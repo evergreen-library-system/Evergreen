@@ -1,8 +1,6 @@
-Circulation Limit Sets
-----------------------
+== Circulation Limit Sets ==
 
-Maximum Checkout by Shelving Location
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Maximum Checkout by Shelving Location ===
 
 This feature enables you to specify the maximum number of checkouts of items by
 shelving location and is an addition to the circulation limit sets.  Circulation

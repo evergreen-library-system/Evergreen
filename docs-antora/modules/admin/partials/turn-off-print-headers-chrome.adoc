@@ -1,5 +1,4 @@
-Turning off print headers and footers in Chrome
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Turning off print headers and footers in Chrome ====
 
 indexterm:[printing,headers]
 indexterm:[printing,footers]

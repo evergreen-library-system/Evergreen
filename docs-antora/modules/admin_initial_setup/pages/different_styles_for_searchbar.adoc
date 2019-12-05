@@ -1,5 +1,4 @@
-Styling the searchbar on the homepage
--------------------------------------
+== Styling the searchbar on the homepage ==
 
 The `.searchbar-home` class is added to the div that
 contains the searchbar when on the homepage.  This allows

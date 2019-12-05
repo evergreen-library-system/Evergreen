@@ -1,5 +1,4 @@
-Setting limits on allowed payment amounts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Setting limits on allowed payment amounts ===
 
 Two new settings have been added to prevent library staff
 from accidentally clearing all patron bills by scanning a

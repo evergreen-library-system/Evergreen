@@ -1,5 +1,4 @@
-Purge User Activity
--------------------
+== Purge User Activity ==
 
 User activity types are now set to transient by default for new
 Evergreen installs.  This means only the most recent activity entry per

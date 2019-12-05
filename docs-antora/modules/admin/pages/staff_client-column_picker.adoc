@@ -1,5 +1,4 @@
-Column Picker
--------------
+== Column Picker ==
 
 indexterm:[Column Picker]
 

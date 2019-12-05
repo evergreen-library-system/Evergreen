@@ -1,5 +1,4 @@
-Setting regular library hours
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Setting regular library hours ===
 
 You may do this in _Administration_ > _Server Administration_ > _Organizational
 Units_.

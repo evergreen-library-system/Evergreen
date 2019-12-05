@@ -1,5 +1,4 @@
-Administering the Physical Characteristics Wizard
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Administering the Physical Characteristics Wizard ===
 
 indexterm:[Physical characteristics wizard]
 indexterm:[MARC editor,configuring]

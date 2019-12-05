@@ -10,8 +10,7 @@ These dates are in addition to your regular weekly closed days.    Both regular 
 
 Closed dates do not affect the processing delays for Action/Triggers. For example, if your library has a trigger event that marks items as lost after 30 days, that 30 day period will include both open and closed dates.
 
-Adding a closure
-^^^^^^^^^^^^^^^^
+==== Adding a closure ====
 
 . Select _Administration > Local Administration_.
 . Select _Closed Dates Editor_.
@@ -36,8 +35,7 @@ image::media/closed_dates.png[]
 Now that your organizational structure is established, you can begin
 configuring permissions for the staff users of your Evergreen system.
 
-Detailed closure
-^^^^^^^^^^^^^^^^
+==== Detailed closure ====
 
 If your closed dates include a portion of a business day, you should create a detailed closing.
 

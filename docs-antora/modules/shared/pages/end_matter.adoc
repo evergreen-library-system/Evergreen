@@ -1,7 +1,6 @@
 [[licensing]]
 [appendix]
-Licensing
-=========
+= Licensing =
 
 image::media/ccbysa.png["CC-BY-SA",link="http://creativecommons.org/licenses/by-sa/3.0/"]
 
@@ -11,6 +10,5 @@ Commons Attribution-ShareAlike 3.0 Unported License].
 
 
 [index]
-Index
-=====
+= Index =
 

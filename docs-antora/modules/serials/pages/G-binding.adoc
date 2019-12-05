@@ -1,5 +1,4 @@
-Binding Issues
---------------
+== Binding Issues ==
 
 *Apply a binding template:*
 

@@ -1,5 +1,4 @@
-Cloning Shared Templates
-------------------------
+== Cloning Shared Templates ==
 
 indexterm:[reports, cloning]
 

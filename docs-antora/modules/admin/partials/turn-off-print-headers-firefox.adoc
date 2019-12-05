@@ -1,5 +1,4 @@
-Turning off print headers and footers in Firefox
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Turning off print headers and footers in Firefox ====
 
 indexterm:[printing,headers]
 indexterm:[printing,footers]

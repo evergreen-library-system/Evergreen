@@ -1,5 +1,4 @@
-Placing purchase requests from a patron record
-----------------------------------------------
+== Placing purchase requests from a patron record ==
 
 indexterm:[patrons, purchase requests]
 

@@ -1,16 +1,12 @@
-Holdings
---------
+== Holdings ==
 
-System Generated Holdings Statement
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== System Generated Holdings Statement ===
 As issues are received, Evergreen creates a holding statement in the OPAC based on what is set up in the Caption and Patterns of the subscription.  The systems generated holdings can only be edited by changing caption and pattern information and there is no ability to edit the statement as free text.
 
-MARC Format for Holdings Display (MFHD)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== MARC Format for Holdings Display (MFHD) ===
 Evergreen users can create, edit and delete their own MFHD.
 
-Create an MFHD record
-^^^^^^^^^^^^^^^^^^^^^
+==== Create an MFHD record ====
 
 *To create a MFHD record:*
 
@@ -35,16 +31,14 @@ image::media/serials_mfhd3.PNG[]
 image::media/serials_mfhd6.PNG[]
 
 
-Edit a MFHD record
-^^^^^^^^^^^^^^^^^^
+==== Edit a MFHD record ====
 
 . Open a serial record, go to *Serials* -> *MFHD Record* -> *Manage MFHDs* and select the appropriate MFHD.
 . Go to *Actions* or right-click on the MFHD and select *Edit MFHD*.
 . The MARC Editor will appear.  _Modify the MFHD record_ as needed and click *Save*.
 
 
-Delete a MFHD Record
-^^^^^^^^^^^^^^^^^^^^
+==== Delete a MFHD Record ====
 
 . Open a serial record, go to *Serials* -> *MFHD Record* -> *Manage MFHDs* and select the appropriate MFHD.
 . Go to *Actions* or right-click on the MFHD and select *Delete Selected MFHDs*.

@@ -1,19 +1,16 @@
-Patron privacy and the SIP protocol
------------------------------------
+== Patron privacy and the SIP protocol ==
 
 SIP traffic includes a lot of patron information, and is not
 encrypted by default.  It is strongly recommended that you
 encrypt any SIP traffic.
 
-SIP server configuration
-~~~~~~~~~~~~~~~~~~~~~~~~
+=== SIP server configuration ===
 
 On the SIP server, use `iptables` or `etc/hosts` to allow SSH connections on port 22 from the SIP client machine.  You will probably want to have very restrictive rules
 on which IP addresses can connect to this server.
 
 
-SSH tunnels on SIP clients
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== SSH tunnels on SIP clients ===
 
 SSH tunnels are a good fit for use cases like self-check machines, because it is relatively easy to automatically open the connection.  Using a VPN is another option,
 but many VPN clients require manual steps to open the VPN connection.

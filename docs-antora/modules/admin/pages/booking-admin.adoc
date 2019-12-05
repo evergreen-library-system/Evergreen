@@ -1,8 +1,6 @@
-Booking Module Administration
------------------------------
+== Booking Module Administration ==
 
-Creating Bookable Non-Bibliographic Resources
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Creating Bookable Non-Bibliographic Resources ===
 
 Staff with the required permissions (Circulator and above) can create bookable non-bibliographic resources such as laptops, projectors, and meeting rooms.
 
@@ -16,8 +14,7 @@ The following pieces make up a non-bibliographic resource:
 
 You need to create resource types and resource attributes (features of the resource types), and add booking items (resources) to individual resource type. Each resource attribute may have multiple values. You need to link the applicable features (resource attributes and values) to individual item (resource) through the Resource Attribute Map. Before you create resources (booking items) you need to have a resource type and associated resource attributes and values, if any, for them.
 
-Create New Resource Type
-^^^^^^^^^^^^^^^^^^^^^^^^
+==== Create New Resource Type ====
 
 1) Select Administration -> Booking Administration -> Resource Types.
 
@@ -65,8 +62,7 @@ image::media/booking-create-resourcetype-4.png[]
 
 image::media/booking-create-resourcetype-5.png[]
 
-Create New Resource Attribute
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Create New Resource Attribute ====
 
 1) Select Administration -> Booking Administration -> Resource Attributes.
 
@@ -88,8 +84,7 @@ image::media/booking-create-bookable-2.png[]
 [NOTE]
 One resource type may have multiple attributes. You may repeat the above procedure to add more.
 
-Create New Resource Attribute Value
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Create New Resource Attribute Value ====
 
 1) One resource attribute may have multiple values. To add new attribute value, select Administration -> Booking Administration -> Resource Attribute Values.
 
@@ -107,8 +102,7 @@ image::media/booking-create-bookable-3.png[]
 
 5) The attribute value will appear in the list. Each attribute should have at least two values attached to it; repeat this process for all applicable attribute values.
 
-Create New Resource
-^^^^^^^^^^^^^^^^^^^
+==== Create New Resource ====
 
 1) Add items to a resource type. Click Administration -> Booking Administration -> Resources.
 
@@ -133,8 +127,7 @@ image::media/booking-create-bookable-4.png[]
 [NOTE]
 One resource type may have multiple resources attached.
 
-Map Resource Attributes and Values to Resources
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Map Resource Attributes and Values to Resources ====
 
 1) Use Resource Attribute Maps to bring together the resources and their attributes and values. Select Administration -> Booking Administration -> Resource Attribute Maps.
 
@@ -160,13 +153,11 @@ Once all attributes have been mapped your resource will be part of a hierarchy s
 image::media/booking-create-bookable-6.png[]
 
 
-Editing Non-Bibliographic Resources
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Editing Non-Bibliographic Resources ===
 
 Staff with the required permissions can edit aspects of existing non-bibliographic resources. For example, resource type can be edited in the event that the fine amount for a laptop changes from $2.00 to $5.00.
 
-Editing Resource Types
-^^^^^^^^^^^^^^^^^^^^^^
+==== Editing Resource Types ====
 
 1) Bring up your list of resource types. Select Administration -> Booking Administration -> Resource Types.
 
@@ -181,8 +172,7 @@ Editing Resource Types
 
 
 
-Deleting Non-bibliographic Resources
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Deleting Non-bibliographic Resources ===
 
 1) To delete a booking resource, go to Administration -> Booking Administration -> Resources.
 

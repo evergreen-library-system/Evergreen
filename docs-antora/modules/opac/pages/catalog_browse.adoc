@@ -1,5 +1,4 @@
-Catalog Browse
---------------
+== Catalog Browse ==
 
 *Abstract*
 

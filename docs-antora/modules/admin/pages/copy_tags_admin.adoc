@@ -1,13 +1,11 @@
-Item Tags (Digital Bookplates)
-------------------------------
+== Item Tags (Digital Bookplates) ==
 
 indexterm:[copy tags]
 
 Item Tags allow staff to apply custom, pre-defined labels or tags to items.  Item tags are visible in the public catalog and are searchable in both the staff client and public catalog based on configuration.  This feature was designed to be used for Digital Bookplates to attach donation or memorial information to items, but may be used for broader purposes to tag items.
 
 
-Administration
-~~~~~~~~~~~~~~
+=== Administration ===
 
 New Permissions:
 
@@ -22,16 +20,14 @@ New Library Settings:
 * OPAC: Enable Digital Bookplate Search: when set to _True_ for a given org unit, the digital bookplate search option will be available in the catalog.
 
 
-Creating item Tags
-~~~~~~~~~~~~~~~~~~
+=== Creating item Tags ===
 There are two components to this feature: Item Tag Types and Item Tags.
 
 Item Tag Types are used to define the type of tag, such as “Bookplates” or “Local History Notes”, as well as the organizational unit scope for use of the tag type.
 
 Item Tags are associated with a Item Tag Type and are used to configure the list of tags that can be applied to copies, such as a list of memorial or donation labels, that are applicable to a particular organizational unit.
 
-Create Item Tag Types
-^^^^^^^^^^^^^^^^^^^^^
+==== Create Item Tag Types ====
 
 . Go to *Administration->Server Administration->Item Tag Types*.
 . In the upper left hand corner, click *New Record*.  A dialog box will appear.  Assign the following to create a new Item Tag Type:
@@ -44,8 +40,7 @@ image::media/copytags1.PNG[Create Item Tag Types]
 
 image::media/copytags2.PNG[Item Tag Types Grid View]
 
-Create Item Tags
-^^^^^^^^^^^^^^^^
+==== Create Item Tags ====
 
 . Go to *Administration->Local Administration->Item Tags*.
 . In the upper left hand corner, click *New Record*.  A dialog box will appear.  Assign the following to create a new Item Tag:
@@ -62,16 +57,13 @@ image::media/copytags3.PNG[Create Item Tags]
 image::media/copytags4.PNG[Item Tags Grid View]
 
 
-Managing Item Tags
-~~~~~~~~~~~~~~~~~~
+=== Managing Item Tags ===
 
-Editing Tags
-^^^^^^^^^^^^
+==== Editing Tags ====
 
 Existing item tags can be edited by selecting a tag and clicking *Actions->Edit Record* or right-clicking on a tag and selecting *Edit Record*.  The dialog box will appear and you can modify the item tag.  Click *Save* to save any changes.  Changes will be propagated to any items that the tag has been attached to.
 
-Deleting Tags
-^^^^^^^^^^^^^
+==== Deleting Tags ====
 
 Existing item tags can be deleted by selecting a tag and clicking *Actions->Delete Record* or right-clicking on a tag and selecting *Delete Record*.  Deleting a tag will delete the tag from any items it was attached to in the catalog.
 

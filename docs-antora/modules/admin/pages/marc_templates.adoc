@@ -1,11 +1,9 @@
-MARC Templates
---------------
+== MARC Templates ==
 
 MARC Templates make the cataloging process more efficient for catalogers.  At this time, MARC Templates have to be
 created on the server, rather than in the Web client.
 
-Adding MARC Templates
-~~~~~~~~~~~~~~~~~~~~~
+=== Adding MARC Templates ===
 
 . Create a marc template in the directory _/openils/var/templates/marc/_. It should be in xml format. Here is an
   example file `k_book.xml`: 

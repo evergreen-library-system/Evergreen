@@ -1,5 +1,4 @@
-Parts Level Hold
-~~~~~~~~~~~~~~~~
+=== Parts Level Hold ===
 
 . To place a parts level hold, retrieve a record with parts-level items
 attached to the title, such as a multi-disc DVD, an annual travel guide,
@@ -16,8 +15,7 @@ image::media/holds_title_options.png[Place Holds screen with Basic Options]
 Requested formats are listed in the _Holdable Part_ column in hold records. Use the _Column Picker_ to display it when the hold record is displayed.
 ===============
 
-Placing Holds in Patron Records
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Placing Holds in Patron Records ===
 
 . Holds can be placed from patron records too. In the patron record on the _Holds_ screen, click the _Place Hold_ button on the left top corner.
 
@@ -29,8 +27,7 @@ Placing Holds in Patron Records
 
 . You may continue to search for more titles. Once you are done, click the _Holds_ button on the top to go back to the _Holds_ screen. Click the _Refresh_ button to display your newly placed holds.
 
-Placing Multiple Holds on Same Title
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Placing Multiple Holds on Same Title ====
 
 After a successful hold placement, staff have the option to place another hold on the same title by clicking the link _Place another hold for this title_.  This returns to the hold screen, where a different patron's information can be entered.
 
@@ -39,8 +36,7 @@ image::media/place-another-hold-1.png[place-another-hold-1]
 This feature can be useful for book groups or new items where a list of waiting patrons needs to be transferred into the system.
 
 
-Managing Holds
-~~~~~~~~~~~~~~
+=== Managing Holds ===
 
 Holds can be cancelled at any time by staff or patrons. Before holds are captured, staff or patrons can suspend them or set them as inactive for a period of time without losing the hold queue position, activate suspended holds, change
 notification method, phone number, pick-up location (for multi-branch libraries only), expiration date, activation date for inactive holds, etc. Once a hold is captured, staff can change the pickup location and extend the hold shelf
@@ -55,8 +51,7 @@ display, the holds shelf display, and the pull list display.
 ==============
 
 
-Actions for Selected Holds
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Actions for Selected Holds ====
 
 . Retrieve the patron record and go to the _Holds_ screen.
 . Highlight the hold record, then select _Actions_.
@@ -106,8 +101,7 @@ _Actions_ list. Make your choice in the pop-up window.
 image::media/holds-managing-8.JPG[holds-managing-8]
 
 
-Transferring Holds
-^^^^^^^^^^^^^^^^^^
+==== Transferring Holds ====
 
 . Holds on one title can be transferred to another with the hold request
 time preserved. To do so, you need to find the destination title and
@@ -119,8 +113,7 @@ image::media/holds-managing-9.png[holds-managing-9]
 +
 image::media/holds-managing-10.JPG[holds-managing-10]
 
-Cancelled Holds
-^^^^^^^^^^^^^^^
+==== Cancelled Holds ====
 
 . Cancelled holds can be displayed. Click the _Recently Cancelled Holds_ button on the _Holds_ screen.
 +
@@ -133,8 +126,7 @@ image::media/holds-managing-12.JPG[holds-managing-12]
 Based on your library’s setting, hold request time can be reset when a hold is un-cancelled.
 
 
-Viewing Details & Adding Notes to Holds
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Viewing Details & Adding Notes to Holds ====
 
 . You can view details of a hold by selecting a hold then clicking the _Detail View_ button on the _Holds_ screen.
 +
@@ -150,16 +142,14 @@ is selected. Enter the message, then click _OK_.
 image::media/holds-managing-15.JPG[holds-managing-15]
 
 
-Displaying Queue Position
-^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Displaying Queue Position ====
 
 Using the Column Picker, you can display _Queue Position_ and _Total number of Holds_.
 
 image::media/holds-managing-16.png[holds-managing-16]
 
 
-Managing Holds in Title Records
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Managing Holds in Title Records ====
 
 . Retrieve and display the title record in the catalog.
 . Click _Actions_ -> _View Holds_.
@@ -179,8 +169,7 @@ _Retrieve Patron_ from this menu.
 image::media/holds-managing-19.png[holds-managing-19]
 
 
-Retargeting Holds
-^^^^^^^^^^^^^^^^^
+==== Retargeting Holds ====
 
 Holds need to be retargeted whenever a new item is added to a record, or after some types of item status changes, for instance when an item is changed from _On Order_ to _In Process_. The system does not automatically recognize the newly added items as available to fill holds.
 
@@ -199,11 +188,9 @@ Holds need to be retargeted whenever a new item is added to a record, or after s
 . When the screen refreshes, the holds will be retargeted. The system will now recognize the new items as available for holds.
 
 
-Pulling & Capturing Holds
-^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Pulling & Capturing Holds ====
 
-Holds Pull List
-+++++++++++++++
+===== Holds Pull List =====
 
 There are usually four statuses a hold may have: _Waiting for Copy_, _Waiting for Capture_, _In Transit_ and _Ready for Pickup_.
 
@@ -245,8 +232,7 @@ With the CSV option, if you are including barcodes in the holds pull list, you w
 
 The _Holds Pull List_ is updated constantly. Once an item on the list is no longer available or a hold on the list is captured, the items will disappear from the list. The _Holds Pull List_ should be printed at least once a day.
 
-Capturing Holds
-+++++++++++++++
+===== Capturing Holds =====
 
 Holds can be captured when a checked-out item is returned (checked in) or an item on the _Holds Pull List_ is retrieved and captured. When a hold is captured, the hold slip will be printed and if the patron has chosen to be notified by email, the email notification will be sent out. The item should be put on the hold shelf.
 
@@ -274,8 +260,7 @@ If a patron has an _OPAC/Staff Client Holds Alias_ in his/her account, it will b
 ===============
 
 
-Handling Missing and Damaged Item
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Handling Missing and Damaged Item ====
 
 If an item on the holds pull list is missing or damaged, you can change its status directly from the holds pull list.
 
@@ -286,8 +271,7 @@ image::media/holds-pull-9.png[holds-pull-9]
 . Evergreen will update the status of the item and will immediately retarget the hold.
 
 
-Holds Notification Methods
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Holds Notification Methods ====
 
 . In Evergreen, patrons can set up their default holds notification method in the _Account Preferences_ area of _My Account_. Staff cannot set these preferences for patrons; the patrons must do it when they are logged into the public catalog.
 +
@@ -305,8 +289,7 @@ image::media/holds-notifications-2.png[holds-notifications-2]
 If the patron changes their contact telephone number when placing the hold, this phone number will display on the holds slip. It will not necessarily be the same phone number contained in the patron’s record.
 
 
-Clearing Shelf-Expired Holds
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Clearing Shelf-Expired Holds ====
 
 . Items with _Ready-for-Pickup_ status are on the _Holds Shelf_. The _Holds Shelf_ can help you manage items on the holds shelf. To see the holds shelf list, select _Circulation_ -> _Holds Shelf_.
 +
@@ -346,8 +329,7 @@ The clear-hold-shelf function cancels shelf-expired holds only. It does not incl
 ===========
 
 
-Alternate Hold Pick up Location
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Alternate Hold Pick up Location ===
 
 *Abstract*
 
@@ -378,8 +360,7 @@ If configured, patrons will see the option to opt-in to the alternate location i
 image::media/custom_hold_pickup_location2.jpg[OPAC Account]
 
 
-Display Hold Types on Pull Lists
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Display Hold Types on Pull Lists ===
 
 This feature ensures that the hold type can be displayed on all hold interfaces.
 

@@ -1,8 +1,6 @@
-Configuring Evergreen for your workstation
-==========================================
+= Configuring Evergreen for your workstation =
 
-Setting search defaults
------------------------
+== Setting search defaults ==
 
 * Go to Administration -> Workstation.
 * Use the dropdown menu to select an appropriate
@@ -25,8 +23,7 @@ secondary panes for Numeric and MARC Expert searching.
 You can change which one is loaded by default when
 opening a new catalog window here.
 
-Turning off sounds
-------------------
+== Turning off sounds ==
 
 * Go to Administration -> Workstation.
 * Click the checkbox labeled _Disable Sounds?_

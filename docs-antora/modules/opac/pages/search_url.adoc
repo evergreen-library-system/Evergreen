@@ -1,5 +1,4 @@
-Search URL
-~~~~~~~~~~
+=== Search URL ===
 
 indexterm:[search, URL]
 
@@ -13,13 +12,11 @@ Here is a basic search URL structure:
 
 +++[hostname]+++/eg/opac/results?query=[search term]&**qtype**=keyword&fi%3Aitem_type=&**locg**=[location id]
 
-locg Parameter
-^^^^^^^^^^^^^^
+==== locg Parameter ====
 This is the id of the search location. It is an integer and matches the id of the
 location the user selected in the location drop down menu.
 
-qtype Parameter
-^^^^^^^^^^^^^^^
+==== qtype Parameter ====
 
 The _qtype_ parameter in the URL represents the search type values and represent
 one of the following search or request types:
@@ -34,8 +31,7 @@ one of the following search or request types:
 
 These match the options in the search type drop-down box.
 
-Sorting
-^^^^^^^
+==== Sorting ====
 
 The _sort_ parameter sorts the results on one of these criteria.
 

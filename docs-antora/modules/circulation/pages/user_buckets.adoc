@@ -1,8 +1,6 @@
-User buckets
-============
+= User buckets =
 
-Introduction
-------------
+== Introduction ==
 indexterm:[patron buckets]
 indexterm:[patrons, batch operations]
 
@@ -15,8 +13,7 @@ Bucket by uploading a text file that contains a list of user barcodes.
 From this interface it is possible to perform a set of specific batch update
 operations on the group of users you have identified.
 
-Editing users
--------------
+== Editing users ==
 indexterm:[batch edit, patrons]
 
 You can change the following fields in batch:
@@ -52,8 +49,7 @@ processing of Action/Trigger event definitions for user update, so users will
 not receive any notifications that they might otherwise receive when their accounts
 are edited.
 
-Deleting users
---------------
+== Deleting users ==
 indexterm:[batch delete, patrons]
 
 You may also delete users as a batch.
@@ -76,8 +72,7 @@ processing of Action/Trigger event definitions for user deletion.
 This mechanism does not completely purge the user from the database.  User data
 will still be available to system administrators with database access.
 
-Editing Statistical Category Entries
-------------------------------------
+== Editing Statistical Category Entries ==
 
 All users in the bucket can have their Statistical Category Entries
 modified. Unlike user data field updates, modification of Statistical

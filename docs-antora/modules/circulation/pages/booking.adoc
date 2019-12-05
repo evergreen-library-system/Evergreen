@@ -1,8 +1,6 @@
-Booking Module
---------------
+== Booking Module ==
 
-Creating a Booking Reservation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Creating a Booking Reservation ===
 
 indexterm:[scheduling,resources using the booking module]
 indexterm:[booking,reserving a resource]
@@ -17,8 +15,7 @@ timezone.
 Only staff members may create reservations. A reservation can be started from a patron record, or a booking resource.
 To reserve catalogued items, you may start from searching the catalogue, if you do not know the booking item's barcode.
 
-To create a reservation from a patron record
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== To create a reservation from a patron record ====
 
 . Retrieve the patron's record.
 . Select Other -> Booking -> Create Reservations. This takes you to the Create Reservations Screen.
@@ -47,8 +44,7 @@ actions button. Select "Create Reservation".
 . The screen will refresh, and the new reservation will appear in the schedule.
 
 
-Search the catalogue to create a reservation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Search the catalogue to create a reservation ====
 
 If you would like to reserve a catalogued item but do not know the item barcode, you may start with a catalogue search.
 
@@ -81,8 +77,7 @@ actions button. Select "Create Reservation".
 [NOTE]
 Reservations on catalogued items can be created on Item Status (F5) screen. Select the item, then Actions -> Book Item Now.
 
-Reservation Pull List
-~~~~~~~~~~~~~~~~~~~~~
+=== Reservation Pull List ===
 
 indexterm:[booking,pull list]
 indexterm:[pull list,booking]
@@ -97,8 +92,7 @@ you can enter 1 in the box, and you will retrieve items that need to be pulled t
 
 . The pull list will appear. Select the actions button, then _Print_ to print the pull list.
 
-Capturing Items for Reservations
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Capturing Items for Reservations ===
 
 indexterm:[booking,capturing reservations]
 
@@ -120,8 +114,7 @@ image::media/booking-capture-2_web_client.png[]
 image::media/booking-capture-3.png[]
 
    
-Picking Up Reservations
-~~~~~~~~~~~~~~~~~~~~~~~
+=== Picking Up Reservations ===
 
 indexterm:[booking,picking up reservations]
 indexterm:[booking,checkout]
@@ -140,8 +133,7 @@ reservation cannot be checked out using the Check Out interface, even if the pat
 4) The screen will refresh to show that the patron has picked up the reservation(s).
 
 
-Returning Reservations
-~~~~~~~~~~~~~~~~~~~~~~
+=== Returning Reservations ===
 
 indexterm:[booking,returning reservations]
 indexterm:[booking,checkin]
@@ -163,15 +155,13 @@ When a reserved item is brought back, staff must use the Booking Module to retur
 [NOTE]
 Reservations can be returned from within patron records by selecting Other -> Booking -> Return Reservations
 
-Cancelling a Reservation
-~~~~~~~~~~~~~~~~~~~~~~~~
+=== Cancelling a Reservation ===
 
 indexterm:[booking,canceling reservations]
 
 A reservation can be cancelled in a patron's record or reservation creation screen.
 
-Cancel a reservation from the patron record
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Cancel a reservation from the patron record ====
 
 1) Retrieve the patron's record.
 

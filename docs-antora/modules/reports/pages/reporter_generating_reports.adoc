@@ -86,8 +86,7 @@ image::media/generate-report-14.png[generate-report-14]
 +
 Once saved, reports stay there forever unless you delete them.
 
-Viewing and Editing Report Parameters
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Viewing and Editing Report Parameters ===
 
 New options to view or edit report parameters are available from the reports folder.
 

@@ -1,8 +1,6 @@
-Library Settings Editor
------------------------
+== Library Settings Editor ==
 
-Introduction
-~~~~~~~~~~~~
+=== Introduction ===
 (((Library Settings Editor)))
 
 With the *Library Settings Editor* one can optionally customize
@@ -10,8 +8,7 @@ Evergreen's behavior for a particular library or library system. For
 descriptions of available settings see the <<_settings_overview,Settings
 Overview>> table below.
 
-Editing Library Settings
-~~~~~~~~~~~~~~~~~~~~~~~~
+=== Editing Library Settings ===
 
 1. To open the *Library Settings Editor* select *Admin* -> *Local
 Administration* -> *Library Settings Editor*.
@@ -39,8 +36,7 @@ formats, which are listed in the <<_settings_overview,Settings
 Overview>> table. Refer to the <<_data_types,Data Types>> table at the
 bottom of this page for more information.
 
-Exporting/Importing Library Settings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Exporting/Importing Library Settings ===
 ((("Exporting", "Library Settings Editor")))
 ((("Importing", "Library Settings Editor")))
 
@@ -58,8 +54,7 @@ contents. Click *Paste* in the pop-up window. Click *Submit*.
 +
 image::media/lse-5.png[Importing Library Settings]
 
-Settings Overview
-~~~~~~~~~~~~~~~~~
+=== Settings Overview ===
 
 The settings are grouped together in separate tables based on functions
 and modules, which are affected by the setting. They are in the same
@@ -497,8 +492,7 @@ usernames in addition to barcode. For this setting to work, a barcode format mus
 |Vandelay Generate Default Call Numbers|Auto-generate default item call numbers when no item call number is present|True/False|These are pulled from the MARC Record.
 |========
 
-Data Types
-^^^^^^^^^^
+==== Data Types ====
 ((("Data Types", "Library Settings Editor")))
 
 Acceptable formats for each setting type are listed below. Quotation

@@ -1,5 +1,4 @@
-Multilingual Search in Evergreen
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Multilingual Search in Evergreen ===
 
 It is now possible to search for items that contain multiple languages in the Evergreen catalog.  This will help facilitate searching for bilingual and multilingual materials, including specific translations, alternative languages, and to exclude specific translations from a search.  
 
@@ -14,8 +13,7 @@ The language filter can be appended to any search.  For example, a title search 
 
 image::media/multilingual_search1.png[]
 
-Search Syntax
-^^^^^^^^^^^^^
+==== Search Syntax ====
 
 To search for materials that contain multiple languages (Boolean AND), the search filters can be constructed in the following ways:
 
@@ -47,16 +45,14 @@ To conduct a search for materials that do not contain at least of the of the lan
 .. Explicit Boolean filtering: _-item_lang(eng) || -item_lang(spa)_
 
 
-Advanced Search
-^^^^^^^^^^^^^^^
+==== Advanced Search ====
 
 Within the Advanced Search interface, multiple languages can be selected from the Language filter by holding down the Ctrl key on the keyboard and selecting the desired languages.  This will apply a Boolean OR operator to the language filters.
 
 image::media/multilingual_search2.PNG[]
 
 
-Adding Subfields to the Index
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Adding Subfields to the Index ====
 
 Additional subfields for the 041 tag, such as h, j, k, and n, can be added to the index through the Record Attribute Definitions interface.  Any records containing the additional subfields will need to be reingested into the database after making changes to the Record Attribute Definition.
 

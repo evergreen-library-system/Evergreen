@@ -1,8 +1,6 @@
-Administering shelving locations
---------------------------------
+== Administering shelving locations ==
 
-Creating new shelving locations
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Creating new shelving locations ===
 
 . Click _Administration_.
 . Click _Local Administration_.
@@ -35,8 +33,7 @@ set _Display shelving location check in alert for in-house-use_ to True.
   use the typical circulation and hold policies to determine circulation
   abilities.
 
-Deleting shelving locations
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Deleting shelving locations ===
 
 You may only delete a shelving location if:
 . it doesn't contain any items, or
@@ -45,8 +42,7 @@ You may only delete a shelving location if:
 Evergreen preserves shelving locations in the database, so no statistical information
 is lost when a shelving location is deleted.
 
-Modifying shelving location order
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Modifying shelving location order ===
 
 . Go to _Administration_.
 . Go to _Local Administration_.
@@ -55,8 +51,7 @@ Modifying shelving location order
 . Click _Apply changes_.
 
 
-Shelving location groups
-~~~~~~~~~~~~~~~~~~~~~~~~
+=== Shelving location groups ===
 
 .Use case
 ****
@@ -79,8 +74,7 @@ org unit or child org unit.
 NOTE: To work with Shelving Location Groups, you will need the ADMIN_COPY_LOCATION_GROUP
 permission.
 
-Create a Shelving Location Group
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Create a Shelving Location Group ====
 
 . Click Administration ->  Local Administration -> Shelving Location Groups.
 . At the top of the screen is a drop down menu that displays the org unit tree.
@@ -102,8 +96,7 @@ Create a Shelving Location Group
   the catalog to retrieve results from any of the shelving locations that you added to
   the shelving location group.
 
-Order Shelving Location Groups
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Order Shelving Location Groups ====
 
 If you create more than one shelving location group, then you can order the groups in the
 org unit tree.

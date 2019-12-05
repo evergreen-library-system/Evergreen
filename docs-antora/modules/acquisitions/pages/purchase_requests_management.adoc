@@ -1,15 +1,12 @@
-Managing patron purchase requests
----------------------------------
+== Managing patron purchase requests ==
 
-Introduction
-~~~~~~~~~~~~
+=== Introduction ===
 
 indexterm:[purchase requests]
 
 Patron Requests can be used to track purchase suggestions from patrons in Evergreen.  This feature allows purchase requests to be placed on selection lists to integrate with the Acquisitions module.  Patron Requests can be accessed through the Acquisitions module under *Acquisitions -> Patron Requests* and through patron accounts under *Other -> Acquisition Patron Requests*.  Requests can be placed and managed through both interfaces.
 
-Place a Patron Request
-~~~~~~~~~~~~~~~~~~~~~~
+=== Place a Patron Request ===
 
 . Go to *Acquisitions -> Patron Requests*.  This interface is scoped by Patron Home Library and will default to the library your workstation is registered to. 
 .. Requests can also be placed directly through a patron account, in which case the interface will scope to the patron ID.
@@ -57,11 +54,9 @@ After placing a Patron Request, a variety of actions can be taken by selecting t
 * *Set No Hold on Requests* - allows you to indicate that a hold should not be placed on the requested title, without needing to go in and edit the request individually.
 * *Cancel Requests* - cancel the request and select a cancellation reason
 
-Administration
-~~~~~~~~~~~~~~
+=== Administration ===
 
-Request Status
-^^^^^^^^^^^^^^
+==== Request Status ====
 
 Patron Requests will use the following statuses:
 
@@ -73,8 +68,7 @@ Patron Requests will use the following statuses:
 * *Fulfilled* - This is the state when an associated hold request has been fulfilled.
 * *Canceled* - This is the state when the acquisition request has been canceled.
 
-Notifications/Action Triggers
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Notifications/Action Triggers ====
 
 The following email notifications are included with Evergreen, but are disabled by default.  The notices can be enabled through the *Notifications/Action Triggers* interface under *Administration -> Local Administration*.  The existing notices could also be modified to place a message in the *Patron Message Center*.  Any enabled notifications related to holds placed on requests will also be sent to patrons.
 
@@ -84,8 +78,7 @@ The following email notifications are included with Evergreen, but are disabled 
 * Email Notice: Patron Acquisition Request marked Cancelled
 * Email Notice: Patron Acquisition Request marked Received
 
-Permissions
-^^^^^^^^^^^
+==== Permissions ====
 
 This feature includes one new permission and makes use of several existing permissions.  The following permissions are required to manage patron requests:
 

@@ -1,5 +1,4 @@
-Adding Data Sources to Reporter
--------------------------------
+== Adding Data Sources to Reporter ==
 
 indexterm:[reports, adding data sources]
 
@@ -36,8 +35,7 @@ Evergreen reporter and/or cstore code that you write.
 definition in _fm_IDL.xml_. You can use this method if you want to be able to 
 access this data source through directly through SQL or using other reporting tool.
 
-Create a PostgreSQL query, view, or table for your data source
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Create a PostgreSQL query, view, or table for your data source ===
 
 indexterm:[PostgreSQL]
 
@@ -110,8 +108,7 @@ left join actor.stat_cat_entry_usr_map ag
 where u.active = 't' and u.deleted <> 't';
 ------------------------------------------------------------
 
-Add a new class to fm_IDL.xml for your data source
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Add a new class to fm_IDL.xml for your data source ===
 
 Once you have your data source, the next step is to add that data source as a 
 new class in _fm_IDL.xml_.
@@ -202,8 +199,7 @@ control system for any changes to fm_IDL.xml. You will need to keep a separate
 copy of you local class definitions so that you can reapply the changes to 
 _fm_IDL.xml_ after Evergreen upgrades.
 
-Restart the affected services to see the new data source in the reporter
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Restart the affected services to see the new data source in the reporter ===
 
 The following steps are needed to for Evergreen to recognize the changes to 
 _fm_IDL.xml_

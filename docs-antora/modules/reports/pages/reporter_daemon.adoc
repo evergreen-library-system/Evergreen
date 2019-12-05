@@ -1,5 +1,4 @@
-Starting and Stopping the Reporter Daemon
------------------------------------------
+== Starting and Stopping the Reporter Daemon ==
 
 indexterm:[reports, starting server application]
 
@@ -11,8 +10,7 @@ the reporter daemon from the command line of the Evergreen server.
 The reporter daemon periodically checks for requests for new reports or 
 scheduled reports and gets them running.
 
-Starting the Reporter Daemon
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Starting the Reporter Daemon ===
 
 indexterm:[reporter, starting]
 
@@ -44,8 +42,7 @@ restarted before you can view reports unless you have configured your server to
 start the daemon automatically at start up time. 
 =============
 
-Stopping the Reporter Daemon
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Stopping the Reporter Daemon ===
 
 indexterm:[reports, stopping server application]
 

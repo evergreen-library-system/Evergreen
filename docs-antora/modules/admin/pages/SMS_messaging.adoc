@@ -1,16 +1,13 @@
-SMS Text Messaging
-------------------
+== SMS Text Messaging ==
 
 The SMS Text Messaging feature enables users to receive hold notices via text message.  Users can opt-in to this hold notification as their default setting for all holds, or they 
 can receive specific hold notifications via text message. Users can also send call numbers and item locations via text message.
 
-Administrative Setup
-~~~~~~~~~~~~~~~~~~~~
+=== Administrative Setup ===
 
 You cannot receive text messages from Evergreen by default.  You must enable this feature to receive hold notices and item information from Evergreen via text message.
 
-Enable Text Messages
-^^^^^^^^^^^^^^^^^^^^
+==== Enable Text Messages ====
 
 . Click *Administration* -> *Local Administration* -> *Library Settings Editor.*
 . Select the setting, *Enable features that send SMS text messages.*
@@ -18,8 +15,7 @@ Enable Text Messages
 
 image::media/SMS_Text_Messaging1.png[Library Setting to enable SMS]
 
-Authenticate Patrons
-^^^^^^^^^^^^^^^^^^^^
+==== Authenticate Patrons ====
 
 By default, you must be logged into your OPAC account to send a text message
 from Evergreen.  However, if you turn on this setting, you can text message copy
@@ -33,8 +29,7 @@ To disable the patron login requirement:
 
 image::media/SMS_Text_Messaging2.png[Library Setting to disable SMS auth/login requirement]
 
-Configure SMS Carriers
-^^^^^^^^^^^^^^^^^^^^^^
+==== Configure SMS Carriers ====
 
 A list of SMS carriers that can transmit text messages to users is available in the staff client.  Library staff can edit this list, or add new carriers.
 
@@ -52,8 +47,7 @@ image::media/SMS_Text_Messaging3.jpg[SMS_Text_Messaging3]
 
 image::media/SMS_Text_Messaging4.jpg[SMS_Text_Messaging4]
 
-Configure Text Message Templates
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Configure Text Message Templates ====
 
 Library staff control the content and format of text messages through the templates in Notifications/Action Triggers.  Patrons cannot add free text to their text messages.
 
@@ -71,8 +65,7 @@ hold notice.
 +
 image::media/SMS_Text_Messaging6.png[Hold Ready SMS Trigger Event Definition]
 
-Receiving Holds Notices via Text Message
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Receiving Holds Notices via Text Message ===
 
 You can receive notification that your hold is ready for pickup from a text message that is sent to your mobile phone.
 
@@ -90,8 +83,7 @@ image::media/SMS_Text_Messaging12.jpg[SMS_Text_Messaging12]
 image::media/SMS_Text_Messaging13.jpg[SMS_Text_Messaging13]
 
 [[Sending_Copy_Details_via_Text_Message]]
-Sending Copy Details via Text Message
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Sending Copy Details via Text Message ===
 
 You can search the catalog for an item, and, after retrieving results
 for the item, click a hyperlink to send the copy information in a text

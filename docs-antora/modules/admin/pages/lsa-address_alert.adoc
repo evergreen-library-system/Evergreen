@@ -1,5 +1,4 @@
-Address Alert
--------------
+== Address Alert ==
 
 indexterm:[address alerts]
 
@@ -15,16 +14,14 @@ To access the Address Alert module, select *Administration* -> *Local Administra
 You must have Local Administrator permissions or ADMIN_ADDRESS_ALERT permission to access the Address Alert module.
 ==========
 
-General Usage Examples
-~~~~~~~~~~~~~~~~~~~~~~
+=== General Usage Examples ===
 
 - Alert staff when an address for a large apartment is entered to prompt them to ask for unit number.
 - Alert staff when the address of a hotel or other temporary housing is entered.
 - Alert staff when an address for a different country is entered.
 - Alert staff when a specific city or zip code is entered if that city or zip code needs to be handled in a special way.  If you have a neighboring city that you don't have a reciprocal relationship with, you could notify staff that a fee card is required for this customer.
 
-Access Control and Scoping
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Access Control and Scoping ===
 
 Each address alert is tied to an Org Unit and will only be matched against staff client instances of that Org Unit and its children.
 
@@ -32,8 +29,7 @@ When viewing the address alerts you will only see the alerts associated with the
 
 The specific permission that controls access to configuring this feature is ADMIN_ADDRESS_ALERT.  Local Administrator level users will already have this permission.  It is possible for the Local Administrator to grant this permission to other staff.
 
-Adding a new Address Alert
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Adding a new Address Alert ===
 
 How to add an address to the alert list:
 
@@ -63,20 +59,17 @@ How to add an address to the alert list:
 +
 . Click save once you have finished.
 
-Editing an Address Alert
-~~~~~~~~~~~~~~~~~~~~~~~~
+=== Editing an Address Alert ===
 
 To make changes to an existing alert, double click on the alert in the list.  The editing form will appear, make your changes and click save or cancel when you are done.
 
 If you don't see your alerts, make sure the *"Context Org Unit"* selection box has the correct Org Unit selected.
 
-Deleting an Address Alert
-~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Deleting an Address Alert ===
 
 To delete an alert or many alerts, click the selection check-box for all alerts you would like to delete.  Then click the "Delete Selected" button at the top of the screen.
 
-Staff View of Address Alerts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Staff View of Address Alerts ===
 
 When an Address Alert is triggered by a matching address the staff will see the address block highlighted with a red dashed line, along with an *"Address Alert"* block which contains the alert message.
 
@@ -84,8 +77,7 @@ Here is an example of what staff would see.
 
 image::media/lsa-address_alert_staff_view.png[Address Alert Staff View] 
 
-Regular Expressions / Wildcards
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Regular Expressions / Wildcards ===
 
 All of the patterns entered to match the various address fields are evaluated as case-insensitive regular expressions by default.
 
@@ -98,8 +90,7 @@ If you want to do a case-sensitive match you need to prepend the pattern with "(
 
 The simplest regular expression that acts as a wildcard is ".*", that matches any type of character zero or more times.
 
-Examples
-~~~~~~~~
+=== Examples ===
 
 .Apartment address
 Match an apartment address to prompt for unit number.
@@ -130,8 +121,7 @@ Match several different cities with one alert.  Could be used if certain cities 
 . Alert Message = "Customer must purchase a Fee card."
 . City = "(Emeryville|San Jose|San Francisco)"
 
-Development
-~~~~~~~~~~~
+=== Development ===
 
 Links to resources with more information on how and why this feature was developed and where the various source files are located.
 

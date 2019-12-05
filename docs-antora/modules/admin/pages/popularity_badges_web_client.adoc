@@ -1,17 +1,14 @@
-Statistical Popularity Badges
------------------------------
+== Statistical Popularity Badges ==
 
 Statistical Popularity Badges allow libraries to set popularity parameters that define popularity badges, which bibliographic records can earn if they meet the set criteria.  Popularity badges can be based on factors such as circulation and hold activity, bibliographic record age, or material type.  The popularity badges that a record earns are used to adjust catalog search results to display more popular titles (as defined by the badges) first.  Within the OPAC there are two new sort options called "Most Popular" and "Popularity Adjusted Relevance" which will allow users to sort records based on the popularity assigned by the popularity badges.
 
-Popularity Rating and Calculation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Popularity Rating and Calculation ===
 
 Popularity badge parameters define the criteria a bibliographic record must meet to earn the badge, as well as which bibliographic records are eligible to earn the badge.  For example, the popularity parameter "Circulations Over Time" can be configured to create a badge that is applied to bibliographic records for DVDs.  The badge can be configured to look at circulations within the last 2 years, but assign more weight or popularity to circulations from the last 6 months.
 
 Multiple popularity badges may be applied to a bibliographic record.  For each applicable popularity badge, the record will be rated on a scale of 1-5, where a 5 indicates the most popular.  Evergreen will then assign an overall popularity rating to each bibliographic record by averaging all of the popularity badge points earned by the record.  The popularity rating is stored with the record and will be used to rank the record within search results when the popularity badge is within the scope of the search.  The popularity badges are recalculated on a regular and configurable basis by a cron job.  Popularity badges can also be recalculated by an administrator directly on the server.
 
-Creating Popularity Badges
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Creating Popularity Badges ===
 
 There are two main types of popularity badges:  point-in-time popularity (PIT), which looks at the popularity of a record at a specific point in time—such as the number of current circulations or the number of open hold requests; and temporal popularity (TP), which looks at the popularity of a record over a period of time—such as the number of circulations in the past year or the number of hold requests placed in the last six months.
 
@@ -81,22 +78,19 @@ NOTE: only Name, Scope, Weight, Recalculation Interval, Importance Interval, and
 . Click *OK* to save the badge.
 
 
-New Global Flags
-~~~~~~~~~~~~~~~~
+=== New Global Flags ===
 
 OPAC Default Sort:  can be used to set a default sort option for the catalog.  Users can always override the default by manually selecting a different sort option while searching.
 
 Maximum Popularity Importance Multiplier:  used with the Popularity Adjusted Relevance sort option in the OPAC.  Provides a scaled adjustment to relevance score based on the popularity rating earned by bibliographic records.  See below for more information on how this flag is used.
 
-Sorting by Popularity in the OPAC
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Sorting by Popularity in the OPAC ===
 
 Within the stock OPAC template there is a new option for sorting search results called "Most Popular".  Selecting "Most Popular" will first sort the search results based on the popularity rating determined by the popularity badges and will then apply the default "Sort by Relevance".  This option will maximize the popularity badges and ensure that the most popular titles appear higher up in the search results.
 
 There is a second new sort option called "Popularity Adjusted Relevance", which can be used to find a balance between popularity and relevance in search results.  For example, it can help ensure that records that are popular, but not necessarily relevant to the search, do not supersede records that are both popular and relevant in the search results.  It does this by sorting search results using an adjusted version of Relevance sorting.  When sorting by relevance, each bibliographic record is assigned a baseline relevance score between 0 and 1, with 0 being not relevant to the search query and 1 being a perfect match.  With "Popularity Adjusted Relevance" the baseline relevance is adjusted by a scaled version of the popularity rating assigned to the bibliographic record.  The scaled adjustment is controlled by a Global Flag called "Maximum Popularity Importance Multiplier" (MPIM).  The MPIM takes the average popularity rating of a bibliographic record (1-5) and creates a scaled adjustment that is applied to the baseline relevance for the record.  The adjustment can be between 1.0 and the value set for the MPIM.  For example, if the MPIM is set to 1.2, a record with an average popularity badge score of 5 (maximum popularity) would have its relevance multiplied by 1.2—in effect giving it the maximum increase of 20% in relevance.  If a record has an average popularity badge score of 2.5, the baseline relevance of the record would be multiplied by 1.1 (due to the popularity score scaling the adjustment to half way between 1.0 and the MPIM of 1.2) and the record would receive a 10% increase in relevance.  A record with a popularity badge score of 0 would be multiplied by 1.0 (due to the popularity score being 0) and would not receive a boost in relevance.
 
-Popularity Badge Example
-~~~~~~~~~~~~~~~~~~~~~~~~
+=== Popularity Badge Example ===
 
 A popularity badge called "Long Term Holds Requested" has been created which has the following parameters:
 

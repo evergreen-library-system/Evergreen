@@ -1,8 +1,6 @@
-Backing up your Evergreen System
-================================
+= Backing up your Evergreen System =
 
-Database backups
-----------------
+== Database backups ==
 
 Although it might seem pessimistic, spending some of your limited time preparing for disaster is one of
 the best investments you can make for the long-term health of your Evergreen system. If one of your
@@ -16,8 +14,7 @@ and circulate materials while you work on restoring your local customizations su
 or additional functionality. This section describes how to back up your data so that you or a colleague
 can help you recover from various disaster scenarios.
 
-Creating logical database backups
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Creating logical database backups ===
 
 The simplest method to back up your PostgreSQL data is to use the `pg_dump` utility to create a logical
 backup of your database. Logical backups have the advantage of taking up minimal space, as the indexes
@@ -49,8 +46,7 @@ different physical location.
 You should establish a routine of nightly logical backups of your database, with older logical backups
 being automatically deleted after a given interval.
 
-Restoring from logical database backups
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Restoring from logical database backups ===
 
 To increase your confidence in the safety of your data, you should regularly test your ability to
 restore from a logical backup. Restoring a logical backup that you created using the custom format
@@ -72,8 +68,7 @@ use the `-U <user-name>`  and `-h <hostname>` options to connect to that server.
 to restore the logical backup from a file named evergreen_20121212.dump into the "testrestore"
 database on a system with 2 CPU cores: `pg_restore -j 2 -d testrestore evergreen_20171212.dump`
 
-Creating physical database backups with support for point-in-time recovery
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Creating physical database backups with support for point-in-time recovery ===
 
 While logical database backups require very little space, they also have the disadvantage of
 taking a great deal of time to restore for anything other than the smallest of Evergreen systems.
@@ -129,8 +124,7 @@ to the database. For example, to be able to relatively quickly restore the state
 to any point in time over the past four weeks, you might take physical backups at weekly intervals,
 keeping the last four physical backups and all of the corresponding WAL segments.
 
-Creating a replicated database
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Creating a replicated database ===
 
 If you have a separate server that you can use  to run a replica of your database, consider
 replicating your database to that server. In the event that your primary database server suffers a

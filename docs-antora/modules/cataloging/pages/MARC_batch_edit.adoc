@@ -1,8 +1,6 @@
-MARC Batch Edit
----------------
+== MARC Batch Edit ==
 
-Introduction
-~~~~~~~~~~~~
+=== Introduction ===
 
 This function is used to batch edit MARC records either adding a field, removing a field or changing the contents of a field. 
 
@@ -33,8 +31,7 @@ https://github.com/edsu/pymarc[PyMarc].
 
 **************************************
 
-Setting Up a Batch Edit Session
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Setting Up a Batch Edit Session ===
 
 Record Source::
 This includes options to batch edit identifying MARC records in a record bucket, CSV file or by record id.
@@ -42,8 +39,7 @@ This includes options to batch edit identifying MARC records in a record bucket,
 Go! (button)::
 This button runs the action defined by the rule template(s).
 
-Action (Rule Type)
-^^^^^^^^^^^^^^^^^^
+==== Action (Rule Type) ====
 Replace::
 Replaces the value in a MARC field for a batch of records.
 Delete::
@@ -51,8 +47,7 @@ Removes a MARC field and its contents from the batch of records.
 Add::
 Use this to add a field and its contents to a batch of records.
 
-Other Template Fields
-^^^^^^^^^^^^^^^^^^^^^
+==== Other Template Fields ====
 MARC Tag::
 This is used to identify the field for adding, replacing, or deleting.
 Subfield (optional)::
@@ -60,8 +55,7 @@ Indicates which subfield is being edited.
 MARC Data::
 Use this to indicate the data to add or used in replacing the existing data.
 
-Advanced Matching Restrictions (Optional)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Advanced Matching Restrictions (Optional) ====
 Subfield
 Regular Expression::
 Using PERL syntax for a regular expression to identify the data to be removed or replaced.
@@ -80,19 +74,16 @@ Using PERL syntax for a regular expression to identify the data to be removed or
 . Click *Go!*
 . Results page will display indicating the number of records successfully edited
 
-Examples
-~~~~~~~~
+=== Examples ===
 
-Adding a new field to all records
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Adding a new field to all records ====
 
 . In the _action_ menu, choose _Add_.
 . In _MARC Tag_, type the MARC tag number.
 . Leave the _Subfields_ field blank.
 . In _MARC Data_, type the field you would like to add.
 
-Delete a field if it contains a particular string
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Delete a field if it contains a particular string ====
 
 . In the _action_ menu, choose _Delete_.
 . In _MARC Tag_, type the MARC tag number.

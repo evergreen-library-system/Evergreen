@@ -1,5 +1,4 @@
-Cataloging Electronic Resources -- Finding Them in Catalog Searches
--------------------------------------------------------------------
+== Cataloging Electronic Resources -- Finding Them in Catalog Searches ==
 There are two ways to make electronic resources visible in the catalog without
 adding items to the record:
 
@@ -15,8 +14,7 @@ Located URI's never appear in results where the search is limited to a specific
 shelving location(s). In contrast, transcendent electronic resources will appear in
 results limited to any shelving location.
 
-Adding a Located URI to the Record
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Adding a Located URI to the Record ===
 A Located URI allows you to add the short name for the owning library to the 856
 field to indicate which organizational units should be able to find the
 resource. The owning organizational unit can be a branch, system, or consortium.
@@ -72,8 +70,7 @@ subfield 9 to the 856 field or you can enter multiple 856 fields with a subfield
 When troubleshooting located URIs, check to make sure there are no spaces either
 before or after the organizational unit short name.
 
-Located URI Example 1
-^^^^^^^^^^^^^^^^^^^^^
+==== Located URI Example 1 ====
 
 The _When enabled, Located URIs will provide visibility behavior identical to
 copies_ flag is set to False (default behavior)
@@ -101,8 +98,7 @@ because it matches or is a child of the preferred search library. The URL
 belonging to the search library (if it is an exact match, not a child) will sort
 to the top.
 
-Located URI Example 2
-^^^^^^^^^^^^^^^^^^^^^
+==== Located URI Example 2 ====
 
 The _When enabled, Located URIs will provide visibility behavior identical to
 copies_ flag is set to True
@@ -136,8 +132,7 @@ because it matches or is a child of the preferred search library. The URL
 belonging to the search library (if it is an exact match, not a child) will sort
 to the top.
 
-Using Transcendant Bib Sources for Electronic Resources
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Using Transcendant Bib Sources for Electronic Resources ===
 Connecting a bib record to a transcendent bib source will make the record
 visible in search results regardless of the user's search scope.
 

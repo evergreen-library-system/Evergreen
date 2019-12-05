@@ -1,8 +1,6 @@
-Migrating Patron Data
-=====================
+= Migrating Patron Data =
 
-Introduction
-------------
+== Introduction ==
 
 This section will explain the task of migrating your patron data from comma
 delimited files into Evergreen. It does not deal with the process of exporting
@@ -139,8 +137,7 @@ for inactive or active flags.
 
 This assumes 1 address per patron. More complex scenarios may require more sophisticated SQL.
 
-Creating an sql Script for Importing Patrons
---------------------------------------------
+== Creating an sql Script for Importing Patrons ==
 
 The procedure for importing patron can be automated with the help of an sql script. Follow these 
 steps to create an import script:
@@ -243,8 +240,7 @@ block so that if any sql statements fail, the entire process is canceled and the
 database is rolled back to its original state. Lines beginning with -- are
 comments to let you you what each sql statement is doing and are not processed.
 
-Batch Updating Patron Data
---------------------------
+== Batch Updating Patron Data ==
 
 For academic libraries, doing batch updates to add new patrons to the Evergreen
 database is a critical task. The above procedures and import script can be

@@ -1,10 +1,8 @@
-Receiving
----------
+== Receiving ==
 Issues can be received through the _Manage Issues_ tab or through the _Quick Receive_ option located in the bibliographic record display.  While receiving, staff can select if issues should be barcoded during receipt.
 
 
-Quick Receive
-~~~~~~~~~~~~~
+=== Quick Receive ===
 . From a serials record in the catalog, go to *Serials->Quick Receive*.
 . A dialog box will appear.  Select the _Library_ and _Subscription_ for which you are receiving issues from the drop down menu and click *OK/Continue*.
 . A _Receive items_ dialog box will appear with the next expected issue.
@@ -23,13 +21,11 @@ Quick Receive
 image::media/serials_sub9.PNG[]
 
 
-Receiving from the Manage Issues tab
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Receiving from the Manage Issues tab ===
 The Manage Issues tab can be used to receive the next expected issue and to receive multiple expected issues.  This tab can be accessed by retrieving the serial record, going to *Serials->Manage Subscriptions*, and selecting the _Manage Issues_ tab.
 
 
-Receive Next Issue and Barcode
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Receive Next Issue and Barcode ====
 
 . Within the _Manage Issues_ tab, *Select [a] subscription* to work on from the drop down menu.  The list of predicted issues for the subscription will appear.
 . Check the box adjacent to _Barcode on receive_.
@@ -43,8 +39,7 @@ Receive Next Issue and Barcode
 . Click *Save* to receive the item(s).  The Status of the issue will update to "Received" and a Date Received will be recorded.  The barcoded item(s) will now appear in the holdings area of the catalog and the Holdings Summary in the Issues Held tab in the catalog will reflect the newly received issue.
 
 
-Receive Next Issue (no barcode)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Receive Next Issue (no barcode) ====
 
 . In the _Manage Issues_ tab, make sure the box adjacent to _Barcode on receive_ is unchecked and click *Receive Next*.
 . A _Receive items_ dialog box will appear with the message "Will receive # item(s) without barcoding."
@@ -54,13 +49,11 @@ Receive Next Issue (no barcode)
 image::media/serials_sub10.PNG[]
 
 
-Batch Receiving
-~~~~~~~~~~~~~~~
+=== Batch Receiving ===
 Multiple issues can be received at the same time using the _Manage Issues_ tab.
 
 
-Batch Receive and Barcode
-^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Batch Receive and Barcode ====
 
 . Within the _Manage Issues tab_, *Select [a] subscription* to work on from the drop down menu.  The list of predicted issues for the subscription will appear.
 . Check the box adjacent to _Barcode on receive_.
@@ -78,8 +71,7 @@ Batch Receive and Barcode
 image::media/serials_sub11.PNG[]
 
 
-Receive multiple issues (no barcode)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Receive multiple issues (no barcode) ====
 
 . Within the _Manage Issues_ tab, *Select [a] subscription* to work on from the drop down menu.  The list of predicted issues for the subscription will appear.
 . Make sure the box next to _Barcode on receive_ is unchecked and check the boxes adjacent to the expected issues you want to receive.

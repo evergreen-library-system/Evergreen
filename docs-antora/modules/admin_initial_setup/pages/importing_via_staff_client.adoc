@@ -1,5 +1,4 @@
-Importing materials in the staff client
-=======================================
+= Importing materials in the staff client =
 
 Evergreen exists to connect users to the materials represented by bibliographic
 records, call numbers, and copies -- so getting these materials into your
@@ -13,8 +12,7 @@ of getting materials into Evergreen:
   for large batches of records such as the initial migration from your legacy
   library system.
 
-Staff client batch record imports
----------------------------------
+== Staff client batch record imports ==
 The staff client has a utility for importing batches of bibliographic and item
 records available through *Cataloging > MARC Batch Import/Export*. In addition
 to importing new records, this interface can be used to match incoming records
@@ -27,8 +25,7 @@ in the system.You will also see this name used in several places in the editor.
 For instance, when you click on the *Record Match Sets*, the title on the screen
 will be *Vandelay Match Sets*.
 
-When to use the MARC Batch Importer
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== When to use the MARC Batch Importer ===
 
 * When importing in batches of up to 500 to 1,000 records.
 * When you need the system to match those incoming records to existing records
@@ -39,8 +36,7 @@ WARNING: If you are importing items that do not have barcodes or call numbers, y
 must enable the _Vandelay Generate Default Barcodes_ and _Vandelay Default 
 Barcode Prefix (vandelay.item.barcode.prefix)_ settings.
 
-Record Match Sets
-~~~~~~~~~~~~~~~~~
+=== Record Match Sets ===
 Click the *Record Match Sets* button to identify how Evergreen should match
 incoming records to existing records in the system.
 
@@ -55,8 +51,7 @@ Common match points used when creating a match set include:
 * MARC tag 024a (UPC)
 * MARC tag 028a (Publisher number)
 
-Create Match Sets
-~~~~~~~~~~~~~~~~~
+=== Create Match Sets ===
 . On the *Record Match Sets* screen, click *New Match Set* to create a set of
   record match points. Give the set a *Name*. Assign the *Owning Library* from
   the dropdown list. The *Match Set Type* should remain as *biblio*. Click
@@ -86,8 +81,7 @@ working points in increasing importance.
 image::media/create_match_sets.png[Creating a Match Point]
 . Click *Save Changes to Expression*.
 
-Quality Metrics
-~~~~~~~~~~~~~~~
+=== Quality Metrics ===
 * Quality metrics provide a mechanism for Evergreen to measure the quality of
 records and to make importing decisions based on quality.
 * Metrics are configured in the match set editor.
@@ -98,8 +92,7 @@ records and to make importing decisions based on quality.
 
 image::media/record_quality_metrics.png[Quality Metric Grid]
 
-Import Item Attributes
-~~~~~~~~~~~~~~~~~~~~~~
+=== Import Item Attributes ===
 If you are importing items with your records, you will need to map the data in
 your holdings tag to fields in the item record. Click the *Holdings Import
 Profile* button to map this information.
@@ -121,8 +114,7 @@ NOTE: All fields (except for Name and Tag) can contain a MARC subfield code
 image::media/batch_import_profile.png[Partial Screenshot of a Holdings Import Profile]
 
 
-Overlay/Merge Profiles
-~~~~~~~~~~~~~~~~~~~~~~
+=== Overlay/Merge Profiles ===
 If Evergreen finds a match for an incoming record in the database, you need to
 identify which fields should be replaced, which should be preserved, and which
 should be added to the record. Click the *Merge/Overlay Profiles* button to
@@ -152,8 +144,7 @@ You can customize the overlay/merge behavior with a new profile by clicking the
 You can add multiple tags to these specifications, separating each tag with a
 comma.
 
-Importing the records
-~~~~~~~~~~~~~~~~~~~~~
+=== Importing the records ===
 After making the above configurations, you are now ready to import your
 records.
 

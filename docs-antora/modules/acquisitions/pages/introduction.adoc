@@ -1,8 +1,6 @@
-Acquisitions
-------------
+== Acquisitions ==
 
-Initial Configuration
-~~~~~~~~~~~~~~~~~~~~~
+=== Initial Configuration ===
 
 Before beginning to use Acquisitions, the following must be configured by an administrator:
 

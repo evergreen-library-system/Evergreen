@@ -1,8 +1,6 @@
-Invoices
---------
+== Invoices ==
 
-Introduction
-~~~~~~~~~~~~
+=== Introduction ===
 
 indexterm:[acquisitions,invoices]
 
@@ -11,16 +9,14 @@ You can create invoices for purchase orders, individual line items, and blanket 
 You can invoice items before you receive the items if desired. You can also
 reopen closed invoices, and you can print all invoices.
 
-Creating invoices and adding line items
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Creating invoices and adding line items ===
 You can add specific line items to an invoice from the PO or acquisitions
 search results screen. You can also search for relevant line items from within 
 the invoice interface. In addition, you can add all line items from an entire
 Purchase order to an invoice or you can create a blanket invoice for items that are not 
 attached to a purchase order.
 
-Creating a blanket invoice
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Creating a blanket invoice ====
 
 You can create a blanket invoice for purchases that are not attached to a purchase order.
 
@@ -42,8 +38,7 @@ Administration_ -> _Invoice Item Types_.
 
 image::media/acq_invoice_blanket.png[Blanket invoice]
 
-Adding line items from a Purchase Order or search results screen to an invoice
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Adding line items from a Purchase Order or search results screen to an invoice ====
 
 You can create an invoice or add line items to an invoice directly from a
 Purchase Order or an acquisitions search results screen. 
@@ -84,8 +79,7 @@ option will also save any changes that have been made.  Funds will be disencumbe
 . You can re-open a closed invoice by clicking the link, _Re-open invoice_. This
 link appears at the bottom of a closed invoice.
 
-Search for line items from an invoice
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Search for line items from an invoice ====
 
 indexterm:[acquisitions,lineitems,searching for]
 indexterm:[acquisitions,invoices,searching for lineitems]
@@ -150,8 +144,7 @@ copies for which the library paid.
 
 image::media/Search_for_line_items_from_an_invoice5.jpg[Search_for_line_items_from_an_invoice5]
 
-Create an invoice for a purchase order
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Create an invoice for a purchase order ====
 
 You can create an invoice for all of the line items on a purchase order. With
 the exception of fields with drop-down menus, no limitations on the data that you enter exist.
@@ -213,8 +206,7 @@ option will also save any changes that have been made.  Funds will be disencumbe
 . You can re-open a closed invoice by clicking the link, _Re-open invoice_. This
 link appears at the bottom of a closed invoice.
 
-Link an existing invoice to a purchase order
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Link an existing invoice to a purchase order ====
 
 You can use the link invoice feature to link an existing invoice to a purchase
 order. For example, an invoice is received for a shipment with items on
@@ -230,8 +222,7 @@ need to recreate it.
 
 image::media/acq_invoice_link.png[Link Invoice]
 
-Electronic Invoicing
-~~~~~~~~~~~~~~~~~~~~
+=== Electronic Invoicing ===
 
 indexterm:[acquisitions,invoices,electronic]
 
@@ -246,8 +237,7 @@ number to view the invoice.
 
 image::media/Electronic_invoicing1.jpg[Electronic_invoicing1]
 
-View an invoice
-~~~~~~~~~~~~~~~
+=== View an invoice ===
 
 You can view an invoice in one of four ways: view open invoices; view invoices
 on a purchase order; view invoices by searching specific invoice fields; view

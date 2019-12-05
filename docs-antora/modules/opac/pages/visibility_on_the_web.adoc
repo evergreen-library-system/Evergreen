@@ -1,8 +1,6 @@
-Library visibility on the Web
------------------------------
+== Library visibility on the Web ==
 
-Introduction
-~~~~~~~~~~~~
+=== Introduction ===
 
 Evergreen follows a number of best practices to
 make Library data integrate with the rest of the
@@ -13,8 +11,7 @@ collections.  Evergreen is also preparing for an
 eventual shift toward linked open bibliographic
 data.
 
-Catalog data in search engines
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Catalog data in search engines ===
 
 Each record in the catalog is displayed to search
 engines using http://schema.org[schema.org] microdata.
@@ -26,8 +23,7 @@ These files restrict search engines, up to the
 point of not allowing search engines to index your
 site at all.
 
-Details of the schema.org mapping
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Details of the schema.org mapping ====
 
  * Each item is listed as a
    http://schema.org/Offer[schema:Offer], which is
@@ -64,8 +60,7 @@ Details of the schema.org mapping
       http://schema.org/exampleOfWork[schema:exampleOfWork].
 
 
-Viewing microdata
-^^^^^^^^^^^^^^^^^
+==== Viewing microdata ====
 You can learn more about how Evergreen publicizes
 these data by viewing them directly.  The 
 http://linter.structured-data.org[structured data linter]
@@ -80,8 +75,7 @@ is a helpful tool for viewing microdata.
   into the text box.
 . Click _Submit_
 
-Other helpful features for search engines
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Other helpful features for search engines ====
  * Titles of catalog pages follow a
    "Page title - Library name" pattern to provide
    specific titles in search engine results pages,
@@ -107,8 +101,7 @@ Other helpful features for search engines
    that provides machine-readable hours and contact
    information.
 
-SKOS support
-~~~~~~~~~~~~
+=== SKOS support ===
 
 Some vocabularies used (or which could be used) for
 stock record attributes and coded value maps in Evergreen

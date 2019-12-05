@@ -1,10 +1,8 @@
-Bibliographic Record Merging and Overlay
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Bibliographic Record Merging and Overlay ===
 
 Catalogers can merge or overlay records in record buckets or using records obtained from a Z39.50 service.
 
-Merge Records in Record Buckets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Merge Records in Record Buckets ====
 
 1. Click *Cataloging>Record Buckets*.
 2. Create and/or select a record bucket.
@@ -29,8 +27,7 @@ image::media/marcoverlay4.png[]
 9. When you are satisfied that you have selected the correct merge profile, click the *Merge* button in the bottom right corner.
 10. Note that merge profiles that contain a preserve field specification are not available to be chosen in this interface, as they would have the effect of reversing which bibliographic record is considered the target of the merge.
 
-Track Record Merges
-^^^^^^^^^^^^^^^^^^^
+==== Track Record Merges ====
 
 When 2 or more bib records are merged in a record bucket, all records involved are stamped with a new merge_date value. For any bib record, this field indicates the last time it was involved in a merge. At the same time, all subordinate records (i.e. those deleted as a product of the merge) are stamped with a merged_to value indicating which bib record the source record was merged with.
 
@@ -38,8 +35,7 @@ In the browser client bib record display, a warning alert now appears along the 
 
 image::media/merge_tracking.png[merge message with date]
 
-Merge Records Using Z39.50
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Merge Records Using Z39.50 ====
 
 1. Search for a record in the catalog that you want to overlay.
 2. Select the record, and click *MARC View*.
@@ -66,8 +62,7 @@ image::media/marcoverlay7.png[]
 14. Also note when the merge profile is applied, the Z39.50 record acts as the target of the merge. For example, if your merge profile adds 650 fields, those 650 fields are brought over from the record that already exists in the Evergreen database (i.e., the one that you are overlaying from Z39.50).
 15. Also note that merge profiles that contain a preserve field specification are not available to be chosen in this interface, as they would have the effect of reversing which bibliographic record is considered the target of the merge.
 
-New Admin Settings
-^^^^^^^^^^^^^^^^^^
+==== New Admin Settings ====
 
 1. Go to *Admin>Local Administration>Library Settings Editor>Upload Default Merge Profile (Z39.50 and Record Buckets)*.
 2. Select a default merge profile, and *click Update Setting*.  The merge profiles that appear in this drop down box are those that are created in *MARC Batch Import/Export*.  Note that catalogers will only see merge profiles that are allowed by their org unit and permissions.

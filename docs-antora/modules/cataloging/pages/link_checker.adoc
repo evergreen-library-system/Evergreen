@@ -1,11 +1,9 @@
-Link Checker
-------------
+== Link Checker ==
 
 The Link Checker enables you to verify the validity of URLs stored in MARC records.  
 The ability to verify URLs would benefit locations with large electronic resource collections.
 
-Search for URLs
-~~~~~~~~~~~~~~~
+=== Search for URLs ===
 
 Search for MARC records that contain URLs that you want to verify.
 
@@ -35,8 +33,7 @@ unchecked.  If you want Evergreen to automatically verify the URLs that it retri
 image::media/Link_Checker1.jpg[Link_Checker1]   
 
    
-View Your Results
-~~~~~~~~~~~~~~~~~
+=== View Your Results ===
 
 If you do not click *Process Immediately*, then you must select the links that you want to verify, and click 
 *Verify Selected URLs*.  If you click *Process Immediately*, then you skip this step, and Evergreen 
@@ -49,18 +46,15 @@ the URLs that Evergreen retrieved, the Bib Record ID, the request and result tim
 
 image::media/Link_Checker6.jpg[Link_Checker6]  
 
-Manage Your Sessions
-~~~~~~~~~~~~~~~~~~~~
+=== Manage Your Sessions ===
 
-Edit Columns
-^^^^^^^^^^^^
+==== Edit Columns ====
 
 You can use the *Column Picker* to add and remove columns on any of the *Link Checker* interfaces.  
 To access the *Column Picker*, right click on any of the column headings.  The columns are saved to your user account.
   
 
-Clone Sessions
-^^^^^^^^^^^^^^
+==== Clone Sessions ====
 
 You can clone sessions that you run frequently or that have frequently-used parameters that 
 need only minor adjustments to create new searches.  To clone a session:
@@ -69,8 +63,7 @@ need only minor adjustments to create new searches.  To clone a session:
 . In the Session ID column, click *Clone*.  A copy of the parameters of that search will appear.
 
 
-View Verification Attempts
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== View Verification Attempts ====
 
 To view the results of a verification attempt after you have closed the session, click *Cataloging* -> *Link Checker*.  
 Your link checker sessions appear in a list.  To view the results of a session, click the *Open* link in the Session ID column.  

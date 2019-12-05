@@ -1,8 +1,7 @@
 Logging into Evergreen
 -----------------------
 
-Registering a Workstation
-~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Registering a Workstation ===
 anchor:register_workstation[]
 indexterm:[staff client, registering a workstation]
 
@@ -38,8 +37,7 @@ indexterm:[staff client, logging in]
 [[browser_defaults]]
 
 
-Logging Out
-~~~~~~~~~~~
+=== Logging Out ===
 
 indexterm:[staff client, logging out]
 

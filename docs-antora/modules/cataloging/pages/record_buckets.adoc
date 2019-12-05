@@ -1,8 +1,6 @@
-Record Buckets
-==============
+= Record Buckets =
 
-Introduction
-------------
+== Introduction ==
 
 Record buckets are containers for MARC records. Once records are in a bucket, you can take
 various types of actions, including:
@@ -13,18 +11,15 @@ various types of actions, including:
 * Downloading the MARC files for all records in the bucket, so you can edit them in another
 program like http://marcedit.reeset.net[MARCEdit].
 
-Creating Record Buckets
------------------------
+== Creating Record Buckets ==
 
 . Click on _Cataloging_ -> _Record Buckets_.
 . On the _Buckets_ menu, click _New Bucket_.
 . Give the bucket a name and (optionally) a description.
 
-Adding Records to a Bucket
---------------------------
+== Adding Records to a Bucket ==
 
-From the Record Bucket Interface
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== From the Record Bucket Interface ===
 . Click on _Cataloging_ -> _Record Buckets_.
 . On the _Buckets_ menu, choose the bucket that you'd like to add records to.
 . Go to the _Record Query_ tab.

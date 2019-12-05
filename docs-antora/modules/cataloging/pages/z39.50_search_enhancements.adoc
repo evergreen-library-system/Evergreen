@@ -1,5 +1,4 @@
-Z39.50 Search Enhancements
---------------------------
+== Z39.50 Search Enhancements ==
 
 *Abstract*
 

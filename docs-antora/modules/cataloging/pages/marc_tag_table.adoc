@@ -1,5 +1,4 @@
-MARC Tag-table Service
-~~~~~~~~~~~~~~~~~~~~~~
+=== MARC Tag-table Service ===
 The tag tables for the web staff client MARC editor are
 stored in the database.  The tag-table
 service has the following features:

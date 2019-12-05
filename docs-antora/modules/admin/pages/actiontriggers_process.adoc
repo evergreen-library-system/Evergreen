@@ -1,5 +1,4 @@
-Processing Action Triggers
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Processing Action Triggers ===
 
 To run action triggers, an Evergreen administrator will need to run the trigger processing script. This should be set up as a cron job to run periodically. To run the script, use this command:
 

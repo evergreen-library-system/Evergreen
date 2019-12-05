@@ -1,8 +1,6 @@
-Acquisitions Administration
----------------------------
+== Acquisitions Administration ==
 
-Acquisitions Settings
-~~~~~~~~~~~~~~~~~~~~~
+=== Acquisitions Settings ===
 
 indexterm:[acquisitions,permissions]
 
@@ -38,8 +36,7 @@ in the acquisitions module
 * Temporary call number prefix - Temporary call number prefix for items that are
 created in the acquisitions module
 
-Cancel/Delay reasons
-~~~~~~~~~~~~~~~~~~~~
+=== Cancel/Delay reasons ===
 
 indexterm:[acquisitions,purchase order,cancellation]
 indexterm:[acquisitions,line item,cancellation]
@@ -52,8 +49,7 @@ associated with the purchase. Cancel reasons also enable you to delay
 a purchase. For example, you could create a cancel reason of 'back ordered,' and
 you could choose to keep the debits associated with the purchase.
 
-Create a cancel/delay reason
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Create a cancel/delay reason ====
 
 . To add a new cancel reason, click _Administration -> Acquisitions Administration ->
 Cancel reasons_.
@@ -77,8 +73,7 @@ the box adjacent to Keep Debits->
 
 . Click _Save_.
 
-Delete a custom cancel/delay reason
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Delete a custom cancel/delay reason ====
 
 You can delete custom cancel reason.
 
@@ -91,16 +86,14 @@ You cannot select the checkbox for any of the default cancel reasons because the
 system expects those reasons to be available to handle EDI order responses. 
 
 
-Claiming
-~~~~~~~~
+=== Claiming ===
 
 indexterm:[acquisitions,claiming]
 
 Currently, all claiming is manual, but the admin module enables you to build
 claim policies and specify the action(s) that users should take to claim items.
 
-Create a claim policy
-^^^^^^^^^^^^^^^^^^^^^
+==== Create a claim policy ====
 
 The claim policy link enables you to name the claim policy and specify the
 organization that owns it.
@@ -122,8 +115,7 @@ The rule of parental inheritance applies to this list.
 entered in this field.
 . Click _Save_.
 
-Create a claim type
-^^^^^^^^^^^^^^^^^^^
+==== Create a claim type ====
 
 The claim type link enables you to specify the reason for a type of claim.
 
@@ -143,8 +135,7 @@ The rule of parental inheritance applies to this list.
 entered in this field.
 . Click _Save_.
 
-Create a claim event type
-^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Create a claim event type ====
 
 The claim event type describes the physical action that should occur when an
 item needs to be claimed. For example, the user should notify the vendor via
@@ -173,8 +164,7 @@ claim an issue.
 +
 . Click _Save_.
 
-Create a claim policy action
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Create a claim policy action ====
 
 The claim policy action enables you to specify how long a user should wait
 before claiming the item.
@@ -195,8 +185,7 @@ before claiming the item.
 You can create claim cycles by adding multiple claim policy actions to a claim
  policy.
 
-Currency Types
-~~~~~~~~~~~~~~
+=== Currency Types ===
 
 indexterm:[acquisitions,currency types] 
 
@@ -206,8 +195,7 @@ purchased in the currency associated with that fund.
 
 
 
-Create a currency type
-^^^^^^^^^^^^^^^^^^^^^^
+==== Create a currency type ====
 
 . To create a new currency type, click _Administration -> Acquisitions Administration ->
 Currency types_.
@@ -222,8 +210,7 @@ on the number of characters that can be entered in this field.
 
 
 
-Edit a currency type
-^^^^^^^^^^^^^^^^^^^^
+==== Edit a currency type ====
 
 . To edit a currency type, click your cursor in the row that you want to edit.
 The row will turn blue.
@@ -236,8 +223,7 @@ The row will turn blue.
 From the currency types interface, you can delete currencies that have never
 been applied to funds or used to make purchases.
 
-Distribution Formulas
-~~~~~~~~~~~~~~~~~~~~~
+=== Distribution Formulas ===
 
 indexterm:[acquisitions,distribution formulas, templates]
 
@@ -246,8 +232,7 @@ distributed to specific branches. They can also serve as templates allowing you
 to predefine settings for your copies. You can create and reuse formulas as
 needed.
 
-Create a distribution formula
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Create a distribution formula ====
 
 . Click _Administration -> Acquisitions Administration -> Distribution Formulas_.
 . Click _New Formula_.
@@ -287,13 +272,11 @@ the entries to your distribution formula.
 To edit the Formula Name, click the hyperlinked name of the formula in the top
 left corner. A pop-up box will enable you to enter a new formula name.
 
-Edit a distribution formula
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Edit a distribution formula ====
 
 To edit a distribution formula, click the hyperlinked title of the formula.
 
-Electronic Data Interchange
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Electronic Data Interchange ===
 indexterm:[acquisitions,EDI,accounts]
 indexterm:[EDI,accounts]
 
@@ -303,15 +286,13 @@ Many libraries use Electronic Data Interchange (EDI) accounts to send purchase o
 also the command line system administration manual, which includes some initial setup steps that are
 required for use of EDI.
 
-Entering SANs (Standard Address Numbers)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Entering SANs (Standard Address Numbers) ====
 
 For EDI to work your library must have a SAN and each of your providers must each supply you with their SAN.
 
 A SAN (Standard Address Number) is a unique 7 digit number that identifies your library.  
 
-Entering a Library's SAN
-++++++++++++++++++++++++
+===== Entering a Library's SAN =====
 
 These steps only need to be done once per library.
 
@@ -330,8 +311,7 @@ top organization unit.
 image::media/enter-library-san-2.png[Enter Library SAN]
 
 
-Entering a Provider's SAN
-+++++++++++++++++++++++++
+===== Entering a Provider's SAN =====
 
 These steps need to be repeated for every provider with which EDI is used.
 
@@ -345,8 +325,7 @@ image::media/enter-provider-san-1.png[Enter Provider SAN]
 +
 image::media/enter-provider-san-2.png[Enter Provider SAN]
 
-Create an EDI Account
-^^^^^^^^^^^^^^^^^^^^^
+==== Create an EDI Account ====
 
 CAUTION: You *must* create your provider before you create an EDI account for the provider.
 
@@ -407,8 +386,7 @@ image::media/create-edi-accounts-5.png[Create EDI Account]
 
 . Click _Save_.
 
-EDI Messages
-^^^^^^^^^^^^
+==== EDI Messages ====
 
 indexterm:[EDI,messages]
 indexterm:[acquisitions,EDI,messages]
@@ -421,8 +399,7 @@ specific EDI message, the Filter options can be useful. Outside the Admin
 interface, EDI messages that pertain to a specific purchase order can be
 viewed from the purchase order interface (See _Acquisitions -> Purchase Orders_).
 
-Exchange Rates
-~~~~~~~~~~~~~~
+=== Exchange Rates ===
 
 indexterm:[acquisitions,exchange rates]
 
@@ -439,8 +416,7 @@ the money to the currency of the receiving fund. During such transfers,
 however, staff can override the automatic conversion by providing an explicit
 amount to credit to the receiving fund.
 
-Create an exchange rate
-^^^^^^^^^^^^^^^^^^^^^^^
+==== Create an exchange rate ====
 
 . To create a new exchange rate, click _Administration -> Acquisitions Administration ->
 Exchange Rates_.
@@ -456,13 +432,11 @@ types.
 
 . Click _Save_.
 
-Edit an exchange rate
-^^^^^^^^^^^^^^^^^^^^^
+==== Edit an exchange rate ====
 
 Edit an exchange rate just as you would edit a currency type.
 
-MARC Federated Search
-~~~~~~~~~~~~~~~~~~~~~
+=== MARC Federated Search ===
 
 
 indexterm:[acquisitions,MARC federated search]
@@ -489,8 +463,7 @@ item and clicking _Actions -> Create Purchase Order_.
 
 image::media/acq_marc_search-2.png[line item]
 
-Fund Tags
-~~~~~~~~~
+=== Fund Tags ===
 
 indexterm:[acquisitions,funds,tags]
 
@@ -520,8 +493,7 @@ The rule of parental inheritance applies to this list.
 entered in this field.
 . Click _Save_.
 
-Funding Sources
-~~~~~~~~~~~~~~~
+=== Funding Sources ===
 
 indexterm:[acquisitions,funding sources]
 
@@ -530,8 +502,7 @@ fund(s). You can create as few or as many funding sources as you need.   These
 can be used to track exact amounts for accounts in your general ledger.  You can
  then use funds to track spending and purchases for specific collections.
 
-Create a funding source
-^^^^^^^^^^^^^^^^^^^^^^^
+==== Create a funding source ====
 
 . To create a new funding source, click _Administration -> Acquisitions Administration ->
 Funding Source_.
@@ -554,8 +525,7 @@ at the branches within the system could also use the funding source.
 choices in the Currency Types interface.
 . Click _Save_.
 
-Allocate credits to funding sources
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Allocate credits to funding sources ====
 
 . Apply a credit to this funding source.
 
@@ -577,8 +547,7 @@ Funding Source Details will appear.
 
 . Click _Apply_.
 
-Allocate credits to funds
-^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Allocate credits to funds ====
 
 If you have already set up your funds, then you can then click the Allocate to
 Fund button to apply credits from the funding sources to the funds. If you have
@@ -593,16 +562,14 @@ credits to funds from the funds interface. See section 1.2 for more information.
 
 . Click _Apply_.
 
-Track debits and credits
-^^^^^^^^^^^^^^^^^^^^^^^^
+==== Track debits and credits ====
 
 You can track credits to and allocations from each funding source. These amounts
  are updated when credits and allocations are made in the Funding Source
  Details. Access the Funding Source Details by clicking on the hyperlinked name 
  of the Funding Source.
 
-Funds
-~~~~~
+=== Funds ===
 
 indexterm:[acquisitions,funds]
 
@@ -614,8 +581,7 @@ interface, you can create funds; allocate credits from funding sources to funds;
  year. The drop-down menu at the top of the screen enables you to focus on funds
  that are owned by specific organizational units during specific years.
 
-Create a fund
-^^^^^^^^^^^^^
+==== Create a fund ====
 
 . To create a new fund, click _Administration -> Acquisitions Administration -> Funds_.
 . Enter a name for the fund. No limits exist on the number of characters that
@@ -659,8 +625,7 @@ fund next year. You should also check this box if you only want to roll over
 encumbrances into next year's fund.
 . Click _Save_.
 
-Allocate credits from funding sources to funds
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Allocate credits from funding sources to funds ====
 
 Credits can be applied to funds from funding sources using the fund interface.
 The credits that you apply to the fund can be applied later to purchases.
@@ -679,8 +644,7 @@ The credits that you apply to the fund can be applied later to purchases.
 
 . Click _Apply_.
 
-Transfer credits between funds
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Transfer credits between funds ====
 
 The credits that you allocate to funds can be transferred between funds if
 desired. In the following example, you can transfer $500.00 from the Young Adult
@@ -700,8 +664,7 @@ Fiction fund to the Children's DVD fund.
 
 . Click _Transfer_.
 
-Track balances and expenditures
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Track balances and expenditures ====
 
 The Fund Details allows you to track the fund's balance, encumbrances, and
 amount spent. It also allows you to track allocations from the funding
@@ -727,8 +690,7 @@ have been invoiced. It does not include encumbrances.
 encumbrances.
 
 
-Fund reporting
-^^^^^^^^^^^^^^
+==== Fund reporting ====
 
 indexterm:[acquisitions,funds,reports]
 indexterm:[reports,funds]
@@ -743,13 +705,11 @@ image::media/Core_Source_1.jpg[Core_Source1]
 
 
 
-Edit a fund
-^^^^^^^^^^^
+==== Edit a fund ====
 
 Edit a fund just as you would edit a currency type.
 
-Perform fiscal year close-out operation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Perform fiscal year close-out operation ====
 
 indexterm:[acquisitions,funds,fiscal rollover]
 
@@ -794,16 +754,14 @@ would occur during the selected operations. No data will be changed.
 . Evergreen will begin the propagation process. Evergreen will make a clone of
 each fund, but it will increment the year by 1.
 
-Invoice menus
-~~~~~~~~~~~~~
+=== Invoice menus ===
 
 indexterm:[acquisitions,invoices]
 
 Invoice menus allow you to create drop-down menus that appear on invoices. You
 can create an invoice item type or invoice payment method.
 
-Invoice item type
-^^^^^^^^^^^^^^^^^
+==== Invoice item type ====
 
 The invoice item type allows you to enter the types of additional charges that
 you can add to an invoice. Examples of additional charge types might include
@@ -831,8 +789,7 @@ Prorate-> if you want to prorate the charge across funds.
 
 . Click _Save_.
 
-Invoice payment method
-^^^^^^^^^^^^^^^^^^^^^^
+==== Invoice payment method ====
 
 The invoice payment method allows you to predefine the type(s) of invoices and
 payment method(s) that you accept. The text that you enter in the admin module
@@ -855,8 +812,7 @@ the drop-down menu on the invoice.
 
 Payment methods can be deleted from this screen.
 
-Line Item Features
-~~~~~~~~~~~~~~~~~~
+=== Line Item Features ===
 [[line_item_features]]
 
 indexterm:[acquisitions,line items]
@@ -866,8 +822,7 @@ selection lists or purchase orders. You can define the alerts from which staff
 can choose. Line item alerts appear in a pop-up box when the line item, or any
 of its copies, are marked as received.
 
-Create a line item alert
-^^^^^^^^^^^^^^^^^^^^^^^^
+==== Create a line item alert ====
 
 . To create a line item alert, click _Administration -> Acquisitions Administration ->
 Line Item Alerts_.
@@ -887,8 +842,7 @@ units tree (See Administration -> Server Administration ->  Organizational Units
 
 . Click _Save_.
 
-Line item MARC attribute definitions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Line item MARC attribute definitions ====
 
 Line item attributes define the fields that Evergreen needs to extract from the
 bibliographic records that are in the acquisitions database to display in the
@@ -896,15 +850,13 @@ catalog. Also, these attributes will appear as fields in the New Brief Record
 interface. You will be able to enter information for the brief record in the
 fields where attributes have been defined.
 
-Providers
-~~~~~~~~~
+=== Providers ===
 
 Providers are vendors. You can create a provider profile that includes contact
 information for the provider, holdings information, invoices, and other
 information.
 
-Create a provider
-^^^^^^^^^^^^^^^^^
+==== Create a provider ====
 
 . To create a new provider, click _Administration_ -> _Acquisitions Administration_ ->
 _Providers_.
@@ -959,8 +911,7 @@ adjacent to prepayment required.
 
 . Click Save.
 
-Add contact and holdings information to providers
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Add contact and holdings information to providers ====
 
 After you save the provider profile, the screen reloads so that you can save
 additional information about the provider. You can also access this screen by
@@ -1000,8 +951,7 @@ information, such as quantity ordered, fund, and estimated price.
 
 . Click invoices to access invoices associated with a provider.
 
-Edit a provider
-^^^^^^^^^^^^^^^
+==== Edit a provider ====
 
 Edit a provider just as you would edit a currency type.
 

@@ -1,5 +1,4 @@
-Sitemap generator
------------------
+== Sitemap generator ==
 
 A http://www.sitemaps.org[sitemap] directs search engines to the pages of
 interest in a web site so that the search engines can intelligently crawl

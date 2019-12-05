@@ -1,5 +1,4 @@
-Describing your people
-======================
+= Describing your people =
 
 Many different members of your staff will use your Evergreen system to perform
 the wide variety of tasks required of the library.
@@ -30,8 +29,7 @@ permissions are typically tied to one or more working location (sometimes
 referred to as a working organizational unit or work OU) which affects where a
 particular user can exercise the permissions they have been granted.
 
-Setting the staff user's working location
------------------------------------------
+== Setting the staff user's working location ==
 To grant a working location to a staff user in the staff client:
 
 . Search for the patron. Select *Search > Search for Patrons* from the top menu.
@@ -51,8 +49,7 @@ the permissions that are given through the *Permission Group* that you assigned
 to this user. Depending on your own permissions, you may also have the ability
 to grant individual permissions directly to this user.
 
-Comparing approaches for managing permissions
----------------------------------------------
+== Comparing approaches for managing permissions ==
 The Evergreen community uses two different approaches to deal with managing
 permissions for users:
 
@@ -94,8 +91,7 @@ you can change them as needed. You may set and alter the permissions for each
 permission group in line with what your library, or possibly your consortium,
 defines as the appropriate needs for each function in the library.
 
-Managing permissions in the staff client
-----------------------------------------
+== Managing permissions in the staff client ==
 In this section, we'll show you in the staff client:
 
 * where to find the available permissions
@@ -107,8 +103,7 @@ We also provide an appendix with a listing of suggested minimum permissions for
 some essential groups. You can compare the existing permissions with these
 suggested permissions and, if any are missing, you will know how to add them.
 
-Where to find existing permissions and what they mean
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Where to find existing permissions and what they mean ===
 In the staff client, in the upper right corner of the screen, click on
 *Administration > Server Administration > Permissions*.
 
@@ -122,8 +117,7 @@ appear in the Evergreen database. Description is a brief note on what the
 permission allows. All of the most common permissions have easily
 understandable descriptions.
 
-Where to find existing Permission Groups
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Where to find existing Permission Groups ===
 In the staff client, in the upper right corner of the screen, navigate to
 *Administration > Server Administration > Permission Groups*.
 
@@ -137,8 +131,7 @@ expand the tree and see the groups underneath it. You should see the Permission
 Groups that were listed at the beginning of this chapter. If you do not and you
 need them, you will have to create them.
 
-Adding or removing permissions from a Permission Group
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Adding or removing permissions from a Permission Group ===
 First, we will remove a permission from the Staff group.
 
 . From the list of Permission Groups, click on *Staff*.
@@ -171,15 +164,13 @@ Now, we will add the permission we just removed back to the Staff group.
 If you have saved your changes and you don't see them, you may have to click
 the Reload button in the upper left side of the staff client screen.
 
-Managing role-based permission groups in the staff client
----------------------------------------------------------
+== Managing role-based permission groups in the staff client ==
 
 Main permission groups are granted in the staff client through Edit in the patron record using the Main (Profile) Permission Group field.  Additional permission
 groups can be granted using secondary permission groups.
 
 [[secondaryperms]]
-Secondary Group Permissions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Secondary Group Permissions ===
 
 The _Secondary Groups_ button functionality enables supplemental permission
 groups to be added to staff accounts. The *CREATE_USER_GROUP_LINK* and
@@ -189,8 +180,7 @@ feature.
 In general when creating a secondary permission group do not grant the
 permission to login to Evergreen.
 
-Granting Secondary Permissions Groups
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Granting Secondary Permissions Groups ====
 
 
 . Open the account of the user you wish to grant secondary permission group to.
@@ -211,8 +201,7 @@ image::media/sup-permissions-3.png[Secondary Permission Group Save]
 . Click _Save_ in the top right hand corner of the _Edit Screen_ to save the user's account.
 
 
-Removing Secondary Group Permissions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Removing Secondary Group Permissions ====
 . Open the account of the user you wish to remove the secondary permission group from.
 . Click _Edit_.
 . Click _Secondary Groups_, located to the right of the _Main (Profile) Permission Group_.
@@ -229,8 +218,7 @@ image::media/sup-permissions-5_web_client.png[Secondary Permissions Group Save]
 +
 . Click _Save_ in the top right hand corner of the _Edit Screen_ to save the user's account.
 
-Managing role-based permission groups in the database
------------------------------------------------------
+== Managing role-based permission groups in the database ==
 While the ability to assign a user to multiple permission groups has existed in
 Evergreen for years, a staff client interface is not currently available to
 facilitate the work of the Evergreen administrator. However, if you or members

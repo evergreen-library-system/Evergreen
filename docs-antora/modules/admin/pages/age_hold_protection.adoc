@@ -1,5 +1,4 @@
-Age hold protection
--------------------
+== Age hold protection ==
 indexterm:[Holds]
 indexterm:[Holds, Age Protection]
 

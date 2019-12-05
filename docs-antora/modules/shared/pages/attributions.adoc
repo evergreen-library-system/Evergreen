@@ -1,7 +1,6 @@
 [[attributions]]
 [appendix]
-Attributions
-============
+= Attributions =
 
 Copyright © 2009-2018 Evergreen DIG
 

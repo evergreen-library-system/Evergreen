@@ -1,6 +1,5 @@
 [[recurring_reports]]
-Running Recurring Reports
--------------------------
+== Running Recurring Reports ==
 
 indexterm:[reports, recurring]
 

@@ -1,5 +1,4 @@
-Item Tags
----------
+== Item Tags ==
 
 indexterm:[copy tags]
 
@@ -24,8 +23,7 @@ image::media/manage_item_tags.png[Assigning an Item Tag]
 
 image::media/copytags7.PNG[Item Tags in the OPAC]
 
-Creating and Applying a Item Tag During Cataloging
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Creating and Applying a Item Tag During Cataloging ===
 
 Item tags can be created in the Holdings Editor on the fly while cataloging or viewing an item:
 
@@ -58,13 +56,11 @@ image::media/copytags9.PNG[Item Bucket View]
 
 NOTE: It is not possible to remove tags using the Item Bucket interface.
 
-Searching Item Tags
-~~~~~~~~~~~~~~~~~~~
+=== Searching Item Tags ===
 
 Item Tags can be searched in the public catalog if searching has been enabled via Library Settings.  Item Tags can be searched in the Basic and Advanced Search interfaces by selecting Digital Bookplate as the search field.  Specific item tags can also be searched using a Keyword search and a specific search syntax.
 
-Digital Bookplate Search Field
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Digital Bookplate Search Field ====
 
 *Basic Search*
 
@@ -75,8 +71,7 @@ image::media/copytags10.png[Digital Bookplates Search Field Location in Basic Se
 image::media/copytags11.png[Digital Bookplates Search Field Location in Advanced Search]
 
 
-Keyword Search
-^^^^^^^^^^^^^^
+==== Keyword Search ====
 
 Item Tags can also be searched by using a Keyword search in the Basic and Advanced search interfaces.  Searches need to be constructed using the following syntax:
 

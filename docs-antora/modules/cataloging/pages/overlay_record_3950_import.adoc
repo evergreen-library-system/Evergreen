@@ -1,5 +1,4 @@
-Overlay Existing Catalog Record via Z39.50 Import
--------------------------------------------------
+== Overlay Existing Catalog Record via Z39.50 Import ==
 
 This feature enables you to replace a catalog record with a record obtained through a Z39.50 search.  No new permissions or administrative settings are needed to use this feature.
 

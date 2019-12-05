@@ -1,5 +1,4 @@
-Running the sitemap generator
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Running the sitemap generator ===
 The `sitemap_generator` script must be invoked with the following argument:
 
 * `--lib-hostname`: specifies the hostname for the catalog (for example,
@@ -20,15 +19,13 @@ Note that on very large Evergreen instances, sitemaps can consume hundreds of
 megabytes of disk space, so ensure that your Evergreen instance has enough room
 before running the script.
 
-Sitemap details
-~~~~~~~~~~~~~~~
+=== Sitemap details ===
 
 The sitemap generator script includes located URIs as well as items
    listed in the `asset.opac_visible_copies` materialized view, and checks
    the children or ancestors of the requested libraries for holdings as well.
 
-Scheduling
-~~~~~~~~~~
+=== Scheduling ===
 To enable search engines to maintain a fresh index of your bibliographic
 records, you may want to include the script in your cron jobs on a nightly or
 weekly basis.

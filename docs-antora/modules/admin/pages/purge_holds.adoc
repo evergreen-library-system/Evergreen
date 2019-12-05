@@ -1,5 +1,4 @@
-Purging holds
--------------
+== Purging holds ==
 
 Similar to purging circulations one may wish to purge old (filled or canceled) hold information. This feature adds a database function and
 settings for doing so.

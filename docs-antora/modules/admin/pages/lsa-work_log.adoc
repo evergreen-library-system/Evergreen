@@ -1,8 +1,7 @@
 Work Log
 -------- 
 
-Expanding the Work Log
-~~~~~~~~~~~~~~~~~~~~~~
+=== Expanding the Work Log ===
 
 In versions of Evergreen prior to 2.3, the work log recorded check ins,
 checkouts, patron registration, patron editing, and renewals.  In version 2.3,

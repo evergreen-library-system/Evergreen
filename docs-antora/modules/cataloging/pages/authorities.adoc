@@ -1,13 +1,10 @@
-Managing Authorities
---------------------
+== Managing Authorities ==
 
-Introduction
-~~~~~~~~~~~~
+=== Introduction ===
 
 This section describes how you can create, import, view, modify, merge, and delete authority records in Evergreen.
 
-Creating Authorities
-~~~~~~~~~~~~~~~~~~~~
+=== Creating Authorities ===
 Currently in Evergreen to create a new authority record, as opposed to importing an authority record, you 
 need to have a bib record open in the bib MARC editor. 
 
@@ -21,8 +18,7 @@ to finally add the new authority record to your system.
 
 
 [[_importing_authority_records_from_the_staff_client]]
-Importing Authorities
-~~~~~~~~~~~~~~~~~~~~~
+=== Importing Authorities ===
 . Click *Cataloging -> MARC Batch Import/Export.*
 . You may create a queue to better track this import project.  If you do not create a new queue, it will automatically put your records into a default queue named *-*.
 . Don't set a value for Holdings Import Profile, because this doesn't apply to authority records.
@@ -56,8 +52,7 @@ Editor and in the 901$s field of the imported authority records.
 =================
 
 
-Setting up Authority Record Match Sets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Setting up Authority Record Match Sets ====
 . Click *Cataloging -> MARC Batch Import/Export.*
 . Click *Record Match Sets.*
 . If you have sufficient privileges, you will be able to click on the *New Match Set*.  If you are unable to do so, check that you have the ADMIN_IMPORT_MATCH_SET permission.
@@ -75,8 +70,7 @@ Evergreen's database stores normalized authority headings in a format that inclu
 Evergreen's internal identifier is in the 901c field. If you have previously exported authority record -- perhaps for an external vendor to do authority cleanup work -- and you want to import them back into your catalog, you may wish to include the 901c field in your match set.
 =================
 
-Viewing and Editing Authority Records by Database ID
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Viewing and Editing Authority Records by Database ID ===
 
 The authority record retriever allows catalogers to retrieve a specific
 authority record using its database ID.  Catalogers can
@@ -93,16 +87,14 @@ number.
 . View or edit the authority record as needed.
 
 
-Manage Authorities Interface
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Manage Authorities Interface ===
 
 In Evergreen to view, edit, merge, and delete authority records you would use the *Manage Authorities* interface 
 through the *Cataloging* menu.
 
 
 
-Searching for authorities
-^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Searching for authorities ====
 
 To search for authorities in your system, first select the *Cataloging* menu and then select *Manage Authorities*. 
 Then proceed to fill out the search form. 
@@ -139,8 +131,7 @@ _Edit_, _Mark for Merge_, _Delete_
 * | = No attempt to code
 
 
-Editing authority records
-+++++++++++++++++++++++++
+===== Editing authority records =====
 
 Editing an authority record (or merging two authority records) can cause its linked bibliographic records to also update.  For example,
 if you correct a spelling error in the 150 field of a subject authority record, the relevant 650 field in linked bibliographic records 

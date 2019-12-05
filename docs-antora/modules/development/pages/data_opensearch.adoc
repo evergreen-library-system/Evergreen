@@ -1,8 +1,6 @@
-Using Opensearch as a developer
-===============================
+= Using Opensearch as a developer =
 
-Introduction
-------------
+== Introduction ==
 
 Evergreen responds to OpenSearch requests. This can be a good way to get
 search results delivered in a format that you prefer.

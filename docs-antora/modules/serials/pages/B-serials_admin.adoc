@@ -1,16 +1,13 @@
-Serials Administration
-----------------------
+== Serials Administration ==
 
 The serials module can be administered under a new menu option:  *Administration->Serials Administration*.  The new Serials Administration menu currently allows staff to configure _Serial Copy Templates_ and _Pattern Templates_.
 
 
-Serial Copy Templates
-~~~~~~~~~~~~~~~~~~~~~
+=== Serial Copy Templates ===
 Serials copy templates enable you to specify item attributes that should be applied by default to copies of serials.  Serials copy templates are associated with distributions in a subscription and are applied when serials copies are received.  Serial copy templates can also be used as a binding template to apply specific item attributes to copies that are being bound together.
 
 
-Creating a Serial Copy Template
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Creating a Serial Copy Template ====
 
 To create a serial copy template, go to *Administration->Serials Administration->Serial Copy Templates*:
 
@@ -39,8 +36,7 @@ To create a serial copy template, go to *Administration->Serials Administration-
 image::media/serials_ct1.PNG[]
 
 
-Modifying a Serial Copy Template
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Modifying a Serial Copy Template ====
 
 To modify a Serial Copy Template:
 
@@ -48,8 +44,7 @@ To modify a Serial Copy Template:
 . The dialog box will appear.  Make any changes to the item attributes and click *Save*.
 
 
-Deleting a Serial Copy Template
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Deleting a Serial Copy Template ====
 
 To delete a Serial Copy Template:
 
@@ -59,14 +54,12 @@ To delete a Serial Copy Template:
 NOTE: Serials copy templates that are being used by subscriptions cannot be deleted.
 
 
-Prediction Pattern Templates
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Prediction Pattern Templates ===
 
 Prediction pattern templates allow you to create templates for prediction patterns that can be shared with other staff users in your library branch, system, or throughout the consortium.  Prediction patterns are used to predict issues on serials subscriptions.  Templates can be created in the Administration module, as described below, and can also be created and shared directly in a subscription.
 
 
-Creating a Prediction Pattern Template
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Creating a Prediction Pattern Template ====
 To create a template, go to *Administration->Serials Administration->Prediction Pattern Templates*:
 
 . Click *New Record* in the upper-right hand corner.  A dialog box called _Prediction Pattern Template_ will appear.

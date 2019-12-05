@@ -1,5 +1,4 @@
-Authentication Proxy
---------------------
+== Authentication Proxy ==
 
 indexterm:[authentication, proxy]
 
@@ -57,8 +56,7 @@ the _Change Operator_ feature in the client software, then add
 ====================================================================
 
 
-Using arbitrary LDAP usernames
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Using arbitrary LDAP usernames ===
 
 Authentication Proxy supports LDAP-based login with a username that is
 different from your Evergreen username.

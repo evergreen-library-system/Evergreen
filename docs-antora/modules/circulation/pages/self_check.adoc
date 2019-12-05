@@ -1,15 +1,12 @@
-Self checkout
-=============
+= Self checkout =
 
-Introduction
-------------
+== Introduction ==
 
 Evergreen includes a self check interface designed for libraries that simply
 want to record item circulation without worrying about security mechanisms like
 magnetic strips or RFID tags.
 
-Initializing the self check
----------------------------
+== Initializing the self check ==
 The self check interface runs in a web browser. Before patrons can use the self
 check station, a staff member must initialize the interface by logging in.
 
@@ -20,8 +17,7 @@ check station, a staff member must initialize the interface by logging in.
 
 image::media/self-check-admin-login.png[Self Check Admin Login]
 
-Basic Check Out
----------------
+== Basic Check Out ==
 
 . Patron scans their barcode.
 +
@@ -60,8 +56,7 @@ will appear to warn patrons 20 seconds before logging out.
 image::media/self_check_check_out_6.png[self check]
 ==========
 
-View Items Out
---------------
+== View Items Out ==
 
 . Patrons are able to view the items they currently have checked out by clicking *View Items Out*
 +
@@ -74,8 +69,7 @@ print out a receipt listing all of the items they currently have checked out.
 image::media/self_check_view_items_out_2.png[self check]
 
 
-View Holds
-----------
+== View Holds ==
 
 . Patrons are able to view their current holds by clicking *View Holds*
 +
@@ -87,8 +81,7 @@ Using the *Print List* button patrons can print out a receipt listing all of the
 +
 image::media/self_check_view_holds_2.png[self check]
 
-View Fines
-----------
+== View Fines ==
 
 . Patrons are able to view the fines they currently owe by clicking *View Details*
 +

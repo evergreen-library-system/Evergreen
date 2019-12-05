@@ -1,8 +1,6 @@
-Managing audio alerts
----------------------
+== Managing audio alerts ==
 
-Globally silencing sounds
-~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Globally silencing sounds ===
 indexterm:[audio alerts,silencing]
 indexterm:[nosound.wav]
 
@@ -19,8 +17,7 @@ ln -s ../../nosound.wav by_search.wav
 ------------------------------------------------------------------------------
 
 
-Self-check interface
-~~~~~~~~~~~~~~~~~~~~
+=== Self-check interface ===
 indexterm:[audio alerts,self check interface]
 indexterm:[self check interface,audio alerts]
 indexterm:[audio_config.tt2]

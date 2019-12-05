@@ -1,30 +1,25 @@
-Using the Item Status interface
--------------------------------
+== Using the Item Status interface ==
 indexterm:[copies]
 indexterm:[items]
 
 The Item Status interface is a powerful tool that can give you a lot of information
 about specific items in your catalog.
 
-Accessing the Item Status interface
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Accessing the Item Status interface ===
 
 There are three ways to access the item status interface:
 
-Through the Search menu
-^^^^^^^^^^^^^^^^^^^^^^^
+==== Through the Search menu ====
 
 . Click *Search -> Search for Copies by Barcode*.
 . Scan your barcode.
 
-Through the Circulation menu
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Through the Circulation menu ====
 
 . Click *Circulation -> Item Status*.
 . Scan your barcode.
 
-From the OPAC view
-^^^^^^^^^^^^^^^^^^
+==== From the OPAC view ====
 
 . Click *Search -> Search the Catalog*.
 . Find a bibliographic record that you are interested in.
@@ -34,11 +29,9 @@ From the OPAC view
 in.
 
 
-Specific fields
-~~~~~~~~~~~~~~~
+=== Specific fields ===
 
-Active date
-^^^^^^^^^^^
+==== Active date ====
 indexterm:[active date]
 indexterm:[copies,activating]
 indexterm:[items,activating]
@@ -51,8 +44,7 @@ and which are not, statuses like _Available_ and _On holds shelf_
 are typically considered active, and statuses like _In process_ or
 _On order_ are typically not.
 
-Printing spine labels
-~~~~~~~~~~~~~~~~~~~~~
+=== Printing spine labels ===
 
 indexterm:[spine labels]
 indexterm:[printing, spine labels]
@@ -67,8 +59,7 @@ include::../admin/turn-off-print-headers-firefox.adoc[]
 
 include::../admin/turn-off-print-headers-chrome.adoc[]
 
-Creating spine labels
-^^^^^^^^^^^^^^^^^^^^^
+==== Creating spine labels ====
 
 To create spine and item labels for an item (or group of items):
 

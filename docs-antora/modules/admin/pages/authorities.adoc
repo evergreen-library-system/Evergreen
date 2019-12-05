@@ -1,8 +1,6 @@
-Authorities
------------
+== Authorities ==
 
-Authority Control Sets
-~~~~~~~~~~~~~~~~~~~~~~
+=== Authority Control Sets ===
 
 
 The tags and subfields that display in authority records in Evergreen are
@@ -25,8 +23,7 @@ To access existing control sets, click *Administration* -> *Server Administratio
 
 image::media/Authority_Server_Admin_Menu.png[Server administration authority actions]
 
-Add a Control Set
-^^^^^^^^^^^^^^^^^
+==== Add a Control Set ====
 
 . Click *Administration* -> *Server Administration* ->  *Authority Control Sets*.
 . Click *New Control Set*.  
@@ -50,8 +47,7 @@ To access an existing thesaurus, click *Administration* -> *Server Administratio
 want to access, or click *Administration* -> *Server Administration* ->  *Authority Thesauri*.
 
 
-Add a Thesaurus
-^^^^^^^^^^^^^^^
+==== Add a Thesaurus ====
 
 . Click *Administration* -> *Server Administration* ->  *Authority Control Sets*,
 and choose the hyperlinked thesaurus that you want to access, or click *Admin*
@@ -75,8 +71,7 @@ by a Library of Congress control set, the 100 tag would contain a "Heading -
 Personal Name."  Authority fields also enable you to create the corresponding
 tag in the bibliographic record that would contain the same data. 
 
-Create an Authority Field
-^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Create an Authority Field ====
 
 . Click *Administration* -> *Server Administration* ->  *Authority Control Sets*.
 . Click *Authority Fields*.  The number in parentheses indicates the number of
@@ -106,16 +101,14 @@ image::media/Authority_Control_Sets4.jpg[Authority_Control_Sets4]
 
 
 
-Browse Axes
-~~~~~~~~~~~
+=== Browse Axes ===
 
 Authority records can be browsed, by default, along five axes: author, series,
 subject, title, and topic. Use the *Browse Axes* feature to create additional
 axes.
 
 
-Create a new Browse Axis
-^^^^^^^^^^^^^^^^^^^^^^^^
+==== Create a new Browse Axis ====
 
 . Click *Administration* -> *Server Administration* ->  *Authority Browse Axes*
 . Click *New Browse Axis*.

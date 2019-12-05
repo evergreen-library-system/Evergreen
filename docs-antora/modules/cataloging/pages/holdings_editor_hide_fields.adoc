@@ -1,5 +1,4 @@
-Hiding Fields in the Holdings Editor
-------------------------------------
+== Hiding Fields in the Holdings Editor ==
  
  
 A user may hide specific fields in the holdings editor if these fields are not used for cataloging in their organization. Hiding fields that are not used by your organization helps to reduce confusion among staff and also declutters the holdings editor screen.

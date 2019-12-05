@@ -1,16 +1,13 @@
-Adding an Evergreen search form to a web page
-=============================================
+= Adding an Evergreen search form to a web page =
 
-Introduction
-------------
+== Introduction ==
 
 To enable users to quickly search your Evergreen catalog, you can add a
 simple search form to any HTML page. The following code demonstrates
 how to create a quick search box suitable for the header of your web
 site:
 
-Simple search form
-------------------
+== Simple search form ==
 
 [source,html]
 ------------------------------------------------------------------------------
@@ -32,8 +29,7 @@ Simple search form
     wish to anchor your search. This is the value of the ''locg'' parameter in
     your normal search.
 
-Advanced search form
---------------------
+== Advanced search form ==
 
 [source,html]
 --------------------------------------------------------------------------------
@@ -78,20 +74,17 @@ Advanced search form
 </form>
 --------------------------------------------------------------------------------
 
-Encoding
---------
+== Encoding ==
 
 For non English characters it is vital to set the attribute `accept-charset="UTF-8"`  in the form tag (as in the examples above). If the parameter is  not set, records with non English characters will not be retrieved.
 
-Setting the document type
--------------------------
+== Setting the document type ==
 
 You can set the document types to be searched using the attribute `option value=` in the form. For the value use MARC 21 code defining the type of record (i.e. https://www.loc.gov/marc/bibliographic/bdleader.html[Leader, position 06]).
 
 For example, for musical recordings you could use `<option value='j'>Musical Sound Recording</option>`
 
-Setting the library
--------------------
+== Setting the library ==
 
 Instead of searching the entire consortium, you can set the Library to be searched in using the attribute `option value=` in the form. For the value use Evergreen database.organization unit ID. 
 

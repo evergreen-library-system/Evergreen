@@ -1,19 +1,15 @@
-Setting Up EDI Acquisitions
----------------------------
+== Setting Up EDI Acquisitions ==
 
-Introduction
-~~~~~~~~~~~~
+=== Introduction ===
 
 Electronic Data Interchange (EDI) is used to exchange information between 
 participating vendors and Evergreen. This chapter contains technical 
 information for installation and configuration of the components necessary 
 to run EDI Acquisitions for Evergreen.
 
-Installation
-~~~~~~~~~~~~
+=== Installation ===
 
-Install EDI Translator
-^^^^^^^^^^^^^^^^^^^^^^
+==== Install EDI Translator ====
 
 The EDI Translator is used to convert data into EDI format. It runs
 on localhost and listens on port 9191 by default. This is controlled via 
@@ -34,14 +30,12 @@ generation.
 +
 [source, bash]
 --------------------------------------------------
-cp -r Open-ILS/src/edi_translator /openils/var/edi
---------------------------------------------------
+== cp -r Open-ILS/src/edi_translator /openils/var/edi ==
 2. Navigate to where you have saved the code to begin next step:
 +
 [source, bash]
 -------------------
-cd /openils/var/edi
--------------------
+== cd /openils/var/edi ==
 3. Next, as the *root* user (or a user with sudo rights), install the 
    dependencies, via "install.sh". This will perform some apt-get routines 
    to install the code needed for the EDI translator to function. 
@@ -73,11 +67,9 @@ root 	30349  0.8  0.1  52620 10824 pts/0	S	13:04   0:00 ruby ./edi_webrick.rb
 +
 [source, bash]
 -----------------------
-kill -INT $(pgrep ruby)
------------------------
+== kill -INT $(pgrep ruby) ==
 
-Install EDI Scripts
-^^^^^^^^^^^^^^^^^^^
+==== Install EDI Scripts ====
 
 The EDI scripts are "edi_pusher.pl" and "edi_fetcher.pl" and are used to
 "push" and "fetch" EDI messages for configured EDI accounts.
@@ -97,8 +89,7 @@ cp Open-ILS/src/support-scripts/edi_fetcher.pl /openils/bin
 [source, bash]
 -----------------------------------------------------------------------
 10 * * * * cd /openils/bin && /usr/bin/perl ./edi_pusher.pl > /dev/null
-0 1 * * * cd /openils/bin && /usr/bin/perl ./edi_fetcher.pl > /dev/null
------------------------------------------------------------------------
+== 0 1 * * * cd /openils/bin && /usr/bin/perl ./edi_fetcher.pl > /dev/null ==
    * The example for edi_pusher.pl sets the script to run at 
      10 minutes past the hour, every hour.
    * The example for edi_fetcher.pl sets the script to run at
@@ -108,11 +99,9 @@ cp Open-ILS/src/support-scripts/edi_fetcher.pl /openils/bin
 You may choose to run the EDI scripts more or less frequently based on the 
 necessary response times from your vendors.
 
-Configuration
-~~~~~~~~~~~~~
+=== Configuration ===
 
-Configuring Providers
-^^^^^^^^^^^^^^^^^^^^^
+==== Configuring Providers ====
 
 Look in Administration -> Acquisitions Administration ->  Providers
 
@@ -135,8 +124,7 @@ Look in Administration -> Acquisitions Administration ->  Providers
 |URL	             |The vendor website
 |======================================================================================
 
-Configuring EDI Accounts
-^^^^^^^^^^^^^^^^^^^^^^^^
+==== Configuring EDI Accounts ====
 
 Look in Administration -> Acquisitions Administration ->  EDI Accounts
 
@@ -157,19 +145,16 @@ Look in Administration -> Acquisitions Administration ->  EDI Accounts
 |Vendor Assigned Code |Usually a sub-account designation. Can be used with or without the Vendor Account Number.
 |===============================================================================================================
 
-Configuring Organizational Unit SAN code
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Configuring Organizational Unit SAN code ====
 
 Look in Administration -> Server Administration -> Organizational Units
 
 This interface allows a library to configure their SAN, alongside 
 their address, phone, etc.
 
-Troubleshooting
-~~~~~~~~~~~~~~~
+=== Troubleshooting ===
 
-PO JEDI Template Issues
-^^^^^^^^^^^^^^^^^^^^^^^
+==== PO JEDI Template Issues ====
 
 Some libraries may run into issues with the action/trigger (PO JEDI). 
 The template has to be modified to handle different vendor codes that 

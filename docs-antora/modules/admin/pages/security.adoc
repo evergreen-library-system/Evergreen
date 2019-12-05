@@ -1,8 +1,6 @@
-Keeping Evergreen Current and Secure
-====================================
+= Keeping Evergreen Current and Secure =
 
-Introduction
-------------
+== Introduction ==
 
 When it comes to running an Evergreen system, there are two special areas of concern:
 
@@ -11,8 +9,7 @@ When it comes to running an Evergreen system, there are two special areas of con
 
 The following hints to help you cope with these challenges.
 
-Upgrading the Evergreen software
---------------------------------
+== Upgrading the Evergreen software ==
 
 The Evergreen community at large have agreed upon an upgrade cycle that produces new major releases twice a year, in Spring and Fall. Major releases can contain new features. The community supports each major release with 12 subsequent monthly minor releases that contain only bug fixes, and continues to provide security fixes if necessary for an additional three months after the end of the regular minor bug fix support, for a total of 15 months of support for each major release. 
 
@@ -20,8 +17,7 @@ As a general rule, as the Evergreen community releases each new version of the E
 
 Keep the Evergreen release schedule in mind when planning  your own testing and upgrade schedules. If you participate in testing new Evergreen releases during the release candidate stages, you will prepare your own library for the upgrade process and help flush out any remaining bugs before the major release of the software. This also gives you time to prepare the members of your library for the upcoming changes by giving them the chance, when possible, to familiarize themselves with new features on your test system. You also have the chance to prepare supporting materials, like handouts and other kinds of documentation, to help your users before, during and after each upgrade cycle. 
 
-Securing the server(s) on which your Evergreen installation runs
-----------------------------------------------------------------
+== Securing the server(s) on which your Evergreen installation runs ==
 
 An Evergreen installation requires interaction between many different components and, depending on the size of your consortium and how many servers you have, it can range from quite complex to extremely. That said, there are a number of standard guidelines that you can follow to secure your server.
 

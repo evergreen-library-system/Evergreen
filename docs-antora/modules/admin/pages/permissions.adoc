@@ -1,5 +1,4 @@
-User and Group Permissions
---------------------------
+== User and Group Permissions ==
 
 It is essential to understand how user and group permissions can be used to allow
 staff to fulfill their roles while ensuring that they only have access to the
@@ -14,8 +13,7 @@ Evergreen provides group application permissions in order to restrict which
 staff members have the ability to assign elevated permissions to a user, and 
 which staff members have the ability to edit users in particular groups.
 
-Staff Accounts
-~~~~~~~~~~~~~~
+=== Staff Accounts ===
 
 New staff accounts are created in much the same way as patron accounts, using
 _Circulation -> Register Patron_ or *Shift+F1*. Select one of the staff
@@ -38,14 +36,12 @@ the bottom of the display and click _Save_.
 NOTE: In multi-branch libraries it is possible to assign more than one working 
 location
 
-Staff Account Permissions
-^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Staff Account Permissions ====
 
 To view a detailed list of permissions for a particular Evergreen account go to 
 _Administration -> User Permission Editor_ in the staff client.
 
-Granting Additional Permissions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Granting Additional Permissions ====
 
 A _Local System Administrator (LSA)_ may selectively grant _LSA_ permissions to 
 other staff accounts. In the example below a _Circ +Full Cat_ account is granted

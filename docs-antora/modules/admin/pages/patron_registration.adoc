@@ -1,5 +1,4 @@
-Patron registration administration
-----------------------------------
+== Patron registration administration ==
 
 indexterm:[new patron form]
 indexterm:[edit patron form]
@@ -8,8 +7,7 @@ indexterm:[forms,new patron]
 indexterm:[forms,edit patron]
 indexterm:[forms,patron registration]
 
-Email addresses
-~~~~~~~~~~~~~~~
+=== Email addresses ===
 
 indexterm:[patrons,email addresses]
 indexterm:[email]
@@ -29,8 +27,7 @@ value to `^(?:(?:\b[^@,\s]+@[^@,\s]+\.[^@.,\s]+\b)(?:,\s?(?!$)|$))*$`
 If you'd like to disallow multiple email addresses, set
 this value to `^(?:\b[^@,\s]+@[^@,\s]+\.[^@.,\s]+\b)$`
 
-Parent/guardian field
-~~~~~~~~~~~~~~~~~~~~~
+=== Parent/guardian field ===
 
 indexterm:[patrons,parent/guardian field]
 indexterm:[parent]
@@ -44,8 +41,7 @@ the guardian field has a library setting called
 requires parent/guardian").  When this setting is set to true, a value
 will be required in the patron editor when the juvenile flag is active.
 
-Privacy waiver
-~~~~~~~~~~~~~~
+=== Privacy waiver ===
 
 indexterm:[Allow others to use my account]
 indexterm:[checking out,materials on another patron's account]

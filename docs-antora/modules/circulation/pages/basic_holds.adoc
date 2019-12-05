@@ -1,11 +1,9 @@
 
-Placing Holds
-~~~~~~~~~~~~~
+=== Placing Holds ===
 
 Holds can be placed by staff in the _Staff Client_ and by patrons in the OPAC. In this chapter we demonstrate placing holds in the _Staff Client_.
 
-Holds Levels
-~~~~~~~~~~~~
+=== Holds Levels ===
 
 Evergreen has different levels of holds. Library staff can place holds at all levels, while patrons can only place title-level holds, and parts-level holds. The chart below summarizes the levels of holds.
 
@@ -18,8 +16,7 @@ Evergreen has different levels of holds. Library staff can place holds at all le
 |==============================
 
 
-Title Level Hold
-~~~~~~~~~~~~~~~~
+=== Title Level Hold ===
 
 [TIP]
 ====================
@@ -63,13 +60,11 @@ fill the hold. The same holds true for selecting multiple languages.
 image::media/holds_title_options_adv.png[Place Hold screen with Advanced Options]
 
 
-Patron Search from Place Hold
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Patron Search from Place Hold ===
 Patron Search from Place Hold allows staff members, when placing a hold on behalf of a patron in the web staff client, to search for patrons by names and other searchable patron information, rather than relying on barcode alone.
 
 
-To use Patron Search From Place Holds:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== To use Patron Search From Place Holds: ====
 1. After performing a search in the catalog, staff will retrieve a bibliographic record.
 2. Click *Place Hold* either in the search results or within the detailed bibliographic record. The Place Hold Screen will appear. Note: this feature also appears when placing volume level holds and copy level holds.
 +

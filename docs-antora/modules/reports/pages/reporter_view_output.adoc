@@ -1,6 +1,5 @@
 [[viewing_report_output]]
-Viewing Report Output
----------------------
+== Viewing Report Output ==
 
 indexterm:[reports, output]
 

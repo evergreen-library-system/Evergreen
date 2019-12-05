@@ -1,15 +1,12 @@
-Self checkout
-=============
+= Self checkout =
 
-Introduction
-------------
+== Introduction ==
 
 Evergreen includes a self check interface designed for libraries that simply
 want to record item circulation without worrying about security mechanisms like
 magnetic strips or RFID tags.
 
-Initializing the self check
----------------------------
+== Initializing the self check ==
 The self check interface runs in a web browser. Before patrons can use the self
 check station, a staff member must initialize the interface by logging in.
 
@@ -20,14 +17,12 @@ check station, a staff member must initialize the interface by logging in.
 
 image::media/self-check-admin-login.png[Self Check Admin Login]
 
-Setting library hours of operation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Setting library hours of operation ===
 When the self check prints a receipt, the default template includes the
 library's hours of operation in the receipt. If the library has no configured
 hours of operation, the attempt to print a receipt fails and the browser hangs.
 
-Configuring self check behavior
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Configuring self check behavior ===
 Several library settings control the behavior of the self check:
 
 * *Block copy checkout status*: Prevent the staff user's permission override
@@ -50,7 +45,6 @@ Several library settings control the behavior of the self check:
   workstation when they login. The workstation parameter ensures that check outs
   are recorded as occurring at the correct library.
 
-Using the self check
---------------------
+== Using the self check ==
 
 See the circulation manual for documentation about using the self check interface.

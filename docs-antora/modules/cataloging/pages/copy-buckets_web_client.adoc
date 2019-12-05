@@ -1,5 +1,4 @@
-Item Buckets
-------------
+== Item Buckets ==
 
 Item buckets are containers copy records can be put into to easily perform batch actions on.  Copies stay in buckets until they are removed.
 
@@ -9,11 +8,9 @@ image::media/copy-bucket-2.png[Cataloguing Menu]
 
 NOTE: The words _copy_ and _item_ are used interchangeably in Evergreen. 
 
-Managing Item Buckets
-~~~~~~~~~~~~~~~~~~~~~
+=== Managing Item Buckets ===
 
-Creating Item Buckets
-^^^^^^^^^^^^^^^^^^^^^
+==== Creating Item Buckets ====
 
 Item buckets can be created in the _Item Bucket_ interface as well as on the fly when adding items to a bucket from
 a catalogue search or from within the _Item Status_ interface.  For information on creating buckets on the fly see _Adding Copies to a Bucket_ (needs section ID).
@@ -34,8 +31,7 @@ The bucket can also be set as _Publicly Visible_ at this time.
 
 NOTE: The functionality for making buckets publicly visible does not appear to be in place at this time.
 
-Editing Item Buckets
-^^^^^^^^^^^^^^^^^^^^
+==== Editing Item Buckets ====
 
 1. In the _Item Bucket_ interface click *Buckets* in either the _Pending Copies_ or _Bucket View_ tab.
 +
@@ -53,18 +49,15 @@ image::media/copy-bucket-edit-2.png[Item Bucket Interface]
 
 NOTE: The functionality for making buckets publicly visible does not appear to be in place at this time.
 
-Sharing Item Buckets
-^^^^^^^^^^^^^^^^^^^^
+==== Sharing Item Buckets ====
 
-Finding the Bucket ID
-+++++++++++++++++++++
+===== Finding the Bucket ID =====
 
 1. With the bucket open, look at the URL for the bucket ID.  Share this ID with the staff member who needs access to this bucket.
 
 image::media/copy-bucket-share-1.png[Bucket ID URL]
 
-Opening a Shared Bucket
-+++++++++++++++++++++++
+===== Opening a Shared Bucket =====
 
 . In the _Item Bucket_ interface click *Buckets* in either the _Pending Copies_ or _Bucket View_ tab.
 +
@@ -82,8 +75,7 @@ image::media/copy-bucket-share-3.png[Item Bucket Interface]
 +
 image::media/copy-bucket-share-4.png[Item Bucket Interface]
 
-Deleting Item Buckets
-^^^^^^^^^^^^^^^^^^^^^
+==== Deleting Item Buckets ====
 
 1. In the _Item Bucket_ interface click *Buckets* in either the _Pending Copies_ or _Bucket View_ tab.
 +
@@ -99,11 +91,9 @@ image::media/copy-bucket-delete-1.png[Item Bucket Interface]
 6. Refresh your screen.
 
 
-Adding Copies to a Bucket
-~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Adding Copies to a Bucket ===
 
-From the Item Bucket Interface
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== From the Item Bucket Interface ====
 
 1. In the _Item Bucket_ interface click on the *Pending Copies* tab.
 +
@@ -132,8 +122,7 @@ image::media/copy-bucket-pending-5.png[Item Bucket Interface]
 NOTE: Once you have added your selected items to a bucket you can deselect them, select other items on your pending list, and add those items to a different bucket.
 
 
-From a Catalogue Search
-^^^^^^^^^^^^^^^^^^^^^^^
+==== From a Catalogue Search ====
 
 1. Retrieve the title through a catalogue search.
 2. If it is not your default view click on the *Holdings View* tab.
@@ -154,8 +143,7 @@ image::media/copy-bucket-cat-3.png[Item Bucket Interface]
 8. Repeat steps 1 through 7 to add additional items.
 
 
-From the Scan Item Interface
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== From the Scan Item Interface ====
 
 . Click on _Search_ -> _Search for Copies by Barcode_
 . Scan the barcode(s) of the item(s) you wish to add to the bucket.
@@ -166,8 +154,7 @@ side of the screen is checked.
 . Choose the existing bucket that you'd like to add to, or create a new bucket.
 
 
-Removing Copies from a Bucket
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Removing Copies from a Bucket ===
 
 . Open the _Item Bucket_ interface.  By default you are on the *Bucket View* tab.
 +
@@ -186,8 +173,7 @@ image::media/copy-bucket-remove-3.png[Item Bucket Interface]
 +
 . Your bucket will reload and the selected item(s) will no longer be in the bucket.
 
-Editing Copies in a Bucket
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Editing Copies in a Bucket ===
 
 . Open the _Item Bucket_ interface.  By default you are on the *Bucket View* tab.
 +
@@ -212,8 +198,7 @@ image::media/copy-bucket-edit-copy-2.png[Item Bucket Interface]
 +
 image::media/copy-bucket-edit-copy-3.png[Item Bucket Interface]
 
-Deleting Copies from the Catalogue
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Deleting Copies from the Catalogue ===
 
 . Open the _Item Bucket_ interface.  By default you are on the *Bucket View* tab.
 +
@@ -237,8 +222,7 @@ image::media/copy-bucket-delete-copy-2.png[Item Bucket Interface]
 . The items have been deleted from the catalogue.
 
 
-Placing Holds on Copies in a Bucket
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Placing Holds on Copies in a Bucket ===
 
 . Open the _Item Bucket_ interface.  By default you are on the *Bucket View* tab.
 +
@@ -265,8 +249,7 @@ image::media/copy-bucket-request-2.png[Item Bucket Interface]
 . The hold has been placed.
 
 
-Transferring Copies to Volumes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Transferring Copies to Volumes ===
 
 1. Retrieve the title through a catalogue search.
 2. If it is not your default view click on the *Holdings View* tab.

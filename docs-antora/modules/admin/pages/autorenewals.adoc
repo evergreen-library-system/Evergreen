@@ -1,15 +1,12 @@
-Autorenewals in Evergreen
--------------------------
+== Autorenewals in Evergreen ==
 
-Introduction
-~~~~~~~~~~~~
+=== Introduction ===
 
 Circulation policies in Evergreen can now be configured to automatically renew items checked out on patron accounts.  Circulations will be renewed automatically and patrons will not need to log in to their OPAC accounts or ask library staff to renew materials. 
 
 Autorenewals are set in the Circulation Duration Rules, which allows this feature to be applied to selected circulation policies.  Effectively, this makes autorenewals configurable by patron group, organizational unit or library, and circulation modifier.
 
-Configure Autorenewals
-~~~~~~~~~~~~~~~~~~~~~~
+=== Configure Autorenewals ===
 
 Autorenewals are configured in *Administration -> Server Administration -> Circulation Duration Rules*.  
 
@@ -19,8 +16,7 @@ image::media/autorenew_circdur.PNG[Autorenewals in Circulation Duration Rules]
 
 The Circulation Duration Rule can then be applied to specific circulation policies (*Administration -> Local Administration -> Circulation Policies*) to implement autorenewals in Evergreen.
 
-Autorenewal Notices and Action Triggers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Autorenewal Notices and Action Triggers ===
 
 Two new action triggers have been added to Evergreen for use with autorenewals.  They can be found and configured in *Administration -> Local Administration -> Notifications/Action Triggers*.
 
@@ -41,8 +37,7 @@ Sample of blocked autorewal notification:
 
 image::media/autorenew_norenewnotice.PNG[Notification of Blocked Autorenewal]
 
-Autorenewals in Patron Accounts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Autorenewals in Patron Accounts ===
 
 A new column called _AutoRenewalsRemaining_ indicates how many autorenewals are available for a transaction.
 

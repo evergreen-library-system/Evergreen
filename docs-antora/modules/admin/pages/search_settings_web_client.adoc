@@ -1,8 +1,6 @@
-Adjusting Relevance Ranking and Indexing
-----------------------------------------
+== Adjusting Relevance Ranking and Indexing ==
 
-Metabib Class FTS Config Maps
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Metabib Class FTS Config Maps ===
 
 NOTE: These settings will apply to all libraries in your
 consortium.  There is no way to apply these settings to
@@ -35,8 +33,7 @@ only one library or branch.
   the Administration > Server Administration > Metabib
   Field FTS Config Maps screen.
 
-Metabib Field FTS Config Maps
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Metabib Field FTS Config Maps ===
 
 NOTE: These settings will apply to all libraries in your
 consortium.  There is no way to apply these settings to

@@ -1,8 +1,6 @@
-Managing Staff from the Command Line
-====================================
+= Managing Staff from the Command Line =
 
-Changing passwords
-------------------
+== Changing passwords ==
 
 If you need to change a patron or staff account password without using the staff client, here is how you can reset it with SQL.
 

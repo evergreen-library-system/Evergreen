@@ -1,8 +1,6 @@
-Circulating uncataloged materials
----------------------------------
+== Circulating uncataloged materials ==
 
-Introduction
-~~~~~~~~~~~~
+=== Introduction ===
 
 This section discusses settings for circulating items that are not cataloged.
 Evergreen offers two ways to circulate an item that is not in the catalog:
@@ -17,8 +15,7 @@ have no metadata, and are not represented with an item record.  No fines
 accrue on these materials, but Evergreen does collect statistics on these
 circulations.
 
-Pre-cataloged item settings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Pre-cataloged item settings ===
 
 indexterm:[on-the-fly circulation]
 indexterm:[pre-cataloged items,routing to a different library]
@@ -44,8 +41,7 @@ items.
 NOTE: Evergreen always sets the owning library of pre-cataloged items to be the
 consortium.
 
-Non-cataloged item settings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=== Non-cataloged item settings ===
 
 indexterm:[ephemeral items]
 
@@ -53,8 +49,7 @@ In Evergreen, libraries may elect to create their own local non-cataloged item
 types. For example, you may choose to circulate non-cataloged paperbacks or magazine
 back-issues, but not wish to catalog them.
 
-Adding a new non-cataloged type
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Adding a new non-cataloged type ====
 
 . Go to Administration > Local Administration > Non-Cataloged Types Editor.
 . Under _Create a new non-cataloged type_, start filling out the appropriate
@@ -69,8 +64,7 @@ Adding a new non-cataloged type
 
 image::media/noncataloged_type_add.png[]
 
-Deleting a non-cataloged type
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+==== Deleting a non-cataloged type ====
 
 . Go to Administration > Local Administration > Non-Cataloged Types Editor.
 . Click the _Delete_ button next to the type you wish to delete.  Note that

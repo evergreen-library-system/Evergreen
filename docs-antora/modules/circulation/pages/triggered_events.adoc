@@ -1,16 +1,13 @@
-Triggered Events and Notices
-----------------------------
+== Triggered Events and Notices ==
 
-Introduction
-~~~~~~~~~~~~
+=== Introduction ===
 
 Improvements to the Triggered Events interface enables you to easily filter,
 sort, and print triggered events from the patron's account or an item's details.
 This feature is especially useful when tracking notice completion from a
 patron's account.
 
-Access and View
-~~~~~~~~~~~~~~~
+=== Access and View ===
 
 You can access *Triggered Events* from two Evergreen interfaces: a patron's
 account or an item's details.  
@@ -28,8 +25,7 @@ select the columns that you want to display.
 
 image::media/Triggered_Events_and_Notices1.jpg[Triggered_Events_and_Notices1]
 
-Filter
-~~~~~~
+=== Filter ===
 
 The triggered events that display are controlled by the filters on the right
 side of the screen.  By default, Evergreen displays completed circulation
@@ -49,24 +45,21 @@ adjacent to a row.
 
 image::media/Triggered_Events_and_Notices2.jpg[Triggered_Events_and_Notices2]
 
-Sort
-~~~~
+=== Sort ===
 
 You can sort your results by clicking the column name.
 
 image::media/Triggered_Events_and_Notices3.jpg[Triggered_Events_and_Notices3]
 
 
-Print
-~~~~~
+=== Print ===
 
 You can select the events that you want to print, or you can print all events.
 To print selected events, check the boxes adjacent to the events that you want
 to print, and click *Print Selected Events*.  To print all events, simply click
 *Print All Events*.
 
-Reset
-~~~~~
+=== Reset ===
 
 If the triggered event does not complete or the notice is not sent and the
 trigger needs to be run again, then select the event, and click *Reset Selected
