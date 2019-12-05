@@ -2146,7 +2146,8 @@ sub wide_hold_data {
                 SELECT  id
                   FROM  action.hold_request recheck
                   WHERE recheck.current_copy = cp.id
-                  ORDER BY capture_time DESC NULLS LAST
+                        AND recheck.capture_time IS NOT NULL
+                  ORDER BY capture_time DESC
                   LIMIT 1
             )))
         SQL
