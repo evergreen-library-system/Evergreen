@@ -2,6 +2,7 @@ name: docs
 title: Evergreen docs
 version: 'latest'
 nav:
+- modules/ROOT/nav.adoc
 - modules/installation/nav.adoc
 - modules/admin_initial_setup/nav.adoc
 - modules/using_staff_client/nav.adoc
