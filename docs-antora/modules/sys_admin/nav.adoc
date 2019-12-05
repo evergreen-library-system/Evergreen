@@ -1,4 +1,5 @@
 * System Administration From the Staff Client
+** xref:sys_admin:introduction.adoc[Introduction]
 ** xref:admin:acquisitions_admin.adoc[Acquisitions Administration]
 ** xref:admin:age_hold_protection.adoc[Age hold protection]
 ** xref:admin:authorities.adoc[Authorities]

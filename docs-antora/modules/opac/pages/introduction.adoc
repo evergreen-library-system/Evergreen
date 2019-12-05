@@ -1,0 +1,12 @@
+== Introduction ==
+
+Evergreen has a public OPAC that meets WCAG guidelines
+(http://www.w3.org/WAI/intro/wcag), which helps make the OPAC accessible to
+users with a range of disabilities. This part of the documentation explains how
+to use the Evergreen public OPAC. It covers the basic catalog and more advanced
+search topics. It also describes the ``My Account'' tools users have to find
+information and manage their personal library accounts through the OPAC. This
+section could be used by staff and patrons but would be more useful for staff as
+a generic reference when developing custom guides and tutorials for their users.
+
+

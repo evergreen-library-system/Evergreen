@@ -1,0 +1,11 @@
+[[licensing]]
+[appendix]
+= Licensing =
+
+image::media/ccbysa.png["CC-BY-SA",link="http://creativecommons.org/licenses/by-sa/3.0/"]
+
+This work is licensed under a 
+link:http://creativecommons.org/licenses/by-sa/3.0/[Creative 
+Commons Attribution-ShareAlike 3.0 Unported License].
+
+

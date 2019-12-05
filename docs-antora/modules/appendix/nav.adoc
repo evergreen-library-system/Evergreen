@@ -1,0 +1,4 @@
+* Appendix
+** xref:shared:attributions.adoc[Attributions]
+** xref:shared:licensing.adoc[Licensing]
+

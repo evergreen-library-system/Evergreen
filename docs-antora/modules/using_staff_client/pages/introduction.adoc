@@ -1,0 +1,7 @@
+== Introduction ==
+This part of the documentation deals with general Browser Client usage including
+logging in, navigation and shortcuts.
+
+For information about the XUL client, consult the
+http://docs.evergreen-ils.org/2.11/[Evergreen 2.11 documentation].
+

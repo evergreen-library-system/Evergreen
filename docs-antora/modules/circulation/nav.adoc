@@ -1,0 +1,15 @@
+* Circulation
+** xref:circulation:introduction.adoc[Introduction]
+** xref:circulation:circulating_items_web_client.adoc[]
+** xref:circulation:basic_holds.adoc[]
+** xref:circulation:advanced_holds.adoc[]
+** xref:circulation:booking.adoc[]
+** xref:circulation:circulation_patron_records_web_client.adoc[]
+** xref:admin:patron_self_registration.adoc[]
+** xref:circulation:triggered_events.adoc[]
+
+:leveloffset: 1
+** xref:circulation:offline_circ_webclient.adoc[]
+** xref:circulation:self_check.adoc[]
+:leveloffset: 0
+

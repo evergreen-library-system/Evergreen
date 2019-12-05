@@ -1,0 +1,3 @@
+== Introduction ==
+This part deals with the options in the Server Administration menu found in the
+staff client.

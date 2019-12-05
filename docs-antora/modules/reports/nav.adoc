@@ -1,0 +1,14 @@
+* Reports
+** xref:reports:introduction.adoc[Introduction]
+** xref:reports:reporter_daemon.adoc[]
+** xref:reports:reporter_folder.adoc[]
+** xref:reports:reporter_create_templates.adoc[]
+** xref:reports:reporter_generating_reports.adoc[]
+** xref:reports:reporter_view_output.adoc[]
+** xref:reports:reporter_cloning_shared_templates.adoc[]
+** xref:reports:reporter_add_data_source.adoc[]
+** xref:reports:reporter_running_recurring_reports.adoc[]
+** xref:reports:reporter_template_terminology.adoc[]
+** xref:reports:reporter_template_enhancements.adoc[]
+** xref:reports:reporter_export_usingpgAdmin.adoc[]
+

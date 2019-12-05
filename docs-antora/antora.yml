@@ -2,7 +2,17 @@ name: docs
 title: Evergreen docs
 version: 'latest'
 nav:
-- modules/ROOT/nav.adoc
+- modules/installation/nav.adoc
+- modules/admin_initial_setup/nav.adoc
 - modules/using_staff_client/nav.adoc
 - modules/sys_admin/nav.adoc
 - modules/local_admin/nav.adoc
+- modules/acquisitions/nav.adoc
+- modules/cataloging/nav.adoc
+- modules/serials/nav.adoc
+- modules/circulation/nav.adoc
+- modules/reports/nav.adoc
+- modules/opac/nav.adoc
+- modules/development/nav.adoc
+- modules/api/nav.adoc
+- modules/appendix/nav.adoc

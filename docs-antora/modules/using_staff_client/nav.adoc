@@ -1,4 +1,5 @@
 * Using the Browser Staff Client
+** xref:using_staff_client:introduction.adoc[Introduction]
 ** xref:admin:web_client-login.adoc[Logging into Evergreen]
 ** xref:admin:web-client-browser-best-practices.adoc[Best Practices for Using the Browser]
 ** xref:admin:staff_client-column_picker.adoc[Column Picker]

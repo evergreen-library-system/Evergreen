@@ -1,0 +1,2 @@
+== Introduction ==
+Learn how to create and use reports in Evergreen.

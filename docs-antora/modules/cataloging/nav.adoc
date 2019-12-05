@@ -1,0 +1,34 @@
+* Cataloging
+** xref:cataloging:introduction.adoc[Introduction]
+** xref:cataloging:marc_tag_table.adoc[]
+** xref:cataloging:copy-buckets_web_client.adoc[]
+** xref:cataloging:item_tags_cataloging.adoc[]
+** xref:cataloging:MARC_Editor.adoc[]
+
+:leveloffset: 1
+** xref:cataloging:record_buckets.adoc[]
+:leveloffset: 0
+
+** xref:cataloging:merge_overlay_bibs.adoc[]
+** xref:cataloging:physical_char_wizard.adoc[]
+** xref:admin:staff_client-return_to_results_from_marc.adoc[]
+** xref:cataloging:batch_importing_MARC.adoc[]
+** xref:cataloging:overlay_record_3950_import.adoc[]
+** xref:cataloging:z39.50_search_enhancements.adoc[]
+** xref:cataloging:monograph_parts.adoc[]
+** xref:cataloging:conjoined_items.adoc[]
+** xref:cataloging:cataloging_electronic_resources.adoc[]
+** xref:cataloging:item_status.adoc[]
+** xref:cataloging:volcopy_editor.adoc[]
+
+:leveloffset: 1
+** xref:cataloging:tpac_copy_edit_links.adoc[]
+** xref:cataloging:holdings_editor_hide_fields.adoc[]
+:leveloffset: 0
+
+** xref:cataloging:MARC_batch_edit.adoc[]
+** xref:cataloging:authorities.adoc[]
+** xref:cataloging:link_checker.adoc[]
+** xref:admin:schema_bibliographic.adoc[]
+** xref:admin:marc_templates.adoc[]
+

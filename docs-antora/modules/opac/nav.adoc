@@ -1,0 +1,16 @@
+* Using the Public Access Catalog
+** xref:opac:introduction.adoc[Introduction]
+** xref:opac:using_the_public_access_catalog.adoc[]
+** xref:opac:my_lists.adoc[]
+** xref:opac:batch_actions_from_search.adoc[]
+** xref:opac:kids_opac.adoc[]
+** xref:opac:catalog_browse.adoc[]
+** xref:opac:advanced_features.adoc[]
+** xref:opac:tpac_meta_record_holds.adoc[]
+** xref:opac:linked_libraries.adoc[]
+** xref:opac:opensearch.adoc[]
+
+:leveloffset: 1
+** xref:opac:search_form.adoc[]
+:leveloffset: 0
+

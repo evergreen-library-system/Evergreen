@@ -1,0 +1,5 @@
+== Introduction ==
+You may be interested in re-using data from your Evergreen installation in
+another application.  This part describes several methods to get the data
+you need.
+

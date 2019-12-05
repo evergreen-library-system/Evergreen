@@ -1,0 +1,2 @@
+== Introduction ==
+This part describes cataloging in Evergreen.

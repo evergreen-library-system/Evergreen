@@ -1,0 +1,11 @@
+* Serials
+** xref:serials:A-intro.adoc[]
+** xref:serials:B-serials_admin.adoc[]
+** xref:serials:C-serials_workflow.adoc[]
+** xref:serials:D-Receiving.adoc[]
+** xref:serials:E-routing_lists.adoc[]
+** xref:serials:F-Special_issue.adoc[]
+** xref:serials:G-binding.adoc[]
+** xref:serials:H-holdings_statements.adoc[]
+** xref:serials:Group_Serials_Issues_in_the_OPAC_2.2.adoc[]
+

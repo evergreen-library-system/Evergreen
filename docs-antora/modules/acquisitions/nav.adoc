@@ -1,0 +1,10 @@
+* Acquisitions
+** xref:acquisitions:introduction.adoc[Introduction]
+** xref:acquisitions:selection_lists_po.adoc[]
+** xref:acquisitions:invoices.adoc[]
+** xref:acquisitions:receive_items_from_invoice.adoc[]
+** xref:acquisitions:vandelay_acquisitions_integration.adoc[]
+** xref:acquisitions:purchase_requests_patron_view.adoc[]
+** xref:acquisitions:purchase_requests_management.adoc[]
+** xref:acquisitions:blanket.adoc[]
+
