@@ -1,5 +1,5 @@
-* System Configuration and Customization
-** xref:admin_initial_setup:introduction.adoc[Introduction]
+* xref:admin_initial_setup:introduction.adoc[System Configuration and
+* Customization]
 ** xref:admin_initial_setup:describing_your_organization.adoc[]
 ** xref:admin_initial_setup:describing_your_people.adoc[]
 ** xref:admin_initial_setup:migrating_patron_data.adoc[]

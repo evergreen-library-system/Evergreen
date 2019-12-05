@@ -183,7 +183,7 @@ image::media/searchfilters2.PNG[search results with search filter enhancements]
 Each filter can be removed by clicking the X next to the filter name to modify the search within the search results screen.  Below the search box on the search results screen, there is also a link to _Refine My Original Search_, which will bring the user back to the advanced search screen where the original search parameters selected can be viewed and modified.
 
 
-anchor:numeric_search[]
+[#numeric_search]
 indexterm:[advanced search, numeric search]
 
 ==== Numeric Search ====
@@ -319,7 +319,7 @@ truncate any number of characters.
 
 === Search Methodology ===
 
-anchor:stemming[]
+[#stemming]
 
 Stemming 
 ^^^^^^^^
@@ -349,7 +349,7 @@ therefore the stemming algorithm does not recognize _gold_ as a stem of
 _golden_. 
 
 
-anchor:order_of_results[]
+[#order_of_results]
 
 ==== Order of Results ====
 

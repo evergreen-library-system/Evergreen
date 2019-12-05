@@ -300,6 +300,7 @@ default physical location being set to library ID 104:
 SetEnv physical_loc 104
 ----
 
+[#setting_a_default_language_and_adding_optional_languages]
 === Setting a default language and adding optional languages ===
 
 _OILSWebLocale_ adds support for a specific language. Add this variable to the
@@ -346,7 +347,7 @@ Evergreen with an up-to-date PO file downloaded from Launchpad.
 . Select _PO format_ and submit the _request for download_ button. You can also request for download of all existing templates and languages at once, see https://translations.launchpad.net/evergreen/master/+export. The download link will be sent You to email address provided. 
 . Download the file and name it according to the language used (e.g., _cs-CZ.po_ for Czech or  _es-ES.po_ for Spanish)  
 . Copy the downloaded file to  _/openils/var/template/data/locale_. It is a good practice to backup the original PO file before.
-. Be sure that the desired language is set as default, using the <<_setting_a_default_language_and_adding_optional_languages,Default language>> procedures.
+. Be sure that the desired language is set as default, using the xref:#setting_a_default_language_and_adding_optional_languages[Default language] procedures.
 
 Analogously, to update the web staff client translations, download the translation template _webstaff_ and copy it to _openils/var/template/data/locale/staff_.
 

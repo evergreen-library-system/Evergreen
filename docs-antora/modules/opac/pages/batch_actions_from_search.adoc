@@ -1,3 +1,4 @@
+[#batch_actions_from_search]
 == Batch Actions from Search ==
 
 === Introduction ===

@@ -18,13 +18,13 @@ to more thorough documentation, if available.
    -- Groups together event output for already processed events.  Useful for
       creating files that contain data from a group of events.  Such as a CSV
       file with all the overdue data for one day.
- * <<_processing_action_triggers,action_trigger_runner.pl>>
+ * xref:admin:actiontriggers_process.adoc#processing_action_triggers[action_trigger_runner.pl]
    -- Useful for creating events for specified hooks and running pending events
  * authority_authority_linker.pl
    -- Links reference headings in authority records to main entry headings
       in other authority records. Should be run at least once a day (only for
 	  changed records).
- * <<_authority_control_fields,authority_control_fields.pl>>
+ * xref:#authority_control_fields[authority_control_fields.pl]
    -- Links bibliographic records to the best matching authority record.
       Should be run at least once a day (only for changed records).
       You can accomplish this by running _authority_control_fields.pl --days-back=1_
@@ -34,12 +34,12 @@ to more thorough documentation, if available.
       facet definitions, compressed JS files and related cache key
  * clark-kent.pl
    -- Used to start and stop the reporter (which runs scheduled reports)
- * <<_creating_the_evergreen_database,eg_db_config>>
+ * xref:installation:server_installation.adoc#creating_the_evergreen_database[eg_db_config]
    -- Creates database and schema, updates config files, sets Evergreen
       administrator username and password
  * fine_generator.pl
  * hold_targeter.pl
- * <<_importing_authority_records_from_command_line,marc2are.pl>>
+ * xref:#importing_authority_records_from_command_line[marc2are.pl]
    -- Converts authority records from MARC format to Evergreen objects
       suitable for importing via pg_loader.pl (or parallel_pg_loader.pl)
  * marc2bre.pl
@@ -48,7 +48,7 @@ to more thorough documentation, if available.
  * marc2sre.pl
    -- Converts serial records from MARC format to Evergreen objects
       suitable for importing via pg_loader.pl (or parallel_pg_loader.pl)
- * <<_marc_export,marc_export>>
+ * xref:#marc_export[marc_export]
    -- Exports authority, bibliographic, and serial holdings records into
       any of these formats: USMARC, UNIMARC, XML, BRE, ARE
  * osrf_control
@@ -57,7 +57,7 @@ to more thorough documentation, if available.
    -- Uses the output of marc2bre.pl (or similar tools) to generate the SQL
       for importing records into Evergreen in a parallel fashion
 
-anchor:_authority_control_fields[]
+[#authority_control_fields]
 
 === authority_control_fields: Connecting Bibliographic and Authority records ===
 
@@ -95,7 +95,7 @@ Here is how the matching works:
 |=========================================================
 
 
-anchor:_marc_export[]
+[#marc_export]
 
 === marc_export: Exporting Bibliographic Records into MARC files ===
 
@@ -215,7 +215,7 @@ best way to use this option is in combination with the `--items` and one of the
 `--library` or `--descendants` options to export *all* of a library's
 holdings both physical and electronic.
 
-anchor:_pingest_pl[]
+[#pingest_pl]
 
 === Parallel Ingest with pingest.pl ===
 
@@ -307,6 +307,7 @@ SELECT reporter.refresh_materialized_simple_record();
 
 
 
+[#importing_authority_records_from_command_line]
 === Importing Authority Records from Command Line ===
 
 indexterm:[marc2are.pl]

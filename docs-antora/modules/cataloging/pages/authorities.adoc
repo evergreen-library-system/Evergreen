@@ -17,7 +17,7 @@ choose _Create and Edit..._, after the authority MARC editor opens you need to c
 to finally add the new authority record to your system.
 
 
-[[_importing_authority_records_from_the_staff_client]]
+[[importing_authority_records_from_the_staff_client]]
 === Importing Authorities ===
 . Click *Cataloging -> MARC Batch Import/Export.*
 . You may create a queue to better track this import project.  If you do not create a new queue, it will automatically put your records into a default queue named *-*.

@@ -1,5 +1,4 @@
-* Local Administration
-** xref:local_admin:introduction.adoc[Introduction]
+* xref:local_admin:introduction.adoc[Local Administration]
 ** xref:admin:librarysettings.adoc[Library Settings Editor]
 ** xref:admin:lsa-address_alert.adoc[Address Alert]
 ** xref:admin:lsa-barcode_completion.adoc[Barcode Completion]

@@ -1,3 +1,4 @@
+[#apache_access_handler_perl_module]
 == Apache Access Handler Perl Module ==
 The OpenILS::WWW::AccessHandler Perl module is intended for limiting patron
 access to configured locations in Apache. These locations could be folder

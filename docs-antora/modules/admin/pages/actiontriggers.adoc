@@ -17,7 +17,7 @@ You must have Local Administrator permissions to access the Action Triggers modu
 You will notice four tabs on this page: <<event_definitions, Event Definitions>>, <<hooks, Hooks>>, <<reactors, Reactors>> and <<validators, Validators>>.
 
 
-anchor:event_definitions[]
+[#event_definitions]
 
 === Event Definitions ===
 
@@ -153,7 +153,7 @@ image::media/test_event_def_output.png[Test Output]
 
 WARNING: If you are testing an email or SMS notification, use a test account and email as an example. Using the Test feature will actually result in the notification being sent if configured correctly.  Similarly, use a test item or barcode when testing a circulation-based event like Mark Lost since the test will mark the item as lost.
 
-anchor:hooks[]
+[#hooks]
 
 ==== Hooks ====
 Hooks define the Fieldmapper class in the core_type column off of which the rest of the field definitions ``hang''.
@@ -170,7 +170,7 @@ Hooks define the Fieldmapper class in the core_type column off of which the rest
 You may also create, edit and delete Hooks but the Core Type must refer to an IDL class in the fm_IDL.xml file.
 
 
-anchor:reactors[]
+[#reactors]
 
 ==== Reactors ====
 
@@ -187,7 +187,7 @@ Reactors link the trigger definition to the action to be carried out.
 You may also create, edit and delete Reactors. Just remember that there must be an associated subroutine or module in the Reactor Perl module.
 
 
-anchor:validators[]
+[#validators]
 
 ==== Validators ====
 

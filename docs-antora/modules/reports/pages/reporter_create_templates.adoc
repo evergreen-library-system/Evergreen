@@ -81,7 +81,8 @@ indexterm:[reports, field transform]
 image::media/create-template-6.png[create-template-6]
 +
 _Field Transforms_ have either an _Aggregate_ or _Non-Aggregate_ output type. 
-See the section called <<field_transforms,Field Transforms>> for more about 
+See the section called
+xref:reports:reporter_template_terminology.adoc#field_transforms[Field Transforms] for more about 
 _Count, _Count Distinct_, and other transform options.
 +
 . Click _Add Selected Fields_ underneath the _Field Transform_ pane to add this 

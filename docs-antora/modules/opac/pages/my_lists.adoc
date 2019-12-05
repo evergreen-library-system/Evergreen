@@ -4,7 +4,7 @@ The *My Lists* feature replaces the bookbag feature that was available in versio
 
 There is now a direct link to *My Lists* from the *My Account* area in the top right part of the screen.  This gives users the ability to quickly access their lists while logged into the catalog.
 
-As of version 3.2, <<_batch_actions_from_search,Batch Actions from Search Results>> has replaced the old Temporary Lists feature, as well as enabled multiple selections from a search results list.
+As of version 3.2, xref:opac:batch_actions_from_search.adoc#batch_actions_from_search[Batch Actions from Search Results] has replaced the old Temporary Lists feature, as well as enabled multiple selections from a search results list.
 
 image::media/My_Lists.png[My Lists]
 

@@ -301,11 +301,13 @@ Received Data: "250bf1518c7527a03249858687714376"
     ------------------------------------
 --------------------------------------------------------------
 +
-If this does not work, it's time to do some <<install-troubleshooting-1,troubleshooting>>.
+If this does not work, it's time to do some
+xref:installation:server_installation.adoc#install-troubleshooting-1[troubleshooting].
 +
 . As the *root* user, start the Apache web server.
 +
-If you encounter errors, refer to the <<install-troubleshooting-1,troubleshooting>> section 
+If you encounter errors, refer to the
+xref:installation:server_installation.adoc#install-troubleshooting-1[troubleshooting] section 
 of this documentation for tips on finding solutions and seeking further assistance
 from the Evergreen community.
 

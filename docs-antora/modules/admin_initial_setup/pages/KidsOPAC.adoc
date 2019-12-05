@@ -78,7 +78,7 @@ in */etc/apache2/eg_vhosts.conf*.
 The following example enables you to configure the alternate skin (Monster Skin, kpac2) for the Kids
 Catalog.
 
-You should be familiar with how the <<_how_to_override_templates,Evergreen TPAC handles template folders>> 
+You should be familiar with how the xref:admin:template_toolkit.adoc#how_to_override_templates[Evergreen TPAC handles template folders] 
 before you make these changes.
 
 If you already have a custom template directory setup you can copy the *Open-ILS/examples/web/templates/kpac* 

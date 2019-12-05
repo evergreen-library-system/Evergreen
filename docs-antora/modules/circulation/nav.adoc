@@ -1,5 +1,4 @@
-* Circulation
-** xref:circulation:introduction.adoc[Introduction]
+* xref:circulation:introduction.adoc[Circulation]
 ** xref:circulation:circulating_items_web_client.adoc[]
 ** xref:circulation:basic_holds.adoc[]
 ** xref:circulation:advanced_holds.adoc[]

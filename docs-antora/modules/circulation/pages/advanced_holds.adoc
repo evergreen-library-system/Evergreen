@@ -51,6 +51,7 @@ display, the holds shelf display, and the pull list display.
 ==============
 
 
+[#actions_for_selected_holds]
 ==== Actions for Selected Holds ====
 
 . Retrieve the patron record and go to the _Holds_ screen.
@@ -162,7 +163,7 @@ image::media/holds-managing-18.png[holds-managing-18]
 +
 . Highlight the hold you want to edit. Choose an action from the
 _Actions_ menu. For more information see the
-<<_actions_for_selected_holds,Actions for Selected Holds>> section. For
+xref:#actions_for_selected_holds[Actions for Selected Holds] section. For
 example, you can retrieve the hold requestor’s account by selecting
 _Retrieve Patron_ from this menu.
 +

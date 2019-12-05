@@ -2,7 +2,7 @@ Logging into Evergreen
 -----------------------
 
 === Registering a Workstation ===
-anchor:register_workstation[]
+[#register_workstation]
 indexterm:[staff client, registering a workstation]
 
 Before logging into Evergreen, you must first register a workstation from your

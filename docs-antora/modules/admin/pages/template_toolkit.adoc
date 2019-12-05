@@ -93,6 +93,7 @@ We will dissect this example in some more detail later, but the important
 thing to note is that the file references are relative to the top of the
 template directory.
 
+[#how_to_override_templates]
 === How to override templates ===
 
 Overrides for templates go in a directory that parallels the structure of the

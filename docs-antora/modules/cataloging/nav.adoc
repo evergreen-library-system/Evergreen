@@ -1,5 +1,4 @@
-* Cataloging
-** xref:cataloging:introduction.adoc[Introduction]
+* xref:cataloging:introduction.adoc[Cataloging]
 ** xref:cataloging:marc_tag_table.adoc[]
 ** xref:cataloging:copy-buckets_web_client.adoc[]
 ** xref:cataloging:item_tags_cataloging.adoc[]

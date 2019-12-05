@@ -11,7 +11,8 @@ required to clone templates from the _Shared Folders_ section and save them to _
 Folders_.
 
 The steps below assume you have already created at least one _Templates_ folder.  
-If you haven’t done this, please see <<reporter_creating_folders,Creating Folders>>.
+If you haven’t done this, please see
+xref:reports:reporter_folder.adoc#reporter_creating_folders[Creating Folders].
 
 . Access the reports interface from _Administration_ -> _Reports_
 . Under _Shared Folders_ expand the _Templates_ folder and the subfolder of the 
@@ -27,11 +28,11 @@ all content, change the Limit output setting from 10 to All.
 . Choose the folder where you want to save the cloned template, then click 
 _Select Folder_. Only template folders created with your account will be visible. 
 If there are no folders to choose from please see 
-<<reporter_creating_folders,Creating Folders>>.
+xref:reports:reporter_folder.adoc#reporter_creating_folders[Creating Folders].
 
 . The cloned template opens in the template editor. From here you may modify 
 the template by adding, removing, or editing fields and filters as described in 
-<<reporter_creating_templates,Creating Templates>>. _Template Name_ and 
+xref:reports:reporter_create_templates.adoc#reporter_creating_templates[Creating Templates]. _Template Name_ and 
 _Description_ can also be edited. When satisfied with your changes click _Save_.
 
 . Click _OK_ in the resulting confirmation windows.

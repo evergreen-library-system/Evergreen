@@ -1,4 +1,3 @@
-* Appendix
-** xref:shared:attributions.adoc[Attributions]
-** xref:shared:licensing.adoc[Licensing]
-** xref:shared:index.adoc[Index]
+* xref:shared:attributions.adoc[Appendix A. Attributions]
+* xref:shared:licensing.adoc[Appendix B. Licensing]
+* xref:shared:index.adoc[Index]

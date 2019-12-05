@@ -113,8 +113,7 @@ parameter. You may optionally get a number of items that patron
 currently has on hold by adding the `addcount` parameter.
 
 As always, you can add the skipemail parameter to skip patrons with
-email notifications of their overdues,  see <<_skipping_patrons_with_email_notification_of_holds, Skipping
-patrons with email notification of holds>> as described below.
+email notifications of their overdues,  see xref:#skipping_patrons_with_email_notification_of_holds[Skipping patrons with email notification of holds] as described below.
 
 
 .Columns in the holds CSV file:
@@ -145,8 +144,7 @@ the number of days specified overdue. It does not pull up any that are
 less than or greater than the number of days specified.
 
 As always, you can add the skipemail parameter to skip patrons with
-email notifications of their overdues, see <<_skipping_patrons_with_email_notification_of_holds, Skipping patrons with
-email notification of holds>> as described below.
+email notifications of their overdues, see xref:#skipping_patrons_with_email_notification_of_holds[Skipping patrons with email notification of holds] as described below.
 
 .Columns in the overdues CSV file:
 |=================================
@@ -156,6 +154,7 @@ email notification of holds>> as described below.
 | Titles | A colon-separated list of titles that the patron has overdue.
 |=================================
 
+[#skipping_patrons_with_email_notification_of_holds]
 === Skipping patrons with email notification of holds ===
 
 Skipping patrons who have email notification for their holds or

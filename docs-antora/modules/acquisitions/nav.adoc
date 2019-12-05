@@ -1,5 +1,4 @@
-* Acquisitions
-** xref:acquisitions:introduction.adoc[Introduction]
+* xref:acquisitions:introduction.adoc[Acquisitions]
 ** xref:acquisitions:selection_lists_po.adoc[]
 ** xref:acquisitions:invoices.adoc[]
 ** xref:acquisitions:receive_items_from_invoice.adoc[]

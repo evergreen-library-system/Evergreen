@@ -112,6 +112,7 @@ Enter patron information and click the *Save* button in the top-right of the Pat
 
 === Managing Offline Transactions ===
 
+[#offline_block_list]
 ==== Offline Block List ====
 
 While logged in and still online, you may download an *Offline Block List*.  This will locally store a list of all patrons with blocks at the time of the download.  If this list is present, the Offline Circulation interface will check transactions against this list.
@@ -130,6 +131,7 @@ To export transactions while you are offline, navigate to *Circulation -> Offlin
 
 To export transactions while you are logged in, navigate to *Circulation -> Offline Circulation* and click on the *Session Management* tab.  Click on the *Export Transactions* button to generate the pending.xacts file as above.  If you wish, you can at this point click *Clear Transactions* to clear the list of pending transactions.
 
+[#processing_offline_transactions]
 ==== Processing Offline Transactions ====
 
 Once connectivity is restored, navigate back to your *Evergreen Login Page*.  You will see a message telling you that there are unprocessed Offline Transactions waiting for upload.
@@ -159,7 +161,7 @@ image::media/offline_session_list.png[Offline session list]
 +
 image::media/offline_processing_complete.png[Offline processing complete]
 +
-. Scroll to the bottom of the screen to see if there are any entries in the <<_exceptions,*Exception List*>>.  Some of these may require staff follow up.  
+. Scroll to the bottom of the screen to see if there are any entries in the xref:#exceptions[*Exception List*].  Some of these may require staff follow up.  
 
 ==== Uploading Previously Exported Transactions ====
 
@@ -174,8 +176,9 @@ To import transactions:
 . Navigate to the location on your computer where the pending.xacts file is saved.
 . Select the file for importing.
 . The *Pending Transactions* list will populate with your imported transactions.
-. You may now proceed according to the instructions under <<_processing_offline_transactions,Processing Offline Transactions>>.
+. You may now proceed according to the instructions under xref:#processing_offline_transactions[Processing Offline Transactions].
 
+[#exceptions]
 ===== Exceptions =====
 
 Exceptions are problems that were encountered during processing. For example, a mis-scanned patron barcode, an open circulation, or an item that was not checked in before it was checked out to another patron would all be listed as exceptions. Those transactions causing exceptions might not be loaded into Evergreen database. Staff should examine the exceptions and take necessary action.
@@ -189,7 +192,7 @@ These are a few notes about possible exceptions. It is not an all-inclusive list
 * An item that is targeted for a patron hold and captured via offline checkin will not cause an exception unless that item also goes to an In Transit status.
 * An item that is on hold for Patron A but checked out to Patron B will not cause an exception.  Patron A's hold will be reset and will retarget the next time the hold targeter is run.  In order to avoid this it is recommended to not check out holds to other patrons.
 * If you check out a book to a patron using a previous barcode for that patron, it will cause an exception and you will have to retrieve that patron while online and re-enter the item barcode in order to checkout the item.
-* The Offline Interface can recognize blocked, barred, and expired patrons if you have downloaded the Offline Block List in the browser you are using.  You will get an error message indicating the patron status from within the Standalone Interface at check-out time.  See the section on the <<_offline_block_list,Offline Block List>> for more information.
+* The Offline Interface can recognize blocked, barred, and expired patrons if you have downloaded the Offline Block List in the browser you are using.  You will get an error message indicating the patron status from within the Standalone Interface at check-out time.  See the section on the xref:#offline_block_list[Offline Block List] for more information.
 
 image::media/offline_exceptions.png[Offline exception list]
 

@@ -1,5 +1,4 @@
-* Serials
-** xref:serials:A-intro.adoc[]
+* xref:serials:A-intro.adoc[Serials]
 ** xref:serials:B-serials_admin.adoc[]
 ** xref:serials:C-serials_workflow.adoc[]
 ** xref:serials:D-Receiving.adoc[]

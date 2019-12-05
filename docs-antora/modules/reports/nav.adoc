@@ -1,5 +1,4 @@
-* Reports
-** xref:reports:introduction.adoc[Introduction]
+* xref:reports:introduction.adoc[Reports]
 ** xref:reports:reporter_daemon.adoc[]
 ** xref:reports:reporter_folder.adoc[]
 ** xref:reports:reporter_create_templates.adoc[]

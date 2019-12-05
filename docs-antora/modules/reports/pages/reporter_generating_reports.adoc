@@ -66,7 +66,8 @@ available as an Excel spreadsheet, an HTML table (for display in the staff
 client or browser), and as a bar chart.
 +
 2) If you want the report to be recurring, check the box and select the 
-_Recurrence Interval_ as described in <<recurring_reports,Recurring Reports>>.  
+_Recurrence Interval_ as described in
+xref:reports:reporter_running_recurring_reports.adoc#recurring_reports[Recurring Reports].  
 In this example, as this is a report that will only be run once, the _Recurring 
 Report_ box is not checked.
 +

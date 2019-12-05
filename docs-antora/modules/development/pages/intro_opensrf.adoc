@@ -97,7 +97,7 @@ ID `6285` that has connected to the `private.localhost` domain using the
 `opensrf` XMPP client credentials could be
 `opensrf@private.localhost/opensrf.simple-text_drone_at_localhost_6285`.
 
-[id="OpenSRFOverHTTP"]
+[#OpenSRFOverHTTP]
 ==== OpenSRF communication flows over HTTP ====
 Any OpenSRF service registered with the public router is accessible via the
 OpenSRF HTTP Translator. The OpenSRF HTTP Translator implements the
@@ -150,7 +150,7 @@ this case, a single string `"foobar"`
 `/osrf-http-translator` is the default location in the Apache example
 configuration files shipped with the OpenSRF source, but this is configurable.
 
-[id="httpResults"]
+[#httpResults]
 .Results from an HTTP POST request to an OpenSRF method via the OpenSRF HTTP Translator
 [source,bash]
 --------------------------------------------------------------------------------
@@ -302,7 +302,7 @@ inheritance is available in this package (named by the special Perl symbol
 `__PACKAGE__` that contains the current package name). The `register_method()`
 procedure is how we introduce a method to the rest of the OpenSRF world.
 
-[id="serviceRegistration"]
+[#serviceRegistration]
 ==== Registering a service with the OpenSRF configuration files ====
 
 Two files control most of the configuration for OpenSRF:
@@ -447,7 +447,7 @@ Request Time in seconds: 0.016718
 =------------------------------------
 --------------------------------------------------------------------------------
 
-[id="opensrfIntrospection"]
+[#opensrfIntrospection]
 ===== Getting documentation for OpenSRF methods from the srfsh client =====
 
 The `srfsh` client also gives you command-line access to retrieving metadata

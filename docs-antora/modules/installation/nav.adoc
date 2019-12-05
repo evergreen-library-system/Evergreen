@@ -1,5 +1,4 @@
-* Software Installation
-** xref:installation:introduction.adoc[Introduction]
+* xref:installation:introduction.adoc[Software Installation]
 ** xref:installation:system_requirements.adoc[System Requirements]
 ** xref:installation:server_installation.adoc[Installing the Evergreen server]
 ** xref:installation:server_upgrade.adoc[Upgrading the Evergreen Server]

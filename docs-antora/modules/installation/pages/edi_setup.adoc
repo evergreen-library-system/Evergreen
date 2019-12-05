@@ -30,12 +30,14 @@ generation.
 +
 [source, bash]
 --------------------------------------------------
-== cp -r Open-ILS/src/edi_translator /openils/var/edi ==
+cp -r Open-ILS/src/edi_translator /openils/var/edi
+--------------------------------------------------
 2. Navigate to where you have saved the code to begin next step:
 +
 [source, bash]
 -------------------
-== cd /openils/var/edi ==
+cd /openils/var/edi
+-------------------
 3. Next, as the *root* user (or a user with sudo rights), install the 
    dependencies, via "install.sh". This will perform some apt-get routines 
    to install the code needed for the EDI translator to function. 
@@ -67,7 +69,8 @@ root 	30349  0.8  0.1  52620 10824 pts/0	S	13:04   0:00 ruby ./edi_webrick.rb
 +
 [source, bash]
 -----------------------
-== kill -INT $(pgrep ruby) ==
+kill -INT $(pgrep ruby)
+-----------------------
 
 ==== Install EDI Scripts ====
 
@@ -89,7 +92,8 @@ cp Open-ILS/src/support-scripts/edi_fetcher.pl /openils/bin
 [source, bash]
 -----------------------------------------------------------------------
 10 * * * * cd /openils/bin && /usr/bin/perl ./edi_pusher.pl > /dev/null
-== 0 1 * * * cd /openils/bin && /usr/bin/perl ./edi_fetcher.pl > /dev/null ==
+0 1 * * * cd /openils/bin && /usr/bin/perl ./edi_fetcher.pl > /dev/null
+-----------------------------------------------------------------------
    * The example for edi_pusher.pl sets the script to run at 
      10 minutes past the hour, every hour.
    * The example for edi_fetcher.pl sets the script to run at

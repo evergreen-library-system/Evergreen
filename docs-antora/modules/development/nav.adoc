@@ -1,5 +1,4 @@
-* Developer Resources
-** xref:development:introduction.adoc[Introduction]
+* xref:development:introduction.adoc[Developer Resources]
 ** xref:development:support_scripts.adoc[]
 ** xref:development:pgtap.adoc[]
 ** xref:development:intro_opensrf.adoc[]

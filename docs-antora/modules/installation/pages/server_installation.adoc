@@ -1,6 +1,5 @@
 == Installing the Evergreen server ==
 :toc:
-:numbered:
 
 === Preamble: referenced user accounts ===
 
@@ -340,8 +339,8 @@ chown opensrf /var/lock/apache2
 
 Learn more about additional Apache options in the following sections:
 
-  * <<_apache_rewrite_tricks,Apache Rewrite Tricks>>
-  * <<_apache_access_handler_perl_module,Apache Access Handler Perl Module>>
+  * xref:admin:apache_rewrite_tricks.adoc#apache_rewrite_tricks[Apache Rewrite Tricks]
+  * xref:admin:apache_access_handler.adoc#apache_access_handler_perl_module[Apache Access Handler Perl Module]
 
 === Configure OpenSRF for the Evergreen application ===
 There are a number of example OpenSRF configuration files in `/openils/conf/`
@@ -366,8 +365,7 @@ destination file. The backup version of the destination file has a tilde (`~`)
 appended to the file name, so if you have forgotten the Jabber users and
 domains, you can retrieve the settings from the backup version of the files.
 
-`eg_db_config`, described in <<_creating_the_evergreen_database,Creating the Evergreen
-database>>, sets the database connection information in `opensrf.xml` for you.
+`eg_db_config`, described in xref:#creating_the_evergreen_database[Creating the Evergreen database], sets the database connection information in `opensrf.xml` for you.
 
 === Configure action triggers for the Evergreen application ===
 _Action Triggers_ provide hooks for the system to perform actions when a given
@@ -384,8 +382,9 @@ cp -b /openils/conf/action_trigger_filters.json.example /openils/conf/action_tri
 ------------------------------------------------------------------------------
 
 For more information about configuring and running action triggers, see
-<<_processing_action_triggers,Notifications / Action Triggers>>.
+xref:admin:actiontriggers_process.adoc#processing_action_triggers[Notifications / Action Triggers].
 
+[#creating_the_evergreen_database]
 === Creating the Evergreen database ===
 
 ==== Setting up the PostgreSQL server ====

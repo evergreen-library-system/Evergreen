@@ -1,3 +1,4 @@
+[#apache_rewrite_tricks]
 == Apache Rewrite Tricks ==
 It is possible to use Apache's Rewrite Module features to perform a number of
 useful tricks that can make people's lives much easier.

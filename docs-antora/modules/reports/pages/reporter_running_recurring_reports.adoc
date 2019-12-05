@@ -9,10 +9,10 @@ registration statistics. When you have set up a report to run on a monthly basis
 you’ll get an email informing you that the report has successfully run. You can 
 click on a link in the email that will take you directly to the report output. 
 You can also access the output through the reporter interface as described in 
-<<viewing_report_output,Viewing Report Output>>.
+xref:reports:reporter_view_output.adoc#viewing_report_output[Viewing Report Output].
 
-To set up a monthly recurring report follow the procedure in <<generating_reports,
-Generating Reports from Templates>>  but make the changes described below.
+To set up a monthly recurring report follow the procedure in
+xref:reports:reporter_generating_reports.adoc#generating_reports[Generating Reports from Templates] but make the changes described below.
 
 . Select the Recurring Report check-box and set the recurrence interval to 1 month.
 . Do not select Run ASAP. Instead schedule the report to run early on the first 

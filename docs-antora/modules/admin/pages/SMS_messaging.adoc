@@ -3,6 +3,7 @@
 The SMS Text Messaging feature enables users to receive hold notices via text message.  Users can opt-in to this hold notification as their default setting for all holds, or they 
 can receive specific hold notifications via text message. Users can also send call numbers and item locations via text message.
 
+[#administrative_setup]
 === Administrative Setup ===
 
 You cannot receive text messages from Evergreen by default.  You must enable this feature to receive hold notices and item information from Evergreen via text message.
@@ -92,7 +93,7 @@ message.
 . Login to your account in the OPAC.  NOTE: If you have disabled the
 setting that requires patron login, then you do not have to login to
 their accounts to send text messages. See
-<<_administrative_setup,Administrative Setup>> for more information.
+xref:#administrative_setup[Administrative Setup] for more information.
 +
 image::media/SMS_Text_Messaging7.jpg[SMS_Text_Messaging7]
 +

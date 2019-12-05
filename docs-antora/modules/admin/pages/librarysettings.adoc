@@ -5,8 +5,7 @@
 
 With the *Library Settings Editor* one can optionally customize
 Evergreen's behavior for a particular library or library system. For
-descriptions of available settings see the <<_settings_overview,Settings
-Overview>> table below.
+descriptions of available settings see the xref:#settings_overview[Settings Overview] table below.
 
 === Editing Library Settings ===
 
@@ -32,8 +31,7 @@ You can revert back to an old value by clicking *revert*.
 image::media/lse-3.png[Library Setting History]
 
 NOTE: Please note that different settings may require different data
-formats, which are listed in the <<_settings_overview,Settings
-Overview>> table. Refer to the <<_data_types,Data Types>> table at the
+formats, which are listed in the xref:#settings_overview[Settings Overview] table. Refer to the xref:#data_types[Data Types] table at the
 bottom of this page for more information.
 
 === Exporting/Importing Library Settings ===
@@ -54,6 +52,7 @@ contents. Click *Paste* in the pop-up window. Click *Submit*.
 +
 image::media/lse-5.png[Importing Library Settings]
 
+[#settings_overview]
 === Settings Overview ===
 
 The settings are grouped together in separate tables based on functions
@@ -61,7 +60,7 @@ and modules, which are affected by the setting. They are in the same
 sequence as you see in the staff client. Each table describes the
 available settings in the group and shows which can be changed on a
 per-library basis. At the bottom is the table with a list of
-<<_data_types, data types>> with details about acceptable settings
+ xref:#data_types[data types] with details about acceptable settings
 values.
 
 ((("Acquisitions", "Library Settings Editor")))
@@ -492,6 +491,7 @@ usernames in addition to barcode. For this setting to work, a barcode format mus
 |Vandelay Generate Default Call Numbers|Auto-generate default item call numbers when no item call number is present|True/False|These are pulled from the MARC Record.
 |========
 
+[#data_types]
 ==== Data Types ====
 ((("Data Types", "Library Settings Editor")))
 
