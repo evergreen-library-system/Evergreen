@@ -722,6 +722,4 @@ The system doesn't need the file extension to know what kind of file it is.
  
 Reload the bib record summary in the web catalog and your new image will display.
 
-:leveloffset: 0
-
-include::admin_initial_setup/carousels.adoc[]
+include::carousels.adoc[]
