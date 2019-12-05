@@ -1,4 +1,4 @@
-﻿Circulating Items
+Circulating Items
 -----------------
 
 Check Out

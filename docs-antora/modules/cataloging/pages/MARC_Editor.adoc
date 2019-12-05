@@ -1,4 +1,4 @@
-﻿Working with the MARC Editor 
+Working with the MARC Editor
 ----------------------------
 
 Editing MARC Records 
