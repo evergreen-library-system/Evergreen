@@ -1,4 +1,4 @@
-= Designing the patron search experience =
+== Designing the patron search experience ==
 
 Editing the formats select box options in the search interface
 ---------------------------------------------------------------
@@ -74,7 +74,7 @@ client.
  {adv_label => l("Our Library's Field"), adv_filter => "facet_group_code"},
 ----
 
-== Changing the display of facets and facet groups ==
+=== Changing the display of facets and facet groups ===
 
 Facets can be reordered on the search results page by editing the
 _opac/parts/config.tt2_ file in your template directory.  
@@ -97,7 +97,7 @@ You may also change the default number of facets appearing under each category
 by editing the _facet.default_display_count_ value in _config.tt2_. The default 
 value is 5.
 
-== Facilitating search scope changes ==
+=== Facilitating search scope changes ===
 
 Users often search in a limited scope, such as only searching items in their
 local library.  When they aren't able find materials that meet their needs in

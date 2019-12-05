@@ -1,10 +1,7 @@
 * Developer Resources
 ** xref:development:introduction.adoc[Introduction]
 ** xref:development:support_scripts.adoc[]
-
-:leveloffset: 1
 ** xref:development:pgtap.adoc[]
 ** xref:development:intro_opensrf.adoc[]
 ** xref:development:updating_translations_launchpad.adoc[]
-:leveloffset: 0
 

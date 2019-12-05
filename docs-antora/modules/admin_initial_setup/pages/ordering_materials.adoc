@@ -1,13 +1,13 @@
-= Ordering materials =
+== Ordering materials ==
 
-== Introduction ==
+=== Introduction ===
 
 Acquisitions allows you to order materials, track the expenditure of your
 collections funds, track invoices and set up policies for manual claiming. In
 this chapter, we're going to be describing how to use the most essential
 functions of acquisitions in the Evergreen system.
 
-== When should libraries use acquisitions? ==
+=== When should libraries use acquisitions? ===
 * When you want to track spending of your collections budget.
 * When you want to use Evergreen to place orders electronically with your
   vendors.
@@ -23,9 +23,9 @@ Below are the basic administrative settings to be configured to get started
 with acquisitions. At a minimum, a library must configure *Funding Sources*,
 *Funds*, and *Providers* to use acquisitions.
 
-== Managing Funds ==
+=== Managing Funds ===
 
-=== Funding Sources (Required) ===
+==== Funding Sources (Required) ====
 Funding sources allow you to specify the sources that contribute monies to your
 fund(s). You can create as few or as many funding sources as you need. These
 can be used to track exact amounts for accounts in your general ledger.
@@ -51,7 +51,7 @@ matching source.
   hyperlinked name of the funding source and then click the *Apply Credit*
   button. Add the amount of funds you need to add. The *Note* field is optional.
 
-=== Funds (Required) ===
+==== Funds (Required) ====
 Funds allow you to allocate credits toward specific purchases. They typically
 are used to track spending and purchases for specific collections. Some
 libraries may choose to define very broad funds for their collections (e.g.
@@ -97,7 +97,7 @@ large generic fund and use that fund for all of your purchases.
   *Funding Source* from which the allocation will be drawn and then enter an
   amount for the allocation. The *Note* field is optional.
 
-=== Fund Tags (Optional) ===
+==== Fund Tags (Optional) ====
 You can apply tags to funds so that you can group funds for easy reporting. For
 example, you have three funds for children’s materials: Children's Board Books,
 Children's DVDs, and Children's CDs. Assign a fund tag of children's to each
@@ -117,9 +117,9 @@ fund.
 For convenience when propagating or rolling over a fund for a new fiscal year,
 fund tags will be copied from the current fund to the new year's fund.
 
-== Ordering ==
+=== Ordering ===
 
-=== Providers (Required) ===
+==== Providers (Required) ====
 Providers are the vendors from whom you order titles.
 
 . To add a provider record,  select *Administration -> Acquisitions Administration ->
@@ -128,7 +128,7 @@ Providers are the vendors from whom you order titles.
   *Provider Name*, *Code*, *Owner*, and *Currency*. You also need to select the
   *Active* checkbox to use the provider.
 
-=== Distribution Formulas (Optional) ===
+==== Distribution Formulas (Optional) ====
 If you are ordering for a multi-branch library system, distribution formulas
 are a useful way to specify the number of items that should be distributed to
 specific branches and item locations.
@@ -144,7 +144,7 @@ specific branches and item locations.
   the right side of the field.
 . Keep adding entries until the distribution formula is complete.
 
-=== Helpful acquisitions Library Settings ===
+==== Helpful acquisitions Library Settings ====
 There are several acquisitions Library Settings available that will help with
 acquisitions workflow. These settings can be found at *Administration -> Local
 Administration -> Library Settings Editor*.
@@ -159,7 +159,7 @@ Administration -> Library Settings Editor*.
 * Temporary call number prefix - Applies a unique prefix to the start of the
   call number that is automatically generated during the acquisitions process.
 
-=== Preparing for order record loading ===
+==== Preparing for order record loading ====
 If your library is planning to upload order records in a batch, you need to add
 some information to your provider records so that Evergreen knows how to map
 the item data contained in the order record.
@@ -190,7 +190,7 @@ Is Identifier => false
 +
 where 962 is the holdings tag and p is the subfield that contains the PO Name.
 
-=== Preparing to send electronic orders from Evergreen ===
+==== Preparing to send electronic orders from Evergreen ====
 If your library wants to transmit electronic order information to a vendor, you
 will need to configure your server to use EDI. You need to install the EDI
 translator and EDI scripts on your server by following the instructions in the

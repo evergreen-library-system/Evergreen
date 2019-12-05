@@ -1,6 +1,6 @@
-= Developing with pgTAP tests =
+== Developing with pgTAP tests ==
 
-== Setting up pgTAP on your development server ==
+=== Setting up pgTAP on your development server ===
 
 Currently, Evergreen pgTAP tests expect a version of pgTAP (0.93)
 that is not yet available in the packages for most Linux distributions.
@@ -19,7 +19,7 @@ Therefore, you will have to install pgTAP from source as follows:
 CREATE EXTENSION pgtap;
 ------------------------------------------------------------------------------
 
-== Running pgTAP tests ==
+=== Running pgTAP tests ===
 The pgTAP tests can be found in subdirectories of `Open-ILS/src/sql/Pg/`
 as follows:
 

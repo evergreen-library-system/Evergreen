@@ -9,8 +9,5 @@
 ** xref:opac:tpac_meta_record_holds.adoc[]
 ** xref:opac:linked_libraries.adoc[]
 ** xref:opac:opensearch.adoc[]
-
-:leveloffset: 1
 ** xref:opac:search_form.adoc[]
-:leveloffset: 0
 

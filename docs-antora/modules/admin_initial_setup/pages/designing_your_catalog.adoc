@@ -1,4 +1,4 @@
-= Designing your catalog =
+== Designing your catalog ==
 
 When people want to find things in your Evergreen system, they will check the
 catalog. In Evergreen, the catalog is made available through a web interface,
@@ -9,14 +9,14 @@ Template Toolkit. You will see the OPAC sometimes referred to as the _TPAC_.
 In this chapter, we'll show you how to customize the OPAC, change it from its
 default configuration, and make it your own.
 
-== Configuring and customizing the public interface ==
+=== Configuring and customizing the public interface ===
 
 The public interface is referred to as the TPAC or Template Toolkit (TT) within
 the Evergreen community. The template toolkit system allows you to customize the
 look and feel of your OPAC by editing the template pages (.tt2) files as well as
 the associated style sheets.   
 
-=== Locating the default template files ===
+==== Locating the default template files ====
 
 The default URL for the TPAC on a default Evergreen system is
 _http://localhost/eg/opac/home_ (adjust _localhost_ to match your hostname or IP
@@ -30,7 +30,7 @@ while you are developing your changes, consider using template overrides rather
 than touching the installed templates until you are ready to commit the changes
 to a branch. See below for information on template overrides.
 
-=== Mapping templates to URLs ===
+==== Mapping templates to URLs ====
 
 The mapping for templates to URLs is straightforward. Following are a few
 examples, where _<templates>_ is a placeholder for one or more directories that
@@ -66,7 +66,7 @@ Example Template Toolkit file: _opac/home.tt2_.
 ----
 Note that file references are relative to the top of the template directory.
 
-=== How to override template files ===
+==== How to override template files ====
 
 Overrides for template files or TPAC pages go in a directory that parallels the
 structure of the default templates directory. The overrides then get pulled in
@@ -83,7 +83,7 @@ bash$ cp /openils/var/templates/opac/advanced.tt2 \
 bash$ vim /openils/var/templates_custom/opac/advanced.tt2
 ----
 
-=== Configuring the custom templates directory in Apache's eg.conf ===
+==== Configuring the custom templates directory in Apache's eg.conf ====
 
 You now need to teach Apache about the new custom template directory. Edit
 _/etc/apache2/sites-available/eg.conf_ and add the following _<Location /eg>_
@@ -111,7 +111,7 @@ Finally, reload the Apache configuration to pick up the changes. You should now
 be able to see your change at _http://localhost/eg/opac/advanced_ where
 _localhost_ is the hostname of your Evergreen server.
 
-=== Adjusting colors for your public interface ===
+==== Adjusting colors for your public interface ====
 
 You may adjust the colors of your public interface by editing the _colors.tt2_
 file. The location of this file is in 
@@ -120,7 +120,7 @@ colors of your public interface, remember to create a custom file in your custom
 template folder and edit the custom file and not the file located in your default
 template.    
 
-=== Adjusting fonts in your public interface ===
+==== Adjusting fonts in your public interface ====
 
 Font sizes can be changed in the _colors.tt2_ file located in
 _/openils/var/templates/opac/parts/css/_. Again, create and edit a custom
@@ -129,12 +129,12 @@ template version and not the file in the default template.
 Other aspects of fonts such as the default font family can be adjusted in
 _/openils/var/templates/opac/css/style.css.tt2_. 
 
-=== Media file locations in the public interface ===
+==== Media file locations in the public interface ====
 The media files (mostly PNG images) used by the default TPAC templates are stored
 in the repository in _Open-ILS/web/images/_ and installed in
 _/openils/var/web/images/_.
 
-=== Changing some text in the public interface ===
+==== Changing some text in the public interface ====
 
 Out of the box, TPAC includes a number of placeholder text and links. For
 example, there is a set of links cleverly named Link 1, Link 2, and so on in the
@@ -195,7 +195,7 @@ these are replaced by the contents of variables passed as extra arguments to the
 Once the link and link text has been edited to your satisfaction, load the page
 in a Web browser and see the live changes immediately.
 
-=== Adding translations to PO file ===
+==== Adding translations to PO file ====
 
 After you have added custom text in translatable form to a TT2 template, you need to add the custom strings and its translations to the PO file containing the translations. Evergreen PO files are stored  in _/openils/var/template/data/locale/_ 
 
@@ -235,7 +235,7 @@ After making changes, restart Apache to make the changes take effect. As root ru
 service apache2 restart
 ----
 
-=== Adding and removing MARC fields from the record details display page ===
+==== Adding and removing MARC fields from the record details display page ====
 
 It is possible to add and remove the MARC fields and subfields displayed in the
 record details page.  In order to add MARC fields to be displayed on the details
@@ -270,7 +270,7 @@ You can add any MARC field to your record details page. Moreover, this approach
 can also be used to display MARC fields in other pages, such as your results
 page.
 
-==== Using bibliographic source variables ====
+===== Using bibliographic source variables =====
 
 For bibliographic records, there is a "bib source" that can be associated with
 every record. This source and its ID are available as record attributes called
@@ -288,7 +288,7 @@ link for these records to point at the vendor website.
 
 ****
 
-== Setting the default physical location for your library environment ==
+=== Setting the default physical location for your library environment ===
 
 _physical_loc_ is an Apache environment variable that sets the default physical
 location, used for setting search scopes and determining the order in which
@@ -300,7 +300,7 @@ default physical location being set to library ID 104:
 SetEnv physical_loc 104
 ----
 
-== Setting a default language and adding optional languages ==
+=== Setting a default language and adding optional languages ===
 
 _OILSWebLocale_ adds support for a specific language. Add this variable to the
 Virtual Host section in _/etc/apache2/eg_vhost.conf_.
@@ -334,7 +334,7 @@ Below is a table of the currently supported languages packaged with Evergreen:
 *American English is built into Evergreen so you do not need to set up this
 language and there are no PO files. 
 
-=== Updating translations in Evergreen using current translations from Launchpad ===
+==== Updating translations in Evergreen using current translations from Launchpad ====
 
 Due to Evergreen release workflow/schedule, some language strings may already have been translated in Launchpad,
 but are not yet packaged with Evergreen. In such cases, it is possible to manually replace the PO file in
@@ -357,7 +357,7 @@ Changes require web server reload to take effect. As root run the command
 service apache2 restart
 ----
 
-== Change Date Format in Patron Account View ==
+=== Change Date Format in Patron Account View ===
 Libraries with same-day circulations may want their patrons to be able to view
 the due *time* as well as due date when they log in to their OPAC account.  To
 accomplish this, go to _opac/myopac/circs.tt2_.  Find the line that reads:
@@ -373,7 +373,7 @@ Replace it with:
 ----
 
 
-== Including External Content in Your Public Interface ==
+=== Including External Content in Your Public Interface ===
 
 The public interface allows you to include external services and content in your
 public interface. These can include book cover images, user reviews, table of
@@ -384,7 +384,7 @@ require a subscription.
 The following are some of the external content services which you can configure
 in Evergreen.
 
-=== OpenLibrary ===
+==== OpenLibrary ====
 
 The default install of Evergreen includes OpenLibrary book covers. The settings
 for this are controlled by the <added_content> section of
@@ -421,7 +421,7 @@ image on the record details page edit the config.tt2 file and change the value
 of the record.summary.jacket_size. The default value is "medium" and the
 available options are "small", "medium" and "large."   
 
-=== ChiliFresh ===
+==== ChiliFresh ====
 
 ChiliFresh is a subscription-based service which allows book covers, reviews and
 social interaction of patrons to appear in your catalog. To activate ChiliFresh,
@@ -480,15 +480,15 @@ types to not be considered at all, you can change the "identifier_order" option
 in opensrf.xml.  When the option is present, only the identifier(s) listed will
 be sent.
 
-=== Obalkyknih.cz ===
+==== Obalkyknih.cz ====
 
-==== Setting up Obalkyknih.cz account ====
+===== Setting up Obalkyknih.cz account =====
 
 If your library wishes to use added content provided by Obalkyknih.cz, a service based in the Czech Republic, you have to http://obalkyknih.cz/signup[create an Obalkyknih.cz account].
 Please note that the interface is only available in Czech. After logging in your Obalkyknih.cz account, you have to add your IP address and Evergreen server address to your account settings.
 (In case each library uses an address of its own, all of these addresses have to be added.) 
 
-==== Enabling Obalkyknih.cz in Evergreen ====
+===== Enabling Obalkyknih.cz in Evergreen =====
 
 Set obalkyknih_cz.enabled to true in '/openils/var/templates/opac/parts/config.tt2':
 
@@ -526,7 +526,7 @@ An example of how to switch off summaries:
 ----
 
 
-=== Google Analytics ===
+==== Google Analytics ====
 
 Google Analytics is a free service to collect statistics for your Evergreen
 site. Statistic tracking is disabled by default through the Evergreen 
@@ -539,7 +539,7 @@ will need to edit _config.tt2_ in your template. To enable the service set
 the value of google_analytics.enabled to true and change the value of 
 _google_analytics.code_ to be the code in your Google Analytics account.
 
-=== NoveList ===
+==== NoveList ====
 
 Novelist is a subscription-based service providing reviews and recommendation
 for books in you catalog. To activate your Novelist service in Evergreen, open
@@ -551,7 +551,7 @@ the Apache configuration file _/etc/apache2/eg_vhost.conf_ and edit the line:
 
 You should use the URL provided by NoveList.
 
-=== RefWorks ===
+==== RefWorks ====
 
 RefWorks is a subscription-based online bibliographic management tool. If you
 have a RefWorks subscription, you can activate RefWorks in Evergreen by editing
@@ -559,7 +559,7 @@ the _config.tt2_ file located in your template directory. You will need to set
 the _ctx.refworks.enabled_ value to _true_. You may also set the RefWorks URL by
 changing the _ctx.refworks.url_ setting on the same file. 
 
-=== SFX OpenURL Resolver ===
+==== SFX OpenURL Resolver ====
 
 An OpenURL resolver allows you to find electronic resources and pull them into
 your catalog based on the ISBN or ISSN of the item. In order to use the SFX
@@ -569,7 +569,7 @@ Enable the resolver by changing the value of _openurl.enabled_ to _true_ and
 change the _openurl.baseurl_ setting to point to the URL of your OpenURL
 resolver. 
 
-=== Syndetic Solutions ===
+==== Syndetic Solutions ====
 
 Syndetic Solutions is a subscription service providing book covers and other
 data for items in your catalog. In order to activate Syndetic, edit the
@@ -601,7 +601,7 @@ found in bibliographic records:
 * ISSN
 
 
-=== Clear External/Added Content Cache ===
+==== Clear External/Added Content Cache ====
 
 On the catalog's record summary page, there is a link for staff that will forcibly clear 
 the cache of the Added Content for that record. This is helpful for when the Added Content 
@@ -617,20 +617,20 @@ You will need to reload the record in the staff client to obtain the new images 
 Added Content Supplier.
 
 
-=== Configure a Custom Image for Missing Images ===
+==== Configure a Custom Image for Missing Images ====
 
 You can configure a "no image" image other than the standard 1-pixel
 blank image.  The example eg_vhost.conf file provides examples in the
 comments.  Note: Evergreen does not provide default images for these.
 
 
-== Including Locally Hosted Content in Your Public Interface ==
+=== Including Locally Hosted Content in Your Public Interface ===
 
 It is also possible to show added content that has been generated locally 
 by placing the content in a specific spot on the web server.  It is 
 possible to have local book jackets, reviews, TOC, excerpts or annotations.
 
-=== File Location and Format ===
+==== File Location and Format ====
 
 By default the files will need to be placed in directories under 
 */openils/var/web/opac/extras/ac/* on the server(s) that run Apache.
@@ -648,7 +648,7 @@ record ID at this time.
     - others, one of html, xml or json ... html is the default for non-image added content
   * *recordid* is the bibliographic record id (bre.id).
 
-=== Example ===
+==== Example ====
 
 If you have some equipment that you are circulating such as a 
 laptop or eBook reader and you want to add an image of the equipment 

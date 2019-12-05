@@ -1,10 +1,10 @@
-= Updating translations using Launchpad =
+== Updating translations using Launchpad ==
 
 This document describes how to update the translations in an Evergreen branch
 by pulling them from Launchpad, as well as update the files to be translated
 in Launchpad by updating the POT files in the Evergreen master branch.
 
-== Prerequisites ==
+=== Prerequisites ===
 You must install all of the Python prerequisites required for building
 translations, per
 http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-admin:customizations:i18n
@@ -16,7 +16,7 @@ http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-admin:customizations:i18
 * http://pypi.python.org/pypi/simplejson/[simplejson]
 * http://lxml.de/[lxml]
 
-== Updating the translations ==
+=== Updating the translations ===
 
 . Check out the latest translations from Launchpad by branching the Bazaar
 repository:

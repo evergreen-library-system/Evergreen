@@ -1,6 +1,6 @@
-= Migrating from a legacy system =
+== Migrating from a legacy system ==
 
-== Introduction ==
+=== Introduction ===
 
 When you migrate to Evergreen, you generally want to migrate the bibliographic
 records and item information that existed in your previous library system. For
@@ -12,7 +12,7 @@ are comfortable working with SQL to manipulate data within PostgreSQL. If so,
 then the following section will guide you towards a method of generating common
 data formats so that you can then load the data into the database in bulk.
 
-== Making electronic resources visible in the catalog ==
+=== Making electronic resources visible in the catalog ===
 Electronic resources generally do not have any call number or item information
 associated with them, and Evergreen enables you to easily make bibliographic
 records visible in the public catalog within sections of the organizational
@@ -45,7 +45,7 @@ indicators and subfields for each 856 field in the record, you can proceed to
 load the records using either the command-line bulk import method or the MARC
 Batch Importer in the staff client.
 
-== Migrating your bibliographic records ==
+=== Migrating your bibliographic records ===
 Convert your MARC21 binary records into the MARCXML format, with one record per
 line. You can use the following Python script to achieve this goal; just
 install the _pymarc_ library first, and adjust the values of the _input_ and

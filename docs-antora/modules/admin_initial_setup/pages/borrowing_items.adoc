@@ -1,4 +1,4 @@
-= Borrowing items: who, what, for how long =
+== Borrowing items: who, what, for how long ==
 
 Circulation policies pull together user, library, and item data to determine how
 library materials circulate, such as: which patrons, from what libraries can
@@ -8,12 +8,12 @@ Individual elements of the circulation policies are configured using specific
 interfaces, and should be configured prior to setting up the circulation 
 policies.  
 
-== Data elements that affect your circulation policies ==
+=== Data elements that affect your circulation policies ===
 
 There are a few data elements which must be considered when setting up your
 circulation policies. 
 
-=== Copy data ===
+==== Copy data ====
 
 Several fields set via the holdings editor are commonly used to affect the
 circulation of an item.
@@ -28,7 +28,7 @@ to disallow an item from circulating.
 * *Reference?* flag - The reference? flag in the holdings editor can also be used as
 a data element in circulation policies.
 
-=== Shelving location data ===
+==== Shelving location data ====
 
 * To get to the Shelving Locations Editor, navigate to *Administration ->
 Local Administration -> Shelving Locations Editor*. 
@@ -51,7 +51,7 @@ image::media/copy_locations_editor.png[screenshot of Shelving Location Editor]
 
 * Shelving locations can also be used as a data element in circulation policies. 
 
-=== User data ===
+==== User data ====
 
 Finally, several characteristics of specific patrons can affect circulation
 policies.  You can modify these characteristics in a patron's record (*Search ->
@@ -63,7 +63,7 @@ circulation policies.
 * Other user data that can be used for circulation policies include the
 *juvenile* flag in the user record.
 
-== Circulation Rules ==
+=== Circulation Rules ===
 
 *Loan duration* describes the length of time for a checkout. You can also
 identify the maximum renewals that can be placed on an item.
@@ -101,7 +101,7 @@ When naming these rules, give them a name that clearly identifies what the rule
 does. This will make it easier to select the correct rule when creating your
 circ policies.
 
-=== Circulation Limit Sets ===
+==== Circulation Limit Sets ====
 
 Circulation Limit Sets allow you to limit the maximum number of items for
 different types of materials that a patron can check out at one time. Evergreen
@@ -137,7 +137,7 @@ To create this limit set, you would add 5 to the *Items Out* field, 0 to the
 *Min Depth* field and select the *Global* flag. Add the DVD, BLURAY and VHS circ
 modifiers to the limit set.
 
-== Creating Circulation Policies ==
+=== Creating Circulation Policies ===
 
 Once you have identified your data elements that will drive circulation policies
 and have created your circulation rules, you are ready to begin creating your
@@ -167,7 +167,7 @@ as the *Item Circ Lib (copy_circ_lib)*.
 and circulation sets created in the above sets when creating the circulation
 policy.
 
-=== Best practices for creating policies ===
+==== Best practices for creating policies ====
 
 * Start by replacing the default consortium-level circ policy with one that
 contains a majority of your libraries' duration, recurring fine, and max fine
@@ -213,7 +213,7 @@ It is still true that "book" and "music" items can be checked out, while "dvd"
 is not circulated. However, now we have added new rules that state that "Adult"
 patrons of "SYS1" can circulate "dvd" items.
 
-=== Settings Relevant to Circulation ===
+==== Settings Relevant to Circulation ====
 
 The following circulation settings, available via *Administration
 -> Local Administration -> Library Settings Editor*, can

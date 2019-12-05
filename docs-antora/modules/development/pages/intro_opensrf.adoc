@@ -1,6 +1,6 @@
-= Easing gently into OpenSRF =
+== Easing gently into OpenSRF ==
 
-== Abstract ==
+=== Abstract ===
 The Evergreen open-source library system serves library consortia composed of
 hundreds of branches with millions of patrons - for example,
 http://www.georgialibraries.org/statelibrarian/bythenumbers.pdf[the Georgia
@@ -11,7 +11,7 @@ article introduces OpenSRF, demonstrates how to build OpenSRF services through
 simple code examples, and explains the technical foundations on which OpenSRF
 is built.
 
-== Introducing OpenSRF ==
+=== Introducing OpenSRF ===
 OpenSRF is a message routing network that offers scalability and failover
 support for individual services and entire servers with minimal development and
 deployment overhead. You can use OpenSRF to build loosely-coupled applications
@@ -48,7 +48,7 @@ of your servers; or if the problem is that your service is resource-hungry, you
 could add an inexpensive server to your cluster and dedicate it to running that
 resource-hungry service.
 
-=== Programming language support ===
+==== Programming language support ====
 
 If you need to develop an entirely new OpenSRF service, you can choose from a
 number of different languages in which to implement that service. OpenSRF
@@ -79,7 +79,7 @@ The recommended option for would-be developers of another language binding is
 to use the Python implementation as the cleanest basis for a port to another
 language.
 
-=== OpenSRF communication flows over XMPP ===
+==== OpenSRF communication flows over XMPP ====
 
 The XMPP messaging service underpins OpenSRF, requiring an XMPP server such
 as http://www.ejabberd.im/[ejabberd].  When you start OpenSRF, the first XMPP
@@ -98,7 +98,7 @@ ID `6285` that has connected to the `private.localhost` domain using the
 `opensrf@private.localhost/opensrf.simple-text_drone_at_localhost_6285`.
 
 [id="OpenSRFOverHTTP"]
-=== OpenSRF communication flows over HTTP ===
+==== OpenSRF communication flows over HTTP ====
 Any OpenSRF service registered with the public router is accessible via the
 OpenSRF HTTP Translator. The OpenSRF HTTP Translator implements the
 http://www.open-ils.org/dokuwiki/doku.php?id=opensrf_over_http[OpenSRF-over-HTTP
@@ -218,7 +218,7 @@ Evergreen `open-ils.pcrud` public service offers the same functionality as
 additional authentication and authorization layer in `open-ils.pcrud` prevents
 unchecked access to Evergreen's data.
 
-=== Stateless and stateful connections ===
+==== Stateless and stateful connections ====
 
 OpenSRF supports both _stateless_ and _stateful_ connections.  When an OpenSRF
 client issues a `REQUEST` message in a _stateless_ connection, the router
@@ -242,7 +242,7 @@ set of database INSERT, UPDATE, and DELETE statements within a transaction.
 .CONNECT, REQUEST, and DISCONNECT flow in a stateful connection
 image:media/CONNECT.png[CONNECT, REQUEST, and DISCONNECT flow in a stateful connection]
 
-== Enough jibber-jabber: writing an OpenSRF service ==
+=== Enough jibber-jabber: writing an OpenSRF service ===
 Imagine an application architecture in which 10 lines of Perl or Python, using
 the data types native to each language, are enough to implement a method that
 can then be deployed and invoked seamlessly across hundreds of servers.  You
@@ -303,7 +303,7 @@ inheritance is available in this package (named by the special Perl symbol
 procedure is how we introduce a method to the rest of the OpenSRF world.
 
 [id="serviceRegistration"]
-=== Registering a service with the OpenSRF configuration files ===
+==== Registering a service with the OpenSRF configuration files ====
 
 Two files control most of the configuration for OpenSRF:
 
@@ -419,12 +419,12 @@ offers their services via the public router as well as the private router.
 Once you have defined the new service, you must restart the OpenSRF Router
 to retrieve the new configuration and start or restart the service itself.
 
-=== Calling an OpenSRF method ===
+==== Calling an OpenSRF method ====
 OpenSRF clients in any supported language can invoke OpenSRF services in any
 supported language. So let's see a few examples of how we can call our fancy
 new `opensrf.simple-text.reverse()` method:
 
-==== Calling OpenSRF methods from the srfsh client ====
+===== Calling OpenSRF methods from the srfsh client =====
 `srfsh` is a command-line tool installed with OpenSRF that you can use to call
 OpenSRF methods. To call an OpenSRF method, issue the `request` command and pass
 the OpenSRF service and method name as the first two arguments; then pass a list
@@ -448,7 +448,7 @@ Request Time in seconds: 0.016718
 --------------------------------------------------------------------------------
 
 [id="opensrfIntrospection"]
-==== Getting documentation for OpenSRF methods from the srfsh client ====
+===== Getting documentation for OpenSRF methods from the srfsh client =====
 
 The `srfsh` client also gives you command-line access to retrieving metadata
 about OpenSRF services and methods. For a given OpenSRF method, for example,
@@ -527,7 +527,7 @@ implementation.
 <9> `argc` is an integer describing the minimum number of arguments that
 must be passed to this method.
 
-==== Calling OpenSRF methods from Perl applications ====
+===== Calling OpenSRF methods from Perl applications =====
 
 To call an OpenSRF method from Perl, you must connect to the OpenSRF service,
 issue the request to the method, and then retrieve the results.
@@ -618,7 +618,7 @@ contains the `length` and `word_count` keys we defined in the method.
 <10> The `OpenSRF::AppSession->disconnect()` method closes the XMPP client
 connection and cleans up resources associated with the session.
 
-=== Accepting and returning more interesting data types ===
+==== Accepting and returning more interesting data types ====
 
 Of course, the example of accepting a single string and returning a single
 string is not very interesting. In real life, our applications tend to pass
@@ -653,7 +653,7 @@ returned to the caller. As a caller of a given method, you must rely on the
 documentation used to register to determine the data structures - if the developer has
 added the appropriate documentation.
 
-=== Accepting and returning Evergreen objects ===
+==== Accepting and returning Evergreen objects ====
 
 OpenSRF is agnostic about objects; its role is to pass JSON back and forth
 between OpenSRF clients and services, and it allows the specific clients and
@@ -810,7 +810,7 @@ the given instance has been deleted, updated, or created respectively.
 Evergreen can then act in batch mode over the collection to perform the
 requested actions on any of the instances that have been flagged for action.
 
-=== Returning streaming results ===
+==== Returning streaming results ====
 
 In the previous implementation of the `opensrf.simple-text.split` method, we
 returned a reference to the complete array of results. For small values being
@@ -867,7 +867,7 @@ connection object on each element of the array.
 <2> Registering the method as a streaming method instructs OpenSRF to also
 register an atomic variant (`opensrf.simple-text.split.atomic`).
 
-=== Error! Warning! Info! Debug! ===
+==== Error! Warning! Info! Debug! ====
 As hard as it may be to believe, it is true: applications sometimes do not
 behave in the expected manner, particularly when they are still under
 development. The server language bindings for OpenSRF include integrated
@@ -934,7 +934,7 @@ To see everything that is happening in OpenSRF, try leaving your logging level
 set to INTERNAL for a few minutes - just ensure that you have a lot of free disk
 space available if you have a moderately busy system!
 
-=== Caching results: one secret of scalability ===
+==== Caching results: one secret of scalability ====
 If you have ever used an application that depends on a remote Web service
 outside of your control-say, if you need to retrieve results from a
 microblogging service-you know the pain of latency and dependability (or the
@@ -986,7 +986,7 @@ entry, with the cache key, value to be stored ("here"), and the timeout
 value in seconds to ensure that we do not return stale data on subsequent
 calls
 
-=== Initializing the service and its children: child labour ===
+==== Initializing the service and its children: child labour ====
 When an OpenSRF service is started, it looks for a procedure called
 `initialize()` to set up any global variables shared by all of the children of
 the service. The `initialize()` procedure is typically used to retrieve
@@ -1003,7 +1003,7 @@ procedure (if any) to clean up any resources associated with the child process.
 Similarly, when the OpenSRF service is stopped, it calls the `DESTROY()`
 procedure to clean up any remaining resources.
 
-=== Retrieving configuration settings ===
+==== Retrieving configuration settings ====
 The settings for OpenSRF services are maintained in the `opensrf.xml` XML 
 configuration file. The structure of the XML document consists of a root
 element `<opensrf>` containing two child elements:
@@ -1045,12 +1045,12 @@ libraries locally cache the configuration file to avoid network roundtrips for
 every request and enable the developer to request specific values without
 having to manually construct XPath expressions.
 
-== Getting under the covers with OpenSRF ==
+=== Getting under the covers with OpenSRF ===
 Now that you have seen that it truly is easy to create an OpenSRF service, we
 can take a look at what is going on under the covers to make all of this work
 for you.
 
-=== Get on the messaging bus - safely ===
+==== Get on the messaging bus - safely ====
 One of the core innovations of OpenSRF was to use the Extensible Messaging and
 Presence Protocol (XMPP, more colloquially known as Jabber) as the messaging
 bus that ties OpenSRF services together across servers. XMPP is an "XML
@@ -1078,7 +1078,7 @@ The opensrf and router user names, passwords, and domain names, along with the
 list of services that should be public, are contained in the `opensrf_core.xml`
 configuration file.
 
-=== Message body format ===
+==== Message body format ====
 OpenSRF was an early adopter of JavaScript Object Notation (JSON). While XMPP
 is an XML protocol, the Evergreen developers recognized that the compactness of
 the JSON format offered a significant reduction in bandwidth for the volume of
@@ -1145,7 +1145,7 @@ The content of the `<body>` element of the OpenSRF request and result should
 look familiar; they match the structure of the <<OpenSRFOverHTTP,OpenSRF over
 HTTP examples>> that we previously dissected.
 
-=== Registering OpenSRF methods in depth ===
+==== Registering OpenSRF methods in depth ====
 Let's explore the call to `__PACKAGE__->register_method()`; most of the elements
 of the hash are optional, and for the sake of brevity we omitted them in the
 previous example. As we have seen in the results of the <<opensrfIntrospection,introspection call>>, a
@@ -1168,7 +1168,7 @@ that you should pass to `__PACKAGE__->register_method()`:
       *** `desc`: a description of the return value
       *** `type`: the data type of the return value: for example, string, integer, boolean, number, array, or hash
 
-== Evergreen-specific OpenSRF services ==
+=== Evergreen-specific OpenSRF services ===
 
 Evergreen is currently the primary showcase for the use of OpenSRF as an
 application architecture. Evergreen 2.6.0 includes the following
@@ -1232,7 +1232,7 @@ flexibility as OpenSRF services, but have the disadvantage of not being
 integrated into the same configuration and control infrastructure as the
 OpenSRF services.
 
-== Evergreen after one year: reflections on OpenSRF ==
+=== Evergreen after one year: reflections on OpenSRF ===
 
 http://projectconifer.ca[Project Conifer] has been live on Evergreen for just
 over a year now, and as one of the primary technologists I have had to work
@@ -1240,7 +1240,7 @@ closely with the OpenSRF infrastructure during that time. As such, I am in
 a position to identify some of the strengths and weaknesses of OpenSRF based
 on our experiences.
 
-=== Strengths of OpenSRF ===
+==== Strengths of OpenSRF ====
 
 As a service infrastructure, OpenSRF has been remarkably reliable. We initially
 deployed Evergreen on an unreleased version of both OpenSRF and Evergreen due
@@ -1284,7 +1284,7 @@ to a single server where we can inspect the complete set of messages for the
 entire cluster in context, rather than trying to piece them together across
 servers.
 
-=== Weaknesses ===
+==== Weaknesses ====
 
 The primary weakness of OpenSRF is the lack of either formal or informal
 documentation for OpenSRF. There are many frequently asked questions on the
@@ -1329,7 +1329,7 @@ framework is in place, more developers might be willing to develop and
 contribute patches as they could sanity check their own code without an intense
 effort before exposing it to their peers.
 
-== Summary ==
+=== Summary ===
 In this article, I attempted to provide both a high-level and detailed overview
 of how OpenSRF works, how to build and deploy new OpenSRF services, how to make
 requests to OpenSRF method from OpenSRF clients or over HTTP, and why you
@@ -1341,7 +1341,7 @@ Conifer after a year in production, with some thoughts about areas where the
 right application of skills could make a significant difference to the Evergreen
 and OpenSRF projects.
 
-== Appendix: Python client ==
+=== Appendix: Python client ===
 
 Following is a Python client that makes the same OpenSRF calls as the Perl
 client:

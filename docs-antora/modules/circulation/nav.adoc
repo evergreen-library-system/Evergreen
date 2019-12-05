@@ -7,9 +7,6 @@
 ** xref:circulation:circulation_patron_records_web_client.adoc[]
 ** xref:admin:patron_self_registration.adoc[]
 ** xref:circulation:triggered_events.adoc[]
-
-:leveloffset: 1
 ** xref:circulation:offline_circ_webclient.adoc[]
 ** xref:circulation:self_check.adoc[]
-:leveloffset: 0
 

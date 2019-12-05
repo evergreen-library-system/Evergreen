@@ -1,6 +1,6 @@
-= Using Supercat =
+== Using Supercat ==
 
-== Introduction ==
+=== Introduction ===
 
 You can use SuperCat to get data about ISBNs, metarecords, bibliographic
 records, and authority records.
@@ -8,7 +8,7 @@ records, and authority records.
 Throughout this section, replace `<hostname>` with the domain or subdomain
 of your Evergreen installation to try these examples on your own system.
 
-== ISBNs ==
+=== ISBNs ===
 
 Given one ISBN, Evergreen can return a list of related records and ISBNs,
 including alternate editions and translations.  To use the Supercat
@@ -56,9 +56,9 @@ the following list of catalog record IDs and ISBNs:
 </idlist>
 ----------------------------------------------------------------------------
 
-== Records ==
+=== Records ===
 
-=== Record formats ===
+==== Record formats ====
 
 First, determine which format you'd like to receive data in.  To see the
 available formats for bibliographic records, visit 
@@ -110,7 +110,7 @@ data for a given bibliographic record.
 ============================================================================
 
 
-=== Retrieve records ===
+==== Retrieve records ====
 
 You can retrieve records using URLs in the following format:
 ----
@@ -197,7 +197,7 @@ returns the following record.
 </modsCollection>
 ----------------------------------------------------------------------------
 
-=== Recent records ===
+==== Recent records ====
 
 SuperCat can return feeds of recently edited or created authority and bibliographic records:
 
@@ -213,7 +213,7 @@ Note the following features:
 
 Example: http://gapines.org/opac/extras/feed/freshmeat/atom/biblio/import/10/2008-01-01
 
-==== Filtering by Org Unit ====
+===== Filtering by Org Unit =====
 
 You can generate a similar list, with the added ability to limit by Org Unit, using the item-age browse axis.
 
@@ -235,7 +235,7 @@ Modifying the 'atom' portion of the URL to 'html-full' will produce an HTML page
 
 Example: http://gapines.org/opac/extras/browse/html-full/item-age/ARL-BOG/1/10
 
-==== Additional Filters ====
+===== Additional Filters =====
 
 If you'd like to limit to a particular status, you can append `?status=0`
 where `0` is the ID number of the status you'd like to limit to.  If a 
