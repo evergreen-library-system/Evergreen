@@ -31,7 +31,7 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
     isRecordSelected: boolean;
     basketSub: Subscription;
     has_course: boolean;
-    courseNames: any[] = [];
+    courses: any[] = [];
 
     constructor(
         private router: Router,
@@ -66,8 +66,7 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
             if (res) {
                 this.course.fetchCopiesInCourseFromRecord(recordId).then(course_list => {
                     Object.keys(course_list).forEach(key => {
-                        this.courseNames.push(course_list[key].name() +
-                          "(" + course_list[key].course_number() + ")");
+                        this.courses.push(course_list[key]);
                     });
                     this.has_course = true;
                 });

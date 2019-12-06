@@ -1,4 +1,5 @@
 import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import { Router, ActivatedRoute }    from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -47,11 +48,17 @@ export class CourseListComponent implements OnInit {
         private net: NetService,
         private org: OrgService,
         private pcrud: PcrudService,
-        private toast: ToastService,
+        private route: ActivatedRoute,
+        private router: Router,
+        private toast: ToastService
     ){}
 
     ngOnInit() {
         this.getSource();
+        this.grid.onRowActivate.subscribe((course:IdlObject) => {
+            let idToEdit = course.id();
+            this.navigateToCoursePage(idToEdit);
+        })
     }
 
     /**
@@ -74,6 +81,10 @@ export class CourseListComponent implements OnInit {
             };
             return this.pcrud.retrieveAll(this.idl_class, searchOps, {fleshSelectors: true});
         };
+    }
+
+    navigateToCoursePage(id: any) {
+        this.router.navigate(["/staff/admin/local/asset/course_list/" + id]);
     }
 
     showEditDialog(standingPenalty: IdlObject): Promise<any> {

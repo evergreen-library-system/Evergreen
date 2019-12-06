@@ -100,7 +100,11 @@
             <li class="list-group-item" *ngFor="let course of courses">
               <div class="d-flex">
                 <div class="flex-1 font-weight-bold" i18n>Course Name:</div>
-                <div class="flex-3">{{course.name()}}</div>
+                <div class="flex-3">
+                  <a routerLink="/staff/admin/local/asset/course_list/{{course.id()}}">
+                    {{course.name()}}
+                  </a>
+                </div>
                 <div class="flex-1 font-weight-bold" i18n>Course Number:</div>
                 <div class="flex-1">{{course.course_number()}}</div>
                 <div class="flex-1 font-weight-bold" i18n>Section Number:</div>

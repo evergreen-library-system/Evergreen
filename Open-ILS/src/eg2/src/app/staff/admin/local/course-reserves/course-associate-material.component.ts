@@ -100,12 +100,12 @@ export class CourseAssociateMaterialComponent extends DialogComponent {
                 tempStatus: this.tempStatus,
                 currentCourse: this.currentCourse
             }
+            this.barcodeInput = null;
             
-            this.pcrud.search('acp', {barcode: barcode}, {
+            this.pcrud.search('acp', {barcode: args.barcode}, {
                 flesh: 3, flesh_fields: {acp: ['call_number']}
             }).subscribe(item => {
                 let associatedMaterial = this.courseSvc.associateMaterials(item, args);
-                console.log(associatedMaterial);
                 associatedMaterial.material.then(res => {
                     item = associatedMaterial.item;
                     let new_cn = item.call_number().label();

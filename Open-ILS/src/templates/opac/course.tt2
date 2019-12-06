@@ -1,0 +1,16 @@
+[%- PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Course Details: [_1] - [_2]", ctx.course.name, ctx.course.course_number);
+-%]
+    [%- INCLUDE "opac/parts/searchbar.tt2" %]
+    <h2 class="sr-only">[% l('Course Details') %]</h2>
+    <br class="clear-both" />
+    <div id="content-wrapper" class="content-wrapper-record-page">
+        <div id="main-content">
+            [% INCLUDE "opac/parts/course/body.tt2" %]
+            <div class="common-full-pad"></div>
+        </div>
+        <br class="clear-both" />
+    </div>
+[%- END %]

@@ -672,7 +672,8 @@ div.format_icon {
     padding-top: 1.5em;
 }
 
-#rdetails_status td {
+#rdetails_status td,
+#course_material_table td {
     [% IF rtl == 't' -%]
     padding: 7px 13px 3px 0px;
     [%- ELSE %]
@@ -685,7 +686,8 @@ div.format_icon {
     white-space: normal;
 }
 
-#rdetails_status thead th {
+#rdetails_status thead th,
+#course_material_table thead th {
     [% IF rtl == 't' -%]
     padding: 13px 13px 13px 0px;
     text-align: right;
@@ -698,7 +700,8 @@ div.format_icon {
     font-weight: bold;
 }
 
-#rdetails_status tbody td {
+#rdetails_status tbody td,
+#course_material_table tbody td {
     [% IF rtl == 't' -%]
     padding-right: 13px;
     text-align: right;
@@ -707,7 +710,8 @@ div.format_icon {
     text-align: left;
     [%- END %]
 }
-#rdetails_status tbody td.copy_note {
+#rdetails_status tbody td.copy_note
+#course_material_table tbody {
     color: [% css_colors.primary %];
     text-wrap:normal;
     white-space:pre-wrap !important;
@@ -1875,7 +1879,7 @@ a.dash-link:hover { text-decoration: underline !important; }
     vertical-align: top;
     [% END -%]
 }
-.rdetail-author-div {
+.rdetail-author-div, .course-instructor-div {
     padding-bottom: 10px;
     display: inline-block;
 }
@@ -2654,7 +2658,7 @@ a.preflib_change {
     display: none;
 }
 
-.rdetail_authors_div {
+.rdetail_authors_div, .course_instructors_div {
     margin-bottom: 1em;
 }
 
@@ -2996,14 +3000,17 @@ a.preflib_change {
     #main-content {
         margin: 0 1px;
     }
-    #rdetails_status thead {
+    #rdetails_status thead,
+    #course_material_table thead {
         display: none;
     }
-    #rdetails_status tr {
+    #rdetails_status tr,
+    #course_material_table tr {
 	display: block;
 	margin-top: 3px;
     }
-    #rdetails_status td {
+    #rdetails_status td,
+    #course_material_table td {
 	display: block;
 	padding: 1px;
     }
@@ -3443,4 +3450,14 @@ label[for*=expert_]
 }
 .carousel .glide__arrow--left {
     left: -5em;
+}
+.archived_course {
+    color: [% css_colors.text_badnews %];
+    font-weight: bold;
+}
+.course_details {
+    padding-top: 1em;
+}
+.course_details_div {
+    padding-bottom: 1em;
 }

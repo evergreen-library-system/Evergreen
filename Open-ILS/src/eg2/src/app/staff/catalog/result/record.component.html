@@ -127,7 +127,12 @@
               </ng-container>
               <ng-container *ngIf="has_course">
                 <div i18n>Associated Courses:
-                  {{courseNames.join(', ')}}</div>
+                  <span *ngFor="let course of courses; let isLast=last">
+                    <a routerLink="/staff/admin/local/asset/course_list/{{course.id()}}">
+                      {{course.name()}} ({{course.course_number()}})
+                    </a>{{isLast ? '' : ', '}}
+                  </span>
+                </div>
               </ng-container>
             </div>
           </div>

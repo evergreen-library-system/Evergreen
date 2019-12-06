@@ -405,6 +405,17 @@ END;
                                                     [% UNLESS rec.mmr_id;
                                                             PROCESS "opac/parts/result/copy_counts.tt2";
                                                         END; %]
+                                                    [%- IF ctx.get_org_setting(ctx.search_ou, 'circ.course_materials_opt_in') == 1 %]
+                                                        [%- courseStrings = [] %]
+                                                        [% FOREACH course IN rec.courses %]
+                                                            [% courseString = course.name _ ' (' _ course.course_number _ ')' %]
+                                                            [% courseStrings.push(courseString); %]
+                                                        [% END %]
+                                                        [% IF courseStrings.size > 0 %]
+                                                            <span><strong>[% l('Associated Courses: ') %]</strong></span>
+                                                            <span>[% courseStrings.join(', ') %]</span>
+                                                        [% END %]
+                                                    [% END %]
                                                     [% IF rec.user_circulated %]
                                                     <div class="result_item_circulated">
                                                         <img src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]" alt="[% l('Checked Out Before') %]"/>

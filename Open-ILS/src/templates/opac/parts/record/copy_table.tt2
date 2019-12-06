@@ -54,6 +54,9 @@ IF has_copies or ctx.foreign_copies;
             [%- END %]
             <th scope='col'>[% l("Status") %]</th>
             <th scope='col'>[% l("Due Date") %]</th>
+            [%- IF ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1 %]
+            <th scope='col'>[% l("Courses") %]</th>
+            [%- END %]
         </tr>
     </thead>
     <tbody class="copy_details_table">
@@ -75,6 +78,10 @@ IF has_copies or ctx.foreign_copies;
     <td>[% bib.target_copy.location.name | html %]</td>
     <td>[% bib.target_copy.status.name | html %]</td>
     <td>[% date.format(ctx.parse_datetime(copy_info.due_date, copy_info.circ_circ_lib),DATE_FORMAT) %]</td>
+    [%- IF ctx.get_org_setting(CGI.param('loc') 
+        OR ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1 %]
+    <td></td>
+    [%- END %]
 </tr>
    [%- END; # FOREACH peer
 END; # FOREACH bib
@@ -223,6 +230,11 @@ END; # FOREACH bib
                 ELSE;
                     '-';
                 END %]</td>
+            [%- IF ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1 %]
+            <td>[%- FOREACH course IN copy_info.courses %]
+                <div>[% course.course_number %]</div>
+            [% END %]</td>
+            [% END %]
         </tr>
 
         [% IF copy_info.notes; %]

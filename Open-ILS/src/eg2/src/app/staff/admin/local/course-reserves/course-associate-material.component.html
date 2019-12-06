@@ -19,7 +19,9 @@
           <div class="input-group-prepend">
             <span class="input-group-text" i18n>Barcode</span>
           </div>
-          <input type="text" [(ngModel)]="barcodeInput" />
+          <input type="text" [(ngModel)]="barcodeInput" 
+            (click)="$event.target.select()"
+            (keyup.enter)="associateItem(barcodeInput, relationshipInput)" />
         </div>
       </div>
       <div class="col-md-5">
@@ -107,7 +109,8 @@
             </div>
           </div>
           <eg-item-location-select permFilter="MANAGE_RESERVES"
-            [(ngModel)]="tempLocation" (oninput)="isModifyingLocation = true">
+            [(ngModel)]="tempLocation" (oninput)="isModifyingLocation = true"
+            (valueChange)="isModifyingLocation = true">
           </eg-item-location-select>
           <div class="input-group-append">
             <div class="input-group-text">

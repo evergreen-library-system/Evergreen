@@ -102,8 +102,13 @@ sub load_record {
 
     $ctx->{copies} = $copy_rec->gather(1);
 
+    my $course_module_opt_in = 0;
+    if ($ctx->{get_org_setting}->($org, "circ.course_materials_opt_in")) {
+        $course_module_opt_in = 1;
+    }
+
     # Add public copy notes to each copy - and while we're in there, grab peer bib records
-    # and copy tags
+    # and copy tags. Oh and if we're working with course materials, those too.
     my %cached_bibs = ();
     foreach my $copy (@{$ctx->{copies}}) {
         $copy->{notes} = $U->simplereq(
@@ -111,6 +116,23 @@ sub load_record {
             'open-ils.circ.copy_note.retrieve.all',
             {itemid => $copy->{id}, pub => 1 }
         );
+        if ($course_module_opt_in) {
+            $copy->{course_materials} = $U->simplereq(
+                'open-ils.circ',
+                'open-ils.circ.course_materials.retrieve',
+                {item => $copy->{id}}
+            );
+            my %course_ids;
+            for my $material (@{$copy->{course_materials}}) {
+                $course_ids{$material->course} = 1;
+            }
+
+            $copy->{courses} = $U->simplereq(
+                'open-ils.circ',
+                'open-ils.circ.courses.retrieve',
+                keys %course_ids
+            );
+        }
         $self->timelog("past copy note retrieval call");
         my $meth = 'open-ils.circ.copy_tags.retrieve';
         $meth .= ".staff" if $ctx->{is_staff};

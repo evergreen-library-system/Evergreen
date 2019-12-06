@@ -24,6 +24,7 @@ use OpenILS::WWW::EGCatLoader::Browse;
 use OpenILS::WWW::EGCatLoader::Library;
 use OpenILS::WWW::EGCatLoader::Search;
 use OpenILS::WWW::EGCatLoader::Record;
+use OpenILS::WWW::EGCatLoader::Course;
 use OpenILS::WWW::EGCatLoader::Container;
 use OpenILS::WWW::EGCatLoader::SMS;
 use OpenILS::WWW::EGCatLoader::Register;
@@ -154,6 +155,7 @@ sub load {
     return $self->load_record if $path =~ m|opac/record/\d|;
     return $self->load_cnbrowse if $path =~ m|opac/cnbrowse|;
     return $self->load_browse if $path =~ m|opac/browse|;
+    return $self->load_course if $path =~ m|opac/course|;
 
     return $self->load_mylist_add if $path =~ m|opac/mylist/add|;
     return $self->load_mylist_delete if $path =~ m|opac/mylist/delete|;

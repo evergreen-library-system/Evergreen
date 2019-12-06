@@ -1,0 +1,101 @@
+<div id='canvas_main' class='canvas'>
+  <div class="course_details">
+    <div>
+      <h1>
+        [% l(ctx.course.name) %] ([% ctx.course.course_number %])
+        [% IF ctx.course.is_archived == 't' %]
+        <span class="archived_course">
+          This course is inactive.
+        </span>
+        [% END %]
+      </h1>
+      [% IF ctx.instructors.size %]
+      <div class="course_instructors_div">
+        <strong>Course Instructors:</strong>
+        [%- FOR instructor IN ctx.instructors;
+          instructorString = '';
+          IF instructor.pref_family_name;
+            instructorString = instructorString _ instructor.pref_family_name _ ', ';
+          ELSE;
+            instructorString = instructorString _ instructor.family_name _ ', ';
+          END;
+          IF instructor.pref_first_given_name;
+            instructorString = instructorString _ instructor.pref_first_given_name;
+          ELSE;
+            instructorString = instructorString _ instructor.first_given_name;
+          END;
+          instructorString = instructorString _ ' (' _ l(instructor.usr_role) _ ')'; %]
+          <span class="course-instructor-div">[% instructorString %].</span>
+        [% END %]
+      </div>
+      [% END %]
+
+      <div class="course_details_div">
+        <h2>[% l('Course Details') %]</h2>
+        <div>
+          <span><strong>[% l('Course Title') %]: </strong></span>
+          <span>[% ctx.course.name %]</span>
+        </div>
+        <div>
+          <span><strong>[% l('Course Number') %]: </strong></span>
+          <span>[% ctx.course.course_number %]</span>
+        <div>
+        </div>
+          <span><strong>[% l('Section Number') %]: </strong></span>
+          <span>[% ctx.course.section_number %]</span>
+        </div>
+        <div>
+          [%
+            owning_lib = ctx.get_aou(ctx.course.owning_lib);
+            lib_url = ctx.get_org_setting(owning_lib.id, 'lib.info_url');
+            prefer_external_url = ctx.get_org_setting(owning_lib.id, 'lib.prefer_external_url');
+            UNLESS lib_url && prefer_external_url;
+              lib_url = mkurl(ctx.opac_root _ '/library/' _ owning_lib.shortname, {}, 1);
+             END;
+          %]
+          <span><strong>[% l('Owning Library') %]: </strong></span>
+          <span><a href="[% lib_url %]">[% owning_lib.name %]</a></span>
+        </div>
+      </div>
+
+      [%- UNLESS ctx.course.is_archived == 't' %]
+      <div>
+        <span><h2>[% l('Course Materials') %]</h2></span>
+        <table class="table_no_border_space table_no_cell_pad table_no_border" width="100%" id="course_material_table">
+          <thead>
+            <tr>
+              <th scope="col">Location</th>
+              <th scope="col">Call Number</th>
+              <th scope="col">Title</th>
+              <th scope="col">Barcode</th>
+              <th scope="col">Relationship</th>
+              <th scope="col">Status</th>
+              <th scope="col">Shelving Location</th>
+            </tr>
+          </thead>
+          <tbody>
+            [% FOREACH copy_info IN ctx.course_materials %]
+              <tr>
+                <td>[%- INCLUDE "opac/parts/library_name_link.tt2"; -%]
+                    <link property="businessFunction" href="http://purl.org/goodrelations/v1#LeaseOut">
+                    <meta property="price" content="0.00">
+                </td>
+                <td>[% copy_info.call_number %]</td>
+                <td>
+                  <a href="[% mkurl(ctx.opac_root _ '/record/' _ copy_info.record) %]">
+                    [% copy_info.title %]
+                  </a>
+                </td>
+                <td>[% copy_info.barcode %]</td>
+                <td>[% copy_info.relationship %]</td>
+                <td>[% copy_info.status.name %]</td>
+                <td>[% copy_info.location.name %]</td>
+              </tr>
+            [% END %]
+          </tbody>
+        </table>
+      </div>
+      [% END %]
+    </div>
+  </div>
+</div>

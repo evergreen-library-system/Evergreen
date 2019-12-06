@@ -23,10 +23,12 @@ CREATE TABLE asset.course_module_course_materials (
     course          INT NOT NULL REFERENCES asset.course_module_course (id),
     item            INT NOT NULL REFERENCES asset.copy (id),
     relationship    TEXT,
+    record          INT REFERENCES biblio.record_entry (id),
     original_location        INT REFERENCES asset.copy_location,
     original_status          INT REFERENCES config.copy_status,
-    original_circ_modifier   TEXT REFERENCES config.circ_modifier,
-    original_callnumber      INT REFERENCES asset.call_number
+    original_circ_modifier   TEXT, --REFERENCES config.circ_modifier,
+    original_callnumber      INT REFERENCES asset.call_number,
+    unique (course, item)
 );
 
 CREATE TABLE asset.course_module_non_cat_course_materials (

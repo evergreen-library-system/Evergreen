@@ -36,7 +36,11 @@
 </ng-template>
 
 <ng-template #courseTemplate let-copy="row">
-  <div *ngFor="let course of copy._courses">{{course.course_number()}}</div>
+  <div *ngFor="let course of copy._courses">
+    <a routerLink="/staff/admin/local/asset/course_list/{{course.id()}}">
+      {{course.course_number()}}
+    </a>
+  </div>
 </ng-template>
 
 <div class='eg-copies w-100 mt-3'>

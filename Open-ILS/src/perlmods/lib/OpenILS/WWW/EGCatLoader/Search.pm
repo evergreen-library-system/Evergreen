@@ -568,10 +568,32 @@ sub load_rresults {
         }
     }
 
+    my $course_module_opt_in = 0;
+    if ($ctx->{get_org_setting}->($self->_get_search_lib, "circ.course_materials_opt_in")) {
+        $course_module_opt_in = 1;
+    }
+
     for my $rec (@{$ctx->{records}}) {
         my ($res_rec) = grep { $_->[0] == $rec->{$id_key} } @{$results->{ids}};
         $rec->{badges} = [split(',', $res_rec->[1])] if $res_rec->[1];
         $rec->{popularity} = $res_rec->[2];
+        if ($course_module_opt_in) {
+            $rec->{course_materials} = $U->simplereq(
+                'open-ils.circ',
+                'open-ils.circ.course_materials.retrieve',
+                {record => $rec->{id}}
+            );
+            my %course_ids;
+            for my $material (@{$rec->{course_materials}}) {
+                $course_ids{$material->course} = 1;
+            }
+
+            $rec->{courses} = $U->simplereq(
+                'open-ils.circ',
+                'open-ils.circ.courses.retrieve',
+                keys %course_ids
+            );
+        }
         if ($tag_circs) {
             # index 3 (5 for MR) in the per-record result array is a boolean which
             # indicates whether the record in question is in the users
@@ -580,6 +602,7 @@ sub load_rresults {
             $rec->{user_circulated} = 1 if $res_rec->[$index];
         }
     }
+    
 
     $ctx->{search_facets} = $facets;
 

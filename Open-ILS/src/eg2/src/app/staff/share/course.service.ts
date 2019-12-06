@@ -35,6 +35,37 @@ export class CourseService {
         }
     }
 
+    getMaterials(course_ids?: Number[]): Promise<IdlObject[]> {
+        if (!course_ids) {
+            return this.pcrud.retrieveAll('acmcm',
+                {}, {atomic: true}).toPromise();
+        } else {
+            return this.pcrud.search('acmcm', {course: course_ids},
+                {}, {atomic: true}).toPromise();
+        }
+    }
+
+    fleshMaterial(itemId, relationship?): Promise<any> {
+        return new Promise((resolve, reject) => {
+            let item = this.idl.create('acp');
+            this.net.request(
+                'open-ils.circ',
+                'open-ils.circ.copy_details.retrieve',
+                this.auth.token(), itemId
+            ).subscribe(res => {
+                if (res && res.copy) {
+                    item = res.copy;
+                    item.call_number(res.volume);
+                    item._title = res.mvr.title();
+                    item.circ_lib(this.org.get(item.circ_lib()));
+                    if (relationship) item._relationship = relationship;
+                }
+            }, err => {
+                reject(err);
+            }, () => resolve(item));
+        });
+    }
+
     getCoursesFromMaterial(copy_id): Promise<any> {
         let id_list = [];
         return new Promise((resolve, reject) => {
@@ -45,7 +76,7 @@ export class CourseService {
                     id_list.push(materials.course());
                 }
             }, err => {
-                console.log(err);
+                console.debug(err);
                 reject(err);
             }, () => {
                 if (id_list.length) {
@@ -81,9 +112,11 @@ export class CourseService {
 
     // Creating a new acmcm Entry
     associateMaterials(item, args) {
-        console.log("entering associateMaterials")
         let material = this.idl.create('acmcm');
         material.item(item.id());
+        if (item.call_number() && item.call_number().record()) {
+            material.record(item.call_number().record());
+        }
         material.course(args.currentCourse.id());
         if (args.relationship) material.relationship(args.relationship);
 
@@ -124,7 +157,6 @@ export class CourseService {
                 material.isdeleted(true);
                 this.resetItemFields(material, course_library_hash[material.course()]);
                 this.pcrud.autoApply(material).subscribe(res => {
-                    console.log(res);
                 }, err => {
                     reject(err);
                 }, () => {
@@ -189,7 +221,11 @@ export class CourseService {
                         resolve(item);
                     });
                 } else {
-                    return this.pcrud.update(item);
+                    this.pcrud.update(item).subscribe(rse => {
+                        resolve(item);
+                    }, err => {
+                        reject(item);
+                    });
                 }
             });
         });

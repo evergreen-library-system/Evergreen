@@ -3143,7 +3143,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="ID" name="id" reporter:datatype="id" />
             <field reporter:label="Course" name="course" reporter:datatype="link" />
             <field reporter:label="User" name="usr" reporter:datatype="link" />
-            <field reporter:label="User Role" name="user_role" reporter:datatype="text" />
+            <field reporter:label="User Role" name="usr_role" reporter:datatype="text" />
+            <field reporter:label="Is Public Viewable?" name="is_public" reporter:datatype="boolean" />
         </fields>
         <links>
             <link field="course" reltype="has_a" key="id" map="" class="acmc" />
@@ -3169,6 +3170,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="ID" name="id" reporter:datatype="id" />
             <field reporter:label="Course" name="course" reporter:datatype="link" />
             <field reporter:label="Item" name="item" reporter:datatype="link" />
+            <field reporter:label="Record" name="record" reporter:datatype="link" />
             <field reporter:label="Item Relationship" name="relationship" reporter:datatype="text" />
             <field reporter:label="Original Status" name="original_status" reporter:datatype="link" />
             <field reporter:label="Original Circ Modifier" name="original_circ_modifier" reporter:datatype="link" />
@@ -3178,6 +3180,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <links>
             <link field="course" reltype="has_a" key="id" map="" class="acmc" />
             <link field="item" reltype="has_a" key="id" map="" class="acp" />
+            <link field="record" reltype="has_a" key="id" map="" class="bre" />
             <link field="original_callnumber" reltype="has_a" key="id" map="" class="acn" />
             <link field="original_status" reltype="has_a" key="id" map="" class="ccs" />
             <link field="original_circ_modifier" reltype="has_a" key="code" map="" class="ccm" />
