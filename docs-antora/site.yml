@@ -10,7 +10,7 @@ content:
     start_path: docs-antora
 ui:
   bundle:
-    url: ./ui/build/ui-bundle.zip
+    url: ./../../eg-antora/build/ui-bundle.zip
   supplemental_files: ./ui/ui-lunr
 
 output:
