@@ -94,10 +94,6 @@ export class RecordPaginationComponent implements OnInit {
 
             return this.refreshSearch().then(ok => {
                 this.index = this.searchContext.indexForResult(this.id);
-                if (this.index === null) {
-                    console.warn(
-                        'No search results found containing the focused record.');
-                }
                 resolve();
             });
         });
