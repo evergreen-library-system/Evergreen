@@ -1,5 +1,5 @@
 import {Component, OnInit, AfterViewInit, Renderer2} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
@@ -21,8 +21,12 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     copyLocations: IdlObject[];
     searchTab: string;
 
+    // Display the full form if true, otherwise display the expandy.
+    showThyself = true;
+
     constructor(
         private renderer: Renderer2,
+        private router: Router,
         private route: ActivatedRoute,
         private org: OrgService,
         private cat: CatalogService,
@@ -37,6 +41,16 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         this.route.queryParams.subscribe(params => {
             if (params.searchTab) {
                 this.searchTab = params.searchTab;
+            }
+        });
+
+        this.router.events.subscribe(routeEvent => {
+            if (routeEvent instanceof NavigationEnd) {
+                if (routeEvent.url.match(/catalog\/record/)) {
+                    this.showThyself = false;
+                } else {
+                    this.showThyself = true;
+                }
             }
         });
     }
