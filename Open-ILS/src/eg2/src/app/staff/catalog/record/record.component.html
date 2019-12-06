@@ -5,6 +5,10 @@
 </ng-container>
 
 <div id="staff-catalog-record-container">
+  <div id='staff-catalog-bib-summary-container' class='mb-1'>
+    <eg-bib-summary [bibSummary]="summary">
+    </eg-bib-summary>
+  </div>
   <div class="row ml-0 mr-0">
     <div id='staff-catalog-bib-navigation'>
       <div *ngIf="searchContext.isSearchable()">
@@ -18,10 +22,6 @@
       <eg-catalog-record-actions [recordId]="recordId">
       </eg-catalog-record-actions>
     </div>
-  </div>
-  <div id='staff-catalog-bib-summary-container' class='mt-1'>
-    <eg-bib-summary [bibSummary]="summary">
-    </eg-bib-summary>
   </div>
   <div id='staff-catalog-bib-tabs-container' class='mt-3'>
     <div class="row">
