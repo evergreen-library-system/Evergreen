@@ -160,7 +160,7 @@ Titles can be added to a manually maintained carousel through the record details
 . Select the Other Actions button
 . Choose Add to Carousel
 +
-image::/media/carousel7.png[Actions button on Record Summary page - Add to Carousel] 
+image::media/carousel7.png[Actions button on Record Summary page - Add to Carousel] 
 +
 . A drop-down with a list of manually maintained carousels that have been shared to at least one of the user’s working locations will appear
 . Choose the carousel from the list
