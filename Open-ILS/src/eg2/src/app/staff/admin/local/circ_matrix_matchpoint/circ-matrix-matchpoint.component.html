@@ -1,0 +1,39 @@
+<eg-title i18n-prefix prefix="Circulation Policy Configuration"></eg-title>
+<eg-staff-banner bannerText="Circulation Policy Configuration" i18n-bannerText>
+</eg-staff-banner>
+
+<eg-string #successString i18n-text text="Circulation Policy Update Succeeded"></eg-string>
+<eg-string #createString i18n-text text="Circulation Policy Creation Succeeded"></eg-string>
+
+<div #limitSets>
+  <ng-container >
+      <linked-circ-limit-sets
+        #circLimitSets
+        (outputLinkedLimitSet)="setLimitSets($event)" >
+      </linked-circ-limit-sets>
+  </ng-container>
+</div>
+
+<eg-grid #grid idlClass="ccmm"
+    [dataSource]="dataSource"
+    [sortable]="true"
+    (onRowActivate)="editSelected([$event])"
+    [showFields]='"is_renewal,active,org_unit,copy_circ_lib,copy_owning_lib,user_home_ou"'
+    >
+    <eg-grid-toolbar-button 
+      label="New Circ Matrix Matchpoint" i18n-label (onClick)="createNew()">
+    </eg-grid-toolbar-button>
+    <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
+    </eg-grid-toolbar-action>
+  </eg-grid>
+
+  
+<eg-fm-record-editor #editDialog
+    idlClass="ccmm" 
+    [preloadLinkedValues]="true" 
+    readonlyFields="name"
+    (recordSaved)="configureLimitSets($event); clearLinkedCircLimitSets()"
+    (recordCanceled)="clearLinkedCircLimitSets()"
+    (recordError)="clearLinkedCircLimitSets()"
+    >
+</eg-fm-record-editor>

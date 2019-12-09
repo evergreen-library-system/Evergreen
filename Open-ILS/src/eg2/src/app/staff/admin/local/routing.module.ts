@@ -120,6 +120,9 @@ const routes: Routes = [{
     loadChildren: () =>
         import('./negative-balances/negative-balances.module').then(m => m.NegativeBalancesModule)
 }, {
+    path: 'config/circ_matrix_matchpoint',
+    loadChildren: '@eg/staff/admin/local/circ_matrix_matchpoint/circ-matrix-matchpoint.module#CircMatrixMathpointModule'
+}, {
     path: 'asset/stat_cat',
     component: BasicAdminPageComponent,
     data: [{

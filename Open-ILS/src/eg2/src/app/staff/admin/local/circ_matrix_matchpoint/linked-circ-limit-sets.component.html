@@ -1,0 +1,67 @@
+<div *ngIf="showLinkLimitSets">
+    <div class="col-lg-15 modal-header bg-info d-flex justify-content-center"><h3 class="modal-title mt-3 mb-3">Linked Limit Sets</h3></div>
+    <ng-container *ngIf="getObjectKeys().length > 0">
+        <ng-container *ngFor="let key of getObjectKeys(); let i = index">
+            <div *ngIf="!linkedSetList[i].isDeleted" class="col-lg-15 d-flex justify-content-center">
+                <div *ngIf="linkedSetList[i].created" class="col-lg-2 mt-3 mb-3 form-group form-check">
+                    <label for="name">Name</label>
+                    <div class="d-flex justify-content-center">
+                        <span>{{limitSetNames[linkedSetList[i].linkedLimitSet.limit_set()]}}</span>
+                    </div>
+                </div>
+                <div *ngIf="linkedSetList[i].created" class="col-lg-2 mt-3 mb-3 form-group form-check">
+                    <label for="{{fallthrough+i}}">Fallthrough</label>
+                    <div class="d-flex justify-content-center">
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="{{fallthrough+i}}"
+                            [ngModel]="linkedSetList[i].linkedLimitSet.fallthrough()" 
+                            (ngModelChange)="linkedSetList[i].linkedLimitSet.fallthrough($event); this.emitLimitSet();"/>
+                    </div>
+                </div>
+                <div *ngIf="linkedSetList[i].created" class="col-lg-2 mt-3 mb-3 form-group form-check">
+                    <label for="{{active+i}}">Active</label>
+                    <div class="d-flex justify-content-center">
+                        <input
+                        class="form-check-input"
+                        type="checkbox"
+                        [ngModel]="linkedSetList[i].linkedLimitSet.active()"
+                        (ngModelChange)="linkedSetList[i].linkedLimitSet.active($event); this.emitLimitSet();"/>
+                    </div>
+                    
+                </div>
+                <div *ngIf="linkedSetList[i].created" class="col-lg-2 mt-3 mb-3 form-group form-check">
+                    <button
+                        type="button"
+                        class="btn btn-warning"
+                        ng-disabled="!linkedSet"
+                        (click)="removeLinkedSet(i)"
+                        i18n-title title="Remove">Remove
+                    </button>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+    <div class="input-group mt-3">
+        <div class="input-group-prepends col-lg-9">
+            <div class="input-group-text  col-lg-4">
+                <label for="linkedLimitName" i18n>Circ Limit Set Name </label>
+            </div>
+            <eg-combobox 
+                name="linkedLimitName"
+                idlClass="ccls" 
+                idlField="name" 
+                (onChange)="onChange($event)">
+            </eg-combobox>
+            <div>
+                <button
+                    type="button"
+                    class="btn btn-info"
+                    (click)="addLinkedSet()"
+                    i18n-title title="Add">Add
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
