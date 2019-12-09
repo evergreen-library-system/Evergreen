@@ -102,9 +102,9 @@ sub load_record {
 
     $ctx->{copies} = $copy_rec->gather(1);
 
-    my $course_module_opt_in = 0;
+    $ctx->{course_module_opt_in} = 0;
     if ($ctx->{get_org_setting}->($org, "circ.course_materials_opt_in")) {
-        $course_module_opt_in = 1;
+        $ctx->{course_module_opt_in} = 1;
     }
 
     # Add public copy notes to each copy - and while we're in there, grab peer bib records
@@ -116,7 +116,7 @@ sub load_record {
             'open-ils.circ.copy_note.retrieve.all',
             {itemid => $copy->{id}, pub => 1 }
         );
-        if ($course_module_opt_in) {
+        if ($ctx->{course_module_opt_in}) {
             $copy->{course_materials} = $U->simplereq(
                 'open-ils.circ',
                 'open-ils.circ.course_materials.retrieve',

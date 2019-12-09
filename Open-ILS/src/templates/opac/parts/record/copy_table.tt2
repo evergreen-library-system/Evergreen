@@ -44,8 +44,10 @@ IF has_copies or ctx.foreign_copies;
             [%- END %]
             <th scope='col'>[% l("Barcode") %]</th>
             <th scope='col'>[% l("Shelving Location") %]</th>
-            [%- IF ctx.is_staff %]
+            [% IF ctx.is_staff || ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1 %]
             <th scope='col'>[% l("Circulation Modifier") %]</th>
+            [% END %]
+            [% IF ctx.is_staff %]
             <th scope='col'>[% l("Age Hold Protection") %]</th>
             <th scope='col'>[% l("Active/Create Date") %]</th>
             [%- END %]
@@ -145,8 +147,10 @@ END; # FOREACH bib
                 END; -%]
             </td>
             <td property="availableAtOrFrom">[%- INCLUDE "opac/parts/location_name_link.tt2"; -%]</td>
-            [%- IF ctx.is_staff %]
+
+            [% IF copy_info.courses.size > 0 || ctx.is_staff %]
             <td>[% copy_info.circ_modifier | html %]</td>
+            [% ELSIF ctx.is_staff %]
             <td>
                 [% copy_info.age_protect ?
                     ctx.get_crahp(copy_info.age_protect).name : l('None') | html %]
@@ -167,6 +171,8 @@ END; # FOREACH bib
                    '-';
                 END;
             %]</td>
+            [% ELSIF ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1 %]
+            <td></td>
             [% END # is_staff %]
             [% IF ctx.is_staff OR serial_holdings %]
             <td>[%  # Show copy/volume hold links to staff (without
