@@ -11,6 +11,10 @@
 
 <eg-course-associate-material-dialog #courseMaterialDialog>
 </eg-course-associate-material-dialog>
+
+<eg-course-associate-users-dialog #courseUserDialog>
+</eg-course-associate-users-dialog>
+
 <div class="w-100 mt-2 mb-2">
   <eg-grid #grid idlClass={{idl_class}}
     [dataSource]="grid_source"
@@ -25,6 +29,8 @@
     <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)">
     </eg-grid-toolbar-action>
     <eg-grid-toolbar-action label="Archive Selected" i18n-label (onClick)="archiveSelected($event)">
+    </eg-grid-toolbar-action>
+    <eg-grid-toolbar-action label="View Users" i18n-label (onClick)="openUsersDialog($event)">
     </eg-grid-toolbar-action>
   </eg-grid>
 </div>

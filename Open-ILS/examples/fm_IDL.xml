@@ -3165,7 +3165,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
     </class>
-    <class id="acmcm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::course_module_course_materials" oils_persist:tablename="asset.course_module_course_materials" reporter:label="Course Materials">
+    <class id="acmcm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::course_module_course_materials" oils_persist:tablename="asset.course_module_course_materials" reporter:label="Course Materials" oils_persist:field_safe="true">
         <fields oils_persist:primary="id" oils_persist:sequence="asset.course_module_course_materials_id_seq">
             <field reporter:label="ID" name="id" reporter:datatype="id" />
             <field reporter:label="Course" name="course" reporter:datatype="link" />

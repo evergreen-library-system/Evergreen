@@ -1,0 +1,57 @@
+<eg-string #deleteFailedString i18n-text text="Disassociation of Course Material failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text text="Disassociation of Course Material succeeded"></eg-string>
+<eg-string #successString i18n-text text="Association of Course Material succeeded"></eg-string>
+<eg-string #failedString i18n-text text="Association of Course Material failed or was not allowed"></eg-string>
+<eg-string #differentLibraryString i18n-text text="Material exists at a different library"></eg-string>
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Course Users</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row mt-4">
+      <div class="col-md-5">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" i18n>User Role</span>
+          </div>
+          <input type="text" [(ngModel)]="userRoleInput" />
+        </div>
+    </div>
+    <div class="row justify-content-center mt-3">
+    </div>
+      <div class="col-md-6">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              <span i18n>User</span>
+            </div>
+          </div>
+            <input type="text" [(ngModel)]="new_usr" />
+        </div>
+      </div>
+    </div>
+    <div class="col-md-0">
+        <button class="btn btn-outline-dark" (click)="associateUsers(userRoleInput)" i18n [disabled]="!new_usr || !userRoleInput">Add User</button>
+    </div>
+    <div class="mt-3">
+      <eg-grid #usersGrid [dataSource]="gridDataSource">
+        <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)">
+        </eg-grid-toolbar-action>
+        <eg-grid-column label="id" [index]=true [hidden]="true" i18n-label></eg-grid-column>
+        <eg-grid-column label="User Role" name="_usr_role" i18n-label></eg-grid-column>
+        <eg-grid-column label="First Name" name="first_given_name" i18n-label></eg-grid-column>
+        <eg-grid-column label="Second Name" name="second_given_name" i18n-label></eg-grid-column>
+        <eg-grid-column label="Last Name" name="family_name" i18n-label></eg-grid-column>
+        <eg-grid-column label="Prefix" name="pref_prefix" [hidden]="true" i18n-label></eg-grid-column>
+        <eg-grid-column label="Preferred First Name" name="pref_first_given_name"[hidden]="true"  i18n-label></eg-grid-column>
+        <eg-grid-column label="Preferred Second Name" name="pref_second_given_name"[hidden]="true"  i18n-label></eg-grid-column>
+        <eg-grid-column label="Preferred Family Name" name="pref_family_name"[hidden]="true"  i18n-label></eg-grid-column>
+        <eg-grid-column label="Preferred Suffix" name="pref_suffix" [hidden]="true" i18n-label></eg-grid-column>
+      </eg-grid>
+    </div>
+  </div>

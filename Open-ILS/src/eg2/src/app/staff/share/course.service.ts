@@ -170,6 +170,31 @@ export class CourseService {
         });
     }
 
+    disassociateUsers(user) {
+        return new Promise((resolve, reject) => {
+            let user_ids = [];
+            let course_library_hash = {};
+            user.forEach(course => {
+                user_ids.push(course.id());
+                course_library_hash[course.id()] = course.owning_lib();
+            });
+            this.pcrud.search('acmcu', {user: user_ids}).subscribe(user => {
+                user.course(user_ids);
+                this.pcrud.autoApply(user).subscribe(res => {
+                    console.log(res);
+                }, err => {
+                    reject(err);
+                }, () => {
+                    resolve(user);
+                });
+            }, err => {
+                reject(err)
+            }, () => {
+                resolve(user_ids);
+            });
+        });
+    }
+
     resetItemFields(material, course_lib) {
         this.pcrud.retrieve('acp', material.item(),
             {flesh: 3, flesh_fields: {acp: ['call_number']}}).subscribe(copy => {

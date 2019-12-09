@@ -16,6 +16,9 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {CourseAssociateMaterialComponent
     } from './course-associate-material.component';
 
+import {CourseAssociateUsersComponent
+    } from './course-associate-users.component';
+
 @Component({
     templateUrl: './course-list.component.html'
 })
@@ -34,6 +37,9 @@ export class CourseListComponent implements OnInit {
     @ViewChild('archiveSuccessString', { static: true }) archiveSuccessString: StringComponent;
     @ViewChild('courseMaterialDialog', {static: true})
         private courseMaterialDialog: CourseAssociateMaterialComponent;
+    @ViewChild('courseUserDialog', {static: true})
+        private courseUserDialog: CourseAssociateUsersComponent;
+
     @Input() sort_field: string;
     @Input() idl_class = "acmc";
     @Input() dialog_size: 'sm' | 'lg' = 'lg';
@@ -79,7 +85,7 @@ export class CourseListComponent implements OnInit {
                 limit: pager.limit,
                 order_by: orderBy
             };
-            return this.pcrud.retrieveAll(this.idl_class, searchOps, {fleshSelectors: true});
+            return this.pcrud.retrieveAll(this.idl_class, searchOps, {fleshSelectors: true})
         };
     }
 
@@ -187,6 +193,41 @@ export class CourseListComponent implements OnInit {
         });
     }
 
+    /**
+     * Uses the course id to fetch the different users associated with that course.
+     * @param course The course id
+     * @param currentMaterials 
+     */
+    fetchCourseUsers(course, currentMaterials): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.pcrud.search('acmcu', {course: course}).subscribe(res => {
+                if(res) this.fleshUserDetails(res.usr(), res.usr_role());
+            }, err => {
+                reject(err);
+            }, () => resolve(this.courseUserDialog.gridDataSource.data));
+        });
+    }
+
+    /**
+     * Takes the user id from the course table, and cross references that with the user table,
+     * to find the right data.
+     * @param userId The user id that is to be cross referenced.
+     * @param usr_role The user role that is to be added to the grid.
+     */
+    fleshUserDetails(userId, usr_role) {
+        return new Promise((resolve, reject) => {
+            this.pcrud.search("au", {id:userId}).subscribe(res => {
+                if (res) {
+                    let user = res;
+                    user._usr_role = usr_role;
+                    this.courseUserDialog.gridDataSource.data.push(user);
+                }
+            }, err => {
+                reject(err);
+            }, () => resolve(this.courseMaterialDialog.gridDataSource.data));
+        });
+    }
+
     fleshItemDetails(itemId, relationship): Promise<any> {
         return new Promise((resolve, reject) => {
             this.net.request(
@@ -215,6 +256,22 @@ export class CourseListComponent implements OnInit {
             this.courseMaterialDialog.currentCourse = course[0];
             this.courseMaterialDialog.materials = currentMaterials;
             this.courseMaterialDialog.open({size: 'lg'}).subscribe(res => {
+                console.log(res);
+            });
+        });
+    }
+
+    /**
+     * Opens the user dialog component using the course id
+     * @param course 
+     */
+    openUsersDialog(course) { 
+        let currentUsers = []
+        this.courseUserDialog.gridDataSource.data = [];
+        this.fetchCourseUsers(course[0].id(), currentUsers).then(res => {
+            this.courseUserDialog.currentCourse = course[0];
+            this.courseUserDialog.users = currentUsers;
+            this.courseUserDialog.open({size: 'lg'}).subscribe(res => {
                 console.log(res);
             });
         });
