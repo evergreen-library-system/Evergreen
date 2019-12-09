@@ -340,7 +340,6 @@ function dispatchRequest(port, data) {
     function replyError(err) {
         console.error('shared worker replying with error', err);
         data.status = 'ERR';
-        data.error = err;
         port.postMessage(data);
     }
 
