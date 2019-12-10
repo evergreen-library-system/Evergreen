@@ -31,24 +31,6 @@
   border-color: #b8daff;
 }
 
-.eg-grid-header-cell {
-    font-weight: bold;
-}
-
-.eg-grid-header-cell.dragover {
-    background-color: #cce5ff;
-    border-color: #b8daff;
-}
-
-.eg-grid-header-cell-sort-label {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
-.eg-grid-header-cell-sort-arrow {
-  font-size: 14px;
-}
-
 .eg-grid-cell {
     flex: 2; /* applied per column */
     padding: 6px;
@@ -73,6 +55,25 @@
 }
 
 .eg-grid-body-cell {
+}
+
+.eg-grid-header-cell {
+  font-weight: bold;
+  white-space: normal;
+}
+
+.eg-grid-header-cell.dragover {
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+
+.eg-grid-header-cell-sort-label {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.eg-grid-header-cell-sort-arrow {
+  font-size: 14px;
 }
 
 .eg-grid-toolbar {
