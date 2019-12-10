@@ -4,16 +4,10 @@
 <eg-string #successString i18n-text text="{{table_name}} Update Succeeded"></eg-string>
 <eg-string #createString i18n-text text="{{table_name}} Was Created Successfully"></eg-string>
 <eg-string #deleteFailedString i18n-text text="Deletion of {{table_name}} failed or was not allowed"></eg-string>
-<eg-string #deleteSucailedString i18n-text text="Deletion of {{table_name}} was successful"></eg-string>
+<eg-string #deleteSuccessString i18n-text text="Deletion of {{table_name}} was successful"></eg-string>
 <eg-string #archiveFailedString i18n-text text="Archival of {{table_name}} failed or was not allowed"></eg-string>
 <eg-string #archiveSuccessString i18n-text text="Archival of {{table_name}} succeeded"></eg-string>
 <eg-string #flairTooltip i18n-text text="Limited Editing"></eg-string>
-
-<eg-course-associate-material-dialog #courseMaterialDialog>
-</eg-course-associate-material-dialog>
-
-<eg-course-associate-users-dialog #courseUserDialog>
-</eg-course-associate-users-dialog>
 
 <div class="w-100 mt-2 mb-2">
   <eg-grid #grid idlClass={{idl_class}}
@@ -22,21 +16,22 @@
     <eg-grid-toolbar-button
       label="Create {{table_name}}" (onClick)="createNew()" i18n-label>
     </eg-grid-toolbar-button>
-    <eg-grid-toolbar-action label="View Materials" i18n-label (onClick)="openMaterialsDialog($event)">
-    </eg-grid-toolbar-action>
     <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
     </eg-grid-toolbar-action>
     <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)">
     </eg-grid-toolbar-action>
     <eg-grid-toolbar-action label="Archive Selected" i18n-label (onClick)="archiveSelected($event)">
     </eg-grid-toolbar-action>
-    <eg-grid-toolbar-action label="View Users" i18n-label (onClick)="openUsersDialog($event)">
-    </eg-grid-toolbar-action>
+    <eg-grid-column label="ID" path="id" [index]=true [hidden]="true" i18n-label></eg-grid-column>
+    <eg-grid-column label="Title" name="name" i18n-label></eg-grid-column>
+    <eg-grid-column label="CourseNumber" name="course_number" i18n-label></eg-grid-column>
+    <eg-grid-column label="Section Number" name="section_number" i18n-label></eg-grid-column>
+    <eg-grid-column label="Is Archived?" name="is_archived" i18n-label datatype="bool"></eg-grid-column>
   </eg-grid>
 </div>
 
 <eg-fm-record-editor #editDialog
-  idlClass={{idl_class}}
+  idlClass="acmc"
   [preloadLinkedValues]="true"
-  hiddenFields="is_archived,id">
+  hiddenFields="id,is_archived">
 </eg-fm-record-editor>

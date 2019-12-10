@@ -1063,15 +1063,6 @@ __PACKAGE__->register_method(
         @params args     : Supplied object to filter search.
     /);
 
-__PACKAGE__->register_method(
-    method          => 'fetch_courses',
-    autoritative    => 1,
-    api_name        => 'open-ils.circ.courses.retrieve',
-    signature       => q/
-        Returns an array of course materials.
-        @params course_id: The id of the course we want to retrieve
-    /);
-
 sub fetch_course_materials {
     my ($self, $conn, $args) = @_;
     my $e = new_editor();
@@ -1126,6 +1117,15 @@ sub fetch_course_materials {
     return $targets;
 }
 
+__PACKAGE__->register_method(
+    method          => 'fetch_courses',
+    autoritative    => 1,
+    api_name        => 'open-ils.circ.courses.retrieve',
+    signature       => q/
+        Returns an array of course materials.
+        @params course_id: The id of the course we want to retrieve
+    /);
+
 sub fetch_courses {
     my ($self, $conn, @course_ids) = @_;
     my $e = new_editor();
@@ -1169,7 +1169,7 @@ sub fetch_course_users {
         unless ($self->api_name =~ /\.staff/) and $e->allowed('MANAGE_RESERVES');
     
     
-    $users->{list} =  $e->search_asset_course_module_course_users($filter);
+    $users->{list} =  $e->search_asset_course_module_course_users($filter, {order_by => {acmcu => 'id'}});
     for my $course_user (@{$users->{list}}) {
         my $patron = {};
         $patron->{id} = $course_user->id;
@@ -1183,10 +1183,15 @@ sub fetch_course_users {
         my $final_user = {};
         $final_user->{id} = $user->{id};
         $final_user->{usr_role} = $user->{usr_role};
+        $final_user->{patron_id} = $user->{patron_data}->id;
         $final_user->{first_given_name} = $user->{patron_data}->first_given_name;
+        $final_user->{second_given_name} = $user->{patron_data}->second_given_name;
         $final_user->{family_name} = $user->{patron_data}->family_name;
         $final_user->{pref_first_given_name} = $user->{patron_data}->pref_first_given_name;
         $final_user->{pref_family_name} = $user->{patron_data}->pref_family_name;
+        $final_user->{pref_second_given_name} = $user->{patron_data}->pref_second_given_name;
+        $final_user->{pref_suffix} = $user->{patron_data}->pref_suffix;
+        $final_user->{pref_prefix} = $user->{patron_data}->pref_prefix;
         
         push @$targets, $final_user;
     }

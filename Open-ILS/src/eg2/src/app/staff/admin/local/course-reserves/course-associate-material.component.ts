@@ -1,4 +1,5 @@
 import {Component, Input, ViewChild, OnInit, TemplateRef} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 import {Observable, Observer, of} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AuthService} from '@eg/core/auth.service';
@@ -12,6 +13,8 @@ import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {StringComponent} from '@eg/share/string/string.component';
+import {StaffBannerComponent} from '@eg/staff/share/staff-banner.component';
+import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {CourseService} from '@eg/staff/share/course.service';
 
@@ -21,14 +24,27 @@ import {CourseService} from '@eg/staff/share/course.service';
 })
 
 export class CourseAssociateMaterialComponent extends DialogComponent {
-
+    @Input() currentCourse: IdlObject;
+    @Input() courseId: any;
+    @Input() displayMode: String;
+    materials: any[] = [];
+    @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
     @ViewChild('materialsGrid', {static: true}) materialsGrid: GridComponent;
-    @ViewChild('deleteFailedString', { static: true }) deleteFailedString: StringComponent;
-    @ViewChild('deleteSuccessString', { static: true }) deleteSuccessString: StringComponent;
-    @ViewChild('successString', { static: true }) successString: StringComponent;
-    @ViewChild('failedString', { static: true }) failedString: StringComponent;
-    @ViewChild('differentLibraryString', { static: true }) differentLibraryString: StringComponent;
-    @Input() table_name = "Course Materials";
+    @ViewChild('materialDeleteFailedString', { static: true })
+        materialDeleteFailedString: StringComponent;
+    @ViewChild('materialDeleteSuccessString', { static: true })
+        materialDeleteSuccessString: StringComponent;
+    @ViewChild('materialAddSuccessString', { static: true })
+        materialAddSuccessString: StringComponent;
+    @ViewChild('materialAddFailedString', { static: true })
+        materialAddFailedString: StringComponent;
+    @ViewChild('materialEditSuccessString', { static: true })
+        materialEditSuccessString: StringComponent;
+    @ViewChild('materialEditFailedString', { static: true })
+        materialEditFailedString: StringComponent;
+    @ViewChild('materialAddDifferentLibraryString', { static: true })
+        materialAddDifferentLibraryString: StringComponent;
+    materialsDataSource: GridDataSource;
     @Input() barcodeInput: String;
     @Input() relationshipInput: String;
     @Input() tempCallNumber: String;
@@ -39,53 +55,86 @@ export class CourseAssociateMaterialComponent extends DialogComponent {
     @Input() isModifyingCircMod: Boolean;
     @Input() isModifyingCallNumber: Boolean;
     @Input() isModifyingLocation: Boolean;
-    currentCourse: IdlObject;
-    materials: any[];
-    gridDataSource: GridDataSource;
 
     constructor(
         private auth: AuthService,
+        private course: CourseService,
+        private event: EventService,
         private idl: IdlService,
         private net: NetService,
-        private pcrud: PcrudService,
         private org: OrgService,
-        private evt: EventService,
-        private modal: NgbModal,
+        private pcrud: PcrudService,
+        private route: ActivatedRoute,
         private toast: ToastService,
-        private courseSvc: CourseService
+        private modal: NgbModal
     ) {
         super(modal);
-        this.gridDataSource = new GridDataSource();
+        this.materialsDataSource = new GridDataSource();
     }
 
     ngOnInit() {
-        this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
-            return this.fetchMaterials(pager);
+        this.materialsDataSource.getRows = (pager: Pager, sort: any[]) => {
+            return this.loadMaterialsGrid(pager);
         }
     }
 
-    deleteSelected(items) {
-        let item_ids = [];
-        items.forEach(item => {
-            this.gridDataSource.data.splice(this.gridDataSource.data.indexOf(item, 0), 1);
-            item_ids.push(item.id())
+    isDialog(): boolean {
+        return this.displayMode === 'dialog';
+    }
+
+    loadMaterialsGrid(pager: Pager): Observable<any> {
+        return new Observable<any>(observer => {
+            this.course.getMaterials(this.courseId).then(materials => {
+                materials.forEach(material => {
+                    this.course.fleshMaterial(material).then(fleshed_material => {
+                        this.materialsDataSource.data.push(fleshed_material);
+                    });
+                });
+            });
+            observer.complete();
         });
-        this.pcrud.search('acmcm', {course: this.currentCourse.id(), item: item_ids}).subscribe(material => {
-            material.isdeleted(true);
-            this.pcrud.autoApply(material).subscribe(
-                val => {
-                    this.courseSvc.resetItemFields(material, this.currentCourse.owning_lib());
-                    console.debug('deleted: ' + val);
-                    this.deleteSuccessString.current().then(str => this.toast.success(str));
+    }
+
+    editSelectedMaterials(itemFields: IdlObject[]) {
+        // Edit each IDL thing one at a time
+        const editOneThing = (item: IdlObject) => {
+            if (!item) { return; }
+
+            this.showEditDialog(item).then(
+                () => editOneThing(itemFields.shift()));
+        };
+
+        editOneThing(itemFields.shift());
+    }
+
+    showEditDialog(course_material: IdlObject): Promise<any> {
+        this.editDialog.mode = 'update';
+        this.editDialog.recordId = course_material._id;
+        return new Promise((resolve, reject) => {
+            this.editDialog.open({size: 'lg'}).subscribe(
+                result => {
+                    this.materialEditSuccessString.current()
+                        .then(str => this.toast.success(str));
+                    this.pcrud.retrieve('acmcm', result).subscribe(material => {
+                        if (material.course() != this.courseId) {
+                            this.materialsDataSource.data.splice(
+                                this.materialsDataSource.data.indexOf(course_material, 0), 1
+                            );
+                        } else {
+                            course_material._relationship = material.relationship();
+                        }
+                    });
+                    resolve(result);
                 },
-                err => {
-                    this.deleteFailedString.current()
+                error => {
+                    this.materialEditFailedString.current()
                         .then(str => this.toast.danger(str));
+                    reject(error);
                 }
             );
         });
     }
-
+    
     associateItem(barcode, relationship) {
         if (barcode) {
             let args = {
@@ -101,59 +150,56 @@ export class CourseAssociateMaterialComponent extends DialogComponent {
                 currentCourse: this.currentCourse
             }
             this.barcodeInput = null;
-            
+
             this.pcrud.search('acp', {barcode: args.barcode}, {
                 flesh: 3, flesh_fields: {acp: ['call_number']}
             }).subscribe(item => {
-                let associatedMaterial = this.courseSvc.associateMaterials(item, args);
+                let associatedMaterial = this.course.associateMaterials(item, args);
                 associatedMaterial.material.then(res => {
                     item = associatedMaterial.item;
                     let new_cn = item.call_number().label();
                     if (this.tempCallNumber) new_cn = this.tempCallNumber;
-                    this.courseSvc.updateItem(item,
-                        this.currentCourse.owning_lib(),
-                        new_cn, args.isModifyingCallNumber).then(resp => {
-                        this.fetchItem(item.id(), args.relationship);
+                    this.course.updateItem(item, this.currentCourse.owning_lib(),
+                        new_cn, args.isModifyingCallNumber
+                    ).then(resp => {
+                        this.course.fleshMaterial(res).then(fleshed_material => {
+                            this.materialsDataSource.data.push(fleshed_material);
+                        });
                         if (item.circ_lib() != this.currentCourse.owning_lib()) {
-                            this.differentLibraryString.current().then(str => this.toast.warning(str));
+                            this.materialAddDifferentLibraryString.current()
+                            .then(str => this.toast.warning(str));
                         } else {
-                            this.successString.current().then(str => this.toast.success(str));
+                            this.materialAddSuccessString.current()
+                            .then(str => this.toast.success(str));
                         }
                     });
                 }, err => {
-                    this.failedString.current().then(str => this.toast.danger(str));
+                    this.materialAddFailedString.current()
+                    .then(str => this.toast.danger(str));
                 });
             });
         }
     }
 
-    fetchMaterials(pager: Pager): Observable<any> {
-        return new Observable<any>(observer => {
-            this.materials.forEach(material => {
-                this.fetchItem(material.item, material.relationship);
-            });
-            observer.complete();
+    deleteSelectedMaterials(items) {
+        let item_ids = [];
+        items.forEach(item => {
+            this.materialsDataSource.data.splice(this.materialsDataSource.data.indexOf(item, 0), 1);
+            item_ids.push(item.id())
         });
-    }
-
-    fetchItem(itemId, relationship): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.net.request(
-                'open-ils.circ',
-                'open-ils.circ.copy_details.retrieve',
-                this.auth.token(), itemId
-            ).subscribe(res => {
-                if (res) {
-                    let item = res.copy;
-                    item.call_number(res.volume);
-                    item.circ_lib(this.org.get(item.circ_lib()));
-                    item._title = res.mvr.title();
-                    item._relationship = relationship;
-                    this.gridDataSource.data.push(item);
+        this.pcrud.search('acmcm', {course: this.courseId, item: item_ids}).subscribe(material => {
+            material.isdeleted(true);
+            this.pcrud.autoApply(material).subscribe(
+                val => {
+                    this.course.resetItemFields(material, this.currentCourse.owning_lib());
+                    console.debug('deleted: ' + val);
+                    this.materialDeleteSuccessString.current().then(str => this.toast.success(str));
+                },
+                err => {
+                    this.materialDeleteFailedString.current()
+                        .then(str => this.toast.danger(str));
                 }
-            }, err => {
-                reject(err);
-            }, () => resolve(this.gridDataSource.data));
+            );
         });
     }
 }

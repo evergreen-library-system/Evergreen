@@ -1427,6 +1427,10 @@ div.result_table_utils_cont {
     font-size: [% css_fonts.size_bigger %];
 }
 
+.search_courses_label {
+    font-size: [% css_fonts.size_bigger %];
+}
+
 .lbl1 {
     font-size: [% css_fonts.size_bigger %];
     font-weight:bold;

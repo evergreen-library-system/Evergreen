@@ -777,20 +777,20 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
  * Detail view -- shows one copy
  */
 .controller('ViewCtrl', 
-       ['$scope','$q','$location','$routeParams','$timeout','$window','egCore','egItem','egBilling','egCirc',
-function($scope , $q , $location , $routeParams , $timeout , $window , egCore , itemSvc , egBilling , egCirc) {
+       ['$scope','$q','egGridDataProvider','$location','$routeParams','$timeout','$window','egCore','egItem','egBilling','egCirc',
+function($scope , $q , egGridDataProvider , $location , $routeParams , $timeout , $window , egCore , itemSvc , egBilling , egCirc) {
     var copyId = $routeParams.id;
     $scope.args.copyId = copyId;
     $scope.tab = $routeParams.tab || 'summary';
     $scope.context.page = 'detail';
     $scope.summaryRecord = null;
-
+    $scope.courseModulesOptIn = fetchCourseOptIn();
+    $scope.has_course_perms = fetchCoursePerms();
     $scope.edit = false;
     if ($scope.tab == 'edit') {
         $scope.tab = 'summary';
         $scope.edit = true;
     }
-
 
     // use the cached record info
     if (itemSvc.copy) {
@@ -998,6 +998,27 @@ console.debug($scope.copy_alert_count);
         });
     }
 
+    // Check for Course Modules Opt-In to enable Course Info tab
+    function fetchCourseOptIn() {
+        return egCore.org.settings(
+            'circ.course_materials_opt_in'
+        ).then(function(set) {
+            $scope.courseModulesOptIn = set['circ.course_materials_opt_in'];
+
+            return $scope.courseModulesOptIn;
+        });
+    }
+
+    function fetchCoursePerms() {
+        return egCore.perm.hasPermAt('MANAGE RESERVES', true).then(function(orgIds) {
+            if(orgIds.indexOf(egCore.auth.user().ws_ou()) != -1){
+                $scope.has_course_perms = true;
+
+                return $scope.has_course_perms;
+            }
+        });
+    }
+
     $scope.addBilling = function(circ) {
         egBilling.showBillDialog({
             xact_id : circ.id(),
@@ -1172,6 +1193,47 @@ console.debug($scope.copy_alert_count);
         })
     }
 
+    function loadCourseInfo() {
+        delete $scope.courses;
+        delete $scope.instructors;
+        delete $scope.course_ids;
+        delete $scope.instructors_exist;
+        if (!copyId) return;
+        $scope.course_ids = [];
+        $scope.courses = [];
+        $scope.instructors = {};
+
+        egCore.pcrud.search('acmcm', {
+            item: copyId
+        }, {
+            flesh: 3,
+            flesh_fields: {
+                acmcm: ['course']
+            }, order_by: {acmc : 'id desc'}
+        }).then(null, null, function(material) {
+            
+            $scope.courses.push(material.course());
+            egCore.net.request(
+                'open-ils.circ',
+                'open-ils.circ.course_users.retrieve',
+                material.course().id()
+            ).then(null, null, function(instructors) {
+                angular.forEach(instructors, function(instructor) {
+                    var patron_id = instructor.patron_id.toString();
+                    if (!$scope.instructors[patron_id]) {
+                        $scope.instructors[patron_id] = instructor;
+                        $scope.instructors_exist = true;
+                        $scope.instructors[patron_id]._linked_course = [];
+                    }
+                    $scope.instructors[patron_id]._linked_course.push({
+                        role: instructor.usr_role,
+                        course: material.course().name()
+                    });
+                });
+            });
+        });
+    }
+
 
     // we don't need all data on all tabs, so fetch what's needed when needed.
     function loadTabData() {
@@ -1192,6 +1254,10 @@ console.debug($scope.copy_alert_count);
             case 'holds':
                 loadHolds()
                 loadMostRecentTransit();
+                break;
+
+            case 'course':
+                loadCourseInfo();
                 break;
 
             case 'triggered_events':

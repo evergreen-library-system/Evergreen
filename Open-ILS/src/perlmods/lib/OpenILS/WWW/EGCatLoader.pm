@@ -145,6 +145,8 @@ sub load {
 
     return $self->load_simple("home") if $path =~ m|opac/home|;
     return $self->load_simple("css") if $path =~ m|opac/css|;
+    return $self->load_cresults if $path =~ m|opac/course/results|;
+    return $self->load_simple("course_search") if $path =~ m|opac/course_search|;
     return $self->load_simple("advanced") if
         $path =~ m:opac/(advanced|numeric|expert):;
 

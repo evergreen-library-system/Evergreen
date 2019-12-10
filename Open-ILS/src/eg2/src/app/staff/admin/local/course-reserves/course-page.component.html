@@ -4,6 +4,21 @@
   [bannerStyle]="currentCourse.is_archived() == 't' ? 'alert-secondary' : null"
   [bannerIcon]="currentCourse.is_archived() == 't' ? 'lock' : null">
 </eg-staff-banner>
+
+<div class="row">
+  <div class="col text-right">
+    <button class="btn btn-danger"
+      (click)="archiveCourse()" [disabled]="currentCourse && currentCourse.is_archived() == 't'">
+      <i class="material-icons align-middle"
+        *ngIf="currentCourse && currentCourse.is_archived() == 't'">block</i>
+      <span class="align-middle">Archive Course</span>
+    </button>
+    <a class="btn btn-warning ml-3" routerLink="/staff/admin/local/asset/course_list" i18n>
+      <i class="material-icons align-middle">keyboard_return</i>
+      <span class="align-middle">Return to Course List</span>
+    </a>
+  </div>
+</div>
 <ngb-tabset class="mb-3">
 
   <!-- Edit Tab -->
@@ -11,12 +26,6 @@
     <ng-template ngbTabContent>
       <div class="row">
         <div class="col-lg-3 mt-3">
-          <button class="p-2 mb-3 btn btn-danger btn-lg"
-            (click)="archiveCourse()" [disabled]="currentCourse && currentCourse.is_archived() == 't'">
-            <i class="material-icons align-middle"
-              *ngIf="currentCourse && currentCourse.is_archived() == 't'">block</i>
-            <span class="align-middle">Archive Course</span>
-          </button>
         </div>
         <div class="col-lg-6 mt-3">
           <eg-fm-record-editor displayMode="inline"
@@ -33,240 +42,21 @@
   <!-- Materials Tab -->
   <ngb-tab title="Course Materials" i18n-title id="courseMaterials">
     <ng-template ngbTabContent>
-      <div class="row mt-3">
-        <!-- Input Sidebar -->
-        <div class="col-lg-4 mt-3">
-          <div class="row mt-3">
-            <div class="col-lg-12 d-flex">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" i18n>Barcode</span>
-                </div>
-                <input type="text" class="flex-grow-1" [(ngModel)]="barcodeInput"
-                  (click)="$event.target.select()" 
-                  [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                  (keyup.enter)="associateItem(barcodeInput, relationshipInput)" />
-              </div>
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-lg-12 d-flex">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" i18n>Relationship</span>
-                </div>
-                <input type="text" [(ngModel)]="relationshipInput"
-                  [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                  placeholder-i18n placeholder="e.g. Required"
-                  class="flex-grow-1" />
-              </div>
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-lg-12 text-right">
-              <button class="btn btn-primary" 
-                [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                (click)="associateItem(barcodeInput, relationshipInput)"
-                i18n [disabled]="!barcodeInput">
-                Add Material
-              </button>
-            </div>
-          </div>
-          <div class="row justify-content-center mt-3">
-            <div class="col">
-              <h5 i18n>The following fields will be applied to the material 
-                    added, and reverted once the course is no longer associated 
-                    with the material.</h5>
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-lg-12 d-flex">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <span i18n>Call Number</span>
-                  </div>
-                </div>
-                <input type="text" [(ngModel)]="tempCallNumber"
-                  [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                  (input)="isModifyingCallNumber = true" class="flex-grow-1" />
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <input type="checkbox" [(ngModel)]="isModifyingCallNumber"
-                      [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                      aria-label="Checkbox for setting a temporary Call Number" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-lg-12 d-flex">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <span i18n>Circulation Modifier</span>
-                  </div>
-                </div>
-                <eg-combobox i18n-placeholder placeholder="Circulation Modifier..."
-                  idlClass="ccm" idlField="name" [displayTemplate]="idlClassLabel"
-                  [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                  [asyncSupportsEmptyTermClick]="true" class="flex-grow-1" 
-                  (onChange)="tempCircMod = $event.id; isModifyingCircMod = true">
-                </eg-combobox>
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <input type="checkbox" [(ngModel)]="isModifyingCircMod"
-                      [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                      aria-label="Checkbox for setting a temporary Circulation Modifier" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-lg-12 d-flex">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <span i18n>Item Status</span>
-                  </div>
-                </div>
-                <eg-combobox i18n-placeholder placeholder="Item Status..."
-                  idlClass="ccs" idlField="name" [displayTemplate]="idlClassLabel"
-                  [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                  [asyncSupportsEmptyTermClick]="true" class="flex-grow-1" 
-                  (onChange)="tempStatus = $event.id; isModifyingStatus = true">
-                </eg-combobox>
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <input type="checkbox" [(ngModel)]="isModifyingStatus"
-                      [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                      aria-label="Checkbox for setting a temporary Item Status" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-lg-12 d-flex">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <div class="input-group-text">
-                    <span i18n>Shelving Location</span>
-                  </div>
-                </div>
-                <eg-item-location-select permFilter="MANAGE_RESERVES" class="flex-grow-1" 
-                  [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                  [(ngModel)]="tempLocation" (valueChange)="isModifyingLocation = true">
-                </eg-item-location-select>
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <input type="checkbox" [(ngModel)]="isModifyingLocation"
-                      [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                      aria-label="Checkbox for setting a temporary Shelving Location" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- End Input Sidebar -->
-        <div class="col-lg-8 mt-3">
-          <eg-grid #materialsGrid [dataSource]="materialsDataSource">
-            <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)">
-            </eg-grid-toolbar-action>
-
-            <eg-grid-column path="id" [index]=true [hidden]="true" label="ID" i18n-label></eg-grid-column>
-            <eg-grid-column label="Barcode" i18n-label name="barcode" [cellTemplate]="barcodeCellTemplate"></eg-grid-column>
-            <eg-grid-column label="Title" i18n-label name="title" [cellTemplate]="titleCellTemplate"></eg-grid-column>
-            <eg-grid-column path="call_number.label" label="Call Number" i18n-label></eg-grid-column>
-            <eg-grid-column path="call_number.prefix.label" [hidden]="true" label="Call Number Prefix" i18n-label hidden></eg-grid-column>
-            <eg-grid-column path="call_number.suffix.label" [hidden]="true" label="Call Number Suffix" i18n-label hidden></eg-grid-column>
-            <eg-grid-column path="circ_modifier" [hidden]="true" label="Circulation Modifier" i18n-label></eg-grid-column>
-            <eg-grid-column path="circ_lib.shortname" label="Circulation Library" i18n-label></eg-grid-column>
-            <eg-grid-column path="location.name" [hidden]="true" label="Shelving Location" i18n-label></eg-grid-column>
-            <eg-grid-column path="status.name" [hidden]="true" label="Copy Status" i18n-label></eg-grid-column>
-            <eg-grid-column path="_relationship" label="Relationship" i18n-label></eg-grid-column>
-          </eg-grid>
-        </div>
-      </div>
-      <ng-template #barcodeCellTemplate let-entry="row">
-        <span>
-          <a class="pl-1"
-            href="/eg/staff/cat/item/{{entry.id()}}">
-            {{entry.barcode()}}
-          </a>
-        </span>
-      </ng-template>
-      <ng-template #titleCellTemplate let-entry="row">
-        <span>
-          <a class="pl-1"
-            href="/eg/staff/cat/catalog/record/{{entry.call_number().record()}}">
-            {{entry._title}}
-          </a>
-        </span>
-      </ng-template>
-      <ng-template #idlClassLabel let-r="result" i18n>
-        {{r.label}}
-      </ng-template>
+      <eg-course-associate-material-dialog [courseId]="courseId" 
+        [currentCourse]="currentCourse" displayMode="inline">
+      </eg-course-associate-material-dialog>
     </ng-template>
   </ngb-tab>
 
   <!-- Users Tab -->
   <ngb-tab title="Course Users" i18n-title id="courseUsers">
     <ng-template ngbTabContent>
-      <div class="row mt-3">
-        <div class="col-lg-4 mt-3">
-          <div class="row mt-3">
-            <div class="col-lg-12 d-flex">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" i18n>Patron Barcode</span>
-                </div>
-                <input type="text" class="flex-grow-1" [(ngModel)]="userBarcode"
-                  (click)="$event.target.select()" 
-                  [disabled]="currentCourse && currentCourse.is_archived() == 't'" />
-                  <!--(keyup.enter)="associateUser(userBarcode)"-->
-              </div>
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-lg-12 d-flex">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" i18n>Role</span>
-                </div>
-                <input type="text" [(ngModel)]="userRoleInput"
-                  [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                  placeholder-i18n placeholder="e.g. Student, TA, Instructor..."
-                  class="flex-grow-1" />
-              </div>
-            </div>
-          </div>
-          <div class="row mt-3">
-            <div class="col-lg-12 text-right">
-              <!--(click)="associateUser(userBarcode)"-->
-              <button class="btn btn-primary"
-                [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                i18n [disabled]="!userBarcode">
-                Add User
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-8 mt-3">
-          <!-- eg-grid -->
-        </div>
-      </div>
+      <eg-course-associate-users-dialog [courseId]="courseId" 
+        [currentCourse]="currentCourse" displayMode="inline">
+      </eg-course-associate-users-dialog>
     </ng-template>
   </ngb-tab>
 </ngb-tabset>
 
 <eg-string #archiveFailedString i18n-text text="Archival of Course failed or was not allowed"></eg-string>
 <eg-string #archiveSuccessString i18n-text text="Archival of Course succeeded"></eg-string>
-<eg-string #materialDeleteFailedString i18n-text text="Disassociation of Course Material failed or was not allowed"></eg-string>
-<eg-string #materialDeleteSuccessString i18n-text text="Disassociation of Course Material succeeded"></eg-string>
-<eg-string #materialAddSuccessString i18n-text text="Association of Course Material succeeded"></eg-string>
-<eg-string #materialAddFailedString i18n-text text="Association of Course Material failed or was not allowed"></eg-string>
-<eg-string #MaterialAddDifferentLibraryString i18n-text text="Material exists at a different library"></eg-string>

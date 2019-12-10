@@ -45,24 +45,55 @@ export class CourseService {
         }
     }
 
-    fleshMaterial(itemId, relationship?): Promise<any> {
+    getUsers(course_ids?: Number[]): Promise<IdlObject[]> {
+        if (!course_ids) {
+            return this.pcrud.retrieveAll('acmcu',
+                {}, {atomic: true}).toPromise();
+        } else {
+            return this.pcrud.search('acmcu', {course: course_ids},
+                {}, {atomic: true}).toPromise();
+        }
+    }
+
+    fleshMaterial(material): Promise<any> {
+        console.log(material)
         return new Promise((resolve, reject) => {
             let item = this.idl.create('acp');
             this.net.request(
                 'open-ils.circ',
                 'open-ils.circ.copy_details.retrieve',
-                this.auth.token(), itemId
+                this.auth.token(), material.item()
             ).subscribe(res => {
                 if (res && res.copy) {
                     item = res.copy;
                     item.call_number(res.volume);
                     item._title = res.mvr.title();
                     item.circ_lib(this.org.get(item.circ_lib()));
-                    if (relationship) item._relationship = relationship;
+                    item._id = material.id();
+                    if (material.relationship())
+                        item._relationship = material.relationship();
                 }
             }, err => {
                 reject(err);
             }, () => resolve(item));
+        });
+    }
+
+    fleshUser(course_user): Promise<any> {
+        return new Promise((resolve, reject) => {
+            let user = this.idl.create('au');
+            this.net.request(
+                'open-ils.actor',
+                'open-ils.actor.user.fleshed.retrieve',
+                this.auth.token(), course_user.usr()
+            ).subscribe(patron => {
+                user = patron;
+                user._id = course_user.id();
+                if (course_user.usr_role()) user._role = course_user.usr_role();
+                if (course_user.is_public()) user._is_public = course_user.is_public();
+            }, err => {
+                reject(err);
+            }, () => resolve(user));
         });
     }
 
@@ -145,6 +176,15 @@ export class CourseService {
         return response;
     }
 
+    associateUsers(patron_id, args) {
+        let new_user = this.idl.create('acmcu');
+        if (args.is_public) new_user.is_public(args.is_public);
+        if (args.role) new_user.usr_role(args.role);
+        new_user.course(args.currentCourse.id());
+        new_user.usr(patron_id);
+        return this.pcrud.create(new_user).toPromise()
+    }
+
     disassociateMaterials(courses) {
         return new Promise((resolve, reject) => {
             let course_ids = [];
@@ -181,7 +221,7 @@ export class CourseService {
             this.pcrud.search('acmcu', {user: user_ids}).subscribe(user => {
                 user.course(user_ids);
                 this.pcrud.autoApply(user).subscribe(res => {
-                    console.log(res);
+                    console.debug(res);
                 }, err => {
                     reject(err);
                 }, () => {

@@ -150,7 +150,10 @@ END; # FOREACH bib
 
             [% IF copy_info.courses.size > 0 || ctx.is_staff %]
             <td>[% copy_info.circ_modifier | html %]</td>
-            [% ELSIF ctx.is_staff %]
+            [% ELSIF ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1 %]
+            <td></td>
+            [% END %]
+            [% IF ctx.is_staff %]
             <td>
                 [% copy_info.age_protect ?
                     ctx.get_crahp(copy_info.age_protect).name : l('None') | html %]
@@ -171,8 +174,6 @@ END; # FOREACH bib
                    '-';
                 END;
             %]</td>
-            [% ELSIF ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1 %]
-            <td></td>
             [% END # is_staff %]
             [% IF ctx.is_staff OR serial_holdings %]
             <td>[%  # Show copy/volume hold links to staff (without

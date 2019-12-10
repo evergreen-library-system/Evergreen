@@ -23,6 +23,9 @@
   <li ng-class="{active : tab == 'triggered_events'}">
     <a href="./cat/item/{{copy.id()}}/triggered_events">[% l('Triggered Events') %]</a>
   </li>
+  <li ng-class="{active : tab == 'course'}" ng-if="has_course_perms && courseModulesOptIn">
+    <a href="./cat/item/{{copy.id()}}/course">[% l('Course Info') %]</a>
+  </li>
 </ul>
 <div class="tab-content">
   <div class="tab-pane active">

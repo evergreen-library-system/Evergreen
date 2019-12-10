@@ -1,0 +1,114 @@
+[%- PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Course Search Results");
+    page = CGI.param('page');
+    page = page.match('^\d+$') ? page : 0; # verify page is a sane value
+
+    page_count = (!ctx.page_size.defined || !ctx.hit_count.defined || ctx.page_size == 0) ? 1 : POSIX.ceil(ctx.hit_count / ctx.page_size);
+
+    # We don't want search engines indexing search results
+    ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
+
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS get_library;
+    ctx.result_start = 1 + ctx.page_size * page;
+    ctx.result_stop = ctx.page_size * (page + 1);
+    IF ctx.result_stop > ctx.hit_count; ctx.result_stop = ctx.hit_count; END;
+
+    result_count = ctx.result_start;
+-%]
+<h2 class="sr-only">[% l('Course Search Results') %]</h2>
+[% INCLUDE "opac/parts/searchbar.tt2" %]
+<div class="almost-content-wrapper">
+  <div id="results_header_bar">
+    <div id="results_header_inner">
+      <div class="results_header_btns">
+        <a href="[% mkurl(ctx.opac_root _ '/course_search', {$loc_name => loc_value}, 1) %]">[% l('Another Search') %]</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="content-wrapper">
+  <div id="main-content">
+    <div id="results-page">
+      [% PROCESS "opac/parts/result/paginate.tt2" %] 
+      [% ctx.results_count_header = PROCESS results_count_header;
+    ctx.results_count_header %]
+      <div id="result_table_div">
+      <div id="result_block" class="result_block_visible">
+
+      <table id="result_table_table" title="[% l('Search Results') %]"
+        class="table_no_border_space table_no_cell_pad">
+        <thead class="sr-only">
+          <tr>
+            <th>[% l('Search result number') %]</th>
+            <th>[% l('Course details') %]</th>
+          </tr>
+        </thead>
+        <tbody id="result_table">
+        [% FOR course IN ctx.courses %]
+          [% course_url_path = ctx.opac_root _ '/course/' _ course.id; %]
+          [% # Do not pass "advanced params" to result detail code.
+          # Instead, pass the scrubed query in one-line form
+          del_parms = del_parms.merge(['query', 'bool', 
+                   'qtype', 'contains', '_adv']);
+          add_parms.import(
+           {query => ctx.naive_query_scrub(ctx.user_query)} );
+                  %]
+          <tr class="result_table_row">
+            <td class="results_row_count" name="results_row_count">
+              [% result_count; result_count = result_count + 1 %].
+            </td>
+            <td class="result_table_pic_header"></td>
+            <td class="result_table_title_cell" name="result_table_title_cell">
+              <div class="result_metadata">
+                <a class="record_title search_link" name="course_[% course.id %]"
+                  href="[% mkurl(course_url_path) %]"
+                  [% html_text_attr('title', l('Display course details for "[_1]"', course.name)) %]>
+                  [% course.course_number %]:  [% l(course.name) %]
+                </a>
+                <div>
+                  [% FOR instructor IN course.instructors %]
+                    [% instructorString = '';
+                      IF instructor.pref_family_name;
+                        instructorString = instructorString _ instructor.pref_family_name _ ', ';
+                      ELSE;
+                        instructorString = instructorString _ instructor.family_name _ ', ';
+                      END;
+                      IF instructor.pref_first_given_name;
+                        instructorString = instructorString _ instructor.pref_first_given_name;
+                      ELSE;
+                        instructorString = instructorString _ instructor.first_given_name;
+                      END; %]
+                  <a title="[% l('Perform an Instructor Search') %]"
+                    class="record_author"
+                    href="[%
+                       mkurl(ctx.opac_root _ '/results', {qtype => 'instructor', query => instructorString})
+                    %]" rel="nofollow" vocab="">
+                  [% instructorString %] ([% l(instructor.usr_role) %])</a>. 
+                  [% END %]
+                </div>
+                <div>
+                  <span><strong>[% l('Course Number') %]</strong>: [% course.course_number %]</span>
+                </div>
+                <div>
+                  <span><strong>[% l('Section Number') %]</strong>: [% course.section_number %]</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              [% ctx.get_aou(course.owning_lib).name %]
+            </td>
+          </tr>
+        [% END %]
+        </tbody>
+      </table>
+      </div>
+      </div>
+    </div>
+    <div class="common-full-pad"></div>
+  </div>
+  <br class="clear-both" />
+</div>
+[%- END %]

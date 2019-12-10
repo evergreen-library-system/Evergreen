@@ -1,0 +1,72 @@
+<div class="col-md-12" ng-show="!has_course_perms">
+  <div class="alert alert-danger">
+    [% l('You do not have sufficient permissions to view this page') %]
+  </div>
+</div>
+
+<div ng-show="has_course_perms">
+  <div class="col-md-6" ng-show="!courses.length">
+    <div class="alert alert-info">
+      [% l('No Associated Courses') %]
+    </div>
+  </div>
+  <div class="col-md-6" ng-show="courses.length">
+    <div class="flex-row">
+      <div class="flex-cell flex-2 strong-text-2">
+        [% l('Associated Courses') %]
+      </div>
+    </div>
+
+    <div class="flex-row well well-sm" ng-repeat="course in courses">
+      <div class="flex-cell">
+        <a href="/eg2/staff/admin/local/asset/course_list/{{course.id()}}">{{course.course_number()}}: {{course.name()}}</a>
+      </div>
+  </div>
+</div>
+
+  <div class="col-md-6" ng-show="!instructors_exist">
+    <div class="alert alert-info">
+      [% l('No Associated Instructors') %]
+    </div>
+  </div>
+  <div class="col-md-6" ng-show="instructors_exist">
+    <div class="flex-row">
+      <div class="flex-cell flex-2 strong-text-2">
+        [% l('Associated Instructors') %]
+      </div>
+    </div>
+
+    <div class="flex-row" ng-repeat="(key, instructor) in instructors">
+      <div class="flex-cell">
+        <strong>
+        <span ng-if="instructor.pref_family_name">
+          {{instructor.pref_family_name}}, 
+        </span>
+        <span ng-if="!instructor.pref_family_name">
+          {{instructor.family_name}}, 
+        </span>
+        <span ng-if="instructor.pref_first_given_name">
+          {{instructor.pref_first_given_name}}
+        </span>
+        <span ng-if="!instructor.pref_first_given_name">
+          {{instructor.first_given_name}}
+        </span>
+        <span ng-if="instructor.pref_second_given_name">
+          {{instructor.pref_second_given_name}}
+        </span>
+        <span ng-if="!instructor.pref_second_given_name && instructor.second_given_name">
+          {{instructor.second_given_name}}
+        </span>
+        </strong>
+        <div class="well well-sm dt">
+          <div class="flex-row" ng-repeat="key in instructor._linked_course">
+            <div class="flex-cell">
+              <span>{{key.course}} </span> 
+              <span>({{key.role}})</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

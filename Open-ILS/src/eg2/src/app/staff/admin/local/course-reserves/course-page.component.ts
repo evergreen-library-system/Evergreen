@@ -16,6 +16,8 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {StaffBannerComponent} from '@eg/staff/share/staff-banner.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {CourseService} from '@eg/staff/share/course.service';
+import {CourseAssociateUsersComponent} from './course-associate-users.component';
+import {CourseAssociateMaterialComponent} from './course-associate-material.component';
 
 @Component({
     selector: 'eg-course-page',
@@ -26,6 +28,11 @@ export class CoursePageComponent implements OnInit {
 
     currentCourse: IdlObject;
     courseId: any;
+
+    @ViewChild('courseMaterialDialog', {static: true})
+        private courseMaterialDialog: CourseAssociateMaterialComponent;
+    @ViewChild('courseUserDialog', {static: true})
+        private courseUserDialog: CourseAssociateUsersComponent;
     
     // Edit Tab
     @ViewChild('archiveFailedString', { static: true })
@@ -34,44 +41,18 @@ export class CoursePageComponent implements OnInit {
         archiveSuccessString: StringComponent;
 
     // Materials Tab
-    materials: any[] = [];
-    @ViewChild('materialsGrid', {static: true}) materialsGrid: GridComponent;
-    @ViewChild('materialDeleteFailedString', { static: true })
-        materialDeleteFailedString: StringComponent;
-    @ViewChild('materialDeleteSuccessString', { static: true })
-        materialDeleteSuccessString: StringComponent;
-    @ViewChild('materialAddSuccessString', { static: true })
-        materialAddSuccessString: StringComponent;
-    @ViewChild('materialAddFailedString', { static: true })
-        materialAddFailedString: StringComponent;
-    @ViewChild('materialAddDifferentLibraryString', { static: true })
-        materialAddDifferentLibraryString: StringComponent;
-    materialsDataSource: GridDataSource;
-    @Input() barcodeInput: String;
-    @Input() relationshipInput: String;
-    @Input() tempCallNumber: String;
-    @Input() tempStatus: Number;
-    @Input() tempLocation: Number;
-    @Input() tempCircMod: String;
-    @Input() isModifyingStatus: Boolean;
-    @Input() isModifyingCircMod: Boolean;
-    @Input() isModifyingCallNumber: Boolean;
-    @Input() isModifyingLocation: Boolean;
 
-    // Users Tab
-    @Input() userBarcode: String;
-    @Input() userRoleInput: String;
     constructor(
         private auth: AuthService,
         private course: CourseService,
         private event: EventService,
         private idl: IdlService,
+        private net: NetService,
         private org: OrgService,
         private pcrud: PcrudService,
         private route: ActivatedRoute,
         private toast: ToastService
     ) {
-        this.materialsDataSource = new GridDataSource();
     }
 
     ngOnInit() {
@@ -79,9 +60,6 @@ export class CoursePageComponent implements OnInit {
         this.course.getCourses([this.courseId]).then(course => {
             this.currentCourse = course[0];
         });
-        this.materialsDataSource.getRows = (pager: Pager, sort: any[]) => {
-            return this.loadMaterialsGrid(pager);
-        }
     }
 
     // Edit Tab
@@ -100,84 +78,5 @@ export class CoursePageComponent implements OnInit {
     }
 
     // Materials Tab
-    loadMaterialsGrid(pager: Pager): Observable<any> {
-        return new Observable<any>(observer => {
-            this.course.getMaterials(this.courseId).then(materials => {
-                materials.forEach(material => {
-                    this.course.fleshMaterial(material.item(), material.relationship()).then(fleshed_material => {
-                        this.materialsDataSource.data.push(fleshed_material);
-                    });
-                });
-            });
-            observer.complete();
-        });
-    }
     
-    associateItem(barcode, relationship) {
-        if (barcode) {
-            let args = {
-                barcode: barcode,
-                relationship: relationship,
-                isModifyingCallNumber: this.isModifyingCallNumber,
-                isModifyingCircMod: this.isModifyingCircMod,
-                isModifyingLocation: this.isModifyingLocation,
-                isModifyingStatus: this.isModifyingStatus,
-                tempCircMod: this.tempCircMod,
-                tempLocation: this.tempLocation,
-                tempStatus: this.tempStatus,
-                currentCourse: this.currentCourse
-            }
-            this.barcodeInput = null;
-
-            this.pcrud.search('acp', {barcode: args.barcode}, {
-                flesh: 3, flesh_fields: {acp: ['call_number']}
-            }).subscribe(item => {
-                let associatedMaterial = this.course.associateMaterials(item, args);
-                associatedMaterial.material.then(res => {
-                    item = associatedMaterial.item;
-                    let new_cn = item.call_number().label();
-                    if (this.tempCallNumber) new_cn = this.tempCallNumber;
-                    this.course.updateItem(item, this.currentCourse.owning_lib(),
-                        new_cn, args.isModifyingCallNumber
-                    ).then(resp => {
-                        this.course.fleshMaterial(item.id(), args.relationship).then(fleshed_material => {
-                            this.materialsDataSource.data.push(fleshed_material);
-                        });
-                        if (item.circ_lib() != this.currentCourse.owning_lib()) {
-                            this.materialAddDifferentLibraryString.current()
-                            .then(str => this.toast.warning(str));
-                        } else {
-                            this.materialAddSuccessString.current()
-                            .then(str => this.toast.success(str));
-                        }
-                    });
-                }, err => {
-                    this.materialAddFailedString.current()
-                    .then(str => this.toast.danger(str));
-                });
-            });
-        }
-    }
-
-    deleteSelected(items) {
-        let item_ids = [];
-        items.forEach(item => {
-            this.materialsDataSource.data.splice(this.materialsDataSource.data.indexOf(item, 0), 1);
-            item_ids.push(item.id())
-        });
-        this.pcrud.search('acmcm', {course: this.courseId, item: item_ids}).subscribe(material => {
-            material.isdeleted(true);
-            this.pcrud.autoApply(material).subscribe(
-                val => {
-                    this.course.resetItemFields(material, this.currentCourse.owning_lib());
-                    console.debug('deleted: ' + val);
-                    this.materialDeleteSuccessString.current().then(str => this.toast.success(str));
-                },
-                err => {
-                    this.materialDeleteFailedString.current()
-                        .then(str => this.toast.danger(str));
-                }
-            );
-        });
-    }
 }

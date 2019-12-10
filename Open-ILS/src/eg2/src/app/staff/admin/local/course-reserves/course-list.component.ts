@@ -12,6 +12,7 @@ import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
+import {LocaleService} from '@eg/core/locale.service';
 
 import {CourseAssociateMaterialComponent
     } from './course-associate-material.component';
@@ -51,6 +52,7 @@ export class CourseListComponent implements OnInit {
     constructor(
         private auth: AuthService,
         private courseSvc: CourseService,
+        private locale: LocaleService,
         private net: NetService,
         private org: OrgService,
         private pcrud: PcrudService,
@@ -89,28 +91,19 @@ export class CourseListComponent implements OnInit {
         };
     }
 
-    navigateToCoursePage(id: any) {
-        this.router.navigate(["/staff/admin/local/asset/course_list/" + id]);
-    }
-
-    showEditDialog(standingPenalty: IdlObject): Promise<any> {
-        this.editDialog.mode = 'update';
-        this.editDialog.recordId = standingPenalty['id']();
-        return new Promise((resolve, reject) => {
-            this.editDialog.open({size: this.dialog_size}).subscribe(
-                result => {
-                    this.successString.current()
-                        .then(str => this.toast.success(str));
-                    this.grid.reload();
-                    resolve(result);
-                },
-                error => {
-                    this.updateFailedString.current()
-                        .then(str => this.toast.danger(str));
-                    reject(error);
-                }
-            );
+    navigateToCoursePage(id_arr: IdlObject[]) {
+        if (typeof id_arr == 'number') id_arr = [id_arr];
+        let urls = [];
+        id_arr.forEach(id => {console.log(this.router.url);
+            urls.push([this.locale.currentLocaleCode() + this.router.url + '/' +  id]);
         });
+        if (id_arr.length == 1) {
+        this.router.navigate([this.router.url + '/' + id_arr[0]]);
+        } else {
+            urls.forEach(url => {
+                window.open(url)
+            });
+        }
     }
 
     createNew() {
@@ -134,12 +127,15 @@ export class CourseListComponent implements OnInit {
 
     editSelected(fields: IdlObject[]) {
         // Edit each IDL thing one at a time
-        const editOneThing = (field_object: IdlObject) => {
-            if (!field_object) { return; }
-            this.showEditDialog(field_object).then(
-                () => editOneThing(fields.shift()));
-        };
-        editOneThing(fields.shift());
+        let course_ids = [];
+        fields.forEach(field => {
+            if (typeof field['id'] == 'function') {
+                course_ids.push(field.id());
+            } else {
+                course_ids.push(field['id']);
+            }
+        });
+        this.navigateToCoursePage(course_ids);
     }
 
     archiveSelected(course: IdlObject[]) {
@@ -182,99 +178,5 @@ export class CourseListComponent implements OnInit {
             );
         });
     };
-
-    fetchCourseMaterials(course, currentMaterials): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.pcrud.search('acmcm', {course: course}).subscribe(res => {
-                if (res) this.fleshItemDetails(res.item(), res.relationship());
-            }, err => {
-                reject(err);
-            }, () => resolve(this.courseMaterialDialog.gridDataSource.data));
-        });
-    }
-
-    /**
-     * Uses the course id to fetch the different users associated with that course.
-     * @param course The course id
-     * @param currentMaterials 
-     */
-    fetchCourseUsers(course, currentMaterials): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.pcrud.search('acmcu', {course: course}).subscribe(res => {
-                if(res) this.fleshUserDetails(res.usr(), res.usr_role());
-            }, err => {
-                reject(err);
-            }, () => resolve(this.courseUserDialog.gridDataSource.data));
-        });
-    }
-
-    /**
-     * Takes the user id from the course table, and cross references that with the user table,
-     * to find the right data.
-     * @param userId The user id that is to be cross referenced.
-     * @param usr_role The user role that is to be added to the grid.
-     */
-    fleshUserDetails(userId, usr_role) {
-        return new Promise((resolve, reject) => {
-            this.pcrud.search("au", {id:userId}).subscribe(res => {
-                if (res) {
-                    let user = res;
-                    user._usr_role = usr_role;
-                    this.courseUserDialog.gridDataSource.data.push(user);
-                }
-            }, err => {
-                reject(err);
-            }, () => resolve(this.courseMaterialDialog.gridDataSource.data));
-        });
-    }
-
-    fleshItemDetails(itemId, relationship): Promise<any> {
-        return new Promise((resolve, reject) => {
-            this.net.request(
-                'open-ils.circ',
-                'open-ils.circ.copy_details.retrieve',
-                this.auth.token(), itemId
-            ).subscribe(res => {
-                if (res) {
-                    let item = res.copy;
-                    item.call_number(res.volume);
-                    item._title = res.mvr.title();
-                    item.circ_lib(this.org.get(item.circ_lib()));
-                    item._relationship = relationship;
-                    this.courseMaterialDialog.gridDataSource.data.push(item);
-                }
-            }, err => {
-                reject(err);
-            }, () => resolve(this.courseMaterialDialog.gridDataSource.data));
-        });
-    }
-
-    openMaterialsDialog(course) {
-        let currentMaterials = []
-        this.courseMaterialDialog.gridDataSource.data = [];
-        this.fetchCourseMaterials(course[0].id(), currentMaterials).then(res => {
-            this.courseMaterialDialog.currentCourse = course[0];
-            this.courseMaterialDialog.materials = currentMaterials;
-            this.courseMaterialDialog.open({size: 'lg'}).subscribe(res => {
-                console.log(res);
-            });
-        });
-    }
-
-    /**
-     * Opens the user dialog component using the course id
-     * @param course 
-     */
-    openUsersDialog(course) { 
-        let currentUsers = []
-        this.courseUserDialog.gridDataSource.data = [];
-        this.fetchCourseUsers(course[0].id(), currentUsers).then(res => {
-            this.courseUserDialog.currentCourse = course[0];
-            this.courseUserDialog.users = currentUsers;
-            this.courseUserDialog.open({size: 'lg'}).subscribe(res => {
-                console.log(res);
-            });
-        });
-    }
 }
 

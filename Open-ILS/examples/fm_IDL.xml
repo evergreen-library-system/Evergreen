@@ -3121,7 +3121,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="Course Members" name="members" oils_persist:virtual="true" reporter:datatype="link" />
             <field reporter:label="Course Materials" name="materials" oils_persist:virtual="true" reporter:datatype="link" />
             <field reporter:label="Non-Cataloged Course Materials" name="non_cat_materials" oils_persist:virtual="true" reporter:datatype="link" />
-            <field reporter:label="Is Archived?" name="is_archived" reporter:datatype="boolean" />
+            <field reporter:label="Is Archived?" name="is_archived" reporter:datatype="bool" />
         </fields>
         <links>
             <link field="owning_lib" reltype="has_a" key="id" map="" class="aou" />
@@ -3144,7 +3144,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="Course" name="course" reporter:datatype="link" />
             <field reporter:label="User" name="usr" reporter:datatype="link" />
             <field reporter:label="User Role" name="usr_role" reporter:datatype="text" />
-            <field reporter:label="Is Public Viewable?" name="is_public" reporter:datatype="boolean" />
+            <field reporter:label="OPAC Viewable?" name="is_public" reporter:datatype="bool" />
         </fields>
         <links>
             <link field="course" reltype="has_a" key="id" map="" class="acmc" />
