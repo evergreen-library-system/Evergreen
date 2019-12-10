@@ -22,6 +22,7 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.CLEAR_SHELF_ACTION_hold = "[% l('Needed for Hold') %]";
   s.CLEAR_SHELF_ACTION_transit = "[% l('Needs Transiting') %]";
   s.CLEAR_SHELF_ACTION_pl_changed = "[% l('Wrong Shelf') %]";
+  s.PULL_LIST_TITLE = "[% l('Pull List') %]";
 }])
 </script>
 [% END %]
