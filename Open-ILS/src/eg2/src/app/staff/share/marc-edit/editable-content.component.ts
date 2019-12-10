@@ -1,9 +1,9 @@
-import {ElementRef, Component, Input, Output, OnInit, OnDestroy, 
+import {ElementRef, Component, Input, Output, OnInit, OnDestroy,
     EventEmitter, AfterViewInit, Renderer2} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {MarcRecord, MarcField, MarcSubfield} from './marcrecord';
-import {MarcEditContext, FieldFocusRequest, MARC_EDITABLE_FIELD_TYPE, 
+import {MarcEditContext, FieldFocusRequest, MARC_EDITABLE_FIELD_TYPE,
     TextUndoRedoAction} from './editor-context';
 import {ContextMenuEntry} from '@eg/share/context-menu/context-menu.service';
 import {TagTableService} from './tagtable.service';
@@ -18,7 +18,7 @@ import {TagTableService} from './tagtable.service';
   styleUrls: ['./editable-content.component.css']
 })
 
-export class EditableContentComponent 
+export class EditableContentComponent
     implements OnInit, AfterViewInit, OnDestroy {
 
     @Input() context: MarcEditContext;
@@ -43,7 +43,7 @@ export class EditableContentComponent
     editInput: any; // <input/> or <div contenteditable/>
     maxLength: number = null;
 
-    // Track the load-time content so we know what text value to 
+    // Track the load-time content so we know what text value to
     // track on our undo stack.
     undoBackToText: string;
 
@@ -91,12 +91,12 @@ export class EditableContentComponent
             if (req.fieldId !== this.field.fieldId) { return false; }
         } else if (req.target === 'ldr') {
             return this.isLeader;
-        } else if (req.target === 'ffld' && 
+        } else if (req.target === 'ffld' &&
             req.ffCode !== this.fixedFieldCode) {
             return false;
         }
 
-        if (req.sfOffset !== undefined && 
+        if (req.sfOffset !== undefined &&
             req.sfOffset !== this.subfield[2]) {
             // this is not the subfield you are looking for.
             return false;
@@ -113,7 +113,7 @@ export class EditableContentComponent
         }
 
         if (!req) {
-            // Focus request may have come from keyboard navigation, 
+            // Focus request may have come from keyboard navigation,
             // clicking, etc.  Model the event as a focus request
             // so it can be tracked the same.
             req = {
@@ -195,14 +195,14 @@ export class EditableContentComponent
     contextMenuEntries(): ContextMenuEntry[] {
         if (this.isLeader) { return; }
 
-        switch(this.fieldType) {
-            case 'tag': 
+        switch (this.fieldType) {
+            case 'tag':
                 return this.tagTable.getFieldTags();
 
-            case 'sfc': 
+            case 'sfc':
                 return this.tagTable.getSubfieldCodes(this.field.tag);
 
-            case 'sfv': 
+            case 'sfv':
                 return this.tagTable.getSubfieldValues(
                     this.field.tag, this.subfield[0]);
 
@@ -211,7 +211,7 @@ export class EditableContentComponent
                 return this.tagTable.getIndicatorValues(
                     this.field.tag, this.fieldType);
 
-            case 'ffld': 
+            case 'ffld':
                 return this.tagTable.getFfValues(
                     this.fixedFieldCode, this.record.recordType());
         }
@@ -223,7 +223,7 @@ export class EditableContentComponent
         if (this.fieldText) { return this.fieldText; } // read-only
 
         switch (this.fieldType) {
-            case 'ldr': return this.record.leader; 
+            case 'ldr': return this.record.leader;
             case 'cfld': return this.field.data;
             case 'tag': return this.field.tag;
             case 'sfc': return this.subfield[0];
@@ -231,7 +231,7 @@ export class EditableContentComponent
             case 'ind1': return this.field.ind1;
             case 'ind2': return this.field.ind2;
 
-            case 'ffld': 
+            case 'ffld':
                 // When actively editing a fixed field, track its value
                 // in a local variable instead of pulling the value
                 // from record.extractFixedField(), which applies
@@ -244,7 +244,7 @@ export class EditableContentComponent
                     !this.context.lastFocused ||
                     !this.focusRequestIsMe(this.context.lastFocused)) {
 
-                    this.ffValue = 
+                    this.ffValue =
                         this.record.extractFixedField(this.fixedFieldCode);
                 }
                 return this.ffValue;
@@ -264,7 +264,7 @@ export class EditableContentComponent
             case 'sfv': this.subfield[1] = value; break;
             case 'ind1': this.field.ind1 = value; break;
             case 'ind2': this.field.ind2 = value; break;
-            case 'ffld': 
+            case 'ffld':
                 // Track locally and propagate to the record.
                 this.ffValue = value;
                 this.record.setFixedField(this.fixedFieldCode, value);
@@ -316,7 +316,7 @@ export class EditableContentComponent
         this.setContent(action.textContent, true, true);
 
         action.textContent = recoverContent;
-        const moveTo = action.isRedo ? 
+        const moveTo = action.isRedo ?
             this.context.undoStack : this.context.redoStack;
 
         moveTo.unshift(action);
@@ -324,7 +324,7 @@ export class EditableContentComponent
 
     inputBlurred() {
         // If the text content changed during this focus session,
-        // track the new value as the value the next session of 
+        // track the new value as the value the next session of
         // text edits should return to upon undo.
         this.undoBackToText = this.getContent();
     }
@@ -370,22 +370,22 @@ export class EditableContentComponent
     // Route keydown events to the appropriate handler
     inputKeyDown(evt: KeyboardEvent) {
 
-        switch(evt.key) {
-            case 'y': 
+        switch (evt.key) {
+            case 'y':
                 if (evt.ctrlKey) { // redo
                     this.context.requestRedo();
                     evt.preventDefault();
                 }
                 return;
 
-            case 'z': 
+            case 'z':
                 if (evt.ctrlKey) { // undo
                     this.context.requestUndo();
                     evt.preventDefault();
                 }
                 return;
 
-            case 'F6': 
+            case 'F6':
                 if (evt.shiftKey) {
                     // shift+F6 => add 006
                     this.context.add00X('006');
@@ -394,7 +394,7 @@ export class EditableContentComponent
                 }
                 return;
 
-            case 'F7': 
+            case 'F7':
                 if (evt.shiftKey) {
                     // shift+F7 => add 007
                     this.context.add00X('007');
@@ -403,7 +403,7 @@ export class EditableContentComponent
                 }
                 return;
 
-            case 'F8': 
+            case 'F8':
                 if (evt.shiftKey) {
                     // shift+F8 => add/replace 008
                     this.context.insertReplace008();
@@ -419,7 +419,7 @@ export class EditableContentComponent
 
         switch (evt.key) {
 
-            case 'Enter': 
+            case 'Enter':
                 if (evt.ctrlKey) {
                     // ctrl+enter == insert stub field after focused field
                     // ctrl+shift+enter == insert stub field before focused field
@@ -431,7 +431,7 @@ export class EditableContentComponent
 
             case 'Delete':
 
-                if (evt.ctrlKey) { 
+                if (evt.ctrlKey) {
                     // ctrl+delete == delete whole field
                     this.context.deleteField(this.field);
                     evt.preventDefault();
@@ -445,7 +445,7 @@ export class EditableContentComponent
 
                 break;
 
-            case 'ArrowDown': 
+            case 'ArrowDown':
 
                 if (evt.ctrlKey) {
                     // ctrl+down == copy current field down one
@@ -502,8 +502,9 @@ export class EditableContentComponent
     }
 
     deleteField() {
-        this.context.focusNextTag(this.field) || 
+        if (!this.context.focusNextTag(this.field)) {
             this.context.focusPreviousTag(this.field);
+        }
 
         this.record.deleteFields(this.field);
     }
@@ -515,12 +516,12 @@ export class EditableContentComponent
 
         this.field.deleteExactSubfields(this.subfield);
 
-        const focus: FieldFocusRequest = 
-            {fieldId: this.field.fieldId, target: 'tag'};
+        const focus: FieldFocusRequest = {
+            fieldId: this.field.fieldId, target: 'tag'};
 
-        if (sfpos >= 0) { 
+        if (sfpos >= 0) {
             focus.target = 'sfv';
-            focus.sfOffset = sfpos; 
+            focus.sfOffset = sfpos;
         }
 
         this.context.requestFieldFocus(focus);

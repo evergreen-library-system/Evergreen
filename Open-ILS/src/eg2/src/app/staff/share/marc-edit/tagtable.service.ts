@@ -16,7 +16,7 @@ interface TagTableSelector {
 const defaultTagTableSelector: TagTableSelector = {
     marcFormat     : 'marc21',
     marcRecordType : 'biblio'
-}
+};
 
 @Injectable()
 export class TagTableService {
@@ -26,7 +26,7 @@ export class TagTableService {
     ffPosMap: {[rtype: string]: any[]} = {};
     ffValueMap: {[rtype: string]: any} = {};
 
-    extractedValuesCache: 
+    extractedValuesCache:
         {[valueType: string]: {[which: string]: any}} = {};
 
     constructor(
@@ -59,7 +59,7 @@ export class TagTableService {
         }
     }
 
-    toCache(dataType: string, which: string, 
+    toCache(dataType: string, which: string,
         which2: string, values: ContextMenuEntry[]): ContextMenuEntry[] {
         const base = this.extractedValuesCache[dataType];
         const part1 = base[which];
@@ -128,7 +128,7 @@ export class TagTableService {
                 selector.marcFormat = defaultTagTableSelector.marcFormat;
             }
             if (!selector.marcRecordType) {
-                selector.marcRecordType = 
+                selector.marcRecordType =
                     defaultTagTableSelector.marcRecordType;
             }
         } else {
@@ -160,15 +160,15 @@ export class TagTableService {
         })).toPromise();
     }
 
-    getSubfieldCodes(tag: string): ContextMenuEntry[] { 
+    getSubfieldCodes(tag: string): ContextMenuEntry[] {
         if (!tag || !this.tagMap[tag]) { return null; }
 
         const cached = this.fromCache('sfcodes', tag);
 
         const list = this.tagMap[tag].subfields.map(sf => ({
-            value: sf.code, 
+            value: sf.code,
             label: `${sf.code}: ${sf.description}`
-        })) 
+        }))
         .sort((a, b) => a.label < b.label ? -1 : 1);
 
         return this.toCache('sfcodes', tag, null, list);
@@ -178,7 +178,7 @@ export class TagTableService {
 
         const cached = this.fromCache('fieldtags');
         if (cached) { return cached; }
-        
+
         return Object.keys(this.tagMap)
         .filter(tag => Boolean(this.tagMap[tag]))
         .map(tag => ({
@@ -191,7 +191,7 @@ export class TagTableService {
     getSubfieldValues(tag: string, sfCode: string): ContextMenuEntry[] {
         if (!tag || !this.tagMap[tag]) { return []; }
 
-        const cached = this.fromCache('sfvalues', tag, sfCode)
+        const cached = this.fromCache('sfvalues', tag, sfCode);
         if (cached) { return cached; }
 
         const list: ContextMenuEntry[] = [];
@@ -203,18 +203,18 @@ export class TagTableService {
             sf.value_list.forEach(value => {
 
                 let label = value.description || value.code;
-                let code = value.code || label;
+                const code = value.code || label;
                 if (code !== label) { label = `${code}: ${label}`; }
 
                 list.push({value: code, label: label});
-            })
+            });
         });
 
         return this.toCache('sfvalues', tag, sfCode, list);
     }
 
     getIndicatorValues(tag: string, which: 'ind1' | 'ind2'): ContextMenuEntry[] {
-        if (!tag || !this.tagMap[tag]) { return }
+        if (!tag || !this.tagMap[tag]) { return; }
 
         const cached = this.fromCache('indicators', tag, which);
         if (cached) { return cached; }

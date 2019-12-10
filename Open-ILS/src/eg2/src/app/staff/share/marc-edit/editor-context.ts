@@ -6,7 +6,7 @@ import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
 
 const STUB_DATA_00X = '                                        ';
 
-export type MARC_EDITABLE_FIELD_TYPE = 
+export type MARC_EDITABLE_FIELD_TYPE =
     'ldr' | 'tag' | 'cfld' | 'ind1' | 'ind2' | 'sfc' | 'sfv' | 'ffld';
 
 export interface FieldFocusRequest {
@@ -137,24 +137,24 @@ export class MarcEditContext {
 
         } else {
             // Re-insert the removed field and focus it.
-            
-            if (action.subfield) { 
+
+            if (action.subfield) {
 
                 this.insertSubfield(action.field, action.subfield, true);
                 this.focusSubfield(action.field, action.subfield[2]);
 
             } else {
-                
+
                 const fieldId = action.position.fieldId;
-                const prevField = 
+                const prevField =
                     this.record.getField(action.prevPosition.fieldId);
 
                 this.record.insertFieldsAfter(prevField, action.field);
-                
+
                 // Recover the original fieldId, which gets re-stamped
                 // in this.record.insertFields* calls.
                 action.field.fieldId = fieldId;
-                
+
                 // Focus the newly recovered field.
                 this.requestFieldFocus(action.position);
             }
@@ -211,17 +211,19 @@ export class MarcEditContext {
         this.undoStack.unshift(action);
     }
 
-    deleteField(field: MarcField) { 
+    deleteField(field: MarcField) {
         this.trackStructuralUndo(field, false);
 
-        this.focusNextTag(field) || this.focusPreviousTag(field);
+        if (!this.focusNextTag(field)) {
+            this.focusPreviousTag(field);
+        }
 
         this.record.deleteFields(field);
     }
 
     add00X(tag: string) {
 
-        const field: MarcField = 
+        const field: MarcField =
             this.record.newField({tag : tag, data : STUB_DATA_00X});
 
         this.record.insertOrderedFields(field);
@@ -274,7 +276,7 @@ export class MarcEditContext {
 
     // Adds a new empty subfield to the provided field at the
     // requested subfield position
-    insertSubfield(field: MarcField, 
+    insertSubfield(field: MarcField,
         subfield: MarcSubfield, skipTracking?: boolean) {
         const position = subfield[2];
 
@@ -297,18 +299,18 @@ export class MarcEditContext {
         const newSf: MarcSubfield = [' ', '', position];
         this.insertSubfield(field, newSf);
     }
-    
-    // Focus the requested subfield by its position.  If its 
+
+    // Focus the requested subfield by its position.  If its
     // position is less than zero, focus the field's tag instead.
     focusSubfield(field: MarcField, position: number) {
 
         const focus: FieldFocusRequest = {fieldId: field.fieldId, target: 'tag'};
 
-        if (position >= 0) { 
+        if (position >= 0) {
             // Focus the code instead of the value, because attempting to
             // focus an empty (editable) div results in nothing getting focus.
             focus.target = 'sfc';
-            focus.sfOffset = position; 
+            focus.sfOffset = position;
         }
 
         this.requestFieldFocus(focus);
@@ -331,8 +333,8 @@ export class MarcEditContext {
     // Returns true if the field has a next tag to focus
     focusNextTag(field: MarcField) {
         const nextField = this.record.getNextField(field.fieldId);
-        if (nextField) { 
-            this.focusTag(nextField); 
+        if (nextField) {
+            this.focusTag(nextField);
             return true;
         }
         return false;

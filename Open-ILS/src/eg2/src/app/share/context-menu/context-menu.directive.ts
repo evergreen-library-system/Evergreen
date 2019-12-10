@@ -3,7 +3,7 @@ import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
 import {ContextMenuService, ContextMenu, ContextMenuEntry} from './context-menu.service';
 
 
-/* Import all of this stuff so we can pass it to our parent 
+/* Import all of this stuff so we can pass it to our parent
  * class via its constructor */
 import {
     Inject, Injector, Renderer2, ElementRef, TemplateRef, ViewContainerRef,
@@ -19,6 +19,10 @@ import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
 })
 export class ContextMenuDirective extends NgbPopover {
 
+    // Only one active menu is allowed at a time.
+    static activeDirective: ContextMenuDirective;
+    static menuId = 0;
+
     triggers = 'contextmenu';
     popoverClass = 'eg-context-menu';
 
@@ -30,10 +34,6 @@ export class ContextMenuDirective extends NgbPopover {
     }
 
     @Output() menuItemSelected: EventEmitter<ContextMenuEntry>;
-
-    // Only one active menu is allowed at a time.
-    static activeDirective: ContextMenuDirective;
-    static menuId = 0;
 
     constructor(
         p1: ElementRef<HTMLElement>, p2: Renderer2, p3: Injector,
@@ -49,7 +49,7 @@ export class ContextMenuDirective extends NgbPopover {
         this.menuService.menuItemSelected.subscribe(
             (entry: ContextMenuEntry) => {
 
-            // Only broadcast entry selection to my listeners if I'm 
+            // Only broadcast entry selection to my listeners if I'm
             // hosting the menu where the selection occurred.
 
             if (this.menu && this.menu.id === this.menuService.activeMenu.id) {
@@ -65,11 +65,11 @@ export class ContextMenuDirective extends NgbPopover {
         if (ContextMenuDirective.activeDirective) {
             ContextMenuDirective.activeDirective.close();
             ContextMenuDirective.activeDirective = null;
-            this.menuService.activeMenu == null;
+            this.menuService.activeMenu = null;
         }
 
         if (!this.menuEntries ||
-             this.menuEntries.length === 0) { 
+             this.menuEntries.length === 0) {
              return;
         }
 

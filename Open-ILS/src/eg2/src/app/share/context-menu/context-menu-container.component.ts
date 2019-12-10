@@ -1,4 +1,4 @@
-import {Component, Input, Output, EventEmitter, OnInit, ViewChild, 
+import {Component, Input, Output, EventEmitter, OnInit, ViewChild,
     AfterViewInit, TemplateRef, ViewEncapsulation} from '@angular/core';
 import {ContextMenuService, ContextMenu, ContextMenuEntry} from './context-menu.service';
 
@@ -6,7 +6,7 @@ import {ContextMenuService, ContextMenu, ContextMenuEntry} from './context-menu.
   selector: 'eg-context-menu-container',
   templateUrl: './context-menu-container.component.html',
   styleUrls: ['context-menu-container.component.css'],
-  /* Our CSS affects the style of the popover, which may 
+  /* Our CSS affects the style of the popover, which may
    * be beyond our reach for standard view encapsulation */
   encapsulation: ViewEncapsulation.None
 })
@@ -19,11 +19,9 @@ export class ContextMenuContainerComponent implements OnInit, AfterViewInit {
     constructor(private menuService: ContextMenuService) {}
 
     ngOnInit() {
-
         this.menuService.showMenuRequest.subscribe(
             (menu: ContextMenu) => {
-
-            this.menuEntries = menu.entries
+            this.menuEntries = menu.entries;
         });
     }
 

@@ -7,8 +7,8 @@ declare var MARC21;
 // MARC breaker delimiter
 const DELIMITER = '$';
 
-export interface MarcSubfield  // code, value, position
-    extends Array<string|number>{0: string; 1: string; 2: number}
+export interface MarcSubfield    // code, value, position
+    extends Array<string|number> { 0: string; 1: string; 2: number; }
 
 // Only contains the attributes/methods we need so far.
 export interface MarcField {
@@ -17,7 +17,7 @@ export interface MarcField {
     tag?: string;
     ind1?: string;
     ind2?: string;
-    subfields?: MarcSubfield[]; 
+    subfields?: MarcSubfield[];
 
     isControlfield(): boolean;
 
