@@ -304,7 +304,7 @@ export class EditableContentComponent
         undo.position = this.context.lastFocused;
         undo.textContent =  this.undoBackToText;
 
-        this.context.undoStack.unshift(undo);
+        this.context.addToUndoStack(undo);
     }
 
     // Apply the undo or redo action and track its opposite
@@ -436,10 +436,15 @@ export class EditableContentComponent
                     this.context.deleteField(this.field);
                     evt.preventDefault();
 
-                } else if (evt.shiftKey && this.subfield) {
-                    // shift+delete == delete subfield
+                } else if (evt.shiftKey) {
 
-                    this.context.deleteSubfield(this.field, this.subfield);
+                    if (this.subfield) {
+                        // shift+delete == delete subfield
+
+                        this.context.deleteSubfield(this.field, this.subfield);
+                    }
+                    // prevent any shift-delete from bubbling up becuase
+                    // unexpected stuff will be deleted.
                     evt.preventDefault();
                 }
 

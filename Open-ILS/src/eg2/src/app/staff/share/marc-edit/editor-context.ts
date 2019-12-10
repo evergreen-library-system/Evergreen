@@ -61,6 +61,11 @@ export class MarcEditContext {
     undoStack: UndoRedoAction[] = [];
     redoStack: UndoRedoAction[] = [];
 
+    // True if any changes have been made.
+    // For the 'rich' editor, this is any un-do-able actions.
+    // For the text edtior it's any text change.
+    changesPending: boolean;
+
     private _record: MarcRecord;
     set record(r: MarcRecord) {
         if (r !== this._record) {
@@ -115,6 +120,11 @@ export class MarcEditContext {
             // Manage structural changes within
             this.handleStructuralUndoRedo(action as StructUndoRedoAction);
         }
+    }
+
+    addToUndoStack(action: UndoRedoAction) {
+        this.changesPending = true;
+        this.undoStack.unshift(action);
     }
 
     handleStructuralUndoRedo(action: StructUndoRedoAction) {
@@ -208,7 +218,7 @@ export class MarcEditContext {
         // time of action will be different than the added field.
         action.prevFocus = this.lastFocused;
 
-        this.undoStack.unshift(action);
+        this.addToUndoStack(action);
     }
 
     deleteField(field: MarcField) {

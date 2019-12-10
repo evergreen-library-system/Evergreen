@@ -42,6 +42,10 @@ export class MarcFlatEditorComponent implements OnInit {
         }
         return 40;
     }
+
+    textChanged() {
+        this.context.changesPending = true;
+    }
 }
 
 

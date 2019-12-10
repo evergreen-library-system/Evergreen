@@ -7,6 +7,7 @@ import {CatalogResolver} from './resolver.service';
 import {HoldComponent} from './hold/hold.component';
 import {BrowseComponent} from './browse.component';
 import {CnBrowseComponent} from './cnbrowse.component';
+import {CanDeactivateGuard} from '@eg/share/util/can-deactivate.guard';
 
 const routes: Routes = [{
   path: '',
@@ -23,7 +24,8 @@ const routes: Routes = [{
     component: HoldComponent
   }, {
     path: 'record/:id/:tab',
-    component: RecordComponent
+    component: RecordComponent,
+    canDeactivate: [CanDeactivateGuard]
   }]}, {
     // Browse is a top-level UI
     path: 'browse',

@@ -111,6 +111,14 @@ export class MarcEditorComponent implements OnInit {
         );
     }
 
+    changesPending(): boolean {
+        return this.context.changesPending;
+    }
+
+    clearPendingChanges() {
+        this.context.changesPending = false;
+    }
+
     // Remember the last used tab as the preferred tab.
     tabChange(evt: NgbTabChangeEvent) {
 
@@ -127,6 +135,10 @@ export class MarcEditorComponent implements OnInit {
 
     saveRecord(): Promise<any> {
         const xml = this.record.toXml();
+
+        // Save actions clears any pending changes.
+        this.context.changesPending = false;
+        this.context.resetUndos();
 
         let sourceName: string = null;
         let sourceId: number = null;

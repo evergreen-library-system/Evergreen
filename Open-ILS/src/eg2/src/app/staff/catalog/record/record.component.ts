@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, HostListener} from '@angular/core';
 import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -9,6 +9,8 @@ import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.s
 import {StaffCatalogService} from '../catalog.service';
 import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.component';
 import {StoreService} from '@eg/core/store.service';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import {MarcEditorComponent} from '@eg/staff/share/marc-edit/editor.component';
 
 @Component({
   selector: 'eg-catalog-record',
@@ -21,7 +23,11 @@ export class RecordComponent implements OnInit {
     summary: BibRecordSummary;
     searchContext: CatalogSearchContext;
     @ViewChild('recordTabs', { static: true }) recordTabs: NgbTabset;
+    @ViewChild('marcEditor', {static: false}) marcEditor: MarcEditorComponent;
     defaultTab: string; // eg.cat.default_record_tab
+
+    @ViewChild('pendingChangesDialog', {static: false})
+        pendingChangesDialog: ConfirmDialogComponent;
 
     constructor(
         private router: Router,
@@ -66,13 +72,54 @@ export class RecordComponent implements OnInit {
 
     // Changing a tab in the UI means changing the route.
     // Changing the route ultimately results in changing the tab.
-    onTabChange(evt: NgbTabChangeEvent) {
-        this.recordTab = evt.nextId;
+    beforeTabChange(evt: NgbTabChangeEvent) {
 
         // prevent tab changing until after route navigation
         evt.preventDefault();
 
-        this.routeToTab();
+        // Protect against tab changes with dirty data.
+        this.canDeactivate().then(ok => {
+            if (ok) {
+                this.recordTab = evt.nextId;
+                this.routeToTab();
+            }
+        });
+    }
+
+    /*
+     * Handle 3 types of navigation which can cause loss of data.
+     * 1. Record detail tab navigation (see also beforeTabChange())
+     * 2. Intra-Angular route navigation away from the record detail page
+     * 3. Browser page unload/reload
+     *
+     * For the #1, and #2, display a eg confirmation dialog.
+     * For #3 use the stock browser onbeforeunload dialog.
+     *
+     * Note in this case a tab change is a route change, but it's one
+     * which does not cause RecordComponent to unload, so it has to be
+     * manually tracked in beforeTabChange().
+     */
+    @HostListener('window:beforeunload', ['$event'])
+    canDeactivate($event?: Event): Promise<boolean> {
+
+        if (this.marcEditor && this.marcEditor.changesPending()) {
+
+            // Each warning dialog clears the current "changes are pending"
+            // flag so the user is not presented with the dialog again
+            // unless new changes are made.
+            this.marcEditor.clearPendingChanges();
+
+            if ($event) { // window.onbeforeunload
+                $event.preventDefault();
+                $event.returnValue = true;
+
+            } else { // tab OR route change.
+                return this.pendingChangesDialog.open().toPromise();
+            }
+
+        } else {
+            return Promise.resolve(true);
+        }
     }
 
     routeToTab() {

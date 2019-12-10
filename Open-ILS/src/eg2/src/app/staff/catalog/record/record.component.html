@@ -4,6 +4,11 @@
   </eg-title>
 </ng-container>
 
+<eg-confirm-dialog #pendingChangesDialog
+  i18n-dialogTitle dialogTitle="Unsaved Changes Confirmation" 
+  i18n-dialogBoby  dialogBody="Unsaved changes will be lost.  Continue navigation?">
+</eg-confirm-dialog>
+
 <div id="staff-catalog-record-container">
   <div id='staff-catalog-bib-summary-container' class='mb-1'>
     <eg-bib-summary [bibSummary]="summary">
@@ -29,7 +34,8 @@
             (click)="setDefaultTab()" i18n>Set Default View</button>
       </div>
     </div>
-    <ngb-tabset #recordTabs [activeId]="recordTab" (tabChange)="onTabChange($event)">
+    <ngb-tabset #recordTabs [activeId]="recordTab" 
+      (tabChange)="beforeTabChange($event)">
       <ngb-tab title="Item Table" i18n-title id="catalog">
         <ng-template ngbTabContent>
           <eg-catalog-copies [recordId]="recordId"></eg-catalog-copies>
@@ -39,7 +45,7 @@
       <ngb-tab title="MARC Edit" i18n-title id="marc_edit">
         <ng-template ngbTabContent>
           <div class="mt-3">
-            <eg-marc-editor (recordSaved)="handleMarcRecordSaved()" 
+            <eg-marc-editor #marcEditor (recordSaved)="handleMarcRecordSaved()" 
               [recordId]="recordId"></eg-marc-editor>
           </div>
         </ng-template>
