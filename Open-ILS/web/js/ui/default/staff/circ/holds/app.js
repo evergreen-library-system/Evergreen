@@ -299,6 +299,8 @@ function($scope , $q , $routeParams , $window , $location , egCore ,
     var cached_details = {};
     var details_needed = {};
 
+    egCore.strings.setPageTitle(egCore.strings['PULL_LIST_TITLE']);
+
     $scope.gridControls = {
         setQuery : function() {
             return {'copy_circ_lib_id' : egCore.auth.user().ws_ou()}
