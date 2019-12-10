@@ -571,12 +571,16 @@ sub nearest_hold {
             JOIN action.hold_copy_map hm ON (hm.hold = h.id)
             JOIN actor.usr au ON (au.id = h.usr)
             JOIN permission.grp_tree pgt ON (au.profile = pgt.id)
+            JOIN asset.copy acp ON (hm.target_copy = acp.id)
+            LEFT JOIN config.rule_age_hold_protect cahp ON (acp.age_protect = cahp.id)
             LEFT JOIN actor.usr_standing_penalty ausp
                 ON ( au.id = ausp.usr AND ( ausp.stop_date IS NULL OR ausp.stop_date > NOW() ) )
             LEFT JOIN config.standing_penalty csp
                 ON ( csp.id = ausp.standing_penalty AND csp.block_list LIKE '%CAPTURE%' )
             $addl_join
           WHERE hm.target_copy = ?
+            /* not protected, or protection is expired or we're in range */
+            AND (cahp.id IS NULL OR (AGE(NOW(),acp.active_date) >= cahp.age OR cahp.prox >= hm.proximity))
             AND (AGE(NOW(),h.request_time) >= CAST(? AS INTERVAL) OR hm.proximity = 0 OR p.prox = 0)
             AND h.capture_time IS NULL
             AND h.cancel_time IS NULL
