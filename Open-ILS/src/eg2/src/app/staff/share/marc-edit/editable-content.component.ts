@@ -177,6 +177,11 @@ export class EditableContentComponent
                 this.watchForFocusRequests();
                 this.watchForUndoRedoRequests();
                 break;
+
+            default:
+                if (this.fieldText) {
+                    this.maxLength = this.fieldText.length;
+                }
         }
     }
 

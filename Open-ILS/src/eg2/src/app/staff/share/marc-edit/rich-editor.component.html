@@ -7,6 +7,32 @@
   </div>
 </ng-container>
 
+
+<ng-template #subfieldChunk let-field="field" let-subfield="subfield">
+
+  <!-- move these around depending on whether we are stacking subfields -->
+
+  <!-- SUBFIELD DECORATOR/DELIMITER -->
+  <eg-marc-editable-content fieldText="‡" i18n-fieldText
+    moreClasses="sf-delimiter border-right-0 bg-transparent p-1 pr-0">
+  </eg-marc-editable-content>
+
+  <!-- SUBFIELD CHARACTER -->
+  <eg-marc-editable-content
+    [context]="context" [field]="field" fieldType="sfc"
+    [subfield]="subfield" ariaLabel="Subfield Code" i18n-ariaLabel
+    moreClasses="sf-code border-left-0 p-1 pl-0">
+  </eg-marc-editable-content>
+
+  <!-- SUBFIELD VALUE -->
+  <eg-marc-editable-content
+    [context]="context" [field]="field" fieldType="sfv"
+    [subfield]="subfield" ariaLabel="Subfield Value" i18n-ariaLabel
+    moreClasses="p-1 pt-2">
+  </eg-marc-editable-content>
+
+</ng-template>
+
 <ng-container *ngIf="dataLoaded">
   <div class="mt-3 text-monospace"
     (contextmenu)="$event.preventDefault()">
@@ -33,7 +59,7 @@
         <div class="mt-2">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" 
-              [disabled]="true"
+              (change)="stackSubfieldsChange()"
               [(ngModel)]="stackSubfields" id="stack-subfields-{{randId}}">
             <label class="form-check-label" for="stack-subfields-{{randId}}">
               Stack Subfields
@@ -72,7 +98,7 @@
     </div>
 
     <!-- LEADER -->
-    <div class="row pt-0 pb-0 pl-3 form-horizontal">
+    <div class="row pt-0 pb-0 pl-3">
       <eg-marc-editable-content
         [context]="context" fieldType="tag"
         fieldText="LDR" i18n-fieldText moreClasses="p-1">
@@ -85,7 +111,7 @@
     </div>
 
     <!-- CONTROL FIELDS -->
-    <div class="row pt-0 pb-0 pl-3 form-horizontal" 
+    <div class="row pt-0 pb-0 pl-3"
       *ngFor="let field of controlFields()">
 
       <eg-marc-editable-content
@@ -100,50 +126,51 @@
     </div>
 
     <!-- data fields -->
-    <div class="row pt-0 pb-0 pl-3 form-horizontal" 
-      *ngFor="let field of dataFields()">
+    <ng-container *ngFor="let field of dataFields()">
 
-      <!-- TAG -->
-      <eg-marc-editable-content
-        [context]="context" [field]="field" fieldType="tag"
-        ariaLabel="Data Field Tag" i18n-ariaLabel moreClasses="p-1">
-      </eg-marc-editable-content>
+      <div class="row pt-0 pb-0 pl-3">
 
-      <!-- INDICATOR 1 -->
-      <eg-marc-editable-content
-        [context]="context" [field]="field" fieldType="ind1"
-        ariaLabel="Data Field Indicator 1" i18n-ariaLabel moreClasses="p-1">
-      </eg-marc-editable-content>
-
-      <!-- INDICATOR 2 -->
-      <eg-marc-editable-content
-        [context]="context" [field]="field" fieldType="ind2"
-        ariaLabel="Data Field Indicator 2" i18n-ariaLabel moreClasses="p-1">
-      </eg-marc-editable-content>
-
-      <!-- SUBFIELDS -->
-      <ng-container *ngFor="let subfield of field.subfields">
-
-        <!-- SUBFIELD DECORATOR/DELIMITER -->
-        <eg-marc-editable-content fieldText="‡" i18n-fieldText
-          moreClasses="sf-delimiter border-right-0 bg-transparent p-1 pr-0">
-        </eg-marc-editable-content>
-
-        <!-- SUBFIELD CHARACTER -->
+        <!-- TAG -->
         <eg-marc-editable-content
-          [context]="context" [field]="field" fieldType="sfc"
-          [subfield]="subfield" ariaLabel="Subfield Code" i18n-ariaLabel
-          moreClasses="sf-code border-left-0 p-1 pl-0">
+          [context]="context" [field]="field" fieldType="tag"
+          ariaLabel="Data Field Tag" i18n-ariaLabel moreClasses="p-1">
         </eg-marc-editable-content>
 
-        <!-- SUBFIELD VALUE -->
+        <!-- INDICATOR 1 -->
         <eg-marc-editable-content
-          [context]="context" [field]="field" fieldType="sfv"
-          [subfield]="subfield" ariaLabel="Subfield Value" i18n-ariaLabel
-          moreClasses="p-1 pt-2">
+          [context]="context" [field]="field" fieldType="ind1"
+          ariaLabel="Data Field Indicator 1" i18n-ariaLabel moreClasses="p-1">
         </eg-marc-editable-content>
+
+        <!-- INDICATOR 2 -->
+        <eg-marc-editable-content
+          [context]="context" [field]="field" fieldType="ind2"
+          ariaLabel="Data Field Indicator 2" i18n-ariaLabel moreClasses="p-1">
+        </eg-marc-editable-content>
+
+        <!-- when not stacking subfields, render them inline -->
+        <ng-container *ngIf="!stackSubfields">
+          <ng-container *ngFor="let subfield of field.subfields">
+            <ng-container 
+              *ngTemplateOutlet="subfieldChunk;context:{field:field,subfield:subfield}">
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </div>
+
+      <!-- when stacking subfields, each subfield gets its own row 
+        preceeded by a placeholder for the tag as a way to 'tab' right -->
+      <ng-container *ngIf="stackSubfields">
+        <div class="form-inline" *ngFor="let subfield of field.subfields">
+          <eg-marc-editable-content fieldText="   " moreClasses="p-1 invisible">
+          </eg-marc-editable-content>
+          <ng-container 
+            *ngTemplateOutlet="subfieldChunk;context:{field:field,subfield:subfield}">
+          </ng-container>
+        </div>
       </ng-container>
-    </div>
+    </ng-container>
+
   </div>
 </ng-container>
 

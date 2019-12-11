@@ -3,6 +3,7 @@ import {Component, Input, Output, OnInit, AfterViewInit, EventEmitter,
 import {filter} from 'rxjs/operators';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 import {TagTableService} from './tagtable.service';
 import {MarcRecord, MarcField} from './marcrecord';
 import {MarcEditContext} from './editor-context';
@@ -31,10 +32,15 @@ export class MarcRichEditorComponent implements OnInit {
     constructor(
         private idl: IdlService,
         private org: OrgService,
+        private store: ServerStoreService,
         private tagTable: TagTableService
     ) {}
 
     ngOnInit() {
+
+        this.store.getItem('cat.marcedit.stack_subfields')
+        .then(stack => this.stackSubfields = stack);
+
         this.init().then(_ =>
             this.context.recordChange.subscribe(__ => this.init()));
 
@@ -60,6 +66,14 @@ export class MarcRichEditorComponent implements OnInit {
             // network.  (Sometimes the data is cached).
             setTimeout(() => this.dataLoaded = true)
         );
+    }
+
+    stackSubfieldsChange() {
+        if (this.stackSubfields) {
+            this.store.setItem('cat.marcedit.stack_subfields', true);
+        } else {
+            this.store.removeItem('cat.marcedit.stack_subfields');
+        }
     }
 
     undoCount(): number {
