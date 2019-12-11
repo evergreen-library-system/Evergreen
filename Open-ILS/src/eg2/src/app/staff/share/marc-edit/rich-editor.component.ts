@@ -1,5 +1,6 @@
 import {Component, Input, Output, OnInit, AfterViewInit, EventEmitter,
     OnDestroy} from '@angular/core';
+import {filter} from 'rxjs/operators';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {TagTableService} from './tagtable.service';
@@ -36,6 +37,10 @@ export class MarcRichEditorComponent implements OnInit {
     ngOnInit() {
         this.init().then(_ =>
             this.context.recordChange.subscribe(__ => this.init()));
+
+        // Changing the Type fixed field means loading new meta-metadata.
+        this.record.fixedFieldChange.pipe(filter(code => code === 'Type'))
+        .subscribe(_ => this.init());
     }
 
     init(): Promise<any> {
@@ -47,7 +52,14 @@ export class MarcRichEditorComponent implements OnInit {
             this.tagTable.loadTagTable({marcRecordType: this.context.recordType}),
             this.tagTable.getFfPosTable(this.record.recordType()),
             this.tagTable.getFfValueTable(this.record.recordType())
-        ]).then(_ => this.dataLoaded = true);
+        ]).then(_ =>
+            // setTimeout forces all of our sub-components to rerender
+            // themselves each time init() is called.  Without this,
+            // changing the record Type would only re-render the fixed
+            // fields editor when data had to be fetched from the
+            // network.  (Sometimes the data is cached).
+            setTimeout(() => this.dataLoaded = true)
+        );
     }
 
     undoCount(): number {

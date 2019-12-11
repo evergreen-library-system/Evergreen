@@ -135,7 +135,8 @@ export class TagTableService {
             selector = defaultTagTableSelector;
         }
 
-        const cacheKey = 'FFValueTable_' + selector.marcRecordType;
+        const cacheKey =
+            `current_tag_table_${selector.marcFormat}_${selector.marcRecordType}`;
 
         this.tagMap = this.store.getLocalItem(cacheKey);
 

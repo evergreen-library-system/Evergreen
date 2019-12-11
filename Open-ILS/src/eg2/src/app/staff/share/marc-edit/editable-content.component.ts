@@ -188,9 +188,6 @@ export class EditableContentComponent
                 this.maxLength = fieldMeta.length || 1;
             }
         });
-
-        // Fixed field options change when the record type changes.
-        this.context.recordChange.subscribe(_ => this.applyFFOptions());
     }
 
     // These are served dynamically to handle cases where a tag or
@@ -537,6 +534,9 @@ export class EditableContentComponent
 
     contextMenuChange(value: string) {
         this.setContent(value, true);
+
+        // Context menus can steal focus.
+        this.context.requestFieldFocus(this.context.lastFocused);
     }
 }
 

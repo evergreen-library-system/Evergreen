@@ -52,21 +52,38 @@ export class ContextMenuDirective extends NgbPopover {
             // Only broadcast entry selection to my listeners if I'm
             // hosting the menu where the selection occurred.
 
-            if (this.menu && this.menu.id === this.menuService.activeMenu.id) {
+            if (this.activeMenuIsMe()) {
                 this.menuItemSelected.emit(entry);
+
+                // Item selection via keyboard fails to close the menu.
+                // Force it closed.
+                this.cleanup();
             }
         });
+    }
+
+    activeMenuIsMe(): boolean {
+        return (
+            this.menu &&
+            this.menuService.activeMenu &&
+            this.menu.id === this.menuService.activeMenu.id
+        );
+    }
+
+    // Close the active menu
+    cleanup() {
+        if (ContextMenuDirective.activeDirective) {
+            ContextMenuDirective.activeDirective.close();
+            ContextMenuDirective.activeDirective = null;
+            this.menuService.activeMenu = null;
+        }
     }
 
     open() {
 
         // In certain scenarios (e.g. right-clicking on another context
         // menu) an open popover will stay open.  Force it closed here.
-        if (ContextMenuDirective.activeDirective) {
-            ContextMenuDirective.activeDirective.close();
-            ContextMenuDirective.activeDirective = null;
-            this.menuService.activeMenu = null;
-        }
+        this.cleanup();
 
         if (!this.menuEntries ||
              this.menuEntries.length === 0) {
