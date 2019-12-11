@@ -19,6 +19,11 @@ export interface MarcField {
     ind2?: string;
     subfields?: MarcSubfield[];
 
+    // Fields are immutable when it comes to controlfield vs.
+    // data field.  Stamp the value when stamping field IDs.
+    isCtrlField: boolean;
+
+    // Pass-through to marcrecord.js
     isControlfield(): boolean;
 
     deleteExactSubfields(...subfield: MarcSubfield[]): number;
@@ -89,9 +94,14 @@ export class MarcRecord {
         this.fields.forEach(f => this.stampFieldId(f));
     }
 
+    // Stamp field IDs the the initial isCtrlField state.
     stampFieldId(field: MarcField) {
         if (!field.fieldId) {
             field.fieldId = Math.floor(Math.random() * 10000000);
+        }
+
+        if (field.isCtrlField === undefined) {
+            field.isCtrlField = field.isControlfield();
         }
     }
 

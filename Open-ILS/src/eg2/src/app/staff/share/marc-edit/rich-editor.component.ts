@@ -93,11 +93,11 @@ export class MarcRichEditorComponent implements OnInit {
     }
 
     controlFields(): MarcField[] {
-        return this.record.fields.filter(f => f.isControlfield());
+        return this.record.fields.filter(f => f.isCtrlField);
     }
 
     dataFields(): MarcField[] {
-        return this.record.fields.filter(f => !f.isControlfield());
+        return this.record.fields.filter(f => !f.isCtrlField);
     }
 }
 
