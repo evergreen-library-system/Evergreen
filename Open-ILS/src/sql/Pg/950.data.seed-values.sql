@@ -3303,7 +3303,7 @@ INSERT into config.org_unit_setting_type
         'Default Classification Scheme',
         'coust', 'label'),
     oils_i18n_gettext('cat.default_classification_scheme',
-        'Defines the default classification scheme for new call numbers: 1 = Generic; 2 = Dewey; 3 = LC',
+        'Defines the default classification scheme for new call numbers.',
         'coust', 'description'),
     'link', 'acnc')
 
