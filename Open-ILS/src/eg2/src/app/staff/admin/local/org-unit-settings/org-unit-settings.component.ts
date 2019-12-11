@@ -95,6 +95,9 @@ export class OrgUnitSettingsComponent {
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
             return this.fetchSettingTypes(pager);
         };
+        this.orgUnitSettingsGrid.onRowActivate.subscribe((setting:OrgUnitSetting) => {
+            this.showEditSettingValueDialog(setting);
+        });
     }
 
     fetchSettingTypes(pager: Pager): Observable<any> {
