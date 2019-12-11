@@ -1,10 +1,15 @@
 
 <ng-template #menuTemplate>
-  <!-- apply (click) to div so user can click anywhere in the row -->
-  <div *ngFor="let entry of menuEntries; first as isFirst" 
-    class="menu-entry {{entryClasses}}">
-    <button (click)="entryClicked(entry)" class="btn p-0 m-0">
-      {{entry.label}}
-    </button>
+
+  <div *ngFor="let entry of menuEntries" class="menu-entry {{entryClasses}}">
+
+    <div *ngIf="entry.divider" class="dropdown-divider"></div>
+
+    <ng-container *ngIf="!entry.divider">
+      <button (click)="entryClicked(entry)" class="btn p-0 m-0">
+        {{entry.label}}
+      </button>
+    </ng-container>
+
   </div>
 </ng-template>

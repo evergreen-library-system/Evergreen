@@ -5,8 +5,9 @@ import {tap} from 'rxjs/operators';
  * template container component */
 
 export interface ContextMenuEntry {
-    value: string;
-    label: string;
+    value?: string;
+    label?: string;
+    divider?: boolean;
 }
 
 export class ContextMenu {

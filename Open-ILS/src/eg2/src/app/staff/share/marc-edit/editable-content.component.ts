@@ -1,5 +1,5 @@
 import {ElementRef, Component, Input, Output, OnInit, OnDestroy,
-    EventEmitter, AfterViewInit, Renderer2} from '@angular/core';
+    ViewChild, EventEmitter, AfterViewInit, Renderer2} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {MarcRecord, MarcField, MarcSubfield} from './marcrecord';
@@ -7,6 +7,7 @@ import {MarcEditContext, FieldFocusRequest, MARC_EDITABLE_FIELD_TYPE,
     TextUndoRedoAction} from './editor-context';
 import {ContextMenuEntry} from '@eg/share/context-menu/context-menu.service';
 import {TagTableService} from './tagtable.service';
+import {StringComponent} from '@eg/share/string/string.component';
 
 /**
  * MARC Editable Content Component
@@ -57,10 +58,20 @@ export class EditableContentComponent
     // Cache of fixed field menu options
     ffValues: ContextMenuEntry[] = [];
 
+    // Cache of tag context menu entries
+    tagMenuEntries: ContextMenuEntry[] = [];
+
     // Track the fixed field value locally since extracting the value
     // in real time from the record, which adds padding to the text,
     // causes usability problems.
     ffValue: string;
+
+    @ViewChild('add006', {static: false}) add006Str: StringComponent;
+    @ViewChild('add007', {static: false}) add007Str: StringComponent;
+    @ViewChild('add008', {static: false}) add008Str: StringComponent;
+    @ViewChild('insertBefore', {static: false}) insertBeforeStr: StringComponent;
+    @ViewChild('insertAfter', {static: false}) insertAfterStr: StringComponent;
+    @ViewChild('deleteField', {static: false}) deleteFieldStr: StringComponent;
 
     constructor(
         private renderer: Renderer2,
@@ -198,11 +209,11 @@ export class EditableContentComponent
     // These are served dynamically to handle cases where a tag or
     // subfield is modified in place.
     contextMenuEntries(): ContextMenuEntry[] {
-        if (this.isLeader) { return; }
+        if (!this.field) { return; }
 
         switch (this.fieldType) {
             case 'tag':
-                return this.tagTable.getFieldTags();
+                return this.tagContextMenuEntries();
 
             case 'sfc':
                 return this.tagTable.getSubfieldCodes(this.field.tag);
@@ -222,6 +233,36 @@ export class EditableContentComponent
         }
 
         return null;
+    }
+
+    tagContextMenuEntries(): ContextMenuEntry[] {
+
+        // string components may not yet be loaded.
+        if (this.tagMenuEntries.length > 0 || !this.add006Str) {
+            return this.tagMenuEntries;
+        }
+
+        this.tagMenuEntries.push(
+            {label: this.add006Str.text, value: '_add006'},
+            {label: this.add007Str.text, value: '_add007'},
+            {label: this.add008Str.text, value: '_add008'}
+        );
+
+        if (!this.field.isCtrlField) {
+            this.tagMenuEntries.push(
+                {label: this.insertAfterStr.text,  value: '_insertAfter'},
+                {label: this.insertBeforeStr.text, value: '_insertBefore'}
+            );
+        }
+
+        this.tagMenuEntries.push(
+            {label: this.deleteFieldStr.text,  value: '_deleteField'},
+            {divider: true}
+        );
+
+        this.tagTable.getFieldTags().forEach(e => this.tagMenuEntries.push(e));
+
+        return this.tagMenuEntries;
     }
 
     getContent(): string {
@@ -538,6 +579,18 @@ export class EditableContentComponent
     }
 
     contextMenuChange(value: string) {
+
+        switch (value) {
+            case '_add006': return this.context.add00X('006');
+            case '_add007': return this.context.add00X('007');
+            case '_add008': return this.context.insertReplace008();
+            case '_insertBefore':
+                return this.context.insertStubField(this.field, true);
+            case '_insertAfter':
+                return this.context.insertStubField(this.field);
+            case '_deleteField': return this.context.deleteField(this.field);
+        }
+
         this.setContent(value, true);
 
         // Context menus can steal focus.
