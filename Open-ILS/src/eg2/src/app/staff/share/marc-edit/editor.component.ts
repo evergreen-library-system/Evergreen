@@ -35,6 +35,9 @@ export class MarcEditorComponent implements OnInit {
     sources: ComboboxEntry[];
     context: MarcEditContext;
 
+    // True if the save request is in flight
+    dataSaving: boolean;
+
     @Input() recordType: 'biblio' | 'authority' = 'biblio';
 
     @Input() set recordId(id: number) {
@@ -87,6 +90,8 @@ export class MarcEditorComponent implements OnInit {
         this.sources = [];
         this.recordSaved = new EventEmitter<MarcSavedEvent>();
         this.context = new MarcEditContext();
+
+        this.recordSaved.subscribe(_ => this.dataSaving = false);
     }
 
     ngOnInit() {
@@ -135,6 +140,7 @@ export class MarcEditorComponent implements OnInit {
 
     saveRecord(): Promise<any> {
         const xml = this.record.toXml();
+        this.dataSaving = true;
 
         // Save actions clears any pending changes.
         this.context.changesPending = false;
@@ -166,6 +172,7 @@ export class MarcEditorComponent implements OnInit {
                 if (evt) {
                     console.error(evt);
                     this.failMsg.current().then(msg => this.toast.warning(msg));
+                    this.dataSaving = false;
                     return;
                 }
 

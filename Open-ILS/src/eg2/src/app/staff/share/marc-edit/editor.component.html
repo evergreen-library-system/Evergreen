@@ -45,7 +45,16 @@
     [disabled]="record && record.deleted" i18n>Save Changes</button>
 </div>
 
-<div class="row">
+
+<ng-container *ngIf="dataSaving">
+  <div class="row mt-5">
+    <div class="offset-lg-3 col-lg-6">
+      <eg-progress-inline></eg-progress-inline>
+    </div>
+  </div>
+</ng-container>
+
+<div *ngIf="!dataSaving" class="row">
   <div class="col-lg-12">
     <ngb-tabset [activeId]="editorTab" (tabChange)="tabChange($event)">
       <ngb-tab title="Enhanced MARC Editor" i18n-title id="rich">
