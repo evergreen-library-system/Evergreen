@@ -3,12 +3,13 @@
 
   <div class="d-flex">
     <div class="flex-4">
-      <span id='label-{{randId}}' class="text-left font-weight-bold">
+      <span id="label-{{randId}}" class="text-left font-weight-bold">
         {{fieldLabel}}
       </span>
     </div>
       <div class="flex-5">
-        <eg-marc-editable-content [context]="context"
+        <eg-marc-editable-content
+          [context]="context" [ariaLabel]="fieldLabel"
           [fixedFieldCode]="fieldCode" fieldType="ffld" moreClasses="p-1">
         </eg-marc-editable-content>
       </div>

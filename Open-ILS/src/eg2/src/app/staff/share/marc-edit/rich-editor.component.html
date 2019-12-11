@@ -73,12 +73,14 @@
 
     <!-- LEADER -->
     <div class="row pt-0 pb-0 pl-3 form-horizontal">
-      <eg-marc-editable-content [context]="context" fieldType="tag" 
+      <eg-marc-editable-content
+        [context]="context" fieldType="tag"
         fieldText="LDR" i18n-fieldText moreClasses="p-1">
       </eg-marc-editable-content>
 
-      <eg-marc-editable-content [context]="context" fieldType="ldr"
-         moreClasses="p-1 pr-2">
+      <eg-marc-editable-content
+        [context]="context" fieldType="ldr"
+        ariaLabel="Leader" i18n-ariaLabel moreClasses="p-1 pr-2">
       </eg-marc-editable-content>
     </div>
 
@@ -86,12 +88,14 @@
     <div class="row pt-0 pb-0 pl-3 form-horizontal" 
       *ngFor="let field of controlFields()">
 
-      <eg-marc-editable-content [context]="context" fieldType="tag"
-        [field]="field" moreClasses="p-1">
+      <eg-marc-editable-content
+        [context]="context" [field]="field" fieldType="tag"
+        ariaLabel="Control Field Tag" i18n-ariaLabel moreClasses="p-1">
       </eg-marc-editable-content>
 
-      <eg-marc-editable-content [context]="context" fieldType="cfld"
-        [field]="field" moreClasses="p-1">
+      <eg-marc-editable-content
+        [context]="context" [field]="field" fieldType="cfld"
+        ariaLabel="Control Field Content" i18n-ariaLabel moreClasses="p-1">
       </eg-marc-editable-content>
     </div>
 
@@ -100,18 +104,21 @@
       *ngFor="let field of dataFields()">
 
       <!-- TAG -->
-      <eg-marc-editable-content [context]="context" fieldType="tag"
-        [field]="field" moreClasses="p-1">
+      <eg-marc-editable-content
+        [context]="context" [field]="field" fieldType="tag"
+        ariaLabel="Data Field Tag" i18n-ariaLabel moreClasses="p-1">
       </eg-marc-editable-content>
 
       <!-- INDICATOR 1 -->
-      <eg-marc-editable-content [context]="context" fieldType="ind1" 
-        [field]="field" moreClasses="p-1">
+      <eg-marc-editable-content
+        [context]="context" [field]="field" fieldType="ind1"
+        ariaLabel="Data Field Indicator 1" i18n-ariaLabel moreClasses="p-1">
       </eg-marc-editable-content>
 
       <!-- INDICATOR 2 -->
-      <eg-marc-editable-content [context]="context" fieldType="ind2" 
-        [field]="field" moreClasses="p-1">
+      <eg-marc-editable-content
+        [context]="context" [field]="field" fieldType="ind2"
+        ariaLabel="Data Field Indicator 2" i18n-ariaLabel moreClasses="p-1">
       </eg-marc-editable-content>
 
       <!-- SUBFIELDS -->
@@ -123,14 +130,17 @@
         </eg-marc-editable-content>
 
         <!-- SUBFIELD CHARACTER -->
-        <eg-marc-editable-content [context]="context" fieldType="sfc" 
-          [field]="field" [subfield]="subfield" 
+        <eg-marc-editable-content
+          [context]="context" [field]="field" fieldType="sfc"
+          [subfield]="subfield" ariaLabel="Subfield Code" i18n-ariaLabel
           moreClasses="sf-code border-left-0 p-1 pl-0">
         </eg-marc-editable-content>
 
         <!-- SUBFIELD VALUE -->
-        <eg-marc-editable-content [context]="context" fieldType="sfv"
-          [field]="field" [subfield]="subfield" moreClasses="p-1 pt-2">
+        <eg-marc-editable-content
+          [context]="context" [field]="field" fieldType="sfv"
+          [subfield]="subfield" ariaLabel="Subfield Value" i18n-ariaLabel
+          moreClasses="p-1 pt-2">
         </eg-marc-editable-content>
       </ng-container>
     </div>

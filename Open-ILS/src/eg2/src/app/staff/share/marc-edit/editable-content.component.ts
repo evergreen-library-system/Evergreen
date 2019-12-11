@@ -36,6 +36,9 @@ export class EditableContentComponent
     // space-separated list of additional CSS classes to append
     @Input() moreClasses: string;
 
+    // aria-label text.  This will not be visible in the UI.
+    @Input() ariaLabel: string;
+
     get record(): MarcRecord { return this.context.record; }
 
     bigText = false;
