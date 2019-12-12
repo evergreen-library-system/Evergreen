@@ -70,12 +70,12 @@ export class MarcEditorComponent implements OnInit {
     // the record is successfully saved.
     @Output() recordSaved: EventEmitter<MarcSavedEvent>;
 
-    @ViewChild('sourceSelector', { static: true }) sourceSelector: ComboboxComponent;
-    @ViewChild('confirmDelete', { static: true }) confirmDelete: ConfirmDialogComponent;
-    @ViewChild('confirmUndelete', { static: true }) confirmUndelete: ConfirmDialogComponent;
-    @ViewChild('cannotDelete', { static: true }) cannotDelete: ConfirmDialogComponent;
-    @ViewChild('successMsg', { static: true }) successMsg: StringComponent;
-    @ViewChild('failMsg', { static: true }) failMsg: StringComponent;
+    @ViewChild('sourceSelector', {static: false}) sourceSelector: ComboboxComponent;
+    @ViewChild('confirmDelete', {static: false}) confirmDelete: ConfirmDialogComponent;
+    @ViewChild('confirmUndelete', {static: false}) confirmUndelete: ConfirmDialogComponent;
+    @ViewChild('cannotDelete', {static: false}) cannotDelete: ConfirmDialogComponent;
+    @ViewChild('successMsg', {static: false}) successMsg: StringComponent;
+    @ViewChild('failMsg', {static: false}) failMsg: StringComponent;
 
     constructor(
         private evt: EventService,

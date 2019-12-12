@@ -209,7 +209,7 @@ export class EditableContentComponent
     // These are served dynamically to handle cases where a tag or
     // subfield is modified in place.
     contextMenuEntries(): ContextMenuEntry[] {
-        if (!this.field) { return; }
+        if (this.isLeader) { return; }
 
         switch (this.fieldType) {
             case 'tag':
@@ -249,6 +249,7 @@ export class EditableContentComponent
         );
 
         if (!this.field.isCtrlField) {
+            // Only data field tags get these.
             this.tagMenuEntries.push(
                 {label: this.insertAfterStr.text,  value: '_insertAfter'},
                 {label: this.insertBeforeStr.text, value: '_insertBefore'}
