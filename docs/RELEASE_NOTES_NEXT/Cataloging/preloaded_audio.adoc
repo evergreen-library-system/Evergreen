@@ -1,0 +1,8 @@
+Preloaded Audio Icon and Search Format
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new search and icon format called Preloaded Audio now exists 
+using the following atttributes: itemtype i, item form q.  This 
+overlaps with the eAudio format.  If you want to exclude 
+preloaded audio from eAudio there is a script in the Administration 
+notes to exclude it. 
+

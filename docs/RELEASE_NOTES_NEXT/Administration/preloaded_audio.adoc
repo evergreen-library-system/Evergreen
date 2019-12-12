@@ -1,0 +1,20 @@
+Preloaded Audio Icon and Search Format
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new search and icon format called Preloaded Audio now exists 
+that overlaps with the eAudio format.  If you want to exclude
+the Preloaded Audio format from overlapping with eAudio 
+you can use the following SQL:
+
+UPDATE config.composite_attr_entry_definition SET definition = '{"0":{"_attr":"item_type","_val":"i"},"1":[{"_attr":"item_form","_val":"o"},{"_attr":"item_form","_val":"s"}]}'
+    WHERE coded_value IN (SELECT id FROM config.coded_value_map WHERE code = 'eaudio');
+
+It is also recommended that you reingest your bibliographic records 
+to updated the fixed field indexes. You can accomplish this by running
+the following query in your database:
+
+SELECT metabib.reingest_record_attributes(source)
+FROM metabib.record_attr_vector_list WHERE
+(SELECT id FROM config.coded_value_map WHERE ctype = 'item_form' AND code = 'q') = ANY(vlist)
+AND (SELECT id FROM config.coded_value_map WHERE ctype = 'item_type' AND code = 'i') = ANY(vlist);
+
+
