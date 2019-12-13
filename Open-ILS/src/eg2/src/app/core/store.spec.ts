@@ -1,9 +1,12 @@
 import {StoreService} from './store.service';
+import {HatchService} from './hatch.service';
 
 describe('StoreService', () => {
     let service: StoreService;
+    let hatchService: HatchService;
     beforeEach(() => {
-        service = new StoreService(null /* CookieService */);
+        hatchService = new HatchService();
+        service = new StoreService(null /* CookieService */, hatchService);
     });
 
     it('should set/get a localStorage value', () => {

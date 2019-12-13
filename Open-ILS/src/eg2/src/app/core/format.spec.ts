@@ -9,6 +9,7 @@ import {OrgService} from './org.service';
 import {LocaleService} from './locale.service';
 import {Location} from '@angular/common';
 import {FormatService} from './format.service';
+import {HatchService} from './hatch.service';
 import {SpyLocation} from '@angular/common/testing';
 import localeArJO from '@angular/common/locales/ar-JO';
 import localeCs from '@angular/common/locales/cs';
@@ -26,6 +27,7 @@ describe('FormatService', () => {
     let evtService: EventService;
     let storeService: StoreService;
     let localeService: LocaleService;
+    let hatchService: HatchService;
     // tslint:disable-next-line:prefer-const
     let location: SpyLocation;
     let service: FormatService;
@@ -35,7 +37,8 @@ describe('FormatService', () => {
         datePipe = new DatePipe('en');
         idlService = new IdlService();
         evtService = new EventService();
-        storeService = new StoreService(null /* CookieService */);
+        hatchService = new HatchService();
+        storeService = new StoreService(null /* CookieService */, hatchService);
         netService = new NetService(evtService);
         authService = new AuthService(evtService, netService, storeService);
         pcrudService = new PcrudService(idlService, netService, authService);
