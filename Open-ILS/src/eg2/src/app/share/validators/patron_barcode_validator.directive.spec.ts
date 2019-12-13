@@ -4,15 +4,18 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
 import {StoreService} from '@eg/core/store.service';
+import {HatchService} from '@eg/core/hatch.service';
 
 let netService: NetService;
 let authService: AuthService;
 let evtService: EventService;
 let storeService: StoreService;
+let hatchService: HatchService;
 
 beforeEach(() => {
     evtService = new EventService();
-    storeService = new StoreService(null /* CookieService */);
+    hatchService = new HatchService();
+    storeService = new StoreService(null /* CookieService */, hatchService);
     netService = new NetService(evtService);
     authService = new AuthService(evtService, netService, storeService);
 });
