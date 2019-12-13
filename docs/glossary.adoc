@@ -4,8 +4,8 @@ Evergreen Glossary
 
 xref:A[A] xref:B[B] xref:C[C] xref:D[D] xref:E[E] xref:F[F] xref:G[G] xref:H[H] xref:I[I] xref:J[J] xref:K[K] xref:L[L] xref:M[M] xref:N[N] xref:O[O] xref:P[P] xref:Q[Q] xref:R[R] xref:S[S] xref:T[T] xref:U[U] xref:V[V] xref:W[W] xref:X[X] xref:Y[Y] xref:Z[Z]
 
-[glossary][[A]]
-AACR2 (Angolo-American Cataloguing Rules, Second Edition)::
+[glossary]
+[[A]]AACR2 (Angolo-American Cataloguing Rules, Second Edition)::
   AACR2 is a set of cataloging rules for descriptive cataloging of various types of resources.  http://www.aacr2.org/
 Acquisitions::
   Processes related to ordering materials and managing expenditures.
