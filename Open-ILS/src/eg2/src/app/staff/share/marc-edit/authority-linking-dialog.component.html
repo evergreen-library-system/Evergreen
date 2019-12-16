@@ -1,0 +1,116 @@
+
+<!-- display a single heading as MARC -->
+<ng-template #fieldAsMarc let-field="field">
+  <span>{{field.tag}} {{field.ind1}} {{field.ind2}}</span>
+  <span *ngFor="let sf of field.subfields">
+    <span class="text-danger" i18n>‡</span>{{sf[0]}} {{sf[1]}}
+  </span>
+</ng-template>
+
+<!-- display a single heading as MARC or as the human friendlier string -->
+<ng-template #headingField let-field="field" let-from="from" let-also="also">
+  <button class="btn btn-sm btn-outline-info p-1 mr-1" 
+    (click)="applyHeading(field)" i18n>Apply</button>
+  <ng-container *ngIf="showAs == 'heading'">
+    <span *ngIf="from" i18n>See From: {{field.heading}}</span>
+    <span *ngIf="also" i18n>See Also: {{field.heading}}</span>
+    <span *ngIf="!from && !also" i18n>{{field.heading}}</span>
+  </ng-container>
+  <ng-container *ngIf="showAs == 'marc'">
+    <ng-container
+      *ngTemplateOutlet="fieldAsMarc;context:{field:field}">
+    </ng-container>
+  </ng-container>
+</ng-template>
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Manage Authority Links</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row border-bottom border-secondary p-2 d-flex">
+      <div class="flex-1 font-weight-bold p-1 pl-2 pt-2 ml-2">
+        <div>{{bibField.tag}} {{bibField.ind1}} {{bibField.ind2}}</div>
+
+        <div *ngFor="let sf of bibField.subfields">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" id="search-subfield-{{sf[0]}}" 
+              type="checkbox" [disabled]="!isControlledBibSf(sf[0])"
+              [(ngModel)]="selectedSubfields[sf[0]]" 
+              (change)="getPage(pager.offset)"/>
+
+            <span class="text-danger" i18n>‡</span>
+
+            <label class="form-check-label" for="search-subfield-{{sf[0]}}" i18n>
+              {{sf[0]}} {{sf[1]}}
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="ml-2 p-1">
+        <div class="mb-1" i18n>Create new authority from this field</div>
+        <div>
+          <button class="btn btn-outline-info" [disabled]="true">
+            Immediately
+          </button>
+          <button class="btn btn-outline-info ml-2" [disabled]="true">
+            Create and Edit
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row border-bottom border-secondary p-2 d-flex">
+      <div class="flex-1">
+        <button class="btn btn-outline-dark" [disabled]="pager.offset == 0"
+          (click)="getPage(0)" i18n>Start</button>
+        <button class="btn btn-outline-dark ml-2"
+          (click)="getPage(-1)" i18n>Previous</button>
+        <button class="btn btn-outline-dark ml-2"
+          (click)="getPage(1)" i18n>Next</button>
+      </div>
+      <div class="pt-2 mb-2">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" value="heading"
+            [(ngModel)]="showAs" name='show-as-heading' id="show-as-heading">
+          <label class="form-check-label" for="show-as-heading" i18n>Show As Heading</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" value="marc"
+            [(ngModel)]="showAs" name='show-as-heading' id="show-as-marc">
+          <label class="form-check-label" for="show-as-marc" i18n>Show As MARC</label>
+        </div>
+      </div>
+    </div>
+    <ul *ngFor="let entry of browseData">
+      <li class="d-flex">
+        <div class="flex-1">
+          <ng-container
+            *ngTemplateOutlet="headingField;context:{field:entry.main_heading}">
+          </ng-container>
+        </div>
+        <div class="font-italic" i18n-title i18n
+          title="Authority Record ID {{entry.authority_id}}">
+          #{{entry.authority_id}}
+        </div>
+      </li>
+      <ul *ngFor="let from of entry.see_froms">
+        <li i18n>
+         <ng-container
+          *ngTemplateOutlet="headingField;context:{field:from, from:true}">
+         </ng-container>
+        </li>
+      </ul>
+      <ul *ngFor="let also of entry.see_alsos">
+        <li i18n>
+         <ng-container
+          *ngTemplateOutlet="headingField;context:{field:also, also:true}">
+         </ng-container>
+        </li>
+      </ul>
+    </ul>
+  </div>
+</ng-template>

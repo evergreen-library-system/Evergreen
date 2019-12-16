@@ -22,6 +22,10 @@ export class UndoRedoAction {
 
     // Which stack do we toss this on once it's been applied?
     isRedo: boolean;
+
+    // Grouped actions are tracked as multiple undo / redo actions, but
+    // are done and un-done as a unit.
+    groupSize?: number;
 }
 
 export class TextUndoRedoAction extends UndoRedoAction {
@@ -88,7 +92,9 @@ export class MarcEditContext {
     requestFieldFocus(req: FieldFocusRequest) {
         // timeout allows for new components to be built before the
         // focus request is emitted.
-        setTimeout(() => this.fieldFocusRequest.emit(req));
+        if (req) {
+            setTimeout(() => this.fieldFocusRequest.emit(req));
+        }
     }
 
     resetUndos() {
@@ -97,18 +103,75 @@ export class MarcEditContext {
     }
 
     requestUndo() {
-        const undo = this.undoStack.shift();
-        if (undo) {
-            undo.isRedo = false;
-            this.distributeUndoRedo(undo);
-        }
+        let remaining = null;
+
+        do {
+            const action = this.undoStack.shift();
+            if (!action) { return; }
+
+            if (remaining === null) {
+                remaining = action.groupSize || 1;
+            }
+            remaining--;
+
+            action.isRedo = false;
+            this.distributeUndoRedo(action);
+
+        } while (remaining > 0);
     }
 
     requestRedo() {
-        const redo = this.redoStack.shift();
-        if (redo) {
-            redo.isRedo = true;
-            this.distributeUndoRedo(redo);
+        let remaining = null;
+
+        do {
+            const action = this.redoStack.shift();
+            if (!action) { return; }
+
+            if (remaining === null) {
+                remaining = action.groupSize || 1;
+            }
+            remaining--;
+
+            action.isRedo = true;
+            this.distributeUndoRedo(action);
+
+        } while (remaining > 0);
+    }
+
+    // Calculate stack action count taking groupSize (atomic action
+    // sets) into consideration.
+    stackCount(stack: UndoRedoAction[]): number {
+        let size = 0;
+        let skip = 0;
+
+        stack.forEach(action => {
+            if (action.groupSize > 1) {
+                if (skip) { return; }
+                skip = 1;
+            } else {
+                skip = 0;
+            }
+            size++;
+        });
+
+        return size;
+    }
+
+    undoCount(): number {
+        return this.stackCount(this.undoStack);
+    }
+
+    redoCount(): number {
+        return this.stackCount(this.redoStack);
+    }
+
+    // Stamp the most recent 'size' entries in the undo stack
+    // as being an atomic undo/redo set.
+    setUndoGroupSize(size: number) {
+        for (let idx = 0; idx < size; idx++) {
+            if (this.undoStack[idx]) {
+                this.undoStack[idx].groupSize = size;
+            }
         }
     }
 

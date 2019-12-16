@@ -2,7 +2,7 @@
     <div class="row form-inline" style="font-family: 'Lucida Console', Monaco, monospace;">
         {{bibField.tag}} {{bibField.ind1}}{{bibField.ind2}} 
         <div ng-repeat="sf in bibField.subfields">
-            <span class="marcsfcodedelimiter">‡{{sf.0}}</span> {{sf.1}}
+            <span class="marcsfcodedelimiter">‡{{sf[0]}}</span> {{sf[1]}}
             <input type="checkbox" ng-model="sf.selected" ng-if="sf.selectable" />
         </div>
     </div>

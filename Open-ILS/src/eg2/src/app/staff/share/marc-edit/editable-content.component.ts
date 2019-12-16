@@ -597,6 +597,36 @@ export class EditableContentComponent
         // Context menus can steal focus.
         this.context.requestFieldFocus(this.context.lastFocused);
     }
+
+    isAuthInvalid(): boolean {
+        return (
+            this.fieldType === 'sfv' &&
+            this.field.authChecked &&
+            !this.field.authValid
+        );
+    }
+
+    isAuthValid(): boolean {
+        return (
+            this.fieldType === 'sfv' &&
+            this.field.authChecked &&
+            this.field.authValid
+        );
+    }
+
+    isLastSubfieldValue(): boolean {
+        if (this.fieldType === 'sfv') {
+            const myIdx = this.subfield[2];
+            for (let idx = 0; idx < this.field.subfields.length; idx++) {
+                if (idx > myIdx) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        return false;
+    }
 }
 
 

@@ -1,5 +1,6 @@
 import {Injectable, EventEmitter} from '@angular/core';
-import {map, tap} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {map, tap, distinct} from 'rxjs/operators';
 import {StoreService} from '@eg/core/store.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -25,6 +26,7 @@ export class TagTableService {
     tagMap: {[tag: string]: any} = {};
     ffPosMap: {[rtype: string]: any[]} = {};
     ffValueMap: {[rtype: string]: any} = {};
+    controlledBibTags: string[];
 
     extractedValuesCache:
         {[valueType: string]: {[which: string]: any}} = {};
@@ -268,6 +270,20 @@ export class TagTableService {
             .sort((a, b) => a.label < b.label ? -1 : 1);
 
         return this.toCache('ffvalues', recordType, fieldCode, values);
+    }
+
+    getControlledBibTags(): Promise<string[]> {
+        if (this.controlledBibTags) {
+            return Promise.resolve(this.controlledBibTags);
+        }
+
+        this.controlledBibTags = [];
+        return this.pcrud.retrieveAll('acsbf', {select: ['tag']})
+        .pipe(
+            map(field => field.tag()),
+            distinct(),
+            map(tag => this.controlledBibTags.push(tag))
+        ).toPromise().then(_ => this.controlledBibTags);
     }
 }
 

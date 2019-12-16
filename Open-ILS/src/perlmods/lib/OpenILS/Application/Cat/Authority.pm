@@ -1,5 +1,7 @@
 package OpenILS::Application::Cat::Authority;
 use strict; use warnings;
+use MARC::Record;
+use MARC::File::XML (BinaryEncoding => 'utf8', RecordFormat => 'USMARC');
 use base qw/OpenILS::Application/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Application::Cat::AuthCommon;
@@ -344,6 +346,337 @@ sub retrieve_acsaf {
     $e->disconnect;
 
     $client->respond($_) foreach @$fields;
+    return undef;
+}
+
+__PACKAGE__->register_method(
+    method => "bib_field_overlay_authority_field",
+    api_name => "open-ils.cat.authority.bib_field.overlay_authority",
+    api_level => 1,
+    stream => 1,
+    argc => 2,
+    signature => {
+        desc => q/Given a bib field hash and an authority field hash,
+            merge the authority data for controlled fields into the 
+            bib field./,
+        params => [
+            {name => 'Bib Field', 
+                desc => '{tag:., ind1:., ind2:.,subfields:[[code, value],...]}'},
+            {name => 'Authority Field', 
+                desc => '{tag:., ind1:., ind2:.,subfields:[[code, value],...]}'},
+            {name => 'Control Set ID',
+                desc => q/Optional control set limiter.  If no control set
+                    is provided, the first matching authority field
+                    definition will be used./}
+        ],
+        return => q/The modified bib field/
+    }
+);
+
+# Returns the first found field.
+sub get_auth_field {
+    my ($atag, $cset_id) = @_;
+
+    my $e = new_editor();
+
+    my $where = {tag => $atag};
+
+    $where->{control_set} = $cset_id if $cset_id;
+
+    return $e->search_authority_control_set_authority_field($where)->[0];
+}
+
+sub bib_field_overlay_authority_field {
+    my ($self, $client, $bib_field, $auth_field, $cset_id) = @_;
+
+    return $bib_field unless $bib_field && $auth_field;
+
+    my $btag = $bib_field->{'tag'};
+    my $atag = $auth_field->{'tag'};
+
+    # Find the controlled subfields.  Here we assume the authority
+    # field provided should be used as the source of which subfields
+    # are controlled.  If passed a set of bib and auth data that are
+    # not consistent with the control set, it may produce unexpected
+    # results.
+    my $sf_list = '';
+    my $acsaf = get_auth_field($atag, $cset_id);
+
+    if ($acsaf) {
+        $sf_list = $acsaf->sf_list;
+
+    } else {
+
+        # Handle 4XX and 5XX
+        (my $alt_atag = $atag) =~ s/^./1/;
+        $acsaf = get_auth_field($alt_atag, $cset_id) if $alt_atag ne $atag;
+
+        $sf_list = $acsaf->sf_list if $acsaf;
+    }
+
+    my $subfields = [];
+    my $auth_sf_zero;
+
+    # Add the controlled authority subfields
+    for my $sf (@{$auth_field->{subfields}}) {
+        my $c = $sf->[0]; # subfield code
+        my $v = $sf->[1]; # subfield value
+
+        if ($c eq '0') {
+            $auth_sf_zero = $v;
+
+        } elsif (index($sf_list, $c) > -1) {
+            push(@$subfields, [$c, $v]);
+        }
+    }
+
+    # Add the uncontrolled bib subfields
+    for my $sf (@{$bib_field->{subfields}}) {
+        my $c = $sf->[0]; # subfield code
+        my $v = $sf->[1]; # subfield value
+
+        # Discard the bib '0' since the link is no longer valid, 
+        # given we're replacing the contents of the field.
+        if (index($sf_list, $c) < 0 && $c ne '0') {
+            push(@$subfields, [$c, $v]);
+        }
+    }
+
+    # The data on this authority field may link to yet 
+    # another authority record.  Track that in our bib field
+    # as the last subfield;
+    push(@$subfields, ['0', $auth_sf_zero]) if $auth_sf_zero;
+
+    my $new_bib_field = {
+        tag => $bib_field->{tag},
+        ind1 => $auth_field->{'ind1'},
+        ind2 => $auth_field->{'ind2'},
+        subfields => $subfields
+    };
+
+    $new_bib_field->{ind1} = $auth_field->{'ind2'} 
+        if $atag eq '130' && $btag eq '130';
+
+    return $new_bib_field;
+}
+
+__PACKAGE__->register_method(
+    method    => "validate_bib_fields",
+    api_name  => "open-ils.cat.authority.validate.bib_field",
+    stream => 1,
+    signature => {
+        desc => q/Returns a stream of bib field objects with a 'valid'
+        attribute added, set to 1 or 0, indicating whether the field
+        has a matching authority entry.  If no control set ID is provided
+        all configured control sets will be tested.  Testing will stop
+        with the first positive validation./,
+        params => [
+            {type => 'object', name => 'Bib Fields',
+                description => q/
+                    List of objects like this 
+                    {
+                        tag: tag, 
+                        ind1: ind1, 
+                        ind2: ind2, 
+                        subfields: [[code, value], ...]
+                    }
+
+                    For example:
+srfsh# request open-ils.cat open-ils.cat.authority.validate.bib_field
+  [{"tag":"600","ind1":"", "ind2":"", "subfields":[["a","shakespeare william"], ...]}]
+                /
+            },
+            {type => 'number', name => 'Optional Control Set ID'},
+        ]
+    }
+);
+
+# for stub records sent to 
+# open-ils.cat.authority.simple_heading
+my $auth_leader = '00000czm a2200205Ka 4500';
+
+sub validate_bib_fields {
+    my ($self, $client, $bib_fields, $control_set) = @_;
+
+    $bib_fields = [$bib_fields] unless ref $bib_fields eq 'ARRAY';
+
+    my $e = new_editor();
+
+    for my $bib_field (@$bib_fields) {
+
+        $bib_field->{valid} = 0;
+
+        my $where = {'+acsbf' => {tag => $bib_field->{tag}}};
+        $where->{'+acsaf'} = {control_set => $control_set} if $control_set;
+
+        my $auth_field_list = $e->json_query({
+            select => {
+                acsbf => ['authority_field'],
+                acsaf => ['id', 'tag', 'sf_list', 'control_set']
+            },
+            from => {acsbf => {acsaf => {}}},
+            where => $where
+        });
+
+        my @seen_subfields;
+        for my $auth_field (@$auth_field_list) {
+
+            my $sf_list = $auth_field->{sf_list};
+
+            # Some auth fields have the same sf_list values.  Track the
+            # ones we've already tested.
+            next if grep {$_ eq $sf_list} @seen_subfields;
+
+            push(@seen_subfields, $sf_list);
+
+            my @sf_values;
+            for my $subfield (@{$bib_field->{subfields}}) {
+                my $code = $subfield->[0];
+                my $value = $subfield->[1];
+
+                next unless defined $value && $value ne '';
+
+                # is this a controlled subfield?
+                next unless index($sf_list, $code) > -1;
+
+                push(@sf_values, $code, $value);
+            }
+
+            next unless @sf_values;
+
+            my $record = MARC::Record->new;
+            $record->leader($auth_leader);
+
+            my $field = MARC::Field->new($auth_field->{tag},
+                $bib_field->{ind1}, $bib_field->{ind2}, @sf_values);
+
+            $record->append_fields($field);
+
+            my $match = $U->simplereq(
+                'open-ils.cat', 
+                'open-ils.cat.authority.simple_heading.from_xml',
+                $record->as_xml_record, $control_set);
+
+            if ($match) {
+                $bib_field->{valid} = 1;
+                $bib_field->{authority_record} = $match;
+                $bib_field->{authority_field} = $auth_field->{id};
+                $bib_field->{control_set} = $auth_field->{control_set};
+                last;
+            }
+        }
+
+        # Present our findings.
+        $client->respond($bib_field);
+    }
+
+    return undef;
+}
+
+
+__PACKAGE__->register_method(
+    method    => "bib_field_authority_linking_browse",
+    api_name  => "open-ils.cat.authority.bib_field.linking_browse",
+    stream => 1,
+    signature => {
+        desc => q/Returns a stream of authority record blobs including
+            information on its main heading and its see froms and see 
+            alsos, based on an axis-based browse search.  This was
+            initially created to move some MARC editor authority linking 
+            logic to the server.  The browse axis is derived from the
+            bib field data provided.
+        ...
+        /,
+        params => [
+            {type => 'object', name => 'MARC Field hash {tag:.,ind1:.,ind2:,subfields:[[code,value],.]}'},
+            {type => 'number', name => 'Page size / limit'},
+            {type => 'number', name => 'Page offset'},
+            {type => 'string', name => 'Optional thesauri, comma separated'}
+        ]
+    }
+);
+
+sub get_heading_string {
+    my $field = shift;
+
+    my $heading = '';
+    for my $subfield ($field->subfields) {
+        $heading .= ' --' if index('xyz', $subfield->[0]) > -1;
+        $heading .= ' ' if $heading;
+        $heading .= $subfield->[1];
+    }
+
+    return $heading;
+}
+
+# Turns a MARC::Field into a hash and adds the field's heading string.
+sub hashify_field {
+    my $field = shift;
+    return {
+        heading => get_heading_string($field),
+        tag => $field->tag,
+        ind1 => $field->indicator(1),
+        ind2 => $field->indicator(2),
+        subfields => [$field->subfields]
+    };
+}
+
+sub bib_field_authority_linking_browse {
+    my ($self, $client, $bib_field, $limit, $offset, $thesauri) = @_;
+
+    $offset ||= 0;
+    $limit ||= 5;
+    $thesauri ||= '';
+    my $e = new_editor();
+
+    return [] unless $bib_field;
+
+    my $term = join(' ', map {$_->[0]} @{$bib_field->{subfields}});
+
+    return [] unless $term;
+
+    my $axis = $e->json_query({
+        select => {abaafm => ['axis']},
+        from => {acsbf => {acsaf => {join => 'abaafm'}}},
+        where => {'+acsbf' => {tag => $bib_field->{tag}}}
+    })->[0];
+
+    return [] unless $axis && ($axis = $axis->{axis});
+
+    # See https://bugs.launchpad.net/evergreen/+bug/1403098
+    my $are_ids = $U->simplereq(
+        'open-ils.supercat',
+        'open-ils.supercat.authority.browse_center.by_axis.refs',
+        $axis, $term, $offset, $limit, $thesauri);
+
+    for my $are_id (@$are_ids) {
+
+        my $are = $e->retrieve_authority_record_entry($are_id);
+        my $rec = MARC::Record->new_from_xml($are->marc, 'UTF-8');
+
+        my $main_field = $rec->field('1..');
+        my $auth_org_field = $rec->field('003');
+        my $auth_org = $auth_org_field ? $auth_org_field->data : undef;
+
+        my $resp = {
+            authority_id => $are_id,
+            main_heading => hashify_field($main_field),
+            auth_org => $auth_org,
+            see_alsos => [],
+            see_froms => []
+        };
+
+        for my $also_field ($rec->field('5..')) {
+            push(@{$resp->{see_alsos}}, hashify_field($also_field));
+        }
+
+        for my $from_field ($rec->field('4..')) {
+            push(@{$resp->{see_froms}}, hashify_field($from_field));
+        }
+
+        $client->respond($resp);
+    }
+
     return undef;
 }
 

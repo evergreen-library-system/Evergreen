@@ -8,6 +8,7 @@ import {FixedFieldsEditorComponent} from './fixed-fields-editor.component';
 import {FixedFieldComponent} from './fixed-field.component';
 import {TagTableService} from './tagtable.service';
 import {EditableContentComponent} from './editable-content.component';
+import {AuthorityLinkingDialogComponent} from './authority-linking-dialog.component';
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import {EditableContentComponent} from './editable-content.component';
         MarcFlatEditorComponent,
         FixedFieldsEditorComponent,
         FixedFieldComponent,
-        EditableContentComponent
+        EditableContentComponent,
+        AuthorityLinkingDialogComponent
     ],
     imports: [
         StaffCommonModule,

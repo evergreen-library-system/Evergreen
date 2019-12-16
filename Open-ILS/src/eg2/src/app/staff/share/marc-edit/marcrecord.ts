@@ -19,6 +19,10 @@ export interface MarcField {
     ind2?: string;
     subfields?: MarcSubfield[];
 
+    // For authority validation
+    authValid: boolean;
+    authChecked: boolean;
+
     // Fields are immutable when it comes to controlfield vs.
     // data field.  Stamp the value when stamping field IDs.
     isCtrlField: boolean;

@@ -8,15 +8,19 @@ div[contenteditable] {
    min-height: calc(1.5em + .75rem + 2px);
 }
 
-.sf-delimiter { 
+.sf-delimiter {
   /* match angjs color */
-  color: rgb(0, 0, 255)!important; 
+  color: rgb(0, 0, 255)!important;
   /* snuggle up to my subfield code */
-  margin-right: -0.5rem; 
+  margin-right: -0.5rem;
 }
 
-.sf-code { 
+.sf-code {
   /* match angjs color */
-  color: rgb(0, 0, 255)!important; 
+  color: rgb(0, 0, 255)!important;
+}
+
+.auth-invalid {
+  color: rgb(255, 0, 0)!important;
 }
 

@@ -6,3 +6,10 @@
   border-bottom: 1px solid gray;
   */
 }
+
+.link-button .material-icons {
+  font-size: 17px;
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+}

@@ -18,7 +18,7 @@
             {{main.heading}}
             (<span style="font-family: 'Lucida Console', Monaco, monospace;">
                 <span ng-repeat="sf in main.headingField.subfields">
-                    <span class="marcsfcodedelimiter">‡{{sf.0}}</span> {{sf.1}}
+                    <span class="marcsfcodedelimiter">‡{{sf[0]}}</span> {{sf[1]}}
                 </span>
             </span>)
         </div>
@@ -29,7 +29,7 @@
                     [% l('See from: [_1]', '{{seefrom.heading}}') %]
                     (<span style="font-family: 'Lucida Console', Monaco, monospace;">
                         <span ng-repeat="sf in seefrom.headingField.subfields">
-                            <span class="marcsfcodedelimiter">‡{{sf.0}}</span> {{sf.1}}
+                            <span class="marcsfcodedelimiter">‡{{sf[0]}}</span> {{sf[1]}}
                         </span>
                     </span>)
                 </div>
@@ -40,7 +40,7 @@
                     [% l('See also from: [_1]', '{{seealso.heading}}') %]
                     (<span style="font-family: 'Lucida Console', Monaco, monospace;">
                         <span ng-repeat="sf in seealso.headingField.subfields">
-                            <span class="marcsfcodedelimiter">‡{{sf.0}}</span> {{sf.1}}
+                            <span class="marcsfcodedelimiter">‡{{sf[0]}}</span> {{sf[1]}}
                         </span>
                     </span>)
                 </div>
