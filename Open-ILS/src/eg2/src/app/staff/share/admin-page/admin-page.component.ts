@@ -87,6 +87,7 @@ export class AdminPageComponent implements OnInit {
 
     idlClassDef: any;
     pkeyField: string;
+    configFields: string[];
 
     // True if any columns on the object support translations
     translateRowIdx: number;
@@ -113,6 +114,7 @@ export class AdminPageComponent implements OnInit {
         public toast: ToastService
     ) {
         this.translatableFields = [];
+        this.configFields = [];
     }
 
     applyOrgValues(orgId?: number) {
@@ -153,6 +155,9 @@ export class AdminPageComponent implements OnInit {
                 (this.persistKeyPfx ? this.persistKeyPfx + '.' : '') +
                 this.idlClassDef.table;
         }
+
+        this.configFields =
+            this.idlClassDef.fields.filter(f => f.config_field);
 
         // gridFilters are a JSON encoded string
         const filters = this.route.snapshot.queryParamMap.get('gridFilters');
