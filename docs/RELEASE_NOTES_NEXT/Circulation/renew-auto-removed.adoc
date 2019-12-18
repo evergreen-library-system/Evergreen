@@ -1,0 +1,6 @@
+open-ils.circ.renew.auto Removed
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The deprecated `open-ils.circ.renew.auto` API was removed.  You will
+want to use `open-ils.circ.renew` with the `auto_renewal` option set
+to 1.  This mainly affects those who have written custom code using
+the open-ils.circ backend.

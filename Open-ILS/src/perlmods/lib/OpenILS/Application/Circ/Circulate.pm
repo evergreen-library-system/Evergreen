@@ -120,16 +120,6 @@ __PACKAGE__->register_method(
 );
 
 __PACKAGE__->register_method(
-    method    => "run_method",
-    api_name  => "open-ils.circ.renew.auto",
-    signature => q/@see open-ils.circ.renew/,
-    notes     => q/
-    The open-ils.circ.renew.auto API is deprecated.  Please use the
-    auto_renew => 1 option to open-ils.circ.renew, instead.
-    /
-);
-
-__PACKAGE__->register_method(
     method  => "run_method",
     api_name    => "open-ils.circ.renew",
     notes       => <<"    NOTES");
@@ -243,7 +233,6 @@ sub run_method {
     }
 
     $circulator->is_renewal(1) if $api =~ /renew/;
-    $circulator->auto_renewal(1) if $api =~ /renew.auto/;
     $circulator->is_checkin(1) if $api =~ /checkin/;
     $circulator->is_checkout(1) if $api =~ /checkout/;
     $circulator->override(1) if $api =~ /override/o;
