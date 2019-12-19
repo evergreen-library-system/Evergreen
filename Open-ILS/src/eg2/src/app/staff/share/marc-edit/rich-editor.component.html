@@ -7,7 +7,8 @@
   </div>
 </ng-container>
 
-<eg-authority-linking-dialog #authLinker></eg-authority-linking-dialog>
+<eg-authority-linking-dialog #authLinker [context]="context">
+</eg-authority-linking-dialog>
 
 <ng-template #subfieldChunk let-field="field" let-subfield="subfield">
 
@@ -69,8 +70,10 @@
       <div class="col-lg-3">
         <div><button class="btn btn-outline-dark"
           (click)="showHelp = !showHelp" i18n>Help</button></div>
-        <div class="mt-2"><button class="btn btn-outline-dark"
-          (click)="validate()" i18n>Validate</button></div>
+        <ng-container *ngIf="context.recordType === 'biblio'">
+          <div class="mt-2"><button class="btn btn-outline-dark"
+            (click)="validate()" i18n>Validate</button></div>
+        </ng-container>
         <div class="mt-2">
           <button type="button" class="btn btn-outline-info"
             [disabled]="undoCount() < 1" (click)="undo()">

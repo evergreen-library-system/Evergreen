@@ -1,0 +1,14 @@
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>MARC Editor</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <eg-marc-editor #marcEditor (recordSaved)="handleRecordSaved($event)" 
+      [recordType]="recordType" [recordXml]="recordXml"></eg-marc-editor>
+  </div>
+</ng-template>

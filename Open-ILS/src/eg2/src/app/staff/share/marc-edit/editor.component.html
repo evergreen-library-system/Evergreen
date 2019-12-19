@@ -26,13 +26,15 @@
     </span>
   </h3>
     
-  <div class="mr-2">
-    <eg-combobox #sourceSelector
-      [entries]="sources"
-      placeholder="Select a Source..."
-      i18n-placeholder>
-    </eg-combobox>
-  </div>
+  <ng-container *ngIf="recordType === 'biblio'">
+    <div class="mr-2">
+      <eg-combobox #sourceSelector
+        [entries]="sources"
+        placeholder="Select a Source..."
+        i18n-placeholder>
+      </eg-combobox>
+    </div>
+  </ng-container>
 
   <ng-container *ngIf="record && record.id">
     <button *ngIf="!record.deleted" class="btn btn-warning" 

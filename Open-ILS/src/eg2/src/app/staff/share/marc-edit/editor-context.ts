@@ -1,6 +1,7 @@
 import {EventEmitter} from '@angular/core';
 import {MarcRecord, MarcField, MarcSubfield} from './marcrecord';
 import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
+import {TagTable} from './tagtable.service';
 
 /* Per-instance MARC editor context. */
 
@@ -64,6 +65,8 @@ export class MarcEditContext {
 
     undoStack: UndoRedoAction[] = [];
     redoStack: UndoRedoAction[] = [];
+
+    tagTable: TagTable;
 
     // True if any changes have been made.
     // For the 'rich' editor, this is any un-do-able actions.

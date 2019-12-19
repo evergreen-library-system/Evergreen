@@ -6,8 +6,8 @@ import {MarcRecord, MarcField, MarcSubfield} from './marcrecord';
 import {MarcEditContext, FieldFocusRequest, MARC_EDITABLE_FIELD_TYPE,
     TextUndoRedoAction} from './editor-context';
 import {ContextMenuEntry} from '@eg/share/context-menu/context-menu.service';
-import {TagTableService} from './tagtable.service';
 import {StringComponent} from '@eg/share/string/string.component';
+import {TagTable} from './tagtable.service';
 
 /**
  * MARC Editable Content Component
@@ -73,9 +73,11 @@ export class EditableContentComponent
     @ViewChild('insertAfter', {static: false}) insertAfterStr: StringComponent;
     @ViewChild('deleteField', {static: false}) deleteFieldStr: StringComponent;
 
-    constructor(
-        private renderer: Renderer2,
-        private tagTable: TagTableService) {}
+    constructor(private renderer: Renderer2) {}
+
+    tt(): TagTable { // for brevity
+        return this.context.tagTable;
+    }
 
     ngOnInit() {
         this.setupFieldType();
@@ -197,8 +199,7 @@ export class EditableContentComponent
     }
 
     applyFFOptions() {
-        return this.tagTable.getFfFieldMeta(
-            this.fixedFieldCode, this.record.recordType())
+        return this.tt().getFfFieldMeta(this.fixedFieldCode)
         .then(fieldMeta => {
             if (fieldMeta) {
                 this.maxLength = fieldMeta.length || 1;
@@ -216,20 +217,19 @@ export class EditableContentComponent
                 return this.tagContextMenuEntries();
 
             case 'sfc':
-                return this.tagTable.getSubfieldCodes(this.field.tag);
+                return this.tt().getSubfieldCodes(this.field.tag);
 
             case 'sfv':
-                return this.tagTable.getSubfieldValues(
+                return this.tt().getSubfieldValues(
                     this.field.tag, this.subfield[0]);
 
             case 'ind1':
             case 'ind2':
-                return this.tagTable.getIndicatorValues(
+                return this.tt().getIndicatorValues(
                     this.field.tag, this.fieldType);
 
             case 'ffld':
-                return this.tagTable.getFfValues(
-                    this.fixedFieldCode, this.record.recordType());
+                return this.tt().getFfValues(this.fixedFieldCode);
         }
 
         return null;
@@ -261,7 +261,7 @@ export class EditableContentComponent
             {divider: true}
         );
 
-        this.tagTable.getFieldTags().forEach(e => this.tagMenuEntries.push(e));
+        this.tt().getFieldTags().forEach(e => this.tagMenuEntries.push(e));
 
         return this.tagMenuEntries;
     }

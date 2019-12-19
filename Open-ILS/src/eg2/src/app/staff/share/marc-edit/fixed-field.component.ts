@@ -25,7 +25,7 @@ export class FixedFieldComponent implements OnInit {
     fieldMeta: IdlObject;
     randId = Math.floor(Math.random() * 10000000);
 
-    constructor(private tagTable: TagTableService) {}
+    constructor() {}
 
     ngOnInit() {
         this.init().then(_ =>
@@ -37,8 +37,7 @@ export class FixedFieldComponent implements OnInit {
 
         // If no field metadata is found for this fixed field code and
         // record type combo, the field will be hidden in the UI.
-        return this.tagTable.getFfFieldMeta(
-            this.fieldCode, this.record.recordType())
+        return this.context.tagTable.getFfFieldMeta(this.fieldCode)
         .then(fieldMeta => this.fieldMeta = fieldMeta);
     }
 }

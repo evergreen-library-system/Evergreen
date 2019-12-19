@@ -220,3 +220,8 @@ body>.dropdown-menu {z-index: 2100;}
   color: black;
 }
 
+/* Allow for larger XL dialogs */
+@media (min-width: 1300px) { .modal-xl { max-width: 1200px; } }
+@media (min-width: 1600px) { .modal-xl { max-width: 1500px; } }
+@media (min-width: 1700px) { .modal-xl { max-width: 1600px; } }
+

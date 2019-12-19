@@ -62,11 +62,13 @@ export class MarcRichEditorComponent implements OnInit {
         if (!this.record) { return Promise.resolve(); }
 
         return Promise.all([
-            this.tagTable.loadTagTable({marcRecordType: this.context.recordType}),
-            this.tagTable.getFfPosTable(this.record.recordType()),
-            this.tagTable.getFfValueTable(this.record.recordType()),
+            this.tagTable.loadTags({
+                marcRecordType: this.context.recordType,
+                ffType: this.record.recordType()
+            }).then(table => this.context.tagTable = table),
             this.tagTable.getControlledBibTags().then(
-                tags => this.controlledBibTags = tags)
+                tags => this.controlledBibTags = tags),
+            this.fetchSettings()
         ]).then(_ =>
             // setTimeout forces all of our sub-components to rerender
             // themselves each time init() is called.  Without this,
@@ -75,6 +77,11 @@ export class MarcRichEditorComponent implements OnInit {
             // network.  (Sometimes the data is cached).
             setTimeout(() => this.dataLoaded = true)
         );
+    }
+
+    fetchSettings(): Promise<any> {
+        // Fetch at rich editor load time to cache.
+        return this.org.settings(['cat.marc_control_number_identifier']);
     }
 
     stackSubfieldsChange() {
@@ -111,8 +118,8 @@ export class MarcRichEditorComponent implements OnInit {
 
     validate() {
         const fields = [];
-        this.record.fields.filter(f => this.isControlledBibTag(f.tag))
 
+        this.record.fields.filter(f => this.isControlledBibTag(f.tag))
         .forEach(f => {
             f.authValid = false;
             fields.push({
@@ -120,7 +127,7 @@ export class MarcRichEditorComponent implements OnInit {
                 tag: f.tag,
                 ind1: f.ind1,
                 ind2: f.ind2,
-                subfields: f.subfields.map(sf => ({code: sf[0], value: sf[1]}))
+                subfields: f.subfields.map(sf => [sf[0], sf[1]])
             });
         });
 
@@ -141,7 +148,7 @@ export class MarcRichEditorComponent implements OnInit {
 
     openLinkerDialog(field: MarcField) {
         this.authLinker.bibField = field;
-        this.authLinker.open({size: 'lg'}).subscribe(newField => {
+        this.authLinker.open({size: 'xl'}).subscribe(newField => {
             if (!newField) { return; }
 
             // Performs an insert followed by a delete, so the two

@@ -7,9 +7,14 @@
   </span>
 </ng-template>
 
+<!-- MARC edit-ception! -->
+<eg-marc-editor-dialog #marcEditDialog recordType="authority">
+</eg-marc-editor-dialog>
+
 <!-- display a single heading as MARC or as the human friendlier string -->
 <ng-template #headingField let-field="field" let-from="from" let-also="also">
-  <button class="btn btn-sm btn-outline-info p-1 mr-1" 
+  <button class="btn btn-sm p-1 mr-1" 
+    [ngClass]="{'btn-outline-primary': !(from || also), 'btn-outline-info': (from || also)}"
     (click)="applyHeading(field)" i18n>Apply</button>
   <ng-container *ngIf="showAs == 'heading'">
     <span *ngIf="from" i18n>See From: {{field.heading}}</span>
@@ -54,12 +59,10 @@
       <div class="ml-2 p-1">
         <div class="mb-1" i18n>Create new authority from this field</div>
         <div>
-          <button class="btn btn-outline-info" [disabled]="true">
-            Immediately
-          </button>
-          <button class="btn btn-outline-info ml-2" [disabled]="true">
-            Create and Edit
-          </button>
+          <button class="btn btn-outline-info" 
+            (click)="createNewAuthority()">Immediately</button>
+          <button class="btn btn-outline-info ml-2" 
+            (click)="createNewAuthority(true)">Create and Edit</button>
         </div>
       </div>
     </div>

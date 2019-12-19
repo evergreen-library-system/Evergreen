@@ -1,10 +1,14 @@
-import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
+import {Component, ViewChild, Input, Output, OnInit, EventEmitter} from '@angular/core';
 import {NetService} from '@eg/core/net.service';
+import {OrgService} from '@eg/core/org.service';
+import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {MarcField} from './marcrecord';
+import {MarcEditContext} from './editor-context';
 import {Pager} from '@eg/share/util/pager';
+import {MarcEditorDialogComponent} from './editor-dialog.component';
 
 /**
  * MARC Authority Linking Dialog
@@ -22,6 +26,7 @@ export class AuthorityLinkingDialogComponent
     @Input() thesauri: string = null;
     @Input() controlSet: number = null;
     @Input() pager: Pager;
+    @Input() context: MarcEditContext;
 
     browseData: any[] = [];
 
@@ -32,8 +37,15 @@ export class AuthorityLinkingDialogComponent
 
     selectedSubfields: string[] = [];
 
+    cni: string; // Control Number Identifier
+
+    @ViewChild('marcEditDialog', {static: false})
+        marcEditDialog: MarcEditorDialogComponent;
+
     constructor(
         private modal: NgbModal,
+        private auth: AuthService,
+        private org: OrgService,
         private pcrud: PcrudService,
         private net: NetService) {
         super(modal);
@@ -61,9 +73,14 @@ export class AuthorityLinkingDialogComponent
 
     initData() {
 
-       this.pager.offset = 0;
+        this.pager.offset = 0;
 
-       this.pcrud.search('acsbf',
+        this.org.settings(['cat.marc_control_number_identifier']).then(s => {
+            this.cni = s['cat.marc_control_number_identifier'] ||
+                'Set cat.marc_control_number_identifier in Library Settings';
+        });
+
+        this.pcrud.search('acsbf',
             {tag: this.bibField.tag},
             {flesh: 1, flesh_fields: {acsbf: ['authority_field']}},
             {atomic:  true, anonymous: true}
@@ -130,5 +147,41 @@ export class AuthorityLinkingDialogComponent
         return this.authMeta ?
             this.authMeta.sf_list().includes(sf) : false;
     }
+
+    setSubfieldZero(authId: number) {
+        const sfZero = this.bibField.subfields.filter(sf => sf[0] === '0')[0];
+        if (sfZero) {
+            this.context.deleteSubfield(this.bibField, sfZero);
+        }
+        this.context.insertSubfield(this.bibField,
+            ['0', `(${this.cni})${authId}`, this.bibField.subfields.length]);
+    }
+
+    createNewAuthority(editFirst?: boolean) {
+
+        const method = editFirst ?
+            'open-ils.cat.authority.record.create_from_bib.readonly' :
+            'open-ils.cat.authority.record.create_from_bib';
+
+        this.net.request(
+            'open-ils.cat', method,
+            this.fieldHash(), this.cni, this.auth.token()
+        ).subscribe(record => {
+            if (editFirst) {
+                this.marcEditDialog.recordXml = record;
+                this.marcEditDialog.open({size: 'xl'})
+                .subscribe(saveEvent => {
+                    if (saveEvent && saveEvent.recordId) {
+                        this.setSubfieldZero(saveEvent.recordId);
+                    }
+                    this.close();
+                });
+            } else {
+                this.setSubfieldZero(record.id());
+                this.close();
+            }
+        });
+    }
 }
+
 

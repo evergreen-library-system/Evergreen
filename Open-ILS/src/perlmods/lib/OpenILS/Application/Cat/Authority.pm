@@ -374,7 +374,7 @@ __PACKAGE__->register_method(
 );
 
 # Returns the first found field.
-sub get_auth_field {
+sub get_auth_field_by_tag {
     my ($atag, $cset_id) = @_;
 
     my $e = new_editor();
@@ -400,7 +400,7 @@ sub bib_field_overlay_authority_field {
     # not consistent with the control set, it may produce unexpected
     # results.
     my $sf_list = '';
-    my $acsaf = get_auth_field($atag, $cset_id);
+    my $acsaf = get_auth_field_by_tag($atag, $cset_id);
 
     if ($acsaf) {
         $sf_list = $acsaf->sf_list;
@@ -409,7 +409,7 @@ sub bib_field_overlay_authority_field {
 
         # Handle 4XX and 5XX
         (my $alt_atag = $atag) =~ s/^./1/;
-        $acsaf = get_auth_field($alt_atag, $cset_id) if $alt_atag ne $atag;
+        $acsaf = get_auth_field_by_tag($alt_atag, $cset_id) if $alt_atag ne $atag;
 
         $sf_list = $acsaf->sf_list if $acsaf;
     }
@@ -515,7 +515,11 @@ sub validate_bib_fields {
                 acsaf => ['id', 'tag', 'sf_list', 'control_set']
             },
             from => {acsbf => {acsaf => {}}},
-            where => $where
+            where => $where,
+            order_by => [
+                {class => 'acsaf', field => 'main_entry', direction => 'desc'},
+                {class => 'acsaf', field => 'tag'}
+            ]
         });
 
         my @seen_subfields;
@@ -553,8 +557,8 @@ sub validate_bib_fields {
             $record->append_fields($field);
 
             my $match = $U->simplereq(
-                'open-ils.cat', 
-                'open-ils.cat.authority.simple_heading.from_xml',
+                'open-ils.search', 
+                'open-ils.search.authority.simple_heading.from_xml',
                 $record->as_xml_record, $control_set);
 
             if ($match) {
@@ -631,14 +635,24 @@ sub bib_field_authority_linking_browse {
 
     return [] unless $bib_field;
 
-    my $term = join(' ', map {$_->[0]} @{$bib_field->{subfields}});
+    my $term = join(' ', map {$_->[1]} @{$bib_field->{subfields}});
 
     return [] unless $term;
 
     my $axis = $e->json_query({
         select => {abaafm => ['axis']},
         from => {acsbf => {acsaf => {join => 'abaafm'}}},
-        where => {'+acsbf' => {tag => $bib_field->{tag}}}
+        where => {'+acsbf' => {tag => $bib_field->{tag}}},
+        order_by => [
+            {class => 'acsaf', field => 'main_entry', direction => 'desc'},
+            {class => 'acsaf', field => 'tag'},
+
+            # This lets us favor the 'subject' axis to the 'topic' axis.
+            # Topic is a subset of subject.  It's not clear if a field
+            # can link only to the 'topic' axes.  In stock EG, the one
+            # 'topic' field also links to 'subject'.
+            {class => 'abaafm', field => 'axis'}
+        ]
     })->[0];
 
     return [] unless $axis && ($axis = $axis->{axis});

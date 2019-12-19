@@ -18,6 +18,7 @@ import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 interface MarcSavedEvent {
     marcXml: string;
     bibSource?: number;
+    recordId?: number;
 }
 
 /**
@@ -44,6 +45,10 @@ export class MarcEditorComponent implements OnInit {
         if (!id) { return; }
         if (this.record && this.record.id === id) { return; }
         this.fromId(id);
+    }
+
+    get recordId(): number {
+        return this.record ? this.record.id : null;
     }
 
     @Input() set recordXml(xml: string) {
@@ -101,6 +106,8 @@ export class MarcEditorComponent implements OnInit {
         this.store.getItem('cat.marcedit.flateditor').then(
             useFlat => this.editorTab = useFlat ? 'flat' : 'rich');
 
+        if (this.recordType !== 'biblio') { return; }
+
         this.pcrud.retrieveAll('cbs').subscribe(
             src => this.sources.push({id: +src.id(), label: src.source()}),
             _ => {},
@@ -149,41 +156,87 @@ export class MarcEditorComponent implements OnInit {
         let sourceName: string = null;
         let sourceId: number = null;
 
-        if (this.sourceSelector.selected) {
+        if (this.sourceSelector && this.sourceSelector.selected) {
             sourceName = this.sourceSelector.selected.label;
             sourceId = this.sourceSelector.selected.id;
         }
 
+        const emission = {
+            marcXml: xml, bibSource: sourceId, recordId: this.recordId};
+
         if (this.inPlaceMode) {
             // Let the caller have the modified XML and move on.
-            this.recordSaved.emit({marcXml: xml, bibSource: sourceId});
+            this.recordSaved.emit(emission);
             return Promise.resolve();
         }
 
+        let promise;
+
         if (this.record.id) { // Editing an existing record
 
-            const method = 'open-ils.cat.biblio.record.xml.update';
-
-            return this.net.request('open-ils.cat', method,
-                this.auth.token(), this.record.id, xml, sourceName
-            ).toPromise().then(response => {
-
-                const evt = this.evt.parse(response);
-                if (evt) {
-                    console.error(evt);
-                    this.failMsg.current().then(msg => this.toast.warning(msg));
-                    this.dataSaving = false;
-                    return;
-                }
-
-                this.successMsg.current().then(msg => this.toast.success(msg));
-                this.recordSaved.emit({marcXml: xml, bibSource: sourceId});
-                return response;
-            });
+            promise = this.modifyRecord(xml, sourceName, sourceId);
 
         } else {
-            // TODO: create a new record
+
+            promise = this.createRecord(xml, sourceName);
         }
+
+        // NOTE we do not reinitialize our record with the MARC returned
+        // from the server after a create/update, which means our record
+        // may be out of sync, e.g. missing 901* values.  It's the
+        // callers onsibility to tear us down and rebuild us.
+        return promise.then(marcXml => {
+            if (!marcXml) { return null; }
+            this.successMsg.current().then(msg => this.toast.success(msg));
+            emission.marcXml = marcXml;
+            emission.recordId = this.recordId;
+            this.recordSaved.emit(emission);
+            return marcXml;
+        });
+    }
+
+    modifyRecord(marcXml: string, sourceName: string, sourceId: number): Promise<any> {
+        const method = 'open-ils.cat.biblio.record.marc.replace';
+
+        return this.net.request('open-ils.cat', method,
+            this.auth.token(), this.record.id, marcXml, sourceName
+
+        ).toPromise().then(response => {
+
+            const evt = this.evt.parse(response);
+            if (evt) {
+                console.error(evt);
+                this.failMsg.current().then(msg => this.toast.warning(msg));
+                this.dataSaving = false;
+                return null;
+            }
+
+            return response.marc();
+        });
+    }
+
+    createRecord(marcXml: string, sourceName?: string): Promise<any> {
+
+        const method = this.recordType === 'biblio' ?
+            'open-ils.cat.biblio.record.xml.create' :
+            'open-ils.cat.authority.record.import';
+
+        return this.net.request('open-ils.cat', method,
+            this.auth.token(), marcXml, sourceName
+        ).toPromise().then(response => {
+
+            const evt = this.evt.parse(response);
+
+            if (evt) {
+                console.error(evt);
+                this.failMsg.current().then(msg => this.toast.warning(msg));
+                this.dataSaving = false;
+                return null;
+            }
+
+            this.record.id = response.id();
+            return response.marc();
+        });
     }
 
     fromId(id: number): Promise<any> {
@@ -226,7 +279,7 @@ export class MarcEditorComponent implements OnInit {
                 }
                 return this.fromId(this.record.id)
                 .then(_ => this.recordSaved.emit(
-                    {marcXml: this.record.toXml()}));
+                    {marcXml: this.record.toXml(), recordId: this.recordId}));
             });
         });
     }
@@ -248,7 +301,7 @@ export class MarcEditorComponent implements OnInit {
 
                 return this.fromId(this.record.id)
                 .then(_ => this.recordSaved.emit(
-                    {marcXml: this.record.toXml()}));
+                    {marcXml: this.record.toXml(), recordId: this.recordId}));
             });
         });
     }
