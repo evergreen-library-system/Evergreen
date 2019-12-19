@@ -1,0 +1,30 @@
+BEGIN;
+
+SELECT plan(4);
+
+SELECT is(
+    (SELECT public.translate_isbn1013('9791186178140')),
+    '9791186178140 ',
+    'public.translate_isbn1013 can handle 979 ISBNs'
+);
+
+SELECT is(
+    (SELECT public.translate_isbn1013('9780735220171')),
+    '9780735220171 0735220174 ',
+    'public.translate_isbn1013 can translate 978 ISBNs to ISBN10s'
+);
+
+SELECT is(
+    (SELECT public.translate_isbn1013('0735220174')),
+    '0735220174 9780735220171 ',
+    'public.translate_isbn1013 can translate ISBN10s to ISBN13s'
+);
+
+SELECT is(
+    (SELECT public.translate_isbn1013('979-1186178140')),
+    '9791186178140 ',
+    'public.translate_isbn1013 can remove hyphens'
+);
+
+
+ROLLBACK;
