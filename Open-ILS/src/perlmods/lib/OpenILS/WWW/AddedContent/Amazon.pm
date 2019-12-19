@@ -65,8 +65,17 @@ sub fetch_content {
 
 # returns the HTTP response object from the URL fetch
 sub fetch_response {
-    my( $self, $page, $key ) = @_;
+    my( $self, $page, $raw_key ) = @_;
     my $uname = $self->userid;
+
+    my $key = $self->normalize_key($raw_key);
+    return 0 if $key eq 0;
+    my $url = $self->base_url . "$key.01.$page";
+    return $AC->get_url($url);
+}
+
+sub normalize_key {
+    my( $self, $key ) = @_;
 
     # Some sites have entered Amazon IDs in 020 $a, thus we cannot
     # simply pass all incoming keys to Business::ISBN for normalization
@@ -79,14 +88,11 @@ sub fetch_response {
         }
 
         # Amazon prefers ISBN10
-        $isbn = $isbn->as_isbn10 if $isbn->type eq 'ISBN13';
+        $isbn = $isbn->as_isbn10 if $isbn->prefix eq '978';
         $key = $isbn->as_string([]);
     }
-
-    my $url = $self->base_url . "$key.01.$page";
-    return $AC->get_url($url);
+    return $key;
 }
-
 
 
 1;
