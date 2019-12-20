@@ -14,7 +14,7 @@
 # truckload to verify that everything would continue to work if
 # we turn it on across the board.
 
-use Test::More tests => 47;
+use Test::More tests => 48;
 use Test::Warn;
 use DateTime::TimeZone;
 use DateTime::Format::ISO8601;
@@ -140,6 +140,7 @@ is (OpenILS::Utils::DateTime::interval_to_seconds('1 month',
 
 is (OpenILS::Utils::DateTime::interval_to_seconds('1 year'), 31536000);
 is (OpenILS::Utils::DateTime::interval_to_seconds('1 year 1 second'), 31536001);
+is (OpenILS::Utils::DateTime::interval_to_seconds('167:59:59'), 604799, 'correctly convert HHH:MM:SS intervals where hours longer than 2 digits');
 
 sub get_offset {
     # get current timezone offset for future use
