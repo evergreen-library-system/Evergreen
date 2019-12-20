@@ -84,6 +84,8 @@ For example, the portion of the Checkout print template below repeats every item
 that is checked out in HTML list format by means of the 'ng-repeat' in the li
 tag. 
 
+<<receipt_contents_reference.adoc#, Receipt Contents Reference>> is a list of most of the variables that you can use in your receipts.
+
 ------
 <ol>
 <li ng-repeat="checkout in circulations">
@@ -215,7 +217,9 @@ Once you have your receipts set up on one machine you can export your receipts,
 and then load them on to another machine.  Just remember to *Save Locally*
 once you import the receipts on the new machine.
 
-=== Exporting templates ===
+Exporting templates
+^^^^^^^^^^^^^^^^^^^
+>>>>>>> 73ef509ade... Docs: added receipt contents references.:docs/admin/receipt_template_editor.adoc
 As you can only save a template on to the computer you are working on you will
 need to export the template if you have more than one computer that prints out
 receipts (i.e., more than one computer on the circulation desk, or another
