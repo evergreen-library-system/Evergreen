@@ -188,6 +188,90 @@ sub do_patron_auth {
     }
 }
 
+# NB: This method returns patron info without patron authorization!
+# Use with caution.
+sub get_patron_info {
+    my ($self, $e, $config, $args) = @_;
+    my $authtoken = $e->authtoken;
+    my $org_unit = $config->context_org;
+    my $userid;
+
+    return $self->backend_error unless $e->checkauth;
+
+    try {
+        if ($args->{userid}) {
+            $userid = $args->{userid};
+        } elsif ($args->{username}) {
+            my $result = $e->search_actor_user({ usrname => $args->{username} })->[0]
+                or return $self->patron_not_found;
+            $userid = $result->id;
+        } elsif ($args->{barcode}) {
+            my $result = $U->simplereq(
+                'open-ils.actor',
+                'open-ils.actor.get_barcodes',
+                $authtoken, $org_unit, 'actor', $args->{barcode});
+            if (!$result or $U->event_code($result)) {
+                $logger->error("RemoteAuth: failed to retrieve user for session $authtoken");
+                return $self->backend_error;
+            }
+            if (scalar @$result == 0) {
+                return $self->patron_not_found;
+            }
+            if (scalar @$result > 1) {
+                # TODO handle multiple matching barcodes
+                $logger->error("RemoteAuth: too many matching patrons at org unit $org_unit for barcode " . $args->{barcode});
+                return $self->backend_error;
+            }
+            $userid = $result->[0]->{id};
+        } else {
+            $logger->error('RemoteAuth: get_patron_info: patron id not provided (or invalid id type)');
+            return $self->backend_error;
+        }
+    } catch Error with {
+        $logger->error("RemoteAuth get_patron_info failed to retrieve userid: @_");
+        return $self->backend_error;
+    };
+
+    return $self->patron_not_found unless ($userid);
+
+    # check if remoteauth is permitted for this user
+    my $permit_test = $e->json_query(
+        {from => ['actor.permit_remoteauth', $config->name, $userid]}
+    )->[0]{'actor.permit_remoteauth'};
+
+    if ($permit_test eq 'success') {
+        # permit_test succeeded, retrieve fleshed user info
+        my $usr_flesh = {
+            flesh => 2,
+            flesh_fields => {
+                au => [
+                    "card",
+                    "cards",
+                    "standing_penalties",
+                    'profile'
+                ],
+                ausp => [ "standing_penalty" ]
+            }
+        };
+        my $user = $e->retrieve_actor_user([$userid, $usr_flesh]);
+        if (!$user or $U->event_code($user)) {
+            $logger->error("RemoteAuth: failed to retrieve user for session $authtoken");
+            return $self->backend_error;
+        } else {
+            return $self->success($user);
+        }
+
+    } elsif ($permit_test eq 'not_found') {
+        return $self->patron_not_found;
+    } elsif ($permit_test eq 'expired') {
+        return $self->patron_is_expired;
+    } elsif ($permit_test eq 'blocked') {
+        return $self->patron_is_blocked;
+    } else {
+        return $self->backend_error;
+    }
+}
+
 # Dummy methods for responding to the client based on
 # different error (or success) conditions.
 # The handler will normally want to override these methods
