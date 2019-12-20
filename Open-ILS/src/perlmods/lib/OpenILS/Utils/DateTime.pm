@@ -109,7 +109,7 @@ sub interval_to_seconds {
     my $interval = ($class eq __PACKAGE__) ? shift : $class;
     my $context = shift;
 
-    $interval =~ s/(\d{2}):(\d{2}):(\d{2})/ $1 h $2 min $3 s /go;
+    $interval =~ s/(\d{2,}):(\d{2}):(\d{2})/ $1 h $2 min $3 s /go;
 
     $interval =~ s/and/,/g;
     $interval =~ s/,/ /g;
