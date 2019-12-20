@@ -358,7 +358,8 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
                 // balance owed on the current item matches or exceeds
                 // the pending payment.  Apply the full remainder of
                 // the payment to this item.. and we're done.
-                item.payment_pending = payment_amount;
+                // Limit to two decimal places to avoid floating point issues
+                item.payment_pending = payment_amount.toFixed(2);
                 break;
             }
         }
