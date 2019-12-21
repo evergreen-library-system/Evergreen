@@ -1,0 +1,14 @@
+<HTML>
+<BODY>
+[%- IF ctx.result == 'success' %]
+RETCOD=0<BR>
+[%- ELSIF ctx.error_msg == 'patron_not_authenticated' %]
+RETCOD=1<BR>
+ERRNUM=4<BR>
+ERRMSG=Invalid patron PIN<BR>
+[%- ELSE %]
+ERRNUM=1<BR>
+ERRMSG=Requested record not found<BR>
+[%- END %]
+</BODY>
+</HTML>

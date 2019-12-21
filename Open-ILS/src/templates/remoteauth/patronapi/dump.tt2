@@ -1,0 +1,14 @@
+[%- USE date %]
+<HTML>
+<BODY>
+[%- IF ctx.result == 'success' %]
+EXP DATE[p43]=[% date.format(ctx.user.expiry_date, '%m-%d-%y') %]<BR>
+P TYPE[p47]=[% ctx.user.profile %]<BR>
+HOME LIBR[p53]=[% ctx.user.home_ou %]<BR>
+P BARCODE[pb]=[% ctx.user.barcode %]<BR>
+[%- ELSE %]
+ERRNUM=1<BR>
+ERRMSG=Requested record not found<BR>
+[%- END %]
+</BODY>
+</HTML>

@@ -20,3 +20,14 @@ INSERT INTO config.remoteauth_profile
     VALUES ('EZProxyCGI', 'EZProxy CGI Authentication for SYS2', 3, TRUE, 1,
         TRUE, FALSE, FALSE, NULL, 1002);
 
+INSERT INTO config.usr_activity_type (id, ewho, ewhat, ehow, egroup, label) VALUES
+ ( 1003, 'patronapi', 'login', 'apache', 'authen',
+    oils_i18n_gettext(1003, 'RemoteAuth Login: PatronAPI Authentication', 'cuat', 'label'));
+
+-- config for PatronAPI Authentication (SYS1)
+INSERT INTO config.remoteauth_profile
+    (name, description, context_org, enabled, perm,
+        restrict_to_org, allow_inactive, allow_expired, block_list, usr_activity_type)
+    VALUES ('PatronAPI', 'PatronAPI Authentication for SYS1', 2, TRUE, 1,
+        TRUE, FALSE, FALSE, NULL, 1003);
+
