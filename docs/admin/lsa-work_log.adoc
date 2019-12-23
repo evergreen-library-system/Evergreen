@@ -14,6 +14,6 @@ To access the Work Log go to *Administration* -> *Local Administration* ->  *Wor
 
 There are two seperate logs, *Most Recently Logged Staff Actions* and *Most Recently Affected patrons*. The *Most Recently Logged Staff Actions* logs the the transactions in order they have occured on the workstation.  The *Most Recently Affected Patrons* log is a listing of the last patrons that transactions happened on. 
 
-The Work Log can contain a maximum number of transactions, this number is set via the <<librarysettings.adoc#,Library Settings Editor>>. They are in the GUI group of settings. *Work Log: Maximum Actions Logged* effects the number of transactions listing under the *Most  Recently Logged Staff Actions* and *Work Log: Maximum Patrons Logged* limits the number of patrons that are listed in the log. 
+The Work Log can contain a maximum number of transactions, this number is set via the <<librarysettings.adoc#,Library Settings Editor>>. They are in the GUI group of settings. *Work Log: Maximum Actions Logged* effects the number of transactions listing under the *Most Recently Logged Staff Actions* and *Work Log: Maximum Patrons Logged* limits the number of patrons that are listed in the log. 
 
 image::media/worklog.png[Work Log]
