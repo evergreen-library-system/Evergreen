@@ -15,6 +15,11 @@ export interface FieldFocusRequest {
     target: MARC_EDITABLE_FIELD_TYPE;
     sfOffset?: number; // focus a specific subfield by its offset
     ffCode?: string; // fixed field code
+
+    // If set, an external source wants to modify the text content
+    // of an editable component (in a way that retains undo/redo
+    // functionality).
+    newText?: string;
 }
 
 export class UndoRedoAction {

@@ -1,0 +1,59 @@
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Physical Characteristics Wizard</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="form-group row">
+      <label for="007-value" 
+        class="col-lg-4 col-form-label" i18n>007 Value</label>
+      <div class="col-lg-5 well-table">
+        <div class="well-value">
+          <!-- avoid newlines and spaces in the <pre> content -->
+          <pre class="pb-0 mb-0 pt-1">{{splitFieldData()[0]}}<span 
+            class="text-danger">{{splitFieldData()[1]}}</span>{{splitFieldData()[2]}}</pre>
+        </div>
+      </div>
+      <div class="col-lg-3 d-flex">
+        <button class="btn btn-outline-dark m-1 p-1 flex-1" (click)="reset()" i18n>Reset</button>
+        <button class="btn btn-outline-dark m-1 p-1 flex-1" (click)="reset(true)" i18n>Clear</button>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <label for="value-selector" class="col-lg-4 col-form-label">
+        <ng-container *ngIf="!selectorLabel" i18n>Category of Material</ng-container>
+        <ng-container *ngIf="selectorLabel">{{selectorLabel}}</ng-container>
+      </label>
+      <div class="col-lg-5">
+        <select id='value-selector' class="form-control" 
+          [(ngModel)]="selectorValue" (change)="selectorChanged()">
+          <option value=" " i18n>&lt;Unset&gt;</option>
+          <option *ngFor="let entry of selectorOptions" 
+            [ngValue]="entry.id" i18n>{{entry.id}}: {{entry.label}}</option>
+        </select>
+      </div>
+      <div class="col-lg-3 d-flex">
+        <button type="button" class="btn btn-outline-dark flex-1 m-1 p-1" 
+          (click)="prev()" [disabled]="step === 0" i18n>Previous</button>
+
+        <button type="button" class="btn btn-outline-dark flex-1 m-1 p-1"
+          (click)="next()" [disabled]="isLastStep()" i18n>Next</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" 
+      (click)="close(fieldData)" i18n>Apply</button>
+
+    <button type="button" class="btn btn-warning" 
+      (click)="close()" i18n>Cancel</button>
+  </div>
+
+</ng-template>

@@ -9,6 +9,7 @@ import {TagTableService} from './tagtable.service';
 import {MarcRecord, MarcField} from './marcrecord';
 import {MarcEditContext} from './editor-context';
 import {AuthorityLinkingDialogComponent} from './authority-linking-dialog.component';
+import {PhysCharDialogComponent} from './phys-char-dialog.component';
 
 
 /**
@@ -34,6 +35,9 @@ export class MarcRichEditorComponent implements OnInit {
 
     @ViewChild('authLinker', {static: false})
         authLinker: AuthorityLinkingDialogComponent;
+
+    @ViewChild('physCharDialog', {static: false})
+        physCharDialog: PhysCharDialogComponent;
 
     constructor(
         private idl: IdlService,
@@ -149,6 +153,11 @@ export class MarcRichEditorComponent implements OnInit {
     openLinkerDialog(field: MarcField) {
         this.authLinker.bibField = field;
         this.authLinker.open({size: 'xl'}).subscribe(newField => {
+
+            // The presence of newField here means the linker wants to
+            // replace the field with a new field from the authority
+            // record.  Otherwise, the original field may have been
+            // directly modified or the dialog canceled.
             if (!newField) { return; }
 
             // Performs an insert followed by a delete, so the two
@@ -160,6 +169,23 @@ export class MarcRichEditorComponent implements OnInit {
             // Mark the insert and delete as an atomic undo/redo action.
             this.context.setUndoGroupSize(2);
         });
+    }
+
+    // 007 Physical characteristics wizard.
+    openPhysCharDialog(field: MarcField) {
+        this.physCharDialog.fieldData = field.data;
+
+        this.physCharDialog.open({size: 'lg'}).subscribe(
+            newData => {
+                if (newData) {
+                    this.context.requestFieldFocus({
+                        fieldId: field.fieldId,
+                        target: 'cfld',
+                        newText: newData
+                    });
+                }
+            }
+        );
     }
 }
 

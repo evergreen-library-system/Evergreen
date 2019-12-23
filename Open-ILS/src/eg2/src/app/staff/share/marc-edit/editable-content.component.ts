@@ -128,7 +128,12 @@ export class EditableContentComponent
             this.editInput.select();
         }
 
-        if (!req) {
+        if (req) {
+            if (req.newText) {
+                this.setContent(req.newText);
+            }
+        } else {
+
             // Focus request may have come from keyboard navigation,
             // clicking, etc.  Model the event as a focus request
             // so it can be tracked the same.

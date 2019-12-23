@@ -10,6 +10,8 @@
 <eg-authority-linking-dialog #authLinker [context]="context">
 </eg-authority-linking-dialog>
 
+<eg-phys-char-dialog #physCharDialog></eg-phys-char-dialog>
+
 <ng-template #subfieldChunk let-field="field" let-subfield="subfield">
 
   <!-- move these around depending on whether we are stacking subfields -->
@@ -150,6 +152,13 @@
         [context]="context" [field]="field" fieldType="cfld"
         ariaLabel="Control Field Content" i18n-ariaLabel moreClasses="p-1">
       </eg-marc-editable-content>
+
+      <ng-container *ngIf="field.tag === '007'">
+         <button class="btn btn-sm btn-info link-button"
+          (click)="openPhysCharDialog(field)">
+          <span class="material-icons">launch</span>
+        </button>
+      </ng-container>
     </div>
 
     <!-- data fields -->
