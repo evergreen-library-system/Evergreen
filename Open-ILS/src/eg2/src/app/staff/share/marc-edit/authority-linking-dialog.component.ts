@@ -155,6 +155,10 @@ export class AuthorityLinkingDialogComponent
         }
         this.context.insertSubfield(this.bibField,
             ['0', `(${this.cni})${authId}`, this.bibField.subfields.length]);
+
+        // Reset the validation state.
+        this.bibField.authChecked = null;
+        this.bibField.authValid = null;
     }
 
     createNewAuthority(editFirst?: boolean) {
