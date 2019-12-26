@@ -1,0 +1,7 @@
+Enriched/Full MARC Editor Ported to Angular
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The full MARC editor is now implemented in Angular.  This change impacts
+both the experimental Angular catalog and the MARC edit option within
+MARC Batch Import/Export (Vandelay) Queue manager.
+
