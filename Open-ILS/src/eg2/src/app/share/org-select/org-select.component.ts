@@ -100,6 +100,8 @@ export class OrgSelectComponent implements OnInit {
     // Does not fire on initialOrg
     @Output() onChange = new EventEmitter<IdlObject>();
 
+    sortedOrgs: IdlObject[] = [];
+
     constructor(
       private auth: AuthService,
       private store: StoreService,
@@ -108,6 +110,14 @@ export class OrgSelectComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+
+        // Sort the tree and reabsorb to propagate the sorted nodes to the
+        // org.list() used by this component.
+        this.org.sortTree(this.displayField);
+        this.org.absorbTree();
+        // Maintain our own copy of the org list in case the org service
+        // is sorted in a different manner by other parts of the code.
+        this.sortedOrgs = this.org.list();
 
         // Apply a default org unit if desired and possible.
         if (!this.startOrg && this.applyDefault && this.auth.user()) {
@@ -186,7 +196,7 @@ export class OrgSelectComponent implements OnInit {
             ),
             map(term => {
 
-                let orgs = this.org.list().filter(org =>
+                let orgs = this.sortedOrgs.filter(org =>
                     this.hidden.filter(id => org.id() === id).length === 0
                 );
 

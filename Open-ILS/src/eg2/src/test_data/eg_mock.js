@@ -30,11 +30,13 @@ window._eg_mock_data = {
         org2.id(2); 
         org2.parent_ou(1);
         org2.ou_type(type2);
+        org2.shortname('B'); // to test sorting
 
         var org3 = idlService.create('aou'); 
         org3.id(3); 
         org3.parent_ou(1);
         org3.ou_type(type2);
+        org3.shortname('A'); // to test sorting
 
         var org4 = idlService.create('aou'); 
         org4.id(4); 

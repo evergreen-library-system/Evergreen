@@ -61,6 +61,12 @@ describe('OrgService', () => {
         expect(orgService.root().id()).toEqual(1);
     });
 
+    it('should sort tree by shortname', () => {
+        initTestData();
+        orgService.sortTree('shortname');
+        expect(orgService.root().children()[0].shortname()).toEqual('A');
+    });
+
 });
 
 
