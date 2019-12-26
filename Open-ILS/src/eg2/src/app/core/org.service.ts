@@ -161,11 +161,11 @@ export class OrgService {
         if (!sortField) { sortField = 'shortname'; }
         if (!node) { node = this.orgTree; }
         node.children(
-            node.children.sort((a, b) => {
+            node.children().sort((a, b) => {
                 return a[sortField]() < b[sortField]() ? -1 : 1;
             })
         );
-        node.children.forEach(n => this.sortTree(n));
+        node.children().forEach(n => this.sortTree(sortField, n));
     }
 
     absorbTree(node?: IdlObject): void {
