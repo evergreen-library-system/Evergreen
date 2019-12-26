@@ -18,6 +18,24 @@
 <eg-string #failMsg i18n-text text="Record failed to update"></eg-string>
 
 <div class="row d-flex p-2 m-2">
+
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox"
+      [(ngModel)]="showFastAdd" id="fast-add-item"/>
+    <label class="form-check-label" for="fast-add-item">
+      Add Item
+    </label>
+  </div>
+
+  <ng-container *ngIf="showFastAdd">
+    <div class="form-inline">
+      <input type="text" class="form-control ml-2" 
+        [(ngModel)]="fastItemLabel" placeholder="Call Number" i18n-placeholder/>
+      <input type="text" class="form-control ml-2" 
+        [(ngModel)]="fastItemBarcode" placeholder="Barcode" i18n-placeholder/>
+    </div>
+  </ng-container>
+
   <div class="flex-1"></div>
 
   <h3 class="mr-2">

@@ -14,6 +14,7 @@ import {ComboboxEntry, ComboboxComponent
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {MarcEditContext} from './editor-context';
 import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 
 interface MarcSavedEvent {
     marcXml: string;
@@ -82,6 +83,10 @@ export class MarcEditorComponent implements OnInit {
     @ViewChild('successMsg', {static: false}) successMsg: StringComponent;
     @ViewChild('failMsg', {static: false}) failMsg: StringComponent;
 
+    fastItemLabel: string;
+    fastItemBarcode: string;
+    showFastAdd: boolean;
+
     constructor(
         private evt: EventService,
         private idl: IdlService,
@@ -90,6 +95,7 @@ export class MarcEditorComponent implements OnInit {
         private org: OrgService,
         private pcrud: PcrudService,
         private toast: ToastService,
+        private holdings: HoldingsService,
         private store: ServerStoreService
     ) {
         this.sources = [];
@@ -184,13 +190,14 @@ export class MarcEditorComponent implements OnInit {
         // NOTE we do not reinitialize our record with the MARC returned
         // from the server after a create/update, which means our record
         // may be out of sync, e.g. missing 901* values.  It's the
-        // callers onsibility to tear us down and rebuild us.
+        // callers responsibility to tear us down and rebuild us.
         return promise.then(marcXml => {
             if (!marcXml) { return null; }
             this.successMsg.current().then(msg => this.toast.success(msg));
             emission.marcXml = marcXml;
             emission.recordId = this.recordId;
             this.recordSaved.emit(emission);
+            this.fastAdd();
             return marcXml;
         });
     }
@@ -304,6 +311,21 @@ export class MarcEditorComponent implements OnInit {
                     {marcXml: this.record.toXml(), recordId: this.recordId}));
             });
         });
+    }
+
+    // Spawns the copy editor with the requested barcode and
+    // call number label.  Called after our record is saved.
+    fastAdd() {
+        if (this.showFastAdd && this.fastItemLabel && this.fastItemBarcode) {
+
+            const fastItem = {
+                label: this.fastItemLabel,
+                barcode: this.fastItemBarcode,
+                fast_add: true
+            };
+
+            this.holdings.spawnAddHoldingsUi(this.recordId, null, [fastItem]);
+        }
     }
 }
 

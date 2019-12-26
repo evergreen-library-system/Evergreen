@@ -8,8 +8,10 @@ import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
 
 interface NewCallNumData {
-    owner: number;
+    owner?: number;
     label?: string;
+    fast_add?: boolean;
+    barcode?: string;
 }
 
 @Injectable()
@@ -25,8 +27,8 @@ export class HoldingsService {
     // Open the holdings editor UI in a new browser window/tab.
     spawnAddHoldingsUi(
         recordId: number,               // Bib record ID
-        addToCallNums?: number[],           // Add copies to / modify existing CNs
-        callNumData?: NewCallNumData[],   // Creating new call numbers
+        addToCallNums?: number[],       // Add copies to / modify existing CNs
+        callNumData?: NewCallNumData[], // Creating new call numbers
         hideCopies?: boolean) {         // Hide the copy edit pane
 
         const raw: any[] = [];
