@@ -76,14 +76,16 @@ export class DialogComponent implements OnInit {
         this.onOpen$ = new EventEmitter<any>();
     }
 
-    open(options?: NgbModalOptions): Observable<any> {
+    open(options: NgbModalOptions = { backdrop: 'static' }): Observable<any> {
 
         if (this.modalRef !== null) {
             this.error('Dialog was replaced!');
             this.finalize();
         }
 
-        options.backdrop="static";
+        // force backdrop to static if caller passed in any options
+        options.backdrop = 'static';
+
         this.modalRef = this.modalService.open(this.dialogContent, options);
         DialogComponent.instances[this.identifier] = this;
 
