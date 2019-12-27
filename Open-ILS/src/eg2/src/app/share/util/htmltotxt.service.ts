@@ -38,7 +38,11 @@ export class HtmlToTxtService {
         }
 
         // First remove multi-line comments.
-        html = html.replace(/<!--(.*?)-->/gs, '');
+        // NOTE: the regexp was originally /<!--(.*?)-->/gs
+        //       but as of 2019-12-27 Firefox does not support
+        //       the ES2018 regexp dotAll flag and Angular/tsc doesn't
+        //       seem set up to transpile it
+        html = html.replace(/<!--([^]*?)-->/g, '');
 
         const lines = html.split(/\n/);
         const newLines = [];
