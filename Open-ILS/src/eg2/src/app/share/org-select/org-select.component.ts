@@ -100,6 +100,8 @@ export class OrgSelectComponent implements OnInit {
     // Does not fire on initialOrg
     @Output() onChange = new EventEmitter<IdlObject>();
 
+    sortedOrgs: IdlObject[] = [];
+
     // convenience method to get an IdlObject representing the current
     // selected org unit. One way of invoking this is via a template
     // reference variable.
@@ -109,8 +111,6 @@ export class OrgSelectComponent implements OnInit {
         }
         return this.org.get(this.selected.id);
     }
-
-    sortedOrgs: IdlObject[] = [];
 
     constructor(
       private auth: AuthService,
