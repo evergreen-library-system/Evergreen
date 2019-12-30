@@ -1,6 +1,9 @@
 Designing your catalog
 ======================
 
+Introduction
+------------
+
 When people want to find things in your Evergreen system, they will check the
 catalog. In Evergreen, the catalog is made available through a web interface,
 called the _OPAC_ (Online Public Access Catalog). In the latest versions of the
