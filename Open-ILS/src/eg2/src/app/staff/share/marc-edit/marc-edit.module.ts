@@ -11,6 +11,7 @@ import {EditableContentComponent} from './editable-content.component';
 import {AuthorityLinkingDialogComponent} from './authority-linking-dialog.component';
 import {MarcEditorDialogComponent} from './editor-dialog.component';
 import {PhysCharDialogComponent} from './phys-char-dialog.component';
+import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
 
 @NgModule({
     declarations: [
@@ -26,7 +27,8 @@ import {PhysCharDialogComponent} from './phys-char-dialog.component';
     ],
     imports: [
         StaffCommonModule,
-        CommonWidgetsModule
+        CommonWidgetsModule,
+        HoldingsModule
     ],
     exports: [
         MarcEditorComponent
