@@ -41,6 +41,7 @@
 
   <ng-container *ngIf="isControlledBibTag(field.tag)">
     <button class="btn btn-sm btn-info link-button"
+      i18n-title title="Create authority link"
       (click)="openLinkerDialog(field)">
       <span class="material-icons">link</span>
     </button>
@@ -155,6 +156,7 @@
 
       <ng-container *ngIf="field.tag === '007'">
          <button class="btn btn-sm btn-info link-button"
+          i18n-title title="Open physical characteristics wizard"
           (click)="openPhysCharDialog(field)">
           <span class="material-icons">launch</span>
         </button>
