@@ -1,0 +1,252 @@
+[glossary]
+Evergreen Glossary
+==================
+
+xref:A[A] xref:B[B] xref:C[C] xref:D[D] xref:E[E] xref:F[F] xref:G[G] xref:H[H] xref:I[I] xref:J[J] xref:K[K] xref:L[L] xref:M[M] xref:N[N] xref:O[O] xref:P[P] xref:Q[Q] xref:R[R] xref:S[S] xref:T[T] xref:U[U] xref:V[V] xref:W[W] xref:X[X] xref:Y[Y] xref:Z[Z]
+
+[glossary]
+[[A]]AACR2 (Angolo-American Cataloguing Rules, Second Edition)::
+  AACR2 is a set of cataloging rules for descriptive cataloging of various types of resources.  http://www.aacr2.org/
+Acquisitions::
+  Processes related to ordering materials and managing expenditures.
+Age Protection:: 
+  Allows libraries to prevent holds on new books (on a item by item basis) from outside the owning library's branch or system for a designated amount of time.
+Apache::
+  Open-source web server software used to serve both static content and dynamic web pages in a secure and reliable way. More information is available at http://apache.org.
+Authority Record::
+  Records used to control the contents of MARC fields.
+[[B]]Balance stop percent::
+  A setting in acquisitions that prevents you from making purchases when only a specified amount of the fund remains. 
+Barcode::
+  The code/number attached to the item.  This is not the database ID. Barcodes are added to items to facilitate the checking in and out of an item. Barcodes can be changed as needed. Physical barcodes that can be placed on items can follow several different barcode symboligies.
+Bibliographic record::
+  The record that contains data about a work, such as title, author and copyright date.
+Booking::
+  Processes relating to reserving cataloged and non- bibliographic items.
+Brick::
+  A brick is a unit consisting of one or more servers. It refers to a set of servers with ejabberd, Apache, and all applicable Evergreen services.  It is possible to run all the software on a single server, creating a “single server brick.” Typically, larger installations will have more than one such brick and, hence, be more robust.
+Buckets::
+  This is a container of items. See also Record Buckets and Item Buckets.
+[[C]]Call number::
+  An item's call number is a string of letters and or numbers that work like map coordinates to describe where in a library a particular item "lives."
+Catalog::
+  The database of titles and objects 
+Cataloging::
+  The process of adding materials to be circulated to the system.
+Check-in::
+  The process of returning an item.
+Check-out::
+  The process of loaning and item to a patron.
+Circulation::
+  The process of loaning an item to an individual.
+Circulating library::
+  The library which has checked out the item.
+Circulation library::
+  The library which is the home of the item.
+Circulation limit sets::
+  Refines circulation policies by limiting the number of items that users can check out. 
+Circulation modifiers::
+  Circulation modifiers pull together Loan Duration, Renewal Limit, Fine Level, Max Fine, and Profile Permission Group to create circulation rules for different types of materials. Circulation Modifiers are also used to determine Hold Policies.
+Cloud Computing::
+  The use of a network of remote servers hosted on the Internet to store, manage, and process data, rather than a local server or computer. Terms sush as Software as a Service(SaaS) refer to these kinds of systems.  ILS vendors offering hosting where they manage the servers used by the ILS and provide access via the internet is an example of cloud computing.
+Commit::
+  To make code changes to the software code permanent. In open source software development, the ability to commit is usually limited to a core group. 
+Community::
+  Community in the open source world of software development and use refers to the users and developers who work in concert to develop, communicate, and collaborate to develop the software.
+Compiled::
+  A compiled software is where the software has been translated to a machine code for use. Compiled software usually targets a specific computer architecture. The code cannot be read by humans. 
+Consortium::
+  A consortium is a organization of two or more individuals, companies, libraries, consortiums, etc. formed to undertake an enterprise beyond the resources of any one member. 
+Consortial Library System (CLS)::
+  An ILS designed to run an consortium. A CLS is designed for resource sharing between all members of the consortium, it provides an union catalog for all items in the consortium. 
+[[copy]]Copy:: 
+  see <<item, Item>>
+[[D]]Default Search Library::
+  The default search library setting determines what library is searched from the advanced search screen and portal page by default. Manual selection of a search library will override it. One recommendation is to set the search library to the highest point you would normally want to search.
+Distribution formulas:: 
+  Used to specify the number of copies that should be distributed to specific branches and item locations in Acquisitions
+Due date::
+  The due date is the day on or before which an item must be returned to the library in order to avoid being charged an overdue fine. 
+[[E]]ejabberd::
+  ejabberd stands for Erland Jabber Daemon. This is the software that runs <<jabber, jabber>>. ejabberd is used to exchange data between servers.
+Electronic data interchange (EDI)::
+  Transmission of data between organizations using electronic means. This is used for Acquisitions. 
+Evergreen::
+  Evergreen is an open source ILS designed to handle the processing of a geographical dispersed, resource sharing library network. 
+[[F]]FIFO (First In First Out):: 
+  In a FIFO environment, holds are filled in the order that they are placed.
+FUD (Fear, Uncertainty, Doubt)::
+  FUD is a marketing stratagy to try to install Fear, Uncertainty, and/or Doubt about a competitors product.   
+Fund tags::
+  Tags used in acquisitions to allow you to group Funds.
+Funding sources::
+  Sources of the monies to fund acquisitions of materials.
+Funds::
+  Allocations of money used for purchases.
+FRBR (Functional Requirements for Bibliographic Records)::
+  See https://www.loc.gov/cds/downloads/FRBR.PDF[Library of Congress FRBR documentation]
+[[G]]Git::
+  Git is a versioning control software for tracking changes in the code. It is designed to work with multiple developers.
+GNU::
+  GNU is a recursive acronym for "GNU's Not Unix". GNU is an open source Unix like operating system.  
+GNU GPL version 2 (GNU General Public License version 2)::
+  GNU GPL Version 2 is the license in which Evergreen is licensed. GNU GPL version 2 is a copyleft licence, which means that derivative work must be open source and distributed under the same licence terms. See https://www.gnu.org/licenses/old-licenses/gpl-2.0.html for complete license information. 
+[[H]]Hatch::
+  A additional program that is installed as an extension of your browser to extend printing functionality with Evergreen.
+Hold::
+  The exclusive right for a patron to checkout a specific item. 
+Hold boundaries::
+  Define which organizational units are available to fill specific holds.
+Holdings import profile::
+  Identifies the <<IIA, Import Item Attributes>> definition.
+Holding subfield::
+  Used in the acquisitions module to map subfields to the appropriate item data. 
+[[I]]ICL (Inter-Consortium Loans)::
+  Inter-Consortium Loans are like ILL's, but different in the fact that the loan happens just with in the Consortium. 
+[[ILS]]ILS (Integrated Library System)::
+  The Integrated Library System is a set of applications which perform the business and technical aspects of library management, including but not exclusive to acquistions, cataloging, circulation, and booking. 
+ILL (Inter-Library Loan)::
+  Inter-Library Loan is the process of one libray borrows materials for a patron from another library. 
+[[IIA]]Import item attributes::
+  Used to map the data in your holdings tag to fields in the item record during a MARC import.
+Insufficient quality fall-through profile::
+  A back-up merge profile to be used for importing if an incoming record does not meet the standards of the minimum quality ratio.
+ISBN (International Standard Book Number)::
+  The ISBN is a publisher product number that has been used in the book supply industry since 1968. A published book that is a separate product gets its own ISBN. ISBNs are either 10 digits or 13 digits long. They may contain information on the country of publication, the publisher, title, volume or edition of a title. 
+ISSN (International Standard Serial Number)::
+  International Standard Serial Number is a unigue 8 digit number assigned by the Internation Serials Data System to identify a specfic Serial Title. 
+[[item]]Item:: 
+  The actual item.
+Item barcode::
+  Item barcodes uniquely identify each specific item entered into the Catalog.
+Item Buckets::
+  This is a container of individual items.
+Item Status::
+  Item Status allows you to see the status of a item without having to go to the actual Title Record.  Item status is a intragal part of Evergreen and how it works.
+[[J]][[jabber]]Jabber:: 
+  The communications protocol used for client-server message passing within Evergreen. Now known as <<XMPP, XMPP>>, it was originally named "Jabber."
+Juvenile flag::
+  User setting used to specify if a user is a juvenile user for circulation purposes.
+[[K]]KPAC (Kids' OPAC):: 
+  Alternate version of the Template Toolkit OPAC that is kid friendly
+[[L]]LaunchPad:: 
+  Launchpad is an open source suite of tools that help people and teams to work together on software projects. Launchpad brings together bug reports, wishlist ideas, translations, and blueprints for future development of Evergreen. https://launchpad.net/evergreen
+LCCN (Library of Congress Control Number)::
+  The LCCN is a system of numbering catalog records at the Library of Congress
+LMS (Library Management System)::
+  see <<ILS>>
+Loan duration::
+  Loan duration (also sometimes referred to as "loan period") is the length of time a given type of material can circulate.
+[[M]]MARC (Machine Readable Cataloging)::
+  The MARC formats are standards for the representation and communication of bibliographic and related information in machine-readable form. 
+MARC batch export::
+  Mass exporting of MARC records out of a library system.
+MARC batch import::
+  Mass importing of MARC records into a library system.
+MARCXML::
+  Framework for working with MARC data in a XML environment.
+Match score::
+  Indicates the relative importance of that match point as Evergreen evaluates an incoming record against an existing record.
+Minimum quality ratio::
+  Used to set the acceptable level of quality for a record to be imported.
+[[N]]Non-Cataloged::
+  Items that have not been cataloged.
+[[O]]OPAC (Online Public Access Catalog):: 
+  An OPAC is an online interface to the database of a library's holdings, used to find resources in their collections. It is possibly searchable by keyword, title, author, subject or call number.  The public view of the catalog.
+OpenSRF (Open Scalable Request Framework):: 
+  Acronym for Open Scalable Request Framework (pronounced 'open surf'). An enterprise class Service Request Framework. It's purpose is to serve as a robust message routing network upon which one may build complex, scalable applications. To that end, OpenSRF attempts to be invisible to the application developer, while providing transparent load balancing and failover with minimal overhead.
+Organizational units (Org Unit)::
+  Organizational Units are the specific instances of the organization unit types that make up your library's hierarchy.
+Organization unit type::
+  The organization types in the hierarchy of a library system.
+Overlay/merge profiles::
+  During a MARC import this is used identify which fields should be replaced, which should be preserved, and which should be added to the record.
+Owning library::
+  The library which has purchased a particular item and created the volume and item records. 
+[[P]]Parent organizational unit::
+  An organizational unit one level above whose policies may be inherited by its child units. 
+Parts::
+  Provide more granularity for copies, primarily to enable patrons to place holds on individual parts of a set of items.
+Patron::
+  A user of the ILS. Patrons in Evergreen can both be staff and public users.
+Patron barcode / library card number::
+  Patrons are uniquely identified by their library card barcode number.
+Permission Groups::
+  A grouping of permissions granted to a group of individuals, i.e. patrons, cataloging, circulation, administration. Permission Groups also set the depth and grantability of permissions.
+Pickup library::
+  Library designated as the location where requested material is to be picked up. 
+PostgreSQL::
+  A popular open-source object-relational database management system that underpins Evergreen software.
+Preferred Library::
+  The library that is used to show items and URIs regardless of the library searched.  It is recommended to set this to your Workstation library so that local copies always show up first in search Results.
+Print Templates::
+  Templates that Evergreen uses to print various receipts and tables.
+Printer Settings::
+  Settings in Evergreen for selected printers.  This is a HATCH functionality.
+Propagate funds::
+  Create a new fund for the following fiscal year with the same parameters as your current fund.
+Providers::
+  Vendors from whom you order your materials. Set in the Acquisition module.
+Purchase Order (PO)::
+  A document issued by a buyer to a vendor, indicating types, quantities, and prices of materials. 
+[[Q]]Quality metrics::
+  Provide a mechanism for Evergreen to measure the quality of records and to make importing decisions based on quality.  
+[[R]]RDA (Resource Description & Access)::
+    RDA is a set of cataloging standards and guidelines based on FRBR and FRAD. RDA is the successor for AACR2. http://rdatoolkit.org/ 
+Record Bucket::
+  This is a container of Title Records.
+Record match sets::
+  When importing records, this identifies how Evergreen should match incoming records to existing records in the system.
+Recurring fine::
+  Recurring Fine is the official term for daily or other regularly accruing overdue fines. 
+Register Patron::
+  The process of adding a Patron account with in Evergreen.
+Rollover::
+  Used to roll over remaining encumbrances and funds into the same fund the following year. 
+[[S]]SAN (Standard Address Number)::
+  SAN is an identificatin code for electronic communication with in the publishing industry. SAN uniguely identify an address for location.
+Shelving location:: 
+  Shelving location is the area within the library where a given item is shelved.
+SIP (Standard Interchange Protocol)::
+  SIP is a communications protocol used within Evergreen for transferring data to and from other third party devices, such as RFID and barcode scanners that handle patron and library material information. Version 2.0 (also known as "SIP2") is the current standard. It was originally developed by the 3M Corporation.
+[[SRU]]SRU (Search & Retrieve URL)::
+  Acronym for Search & Retrieve URL Service. SRU is a search protocol used in web search and retrieval. It expresses queries in Contextual Query Language (CQL) and transmits them as a URL, returning XML data as if it were a web page.
+Staff client::
+  The graphical user interface used by library workers to interact with the Evergreen system. Staff use the Staff Client to access administration, acquisitions, circulation, and cataloging functions.
+Standing penalties::
+  Serve as alerts and blocks when patron records have met certain criteria, commonly excessive overdue materials or fines; standing penalty blocks will prevent circulation and hold transactions.  
+Statistical categories:: 
+  Allow libraries to associate locally interesting data with patrons and holdings. Also known as stat cats.
+[[T]]Template Toolkit (TT)::
+  A template processing system written in Perl.
+TPAC:: 
+  Evergreen's Template Toolkit based OPAC. The web based public interface in Evergreen written using functionality from the Template Toolkit.
+[[U]]URI::
+  Universal Resource Identifier. A URI is a string of characters that identify a logical or physical resource. Examples are URL an URN
+URL (Universal Resource Locator)::
+  This is the web address.
+URN (Universal Resource Number)::
+  This is a standard number to identify a resource. Example of URNs are ISBN, ISSN, and UPC.
+UPC (Universal Product Code)::
+  The UPC is a number uniguely assigned to an item by the manufacturer.
+User Activity Type::
+  Different types of activities users do in Evergreen. Examples: Login, Verification of account
+[[V]]Vandelay::
+  MARC Batch Import/Export tool original name.
+[[W]]Wiki::
+  The Evergreen Wiki can be found at https://wiki.evergreen-ils.org. The Evergreen Wiki is a knowledge base of information on Evergreen. 
+Workstation::
+  The unique name associated with a specific computer and Org Unit.
+[[X]]XML (eXtensible Markup Language)::
+  Acronym for eXtensible Markup Language, a subset of SGML. XML is a set of rules for encoding information in a way that is both human-readable and machine-readable. It is primarily used to define documents but can also be used to define arbitrary data structures. It was originally defined by the World Wide Web Consortium (W3C).
+[[XMPP]]XMPP (Extensible Messaging and Presence Protocol)::
+  The open-standard communications protocol (based on XML) used for client-server message passing within Evergreen. It supports the concept of a consistent domain of message types that flow between software applications, possibly on different operating systems and architectures. More information is available at http://xmpp.org.
+  See Also: <<jabber,Jabber>>. 
+xpath::
+  The XML Path Language, a query language based on a tree representation of an XML document. It is used to programmatically select nodes from an XML document and to do minor computation involving strings, numbers and Boolean values. It allows you to identify parts of the XML document tree, to navigate around the tree, and to uniquely select nodes. The currently version is "XPath 2.0". It was originally defined by the World Wide Web Consortium (W3C). 
+[[Y]]YAOUS:: 
+  Yet Another Organization Unit Setting
+[[Z]]Z39.50 ::
+  An international standard client/server protocol for communication between computer systems, primarily library and information related systems.
+  See Also: <<SRU>>
+

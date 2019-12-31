@@ -1,24 +1,19 @@
 Work Log
 -------- 
+indexterm:[Work Log]
+indexterm:[staff client, Work Log]
+indexterm:[workstation, Work Log]
+
 
 === Expanding the Work Log ===
 
-In versions of Evergreen prior to 2.3, the work log recorded check ins,
-checkouts, patron registration, patron editing, and renewals.  In version 2.3,
-the work log also records holds that have been placed and payments that have
-been received.
+The Work Log records checkins, checkouts, patron registration, patron editing, renewals, payments and holds placed from with the patron record for a given login. 
 
-In this example, a staff member has collected a fine from a patron.  To view
-this action in the work log, click *Administration* -> *Local Administration* ->  *Work
-Log*.  By default, the work log will record the staff member's username, the
-amount that was received, the payment type, the patron's barcode, and the
-patron's last name.
+To access the Work Log go to *Administration* -> *Local Administration* ->  *Work Log*. 
 
-image::media/Expanding_the_Work_Log1.jpg[Expanding_the_Work_Log1]
+There are two seperate logs, *Most Recently Logged Staff Actions* and *Most Recently Affected patrons*. The *Most Recently Logged Staff Actions* logs the the transactions in order they have occured on the workstation.  The *Most Recently Affected Patrons* log is a listing of the last patrons that transactions happened on. 
 
-In this example, a staff member has placed a hold for a patron.  To view this
-action in the work log, click *Administration* -> *Local Administration* ->  *Work Log*.
-By default, the work log will record the staff member's username, the hold type,
-the patron's barcode, and the patron's last name.
+The Work Log can contain a maximum number of transactions, this number is set via the <<library_settings_editor,Library Settings Editor>>. They are in the GUI group of settings. *Work Log: Maximum Actions Logged* effects the number of transactions listing under the *Most Recently Logged Staff Actions* and *Work Log: Maximum Patrons Logged* limits the number of patrons that are listed in the log. 
 
-image::media/Expanding_the_Work_Log2.jpg[Expanding_the_Work_Log2]
+image::worklog.png[Work Log]
+

@@ -1,5 +1,4 @@
-* xref:admin_initial_setup:introduction.adoc[System Configuration and
-* Customization]
+* xref:admin_initial_setup:introduction.adoc[System Configuration and Customization]
 ** xref:admin_initial_setup:describing_your_organization.adoc[]
 ** xref:admin_initial_setup:describing_your_people.adoc[]
 ** xref:admin_initial_setup:migrating_patron_data.adoc[]
@@ -13,6 +12,7 @@
 ** xref:admin:autorenewals.adoc[]
 ** xref:admin_initial_setup:hard_due_dates.adoc[]
 ** xref:admin:template_toolkit.adoc[]
+** xref:admin_initial_setup:carousels.adoc[Carousels]
 ** xref:opac:new_skin_customizations.adoc[]
 ** xref:admin:auto_suggest_search.adoc[]
 ** xref:admin:authentication_proxy.adoc[]
