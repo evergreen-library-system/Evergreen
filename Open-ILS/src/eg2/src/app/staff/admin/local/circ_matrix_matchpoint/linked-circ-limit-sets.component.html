@@ -1,16 +1,16 @@
 <div *ngIf="showLinkLimitSets">
-    <div class="col-lg-15 modal-header bg-info d-flex justify-content-center"><h3 class="modal-title mt-3 mb-3">Linked Limit Sets</h3></div>
+    <div class="col-lg-15 bg-info d-flex justify-content-center"><h3 class="modal-title mt-3 mb-3" i18n>Linked Limit Sets</h3></div>
     <ng-container *ngIf="getObjectKeys().length > 0">
         <ng-container *ngFor="let key of getObjectKeys(); let i = index">
             <div *ngIf="!linkedSetList[i].isDeleted" class="col-lg-15 d-flex justify-content-center">
                 <div *ngIf="linkedSetList[i].created" class="col-lg-2 mt-3 mb-3 form-group form-check">
-                    <label for="name">Name</label>
+                    <label for="name" i18n>Name</label>
                     <div class="d-flex justify-content-center">
                         <span>{{limitSetNames[linkedSetList[i].linkedLimitSet.limit_set()]}}</span>
                     </div>
                 </div>
                 <div *ngIf="linkedSetList[i].created" class="col-lg-2 mt-3 mb-3 form-group form-check">
-                    <label for="{{fallthrough+i}}">Fallthrough</label>
+                    <label for="{{fallthrough+i}}" i18n>Fallthrough</label>
                     <div class="d-flex justify-content-center">
                         <input
                             class="form-check-input"
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div *ngIf="linkedSetList[i].created" class="col-lg-2 mt-3 mb-3 form-group form-check">
-                    <label for="{{active+i}}">Active</label>
+                    <label for="{{active+i}}" i18n>Active</label>
                     <div class="d-flex justify-content-center">
                         <input
                         class="form-check-input"
@@ -37,31 +37,29 @@
                         class="btn btn-warning"
                         ng-disabled="!linkedSet"
                         (click)="removeLinkedSet(i)"
-                        i18n-title title="Remove">Remove
+                        i18n-title title="Remove" i18n>Remove
                     </button>
                 </div>
             </div>
         </ng-container>
     </ng-container>
-    <div class="input-group mt-3">
-        <div class="input-group-prepends col-lg-9">
-            <div class="input-group-text  col-lg-4">
-                <label for="linkedLimitName" i18n>Circ Limit Set Name </label>
-            </div>
+    <div class="input-group mt-3 col-md-12">
+        <div class="input-group-prepend">
+            <div class="input-group-text" i18n>Circ Limit Set Name</div>
             <eg-combobox 
                 name="linkedLimitName"
                 idlClass="ccls" 
                 idlField="name" 
                 (onChange)="onChange($event)">
             </eg-combobox>
-            <div>
-                <button
-                    type="button"
-                    class="btn btn-info"
-                    (click)="addLinkedSet()"
-                    i18n-title title="Add">Add
-                </button>
-            </div>
+        </div>
+        <div class="input-group-append">
+            <button
+                type="button"
+                class="btn btn-info"
+                (click)="addLinkedSet()"
+                i18n-title title="Add" i18n>Add
+            </button>
         </div>
     </div>
 </div>
