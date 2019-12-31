@@ -12,10 +12,11 @@
 </eg-marc-editor-dialog>
 
 <!-- display a single heading as MARC or as the human friendlier string -->
-<ng-template #headingField let-field="field" let-from="from" let-also="also">
+<ng-template #headingField 
+  let-field="field" let-from="from" let-also="also" let-authId="authId">
   <button class="btn btn-sm p-1 mr-1" 
     [ngClass]="{'btn-outline-primary': !(from || also), 'btn-outline-info': (from || also)}"
-    (click)="applyHeading(field)" i18n>Apply</button>
+    (click)="applyHeading(field, authId)" i18n>Apply</button>
   <ng-container *ngIf="showAs == 'heading'">
     <span *ngIf="from" i18n>See From: {{field.heading}}</span>
     <span *ngIf="also" i18n>See Also: {{field.heading}}</span>
@@ -92,7 +93,7 @@
       <li class="d-flex">
         <div class="flex-1">
           <ng-container
-            *ngTemplateOutlet="headingField;context:{field:entry.main_heading}">
+            *ngTemplateOutlet="headingField;context:{field:entry.main_heading, authId: entry.authority_id}">
           </ng-container>
         </div>
         <div class="font-italic" i18n-title i18n

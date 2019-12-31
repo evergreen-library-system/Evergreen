@@ -135,12 +135,20 @@ export class AuthorityLinkingDialogComponent
         ).subscribe(entry => this.browseData.push(entry));
     }
 
-    applyHeading(authField: MarcField) {
+    applyHeading(authField: MarcField, authId?: number) {
         this.net.request(
             'open-ils.cat',
             'open-ils.cat.authority.bib_field.overlay_authority',
             this.fieldHash(), this.fieldHash(authField), this.controlSet
-        ).subscribe(field => this.close(field));
+        ).subscribe(field => {
+            if (authId) {
+                // If an authId is provided, it means we are using
+                // a main entry heading and we should set the bib
+                // field's subfield 0 to refer to the main entry record.
+                this.setSubfieldZero(authId, field);
+            }
+            this.close(field);
+        });
     }
 
     isControlledBibSf(sf: string): boolean {
@@ -148,17 +156,20 @@ export class AuthorityLinkingDialogComponent
             this.authMeta.sf_list().includes(sf) : false;
     }
 
-    setSubfieldZero(authId: number) {
-        const sfZero = this.bibField.subfields.filter(sf => sf[0] === '0')[0];
+    setSubfieldZero(authId: number, bibField?: MarcField) {
+
+        if (!bibField) { bibField = this.bibField; }
+
+        const sfZero = bibField.subfields.filter(sf => sf[0] === '0')[0];
         if (sfZero) {
-            this.context.deleteSubfield(this.bibField, sfZero);
+            this.context.deleteSubfield(bibField, sfZero);
         }
-        this.context.insertSubfield(this.bibField,
-            ['0', `(${this.cni})${authId}`, this.bibField.subfields.length]);
+        this.context.insertSubfield(bibField,
+            ['0', `(${this.cni})${authId}`, bibField.subfields.length]);
 
         // Reset the validation state.
-        this.bibField.authChecked = null;
-        this.bibField.authValid = null;
+        bibField.authChecked = null;
+        bibField.authValid = null;
     }
 
     createNewAuthority(editFirst?: boolean) {
