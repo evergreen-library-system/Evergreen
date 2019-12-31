@@ -126,6 +126,7 @@ export class CatalogUrlService {
         if (context.cnBrowseSearch.isSearchable()) {
             params.cnBrowseTerm = context.cnBrowseSearch.value;
             params.cnBrowsePage = context.cnBrowseSearch.offset;
+            params.cnBrowsePageSize = context.cnBrowseSearch.limit;
         }
 
         return params;
@@ -198,6 +199,7 @@ export class CatalogUrlService {
         if (params.has('cnBrowseTerm')) {
             context.cnBrowseSearch.value = params.get('cnBrowseTerm');
             context.cnBrowseSearch.offset = Number(params.get('cnBrowsePage'));
+            context.cnBrowseSearch.limit = Number(params.get('cnBrowsePageSize'));
         }
 
         const ts = context.termSearch;

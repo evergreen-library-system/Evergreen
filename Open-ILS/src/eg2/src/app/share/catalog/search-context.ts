@@ -158,9 +158,14 @@ export class CatalogCnBrowseContext {
     // e.g. -2 means 2 pages back (alphabetically) from the original search.
     offset: number;
 
+    // Maintain a separate page size limit since it will generally
+    // differ from other search page sizes.
+    limit: number;
+
     reset() {
         this.value = '';
         this.offset = 0;
+        this.limit = 5; // UI will modify
     }
 
     isSearchable() {
@@ -171,6 +176,7 @@ export class CatalogCnBrowseContext {
         const ctx = new CatalogCnBrowseContext();
         ctx.value = this.value;
         ctx.offset = this.offset;
+        ctx.limit = this.limit;
         return ctx;
     }
 

@@ -431,7 +431,7 @@ export class CatalogService {
         return this.net.request(
             'open-ils.supercat',
             'open-ils.supercat.call_number.browse',
-            cbs.value, ctx.searchOrg.shortname(), ctx.pager.limit, cbs.offset
+            cbs.value, ctx.searchOrg.shortname(), cbs.limit, cbs.offset
         ).pipe(tap(result => ctx.searchState = CatalogSearchState.COMPLETE));
     }
 }

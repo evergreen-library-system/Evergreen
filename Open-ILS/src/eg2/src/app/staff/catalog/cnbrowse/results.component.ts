@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
@@ -8,12 +8,19 @@ import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from '../catalog.service';
 import {BibRecordSummary} from '@eg/share/catalog/bib-record.service';
+import {OrgService} from '@eg/core/org.service';
 
 @Component({
   selector: 'eg-catalog-cn-browse-results',
   templateUrl: 'results.component.html'
 })
 export class CnBrowseResultsComponent implements OnInit, OnDestroy {
+
+    @Input() rowCount = 5;
+    rowIndexList: number[] = [];
+
+    // hard-coded because it requires template changes.
+    colCount = 3;
 
     searchContext: CatalogSearchContext;
     results: any[];
@@ -22,6 +29,7 @@ export class CnBrowseResultsComponent implements OnInit, OnDestroy {
     constructor(
         private router: Router,
         private route: ActivatedRoute,
+        private org: OrgService,
         private cat: CatalogService,
         private bib: BibRecordService,
         private catUrl: CatalogUrlService,
@@ -30,6 +38,11 @@ export class CnBrowseResultsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;
+
+        for (let idx = 0; idx < this.rowCount; idx++) {
+            this.rowIndexList.push(idx);
+        }
+
         this.routeSub = this.route.queryParamMap.subscribe(
             (params: ParamMap) => this.browseByUrl(params)
         );
@@ -42,6 +55,7 @@ export class CnBrowseResultsComponent implements OnInit, OnDestroy {
     browseByUrl(params: ParamMap): void {
         this.catUrl.applyUrlParams(this.searchContext, params);
         const cbs = this.searchContext.cnBrowseSearch;
+        cbs.limit = this.rowCount * this.colCount;
 
         if (cbs.isSearchable()) {
             this.results = [];
@@ -116,6 +130,20 @@ export class CnBrowseResultsComponent implements OnInit, OnDestroy {
 
         this.router.navigate(
             ['/staff/catalog/record/' + summary.id], {queryParams: params});
+    }
+
+    resultSlice(rowIdx: number): number[] {
+        const offset = rowIdx * this.colCount;
+        return this.results.slice(offset, offset + this.colCount);
+    }
+
+    isCenter(rowIdx: number, colIdx: number): boolean {
+        const total = this.rowCount * this.colCount;
+        return Math.floor(total / 2) === ((rowIdx * this.colCount) + colIdx);
+    }
+
+    orgName(orgId: number): string {
+        return this.org.get(orgId).shortname();
     }
 }
 
