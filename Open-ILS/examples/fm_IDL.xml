@@ -1322,7 +1322,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="ath" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::hook" oils_persist:tablename="action_trigger.hook" reporter:label="Trigger Hook Point">
 		<fields oils_persist:primary="key">
-			<field reporter:label="Hook Key" name="key" reporter:datatype="text"/>
+			<field reporter:label="Hook Key" name="key" reporter:datatype="text" reporter:selector="key"/>
 			<field reporter:label="Core Type" name="core_type" reporter:datatype="text"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Passive" name="passive"  reporter:datatype="bool"/>
@@ -1340,7 +1340,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="atcol" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::collector" oils_persist:tablename="action_trigger.collector" reporter:label="Trigger Environment Collector">
 		<fields oils_persist:primary="module">
-			<field reporter:label="Module Name" name="module" reporter:datatype="text"/>
+			<field reporter:label="Module Name" name="module" reporter:datatype="text" reporter:selector="module"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
@@ -1348,7 +1348,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="atval" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::validator" oils_persist:tablename="action_trigger.validator" reporter:label="Trigger Condition Validator">
 		<fields oils_persist:primary="module">
-			<field reporter:label="Module Name" name="module" reporter:datatype="text"/>
+			<field reporter:label="Module Name" name="module" reporter:datatype="text" reporter:selector="module"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
@@ -1364,7 +1364,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="atreact" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::reactor" oils_persist:tablename="action_trigger.reactor" reporter:label="Trigger Event Reactor">
 		<fields oils_persist:primary="module">
-			<field reporter:label="Module Name" name="module" reporter:datatype="text"/>
+			<field reporter:label="Module Name" name="module" reporter:datatype="text" reporter:selector="module"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
@@ -1380,7 +1380,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="atclean" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::cleanup" oils_persist:tablename="action_trigger.cleanup" reporter:label="Trigger Event Cleanup">
 		<fields oils_persist:primary="module">
-			<field reporter:label="Module Name" name="module" reporter:datatype="text"/>
+			<field reporter:label="Module Name" name="module" reporter:datatype="text" reporter:selector="module"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
