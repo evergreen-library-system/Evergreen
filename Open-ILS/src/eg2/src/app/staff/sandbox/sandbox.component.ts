@@ -63,6 +63,7 @@ export class SandboxComponent implements OnInit {
 
     btSource: GridDataSource = new GridDataSource();
     acpSource: GridDataSource = new GridDataSource();
+    eventsDataSource: GridDataSource = new GridDataSource();
     editSelected: (rows: IdlObject[]) => void;
     @ViewChild('acpGrid') acpGrid: GridComponent;
     @ViewChild('acpEditDialog') editDialog: FmRecordEditorComponent;
@@ -225,6 +226,33 @@ export class SandboxComponent implements OnInit {
                 offset: pager.offset,
                 limit: pager.limit,
                 order_by: orderBy
+            });
+        };
+
+        this.eventsDataSource.getRows = (pager: Pager, sort: any[]) => {
+
+            const orderEventsBy: any = {atevdef: 'name'};
+            if (sort.length) {
+                orderEventsBy.atevdef = sort[0].name + ' ' + sort[0].dir;
+            }
+
+            const base: Object = {};
+            base[this.idl.classes['atevdef'].pkey] = {'!=' : null};
+            const query: any = new Array();
+            query.push(base);
+
+            Object.keys(this.eventsDataSource.filters).forEach(key => {
+                Object.keys(this.eventsDataSource.filters[key]).forEach(key2 => {
+                    query.push(this.eventsDataSource.filters[key][key2]);
+                });
+            });
+
+            return this.pcrud.search('atevdef', query, {
+                flesh: 1,
+                flesh_fields: {atevdef: ['hook', 'validator', 'reactor']},
+                offset: pager.offset,
+                limit: pager.limit,
+                order_by: orderEventsBy
             });
         };
 
