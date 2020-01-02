@@ -140,6 +140,12 @@ export class IdlService {
     getLinkSelector(fmClass: string, field: string): string {
         let fieldDef = this.classes[fmClass].field_map[field];
 
+        if (!fieldDef) {
+            console.warn(
+                `No such field "${field}" for IDL class "${fmClass}"`);
+            return null;
+        }
+
         if (fieldDef.map) {
             // For mapped fields, we want the selector field on the
             // remotely linked object instead of the directly
@@ -149,11 +155,27 @@ export class IdlService {
         }
 
         if (fieldDef.class) {
-            const classDef = this.classes[fieldDef.class];
+            return this.getClassSelector(fieldDef.class);
+        }
+        return null;
+    }
+
+    // Return the selector field for the class.  If no selector is
+    // defined, use 'name' if it exists as a field on the class.
+    getClassSelector(idlClass: string): string {
+
+        if (idlClass) {
+            const classDef = this.classes[idlClass];
+
             if (classDef.pkey) {
-                return classDef.field_map[classDef.pkey].selector || null;
+                let selector = classDef.field_map[classDef.pkey].selector;
+                if (selector) { return selector; }
+
+                // No selector defined in the IDL, try 'name'.
+                if ('name' in classDef.field_map) { return 'name'; }
             }
         }
+
         return null;
     }
 

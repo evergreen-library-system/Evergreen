@@ -173,7 +173,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
             }
 
             if (!this.idlField) {
-                this.idlField = classDef.field_map[classDef.pkey].selector || 'name';
+                this.idlField = this.idl.getClassSelector(this.idlClass);
             }
 
             this.asyncDataSource = term => {
@@ -332,8 +332,12 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
 
         let searchTerm: string;
         searchTerm = term;
-        if (searchTerm === '_CLICK_' && this.asyncSupportsEmptyTermClick) {
-            searchTerm = '';
+        if (searchTerm === '_CLICK_') {
+            if (this.asyncSupportsEmptyTermClick) {
+                searchTerm = '';
+            } else {
+                return of();
+            }
         }
 
         return new Observable(observer => {

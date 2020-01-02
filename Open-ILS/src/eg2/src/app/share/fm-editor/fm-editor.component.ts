@@ -399,24 +399,13 @@ export class FmRecordEditorComponent
         });
     }
 
-    // Returns the name of the field on a class (typically via a linked
-    // field) that acts as the selector value for display / search.
-    getClassSelector(class_: string): string {
-        if (class_) {
-            const linkedClass = this.idl.classes[class_];
-            return linkedClass.pkey ?
-                linkedClass.field_map[linkedClass.pkey].selector : null;
-        }
-        return null;
-    }
-
     private flattenLinkedValues(field: any, list: IdlObject[]): ComboboxEntry[] {
         const class_ = field.class;
         const fieldOptions = this.fieldOptions[field.name] || {};
         const idField = this.idl.classes[class_].pkey;
 
         const selector = fieldOptions.linkedSearchField
-            || this.getClassSelector(class_) || idField;
+            || this.idl.getClassSelector(class_) || idField;
 
         return list.map(item => {
             return {id: item[idField](), label: item[selector]()};
@@ -499,7 +488,7 @@ export class FmRecordEditorComponent
                 // field.  Otherwise, avoid the network lookup and let the
                 // bare value (usually an ID) be displayed.
                 const selector = fieldOptions.linkedSearchField ||
-                    this.getClassSelector(field.class);
+                    this.idl.getClassSelector(field.class);
 
                 if (selector && selector !== field.name) {
                     promise = this.pcrud.retrieve(field.class, idToFetch)
@@ -544,7 +533,7 @@ export class FmRecordEditorComponent
         }
 
         const selector = fieldOptions.linkedSearchField ||
-            this.getClassSelector(field.class);
+            this.idl.getClassSelector(field.class);
 
         if (!selector && !fieldOptions.preloadLinkedValues) {
             // User probably expects an async data source, but we can't
