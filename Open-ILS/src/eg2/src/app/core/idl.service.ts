@@ -168,7 +168,7 @@ export class IdlService {
             const classDef = this.classes[idlClass];
 
             if (classDef.pkey) {
-                let selector = classDef.field_map[classDef.pkey].selector;
+                const selector = classDef.field_map[classDef.pkey].selector;
                 if (selector) { return selector; }
 
                 // No selector defined in the IDL, try 'name'.
