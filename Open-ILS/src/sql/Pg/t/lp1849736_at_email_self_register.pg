@@ -1,0 +1,34 @@
+\unset ECHO
+\set QUIET 1
+-- Turn off echo and keep things quiet.
+
+-- Format the output for nice TAP.
+\pset format unaligned
+\pset tuples_only true
+\pset pager off
+
+-- Revert all changes on failure.
+\set ON_ERROR_ROLLBACK 1
+\set ON_ERROR_STOP true
+
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(2);
+
+-- Run the tests.
+SELECT isnt_empty(
+    'SELECT * FROM action_trigger.hook WHERE key = $$stgu.created$$',
+    'A/T Hook stgu.created exists'
+);
+
+SELECT isnt_empty(
+    'SELECT * FROM action_trigger.event_definition WHERE owner=1 AND name = $$Patron Registered for a card stgu.created$$',
+    'Default consortium ATED for stgu.created exists'
+);
+
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;

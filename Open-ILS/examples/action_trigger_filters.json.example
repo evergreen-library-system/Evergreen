@@ -40,5 +40,11 @@
             "active":"t",
             "deleted":"f"
         }
+    },
+    "stgu.created" : {
+        "context_org": "home_ou",
+        "filter": {
+            "complete": "f"
+        }
     }
 }
