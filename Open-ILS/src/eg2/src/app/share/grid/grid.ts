@@ -176,23 +176,32 @@ export class GridColumnSet {
 
         let idlParent;
         let idlField;
-        let idlClass = this.idl.classes[this.idlClass];
+        let idlClass;
+        let nextIdlClass = this.idl.classes[this.idlClass];
 
         const pathParts = dotpath.split(/\./);
 
         for (let i = 0; i < pathParts.length; i++) {
+
             const part = pathParts[i];
             idlParent = idlField;
+            idlClass = nextIdlClass;
             idlField = idlClass.field_map[part];
 
-            if (idlField) {
-                if (idlField['class'] && (
-                    idlField.datatype === 'link' ||
-                    idlField.datatype === 'org_unit')) {
-                    idlClass = this.idl.classes[idlField['class']];
-                }
-            } else {
-                return null;
+            if (!idlField) { return null; } // invalid IDL path
+
+            if (i === pathParts.length - 1) {
+                // No more links to process.
+                break;
+            }
+
+            if (idlField['class'] && (
+                idlField.datatype === 'link' ||
+                idlField.datatype === 'org_unit')) {
+                // The link class on the current field refers to the
+                // class of the link destination, not the current field.
+                // Mark it for processing during the next iteration.
+                nextIdlClass = this.idl.classes[idlField['class']];
             }
         }
 
@@ -215,8 +224,8 @@ export class GridColumnSet {
 
     applyColumnDefaults(col: GridColumn) {
 
-        if (!col.idlFieldDef && col.path) {
-            const idlInfo = this.idlInfoFromDotpath(col.path);
+        if (!col.idlFieldDef) {
+            const idlInfo = this.idlInfoFromDotpath(col.path || col.name);
             if (idlInfo) {
                 col.idlFieldDef = idlInfo.idlField;
                 col.idlClass = idlInfo.idlClass.name;
@@ -479,7 +488,6 @@ export class GridContext {
     defaultVisibleFields: string[];
     defaultHiddenFields: string[];
     overflowCells: boolean;
-    showLinkSelectors: boolean;
     disablePaging: boolean;
     showDeclaredFieldsOnly: boolean;
 
@@ -1056,14 +1064,6 @@ export class GridContext {
             col.datatype = field.datatype;
             col.isIndex = (field.name === pkeyField);
             col.isAuto = true;
-
-            if (this.showLinkSelectors) {
-                const selector = this.idl.getLinkSelector(
-                    this.columnSet.idlClass, field.name);
-                if (selector) {
-                    col.path = field.name + '.' + selector;
-                }
-            }
 
             if (this.showDeclaredFieldsOnly) {
                 col.hidden = true;

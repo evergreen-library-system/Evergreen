@@ -62,9 +62,16 @@ export class GridFilterControlComponent implements OnInit {
         col.isFiltered = true;
         this.context.reload();
     }
+
     applyLinkFilter($event, col: GridColumn) {
-        col.filterValue = $event.id;
-        this.applyFilter(col);
+        if ($event) {
+            col.filterValue = $event.id;
+            this.applyFilter(col);
+
+        } else {
+            // Value was cleared from the combobox
+            this.clearFilter(col);
+        }
     }
 
     // TODO: this was copied from date-select and

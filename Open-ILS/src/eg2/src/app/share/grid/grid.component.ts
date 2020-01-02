@@ -89,18 +89,6 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     // Pass in a default page size.  May be overridden by settings.
     @Input() pageSize: number;
 
-    // If true and an idlClass is specificed, the grid assumes
-    // datatype=link fields that link to classes which define a selector
-    // are fleshed with the linked object.  And, instead of displaying
-    // the raw field value, displays the selector value from the linked
-    // object.  The caller is responsible for fleshing the appropriate
-    // fields in the GridDataSource getRows handler.
-    //
-    // This only applies to auto-generated columns.
-    //
-    // For example, idlClass="aou" and field="ou_type", the display
-    // value will be ou_type().name() since "name" is the selector
-    // field on the "aout" class.
     @Input() showLinkSelectors: boolean;
 
     @Input() disablePaging: boolean;
@@ -155,7 +143,6 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.isMultiSortable = this.multiSortable === true;
         this.context.useLocalSort = this.useLocalSort === true;
         this.context.disableSelect = this.disableSelect === true;
-        this.context.showLinkSelectors = this.showLinkSelectors === true;
         this.context.disableMultiSelect = this.disableMultiSelect === true;
         this.context.rowFlairIsEnabled = this.rowFlairIsEnabled  === true;
         this.context.showDeclaredFieldsOnly = this.showDeclaredFieldsOnly;
@@ -181,6 +168,11 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
             this.rowClassCallback || function () { return ''; };
         this.context.cellClassCallback =
             this.cellClassCallback || function() { return ''; };
+
+        if (this.showLinkSelectors) {
+            console.debug(
+                'showLinkSelectors is deprecated and no longer has any effect');
+        }
 
         this.context.init();
     }
