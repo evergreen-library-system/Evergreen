@@ -27,8 +27,6 @@
     ,[ l('Circulation Modifiers'), "./admin/server/config/circ_modifier" ]
     ,[ l('Circulation Recurring Fine Rules'), "./admin/server/config/rule_recurring_fine" ]
     ,[ l('Custom Org Unit Trees'), "./admin/server/actor/org_unit_custom_tree" ]
-    ,[ l('Event Definition Groups'), "/eg2/staff/admin/server/action_trigger/event_def_group" ]
-    ,[ l('Event Definition Group Members'), "/eg2/staff/admin/server/action_trigger/event_def_group_member" ]
     ,[ l('Floating Groups'), "./admin/server/config/floating_groups" ]
     ,[ l('Global Flags'), "./admin/server/config/global_flag" ]
     ,[ l('Hard Due Date Changes'), "./admin/server/config/hard_due_date" ]

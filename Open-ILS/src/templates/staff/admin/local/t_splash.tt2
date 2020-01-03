@@ -17,6 +17,8 @@
     ,[ l('Circulation Limit Sets'), "./admin/local/config/circ_limit_set" ]
     ,[ l('Circulation Policies'), "./admin/local/config/circ_matrix_matchpoint" ]
     ,[ l('Closed Dates Editor'), "./admin/local/actor/closed_dates" ]
+    ,[ l('Event Definition Group Members'), "/eg2/staff/admin/local/action_trigger/event_def_group_member" ]
+    ,[ l('Event Definition Groups'), "/eg2/staff/admin/local/action_trigger/event_def_group" ]
     ,[ l('Field Documentation'), "./admin/local/config/idl_field_doc" ]
     ,[ l('Group Penalty Thresholds'), "./admin/local/permission/grp_penalty_threshold" ]
     ,[ l('Hold Policies'), "./admin/local/config/hold_matrix_matchpoint" ]
