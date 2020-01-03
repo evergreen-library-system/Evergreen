@@ -39,6 +39,22 @@ Event Definition through either Environment or Parameter definitions.
 ABOUT
 }
 
+# Utility method to interrogate the user data to see if a preview
+# has been requested. As noted in the discussion in LP#1749475, there
+# are likely alternative designs that would be better, but this does
+# the job for the moment.
+sub _is_preview {
+    my $user_data = shift;
+
+    return 0 unless $user_data;
+    return 1 if ref($user_data) =~ /HASH/ && $user_data->{preview};
+    return 1 if ref($user_data) =~ /ARRAY/ &&
+                @$user_data > 0 &&
+                ref($user_data->[0]) =~ /HASH/ &&
+                $user_data->[0]->{preview};
+    return 0;
+}
+
 sub handler {
     my $self = shift;
     my $env = shift;
@@ -49,7 +65,7 @@ sub handler {
 
     my $text = encode_utf8($self->run_TT($env));
     return 0 if (!$text);
-    if ($$env{user_data} && ref($$env{user_data}) =~ /HASH/ && $$env{user_data}{preview}) {
+    if (_is_preview($$env{user_data})) {
         $logger->info("SendEmail Reactor: success in preview mode, not sending email");
         return 1;
     }
