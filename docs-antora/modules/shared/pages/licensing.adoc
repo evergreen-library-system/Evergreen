@@ -1,5 +1,5 @@
 [[licensing]]
-[appendix]
+[#appendix]
 = Licensing =
 
 image::media/ccbysa.png["CC-BY-SA",link="http://creativecommons.org/licenses/by-sa/3.0/"]

@@ -1,6 +1,6 @@
 site:
   title: Evergreen Documentation
-  start_page: docs::index
+  start_page: docs:shared:about_this_documentation
   url: http://localhost/prod
 content:
   sources:

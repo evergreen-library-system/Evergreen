@@ -1,6 +1,7 @@
-== Acquisitions ==
+= Acquisitions =
+:toc:
 
-=== Initial Configuration ===
+== Initial Configuration ==
 
 Before beginning to use Acquisitions, the following must be configured by an administrator:
 
@@ -18,8 +19,7 @@ Before beginning to use Acquisitions, the following must be configured by an adm
 
 More details can be found in the Staff Client System Administration manual.
 
-Acquisitions Workflow
-~~~~~~~~~~~~~~~~~~~~
+== Acquisitions Workflow ==
 
 The following diagram shows how the workflow functions in Evergreen. One of the differences in this process you should notice is that when creating a selection list on the vendor site, libraries will be downloading and importing the vendor bibs and item records.
 

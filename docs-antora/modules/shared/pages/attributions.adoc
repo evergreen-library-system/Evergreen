@@ -1,5 +1,5 @@
 [[attributions]]
-[appendix]
+[#appendix]
 = Attributions =
 
 Copyright © 2009-2018 Evergreen DIG
@@ -26,8 +26,9 @@ Copyright © 2008-2018 Evergreen Indiana
 
 Copyright © 2008-2018 SC LENDS
 
-Copyright @ 2012-2018 CW MARS
+Copyright © 2012-2018 CW MARS
 
+Copyright © 2014-2020 MOBIUS
 
 
 *DIG Contributors*
@@ -51,3 +52,6 @@ Copyright @ 2012-2018 CW MARS
 * Lindsay Stratton, Pioneer Library System
 * Yamil Suarez, Berklee College of Music
 * Jenny Turner, PALS
+* Debbie Luchenbill, MOBIUS
+* Blake Graham-Henderson, MOBIUS
+* Ted Peterson, MOBIUS

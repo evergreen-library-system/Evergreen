@@ -1,8 +1,9 @@
-== "Blanket" Orders ==
+= "Blanket" Orders =
+:toc:
 
 "Blanket" orders allow staff to invoice an encumbered amount multiple times, paying off the charge over a period of time. The work flow supported by this development assumes staff does not need to track the individual contents of the order, only the amounts encumbered and invoiced in bulk.
 
-=== Example ===
+== Example ==
 
 . Staff creates PO with a Direct Charge of "Popular Fiction 2015" and a charge type of "Blanket Order".
 
@@ -14,8 +15,7 @@
 
   .. Alternatively, if the PO needs to be finalized without creating a final invoice, staff can use the new _Finalize Blanket Order_ option on the PO page.
 
-More details about blanket orders
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== More details about blanket orders ==
  
 * Any direct charge using a _blanket_ item type will create a long-lived charge that can be invoiced multiple times.
 
