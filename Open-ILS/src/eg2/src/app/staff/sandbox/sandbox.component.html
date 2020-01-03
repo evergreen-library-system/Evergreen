@@ -217,6 +217,7 @@
   [rowFlairCallback]="btGridRowFlairCallback"
   [cellClassCallback]="btGridCellClassCallback"
   [stickyHeader]="true"
+  [cellTextGenerator]="btGridCellTextGenerator"
   [sortable]="true">
   <eg-grid-toolbar-action label="Action that needs a single row" i18n-label
     (onClick)="complimentEvergreen($event)" [disableOnRows]="notOneSelectedRow">
