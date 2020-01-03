@@ -1,30 +1,35 @@
 
-import {Component, OnInit, Input,Output,EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import { IdlService} from '@eg/core/idl.service';
+import {ToastService} from '@eg/share/toast/toast.service';
+import {StringComponent} from '@eg/share/string/string.component';
+
 class LinkedLimitSetObjects {
-    linkedLimitSet:any;
-    created:boolean;
-    isDeleted:boolean;
-    isNew:boolean;
+    linkedLimitSet: any;
+    created: boolean;
+    isDeleted: boolean;
+    isNew: boolean;
 }
 
 @Component({
-    selector:'linked-circ-limit-sets',
+    selector: 'eg-linked-circ-limit-sets',
     templateUrl: './linked-circ-limit-sets.component.html'
 })
 
-
 export class LinkedCircLimitSetsComponent implements OnInit {
 
-    @Input() usedSetLimitList = [];
+    @ViewChild('errorString', { static: true }) errorString: StringComponent;
+
+    @Input() usedSetLimitList = {};
     @Input() limitSetNames = {};
     @Output() outputLinkedLimitSet: EventEmitter<any>;
     linkedSetList = {};
-    linkedSet:any;
-    showLinkLimitSets:boolean
+    linkedSet: any;
+    showLinkLimitSets: boolean;
 
-    constructor( 
-        private idl: IdlService
+    constructor(
+        private idl: IdlService,
+        private toast: ToastService
         ) {
         this.outputLinkedLimitSet = new EventEmitter();
     }
@@ -32,15 +37,15 @@ export class LinkedCircLimitSetsComponent implements OnInit {
     ngOnInit() {}
 
     displayLinkedLimitSets() {
-        this.createEmptyLimitSetObject()
+        this.createEmptyLimitSetObject();
     }
 
     createFilledLimitSetObject(element) {
-        let newLinkedSetObject = new LinkedLimitSetObjects();
-        if(element.fallthrough() == "f") element.fallthrough(false)
-        if(element.fallthrough() == "t") element.fallthrough(true)
-        if(element.active() == "f") element.active(false)
-        if(element.active() == "t") element.active(true)
+        const newLinkedSetObject = new LinkedLimitSetObjects();
+        if (element.fallthrough() === 'f') { element.fallthrough(false); }
+        if (element.fallthrough() === 't') { element.fallthrough(true); }
+        if (element.active() === 'f') { element.active(false); }
+        if (element.active() === 't') { element.active(true); }
         newLinkedSetObject.linkedLimitSet = element;
         newLinkedSetObject.created = true;
         newLinkedSetObject.isNew = false;
@@ -49,8 +54,8 @@ export class LinkedCircLimitSetsComponent implements OnInit {
     }
 
     createEmptyLimitSetObject() {
-        let object = this.idl.create("ccmlsm")
-        let newLinkedSetObject = new LinkedLimitSetObjects();
+        const object = this.idl.create('ccmlsm');
+        const newLinkedSetObject = new LinkedLimitSetObjects();
         newLinkedSetObject.linkedLimitSet = object;
         newLinkedSetObject.linkedLimitSet.fallthrough(false);
         newLinkedSetObject.linkedLimitSet.active(true);
@@ -60,39 +65,40 @@ export class LinkedCircLimitSetsComponent implements OnInit {
         this.linkedSetList[this.getObjectKeys().length] = newLinkedSetObject;
     }
 
-    onChange(object:any) {
+    onChange(object: any) {
         this.linkedSet = object;
     }
 
     getObjectKeys() {
-        if(this.linkedSetList) {
+        if (this.linkedSetList) {
             return Object.keys(this.linkedSetList);
         } else {
-            this.linkedSetList = {}
-            return Object.keys({})
+            this.linkedSetList = {};
+            return Object.keys({});
         }
     }
 
     addLinkedSet() {
         if (this.linkedSet) {
-            if( !this.usedSetLimitList.find(element => element == this.linkedSet.id)) {
+            if ( !this.usedSetLimitList[this.linkedSet.id]) {
                 this.createEmptyLimitSetObject();
-                this.linkedSetList[this.getObjectKeys().length-1].linkedLimitSet.limit_set(this.linkedSet.id);
-                this.linkedSetList[this.getObjectKeys().length-1].created = true;
+                this.linkedSetList[this.getObjectKeys().length - 1].linkedLimitSet.limit_set(this.linkedSet.id);
+                this.linkedSetList[this.getObjectKeys().length - 1].created = true;
                 this.emitLimitSet();
-                this.usedSetLimitList.push(this.linkedSet.id)
+                this.usedSetLimitList[this.linkedSet.id] = this.linkedSet.label;
+            } else {
+                this.errorString.current()
+                    .then(str => this.toast.danger(str));
             }
         }
     }
 
     emitLimitSet() {
-        this.outputLinkedLimitSet.emit(this.linkedSetList)
+        this.outputLinkedLimitSet.emit(this.linkedSetList);
     }
 
     removeLinkedSet(index) {
-        if(!this.linkedSetList[index].isNew) {
-            this.usedSetLimitList.splice(index,1);
-        }
+        delete this.usedSetLimitList[this.linkedSetList[index].linkedLimitSet.limit_set()];
         this.linkedSetList[index].isDeleted = true;
         this.emitLimitSet();
     }

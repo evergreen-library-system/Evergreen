@@ -1,3 +1,6 @@
+
+<eg-string #errorString i18n-text text="The Linked Set Name Already Exists on Another Matchpoint"></eg-string>
+
 <div *ngIf="showLinkLimitSets">
     <div class="col-lg-15 bg-info d-flex justify-content-center"><h3 class="modal-title mt-3 mb-3" i18n>Linked Limit Sets</h3></div>
     <ng-container *ngIf="getObjectKeys().length > 0">
@@ -50,6 +53,7 @@
                 name="linkedLimitName"
                 idlClass="ccls" 
                 idlField="name" 
+                asyncSupportsEmptyTermClick="true"
                 (onChange)="onChange($event)">
             </eg-combobox>
         </div>
@@ -60,6 +64,7 @@
                 (click)="addLinkedSet()"
                 i18n-title title="Add" i18n>Add
             </button>
+            <eg-help-popover [helpText]="'Go to Local Admin -> Circulation Limit Sets to Create a Link Limit Set'" ></eg-help-popover>
         </div>
     </div>
 </div>

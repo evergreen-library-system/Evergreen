@@ -1,0 +1,9 @@
+<ng-template #dialogContent>
+    <div class="modal-body">
+        <ng-content>
+        </ng-content>
+        <button type="button" class="btn btn-warning ml-2 mb-6" [ngStyle]="{marginTop:'-12%'}"
+          (click)="closeEditor()" i18n>Cancel
+        </button>
+    </div>
+</ng-template>
