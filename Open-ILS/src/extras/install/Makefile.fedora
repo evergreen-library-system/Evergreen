@@ -44,6 +44,7 @@ FEDORA_RPMS = \
 	perl-DBD-Pg \
 	perl-Email-Send \
 	perl-Email-Simple \
+	perl-Email-MIME \
 	perl-GDGraph3d \
 	perl-JSON-XS \
 	perl-LDAP \
