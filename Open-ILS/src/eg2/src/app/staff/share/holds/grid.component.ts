@@ -321,9 +321,9 @@ export class HoldsGridComponent implements OnInit {
     }
 
     metaRecordHoldsSelected(rows: IdlObject[]) {
-        var found = false;
+        let found = false;
         rows.forEach( row => {
-           if (row.hold_type == 'M') {
+           if (row.hold_type === 'M') {
              found = true;
            }
         });
@@ -331,9 +331,9 @@ export class HoldsGridComponent implements OnInit {
     }
 
     nonTitleHoldsSelected(rows: IdlObject[]) {
-        var found = false;
+        let found = false;
         rows.forEach( row => {
-           if (row.hold_type != 'T') {
+           if (row.hold_type !== 'T') {
              found = true;
            }
         });
@@ -388,10 +388,10 @@ export class HoldsGridComponent implements OnInit {
     }
 
     showOrder(rows: any[]) {
-        //Doesn't work in Typescript currently without compiler option:
+        // Doesn't work in Typescript currently without compiler option:
         //   const bibIds = [...new Set( rows.map(r => r.record_id) )];
         const bibIds = Array.from(
-          new Set( rows.filter(r => r.hold_type!='M').map(r => r.record_id) ));
+          new Set( rows.filter(r => r.hold_type !== 'M').map(r => r.record_id) ));
         bibIds.forEach( bibId => {
           const url =
               '/eg/staff/acq/legacy/lineitem/related/' + bibId + '?target=bib';
@@ -401,7 +401,7 @@ export class HoldsGridComponent implements OnInit {
 
     addVolume(rows: any[]) {
         const bibIds = Array.from(
-          new Set( rows.filter(r => r.hold_type!='M').map(r => r.record_id) ));
+          new Set( rows.filter(r => r.hold_type !== 'M').map(r => r.record_id) ));
         bibIds.forEach( bibId => {
           this.holdings.spawnAddHoldingsUi(bibId);
         });
@@ -410,7 +410,7 @@ export class HoldsGridComponent implements OnInit {
     showTitle(rows: any[]) {
         const bibIds = Array.from(new Set( rows.map(r => r.record_id) ));
         bibIds.forEach( bibId => {
-          //const url = '/eg/staff/cat/catalog/record/' + bibId;
+          // const url = '/eg/staff/cat/catalog/record/' + bibId;
           const url = '/eg2/staff/catalog/record/' + bibId;
           window.open(url, '_blank');
         });
@@ -431,7 +431,7 @@ export class HoldsGridComponent implements OnInit {
     }
 
     showTransferDialog(rows: any[]) {
-        const holdIds = rows.filter(r => r.hold_type=='T').map(r => r.id).filter(id => Boolean(id));
+        const holdIds = rows.filter(r => r.hold_type === 'T').map(r => r.id).filter(id => Boolean(id));
         if (holdIds.length > 0) {
             this.transferDialog.holdIds = holdIds;
             this.transferDialog.open({}).subscribe(
