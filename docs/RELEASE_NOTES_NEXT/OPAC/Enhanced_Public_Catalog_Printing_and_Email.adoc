@@ -1,0 +1,34 @@
+Enhanced Public Catalog Printing and Email 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen now provides additional functionality for printing and emailing
+bibliographic record and holdings information from the catalog, including
+from an individual record or from a list or basket.
+
+After selecting Print or Email, the user will be presented with a preview of
+the printout or email, respectively.  From the preview users can chose to view
+Brief or Full record information (Full includes holdings information) and how
+records should be sorted (Author, Title, Publication Date).  Holdings
+information can also be limited to a certain library.
+
+Users can be required to log in to their OPAC account to send an email or this
+feature can be configured to allow sending an email without signing in to the
+public catalog. If the option to allow emailing without signing in is enabled
+(by turning on the new 'Allow record emailing without login' library setting),
+user will be asked to solve an arithmetic CAPTCHA in order to send the email.
+
+Administration
+++++++++++++++
+Two new interfaces have been added to Local Administration: Event Definition
+Groups and Event Definition Group Members.  The Event Definition Groups defines
+the various groups for Action Trigger Event Definitions-- currently Print
+Record(s) or Email Record(s).  The Event Definition Group Members defines the
+options within each group-- currently Brief or Full record information.
+
+These two interfaces expose the infrastructure behind the new print and
+email functionality and library staff will not need to make any changes to
+these interfaces to use the existing print and email options.  The stock print
+and email Action Trigger Event Definitions can be cloned and modified to
+provide additional bibliographic format options.  After creating the custom
+Event Definition, add it to the appropriate Event Definition Group (Print
+Record or Email Record) and the new format will be available in the catalog.
+
