@@ -5,7 +5,7 @@ import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringService} from '@eg/share/string/string.service';
 import {map, take} from 'rxjs/operators';
-import {GridDataSource, GridColumn, GridRowFlairEntry} from '@eg/share/grid/grid';
+import {GridDataSource, GridColumn, GridRowFlairEntry, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
@@ -62,6 +62,7 @@ export class SandboxComponent implements OnInit {
     cbAsyncSource: (term: string) => Observable<ComboboxEntry>;
 
     btSource: GridDataSource = new GridDataSource();
+    btGridCellTextGenerator: GridCellTextGenerator;
     acpSource: GridDataSource = new GridDataSource();
     eventsDataSource: GridDataSource = new GridDataSource();
     editSelected: (rows: IdlObject[]) => void;
@@ -199,6 +200,14 @@ export class SandboxComponent implements OnInit {
                 this.oneBtype = cbt;
                 return cbt;
             }));
+        };
+
+        // GridCellTextGenerator for the btGrid; note that this
+        // also demonstrates that a GridCellTextGenerator only has
+        // access to the row, and does not have access to any additional
+        // context that might be passed to a cellTemplate
+        this.btGridCellTextGenerator = {
+            test: row => 'HELLO universe ' + row.id()
         };
 
         this.acpSource.getRows = (pager: Pager, sort: any[]) => {

@@ -399,6 +399,13 @@ export class GridColumnSet {
 // each mapped column on a given row.  This is primarily useful for
 // generating print-friendly content for grid cells rendered via
 // cellTemplate.
+//
+// USAGE NOTE: Since a cellTemplate can be passed arbitrary context
+//             but a GridCellTextGenerator only gets the row object,
+//             if it's important to include content that's not available
+//             by default in the row object, you may want to stick
+//             it in the row object as an additional attribute.
+//
 export interface GridCellTextGenerator {
     [columnName: string]: (row: any) => string;
 }
