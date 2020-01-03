@@ -1,4 +1,5 @@
-== Monograph Parts ==
+= Monograph Parts =
+:toc:
 
 *Monograph Parts* enables you to differentiate between parts of
 monographs or other multi-part items.  This feature enables catalogers
@@ -20,7 +21,7 @@ These permissions should be assigned at the consortial level to those
 groups or users that will make use of the features described below.
 
 
-=== Add a Monograph Part to an Existing Record ===
+== Add a Monograph Part to an Existing Record ==
 
 To add a monograph part to an existing record in the catalog:  
 
@@ -74,7 +75,7 @@ also appear in the OPAC View.
 +
 image::media/manage_parts_opac.png[Catalog Record showing items with part details]
 
-=== Monograph Part Merging ===
+== Monograph Part Merging ==
 
 The monograph part list for a bibliographic record may, over time, diverge from
 the proscribed format, resulting in multiple labels for what are essentially the

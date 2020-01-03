@@ -1,4 +1,5 @@
-== MARC 007 Field Physical Characteristics Wizard ==
+= MARC 007 Field Physical Characteristics Wizard =
+:toc:
 
 The MARC 007 Field Physical Characteristics Wizard enables catalogers to interact with a database wizard that leads the user step-by-step through the MARC 007 field positions. The wizard displays the significance of the current position and provides dropdown lists of possible values for the various components of the MARC 007 field in a more user-friendly way.
 

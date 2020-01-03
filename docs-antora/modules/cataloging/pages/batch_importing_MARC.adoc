@@ -1,6 +1,7 @@
-== Batch Importing MARC Records ==
+= Batch Importing MARC Records =
+:toc:
 
-=== Introduction ===
+== Introduction ==
 
 indexterm:[MARC records,importing,using the staff client]
 
@@ -14,26 +15,26 @@ of higher quality than the existing record. Records are added to a queue where
 you can apply filters that enable you to generate any errors that may have
 occurred during import. You can print, email or export your queue as a CSV file.
 
-=== Permissions ===
+== Permissions ==
 
 To use match sets to import records, you will need the following permission:
 
 ADMIN_IMPORT_MATCH_SET
 
 
-=== Record Display Attributes ===
+== Record Display Attributes ==
 
 This feature enables you to specify the tags and subfields that will display in
 records that appear in the import queue. 
 
 
 [[matchsets]]
-=== Record Match Sets ===
+== Record Match Sets ==
 
 This feature enables you to create custom match points that you can use to
 accurately match incoming records with existing catalog records.  
   
-==== Creating a Match Set ====
+=== Creating a Match Set ===
 
 In this example, to demonstrate matching on record attributes and MARC tags and
 subfields, we will create a record match set that defines a match based on the
@@ -137,7 +138,7 @@ will build across the top of the screen.
 +
 image::media/Batch_Importing_MARC_Records7.jpg[Batch_Importing_MARC_Records7]
 
-==== Replace Mode ====
+=== Replace Mode ===
 
 Replace Mode enables you to replace an existing part of the expression tree
 with a new record attribute, MARC tag, or Boolean operator.  For example, if
@@ -154,7 +155,7 @@ the top of the tree is AND, in Replace Mode, you could change that to an OR.
 . Click *Exit Replace Mode*.
 
 
-==== Quality Metrics ====
+=== Quality Metrics ===
 
 . Set the *Quality Metrics for this Match Set*.  Quality metrics are used to
 determine the overall quality of a record.  Each metric is given a weight and
@@ -184,7 +185,7 @@ quality points by increasing subsequent records by a power of 2 (two).
 +
 image::media/Batch_Importing_MARC_Records8.jpg[Batch_Importing_MARC_Records8]
 
-=== Merge/Overlay Profiles ===
+== Merge/Overlay Profiles ==
 
 If Evergreen finds a match for an incoming record in the database, you need to identify which fields should be replaced, which should be preserved, and which should be added to the record.
 Click the Merge/Overlay Profiles button to create a profile that contains this information.
@@ -208,7 +209,7 @@ record.
 You can add multiple tags to the specification options, separating each tag with a comma.
 
 
-=== Import Item Attributes ===
+== Import Item Attributes ==
 If you are importing items with your records, you will need to map the data in
 your holdings tag to fields in the item record. Click the *Holdings Import
 Profile* button to map this information.
@@ -263,7 +264,7 @@ incoming items contain updated values for matching categories.
 |=============================
 
 
-=== Import Records ===
+== Import Records ==
 
 The *Import Records* interface incorporates record match sets, quality metrics,
 more merging options, and improved ways to manage your queue.  In this example,

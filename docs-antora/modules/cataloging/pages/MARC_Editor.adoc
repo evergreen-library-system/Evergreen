@@ -1,4 +1,5 @@
-== Working with the MARC Editor ==
+= Working with the MARC Editor =
+:toc:
 
 Editing MARC Records 
 ~~~~~~~~~~~~~~~~~~~~
@@ -36,12 +37,12 @@ within the MARC Editor.
 . When finished, click _Save_. The record will remain open in the editor. You can close the browser window or browser tab. Or you can switch to 
 another view from the navigation near the top (for example to view it as it appears in the OPAC choose _OPAC View_).
 
-==== MARC Record Leader and MARC fixed field 008 ====
+=== MARC Record Leader and MARC fixed field 008 ===
 
 You can edit parts of the leader and the 008 field in the MARC Editor via the fixed field editor box displayed above 
 the MARC record.
 
-===== To edit the MARC record leader =====
+==== To edit the MARC record leader ====
 
 . Retrieve and display the appropriate record in _MARC Edit_ view. 
 
@@ -57,7 +58,7 @@ the MARC record.
 OPAC icons for text, moving pictures and sound rely on correct MARC coding in the leader, 007, and 008, as do OPAC 
 search filters such as publication date, item type, or target audience.
 
-===== MARC Fixed Field Editor Right-Click Context Menu Options =====
+==== MARC Fixed Field Editor Right-Click Context Menu Options ====
 
 The MARC Fixed Field Editor provides suggested values for select fixed fields based on the record type being edited. Users can right-click on the value control for a fixed field and choose the appropriate value from the menu options.
 The Evergreen database contains information from the Library of Congress’s MARC 21 format standards that includes possible values for select fixed fields. The right-click context menu options are available for fixed fields whose values are already stored in the database. Fixed fields that do not contain possible values in the database, the user will receive the default web browser menu (such as cut, copy, paste, etc.).
@@ -94,10 +95,10 @@ There are three relevant tables that contain the values that display in the fixe
 . *config.coded_value_map* defines the set of valid values for many of the fixed fields and the translatable, human-friendly labels for them.
 . *config.record_attr_definition* links together the information from the config.marc21_ff_pos_map and  config.coded_value_map tables.
 
-==== Deleting MARC Records ====
+=== Deleting MARC Records ===
 You can delete MARC records using the MARC Editor.
 
-===== To Delete a MARC record =====
+==== To Delete a MARC record ====
 
 . Retrieve and display the appropriate record in the MARC editor.
 . Click on the _MARC Edit_ tab.
@@ -105,3 +106,34 @@ You can delete MARC records using the MARC Editor.
 . In the modal window, click the *OK/Continue* button to remove the MARC record.
 
 image::media/marc_delete_record_3_3.png[The Delete button is located in the Marc Edit tab]
+
+=== MARC Tag-table Service ===
+The tag tables for the web staff client MARC editor are
+stored in the database.  The tag-table
+service has the following features:
+
+- specifies whether (sub)fields are optional or mandatory
+- specifies whether (sub)fields are repeatable or not
+- a coded value map can be associated with a subfield to
+  establish a controlled vocabulary for that subfield
+- MARC field and subfield definitions can be overridden
+  by institutions further down in the organizational unit
+  hierarchy.  This allows, for example, a library to specify
+  definitions for local MARC tags.
+- values supplied by the tag-table service are used to
+  populate values in context menus in the web staff client
+  MARC editor.
+
+MARC Tag Tables can be found under Administration -> Server Administration -> MARC Tag Tables.
+
+MARC Tag Tables Grid:
+
+image::media/MARC_Tag_Tables_Grid.PNG[Grid view of MARC Tag Tables]
+
+MARC Tag Tables Detail:
+
+image::media/MARC_Tag_Tables_Detail.PNG[Detail view of MARC Tag Tables]
+
+The initial seed data for the in-database tag table is
+derived from the current tooltips XML file.
+
