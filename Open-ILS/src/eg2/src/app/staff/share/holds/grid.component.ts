@@ -148,7 +148,7 @@ export class HoldsGridComponent implements OnInit {
         // Text-ify function for cells that use display templates.
         this.cellTextGenerator = {
             title: row => row.title,
-            cp_barcode: row => row.cp_barcode
+            cp_barcode: row => (row.cp_barcode == null) ? '' : row.cp_barcode
         };
     }
 
