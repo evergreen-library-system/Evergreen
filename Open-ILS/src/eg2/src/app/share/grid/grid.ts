@@ -822,7 +822,8 @@ export class GridContext {
 
     getColumnTextContent(row: any, col: GridColumn): string {
         if (this.columnHasTextGenerator(col)) {
-            return this.cellTextGenerator[col.name](row);
+            const str = this.cellTextGenerator[col.name](row);
+            return (str === null || str === undefined)  ? '' : str;
         } else {
             if (col.cellTemplate) {
                 return ''; // avoid 'undefined' values
