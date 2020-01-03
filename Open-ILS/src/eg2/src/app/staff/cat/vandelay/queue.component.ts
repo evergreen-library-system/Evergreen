@@ -61,7 +61,7 @@ export class QueueComponent implements OnInit, AfterViewInit {
 
         this.cellTextGenerator = {
             '+matches': row => row.matches.length + '',
-            'import_error': row => row.import_error,
+            'import_error': row => (row.import_error == null) ? '' : row.import_error,
             'imported_as': row => row.imported_as + ''
         };
     }

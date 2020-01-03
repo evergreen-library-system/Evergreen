@@ -56,8 +56,8 @@ export class CopiesComponent implements OnInit {
         };
 
         this.cellTextGenerator = {
-            callnumber: row => `${row.call_number_prefix_label} ` +
-                `${row.call_number_label} ${row.call_number_suffix_label}`,
+            callnumber: row => (`${row.call_number_prefix_label} ` +
+                `${row.call_number_label} ${row.call_number_suffix_label}`).trim(),
             holdable: row => this.copyContext.holdable(row),
             barcode: row => row.barcode
         };
