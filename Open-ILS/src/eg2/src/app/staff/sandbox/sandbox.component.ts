@@ -222,7 +222,7 @@ export class SandboxComponent implements OnInit {
             return this.pcrud.search('acp',
                 query, {
                 flesh: 1,
-                flesh_fields: {acp: ['location', 'status']},
+                flesh_fields: {acp: ['location', 'status', 'creator', 'editor']},
                 offset: pager.offset,
                 limit: pager.limit,
                 order_by: orderBy
