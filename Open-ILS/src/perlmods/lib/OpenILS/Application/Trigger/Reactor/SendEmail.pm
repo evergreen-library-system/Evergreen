@@ -62,13 +62,13 @@ sub handler {
     # properly, we make sure there is only 1 each.
     for my $hfield (qw/From To Bcc Cc Reply-To Sender/) {
         my @headers = $email->header($hfield);
-        $email->header_str_set($hfield => join(',', @headers)) if ($headers[0]);
+        $email->header_str_set($hfield => decode_utf8(join(',', @headers))) if ($headers[0]);
     }
 
     # Handle the Subject field.  Again, the standard says there can be
     # only one.
     my @headers = $email->header('Subject');
-    $email->header_str_set('Subject' => $headers[0]) if ($headers[0]);
+    $email->header_str_set('Subject' => decode_utf8($headers[0])) if ($headers[0]);
 
     $email->header_set('MIME-Version' => '1.0');
     $email->header_set('Content-Type' => "text/plain; charset=UTF-8");
