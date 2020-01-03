@@ -34,7 +34,7 @@
 </ng-container>
 
 <eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" 
-    [sortable]="true" persistKey="{{persistKey}}" [showLinkSelectors]="true">
+    [sortable]="true" persistKey="{{persistKey}}">
   <eg-grid-toolbar-button [disabled]="!canCreate" 
     label="New {{idlClassDef.label}}" i18n-label (onClick)="createNew()">
   </eg-grid-toolbar-button>
