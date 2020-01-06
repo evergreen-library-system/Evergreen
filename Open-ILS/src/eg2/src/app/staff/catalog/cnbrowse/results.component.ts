@@ -2,6 +2,7 @@ import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
+import {PcrudService} from '@eg/core/pcrud.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {BibRecordService} from '@eg/share/catalog/bib-record.service';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
@@ -16,6 +17,9 @@ import {OrgService} from '@eg/core/org.service';
 })
 export class CnBrowseResultsComponent implements OnInit, OnDestroy {
 
+    // If set, this is a bib-focused browse
+    @Input() bibSummary: BibRecordSummary;
+
     @Input() rowCount = 5;
     rowIndexList: number[] = [];
 
@@ -23,13 +27,18 @@ export class CnBrowseResultsComponent implements OnInit, OnDestroy {
     colCount = 3;
 
     searchContext: CatalogSearchContext;
-    results: any[];
+    results: any[] = [];
     routeSub: Subscription;
+
+    // When browsing by a specific record, keep tabs on the initial
+    // browse call number.
+    browseCn: string;
 
     constructor(
         private router: Router,
         private route: ActivatedRoute,
         private org: OrgService,
+        private pcrud: PcrudService,
         private cat: CatalogService,
         private bib: BibRecordService,
         private catUrl: CatalogUrlService,
@@ -43,19 +52,52 @@ export class CnBrowseResultsComponent implements OnInit, OnDestroy {
             this.rowIndexList.push(idx);
         }
 
-        this.routeSub = this.route.queryParamMap.subscribe(
-            (params: ParamMap) => this.browseByUrl(params)
-        );
+        let promise = Promise.resolve();
+        if (this.bibSummary) {
+            promise = this.getBrowseCallnumber();
+        }
+
+        promise.then(_ => {
+            this.routeSub = this.route.queryParamMap.subscribe(
+                (params: ParamMap) => this.browseByUrl(params)
+            );
+        });
     }
 
     ngOnDestroy() {
         this.routeSub.unsubscribe();
     }
 
+    getBrowseCallnumber(): Promise<any> {
+        let org = this.searchContext.searchOrg.id();
+
+        if (this.searchContext.searchOrg.ou_type().can_have_vols() === 'f') {
+            // If the current search org unit cannot hold volumes, search
+            // across child org units.
+            org = this.org.descendants(this.searchContext.searchOrg, true);
+        }
+
+        return this.pcrud.search('acn',
+            {record: this.bibSummary.id, owning_lib: org},
+            {limit: 1}
+        ).toPromise().then(cn =>
+            this.browseCn = cn ? cn.label() : this.bibSummary.bibCallNumber
+        );
+    }
+
     browseByUrl(params: ParamMap): void {
         this.catUrl.applyUrlParams(this.searchContext, params);
+        this.getBrowseResults();
+    }
+
+    getBrowseResults() {
         const cbs = this.searchContext.cnBrowseSearch;
         cbs.limit = this.rowCount * this.colCount;
+
+        if (this.browseCn) {
+            // Override any call number browse URL parameters
+            cbs.value = this.browseCn;
+        }
 
         if (cbs.isSearchable()) {
             this.results = [];
@@ -114,12 +156,23 @@ export class CnBrowseResultsComponent implements OnInit, OnDestroy {
 
     prevPage() {
         this.searchContext.cnBrowseSearch.offset--;
-        this.staffCat.cnBrowse();
+        if (this.bibSummary) {
+            // Browse without navigation
+            this.getBrowseResults();
+        } else {
+            this.staffCat.cnBrowse();
+        }
+
     }
 
     nextPage() {
         this.searchContext.cnBrowseSearch.offset++;
-        this.staffCat.cnBrowse();
+        if (this.bibSummary) {
+            // Browse without navigation
+            this.getBrowseResults();
+        } else {
+            this.staffCat.cnBrowse();
+        }
     }
 
     /**
@@ -144,6 +197,10 @@ export class CnBrowseResultsComponent implements OnInit, OnDestroy {
 
     orgName(orgId: number): string {
         return this.org.get(orgId).shortname();
+    }
+
+    getAuthorSearchParams(summary: BibRecordSummary): any {
+        return this.staffCat.getAuthorSearchParams(summary);
     }
 }
 

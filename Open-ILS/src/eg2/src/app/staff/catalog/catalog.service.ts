@@ -5,6 +5,7 @@ import {OrgService} from '@eg/core/org.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
+import {BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 
 /**
  * Shared bits needed by the staff version of the catalog.
@@ -121,6 +122,16 @@ export class StaffCatalogService {
         const params = this.catUrl.toUrlParams(this.searchContext);
         params.ridx = '' + this.routeIndex++; // see comments above
         this.router.navigate(['/staff/catalog/cnbrowse'], {queryParams: params});
+    }
+
+    // Params to genreate a new author search based on a reset
+    // clone of the current page params.
+    getAuthorSearchParams(summary: BibRecordSummary): any {
+        const tmpContext = this.cloneContext(this.searchContext);
+        tmpContext.reset();
+        tmpContext.termSearch.fieldClass = ['author'];
+        tmpContext.termSearch.query = [summary.display.author];
+        return this.catUrl.toUrlParams(tmpContext);
     }
 }
 

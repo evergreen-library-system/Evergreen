@@ -83,6 +83,16 @@
           </eg-catalog-record-conjoined>
         </ng-template>
       </ngb-tab>
+      <ngb-tab title="Shelf Browse" i18n-title id="cnbrowse">
+        <ng-template ngbTabContent>
+          <ng-container *ngIf="summary">
+            <div class="mt-2">
+              <eg-catalog-cn-browse-results [bibSummary]="summary">
+              </eg-catalog-cn-browse-results>
+            </div>
+          </ng-container>
+        </ng-template>
+      </ngb-tab>
       <ngb-tab title="Patron View" i18n-title id="catalog">
         <ng-template ngbTabContent>
           <eg-opac-record-detail [recordId]="recordId">

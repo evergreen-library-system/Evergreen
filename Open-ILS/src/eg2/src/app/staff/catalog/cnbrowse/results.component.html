@@ -25,8 +25,9 @@
 <!-- header, pager, and list of records -->
 <div id="staff-catalog-browse-results-container" *ngIf="browseHasResults()">
 
-  <div class="row mb-2">
-    <div class="col-lg-3">
+  <div class="row mb-2 d-flex">
+    <div class="flex-1"></div>
+    <div>
       <button class="btn btn-primary" (click)="prevPage()">Back</button>
       <button class="btn btn-primary ml-3" (click)="nextPage()">Next</button>
     </div>
@@ -44,8 +45,18 @@
                 {{callNumber.suffix().label()}}
                 @ {{orgName(callNumber.owning_lib())}}
               </div>
-              <div>{{callNumber._bibSummary.display.title}}</div>
-              <div>{{callNumber._bibSummary.display.author}}</div>
+              <div>
+                <a queryParamsHandling="merge"
+                  routerLink="/staff/catalog/record/{{callNumber._bibSummary.id}}">
+                  {{callNumber._bibSummary.display.title}}
+                </a>
+              </div>
+              <div>
+                <a routerLink="/staff/catalog/search"
+                  [queryParams]="getAuthorSearchParams(callNumber._bibSummary)">
+                  {{callNumber._bibSummary.display.author}}
+                </a>
+              </div>
             </div>
             <div class="ml-2">
               <img src="/opac/extras/ac/jacket/small/r/{{callNumber._bibSummary.id}}"/>
@@ -56,14 +67,13 @@
     </div>
   </ng-container>
 
-
-  <div class="row mb-2">
-    <div class="col-lg-3">
+  <div class="row mb-2 d-flex">
+    <div class="flex-1"></div>
+    <div>
       <button class="btn btn-primary" (click)="prevPage()">Back</button>
       <button class="btn btn-primary ml-3" (click)="nextPage()">Next</button>
     </div>
   </div>
-
 </div>
 
 

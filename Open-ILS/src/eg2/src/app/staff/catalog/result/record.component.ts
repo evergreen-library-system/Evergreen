@@ -85,11 +85,7 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
     // Params to genreate a new author search based on a reset
     // clone of the current page params.
     getAuthorSearchParams(summary: BibRecordSummary): any {
-        const tmpContext = this.staffCat.cloneContext(this.searchContext);
-        tmpContext.reset();
-        tmpContext.termSearch.fieldClass = ['author'];
-        tmpContext.termSearch.query = [summary.display.author];
-        return this.catUrl.toUrlParams(tmpContext);
+        return this.staffCat.getAuthorSearchParams(summary);
     }
 
     // Returns the URL parameters for the current page plus the
