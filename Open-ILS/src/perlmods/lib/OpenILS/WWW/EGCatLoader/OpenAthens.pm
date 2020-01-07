@@ -206,8 +206,7 @@ sub _get_openathens_config_for_org {
     my ($self, $org_id) = @_;
     my $e = new_editor();
 
-    my @org_ancestors = reverse @{$U->get_org_ancestors($org_id, 1)};
-    my $parent_org = $org_ancestors[1];
+    my $parent_org = $U->get_org_unit_parent($org_id);
 
     my $configs = $e->json_query({
         select => {

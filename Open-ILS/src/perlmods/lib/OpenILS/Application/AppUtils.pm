@@ -1559,6 +1559,21 @@ sub org_unit_ancestor_at_depth {
     return ($resp) ? $resp->{id} : undef;
 }
 
+# returns the ID of the org unit ancestor at the specified distance
+sub get_org_unit_ancestor_at_distance {
+    my ($class, $org_id, $distance) = @_;
+    my $ancestors = OpenILS::Utils::CStoreEditor->new->json_query(
+        { from => ['actor.org_unit_ancestors_distance', $org_id] });
+    my @match = grep { $_->{distance} == $distance } @{$ancestors};
+    return (@match) ? $match[0]->{id} : undef;
+}
+
+# returns the ID of the org unit parent
+sub get_org_unit_parent {
+    my ($class, $org_id) = @_;
+    return $class->get_org_unit_ancestor_at_distance($org_id, 1);
+}
+
 # Returns the proximity value between two org units.
 sub get_org_unit_proximity {
     my ($class, $e, $from_org, $to_org) = @_;
