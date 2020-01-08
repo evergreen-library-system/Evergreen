@@ -66,6 +66,9 @@ const routes: Routes = [{
     loadChildren: () =>
       import('./triggers/triggers.module').then(m => m.TriggersModule)
 }, {
+    path: 'config/idl_field_doc',
+    loadChildren: '@eg/staff/admin/local/field-documentation/field-documentation.module#FieldDocumentationModule'
+}, {
     path: ':schema/:table',
     component: BasicAdminPageComponent
 }];

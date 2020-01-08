@@ -1,0 +1,52 @@
+<eg-title i18n-prefix prefix="Field Documentation"></eg-title>
+<eg-staff-banner bannerText="Field Documentation" i18n-bannerText></eg-staff-banner>
+
+<div class="row mt-3">
+  <div class="col-md-3">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <div class="input-group-text" i18n>Class</div>
+        <!-- IDL Selector -->
+        <eg-combobox [allowFreeText]="true"
+          [entries]="idlEntries" [(ngModel)]="selectedClass"
+          (ngModelChange)="setGrid()">
+        </eg-combobox>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<div class='w-11 mt-3'>
+  <eg-grid #fieldDocGrid [dataSource]="gridDataSource"
+    persistKey="admin.config.idl_field_doc" idlClass="fdoc">
+    <eg-grid-toolbar-button 
+      label="New Field Documentation" i18n-label (onClick)="createNew()">
+    </eg-grid-toolbar-button>
+    <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
+    </eg-grid-toolbar-action>
+  </eg-grid>
+</div>
+
+<eg-fm-record-editor #editDialog hiddenFields="id" idlClass="fdoc"
+  requiredFields="fm_class,field,owner,string" [(fieldOptions)]="fieldOptions">
+</eg-fm-record-editor>
+
+<ng-template #fieldClassSelector let-fieldentries="fieldentries" let-selected="selectedEntry">
+  <eg-combobox [allowFreeText]="true" [(ngModel)]="selected" required="true"
+    [entries]="fieldentries" (onChange)="setClass($event)">
+  </eg-combobox>
+</ng-template>
+
+<ng-template #fieldSelector
+  let-entries="fields" let-selected="selectedEntry">
+  <eg-combobox [allowFreeText]="true" required="true"
+    [entries]="fields" [(ngModel)]="selected"
+    (ngModelChange)="setField($event)">
+  </eg-combobox>
+</ng-template>
+
+<eg-string #updateSuccessString text="Updated succeeded!" i18n-text></eg-string>
+<eg-string #updateFailedString text="Updated failed." i18n-text></eg-string>
+<eg-string #createSuccessString text="New Field Documentation Created!" i18n-text></eg-string>
+<eg-string #createFailedString text="Creation of new Field Documentation failed." i18n-text></eg-string>
