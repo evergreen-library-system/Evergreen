@@ -1936,13 +1936,13 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         // A record ID in the path indicates a request for the record-
         // specific page.
         if ($routeParams.record_id) {
-            url = url.replace(/advanced/, '/record/' + $scope.record_id);
+            url = url.replace(/\/advanced/, '/record/' + $scope.record_id);
         }
 
         // Jumping directly to the results page by passing a search
         // query via the URL.  Copy all URL params to the iframe url.
         if ($location.path().match(/catalog\/results/)) {
-            url = url.replace(/advanced/, '/results?');
+            url = url.replace(/\/advanced/, '/results?');
             var first = true;
             angular.forEach($location.search(), function(val, key) {
                 if (!first) url += '&';
