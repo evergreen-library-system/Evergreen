@@ -17,7 +17,7 @@ __PACKAGE__->columns( Essential => qw/usrname email first_given_name
                 ident_type2 ident_value2 net_access_level alias
                 photo_url create_date expire_date credit_forward_balance
                 super_user usrgroup passwd card last_xact_id
-                standing barred profile prefix suffix alert_message
+                standing barred profile prefix suffix
                 day_phone evening_phone other_phone mailing_address
                 claims_never_checked_out_count last_update_time/ );
 

@@ -2312,9 +2312,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Title" name="title" reporter:datatype="text"/>
 			<field reporter:label="User" name="usr" reporter:datatype="link" />
 			<field reporter:label="Message" name="message" reporter:datatype="text"/>
+			<field reporter:label="Patron Visible?" name="pub" reporter:datatype="bool"/>
+			<field reporter:label="Stop Date/Time" name="stop_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Editor" name="editor" reporter:datatype="link" />
+			<field reporter:label="Edit Date/Time" name="edit_date" reporter:datatype="timestamp"/>
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="sending_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -2335,9 +2340,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Title" name="title" reporter:datatype="text"/>
 			<field reporter:label="User" name="usr" reporter:datatype="link" />
 			<field reporter:label="Message" name="message" reporter:datatype="text"/>
+			<field reporter:label="Patron Visible?" name="pub" reporter:datatype="bool"/>
+			<field reporter:label="Stop Date/Time" name="stop_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Editor" name="usr" reporter:datatype="link" />
+			<field reporter:label="Edit Date/Time" name="edit_date" reporter:datatype="timestamp"/>
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="sending_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -2347,38 +2357,56 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="aun" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_note" oils_persist:tablename="actor.usr_note" reporter:label="User Note">
-		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_note_id_seq">
+	<class id="aump" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_message_penalty" oils_persist:tablename="actor.usr_message_penalty" reporter:label="User Message Penalty">
+        <fields oils_persist:primary="id">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
-			<field reporter:label="Creating Staff" name="creator" reporter:datatype="link"/>
-			<field reporter:label="Note ID" name="id" reporter:datatype="id" />
-			<field reporter:label="Is OPAC Visible?" name="pub" reporter:datatype="bool"/>
-			<field reporter:label="Note Title" name="title" reporter:datatype="text"/>
+			<field reporter:label="Debug: Set Date (Penalty)" name="ausp_set_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Debug: Creation Date/Time (Message)" name="aum_create_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Read Date/Time" name="read_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Creating Library" name="org_unit" reporter:datatype="link"/>
+			<field reporter:label="Debug: Creating Library (Penalty)" name="ausp_org_unit" reporter:datatype="link"/>
+			<field reporter:label="Debug: Creating Library (Message)" name="aum_sending_lib" reporter:datatype="link"/>
+			<field reporter:label="Debug: Penalty ID" name="ausp_id" reporter:datatype="id" />
+			<field reporter:label="Debug: Message ID" name="aum_id" reporter:datatype="id" />
+			<field reporter:label="Deleted?" name="deleted" reporter:datatype="bool"/>
+			<field reporter:label="Title" name="title" reporter:datatype="text"/>
 			<field reporter:label="User" name="usr" reporter:datatype="link" />
-			<field reporter:label="Note Content" name="value" reporter:datatype="text"/>
+			<field reporter:label="Debug: User (Penalty)" name="ausp_usr" reporter:datatype="link" />
+			<field reporter:label="Debug: User (Message)" name="aum_usr" reporter:datatype="link" />
+			<field reporter:label="Message" name="message" reporter:datatype="text"/>
+			<field reporter:label="Patron Visible?" name="pub" reporter:datatype="bool"/>
+			<field reporter:label="Stop Date/Time" name="stop_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Debug: Stop Date/Time (Penalty)" name="ausp_stop_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Debug: Stop Date/Time (Message)" name="aum_stop_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Editor" name="editor" reporter:datatype="link" />
+			<field reporter:label="Edit Date/Time" name="edit_date" reporter:datatype="timestamp"/>
+			<field name="staff" reporter:datatype="link" reporter:label="Staff"/>
+			<field name="standing_penalty" reporter:datatype="link" reporter:label="Standing Penalty"/>
+			<field name="ausp_usr_message" reporter:datatype="link" reporter:label="Debug: User Message (Penalty)"/>
 		</fields>
 		<links>
+			<link field="ausp_id" reltype="has_a" key="id" map="" class="ausp"/>
+			<link field="aum_id" reltype="has_a" key="id" map="" class="aum"/>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
-			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="ausp_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="aum_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="aum_sending_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="ausp_org_unit" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="standing_penalty" reltype="has_a" key="id" map="" class="csp"/>
+			<link field="ausp_usr_message" reltype="has_a" key="id" map="" class="aum"/>
 		</links>
-        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-            <actions>
-                <create permission="UPDATE_USER" context_field="owner">
-                    <context link="usr" field="home_ou"/>
-                </create>
-				<!-- note: public notes are still accessible via API -->
-                <retrieve permission="UPDATE_USER">
-                    <context link="usr" field="home_ou"/>
-				</retrieve>
-                <update permission="UPDATE_USER">
-                    <context link="usr" field="home_ou"/>
-				</update>
-                <delete permission="UPDATE_USER">
-                    <context link="usr" field="home_ou"/>
-				</delete>
-            </actions>
-        </permacrud>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions> <!-- created magically, so no create action -->
+				<retrieve permission="VIEW_USER"><context link="usr" field="home_ou"/></retrieve>
+				<update permission="UPDATE_USER"><context link="usr" field="home_ou"/></update>
+			</actions>
+		</permacrud>
 	</class>
+
 	<class id="aupw" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_privacy_waiver" oils_persist:tablename="actor.usr_privacy_waiver" reporter:label="Privacy Waiver">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_privacy_waiver_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id" />
@@ -3902,7 +3930,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Workstation Org Unit" name="ws_ou" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Workstation ID" name="wsid" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Active" name="active" reporter:datatype="bool"/>
-			<field reporter:label="Alert Message" name="alert_message"  reporter:datatype="text"/>
 			<field reporter:label="Barred" name="barred" reporter:datatype="bool"/>
 			<field reporter:label="Physical Address" name="billing_address" reporter:datatype="link"/>
 			<field reporter:label="Current Library Card" name="card" reporter:datatype="link"/>
@@ -3988,7 +4015,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="standing_penalties" reltype="has_many" key="usr" map="" class="ausp"/>
 			<link field="addresses" reltype="has_many" key="usr" map="" class="aua"/>
 			<link field="survey_responses" reltype="has_many" key="usr" map="" class="asvr"/>
-			<link field="notes" reltype="has_many" key="usr" map="" class="aun"/>
+			<link field="notes" reltype="has_many" key="usr" map="" class="aum"/>
 			<link field="checkins" reltype="has_many" key="checkin_staff" map="" class="circ"/>
 			<link field="cards" reltype="has_many" key="usr" map="" class="ac"/>
 			<link field="performed_circulations" reltype="has_many" key="circ_staff" map="" class="circ"/>
@@ -4604,7 +4631,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="ADMIN_STANDING_PENALTY" global_required="true"/>
-                <retrieve permission="ADMIN_STANDING_PENALTY VIEW_STANDING_PENALTY" global_required="true"/>
+                <retrieve permission="STAFF_LOGIN" global_required="true"/>
                 <update permission="ADMIN_STANDING_PENALTY" global_required="true"/>
                 <delete permission="ADMIN_STANDING_PENALTY" global_required="true"/>
             </actions>
@@ -4662,13 +4689,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="standing_penalty" reporter:datatype="link" reporter:label="Standing Penalty"/>
 			<field name="org_unit" reporter:datatype="link" reporter:label="Org Unit"/>
 			<field name="stop_date" reporter:datatype="timestamp" reporter:label="Stop Date"/>
-			<field name="note" reporter:datatype="text" reporter:label="Note"/>
+			<field name="usr_message" reporter:datatype="link" reporter:label="User Message"/>
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="staff" reltype="has_a" key="id" map="" class="au"/>
 			<link field="standing_penalty" reltype="has_a" key="id" map="" class="csp"/>
+			<link field="usr_message" reltype="has_a" key="id" map="" class="aum"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>

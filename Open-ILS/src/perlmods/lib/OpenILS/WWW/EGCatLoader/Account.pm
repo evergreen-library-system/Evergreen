@@ -584,6 +584,7 @@ sub load_myopac_messages {
             title       => $aum->title,
             message     => $aum->message,
             create_date => $aum->create_date,
+            edit_date   => $aum->edit_date,
             is_read     => defined($aum->read_date) ? 1 : 0,
             library     => $aum->sending_lib->name,
         };
@@ -2637,7 +2638,7 @@ sub load_myopac_main {
     my $offset = $self->cgi->param('offset') || 0;
     $self->ctx->{search_ou} = $self->_get_search_lib();
     $self->ctx->{user}->notes(
-        $self->editor->search_actor_usr_note({
+        $self->editor->search_actor_usr_message({
             usr => $self->ctx->{user}->id,
             pub => 't'
         })

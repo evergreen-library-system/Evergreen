@@ -68,7 +68,6 @@ CREATE TABLE actor.usr (
 	claims_returned_count	INT				NOT NULL DEFAULT 0,
 	credit_forward_balance	NUMERIC(6,2)			NOT NULL DEFAULT 0.00,
 	last_xact_id		TEXT				NOT NULL DEFAULT 'none',
-	alert_message		TEXT,
 	create_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
 	expire_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT (now() + '3 years'::INTERVAL),
 	claims_never_checked_out_count  INT         NOT NULL DEFAULT 0,
@@ -191,18 +190,6 @@ $func$ LANGUAGE PLPGSQL;
 CREATE TRIGGER user_ingest_name_keywords_tgr 
     BEFORE INSERT OR UPDATE ON actor.usr 
     FOR EACH ROW EXECUTE PROCEDURE actor.user_ingest_name_keywords();
-
-CREATE TABLE actor.usr_note (
-	id		BIGSERIAL			PRIMARY KEY,
-	usr		BIGINT				NOT NULL REFERENCES actor.usr ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	creator		BIGINT				NOT NULL REFERENCES actor.usr ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
-	create_date	TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
-	pub		BOOL				NOT NULL DEFAULT FALSE,
-	title		TEXT				NOT NULL,
-	value		TEXT				NOT NULL
-);
-CREATE INDEX actor_usr_note_usr_idx ON actor.usr_note (usr);
-CREATE INDEX actor_usr_note_creator_idx ON actor.usr_note ( creator );
 
 CREATE TABLE actor.usr_setting (
 	id	BIGSERIAL	PRIMARY KEY,
@@ -681,8 +668,7 @@ CREATE TABLE actor.usr_standing_penalty (
 	standing_penalty	INT	NOT NULL REFERENCES config.standing_penalty (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	staff			INT	REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	set_date		TIMESTAMP WITH TIME ZONE	DEFAULT NOW(),
-	stop_date		TIMESTAMP WITH TIME ZONE,
-	note			TEXT
+	stop_date		TIMESTAMP WITH TIME ZONE
 );
 COMMENT ON TABLE actor.usr_standing_penalty IS $$
 User standing penalties
@@ -804,9 +790,15 @@ CREATE TABLE actor.usr_message (
 	create_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	deleted		BOOL				NOT NULL DEFAULT FALSE,
 	read_date	TIMESTAMP WITH TIME ZONE,
-	sending_lib	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED
+	sending_lib	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
+	pub		BOOL				NOT NULL DEFAULT FALSE,
+	stop_date		TIMESTAMP WITH TIME ZONE,
+	editor	BIGINT REFERENCES actor.usr (id),
+	edit_date		TIMESTAMP WITH TIME ZONE
+    
 );
 CREATE INDEX aum_usr ON actor.usr_message (usr);
+ALTER TABLE actor.usr_standing_penalty ADD COLUMN usr_message BIGINT REFERENCES actor.usr_message(id);
 
 CREATE RULE protect_usr_message_delete AS
 	ON DELETE TO actor.usr_message DO INSTEAD (
@@ -815,42 +807,11 @@ CREATE RULE protect_usr_message_delete AS
 		  WHERE	OLD.id = actor.usr_message.id
 	);
 
-CREATE FUNCTION actor.convert_usr_note_to_message () RETURNS TRIGGER AS $$
-DECLARE
-	sending_ou INTEGER;
-BEGIN
-	IF NEW.pub THEN
-		IF TG_OP = 'UPDATE' THEN
-			IF OLD.pub = TRUE THEN
-				RETURN NEW;
-			END IF;
-		END IF;
-
-		SELECT INTO sending_ou aw.owning_lib
-		FROM auditor.get_audit_info() agai
-		JOIN actor.workstation aw ON (aw.id = agai.eg_ws);
-		IF sending_ou IS NULL THEN
-			SELECT INTO sending_ou home_ou
-			FROM actor.usr
-			WHERE id = NEW.creator;
-		END IF;
-		INSERT INTO actor.usr_message (usr, title, message, sending_lib)
-			VALUES (NEW.usr, NEW.title, NEW.value, sending_ou);
-	END IF;
-
-	RETURN NEW;
-END;
-$$ LANGUAGE PLPGSQL;
-
-CREATE TRIGGER convert_usr_note_to_message_tgr
-	AFTER INSERT OR UPDATE ON actor.usr_note
-	FOR EACH ROW EXECUTE PROCEDURE actor.convert_usr_note_to_message();
-
 -- limited view to ensure that a library user who somehow
 -- manages to figure out how to access pcrud cannot change
 -- the text of messages sent them
 CREATE VIEW actor.usr_message_limited
-AS SELECT * FROM actor.usr_message;
+AS SELECT * FROM actor.usr_message WHERE pub AND NOT deleted;
 
 CREATE FUNCTION actor.restrict_usr_message_limited () RETURNS TRIGGER AS $$
 BEGIN
@@ -868,6 +829,47 @@ $$ LANGUAGE PLPGSQL;
 CREATE TRIGGER restrict_usr_message_limited_tgr
     INSTEAD OF UPDATE OR INSERT OR DELETE ON actor.usr_message_limited
     FOR EACH ROW EXECUTE PROCEDURE actor.restrict_usr_message_limited();
+
+-- combined view of actor.usr_standing_penalty and actor.usr_message for populating
+-- staff Notes (formerly Messages) interface
+
+CREATE VIEW actor.usr_message_penalty
+AS SELECT
+    COALESCE(ausp.id::TEXT,'') || ':' || COALESCE(aum.id::TEXT,'') AS "id",
+    ausp.id AS "ausp_id",
+    aum.id AS "aum_id",
+    COALESCE(ausp.org_unit,aum.sending_lib) AS "org_unit",
+    ausp.org_unit AS "ausp_org_unit",
+    aum.sending_lib AS "aum_sending_lib",
+    COALESCE(ausp.usr,aum.usr) AS "usr",
+    ausp.usr as "ausp_usr",
+    aum.usr as "aum_usr",
+    ausp.standing_penalty AS "standing_penalty",
+    ausp.staff AS "staff",
+    LEAST(ausp.set_date,aum.create_date) AS "create_date",
+    ausp.set_date AS "ausp_set_date",
+    aum.create_date AS "aum_create_date",
+    LEAST(ausp.stop_date,aum.stop_date) AS "stop_date",
+    ausp.stop_date AS "ausp_stop_date",
+    aum.stop_date AS "aum_stop_date",
+    ausp.usr_message AS "ausp_usr_message",
+    aum.title AS "title",
+    aum.message AS "message",
+    aum.deleted AS "deleted",
+    aum.read_date AS "read_date",
+    aum.pub AS "pub",
+    aum.editor AS "editor",
+    aum.edit_date AS "edit_date"
+FROM
+    actor.usr_standing_penalty ausp
+FULL OUTER JOIN
+    actor.usr_message aum
+ON (
+    ausp.usr_message = aum.id
+)
+WHERE
+    NOT (ausp.id IS NULL AND aum.deleted);
+;
 
 CREATE TABLE actor.passwd_type (
     code        TEXT PRIMARY KEY,

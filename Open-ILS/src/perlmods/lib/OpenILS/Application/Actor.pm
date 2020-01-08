@@ -1508,6 +1508,20 @@ sub retrieve_coordinates {
 }
 
 __PACKAGE__->register_method(
+    method   => "get_my_org_ancestor_at_depth",
+    api_name => "open-ils.actor.org_unit.ancestor_at_depth.retrieve"
+);
+
+sub get_my_org_ancestor_at_depth {
+    my( $self, $client, $auth, $org_id, $depth ) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    $org_id = $e->requestor->ws_ou unless defined $org_id;
+
+    return $apputils->org_unit_ancestor_at_depth( $org_id, $depth );
+}
+
+__PACKAGE__->register_method(
     method   => "patron_adv_search",
     api_name => "open-ils.actor.patron.search.advanced"
 );
@@ -1975,7 +1989,13 @@ sub user_opac_vitals {
     $out->{"total_out"} = reduce { $a + $out->{$b} } 0, qw/out overdue/;
 
     my $unread_msgs = $e->search_actor_usr_message([
-        {usr => $user_id, read_date => undef, deleted => 'f'},
+        {usr => $user_id, read_date => undef, deleted => 'f',
+            'pub' => 't', # this is for the unread message count in the opac
+            '-or' => [
+                {stop_date => undef},
+                {stop_date => {'>' => 'now'}}
+            ],
+        },
         {idlist => 1}
     ]);
 
@@ -3097,7 +3117,9 @@ __PACKAGE__->register_method(
 );
 
 sub apply_penalty {
-    my($self, $conn, $auth, $penalty) = @_;
+    my($self, $conn, $auth, $penalty, $msg) = @_;
+
+    $msg ||= {};
 
     my $e = new_editor(authtoken=>$auth, xact => 1);
     return $e->die_event unless $e->checkauth;
@@ -3107,10 +3129,23 @@ sub apply_penalty {
 
     my $ptype = $e->retrieve_config_standing_penalty($penalty->standing_penalty) or return $e->die_event;
 
-    my $ctx_org =
-        (defined $ptype->org_depth) ?
-        $U->org_unit_ancestor_at_depth($penalty->org_unit, $ptype->org_depth) :
-        $penalty->org_unit;
+    my $ctx_org = $penalty->org_unit; # csp org_depth is now considered in the UI for the org drop-down menu
+
+    if (($msg->{title} || $msg->{message}) && ($msg->{title} ne '' || $msg->{message} ne '')) {
+        my $aum = Fieldmapper::actor::usr_message->new;
+
+        $aum->create_date('now');
+        $aum->sending_lib($e->requestor->ws_ou);
+        $aum->title($msg->{title});
+        $aum->usr($penalty->usr);
+        $aum->message($msg->{message});
+        $aum->pub($msg->{pub});
+
+        $aum = $e->create_actor_usr_message($aum)
+            or return $e->die_event;
+
+        $penalty->usr_message($aum->id);
+    }
 
     $penalty->org_unit($ctx_org);
     $penalty->staff($e->requestor->id);
@@ -3118,6 +3153,44 @@ sub apply_penalty {
 
     $e->commit;
     return $penalty->id;
+}
+
+__PACKAGE__->register_method(
+    method   => "modify_penalty",
+    api_name => "open-ils.actor.user.penalty.modify"
+);
+
+sub modify_penalty {
+    my($self, $conn, $auth, $penalty, $usr_msg) = @_;
+
+    my $e = new_editor(authtoken=>$auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    my $user = $e->retrieve_actor_user($penalty->usr) or return $e->die_event;
+    return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
+
+    $usr_msg->editor($e->requestor->id);
+    $usr_msg->edit_date('now');
+
+    if ($usr_msg->isnew) {
+        $usr_msg = $e->create_actor_usr_message($usr_msg)
+            or return $e->die_event;
+        $penalty->usr_message($usr_msg->id);
+    } else {
+        $usr_msg = $e->update_actor_usr_message($usr_msg)
+            or return $e->die_event;
+    }
+
+    if ($penalty->isnew) {
+        $penalty = $e->create_actor_user_standing_penalty($penalty)
+            or return $e->die_event;
+    } else {
+        $penalty = $e->update_actor_user_standing_penalty($penalty)
+            or return $e->die_event;
+    }
+
+    $e->commit;
+    return 1;
 }
 
 __PACKAGE__->register_method(
@@ -3147,14 +3220,39 @@ sub update_penalty_note {
     my $e = new_editor(authtoken=>$auth, xact => 1);
     return $e->die_event unless $e->checkauth;
     for my $penalty_id (@$penalty_ids) {
-        my $penalty = $e->search_actor_user_standing_penalty( { id => $penalty_id } )->[0];
+        my $penalty = $e->search_actor_user_standing_penalty([
+            { id => $penalty_id },
+            {   flesh => 1,
+                flesh_fields => {aum => ['usr_message']}
+            }
+        ])->[0];
         if (! $penalty ) { return $e->die_event; }
         my $user = $e->retrieve_actor_user($penalty->usr) or return $e->die_event;
         return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
 
-        $penalty->note( $note ); $penalty->ischanged( 1 );
+        my $aum = $penalty->usr_message();
+        if (!$aum) {
+            $aum = Fieldmapper::actor::usr_message->new;
 
-        $e->update_actor_user_standing_penalty($penalty) or return $e->die_event;
+            $aum->create_date('now');
+            $aum->sending_lib($e->requestor->ws_ou);
+            $aum->title('');
+            $aum->usr($penalty->usr);
+            $aum->message($note);
+            $aum->pub(0);
+            $aum->isnew(1);
+
+            $aum = $e->create_actor_usr_message($aum)
+                or return $e->die_event;
+
+            $penalty->usr_message($aum->id);
+            $penalty->ischanged(1);
+            $e->update_actor_user_standing_penalty($penalty) or return $e->die_event;
+        } else {
+            $aum = $e->retrieve_actor_usr_message($aum) or return $e->die_event;
+            $aum->message($note); $aum->ischanged(1);
+            $e->update_actor_usr_message($aum) or return $e->die_event;
+        }
     }
     $e->commit;
     return 1;
@@ -3224,6 +3322,12 @@ sub new_flesh_user {
         $fetch_penalties = 1;
     }
 
+    my $fetch_notes = 0;
+    if(grep {$_ eq 'notes'} @$fields) {
+        $fields = [grep {$_ ne 'notes'} @$fields];
+        $fetch_notes = 1;
+    }
+
     my $fetch_usr_act = 0;
     if(grep {$_ eq 'usr_activity'} @$fields) {
         $fields = [grep {$_ ne 'usr_activity'} @$fields];
@@ -3272,8 +3376,23 @@ sub new_flesh_user {
                     org_unit => $U->get_org_full_path($e->requestor->ws_ou)
                 },
                 {   flesh => 1,
-                    flesh_fields => {ausp => ['standing_penalty']}
+                    flesh_fields => {ausp => ['standing_penalty','usr_message']}
                 }
+            ])
+        );
+    }
+
+    if($fetch_notes) {
+        # grab undeleted notes (now actor.usr_message_penalty) that have not hit their stop_date
+        $user->notes(
+            $e->search_actor_usr_message_penalty([
+                {   usr => $id,
+                    deleted => 'f',
+                    '-or' => [
+                        {stop_date => undef},
+                        {stop_date => {'>' => 'now'}}
+                    ],
+                }, {}
             ])
         );
     }

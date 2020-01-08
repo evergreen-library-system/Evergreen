@@ -704,25 +704,6 @@ within the "form" by name for validation.
   </div>
 </div>
 
-<!-- ALERT_MESSAGE -->
-
-<div class="row reg-field-row" ng-show="show_field('au.alert_message')">
-  [% draw_field_label('au', 'alert_message') %]
-  <div class="col-md-3 reg-field-input">
-    <textarea 
-      class="form-control" 
-      aria-labelledby="{{idl_fields.au.alert_message.name}}"
-      ng-model="patron.alert_message"
-      ng-pattern="field_pattern('au', 'alert_message')"
-      ng-change="field_modified()"
-      ng-blur="handle_field_changed(patron, 'alert_message')">
-    </textarea>
-  </div>
-  <div class="col-md-6 patron-reg-example">
-    [% draw_example_text('au', 'alert_message') %]
-  </div>
-</div>
-
 <div ng-if="!offline">
 
 <div class="alert alert-success row" role="alert">

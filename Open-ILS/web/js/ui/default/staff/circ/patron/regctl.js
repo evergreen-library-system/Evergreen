@@ -402,8 +402,6 @@ angular.module('egCoreMod')
             'ui.patron.edit.au.claims_returned_count.suggest',
             'ui.patron.edit.au.claims_never_checked_out_count.show',
             'ui.patron.edit.au.claims_never_checked_out_count.suggest',
-            'ui.patron.edit.au.alert_message.show',
-            'ui.patron.edit.au.alert_message.suggest',
             'ui.patron.edit.aua.post_code.regex',
             'ui.patron.edit.aua.post_code.example',
             'ui.patron.edit.aua.county.require',

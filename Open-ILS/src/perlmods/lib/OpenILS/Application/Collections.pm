@@ -487,8 +487,8 @@ sub put_into_collections {
     $pen->usr($user_id);
     $pen->standing_penalty(30); # PATRON_IN_COLLECTIONS
     $pen->staff($e->requestor->id);
-    $pen->note($fee_note) if $fee_note;
-    $U->simplereq('open-ils.actor', 'open-ils.actor.user.penalty.apply', $auth, $pen);
+    my $msg = { 'pub' => 0, 'title' => 'PATRON_IN_COLLECTIONS', 'message' => $fee_note };
+    $U->simplereq('open-ils.actor', 'open-ils.actor.user.penalty.apply', $auth, $pen, $msg);
 
     return OpenILS::Event->new('SUCCESS');
 }

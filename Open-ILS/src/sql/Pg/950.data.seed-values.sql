@@ -1656,8 +1656,6 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'VIEW_MERGE_PROFILE', 'ppl', 'description' )),
  ( 479, 'VIEW_SERIAL_SUBSCRIPTION', oils_i18n_gettext( 479, 
     'VIEW_SERIAL_SUBSCRIPTION', 'ppl', 'description' )),
- ( 480, 'VIEW_STANDING_PENALTY', oils_i18n_gettext( 480, 
-    'VIEW_STANDING_PENALTY', 'ppl', 'description' )),
  ( 481, 'ADMIN_SERIAL_CAPTION_PATTERN', oils_i18n_gettext( 481, 
     'ADMIN_SERIAL_CAPTION_PATTERN', 'ppl', 'description' )),
  ( 482, 'ADMIN_SERIAL_DISTRIBUTION', oils_i18n_gettext( 482, 
@@ -2399,7 +2397,6 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_BOOKING_RESERVATION',
 			'VIEW_BOOKING_RESERVATION_ATTR_MAP',
 			'VIEW_GROUP_PENALTY_THRESHOLD',
-			'VIEW_STANDING_PENALTY',
 			'VOID_BILLING',
 			'VOLUME_HOLDS');
 
@@ -2565,7 +2562,6 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_BOOKING_RESERVATION',
 			'VIEW_BOOKING_RESERVATION_ATTR_MAP',
 			'VIEW_REPORT_OUTPUT',
-			'VIEW_STANDING_PENALTY',
 			'VOID_BILLING',
             'TRANSIT_CHECKIN_INTERVAL_BLOCK.override',
 			'VOLUME_HOLDS',
@@ -4848,24 +4844,6 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
-,( 'ui.patron.edit.au.alert_message.show', 'gui',
-    oils_i18n_gettext('ui.patron.edit.au.alert_message.show',
-        'Show alert_message field on patron registration',
-        'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.alert_message.show',
-        'The alert_message field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
-        'coust', 'description'),
-    'bool', null)
-
-,( 'ui.patron.edit.au.alert_message.suggest', 'gui',
-    oils_i18n_gettext('ui.patron.edit.au.alert_message.suggest',
-        'Suggest alert_message field on patron registration',
-        'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.alert_message.suggest',
-        'The alert_message field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
-        'coust', 'description'),
-    'bool', null)
-
 ,( 'ui.patron.edit.au.alias.show', 'gui',
     oils_i18n_gettext('ui.patron.edit.au.alias.show',
         'Show alias field on patron registration',
@@ -5417,22 +5395,12 @@ INSERT into config.org_unit_setting_type
 
 ,( 'ui.staff.require_initials.patron_standing_penalty', 'gui',
     oils_i18n_gettext('ui.staff.require_initials.patron_standing_penalty',
-        'Require staff initials for entry/edit of patron standing penalties and messages.',
+        'Require staff initials for entry/edit of patron standing penalties and notes.',
         'coust', 'label'),
     oils_i18n_gettext('ui.staff.require_initials.patron_standing_penalty',
-        'Appends staff initials and edit date into patron standing penalties and messages.',
+        'Require staff initials for entry/edit of patron standing penalties and notes.',
         'coust', 'description'),
     'bool', null)
-
-,( 'ui.staff.require_initials.patron_info_notes', 'gui',
-    oils_i18n_gettext('ui.staff.require_initials.patron_info_notes',
-        'Require staff initials for entry/edit of patron notes.',
-        'coust', 'label'),
-    oils_i18n_gettext('ui.staff.require_initials.patron_info_notes',
-        'Appends staff initials and edit date into patron note content.',
-        'coust', 'description'),
-    'bool', null)
-
 ,( 'ui.staff.require_initials.copy_notes', 'gui',
     oils_i18n_gettext('ui.staff.require_initials.copy_notes',
         'Require staff initials for entry/edit of copy notes.',

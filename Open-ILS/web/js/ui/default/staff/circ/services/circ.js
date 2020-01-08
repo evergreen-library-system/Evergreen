@@ -576,15 +576,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         });
     }
 
-    service.get_staff_penalty_types = function() {
+    service.get_all_penalty_types = function() {
         if (egCore.env.csp) 
             return $q.when(egCore.env.csp.list);
-        return egCore.pcrud.search(
-            // id <= 100 are reserved for system use
-            'csp', {id : {'>': 100}}, {}, {atomic : true})
-        .then(function(penalties) {
-            return egCore.env.absorbList(penalties, 'csp').list;
-        });
+        return egCore.pcrud.retrieveAll('csp', {}, {atomic : true}).then(
+            function(penalties) {
+                return egCore.env.absorbList(penalties, 'csp').list;
+            }
+        );
     }
 
     // ideally all of these data should be returned with the response,
@@ -2106,34 +2105,96 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         });
     }
 
+    function generate_penalty_dialog_watch_callback($scope,egCore,allPenalties) {
+        return function(newval) {
+            if (newval) {
+                var selected_penalty = allPenalties.filter(function(p) {
+                        return p.id() == newval; })[0];
+                var penalty_id = selected_penalty.id();
+                if (penalty_id == 20 || penalty_id == 21 || penalty_id == 25) {
+                    $scope.args.custom_penalty = penalty_id;
+                    $scope.args.penalty = penalty_id;
+                }
+                if (penalty_id > 100) {
+                    $scope.args.custom_penalty = penalty_id;
+                    $scope.args.penalty = null;
+                }
+                // there's a $watch on custom_depth
+                if (selected_penalty.org_depth() || selected_penalty.org_depth() == 0) {
+                    $scope.args.custom_depth = selected_penalty.org_depth();
+                } else {
+                    $scope.args.custom_depth = $scope.args.org.ou_type().depth();
+                }
+            }
+        };
+    }
+
     service.create_penalty = function(user_id) {
         return $uibModal.open({
             templateUrl: './circ/share/t_new_message_dialog',
             backdrop: 'static',
             controller: 
-                   ['$scope','$uibModalInstance','staffPenalties',
-            function($scope , $uibModalInstance , staffPenalties) {
+                   ['$scope','$uibModalInstance','allPenalties','goodOrgs',
+            function($scope , $uibModalInstance , allPenalties , goodOrgs) {
                 $scope.focusNote = true;
-                $scope.penalties = staffPenalties;
-                $scope.require_initials = service.require_initials;
-                $scope.args = {penalty : 21}; // default to Note
-                $scope.setPenalty = function(id) {
-                    args.penalty = id;
+                $scope.penalties = allPenalties.filter(
+                    function(p) { return p.id() > 100 || p.id() == 20 || p.id() == 21 || p.id() == 25; });
+                $scope.set_penalty = function(id) {
+                    if (!($scope.args.pub && $scope.args.read_date) && !$scope.args.deleted) {
+                        $scope.args.penalty = id;
+                    }
                 }
+                $scope.require_initials = service.require_initials;
+                $scope.update_org = function(org) {
+                    if (!($scope.args.pub && $scope.args.read_date) && !$scope.args.deleted) {
+                        $scope.args.org = org;
+                    }
+                }
+                $scope.cant_use_org = function(org_id) {
+                    return ($scope.args.pub && $scope.args.read_date) || $scope.args.deleted || goodOrgs.indexOf(org_id) == -1;
+                }
+                $scope.args = {
+                    pub : false,
+                    penalty : 21, // default to Note
+                    org : egCore.org.get(egCore.auth.user().ws_ou())
+                };
+                $scope.args.max_depth = $scope.args.org.ou_type().depth();
                 $scope.ok = function(count) { $uibModalInstance.close($scope.args) }
                 $scope.cancel = function($event) { 
                     $uibModalInstance.dismiss();
                     $event.preventDefault();
                 }
+                $scope.$watch('args.penalty', generate_penalty_dialog_watch_callback($scope,egCore,allPenalties));
+                $scope.$watch('args.custom_penalty', generate_penalty_dialog_watch_callback($scope,egCore,allPenalties));
+                $scope.$watch('args.custom_depth', function(org_depth) {
+                    if (org_depth || org_depth == 0) {
+                        egCore.net.request(
+                            'open-ils.actor',
+                            'open-ils.actor.org_unit.ancestor_at_depth.retrieve',
+                            egCore.auth.token(), egCore.auth.user().ws_ou(), org_depth
+                        ).then(function(ctx_org) {
+                            if (ctx_org) {
+                                $scope.args.org = egCore.org.get(ctx_org);
+                            }
+                        });
+                    }
+                });
             }],
-            resolve : { staffPenalties : service.get_staff_penalty_types }
+            resolve : {
+                allPenalties : service.get_all_penalty_types,
+                goodOrgs : egCore.perm.hasPermAt('UPDATE_USER', true)
+            }
         }).result.then(
             function(args) {
                 var pen = new egCore.idl.ausp();
+                var msg = {
+                    pub : args.pub,
+                    title : args.title,
+                    message : args.note ? args.note : ''
+                };
                 pen.usr(user_id);
-                pen.org_unit(egCore.auth.user().ws_ou());
-                pen.note(args.note);
-                if (args.initials) pen.note(args.note + ' [' + args.initials + ']');
+                pen.org_unit(args.org.id());
+                if (args.initials) msg.message = (args.note ? args.note : '') + ' [' + args.initials + ']';
                 if (args.custom_penalty) {
                     pen.standing_penalty(args.custom_penalty);
                 } else {
@@ -2145,41 +2206,133 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 return egCore.net.request(
                     'open-ils.actor',
                     'open-ils.actor.user.penalty.apply',
-                    egCore.auth.token(), pen
+                    egCore.auth.token(), pen, msg
                 );
             }
         );
     }
 
     // assumes, for now anyway,  penalty type is fleshed onto usr_penalty.
-    service.edit_penalty = function(usr_penalty) {
+    service.edit_penalty = function(pen,aum) {
         return $uibModal.open({
             templateUrl: './circ/share/t_new_message_dialog',
             backdrop: 'static',
             controller: 
-                   ['$scope','$uibModalInstance','staffPenalties',
-            function($scope , $uibModalInstance , staffPenalties) {
-                $scope.focusNote = true;
-                $scope.penalties = staffPenalties;
-                $scope.require_initials = service.require_initials;
-                $scope.args = {
-                    penalty : usr_penalty.standing_penalty().id(),
-                    note : usr_penalty.note()
+                   ['$scope','$uibModalInstance','allPenalties','goodOrgs',
+            function($scope , $uibModalInstance , allPenalties , goodOrgs) {
+                // We may need to vivicate usr_penalty (pen) or usr_message (aum)
+                if (!pen) {
+                    pen = new egCore.idl.ausp();
+                    pen.usr(aum.usr());
+                    pen.org_unit(aum.sending_lib()); // FIXME: preserve sending_lib or use ws_ou?
+                    pen.staff(egCore.auth.user().id());
+                    pen.set_date('now');
+                    pen.usr_message(aum.id());
+                    pen.isnew(true);
+                    aum.ischanged(true);
                 }
-                $scope.setPenalty = function(id) { args.penalty = id; }
+                if (!aum) {
+                    aum = new egCore.idl.aum();
+                    aum.create_date('now');
+                    aum.sending_lib(pen.org_unit());
+                    aum.pub(false);
+                    aum.usr(pen.usr());
+                    aum.isnew(true);
+                    pen.ischanged(true);
+                }
+
+                $scope.focusNote = true;
+                $scope.penalties = allPenalties.filter(
+                    function(p) { return p.id() > 100 || p.id() == 20 || p.id() == 21 || p.id() == 25; });
+                $scope.set_penalty = function(id) {
+                    if (!($scope.args.pub && $scope.args.read_date) && !$scope.args.deleted) {
+                        $scope.args.penalty = id;
+                    }
+                }
+                $scope.require_initials = service.require_initials;
+                $scope.update_org = function(org) {
+                    if (!($scope.args.pub && $scope.args.read_date) && !$scope.args.deleted) {
+                        $scope.args.org = org;
+                    }
+                }
+                $scope.cant_use_org = function(org_id) {
+                    return ($scope.args.pub && $scope.args.read_date) || $scope.args.deleted || goodOrgs.indexOf(org_id) == -1;
+                }
+                var penalty_id = pen.standing_penalty();
+                $scope.args = {
+                    penalty : pen.isnew()
+                        ? 21 // default to Note
+                        : penalty_id,
+                    pub : typeof aum.pub() == 'boolean'
+                        ? aum.pub()
+                        : aum.pub() == 't',
+                    title : aum.title(),
+                    note : aum.message() ? aum.message() : '',
+                    org : egCore.org.get(pen.org_unit()),
+                    deleted : typeof aum.deleted() == 'boolean'
+                        ? aum.deleted()
+                        : aum.deleted() == 't',
+                    read_date : aum.read_date(),
+                    edit_date : aum.edit_date(),
+                    editor : aum.editor()
+                }
+                $scope.args.max_depth = $scope.args.org.ou_type().depth();
+                $scope.original_org = $scope.args.org;
+                $scope.workstation_depth = egCore.org.get(egCore.auth.user().ws_ou()).ou_type().depth();
+                if (penalty_id == 20 || penalty_id == 21 || penalty_id == 25) {
+                    $scope.args.custom_penalty = penalty_id;
+                }
+                if (penalty_id > 100) {
+                    $scope.args.custom_penalty = penalty_id;
+                    $scope.args.penalty = null;
+                }
                 $scope.ok = function(count) { $uibModalInstance.close($scope.args) }
                 $scope.cancel = function($event) { 
                     $uibModalInstance.dismiss();
                     $event.preventDefault();
                 }
+                $scope.$watch('args.penalty', generate_penalty_dialog_watch_callback($scope,egCore,allPenalties));
+                $scope.$watch('args.custom_penalty', generate_penalty_dialog_watch_callback($scope,egCore,allPenalties));
+                $scope.$watch('args.custom_depth', function(org_depth) {
+                    if (org_depth || org_depth == 0) {
+                        if (org_depth > $scope.workstation_depth) {
+                            $scope.args.org = $scope.original_org;
+                        } else {
+                            egCore.net.request(
+                                'open-ils.actor',
+                                'open-ils.actor.org_unit.ancestor_at_depth.retrieve',
+                                egCore.auth.token(), egCore.auth.user().ws_ou(), org_depth
+                            ).then(function(ctx_org) {
+                                if (ctx_org) {
+                                    $scope.args.org = egCore.org.get(ctx_org);
+                                }
+                            });
+                        }
+                    }
+                });
             }],
-            resolve : { staffPenalties : service.get_staff_penalty_types }
+            resolve : {
+                allPenalties : service.get_all_penalty_types,
+                goodOrgs : egCore.perm.hasPermAt('UPDATE_USER', true)
+            }
         }).result.then(
             function(args) {
-                usr_penalty.note(args.note);
-                if (args.initials) usr_penalty.note(args.note + ' [' + args.initials + ']');
-                usr_penalty.standing_penalty(args.penalty);
-                return egCore.pcrud.update(usr_penalty);
+                aum.pub(args.pub);
+                aum.title(args.title);
+                aum.message(args.note);
+                aum.sending_lib(egCore.org.get(egCore.auth.user().ws_ou()).id());
+                pen.org_unit(egCore.org.get(args.org).id());
+                if (args.initials) aum.message((args.note ? args.note : '') + ' [' + args.initials + ']');
+                if (args.custom_penalty) {
+                    pen.standing_penalty(args.custom_penalty);
+                } else {
+                    pen.standing_penalty(args.penalty);
+                }
+                return egCore.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.user.penalty.modify',
+                    egCore.auth.token(), pen, aum
+                );
             }
         );
     }

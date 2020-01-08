@@ -1,37 +1,46 @@
-
-<div class="strong-text-2">[% l('Penalties and Messages') %]</div>
+<div class="strong-text-2">[% l('Notes') %]</div>
 <div class="pad-vert"></div>
 <eg-grid
-  idl-class="ausp"
+  idl-class="aump"
   grid-controls="activeGridControls"
   dateformat="{{$root.egDateAndTimeFormat}}"
   persist-key="circ.patron.staff_messages">
 
   <eg-grid-menu-item handler="createPenalty"
-    label="[% l('Apply Penalty / Message') %]"></eg-grid-menu-item>
+    label="[% l('Create Note') %]"></eg-grid-menu-item>
 
-  <eg-grid-action label="[% l('Remove Penalty / Message') %]" 
-    handler="removePenalty"></eg-grid-action>
-  <eg-grid-action label="[% l('Modify Penalty / Message') %]" 
+  <eg-grid-action label="[% l('Remove Note') %]" 
+    disabled="test_for_disable_remove_penalty" handler="removePenalty"></eg-grid-action>
+  <eg-grid-action label="[% l('Edit Note') %]" 
     handler="editPenalty"></eg-grid-action>
-  <eg-grid-action label="[% l('Archive Penalty / Message') %]" 
+  <eg-grid-action label="[% l('Archive Note') %]" 
     handler="archivePenalty"></eg-grid-action>
 
-  <eg-grid-field path="set_date" label="[% l('Applied On') %]" datatype="timestamp"></eg-grid-field>
-  <eg-grid-field path="standing_penalty.label"></eg-grid-field>
-  <eg-grid-field path="org_unit.shortname" label="[% l('Library') %]"></eg-grid-field>
-  <eg-grid-field path="note"></eg-grid-field>
-  <eg-grid-field path="id" required hidden></eg-grid-field>
+  <eg-grid-field path="read_date"></eg-grid-field>
+  <eg-grid-field path="deleted" required hidden></eg-grid-field>
+  <eg-grid-field path="usr.usrname" label="[% l('User') %]" required hidden></eg-grid-field>
+  <eg-grid-field path="message" label="[% l('Note Text') %]"></eg-grid-field>
+  <eg-grid-field path="title"></eg-grid-field>
+  <eg-grid-field path="pub"></eg-grid-field>
+  <eg-grid-field path="stop_date" hidden></eg-grid-field>
+  <eg-grid-field path="editor.usrname" label="[% l('Editor') %]" required hidden></eg-grid-field>
+  <eg-grid-field path="edit_date" hidden></eg-grid-field>
+  <eg-grid-field path="staff.usrname" label="[% l('Staff') %]" required></eg-grid-field>
+  <eg-grid-field path="standing_penalty.name" required label="[% l('Penalty Name') %]"></eg-grid-field>
   <eg-grid-field path="standing_penalty.block_list" required hidden></eg-grid-field>
   <eg-grid-field path="standing_penalty.*" hidden></eg-grid-field>
-
+  <eg-grid-field path="org_unit.shortname" label="[% l('Location') %]" required></eg-grid-field>
+  <eg-grid-field path="create_date"></eg-grid-field>
+  <eg-grid-field path="ausp_id" required hidden></eg-grid-field>
+  <eg-grid-field path="aum_id" required hidden></eg-grid-field>
+  <eg-grid-field path="id" required hidden></eg-grid-field>
 </eg-grid>
 
 <div class="pad-vert"><hr/></div>
 
 <div class="pad-vert row padded">
   <div class="col-md-4">
-    <div class="strong-text-2">[% l('Archived Penalties / Messages') %]</div>
+    <div class="strong-text-2">[% l('Archived Notes') %]</div>
   </div>
   <div class="col-md-4">
     <label>[% l('Set Date Start:') %]</label>
@@ -43,19 +52,30 @@
   </div>
 </div>
 <eg-grid
-  idl-class="ausp"
+  idl-class="aump"
   grid-controls="archiveGridControls"
   dateformat="{{$root.egDateAndTimeFormat}}"
+  features="-multiselect"
   persist-key="circ.patron.archived_messages">
 
-  <eg-grid-field path="set_date" label="[% l('Applied On') %]" datatype="timestamp"></eg-grid-field>
-  <eg-grid-field path="standing_penalty.label"></eg-grid-field>
-  <eg-grid-field path="org_unit.shortname" label="[% l('Library') %]"></eg-grid-field>
-  <eg-grid-field path="note"></eg-grid-field>
-  <eg-grid-field path="id" required hidden></eg-grid-field>
+  <eg-grid-field path="read_date"></eg-grid-field>
+  <eg-grid-field path="deleted" required hidden></eg-grid-field>
+  <eg-grid-field path="usr.usrname" label="[% l('User') %]" required hidden></eg-grid-field>
+  <eg-grid-field path="message" label="[% l('Note Text') %]"></eg-grid-field>
+  <eg-grid-field path="title"></eg-grid-field>
+  <eg-grid-field path="pub"></eg-grid-field>
+  <eg-grid-field path="stop_date" hidden></eg-grid-field>
+  <eg-grid-field path="editor.usrname" label="[% l('Editor') %]" required hidden></eg-grid-field>
+  <eg-grid-field path="edit_date" hidden></eg-grid-field>
+  <eg-grid-field path="staff.usrname" label="[% l('Staff') %]" required></eg-grid-field>
+  <eg-grid-field path="standing_penalty.name" required label="[% l('Penalty Name') %]"></eg-grid-field>
   <eg-grid-field path="standing_penalty.block_list" required hidden></eg-grid-field>
   <eg-grid-field path="standing_penalty.*" hidden></eg-grid-field>
-
+  <eg-grid-field path="org_unit.shortname" label="[% l('Location') %]" required></eg-grid-field>
+  <eg-grid-field path="create_date"></eg-grid-field>
+  <eg-grid-field path="ausp_id" required hidden></eg-grid-field>
+  <eg-grid-field path="aum_id" required hidden></eg-grid-field>
+  <eg-grid-field path="id" required hidden></eg-grid-field>
 </eg-grid>
 
 

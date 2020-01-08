@@ -6,19 +6,11 @@
       ng-repeat="penalty in alert_penalties()">
       <div 
         class="col-md-9 patron-summary-alert"
-        title="{{penalty.standing_penalty().name()}}">
-        {{penalty.note() || penalty.standing_penalty().label()}}
+        title="{{penalty.standing_penalty().name()}} (id {{penalty.id()}}): {{penalty.usr_message().message()}}">
+        {{penalty.usr_message().title() || penalty.standing_penalty().label() | limitTo: 40}}
       </div>
       <div class="col-md-3">
         {{penalty.set_date() | date:$root.egDateFormat}}
-      </div>
-    </div>
-    <div class="row patron-summary-divider">
-      <div
-        class="col-md-9 patron-summary-alert"
-        title="[% l('Patron Alert Message') %]"
-        ng-if="patron().alert_message()">
-        {{patron().alert_message()}}
       </div>
     </div>
     <div class="row" ng-class="{'patron-summary-alert' : doesPatronExpireSoon()}">
@@ -28,7 +20,7 @@
          <div class="col-md-8 patron_photo_wrap"><img class="img-responsive img-rounded" src="{{patron().photo_url()}}" alt=""></div>
     </div>
     <div class="row" 
-      ng-class="{'patron-summary-divider' : alert_penalties().length || patron().alert_message()}">
+      ng-class="{'patron-summary-divider' : alert_penalties().length}">
       <div class="col-md-5">[% l('Profile') %]</div>
       <div class="col-md-7">{{patron().profile().name()}}</div>
     </div>

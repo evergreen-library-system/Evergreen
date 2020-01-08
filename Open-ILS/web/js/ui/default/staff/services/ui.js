@@ -1484,6 +1484,8 @@ https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-inpu
         transclude : true,
         scope : {
             ngModel : '=',
+            useOpacLabel : '@',
+            maxDepth : '@',
         },
         require: 'ngModel',
         templateUrl : './share/t_share_depth_selector',
@@ -1497,17 +1499,26 @@ https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-inpu
                 var scratch = [];
                 angular.forEach(list, function(aout) {
                     var depth = parseInt(aout.depth());
-                    if (depth in scratch) {
-                        scratch[depth].push(aout.name());
-                    } else {
-                        scratch[depth] = [ aout.name() ]
+                    if (typeof $scope.maxDepth == 'undefined' || depth <= $scope.maxDepth) {
+                        var text = $scope.useOpacLabel ? aout.opac_label() : aout.name();
+                        if (depth in scratch) {
+                            scratch[depth].push(text);
+                        } else {
+                            scratch[depth] = [ text ]
+                        }
                     }
                 });
                 scratch.forEach(function(val, idx) {
                     $scope.values.push({ id : idx,  name : scratch[idx].join(' / ') });
                 });
             });
-        }]
+        }],
+        link : function(scope, elm, attrs) {
+            if ('useOpacLabel' in attrs)
+                scope.useOpacLabel = true;
+            if ('maxDepth' in attrs) // I feel like I'm doing this wrong :)
+                scope.maxDepth = parseInt(attrs.maxdepth);
+        }
     }
 })
 

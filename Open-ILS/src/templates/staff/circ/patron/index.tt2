@@ -76,7 +76,7 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.PAGE_TITLE_PATRON_SEARCH = "[% l('Patron Search') %]";
   s.PAGE_TITLE_PATRON_NAME = "[% l('[_1], [_2] [_3]', '{{lname}}','{{fname}}','{{mname}}') %]";
   s.PAGE_TITLE_PATRON_CHECKOUT = "[% l('Checkout') %]";
-  s.PAGE_TITLE_PATRON_MESSAGES = "[% l('Messages') %]";
+  s.PAGE_TITLE_PATRON_MESSAGES = "[% l('Notes') %]";
   /* TODO: The "Other" page title could be smarter.. */
   s.PAGE_TITLE_PATRON_OTHER = "[% l('Other') %]";
   s.PAGE_TITLE_PATRON_BILLS = "[% l('Bills') %]";
@@ -116,7 +116,6 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
                <span ng-if="patron().name_keywords()"> <a title="[% l('Name keywords: ') %]{{patron().name_keywords()}}" class="glyphicon glyphicon-tags"></a>
           </div>
 
-          <p ng-show="patron().notes().length > 0"><a class='patron-summary-has-notes' href="./circ/patron/{{patron().id()}}/notes"><span class="label label-warning">Notes &nbsp;{{patron().notes().length}}</span></a></p>
           <div ng-show="tab != 'search'">
             <a href ng-click="toggle_expand_summary()"
               title="[% l('Collapse Patron Summary Display') %]"
@@ -164,7 +163,11 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
         </a>
       </li>
       <li ng-class="{active : tab == 'messages', disabled : !patron()}">
-        <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/messages">[% l('Messages') %]</a>
+        <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/messages">[% l('Notes') %]
+            <span ng-if="visible_notes().length > 0">
+                ({{visible_notes().length}})
+            </span>
+        </a>
       </li>
       <li ng-class="{active : tab == 'edit', disabled : !patron()}">
         <a href="./circ/patron/{{patron().id()}}/edit">[% l('Edit') %]</a>
@@ -177,12 +180,7 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
         <ul uib-dropdown-menu>
           <li>
             <a href="./circ/patron/{{patron().id()}}/alerts">
-              [% l('Display Alert and Messages') %]
-            </a>
-          </li>
-          <li>
-            <a href="./circ/patron/{{patron().id()}}/notes">
-              [% l('Notes') %]
+              [% l('Display Alerts') %]
             </a>
           </li>
           <li>
