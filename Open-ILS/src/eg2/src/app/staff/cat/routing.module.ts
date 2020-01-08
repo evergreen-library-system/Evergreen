@@ -4,6 +4,9 @@ import {RouterModule, Routes} from '@angular/router';
 const routes: Routes = [
   { path: 'vandelay',
     loadChildren: '@eg/staff/cat/vandelay/vandelay.module#VandelayModule'
+  }, {
+    path: 'authority',
+    loadChildren: '@eg/staff/cat/authority/authority.module#AuthorityModule'
   }
 ];
 

@@ -19,13 +19,15 @@
 
 <div class="row d-flex p-2 m-2">
 
-  <div class="form-check">
-    <input class="form-check-input" type="checkbox"
-      [(ngModel)]="showFastAdd" id="fast-add-item"/>
-    <label class="form-check-label" for="fast-add-item">
-      Add Item
-    </label>
-  </div>
+  <ng-container *ngIf="recordType === 'biblio'">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox"
+        [(ngModel)]="showFastAdd" id="fast-add-item"/>
+      <label class="form-check-label" for="fast-add-item">
+        Add Item
+      </label>
+    </div>
+  </ng-container>
 
   <ng-container *ngIf="showFastAdd">
     <div class="form-inline">
@@ -64,7 +66,6 @@
   <button class="btn btn-success ml-2" (click)="saveRecord()" 
     [disabled]="record && record.deleted" i18n>Save Changes</button>
 </div>
-
 
 <ng-container *ngIf="dataSaving">
   <div class="row mt-5">

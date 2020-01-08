@@ -16,7 +16,7 @@ import {MarcEditContext} from './editor-context';
 import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 
-interface MarcSavedEvent {
+export interface MarcSavedEvent {
     marcXml: string;
     bibSource?: number;
     recordId?: number;
@@ -42,14 +42,24 @@ export class MarcEditorComponent implements OnInit {
 
     @Input() recordType: 'biblio' | 'authority' = 'biblio';
 
+    _pendingRecordId: number;
     @Input() set recordId(id: number) {
-        if (!id) { return; }
         if (this.record && this.record.id === id) { return; }
-        this.fromId(id);
+
+        // Avoid fetching the record by ID before OnInit since we may
+        // not yet know our recordType.
+        if (this.initCalled) {
+            this._pendingRecordId = null;
+            this.fromId(id);
+
+         } else {
+            // fetch later in OnInit
+            this._pendingRecordId = id;
+         }
     }
 
     get recordId(): number {
-        return this.record ? this.record.id : null;
+        return this.record ? this.record.id : this._pendingRecordId;
     }
 
     @Input() set recordXml(xml: string) {
@@ -86,6 +96,7 @@ export class MarcEditorComponent implements OnInit {
     fastItemLabel: string;
     fastItemBarcode: string;
     showFastAdd: boolean;
+    initCalled = false;
 
     constructor(
         private evt: EventService,
@@ -107,10 +118,16 @@ export class MarcEditorComponent implements OnInit {
 
     ngOnInit() {
 
+        this.initCalled = true;
+
         this.context.recordType = this.recordType;
 
         this.store.getItem('cat.marcedit.flateditor').then(
             useFlat => this.editorTab = useFlat ? 'flat' : 'rich');
+
+        if (!this.record && this.recordId) {
+            this.fromId(this.recordId);
+        }
 
         if (this.recordType !== 'biblio') { return; }
 
@@ -247,13 +264,15 @@ export class MarcEditorComponent implements OnInit {
     }
 
     fromId(id: number): Promise<any> {
-        return this.pcrud.retrieve('bre', id)
-        .toPromise().then(bib => {
-            this.context.record = new MarcRecord(bib.marc());
+        const idlClass = this.recordType === 'authority' ? 'are' : 'bre';
+
+        return this.pcrud.retrieve(idlClass, id)
+        .toPromise().then(rec => {
+            this.context.record = new MarcRecord(rec.marc());
             this.record.id = id;
-            this.record.deleted = bib.deleted() === 't';
-            if (bib.source()) {
-                this.sourceSelector.applyEntryId(+bib.source());
+            this.record.deleted = rec.deleted() === 't';
+            if (idlClass === 'bre' && rec.source()) {
+                this.sourceSelector.applyEntryId(+rec.source());
             }
         });
     }

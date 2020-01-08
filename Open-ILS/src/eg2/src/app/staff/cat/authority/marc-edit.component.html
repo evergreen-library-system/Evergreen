@@ -1,0 +1,32 @@
+
+<ng-container *ngIf="!authorityId">
+  <!-- If we don't have an authority ID, prompt the user to enter one -->
+  <eg-staff-banner bannerText="Find Authority Record By ID" i18n-bannerText>
+  </eg-staff-banner>
+
+  <div class="row">
+    <div class="col-lg-6 form-inline">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" i18n>Authorty Record Id</span>
+        </div>
+        <input type="text" class="form-control" 
+          id='auth-id-input'
+          i18n-placeholder placeholder="Authorty Record Id" 
+          i18n-aria-label aria-label="Authorty Record Id"
+          (keyup.enter)="goToAuthority()" [(ngModel)]="loadId"/>
+        <button class="btn btn-success" (click)="goToAuthority()" i18n>Submit</button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="authorityId">
+  <eg-staff-banner bannerText="Edit Authority Record #{{authorityId}}" i18n-bannerText>
+  </eg-staff-banner>
+
+  <eg-marc-editor #marcEditor recordType="authority" [recordId]="authorityId">
+  </eg-marc-editor>
+</ng-container>
+
+

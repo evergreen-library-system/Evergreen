@@ -90,26 +90,29 @@
       </div>
     </div>
     <ul *ngFor="let entry of browseData">
-      <li class="d-flex">
+      <li class="d-flex mt-1">
         <div class="flex-1">
           <ng-container
             *ngTemplateOutlet="headingField;context:{field:entry.main_heading, authId: entry.authority_id}">
           </ng-container>
         </div>
-        <div class="font-italic" i18n-title i18n
-          title="Authority Record ID {{entry.authority_id}}">
-          #{{entry.authority_id}}
+        <div class="font-italic">
+          <a target="_blank" 
+            i18n-title title="Authority Record ID {{entry.authority_id}}"
+            routerLink="/staff/cat/authority/edit/{{entry.authority_id}}">
+            #{{entry.authority_id}}
+          </a>
         </div>
       </li>
       <ul *ngFor="let from of entry.see_froms">
-        <li i18n>
+        <li class="mt-1">
          <ng-container
           *ngTemplateOutlet="headingField;context:{field:from, from:true}">
          </ng-container>
         </li>
       </ul>
       <ul *ngFor="let also of entry.see_alsos">
-        <li i18n>
+        <li class="mt-1">
          <ng-container
           *ngTemplateOutlet="headingField;context:{field:also, also:true}">
          </ng-container>
