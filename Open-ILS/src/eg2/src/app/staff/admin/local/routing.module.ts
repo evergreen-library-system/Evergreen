@@ -90,13 +90,18 @@ const routes: Routes = [{
     loadChildren: () => import('./field-documentation/field-documentation.module')
       .then(m => m.FieldDocumentationModule)
 }, {
+    path: 'money/cash_reports',
+    loadChildren: '@eg/staff/admin/local/cash-reports/cash-reports.module#CashReportsModule'
+}, {
     path: 'negative-balances',
     loadChildren: () =>
       import('./negative-balances/negative-balances.module').then(m => m.NegativeBalancesModule)
 }, {
     path: ':schema/:table',
     component: BasicAdminPageComponent
-}];
+}
+
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -1,0 +1,13 @@
+
+<ng-template #dialogContent>
+    <div class="modal-header bg-info">
+        <h4 class="modal-title" i18n>User Information</h4>
+
+    </div>
+    <div class="modal-body">
+        <ng-content></ng-content>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" (click)="closeEditor()" i18n>Close</button>
+    </div>
+</ng-template>

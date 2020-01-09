@@ -1,0 +1,81 @@
+<eg-title i18n-prefix prefix="Cash Reports"></eg-title>
+<eg-staff-banner bannerText="Cash Reports" i18n-bannerText>
+</eg-staff-banner>
+
+<div class="mb-5 text-center">
+    <div>
+        <div class="row col-lg-12 ml-auto mr-auto">
+            <div class="input-group col-lg-3 ml-auto mr-auto">
+                <div class="input-group-prepend col-lg-12">
+                    <div class="input-group-text" i18n>Start Date</div> 
+                    <eg-date-select [initialDate]="today" (onChangeAsYmd)="onStartDateChange($event)"></eg-date-select>
+                </div>
+            </div>
+            <div class="input-group col-lg-3 ml-auto mr-auto">
+                <div class="input-group-prepend col-lg-12">
+                    <div class="input-group-text" i18n>End Date</div> 
+                    <eg-date-select [initialDate]="today" (onChangeAsYmd)="onEndDateChange($event)"></eg-date-select>
+                </div>
+            </div>
+            <div class="input-group col-lg-4">
+                <div class="input-group-prepend col-lg-6 ml-auto mr-auto">
+                    <div class="input-group-text" i18n>View reports for</div>
+                    <eg-org-select [applyDefault]="true" [disableOrgs]="disabledOrgs" (onChange)="onOrgChange($event)"></eg-org-select>
+                </div>
+                <button class="btn btn-primary col-lg-2" (click)="searchForData(startDate, endDate)">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<ngb-tabset [destroyOnHide]="false" (tabChange)="eraseUserGrid()">
+    <ngb-tab title="Desk Payments">
+      <ng-template ngbTabContent>
+        <div class="mb-5">
+            <eg-grid #deskPaymentGrid
+                [disableSelect]="true"
+                [disablePaging]="true"
+                [dataSource]="deskPaymentDataSource"
+                [sortable]="false">
+                <eg-grid-column label="Workstation" name="workstation" [index]="true" i18n-label></eg-grid-column>
+                <eg-grid-column label="Cash Payment" name="cash_payment" i18n-label></eg-grid-column>
+                <eg-grid-column label="Check Payment" name="check_payment" i18n-label></eg-grid-column>
+                <eg-grid-column label="Credit Card Payment" name="credit_card_payment" i18n-label></eg-grid-column>
+            </eg-grid>
+        </div>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="User Payments">
+        <ng-template ngbTabContent>
+            <div class="mb-3">
+                <eg-grid #userPaymentGrid
+                    (onRowActivate) = "onRowActivate($event)"
+                    [disableSelect]="true"
+                    [disablePaging]="true"
+                    [dataSource]="userPaymentDataSource"
+                    [sortable]="false">
+                    <eg-grid-column label="User" name="usr" [index]="true" i18n-label></eg-grid-column>
+                    <eg-grid-column label="Credit Payment" name="credit_payment" i18n-label></eg-grid-column>
+                    <eg-grid-column label="Forgive Payment" name="forgive_payment" i18n-label></eg-grid-column>
+                    <eg-grid-column label="Work Payment" name="work_payment" i18n-label></eg-grid-column>
+                    <eg-grid-column label="Goods Payment" name="goods_payment" i18n-label></eg-grid-column>
+                </eg-grid>
+            </div>
+        </ng-template>
+      </ngb-tab>
+</ngb-tabset>
+
+<eg-user-dialog #userDialog>
+    <ng-container *ngIf="userDataSource.data && userDataSource.data.length>0">
+        <eg-grid #userGrid
+            [disableSelect]="true"
+            [disablePaging]="true"
+            [dataSource]="userDataSource"
+            [sortable]="false">
+            <eg-grid-column label="Card" name="card" [index]="true" i18n-label></eg-grid-column>
+            <eg-grid-column label="Email" name="email" i18n-label></eg-grid-column>
+            <eg-grid-column label="First Name" name="first_given_name" i18n-label></eg-grid-column>
+            <eg-grid-column label="Family Name" name="family_name" i18n-label></eg-grid-column>
+            <eg-grid-column label="Home OU" name="home_ou" i18n-label></eg-grid-column>
+        </eg-grid>
+    </ng-container>
+</eg-user-dialog>
