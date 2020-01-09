@@ -230,9 +230,11 @@ export class GridColumnSet {
             if (idlInfo) {
                 col.idlFieldDef = idlInfo.idlField;
                 col.idlClass = idlInfo.idlClass.name;
+                if (!col.datatype) {
+                    col.datatype = col.idlFieldDef.datatype;
+                }
                 if (!col.label) {
                     col.label = col.idlFieldDef.label || col.idlFieldDef.name;
-                    col.datatype = col.idlFieldDef.datatype;
                 }
             }
         }

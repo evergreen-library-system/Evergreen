@@ -4,7 +4,7 @@ import {FormGroup, FormControl, Validators} from '@angular/forms';
 import {NgbTabChangeEvent, NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, from, of, Subscription} from 'rxjs';
 import { single, switchMap, tap, debounceTime } from 'rxjs/operators';
-import {PatronService} from '@eg/staff/share/patron.service';
+import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {ReservationsGridComponent} from './reservations-grid.component';

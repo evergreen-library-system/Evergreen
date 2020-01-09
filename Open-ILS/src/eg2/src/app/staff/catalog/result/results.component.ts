@@ -71,9 +71,11 @@ export class ResultsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
-        this.searchSub.unsubscribe();
-        this.basketSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+            this.searchSub.unsubscribe();
+            this.basketSub.unsubscribe();
+        }
     }
 
     // Apply the select-all checkbox when all visible records

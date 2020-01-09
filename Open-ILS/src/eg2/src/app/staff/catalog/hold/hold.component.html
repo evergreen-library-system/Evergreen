@@ -1,3 +1,7 @@
+
+<eg-patron-search-dialog #patronSearch>
+</eg-patron-search-dialog>
+
 <div class="row">
   <div class="col-lg-4">
     <h3 i18n>Place Hold 
@@ -7,7 +11,7 @@
     </h3>
   </div>
   <div class="col-lg-2 text-right">
-    <button class="btn btn-outline-dark btn-sm" [disabled]="true">
+    <button class="btn btn-outline-dark btn-sm" (click)="searchPatrons()">
       <span class="material-icons mat-icon-in-button align-middle" 
         i18n-title title="Search for Patron">search</span>
       <span class="align-middle" i18n>Search for Patron</span>

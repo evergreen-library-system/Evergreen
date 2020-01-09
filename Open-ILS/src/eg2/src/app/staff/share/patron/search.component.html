@@ -1,0 +1,233 @@
+
+<div class="patron-search-form">
+  <div class="row mb-2">
+    <div class="col-lg-2">
+      <input class="form-control" type="text" id='focus-this-input'
+        i18n-aria-label aria-label="Last Name" (keyup.enter)="go()"
+        i18n-placeholder placeholder="Last Name"
+        [(ngModel)]="search.family_name"/>
+    </div>
+    <div class="col-lg-2">
+      <input class="form-control" type="text" (keyup.enter)="go()"
+        i18n-aria-label aria-label="First Name"
+        i18n-placeholder placeholder="First Name"
+        [(ngModel)]="search.first_given_name"/>
+    </div>
+    <div class="col-lg-2">
+      <input class="form-control" type="text" (keyup.enter)="go()"
+        i18n-aria-label aria-label="Middle Name"
+        i18n-placeholder placeholder="Middle Name"
+        [(ngModel)]="search.second_given_name"/>
+    </div>
+    <div class="col-lg-2">
+      <input class="form-control" type="text" (keyup.enter)="go()"
+        i18n-aria-label aria-label="Name Keywords"
+        i18n-placeholder placeholder="Name Keywords"
+        [(ngModel)]="search.name"/>
+    </div>
+    <div class="col-lg-2">
+      <button class="btn btn-success" (click)="go()" i18n>Search</button>
+      <button (click)="toggleExpandForm()"
+        class="btn btn-outline-dark ml-2 label-with-material-icon"
+        i18n-title title="Toggle Expanded Form Display">
+        <span *ngIf="!expandForm" class="material-icons">arrow_drop_down</span>
+        <span *ngIf="expandForm"  class="material-icons">arrow_drop_up</span>
+      </button>
+    </div>
+    <div class="col-lg-2">
+    </div>
+  </div>
+
+  <ng-container *ngIf="expandForm">
+    <div class="row mb-2">
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="Barcode"
+          i18n-placeholder placeholder="Barcode"
+          [(ngModel)]="search.barcode"/>
+      </div>
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="Alias"
+          i18n-placeholder placeholder="Alias"
+          [(ngModel)]="search.alias"/>
+      </div>
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="Username"
+          i18n-placeholder placeholder="Username"
+          [(ngModel)]="search.usrname"/>
+      </div>
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="Email"
+          i18n-placeholder placeholder="Email"
+          [(ngModel)]="search.email"/>
+      </div>
+      <div class="col-lg-2">
+        <button class="btn btn-warning" (click)="clear()" i18n>Clear Form</button>
+      </div>
+      <div class="col-lg-2">
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="Identification"
+          i18n-placeholder placeholder="Identification"
+          [(ngModel)]="search.ident"/>
+      </div>
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="Phone"
+          i18n-placeholder placeholder="Phone"
+          [(ngModel)]="search.phone"/>
+      </div>
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="Street 1"
+          i18n-placeholder placeholder="Street 1"
+          [(ngModel)]="search.street1"/>
+      </div>
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="Street 2"
+          i18n-placeholder placeholder="Street 2"
+          [(ngModel)]="search.street2"/>
+      </div>
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="City"
+          i18n-placeholder placeholder="City"
+          [(ngModel)]="search.city"/>
+      </div>
+      <div class="col-lg-2"></div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="State"
+          i18n-placeholder placeholder="State"
+          [(ngModel)]="search.state"/>
+      </div>
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="Post Code"
+          i18n-placeholder placeholder="Post Code"
+          [(ngModel)]="search.post_code"/>
+      </div>
+      <div class="col-lg-2">
+        <eg-profile-select [useDisplayEntries]="true" 
+          [(ngModel)]="search.profile">
+        </eg-profile-select>
+      </div>
+      <div class="col-lg-2">
+        <eg-org-select (onChange)="searchOrg = $event"
+          [applyOrgId]="searchOrg ? searchOrg.id() : null"
+          i18n-placeholder placeholder="Home Library">
+        </eg-org-select>
+        <!-- home org -->
+      </div>
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="Guardian"
+          i18n-placeholder placeholder="Guardian"
+          [(ngModel)]="search.guardian"/>
+      </div>
+      <div class="col-lg-2"></div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="DOB Year"
+          i18n-placeholder placeholder="DOB Year"
+          [(ngModel)]="search.dob_year"/>
+      </div>
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="DOB Month"
+          i18n-placeholder placeholder="DOB Month"
+          [(ngModel)]="search.dob_month"/>
+      </div>
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="DOB Day"
+          i18n-placeholder placeholder="DOB Day"
+          [(ngModel)]="search.dob_day"/>
+      </div>
+      <div class="col-lg-2">
+        <input class="form-control" type="text" (keyup.enter)="go()"
+          i18n-aria-label aria-label="Database ID"
+          i18n-placeholder placeholder="Database ID"
+          [(ngModel)]="search.id"/>
+      </div>
+      <div class="col-lg-2">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" 
+            (change)="toggleIncludeInactive()"
+            id="include-inactive" [(ngModel)]="search.inactive">
+          <label class="form-check-label" for="include-inactive" i18n>
+            Include Inactive
+          ?</label>
+        </div>
+      </div>
+      <div class="col-lg-2"></div>
+    </div>
+  </ng-container><!-- expand form -->
+</div>
+
+<div class="patron-search-grid">
+  <eg-grid #searchGrid idlClass="au" 
+    persistKey="circ.patron.search"
+    (onRowActivate)="rowsSelected($event)"
+    [dataSource]="dataSource" 
+    [showDeclaredFieldsOnly]="true"> 
+
+    <eg-grid-column path='id' 
+      i18n-label label="ID"></eg-grid-column>      
+    <eg-grid-column path='card.barcode' 
+      i18n-label label="Card"></eg-grid-column>
+    <eg-grid-column path='profile.name' 
+      i18n-label label="Profile"></eg-grid-column>
+    <eg-grid-column path='family_name' 
+      [sortable]="true" [multiSortable]="true"></eg-grid-column>
+    <eg-grid-column path='first_given_name' 
+      [sortable]="true" [multiSortable]="true"></eg-grid-column>
+    <eg-grid-column path='second_given_name' 
+      [sortable]="true" [multiSortable]="true"></eg-grid-column>
+    <eg-grid-column path='dob' 
+      [sortable]="true" [multiSortable]="true"></eg-grid-column>
+    <eg-grid-column path='home_ou.shortname' 
+      i18n-label label="Home Library"></eg-grid-column>
+    <eg-grid-column path='create_date' i18n-label label="Created On" 
+      [sortable]="true" [multiSortable]="true"></eg-grid-column>
+
+    <eg-grid-column i18n-label label="Mailing:Street 1"
+      path='mailing_address.street1' visible></eg-grid-column>
+    <eg-grid-column i18n-label label="Mailing:Street 2"
+      path='mailing_address.street2'></eg-grid-column>
+    <eg-grid-column i18n-label label="Mailing:City"
+      path='mailing_address.city'></eg-grid-column>
+    <eg-grid-column i18n-label label="Mailing:County"
+      path='mailing_address.county'></eg-grid-column>
+    <eg-grid-column i18n-label label="Mailing:State"
+      path='mailing_address.state'></eg-grid-column>
+    <eg-grid-column i18n-label label="Mailing:Zip"
+      path='mailing_address.post_code'></eg-grid-column>
+                                                                                 
+    <eg-grid-column i18n-label label="Billing:Street 1"
+      path='billing_address.street1'></eg-grid-column>
+    <eg-grid-column i18n-label label="Billing:Street 2"
+      path='billing_address.street2'></eg-grid-column>
+    <eg-grid-column i18n-label label="Billing:City"
+      path='billing_address.city'></eg-grid-column>
+    <eg-grid-column i18n-label label="Billing:County"
+      path='billing_address.county'></eg-grid-column>
+    <eg-grid-column i18n-label label="Billing:State"
+      path='billing_address.state'></eg-grid-column>
+    <eg-grid-column i18n-label label="Billing:Zip"
+      path='billing_address.post_code'></eg-grid-column>
+  </eg-grid>
+
+</div>
+

@@ -75,16 +75,19 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
     // Allow the selected entry ID to be passed via the template
     // This does NOT not emit onChange events.
     @Input() set selectedId(id: any) {
-        if (id) {
-            if (this.entrylist.length) {
-                this.selected = this.entrylist.filter(e => e.id === id)[0];
-            }
+        if (id === undefined) { return; }
 
-            if (!this.selected) {
-                // It's possible the selected ID lives in a set of entries
-                // that are yet to be provided.
-                this.startId = id;
-            }
+        // clear on explicit null
+        if (id === null) { this.selected = null; }
+
+        if (this.entrylist.length) {
+            this.selected = this.entrylist.filter(e => e.id === id)[0];
+        }
+
+        if (!this.selected) {
+            // It's possible the selected ID lives in a set of entries
+            // that are yet to be provided.
+            this.startId = id;
         }
     }
 

@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Subscription, of} from 'rxjs';
 import {single, filter, switchMap, debounceTime, tap} from 'rxjs/operators';
-import {PatronService} from '@eg/staff/share/patron.service';
+import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {ReservationsGridComponent} from './reservations-grid.component';

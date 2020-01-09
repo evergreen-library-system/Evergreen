@@ -11,7 +11,7 @@ import {PickupComponent} from './pickup.component';
 import {PullListComponent} from './pull-list.component';
 import {ReturnComponent} from './return.component';
 import {NoTimezoneSetComponent} from './no-timezone-set.component';
-import {PatronService} from '@eg/staff/share/patron.service';
+import {PatronModule} from '@eg/staff/share/patron/patron.module';
 import {BookingResourceBarcodeValidatorDirective} from './booking_resource_validator.directive';
 import {FmRecordEditorModule} from '@eg/share/fm-editor/fm-editor.module';
 import {OrgFamilySelectModule} from '@eg/share/org-family-select/org-family-select.module';
@@ -23,9 +23,9 @@ import {OrgFamilySelectModule} from '@eg/share/org-family-select/org-family-sele
         BookingRoutingModule,
         ReactiveFormsModule,
         FmRecordEditorModule,
-        OrgFamilySelectModule
+        OrgFamilySelectModule,
+        PatronModule
     ],
-    providers: [PatronService],
     declarations: [
         CancelReservationDialogComponent,
         CreateReservationComponent,

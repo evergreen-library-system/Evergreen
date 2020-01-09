@@ -89,6 +89,11 @@ h5 {font-size: .95rem}
     line-height: inherit;
 }
 
+.mat-icon-shrunk-in-button {
+    line-height: inherit;
+    font-size: 18px;
+}
+
 .input-group .mat-icon-in-button {
     font-size: .88rem !important; /* useful for buttons that cuddle up with inputs */
 }

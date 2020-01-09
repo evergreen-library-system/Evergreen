@@ -13,6 +13,8 @@ import {StaffCatalogService} from '../catalog.service';
 import {HoldsService, HoldRequest,
     HoldRequestTarget} from '@eg/staff/share/holds/holds.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {PatronSearchDialogComponent
+  } from '@eg/staff/share/patron/search-dialog.component';
 
 class HoldContext {
     holdMeta: HoldRequestTarget;
@@ -62,6 +64,9 @@ export class HoldComponent implements OnInit {
 
     smsEnabled: boolean;
     placeHoldsClicked: boolean;
+
+    @ViewChild('patronSearch', {static: false})
+      patronSearch: PatronSearchDialogComponent;
 
     constructor(
         private router: Router,
@@ -396,6 +401,22 @@ export class HoldComponent implements OnInit {
                 ctx.holdMeta.metarecord_filters.langs.length > 1 ||
                 ctx.holdMeta.metarecord_filters.formats.length > 1
             )
+        );
+    }
+
+    searchPatrons() {
+        this.patronSearch.open({size: 'xl'}).toPromise().then(
+            patrons => {
+                if (!patrons || patrons.length === 0) { return; }
+
+                const user = patrons[0];
+
+                this.user = user;
+                this.userBarcode =
+                    this.currentUserBarcode = user.card().barcode();
+                user.home_ou(this.org.get(user.home_ou()).id()); // de-flesh
+                this.applyUserSettings();
+            }
         );
     }
 }
