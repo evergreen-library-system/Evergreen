@@ -1,4 +1,4 @@
-* xref:development:introduction.adoc[Getting Data from Evergreen]
+* xref:api:introduction.adoc[Getting Data from Evergreen]
 ** xref:development:data_supercat.adoc[]
 ** xref:development:data_unapi.adoc[]
 ** xref:development:data_opensearch.adoc[]
