@@ -1394,7 +1394,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     if ($scope.recordId) {  
 
                         var method = $scope.record_type === 'bre' ?
-                            'open-ils.cat.biblio.record.marc.replace' :
+                            'open-ils.cat.biblio.record.xml.update' :
                             'open-ils.cat.authority.record.overlay';
 
                         promise = egCore.net.request(
