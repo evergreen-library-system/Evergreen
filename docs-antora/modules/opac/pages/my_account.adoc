@@ -2,7 +2,7 @@
 [#my_account]
 
 
-=== My Account ===
+== My Account ==
 
 // ``First Login Password Update'' the following documentation comes from JSPAC
 // as of 2013-03-12 this feature did not exist in EG 2.4 TPAC,
@@ -68,7 +68,7 @@ If using a public computer be sure to log out!
 
 [#password_reset]
 
-==== Password Reset ====
+=== Password Reset ===
 
 indexterm:[my account, password reset]
 
@@ -104,7 +104,7 @@ password_ field and re-enter it in the _Re-enter new password_ field.
 . Login to your account with your new password. 
 
 
-==== Account Summary ====
+=== Account Summary ===
 
 indexterm:[my account, account summary]
 
@@ -233,7 +233,7 @@ there is no way for a patron to recover those data.
 After changing any of these settings, you must click _Save_ to store your 
 preferences.
 
-===== Authorize other people to use your account =====
+==== Authorize other people to use your account ====
 
 indexterm:[Allow others to use my account]
 indexterm:[checking out,materials on another patron's account]
@@ -253,7 +253,7 @@ information will also be visible to circulation staff at your library.
 
 indexterm:[holds, preferred pickup location]
 
-==== Patron Messages ====
+=== Patron Messages ===
 
 The Patron Message Center provides a way for libraries to communicate with 
 patrons through messages that can be accessed through the patron's OPAC account.
@@ -284,7 +284,7 @@ image::media/message_center12.PNG[Message Center 12]
 NOTE: Patron deleted messages will still appear in the patron's account in the 
 staff client under Other -> Message Center.
 
-==== Reservations ====
+=== Reservations ===
 
 When patrons place a reservation for a particular item at a particular time,
 they can check on its status using the *Reservations* tab.

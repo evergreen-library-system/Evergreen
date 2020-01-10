@@ -1,4 +1,5 @@
-== Library Information Pages ==
+= Library Information Pages =
+:toc:
 
 The branch name displayed in the copy details section of the search results
 page, the record summary page, and the kids catalog record summary page will

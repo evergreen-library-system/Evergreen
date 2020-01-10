@@ -1,4 +1,5 @@
-== Support Scripts ==
+= Support Scripts =
+:toc:
 
 Various scripts are included with Evergreen in the `/openils/bin/` directory
 (and in the source code in `Open-ILS/src/support-scripts` and
@@ -59,7 +60,7 @@ to more thorough documentation, if available.
 
 [#authority_control_fields]
 
-=== authority_control_fields: Connecting Bibliographic and Authority records ===
+== authority_control_fields: Connecting Bibliographic and Authority records ==
 
 indexterm:[authority control]
 
@@ -97,7 +98,7 @@ Here is how the matching works:
 
 [#marc_export]
 
-=== marc_export: Exporting Bibliographic Records into MARC files ===
+== marc_export: Exporting Bibliographic Records into MARC files ==
 
 indexterm:[marc_export]
 indexterm:[MARC records,exporting,using the command line]
@@ -144,12 +145,12 @@ cat /home/opensrf/records.txt | ./marc_export --store -i -c /openils/conf/opensr
 `marc_export` does not output progress as it executes.
 ====================
 
-==== Options ====
+=== Options ===
 
 The *marc_export* support script includes several options.  You can find a complete list
 by running `./marc_export -h`.  A few key options are also listed below:
 
-===== --descendants and --library =====
+==== --descendants and --library ====
 
 The `marc_export` script has two related options, `--descendants` and
 `--library`.  Both options take one argument of an organizational unit
@@ -170,7 +171,7 @@ All of the specified org. units and their descendants will be included
 in the output.  You can also combine `--library` and `--descendants`
 options when necessary.
 
-===== --items =====
+==== --items ====
 
 The `--items` option will add an 852 field for every relevant item to the MARC
 record.  This 852 field includes the following information:
@@ -193,18 +194,18 @@ record.  This 852 field includes the following information:
 |===================================
 
 
-===== --since =====
+==== --since ====
 
 You can use the `--since` option to export records modified after a certain date and time.
 
-===== --store =====
+==== --store ====
 
 By default, marc_export will use the reporter storage service, which should
 work in most cases. But if you have a separate reporter database and you
 know you want to talk directly to your main production database, then you
 can set the `--store` option to `cstore` or `storage`. 
 
-===== --uris =====
+==== --uris ====
 The `--uris` option (short form: `-u`) allows you to  export records with
 located URIs (i.e. electronic resources).  When used by itself, it will export
 only records that have located URIs.  When used in conjunction with `--items`,
@@ -217,7 +218,7 @@ holdings both physical and electronic.
 
 [#pingest_pl]
 
-=== Parallel Ingest with pingest.pl ===
+== Parallel Ingest with pingest.pl ==
 
 indexterm:[pgingest.pl]
 indexterm:[MARC records,importing,using the command line]
@@ -234,7 +235,7 @@ NOTE: The browse ingest is presently done in a single process over all
 of the input records as it cannot run in parallel with itself.  It
 does, however, run in parallel with the other ingests.
 
-==== Command Line Options ====
+=== Command Line Options ===
 
 pingest.pl accepts the following command line options:
 
@@ -308,7 +309,7 @@ SELECT reporter.refresh_materialized_simple_record();
 
 
 [#importing_authority_records_from_command_line]
-=== Importing Authority Records from Command Line ===
+== Importing Authority Records from Command Line ==
 
 indexterm:[marc2are.pl]
 indexterm:[pg_loader.pl]
@@ -358,7 +359,7 @@ that command looks like:
 psql -U evergreen -h localhost -d evergreen -f pg_loader-output.sql
 ----
 
-=== Juvenile-to-adult batch script ===
+== Juvenile-to-adult batch script ==
 
 The batch `juv_to_adult.srfsh` script is responsible for toggling a patron
 from juvenile to adult. It should be set up as a cron job.
@@ -368,7 +369,7 @@ library setting named "Juvenile Age Threshold" (`global.juvenile_age_threshold`)
 When no library setting value is present at a given patron's home library, the
 value passed in to the script will be used as a default.
 
-=== MARC Stream Importer ===
+== MARC Stream Importer ==
 
 indexterm:[MARC records,importing,using the command line]
 

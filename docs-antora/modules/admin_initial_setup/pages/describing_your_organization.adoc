@@ -1,4 +1,5 @@
-== Describing your organization ==
+= Describing your organization =
+:toc:
 
 Your Evergreen system is almost ready to go. You'll need to add each of the
 libraries that will be using your Evergreen system. If you're doing this for a
@@ -71,7 +72,7 @@ To create a new dependent organizational unit, click *New Child*. The new child
 will appear in the hierarchy list below the parent unit. Click on the new unit
 and edit the data, click *Save*
 
-==== Organizational Unit data ====
+=== Organizational Unit data ===
 The *Addresses* tab allows you to enter library contact information. Library
 Phone number, email address, and addresses are used in patron email
 notifications, hold slips, and transit slips. The Library address tab is broken
@@ -82,7 +83,7 @@ The *Hours of Operation* tab is where you enter regular, weekly hours. Holiday
 and other closures are set in the *Closed Dates Editor*. Hours of operation and
 closed dates impact due dates and fine accrual.  
 
-==== After Changing Organization Unit Data ====
+=== After Changing Organization Unit Data ===
 
 After you change Org Unit data, you must run the autogen.sh script.  
 This script updates the Evergreen organization tree and fieldmapper IDL.  

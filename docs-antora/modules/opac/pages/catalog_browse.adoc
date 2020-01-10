@@ -1,4 +1,5 @@
-== Catalog Browse ==
+= Catalog Browse =
+:toc:
 
 *Abstract*
 

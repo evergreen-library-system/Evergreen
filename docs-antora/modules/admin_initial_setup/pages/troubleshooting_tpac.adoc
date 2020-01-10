@@ -1,4 +1,5 @@
-== Troubleshooting TPAC errors ==
+= Troubleshooting TPAC errors =
+:toc:
 
 If there is a problem such as a TT syntax error, it generally shows up as an
 ugly server failure page. If you check the Apache error logs, you will probably

@@ -1,12 +1,13 @@
-== Creating a New Skin: the Bare Minimum ==
+= Creating a New Skin: the Bare Minimum =
+:toc:
 
-=== Introduction ===
+== Introduction ==
 
 When you adopt the TPAC as your catalog, you must create a new skin. This
 involves a combination of overriding template files and setting Apache
 directives to control the look and feel of your customized TPAC.
 
-=== Apache directives ===
+== Apache directives ==
 There are a few Apache directives and environment variables of note for
 customizing TPAC behavior. These directives should generally live within a
 `<vhost>` section of your Apache configuration.
@@ -31,7 +32,7 @@ PerlAddVar OILSWebDefaultLocale "fr-CA"
 SetEnv physical_loc 104
 ------------------------------------------------------------------------------
 
-=== Customizing templates ===
+== Customizing templates ==
 When you install Evergreen, the TPAC templates include many placeholder images,
 text, and links. You should override most of these to provide your users with a
 custom experience that matches your library.  Following is a list of templates

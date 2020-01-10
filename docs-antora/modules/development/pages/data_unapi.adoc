@@ -1,6 +1,7 @@
-== Using UnAPI ==
+= Using UnAPI =
+:toc:
 
-=== URL format ===
+== URL format ==
 
 Evergreen's unAPI support includes access to many
 record types. For example, the following URL would fetch

@@ -1,6 +1,7 @@
 * xref:development:introduction.adoc[Developer Resources]
-** xref:development:support_scripts.adoc[]
-** xref:development:pgtap.adoc[]
-** xref:development:intro_opensrf.adoc[]
-** xref:development:updating_translations_launchpad.adoc[]
+** xref:development:support_scripts.adoc[Support Scripts]
+** xref:development:pgtap.adoc[Developing with pgTAP tests]
+** xref:development:intro_opensrf.adoc[Easing gently into OpenSRF]
+** xref:development:updating_translations_launchpad.adoc[Updating translations
+using Launchpad]
 

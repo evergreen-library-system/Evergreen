@@ -1,6 +1,7 @@
-== Kids OPAC ==
+= Kids OPAC =
+:toc:
 
-=== Introduction ===
+== Introduction ==
 
 The Kids OPAC (KPAC) is a public catalog search that was designed for children 
 and teens.  Colorful menu items,large buttons, and simple navigation make this 
@@ -11,7 +12,7 @@ as the Template Toolkit OPAC (TPAC), the adult catalog search, so you can easily
 extend the KPAC using the code that already exists in the TPAC.  Finally, third 
 party content, such as reader reviews, can be integrated into the KPAC.
 
-=== Choose a Skin ===
+== Choose a Skin ==
 
 Two skins, or design interfaces, have been created for the KPAC.  The KPAC was 
 designed to run multiple skins on a single web server.  A consortium, then, could 
@@ -37,7 +38,7 @@ After you login, the Login button disappears.
 image::media/Kids_OPAC2.jpg[Kids_OPAC2]
 
 
-=== Search the Catalog ===
+== Search the Catalog ==
 
 You can search the catalog using only the search bar, the search grid, or the search 
 bar and the collection drop down menu.
@@ -112,7 +113,7 @@ image::media/Kids_OPAC7.jpg[Kids_OPAC7]
 
 
 
-=== Place a Hold ===
+== Place a Hold ==
 
 From the search results, click the *Get it!* link to place a hold.
 
@@ -138,7 +139,7 @@ image::media/Kids_OPAC13.jpg[Kids_OPAC13]
 
 
 
-=== Save Items to a List ===
+== Save Items to a List ==
 
 You can save items to a temporary list, or, if you are logged in, you can save to 
 a list of your own creation.  To save items to a list, click the *Get it* button 
@@ -163,7 +164,7 @@ image::media/Kids_OPAC15.jpg[Kids_OPAC15]
 
 
 
-=== Third Party Content ===
+== Third Party Content ==
 
 Third party content, such as reader reviews, can be viewed in the Kids OPAC. The 
 reviews link appears adjacent to the brief information.
@@ -184,7 +185,7 @@ copy information.
 
 image::media/Kids_OPAC10.jpg[Kids_OPAC10]
 
-=== Configuration Files ===
+== Configuration Files ==
 
 Configuration files allow you to define labels for canned searches in the icon 
 grid, determine how icons lead users to new pages, and define whether those icons 

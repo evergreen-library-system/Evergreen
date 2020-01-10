@@ -1,4 +1,5 @@
-== My Lists ==
+= My Lists =
+:toc:
 
 The *My Lists* feature replaces the bookbag feature that was available in versions prior to 2.2.  The *My Lists* feature is a part of the Template Toolkit OPAC that is available in version 2.2.  This feature enables you to create temporary and permanent lists; create and edit notes for items in lists; place holds on items in lists; and share lists via RSS feeds and CSV files.
 
@@ -8,7 +9,7 @@ As of version 3.2, xref:opac:batch_actions_from_search.adoc#batch_actions_from_s
 
 image::media/My_Lists.png[My Lists]
 
-=== Create New Lists ===
+== Create New Lists ==
 
 1) Log in to your account in the OPAC.
 
@@ -45,7 +46,7 @@ image::media/My_Lists7.jpg[Share, Delete, Download List]
 16) When you no longer need a list, click *Delete List*. 
 
 
-=== Local Call Number in My Lists ===
+== Local Call Number in My Lists ==
 
 When a title is added to a list in the TPAC, a local call number will be displayed in the list to assist patrons in locating the physical item.  Evergreen will look at the following locations to identify the most relevant call number to display in the list:  
 
@@ -61,7 +62,7 @@ The local call number and associated library location will appear in the list:
 
 image::media/my_list_call_numbers.png[Local Call Number in List]
 
-=== My Lists Preferences ===
+== My Lists Preferences ==
 
 Patrons can adjust the number of lists or list items displayed in a page.  This setting can be found under the *Account Preferences* tab, in the *My Lists Preferences* section.
 

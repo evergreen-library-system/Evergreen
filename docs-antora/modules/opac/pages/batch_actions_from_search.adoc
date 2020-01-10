@@ -1,12 +1,13 @@
 [#batch_actions_from_search]
-== Batch Actions from Search ==
+= Batch Actions from Search =
+:toc:
 
-=== Introduction ===
+== Introduction ==
 
 The public catalog and staff interface display checkboxes on the search results pages, both for bibliographic records and metarecord constituents.  Selecting one or more titles with these checkboxes adds the titles to a basket, which is viewable on the search bar as an icon.  Users can then take a variety of actions on titles within the basket:  place holds, print or email title details, add the items to a permanent list (from the public catalog) or add the titles to a bucket (from the staff interface).
 
 
-=== Using Batch Actions from Search in the Public Catalog ===
+== Using Batch Actions from Search in the Public Catalog ==
 
 . Perform a search in the public catalog and retrieve a list of results.  
 +
@@ -30,7 +31,7 @@ image::media/BatchActionsSearch-02.png[Basket Actions Drop-down]
 image::media/BatchActionsSearch-03.png[Details of Basket Actions Drop-down]
 
 
-==== Actions Initiated with the Basket Actions Drop-down ====
+=== Actions Initiated with the Basket Actions Drop-down ===
 * *View Basket* - This opens the basket in a new screen.  Checkboxes allow for the selection of one or more titles within the basket.  A drop-down menu appears above the list of titles that can be used to place holds, print title details, email title details, or remove titles from the basket.  This menu reads _Actions for these items_.  (See the next section for more information about this menu.)
 
 * *Place Hold* - This allows for placement of holds in batch for all of the items in the basket.  If not already authenticated, users will be asked to login.  Once authenticated, the holds process begins for all titles within the basket.  Users can set _Advanced Hold Options_ for each title, as well as set the pickup location, hold notification and suspend options.  
@@ -43,12 +44,12 @@ image::media/BatchActionsSearch-03.png[Details of Basket Actions Drop-down]
 
 * *Clear Basket* - This removes removes all titles from the basket
 
-==== View Basket -> _Actions for These Items_ Drop-down Menu ====
+=== View Basket -> _Actions for These Items_ Drop-down Menu ===
 Most actions described above can be taken on titles from within the basket with the _Actions for these items_ drop-down menu.  This menu offers additional flexibility, as users can select some or all of the individual titles in the basket on which to place holds, print or email details, or remove from the basket.  Users cannot add titles to permanent lists with this menu.
  
 image::media/BatchActionsSearch-04.png[Actions for These Items Drop-down Menu]
 
-=== Using Batch Actions from Search in the Staff Interface ===
+== Using Batch Actions from Search in the Staff Interface ==
 
 . Perform a search in the staff interface and retrieve a list of results.  
 +
@@ -70,7 +71,7 @@ image::media/BatchActionsSearch-02.png[Basket Actions Drop-down]
 image::media/BatchActionsSearch-03.png[Details of Basket Actions Drop-down]
 
 
-==== Actions Initiated with the Basket Actions Drop-down ====
+=== Actions Initiated with the Basket Actions Drop-down ===
 
 * *View Basket* - This opens the basket in a new screen.  Checkboxes allow for the selection of one or more titles within the basket.  A drop-down menu appears above the list of titles that can be used to place holds, print title details, email title details, or remove titles from the basket.  This menu reads _Actions for these items_.  (See the next section for more information about this menu.)
 
@@ -90,11 +91,11 @@ image::media/BatchActionsSearch-06.png[Add Basket Titles to Bucket]
 * *Clear Basket* - removes all items from the basket
 
 
-==== View Basket -> Actions for These Items Drop-down Menu ====
+=== View Basket -> Actions for These Items Drop-down Menu ===
 
 Most of the basket actions can be taken on titles from within the basket with the _Actions for these items_ drop-down menu.  This menu offers additional flexibility, as staff can select some or all of the individual titles within the basket on which to place holds, print or email details, or remove from the basket.  Staff cannot place titles in Records Buckets from this menu.
 
-=== Additional Information ===
+== Additional Information ==
 
 The basket used to be called a *Temporary List* in previous versions of Evergreen.
 

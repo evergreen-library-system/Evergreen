@@ -1,8 +1,9 @@
-== Kid's OPAC Configuration ==
+= Kid's OPAC Configuration =
+:toc:
 
-=== Configuration ===
+== Configuration ==
 
-==== Apache ====
+=== Apache ===
 
 The KPAC is already included and ready to be used with new Evergreen installs.  So you only need to change the apache config
 if you need to change template locations or if you want to use a different *kpac.xml* config file.  The defaults for the KPAC are set
@@ -15,7 +16,7 @@ in */etc/apache2/eg_vhosts.conf*.
 </Location>
 ------------------------------------------------------------------------------
 
-==== XML Configuration File ====
+=== XML Configuration File ===
 
     * The XML configuration file defines the layout of the kid's OPAC.
     * It is read with each restart/reload of the Apache web server.
@@ -73,7 +74,7 @@ in */etc/apache2/eg_vhosts.conf*.
 ------------------------------------------------------------------------------
 
 
-==== Skin Configuration ====
+=== Skin Configuration ===
 
 The following example enables you to configure the alternate skin (Monster Skin, kpac2) for the Kids
 Catalog.
@@ -110,7 +111,7 @@ along the lines of:
 </VirtualHost>
 ------------------------------------------------------------------------------
 
-=== Considerations for Community Adoption ===
+== Considerations for Community Adoption ==
 
 The templates for the Kid's OPAC were developed long before the TPAC was 
 integrated into Evergreen and it has many of the same limitations that 
@@ -124,7 +125,7 @@ were part of the TPAC.
       palette.  Creating an additional skin to act as the Evergreen default
       my be necessary.
 
-=== Outstanding Development (Unsponsored) ===
+== Outstanding Development (Unsponsored) ==
 
     ** Port the XML configuration file to a DB structure, complete with UI for
        managing the various components and upgrade path.

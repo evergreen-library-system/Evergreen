@@ -1,4 +1,5 @@
-== Introduction ==
+= Introduction =
+:toc:
 
 Evergreen has a public OPAC that meets WCAG guidelines
 (http://www.w3.org/WAI/intro/wcag), which helps make the OPAC accessible to

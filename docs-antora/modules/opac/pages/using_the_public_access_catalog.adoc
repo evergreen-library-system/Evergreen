@@ -1,6 +1,7 @@
-== Using the Public Access Catalog ==
+= Using the Public Access Catalog =
+:toc:
 
-=== Basic Search ===
+== Basic Search ==
 
 indexterm:[OPAC]
 
@@ -50,7 +51,7 @@ To search an item copy call number, use <<numeric_search, _Advanced Search:
 Numeric_>> 
 =============
 
-==== Formats ====
+=== Formats ===
 
 You can limit your search by formats based on MARC fixed field type:
 
@@ -86,7 +87,7 @@ indexterm:[formats, music]
 * *VHS*
 
 
-===== Libraries =====
+==== Libraries ====
 
 If you are using a catalogue in a library or accessing a library’s online 
 catalogue from its homepage, the search will return items for your local 
@@ -94,7 +95,7 @@ library. If your library has multiple branches, the result will display items
 available at your branch and all branches of your library system separately.
 
 
-=== Advanced Search ===
+== Advanced Search ==
 
 Advanced searches allow users to perform more complex searches by providing more
 options. Many kinds of searches can be performed from the _Advanced Search_ 
@@ -107,7 +108,7 @@ search options, use _Add Search Row_ button to add more search input rows.
 Clicking the _X_ button will close the search input row.
 
 
-==== Sort Results ====
+=== Sort Results ===
 
 indexterm:[advanced search, sort results]
 
@@ -116,7 +117,7 @@ By default, the search results are in order of greatest to least relevance, see
  to order the search results by relevance, title, author, or publication date.
 
 
-==== Search Library ====
+=== Search Library ===
 
 indexterm:[advanced search, search library]
 
@@ -126,7 +127,7 @@ only. If your library system has multiple branches, use the _Search Library_ box
 to select different branches or the whole library system.
 
 
-==== Limit to Available ====
+=== Limit to Available ===
 
 indexterm:[advanced search, limit to available]
 
@@ -135,7 +136,7 @@ This checkbox is at the bottom line of _Search Library_. Select _Limit to
 Available_ to limit results to those titles that have items with a circulation 
 status of "available" (by default, either _Available_ or _Reshelving_).
 
-==== Exclude Electronic Resources ====
+=== Exclude Electronic Resources ===
 
 indexterm:[advanced search, exclude electronic resources]
 
@@ -154,7 +155,7 @@ the 'ctx.exclude_electronic_checkbox' setting in config.tt2 to 1.
 ===============
 
 
-==== Search Filter ====
+=== Search Filter ===
 
 indexterm:[advanced search, search filters]
 
@@ -168,7 +169,7 @@ For each filter type, you may select multiple criteria by holding down the
  _CTRL_ key as you click on the options. If nothing is selected for a filter, 
 the search will return results as though all options are selected.
 
-===== Search Filter Enhancements =====
+==== Search Filter Enhancements ====
 
 Enhancements to the Search Filters now makes it easier to view, remove, and modify search filters while viewing search results in the Evergreen OPAC.  Filters that are selected while conducting an advanced search in the Evergreen OPAC now appear below the search box in the search results interface.
 
@@ -186,7 +187,7 @@ Each filter can be removed by clicking the X next to the filter name to modify t
 [#numeric_search]
 indexterm:[advanced search, numeric search]
 
-==== Numeric Search ====
+=== Numeric Search ===
 
 If you have details on the exact item you wish to search for, use the _Numeric 
 Search_ tab on the advanced search page. Use the drop-down menu to select your 
@@ -194,7 +195,7 @@ search by _ISBN_, _ISSN_, _Bib Call Number_, _Call Number (Shelf Browse)_,
 _LCCN_, _TCN_, or _Item Barcode_. Enter the information and then click the 
 _Search_ button.
 
-==== Expert Search ====
+=== Expert Search ===
 
 indexterm:[advanced search, expert search]
 
@@ -213,7 +214,7 @@ an expert search for "245 a Gone with the wind", simply do a regular title
 search for "Gone with the wind".
 =============
 
-=== Boolean operators ===
+== Boolean operators ==
 
 indexterm:[search, AND operator]
 indexterm:[search, OR operator]
@@ -249,7 +250,7 @@ might require it, using symbolic operators as follows:
 | NOT      | `-`_term_ | `a -b`
 |=================================
 
-=== Search Tips ===
+== Search Tips ==
 
 indexterm:[search, stop words]
 indexterm:[search, truncation]
@@ -317,7 +318,7 @@ truncate any number of characters.
 (example: _environment* agency_)
 
 
-=== Search Methodology ===
+== Search Methodology ==
 
 [#stemming]
 
@@ -351,7 +352,7 @@ _golden_.
 
 [#order_of_results]
 
-==== Order of Results ====
+=== Order of Results ===
 
 indexterm:[search, order of results]
 
@@ -368,7 +369,7 @@ can also re-order your search results using the _Sort Results_ dropdown list on
 the search result screen.
 
 
-=== Search Results ===
+== Search Results ==
 
 indexterm:[search results]
 
@@ -407,7 +408,7 @@ the _Show More Details_ link. Clicking an entry on the list will re-sort your
 search results accordingly.
 
 
-==== Facets: Subjects, Authors, and Series ====
+=== Facets: Subjects, Authors, and Series ===
 
 indexterm:[search results, facets: subjects, authors, and series]
 
@@ -420,7 +421,7 @@ your original results before the facet was activated.
 image::media/catalogue-5.png[catalogue-5]
 
 
-==== Availability ====
+=== Availability ===
 
 indexterm:[search results, availability]
 
@@ -441,7 +442,7 @@ next to the _Limit to available items_ check box, to view each search result's
 copies' individual call number, status, and shelving location. 
 
 
-==== Viewing a record ====
+=== Viewing a record ===
 
 indexterm:[search results, viewing a record]
 
@@ -452,7 +453,7 @@ options for placing holds, add to my list, and print/email.
 image::media/catalogue-8.png[catalogue-8]
 image::media/catalogue-8a.png[catalogue-8a]
 
-=== Details ===
+== Details ==
 
 indexterm:[search results, details]
 
@@ -538,7 +539,7 @@ The record summary page offers a link to a shorter permalink that
 image::media/using-opac-view-permalink.png[Permalink]
 
 
-==== SMS Call Number ====
+=== SMS Call Number ===
 
 If configured by the library system administrator, you may send yourself the 
 call number via SMS message by clicking on the *Text* link, which appears beside
