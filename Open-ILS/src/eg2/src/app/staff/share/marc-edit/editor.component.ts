@@ -220,7 +220,9 @@ export class MarcEditorComponent implements OnInit {
     }
 
     modifyRecord(marcXml: string, sourceName: string, sourceId: number): Promise<any> {
-        const method = 'open-ils.cat.biblio.record.marc.replace';
+        const method = this.recordType === 'biblio' ?
+            'open-ils.cat.biblio.record.xml.update' :
+            'open-ils.cat.authority.record.overlay';
 
         return this.net.request('open-ils.cat', method,
             this.auth.token(), this.record.id, marcXml, sourceName
@@ -235,7 +237,8 @@ export class MarcEditorComponent implements OnInit {
                 return null;
             }
 
-            return response.marc();
+            // authority.record.overlay resturns a '1' on success.
+            return typeof response === 'object' ? response.marc() : marcXml;
         });
     }
 
