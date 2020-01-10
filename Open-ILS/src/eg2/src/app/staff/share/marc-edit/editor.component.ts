@@ -115,7 +115,7 @@ export class MarcEditorComponent implements OnInit {
 
         if (this.record.id) { // Editing an existing record
 
-            const method = 'open-ils.cat.biblio.record.marc.replace';
+            const method = 'open-ils.cat.biblio.record.xml.update';
 
             return this.net.request('open-ils.cat', method,
                 this.auth.token(), this.record.id, xml, sourceName
