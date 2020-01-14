@@ -3839,7 +3839,7 @@ INSERT into config.org_unit_setting_type
         'coust', 'label'),
     oils_i18n_gettext(
         'circ.course_materials_opt_in',
-        'If enabled, the Org Unit will utilize Course Material functionality.'
+        'If enabled, the Org Unit will utilize Course Material functionality.',
         'coust', 'description'),
     'bool', null)
 
