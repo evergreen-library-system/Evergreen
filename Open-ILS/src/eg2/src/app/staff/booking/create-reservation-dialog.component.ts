@@ -83,6 +83,7 @@ export class CreateReservationDialogComponent
             'startTime': new FormControl(null, notBeforeMomentValidator(Moment().add('15', 'minutes'))),
             'endTime': new FormControl(),
             'resourceList': new FormControl(),
+            'note': new FormControl(),
         }, [startTimeIsBeforeEndTimeValidator]
         );
         if (this.patronId) {
@@ -111,7 +112,8 @@ export class CreateReservationDialogComponent
                 this.targetResourceType.id,
                 selectedResourceId,
                 this.attributes.filter(Boolean),
-                this.emailNotify
+                this.emailNotify,
+                this.bresvNote
             ).pipe(tap(
                 (success) => {
                     if (success.ilsevent) {
@@ -195,6 +197,10 @@ export class CreateReservationDialogComponent
 
     get emailNotify() {
         return this.create.get('emailNotify').value;
+    }
+
+    get bresvNote() {
+        return this.create.get('note').value;
     }
 
     get patronBarcode() {
