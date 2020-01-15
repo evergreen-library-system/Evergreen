@@ -630,6 +630,14 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
     }
 
+    // Map the Angular catalog-only 'item_table' tab to the AngJS
+    // 'catalog' tab.
+    function get_default_record_tab() {
+        var tab = egCore.hatch.getLocalItem('eg.cat.default_record_tab');
+        if (!tab || tab === 'item_table') { return 'catalog'; }
+        return tab;
+    }
+
     // also set it when the iframe changes to a new record
     $scope.handle_page = function(url) {
 
@@ -669,8 +677,8 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         // or we didn't change records on the OPAC load
         if (!$scope.in_opac_call && ($scope.record_id != prev_record_id)) {
             if ($scope.record_id) {
-                $scope.default_tab = egCore.hatch.getLocalItem( 'eg.cat.default_record_tab' );
-                tab = $routeParams.record_tab || $scope.default_tab || 'catalog';
+                $scope.default_tab = get_default_record_tab();
+                tab = $routeParams.record_tab || $scope.default_tab;
             } else {
                 tab = $routeParams.record_tab || 'catalog';
             }
@@ -2006,8 +2014,8 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
     var tab;
     if ($scope.record_id) {
-        $scope.default_tab = egCore.hatch.getLocalItem( 'eg.cat.default_record_tab' );
-        tab = $routeParams.record_tab || $scope.default_tab || 'catalog';
+        $scope.default_tab = get_default_record_tab();
+        tab = $routeParams.record_tab || $scope.default_tab;
 
     } else {
         tab = $routeParams.record_tab || 'catalog';

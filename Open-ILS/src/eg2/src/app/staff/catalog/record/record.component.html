@@ -36,7 +36,7 @@
     </div>
     <ngb-tabset #recordTabs [activeId]="recordTab" 
       (tabChange)="beforeTabChange($event)">
-      <ngb-tab title="Item Table" i18n-title id="catalog">
+      <ngb-tab title="Item Table" i18n-title id="item_table">
         <ng-template ngbTabContent>
           <eg-catalog-copies [recordId]="recordId"></eg-catalog-copies>
         </ng-template>
@@ -83,7 +83,7 @@
           </eg-catalog-record-conjoined>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="Patron View" i18n-title id="opac">
+      <ngb-tab title="Patron View" i18n-title id="catalog">
         <ng-template ngbTabContent>
           <eg-opac-record-detail [recordId]="recordId">
           </eg-opac-record-detail>

@@ -44,7 +44,7 @@ export class RecordComponent implements OnInit {
 
         this.defaultTab =
             this.store.getLocalItem('eg.cat.default_record_tab')
-            || 'catalog';
+            || 'item_table';
 
         // Watch for URL record ID changes
         // This includes the initial route.
@@ -58,7 +58,7 @@ export class RecordComponent implements OnInit {
             this.searchContext = this.staffCat.searchContext;
 
             if (!this.recordTab) {
-                this.recordTab = this.defaultTab || 'catalog';
+                this.recordTab = this.defaultTab || 'item_table';
             }
 
             this.loadRecord();
