@@ -15,7 +15,8 @@ CREATE TABLE asset.course_module_course_users (
     id              SERIAL PRIMARY KEY,
     course          INT NOT NULL REFERENCES asset.course_module_course (id),
     usr             INT NOT NULL REFERENCES actor.usr (id),
-    usr_role        TEXT
+    usr_role        TEXT,
+    is_public       BOOLEAN NOT NULL DEFAULT false
 );
 
 CREATE TABLE asset.course_module_course_materials (
