@@ -1,7 +1,7 @@
 
 /**
- * Force the jacket image column to consume a consistent amount of 
- * horizontal space, while allowing some room for the browser to 
+ * Force the jacket image column to consume a consistent amount of
+ * horizontal space, while allowing some room for the browser to
  * render the correct aspect ratio.
  */
 .record-jacket-div {

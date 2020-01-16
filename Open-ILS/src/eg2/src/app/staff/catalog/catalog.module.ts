@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {FmRecordEditorModule} from '@eg/share/fm-editor/fm-editor.module';
 import {StaffCommonModule} from '@eg/staff/common.module';
-import {CatalogCommonModule} from '@eg/share/catalog/catalog-common.module';
 import {CatalogRoutingModule} from './routing.module';
 import {HoldsModule} from '@eg/staff/share/holds/holds.module';
 import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
@@ -61,7 +60,6 @@ import {PreferencesComponent} from './prefs.component';
   imports: [
     StaffCommonModule,
     FmRecordEditorModule,
-    CatalogCommonModule,
     CatalogRoutingModule,
     HoldsModule,
     HoldingsModule,

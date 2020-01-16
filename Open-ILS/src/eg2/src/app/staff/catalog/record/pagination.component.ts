@@ -137,17 +137,23 @@ export class RecordPaginationComponent implements OnInit {
             return Promise.resolve();
         }
 
-        const origPager = this.searchContext.pager;
+        const ctx = this.searchContext;
+
+        const origPager = ctx.pager;
         const tmpPager = new Pager();
         tmpPager.limit = limit || 1000;
 
-        this.searchContext.pager = tmpPager;
+        ctx.pager = tmpPager;
 
-        return this.cat.search(this.searchContext)
-        .then(
-            ok => this.searchContext.pager = origPager,
-            notOk => this.searchContext.pager = origPager
-        );
+        // Avoid fetching highlight data for a potentially large
+        // list of record IDs
+        ctx.getHighlightsFor = this.id;
+
+        return this.cat.search(ctx)
+        .then(_ => {
+            ctx.pager = origPager;
+            ctx.getHighlightsFor = null;
+        });
     }
 
     returnToSearch(): void {

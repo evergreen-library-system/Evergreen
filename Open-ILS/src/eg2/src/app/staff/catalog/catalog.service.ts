@@ -64,7 +64,7 @@ export class StaffCatalogService {
         }
 
         if (!this.searchContext.pager.limit) {
-            this.searchContext.pager.limit = this.defaultSearchLimit || 20;
+            this.searchContext.pager.limit = this.defaultSearchLimit || 10;
         }
     }
 

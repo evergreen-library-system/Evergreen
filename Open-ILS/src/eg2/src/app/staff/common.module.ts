@@ -3,6 +3,7 @@ import {EgCommonModule} from '@eg/common.module';
 import {CommonWidgetsModule} from '@eg/share/common-widgets.module';
 import {AudioService} from '@eg/share/util/audio.service';
 import {GridModule} from '@eg/share/grid/grid.module';
+import {CatalogCommonModule} from '@eg/share/catalog/catalog-common.module';
 import {StaffBannerComponent} from './share/staff-banner.component';
 import {AccessKeyDirective} from '@eg/share/accesskey/accesskey.directive';
 import {AccessKeyService} from '@eg/share/accesskey/accesskey.service';
@@ -39,12 +40,14 @@ import {PatronBarcodeValidatorDirective} from '@eg/share/validators/patron_barco
   imports: [
     EgCommonModule,
     CommonWidgetsModule,
-    GridModule
+    GridModule,
+    CatalogCommonModule
   ],
   exports: [
     EgCommonModule,
     CommonWidgetsModule,
     GridModule,
+    CatalogCommonModule,
     StaffBannerComponent,
     AccessKeyDirective,
     AccessKeyInfoComponent,

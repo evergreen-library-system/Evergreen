@@ -1,0 +1,7 @@
+
+<ng-container 
+  *ngFor="let val of getDisplayStrings(); let first = first">
+  <ng-container *ngIf="joiner && !first">{{joiner}} </ng-container>
+  <span [innerHTML]="val"></span>
+</ng-container>
+

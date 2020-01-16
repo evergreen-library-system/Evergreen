@@ -151,6 +151,23 @@ export class RecordComponent implements OnInit {
         });
     }
 
+    // Lets us intercept the summary object and augment it with
+    // search highlight data if/when it becomes available from
+    // an externally executed search.
+    summaryForDisplay(): BibRecordSummary {
+        if (!this.summary) { return null; }
+        const sum = this.summary;
+        const ctx = this.searchContext;
+
+        if (Object.keys(sum.displayHighlights).length === 0) {
+            if (ctx.highlightData[sum.id]) {
+                sum.displayHighlights = ctx.highlightData[sum.id];
+            }
+        }
+
+        return this.summary;
+    }
+
     currentSearchOrg(): IdlObject {
         if (this.staffCat && this.staffCat.searchContext) {
             return this.staffCat.searchContext.searchOrg;

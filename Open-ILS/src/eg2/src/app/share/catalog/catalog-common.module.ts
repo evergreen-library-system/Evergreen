@@ -6,17 +6,20 @@ import {CatalogUrlService} from './catalog-url.service';
 import {BibRecordService} from './bib-record.service';
 import {UnapiService} from './unapi.service';
 import {MarcHtmlComponent} from './marc-html.component';
+import {BibDisplayFieldComponent} from './bib-display-field.component';
 
 
 @NgModule({
     declarations: [
-        MarcHtmlComponent
+        MarcHtmlComponent,
+        BibDisplayFieldComponent
     ],
     imports: [
         EgCommonModule
     ],
     exports: [
-        MarcHtmlComponent
+        MarcHtmlComponent,
+        BibDisplayFieldComponent
     ],
     providers: [
         CatalogService,

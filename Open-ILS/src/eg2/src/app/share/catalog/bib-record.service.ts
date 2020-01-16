@@ -31,6 +31,7 @@ export class BibRecordSummary {
     holdCount: number;
     bibCallNumber: string;
     net: NetService;
+    displayHighlights: {[name: string]: string | string[]} = {};
 
     constructor(record: IdlObject, orgId: number, orgDepth: number) {
         this.id = Number(record.id());

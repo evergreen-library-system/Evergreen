@@ -47,7 +47,10 @@
           <li class="list-group-item">
             <div class="d-flex">
               <div class="flex-1 font-weight-bold" i18n>Title:</div>
-              <div class="flex-3">{{summary.display.title}}</div>
+              <div class="flex-3">
+                <eg-bib-display-field [summary]="summary" field="title">
+                </eg-bib-display-field>
+              </div>
               <div class="flex-1 font-weight-bold pl-1" i18n>Edition:</div>
               <div class="flex-1">{{summary.display.edition}}</div>
               <div class="flex-1 font-weight-bold" i18n>TCN:</div>

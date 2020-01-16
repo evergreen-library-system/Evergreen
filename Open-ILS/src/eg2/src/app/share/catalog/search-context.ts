@@ -347,6 +347,12 @@ export class CatalogSearchContext {
     // List of IDs in page/offset context.
     resultIds: number[];
 
+    // If a bib ID is provided, instruct the search code to
+    // only fetch field highlight data for a single record instead
+    // of all search results.
+    getHighlightsFor: number;
+    highlightData: {[id: number]: {[field: string]: string | string[]}} = {};
+
     // Utility stuff
     pager: Pager;
     org: OrgService;
@@ -403,6 +409,7 @@ export class CatalogSearchContext {
         this.showBasket = false;
         this.result = new CatalogSearchResults();
         this.resultIds = [];
+        this.highlightData = {};
         this.searchState = CatalogSearchState.PENDING;
         this.termSearch.reset();
         this.marcSearch.reset();
