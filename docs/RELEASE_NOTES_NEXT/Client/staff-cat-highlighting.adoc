@@ -1,0 +1,6 @@
+Angular Staff Catalog gets Search Highlighting
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Search text highlighting is now supported on the search results and
+record details pages in the Angular staff catalog for searches that
+support highlighting.
+
