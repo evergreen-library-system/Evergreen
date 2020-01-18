@@ -8,7 +8,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {FormatService} from '@eg/core/format.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource, GridRowFlairEntry} from '@eg/share/grid/grid';
+import {GridDataSource, GridRowFlairEntry, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -43,6 +43,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
     attributes: IdlObject[] = [];
     multiday = false;
     resourceAvailabilityIcon: (row: ScheduleRow) => GridRowFlairEntry;
+    cellTextGenerator: GridCellTextGenerator;
 
     patronId: number;
     resourceBarcode: string;
@@ -305,6 +306,19 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
                 this.granularity,
                 this.format.wsOrgTimezone
             );
+        }, (err) => {
+        }, () => {
+            this.cellTextGenerator = {
+                'Time': row => {
+                    return this.multiday ? row['time'].format('LT') :
+                        this.format.transform({value: row['time'], datatype: 'timestamp', datePlusTime: true});
+                }
+            };
+            this.resources.forEach(resource => {
+                this.cellTextGenerator[resource.barcode()] = row =>  {
+                    return row[resource.barcode()] ? row[resource.barcode()].map(reservation => reservation['patronLabel']).join(', ') : '';
+                };
+            });
         });
     }
     // TODO: make this into cross-field validation, and don't fetch data if true
