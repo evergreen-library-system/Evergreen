@@ -163,6 +163,7 @@
     </button>
   </div>
   <eg-grid #scheduleGrid
+    [cellTextGenerator]="cellTextGenerator"
     [sortable]="false"
     (onRowActivate)="openTheDialog([$event])"
     [dataSource]="scheduleSource"
@@ -173,7 +174,7 @@
     <eg-grid-toolbar-button label="Create Reservation" i18n-label (onClick)="openTheDialog($event)"></eg-grid-toolbar-button>
     <eg-grid-toolbar-action label="Create Reservation" i18n-label (onClick)="openTheDialog($event)"></eg-grid-toolbar-action>
     <eg-grid-column path="time" [index]="true" name="Time" i18n-name [cellTemplate]="timeTemplate" ></eg-grid-column>
-    <eg-grid-column *ngFor="let resource of resources" path="{{resource.barcode()}}" [cellTemplate]="reservationsTemplate" [disableTooltip]="true"></eg-grid-column>
+    <eg-grid-column *ngFor="let resource of resources" path="{{resource.barcode()}}" [cellTemplate]="reservationsTemplate" [name]="resource.barcode()" [disableTooltip]="true"></eg-grid-column>
   </eg-grid>
 </ng-container>
 <div class="text-sm-center" *ngIf="this.resourceType.value && !resources.length" i18n>
