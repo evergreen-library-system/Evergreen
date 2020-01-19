@@ -49,10 +49,11 @@ export class PermService {
             return Promise.reject('hasWorkPermHere requires a workstation');
         }
 
+        const ws_ou: number = +this.auth.user().ws_ou();
         return this.hasWorkPermAt(permNames, true).then(resp => {
             const answer: HasPermHereResult = {};
             Object.keys(resp).forEach(perm => {
-                answer[perm] = resp[perm].indexOf(wsId) > -1;
+                answer[perm] = resp[perm].indexOf(ws_ou) > -1;
             });
             return answer;
         });
