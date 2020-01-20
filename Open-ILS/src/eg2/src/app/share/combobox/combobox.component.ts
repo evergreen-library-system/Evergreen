@@ -71,6 +71,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
     // onChange() is NOT fired when applying the default value,
     // unless startIdFiresOnChange is set to true.
     @Input() startId: any = null;
+    @Input() idlClass: string;
     @Input() startIdFiresOnChange: boolean;
 
     // Allow the selected entry ID to be passed via the template
@@ -89,6 +90,16 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
             // It's possible the selected ID lives in a set of entries
             // that are yet to be provided.
             this.startId = id;
+            if (this.idlClass) {
+                this.pcrud.retrieve(this.idlClass, id)
+                .subscribe(rec => {
+                    this.entrylist = [{
+                        id: id,
+                        label: rec[this.idlField]()
+                    }];
+                    this.selected = this.entrylist.filter(e => e.id === id)[0];
+                });
+            }
         }
     }
 
@@ -96,7 +107,6 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
         return this.selected ? this.selected.id : null;
     }
 
-    @Input() idlClass: string;
     @Input() idlField: string;
     @Input() idlIncludeLibraryInLabel: string;
     @Input() asyncDataSource: (term: string) => Observable<ComboboxEntry>;
