@@ -53,7 +53,8 @@
   <eg-grid-field path='target_copy.circ_lib.shortname' hidden></eg-grid-field>
   <eg-grid-field path='target_copy.location.name' label="[% l('Shelving Location') %]" hidden sortable></eg-grid-field>
   <eg-grid-field label="[% l('CN Prefix') %]" path="target_copy.call_number.prefix.label"></eg-grid-field>
-  <eg-grid-field path='target_copy.call_number.label' hidden sortable></eg-grid-field>
+  <eg-grid-field path='target_copy.call_number.label_sortkey' hidden sortable>{{item['target_copy.call_number.label']}}</eg-grid-field>
+  <eg-grid-field path='target_copy.call_number.label' hidden required sortable></eg-grid-field>
   <eg-grid-field label="[% l('CN Suffix') %]" path="target_copy.call_number.suffix.label"></eg-grid-field>
   <eg-grid-field path='target_copy.call_number.record.simple_record.title' label="[% l('Title') %]" sortable>
     <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['target_copy.call_number.record.simple_record.id']}}">
