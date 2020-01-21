@@ -130,6 +130,11 @@ export class AuthService {
         let service = 'open-ils.auth';
         let method = 'open-ils.auth.login';
 
+        if (isOpChange && this.opChangeIsActive()) {
+            // Enforce one op-change at a time.
+            this.undoOpChange();
+        }
+
         return this.net.request(
             'open-ils.auth_proxy',
             'open-ils.auth_proxy.enabled')
