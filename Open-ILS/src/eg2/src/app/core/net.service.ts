@@ -73,7 +73,7 @@ export class NetService {
     permFailed$: EventEmitter<NetRequest>;
     authExpired$: EventEmitter<AuthExpiredEvent>;
 
-    // If true, permission failures are emitted via permFailed$
+    // If true, permission failures are emitted via permFailed
     // and the active request is marked as superseded.
     permFailedHasHandler: Boolean = false;
 

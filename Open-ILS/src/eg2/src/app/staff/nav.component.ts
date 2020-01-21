@@ -1,12 +1,15 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Location} from '@angular/common';
+import {Subscription} from 'rxjs';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {LocaleService} from '@eg/core/locale.service';
 import {PrintService} from '@eg/share/print/print.service';
 import {StoreService} from '@eg/core/store.service';
+import {NetRequest, NetService} from '@eg/core/net.service';
+import {OpChangeComponent} from '@eg/staff/share/op-change/op-change.component';
 
 @Component({
     selector: 'eg-staff-nav-bar',
@@ -14,7 +17,7 @@ import {StoreService} from '@eg/core/store.service';
     templateUrl: 'nav.component.html'
 })
 
-export class StaffNavComponent implements OnInit {
+export class StaffNavComponent implements OnInit, OnDestroy {
 
     // Locales that have Angular staff translations
     locales: any[];
@@ -23,9 +26,13 @@ export class StaffNavComponent implements OnInit {
     // When active, show a link to the experimental Angular staff catalog
     showAngularCatalog: boolean;
 
+    @ViewChild('navOpChange', {static: false}) opChange: OpChangeComponent;
+    permFailedSub: Subscription;
+
     constructor(
         private router: Router,
         private store: StoreService,
+        private net: NetService,
         private org: OrgService,
         private auth: AuthService,
         private pcrud: PcrudService,
@@ -53,6 +60,19 @@ export class StaffNavComponent implements OnInit {
             this.org.settings('ui.staff.angular_catalog.enabled')
             .then(settings => this.showAngularCatalog =
                 Boolean(settings['ui.staff.angular_catalog.enabled']));
+        }
+
+        // Wire up our op-change component as the general purpose
+        // permission failed handler.
+        this.net.permFailedHasHandler = true;
+        this.permFailedSub =
+            this.net.permFailed$.subscribe(
+                (req: NetRequest) => this.opChange.escalateRequest(req));
+    }
+
+    ngOnDestroy() {
+        if (this.permFailedSub) {
+            this.permFailedSub.unsubscribe();
         }
     }
 

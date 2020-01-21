@@ -2,13 +2,14 @@ import {Component, OnInit, Input, ViewChild, Renderer2} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
-import {EventService} from '@eg/core/event.service';
+import {EgEvent, EventService} from '@eg/core/event.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {StringComponent} from '@eg/share/string/string.component';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
 
 /**
@@ -38,12 +39,16 @@ export class DeleteHoldingDialogComponent
     numCopies: number;
     numSucceeded: number;
     numFailed: number;
+    deleteEventDesc: string;
 
     @ViewChild('successMsg')
         private successMsg: StringComponent;
 
     @ViewChild('errorMsg')
         private errorMsg: StringComponent;
+
+    @ViewChild('confirmOverride', {static: false})
+        private confirmOverride: ConfirmDialogComponent;
 
     constructor(
         private modal: NgbModal, // required for passing to parent
@@ -89,23 +94,28 @@ export class DeleteHoldingDialogComponent
         return super.open(args);
     }
 
-    deleteHoldings() {
+    deleteHoldings(override?: boolean) {
 
-        const flags = {
+        this.deleteEventDesc = '';
+
+        const flags: any = {
             force_delete_copies: this.forceDeleteCopies
         };
 
+        let method = 'open-ils.cat.asset.volume.fleshed.batch.update';
+        if (override) {
+            method = `${method}.override`;
+            flags.events = ['TITLE_LAST_COPY', 'COPY_DELETE_WARNING'];
+        }
+
         this.net.request(
-            'open-ils.cat',
-            'open-ils.cat.asset.volume.fleshed.batch.update.override',
+            'open-ils.cat', method,
             this.auth.token(), this.callNums, 1, flags
         ).toPromise().then(
             result => {
                 const evt = this.evt.parse(result);
                 if (evt) {
-                    console.warn(evt);
-                    this.errorMsg.current().then(msg => this.toast.warning(msg));
-                    this.numFailed++;
+                    this.handleDeleteEvent(evt, override);
                 } else {
                     this.numSucceeded++;
                     this.close(this.numSucceeded > 0);
@@ -117,6 +127,29 @@ export class DeleteHoldingDialogComponent
                 this.numFailed++;
             }
         );
+    }
+
+    handleDeleteEvent(evt: EgEvent, override?: boolean): Promise<any> {
+
+        if (override) { // override failed
+            console.warn(evt);
+            this.numFailed++;
+            return this.errorMsg.current().then(msg => this.toast.warning(msg));
+        }
+
+        this.deleteEventDesc = evt.desc;
+
+        return this.confirmOverride.open().toPromise().then(confirmed => {
+            if (confirmed) {
+                return this.deleteHoldings(true);
+
+            } else {
+                // User canceled the delete confirmation dialog
+                this.numFailed++;
+                this.errorMsg.current().then(msg => this.toast.warning(msg));
+                this.close(this.numSucceeded > 0);
+            }
+        });
     }
 }
 

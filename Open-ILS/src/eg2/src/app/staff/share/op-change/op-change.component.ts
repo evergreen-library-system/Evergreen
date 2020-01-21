@@ -3,6 +3,7 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NetRequest, NetService} from '@eg/core/net.service';
 
 @Component({
   selector: 'eg-op-change',
@@ -19,16 +20,18 @@ export class OpChangeComponent
     @Input() successMessage: string;
     @Input() failMessage: string;
 
+    requestToEscalate: NetRequest;
+
     constructor(
         private modal: NgbModal, // required for passing to parent
         private renderer: Renderer2,
         private toast: ToastService,
+        private net: NetService,
         private auth: AuthService) {
         super(modal);
     }
 
     ngOnInit() {
-
         // Focus the username any time the dialog is opened.
         this.onOpen$.subscribe(
             val => this.renderer.selectRootElement('#username').focus()
@@ -56,6 +59,10 @@ export class OpChangeComponent
                     ok2 => {
                         this.close();
                         this.toast.success(this.successMessage);
+                        if (this.requestToEscalate) {
+                            // Allow a breath for the dialog to clean up.
+                            setTimeout(() => this.sendEscalatedRequest());
+                        }
                     }
                 );
             },
@@ -71,6 +78,37 @@ export class OpChangeComponent
             ok => this.toast.success(this.successMessage),
             err => this.toast.danger(this.failMessage)
         );
+    }
+
+    escalateRequest(req: NetRequest) {
+        this.requestToEscalate = req;
+        this.open({});
+    }
+
+    // Resend a net request using the credentials just created
+    // via operator change.
+    sendEscalatedRequest() {
+        const sourceReq = this.requestToEscalate;
+        delete this.requestToEscalate;
+
+        console.debug('Op-Change escalating request', sourceReq);
+
+        // Clone the source request, modifying the params to
+        // use the op-change'd authtoken
+        const req = new NetRequest(
+            sourceReq.service,
+            sourceReq.method,
+            [this.auth.token()].concat(sourceReq.params.splice(1))
+        );
+
+        // Relay responses received for our escalated request to
+        // the caller via the original request observer.
+        this.net.requestCompiled(req)
+        .subscribe(
+            res => sourceReq.observer.next(res),
+            err => sourceReq.observer.error(err),
+            ()  => sourceReq.observer.complete()
+        ).add(_ => this.auth.undoOpChange());
     }
 }
 
