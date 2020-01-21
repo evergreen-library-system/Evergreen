@@ -38,6 +38,10 @@ export class PartsComponent implements OnInit {
         }
     }
 
+    get recordId(): number {
+        return this.recId;
+    }
+
     constructor(
         private idl: IdlService,
         private org: OrgService,
