@@ -34,7 +34,8 @@
       {{item['barcode']}}
     </a>
   </eg-grid-field>
-  <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Call Number') %]" path="call_number.label_sortkey" visible><span>{{item['call_number.label']}}</span></eg-grid-field>
+  <eg-grid-field label="[% l('Call Number Label') %]" path="call_number.label" hidden required></eg-grid-field>
   <eg-grid-field label="[% l('CN Prefix') %]" path="call_number.prefix.label"></eg-grid-field>
   <eg-grid-field label="[% l('CN Suffix') %]" path="call_number.suffix.label"></eg-grid-field>
   <eg-grid-field label="[% l('Location') %]"    path="location.name" visible></eg-grid-field>
