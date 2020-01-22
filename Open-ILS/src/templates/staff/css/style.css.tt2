@@ -356,6 +356,11 @@ table.list tr.selected td { /* deprecated? */
 .overdue-row a:link, .lost-row a:link {
   color: #B8ECFF;
 }
+
+.overdue-row a:visited, .lost-row a:visited {
+  color: #DDDDDD;
+}
+
 .longoverdue-row {
   color: #000;
   background-color: #FFE1A8 !important;
