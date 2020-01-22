@@ -96,7 +96,12 @@ export class OrgUnitComponent implements OnInit {
                 'admin.server.org_unit.treenode', {org: orgNode}
             ).then(label => treeNode.label = label);
 
-            orgNode.children().forEach(childNode =>
+            // Tree node labels are "name -- shortname".  Sorting
+            // by name suffices and bypasses the need the wait
+            // for all of the labels to interpolate.
+            orgNode.children()
+            .sort((a, b) => a.name() < b.name() ? -1 : 1)
+            .forEach(childNode =>
                 treeNode.children.push(handleNode(childNode))
             );
 
