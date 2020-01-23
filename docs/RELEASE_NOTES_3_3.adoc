@@ -3,6 +3,92 @@ Evergreen 3.3 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.3.6
+----------------
+
+This release contains bug fixes improving on Evergreen 3.3.5.
+
+Upgrade Notes
+~~~~~~~~~~~~~
+
+The SendEmail reactor for Action/Trigger has been updated to use the
+Email::MIME Perl module for proper encoding of the email message
+header fields.  You should notice no functional difference in the
+sending of emails.  This change does add a new prerequisite package,
+so be sure to run the prerequisite installation procedure for your
+Linux distribution before upgrading Evergreen.
+
+The new dependency is the `libemail-mime-perl` package for Debian and
+Ubuntu, and the `perl-Email-MIME` package for Fedora.
+
+Bug Fixes
+~~~~~~~~~
+
+General
+^^^^^^^
+
+* Fixes an issue with sending emails on newer versions of Ubuntu and Debian (https://bugs.launchpad.net/evergreen/+bug/1801163[Bug 1801163])
+* It is now harder to accidentally close modals in the Angular portions of the web client (https://bugs.launchpad.net/evergreen/+bug/1827942[Bug 1827942])
+* Organizational Unit Selectors in the Angular portions of the web client now present libraries in the correct order (https://bugs.launchpad.net/evergreen/+bug/1857350[Bug 1857350])
+* Fixes some permission-related code in the Angular portions of the web client (https://bugs.launchpad.net/evergreen/+bug/1860351[Bug 1860351])
+
+
+Acquisitions
+^^^^^^^^^^^^
+
+* Fixes an issue with receiving line items from the general acquisitions search screen (https://bugs.launchpad.net/evergreen/+bug/1607922[Bug 1607922])
+
+Cataloging
+^^^^^^^^^^
+
+* The new batch import/export interface now allows users to view and edit the incoming MARC records while inspecting an imported queue (https://bugs.launchpad.net/evergreen/+bug/1830923[Bug 1830923])
+* Evergreen now asks users to confirm that they want to delete items that are in non-ideal statuses, like Checked Out (https://bugs.launchpad.net/evergreen/+bug/1735566[Bug 1735566])
+* Catalogers can now apply copy alerts to multiple items at once when creating new items (https://bugs.launchpad.net/evergreen/+bug/1832735[Bug 1832735])
+* The experimental staff catalog now uses the $ (dollar sign) instead of ‡ (double dagger) as the flat text editor's subfield delimiter (https://bugs.launchpad.net/evergreen/+bug/1848778[Bug 1848778])
+* Fixes an issue that prevented catalogers from setting a bib source for a bibliographic record (https://bugs.launchpad.net/evergreen/+bug/1843599[Bug 1843599])
+* Fixes a display issue in the experimental staff catalog holdings view (https://bugs.launchpad.net/evergreen/+bug/1840982[Bug 1840982])
+
+
+Circulation
+^^^^^^^^^^^
+
+* The check in screen now honors the `ui.circ.suppress_checkin_popups` library setting (https://bugs.launchpad.net/evergreen/+bug/1437103[Bug 1437103])
+* Fixes an issue with selecting bills on the Bill History tab (https://bugs.launchpad.net/evergreen/+bug/1780283[Bug 1780283])
+* Improves performance of the hold shelf functionality (https://bugs.launchpad.net/evergreen/+bug/1855329[Bug 1855329])
+* Fixes a display issue with the check out screen's due date box on wider screens (https://bugs.launchpad.net/evergreen/+bug/1803406[Bug 1803406])
+* The check out screeen no longer allows due dates in the past (https://bugs.launchpad.net/evergreen/+bug/1712644[Bug 1712644])
+* Circulation staff with appropriate permissions can now override certain circulation alerts (Bugs https://bugs.launchpad.net/evergreen/+bug/1851434[Bug 1851434] and https://bugs.launchpad.net/evergreen/+bug/1827901[1827901])
+* Loan duration rules can now include hour lengths that are longer than two digits (https://bugs.launchpad.net/evergreen/+bug/1857156[Bug 1857156])
+* The check in grid now has an optional Monograph Parts column (https://bugs.launchpad.net/evergreen/+bug/1739609[Bug 1739609])
+
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.3.6 point release of Evergreen:
+
+* John Amundson
+* Zavier Banks
+* Katlyn Beck
+* Jason Boyer
+* Dan Briem
+* Galen Charlton
+* Garry Collum
+* Bill Erickson
+* Rogan Hamby
+* Kyle Huckins
+* Terran McCanna
+* Michele Morgan
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Beth Willis
+
+
 Evergreen 3.3.5
 ----------------
 
