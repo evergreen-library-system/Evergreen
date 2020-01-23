@@ -1,3 +1,1531 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit e8b8a2839332fe6ee484fc5285a09eca36c87f23
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Jan 23 17:43:21 2020 -0500
+
+    Bumping Perl version string for 3.4.2
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 1b1a2981f4bbc15619b4cc64265dcb1e0b17822f
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Jan 23 07:12:42 2020 -0800
+
+    Docs: release notes for 3.3.6
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+86	0	docs/RELEASE_NOTES_3_3.adoc
+
+commit 928734e1036b82a6a2ee94378d437ae039dc62e7
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Jan 23 07:11:17 2020 -0800
+
+    Docs: release notes for 3.4.2
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+104	0	docs/RELEASE_NOTES_3_4.adoc
+
+commit 8eb50bde112efb128a7cbc2b98675ea681fbbab8
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Jan 3 17:55:10 2020 -0500
+
+    LP#1801163: (follow-up) deal with header fields that contain Unicode strings
+    
+    Since Email::MIME->header_str_set() expects Unicode strings, not octets,
+    use decode_utf8() on the header values to
+    
+    To test
+    -------
+    [1] Update the biblio.format.record_entry.print A/T event definition
+        to include non-ASCII characters in the subject and from headers.
+    [2] Upon applying the patch series, verifying that the strings provided
+        in step 1 are not mangled when the email is sent.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor/SendEmail.pm
+
+commit 2a3dcc0624d38de4fcc14b815b3fe2df1afa83e4
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Jan 3 17:19:56 2020 -0500
+
+    LP#1801163: update Debian Buster and Fedora installation deps
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+1	0	Open-ILS/src/extras/install/Makefile.debian-buster
+1	0	Open-ILS/src/extras/install/Makefile.fedora
+
+commit 9d12223513271a2c7c8ac57b1cbccdf808b2f10e
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Feb 8 15:47:41 2019 -0500
+
+    Lp 1801163: Switch to Email::MIME in SendEmail A/T Reactor
+    
+    Switch from Email::Simple to Email::MIME Perl module in the SendEmail
+    Action/Trigger Reactor.  Email::MIME properly encodes unescaped header
+    fields when added to the message with the header_str_set method.
+    
+    We allow only 1 of each address field to be created while doing the
+    encoding, so that messages conform to RFC 2822.
+    
+    This commit adds a new prerequisite as mentioned in the release notes,
+    so be sure to install the prerequisites for your Linux distribution
+    before installing.
+    
+    You can test this with concerto data from a fresh installation by:
+    
+    1. Configuring your test system to send email.
+    
+    2. Updating all actor.usr entries to have your email address.
+    
+    3. Updating the New User Created Welcome Notice event definiton to
+       active = true.
+    
+    4. Run the action_trigger_runner with --process-hooks --run-pending.
+    
+    5. You should get 237 new user welcome emails.  The exact number is
+       subject to change.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+1	0	Open-ILS/src/extras/install/Makefile.debian-jessie
+1	0	Open-ILS/src/extras/install/Makefile.debian-stretch
+1	0	Open-ILS/src/extras/install/Makefile.ubuntu-bionic
+1	0	Open-ILS/src/extras/install/Makefile.ubuntu-xenial
+13	6	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor/SendEmail.pm
+8	0	docs/RELEASE_NOTES_NEXT/Administration/sendemail-reactor-mime.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/sendemail-reactor-mime.adoc
+
+commit 2b565d778de776c0cc62d0eac6b865de982b84d1
+Author: Josh Stompro <stompro@stompro.org>
+Date:   Thu Nov 7 22:00:21 2019 -0600
+
+    LP1832735 - Allow copy alerts to be applied to multiple copies
+    
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Beth Willis <willis@noblenet.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	0	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit eab367038619cc93d43cf76c9c65c093781956a5
+Author: Josh Stompro <stompro@stompro.org>
+Date:   Tue Nov 5 15:31:21 2019 -0600
+
+    LP#1851434 - Allow COPY_NOT_AVAILABLE.override during renewal
+    
+    Also addresses LP#1827901 - Allow PATRON_EXCEEDS_LONGOVERDUE_COUNT
+    override during checkout and renew.
+    
+    Test Plan:
+    1. Check out an item to a patron.
+    2. Mark item lost by patron to change status to lost.
+    3. In web client, log in as user with COPY_NOT_AVAILABLE.override
+    4. Try to renew item for patron, see that it isn't allowed.
+    
+    After fix:
+    1. Try to renew item for patron, see that the override is now allowed.
+    
+    Also try checkouts and renews for patrons that have the PATRON_EXCEEDS_LONGOVERDUE_COUNT block.
+    
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+5	1	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit e47ac8e9ff6c046d7f677a6678f0e23c08942142
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Aug 21 17:18:09 2019 -0400
+
+    LP1840982 Replace troublesome catalog icons
+    
+    Replace 'arrow_right' icon with 'keyboard_arrow_right' (ditto left) in
+    the Angular catalog holdings maintenance grid.  This resolves an issue
+    where the 'arrow_right' icon presents with excess padding, causing the
+    barcode / call number values to appear to be empty in the
+    'Location/Barcode' column of the holdings grid.
+    
+    See also LP1830912 for icon padding issues.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.html
+
+commit 7e57c0bab70b7ae56b3a60a9ecd04a375d60de55
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Oct 21 14:23:07 2019 -0400
+
+    LP1849182 Angular catalog result/detail tab titles
+    
+    Add tab/page titles to the Angular staff catalog Search Results and
+    Record Details pages.
+    
+    Search results offers 1 of 2 titles, depending on whether a search has
+    be run:
+    
+    "Catalog Search"
+    "Catalog Search - <count> Results"
+    
+    The record detail title shows the bib ID and bib title:
+    
+    "Bib <bib TCN> - <bib title>"
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	0	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+6	0	Open-ILS/src/eg2/src/app/staff/catalog/result/results.component.html
+
+commit 1e14372cbf133d616883b099948eae689a4b76ba
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Oct 17 11:11:34 2019 -0700
+
+    LP1735566: Ask before deleting items in non-ideal statuses in AngularJS
+    
+    To test:
+    
+    1) Apply this commit.
+    2) Log in as a user with COPY_DELETE_WARNING.override permission.
+    3) Go to item status and scan an item in a non-ideal status (like #1:
+    checked out)
+    4) Delete the item.  Note that you are alerted of the item's non-ideal
+    status, and you can confirm that you actually want to delete it.
+    5) Repeat steps 3-4 with an item in an ideal status (like #0:
+    Available). Note that no such alert appears.
+    6) Open the holdings view and repeat steps 4-5.
+    7) Log in as a user without the COPY_DELETE_WARNING.override
+    permission. Note that you are still informed about the non-ideal status,
+    but you aren't able to continue with the deletion without an admin
+    using their credentials.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	0	Open-ILS/src/templates/staff/cat/catalog/index.tt2
+4	0	Open-ILS/src/templates/staff/circ/share/circ_strings.tt2
+25	5	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+22	3	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit 9dcf7eae8d9425c592583c56762136d2e1398d56
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Sun Jan 19 14:47:40 2020 -0500
+
+    LP#1860351: fix hasWorkPermHere() in Angular client
+    
+    Fixes a bug where the Angular client's hasWorkPermHere() check
+    could return incorrect results and thus incorrectly report
+    whether or not the staff user currently has particularl permissions
+    at their current workstation.
+    
+    To test
+    -------
+    [1] Arrange for a workstation whose internal ID is larger than
+        any of the org unit IDs.
+    [2] Log in to that workstation with a user who has permission
+        to update monograph parts.
+    [4] In the experimental Angular staff catalog, go to a record
+        (e.g., /eg2/en-US/staff/catalog/record/21/monoparts) and note
+        that the New Monograph Part button is disabled.
+    [5] Apply the patch and repeat step 4. This time, the button
+        should be active.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	1	Open-ILS/src/eg2/src/app/core/perm.service.ts
+
+commit 7ab7f355d311726a8e42b38c78198535e1a4ed76
+Author: Josh Stompro <stompro@stompro.org>
+Date:   Thu Nov 21 14:01:36 2019 -0600
+
+    LP1739609 - Add Monographic Part to check in grid.
+    
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2
+
+commit 0d539758a4fb001e7ca4d1bc1a8f7e10e475761b
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sat Jan 18 10:44:02 2020 -0800
+
+    LP#1835982 follow-up: Add cellTextGenerator to booking schedule grid
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	Open-ILS/src/eg2/src/app/staff/booking/create-reservation.component.html
+15	1	Open-ILS/src/eg2/src/app/staff/booking/create-reservation.component.ts
+
+commit 7f739e61b87cae7329226b89db6a9a0488761061
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jan 3 15:41:03 2020 -0500
+
+    LPLP1835982 Holds grid user barcode text generator; handle null
+    
+    Adds a new text generator for the patron barcode template in the staff
+    catalog holds grid.  Also adds a name field to the <eg-grid-column/>
+    to support the text generator.
+    
+    Teach the cell text generator internals to translate undefined and null
+    values to '' so generator authors don't have to.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+1	1	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+2	1	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+
+commit f4b0b5a8477da7ff41ee38bf013be9aacd54096c
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Jan 3 11:50:05 2020 -0500
+
+    LP#1835982: tweak a few of the new GridCellTextGenerator
+    
+    - do not display 'null' for Vandelay import errors and
+      holds table current copy barcodes
+    - trim leading and trailing whitespace from the items table
+      call number
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+
+commit 0163433f15a1111e2361e456a3960b50a789a33a
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Jan 3 11:33:19 2020 -0500
+
+    LP#1835982: add GridCellTextGenerator to the btGrid in the sandbox
+    
+    This patch also adds a usage note: since the GridCellTextGenerator
+    only has access to the row object but a cellTemplate can be passed
+    arbitrary context in addition to the row, a GridCellTextGenerator
+    that needs that additional context to have the print content match
+    the displayed content may require that the caller stick it in the
+    row object.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+7	0	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+1	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+10	1	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+
+commit 87fe1497dbba62fb15d6516562ce676831fc65a0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Nov 20 11:57:26 2019 -0500
+
+    LP1835982 Remove more deprecated cellPrintValue refs
+    
+    cellPrintValue inputs were replaced with grid-wide cellTextGenerator
+    handlers.  This patch removes a few remaining references to
+    cellPrintValue inputs.  Having them linger was breaking --prod builds,
+    since they referred to nonexistent methods.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+0	2	Open-ILS/src/eg2/src/app/share/grid/grid-column.component.ts
+0	4	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+3	4	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.html
+1	2	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.html
+
+commit 221969150882efa347932d7fd109a1eb35bc0b2c
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Aug 9 12:47:37 2019 -0400
+
+    LP1835982 Grid cell text generator API migration
+    
+    Migrate cell-specific cellPrintValue handlers to a grid-wide
+    cellTextGenerator handler.  This simplifies the client-side API and
+    helps to formalize the API a bit more by providing a new
+    GridCellTextGenerator interface.
+    
+    Warning messages are now display at page load time when a grid cell uses
+    a cellTemplate but does not have a matching text generator.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+6	0	Open-ILS/src/eg2/src/app/share/grid/grid-column.component.ts
+0	7	Open-ILS/src/eg2/src/app/share/grid/grid-print.component.ts
+6	1	Open-ILS/src/eg2/src/app/share/grid/grid.component.ts
+14	2	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+2	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.html
+4	8	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.html
+6	9	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+3	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.html
+5	8	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.html
+7	13	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.ts
+2	4	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.html
+6	11	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+5	7	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+
+commit 26b547f50419ca60d07fd1b28234d8cea0aa08e7
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Aug 9 11:52:05 2019 -0400
+
+    LP1835982 More grid cell print generators
+    
+    Adds additional print content generators for Angular grid cells which
+    are rendered via cell templates.
+    
+    * Vandelay match set list grid
+    * Vandelay queue contents grid
+    * Vandelay queued record matches grid
+    * Catalog holds grid.
+    
+    Also adds a warning to the grid component when an attempt is made to
+    print a templated cell which has no print content generator.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+7	0	Open-ILS/src/eg2/src/app/share/grid/grid-print.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.html
+10	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.ts
+6	5	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.html
+10	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.html
+11	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+11	1	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+
+commit 82ee9ee0675ef853f5962746941bb6fff711c5c8
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Jul 30 12:02:26 2019 -0400
+
+    LP#1835982: add cell value print handlers to holdings grid
+    
+    This patch adds cell value print handlers for the barcode
+    and holdable columns of the Angular staff catalog holdings
+    view.
+    
+    To test
+    -------
+    [1] After applying the patches for this bug, perform a "Download
+        Full CSV" or "Print Full Grid" action on the Holdings View
+        grid in the Angular staff catalog.
+    [2] Verify that the Location/Barcode and Holdable? columns in the
+        output contain appropriate values.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	1	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.html
+14	1	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+
+commit f1acbd0c7cd2932c4859dc54b1165a3af7e07b8b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jul 16 12:10:36 2019 -0400
+
+    LP1835982 Grid cell print values option
+    
+    Allow grid callers to implement functions that return plain text
+    (printable) values for a given cell.  These are primarily useful when a
+    cell is rendered via cellTemplate, which may not produce content which
+    is ideal for printing. Such functions are specified by the cellPrintValue
+    attribute in the eg-grid-column element.
+    
+    Includes sample implementation for the Angular record detail copies
+    grid, which uses several cellTemplate cells.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	0	Open-ILS/src/eg2/src/app/share/grid/grid-column.component.ts
+12	4	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+5	4	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.html
+16	1	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.ts
+
+commit 9d9f1b667c042e2e6ed2d386d9c532016579286f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Dec 20 12:40:34 2019 -0500
+
+    LP#1843599: AngularJS MARC editor once again sets bib source
+    
+    This patch fixes a regression introduced by the patch for bug 1693580
+    that prevent changes to the bib source from being made via the AngularJS
+    MARC editor.
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Create a new bib record and save it with a non-empty source. Verify
+        that the record sets the source as expected.
+    [3] Edit a bib record and change the source. Verify that the new source
+        is retained when the record is saved.
+    [4] Edit an authority record and save it. Verify that it can be updated
+        without error. (Note that authority records do not have sources in
+        the same way that bib records do.)
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Rogan Hamby <rhamby@esilibrary.com>
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+
+6	3	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+
+commit 402660642396a9f13ecc6206b1ab2e3db4c4de8a
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Dec 5 15:12:57 2019 -0500
+
+    LP#1855329: Hold shelf query speed problem
+    
+    In bug 1827250 I suggested Jason Stephenson look at an alternate SQL
+    formulation to solve the original problem. He did, and deemed it faster,
+    so went with that. Unfortunately, on PG 9.6, we're seeing some data sets
+    that decide on a /very/ poor plan for the wide-hold query with the
+    solution as implemented, but the original suggestion from Jason works
+    fine.
+    
+    In the face of evidence controverting my thought that giving PG more
+    options for planning is better in this case, this commit moves to his
+    original query change.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit 640f7aeed4a6a2262921fef2e0cd6f184a0f0415
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Jan 3 11:02:29 2020 -0500
+
+    LP#1858138: (follow-up) flesh creator and editor in sandbox's acp grid
+    
+    Doing so ensures that the usrnames are displayed in the respective
+    grid columns rather than the au ID.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+
+commit 3e918827f4a92d6dcf87468f8bebc18a904ea371
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Jan 3 10:35:56 2020 -0500
+
+    LP#1858138: remove remaining uses of showLinkSelector
+    
+    Now that showLinkSelector is deprecated and does nothing,
+    remove current uses of it.
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Visit Angular admin interfaces that have grids that
+        refer to linked IDL classes, e.g.,
+    
+        - Local Admin -> Carousels (carousel type)
+        - Server Admin -> Weights Association (circ weights and hold
+                                               weights)
+        - Local Admin -> Item Tags (copy tag type)
+        - Acq Admin -> EDI Accounts (provider)
+    
+    [3] Verify that the columns for linked fields display the
+        appropriate selector field rather than the numeric ID.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/eg2/src/app/staff/admin/local/admin-carousel.component.html
+0	1	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+1	1	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.html
+
+commit 26b4fc98de4222b95c1fcd599903ef7f31343e6f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 2 16:31:31 2020 -0500
+
+    LP1858138 Sandbox example of simple grid filtering
+    
+    Adds a trimmed down grid example demonstrating consistent filtering and
+    link selector display for auto and manual fields without requiring any
+    additional grid markup to define basic column behevior.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+12	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+28	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+
+commit 8943923a86a06abb1be82d05e802420f22d38c18
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 2 16:28:46 2020 -0500
+
+    LP1858138 Link selector consolidation/repairs
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/eg2/src/app/core/idl.service.ts
+
+commit 0328879b1ae5ff04b1e86550d97ee0709478bb11
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 2 16:22:34 2020 -0500
+
+    LP1858138 Grid IDL field definition repairs and more
+    
+    * Deprecate showLinkSelectors, since FormatService now performs that
+      logic under the covers.  Includes deprecation console warning.
+    
+    * Fix Grid field IDL class extraction off-by-one error.  The code was
+      stamping the source field with the class of the field's link target
+      instead of the class the field actually belonged to.
+    
+    * Allow for IDL field info extraction from the 'name' attribute when no
+      'path' attribute is defined.
+    
+    * Avoid console errors when clearing combobox values in grid filters.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+9	2	Open-ILS/src/eg2/src/app/share/grid/grid-filter-control.component.ts
+5	13	Open-ILS/src/eg2/src/app/share/grid/grid.component.ts
+20	20	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+
+commit d24cf32e42fd6d624b69122d8d4c72e8eaba50ae
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 2 16:17:59 2020 -0500
+
+    LP1858138 Link selector consolidation/repairs
+    
+    Move more of the IDL link class selector extraction logic into the IDL
+    service.
+    
+    Avoid using 'name' as a fall-through selector field when no 'name' field
+    exists on the class.
+    
+    Teach the idl service to log warnings on invalid class and field name
+    combinations in selector lookups.
+    
+    Modify fm-editor and combobox to use the new idl link selector
+    functions.
+    
+    While we're in there, avoid unnecessary API calls from the combobox
+    by preventing async data lookups with a search term of "_CLICK_".
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+24	2	Open-ILS/src/eg2/src/app/core/idl.service.ts
+7	3	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+3	14	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+
+commit f892fc8015233118998b8aa66a2a83a4215f1848
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 2 15:19:16 2020 -0500
+
+    LP1858138 Action/Trigger IDL selector additions
+    
+    Adds selector field entries for Action/Trigger hook, collector,
+    validator, reactor, and cleanup classes for ease of admin page building.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	5	Open-ILS/examples/fm_IDL.xml
+
+commit 0248527260f8c95157cf945b3e641be4b79e47e3
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Dec 20 12:55:16 2019 -0500
+
+    LP#1857156: handle HHH:MM:SS durations in loans
+    
+    This patch fixes a problem where loan durations of the form
+    HHH:MM:SS, where the hours component is longer than 2 digits, could
+    cause checkouts to fail. This sort of duration has been observed
+    in cases where a library wanted a long-term reserves loan that
+    doesn't have the due time bumped up to midnight.
+    
+    To test
+    -------
+    [1] Set up a circulation policy that has a loan duration of 167:59:59.
+    [2] Attempt a checkout that uses that policy. Note that the checkout
+        will fail.
+    [3] Apply the patch and repeat step 2. This time, the checkout should
+        succeed.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Utils/DateTime.pm
+2	1	Open-ILS/src/perlmods/t/14-OpenILS-Utils.t
+
+commit 0125fa23f468469d78eb563273ea3213e9c83258
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Nov 12 15:13:39 2019 -0500
+
+    LP1858118 Hatch enabled check repairs
+    
+    Teach code asking Hatch whether printing is enabled to properly handle
+    the asynchronous response of the setting which now exists as a
+    workstation setting instead of a localStorage setting.
+    
+    Related, if Hatch is unavailable, use browser printing regardless of the
+    hatch printing workstation setting.
+    
+    Additionally update the "reprint last" handling to store the
+    last_printed value in localStorage instead of attempting to save its
+    value as a workstation setting.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	1	Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+3	1	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+3	0	Open-ILS/web/js/ui/default/staff/services/hatch.js
+20	28	Open-ILS/web/js/ui/default/staff/services/print.js
+
+commit 69619e2df9f15c82af3713e7a11d4862fd04b1f2
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Dec 30 14:50:47 2019 -0800
+
+    Docs: Fixing asciidoc syntax so fop doesn't complain about staff client admin manual
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	0	docs/admin_initial_setup/designing_your_catalog.adoc
+
+commit 7f8992f44cf8af8e42e9fe9fe240389dd5cea799
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Dec 30 14:24:58 2019 -0800
+
+    Docs: LP1767378 follow up: adding manual anchor
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	docs/admin/librarysettings.adoc
+2	2	docs/admin/lsa-work_log.adoc
+
+commit 598319b54491023ccfaebe0cc5db0cf939f9ca08
+Author: lfloyd <lfloyd@library.in.gov>
+Date:   Mon Dec 23 12:53:04 2019 -0500
+
+    Docs: fixed a spacing issue
+    
+    Signed-off-by: Lynn Floyd <lfloyd@library.in.gov>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	docs/admin/lsa-work_log.adoc
+
+commit bec0e597b031e60cbea2fd0b30e5a00a6e2eb035
+Author: lfloyd <lfloyd@library.in.gov>
+Date:   Mon Dec 23 11:25:40 2019 -0500
+
+    DOCS: LP 1767378 Work Log documentation
+    
+    Updated Work Log documentation with new image.
+    Deleted old image files, noted which holds log.
+    
+    Signed-off-by: Lynn Floyd <lfloyd1@library.in.gov>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+9	15	docs/admin/lsa-work_log.adoc
+-	-	docs/media/Expanding_the_Work_Log1.jpg
+-	-	docs/media/Expanding_the_Work_Log2.jpg
+-	-	docs/media/worklog.png
+ delete mode 100644 docs/media/Expanding_the_Work_Log1.jpg
+ delete mode 100644 docs/media/Expanding_the_Work_Log2.jpg
+ create mode 100644 docs/media/worklog.png
+
+commit 3f741a5e254796fef5cdd8516974f48536b8bc08
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Dec 27 16:45:42 2019 -0500
+
+    LP#1855931: (follow-up) make grid filter control cells wrap as well
+    
+    This patch applies "word-wrap: normal" to filter control cells
+    as well, making it more likely that they will stay aligned with
+    the width of their corresponding header cells. This can be tested
+    by adding visible columns to the "Grid with filtering" table in
+    the Angular sandbox (/eg2/en-US/staff/sandbox) and verifying that
+    the column after "Circulating Library" continues to have its
+    filter widget stay aligned with its label.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	Open-ILS/src/eg2/src/app/share/grid/grid.component.css
+
+commit e503499f59dd36a99aa6fdc4d5c517d11cf49956
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Tue Dec 10 23:15:35 2019 +0000
+
+    lp1855931 wrap text for wide Angular eg-grid column headers
+    
+    Make column headers text wrap so that you can fully read the header even if
+    it's several words long.  This will help when there are multiple headers
+    that start with the same word and they show up identically.
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+19	18	Open-ILS/src/eg2/src/app/share/grid/grid.component.css
+
+commit 12ae55c06e54c1631f1d4d6d5f578940da2fa895
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Dec 27 17:50:08 2019 -0500
+
+    LP#1857350: (follow-up) fix lint issue
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	2	Open-ILS/src/eg2/src/app/share/org-select/org-select.component.ts
+
+commit b26e29d6ada7b194a1226ba8d6813cdc45aba49d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Dec 26 13:18:26 2019 -0500
+
+    LP1857350 Org selector sorts by display value
+    
+    When displaying the org unit selector, sort each set of children by the
+    display label (defaults to shortname).
+    
+    Fixes issues with the org server sortTree function and adds a unit test
+    to test the repaired sort function.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/eg2/src/app/core/org.service.ts
+6	0	Open-ILS/src/eg2/src/app/core/org.spec.ts
+11	1	Open-ILS/src/eg2/src/app/share/org-select/org-select.component.ts
+2	0	Open-ILS/src/eg2/src/test_data/eg_mock.js
+
+commit 7fe992abef62c3beb6438b9c7af0801ed175ff69
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Fri Sep 13 21:53:42 2019 +0000
+
+    lp1843640 Standing Penalty Followup
+    Fix 2 issues:  grid not updating when a new record is created and
+    double clicking a row doesn't edit it
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    
+    Changes to be committed:
+    	modified:   Open-ILS/src/eg2/src/app/staff/admin/local/standing-penalty.component.html
+    	modified:   Open-ILS/src/eg2/src/app/staff/admin/local/standing-penalty.component.ts
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	0	Open-ILS/src/eg2/src/app/staff/admin/local/standing-penalty.component.html
+4	0	Open-ILS/src/eg2/src/app/staff/admin/local/standing-penalty.component.ts
+
+commit 72b080f331cfd5c7701209a6dc8819e4842cd616
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Oct 18 13:47:17 2019 -0400
+
+    LP1848778 Use consistent MARC breaker delimiter
+    
+    Use the '$' delimiter in the read-only MARC breaker view for
+    consistency with the flat text MARC editor to easy copy/paste from one
+    to the other.
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Set up two records in a record bucket and initiate a merge. Note
+        that when you select a lead record and choose to edit it in
+        flat text mode, you can copy and paste fields from the subordinate
+        record display without having to change the subfield delimiter
+        character.
+    [3] Mark a record for overlay, perform a Z39.50 search, then select
+        a hit and choose the overlay action. Note that you can copy and
+        paste fields from the record to overlay when editing the incoming
+        record using the flat text editor.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	0	Open-ILS/web/js/ui/default/staff/cat/services/record.js
+
+commit 6f861ba9498f2c6311c4f5c5fa041d506d1e5c8c
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Thu Aug 8 23:45:40 2019 -0400
+
+    LP#1780283 Checking One Bill Checks Them All
+    
+    Under Patron->Bills->History if Bill # isn't visible for the Transactions
+    grid or Payment ID isn't visible for Payments grid, rows can't be selected
+    individually. This adds the required attribute to those field directives.
+    
+    1. Under a patron account with multiple bills, go to Bills->History
+    2. Remove Bill # from the Transactions grid
+    3. Try to select an individual row (note all rows are selected)
+    4. Apply patch and repeat steps 1-3 (note rows are selected individually)
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2
+1	1	Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2
+
+commit bd8f92a1852f2e5ab20fbe3a25511da6b4a6f508
+Author: Katlyn Beck <kbeck@catalyte.io>
+Date:   Mon Nov 26 21:23:48 2018 +0000
+
+    lp1712644 Prevent check out due date in past
+    
+    - Prevents selecting past due date when checking out an item
+    - Prevents saving a due date with hatch when input date is invalid
+    
+    Signed-off-by: Katlyn Beck <kbeck@catalyte.io>
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	2	Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2
+10	3	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+6	7	Open-ILS/web/js/ui/default/staff/services/ui.js
+
+commit 21616b507941b9b35ff092045f10ea0d5d7144ed
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Dec 27 13:21:15 2019 -0500
+
+    LP#1857710: fix Angular client whitescreen on Firefox
+    
+    Work done for LP#1830391 added an instance of a Javascript
+    regexp replace using the dotAll ("/s") flag, but as of the moment
+    Firefox treats that flag as a fatal syntax error, breaking the
+    Angular staff client.
+    
+    To test
+    -------
+    [1] Attempt to log in the Angular staff client with Firefox. Note
+        that you get a whitescreen with the following in the browser
+        console:
+    
+        SyntaxError: invalid regular expression flag s
+    [2] Apply the patch and repeat step 1. This time, the Angular
+        staff client should work normally.
+    [3] Verify that the Angular unit tests pass.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+15	0	Open-ILS/src/eg2/src/app/share/util/htmltotxt.service.spec.ts
+5	1	Open-ILS/src/eg2/src/app/share/util/htmltotxt.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/util/htmltotxt.service.spec.ts
+
+commit 23e7b33b1bd9aec5d3e8ce64173ce543a30e896f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Dec 27 11:04:32 2019 -0500
+
+    LP#1827942: follow-up to fix a couple issues
+    
+    [1] Sets a default value for the modal options for dialogs such
+        as ProgressDialog that do not supply any value for the
+        options parameter; otherwise, progress dialogs would not
+        appear at all.
+    [2] Fix lint warnings.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	2	Open-ILS/src/eg2/src/app/share/dialog/dialog.component.ts
+
+commit d377d9e3d96229de374f8066b99406cd01aa4ba5
+Author: Zavier Banks <zbanks@catalyte.io>
+Date:   Tue Sep 17 20:59:15 2019 +0000
+
+    lp1827942: prevent clicking outside an Angular modal from closing it
+    
+    I added a new property to the "options" object inside the "open"
+    function, which resides in the dialog.component.ts. The static string
+    inside the backdrop property makes the form stay, even if the backdrop
+    is clicked.
+    
+    Signed-off-by: Zavier Banks <zbanks@catalyte.io>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/eg2/src/app/share/dialog/dialog.component.ts
+
+commit 4b7914768f3149249e1d86152c09df3c98a587dd
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Dec 13 14:27:16 2019 -0500
+
+    LP1830391 Stamping DB upgrate (hatch omnibus)
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+53	0	Open-ILS/src/sql/Pg/upgrade/1197.data.hatch-enable-print.sql
+0	53	Open-ILS/src/sql/Pg/upgrade/XXXX.data.hatch-enable-print.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1197.data.hatch-enable-print.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.hatch-enable-print.sql
+
+commit c2fdba8260e1ab7670a51a4e95a576e886095931
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Dec 13 14:13:40 2019 -0500
+
+    LP1830391 Angular test spec updates for Hatch store updates
+    
+    The store service now leverages Hatch for workstation storage.  Update
+    unit tests which load the store service to also load and propagate the
+    Hatch service.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	1	Open-ILS/src/eg2/src/app/core/format.spec.ts
+4	1	Open-ILS/src/eg2/src/app/core/org.spec.ts
+4	1	Open-ILS/src/eg2/src/app/core/store.spec.ts
+4	1	Open-ILS/src/eg2/src/app/share/validators/patron_barcode_validator.directive.spec.ts
+
+commit 45dbb43574d2bfa5506064735f7eac8131e778ec
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Dec 12 16:47:31 2019 -0500
+
+    LP1830391 Warn on dupe workstation settings
+    
+    Check for duplication workstations (by name and workstation) before
+    applying the UNIQUE constraint on actor.workstation_setting.  If found,
+    raise a notice to the user to provide suggestions.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+34	1	Open-ILS/src/sql/Pg/upgrade/XXXX.data.hatch-enable-print.sql
+
+commit 12468d0e0212027d8772583d434760643dfdb04d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Oct 28 13:53:46 2019 -0400
+
+    LP1830391 Angular Hatch enabled flag lookup repair
+    
+    Fix the Angular Hatch enabled setting lookup to pull the value from the
+    workstation setting instead of localStorage.  This required shuffling a
+    few things around to support the asynchronicity.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+4	3	Open-ILS/src/eg2/src/app/share/print/print.component.html
+44	24	Open-ILS/src/eg2/src/app/share/print/print.component.ts
+
+commit 032dc3b1fbfa1ccf93238948dd73d54b6baadd1c
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Aug 5 10:44:55 2019 -0400
+
+    LP1830391 Hatch core mod import/export repairs
+    
+    No need to import/export HatchService from the base common module since
+    it's now a core service which is exported automatically to root.
+    
+    Includes minor lint repair.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+0	2	Open-ILS/src/eg2/src/app/common.module.ts
+6	6	Open-ILS/src/eg2/src/app/share/print/print.component.ts
+
+commit eed52b506f4cdf3a607f12b2f122ed9844710103
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu May 23 18:02:41 2019 -0400
+
+    LP1830391 Workstation settings unique constraint
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+2	1	Open-ILS/src/sql/Pg/005.schema.actors.sql
+2	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.hatch-enable-print.sql
+
+commit e01b4c822e317ca4da0ca74336d480dc5a57a3c5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Apr 12 15:47:24 2019 -0400
+
+    LP1824391 Hatch File Writer release notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+11	0	docs/RELEASE_NOTES_NEXT/Client/hatch-file-writer.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Client/hatch-file-writer.adoc
+
+commit 520139cb60d90dc5fea8529ec637a846a83a7790
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Apr 15 11:34:21 2019 -0400
+
+    LP1824391 Hatch print-to-file Angular edition
+    
+    Adds support for the Angular hatch service for sending 'bare' text/plain
+    print-to-file requests.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+1	1	Open-ILS/src/eg2/src/app/app.component.ts
+2	0	Open-ILS/src/eg2/src/app/common.module.ts
+30	7	Open-ILS/src/eg2/src/app/share/print/print.component.ts
+75	0	Open-ILS/src/eg2/src/app/share/util/htmltotxt.service.ts
+1	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+6	1	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+4	0	Open-ILS/src/eg2/src/app/staff/staff.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/util/htmltotxt.service.ts
+
+commit 436d7a1be877684b3ac43b09ac5cb52a6dbf87b3
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Apr 12 12:52:09 2019 -0400
+
+    LP1824391 Hatch File Writer print support
+    
+    Adds support for translating receipt data to plain text and writing the
+    output to a file instead of sending it to a printer.
+    
+    Adds a new stock printer named "Hatch File Writer" to the print
+    configuration interface.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+21	5	Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2
+19	2	Open-ILS/web/js/ui/default/staff/admin/workstation/app.js
+65	1	Open-ILS/web/js/ui/default/staff/services/hatch.js
+7	5	Open-ILS/web/js/ui/default/staff/services/print.js
+
+commit 085ebb527ee2eff750e273dcb30f86ef4825966d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Apr 22 14:02:05 2019 -0700
+
+    LP1825891 Use Hatch 'hostname' for workstation reg.
+    
+    Populate the workstation name with the hostname of the PC when
+    registring a new workstation for Hatch-enabled workstations.
+    
+    Note the code gracefully returns null if Hatch returns a 404 (not found)
+    or Hatch is not active.
+    
+    Updates the AngJS and Angular workstation admin pages to load the
+    hostname value when possible.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+9	0	Open-ILS/src/eg2/src/app/core/hatch.service.ts
+12	6	Open-ILS/src/eg2/src/app/staff/admin/workstation/workstations/workstations.component.ts
+4	0	Open-ILS/web/js/ui/default/staff/admin/workstation/app.js
+13	0	Open-ILS/web/js/ui/default/staff/services/hatch.js
+
+commit 63438e048405301e613d4287c79a49f296fd8100
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Apr 23 07:57:31 2019 -0700
+
+    LP1825896 Store workstations in Hatch when available
+    
+    When Hatch is enabled, use Hatch for storing workstation registration
+    information.
+    
+    If workstations are found in localStorage, they are merged into the
+    collection of workstations stored in hatch and removed from
+    localStorage.
+    
+    Include DB udpate to add workstation setting 'eg.hatch.enable.printing'
+    so that it may live on the server.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+12	12	Open-ILS/src/eg2/src/app/core/auth.service.ts
+124	0	Open-ILS/src/eg2/src/app/core/hatch.service.ts
+114	1	Open-ILS/src/eg2/src/app/core/store.service.ts
+0	109	Open-ILS/src/eg2/src/app/share/print/hatch.service.ts
+7	7	Open-ILS/src/eg2/src/app/share/print/print.component.ts
+16	11	Open-ILS/src/eg2/src/app/staff/admin/workstation/workstations/workstations.component.ts
+8	4	Open-ILS/src/eg2/src/app/staff/login.component.ts
+4	0	Open-ILS/src/eg2/src/app/staff/resolver.service.ts
+11	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+18	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.hatch-enable-print.sql
+18	10	Open-ILS/web/js/ui/default/staff/admin/workstation/app.js
+2	2	Open-ILS/web/js/ui/default/staff/app.js
+2	2	Open-ILS/web/js/ui/default/staff/offline.js
+159	60	Open-ILS/web/js/ui/default/staff/services/hatch.js
+ create mode 100644 Open-ILS/src/eg2/src/app/core/hatch.service.ts
+ delete mode 100644 Open-ILS/src/eg2/src/app/share/print/hatch.service.ts
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.hatch-enable-print.sql
+
+commit cbbffe290091043b2d6a4fa93c281a1a65e9166a
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Dec 13 08:22:17 2019 -0500
+
+    Docs: Fix AsciiDoc syntax error in glossary
+    
+    This commit fixes a minor syntax problem that causes an AsciiDoc build
+    error.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	2	docs/glossary.adoc
+
+commit e5c3579cccae4c4a74f5a2bdd8942711cc7dbeda
+Author: lfloyd <lfloyd@library.in.gov>
+Date:   Fri Dec 6 14:26:35 2019 -0500
+
+    Docs: Added linkages, and additonal terms.
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+43	17	docs/glossary.adoc
+
+commit 01a1117ed60d33e1b3b60e8d2d2e3198051eba67
+Author: Lynn <lfloyd@library.in.gov>
+Date:   Wed Nov 27 12:18:01 2019 -0500
+
+    Docs: Glossary Added
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+225	0	docs/glossary.adoc
+5	0	docs/root.adoc
+1	1	docs/shared/attributions.adoc
+ create mode 100644 docs/glossary.adoc
+
+commit 50f1e861263a8f4f0394116bc979098d926f2408
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Wed Aug 7 19:13:21 2019 -0400
+
+    LP#1803406 Due date box in check out has display issues at wider resolutions
+    
+    Adjusted bootstrap .col classes so the specific due date input displays the
+    full date and prevents the barcode input group from collapsing at < 1179px.
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	4	Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2
+
+commit 93976c74fa188d73606173ba510c384c994c425b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Dec 5 10:08:48 2019 -0500
+
+    LP1830923 Replace some pesky tabs
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+16	16	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record.component.html
+
+commit bef2ededd4c0e57fe1325a13d2de9dacc2149854
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Dec 4 17:41:38 2019 -0500
+
+    LP#1830923: do not show Enhanced MARC editor tab when editing in-place
+    
+    As the the AngularJS side does not currently offer a path
+    for directly editing a queued record, the enhancd editor tab
+    serves no purpose in this context.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.html
+
+commit 00ca24c8920b077f62ef36d0581c78ac1f49094c
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Dec 4 17:34:45 2019 -0500
+
+    LP#1830923: add support for editing queued authority records
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+6	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record.component.html
+4	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record.component.ts
+
+commit 3db73a2ab3ca0d90c436f1e3b263ff2b7c51ef04
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Oct 17 17:59:08 2019 -0400
+
+    LP1830923 Vandelay queued record editing
+    
+    This patch adds MARC record editing the the Angular
+    Vandelay interface using the Angular MARC editor
+    component, which as of the date of this patch offers
+    a flat-text mode.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+9	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record.component.html
+24	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record.component.ts
+2	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.module.ts
+
+commit e458e609445e18f9558b181ef0469839c8a33f93
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Oct 17 17:57:10 2019 -0400
+
+    LP1830923 Marc edit in-place additions
+    
+    Improve Angular MARC editor for in-place editing.
+    
+    * Make inPlaceMode a proper @Input.
+    * Allow the caller to pass in the bib source
+    * The recordSaved event now reports both the MARC XML and the currently
+      selected bib source.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.html
+30	11	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.ts
+
+commit d9f9938456af1e0065112c154ae30d177012e533
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Oct 17 17:44:40 2019 -0400
+
+    LP1830923 Combobox LP1844812 regression fix
+    
+    Allow a combobox to start with an empty array that is later filled by
+    the caller.  This was broken due to changes which prevented the combobox
+    from seeing an empty/stub array as being different from its
+    initialization array, thus ignoring empty array as a duplicate.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+8	2	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+
+commit 56842b5af1ca749088b31b403b58e39f1e46a2f4
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Fri Dec 6 09:50:10 2019 -0500
+
+    Docs: corrected image file reference in carousels.adoc
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+1	1	docs/admin_initial_setup/carousels.adoc
+
+commit 87bdb75eda4c8e6717d58b8964ecddc62986a3a1
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Thu Dec 5 16:07:20 2019 -0500
+
+    Docs: follow up commit to fix include error
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+1	3	docs/admin_initial_setup/designing_your_catalog.adoc
+
+commit f86c6ceab5eef9217809b7197654632cd0de74ab
+Author: Felicia Beaudry <felicia.beaudry@equinoxinitiative.org>
+Date:   Thu Dec 5 15:35:50 2019 -0500
+
+    Docs: adding Carousels docs and screenshots
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+263	0	docs/admin_initial_setup/carousels.adoc
+3	0	docs/admin_initial_setup/designing_your_catalog.adoc
+-	-	docs/media/carousel1.png
+-	-	docs/media/carousel2.png
+-	-	docs/media/carousel3.png
+-	-	docs/media/carousel4.png
+-	-	docs/media/carousel5.png
+-	-	docs/media/carousel6.png
+-	-	docs/media/carousel7.png
+-	-	docs/media/carousel8.png
+2	0	docs/root_staff_client_admin.adoc
+ create mode 100644 docs/admin_initial_setup/carousels.adoc
+ create mode 100644 docs/media/carousel1.png
+ create mode 100644 docs/media/carousel2.png
+ create mode 100644 docs/media/carousel3.png
+ create mode 100644 docs/media/carousel4.png
+ create mode 100644 docs/media/carousel5.png
+ create mode 100644 docs/media/carousel6.png
+ create mode 100644 docs/media/carousel7.png
+ create mode 100644 docs/media/carousel8.png
+
+commit c8fe0607192688421c796d3c1590189533659ed4
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Jul 30 13:54:10 2019 -0700
+
+    LP1607922: Receiving items on page 2 of search results
+    
+    Previously, if a user selected a bunch of line items on two consecutive
+    pages of acq search results, and tried to receive items from the second
+    page, the operation would fail.
+    
+    This issue was caused by Evergreen caching IDs of selected line items
+    from page 1, but not caching the data that went along with them.
+    
+    To test:
+    
+    1) Go to Acquisitions > General Search
+    2) In the Select Search Field dropdown, choose LI - State.
+    3) Set the state to on-order.
+    4) Click Search.
+    5) Click the check mark to select all results on the first page.
+    6) Click the Next button.
+    7) Click the check mark to select all results on the second page.
+    8) On the top --Actions-- menu, select Mark Selected Line Items as
+    Received.
+    9) Note that the interface does nothing, and that there is a TypeError
+    error message in the browser console.
+    10) Apply this commit.
+    11) Refresh your page completely and repeat steps 1-8.
+    12) Note that the items on the second page are received.  Since they no
+    longer meet the search criteria, Evergreen gives you the next page of
+    results.
+    
+    For further testing, see similar test steps by John Yorio at
+    https://bugs.launchpad.net/evergreen/+bug/1607922.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/web/js/ui/default/acq/common/li_table_pager.js
+
+commit 8844d3265eb661c358c65b0eef57acc1ea7f3416
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Nov 8 10:37:21 2019 -0500
+
+    LP1851831 Group perm editor null descriptions OK
+    
+    Avoid assuming a permission description value is non-NULL in the
+    permission group editor interfaces since values are not required in the
+    database.
+    
+    Fixes: ERROR TypeError: "l.description(...) is null"
+    
+    Similarly repair the permission list title attributes so they display
+    the permission code (instead of an empty string) for titles when no
+    description is available.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/admin/server/perm-group-map-dialog.component.ts
+4	1	Open-ILS/src/eg2/src/app/staff/admin/server/perm-group-tree.component.html
+4	2	Open-ILS/src/eg2/src/app/staff/admin/server/perm-group-tree.component.ts
+
+commit 2969e2f41c72c2369ae70cb7092fcac5188e968a
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Nov 6 11:35:58 2019 -0500
+
+    LP#1851524: fix adding a bucket when saving a new carousel
+    
+    This patch fixes a regression where saving a new carousel
+    would not result in its bucket being created due to the
+    post-save callback never getting invoked.
+    
+    This patch does not fix any carousels that do not have
+    buckets due to this bug. Because such carousels will
+    not function anyway, they should be deleted and
+    recreated by the local admin.
+    
+    To test
+    -------
+    [1] Create a new carousel in local adminstration. Open it
+        in the edit modal again and note that no record bucket
+        is linked to it.
+    [2] Apply the patch and repeat step 1. This time, the
+        bucket should be created.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/admin/local/admin-carousel.component.html
+
+commit 633e987bf2d733af5e2cbc3b2f0f1906e18754a4
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Fri Jul 5 14:36:05 2019 +0000
+
+    lp1437103 Allow Receipts to Print when Suppressing Popups
+    
+    - Move suppress_popup check further along and allow transit receipts
+    to properly print when popups suppressed.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	2	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit 1678790a4965c7ee756b620ff5b4c262cbfa1831
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Wed Jun 26 15:36:09 2019 +0000
+
+    lp1437103 Suppress Popups on Patron Items Out Checkin
+    
+    - Make Patron Items Out UI respect Suppress Popups setting.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+30	19	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit 1c251ecdd5b1a4fce5a506c4d33b5921e3e59a4e
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Tue Jun 25 16:47:04 2019 +0000
+
+    lp1437103 - Suppress Popups based on OU Setting
+    
+    - Allow OU setting to suppress checkin popups to properly take effect.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+6	4	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit fee6598129436b834ddf893f6d83bc7dcf2c768e
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Oct 29 15:40:31 2019 -0400
+
+    Forward-port 3.4.1 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+168	0	Open-ILS/src/sql/Pg/version-upgrade/3.4.0-3.4.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.4.0-3.4.1-upgrade-db.sql
