@@ -1,139 +1,20 @@
 # Arabic translation for evergreen
-# Copyright (c) 2016 Rosetta Contributors and Canonical Ltd 2016
+# Copyright (c) 2019 Rosetta Contributors and Canonical Ltd 2019
 # This file is distributed under the same license as the evergreen package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2016.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2009-11-23 23:36-0400\n"
-"PO-Revision-Date: 2017-01-19 09:22+0000\n"
-"Last-Translator: fares othman <Unknown>\n"
+"POT-Creation-Date: 2019-10-25 20:10+0000\n"
+"PO-Revision-Date: 2019-10-25 20:10+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-01-21 06:03+0000\n"
-"X-Generator: Launchpad (build 18302)\n"
+"X-Launchpad-Export-Date: 2019-10-26 06:25+0000\n"
+"X-Generator: Launchpad (build 469f241f4e73cc0bdffa4e30654052a2af068e06)\n"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:1
-msgctxt ""
-"../../Open-ILS/xul/staff_client/server/locale/en-"
-"US/multiclass_search_help.html:1"
-msgid "Multiclass Search Help"
-msgstr "مساعدة البحث المتعدد الفئات"
 
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:2
-msgctxt ""
-"../../Open-ILS/xul/staff_client/server/locale/en-"
-"US/multiclass_search_help.html:2"
-msgid "Multiclass Search Help"
-msgstr "مساعدة البحث المتعدد الفئات"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:3
-msgid "Recognized search keys include:"
-msgstr "تضمين مفاتيح البحث المعترف بها ـ المعروفة ـ"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:4
-msgid "Search key"
-msgstr "مفتاح البحث"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:5
-msgid "Definition"
-msgstr "تعريف"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:6
-msgid ""
-"keyword</strong>, <strong>title</strong>,             "
-"<strong>author</strong>, <strong>subject</strong>, and             "
-"<strong>series</strong> support additional search subclasses,             "
-"specified with a <kbd>|</kbd>. For example:             "
-"<kbd>title|proper:gone with the wind"
-msgstr ""
-"كلمة مفتاحية</strong>، <strong>عنوان</strong>،             "
-"<strong>مُؤلف</strong>، <strong>موضوع</strong>، and             "
-"<strong>سلسلة</strong> دعم فئات البحث الفرعية الإضافية،             المحدد "
-"مع <kbd>|</kbd>. على سبيل المثال:             <kbd>عنوان|المناسب:علم "
-"المكتبات والمعلومات بين التطور التقني وفلسفة المهنة"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:7
-msgid "keyword/kw"
-msgstr "كلمة مفتاحية/kw"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:8
-msgid "search keyword(s)"
-msgstr "البحث بالكلمات المفتاحية"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:9
-msgid "author/au/name"
-msgstr "مؤلف/au/الاسم"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:10
-msgid "search author(s)"
-msgstr "البحث بالمؤلفين"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:11
-msgid "title/ti"
-msgstr "عنوان/ti"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:12
-msgid "search title"
-msgstr "البحث بالعنوان"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:13
-msgid "subject/su"
-msgstr "موضوع/su"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:14
-msgid "search subject"
-msgstr "البحث بالموضوعات"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:15
-msgid "series/se"
-msgstr "سلسلة/se"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:16
-msgid "search series"
-msgstr "البحث في السلاسل"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:17
-msgid "lang"
-msgstr "اللغة"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:18
-msgid "limit by language (specifiy multiple langs with lang:l1 lang:l2 ...)"
-msgstr "حدود حسب اللغة (تحديد لغات متعددة كما يلي لغة:l1 لغة:l2 ...)"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:19
-msgid "site"
-msgstr "الموقع"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:20
-msgid "search at specified org unit, corresponds to actor.org_unit.shortname"
-msgstr "البحث في وحدة تنظيمية محددة, يتوافق مع actor.org_unit.shortname"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:21
-msgid "sort"
-msgstr "ترتيب وفرز"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:22
-msgid "sort type (title, author, pubdate)"
-msgstr "نوع الفرز (عنوان, مؤلف, تاريخ النشر)"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:23
-msgid "dir"
-msgstr "المسار"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:24
-msgid "sort direction (asc, desc)"
-msgstr "اتجاه الفرز (تصاعدي, تنازلي)"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:25
-msgid "available"
-msgstr "مُتاحة"
-
-#: ../../Open-ILS/xul/staff_client/server/locale/en-US/multiclass_search_help.html:26
-msgid ""
-"if set to anything other than \"false\" or \"0\", limits to available items"
-msgstr "إذا كانت القيمة أي شيء غير \"خطأ\" أو\"0\"، فإن حدود النسخ مُتاحة"

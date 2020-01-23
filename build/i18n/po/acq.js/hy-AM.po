@@ -8,22 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-12-14 21:52-0400\n"
-"PO-Revision-Date: 2017-07-26 10:55+0000\n"
+"PO-Revision-Date: 2019-10-25 20:10+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-12-16 05:36+0000\n"
-"X-Generator: Launchpad (build 18837)\n"
-
-#: acq.js:PRINT
-msgid "Print"
-msgstr "Տպել"
-
-#: acq.js:CANCELED
-msgid "Canceled"
-msgstr "Չեղարկված է"
+"X-Launchpad-Export-Date: 2019-10-30 06:11+0000\n"
+"X-Generator: Launchpad (build 469f241f4e73cc0bdffa4e30654052a2af068e06)\n"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlid
 msgid "LID"
@@ -259,6 +251,10 @@ msgstr ""
 msgid "Are you SURE you want to cancel this purchase order?"
 msgstr "Դու վստա՞հ ես որ ցանկանում ես չեղյալ անել գնման այս պատվերը:"
 
+#: acq.js:PRINT
+msgid "Print"
+msgstr "Տպել"
+
 #: acq.js:PO_ACTIVATING
 msgid "Activating purchase order..."
 msgstr "Գնման պատվերը ակտիվացվում է․․․"
@@ -360,6 +356,10 @@ msgstr "Ակտիվացված"
 #: acq.js:INVOICE_NUMBER
 msgid "Invoice #${0}"
 msgstr "Ինվոյս #${0}"
+
+#: acq.js:CANCELED
+msgid "Canceled"
+msgstr "Չեղարկված է"
 
 #: acq.js:FINALIZE_PO
 msgid ""
@@ -636,42 +636,3 @@ msgstr "Չկան գտնված արժեքներ '${0}' բաղադրիչի համ�
 #: acq.js:APPLY
 msgid "Apply"
 msgstr "Կիրառիր"
-
-#~ msgid ""
-#~ "<div class='acq-lineitem-summary'><a href='${19}'>${0}</a>, by ${1} "
-#~ "(${2})</div>\n"
-#~ "<div class='acq-lineitem-summary-extra'>\n"
-#~ "${3} Ordered, ${4} Received, ${7} Invoiced, ${8} Claimed, ${9} "
-#~ "Cancelled</div>\n"
-#~ "<div class='acq-lineitem-summary-extra'>Estimated $${6}, Encumbered $${16}, "
-#~ "Paid $${17}</div>\n"
-#~ "<div class='acq-lineitem-summary-extra'>\n"
-#~ "# ${10} <a style='padding-right: 10px;' class='hidden${20}'  "
-#~ "href='${11}/acq/po/view/${12}'>&#x2318; ${13} ${18}</a>\n"
-#~ "<a style='padding-right: 10px;' class='hidden${21}' "
-#~ "href='${11}/acq/picklist/view/${14}'>&#x2756; ${15}</a></div>"
-#~ msgstr ""
-#~ "<div class='acq-lineitem-summary'><a href='${19}'>${0}</a>, by ${1} "
-#~ "(${2})</div><div class='acq-lineitem-summary-extra'>${3} Պատվիրված, ${4} "
-#~ "Ստացված, ${7} Հաշիվ ներկայացված, ${8} Թիրախավորված, ${9} Չեղյալ "
-#~ "արված</div><div class='acq-lineitem-summary-extra'>Գնահատված $${6}, "
-#~ "Խոչընդոտած $${16}, Վճարված $${17}</div><div class='acq-lineitem-summary-"
-#~ "extra'># ${10} <a style='padding-right: 10px;' class='hidden${20}' "
-#~ "href='${11}/acq/po/view/${12}'>&#x2318; ${13} ${18}</a><a style='padding-"
-#~ "right: 10px;' class='hidden${21}' "
-#~ "href='${11}/acq/picklist/view/${14}'>&#x2756; ${15}</a></div>"
-
-#~ msgid "You have not selected any lineitem details to claim."
-#~ msgstr "Դու չես ընտրել որևէ գծային  նյութի մանրամասներ պահանջ դնելու համառ:"
-
-#~ msgid ""
-#~ "<b>${1}</b> funds propagated for fiscal year ${0} for the selected locations"
-#~ msgstr ""
-#~ "<b>${1}</b> բյուջե տրամադրված հաշվարկային տրվա համար ${0} ընտրված "
-#~ "տեղաբաշխումների համար"
-
-#~ msgid "Could not record all of your applications of distribution forumulas."
-#~ msgstr "Չի կարող գրանցել բաշխված բանաձևերի քո բոլոր կիրառումները:"
-
-#~ msgid "You have not selected any lineitems to claim."
-#~ msgstr "Դու չես ընտրել որևէ գծծային նյութ պահանջ դնելու համառ:"

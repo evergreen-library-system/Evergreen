@@ -7,20 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2019-02-28 16:11-0400\n"
-"PO-Revision-Date: 2017-02-05 17:05+0000\n"
+"POT-Creation-Date: 2019-08-22 13:21-0400\n"
+"PO-Revision-Date: 2019-10-25 20:10+0000\n"
 "Last-Translator: Jane Sandberg <sandbej@linnbenton.edu>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-03-02 05:36+0000\n"
-"X-Generator: Launchpad (build 18888)\n"
-
-#: class.ccs.label:4367 field.sunit.status.label:5774
-#: field.acp.status.label:7485
-msgid "Copy Status"
-msgstr "Статус единицы"
+"X-Launchpad-Export-Date: 2019-10-30 06:18+0000\n"
+"X-Generator: Launchpad (build 469f241f4e73cc0bdffa4e30654052a2af068e06)\n"
 
 #: class.stgu.label:10608
 msgid "User Stage"
@@ -745,9 +740,9 @@ msgstr "Дата/время захвата"
 msgid "Selection List ID"
 msgstr ""
 
-#: class.pupm.label:8003
-msgid "User Permission Map"
-msgstr "Список полномочий пользователя"
+#: field.siss.holding_link_id.label:5718
+msgid "Holding Link ID"
+msgstr ""
 
 #: class.auricnm.label:3152
 msgid "Electronic Access URI to Call Number Map"
@@ -810,9 +805,9 @@ msgstr "Хранение"
 msgid "Event ID"
 msgstr "ID события"
 
-#: field.mcrp.xact.label:7024 field.mb.xact.label:8321
-msgid "Transaction"
-msgstr "Транзакция"
+#: class.cubin.label:7272
+msgid "User Bucket Item Note"
+msgstr "Примечание единицы Отдела пользователя (User Bucket )"
 
 #: field.acqafsb.amount.label:9242
 msgid "Total Spent Balance"
@@ -895,6 +890,10 @@ msgstr "ID циркуляции"
 #: field.cmcts.active.label:11934 field.cmfts.active.label:11959
 msgid "Active?"
 msgstr "Активный?"
+
+#: class.qfpd.label:10921
+msgid "Function Parameter Definition"
+msgstr ""
 
 #: class.ascecm.label:6020
 msgid "Statistical Category Entry Copy Map"
@@ -1620,9 +1619,9 @@ msgstr ""
 msgid "Record ID"
 msgstr "ID Записи"
 
-#: field.siss.holding_link_id.label:5718
-msgid "Holding Link ID"
-msgstr ""
+#: class.cam.label:3013
+msgid "Audience Map"
+msgstr "Список группы"
 
 #: field.sdist.index_summary.label:5586 class.sisum.label:5972
 msgid "Index Issue Summary"
@@ -3498,9 +3497,9 @@ msgstr "Местонахождение"
 msgid "MARC21 Physical Characteristic Value Map"
 msgstr ""
 
-#: class.cam.label:3013
-msgid "Audience Map"
-msgstr "Список группы"
+#: field.rsr.topic_subject.label:10256
+msgid "Topic Subjects (normalized)"
+msgstr "Тематика (стандартная)"
 
 #: field.acqpro.prepayment_required.label:8631
 #: field.acqpo.prepayment_required.label:9471
@@ -4304,10 +4303,9 @@ msgstr "Исполняющий персонал"
 msgid "Invoice Entries"
 msgstr ""
 
-#: field.mp.work_payment.label:8043 field.mbp.work_payment.label:8081
-#: field.mndp.work_payment.label:8115
-msgid "Work Payment Detail"
-msgstr "Детали оплаты труда"
+#: class.pupm.label:8003
+msgid "User Permission Map"
+msgstr "Список полномочий пользователя"
 
 #: class.acqfsb.label:9289
 msgid "Fund Spent Balance"
@@ -4764,9 +4762,9 @@ msgstr ""
 msgid "Department"
 msgstr ""
 
-#: class.cubin.label:7272
-msgid "User Bucket Item Note"
-msgstr "Примечание единицы Отдела пользователя (User Bucket )"
+#: field.mcrp.xact.label:7024 field.mb.xact.label:8321
+msgid "Transaction"
+msgstr "Транзакция"
 
 #: field.acqliat.id.label:9713
 msgid "Alert Text ID"
@@ -5550,11 +5548,9 @@ msgstr "ID атрибута"
 msgid "Resource Attribute Value"
 msgstr "Значение атрибута ресурсов"
 
-#: field.ahr.target.label:6320 field.ahopl.target.label:6470
-#: field.alhr.target.label:6555 field.combahr.target.label:6644
-#: field.aahr.target.label:6703
-msgid "Target Object ID"
-msgstr "ID Целевого объекта"
+#: field.vie.code.label:488
+msgid "Error Code"
+msgstr ""
 
 #: field.acqlisum.claim_count.label:12165
 #: field.acqlisumi.claim_count.label:12186
@@ -6741,10 +6737,6 @@ msgstr ""
 msgid "Call Number Bucket Item"
 msgstr "Шифр единицы Корзины"
 
-#: field.rsr.topic_subject.label:10256
-msgid "Topic Subjects (normalized)"
-msgstr "Тематика (стандартная)"
-
 #: class.aahr.label:6677
 msgid "Aged Hold Request"
 msgstr ""
@@ -7079,9 +7071,11 @@ msgstr ""
 msgid "Item Count"
 msgstr "Подсчёт единицы"
 
-#: field.vie.code.label:488
-msgid "Error Code"
-msgstr ""
+#: field.ahr.target.label:6320 field.ahopl.target.label:6470
+#: field.alhr.target.label:6555 field.combahr.target.label:6644
+#: field.aahr.target.label:6703
+msgid "Target Object ID"
+msgstr "ID Целевого объекта"
 
 #: field.vst.state.label:825 field.atev.state.label:1486
 #: field.aua.state.label:4421 field.aal.state.label:4454
@@ -7495,9 +7489,9 @@ msgstr "Код целевой группы"
 msgid "Rule Name"
 msgstr "Имя правила"
 
-#: field.crad.composite.label:1004
-msgid "Composite attribute?"
-msgstr ""
+#: field.atevdef.env.label:1451
+msgid "Environment Entries"
+msgstr "Окружающая среда  записей"
 
 #: field.rlcd.last_delete_date.label:11698
 msgid "Delete Date/Time"
@@ -8873,9 +8867,10 @@ msgstr ""
 msgid "Assoc ID"
 msgstr ""
 
-#: class.qfpd.label:10921
-msgid "Function Parameter Definition"
-msgstr ""
+#: field.mp.work_payment.label:8043 field.mbp.work_payment.label:8081
+#: field.mndp.work_payment.label:8115
+msgid "Work Payment Detail"
+msgstr "Детали оплаты труда"
 
 #: field.acqpron.create_time.label:8663 field.acqpl.create_time.label:9415
 #: field.acqpo.create_time.label:9461 field.acqpon.create_time.label:9542
@@ -8935,9 +8930,9 @@ msgstr ""
 msgid "Questions"
 msgstr "Вопросы"
 
-#: field.atevdef.env.label:1451
-msgid "Environment Entries"
-msgstr "Окружающая среда  записей"
+#: field.crad.composite.label:1004
+msgid "Composite attribute?"
+msgstr ""
 
 #: field.acqftr.dest_fund.label:8914
 msgid "Destination Fund"
@@ -9054,6 +9049,11 @@ msgstr "Запрос записи для Хранения"
 #: class.aurt.label:8428
 msgid "User Purchase Request Type"
 msgstr ""
+
+#: class.ccs.label:4367 field.sunit.status.label:5774
+#: field.acp.status.label:7485
+msgid "Copy Status"
+msgstr "Статус единицы"
 
 #: field.acqlisum.encumbrance_amount.label:12167
 #: field.acqlisumi.encumbrance_amount.label:12188
@@ -9264,42 +9264,3 @@ msgstr ""
 #: field.au.billable_transactions.label:3688
 msgid "Billable Transactions"
 msgstr "Платежные Сделки"
-
-#~ msgid "Matched Attribute"
-#~ msgstr "Подобранный атрибут"
-
-#~ msgid "Billing Timestamp"
-#~ msgstr "Временная отметка выписанного счета"
-
-#~ msgid "Field Class"
-#~ msgstr "Тип поля"
-
-#~ msgid ""
-#~ "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
-#~ msgstr ""
-#~ "Матрица  циркуляции Субтест модификатора циркуляции Установка модификатора "
-#~ "циркуляции"
-
-#~ msgid "Suffix/Title"
-#~ msgstr "Суффикс/Заглавие"
-
-#~ msgid "Check Out Date/Time"
-#~ msgstr "Дата/Время регистрации выдачи (документов)"
-
-#~ msgid "Test ID"
-#~ msgstr "ID испытаний"
-
-#~ msgid "Keep"
-#~ msgstr "Хранить"
-
-#~ msgid "Thaw Date (if frozen)"
-#~ msgstr "Дата оттаивания (если заморожены)"
-
-#~ msgid "Field Type"
-#~ msgstr "Тип поля"
-
-#~ msgid "Circulation Modifier Subtest ID"
-#~ msgstr "ID Субтестов модификатора циркуляции"
-
-#~ msgid "Circulation Matrix Circulation Modifier Subtest"
-#~ msgstr "Матрица циркуляции  Субтест модификатора циркуляции"

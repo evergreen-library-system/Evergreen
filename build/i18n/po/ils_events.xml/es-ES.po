@@ -7,19 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-12-14 21:52-0400\n"
-"PO-Revision-Date: 2016-11-11 21:44+0000\n"
+"POT-Creation-Date: 2019-08-22 13:22-0400\n"
+"PO-Revision-Date: 2019-10-25 20:10+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-12-16 05:35+0000\n"
-"X-Generator: Launchpad (build 18837)\n"
-
-#: 1621.CONTAINER_COPY_BUCKET_NOT_FOUND:514
-msgid "The requested container_copy_bucket was not found"
-msgstr "No se encontró la container_copy_bucket solicitado"
+"X-Launchpad-Export-Date: 2019-10-30 06:19+0000\n"
+"X-Generator: Launchpad (build 469f241f4e73cc0bdffa4e30654052a2af068e06)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -33,6 +29,10 @@ msgstr "No se encontró la container_user_bucket_item solicitado"
 #: 1598.MONEY_USER_CIRCULATION_SUMMARY_NOT_FOUND:445
 msgid "The requested money_user_circulation_summary was not found"
 msgstr "La copia requerida de money_user_circulation no ha sido encontrada"
+
+#: 1621.CONTAINER_COPY_BUCKET_NOT_FOUND:514
+msgid "The requested container_copy_bucket was not found"
+msgstr "No se encontró la container_copy_bucket solicitado"
 
 #: 1218.ITEM_AGE_PROTECTED:109
 msgid "This item is too new to have a hold placed on it"
@@ -113,6 +113,10 @@ msgstr "No se encontró la action_open_circ_count_by_circ_mod solicitado"
 #: 1589.ACTOR_CARD_NOT_FOUND:418
 msgid "The requested actor_card was not found"
 msgstr "La actor_card solicitada no fue encontrada"
+
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:996
+msgid "The lineitem detail has no owning_lib"
+msgstr "El detalle línea de pedido no tiene owning_lib"
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:475
 msgid "The requested metabib_subject_field_entry was not found"
@@ -209,6 +213,11 @@ msgstr "No se encontró la config_billing_type solicitado"
 #: 1851.ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND:636
 msgid "The requested acq.fund_encumbrance_total was not found"
 msgstr "No se encontró la acq.fund_encumbrance_total solicitado"
+
+#: 8002.OFFLINE_FILE_ERROR:948
+msgid "An offline file or directory could not be created or accessed"
+msgstr ""
+"Un archivo o directorio en línea no pudieron ser creados o se puede acceder"
 
 #: 1529.ACTOR_WORKSTATION_NOT_FOUND:246
 msgid "The requested actor_workstation was not found"
@@ -330,10 +339,6 @@ msgstr "No se encontró la money_collections_tracker solicitado"
 #: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:604
 msgid "An authority record already exists with the requested ARN"
 msgstr "Un registro de autoridad ya existe con el ARN solicitado"
-
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1019
-msgid "The caption/pattern still has dependent issuances"
-msgstr "La foto/patrón aún tiene emisiones dependientes"
 
 #: 5000.PERM_FAILURE:822
 msgid "Permission Denied"
@@ -560,11 +565,6 @@ msgstr "No se encontró el money_cash_payment solicitado"
 #: 1221.ORG_CANNOT_HAVE_VOLS:120
 msgid "The selected location cannot have volumes attached"
 msgstr "La ubicación seleccionada no puede haber volúmenes adjunta"
-
-#: 8002.OFFLINE_FILE_ERROR:948
-msgid "An offline file or directory could not be created or accessed"
-msgstr ""
-"Un archivo o directorio en línea no pudieron ser creados o se puede acceder"
 
 #: 1704.TCN_EXISTS:728
 msgid "A record already exists with the requested TCN value"
@@ -1058,6 +1058,14 @@ msgstr "El usuario intentó establecer su contraseña a un valor débil."
 msgid "A report with the given name and folder already exists"
 msgstr "Un informe con el nombre y la carpeta dado ya existe"
 
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1036
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+msgstr ""
+"Un código de modelo de serie ha sido configurado que no se ajuste a MFHD "
+"normas sobre los campos 853-855."
+
 #: 1705.VOLUME_LABEL_EXISTS:731
 msgid "A volume with the same label, title and owning library exists"
 msgstr ""
@@ -1135,6 +1143,10 @@ msgstr ""
 #: 1000.LOGIN_FAILED:28
 msgid "User login failed"
 msgstr "Iniciar sesión de usuario falló"
+
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1019
+msgid "The caption/pattern still has dependent issuances"
+msgstr "La foto/patrón aún tiene emisiones dependientes"
 
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:684
 msgid "The requested acq.currency_type was not found"
@@ -1320,10 +1332,6 @@ msgstr "Se requiere el pago de una cuota de alquiler de artículos."
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "No se encontró el container_call_number_bucket_item solicitado"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:996
-msgid "The lineitem detail has no owning_lib"
-msgstr "El detalle línea de pedido no tiene owning_lib"
-
 #: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1023
 msgid ""
 "Units cannot be created for the given item because its associated "
@@ -1372,23 +1380,6 @@ msgstr ""
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "No se encontró la action_non_cataloged_circulation solicitado"
 
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1036
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
-msgstr ""
-"Un código de modelo de serie ha sido configurado que no se ajuste a MFHD "
-"normas sobre los campos 853-855."
-
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
 msgid "The requested money_user_summary was not found"
 msgstr "No se encontró el money_user_summary solicitado"
-
-#~ msgid "This requested item is currently on the holds shelf"
-#~ msgstr "El ejmplar solicitado está en la estantería de apartados"
-
-#~ msgid ""
-#~ "The transit on this item may not be aborted due to the state the item is in"
-#~ msgstr ""
-#~ "El tránsito en este artículo no puede ser abortado debido al estado del "
-#~ "artículo,"
