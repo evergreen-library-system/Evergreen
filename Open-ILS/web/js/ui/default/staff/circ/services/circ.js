@@ -1313,18 +1313,17 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
     service.mark_damaged = function(params) {
         if (!params) return $q.when();
         return $uibModal.open({
+            backdrop: 'static',
             templateUrl: './circ/share/t_mark_damaged',
             controller:
                 ['$scope', '$uibModalInstance', 'egCore', 'egBilling', 'egItem',
                 function($scope, $uibModalInstance, egCore, egBilling, egItem) {
                     var doRefresh = params.refresh;
                     
+                    $scope.showBill = params.charge != null && params.circ;
                     $scope.billArgs = {charge: params.charge};
                     $scope.mode = 'charge';
                     $scope.barcode = params.barcode;
-                    if (params.charge && params.charge > 0) {
-                        $scope.applyFine = "apply";
-                    }
                     if (params.circ) {
                         $scope.circ = params.circ;
                         $scope.circ_checkin_time = params.circ.checkin_time();
@@ -1339,12 +1338,10 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                     $scope.btnChargeFees = function() {
                         $scope.mode = 'charge';
                         $scope.billArgs.charge = params.charge;
-                        $scope.applyFine = "apply";
                     }
                     $scope.btnWaiveFees = function() {
                         $scope.mode = 'waive';
                         $scope.billArgs.charge = 0;
-                        $scope.applyFine = "noapply";
                     }
 
                     $scope.cancel = function ($event) { 
@@ -1355,15 +1352,19 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                     }
 
                     var handle_mark_item_damaged = function() {
+                        var applyFines;
+                        if ($scope.showBill)
+                            applyFines = $scope.billArgs.charge ? 'apply' : 'noapply';
+
                         egCore.net.request(
                             'open-ils.circ',
                             'open-ils.circ.mark_item_damaged',
                             egCore.auth.token(), params.id, {
-                                apply_fines: $scope.applyFine,
+                                apply_fines: applyFines,
                                 override_amount: $scope.billArgs.charge,
                                 override_btype: $scope.billArgs.type,
                                 override_note: $scope.billArgs.note,
-                                handle_checkin: !$scope.applyFine
+                                handle_checkin: !applyFines
                         }).then(function(resp) {
                             if (evt = egCore.evt.parse(resp)) {
                                 doRefresh = false;
