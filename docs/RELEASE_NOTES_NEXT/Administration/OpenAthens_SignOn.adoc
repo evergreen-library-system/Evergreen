@@ -136,13 +136,23 @@ implementation partner.
 sample data set)
 |===
 
-Network access
-++++++++++++++
+Network access - server
++++++++++++++++++++++++
 As part of the sign-on process, Evergreen makes a connection to the OpenAthens
 service to transfer details of the user that is signing on. This data does not
 go via the user's browser, to avoid revealing the private API key and to avoid
 the risk of spoofing. You need to open up port 443 outbound in your firewall,
 from your Evergreen server to login.openathens.net.
+
+Network access - web client
++++++++++++++++++++++++++++
+If you restrict internet access for your web client machines, you need to open
+up port 443 outbound in your firewall, from your web clients to the following
+three domains:
+
+* connect.openathens.net
+* login.openathens.net
+* wayfinder.openathens.net
 
 Admin permissions
 +++++++++++++++++

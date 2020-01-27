@@ -16,6 +16,9 @@ If you will be configuring Evergreen to sign users on to OpenAthens:
 
  * Port 443 should be opened _outbound_ in your firewall to allow the
    Evergreen server to connect to https://login.openathens.net.
+ * If you are providing web client machines with restricted internet access, then port 443 should be
+   opened _outbound_ to allow your web clients to connect to https://connect.openathens.net,
+   https://login.openathens.net, and https://wayfinder.openathens.net.
 
 == Web Client Requirements ==
 
