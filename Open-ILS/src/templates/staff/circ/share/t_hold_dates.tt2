@@ -15,7 +15,7 @@
     <hr/>
     <div class="row">
       <div class="col-md-1">
-        <label for="modify_thaw_date" class="sr-only">[% l('Update Activate Email') %]</label>
+        <label for="modify_thaw_date" class="sr-only">[% l('Update Hold Activate Date') %]</label>
         <input id='modify_thaw_date' ng-model="args.modify_thaw_date" type="checkbox"/>
       </div>
       <div class="col-md-4">
@@ -23,13 +23,18 @@
       </div>
       <div class="col-md-7">
         <eg-date-input id='thaw_date'
-          ng-disabled="!args.modify_thaw_date" ng-model="args.thaw_date">
+          ng-disabled="!args.modify_thaw_date" ng-model="args.thaw_date" min-date="minDate">
         </eg-date-input>
+        <p ng-hide="!args.modify_thaw_date">[% l('Setting an activation date will also suspend hold.') %]
+        </p>
+        <p ng-hide="!args.thaw_date_error" class="alert alert-warning">
+          [% l('Activation dates in the past not allowed, resetting to today!') %]
+        </p>
       </div>
     </div>
     <div class="row">
       <div class="col-md-1">
-        <label for="modify_request_time" class="sr-only">[% l('Update Phone Number') %]</label>
+        <label for="modify_request_time" class="sr-only">[% l('Update Request Time') %]</label>
         <input id='modify_request_time' ng-model="args.modify_request_time" type="checkbox"/>
       </div>
       <div class="col-md-4">
@@ -57,7 +62,7 @@
     </div>
     <div class="row">
       <div class="col-md-1">
-        <label for="modify_shelf_expire_time" class="sr-only">[% l('Update SMS Carrier') %]</label>
+        <label for="modify_shelf_expire_time" class="sr-only">[% l('Update Shelf Expire Date') %]</label>
         <input id='modify_shelf_expire_time' ng-model="args.modify_shelf_expire_time" type="checkbox"/>
       </div>
       <div class="col-md-4">
