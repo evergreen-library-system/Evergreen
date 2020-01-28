@@ -86,6 +86,10 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
         itemSvc.add_copies_to_bucket([$scope.args.copyId]);
     }
 
+    $scope.add_records_to_bucket = function() {
+        itemSvc.add_records_to_bucket([$scope.args.recordId], 'biblio');
+    }
+
     $scope.show_in_catalog = function() {
         window.open('/eg/staff/cat/catalog/record/' + $scope.args.recordId + '/catalog', '_blank');
     }
@@ -469,6 +473,17 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
         return cp_id_list;
     }
 
+    function gatherSelectedHoldingsRecords() {
+        var record_id_list = [];
+        angular.forEach(
+            copyGrid.selectedItems(),
+            function (item) {
+                record_id_list.push(item['call_number.record.id']);
+            }
+        )
+        return record_id_list;
+    }
+
     $scope.refreshGridData = function() {
         var chain = $q.when();
         var all_items = itemSvc.copies.map(function(item) {
@@ -489,6 +504,11 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     $scope.add_copies_to_bucket = function() {
         var copy_list = gatherSelectedHoldingsIds();
         itemSvc.add_copies_to_bucket(copy_list);
+    }
+
+    $scope.add_records_to_bucket = function() {
+        var record_list = gatherSelectedHoldingsRecords();
+        itemSvc.add_copies_to_bucket(record_list, 'biblio');
     }
 
     $scope.locateAcquisition = function() {

@@ -224,8 +224,9 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
         });
     }
 
-    service.add_copies_to_bucket = function(copy_list) {
-        if (copy_list.length == 0) return;
+    service.add_copies_to_bucket = function(list, bucket_type) {
+        if (list.length == 0) return;
+        if (!bucket_type) bucket_type = 'copy';
 
         return $uibModal.open({
             templateUrl: './cat/catalog/t_add_to_bucket',
@@ -244,20 +245,21 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
                     'open-ils.actor',
                     'open-ils.actor.container.retrieve_by_class.authoritative',
                     egCore.auth.token(), egCore.auth.user().id(),
-                    'copy', 'staff_client'
+                    bucket_type, 'staff_client'
                 ).then(function(buckets) { $scope.allBuckets = buckets; });
 
                 $scope.add_to_bucket = function() {
                     var promises = [];
-                    angular.forEach(copy_list, function (cp) {
-                        var item = new egCore.idl.ccbi()
+                    angular.forEach(list, function (entry) {
+                        var item = bucket_type == 'copy' ? new egCore.idl.ccbi() : new egCore.idl.cbrebi();
                         item.bucket($scope.bucket_id);
-                        item.target_copy(cp);
+                        if (bucket_type == 'copy') item.target_copy(entry);
+                        if (bucket_type == 'biblio') item.target_biblio_record_entry(entry);
                         promises.push(
                             egCore.net.request(
                                 'open-ils.actor',
                                 'open-ils.actor.container.item.create',
-                                egCore.auth.token(), 'copy', item
+                                egCore.auth.token(), bucket_type, item
                             )
                         );
 
@@ -268,7 +270,7 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
                 }
 
                 $scope.add_to_new_bucket = function() {
-                    var bucket = new egCore.idl.ccb();
+                    var bucket = bucket_type == 'copy' ? new egCore.idl.ccb() : new egCore.idl.cbreb();
                     bucket.owner(egCore.auth.user().id());
                     bucket.name($scope.newBucketName);
                     bucket.description('');
@@ -277,7 +279,7 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
                     return egCore.net.request(
                         'open-ils.actor',
                         'open-ils.actor.container.create',
-                        egCore.auth.token(), 'copy', bucket
+                        egCore.auth.token(), bucket_type, bucket
                     ).then(function(bucket) {
                         $scope.bucket_id = bucket;
                         $scope.add_to_bucket();

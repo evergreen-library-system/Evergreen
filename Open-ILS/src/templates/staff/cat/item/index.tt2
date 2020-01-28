@@ -90,6 +90,7 @@
       </button>
       <ul uib-dropdown-menu class="scrollable-menu dropdown-menu-right">
         <li><a href ng-click="add_copies_to_bucket()">[% l('Add Items to Bucket') %]</a></li>
+        <li><a href ng-click="add_records_to_bucket()">[% l('Add Items to Record Bucket') %]</a></li>
         <li><a href ng-click="show_in_catalog()">[% l('Show in Catalog') %]</a></li>
         <li><a href ng-click="make_copies_bookable()">[% l('Make Items Bookable') %]</a></li>
         <li><a href ng-click="book_copies_now()">[% l('Book Item Now') %]</a></li>
