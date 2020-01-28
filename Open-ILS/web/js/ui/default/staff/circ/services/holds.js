@@ -305,8 +305,13 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
                 angular.forEach(
                     ['thaw_date', 'request_time', 'expire_time', 'shelf_expire_time'], 
                     function(field) {
-                        if (modal_scope.args['modify_' + field]) 
+                        if (modal_scope.args['modify_' + field]) { 
                             val[field] = modal_scope.args[field].toISOString();
+                            if (field === 'thaw_date') {
+                            //If we are setting the thaw_date, freeze the hold.
+                                val['frozen'] = true;
+                            }
+                        }
                     }
                 );
 
@@ -335,6 +340,17 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
                         relay_to_update($scope).then($uibModalInstance.close);
                     }
                     $scope.cancel = function() { $uibModalInstance.dismiss() }
+                    $scope.minDate = new Date();
+                    //watch for changes to the hold dates, and perform validations
+                    $scope.$watch('args', function(newValue,oldValue,scope) {
+                        if (newValue['thaw_date'] && newValue['thaw_date'] < today) {
+                            $scope.args['thaw_date'] = today;
+                            $scope.args.thaw_date_error = true;
+                        }
+                        if (newValue['thaw_date'] && newValue['thaw_date'] > today) {
+                            $scope.args.thaw_date_error = false;
+                        }
+                    }, true);
                 }
             ],
         }).result;
