@@ -775,7 +775,7 @@ function($scope , $q , $routeParams,  egCore , $uibModal , patronSvc , egCirc) {
         setSort : function() {
             return ['set_date'];
         },
-        setQuery : function() {
+        watchQuery : function() {
             return {
                 usr : usr_id, 
                 org_unit : org_ids,
