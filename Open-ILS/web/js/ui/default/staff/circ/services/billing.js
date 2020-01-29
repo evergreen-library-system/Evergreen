@@ -140,8 +140,11 @@ function($uibModal , $q , egCore) {
                 $scope.updateDefaultPrice = function() {
                     var type = billingTypes.filter(function(t) {
                         return t.id() == $scope.billArgs.billingType })[0];
-                    if (type.default_price() && !$scope.billArgs.amount) 
-                        $scope.billArgs.amount = Number(type.default_price());
+                    if (type.default_price()) {
+                        $scope.billArgs.amount = parseFloat(type.default_price()).toFixed(2);
+                    } else {
+                        $scope.billArgs.amount = null;
+                    }
                 }
             }],
             resolve : {
