@@ -69,7 +69,7 @@
       <div class="form-group">
         <label for="bill-dialog-amount" class="control-label col-md-4">[% l('Amount:') %]</label>
         <div class="col-md-8">
-          <input type="number" min="0" step="any" class="form-control" 
+          <input type="string" min="0" step="any" class="form-control" 
             focus-me='focus' ng-required="true" id="bill-dialog-amount"
             ng-model="billArgs.amount"/>
         </div>
