@@ -27,6 +27,7 @@ module.exports = function(config){
       'services/grid.js',
       'services/patron_search.js',
       'services/user-bucket.js',
+      'services/batch_promises.js',
 
       // load app scripts
       'app.js',

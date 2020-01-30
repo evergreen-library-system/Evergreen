@@ -3,7 +3,7 @@
  */
 
 angular.module('egItemStatus', 
-    ['ngRoute', 'ui.bootstrap', 'egCoreMod', 'egUiMod', 'egGridMod', 'egUserMod'])
+    ['ngRoute', 'ui.bootstrap', 'egCoreMod', 'egUiMod', 'egGridMod', 'egUserMod', 'egBatchPromisesMod'])
 
 .filter('boolText', function(){
     return function (v) {
@@ -325,12 +325,12 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
 .controller('ListCtrl', 
        ['$scope','$q','$routeParams','$location','$timeout','$window','egCore',
         'egGridDataProvider','egItem','egUser','$uibModal','egCirc','egConfirmDialog',
-        'egProgressDialog', 'ngToast',
+        'egProgressDialog', 'ngToast', 'egBatchPromises',
 // function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
 //          egGridDataProvider , itemSvc , egUser , $uibModal , egCirc , egConfirmDialog,
 //          egProgressDialog, ngToast) {
     function($scope , $q , $routeParams , $location , $timeout , $window , egCore , egGridDataProvider , itemSvc , egUser , $uibModal , egCirc , egConfirmDialog,
-                 egProgressDialog, ngToast) {
+                 egProgressDialog, ngToast, egBatchPromises) {
     var copyId = [];
     var cp_list = $routeParams.idList;
     if (cp_list) {
@@ -549,7 +549,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
 
         progress_bar = $timeout(egProgressDialog.open, 5000, true, {value: 0, max: fetch_list.length});
 
-        $q.all(fetch_list)
+        egBatchPromises.all(fetch_list)
         .then( function() {
             copyGrid.refresh();
             if (progress_bar) $timeout.cancel(progress_bar);
