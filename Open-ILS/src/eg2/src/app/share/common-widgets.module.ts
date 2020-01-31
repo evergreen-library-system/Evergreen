@@ -16,6 +16,7 @@ import {DateRangeSelectComponent} from '@eg/share/daterange-select/daterange-sel
 import {DateTimeSelectComponent} from '@eg/share/datetime-select/datetime-select.component';
 import {ContextMenuModule} from '@eg/share/context-menu/context-menu.module';
 import {FileReaderComponent} from '@eg/share/file-reader/file-reader.component';
+import {IntervalInputComponent} from '@eg/share/interval-input/interval-input.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import {FileReaderComponent} from '@eg/share/file-reader/file-reader.component';
     DateRangeSelectComponent,
     DateTimeSelectComponent,
     FileReaderComponent,
-    IdlClassTemplateDirective
+    IdlClassTemplateDirective,
+    IntervalInputComponent,
   ],
   imports: [
     CommonModule,
@@ -50,6 +52,7 @@ import {FileReaderComponent} from '@eg/share/file-reader/file-reader.component';
     DateTimeSelectComponent,
     ContextMenuModule,
     FileReaderComponent,
+    IntervalInputComponent,
   ],
 })
 

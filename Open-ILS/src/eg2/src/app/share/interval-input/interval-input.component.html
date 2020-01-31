@@ -1,0 +1,10 @@
+<div class="input-group">
+  <input class="form-control" type="numeric" [(ngModel)]="period" (ngModelChange)="changeListener()" />
+  <select class="form-control" [(ngModel)]="unit" (ngModelChange)="changeListener()">
+    <option value="hours" i18n>hours</option>
+    <option value="days" i18n>days</option>
+    <option value="weeks" i18n>weeks</option>
+    <option value="months" i18n>months</option>
+    <option value="years" i18n>years</option>
+  </select>
+</div>
