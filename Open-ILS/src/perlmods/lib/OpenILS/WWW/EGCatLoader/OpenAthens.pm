@@ -63,6 +63,12 @@ sub perform_openathens_sso_if_required {
         && $U->is_true($openathens_config->{active})
         && $U->is_true($openathens_config->{auto_signon_enabled})
     ) {
+        # Remove scheme and hostname from redirect_to (this may have been set
+        # by the login form, but isn't allowed by the OpenAthens SSO page)
+        if ($redirect_to =~ m#^https?://\Q$ctx->{hostname}\E(.+)#) {
+            $redirect_to = $1;
+        }
+
         my $redirect = $ctx->{opac_root} . '/sso/openathens?redirect_to='
             . uri_escape_utf8($redirect_to);
 
