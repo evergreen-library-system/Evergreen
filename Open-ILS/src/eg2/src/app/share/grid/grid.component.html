@@ -26,7 +26,10 @@
         </div>
       </ng-container>
       <ng-container *ngIf="!dataSource.requestingData">
-        <div class="col-lg-12 text-center alert font-italic font-weight-bold">
+        <div class="col-lg-12 text-center alert alert-danger font-italic font-weight-bold" *ngIf="dataSource.retrievalError">
+          <span i18n>Error Retrieving Results</span>
+        </div>
+        <div class="col-lg-12 text-center alert font-italic font-weight-bold" *ngIf="!dataSource.retrievalError">
           <span i18n>Nothing to Display</span>
         </div>
       </ng-container>

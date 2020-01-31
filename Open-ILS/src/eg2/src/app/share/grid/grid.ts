@@ -1153,6 +1153,7 @@ export class GridDataSource {
     filters: Object;
     allRowsRetrieved: boolean;
     requestingData: boolean;
+    retrievalError: boolean;
     getRows: (pager: Pager, sort: any[]) => Observable<any>;
 
     constructor() {
@@ -1191,6 +1192,7 @@ export class GridDataSource {
 
         // If we have to call out for data, set inFetch
         this.requestingData = true;
+        this.retrievalError = false;
 
         return new Promise((resolve, reject) => {
             let idx = pager.offset;
@@ -1198,14 +1200,18 @@ export class GridDataSource {
                 row => {
                     this.data[idx++] = row;
                     this.requestingData = false;
+                    this.retrievalError = false;
                 },
                 err => {
                     console.error(`grid getRows() error ${err}`);
+                    this.requestingData = false;
+                    this.retrievalError = true;
                     reject(err);
                 },
                 ()  => {
                     this.checkAllRetrieved(pager, idx);
                     this.requestingData = false;
+                    this.retrievalError = false;
                     resolve();
                 }
             );
