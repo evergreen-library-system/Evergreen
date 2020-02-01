@@ -2,6 +2,16 @@
 <eg-staff-banner bannerText="Edit Floating Group" i18n-bannerText>
 </eg-staff-banner>
 
+<div class="row">
+    <div class="col text-right">
+        <a class="btn btn-warning ml-3" routerLink="/staff/admin/server/config/floating_group">
+            <span class="material-icons align-middle">keyboard_return</span>
+            <span class="align-middle" i18n>Return to Floating Groups List</span>
+        </a>
+    </div>
+</div>
+
+
 <div class="col-lg-6 offset-lg-3">
     <eg-fm-record-editor displayMode="inline"
         idlClass="cfg" mode="update" recordId="{{this.currentId}}">
