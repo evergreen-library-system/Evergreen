@@ -25,7 +25,8 @@
 
 <eg-grid
   ng-hide="forbidden"
-  features="-sort,-multisort,-display"
+  features="-sort,-multisort,-display,allowAll"
+  page-size=100
   id-field="id"
   idl-class="au"
   auto-fields="true"

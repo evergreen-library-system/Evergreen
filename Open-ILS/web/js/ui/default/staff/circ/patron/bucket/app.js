@@ -89,6 +89,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
                 var item = new egCore.idl.cubi();
                 item.bucket(bucketSvc.currentBucket.id());
                 item.target_user(rec.id);
+                $scope.removeFromPendingList(rec.id);
                 egCore.net.request(
                     'open-ils.actor',
                     'open-ils.actor.container.item.create', 
@@ -104,7 +105,8 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
                 });
             }
         );
-        $scope.resetPendingList();
+        //re-draw the pending list
+        $scope.resetPendingListQuery();
     }
 
     $scope.openCreateBucketDialog = function() {
@@ -265,7 +267,21 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore , ngTo
     }
 
     $scope.$parent.resetPendingList = $scope.resetPendingList;
-    
+
+    //remove entry from PendingList
+    $scope.removeFromPendingList = function(usr) {
+        const index = bucketSvc.pendingList.indexOf(usr);
+        if (index > -1) {
+            bucketSvc.pendingList.splice(index,1);
+        }
+    }
+    $scope.$parent.removeFromPendingList = $scope.removeFromPendingList;
+
+    $scope.resetPendingListQuery = function() {
+        $scope.gridControls.setQuery({id : bucketSvc.pendingList});
+    }
+    $scope.$parent.resetPendingListQuery = $scope.resetPendingListQuery;
+
     if ($routeParams.id && 
         (!bucketSvc.currentBucket || 
             bucketSvc.currentBucket.id() != $routeParams.id)) {
