@@ -812,9 +812,15 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
 
     // direct the user to the transaction details page
     $scope.showFullDetails = function(all) {
-        if (all[0]) 
+        var lastClicked = $scope.gridControls.contextMenuItem();
+        if (lastClicked) {
+            $location.path('/circ/patron/' + 
+                patronSvc.current.id() + '/bill/' + lastClicked + '/statement');
+        } else if (all[0]) {
             $location.path('/circ/patron/' + 
                 patronSvc.current.id() + '/bill/' + all[0].id + '/statement');
+        }
+            
     }
 
     $scope.activateBill = function(xact) {
