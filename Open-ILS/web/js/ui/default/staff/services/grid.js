@@ -281,6 +281,10 @@ angular.module('egGridMod',
                     return grid.columnsProvider;
                 }
 
+                controls.contextMenuItem = function() {
+                    return $scope.contextMenuItem;
+                }
+
                 // link in the control functions
                 controls.selectedItems = function() {
                     return grid.getSelectedItems()
@@ -711,6 +715,9 @@ angular.module('egGridMod',
                     if(s.hasOwnProperty('item')){ break; }
                     e = e.parentElement;
                 }
+                
+                $scope.contextMenuItem = grid.indexValue(s.item);
+                
                 // select the right-clicked row if it is not already selected (lp1776557):
                 if(!$scope.selected[grid.indexValue(s.item)]){ $event.target.click(); }
 
