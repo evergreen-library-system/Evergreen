@@ -1,5 +1,6 @@
 [[reporter_folders]]
-== Folders ==
+= Folders =
+:toc:
 
 indexterm:[reports, folders]
 
@@ -18,7 +19,7 @@ account.
 image::media/folder-1.png[folder-1]
 
 [[reporter_creating_folders]]
-=== Creating Folders ===
+== Creating Folders ==
 
 
 indexterm:[reports, folders, creating]
@@ -54,7 +55,7 @@ example, _Circulation (BNCLF)_ is shared with the North Coast Library Federation
 If it is not a shared folder there will be nothing after the folder name. You 
 may create as many folders and sub-folders as you like.
 
-=== Managing Folders ===
+== Managing Folders ==
 
 indexterm:[reports, folders, managing]
 

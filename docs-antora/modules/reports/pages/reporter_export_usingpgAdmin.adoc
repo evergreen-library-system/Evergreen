@@ -1,4 +1,5 @@
-== Exporting Report Templates Using phpPgAdmin ==
+= Exporting Report Templates Using phpPgAdmin =
+:toc:
 
 indexterm:[reports, exporting templates]
 
@@ -6,7 +7,7 @@ Once the data is exported. Database Administrators/Systems Administrators can
 easily import this data into the templates folder to make it available in the 
 client.
 
-=== Dump the Entire Reports Template Table ===
+== Dump the Entire Reports Template Table ==
 
 The data exported in this method can create issues importing into a different 
 system if you do not have a matching folder and owner. This is going to export 
@@ -26,7 +27,7 @@ appropriate owner and folder information for the new system.
 . Click _export_ button at the bottom
 . A text file will download to your local system
 
-=== Dump Data with an SQL Statement ===
+== Dump Data with an SQL Statement ==
 
 
 The following statement could be used to grab the data in the folder and dump it 

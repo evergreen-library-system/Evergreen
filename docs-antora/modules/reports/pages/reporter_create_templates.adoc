@@ -1,5 +1,6 @@
 [[reporter_creating_templates]]
-== Creating Templates ==
+= Creating Templates =
+:toc:
 
 indexterm:[reports, creating templates]
 
@@ -34,7 +35,7 @@ create a template are the same every time, but the tables chosen, how the data
 is transformed and displayed, and the filters used will vary depending on your 
 needs.
 
-=== Choosing Report Fields ===
+== Choosing Report Fields ==
 
 indexterm:[reports, creating templates, choosing reports fields]
 
@@ -174,7 +175,8 @@ Report output will sort by the first column.
 
 image::media/create-template-23.png[create-template-23]
 
-= [NOTE] =
+[NOTE]
+======
 Note the _Change Transform_ button in the bottom left hand pane. It has the same 
 function as the upper right _Field Transform_ pane for fields that have already 
 been added.
@@ -183,7 +185,7 @@ image::media/create-template-24.png[create-template-24]
 ======
 
 
-=== Applying Filters ===
+== Applying Filters ==
 
 indexterm:[reports, applying filters]
 
@@ -217,7 +219,7 @@ In this example we are going to use a Base Filter to filter out one library’s
 circulations for a specified time frame. The time frame in the template will be 
 configured so that you can change it each time you run the report.
 
-==== Using Base Filters ====
+=== Using Base Filters ===
 
 indexterm:[reports, applying filters, base filter]
 

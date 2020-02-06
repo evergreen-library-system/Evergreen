@@ -1,63 +1,64 @@
-== Template Terminology ==
+= Template Terminology =
+:toc:
 
-=== Data Types ===
+== Data Types ==
 
 indexterm:[reports, data types]
 
 The information in Evergreen's database can be classified in nine data types, formats that describe the type of data and/or its use.  These were represented by text-only labels in prior versions of Evergreen.  Evergreen 3.0 has replaced the text labels with icons.  When building templates in _Reports_, you will find these icons in the Field Name Pane of the template creation interface.
 
-==== timestamp ====
+=== timestamp ===
 image::media/datatypes_timestamp.png[]
 
 An exact date and time (year, month, day, hour, minutes, and seconds).  Remember to select the appropriate date/time transform. Raw Data includes second and timezone information, which is usually more than is required for a report.
 
-==== link ====
+=== link ===
 
 image::media/datatypes_link.png[]
 
 A link to another database table. Link outputs a number that is a meaningful reference for the database but not of much use to a human user. You will usually want to drill further down the tree in the Sources pane and select fields from the linked table. However, in some instances you might want to use a link field. For example, to count the number of patrons who borrowed items you could do a count on the Patron link data.
 
-==== text ====
+=== text ===
 image::media/datatypes_text.png[]
 
 A field of text. You will usually want to use the Raw Data transform.
 
-==== bool ====
+=== bool ===
 image::media/datatypes_bool.png[]
 
 True or False. Commonly used to filter out deleted item or patron records.
 
-==== org_unit ====
+=== org_unit ===
 image::media/datatypes_orgunit.png[]
 
 Organizational Unit - a number representing a library, library system, or federation. When you want to filter on a library, make sure that the field name is on an org_unit or id data type.
 
-==== id ====
+=== id ===
 
 image::media/datatypes_id.png[]
 
 A unique number assigned by the database to identify each record. These numbers are meaningful references for the database but not of much use to a human user. Use in displayed fields when counting records or in filters.
 
-==== money ====
+=== money ===
 
 image::media/datatypes_money.png[]
 
 A monetary amount.
 
-==== int ====
+=== int ===
 
 image::media/datatypes_int.png[]
 
 Integer (a number)
 
-==== interval ====
+=== interval ===
 
 image::media/datatypes_interval.png[]
 
 A period of time.
 
 [[field_transforms]]
-=== Field Transforms ===
+== Field Transforms ==
 
 indexterm:[reports, field transforms]
 

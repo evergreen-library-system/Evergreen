@@ -1,5 +1,6 @@
 [[viewing_report_output]]
-== Viewing Report Output ==
+= Viewing Report Output =
+:toc:
 
 indexterm:[reports, output]
 

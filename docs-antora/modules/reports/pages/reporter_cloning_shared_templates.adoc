@@ -1,4 +1,5 @@
-== Cloning Shared Templates ==
+= Cloning Shared Templates =
+:toc:
 
 indexterm:[reports, cloning]
 
