@@ -424,7 +424,7 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
                 id: circ.target_copy().id(),
                 barcode: circ.target_copy().barcode(),
                 circ_lib: circ.target_copy().circ_lib().id()
-            }).then($timeout(reset_page,1000)) // reset after each, because rejecting one stops the $q.all() chain
+            }).then(() => $timeout(reset_page,1000)) // reset after each, because rejecting one stops the $q.all() chain
         });
     }
     $scope.mark_missing = function(items) {
