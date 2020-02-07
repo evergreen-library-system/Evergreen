@@ -66,7 +66,7 @@
 
 <ng-template #bucketTemplate
     let-field="field" let-record="record">
-  <span *ngIf="record[field.name]()" i18n>
+  <span *ngIf="record[field.name]()">
     <a href="/eg/staff/cat/bucket/record/view/{{record[field.name]()}}" target="_blank" i18n>Link to bucket</a>
     <span *ngIf="record['type']() !== 1" i18n style="font-style: italic"> (Note: changes to bucket contents may be overwritten by the next carousel update.)</span>
   </span>
