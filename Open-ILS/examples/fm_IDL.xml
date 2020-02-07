@@ -8114,11 +8114,17 @@ SELECT  usr,
 			<field reporter:label="Note" name="note" reporter:datatype="text"/>
 			<field reporter:label="Payment Date/Time" name="payment_ts" reporter:datatype="timestamp"/>
 			<field reporter:label="Payment Type" name="payment_type" reporter:datatype="text"/>
-			<field reporter:label="Aged Circulation" name="xact" reporter:datatype="link"/>
+			<field reporter:label="Transaction" name="xact" reporter:datatype="link"/>
 			<field reporter:label="Voided?" name="voided" reporter:datatype="bool"/>
+			<field reporter:label="Accepting User" name="accepting_usr" reporter:datatype="link"/>
+			<field reporter:label="Cash Drawer" name="cash_drawer" reporter:datatype="link"/>
+			<field name="billing" reporter:datatype="link"/>
 		</fields>
 		<links>
-			<link field="xact" reltype="has_a" key="id" map="" class="acirc"/>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="cash_drawer" reltype="has_a" key="id" map="" class="aws"/>
+			<link field="billing" reltype="has_a" key="id" class="mab"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -8140,11 +8146,15 @@ SELECT  usr,
 			<field reporter:label="Payment Type" name="payment_type" reporter:datatype="text"/>
 			<field reporter:label="Aged Circulation" name="xact" reporter:datatype="link"/>
 			<field reporter:label="Voided?" name="voided" reporter:datatype="bool"/>
+			<field reporter:label="Accepting User" name="accepting_usr" reporter:datatype="link"/>
+			<field reporter:label="Cash Drawer" name="cash_drawer" reporter:datatype="link"/>
+			<field name="billing" reporter:datatype="link"/>
 		</fields>
 		<links>
-			<!-- 
-				'xact' may link to a money.billabl_xact or to a money.aged_circulation.
-			 -->
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="cash_drawer" reltype="has_a" key="id" map="" class="aws"/>
+			<link field="billing" reltype="has_a" key="id" class="mab"/>
 		</links>
 	</class>
 
@@ -8444,7 +8454,7 @@ SELECT  usr,
 			<field reporter:label="Type" name="btype" reporter:datatype="link"/>
 		</fields>
 		<links>
-			<link field="xact" reltype="has_a" key="id" map="" class="acirc"/>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 			<link field="voider" reltype="has_a" key="id" map="" class="au"/>
 			<link field="btype" reltype="has_a" key="id" map="" class="cbt"/>
 		</links>
