@@ -14,7 +14,7 @@
             </div>
           </div>
         </div>
-        <eg-combobox [idlClass]="col.idlFieldDef.class" (onChange)="applyLinkFilter($event, col)" 
+        <eg-combobox [asyncSupportsEmptyTermClick]="col.asyncSupportsEmptyTermClick" [idlClass]="col.idlFieldDef.class" (onChange)="applyLinkFilter($event, col)" 
           i18n-placeholder placeholder="Enter value to filter by"></eg-combobox>
       </div>
     </div>

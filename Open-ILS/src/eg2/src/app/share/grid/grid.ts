@@ -39,6 +39,7 @@ export class GridColumn {
     isFiltered: boolean;
     isMultiSortable: boolean;
     disableTooltip: boolean;
+    asyncSupportsEmptyTermClick: boolean;
     comparator: (valueA: any, valueB: any) => number;
 
     // True if the column was automatically generated.
