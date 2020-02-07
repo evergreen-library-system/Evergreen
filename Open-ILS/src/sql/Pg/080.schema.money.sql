@@ -687,15 +687,33 @@ CREATE OR REPLACE VIEW money.cashdrawer_payment_view AS
 		LEFT JOIN money.bnm_desk_payment p ON (ws.id = p.cash_drawer)
 		LEFT JOIN money.payment_view t ON (p.id = t.id);
 
+-- serves as the basis for the aged payments data.
+CREATE OR REPLACE VIEW money.payment_view_extended AS
+    SELECT p.*,
+        bnm.accepting_usr,
+        bnmd.cash_drawer,
+        maa.billing
+    FROM money.payment_view p
+    LEFT JOIN money.bnm_payment bnm ON bnm.id = p.id
+    LEFT JOIN money.bnm_desk_payment bnmd ON bnmd.id = p.id
+    LEFT JOIN money.account_adjustment maa ON maa.id = p.id;
 
 -- Create 'aged' clones of billing and payment_view tables
 CREATE TABLE money.aged_payment (LIKE money.payment INCLUDING INDEXES);
-ALTER TABLE money.aged_payment ADD COLUMN payment_type TEXT NOT NULL;
+ALTER TABLE money.aged_payment 
+    ADD COLUMN payment_type TEXT NOT NULL,
+    ADD COLUMN accepting_usr INTEGER,
+    ADD COLUMN cash_drawer INTEGER,
+    ADD COLUMN billing BIGINT;
+
+CREATE INDEX aged_payment_accepting_usr_idx ON money.aged_payment(accepting_usr);
+CREATE INDEX aged_payment_cash_drawer_idx ON money.aged_payment(cash_drawer);
+CREATE INDEX aged_payment_billing_idx ON money.aged_payment(billing);
 
 CREATE TABLE money.aged_billing (LIKE money.billing INCLUDING INDEXES);
 
 CREATE OR REPLACE VIEW money.all_payments AS
-    SELECT * FROM money.payment_view 
+    SELECT * FROM money.payment_view_extended
     UNION ALL
     SELECT * FROM money.aged_payment;
 
