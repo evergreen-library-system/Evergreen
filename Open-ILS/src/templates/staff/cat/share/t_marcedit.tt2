@@ -46,7 +46,7 @@
           <button ng-hide="brandNewRecord || Record().deleted() != 't'" class="btn btn-default" ng-click="undeleteRecord()">[% l('Undelete') %]</button>
         </span>
         <span class="btn-group">
-          <button class="btn btn-default" ng-click="showHelp = !showHelp">[% l('Help') %]</button>
+          <button ng-show="!flatEditor.isEnabled" class="btn btn-default" ng-click="showHelp = !showHelp">[% l('Help') %]</button>
         </span>
       </div>
     </div>
