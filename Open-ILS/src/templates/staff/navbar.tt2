@@ -389,8 +389,10 @@
           </li>
           <li class="divider"></li>
           <li>
-            <a href="./cat/catalog/new_bib" target="_self">
-              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            <a href="./cat/catalog/new_bib" target="_self"
+              eg-accesskey="[% l('ctrl+f3') %]"
+              eg-accesskey-desc="[% l('Create New MARC Record') %]">
+              <span class="glyphicon glyphicon-plus aria-hidden="true""></span>
               [% l('Create New MARC Record') %]
             </a>
           </li>
