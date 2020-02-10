@@ -210,6 +210,8 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
     $scope.template_name = '';
     $scope.new_bib_id = 0;
 
+    egCore.strings.setPageTitle(egCore.strings.PAGE_TITLE_CREATE_MARC);
+
     egCore.net.request(
         'open-ils.cat',
         'open-ils.cat.marc_template.types.retrieve'
@@ -257,6 +259,18 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
     
 
 }])
+
+.directive('autoFocus', function($timeout) {
+    return {
+        restrict: 'AC',
+        link: function(_scope, _element) {
+            $timeout(function(){
+                _element[0].focus();
+            }, 0);
+        }
+    };
+})
+
 .controller('CatalogCtrl',
        ['$scope','$routeParams','$location','$window','$q','egCore','egHolds','egCirc','egConfirmDialog','ngToast',
         'egGridDataProvider','egHoldGridActions','egProgressDialog','$timeout','$uibModal','holdingsSvc','egUser','conjoinedSvc',
