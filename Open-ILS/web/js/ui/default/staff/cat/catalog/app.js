@@ -257,6 +257,45 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
     
 
 }])
+
+.directive('autoFocus', function($timeout) {
+    return {
+        restrict: 'AC',
+        link: function(_scope, _element) {
+            $timeout(function(){
+                _element[0].focus();
+            }, 0);
+        }
+    };
+})
+
+.directive('focusOnShow', function($timeout) {
+    return {
+        restrict: 'A',
+        link: function($scope, $element, $attr) {
+            if ($attr.ngShow){
+                $scope.$watch($attr.ngShow, function(newValue){
+                    if(newValue){
+                        $timeout(function(){
+                            $element[0].focus();
+                        }, 0);
+                    }
+                })
+            }
+            if ($attr.ngHide){
+                $scope.$watch($attr.ngHide, function(newValue){
+                    if(!newValue){
+                        $timeout(function(){
+                            $element[0].focus();
+                        }, 0);
+                    }
+                })
+            }
+
+        }
+    };
+})
+
 .controller('CatalogCtrl',
        ['$scope','$routeParams','$location','$window','$q','egCore','egHolds','egCirc','egConfirmDialog','ngToast',
         'egGridDataProvider','egHoldGridActions','egProgressDialog','$timeout','$uibModal','holdingsSvc','egUser','conjoinedSvc',
