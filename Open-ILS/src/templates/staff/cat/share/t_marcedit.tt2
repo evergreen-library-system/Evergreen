@@ -1,10 +1,10 @@
 <div>
   <div ng-show="bre && fastAdd" class="row pad-vert marcfastitemadd">
     <div class="col-md-2">
-      <label><input type="checkbox" ng-model="enable_fast_add"/> [% l('Add Item') %]</label>
+      <label><input ng-show="bre && fastAdd" type="checkbox" ng-model="enable_fast_add" focus-on-show/> [% l('Add Item') %]</label>
     </div>
     <div class="col-md-2">
-      <input id="mfiacn" class="form-control" ng-show="enable_fast_add" type="text" placeholder="[% l('Call Number') %]" ng-model="fast_item_callnumber"/>
+      <input id="mfiacn" class="form-control" ng-show="enable_fast_add" type="text" placeholder="[% l('Call Number') %]" ng-model="fast_item_callnumber" focus-on-show/>
     </div>
     <div class="col-md-2">
       <input id="mfiabc" class="form-control" ng-show="enable_fast_add" type="text" placeholder="[% l('Barcode') %]" ng-model="fast_item_barcode"/>
