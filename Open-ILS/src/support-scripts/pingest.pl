@@ -316,7 +316,7 @@ sub reingest_attributes {
     my $dbh = shift;
     my $list = shift;
     my $sth = $dbh->prepare(<<END_OF_INGEST
-SELECT metabib.reingest_record_attributes(rid := id, prmarc := marc, pattr_list := ?)
+SELECT metabib.reingest_record_attributes(rid := id, prmarc := marc, pattr_list := ?, rdeleted := deleted)
 FROM biblio.record_entry
 WHERE id = ?
 END_OF_INGEST
