@@ -1,0 +1,1 @@
+* Add a global keyboard shortcut for Create MARC Record of Ctrl+F3. https://bugs.launchpad.net/evergreen/+bug/2031040([Bug 2031040])
