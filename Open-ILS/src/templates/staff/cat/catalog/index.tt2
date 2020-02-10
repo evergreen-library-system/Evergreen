@@ -64,6 +64,7 @@
     s.SERIALS_ISSUANCE_SUCCESS_SAVE = "[% l('Issuance saved') %]";
     s.PAGE_TITLE_CATALOG_CONTEXT = "[% l('Catalog') %]";
     s.PAGE_TITLE_BIB_DETAIL = "[% l('Bib [_1]', '{{record_id}}') %]";
+    s.PAGE_TITLE_CREATE_MARC = "[% l('Create MARC Record') %]";
 
     s.HOTKEY_SAVE_RECORD = "[% l('Save Record') %]";
     s.HOTKEY_FOCUS_EDITOR = "[% l('Jump to editor') %]";

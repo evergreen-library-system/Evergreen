@@ -210,6 +210,8 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
     $scope.template_name = '';
     $scope.new_bib_id = 0;
 
+    egCore.strings.setPageTitle(egCore.strings.PAGE_TITLE_CREATE_MARC);
+
     egCore.net.request(
         'open-ils.cat',
         'open-ils.cat.marc_template.types.retrieve'
