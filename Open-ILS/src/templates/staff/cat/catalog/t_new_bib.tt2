@@ -2,7 +2,7 @@
     <div class="col-xs-6">
         <div class="form-group">
             <label for="select-marc-template" class="control-label">[% l('Select MARC template') %]</label>
-            <select id="select-marc-template" class="form-control" ng-model="template_name" ng-options="name as name for name in template_list"></select>
+            <select id="select-marc-template" class="form-control" ng-model="template_name" ng-options="name as name for name in template_list" auto-focus></select>
         </div>
         <button class="btn btn-primary" ng-click="loadTemplate()">[% l('Load') %]</button>
         <button class="btn btn-default" ng-click="setDefaultTemplate()">[% l('Set Workstation Default') %]</button>
