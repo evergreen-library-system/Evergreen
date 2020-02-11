@@ -697,9 +697,9 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
         },
         controller : ['$timeout','$scope','$q','$window','egCore', 'egTagTable',
-                      'egConfirmDialog','egAlertDialog','ngToast','egStrings',
+                      'egConfirmDialog','egAlertDialog','ngToast','egStrings','hotkeys',
             function ( $timeout , $scope , $q,  $window , egCore ,  egTagTable , 
-                       egConfirmDialog , egAlertDialog , ngToast , egStrings) {
+                       egConfirmDialog , egAlertDialog , ngToast , egStrings, hotkeys) {
 
 
                 $scope.onSaveCallback = $scope.onSave;
@@ -718,6 +718,20 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         }
                     }
                 );
+
+                hotkeys.add({
+                    combo: 'ctrl+s',
+                    description: egCore.strings.HOTKEY_SAVE_RECORD,
+                    callback: function(event, hotkey) {
+
+                        event.preventDefault();
+                        if($scope.flatEditor.isEnabled){
+                            $scope.saveFlatTextMARC();
+                        }
+                        $scope.saveRecord();
+                    },
+                    allowIn : ['INPUT','SELECT','TEXTAREA']
+                });
 
                 MARC21.Record.delimiter = '$';
 

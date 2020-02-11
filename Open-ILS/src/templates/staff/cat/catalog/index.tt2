@@ -65,6 +65,8 @@
     s.PAGE_TITLE_CATALOG_CONTEXT = "[% l('Catalog') %]";
     s.PAGE_TITLE_BIB_DETAIL = "[% l('Bib [_1]', '{{record_id}}') %]";
 
+    s.HOTKEY_SAVE_RECORD = "[% l('Save Record') %]";
+
   }])
 </script>
 
