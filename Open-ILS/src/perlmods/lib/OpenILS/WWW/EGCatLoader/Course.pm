@@ -41,6 +41,165 @@ sub load_course {
     return Apache2::Const::OK;
 }
 
+sub load_course_browse {
+    my $self = shift;
+    my $cgi = $self->cgi;
+    my $ctx = $self->ctx;
+    my $e = $self->editor;
+
+    my $browse_results = [];
+
+    # Are we searching? Cool, let's generate some links
+    if ($cgi->param('bterm')) {
+        my $bterm = $cgi->param('bterm');
+        my $qtype = $cgi->param('qtype');
+        # Search term is optional. If it's empty, start at the
+        # beginning. Otherwise, center results on a match.
+        # Regardless, we're listing everything, so retrieve all.
+        my $results;
+        my $instructors;
+        if ($qtype eq 'instructor') {
+            $instructors = $e->json_query({
+                "from" => "acmcu",
+                "select" => {"acmcu" => [
+                    'id',
+                    'usr',
+                    'is_public'
+                ]},
+                # TODO: We need to support the chosen library as well...
+                "where" => {'+acmcu' => 'is_public'}
+            });
+            $results = $e->json_query({
+                "from" => "au",
+                "select" => {"au" => [
+                    'id',
+                    'pref_first_given_name',
+                    'first_given_name',
+                    'pref_second_given_name',
+                    'second_given_name',
+                    'pref_family_name',
+                    'family_name'
+                ]},
+                "order_by" => {'au' => ['pref_family_name', 'family_name']},
+                "where" => {'-and' => [{
+                    "id" => { "in" => {
+                        "from" => "acmcu",
+                        "select" => {
+                            "acmcu" => ['usr']
+                        },
+                        "where" => {'-and' => [
+                            {'+acmcu' => 'is_public'},
+                            {"course" => { "in" =>{
+                                "from" => "acmc",
+                                "select" => {
+                                    "acmc" => ['id']
+                                },
+                                "where" => {'-not' => [{'+acmc' => 'is_archived'}]}
+                            }}}
+                        ]}
+                    }}
+                }]}
+            });
+        } else {
+            $results = $e->json_query({
+                "from" => "acmc",
+                "select" => {"acmc" => [
+                    'id',
+                    'name',
+                    'course_number',
+                    'is_archived',
+                    'owning_lib'
+                ]},
+                "order_by" => {"acmc" => [$qtype]},
+                # TODO: We need to support the chosen library as well...
+                "where" => {'-not' => {'+acmc' => 'is_archived'}}
+            });
+        }
+        my $bterm_match = 0;
+        for my $result(@$results) {
+            my $value_exists = 0;
+            my $rqtype = $qtype;
+            my $entry = {
+                'value' => '',
+                'results_count' => 0,
+                'match' => 0
+            };
+
+            if ($qtype eq 'instructor') {
+                # Put together the name
+                my $name_str = '';
+                if ($result->{'pref_family_name'}) {
+                    $name_str = $result->{'pref_family_name'} . ", ";
+                } elsif ($result->{'family_name'}) {
+                    $name_str = $result->{'family_name'} . ", ";
+                }
+
+                if ($result->{'pref_first_given_name'}) {
+                    $name_str .= $result->{'pref_first_given_name'};
+                } elsif ($result->{'first_given_name'}) {
+                    $name_str .= $result->{'first_given_name'};
+                }
+
+                if ($result->{'pref_second_given_name'}) {
+                    $name_str .= " " . $result->{'pref_second_given_name'};
+                } elsif ($result->{'second_given_name'}) {
+                    $name_str .= " " . $result->{'second_given_name'};
+                }
+
+                $result->{$rqtype} = $name_str;
+
+                # Get an accurate count of matching courses
+                for my $instructor(@$instructors) {
+                    if ($instructor->{'usr'} eq $result->{'id'}) {
+                        $entry->{'results_count'} += 1;
+                        last;
+                    }
+                }
+            } else {
+                $entry->{'results_count'} += 1;
+            }
+
+            for my $existing_entry(@$browse_results) {
+                if ($existing_entry->{'value'} eq $result->{$rqtype} && $value_exists eq 0) {
+                    $value_exists = 1;
+                    $existing_entry->{'results_count'} += 1;
+                    last;
+                }
+            }
+
+            if ($value_exists eq 0) {
+                # For Name/Course Number browse queries...
+                if ($bterm_match eq 0) {
+                    if ($result->{$qtype} =~ m/^$bterm./ || $result->{$qtype} eq $bterm) {
+                        $bterm_match = 1;
+                        $entry->{'match'} = 1;
+                    }
+                }
+                $entry->{'value'} = $result->{$rqtype};
+                push @$browse_results, $entry;
+            }
+        }
+        # Feels a bit hacky, but we need the index of the matching entry
+        my $match_idx = 0;
+        if ($bterm_match) {
+            for my $i (0..$#$browse_results) {
+                if ($browse_results->[$i]->{'match'}) {
+                    $match_idx = $i;
+                    last;
+                }
+            }
+        }
+
+        for my $i(0..$#$browse_results) {
+            $browse_results->[$i]->{'browse_index'} = $i;
+        }
+        $ctx->{match_idx} = $match_idx;
+        $ctx->{browse_results} = $browse_results;
+    }
+
+    return Apache2::Const::OK;
+}
+
 sub load_cresults {
     my $self = shift;
     my %args = @_;

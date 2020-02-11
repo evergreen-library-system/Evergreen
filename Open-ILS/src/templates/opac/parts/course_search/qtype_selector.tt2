@@ -1,8 +1,17 @@
-[%  query_types = [
+[% query_types = [
     {value => "name", label => l("Title"), plural_label => l("Titles"), browse => 1},
-    {value => "instructor", label => l("Instructor"), plural_label => l('Instructors')},
-    {value => "course_number", label => l("Course Number")}
+    {value => "course_number", label => l("Course Number"), plural_label => l('Course Numbers'), browse => 1}
 ];
+
+IF ctx.get_org_setting(
+    CGI.param('locg'), 'circ.course_materials_browse_by_instructor');
+query_types.push({
+    value => "instructor", 
+    label => l("Instructor"),
+    plural_label => l('Instructors'), 
+    browse => 1},
+);
+END;
 -%]
 <select name="[% name || 'qtype' %]"[% IF id; ' id="'; id ; '"' ; END -%]
     title="[% l('Select query type:') %]">

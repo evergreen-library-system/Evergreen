@@ -71,6 +71,21 @@ VALUES (
         'coust',
         'description'
     )
+), (
+    'circ',
+    'circ.course_materials_browse_by_instructor', 'bool',
+    oils_i18n_gettext(
+        'circ.course_materials_browse_by_instructor',
+        'Allow users to browse Courses by Instructor',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'circ.course_materials_browse_by_instructor',
+        'If enabled, the Org Unit will allow OPAC users to browse Courses by instructor name.'
+        'coust',
+        'description'
+    )
 );
 
 COMMIT;
