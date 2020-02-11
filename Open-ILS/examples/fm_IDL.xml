@@ -9627,7 +9627,7 @@ SELECT  usr,
 			<field reporter:label="Creation Time" name="create_time" reporter:datatype="timestamp" />
 			<field reporter:label="Edit Time" name="edit_time" reporter:datatype="timestamp" />
 			<field reporter:label="Provider" name="provider" reporter:datatype="link" />
-			<field reporter:label="State" name="state" reporter:datatype="text" />
+			<field reporter:label="Status" name="state" reporter:datatype="link" />
 			<field reporter:label="Ordering Agency" name="ordering_agency" reporter:datatype="org_unit" />
 			<field reporter:label="Creator" name="creator" reporter:datatype="link" />
 			<field reporter:label="Editor" name="editor" reporter:datatype="link" />
@@ -9644,6 +9644,7 @@ SELECT  usr,
 			<field reporter:label="PO Items" name="po_items" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
+			<link field="state" reltype="has_a" key="id" map="" class="acqpostlbl"/>
 			<link field="owner" reltype="has_a" key="id" map="" class="au"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
@@ -9678,7 +9679,7 @@ SELECT  usr,
 			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Edit Time" name="edit_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Provider" name="provider" reporter:datatype="link"/>
-			<field reporter:label="State" name="state" reporter:datatype="text"/>
+			<field reporter:label="Status" name="state" reporter:datatype="text"/>
 			<field reporter:label="Order Date" name="order_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Cancel Reason" name="cancel_reason" reporter:datatype="link"/>
@@ -9784,7 +9785,7 @@ SELECT  usr,
 			<field reporter:label="Evergreen Bib ID" name="eg_bib_id" reporter:datatype="link" />
 			<field reporter:label="Source Label" name="source_label" reporter:datatype="text" />
 			<field reporter:label="Expected Receive Date" name="expected_recv_time" reporter:datatype="timestamp" />
-			<field reporter:label="State" name="state" reporter:datatype="text" />
+			<field reporter:label="Status" name="state" reporter:datatype="link" />
 			<field reporter:label="Creator" name="creator" reporter:datatype="link" />
 			<field reporter:label="Editor" name="editor" reporter:datatype="link" />
 			<field reporter:label="Claim Policy" name="claim_policy" reporter:datatype="link" />
@@ -9800,6 +9801,7 @@ SELECT  usr,
 			<field reporter:label="Order Summary" name="order_summary" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
+			<link field="state" reltype="has_a" key="id" map="" class="jubstlbl"/>
 			<link field="selector" reltype="has_a" key="id" map="" class="au"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
@@ -9845,7 +9847,7 @@ SELECT  usr,
 			<field reporter:label="MARC" name="marc" reporter:datatype="text"/>
 			<field reporter:label="Evergreen Bib ID" name="eg_bib_id" reporter:datatype="link"/>
 			<field reporter:label="Source Label" name="source_label" reporter:datatype="text"/>
-			<field reporter:label="State" name="state" reporter:datatype="text"/>
+			<field reporter:label="Status" name="state" reporter:datatype="text"/>
 			<field reporter:label="Claim Policy" name="claim_policy" reporter:datatype="link"/>
 			<field reporter:label="Cancel Reason" name="cancel_reason" reporter:datatype="link"/>
 			<field reporter:label="Estimated Unit Price" name="estimated_unit_price" reporter:datatype="money" />
@@ -11873,6 +11875,33 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+
+	<class id="jubstlbl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::li_state_label" oils_persist:tablename="acq.li_state_label" oils_persist:readonly="true" reporter:label="Line Item State Labels" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id">
+			<field reporter:label="State ID" reporter:selector="label" name="id" reporter:datatype="text"/>
+			<field reporter:label="State Label" name="label" oils_persist:i18n="true" reporter:datatype="text"/>
+		</fields>
+	        <links/>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="acqpostlbl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::po_state_label" oils_persist:tablename="acq.po_state_label" oils_persist:readonly="true" reporter:label="PO State Labels">
+		<fields oils_persist:primary="id">
+			<field reporter:label="State ID" reporter:selector="label" name="id" reporter:datatype="text"/>
+			<field reporter:label="State Label" name="label" oils_persist:i18n="true" reporter:datatype="text"/>
+		</fields>
+        	<links/>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
 
 	<class id="rhcrpb" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib" oils_persist:readonly="true" reporter:core="true" reporter:label="Hold/Copy Ratio per Bib">
 		<oils_persist:source_definition><![CDATA[

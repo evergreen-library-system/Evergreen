@@ -2585,4 +2585,28 @@ CREATE OR REPLACE VIEW acq.lineitem_summary AS
 
         FROM acq.lineitem AS li;
 
+
+CREATE VIEW acq.li_state_label AS
+  SELECT *
+  FROM (VALUES
+          ('new', oils_i18n_gettext('new', 'New', 'jubstlbl', 'label')),
+          ('selector-ready', oils_i18n_gettext('selector-ready', 'Selector-Ready', 'jubstlbl', 'label')),
+          ('order-ready', oils_i18n_gettext('order-ready', 'Order-Ready', 'jubstlbl', 'label')),
+          ('approved', oils_i18n_gettext('approved', 'Approved', 'jubstlbl', 'label')),
+          ('pending-order', oils_i18n_gettext('pending-order', 'Pending-Order', 'jubstlbl', 'label')),
+          ('on-order', oils_i18n_gettext('on-order', 'On-Order', 'jubstlbl', 'label')),
+          ('received', oils_i18n_gettext('received', 'Received', 'jubstlbl', 'label')),
+          ('cancelled', oils_i18n_gettext('cancelled', 'Cancelled', 'jubstlbl', 'label'))
+       ) AS t (id,label);
+
+CREATE VIEW acq.po_state_label AS
+  SELECT *
+  FROM (VALUES
+          ('new', oils_i18n_gettext('new', 'New', 'acqpostlbl', 'label')),
+          ('pending', oils_i18n_gettext('pending', 'Pending', 'acqpostlbl', 'label')),
+          ('on-order', oils_i18n_gettext('on-order', 'On-Order', 'acqpostlbl', 'label')),
+          ('received', oils_i18n_gettext('received', 'Received', 'acqpostlbl', 'label')),
+          ('cancelled', oils_i18n_gettext('cancelled', 'Cancelled', 'acqpostlbl', 'label'))
+       ) AS t (id,label);
+
 COMMIT;
