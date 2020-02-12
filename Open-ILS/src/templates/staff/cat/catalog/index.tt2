@@ -67,6 +67,7 @@
     s.PAGE_TITLE_CREATE_MARC = "[% l('Create MARC Record') %]";
 
     s.HOTKEY_SAVE_RECORD = "[% l('Save Record') %]";
+    s.HOTKEY_FOCUS_EDITOR = "[% l('Jump to editor') %]";
 
   }])
 </script>
