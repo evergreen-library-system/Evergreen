@@ -1,11 +1,12 @@
 * xref:circulation:introduction.adoc[Circulation]
-** xref:circulation:circulating_items_web_client.adoc[]
-** xref:circulation:basic_holds.adoc[]
-** xref:circulation:advanced_holds.adoc[]
-** xref:circulation:booking.adoc[]
-** xref:circulation:circulation_patron_records_web_client.adoc[]
-** xref:admin:patron_self_registration.adoc[]
-** xref:circulation:triggered_events.adoc[]
-** xref:circulation:offline_circ_webclient.adoc[]
-** xref:circulation:self_check.adoc[]
+** xref:circulation:circulating_items_web_client.adoc[Circulating Items]
+** xref:circulation:basic_holds.adoc[Holds Management]
+** xref:circulation:booking.adoc[Booking Module]
+** xref:circulation:circulation_patron_records_web_client.adoc[Circulation -
+Patron Record]
+** xref:admin:patron_self_registration.adoc[Patron Self-Registration
+Administration]
+** xref:circulation:triggered_events.adoc[Triggered Events and Notices]
+** xref:circulation:offline_circ_webclient.adoc[Offline Circulation]
+** xref:circulation:self_check.adoc[Self Checkout]
 

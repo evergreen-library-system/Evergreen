@@ -1,4 +1,5 @@
-== Routing Lists ==
+= Routing Lists =
+:toc:
 
 Routing lists enable you to designate specific users and/or departments that serial items need to be routed to upon receiving.
 

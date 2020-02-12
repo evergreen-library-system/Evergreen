@@ -1,4 +1,5 @@
 = User buckets =
+:toc:
 
 == Introduction ==
 indexterm:[patron buckets]

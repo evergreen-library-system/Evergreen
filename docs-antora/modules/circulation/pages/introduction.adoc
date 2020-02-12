@@ -1,4 +1,5 @@
-== Introduction ==
+= Introduction =
+:toc:
 Use this section for understanding the circulation procedures in the Evergreen
 system.
 

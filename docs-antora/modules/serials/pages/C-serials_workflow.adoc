@@ -1,4 +1,5 @@
-== Serials Module ==
+= Serials Module =
+:toc:
 
 The Serials Module can be used to create subscriptions, distributions, streams, and prediction patterns.  As well as to generate predictions and receive issues as they come in to the library.
 
@@ -14,7 +15,7 @@ To access the Serials Module, go to a serials record in the catalog, and click o
 image::media/serials_sub0.PNG[]
 
 
-=== Create a Subscription ===
+== Create a Subscription ==
 
 . From a bibliographic record, go to *Serials->Manage Subscriptions*, view the _Manage Subscriptions_ tab. 
 . Within the _Manage Subscriptions_ tab, create a new subscription by clicking *New Subscription*.  The subscription editor will appear:
@@ -36,11 +37,11 @@ NOTE: After creating a subscription, you can use the Actions menu to take a vari
 image::media/serials_sub1.PNG[]
 
 
-=== Create and Manage Predictions ===
+== Create and Manage Predictions ==
 
 From the _Manage Predictions_ tab you can create a new prediction pattern from scratch, use an existing pattern template, or use an existing pattern template as the basis for a new prediction pattern.
 
-==== Predict Issues Using a New Prediction Pattern ====
+=== Predict Issues Using a New Prediction Pattern ===
 . Within the _Manage Predictions_ tab, _Select [a] subscription_ to work on from the drop down menu.
 . To create a new prediction pattern, click *Add New*.
 .. The box next to *Active* will be checked by default.
@@ -73,7 +74,7 @@ image::media/serials_sub3.PNG[]
 image::media/serials_sub4.PNG[]
 
 
-==== Predict Issues Using a Prediction Pattern Template ====
+=== Predict Issues Using a Prediction Pattern Template ===
 . Within the _Manage Predictions_ tab, *Select [a] subscription* to work on from the drop down menu.
 . _Select a template_ from the drop down menu that appears under the Add New button and click *Create from Template*.  The pattern information will appear below the drop down menu.
 
@@ -97,7 +98,7 @@ image::media/serials_sub5.PNG[]
 . Evergreen will generate the predictions and bring you to the _Manage Issues_ tab to review the predicted issues.
 
 
-==== Predict Issues Using a Prediction Pattern from a Bibliographic and/or MFHD Record ====
+=== Predict Issues Using a Prediction Pattern from a Bibliographic and/or MFHD Record ===
 Evergreen can also generate a prediction pattern from existing MFHD records attached to a serials record and from MFHD patterns embedded directly in the bibliographic record.
 
 . Within the _Manage Predictions_ tab, *Select [a] subscription* to work on from the drop down menu.
@@ -128,7 +129,7 @@ image::media/serials_sub7.PNG[]
 . Evergreen will generate the predictions and bring you to the _Manage Issues_ tab to review the predicted issues.
 
 
-==== Manage Issues ====
+=== Manage Issues ===
 After generating predictions in the _Manage Predictions_ tab, you will see a list of the predicted issues in the Manage Issues tab.  A variety of actions can be taken in this tab, including receiving issues, predicting new issues, adding special issues.
 
 

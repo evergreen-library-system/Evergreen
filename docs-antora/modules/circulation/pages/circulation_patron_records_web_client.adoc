@@ -63,11 +63,11 @@ image::media/circulation_patron_records-2_web_client.png[circulation_patron_reco
 
 The _Patron Search_ button on the upper right may be used to resume searching for patrons.
 
-=== Retrieve Recent Patrons ===
+== Retrieve Recent Patrons ==
 
 indexterm:[patrons, retrieving recent]
 
-==== Setting up Retrieve Recent Patrons ====
+=== Setting up Retrieve Recent Patrons ===
 
 * This feature must be configured in the _Library Settings Editor_
 (_Administration -> Local Administration -> Library Settings Editor_). The
@@ -79,7 +79,7 @@ patrons via a new _Circulation -> Retrieve Recent Patrons_ menu entry.
 ** The default value is 1 for backwards compatibility. (The _Circulation ->
 Retrieve Last Patron_ menu entry will be available.)
 
-==== Retrieving Recent Patrons ====
+=== Retrieving Recent Patrons ===
 * Once the library setting has been configured to a number greater than 1, the
 option Retrieve Recent Patrons will appear below the Retrieve Last patron
 option in the Circulation drop-down from the Menu Bar (_Circulation ->
@@ -131,7 +131,7 @@ that is not in the default patron record.
 Date_ button will work, since the permission group determines the expiration date.
 ============================================================================
 
-==== Email field ====
+=== Email field ===
 
 indexterm:[patrons,email addresses]
 indexterm:[email]
@@ -143,7 +143,7 @@ are allowed here or not, ask your system administrator to change the
 `ui.patron.edit.au.email.regex` library setting.
 
 
-=== Patron Self-Registration ===
+== Patron Self-Registration ==
 *Abstract*
 
 Patron Self-Registration allows patrons to initiate registration for a library account through the OPAC.  Patrons can fill out a web-based form with basic information that will be stored as a “pending patron” in Evergreen.  Library staff can review pending patrons in the staff-client and use the pre-loaded account information to create a full patron account.  Pending patron accounts that are not approved within a configurable amount of time will be automatically deleted.  
@@ -170,7 +170,7 @@ image::media/patron_self_registration2.jpg[Patron Self-Registration form]
 
 
 [[updating_patron_information]] 
-=== Updating Patron Information ===
+== Updating Patron Information ==
 
 indexterm:[patrons, updating]
 
@@ -330,7 +330,7 @@ A notice appears when a staff person tries to checkout an item to blocked
 patrons, but staff may be given permissions to override blocks.
 
 
-=== Staff-Generated Messages ===
+== Staff-Generated Messages ==
 
 [[staff_generated_messages]]
 indexterm:[patrons, messages]
@@ -343,7 +343,7 @@ There are several types of messages available for staff to leave notes on patron
 
 *Staff-Generated Penalties/Messages*: These messages are added via the _Messages_ button in the patron record. They can be a note, alert or block. Staff initials can be required. (See the section <<staff_generated_penalties_web_client,Staff-Generated Penalties/Messages>> for more.)
 
-=== Patron Alerts ===
+== Patron Alerts ==
 
 [[circulation_patron_alerts]]
 indexterm:[patrons, Alerts]
@@ -437,14 +437,14 @@ on the right of each note.
 
 image::media/circulation_patron_records-26_web_client.png[circulation_patron_records 26]
 
-=== Staff-Generated Penalties/Messages ===
+== Staff-Generated Penalties/Messages ==
 
 [[staff_generated_penalties_web_client]]
 To access this feature, use the _Messages_ button in the patron record.
 
 image::media/staff-penalties-1_web_client.png[Messages screen]
 
-==== Add a Message ====
+=== Add a Message ===
 
 Click *Apply Penalty/Message* to begin the process of adding a message to the patron.
 
@@ -464,7 +464,7 @@ The message should now be visible in the _Staff-Generated Penalties/Messages_ li
 
 image::media/staff-penalties-3_web_client.png[[Messages on a record]
 
-==== Modify a Message ====
+=== Modify a Message ===
 
 Messages can be edited by staff after they are created. 
 
@@ -478,7 +478,7 @@ To change the type of message, click on *Note*, *Alert*, *Block* to select the n
 
 image::media/staff-penalties-6_web_client.png[Modified message in the list]
 
-==== Archive a Message ====
+=== Archive a Message ===
 
 Messages which are no longer current can be archived by staff. This action will remove any alerts or blocks associated with the message, but retains the information contained there for future reference.
 
@@ -490,7 +490,7 @@ image::media/staff-penalties-7_web_client.png[Archived messages]
 
 Archived messages will be shown in the section labelled _Archived Penalties/Messages_. To view messages, click *Retrieve Archived Penalties*. By default, messages archived within the past year will be retrieved. To retrieve messages from earlier dates, change the start date to the desired date before clicking *Retrieve Archived Penalties*.
 
-==== Remove a Message ====
+=== Remove a Message ===
 
 Messages which are no longer current can be removed by staff.  This action removes any alerts or blocks associated with the message and deletes the information from the system.
 
@@ -499,7 +499,7 @@ image::media/staff-penalties-4_web_client.png[[Actions menu]
 Click to select the message to be removed, then click _Actions_ -> _Remove Penalty/Message_. This menu can also be accessed by right-clicking in the message area.
 
 
-=== User Buckets ===
+== User Buckets ==
 
 User Buckets allow staff to batch delete and make batch modifications to user accounts in Evergreen. Batch modifications can be made to selected fields in the patron account:
 
@@ -516,7 +516,7 @@ Batch modifications and deletions can be rolled back or reversed, with the excep
 
 User accounts can be added to User Buckets by scanning individual user barcodes or by uploading a file of user barcodes directly in the User Bucket interface.  They can also be added to a User Bucket from the Patron Search screen.  Batch changes and batch edit sets are tied to the User Bucket itself, not to the login of the bucket owner.
 
-==== Create a User Bucket ====
+=== Create a User Bucket ===
 *To add users to a bucket via the Patron Search screen:*
 
 . Go to *Search->Search for Patrons*.
@@ -553,7 +553,7 @@ image::media/userbucket3.PNG[]
 . Select the user accounts that you want to add to the bucket by checking the box next to each user row or by using the CTRL or SHIFT key on your keyboard to select multiple users.
 . Go to *Actions->Add To Bucket* or right-click on a selected user account to view the _Actions_ menu and select *Add To Bucket*.  The user accounts will move to the Bucket View tab and are now in the selected User Bucket.
 
-==== Batch Edit All Users ====
+=== Batch Edit All Users ===
 To batch edit all users in a user bucket:
 
 . Go to *Circulation->User Buckets* and select the *Bucket View* tab.
@@ -575,7 +575,7 @@ To batch edit all users in a user bucket:
 
 image::media/userbucket4.PNG[]
 
-==== Batch Modify Statistical Categories ====
+=== Batch Modify Statistical Categories ===
 To batch modify statistical categories for all users in a bucket:
 
 . Go to *Circulation->User Buckets* and select the *Bucket View* tab.
@@ -589,7 +589,7 @@ To batch modify statistical categories for all users in a bucket:
 
 image::media/userbucket12.PNG[]
 
-==== Batch Delete Users ====
+=== Batch Delete Users ===
 To batch delete users in a bucket:
 . Go to *Circulation->User Buckets* and select the *Bucket View* tab.
 . Click on *Buckets* and select the bucket you want to modify from the list of existing buckets.
@@ -602,7 +602,7 @@ NOTE: Batch deleting patrons from a user bucket does not use the Purge User func
 
 image::media/userbucket7.PNG[]
 
-==== View Batch Changes ====
+=== View Batch Changes ===
 
 . The batch changes that have been made to User Buckets can be viewed by going to *Circulation->User Buckets* and selecting the *Bucket View* tab.
 . Click *Buckets* to select an existing bucket.
@@ -611,7 +611,7 @@ image::media/userbucket7.PNG[]
 
 image::media/userbucket8.PNG[]
 
-==== Roll Back Batch Changes ====
+=== Roll Back Batch Changes ===
 
 . Batch Changes and Batch Deletions can be rolled back or reversed by going to *Circulation->User Buckets* and selecting the *Bucket View* tab.
 . Click *Buckets* to select an existing bucket.
@@ -623,14 +623,14 @@ image::media/userbucket10.png[]
 
 image::media/userbucket9.PNG[]
 
-==== Sharing Buckets ====
+=== Sharing Buckets ===
 If a User Bucket has been made Staff Shareable, it can be retrieved via bucket ID by another staff account.  The ID for each bucket can be found at the end of the URL for the bucket.  For example, in the screenshot below, the bucket ID is 32.
 
 image::media/userbucket11.PNG[]
 
 A shared bucket can be retrieved by going to *Circulation->User Buckets* and selecting the *Bucket View* tab.  Next, click *Buckets* and select *Shared Bucket*.  A dialog box called _Load Shared Bucket by Bucket ID_ will appear.  Enter the ID of the bucket you wish to retrieve and click *Load Bucket*.  The shared bucket will load in the Bucket View tab.
 
-==== Permissions ====
+=== Permissions ===
 All permissions must be granted at the organizational unit that the workstation is registered to or higher and are checked against the users' Home Library at when a batch modification or deletion is executed.
 
 Permissions for Batch Edits:

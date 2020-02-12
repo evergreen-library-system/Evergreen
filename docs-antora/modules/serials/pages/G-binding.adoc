@@ -1,4 +1,5 @@
-== Binding Issues ==
+= Binding Issues =
+:toc:
 
 *Apply a binding template:*
 

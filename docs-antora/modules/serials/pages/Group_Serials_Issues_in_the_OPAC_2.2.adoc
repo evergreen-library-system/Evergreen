@@ -1,11 +1,12 @@
-== Group Serials Issues in the Template Toolkit OPAC ==
+= Group Serials Issues in the Template Toolkit OPAC =
+:toc:
 
 In previous versions of Evergreen, issues of serials displayed in a list ordered by publication date.  The list could be lengthy if the library had extensive holdings of a serial.  
 Using the Template Toolkit OPAC that is available in version 2.2, you can group issues of serials in the OPAC by chronology or enumeration. For example, you might group issues by date published or by volume. Users can expand these hyperlinked groups to view holdings of specific issues.  The result is a clean, easy-to-navigate interface for viewing holdings of serials with a large quantity of issues.  
 
 NOTE: This feature is only available in the Template Toolkit OPAC.
 
-=== Administration ===
+== Administration ==
 
 Enable the following organizational unit settings to use this feature:
  
@@ -18,7 +19,7 @@ Enable the following organizational unit settings to use this feature:
 . Select the value, *True*, to view a compressed holdings statement.
 . Click *Update Setting*. 
 
-=== Displaying Issues in the OPAC ===
+== Displaying Issues in the OPAC ==
 
 Your library system has a subscription to the periodical, _Bon Appetit_.  The serials librarian has determined that the issues at the Forest Falls branch should display in the OPAC by month and year.  The issues at the McKinley branch should display by volume and number.  The serials librarian will create two distributions for the serial that will include these groupings.
 

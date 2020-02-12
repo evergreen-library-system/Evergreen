@@ -1,6 +1,7 @@
-== Offline Circulation ==
+= Offline Circulation =
+:toc:
 
-=== Introduction ===
+== Introduction ==
 
 Evergreen's Offline Circulation interface is designed to log transactions during a network or server outage.  Transactions can be uploaded and processed once connectivity is restored.
 
@@ -8,7 +9,7 @@ Offline Circulation in the Web Staff Client relies on the use of web service wor
 
 The web service workers will refresh the cache every 24 hours under normal use.  Offline Circulation information is stored via IndexedDB. 
 
-=== Using Offline Circulation ===
+== Using Offline Circulation ==
 
 The Offline Circulation interface can be found by navigating to *Circulation -> Offline Circulation*.
 
@@ -28,7 +29,7 @@ image::media/offline_logout_warning.png[Logout warning]
 
 This warning is not network-aware and it will appear regardless of network connection state.  You must be logged out to record offline transactions.  If you see this warning and wish to record offline transactions, click *Proceed* in order to log out.
 
-=== Checkout ===
+== Checkout ==
 
 To check out items in Offline Circulation:
 
@@ -55,7 +56,7 @@ Due Date and Offset values are sticky between the Checkout and Renew tabs, and a
 
 Pre-cataloged item checkout is not available in Offline Circulation.  Any pre-cataloged item checked out through Offline Circulation will result in an entry in the Exception List and will not successfully check out.  Pre-cataloged items which are checked in through offline will also result in an entry in the Exception List, but will successfully check in.
 
-=== Renew ===
+== Renew ==
 
 To renew an item, you must know the item's barcode number. The patron's barcode is optional.
  
@@ -71,7 +72,7 @@ To renew items in Offline Circulation:
 
 image::media/offline_renew.png[Offline renewal]
 
-=== In-House Use ===
+== In-House Use ==
 
 To record in-house use transactions in *Offline Circulation*:
  
@@ -84,7 +85,7 @@ To record in-house use transactions in *Offline Circulation*:
 
 image::media/offline_inhouse.png[Offline in house use]
 
-=== Checkin ===
+== Checkin ==
 
 To checkin items in Offline Circulation:
  
@@ -100,7 +101,7 @@ Note that existing pre-cataloged items can be checked in through the Offline int
 
 Items targeted for holds will be captured for their holds when the offline transactions are uploaded and processed; however, there will be no indication in the Exceptions list about this unless the item is also transiting.
 
-=== Patron Registration ===
+== Patron Registration ==
 
 Patron registration in Evergreen Offline Circulation records patron information for later upload.  In the web staff client, the Patron Registration form in Offline is the same as the regular Patron Registration interface.
 
@@ -110,10 +111,10 @@ All fields in the normal Patron Registration interface are available for entry. 
 
 Enter patron information and click the *Save* button in the top-right of the Patron Registration interface.  You may checkout items to this patron right away, even if you are still in offline mode.
 
-=== Managing Offline Transactions ===
+== Managing Offline Transactions ==
 
 [#offline_block_list]
-==== Offline Block List ====
+=== Offline Block List ===
 
 While logged in and still online, you may download an *Offline Block List*.  This will locally store a list of all patrons with blocks at the time of the download.  If this list is present, the Offline Circulation interface will check transactions against this list.
 
@@ -123,7 +124,7 @@ If you attempt a checkout or a renewal for a patron on the block list, you will 
 
 image::media/offline_patron_blocked.png[Patron blocked modal]
 
-==== Exporting Offline Transactions ====
+=== Exporting Offline Transactions ===
 
 If you anticipate a multi-day closing or if you plan to process your offline transactions at a different workstation, you will want to export your offline transactions.
 
@@ -132,7 +133,7 @@ To export transactions while you are offline, navigate to *Circulation -> Offlin
 To export transactions while you are logged in, navigate to *Circulation -> Offline Circulation* and click on the *Session Management* tab.  Click on the *Export Transactions* button to generate the pending.xacts file as above.  If you wish, you can at this point click *Clear Transactions* to clear the list of pending transactions.
 
 [#processing_offline_transactions]
-==== Processing Offline Transactions ====
+=== Processing Offline Transactions ===
 
 Once connectivity is restored, navigate back to your *Evergreen Login Page*.  You will see a message telling you that there are unprocessed Offline Transactions waiting for upload.
 
@@ -163,7 +164,7 @@ image::media/offline_processing_complete.png[Offline processing complete]
 +
 . Scroll to the bottom of the screen to see if there are any entries in the xref:#exceptions[*Exception List*].  Some of these may require staff follow up.  
 
-==== Uploading Previously Exported Transactions ====
+=== Uploading Previously Exported Transactions ===
 
 If you had previous exported your offline transactions you can upload them for processing.
 
@@ -179,7 +180,7 @@ To import transactions:
 . You may now proceed according to the instructions under xref:#processing_offline_transactions[Processing Offline Transactions].
 
 [#exceptions]
-===== Exceptions =====
+==== Exceptions ====
 
 Exceptions are problems that were encountered during processing. For example, a mis-scanned patron barcode, an open circulation, or an item that was not checked in before it was checked out to another patron would all be listed as exceptions. Those transactions causing exceptions might not be loaded into Evergreen database. Staff should examine the exceptions and take necessary action.
  

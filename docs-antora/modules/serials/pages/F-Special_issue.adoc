@@ -1,6 +1,7 @@
-== Special Issues ==
+= Special Issues =
+:toc:
 
-=== Adding Extra Copies ===
+== Adding Extra Copies ==
 If the library receives an extra copy of an expected issue, the extra copy can be added to the list of predicted issues so it can be received through the serials module.
 
 *To add an extra copy of an expected issue*:
@@ -14,7 +15,7 @@ If the library receives an extra copy of an expected issue, the extra copy can b
 image::media/serials_extra1.PNG[]
 
 
-=== Adding Special Issues ===
+== Adding Special Issues ==
 If the library receives an unexpected issue of a subscription, such as Summer Issue or Holiday Issue, it can be added to the list of predicted issues as a Special Issue so it can be received through the serials module.
 
 *To add a special issue*:
