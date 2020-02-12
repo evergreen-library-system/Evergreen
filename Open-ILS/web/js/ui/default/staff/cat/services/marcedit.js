@@ -733,6 +733,23 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     allowIn : ['INPUT','SELECT','TEXTAREA']
                 });
 
+                hotkeys.add({
+                    combo: 'ctrl+e',
+                    description: egCore.strings.HOTKEY_FOCUS_EDITOR,
+                    callback: function(event, hotkey) {
+                        event.preventDefault();
+                        if($scope.flatEditor.isEnabled){
+                            var editor = $window.document.getElementsByTagName('textarea');
+                            editor[0].focus();
+                        }
+                        else {
+                            console.log('Jump focus to non-flattext editor not implemented.');
+                        }
+                    },
+                    allowIn : ['INPUT','SELECT','TEXTAREA']
+                });
+
+
                 MARC21.Record.delimiter = '$';
 
                 $scope.enable_fast_add = false;
