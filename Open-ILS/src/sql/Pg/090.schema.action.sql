@@ -314,7 +314,6 @@ UNION ALL
 ;
 
 
-
 CREATE OR REPLACE FUNCTION action.age_circ_on_delete () RETURNS TRIGGER AS $$
 DECLARE
 found char := 'N';
@@ -354,14 +353,12 @@ BEGIN
 
     -- Migrate billings and payments to aged tables
 
-    INSERT INTO money.aged_billing
-        SELECT * FROM money.billing WHERE xact = OLD.id;
+    SELECT 'Y' INTO found FROM config.global_flag 
+        WHERE name = 'history.money.age_with_circs' AND enabled;
 
-    INSERT INTO money.aged_payment 
-        SELECT * FROM money.payment_view_extended WHERE xact = OLD.id;
-
-    DELETE FROM money.payment WHERE xact = OLD.id;
-    DELETE FROM money.billing WHERE xact = OLD.id;
+    IF found = 'Y' THEN
+        PERFORM money.age_billings_and_payments_for_xact(OLD.id);
+    END IF;
 
     RETURN OLD;
 END;

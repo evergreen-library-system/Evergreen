@@ -2,9 +2,32 @@ BEGIN;
 
 -- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version);
 
+INSERT INTO config.global_flag (name, value, enabled, label)
+VALUES (
+    'history.money.age_with_circs',
+    NULL, 
+    FALSE,
+    oils_i18n_gettext(
+        'history.money.age_with_circs',
+        'Age billings and payments when cirulcations are aged.',
+        'cgf', 'label'
+    )
+), (
+    'history.money.retention_age',
+    NULL, 
+    FALSE,
+    oils_i18n_gettext(
+        'history.money.retention_age',
+        'Age billings and payments whose transactions were completed ' ||
+        'this long ago.  For circulation transactions, this setting ' ||
+        'is superseded by the "history.money.age_with_circs" setting',
+        'cgf', 'label'
+    )
+);
+
 DROP VIEW money.all_payments;
 
-CREATE OR REPLACE VIEW money.payment_view_extended AS
+CREATE OR REPLACE VIEW money.payment_view_for_aging AS
     SELECT p.*,
         bnm.accepting_usr,
         bnmd.cash_drawer,
@@ -24,9 +47,64 @@ CREATE INDEX aged_payment_cash_drawer_idx ON money.aged_payment(cash_drawer);
 CREATE INDEX aged_payment_billing_idx ON money.aged_payment(billing);
 
 CREATE OR REPLACE VIEW money.all_payments AS
-    SELECT * FROM money.payment_view_extended
+    SELECT * FROM money.payment_view_for_aging
     UNION ALL
     SELECT * FROM money.aged_payment;
+
+CREATE OR REPLACE FUNCTION money.age_billings_and_payments() RETURNS INTEGER AS $FUNC$
+-- Age billings and payments linked to transactions which were 
+-- completed at least 'older_than' time ago.
+DECLARE
+    xact_id BIGINT;
+    counter INTEGER DEFAULT 0;
+    keep_age INTERVAL;
+BEGIN
+
+    SELECT value::INTERVAL INTO keep_age FROM config.global_flag 
+        WHERE name = 'history.money.retention_age' AND enabled;
+
+    -- Confirm interval-based aging is enabled.
+    IF keep_age IS NULL THEN RETURN counter; END IF;
+
+    -- Start with non-circulation transactions
+    FOR xact_id IN SELECT DISTINCT(xact.id) FROM money.billable_xact xact
+        -- confirm there is something to age
+        JOIN money.billing mb ON mb.xact = xact.id
+        -- Avoid aging money linked to non-aged circulations.
+        LEFT JOIN action.circulation circ ON circ.id = xact.id
+        WHERE circ.id IS NULL AND AGE(NOW(), xact.xact_finish) > keep_age LOOP
+
+        PERFORM money.age_billings_and_payments_for_xact(xact_id);
+        counter := counter + 1;
+    END LOOP;
+
+    -- Then handle aged circulation money.
+    FOR xact_id IN SELECT DISTINCT(xact.id) FROM action.aged_circulation xact
+        -- confirm there is something to age
+        JOIN money.billing mb ON mb.xact = xact.id
+        WHERE AGE(NOW(), xact.xact_finish) > keep_age LOOP
+
+        PERFORM money.age_billings_and_payments_for_xact(xact_id);
+        counter := counter + 1;
+    END LOOP;
+
+    RETURN counter;
+END;
+$FUNC$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION money.age_billings_and_payments_for_xact
+    (xact_id BIGINT) RETURNS VOID AS $FUNC$
+
+    INSERT INTO money.aged_billing
+        SELECT * FROM money.billing WHERE xact = $1;
+
+    INSERT INTO money.aged_payment 
+        SELECT * FROM money.payment_view_for_aging WHERE xact = xact_id;
+
+    DELETE FROM money.payment WHERE xact = $1;
+    DELETE FROM money.billing WHERE xact = $1;
+
+$FUNC$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION action.age_circ_on_delete () RETURNS TRIGGER AS $$
 DECLARE
@@ -67,18 +145,15 @@ BEGIN
 
     -- Migrate billings and payments to aged tables
 
-    INSERT INTO money.aged_billing
-        SELECT * FROM money.billing WHERE xact = OLD.id;
+    SELECT 'Y' INTO found FROM config.global_flag 
+        WHERE name = 'history.money.age_with_circs' AND enabled;
 
-    INSERT INTO money.aged_payment 
-        SELECT * FROM money.payment_view_extended WHERE xact = OLD.id;
-
-    DELETE FROM money.payment WHERE xact = OLD.id;
-    DELETE FROM money.billing WHERE xact = OLD.id;
+    IF found = 'Y' THEN
+        PERFORM money.age_billings_and_payments_for_xact(OLD.id);
+    END IF;
 
     RETURN OLD;
 END;
 $$ LANGUAGE 'plpgsql';
-
 
 COMMIT;
