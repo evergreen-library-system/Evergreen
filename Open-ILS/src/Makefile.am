@@ -75,6 +75,7 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/purge_circulations.srfsh \
 		 $(supportscr)/purge_pending_users.srfsh \
 		 $(supportscr)/clear_cc_number.srfsh \
+		 $(supportscr)/age_money.srfsh \
 		 $(supportscr)/sitemap_generator \
 		 $(srcdir)/extras/eg_config \
 		 $(srcdir)/extras/openurl_map.pl \
@@ -288,6 +289,7 @@ ilscore-install:
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/long-overdue-status-update.pl'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/thaw_expired_frozen_holds.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/clear_cc_number.srfsh'
+	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/age_money.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/purge_at_events.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/purge_circulations.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/purge_holds.srfsh'
