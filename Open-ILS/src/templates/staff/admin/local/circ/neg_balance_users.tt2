@@ -39,8 +39,12 @@
 
   <eg-grid-action handler="get_user"
     label="[% l('Retrieve Patron') %]"></eg-grid-action>
-
   <eg-grid-field label="[% l('Barred') %]" path='usr.barred'></eg-grid-field>
+  <eg-grid-field label="[% l('Barcode') %]" path="usr.card.barcode">
+    <a href="./circ/patron/{{item.usr.id()}}/checkout/" target="_blank">
+      {{item.usr.card().barcode()}}
+    </a>
+  </eg-grid-field>
   <eg-grid-field label="[% l('Date of Birth') %]" dateformat="{{$root.egDateFormat}}" datatype="timestamp" path='usr.dob'></eg-grid-field>
   <eg-grid-field label="[% l('Last Name') %]" path='usr.family_name'></eg-grid-field>
   <eg-grid-field label="[% l('First Name') %]" path='usr.first_given_name'></eg-grid-field>
@@ -48,8 +52,8 @@
   <eg-grid-field label="[% l('Balance Owed') %]" path='balance_owed'></eg-grid-field>
   <eg-grid-field label="[% l('Last Billing Activity') %]" 
     path='last_billing_activity' datatype='timestamp'></eg-grid-field>
-
   <eg-grid-field path='usr.*' parent-idl-class="au" hidden></eg-grid-field>
+  
 </eg-grid>
 
    
