@@ -13019,10 +13019,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_CAROUSEL" global_required="true"/>
-				<retrieve/>
-				<update permission="ADMIN_CAROUSEL" global_required="true"/>
-				<delete permission="ADMIN_CAROUSEL" global_required="true"/>
+				<create permission="ADMIN_CAROUSEL" context_field="owner"/>
+				<retrieve permission="ADMIN_CAROUSEL" context_field="owner"/>
+				<update permission="ADMIN_CAROUSEL" context_field="owner"/>
+				<delete permission="ADMIN_CAROUSEL" context_field="owner"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -13045,10 +13045,18 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_CAROUSEL" global_required="true"/>
-				<retrieve/>
-				<update permission="ADMIN_CAROUSEL" global_required="true"/>
-				<delete permission="ADMIN_CAROUSEL" global_required="true"/>
+				<create permission="ADMIN_CAROUSEL">
+				    <context link="carousel" field="owner" />
+				</create>
+				<retrieve permission="ADMIN_CAROUSEL">
+				    <context link="carousel" field="owner" />
+				</retrieve>
+				<update permission="ADMIN_CAROUSEL">
+				    <context link="carousel" field="owner" />
+				</update>
+				<delete permission="ADMIN_CAROUSEL">
+				    <context link="carousel" field="owner" />
+				</delete>
 			</actions>
 		</permacrud>
 	</class>
