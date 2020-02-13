@@ -198,6 +198,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
                 const extra_args = { order_by : {} };
                 args[field] = {'ilike': `%${term}%`}; // could -or search on label
                 extra_args['order_by'][this.idlClass] = field;
+                extra_args['limit'] = 100;
                 if (this.idlIncludeLibraryInLabel) {
                     extra_args['flesh'] = 1;
                     const flesh_fields: Object = {};
