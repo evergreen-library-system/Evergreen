@@ -20299,3 +20299,27 @@ VALUES (
     )
 );
 
+
+INSERT INTO config.global_flag (name, value, enabled, label)
+VALUES (
+    'history.money.age_with_circs',
+    NULL, 
+    FALSE,
+    oils_i18n_gettext(
+        'history.money.age_with_circs',
+        'Age billings and payments when cirulcations are aged.',
+        'cgf', 'label'
+    )
+), (
+    'history.money.retention_age',
+    NULL, 
+    FALSE,
+    oils_i18n_gettext(
+        'history.money.retention_age',
+        'Age billings and payments whose transactions were completed ' ||
+        'this long ago.  For circulation transactions, this setting ' ||
+        'is superseded by the "history.money.age_with_circs" setting',
+        'cgf', 'label'
+    )
+);
+

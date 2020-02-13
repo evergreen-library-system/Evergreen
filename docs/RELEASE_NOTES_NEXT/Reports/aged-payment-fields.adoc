@@ -1,6 +1,0 @@
-Aged Payment Additional Fields
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The aged payment table now has accepting_usr, cash_drawer, and billing
-columns to improve reporting of aged money.
-
