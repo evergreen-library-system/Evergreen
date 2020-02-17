@@ -90,9 +90,9 @@ sub handler {
     my @headers = $email->header('Subject');
     $email->header_str_set('Subject' => decode_utf8($headers[0])) if ($headers[0]);
 
-    $email->header_set('MIME-Version' => '1.0');
-    $email->header_set('Content-Type' => "text/plain; charset=UTF-8");
-    $email->header_set('Content-Transfer-Encoding' => '8bit');
+    $email->header_set('MIME-Version' => '1.0') unless $email->header('MIME-Version');
+    $email->header_set('Content-Type' => "text/plain; charset=UTF-8") unless $email->header('Content-Type');
+    $email->header_set('Content-Transfer-Encoding' => '8bit') unless $email->header('Content-Transfer-Encoding');
 
     try {
         $stat = $sender->send($email);
