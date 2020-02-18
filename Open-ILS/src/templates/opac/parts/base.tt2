@@ -22,6 +22,13 @@
         [% '<style>'; custom_css ; '</style>' %]                                          
         [% END %]
 
+        [% IF ctx.get_org_setting(ctx.search_ou, 'opac.analytics.use_matomo') == 1 %]
+           [% matomo_enabled = 1; %]
+           [% matomo_id = ctx.get_org_setting(ctx.search_ou, 'opac.analytics.matomo_id'); %]
+           [% matomo_url = ctx.get_org_setting(ctx.search_ou, 'opac.analytics.matomo_url'); %]  
+           [% INCLUDE 'opac/parts/matomo_analytics.tt2' %]                                       
+        [% END %]
+
         [%- libname = ctx.get_aou(ctx.search_ou).name;
             libname = libname | html;
             libsname = ctx.get_aou(ctx.search_ou).shortname; %]
