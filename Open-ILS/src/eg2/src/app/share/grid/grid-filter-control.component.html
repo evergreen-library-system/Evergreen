@@ -307,6 +307,9 @@
         </div>
       </div>
     </div>
+    <div *ngSwitchCase="'interval'">
+      <!-- this is a short-term fix to prevent *ngSwitchDefault from displaying -->
+    </div>
     <div *ngSwitchDefault>I don't know how to filter {{col.name}} - {{col.datatype}}</div>
   </div>
   <!--
