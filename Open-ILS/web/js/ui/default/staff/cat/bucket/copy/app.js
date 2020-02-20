@@ -615,6 +615,15 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
         });
     }
 
+    $scope.showItems = function() {
+        var cp_list = []
+        angular.forEach($scope.gridControls.selectedItems(), function (i) {
+            cp_list.push(i.id);
+        })
+        var url = egCore.env.basePath + '/cat/item/search/' + cp_list.join();
+        $timeout(function() { $window.open(url, '_blank') });
+    }
+
     $scope.requestItems = function() {
         var copy_list = $scope.gridControls.selectedItems().map(
             function (i) {
