@@ -483,11 +483,12 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
             controller : [
                         '$scope','$uibModalInstance',
                 function($scope , $uibModalInstance) {
+                    var now = new Date();
                     $scope.outOfRange = false;
-                    $scope.minDate = new Date();
+                    $scope.minDate = new Date(now);
                     $scope.args = {
                         barcodes : barcodes,
-                        date : new Date()
+                        date : new Date(now)
                     }
                     $scope.cancel = function() {$uibModalInstance.dismiss()}
 
