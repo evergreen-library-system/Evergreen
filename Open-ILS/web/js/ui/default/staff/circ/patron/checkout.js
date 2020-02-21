@@ -9,6 +9,7 @@ angular.module('egPatronApp').controller('PatronCheckoutCtrl',
 
 function($scope , $q , $routeParams , egCore , egUser , patronSvc , 
          egGridDataProvider , $location , $timeout , egCirc , ngToast) {
+    var now = new Date();
 
     $scope.initTab('checkout', $routeParams.id).finally(function(){
         $scope.focusMe = true;
@@ -16,10 +17,10 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
     $scope.checkouts = patronSvc.checkouts;
     $scope.checkoutArgs = {
         noncat_type : 'barcode',
-        due_date : new Date()
+        due_date : new Date(now)
     };
 
-    $scope.minDate = new Date();
+    $scope.minDate = new Date(now);
     $scope.outOfRange = false;
     $scope.gridDataProvider = egGridDataProvider.instance({
         get : function(offset, count) {

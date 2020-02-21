@@ -32,16 +32,16 @@ angular.module('egRenewApp',
 .controller('RenewCtrl',
        ['$scope','$window','$location','egCore','egGridDataProvider','egCirc',
 function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
+    var now = new Date();
 
     egCore.hatch.getItem('circ.renew.strict_barcode')
         .then(function(sb){ $scope.strict_barcode = sb });
     $scope.focusBarcode = true;
     $scope.outOfRange = false;
-    $scope.minDate = new Date();
+    $scope.minDate = new Date(now);
     $scope.renewals = [];
 
-    var today = new Date();
-    $scope.renewalArgs = {due_date : today};
+    $scope.renewalArgs = {due_date : new Date(now)};
 
     $scope.sort_money = function (a,b) {
         var ma = parseFloat(a);
