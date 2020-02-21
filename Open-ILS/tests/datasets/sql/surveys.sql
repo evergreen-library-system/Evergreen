@@ -26,6 +26,10 @@ INSERT INTO action.survey_answer (id, question, answer) VALUES (16, 3, 'Redshirt
 INSERT INTO action.survey_answer (id, question, answer) VALUES (17, 3, 'TARDIS blue.');
 INSERT INTO action.survey_answer (id, question, answer) VALUES (18, 3, 'This is getting too silly - I quit.');
 
+SELECT SETVAL('action.survey_id_seq'::TEXT, 100);
+SELECT SETVAL('action.survey_question_id_seq'::TEXT, 100);
+SELECT SETVAL('action.survey_answer_id_seq'::TEXT, 100);
+
 /** for every user with an id not evenly divisible by 6, 
  *  add a randomized response for every question in the survey
  */
