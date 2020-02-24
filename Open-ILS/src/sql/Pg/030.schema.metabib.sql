@@ -739,7 +739,8 @@ CREATE TYPE metabib.field_entry_template AS (
     source              BIGINT,
     value               TEXT,
     authority           BIGINT,
-    sort_value          TEXT
+    sort_value          TEXT,
+    browse_nocase       BOOL
 );
 
 CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry (
@@ -770,6 +771,7 @@ DECLARE
 BEGIN
 
     -- Start out with no field-use bools set
+    output_row.browse_nocase = FALSE;
     output_row.browse_field = FALSE;
     output_row.facet_field = FALSE;
     output_row.display_field = FALSE;
@@ -829,6 +831,7 @@ BEGIN
 
             -- autosuggest/metabib.browse_entry
             IF idx.browse_field THEN
+                output_row.browse_nocase = idx.browse_nocase;
 
                 IF idx.browse_xpath IS NOT NULL AND idx.browse_xpath <> '' THEN
                     browse_text := oils_xpath_string( idx.browse_xpath, xml_node, joiner, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
@@ -884,6 +887,7 @@ BEGIN
                     output_row.search_field = TRUE;
                 END IF;
                 RETURN NEXT output_row;
+                output_row.browse_nocase = FALSE;
                 output_row.browse_field = FALSE;
                 output_row.search_field = FALSE;
                 output_row.sort_value := NULL;
@@ -1120,8 +1124,14 @@ BEGIN
             CONTINUE WHEN ind_data.sort_value IS NULL;
 
             value_prepped := metabib.browse_normalize(ind_data.value, ind_data.field);
-            SELECT INTO mbe_row * FROM metabib.browse_entry
-                WHERE value = value_prepped AND sort_value = ind_data.sort_value;
+            IF ind_data.browse_nocase THEN
+                SELECT INTO mbe_row * FROM metabib.browse_entry
+                    WHERE evergreen.lowercase(value) = evergreen.lowercase(value_prepped) AND sort_value = ind_data.sort_value
+                    ORDER BY sort_value, value LIMIT 1; -- gotta pick something, I guess
+            ELSE
+                SELECT INTO mbe_row * FROM metabib.browse_entry
+                    WHERE value = value_prepped AND sort_value = ind_data.sort_value;
+            END IF;
 
             IF FOUND THEN
                 mbe_id := mbe_row.id;

@@ -3120,6 +3120,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Display Field?" name="display_field" reporter:datatype="bool" />
 			<field reporter:label="Display XPath" name="display_xpath" reporter:datatype="text" />
 			<field reporter:label="Browse Field" name="browse_field" reporter:datatype="bool" />
+			<field reporter:label="Browse Folding is Case-Insensitive" name="browse_nocase" reporter:datatype="bool" />
 			<field reporter:label="Browse XPath" name="browse_xpath" reporter:datatype="text" />
 			<field reporter:label="Browse Sort XPath" name="browse_sort_xpath" reporter:datatype="text" />
 			<field reporter:label="Authority XPath" name="authority_xpath" reporter:datatype="text" />
