@@ -16,7 +16,13 @@ SELECT is( metabib.trim_trailing_punctuation('Saki'), 'Saki', 'Name no trailing 
 SELECT is( metabib.trim_trailing_punctuation('Smith, John.'), 'Smith, John', 'Chop trailing period');
 SELECT is( metabib.trim_trailing_punctuation('Public, John Q.'), 'Public, John Q.', 'Retain trailing period');
 SELECT is( metabib.trim_trailing_punctuation('Public, John Q,'), 'Public, John Q', 'Eliminate comma C');
+SELECT is( metabib.trim_trailing_punctuation('Public, John, Ph.D.'), 'Public, John, Ph.D.', 'Retain trailing period in abbr.');
+SELECT is( metabib.trim_trailing_punctuation('Washington DC, U.S.'), 'Washington DC, U.S.', 'Retain trailing period in abbr.');
 SELECT is( metabib.trim_trailing_punctuation('(FTC).'), '(FTC)', 'Trailing period');
+SELECT is( metabib.trim_trailing_punctuation('A title with no SoR /'), 'A title with no SoR', 'Remove erroneous trailing slash');
+SELECT is( metabib.trim_trailing_punctuation('A title with no subtitle :'), 'A title with no subtitle', 'Remove erroneous trailing colon');
+SELECT is( metabib.trim_trailing_punctuation('A title ;'), 'A title', 'Remove erroneous trailing semicolon');
+SELECT is( metabib.trim_trailing_punctuation('A title ='), 'A title', 'Remove erroneous trailing equal');
 
 SELECT * FROM finish();
 

@@ -2314,11 +2314,17 @@ $p$ LANGUAGE SQL STABLE;
 -- This function is used to help clean up facet labels. Due to quirks in
 -- MARC parsing, some facet labels may be generated with periods or commas
 -- at the end.  This will strip a trailing commas off all the time, and
--- periods when they don't look like they are part of initials.
---      Smith, John    =>  no change
---      Smith, John,   =>  Smith, John
---      Smith, John.   =>  Smith, John
---      Public, John Q. => no change
+-- periods when they don't look like they are part of initials or dotted
+-- abbreviations.
+--      Smith, John                   =>  no change
+--      Smith, John,                  =>  Smith, John
+--      Smith, John.                  =>  Smith, John
+--      Public, John Q.               => no change
+--      Public, John, Ph.D.           => no change
+--      Atlanta -- Georgia -- U.S.    => no change
+--      Atlanta -- Georgia.           => Atlanta, Georgia
+--      The fellowship of the rings / => The fellowship of the rings
+--      Some title ;                  => Some title
 CREATE OR REPLACE FUNCTION metabib.trim_trailing_punctuation ( TEXT ) RETURNS TEXT AS $$
 DECLARE
     result    TEXT;
@@ -2331,8 +2337,14 @@ BEGIN
         result := substring(result from '^(.*),$');
 
     ELSIF last_char = '.' THEN
-        IF substring(result from ' \w\.$') IS NULL THEN
+        -- must have a single word-character following at least one non-word character
+        IF substring(result from '\W\w\.$') IS NULL THEN
             result := substring(result from '^(.*)\.$');
+        END IF;
+
+    ELSIF last_char IN ('/',':',';','=') THEN -- Dangling subtitle/SoR separator
+        IF substring(result from ' .$') IS NOT NULL THEN -- must have a space before last_char
+            result := substring(result from '^(.*) .$');
         END IF;
     END IF;
 
