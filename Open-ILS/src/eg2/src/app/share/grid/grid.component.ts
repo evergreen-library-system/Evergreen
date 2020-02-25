@@ -80,6 +80,12 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     // the selected fields will be hidden.
     @Input() hideFields: string;
 
+    // comma-separated list of fields to ignore when generating columns
+    // from the IDL.
+    // This does not imply all other fields should be available, only
+    // that the selected fields will be ignored.
+    @Input() ignoreFields: string;
+
     // When true, only display columns that are declared in the markup
     // and leave all auto-generated fields hidden.
     @Input() showDeclaredFieldsOnly: boolean;
@@ -152,12 +158,16 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.rowFlairCallback = this.rowFlairCallback;
         this.context.disablePaging = this.disablePaging === true;
         this.context.cellTextGenerator = this.cellTextGenerator;
+        this.context.ignoredFields = [];
 
         if (this.showFields) {
             this.context.defaultVisibleFields = this.showFields.split(',');
         }
         if (this.hideFields) {
             this.context.defaultHiddenFields = this.hideFields.split(',');
+        }
+        if (this.ignoreFields) {
+            this.context.ignoredFields = this.ignoreFields.split(',');
         }
 
         if (this.pageOffset) {

@@ -505,6 +505,7 @@ export class GridContext {
     cellClassCallback: (row: any, col: GridColumn) => string;
     defaultVisibleFields: string[];
     defaultHiddenFields: string[];
+    ignoredFields: string[];
     overflowCells: boolean;
     disablePaging: boolean;
     showDeclaredFieldsOnly: boolean;
@@ -1079,20 +1080,22 @@ export class GridContext {
         this.idl.classes[this.columnSet.idlClass].fields
         .filter(field => !field.virtual)
         .forEach(field => {
-            const col = new GridColumn();
-            col.name = field.name;
-            col.label = field.label || field.name;
-            col.idlFieldDef = field;
-            col.idlClass = this.columnSet.idlClass;
-            col.datatype = field.datatype;
-            col.isIndex = (field.name === pkeyField);
-            col.isAuto = true;
+            if (!this.ignoredFields.filter(ignored => ignored === field.name).length) {
+                const col = new GridColumn();
+                col.name = field.name;
+                col.label = field.label || field.name;
+                col.idlFieldDef = field;
+                col.idlClass = this.columnSet.idlClass;
+                col.datatype = field.datatype;
+                col.isIndex = (field.name === pkeyField);
+                col.isAuto = true;
 
-            if (this.showDeclaredFieldsOnly) {
-                col.hidden = true;
+                if (this.showDeclaredFieldsOnly) {
+                    col.hidden = true;
+                }
+
+                this.columnSet.add(col);
             }
-
-            this.columnSet.add(col);
         });
     }
 
