@@ -1,0 +1,23 @@
+* xref:ROOT:index.adoc[Introduction]
+** xref:docs:shared:about_evergreen.adoc[About Evergreen]
+* xref:docs:admin:web_client-login.adoc[Logging into Evergreen]
+* xref:docs:admin:web-client-browser-best-practices.adoc[Best Practices for Using the Browser]
+* xref:docs:shared:workstation_settings.adoc[Configuring Evergreen for Your
+Workstation]
+* xref:docs:acquisitions:introduction.adoc[Acquisitions]
+* xref:docs:acquisitions:selection_lists_po.adoc[Selection Lists and Purchase
+Orders]
+* xref:docs:acquisitions:vandelay_acquisitions_integration.adoc[Load MARC Order
+Records]
+* xref:docs:acquisitions:invoices.adoc[Invoices]
+* xref:docs:acquisitions:receive_items_from_invoice.adoc[]
+* xref:docs:acquisitions:purchase_requests_management.adoc[Managing Patron
+Purchase Requests]
+* xref:docs:acquisitions:purchase_requests_patron_view.adoc[]
+* xref:docs:opac:using_the_public_access_catalog.adoc[Using the Public Access
+Catalog]
+* xref:docs:shared:attributions.adoc[Attributions]
+* xref:docs:shared:attributions.adoc[Appendix A. Attributions]
+* xref:docs:shared:licensing.adoc[Appendix B. Licensing]
+* xref:docs:appendix:glossary.adoc[Glossary]
+* xref:docs:shared:index.adoc[Index]

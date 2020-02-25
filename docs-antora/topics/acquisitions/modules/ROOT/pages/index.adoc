@@ -1,0 +1,5 @@
+= Evergreen Acquisitions Manual =
+
+This guide to Evergreen is intended to meet the needs of library workers who use
+Evergreen's Acquisitions module. It is organized into Parts, Chapters, and
+Sections addressing key aspects of the software.

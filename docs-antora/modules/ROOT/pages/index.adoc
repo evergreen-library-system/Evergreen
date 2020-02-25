@@ -7,5 +7,10 @@ endif::[]
 :idseparator: -
 
 
-== It's Powered by Antora!
+== Topic Manuals ==
+
+Browse all the documentation topics using the left sidebar.  Or, try one of
+these smaller topic manuals:
+
+xref:acq:ROOT:index.adoc[Acquisitions Manual]
 

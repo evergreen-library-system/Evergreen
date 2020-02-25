@@ -1,0 +1,5 @@
+name: acq
+title: Evergreen Acquisitions Manual
+version: 'latest'
+nav:
+- modules/ROOT/nav.adoc
