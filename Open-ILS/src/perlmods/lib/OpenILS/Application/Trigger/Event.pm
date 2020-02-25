@@ -693,7 +693,7 @@ sub _object_by_path {
             }
             $$node{$$label[-1]} = $obj;
         } else {
-            $obj = $$obj[0] if $rtype eq 'might_have';
+            $obj = $$obj[0] if $rtype eq 'might_have' and ref($obj) eq 'ARRAY';
             $context->$step( $obj ) if ($obj);
         }
     }
