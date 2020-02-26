@@ -99,6 +99,7 @@ CREATE TABLE config.best_hold_order(
     name        TEXT        UNIQUE,   -- i18n (metadata)
     pprox       INT, -- copy capture <-> pickup lib prox
     hprox       INT, -- copy circ lib <-> request lib prox
+    owning_lib_to_home_lib_prox      INT, -- copy owning lib <-> user home lib prox
     aprox       INT, -- copy circ lib <-> pickup lib ADJUSTED prox on ahcm
     priority    INT, -- group hold priority
     cut         INT, -- cut-in-line
@@ -111,6 +112,7 @@ CREATE TABLE config.best_hold_order(
 ALTER TABLE config.best_hold_order ADD CHECK ((
     pprox IS NOT NULL OR
     hprox IS NOT NULL OR
+    owning_lib_to_home_lib_prox IS NOT NULL OR
     aprox IS NOT NULL OR
     priority IS NOT NULL OR
     cut IS NOT NULL OR
@@ -165,6 +167,14 @@ INSERT INTO config.best_hold_order (
 ) VALUES (
     'FIFO with Holds-go-home',
     1, 2, 3, 4, 5, 6, 7, 8
+);
+
+INSERT INTO config.best_hold_order (
+    name,
+    owning_lib_to_home_lib_prox, hprox, approx, pprox, aprox, priority, cut, depth, rtime
+) VALUES (
+    'Traditional with Holds-chase-home-lib-patrons',
+    1, 2, 3, 4, 5, 6, 7, 8, 9
 );
 
 INSERT INTO config.org_unit_setting_type (
