@@ -4,6 +4,13 @@
 {{r.label || r.id}}
 </ng-template>
 
+<ng-template #acqfTemplate egIdlClass="acqf" let-r="result">
+  {{r.fm.code()}} ({{r.fm.year()}})
+</ng-template>
+<ng-template #acplTemplate egIdlClass="acpl" let-r="result">
+  {{r.fm.name()}} ({{getOrgShortname(r.fm.owning_lib())}})
+</ng-template>
+
 <div class="d-flex">
   <input type="text" 
     class="form-control"
@@ -14,7 +21,7 @@
     [required]="isRequired"
     [(ngModel)]="selected" 
     [ngbTypeahead]="filter"
-    [resultTemplate]=" displayTemplate || defaultDisplayTemplate"
+    [resultTemplate]=" displayTemplate || idlDisplayTemplateMap[idlClass] || defaultDisplayTemplate"
     [inputFormatter]="formatDisplayString"
     (click)="onClick($event)"
     (blur)="onBlur()"

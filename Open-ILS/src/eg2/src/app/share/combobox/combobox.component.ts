@@ -4,14 +4,16 @@
  * </eg-combobox>
  */
 import {Component, OnInit, Input, Output, ViewChild,
+    Directive, ViewChildren, QueryList, AfterViewInit,
     TemplateRef, EventEmitter, ElementRef, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable, of, Subject} from 'rxjs';
 import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
 import {StoreService} from '@eg/core/store.service';
-import {IdlService} from '@eg/core/idl.service';
+import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
+import {OrgService} from '@eg/core/org.service';
 
 export interface ComboboxEntry {
   id: any;
@@ -19,6 +21,15 @@ export interface ComboboxEntry {
   label?: string;
   freetext?: boolean;
   userdata?: any; // opaque external value; ignored by this component.
+  fm?: IdlObject;
+}
+
+@Directive({
+    selector: 'ng-template[egIdlClass]'
+})
+export class IdlClassTemplateDirective {
+  @Input() egIdlClass: string;
+  constructor(public template: TemplateRef<any>) {}
 }
 
 @Component({
@@ -34,13 +45,15 @@ export interface ComboboxEntry {
     multi: true
   }]
 })
-export class ComboboxComponent implements ControlValueAccessor, OnInit {
+export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterViewInit {
 
     selected: ComboboxEntry;
     click$: Subject<string>;
     entrylist: ComboboxEntry[];
 
     @ViewChild('instance', { static: true }) instance: NgbTypeahead;
+    @ViewChild('defaultDisplayTemplate', { static: true}) t: TemplateRef<any>;
+    @ViewChildren(IdlClassTemplateDirective) idlClassTemplates: QueryList<IdlClassTemplateDirective>;
 
     // Applies a name attribute to the input.
     // Useful in forms.
@@ -95,7 +108,8 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
                 .subscribe(rec => {
                     this.entrylist = [{
                         id: id,
-                        label: rec[this.idlField]()
+                        label: this.getFmRecordLabel(rec),
+                        fm: rec
                     }];
                     this.selected = this.entrylist.filter(e => e.id === id)[0];
                 });
@@ -157,6 +171,9 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
     // and display.  Default version trims leading/trailing spaces.
     formatDisplayString: (e: ComboboxEntry) => string;
 
+    idlDisplayTemplateMap: { [key: string]: TemplateRef<any> } = {};
+    getFmRecordLabel: (fm: IdlObject) => string;
+
     // Stub functions required by ControlValueAccessor
     propagateChange = (_: any) => {};
     propagateTouch = () => {};
@@ -166,6 +183,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
       private store: StoreService,
       private idl: IdlService,
       private pcrud: PcrudService,
+      private org: OrgService,
     ) {
         this.entrylist = [];
         this.asyncIds = {};
@@ -176,6 +194,26 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
         this.formatDisplayString = (result: ComboboxEntry) => {
             const display = result.label || result.id;
             return (display + '').trim();
+        };
+
+        this.getFmRecordLabel = (fm: IdlObject) => {
+            // FIXME: it would be cleaner if we could somehow use
+            // the per-IDL-class ng-templates directly
+            switch (this.idlClass) {
+                case 'acqf':
+                    return fm.code() + ' (' + fm.year() + ')';
+                    break;
+                case 'acpl':
+                    return fm.name() + ' (' + this.getOrgShortname(fm.owning_lib()) + ')';
+                    break;
+                default:
+                    const field = this.idlField;
+                    if (this.idlIncludeLibraryInLabel) {
+                        return fm[field]() + ' (' + fm[this.idlIncludeLibraryInLabel]().shortname() + ')';
+                    } else {
+                        return fm[field]();
+                    }
+            }
         };
     }
 
@@ -207,20 +245,36 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
                     return this.pcrud.search(this.idlClass, args, extra_args).pipe(map(data => {
                         return {
                             id: data[pkeyField](),
-                            label: data[field]() + ' (' + data[this.idlIncludeLibraryInLabel]().shortname() + ')'
+                            label: this.getFmRecordLabel(data),
+                            fm: data
                         };
                     }));
                 } else {
                     return this.pcrud.search(this.idlClass, args, extra_args).pipe(map(data => {
-                        return {id: data[pkeyField](), label: data[field]()};
+                        return {id: data[pkeyField](), label: this.getFmRecordLabel(data), fm: data};
                     }));
                 }
             };
         }
     }
 
+    ngAfterViewInit() {
+        this.idlDisplayTemplateMap = this.idlClassTemplates.reduce((acc, cur) => {
+            acc[cur.egIdlClass] = cur.template;
+            return acc;
+        }, {});
+    }
+
     onClick($event) {
         this.click$.next($event.target.value);
+    }
+
+    getOrgShortname(ou: any) {
+        if (typeof ou === 'object') {
+            return ou.shortname();
+        } else {
+            return this.org.get(ou).shortname();
+        }
     }
 
     openMe($event) {

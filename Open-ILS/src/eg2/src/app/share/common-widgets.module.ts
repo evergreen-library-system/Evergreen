@@ -8,7 +8,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {EgCoreModule} from '@eg/core/core.module';
-import {ComboboxComponent} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, IdlClassTemplateDirective} from '@eg/share/combobox/combobox.component';
 import {ComboboxEntryComponent} from '@eg/share/combobox/combobox-entry.component';
 import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
 import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
@@ -27,6 +27,7 @@ import {FileReaderComponent} from '@eg/share/file-reader/file-reader.component';
     DateRangeSelectComponent,
     DateTimeSelectComponent,
     FileReaderComponent,
+    IdlClassTemplateDirective
   ],
   imports: [
     CommonModule,
