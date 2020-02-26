@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1200', :eg_version);
 
 CREATE TABLE money.debit_card_payment () INHERITS (money.bnm_desk_payment);
 ALTER TABLE money.debit_card_payment ADD PRIMARY KEY (id);
