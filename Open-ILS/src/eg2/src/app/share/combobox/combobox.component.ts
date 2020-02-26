@@ -274,6 +274,11 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
             }
         });
         if (!firstTime) {
+            if ('selectedId' in changes) {
+                if (!changes.selectedId.currentValue) {
+                    this.selected = null;
+                }
+            }
             if ('idlClass' in changes) {
                 if (!('idlField' in changes)) {
                     // let ngOnInit reset it to the
@@ -283,8 +288,8 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                 this.asyncIds = {};
                 this.entrylist.length = 0;
                 this.selected = null;
+                this.ngOnInit();
             }
-            this.ngOnInit();
         }
     }
 
