@@ -5,6 +5,7 @@
  */
 import {Component, OnInit, Input, Output, ViewChild,
     Directive, ViewChildren, QueryList, AfterViewInit,
+    OnChanges, SimpleChanges,
     TemplateRef, EventEmitter, ElementRef, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable, of, Subject} from 'rxjs';
@@ -45,14 +46,14 @@ export class IdlClassTemplateDirective {
     multi: true
   }]
 })
-export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterViewInit {
+export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
 
     selected: ComboboxEntry;
     click$: Subject<string>;
     entrylist: ComboboxEntry[];
 
     @ViewChild('instance', { static: true }) instance: NgbTypeahead;
-    @ViewChild('defaultDisplayTemplate', { static: true}) t: TemplateRef<any>;
+    @ViewChild('defaultDisplayTemplate', { static: true}) defaultDisplayTemplate: TemplateRef<any>;
     @ViewChildren(IdlClassTemplateDirective) idlClassTemplates: QueryList<IdlClassTemplateDirective>;
 
     // Applies a name attribute to the input.
@@ -265,8 +266,40 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
         }, {});
     }
 
+    ngOnChanges(changes: SimpleChanges) {
+        let firstTime = true;
+        Object.keys(changes).forEach(key => {
+            if (!changes[key].firstChange) {
+                firstTime = false;
+            }
+        });
+        if (!firstTime) {
+            if ('idlClass' in changes) {
+                if (!('idlField' in changes)) {
+                    // let ngOnInit reset it to the
+                    // selector of the new IDL class
+                    this.idlField = null;
+                }
+                this.asyncIds = {};
+                this.entrylist.length = 0;
+                this.selected = null;
+            }
+            this.ngOnInit();
+        }
+    }
+
     onClick($event) {
         this.click$.next($event.target.value);
+    }
+
+    getResultTemplate(): TemplateRef<any> {
+        if (this.displayTemplate) {
+            return this.displayTemplate;
+        }
+        if (this.idlClass in this.idlDisplayTemplateMap) {
+            return this.idlDisplayTemplateMap[this.idlClass];
+        }
+        return this.defaultDisplayTemplate;
     }
 
     getOrgShortname(ou: any) {

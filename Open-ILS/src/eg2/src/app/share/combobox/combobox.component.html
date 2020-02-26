@@ -21,7 +21,7 @@
     [required]="isRequired"
     [(ngModel)]="selected" 
     [ngbTypeahead]="filter"
-    [resultTemplate]=" displayTemplate || idlDisplayTemplateMap[idlClass] || defaultDisplayTemplate"
+    [resultTemplate]="getResultTemplate()"
     [inputFormatter]="formatDisplayString"
     (click)="onClick($event)"
     (blur)="onBlur()"
