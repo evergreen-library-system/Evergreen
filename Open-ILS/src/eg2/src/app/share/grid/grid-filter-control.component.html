@@ -3,7 +3,9 @@
     <div *ngSwitchCase="'link'">
       <div class="input-group">
         <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button"><span class="material-icons mat-icon-in-button">filter_list</span></button>
+          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
+            <span class="material-icons mat-icon-in-button">filter_list</span>
+          </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <div style="padding-top: 2px;">
@@ -15,13 +17,16 @@
           </div>
         </div>
         <eg-combobox [asyncSupportsEmptyTermClick]="col.asyncSupportsEmptyTermClick" [idlClass]="col.idlFieldDef.class" (onChange)="applyLinkFilter($event, col)" 
+          [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
           i18n-placeholder placeholder="Enter value to filter by"></eg-combobox>
       </div>
     </div>
     <div *ngSwitchCase="'bool'">
       <div class="input-group">
         <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button"><span class="material-icons mat-icon-in-button">filter_list</span></button>
+          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
+            <span class="material-icons mat-icon-in-button">filter_list</span>
+          </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <div style="padding-top: 2px;">
@@ -32,7 +37,8 @@
             </div>
           </div>
         </div>
-        <select class="custom-select" [(ngModel)]="col.filterValue" (change)="applyBooleanFilter(col)">
+        <select class="custom-select" [(ngModel)]="col.filterValue" (change)="applyBooleanFilter(col)"
+            [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
           <option value="" i18n>Any</option>
           <option value="t" i18n>True</option>
           <option value="f" i18n>False</option>
@@ -42,7 +48,9 @@
     <div *ngSwitchCase="'text'">
       <div class="input-group">
         <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button"><span class="material-icons mat-icon-in-button">filter_list</span></button>
+          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
+            <span class="material-icons mat-icon-in-button">filter_list</span>
+          </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
@@ -69,13 +77,15 @@
           </div>
         </div>
         <input type="text" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" 
-          [disabled]="col.filterInputDisabled" i18n-placeholder placeholder="Enter value to filter by">
+          [disabled]="col.filterInputDisabled || context.dataSource.requestingData" i18n-placeholder placeholder="Enter value to filter by">
       </div>
     </div>
     <div *ngSwitchCase="'int'">
       <div class="input-group">
         <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button"><span class="material-icons mat-icon-in-button">filter_list</span></button>
+          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
+            <span class="material-icons mat-icon-in-button">filter_list</span>
+          </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
@@ -97,13 +107,15 @@
             </div>
           </div>
         </div>
-        <input type="number" min="0" step="1" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" [disabled]="col.filterInputDisabled">
+        <input type="number" min="0" step="1" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
       </div>
     </div>
     <div *ngSwitchCase="'id'">
       <div class="input-group">
         <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button"><span class="material-icons mat-icon-in-button">filter_list</span></button>
+          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
+            <span class="material-icons mat-icon-in-button">filter_list</span>
+          </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
@@ -125,13 +137,15 @@
             </div>
           </div>
         </div>
-        <input type="number" min="0" step="1" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" [disabled]="col.filterInputDisabled">
+        <input type="number" min="0" step="1" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
       </div>
     </div>
     <div *ngSwitchCase="'float'">
       <div class="input-group">
         <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button"><span class="material-icons mat-icon-in-button">filter_list</span></button>
+          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
+            <span class="material-icons mat-icon-in-button">filter_list</span>
+          </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
@@ -153,13 +167,15 @@
             </div>
           </div>
         </div>
-        <input type="number" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" [disabled]="col.filterInputDisabled">
+        <input type="number" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
       </div>
     </div>
     <div *ngSwitchCase="'money'">
       <div class="input-group">
         <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button"><span class="material-icons mat-icon-in-button">filter_list</span></button>
+          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
+            <span class="material-icons mat-icon-in-button">filter_list</span>
+          </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
@@ -181,14 +197,16 @@
             </div>
           </div>
         </div>
-        <input type="number" step="0.01" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" [disabled]="col.filterInputDisabled">
+        <input type="number" step="0.01" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
       </div>
     </div>
     <div *ngSwitchCase="'timestamp'">
       <div class="input-group">
         <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-           <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button"><span class="material-icons mat-icon-in-button">filter_list</span></button>
-          <div ngbDropdownMenu class="eg-grid-filter-menu">
+            <div ngbDropdownMenu class="eg-grid-filter-menu">
+            <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
+              <span class="material-icons mat-icon-in-button">filter_list</span>
+            </button>
             <div class="dropdown-item">
               <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
               <select id="eg-filter-op-select-{{col.name}}" class="form-control" [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
@@ -211,10 +229,11 @@
           </div>
         </div>
         <eg-date-select [initialYmd]="col.filterValue" (onChangeAsYmd)="applyDateFilter($event, col, dateendsel.currentAsYmd())" (onCleared)="clearDateFilter(col)"
-                        [disabled]="col.filterInputDisabled" #datesel></eg-date-select>
+                        [disabled]="col.filterInputDisabled || context.dataSource.requestingData" #datesel></eg-date-select>
         <div [hidden]="col.filterOperator !== 'between'" class="form-inline form-group">
           <label for="eg-filter-end-date-select-{{col.name}}" style="width: 3em;" i18n>and</label>
           <eg-date-select [hidden]="col.filterOperator !== 'between'" (onChangeAsYmd)="applyDateFilter(datesel.currentAsYmd(), col, $event)"
+                          [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
                           [required]="col.filterOperator == 'between'" #dateendsel></eg-date-select>
         </div>
       </div>
@@ -222,7 +241,9 @@
     <div *ngSwitchCase="'org_unit'">
       <div class="input-group">
         <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button"><span class="material-icons mat-icon-in-button">filter_list</span></button>
+          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
+            <span class="material-icons mat-icon-in-button">filter_list</span>
+          </button>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
@@ -252,7 +273,8 @@
             </div>
           </div>
         </div>
-        <eg-org-select [applyOrgId]="col.filterValue" (onChange)="applyOrgFilter($event, col)" 
+        <eg-org-select [applyOrgId]="col.filterValue" (onChange)="applyOrgFilter($event, col)"
+          [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
           i18n-placeholder placeholder="Enter library to filter by" #ousel></eg-org-select>
       </div>
     </div>

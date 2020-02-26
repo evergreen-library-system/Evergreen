@@ -8,7 +8,7 @@
       <!-- special case for remove filters button -->
       <button *ngIf="gridContext.isFilterable"
         class="btn btn-outline-dark mr-1" (click)="gridContext.removeFilters()"
-        [disabled]="!gridContext.filtersSet()" i18n>
+        [disabled]="!gridContext.filtersSet() || gridContext.dataSource.requestingData" i18n>
         Remove Filters
       </button>
       <button *ngFor="let btn of gridContext.toolbarButtons"

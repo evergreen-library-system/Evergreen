@@ -1203,7 +1203,8 @@ export class GridDataSource {
             return this.getRows(pager, this.sort).subscribe(
                 row => {
                     this.data[idx++] = row;
-                    this.requestingData = false;
+                    // not updating this.requestingData, as having
+                    // retrieved one row doesn't mean we're done
                     this.retrievalError = false;
                 },
                 err => {
