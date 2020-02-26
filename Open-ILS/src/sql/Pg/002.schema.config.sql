@@ -1140,6 +1140,7 @@ CREATE TABLE config.best_hold_order(
     name        TEXT        UNIQUE,   -- i18n
     pprox       INT, -- copy capture <-> pickup lib prox
     hprox       INT, -- copy circ lib <-> request lib prox
+    owning_lib_to_home_lib_prox      INT, -- copy owning lib <-> user home lib prox
     aprox       INT, -- copy circ lib <-> pickup lib ADJUSTED prox on ahcm
     approx      INT, -- copy capture <-> pickup lib ADJUSTED prox from function
     priority    INT, -- group hold priority
@@ -1154,6 +1155,7 @@ CREATE TABLE config.best_hold_order(
 ALTER TABLE config.best_hold_order ADD CHECK ((
     pprox IS NOT NULL OR
     hprox IS NOT NULL OR
+    owning_lib_to_home_lib_prox IS NOT NULL OR
     aprox IS NOT NULL OR
     priority IS NOT NULL OR
     cut IS NOT NULL OR

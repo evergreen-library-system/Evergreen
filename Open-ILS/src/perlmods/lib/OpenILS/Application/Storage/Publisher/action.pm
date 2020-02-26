@@ -23,6 +23,7 @@ my $U = "OpenILS::Application::AppUtils";
 my %HOLD_SORT_ORDER_BY = (
     pprox => 'p.prox',
     hprox => 'actor.org_unit_proximity(%d, h.pickup_lib)',  # $cp->call_number->owning_lib
+    owning_lib_to_home_lib_prox => 'actor.org_unit_proximity(%d, au.home_ou)',  # $cp->call_number->owning_lib
     aprox => 'COALESCE(hm.proximity, p.prox)',
     approx => 'action.hold_copy_calculated_proximity(h.id, %d, %d)', # $cp,$here
     priority => 'pgt.hold_priority',
@@ -348,8 +349,9 @@ sub get_hold_sort_order {
     my $row = $dbh->selectrow_hashref(
         q!
         SELECT
-            cbho.pprox, cbho.hprox, cbho.aprox, cbho.approx, cbho.priority,
-            cbho.cut, cbho.depth, cbho.htime, cbho.shtime, cbho.rtime
+            cbho.pprox, cbho.hprox, cbho.owning_lib_to_home_lib_prox, cbho.aprox,
+            cbho.approx, cbho.priority, cbho.cut, cbho.depth, cbho.htime,
+            cbho.shtime, cbho.rtime
         FROM config.best_hold_order cbho
         WHERE id = (
             SELECT oils_json_to_text(value)::INT
@@ -378,6 +380,7 @@ sub build_hold_sort_clause {
 
     my %order_by_sprintf_args = (
         hprox => [$cp->call_number->owning_lib],
+        owning_lib_to_home_lib_prox => [$cp->call_number->owning_lib],
         approx => [$cp->id, $here],
         htime => [$cp->call_number->owning_lib, $cp->call_number->owning_lib],
         shtime => [$cp->call_number->owning_lib, $cp->call_number->owning_lib]

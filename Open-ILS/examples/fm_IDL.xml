@@ -2973,6 +2973,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Capture Lib to Pickup Lib Proximity" name="pprox" reporter:datatype="int" />
 			<field reporter:label="Circ Lib to Request Lib Proximity" name="hprox" reporter:datatype="int" />
+			<field reporter:label="Owning Lib to Patron Home Lib Proximity" name="owning_lib_to_home_lib_prox" reporter:datatype="int" />
 			<field reporter:label="Adjusted Circ Lib to Pickup Lib Proximity" name="aprox" reporter:datatype="int" />
 			<field reporter:label="Adjusted Capture Location to Pickup Lib Proximity" name="approx" reporter:datatype="int" />
 			<field reporter:label="Hold Priority" name="priority" reporter:datatype="int" />

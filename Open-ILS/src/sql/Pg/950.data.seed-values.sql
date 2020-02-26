@@ -16055,6 +16055,14 @@ INSERT INTO config.best_hold_order (
     1, 2, 3, 4, 5, 6, 7, 8
 );
 
+INSERT INTO config.best_hold_order (
+    name,
+    owning_lib_to_home_lib_prox, hprox, approx, pprox, aprox, priority, cut, depth, rtime
+) VALUES (
+    'Traditional with Holds-chase-home-lib-patrons',
+    1, 2, 3, 4, 5, 6, 7, 8, 9
+);
+
 INSERT INTO actor.org_unit_setting (
     org_unit, name, value
 ) VALUES (

@@ -114,8 +114,9 @@ if (!dojo._hasResource["openils.conify.BestHoldOrder"]) {
     /* We could get these from the IDL, but if we add more fields to that
      * later, we have no particular mechanism for determining what is or
      * isn't metadata. */
-    module.fields = ["pprox", "hprox", "aprox", "priority", "cut", "depth",
-        "htime", "rtime", "approx", "shtime"];
+    module.fields = ["pprox", "hprox", "owning_lib_to_home_lib_prox",
+        "aprox", "priority", "cut", "depth", "htime", "rtime", "approx",
+        "shtime"];
 
     module.init = function() {
         module.progress_dialog = dijit.byId("progress-dialog");
