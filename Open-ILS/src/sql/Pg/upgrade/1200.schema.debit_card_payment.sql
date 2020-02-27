@@ -18,7 +18,6 @@ CREATE OR REPLACE VIEW money.non_drawer_payment_view AS
        SELECT  p.*, c.relname AS payment_type
          FROM  money.bnm_payment p         
                        JOIN pg_class c ON p.tableoid = c.oid
-         WHERE c.relname NOT IN ('cash_payment','check_payment','credit_card_payment');
          WHERE c.relname NOT IN ('cash_payment','check_payment','credit_card_payment','debit_card_payment');
 
 UPDATE action_trigger.event_definition 
