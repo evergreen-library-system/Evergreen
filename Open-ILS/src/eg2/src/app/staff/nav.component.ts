@@ -26,7 +26,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     // When active, show a link to the experimental Angular staff catalog
     showAngularCatalog: boolean;
 
-    @ViewChild('navOpChange', {static: false}) opChange: OpChangeComponent;
+    @ViewChild('navOpChange') opChange: OpChangeComponent;
     permFailedSub: Subscription;
 
     constructor(

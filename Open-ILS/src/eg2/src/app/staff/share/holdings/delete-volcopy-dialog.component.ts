@@ -47,7 +47,7 @@ export class DeleteHoldingDialogComponent
     @ViewChild('errorMsg')
         private errorMsg: StringComponent;
 
-    @ViewChild('confirmOverride', {static: false})
+    @ViewChild('confirmOverride')
         private confirmOverride: ConfirmDialogComponent;
 
     constructor(
