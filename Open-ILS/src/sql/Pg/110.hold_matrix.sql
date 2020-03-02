@@ -230,12 +230,14 @@ DECLARE
     item_status_object  config.copy_status%ROWTYPE;
     item_location_object    asset.copy_location%ROWTYPE;
     ou_skip              actor.org_unit_setting%ROWTYPE;
+    calc_age_prox        actor.org_unit_setting%ROWTYPE;
     result            action.matrix_test_result;
     hold_test        config.hold_matrix_matchpoint%ROWTYPE;
     use_active_date   TEXT;
+    prox_ou           INT;
     age_protect_date  TIMESTAMP WITH TIME ZONE;
     hold_count        INT;
-    hold_transit_prox    INT;
+    hold_transit_prox    NUMERIC;
     frozen_hold_count    INT;
     context_org_list    INT[];
     done            BOOL := FALSE;
@@ -360,7 +362,7 @@ BEGIN
             RETURN NEXT result;
         END IF;
     END IF;
- 
+
     -- Proximity of user's home_ou to the pickup_lib to see if penalty should be ignored.
     SELECT INTO pickup_prox prox FROM actor.org_unit_proximity WHERE from_org = user_object.home_ou AND to_org = v_pickup_ou;
     -- Proximity of user's home_ou to the items' lib to see if penalty should be ignored.
@@ -396,7 +398,7 @@ BEGIN
                     AND usp.org_unit IN ( SELECT * FROM unnest(context_org_list) )
                     AND (usp.stop_date IS NULL or usp.stop_date > NOW())
                     AND csp.block_list LIKE '%CIRC%' LOOP
-    
+
             result.fail_part := standing_penalty.name;
             result.success := FALSE;
             done := TRUE;
@@ -433,14 +435,26 @@ BEGIN
             age_protect_date := item_object.create_date;
         END IF;
         IF age_protect_date + age_protect_object.age > NOW() THEN
+            SELECT INTO calc_age_prox * FROM actor.org_unit_setting WHERE name = 'circ.holds.calculated_age_proximity' AND org_unit = item_object.circ_lib;
             IF hold_test.distance_is_from_owner THEN
-                SELECT INTO item_cn_object * FROM asset.call_number WHERE id = item_object.call_number;
-                SELECT INTO hold_transit_prox prox FROM actor.org_unit_proximity WHERE from_org = item_cn_object.owning_lib AND to_org = v_pickup_ou;
+                prox_ou := item_cn_object.owning_lib;
             ELSE
-                SELECT INTO hold_transit_prox prox FROM actor.org_unit_proximity WHERE from_org = item_object.circ_lib AND to_org = v_pickup_ou;
+                prox_ou := item_object.circ_lib;
+            END IF;
+            IF calc_age_prox.id IS NOT NULL AND calc_age_prox.value = 'true' THEN
+                SELECT INTO hold_transit_prox action.copy_calculated_proximity(
+                    v_pickup_ou,
+                    v_request_ou,
+                    prox_ou,
+                    item_object.circ_modifier,
+                    item_cn_object.owning_lib,
+                    item_location_object.owning_lib
+                );
+            ELSE
+                SELECT INTO hold_transit_prox prox::NUMERIC FROM actor.org_unit_proximity WHERE from_org = prox_ou AND to_org = v_pickup_ou;
             END IF;
 
-            IF hold_transit_prox > age_protect_object.prox THEN
+            IF hold_transit_prox > age_protect_object.prox::NUMERIC THEN
                 result.fail_part := 'config.rule_age_hold_protect.prox';
                 result.success := FALSE;
                 done := TRUE;

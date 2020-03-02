@@ -1477,53 +1477,31 @@ query-based fieldsets.
 Returns NULL if successful, or an error message if not.
 $$;
 
-CREATE OR REPLACE FUNCTION action.hold_copy_calculated_proximity(
-    ahr_id INT,
-    acp_id BIGINT,
-    copy_context_ou INT DEFAULT NULL
-    -- TODO maybe? hold_context_ou INT DEFAULT NULL.  This would optionally
-    -- support an "ahprox" measurement: adjust prox between copy circ lib and
-    -- hold request lib, but I'm unsure whether to use this theoretical
-    -- argument only in the baseline calculation or later in the other
-    -- queries in this function.
+CREATE OR REPLACE FUNCTION action.copy_calculated_proximity(
+    pickup  INT,
+    request INT,
+    vacp_cl  INT,
+    vacp_cm  TEXT,
+    vacn_ol  INT,
+    vacl_ol  INT
 ) RETURNS NUMERIC AS $f$
 DECLARE
-    aoupa           actor.org_unit_proximity_adjustment%ROWTYPE;
-    ahr             action.hold_request%ROWTYPE;
-    acp             asset.copy%ROWTYPE;
-    acn             asset.call_number%ROWTYPE;
-    acl             asset.copy_location%ROWTYPE;
     baseline_prox   NUMERIC;
-
-    icl_list        INT[];
-    iol_list        INT[];
-    isl_list        INT[];
-    hpl_list        INT[];
-    hrl_list        INT[];
-
+    aoupa           actor.org_unit_proximity_adjustment%ROWTYPE;
 BEGIN
 
-    SELECT * INTO ahr FROM action.hold_request WHERE id = ahr_id;
-    SELECT * INTO acp FROM asset.copy WHERE id = acp_id;
-    SELECT * INTO acn FROM asset.call_number WHERE id = acp.call_number;
-    SELECT * INTO acl FROM asset.copy_location WHERE id = acp.location;
-
-    IF copy_context_ou IS NULL THEN
-        copy_context_ou := acp.circ_lib;
-    END IF;
-
     -- First, gather the baseline proximity of "here" to pickup lib
-    SELECT prox INTO baseline_prox FROM actor.org_unit_proximity WHERE from_org = copy_context_ou AND to_org = ahr.pickup_lib;
+    SELECT prox INTO baseline_prox FROM actor.org_unit_proximity WHERE from_org = vacp_cl AND to_org = pickup;
 
     -- Find any absolute adjustments, and set the baseline prox to that
     SELECT  adj.* INTO aoupa
       FROM  actor.org_unit_proximity_adjustment adj
-            LEFT JOIN actor.org_unit_ancestors_distance(copy_context_ou) acp_cl ON (acp_cl.id = adj.item_circ_lib)
-            LEFT JOIN actor.org_unit_ancestors_distance(acn.owning_lib) acn_ol ON (acn_ol.id = adj.item_owning_lib)
-            LEFT JOIN actor.org_unit_ancestors_distance(acl.owning_lib) acl_ol ON (acl_ol.id = adj.copy_location)
-            LEFT JOIN actor.org_unit_ancestors_distance(ahr.pickup_lib) ahr_pl ON (ahr_pl.id = adj.hold_pickup_lib)
-            LEFT JOIN actor.org_unit_ancestors_distance(ahr.request_lib) ahr_rl ON (ahr_rl.id = adj.hold_request_lib)
-      WHERE (adj.circ_mod IS NULL OR adj.circ_mod = acp.circ_modifier) AND
+            LEFT JOIN actor.org_unit_ancestors_distance(vacp_cl) acp_cl ON (acp_cl.id = adj.item_circ_lib)
+            LEFT JOIN actor.org_unit_ancestors_distance(vacn_ol) acn_ol ON (acn_ol.id = adj.item_owning_lib)
+            LEFT JOIN actor.org_unit_ancestors_distance(vacl_ol) acl_ol ON (acl_ol.id = adj.copy_location)
+            LEFT JOIN actor.org_unit_ancestors_distance(pickup) ahr_pl ON (ahr_pl.id = adj.hold_pickup_lib)
+            LEFT JOIN actor.org_unit_ancestors_distance(request) ahr_rl ON (ahr_rl.id = adj.hold_request_lib)
+      WHERE (adj.circ_mod IS NULL OR adj.circ_mod = vacp_cm) AND
             (adj.item_circ_lib IS NULL OR adj.item_circ_lib = acp_cl.id) AND
             (adj.item_owning_lib IS NULL OR adj.item_owning_lib = acn_ol.id) AND
             (adj.copy_location IS NULL OR adj.copy_location = acl_ol.id) AND
@@ -1546,14 +1524,14 @@ BEGIN
 
     -- Now find any relative adjustments, and change the baseline prox based on them
     FOR aoupa IN
-        SELECT  adj.* 
+        SELECT  adj.*
           FROM  actor.org_unit_proximity_adjustment adj
-                LEFT JOIN actor.org_unit_ancestors_distance(copy_context_ou) acp_cl ON (acp_cl.id = adj.item_circ_lib)
-                LEFT JOIN actor.org_unit_ancestors_distance(acn.owning_lib) acn_ol ON (acn_ol.id = adj.item_owning_lib)
-                LEFT JOIN actor.org_unit_ancestors_distance(acl.owning_lib) acl_ol ON (acn_ol.id = adj.copy_location)
-                LEFT JOIN actor.org_unit_ancestors_distance(ahr.pickup_lib) ahr_pl ON (ahr_pl.id = adj.hold_pickup_lib)
-                LEFT JOIN actor.org_unit_ancestors_distance(ahr.request_lib) ahr_rl ON (ahr_rl.id = adj.hold_request_lib)
-          WHERE (adj.circ_mod IS NULL OR adj.circ_mod = acp.circ_modifier) AND
+                LEFT JOIN actor.org_unit_ancestors_distance(vacp_cl) acp_cl ON (acp_cl.id = adj.item_circ_lib)
+                LEFT JOIN actor.org_unit_ancestors_distance(vacn_ol) acn_ol ON (acn_ol.id = adj.item_owning_lib)
+                LEFT JOIN actor.org_unit_ancestors_distance(vacl_ol) acl_ol ON (acn_ol.id = adj.copy_location)
+                LEFT JOIN actor.org_unit_ancestors_distance(pickup) ahr_pl ON (ahr_pl.id = adj.hold_pickup_lib)
+                LEFT JOIN actor.org_unit_ancestors_distance(request) ahr_rl ON (ahr_rl.id = adj.hold_request_lib)
+          WHERE (adj.circ_mod IS NULL OR adj.circ_mod = vacp_cm) AND
                 (adj.item_circ_lib IS NULL OR adj.item_circ_lib = acp_cl.id) AND
                 (adj.item_owning_lib IS NULL OR adj.item_owning_lib = acn_ol.id) AND
                 (adj.copy_location IS NULL OR adj.copy_location = acl_ol.id) AND
@@ -1566,6 +1544,47 @@ BEGIN
     END LOOP;
 
     RETURN baseline_prox;
+END;
+$f$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION action.hold_copy_calculated_proximity(
+    ahr_id INT,
+    acp_id BIGINT,
+    copy_context_ou INT DEFAULT NULL
+    -- TODO maybe? hold_context_ou INT DEFAULT NULL.  This would optionally
+    -- support an "ahprox" measurement: adjust prox between copy circ lib and
+    -- hold request lib, but I'm unsure whether to use this theoretical
+    -- argument only in the baseline calculation or later in the other
+    -- queries in this function.
+) RETURNS NUMERIC AS $f$
+DECLARE
+    ahr  action.hold_request%ROWTYPE;
+    acp  asset.copy%ROWTYPE;
+    acn  asset.call_number%ROWTYPE;
+    acl  asset.copy_location%ROWTYPE;
+
+    prox NUMERIC;
+BEGIN
+
+    SELECT * INTO ahr FROM action.hold_request WHERE id = ahr_id;
+    SELECT * INTO acp FROM asset.copy WHERE id = acp_id;
+    SELECT * INTO acn FROM asset.call_number WHERE id = acp.call_number;
+    SELECT * INTO acl FROM asset.copy_location WHERE id = acp.location;
+
+    IF copy_context_ou IS NULL THEN
+        copy_context_ou := acp.circ_lib;
+    END IF;
+
+    SELECT action.copy_calculated_proximity(
+        ahr.pickup_lib,
+        ahr.request_lib,
+        copy_context_ou,
+        acp.circ_modifier,
+        acn.owning_lib,
+        acl.owning_lib
+    ) INTO prox;
+
+    RETURN prox;
 END;
 $f$ LANGUAGE PLPGSQL;
 
