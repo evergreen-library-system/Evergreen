@@ -97,17 +97,13 @@ export class OrgSelectComponent implements OnInit {
     // Modify the selected org unit via data binding.
     // This WILL NOT result in an onChange event firing.
     @Input() set applyOrg(org: IdlObject) {
-        if (org) {
-            this.selected = this.formatForDisplay(org);
-        }
+        this.selected = org ? this.formatForDisplay(org) : null;
     }
 
     // Modify the selected org unit by ID via data binding.
     // This WILL NOT result in an onChange event firing.
     @Input() set applyOrgId(id: number) {
-        if (id) {
-            this.selected = this.formatForDisplay(this.org.get(id));
-        }
+        this.selected = id ? this.formatForDisplay(this.org.get(id)) : null;
     }
 
     // Limit org unit display to those where the logged in user
