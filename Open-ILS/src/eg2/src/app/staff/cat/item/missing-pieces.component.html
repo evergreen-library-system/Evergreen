@@ -1,0 +1,85 @@
+<eg-staff-banner i18n-bannerText bannerText="Mark Item Missing Pieces">
+</eg-staff-banner>
+
+<eg-patron-penalty-dialog #penaltyDialog></eg-patron-penalty-dialog>
+
+<div class="row">
+  <div class="col-lg-12 form-inline">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id='barcode-label' i18n>Barcode</span>
+      </div>
+      <input type="text" class="form-control" id="item-barcode-input" 
+        (keydown)="noSuchItem=false; true;"
+        (keyup.enter)="getItemByBarcode()" [(ngModel)]="itemBarcode" 
+        aria-describedby="barcode-label"/>
+    </div>
+    <button class="btn btn-outline-dark" 
+      (click)="getItemByBarcode()" i18n>Submit</button>
+  </div>
+</div>
+
+<div class="mt-3 mb-3 p-2" *ngIf="item">
+  <div class="row">
+    <div class="col-lg-2" i18n>Title: </div>
+    <div class="col-lg-10">{{display('title')}}</div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2" i18n>Author: </div>
+    <div class="col-lg-10">{{display('author')}}</div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2" i18n>Call Number: </div>
+    <div class="col-lg-10">{{item.call_number().label()}}</div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-lg-12">
+      <button class="btn btn-success" (click)="processItem()" i18n>
+        Mark Item as Missing Pieces?
+      </button>
+      <button class="btn btn-warning ml-2" (click)="reset()" i18n>
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="row m-1" *ngIf="noSuchItem">
+  <div class="col-lg-6 offset-lg-3">
+    <div class="alert alert-warning" i18n>
+     No item with barcode "{{itemBarcode}}".
+    </div>
+  </div>
+</div>
+
+<div class="row m-1" *ngIf="circNotFound">
+  <div class="col-lg-6 offset-lg-3">
+    <div class="alert alert-warning" i18n>
+     No circulation found for item with barcode {{itemBarcode}}.
+     Item not modified.
+    </div>
+  </div>
+</div>
+
+<div class="row m-1" *ngIf="processing">
+  <div class="col-lg-6 offset-lg-3">
+    <eg-progress-inline></eg-progress-inline>
+  </div>
+</div>
+
+<div *ngIf="letter">
+  <div class="row">
+    <div class="col-lg-3">
+      <button class="btn btn-outline-dark" (click)="printLetter()" i18n>
+        Print Letter
+      </button>
+    </div>
+  </div>
+  <div class="row m-1">
+    <div class="col-lg-8">
+      <textarea [(ngModel)]="letter" 
+        rows="{{letterRowCount()}}" class="form-control">
+      </textarea>
+    </div>
+  </div>
+</div>

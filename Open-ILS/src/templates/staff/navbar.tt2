@@ -223,7 +223,7 @@
             </a>
           </li>
           <li>
-            <a href="./cat/item/missing_pieces" target="_self">
+            <a href="/eg2/staff/cat/item/missing_pieces">
               <span class="glyphicon glyphicon-th" aria-hidden="true"></span>
               <span>[% l('Scan Item as Missing Pieces') %]</span>
             </a>

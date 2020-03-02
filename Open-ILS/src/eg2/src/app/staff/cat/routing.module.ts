@@ -15,6 +15,9 @@ const routes: Routes = [
     loadChildren: () =>
       import('./marcbatch/marcbatch.module').then(m => m.MarcBatchModule)
   }, {
+    path: 'item',
+    loadChildren: () => import('./item/item.module').then(m => m.ItemModule)
+  }, {
     path: 'bib-from/:identType',
     component: BibByIdentComponent
   }

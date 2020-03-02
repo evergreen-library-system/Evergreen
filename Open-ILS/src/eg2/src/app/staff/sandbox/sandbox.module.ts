@@ -8,6 +8,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {SampleDataService} from '@eg/share/util/sample-data.service';
 import {OrgFamilySelectModule} from '@eg/share/org-family-select/org-family-select.module';
 import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
+import {PatronModule} from '@eg/staff/share/patron/patron.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-loca
     OrgFamilySelectModule,
     ItemLocationSelectModule,
     SandboxRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PatronModule
   ],
   providers: [
     SampleDataService

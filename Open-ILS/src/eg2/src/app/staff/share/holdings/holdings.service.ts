@@ -4,7 +4,9 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {NetService} from '@eg/core/net.service';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
+import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 
 interface NewCallNumData {
@@ -20,6 +22,7 @@ export class HoldingsService {
     constructor(
         private net: NetService,
         private auth: AuthService,
+        private pcrud: PcrudService,
         private evt: EventService,
         private anonCache: AnonCacheService
     ) {}
@@ -57,6 +60,23 @@ export class HoldingsService {
                 const url = `/eg/staff/cat/volcopy/${key}`;
                 window.open(url, '_blank');
             });
+        });
+    }
+
+    // Using open-ils.actor.get_barcodes
+    getItemIdFromBarcode(barcode: string): Promise<number> {
+        return this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.get_barcodes',
+            this.auth.token(), this.auth.user().ws_ou(), 'asset', barcode
+        ).toPromise().then(resp => {
+            if (this.evt.parse(resp)) {
+                return Promise.reject(resp);
+            } else if (resp.length === 0) {
+                return null;
+            } else {
+                return resp[0].id;
+            }
         });
     }
 }

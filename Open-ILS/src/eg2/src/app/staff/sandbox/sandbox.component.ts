@@ -52,6 +52,8 @@ export class SandboxComponent implements OnInit {
     @ViewChild('bresvEditor', { static: true })
     private bresvEditor: FmRecordEditorComponent;
 
+    @ViewChild('penaltyDialog', {static: false}) penaltyDialog;
+
 
     // @ViewChild('helloStr') private helloStr: StringComponent;
 
@@ -477,6 +479,11 @@ export class SandboxComponent implements OnInit {
             contextData: templateData,
             printContext: 'default'
         });
+    }
+
+    openPenalty() {
+        this.penaltyDialog.open()
+        .subscribe(val => console.log('penalty value', val));
     }
 }
 

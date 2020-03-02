@@ -5,12 +5,14 @@ import {PatronService} from './patron.service';
 import {PatronSearchComponent} from './search.component';
 import {PatronSearchDialogComponent} from './search-dialog.component';
 import {ProfileSelectComponent} from './profile-select.component';
+import {PatronPenaltyDialogComponent} from './penalty-dialog.component';
 
 @NgModule({
     declarations: [
         PatronSearchComponent,
         PatronSearchDialogComponent,
-        ProfileSelectComponent
+        ProfileSelectComponent,
+        PatronPenaltyDialogComponent
     ],
     imports: [
         StaffCommonModule,
@@ -19,7 +21,8 @@ import {ProfileSelectComponent} from './profile-select.component';
     exports: [
         PatronSearchComponent,
         PatronSearchDialogComponent,
-        ProfileSelectComponent
+        ProfileSelectComponent,
+        PatronPenaltyDialogComponent
     ],
     providers: [
         PatronService

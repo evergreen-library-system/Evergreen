@@ -414,6 +414,14 @@
 </div>
 
 <div class="mt-4 mb-4">
+  <h4>Add Patron Penalty</h4>
+  <eg-patron-penalty-dialog #penaltyDialog patronId="1"></eg-patron-penalty-dialog>
+  <button class="btn btn-outline-dark" (click)="openPenalty()" i18n>
+    Open Penalty Dialog
+  </button>
+</div>
+
+<div class="mt-4 mb-4">
   <h4>Grid Stock Selector Display and Filtering</h4>
   <eg-grid #eventsGrid idlClass="atevdef"
     [dataSource]="eventsDataSource"
