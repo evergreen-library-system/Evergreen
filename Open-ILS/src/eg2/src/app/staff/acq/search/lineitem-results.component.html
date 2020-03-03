@@ -36,7 +36,7 @@
 </ng-template>
 
 <ng-template #providerTmpl let-lineitem="row">
-  <a *ngIf="lineitem.provider()" href="/eg/staff/admin/acq/conify/provider/{{lineitem.provider().id()}}"
+  <a *ngIf="lineitem.provider()" routerLink="/staff/acq/provider/{{lineitem.provider().id()}}"
      target="_blank">
     {{lineitem.provider().code()}}
   </a>

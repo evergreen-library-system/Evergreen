@@ -1,0 +1,68 @@
+<eg-string #createString i18n-text text="New Provider Contact Added"></eg-string>
+<eg-string #createErrString i18n-text text="Failed to Create New Provider Contact"></eg-string>
+<eg-string #successString i18n-text text="Provider Contact Update Succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text text="Provider Contact Update Failed"></eg-string>
+<eg-string #deleteFailedString i18n-text text="Delete of Provider Contact failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text text="Delete of Provider Contact succeeded"></eg-string>
+<eg-string #setAsPrimarySuccessString i18n-text text="Successfully set primary contact"></eg-string>
+<eg-string #setAsPrimaryFailedtring i18n-text text="Failed to set primary contact"></eg-string>
+<eg-string #unsetAsPrimarySuccessString i18n-text text="Successfully removed primary contact"></eg-string>
+<eg-string #unsetAsPrimaryFailedtring i18n-text text="Failed to remove primary contact"></eg-string>
+
+<ng-template #emailTmpl let-contact="row">
+  <a href="mailto:{{contact.email()}}">{{contact.email()}}</a>
+</ng-template>
+
+<ng-template #phoneTmpl let-contact="row">
+  <a href="tel:{{contact.phone()}}">{{contact.phone()}}</a>
+</ng-template>
+
+<eg-confirm-dialog #confirmSetAsPrimary
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Setting Primary Contact"
+  dialogBody="Set {{selectedContact ? selectedContact.name() : ''}} as the primary contact for {{provider ? provider.name() : ''}}?">
+</eg-confirm-dialog>
+
+<eg-confirm-dialog #confirmUnsetAsPrimary
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Unsetting Primary Contact"
+  dialogBody="Unset {{selectedContact ? selectedContact.name() : ''}} as the primary contact for {{provider ? provider.name() : ''}}?">
+</eg-confirm-dialog>
+
+<eg-grid #acqProviderContactsGrid
+  persistKey="acq.provider.contacts"
+  idlClass="acqpc" [dataSource]="gridSource"
+  [sortable]="true"
+  [disableMultiSelect]="true"
+  [filterable]="true"
+  hideFields="provider"
+  [cellTextGenerator]="cellTextGenerator">
+
+  <eg-grid-toolbar-button label="New Provider Contact" i18n-label (onClick)="createNew()"></eg-grid-toolbar-button>
+  <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Set as Primary Contact" i18n-label (onClick)="setAsPrimary($event)" [disableOnRows]="cannotSetPrimaryContact">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Unset as Primary Contact" i18n-label (onClick)="unsetAsPrimary($event)" [disableOnRows]="cannotUnsetPrimaryContact">
+  </eg-grid-toolbar-action>
+
+
+  <eg-grid-column path="email" [cellTemplate]="emailTmpl" [disableTooltip]="true"></eg-grid-column>
+  <eg-grid-column path="phone" [cellTemplate]="phoneTmpl" [disableTooltip]="true"></eg-grid-column>
+  <eg-grid-column [filterable]="false" [sortable]="false" i18n-label label="Is Primary?" path="_is_primary" datatype="bool"></eg-grid-column>
+</eg-grid>
+
+<ng-container *ngIf="selectedContact">
+  <hr><h3 i18n>Addresses for: {{selectedContact.name()}}</h3>
+  <eg-provider-contact-addresses
+    #providerContactAddresses
+    [contactId]="selectedContact.id()">
+  </eg-provider-contact-addresses>
+</ng-container>
+
+<eg-fm-record-editor #editDialog
+  idlClass="acqpc"
+  readonlyFields="id,provider"
+  fieldOrder="id,provider,name,role,email,phone">
+</eg-fm-record-editor>
+

@@ -1,0 +1,64 @@
+<div id="acq-provider-search-form" class="pl-3 pr-3 pt-3 pb-3 mb-3">
+<form>
+  <div class="row mb-1">
+    <div class="col-lg">
+      <input i18n-placeholder placeholder="Provider Name" [ngModelOptions]="{standalone: true}" [(ngModel)]="providerName" type="text" class="form-control" />
+    </div>
+    <div class="col-lg">
+      <input i18n-placeholder placeholder="Code" [ngModelOptions]="{standalone: true}" [(ngModel)]="providerCode" type="text" class="form-control" />
+    </div>
+    <div class="col-lg-4">
+      <eg-org-family-select i18n-labelText labelText="Owner"
+        [limitPerms]="['VIEW_PROVIDER','MANAGE_PROVIDER','ADMIN_PROVIDER']"
+        [ngModelOptions]="{standalone: true}" [(ngModel)]="providerOwners">
+      </eg-org-family-select>
+    </div>
+    <div class="col-lg-2 text-right">
+      <button class="btn btn-primary mr-1" (click)="submitSearch()" type="submit" i18n>Search</button>
+      <button class="btn btn-secondary" (click)="clearSearch()" type="button" i18n>Reset Form</button>
+      <button class="btn" [hidden]="collapsed" (click)="toggleCollapse()" type="submit" i18n><span class="material-icons">expand_less</span></button>
+      <button class="btn" [hidden]="!collapsed" (click)="toggleCollapse()" type="submit" i18n><span class="material-icons">expand_more</span></button>
+    </div>
+  </div>
+
+  <div class="row mb-1" [hidden]="collapsed">
+    <div class="col-lg">
+      <input i18n-placeholder placeholder="Contact Name" [ngModelOptions]="{standalone: true}" [(ngModel)]="contactName" type="text" class="form-control" />
+    </div>
+    <div class="col-lg">
+      <input i18n-placeholder placeholder="Provider Email" [ngModelOptions]="{standalone: true}" [(ngModel)]="providerEmail" type="text" class="form-control" />
+    </div>
+    <div class="col-lg">
+      <input i18n-placeholder placeholder="Provider Phone" [ngModelOptions]="{standalone: true}" [(ngModel)]="providerPhone" type="text" class="form-control" />
+    </div>
+    <div class="col-lg">
+      <eg-combobox i18n-placeholder placeholder="Currency"
+        idlClass="acqct" [asyncSupportsEmptyTermClick]="true"
+        (onChange)="providerCurrencyType = $event ? $event.id : null" [asyncSupportsEmptyTermClick]="true"></eg-combobox>
+    </div>
+  </div>
+
+  <div class="row mb-1" [hidden]="collapsed">
+    <div class="col-lg">
+      <input i18n-placeholder placeholder="SAN" [ngModelOptions]="{standalone: true}" [(ngModel)]="providerSAN" type="text" class="form-control" />
+    </div>
+    <div class="col-lg">
+      <!-- edi default account link -->
+      <eg-combobox i18n-placeholder placeholder="EDI Default"
+        idlClass="acqedi" [asyncSupportsEmptyTermClick]="true"
+        (onChange)="providerEDIDefault = $event ? $event.id : null"></eg-combobox>
+    </div>
+    <div class="col-lg">
+      <input i18n-placeholder placeholder="URL" [ngModelOptions]="{standalone: true}" [(ngModel)]="providerURL" type="text" class="form-control" />
+    </div>
+    <div class="col-lg form-group">
+      <label for="acqproIsActive" i18n>Active?</label>
+      <select class="form-control" id="acqproIsActive" [ngModelOptions]="{standalone: true}" [(ngModel)]="providerIsActive">
+        <option i18n value="active">Yes</option>
+        <option i18n value="inactive">No</option>
+        <option i18n value="any">Any</option>
+      </select>
+    </div>
+  </div>
+</form>
+</div>

@@ -27,7 +27,7 @@
     ,[ l('Invoice Payment Method'), "./admin/acq/conify/invoice_payment_method" ]
     ,[ l('Line Item Alerts'), "./admin/acq/conify/lineitem_alert" ]
     ,[ l('Line Item MARC Attribute Definitions'), "./admin/acq/conify/lineitem_marc_attr_def" ]
-    ,[ l('Providers'), "./admin/acq/conify/provider" ]
+    ,[ l('Providers'), "/eg2/admin/acq/provider" ]
    ];
 
    USE table(interfaces, cols=3);

@@ -1,0 +1,39 @@
+<eg-string #createString i18n-text text="New Provider Address Added"></eg-string>
+<eg-string #createErrString i18n-text text="Failed to Create New Provider Address"></eg-string>
+<eg-string #successString i18n-text text="Provider Address Update Succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text text="Provider Address Update Failed"></eg-string>
+<eg-string #deleteFailedString i18n-text text="Delete of Provider Address failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text text="Delete of Provider Address succeeded"></eg-string>
+
+<eg-grid #acqProviderAddressesGrid
+  persistKey="acq.provider.addresses"
+  idlClass="acqpa" [dataSource]="gridSource"
+  [sortable]="true"
+  [filterable]="true"
+  hideFields="provider,id"
+  [cellTextGenerator]="cellTextGenerator">
+    <eg-grid-toolbar-button 
+      label="New Provider Address" i18n-label (onClick)="createNew()">
+    </eg-grid-toolbar-button>
+    <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
+    </eg-grid-toolbar-action>
+    <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)">
+    </eg-grid-toolbar-action>
+  <eg-grid-column name="address_type"></eg-grid-column>
+  <eg-grid-column name="street1"></eg-grid-column>
+  <eg-grid-column name="street2"></eg-grid-column>
+  <eg-grid-column name="city"></eg-grid-column>
+  <eg-grid-column name="county"></eg-grid-column>
+  <eg-grid-column name="state"></eg-grid-column>
+  <eg-grid-column name="country"></eg-grid-column>
+  <eg-grid-column name="post_code"></eg-grid-column>
+  <eg-grid-column name="fax_phone"></eg-grid-column>
+  <eg-grid-column name="valid"></eg-grid-column>
+</eg-grid>
+
+<eg-fm-record-editor #editDialog
+  idlClass="acqpa"
+  readonlyFields="id,provider"
+  fieldOrder="id,valid,address_type,provider,street1,street2,city,county,state,country,post_code,fax_phone">
+</eg-fm-record-editor>
+

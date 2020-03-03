@@ -5,6 +5,10 @@ const routes: Routes = [
   { path: 'search',
     loadChildren: () =>
       import('./search/acq-search.module').then(m => m.AcqSearchModule)
+  },
+  { path: 'provider',
+    loadChildren: () =>
+      import('./provider/acq-provider.module').then(m => m.AcqProviderModule)
   }
 ];
 

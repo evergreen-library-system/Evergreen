@@ -1,0 +1,26 @@
+<eg-string #createString i18n-text text="New Provider Attributes Added"></eg-string>
+<eg-string #createErrString i18n-text text="Failed to Create New Provider Attributes"></eg-string>
+<eg-string #successString i18n-text text="Provider Attributes Update Succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text text="Provider Attributes Update Failed"></eg-string>
+<eg-string #deleteFailedString i18n-text text="Delete of Provider Attributes failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text text="Delete of Provider Attributes succeeded"></eg-string>
+
+<eg-grid #acqProviderAttributesGrid
+  persistKey="acq.provider.attributes"
+  idlClass="acqlipad" [dataSource]="gridSource"
+  [sortable]="true"
+  hideFields="provider"
+  [cellTextGenerator]="cellTextGenerator">
+
+  <eg-grid-toolbar-button label="New Attributes" i18n-label (onClick)="createNew()"></eg-grid-toolbar-button>
+  <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
+
+</eg-grid>
+
+<eg-fm-record-editor #editDialog
+  idlClass="acqlipad"
+  readonlyFields="id,provider"
+  fieldOrder="id,provider,code,description,xpath,remove,ident">
+</eg-fm-record-editor>
+

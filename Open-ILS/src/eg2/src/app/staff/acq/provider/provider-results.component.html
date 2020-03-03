@@ -1,0 +1,25 @@
+<eg-acq-provider-search-form #providerSearchForm (searchSubmitted)="doSearch($event)"></eg-acq-provider-search-form>
+
+<ng-template #contactTmpl let-provider="row">
+  <ul>
+    <li *ngFor="let c of provider.contacts()">{{c.name()}}</li>
+  </ul>
+</ng-template>
+
+<eg-grid #acqSearchProviderGrid
+  persistKey="acq.provider.search.results"
+  idlClass="acqpro" [dataSource]="gridSource"
+  [stickyHeader]="true"
+  [filterable]="true"
+  [sortable]="true"
+  [disableMultiSelect]="true"
+  (onRowClick)="previewRow($event, false)"
+  (onRowActivate)="previewRow($event)"
+  [cellTextGenerator]="cellTextGenerator">
+
+  <eg-grid-toolbar-action label="Retrieve Provider" i18n-label (onClick)="retrieveRow($event)"></eg-grid-toolbar-action>
+  <eg-grid-column [asyncSupportsEmptyTermClick]="true" path="currency_type" [hidden]="true"></eg-grid-column>
+  <eg-grid-column [asyncSupportsEmptyTermClick]="true" path="default_claim_policy" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="contacts" [cellTemplate]="contactTmpl" [filterable]="false" [sortable]="false" [hidden]="true" [disableTooltip]="true"></eg-grid-column>
+</eg-grid>
+

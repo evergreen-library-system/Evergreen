@@ -1,0 +1,74 @@
+<eg-string #createString i18n-text text="New EDI Account Added"></eg-string>
+<eg-string #createErrString i18n-text text="Failed to Create New EDI Account"></eg-string>
+<eg-string #successString i18n-text text="EDI Account Update Succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text text="EDI Account Update Failed"></eg-string>
+<eg-string #deleteFailedString i18n-text text="Delete of EDI Account failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text text="Delete of EDI Account succeeded"></eg-string>
+<eg-string #setAsDefaultSuccessString i18n-text text="Successfully set EDI default account"></eg-string>
+<eg-string #setAsDefaultFailedtring i18n-text text="Failed to set EDI default account"></eg-string>
+
+<eg-confirm-dialog #confirmSetAsDefault
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Setting Default EDI Account"
+  dialogBody="Set {{selected ? selected.label() : ''}} as the default EDI account for {{provider ? provider.name() : ''}}?">
+</eg-confirm-dialog>
+
+<eg-grid #acqProviderEdiAccountsGrid
+  persistKey="acq.provider.edi_accounts"
+  idlClass="acqedi" [dataSource]="gridSource"
+  [sortable]="true"
+  hideFields="provider"
+  [cellTextGenerator]="cellTextGenerator">
+  <eg-grid-toolbar-button 
+    label="New EDI Account" i18n-label (onClick)="createNew()">
+  </eg-grid-toolbar-button>
+  <eg-grid-toolbar-button
+    label="View EDI Messages" i18n-label (onClick)="displayEdiMessages($event)" [disabled]="acqProviderEdiAccountsGrid.context.getSelectedRows().length !== 1">
+  </eg-grid-toolbar-button>
+  <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Set as Default" i18n-label (onClick)="setAsDefault($event)" [disableOnRows]="notOneSelectedRow">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="View EDI Messages" i18n-label (onClick)="displayEdiMessages($event)" [disableOnRows]="notOneSelectedRow">
+  </eg-grid-toolbar-action>
+  <eg-grid-column [filterable]="false" [sortable]="false" i18n-label label="Is Default?" path="_is_default" datatype="bool"></eg-grid-column>
+</eg-grid>
+
+<ng-container *ngIf="viewEdiMessages">
+  <h2 i18n>EDI messages for account {{selectedEdiAccountLabel}}</h2>
+  <eg-grid #acqProviderEdiMessagesGrid
+    persistKey="acq.provider.edi_messages"
+    idlClass="acqedim" [dataSource]="ediMessagesSource"
+    [sortable]="true"
+    [filterable]="true">
+  </eg-grid>
+</ng-container>
+
+<eg-string #hostHelpStr text="EDI FTP or SCP server, including protocol. For example, ftp://ftp.example.org." i18n-text></eg-string>
+<eg-string #usernameHelpStr text="Username supplied by provider."></eg-string>
+<eg-string #passwordHelpStr text="Password supplied by provider."></eg-string>
+<eg-string #pathHelpStr text="Directory on the provider's server where Evergreen should deposit order files."></eg-string>
+<eg-string #indirHelpStr text="Directory on the provider's server where Evergreen should retrieve order responses and invoices."></eg-string>
+<eg-string #vendacctHelpStr text="Supplied by provider."></eg-string>
+<eg-string #vendcodeHelpStr text="Supplied by provider."></eg-string>
+<eg-string #accountHelpStr text="Supplied by provider."></eg-string>
+
+<eg-fm-record-editor #editDialog
+  idlClass="acqedi"
+  readonlyFields="id,provider"
+  hiddenFields="provider,last_activity"
+  [fieldOptions]="{
+                    host: {helpText: hostHelpStr},
+                    username: {helpText: usernameHelpStr},
+                    password: {helpText: passwordHelpStr},
+                    path: {helpText: pathHelpStr},
+                    in_dir: {helpText: indirHelpStr},
+                    vendacct: {helpText: vendacctHelpStr},
+                    vendcode: {helpText: vendcodeHelpStr},
+                    account: {helpText: accountHelpStr}
+                  }"
+  fieldOrder="id,label,host,username,password,account,owner,path,in_dir,vendacct,vendcode,attr_set,use_attrs">
+</eg-fm-record-editor>
+

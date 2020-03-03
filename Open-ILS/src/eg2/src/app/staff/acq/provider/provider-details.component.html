@@ -1,0 +1,17 @@
+<eg-string #successString i18n-text text="Provider Update Succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text text="Provider Update Failed"></eg-string>
+<eg-string #deleteFailedString i18n-text text="Delete of Provider failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text text="Delete of Provider succeeded"></eg-string>
+
+<eg-fm-record-editor #editDialog
+  idlClass="acqpro"
+  [mode]="permittedMode()"
+  [hideBanner]="true" displayMode="inline"
+  [record]="provider"
+  (recordSaved)="updateProvider($event)"
+  readonlyFields="id"
+  hiddenFields="holding_tag,primary_contact"
+  [fieldOptions]="{currency_type:{preloadLinkedValues:true},edi_default:{preloadLinkedValues:true},default_claim_policy:{preloadLinkedValues:true}}"
+  fieldOrder="active,name,code,id,currency_type,default_claim_policy,default_copy_count,edi_default,owner,phone,fax_phone,email,url,san,prepayment_required"
+>
+</eg-fm-record-editor>

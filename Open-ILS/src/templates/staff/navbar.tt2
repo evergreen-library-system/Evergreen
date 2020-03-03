@@ -360,6 +360,12 @@
               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
               [% l('General Search') %]
             </a>
+          <li class="divider"></li>
+          <li>
+            <a href="/eg2/staff/acq/provider" target="_self">
+              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+              [% l('Provider Search') %]
+            </a>
           </li>
           <li class="divider"></li>
           <li>

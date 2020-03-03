@@ -1,0 +1,125 @@
+<button class="btn" *ngIf="provider_id" [hidden]="!collapsed" (click)="toggleCollapse()" type="submit" i18n><span class="material-icons">expand_more</span></button>
+<button class="btn" *ngIf="provider_id" [hidden]="collapsed" (click)="toggleCollapse()" type="submit" i18n><span class="material-icons">expand_less</span></button>
+
+<div id="acq-provider-summary-pane" [hidden]="!provider_id || collapsed" class="pl-3 pr-3 pt-3 pb-3 mb-3">
+
+<ng-template #errorStrTmpl i18n>Provider Deletion Failed</ng-template>
+<eg-string #deleteSuccessString i18n-text text="Successfully deleted provider."></eg-string>
+<eg-string #errorString [template]="errorStrTmpl"></eg-string>
+
+<eg-confirm-dialog #delConfirm
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Delete"
+  dialogBody="Delete Provider {{provider ? provider.code() : ''}}?">
+</eg-confirm-dialog>
+
+<div class="row provider_name">
+<div class="col">{{provider_name_label}}</div>
+<div class="col">{{provider_name}}</div>
+</div>
+
+<div class="row provider_code">
+<div class="col">{{provider_code_label}}</div>
+<div class="col">{{provider_code}}</div>
+</div>
+
+<div class="row provider_owner">
+<div class="col">{{provider_owner_label}}</div>
+<div class="col">{{provider_owner}}</div>
+</div>
+
+<div class="row provider_id">
+<div class="col">{{provider_id_label}}</div>
+<div class="col">{{provider_id}}</div>
+</div>
+
+<div class="row provider_currency_type">
+<div class="col">{{provider_currency_type_label}}</div>
+<div class="col">{{provider_currency_type}}</div>
+</div>
+
+<div class="row provider_contacts">
+<div class="col">{{provider_contacts_label}}</div>
+<div class="col">
+  <div *ngFor="let contact of provider_contacts">
+    <span *ngIf="contact.role()"><span class="provider_contact_role">{{contact.role()}} : </span><span>{{contact.name()}}</span></span>
+    <span *ngIf="!contact.role()">{{contact.name()}}</span>
+    <span *ngIf="contact._is_primary"><span class="provider_primary_contact"> (primary)</span></span>
+  </div>
+</div>
+</div>
+
+<div class="row provider_san_tag">
+<div class="col">{{provider_san_label}}</div>
+<div class="col">{{provider_san}}</div>
+</div>
+
+<div class="row provider_edi_default">
+<div class="col">{{provider_edi_default_label}}</div>
+<div class="col">{{provider_edi_default}}</div>
+</div>
+
+<div class="row provider_url">
+<div class="col">{{provider_url_label}}</div>
+<div class="col" *ngIf="provider_url"><a target="_blank" href="{{provider_url}}">{{provider_url}}</a></div>
+</div>
+
+<div class="row provider_holding_tag">
+<div class="col">{{provider_holding_tag_label}}</div>
+<div class="col">{{provider_holding_tag}}</div>
+</div>
+
+<div class="row provider_addresses">
+<div class="col">{{provider_addresses_label}}</div>
+<div class="col">{{provider_addresses}}</div>
+</div>
+
+<div class="row provider_active">
+<div class="col">{{provider_active_label}}</div>
+<div class="col"><eg-bool [value]="provider_active == 't'"></eg-bool></div>
+</div>
+
+<div class="row provider_prepayment_required">
+<div class="col">{{provider_prepayment_required_label}}</div>
+<div class="col">{{provider_prepayment_required}}</div>
+</div>
+
+<div class="row provider_email">
+<div class="col">{{provider_email_label}}</div>
+<div class="col">{{provider_email}}</div>
+</div>
+
+<div class="row provider_phone">
+<div class="col">{{provider_phone_label}}</div>
+<div class="col">{{provider_phone}}</div>
+</div>
+
+<div class="row provider_fax_phone">
+<div class="col">{{provider_fax_phone_label}}</div>
+<div class="col">{{provider_fax_phone}}</div>
+</div>
+
+<div class="row provider_default_claim_policy">
+<div class="col">{{provider_default_claim_policy_label}}</div>
+<div class="col">{{provider_default_claim_policy}}</div>
+</div>
+
+<div class="row provider_default_copy_count">
+<div class="col">{{provider_default_copy_count_label}}</div>
+<div class="col">{{provider_default_copy_count}}</div>
+</div>
+
+<div class="row provider_provider_notes">
+<div class="col">{{provider_provider_notes_label}}</div>
+<div class="col">{{provider_provider_notes}}</div>
+</div>
+
+</div>
+
+<button class="btn btn-primary"
+  [hidden]="collapsed"
+  *ngIf="provider_id"
+  [disabled]="!canDeleteProvider()"
+  (click)="deleteProvider()"
+  type="submit" i18n>
+Delete Provider</button>

@@ -1,0 +1,152 @@
+<eg-staff-banner bannerText="Providers" i18n-bannerText>
+</eg-staff-banner>
+<eg-string #createString i18n-text text="New Provider Added"></eg-string>
+<eg-string #createErrString i18n-text text="Failed to Create New Provider"></eg-string>
+
+<eg-confirm-dialog #leaveConfirm
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Unsaved Changes Warning"
+  dialogBody="There are unsaved changes. Are you sure you want to leave?">
+</eg-confirm-dialog>
+
+<div><div class="row">
+
+<div class="col">
+<div class="row mb-2">
+  <div class="col-lg">
+    <h3 i18n *ngIf="id && !showSearchForm">{{providerRecord.currentProvider?.record.name()}} ({{providerRecord.currentProvider?.record.code()}})</h3>
+  </div>
+  <div class="col-lg-auto">
+    <div class="btn-toolbar" role="toolbar">
+      <div class="button-grp mr-2">
+        <button class="btn btn-primary" [hidden]="showSearchForm" (click)="showSearchForm = !showSearchForm" i18n>Show Search Form</button>
+        <button class="btn btn-primary" [hidden]="!showSearchForm"  (click)="showSearchForm = !showSearchForm" i18n>Hide Search Form</button>
+      </div>
+      <div class="button-grp mr-2">
+        <button class="btn btn-primary" (click)="createNew()" [disabled]="!providerRecord.checkIfCanAdminAtAll()" i18n>New Provider</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mb-5" [hidden]="!showSearchForm">
+  <div class="col-lg-12">
+    <eg-provider-results #acqProviderResults (desireSummarize)="onDesireSummarize($event)" (summarizeSearchFormOpen)="onDesireSummarize($event, false, false)"></eg-provider-results>
+  </div>
+</div>
+
+<h3 i18n *ngIf="id && showSearchForm">{{providerRecord.currentProvider?.record.name()}} ({{providerRecord.currentProvider?.record.code()}})</h3>
+<div class="row">
+<div class="col-lg-auto">
+  <eg-acq-provider-summary-pane #acqSearchProviderSummary
+    (summaryToggled)="onSummaryToggled($event)" [providerId]="id">
+  </eg-acq-provider-summary-pane>
+</div>
+
+<div class="col">
+<div class="row" id="acq-provider-page" [hidden]="!id">
+  <div class="col-lg-12">
+    <ngb-tabset #acqProviderTabs [activeId]="activeTab" (tabChange)="onTabChange($event)">
+      <ngb-tab title="Provider" i18n-title id="details" [disabled]="!id">
+        <ng-template ngbTabContent>
+          <div class="row mt-3">
+            <div class="col-lg-12 text-right pb-1">
+              <button class="btn btn-secondary btn-sm" [disabled]="activeTab == defaultTabType"
+                (click)="setDefaultTab()" i18n>Set Default View</button>
+            </div>
+          </div>
+          <eg-provider-details #providerDetails (desireSummarize)="onDesireSummarize($event, true)"></eg-provider-details>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Addresses" i18n-title id="addresses" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
+        <ng-template ngbTabContent>
+          <div class="row mt-3">
+            <div class="col-lg-12 text-right pb-1">
+              <button class="btn btn-secondary btn-sm" [disabled]="activeTab == defaultTabType"
+                (click)="setDefaultTab()" i18n>Set Default View</button>
+            </div>
+          </div>
+          <eg-provider-addresses></eg-provider-addresses>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Contacts" i18n-title id="contacts" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
+        <ng-template ngbTabContent>
+          <div class="row mt-3">
+            <div class="col-lg-12 text-right pb-1">
+              <button class="btn btn-secondary btn-sm" [disabled]="activeTab == defaultTabType"
+                (click)="setDefaultTab()" i18n>Set Default View</button>
+            </div>
+          </div>
+          <eg-provider-contacts (desireSummarize)="onDesireSummarize($event, true)"></eg-provider-contacts>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Attribute Definitions" i18n-title id="attributes" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
+        <ng-template ngbTabContent>
+          <div class="row mt-3">
+            <div class="col-lg-12 text-right pb-1">
+              <button class="btn btn-secondary btn-sm" [disabled]="activeTab == defaultTabType"
+                (click)="setDefaultTab()" i18n>Set Default View</button>
+            </div>
+          </div>
+          <eg-provider-attributes></eg-provider-attributes>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Holdings Definitions" i18n-title id="holdings" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
+        <ng-template ngbTabContent>
+          <div class="row mt-3">
+            <div class="col-lg-12 text-right pb-1">
+              <button class="btn btn-secondary btn-sm" [disabled]="activeTab == defaultTabType"
+                (click)="setDefaultTab()" i18n>Set Default View</button>
+            </div>
+          </div>
+          <eg-provider-holdings #providerHoldings></eg-provider-holdings>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="EDI" i18n-title id="edi_accounts" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
+        <ng-template ngbTabContent>
+          <div class="row mt-3">
+            <div class="col-lg-12 text-right pb-1">
+              <button class="btn btn-secondary btn-sm" [disabled]="activeTab == defaultTabType"
+                (click)="setDefaultTab()" i18n>Set Default View</button>
+            </div>
+          </div>
+          <eg-provider-edi-accounts (desireSummarize)="onDesireSummarize($event, true)"></eg-provider-edi-accounts>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Invoices" i18n-title id="invoices" [disabled]="!id">
+        <ng-template ngbTabContent>
+          <div class="row mt-3">
+            <div class="col-lg-12 text-right pb-1">
+              <button class="btn btn-secondary btn-sm" [disabled]="activeTab == defaultTabType"
+                (click)="setDefaultTab()" i18n>Set Default View</button>
+            </div>
+          </div>
+          <eg-provider-invoices></eg-provider-invoices>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="POs" i18n-title id="purchase_orders" [disabled]="!id">
+        <ng-template ngbTabContent>
+          <div class="row mt-3">
+            <div class="col-lg-12 text-right pb-1">
+              <button class="btn btn-secondary btn-sm" [disabled]="activeTab == defaultTabType"
+                (click)="setDefaultTab()" i18n>Set Default View</button>
+            </div>
+          </div>
+          <eg-provider-purchase-orders></eg-provider-purchase-orders>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+</div></div>
+
+<eg-fm-record-editor #createDialog
+  idlClass="acqpro"
+  fieldOrder="active,name,code,currency_type,default_claim_policy,default_copy_count,edi_default,owner,url,san,prepayment_required"
+  [remainOpenOnError]="true"
+  [fieldOptions]="{currency_type:{preloadLinkedValues:true},edi_default:{preloadLinkedValues:true},default_claim_policy:{preloadLinkedValues:true}}"
+  hiddenFields="id,email,phone,fax_phone,holding_tag,primary_contact">
+</eg-fm-record-editor>

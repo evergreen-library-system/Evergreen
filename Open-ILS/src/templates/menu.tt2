@@ -79,6 +79,7 @@
                                 onClick="location.href = '[% ctx.base_path %]/acq/funding_source/list';">[% l('Funding Sources') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
                                 onClick="location.href = '[% ctx.base_path %]/conify/global/acq/provider';">[% l('Providers') %]</div>
+                                <!-- what about this one? onClick="location.href = '/eg2/staff/acq/provider';">[% l('Providers') %]</div> -->
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
                                 onClick="location.href = '[% ctx.base_path %]/acq/currency_type/list';">[% l('Currency Types') %]</div>
                         <div dojoType="dijit.MenuItem" iconClass="dijitEditorIcon dijitEditorIconCopy" 
