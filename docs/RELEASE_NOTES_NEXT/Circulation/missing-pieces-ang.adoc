@@ -1,0 +1,6 @@
+Scan Item as Missing Pieces Angular Port
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The 'Scan Item As Missing Pieces' interface is now an Angular interface.
+The functionality is the same, but the interface displays more details
+on the item in question (title/author/callnum) before proceeding with the 
+missing pieces process.
