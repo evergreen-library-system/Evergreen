@@ -1,9 +1,0 @@
-Hide Print List Button On Self Check Home Page
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The _Print List_ button is no longer displayed on the main page
-of the self check interface. This addresses an issue where
-users were observed to either hit the _Print List_ button and
-walk away or hit it *and* the _Logout_ button, causing duplicate
-receipts to be printed.  The _Print List_ button continues to
-be displayed on the _Items Out_, _Holds_, and _Fines Details_ pages
-of the self check interface.

@@ -1,0 +1,203 @@
+Evergreen 3.5 Release Notes
+===========================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+
+New Action Trigger hook for patron registration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Use of the new Action Trigger stgu.created hook requires changes to 
+your action_trigger_filters.json file.  See below for more details.
+
+New prerequisite - Email::MIME Perl module
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The Email::MIME Perl module is now required, so be sure to run the 
+prerequisite installation procedure for your Linux distribution before 
+upgrading Evergreen.
+
+
+
+New Features for 3.5.0
+----------------------
+
+Administration
+~~~~~~~~~~~~~~
+
+PostgreSQL 10 Support
+^^^^^^^^^^^^^^^^^^^^^
+PostgreSQL 10 is now available for installation with Evergreen.  Please
+see the installation documentation for details.
+
+New Action Trigger hook for patron registration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen now includes a new type of Action Trigger hook: stgu.created. 
+This hook will trigger upon the patron registration submission form. In 
+addition to the new hook, an example Action Trigger definition is 
+provided (disabled) entitled "Patron Registered for a card 
+stgu.created". With clever timing and delay settings, a library can 
+receive a single notification containing all of the pending patron 
+registrations for a given time interval. No special server-side 
+considerations required unless you introduce a new granularity. There 
+is, however, a new clause introduced to the 
+"action_trigger_filters.json.example" file.
+
+If you wish to use this new hook, be sure to include this clause in your 
+local "action_trigger_filters.json" file:
+
+----
+"stgu.created" : {
+        "context_org": "home_ou",
+        "filter": {
+            "complete": "f"
+        }
+    }
+----
+
+SendEmail Reactor Updated to use Email::MIME
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The SendEmail reactor for Action/Trigger has been updated to use the
+Email::MIME Perl module for proper encoding of the email message
+header fields.  You should notice no functional difference in the
+sending of emails.
+
+
+
+Cataloging
+~~~~~~~~~~
+
+Enriched/Full MARC Editor Ported to Angular
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The full MARC editor is now implemented in Angular.  This change impacts
+both the experimental Angular catalog and the MARC edit option within
+MARC Batch Import/Export (Vandelay) Queue manager.
+
+Patron View tab in Experimental Catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The record view screen in the Experimental Catalog now has a 
+_Patron View_ tab.  This tab displays a view of the record in
+the OPAC, as a patron would see it.
+
+The _Patron View_ tab replaces the previous _View in Catalog_
+button.
+
+
+
+Circulation
+~~~~~~~~~~~
+
+Angular Staff Catalog Holds Patron Search Support
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Angular staff catalog now supports patron searching directly from 
+the holds placement interace.
+
+Hide Print List Button On Self Check Home Page
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The _Print List_ button is no longer displayed on the main page
+of the self check interface. This addresses an issue where
+users were observed to either hit the _Print List_ button and
+walk away or hit it *and* the _Logout_ button, causing duplicate
+receipts to be printed.  The _Print List_ button continues to
+be displayed on the _Items Out_, _Holds_, and _Fines Details_ pages
+of the self check interface.
+
+Update Hold Notification Information
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The public catalog and staff client now have the ability to update 
+existing holds if a patron or a staff member changes certain 
+notification preferences or contact information.  Evergreen will detect 
+these changes and prompt the staff user or patron user and ask if they 
+want to update existing holds with the new contact information and/or 
+notification preferences.
+
+
+
+Client
+~~~~~~
+
+Angular Staff Catalog Preferences Page
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Adds a new "Catalog Preferences" interface, accessible directly from the
+catalog.  The UI houses the search preferences (default search lib,
+preferred library, default search tab) and a new staff-specific
+hits-per-page setting.  Other preferences may be added later.
+
+Adds support for selecting a default search tab using the existing
+'eg.search.adv_pane' setting.
+
+Hatch File Writer Print Option
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Adds a new stock print option in the Hatch printer configuration interface
+called Hatch File Writer (translatable).  When selected, any print content
+that is delivered to this printer is translated into text where necessary
+and written to a file in the Hatch profile directory.
+
+The name of the file written is based on the print context: 
+"receipt.<context>.txt".  For example, 'receipt.label.txt'.
+
+Angular Staff Catalog gets Search Highlighting
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Search text highlighting is now supported on the search results and
+record details pages in the Angular staff catalog for searches that
+support highlighting.
+
+
+
+OPAC
+~~~~
+
+Custom CSS in OPAC 
+^^^^^^^^^^^^^^^^^^
+There is now a library setting called opac.patron.custom_css.  This can 
+be populated with CSS that will load in the OPAC after the stylesheets 
+and allow for custom CSS without editing server side templates.  
+
+
+
+SIP
+~~~
+
+Add patron_status_always_permit_loans Option to SIP Server
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen now has a new `oils_sip.xml` login attribute called
+`patron_status_always_permit_loans` that specifies whether
+the charge privileges denied, renewal privilges denied, and
+card reported lost flags in the patron status block should be
+coerced to permissive values regardless of the actual state
+of the patron record. Turning this on works around an issue
+where a 2019-12 change by the Hoopla SIP2 client takes those flag
+fields into account, but some libraries may not wish those
+to block a patron's access to online resources that use
+SIP2 to authenticate. This setting can also be set as
+an `implementation_config` option; note that if it is set to
+'true' or 'false' as a login attribute, the login attribute will
+override whatever is set in the `implementation_config`.
+
+
+
+
+Acknowledgments
+---------------
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+TODO
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations patches and tests to this release of
+Evergreen:
+
+TODO
+
+
+We also thank the following organizations whose employees contributed
+patches:
+
+TODO
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+

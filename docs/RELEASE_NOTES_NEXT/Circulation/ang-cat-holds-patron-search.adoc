@@ -1,5 +1,0 @@
-Angular Staff Catalog Holds Patron Search Support
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Angular staff catalog now supports patron searching directly from 
-the holds placement interace.
-

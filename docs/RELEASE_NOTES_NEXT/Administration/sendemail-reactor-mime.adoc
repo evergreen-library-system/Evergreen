@@ -1,8 +1,0 @@
-SendEmail Reactor Updated to use Email::MIME
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The SendEmail reactor for Action/Trigger has been updated to use the
-Email::MIME Perl module for proper encoding of the email message
-header fields.  You should notice no functional difference in the
-sending of emails.  This change does add a new prerequisite package,
-so be sure to run the prerequisite installation procedure for your
-Linux distribution before upgrading Evergreen.

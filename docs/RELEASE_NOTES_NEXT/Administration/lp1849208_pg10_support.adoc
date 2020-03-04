@@ -1,4 +1,0 @@
-PostgreSQL 10 Support
-^^^^^^^^^^^^^^^^^^^^^
-PostgreSQL 10 is now available for installation with Evergreen.  Please
-see the installation documentation for details.
