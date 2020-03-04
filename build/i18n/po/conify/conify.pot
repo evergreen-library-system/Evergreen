@@ -1298,7 +1298,7 @@ msgstr ""
 msgid "Save Changes To Expression"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:1 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:17 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:64
+#: ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:17 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:2 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:64
 msgid "Search Filter Group"
 msgstr ""
 
