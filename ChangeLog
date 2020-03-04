@@ -1,3 +1,2773 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 59bdcdce59f36c622ae2f0e4186e41e0c2e6ec0e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 4 15:17:55 2020 -0500
+
+    Bump Perl version string to 3.0500
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit cd3ac9743137ba8a53aeda4798e44dbcc57c2ce0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 4 15:12:27 2020 -0500
+
+    Translation updates - po files (3.5.beta)
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+114	0	build/i18n/po/URLVerify.js/tr-TR.po
+2583	2571	build/i18n/po/db.seed/ar-JO.po
+2965	2936	build/i18n/po/db.seed/cs-CZ.po
+2583	2571	build/i18n/po/db.seed/de-DE.po
+2583	2571	build/i18n/po/db.seed/en-CA.po
+2583	2571	build/i18n/po/db.seed/en-GB.po
+2583	2571	build/i18n/po/db.seed/es-ES.po
+2583	2571	build/i18n/po/db.seed/fi-FI.po
+2583	2571	build/i18n/po/db.seed/fr-CA.po
+2583	2571	build/i18n/po/db.seed/he-IL.po
+2583	2571	build/i18n/po/db.seed/hu-HU.po
+2583	2571	build/i18n/po/db.seed/hy-AM.po
+2583	2571	build/i18n/po/db.seed/oc-FR.po
+2583	2571	build/i18n/po/db.seed/pt-BR.po
+2583	2571	build/i18n/po/db.seed/ru-RU.po
+2583	2571	build/i18n/po/db.seed/sv-SE.po
+2583	2571	build/i18n/po/db.seed/tr-TR.po
+108	108	build/i18n/po/ils_events.xml/en-GB.po
+43	39	build/i18n/po/tpac/ar-JO.po
+20	16	build/i18n/po/tpac/cs-CZ.po
+43	39	build/i18n/po/tpac/de-DE.po
+43	39	build/i18n/po/tpac/en-CA.po
+29	25	build/i18n/po/tpac/en-GB.po
+43	39	build/i18n/po/tpac/es-ES.po
+43	39	build/i18n/po/tpac/fi-FI.po
+43	39	build/i18n/po/tpac/fr-CA.po
+43	39	build/i18n/po/tpac/he-IL.po
+43	39	build/i18n/po/tpac/hu-HU.po
+43	39	build/i18n/po/tpac/hy-AM.po
+43	39	build/i18n/po/tpac/oc-FR.po
+43	39	build/i18n/po/tpac/pt-BR.po
+43	39	build/i18n/po/tpac/ru-RU.po
+43	39	build/i18n/po/tpac/sv-SE.po
+43	39	build/i18n/po/tpac/tr-TR.po
+634	0	build/i18n/po/vandelay/en-GB.po
+105	92	build/i18n/po/webstaff/ar-JO.po
+37	21	build/i18n/po/webstaff/cs-CZ.po
+105	92	build/i18n/po/webstaff/en-CA.po
+875	835	build/i18n/po/webstaff/en-GB.po
+108	92	build/i18n/po/webstaff/es-ES.po
+105	92	build/i18n/po/webstaff/hy-AM.po
+105	92	build/i18n/po/webstaff/ru-RU.po
+ create mode 100644 build/i18n/po/URLVerify.js/tr-TR.po
+ create mode 100644 build/i18n/po/vandelay/en-GB.po
+
+commit 355b1bca9d571f06fd227b078d8c047054b18362
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 4 15:08:27 2020 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	build/i18n/po/conify/conify.pot
+799	789	build/i18n/po/db.seed/db.seed.pot
+3056	3040	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+89	85	build/i18n/po/ils_events.xml/ils_events.xml.pot
+14	14	build/i18n/po/kpac/kpac.pot
+558	490	build/i18n/po/tpac/tpac.pot
+2	2	build/i18n/po/urlverify/urlverify.pot
+539	434	build/i18n/po/webstaff/webstaff.pot
+
+commit 8c40e6316d0f9b4e5aeaec91bc05560582655767
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Mar 4 14:38:49 2020 -0500
+
+    First pass at release notes for 3.5
+    
+    This commit consolidates all the release notes in RELEASE_NOTES_NEXT,
+    and does a few minor edits to formatting, layout, and text for improved
+    flow of the content.
+    
+    Filling out of acknowledgements remains a TODO.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+203	0	docs/RELEASE_NOTES_3_5.adoc
+0	4	docs/RELEASE_NOTES_NEXT/Administration/lp1849208_pg10_support.adoc
+0	16	docs/RELEASE_NOTES_NEXT/Administration/lp1849736_at_email_self_register.adoc
+0	8	docs/RELEASE_NOTES_NEXT/Administration/sendemail-reactor-mime.adoc
+0	7	docs/RELEASE_NOTES_NEXT/Cataloging/ang-marc-editor.adoc
+0	9	docs/RELEASE_NOTES_NEXT/Cataloging/patron-view-tab.adoc
+0	5	docs/RELEASE_NOTES_NEXT/Circulation/ang-cat-holds-patron-search.adoc
+0	9	docs/RELEASE_NOTES_NEXT/Circulation/hide-self-check-print-list-button.adoc
+0	7	docs/RELEASE_NOTES_NEXT/Circulation/update-hold-notifications.adoc
+0	12	docs/RELEASE_NOTES_NEXT/Client/ang-cat-prefs-page.adoc
+0	11	docs/RELEASE_NOTES_NEXT/Client/hatch-file-writer.adoc
+0	6	docs/RELEASE_NOTES_NEXT/Client/staff-cat-highlighting.adoc
+0	6	docs/RELEASE_NOTES_NEXT/OPAC/custom_css_in_opac.adoc
+0	15	docs/RELEASE_NOTES_NEXT/SIP/Add_patron_status_always_permit_loans_SIP_option.adoc
+ create mode 100644 docs/RELEASE_NOTES_3_5.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Administration/lp1849208_pg10_support.adoc
+ delete mode 100755 docs/RELEASE_NOTES_NEXT/Administration/lp1849736_at_email_self_register.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Administration/sendemail-reactor-mime.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/ang-marc-editor.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/patron-view-tab.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/ang-cat-holds-patron-search.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/hide-self-check-print-list-button.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/update-hold-notifications.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Client/ang-cat-prefs-page.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Client/hatch-file-writer.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Client/staff-cat-highlighting.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/custom_css_in_opac.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/SIP/Add_patron_status_always_permit_loans_SIP_option.adoc
+
+commit b50528f4b0a66f9f6b72e3a1de4a7e6d920908a6
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Wed Jan 22 22:56:42 2020 +0000
+
+    lp1789491 visited link color
+    
+    Some interfaces use a red or dark red background color for certain rows
+    and the visited link color makes it hard to read.  Adjust this color
+    so there is more contrast against the red background.
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    Signed-off-by: Jessica Woolford <jwoolford@biblio.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	0	Open-ILS/src/templates/staff/css/style.css.tt2
+
+commit c590ba3e3c6fb90e15e0005fa25eb6416a09952f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Feb 27 11:01:31 2020 -0500
+
+    LP1811132 Debit payment SQL upgrade fix
+    
+    Repair a copy/paste thinko in the upgrade script for debit card
+    payments.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+0	1	Open-ILS/src/sql/Pg/upgrade/1200.schema.debit_card_payment.sql
+
+commit 42939f1edc805adb63d4e2a1daf7ada71c7c52b9
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Nov 22 18:05:10 2019 -0500
+
+    LP#1853363: add SIP2 option patron_status_always_permit_loans
+    
+    This patch adds a new oils_sip.xml login attribute called
+    patron_status_always_permit_loans that specifies whether
+    the charge privileges denied, renewal privilges denied, and
+    card reported lost flags in the patron status block should be
+    coerced to permissive values regardless of the actual state
+    of the patron record. Turning this on works around an issue
+    where a 2019-12 change by the Hoopla SIP2 client takes those flag
+    fields into account, but some libraries may not wish those
+    to block a patron's access to online resources that use
+    SIP2 to authenticate. This setting can also be set as
+    an implementation_config option; note that if it is set to
+    'true' or 'false' as a login attribute, the login attribute will
+    override whatever is set in the implementation_config.
+    
+    To test
+    -------
+    [1] Set up a test system that has SIPServer running. Also set
+        up a patron that either has a standing penalty blocking CIRC
+        or renewals, expired privileges, and/or a lost primary card.
+    [2] Perform a SIP2 patron information request (message 63) for
+        the patron created in step 1. Note that the charge, renewal,
+        and card lost flag fields in the SIP2 response should be set
+        to indicated that privileges are denied.
+    [3] Apply the patch and enable patron_status_always_permit_loans
+        either as a login attribute or a implementation_config option;
+        oils_sip.xml.example in this patch contains examples.
+    [4] Repeat step 2; this time, the three flag fields should have
+        permissive values (i.e., they will be set to the space character)
+        regardless of the state of the patron record.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+
+19	0	Open-ILS/examples/oils_sip.xml.example
+24	0	Open-ILS/src/perlmods/lib/OpenILS/SIP/Patron.pm
+15	0	docs/RELEASE_NOTES_NEXT/SIP/Add_patron_status_always_permit_loans_SIP_option.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/SIP/Add_patron_status_always_permit_loans_SIP_option.adoc
+
+commit 975ef969e7236ef05f642e6f88159d6668712410
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Feb 26 16:24:54 2020 -0500
+
+    LP#1811132 - Stamping upgrade script
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.debit_card_payment.sql => 1200.schema.debit_card_payment.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.debit_card_payment.sql => 1200.schema.debit_card_payment.sql} (99%)
+
+commit 3d7a7c1c789e7c2facf9801fabf3448ae0f5d490
+Author: Jeff Davis <jeff.davis@bc.libraries.coop>
+Date:   Fri Mar 8 14:12:04 2019 -0800
+
+    LP#1811132: add Debit Card payment type
+    
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Ruth Frasur <rfrasur@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+34	0	Open-ILS/examples/fm_IDL.xml
+3	0	Open-ILS/src/extras/ils_events.xml
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+5	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/CDBI.pm
+7	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/CDBI/money.pm
+6	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/dbi.pm
+3	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/money.pm
+14	1	Open-ILS/src/sql/Pg/080.schema.money.sql
+1	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+147	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.debit_card_payment.sql
+1	0	Open-ILS/src/templates/staff/base_js.tt2
+1	0	Open-ILS/src/templates/staff/circ/patron/t_bills.tt2
+1	0	Open-ILS/src/templates/staff/share/print_templates/t_bill_payment.tt2
+1	0	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+4	2	Open-ILS/web/opac/common/js/fm_table_conf.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.debit_card_payment.sql
+
+commit 65ebd4874f971c52e10b48786b01f7c68c98df76
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Oct 4 14:31:22 2019 -0400
+
+    LP#1846484 - Add BETWEEN SYMMETRIC to reporter SQL builder
+    
+    Let's give end users a break and forgive them when they mix
+    up the order of a date range.  BETWEEN SYMMETRIC allows users
+    to enter a date range in any order rather than strictly
+    enforcing "oldest date first" and returning an empty result
+    set.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Reporter/SQLBuilder.pm
+
+commit 7fea3dac33d9be540fd938729101381fd5161278
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Tue Sep 24 17:41:27 2019 +0000
+
+    lp1845240 port of Surveys UI from DOJO to Angular
+    
+    idlClass asv holds the surveys, asvq holds their questions, and
+    asva holds the answers to those questions. The surveys are in
+    their own module and are lazy loaded
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    
+    Modernize the survey create API by migrating it to cstore.
+    Additionally, make it possible to modify an existing survey top-level
+    object by setting 'ischanged' to the inbound survey.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    LP1845240 Migrate survey create API to cstore
+    
+    Modernize the survey create API by migrating it to cstore.
+    New API supports full range of isnew / ischanged / isdeleted actions on
+    the survey, questions, and answers.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    LP1845240 Survey API returns updated fleshed survey
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+     Changes to be committed:
+            modified:   Open-ILS/src/eg2/src/app/staff/admin/local/admin-local-splash.component.html
+            modified:   Open-ILS/src/eg2/src/app/staff/admin/local/routing.module.ts
+            new file:   Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey-edit.component.html
+            new file:   Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey-edit.component.ts
+            new file:   Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey-routing.module.ts
+            new file:   Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey.component.html
+            new file:   Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey.component.ts
+            new file:   Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey.module.ts
+            modified:   Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Survey.pm
+            modified:   Open-ILS/tests/datasets/sql/surveys.sql
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	2	Open-ILS/src/eg2/src/app/staff/admin/local/admin-local-splash.component.html
+3	0	Open-ILS/src/eg2/src/app/staff/admin/local/routing.module.ts
+124	0	Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey-edit.component.html
+307	0	Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey-edit.component.ts
+22	0	Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey-routing.module.ts
+37	0	Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey.component.html
+122	0	Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey.component.ts
+25	0	Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey.module.ts
+147	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Survey.pm
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey-edit.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey-edit.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey-routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey.module.ts
+
+commit faf06e1fc43ff91bf4a7d52f175fc351f9646123
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Feb 21 13:58:15 2020 -0500
+
+    LP#1863929 - Fix sample survey data.
+    
+    Since we enter the surveys, questions, and answers with specified ID values
+    but don't set the values to one higher, testers were unable to enter survey
+    data.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	0	Open-ILS/tests/datasets/sql/surveys.sql
+
+commit 05a0118911e9d94d47e0038330487e6d35419a05
+Author: Josh Stompro <stompro@stompro.org>
+Date:   Tue Feb 25 13:53:08 2020 -0600
+
+    LP#850160 - Event Def Environment Fleshing Might Have Issue
+    
+    When the action trigger environment gets fleshed out, there is a bug
+    with how might_have relations are fleshed ever other time they are
+    evaluated.
+    
+    The first time they are correctly evaluated, but then the next time the
+    same path gets evaluated, the object gets reset to the first value in
+    the object.
+    
+    See https://bugs.launchpad.net/evergreen/+bug/850160 for testing notes.
+    
+    The fix is to add an extra check to only grab the first element if the object is
+    an array.  If it isn't an array it means it has already been fleshed.
+    
+    Testing notes:
+    
+    One way to test this bug is by looking at the self check
+    receipt, hours of operations bug.
+    https://bugs.launchpad.net/evergreen/+bug/793627
+    
+    By default, the self check receipt will fail for even numbers of items checked
+    out because the hours of operation doesn't get fleshed correctly.
+    
+    With this change, the receipt should print for even and odd numbers of items.
+    
+    Another test is to add user.money_summary to a lost/bill action trigger
+    event notification.  Before the fix, if you have an even number of items billec, the
+    user.money_summary gets set to the first object in that table, and for odd
+    numbers of items, user.money_summary.balanced_owed gets set correctly.
+    
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Event.pm
+
+commit 9a6f54128845e43fa6876d6c6fb3db2fd708c776
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Wed Oct 23 09:52:16 2019 -0400
+
+    LP#1840332 Item Status Input Field Acessibility
+    
+    This adds an accessible label (aria-label) to the Item Status input field
+    of the web staff client.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Llewellyn Marshall <lbmarshallv.ncdr@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+2	1	Open-ILS/src/templates/staff/cat/item/index.tt2
+
+commit cb6050ed4bc723e571fc6013b48b5b3e7ce0011f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Aug 7 20:08:25 2019 -0400
+
+    LP#1570072: add release notes
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+7	0	docs/RELEASE_NOTES_NEXT/Circulation/update-hold-notifications.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/update-hold-notifications.adoc
+
+commit 7e9229353092302402c1ca0cbc2efcd5f8a54d90
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Tue Jan 22 12:16:54 2019 -0500
+
+    LP#1570072: update hold notification methods upon preference changes
+    
+    This patch adds a feature where if a patron's hold notification
+    preferences are changed, they are given an opportunity to have
+    notfication methods for their pending hold requests updated to
+    reflect their new prefernces.
+    
+    This feature affects both the public catalog My Account interface
+    and the staff patron registration form. In both cases, the user
+    is presented with a modal (staff-side) or interstitial page (public
+    catalog) asking them whether to update current hold requests.
+    
+    Sponsored-by: MassLNC
+    
+    Additional-work-by: Mike Rylander <mrylander@gmail.com>
+    Additional-work-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+277	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm
+267	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+7	0	Open-ILS/src/templates/opac/myopac/holds.tt2
+20	0	Open-ILS/src/templates/opac/myopac/holds/edit.tt2
+142	92	Open-ILS/src/templates/opac/myopac/prefs_notify.tt2
+29	0	Open-ILS/src/templates/opac/myopac/prefs_notify_changed_holds.tt2
+28	0	Open-ILS/src/templates/opac/parts/hold_notify.tt2
+2	2	Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2
+7	4	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+42	0	Open-ILS/src/templates/staff/circ/patron/t_hold_notify_update.tt2
+1	0	Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2
+195	0	Open-ILS/web/js/ui/default/opac/simple.js
+341	8	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+ create mode 100644 Open-ILS/src/templates/opac/myopac/prefs_notify_changed_holds.tt2
+ create mode 100644 Open-ILS/src/templates/opac/parts/hold_notify.tt2
+ create mode 100644 Open-ILS/src/templates/staff/circ/patron/t_hold_notify_update.tt2
+
+commit ed4b678f8d393674f4b82eee1b279dbba556a9b5
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Feb 24 11:17:16 2020 -0500
+
+    LP#1849736: remove testing upgrade script
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+0	47	Open-ILS/src/sql/Pg/upgrade/XXXX.lp1849736_at_email_self_register.sql
+ delete mode 100755 Open-ILS/src/sql/Pg/upgrade/XXXX.lp1849736_at_email_self_register.sql
+
+commit 254ef81f24faac127abd9b2ab5fe1aa70c522145
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Feb 24 11:02:28 2020 -0500
+
+    LP#1849736: Stamping upgrade script
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+47	0	Open-ILS/src/sql/Pg/upgrade/1199.lp1849736_at_email_self_register.sql
+ create mode 100755 Open-ILS/src/sql/Pg/upgrade/1199.lp1849736_at_email_self_register.sql
+
+commit 3140010444c50150a3507aaa773c26da9415d37b
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun Feb 23 08:10:44 2020 -0800
+
+    LP#1774285 (follow-up): Make page title consistent with heading
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/templates/staff/circ/holds/index.tt2
+
+commit e42cfc9d873dbecad1fa261b68874e975ae02c0c
+Author: Josh Stompro <stompro@stompro.org>
+Date:   Tue Dec 10 13:25:37 2019 -0600
+
+    LP#1774285 - Change Pull list page title from Holds Shelf title.
+    
+    Add a string for 'Pull List' and set the page title to that string
+    when the pull list interface is loaded.  Allows staff to tell which
+    tab has the Holds Shelf open and which tab has the Pull List open.
+    
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Jessica Woolford <jwoolford@biblio.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	Open-ILS/src/templates/staff/circ/holds/index.tt2
+2	0	Open-ILS/web/js/ui/default/staff/circ/holds/app.js
+
+commit 5bfdbe9867666ef31f4f9faddfa9afaa10d6bdfd
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jan 21 16:06:01 2020 -0500
+
+    LP1860460 Copy delete override repairs, perm failed handler
+    
+    * Teach the Angular holdings module vol/copy delete dialog to correctly
+      report failure events to the user and handle permission overrides.
+    
+    * Add support for automatically launching the op-change dialog when a
+      permission failed event is returned by an API call for any /eg2/staff/
+      interface.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jennifer Weston <jennifer.weston@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	0	Open-ILS/src/eg2/src/app/core/auth.service.ts
+1	1	Open-ILS/src/eg2/src/app/core/net.service.ts
+22	2	Open-ILS/src/eg2/src/app/staff/nav.component.ts
+27	24	Open-ILS/src/eg2/src/app/staff/share/holdings/delete-volcopy-dialog.component.html
+41	8	Open-ILS/src/eg2/src/app/staff/share/holdings/delete-volcopy-dialog.component.ts
+39	1	Open-ILS/src/eg2/src/app/staff/share/op-change/op-change.component.ts
+
+commit eea266a15ded37c91ae272db33fac0548035f8d5
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Thu Feb 13 21:02:09 2020 +0000
+
+    lp1668352 Add barcode to patron neg balance grid
+    
+    Add a barcode column to the existing Patron Negative Balance Grid.
+    It should be hyperlinked and link to the relevant patron.
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+6	2	Open-ILS/src/templates/staff/admin/local/circ/neg_balance_users.tt2
+
+commit abc50d3a6dceafef96bc4c3972c0dd440c86b4d7
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Jan 31 20:47:54 2020 -0800
+
+    LP1840287: Add a return to list button for floating group edit page
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+10	0	Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/edit-floating-group.component.html
+
+commit 27c346a64e0a55984b16b1218c204e28de2cec52
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Dec 4 15:52:23 2019 -0500
+
+    LP1840287 Floating group admin minor code tweaks
+    
+    * Added grid sorting to both group and group member grids.
+    
+    * Avoid using the defaultNewRecord in fm-editor directly, by cloning it
+      as needed, so that subsequent new records (within a single parent
+      component instance) do not pick up values from the previously created
+      record.
+    
+    * Renamed the eg-admin-page @Input() 'hideFields' to 'hideGridFields'
+      to better explain how the value will be passed along.
+    
+    * Replace access of fieldmapper innards (thing.a[0]) with field names
+      (thing.id())
+    
+    * Remove unused <eg-string /> entries.
+    
+    * Avoid unnecessary newlines in translatable strings.
+    
+    * Remove unused @Inputs() and unnecessary functions
+    
+    * Remove unneccessary TreeModule import
+    
+    * Removed a redundant <eg-title /> -- <eg-staff-banner /> will set the
+      title when present.
+    
+    * Various 'ng lint' repairs.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+10	2	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+3	9	Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/edit-floating-group.component.html
+18	12	Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/edit-floating-group.component.ts
+8	10	Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group.component.html
+23	21	Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group.component.ts
+2	4	Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group.module.ts
+1	1	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.html
+1	1	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+
+commit 1d4ba0034ab8e7198593c9742842e5bbee80222d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Dec 4 15:10:12 2019 -0500
+
+    LP1840287 Floating group IDL required fields
+    
+    Indicate require Floating Group and Floating Group Member fields in the
+    IDL to support UI form validation.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+6	6	Open-ILS/examples/fm_IDL.xml
+
+commit 0c62ab0975cbffcf5346ddc328a9f2dfd2fb5f19
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Fri Sep 13 20:26:47 2019 +0000
+
+    lp1840287 Edit Floating Group Members
+    
+    Add functionality so that when editing a floating group, one
+    is taken to a page where one can edit a given floating group as
+    well as all its linked members. New functionality:
+    - eg-admin-page can hide grid fields
+    - fm-editor can create a record with fields defaulting to values
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    
+     Changes to be committed:
+            modified:   Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+            new file:   Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/edit-floating-group.component.html
+            new file:   Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/edit-floating-group.component.ts
+            new file:   Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group-routing.module.ts
+            new file:   Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group.component.html
+            new file:   Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group.component.ts
+            new file:   Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group.module.ts
+            modified:   Open-ILS/src/eg2/src/app/staff/admin/server/routing.module.ts
+            modified:   Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.html
+            modified:   Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+4	1	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+24	0	Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/edit-floating-group.component.html
+45	0	Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/edit-floating-group.component.ts
+19	0	Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group-routing.module.ts
+24	0	Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group.component.html
+81	0	Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group.component.ts
+25	0	Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group.module.ts
+3	0	Open-ILS/src/eg2/src/app/staff/admin/server/routing.module.ts
+2	2	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.html
+9	0	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/edit-floating-group.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/edit-floating-group.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group-routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/floating-group/floating-group.module.ts
+
+commit 473688892df7ee175d44930c5cea438d44d01992
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Feb 5 19:44:52 2020 -0800
+
+    LP#1845706 (follow-up): Fix callback
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit 2800d58f7e37181355050f042f221fb65f2c4829
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Aug 21 11:41:29 2019 -0400
+
+    LP#1845706: Missing/Damaged from Items Out
+    
+    Marking items Missing or Damaged from the patron Items Out interface
+    is sometimes necessary.  This commit adds that ability.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+
+4	0	Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2
+20	0	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit 4d1cb47c383e1686f4b2a55c1f3e906db1d8c4a4
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Feb 13 16:49:46 2020 -0500
+
+    LP#1863386: link ADMIN_CAROUSEL permission to appropriate OU context
+    
+    This patch restricts prcrud retrieval and modification of templates
+    to users who have ADMIN_CAROUSEL in the relevant carousel owner OU
+    rather than requiring global_required.
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Ensure that a user with ADMIN_CAROUSEL privileges at a depth
+        lower than "Consortium" can only view and edit carousel
+        definitions at OUs applicable to their working libraries.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jennifer Weston <jennifer.weston@equinoxinitiative.org>
+
+16	8	Open-ILS/examples/fm_IDL.xml
+
+commit 0bff4ed1efbcd6dedd8398b5080ec0dec2b2cf7c
+Author: Jeff Davis <jeff.davis@bc.libraries.coop>
+Date:   Mon Sep 9 16:11:44 2019 -0700
+
+    LP#1839684: avoid repeating qtype prefix in query
+    
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit beab6b4daa6409dfd0425ea166ac68bbef6f8d3a
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Dec 2 17:44:14 2019 -0500
+
+    LP1854197 Add Vols and Copies honors owning lib
+    
+    Fixes a bug in the Add Volumes and Copies action where there vol/copy
+    editor was unable to extract the owning library of the selected volumes,
+    thus leading to no differentation between owning libraries in the editor
+    and having all of the new volumes/copies linked (by default) to the
+    first owning library in the list.
+    
+    To test:
+    
+    1. Navigate to Item Status UI
+    2. Scan multiple (say, 3) barcodes, each with a different owning lib.
+    3. Select all 3 items and chose "Add Callnumbers and Items"
+    4. The holdings edit page that results should show one volume and copy
+       row per owning library instead of all rows linked to the first owning
+       library in the set.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jessica Woolford <jwoolford@biblio.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+6	1	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit 73e3fe50f93fa4fc61e826d7cc5d9eee9a5289d1
+Author: blake <blake@mobiusconsortium.org>
+Date:   Tue Feb 18 16:28:50 2020 -0600
+
+    LP#1849736 Add action trigger for email/sms for patron self registration
+    
+    Removed double blank lines at the top of the stock AT Email template.
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+2	3	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+3	4	Open-ILS/src/sql/Pg/upgrade/XXXX.lp1849736_at_email_self_register.sql
+
+commit f1f721ac25bdacf32a7603644ca3c2c1ce12e608
+Author: blake <blake@mobiusconsortium.org>
+Date:   Thu Jan 2 16:48:45 2020 -0600
+
+    LP#1849736 Add action trigger for email/sms for patron self registration
+    
+    Setup a new A/T Hook.
+    
+    Includes:
+    1. New row in action_trigger.hook
+    2. New row in action_trigger.event_definition
+    3. New clause in action_trigger_filters.json.example
+    4. Link XML clause for oils_obj:fieldmapper="staging::user_stage" on fm_IDL.xml
+    4. pgTAP Test
+    5. Release Documentation
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+6	0	Open-ILS/examples/action_trigger_filters.json.example
+1	0	Open-ILS/examples/fm_IDL.xml
+50	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+34	0	Open-ILS/src/sql/Pg/t/lp1849736_at_email_self_register.pg
+48	0	Open-ILS/src/sql/Pg/upgrade/XXXX.lp1849736_at_email_self_register.sql
+16	0	docs/RELEASE_NOTES_NEXT/Administration/lp1849736_at_email_self_register.adoc
+ create mode 100755 Open-ILS/src/sql/Pg/t/lp1849736_at_email_self_register.pg
+ create mode 100755 Open-ILS/src/sql/Pg/upgrade/XXXX.lp1849736_at_email_self_register.sql
+ create mode 100755 docs/RELEASE_NOTES_NEXT/Administration/lp1849736_at_email_self_register.adoc
+
+commit 559541a5506776ba1b47d18b151e38b1f938dd9f
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Jul 30 15:52:39 2019 -0400
+
+    LP#1761222: Replace bib "quality" with item "mint_condition"
+    
+    I originally misunderstood the XUL item field labeled "quality" and
+    pulled in the bib record "overall quality" score. But upon checking the
+    XUL holdings maintenance screen again, we clearly want the item's
+    "mint_condition" field instead. This commit makes that correction and
+    converts the 't' or 'f' values into "Good" or "Damaged", to match the
+    item editor labels.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+3	1	Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+
+commit 7e98d9071c7029289bf9fa008a85e7d852a26b13
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Feb 5 15:35:51 2019 -0500
+
+    LP1761222 Holdings batch circ retrieval
+    
+    Fetch non-checked-in circulations for copies in the Holdings
+    maintenance grid (for due date display) in batch instead firing a
+    potentially vary large parallel batch of pcrud API calls.
+    
+    This also limits due date display to items that have open circulations,
+    consistent with the XUL client.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+21	14	Open-ILS/web/js/ui/default/staff/cat/services/holdings.js
+
+commit d386d7c604d92b443e1698fb1efa5d6f5eb45627
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Nov 7 11:02:48 2018 -0500
+
+    LP#1761222: Add four columns available in XUL client
+    
+    The XUL client had these columns but they hadn't been added to the web client
+    yet. This commit adds them:
+    
+      - Classification
+      - Due Date
+      - OPAC visible?
+      - Quality
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+4	0	Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+17	2	Open-ILS/web/js/ui/default/staff/cat/services/holdings.js
+
+commit 56dfce3defcd77303ef59c29a982cfcc8c193e75
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Nov 6 11:17:33 2018 -0500
+
+    LP#1761222: Add Fine Level, Loan Duration to Holdings View grid
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+6	0	Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+1	0	Open-ILS/web/js/ui/default/staff/cat/services/holdings.js
+
+commit a63533f3ce0835f9c9c4d6ecff85ea90b47b6804
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Tue Feb 18 18:43:37 2020 +0000
+
+    lp1760193 - Action Rewording
+    
+    - Rename "Add Items to Bucket/Record Bucket" and
+    "Add Items/Item Records to Bucket" to "Add to Item/Record
+    Bucket"
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+            modified:   Open-ILS/src/templates/staff/cat/item/index.tt2
+            modified:   Open-ILS/src/templates/staff/cat/item/t_list.tt2
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+2	2	Open-ILS/src/templates/staff/cat/item/index.tt2
+2	2	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+
+commit ce721a53839f3c226144198cda2db08441d55ebf
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Tue Jan 28 18:27:36 2020 +0000
+
+    lp1760193 Add to Record Bucket from Item Status
+    
+    - Add "Add Items to Record Bucket" option in Item Status
+    UI
+    - Refactor Add Copy to Bucket functionality to support
+    adding to Copy Buckets or to Record Buckets depending
+    on optional bucket_type parameter
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+            modified:   Open-ILS/src/templates/staff/cat/item/index.tt2
+            modified:   Open-ILS/src/templates/staff/cat/item/t_list.tt2
+            modified:   Open-ILS/web/js/ui/default/staff/cat/item/app.js
+            modified:   Open-ILS/web/js/ui/default/staff/circ/services/item.js
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	0	Open-ILS/src/templates/staff/cat/item/index.tt2
+2	0	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+20	0	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+11	9	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit 81a018c686c96385d358d378609b200532b51be0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jan 6 11:05:52 2020 -0500
+
+    LP1850546 Record detail shelf browse
+    
+    Adds support for browsing call numbers directly from a record detail
+    page, similar to the TPAC's 'Shelf Browser' tab in its detail page.
+    
+    Add support for jumping to a record detail page or a new author search
+    from each shelf browse entry.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ruth Frasur <rfrasur@gmail.com>
+
+11	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+18	8	Open-ILS/src/eg2/src/app/staff/catalog/cnbrowse/results.component.html
+63	6	Open-ILS/src/eg2/src/app/staff/catalog/cnbrowse/results.component.ts
+10	0	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+1	5	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.ts
+
+commit 4155a7a2abeffe73db0403a25f7a514514090ba3
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Dec 31 13:02:57 2019 -0500
+
+    LP1850546 Call number browse grid
+    
+    Return to grid-shaped call number browse with denser data display for
+    main CN browse UI.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ruth Frasur <rfrasur@gmail.com>
+
+2	0	Open-ILS/src/eg2/src/app/share/catalog/catalog-url.service.ts
+1	1	Open-ILS/src/eg2/src/app/share/catalog/catalog.service.ts
+6	0	Open-ILS/src/eg2/src/app/share/catalog/search-context.ts
+23	6	Open-ILS/src/eg2/src/app/staff/catalog/cnbrowse/results.component.html
+29	1	Open-ILS/src/eg2/src/app/staff/catalog/cnbrowse/results.component.ts
+
+commit 4325faeb1271cfa7c087c0ec890d2a0a765d5d04
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jan 10 16:02:31 2020 -0500
+
+    LP1859241 Relase Notes (Angular Patron Search)
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ruth Frasur <rfrasur@gmail.com>
+
+5	0	docs/RELEASE_NOTES_NEXT/Circulation/ang-cat-holds-patron-search.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/ang-cat-holds-patron-search.adoc
+
+commit 1e35be4827254524e229ead11f89c5de1340113d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 9 17:20:42 2020 -0500
+
+    LP1859241 Angular holds patron search dialog
+    
+    Implements a patron search dialog which may be instantiated directly
+    from the staff catalog holds placement interface.
+    
+    Includes:
+    
+    1. New patron module (which absorbs the existing PatronService)
+    2. New patron search component
+    3. Patron search component dialog wrapper.
+    4. Patron profile selector component which understands custom group
+       display trees.
+    4. Fixes an issue with the grid where the 'datatype' was not always
+       propagated to IDL fields.
+    5. Modifies the combobox to allow the caller to clear the value by
+       passing a null value for the selectedId.
+    
+    To Test:
+    
+    [1] Navigate to the Angular staff catalog
+    [2] Perform a bib search
+    [3] Click 'Place Hold' next to a title.
+    [4] Click the 'Patron Search' button.
+    [5] Search for patrons and either double-click a search result row or
+        single click then chose the 'Select' button.
+    [6] Confirm the selected patron is now chosen for holds placement.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ruth Frasur <rfrasur@gmail.com>
+
+12	9	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+3	1	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+3	3	Open-ILS/src/eg2/src/app/staff/booking/booking.module.ts
+1	1	Open-ILS/src/eg2/src/app/staff/booking/pickup.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/booking/return.component.ts
+2	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.module.ts
+5	1	Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.html
+21	0	Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.ts
+5	3	Open-ILS/src/eg2/src/app/staff/catalog/result/results.component.ts
+30	0	Open-ILS/src/eg2/src/app/staff/share/patron/patron.module.ts
+0	0	Open-ILS/src/eg2/src/app/staff/share/{ => patron}/patron.service.ts
+6	0	Open-ILS/src/eg2/src/app/staff/share/patron/profile-select.component.html
+178	0	Open-ILS/src/eg2/src/app/staff/share/patron/profile-select.component.ts
+23	0	Open-ILS/src/eg2/src/app/staff/share/patron/search-dialog.component.html
+36	0	Open-ILS/src/eg2/src/app/staff/share/patron/search-dialog.component.ts
+233	0	Open-ILS/src/eg2/src/app/staff/share/patron/search.component.html
+239	0	Open-ILS/src/eg2/src/app/staff/share/patron/search.component.ts
+5	0	Open-ILS/src/eg2/src/styles.css
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/patron/patron.module.ts
+ rename Open-ILS/src/eg2/src/app/staff/share/{ => patron}/patron.service.ts (100%)
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/patron/profile-select.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/patron/profile-select.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/patron/search-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/patron/search-dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/patron/search.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/patron/search.component.ts
+
+commit 63c7000c3d4166a7b832ee5e28a399dc555401a1
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jan 17 11:22:09 2020 -0500
+
+    LP1860044 Release Notes for Ang Cat Highlights
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ruth Frasur <rfrasur@gmail.com>
+
+6	0	docs/RELEASE_NOTES_NEXT/Client/staff-cat-highlighting.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Client/staff-cat-highlighting.adoc
+
+commit 0df5d1f8f7e0d907489feaa0156b966440310fb3
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 16 13:23:15 2020 -0500
+
+    LP1860044 Angular catalog search result highlights
+    
+    Support search field highlighting in the Angular staff catalog
+    search result and record detail pages.
+    
+    Adds a new <eg-bib-display-field /> component for rendering the
+    highlighted content.
+    
+    Move the catalog-common module import into the staff common module so
+    the bib-summary component has access to the new display-field component.
+    
+    Drop the default search result page size to 10 for consistency with
+    other catalogs (and to speed up rendering).  Note users can still set
+    the page size of their choice via user settings.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ruth Frasur <rfrasur@gmail.com>
+
+11	0	Open-ILS/src/eg2/src/app/share/catalog/bib-display-field.component.css
+7	0	Open-ILS/src/eg2/src/app/share/catalog/bib-display-field.component.html
+62	0	Open-ILS/src/eg2/src/app/share/catalog/bib-display-field.component.ts
+1	0	Open-ILS/src/eg2/src/app/share/catalog/bib-record.service.ts
+5	2	Open-ILS/src/eg2/src/app/share/catalog/catalog-common.module.ts
+75	15	Open-ILS/src/eg2/src/app/share/catalog/catalog.service.ts
+7	0	Open-ILS/src/eg2/src/app/share/catalog/search-context.ts
+0	2	Open-ILS/src/eg2/src/app/staff/catalog/catalog.module.ts
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+13	7	Open-ILS/src/eg2/src/app/staff/catalog/record/pagination.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+17	0	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.css
+30	20	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.html
+4	1	Open-ILS/src/eg2/src/app/staff/common.module.ts
+4	1	Open-ILS/src/eg2/src/app/staff/share/bib-summary/bib-summary.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/catalog/bib-display-field.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/share/catalog/bib-display-field.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/catalog/bib-display-field.component.ts
+
+commit 28ecd418244d2974498470d7cbe45a525df14e27
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Sep 16 11:26:23 2019 -0400
+
+    LP1841823 Marc flat editor repair slashes (AngJS)
+    
+    Replace all control field spaces with backslashes in MARC Flat text
+    editor (AngJS edition).
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+
+2	2	Open-ILS/web/js/ui/default/staff/marcrecord.js
+
+commit c6b0494759c0755654fcdf9125cd5717361e0167
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Sep 16 11:26:10 2019 -0400
+
+    LP1841823 Marc flat editor repair slashes (Angular)
+    
+    Replace all control field spaces with backslashes in MARC Flat text
+    editor, Anglular edition.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+
+3	3	Open-ILS/src/eg2/src/assets/js/marcrecord.js
+
+commit e01c8ad84163468fe9c76584e56c90382fe46069
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jan 15 11:14:06 2020 -0500
+
+    LP1859706 Map Angular cat "Patron View" to AngJS "OPAC View"
+    
+    The Angular catalog now treats the "Patron View" tab as the same as
+    the "OPAC View" tab in the AngJS catalog for the purposes of saving a
+    preferred default tab.
+    
+    Similarly, the Angular catalog-only "Item Table" tab maps to the AngJS
+    "OPAC View" tab, since it's the closest analog.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ruth Frasur <rfrasur@gmail.com>
+
+2	2	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+2	2	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.ts
+12	4	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit d1ea5bc27b6b0cc67fd3d99561da5dc69178cf18
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Sep 19 16:14:06 2019 -0400
+
+    LP1819236 Ang cat prevent keyword starts/exact searches
+    
+    Prevent users from attempting Keyword starts-with or matches-exactly
+    searches since these are nonsensical.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ruth Frasur <rfrasur@gmail.com>
+
+5	2	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.html
+10	0	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.ts
+
+commit de3d6edee1cc948238c443772ff9b278d541a1c1
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jan 21 10:07:30 2020 -0500
+
+    LP1860275 Staff catalog add mono part repair
+    
+    Fixes a bug in the New Monograph Part dialog which prevented passing the
+    bib record ID during the creation process, which resulted in a database
+    error and faulure to create the part.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+
+4	0	Open-ILS/src/eg2/src/app/staff/catalog/record/parts.component.ts
+
+commit 9194d9c4bc99f9c8f13632ef6f50e72793f392d1
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Feb 21 11:33:43 2020 -0500
+
+    LP1850938 Stamping DB upgrade (Ang Cat Prefs)
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.catalog-prefs.sql => 1198.data.catalog-prefs.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.catalog-prefs.sql => 1198.data.catalog-prefs.sql} (80%)
+
+commit 4717051494a67d70f1cd7e604c5df91b66b56f94
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Nov 1 10:59:51 2019 -0400
+
+    LP1850938 Angular Catalog Prefs Release Notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+12	0	docs/RELEASE_NOTES_NEXT/Client/ang-cat-prefs-page.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Client/ang-cat-prefs-page.adoc
+
+commit 7dc6adfcca7e56b53906adb7110a25545483d1e1
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Oct 31 17:56:39 2019 -0400
+
+    LP1850938 Angular Catalog Preferences Page
+    
+    Adds a new "Catalog Preferences" interface, accessible directly from the
+    catalog.  The UI houses the search preferences (default search lib,
+    preferred library, default search tab), a new staff-specific
+    hits-per-page setting.  Other preferences may be added later.
+    
+    Adds support for selecting a default search tab using the existing
+    'eg.search.adv_pane' setting.
+    
+    Reduce API call count by loading more of the catalog preference settings
+    in the main batch invoked by the page resolver.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+23	15	Open-ILS/src/eg2/src/app/staff/catalog/basket-actions.component.html
+2	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.module.ts
+3	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+84	0	Open-ILS/src/eg2/src/app/staff/catalog/prefs.component.html
+73	0	Open-ILS/src/eg2/src/app/staff/catalog/prefs.component.ts
+9	0	Open-ILS/src/eg2/src/app/staff/catalog/resolver.service.ts
+5	0	Open-ILS/src/eg2/src/app/staff/catalog/routing.module.ts
+18	2	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.ts
+2	3	Open-ILS/src/eg2/src/app/staff/catalog/search-templates.component.ts
+10	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.catalog-prefs.sql
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/prefs.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/prefs.component.ts
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.catalog-prefs.sql
+
+commit 54032550a5db3690cea5a75b3c183d5e690b08b2
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jan 15 10:32:52 2020 -0500
+
+    LP1852782 Improve MARC edit save/delete button placement
+    
+    Move the Save Record button to the left of the Delete Record, which is
+    more consistent with other yes/no button combinations in the client.
+    Also adds additional spacing and a faint border between the two buttons.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	3	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.html
+
+commit 5eb9013776160b9cc24cc8653f63859bca418c82
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jan 15 10:10:03 2020 -0500
+
+    LP1852782 Fix Firefox contenteditable tabbing
+    
+    Use tabindex="0" instead of tabindex="" to indicate focusable content.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.html
+
+commit abd661656a4d3308aca3aa5ed4a5f6a408322502
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jan 10 16:47:44 2020 -0500
+
+    LP1852782 Angular MARC record update API repairs
+    
+    Use the correct API when updating authority records.
+    
+    Also use the correct bib record update API per LP 1859191.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	2	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.ts
+
+commit 37885d3a0ba1008747f674387530d0497b1a6992
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jan 8 16:49:35 2020 -0500
+
+    LP1852782 Linker links to auth record editor
+    
+    Adds a new UI at /staff/cat/authority/edit/ for finding authority
+    records by ID and editing authority records via the Angular MARC editor.
+    
+    Modifies the "Cataloging" => "Retrieve Authority Record By ID" nav menu
+    entry to point to the Angular version of the interface.
+    
+    Augments the MARC edit authority linking dialog to turn authority ID's
+    into links which open the authority record in its own MARC editor in a
+    new tab.
+    
+    Misc. MARC editor repairs related to loading authority records by ID.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	Open-ILS/src/eg2/src/app/common.module.ts
+1	3	Open-ILS/src/eg2/src/app/share/catalog/catalog-common.module.ts
+23	0	Open-ILS/src/eg2/src/app/staff/cat/authority/authority.module.ts
+32	0	Open-ILS/src/eg2/src/app/staff/cat/authority/marc-edit.component.html
+35	0	Open-ILS/src/eg2/src/app/staff/cat/authority/marc-edit.component.ts
+20	0	Open-ILS/src/eg2/src/app/staff/cat/authority/routing.module.ts
+3	0	Open-ILS/src/eg2/src/app/staff/cat/routing.module.ts
+1	1	Open-ILS/src/eg2/src/app/staff/nav.component.html
+9	6	Open-ILS/src/eg2/src/app/staff/share/marc-edit/authority-linking-dialog.component.html
+9	8	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.html
+29	10	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.html
+1	1	Open-ILS/src/templates/staff/navbar.tt2
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/authority/authority.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/authority/marc-edit.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/authority/marc-edit.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/authority/routing.module.ts
+
+commit fa921ae9d3cc1e418e85de379274588afb393eea
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Dec 31 10:58:55 2019 -0500
+
+    LP1852782 Main entry link sets subfield 0
+    
+    In the MARC editor, when applying a main entry heading, set the subfield
+    0 of the modified bib field to link to the authority record in question.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+4	3	Open-ILS/src/eg2/src/app/staff/share/marc-edit/authority-linking-dialog.component.html
+20	9	Open-ILS/src/eg2/src/app/staff/share/marc-edit/authority-linking-dialog.component.ts
+
+commit 48ad50466df4ef921036216a15f8c8f22254d2a3
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Dec 31 10:04:36 2019 -0500
+
+    LP1852782 More title attributes for action buttons
+    
+    Adds title attributes to the Phys Char wizard and authority linking
+    buttons, which contain no text within the button proper.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.html
+
+commit 3187adcc2004f3fef0756f106b6fb104dd668ca6
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Dec 30 16:35:42 2019 -0500
+
+    LP1852782 Vandelay MARC editor module repair
+    
+    With the addition of Fast Add item support, the MARC editor requires
+    access to the HoldingsModule, which was not importe directly into
+    Vandelay, unlike the catalog.  This patch tells the MARC editor to
+    import the module itself.
+    
+    Fixes:
+    
+    QueuedRecordComponent.html:22
+    NullInjectorError: StaticInjectorError(BaseModule)[MarcEditorComponent
+    -> HoldingsService]:
+      StaticInjectorError(Platform: core)[MarcEditorComponent ->
+      HoldingsService]:
+          NullInjectorError: No provider for HoldingsService!
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	1	Open-ILS/src/eg2/src/app/staff/share/marc-edit/marc-edit.module.ts
+
+commit 7ed43007e22b07c7debe881aa74b20a3471d84fe
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Dec 26 11:21:22 2019 -0500
+
+    LP1852782 Angular MARC editor Release Notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+7	0	docs/RELEASE_NOTES_NEXT/Cataloging/ang-marc-editor.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/ang-marc-editor.adoc
+
+commit fad0e712ccba16dde72eb26352c3c6013a58057b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Dec 26 10:28:59 2019 -0500
+
+    LP1852782 Fast add item option
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	3	Open-ILS/src/eg2/src/app/staff/share/holdings/holdings.service.ts
+18	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.html
+23	1	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.ts
+
+commit cad0d77286bf4d7d3b2686f3a4030e2640b52078
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Dec 23 17:33:18 2019 -0500
+
+    LP1852782 MARC editor Physical Characteristics Wizard
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+6	1	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.ts
+5	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor-context.ts
+2	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/marc-edit.module.ts
+59	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/phys-char-dialog.component.html
+220	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/phys-char-dialog.component.ts
+9	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.html
+26	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/phys-char-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/phys-char-dialog.component.ts
+
+commit 9f3c2229737fc8170a0bfc721b7d39bf04e5ecd7
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Dec 23 17:33:05 2019 -0500
+
+    LP1852782 Reset authority validation after linking
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+4	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/authority-linking-dialog.component.ts
+
+commit 7f83d0319fe961edb9478d5f26a93f6683153ea1
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Dec 19 18:00:27 2019 -0500
+
+    LP1852782 MARC edit inline authority record creation.
+    
+    Implement support for creating a new authority record from a bib field
+    in "immediate" (non-editing)  mode.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+10	7	Open-ILS/src/eg2/src/app/staff/share/marc-edit/authority-linking-dialog.component.html
+56	3	Open-ILS/src/eg2/src/app/staff/share/marc-edit/authority-linking-dialog.component.ts
+12	12	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.ts
+3	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor-context.ts
+14	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor-dialog.component.html
+44	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor-dialog.component.ts
+9	7	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.html
+75	22	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.ts
+2	3	Open-ILS/src/eg2/src/app/staff/share/marc-edit/fixed-field.component.ts
+2	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/marc-edit.module.ts
+6	3	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.html
+14	7	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.ts
+128	83	Open-ILS/src/eg2/src/app/staff/share/marc-edit/tagtable.service.ts
+5	0	Open-ILS/src/eg2/src/styles.css
+22	8	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/Authority.pm
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor-dialog.component.ts
+
+commit 90d93ea18314597f7a31a0450f8f7f652d26864e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Dec 16 10:40:01 2019 -0500
+
+    LP1852782 MARC editor authority linking support
+    
+    Adds authority browse UI for controlled bib tags, with support for
+    applying headings for found authorities.
+    
+    Adds 3 new open-ils.cat APIs for managing the authority browse and
+    linking logic, lifted from the AngJS MARC editor.
+    
+    open-ils.cat.authority.validate.bib_field
+    open-ils.cat.authority.bib_field.linking_browse
+    open-ils.cat.authority.bib_field.overlay_authority
+    
+    Adds new "Show As Heading" and "Show As MARC" options allowing staff to
+    see the main headings, see from, and see alsos as human-friendly text or
+    as the raw MARC data.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+6	6	Open-ILS/src/eg2/src/app/staff/share/buckets/bucket-dialog.component.html
+116	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/authority-linking-dialog.component.html
+134	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/authority-linking-dialog.component.ts
+9	5	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.css
+9	7	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.html
+30	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.ts
+73	10	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor-context.ts
+3	1	Open-ILS/src/eg2/src/app/staff/share/marc-edit/marc-edit.module.ts
+4	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/marcrecord.ts
+7	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.css
+39	8	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.html
+59	4	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.ts
+17	1	Open-ILS/src/eg2/src/app/staff/share/marc-edit/tagtable.service.ts
+333	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/Authority.pm
+3	3	Open-ILS/src/templates/staff/cat/share/t_authority_browser.tt2
+1	1	Open-ILS/src/templates/staff/cat/share/t_authority_linker.tt2
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/authority-linking-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/authority-linking-dialog.component.ts
+
+commit 6343177c6f4dda71016976b17389e75ded7a2fcb
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Dec 12 10:35:06 2019 -0500
+
+    LP1852782 FF context menu repairs; Angular fixes
+    
+    Fix regression in context menu generation for fixed fields.
+    
+    Migrate some ViewChild's from static=true to static=false.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.ts
+6	6	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.ts
+1	2	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.html
+
+commit 95331c22c6c0a7557404dd0185ead17e120759ba
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Dec 11 17:03:19 2019 -0500
+
+    LP1852782 Progress indicator while saving MARC records
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+10	1	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.html
+7	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.ts
+
+commit 393373cc1509d8e4b0056b42c2ab9397571072fe
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Dec 11 16:44:29 2019 -0500
+
+    LP1852782 Tag menu static additions
+    
+    Adds support for add 006/007/008, delete fields and optionally add new
+    field before and after actions to the context menus displayed for
+    control field and data field tags.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+11	6	Open-ILS/src/eg2/src/app/share/context-menu/context-menu-container.component.html
+3	2	Open-ILS/src/eg2/src/app/share/context-menu/context-menu.service.ts
+11	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.html
+56	3	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.ts
+
+commit dfe56547d235d65298ab4e4322621a1afba28f30
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Dec 11 15:28:04 2019 -0500
+
+    LP1852782 Prevents data fields swapping to control fields
+    
+    Prevent an existing data field from swapping to a control field while
+    editing the tag.  This way if a tag is cleared the field won't jump from
+    the data fields section up to the control fields section mid-edit.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+10	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/marcrecord.ts
+2	2	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.ts
+
+commit f9fd5df8f4f83e043792c7934c249fbc4ef0d0a0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Dec 11 14:48:40 2019 -0500
+
+    LP1852782 MARC editor subfield stacking support
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.ts
+64	37	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.html
+14	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.ts
+
+commit 4162057c4e291163a9cda692f63f0777b21fc3d1
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Dec 11 12:31:15 2019 -0500
+
+    LP1852782 Context menu nagivation and FF repairs
+    
+    Allow keyboard navigation of context menus by changing the action links
+    to buttons.  Teach the menu to close itself once an action has been
+    selected to cover cases where the popover does not close itself,
+    specifically on keyboard Enter to select.
+    
+    Teach the editor to reload the tagtable data when the record type has
+    changed and refresh all of its child component, since a Type change
+    impacts all of the tagtable options.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+4	2	Open-ILS/src/eg2/src/app/share/context-menu/context-menu-container.component.html
+21	4	Open-ILS/src/eg2/src/app/share/context-menu/context-menu.directive.ts
+3	3	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.ts
+13	1	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.ts
+2	1	Open-ILS/src/eg2/src/app/staff/share/marc-edit/tagtable.service.ts
+
+commit 992402e003347e4e06e53a13b0801677b858eb1b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Dec 11 10:46:04 2019 -0500
+
+    LP1852782 MARC editable content aria-labels
+    
+    Label fixed fields by their respective labels.  Label tags, indicators,
+    subfield codes, and values with generic terms indicating their purpose.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.html
+3	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.ts
+3	2	Open-ILS/src/eg2/src/app/staff/share/marc-edit/fixed-field.component.html
+27	17	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.html
+
+commit c83db17612f518ca8b6468aa9d1903dcf822ba2b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Dec 10 17:35:49 2019 -0500
+
+    LP1852782 MARC editor prevent navigation with changes
+    
+    Show a confirmation dialog when the user attempts to navigate away from
+    the MARC edit tab in the catalog if the MARC editor has pending changes.
+    
+    The dialog will be shown if the user attempts to change tabs or navigate
+    away from the record detail page w/in Angular.
+    
+    If the user unloads / reloads the page, the stock browser onbeforeunload
+    confirmation dialog will be displayed instead.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+33	0	Open-ILS/src/eg2/src/app/share/util/can-deactivate.guard.ts
+8	2	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+51	4	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.ts
+3	1	Open-ILS/src/eg2/src/app/staff/catalog/routing.module.ts
+9	4	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.ts
+11	1	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor-context.ts
+12	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.ts
+1	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/flat-editor.component.html
+4	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/flat-editor.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/util/can-deactivate.guard.ts
+
+commit 1ee7ef92ab92879b44f50d84ea41bab53882bbd1
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Dec 10 12:00:20 2019 -0500
+
+    LP1852782 MARC editor and related lint repairs
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	5	Open-ILS/src/eg2/src/app/share/context-menu/context-menu-container.component.ts
+8	8	Open-ILS/src/eg2/src/app/share/context-menu/context-menu.directive.ts
+3	3	Open-ILS/src/eg2/src/app/share/context-menu/context-menu.service.ts
+33	32	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.ts
+19	17	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor-context.ts
+3	3	Open-ILS/src/eg2/src/app/staff/share/marc-edit/marcrecord.ts
+12	12	Open-ILS/src/eg2/src/app/staff/share/marc-edit/tagtable.service.ts
+
+commit 41231d34639ac05d8b811ac5afa87e1899d4bd62
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Dec 6 15:27:28 2019 -0500
+
+    LP1852782 Avoid unnecessary catalog pagination search
+    
+    Prevent the record detail paginator from trying to execute a search (to
+    find the current details) as users type in new search params in the
+    record detail seach form.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+0	4	Open-ILS/src/eg2/src/app/staff/catalog/record/pagination.component.ts
+2	4	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+
+commit 73e7e0c54d082af4d408caab8465e2654f8825e0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Dec 6 13:10:29 2019 -0500
+
+    LP1852782 Record detail page shows summary first
+    
+    Consistent with other EG catalogs, show the record summary section first
+    on the record detail page, with actions below.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+4	4	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+
+commit 22e046d33c8bfce2c59f9de075c72ee0b4d9bdbd
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Dec 6 13:02:55 2019 -0500
+
+    LP1852782 Catalog search form expand/collapse
+    
+    Collapse the form by default on record detail pages for closer
+    consistency with previous catalogs.  When collapsed, provide an option
+    to expand the search form.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+13	4	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.html
+15	1	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.ts
+
+commit 086f54a1e8d56bc7fc8f649b44eddae6dae12e7c
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Nov 14 16:54:21 2019 -0500
+
+    LP1852782 Angular MARC enriched editor (first batch)
+    
+    Main rich MARC editor component.  Includes fixed fields editor, context
+    menus for value selection, undo/redo, help display, keyboard shortcuts.
+    
+    Also includes a standalone context menu component.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	0	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+6	3	Open-ILS/src/eg2/src/app/share/common-widgets.module.ts
+27	0	Open-ILS/src/eg2/src/app/share/context-menu/context-menu-container.component.css
+8	0	Open-ILS/src/eg2/src/app/share/context-menu/context-menu-container.component.html
+38	0	Open-ILS/src/eg2/src/app/share/context-menu/context-menu-container.component.ts
+90	0	Open-ILS/src/eg2/src/app/share/context-menu/context-menu.directive.ts
+24	0	Open-ILS/src/eg2/src/app/share/context-menu/context-menu.module.ts
+32	0	Open-ILS/src/eg2/src/app/share/context-menu/context-menu.service.ts
+22	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.css
+35	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.html
+534	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.ts
+351	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor-context.ts
+14	16	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.html
+37	7	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.ts
+20	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/fixed-field.component.css
+16	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/fixed-field.component.html
+46	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/fixed-field.component.ts
+281	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/fixed-fields-editor.component.html
+31	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/fixed-fields-editor.component.ts
+11	8	Open-ILS/src/eg2/src/app/staff/share/marc-edit/flat-editor.component.ts
+12	2	Open-ILS/src/eg2/src/app/staff/share/marc-edit/marc-edit.module.ts
+144	3	Open-ILS/src/eg2/src/app/staff/share/marc-edit/marcrecord.ts
+8	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.css
+139	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.html
+54	3	Open-ILS/src/eg2/src/app/staff/share/marc-edit/rich-editor.component.ts
+274	0	Open-ILS/src/eg2/src/app/staff/share/marc-edit/tagtable.service.ts
+2	0	Open-ILS/src/eg2/src/app/staff/staff.component.html
+1	0	Open-ILS/src/eg2/src/styles.css
+ create mode 100644 Open-ILS/src/eg2/src/app/share/context-menu/context-menu-container.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/share/context-menu/context-menu-container.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/context-menu/context-menu-container.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/context-menu/context-menu.directive.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/context-menu/context-menu.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/context-menu/context-menu.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/editable-content.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor-context.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/fixed-field.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/fixed-field.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/fixed-field.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/fixed-fields-editor.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/fixed-fields-editor.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/marc-edit/tagtable.service.ts
+
+commit a3cd173a646097fdd09d3b13ae489fbcca41ba99
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Thu Aug 8 14:01:00 2019 -0400
+
+    LP1787415: Item Status checkout date and checkout workstation for renewed items
+    
+    Fixes Item Status Quick Summary and Recent Circ History to show the original
+    checkout date and original checkout workstation for renewed items, instead of
+    values from the most recent circ row.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+2	2	Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2
+2	2	Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2
+
+commit 1912e59e65d253498e2d29a1a486ee3efaf505c6
+Author: Josh Stompro <stompro@stompro.org>
+Date:   Wed Nov 13 13:48:50 2019 -0600
+
+    LP1777181 - Make backdating more visible in check in.
+    
+    Add another visual indication that backdating is in use in check in screen.
+    
+    To test, visit check in screen and pick a date for the effective date.
+    
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+3	1	Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2
+
+commit 950c6153163022ea7da92ceb15f6a4f722e4d3ed
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Fri Jan 24 18:03:07 2020 -0500
+
+    LP1849370 Mark items as damaged - changing fee usability issues
+    
+    The prop that conditionally renders the fee interface is bound to the fee input
+    so it removes itself from the DOM when cleared. The patch uses a separate prop.
+    
+    The fee input's by the edge so you may mistakenly close the modal if you try to
+    click & drag to highlight the fee. The patch sets the prop backdrop to static.
+    
+    A $0 item price will cause the modal to keep reloading on submit. If you set a
+    $0 fee manually without clicking No Charge it charges the full item price. The
+    patch sets the apply_fines param for the Perl API dynamically on submission.
+    
+    To test:
+    1. Make sure the OU setting "Charge item price when marked damaged" is true
+    2. Check out an item with a price to a user
+    3. Mark it damaged (from Item Status or Checkin screen)
+    4. Note if you clear the fee input it removes itself, if you drag the mouse off
+    the modal & release it closes, & if you charge $0 without using "No Charge" it
+    charges the user the full item price
+    5. Apply patch and repeat steps 1-3
+    6. Note the input stays when cleared, the modal doesn't close if you release
+    the mouse on the backdrop, & charging $0 doesn't charge the user
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+9	9	Open-ILS/src/templates/staff/circ/share/t_mark_damaged.tt2
+8	7	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit 4489629dec1380314aa646ceaf15208bad35ec79
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Tue Feb 4 22:42:08 2020 +0000
+
+    lp1792995 wrong row details shown on billing grid
+    
+    When using the bill grid, if one right clicks on a row and views full
+    details one is taken to the first selected row.  Make the UI show
+    full details for the row being right clicked on.  If no row is
+    clicked on show first selected item's details.
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    
+     Changes to be committed:
+            modified:   Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+            modified:   Open-ILS/web/js/ui/default/staff/services/grid.js
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+7	1	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+7	0	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit fba0719e6fa2685be3b0993f53be636c52024a58
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Mon Oct 21 17:18:44 2019 -0400
+
+    LP#1839361 Login page tile is confusing to screen readers
+    
+    Prior to this change, the login page, the splash page, and the
+    about page in the staff client all used 'Home' as the page title,
+    which caused accessibility problems. This change gives each
+    its own title.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Lynn Floyd <lfloyd1@library.in.gov>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+7	1	Open-ILS/src/templates/staff/index.tt2
+13	3	Open-ILS/web/js/ui/default/staff/app.js
+
+commit d96059d980bb41440493678481a9e3721c3e4f6e
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Jan 14 16:32:58 2020 -0800
+
+    LP1859728: Allow users to add notes when creating a booking reservation
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Lynn Floyd <lfloyd1@library.in.gov>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+6	0	Open-ILS/src/eg2/src/app/staff/booking/create-reservation-dialog.component.html
+7	1	Open-ILS/src/eg2/src/app/staff/booking/create-reservation-dialog.component.ts
+
+commit bab3860d53fd118f82e0d1c44d6f847342afb723
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Feb 19 10:36:56 2020 -0500
+
+    LP#1778521: Reset field transform after adding fields
+    
+    Prior to this commit, the field transform was carried from field to
+    field as each was added to a report.  This commit resets the selected
+    transform to the default "Raw data" after adding a field.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+
+2	0	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+
+commit 4340cf61c3310c45368e250537126383f8c172aa
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Tue Jan 21 22:38:13 2020 +0000
+
+    lp1654529 Callnumber Sorting by Sortkey in Transit & Copy Buckets
+    
+    - Add column for label_sortkey, displaying the data for a
+    Callnumber's Label.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+            modified:   Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2
+            modified:   Open-ILS/src/templates/staff/circ/transits/t_list.tt2
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+2	1	Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2
+2	1	Open-ILS/src/templates/staff/circ/transits/t_list.tt2
+
+commit 2bb8e3c61a5b801c7e8d8d382ca747cd2368ea12
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Jan 10 11:54:08 2020 -0500
+
+    LP#1859191 - Use correct API method for updating existing MARC records.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.ts
+1	1	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+
+commit 04d0ee774d2b604d26e8fb6fac63e4e70a806b14
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Tue Oct 22 14:34:48 2019 -0400
+
+    LP#1839372 Splash page needs headers
+    
+    This resolves accessibility problems by changing the section
+    divs on the splash page of the staff client to h1s. It does
+    not change anything visually.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+5	3	Open-ILS/src/eg2/src/app/staff/splash.component.html
+4	3	Open-ILS/src/templates/staff/t_splash.tt2
+
+commit f80965ad811f723af8439b7ecd98eb98db9cb3e7
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jan 22 10:10:20 2020 -0500
+
+    LP1860468 Org unit admin interface sorting
+    
+    Sort org units by name alphabetically in the Angular Org Unit admin
+    interface navigation tree.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Lynn Floyd <lfloyd1@library.in.gov>
+
+6	1	Open-ILS/src/eg2/src/app/staff/admin/server/org-unit.component.ts
+
+commit 8d022fcaa5ac2fb5ab3e6754d6fe3ea46bdcb7f4
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Tue Oct 22 09:37:59 2019 -0400
+
+    LP#1839359 Select element on login not accessible
+    
+    This adds id and name to the select element on the staff
+    client login page to make it accessible.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	Open-ILS/src/templates/staff/t_login.tt2
+
+commit 041f768ae634fead7b4ed341c99cfe0b36224bdc
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Feb 7 12:35:14 2020 -0500
+
+    LP1862395 Repair nested i18n Angular attribute
+    
+    Nested i18n attributes prevent the string exporter from completing.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/eg2/src/app/staff/admin/local/admin-carousel.component.html
+
+commit 851572686b9d3c827bca282449d66299cc929e2e
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Fri Nov 29 14:51:06 2019 -0500
+
+    LP#1775276: Check In - "Route To" Field Sometimes Incorrect
+    
+    When open-ils.circ.checkin closes a transit and creates a new one, the
+    payload only returns the closed transit. The route dialogs perform a
+    pcrud search to get the most recent transit, but the grid's Route To
+    field still depends on the transit returned by the API, so received
+    transits display the old destination in the Route To field instead of
+    the shelving location or new destination.
+    
+    This branch returns the most recent route info collected by the route
+    dialog and, if the most recent transit destination doesn't match the
+    old one, the new one is assigned to the route_to prop on the
+    final_resp. It also checks that the transit is open before displaying
+    the destination in the Route To field so the shelving location
+    displays if the most recent transit is closed.
+    
+    To test:
+    1. Sign in as Library A and check in an item owned by Library B
+    2. Place a copy hold on the item with a pickup location of Library C
+    3. Sign in as Library B and check in the item - note the dialog is
+       correct but the grid's Route To field displays Library B instead of
+       Library C
+    4. Apply patch
+    5. Repeat steps 1-3, note the Route To field displays Library C
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+9	5	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit cf5cf1de34846c6449f3c4fb40c2d0a908ec5bfc
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Mon Jan 27 15:08:06 2020 -0500
+
+    Forward port 3.3.5 to 3.3.6 db upgrade script
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.3.5-3.3.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.3.5-3.3.6-upgrade-db.sql
+
+commit f5fbf4776b75dcacf5d7e6c1d58940be0b36abfd
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Jan 24 09:37:22 2020 -0500
+
+    Forward Port 3.4.1 to 3.4.2 upgrade script
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+60	0	Open-ILS/src/sql/Pg/version-upgrade/3.4.1-3.4.2-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.4.1-3.4.2-upgrade-db.sql
+
+commit 6ba4090ce72fe9f19f656c51d6d263870a28db4f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Aug 9 12:47:37 2019 -0400
+
+    LP1835982 Grid cell text generator API migration
+    
+    Migrate cell-specific cellPrintValue handlers to a grid-wide
+    cellTextGenerator handler.  This simplifies the client-side API and
+    helps to formalize the API a bit more by providing a new
+    GridCellTextGenerator interface.
+    
+    Warning messages are now display at page load time when a grid cell uses
+    a cellTemplate but does not have a matching text generator.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+6	0	Open-ILS/src/eg2/src/app/share/grid/grid-column.component.ts
+0	7	Open-ILS/src/eg2/src/app/share/grid/grid-print.component.ts
+6	1	Open-ILS/src/eg2/src/app/share/grid/grid.component.ts
+14	2	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+2	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.html
+4	8	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.html
+6	9	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+3	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.html
+5	8	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.html
+7	13	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.ts
+2	4	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.html
+6	11	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+5	7	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+
+commit 97ad87b1b94d64e35097a188e266b0d31d167e20
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Aug 9 11:52:05 2019 -0400
+
+    LP1835982 More grid cell print generators
+    
+    Adds additional print content generators for Angular grid cells which
+    are rendered via cell templates.
+    
+    * Vandelay match set list grid
+    * Vandelay queue contents grid
+    * Vandelay queued record matches grid
+    * Catalog holds grid.
+    
+    Also adds a warning to the grid component when an attempt is made to
+    print a templated cell which has no print content generator.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+7	0	Open-ILS/src/eg2/src/app/share/grid/grid-print.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.html
+10	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.ts
+6	5	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.html
+10	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.html
+11	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+11	1	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+
+commit 621b895def1a5bce7e0398f668b907314b79c127
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 2 16:31:31 2020 -0500
+
+    LP1858138 Sandbox example of simple grid filtering
+    
+    Adds a trimmed down grid example demonstrating consistent filtering and
+    link selector display for auto and manual fields without requiring any
+    additional grid markup to define basic column behevior.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+12	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+28	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+
+commit 29d5c4e35c1a09e20c0db114c9ad5d18b9c9aae7
+Author: Dan Scott <dan@coffeecode.net>
+Date:   Sun Dec 15 10:53:33 2019 -0500
+
+    Fix doc build for glossary
+    
+    asciidoctor was throwing the error "invalid part, must have at least one
+    section (e.g., chapter, appendix, etc.)"; including [appendix] in front
+    of the include mollified it.
+    
+    Also we don't need the duplicated Glossary / Glossary headings.
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+1	3	docs/root.adoc
+
+commit 10c1c8fe2b9616e907ebd663db1e6eb17bb467dc
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Dec 13 14:27:16 2019 -0500
+
+    LP1830391 Stamping DB upgrate (hatch omnibus)
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.hatch-enable-print.sql => 1197.data.hatch-enable-print.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.hatch-enable-print.sql => 1197.data.hatch-enable-print.sql} (94%)
+
+commit b2de21e54ed6067f31196008dca803ee86652cfc
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Oct 17 17:57:10 2019 -0400
+
+    LP1830923 Marc edit in-place additions
+    
+    Improve Angular MARC editor for in-place editing.
+    
+    * Make inPlaceMode a proper @Input.
+    * Allow the caller to pass in the bib source
+    * The recordSaved event now reports both the MARC XML and the currently
+      selected bib source.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.html
+30	11	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.ts
+
+commit f643bea30c2a2253d74636e1e33ec5c2aa78bd4c
+Author: Jason Boyer <JBoyer@eoli.info>
+Date:   Wed Nov 27 08:42:27 2019 -0500
+
+    LP1850955: Include changes to package-lock.json
+    
+    The package-lock.json file is necessarily changed
+    by dropping some dependencies. As long as we track
+    it, it may as well be updated.
+    
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+17	148	Open-ILS/src/eg2/package-lock.json
+
+commit 1fae3b2071480d29620fcb48df3ef3189ffd767d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Nov 1 12:22:33 2019 -0400
+
+    LP1850955 Remove PhantomJS polyfills
+    
+    Remove additional polyfills that were required specifically for
+    PhantomJS, which we no longer use.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+3	3	Open-ILS/src/eg2/src/polyfills.ts
+
+commit 2b259e3ef6f04fa16eab920a20ef5dde01639642
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Nov 1 12:18:00 2019 -0400
+
+    LP1850955 Angular build targets modernized
+    
+    Apply a specific set of browsers to guide the Angular / Typescript
+    compilers toward a more modern set of default browsers.  This reduces
+    the amount of compilation and browser files required.
+    
+    Bump the ES version used by Typescript from ES5 to ES6.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+
+5	0	Open-ILS/src/eg2/package.json
+0	2	Open-ILS/src/eg2/src/tsconfig.app.json
+4	4	Open-ILS/src/eg2/tsconfig.json
+
+commit 87a962268ee33ea9bbb55af7b2ed680ff1be0f30
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Oct 22 09:21:22 2019 -0400
+
+    LP#1849208 - Add PostgreSQL 10 Makfile.install targets
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+10	0	Open-ILS/src/extras/Makefile.install
+12	0	Open-ILS/src/extras/install/Makefile.debian-buster
+12	0	Open-ILS/src/extras/install/Makefile.debian-jessie
+12	0	Open-ILS/src/extras/install/Makefile.debian-stretch
+13	0	Open-ILS/src/extras/install/Makefile.ubuntu-bionic
+12	0	Open-ILS/src/extras/install/Makefile.ubuntu-xenial
+4	0	docs/RELEASE_NOTES_NEXT/Administration/lp1849208_pg10_support.adoc
+14	1	docs/installation/server_installation.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/lp1849208_pg10_support.adoc
+
+commit a3c2d5980d56befffeb8fc034d45ecb668651dd8
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Oct 29 15:39:46 2019 -0400
+
+    Forward-port 3.3.5 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+284	0	Open-ILS/src/sql/Pg/version-upgrade/3.3.4-3.3.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.3.4-3.3.5-upgrade-db.sql
+
+commit bd125feb4da87e8cca9e2475a57ddf6a44e331d8
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Oct 29 15:38:39 2019 -0400
+
+    Forward-port 3.2.10 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+284	0	Open-ILS/src/sql/Pg/version-upgrade/3.2.9-3.2.10-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.2.9-3.2.10-upgrade-db.sql
+
+commit 169c6daf9530111d7b959bec9b93b4dab206c9be
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Oct 29 15:37:17 2019 -0400
+
+    Forward-port 3.1.16 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+154	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.15-3.1.16-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.15-3.1.16-upgrade-db.sql
+
+commit aab9a85fe07c387760efd437cd4d20c8056cc7d0
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Sep 18 19:16:50 2019 -0400
+
+    Forward port 3.2.8 to 3.2.9 db upgrade script
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.2.8-3.2.9-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.2.8-3.2.9-upgrade-db.sql
+
+commit 342aa03179923e350c846efe1a8c4440adb2375c
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Sep 19 08:46:12 2019 -0400
+
+    Forward port 3.1.14 to 3.1.15 db upgrade script
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.14-3.1.15-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.14-3.1.15-upgrade-db.sql
+
+commit 2cb41481221ef8fd02e49a107dc8f7e8d20fb010
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Oct 29 12:37:28 2019 -0700
+
+    Docs: LP1849137 follow-up: add release note
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+9	0	docs/RELEASE_NOTES_NEXT/Cataloging/patron-view-tab.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/patron-view-tab.adoc
+
+commit 1d03f161727570e936ed8980c310c85869927153
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Oct 29 14:25:42 2019 -0400
+
+    LP1849137 Patron View hide OPAC header
+    
+    Hide the TPAC header (nav links, My Account, etc.) when displaying the
+    embedded read-only record detail view in the staff catalog Patron View
+    tab.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/templates/opac/parts/topnav.tt2
+
+commit 1fae8ec807e88cee21e18e8ec74b606e5bcdab91
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Oct 29 13:54:26 2019 -0400
+
+    LP1849137 Catalog Patron View loading icon
+    
+    Display the usual loading circle icon while the embedded patron view
+    iframe is loading.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+4	0	Open-ILS/src/eg2/src/app/staff/catalog/record/opac.component.html
+2	0	Open-ILS/src/eg2/src/app/staff/catalog/record/opac.component.ts
+
+commit fc990504b20269b189d3674fde521c4b06a70b9e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Oct 29 12:00:25 2019 -0400
+
+    LP1849137 Catalog Patron View embedding improvements
+    
+    Adds a readonly record detail view to the OPAC.  This is used by the
+    Angular catalog Patron View tab to present a version of the OPAC where
+    all links, buttons, and inputs are disabled.
+    
+    Dynamically style the height of the embedded iframe to prevent nested
+    scroll bars in the Patron View.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	Open-ILS/src/eg2/src/app/staff/catalog/record/opac.component.html
+14	3	Open-ILS/src/eg2/src/app/staff/catalog/record/opac.component.ts
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
+18	1	Open-ILS/src/templates/opac/parts/js.tt2
+
+commit 6dfd3980475b7b4472a0fa2dc972534c87620e6c
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Oct 21 10:41:15 2019 -0400
+
+    LP1849137 Staff catalog Patron View tab
+    
+    Adds a tab to the Angular staff catalog record detail page which
+    displays an embedded display of the patron OPAC view of the record
+    detail page.  This replaces the View In Catalog button.
+    
+    The iframe is not linked or tied into the parent Angular app in any way.
+    It's just an iframe with a source.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.module.ts
+0	4	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.html
+5	0	Open-ILS/src/eg2/src/app/staff/catalog/record/opac.component.html
+34	0	Open-ILS/src/eg2/src/app/staff/catalog/record/opac.component.ts
+6	0	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/opac.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/opac.component.ts
+
+commit 63f7c2448017a2c50ba95ed25bc0e5c89671d060
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Oct 22 13:52:56 2019 -0400
+
+    LP1830973 Angular 8 org family test spec repair
+    
+    The test runner does not like that the test expectations are wrapped in
+    the fixture.whenStable promise.  It reports an error, since no
+    expectations occur in line with the test:
+    
+    ERROR: 'Spec 'Component: OrgFamilySelect allows user to turn off
+    includeDescendants checkbox' has no expectations.'
+    
+    As the whenStable checks do not appear to be necessary, simply removing
+    them resolves the issue and allows the tests to succeed.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+
+18	30	Open-ILS/src/eg2/src/app/share/org-family-select/org-family-select.component.spec.ts
+
+commit 11868e97844a47d57489062197ac6809d9473366
+Author: Jason Boyer <jboyer@equinoxinitiative.org>
+Date:   Wed Oct 23 12:01:15 2019 -0400
+
+    Stamp upgrade script for LP 1849152
+    
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{xxxx.data.opac_custom_css.sql => 1196.data.opac_custom_css.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{xxxx.data.opac_custom_css.sql => 1196.data.opac_custom_css.sql} (86%)
+
+commit 485624d4a7bc8d44843857060b72a813e47573ab
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Mon Oct 21 12:02:24 2019 -0400
+
+    loading custom css from library setting
+    
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+9	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+16	0	Open-ILS/src/sql/Pg/upgrade/xxxx.data.opac_custom_css.sql
+6	1	Open-ILS/src/templates/opac/parts/base.tt2
+6	0	docs/RELEASE_NOTES_NEXT/OPAC/custom_css_in_opac.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.data.opac_custom_css.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/custom_css_in_opac.adoc
+
+commit 038227c74fe44a82a9d4e1103daafb842752ab0c
+Author: Jason Boyer <JBoyer@eoli.info>
+Date:   Tue Oct 22 12:51:15 2019 -0400
+
+    LP1845693: Test Angular(JS) with modern browsers
+    
+    Rather than using PhantomJS to test Angular(JS),
+    we can use all supported browsers for the web client.
+    Currently this is Firefox and Chrom(ium).
+    
+    Because of the number of dependencies this also
+    requires that testing is removed from the standard
+    build instructions and only done in specific testing
+    environments or on developer machines.
+    
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+10	2	Open-ILS/src/eg2/karma.conf.js
+1	1	Open-ILS/src/eg2/package.json
+3	1	Open-ILS/src/extras/install/Makefile.debian-buster
+3	1	Open-ILS/src/extras/install/Makefile.debian-jessie
+3	1	Open-ILS/src/extras/install/Makefile.debian-stretch
+3	1	Open-ILS/src/extras/install/Makefile.ubuntu-bionic
+3	1	Open-ILS/src/extras/install/Makefile.ubuntu-xenial
+2	2	Open-ILS/web/js/ui/default/staff/package.json
+10	1	Open-ILS/web/js/ui/default/staff/test/karma.conf.js
+16	3	docs/installation/server_installation.adoc
+
+commit 2309b603a0413a014b92a88e65c2a508a84269eb
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Oct 22 15:54:13 2019 -0400
+
+    LP1849372 Close all open dialogs on Angular route change
+    
+    On all angular route changes, force close any open dialogs, since it
+    makes little sense for them to persist across interfaces.
+    
+    To test:
+    
+    [1] Navigate to Server Administration
+    [2] Navigate to Age Hold Protection Rule Configuration
+    [3] Double-click a grid row to open an edit dialog
+    [4] Click browser back button to return to the Server Admin page
+    [5] Confirm edit dialog closes once the navigation is complete.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+12	0	Open-ILS/src/eg2/src/app/app.component.ts
+22	0	Open-ILS/src/eg2/src/app/share/dialog/dialog.component.ts
+
+commit 3a24c34eceff19a4d4dcd2a99d1a020a6a798c17
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Oct 21 13:38:46 2019 -0400
+
+    LP1830973 Remove no longer needed navbar margin mods
+    
+    Angular 8 and dependency changes render some existing nav bar padding no
+    longer necessary.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+0	1	Open-ILS/src/eg2/src/app/staff/nav.component.css
+
+commit 6e85f068a33075ecf859004350ef5dc0368af847
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Oct 21 13:25:42 2019 -0400
+
+    LP1830973 Angular8 lint repair
+    
+    Avoid lint warning:
+    
+    "In the class "NotBeforeMomentValidatorDirective", the directive input
+    property "egNotBeforeMoment" should not be renamed."
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+3	3	Open-ILS/src/eg2/src/app/share/validators/not_before_moment_validator.directive.ts
+
+commit 337891b51fdba55b8fa0fb669e04d79d2762e5ba
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Oct 21 11:18:29 2019 -0400
+
+    LP1830973 Angular 8 updates
+    
+    Update package.json versions and perform the angular 7 to angular 8
+    migration steps.
+    
+    Update some configs to match supported options in newer versions of
+    typescript and tslint.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+7644	7381	Open-ILS/src/eg2/package-lock.json
+33	33	Open-ILS/src/eg2/package.json
+1	1	Open-ILS/src/eg2/src/app/app.module.ts
+1	1	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+1	1	Open-ILS/src/eg2/src/app/share/datetime-select/datetime-select.component.ts
+1	1	Open-ILS/src/eg2/src/app/share/dialog/dialog.component.ts
+1	1	Open-ILS/src/eg2/src/app/share/eg-help-popover/eg-help-popover.component.spec.ts
+4	4	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+2	2	Open-ILS/src/eg2/src/app/share/grid/grid-print.component.ts
+1	1	Open-ILS/src/eg2/src/app/share/grid/grid.component.ts
+1	1	Open-ILS/src/eg2/src/app/share/org-select/org-select.component.ts
+1	1	Open-ILS/src/eg2/src/app/share/title/title.component.ts
+1	1	Open-ILS/src/eg2/src/app/share/util/bool.component.spec.ts
+1	1	Open-ILS/src/eg2/src/app/staff/admin/local/address-alert.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/admin/local/admin-carousel.component.ts
+9	9	Open-ILS/src/eg2/src/app/staff/admin/local/standing-penalty.component.ts
+5	5	Open-ILS/src/eg2/src/app/staff/admin/server/org-unit-type.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/admin/server/org-unit.component.ts
+10	10	Open-ILS/src/eg2/src/app/staff/admin/server/perm-group-tree.component.ts
+4	4	Open-ILS/src/eg2/src/app/staff/admin/server/print-template.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/admin/workstation/workstations/workstations.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/booking/cancel-reservation-dialog.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/booking/create-reservation-dialog.component.ts
+4	4	Open-ILS/src/eg2/src/app/staff/booking/create-reservation.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/booking/manage-reservations.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/booking/pickup.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/booking/pull-list.component.ts
+4	4	Open-ILS/src/eg2/src/app/staff/booking/reservations-grid.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/booking/return.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/export.component.ts
+12	12	Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-expression.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-quality.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-items.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-list.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/record-items.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/basket-actions.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/browse.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/cnbrowse.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/catalog/record/conjoined.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.ts
+13	13	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/catalog/record/parts.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/catalog/search-templates.component.ts
+10	10	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+9	9	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/share/booking/make-bookable-dialog.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/share/holdings/conjoined-items-dialog.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/share/holdings/copy-alerts-dialog.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/share/holdings/delete-volcopy-dialog.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/share/holdings/mark-damaged-dialog.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/share/holdings/mark-missing-dialog.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/share/holdings/replace-barcode-dialog.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/share/holds/cancel-dialog.component.ts
+8	8	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/share/holds/retarget-dialog.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/share/holds/transfer-dialog.component.ts
+6	6	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.ts
+3	3	Open-ILS/src/eg2/src/polyfills.ts
+1	1	Open-ILS/src/eg2/tsconfig.json
+5	5	Open-ILS/src/eg2/tslint.json
+
+commit 676d3af61e4dd73e84dd26b186a9d3df9f7aefac
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Aug 5 17:58:41 2019 -0400
+
+    LP1830973 Angular reversioning script
+    
+    Script for rebuilding the dependencies for the Angular app.  This is
+    useful both for major Angular upgrades or just for simply refreshing the
+    deps on the current version to ensure everything is up to date, but not
+    so up to date is breaks Angular compatibility.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+68	0	Open-ILS/src/eg2/reversion.sh
+ create mode 100755 Open-ILS/src/eg2/reversion.sh
+
+commit 3429a244fbd918dead6cc03a1ea328d7971abc1d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jul 8 12:28:17 2019 -0400
+
+    LP1830973 Node install v12.6.0
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/extras/Makefile.install
+
+commit 6baed891df26fc2e9421883fab8148f579c84c70
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jul 8 11:08:20 2019 -0400
+
+    LP1830973 Deps installer uses Angular 8
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/extras/install/Makefile.common
+
+commit 608741a1956761e58249d039f57a756172f8f545
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Oct 21 14:08:39 2019 -0400
+
+    LP#1802952: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.function.located_uri_auto_suggest_visibility.sql => 1195.function.located_uri_auto_suggest_visibility.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.function.located_uri_auto_suggest_visibility.sql => 1195.function.located_uri_auto_suggest_visibility.sql} (98%)
+
+commit a3206c00ab89b4798be6d765a0f4612f21355f80
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Oct 21 09:44:27 2019 -0400
+
+    LP#1657171 - Adding upgrade script
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+2	0	Open-ILS/src/sql/Pg/upgrade/{xxxx.schema.normalize_quotes.sql => 1194.schema.normalize_quotes.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{xxxx.schema.normalize_quotes.sql => 1194.schema.normalize_quotes.sql} (98%)
+
+commit 41f088d3fab1deb757e9e9e431a8b16864614c41
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Fri Oct 12 16:01:40 2018 -0400
+
+    LP#1657171 - Normalize right and left single and double quotes
+    
+    Changes search_normalize and naco_normalize to replace right and left
+    leaning single quotes with U+0027, double quotes with U=0022
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+4	0	Open-ILS/src/perlmods/lib/OpenILS/Utils/Normalize.pm
+8	0	Open-ILS/src/sql/Pg/002.functions.config.sql
+141	0	Open-ILS/src/sql/Pg/upgrade/xxxx.schema.normalize_quotes.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.schema.normalize_quotes.sql
+
+commit 5dadc54f88e5ef3771664bded5312fb5d9131c4f
+Author: Suzanne Paterno <paterno@noblenet.org>
+Date:   Tue Aug 6 10:25:05 2019 -0400
+
+    LP 985957 Prevent hold activation date being in the past
+    
+    Created a new JS function isValidDate. Checks that the date is in the future, is a valid date within the month/year given. Also makes sure the date is in the proper format D/m/Y.
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+
+1	0	Open-ILS/src/templates/opac/i18n_strings.tt2
+53	5	Open-ILS/web/js/ui/default/opac/holds-validation.js
+
+commit 332588c6c8ef7e19d45ad8036d23303272db5c74
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Fri Oct 4 10:57:06 2019 -0400
+
+    LP#1778606 Web Client - Place Hold Requires Two Clicks on Submit
+    
+    Issue: the barcode lookup runs on the input's onchange, onkeypress (Enter), &
+    disables the submit button until the patron loads. So, if you type a barcode,
+    click enter, click the submit button, mousedown fires, if focus was still the
+    barcode input, its onchange fires, the lookup runs again, the submit button
+    disables, prevents button mouseup from firing, the click event is disrupted, &
+    the form doesn't submit. Click again & it works.
+    
+    Instead of onchange & onkeypress this branch runs the lookup when there's a
+    500ms pause between onkeydowns. onpaste and enter still run the lookup
+    immediately. The patron search triggers the input's keydown instead of change.
+    
+    To test:
+    1. Search for any holdable item in the catalog and click Place Hold
+    2. Type in an existing patron barcode and click Enter
+    3. Before tabbing or clicking off the barcode input, click the Submit button
+    4. Note it doesn't submit - click again and it submits
+    5. Apply patch
+    6. Repeat steps 1-3
+    7. Note it submits
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+
+2	3	Open-ILS/src/templates/opac/parts/place_hold.tt2
+18	7	Open-ILS/web/js/ui/default/opac/staff.js
+1	1	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit 7a4dd1113295f41feb59479a84fa7d2e898906dd
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Oct 18 11:05:47 2019 -0400
+
+    LP#1555791: add release notes entry
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+9	0	docs/RELEASE_NOTES_NEXT/Circulation/hide-self-check-print-list-button.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/hide-self-check-print-list-button.adoc
+
+commit 8195d831167ec3a9109af86b0ac3408379693610
+Author: Josh Stompro <stompro@stompro.org>
+Date:   Fri Sep 13 15:02:36 2019 -0500
+
+    LP#1555791 - Hide Print List from checkout screen
+    
+    Hide the print list button from the checkout screen so customers
+    don't learn to use that instead of logout.
+    
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/circ/selfcheck/main.tt2
+4	2	Open-ILS/web/js/ui/default/circ/selfcheck/selfcheck.js
+
+commit 71af16d9530d8ff9a843469156899588afdeb1cd
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Oct 2 17:28:11 2019 -0400
+
+    forward-port 3.3.3-3.4.0 schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+880	0	Open-ILS/src/sql/Pg/version-upgrade/3.3.3-3.4.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.3.3-3.4.0-upgrade-db.sql
