@@ -658,6 +658,9 @@ angular.module('egGridMod',
 
             // fires the disable handler function for a context action
             $scope.actionDisable = function(action) {
+                if(grid.getSelectedItems().length == 0 && action.handler.length > 0) {
+                    return true;
+                }
                 if (typeof action.disabled == 'undefined') {
                     return false;
                 }
