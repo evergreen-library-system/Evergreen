@@ -92,8 +92,7 @@
 
     <!-- actions drop-down menu -->
     <div class="btn-group" ng-show="showActions" ng-if="actionGroups.length > 1 || actionGroups[0].actions.length" uib-dropdown>                                                  
-      <button type="button" class="btn btn-default" uib-dropdown-toggle
-        ng-disabled="!hasSelected()">
+      <button type="button" class="btn btn-default" uib-dropdown-toggle>
         [% l('Actions') %] <span class="caret"></span>                       
       </button>                                                              
       <ul class="pull-right grid-action-dropdown scrollable-menu" uib-dropdown-menu>
