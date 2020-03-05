@@ -4410,6 +4410,15 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'integer', null)
 
+,( 'opac.patron.custom_css', 'opac',
+    oils_i18n_gettext('opac.patron.custom_css',
+        'Custom CSS for the OPAC',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.patron.custom_css',
+        'Custom CSS for the OPAC',
+        'coust', 'description'),
+    'string', NULL)
+
 ,( 'opac.payment_history_age_limit', 'opac',
     oils_i18n_gettext('opac.payment_history_age_limit',
         'Payment History Age Limit',
@@ -5548,9 +5557,6 @@ INSERT into config.org_unit_setting_type
    'bool', null)
 ;
 
-INSERT INTO config.org_unit_setting_type ( name, label, grp, description, datatype, update_perm )
-VALUES ('opac.update.css','Setting CSS in the OPAC','opac','Setting CSS in the OPAC','string',620);
-
 UPDATE config.org_unit_setting_type
     SET view_perm = (SELECT id FROM permission.perm_list
         WHERE code = 'VIEW_CREDIT_CARD_PROCESSING' LIMIT 1)
@@ -5560,6 +5566,11 @@ UPDATE config.org_unit_setting_type
     SET update_perm = (SELECT id FROM permission.perm_list
         WHERE code = 'ADMIN_CREDIT_CARD_PROCESSING' LIMIT 1)
     WHERE name LIKE 'credit.processor%' AND update_perm IS NULL;
+
+UPDATE config.org_unit_setting_type
+    SET update_perm = (SELECT id FROM permission.perm_list
+        WHERE code = 'UPDATE_ORG_UNIT_SETTING.opac.patron.custom_css' LIMIT 1)
+    WHERE name = 'opac.patron.custom_css' AND update_perm IS NULL;
 
 -- *** Has to go below coust definition to satisfy referential integrity ***
 -- In booking, elbow room defines:
