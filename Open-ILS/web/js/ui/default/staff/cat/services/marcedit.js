@@ -1331,8 +1331,24 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 };
 
                 $scope.undeleteRecord = function () {
-                    $scope.Record().deleted(false);
-                    return $scope.saveRecord();
+                    if ($scope.record_type == 'bre') {
+                        egCore.net.request(
+                            'open-ils.cat',
+                            'open-ils.cat.biblio.record_entry.undelete',
+                            egCore.auth.token(), $scope.recordId
+                        ).then(function(resp) {
+                            var evt = egCore.evt.parse(resp);
+                            if (evt) {
+                                return egAlertDialog.open(
+                                    egCore.strings.ALERT_UNDELETE_FAILED,
+                                    { id : $scope.recordId, desc : evt.desc }
+                                );
+                            } else {
+                                ngToast.create(egCore.strings.SUCCESS_UNDELETE_RECORD);
+                                loadRecord().then(processOnSaveCallbacks);
+                            }
+                        });
+                    }
                 };
 
                 $scope.validateHeadings = function () {
