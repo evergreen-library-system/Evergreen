@@ -12,10 +12,12 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
     s.CONFIRM_DELETE_BRE_MSG    = "[% l('Are you sure you want to delete title record [_1] from the catalog?', '{{id}}') %]";
     s.CONFIRM_DELETE_ARE_MSG    = "[% l('Are you sure you want to delete authority record [_1] from the catalog?', '{{id}}') %]";
     s.ALERT_DELETE_FAILED       = "[% l('Could not delete record [_1]: [_2]', '{{id}}', '{{desc}}') %]";
+    s.ALERT_UNDELETE_FAILED     = "[% l('Could not undelete record [_1]: [_2]', '{{id}}', '{{desc}}') %]";
     s.DIRTY_MARC_WARNING        = "[% l('There is unsaved data in this record.') %]"
     s.MARC_ALERT_CREATE_SUCCESS = "[% l('Successfully created new record') %]";
     s.MARC_ALERT_CREATE_FAILED  = "[% l('Failed to create new record: [_1]', '{{error}}') %]";
     s.MARC_ALERT_UPDATE_SUCCESS = "[% l('Successfully updated record') %]";
     s.MARC_ALERT_UPDATE_FAILED  = "[% l('Failed to update record: [_1]', '{{error}}') %]";
+    s.SUCCESS_UNDELETE_RECORD   = "[% l('Record is no longer deleted') %]";
 }]);
 </script>
