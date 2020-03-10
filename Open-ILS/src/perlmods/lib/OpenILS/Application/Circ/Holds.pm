@@ -1073,6 +1073,12 @@ sub update_hold_impl {
                 # clear to prevent premature shelf expiration
                 $hold->clear_shelf_expire_time;
             }
+          # If a copy is targeted and pickup lib changes,
+          # clear the current_copy so a retarget will re-evaluate
+          # the hold from scratch.
+        } elsif ($hold_status == 2) {
+              $logger->info("Pickup location changed and waiting for capture, clear current_copy for hold ".$hold->id);
+              $hold->clear_current_copy;
         }
     }
 
