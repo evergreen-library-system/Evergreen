@@ -291,25 +291,53 @@ export class MarcEditorComponent implements OnInit {
         .then(yes => {
             if (!yes) { return; }
 
-            return this.net.request('open-ils.cat',
-                'open-ils.cat.biblio.record_entry.delete',
-                this.auth.token(), this.record.id).toPromise()
+            let promise;
+            if (this.recordType === 'authority') {
+                promise = this.deleteAuthorityRecord();
+            } else {
+                promise = this.deleteBibRecord();
+            }
 
-            .then(resp => {
+            return promise.then(ok => {
+                if (!ok) { return; }
 
-                const evt = this.evt.parse(resp);
-                if (evt) {
-                    if (evt.textcode === 'RECORD_NOT_EMPTY') {
-                        return this.cannotDelete.open().toPromise();
-                    } else {
-                        console.error(evt);
-                        return alert(evt);
-                    }
-                }
-                return this.fromId(this.record.id)
-                .then(_ => this.recordSaved.emit(
-                    {marcXml: this.record.toXml(), recordId: this.recordId}));
+                return this.fromId(this.record.id).then(_ => {
+                    this.recordSaved.emit({
+                        marcXml: this.record.toXml(),
+                        recordId: this.recordId
+                    });
+                });
             });
+        });
+    }
+
+    deleteAuthorityRecord(): Promise<boolean> {
+        return this.pcrud.retrieve('are', this.record.id).toPromise()
+        .then(rec => this.pcrud.remove(rec).toPromise())
+        .then(resp => resp !== null);
+    }
+
+    deleteBibRecord(): Promise<boolean> {
+
+        return this.net.request('open-ils.cat',
+            'open-ils.cat.biblio.record_entry.delete',
+            this.auth.token(), this.record.id).toPromise()
+
+        .then(resp => {
+
+            const evt = this.evt.parse(resp);
+            if (evt) {
+                if (evt.textcode === 'RECORD_NOT_EMPTY') {
+                    return this.cannotDelete.open().toPromise()
+                    .then(_ => false);
+                } else {
+                    console.error(evt);
+                    alert(evt);
+                    return false;
+                }
+            }
+
+            return true;
         });
     }
 
@@ -319,19 +347,50 @@ export class MarcEditorComponent implements OnInit {
         .then(yes => {
             if (!yes) { return; }
 
-            return this.net.request('open-ils.cat',
-                'open-ils.cat.biblio.record_entry.undelete',
-                this.auth.token(), this.record.id).toPromise()
+            let promise;
+            if (this.recordType === 'authority') {
+                promise = this.undeleteAuthorityRecord();
+            } else {
+                promise = this.undeleteBibRecord();
+            }
 
-            .then(resp => {
-
-                const evt = this.evt.parse(resp);
-                if (evt) { console.error(evt); return alert(evt); }
-
+            return promise.then(ok => {
+                if (!ok) { return; }
                 return this.fromId(this.record.id)
-                .then(_ => this.recordSaved.emit(
-                    {marcXml: this.record.toXml(), recordId: this.recordId}));
+                .then(_ => {
+                    this.recordSaved.emit({
+                        marcXml: this.record.toXml(),
+                        recordId: this.recordId
+                    });
+                });
             });
+        });
+    }
+
+    undeleteAuthorityRecord(): Promise<any> {
+        return this.pcrud.retrieve('are', this.record.id).toPromise()
+        .then(rec => {
+            rec.deleted('f');
+            return this.pcrud.update(rec).toPromise();
+        }).then(resp => resp !== null);
+    }
+
+    undeleteBibRecord(): Promise<any> {
+
+        return this.net.request('open-ils.cat',
+            'open-ils.cat.biblio.record_entry.undelete',
+            this.auth.token(), this.record.id).toPromise()
+
+        .then(resp => {
+
+            const evt = this.evt.parse(resp);
+            if (evt) {
+                console.error(evt);
+                alert(evt);
+                return false;
+            }
+
+            return true;
         });
     }
 
