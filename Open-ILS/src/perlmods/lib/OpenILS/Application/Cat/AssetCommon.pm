@@ -724,6 +724,12 @@ sub remove_empty_objects {
         return OpenILS::Event->new('TITLE_LAST_COPY', payload => $vol->record ) 
             if $aoe and not ($override->{all} || grep { $_ eq 'TITLE_LAST_COPY' } @{$override->{events}}) and not $force_delete_empty_bib;
 
+        # check for any holds on the title and alert the user before plowing ahead
+        if( OpenILS::Application::Cat::BibCommon->title_has_holds($editor, $vol->record) ) {
+            return OpenILS::Event->new('TITLE_HAS_HOLDS', payload => $vol->record )
+                if not ($override->{all} || grep { $_ eq 'TITLE_HAS_HOLDS' } @{$override->{events}}) and not $force_delete_empty_bib;
+        }
+
         unless($koe and not $force_delete_empty_bib) {
             # delete the bib record if the keep-on-empty setting is not set (and we're not otherwise forcing things, say through acq settings)
             my $evt = OpenILS::Application::Cat::BibCommon->delete_rec($editor, $vol->record);

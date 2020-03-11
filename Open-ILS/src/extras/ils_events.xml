@@ -1086,6 +1086,12 @@
     <event code='12002' textcode='ITEM_TO_MARK_LAST_HOLD_COPY'>
       <desc xml:lang="en-US">The item to be marked is the last possible target for a hold.</desc>
     </event>
+
+	<!-- ================================================================ -->
+
+    <event code='12003' textcode='TITLE_HAS_HOLDS'>
+      <desc xml:lang="en-US">This title has hold requests on it that will be canceled if they are not transferred.</desc>
+    </event>
 </ils_events>
 
 
