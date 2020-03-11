@@ -1532,11 +1532,17 @@ sub batch_volume_transfer {
         # Now see if any empty records need to be deleted after all of this
         my $keep_on_empty = $U->ou_ancestor_setting_value($e->requestor->ws_ou, 'cat.bib.keep_on_empty', $e);
         unless ($U->is_true($keep_on_empty)) {
+
             for (@rec_ids) {
                 $logger->debug("merge: seeing if we should delete record $_...");
-                $evt = OpenILS::Application::Cat::BibCommon->delete_rec($e, $_)
-                    if OpenILS::Application::Cat::BibCommon->title_is_empty($e, $_);
-                return $evt if $evt;
+                if (OpenILS::Application::Cat::BibCommon->title_is_empty($e, $_)) {
+                    # check for any title holds on the bib, bail if so
+                    my $has_holds = OpenILS::Application::Cat::BibCommon->title_has_holds($e, $_);
+                    return OpenILS::Event->new('TITLE_HAS_HOLDS', payload => $_) if $has_holds;
+                    # we're good, delete the record
+                    $evt = OpenILS::Application::Cat::BibCommon->delete_rec($e, $_);
+                    return $evt if $evt;
+                }
             }
         }
     }

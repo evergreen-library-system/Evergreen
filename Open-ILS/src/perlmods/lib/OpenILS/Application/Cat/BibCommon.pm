@@ -410,4 +410,27 @@ sub title_is_empty {
 
     return 1;
 }
+
+# --------------------------------------------------------------------------
+# returns true if the given title (id) has active hold requests on it
+# --------------------------------------------------------------------------
+sub title_has_holds {
+    my($class, $editor, $rid) = @_;
+
+    # check if $rid is an object, because may be passing the volume
+    # with a fleshed record in one of our callers.
+    $rid = $rid->id() if (ref($rid));
+
+    my $holds = $editor->search_action_hold_request(
+        [
+           { fulfillment_time  => undef,
+            cancel_time         => undef,
+            hold_type           => 'T',
+            target              => $rid },
+           { limit => 1 },
+        ], { idlist => 1 });
+    return 0 unless @$holds;
+
+    return 1; # we found a hold
+}
 1;
