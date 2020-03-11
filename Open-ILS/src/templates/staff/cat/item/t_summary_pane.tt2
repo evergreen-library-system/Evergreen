@@ -4,6 +4,14 @@
     [% l('This item has been marked as Deleted.') %]
   </div>
 
+  <div class="flex-row" ng-if="copy.dummy_title() || copy.dummy_author()">
+    <div class="flex-cell" ng-if="copy.dummy_title()">[% l('Precat Title') %]</div>
+    <div class="flex-cell well" ng-if="copy.dummy_title()">{{copy.dummy_title()}}</div>
+    
+    <div class="flex-cell" ng-if="copy.dummy_author()">[% l('Precat Author') %]</div>
+    <div class="flex-cell well" ng-if="copy.dummy_author()">{{copy.dummy_author()}}</div>
+  </div>
+
   <div class="flex-row">
     <div class="flex-cell">[% l('Barcode') %]</div>
     <div class="flex-cell well">{{copy.barcode()}}</div>
@@ -59,7 +67,7 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('ISBN') %]</div>
     <div class="flex-cell well">
-      {{copy.call_number().record().simple_record().isbn()}}
+      {{copy.call_number().record().simple_record().isbn() || copy.dummy_isbn()}}
     </div>
 
     <div class="flex-cell">[% l('Loan Duration') %]</div>
