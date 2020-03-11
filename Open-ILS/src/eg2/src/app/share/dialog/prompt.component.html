@@ -7,10 +7,10 @@
   <div class="modal-body">
     <p>{{dialogBody}}</p>
     <div class="text-center">
-        <input type="{{promptType}}" class="form-control" id="{{inputDomId}}"
-          [attr.min]="promptType === 'number' ? promptMin : ''"
-          [attr.max]="promptType === 'number' ? promptMax : ''"
-          (keyup.enter)="close(promptValue)" [(ngModel)]="promptValue"/>
+      <input type="{{promptType}}" class="form-control" id="{{inputDomId}}"
+        [attr.min]="promptType === 'number' ? promptMin : ''"
+        [attr.max]="promptType === 'number' ? promptMax : ''"
+        (keyup.enter)="close(promptValue)" [(ngModel)]="promptValue"/>
     </div>
   </div>
   <div class="modal-footer">

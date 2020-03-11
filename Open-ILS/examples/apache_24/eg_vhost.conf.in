@@ -631,6 +631,13 @@ RewriteRule ^/conify/([a-z]{2}-[A-Z]{2})/global/(.*)$ /conify/global/$2 [E=local
     Require all granted 
 </Location>
 
+<Location /sip2-mediator>
+    SetHandler perl-script
+    PerlHandler OpenILS::WWW::SIP2Mediator
+    Options +ExecCGI
+    Require all granted
+</Location>
+
 # OpenURL 0.1 searching based on OpenSearch
 RewriteMap openurl prg:@bindir@/openurl_map.pl
 RewriteCond %{QUERY_STRING} (^.*$)

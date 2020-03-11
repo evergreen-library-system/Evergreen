@@ -46,6 +46,7 @@ FTS_CONFIG_FILE
 
 300.schema.staged_search.sql
 400.schema.action_trigger.sql
+410.schema.sip.sql
 
 500.view.cross-schema.sql
 600.schema.oai.sql

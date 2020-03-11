@@ -1,0 +1,19 @@
+SIP2Mediator Support
+^^^^^^^^^^^^^^^^^^^^
+
+Evergreen now supports back-end functionality to integrate with SIP2Mediator.
+
+For more information, see 
+https://wiki.evergreen-ils.org/doku.php?id=evergreen-admin:sip2mediator[Evergreen Wiki].
+
+
+New Admin Interfaces
+++++++++++++++++++++
+
+* Manage SIP accounts:
+ ** Administration => Server Administration => SIP Accounts
+
+* Manage SIP Screen Messages:
+ ** Administration => Server Administration => SIP Screen Messages
+
+

@@ -98,6 +98,15 @@ const routes: Routes = [{
     data: [{schema: 'asset',
         table: 'call_number_suffix', readonlyFields: 'label_sortkey'}]
 }, {
+    path: 'sip/account',
+    loadChildren: () =>
+      import('./sip/account.module').then(m => m.SipAccountModule)
+}, {
+    path: 'sip/screen_message',
+    component: BasicAdminPageComponent,
+    data: [{schema: 'sip',
+        table: 'screen_message', readonlyFields: 'key'}]
+}, {
     path: ':schema/:table',
     component: BasicAdminPageComponent
 }];

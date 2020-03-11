@@ -1413,6 +1413,26 @@ vim:et:ts=4:sw=4:
                 </unix_config>
             </open-ils.courses>
 
+            <open-ils.sip2>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>OpenILS::Application::SIP2</implementation>
+                <max_requests>100</max_requests>
+                <unix_config>
+                    <unix_sock>sip2_unix.sock</unix_sock>
+                    <unix_pid>sip2_unix.pid</unix_pid>
+                    <unix_log>sip2_unix.log</unix_log>
+                    <max_requests>1000</max_requests>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+                <app_settings>
+                </app_settings>
+            </open-ils.sip2>
+
             <open-ils.curbside>
                 <keepalive>5</keepalive>
                 <stateless>1</stateless>
@@ -1432,6 +1452,7 @@ vim:et:ts=4:sw=4:
                 <app_settings>
                 </app_settings>
             </open-ils.curbside>
+
         </apps>
     </default>
 
@@ -1482,6 +1503,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.courses</appname>
                 <appname>open-ils.curbside</appname>
                 <appname>open-ils.geo</appname>
+                <appname>open-ils.sip2</appname>
             </activeapps>
         </localhost>
     </hosts>

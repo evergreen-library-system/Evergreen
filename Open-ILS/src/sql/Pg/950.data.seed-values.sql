@@ -23965,3 +23965,136 @@ VALUES (
     oils_i18n_gettext( 'eg.grid.reporter.full.reports', 'Report definition grid settings', 'cwst', 'label')
 );
 
+INSERT INTO actor.passwd_type (code, name, login, crypt_algo, iter_count)
+    VALUES ('sip2', 'SIP2 Client Password', FALSE, 'bf', 5);
+
+-- ID 1 is magic.
+INSERT INTO sip.setting_group (id, label, institution) 
+    VALUES (1, 'Default Settings', 'example');
+
+-- carve space for other canned setting groups
+SELECT SETVAL('sip.setting_group_id_seq'::TEXT, 1000);
+
+-- has to be global since settings are linked to accounts and if
+-- status-before-login is used, no account information will be available.
+INSERT INTO config.global_flag (name, value, enabled, label) VALUES
+(   'sip.sc_status_before_login_institution', NULL, FALSE, 
+    oils_i18n_gettext(
+        'sip.sc_status_before_login_institution',
+        'Activate status-before-login-support and define the institution ' ||
+        'value which should be used in the response',
+        'cgf', 'label')
+);
+
+INSERT INTO sip.setting (setting_group, name, value, description)
+VALUES (
+    1, 'currency', '"USD"',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'currency'),
+        'Monetary amounts are reported in this currency',
+        'sipset', 'description')
+), (
+    1, 'av_format', '"eg_legacy"',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'av_format'),
+        'AV Format. Options: eg_legacy, 3m, swyer_a, swyer_b',
+        'sipset', 'description')
+), (
+    1, 'due_date_use_sip_date_format', 'false',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'due_date_use_sip_date_format'),
+        'Due date uses 18-char date format (YYYYMMDDZZZZHHMMSS).  Otherwise "YYYY-MM-DD HH:MM:SS',
+        'sipset', 'description')
+), (
+    1, 'patron_status_permit_loans', 'false',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'patron_status_permit_loans'),
+        'Checkout and renewal are allowed even when penalties blocking these actions exist',
+        'sipset', 'description')
+), (
+    1, 'patron_status_permit_all', 'false',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'patron_status_permit_all'),
+        'Holds, checkouts, and renewals allowed regardless of blocking penalties',
+        'sipset', 'description')
+), (
+    1, 'default_activity_who', 'null',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'default_activity_who'),
+        'Patron holds data may be returned as either "title" or "barcode"',
+        'sipset', 'description')
+), (
+    1, 'msg64_summary_datatype', '"title"',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'msg64_summary_datatype'),
+        'Patron circulation data may be returned as either "title" or "barcode"',
+        'sipset', 'description')
+), (
+    1, 'msg64_hold_items_available', '"title"',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'msg64_hold_items_available'),
+        'Patron holds data may be returned as either "title" or "barcode"',
+        'sipset', 'description')
+), (
+    1, 'checkout.override.COPY_ALERT_MESSAGE', 'true',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'checkout.override.COPY_ALERT_MESSAGE'),
+        'Checkout override copy alert message',
+        'sipset', 'description')
+), (
+    1, 'checkout.override.COPY_NOT_AVAILABLE', 'true',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'checkout.override.COPY_NOT_AVAILABLE'),
+        'Checkout override copy not available message',
+        'sipset', 'description')
+), (
+    1, 'checkin.override.COPY_ALERT_MESSAGE', 'true',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'checkin.override.COPY_ALERT_MESSAGE'),
+        'Checkin override copy alert message',
+        'sipset', 'description')
+), (
+    1, 'checkin.override.COPY_BAD_STATUS', 'true',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'checkin.override.COPY_BAD_STATUS'),
+        'Checkin override bad copy status',
+        'sipset', 'description')
+), (
+    1, 'checkin.override.COPY_STATUS_MISSING', 'true',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'checkin.override.COPY_STATUS_MISSING'),
+        'Checkin override copy status missing',
+        'sipset', 'description')
+), (
+    1, 'checkin_hold_as_transit', 'false',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'checkin_hold_as_transit'),
+        'Checkin local holds as transits',
+        'sipset', 'description')
+);
+
+INSERT INTO sip.screen_message (key, message) VALUES (
+    'checkout.open_circ_exists', 
+    oils_i18n_gettext(
+        'checkout.open_circ_exists',
+        'This item is already checked out',
+        'sipsm', 'message')
+), (
+    'checkout.patron_not_allowed', 
+    oils_i18n_gettext(
+        'checkout.patron_not_allowed',
+        'Patron is not allowed to checkout the selected item',
+        'sipsm', 'message')
+), (
+    'payment.overpayment_not_allowed',
+    oils_i18n_gettext(
+        'payment.overpayment_not_allowed',
+        'Overpayment not allowed',
+        'sipsm', 'message')
+), (
+    'payment.transaction_not_found',
+    oils_i18n_gettext(
+        'payment.transaction_not_found',
+        'Bill not found',
+        'sipsm', 'message')
+);

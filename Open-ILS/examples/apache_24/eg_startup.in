@@ -19,6 +19,8 @@ use OpenILS::WWW::RemoteAuth ('@sysconfdir@/opensrf_core.xml', 'OpenILS::WWW::Re
 # Pass second argument of '1' to enable template caching.
 use OpenILS::WWW::PrintTemplate ('@sysconfdir@/opensrf_core.xml', 0);
 
+use OpenILS::WWW::SIP2Mediator ('@sysconfdir@/opensrf_core.xml');
+
 # - Uncomment the following 2 lines to make use of the IP redirection code
 # - The IP file should to contain a map with the following format:
 # - actor.org_unit.shortname <start_ip> <end_ip>

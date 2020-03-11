@@ -1,0 +1,18 @@
+<eg-staff-banner bannerText="SIP Accounts" i18n-bannerText></eg-staff-banner>
+
+<eg-confirm-dialog #confirmDelete
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Delete Accounts"
+  dialogBody="Delete selected SIP accounts?">
+</eg-confirm-dialog>
+
+<eg-grid #grid idlClass="sipacc" [dataSource]="gridSource" 
+  persistKey="admin.server.sip.account-list"
+  [stickyHeader]="true" [sortable]="true" (onRowActivate)="openAccount($event)">
+  <eg-grid-toolbar-button label="New Account" i18n-label
+    (onClick)="newAccount()"></eg-grid-toolbar-button>
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+    (onClick)="deleteSelected($event)">
+  </eg-grid-toolbar-action>
+</eg-grid>
+

@@ -1,0 +1,37 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Delete Setting Group</h4>
+    <button type="button" class="close" 
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-12" *ngIf="group" i18n>
+        Deleting SIP setting group: {{group.label()}}
+      </div>
+    </div>
+    <div class="row mt-2 pt-2 border-top">
+      <div class="col-lg-12" i18n>
+        Select another group to act as the transfer target group.
+        Any SIP accounts linked to the deleted group will be transferred
+        to this group:
+      </div>
+    </div>
+    <div class="row mt-2 pt-2 border-top">
+      <div class="col-lg-8 offset-lg-2" i18n>
+        <eg-combobox #grpCbox required="true" [selectedId]="targetGroup"
+          [entries]="trimmedSettingGroups" (onChange)="grpChanged($event)">
+        </eg-combobox>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" 
+      (click)="doDelete(true)" i18n>Confirm</button>
+    <button type="button" class="btn btn-warning" 
+      (click)="close(false)" i18n>Cancel</button>
+  </div>
+</ng-template>

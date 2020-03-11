@@ -1,0 +1,112 @@
+<eg-staff-banner bannerText="SIP Account" i18n-bannerText></eg-staff-banner>
+
+<a routerLink="/staff/admin/server/sip/account">
+  <button class="btn btn-outline-dark label-with-material-icon">
+    <span class="material-icons">reply</span>
+    <span i18n>SIP Accounts</span>
+  </button>
+</a>
+
+<eg-sip-group-delete-dialog *ngIf="account && account.setting_group()"
+  #deleteGroupDialog
+  [group]="account.setting_group()" [settingGroups]="settingGroups">
+</eg-sip-group-delete-dialog>
+
+<eg-fm-record-editor #cloneDialog idlClass="sipsetg" mode="create" 
+  hiddenFields="id" fieldOrder="label,institution">
+</eg-fm-record-editor>
+
+<eg-fm-record-editor #settingDialog idlClass="sipset" mode="update" 
+  hiddenFields="id,setting_group" fieldOrder="name,description,value"
+  [fieldOptions]="{name:{isReadonly:true}}">
+</eg-fm-record-editor>
+
+<ng-container *ngIf="createMode">
+  <eg-prompt-dialog #passwordDialog i18n-dialogTitle i18n-dialogBody
+    dialogTitle="Create SIP Password" i18n-dialogBody="Create a new password"
+    promptType="password">
+  </eg-prompt-dialog>
+</ng-container>
+
+<ng-container *ngIf="!createMode">
+  <eg-prompt-dialog #passwordDialog i18n-dialogTitle i18n-dialogBody
+    dialogTitle="Create SIP Password" i18n-dialogBody="Create a new password"
+    promptType="password">
+  </eg-prompt-dialog>
+</ng-container>
+
+<div class="row mt-2" *ngIf="account">
+  <div class="col-lg-7">
+
+    <ng-template #usrTemplate>
+      <eg-combobox #usrCbox [entries]="usrCboxEntries" required="true"
+        (onChange)="usrChanged($event)"
+        [selectedId]="usrId" [asyncDataSource]="usrCboxSource">
+      </eg-combobox>
+    </ng-template>
+
+    <ng-template #grpTemplate>
+      <div class="form-inline">
+        <eg-combobox #grpCbox required="true" 
+          [selectedId]="account.setting_group() ? account.setting_group().id() : null"
+          [entries]="settingGroups" (onChange)="grpChanged($event)">
+        </eg-combobox>
+        <button class="btn btn-outline-info ml-2" 
+          [disabled]="!account.setting_group()" (click)="openCloneDialog()" 
+          i18n>Clone</button>
+        <button class="btn btn-outline-danger ml-2" (click)="openDeleteDialog()" 
+          [disabled]="!account.setting_group() || account.setting_group().id() == 1" 
+          i18n>Delete</button>
+      </div>
+    </ng-template>
+
+    <ng-template #sipUsernameTemplate>
+      <div class="form-inline">
+        <input type="text" class="form-control"
+          [ngModel]="account.sip_username()"
+          (ngModelChange)="account.sip_username($event)">
+        <button class="btn btn-outline-dark ml-2" 
+          [ngClass]="{'border-danger' : createMode && !account.sip_password()}"
+          (click)="setPassword()">Set Password</button>
+      </div>
+    </ng-template>
+
+    <eg-fm-record-editor #editor
+      idlClass="sipacc" [mode]="createMode ? 'create' : 'update'" 
+      hiddenFields="id" displayMode="inline" [inPlaceMode]="true"
+      fieldOrder="sip_username,sip_password,setting_group,usr,workstation,transient,activity_who,enabled"
+      [fieldOptions]="{
+        setting_group:{customTemplate:{template:grpTemplate}},
+        sip_username:{customTemplate:{template:sipUsernameTemplate}},
+        usr:{customTemplate:{template:usrTemplate}}}"
+      [preSave]="accountPreSave" [recordId]="!createMode ? accountId : null"
+      (recordSaved)="accountSaved($event)">
+    </eg-fm-record-editor>
+  </div>
+  <div class="col-lg-5">
+    <ul>
+      <li i18n>Save account changes before modifying individual settings.</li>
+      <li i18n>Setting values must be entered as valid JSON.</li>
+      <li i18n>The "Default Settings" group cannot be modified.</li>
+      <li i18n>The same "SIP Institution" value may be used for multiple groups.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="row" *ngIf="account && account.setting_group()">
+
+  <div class="col-lg-12 border-top mt-2 pt-2">
+    <h4 class="mb-2" i18n>Settings For Group 
+      <span class="font-weight-bold">'{{account.setting_group().label()}}'</span>
+    </h4>
+
+    <eg-grid #settingGrid idlClass="sipset" [dataSource]="settingsSource" 
+      [sortable]="true" (onRowActivate)="editSetting($event)"
+      persistKey="admin.server.sip.account.settings" hideFields="id,setting_group">
+      <eg-grid-toolbar-action label="Edit Selected" i18n-label 
+        (onClick)="editFirstSetting($event)">
+      </eg-grid-toolbar-action>
+    </eg-grid>
+  </div>
+</div>
+

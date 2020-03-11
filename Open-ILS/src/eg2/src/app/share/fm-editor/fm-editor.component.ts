@@ -163,7 +163,11 @@ export class FmRecordEditorComponent
     @Input() hideSave: boolean;
 
     // do not close dialog on error saving record
-    @Input() remainOpenOnError: false;
+    @Input() remainOpenOnError = false;
+
+    // Avoid making any pcrud calls.  Instead return the modified object
+    // to the caller via recordSaved Output and dialog close().
+    @Input() inPlaceMode = false;
 
     // if date fields need to be in a specific order (e.g.
     // start date before end date), specify them in a comma-
@@ -208,7 +212,7 @@ export class FmRecordEditorComponent
 
     // custom function for munging the record before it gets saved;
     // will get passed mode and the record itself
-    @Input() preSave: Function;
+    @Input() preSave: (mode: string, recToSave: IdlObject) => void;
 
     // recordId and record getters and setters.
     // Note that setting the this.recordId to NULL does not clear the
@@ -627,6 +631,19 @@ export class FmRecordEditorComponent
             this.preSave(this.mode, recToSave);
         }
         this.convertDatatypesToIdl(recToSave);
+
+        if (this.inPlaceMode) {
+            this.recordSaved.emit(recToSave);
+            if (this.fmEditForm) {
+                this.fmEditForm.form.markAsPristine();
+            }
+            if (this.isDialog()) {
+                this.record = undefined;
+                this.close(recToSave);
+            }
+            return;
+        }
+
         this.pcrud[this.mode]([recToSave]).toPromise().then(
             result => {
                 this.recordSaved.emit(result);

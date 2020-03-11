@@ -15531,6 +15531,112 @@ SELECT  usr,
 			 <field reporter:label="Transaction Closed?" name="xact_closed" sr:suggest_filter="true" reporter:datatype="bool"/>
 		</fields>
 	</class>
+	<class id="sipsetg" controller="open-ils.cstore open-ils.pcrud"
+		oils_obj:fieldmapper="sip::setting_group" 
+		oils_persist:tablename="sip.setting_group" 
+		reporter:label="SIP Settings Group">
+		<fields oils_persist:primary="id" oils_persist:sequence="sip.setting_group_id_seq">
+			<field name="id" reporter:datatype="id" reporter:label="ID" reporter:selector="label"/>
+			<field name="label" reporter:datatype="text" reporter:label="Label" oils_obj:required="true"/>
+			<field name="institution" reporter:datatype="text" reporter:label="SIP Institution" oils_obj:required="true"/>
+			<field name="settings" reporter:datatype="link" reporter:label="Settings" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+			<link field="settings" reltype="has_many" key="setting_group" map="" class="sipset"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="SIP_ADMIN" global_required="true"/>
+				<retrieve permission="SIP_ADMIN" global_required="true"/>
+				<update permission="SIP_ADMIN" global_required="true"/>
+				<delete permission="SIP_ADMIN" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="sipset" controller="open-ils.cstore open-ils.pcrud"
+		oils_obj:fieldmapper="sip::setting" 
+		oils_persist:tablename="sip.setting" 
+		reporter:label="SIP Settings">
+		<fields oils_persist:primary="id" oils_persist:sequence="sip.setting_id_seq">
+			<field name="id" reporter:datatype="id" reporter:label="ID" reporter:selector="name"/>
+			<field name="setting_group" reporter:datatype="link" reporter:label="Settings Group" oils_obj:required="true" config_field="true"/>
+			<field name="name" reporter:datatype="text" reporter:label="Name" oils_obj:required="true"/>
+			<field name="description" reporter:datatype="text" reporter:label="Description" oils_obj:required="true"/>
+			<field name="value" reporter:datatype="text" reporter:label="Value" oils_obj:required="true"/>
+		</fields>
+		<links>
+			<link field="setting_group" reltype="has_a" key="id" map="" class="sipsetg"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="SIP_ADMIN" global_required="true"/>
+				<retrieve permission="SIP_ADMIN" global_required="true"/>
+				<update permission="SIP_ADMIN" global_required="true"/>
+				<delete permission="SIP_ADMIN" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="sipacc" controller="open-ils.cstore open-ils.pcrud"
+		oils_obj:fieldmapper="sip::account" 
+		oils_persist:tablename="sip.account" 
+		reporter:label="SIP Account">
+		<fields oils_persist:primary="id" oils_persist:sequence="sip.account_id_seq">
+			<field name="id" reporter:datatype="id" reporter:label="ID" reporter:selector="sip_username"/>
+			<field name="enabled" reporter:datatype="bool" reporter:label="Enabled"/>
+			<field name="setting_group" reporter:datatype="link" reporter:label="Settings Group" oils_obj:required="true"/>
+			<field name="sip_username" reporter:datatype="text" reporter:label="SIP Username" oils_obj:required="true"/>
+			<field name="usr" reporter:datatype="link" reporter:label="ILS User" oils_obj:required="true"/>
+			<field name="workstation" reporter:datatype="link" reporter:label="Workstation"/>
+			<field name="transient" reporter:datatype="bool" reporter:label="Transient"/>
+			<field name="activity_who" reporter:datatype="text" reporter:label="Activity Who"/>
+			<field name="sip_password" reporter:datatype="id" reporter:label="SIP Password" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="workstation" reltype="has_a" key="id" map="" class="aws"/>
+			<link field="setting_group" reltype="has_a" key="id" map="" class="sipsetg"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="SIP_ADMIN" global_required="true"/>
+				<retrieve permission="SIP_ADMIN" global_required="true"/>
+				<update permission="SIP_ADMIN" global_required="true"/>
+				<delete permission="SIP_ADMIN" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+	<class id="sipses" controller="open-ils.cstore"
+		oils_obj:fieldmapper="sip::session" 
+		oils_persist:tablename="sip.session" 
+		reporter:label="SIP Session">
+		<fields oils_persist:primary="key">
+			<field name="key" reporter:datatype="text" reporter:label="SIP Session Key"/>
+			<field name="ils_token" reporter:datatype="text" reporter:label="ILS Auth Token"/>
+			<field name="account" reporter:datatype="link" reporter:label="SIP Account"/>
+			<field name="create_time" reporter:label="Create Time" reporter:datatype="timestamp"/>
+		</fields>
+		<links>
+			<link field="account" reltype="has_a" key="id" map="" class="sipacc"/>
+		</links>
+	</class>
+	<class id="sipsm" controller="open-ils.cstore open-ils.pcrud"
+		oils_obj:fieldmapper="sip::screen_message" 
+		oils_persist:tablename="sip.screen_message" 
+		reporter:label="SIP Screen Message">
+		<fields oils_persist:primary="key">
+			<field name="key" reporter:datatype="text" reporter:label="Message Key"/>
+			<field name="message" reporter:datatype="text" reporter:label="Message" oils_persist:i18n="true"/>
+		</fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="SIP_ADMIN" global_required="true"/>
+				<retrieve />
+				<update permission="SIP_ADMIN" global_required="true"/>
+				<delete permission="SIP_ADMIN" global_required="true"/>
+			</actions>
+		</permacrud>
+>>>>>>> a8a7d791061 (LP1901930 SIP2Mediator back-end support & release notes)
+	</class>
 
 	<class id="coauf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::openathens_uid_field" oils_persist:tablename="config.openathens_uid_field" reporter:label="OpenAthens unique identifiers">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.openathens_uid_field_id_seq">
