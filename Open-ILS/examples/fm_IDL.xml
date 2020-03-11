@@ -4942,8 +4942,8 @@ SELECT  usr,
 			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
 			<link field="checkin_staff" reltype="has_a" key="id" map="" class="au"/>
 			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
-			<link field="payments" reltype="has_many" key="xact" map="" class="map"/>
-			<link field="billings" reltype="has_many" key="xact" map="" class="mab"/>
+			<link field="payments" reltype="has_many" key="xact" map="" class="mallp"/>
+			<link field="billings" reltype="has_many" key="xact" map="" class="mallb"/>
 			<link field="duration_rule" reltype="has_a" key="name" map="" class="crcd"/>
 			<link field="max_fine_rule" reltype="has_a" key="name" map="" class="crmf"/>
 			<link field="recurring_fine_rule" reltype="has_a" key="name" map="" class="crrf"/>
@@ -8037,7 +8037,7 @@ SELECT  usr,
 			<link field="perm" reltype="has_a" key="id" map="" class="ppl"/>
 		</links>
 	</class>
-	<class id="mp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::payment" oils_persist:tablename="money.payment_view" reporter:core="true" reporter:label="Payments: All">
+	<class id="mp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::payment" oils_persist:tablename="money.payment_view" reporter:label="Payments">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
 			<field reporter:label="Payment ID" name="id" reporter:datatype="id" />
@@ -8107,14 +8107,15 @@ SELECT  usr,
 	<class id="mallp" controller="open-ils.cstore" 
 		oils_obj:fieldmapper="money::all_payments" 
 		oils_persist:tablename="money.all_payments" 
-		oils_persist="readonly" reporter:label="All Payments">
+		oils_persist="readonly" reporter:core="true"
+		reporter:label="Payments: All">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
 			<field reporter:label="Payment ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Note" name="note" reporter:datatype="text"/>
 			<field reporter:label="Payment Date/Time" name="payment_ts" reporter:datatype="timestamp"/>
 			<field reporter:label="Payment Type" name="payment_type" reporter:datatype="text"/>
-			<field reporter:label="Aged Circulation" name="xact" reporter:datatype="link"/>
+			<field reporter:label="Billable Transaction" name="xact" reporter:datatype="link"/>
 			<field reporter:label="Voided?" name="voided" reporter:datatype="bool"/>
 			<field reporter:label="Accepting User" name="accepting_usr" reporter:datatype="link"/>
 			<field reporter:label="Cash Drawer" name="cash_drawer" reporter:datatype="link"/>
@@ -8124,7 +8125,7 @@ SELECT  usr,
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="cash_drawer" reltype="has_a" key="id" map="" class="aws"/>
-			<link field="billing" reltype="has_a" key="id" class="mab"/>
+			<link field="billing" reltype="has_a" key="id" class="mallb"/>
 		</links>
 	</class>
 
@@ -8454,9 +8455,7 @@ SELECT  usr,
 		<links>
 			<link field="voider" reltype="has_a" key="id" map="" class="au"/>
 			<link field="btype" reltype="has_a" key="id" map="" class="cbt"/>
-			<!-- 
-				'xact' may link to a money.billabl_xact or to a money.aged_circulation.
-			 -->
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 		</links>
 	</class>
 	<class id="pugm" controller="open-ils.cstore" oils_obj:fieldmapper="permission::usr_grp_map" oils_persist:tablename="permission.usr_grp_map" reporter:label="User Group Map">
