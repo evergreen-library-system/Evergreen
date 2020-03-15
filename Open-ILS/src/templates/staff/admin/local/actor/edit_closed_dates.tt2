@@ -58,6 +58,7 @@
       <div class="form-group row" ng-show="args.type != 'full'">
         <div class="col-md-3">
           <label for="end">[% l('End') %]</label>
+          <eg-help-popover help-text="[%l('Keep the library closed until 11:59pm on this day')%]" ng-if="args.is_not_detailed">
         </div>
         <div class="col-md-9">
           <eg-date-input id="end" show-time-picker hide-time-picker="args.is_not_detailed" ng-model="args.end"></eg-date-input>
