@@ -1,4 +1,6 @@
-import {Component, OnInit, Input, Renderer2} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, Renderer2} from '@angular/core';
+import {throwError} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 import {NetService} from '@eg/core/net.service';
 import {IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -6,6 +8,7 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 /**
@@ -20,6 +23,8 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 export class BucketDialogComponent extends DialogComponent implements OnInit {
 
     selectedBucket: number;
+    sharedBucketId: number;
+    sharedBucketName: string;
     newBucketName: string;
     newBucketDesc: string;
     buckets: any[];
@@ -36,6 +41,8 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
     // bucket item classes are these plus a following 'i'.
     bucketFmClass: 'ccb' | 'ccnb' | 'cbreb' | 'cub';
     targetField: string;
+
+    @ViewChild('confirmAddToShared', {static: true}) confirmAddToShared: ConfirmDialogComponent;
 
     constructor(
         private modal: NgbModal, // required for passing to parent
@@ -65,6 +72,8 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
 
     reset() {
         this.selectedBucket = null;
+        this.sharedBucketId = null;
+        this.sharedBucketName = '';
         this.newBucketName = '';
         this.newBucketDesc = '';
 
@@ -100,6 +109,25 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
 
     addToSelected() {
         this.addToBucket(this.selectedBucket);
+    }
+
+    addToShared() {
+        this.net.request('open-ils.actor',
+            'open-ils.actor.container.flesh',
+            this.auth.token(), this.bucketClass,
+            this.sharedBucketId)
+        .pipe(switchMap((resp) => {
+            const evt = this.evt.parse(resp);
+            if (evt) {
+                this.toast.danger(evt.toString());
+                return throwError(evt);
+            } else {
+                this.sharedBucketName = resp.name();
+                return this.confirmAddToShared.open();
+            }
+        })).subscribe(() => {
+            this.addToBucket(this.sharedBucketId);
+        });
     }
 
     bucketChanged(entry: ComboboxEntry) {
@@ -191,6 +219,7 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
         });
     }
 }
+
 
 
 
