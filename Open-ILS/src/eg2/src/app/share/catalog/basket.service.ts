@@ -30,6 +30,9 @@ export class BasketService {
     ) {
         this.idList = [];
         this.onChange = new EventEmitter<number[]>();
+
+        // Tell the browser store service to clear the basket on logout.
+        this.store.addLoginSessionKey(BASKET_CACHE_KEY_COOKIE);
     }
 
     hasRecordId(id: number): boolean {
