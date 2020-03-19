@@ -1,13 +1,11 @@
 * xref:opac:introduction.adoc[Using the Public Access Catalog]
-** xref:opac:using_the_public_access_catalog.adoc[Using the Public Access
-Catalog]
+** xref:opac:using_the_public_access_catalog.adoc[Using the Public Access Catalog]
 ** xref:opac:my_lists.adoc[My Lists]
 ** xref:opac:batch_actions_from_search.adoc[Batch Actions from Search]
 ** xref:opac:kids_opac.adoc[Kids OPAC]
 ** xref:opac:catalog_browse.adoc[Catalog Browse]
 ** xref:opac:advanced_features.adoc[Bibliographic Search Enhancements]
-** xref:opac:tpac_meta_record_holds.adoc[TPAC Metarecord Search and Metarecord
-Level Holds]
+** xref:opac:tpac_meta_record_holds.adoc[TPAC Metarecord Search and Metarecord Level Holds]
 ** xref:opac:linked_libraries.adoc[Library Information Pages]
 ** xref:opac:opensearch.adoc[Adding Evergreen Search to Web Browsers]
 ** xref:opac:search_form.adoc[Adding an Evergreen search form to a web page]

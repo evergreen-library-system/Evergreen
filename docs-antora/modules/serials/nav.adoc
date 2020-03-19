@@ -6,6 +6,5 @@
 ** xref:serials:F-Special_issue.adoc[Special Issues]
 ** xref:serials:G-binding.adoc[Binding Issues]
 ** xref:serials:H-holdings_statements.adoc[Holdings]
-** xref:serials:Group_Serials_Issues_in_the_OPAC_2.2.adoc[Group Serials Issues
-in the OPAC]
+** xref:serials:Group_Serials_Issues_in_the_OPAC_2.2.adoc[Group Serials Issues in the OPAC]
 

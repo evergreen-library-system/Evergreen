@@ -13,12 +13,10 @@
 ** xref:admin:copy_tags_admin.adoc[Item Tags (Digital Bookplates)]
 ** xref:admin:MARC_RAD_MVF_CRA.adoc[MARC Record Attributes]
 *** xref:admin:multilingual_search.adoc[Multilingual Search in Evergreen]
-*** xref:admin:infrastructure_auth_browse.adoc[Infrastructure Changes to
-Authority Browse]
+*** xref:admin:infrastructure_auth_browse.adoc[Infrastructure Changes to Authority Browse]
 *** xref:admin:virtual_index_defs.adoc[Virtual Index Definitions]
 ** xref:admin:Org_Unit_Proximity_Adjustments.adoc[Org Unit Proximity Adjustments]
-** xref:admin:physical_char_wizard_db.adoc[Administering the Physical
-Characteristics Wizard]
+** xref:admin:physical_char_wizard_db.adoc[Administering the Physical Characteristics Wizard]
 ** xref:admin:copy_locations.adoc[Administering shelving locations]
 ** xref:admin:permissions.adoc[User and Group Permissions]
 ** xref:admin:SMS_messaging.adoc[SMS Text Messaging]
