@@ -1022,9 +1022,14 @@ sub mk_env {
     
         my $expire = DateTime::Format::ISO8601->new->parse_datetime(
             clean_ISO8601($patron->expire_date));
-    
-        $self->bail_on_events(OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED'))
-            if( CORE::time > $expire->epoch ) ;
+
+        # An expired patron can renew with the assistance of an OUS.
+        my $expire_setting = $U->ou_ancestor_setting_value($self->circ_lib, OILS_SETTING_ALLOW_RENEW_FOR_EXPIRED_PATRON);
+        unless ($self->is_renewal and $expire_setting) {
+            if(CORE::time > $expire->epoch) {
+                $self->bail_on_events(OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED'))
+            }
+        }
     }
 }
 

@@ -3644,6 +3644,15 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
+,( 'circ.renew.expired_patron_allow', 'circ',
+    oils_i18n_gettext('circ.renew.expired_patron_allow',
+        'Allow renewal request if renewal recipient privileges have expired',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.renew.expired_patron_allow',
+        'If enabled, users within the org unit who are expired may still renew items.',
+        'coust', 'description'),
+    'bool', null)
+
 ,( 'circ.holds.hold_has_copy_at.alert', 'holds',
     oils_i18n_gettext('circ.holds.hold_has_copy_at.alert',
         'Has Local Copy Alert',
