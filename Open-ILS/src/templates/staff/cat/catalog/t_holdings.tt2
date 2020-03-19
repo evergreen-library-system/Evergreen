@@ -105,7 +105,7 @@
     <eg-grid-action handler="transferItems" group="[% l('Transfer') %]"
       label="[% l('Items to Previously Marked Destination') %]"></eg-grid-action>
 
-    <eg-grid-field label="[% l('Owning Library') %]"  path="owner_label" flex="4" align="right" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Owning Library') %]"  path="owner_label" flex="4" visible></eg-grid-field>
     <eg-grid-field label="[% l('Call Number') %]"     path="call_number.label" visible></eg-grid-field>
     <eg-grid-field label="[% l('Location') %]"        path="location.name" visible></eg-grid-field>
     <eg-grid-field label="[% l('Item #') %]"          path="copy_number" flex="1" visible></eg-grid-field>
