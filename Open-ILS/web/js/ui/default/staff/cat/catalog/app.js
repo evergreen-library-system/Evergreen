@@ -1045,10 +1045,26 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 controller:
                            ['$scope','$uibModalInstance',
                     function($scope , $uibModalInstance) {
+                        $scope.duplicate_barcode = false;
                         $scope.isModal = true;
                         $scope.focusBarcode = false;
                         $scope.focusBarcode2 = true;
                         $scope.barcode1 = cp.barcode();
+
+                        // check input to see if it's a duplicate barcode
+                        $scope.checkCurrentBarcode = function() {
+                            if (!$scope.duplicate_barcode_string) {
+                                $scope.duplicate_barcode_string = window.duplicate_barcode_string;
+                            }
+                            var searchParams = {
+                                deleted : 'f',
+                                'barcode' : $scope.barcode2,
+                                id : { '!=' : $scope.copyId }
+                            };
+                            egCore.pcrud.search('acp', searchParams).then(function (res) {
+                                $scope.duplicate_barcode = res;
+                            });
+                        }
 
                         $scope.updateBarcode = function() {
                             $scope.copyNotFound = false;
