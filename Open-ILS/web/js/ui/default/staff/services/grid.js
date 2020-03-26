@@ -2337,15 +2337,14 @@ angular.module('egGridMod',
     var GVF = function(value, column, item) {
         switch(column.datatype) {
             case 'bool':
-                switch(value) {
-                    // Browser will translate true/false for us
+                switch(''+value) {
                     case 't' : 
                     case '1' :  // legacy
-                    case true:
+                    case 'true':
                         return egStrings.YES;
                     case 'f' : 
                     case '0' :  // legacy
-                    case false:
+                    case 'false':
                         return egStrings.NO;
                     // value may be null,  '', etc.
                     default : return '';
