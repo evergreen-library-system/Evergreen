@@ -10,7 +10,7 @@
   <div class="col-md-2">{{xact.summary().total_owed() | currency}}</div>
   <div class="col-md-2 strong-text">[% l('Title') %]</div>
   <div class="col-md-2">
-    <a ng-if="title_id" target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{title_id}}">{{title}}</a>
+    <a ng-if="title_id" href="/eg2/staff/catalog/record/{{title_id}}">{{title}}</a>
     <span ng-if="!title_id">{{title}}</span>
   </div>
 </div>

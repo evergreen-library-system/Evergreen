@@ -380,7 +380,7 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
             recordIds.push(i.acn.record());
         });
         angular.forEach(recordIds, function (r) {
-            var url = egCore.env.basePath + 'cat/catalog/record/' + r + '/holds';
+            var url = '/eg2/staff/catalog/record/' + r + '/holds';
             $timeout(function() { $window.open(url, '_blank') });
         });
     }

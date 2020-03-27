@@ -104,11 +104,10 @@ export class StaffNavComponent implements OnInit, OnDestroy {
         this.printer.reprintLast();
     }
 
-    // TODO: Point to Angular catalog when the time comes
     retrieveLastRecord() {
         const recId = this.store.getLocalItem('eg.cat.last_record_retrieved');
         if (recId) {
-            window.location.href = '/eg/staff/cat/catalog/record/' + recId;
+            this.router.navigate(['/staff/catalog/record/' + recId]);
         }
     }
 }

@@ -7,8 +7,7 @@
         </span>
     </div>
     <div ng-if="!noMarcLink" class="flex-cell flex-2">
-      <a target="_self" 
-        href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}/marc_html">
+      <a href="/eg2/staff/catalog/record/{{record.id()}}/marc_html">
         (MARC)
       </a>
     </div>
@@ -27,7 +26,7 @@
   </div>
 </div>
 <div ng-if="record.merged_to()" class="row alert alert-warning">
-  <a href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.merged_to()}}">
+  <a href="/eg2/staff/catalog/record/{{record.merged_to()}}">
     [% l('Record merged to #[_1] on [_2]', 
          '{{record.merged_to()}}',
          '{{record.merge_date() | date:$root.egDateAndTimeFormat}}') 
@@ -38,8 +37,7 @@
   <div class="flex-row">
     <div class="flex-cell strong-text">[% l('Title:') %]</div>
     <div class="flex-cell flex-3">
-      <a target="_self" 
-        href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}">
+      <a href="/eg2/staff/catalog/record/{{record.id()}}">
         {{rec_display.title}}
       </a>
     </div>
@@ -64,8 +62,7 @@
   <div class="flex-row">
     <div class="flex-cell strong-text">[% l('Title:') %]</div>
     <div class="flex-cell flex-3">
-      <a target="_self" 
-        href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}">
+      <a href="/eg2/staff/catalog/record/{{record.id()}}">
         {{rec_display.title}}
       </a>
     </div>

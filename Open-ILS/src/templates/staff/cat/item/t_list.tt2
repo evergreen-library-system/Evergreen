@@ -93,7 +93,7 @@
         {{item['dummy_title']}}
     </span>
     <span ng-hide="item['call_number.record.id'] == -1">
-        <a target="_blank" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['call_number.record.id']}}">
+        <a target="_blank" href="/eg2/staff/catalog/record/{{item['call_number.record.id']}}">
           {{item['call_number.record.simple_record.title']}} <span ng-show="item['call_number.record.id']" class="glyphicon glyphicon-new-window"></span>
         </a>
     </span>

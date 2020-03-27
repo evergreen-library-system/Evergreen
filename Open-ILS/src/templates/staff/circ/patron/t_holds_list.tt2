@@ -66,7 +66,7 @@
   <eg-grid-field label="[% l('Pickup Library') %]" path='hold.pickup_lib.shortname'></eg-grid-field>
 
   <eg-grid-field label="[% l('Title') %]" path='mvr.title'>
-    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.mvr.doc_id()}}">
+    <a href="/eg2/staff/catalog/record/{{item.mvr.doc_id()}}">
       {{item.mvr.title()}}
     </a>
   </eg-grid-field>

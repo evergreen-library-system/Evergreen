@@ -121,7 +121,7 @@
     path='circ.renewal_remaining'></eg-grid-field>
 
   <eg-grid-field label="[% l('Title') %]" path="title">
-    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.doc_id()}}">
+    <a href="/eg2/staff/catalog/record/{{record.doc_id()}}">
       {{item.title}}
     </a>
   </eg-grid-field>

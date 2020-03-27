@@ -44,7 +44,7 @@
 
   <eg-grid-field label="[% l('Title') %]"
     path="call_number.record.simple_record.title" visible>
-    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['call_number.record.id']}}">
+    <a href="/eg2/staff/catalog/record/{{item['call_number.record.id']}}">
       {{item['call_number.record.simple_record.title']}}
     </a>
   </eg-grid-field>

@@ -185,8 +185,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     $scope.showInCatalog = function() {
         var items = $scope.gridControls.selectedItems();
         // relying on cant_showInCatalog to protect us
-        var url = egCore.env.basePath +
-                  'cat/catalog/record/' + items[0].tcn();
+        var url = '/eg2/staff/catalog/record/' + items[0].tcn();
         $timeout(function() { $window.open(url, '_blank') });        
     };
     $scope.cant_showInCatalog = function() {
@@ -268,7 +267,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                         egCore.strings.GO_TO_RECORD,
                         egCore.strings.GO_BACK
                     ).result.then(function() {
-                        $window.open(egCore.env.basePath + 'cat/catalog/record/' + result.id());
+                        $window.open('/eg2/staff/catalog/record/' + result.id());
                     });
                 }
             }
@@ -322,7 +321,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
             }]
         }).result.then(function () {
             if (recId) {
-                $window.location.href = egCore.env.basePath + 'cat/catalog/record/' + recId;
+                $window.location.href = '/eg2/staff/catalog/record/' + recId;
             }
         });
     }
@@ -472,7 +471,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                     $scope.local_overlay_target = 0;
                     egCore.hatch.removeLocalItem('eg.cat.marked_overlay_record');
                     console.debug('overlay complete, target removed');
-                    $window.open(egCore.env.basePath + 'cat/catalog/record/' + overlay_target);
+                    $window.open('/eg2/staff/catalog/record/' + overlay_target);
                 }
             );            
         });

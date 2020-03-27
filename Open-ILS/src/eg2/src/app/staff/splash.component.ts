@@ -23,17 +23,10 @@ export class StaffSplashComponent implements OnInit {
     searchCatalog(): void {
         if (!this.catSearchQuery) { return; }
 
-        /* Route to angular6 catalog
         this.router.navigate(
             ['/staff/catalog/search'],
             {queryParams: {query : this.catSearchQuery}}
         );
-        */
-
-        // Route to AngularJS / TPAC catalog
-        window.location.href =
-            '/eg/staff/cat/catalog/results?query=' +
-            encodeURIComponent(this.catSearchQuery);
     }
 }
 

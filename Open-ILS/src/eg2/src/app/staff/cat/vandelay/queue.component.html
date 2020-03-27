@@ -114,10 +114,9 @@
   <a *ngIf="queueType=='bib'" routerLink="/staff/catalog/record/{{row.imported_as}}">
     {{row.imported_as}}
   </a>
-  <a *ngIf="queueType=='auth'" href="/eg/staff/cat/catalog/authority/{{row.imported_as}}/marc_edit">
+  <a *ngIf="queueType=='auth'" routerLink="/staff/cat/authority/edit/{{row.imported_as}}">
     {{row.imported_as}}
   </a>
-
 </ng-template>
 
 

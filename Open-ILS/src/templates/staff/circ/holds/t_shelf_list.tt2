@@ -76,7 +76,7 @@
   <eg-grid-field label="[% l('Post-Clear') %]" path='post_clear'></eg-grid-field>
 
   <eg-grid-field label="[% l('Title') %]" path='hold.title'>
-    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.hold.record_id}}">
+    <a href="/eg2/staff/catalog/record/{{item.hold.record_id}}">
       {{item.hold.title}}
     </a>
   </eg-grid-field>

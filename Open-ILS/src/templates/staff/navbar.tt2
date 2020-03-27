@@ -51,9 +51,9 @@
             </a>
           </li>
           <li>
-            <a href="./cat/catalog/index" target="_self"
+            <a href="/eg2/staff/catalog/search"
               eg-accesskey="[% l('f3') %]" 
-              eg-accesskey-desc="[% l('OPAC') %]">
+              eg-accesskey-desc="[% l('Catalog') %]">
               <span class="glyphicon glyphicon-search"></span>
               <span>[% l('Search the Catalog') %]</span>
             </a>
@@ -245,19 +245,16 @@
         <a href uib-dropdown-toggle>[% l('Cataloging') %]<b class="caret"></b>
         </a>
         <ul uib-dropdown-menu>
+          <li> 
+            <a href="/eg2/staff/catalog/search">
+              <span class="glyphicon glyphicon-search"></span>
+              <span>[% l('Search the Catalog') %]</span>
+            </a>
+          </li>
           <li>
             <a href="./cat/catalog/index" target="_self">
               <span class="glyphicon glyphicon-search"></span>
-              [% l('Search the Catalog') %]
-            </a>
-          </li>
-          <!--
-            Link to experimental Angular staff catalog.
-          -->
-          <li ng-if="showAngularCatalog">
-            <a href="/eg2/staff/catalog/search">
-              <span class="glyphicon glyphicon-search"></span>
-              <span>[% l('Staff Catalog (Experimental)') %]</span>
+              [% l('Search the Catalog (Traditional)') %]
             </a>
           </li>
           <li>

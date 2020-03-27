@@ -668,10 +668,7 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
     service.show_holds_for_title = function(items) {
         var focus = items.length == 1;
         angular.forEach(items, function(item) {
-            var url = egCore.env.basePath +
-                      'cat/catalog/record/' +
-                      item.mvr.doc_id() +
-                      '/holds';
+            var url = '/eg2/staff/catalog/record/' + item.mvr.doc_id() + '/holds';
             $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
         });
     }
@@ -679,10 +676,7 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
     service.show_holds_for_title_wide = function(items) {
         var focus = items.length == 1;
         angular.forEach(items, function(item) {
-            var url = egCore.env.basePath +
-                      'cat/catalog/record/' +
-                      item.hold.record_id +
-                      '/holds';
+            var url = '/eg2/staff/catalog/record/' + item.hold.record_id + '/holds';
             $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
         });
     }

@@ -18,6 +18,14 @@ angular.module('egCoreMod')
                 }
 
                 function navTo(path) {
+
+                    if (path.match(/^\/eg2\//)) {
+                        // Hotkey for /eg2/ page.  Go directly to the
+                        // provided URL.
+                        $window.location.href = path;
+                        return;
+                    }
+
                     path = path.replace(/^\.\//,'');
                     $window.location.href = egCore.env.basePath + path;
                 }       
@@ -55,8 +63,8 @@ angular.module('egCoreMod')
                 $scope.retrieveLastRecord = function() {
                     var last_record = egCore.hatch.getLocalItem("eg.cat.last_record_retrieved");
                     if (last_record) {
-                        $window.location.href =
-                            egCore.env.basePath + 'cat/catalog/record/' + last_record;
+                        $window.location.href = 
+                            '/eg2/staff/catalog/record/' + last_record;
                     }
                 }
 

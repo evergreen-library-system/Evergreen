@@ -7,7 +7,7 @@
     <div class="modal-body">
         <div ng-repeat="legacy in legacies">
             <div uib-tooltip="[% l('Record ID [_1]', '{{legacy.mvr.doc_id}}') %]" tooltip-placement="left">
-                <a target="_blank" href="/eg/staff/cat/catalog/record/{{legacy.mvr.doc_id}}">{{legacy.mvr.title}}</a>
+                <a href="/eg2/staff/catalog/record/{{legacy.mvr.doc_id}}">{{legacy.mvr.title}}</a>
             </div>
             <div>
                 {{legacy.mvr.physical_description}}

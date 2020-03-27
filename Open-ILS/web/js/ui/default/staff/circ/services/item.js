@@ -998,7 +998,7 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
 
     service.show_in_catalog = function(copy_list){
         angular.forEach(copy_list, function(copy){
-            window.open('/eg/staff/cat/catalog/record/'+copy['call_number.record.id']+'/catalog', '_blank')
+            window.open('/eg2/staff/catalog/record/'+copy['call_number.record.id'], '_blank')
         });
     }
 

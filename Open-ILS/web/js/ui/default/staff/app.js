@@ -166,7 +166,7 @@ function($routeProvider , $locationProvider) {
         if (!$scope.cat_query) return;
         if ($event && $event.keyCode != 13) return; // input ng-keypress
         $window.location.href = 
-            '/eg/staff/cat/catalog/results?query=' + 
+            '/eg2/staff/catalog/search?query=' +
             encodeURIComponent($scope.cat_query);
     }
 }])

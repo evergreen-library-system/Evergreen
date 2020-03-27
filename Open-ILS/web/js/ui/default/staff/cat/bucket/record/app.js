@@ -747,7 +747,7 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                     args.lead_id,
                     args.records.map(function(val) { return val.id; })
                 ).then(function() {
-                    $window.open(egCore.env.basePath + 'cat/catalog/record/' + args.lead_id);
+                    $window.open('/eg2/staff/catalog/record/' + args.lead_id);
                 });
             });
         });
@@ -757,9 +757,7 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
         // TODO: probably want to set a limit on the number of
         //       new tabs one could choose to open at once
         angular.forEach(records, function(rec) {
-            var url = egCore.env.basePath +
-                      'cat/catalog/record/' +
-                      rec.id;
+            var url = '/eg2/staff/catalog/record/' + rec.id;
             $timeout(function() { $window.open(url, '_blank') });
         });
     }

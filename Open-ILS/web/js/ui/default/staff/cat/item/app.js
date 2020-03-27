@@ -91,7 +91,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     }
 
     $scope.show_in_catalog = function() {
-        window.open('/eg/staff/cat/catalog/record/' + $scope.args.recordId + '/catalog', '_blank');
+        window.open('/eg2/staff/catalog/record/' + $scope.args.recordId, '_blank');
     }
 
     $scope.print_labels = function() {
@@ -169,7 +169,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     }
 
     $scope.show_record_holds = function() {
-        window.open('/eg/staff/cat/catalog/record/' + $scope.args.recordId + '/holds', '_blank');
+        window.open('/eg2/staff/catalog/record/' + $scope.args.recordId + '/holds', '_blank');
     }
 
     $scope.add_item_alerts = function() {
@@ -656,7 +656,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
 
     $scope.showBibHolds = function () {
         angular.forEach(gatherSelectedRecordIds(), function (r) {
-            var url = egCore.env.basePath + 'cat/catalog/record/' + r + '/holds';
+            var url = '/eg2/staff/catalog/record/' + r + '/holds';
             $timeout(function() { $window.open(url, '_blank') });
         });
     }
