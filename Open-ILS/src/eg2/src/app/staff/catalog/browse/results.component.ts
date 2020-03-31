@@ -117,21 +117,20 @@ export class BrowseResultsComponent implements OnInit, OnDestroy {
         }
     }
 
-    searchByBrowseEntry(result) {
-
-        // Avoid propagating browse values to term search.
-        this.searchContext.browseSearch.reset();
-
-        this.searchContext.termSearch.hasBrowseEntry =
+    searchByBrowseEntryParams(result) {
+        const ctx = this.searchContext.clone();
+        ctx.browseSearch.reset(); // we're done browsing
+        ctx.termSearch.hasBrowseEntry =
             result.browse_entry + ',' + result.fields;
-        this.staffCat.search();
+        return this.catUrl.toUrlParams(ctx);
     }
 
     // NOTE: to test unauthorized heading display in concerto
     // browse for author = kab
-    newBrowseFromHeading(heading) {
-        this.searchContext.browseSearch.value = heading.heading;
-        this.staffCat.browse();
+    newBrowseFromHeadingParams(heading) {
+        const ctx = this.searchContext.clone();
+        ctx.browseSearch.value = heading.heading;
+        return this.catUrl.toUrlParams(ctx);
     }
 }
 

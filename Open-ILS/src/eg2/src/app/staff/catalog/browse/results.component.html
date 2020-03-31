@@ -39,7 +39,8 @@
       <div class="col-lg-8">
         <div class="card-body">
           <ng-container *ngIf="result.sources > 0">
-            <a (click)="searchByBrowseEntry(result)" href="javascript:void(0)">
+            <a routerLink="/staff/catalog/search"
+              [queryParams]="searchByBrowseEntryParams(result)">
                 {{result.value}} ({{result.sources}})
             </a>
           </ng-container>
@@ -62,7 +63,8 @@
                     Related term
                 </ng-container>
               </span>
-              <a (click)="newBrowseFromHeading(heading)" href="javascript:void(0)">
+              <a routerLink="/staff/catalog/browse"
+                [queryParams]="newBrowseFromHeadingParams(heading)">
                 {{heading.heading}} ({{heading.target_count}})
               </a>
             </div>
