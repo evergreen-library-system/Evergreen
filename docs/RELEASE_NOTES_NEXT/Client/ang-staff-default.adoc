@@ -1,0 +1,17 @@
+New Angular Staff Catalog Default
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The experimental Angular staff catalog has been promoted to operate as the
+default catalog in the browser staff client.  It will be used for all 
+catalog entry points, except for the menu entries for the traditiaional
+catalog and any links within the traditional catalog.
+
+Menu Changes
+++++++++++++
+
+* Search => 'Search The Catalog' now searches to new catalog.
+* Cataloging => 'Search The Catalog' now searches to new catalog.
+* Cataloging => 'Search The Catalog (Traditional)' searches the traditional 
+  TPAC-style catalog.
+* Staff client splash page => 'Search the catalog' inline form uses the 
+  new catalog.
+
