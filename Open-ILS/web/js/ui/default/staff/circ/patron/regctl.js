@@ -1871,16 +1871,13 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
     function extract_hold_notify() {
         var notify = $scope.user_settings['opac.hold_notify'];
-        if (notify === '') {
-           $scope.hold_notify_type.phone = false;
-           $scope.hold_notify_type.email = false;
-           return;
+
+        if (!notify && !(notify === '')) {
+            $scope.hold_notify_type.phone = true;
+            $scope.hold_notify_type.email = true;
+            return;
         }
-        if (!notify) {
-           $scope.hold_notify_type.phone = true;
-           $scope.hold_notify_type.email = true;
-           return;
-        }
+
         $scope.hold_notify_type.phone = Boolean(notify.match(/phone/));
         $scope.hold_notify_type.email = Boolean(notify.match(/email/));
         $scope.hold_notify_type.sms = Boolean(notify.match(/sms/));
