@@ -33,8 +33,12 @@ export class RecordActionsComponent implements OnInit {
             current: null
         },
         holdingTransfer: {
-            key: 'eg.cat.marked_holding_transfer_record',
-            current: null
+            key: 'eg.cat.transfer_target_record',
+            current: null,
+            clear: [ // Clear these values on mark.
+              'eg.cat.transfer_target_lib',
+              'eg.cat.transfer_target_vol'
+            ]
         }
     };
 
@@ -69,6 +73,12 @@ export class RecordActionsComponent implements OnInit {
         const target = this.targets[name];
         target.current = this.recId;
         this.store.setLocalItem(target.key, this.recId);
+
+        if (target.clear) {
+            // Some marks require clearing other marks.
+            target.clear.forEach(key => this.store.removeLocalItem(key));
+        }
+
         this.strings.interpolate('catalog.record.toast.' + name)
             .then(txt => this.toast.success(txt));
     }
