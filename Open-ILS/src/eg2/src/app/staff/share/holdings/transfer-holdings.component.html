@@ -1,0 +1,17 @@
+
+<eg-string #successMsg
+    text="Successfully Transferred Item(s)" i18n-text></eg-string>
+
+<eg-string #errorMsg
+    text="Failed To Transfer Item(s)" i18n-text></eg-string>
+
+<eg-string #noTargetMsg
+    text="No transfer target selected" i18n-text></eg-string>
+
+<eg-alert-dialog #alertDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="One or more items could not be transferred"
+  dialogBody="Reason(s) include: {{eventDesc}}">
+</eg-alert-dialog>
+
+<eg-progress-dialog #progressDialog></eg-progress-dialog>

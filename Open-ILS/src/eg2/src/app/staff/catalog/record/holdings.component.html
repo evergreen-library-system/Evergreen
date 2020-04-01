@@ -52,6 +52,12 @@
 <eg-bucket-dialog #bucketDialog></eg-bucket-dialog>
 <eg-conjoined-items-dialog #conjoinedDialog></eg-conjoined-items-dialog>
 <eg-make-bookable-dialog #makeBookableDialog></eg-make-bookable-dialog>
+<eg-transfer-items #transferItems></eg-transfer-items>
+<eg-transfer-holdings #transferHoldings></eg-transfer-holdings>
+<eg-alert-dialog #transferAlert
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="No Target Selected"
+  dialogBody="Please select a suitable transfer target"></eg-alert-dialog>
 
 <!-- holdings grid -->
 <div class='eg-copies w-100 mt-3'>
@@ -214,7 +220,18 @@
       i18n-label label="Mark Library/Call Number as Transfer Destination"
       (onClick)="markLibCnForTransfer($event)">
     </eg-grid-toolbar-action>
-      
+
+    <eg-grid-toolbar-action
+      i18n-group group="Transfer" 
+      i18n-label label="Transfer Items to Marked Destination"
+      (onClick)="transferSelectedItems($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Transfer" 
+      i18n-label label="Transfer Holdings to Marked Destination"
+      (onClick)="transferSelectedHoldings($event)">
+    </eg-grid-toolbar-action>
 
     <!-- fields -->
     <!-- NOTE column names were added to match the names from the AngJS grid
