@@ -351,7 +351,7 @@ BEGIN
           ORDER BY billing_ts
     LOOP
         IF avoid_negative THEN
-            PERFORM FROM money.materialized_billable_xact_summary WHERE id = circ.id AND balanced_owd < bill.amount;
+            PERFORM FROM money.materialized_billable_xact_summary WHERE id = circ.id AND balance_owed < bill.amount;
             EXIT WHEN FOUND; -- We can't go negative, and voiding this bill would do that...
         END IF;
 
@@ -438,7 +438,7 @@ BEGIN
                 AND NOT EXISTS (SELECT 1 FROM money.account_adjustment a WHERE a.billing = b.id)
     LOOP
         IF avoid_negative THEN
-            PERFORM FROM money.materialized_billable_xact_summary WHERE id = res.id AND balanced_owd < bill.amount;
+            PERFORM FROM money.materialized_billable_xact_summary WHERE id = res.id AND balance_owed < bill.amount;
             EXIT WHEN FOUND; -- We can't go negative, and voiding this bill would do that...
         END IF;
 
