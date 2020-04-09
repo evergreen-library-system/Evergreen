@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {EgCommonModule} from '@eg/common.module';
+import {StaffCommonModule} from '@eg/staff/common.module';
 import {CommonWidgetsModule} from '@eg/share/common-widgets.module';
 import {StringModule} from '@eg/share/string/string.module';
 import {TranslateModule} from '@eg/share/translate/translate.module';
@@ -14,6 +15,7 @@ import {FmRecordEditorActionComponent} from './fm-editor-action.component';
     ],
     imports: [
         EgCommonModule,
+        StaffCommonModule,
         StringModule,
         TranslateModule,
         CommonWidgetsModule

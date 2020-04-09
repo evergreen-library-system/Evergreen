@@ -76,6 +76,9 @@ export interface FmFieldOptions {
     // Render the field using this custom template instead of chosing
     // from the default set of form inputs.
     customTemplate?: CustomFieldTemplate;
+
+    // help text to display via a popover
+    helpText?: StringComponent;
 }
 
 @Component({
@@ -538,6 +541,11 @@ export class FmRecordEditorComponent
         if (fieldOptions.customTemplate) {
             field.template = fieldOptions.customTemplate.template;
             field.context = fieldOptions.customTemplate.context;
+        }
+
+        if (fieldOptions.helpText) {
+            field.helpText = fieldOptions.helpText;
+            field.helpText.current().then(help => field.helpTextValue = help);
         }
 
         return promise || Promise.resolve();
