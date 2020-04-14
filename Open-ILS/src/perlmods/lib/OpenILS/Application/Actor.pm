@@ -4368,8 +4368,9 @@ sub fire_test_notification {
     }
 
     my $event_hook = $$args{hook} or return $e->event;
-    my $usr = $e->retrieve_actor_user($$args{target});
+    return $e->event unless ($event_hook eq 'au.email.test' or $event_hook eq 'au.sms_text.test');
 
+    my $usr = $e->retrieve_actor_user($$args{target});
     return $e->event unless $usr;
 
     return $U->fire_object_event(undef, $event_hook, $usr, $e->requestor->ws_ou);
