@@ -19,3 +19,24 @@ Aged Payment Additional Fields
 The aged payment table now has accepting_usr, cash_drawer, and billing
 columns to improve reporting of aged money.
 
+Manual Data Migration of Aged Money
++++++++++++++++++++++++++++++++++++
+
+For users that wish to age money along with circulations (global flag 
+'history.money.age_with_circs' is set to true), it's necessary to manaully
+age money for circulations which have already been aged.  This can be
+done directly in the database with SQL:
+
+NOTE: This SQL can take a very long time to run on large databases, so
+it may be necessary to process aged circulations in batches instead
+of all at once.
+
+[source,sql]
+-------------------------------------------------------------------------
+SELECT money.age_billings_and_payments_for_xact(circ.id)
+FROM action.aged_circulation circ
+-- limit to aged circs with billings
+JOIN money.billing mb ON mb.xact = circ.id;
+-------------------------------------------------------------------------
+
+
