@@ -139,6 +139,9 @@ export class FmRecordEditorComponent
     // for displayMode === 'inline'
     @Input() hideBanner: boolean;
 
+    // do not close dialog on error saving record
+    @Input() remainOpenOnError: false;
+
     // Emit the modified object when the save action completes.
     @Output() recordSaved = new EventEmitter<IdlObject>();
 
@@ -621,7 +624,7 @@ export class FmRecordEditorComponent
             error => {
                 this.recordError.emit(error);
                 this.failStr.current().then(msg => this.toast.warning(msg));
-                if (this.isDialog()) { this.error(error); }
+                if (this.isDialog() && !this.remainOpenOnError) { this.error(error); }
             }
         );
     }
@@ -639,7 +642,7 @@ export class FmRecordEditorComponent
                 error => {
                     this.recordError.emit(error);
                     this.failStr.current().then(msg => this.toast.warning(msg));
-                    if (this.isDialog()) { this.error(error); }
+                    if (this.isDialog() && !this.remainOpenOnError) { this.error(error); }
                 }
             );
         });
