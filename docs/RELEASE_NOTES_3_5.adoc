@@ -35,7 +35,7 @@ New Action Trigger hook for patron registration
 Evergreen now includes a new type of Action Trigger hook: stgu.created. 
 This hook will trigger upon the patron registration submission form. In 
 addition to the new hook, an example Action Trigger definition is 
-provided (disabled) entitled "Patron Registered for a card 
+provided (disabled by default) entitled "Patron Registered for a card 
 stgu.created". With clever timing and delay settings, a library can 
 receive a single notification containing all of the pending patron 
 registrations for a given time interval. No special server-side 
@@ -183,19 +183,46 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-TODO
+* King County Library System 
+* MassLNC
+* PaILS
 
 We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
 Evergreen:
 
-TODO
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Dawn Dale
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Lynn Floyd
+* Ruth Frasur
+* Blake Graham-Henderson
+* Rogan Hamby
+* Terran McCanna
+* Mike Risher
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Josh Stompro
+* Cesar Velez
 
 
 We also thank the following organizations whose employees contributed
 patches:
 
-TODO
+* BC Libraries Cooperative
+* Catalyte
+* Equinox Open Library Initiative
+* Georgia Public Library Service
+* Indiana State Library
+* King County Library System 
+* Lake Agassiz Regional Library
+* Linn-Benton Community College
+* MOBIUS
 
 We regret any omissions.  If a contributor has been inadvertently
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
