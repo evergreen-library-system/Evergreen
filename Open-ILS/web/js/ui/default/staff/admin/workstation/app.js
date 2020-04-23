@@ -452,6 +452,9 @@ function($scope , $q , egCore , ngToast) {
 
     var seed_copy = {
         barcode : '33434322323',
+        status : {
+            name : 'In transit'
+            },
         call_number : {
             label : '636.8 JON',
             record : {
@@ -479,7 +482,8 @@ function($scope , $q , egCore , ngToast) {
         'call_number.record.simple_record.title' : 'Test Title',
         'location.name' : 'General Collection',
         'call_number.owning_lib.name' : 'Ankers Memorial Library',
-        'call_number.owning_lib.shortname' : 'Ankers'
+        'call_number.owning_lib.shortname' : 'Ankers',
+        'location.name' : 'General Collection'
     }
 
     var one_hold = {
