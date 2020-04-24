@@ -21,7 +21,7 @@
     [% l('Template Description') %]
   </div>
   <div class="col-md-10">
-    <div><textarea class="form-control" ng-model="templateDescription" /></div>
+    <div><textarea class="form-control" ng-model="templateDescription"></textarea></div>
   </div>
 </div>
 

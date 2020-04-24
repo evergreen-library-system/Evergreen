@@ -87,7 +87,7 @@
     </span>
     <span ng-hide="item['call_number.record.id'] == -1">
         <a target="_blank" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['call_number.record.id']}}">
-          {{item['call_number.record.simple_record.title']}} <span ng-show="item['call_number.record.id']" class="glyphicon glyphicon-new-window"/>
+          {{item['call_number.record.simple_record.title']}} <span ng-show="item['call_number.record.id']" class="glyphicon glyphicon-new-window"></span>
         </a>
     </span>
   </eg-grid-field>
@@ -119,7 +119,7 @@
   <eg-grid-field label="[% l('Created By') %]"
     path="creator" hidden>
     <a target="_blank" href="[% ctx.base_path %]/staff/circ/patron/{{item['creator.id']}}/checkout">
-      {{item['creator.usrname']}} <span ng-show="item['creator.id']" class="glyphicon glyphicon-new-window"/>
+      {{item['creator.usrname']}} <span ng-show="item['creator.id']" class="glyphicon glyphicon-new-window"></span>
     </a>
   </eg-grid-field>
 

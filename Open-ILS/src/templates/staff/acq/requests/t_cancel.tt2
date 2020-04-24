@@ -18,7 +18,7 @@
                 <label for="cancel-reason-selector">[% l('Cancel Reason') %]</label>
                 <select id="cancel-reason-selector" class="form-control" required
                     ng-model="cancel_reason"
-                    ng-options="rt.label() for rt in cancel_reasons"/>
+                    ng-options="rt.label() for rt in cancel_reasons"></select>
             </div>
         </div>
         <div class="modal-footer">

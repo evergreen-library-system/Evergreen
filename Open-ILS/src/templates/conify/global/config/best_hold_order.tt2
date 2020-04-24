@@ -20,7 +20,6 @@
 <div id="cbho-loading">
     <img src="[% ctx.media_prefix %]/opac/images/progressbar_green-old.gif"
         alt="[% l('Interface loading') %]" />
-    <!-- <audio src="knight rider theme ;)" /> -->
 </div>
 
 <div id="cbho-main-body" class="hidden"><!-- main body -->

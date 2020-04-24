@@ -73,7 +73,7 @@
                 </script>
 
                 <table id='oils-acq-invoice-table' class='oils-acq-invoice-table'>
-                    <thead/>
+                    <thead></thead>
                     <tbody id='acq-invoice-entry-header' class='hidden'>
                         <tr>
                             <td colspan='0'>
@@ -123,7 +123,7 @@
                             <th class='acq-invoice-center-col'>[% l('Fund') %]</th>
                             <th>[% l('Title / Description') %]</th>
                             <th class='acq-invoice-center-col'>[% l('Billed') %]</th>
-                            <th/>
+                            <th></th>
                             <th class='acq-invoice-paid-col'>[% l('Paid') %]</th>
                             <th class='acq-invoice-center-col hide-complete'>[% l('Delete') %]</th>
                         </tr>
@@ -134,7 +134,7 @@
                             <td class='acq-invoice-center-col'><div name='fund'></div></td>
                             <td><div name='title'></div></td>
                             <td class='acq-invoice-center-col acq-invoice-billed-col'><div name='cost_billed'></div></td>
-                            <td/>
+                            <td></td>
                             <td class='acq-invoice-paid-col'><div name='amount_paid'></div></td>
                             <td class='acq-invoice-center-col hide-complete'><a href='javascript:void(0);' name='delete'>[% l('Delete') %]</a></td>
                         </tr>
@@ -155,9 +155,9 @@
                     </tbody>
                     <thead>
                         <tr>
-                            <th colspan='3'/>
+                            <th colspan='3'></th>
                             <th class='acq-invoice-center-col acq-invoice-billed-col'>[% l('Total') %]</th>
-                            <th/>
+                            <th></th>
                             <th class='acq-invoice-paid-col'>[% l('Total') %]</th>
                             <th class='acq-invoice-center-col acq-invoice-balance-col'>[% l('Balance') %]</th>
                         </tr>
@@ -179,7 +179,7 @@
                                 </span>
                             </td>
                             <td class='acq-invoice-center-col'><div id='acq-total-invoiced-box'></div></td>
-                            <td/>
+                            <td></td>
                             <td class='acq-invoice-paid-col'><div id='acq-total-paid-box'></div></td>
                             <td class='acq-invoice-center-col'><div id='acq-total-balance-box'></div></td>
                         </tr>

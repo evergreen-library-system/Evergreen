@@ -79,8 +79,8 @@
             editOnEnter='true'>
         <thead>
             <tr>
-                <th field="name" formatter='formatName'/>
-                <th field="owner" get='getOwnerName'/>
+                <th field="name" formatter='formatName'></th>
+                <th field="owner" get='getOwnerName'></th>
                 <th field="entry_count">[% l('Entry Count') %]</th>
             </tr>
         </thead>

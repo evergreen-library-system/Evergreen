@@ -1,6 +1,6 @@
 [% WRAPPER base.tt2 %]
 <div dojoType="dijit.layout.ContentPane" layoutAlign='client'>
-    <h2 id='at-event-def-name'/>
+    <h2 id='at-event-def-name'></h2>
 </div>
 
 <div dojoType="dijit.layout.TabContainer" style='height:100%;' jsId='eventDefTabs'>

@@ -144,7 +144,7 @@
 
                         <thead>
                             <tr>
-                                <th field='fund' get='getFund' formatter='formatFund'/>
+                                <th field='fund' get='getFund' formatter='formatFund'></th>
                             </tr>
                         </thead>
                     </table>

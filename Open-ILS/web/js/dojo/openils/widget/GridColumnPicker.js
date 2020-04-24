@@ -127,7 +127,7 @@ if(!dojo._hasResource["openils.widget.GridColumnPicker"]) {
 		"<th width='23%'>" + this.nls.DISPLAY + "</th>" +
                 "<th width='23%'>" + this.nls.AUTO_WIDTH + "</th>" +
 		"<th width='23%'>" + this.nls.SORT_PRIORITY + "</th></tr></thead>" +
-                "<tbody />"});
+                "<tbody></tbody>"});
 
             var tDiv = dojo.create('div');
             tDiv.appendChild(table);

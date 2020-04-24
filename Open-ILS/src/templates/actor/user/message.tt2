@@ -108,7 +108,7 @@
                 defaultCellWidth='10'
                 editOnEnter='true'>
             <thead>
-                <tr><th field='sending_lib' get='getOrgInfo'/></tr>
+                <tr><th field='sending_lib' get='getOrgInfo'></th></tr>
             </thead>
         </table>
     </div>

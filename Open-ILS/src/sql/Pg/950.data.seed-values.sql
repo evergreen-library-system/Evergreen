@@ -9515,7 +9515,7 @@ date <b>[% date.format(date.now, '%Y%m%d') %]</b>
   </tr>
   [% END %]
   <tr>
-    <td/><td/><td/><td/>
+    <td></td><td></td><td></td><td></td>
     <td>Subtotal</td>
     <td>[% subtotal %]</td>
   </tr>

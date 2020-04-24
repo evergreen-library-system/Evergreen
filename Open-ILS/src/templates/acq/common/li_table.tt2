@@ -326,7 +326,7 @@
         </table>
 
         <table id='acq-lit-li-details-table'>
-            <tbody><tr><td class='acq-lit-table-spacer' colspan='0'/></tr></tbody>
+            <tbody><tr><td class='acq-lit-table-spacer' colspan='0'></td></tr></tbody>
             <tbody style='font-weight:bold;'>
                 <tr>
                     <td style='margin-top:30px;'>[% l('Owning Branch') %]</td>

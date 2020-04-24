@@ -13,7 +13,7 @@
             defaultCellWidth='30'
             fmClass='cgf'
             hideSelector='true'
-            editOnEnter='true'/>
+            editOnEnter='true'></table>
 </div>
 
 <script type="text/javascript">

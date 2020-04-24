@@ -5,7 +5,7 @@
         </div>
         <table>
             <tbody id="acq-[% which_lc %]-info-tbody">
-                <tr id="acq-[% which_lc %]-info-row"><td name="label"/><td name="value"/></tr>
+                <tr id="acq-[% which_lc %]-info-row"><td name="label"></td><td name="value"></td></tr>
             </tbody>
         </table>
 [% IF which == "Lit" %]
