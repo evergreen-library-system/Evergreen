@@ -34,8 +34,8 @@
                 editOnEnter='true'>
             <thead>
                 <tr>
-                    <th field='provider' get='getProvider' formatter='formatProvider'/>
-                    <th field='owner' get='getOwner'/>
+                    <th field='provider' get='getProvider' formatter='formatProvider'></th>
+                    <th field='owner' get='getOwner'></th>
                 </tr>
             </thead>
         </table>

@@ -28,7 +28,7 @@
                     showLoadFilter='true'
                     editOnEnter='true'>
                 <thead>
-                    <tr><th field='name' get='getProviderName' formatter='formatName'/></tr>
+                    <tr><th field='name' get='getProviderName' formatter='formatName'></th></tr>
                 </thead>
             </table>
         </div>
@@ -117,9 +117,9 @@
                         editOnEnter='true'>
                     <thead>
                         <tr>
-                            <th field="xpath" width='auto'/>
-                            <th field="tag" name="Tag" get='getParsedTag'/>
-                            <th field="subfield" name="Subfield" get='getParsedSubf'/>
+                            <th field="xpath" width='auto'></th>
+                            <th field="tag" name="Tag" get='getParsedTag'></th>
+                            <th field="subfield" name="Subfield" get='getParsedSubf'></th>
                         </tr>
                     </thead>
                 </table>
@@ -172,7 +172,7 @@
                     fmClass="acqinv">
                     <thead>
                         <tr>
-                            <th field="inv_ident" get="getInvIdent" formatter="formatInvIdent" />
+                            <th field="inv_ident" get="getInvIdent" formatter="formatInvIdent"></th>
                         </tr>
                     </thead>
                 </table>

@@ -48,8 +48,8 @@
         query="{grp: grp_id}">
         <thead>
             <tr>
-                <th field="id" fpath="id" ffilter="true"/>
-                <th field="field" fpath="field" ffilter="true"/>
+                <th field="id" fpath="id" ffilter="true"></th>
+                <th field="field" fpath="field" ffilter="true"></th>
             </tr>
         </thead>
     </table>
@@ -88,10 +88,10 @@
         query="{id:{'!=':null}}">
         <thead>
             <tr>
-                <th field="id" fpath="id" ffilter="true" formatter="format_grp"/>
-                <th field="owner" fpath="owner.shortname" ffilter="true"/>
-                <th field="label" fpath="label" ffilter="true"/>
-                <th field="always_apply" fpath="always_apply" ffilter="true"/>
+                <th field="id" fpath="id" ffilter="true" formatter="format_grp"></th>
+                <th field="owner" fpath="owner.shortname" ffilter="true"></th>
+                <th field="label" fpath="label" ffilter="true"></th>
+                <th field="always_apply" fpath="always_apply" ffilter="true"></th>
             </tr>
         </thead>
     </table>

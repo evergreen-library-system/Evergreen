@@ -9,14 +9,14 @@
         <h1>[% l('Import Errors') %]</h1><br/>
         <table>
             <tbody>
-                <tr><td>[% l('ID') %]</td><td id='vl-error-id'/></tr>
-                <tr><td>[% l('Import Error') %]</td><td id='vl-error-import-error'/></tr>
-                <tr><td>[% l('Error Detail') %]</td><td id='vl-error-error-detail'/></tr>
-                <tr><td>[% l('Title') %]</td><td id='vl-error-title'/></tr>
-                <tr><td>[% l('Author') %]</td><td id='vl-error-author'/></tr>
-                <tr><td>[% l('ISBN') %]</td><td id='vl-error-isbn'/></tr>
-                <tr><td>[% l('ISSN') %]</td><td id='vl-error-issn'/></tr>
-                <tr><td>[% l('UPC') %]</td><td id='vl-error-upc'/></tr>
+                <tr><td>[% l('ID') %]</td><td id='vl-error-id'></td></tr>
+                <tr><td>[% l('Import Error') %]</td><td id='vl-error-import-error'></td></tr>
+                <tr><td>[% l('Error Detail') %]</td><td id='vl-error-error-detail'></td></tr>
+                <tr><td>[% l('Title') %]</td><td id='vl-error-title'></td></tr>
+                <tr><td>[% l('Author') %]</td><td id='vl-error-author'></td></tr>
+                <tr><td>[% l('ISBN') %]</td><td id='vl-error-isbn'></td></tr>
+                <tr><td>[% l('ISSN') %]</td><td id='vl-error-issn'></td></tr>
+                <tr><td>[% l('UPC') %]</td><td id='vl-error-upc'></td></tr>
             </tbody>
         </table>
     </div>
@@ -35,10 +35,10 @@
                 fmClass='vii'>
                 <thead>
                     <tr>
-                        <th field='owning_lib' get='vlGetOrg'/>
-                        <th field='circ_lib' get='vlGetOrg'/>
-                        <th field='status' get='vlCopyStatus'/>
-                        <th field='location' get='vlCopyLocation'/>
+                        <th field='owning_lib' get='vlGetOrg'></th>
+                        <th field='circ_lib' get='vlGetOrg'></th>
+                        <th field='status' get='vlCopyStatus'></th>
+                        <th field='location' get='vlCopyLocation'></th>
                     </tr>
                 </thead>
         </table>
@@ -69,10 +69,10 @@
                 fmClass='vii'>
                 <thead>
                     <tr>
-                        <th field='owning_lib' get='vlGetOrg'/>
-                        <th field='circ_lib' get='vlGetOrg'/>
-                        <th field='status' get='vlCopyStatus'/>
-                        <th field='location' get='vlCopyLocation'/>
+                        <th field='owning_lib' get='vlGetOrg'></th>
+                        <th field='circ_lib' get='vlGetOrg'></th>
+                        <th field='status' get='vlCopyStatus'></th>
+                        <th field='location' get='vlCopyLocation'></th>
                     </tr>
                 </thead>
         </table>

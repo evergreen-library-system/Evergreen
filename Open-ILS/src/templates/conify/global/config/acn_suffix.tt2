@@ -27,7 +27,7 @@
                 fmClass='acns'
                 editOnEnter='true'>
             <thead>
-                <tr><th field='owning_lib' get='getOrgInfo'/></tr>
+                <tr><th field='owning_lib' get='getOrgInfo'></th></tr>
             </thead>
         </table>
     </div>

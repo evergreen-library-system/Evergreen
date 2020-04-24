@@ -22,8 +22,8 @@
                 editOnEnter='true'>
             <thead>
                 <tr>
-                    <th field='name' get='getFormulaName' formatter='formatName'/>
-                    <th field='item_count' get='getItemCount'/>
+                    <th field='name' get='getFormulaName' formatter='formatName'></th>
+                    <th field='item_count' get='getItemCount'></th>
                 </tr>
             </thead>
         </table>

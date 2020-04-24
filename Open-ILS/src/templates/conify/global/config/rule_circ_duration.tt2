@@ -14,7 +14,7 @@
             suppressFields="['id']"
             query="{id: '*'}"
             fmClass='crcd'
-            editOnEnter='true'/>
+            editOnEnter='true'></table>
 </div>
 
 <script type="text/javascript">

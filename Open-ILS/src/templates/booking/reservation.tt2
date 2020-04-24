@@ -37,7 +37,7 @@
                     size="12"></select>
                 <div id="contain_patron_barcode" class="nice_vertical_padding">
                     <label class="AUTO_patron_barcode"
-                        for="patron_barcode" /></label>
+                        for="patron_barcode"></label>
                     <input name="patron_barcode" id="patron_barcode"
                         onchange="update_bresv_grid();" />
                 </div>

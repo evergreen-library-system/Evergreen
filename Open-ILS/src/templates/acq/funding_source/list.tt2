@@ -37,9 +37,9 @@
             editOnEnter='true'>
         <thead>
             <tr>
-                <th field="name" get='getName' formatter='formatName'/>
-                <th field="owner" get='getOrgInfo'/>
-                <th field="balance" get='getBalanceInfo'/>
+                <th field="name" get='getName' formatter='formatName'></th>
+                <th field="owner" get='getOrgInfo'></th>
+                <th field="balance" get='getBalanceInfo'></th>
             </tr>
         </thead>
     </table>

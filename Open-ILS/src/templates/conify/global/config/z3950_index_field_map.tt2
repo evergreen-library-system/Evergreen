@@ -35,15 +35,15 @@
         query="{'id': {'!=' : null}}">
         <thead>
             <tr>
-                <th field="label" fpath="label" ffilter="true"/>
+                <th field="label" fpath="label" ffilter="true"></th>
                 <th field="metabib_field_label" fpath="metabib_field.label" 
-                    ffilter="true" name="[% l('Metabib Field') %]"/>
+                    ffilter="true" name="[% l('Metabib Field') %]"></th>
                 <th field="record_attr_label" fpath="record_attr.label" 
-                    ffilter="true" name="[% l('Record Attribute') %]"/>
+                    ffilter="true" name="[% l('Record Attribute') %]"></th>
                 <th field="z3950_attr_label" fpath="z3950_attr.label" 
-                    ffilter="true" name="[% l('Z39.50 Attribute') %]"/>
+                    ffilter="true" name="[% l('Z39.50 Attribute') %]"></th>
                 <th field="z3950_attr_type" fpath="z3950_attr_type" 
-                    ffilter="true"/>
+                    ffilter="true"></th>
             </tr>
         </thead>
     </table>

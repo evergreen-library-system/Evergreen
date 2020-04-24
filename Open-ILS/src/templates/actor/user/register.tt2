@@ -92,7 +92,7 @@
             <thead>
                 <tr>
                     <th>[% l('Secondary Permission Groups') %]</th>
-                    <th/>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -113,7 +113,7 @@
                    <td style='text-align:center;'>
                        <button dojoType='dijit.form.Button' onClick='saveSecondaryGroups' scrollOnFocus='false'>[% l('Save') %]</button>
                     </td>
-                    <td/>
+                    <td></td>
                 </tr>
             </tbody>
         </table>

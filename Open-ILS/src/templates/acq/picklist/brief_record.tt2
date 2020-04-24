@@ -8,7 +8,7 @@
         <tbody id='acq-brief-record-tbody'>
             <tr id='acq-brief-record-pl-row'>
                 <td>[% l('Add To Selection List') %]</td>
-                <td><select dojoType='dijit.form.ComboBox' jsId='plSelector'/></td>
+                <td><select dojoType='dijit.form.ComboBox' jsId='plSelector'></select></td>
             </tr>
             <tr id='acq-brief-record-po-row'>
                 <td>[% l('Adding to Purchase Order') %]</td>
