@@ -41,6 +41,8 @@ BEGIN
 
     -- Migrate billings and payments to aged tables
 
+
+/* LP 1858448 : Disable initial aged money migration
     INSERT INTO money.aged_billing
         SELECT * FROM money.billing WHERE xact = OLD.id;
 
@@ -49,6 +51,8 @@ BEGIN
 
     DELETE FROM money.payment WHERE xact = OLD.id;
     DELETE FROM money.billing WHERE xact = OLD.id;
+
+*/
 
     RETURN OLD;
 END;
