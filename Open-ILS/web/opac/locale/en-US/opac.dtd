@@ -258,7 +258,7 @@ However, you will still have the option to change individual holds regardless of
 <!--	================================================================= 
 	 MyOPAC Summary page
 	================================================================= -->
-<!ENTITY myopac.summary.expired "Your account expired on <span id='myopac.expired.date'/>!  
+<!ENTITY myopac.summary.expired "Your account expired on <span id='myopac.expired.date'></span>!  
 Please see a librarian to renew your account.">
 <!ENTITY myopac.summary.notes "* Staff Notes *">
 <!ENTITY myopac.summary.phone.day "Day Phone">

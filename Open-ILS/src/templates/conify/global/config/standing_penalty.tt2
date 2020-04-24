@@ -21,7 +21,7 @@
                 fmClass='csp'
                 editOnEnter='true'>
             <thead>
-                <tr> <th field="id" formatter='formatId'/> </tr>
+                <tr> <th field="id" formatter='formatId'></th> </tr>
             </thead>
         </table>
     </div>

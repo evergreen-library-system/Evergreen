@@ -10,7 +10,7 @@
             <span id='acq-po-activated-on' class='hidden'></span>
             <table class="oils-generic-table acq-po-info">
                 <tr>
-                    <th>[% l('ID') %]</th><td><a id="acq-po-view-id"/></td>
+                    <th>[% l('ID') %]</th><td><a id="acq-po-view-id"></a></td>
                     <th>[% l('Prepayment Required?') %]</th>
                     <td><span id="acq-po-view-prepay"></span></td>
                 </tr>

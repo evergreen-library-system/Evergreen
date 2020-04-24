@@ -21,7 +21,7 @@
             defaultCellWidth='15'
             editOnEnter='true'>
         <thead>
-            <tr><th field='string' width='auto'/></tr>
+            <tr><th field='string' width='auto'></th></tr>
         </thead>
     </table>
   </div>

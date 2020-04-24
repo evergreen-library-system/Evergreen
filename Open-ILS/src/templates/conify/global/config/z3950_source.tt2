@@ -57,12 +57,12 @@
         query="{'source': ['[% source_code %]']}">
         <thead>
             <tr>
-                <th field="source" fpath="source" ffilter="true"/>
-                <th field="name" fpath="name" ffilter="true"/>
-                <th field="label" fpath="label" ffilter="true"/>
-                <th field="code" fpath="code" ffilter="true"/>
-                <th field="format" fpath="format" ffilter="true"/>
-                <th field="truncation" fpath="truncation" ffilter="true"/>
+                <th field="source" fpath="source" ffilter="true"></th>
+                <th field="name" fpath="name" ffilter="true"></th>
+                <th field="label" fpath="label" ffilter="true"></th>
+                <th field="code" fpath="code" ffilter="true"></th>
+                <th field="format" fpath="format" ffilter="true"></th>
+                <th field="truncation" fpath="truncation" ffilter="true"></th>
             </tr>
         </thead>
     </table>
@@ -92,7 +92,7 @@
             fmClass='czs'
             editOnEnter='true'>
         <thead>
-            <tr><th field='name' formatter='formatSourceName'/></tr>
+            <tr><th field='name' formatter='formatSourceName'></th></tr>
         </thead>
     </table>
 

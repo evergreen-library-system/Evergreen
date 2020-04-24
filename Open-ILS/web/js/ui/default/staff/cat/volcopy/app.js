@@ -599,17 +599,17 @@ function(egCore , $q) {
             '<div class="row">'+
                 '<div class="col-xs-2">'+
                     '<button aria-label="Delete" style="margin:-5px -15px; float:left;" ng-hide="callNumber.not_ephemeral" type="button" class="close" ng-click="removeCN()">&times;</button>' +
-                    '<select class="form-control" ng-model="classification" ng-change="updateClassification()" ng-options="cl.name() for cl in classification_list"/>'+
+                    '<select class="form-control" ng-model="classification" ng-change="updateClassification()" ng-options="cl.name() for cl in classification_list"></select>'+
                 '</div>'+
                 '<div class="col-xs-1">'+
-                    '<select class="form-control" ng-model="prefix" ng-change="updatePrefix()" ng-options="p.label() for p in prefix_list"/>'+
+                    '<select class="form-control" ng-model="prefix" ng-change="updatePrefix()" ng-options="p.label() for p in prefix_list"></select>'+
                 '</div>'+
                 '<div class="col-xs-2">'+
                     '<input class="form-control" type="text" ng-change="updateLabel()" ng-model="label"/>'+
                     '<div class="label label-danger" ng-if="empty_label">{{empty_label_string}}</div>'+
                 '</div>'+
                 '<div class="col-xs-1">'+
-                    '<select class="form-control" ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list"/>'+
+                    '<select class="form-control" ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list"></select>'+
                 '</div>'+
                 '<div ng-hide="onlyVols" class="col-xs-1"><input class="form-control" type="number" ng-model="copy_count" min="{{orig_copy_count}}" ng-change="changeCPCount()"></div>'+
                 '<div ng-hide="onlyVols" class="col-xs-5">'+

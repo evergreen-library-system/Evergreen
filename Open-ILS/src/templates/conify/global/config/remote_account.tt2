@@ -24,14 +24,14 @@
     query="{id : {'!=':0}}">
     <thead>
         <tr>
-            <th field="id"          fpath="id"/>
-            <th field="owner_sn"    fpath="owner.shortname" ffilter="true"/>
-            <th field="label"       fpath="label" ffilter="true"/>
-            <th field="host"        fpath="host" ffilter="true"/>
-            <th field="username"    fpath="username" ffilter="true"/>
-            <th field="password"    fpath="password" ffilter="true"/>
-            <th field="account"     fpath="account" ffilter="true"/>
-            <th field="path"        fpath="path" ffilter="true"/>
+            <th field="id"          fpath="id"></th>
+            <th field="owner_sn"    fpath="owner.shortname" ffilter="true"></th>
+            <th field="label"       fpath="label" ffilter="true"></th>
+            <th field="host"        fpath="host" ffilter="true"></th>
+            <th field="username"    fpath="username" ffilter="true"></th>
+            <th field="password"    fpath="password" ffilter="true"></th>
+            <th field="account"     fpath="account" ffilter="true"></th>
+            <th field="path"        fpath="path" ffilter="true"></th>
         </tr>
     </thead>
 </table>

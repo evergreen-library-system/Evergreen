@@ -22,7 +22,7 @@
             suppressEditFields="['id','label_sortkey','deleted']"
             query="{id: null}"
             fmClass='bmp'
-            editOnEnter='true'/>
+            editOnEnter='true'></table>
      </div>
   </div>
 

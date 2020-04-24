@@ -98,7 +98,7 @@
             <tr> 
                 <th field="id" formatter='formatId'>[% l('ID') %]</th> 
                 <!--
-                <th field="owner" get='getPOOwner'/>
+                <th field="owner" get='getPOOwner'></th>
                 -->
             </tr> 
         </thead> 

@@ -21,7 +21,7 @@
             editOnEnter='true'>
         <thead>
             <tr>
-                <th field='owner' get='vlGetOrg'/>
+                <th field='owner' get='vlGetOrg'></th>
             </tr>
         </thead>
     </table>

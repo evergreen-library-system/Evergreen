@@ -195,7 +195,7 @@
 
                         <thead>
                             <tr>
-                                <th field='funding_source' get='getFundingSource' formatter='formatFundingSource'/>
+                                <th field='funding_source' get='getFundingSource' formatter='formatFundingSource'></th>
                             </tr>
                         </thead>
                     </table>

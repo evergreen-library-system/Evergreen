@@ -49,10 +49,10 @@
 								<td><input size='32' id='oils_rpt_builder_new_name'/></td>
 							</tr><tr>
 								<td>&reports.oils_rpt_builder.template_description;</td>
-								<td><textarea cols='50' rows='2' id='oils_rpt_builder_new_desc'/></td>
+								<td><textarea cols='50' rows='2' id='oils_rpt_builder_new_desc'></textarea></td>
 							</tr><tr>
 								<td>&reports.oils_rpt_builder.template_type;</td>
-								<td><select id='oils_rpt_builder_type_selector'/></td>
+								<td><select id='oils_rpt_builder_type_selector'></select></td>
 							</tr><tr>
 								<td>&reports.oils_rpt_builder.save_this_template;</td>
 								<td><input type='submit' value='Save Template' id='oils_rpt_builder_save_template'/></td>
@@ -75,19 +75,19 @@
 					<td id='oils_rpt_table_right_td' align='right'>
 						<div class='oils_rpt_info_div'>
 							<div class='oils_rpt_info_item oils_rpt_info_title'>&reports.oils_rpt_builder.temp_disp_items;</div>
-							<select id='oils_rpt_display_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'/>
+							<select id='oils_rpt_display_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'></select>
 							<button onclick='oilsDelSelectedDisplayItems();'><u>X</u> &reports.oils_rpt_builder.remove_selected;</button>
 							<button onclick='oilsMoveUpDisplayItems();'>&reports.oils_rpt_builder.move_up;</button>
 							<button onclick='oilsMoveDownDisplayItems();'>&reports.oils_rpt_builder.move_down;</button>
 						</div>
 						<div class='oils_rpt_info_div'>
 							<div class='oils_rpt_info_item oils_rpt_info_title'>&reports.oils_rpt_builder.template_filters;</div>
-							<select id='oils_rpt_filter_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'/>
+							<select id='oils_rpt_filter_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'></select>
 							<button onclick='oilsDelSelectedFilterItems();'><u>X</u> &reports.oils_rpt_builder.remove_selected;</button>
 						</div>
 						<div class='oils_rpt_info_div'>
 							<div class='oils_rpt_info_item oils_rpt_info_title'>&reports.oils_rpt_builder.report_aggregate_filters;</div>
-							<select id='oils_rpt_agg_filter_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'/>
+							<select id='oils_rpt_agg_filter_selector' class='oils_rpt_info_item oils_rpt_info_selector' multiple='multiple'></select>
 							<button onclick='oilsDelSelectedAggFilterItems();'><u>X</u> &reports.oils_rpt_builder.remove_selected;</button>
 						</div>
 						<div class='oils_rpt_info_div'>
@@ -114,7 +114,7 @@
 			</tbody></table>
 
 			<div style='margin-bottom: 10px;'>
-				<b style='padding-right: 8px;' id='oils_rpt_editor_window_label'/>
+				<b style='padding-right: 8px;' id='oils_rpt_editor_window_label'></b>
 				(<span id='oils_rpt_editor_window_datatype'></span>)
 			</div>
 			<div id='oils_rpt_tform_div'>
@@ -184,7 +184,7 @@
 							<tr>
 							<td>&reports.oils_rpt_builder.choose_column;</td>
 							<td>
-								<select id='oils_rpt_order_by_selector'/>
+								<select id='oils_rpt_order_by_selector'></select>
 							</td>
 						</tr>
 						<tr>	
