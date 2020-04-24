@@ -141,5 +141,13 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+-- Remove existing orphaned URIs from the database.
+DELETE FROM asset.uri
+WHERE id NOT IN
+(
+SELECT uri
+FROM asset.uri_call_number_map
+);
+
 COMMIT;
 
