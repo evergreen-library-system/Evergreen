@@ -1415,7 +1415,7 @@ DECLARE
     uri_map_count   INT;
     current_uri_map_list    INT[];
     current_map_owner_list  INT[];
-    orphaned_uri_list       INT[];
+
 BEGIN
 
     uris := oils_xpath('//*[@tag="856" and (@ind1="4" or @ind1="1") and (@ind2="0" or @ind2="1")]',marcxml);
@@ -1514,7 +1514,6 @@ BEGIN
                 JOIN asset.call_number cn ON (cn.id = m.call_number)
           WHERE cn.record = bib_id
                 AND cn.label = '##URI##'
-                AND NOT cn.deleted
                 AND NOT (m.id = ANY (current_uri_map_list))
     LOOP
         SELECT uri INTO current_uri FROM asset.uri_call_number_map WHERE id = current_map;
