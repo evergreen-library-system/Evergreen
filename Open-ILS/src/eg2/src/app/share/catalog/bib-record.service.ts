@@ -107,13 +107,10 @@ export class BibRecordSummary {
             return Promise.resolve(this.bibCallNumber);
         }
 
-        // TODO labelClass = cat.default_classification_scheme YAOUS
-        const labelClass = 1;
-
         return this.net.request(
             'open-ils.cat',
             'open-ils.cat.biblio.record.marc_cn.retrieve',
-            this.id, labelClass
+            this.id, null, this.orgId
         ).toPromise().then(cnArray => {
             if (cnArray && cnArray.length > 0) {
                 const key1 = Object.keys(cnArray[0])[0];
