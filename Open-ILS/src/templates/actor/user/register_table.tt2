@@ -1,6 +1,6 @@
 <tbody id='uedit-tbody'>
     <tr fmclass='ac' fmfield='barcode' required='required'>
-        <td/><td/><td/>
+        <td></td><td></td><td></td>
         <td>
             <button dojoType='dijit.form.Button' jsId='replaceBarcode' scrollOnFocus='false'></button>
             <span id='uedit-dupe-barcode-warning' style='color:red; font-weight:bold' class='hidden'>
@@ -11,37 +11,37 @@
         </td>
     </tr>
     <tr fmclass='au' fmfield='usrname' required='required'>
-        <td/><td/><td/>
+        <td></td><td></td><td></td>
         <td>
             <span id='uedit-dupe-username-warning' style='color:red; font-weight:bold' class='hidden'>
             </span>
         </td>
     </tr>
     <tr fmclass='au' fmfield='passwd' required='required'>
-        <td/><td/><td/>
+        <td></td><td></td><td></td>
         <td>
             <button dojoType='dijit.form.Button' jsId='generatePassword' scrollOnFocus='false' tabIndex='-1'></button>
         </td>
     </tr>
-    <tr fmclass='au' fmfield='passwd2' required='required'><td/><td id='verifyPassword'></td><td/></tr>
-    <tr fmclass='au' fmfield='prefix'/>
-    <tr fmclass='au' fmfield='first_given_name' required='required'/>
-    <tr fmclass='au' fmfield='second_given_name'/>
-    <tr fmclass='au' fmfield='family_name' required='required'/>
-    <tr fmclass='au' fmfield='suffix'/>
-    <tr fmclass='au' fmfield='alias'/>
-    <tr fmclass='au' fmfield='dob'/>
-    <tr fmclass='au' fmfield='juvenile'/>
-    <tr fmclass='au' fmfield='ident_type' required='required'/>
-    <tr fmclass='au' fmfield='ident_value'/>
-    <tr fmclass='au' fmfield='ident_value2'><td/><td id='parentGuardian'></td></tr>
-    <tr fmclass='au' fmfield='email'/>
-    <tr fmclass='au' fmfield='day_phone'/>
-    <tr fmclass='au' fmfield='evening_phone'/>
-    <tr fmclass='au' fmfield='other_phone'/>
-    <tr fmclass='au' fmfield='home_ou' required='required'/>
+    <tr fmclass='au' fmfield='passwd2' required='required'><td></td><td id='verifyPassword'></td><td></td></tr>
+    <tr fmclass='au' fmfield='prefix'></tr>
+    <tr fmclass='au' fmfield='first_given_name' required='required'></tr>
+    <tr fmclass='au' fmfield='second_given_name'></tr>
+    <tr fmclass='au' fmfield='family_name' required='required'></tr>
+    <tr fmclass='au' fmfield='suffix'></tr>
+    <tr fmclass='au' fmfield='alias'></tr>
+    <tr fmclass='au' fmfield='dob'></tr>
+    <tr fmclass='au' fmfield='juvenile'></tr>
+    <tr fmclass='au' fmfield='ident_type' required='required'></tr>
+    <tr fmclass='au' fmfield='ident_value'></tr>
+    <tr fmclass='au' fmfield='ident_value2'><td></td><td id='parentGuardian'></td></t></tr>
+    <tr fmclass='au' fmfield='email'></tr>
+    <tr fmclass='au' fmfield='day_phone'></tr>
+    <tr fmclass='au' fmfield='evening_phone'></tr>
+    <tr fmclass='au' fmfield='other_phone'></tr>
+    <tr fmclass='au' fmfield='home_ou' required='required'></tr>
     <tr fmclass='au' fmfield='profile' required='required'>
-        <td/><td/><td/>
+        <td></td><td></td><td></td>
         <td>
             <span class="hidden" id="ueditSecondaryGrpButton">
                 <button dojoType='dijit.form.Button' jsId='secondaryGroupsButton' scrollOnFocus='false' tabIndex='-1'>[% l('Secondary Groups') %]</button>
@@ -49,22 +49,22 @@
         </td>
     </tr>
     <tr fmclass='au' fmfield='expire_date' required='required'>
-        <td/><td/><td/>
+        <td></td><td></td><td></td>
         <td>
             <button dojoType='dijit.form.Button' jsId='setExpireDate' scrollOnFocus='false'></button>
         </td>
     </tr>
-    <tr fmclass='au' fmfield='net_access_level' required='required'/>
-    <tr fmclass='au' fmfield='active'/>
-    <tr fmclass='au' fmfield='barred'/>
-    <tr fmclass='au' fmfield='master_account'/>
-    <tr fmclass='au' fmfield='claims_returned_count' wclass='dijit.form.NumberSpinner' wconstraints="{min:0,places:0}" wvalue='0'/>
-    <tr fmclass='au' fmfield='claims_never_checked_out_count' wclass='dijit.form.NumberSpinner' wconstraints="{min:0,places:0}" wvalue='0'/>
-    <tr fmclass='au' fmfield='alert_message' wclass='dijit.form.Textarea' wstyle='height:5em'/>
+    <tr fmclass='au' fmfield='net_access_level' required='required'></tr>
+    <tr fmclass='au' fmfield='active'></tr>
+    <tr fmclass='au' fmfield='barred'></tr>
+    <tr fmclass='au' fmfield='master_account'></tr>
+    <tr fmclass='au' fmfield='claims_returned_count' wclass='dijit.form.NumberSpinner' wconstraints="{min:0,places:0}" wvalue='0'></tr>
+    <tr fmclass='au' fmfield='claims_never_checked_out_count' wclass='dijit.form.NumberSpinner' wconstraints="{min:0,places:0}" wvalue='0'></tr>
+    <tr fmclass='au' fmfield='alert_message' wclass='dijit.form.Textarea' wstyle='height:5em'></tr>
 
     <tr class='divider hidden' id='uedit-settings-divider'><td colspan='0' id='userSettings'></td></tr>
     <tr class='hidden' id='uedit-user-setting-template'>
-        <td/>
+        <td></td>
         <td><span name='label'></span></td>
         <td><div name='widget'></div></td>
     </tr>
@@ -97,16 +97,16 @@
     </tr>
 
 
-    <tr fmclass='aua' fmfield='address_type' type='addr-template' required='required'/>
-    <tr fmclass='aua' fmfield='post_code' type='addr-template' required='required'/>
-    <tr fmclass='aua' fmfield='street1' type='addr-template' required='required'/>
-    <tr fmclass='aua' fmfield='street2' type='addr-template' required='show'/>
-    <tr fmclass='aua' fmfield='city' type='addr-template' required='required'/>
-    <tr fmclass='aua' fmfield='county' type='addr-template' required='show'/>
-    <tr fmclass='aua' fmfield='state' type='addr-template'/>
-    <tr fmclass='aua' fmfield='country' type='addr-template' required='required'/>
-    <tr fmclass='aua' fmfield='valid' type='addr-template' required='show'/>
-    <tr fmclass='aua' fmfield='within_city_limits' type='addr-template' required='show'/>
+    <tr fmclass='aua' fmfield='address_type' type='addr-template' required='required'></tr>
+    <tr fmclass='aua' fmfield='post_code' type='addr-template' required='required'></tr>
+    <tr fmclass='aua' fmfield='street1' type='addr-template' required='required'></tr>
+    <tr fmclass='aua' fmfield='street2' type='addr-template' required='show'></tr>
+    <tr fmclass='aua' fmfield='city' type='addr-template' required='required'></tr>
+    <tr fmclass='aua' fmfield='county' type='addr-template' required='show'></tr>
+    <tr fmclass='aua' fmfield='state' type='addr-template'></tr>
+    <tr fmclass='aua' fmfield='country' type='addr-template' required='required'></tr>
+    <tr fmclass='aua' fmfield='valid' type='addr-template' required='show'></tr>
+    <tr fmclass='aua' fmfield='within_city_limits' type='addr-template' required='show'></tr>
 
     <tr id='new-addr-row' class='newaddr-row' required='show'>
         <td colspan='0' style='text-align:center;'>
@@ -116,10 +116,10 @@
 
     <!-- stat cats -->
     <tr class='divider' id='stat-cat-divider' required='suggested'><td colspan='0' id='statCats'></td></tr>
-    <tr id='stat-cat-row-template' required='suggested'><td class='uedit-help'/><td name='name'/><td name='widget'/></tr>
+    <tr id='stat-cat-row-template' required='suggested'><td class='uedit-help'></td><td name='name'></td><td name='widget'></td></tr>
 
     <!-- surveys -->
-    <tr id='survey-row-template' class='divider' required='suggested'><td colspan='0' name='name'/></tr>
-    <tr id='survey-question-row-template' required='suggested'><td class='uedit-help'/><td name='question'/><td name='answers'/></tr>
+    <tr id='survey-row-template' class='divider' required='suggested'><td colspan='0' name='name'></td></tr>
+    <tr id='survey-question-row-template' required='suggested'><td class='uedit-help'></td><td name='question'></td><td name='answers'></td></tr>
 </tbody>
 

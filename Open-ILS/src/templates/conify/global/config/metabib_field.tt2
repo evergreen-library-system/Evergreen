@@ -17,7 +17,7 @@
             autoHeight='true'
             editOnEnter='true'>
         <thead>
-            <tr><th field='xpath' width='25%'/>
+            <tr><th field='xpath' width='25%'></th>
                 <th field='vdata_suppliers' get='getCmfvm' formatter='formatCmfvmLink'>
                         [% l('Data Suppliers') %]
                 </th>

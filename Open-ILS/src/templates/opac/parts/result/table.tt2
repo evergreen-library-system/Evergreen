@@ -527,13 +527,13 @@ END;
                                         </tr>
                                         [%- IF ENV.OILS_CHILIFRESH_ACCOUNT %]
                                         <tr>
-                                            <td/>
+                                            <td></td>
                                             <td align='center'> <!-- Chilifresh reviews link --> 
                                                 <span class="chili_review" id="isbn_[% attrs.isbn_clean | html %]"> </span>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td/>
+                                            <td></td>
                                             <td colspan='5'> <!-- Chilifresh reviews panel -->
                                                 <div id="chili_review_[% attrs.isbn_clean | html %]" style="display: none;" align="center"></div>
                                             </td>

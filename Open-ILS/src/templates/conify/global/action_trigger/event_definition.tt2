@@ -37,7 +37,7 @@
                     showPaginator='true'
                     editOnEnter='true'>
                 <thead>
-                    <tr><th field='name' width='15%' get='getEventDefNameLink' formatter='formatEventDefNameLink'/></tr>
+                    <tr><th field='name' width='15%' get='getEventDefNameLink' formatter='formatEventDefNameLink'></th></tr>
                 </thead>
             </table>
         </div>
@@ -82,8 +82,8 @@
                     editOnEnter='true'>
                 <thead>
                     <tr>
-                        <th field='module' width='200px;'/>
-                        <th field='description' width='auto'/>
+                        <th field='module' width='200px;'></th>
+                        <th field='description' width='auto'></th>
                     </tr>
                 </thead>
             </table>
@@ -107,8 +107,8 @@
                     editOnEnter='true'>
                 <thead>
                     <tr>
-                        <th field='module' width='200px'/>
-                        <th field='description' width='auto'/>
+                        <th field='module' width='200px'></th>
+                        <th field='description' width='auto'></th>
                     </tr>
                 </thead>
             </table>

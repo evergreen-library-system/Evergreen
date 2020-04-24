@@ -37,7 +37,7 @@
             editOnEnter='true'>
         <thead>
             <tr>
-                <th field="datatype" formatter="formatDtype"/>
+                <th field="datatype" formatter="formatDtype"></th>
             </tr>
         </thead>
     </table>

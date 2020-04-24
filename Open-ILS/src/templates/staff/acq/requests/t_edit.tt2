@@ -139,7 +139,7 @@
                 <select id="request-type-selector" class="form-control" required
                     ng-model="extra.selected_request_type"
                     ng-disabled="mode=='view'"
-                    ng-options="rt.label() for rt in request_types"/>
+                    ng-options="rt.label() for rt in request_types"></select>
             </div>
             <div class="form-group">
                 <label for="edit-request-isxn">[% l('ISxN') %]</label>

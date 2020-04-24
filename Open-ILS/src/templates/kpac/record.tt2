@@ -32,7 +32,7 @@
             <div class="item_detail_rate_wrapper">
                 <div class="item_detail_rate_starts">
                     <span class="chili_review" id="isbn_[% attrs.isbn_clean | html %]"> </span>
-                    <span class="ltfl_reviews"/>
+                    <span class="ltfl_reviews"></span>
                 </div>
                 <!--
                 <div style="margin-bottom:20px;">

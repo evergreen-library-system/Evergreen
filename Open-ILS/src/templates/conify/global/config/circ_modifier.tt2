@@ -37,8 +37,8 @@
             editOnEnter='true'>
         <thead>
             <tr>
-                <th field="magnetic_media" options='No,Yes' values='f,t'/>
-                <th field="sip2_media_type" formatter='formatSIPMediaType'/>
+                <th field="magnetic_media" options='No,Yes' values='f,t'></th>
+                <th field="sip2_media_type" formatter='formatSIPMediaType'></th>
             </tr>
         </thead>
     </table>

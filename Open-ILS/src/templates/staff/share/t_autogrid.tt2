@@ -104,7 +104,7 @@
           <a ng-if="!action.divider" href
             ng-click="!actionDisable(action) && actionLauncher(action)">{{action.label}}</a>
         </li>
-        <span ng-repeat-end/>
+        <span ng-repeat-end></span>
       </ul>
     </div>
 

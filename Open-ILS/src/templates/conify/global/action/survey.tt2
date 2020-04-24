@@ -42,7 +42,7 @@
             </tr>
             <tr>
                 <td>[% l('Owning Library') %]</td>
-                <td><select dojoType='openils.widget.OrgUnitFilteringSelect' name='svOwner' jsId='asvOwningOrg' searchAttr='shortname' labelAttr='shortname'/></td>
+                <td><select dojoType='openils.widget.OrgUnitFilteringSelect' name='svOwner' jsId='asvOwningOrg' searchAttr='shortname' labelAttr='shortname'></select></td>
             </tr>
             <tr>
                 <td>[% l('Start Date') %]</td>

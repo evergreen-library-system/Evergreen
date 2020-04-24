@@ -14,7 +14,7 @@
             query="{field: '*'}"
             fmClass='ascsf'
             defaultCellWidth='15'
-            editOnEnter='true'/>
+            editOnEnter='true'></table>
 </div>
 
 <script type="text/javascript">
