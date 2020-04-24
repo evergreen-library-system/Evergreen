@@ -10,6 +10,9 @@ ALTER TABLE money.aged_payment ADD COLUMN payment_type TEXT NOT NULL;
 
 CREATE TABLE money.aged_billing (LIKE money.billing INCLUDING INDEXES);
 
+
+/* LP 1858448 : Disable initial aged money migration
+
 INSERT INTO money.aged_payment 
     SELECT  mp.* FROM money.payment_view mp
     JOIN action.aged_circulation circ ON (circ.id = mp.xact);
@@ -17,6 +20,7 @@ INSERT INTO money.aged_payment
 INSERT INTO money.aged_billing
     SELECT mb.* FROM money.billing mb
     JOIN action.aged_circulation circ ON (circ.id = mb.xact);
+*/
 
 CREATE OR REPLACE VIEW money.all_payments AS
     SELECT * FROM money.payment_view 
@@ -65,6 +69,8 @@ BEGIN
 
     -- Migrate billings and payments to aged tables
 
+
+/* LP 1858448 : Disable initial aged money migration
     INSERT INTO money.aged_billing
         SELECT * FROM money.billing WHERE xact = OLD.id;
 
@@ -73,10 +79,14 @@ BEGIN
 
     DELETE FROM money.payment WHERE xact = OLD.id;
     DELETE FROM money.billing WHERE xact = OLD.id;
+*/
 
     RETURN OLD;
 END;
 $$ LANGUAGE 'plpgsql';
+
+
+/* LP 1858448 : Disable initial aged money migration
 
 -- NOTE you could COMMIT here then start a new TRANSACTION if desired.
 
@@ -128,8 +138,12 @@ ALTER TABLE money.account_adjustment
     ADD CONSTRAINT account_adjustment_billing_fkey 
     FOREIGN KEY (billing) REFERENCES money.billing (id);
 
+*/
+
 COMMIT;
 
 -- Good to run after truncating -- OK to run after COMMIT.
+/* LP 1858448 : Disable initial aged money migration
 ANALYZE money.billing;
+*/
 
