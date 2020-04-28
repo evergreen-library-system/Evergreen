@@ -1224,7 +1224,7 @@ sub handle_hold_update {
             $val->{"pickup_lib"} = $self->cgi->param("pickup_lib");
             $val->{"email_notify"} = $self->cgi->param("email_notify") ? 1 : 0;
             $val->{"phone_notify"} = $self->cgi->param("phone_notify");
-            $val->{"sms_notify"} = $self->cgi->param("sms_notify");
+            $val->{"sms_notify"} = ( $self->cgi->param("sms_notify") eq '' ) ? undef : $self->cgi->param("sms_notify");
             $val->{"sms_carrier"} = int($self->cgi->param("sms_carrier")) if $val->{"sms_notify"};
 
             for my $field (qw/expire_time thaw_date/) {
