@@ -1,6 +1,8 @@
 import {Pager} from '@eg/share/util/pager';
 import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
+import {FormatService} from '@eg/core/format.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -25,6 +27,8 @@ export class FloatingGroupComponent extends AdminPageComponent implements OnInit
 
     constructor(
         route: ActivatedRoute,
+        ngLocation: Location,
+        format: FormatService,
         idl: IdlService,
         org: OrgService,
         auth: AuthService,
@@ -33,7 +37,7 @@ export class FloatingGroupComponent extends AdminPageComponent implements OnInit
         toast: ToastService,
         private router: Router
     ) {
-        super(route, idl, org, auth, pcrud, perm, toast);
+        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast);
     }
 
     ngOnInit() {
