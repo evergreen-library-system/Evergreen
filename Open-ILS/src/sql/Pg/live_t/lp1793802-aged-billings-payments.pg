@@ -1,6 +1,10 @@
 -- Load the TAP functions.
 BEGIN;
 
+-- Activate "age money with circs" setting.
+UPDATE config.global_flag SET enabled = TRUE
+    WHERE name = 'history.money.age_with_circs';
+
 -- Plan the tests.
 SELECT plan(8);
 
