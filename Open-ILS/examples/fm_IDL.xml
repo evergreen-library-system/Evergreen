@@ -1252,7 +1252,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
     <class id="cza" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::z3950_attr" oils_persist:tablename="config.z3950_attr" reporter:label="Z39.50 Attribute">
         <fields oils_persist:primary="id" oils_persist:sequence="config.z3950_attr_id_seq">
             <field reporter:label="Z39.50 Attribute ID" name="id" reporter:datatype="id" reporter:selector="label"/>
-            <field reporter:label="Z39.50 Source" name="source" reporter:datatype="link"/>
+            <field reporter:label="Z39.50 Source" name="source" reporter:datatype="link" config_field="true"/>
             <field reporter:label="Name" name="name" reporter:datatype="text"/>
             <field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true"/>
             <field reporter:label="Code" name="code"  reporter:datatype="int"/>
@@ -3550,9 +3550,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="Always Use?" name="forceto" reporter:datatype="bool"/>
 			<field reporter:label="Current Ceiling Date" name="ceiling_date" reporter:datatype="timestamp"/>
             <field reporter:label="Owner" name="owner" reporter:datatype="org_unit"/>
+			<field reporter:label="Values" name="values" oils_persist:virtual="true" 
+				reporter:datatype="link" config_field="true"/>
 		</fields>
 		<links>
             <link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="values" reltype="has_many" key="hard_due_date" map="" class="chddv"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -3567,7 +3570,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="chddv" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::hard_due_date_values" oils_persist:tablename="config.hard_due_date_values" reporter:label="Hard Due Date Values">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.hard_due_date_values_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Hard Due Date" name="hard_due_date" reporter:datatype="link"/>
+			<field reporter:label="Hard Due Date" name="hard_due_date" reporter:datatype="link" config_field="true"/>
 			<field reporter:label="Ceiling Date" name="ceiling_date" reporter:datatype="timestamp"/>
             <field reporter:label="Active Date" name="active_date" reporter:datatype="timestamp"/>
 		</fields>
