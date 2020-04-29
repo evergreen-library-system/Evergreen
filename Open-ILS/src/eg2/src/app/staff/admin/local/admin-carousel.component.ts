@@ -1,4 +1,6 @@
 import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
+import {FormatService} from '@eg/core/format.service';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
 import {ActivatedRoute} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -28,6 +30,8 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
 
     constructor(
         route: ActivatedRoute,
+        ngLocation: Location,
+        format: FormatService,
         idl: IdlService,
         org: OrgService,
         auth: AuthService,
@@ -36,7 +40,7 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
         toast: ToastService,
         private net: NetService
     ) {
-        super(route, idl, org, auth, pcrud, perm, toast);
+        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast);
     }
 
     ngOnInit() {

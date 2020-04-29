@@ -1,7 +1,9 @@
 import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {GridDataSource} from '@eg/share/grid/grid';
+import {FormatService} from '@eg/core/format.service';
+import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {TranslateComponent} from '@eg/share/translate/translate.component';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -75,6 +77,13 @@ export class AdminPageComponent implements OnInit {
     // Override field options for create/edit dialog
     @Input() fieldOptions: {[field: string]: FmFieldOptions};
 
+    // Override default values for fm-editor
+    @Input() defaultNewRecord: IdlObject;
+
+    // Used as the first part of the routerLink path when creating
+    // links to related tables via configField's.
+    @Input() configLinkBasePath: string;
+
     @ViewChild('grid') grid: GridComponent;
     @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
     @ViewChild('successString') successString: StringComponent;
@@ -87,7 +96,7 @@ export class AdminPageComponent implements OnInit {
 
     idlClassDef: any;
     pkeyField: string;
-    configFields: string[];
+    configFields: any[]; // IDL field definitions
 
     // True if any columns on the object support translations
     translateRowIdx: number;
@@ -106,6 +115,8 @@ export class AdminPageComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
+        private ngLocation: Location,
+        private format: FormatService,
         public idl: IdlService,
         private org: OrgService,
         public auth: AuthService,
@@ -143,6 +154,7 @@ export class AdminPageComponent implements OnInit {
     }
 
     ngOnInit() {
+
         this.idlClassDef = this.idl.classes[this.idlClass];
         this.pkeyField = this.idlClassDef.pkey || 'id';
 
@@ -156,6 +168,13 @@ export class AdminPageComponent implements OnInit {
                 this.idlClassDef.table;
         }
 
+
+        // Note the field filter could be based purely on fields
+        // which are links, but that leads to cases where links
+        // are created to tables which are too big and/or admin
+        // interfaces which are not otherwise used because they
+        // have custom UI's instead.
+        // this.idlClassDef.fields.filter(f => f.datatype === 'link');
         this.configFields =
             this.idlClassDef.fields.filter(f => f.config_field);
 
@@ -235,7 +254,10 @@ export class AdminPageComponent implements OnInit {
 
             const search: any = {};
 
-            search[this.orgField] = this.searchOrgs.orgIds || [this.contextOrg.id()];
+            if (this.orgField) {
+                search[this.orgField] =
+                    this.searchOrgs.orgIds || [this.contextOrg.id()];
+            }
 
             if (this.gridFilters) {
                 // Lay the URL grid filters over our search object.
@@ -360,6 +382,82 @@ export class AdminPageComponent implements OnInit {
         };
 
         this.translator.open({size: 'lg'});
+    }
+
+    // Construct a routerLink path for a configField.
+    configFieldRouteLink(row: any, col: GridColumn): string {
+        const cf = this.configFields.filter(field => field.name === col.name)[0];
+        const linkClass = this.idl.classes[cf['class']];
+        const pathParts = linkClass.table.split(/\./); // schema.tablename
+        return `${this.configLinkBasePath}/${pathParts[0]}/${pathParts[1]}`;
+    }
+
+    // Compiles a gridFilter value used when navigating to a linked
+    // class via configField.  The filter ensures the linked page
+    // only shows rows which refer back to the object from which the
+    // link was clicked.
+    configFieldRouteParams(row: any, col: GridColumn): any {
+        const cf = this.configFields.filter(field => field.name === col.name)[0];
+        let value = this.configFieldLinkedValue(row, col);
+
+        // For certain has-a relationships, the linked object will be
+        // fleshed so its display (selector) value can be used.
+        // Extract the scalar value found at the remote target field.
+        if (value && typeof value === 'object') { value = value[cf.key](); }
+
+        const filter: any = {};
+        filter[cf.key] = value;
+
+        return {gridFilters : JSON.stringify(filter)};
+    }
+
+    // Returns the value on the local object for the field which
+    // refers to the remote object.  This may be a scalar or a
+    // fleshed IDL object.
+    configFieldLinkedValue(row: any, col: GridColumn): any {
+        const cf = this.configFields.filter(field => field.name === col.name)[0];
+        const linkClass = this.idl.classes[cf['class']];
+
+        // cf.key is the name of the field on the linked object that matches
+        // the value on our local object.
+        // In as has_many relationship, the remote field has its own
+        // 'key' value which determines which field on the local object
+        // represents the other end of the relationship.  This is
+        // typically, but not always the local pkey field.
+
+        const localField =
+            cf.reltype === 'has_many' ?
+            (linkClass.field_map[cf.key].key || this.pkeyField) : cf.name;
+
+        return row[localField]();
+    }
+
+    // Returns a URL suitable for using as an href.
+    // We use an href to jump to the secondary admin page because
+    // routerLink within the same base component results in component
+    // reuse of a series of components which were not designed with
+    // reuse in mind.
+    configFieldLinkUrl(row: any, col: GridColumn): string {
+        const path = this.configFieldRouteLink(row, col);
+        const filters = this.configFieldRouteParams(row, col);
+        const url = path + '?gridFilters=' +
+            encodeURIComponent(filters.gridFilters);
+
+        return this.ngLocation.prepareExternalUrl(url);
+    }
+
+    configLinkLabel(row: any, col: GridColumn): string {
+        const cf = this.configFields.filter(field => field.name === col.name)[0];
+
+        // Has-many links have no specific value to use for display
+        // so just use the column label.
+        if (cf.reltype === 'has_many') { return col.label; }
+
+        return this.format.transform({
+            value: row[col.name](),
+            idlClass: this.idlClass,
+            idlField: col.name
+        });
     }
 }
 
