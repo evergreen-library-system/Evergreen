@@ -617,28 +617,57 @@ sub autogen_barcodes {
     if ($barcode =~ /(\d+)$/) { $barcode_number = $1; }
 
     my @res;
+    my $iter = 0;
     for (my $i = 1; $i <= $num_of_barcodes; $i++) {
-        my $calculated_barcode;
 
-        # default is to use checkdigits, so looking for an explicit false here
-        if (defined $$options{'checkdigit'} && ! $$options{'checkdigit'}) { 
-            $calculated_barcode = $barcode_number + $i;
-        } else {
-            if ($barcode_number =~ /^\d{8}$/) {
-                $calculated_barcode = add_codabar_checkdigit($barcode_number + $i, 0);
-            } elsif ($barcode_number =~ /^\d{9}$/) {
-                $calculated_barcode = add_codabar_checkdigit($barcode_number + $i*10, 1); # strip last digit
-            } elsif ($barcode_number =~ /^\d{13}$/) {
-                $calculated_barcode = add_codabar_checkdigit($barcode_number + $i, 0);
-            } elsif ($barcode_number =~ /^\d{14}$/) {
-                $calculated_barcode = add_codabar_checkdigit($barcode_number + $i*10, 1); # strip last digit
-            } else {
-                $calculated_barcode = $barcode_number + $i;
-            }
+        my $full_barcode;
+        while (1) {
+            $iter++;
+
+            my $calculated_barcode = next_auto_barcode($barcode_number, $iter, $options);
+            $full_barcode = $barcode_text . $calculated_barcode;
+
+            # If we're not checking dupes, assume the barcode we have is fine.
+            last unless $options->{skip_dupes};
+
+            my $dupe = $e->search_asset_copy(
+                {barcode => $full_barcode, deleted => 'f'},
+                {idlist => 1}
+            )->[0];
+
+            # If we find a duplicate, circle around again for another try.
+            last unless $dupe;
         }
-        push @res, $barcode_text . $calculated_barcode;
+
+        push @res, $full_barcode;
     }
+
     return \@res
+}
+
+sub next_auto_barcode {
+    my ($barcode_number, $iter, $options) = @_;
+
+    my $calculated_barcode;
+
+    # default is to use checkdigits, so looking for an explicit false here
+    if (defined $$options{'checkdigit'} && ! $$options{'checkdigit'}) { 
+        $calculated_barcode = $barcode_number + $iter;
+    } else {
+        if ($barcode_number =~ /^\d{8}$/) {
+            $calculated_barcode = add_codabar_checkdigit($barcode_number + $iter, 0);
+        } elsif ($barcode_number =~ /^\d{9}$/) {
+            $calculated_barcode = add_codabar_checkdigit($barcode_number + $iter*10, 1); # strip last digit
+        } elsif ($barcode_number =~ /^\d{13}$/) {
+            $calculated_barcode = add_codabar_checkdigit($barcode_number + $iter, 0);
+        } elsif ($barcode_number =~ /^\d{14}$/) {
+            $calculated_barcode = add_codabar_checkdigit($barcode_number + $iter*10, 1); # strip last digit
+        } else {
+            $calculated_barcode = $barcode_number + $iter;
+        }
+    }
+
+    return $calculated_barcode;
 }
 
 # Codabar doesn't define a checkdigit algorithm, but this one is typically used by libraries.  gmcharlt++
