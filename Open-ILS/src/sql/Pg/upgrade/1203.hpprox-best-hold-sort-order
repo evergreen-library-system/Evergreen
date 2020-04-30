@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1203', :eg_version);
 
 ALTER TABLE config.best_hold_order ADD COLUMN owning_lib_to_home_lib_prox INT; -- copy owning lib <-> user home lib prox
 
