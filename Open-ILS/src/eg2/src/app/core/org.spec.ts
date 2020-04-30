@@ -1,5 +1,6 @@
 import {IdlService} from './idl.service';
 import {EventService} from './event.service';
+import {DbStoreService} from './db-store.service';
 import {NetService} from './net.service';
 import {AuthService} from './auth.service';
 import {PcrudService} from './pcrud.service';
@@ -16,6 +17,7 @@ describe('OrgService', () => {
     let evtService: EventService;
     let storeService: StoreService;
     let hatchService: HatchService;
+    let dbStoreService: DbStoreService;
 
     beforeEach(() => {
         idlService = new IdlService();
@@ -25,7 +27,8 @@ describe('OrgService', () => {
         netService = new NetService(evtService);
         authService = new AuthService(evtService, netService, storeService);
         pcrudService = new PcrudService(idlService, netService, authService);
-        orgService = new OrgService(netService, authService, pcrudService);
+        dbStoreService = new DbStoreService();
+        orgService = new OrgService(dbStoreService, netService, authService, pcrudService);
     });
 
     const initTestData = () => {
