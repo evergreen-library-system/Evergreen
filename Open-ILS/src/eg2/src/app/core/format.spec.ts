@@ -1,6 +1,7 @@
 import {DatePipe, CurrencyPipe, registerLocaleData} from '@angular/common';
 import {IdlService} from './idl.service';
 import {EventService} from './event.service';
+import {DbStoreService} from './db-store.service';
 import {NetService} from './net.service';
 import {AuthService} from './auth.service';
 import {PcrudService} from './pcrud.service';
@@ -26,6 +27,7 @@ describe('FormatService', () => {
     let orgService: OrgService;
     let evtService: EventService;
     let storeService: StoreService;
+    let dbStoreService: DbStoreService;
     let localeService: LocaleService;
     let hatchService: HatchService;
     // tslint:disable-next-line:prefer-const
@@ -42,7 +44,8 @@ describe('FormatService', () => {
         netService = new NetService(evtService);
         authService = new AuthService(evtService, netService, storeService);
         pcrudService = new PcrudService(idlService, netService, authService);
-        orgService = new OrgService(netService, authService, pcrudService);
+        dbStoreService = new DbStoreService();
+        orgService = new OrgService(dbStoreService, netService, authService, pcrudService);
         localeService = new LocaleService(location, null, pcrudService);
         service = new FormatService(
             datePipe,
