@@ -5012,7 +5012,7 @@ SELECT  usr,
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="ADMIN_BOOKING_RESOURCE_TYPE" context_field='owner'/>
-				<retrieve/>
+				<retrieve permission="VIEW_BOOKING_RESOURCE_TYPE" context_field='owner'/>
 				<update permission="ADMIN_BOOKING_RESOURCE_TYPE" context_field='owner'/>
 				<delete permission="ADMIN_BOOKING_RESOURCE_TYPE" context_field='owner'/>
 			</actions>
@@ -5044,7 +5044,7 @@ SELECT  usr,
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<create permission="ADMIN_BOOKING_RESOURCE" context_field='owner'/>
-				<retrieve/>
+				<retrieve permission="VIEW_BOOKING_RESOURCE" context_field='owner'/>
 				<update permission="ADMIN_BOOKING_RESOURCE" context_field='owner'/>
 				<delete permission="ADMIN_BOOKING_RESOURCE" context_field='owner'/>
 			</actions>
