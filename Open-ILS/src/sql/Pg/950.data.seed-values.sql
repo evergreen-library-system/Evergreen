@@ -1933,7 +1933,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 618, 'CREATE_PRECAT', oils_i18n_gettext(618,
     'Allows a user to create a pre-catalogued copy', 'ppl', 'description')),
  ( 619, 'EDIT_SELF_IN_CLIENT', oils_i18n_gettext(619,
-    'Allow a user to edit their own account in the staff client', 'ppl', 'description'))
+    'Allow a user to edit their own account in the staff client', 'ppl', 'description')),
+ ( 621, 'VIEW_BOOKING_RESOURCE_TYPE', oils_i18n_gettext(621,
+    'View booking resource types', 'ppl', 'description')),
+ ( 622, 'VIEW_BOOKING_RESOURCE', oils_i18n_gettext(622,
+    'View booking resources', 'ppl', 'description'))
 ;
 
 
@@ -2367,6 +2371,8 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'UPDATE_PAYMENT_NOTE',
 			'UPDATE_PICKUP_LIB FROM_TRANSIT',
 			'UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF',
+			'VIEW_BOOKING_RESOURCE',
+			'VIEW_BOOKING_RESOURCE_TYPE',
 			'VIEW_GROUP_PENALTY_THRESHOLD',
 			'VIEW_STANDING_PENALTY',
 			'VOID_BILLING',
@@ -2527,6 +2533,8 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF',
 			'UPDATE_PICKUP_LIB_FROM_TRANSIT',
 			'UPDATE_USER',
+			'VIEW_BOOKING_RESOURCE',
+			'VIEW_BOOKING_RESOURCE_TYPE',
 			'VIEW_REPORT_OUTPUT',
 			'VIEW_STANDING_PENALTY',
 			'VOID_BILLING',
