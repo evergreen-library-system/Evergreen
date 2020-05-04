@@ -1,5 +1,5 @@
 BEGIN;
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1204', :eg_version);
 
 INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 621, 'VIEW_BOOKING_RESOURCE_TYPE', oils_i18n_gettext(621,
