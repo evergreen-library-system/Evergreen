@@ -2540,8 +2540,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Control Set ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true" />
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true" />
-			<field reporter:label="Controlling Authority Fields" name="authority_fields" reporter:datatype="link" oils_persist:virtual="true"/>
-			<field reporter:label="Thesauri" name="thesauri" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field reporter:label="Controlling Authority Fields" name="authority_fields" reporter:datatype="link" oils_persist:virtual="true" config_field="true"/>
+			<field reporter:label="Thesauri" name="thesauri" reporter:datatype="link" oils_persist:virtual="true" config_field="true"/>
 		</fields>
 		<links>
 			<link field="authority_fields" reltype="has_many" key="control_set" map="" class="acsaf"/>
@@ -2561,7 +2561,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.control_set_authority_field_id_seq">
 			<field reporter:label="Control Set Authority Field ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Main Entry" name="main_entry" reporter:datatype="link"/>
-			<field reporter:label="Control Set" name="control_set" reporter:datatype="link"/>
+			<field reporter:label="Control Set" name="control_set" reporter:datatype="link" config_field="true"/>
 			<field reporter:label="Tag" name="tag" reporter:datatype="text" oils_obj:required="true" oils_obj:validate="^.{3}$"/>
 			<field reporter:label="Subfield List" name="sf_list" reporter:datatype="text" />
 			<field reporter:label="Subfield List for Display" name="display_sf_list" reporter:datatype="text" />
@@ -2637,7 +2637,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="at" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::thesaurus" oils_persist:tablename="authority.thesaurus" reporter:label="Authority Thesaurus" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field reporter:label="Thesaurus Code" name="code" reporter:datatype="id" reporter:selector="name"/>
-			<field reporter:label="Control Set" name="control_set" reporter:datatype="link"/>
+			<field reporter:label="Control Set" name="control_set" reporter:datatype="link" config_field="true"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true" />
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true" />
 			<field reporter:label="Short Code" name="short_code" reporter:datatype="text" />
