@@ -218,7 +218,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="vibtf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="vandelay::import_bib_trash_fields" oils_persist:tablename="vandelay.import_bib_trash_fields" reporter:label="Import/Overlay Fields for Removal">
 		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.import_bib_trash_fields_id_seq">
 			<field reporter:label="Field ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Group" name="grp" reporter:datatype="link"/>
+			<field reporter:label="Group" name="grp" reporter:datatype="link" config_field="true"/>
 			<field reporter:label="Field" name="field" reporter:datatype="text"/>
 		</fields>
 		<links>
@@ -343,9 +343,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text"/>
 			<field reporter:label="Always Apply" name="always_apply" reporter:datatype="bool"/>
+			<field reporter:label="Fields" name="import_bib_trash_fields" oils_persist:virtual="true" reporter:datatype="link" config_field="true"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="import_bib_trash_fields" reltype="has_many" key="grp" map="" class="vibtf"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
