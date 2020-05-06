@@ -5431,10 +5431,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_BOOKING_RESERVATION" global_required='true'/>
-				<retrieve permission="STAFF_LOGIN" global_required='true'/>
-				<update permission="ADMIN_BOOKING_RESERVATION" global_required='true'/>
-				<delete permission="ADMIN_BOOKING_RESERVATION" global_required='true'/>
+				<create permission="ADMIN_BOOKING_RESERVATION" context_field="pickup_lib"/>
+				<retrieve permission="VIEW_BOOKING_RESERVATION" context_field="pickup_lib"/>
+				<update permission="ADMIN_BOOKING_RESERVATION" context_field="pickup_lib"/>
+				<delete permission="ADMIN_BOOKING_RESERVATION" context_field="pickup_lib"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -5451,10 +5451,18 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_BOOKING_RESERVATION_ATTR_MAP" global_required='true'/>
-				<retrieve permission="STAFF_LOGIN" global_required='true'/>
-				<update permission="ADMIN_BOOKING_RESERVATION_ATTR_MAP" global_required='true'/>
-				<delete permission="ADMIN_BOOKING_RESERVATION_ATTR_MAP" global_required='true'/>
+				<create permission="ADMIN_BOOKING_RESERVATION_ATTR_MAP">
+					<context link="reservation" field="pickup_lib"/>
+				</create>
+				<retrieve permission="VIEW_BOOKING_RESERVATION_ATTR_MAP">
+					<context link="reservation" field="pickup_lib"/>
+				</retrieve>
+				<update permission="ADMIN_BOOKING_RESERVATION_ATTR_MAP">
+					<context link="reservation" field="pickup_lib"/>
+				</update>
+				<delete permission="ADMIN_BOOKING_RESERVATION_ATTR_MAP">
+					<context link="reservation" field="pickup_lib"/>
+				</delete>
 			</actions>
 		</permacrud>
 	</class>
