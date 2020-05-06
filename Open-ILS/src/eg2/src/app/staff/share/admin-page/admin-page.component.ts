@@ -191,6 +191,20 @@ export class AdminPageComponent implements OnInit {
             } catch (E) {
                 console.error('Invalid grid filters provided: ', filters);
             }
+
+            // Use the grid filters as the basis for our default
+            // new record (passed to fm-editor).
+            if (!this.defaultNewRecord) {
+                const rec = this.idl.create(this.idlClass);
+                Object.keys(this.gridFilters).forEach(field => {
+                    // When filtering on the primary key of the current
+                    // object type, avoid using it in the default new object.
+                    if (rec[field] && this.pkeyField !== field) {
+                        rec[field](this.gridFilters[field]);
+                    }
+                });
+                this.defaultNewRecord = rec;
+            }
         }
 
         // Limit the view org selector to orgs where the user has
@@ -463,6 +477,12 @@ export class AdminPageComponent implements OnInit {
             idlClass: this.idlClass,
             idlField: col.name
         });
+    }
+
+    clearGridFiltersUrl(): string {
+        const parts = this.idlClassDef.table.split(/\./);
+        const url = this.configLinkBasePath + '/' + parts[0] + '/' + parts[1];
+        return this.ngLocation.prepareExternalUrl(url);
     }
 }
 
