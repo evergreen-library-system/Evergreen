@@ -614,11 +614,19 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
     }
 
     service.checkin = function (items) {
-        angular.forEach(items, function (cp) {
-            egCirc.checkin({copy_barcode:cp.barcode}).then(
-                function() { service.add_barcode_to_list(cp.barcode) }
-            );
-        });
+        // Recursive function that creates a promise for each item. Once the dialog 
+        // window for a given item is closed the next promise is started and a
+        // new dialog is opened. 
+        // This keeps multiple popups from hitting the screen at once.
+        (function checkinLoop(i) {
+            if (i < items.length) new Promise((resolve, reject) => {
+                egCirc.checkin({copy_barcode: items[i].barcode})
+                .then(function() {
+                    service.add_barcode_to_list(items[i].barcode);
+                    resolve();
+                })
+            }).then(checkinLoop.bind(null, i+1));
+        })(0);
     }
 
     service.renew = function (items) {
