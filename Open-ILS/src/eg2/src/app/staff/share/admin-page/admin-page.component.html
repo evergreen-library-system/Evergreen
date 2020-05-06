@@ -16,13 +16,27 @@
 <ng-template #createErrStrTmpl i18n>Failed to create new {{idlClassDef.label}}</ng-template>
 <eg-string #createErrString [template]="createErrStrTmpl"></eg-string>
 
-<ng-container *ngIf="orgField">
-  <eg-org-family-select
-    [limitPerms]="viewPerms" 
-    [selectedOrgId]="contextOrg.id()"
-    [(ngModel)]="searchOrgs"
-    (ngModelChange)="grid.reload()">
-  </eg-org-family-select>
+<ng-container *ngIf="orgField || gridFilters">
+  <div class="row">
+    <div class="col-lg-6">
+      <ng-container *ngIf="orgField">
+        <eg-org-family-select
+          [limitPerms]="viewPerms" 
+          [selectedOrgId]="contextOrg.id()"
+          [(ngModel)]="searchOrgs"
+          (ngModelChange)="grid.reload()">
+        </eg-org-family-select>
+      </ng-container>
+    </div>
+    <div class="col-lg-6 d-flex">
+      <div class="flex-1"></div><!-- push right -->
+      <ng-container *ngIf="gridFilters">
+        <span i18n>Filters Applied: {{gridFilters | json}}</span>
+        <a class="pl-2 font-italic" 
+          [attr.href]="clearGridFiltersUrl()" i18n>Clear Filters</a>
+      </ng-container>
+    </div>
+  </div>
   <hr/>
 </ng-container>
 
