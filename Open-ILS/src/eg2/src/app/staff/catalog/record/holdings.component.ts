@@ -727,14 +727,20 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
     openHoldingEdit(rows: HoldingsEntry[], addCallNums: boolean, addCopies: boolean) {
 
-        // The user may select a set of call numbers by selecting call number and/or
-        // copy rows.
+        // The user may select a set of call numbers by selecting call
+        // number and/or item rows.  Owning libs for new call numbers may
+        // also come from org unit row selection.
+        const orgs = {};
         const callNums = [];
         rows.forEach(r => {
             if (r.treeNode.nodeType === 'callNum') {
                 callNums.push(r.callNum);
+
             } else if (r.treeNode.nodeType === 'copy') {
                 callNums.push(r.treeNode.parentNode.target);
+
+            } else if (r.treeNode.nodeType === 'org') {
+                orgs[r.treeNode.target.id()] = true;
             }
         });
 
@@ -748,16 +754,15 @@ export class HoldingsMaintenanceComponent implements OnInit {
         } else if (addCallNums) {
             const entries = [];
 
-            if (callNums.length > 0) {
+            // Use selected call numbers as basis for new call numbers.
+            callNums.forEach(v =>
+                entries.push({label: v.label(), owner: v.owning_lib()}));
 
-                // When adding call numbers, if any are selected in the grid,
-                // create call numbers that have the same label and owner.
-                callNums.forEach(v =>
-                    entries.push({label: v.label(), owner: v.owning_lib()}));
+            // Use selected org units as owning libs for new call numbers
+            Object.keys(orgs).forEach(id => entries.push({owner: id}));
 
-                } else {
-
-                // Otherwise create new call numbers from scratch.
+            if (entries.length === 0) {
+                // Otherwise create new call numbers for "here"
                 entries.push({owner: this.auth.user().ws_ou()});
             }
 
