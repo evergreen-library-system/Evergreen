@@ -2,6 +2,85 @@
 
 :idseparator: -
 
+== Using generate_docs.pl
+
+This tool should perform all of the steps in "Doing it Manually", automatically. This tool requires some command line arguments and also requires some prerequisites.
+
+=== Installing Node
+
+Be sure and have Node installed.
+
+see https://github.com/nvm-sh/nvm#installation-and-update[Installing Node]
+
+[source,bash]
+----
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+----
+
+=== Antora pre-reqs
+
+Once Node is installed, follow the Antora prereqs
+
+Summarized from https://docs.antora.org/antora/2.3/install/linux-requirements/[Antora pre-reqs]
+
+[source,bash]
+----
+$ nvm install --lts
+----
+
+=== Install Ansible
+
+There is one peice of the puzzle using Ansible at the moment. Better get that installed.
+
+[source,bash]
+----
+$ sudo apt-get install ansible
+----
+
+=== Run generate_docs.pl
+
+This tool does the rest of the work. You will be requried to supply these things:
+
+[cols=2*]
+|===
+
+|base-url
+|[eg: http//examplesite.org]
+
+|tmp-space
+|[Writable path where we stage antora UI repo and the antora HTML, eg: ../../tmp]
+
+|html-output
+|[Path where you want the generated HTML files to go, eg: /var/www/html]
+
+|antora-ui-repo
+|[git link to a repo, could be community repo: https://gitlab.com/antora/antora-ui-default.git]
+
+|antora-version
+|[target version of antora, eg: 2.1]
+
+|===
+
+Example:
+
+[source,bash]
+----
+$ cd Evergreen/docs-antora
+$ ./generate_docs.pl \
+--base-url http//examplesite.org/prod \
+--tmp-space ../../tmp \
+--html-output /var/www/html/prod \
+--antora-ui-repo https://git.evergreen-ils.org/eg-antora.git \
+--antora-version 2.3
+
+----
+
+NOTE: This tool will create two folders within the temp space folder path: "staging" and "antora-ui". These folders will be erased and re-created with each execution.
+
+
+
+== Doing it all manually
+
 [source,bash]
 ----
 $ git clone git://git.evergreen-ils.org/working/Evergreen.git
