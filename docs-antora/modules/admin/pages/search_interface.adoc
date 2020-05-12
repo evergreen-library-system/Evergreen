@@ -1,7 +1,7 @@
-== Designing the patron search experience ==
+= Designing the patron search experience =
+:toc:
 
-Editing the formats select box options in the search interface
----------------------------------------------------------------
+== Editing the formats select box options in the search interface ==
 
 You may wish to remove, rename or organize the options in the formats select
 box. This can be accomplished from the staff client.
@@ -23,8 +23,7 @@ To hide the type so that it does not appear in the search interface, uncheck the
 
 Changes will be immediate.
 
-Adding and removing search fields in advanced search
------------------------------------------------------
+== Adding and removing search fields in advanced search ==
 
 It is possible to add and remove search fields on the advanced search page by
 editing the _opac/parts/config.tt2_ file in your template directory. Look for
@@ -74,7 +73,7 @@ client.
  {adv_label => l("Our Library's Field"), adv_filter => "facet_group_code"},
 ----
 
-=== Changing the display of facets and facet groups ===
+== Changing the display of facets and facet groups ==
 
 Facets can be reordered on the search results page by editing the
 _opac/parts/config.tt2_ file in your template directory.  
@@ -97,7 +96,7 @@ You may also change the default number of facets appearing under each category
 by editing the _facet.default_display_count_ value in _config.tt2_. The default 
 value is 5.
 
-=== Facilitating search scope changes ===
+== Facilitating search scope changes ==
 
 Users often search in a limited scope, such as only searching items in their
 local library.  When they aren't able find materials that meet their needs in

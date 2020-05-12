@@ -1,6 +1,7 @@
-== Notes about the Bibliographic Schema in the Database ==
+= Notes about the Bibliographic Schema in the Database =
+:toc:
 
-=== Bibliographic fingerprint ===
+== Bibliographic fingerprint ==
 
 Evergreen creates a fingerprint for each bib record, which can be found in the `fingerprint` column of the `biblio.record_entry` table.
 This fingerprint is used to group together different bib records in a Group Formats & Editions search in the public catalog.

@@ -1,7 +1,7 @@
-Logging into Evergreen
------------------------
+= Logging into Evergreen =
+:toc:
 
-=== Registering a Workstation ===
+== Registering a Workstation ==
 [#register_workstation]
 indexterm:[staff client, registering a workstation]
 
@@ -25,8 +25,7 @@ image::media/web_client_workstation_registration.png[]
 With This Browser_ menu, click _Use Now_ to return to the login page. Your
 newly-registered workstation should be selected by default on the login page.
 
-Basic Login,
-~~~~~~~~~~~
+== Basic Login ==
 
 indexterm:[staff client, logging in]
 
@@ -37,7 +36,7 @@ indexterm:[staff client, logging in]
 [[browser_defaults]]
 
 
-=== Logging Out ===
+== Logging Out ==
 
 indexterm:[staff client, logging out]
 

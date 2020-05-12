@@ -1,4 +1,4 @@
-== About Evergreen ==
+= About Evergreen =
 
 Evergreen is an open source library automation software designed to meet the
 needs of the very smallest to the very largest libraries and consortia. Through

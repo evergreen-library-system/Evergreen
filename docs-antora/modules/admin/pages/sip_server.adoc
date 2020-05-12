@@ -1,6 +1,7 @@
-== SIP Server ==
+= SIP Server =
+:toc:
 
-=== About the SIP Protocol ===
+== About the SIP Protocol ==
 
 indexterm:[Automated Circulation System]
 indexterm:[SelfCheck]
@@ -18,14 +19,13 @@ examples include:
 ** The automated sorting of items, often to bins or book carts, based on shelving location or other programmable 
 criteria
 
-=== Installing the SIP Server ===
+== Installing the SIP Server ==
 
 
 
 This is a rough intro to installing the +SIP+ server for Evergreen. 
 
-Getting the code 
-^^^^^^^^^^^^^^^^
+=== Getting the code ===
 
 Current +SIP+ server code lives at in the Evergreen git repository:
 
@@ -33,8 +33,7 @@ Current +SIP+ server code lives at in the Evergreen git repository:
    git clone git://git.evergreen-ils.org/SIPServer.git SIPServer 
 
 
-Configuring the Server 
-^^^^^^^^^^^^^^^^^^^^^^
+=== Configuring the Server ===
 
 indexterm:[configuration files, oils_sip.xml]
 
@@ -57,7 +56,7 @@ indexterm:[configuration files, oils_sip.xml]
 bear in mind that too many connections can exhaust memory. On a 4G RAM/4 CPU server (that is also running 
 evergreen), it is not recommended to exceed 100 +SIP+ client connections. 
 
-===== Setting the encoding =====
+==== Setting the encoding ====
 
 SIPServer looks for the encoding in the following
 places:
@@ -73,7 +72,7 @@ its parent +institution+ element.  Ideally, SIPServer should *not* look into
 the implementation config, and this check may be removed at some time
 in the future.
 
-===== Datatypes =====
+==== Datatypes ====
 
 The `msg64_hold_datatype` setting is similar to `msg64_summary_datatype`, but affects holds instead of circulations.
 When set to `barcode`, holds information will be delivered as a set of copy barcodes instead of title strings for
@@ -81,7 +80,7 @@ patron info requests. With barcodes, SIP clients can both find the title strings
 and make subsequent hold-related action requests, like holds cancellation. 
 
 
-==== Adding SIP Users ====
+=== Adding SIP Users ===
 
 indexterm:[configuration files, oils_sip.xml]
 
@@ -156,8 +155,7 @@ The expiration date will affect the +SIP+ users' connection so you might want to
 somewhere. 
 ===================
 
-Running the server 
-^^^^^^^^^^^^^^^^^^
+=== Running the server ===
 
 To start the +SIP+ server type the following commands from the command prompt: 
 
@@ -169,10 +167,9 @@ To start the +SIP+ server type the following commands from the command prompt:
 indexterm:[SIP]
 
 
-Logging-SIP 
-^^^^^^^^^^^
+=== Logging-SIP ===
 
-===== Syslog =====
+==== Syslog ====
 
 indexterm:[syslog]
 
@@ -197,7 +194,7 @@ It is useful to log +SIP+ requests to a separate file especially during initial 
    $ sudo /etc/init.d/sysklogd restart 
 
 
-===== Syslog-NG =====
+==== Syslog-NG ====
 
 indexterm:[syslog-NG]
 
@@ -224,8 +221,7 @@ indexterm:[syslog-NG]
 indexterm:[SIP]
 
 
-Testing Your SIP Connection 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Testing Your SIP Connection ===
 
 * In the root directory of the SIPServer code: 
 
@@ -247,7 +243,7 @@ This should produce something like:
 
 * Don't be dismayed at *Invalid Username*. That's just one of the many tests that are run. 
 
-==== More Testing ====
+=== More Testing ===
 
 Once you have opened up either the +SIP+ OR +SIP2+ ports to be accessible from outside you can do some testing 
 via +telnet+. In the following tests:
@@ -308,7 +304,7 @@ permanent and current locations, and call number.
 
 indexterm:[SIP]
 
-=== SIP Communication ===
+== SIP Communication ==
 
 indexterm:[SIP Server, SIP Communication]
 
@@ -350,7 +346,7 @@ preceded with a 2-character field identifier) are used. The fields vary between 
 
 [#sip_01_block_patron]
 
-==== 01 Block Patron ====
+=== 01 Block Patron ===
 
 indexterm:[SelfCheck]
 
@@ -390,7 +386,7 @@ The response is a 24 ``Patron Status Response'' with the following:
 
 [#sip_09-10_checkin]
 
-==== 09/10 Checkin ====
+=== 09/10 Checkin ===
 
 ~The request looks like: 
 
@@ -454,12 +450,12 @@ Don't be confused by the different branches that can show up in the same respons
 
 [#sip_11-12_checkout]
 
-==== 11/12 Checkout ====
+=== 11/12 Checkout ===
 
 
 [#sip_15-16_hold]
 
-==== 15/16 Hold ====
+=== 15/16 Hold ===
 
 Evergreen supports the Hold message for the purpose of canceling
 holds.  It does not currently support creating hold requests via SIP2.
@@ -467,8 +463,7 @@ holds.  It does not currently support creating hold requests via SIP2.
 
 [#sip_17-18_item_information]
 
-17/18 Item Information 
-^^^^^^^^^^^^^^^^^^^^^^
+=== 17/18 Item Information ===
 
 The request looks like: 
 
@@ -503,13 +498,12 @@ systems.
 
 [#sip_19-20_item_status_update]
 
-==== 19/20 Item Status Update ====
+=== 19/20 Item Status Update ===
 
 
 [#sip_23-24_patron_status]
 
-23/24 Patron Status 
-^^^^^^^^^^^^^^^^^^^
+=== 23/24 Patron Status ===
 
 Example: 
 
@@ -541,15 +535,14 @@ field definitions in your copy of the spec.
 
 [#sip_25-26_patron_enable]
 
-25/26 Patron Enable 
-^^^^^^^^^^^^^^^^^^^
+=== 25/26 Patron Enable ===
 
 Not yet supported. 
 
 
 [#sip_29-30_renew]
 
-==== 29/30 Renew ====
+=== 29/30 Renew ===
 
 Evergreen supports the Renew message. Evergreen checks whether a penalty is specifically configured to block
 renewals before blocking any SIP renewal.
@@ -557,7 +550,7 @@ renewals before blocking any SIP renewal.
 
 [#sip_35-36_end_session]
 
-==== 35/36 End Session ====
+=== 35/36 End Session ===
 
    3520100505    115901AOBR1|AA999999|
 
@@ -570,16 +563,14 @@ in this context, and for evergreen it is hardcoded _Y_.
 
 [#sip_37-38_fee_paid]
 
-37/38 Fee Paid 
-^^^^^^^^^^^^^^
+=== 37/38 Fee Paid ===
 
 Evergreen supports the Fee Paid message.
 
 
 [#sip_63-64_patron_information]
 
-63/64 Patron Information 
-^^^^^^^^^^^^^^^^^^^^^^^^
+=== 63/64 Patron Information ===
 
 Attempting to retrieve patron info with a bad barcode:
 
@@ -603,15 +594,14 @@ See <<sip_23-24_patron_status, 23/24 Patron Status>> for info on +BL+ and +CQ+ f
 
 [#sip_65-66_renew_all]
 
-==== 65/66 Renew All ====
+=== 65/66 Renew All ===
 
 Evergreen supports the Renew All message.
 
 
 [#sip_93-94_login]
 
-93/94 Login 
-^^^^^^^^^^^
+=== 93/94 Login ===
 
 Example: 
 
@@ -631,12 +621,12 @@ When using a version of SIPServer that supports the feature, the Location (CP) f
 
 [#sip_97-96_resend]
 
-==== 97/96 Resend ====
+=== 97/96 Resend ===
 
 
 [#sip_99-98_sc_and_acs_status]
 
-==== 99/98 SC and ACS Status ====
+=== 99/98 SC and ACS Status ===
 
    99<status code><max print width><protocol version> 
  
@@ -674,7 +664,7 @@ supported by the +ACS+ or not.
 
 [#fields]
 
-==== Fields ====
+=== Fields ===
 
 All fixed-length fields in a communication will appear before the first variable-length field. This allows for simple 
 parsing. Variable-length fields are by definition delimited, though there will not necessarily be an initial delimiter 
@@ -682,19 +672,19 @@ between the last fixed-length field and the first variable-length one. It would 
 the exact position where that field begins already.
 
 
-=== Patron privacy and the SIP protocol ===
+== Patron privacy and the SIP protocol ==
 
 SIP traffic includes a lot of patron information, and is not
 encrypted by default.  It is strongly recommended that you
 encrypt any SIP traffic.
 
-==== SIP server configuration ====
+=== SIP server configuration ===
 
 On the SIP server, use `iptables` or `etc/hosts` to allow SSH connections on port 22 from the SIP client machine.  You will probably want to have very restrictive rules
 on which IP addresses can connect to this server.
 
 
-==== SSH tunnels on SIP clients ====
+=== SSH tunnels on SIP clients ===
 
 SSH tunnels are a good fit for use cases like self-check machines, because it is relatively easy to automatically open the connection.  Using a VPN is another option,
 but many VPN clients require manual steps to open the VPN connection.

@@ -1,10 +1,11 @@
-== Workstation Administration ==
+= Workstation Administration =
+:toc:
 
 indexterm:[staff client, configuration]
 indexterm:[workstation, configuration]
 indexterm:[configuration]
 
-=== Copy Editor: Copy Location Name First ===
+== Copy Editor: Copy Location Name First ==
 
 indexterm:[copy editor, shelving location]
 
@@ -15,12 +16,12 @@ First*.
 Simply click it to make copy location name displayed first. The setting is saved
 on the workstation. 
 
-=== Font and Sound Settings ===
+== Font and Sound Settings ==
 
 indexterm:[staff client, fonts, zooming]
 indexterm:[staff client, sounds]
 
-==== In the Staff Client ====
+=== In the Staff Client ===
 
 You may change the size of displayed text or turn staff client sounds on
 and off. These settings are specific to each workstation and stored on
@@ -39,7 +40,7 @@ to Disk_.
  
 image::media/workstation_admin-2.jpg[font size]
 
-==== In the OPAC ====
+=== In the OPAC ===
 
 It is also possible to zoom in and zoom out when viewing the OPAC in the
 staff client, making the font appear larger or smaller. (This will not
@@ -47,7 +48,7 @@ affect other screens.) Use *CTRL + +* (plus sign, to zoom in), *CTRL + -*
 (minus sign, to zoom out), and *CTRL + 0* (to restore default). The
 workstation will remember the setting.
 
-=== Select Hotkeys ===
+== Select Hotkeys ==
 
 indexterm:[staff client, hotkeys]
 
@@ -73,7 +74,7 @@ corner, to switch your selected Hotkeys  _on_ or
 _off_ for the current login session.
 It has the same effect as when you click *Disable Hotkeys* on the _Hotkeys_ menu.
 
-=== Configure Printers ===
+== Configure Printers ==
 
 indexterm:[staff client, printers]
 
@@ -110,7 +111,7 @@ changes.
 
 image::media/workstation_admin-6.jpg[page setup]
 
-==== Advanced Settings ====
+=== Advanced Settings ===
 
 If you followed the steps above and still cannot print there are two alternate
 print strategies: 

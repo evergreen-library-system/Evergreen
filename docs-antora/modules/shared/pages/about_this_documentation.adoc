@@ -1,4 +1,4 @@
-== About This Documentation ==
+= About This Documentation =
 
 This guide was produced by the Evergreen Documentation Interest Group (DIG),
 consisting of numerous volunteers from many different organizations. The DIG

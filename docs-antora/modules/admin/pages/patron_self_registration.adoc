@@ -1,6 +1,7 @@
-== Patron self-registration administration ==
+= Patron self-registration administration =
+:toc:
 
-=== Library Settings ===
+== Library Settings ==
 
 Three Library Settings are specific to patron self-registration:
 

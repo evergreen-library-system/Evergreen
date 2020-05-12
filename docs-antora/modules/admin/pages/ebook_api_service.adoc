@@ -1,4 +1,4 @@
-== ebook_api service ==
+= ebook_api service =
 
 The `open-ils.ebook_api` service looks up title and
 patron information from specified ebook vendor APIs.

@@ -1,4 +1,5 @@
-== Standing Penalties ==
+= Standing Penalties =
+:toc:
 
 In versions of Evergreen prior to 2.3, the following penalty types were
 available by default.  When applied to user accounts, these penalties prevented

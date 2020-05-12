@@ -1,6 +1,7 @@
-== TPac Configuration and Customization ==
+= TPac Configuration and Customization =
+:toc:
 
-=== Template toolkit documentation ===
+== Template toolkit documentation ==
 
 For more general information about template toolkit see:  http://template-toolkit.org/docs/index.html[official
 documentation]. 
@@ -8,13 +9,13 @@ documentation].
 The purpose of this chapter is to focus on the
 Evergreen-specific uses of Template Toolkit ('TT') in the OPAC.
 
-=== TPAC URL ===
+== TPAC URL ==
 
 The URL for the TPAC on a default Evergreen system is
 http://localhost/eg/opac/home (adjust `localhost` to match your hostname or IP
 address, naturally!)
 
-=== Perl modules used directly by TPAC ===
+== Perl modules used directly by TPAC ==
 
   * `Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm`
   * `Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm`
@@ -23,7 +24,7 @@ address, naturally!)
   * `Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm`
   * `Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Util.pm`
 
-=== Default templates ===
+== Default templates ==
 
 The source template files are found in `Open-ILS/src/templates/opac`.
 
@@ -37,7 +38,7 @@ template overrides rather than touching the installed templates until you are
 ready to commit the changes to a branch. See below for information on template
 overrides.
 
-=== Apache configuration files ===
+== Apache configuration files ==
 
 The base Evergreen configuration file on Debian-based systems can be found in
 `/etc/apache2/sites-enabled/eg.conf`. This file defines the basic virtual host
@@ -45,7 +46,7 @@ configuration for Evergreen (hostnames and ports), then single-sources the
 bulk of the configuration for each virtual host by including
 `/etc/apache2/eg_vhost.conf`.
 
-=== TPAC CSS and media files ===
+== TPAC CSS and media files ==
 
 The CSS files used by the default TPAC templates are stored in the repo in
 `Open-ILS/web/css/skin/default/opac/` and installed in
@@ -55,7 +56,7 @@ The media files--mostly PNG images--used by the default TPAC templates are
 stored in the repo in `Open-ILS/web/images/` and installed in
 `/openils/var/web/images/`.
 
-=== Mapping templates to URLs ===
+== Mapping templates to URLs ==
 
 The mapping for templates to URLs is straightforward. Following are a few
 examples, where `<templates>` is a placeholder for one or more directories
@@ -94,7 +95,7 @@ thing to note is that the file references are relative to the top of the
 template directory.
 
 [#how_to_override_templates]
-=== How to override templates ===
+== How to override templates ==
 
 Overrides for templates go in a directory that parallels the structure of the
 default templates directory. The overrides then get pulled in via the Apache
@@ -146,7 +147,7 @@ bash# /etc/init.d/apache2 reload
 
 You should now be able to see your change at http://localhost/eg/opac/advanced
 
-==== Defining multiple layers of overrides ====
+=== Defining multiple layers of overrides ===
 
 You can define multiple layers of overrides, so if you want every library in
 your consortium to have the same basic customizations, and then apply
@@ -196,7 +197,7 @@ we only show the configuration for port 80.
 </VirtualHost>
 ------------------------------------------------------------------------------
 
-=== Changing some text in the TPAC ===
+== Changing some text in the TPAC ==
 
 Out of the box, the TPAC includes a number of placeholder text and links. For
 example, there is a set of links cleverly named 'Link 1', 'Link 2', and so on
@@ -263,7 +264,7 @@ Once we have edited the link and link text to our satisfaction, we can load
 the page in our Web browser and see the live changes immediately (assuming
 we are looking at the BR1 overrides, of course).
 
-=== Troubleshooting ===
+== Troubleshooting ==
 
 If there is a problem such as a TT syntax error, it generally shows up as a
 an ugly server failure page. If you check the Apache error logs, you will

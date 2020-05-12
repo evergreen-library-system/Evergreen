@@ -1,6 +1,8 @@
-== Notifications / Action Triggers ==
+= Notifications / Action Triggers =
+:toc:
 
-=== Introduction ===
+
+== Introduction ==
 
 indexterm:[action triggers, event definitions, notifications]
 
@@ -19,11 +21,12 @@ You will notice four tabs on this page: <<event_definitions, Event Definitions>>
 
 [#event_definitions]
 
-=== Event Definitions ===
+== Event Definitions ==
 
 Event Definitions is the main tab and contains the key fields when working with action triggers. These fields include:
 
-==== Table 1: Action Trigger Event Definitions ====
+=== Table 1: Action Trigger Event Definitions ===
+
 
 |==============================================
 |*Field*                         |*Description*
@@ -51,7 +54,8 @@ Event Definitions is the main tab and contains the key fields when working with 
 |==============================================
 
 
-=== Creating Action Triggers ===
+== Creating Action Triggers ==
+
 . From the top menu, select *Administration* -> *Local Administration* ->  *Notifications / Action triggers*.
 . Click on the _New_ button.
 +
@@ -116,14 +120,14 @@ image::media/event_def_details_2.png[Event Definition Details]
 A quick and easy way to create new action triggers is to clone an existing action trigger.
 =========
 
-==== Cloning Existing Action Triggers ====
+=== Cloning Existing Action Triggers ===
 
 . Check the check box next to the action trigger you wish to clone.
 . Click _Clone Selected_ on the top left of the page.
 . An editing window will open. Notice that the fields will be populated with content from the cloned action trigger. Edit as necessary and give the new action trigger a unique Name.
 . Click _Save_.
 
-==== Editing Action Triggers ====
+=== Editing Action Triggers ===
 
 . Double-click on the action trigger you wish to edit.
 . The edit screen will appear. When you are finished editing, click _Save_ at the bottom of the form. Or click _Cancel_ to exit the screen without saving.
@@ -133,12 +137,12 @@ A quick and easy way to create new action triggers is to clone an existing actio
 Before deleting an action trigger, you should consider disabling it through the editing form. This way you can keep it for future use or cloning.
 ============
 
-==== Deleting Action Triggers ====
+=== Deleting Action Triggers ===
 
 . Check the check box next to the action trigger you wish to delete
 . Click _Delete Selected_ on the top-right of the page.
 
-==== Testing Action Triggers ====
+=== Testing Action Triggers ===
 
 . Go to the list of action triggers.
 . Click on the blue link text for the action trigger you'd like to test.
@@ -155,10 +159,14 @@ WARNING: If you are testing an email or SMS notification, use a test account and
 
 [#hooks]
 
-==== Hooks ====
+=== Hooks ===
+
 Hooks define the Fieldmapper class in the core_type column off of which the rest of the field definitions ``hang''.
 
-===== Table 2. Hooks =====
+
+==== Table 2. Hooks ====
+
+
 |=======================
 | *Field*        | *Description*
 | Hook Key       | A unique name given to the hook.
@@ -172,11 +180,12 @@ You may also create, edit and delete Hooks but the Core Type must refer to an ID
 
 [#reactors]
 
-==== Reactors ====
+=== Reactors ===
 
 Reactors link the trigger definition to the action to be carried out.
 
-===== Table 3. Action Trigger Reactors =====
+==== Table 3. Action Trigger Reactors ====
+
 
 |=======================
 | Field        | Description
@@ -189,11 +198,12 @@ You may also create, edit and delete Reactors. Just remember that there must be 
 
 [#validators]
 
-==== Validators ====
+=== Validators ===
 
 Validators set the validation test to be preformed to determine whether the action trigger is executed.
 
-===== Table 4. Action Trigger Validators =====
+==== Table 4. Action Trigger Validators ====
+
 
 |=======================
 | Field         | Description
@@ -202,3 +212,67 @@ Validators set the validation test to be preformed to determine whether the acti
 |=======================
 
 You may also create, edit and delete Validators. Just remember that their must be an associated subroutine in the Reactor.pm Perl module.
+
+[#processing_action_triggers]
+== Processing Action Triggers ==
+
+To run action triggers, an Evergreen administrator will need to run the trigger processing script. This should be set up as a cron job to run periodically. To run the script, use this command:
+
+----
+/openils/bin/action_trigger_runner.pl --process-hooks --run-pending
+----
+
+You have several options when running the script:
+
+* --run-pending: Run pending events to send emails or take other actions as
+specified by the reactor in the event definition.
+
+* --process-hooks: Create hook events
+
+* --osrf-config=[config_file]: OpenSRF core config file. Defaults to:
+/openils/conf/opensrf_core.xml
+
+* --custom-filters=[filter_file]: File containing a JSON Object which describes any hooks
+that should use a user-defined filter to find their target objects. Defaults to:
+/openils/conf/action_trigger_filters.json
+
+* --max-sleep=[seconds]: When in process-hooks mode, wait up to [seconds] for the lock file to go
+away. Defaults to 3600 (1 hour).
+
+* --hooks=hook1[,hook2,hook3,...]: Define which hooks to create events for. If none are defined, it
+defaults to the list of hooks defined in the --custom-filters option.
+Requires --process-hooks.
+
+* --granularity=[label]: Limit creating events and running pending events to
+those only with [label] granularity setting.
+
+* --debug-stdout: Print server responses to STDOUT (as JSON) for debugging.
+
+* --lock-file=[file_name]: Sets the lock file for the process.
+
+* --verbose: Show details of script processing.
+
+* --help: Show help information.
+
+Examples:
+
+* Run all pending events that have no granularity set. This is what you tell
+CRON to run at regular intervals.
++
+----
+perl action_trigger_runner.pl --run-pending
+----
+
+* Batch create all "checkout.due" events
++
+----
+perl action_trigger_runner.pl --hooks=checkout.due --process-hooks
+----
+
+* Batch create all events for a specific granularity and to send notices for all
+pending events with that same granularity.
++
+----
+perl action_trigger_runner.pl --run-pending --granularity=Hourly --process-hooks
+----
+

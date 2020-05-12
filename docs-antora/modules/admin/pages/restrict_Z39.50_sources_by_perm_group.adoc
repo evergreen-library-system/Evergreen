@@ -1,10 +1,11 @@
-== Z39.50 Servers ==
+= Z39.50 Servers =
+:toc:
 
-=== Restrict Z39.50 Sources by Permission Group ===
+== Restrict Z39.50 Sources by Permission Group ==
 
 In Evergreen versions preceding 2.2, all users with cataloging privileges could view all of the Z39.50 servers that were available for use in the staff client.  In Evergreen version 2.2, you can use a permission to restrict users' access to Z39.50 servers.  You can apply a permission to the Z39.50 servers to restrict access to that server, and then assign that permission to users or groups so that they can access the restricted servers.
 
-==== Administrative Settings ====
+=== Administrative Settings ===
 
 You can add a permission to limit use of Z39.50 servers, or you can use an existing permission.
 
@@ -26,7 +27,7 @@ image::media/Restrict_Z39_50_Sources_by_Permission_Group2.png[Create new permiss
 
 
 
-==== Restrict Z39.50 Sources by Permission Group ====
+=== Restrict Z39.50 Sources by Permission Group ===
 
 1) Click *Administration -> Server Administration ->  Z39.50 Servers*
 
@@ -48,7 +49,7 @@ image::media/Restrict_Z39_50_Sources_by_Permission_Group3.jpg[]
 NOTE: As an alternative to creating a new permission to restrict use, you can use a preexisting permission.  For example, your library uses a permission group called SuperCat, and only members in this group should have access to a restricted Z39.50 source.  Identify a permission that is unique to the SuperCat group (e.g. CREATE_MARC) and apply that permission to the restricted Z39.50 server.  Because these users are in the only group with the permission, they will be the only group w/ access to the restricted server.
 
 
-=== Storing Z39.50 Server Credentials ===
+== Storing Z39.50 Server Credentials ==
 
 Staff have the option to apply Z39.50 login credentials to each Z39.50 server at different levels of the organizational unit hierarchy.  Credentials can be set at the library branch or system level, or for an entire consortium.  When credentials are set for a Z39.50 server, searches of the Z39.50 server will use the stored credentials.  If a staff member provides alternate credentials in the Z39.50 search interface, the supplied credentials will override the stored ones.  Staff have the ability to apply new credentials or clear existing ones in this interface.  For security purposes, it is not possible for staff to retrieve or report on passwords.
 

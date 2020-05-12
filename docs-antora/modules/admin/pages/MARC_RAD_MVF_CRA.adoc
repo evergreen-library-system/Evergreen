@@ -1,10 +1,11 @@
-== MARC Record Attributes ==
+= MARC Record Attributes =
+:toc:
 
 The MARC Record Attribute Definitions support the ingesting, indexing, searching, filtering, and delivering of bibliographic record attributes.
 
 To Access the MARC Record Attributes, click *Administration* -> *Server Administration* ->  *MARC Record Attributes*
 
-=== Managing Fixed Field Drop-down Context Menus ===
+== Managing Fixed Field Drop-down Context Menus ==
 
 indexterm:[Fixed fields]
 indexterm:[MARC editor,configuring]
@@ -28,11 +29,11 @@ attribute definitions as a model.
 
 
 
-=== Multi Valued Fields and Composite Record Attributes ===
+== Multi Valued Fields and Composite Record Attributes ==
 
 *Multi Valued Fields* and *Composite Record Attributes* expands upon the Record Attribute Definitions feature to include capturing all occurrences of multi-valued elements in a record. *Multi Valued Fields* allows users to say that a bibliographic record contains multiple entries for a particular record attribute. *Composite Record Attributes* supports the application of a more complicated and nested form of structure to a record attribute definition.
 
-==== Multi Valued Fields ====
+=== Multi Valued Fields ===
 
 Multi Valued Fields allows for the capturing of multi-valued elements of a bibliographic record. Through the use of Multi Valued Fields, Evergreen recognizes that records are capable of storing multiple values. Multi Valued Fields are represented in the Record Attribute Definitions interface by a column named *Multi-valued?*. With *Multi-valued?* set to *True*, Evergreen will recognize the bibliographic records in the database that have multiple values mapping to the record attribute definition; it will also track and search on those values in the catalog. This feature will be particularly handy for bibliographic records representing a Blu-ray / DVD combo pack, since both format types can be displayed in the OPAC (if both formats were cataloged in the record).
 
@@ -48,13 +49,13 @@ To edit an existing record attribute definition and set the *Multi-valued?* fiel
 
 image::media/editrad_2.jpg[]
 
-==== Composite Record Attributes ====
+=== Composite Record Attributes ===
 
 Composite Record Attributes build on top of Evergreen’s ability to support record attributes that contain multiple entries. The Composite Record Attributes feature enables administrators to take a record attribute definition and apply a more complicated and nested form of structure to that particular record attribute. Two new Record Attribute Definitions columns have been added to facilitate the management of the Composite Record Attributes. The *Composite attribute?* column designates whether or not a particular record attribute definition is also a composite record attribute. The *Coded Value Maps* column contains a *Manage* link in each row that allows users to manage the Coded Value Maps for the record attributes.
 
 image::media/radcvmcacolumns_3.jpg[]
 
-==== Coded Value Maps ====
+=== Coded Value Maps ===
 
 To manage the Coded Value Maps of a particular record attribute definition, click the *Manage* link located under the Coded Value Maps column for that record attribute. This will open the Coded Value Maps interface. What administrators see on the Coded Value Maps screen does not define the structure of the composite record attribute; they must go into the *Composite Attribute Entry Definitions* screen to view this information.
 
@@ -74,7 +75,7 @@ image::media/radcatrue_5.jpg[]
 
 Now that the *Composite attribute?* value is set to *True*, click on the *Manage* link located under the *Coded Value Maps* column for the edited record attribute definition. Back in the Coded Value Maps screen, a *Manage* link should now be exposed under the *Composite Definition* column. Clicking on a specific coded value’s *Manage* link will take the user into the *Composite Attribute Entry Definitions* screen for that specified coded value.
 
-==== Composite Attribute Entry Definitions ====
+=== Composite Attribute Entry Definitions ===
 
 The Composite Attribute Entry Definitions screen is where administrators can locally define and edit Composite Record Attributes for specific coded values. For example: administrators can further refine and distinguish the way a “book” should be defined within their database, by bringing together the right combination of attributes together to truly define what a “book” is in their database.
 
@@ -96,9 +97,9 @@ To modify the *Composite Attribute Entry Definition*:
 
 image::media/modifycde_7.jpg[]
 
-==== Search and Icon Formats ====
+=== Search and Icon Formats ===
 
-===== Search and Icon Formats =====
+==== Search and Icon Formats ====
 
 The table below shows all the search and icon formats. In some cases they vary slightly, with the icon format being more restrictive. This is so that things such as a search for "All Books" will include Large Print books yet Large Print books will not show both a "Book" and "Large Print Book" icon.
 
@@ -168,7 +169,7 @@ SR Format: a,b,c,d,e
 |====
 
 [[anchor-2]]
-===== Record Types =====
+==== Record Types ====
 
 This table shows the record types currently used in determining elements of search and icon formats. They are based on a combination of the MARC Record Type (LDR 06) and Bibliographic Level (LDR 07) fixed fields. 
 

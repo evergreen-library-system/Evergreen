@@ -1,5 +1,7 @@
 [#apache_access_handler_perl_module]
-== Apache Access Handler Perl Module ==
+= Apache Access Handler Perl Module =
+:toc:
+
 The OpenILS::WWW::AccessHandler Perl module is intended for limiting patron
 access to configured locations in Apache. These locations could be folder
 trees, static files, non-Evergreen dynamic content, or other Apache
@@ -62,7 +64,7 @@ As the AccessHandler module does not actually serve the content it is
 protecting, but instead merely hands control back to Apache when it is done
 authenticating, you can protect almost anything else you can serve with Apache.
 
-=== Use Cases ===
+== Use Cases ==
 The general use of this module is "protect access to something else" - what that
 something else is will vary. Some possibilities:
 
@@ -78,7 +80,7 @@ something else is will vary. Some possibilities:
  ** Semi-public Patron resources
  ** Staff-only downloads
 
-=== Proxying Websites ===
+== Proxying Websites ==
 One potentially interesting use of the AccessHandler module is to protect an
 Apache Proxy configuration. For example, after installing and enabling
 mod_proxy, mod_proxy_http, and mod_proxy_html you could proxy websites like so:

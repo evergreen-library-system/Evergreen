@@ -1,4 +1,6 @@
-== Print (Receipt) Templates ==
+= Print (Receipt) Templates =
+:toc:
+
 indexterm:[web client, receipt template editor]
 indexterm:[print templates]
 indexterm:[web client, print templates]
@@ -18,7 +20,7 @@ The Editor can also be found on the default home page of the staff client.
 Receipts come in various types: Bills, checkout, items, holds, transits and
 Payments.
 
-=== Receipt Templates ===
+== Receipt Templates ==
 This is a complete list of the receipts currently in use in Evergreen.
 
 [horizontal]
@@ -45,7 +47,7 @@ This is a complete list of the receipts currently in use in Evergreen.
 *Transit Slip*:: This is printed when an items goes in-transit to another location.
 
 
-=== Editing Receipts ===
+== Editing Receipts ==
 
 To edit a Receipt:
 
@@ -68,7 +70,7 @@ image::media/receipt2.png[receipt screen]
 . Click *Save Locally* in the Upper right hand corner.
 
 
-==== Formatting Receipts ====
+=== Formatting Receipts ===
 
 Print templates use variables for various pieces of information coming from the
 Evergreen database.  These variables deal with everything from the library name
@@ -92,7 +94,7 @@ Due: {{checkout.circ.due_date | date:"short"}}<br/>
 </ol>
 ------
 
-==== Text Formatting ====
+=== Text Formatting ===
 
 General text formatting
 |========================================================================================
@@ -103,7 +105,7 @@ General text formatting
 | Currency     | 1            | {{1 \| currency}}                               | $1.00
 |========================================================================================
 
-==== Date Formatting ====
+=== Date Formatting ===
 
 If you do not format dates, they will appear in a system format which isn't
 easily readable.
@@ -115,7 +117,7 @@ easily readable.
 |{{today \| date:'M/d/yyyy'}}  | 8/1/2017
 |===================================================
 
-==== Currency Formatting ====
+=== Currency Formatting ===
 
 Add " | currency" after any dollar amount that you wish to display as currency.
 
@@ -123,7 +125,7 @@ Example:
 `{{xact.summary.balance_owed | currency}}` prints as `$2.50`
 
 
-==== Conditional Formatting ====
+=== Conditional Formatting ===
 
 You can use Angular JS to only print a line if the data matches. For example:
 
@@ -140,7 +142,7 @@ ${{patron_money.balance_owed}}</span>`
 
 See also: https://docs.angularjs.org/api/ng/directive/ngIf
 
-==== Substrings ====
+=== Substrings ===
 
 To print just a sub-string of a variable, you can use a *limitTo* function.
 `{{variable | limitTo:limit:begin}}` where *limit* is the number of characters
@@ -158,7 +160,7 @@ characters you can use `{{variable | limitTo:-5}}` to get "iable". And
 |========================================================================================
 
 
-==== Images ====
+=== Images ===
 
 You can use HTML and CSS to add an image to your print template if you have the
 image uploaded onto a publicly available web server. (It will currently only
@@ -168,7 +170,7 @@ work with images on a secure (https) site.) For example:
 src="https://evergreen-ils.org/wp-content/uploads/2013/09/copy-Evergreen_Logo_sm072.jpg"
 style="width:150px;padding:5px;">`
 
-==== Sort Order ====
+=== Sort Order ===
 
 You can sort the items in an ng-repeat block using orderBy. For example, the
 following will sort a list of holds by the shelving location first, then by the
@@ -177,7 +179,7 @@ call number:
 `<tr ng-repeat="hold_data in holds | orderBy :
 ['copy.location.name','volume.label']">`
 
-==== Subtotals ====
+=== Subtotals ===
 
 You can use Angular JS to add information from each iteration of a loop together
 to create a subtotal. This involves setting an initial variable before the
@@ -207,13 +209,13 @@ by borrowing from the library!</div>
 <2> This adds the list item's price to the variable.
 <3> This prints the total of the variable.
 
-=== Exporting and importing Customized Receipts ===
+== Exporting and importing Customized Receipts ==
 
 Once you have your receipts set up on one machine you can export your receipts,
 and then load them on to another machine.  Just remember to *Save Locally*
 once you import the receipts on the new machine.
 
-==== Exporting templates ====
+=== Exporting templates ===
 As you can only save a template on to the computer you are working on you will
 need to export the template if you have more than one computer that prints out
 receipts (i.e., more than one computer on the circulation desk, or another
@@ -224,7 +226,7 @@ computer in the workroom that you use to checkin items or capture holds with)
 *Save*.
 . Click OK. 
 
-==== Importing Templates ====
+=== Importing Templates ===
 
 . Click Import.
 . Navigate to and select the template that you want to import.  Click Open. 

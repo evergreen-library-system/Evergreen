@@ -1,4 +1,6 @@
-== Age hold protection ==
+= Age hold protection =
+:toc:
+
 indexterm:[Holds]
 indexterm:[Holds, Age Protection]
 
@@ -16,7 +18,6 @@ In addition to time period, you can set the proximity  value to define which org
 
 Age protection only applies to individual item records. You cannot configure age protection rules in hold policies.
 
-Active date display in OPAC 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Active date display in OPAC ==
 
 If a library uses the item's active date to calculate holds age protection, the active date will display with the item details instead of the create date in the staff client view of the catalog. Libraries that do not enable the  _Use Active Date for Age Protection_ library setting will continue to display the create date.

@@ -1,11 +1,12 @@
-Work Log
--------- 
+= Work Log =
+:toc:
+
 indexterm:[Work Log]
 indexterm:[staff client, Work Log]
 indexterm:[workstation, Work Log]
 
 
-=== Expanding the Work Log ===
+== Expanding the Work Log ==
 
 The Work Log records checkins, checkouts, patron registration, patron editing, renewals, payments and holds placed from with the patron record for a given login. 
 
@@ -13,7 +14,7 @@ To access the Work Log go to *Administration* -> *Local Administration* ->  *Wor
 
 There are two seperate logs, *Most Recently Logged Staff Actions* and *Most Recently Affected patrons*. The *Most Recently Logged Staff Actions* logs the the transactions in order they have occured on the workstation.  The *Most Recently Affected Patrons* log is a listing of the last patrons that transactions happened on. 
 
-The Work Log can contain a maximum number of transactions, this number is set via the <<library_settings_editor,Library Settings Editor>>. They are in the GUI group of settings. *Work Log: Maximum Actions Logged* effects the number of transactions listing under the *Most Recently Logged Staff Actions* and *Work Log: Maximum Patrons Logged* limits the number of patrons that are listed in the log. 
+The Work Log can contain a maximum number of transactions, this number is set via the xref:admin:librarysettings.adoc[Library Settings Editor]. They are in the GUI group of settings. *Work Log: Maximum Actions Logged* effects the number of transactions listing under the *Most Recently Logged Staff Actions* and *Work Log: Maximum Patrons Logged* limits the number of patrons that are listed in the log. 
 
 image::worklog.png[Work Log]
 

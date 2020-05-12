@@ -1,4 +1,5 @@
-== Statistical Categories Editor ==
+= Statistical Categories Editor =
+:toc:
 
 This is where you configure your statistical categories (stat cats).  Stat cats are a way to save and report on additional information that doesn't fit elsewhere in Evergreen's default records.  It is possible to have stat cats for copies or patrons.
 

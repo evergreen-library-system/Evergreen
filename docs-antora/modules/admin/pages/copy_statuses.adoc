@@ -1,4 +1,5 @@
-== Item Status ==
+= Item Status =
+:toc:
 
 indexterm:[copy status]
 
@@ -54,7 +55,7 @@ Evergreen comes pre-loaded with a number of item statuses.
 |17|Lost and Paid|false|false|false
 |==============================================
 
-=== Adding Item Statuses ===
+== Adding Item Statuses ==
 
 . In the _New Status_ field, enter the name of the new status you wish to add.
 . Click _Add_.
@@ -67,7 +68,7 @@ status.
 
 image::media/copy_status_add.png[Adding item statuses]
 
-=== Deleting Item Statuses ===
+== Deleting Item Statuses ==
 
 . Highlight the statuses you wish to delete. Ctrl-click to select more than one
 status.
@@ -80,7 +81,8 @@ image::media/copy_status_delete.png[Deleting item statuses]
 You will not be able to delete statuses if items currently exist with that
 status.
 
-=== Editing Item Statuses ===
+== Editing Item Statuses ==
+
 . Double click on a status name to change its name. Enter the new name.
 
 . To change whether a status is holdable, visible in the OPAC, or sets the

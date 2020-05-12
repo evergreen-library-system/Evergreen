@@ -1,10 +1,11 @@
-=== Virtual Index Definitions ===
+= Virtual Index Definitions =
+:toc:
 
 Virtual index definitions can be configured in Evergreen to create customized search indexes that make use of data collected by other (real) index definitions.  Real index definitions use an XPath expression to indicate the bibliographic data that should be included in the index.  Virtual index definitions bring together data collected by other index definitions to create a new, virtual index.  They can also use an XPath expression to collect data directly for an index, but they are not required to.
 
 All index definitions can be modified by having other indexes map to them.  For example, Genre could be added to the All Subjects field definition in the Subject index.  This would allow users to search Genre as part of a Subject search.
 
-==== Keyword Virtual Index Definition ====
+== Keyword Virtual Index Definition ==
 
 Evergreen now uses a virtual index definition for the Keyword index.  This allows libraries to customize the keyword search index by specifying which fields are included in the keyword index, as well as how each field should be weighted for relevance ranking in search results. By default, the keyword index contains all of the search fields other than the keyword definition itself.  Each field is assigned a weight of 1, with the exception of Title Proper, which is assigned a weight of 8.  A match on the Title Proper within a keyword search will be given the higher weight and therefore a higher relevance ranking within search results.
 
@@ -13,7 +14,7 @@ Evergreen now uses a virtual index definition for the Keyword index.  This allow
 . The weight of a field can be modified by selecting the field and going to *Actions>Edit Record* or right-clicking and selecting *Edit Record*.
 .. The Metabib Field Virtual Map modal will appear.  Increase the weight of the field and click *Save*.
 
-==== Configuring Virtual Index Definitions ====
+== Configuring Virtual Index Definitions ==
 
 . To configure a virtual index definition, go to *Administration>Server Administration>MARC Search/Facet Fields*. 
 .. This interface now has a _Search Class_ filter that allows users to easily select which search class they want to view.
@@ -36,7 +37,7 @@ image::media/vid3.PNG[]
 
 Note: A service restart is required after definitions and mapping are changed.  Changes to weight only do not require a restart as they are calculated in real time.
 
-==== Search Term Highlighting in Search Results ====
+== Search Term Highlighting in Search Results ==
 
 Search terms are now highlighted on the main OPAC search results page, the bibliographic record detail page, and the metarecord grouped results page.  This will help users discern why a certain record was included in the search result set, as well as its relevance to the search.  Search terms will be highlighted in both real and virtual fields that were searched.  Terms that were stemmed or normalized during searching will also be highlighted.  Search term highlighting can be turned off within the OPAC by selecting the checkbox to "Disable Highlighting" in the search results interface.
 

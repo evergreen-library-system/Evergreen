@@ -1,4 +1,5 @@
 = Floating Groups =
+:toc:
 
 Before floating groups items could float or not. If they floated then they floated everywhere, with no restrictions.
 

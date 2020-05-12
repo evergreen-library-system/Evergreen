@@ -1,4 +1,5 @@
-== Column Picker ==
+= Column Picker =
+:toc:
 
 indexterm:[Column Picker]
 

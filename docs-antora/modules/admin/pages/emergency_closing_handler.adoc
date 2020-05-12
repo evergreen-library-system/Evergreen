@@ -1,16 +1,17 @@
-== Emergency Closing Handler ==
+= Emergency Closing Handler =
+:toc:
 
-=== Introduction ===
+== Introduction ==
 
 The *Closed Dates Editor* now includes an Emergency Closing feature that allows libraries to shift due dates and expiry dates to the next open day. Overdue fines will be automatically voided for the day(s) the library is marked closed. Once an Emergency Closing is processed, it is permanent and cannot be rolled back.
 
-=== Administration ===
+== Administration ==
 
-==== Permissions ====
+=== Permissions ===
 
 To create an Emergency Closing, the EMERGENCY_CLOSING permission needs to be granted to the user for all locations to be affected by an emergency closing.
  
-=== Create an emergency closing ===
+== Create an emergency closing ==
 
 The Emergency Closing feature is located within the *Closed Dates Editor* screen, which can be accessed via *Administration -> Local Administration -> Closed Dates Editor*. 
 
@@ -46,7 +47,7 @@ image::media/ECHLibraryClosingDetailed.png[Create Detailed Closing]
 
 *Reason* - Label the reason for library closing accordingly, e.g. 3/15 Snow Day
 
-==== Emergency Closing Handler ====
+=== Emergency Closing Handler ===
 
 When a date is chosen that is nearer in time than the end of the longest configured circulation period or in the past, then a *Possible Emergency Closing* message will appear in the pop-up and in the bottom right-hand corner of the screen. Below the Possible Emergency Closing message, two checkboxes appear: *Emergency* and *Process Immediately*. 
 
@@ -68,7 +69,7 @@ Upon clicking *OK*, a progress bar will appear on-screen. After completion, the 
 
 image::media/ECHLibraryClosingDone.png[Emergency Closing Processing Complete]
 
-==== Editing Closing to process Emergency Closing ====
+=== Editing Closing to process Emergency Closing ===
 
 If *Process immediately* is not selected during an Emergency Closing event creation, staff will need to edit the existing Emergency Closing event and process the affected items.
 

@@ -1,8 +1,9 @@
-== User Activity Types ==
+= User Activity Types =
+:toc:
 
 The User Activity Types feature enables you to specify the user activity that you want to record in the database.  You can use this feature for reporting purposes. This function will also display a last activity date in a user's account.
 
-=== Enabling this Feature ===
+== Enabling this Feature ==
 
 Click *Administration* -> *Server Administration* ->  *User Activity Types* to access the default set of user activity types and to add new ones.  The default set of user activity types records user logins to the Evergreen ILS and to third party products that communicate with Evergreen.
 
@@ -21,7 +22,7 @@ The *Transient* column enables you to decide how many actions you want to track.
 image::media/User_Activity_Types1A.jpg[User_Activity_Types1A]
 
 
-=== Using this Feature ===
+== Using this Feature ==
 
 The last activity date for user logins appears in the patron's summary.
 

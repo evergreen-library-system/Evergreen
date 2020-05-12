@@ -1,4 +1,5 @@
 = Hold-driven recalls =
+:toc:
 
 indexterm:[hold-driven recalls]
 indexterm:[circulation, recalls, hold-driven]
@@ -43,6 +44,7 @@ threshold. If so, then the eligible item with the due date nearest to the
 current date is recalled.
 
 == Editing the item recall notification email template ==
+
 The template for the item recall notification email is contained in the
 'Item Recall Email Notice' template, found under *Administration* -> *Local
 Administration* -> *Notifications / Action Triggers*.

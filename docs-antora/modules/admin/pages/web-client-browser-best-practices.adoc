@@ -1,6 +1,8 @@
-== Best Practices for Using the Browser ==
+= Best Practices for Using the Browser =
+:toc:
 
-=== Pop-up Blockers ===
+== Pop-up Blockers ==
+
 Before using the web client, be sure to disable pop-up blockers for your
 Evergreen system's domain. 
 
@@ -12,21 +14,22 @@ _Content_ panel. Click the _Exceptions_ button and add your domain to the
 _Allowed Sites_ list.
 
 
-=== Setting Browser Defaults for Web Client ===
+== Setting Browser Defaults for Web Client ==
 
 To ensure that staff can easily get to the web client portal page on login 
 without additional steps, you can set the browser's home page to default to the
 web client. 
 
-Setting the Web Client as the Home Page in Chrome
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Setting the Web Client as the Home Page in Chrome ===
+
 . In the top-right corner of your browser, click the Chrome menu.
 . Select *Settings*.
 . In the _On startup_ section, select _Open a specific page or set of pages._
 . Click the *Set Pages* link.
 . Add _https://localhost/eg/staff/_ to the _Enter URL_ box and click *OK*.
 
-==== Setting the Web Client as the Home Page in Firefox ====
+=== Setting the Web Client as the Home Page in Firefox ===
+
 . In the top-right corner of your browser, click the menu button.
 . Click *Options*.
 . In the _When Firefox starts:_ dropdown menu, select _Show my home page_.
@@ -36,8 +39,8 @@ include::partial$turn-off-print-headers-firefox.adoc[]
 
 include::partial$turn-off-print-headers-chrome.adoc[]
 
-Tab Buttons and Keyboard Shortcuts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Tab Buttons and Keyboard Shortcuts ==
+
 Now that the client will be loaded in a web browser, users can use browser-based
 tab controls and keyboard shortcuts to help with navigation. Below are some 
 tips for browser navigation that can be used in Chrome and Firefox on Windows
@@ -51,7 +54,8 @@ right-click the link and select *Open Link in New Tab*. Using this method, you
 can also open options from the web client's dropdown menus in a new tab
 - Navigate to the next tab using CTRL-Tab. Go to the previous tab with CTRL-Shift-Tab.
 
-==== Setting New Tab Behavior ====
+=== Setting New Tab Behavior ===
+
 Some users may want to automatically open the web client's portal page in a new
 tab. Neither Chrome nor Firefox will open your home page by default when you
 open a new tab. However, both browsers have optional add-ons that will allow you

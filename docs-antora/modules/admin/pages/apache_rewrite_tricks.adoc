@@ -1,9 +1,11 @@
 [#apache_rewrite_tricks]
-== Apache Rewrite Tricks ==
+= Apache Rewrite Tricks =
+:toc:
+
 It is possible to use Apache's Rewrite Module features to perform a number of
 useful tricks that can make people's lives much easier.
 
-=== Short URLs ===
+== Short URLs ==
 Making short URLs for common destinations can simplify making printed media as
 well as shortening or simplifying what people need to type. These are also easy
 to add and require minimal maintenance, and generally can be implemented with a
@@ -18,7 +20,7 @@ RewriteRule ^/myaccount https://%{HTTP_HOST}/eg/opac/myopac/main [R]
 RewriteRule ^/search/isbn/(.*) /eg/opac/results?_special=1&qtype=identifier|isbn&query=$1 [R]
 ----
 
-=== Domain Based Content with RewriteMaps ===
+== Domain Based Content with RewriteMaps ==
 One creative use of Rewrite features is domain-based configuration in a single
 eg_vhost.conf file. Regardless of how many VirtualHost blocks use the
 configuration you don't need to duplicate things for minor changes, and can in

@@ -1,4 +1,5 @@
-== Cash Reports ==
+= Cash Reports =
+:toc:
 
 Cash reports are useful for quickly getting information about money that
 your library has collected from patrons.  This can be helpful in a few

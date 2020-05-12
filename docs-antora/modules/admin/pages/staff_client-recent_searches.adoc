@@ -1,8 +1,9 @@
-== Recent Staff Searches ==
+= Recent Staff Searches =
+:toc:
 
 This feature enables you to view your recent searches as you perform them in the staff client.  The number of searches that you can view is configurable.  This feature is only available through the staff client; it is not available to patrons in the OPAC. 
 
-=== Administrative Settings ===
+== Administrative Settings ==
 
 By default, ten searches will be saved as you search the staff client.  If you want to change the number of saved searches, then you can configure the number of searches that you wish to save through the *Library Settings Editor* in the *Admin* module.
 
@@ -29,7 +30,7 @@ To deactivate this feature:
 . Click *Update Setting.*  This will prevent you from viewing any saved searches.
 
 
-=== Recent Staff Searches ===
+== Recent Staff Searches ==
 
 Evergreen will save staff searches that are entered through either the basic or advanced search fields.  To view recent staff searches:
 

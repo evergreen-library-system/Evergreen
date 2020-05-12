@@ -1,4 +1,5 @@
-== Patron Address City/State/County Pre-Populate by ZIP Code ==
+= Patron Address City/State/County Pre-Populate by ZIP Code =
+:toc:
 
 indexterm:[zips.txt, Populate Address by ZIP Code, ZIP code]
 
@@ -16,15 +17,15 @@ Please be aware of the following when using this feature.
 * The zips.txt data is loaded once at service startup and stored in memory, so changes to the zips.txt data file require that Evergreen be restarted.  Specifically, you need to restart the "open-ils.search" OpenSRF service.
 
 
-=== Scoping and Permissions ===
+== Scoping and Permissions ==
 
 There are no staff client permissions associated with this feature since there is no staff client interface.
 
 This feature affects all users of the system; there is no way to have separate settings per Org Unit.
 
-=== Setup Steps ===
+== Setup Steps ==
 
-==== Step 1 - Setup Data File ====
+=== Step 1 - Setup Data File ===
 
 The default location and name of the data file is /openils/var/data/zips.txt on your Evergreen server.  You can choose a different location if needed.
 
@@ -64,7 +65,7 @@ Here is an example of what the data file should look like.
 |MN|Gonvick|56644|1||Clearwater||
 ----
 
-==== Step 2 - Enable Feature ====
+=== Step 2 - Enable Feature ===
 
 The next step is to tell the system to use the zips.txt file that you created. This is done by editing /openils/conf/opensrf.xml. Look about halfway into the file and you may very well see a commented section in the file that looks similar to this:
 
@@ -89,19 +90,19 @@ Save your changes to the opensrf.xml file, restart Evergreen and restart Apache.
 
 NOTE: The specific opensrf services you need to restart are "opensrf.setting" and "open-ils.search".
 
-==== Step 3 - Test ====
+=== Step 3 - Test ===
 
 Open up the staff client and try to register a new patron.  When you get to the address section, enter a ZIP code that you know is in your zips.txt file.  The data from the file that matches your ZIP will auto fill the city, state and county fields.
 
-=== ZIP Code Data ===
+== ZIP Code Data ==
 
 There are several methods you can use to populate your zips.txt with data.
 
-==== Manual Entry ====
+=== Manual Entry ===
 
 If you only have a few communities that you serve, entering data manually may be the simplest approach.
 
-==== Geonames.org Data ====
+=== Geonames.org Data ===
 
 Geonames.org provides free ZIP code to city, state and county information licensed under the Creative Commons Attribution 3.0 License, which means you need to put a link to them on your website.  Their data includes primary city, state and county information only.  It doesn't include info about which other cities are included in a ZIP code.  Visit http://www.geonames.org for more info.
 
@@ -120,11 +121,11 @@ cut -f2,3,5,6 US.txt \
 egrep "^\|(ND|MN|WI|SD)\|" zips.txt  > zips-mn.txt
 ----
 
-==== Commercial Data ====
+=== Commercial Data ===
 
 There are many vendors that sell databases that include ZIP code to city, state and county information.  A web search will easily find them.  Many of the commercial vendors will include more information on which ZIP codes cover multiple cities, counties and states, which you could use to populate the alert field.
 
-==== Existing Patron Database ====
+=== Existing Patron Database ===
 
 Another possibility is to use your current patron database to build your zips.txt.  Pull out the current ZIP, city, state, county unique rows and use them to form your zips.txt.
 
@@ -149,7 +150,7 @@ For larger sites Ben Ostrowsky at ESI created a pair of scripts that handles ded
 * http://git.esilibrary.com/?p=migration-tools.git;a=blob;f=enrich_ZIPs
 
 
-=== Development ===
+== Development ==
 
 If you need to make changes to how this feature works, such as to add support for other postal code formats, here is a list of the files that you need to look at.
 

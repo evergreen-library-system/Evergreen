@@ -1,4 +1,5 @@
-== Aging Circulations ==
+= Aging Circulations =
+:toc:
 
 .Use case
 ****
@@ -13,7 +14,7 @@ In the database, every time you attempt to `DELETE` a row from `action.circ`, it
 copies over the appropriate data to `action.aged_circulation`,
 then deletes the `action.circ` row.
 
-=== Global Flags ===
+== Global Flags ==
 
 There are four global flags used for aging circulations.
 
@@ -27,7 +28,7 @@ There are four global flags used for aging circulations.
 
 
 
-=== What Data is Aged? ===
+== What Data is Aged? ==
 
 Only completed transactions are aged.  These circulations have been checked in (returned) and *do not* contain any unpaid fines or bills.  
 
@@ -56,7 +57,7 @@ approach to logs and backups of these data.
 You can create a cron job to automatically age circulations.
 ==========
 
-=== How Circulations are Aged ===
+== How Circulations are Aged ==
 
 The action.aged_circulation table is for statistical reporting while breaking the link to the patron who had the item checked out.
 
@@ -80,7 +81,7 @@ The purge_circulations function will take a *long* time to run for the first tim
 ==========
 
 
-=== Impacts on Billing Data ===
+== Impacts on Billing Data ==
 
 When a circulation is aged, billings and payments linked to the circulation are migrated from the active billing and payment tables to the `money.aged_billing` and `money.aged_payment` tables.
 
