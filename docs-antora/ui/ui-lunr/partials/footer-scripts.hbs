@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script>
   window.antora = window.antora || {}
   window.antora.basePath = '{{or siteRootPath (or site.url siteRootUrl)}}'
   window.antora.pagePath = '{{@root.page.url}}'
@@ -9,5 +9,4 @@
 <script src="{{uiRootPath}}/js/vendor/search.js"></script>
 <script async src="{{uiRootPath}}/../search-index.js"></script>
 {{/if}}
-<script src="{{uiRootPath}}/js/vendor/highlight.js"></script>
-<script>hljs.initHighlighting()</script>
+<script async src="{{uiRootPath}}/js/vendor/highlight.js"></script>
