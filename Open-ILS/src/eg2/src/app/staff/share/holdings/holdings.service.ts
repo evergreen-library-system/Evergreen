@@ -26,26 +26,28 @@ export class HoldingsService {
 
     // Open the holdings editor UI in a new browser window/tab.
     spawnAddHoldingsUi(
-        recordId: number,               // Bib record ID
-        addToCallNums?: number[],       // Add copies to / modify existing CNs
-        callNumData?: NewCallNumData[], // Creating new call numbers
-        hideCopies?: boolean) {         // Hide the copy edit pane
+        recordId: number,                  // Bib record ID
+        editExistingCallNums?: number[],   // Add copies to / modify existing CNs
+        newCallNumData?: NewCallNumData[], // Creating new call numbers
+        editCopyIds?: number[],            // Edit existing items
+        hideCopies?: boolean,              // Hide the copy edit pane
+        hideVols?: boolean) {
 
         const raw: any[] = [];
 
-        if (addToCallNums) {
-            addToCallNums.forEach(callNumId => raw.push({callnumber: callNumId}));
-        } else if (callNumData) {
-            callNumData.forEach(data => raw.push(data));
+        if (editExistingCallNums) {
+            editExistingCallNums.forEach(
+                callNumId => raw.push({callnumber: callNumId}));
+        } else if (newCallNumData) {
+            newCallNumData.forEach(data => raw.push(data));
         }
-
-        if (raw.length === 0) { raw.push({}); }
 
         this.anonCache.setItem(null, 'edit-these-copies', {
             record_id: recordId,
             raw: raw,
-            hide_vols : false,
-            hide_copies : hideCopies ? true : false
+            copies: editCopyIds,
+            hide_vols : hideVols === true,
+            hide_copies : hideCopies === true
         }).then(key => {
             if (!key) {
                 console.error('Could not create holds cache key!');
