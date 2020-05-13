@@ -35,6 +35,8 @@ sub load_record {
     my $org_name = $ctx->{get_aou}->($org)->shortname;
     my $pref_ou = $self->_get_pref_lib();
     my $depth = $self->cgi->param('depth');
+    my $available = $self->cgi->param('available') || 'false';
+
     $depth = $ctx->{get_aou}->($org)->ou_type->depth 
         unless defined $depth; # can be 0
 
@@ -214,6 +216,7 @@ sub load_record {
     $self->timelog("past store copy retrieval call");
     $ctx->{copy_limit} = $copy_limit;
     $ctx->{copy_offset} = $copy_offset;
+    $ctx->{available} = $available;
 
     $ctx->{have_holdings_to_show} = 0;
     $ctx->{have_mfhd_to_show} = 0;
@@ -350,14 +353,27 @@ sub mk_copy_query {
     my $copy_offset = shift;
     my $pref_ou = shift;
     my $coords = shift;
+    my $staff = $self->ctx->{is_staff};
+    my $available = $self->cgi->param('available') || 'false';
 
     my $query = $U->basic_opac_copy_query(
-        $rec_id, undef, undef, $copy_limit, $copy_offset, $self->ctx->{is_staff}
+        $rec_id, undef, undef, $copy_limit, $copy_offset, $staff
     );
+
+    if($available eq 'true') {
+        $query->{where} = {
+            '+acp' => {
+                deleted => 'f',
+                ($staff ? () : (opac_visible => 't'))
+            },
+            '+ccs' => { is_available => 't'},
+            ($staff ? () : ( '+aou' => { opac_visible => 't' } ))
+        };
+    }
 
     my $lasso_orgs = $self->search_lasso_orgs;
 
-    if($lasso_orgs || $org != $self->ctx->{aou_tree}->()->id) { 
+    if($lasso_orgs || $org != $self->ctx->{aou_tree}->()->id) {
         # no need to add the org join filter if we're not actually filtering
 
         my $filter_orgs = $lasso_orgs || $org;

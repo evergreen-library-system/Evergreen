@@ -2088,7 +2088,8 @@ sub basic_opac_copy_query {
             ccs => [
                 {column => 'id', alias => 'status_code'},
                 {column => 'name', alias => 'copy_status'},
-                {column => 'holdable', alias => 'status_holdable'}
+                {column => 'holdable', alias => 'status_holdable'},
+                {column => 'is_available', alias => 'is_available'}
             ],
             acn => [
                 {column => 'label', alias => 'call_number_label'},
