@@ -96,17 +96,17 @@
 
     <eg-grid-toolbar-action
       i18n-group group="Add" i18n-label label="Add Call Numbers"
-      (onClick)="openHoldingEdit($event, true, false)">
+      (onClick)="openHoldingAdd($event, true, false)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
       i18n-group group="Add" i18n-label label="Add Items"
-      (onClick)="openHoldingEdit($event, false, true)">
+      (onClick)="openHoldingAdd($event, false, true)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
       i18n-group group="Add" i18n-label label="Add Call Numbers and Items"
-      (onClick)="openHoldingEdit($event, true, true)">
+      (onClick)="openHoldingAdd($event, true, true)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
@@ -140,17 +140,17 @@
 
     <eg-grid-toolbar-action
       i18n-group group="Edit" i18n-label label="Edit Call Numbers"
-      (onClick)="openHoldingEdit($event, true, false)">
+      (onClick)="openHoldingEdit($event, false, true)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
       i18n-group group="Edit" i18n-label label="Edit Call Numbers And Items"
-      (onClick)="openHoldingEdit($event, true, true)">
+      (onClick)="openHoldingEdit($event, false, false)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
       i18n-group group="Edit" i18n-label label="Edit Items"
-      (onClick)="openHoldingEdit($event, false, true)">
+      (onClick)="openHoldingEdit($event, true, false)">
     </eg-grid-toolbar-action>
     
     <eg-grid-toolbar-action

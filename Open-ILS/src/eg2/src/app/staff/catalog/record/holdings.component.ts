@@ -592,12 +592,22 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
     // Which copies in the grid are selected.
     selectedCopyIds(rows: HoldingsEntry[], skipStatus?: number): number[] {
+        return this.selectedCopies(rows, skipStatus).map(c => Number(c.id()));
+    }
+
+    selectedVolIds(rows: HoldingsEntry[]): number[] {
+        return rows
+            .filter(r => Boolean(r.callNum))
+            .map(r => Number(r.callNum.id()));
+    }
+
+    selectedCopies(rows: HoldingsEntry[], skipStatus?: number): IdlObject[] {
         let copyRows = rows.filter(r => Boolean(r.copy)).map(r => r.copy);
         if (skipStatus) {
             copyRows = copyRows.filter(
                 c => Number(c.status().id()) !== Number(skipStatus));
         }
-        return copyRows.map(c => Number(c.id()));
+        return copyRows;
     }
 
     selectedCallNumIds(rows: HoldingsEntry[]): number[] {
@@ -725,7 +735,32 @@ export class HoldingsMaintenanceComponent implements OnInit {
         .then(key => this.openAngJsWindow(`cat/printlabels/${key}`));
     }
 
-    openHoldingEdit(rows: HoldingsEntry[], addCallNums: boolean, addCopies: boolean) {
+    openHoldingEdit(rows: HoldingsEntry[], hideVols: boolean, hideCopies: boolean) {
+
+        // Avoid adding call number edit entries for call numbers
+        // that are already represented by selected items.
+
+        const copies = this.selectedCopies(rows);
+        const copyVols = copies.map(c => Number(c.call_number()));
+
+        const volIds = [];
+        this.selectedVolIds(rows).forEach(id => {
+            if (!copyVols.includes(id)) {
+                volIds.push(id);
+            }
+        });
+
+        this.holdings.spawnAddHoldingsUi(
+            this.recordId,
+            volIds,
+            null,
+            copies.map(c => Number(c.id())),
+            hideCopies,
+            hideVols
+        );
+    }
+
+    openHoldingAdd(rows: HoldingsEntry[], addCallNums: boolean, addCopies: boolean) {
 
         // The user may select a set of call numbers by selecting call
         // number and/or item rows.  Owning libs for new call numbers may
@@ -740,7 +775,10 @@ export class HoldingsMaintenanceComponent implements OnInit {
                 callNums.push(r.treeNode.parentNode.target);
 
             } else if (r.treeNode.nodeType === 'org') {
-                orgs[r.treeNode.target.id()] = true;
+                const org = r.treeNode.target;
+                if (org.ou_type().can_have_vols() === 't') {
+                    orgs[org.id()] = true;
+                }
             }
         });
 
@@ -767,7 +805,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
             }
 
             this.holdings.spawnAddHoldingsUi(
-                this.recordId, null, entries, !addCopies);
+                this.recordId, null, entries, null, !addCopies);
         }
     }
 
