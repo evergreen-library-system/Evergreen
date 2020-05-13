@@ -100,6 +100,9 @@ export class FmRecordEditorComponent
     // behaviour for each field (by field name).
     @Input() fieldOptions: {[fieldName: string]: FmFieldOptions} = {};
 
+    // This is used to set default values when making a new record
+    @Input() defaultNewRecord: IdlObject;
+
     // list of fields that should not be displayed
     @Input() hiddenFieldsList: string[] = [];
     @Input() hiddenFields: string; // comma-separated string version
@@ -356,8 +359,16 @@ export class FmRecordEditorComponent
         //
         // Create a new record from the stub record provided by the
         // caller or a new from-scratch record
-        // Set this._record (not this.record) to avoid loop in initRecord()
-        this._record = this.record || this.idl.create(this.idlClass);
+        if (!this.record) {
+            // NOTE: Set this._record (not this.record) to avoid
+            // loop in initRecord()
+            if (this.defaultNewRecord) {
+                // Clone to avoid polluting the stub record
+                this._record = this.idl.clone(this.defaultNewRecord);
+            } else {
+                this._record = this.idl.create(this.idlClass);
+            }
+        }
         this._recordId = null; // avoid future confusion
 
         return this.getFieldList();
