@@ -480,6 +480,7 @@ sub update_patron {
 
     my $old_patron;
     my $barred_hook = '';
+    my $renew_hook = '';
 
     if($patron->isnew()) {
         ( $new_patron, $evt ) = _add_patron($e, _clone_patron($patron));
@@ -494,6 +495,8 @@ sub update_patron {
         # Did auth checking above already.
         $old_patron = $e->retrieve_actor_user($patron->id) or
             return $e->die_event;
+
+        $renew_hook = 'au.renewed' if ($old_patron->expire_date ne $new_patron->expire_date);
 
         if($U->is_true($old_patron->barred) != $U->is_true($new_patron->barred)) {
             my $perm = $U->is_true($old_patron->barred) ? 'UNBAR_PATRON' : 'BAR_PATRON';
@@ -546,10 +549,13 @@ sub update_patron {
     my $tses = OpenSRF::AppSession->create('open-ils.trigger');
     if($patron->isnew) {
         $tses->request('open-ils.trigger.event.autocreate',
-            'au.create', $new_patron, $new_patron->home_ou);
+            'au.created', $new_patron, $new_patron->home_ou);
     } else {
         $tses->request('open-ils.trigger.event.autocreate',
-            'au.update', $new_patron, $new_patron->home_ou);
+            'au.updated', $new_patron, $new_patron->home_ou);
+
+        $tses->request('open-ils.trigger.event.autocreate', $renew_hook,
+            $new_patron, $new_patron->home_ou) if $renew_hook;
 
         $tses->request('open-ils.trigger.event.autocreate', $barred_hook,
             $new_patron, $new_patron->home_ou) if $barred_hook;
@@ -916,6 +922,7 @@ sub _add_update_cards {
 
     my $virtual_id; #id of the card before creation
 
+    my $card_changed = 0;
     my $cards = $patron->cards();
     for my $card (@$cards) {
 
@@ -932,12 +939,17 @@ sub _add_update_cards {
                 $new_patron->card($card->id());
                 $new_patron->ischanged(1);
             }
+            $card_changed++;
 
         } elsif( ref($card) and $card->ischanged() ) {
             $evt = _update_card($e, $card);
             return (undef, $evt) if $evt;
+            $card_changed++;
         }
     }
+
+    $U->create_events_for_hook('au.barcode_changed', $new_patron, $e->requestor->ws_ou)
+        if $card_changed;
 
     return ( $new_patron, undef );
 }
@@ -1565,6 +1577,7 @@ sub update_passwd {
         return new OpenILS::Event('INCORRECT_PASSWORD');
     }
 
+    my $at_event = 0;
     if( $api =~ /password/o ) {
         # NOTE: with access to the plain text password we could crypt
         # the password without the extra MD5 pre-hashing.  Other changes
@@ -1587,14 +1600,19 @@ sub update_passwd {
                 return new OpenILS::Event('USERNAME_EXISTS');
             }
             $db_user->usrname($new_val);
+            $at_event++;
 
         } elsif( $api =~ /email/o ) {
             $db_user->email($new_val);
+            $at_event++;
         }
     }
 
     $e->update_actor_user($db_user) or return $e->die_event;
     $e->commit;
+
+    $U->create_events_for_hook('au.updated', $db_user, $e->requestor->ws_ou)
+        if $at_event;
 
     # update the cached user to pick up these changes
     $U->simplereq('open-ils.auth', 'open-ils.auth.session.reset_timeout', $auth, 1);
@@ -3617,8 +3635,8 @@ sub update_user_pending_address {
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
 
+    my $user = $e->retrieve_actor_user($addr->usr) or return $e->die_event;
     if($addr->usr != $e->requestor->id) {
-        my $user = $e->retrieve_actor_user($addr->usr) or return $e->die_event;
         return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
     }
 
@@ -3631,6 +3649,8 @@ sub update_user_pending_address {
     }
 
     $e->commit;
+    $U->create_events_for_hook('au.updated', $user, $e->requestor->ws_ou);
+
     return $addr->id;
 }
 

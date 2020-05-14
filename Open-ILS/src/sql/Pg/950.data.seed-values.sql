@@ -16609,6 +16609,15 @@ INSERT INTO action_trigger.environment (event_def, path) VALUES
 INSERT INTO action_trigger.hook (key, core_type, description, passive)
     VALUES ('au.created', 'au', 'A user was created', 't');
 	
+INSERT INTO action_trigger.hook (key, core_type, description, passive)
+    VALUES ('au.updated', 'au', 'A user was updated', 't');
+	
+INSERT INTO action_trigger.hook (key, core_type, description, passive)
+    VALUES ('au.barcode_changed', 'au', 'A card was updated or created for an existing user', 't');
+	
+INSERT INTO action_trigger.hook (key, core_type, description, passive)
+    VALUES ('au.renewed', 'au', 'A user was renewed by having their expire date changed', 't');
+
 --SQL to create event definition for new account creation notice
 --Inactive, owned by top of org tree by default.  Modify to suit needs.
 
