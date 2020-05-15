@@ -48,8 +48,6 @@ Open-ILS/src/extras/.libs/
 Open-ILS/src/extras/Makefile
 Open-ILS/src/extras/Makefile.in
 Open-ILS/src/extras/oils_requestor
-Open-ILS/src/java/Makefile
-Open-ILS/src/java/Makefile.in
 Open-ILS/src/Makefile
 Open-ILS/src/Makefile.in
 Open-ILS/src/perlmods/blib/

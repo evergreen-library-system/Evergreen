@@ -109,12 +109,6 @@ reporter_data = @srcdir@/reporter/report-fail \
 endif
 
 #------------------------------
-# Build EVERGREEN JAVA
-#------------------------------
-
-if BUILDEGJAVA
-OILSJAVA_DIR = java
-endif
 
 # scripts that are generated from *.in files and can
 # be deleted by a make clean
@@ -150,7 +144,7 @@ doc_DATA = $(gen_docs)
 
 # Take care of which subdirectories to build, and which extra files to include in a distribution.
 
-SUBDIRS = $(OILSCORE_DIRS) $(OILSWEB_DIR) $(OILSJAVA_DIR)
+SUBDIRS = $(OILSCORE_DIRS) $(OILSWEB_DIR)
 
 EXTRA_DIST = @srcdir@/perlmods \
 	@srcdir@/data \

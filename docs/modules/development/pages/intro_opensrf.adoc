@@ -1040,11 +1040,10 @@ retrieve the value directly.
 
 In practice, OpenSRF includes convenience libraries in all of its client
 language bindings to simplify access to configuration values. C offers
-osrfConfig.c, Perl offers `OpenSRF::Utils::SettingsClient`, Java offers
-`org.opensrf.util.SettingsClient`, and Python offers `osrf.set`. These
-libraries locally cache the configuration file to avoid network roundtrips for
-every request and enable the developer to request specific values without
-having to manually construct XPath expressions.
+osrfConfig.c, Perl offers `OpenSRF::Utils::SettingsClient`, and Python offers
+`osrf.set`. These libraries locally cache the configuration file to avoid
+network roundtrips for every request and enable the developer to request
+specific values without having to manually construct XPath expressions.
 
 == Getting under the covers with OpenSRF ==
 Now that you have seen that it truly is easy to create an OpenSRF service, we
