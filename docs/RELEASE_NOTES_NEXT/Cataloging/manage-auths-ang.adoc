@@ -1,0 +1,7 @@
+Manage Authorities Angular Port
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Cataloging => 'Manage Authorities' interface has been ported to Angular.
+
+New functionality includes displaying additional authority data, like create
+and edit dates, etc.  It's also possible to view the list of linked bib
+records.

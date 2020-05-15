@@ -335,7 +335,7 @@
           </li>
           <li class="divider"></li>
           <li>
-            <a href="./cat/catalog/manageAuthorities" target="_self">
+            <a href="/eg2/staff/cat/authority/browse">
               <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
               [% l('Manage Authorities') %]
             </a>

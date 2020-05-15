@@ -1,0 +1,35 @@
+<eg-staff-banner bannerText="#{{authId}} {{authMeta ? authMeta.heading : ''}}" i18n-bannerText>
+</eg-staff-banner>
+
+<div class="row mb-2">
+  <div class="col-lg-3">
+    <a routerLink="/staff/cat/authority/browse">
+      <button class="btn btn-outline-dark">
+        <span class="material-icons material-mat-icon-shrunk-in-button">arrow_back</span>
+        <span class="pl-1" i18n>Return to Browse</span>
+      </button>
+    </a>
+  </div>
+</div>
+
+<ngb-tabset #authTabs [activeId]="authTab" 
+  (tabChange)="beforeTabChange($event)">
+  <ngb-tab title="Linked Bibs" i18n-title id="bibs">
+    <ng-template ngbTabContent>
+      <div class="mt-3" *ngIf="authMeta">
+        <eg-bib-list #bibList [bibIds]="authMeta.linked_bibs"
+          gridPersistKey="cat.authority.manage.bibs"></eg-bib-list>
+      </div>
+    </ng-template>
+  </ngb-tab>
+  <ngb-tab title="Edit" i18n-title id="edit">
+    <ng-template ngbTabContent>
+      <div class="mt-3">
+        <eg-marc-editor #marcEditor recordType="authority" [recordId]="authId">
+        </eg-marc-editor>
+      </div>
+    </ng-template>
+  </ngb-tab>
+</ngb-tabset>
+
+

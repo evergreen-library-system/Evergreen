@@ -4,6 +4,9 @@ use strict; use warnings;
 
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
+use MARC::Record;
+use MARC::File::XML (BinaryEncoding => 'UTF-8');
+use MARC::Charset;
 use XML::LibXML;
 use XML::LibXSLT;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
@@ -336,6 +339,92 @@ sub crossref_authority_batch2 {
         $cache->put_cache("oils_authority_${class}_$t", $auth, $timeout);
     }
     return $response;
+}
+
+__PACKAGE__->register_method(
+    method        => "authority_main_entry",
+    api_name      => "open-ils.search.authority.main_entry",
+    stream => 1,
+    signature     => {
+        desc => q/
+            Returns the main entry details for one or more authority 
+            records plus a few other details.
+        /,
+        params => [
+            {desc => 'Authority IDs', type => 'number or array'}
+        ],
+        return => {
+            desc => q/
+                Stream of authority metadata objects.
+                {   authority: are_object,
+                    heading: heading_text,
+                    thesaurus: short_code,
+                    thesaurus_code: code,
+                    control_set: control_set_object,
+                    linked_bibs: [id1, id2, ...]
+                }
+            /,
+            type => 'object'
+        }
+    }
+);
+
+sub authority_main_entry {
+    my ($self, $client, $auth_ids) = @_;
+
+    $auth_ids = [$auth_ids] unless ref $auth_ids;
+
+    my $e = new_editor();
+
+    for my $auth_id (@$auth_ids) {
+
+        my $rec = $e->retrieve_authority_record_entry([
+            $auth_id, {
+                flesh => 1,
+                flesh_fields => {are => [qw/control_set bib_links creator/]}
+            }
+        ]) or return $e->event;
+
+        my $response = {
+            authority => $rec,
+            control_set => $rec->control_set,
+            linked_bibs => [ map {$_->bib} @{$rec->bib_links} ]
+        };
+
+        # Extract the heading and thesaurus.
+        # In theory this data has already been extracted in the DB, but
+        # using authority.simple_heading results in data that varies
+        # quite a bit from the previous authority manage interface.  I
+        # took the MARC parsing approach because it matches the logic
+        # (and results) of the previous UI.
+
+        my $marc = MARC::Record->new_from_xml($rec->marc);
+        my $heading_field = $marc->field('1..');
+        $response->{heading} = $heading_field->as_string if $heading_field;
+
+        my $field_008 = $marc->field('008');
+        if ($field_008) {
+
+            # Extract the 1-char thesaurus code from the 008.
+            my $thes = substr($field_008->data, 11, 1);
+
+            if (defined $thes) {
+                $response->{thesaurus} = $thes;
+
+                if ($thes ne 'z') { # 'z' ('Other') maps to many entries
+                    my $thesaurus = $e->search_authority_thesaurus(
+                        {short_code => $thes})->[0];
+
+                    $response->{thesaurus_code} = $thesaurus->code if $thesaurus;
+                }
+            }
+        }
+
+        $rec->clear_marc;
+        $client->respond($response);
+    }
+
+    return undef;
 }
 
 

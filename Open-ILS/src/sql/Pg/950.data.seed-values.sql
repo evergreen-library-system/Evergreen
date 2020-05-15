@@ -20520,6 +20520,18 @@ VALUES (
         'Default org unit for patron search',
         'cwst', 'label'
     )
+), (
+    'eg.grid.cat.authority.browse', 'gui', 'object',
+    oils_i18n_gettext(
+    'eg.grid.cat.authority.browse',
+    'Grid Config: eg.grid.cat.authority.browse',
+    'cwst', 'label')
+), (
+    'eg.grid.cat.authority.manage.bibs', 'gui', 'object',
+    oils_i18n_gettext(
+    'eg.grid.cat.authority.manage.bibs',
+    'Grid Config: eg.grid.cat.authority.manage.bibs',
+    'cwst', 'label')
 );
 
 INSERT INTO config.workstation_setting_type
