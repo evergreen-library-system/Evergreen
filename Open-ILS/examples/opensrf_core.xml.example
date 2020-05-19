@@ -28,6 +28,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
           <service>open-ils.circ</service>
           <service>open-ils.collections</service>
           <service>open-ils.courses</service>
+          <service>open-ils.curbside</service>
           <service>open-ils.fielder</service>
           <service>open-ils.pcrud</service>
           <service>open-ils.permacrud</service>
