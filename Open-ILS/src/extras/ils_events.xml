@@ -938,6 +938,15 @@
 	<event code='7029' textcode='MAX_AUTO_RENEWALS_REACHED'>
 		<desc xml:lang="en-US">Circulation has no more auto-renewals remaining</desc>
 	</event>
+	<event code='7030' textcode='CURBSIDE_NOT_ALLOWED'>
+		<desc xml:lang="en-US">Curbside pickup is not enabled for this location</desc>
+	</event>
+	<event code='7031' textcode='CURBSIDE_MAX_FOR_TIME'>
+		<desc xml:lang="en-US">Maximum scheduled curbside pickups at the requested time</desc>
+	</event>
+	<event code='7032' textcode='CURBSIDE_EXISTS'>
+		<desc xml:lang="en-US">A scheduled, unfilled curbside request already exists</desc>
+	</event>
 
 
 	<!-- ================================================================ -->
