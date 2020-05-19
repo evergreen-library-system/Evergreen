@@ -4853,6 +4853,26 @@ SELECT  usr,
             <link field="usr" reltype="has_a" key="id" map="" class="au"/>
         </links>
 	</class>
+	<class id="acsp" controller="open-ils.cstore" oils_obj:fieldmapper="action::curbside" oils_persist:tablename="action.curbside" reporter:label="Curbside Appointment Slot">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.curbside_id_seq">
+			<field reporter:label="Appointment ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Patron" name="patron" reporter:datatype="link"/>
+			<field reporter:label="Pickup Library" name="org" reporter:datatype="org_unit"/>
+			<field reporter:label="Appointment Date/Time" name="slot" reporter:datatype="timestamp"/>
+			<field reporter:label="Staged" name="staged" reporter:datatype="timestamp"/>
+			<field reporter:label="Staging Staff" name="stage_staff" reporter:datatype="link"/>
+			<field reporter:label="Arrival Date/Time" name="arrival" reporter:datatype="timestamp"/>
+			<field reporter:label="Delivery Date/Time" name="delivered" reporter:datatype="timestamp"/>
+			<field reporter:label="Delivery Staff" name="delivery_staff" reporter:datatype="link"/>
+			<field reporter:label="Notes" name="notes" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="org" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="patron" reltype="has_a" key="id" map="" class="au"/>
+			<link field="stage_staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="delivery_staff" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+	</class>
 	<class id="circ" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::circulation" oils_persist:tablename="action.circulation" reporter:core="true" reporter:label="Circulation">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
 			<field reporter:label="Check In Library" name="checkin_lib" reporter:datatype="org_unit"/>
