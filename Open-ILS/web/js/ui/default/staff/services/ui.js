@@ -937,7 +937,7 @@ function($uibModal , $interpolate , egCore) {
         },
         template:
             '<div class="input-group">'+
-                '<input placeholder="{{placeholder}}" type="text" ng-disabled="egDisabled" class="form-control" ng-model="selected" ng-change="makeOpen()" focus-me="focusMe">'+
+                '<input placeholder="{{placeholder}}" type="text" ng-disabled="egDisabled" class="form-control" ng-model="selected" ng-change="makeOpen()" focus-me="focusMe" ng-click="inputClick()">'+
                 '<div class="input-group-btn" uib-dropdown ng-class="{open:isopen}">'+
                     '<button type="button" ng-click="showAll()" ng-disabled="egDisabled" class="btn btn-default" uib-dropdown-toggle><span class="caret"></span></button>'+
                     '<ul uib-dropdown-menu class="dropdown-menu-right">'+
@@ -957,8 +957,11 @@ function($uibModal , $interpolate , egCore) {
 
                 $scope.compare = function (ex, act) {
                     if (act === null || act === undefined) return true;
-                    if (act.toString) act = act.toString();
-                    return new RegExp(act.toLowerCase()).test(ex)
+                    if (act.toString) {
+                        act = act.toString();
+                        act = act.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&'); // modify string to make sure characters like [ are accepted in the regex
+                    }
+                    return new RegExp(act.toLowerCase()).test(ex.toLowerCase());
                 }
 
                 $scope.showAll = function () {
@@ -976,6 +979,13 @@ function($uibModal , $interpolate , egCore) {
                     if ($scope.selected && $scope.selected.length > 0) $scope.complete_list = true;
                     if (!$scope.selected || $scope.selected.length == 0) $scope.complete_list = false;
                     $scope.makeOpen();
+                }
+
+                $scope.inputClick = function() {
+                    if ($scope.isopen) {
+                        $scope.isopen = false;
+                        $scope.clickedclosed = null;
+                    }
                 }
 
                 $scope.makeOpen = function () {
