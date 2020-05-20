@@ -1,4 +1,5 @@
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter, forwardRef} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Input, Output, ViewChild,
+    EventEmitter, forwardRef} from '@angular/core';
 import {ControlValueAccessor, FormGroup, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -8,6 +9,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {StringComponent} from '@eg/share/string/string.component';
 
 /**
  * Item (Copy) Location Selector.
@@ -26,7 +28,8 @@ import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.comp
       multi: true
   }]
 })
-export class ItemLocationSelectComponent implements OnInit, ControlValueAccessor {
+export class ItemLocationSelectComponent
+    implements OnInit, AfterViewInit, ControlValueAccessor {
 
     // Limit copy locations to those owned at or above org units where
     // the user has work permissions for the provided permission code.
@@ -40,12 +43,16 @@ export class ItemLocationSelectComponent implements OnInit, ControlValueAccessor
     // Emits an acpl object or null on combobox value change
     @Output() valueChange: EventEmitter<IdlObject>;
 
+    @Input() required: boolean;
+
     @ViewChild('comboBox', {static: false}) comboBox: ComboboxComponent;
+    @ViewChild('unsetString', {static: false}) unsetString: StringComponent;
 
     startId: number = null;
-    filterOrgs: number[];
+    filterOrgs: number[] = [];
     cache: {[id: number]: IdlObject} = {};
 
+    initDone = false; // true after first data load
     propagateChange = (id: number) => {};
     propagateTouch = () => {};
 
@@ -59,12 +66,51 @@ export class ItemLocationSelectComponent implements OnInit, ControlValueAccessor
     }
 
     ngOnInit() {
-        this.setFilterOrgs().then(_ => this.getLocations());
+        this.setFilterOrgs()
+        .then(_ => this.getLocations())
+        .then(_ => this.initDone = true);
+    }
+
+    ngAfterViewInit() {
+
+        // Format the display of locations to include the org unit
+        this.comboBox.formatDisplayString = (result: ComboboxEntry) => {
+            let display = result.label || result.id;
+            display = (display + '').trim();
+            if (result.userdata) {
+                display += ' (' +
+                    this.orgName(result.userdata.owning_lib()) + ')';
+            }
+            return display;
+        };
     }
 
     getLocations(): Promise<any> {
+
+        if (this.filterOrgs.length === 0) {
+            this.comboBox.entries = [];
+            return Promise.resolve();
+        }
+
+        const search: any = {deleted: 'f'};
+
+        if (this.startId) {
+            // Guarantee we have the load-time copy location, which
+            // may not be included in the org-scoped set of locations
+            // we fetch by default.
+            search['-or'] = [
+                {id: this.startId},
+                {owning_lib: this.filterOrgs}
+            ];
+        } else {
+            search.owning_lib = this.filterOrgs;
+        }
+
         const entries: ComboboxEntry[] = [];
-        const search = {owning_lib: this.filterOrgs, deleted: 'f'};
+
+        if (!this.required) {
+            entries.push({id: null, label: this.unsetString.text});
+        }
 
         return this.pcrud.search('acpl', search, {order_by: {acpl: 'name'}}
         ).pipe(map(loc => {
@@ -90,11 +136,22 @@ export class ItemLocationSelectComponent implements OnInit, ControlValueAccessor
     }
 
     writeValue(id: number) {
-        if (this.comboBox) { // May not yet be initialized
-            this.comboBox.selectedId = id;
-        } else if (id) {
+        if (this.initDone) {
+            this.getOneLocation(id).then(_ => this.comboBox.selectedId = id);
+        } else {
             this.startId = id;
         }
+    }
+
+    getOneLocation(id: number) {
+        if (!id || this.cache[id]) { return Promise.resolve(); }
+
+        return this.pcrud.retrieve('acpl', id).toPromise()
+        .then(loc => {
+            this.cache[loc.id()] = loc;
+            this.comboBox.entries.push(
+                {id: loc.id(), label: loc.name(), userdata: loc});
+        });
     }
 
     setFilterOrgs(): Promise<number[]> {

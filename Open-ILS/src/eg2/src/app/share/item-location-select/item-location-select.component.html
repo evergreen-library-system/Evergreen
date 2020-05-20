@@ -1,12 +1,16 @@
 
 <ng-template #displayTemplate let-r="result" i18n>
-  {{r.label}} ({{orgName(r.userdata.owning_lib())}})
+  {{r.label}} <ng-container *ngIf="r.userdata">
+    ({{orgName(r.userdata.owning_lib())}})</ng-container>
 </ng-template>
+
+<eg-string #unsetString text="<Unset>" i18n-text></eg-string>
 
 <eg-combobox #comboBox
   [startId]="startId"
   [displayTemplate]="displayTemplate"
   (onChange)="cboxChanged($event)"
+  [required]="required"
   (blur)="propagateTouch()"
   placeholder="Shelving Location..."
   i18n-placeholder>
