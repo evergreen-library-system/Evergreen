@@ -1,0 +1,187 @@
+<eg-staff-banner bannerText="MARC Batch Edit" i18n-bannerText></eg-staff-banner>
+
+<div class="row">
+  <div class="col-lg-7 common-form striped-odd">
+    <ng-container *ngFor="let rule of templateRules; let idx = index">
+      <hr *ngIf="idx > 0"/>
+      <div class="row mb-2">
+        <div class="col-lg-3 font-weight-bold" i18n>Rule Setup</div>
+        <div class="col-lg-4 font-weight-bold" i18n>Data</div>
+        <div class="col-lg-5 font-weight-bold" i18n>Help</div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-lg-3" i18n>Action (Rule Type)</div>
+        <div class="col-lg-4">
+          <select class="form-control" [(ngModel)]="rule.ruleType"
+            (change)="rulesetToRecord()">
+            <option value='r' i18n>Replace</option>
+            <option value='a' i18n>Add</option>
+            <option value='d' i18n>Delete</option>
+          </select>
+        </div>
+        <div class="col-lg-5" i18n>How to change the existing record.</div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-lg-3" i18n>MARC Tag</div>
+        <div class="col-lg-4">
+          <input type="text" class="form-control" maxlength="3"
+            (change)="rulesetToRecord(true)" [(ngModel)]="rule.marcTag"/>
+        </div>
+        <div class="col-lg-5" i18n>
+          Three characters, no spaces, no indicators, etc. eg: 245
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-lg-3" i18n>Subfields (optional)</div>
+        <div class="col-lg-4">
+          <input type="text" class="form-control" 
+            (change)="rulesetToRecord(true)" [(ngModel)]="rule.marcSubfields"/>
+        </div>
+        <div class="col-lg-5" i18n>No spaces, no delimiters, eg: abcnp</div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-lg-3" i18n>MARC Data</div>
+        <div class="col-lg-4">
+          <input type="text" class="form-control" 
+            (change)="rulesetToRecord()" [(ngModel)]="rule.marcData"/>
+        </div>
+        <div class="col-lg-5" i18n>
+          MARC-Breaker formatted data with indicators and subfield delimiters, 
+          eg: 245 04$aThe End
+        </div>
+      </div>
+      <div class="row mt-3 mb-2 pt-2 border-top">
+        <div class="col-lg-12 justify-content-center d-flex">
+          <div class="font-weight-bold" i18n>
+            Advanced Matching Restriction (Optional)
+          </div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-lg-3" i18n>Subfield</div>
+        <div class="col-lg-4">
+          <input type="text" class="form-control" 
+            (change)="rulesetToRecord()" [(ngModel)]="rule.advSubfield"/>
+        </div>
+        <div class="col-lg-5" i18n>
+          A single subfield code, no delimiters, eg: a
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-lg-3" i18n>Expression</div>
+        <div class="col-lg-4">
+          <input type="text" class="form-control" 
+            (change)="rulesetToRecord()" [(ngModel)]="rule.advRegex"/>
+        </div>
+        <div class="col-lg-5" i18n>
+          See the 
+          <a target="_blank" 
+            href="https://perldoc.perl.org/perlre.html#Regular-Expressions">
+            Perl documentation
+          </a> for an explanation of Regular Expressions.
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-lg-12 d-flex justify-content-end">
+          <button class="btn btn-outline-danger label-with-material-icon"
+            (click)="removeRule(idx)" i18n>
+            <span>Remove this Merge Rule</span>
+            <span class="material-icons ml-2">delete</span>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+    <div class="row mb-2">
+      <div class="col-lg-6">
+        <button class="btn btn-outline-dark label-with-material-icon" 
+          (click)="addRule()">
+          <span i18n>Add a New Merge Rule</span>
+          <span class="material-icons ml-2">arrow_downward</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="row pb-2 pt-2 border">
+      <div class="col-lg-12">
+        <div class="font-weight-bold" i18n>Merge Template Preview</div>
+        <div>
+          <textarea class="form-control" [ngModel]="breaker()" 
+            disabled rows="{{breakerRows()}}"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-lg-3" i18n>Record Source: </div>
+      <div class="col-lg-6">
+        <select class="form-control" [(ngModel)]="source">
+          <option value='b' i18n>Bucket</option>
+          <option value='c' i18n>CSV File</option>
+          <option value='r' i18n>Bib Record ID</option>
+        </select>
+      </div>
+    </div>
+    <div class="row mt-2 pt-2 pb-2 border">
+      <ng-container *ngIf="source == 'b'">
+        <div class="col-lg-3" i18n>Bucket named: </div>
+        <div class="col-lg-6">
+          <eg-combobox [entries]="buckets" (onChange)="bucketChanged($event)">
+          </eg-combobox>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="source == 'r'">
+        <div class="col-lg-3" i18n>Record ID: </div>
+        <div class="col-lg-3">
+          <input type="text" class="form-control" [(ngModel)]="recordId"/>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="source == 'c'">
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-3" i18n>Column: </div>
+            <div class="col-lg-3 d-flex">
+              <input type="number" class="form-control" [(ngModel)]="csvColumn"/>
+              <span class="pl-2" i18n> of </span>
+            </div>
+            <div class="col-lg-6">
+              <input type="file" class="form-control"
+                #fileSelector (change)="fileSelected($event)"/>
+            </div>
+          </div>
+          <div class="row pt-2">
+            <div class="col-lg-12" i18n>
+              Columns are numbered starting at 0. For instance, when looking 
+              at a CSV file in Excel, the column labeled A is the same as 
+              column 0, and the column labeled B is the same as column 1.
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="row mt-2 pt-2 pb-2 border">
+      <div class="col-lg-12">
+        <button class="btn btn-outline-dark" 
+          [disabled]="disableSave()" (click)="process()" i18n>Go!</button>
+      </div>
+    </div>
+    <div class="row mt-2 p-2" *ngIf="processing">
+      <div class="col-lg-10 offset-lg-1">
+        <eg-progress-inline [max]="progressMax" [value]="progressValue">
+        </eg-progress-inline>
+      </div>
+    </div>
+    <div class="row mt-2 p-2" *ngIf="!processing && progressMax">
+      <div class="col-lg-12 alert alert-success">
+        <div i18n>Processing Complete</div>
+        <div class="row">
+          <div class="col-lg-3" i18n>Success count: </div>
+          <div class="col-lg-3">{{this.numSucceeded}}</div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3" i18n>Failed count: </div>
+          <div class="col-lg-3">{{this.numFailed}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

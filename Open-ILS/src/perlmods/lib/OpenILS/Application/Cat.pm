@@ -240,12 +240,17 @@ __PACKAGE__->register_method(
         @param auth The authtoken
         @param container The container, um, containing the records to be updated by the template
         @param template The overlay template, or nothing and the method will look for a negative bib id in the container
+        @param options Hash of options; currently supports:
+            xact_per_record: Apply updates to each bib record within its own transaction.
         @return Cache key to check for status of the container overlay
     #
 );
 
 sub template_overlay_container {
-    my($self, $conn, $auth, $container, $template) = @_;
+    my($self, $conn, $auth, $container, $template, $options) = @_;
+    $options ||= {};
+    my $xact_per_rec = $options->{xact_per_record};
+
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
 
@@ -265,14 +270,20 @@ sub template_overlay_container {
         $template = $e->retrieve_biblio_record_entry( $titem->target_biblio_record_entry )->marc;
     }
 
+    my $num_total = scalar(@$items);
     my $num_failed = 0;
     my $num_succeeded = 0;
 
     $conn->respond_complete(
-        $actor->request('open-ils.actor.anon_cache.set_value', $auth, batch_edit_progress => {})->gather(1)
+        $actor->request('open-ils.actor.anon_cache.set_value', $auth, 
+            batch_edit_progress => {total => $num_total})->gather(1)
     ) if ($actor);
 
+    # read-only up to here.
+    $e->rollback if $xact_per_rec;
+
     for my $item ( @$items ) {
+        $e->xact_begin if $xact_per_rec;
         my $rec = $e->retrieve_biblio_record_entry($item->target_biblio_record_entry);
         next unless $rec;
 
@@ -294,6 +305,7 @@ sub template_overlay_container {
             $actor->request(
                 'open-ils.actor.anon_cache.set_value', $auth,
                 batch_edit_progress => {
+                    total     => $num_total,
                     succeeded => $num_succeeded,
                     failed    => $num_failed
                 },
@@ -311,6 +323,7 @@ sub template_overlay_container {
                         batch_edit_progress => {
                             complete => 1,
                             success  => 'f',
+                            total     => $num_total,
                             succeeded => $num_succeeded,
                             failed    => $num_failed,
                         }
@@ -321,19 +334,23 @@ sub template_overlay_container {
                 }
             }
         }
+        $e->xact_commit if $xact_per_rec;
     }
 
     if ($titem && !$num_failed) {
+        $e->xact_begin if $xact_per_rec;
         return $e->die_event unless ($e->delete_container_biblio_record_entry_bucket_item($titem));
+        $e->xact_commit if $xact_per_rec;
     }
 
-    if ($e->commit) {
+    if ($xact_per_rec || $e->commit) {
         if ($actor) {
             $actor->request(
                 'open-ils.actor.anon_cache.set_value', $auth,
                 batch_edit_progress => {
                     complete => 1,
                     success  => 't',
+                    total     => $num_total,
                     succeeded => $num_succeeded,
                     failed    => $num_failed,
                 }
@@ -348,6 +365,7 @@ sub template_overlay_container {
                 batch_edit_progress => {
                     complete => 1,
                     success  => 'f',
+                    total     => $num_total,
                     succeeded => $num_succeeded,
                     failed    => $num_failed,
                 }

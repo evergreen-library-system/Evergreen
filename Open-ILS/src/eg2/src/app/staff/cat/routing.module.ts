@@ -9,6 +9,10 @@ const routes: Routes = [
     path: 'authority',
     loadChildren: () =>
       import('./authority/authority.module').then(m => m.AuthorityModule)
+  }, {
+    path: 'marcbatch',
+    loadChildren: () =>
+      import('./marcbatch/marcbatch.module').then(m => m.MarcBatchModule)
   }
 ];
 

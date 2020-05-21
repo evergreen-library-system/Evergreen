@@ -1,4 +1,3 @@
---002.schema.config.sql:
 INSERT INTO config.bib_source (id, quality, source, transcendant, can_have_copies) VALUES 
     (1, 90, oils_i18n_gettext(1, 'oclc', 'cbs', 'source'), FALSE, TRUE);
 INSERT INTO config.bib_source (id, quality, source, transcendant, can_have_copies) VALUES 

@@ -321,7 +321,7 @@
             </a>
           </li>
           <li>
-            <a href="./cat/catalog/batchEdit" target="_self">
+            <a href="/eg2/staff/cat/marcbatch">
               <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
               [% l('MARC Batch Edit') %]
             </a>

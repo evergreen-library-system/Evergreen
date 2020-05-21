@@ -60,7 +60,7 @@ export class MarcRecord {
         this.record.fields = f;
     }
 
-    constructor(xml: string) {
+    constructor(xml?: string) {
         this.record = new MARC21.Record({marcxml: xml, delimiter: DELIMITER});
         this.breakerText = this.record.toBreaker();
         this.fixedFieldChange = new EventEmitter<string>();
@@ -111,6 +111,11 @@ export class MarcRecord {
 
     field(spec: string, wantArray?: boolean): MarcField | MarcField[] {
         return this.record.field(spec, wantArray);
+    }
+
+    appendFields(...newFields: MarcField[]) {
+        this.record.appendFields.apply(this.record, newFields);
+        this.stampFieldIds();
     }
 
     insertFieldsBefore(field: MarcField, ...newFields: MarcField[]) {
@@ -185,6 +190,11 @@ export class MarcRecord {
         const root = [];
         subfields.forEach(sf => root.push([].concat(sf)));
         return root;
+    }
+
+    // Returns a list of values for the tag + subfield combo
+    subfield(tag: string, subfield: string): string {
+        return this.record.subfield(tag, subfield);
     }
 }
 

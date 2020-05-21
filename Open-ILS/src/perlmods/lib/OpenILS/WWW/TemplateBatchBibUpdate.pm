@@ -4,7 +4,7 @@ use warnings;
 use bytes;
 
 use Apache2::Log;
-use Apache2::Const -compile => qw(OK REDIRECT DECLINED NOT_FOUND :log);
+use Apache2::Const -compile => qw(OK REDIRECT DECLINED NOT_FOUND HTTP_BAD_REQUEST :log);
 use APR::Const    -compile => qw(:error SUCCESS);
 use APR::Table;
 
@@ -56,14 +56,21 @@ sub handler {
     my $cgi = new CGI;
 
     my $authid = $cgi->cookie('ses') || $cgi->param('ses');
+
+    # Avoid sending the HTML to the caller.  Final response will
+    # will just be the cache key or HTTP_BAD_REQUEST on error.
+    my $skipui = $cgi->param('skipui');
+
     my $usr = verify_login($authid);
-    return show_template($r) unless ($usr);
+    return show_template($r, $skipui) unless ($usr);
 
     my $template = $cgi->param('template');
-    return show_template($r) unless ($template);
+    return show_template($r, $skipui) unless ($template);
 
 
     my $rsource = $cgi->param('recordSource');
+    my $xact_per = $cgi->param('xactPerRecord');
+
     # find some IDs ...
     my @records;
 
@@ -118,7 +125,7 @@ sub handler {
     unless (@records) {
         $e->request('open-ils.cstore.transaction.rollback')->gather(1);
         $e->disconnect;
-        return show_template($r);
+        return show_template($r, $skipui);
     }
 
     # we have a template and some record ids, so...
@@ -173,10 +180,12 @@ sub handler {
     # fire the background bucket processor
     my $cache_key = OpenSRF::AppSession
         ->create('open-ils.cat')
-        ->request('open-ils.cat.container.template_overlay.background', $authid, $bucket->id)
+        ->request('open-ils.cat.container.template_overlay.background', 
+            $authid, $bucket->id, undef, {xact_per_record => $xact_per})
         ->gather(1);
 
-    return show_processing_template($r, $bucket->id, \@records, $cache_key);
+    return show_processing_template(
+      $r, $bucket->id, \@records, $cache_key, $skipui);
 }
 
 sub verify_login {
@@ -201,6 +210,13 @@ sub show_processing_template {
     my $bid = shift;
     my $recs = shift;
     my $cache_key = shift;
+    my $skipui = shift;
+
+    if ($skipui) {
+        $r->content_type('text/plain');
+        $r->print($cache_key);
+        return Apache2::Const::OK;
+    }
 
     my $rec_string = @$recs;
 
@@ -366,6 +382,11 @@ HTML
 
 sub show_template {
     my $r = shift;
+    my $skipui = shift;
+
+    # Makes no sense to call the API in such a way that the caller
+    # is returned the UI code if skipui is set.
+    return Apache2::Const::HTTP_BAD_REQUEST if $skipui;
 
     $r->content_type('text/html');
     $r->print(<<'HTML');
