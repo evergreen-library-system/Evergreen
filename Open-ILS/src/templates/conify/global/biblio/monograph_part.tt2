@@ -1,6 +1,6 @@
 [% WRAPPER base.tt2 %]
 [% ctx.page_title = l('Configure Monograph Parts') %]
-    <div dojoType="dijit.layout.BorderContainer" design="headline" >
+    <div dojoType="dijit.layout.ContentPane" layoutAlign="client">
 
         <div dojoType="dijit.layout.ContentPane" layoutAlign="top" class='oils-header-panel' region="top" style="height:30px;">
             <div>[% l('Monograph Parts') %]</div>
@@ -27,7 +27,6 @@
   </div>
 
 <script type="text/javascript">
-    dojo.require('dijit.layout.BorderContainer');
     dojo.require('openils.CGI');
     dojo.require('openils.Util');
     dojo.require('openils.widget.AutoGrid');
