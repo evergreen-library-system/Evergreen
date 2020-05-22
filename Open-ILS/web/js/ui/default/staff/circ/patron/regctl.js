@@ -1294,9 +1294,16 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
             // passsword may originate from staged user.
             $scope.generate_password();
         }
-        $scope.hold_notify_type.phone = true;
-        $scope.hold_notify_type.email = true;
-        $scope.hold_notify_type.sms = false;
+
+        var notify = 'phone:email'; // hard-coded default when opac.hold_notify has no reg_default
+        var notify_stype = $scope.user_setting_types['opac.hold_notify'];
+        if (notify_stype && notify_stype.reg_default() !== undefined && notify_stype.reg_default() !== null) {
+            console.log('using default opac.hold_notify');
+            notify = notify_stype.reg_default();
+        }
+        $scope.hold_notify_type.phone = Boolean(notify.match(/phone/));
+        $scope.hold_notify_type.email = Boolean(notify.match(/email/));
+        $scope.hold_notify_type.sms = Boolean(notify.match(/sms/));
 
         // staged users may be loaded w/ a profile.
         $scope.set_expire_date();
@@ -1871,12 +1878,20 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     }
 
     function extract_hold_notify() {
+        // get the user's opac.hold_notify setting
         var notify = $scope.user_settings['opac.hold_notify'];
 
+        // if it's not set, use the default opac.hold_notify value
         if (!notify && !(notify === '')) {
-            $scope.hold_notify_type.phone = true;
-            $scope.hold_notify_type.email = true;
-            return;
+            var notify_stype = $scope.user_setting_types['opac.hold_notify'];
+            if (notify_stype && notify_stype.reg_default() !== undefined && notify_stype.reg_default() !== null) {
+                notify = notify_stype.reg_default();
+            } else {
+                // no setting and no default: set phone and email to true
+                $scope.hold_notify_type.phone = true;
+                $scope.hold_notify_type.email = true;
+                return;
+            }
         }
 
         $scope.hold_notify_type.phone = Boolean(notify.match(/phone/));
