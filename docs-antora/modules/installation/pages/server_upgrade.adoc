@@ -1,8 +1,10 @@
-== Upgrading the Evergreen Server ==
+= Upgrading the Evergreen Server =
+:toc:
+
 Before upgrading, it is important to carefully plan an upgrade strategy to minimize system downtime and service interruptions.
 All of the steps in this chapter are to be completed from the command line.
 
-=== Software Prerequisites ===
+== Software Prerequisites ==
 
   * **PostgreSQL**: The minimum supported version is 9.6.
   * **Linux**: Evergreen 3.X.X has been tested on Debian Stretch (9.0),
@@ -22,7 +24,8 @@ To switch from the *root* user to a different user, issue the `su - [user]`
 command; for example, `su - opensrf`. Once you have become a non-root user, to
 become the *root* user again simply issue the `exit` command.
 
-=== Upgrade the Evergreen code ===
+== Upgrade the Evergreen code ==
+
 The following steps guide you through a simplistic upgrade of a production
 server. You must adjust these steps to accommodate your customizations such
 as catalogue skins.
@@ -178,7 +181,7 @@ cp /home/opensrf/Evergreen-ILS-3.X.X/Open-ILS/examples/apache/eg_vhost.conf /etc
 cp /home/opensrf/Evergreen-ILS-3.X.X/Open-ILS/examples/apache/eg.conf /etc/apache2/sites-available/eg.conf
 ----------------------------------------------------------
 
-=== Upgrade the Evergreen database schema ===
+== Upgrade the Evergreen database schema ==
 
 indexterm:[database schema]
 
@@ -241,7 +244,8 @@ note on how to reingest your bib records. You may run this after you have
 completed the entire upgrade and tested your system. Reingesting records
 may take a long time depending on the number of bib records in your system.
 
-=== Restart Evergreen and Test ===
+== Restart Evergreen and Test ==
+
 . As the *root* user, restart memcached to clear out all old user sessions.
 +
 [source, bash]
@@ -311,7 +315,7 @@ xref:installation:server_installation.adoc#install-troubleshooting-1[troubleshoo
 of this documentation for tips on finding solutions and seeking further assistance
 from the Evergreen community.
 
-=== Review Release Notes ===
+== Review Release Notes ==
 
 Review this version's release notes for other tasks
 that need to be done after upgrading.  If you have upgraded over several 

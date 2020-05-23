@@ -1,5 +1,5 @@
-Adding Carousels to Your Public Catalog
----------------------------------------
+= Adding Carousels to Your Public Catalog =
+:toc: 
 
 This feature fully integrates the creation and management of book carousels into Evergreen, allowing for the display of book cover images on a library’s public catalog home page. Carousels may be animated or static. They can be manually maintained by staff or automatically maintained by Evergreen. Titles can appear in carousels based on newly cataloged items, recent returns, popularity, etc. Titles must have copies that are visible to the public catalog, be circulating, and holdable to appear in a carousel. Serial titles cannot be displayed in carousels. 
 
@@ -14,8 +14,7 @@ There are three administrative interfaces used to create and manage carousels an
 Each of these interfaces are detailed below.
 
 [[carousel_types]]
-CAROUSEL TYPES
-~~~~~~~~~~~~~~
+== CAROUSEL TYPES ==
 
 The Carousel Types administrative interface is used to create, edit, or delete carousel types. Carousel Types define the attributes of a carousel, such as whether it is automatically managed and how it is filtered. A carousel must be associated with a carousel type to function properly.  
 
@@ -33,8 +32,8 @@ The interface displays the list of carousel types in a grid format. The grid dis
 
 image::carousel2.png[Carousel Types configuration screen]
 
-Attributes of Carousel Types 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
+=== Attributes of Carousel Types ===
+
 Each Carousel Type defines attributes used to add titles to the carousels associated with the type. Filters apply only to automatically managed carousels.
 
 * *Automatically Managed* - when set to true, Evergreen uses a cron job to add titles to a carousel automatically based on a set of criteria established in the carousel definition. When set to false, library staff must enter the contents of a carousel manually.
@@ -42,8 +41,7 @@ Each Carousel Type defines attributes used to add titles to the carousels associ
 * *Filter by Item Owning Library* - when set to true, the type includes or excludes titles based the owning organizational unit of their attached items
 * *Filter by Item Location* - when set to true, the type includes or excludes titles based on the shelving locations of their attached items
 
-Creating a Carousel Type
-^^^^^^^^^^^^^^^^^^^^^^^^
+=== Creating a Carousel Type ===
 
 . Go to Administration > Server Administration > Carousel Types
 . Select the *New Carousel Type* button
@@ -56,16 +54,16 @@ Creating a Carousel Type
 
 image::carousel3.png[Carousel Types Editor screen]
 
-Editing a Carousel Type
-^^^^^^^^^^^^^^^^^^^^^^^
+=== Editing a Carousel Type ===
+
 Users can rename a carousel type or change the characteristics of existing types.
 
 . Go to Administration > Server Administration > Carousel Types
 . Select the type you wish to edit with the checkbox at the beginning of the row for that type
 . Select the Actions Button (or right-click on the type’s row) and choose Edit Type
 
-Deleting a Carousel Type
-^^^^^^^^^^^^^^^^^^^^^^^^
+=== Deleting a Carousel Type ===
+
 Carousel types can be deleted with the Actions Menu
 
 . Go to Administration > Server Administration > Carousel Types
@@ -73,8 +71,8 @@ Carousel types can be deleted with the Actions Menu
 . Select the Actions button (or right-click on the type’s row) and choose Delete Type; carousel types cannot be deleted if there are carousels attached
 
 [[carousel_definitions]]
-CAROUSEL DEFINITIONS
-~~~~~~~~~~~~~~~~~~~~
+== CAROUSEL DEFINITIONS ==
+
 The Carousels administration page is used to define the characteristics of the carousel, such as the carousel type, which libraries will be able to display the carousel, and which shelving locations should be used to populate the carousel.
 
 The Carousels administration page is accessed through Administration > Server Administration > Carousels. (Please note that in the community release, this page will eventually move to Local Administration.) The interface displays existing carousels in a grid format. The grid can be filtered by organizational unit, based on ownership. The filter may include ancestor or descendent organization units, depending on the scope chosen. The columns displayed correspond to attributes of the carousel. The following are displayed by default: Carousel ID, Carousel Type, Owner, Name, Last Refresh Time, Active, Maximum Items. 
@@ -83,8 +81,7 @@ image::carousel4.png[Carousels configuration screen]
 
 Additional columns may be added to the display with the column picker, including the log in of the creator and/or editor, the carousel’s creation or edit time, age limit, item libraries, shelving locations, or associated record bucket. 
 
-Attributes of a Carousel Definition
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Attributes of a Carousel Definition ===
 
 * *Carousel ID* - unique identifier assigned by Evergreen when the carousel is created
 * *Carousel Type* - identifies the carousel type associated with the carousel
@@ -99,8 +96,7 @@ Attributes of a Carousel Definition
 * *Maximum Items* - defines the maximum number of titles that should appear in the carousel; this attribute is enforced only for automatically maintained carousels
 
 
-Creating a Carousel from the Carousels Administration Page
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Creating a Carousel from the Carousels Administration Page ===
 
 . Go to Administration > Server Administration > Carousels
 . Select the *New Carousels* button
@@ -125,12 +121,12 @@ Creating a Carousel from the Carousels Administration Page
 
 image::carousel5.png[Carousel editor screen]
 
-Carousels and Record Buckets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Carousels and Record Buckets ===
+
 When a carousel is created, a corresponding record bucket is also created. The bucket is owned by the staff user who created the carousel; however, access to the carousel is controlled by the carousel’s owning library. The bucket is removed if the carousel is deleted. 
 
-View a Carousel Bucket from Record Buckets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== View a Carousel Bucket from Record Buckets ===
+
 A record bucket linked to a carousel can be displayed in the Record Bucket interface through the Shared Bucket by ID action.
 
 . Go to Cataloging > Record Buckets
@@ -140,8 +136,8 @@ A record bucket linked to a carousel can be displayed in the Record Bucket inter
 
 Users can add or remove records from the bucket. If the associated carousel is automatically maintained, any changes to the bucket’s contents are subject to being overwritten by the next automatic update. Users are warned of this when making changes to the bucket contents.
 
-Create a Carousel from a Record Bucket
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Create a Carousel from a Record Bucket ===
+
 A carousel can be created from a record bucket.
  
 . Go to Cataloging > Record Buckets
@@ -152,8 +148,8 @@ image::carousel6.png[Record Bucket Actions button - Create Carousel from Bucket]
 
 TIP: The Create Carousel from Bucket option is visible in both Record Query and Pending Buckets; however, initiating the creation of a carousel from either of these two tabs creates an empty bucket only. It will not pull titles from either to add contents to the carousel.
 
-Manually Adding Contents to a Carousel from Record Details Page
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Manually Adding Contents to a Carousel from Record Details Page ===
+
 Titles can be added to a manually maintained carousel through the record details page.
 
 . Go to the details page for a title record
@@ -169,8 +165,8 @@ image::carousel7.png[Actions button on Record Summary page - Add to Carousel]
 TIP: The Add to Carousel menu item is disabled if no qualifying carousels are available
 
 [[carousel_mapping]]
-CAROUSEL LIBRARY MAPPING
-~~~~~~~~~~~~~~~~~~~~~~~~
+== CAROUSEL LIBRARY MAPPING ==
+
 The Carousel Library Mapping administration page is used to manage which libraries will display specific carousels, as well as the default display order on a library’s public catalog. 
 
 The visibility of a carousel at a given organizational unit is not automatically inherited by the descendants of that unit. The carousel’s owning organizational unit is automatically added to the list of display organizational units.
@@ -179,8 +175,7 @@ The interface is accessed by going to Administration > Server Administration > C
 
 WARNING: If a carousel is deleted, its mappings are deleted.
 
-Attributes of Carousel Library Mapping
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Attributes of Carousel Library Mapping ===
 
 * *ID* - this is a unique identifier automatically generated by the database
 * *Carousel* - this is the carousel affected by the mapping
@@ -188,8 +183,7 @@ Attributes of Carousel Library Mapping
 * *Library* - this is the organizational unit associated with the particular mapping; excludes descendent units
 * *Sequence Number* - this is the order in which carousels will be displayed, starting with “0” (Example: Carousel 0 at consortial level will display first. Carousel 1 set at the consortial level will appear just below Carousel 0.)
 
-Create a New Carousel Mapping
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Create a New Carousel Mapping ===
 
 . Go to Administration > Server Administration > Carousel Library Mapping
 . Select *New Carousels Visible at Library*
@@ -201,27 +195,26 @@ Create a New Carousel Mapping
 image::carousel8.png[Carousel mapping editor screen]
 
 
-CAROUSELS - OTHER ADMINISTRATIVE FEATURES
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== CAROUSELS - OTHER ADMINISTRATIVE FEATURES ==
 
-New Staff Permissions
-^^^^^^^^^^^^^^^^^^^^^
+=== New Staff Permissions ===
+
 Includes new staff permissions:
 
 * ADMIN_CAROUSEL_TYPES - allows users to create, edit, or delete carousel types
 * ADMIN_CAROUSELS - allows users to create, edit, or delete carousels
 * REFRESH_CAROUSEL - allows users to perform a manual refresh of carousels
 
-New Database Tables
-^^^^^^^^^^^^^^^^^^^
+=== New Database Tables ===
+
 A new table was added to the database to specify the carousel and how it is to be populated, including the name, owning library, details about the most recent refresh, and a link to the Record Bucket and its contents.
 
 Another new table defines carousel types and includes the name, whether the carousel is manually or automatically maintained, and a link to the QStore query specifying the foundation database query used to populate the carousel.
 
 A third new table defines the set of organizational units at which the carousel is visible and the display order in which carousels should be listed at each organizational unit.
 
-OPAC Templates
-^^^^^^^^^^^^^^
+=== OPAC Templates ===
+
 Carousels display on the public catalog home page by default. Administrators can modify the public catalog templates to display carousels where desired.
 
 A new Template Toolkit macro called “carousels” allows the Evergreen administrator to inject the contents of one or more carousels into any point in the OPAC. The macro will accept the following parameters:
@@ -239,16 +232,15 @@ The dynamic parameter controls whether the entire contents of the carousel shoul
 
 A set of CSS classes for the carousels and their contents will be exposed in style.css.tt2. Lightweight JavaScript was used for navigating the carousels, based either on jQuery or native JavaScript. The carousels are responsive.
 
-Accessibility Features
-^^^^^^^^^^^^^^^^^^^^^^
+=== Accessibility Features ===
 
 * Users can advance through the carousel using only a keyboard
 * Users can navigate to a title from the carousel using only a keyboard
 * Users pause animated carousels
 * Changes in the state of the carousel are announced to screen readers.
 
-OpenSRF
-^^^^^^^
+=== OpenSRF ===
+
 Several Evergreen APIs are used to support the following operations:
 
 * refreshing the contents of an individual carousel
@@ -258,7 +250,7 @@ Several Evergreen APIs are used to support the following operations:
 
 The retrieval APIs allow for anonymous access to permit Evergreen admins to create alternative implementation of the carousel display or to share the carousels with other systems.
 
-Cron Job
-^^^^^^^^
+=== Cron Job ===
+
 The carousels feature includes a cronjob added to the example crontab to perform automatic carousel refreshes. It is implemented as a srfsh script that invokes open-ils.storage.carousel.refresh_all.
 

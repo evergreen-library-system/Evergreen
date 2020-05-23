@@ -1,4 +1,5 @@
-== Introduction ==
+= Introduction =
+
 This part of the documentation deals with general Browser Client usage including
 logging in, navigation and shortcuts.
 

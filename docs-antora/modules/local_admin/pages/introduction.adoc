@@ -1,3 +1,4 @@
-== Introduction ==
+= Introduction =
+
 This part covers the options in the Local Administration menu found in the staff
 client.

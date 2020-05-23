@@ -1,9 +1,8 @@
-Circulation - Patron Record 
----------------------------
+= Circulation - Patron Record = 
+:toc:
 
 [[searching_patrons]] 
-Searching Patrons 
-~~~~~~~~~~~~~~~~~
+== Searching Patrons ==
 
 indexterm:[patrons, searching for]
 
@@ -91,8 +90,7 @@ configured in the _Library Settings Editor_. If no patrons have been accessed,
 the grid will display "No Items To Display."
 
 
-Registering New Patrons 
-~~~~~~~~~~~~~~~~~~~~~~~
+== Registering New Patrons == 
 
 indexterm:[patrons, registering]
 
@@ -194,8 +192,7 @@ since the permission group determines the expiration date.
 =======
 
 
-Renewing Library Cards 
-~~~~~~~~~~~~~~~~~~~~~~
+== Renewing Library Cards ==
 
 indexterm:[library cards, renewing]
 
@@ -218,8 +215,7 @@ the _Save_ button.  The screen will refresh and the ``expired'' alerts on the
 account will be removed. 
 
 
-Lost Library Cards 
-~~~~~~~~~~~~~~~~~~
+== Lost Library Cards ==
 
 indexterm:[library cards, replacing]
 
@@ -257,8 +253,7 @@ Once you have modified the patron barcode(s), _Save_ the patron record.  If you
 modified the ``primary'' barcode, the new primary barcode will display in the
 patron summary screen. 
 
-Resetting Patron's Password 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Resetting Patron's Password ==
 
 indexterm:[patrons, passwords]
 
@@ -281,8 +276,7 @@ Make note of the new password and _Save_ the patron record.  The screen will
 refresh and the new password will be suppressed from view.   
 
 
-Barring a Patron 
-~~~~~~~~~~~~~~~~
+== Barring a Patron ==
 
 indexterm:[patrons, barring]
 
@@ -305,8 +299,7 @@ member libraries.
 To unbar a patron, uncheck the Barred checkbox.
 
 
-Barred vs. Blocked 
-~~~~~~~~~~~~~~~~~~
+== Barred vs. Blocked ==
 
 indexterm:[patrons, barring]
 
@@ -393,8 +386,7 @@ _Save_ the record.
 The screen will refresh and the indicators for the alert will be removed from 
 the account. 
 
-Patron Notes 
-~~~~~~~~~~~~
+== Patron Notes ==
 
 [[circulation_patron_notes]]
 indexterm:[patrons, Notes]
@@ -517,6 +509,7 @@ Batch modifications and deletions can be rolled back or reversed, with the excep
 User accounts can be added to User Buckets by scanning individual user barcodes or by uploading a file of user barcodes directly in the User Bucket interface.  They can also be added to a User Bucket from the Patron Search screen.  Batch changes and batch edit sets are tied to the User Bucket itself, not to the login of the bucket owner.
 
 === Create a User Bucket ===
+
 *To add users to a bucket via the Patron Search screen:*
 
 . Go to *Search->Search for Patrons*.
@@ -554,6 +547,7 @@ image::media/userbucket3.PNG[]
 . Go to *Actions->Add To Bucket* or right-click on a selected user account to view the _Actions_ menu and select *Add To Bucket*.  The user accounts will move to the Bucket View tab and are now in the selected User Bucket.
 
 === Batch Edit All Users ===
+
 To batch edit all users in a user bucket:
 
 . Go to *Circulation->User Buckets* and select the *Bucket View* tab.
@@ -576,6 +570,7 @@ To batch edit all users in a user bucket:
 image::media/userbucket4.PNG[]
 
 === Batch Modify Statistical Categories ===
+
 To batch modify statistical categories for all users in a bucket:
 
 . Go to *Circulation->User Buckets* and select the *Bucket View* tab.
@@ -590,6 +585,7 @@ To batch modify statistical categories for all users in a bucket:
 image::media/userbucket12.PNG[]
 
 === Batch Delete Users ===
+
 To batch delete users in a bucket:
 . Go to *Circulation->User Buckets* and select the *Bucket View* tab.
 . Click on *Buckets* and select the bucket you want to modify from the list of existing buckets.
@@ -631,6 +627,7 @@ image::media/userbucket11.PNG[]
 A shared bucket can be retrieved by going to *Circulation->User Buckets* and selecting the *Bucket View* tab.  Next, click *Buckets* and select *Shared Bucket*.  A dialog box called _Load Shared Bucket by Bucket ID_ will appear.  Enter the ID of the bucket you wish to retrieve and click *Load Bucket*.  The shared bucket will load in the Bucket View tab.
 
 === Permissions ===
+
 All permissions must be granted at the organizational unit that the workstation is registered to or higher and are checked against the users' Home Library at when a batch modification or deletion is executed.
 
 Permissions for Batch Edits:
