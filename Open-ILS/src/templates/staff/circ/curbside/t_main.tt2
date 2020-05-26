@@ -1,0 +1,39 @@
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Curbside Pickup') %]</span>
+  </div>
+</div>
+
+<div class="row col-md-12 pad-vert">
+  <div class="col-md-12">
+    <uib-tabset active="active_tab"> 
+      <!-- note that non-numeric index values must be enclosed in single-quotes,
+           otherwise selecting the active table won't work cleanly -->
+      <uib-tab index="'to-be-staged'" heading="[% l('To Be Staged') %]">
+        <div class="container-fluid">
+           <eg-curbside-to-be-staged-manager ng-if="active_tab === 'to-be-staged'"></eg-curbside-to-be-staged-manager>
+        </div>
+      </uib-tab>
+      <uib-tab index="'staged'" heading="[% l('Staged And Ready') %]">
+        <div class="container-fluid">
+           <eg-curbside-staged-manager ng-if="active_tab === 'staged'"></eg-curbside-staged-manager>
+        </div>
+      </uib-tab>
+      <uib-tab index="'arrived'" heading="[% l('Patron Is Outside') %]">
+        <div class="container-fluid">
+           <eg-curbside-arrived-manager ng-if="active_tab === 'arrived'"></eg-curbside-arrived-manager>
+        </div>
+      </uib-tab>
+      <uib-tab index="'delivered'" heading="[% l('Delivered Today') %]">
+        <div class="container-fluid">
+           <eg-curbside-delivered-manager ng-if="active_tab === 'delivered'"></eg-curbside-delivered-manager>
+        </div>
+      </uib-tab>
+      <uib-tab index="'schedule'" heading="[% l('Schedule Pickup') %]">
+        <div class="container-fluid">
+           <eg-curbside-schedule-pickup ng-if="active_tab === 'schedule'"></eg-curbside-schedule-pickup>
+        </div>
+      </uib-tab>
+    </uib-tabset>
+  </div>
+</div>

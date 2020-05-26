@@ -1,0 +1,56 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Curbside Pickup"); 
+  ctx.page_app = "egCurbsideApp";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/curbside/services/core.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/curbside/app.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/patron_search.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/curbside/directives/to_be_staged_manager.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/curbside/directives/staged_manager.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/curbside/directives/arrived_manager.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/curbside/directives/delivered_manager.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/curbside/directives/schedule_pickup.js"></script>
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.CONFIRM_TAKE_OVER_STAGING_TITLE = "[% l('Take Over Claim for Staging Curbside Pickup Appointment') %]";
+    s.CONFIRM_TAKE_OVER_STAGING_BODY = "[% l('Take over staging pickup appointment [_1] from staff user [_2]?', '{{slot_id}}','{{other_staff}}') %]";
+    s.SUCCESS_CANCEL_APPOINTMENT = "[% l('Canceled curbside appointment {{slot_id}}') %]";
+    s.SUCCESS_CURBSIDE_CLAIM_STAGING = "[% l('Released claim on curbside appointment {{slot_id}} for staging') %]";
+    s.NOTFOUND_CURBSIDE_CLAIM_STAGING = "[% l('Could not find curbside appointment {{slot_id}} to release claim for staging') %]";
+    s.FAILED_CURBSIDE_CLAIM_STAGING = "[% l('Failed to release claim on curbside appointment {{slot_id}} for staging: {{evt_code}}') %]";
+    s.SUCCESS_CURBSIDE_UNCLAIM_STAGING = "[% l('Released claim on curbside appointment {{slot_id}} for staging') %]";
+    s.NOTFOUND_CURBSIDE_UNCLAIM_STAGING = "[% l('Could not find curbside appointment {{slot_id}} to release claim for staging') %]";
+    s.FAILED_CURBSIDE_UNCLAIM_STAGING = "[% l('Failed to release claim on curbside appointment {{slot_id}} for staging: {{evt_code}}') %]";
+    s.SUCCESS_CURBSIDE_MARK_STAGED = "[% l('Marked curbside appointment {{slot_id}} as staged') %]";
+    s.NOTFOUND_CURBSIDE_MARK_STAGED = "[% l('Could not find curbside appointment {{slot_id}} to mark as staged') %]";
+    s.FAILED_CURBSIDE_MARK_STAGED = "[% l('Failed to mark curbside appointment {{slot_id}} as staged: {{evt_code}}') %]";
+    s.SUCCESS_CURBSIDE_MARK_ARRIVED = "[% l('Marked curbside appointment {{slot_id}} as patron arrived') %]";
+    s.NOTFOUND_CURBSIDE_MARK_ARRIVED = "[% l('Could not find curbside appointment {{slot_id}} to mark as patron arrived') %]";
+    s.FAILED_CURBSIDE_MARK_ARRIVED = "[% l('Failed to mark curbside appointment {{slot_id}} as patron arrived: {{evt_code}}') %]";
+    s.SUCCESS_CURBSIDE_MARK_UNSTAGED = "[% l('Marked curbside appointment {{slot_id}} back to to-be-staged') %]";
+    s.NOTFOUND_CURBSIDE_MARK_UNSTAGED = "[% l('Could not find curbside appointment {{slot_id}} to mark as to-be-staged') %]";
+    s.FAILED_CURBSIDE_MARK_UNSTAGED = "[% l('Failed to mark curbside appointment {{slot_id}} as to-be-staged: {{evt_code}}') %]";
+    s.SUCCESS_CURBSIDE_MARK_DELIVERED = "[% l('Marked curbside appointment {{slot_id}} as delivered') %]";
+    s.NOTFOUND_CURBSIDE_MARK_DELIVERED = "[% l('Could not find curbside appointment {{slot_id}} to mark as delivered') %]";
+    s.FAILED_CURBSIDE_MARK_DELIVERED = "[% l('Failed to mark curbside appointment {{slot_id}} as delivered: {{evt_code}}') %]";
+    s.FAILED_CURBSIDE_CHECKOUT = "[% l('Failed to check out an item as part of curbside appointment {{slot_id}}: {{evt_code}}') %]";
+    s.CONFIRM_CANCEL_TITLE = "[% l('Cancel Curbside Pickup Appointment') %]";
+    s.CONFIRM_CANCEL_BODY = "[% l('Cancel curbside pickup appointment [_1]?', '{{slot_id}}') %]";
+    s.SUCCESS_CANCEL_APPOINTMENT = "[% l('Canceled curbside appointment {{slot_id}}') %]";
+    s.FAILED_CANCEL_APPOINTMENT = "[% l('Failed to cancel curbside appointment {{slot_id}} ({{evt_code}})') %]";
+    s.SUCCESS_SAVE_APPOINTMENT = "[% l('Saved curbside appointment {{slot_id}}') %]";
+    s.FAILED_SAVE_APPOINTMENT = "[% l('Failed to save changes to curbside appointment ({{evt_code}})') %]";
+    s.FAILED_SAVE_APPOINTMENT_TOO_MANY = "[% l('Time slot is full; please choose another.') %]";
+}]);
+</script>
+[% END %]
+
+<div ng-view></div>
+
+[% END %]
+

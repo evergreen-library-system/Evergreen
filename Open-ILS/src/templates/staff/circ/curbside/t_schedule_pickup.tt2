@@ -1,0 +1,91 @@
+<div class="row">
+  <form ng-submit="submitBarcode(args)" role="form" class="form-inline" name="patronLookup">
+    <div class="input-group">
+
+      <label class="input-group-addon" 
+        for="patron-curbside-barcode" >[% l('Patron Barcode') %]</label>
+
+      <input select-me="selectMe" class="form-control"
+        ng-model="args.barcode" 
+        placeholder="[% l('Patron Barcode') %]"
+        id="patron-curbside-barcode" type="text"/> 
+
+    </div>
+    <input class="btn btn-primary" type="submit" value="[% l('Submit') %]"/>
+    <button ng-click="patron_search()" class="btn btn-success">[% l('Patron Search') %]</button>
+    <button ng-click="clear()" class="btn btn-default">[% l('Clear') %]</button>
+  </form>
+</div>
+
+<br/>
+<div class="alert alert-warning" ng-show="bcNotFound">
+  [% l('Barcode Not Found: [_1]', '{{bcNotFound}}') %]
+</div>
+<div class="alert alert-warning" ng-show="optInRestricted">
+  [% l("This patron's record is not viewable at your library.") %]
+</div>
+
+<span ng-if="user_id">
+
+  <div class="row">
+    [% l('Patron: [_1] [_2], [_3] [_4] [_5]',
+          '{{patron().pref_prefix() || patron().prefix()}}',
+          '{{patron().pref_family_name() || patron().family_name()}}',
+          '{{patron().pref_first_given_name() || patron().first_given_name()}}',
+          '{{patron().pref_second_given_name() || patron().second_given_name()}}',
+          '{{patron().pref_suffix() || patron().suffix()}}')
+    %]
+  </div>
+  <div class="row">
+    [% l('Patron has [_1] ready holds at this location.', '{{readyHolds}}') %]
+  </div>
+
+  <div class="row">
+    <button ng-disabled="openAppointments.length > 0" ng-click="startNewAppointment()" class="btn btn-success">[% l('Make New Appointment') %]</button>
+  </div>
+  <br>
+  <div class="form-inline" ng-repeat="appt in openAppointments">
+    <ng-form name="forms['curbside' + appt.id]">
+      <div class="row">
+        <div class="col-md-1">
+          <label for="appointment-id">[% l('Appointment') %]</label>
+          <div id="appointment-id">{{appt.id}}</div>
+        </div>
+        <div class="col-md-2">
+          <label for="appointment-day">[% l('Date') %]</label>
+          <eg-date-input id="appointment-day" hide-time-picker ng-model="appt.slot_date"
+                         required min-date="minDate">
+          </eg-date-input>
+        </div>
+        <div class="col-md-2">
+          <label for="appointment-time">[% l('Time') %]</label>
+          <select class="form-control" id="appointment-time" ng-model="appt.slot_time"
+                  name="slot_time" style="display: block;"
+                  required ng-focus="refreshAvailableTimes(appt)">
+            <option value=""></option>
+            <option ng-repeat="t in appt.available_times track by t.time" value="{{t.time}}"
+                    ng-disabled="t.available === 0 && appt.original_slot_time !== t.time">
+              [% l('[_1] (Available: [_2])', '{{t.time_fmt}}', '{{t.available}}') %]
+          </option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="appointment-notes">[% l('Notes') %]</label>
+          <input class="form-control" type="text" id="appointment-notes" ng-model="appt.notes" style="display: block;"></input>
+        </div>
+        <div class="col-md-2">
+          <label for="appointment-actions">[% l('Actions') %]</label>
+          <div id="appointment-actions">
+            <button ng-click="updateAppointment(appt)" ng-disabled="!forms['curbside' + appt.id].$valid" class="btn btn-primary">[% l('Save') %]</button>
+            <button ng-click="cancelAppointment(appt.id)" ng-disabled="!appt.id" class="btn btn-danger">[% l('Cancel Appointment') %]</button>
+          </div>
+        </div>
+      </div>
+      <div class="row pad-vert">
+        <div ng-if="appt.is_past" class="col-md-offset-1 col-md-4 alert alert-warning">
+          [% l('Appointment is in the past and may need to be rescheduled.') %]
+        </div>
+      </div>
+    </ng-form>
+  </div>
+</span>

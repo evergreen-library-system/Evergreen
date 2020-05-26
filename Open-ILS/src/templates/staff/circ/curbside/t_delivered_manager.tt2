@@ -1,0 +1,31 @@
+<div>
+  <div ng-style="{visibility : refreshNeeded ? 'visible' : 'hidden'}" class="alert alert-warning">
+    [% l('Updates to the list of appointments whose items were delivered are available. Please refresh.') %]
+  </div>
+  <eg-grid
+    id-field="id"
+    features="-sort,-multisort,-picker,-multiselect"
+    items-provider="gridDataProvider"
+    grid-controls="gridControls"
+    dateformat="{{$root.egDateAndTimeFormat}}">
+
+    <eg-grid-menu-item handler="refresh_delivered" standalone="true"
+        label="[% l('Refresh List')%]"></eg-grid-menu-item>
+
+    <eg-grid-field label="[% l('Delivery Date/Time') %]" path="slot.delivered" datatype="timestamp"></eg-grid-field>
+    <eg-grid-field label="[% l('Patron') %]" path="slot.patron" compiled>
+      <a href="./circ/patron/{{item.slot.patron().id()}}/items_out" target="_blank">
+        {{item.slot.patron().family_name()}} / {{item.slot.patron().card().barcode()}}
+        <span class="glyphicon glyphicon-new-window"></span>
+      </a>
+      <br>
+      <span ng-show="item.slot.notes()">
+        <strong>[% l('Notes:') %]</strong> {{item.notes()}}
+      </span>
+    </eg-grid-field>
+    <eg-grid-field label="[% l('Appointment ID') %]" path="slot.id"></eg-grid-field>
+    <eg-grid-field label="[% l('Items Checked Out') %]" path="holds" compiled>
+      <eg-curbside-holds-list holds="item.holds" bib-data="item.bib_data_by_hold" slot="item.slot"></eg-curbside-holds-list>
+    </eg-grid-field>
+  </eg-grid>
+</div>

@@ -1,0 +1,57 @@
+<div>
+  <div ng-style="{visibility : refreshNeeded ? 'visible' : 'hidden'}" class="alert alert-warning">
+    [% l('Updates to the curbside appointment list are available. Please refresh.') %]
+  </div>
+  <eg-grid
+    id-field="slot_id"
+    features="-sort,-multisort,-picker,-multiselect"
+    items-provider="gridDataProvider"
+    grid-controls="gridControls"
+    dateformat="{{$root.egDateAndTimeFormat}}">
+
+    <eg-grid-menu-item handler="refresh_staging" standalone="true"
+        label="[% l('Refresh List')%]"></eg-grid-menu-item>
+
+    <eg-grid-field label="[% l('Pickup Date/Time') %]" path="slot.slot" datatype="timestamp"></eg-grid-field>
+    <eg-grid-field label="[% l('Patron') %]" path="slot.patron" compiled handlers="gridCellHandlers">
+      <a href="./circ/patron/{{item.slot.patron().id()}}/holds" target="_blank">
+        {{item.slot.patron().family_name()}} / {{item.slot.patron().card().barcode()}}
+        <span class="glyphicon glyphicon-new-window"></span>
+      </a>
+      <br>
+      <span ng-show="item.slot.notes()">
+        <strong>[% l('Notes:') %]</strong> {{item.slot.notes()}}
+      </span>
+      <div class="alert alert-warning" ng-show="col.handlers.patronIsBlocked(item['slot'].patron())">
+        [% l('Patron is blocked from checkouts.') %]
+      </div>
+      <div class="alert alert-danger" ng-show="item['slot'].arrival()">
+        [% l('Patron has already arrived!') %]
+      </div>
+    </eg-grid-field>
+    <eg-grid-field label="[% l('Appointment ID') %]" path="slot.id"></eg-grid-field>
+    <eg-grid-field label="[% l('Items for Pickup') %]" path="holds" compiled>
+      <eg-curbside-holds-list holds="item.holds" bib-data="item.bib_data_by_hold" slot="item.slot"></eg-curbside-holds-list>
+    </eg-grid-field>
+    <eg-grid-field label="[% l('Staging Staff') %]" path="slot.stage_staff" handlers="gridCellHandlers" compiled>
+      {{item.slot.stage_staff().usrname()}}
+      <button class="btn btn-sm btn-default"
+        ng-show="col.handlers.canClaimStaging(item)"
+        ng-click="col.handlers.claim_staging(item)">
+        [% l('Claim') %]
+      </button>
+      <button class="btn btn-sm btn-default"
+        ng-show="col.handlers.canUnclaimStaging(item)"
+        ng-click="col.handlers.unclaim_staging(item)">
+        [% l('Release Claim') %]
+      </button>
+    </eg-grid-field>
+    <eg-grid-field label="[% l('Action') %]" handlers="gridCellHandlers" compiled>
+      <button class="btn btn-sm btn-primary"
+        ng-disabled="col.handlers.wasHandled(item['slot_id']) || col.handlers.patronIsBlocked(item['slot'].patron())"
+        ng-click="col.handlers.mark_staged(item['slot_id'])">
+        [% l('Mark As Staged And Ready') %]
+      </button>
+    </eg-grid-field>
+  </eg-grid>
+</div>

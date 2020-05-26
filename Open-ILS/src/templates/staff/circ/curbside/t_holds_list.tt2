@@ -1,0 +1,12 @@
+<ul style="white-space: normal;">
+  <li ng-repeat="hold in holds">
+    {{bibData[hold.id()].title()}} / {{bibData[hold.id()].author()}}<br>
+    <a href="./cat/item/{{hold.current_copy().id()}}" target="_blank">
+      {{hold.current_copy().barcode()}}
+      <span class="glyphicon glyphicon-new-window"></span>
+    </a>
+    <div ng-if="slot.staged() && slot.staged() < hold.shelf_time()" class="alert alert-warning">
+      [% l('Check item; came in after appointment was staged.') %]
+    </div>
+  </li>
+</ul>

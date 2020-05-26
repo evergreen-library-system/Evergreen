@@ -122,7 +122,8 @@ angular.module('egCoreMod')
 
                             egCore.org.settings([
                                 'ui.staff.max_recent_patrons',
-                                'ui.staff.angular_catalog.enabled'
+                                'ui.staff.angular_catalog.enabled',
+                                'circ.curbside'
                             ]).then(function(s) {
                                 var val = s['ui.staff.max_recent_patrons'];
                                 $scope.showRecentPatron = val > 0;
@@ -130,6 +131,8 @@ angular.module('egCoreMod')
 
                                 $scope.showAngularCatalog = 
                                     s['ui.staff.angular_catalog.enabled'];
+                                $scope.enableCurbside = 
+                                    s['circ.curbside'];
                             }).then(function() {
                                 // need to defer initialization of hotkeys to this point
                                 // as it depends on various settings.

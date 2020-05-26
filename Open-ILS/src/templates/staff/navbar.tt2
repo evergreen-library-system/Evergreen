@@ -238,6 +238,13 @@
               <span>[% l('Offline Circulation') %]</span>
             </a>
           </li>
+          <li ng-if="enableCurbside" class="divider"></li>
+          <li ng-if="enableCurbside">
+            <a href="./circ/curbside/index" target="_self" ng-class="{disabled : curbsideDisabled()}">
+              <span class="glyphicon glyphicon-road"></span>
+              <span>[% l('Curbside Pickup') %]</span>
+            </a>
+          </li>
         </ul>
       </li><!-- circ -->
 
