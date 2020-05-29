@@ -3465,3 +3465,29 @@ label[for*=expert_]
 .course_details_div {
     padding-bottom: 1em;
 }
+
+/*
+  Fake tables for form-rows
+*/
+
+div.egtable { display:table; }
+form.egtr, div.egtr { display:table-row; }
+span.egth { display:table-cell; font-weight: bold; }
+span.egtd { display:table-cell; }
+
+/* Example:
+
+<div class="egtable">
+    <form class="egtr" method="post" action="blah.html">
+        <span class="egtd"><input type="text"/></span>
+        <span class="egtd"><input type="text"/></span>
+    </form>
+    <div class="egtr">
+        <span class="egtd">(cell data)</span>
+        <span class="egtd">(cell data)</span>
+    </div>
+    ...
+</div>
+
+*/
+
