@@ -5,6 +5,7 @@
         {url => "messages", name => l("Messages")},
         {url => "circs", name => l("Items Checked Out")},
         {url => "holds", name => l("Holds")},
+        {url => "holds_curbside", name => l("Curbside Pickup")},
         {url => "prefs", name => l("Account Preferences")},
         {url => "lists", name => l("My Lists")}
     ];

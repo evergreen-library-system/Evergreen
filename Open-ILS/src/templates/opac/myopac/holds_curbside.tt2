@@ -1,0 +1,198 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS "opac/parts/hold_status.tt2";
+    PROCESS "opac/parts/hold_notify.tt2";
+    PROCESS "opac/parts/myopac/column_sort_support.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "holds_curbside";
+%]
+<h3 class="sr-only">[% l('Curbside Pickup') %]</h3>
+<div id='myopac_holds_div'>
+
+    <div id="acct_holds_tabs">
+        <div class="align">
+            <a href='[% mkurl('holds',{},['limit','offset']) %]'>[% l("Items on Hold") %]</a>
+        </div>
+        [% IF ctx.curbside_pickup_libs.size > 0 %]
+        <div class="align selected">
+            <a href='#'>[% l("Curbside Pickup") %]</a>
+        </div>
+        [% END %]
+        [% IF ebook_api.enabled == 'true' %]
+        <div class="align">
+            <a href='[% mkurl('ebook_holds', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("E-Items on Hold") %]</a>
+        </div>
+        <div class="align">
+            <a href='[% mkurl('ebook_holds_ready', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("E-Items Ready for Checkout") %]</a>
+        </div>
+        [% END %]
+        <div class="align">
+            <a href='[% mkurl('hold_history', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("Holds History") %]</a>
+        </div>
+    </div>
+
+    <div class="header_middle">
+        <span id="acct_holds_header" style="float:left;">
+            [%  l("Curbside Pickup Appointments") %]
+        </span>
+    </div>
+    <div class="clear-both"></div>
+    <div title="[% l('Curbside Pickup Appointments') %]" style="width:90%"
+        class="egtable table_no_border_space table_no_cell_pad">
+        <div class="egtr">
+            <span class="egth">[% l('Pickup Location') %]</span>
+            <span class="egth">[% l('Date') %]</span>
+            <span class="egth">[% l('Time') %]</span>
+            <span class="egth">[% l('Arrival Notes (vehicle description, etc)') %]</span>
+            <span class="egth">[% l('Action') %]</span>
+        </div>
+        <div class="egtr">
+            <span class="egtd"><hr/></span>
+            <span class="egtd"><hr/></span>
+            <span class="egtd"><hr/></span>
+            <span class="egtd"><hr/></span>
+            <span class="egtd"><hr/></span>
+        </div>
+    [% FOR lib IN ctx.curbside_pickup_libs;
+
+        cs_slot = '';
+        cs_slot_id = '';
+        cs_date = '';
+        cs_time = '';
+        cs_notes = '';
+
+	cs_org = ctx.cs_org;
+        IF cs_org == lib;
+            cs_slot = ctx.cs_slot;
+            cs_slot_id = ctx.cs_slot_id;
+            cs_date = ctx.cs_date;
+            cs_time = ctx.cs_time;
+            cs_notes = ctx.cs_notes;
+        END;
+
+        appointment = ctx.curbside_appointments.$lib;
+        IF appointment;
+            cs_slot = appointment;
+            cs_slot_id = appointment.id;
+            IF appointment.slot; cs_date = date.format(ctx.parse_datetime(appointment.slot),'%F'); END;
+            IF appointment.slot; cs_time = date.format(ctx.parse_datetime(appointment.slot),'%T'); END;
+            cs_notes = appointment.notes;
+        END %]
+        <form class="egtr" method="POST">
+            <input type="hidden" name="action" value="curbside"/>
+            <input type="hidden" name="cs_slot_id" value="[% appointment.id %]"/>
+            [% disable_me = 0 %]
+            [% no_patron_input = 0 %]
+            [% date_started_null = 0 %]
+            [% IF appointment && appointment.arrival; disable_me = 1; END %]
+            [% IF ctx.get_org_setting(lib, 'circ.curbside.disable_patron_input'); no_patron_input = 1; END %]
+            <span class="egtd">
+                [% ctx.get_aou(lib).name | html %]<br/>
+                [% l('Phone:')%] [% ctx.get_aou(lib).phone | html %]
+                <input type="hidden" name="cs_org" value="[% lib %]"/>
+            </span>
+            <span class="egtd">
+                [% IF !cs_date; tmp_cs_date = date.format(date.now, '%F'); date_started_null = 1; %]
+                [% ELSE; tmp_cs_date = cs_date; END %]
+                [% IF cs_date %]<input type="hidden" name="cs_date" value="[% cs_date | html %]"/>[% END %]
+                [% IF no_patron_input && date_started_null; %]&nbsp;
+                [% ELSE; %]<input type="date" name="cs_date" value="[% tmp_cs_date | html %]" [% IF cs_date || no_patron_input %]disabled="disabled"[% END %]/>[% END %]
+            </span>
+            <span class="egtd">
+                [% IF appointment || cs_date; # checking times %]
+                  [% current_date = cs_date %]
+                  [% IF date_started_null && no_patron_input %]&nbsp;
+                  [% ELSIF appointment || ctx.cs_times.$current_date.size; # show a select %]
+                    <select name="cs_time" [% IF disable_me || no_patron_input %]disabled="disabled"[% END %]>
+                      [% found_time = 0 %]
+                      [% FOR t IN ctx.cs_times.$current_date %]
+                        <option value="[% t.0 | html %]"
+                          [% IF cs_time == t.0; found_time=1 %] selected="selected"[% END %]
+                          [% IF t.1 <= 0 && cs_time != t.0 %] disabled="disabled"[% END %]>
+                            [% date.format(current_date _ ' ' _ t.0,'%l:%M %p') | html %]
+                        </option>
+                      [% END %]
+                      [% IF cs_time && !found_time %]
+                        <option value="[% cs_time | html %]" selected="selected">
+                          [% date.format(current_date _ ' ' _ cs_time,'%l:%M %p') | html %]
+                        </option>
+                      [% END %]
+                    </select>
+                  [% ELSE %] 
+                    [% l('No times available') %]
+                    <button type="submit" name="cs_action" value="reset" class="opac-button">
+                        [% l('Select another date') %]
+                    </button><br/>
+                  [% END %]
+                [% ELSE %] 
+                  [% IF !no_patron_input; %][% l('Select a date') %][% END %]
+                [% END %]
+            </span>
+            <span class="egtd">
+                [% IF cs_date; # show the notes box %]
+                <input type="text" name="cs_notes" value="[% cs_notes | html %]" [% IF no_patron_input || disable_me %]disabled="disabled"[% END %]/>
+                [% ELSE %] &nbsp;
+                [% END %]
+            </span>
+            <span class="egtd">[%
+                disable_arrival_button = 1; # assume arrival is not yet allowed
+                IF appointment && appointment.slot;
+                    stime = date.format(ctx.parse_datetime(appointment.slot), '%s');
+                    now_time = date.format(date.now, '%s');
+                    IF now_time >= stime;
+                        disable_arrival_button = 0; # if 'now' is after the slot time, allow arrival
+                    END;
+                END %]
+                [% IF no_patron_input %]
+                    [% l('Please contact the library to schedule, change, or cancel your appointment.') %]
+                [% ELSIF appointment.staged && !appointment.arrival; # relevant submit action %]
+                    <button type="submit" name="cs_action" value="arrive" class="opac-button" [% IF disable_arrival_button %]disabled="disabled"[% END %]>
+                        [% l('Alert staff of your arrival') %]
+                    </button><br/>
+                    <button type="submit" name="cs_action" value="cancel" class="opac-button">
+                        [% l('Cancel appointment') %]
+                    </button>
+                [% ELSIF appointment.arrival %]
+                    <!--
+                    <button type="submit" name="cs_action" value="deliver" class="opac-button">
+                        [% l('Confirm delivery of items') %]
+                    </button><br/>
+                    -->
+                    <button type="submit" name="cs_action" value="cancel" class="opac-button">
+                        [% l('Cancel appointment') %]
+                    </button>
+                [% ELSIF appointment.slot %]
+                    <button type="submit" name="cs_action" value="arrive" class="opac-button" [% IF disable_arrival_button %]disabled="disabled"[% END %]>
+                        [% l('Alert staff of your arrival') %]
+                    </button><br/>
+                    <button type="submit" name="cs_action" value="save" class="opac-button">
+                        [% l('Update appointment') %]
+                    </button><br/>
+                    <button type="submit" name="cs_action" value="cancel" class="opac-button">
+                        [% l('Cancel appointment') %]
+                    </button>
+                [% ELSIF cs_date %]
+                    <button type="submit" name="cs_action" value="save" class="opac-button">
+                        [% l('Request appointment') %]
+                    </button>
+                    <button type="submit" name="cs_action" value="reset" class="opac-button">
+                        [% l('Select another date') %]
+                    </button><br/>
+                [% ELSE %]
+                    <button type="submit" name="cs_action" value="next" class="opac-button">
+                        [% l('Check available times') %]
+                    </button>
+                [% END %]
+            </span>
+        </form>
+        <div class="egtr">
+            <span class="egtd"><hr/></span>
+            <span class="egtd"><hr/></span>
+            <span class="egtd"><hr/></span>
+            <span class="egtd"><hr/></span>
+            <span class="egtd"><hr/></span>
+        </div>
+    [% END %]
+    </div>
+</div>
+[% END %]
