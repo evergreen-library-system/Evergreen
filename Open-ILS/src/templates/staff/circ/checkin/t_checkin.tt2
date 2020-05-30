@@ -9,9 +9,14 @@
 
 <div class="row">
   <div class="col-md-12">
-    <div ng-if="is_backdate()" class="alert-danger pad-all-min">
-      [% l('Backdated Check In [_1]', 
-        '{{checkinArgs.backdate | date:$root.egDateFormat}}') %]
+    <div ng-if="is_backdate()">
+      <div class="alert-danger pad-all-min">
+        [% l('Backdated Check In [_1]', 
+          '{{checkinArgs.backdate | date:$root.egDateFormat}}') %]
+      </div>
+      <div ng-if="backdate.untilLogout" class="alert-danger pad-all-min">
+        [% l('Use Effective Date Until Logout') %]
+      </div>
     </div>
     <div ng-if="modifiers.no_precat_alert" class="alert-danger pad-all-min">
       [% l('Ignore Pre-Cataloged Items') %]
@@ -86,6 +91,15 @@
       <div class="pad-horiz">[% l('Effective Date') %]</div>
       <!-- date max= not yet supported -->
       <div><eg-date-input ng-model="checkinArgs.backdate"></eg-date-input>
+      </div>
+    </div>
+    <div class="flex-row" ng-show="is_backdate()">
+      <div class="flex-cell"></div>
+      <div class="checkbox pad-horiz">
+        <label>
+          <input type="checkbox" ng-model="backdate.untilLogout" ng-change="onUntilLogoutChange()"/>
+          [% l('Use effective date until logout') %]
+        </label>
       </div>
     </div>
   </div>

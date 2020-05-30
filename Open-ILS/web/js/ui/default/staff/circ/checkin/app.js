@@ -39,7 +39,7 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
 
     $scope.focusMe = true;
     $scope.checkins = checkinSvc.checkins;
-    var today = new Date();
+    var today = new Date(new Date().setHours(0,0,0,0));
     $scope.checkinArgs = {backdate : today}
     $scope.modifiers = {};
     $scope.fine_total = 0;
@@ -90,6 +90,26 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
         modifiers.push('noop'); // AKA suppress holds and transits
         modifiers.push('auto_print_holds_transits');
         modifiers.push('do_inventory_update');
+
+        // backdate is possible so load options
+        $scope.backdate = {date: egCore.hatch.getSessionItem('eg.circ.checkin.backdate')};
+        $scope.backdate.untilLogout = !!$scope.backdate.date;
+        if ($scope.backdate.untilLogout)
+            $scope.checkinArgs.backdate = new Date($scope.backdate.date);
+
+        // watch backdate to enable/disable the sticky option
+        // and ensure the backdate is not in the future
+        // note: input type=date max=foo not yet supported anywhere
+        $scope.$watch('checkinArgs.backdate', function(newval) {
+            if (!newval || newval.getTime() == today.getTime()) {
+                $scope.backdate.untilLogout = false;
+                egCore.hatch.removeSessionItem('eg.circ.checkin.backdate');
+            } else if (newval > today) {
+                $scope.checkinArgs.backdate = today;
+            } else if ($scope.backdate.untilLogout) {
+                egCore.hatch.setSessionItem('eg.circ.checkin.backdate', newval);
+            }
+        });
     }
 
     // set modifiers from stored preferences
@@ -116,16 +136,17 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
         }
     }
 
-
-    // ensure the backdate is not in the future
-    // note: input type=date max=foo not yet supported anywhere
-    $scope.$watch('checkinArgs.backdate', function(newval) {
-        if (newval && newval > today) 
-            $scope.checkinArgs.backdate = today;
-    });
+    $scope.onUntilLogoutChange = function() {
+        if ($scope.backdate.untilLogout)
+            egCore.hatch.setSessionItem('eg.circ.checkin.backdate',
+                $scope.checkinArgs.backdate
+            );
+        else
+            egCore.hatch.removeSessionItem('eg.circ.checkin.backdate');
+    };
 
     $scope.is_backdate = function() {
-        return $scope.checkinArgs.backdate < today;
+        return $scope.checkinArgs.backdate && $scope.checkinArgs.backdate < today;
     }
 
     var checkinGrid = $scope.gridControls = {};
