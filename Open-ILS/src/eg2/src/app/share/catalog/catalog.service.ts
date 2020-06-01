@@ -50,6 +50,11 @@ export class CatalogService {
         } else if (ctx.identSearch.isSearchable() &&
             ctx.identSearch.queryType === 'item_barcode') {
             return this.barcodeSearch(ctx);
+        } else if (
+            ctx.isStaff &&
+            ctx.identSearch.isSearchable() &&
+            ctx.identSearch.queryType === 'identifier|tcn') {
+            return this.tcnStaffSearch(ctx);
         } else {
             return this.termSearch(ctx);
         }
@@ -73,6 +78,20 @@ export class CatalogService {
             this.onSearchComplete.emit(ctx);
         });
     }
+
+    tcnStaffSearch(ctx: CatalogSearchContext): Promise<void> {
+        return this.net.request(
+            'open-ils.search',
+            'open-ils.search.biblio.tcn',
+            ctx.identSearch.value, 1
+        ).toPromise().then(result => {
+            result.ids =  result.ids.map(id => [id]);
+            this.applyResultData(ctx, result);
+            ctx.searchState = CatalogSearchState.COMPLETE;
+            this.onSearchComplete.emit(ctx);
+        });
+    }
+
 
     // "Search" the basket by loading the IDs and treating
     // them like a standard query search results set.
