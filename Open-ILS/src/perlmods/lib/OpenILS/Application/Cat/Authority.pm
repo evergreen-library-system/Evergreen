@@ -11,18 +11,12 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Const qw/:const/;
 use OpenILS::Event;
 my $U = 'OpenILS::Application::AppUtils';
-my $MARC_NAMESPACE = 'http://www.loc.gov/MARC21/slim';
-
 
 # generate a MARC XML document from a MARC XML string
 sub marc_xml_to_doc {
     my $xml = shift;
-    my $marc_doc = XML::LibXML->new->parse_string($xml);
-    $marc_doc->documentElement->setNamespace($MARC_NAMESPACE, 'marc', 1);
-    $marc_doc->documentElement->setNamespace($MARC_NAMESPACE);
-    return $marc_doc;
+    return $U->marc_xml_to_doc($xml);
 }
-
 
 __PACKAGE__->register_method(
     method  => 'import_authority_record',

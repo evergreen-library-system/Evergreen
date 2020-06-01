@@ -17,6 +17,11 @@ export const NAMESPACE_MAPS = {
 export const HOLDINGS_XPATH =
     '/holdings:holdings/holdings:counts/holdings:count';
 
+interface EResourceUrl {
+    href: string;
+    note: string;
+    label: string;
+}
 
 export class BibRecordSummary {
     id: number; // == record.id() for convenience
@@ -32,6 +37,7 @@ export class BibRecordSummary {
     bibCallNumber: string;
     net: NetService;
     displayHighlights: {[name: string]: string | string[]} = {};
+    eResourceUrls: EResourceUrl[] = [];
 
     constructor(record: IdlObject, orgId: number, orgDepth?: number) {
         this.id = Number(record.id());
@@ -106,6 +112,7 @@ export class BibRecordService {
             summary.attributes = bibSummary.attributes;
             summary.holdCount = bibSummary.hold_count;
             summary.holdingsSummary = bibSummary.copy_counts;
+            summary.eResourceUrls = bibSummary.urls;
             return summary;
         }));
     }

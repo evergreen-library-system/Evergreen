@@ -2852,6 +2852,73 @@ sub mk_copy_query {
     return $query;
 }
 
+__PACKAGE__->register_method(
+    method    => 'record_urls',
+    api_name  => 'open-ils.search.biblio.record.resource_urls.retrieve',
+    argc      => 1,
+    stream    => 1,
+    signature => {
+        desc   => q/Returns bib record 856 URL content./,
+        params => [
+            {desc => 'Record ID or Array of Record IDs', type => 'number or array'}
+        ],
+        return => {
+            desc => 'Stream of URL objects, one collection object per record',
+            type => 'object'
+        }
+    }
+);
+
+sub record_urls {
+    my ($self, $client, $record_ids) = @_;
+
+    $record_ids = [$record_ids] unless ref $record_ids eq 'ARRAY';
+
+    my $e = new_editor();
+
+    for my $record_id (@$record_ids) {
+        my $bib = $e->retrieve_biblio_record_entry($record_id)
+            or return $e->event;
+
+        my $marc_doc = $U->marc_xml_to_doc($bib->marc);
+
+        # Logic copied from TPAC misc_utils.tts
+        my @urls;
+
+        for my $node ($marc_doc->findnodes(
+            '//*[@tag="856" and @ind1="4" and (@ind2="0" or @ind2="1")]')) {
+
+            # asset.uri's
+            next if $node->findnodes('./*[@code="9" or @code="w" or @code="n"]');
+
+            my $url = {};
+            my ($label) = $node->findnodes('./*[@code="y"]');
+            my ($notes) = $node->findnodes('./*[@code="z" or @code="3"]');
+
+            my $first = 1;
+            for my $href_node ($node->findnodes('./*[@code="u"]')) {
+                next unless $href_node;
+
+                # it's possible for multiple $u's to exist within 1 856 tag.
+                # in that case, honor the label/notes data for the first $u, but
+                # leave any subsequent $u's as unadorned href's.
+                # use href/link/note keys to be consistent with args.uri's
+
+                my $href = $href_node->textContent;
+                push(@urls, {
+                    href => $href,
+                    label => ($first && $label) ?  $label->textContent : $href,
+                    note => ($first && $notes) ? $notes->textContent : ''
+                });
+                $first = 0;
+            }
+        }
+
+        $client->respond({id => $record_id, urls => \@urls});
+    }
+
+    return undef;
+}
 
 __PACKAGE__->register_method(
     method    => 'catalog_record_summary',
@@ -2920,8 +2987,8 @@ sub catalog_record_summary {
     for my $rec_id (@$record_ids) {
 
         my $response = $is_meta ? 
-            get_one_metarecord_summary($e, $rec_id) :
-            get_one_record_summary($e, $rec_id);
+            get_one_metarecord_summary($self, $e, $rec_id) :
+            get_one_record_summary($self, $e, $rec_id);
 
         ($response->{copy_counts}) = $copy_method->run($org_id, $rec_id);
 
@@ -2934,10 +3001,20 @@ sub catalog_record_summary {
     return undef;
 }
 
+sub get_one_rec_urls {
+    my ($self, $e, $bib_id) = @_;
+
+    my ($resp) = $self->method_lookup(
+        'open-ils.search.biblio.record.resource_urls.retrieve')
+        ->run($bib_id);
+
+    return $resp->{urls};
+}
+
 # Start with a bib summary and augment the data with additional
 # metarecord content.
 sub get_one_metarecord_summary {
-    my ($e, $rec_id) = @_;
+    my ($self, $e, $rec_id) = @_;
 
     my $meta = $e->retrieve_metabib_metarecord($rec_id) or return {};
     my $maps = $e->search_metabib_metarecord_source_map({metarecord => $rec_id});
@@ -2945,6 +3022,7 @@ sub get_one_metarecord_summary {
     my $bre_id = $meta->master_record; 
 
     my $response = get_one_record_summary($e, $bre_id);
+    $response->{urls} = get_one_rec_urls($self, $e, $bre_id);
 
     $response->{metabib_id} = $rec_id;
     $response->{metabib_records} = [map {$_->source} @$maps];
@@ -2969,7 +3047,7 @@ sub get_one_metarecord_summary {
 }
 
 sub get_one_record_summary {
-    my ($e, $rec_id) = @_;
+    my ($self, $e, $rec_id) = @_;
 
     my $bre = $e->retrieve_biblio_record_entry([$rec_id, {
         flesh => 1,
@@ -3001,7 +3079,8 @@ sub get_one_record_summary {
         id => $rec_id,
         record => $bre,
         display => $display,
-        attributes => $attributes
+        attributes => $attributes,
+        urls => get_one_rec_urls($self, $e, $rec_id)
     };
 }
 
