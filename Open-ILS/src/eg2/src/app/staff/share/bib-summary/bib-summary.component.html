@@ -117,6 +117,19 @@
               </div>
             </li>
           </ng-container>
+          <ng-container *ngIf="expand && summary.eResourceUrls.length">
+            <li class="list-group-item" *ngFor="let url of summary.eResourceUrls">
+              <div class="d-flex">
+                <div class="flex-1 font-weight-bold" i18n>
+                  Electronic Resource:
+                </div>
+                <div class="flex-5">
+                  <a href="{{url.href}}">{{url.label}}</a>
+                </div>
+                <div class="flex-4">{{url.note}}</div>
+              </div>
+            </li>
+          </ng-container>
         </ul>
       </div>
     </div><!-- col -->
