@@ -193,13 +193,18 @@
         <div class="row pt-2">
           <div class="col-lg-12">
             <div class="float-right">
-              <span>
-                <button (click)="placeHold()"
-                  class="btn btn-sm btn-success label-with-material-icon small-text-1">
-                  <span class="material-icons">check</span>
-                  <span i18n>Place Hold</span>
-                </button>
-              </span>
+              <ng-container *ngIf="summary.record.deleted() == 't'">
+                <span class="text-danger" i18n>(Deleted)</span>
+              </ng-container>
+              <ng-container *ngIf="summary.record.deleted() == 'f'">
+                <span>
+                  <button (click)="placeHold()"
+                    class="btn btn-sm btn-success label-with-material-icon small-text-1">
+                    <span class="material-icons">check</span>
+                    <span i18n>Place Hold</span>
+                  </button>
+                </span>
+              </ng-container>
             </div>
           </div>
         </div>

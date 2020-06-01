@@ -3,6 +3,9 @@
   <div class="card-header d-flex">
     <div class="font-weight-bold">
       Record Summary
+      <ng-container *ngIf="summary.record.deleted() == 't'">
+        <span class="text-danger" i18n>(Deleted)</span>
+      </ng-container>
       <ng-container *ngIf="summary.attributes.icon_format && summary.attributes.icon_format[0]">
         <ng-container *ngFor="let icon of summary.attributes.icon_format">
           <span class="pr-1 pl-2">
