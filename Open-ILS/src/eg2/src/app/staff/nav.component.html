@@ -137,6 +137,11 @@
             <span class="material-icons" aria-hidden="true">signal_wifi_off</span>
             <span i18n>Offline Circulation</span>
           </a>
+          <div *ngIf="curbsideEnabled" class="dropdown-divider"></div>
+          <a *ngIf="curbsideEnabled" class="dropdown-item" href="/eg/staff/circ/curbside/index">
+            <span class="material-icons">directions_bus</span>
+            <span i18n>Curbside Pickup</span>
+          </a>
         </div>
       </div>
     </div>

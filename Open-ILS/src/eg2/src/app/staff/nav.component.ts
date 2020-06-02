@@ -25,6 +25,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
 
     // When active, show a link to the experimental Angular staff catalog
     showAngularCatalog: boolean;
+    curbsideEnabled: boolean;
 
     @ViewChild('navOpChange', {static: false}) opChange: OpChangeComponent;
     permFailedSub: Subscription;
@@ -60,6 +61,9 @@ export class StaffNavComponent implements OnInit, OnDestroy {
             this.org.settings('ui.staff.angular_catalog.enabled')
             .then(settings => this.showAngularCatalog =
                 Boolean(settings['ui.staff.angular_catalog.enabled']));
+            this.org.settings('circ.curbside')
+            .then(settings => this.curbsideEnabled =
+                Boolean(settings['circ.curbside']));
         }
 
         // Wire up our op-change component as the general purpose
