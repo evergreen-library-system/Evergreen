@@ -1,8 +1,7 @@
 = Circulating Items =
 :toc:
 
-Check Out
-~~~~~~~~~~
+== Check Out ==
 
 === Regular Items ===
 
@@ -187,8 +186,7 @@ These options may be selected simultaneously. The selected option is displayed i
 image::media/checkinmodifiers-with-inventory2.png[Web client check-in modifiers]
 ===================================================
   
-Renewal and Editing the Item's Due Date
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Renewal and Editing the Item's Due Date ==
 
 Checked-out items can be renewed if your library's policy allows it. The new due date is calculated from the renewal date. Existing loans can also be extended to a specific date by editing the due date or renewing with a specific due date.
 
@@ -256,15 +254,13 @@ Lost Item Billing
 - The replacement fee and processing fee for lost-then-returned items may be voided if set by local policy. Overdue fines may be reinstated on lost-then-returned items if set by local policy.
 ========================
 
-Refunds for Lost Items
-^^^^^^^^^^^^^^^^^^^^^^^
+=== Refunds for Lost Items ===
 
 If an item is returned after a lost bill has been paid and the library's policy is to void the replacement fee for lost-then-returned items, there will be a negative balance in the bill. A refund needs to be made to close the bill and the circulation record. Once the outstanding amount has been refunded, the bill and circulation record will be closed and the item will disappear from the Items Out screen.
 
 If you need to balance a bill with a negative amount, you need to add two dummy bills to the existing bills. The first one can be of any amount (e.g. $0.01), while the second should be of the absolute value of the negative amount. Then you need to void the first dummy bill. The reason for using a dummy bill is that Evergreen will check and close the circulation record only when payment is applied or bills are voided.
 
-Claimed Returned Items
-^^^^^^^^^^^^^^^^^^^^^^^
+=== Claimed Returned Items ===
 
 1) To mark an item Claimed Returned, retrieve the patron record and go to the *Items Out* screen.
 
@@ -345,8 +341,7 @@ If the item's status is "Available", the displayed due date refers to the previo
 [TIP]
 Upload From File allows you to load multiple items saved in a file on your local computer. The file contains a list of the barcodes in text format. To ensure smooth uploading and further processing on the items, it is recommended that the list contains no more than 100 items.
 
-Viewing past circulations
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Viewing past circulations ===
 1) To view past circulations, retrieve the item on the *Item Status* screen as described above.
 
 2) Select *Detail view*.

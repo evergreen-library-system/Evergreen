@@ -7,8 +7,7 @@ Item Tags allow staff to apply custom, pre-defined labels or tags to items.  Ite
 
 Item tags can be created ahead of time in the Administration module (See the Administration section of this documentation for more information.) and then applied to items or they can be created on the fly during the cataloging process.
 
-Adding Existing Item Tags to Items
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Adding Existing Item Tags to Items ==
 
 Item Tags can be added to existing items or to new items as they are cataloged.  To add an item tag:
 
@@ -32,8 +31,7 @@ Item tags can be created in the Holdings Editor on the fly while cataloging or v
 . Select the *Tag Type* from the drop down menu and type in the new Tag you want to apply to the item.  Click *Add Tag*, then click *OK*.  The new tag will be created and attached to the item.  It will be owned by the organization unit your workstation is registered to.  The tag can be modified under *Admin->Local Administration->Item Tags*.
 
 
-Removing Item Tags from Items
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Removing Item Tags from Items ==
 
 To remove an item tag from a item:
 
@@ -44,8 +42,7 @@ To remove an item tag from a item:
 image::media/remove_item_tag.png[Removing an Item Tag]
 
 
-Adding Item Tags to Items in Batch
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Adding Item Tags to Items in Batch ==
 
 Item tags can be added to multiple items in batch using _Item Buckets_.  After adding the items to a Item Bucket:
 

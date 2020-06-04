@@ -322,8 +322,7 @@ truncate any number of characters.
 
 [#stemming]
 
-Stemming 
-^^^^^^^^
+=== Stemming ===
 
 indexterm:[search, stemming]
 
@@ -494,8 +493,7 @@ and barcode.
 
 
 
-Placing Holds 
-^^^^^^^^^^^^^
+=== Placing Holds ===
 
 indexterm:[search results, placing holds]
 
@@ -526,8 +524,7 @@ hold has not been fulfilled you do not need the item anymore.
 
 image::media/catalogue-9.png[catalogue-9]
 
-Permalink 
-^^^^^^^^^
+=== Permalink ===
 
 The record summary page offers a link to a shorter permalink that
  can be used for sharing the record with others. All URL parameters are stripped
@@ -553,8 +550,7 @@ Carrier charges may apply when using the SMS call number feature.
 ==========
 
 
-Going back 
-^^^^^^^^^^
+=== Going back ===
 
 indexterm:[search results, going back]
 
