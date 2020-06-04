@@ -258,6 +258,8 @@ export class SandboxComponent implements OnInit {
             const query: any = new Array();
             query.push(base);
 
+            console.log(JSON.stringify(this.eventsDataSource.filters));
+
             Object.keys(this.eventsDataSource.filters).forEach(key => {
                 Object.keys(this.eventsDataSource.filters[key]).forEach(key2 => {
                     query.push(this.eventsDataSource.filters[key][key2]);

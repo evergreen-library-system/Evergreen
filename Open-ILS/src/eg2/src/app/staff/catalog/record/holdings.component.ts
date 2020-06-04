@@ -23,6 +23,8 @@ import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {CopyAlertsDialogComponent
     } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
+import {CopyTagsDialogComponent
+    } from '@eg/staff/share/holdings/copy-tags-dialog.component';
 import {ReplaceBarcodeDialogComponent
     } from '@eg/staff/share/holdings/replace-barcode-dialog.component';
 import {DeleteHoldingDialogComponent
@@ -106,6 +108,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
         private markMissingDialog: MarkMissingDialogComponent;
     @ViewChild('copyAlertsDialog', { static: true })
         private copyAlertsDialog: CopyAlertsDialogComponent;
+    @ViewChild('copyTagsDialog', {static: false})
+        private copyTagsDialog: CopyTagsDialogComponent;
     @ViewChild('replaceBarcode', { static: true })
         private replaceBarcode: ReplaceBarcodeDialogComponent;
     @ViewChild('deleteHolding', { static: true })
@@ -855,6 +859,20 @@ export class HoldingsMaintenanceComponent implements OnInit {
         this.copyAlertsDialog.copyIds = copyIds;
         this.copyAlertsDialog.mode = mode;
         this.copyAlertsDialog.open({size: 'lg'}).subscribe(
+            modified => {
+                if (modified) {
+                    this.hardRefresh();
+                }
+            }
+        );
+    }
+
+    openItemTags(rows: HoldingsEntry[]) {
+        const copyIds = this.selectedCopyIds(rows);
+        if (copyIds.length === 0) { return; }
+
+        this.copyTagsDialog.copyIds = copyIds;
+        this.copyTagsDialog.open({size: 'lg'}).subscribe(
             modified => {
                 if (modified) {
                     this.hardRefresh();

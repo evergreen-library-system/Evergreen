@@ -47,6 +47,7 @@
 <eg-mark-damaged-dialog #markDamagedDialog></eg-mark-damaged-dialog>
 <eg-mark-missing-dialog #markMissingDialog></eg-mark-missing-dialog>
 <eg-copy-alerts-dialog #copyAlertsDialog></eg-copy-alerts-dialog>
+<eg-copy-tags-dialog #copyTagsDialog></eg-copy-tags-dialog>
 <eg-replace-barcode-dialog #replaceBarcode></eg-replace-barcode-dialog>
 <eg-delete-holding-dialog #deleteHolding></eg-delete-holding-dialog>
 <eg-bucket-dialog #bucketDialog></eg-bucket-dialog>
@@ -118,6 +119,11 @@
     <eg-grid-toolbar-action
       i18n-group group="Add" i18n-label label="Add Item Alerts"
       (onClick)="openItemNotes($event, 'create')">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Add" i18n-label label="Add/Manage Item Tags"
+      (onClick)="openItemTags($event)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action

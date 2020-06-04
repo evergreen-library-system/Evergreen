@@ -47,6 +47,7 @@ export class IdlClassTemplateDirective {
   }]
 })
 export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
+    static domIdAuto = 0;
 
     selected: ComboboxEntry;
     click$: Subject<string>;
@@ -55,6 +56,8 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
     @ViewChild('instance', { static: true }) instance: NgbTypeahead;
     @ViewChild('defaultDisplayTemplate', { static: true}) defaultDisplayTemplate: TemplateRef<any>;
     @ViewChildren(IdlClassTemplateDirective) idlClassTemplates: QueryList<IdlClassTemplateDirective>;
+
+    @Input() domId = 'eg-combobox-' + ComboboxComponent.domIdAuto++;
 
     // Applies a name attribute to the input.
     // Useful in forms.
@@ -68,6 +71,9 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
     @Input() allowFreeText = false;
 
     @Input() inputSize: number = null;
+
+    // If true, applies form-control-sm CSS
+    @Input() smallFormControl = false;
 
     // Add a 'required' attribute to the input
     isRequired: boolean;

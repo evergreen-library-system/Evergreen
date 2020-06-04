@@ -32,6 +32,9 @@ export class BibDisplayFieldComponent implements OnInit {
     // If true, replace empty values with a non-collapsing space.
     @Input() usePlaceholder: boolean;
 
+    // If provided, turn the display value into a link
+    @Input() routerLink: string;
+
     constructor() {}
 
     ngOnInit() {}

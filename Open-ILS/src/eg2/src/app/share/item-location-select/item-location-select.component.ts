@@ -30,6 +30,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 })
 export class ItemLocationSelectComponent
     implements OnInit, AfterViewInit, ControlValueAccessor {
+    static domIdAuto = 0;
 
     // Limit copy locations to those owned at or above org units where
     // the user has work permissions for the provided permission code.
@@ -44,6 +45,9 @@ export class ItemLocationSelectComponent
     @Output() valueChange: EventEmitter<IdlObject>;
 
     @Input() required: boolean;
+
+    @Input() domId = 'eg-item-location-select-' +
+        ItemLocationSelectComponent.domIdAuto++;
 
     @ViewChild('comboBox', {static: false}) comboBox: ComboboxComponent;
     @ViewChild('unsetString', {static: false}) unsetString: StringComponent;

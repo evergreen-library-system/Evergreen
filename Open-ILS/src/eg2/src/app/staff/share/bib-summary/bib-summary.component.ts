@@ -50,35 +50,39 @@ export class BibSummaryComponent implements OnInit {
 
     ngOnInit() {
 
-        if (this.summary) {
-            this.summary.getBibCallNumber();
-            this.loadCourseInformation(this.summary.record.id());
-        } else {
-            if (this.recordId) {
-                this.loadSummary();
-            }
-        }
-
         this.store.getItem('eg.cat.record.summary.collapse')
         .then(value => this.expand = !value)
-        .then(() => this.initDone = true);
+        .then(_ => this.cat.fetchCcvms())
+        .then(_ => {
+            if (this.summary) {
+                return this.loadCourseInformation(this.summary.record.id())
+                .then(_ => this.summary.getBibCallNumber());
+            } else {
+                if (this.recordId) {
+                    return this.loadSummary();
+                }
+            }
+        }).then(_ => this.initDone = true);
     }
 
     saveExpandState() {
         this.store.setItem('eg.cat.record.summary.collapse', !this.expand);
     }
 
-    loadSummary(): void {
-        this.loadCourseInformation(this.recordId);
-        this.bib.getBibSummary(this.recordId).toPromise()
-        .then(summary => {
-            summary.getBibCallNumber();
-            this.summary = summary;
+    loadSummary(): Promise<any> {
+        return this.loadCourseInformation(this.recordId)
+        .then(_ => {
+            return this.bib.getBibSummary(this.recordId).toPromise()
+            .then(summary => {
+                this.summary = summary;
+                return summary.getBibCallNumber();
+            });
         });
     }
 
-    loadCourseInformation(recordId) {
-        this.org.settings('circ.course_materials_opt_in').then(setting => {
+    loadCourseInformation(recordId): Promise<any> {
+        return this.org.settings('circ.course_materials_opt_in')
+        .then(setting => {
             if (setting['circ.course_materials_opt_in']) {
                 this.course.fetchCoursesForRecord(recordId).then(courseList => {
                     if (courseList) {

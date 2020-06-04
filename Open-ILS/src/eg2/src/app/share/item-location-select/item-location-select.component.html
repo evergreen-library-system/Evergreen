@@ -7,6 +7,7 @@
 <eg-string #unsetString text="<Unset>" i18n-text></eg-string>
 
 <eg-combobox #comboBox
+  [domId]="domId"
   [startId]="startId"
   [displayTemplate]="displayTemplate"
   (onChange)="cboxChanged($event)"

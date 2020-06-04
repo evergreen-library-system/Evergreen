@@ -25,26 +25,22 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 export class CopyAlertsDialogComponent
     extends DialogComponent implements OnInit {
 
-    _copyIds: number[];
-    @Input() set copyIds(ids: number[]) {
-        this._copyIds = [].concat(ids);
-    }
-    get copyIds(): number[] {
-        return this._copyIds;
-    }
+    // If there are multiple copyIds, only new alerts may be applied.
+    // If there is only one copyId, then tags may be applied or removed.
+    @Input() copyIds: number[] = [];
 
-    _mode: string; // create | manage
-    @Input() set mode(m: string) {
-        this._mode = m;
-    }
-    get mode(): string {
-        return this._mode;
-    }
+    mode: string; // create | manage
+
+    // If true, no attempt is made to save the new alerts to the
+    // database.  It's assumed this takes place in the calling code.
+    // This is useful for creating alerts for new copies.
+    @Input() inPlaceMode = false;
 
     // In 'create' mode, we may be adding notes to multiple copies.
     copies: IdlObject[];
     // In 'manage' mode we only handle a single copy.
     copy: IdlObject;
+
     alertTypes: ComboboxEntry[];
     newAlert: IdlObject;
     changesMade: boolean;
@@ -78,18 +74,16 @@ export class CopyAlertsDialogComponent
         this.newAlert = this.idl.create('aca');
         this.newAlert.create_staff(this.auth.user().id());
 
-        if (this.copyIds.length === 0) {
+        if (this.copyIds.length === 0 && !this.inPlaceMode) {
             return throwError('copy ID required');
         }
 
         // In manage mode, we can only manage a single copy.
-        // But in create mode, we can add alerts to multiple copies.
-
-        if (this.mode === 'manage') {
-            if (this.copyIds.length > 1) {
-                console.warn('Attempt to manage alerts for multiple copies.');
-                this.copyIds = [this.copyIds[0]];
-            }
+        // But in create mode, we can add tags to multiple copies.
+        if (this.copyIds.length === 1 && !this.inPlaceMode) {
+            this.mode = 'manage';
+        } else {
+            this.mode = 'create';
         }
 
         // Observerify data loading
@@ -104,9 +98,8 @@ export class CopyAlertsDialogComponent
     }
 
     getAlertTypes(): Promise<any> {
-        if (this.alertTypes) {
-            return Promise.resolve();
-        }
+        if (this.alertTypes) { return Promise.resolve(); }
+
         return this.pcrud.retrieveAll('ccat',
         {   active: true,
             scope_org: this.org.ancestors(this.auth.user().ws_ou(), true)
@@ -117,6 +110,8 @@ export class CopyAlertsDialogComponent
     }
 
     getCopies(): Promise<any> {
+        if (this.inPlaceMode) { return Promise.resolve(); }
+
         return this.pcrud.search('acp', {id: this.copyIds}, {}, {atomic: true})
         .toPromise().then(copies => {
             this.copies = copies;
@@ -148,6 +143,11 @@ export class CopyAlertsDialogComponent
     // Add the in-progress new note to all copies.
     addNew() {
         if (!this.newAlert.alert_type()) { return; }
+
+        if (this.inPlaceMode) {
+            this.close(this.newAlert);
+            return;
+        }
 
         const alerts: IdlObject[] = [];
         this.copies.forEach(c => {

@@ -1,0 +1,68 @@
+
+<div class="border rounded m-1">
+  <div class="font-weight-bold header p-2 d-flex" i18n>
+    {{label}} <span *ngIf="hasChanged" class="text-danger">*</span>
+    <ng-container *ngIf="bulky()">
+      <div class="flex-1"></div>
+      <a href='javascript:;' (click)="expanded = true" *ngIf="!expanded">
+        <span class="material-icons">unfold_more</span>
+      </a>
+      <a href='javascript:;' (click)="expanded = false" *ngIf="expanded">
+        <span class="material-icons">unfold_less</span>
+      </a>
+    </ng-container>
+  </div>
+  <div tabindex="0" class="p-2" *ngIf="!editing || multiValue()"
+    (click)="enterEditMode()" (keyup.enter)="enterEditMode()"
+    [ngClass]="{'has-changes': hasChanged, 'bg-warning': warnOnRequired()}">
+    <div class="d-flex" 
+      *ngFor="let count of labelCounts | keyvalue; let idx = index">
+      <ng-container *ngIf="!expanded && !editing && idx === defaultDisplayCount">
+        <span class="text-info" i18n>...</span>
+      </ng-container>
+      <ng-container *ngIf="expanded || editing || idx < defaultDisplayCount">
+        <ng-container *ngIf="editing">
+          <div class="ml-4 mr-2">
+            <input type="checkbox" class="form-check-input" 
+              [(ngModel)]="editValues[count.key]"/>
+          </div>
+        </ng-container>
+        <div class="flex-1">
+          <ng-container *ngIf="displayAs == 'bool'">
+            <ng-container *ngIf="valueIsUnset(count.key); else defaultBool">
+              <span i18n>&lt;Unset&gt;</span>
+            </ng-container>
+            <ng-template #defaultBool>
+              <span *ngIf="count.key == 't'" i18n>Yes</span>
+              <span *ngIf="count.key == 'f'" i18n>No</span>
+            </ng-template>
+          </ng-container>
+          <ng-container *ngIf="displayAs == 'currency'">
+            <ng-container 
+              *ngIf="valueIsUnset(count.key); else defaultCurrency">
+              <span i18n>&lt;Unset&gt;</span>
+            </ng-container>
+            <ng-template #defaultCurrency>{{count.key | currency}}</ng-template>
+          </ng-container>
+          <ng-container *ngIf="displayAs != 'bool' && displayAs != 'currency'">
+            <ng-container 
+              *ngIf="valueIsUnset(count.key); else default">
+              <span i18n>&lt;Unset&gt;</span>
+            </ng-container>
+            <ng-template #default>{{count.key}}</ng-template>
+          </ng-container>
+        </div>
+        <div i18n>{{count.value}} copies</div>
+      </ng-container>
+    </div>
+  </div>
+  <ng-container *ngIf="editing">
+    <ng-container *ngTemplateOutlet="editTemplate"></ng-container>
+    <div class="mt-1">
+      <button class="btn btn-outline-dark" (click)="save()" i18n>Apply</button>
+      <button class="btn btn-outline-dark ml-1" (click)="cancel()" i18n>Cancel</button>
+      <button class="btn btn-outline-dark ml-1" (click)="clear()" i18n>Clear</button>
+    </div>
+  </ng-container>
+</div>
+

@@ -14,7 +14,11 @@
 <div class="d-flex">
   <input type="text" 
     class="form-control"
-    [ngClass]="{'text-success font-italic font-weight-bold': selected && selected.freetext}"
+    [id]="domId"
+    [ngClass]="{
+      'text-success font-italic font-weight-bold': selected && selected.freetext,
+      'form-control-sm': smallFormControl
+    }"
     [placeholder]="placeholder"
     [name]="name"
     [disabled]="isDisabled"
