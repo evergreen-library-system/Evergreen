@@ -18,6 +18,8 @@
     handler="requestItems"></eg-grid-action>
   <eg-grid-action label="[% l('Edit Selected Items') %]" group="[% l('Items') %]"
     handler="spawnHoldingsEdit"></eg-grid-action>
+  <eg-grid-action label="[% l('Edit Call Numbers') %]" group="[% l('Items') %]"
+    handler="spawnCallNumberEdit"></eg-grid-action>
   <eg-grid-action handler="showItems" group="[% l('Show') %]"
     label="[% l('Open in Item Status') %]"></eg-grid-action>  
   <eg-grid-action handler="print_labels" group="[% l('Show') %]"
