@@ -2518,6 +2518,46 @@ sub checkout_noncat {
    }
 }
 
+# if an item is in transit but the status doesn't agree, then we need to fix things.
+# The next two subs will hopefully do that
+sub fix_broken_transit_status {
+    my $self = shift;
+
+    # Capture the transit so we don't have to fetch it again later during checkin
+    # This used to live in sub check_transit_checkin_interval and later again in
+    # do_checkin
+    $self->transit(
+        $self->editor->search_action_transit_copy(
+            {target_copy => $self->copy->id, dest_recv_time => undef, cancel_time => undef}
+        )->[0]
+    );
+
+    if ($self->transit && $U->copy_status($self->copy->status)->id != OILS_COPY_STATUS_IN_TRANSIT) {
+        $logger->warn("circulator: we have a copy ".$self->copy->barcode.
+            " that is in-transit but without the In Transit status... fixing");
+        $self->copy->status(OILS_COPY_STATUS_IN_TRANSIT);
+        # FIXME - do we want to make this permanent if the checkin bails?
+        $self->update_copy;
+    }
+
+}
+sub cancel_transit_if_circ_exists {
+    my $self = shift;
+    if ($self->circ && $self->transit) {
+        $logger->warn("circulator: we have a copy ".$self->copy->barcode.
+            " that is in-transit AND circulating... aborting the transit");
+        my $circ_ses = create OpenSRF::AppSession("open-ils.circ");
+        my $result = $circ_ses->request(
+            "open-ils.circ.transit.abort",
+            $self->editor->authtoken,
+            { 'transitid' => $self->transit->id }
+        )->gather(1);
+        $logger->warn("circulator: transit abort result: ".$result);
+        $circ_ses->disconnect;
+        $self->transit(undef);
+    }
+}
+
 # If a copy goes into transit and is then checked in before the transit checkin 
 # interval has expired, push an event onto the overridable events list.
 sub check_transit_checkin_interval {
@@ -2529,13 +2569,6 @@ sub check_transit_checkin_interval {
     # no interval, no problem
     my $interval = $U->ou_ancestor_setting_value($self->circ_lib, 'circ.transit.min_checkin_interval');
     return unless $interval;
-
-    # capture the transit so we don't have to fetch it again later during checkin
-    $self->transit(
-        $self->editor->search_action_transit_copy(
-            {target_copy => $self->copy->id, dest_recv_time => undef, cancel_time => undef}
-        )->[0]
-    ); 
 
     # transit from X to X for whatever reason has no min interval
     return if $self->transit->source == $self->transit->dest;
@@ -2648,6 +2681,7 @@ sub do_checkin {
         OpenILS::Event->new('ASSET_COPY_NOT_FOUND')) 
         unless $self->copy;
 
+    $self->fix_broken_transit_status; # if applicable
     $self->check_transit_checkin_interval;
     $self->checkin_retarget;
 
@@ -2663,6 +2697,7 @@ sub do_checkin {
         $logger->warn("circulator: we have ".scalar(@$circs).
             " open circs for copy " .$self->copy->id."!!") if @$circs > 1;
     }
+    $self->cancel_transit_if_circ_exists; # if applicable
 
     my $stat = $U->copy_status($self->copy->status)->id;
 
@@ -2734,14 +2769,6 @@ sub do_checkin {
     $self->override_events unless $self->is_renewal;
     return if $self->bail_out;
     
-    if( $self->copy and !$self->transit ) {
-        $self->transit(
-            $self->editor->search_action_transit_copy(
-                { target_copy => $self->copy->id, dest_recv_time => undef, cancel_time => undef }
-            )->[0]
-        ); 
-    }
-
     if( $self->circ ) {
         $self->checkin_handle_circ_start;
         return if $self->bail_out;
