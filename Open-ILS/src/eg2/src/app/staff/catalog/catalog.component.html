@@ -1,5 +1,23 @@
 <eg-staff-banner bannerText="Staff Catalog (Experimental)" i18n-bannerText>
 </eg-staff-banner>
+
+<ng-container *ngIf="holdForUser()">
+  <div class="row border border-info mb-2 pt-1 pb-1">
+    <div class="col-lg-10 offset-lg-1 d-flex justify-content-center">
+      <span class="mt-2" i18n>
+        Placing hold for patron 
+        <a href="/eg/staff/circ/patron/{{holdForUser().id()}}/holds">
+          {{holdForUser().family_name()}}, {{holdForUser().first_given_name()}}
+        </a>.
+      </span>
+    </div>
+    <div class="col-lg-1">
+      <button class="btn btn-info btn-sm" 
+        (click)="clearHoldPatron()" i18n>Clear</button>
+    </div>
+  </div>
+</ng-container>
+
 <!-- search form sits atop every catalog page -->
 <eg-catalog-search-form></eg-catalog-search-form>
 

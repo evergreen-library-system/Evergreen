@@ -13,6 +13,7 @@ import {StaffCatalogService} from '../catalog.service';
 import {HoldsService, HoldRequest,
     HoldRequestTarget} from '@eg/staff/share/holds/holds.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronSearchDialogComponent
   } from '@eg/staff/share/patron/search-dialog.component';
 
@@ -81,6 +82,7 @@ export class HoldComponent implements OnInit {
         private cat: CatalogService,
         private staffCat: StaffCatalogService,
         private holds: HoldsService,
+        private patron: PatronService,
         private perm: PermService
     ) {
         this.holdContexts = [];
@@ -92,6 +94,11 @@ export class HoldComponent implements OnInit {
         this.holdType = this.route.snapshot.params['type'];
         this.holdTargets = this.route.snapshot.queryParams['target'];
         this.holdFor = this.route.snapshot.queryParams['holdFor'] || 'patron';
+
+        if (this.staffCat.holdForBarcode) {
+            this.holdFor = 'patron';
+            this.userBarcode = this.staffCat.holdForBarcode;
+        }
 
         if (!Array.isArray(this.holdTargets)) {
             this.holdTargets = [this.holdTargets];
@@ -107,7 +114,7 @@ export class HoldComponent implements OnInit {
             return ctx;
         });
 
-        if (this.holdFor === 'staff') {
+        if (this.holdFor === 'staff' || this.userBarcode) {
             this.holdForChanged();
         }
 
@@ -245,25 +252,18 @@ export class HoldComponent implements OnInit {
 
         this.user = null;
         this.currentUserBarcode = this.userBarcode;
+        this.getUser();
+    }
 
-        this.net.request(
-            'open-ils.actor',
-            'open-ils.actor.get_barcodes',
-            this.auth.token(), this.auth.user().ws_ou(),
-            'actor', this.userBarcode
-        ).subscribe(barcodes => {
+    getUser(id?: number) {
+        const flesh = {flesh: 1, flesh_fields: {au: ['settings']}};
 
-            // Use the first successful barcode response.
-            // TODO: What happens when there are multiple responses?
-            // Use for-loop for early exit since we have async
-            // action within the loop.
-            for (let i = 0; i < barcodes.length; i++) {
-                const bc = barcodes[i];
-                if (!this.evt.parse(bc)) {
-                    this.getUser(bc.id);
-                    break;
-                }
-            }
+        const promise = id ? this.patron.getById(id, flesh) :
+            this.patron.getByBarcode(this.userBarcode);
+
+        promise.then(user => {
+            this.user = user;
+            this.applyUserSettings();
         });
     }
 
@@ -272,14 +272,6 @@ export class HoldComponent implements OnInit {
         this.notifyPhone = true;
         this.phoneValue = '';
         this.pickupLib = this.requestor.ws_ou();
-    }
-
-    getUser(id: number) {
-        this.pcrud.retrieve('au', id, {flesh: 1, flesh_fields: {au: ['settings']}})
-        .subscribe(user => {
-            this.user = user;
-            this.applyUserSettings();
-        });
     }
 
     applyUserSettings() {

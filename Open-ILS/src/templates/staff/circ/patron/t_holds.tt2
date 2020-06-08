@@ -32,7 +32,9 @@
 
 <!-- catalog view for holds placement -->
 
+<!-- Replaced with Angular catalog link
 <div ng-if="placing_hold">
   <eg-embed-frame url="catalog_url" handlers="handlers" 
     onchange="handle_page"></eg-embed-frame>
 </div>
+-->

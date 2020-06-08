@@ -6,6 +6,7 @@ import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {BibRecordSummary} from '@eg/share/catalog/bib-record.service';
+import {PatronService} from '@eg/staff/share/patron/patron.service';
 
 /**
  * Shared bits needed by the staff version of the catalog.
@@ -27,6 +28,11 @@ export class StaffCatalogService {
     // Default search tab
     defaultTab: string;
 
+    // Patron barcode we hope to place a hold for.
+    holdForBarcode: string;
+    // User object for above barcode.
+    holdForUser: IdlObject;
+
     // Cache the currently selected detail record (i.g. catalog/record/123)
     // summary so the record detail component can avoid duplicate fetches
     // during record tab navigation.
@@ -37,6 +43,7 @@ export class StaffCatalogService {
         private route: ActivatedRoute,
         private org: OrgService,
         private cat: CatalogService,
+        private patron: PatronService,
         private catUrl: CatalogUrlService
     ) { }
 
@@ -47,6 +54,13 @@ export class StaffCatalogService {
         // search results pages will handle running the actual search.
         this.searchContext =
             this.catUrl.fromUrlParams(this.route.snapshot.queryParamMap);
+
+        this.holdForBarcode = this.route.snapshot.queryParams['holdForBarcode'];
+
+        if (this.holdForBarcode) {
+            this.patron.getByBarcode(this.holdForBarcode)
+            .then(user => this.holdForUser = user);
+        }
 
         this.searchContext.org = this.org; // service, not searchOrg
         this.searchContext.isStaff = true;

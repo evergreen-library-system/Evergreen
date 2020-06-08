@@ -145,7 +145,10 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
     }
 
     $scope.place_hold = function() {
-        $location.path($location.path() + '/create');
+        $window.location.href = '/eg2/staff/catalog?holdForBarcode=' + 
+            encodeURIComponent(patronSvc.current.card().barcode());
+
+        //$location.path($location.path() + '/create');
     }
 
     // when the detail hold is fetched (and updated), update the bib
