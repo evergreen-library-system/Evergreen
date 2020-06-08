@@ -371,12 +371,13 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
             mergeMap(term => this.addAsyncEntries(term)),
             map((term: string) => {
 
-                if (term === '' || term === '_CLICK_') {
-                    if (!this.asyncDataSource) {
-                        // In sync mode, a post-focus empty search or
-                        // click event displays the whole list.
-                        return this.entrylist;
-                    }
+                // Display no values when the input is empty and no
+                // click action occurred.
+                if (term === '') { return []; }
+
+                // In sync-data mode, a click displays the full list.
+                if (term === '_CLICK_' && !this.asyncDataSource) {
+                    return this.entrylist;
                 }
 
                 // Filter entrylist whose labels substring-match the
