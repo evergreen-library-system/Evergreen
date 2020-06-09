@@ -20592,7 +20592,13 @@ VALUES (
         'Grid Config: Booking Captured Reservations',
         'cwst', 'label')
 ), (
-    'eg.booking.manage.selected_org_family', 'gui', 'object',
+    'eg.grid.booking.pull_list', 'gui', 'object',
+    oils_i18n_gettext(
+        'booking.pull_list',
+        'Grid Config: Booking Pull List',
+        'cwst', 'label')
+),(
+   'eg.booking.manage.selected_org_family', 'gui', 'object',
     oils_i18n_gettext(
         'booking.manage.selected_org_family',
         'Sticky setting for pickup ou family in Manage Reservations screen',
