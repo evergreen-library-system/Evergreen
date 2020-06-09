@@ -20332,6 +20332,12 @@ VALUES (
         'Grid Config: Booking Return Resource tab Returned Today grid',
         'cwst', 'label')
 ), (
+    'eg.grid.booking.pull_list', 'gui', 'object',
+    oils_i18n_gettext(
+        'booking.pull_list',
+        'Grid Config: Booking Pull List',
+        'cwst', 'label')
+), (
     'eg.booking.manage.selected_org_family', 'gui', 'object',
     oils_i18n_gettext(
         'booking.manage.selected_org_family',
