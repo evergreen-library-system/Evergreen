@@ -3,6 +3,67 @@ Evergreen 3.3 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.3.7
+---------------
+
+This release contains bug fixes improving on Evergreen 3.3.6.
+
+Bug Fixes
+~~~~~~~~~
+
+* Check In - "Route To" Field Sometimes Incorrect (https://bugs.launchpad.net/evergreen/+bug/1775276[Bug 1775276])
+* Select element on login not accessible (https://bugs.launchpad.net/evergreen/+bug/1839359[Bug 1839359])
+* Splash page needs headers (https://bugs.launchpad.net/evergreen/+bug/1839372[Bug 1839372])
+* Use correct API method for updating existing MARC records. (https://bugs.launchpad.net/evergreen/+bug/1859191[Bug 1859191])
+* Callnumber Sorting by Sortkey in Transit & Copy Buckets (https://bugs.launchpad.net/evergreen/+bug/1654529[Bug 1654529])
+* Reset field transform after adding fields (https://bugs.launchpad.net/evergreen/+bug/1778521[Bug 1778521])
+* Wrong row details shown on billing grid (https://bugs.launchpad.net/evergreen/+bug/1792995[Bug 1792995])
+* Mark items as damaged - changing fee usability issues (https://bugs.launchpad.net/evergreen/+bug/1849370[Bug 1849370])
+* Item Status checkout date and checkout workstation for renewed items (https://bugs.launchpad.net/evergreen/+bug/1787415[Bug 1787415])
+* Marc flat editor repair slashes (AngJS) (https://bugs.launchpad.net/evergreen/+bug/1841823[Bug 1841823])
+* Add Vols and Copies honors owning lib (https://bugs.launchpad.net/evergreen/+bug/1854197[Bug 1854197])
+* Avoid repeating qtype prefix in query (https://bugs.launchpad.net/evergreen/+bug/1839684[Bug 1839684])
+* Add barcode to patron negative balance grid (https://bugs.launchpad.net/evergreen/+bug/1668352[Bug 1668352])
+* Event Def Environment Fleshing Might Have Issue (https://bugs.launchpad.net/evergreen/+bug/850160[Bug 850160])
+* On patron edit screen set the email and phone notification to true when patron doesn't have any prefernces. This mimics the behavior in the xul client; handle opac.hold_notify empty string in AngJS patron editor (https://bugs.launchpad.net/evergreen/+bug/1774268[Bug 1774268])
+* Item Status Precat Information (https://bugs.launchpad.net/evergreen/+bug/1801137[Bug 1801137])
+* Change expire list to match what the hold expire function (https://bugs.launchpad.net/evergreen/+bug/1819540[Bug 1819540])
+* Fix floating point issue preventing transactions from closing (https://bugs.launchpad.net/evergreen/+bug/1781274[Bug 1781274])
+* Fix Bad End Tags (https://bugs.launchpad.net/evergreen/+bug/1873286[Bug 1873286])
+* Coerce Values to String in egGridValueFilter (https://bugs.launchpad.net/evergreen/+bug/1813088[Bug 1813088])
+* Remove right justification in grid view; Sort Libraries without Holdings In Holdings View (https://bugs.launchpad.net/evergreen/+bug/1787636[Bug 1787636])
+* Fix rendering of monograph parts (https://bugs.launchpad.net/evergreen/+bug/1880035[Bug 1880035])
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.3.7 point release of Evergreen:
+
+* Bill Erickson
+* Chris Sharp
+* Dan Briem
+* Daniel Pearl
+* Dan Wells
+* Dawn Dale
+* Elaine Hardy
+* Gina Monti
+* Jane Sandberg
+* Jason Boyer
+* Jason Stephenson
+* Jeff Davis
+* Jennifer Pringle
+* Jessica Woolford
+* John Amundson
+* Josh Stompro
+* Kyle Huckins
+* Michele Morgan
+* Mike Risher
+* Mike Rylander
+* Remington Steed
+* Steven Callender
+* Terran McCanna
+
+
 Evergreen 3.3.6
 ----------------
 
