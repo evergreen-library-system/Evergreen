@@ -1,12 +1,11 @@
 
-{ # The driver package itself just needs a db_Main method (or db_standbys if
-  #Class::DBI::Replication is in use) for Class::DBI to call.
+{ # The driver package itself just needs a db_Main method.
   #
   # Any other fixups can go in here too... Also, the drivers should subclass the
   # DBI driver that they are wrapping, or provide a 'quote()' method that calls
   # the DBD::xxx::quote() method on FTI's behalf.
   #
-  # The dirver MUST be a subclass of Class::DBI(::Replication) and
+  # The dirver MUST be a subclass of Class::DBI and
   # OpenILS::Application::Storage.
   #-------------------------------------------------------------------------------
     package OpenILS::Application::Storage::Driver::Pg;
@@ -138,18 +137,6 @@
         my $self = shift;
         return $self->db_Main->quote(@_)
     }
-
-#   sub tsearch2_trigger {
-#       my $self = shift;
-#       return unless ($self->value);
-#       $self->index_vector(
-#           $self->db_standbys->selectrow_array(
-#               "SELECT to_tsvector('default',?);",
-#               {},
-#               $self->value
-#           )
-#       );
-#   }
 
     my $_xact_session;
     my $_audit_session;
