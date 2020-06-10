@@ -1,0 +1,92 @@
+Curbside Pickup
+^^^^^^^^^^^^^^^
+The Curbside Pickup features in Evergreen provides an interface to help
+facilitate contact free pickup of library materials.  It provides a dedicated
+interface in the staff client for library staff to track and manage curbside
+pickup appointments and materials through the various stages of the process.
+Staff can also schedule pickup appointments on behalf of patrons.  This feature
+also allows patrons to schedule their own curbside pickup appointments in their
+OPAC account, as well as inform the library when they have arrived and are
+waiting for their materials.  
+
+This is an extension of the existing holds functionality in Evergreen.  A hold
+must be placed for an item to be eligible for curbside pickup.  After an item
+has been captured for a hold and is available for pickup from the holds shelf,
+a curbside pickup appointment can be scheduled to allow the materials to be
+obtained in a contact free transaction.
+
+It can accommodate several different workflows depending on how the library
+decides to implement curbside pickup.  It can help library staff track and
+checkout batches of items to be picked up curbside and help facilitate
+communication between library staff and patrons.  It does not prescribe a
+specific workflow for curbside pickup.
+
+It can be used alongside regular (in the library) hold pickup.  Curbside pickup
+can be an option offered patrons in addition to regular pickup or it can
+be the primary pickup option depending on tghe library’s current service plan.
+
+It assumes the library will have a staff member assigned to managing curbside
+pickup throughout the day.
+
+Library Settings
+++++++++++++++++
+This feature adds the following library settings.
+
+ * `circ.curbside`: whether to enable curbside appointments for
+   picking up available hold requests. This default to off.
+    
+ * `circ.curbside.granularity`: interval between appointment slots. This
+   defaults to 15 minutes.
+ 
+ * `circ.curbside.max_concurrent`: how many appointments to permit per
+   time slot.  This defaults to 10.
+
+ * `circ.curbside.disable_patron_input`: if turned on, display scheduled
+    and pending appointments in My Account in the public catalog but
+    do not give the patron the ability to change them from My Account.
+    This defaults to false, i.e., allowing patrons to modify appointments
+    from My Account.
+
+Notifications And Action Triggers
++++++++++++++++++++++++++++++++++
+There are several new patron notice options related to curbside pickup. 
+
+When a patron’s holds are marked as ready for pickup in Evergreen, an email or
+text/SMS notification can be sent to let them know that curbside pickup is an
+option at their library.  This notice can be used to promote this service and
+the default message will prompt patrons to log in to their OPAC account to
+schedule an appointment or call the library to schedule an appointment.
+notice message is customizable.  The Trigger Event Definitions for this notice
+are called:
+
+ * Curbside offer Email notification, triggered by CurbsideSlot reactor on a
+   definition attached to the hold available hook
+ * Curbside offer SMS notification, triggered by CurbsideSlot reactor on a
+   definition attached to the hold available hook
+
+If a patron has scheduled a curbside pickup appointment, an email or text/SMS
+notification can be sent to confirm the appointment.  It will also prompt them
+to log into their account or call the library when they have arrived for their
+pickup appointment.  The Trigger Event Definitions for this notice are called:
+
+ * Curbside confirmation Email notification
+ * Curbside confirmation SMS notification
+
+Patrons can receive an email with a list of the items they checked out.  To
+receive this notice patrons must have an email address associated with their
+account and the option for “Email checkout receipts by default?” must be
+selected in their account.  This is an existing notice in Evergreen that ties
+in to the curbside pickup workflow.
+
+There is another action trigger called “Trigger curbside offer events and
+create a placeholder for the patron, where applicable”.  This action trigger
+does not send a notice to patrons or staff.  It is a silent action behind the
+scenes that initiates the curbside offer email or SMS notification described
+above.  
+
+Upgrade Notes
++++++++++++++
+This feature adds a new OpenSRF service, `open-ils.curbside`, which must be
+enabled and registered with the public router for the feature to function.
+
+This feature adds no new staff permissions.
