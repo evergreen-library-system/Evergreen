@@ -1,5 +1,5 @@
 
-{ # The driver package itself just needs a db_Main method (or db_Slaves if
+{ # The driver package itself just needs a db_Main method (or db_standbys if
   #Class::DBI::Replication is in use) for Class::DBI to call.
   #
   # Any other fixups can go in here too... Also, the drivers should subclass the
@@ -34,12 +34,12 @@
     __PACKAGE__->set_sql( copy_start => 'COPY %s (%s) FROM STDIN;' );
     __PACKAGE__->set_sql( copy_end => '\.' );
 
-    my $master_db;
-    my @slave_dbs;
+    my $primary_db;
+    my @standby_dbs;
     my $_db_params;
 
     sub db_Handles {
-        return ($master_db, @slave_dbs);
+        return ($primary_db, @standby_dbs);
     }
 
     sub child_init {
@@ -64,50 +64,50 @@
                 ChopBlanks => 1,
         );
 
-        my $master = shift @$_db_params;
-        $$master{port} ||= '5432';
-        $$master{host} ||= 'localhost';
-        $$master{db} ||= 'openils';
+        my $primary = shift @$_db_params;
+        $$primary{port} ||= '5432';
+        $$primary{host} ||= 'localhost';
+        $$primary{db} ||= 'openils';
 
-        $log->debug("Attempting to connect to $$master{db} at $$master{host}", INFO);
+        $log->debug("Attempting to connect to $$primary{db} at $$primary{host}", INFO);
 
         try {
-            $master_db = DBI->connect(
+            $primary_db = DBI->connect(
                 "dbi:Pg:".
-                    "host=$$master{host};".
-                    "port=$$master{port};".
-                    "dbname=$$master{db}".
-                    ($$master{application_name} ? ";application_name='$$master{application_name}'": ""),
-                $$master{user},
-                $$master{pw},
+                    "host=$$primary{host};".
+                    "port=$$primary{port};".
+                    "dbname=$$primary{db}".
+                    ($$primary{application_name} ? ";application_name='$$primary{application_name}'": ""),
+                $$primary{user},
+                $$primary{pw},
                 \%attrs)
             || do { sleep(1);
                 DBI->connect(
                     "dbi:Pg:".
-                        "host=$$master{host};".
-                        "port=$$master{port};".
-                        "dbname=$$master{db}".
-                        ($$master{application_name} ? ";application_name='$$master{application_name}'": ""),
-                    $$master{user},
-                    $$master{pw},
+                        "host=$$primary{host};".
+                        "port=$$primary{port};".
+                        "dbname=$$primary{db}".
+                        ($$primary{application_name} ? ";application_name='$$primary{application_name}'": ""),
+                    $$primary{user},
+                    $$primary{pw},
                     \%attrs) }
             || throw OpenSRF::EX::ERROR
-                ("Couldn't connect to $$master{db}".
-                 " on $$master{host}::$$master{port}".
-                 " as $$master{user}!!");
+                ("Couldn't connect to $$primary{db}".
+                 " on $$primary{host}::$$primary{port}".
+                 " as $$primary{user}!!");
         } catch Error with {
             my $e = shift;
             $log->debug("Error connecting to database:\n\t$e\n\t$DBI::errstr", ERROR);
             throw $e;
         };
 
-        $log->debug("Connected to MASTER db $$master{db} at $$master{host}", INFO);
+        $log->debug("Connected to primary db $$primary{db} at $$primary{host}", INFO);
         
-        $master_db->do("SET NAMES '$$master{client_encoding}';") if ($$master{client_encoding});
+        $primary_db->do("SET NAMES '$$primary{client_encoding}';") if ($$primary{client_encoding});
 
         for my $db (@$_db_params) {
             try {
-                push @slave_dbs, DBI->connect("dbi:Pg:host=$$db{host};port=$$db{port};dbname=$$db{db}". ($$db{application_name} ? ";application_name='$$db{application_name}'" : ""),$$db{user},$$db{pw}, \%attrs)
+                push @standby_dbs, DBI->connect("dbi:Pg:host=$$db{host};port=$$db{port};dbname=$$db{db}". ($$db{application_name} ? ";application_name='$$db{application_name}'" : ""),$$db{user},$$db{pw}, \%attrs)
                     || do { sleep(1); DBI->connect("dbi:Pg:host=$$db{host};port=$$db{port};dbname=$$db{db}". ($$db{application_name} ? ";application_name='$$db{application_name}'" : ""),$$db{user},$$db{pw}, \%attrs) }
                     || throw OpenSRF::EX::ERROR
                         ("Couldn't connect to $$db{db}".
@@ -119,9 +119,9 @@
                 throw $e;
             };
 
-            $slave_dbs[-1]->do("SET NAMES '$$db{client_encoding}';") if ($$master{client_encoding});
+            $standby_dbs[-1]->do("SET NAMES '$$db{client_encoding}';") if ($$primary{client_encoding});
 
-            $log->debug("Connected to MASTER db '$$master{db} at $$master{host}", INFO);
+            $log->debug("Connected to primary db '$$primary{db} at $$primary{host}", INFO);
         }
 
         $log->debug("All is well on the western front", INTERNAL);
@@ -129,9 +129,9 @@
 
     sub db_Main {
         my $self = shift;
-        return $master_db if ($self->current_xact_session || $OpenILS::Application::Storage::WRITE);
-        return $master_db unless (@slave_dbs);
-        return ($master_db, @slave_dbs)[rand(scalar(@slave_dbs))];
+        return $primary_db if ($self->current_xact_session || $OpenILS::Application::Storage::WRITE);
+        return $primary_db unless (@standby_dbs);
+        return ($primary_db, @standby_dbs)[rand(scalar(@standby_dbs))];
     }
 
     sub quote {
@@ -143,7 +143,7 @@
 #       my $self = shift;
 #       return unless ($self->value);
 #       $self->index_vector(
-#           $self->db_Slaves->selectrow_array(
+#           $self->db_standbys->selectrow_array(
 #               "SELECT to_tsvector('default',?);",
 #               {},
 #               $self->value
