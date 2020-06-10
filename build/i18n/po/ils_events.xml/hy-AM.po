@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2018-12-14 21:52-0400\n"
-"PO-Revision-Date: 2017-09-06 11:45+0000\n"
+"POT-Creation-Date: 2019-08-22 13:22-0400\n"
+"PO-Revision-Date: 2019-10-25 20:10+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-12-16 05:35+0000\n"
-"X-Generator: Launchpad (build 18837)\n"
+"X-Launchpad-Export-Date: 2019-10-30 06:19+0000\n"
+"X-Generator: Launchpad (build 469f241f4e73cc0bdffa4e30654052a2af068e06)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -106,6 +106,10 @@ msgstr "Հարցվող action_open_circ_count_by_circ_mod չի գտնված"
 msgid "The requested actor_card was not found"
 msgstr "Հարցվող actor_card չի գտնված"
 
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:996
+msgid "The lineitem detail has no owning_lib"
+msgstr "Տողի նյութի մանրամասը չունի owning_lib"
+
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:475
 msgid "The requested metabib_subject_field_entry was not found"
 msgstr "Հարցվող metabib_subject_field_entry չի գտնված"
@@ -199,6 +203,10 @@ msgstr "Առաջարկվող config_billing_type չի գտնված"
 #: 1851.ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND:636
 msgid "The requested acq.fund_encumbrance_total was not found"
 msgstr "Պահանջվող acq.fund_encumbrance_total չի գտնված"
+
+#: 8002.OFFLINE_FILE_ERROR:948
+msgid "An offline file or directory could not be created or accessed"
+msgstr "Օֆլայն ֆայլը կամ գրադարանը հնարավոր չէ ստեղծել կամ հասանելի դարձնել"
 
 #: 1529.ACTOR_WORKSTATION_NOT_FOUND:246
 msgid "The requested actor_workstation was not found"
@@ -318,10 +326,6 @@ msgstr "Հարցվող money_collections_tracker չի գտնված"
 #: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:604
 msgid "An authority record already exists with the requested ARN"
 msgstr "Հեղինակավոր գրառումը արդեն գոյություն ունի պահանջվող ARN-ով"
-
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1019
-msgid "The caption/pattern still has dependent issuances"
-msgstr "Ձևը դեռ ունի կախված տրումներ"
 
 #: 5000.PERM_FAILURE:822
 msgid "Permission Denied"
@@ -545,10 +549,6 @@ msgstr "Հարցվող money_cash_payment չի գնված"
 #: 1221.ORG_CANNOT_HAVE_VOLS:120
 msgid "The selected location cannot have volumes attached"
 msgstr "Ընտրված տեղաբաշխումը չի կարող ունենալ կցված հատորներ"
-
-#: 8002.OFFLINE_FILE_ERROR:948
-msgid "An offline file or directory could not be created or accessed"
-msgstr "Օֆլայն ֆայլը կամ գրադարանը հնարավոր չէ ստեղծել կամ հասանելի դարձնել"
 
 #: 1704.TCN_EXISTS:728
 msgid "A record already exists with the requested TCN value"
@@ -1036,6 +1036,14 @@ msgstr "Օգտվողը փորձ է արել գրել գաղտնաբառ թույ
 msgid "A report with the given name and folder already exists"
 msgstr "Տրված անունով և թղթապանակով հաշվետվությունը արդեն գոյություն ունի"
 
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1036
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+msgstr ""
+"Պարբերականի ձևանմուշի կոդը կարգաբերվել է որ չկարողանա նմանեցել MFHD "
+"ստանդարտները 853-855 դաշտերի համար։"
+
 #: 1705.VOLUME_LABEL_EXISTS:731
 msgid "A volume with the same label, title and owning library exists"
 msgstr "Նույն պիտակով, վերնագրովշ և վայրով հտոր արդեն կա"
@@ -1109,6 +1117,10 @@ msgstr "Հարցվող container_biblio_record_entry_bucket_item չի գտնվա
 #: 1000.LOGIN_FAILED:28
 msgid "User login failed"
 msgstr "Օգտվողի գրանցումը ձախողվեգ"
+
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1019
+msgid "The caption/pattern still has dependent issuances"
+msgstr "Ձևը դեռ ունի կախված տրումներ"
 
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:684
 msgid "The requested acq.currency_type was not found"
@@ -1292,10 +1304,6 @@ msgstr "Պահանջվում է նյութի վարձակալության վճա
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "Հարցվող container_call_number_bucket_item չի գտնված"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:996
-msgid "The lineitem detail has no owning_lib"
-msgstr "Տողի նյութի մանրամասը չունի owning_lib"
-
 #: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1023
 msgid ""
 "Units cannot be created for the given item because its associated "
@@ -1344,45 +1352,6 @@ msgstr ""
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "Հարցվող action_non_cataloged_circulation չի գտնված"
 
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1036
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
-msgstr ""
-"Պարբերականի ձևանմուշի կոդը կարգաբերվել է որ չկարողանա նմանեցել MFHD "
-"ստանդարտները 853-855 դաշտերի համար։"
-
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
 msgid "The requested money_user_summary was not found"
 msgstr "Հարցվող money_user_summary չի գտնված"
-
-#~ msgid "This requested item is currently on the holds shelf"
-#~ msgstr "Պահանջվող նյութը գտնվում է պահումների ցուցակում"
-
-#~ msgid "Copy has is marked as lost"
-#~ msgstr "Օրինակը նշված է որպես կորած"
-
-#~ msgid "The selecte bill has already been voided"
-#~ msgstr "Ընտրված հաշիվը արդեն հեռացվել է"
-
-#~ msgid ""
-#~ "The transit on this item may not be aborted due to the state the item is in"
-#~ msgstr "Այս նյութի համար տրանզիտը չի կարող վիժեցվել, ելնելով նյութի վիճակից"
-
-#~ msgid "Copy has is marked as missing"
-#~ msgstr "Օրինակը նշված է որպես բացակա"
-
-#~ msgid "The requested acq.po_lineitem was not found"
-#~ msgstr "Պահանջվող acq.po_lineitem չի գտնված"
-
-#~ msgid ""
-#~ "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
-#~ "successfuly, but the patron's payment could not be recorded within "
-#~ "Evergreen.  Please seek assistance."
-#~ msgstr ""
-#~ "*ԱՀԱՎՈՐ* պրոբլեմ է համդիպել, կրեդիտ քարտի տրանզակցիան հաջող է կատարվել, բայց "
-#~ "ընթերցողի վճարումը հնարավոր չէ գրանցել Էվեռգռինի ներսում: Դիմիր օգնության"
-
-#~ msgid "This item is currently on the holds shelf for another patron"
-#~ msgstr ""
-#~ "Այս նյութը հիմա գտնվում է պահումների դարակում մեկ այլ ընթերցողի համար։"

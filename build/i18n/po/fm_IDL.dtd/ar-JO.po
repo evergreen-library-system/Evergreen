@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2019-02-28 16:11-0400\n"
-"PO-Revision-Date: 2017-11-05 06:53+0000\n"
+"POT-Creation-Date: 2019-08-22 13:21-0400\n"
+"PO-Revision-Date: 2019-10-25 20:10+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-03-02 05:35+0000\n"
-"X-Generator: Launchpad (build 18888)\n"
+"X-Launchpad-Export-Date: 2019-10-30 06:17+0000\n"
+"X-Generator: Launchpad (build 469f241f4e73cc0bdffa4e30654052a2af068e06)\n"
 "Language: ar\n"
 
 #: class.stgu.label:10608
@@ -741,9 +741,9 @@ msgstr "وقت/تاريخ الالتقاط"
 msgid "Selection List ID"
 msgstr "مُعرف قائمة الاختيار"
 
-#: class.pupm.label:8003
-msgid "User Permission Map"
-msgstr "خريطة صلاحية المستخدم"
+#: field.siss.holding_link_id.label:5718
+msgid "Holding Link ID"
+msgstr "مُعرف رابط الحجز"
 
 #: class.auricnm.label:3152
 msgid "Electronic Access URI to Call Number Map"
@@ -806,9 +806,9 @@ msgstr "الحجز"
 msgid "Event ID"
 msgstr "مُعرف الحدث"
 
-#: field.mcrp.xact.label:7024 field.mb.xact.label:8321
-msgid "Transaction"
-msgstr "المُعاملة"
+#: class.cubin.label:7272
+msgid "User Bucket Item Note"
+msgstr "ملاحظة نُسخة سلة المستخدم"
 
 #: field.acqafsb.amount.label:9242
 msgid "Total Spent Balance"
@@ -891,6 +891,10 @@ msgstr "مُعرف الإعارة"
 #: field.cmcts.active.label:11934 field.cmfts.active.label:11959
 msgid "Active?"
 msgstr "هل تم تفعيله؟"
+
+#: class.qfpd.label:10921
+msgid "Function Parameter Definition"
+msgstr "تعريف بارمترات الوظيفة"
 
 #: class.ascecm.label:6020
 msgid "Statistical Category Entry Copy Map"
@@ -1617,9 +1621,9 @@ msgstr "تعداد 6"
 msgid "Record ID"
 msgstr "مُعرف التسجيلة"
 
-#: field.siss.holding_link_id.label:5718
-msgid "Holding Link ID"
-msgstr "مُعرف رابط الحجز"
+#: class.cam.label:3013
+msgid "Audience Map"
+msgstr "خريطة الجمهور"
 
 #: field.sdist.index_summary.label:5586 class.sisum.label:5972
 msgid "Index Issue Summary"
@@ -3493,9 +3497,9 @@ msgstr "الموقع"
 msgid "MARC21 Physical Characteristic Value Map"
 msgstr "خريطة قيّم الخاصيات المادية لـِ مارك21"
 
-#: class.cam.label:3013
-msgid "Audience Map"
-msgstr "خريطة الجمهور"
+#: field.rsr.topic_subject.label:10256
+msgid "Topic Subjects (normalized)"
+msgstr "الموضوعات المُعالجة (تسوية)"
 
 #: field.acqpro.prepayment_required.label:8631
 #: field.acqpo.prepayment_required.label:9471
@@ -4297,10 +4301,9 @@ msgstr "إنجاز الطاقم"
 msgid "Invoice Entries"
 msgstr "مداخل الفاتورة"
 
-#: field.mp.work_payment.label:8043 field.mbp.work_payment.label:8081
-#: field.mndp.work_payment.label:8115
-msgid "Work Payment Detail"
-msgstr "تفاصيل الدفع"
+#: class.pupm.label:8003
+msgid "User Permission Map"
+msgstr "خريطة صلاحية المستخدم"
 
 #: class.acqfsb.label:9289
 msgid "Fund Spent Balance"
@@ -4757,9 +4760,9 @@ msgstr "تعداد القيمة المنبوذة"
 msgid "Department"
 msgstr "القِسم"
 
-#: class.cubin.label:7272
-msgid "User Bucket Item Note"
-msgstr "ملاحظة نُسخة سلة المستخدم"
+#: field.mcrp.xact.label:7024 field.mb.xact.label:8321
+msgid "Transaction"
+msgstr "المُعاملة"
 
 #: field.acqliat.id.label:9713
 msgid "Alert Text ID"
@@ -5543,11 +5546,9 @@ msgstr "مُعرف الخاصية"
 msgid "Resource Attribute Value"
 msgstr "قيمة خاصية المصدر"
 
-#: field.ahr.target.label:6320 field.ahopl.target.label:6470
-#: field.alhr.target.label:6555 field.combahr.target.label:6644
-#: field.aahr.target.label:6703
-msgid "Target Object ID"
-msgstr "مُعرف الكائن المُستهدف"
+#: field.vie.code.label:488
+msgid "Error Code"
+msgstr "كود الخطأ"
 
 #: field.acqlisum.claim_count.label:12165
 #: field.acqlisumi.claim_count.label:12186
@@ -6734,10 +6735,6 @@ msgstr "المدخل الرئيسي"
 msgid "Call Number Bucket Item"
 msgstr "نُسخة سلة رمز الاستدعاء"
 
-#: field.rsr.topic_subject.label:10256
-msgid "Topic Subjects (normalized)"
-msgstr "الموضوعات المُعالجة (تسوية)"
-
 #: class.aahr.label:6677
 msgid "Aged Hold Request"
 msgstr "الحجز العمري المطلوب"
@@ -7072,9 +7069,11 @@ msgstr "الأعداد"
 msgid "Item Count"
 msgstr "تعداد النُسخ"
 
-#: field.vie.code.label:488
-msgid "Error Code"
-msgstr "كود الخطأ"
+#: field.ahr.target.label:6320 field.ahopl.target.label:6470
+#: field.alhr.target.label:6555 field.combahr.target.label:6644
+#: field.aahr.target.label:6703
+msgid "Target Object ID"
+msgstr "مُعرف الكائن المُستهدف"
 
 #: field.vst.state.label:825 field.atev.state.label:1486
 #: field.aua.state.label:4421 field.aal.state.label:4454
@@ -7486,9 +7485,9 @@ msgstr "كود الجمهور"
 msgid "Rule Name"
 msgstr "اسم الشرط/القاعدة"
 
-#: field.crad.composite.label:1004
-msgid "Composite attribute?"
-msgstr "خاصية مُركبة؟"
+#: field.atevdef.env.label:1451
+msgid "Environment Entries"
+msgstr "مُدخلات البيئة"
 
 #: field.rlcd.last_delete_date.label:11698
 msgid "Delete Date/Time"
@@ -8860,9 +8859,10 @@ msgstr "متن رسالة تبادل البيانات الرقمية"
 msgid "Assoc ID"
 msgstr "مُعرف الانضمام"
 
-#: class.qfpd.label:10921
-msgid "Function Parameter Definition"
-msgstr "تعريف بارمترات الوظيفة"
+#: field.mp.work_payment.label:8043 field.mbp.work_payment.label:8081
+#: field.mndp.work_payment.label:8115
+msgid "Work Payment Detail"
+msgstr "تفاصيل الدفع"
 
 #: field.acqpron.create_time.label:8663 field.acqpl.create_time.label:9415
 #: field.acqpo.create_time.label:9461 field.acqpon.create_time.label:9542
@@ -8922,9 +8922,9 @@ msgstr "إجمالي المخصصات"
 msgid "Questions"
 msgstr "أسئلة"
 
-#: field.atevdef.env.label:1451
-msgid "Environment Entries"
-msgstr "مُدخلات البيئة"
+#: field.crad.composite.label:1004
+msgid "Composite attribute?"
+msgstr "خاصية مُركبة؟"
 
 #: field.acqftr.dest_fund.label:8914
 msgid "Destination Fund"
@@ -9256,12 +9256,3 @@ msgstr "مُعرف الفاتورة"
 #: field.au.billable_transactions.label:3688
 msgid "Billable Transactions"
 msgstr "العمليات القابلة لـِ الفواتير"
-
-#~ msgid "Billing Timestamp"
-#~ msgstr "الطابع الزمني للفاتورة"
-
-#~ msgid "Keep"
-#~ msgstr "احتفظ"
-
-#~ msgid "Subject"
-#~ msgstr "الموضوع"
