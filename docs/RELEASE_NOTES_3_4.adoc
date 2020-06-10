@@ -3,6 +3,94 @@ Evergreen 3.4 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.4.3
+---------------
+
+This release contains bug fixes improving on Evergreen 3.4.2.
+
+Bug Fixes
+~~~~~~~~~
+
+* Check In - "Route To" Field Sometimes Incorrect (https://bugs.launchpad.net/evergreen/+bug/1775276[Bug 1775276])
+* Repair nested i18n Angular attribute (https://bugs.launchpad.net/evergreen/+bug/1862395[Bug 1862395])
+* Select element on login not accessible (https://bugs.launchpad.net/evergreen/+bug/1839359[Bug 1839359])
+* Org unit admin interface sorting (https://bugs.launchpad.net/evergreen/+bug/1860468[Bug 1860468])
+* Splash page needs headers (https://bugs.launchpad.net/evergreen/+bug/1839372[Bug 1839372])
+* Use correct API method for updating existing MARC records. (https://bugs.launchpad.net/evergreen/+bug/1859191[Bug 1859191])
+* Callnumber Sorting by Sortkey in Transit & Copy Buckets (https://bugs.launchpad.net/evergreen/+bug/1654529[Bug 1654529])
+* Reset field transform after adding fields (https://bugs.launchpad.net/evergreen/+bug/1778521[Bug 1778521])
+* Login page tile is confusing to screen readers (https://bugs.launchpad.net/evergreen/+bug/1839361[Bug 1839361])
+* Wrong row details shown on billing grid (https://bugs.launchpad.net/evergreen/+bug/1792995[Bug 1792995])
+* Mark items as damaged - changing fee usability issues (https://bugs.launchpad.net/evergreen/+bug/1849370[Bug 1849370])
+* Item Status checkout date and checkout workstation for renewed items (https://bugs.launchpad.net/evergreen/+bug/1787415[Bug 1787415])
+* Staff catalog add mono part repair (https://bugs.launchpad.net/evergreen/+bug/1860275[Bug 1860275])
+* Ang cat prevent keyword starts/exact searches (https://bugs.launchpad.net/evergreen/+bug/1819236[Bug 1819236])
+* Marc flat editor repair slashes (in AngJS and Angular) (https://bugs.launchpad.net/evergreen/+bug/1841823[Bug 1841823])
+* Add Vols and Copies honors owning lib (https://bugs.launchpad.net/evergreen/+bug/1854197[Bug 1854197])
+* Avoid repeating qtype prefix in query (https://bugs.launchpad.net/evergreen/+bug/1839684[Bug 1839684])
+* Link ADMIN_CAROUSEL permission to appropriate OU context (https://bugs.launchpad.net/evergreen/+bug/1863386[Bug 1863386])
+* Add barcode to patron neg balance grid (https://bugs.launchpad.net/evergreen/+bug/1668352[Bug 1668352])
+* Copy delete override repairs, perm failed handler (https://bugs.launchpad.net/evergreen/+bug/1860460[Bug 1860460])
+* Change Pull list page title from Holds Shelf title; Make page title consistent with heading (https://bugs.launchpad.net/evergreen/+bug/1774285[Bug 1774285])
+* Event Def Environment Fleshing Might Have Issue (https://bugs.launchpad.net/evergreen/+bug/850160[Bug 850160])
+* Fix sample survey data. (https://bugs.launchpad.net/evergreen/+bug/1863929[Bug 1863929])
+* Visited link color (https://bugs.launchpad.net/evergreen/+bug/1789491[Bug 1789491])
+* 3.4 Angular version mismatch repairs (https://bugs.launchpad.net/evergreen/+bug/1860460[Bug 1860460])
+* Fixes to consistency in two files, creating uniform capitalization and use of ellipses (https://bugs.launchpad.net/evergreen/+bug/1865951[Bug 1865951])
+* Adding alt attributes to Open-ILS\src\templates\kpac\parts\paginate.tt2 (also handling I18N) (https://bugs.launchpad.net/evergreen/+bug/1834251[Bug 1834251])
+* On patron edit screen set the email and phone notification to true (https://bugs.launchpad.net/evergreen/+bug/1774268[Bug 1774268])
+when patron doesn't have any preferences. This mimics the behavior in the xul client.
+* Item Status Precat Information (https://bugs.launchpad.net/evergreen/+bug/1801137[Bug 1801137])
+* Change expire list to match what the hold expire function (https://bugs.launchpad.net/evergreen/+bug/1819540[Bug 1819540])
+* Fix floating point issue preventing transactions from closing (https://bugs.launchpad.net/evergreen/+bug/1781274[Bug 1781274])
+* Additional aged_payment fields; Aged money control flags; Money aging srfsh script function repair; Disable inititial aged money migration (https://bugs.launchpad.net/evergreen/+bug/1858448[Bug 1858448])
+* Fix Bad End Tags (https://bugs.launchpad.net/evergreen/+bug/1873286[Bug 1873286])
+* Angular staff cat browse links (https://bugs.launchpad.net/evergreen/+bug/1869906[Bug 1869906])
+* Coerce Values to String in egGridValueFilter (https://bugs.launchpad.net/evergreen/+bug/1813088[Bug 1813088])
+* Remove right justification in grid view; Sort Libraries without Holdings In Holdings View (https://bugs.launchpad.net/evergreen/+bug/1787636[Bug 1787636])
+* Add scoped retrieve perms for booking resource types and resources (https://bugs.launchpad.net/evergreen/+bug/1873048[Bug 1873048])
+* Org proximity admin disable org filter (https://bugs.launchpad.net/evergreen/+bug/1837656[Bug 1837656])
+* Fix rendering of monograph parts (https://bugs.launchpad.net/evergreen/+bug/1880035[Bug 1880035])
+* Links to secondary admin pages (fm-editor defaultNewRecord backport;
+config_field attribute in IDL; Admin grids support config_field links; Admin
+grid filter display, default fields, IDL repairs; https://bugs.launchpad.net/evergreen/+bug/1847800[Bug 1847800], https://bugs.launchpad.net/evergreen/+bug/1834687[Bug 1834687], https://bugs.launchpad.net/evergreen/+bug/1847781[Bug 1847781], https://bugs.launchpad.net/evergreen/+bug/1847810[Bug 1847810])
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.4.3 point release of Evergreen:
+
+* Bill Erickson
+* Chris Sharp
+* Dan Briem
+* Daniel Pearl
+* Dawn Dale
+* Elaine Hardy
+* Galen Charlton
+* Gina Monti
+* Jane Sandberg
+* Jason Boyer
+* Jason Etheridge
+* Jason Stephenson
+* Jeff Davis
+* Jennifer Pringle
+* Jennifer Weston
+* Jessica Woolford
+* John Amundson
+* Josh Stompro
+* Kyle Huckins
+* Llewellyn Marshall
+* Lynn Floyd
+* Michele Morgan
+* Mike Risher
+* Mike Rylander
+* Ruth Frasur
+* Sam Link
+* Steven Callender
+* Terran McCanna
+* Tiffany Little
+
+
 Evergreen 3.4.2
 ----------------
 
