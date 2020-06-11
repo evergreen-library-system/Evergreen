@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2019-09-10 01:03+0000\n"
-"PO-Revision-Date: 2019-02-13 00:46+0000\n"
+"POT-Creation-Date: 2019-10-29 14:19+0000\n"
+"PO-Revision-Date: 2019-10-29 14:10+0000\n"
 "Last-Translator: Jennifer Pringle <Unknown>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-09-11 05:53+0000\n"
-"X-Generator: Launchpad (build 19044)\n"
+"X-Launchpad-Export-Date: 2020-06-11 06:40+0000\n"
+"X-Generator: Launchpad (build b190cebbf563f89e480a8b57f641753c8196bda0)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
 msgid ""
@@ -94,9 +94,9 @@ msgstr ""
 msgid "%1 %2"
 msgstr "%1 %2"
 
+#. (title, part.label)
 #. (copy.label, copy_org.name)
 #. (title, hold.hold.part.label)
-#. (title, part.label)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:188 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:383 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:75 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:45
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
@@ -811,7 +811,7 @@ msgstr "Biographical or Historical Data: "
 msgid "Blurb writer"
 msgstr "Blurb writer"
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:841 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:118
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:118
 msgid "Book cover"
 msgstr ""
 
@@ -892,7 +892,7 @@ msgstr ""
 msgid "Browse the Catalog"
 msgstr "Browse the Catalogue"
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:103 ../../Open-ILS/src/templates/opac/myopac/circ_history/export.tt2:11 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:79
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:103 ../../Open-ILS/src/templates/opac/myopac/circ_history/export.tt2:11
 msgid "Call Number"
 msgstr "Call Number"
 
@@ -908,7 +908,7 @@ msgstr ""
 msgid "Call Number Browse"
 msgstr "Call Number Browse"
 
-#: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3193 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3202 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:370
+#: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3193 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3202 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:370
 msgid "Call number"
 msgstr "Call number"
 
@@ -976,7 +976,7 @@ msgstr "Catalogue Home"
 msgid "Catalog Search"
 msgstr "Catalogue Search"
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:176 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:159 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:195
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:176 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:151 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:195
 msgid "Catalog record"
 msgstr "Catalogue record"
 
@@ -2338,7 +2338,7 @@ msgstr "Item Barcode"
 msgid "Item Form"
 msgstr "Item Form"
 
-#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:149
+#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:141
 msgid "Item Selected"
 msgstr ""
 
@@ -2350,7 +2350,7 @@ msgstr "Item Type"
 msgid "Item details and Actions"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:204
+#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:188
 msgid "Item is needed for a hold"
 msgstr ""
 
@@ -2942,7 +2942,7 @@ msgid "Next"
 msgstr "Next"
 
 #. (ctx.copy_limit)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:287
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:278
 msgid "Next %1"
 msgstr "Next %1"
 
@@ -3516,7 +3516,7 @@ msgid "Previous"
 msgstr "Previous"
 
 #. (ctx.copy_offset - new_offset)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:281
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:272
 msgid "Previous %1"
 msgstr "Previous %1"
 
@@ -4357,11 +4357,11 @@ msgstr ""
 msgid "Show copies at %1"
 msgstr "Show copies at %1"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:304
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:295
 msgid "Show fewer copies"
 msgstr "Show fewer copies"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:303
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:294
 msgid "Show fewer copies icon"
 msgstr ""
 
@@ -4369,11 +4369,11 @@ msgstr ""
 msgid "Show items in list"
 msgstr "Show items in list"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:299
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:290
 msgid "Show more copies"
 msgstr "Show more copies"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:298
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:289
 msgid "Show more copies icon"
 msgstr ""
 
@@ -4678,6 +4678,10 @@ msgstr "Terms Governing Use and Reproduction Note: "
 #: ../../Open-ILS/src/templates/opac/sms_cn.tt2:27
 msgid "Text call number"
 msgstr "Text call number"
+
+#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:21
+msgid "That is not a valid date in the future."
+msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/login/form.tt2:3
 msgid ""
@@ -5374,112 +5378,3 @@ msgstr ""
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:156
 msgid "volume"
 msgstr ""
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr "Are you sure you are ready to charge %1 to your credit card?"
-
-#~ msgid "April"
-#~ msgstr "April"
-
-#~ msgid "August"
-#~ msgstr "August"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Balance Owed"
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr "Click %1Cancel%2 to go back and (un)select other fines."
-
-#~ msgid "December"
-#~ msgstr "December"
-
-#~ msgid "Fines"
-#~ msgstr "Fines"
-
-#~ msgid "February"
-#~ msgstr "February"
-
-#~ msgid "Fines:"
-#~ msgstr "Fines:"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "Go back to try again or to cancel this payment attempt."
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "Initial Amount Owed"
-
-#~ msgid "January"
-#~ msgstr "January"
-
-#~ msgid "July"
-#~ msgstr "July"
-
-#~ msgid "June"
-#~ msgstr "June"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "Last Payment Time"
-
-#~ msgid "May"
-#~ msgstr "May"
-
-#~ msgid "March"
-#~ msgstr "March"
-
-#~ msgid "October"
-#~ msgstr "October"
-
-#~ msgid "November"
-#~ msgstr "November"
-
-#~ msgid "Other Fees"
-#~ msgstr "Other Fees"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "Pay selected fines"
-
-#~ msgid "Pay Fines"
-#~ msgstr "Pay Fines"
-
-#~ msgid "Remove from my list"
-#~ msgstr "Remove from my list"
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "Selected fines you are paying for:"
-
-#~ msgid "September"
-#~ msgstr "September"
-
-#~ msgid "Submit Payment"
-#~ msgstr "Submit Payment"
-
-#~ msgid "Temporary List"
-#~ msgstr "Temporary List"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "Total amount to pay:"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "Transaction Start Time"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "Total Amount Paid"
-
-#~ msgid "View My List"
-#~ msgstr "View My List"
-
-#~ msgid "You have not created a list yet."
-#~ msgstr "You have not created a list yet."
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-
-#~ msgid "Temporary List Warning"
-#~ msgstr "Temporary List Warning"
-
-#~ msgid "You are adding to a temporary list."
-#~ msgstr "You are adding to a temporary list."

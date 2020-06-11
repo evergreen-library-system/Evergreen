@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2019-09-10 01:03+0000\n"
-"PO-Revision-Date: 2019-10-21 19:31+0000\n"
+"POT-Creation-Date: 2019-10-29 14:19+0000\n"
+"PO-Revision-Date: 2019-10-29 14:10+0000\n"
 "Last-Translator: Jennifer Pringle <Unknown>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-10-22 04:37+0000\n"
-"X-Generator: Launchpad (build 186023fa645d8be19d403a76064f0643f510db2f)\n"
+"X-Launchpad-Export-Date: 2020-06-11 06:39+0000\n"
+"X-Generator: Launchpad (build b190cebbf563f89e480a8b57f641753c8196bda0)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
 msgid ""
@@ -98,9 +98,9 @@ msgstr "%1 "
 msgid "%1 %2"
 msgstr "%1 %2"
 
+#. (title, part.label)
 #. (copy.label, copy_org.name)
 #. (title, hold.hold.part.label)
-#. (title, part.label)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:188 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:383 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:75 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:45
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
@@ -302,7 +302,7 @@ msgstr "Note sur les mesures prises&nbsp;: "
 
 #: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3222 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3227 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:26 ../../Open-ILS/src/templates/opac/myopac/ebook_circs.tt2:37 ../../Open-ILS/src/templates/opac/myopac/ebook_holds.tt2:47 ../../Open-ILS/src/templates/opac/myopac/ebook_holds_ready.tt2:44 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:28
 msgid "Actions"
-msgstr "Options"
+msgstr "Actions"
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:64
 msgid "Actions for Items on Hold"
@@ -823,7 +823,7 @@ msgstr "Données biographiques ou historiques&nbsp;: "
 msgid "Blurb writer"
 msgstr "Écrivain blurb"
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:841 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:118
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:118
 msgid "Book cover"
 msgstr "Couverture du livre"
 
@@ -904,7 +904,7 @@ msgstr ""
 msgid "Browse the Catalog"
 msgstr "Parcourir le catalogue"
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:103 ../../Open-ILS/src/templates/opac/myopac/circ_history/export.tt2:11 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:79
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:103 ../../Open-ILS/src/templates/opac/myopac/circ_history/export.tt2:11
 msgid "Call Number"
 msgstr "Cote"
 
@@ -920,7 +920,7 @@ msgstr "Cote / Notes"
 msgid "Call Number Browse"
 msgstr "Exploration de cotes"
 
-#: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3193 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3202 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:370
+#: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3193 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3202 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:370
 msgid "Call number"
 msgstr "Cote"
 
@@ -988,7 +988,7 @@ msgstr "Accueil Catalogue"
 msgid "Catalog Search"
 msgstr "Chercher dans le catalogue"
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:176 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:159 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:195
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:176 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:151 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:195
 msgid "Catalog record"
 msgstr "Notice du catalogue"
 
@@ -1619,7 +1619,7 @@ msgstr "Donateur"
 
 #: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:12
 msgid "Download"
-msgstr "Téléchargement"
+msgstr "Télécharger"
 
 #: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:54 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:204
 msgid "Download CSV"
@@ -2370,7 +2370,7 @@ msgstr "Code à barres du document"
 msgid "Item Form"
 msgstr "Support matériel du document"
 
-#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:149
+#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:141
 msgid "Item Selected"
 msgstr "Article sélectionné"
 
@@ -2382,7 +2382,7 @@ msgstr "Type de document"
 msgid "Item details and Actions"
 msgstr "Détails sur l’article et options"
 
-#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:204
+#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:188
 msgid "Item is needed for a hold"
 msgstr "L’article est réservé"
 
@@ -2984,7 +2984,7 @@ msgid "Next"
 msgstr "Suivant"
 
 #. (ctx.copy_limit)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:287
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:278
 msgid "Next %1"
 msgstr "Suivant %1"
 
@@ -3578,7 +3578,7 @@ msgid "Previous"
 msgstr "Précédent"
 
 #. (ctx.copy_offset - new_offset)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:281
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:272
 msgid "Previous %1"
 msgstr "Précédent %1"
 
@@ -4426,11 +4426,11 @@ msgstr ""
 msgid "Show copies at %1"
 msgstr "Afficher les exemplaires à %1"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:304
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:295
 msgid "Show fewer copies"
 msgstr "Afficher moins d’exemplaires"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:303
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:294
 msgid "Show fewer copies icon"
 msgstr "Icône « moins d’exemplaires »"
 
@@ -4438,11 +4438,11 @@ msgstr "Icône « moins d’exemplaires »"
 msgid "Show items in list"
 msgstr "Afficher les documents dans la liste"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:299
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:290
 msgid "Show more copies"
 msgstr "Afficher plus d’exemplaires"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:298
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:289
 msgid "Show more copies icon"
 msgstr "Icône « plus d’exemplaires »"
 
@@ -4748,6 +4748,10 @@ msgstr "Note sur les modalités d'utilisation et de reproduction&nbsp;: "
 #: ../../Open-ILS/src/templates/opac/sms_cn.tt2:27
 msgid "Text call number"
 msgstr "Envoyer la cote par message texte"
+
+#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:21
+msgid "That is not a valid date in the future."
+msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/login/form.tt2:3
 msgid ""
@@ -5480,121 +5484,3 @@ msgstr "afficher"
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:156
 msgid "volume"
 msgstr "volume"
-
-#~ msgid "April"
-#~ msgstr "avril"
-
-#~ msgid "August"
-#~ msgstr "août"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Solde dû"
-
-#~ msgid "December"
-#~ msgstr "décembre"
-
-#~ msgid "Fines"
-#~ msgstr "Amendes"
-
-#~ msgid "Fines:"
-#~ msgstr "Amendes :"
-
-#~ msgid "February"
-#~ msgstr "février"
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "Montant initial dû"
-
-#~ msgid "January"
-#~ msgstr "janvier"
-
-#~ msgid "July"
-#~ msgstr "juillet"
-
-#~ msgid "June"
-#~ msgstr "juin"
-
-#~ msgid "May"
-#~ msgstr "mai"
-
-#~ msgid "March"
-#~ msgstr "mars"
-
-#~ msgid "November"
-#~ msgstr "novembre"
-
-#~ msgid "October"
-#~ msgstr "octobre"
-
-#~ msgid "Other Fees"
-#~ msgstr "Autres frais"
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr "Voulez-vous vraiment débiter %1 de votre carte de crédit?"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "Retour pour réessayer ou annuler le paiement"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "Date du dernier paiement"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "Payer les amendes sélectionnées"
-
-#~ msgid "Pay Fines"
-#~ msgstr "Payer les amendes"
-
-#~ msgid "Remove from my list"
-#~ msgstr "Supprimer de ma liste"
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "Sélectionner les amendes à payer :"
-
-#~ msgid "September"
-#~ msgstr "Septembre"
-
-#~ msgid "Submit Payment"
-#~ msgstr "Soumettre un paiement"
-
-#~ msgid "Temporary List"
-#~ msgstr "Liste temporaire :"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "Montant total à payer :"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "Début de la transaction"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "Montant total payé"
-
-#~ msgid "View My List"
-#~ msgstr "Afficher ma liste"
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "Vous n’avez pas d’amendes à payer ou vous avez sélectionner des amendes dont "
-#~ "le solde n’est pas positif. Nous ne pouvons traiter des montants non "
-#~ "positifs."
-
-#~ msgid "You have not created a list yet."
-#~ msgstr "Aucune liste créée."
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr ""
-#~ "Cliquez sur %1Annuler%2 pour retourner en arrière et modifier la sélection "
-#~ "d’amendes."
-
-#~ msgid "Add %1 to my list"
-#~ msgstr "Ajouter %1 à ma liste"
-
-#~ msgid "My Existing Lists"
-#~ msgstr "Mes listes existantes"
-
-#~ msgid "Results %1 - %2 of about %3"
-#~ msgstr "Resultats %1 à %2 de %3"
-
-#~ msgid "Remove %1 from my list"
-#~ msgstr "Supprimer %1 de ma liste"

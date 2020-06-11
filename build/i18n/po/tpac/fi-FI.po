@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-10 01:03+0000\n"
-"PO-Revision-Date: 2017-02-28 02:28+0000\n"
+"POT-Creation-Date: 2019-10-29 14:19+0000\n"
+"PO-Revision-Date: 2019-10-29 14:10+0000\n"
 "Last-Translator: Galen Charlton <gmc@equinoxinitiative.org>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-09-11 05:52+0000\n"
-"X-Generator: Launchpad (build 19044)\n"
+"X-Launchpad-Export-Date: 2020-06-11 06:39+0000\n"
+"X-Generator: Launchpad (build b190cebbf563f89e480a8b57f641753c8196bda0)\n"
 "Language: fi\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
@@ -87,9 +87,9 @@ msgstr ""
 msgid "%1 %2"
 msgstr "%1 %2"
 
+#. (title, part.label)
 #. (copy.label, copy_org.name)
 #. (title, hold.hold.part.label)
-#. (title, part.label)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:188 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:383 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:75 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:45
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
@@ -806,7 +806,7 @@ msgstr "Huomautus elämäkerrasta tai historiasta: "
 msgid "Blurb writer"
 msgstr "Takakansitekstin kirjoittaja"
 
-#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:841 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:118
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:118
 msgid "Book cover"
 msgstr ""
 
@@ -887,7 +887,7 @@ msgstr ""
 msgid "Browse the Catalog"
 msgstr "Selaa tietokantaa"
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:103 ../../Open-ILS/src/templates/opac/myopac/circ_history/export.tt2:11 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:79
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:103 ../../Open-ILS/src/templates/opac/myopac/circ_history/export.tt2:11
 msgid "Call Number"
 msgstr "Hyllypaikka"
 
@@ -903,7 +903,7 @@ msgstr "Hyllypaikka / Nidehuomautus"
 msgid "Call Number Browse"
 msgstr "Hyllypaikan selaus"
 
-#: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3193 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3202 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:370
+#: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3193 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3202 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:370
 msgid "Call number"
 msgstr "Hyllypaikka"
 
@@ -971,7 +971,7 @@ msgstr "Tietokannan aloitussivu"
 msgid "Catalog Search"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:176 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:159 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:195
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:176 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:151 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:195
 msgid "Catalog record"
 msgstr "Luettelointitietue"
 
@@ -2339,7 +2339,7 @@ msgstr "Nidetunnus"
 msgid "Item Form"
 msgstr "Niteen muoto"
 
-#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:149
+#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:141
 msgid "Item Selected"
 msgstr ""
 
@@ -2351,7 +2351,7 @@ msgstr "Nidetyyppi"
 msgid "Item details and Actions"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:204
+#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:188
 msgid "Item is needed for a hold"
 msgstr ""
 
@@ -2948,7 +2948,7 @@ msgid "Next"
 msgstr "Seuraava"
 
 #. (ctx.copy_limit)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:287
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:278
 msgid "Next %1"
 msgstr "Seuraava %1"
 
@@ -3526,7 +3526,7 @@ msgid "Previous"
 msgstr "Edellinen"
 
 #. (ctx.copy_offset - new_offset)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:281
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:272
 msgid "Previous %1"
 msgstr "Edellinen %1"
 
@@ -4367,11 +4367,11 @@ msgstr ""
 msgid "Show copies at %1"
 msgstr "Näytä niteet kohteessa %1"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:304
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:295
 msgid "Show fewer copies"
 msgstr "Näytä vähemmän niteitä"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:303
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:294
 msgid "Show fewer copies icon"
 msgstr ""
 
@@ -4379,11 +4379,11 @@ msgstr ""
 msgid "Show items in list"
 msgstr "Näytä listan sisältö"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:299
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:290
 msgid "Show more copies"
 msgstr "Näytä lisää niteitä"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:298
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:289
 msgid "Show more copies icon"
 msgstr ""
 
@@ -4688,6 +4688,10 @@ msgstr "Huomautus käytön ja kopioinnin ehdoista: "
 #: ../../Open-ILS/src/templates/opac/sms_cn.tt2:27
 msgid "Text call number"
 msgstr "Lähetä hyllypaikka tekstiviestinä"
+
+#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:21
+msgid "That is not a valid date in the future."
+msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/login/form.tt2:3
 msgid ""
@@ -5389,117 +5393,3 @@ msgstr ""
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:156
 msgid "volume"
 msgstr ""
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr "Haluatko varmasti veloittaa %1 luottokortiltasi?"
-
-#~ msgid "August"
-#~ msgstr "Elokuu"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Maksuja maksamatta"
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr ""
-#~ "Siirry takaisin ja valitse tai poista valinnat muista maksuista "
-#~ "napsauttamalla %1Peruuta%2."
-
-#~ msgid "December"
-#~ msgstr "Joulukuu"
-
-#~ msgid "February"
-#~ msgstr "Helmikuu"
-
-#~ msgid "Fines:"
-#~ msgstr "Sakot:"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "Yritä uudelleen siirtymällä takaisin tai peruuta tämä maksuyritys."
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "Velan alkusumma"
-
-#~ msgid "January"
-#~ msgstr "Tammikuu"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "Viimeisin maksuaika"
-
-#~ msgid "March"
-#~ msgstr "Maaliskuu"
-
-#~ msgid "November"
-#~ msgstr "Marraskuu"
-
-#~ msgid "October"
-#~ msgstr "Lokakuu"
-
-#~ msgid "Other Fees"
-#~ msgstr "Muut veloitukset"
-
-#~ msgid "Pay Fines"
-#~ msgstr "Maksa maksut"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "Maksa valitut maksut"
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "Valitut maksut, joita olet maksamassa:"
-
-#~ msgid "September"
-#~ msgstr "Syyskuu"
-
-#~ msgid "Submit Payment"
-#~ msgstr "Suorita maksu"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "Maksettu yhteensä"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "Maksettavaa yhteensä:"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "Maksutapahtuman aloitusaika"
-
-#~ msgid "You are adding to a temporary list."
-#~ msgstr "Olet lisäämässä väliaikaiseen luetteloon."
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "Sinulla ei ole maksuja maksettavana, tai olet valinnut maksut, joiden summa "
-#~ "on negatiivinen.  Emme voi käsitellä negatiivisia summia."
-
-#~ msgid "You have not created a list yet."
-#~ msgstr "Et ole vielä luonut luetteloa."
-
-#~ msgid "April"
-#~ msgstr "Huhti"
-
-#~ msgid "Fines"
-#~ msgstr "Maksut"
-
-#~ msgid "July"
-#~ msgstr "Heinä"
-
-#~ msgid "June"
-#~ msgstr "Kesä"
-
-#~ msgid "May"
-#~ msgstr "Touko"
-
-#~ msgid "My Existing Lists"
-#~ msgstr "Omat listat"
-
-#~ msgid "Remove from my list"
-#~ msgstr "Poista omasta listasta"
-
-#~ msgid "Temporary List"
-#~ msgstr "Väliaikainen lista"
-
-#~ msgid "Temporary List Warning"
-#~ msgstr "Väliaikaisen listan varoitus"
-
-#~ msgid "View My List"
-#~ msgstr "Omat listat"
