@@ -25,6 +25,93 @@ New Features for 3.5.0
 Administration
 ~~~~~~~~~~~~~~
 
+Do not cache the Angular application root
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Evergreen administrators should update existing apache configuration files
+so that the Angular index.html file is never cached by the client.  This
+can be done by changing the Angular setup section of the apache configuration
+that starts with:
+
+[source, conf]
+----
+<Directory "/openils/var/web/eg2/en-US">
+----
+
+or similar in the apache configuration. Add the following after the
+FallbackResource directive:
+
+[source, conf]
+----
+    <Files "index.html">
+      <IfModule mod_headers.c>
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+      </IfModule>
+    </Files>
+----
+
+Finally, ensure that the mod_headers apache module is enabled by running the
+following commands on all apache servers as the root user:
+
+[source, sh]
+----
+a2enmod headers
+/etc/init.d/apache2 restart
+----
+
+
+Repair of Self-closing HTML Tags
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The most recent release of JQuery requires valid closing tags for X/HTML elements.
+These were repaired within affected OPAC/Staff Client TT2 templates, but care should
+be taken in Action/Trigger templates to make sure closing tags are present where 
+appropriate.  The stock template for PO HTML was affected. 
+See https://bugs.launchpad.net/evergreen/+bug/1873286[LP#1873286] for details. 
+
+Aged Money Changes
+^^^^^^^^^^^^^^^^^^
+
+Two new global flag settings have been added to control if/when billings and
+payments are aged.  Both settings are disabled by default.
+
+* 'history.money.age_with_circs' 
+ ** Age billings and payments linked to circulations when the cirulcation 
+    is aged.
+* 'history.money.retention_age'
+  ** Age billings and payments based on the age of the finish date for
+     the linked transaction.
+  ** To age money based on this setting, there is a new srfsh script
+     at (by default) /openils/bin/age_money.srfsh.
+
+Aged Payment Additional Fields
+++++++++++++++++++++++++++++++
+
+The aged payment table now has accepting_usr, cash_drawer, and billing
+columns to improve reporting of aged money.
+
+Manual Data Migration of Aged Money
++++++++++++++++++++++++++++++++++++
+
+For users that wish to age money along with circulations (global flag 
+'history.money.age_with_circs' is set to true), it's necessary to manaully
+age money for circulations which have already been aged.  This can be
+done directly in the database with SQL:
+
+NOTE: This SQL can take a very long time to run on large databases, so
+it may be necessary to process aged circulations in batches instead
+of all at once.
+
+[source,sql]
+-------------------------------------------------------------------------
+SELECT money.age_billings_and_payments_for_xact(circ.id)
+FROM action.aged_circulation circ
+-- limit to aged circs with billings
+JOIN money.billing mb ON mb.xact = circ.id;
+-------------------------------------------------------------------------
+
+
 PostgreSQL 10 Support
 ^^^^^^^^^^^^^^^^^^^^^
 PostgreSQL 10 is now available for installation with Evergreen.  Please
@@ -86,6 +173,15 @@ button.
 
 Circulation
 ~~~~~~~~~~~
+
+New Hold Sort Order: Traditional with Holds-chase-home-lib-patrons
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This is a new entry under Administration -> Server Administration -> 
+Best-Hold Selection Sort Order in the staff client.  It prioritizes holds 
+such that a given item, based on its owning library, will prefer patrons with 
+a matching home library, no matter the pickup library.
+
 
 Angular Staff Catalog Holds Patron Search Support
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -149,9 +245,10 @@ OPAC
 
 Custom CSS in OPAC 
 ^^^^^^^^^^^^^^^^^^
-There is now a library setting called opac.patron.custom_css.  This can 
-be populated with CSS that will load in the OPAC after the stylesheets 
-and allow for custom CSS without editing server side templates.  
+There is now a library setting called opac.patron.custom_css. This can be
+populated with CSS that will load in the OPAC after the stylesheets and
+allow for custom CSS without editing server side templates. The permission
+UPDATE_ORG_UNIT_SETTING.opac.patron.custom_css manages access to it.
 
 
 

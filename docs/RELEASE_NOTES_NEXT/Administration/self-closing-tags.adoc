@@ -1,6 +1,0 @@
-Repair of Self-closing HTML Tags
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The most recent release of JQuery requires valid closing tags for X/HTML elements.
-These were repaired within affected OPAC/Staff Client TT2 templates, but care should
-be taken in Action/Trigger templates to make sure closing tags are present where 
-appropriate.  The stock template for PO HTML was affected. See https://bugs.launchpad.net/evergreen/+bug/1873286[LP#1873286] for details. 
