@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-06-22 06:09+0000\n"
+"POT-Creation-Date: 2020-03-05 03:33+0000\n"
 "PO-Revision-Date: 2016-11-27 12:24+0000\n"
 "Last-Translator: Denis Graipel <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-06-23 05:37+0000\n"
-"X-Generator: Launchpad (build 18416)\n"
+"X-Launchpad-Export-Date: 2020-03-06 05:56+0000\n"
+"X-Generator: Launchpad (build e0878392dc799b267dea80578fa65500a5d74155)\n"
 
 #: ../../Open-ILS/src/templates/url_verify/create_session.tt2:107
 msgid "Add"
@@ -68,7 +68,7 @@ msgstr ""
 msgid "Optionally select one or more to combine with 'Search' field above."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:30
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:31
 msgid "Print URLs"
 msgstr "URLs drucken"
 
@@ -122,7 +122,7 @@ msgstr ""
 msgid "Verification Attempts"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:37
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:38
 msgid "Verify Selected URLs"
 msgstr ""
 
