@@ -132,6 +132,10 @@ msgstr ""
 msgid "Kid's Catalog - %1"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/kpac/parts/paginate.tt2:20
+msgid "Last"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/kpac/getit.tt2:41
 msgid "Library Card Number without spaces:"
 msgstr ""
@@ -160,6 +164,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:1
 msgid "New Search"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/paginate.tt2:40
+msgid "Next"
 msgstr ""
 
 #. (ctx.copy_limit)
@@ -264,6 +272,10 @@ msgstr ""
 #. ("<a href=\"' _ mkurl(ctx.opac_root _ '/myopac/lists', {   }, 1) _ '\">", "</a>")
 #: ../../Open-ILS/src/templates/kpac/getit_results.tt2:18 ../../Open-ILS/src/templates/kpac/getit_results.tt2:25
 msgid "To manage your lists, go to %1My Lists%2"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/parts/paginate.tt2:46
+msgid "Top"
 msgstr ""
 
 #. ("<a href=\"' _ mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {   }, kill_params) _ '\">' _ title_html _ '</a>")
