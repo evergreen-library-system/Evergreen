@@ -1367,6 +1367,17 @@ div.result_table_utils_cont {
    text-align:center;
 }
 
+/* Stripe's payment form */
+#payment-form
+{
+    background-color: [% css_colors.accent_ultralight %];
+    width: 50%;
+}
+#card-element
+{
+    padding: 10px;
+}
+
 /* text to state what is seen on cc statement */
 .cc_disclaimer
 {

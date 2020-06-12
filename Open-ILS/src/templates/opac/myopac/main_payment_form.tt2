@@ -24,8 +24,96 @@
         "process credit card payments without it.  Please change your " _
         "browser settings and try again.") %]
 </noscript>
+<script type="text/javascript">
+function build_stripe_form() {
+    var elements = stripe.elements();
+
+    var style = {
+        base: {
+            color: '#32325d',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+                color: '#aab7c4'
+            }
+        },
+        invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+        }
+    };
+
+    var card = elements.create('card', {style: style});
+    card.mount('#card-element');
+
+    // real-time validation
+    card.on('change', function(event) {
+      var displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    // let's try some auto-focus
+    card.on('ready', function(event) {
+        try { card.focus(); } catch(E) { console.log('failed to focus card element',E); }
+    });
+
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      stripe.createToken(card).then(function(result) {
+        if (result.error) {
+          // Inform the user if there was an error.
+          var errorElement = document.getElementById('card-errors');
+          errorElement.textContent = result.error.message;
+        } else {
+          // Send the token to your server.
+          stripeTokenHandler(result.token);
+        }
+      });
+    });
+
+    function stripeTokenHandler(token) {
+      var form = document.getElementById('payment-form');
+      var hiddenInput = document.createElement('input');
+      hiddenInput.setAttribute('type', 'hidden');
+      hiddenInput.setAttribute('name', 'stripe_token');
+      hiddenInput.setAttribute('value', token.id);
+      form.appendChild(hiddenInput);
+
+      form.submit();
+    }
+}
+[% IF ctx.want_jquery %]
+    // jquery won't actually load until after this execution thread
+    setTimeout(function() { $(document).ready(build_stripe_form) }, 0);
+[% ELSE %]
+    // but jquery is preferable to doing this
+    setTimeout(build_stripe_form,0);
 [% END %]
-<div id="pay_fines_now"[% IF ctx.use_stripe %] class="hide_me"[% END %]>
+</script>
+<form action="[% ctx.opac_root %]/myopac/main_pay_init" method="post" id="payment-form">
+  <div class="form-row">
+    <label for="card-element">
+      <h1>Credit Card Information</h1>
+    </label>
+    <div id="card-element">
+      <!-- A Stripe Element will be inserted here. -->
+    </div>
+
+    <!-- Used to display form errors. -->
+    <div id="card-errors" role="alert"></div>
+  </div>
+
+  <button class="opac-button">Submit Payment</button>
+</form>
+[% ELSE %]
+<div id="pay_fines_now">
     [% IF last_chance %]
     
     <p><big>[% l("Are you sure you are ready to charge ") %]
@@ -85,20 +173,13 @@
         <a href="[% mkurl(ctx.opac_root _ '/myopac/main#selected_fines', {}, 1) %]" class="opac-button">[% l('Cancel') %]</a>
     [% ELSE %]
     
-    <form method="post" id="payment_form" action='#payment'
-    [% IF ctx.use_stripe %]
-    onsubmit="return stripe_onsubmit();"
-    [% END %]
-    >
+    <form method="post" id="payment_form" action='#payment'>
         <input type="hidden" name="last_chance" value="1" />
         [% FOR xact IN CGI.param('xact') %]
         <input type="hidden" name="xact" value="[% xact | html %]" />
         [% END %]
         [% FOR xact IN CGI.param('xact_misc') %]
         <input type="hidden" name="xact_misc" value="[% xact | html %]" />
-        [% END %]
-        [% IF ctx.use_stripe %]
-        <input type="hidden" name="stripe_token" id="stripe_token" />
         [% END %]
 
          <table id="billing_info_table">
@@ -161,36 +242,18 @@
                     <td><label for="payment-credit-card">[% l('Credit Card #') %]</label></td>
                     
                      <!-- Make type tel, which prompts for numbers in mobile -->
-                    <td><input type="tel" pattern="[0-9]*" maxlength="16" id="payment-credit-card" required 
-                    [% IF ctx.use_stripe %]
-                    data-stripe="number"
-                    [% ELSE %]
-                    name="number"
-                    [% END %]
-                    /></td>
+                    <td><input type="tel" pattern="[0-9]*" maxlength="16" id="payment-credit-card" required name="number"/></td>
                 </tr>
                 <tr>
                     <td><label for="payment-security-code">[% l('Security Code') %]</label></td>
                     <td>
                          <!-- Make type tel, which prompts for numbers in mobile -->
-                        <input type="tel" pattern="[0-9]*" size="4" maxlength="5" id="payment-security-code"
-                        [% IF ctx.use_stripe %]
-                        data-stripe="cvc"
-                        [% ELSE %]
-                        name="cvv2"
-                        [% END %]
-                        /></td>
+                        <input type="tel" pattern="[0-9]*" size="4" maxlength="5" id="payment-security-code" name="cvv2"/></td>
                 </tr>
                 <tr>
                     <td><label for="payment-expire-month">[% l('Expiration Month') %]</label></td>
                     <td>
-                        <select id="payment-expire-month" required
-                        [% IF ctx.use_stripe %]
-                        data-stripe="exp_month"
-                        [% ELSE %]
-                        name="expire_month"
-                        [% END %]
-                        >
+                        <select id="payment-expire-month" required name="expire_month">
                             <option value="-1"></option>
                             <option value="01">[% l("January (1)") %]</option>
                             <option value="02">[% l("February (2)") %]</option>
@@ -210,13 +273,7 @@
                 <tr>
                     <td><label for="payment-expire-year">[% l('Expiration Year') %]</label></td>
                     <td>
-                        <select id="payment-expire-year"
-                        [%- IF ctx.use_stripe %]
-                        data-stripe="exp_year"
-                        [% ELSE %]
-                        name="expire_year"
-                        [% END -%]
-                        >
+                        <select id="payment-expire-year" name="expire_year">
                         [% year = date.format(date.now, '%Y');
                         y = year;
                         WHILE y < year + 10; # show ten years starting now %]
@@ -247,5 +304,6 @@
     [% END %]
     </form>
 </div>
+[% END %]
 [% END %]
 [% END %]

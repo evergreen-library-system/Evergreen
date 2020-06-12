@@ -13,7 +13,7 @@
         <div class="col-md-4"><label>[% l('Process Where?') %]</label></div>
         <div class="col-md-8">
           <select class="form-control" ng-model="context.cc.where_process">
-            <option value='1'>
+            <option value='1' ng-disabled="context.cc.disable_internal">
               [% l('Process payment through Evergreen') %]</option>
             <option value='0'>
               [% l('Record externally processed payment') %]</option>

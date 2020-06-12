@@ -16,7 +16,8 @@ function($q , egCore , egWorkLog , patronSvc) {
             'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
             'ui.circ.billing.amount_warn', 'ui.circ.billing.amount_limit',
             'circ.staff_client.do_not_auto_attempt_print',
-            'circ.disable_patron_credit'
+            'circ.disable_patron_credit',
+            'credit.processor.default'
         ]).then(function(s) {return service.settings = s});
     }
 
@@ -543,6 +544,13 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
         if (s['circ.disable_patron_credit']) {
             $scope.disablePatronCredit = true;
         }
+        if (!s['credit.processor.default']) {
+            // If we don't have a CC processor, we should disable the "internal" CC form
+            $scope.disableCreditCardForm = true;
+        } else {
+            // Stripe isn't supported in the staff client currently, so disable here too
+            $scope.disableCreditCardForm = (s['credit.processor.default'] == 'Stripe');
+        }
     });
 
     $scope.gridControls.allItemsRetrieved = function() {
@@ -691,6 +699,8 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
         if ($scope.payment_type != 'credit_card_payment') 
             return $q.when();
 
+        var disableCreditCardForm = $scope.disableCreditCardForm;
+
         return $uibModal.open({
             templateUrl : './circ/patron/t_cc_payment_dialog',
             backdrop: 'static',
@@ -700,7 +710,8 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
 
                     $scope.context = {
                         cc : {
-                            where_process : '1', // internal=1 ; external=0
+                            where_process : disableCreditCardForm ? '0' : '1', // internal=1 ; external=0
+                            disable_internal : disableCreditCardForm,
                             type : 'VISA', // external only
                             billing_first : patronSvc.current.first_given_name(),
                             billing_last : patronSvc.current.family_name()
