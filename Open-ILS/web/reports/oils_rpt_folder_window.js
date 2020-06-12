@@ -5,7 +5,7 @@ var NG_NEW_TEMPLATE_INTERFACE = '/eg/staff/reporter/template/new';
 var NG_CLONE_TEMPLATE_INTERFACE = '/eg/staff/reporter/template/clone';
 var OILS_TEMPLATE_INTERFACE = 'xul/template_builder.xul';
 var OILS_LEGACY_TEMPLATE_INTERFACE = 'oils_rpt_builder.xhtml';
-
+var currentlyLoading = false;
 
 /* generic folder window class */
 oilsRptSetSubClass('oilsRptFolderWindow', 'oilsRptObject');
@@ -24,6 +24,8 @@ oilsRptFolderWindow.folderIdMap = {};
 
 // Here lie the contents of a specific folder
 oilsRptFolderWindow.prototype.draw = function(viaPaging) {
+	if (currentlyLoading) return; // avoids loading same data repeatedly
+	currentlyLoading=true;
 
 	_debug('drawing folder window for ' + this.folderNode.folder.name() );
 
@@ -535,7 +537,6 @@ oilsRptFolderWindow.prototype.createSearchRequest = function() {
 }
 
 oilsRptFolderWindow.prototype.fetchFolderData = function(callback) {
-
 	hideMe(DOM.oils_rpt_content_count_row_2);
 	hideMe(DOM.oils_rpt_content_row_2);
 
@@ -605,6 +606,7 @@ oilsRptFolderWindow.prototype.fetchFolderData = function(callback) {
 					}
 				);
 			}
+			currentlyLoading=false;
 		}
 	);
 	req.send();
