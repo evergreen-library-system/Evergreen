@@ -1,5 +1,0 @@
-New Hold Sort Order: Traditional with Holds-chase-home-lib-patrons
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-This is a new entry under Administration -> Server Administration -> Best-Hold Selection Sort Order in the staff client.  It prioritizes holds such that a given item, based on its owning library, will prefer patrons with a matching home library, no matter the pickup library.
-

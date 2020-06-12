@@ -1,6 +1,0 @@
-Custom CSS in OPAC
-^^^^^^^^^^^^^^^^^^
-There is now a library setting called opac.patron.custom_css. This can be
-populated with CSS that will load in the OPAC after the stylesheets and
-allow for custom CSS without editing server side templates. The permission
-UPDATE_ORG_UNIT_SETTING.opac.patron.custom_css manages access to it.
