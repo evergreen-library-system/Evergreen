@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-06-22 06:09+0000\n"
+"POT-Creation-Date: 2020-03-05 03:33+0000\n"
 "PO-Revision-Date: 2017-01-18 19:58+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-06-23 05:37+0000\n"
-"X-Generator: Launchpad (build 18416)\n"
+"X-Launchpad-Export-Date: 2020-03-06 05:56+0000\n"
+"X-Generator: Launchpad (build e0878392dc799b267dea80578fa65500a5d74155)\n"
 
 #: ../../Open-ILS/src/templates/url_verify/create_session.tt2:107
 msgid "Add"
@@ -72,7 +72,7 @@ msgid "Optionally select one or more to combine with 'Search' field above."
 msgstr ""
 "اختيارياً، يمكنك تحديد أو اختيار واحد أو أكثر لتتحد مع حقل 'البحث' أعلاه."
 
-#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:30
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:31
 msgid "Print URLs"
 msgstr "طباعة روابط يو آر إل"
 
@@ -127,7 +127,7 @@ msgstr "روابط يو آر إل المحددة أو المختارة"
 msgid "Verification Attempts"
 msgstr "محاولات التحقق"
 
-#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:37
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:38
 msgid "Verify Selected URLs"
 msgstr "التحقق من روابط يو آر إل المُختارة"
 
