@@ -885,9 +885,23 @@ RewriteRule ^/eg2/(.*) https://%{HTTP_HOST}/eg2/en-US/$1 [R=307,L]
 # This is the only required configuration when only using the default locale.
 <Directory "@localstatedir@/web/eg2/en-US">
     FallbackResource /eg2/en-US/index.html
+    <Files "index.html">
+      <IfModule mod_headers.c>
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+      </IfModule>
+    </Files>
 </Directory>
 
 # fr-CA build
 #<Directory "@localstatedir@/web/eg2/fr-CA">
 #    FallbackResource /eg2/fr-CA/index.html
+#    <Files "index.html">
+#      <IfModule mod_headers.c>
+#        Header set Cache-Control "no-cache, no-store, must-revalidate"
+#        Header set Pragma "no-cache"
+#        Header set Expires 0
+#      </IfModule>
+#    </Files>
 #</Directory>
