@@ -773,6 +773,7 @@ sub create_in_house_use {
         }
 
         $ihu->staff($e->requestor->id);
+        $ihu->workstation($e->requestor->wsid);
         $ihu->org_unit($org);
         $ihu->use_time($use_time);
 

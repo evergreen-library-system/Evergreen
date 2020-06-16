@@ -10,14 +10,14 @@ package action::in_house_use;
 use base qw/action/;
 __PACKAGE__->table('action_in_house_use');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/item staff org_unit use_time/);
+__PACKAGE__->columns(Essential => qw/item staff workstation org_unit use_time/);
 #-------------------------------------------------------------------------------
 
 package action::non_cat_in_house_use;
 use base qw/action/;
 __PACKAGE__->table('action_non_cat_in_house_use');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/item_type staff org_unit use_time/);
+__PACKAGE__->columns(Essential => qw/item_type staff workstation org_unit use_time/);
 #-------------------------------------------------------------------------------
 
 package action::non_cataloged_circulation;

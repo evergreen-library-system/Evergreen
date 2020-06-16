@@ -702,6 +702,7 @@ sub modify_from_fieldmapper {
 
     action::in_house_use->has_a( org_unit => 'actor::org_unit' );
     action::in_house_use->has_a( staff => 'actor::user' );
+    action::in_house_use->has_a( workstation => 'actor::workstation' );
     action::in_house_use->has_a( item => 'asset::copy' );
 
     action::non_cataloged_circulation->has_a( circ_lib => 'actor::org_unit' );

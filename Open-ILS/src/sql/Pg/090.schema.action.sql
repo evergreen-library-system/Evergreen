@@ -25,10 +25,12 @@ CREATE TABLE action.in_house_use (
 	id		SERIAL				PRIMARY KEY,
 	item		BIGINT				NOT NULL, -- REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED, -- XXX could be an serial.issuance
 	staff		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	workstation INT				REFERENCES actor.workstation (id) DEFERRABLE INITIALLY DEFERRED,
 	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	use_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
 CREATE INDEX action_in_house_use_staff_idx      ON action.in_house_use ( staff );
+CREATE INDEX action_in_house_use_ws_idx ON action.in_house_use ( workstation );
 
 CREATE TABLE action.non_cataloged_circulation (
 	id		SERIAL				PRIMARY KEY,
@@ -45,10 +47,12 @@ CREATE TABLE action.non_cat_in_house_use (
 	id		SERIAL				PRIMARY KEY,
 	item_type	BIGINT				NOT NULL REFERENCES config.non_cataloged_type(id) DEFERRABLE INITIALLY DEFERRED,
 	staff		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+	workstation INT				REFERENCES actor.workstation (id) DEFERRABLE INITIALLY DEFERRED,
 	org_unit	INT				NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	use_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW()
 );
 CREATE INDEX non_cat_in_house_use_staff_idx ON action.non_cat_in_house_use ( staff );
+CREATE INDEX non_cat_in_house_use_ws_idx ON action.non_cat_in_house_use ( workstation );
 
 CREATE TABLE action.survey (
 	id		SERIAL				PRIMARY KEY,

@@ -2402,11 +2402,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Item" name="item" reporter:datatype="int" />
 			<field reporter:label="Using Library" name="org_unit" reporter:datatype="org_unit"/>
 			<field reporter:label="Recording Staff" name="staff" reporter:datatype="link"/>
+			<field reporter:label="Workstation" name="workstation" reporter:datatype="link"/>
 			<field reporter:label="Use Date/Time" name="use_time" reporter:datatype="timestamp"/>
 		</fields>
 		<links>
 			<link field="item" reltype="has_a" key="id" map="" class="acp"/>
 			<link field="staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="workstation" reltype="has_a" key="id" map="" class="aws"/>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -2421,11 +2423,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Item Type" name="item_type" reporter:datatype="link"/>
 			<field reporter:label="Using Library" name="org_unit" reporter:datatype="org_unit"/>
 			<field reporter:label="Recording Staff" name="staff" reporter:datatype="link"/>
+			<field reporter:label="Workstation" name="workstation" reporter:datatype="link"/>
 			<field reporter:label="Use Date/Time" name="use_time" reporter:datatype="timestamp"/>
 		</fields>
 		<links>
 			<link field="item_type" reltype="has_a" key="id" map="" class="cnct"/>
 			<link field="staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="workstation" reltype="has_a" key="id" map="" class="aws"/>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
