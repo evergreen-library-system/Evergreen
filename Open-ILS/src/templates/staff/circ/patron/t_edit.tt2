@@ -224,10 +224,10 @@ within the "form" by name for validation.
   <div class="col-md-6">
     <ul class="nav nav-pills nav-pills-like-tabs">
       <li ng-class="{active : name_tab == 'primary'}">
-        <a ng-click="name_tab='primary'">[% l('Primary Name') %]</a>
+        <a ng-click="name_tab='primary'" href="#">[% l('Primary Name') %]</a>
       </li>
       <li ng-class="{active : name_tab == 'preferred'}">
-        <a ng-click="name_tab='preferred'">[% l('Preferred Name') %]</a>
+        <a ng-click="name_tab='preferred'" href="#">[% l('Preferred Name') %]</a>
       </li>
     </ul>
   </div>
