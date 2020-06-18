@@ -20293,8 +20293,10 @@ $TEMPLATE$
     # template_data is data returned from open-ils.booking.resources.capture_for_reservation.
 -%]
 <div>
-  [% IF data.transit %]
-  <div>This item need to be routed to <strong>data.transit.dest</strong></div>
+  [% IF data.transit;
+       dest_ou = helpers.get_org_unit(data.transit.dest);
+  %]
+  <div>This item need to be routed to <strong>[% dest_ou.shortname %]</strong></div>
   [% ELSE %]
   <div>This item need to be routed to <strong>RESERVATION SHELF:</strong></div>
   [% END %]
