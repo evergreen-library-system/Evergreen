@@ -92,7 +92,7 @@ CREATE TRIGGER no_overlapping_deps
     BEFORE INSERT OR UPDATE ON config.db_patch_dependencies
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1204', :eg_version); -- jeffdavis/sandbergja/csharp
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1205', :eg_version); -- sandbergja/tmcanna/gmcharlt
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
