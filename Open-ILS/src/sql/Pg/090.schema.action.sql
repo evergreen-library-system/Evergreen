@@ -1749,5 +1749,18 @@ UNION ALL
     asset.copy ac_aacirc
   WHERE aacirc.target_copy = ac_aacirc.id;
 
+CREATE TABLE action.curbside (
+    id          SERIAL      PRIMARY KEY,
+    patron      INT         NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    org         INT         NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    slot        TIMESTAMPTZ,
+    staged      TIMESTAMPTZ,
+    stage_staff     INT     REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    arrival     TIMESTAMPTZ,
+    delivered   TIMESTAMPTZ,
+    delivery_staff  INT     REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    notes       TEXT
+);
+
 COMMIT;
 
