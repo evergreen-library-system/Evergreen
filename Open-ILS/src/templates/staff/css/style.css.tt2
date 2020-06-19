@@ -202,6 +202,9 @@ table.list tr.selected td { /* deprecated? */
    e.g., a item alert */
 .acknowledged { text-decoration: line-through; }
 
+/* eg-help-popover directive doesn't need a border around its <button> */
+.no-border.glyphicon-question-sign { border-color: #fff; }
+
 /* bootstrap alerts are heavily padded.  use this to reduce */
 .alert-less-pad {padding: 5px;}
 
