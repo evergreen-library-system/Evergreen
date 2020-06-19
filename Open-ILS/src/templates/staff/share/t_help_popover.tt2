@@ -1,12 +1,14 @@
-<span class="glyphicon glyphicon-question-sign"
+<button class="glyphicon glyphicon-question-sign no-border"
       uib-popover="{{helpText}}"
       popover-trigger="click"
       popover-placement="auto"
+      i18n-aria-label aria-label="Help"
       ng-if="!helpLink || helpLink.length == 0"
-></span>
-<span class="glyphicon glyphicon-question-sign"
+></button>
+<button class="glyphicon glyphicon-question-sign no-border"
       uib-popover-html="helpHtml"
       popover-trigger="click"
       popover-placement="auto"
+      i18n-aria-label aria-label="Help"
       ng-if="helpLink.length > 0"
-></span>
+></button>
