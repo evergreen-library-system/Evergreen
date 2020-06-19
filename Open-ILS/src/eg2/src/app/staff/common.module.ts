@@ -17,6 +17,7 @@ import {DatetimeValidatorDirective} from '@eg/share/validators/datetime_validato
 import {MultiSelectComponent} from '@eg/share/multi-select/multi-select.component';
 import {NotBeforeMomentValidatorDirective} from '@eg/share/validators/not_before_moment_validator.directive';
 import {PatronBarcodeValidatorDirective} from '@eg/share/validators/patron_barcode_validator.directive';
+import {BroadcastService} from '@eg/share/util/broadcast.service';
 
 /**
  * Imports the EG common modules and adds modules common to all staff UI's.
@@ -69,7 +70,8 @@ export class StaffCommonModule {
             ngModule: StaffCommonModule,
             providers: [ // Export staff-wide services
                 AccessKeyService,
-                AudioService
+                AudioService,
+                BroadcastService
             ]
         };
     }

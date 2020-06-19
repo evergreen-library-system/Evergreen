@@ -38,6 +38,7 @@ import {TransferItemsComponent
 import {TransferHoldingsComponent
     } from '@eg/staff/share/holdings/transfer-holdings.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
+import {BroadcastService} from '@eg/share/util/broadcast.service';
 
 
 // The holdings grid models a single HoldingsTree, composed of HoldingsTreeNodes
@@ -170,6 +171,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         private store: ServerStoreService,
         private localStore: StoreService,
         private holdings: HoldingsService,
+        private broadcaster: BroadcastService,
         private anonCache: AnonCacheService
     ) {
         // Set some sane defaults before settings are loaded.
@@ -229,6 +231,13 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
     ngOnInit() {
         this.initDone = true;
+
+        this.broadcaster.listen('eg.holdings.update').subscribe(data => {
+            if (data && data.records && data.records.includes(this.recordId)) {
+                this.refreshHoldings = true;
+                this.holdingsGrid.reload();
+            }
+        });
 
         // These are pre-cached via the catalog resolver.
         const settings = this.store.getItemBatchCached([
