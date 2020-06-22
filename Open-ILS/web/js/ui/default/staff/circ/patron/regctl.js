@@ -804,6 +804,7 @@ angular.module('egCoreMod')
 
         // toss entries for existing stat cat maps into our living 
         // stat cat entry map, which is modified within the template.
+        service.stat_cat_entry_maps = [];
         angular.forEach(patron.stat_cat_entries, function(map) {
             service.stat_cat_entry_maps[map.stat_cat.id] = map.stat_cat_entry;
         });
