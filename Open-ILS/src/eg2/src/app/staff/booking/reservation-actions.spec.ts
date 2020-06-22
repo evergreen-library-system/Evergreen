@@ -1,19 +1,26 @@
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie';
+import { PrintService } from '@eg/share/print/print.service';
 import { PcrudService } from '@eg/core/pcrud.service';
 import { ReservationActionsService } from './reservation-actions.service';
 describe('ReservationActionsService', () => {
     let service: ReservationActionsService;
+    let cookieServiceStub: Partial<CookieService>;
+    let printServiceStub: Partial<PrintService>;
     const routerSpy = {
         navigate: jasmine.createSpy('navigate')
     };
     beforeEach(() => {
         const pcrudServiceStub = {};
+        const cookieServiceStub = {};
         TestBed.configureTestingModule({
             providers: [
                 ReservationActionsService,
                 { provide: Router, useValue: routerSpy },
-                { provide: PcrudService, useValue: pcrudServiceStub }
+                { provide: PcrudService, useValue: pcrudServiceStub },
+                { provide: CookieService, useValue: cookieServiceStub },
+                { provide: PrintService, useValue: printServiceStub }
             ]
         });
         service = TestBed.get(ReservationActionsService);
