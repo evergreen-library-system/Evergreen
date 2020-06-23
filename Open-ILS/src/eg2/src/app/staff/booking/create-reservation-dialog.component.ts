@@ -16,7 +16,7 @@ import {PatronBarcodeValidator} from '@eg/share/validators/patron_barcode_valida
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import * as Moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 
 const startTimeIsBeforeEndTimeValidator: ValidatorFn = (fg: FormGroup): ValidationErrors | null => {
     const start = fg.get('startTime').value;
@@ -80,7 +80,7 @@ export class CreateReservationDialogComponent
                 [this.pbv.validate]
             ),
             'emailNotify': new FormControl(true),
-            'startTime': new FormControl(null, notBeforeMomentValidator(Moment().add('15', 'minutes'))),
+            'startTime': new FormControl(null, notBeforeMomentValidator(moment().add('15', 'minutes'))),
             'endTime': new FormControl(),
             'resourceList': new FormControl(),
             'note': new FormControl(),
@@ -174,9 +174,9 @@ export class CreateReservationDialogComponent
         );
     }
 
-    setDefaultTimes(times: Moment[], granularity: number) {
-        this.create.patchValue({startTime: Moment.min(times),
-        endTime: Moment.max(times).clone().add(granularity, 'minutes')
+    setDefaultTimes(times: moment.Moment[], granularity: number) {
+        this.create.patchValue({startTime: moment.min(times),
+        endTime: moment.max(times).clone().add(granularity, 'minutes')
         });
     }
 

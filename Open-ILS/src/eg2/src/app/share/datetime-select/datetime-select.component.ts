@@ -3,7 +3,7 @@ import {FormatService} from '@eg/core/format.service';
 import {AbstractControl, ControlValueAccessor, FormControl, FormGroup, NgControl} from '@angular/forms';
 import {NgbDatepicker, NgbTimeStruct, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {DatetimeValidator} from '@eg/share/validators/datetime_validator.directive';
-import * as Moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 
 @Component({
     selector: 'eg-datetime-select',
@@ -36,7 +36,7 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
     ) {
         if (controlDir) { controlDir.valueAccessor = this; }
         this.onChangeAsIso = new EventEmitter<string>();
-        const startValue = Moment.tz([], this.timezone);
+        const startValue = moment.tz([], this.timezone);
         this.dateTimeForm = new FormGroup({
             'stringVersion': new FormControl(
                 this.format.transform({value: startValue, datatype: 'timestamp', datePlusTime: true}),
@@ -57,7 +57,7 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
             this.timezone = this.format.wsOrgTimezone;
         }
         if (this.initialIso) {
-            this.writeValue(Moment(this.initialIso).tz(this.timezone));
+            this.writeValue(moment(this.initialIso).tz(this.timezone));
         }
         this.dateTimeForm.get('stringVersion').valueChanges.subscribe((value) => {
             if ('VALID' === this.dateTimeForm.get('stringVersion').status) {
@@ -81,7 +81,7 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
             }
         });
         this.dateTimeForm.get('date').valueChanges.subscribe((date) => {
-            const newDate = Moment.tz([date.year, (date.month - 1), date.day,
+            const newDate = moment.tz([date.year, (date.month - 1), date.day,
                 this.time.value.hour, this.time.value.minute, 0], this.timezone);
             this.dateTimeForm.patchValue({stringVersion:
                 this.format.transform({value: newDate, datatype: 'timestamp', datePlusTime: true})},
@@ -91,7 +91,7 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
         });
 
         this.dateTimeForm.get('time').valueChanges.subscribe((time) => {
-            const newDate = Moment.tz([this.date.value.year,
+            const newDate = moment.tz([this.date.value.year,
                 (this.date.value.month - 1),
                 this.date.value.day,
                 time.hour, time.minute, 0],
@@ -105,16 +105,16 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
         });
     }
 
-    setDatePicker(current: Moment) {
-        const withTZ = current ? current.tz(this.timezone) : Moment.tz([], this.timezone);
+    setDatePicker(current: moment.Moment) {
+        const withTZ = current ? current.tz(this.timezone) : moment.tz([], this.timezone);
         this.dateTimeForm.patchValue({date: {
             year: withTZ.year(),
             month: withTZ.month() + 1,
             day: withTZ.date() }});
     }
 
-    setTimePicker(current: Moment) {
-        const withTZ = current ? current.tz(this.timezone) : Moment.tz([], this.timezone);
+    setTimePicker(current: moment.Moment) {
+        const withTZ = current ? current.tz(this.timezone) : moment.tz([], this.timezone);
         this.dateTimeForm.patchValue({time: {
             hour: withTZ.hour(),
             minute: withTZ.minute(),
@@ -122,7 +122,7 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
     }
 
 
-    writeValue(value: Moment) {
+    writeValue(value: moment.Moment) {
         if (value !== undefined && value !== null) {
             this.dateTimeForm.patchValue({
                 stringVersion: this.format.transform({value: value, datatype: 'timestamp', datePlusTime: true})});
@@ -131,7 +131,7 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
         }
     }
 
-    registerOnChange(fn: (value: Moment) => any): void {
+    registerOnChange(fn: (value: moment.Moment) => any): void {
         this.onChange = fn;
     }
     registerOnTouched(fn: () => any): void {

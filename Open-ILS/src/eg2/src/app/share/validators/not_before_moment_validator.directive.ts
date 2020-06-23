@@ -2,9 +2,9 @@ import {Directive, Input} from '@angular/core';
 import {NG_VALIDATORS, AbstractControl, FormControl, ValidationErrors, ValidatorFn} from '@angular/forms';
 import {Injectable} from '@angular/core';
 
-import * as Moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 
-export function notBeforeMomentValidator(notBeforeMe: Moment): ValidatorFn {
+export function notBeforeMomentValidator(notBeforeMe: moment.Moment): ValidatorFn {
     return (control: AbstractControl): {[key: string]: any} | null => {
         return (control.value && control.value.isBefore(notBeforeMe)) ?
             {tooEarly: 'This cannot be before ' + notBeforeMe.format('LLL')} : null;
@@ -20,7 +20,7 @@ export function notBeforeMomentValidator(notBeforeMe: Moment): ValidatorFn {
     }]
 })
 export class NotBeforeMomentValidatorDirective {
-    @Input('egNotBeforeMoment') notBeforeMoment: Moment;
+    @Input('egNotBeforeMoment') notBeforeMoment: moment.Moment;
 
     validate(control: AbstractControl): {[key: string]: any} | null {
         return this.notBeforeMoment ?
