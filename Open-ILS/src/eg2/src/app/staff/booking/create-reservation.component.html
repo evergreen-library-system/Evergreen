@@ -193,9 +193,9 @@
 </eg-create-reservation-dialog>
 
 <ng-template #reservationsTemplate let-row="row" let-col="col">
-  <ng-container *ngIf="row[col.name]">
+  <ng-container *ngIf="row.patrons && row.patrons[col.name]">
     <ul class="list-unstyled">
-      <li *ngFor="let reservation of row[col.name]">
+      <li *ngFor="let reservation of row.patrons[col.name]">
         <button class="btn btn-info" (click)="openReservationViewer(reservation['reservationId'])">
           {{reservation['patronLabel']}}
         </button>

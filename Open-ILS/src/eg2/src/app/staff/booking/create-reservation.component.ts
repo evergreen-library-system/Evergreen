@@ -20,7 +20,7 @@ import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ScheduleGridService, ScheduleRow} from './schedule-grid.service';
 import {NoTimezoneSetComponent} from './no-timezone-set.component';
 
-import * as Moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 
 const startOfDayIsBeforeEndOfDayValidator: ValidatorFn = (fg: FormGroup): ValidationErrors | null => {
     const start = fg.get('startOfDay').value;
@@ -280,7 +280,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
             }),
             takeLast(1),
             switchMap(() => {
-                let range = {startTime: Moment(), endTime: Moment()};
+                let range = {startTime: moment(), endTime: moment()};
 
                 if (this.multiday) {
                     range = this.scheduleService.momentizeDateRange(
@@ -316,7 +316,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
             };
             this.resources.forEach(resource => {
                 this.cellTextGenerator[resource.barcode()] = row =>  {
-                    return row[resource.barcode()] ? row[resource.barcode()].map(reservation => reservation['patronLabel']).join(', ') : '';
+                    return row.patrons[resource.barcode()] ? row.patrons[resource.barcode()].map(reservation => reservation['patronLabel']).join(', ') : '';
                 };
             });
         });

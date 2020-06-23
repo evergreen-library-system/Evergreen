@@ -17,7 +17,7 @@ import {NoTimezoneSetComponent} from './no-timezone-set.component';
 import {ReservationActionsService} from './reservation-actions.service';
 import {CancelReservationDialogComponent} from './cancel-reservation-dialog.component';
 
-import * as Moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 
 // A filterable grid of reservations used in various booking interfaces
 
@@ -121,7 +121,7 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
                     where['pickup_time'] = {'!=': null};
                     where['return_time'] = null;
                 } else if ('returnedToday' === this.status) {
-                    where['return_time'] = {'>': Moment().startOf('day').toISOString()};
+                    where['return_time'] = {'>': moment().startOf('day').toISOString()};
                 }
             } else {
                 where['return_time'] = null;
@@ -281,7 +281,7 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
     enrichRow$ = (row: IdlObject): Observable<IdlObject> => {
         return from(this.org.settings('lib.timezone', row.pickup_lib().id())).pipe(
             switchMap((tz) => {
-                row['length'] = Moment(row['end_time']()).from(Moment(row['start_time']()), true);
+                row['length'] = moment(row['end_time']()).from(moment(row['start_time']()), true);
                 row['timezone'] = tz['lib.timezone'];
                 return of(row);
             })
@@ -307,7 +307,7 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
         this.router.navigate(['/staff', 'booking', 'manage_reservations', 'by_resource', barcode]);
     }
 
-    momentizeIsoString(isoString: string, timezone: string): Moment {
+    momentizeIsoString(isoString: string, timezone: string): moment.Moment {
         return this.format.momentizeIsoString(isoString, timezone);
     }
 }

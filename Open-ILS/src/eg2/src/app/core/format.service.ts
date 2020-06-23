@@ -3,7 +3,7 @@ import {DatePipe, CurrencyPipe, getLocaleDateFormat, getLocaleTimeFormat, getLoc
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {LocaleService} from '@eg/core/locale.service';
-import * as Moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 
 /**
  * Format IDL vield values for display.
@@ -121,7 +121,7 @@ export class FormatService {
                 } else {
                     tz = this.wsOrgTimezone;
                 }
-                const date = Moment(value).tz(tz);
+                const date = moment(value).tz(tz);
                 if (!date.isValid()) {
                     console.error('Invalid date in format service', value);
                     return '';
@@ -161,37 +161,37 @@ export class FormatService {
     /**
      * Create a Moment from an ISO string
      */
-    momentizeIsoString(isoString: string, timezone: string): Moment {
-        return (isoString.length) ? Moment(isoString, timezone) : Moment();
+    momentizeIsoString(isoString: string, timezone: string): moment.Moment {
+        return (isoString.length) ? moment(isoString, timezone) : moment();
     }
 
     /**
      * Turn a date string into a Moment using the date format org setting.
      */
-    momentizeDateString(date: string, timezone: string, strict?, locale?): Moment {
+    momentizeDateString(date: string, timezone: string, strict?, locale?): moment.Moment {
         return this.momentize(date, this.makeFormatParseable(this.dateFormat, locale), timezone, strict);
     }
 
     /**
      * Turn a datetime string into a Moment using the datetime format org setting.
      */
-    momentizeDateTimeString(date: string, timezone: string, strict?, locale?): Moment {
+    momentizeDateTimeString(date: string, timezone: string, strict?, locale?): moment.Moment {
         return this.momentize(date, this.makeFormatParseable(this.dateTimeFormat, locale), timezone, strict);
     }
 
     /**
      * Turn a string into a Moment using the provided format string.
      */
-    private momentize(date: string, format: string, timezone: string, strict: boolean): Moment {
+    private momentize(date: string, format: string, timezone: string, strict: boolean): moment.Moment {
         if (format.length) {
-            const result = Moment.tz(date, format, true, timezone);
-            if (isNaN(result) || 'Invalid date' === result) {
+            const result = moment.tz(date, format, true, timezone);
+            if (!result.isValid()) {
                 if (strict) {
                     throw new Error('Error parsing date ' + date);
                 }
-                return Moment.tz(date, format, false, timezone);
+                return moment.tz(date, format, false, timezone);
             }
-        return Moment(new Date(date), timezone);
+        return moment(new Date(date), timezone);
         }
     }
 

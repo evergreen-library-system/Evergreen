@@ -8,7 +8,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {GridRowFlairEntry} from '@eg/share/grid/grid';
 import {DateRange} from '@eg/share/daterange-select/daterange-select.component';
 
-import * as Moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 
 export interface ReservationPatron {
   patronId: number;
@@ -16,9 +16,13 @@ export interface ReservationPatron {
   reservationId: number;
 }
 
-export interface ScheduleRow {
-    time: Moment;
+interface ScheduleRowPatrons {
     [key: string]: ReservationPatron[];
+}
+
+export interface ScheduleRow {
+    time: moment.Moment;
+    patrons: ScheduleRowPatrons;
 }
 
 // Various methods that fetch data for and process the schedule of reservations
@@ -54,8 +58,8 @@ export class ScheduleGridService {
     resourceAvailabilityIcon = (row: ScheduleRow, numResources: number): GridRowFlairEntry => {
         let icon = {icon: 'event_busy', title: 'All resources are reserved at this time'};
         let busyColumns = 0;
-        for (const key in row) {
-            if (row[key] instanceof Array && row[key].length) {
+        for (const key in row.patrons) {
+            if (row.patrons[key] instanceof Array && row.patrons[key].length) {
                 busyColumns += 1;
             }
         }
@@ -83,30 +87,30 @@ export class ScheduleGridService {
         });
     }
 
-    momentizeDateRange = (range: DateRange, timezone: string): {startTime: Moment, endTime: Moment} => {
+    momentizeDateRange = (range: DateRange, timezone: string): {startTime: moment.Moment, endTime: moment.Moment} => {
         return {
-            startTime: Moment.tz([
+            startTime: moment.tz([
                 range.fromDate.year,
                 range.fromDate.month - 1,
                 range.fromDate.day],
                 timezone),
-            endTime: Moment.tz([
+            endTime: moment.tz([
                 range.toDate.year,
                 range.toDate.month - 1,
                 range.toDate.day + 1],
                 timezone)
         };
     }
-    momentizeDay = (date: Date, start: NgbTimeStruct, end: NgbTimeStruct, timezone: string): {startTime: Moment, endTime: Moment} => {
+    momentizeDay = (date: Date, start: NgbTimeStruct, end: NgbTimeStruct, timezone: string): {startTime: moment.Moment, endTime: moment.Moment} => {
         return {
-            startTime: Moment.tz([
+            startTime: moment.tz([
                 date.getFullYear(),
                 date.getMonth(),
                 date.getDate(),
                 start.hour,
                 start.minute],
                 timezone),
-            endTime: Moment.tz([
+            endTime: moment.tz([
                 date.getFullYear(),
                 date.getMonth(),
                 date.getDate(),
@@ -116,7 +120,7 @@ export class ScheduleGridService {
         };
     }
 
-    createBasicSchedule = (range: {startTime: Moment, endTime: Moment}, granularity: number): ScheduleRow[] => {
+    createBasicSchedule = (range: {startTime: moment.Moment, endTime: moment.Moment}, granularity: number): ScheduleRow[] => {
         const currentTime = range.startTime.clone();
         const schedule = [];
         while (currentTime < range.endTime) {
@@ -126,7 +130,7 @@ export class ScheduleGridService {
         return schedule;
     }
 
-    fetchReservations = (range: {startTime: Moment, endTime: Moment}, resourceIds: number[]): Observable<IdlObject> => {
+    fetchReservations = (range: {startTime: moment.Moment, endTime: moment.Moment}, resourceIds: number[]): Observable<IdlObject> => {
         return this.pcrud.search('bresv', {
             '-or': {'target_resource': resourceIds, 'current_resource': resourceIds},
             'end_time': {'>': range.startTime.toISOString()},
@@ -142,14 +146,15 @@ export class ScheduleGridService {
             const end = (index + 1 < schedule.length) ?
                 schedule[index + 1].time :
                 schedule[index].time.clone().add(granularity, 'minutes');
-            if ((Moment.tz(reservation.start_time(), timezone).isBefore(end)) &&
-                (Moment.tz(reservation.end_time(), timezone).isAfter(start))) {
-                if (!schedule[index][reservation.current_resource().barcode()]) {
-                    schedule[index][reservation.current_resource().barcode()] = [];
+            if ((moment.tz(reservation.start_time(), timezone).isBefore(end)) &&
+                (moment.tz(reservation.end_time(), timezone).isAfter(start))) {
+                if (!schedule[index]['patrons']) schedule[index].patrons = {};
+                if (!schedule[index].patrons[reservation.current_resource().barcode()]) {
+                    schedule[index].patrons[reservation.current_resource().barcode()] = [];
                 }
-                if (schedule[index][reservation.current_resource().barcode()]
+                if (schedule[index].patrons[reservation.current_resource().barcode()]
                     .findIndex(patron => patron.patronId === reservation.usr().id()) === -1) {
-                    schedule[index][reservation.current_resource().barcode()].push(
+                    schedule[index].patrons[reservation.current_resource().barcode()].push(
                         {'patronLabel': reservation.usr().usrname(),
                         'patronId': reservation.usr().id(),
                         'reservationId': reservation.id()});
