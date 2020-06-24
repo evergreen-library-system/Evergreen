@@ -8,12 +8,16 @@ describe('ReservationActionsService', () => {
     let service: ReservationActionsService;
     let cookieServiceStub: Partial<CookieService>;
     let printServiceStub: Partial<PrintService>;
+    let pcrudServiceStub: Partial<PcrudService>;
     const routerSpy = {
         navigate: jasmine.createSpy('navigate')
     };
     beforeEach(() => {
-        const pcrudServiceStub = {};
-        const cookieServiceStub = {};
+        pcrudServiceStub = {};
+        cookieServiceStub = {};
+        pcrudServiceStub = {};
+        cookieServiceStub = {};
+        printServiceStub = {};
         TestBed.configureTestingModule({
             providers: [
                 ReservationActionsService,

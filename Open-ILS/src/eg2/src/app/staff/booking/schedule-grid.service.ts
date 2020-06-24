@@ -101,7 +101,8 @@ export class ScheduleGridService {
                 timezone)
         };
     }
-    momentizeDay = (date: Date, start: NgbTimeStruct, end: NgbTimeStruct, timezone: string): {startTime: moment.Moment, endTime: moment.Moment} => {
+    momentizeDay = (date: Date, start: NgbTimeStruct, end: NgbTimeStruct, timezone: string):
+        {startTime: moment.Moment, endTime: moment.Moment} => {
         return {
             startTime: moment.tz([
                 date.getFullYear(),
@@ -148,7 +149,7 @@ export class ScheduleGridService {
                 schedule[index].time.clone().add(granularity, 'minutes');
             if ((moment.tz(reservation.start_time(), timezone).isBefore(end)) &&
                 (moment.tz(reservation.end_time(), timezone).isAfter(start))) {
-                if (!schedule[index]['patrons']) schedule[index].patrons = {};
+                if (!schedule[index]['patrons']) { schedule[index].patrons = {}; }
                 if (!schedule[index].patrons[reservation.current_resource().barcode()]) {
                     schedule[index].patrons[reservation.current_resource().barcode()] = [];
                 }

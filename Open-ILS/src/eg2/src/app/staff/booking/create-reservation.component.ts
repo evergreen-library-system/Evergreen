@@ -316,7 +316,8 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
             };
             this.resources.forEach(resource => {
                 this.cellTextGenerator[resource.barcode()] = row =>  {
-                    return row.patrons[resource.barcode()] ? row.patrons[resource.barcode()].map(reservation => reservation['patronLabel']).join(', ') : '';
+                    return row.patrons[resource.barcode()] ?
+                        row.patrons[resource.barcode()].map(reservation => reservation['patronLabel']).join(', ') : '';
                 };
             });
         });
