@@ -4,11 +4,12 @@ import { PcrudService } from '@eg/core/pcrud.service';
 import { ReservationActionsService } from './reservation-actions.service';
 describe('ReservationActionsService', () => {
     let service: ReservationActionsService;
+    let pcrudServiceStub: Partial<PcrudService>;
     const routerSpy = {
         navigate: jasmine.createSpy('navigate')
     };
     beforeEach(() => {
-        const pcrudServiceStub = {};
+        pcrudServiceStub = {};
         TestBed.configureTestingModule({
             providers: [
                 ReservationActionsService,
