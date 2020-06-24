@@ -1,5 +1,14 @@
 import {Component, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
+import {ActivatedRoute} from '@angular/router';
+import {FormatService} from '@eg/core/format.service';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
+import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {PcrudService} from '@eg/core/pcrud.service';
+import {OrgService} from '@eg/core/org.service';
+import {PermService} from '@eg/core/perm.service';
+import {AuthService} from '@eg/core/auth.service';
+import {ToastService} from '@eg/share/toast/toast.service';
 
 @Component({
     templateUrl: './openathens-identity.component.html'
@@ -8,6 +17,20 @@ export class OpenAthensIdentityComponent extends AdminPageComponent implements O
 
     idlClass = 'coai';
     classLabel: string;
+
+    constructor(
+        route: ActivatedRoute,
+        ngLocation: Location,
+        format: FormatService,
+        idl: IdlService,
+        org: OrgService,
+        auth: AuthService,
+        pcrud: PcrudService,
+        perm: PermService,
+        toast: ToastService,
+    ) {
+        super(route, ngLocation, format, idl, org, auth, pcrud, perm, toast);
+    }
 
     ngOnInit() {
         super.ngOnInit();
@@ -40,5 +63,9 @@ export class OpenAthensIdentityComponent extends AdminPageComponent implements O
                 }
             }
         );
-    };
+    }
+
+    deleteSelected = (entries: IdlObject[]) => {
+        super.deleteSelected(entries);
+    }
 }
