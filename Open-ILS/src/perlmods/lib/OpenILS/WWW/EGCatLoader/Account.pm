@@ -1355,8 +1355,8 @@ sub handle_hold_update {
             );
         }
 
-        if ($date and $org and !$ctx->{cs_times}{$date}) {
-            $ctx->{cs_times}{$date} = $circ->request(
+        if ($date and $org and !$ctx->{cs_times}{$org}{$date}) {
+            $ctx->{cs_times}{$org}{$date} = $circ->request(
                 'open-ils.curbside.times_for_date.atomic',
                 $e->authtoken, $date, $org
             )->gather(1);
@@ -1398,7 +1398,7 @@ sub load_myopac_holds {
         for my $cs (@{$holds_object->{curbsides}}) {
             if ($cs->slot) {
                 my $dt = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($cs->slot))->strftime('%F');
-                $ctx->{cs_times}{$dt} = $U->simplereq(
+                $ctx->{cs_times}{$cs->org}{$dt} = $U->simplereq(
                     'open-ils.curbside', 'open-ils.curbside.times_for_date.atomic',
                     $e->authtoken, $dt, $cs->org
                 );

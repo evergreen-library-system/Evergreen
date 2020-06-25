@@ -102,10 +102,10 @@
                 [% IF appointment || cs_date; # checking times %]
                   [% current_date = cs_date %]
                   [% IF date_started_null && no_patron_input %]&nbsp;
-                  [% ELSIF appointment || ctx.cs_times.$current_date.size; # show a select %]
+                  [% ELSIF appointment || ctx.cs_times.$lib.$current_date.size; # show a select %]
                     <select name="cs_time" [% IF disable_me || no_patron_input %]disabled="disabled"[% END %]>
                       [% found_time = 0 %]
-                      [% FOR t IN ctx.cs_times.$current_date %]
+                      [% FOR t IN ctx.cs_times.$lib.$current_date %]
                         <option value="[% t.0 | html %]"
                           [% IF cs_time == t.0; found_time=1 %] selected="selected"[% END %]
                           [% IF t.1 <= 0 && cs_time != t.0 %] disabled="disabled"[% END %]>
