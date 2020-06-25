@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlService} from '@eg/core/idl.service';
+import {Observable} from 'rxjs';
+import {tap, switchMap} from 'rxjs/operators';
 
 /**
  * Generic IDL class editor page.
@@ -8,6 +10,7 @@ import {IdlService} from '@eg/core/idl.service';
 
 @Component({
     template: `
+      <ng-container *ngIf="idlClass">
       <eg-title i18n-prefix prefix="{{classLabel}} Administration">
       </eg-title>
       <eg-staff-banner bannerText="{{classLabel}} Configuration" i18n-bannerText>
@@ -16,6 +19,7 @@ import {IdlService} from '@eg/core/idl.service';
         configLinkBasePath="{{configLinkBasePath}}"
         readonlyFields="{{readonlyFields}}"
         [disableOrgFilter]="disableOrgFilter"></eg-admin-page>
+      </ng-container>
     `
 })
 
@@ -30,6 +34,13 @@ export class BasicAdminPageComponent implements OnInit {
     // Tell the admin page to disable and hide the automagic org unit filter
     disableOrgFilter: boolean;
 
+    private getParams$: Observable<ParamMap>;
+    private getRouteData$: Observable<any>;
+    private getParentUrl$: Observable<any>;
+
+    private schema: string;
+    private table: string;
+
     constructor(
         private route: ActivatedRoute,
         private idl: IdlService
@@ -37,60 +48,68 @@ export class BasicAdminPageComponent implements OnInit {
     }
 
     ngOnInit() {
-        let schema = this.route.snapshot.paramMap.get('schema');
-        if (!schema) {
-            // Allow callers to pass the schema via static route data
-            const data = this.route.snapshot.data[0];
-            if (data) { schema = data.schema; }
-        }
-        let table = this.route.snapshot.paramMap.get('table');
-        if (!table) {
-            const data = this.route.snapshot.data[0];
-            if (data) { table = data.table; }
-        }
-        const fullTable = schema + '.' + table;
+        this.getParams$ = this.route.paramMap
+            .pipe(tap(params => {
+                this.schema = params.get('schema');
+                this.table = params.get('table');
+            }));
 
-        // Set the prefix to "server", "local", "workstation",
-        // extracted from the URL path.
-        // For admin pages that use none of these, avoid setting
-        // the prefix because that will cause it to double-up.
-        // e.g. eg.grid.acq.acq.cancel_reason
-        this.persistKeyPfx = this.route.snapshot.parent.url[0].path;
-        const selfPrefixers = ['acq', 'action_trigger', 'booking'];
-        if (selfPrefixers.indexOf(this.persistKeyPfx) > -1) {
-            // selfPrefixers, unlike 'server', 'local', and
-            // 'workstation', are the root of the path.
-            this.persistKeyPfx = '';
-        } else {
-            this.configLinkBasePath += '/' + this.persistKeyPfx;
-        }
+        this.getRouteData$ = this.route.data
+            .pipe(tap(routeData => {
+                const data = routeData[0];
 
-        // Pass the readonlyFields param if available
-        if (this.route.snapshot.data && this.route.snapshot.data[0]) {
-            // snapshot.data is a HASH.
-            const data = this.route.snapshot.data[0];
+                if (data) {
+                    // Schema and table can both be passed
+                    // by either param or data
+                    if (!this.schema) {
+                        this.schema = data['schema'];
+                    }
+                    if (!this.table) {
+                        this.table = data['table'];
+                    }
+                this.disableOrgFilter = data['disableOrgFilter'];
+                this.readonlyFields = data['readonlyFields'];
+                }
 
-            if (data.readonlyFields) {
-                this.readonlyFields = data.readonlyFields;
-            }
+            }));
 
-            if (data.disableOrgFilter) {
-                this.disableOrgFilter = true;
-            }
-        }
+        this.getParentUrl$ = this.route.parent.url
+            .pipe(tap(parentUrl => {
+                // Set the prefix to "server", "local", "workstation",
+                // extracted from the URL path.
+                // For admin pages that use none of these, avoid setting
+                // the prefix because that will cause it to double-up.
+                // e.g. eg.grid.acq.acq.cancel_reason
+                this.persistKeyPfx = this.route.snapshot.parent.url[0].path;
+                const selfPrefixers = ['acq', 'action_trigger', 'booking'];
+                if (selfPrefixers.indexOf(this.persistKeyPfx) > -1) {
+                    // selfPrefixers, unlike 'server', 'local', and
+                    // 'workstation', are the root of the path.
+                    this.persistKeyPfx = '';
+                } else {
+                    this.configLinkBasePath += '/' + this.persistKeyPfx;
+                }
+            }));
 
-        Object.keys(this.idl.classes).forEach(class_ => {
-            const classDef = this.idl.classes[class_];
-            if (classDef.table === fullTable) {
-                this.idlClass = class_;
-                this.classLabel = classDef.label;
+        this.getParentUrl$.subscribe();
+        this.getParams$.pipe(
+            switchMap(() => this.getRouteData$)
+        ).subscribe(() => {
+            const fullTable = this.schema + '.' + this.table;
+
+            Object.keys(this.idl.classes).forEach(class_ => {
+                const classDef = this.idl.classes[class_];
+                if (classDef.table === fullTable) {
+                    this.idlClass = class_;
+                    this.classLabel = classDef.label;
+                }
+            });
+
+            if (!this.idlClass) {
+                throw new Error('Unable to find IDL class for table ' + fullTable);
             }
         });
-
-        if (!this.idlClass) {
-            throw new Error('Unable to find IDL class for table ' + fullTable);
-        }
     }
-}
 
+}
 
