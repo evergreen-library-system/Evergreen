@@ -44,6 +44,10 @@ export class AdminPageComponent implements OnInit {
     // Size of create/edito dialog.  Uses large by default.
     @Input() dialogSize: 'sm' | 'lg' = 'lg';
 
+    // Optional comma-separated list of field names defining the order in which
+    // fields should be rendered in the fm-editor and grid.
+    @Input() fieldOrder: string;
+
     // comma-separated list of fields to hide.
     // This does not imply all other fields should be visible, only that
     // the selected fields will be hidden.
