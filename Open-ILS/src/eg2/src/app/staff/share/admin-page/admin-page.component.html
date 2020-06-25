@@ -72,8 +72,11 @@
 </eg-grid>
 
 <eg-fm-record-editor #editDialog idlClass="{{idlClass}}" 
-    [fieldOptions]="fieldOptions" [defaultNewRecord]="defaultNewRecord"
-    [preloadLinkedValues]="true" readonlyFields="{{readonlyFields}}">
+    [fieldOptions]="fieldOptions"
+    [fieldOrder]="fieldOrder"
+    [defaultNewRecord]="defaultNewRecord"
+    [preloadLinkedValues]="true"
+    [readonlyFields]="readonlyFields">
 </eg-fm-record-editor>
 
 

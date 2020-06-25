@@ -7,6 +7,15 @@ const routes: Routes = [{
     path: 'splash',
     component: AdminAcqSplashComponent
 }, {
+    path: 'edi_account',
+    component: BasicAdminPageComponent,
+    data: [{
+        schema: 'acq',
+        table: 'edi_account',
+        fieldOrder: 'id,label,provider,owner,account,vendacct,vendcode,last_activity,host,username,password,path,in_dir,use_attrs,attr_set',
+        readonlyFields: 'last_activity'
+    }]
+}, {
     path: ':table',
     component: BasicAdminPageComponent,
     // All ACQ admin pages cover data in the acq.* schema.  No need to

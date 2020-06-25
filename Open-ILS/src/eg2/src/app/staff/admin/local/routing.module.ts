@@ -18,6 +18,13 @@ const routes: Routes = [{
     path: 'actor/address_alert',
     component: AddressAlertComponent
 }, {
+    path: 'asset/copy_location',
+    component: BasicAdminPageComponent,
+    data: [{
+        schema: 'asset',
+        table: 'copy_location',
+        fieldOrder: 'owning_lib,name,opac_visible,circulate,holdable,hold_verify,checkin_alert,deleted,label_prefix,label_suffix,url,id'}]
+}, {
     path: 'container/carousel',
     component: AdminCarouselComponent
 }, {

@@ -17,6 +17,7 @@ import {tap, switchMap} from 'rxjs/operators';
       </eg-staff-banner>
       <eg-admin-page persistKeyPfx="{{persistKeyPfx}}" idlClass="{{idlClass}}"
         configLinkBasePath="{{configLinkBasePath}}"
+        fieldOrder="{{fieldOrder}}"
         readonlyFields="{{readonlyFields}}"
         [disableOrgFilter]="disableOrgFilter"></eg-admin-page>
       </ng-container>
@@ -28,6 +29,7 @@ export class BasicAdminPageComponent implements OnInit {
     idlClass: string;
     classLabel: string;
     persistKeyPfx: string;
+    fieldOrder = '';
     readonlyFields = '';
     configLinkBasePath = '/staff/admin';
 
@@ -68,6 +70,7 @@ export class BasicAdminPageComponent implements OnInit {
                         this.table = data['table'];
                     }
                 this.disableOrgFilter = data['disableOrgFilter'];
+                this.fieldOrder = data['fieldOrder'];
                 this.readonlyFields = data['readonlyFields'];
                 }
 
