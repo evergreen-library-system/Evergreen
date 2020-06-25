@@ -20,9 +20,9 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
     s.CONFIRM_TAKE_OVER_STAGING_TITLE = "[% l('Take Over Claim for Staging Curbside Pickup Appointment') %]";
     s.CONFIRM_TAKE_OVER_STAGING_BODY = "[% l('Take over staging pickup appointment [_1] from staff user [_2]?', '{{slot_id}}','{{other_staff}}') %]";
     s.SUCCESS_CANCEL_APPOINTMENT = "[% l('Canceled curbside appointment {{slot_id}}') %]";
-    s.SUCCESS_CURBSIDE_CLAIM_STAGING = "[% l('Released claim on curbside appointment {{slot_id}} for staging') %]";
-    s.NOTFOUND_CURBSIDE_CLAIM_STAGING = "[% l('Could not find curbside appointment {{slot_id}} to release claim for staging') %]";
-    s.FAILED_CURBSIDE_CLAIM_STAGING = "[% l('Failed to release claim on curbside appointment {{slot_id}} for staging: {{evt_code}}') %]";
+    s.SUCCESS_CURBSIDE_CLAIM_STAGING = "[% l('Claimed curbside appointment {{slot_id}} for staging') %]";
+    s.NOTFOUND_CURBSIDE_CLAIM_STAGING = "[% l('Could not find curbside appointment {{slot_id}} to claim for staging') %]";
+    s.FAILED_CURBSIDE_CLAIM_STAGING = "[% l('Failed to claim curbside appointment {{slot_id}} for staging: {{evt_code}}') %]";
     s.SUCCESS_CURBSIDE_UNCLAIM_STAGING = "[% l('Released claim on curbside appointment {{slot_id}} for staging') %]";
     s.NOTFOUND_CURBSIDE_UNCLAIM_STAGING = "[% l('Could not find curbside appointment {{slot_id}} to release claim for staging') %]";
     s.FAILED_CURBSIDE_UNCLAIM_STAGING = "[% l('Failed to release claim on curbside appointment {{slot_id}} for staging: {{evt_code}}') %]";
