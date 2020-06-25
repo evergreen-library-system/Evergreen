@@ -1,11 +1,17 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {BasketService} from '@eg/share/catalog/basket.service';
 import {Router} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PrintService} from '@eg/share/print/print.service';
+import {CatalogService} from '@eg/share/catalog/catalog.service';
+import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
+import {StaffCatalogService} from './catalog.service';
 import {BucketDialogComponent
     } from '@eg/staff/share/buckets/bucket-dialog.component';
+import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
+
+const MAX_FROM_SEARCH_RESULTS = 1000;
 
 @Component({
   selector: 'eg-catalog-basket-actions',
@@ -18,12 +24,17 @@ export class BasketActionsComponent implements OnInit {
     @ViewChild('addBasketToBucketDialog', { static: true })
         addToBucketDialog: BucketDialogComponent;
 
+    @ViewChild('addAllProgress', {static: true})
+        addAllProgress: ProgressDialogComponent;
+
     constructor(
         private router: Router,
         private net: NetService,
         private auth: AuthService,
         private printer: PrintService,
-        private basket: BasketService
+        private basket: BasketService,
+        private cat: CatalogService,
+        private staffCat: StaffCatalogService
     ) {
         this.basketAction = '';
     }
@@ -35,13 +46,33 @@ export class BasketActionsComponent implements OnInit {
         return this.basket.recordCount();
     }
 
+    isMetarecordSearch(): boolean {
+        return this.staffCat.searchContext &&
+            this.staffCat.searchContext.termSearch.isMetarecordSearch();
+    }
+
     // TODO: confirmation dialogs?
 
     applyAction(action: string) {
         this.basketAction = action;
-        console.debug('Performing basket action', this.basketAction);
 
         switch (this.basketAction) {
+
+            case 'add_all':
+                // Add all search results to basket.
+
+                this.addAllProgress.open();
+
+                const ctx = this.staffCat.cloneContext(this.staffCat.searchContext);
+                ctx.pager.offset = 0;
+                ctx.pager.limit = MAX_FROM_SEARCH_RESULTS;
+
+                this.cat.search(ctx)
+                .then(_ => this.basket.addRecordIds(ctx.currentResultIds()))
+                .then(_ => this.addAllProgress.close());
+
+                break;
+
             case 'view':
                 // This does not propagate search params -- unclear if needed.
                 this.router.navigate(['/staff/catalog/search'],

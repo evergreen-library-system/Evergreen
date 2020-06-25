@@ -99,11 +99,14 @@ export class CatalogService {
 
         return this.basket.getRecordIds().then(ids => {
 
+            const pageIds =
+                ids.slice(ctx.pager.offset, ctx.pager.limit + ctx.pager.offset);
+
             // Map our list of IDs into a search results object
             // the search context can understand.
             const result = {
                 count: ids.length,
-                ids: ids.map(id => [id])
+                ids: pageIds.map(id => [id])
             };
 
             this.applyResultData(ctx, result);

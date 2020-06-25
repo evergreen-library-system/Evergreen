@@ -89,7 +89,9 @@ export class StaffCatalogService {
 
     cloneContext(context: CatalogSearchContext): CatalogSearchContext {
         const params: any = this.catUrl.toUrlParams(context);
-        return this.catUrl.fromUrlHash(params);
+        const ctx = this.catUrl.fromUrlHash(params);
+        ctx.isStaff = true; // not carried in the URL
+        return ctx;
     }
 
     applySearchDefaults(): void {

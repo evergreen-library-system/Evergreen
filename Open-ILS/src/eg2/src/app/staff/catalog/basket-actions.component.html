@@ -1,6 +1,8 @@
 <eg-bucket-dialog #addBasketToBucketDialog>
 </eg-bucket-dialog>
 
+<eg-progress-dialog #addAllProgress></eg-progress-dialog>
+
 <div class="d-flex justify-content-end">
   <div class="pr-1">
     <div class="float-right">
@@ -15,22 +17,23 @@
   <div class="pr-1">
     <div ngbDropdown placement="bottom-right">
       <button class="btn btn-light" id="basketActions"
-        [disabled]="!basketCount()"
         ngbDropdownToggle i18n>Basket Actions</button>
       <div ngbDropdownMenu aria-labelledby="basketActions">
-        <button class="dropdown-item"
+        <button class="dropdown-item" [disabled]="isMetarecordSearch()"
+          (click)="applyAction('add_all')" i18n>Add All Search Results</button>
+        <button class="dropdown-item" [disabled]="!basketCount()"
           (click)="applyAction('view')" i18n>View Basket</button>
-        <button class="dropdown-item"
+        <button class="dropdown-item" [disabled]="!basketCount()"
           (click)="applyAction('hold')" i18n>Place Hold</button>
-        <button class="dropdown-item"
+        <button class="dropdown-item" [disabled]="!basketCount()"
           (click)="applyAction('print')" i18n>Print Title Details</button>
-        <button class="dropdown-item"
+        <button class="dropdown-item" [disabled]="!basketCount()"
           (click)="applyAction('email')" i18n>Email Title Details</button>
-        <button class="dropdown-item"
+        <button class="dropdown-item" [disabled]="!basketCount()"
           (click)="applyAction('bucket')" i18n>Add Basket to Bucket</button>
-        <button class="dropdown-item"
+        <button class="dropdown-item" [disabled]="!basketCount()"
           (click)="applyAction('export_marc')" i18n>Export Records</button>
-        <button class="dropdown-item"
+        <button class="dropdown-item" [disabled]="!basketCount()"
           (click)="applyAction('clear')" i18n>Clear Basket</button>
       </div>
     </div>
