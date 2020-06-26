@@ -54,6 +54,7 @@
   idlClass="bresv"
   datetimeFields="start_time,end_time"
   [fieldOptions]="{end_time:{customTemplate:{template:endTimeTemplate}}}"
+  fieldOrder="usr,start_time,end_time,request_time,capture_time,pickup_time,email_notify,unrecovered,billing_total,payment_total,fine_interval,fine_amount,max_fine,current_resource,note,target_resource_type,request_lib,pickup_lib"
   hiddenFields="xact_start,xact_finish,cancel_time,booking_interval"
   [readonlyFields]="listReadOnlyFields()">
 </eg-fm-record-editor>
