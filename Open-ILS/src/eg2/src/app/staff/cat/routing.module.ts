@@ -3,10 +3,12 @@ import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
   { path: 'vandelay',
-    loadChildren: '@eg/staff/cat/vandelay/vandelay.module#VandelayModule'
+    loadChildren: () =>
+      import('./vandelay/vandelay.module').then(m => m.VandelayModule)
   }, {
     path: 'authority',
-    loadChildren: '@eg/staff/cat/authority/authority.module#AuthorityModule'
+    loadChildren: () =>
+      import('./authority/authority.module').then(m => m.AuthorityModule)
   }
 ];
 

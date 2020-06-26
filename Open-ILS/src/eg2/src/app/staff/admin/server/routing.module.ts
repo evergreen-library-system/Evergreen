@@ -14,7 +14,8 @@ const routes: Routes = [{
     component: OrgUnitTypeComponent
 }, {
     path: 'config/floating_group',
-    loadChildren: '@eg/staff/admin/server/floating-group/floating-group.module#FloatingGroupModule'
+    loadChildren: () =>
+      import('./floating-group/floating-group.module').then(m => m.FloatingGroupModule)
 }, {
     path: 'config/print_template',
     component: PrintTemplateComponent
@@ -23,7 +24,8 @@ const routes: Routes = [{
     component: PermGroupTreeComponent
 }, {
     path: 'actor/org_unit',
-    loadChildren: '@eg/staff/admin/server/org-unit.module#OrgUnitModule'
+    loadChildren: () =>
+      import('./org-unit.module').then(m => m.OrgUnitModule)
 }, {
     path: 'actor/org_unit_proximity_adjustment',
     component: BasicAdminPageComponent,

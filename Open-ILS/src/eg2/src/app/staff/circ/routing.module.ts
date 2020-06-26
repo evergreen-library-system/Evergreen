@@ -3,7 +3,8 @@ import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
   { path: 'patron',
-    loadChildren: '@eg/staff/circ/patron/routing.module#CircPatronRoutingModule'
+    loadChildren: () =>
+      import('./patron/routing.module').then(m => m.CircPatronRoutingModule)
   }
 ];
 

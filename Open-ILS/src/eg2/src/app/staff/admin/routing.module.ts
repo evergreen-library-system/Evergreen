@@ -3,21 +3,26 @@ import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [{
   path: '',
-  children : [
-  { path: 'workstation',
-   loadChildren: '@eg/staff/admin/workstation/routing.module#AdminWsRoutingModule'
+  children : [{
+    path: 'workstation',
+    loadChildren: () =>
+      import('./workstation/routing.module').then(m => m.AdminWsRoutingModule)
   }, {
     path: 'server',
-    loadChildren: '@eg/staff/admin/server/admin-server.module#AdminServerModule'
+    loadChildren: () =>
+      import('./server/admin-server.module').then(m => m.AdminServerModule)
   }, {
     path: 'local',
-    loadChildren: '@eg/staff/admin/local/admin-local.module#AdminLocalModule'
+    loadChildren: () =>
+      import('./local/admin-local.module').then(m => m.AdminLocalModule)
   }, {
     path: 'acq',
-    loadChildren: '@eg/staff/admin/acq/admin-acq.module#AdminAcqModule'
+    loadChildren: () =>
+      import('./acq/admin-acq.module').then(m => m.AdminAcqModule)
   }, {
     path: 'booking',
-    loadChildren: '@eg/staff/admin/booking/admin-booking.module#AdminBookingModule'
+    loadChildren: () =>
+      import('./booking/admin-booking.module').then(m => m.AdminBookingModule)
   }]
 }];
 

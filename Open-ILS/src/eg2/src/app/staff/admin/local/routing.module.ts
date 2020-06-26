@@ -24,7 +24,8 @@ const routes: Routes = [{
     component: StandingPenaltyComponent
 }, {
     path: 'action/survey',
-    loadChildren: '@eg/staff/admin/local/survey/survey.module#SurveyModule'
+    loadChildren: () =>
+      import('./survey/survey.module').then(m => m.SurveyModule)
 }, {
     path: ':schema/:table',
     component: BasicAdminPageComponent

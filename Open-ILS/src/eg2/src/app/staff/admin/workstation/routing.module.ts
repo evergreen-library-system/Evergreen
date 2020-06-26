@@ -3,7 +3,8 @@ import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [{
     path: 'workstations',
-    loadChildren: '@eg/staff/admin/workstation/workstations/workstations.module#ManageWorkstationsModule'
+    loadChildren: () =>
+      import('./workstations/workstations.module').then(m => m.ManageWorkstationsModule)
 }];
 
 @NgModule({

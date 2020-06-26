@@ -20,7 +20,8 @@ const routes: Routes = [{
     pathMatch: 'full',
   }, {
     path: 'booking',
-    loadChildren : '@eg/staff/booking/booking.module#BookingModule'
+    loadChildren: () =>
+      import('./booking/booking.module').then(m => m.BookingModule)
   }, {
     path: 'about',
     component: AboutComponent
@@ -32,19 +33,24 @@ const routes: Routes = [{
     component: StaffSplashComponent
   }, {
     path: 'circ',
-    loadChildren : '@eg/staff/circ/routing.module#CircRoutingModule'
+    loadChildren: () =>
+      import('./circ/routing.module').then(m => m.CircRoutingModule)
   }, {
     path: 'cat',
-    loadChildren : '@eg/staff/cat/routing.module#CatRoutingModule'
+    loadChildren: () =>
+      import('./cat/routing.module').then(m => m.CatRoutingModule)
   }, {
     path: 'catalog',
-    loadChildren : '@eg/staff/catalog/catalog.module#CatalogModule'
+    loadChildren: () =>
+      import('./catalog/catalog.module').then(m => m.CatalogModule)
   }, {
     path: 'sandbox',
-    loadChildren : '@eg/staff/sandbox/sandbox.module#SandboxModule'
+    loadChildren: () =>
+      import('./sandbox/sandbox.module').then(m => m.SandboxModule)
   }, {
     path: 'admin',
-    loadChildren : '@eg/staff/admin/routing.module#AdminRoutingModule'
+    loadChildren: () =>
+      import('./admin/routing.module').then(m => m.AdminRoutingModule)
   }]
 }];
 
