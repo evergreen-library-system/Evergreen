@@ -20,7 +20,7 @@
       </a>
       <br>
       <span ng-show="item.slot.notes()">
-        <strong>[% l('Notes:') %]</strong> {{item.notes()}}
+        <strong>[% l('Notes:') %]</strong> {{item.slot.notes()}}
       </span>
     </eg-grid-field>
     <eg-grid-field label="[% l('Appointment ID') %]" path="slot.id"></eg-grid-field>
