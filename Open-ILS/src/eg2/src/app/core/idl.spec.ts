@@ -51,6 +51,54 @@ describe('IdlService', () => {
         expect(service.pkeyMatches(org, user)).toBe(false);
     });
 
+    it('should sort an array of IDL fields according to an array of field names', () => {
+        const fieldNames = ['name', 'owner', 'active', 'id'];
+        const idlFields = [
+            {'name': 'id', 'label': 'Object ID', 'dataType': 'id'},
+            {'name': 'name', 'label': 'The name of this object', 'datatype': 'text'},
+            {'name': 'active', 'datatype': 'bool'},
+            {'name': 'owner', 'type': 'link', 'key': 'id', 'class': 'aou', 'reltype': 'has_a', 'datatype': 'org_unit'}
+        ];
+        const expectedOrder = [
+            {'name': 'name', 'label': 'The name of this object', 'datatype': 'text'},
+            {'name': 'owner', 'type': 'link', 'key': 'id', 'class': 'aou', 'reltype': 'has_a', 'datatype': 'org_unit'},
+            {'name': 'active', 'datatype': 'bool'},
+            {'name': 'id', 'label': 'Object ID', 'dataType': 'id'},
+        ];
+        expect(service.sortIdlFields(idlFields, fieldNames)).toEqual(expectedOrder);
+    });
+
+    it('should sort IDL fields by label when it runs out of specified field names', () => {
+        const fieldNames = ['owner'];
+        const idlFields = [
+            {'name': 'id', 'label': 'Object ID', 'dataType': 'id'},
+            {'name': 'name', 'label': 'The name of this object', 'datatype': 'text'},
+            {'name': 'owner', 'type': 'link', 'key': 'id', 'class': 'aou', 'reltype': 'has_a', 'datatype': 'org_unit'}
+        ];
+        const expectedOrder = [
+            {'name': 'owner', 'type': 'link', 'key': 'id', 'class': 'aou', 'reltype': 'has_a', 'datatype': 'org_unit'},
+            {'name': 'id', 'label': 'Object ID', 'dataType': 'id'},
+            {'name': 'name', 'label': 'The name of this object', 'datatype': 'text'},
+        ];
+        expect(service.sortIdlFields(idlFields, fieldNames)).toEqual(expectedOrder);
+    });
+
+    it('should sort IDL fields by name when it runs out of other ways to sort', () => {
+        const fieldNames = ['owner'];
+        const idlFields = [
+            {'name': 'id', 'dataType': 'id'},
+            {'name': 'name', 'label': 'The name of this object', 'datatype': 'text'},
+            {'name': 'active', 'datatype': 'bool'},
+            {'name': 'owner', 'type': 'link', 'key': 'id', 'class': 'aou', 'reltype': 'has_a', 'datatype': 'org_unit'}
+        ];
+        const expectedOrder = [
+            {'name': 'owner', 'type': 'link', 'key': 'id', 'class': 'aou', 'reltype': 'has_a', 'datatype': 'org_unit'},
+            {'name': 'name', 'label': 'The name of this object', 'datatype': 'text'},
+            {'name': 'active', 'datatype': 'bool'},
+            {'name': 'id', 'dataType': 'id'},
+        ];
+        expect(service.sortIdlFields(idlFields, fieldNames)).toEqual(expectedOrder);
+    });
 
 });
 

@@ -227,5 +227,35 @@ export class IdlService {
         const pkeyField = this.classes[idlClass].pkey || 'id';
         return obj1[pkeyField]() === obj2[pkeyField]();
     }
+
+    // Sort an array of fields from the IDL (like you might get from calling
+    // this.idlClasses[classname][fields])
+
+    sortIdlFields(fields: any[], desiredOrder: string[]): any[] {
+        let newList = [];
+
+        desiredOrder.forEach(name => {
+            const match = fields.filter(field => field.name === name)[0];
+            if (match) { newList.push(match); }
+        });
+
+        // Sort remaining fields by label
+        const remainder = fields.filter(f => !desiredOrder.includes(f.name));
+        remainder.sort((a, b) => {
+            if (a.label && b.label) {
+                return (a.label < b.label) ? -1 : 1;
+            } else if (a.label) {
+                return -1;
+            } else if (b.label) {
+                return 1;
+            }
+
+            // If no order specified and no labels to sort by,
+            // default to sorting by field name
+            return (a.label < b.label) ? -1 : 1;
+        });
+        newList = newList.concat(remainder);
+        return newList;
+    }
 }
 
