@@ -75,7 +75,7 @@ import {StringModule} from '@eg/share/string/string.module';
 export class EgCommonModule {
     /** forRoot() lets us define services that should only be
      * instantiated once for all loaded routes */
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<EgCommonModule> {
         return {
             ngModule: EgCommonModule,
             providers: [

@@ -27,6 +27,11 @@
             ],
             "scripts": [
               "src/assets/js/marcrecord.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "file-saver",
+              "moment",
+              "moment-timezone"
             ]
           },
           "configurations": {

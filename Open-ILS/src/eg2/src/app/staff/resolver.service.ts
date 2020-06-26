@@ -64,7 +64,11 @@ export class StaffResolver implements Resolve<Observable<any>> {
                         this.auth.verifyWorkstation().then(
                             wsOk => {
                                 this.loadStartupData()
-                                .then(ok => this.observer.complete());
+                                .then(ok => {
+                                    // Resolve observable must emit /something/
+                                    this.observer.next(true);
+                                    this.observer.complete()
+                                });
                             },
                             wsNotOk => this.handleInvalidWorkstation(path)
                         );
@@ -115,6 +119,8 @@ export class StaffResolver implements Resolve<Observable<any>> {
 
         if (path.startsWith(WS_MANAGE_PATH)) {
             // user is navigating to the WS admin page.
+            this.observer.next(true);
+            // Resolve observable must emit /something/
             this.observer.complete();
         } else {
             this.router.navigate([WS_MANAGE_PATH]);

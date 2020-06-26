@@ -64,7 +64,7 @@ import {PatronBarcodeValidatorDirective} from '@eg/share/validators/patron_barco
 })
 
 export class StaffCommonModule {
-    static forRoot(): ModuleWithProviders {
+    static forRoot(): ModuleWithProviders<StaffCommonModule> {
         return {
             ngModule: StaffCommonModule,
             providers: [ // Export staff-wide services

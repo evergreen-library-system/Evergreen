@@ -25,6 +25,7 @@
     "@angular/core": "^9.1.11",
     "@angular/forms": "^10.0.0",
     "@angular/http": "^7.2.16",
+    "@angular/localize": "^10.0.0",
     "@angular/platform-browser": "^10.0.0",
     "@angular/platform-browser-dynamic": "^10.0.0",
     "@angular/router": "^10.0.0",
