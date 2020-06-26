@@ -38,7 +38,7 @@ install_nodejs_from_source:
 	wget -N $(NODEJS_BINARY)
 	tar -C /usr/local --strip-components 1 -xJf $(NODEJS_TARBIN)
 	npm update
-	npm install -g @angular/cli@^9.1.0
+	npm install -g @angular/cli@^10.0.0
 
 clean:
 	make -C $(LIBDBI) clean
