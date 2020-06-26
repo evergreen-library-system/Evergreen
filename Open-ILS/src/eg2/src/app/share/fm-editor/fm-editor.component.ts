@@ -447,26 +447,8 @@ export class FmRecordEditorComponent
             fields.map(field => this.constructOneField(field))
 
         ).then(() => {
-
-            if (!this.fieldOrder) {
-                this.fields = fields.sort((a, b) => a.label < b.label ? -1 : 1);
-                return;
-            }
-
-            let newList = [];
-            const ordered = this.fieldOrder.split(/,/);
-
-            ordered.forEach(name => {
-                const f1 = fields.filter(f2 => f2.name === name)[0];
-                if (f1) { newList.push(f1); }
-            });
-
-            // Sort remaining fields by label
-            const remainder = fields.filter(f => !ordered.includes(f.name));
-            remainder.sort((a, b) => a.label < b.label ? -1 : 1);
-            newList = newList.concat(remainder);
-
-            this.fields = newList;
+            const order = this.fieldOrder ? this.fieldOrder.split(/,/) : [];
+            this.fields = this.idl.sortIdlFields(fields, order);
         });
     }
 
