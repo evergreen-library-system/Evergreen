@@ -89,11 +89,11 @@
 </ng-template>
 
 <eg-fm-record-editor #editDialog idlClass="{{idlClass}}" 
-    [preloadLinkedValues]="true" readonlyFields="last_refresh_time"
+    [preloadLinkedValues]="true"
+    fieldOrder="owner,name,type,age_filter,max_items,owning_lib_filter,copy_location_filter,active,id,bucket,last_refresh_time,creator,create_time,editor,edit_time"
     hiddenFieldsList="creator,editor,create_time,edit_time"
     [preSave]="mungeCarousel" (recordSaved)="postSave($event)"
     readonlyFields="last_refresh_time"
     [fieldOptions]="{bucket:{customTemplate:{template:bucketTemplate}},copy_location_filter:{customTemplate:{template:locationTemplate}},owning_lib_filter:{customTemplate:{template:orgTemplate}}}"
 ></eg-fm-record-editor>
-
 
