@@ -13,7 +13,7 @@ import {ComboboxEntry, ComboboxComponent
   } from '@eg/share/combobox/combobox.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {MarcEditContext} from './editor-context';
-import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 
 export interface MarcSavedEvent {
@@ -155,7 +155,7 @@ export class MarcEditorComponent implements OnInit {
     }
 
     // Remember the last used tab as the preferred tab.
-    tabChange(evt: NgbTabChangeEvent) {
+    tabChange(evt: NgbNavChangeEvent) {
 
         // Avoid undo persistence across tabs since that could result
         // in changes getting lost.

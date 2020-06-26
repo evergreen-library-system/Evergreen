@@ -79,22 +79,26 @@
 
 <div *ngIf="!dataSaving" class="row">
   <div class="col-lg-12">
-    <ngb-tabset [activeId]="editorTab" (tabChange)="tabChange($event)">
-      <ngb-tab title="Enhanced MARC Editor" i18n-title id="rich">
-        <ng-template ngbTabContent>
+    <ul ngbNav #editorNav="ngbNav" class="nav-tabs"
+      [activeId]="editorTab" (navChange)="tabChange($event)">
+      <li [ngbNavItem]="'rich'">
+        <a ngbNavLink i18n>Enhanced MARC Editor</a>
+        <ng-template ngbNavContent>
           <ng-container *ngIf="context && context.record">
             <eg-marc-rich-editor [context]="context"></eg-marc-rich-editor>
           </ng-container>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Flat Text Editor" i18n-title id="flat">
-        <ng-template ngbTabContent>
+      </li>
+      <li ngbNavItem="flat">
+        <a ngbNavLink i18n>Flat Text Editor</a>
+        <ng-template ngbNavContent>
           <ng-container *ngIf="context && context.record">
             <eg-marc-flat-editor [context]="context"></eg-marc-flat-editor>
           </ng-container>
         </ng-template>
-      </ngb-tab>
-    </ngb-tabset>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="editorNav"></div>
   </div>
 </div>
 
