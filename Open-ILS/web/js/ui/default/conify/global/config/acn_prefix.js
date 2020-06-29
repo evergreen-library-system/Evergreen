@@ -50,7 +50,10 @@ function buildGrid() {
         {   async: true,
             params: [
                 openils.User.authtoken,
-                {"owning_lib":fieldmapper.aou.descendantNodeList(thingContextOrg,true)},
+                {"owning_lib":fieldmapper.aou.descendantNodeList(thingContextOrg,true),
+		    deleted: 'f',
+	            id != -1
+		},
                 {"order_by":{"acnp":"label_sortkey"}}
             ],
             oncomplete: function(r) {

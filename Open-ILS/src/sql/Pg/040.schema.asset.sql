@@ -461,9 +461,11 @@ CREATE TABLE asset.call_number_prefix (
 	id		        SERIAL   PRIMARY KEY,
 	owning_lib	    INT			NOT NULL REFERENCES actor.org_unit (id),
 	label		    TEXT		NOT NULL, -- i18n
-	label_sortkey	TEXT
+	label_sortkey	TEXT,
+	deleted         BOOLEAN DEFAULT FALSE 
 );
 CREATE TRIGGER prefix_normalize_tgr BEFORE INSERT OR UPDATE ON asset.call_number_prefix FOR EACH ROW EXECUTE PROCEDURE asset.normalize_affix_sortkey();
+CREATE RULE protect_acn_prefix_delete AS ON DELETE TO asset.call_number_prefix DO INSTEAD UPDATE asset.call_number_prefix SET deleted = TRUE WHERE OLD.id = asset.call_number_prefix.id;
 CREATE UNIQUE INDEX asset_call_number_prefix_once_per_lib ON asset.call_number_prefix (label, owning_lib);
 CREATE INDEX asset_call_number_prefix_sortkey_idx ON asset.call_number_prefix (label_sortkey);
 
@@ -471,9 +473,11 @@ CREATE TABLE asset.call_number_suffix (
 	id		        SERIAL   PRIMARY KEY,
 	owning_lib	    INT			NOT NULL REFERENCES actor.org_unit (id),
 	label		    TEXT		NOT NULL, -- i18n
-	label_sortkey	TEXT
+	label_sortkey	TEXT,
+	deleted         BOOLEAN DEFAULT FALSE 
 );
 CREATE TRIGGER suffix_normalize_tgr BEFORE INSERT OR UPDATE ON asset.call_number_suffix FOR EACH ROW EXECUTE PROCEDURE asset.normalize_affix_sortkey();
+CREATE RULE protect_acn_suffix_delete AS ON DELETE TO asset.call_number_suffix DO INSTEAD UPDATE asset.call_number_suffix SET deleted = TRUE WHERE OLD.id = asset.call_number_suffix.id;
 CREATE UNIQUE INDEX asset_call_number_suffix_once_per_lib ON asset.call_number_suffix (label, owning_lib);
 CREATE INDEX asset_call_number_suffix_sortkey_idx ON asset.call_number_suffix (label_sortkey);
 

@@ -19,7 +19,7 @@
         </div>
         <table  jsId="thingGrid"
                 dojoType="openils.widget.AutoGrid"
-                fieldOrder="['id', 'label', 'owning_lib']"
+                fieldOrder="['id', 'label', 'owning_lib', 'deleted']"
                 suppressFields="['label_sortkey']"
                 suppressEditFields="['label_sortkey']"
                 query="{id: '*'}"
