@@ -1,0 +1,22 @@
+[%- PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
+    ctx.page_title = l("Record Detail") %]
+    <h2 class="sr-only">[% l('Basket') %]</h2>
+    <div class="mobile_hide">
+    [% INCLUDE "opac/parts/searchbar.tt2" %]
+    </div>
+    <div id="content-wrapper">
+        <div id="main-content">
+            [%  IF ctx.mylist.size;
+                    INCLUDE "opac/parts/anon_list.tt2";
+                ELSE %]
+                <div class="warning_box"><h2>[% l("The basket is empty."); %]</h2></div>
+                <button type="button" class="btn btn-confirm" onclick="window.location='[% ctx.referer | html %]'">[% l('Return') %]</button>
+                [% END %]
+            <div class="common-full-pad"></div>	
+        </div>
+    </div>
+[%- END %]

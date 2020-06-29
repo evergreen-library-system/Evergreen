@@ -1,0 +1,281 @@
+[%
+
+##############################################################################
+# This file contains skin-level configuration settings.
+# Many of these settings will probably migrate into actor.org_unit_settings.
+##############################################################################
+
+##############################################################################
+# Holds blocking
+##############################################################################
+# Prevent the "Place hold" link from being displayed if a copy is available.
+# This is not perfect, given the umpteen different types of holds that are
+# possible, but addresses the major use case for libraries that don't want
+# to fetch copies from the shelves.
+ctx.holds_block.enabled = 'false';
+
+##############################################################################
+# RefWorks configuration
+##############################################################################
+# RefWorks is a Web-based citation manager
+ctx.refworks.enabled = 'false';
+
+# Base URL for RefWorks
+ctx.refworks.url = 'http://www.refworks.com';
+
+# Some sites have a hosted RefWorks instance at a different URL;
+# in addition, you might want to proxy access to RefWorks - for example:
+# ctx.refworks.url = 'http://librweb.laurentian.ca/login?url=http://refworks.scholarsportal.info';
+
+##############################################################################
+# OpenURL resolution
+##############################################################################
+# Evergreen provides the ability to point at an OpenURL resolver to find
+# electronic resources for a given ISSN or ISBN. Currently, only the SFX
+# resolver is supported.
+#
+# You must enable the open-ils.resolver instance in opensrf.xml to use
+# this feature.
+##############################################################################
+
+openurl.enabled = 'false';
+openurl.baseurl = 'http://sfx.example.com/instance';
+
+##############################################################################
+# Google Analytics support
+##############################################################################
+# You can enable Google Analytics support in Evergreen by entering a
+# valid Google Analytics code and changing 'false' to 'true'
+##############################################################################
+google_analytics.enabled = 'false';
+google_analytics.code = 'UA-9999999-99';
+
+##############################################################################
+# Ebook API integration
+##############################################################################
+ebook_api.enabled = 'false';
+ebook_api.ebook_test.enabled = 'false';
+ebook_api.ebook_test.base_uris = [ 'http://example.com/ebookapi/t/' ];
+ebook_api.oneclickdigital.enabled = 'false';
+ebook_api.oneclickdigital.base_uris = [ 'http://example.oneclickdigital.com/Products/ProductDetail.aspx' ];
+ebook_api.overdrive.enabled = 'false';
+ebook_api.overdrive.base_uris = [ 'http://elm.lib.overdrive.com/' ];
+
+##############################################################################
+# Enable "Forgot your password?" prompt at login
+##############################################################################
+reset_password = 'true';
+
+##############################################################################
+# Hide various options from user preferences that you might not want to expose
+# if you rely on centralized authentication via open-ils.auth_proxy, like LDAP
+#
+# Username changes can be disabled by the opac.lock_usernames OU setting.
+##############################################################################
+disable_password_change = 'false';
+disable_email_change = 'false';
+
+##############################################################################
+# Some libraries do not do notifications by phone; if not true, then this
+# hides the user preference for phone notifications as well as the phone
+# notification portion of the hold dialogue
+##############################################################################
+allow_phone_notifications = 'true';
+
+##############################################################################
+# Format of parts selection on Place Holds screen
+# Set to true to use radio buttons for parts selection on the Place Holds
+# screen. The default behavior is to to display them in a select menu.
+#############################################################################
+enable.radio.parts = 'false';
+
+##############################################################################
+# Misc. UI Settings
+##############################################################################
+# Option for full details as a default, esp. impt. for e-content
+# that uses resolver plumbing. Valid values are 'true', 'false' and 'hide'.
+# Setting this to 'true' shows full details by default but allows the link
+# to appear for 'Show Fewer Details'. The 'hide' option shows full details
+# and also suppresses the link from displaying at all.
+show_more_details.default = 'false';
+
+##############################################################################
+# Size of the jacket image to display on the record detail summary.
+# Sizes vary depending on added content provider.
+# Options are "small", "medium", and "large"
+record.summary.jacket_size = 'medium';
+
+##############################################################################
+# Define the order in which facets are displayed.  Only facets listed here
+# will be displayed.  To show all facets sorted by name, comment out this
+# setting.
+# facet.display = [] # show no facets
+facet.display = [
+    {facet_class => 'author',  facet_order => ['personal', 'corporate']},
+    {facet_class => 'subject', facet_order => ['topic']},
+    {facet_class => 'identifier', facet_order => ['genre']},
+    {facet_class => 'series',  facet_order => ['seriestitle']},
+    {facet_class => 'subject', facet_order => ['name', 'geographic']}
+];
+facet.default_display_count = 5;
+
+##############################################################################
+# Define the advanced search limiters and labels.
+# Each entry is put into a table cell.
+# adv_label is the (translated) label for the limiter
+# adv_attr is an array of possible limiters, the first one that has any
+#   values will be used
+# adv_filter is the same as adv_attr, but for search filter groups
+# adv_size lets you set the height of the adv_attr or adv_filter select box.
+# if adv_size < 1, the box height is set to the number of options in it.
+# adv_break will end the current row. If specified with a label/attr it
+#   will do so *after* that limiter.
+# adv_special will drop in a special entry:
+#   lib_selector will put the search library box (with limit to available)
+#   pub_year will put the publication year box
+#   sort_selector will put the sort results selector
+# id DOM id used for linking labels to form controls.  They are pinned
+#   here instead of auto-generated (from the attr type, for example)
+#   for consistency.
+
+search.adv_config = [
+    {adv_label => l("Item Type"), adv_attr => ["mattype", "item_type"], id => 'adv_selector_item_type'},
+    {adv_label => l("Item Form"), adv_attr => "item_form", id => 'adv_selector_item_form'},
+    {adv_label => l("Language"),  adv_attr => "item_lang", id => 'adv_selector_item_lang'},
+    {adv_label => l("Audience"),  adv_attr => ["audience_group", "audience"], id => 'adv_selector_audience', adv_break => 1},
+    {adv_label => l("Video Format"), adv_attr => "vr_format", id => 'adv_selector_video_format'},
+    {adv_label => l("Bib Level"), adv_attr => "bib_level", id => 'adv_selector_bib_level'},
+    {adv_label => l("Literary Form"), adv_attr => "lit_form", id => 'adv_selector_lit_form'},
+    {adv_label => l("Shelving Location"), adv_special => "copy_location", id => 'adv_copy_location_selector', js_only => 1, adv_break => 1},
+    {adv_label => l("Search Library"), adv_special => "lib_selector", id => 'adv_org_selector'},
+    {adv_label => l("Publication Year"), adv_special => "pub_year", id => 'adv_selector_pub_year'},
+    {adv_label => l("Sort Results"), adv_special => "sort_selector", id => 'adv_selector_sort_results'},
+];
+
+# Set the default height of the select boxes. Defaults to 4.
+#search.default_adv_select_height = 4;
+
+##############################################################################
+# For each search box the default "query type" value can be specified here
+# This is the actual backend value, not the label
+# Also note that including more than the row count entries won't add rows
+# The first entry should be used as a default for "basic" search as well
+
+search.default_qtypes = ['keyword','title','author'];
+
+##############################################################################
+# Basic Search Box definition
+# This allows selection of what, exactly, basic search uses for a selection
+# box. Previously it was hardcoded to use an attr box of mattype or item_type.
+#
+# type can be "attr" or "filter"
+# group is the attr or filter entries you want to check for
+# none_label is the label for the default nothing selected entry.
+
+search.basic_config = {
+    type => 'attr',
+    group => [ctx.get_cgf('opac.format_selector.attr').value, 'item_type'],
+    none_label => l("All Formats"),
+};
+
+# Make metarecord search the default.
+#search.metarecord_default = 1;
+
+# Disable search term highlighting
+#search.no_highlight = 1;
+
+##############################################################################
+# Show Google Book Previews
+# Set to 1 or 'true' to enable
+ctx.google_books_preview = 0;
+
+##############################################################################
+
+# Set a maintenance message to display in the catalogue. Supports HTML encoding
+ctx.maintenance_message = "<b>This OPAC will be unavailable on Month ##, #### at #pm for planned upgrades.</b>";
+# Maintenance types follow Bootstrap4 alert options as follows
+# success = green; info = blue; warning = yellow; danger = red
+# Other colors would require re-coding the alert 
+ctx.maintenance_type = l('info');
+
+##############################################################################
+# Depth Button/Checkbox
+# Recommendation: Do not enable button for basic search without enabling the
+# checkbox for the results page
+ctx.depth_sel_checkbox = 1; # Results Page Checkbox Toggle
+ctx.depth_sel_button = 1; # Basic Search Submit Button
+ctx.depth_sel_depth = 0; # Depth to set to
+ctx.depth_sel_button_label = l('All Libraries');
+ctx.depth_sel_button_class = 'opac-button';
+ctx.depth_sel_checkbox_label = l('Show Results from All Libraries');
+ctx.depth_sel_tooltip = l('Select this option to expand your results to all libraries while retaining the priority of your selected library\'s holdings.');
+ctx.depth_sel_resultshint = l('Showing results from all libraries');
+
+##############################################################################
+# Exclude Electronic Resources Checkbox
+# One setting for both the advanced search page and the results bar.
+# Off by default; set to 1 to display.
+ctx.exclude_electronic_checkbox = 0;
+
+##############################################################################
+# Metarecords configuration
+# metarecords.disabled = 1; # disable all metarecord access points
+##############################################################################
+
+##############################################################################
+# Local date format (uses POSIX strftime() formatting)
+# See http://www.template-toolkit.org/docs/modules/Template/Plugin/Date.html
+# DATE_FORMAT = '%Y-%m-%d'; # for 2014-06-31 format
+##############################################################################
+
+##############################################################################
+# Local time format (uses POSIX strftime() formatting)
+# See http://www.template-toolkit.org/docs/modules/Template/Plugin/Date.html
+# TIME_FORMAT = '%H:%M:%S'; # for 16:32:32 (24 hour) format
+# TIME_FORMAT = '%H:%M'; # for 16:32 (24 hour) format
+##############################################################################
+
+##############################################################################
+# Obalkyknih.cz support
+##############################################################################
+# Obalkyknihy.cz is free Czech service providing added content and book covers
+# Set to 'true' to enable
+##############################################################################
+# obalkyknih_cz.enabled = 'false';
+
+##############################################################################
+# JQuery support
+##############################################################################
+# Include JQuery in the TPAC?
+# Set to a true value to enable
+##############################################################################
+# ctx.want_jquery = 1;
+
+##############################################################################
+# Browser cache-busting key
+##############################################################################
+# Links to assets like stylesheets, JavaScript, and images will have this
+# key appended so that browsers will be forced to request a new version.
+# Enables you to set a cache max-date of years.
+#
+# If unset, it falls back to eg_cache_hash (which is set every time you run
+# "autogen", which may or may not be when you change styles etc)
+##############################################################################
+# ctx.cache_key = '001'
+
+##############################################################################
+# Display of badge scores
+##############################################################################
+ctx.hide_badge_scores = 'false';
+
+##############################################################################
+# Maximum number of items allowed to be stored in a basket
+##############################################################################
+ctx.max_cart_size = 500;
+
+##############################################################################
+# Display booking reservations tab in myopac 
+##############################################################################
+ctx.show_reservations_tab = 'false';
+
+%]

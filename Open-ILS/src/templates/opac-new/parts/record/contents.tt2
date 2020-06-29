@@ -1,0 +1,217 @@
+[%-
+contents =  [
+    {
+        display_field => 'general_note',
+        label => l('General Note: '),
+        xpath => '//*[@tag="500"]'
+    }, {
+        label => l('With Note: '),
+        xpath => '//*[@tag="501"]'
+    }, {
+        display_field => 'thesis',
+        label => l('Dissertation Note: '),
+        xpath => '//*[@tag="502"]'
+    }, {
+        display_field => 'bibliography',
+        label => l('Bibliography, etc. Note: '),
+        xpath => '//*[@tag="504"]'
+    }, {
+        display_field => 'toc',
+        label => l('Formatted Contents Note: '),
+        xpath => '//*[@tag="505"]'
+    }, {
+        label => l('Restrictions on Access Note: '),
+        xpath => '//*[@tag="506"]'
+    }, {
+        label => l('Scale Note for Graphic Material: '),
+        xpath => '//*[@tag="507"]'
+    }, {
+        display_field => 'production_credits',
+        label => l('Creation/Production Credits Note: '),
+        xpath => '//*[@tag="508"]'
+    }, {
+        label => l('Citation/References Note: '),
+        xpath => '//*[@tag="510"]'
+    }, {
+        display_field => 'performers',
+        label => l('Participant or Performer Note: '),
+        xpath => '//*[@tag="511"]'
+    }, {
+        label => l('Type of Report and Period Covered Note: '),
+        xpath => '//*[@tag="513"]'
+    }, {
+        label => l('Data Quality Note: '),
+        xpath => '//*[@tag="514"]'
+    }, {
+        label => l('Numbering Peculiarities Note: '),
+        xpath => '//*[@tag="515"]'
+    }, {
+        label => l('Type of Computer File or Data Note: '),
+        xpath => '//*[@tag="516"]'
+    }, {
+        label => l('Date/Time and Place of an Event Note: '),
+        xpath => '//*[@tag="518"]'
+    }, {
+        display_field => 'abstract',
+        label => l('Summary, etc.: '),
+        xpath => '//*[@tag="520"]'
+    }, {
+        label => l('Target Audience Note: '),
+        xpath => '//*[@tag="521"]'
+    }, {
+        label => l('Geographic Coverage Note: '),
+        xpath => '//*[@tag="522"]'
+    }, {
+        label => l('Preferred Citation of Described Materials Note: '),
+        xpath => '//*[@tag="524"]'
+    }, {
+        label => l('Supplement Note: '),
+        xpath => '//*[@tag="525"]'
+    }, {
+        label => l('Study Program Information Note: '),
+        xpath => '//*[@tag="526"]'
+    }, {
+        label => l('Additional Physical Form available Note: '),
+        xpath => '//*[@tag="530"]'
+    }, {
+        label => l('Reproduction Note: '),
+        xpath => '//*[@tag="533"]'
+    }, {
+        label => l('Original Version Note: '),
+        xpath => '//*[@tag="534"]'
+    }, {
+        label => l('Location of Originals/Duplicates Note: '),
+        xpath => '//*[@tag="535"]'
+    }, {
+        label => l('Funding Information Note: '),
+        xpath => '//*[@tag="536"]'
+    }, {
+        label => l('System Details Note: '),
+        xpath => '//*[@tag="538"]'
+    }, {
+        label => l('Terms Governing Use and Reproduction Note: '),
+        xpath => '//*[@tag="540"]'
+    }, {
+        label => l('Immediate Source of Acquisition Note: '),
+        xpath => '//*[@tag="541"]'
+    }, {
+        label => l('Information Relating to Copyright Status: '),
+        xpath => '//*[@tag="542"]'
+    }, {
+        label => l('Location of Other Archival Materials Note: '),
+        xpath => '//*[@tag="544"]'
+    }, {
+        label => l('Biographical or Historical Data: '),
+        xpath => '//*[@tag="545"]'
+    }, {
+        label => l('Language Note: '),
+        xpath => '//*[@tag="546"]'
+    }, {
+        label => l('Former Title Complexity Note: '),
+        xpath => '//*[@tag="547"]'
+    }, {
+        label => l('Issuing Body Note: '),
+        xpath => '//*[@tag="550"]'
+    }, {
+        label => l('Entity and Attribute Information Note: '),
+        xpath => '//*[@tag="552"]'
+    }, {
+        label => l('Cumulative Index/Finding Aids Note: '),
+        xpath => '//*[@tag="555"]'
+    }, {
+        label => l('Information About Documentation Note: '),
+        xpath => '//*[@tag="556"]'
+    }, {
+        label => l('Ownership and Custodial History: '),
+        xpath => '//*[@tag="561"]'
+    }, {
+        label => l('Copy and Version Identification Note: '),
+        xpath => '//*[@tag="562"]'
+    }, {
+        label => l('Binding Information: '),
+        xpath => '//*[@tag="563"]'
+    }, {
+        label => l('Case File Characteristics Note: '),
+        xpath => '//*[@tag="565"]'
+    }, {
+        label => l('Methodology Note: '),
+        xpath => '//*[@tag="567"]'
+    }, {
+        label => l('Linking Entry Complexity Note: '),
+        xpath => '//*[@tag="580"]'
+    }, {
+        label => l('Publications About Described Materials Note: '),
+        xpath => '//*[@tag="581"]'
+    }, {
+        label => l('Action Note: '),
+        xpath => '//*[@tag="583"]'
+    }, {
+        label => l('Accumulation and Frequency of Use Note: '),
+        xpath => '//*[@tag="584"]'
+    }, {
+        label => l('Exhibitions Note: '),
+        xpath => '//*[@tag="585"]'
+    }, {
+        label => l('Awards Note: '),
+        xpath => '//*[@tag="586"]'
+    }, {
+        label => l('Source of Description Note: '),
+        xpath => '//*[@tag="588"]'
+    } 
+];
+
+BLOCK render_contents;
+    xpath = xpath || '//*[starts-with(@tag,"5")]';
+    FOR node IN ctx.marc_xml.findnodes(xpath);
+        all_content = [];
+        graphics = [];
+        FOR subfield IN node.childNodes;
+            NEXT UNLESS subfield.nodeName == "subfield";
+            code = subfield.getAttribute('code');
+            IF code == '6';
+               linked_fields = [subfield.textContent()];
+               target_field = node.getAttribute('tag');
+               get_linked_880s;
+            END;
+            NEXT UNLESS code.match('[a-z]');
+            all_content.push(subfield.textContent);
+        END;
+        total_contents = all_content.join(" ").replace('\s+$', '');
+        %] [% "<div class='content_field'>"; total_contents | html ; "</div>";
+        FOREACH link880 IN graphics;
+            '<div class="graphic880"' _ link880.dir _ '>';
+            link880.value | html;
+            '</div>';
+        END;
+    END;
+END;
+
+BLOCK render_all_contents;
+    FOREACH cont IN contents;
+        content = '';
+        df = cont.display_field;
+        IF df AND attrs.hl.$df.size;
+            content = '<!-- highlighted -->' _ attrs.hl.$df.join('<br/>');
+        ELSE;
+            content = PROCESS render_contents(xpath=cont.xpath);
+        END;
+        IF content.match('\S');
+-%]
+<tr>
+    <td class='rdetail_content_type'>[% cont.label %]</td>
+    <td class='rdetail_content_value' property='keywords'>[% content %]</td>
+</tr>
+        [%- END; %]
+    [%- END; %]
+[%- END %]
+
+[%-  content_html = PROCESS render_all_contents;
+    IF content_html.length > 0;
+%]
+<h2 class='rdetail_contents'>[% l('Content descriptions') %]</h2>
+<table class='rdetail_content'>
+    <tbody>
+[%- content_html %]
+    </tbody>
+</table>
+[%- END %]

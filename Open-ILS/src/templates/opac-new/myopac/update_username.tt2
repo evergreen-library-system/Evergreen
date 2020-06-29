@@ -1,0 +1,39 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "prefs"  %]
+<h3 class="sr-only">[% l('Update Username') %]</h3>
+<div id='myopac_summary_div' style="padding:0px;">
+
+    <div class="header_middle">
+        <span class="float-left">[% l('Update Username') %]</span>
+    </div>
+	
+[% IF ctx.invalid_username %]
+    <div id='account-update-email-error'> <!-- borrow css from update-email page -->
+        [% bad_user = ctx.invalid_username | html %]
+        [% l('"[_1]" is not a valid username.  Usernames cannot have any spaces or look like a barcode, and may be restricted by policy.  Please try a different username.', '<b>' _ bad_user _ '</b>') %]
+    </div>
+
+[% ELSIF ctx.username_exists %]
+    <div id='account-update-email-error'>
+        [% l('The username "[_1]" is taken.  Please try a different username.', '<b>' _ bad_user _ '</b>') %]
+    </div>
+
+[% ELSIF ctx.password_incorrect %]
+    <div id='account-update-email-error'>
+        [% |l %]Your current password was not correct.[% END %]
+    </div>
+
+[% END %]
+
+<form method='post' id='account-update-email' autocomplete='off'> 
+    <table> 
+        <tr><td>[% l('Current Username') %]</td><td>[% ctx.user.usrname | html %]</td></tr>
+        <tr><td>[% l('Current Password') %]</td><td><input type='password' name='current_pw' class="form-control"/></td></tr>
+        <tr><td>[% l('New Username') %]</td><td><input type='text' name='username' value='[% ctx.invalid_username | html %]' class="form-control"/></td></tr>
+        <tr><td colspan='2' align='center'><input value="[% l('Submit') %]" class="btn btn-confirm m-2" type='submit'/></td></tr>
+    </table>
+</form>
+
+[% END %]

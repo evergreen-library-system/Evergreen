@@ -1,0 +1,134 @@
+[%
+# Org Unit Selector Widget :
+#   INCLUDE build_org_selector id='selector-id' name='selector-name' 
+#       value=org_id show_loc_groups=1/0 can_have_vols_only=1/0
+#       can_have_users_only=1/0 valid_org_list=[1,2,3]
+#
+# NOTE: DO NOT USE PROCESS
+# Use of PROCESS results in internal variables, such as value or org_unit, to "leak" out
+
+PROCESS "opac/parts/misc_util.tt2";
+PROCESS get_library;
+
+BLOCK build_org_selector;
+    node_stack = [{org => org_unit || ctx.aouct_tree || ctx.aou_tree}];
+    inherited_vis = ctx.get_cgf('opac.org_unit.non_inherited_visibility').enabled == 'f';
+
+    IF !name; 
+        name = loc_name;
+    END;
+    IF !value;
+        value = loc_value;
+    END;
+
+    # if the selected org unit is out of hiding scope, 
+    # disable the ou-hide scoping altogether.
+    hiding_disabled = ctx.org_hiding_disabled(value);
+
+    -%]
+
+    <select [% IF id %] id='[% id %]' [% END -%]
+            title='[% arialabel || l("Select Library") %]' 
+            name='[% name %]' class="form-control w-100">
+    [%- 
+        WHILE node_stack.size > 0; 
+            node = node_stack.pop();
+            org_unit = node.org;
+            loc_grp = node.loc_grp;
+            ou_id = org_unit.id;
+            css_class = '';
+            disabled = '';
+            selected = '';
+            visible = org_unit.opac_visible == 't';
+
+            # org and all children are invisible.
+            NEXT IF !visible AND inherited_vis AND !ctx.is_staff;
+
+            IF !loc_grp; # processing an org unit
+
+                top_loc_groups = [];
+                IF show_loc_groups;
+                    # add the location groups that sort below the child org units
+                    FOR grp IN ctx.copy_location_groups.$ou_id.reverse;
+                        IF grp.top == 't';
+                            top_loc_groups.push(grp);
+                        ELSE;
+                            node_stack.push({org => org_unit, loc_grp => grp});
+                        END;
+                    END;
+                END;
+
+                # add the child org units
+                FOR child IN org_unit.children.reverse;
+                    node_stack.push({org => child});
+                END;
+
+                # add the location groups that sort to the top
+                # above the child org units
+                FOR grp IN top_loc_groups;
+                    node_stack.push({org => org_unit, loc_grp => grp});
+                END;
+
+            END;
+
+            # org is not publicly visible (though its children may be).
+            NEXT UNLESS ctx.is_staff OR visible;
+            
+            # org is not within hiding scope (though its children may be).
+            NEXT UNLESS hiding_disabled OR ctx.org_within_hiding_scope(ou_id);
+
+            node_value = ou_id;
+            IF loc_grp;
+                node_value = node_value _ ':' _ loc_grp.id; 
+                css_class = 'class="loc_grp"';
+            ELSE;
+                css_class = 'class="org_unit"';
+            END;
+
+            IF can_have_vols_only AND org_unit.ou_type.can_have_vols != 't';
+                disabled = 'disabled="disabled"';
+            ELSIF node_value == value;
+                selected = 'selected="selected"';
+            END; 
+
+            IF can_have_users_only AND org_unit.ou_type.can_have_users != 't';
+                disabled = 'disabled="disabled"';
+            ELSIF node_value == value;
+                selected = 'selected="selected"';
+            END; 
+
+            IF hold_pickup_lib AND ctx.get_org_setting(
+                    org_unit.id, 'opac.holds.org_unit_not_pickup_lib');
+                disabled = 'disabled="disabled"';
+            END;
+
+            # caller provided a list of valid org units.
+            # all orgs not in the list are marked invalid.
+            IF valid_org_list AND 
+                    !valid_org_list.grep('^' _ org_unit.id _ '$').size;
+                disabled = 'disabled="disabled"';
+                selected = '';
+            END;
+
+            pad_depth = 0;
+
+            # copy loc groups appear as children of the owning org unit
+            SET pad_depth = pad_depth + 1 IF loc_grp;
+
+            # determine the depth by calculating the distance from the root
+            porg = ctx.get_aou(org_unit.parent_ou);
+            WHILE porg;
+                SET pad_depth = pad_depth + 1 IF porg.opac_visible == 't' OR ctx.is_staff;
+                porg = ctx.get_aou(porg.parent_ou);
+            END;
+
+            pad_depth = pad_depth * 2;
+            display_name = loc_grp ? loc_grp.name : org_unit.name %]
+
+            <option value='[% node_value %]' [% selected %] [% disabled %] [% css_class %]> 
+                [% '&nbsp;' FOR [0..pad_depth]; display_name | html %]
+            </option> 
+
+        [%- END %]
+    </select>
+[%- END %]

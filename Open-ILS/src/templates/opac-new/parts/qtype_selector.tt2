@@ -1,0 +1,29 @@
+[%  query_types = [
+    {value => "keyword", label => l("Keyword")},
+    {value => "title", label => l("Title"), plural_label => l("Titles"), browse => 1},
+    {value => "jtitle", label => l("Journal Title")},
+    {value => "author", label => l("Author"), plural_label => l("Authors"), browse => 1},
+    {value => "subject", label => l("Subject"), plural_label => l("Subjects"), browse => 1},
+    {value => "series", label => l("Series"), plural_label => l("Series"), browse => 1}
+];
+    IF  ctx.get_org_setting(ctx.search_ou, 'opac.search.enable_bookplate_search');
+        query_types.push(
+            {value => "bookplate", label => l("Digital Bookplate"), plural_label => l("Digital Bookplates")}
+        );
+    END;
+-%]
+
+<select class="form-control w-100" name="[% name || 'qtype' %]"[% IF id; ' id="'; id ; '"' ; END -%]
+    title="[% l('Select query type:') %]">
+    [%  query_type = query_type || CGI.param('qtype') || search.default_qtypes.0;
+      FOR qt IN query_types;
+        NEXT IF browse_only AND NOT qt.browse -%]
+    <option value='[% qt.value | html %]'[%
+        query_type == qt.value ? ' selected="selected"' : ''
+    %]>[% IF plural AND qt.plural_label;
+        qt.plural_label | html;
+    ELSE;
+        qt.label | html;
+    END %]</option>
+    [% END -%]
+</select>

@@ -1,0 +1,52 @@
+<span id="rdetail_copy_counts">
+    <h2>[% l('Available copies') %]</h2>
+    <ul>
+    [%- depths = ctx.copy_summary.size;
+        depth = 0;
+        displayed_ous = {};
+        ou_hiding_disabled = ctx.org_hiding_disabled();
+        WHILE depth < depths;
+            ou_avail = ctx.copy_summary.$depth.available;
+            ou_count = ctx.copy_summary.$depth.count;
+            ou_id = ctx.copy_summary.$depth.org_unit;
+            cp_org_unit = ctx.get_aou(ou_id);
+            skip_me = !ou_hiding_disabled AND !ctx.org_within_hiding_scope(ou_id);
+            IF (cp_org_unit.opac_visible == 'f' AND !ctx.is_staff) OR skip_me;
+                depth = depth + 1;
+                NEXT;
+            END;
+            ou_name = cp_org_unit.name;
+            displayed_ous.$ou_name = 1;
+    %]
+    <li>
+    [% l('[_1] of [quant,_2,copy,copies] available at [_3].', ou_avail, ou_count, ou_name) | html %]
+    [%- this_depth = ctx.get_aou(ou_id).ou_type.depth;
+        IF ou_count > 0 && this_depth != ctx.copy_depth %]
+    <a href="[% mkurl('', {copy_depth => this_depth}, ['copy_offset']); %]"
+       title="[% l('Show copies at [_1]', ou_name) | html; %]">
+       [%- l('(Show)'); %]</a>
+    [%- END; %]
+    </li> 
+    [%- depth = depth + 1;
+        END;
+
+        depth = attrs.plib_copy_counts.size - 1;
+        ou_name = ctx.get_aou(attrs.plib_copy_counts.$depth.org_unit).name;
+        ou_id = attrs.plib_copy_counts.$depth.org_unit;
+        UNLESS depth < 0 || displayed_ous.exists(ou_name);
+    %]
+    [%- IF attrs.plib_copy_counts.$depth.count > 0; %]
+    <li class="preferred">
+    [%-
+        l('[_1] of [quant,_2,copy,copies] available at [_3].',
+            attrs.plib_copy_counts.$depth.available,
+            attrs.plib_copy_counts.$depth.count,
+            ou_name) | html
+    %] <a href="[% mkurl('', {locg => ou_id}, ['copy_offset']); %]"
+       title="[% l('Show copies at [_1]', ou_name) | html; %]">[%
+       l('(Show preferred library)');
+    %]</a></li>
+    [%- END %]
+    [%- END %]
+    </ul>
+</span>

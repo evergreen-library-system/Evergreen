@@ -1,0 +1,39 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "reservations";
+%]
+<h3 class="sr-only">[% l('Reservations') %]</h3>
+[% IF ctx.reservations.size %]
+    <table id="acct_reservations_main_header" class="table_no_border_space table_no_cell_pad item_list_padding">
+        <tr>
+            <th scope="col">[% l('Resource type') %]</th>
+            <th scope="col">[% l('Start time') %]</th>
+            <th scope="col">[% l('End time') %]</th>
+            <th scope="col">[% l('Pickup location') %]</th>
+            <th scope="col">[% l('Status') %]</th>
+        </tr>
+    [% FOREACH r IN ctx.reservations %]
+        <tr>
+            <td>[% r.resource_type_name %]</td>
+            <td>[% date.format(ctx.parse_datetime(r.start_time, r.pickup_lib), DATE_FORMAT _ ' %I:%M %p') %]</td>
+            <td>[% date.format(ctx.parse_datetime(r.end_time, r.pickup_lib), DATE_FORMAT _ ' %I:%M %p') %]</td>
+            <td><a href="../library/[% r.shortname %]">[% r.pickup_name %]</a></td>
+            <td>
+            [% IF r.cancel_time %]
+                [% l('Canceled') %]
+            [% ELSIF r.pickup_time %]
+                [% l('Checked Out') %]
+            [% ELSIF r.capture_time %]
+                [% l('Ready for Pickup') %]
+            [% ELSE %]
+                [% l('Reserved') %]
+            [% END %]
+            </td>
+        </tr>
+    [% END %]
+    </table>
+[% ELSE %]
+    [% l('You have no current reservations') %]
+[% END %]
+[% END %]

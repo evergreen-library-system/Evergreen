@@ -1,0 +1,21 @@
+[%- PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    IF ctx.is_staff;
+        basic_search = "f";
+    END;
+    ctx.page_title = l("Place Hold") %]
+    <h2 class="sr-only">[% l('Hold Placement') %]</h2>
+    [% INCLUDE "opac/parts/searchbar.tt2" %]    
+    <div id="content-wrapper">
+        <div id="main-content" class="container">
+            <div class="common-full-pad"></div>	
+            [% IF ctx.hold_attempt_made %]
+                [% INCLUDE "opac/parts/place_hold_result.tt2" %]
+            [% ELSE %]
+                [% INCLUDE "opac/parts/place_hold.tt2" %]
+            [% END %]
+            <div class="common-full-pad"></div>	
+        </div>
+    </div>
+[%- END %]

@@ -1,0 +1,67 @@
+[%  PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/myopac/prefs_base.tt2";
+    myopac_page = "prefs";
+    prefs_page = 'prefs_my_lists' %]
+
+
+    <h3 class="sr-only">[% l('List Preferences') %]</h3>
+    <form method='post'>
+
+       <table class="full-width table" id="acct_search_main"
+            title="[% l('List Preferences') %]">
+            <tbody>
+
+                [% IF ctx.updated_user_settings %]
+                <tr><td colspan='2'>
+                    <div class='renew-summary'>
+                        [% l('Account Successfully Updated') %]
+                    </div>
+                </td></tr>
+                [% END %]
+
+                [%- setting = 'opac.lists_per_page' -%]
+                <tr >
+                    <td width='20%'><label for='[% setting %]'>[%l("Lists per page") %]</label></td>
+                    <td>
+                        <select class="form-control mini-control" id='[% setting %]' name='[% setting %]'>
+                            [%  UNLESS ctx.user_setting_map.$setting;
+                                    ctx.user_setting_map.$setting = 10;
+                                END;
+                                FOR val IN [10, 15, 20, 25] %]
+                                <option value='[% val | uri %]' 
+                                    [% IF ctx.user_setting_map.$setting == val %]
+                                        selected='selected'[% END %]>[% val | html %]</option>
+                            [% END %]
+                        </select>
+                       <img alt="[% l('List Items Help') %]"
+                            src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]"
+                            title="[% l('The number of lists displayed per page.') %]"
+                        />
+                    </td>
+                </tr>
+                [%- setting = 'opac.list_items_per_page' -%]
+                <tr >
+                    <td width='20%'><label for='[% setting %]'>[%l("List items per page") %]</label></td>
+                    <td>
+                        <select class="form-control mini-control" id='[% setting %]' name='[% setting %]'>
+                            [%  UNLESS ctx.user_setting_map.$setting;
+                                    ctx.user_setting_map.$setting = 10;
+                                END;
+                                FOR val IN [10, 15, 20, 25, 50] %]
+                                <option value='[% val | uri %]' 
+                                    [% IF ctx.user_setting_map.$setting == val %]
+                                        selected='selected'[% END %]>[% val | html %]</option>
+                            [% END %]
+                        </select>
+                        <img alt="[% l('List Items Help') %]"
+                            src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]"
+                            title="[% l('The number of list items displayed per page when viewing a selected list.') %]"
+                        /> 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" value="[% l('Save') %]" class="btn btn-confirm"/>
+    </form>
+    [% INCLUDE "opac/parts/myopac/prefs_hints.tt2" %]
+[% END %]

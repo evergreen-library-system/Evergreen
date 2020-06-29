@@ -1,0 +1,17 @@
+<div class="col-12">
+    <p>
+        [% l('Visit our FAQs section for answers to common questions about how to use your account.') %]
+    </p>
+</div>
+<div class="col-12 text-center">
+    <div class="mx-3 d-inline-block">
+        <a href="http://example.com" class="btn btn-confirm">[% l('Questions?') %]</a>
+    </div>
+    
+    <div class="mx-3 d-inline-block">
+        <div>
+            <a href="http://example.com" class="btn btn-confirm">[% l('FAQs') %]</a>
+	    </div>
+    </div>
+
+</div>

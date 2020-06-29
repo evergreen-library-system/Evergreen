@@ -1,0 +1,4 @@
+<div id="homeLogo">
+    
+</div>
+[% PROCESS carousels %]

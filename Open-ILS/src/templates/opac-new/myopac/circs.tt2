@@ -1,0 +1,238 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS "opac/parts/myopac/column_sort_support.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "circs";
+%]
+<h3 class="sr-only">[% l('Current Items Checked Out') %]</h3>
+<div id='myopac_checked_div'>
+	<div>
+     <ul class="nav nav-pills nav-fill">
+        <li class="nav-item m-2">
+            <a class="nav-link active" href='#'>[% l("Current Items Checked Out") %]</a>
+        </li>
+        [%- IF ebook_api.enabled == 'true' %]
+        <li class="nav-item m-2">
+            <a class="nav-link not_active_pill" href="[% mkurl('ebook_circs',{},1) %]">[% l("E-Items Currently Checked Out") %]</a>
+        </li>
+        [%- END %]
+        <li class="nav-item active m-2">
+            <a class="nav-link not_active_pill" href="[% mkurl('circ_history',{},1) %]">[% l("Check Out History") %]</a>
+        </li>
+    </ul>
+	</div>
+    <div class="my-4">
+    <div class="header_middle">
+        <span class="float-left">[% l('Current Items Checked Out') %]</span>
+    </div>
+    <div class="clear-both"></div>
+    [% IF ctx.circs.size < 1 %]
+    <div class="warning_box">[% l('You have no items checked out.') %]</div>
+    [% ELSE %]
+    [% IF ctx.success_renewals %]
+    <div class="renew-summary">
+        [% l("Successfully renewed [_1] item(s)", ctx.success_renewals) %]
+    </div>
+    [% END %]
+    [% IF ctx.failed_renewals %]
+    <div class="renew-summary alert">
+        [% l("Failed to renew [_1] item(s)", ctx.failed_renewals) %]
+    </div>
+    [% END %]
+    <div id='checked_main'>
+        <form method="post" id="circ-form"
+            onsubmit="return confirm('[% l("Are you sure you wish to renew the selected item(s)?") %]');">
+         <div class="row">
+                <span class="col-md-11 my-2">
+                <select class="form-control" name="action" title="[% l('Select Action') %]">
+                    <option value="renew">[% l('Renew Selected Titles') %]</option>
+                </select>
+            </span>
+            <span class="col-md-1 my-2">
+                <input type="submit"
+                    value="[% l('Go') %]"
+                    title="[% l('Go') %]"
+                    class="btn btn-confirm" />
+            </span>
+           <!-- <span style="padding-left:5px;">
+                <a href="#"><img 
+                    alt="[% l('Renewing Help') %]"
+                    title="[% l('Actions for checked out items') %]"
+                    src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]" /></a>
+            </span> -->
+        </div>
+
+        <table  id="acct_checked_main_header"  title="[% l('Items Checked Out') %]"
+            class="table table-hover miniTable circTable">
+            <thead>
+            <tr>
+                <th class="checkbox_column">
+                    <input type="checkbox" id="check_all_checked"
+                        title="[% l('Select All Items') %]"
+                        onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"
+                    />
+                </th>
+                <th>[% sort_head("sort_title", l("Title")) %]</th>
+                <th>[% sort_head("author", l("Author")) %]</th>
+                <th>[% sort_head("renews", l("Renewals Left")) %]</th>
+                <th>[% sort_head("due", l("Due Date")) %]</th>
+                <th>[% sort_head("barcode", l("Barcode")) %]</th>
+                <th>[% sort_head("callnum", l("Call Number")) %]</th>
+                 [% IF ctx.get_org_setting(ctx.user.home_ou, 'opac.show_owning_lib_column'); %]
+                   <th>[% sort_head("lib", l("Owning Library")) %]</th>
+                   [% column_count = 8;
+                ELSE ;
+                   column_count = 7;
+                END; %]
+            </tr>
+            </thead>
+            <tbody>
+                [%# Copy the ctx.circs into a local array, then add a SORT field
+                    that contains the value to sort on.  Since we need the item attrs,
+                    invoke it and save the result in ATTRS.
+		%]
+		[% 
+                circ_items = ctx.circs;  # Array assignment
+
+                sort_field = CGI.param('sort');  # unless changed below...
+
+                FOR circ IN circ_items;
+                    circ.ATTRS = {marc_xml => circ.marc_xml};
+                    PROCESS get_marc_attrs args=circ.ATTRS;
+		
+                    SWITCH sort_field;
+
+                       CASE "sort_title";
+                          circ.SORTING = circ.ATTRS.sort_title;
+
+                       CASE "author";
+                          circ.SORTING = circ.ATTRS.author;
+
+                       CASE "renews";
+                          circ.SORTING = circ.circ.renewal_remaining;
+                       
+                       CASE "due";
+                          circ.SORTING = circ.circ.due_date;
+                       
+                       CASE "barcode";
+                          circ.SORTING = circ.circ.target_copy.barcode;
+
+                       CASE "callnum";
+                          circ.SORTING = circ.circ.target_copy.call_number.label;
+                        CASE "lib";
+                          circ.SORTING = circ.circ.target_copy.call_number.owning_lib.name;
+                       
+                       CASE;
+                          sort_field = "";
+                    END; # SWITCH
+                END; #FOR circ
+
+                IF (sort_field != "sort_title");
+                   deemphasize_class = "";
+                ELSE;
+                   deemphasize_class = " class=\"sort_deemphasize\"";
+                END;
+
+                # Apply sorting to circ_items
+	        IF (sort_field);
+		    circ_items = circ_items.sort("SORTING");
+                    IF (CGI.param("sort_type") == "desc");
+                        circ_items = circ_items.reverse;
+                    END;
+                END;
+
+		# circ_items list is now sorted.  Traverse and dump the information.
+
+                FOR circ IN circ_items; %]
+                    <tr>
+                        <td class="checkbox_column" valign="top">
+                            <input type="checkbox" name="circ"
+                                title="[% l('Item Selected') %]"
+                                [% IF circ.circ.renewal_remaining < 1 %] disabled="disabled" [% END %]
+                                value="[% circ.circ.id %]" />
+                        </td>
+                        <td name="title">
+                            <span class="sr-only">Title</span>
+                            [% IF circ.circ.target_copy.call_number.id == -1 %]
+                                [% circ.circ.target_copy.dummy_title | html %]
+                            [% ELSIF circ.ATTRS.title %]
+                                <a href="[% mkurl(ctx.opac_root _ '/record/' _ 
+                                    circ.circ.target_copy.call_number.record.id, {}, 1) %]"
+                                    name="[% l('Catalog record') %]"><span[%- deemphasize_class -%]>
+                                    [%- circ.ATTRS.title.substr(0,circ.ATTRS.nonfiling_characters) | html %]</span>
+                                    [%- circ.ATTRS.title.substr(circ.ATTRS.nonfiling_characters) | html %]</a>
+                            [% END %]
+                        </td>
+                        <td name="author">
+                            [% IF circ.circ.target_copy.call_number.id == -1 %]
+                                <span class="sr-only">Author</span>
+                                [% circ.circ.target_copy.dummy_author | html %]
+                            [% ELSIF circ.ATTRS.author %]
+                                <span class="sr-only">Author</span>
+                                <a href="[% mkurl(ctx.opac_root _ '/results',
+                                    {qtype => 'author', query => circ.ATTRS.author.replace('[,\.:;]', '')},
+                                    1
+                                ) %]">[% circ.ATTRS.author | html %]</a>
+                            [% ELSE %]
+
+                            [% END %]
+                        </td>
+                        <td name="renewals">
+                            <span class="sr-only">Renewals Remaining</span>
+                            [% circ.circ.renewal_remaining %]
+                        </td>
+                        [%
+                            due_date = ctx.parse_datetime(circ.circ.due_date, circ.circ.circ_lib);
+                            due_class = (date.now > date.format(due_date, '%s')) ? 'error' : '';
+                        %]
+                        <td name="due_date" class='[% due_class %]'>
+                            <span class="sr-only">Due Date</span>
+                            [% date.format(due_date, DATE_FORMAT) %]
+                        </td>
+                        <td name="barcode">
+                            <span class="sr-only">Barcode</span>
+                            <span class="speak:spell-out;">[% circ.circ.target_copy.barcode | html %]</span>
+                        </td>
+                        <td name="call_number">
+                            <span class="sr-only">Call Number</span>
+                            [% circ.circ.target_copy.call_number.label | html %]
+                        </td>
+                         [% IF ctx.get_org_setting(ctx.user.home_ou, 'opac.show_owning_lib_column'); %]
+                          <td name="lib">
+                                [%- fleshed_ou = circ.circ.target_copy.call_number.owning_lib;
+                                                INCLUDE "opac/parts/library_name_link_from_ou.tt2";
+                                %]
+                          </td>
+                        [% END; %]
+                    </tr>
+                    [%  IF circ.renewal_response AND
+                            circ.renewal_response.textcode != 'SUCCESS' %]
+                    <tr>
+                        <td colspan="[% column_count %]">[%# XXX colspan="0" does not work in IE %]
+                            <span class="failure-text" title="[% circ.renewal_response.textcode | html %] / [% circ.renewal_response.fail_part | html %]">
+                                [%
+                                    renew_fail_msg = '';
+                                    IF circ.renewal_response.textcode == 'TOTAL_HOLD_COPY_RATIO_EXCEEDED' OR
+                                        circ.renewal_response.textcode == 'AVAIL_HOLD_COPY_RATIO_EXCEEDED';
+                                        # the stock hold ratio message may not be patron friendly
+                                        renew_fail_msg = l('Item is needed for a hold');
+                                    ELSE;
+                                        renew_fail_msg = circ.renewal_response.desc || 
+                                            circ.renewal_response.fail_part || 
+                                            circ.renewal_response.textcode;
+                                    END;
+                                    renew_fail_msg | html;
+                                %]
+                            </span>
+                        </td>
+                    </tr>
+                    [% END; %]
+
+                [% END; %]
+                </tbody>
+            </table>
+        </form>
+    </div>
+    [% END %]
+</div></div>
+[% END %]

@@ -1,0 +1,68 @@
+[% IF !ctx.is_staff %]
+<div id="footer-wrap">
+<div id="footer" class="text-center">
+<nav class="navbar navbar-expand-lg navbar-dark ">
+<!--Home-->
+ 
+  
+  <div class="collapse navbar-collapse" id="navbarNav" style="height:auto !important;">
+  <!--Left Links-->
+  <div class="row w-100">
+  <div class="col-12">
+ 
+  
+   <ul class="navbar-nav justify-content-center ">
+    	<!--Link 1-->
+      [% IF ctx.get_org_setting(ctx.physical_loc || ctx.aou_tree.id, 'opac.allow_pending_user') && !ctx.user %]
+    	<li class="nav-item"><a class="nav-link" href="[% mkurl(ctx.opac_root _ '/register') %]">[% 
+        l('Request Library Card') %]</a></li>
+    [% ELSE %]
+    	<li class="nav-item"><a class="nav-link" href="#">[% l('Link 1') %]</a></li> 
+    [% END %]
+    	<li class="nav-item"><a class="nav-link" href="#">[% l('Link 2') %]</a></li> 
+    	<li class="nav-item"><a class="nav-link" href="#">[% l('Link 3') %]</a></li>
+    	<li class="nav-item"><a class="nav-link" href="#">[% l('Link 4') %]</a></li>
+    </ul>
+ 
+    <div id="nav-divide" class="dropdown-divider"></div>
+    
+   
+       </div>
+       
+       
+       	
+           </div>
+       </div>
+   </nav>
+    [% IF ctx.timing %]
+    <div id="timing">
+        [% FOR event IN ctx.timing %]
+        At <span class="timing-time">[% event.0 | format("%0.4f") %]</span>:
+        <span class="timing-event">[% event.1 %]</span><br />
+        [% END %]
+    </div>
+    [% END %]
+    
+ <!--   <div id="footer_logo my-2">
+        <a href="http://evergreen-ils.org">
+            [% INCLUDE "opac/parts/topnav_logo.tt2" %]
+        </a>
+    </div> -->
+    
+      <div id="copyright_text" class="mt-3">
+        [% l('Copyright &copy; 2006-[_1] Georgia Public Library Service, and others', date.format(date.now, '%Y')) %]
+    <div id="footer_logo">
+        [% l('Powered by') %]
+        <a href="http://evergreen-ils.org">
+            <img src="[% ctx.media_prefix %]/opac/images/eg_tiny_logo.png[% ctx.cache_key %]"
+                style="border:none; width: 94px; height: 16px;"
+                alt="[% l('Evergreen') %]"
+            />
+        </a>
+    </div>
+   
+    </div>
+    
+</div>
+</div>
+[% END %]

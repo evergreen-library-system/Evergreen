@@ -1,0 +1,232 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/main_base.tt2";
+    myopac_page = "main";
+    myopac_main_page = "main";
+    myopac_cc_allowed = 0;
+    IF (ctx.fines.grocery.size OR ctx.fines.circulation.size) AND ctx.get_org_setting(ctx.user.home_ou, 'credit.payments.allow') == 1;
+        myopac_cc_allowed = 1;
+    END
+%]
+<h3 class="sr-only">[% l('My Account Summary') %]</h3>
+[%  IF myopac_cc_allowed;
+    # http://www.w3.org/TR/WCAG20-TECHS/H32.html
+    # avoid forms w/ no submit action %]
+<form action="[% ctx.opac_root %]/myopac/main_payment_form#payment" method="get" id="selected_fines" class="my-3">
+[% END %]
+
+    [% IF ctx.fines.circulation.size > 0 %]
+    <div id='myopac_circ_trans_div'>
+      <!--moved tables heading to outside of the table itself - took internal styling -->
+        <div class="header_middle">
+           <span class="acct_fines_header">
+           <!-- Different heading when not able to pay -->
+             [% IF myopac_cc_allowed %]
+                [% l("Pay Selected Circulation Charges") %]
+            [% ELSE %] 
+                [% l("Circulation Charges") %]
+             [% END %]
+           </span>
+           
+        </div>
+    
+        <table id="acct_fines_main_header" class="table table-hover miniTable chargesMainTable" title="[% l('Items Checked Out') %]">
+            <thead>
+               
+                <tr>
+
+                   [% IF myopac_cc_allowed %]
+                    <th nowrap="nowrap" style="white-space:nowrap;">
+                        <input id="pay_fines_box1" checked="checked"
+                            type="checkbox" onclick="select_all_checkboxes('xact', this.checked)"
+                            title="[% l('Click to (un)select all charges') %]" />
+                    </th>
+                    [% END %]
+                    <th>[% l("Owed") %]</th>
+                    <th class="mobile_hide">[% l("Billing Type") %]</th>
+                    <th>[% l("Title") %]</th>
+                    <th class='mobile_hide'>[% l("Checkout") %]</th> 
+                    <th>[% l(" Due ") %]</th> 
+                    <th>
+                       <span class="mobile_hide">[% l(" Returned/Renewed") %]</span>
+                       <span class="mobile_view">[% l(" Returned&#42;") %]</span>
+                    </th>
+                    
+                </tr>
+            </thead>
+            <tbody id='myopac_circ_trans_tbody'>
+                [% FOR f IN ctx.fines.circulation;
+                    attrs = {marc_xml => f.marc_xml};
+                    IF f.marc_xml;
+                        PROCESS get_marc_attrs args=attrs;
+                    ELSIF f.xact.reservation;
+                        attrs.title = f.xact.reservation.target_resource_type.name;
+                    END %]
+                <tr id='myopac_circ_trans_row'>
+                    [% IF myopac_cc_allowed %]
+                    <td>
+                        <input type="checkbox" checked="checked" 
+                            title="[% l('Pay this fine') %]" name="xact"
+                            value="[% f.xact.id %]" class="fineCheck"/>
+                    </td>
+                    [% END %]
+                    
+                    <td>
+                        <strong class="fineAmount" value="[% f.xact.balance_owed %]">
+                            [% money(f.xact.balance_owed) %]
+                        </strong>
+                    </td>
+                    
+                    <td class="mobile_hide">
+                       [% f.xact.last_billing_type %]
+                    </td>
+                                  
+                    <td>
+                        [% recid = f.xact.circulation.target_copy.call_number.record.id || f.xact.reservation.target_resource_type.record.id;
+                        IF recid; %]
+                        <a href="[% mkurl(ctx.opac_root _ '/record/' _ recid,
+                            {loc => ctx.search_ou}) %]">[% attrs.title | html %]</a>
+                        [% ELSE %]
+                        [% attrs.title | html %]
+                        [% END %]
+                    </td>
+                    
+                   <td name='myopac_circ_trans_start' class='mobile_hide'>
+                        [% ts = f.xact.circulation.xact_start || f.xact.reservation.start_time || 0;
+                        IF ts;
+                            date.format(ctx.parse_datetime(ts), DATE_FORMAT);
+                        END %]
+                    </td>
+                    
+                    <td name='myopac_circ_trans_due' >
+                        [% ts = f.xact.circulation.due_date || f.xact.reservation.end_time || 0;
+                           due_org = f.xact.circulation.circ_lib || f.xact.reservation.pickup_lib;
+                        IF ts;
+                            date.format(ctx.parse_datetime(ts, due_org), DATE_FORMAT);
+                        END %]
+                    </td>
+                    
+                    <td name='myopac_circ_trans_finished' >
+                        [%  ts = f.xact.circulation.checkin_time || f.xact.reservation.return_time || 0;
+                            IF ts;
+                                date.format(ctx.parse_datetime(ts), DATE_FORMAT);
+                            ELSE %]
+                            <!-- XXX TODO fines aren't really accruing
+                                if circ has hit maxfines. more clarity
+                                here? --> 
+                            <span class="alert">[% l('(fines accruing)') %]</span>
+                        [%  END %]
+                    </td>
+                   
+                </tr>
+                [% END %]
+            </tbody>
+        </table>
+        <!-- Disclaimer for mobile -->
+        <span class="mobile_view cc_disclaimer"> <strong>&#42;</strong>Items may have been renewed. </span>
+    </div>
+    [% END %]
+
+    [% IF ctx.fines.grocery.size > 0 %]
+    <!-- Table for all non-circulation transactions -->
+    <div id='myopac_trans_div'>
+        <h2 class="acct_fines_header text-center">
+                [% l("Charges On Your Account") %]
+        </h2>
+        
+        
+         <table id="acct_fees_main_header" class="table table-hover miniTable chargesTable my-3" title="[% l('Other Fines and Fees') %]">
+            <thead>
+                <tr>
+                
+                     [% IF myopac_cc_allowed %]
+                    <th  nowrap="nowrap" style="white-space:nowrap;">
+                        <input id="pay_fines_box2" checked="checked"
+                            type="checkbox" onclick="select_all_checkboxes('xact_misc', this.checked)"
+                            title="[% l('Click to (un)select all fines') %]" />
+                    </th>
+                    [% END %]
+                    <th >[% l("Owed") %]</th>
+                    <th >[% l("Billing Type") %]</th>
+                    <th >[% l("Note") %]</th>
+                    <th >[% l("Date") %]</th>
+                    
+
+                </tr>
+            </thead>
+            <tbody id='myopac_trans_tbody'>
+                [% c = 0; %]
+                [% FOR f IN ctx.fines.grocery %]
+                <tr id='myopac_trans_row'>
+                [% c = c + 1; %]
+                    [% IF myopac_cc_allowed %]
+                    <td>
+                        <span class="sr-only">Billing Number [% c %]</span>
+                        <input class="fineCheck" type="checkbox" title='[% l("Pay this fine") %]' name="xact_misc" value="[% f.xact.id %]" checked="checked" />
+                    </td>
+                    [% END %]
+                    
+                    <td class="red">
+                        <span class="sr-only">Amount Owed</span>
+                        <strong class="fineAmount" value="[% f.xact.balance_owed %]">
+                            [% money(f.xact.balance_owed) %]
+                        </strong>
+                    </td>
+                    
+                    <td>
+                        <span class="sr-only">Billing For</span>
+                        [% f.xact.last_billing_type %]
+                    </td>
+                    
+                    <td>
+                        [% IF f.xact.last_billing_note; %]
+                            <span class="sr-only">Note</span>
+                            [% f.xact.last_billing_note %]
+                        [% END %]
+                    </td>
+                    
+                    <td>
+                        <span class="sr-only">Date of Billing</span>
+                        [% date.format(ctx.parse_datetime(f.xact.xact_start),DATE_FORMAT) %]
+                    </td>
+
+                </tr>
+                [% END %]
+            </tbody>
+        </table>
+   
+    </div>
+    [% END %]
+    [% UNLESS ctx.fines.grocery.size OR ctx.fines.circulation.size %]
+    <div>[% l('You have no current fines.') %]</div>
+    [% ELSIF myopac_cc_allowed %]
+   
+    <div class="my-3">
+        <input type="submit"
+            value="[% l('Pay selected charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]"
+            title="[% l('Pay selected charges') %]"
+            class="btn btn-confirm my-1"
+            id="selectPay"/>
+    <form action="[% ctx.opac_root %]/myopac/main_payment_form" method="get"><input
+            type="submit" title="[% l('Pay All Charges') %] "
+            value="[% l('Pay All Charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]" class="btn btn-confirm my-1" /></form>
+    </div>
+    [% END %]
+[% IF myopac_cc_allowed %]
+</form>
+[% END %]
+[% END %]
+
+<!--Table functions ~ Running total of selected items for use in a Paypal module or where running total is needed-->
+<script>
+jQuery("input[type=checkbox]").click(function () {
+	var amount = 0;
+    jQuery("td input:checked").each(function () {
+ 		var item = jQuery( this ).parent().parent().children("td").children(".fineAmount").attr("value");
+        item = parseFloat(item);
+        amount += item;
+    });
+    jQuery("#total").val(amount);
+    jQuery("#selectPay").val('Pay selected charges - $' + amount.toFixed(2));
+});
+</script>

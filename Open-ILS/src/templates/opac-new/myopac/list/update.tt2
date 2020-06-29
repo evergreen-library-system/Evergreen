@@ -1,0 +1,44 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "lists/update"  
+%]
+
+<!-- we should never see this page on success -->
+
+[% IF ctx.bucket_action_failed %]
+<div id='bookbag_udpate_failures'>
+
+  <div>
+    <strong>[% l("Problem with list management:") %]</strong>
+  </div>
+
+  <div>
+    <ul>
+    [% IF ctx.bucket_action == 'create' %]
+      [% IF ctx.bucket_failure_noname %]         
+        <li>[% l('A list name is required') %]</li>
+      [% END %]   
+    [% END %]   
+    </ul>
+  </div>
+
+  <div>
+    [% url = ctx.referer;
+      # The return link should return the user to the page where the edit
+      # failure occurred.
+      # mkurl() does not support 'page' params w/ existing CGI params.
+      # build the URL manually.
+      IF ctx.where_from;
+        from = ctx.where_from | uri;
+        IF url.match('\?');
+          url = url _ ';where_from=' _ from;
+        ELSE;
+          url = url _ '?where_from=' _ from;
+        END;
+      END; %]
+    <a href="[% url %]">[% l('Return') %]</a>
+  </div>
+</div>
+[% END %]
+[% END %]

@@ -1,0 +1,20 @@
+<div class='rdetail_extras_div'> 
+    [%- IF attrs.summary %]
+    <div class='rdetail-extras-summary'>
+        <strong>[% l('Summary: ') %]</strong>
+        [% FOR sum IN attrs.summaries %]
+            [% IF !loop.first; '<br/>'; END %]
+            <span>[% sum | html %] </span>
+        [% END %]
+    </div>
+    [%- END %]
+    [%- IF ENV.OILS_CONTENT_CAFE_USER %]
+    <!-- Embedded content cafe iframe -->
+    [% ident = attrs.isbn_clean || attrs.upc %]
+    <iframe width="100%" height="400" frameborder="0" 
+        src="[% ctx.ext_proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 
+            ENV.OILS_CONTENT_CAFE_USER %]&amp;Password=[% ENV.OILS_CONTENT_CAFE_PASS %]&amp;ItemKey=[% ident | uri %]&amp;Options=Y" >
+    </iframe>
+    [%- END %]
+</div>
+

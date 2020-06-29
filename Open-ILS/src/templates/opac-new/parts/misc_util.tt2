@@ -1,0 +1,868 @@
+[%- 
+    # Support multiscript records via alternate graphic 880 fields
+    # get_graphic_880s(target_field='100')
+    # See "Model A" in http://www.loc.gov/marc/bibliographic/ecbdmulti.html
+    # and $6 description in http://www.loc.gov/marc/bibliographic/ecbdcntf.html
+    MACRO get_graphic_880s BLOCK;
+        FOR node IN xml.findnodes('//*[@tag="' _ target_field _ '"]');
+            raw_vals = [];
+            core_val = '';
+            FOR subnode IN node.findnodes('./*[not(contains("e w 0 4 5 6 7 8 9", @code))]');
+                raw_vals.push(subnode.textContent());
+            END;
+            core_val = raw_vals.join(" ");
+            raw_vals = [];
+
+            linked_fields = [];
+            FOR sub IN node.findnodes('./*[@code="6"]');
+                linked_fields.push(sub.textContent);
+            END;
+            graphics = [];
+            get_linked_880s;
+            graphic_880s.push({
+                primary => {"occur" => occurrence, "value" => core_val},
+                graphic => graphics
+            });
+        END;
+    END;
+
+    MACRO get_linked_880s BLOCK;
+        FOR link_field IN linked_fields;
+            target = target_field _ link_field.substr(3);
+            # Get the linked 880 value
+            raw_val = '';
+            dir = '';
+            occurrence = '';
+            script = '';
+            FOR node IN xml.findnodes('//*[@tag="880"]');
+                # Operate only on the target linked fields
+                FOR linknode IN node.findnodes('./*[@code="6"]');
+                    lf = linknode.textContent();
+                    IF lf.substr(0, target.length) == target;
+                        occurrence = lf.substr(4, 2);
+                        rawscript = lf.substr(7, 2);
+                        SWITCH rawscript;
+                        CASE '(3';
+                            script = 'Arabic';
+                        CASE '(B';
+                            script = 'Latin';
+                        CASE '$1';
+                            script = 'CJK';
+                        CASE '(N';
+                            script = 'Cyrillic';
+                        CASE '(S';
+                            script = 'Greek';
+                        CASE '(2';
+                            script = 'Hebrew';
+                        END;
+
+                        rawdir = lf.substr(9, 1);
+                        SWITCH rawdir;
+                        CASE 'r';
+                            dir = 'rtl';
+                        END;
+
+                        raw_vals = [];
+                        FOR subnode IN node.findnodes('./*[not(contains("w 0 5 6 8 9", @code))]');
+                            raw_vals.push(subnode.textContent());
+                        END;
+                        raw_val = raw_vals.join(" ");
+                    END;
+                END;
+            END;
+            graphics.push({
+                occur => occurrence,
+                value => raw_val,
+                script => script,
+                dir => dir
+            });
+        END;
+    END;
+
+    BLOCK get_ccvm_icon;
+        ctx.media_prefix _ '/images/format_icons/' _ ccvm.ctype _ '/' _ ccvm.code _ '.png' _ ctx.cache_key;
+    END;
+
+    # Extract MARC fields from XML
+    #   get_marc_attrs( args = { marc_xml => doc } )
+    BLOCK get_marc_attrs;
+        USE Dumper;
+        xml = args.marc_xml;
+
+        args.bibid = [];
+        FOR bibid IN xml.findnodes('//*[@tag="901"]/*[@code="c"]');
+            args.bibid.push(bibid.textContent);
+        END;
+
+        args.df_bib_list = args.bibid;
+        args.bibid = args.bibid.0; 
+
+        IF args.mr_constituent_ids.size && !args.df_bib_list.size;
+            args.df_bib_list = args.mr_constituent_ids;
+        END;
+
+
+        # Gather display field data for this record and map it
+        # to a display field map.  Hopefully, one day, this can
+        # replace the XPath below entirely.
+
+        args.display_fields = {};
+        args.hl = {};
+
+        args.hl_field = 'highlight';
+        IF CGI.param('no_highlight') || search.no_highlight;
+            args.hl_field = 'value';
+        END;
+        hl_field = args.hl_field;
+
+        junk = ctx.timelog('Fetching display fields and Using data from "' _ hl_field _ '" for rendering'); 
+        args.display_field_list = ctx.fetch_display_fields(args.df_bib_list.list);
+
+        junk = ctx.timelog('Mapping display fields for bib(s) ' _ args.df_bib_list.list.join(', ')); 
+        FOR df IN args.display_field_list;
+            df_map = ctx.search_cdfm('field', df.field).0;
+            df_name = df_map.name();
+            IF df_map.multi() == 't';
+                IF NOT args.hl_display_fields.$df_name;
+                    args.hl_display_fields.$df_name = [];
+                    args.hl.$df_name = [];
+                END;
+                args.hl_display_fields.$df_name.push(df);
+                args.hl.$df_name.push(df.$hl_field || df.value);
+            ELSIF !args.hl_display_fields.$df_name.defined;
+                args.hl_display_fields.$df_name = df;
+                args.hl.$df_name = df.$hl_field || df.value;
+            END;
+        END;
+        junk = ctx.timelog('Finished mapping display fields for bib(s) ' _ args.df_bib_list.list.join(', ')); 
+
+        # Map item types to schema.org types; impedance mismatch :(
+        args.schema.itemtype = {};
+        schema_typemap = {};
+
+        schema_typemap.bluray = 'Movie'; # Movie could also be TVSeries
+        schema_typemap.book = 'Book';
+        schema_typemap.braille = 'Book';
+        schema_typemap.casaudiobook = 'Book AudioObject';
+        schema_typemap.casmusic = 'MusicAlbum';
+        schema_typemap.cdaudiobook = 'Book AudioObject';
+        schema_typemap.cdmusic = 'MusicAlbum';
+        schema_typemap.dvd = 'Movie';
+        schema_typemap.eaudio = 'AudioObject';
+        schema_typemap.ebook = 'Book';
+        # schema_typemap.equip = '';
+        schema_typemap.evideo = 'Movie';
+        # schema_typemap.kit = '';
+        schema_typemap.lpbook = 'Book';
+        schema_typemap.map = 'Map';
+        # schema_typemap.microform = '';
+        schema_typemap.music = 'MusicAlbum';
+        schema_typemap.phonomusic = 'MusicAlbum';
+        # schema_typemap.phonospoken = '';
+        # schema_typemap.picture = ''; Painting or Photograph?
+        schema_typemap.score = 'Book'; # schema.org has no generic Music type
+        schema_typemap.serial = 'Periodical';
+        schema_typemap.software = 'SoftwareApplication';
+        schema_typemap.vhs = 'Movie';
+
+        schema_typemap.a = 'Book';
+        schema_typemap.e = 'Map';
+        schema_typemap.j = 'MusicAlbum';
+
+        # Hard-coded to match defaults in config.copy_status for all OPAC-visible statuses
+        schema_copy_status = {};
+        schema_copy_status.0 = '<link property="availability" href="http://schema.org/InStock" />'; # Available
+        schema_copy_status.1 = '<link property="availability" href="http://schema.org/OutOfStock" />'; # Checked out
+        schema_copy_status.5 = '<link property="availability" href="http://schema.org/PreOrder" />'; # In process
+        schema_copy_status.6 = '<link property="availability" href="http://schema.org/PreOrder" />'; # In transit
+        schema_copy_status.7 = '<link property="availability" href="http://schema.org/InStock" />'; # Reshelving
+        schema_copy_status.8 = '<link property="availability" href="http://schema.org/OutOfStock" />'; # On holds shelf
+        schema_copy_status.9 = '<link property="availability" href="http://schema.org/PreOrder" />'; # On order
+        schema_copy_status.12 = '<link property="availability" href="http://schema.org/InStoreOnly" />'; # Reserves
+
+        args.isbns = [];
+        FOR isbn IN xml.findnodes('//*[@tag="020"]/*[@code="a"]');
+            args.isbns.push(isbn.textContent);
+        END;
+
+        # UPCs can be identified either by ind1="1" or subfield 2 of "upc"
+        args.upcs = [];
+        FOR upc IN xml.findnodes('//*[@tag="024" and @ind="1"]/*[@code="a"]');
+            args.upcs.push(upc.textContent);
+        END;
+        FOR upcfield IN xml.findnodes('//*[@tag="024"]/*[@code="2" and text()="upc"]');
+            my_parent = upcfield.parentNode();
+            FOR upc IN my_parent.findnodes('./*[@code="a"]');
+                args.upcs.push(upc.textContent);
+            END;
+        END;
+        args.upc = args.upcs.0; # use first UPC as the default
+
+        # These are URIs that link out to related works for linked data purposes,
+        # such as OCLC Work Entities like http://worldcat.org/entity/work/id/415491
+
+        # We differentiate between http://schema.org/sameAs relations, which
+        # are roughly the same as the work we're describing here, and
+        # http://schema.org/exampleOfWork which point to a broader work, of which
+        # this is a more specific edition or manifestation.
+        args.links.sameAs = [];
+        args.links.exampleOfWork = [];
+        FOR link_node IN xml.findnodes('//*[@tag="024"]/*[@code="2" and text()="uri"]');
+            my_parent = link_node.parentNode();
+            FOR link IN my_parent.findnodes('./*[@code="a"]');
+                link_uri = link.textContent | trim;
+                IF link_uri.search('worldcat.org/entity/work');
+                    args.links.exampleOfWork.push(link_uri);
+                ELSE;
+                    args.links.sameAs.push(link_uri);
+                END;
+            END;
+        END;
+        FOR lccn IN xml.findnodes('//*[@tag="010"]/*[@code="a"]');
+            lccn_num = lccn.textContent | trim;
+            args.links.sameAs.push('http://lccn.loc.gov/' _ lccn_num);
+        END;
+        FOR oclcnum IN xml.findnodes('//*[@tag="035"]/*[@code="a"]');
+            oclcnum = oclcnum.textContent | trim;
+            NEXT UNLESS oclcnum.search('^\(OCoLC\)');
+            oclcnum = oclcnum | remove('\(OCoLC\)');
+            # These prefixes are often included in the 035, even though they should not be
+            oclcnum = oclcnum | remove('ocm');
+            oclcnum = oclcnum | remove('ocn');
+            oclcnum = oclcnum | remove('on') | trim;
+            args.links.sameAs.push('http://www.worldcat.org/oclc/' _ oclcnum);
+        END;
+        args.links.sameAs = args.links.sameAs.unique;
+
+        args.issns = [];
+        FOR sub IN xml.findnodes('//*[@tag="022"]/*[@code="a"]');
+            args.issns.push(sub.textContent);
+        END;
+        args.issn = (args.issns.size) ? args.issn.0 : '';
+
+        graphic_880s = [];
+        get_graphic_880s(target_field='100');
+        get_graphic_880s(target_field='110');
+        get_graphic_880s(target_field='111');
+        args.graphic_authors = graphic_880s;
+        args.authors = [];
+        FOR author IN args.graphic_authors;
+            args.authors.push(author.primary.value);
+        END;
+        args.author = (args.authors.size) ? args.authors.0 : '';
+
+        # Include subfields 'abnp' to generate a more comprehensive title display in search results
+        titresults = xml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b" or @code="n" or @code="p"]');
+        titresults_content = [];
+            FOR sub IN titresults; titresults_content.push(sub.textContent); END;
+
+        args.title = titresults_content.join(" ");
+        # Avoid ugly trailing syntax on brief titles
+        args.title = args.title | replace('[:;/]$', '');
+
+        graphic_880s = [];
+        get_graphic_880s(target_field='245');
+        args.graphic_titles = graphic_880s;
+        args.titles = [];
+        FOR title IN args.graphic_titles;
+            args.titles.push(title.primary.value);
+        END;
+        args.title_extended = (args.titles.size) ? args.titles.0 : '';
+
+        # Create a version of the title designed for sorted displays.
+        args.sort_title = args.title | upper;
+
+        # If the title has a "non-filing chaaracters" 
+        # (to logically remove leading "The " for example)
+        # chop the title. Otherwise, chop until the first alphanumeric.
+        # BTW: Template Toolkit folds 1-element arrays to scalars!
+        title_node = xml.findnodes('//*[@tag="245"]');
+
+        args.nonfiling_characters = title_node.findvalue('@ind2');
+      
+        IF (args.nonfiling_characters > 0);
+             args.sort_title = args.sort_title.substr(args.nonfiling_characters); 
+        ELSE;
+             args.sort_title = args.sort_title.replace('^[^A-Z0-9]*','');
+        END;
+      
+        args.pubplaces = [];
+        pubplace_hunt = xml.findnodes('//*[@tag="260"]/*[@code="a"]') ||
+            xml.findnodes('//*[@tag="264" and @ind2="1"]/*[@code="a"]');
+        FOR sub IN pubplace_hunt;
+            args.pubplaces.push(sub.textContent);
+        END;
+        args.pubplace = (args.pubplaces.size) ? args.pubplaces.0 : '';
+
+        args.publishers = [];
+        publishers_hunt = xml.findnodes('//*[@tag="260"]/*[@code="b"]') ||
+            xml.findnodes('//*[@tag="264" and @ind2="1"]/*[@code="b"]');
+        FOR sub IN publishers_hunt;
+            args.publishers.push(sub.textContent);
+        END;
+        args.publisher = (args.publishers.size) ? args.publishers.0 : '';
+
+        args.pubdates = [];
+        pubdates_hunt = xml.findnodes('//*[@tag="260"]/*[@code="c"]') || 
+            xml.findnodes('//*[@tag="264" and @ind2="1"]/*[@code="c"]');
+        FOR sub IN pubdates_hunt;
+            args.pubdates.push(sub.textContent);
+        END;
+        args.pubdate = (args.pubdates.size) ? args.pubdates.0 : '';
+
+        # Get RDA Copyright Info.
+        args.copyrights = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="4"]/*[@code="c"]');
+            args.copyrights.push(sub.textContent);
+        END;
+        args.copyright = (args.copyrights.size) ? args.copyrights.0 : '';
+
+        IF args.copyright.length >= 4;
+            args.copyrightYear = args.copyright.match('(\d{4})');
+            IF args.copyrightYear;
+                args.copyrightYear = args.copyrightYear.0;
+            END;
+        END;
+
+        # Get the RDA Production info.
+        args.producers = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="0"]/*[@code="b"]');
+            args.producers.push(sub.textContent);
+        END;
+        args.producer = (args.producers.size) ? args.producers.0 : '';
+
+        args.prodplaces = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="0"]/*[@code="a"]');
+            args.prodplaces.push(sub.textContent);
+        END;
+        args.prodplace = (args.prodplaces.size) ? args.prodplaces.0 : '';
+
+        args.proddates = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="0"]/*[@code="c"]');
+            args.proddates.push(sub.textContent);
+        END;
+        args.proddate = (args.proddates.size) ? args.proddates.0 : '';
+
+        # Get the RDA Distribution args.
+        args.distributors = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="2"]/*[@code="b"]');
+            args.distributors.push(sub.textContent);
+        END;
+        args.distributor = (args.distributors.size) ? args.distributors.0 : '';
+
+        args.distplaces = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="2"]/*[@code="a"]');
+            args.distplaces.push(sub.textContent);
+        END;
+        args.distplace = (args.distplaces.size) ? args.distplaces.0 : '';
+
+        args.distdates = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="2"]/*[@code="c"]');
+            args.distdates.push(sub.textContent);
+        END;
+        args.distdate = (args.distdates.size) ? args.distdates.0 : '';
+
+        # Get the RDA Manufacture args.
+        args.manufacturers = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="3"]/*[@code="b"]');
+            args.manufacturers.push(sub.textContent);
+        END;
+        args.manufacturer = (args.manufacturers.size) ? args.manufacturers.0 : '';
+
+        args.manplaces = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="3"]/*[@code="a"]');
+            args.manplaces.push(sub.textContent);
+        END;
+        args.manplace = (args.manplaces.size) ? args.manplaces.0 : '';
+
+        args.mandates = [];
+        FOR sub IN xml.findnodes('//*[@tag="264" and @ind2="3"]/*[@code="c"]');
+            args.mandates.push(sub.textContent);
+        END;
+        args.mandate = (args.mandates.size) ? args.mandates.0 : '';
+
+        # RDA adds 264 to the pubinfo 880 consideration mix
+        graphic_880s = [];
+        get_graphic_880s(target_field='260');
+        get_graphic_880s(target_field='264');
+        args.graphic_pubinfos = graphic_880s;
+        args.pubinfos = [];
+        FOR pubinfo IN args.graphic_pubinfos;
+            args.pubinfos.push(pubinfo.primary.value);
+        END;
+        args.pubinfo = (args.pubinfos.size) ? args.pubinfos.0 : '';
+
+        args.summaries = [];
+        FOR sub IN xml.findnodes('//*[@tag="520"]/*[@code="a"]');
+            args.summaries.push(sub.textContent);
+        END;
+        args.summary = (args.summaries.size) ? args.summaries.0 : '';
+
+        # 250 gets pride of place for edition statement, and is the
+        # only logical choice for 880 graphic fields
+        graphic_880s = [];
+        get_graphic_880s(target_field='250');
+        args.graphic_editions = graphic_880s;
+        args.editions = [];
+        FOR edition IN args.graphic_editions;
+            args.editions.push(edition.primary.value);
+        END;
+
+        ed_hunt = xml.findnodes('//*[@tag="250"]/*[@code="a"]');
+        FOR sub IN ed_hunt;
+            args.editions.push(sub.textContent);
+        END;
+        args.edition = (args.editions.size) ? args.editions.0 : '';
+
+        phys_content = [];
+        FOR sub IN xml.findnodes(
+            '//*[@tag="300"]/*[@code="a" or @code="b" or @code="c" or @code="e"]'
+        );
+            phys_content.push(sub.textContent);
+        END;
+        args.phys_desc = phys_content.join(" ");
+
+        graphic_880s = [];
+        get_graphic_880s(target_field='505');
+        args.graphic_contents = graphic_880s;
+        FOR content IN args.graphic_contents;
+            args.contents.push(content.primary.value);
+        END;
+        args.content = (args.contents.size) ? args.contents.0 : '';
+
+        # Maintain contents_list in case any custom use was made of it
+        args.contents_list = [];
+        FOR sub IN xml.findnodes('//*[@tag="505"]');
+            args.contents_list.push(sub.textContent);
+        END;
+
+        # MARC Callnumber
+        args.marc_cns = [];
+        FOR sub IN xml.findnodes('//*[@tag="092" or @tag="099"]/*');
+            args.marc_cns.push(sub.textContent);
+        END;
+        args.marc_cn = (args.marc_cns.size ) ? args.marc_cns.0 : '';
+            
+
+        # clean up the ISBN
+        args.isbn_clean = args.isbns.0.replace('\ .*', '');
+        FOR isbn IN args.isbns;
+            clean_isbn = isbn.replace('\ .*', '');
+            clean_isbn = clean_isbn.replace('-', '');
+            IF clean_isbn.length == 13;
+                args.gtin13 = clean_isbn;
+                LAST;
+            END;
+        END;
+
+        IF ebook_api.overdrive.enabled == 'true';
+            FOR marc037 IN xml.findnodes('//*[@tag="037"]');
+                marc037_id = marc037.findnodes('./*[@code="a"]').textContent;
+                marc037_source = marc037.findnodes('./*[@code="b"]').textContent;
+                IF marc037_source.match('OverDrive') AND marc037_id;
+                    args.overdrive_id = marc037_id;
+                    LAST;
+                END;
+            END;
+        END;
+
+        # Extract the 856 URLs that are not otherwise represented by asset.uri's
+        args.online_res = [];
+        FOR node IN xml.findnodes('//*[@tag="856" and @ind1="4" and (@ind2="0" or @ind2="1")]');
+            IF node.findnodes('./*[@code="9" or @code="w" or @code="n"]'); NEXT; END; # asset.uri's
+            label = node.findnodes('./*[@code="y"]');
+            notes = node.findnodes('./*[@code="z" or @code="3"]');
+            FOR href IN node.findnodes('./*[@code="u"]');
+                NEXT UNLESS href;
+                # it's possible for multiple $u's to exist within 1 856 tag.
+                # in that case, honor the label/notes data for the first $u, but
+                # leave any subsequent $u's as unadorned href's. 
+                # use href/link/note keys to be consistent with args.uri's
+                args.online_res.push({
+                    href => href.textContent, 
+                    link => (loop.first AND label) ? label.textContent : href.textContent,
+                    note => (loop.first) ? notes.textContent : ''
+                });
+            END;
+        END;
+ 
+        args.holdings = [];
+        args.uris = [];
+        args.issns = [];
+        args.resolver_isbns = [];
+        args.resolver_issns = [];
+
+        # we use $9 of ISBN and ISSN as a flag for e-version
+        FOR resolver_isbn IN xml.findnodes('//*[@tag="020"]/*[@code="9"]');
+            IF resolver_isbn.textContent == "SFX" || resolver_isbn.textContent == "CUFTS";
+                my_parent = resolver_isbn.parentNode();
+                FOR resolver_isbn_val IN my_parent.findnodes('./*[@code="a"]');
+                    args.resolver_isbns.push(
+                        resolver_isbn_val.textContent.replace('-', '').replace('\ .*', '')
+                    );
+                END;
+            END;
+        END;
+
+        FOR resolver_issn IN xml.findnodes('//*[@tag="022"]/*[@code="9"]');
+            IF resolver_issn.textContent == "SFX" || resolver_issn.textContent == "CUFTS";
+                my_parent = resolver_issn.parentNode();
+                FOR resolver_issn_val IN my_parent.findnodes('./*[@code="a"]');
+                    args.resolver_issns.push(
+                        resolver_issn_val.textContent.replace('[^\d\-X]', '')
+                    );
+                END;
+            END;
+        END;
+
+        # now snag all issns 
+        FOR rawissn IN xml.findnodes('//*[@tag="022"]/*[@code="a"]');
+            args.issns.push(
+                rawissn.textContent.replace('[^\d\-X]', '')
+            );
+        END;
+
+        ou_hiding_disabled = ctx.org_hiding_disabled();
+
+        # explicitly grabbing the first bib_source node, though there should be only one anyway
+        bib_source = xml.findnodes('//*[local-name()="bib_source"][1]');
+        args.bib_source.id = bib_source.getAttribute('ident');
+        args.bib_source.source = bib_source.textContent;
+
+        FOR volume IN xml.findnodes('//*[local-name()="volumes"]/*[local-name()="volume"]');
+
+            # Check volume visibility - could push this into XPath
+            vol.label = volume.getAttribute('label');
+
+            # Prepend prefix, if any
+            prefix = volume.findnodes('./*[local-name()="call_number_prefix"][@ident!="-1"]');
+            IF prefix.getAttribute('label') != '';
+                vol.label = prefix.getAttribute('label') _ " " _ vol.label;
+            END;
+
+            # Append prefix, if any
+            suffix = volume.findnodes('./*[local-name()="call_number_suffix"][@ident!="-1"]');
+            IF suffix.getAttribute('label') != '';
+                vol.label = vol.label _ " " _ suffix.getAttribute('label');
+            END;
+
+            vol.id = volume.getAttribute('id');
+            NEXT IF volume.getAttribute('opac_visible') == 'false';
+            NEXT IF volume.getAttribute('deleted') == 'true';
+
+            IF vol.label == '##URI##';
+                FOR uri IN volume.findnodes('./*[local-name()="uris"]/*[local-name()="uri"]');
+                    res = {};
+                    res.href = uri.getAttribute('href');
+                    res.link = uri.getAttribute('label');
+                    res.note = uri.getAttribute('use_restriction');
+                    # Avoid displaying the href as the link text if we can display the note instead
+                    IF res.link == res.href AND res.note;
+                        res.link = res.note;
+                        res.note = '';
+                    END;
+                    args.uris.push(res);
+
+                    IF ebook_api.ebook_test.enabled == 'true';
+                        IF !args.ebook_test_id;
+                            FOR base_uri IN ebook_api.ebook_test.base_uris;
+                                IF res.href.match(base_uri);
+                                    args.ebook_test_id = res.href.remove(base_uri);
+                                    LAST;
+                                END;
+                            END;
+                        END;
+                    END;
+
+                    IF ebook_api.oneclickdigital.enabled == 'true';
+                        # A record might conceivably have multiple OneClickdigital URIs,
+                        # but we use (the same) ISBN as the ebook ID in each case.
+                        IF !args.oneclickdigital_id;
+                            FOR base_uri IN ebook_api.oneclickdigital.base_uris;
+                                IF res.href.match(base_uri);
+                                    # found a OneClickdigital URI, let's grab our ID and move on
+                                    args.oneclickdigital_id = clean_isbn;
+                                    LAST;
+                                END;
+                            END;
+                        END;
+                    END;
+
+                    IF ebook_api.overdrive.enabled == 'true';
+                        # Ideally we already have an OverDrive record ID from MARC 037 (see above).
+                        # But for older records, it will be embedded in the URI in MARC 856.
+                        IF !args.overdrive_id;
+                            FOR base_uri IN ebook_api.overdrive.base_uris;
+                                IF res.href.match(base_uri);
+                                    args.overdrive_id = res.href.remove('^.*/ContentDetails.htm\?ID=');
+                                    LAST;
+                                END;
+                            END;
+                        END;
+                    END;
+                END;
+
+                NEXT;
+            ELSE;
+                copies = volume.findnodes('./*[local-name()="copies"]/*[local-name()="copy"]');
+                FOR copy IN copies;
+                    parts = copy.findnodes('./*[local-name()="monograph_parts"]/*[local-name()="monograph_part"]');
+                    part_label = '';
+                    FOREACH part IN parts;
+                        part_label = part.getAttribute('label');
+                        LAST IF part_label != '';
+                    END;
+                    # Check copy visibility
+                    cp.deleted = copy.getAttribute('deleted');    
+                    cp.visible = copy.getAttribute('opac_visible');
+                    NEXT IF (cp.deleted == 'true' OR cp.visible == 'false');
+
+                    # Iterate through all of the children to determine visibility
+                    FOR node IN cp.childNodes;
+                        NEXT IF cp.visible == 'false';
+                        vis = node.getAttribute('opac_visible');
+                        del = node.getAttribute('deleted');
+                        IF vis == 'false' or del == 'true';
+                            cp.visible = 'false';
+                        END;
+                    END;
+
+                    NEXT IF cp.visible == 'false';
+                    
+                    loc = copy.findnodes('./*[local-name()="location"]');
+                    NEXT IF loc.getAttribute('opac_visible') == 'false';
+
+                    circlib = copy.findnodes('./*[local-name()="circlib"]');
+                    NEXT IF circlib.getAttribute('opac_visible') == 'false';
+
+                    status = copy.findnodes('./*[local-name()="status"]');
+                    NEXT IF status.getAttribute('opac_visible') == 'false';
+
+                    # extract the circ_lib id from the circ_lib node
+                    circ_lib = copy.findnodes('./*[local-name()="circ_lib"]');
+                    circ_lib_id = circ_lib.getAttribute('id').replace('.*/', '');
+
+                    UNLESS ou_hiding_disabled;
+                        NEXT UNLESS ctx.org_within_hiding_scope(circ_lib_id);
+                    END;
+
+                    holding = {
+                        circ_lib => circ_lib_id,
+                        label => vol.label,
+                        part_label => part_label,
+                        location => loc.textContent,
+                        library => circlib.textContent,
+                        status => status.textContent,
+                        status_code => status.getAttribute('ident'),
+                        barcode => copy.getAttribute('barcode'),
+                        owner => volume.getAttribute('lib')
+                    };
+                    args.holdings.push(holding);
+                    part_label = '';
+                END;
+            END;
+        END;
+
+        # Extract the copy count summary
+        count_type = (ctx.is_staff) ? 'staff' : 'public';
+
+        # Consortial copy count summary first
+        xpath = '//*[local-name()="counts"]/*[local-name()="count"][@type="' _ count_type _ '"]';
+        args.copy_counts = {};
+        FOR node IN xml.findnodes(xpath);
+            FOR attr IN ['count', 'available', 'unshadow', 'transcendant', 'org_unit']; 
+                depth = node.getAttribute('depth');
+                count_org_unit = node.getAttribute('org_unit');
+                args.copy_counts.$depth.$attr = node.getAttribute(attr);
+                args.org_copy_counts.$count_org_unit.$attr = node.getAttribute(attr);
+            END;
+        END;
+
+        # Get preferred library copy count
+        args.plib_copy_counts = {};
+        count_type = 'pref_lib';
+        xpath = '//*[local-name()="counts"]/*[local-name()="count"][@type="' _ count_type _ '"]';
+        FOR node IN xml.findnodes(xpath);
+            FOR attr IN ['count', 'available', 'unshadow', 'transcendant', 'org_unit']; 
+                depth = node.getAttribute('depth');
+                args.plib_copy_counts.$depth.$attr = node.getAttribute(attr);
+            END;
+        END;
+
+        mmr_unique_bib = [];
+        # "mattype" == "custom marc format specifier"
+        icon_style = ctx.get_cgf('opac.icon_attr').value || 'item_type';
+        formats_xpath = '//*[local-name()="attributes"]/*[local-name()="field"][@name="' _ icon_style _ '"]';
+
+        args.all_formats = [];
+        FOR node IN xml.findnodes(formats_xpath);
+            IF node AND node.textContent;
+                ccvm = ctx.get_ccvm(node.getAttribute('cvmid'));
+                NEXT IF ccvm.opac_visible == 'f';
+
+                format = {};
+                this_icon_source = node.getAttribute('source_list');
+                including = 'F';
+                # Just display everything if we don't have the data
+                IF NOT args.mr_constituent_ids OR NOT this_icon_source;
+                    including = 'T';
+                # We have an array of search-included bib IDs and we have the bib ID that this icon belongs to
+                ELSE;
+                    FOR mr_constituent_id IN args.mr_constituent_ids;
+                        IF this_icon_source.split(',').grep('^' _ mr_constituent_id _ '$' ).size;
+                            # This bib appears to be in the array of filtered bibs
+                            including = 'T';
+                        END;
+                    END;
+                END;
+                IF including == 'T';
+                    type = ccvm.code.remove('-'); # blu-ray to bluray
+                    format.label = ccvm.search_label || ccvm.value;
+                    format.icon = PROCESS get_ccvm_icon ccvm=ccvm;
+                    format.itemtype = schema_typemap.$type || 'CreativeWork';
+                    format.search_format = ccvm.code;
+                    format.source_bibs = this_icon_source.split(',');
+                    FOR bib_source IN format.source_bibs;
+                        IF NOT mmr_unique_bib.grep(bib_source).size; mmr_unique_bib.push(bib_source); END;
+                    END;
+                    args.all_formats.push(format); # metarecords want all formats
+
+                    IF !args.format_label;
+                        # use the first format as the default
+                        args.format_label = format.label;
+                        args.schema.itemtype = format.itemtype;
+                        args.format_icon = format.icon;
+                    END;
+                END;
+            END;
+        END;
+
+        formats_xpath = '//*[local-name()="attributes"]/*[local-name()="field"][@name="item_lang"]';
+        args.all_lang = [];
+        FOR node IN xml.findnodes(formats_xpath);
+            IF node AND node.textContent;
+                ccvm = ctx.get_ccvm(node.getAttribute('cvmid'));
+                NEXT IF ccvm.opac_visible == 'f';
+
+                lang = {};
+                this_source = node.getAttribute('source_list');
+                including = 'F';
+                # Just display everything if we don't have the data
+                IF NOT args.mr_constituent_ids OR NOT this_source;
+                    including = 'T';
+                # We have an array of search-included bib IDs and we have the bib ID that this lang belongs to
+                ELSE;
+                    FOR mr_constituent_id IN args.mr_constituent_ids;
+                        IF this_source.split(',').grep('^' _ mr_constituent_id _ '$' ).size;
+                            # This bib appears to be in the array of filtered bibs
+                            including = 'T';
+                        END;
+                    END;
+                END;
+                IF including == 'T';
+                    lang.label = ccvm.search_label || ccvm.value;
+                    lang.itemtype = schema_typemap.$type || 'CreativeWork';
+                    lang.search_format = node.textContent;
+                    lang.source_bibs = this_source.split(',');
+                    FOR bib_source IN lang.source_bibs;
+                        IF NOT mmr_unique_bib.grep(bib_source).size; mmr_unique_bib.push(bib_source); END;
+                    END;
+
+                    args.all_lang.push(lang); # metarecords want all
+                END;
+            END;
+        END;
+        args.mmr_unique_bib = mmr_unique_bib;
+
+        IF args.ebook_test_id;
+            args.ebook.ebook_id = args.ebook_test_id;
+            args.ebook.vendor = 'ebook_test';
+        ELSIF args.oneclickdigital_id;
+            args.ebook.ebook_id = args.oneclickdigital_id;
+            args.ebook.vendor = 'oneclickdigital';
+        ELSIF args.overdrive_id;
+            args.ebook.ebook_id = args.overdrive_id;
+            args.ebook.vendor = 'overdrive';
+        END;
+
+    END;
+
+    # Get the library or location group
+    # get_library()
+    # magically upgrades any use of 'loc' to 'locg', 
+    # which is a superset of 'loc'.
+    BLOCK get_library;
+        loc_name = 'locg';
+
+        # Location groups don't have shortnames, so they'll take priority
+        # (_org doesn't contain the group and breaks the selector).
+        loc_value = ctx.copy_location_group ? CGI.param(loc_name)
+                  : ctx.copy_location_group_org # resolved locg
+                    || CGI.param(loc_name) || CGI.param('loc') || ctx.search_ou;
+    END;
+
+-%]
+
+[%- BLOCK carousels;
+    config = {
+        animated => 0,
+        animation_interval => 5,
+        width => 4,
+    };
+    config.import(args);
+    carousels = [];
+    IF config.carousel_id;
+        carousels.push(ctx.get_carousel(config.carousel_id));
+    ELSE;
+        visible_carousels = ctx.get_visible_carousels();
+        FOREACH car IN visible_carousels;
+            carousel = ctx.get_carousel(car.carousel);
+            IF car.override_name.defined;
+                carousel.name = car.override_name;
+            END;
+            carousels.push(carousel);
+        END; 
+    END;
+    IF carousels.size > 0;
+%]
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/glide.min.js[% ctx.cache_key %]"></script>
+<div class="carousels">
+[% FOREACH carousel IN carousels;
+   IF carousel.bibs.size > 0;
+%]
+<div class="carousel">
+<div class="carousel-title">[% carousel.name %]</div>
+<div class="carousel-body glide" id="carousel-[% carousel.id %]">
+  <div class="glide__track" data-glide-el="track">
+    <ul class="glide__slides">
+[% FOREACH bib IN carousel.bibs; %]
+      <li class="glide__slide"><div class="carousel-entry">
+        <a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]">
+          <img alt="[% l('Book cover') %]" class="carousel-entry-image" src="[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/r/[% bib.id | uri %]"></img>
+        </a><br>
+        <span class="carousel-entry-title"><a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]">[% bib.title | html %]</a></span>
+      </div></li>
+[% END; %]
+    </ul>
+  </div>
+  <div class="glide__arrows" data-glide-el="controls">
+    <button class="glide__arrow glide__arrow--left btn btn-confirm" data-glide-dir="<">prev</button>
+    <button class="glide__arrow glide__arrow--right btn btn-confirm" data-glide-dir=">">next</button>
+  </div>
+</div>
+</div>
+<script>
+    var glide = new Glide('#carousel-[% carousel.id %]', {
+        type: 'carousel',
+        rewind: false,
+        perView: [% config.width %],
+        startAt: 0,
+        [% IF config.animated %] autoplay: [% config.animation_interval * 1000 %],[% END %]
+    });
+    glide.mount();
+</script>
+[% END; %]
+[% END; %]
+</div>
+[% END -%]
+[% END -%]

@@ -1,0 +1,15 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "main";
+    myopac_main_page = "pay" %]
+<div id="myopac_summary_div">
+
+    <div class="payment-processing">
+        [% l('Processing...') %] <br/><br/>
+        [% l('Processing your payment may take some time.') %]<br/>
+        [% l("Please do not Refresh or use your browser's Back button or your credit card may be charged more than once.") %]<br/>
+    </div>
+
+</div>
+[% END %]

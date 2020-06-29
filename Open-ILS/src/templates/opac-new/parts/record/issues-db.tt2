@@ -1,0 +1,199 @@
+[%-
+expand_path = CGI.param('sepath') || [];
+expand_path = expand_path.list; # sic
+
+seoffset_list = CGI.param('seoffset') || [];
+seoffset_list = seoffset_list.list; # sic
+
+IF expand_path.size == 0 AND seoffset_list.size == 0;
+    seoffset_list = [0,0]; # compensate for $auto_expand_first; see ML
+END;
+
+selimit = CGI.param('selimit') || 10;
+ght_sepath = [];
+ght_depth = 0;
+
+VIEW grouped_holding_tree;
+    BLOCK list;
+        level_description = item.shift;
+        level_description.caption =
+            level_description.caption.replace('[\(\)]', '');
+
+        '<div class="rdetail-holding-group">';
+        prev_seoffset_list = seoffset_list.slice(0, ght_depth);
+        next_seoffset_list = seoffset_list.slice(0, ght_depth);
+
+        prev_seoffset_list.$ght_depth = prev_seoffset_list.$ght_depth - selimit;
+        IF prev_seoffset_list.$ght_depth < 0;
+            prev_seoffset_list.$ght_depth = 0;
+        END;
+
+        has_more = 0;
+        at_deepest_level = 0;
+
+        next_seoffset_list.$ght_depth = next_seoffset_list.$ght_depth + selimit;
+        IF item.0.units;
+            INCLUDE "opac/parts/record/copy_table.tt2" serial_holdings=item;
+            "<hr />";
+
+            at_deepest_level = 1;
+            IF NOT item.last.label;
+                has_more = 1;
+            END;
+        ELSE;
+            FOREACH node IN item;
+                IF NOT node.label;
+                    has_more = 1;
+                    LAST;
+                END;
+
+                IF node.value;
+                    ght_sepath.push(node.value);
+                    new_seoffsets = seoffset_list.slice(0, ght_depth);
+                    new_seoffsets.push(0);
+
+                    expand_link = mkurl(
+                        '', {'sepath' => ght_sepath, 'seoffset' => new_seoffsets},
+                        0, 'issues'
+                    );
+
+                    collapse_sepath = ght_sepath.slice(0, -2);
+                    IF collapse_sepath.size == 0;
+                        collapse_clear_params = ['sepath'];
+                    ELSE;
+                        collapse_clear_params = 0;
+                    END;
+
+                    collapse_link = mkurl(
+                        '', {
+                            'sepath' => collapse_sepath,
+                            'seoffset' => new_seoffsets.slice(0, -2)
+                        }, collapse_clear_params, 'issues'
+                    );
+
+                    "<div class='rdetail-holding-group'>";
+                    IF node.children.size;
+                        # TODO: make images or figure out a CSS trick or
+                        # something. I doubt we can count on all OPAC clients
+                        # having adequate fonts to cover these Unicode glyphs.
+                        "&#x25bc; <a href='"; collapse_link;
+                    ELSE;
+                        "&#x25ba; <a href='"; expand_link;
+                    END;
+                    "'>"; node.label; "</a></div>";
+
+                    IF node.children.size;
+                        ght_depth = ght_depth + 1;
+                        view.print(node.children);
+                        ght_depth = ght_depth - 1;
+                    END;
+
+                    waste = ght_sepath.pop;
+                ELSE;
+                    "<div class='rdetail-holding-group'>"; node.label; "</div>";
+                    at_deepest_level = 1;
+                END;
+            END;
+        END;
+
+        to_clear = 0;
+        new_sepath_end = ght_depth - 1;
+        IF new_sepath_end < 0;
+            to_clear = ['sepath'];
+            new_sepath = [];
+        ELSE;
+            new_sepath = expand_path.slice(0, ght_depth - 1);
+        END;
+
+        # So the "holdings" level of the tree is sorted ascending, while all
+        # the higher levels are sorted descending.  This seems weird until you
+        # look at it.  I dunno. I think it feels right.  It could be changed I
+        # guess.  Anyway, this means we have to be careful about which
+        # paging link we label "earlier" and which one we label "later."
+
+        next_link = ''; prev_link = '';
+        IF has_more;
+            next_link = '<a class="paging" href="' _
+                mkurl('',{seoffset => next_seoffset_list, sepath => new_sepath},to_clear,'issues') _ '">LABEL_HERE</a>&nbsp; ';
+        END;
+        IF seoffset_list.$ght_depth > 0;
+            prev_link = '<a class="paging" href="' _
+                mkurl('',{seoffset => prev_seoffset_list, sepath => new_sepath},to_clear,'issues') _ '">LABEL_HERE</a>&nbsp; ';
+        END;
+
+        IF at_deepest_level;
+            prev_link.replace('LABEL_HERE', '&laquo; ' _ l('Earlier issues'));
+            next_link.replace('LABEL_HERE', l('Later issues') _ ' &raquo;');
+        ELSE;
+            # XXX this is really bad for i18n (notice the sloppy pluralization),
+            # but then the middle layer for serials only knows English names
+            # for things like "month". There's a bigger problem to solve
+            # here...
+            caption = level_description.caption;
+            IF level_description.display_grouping == 'chron';
+                caption = caption _ 's';
+            END;
+            next_link.replace(
+                'LABEL_HERE',
+                '&laquo; ' _ l('Earlier') _ ' ' _ caption
+            );
+            prev_link.replace(
+                'LABEL_HERE',
+                l('Later') _ ' ' _ caption _ ' &raquo;'
+            );
+        END;
+        '</div>';
+    END;
+END;
+
+VIEW holding_summary_tree;
+    BLOCK hash;
+        '<div class="rdetail-holding-group">';
+        ctx.get_aou(item.org_unit).name; "<br />";
+        FOREACH summary IN item.holding_summaries;
+            IF summary.holdings;
+                twisty = '&#x25bc; ';
+                link = mkurl(
+                    '', {},
+                    ['sid','stype','selimit','sepath','seoffset'], 'issues'
+                );
+                link_title = l('Collapse');
+            ELSE;
+                twisty = '&#x25ba; ';
+                link = mkurl(
+                    '', {sid => summary.id, stype => summary.summary_type},
+                    ['selimit','sepath','seoffset'], 'issues'
+                );
+                link_title = l('Expand');
+            END;
+            '<span>'; twisty;
+            '<a href="' _ link _ '" title="' _ link_title _ '">';
+            summary.generated_coverage.join(", ");
+            '</a></span><br />';
+            IF summary.holdings;
+                grouped_holding_tree.print(summary.holdings);
+            END;
+        END;
+        FOREACH child IN item.children;
+            view.print(child);
+        END;
+        '</div>';
+    END;
+END %]
+    <div class="holding-summary-tree">
+    [% holding_summary_tree.print(ctx.holding_summary_tree) %]
+    </div>
+    <div class="holding-summary-tree-pager">
+        [%  slimit = CGI.param('slimit') || 10;
+            soffset = CGI.param('soffset') || 0;
+            soffset_prev = soffset - slimit;
+            IF soffset_prev < 0; soffset_prev = 0; END;
+            soffset_next = soffset + slimit;
+        %]
+        [% IF soffset > 0 %]
+        <a href="[% mkurl('', {soffset => soffset_prev}, ['sid','stype','sepath','selimit','seoffset'], 'issues') %]>[% l('Previous') %]</a>
+        [% END %]
+        [% IF ctx.holding_summary_tree.more %]
+        <a href="[% mkurl('', {soffset => soffset_next}, ['sid','stype','sepath','selimit','seoffset'], 'issues') %]">[% l('Next') %]</a>
+        [% END %]
+    </div>

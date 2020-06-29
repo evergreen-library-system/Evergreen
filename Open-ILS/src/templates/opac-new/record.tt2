@@ -1,0 +1,27 @@
+[%- PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Record Detail");
+    canon = ctx.proto _ '://' _ ctx.hostname _ mkurl('', {}, 1);
+    ctx.metalinks.push('<link rel="canonical" href="' _ canon  _ '" />');
+    ctx.metalinks.push('<meta property="og:url" content="' _ canon  _ '" />');
+    IF CGI.param("expand"); basic_search = "f"; END;    
+-%]
+    <span class="sr-only">[% l('Record Details') %]</span>
+    [% INCLUDE "opac/parts/searchbar.tt2" %]
+    <br class="clear-both" />
+    <div id="content-wrapper" class="content-wrapper-record-page">
+        [% IF ctx.staff_saved_search_size %]
+        <div id="results-side-bar">
+            <div id="staff-saved-search">
+                [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
+            </div>
+        </div>
+        [% END %]
+        <div id="[% ctx.staff_saved_search_size ? 'main-content-after-bar' : 'main-content' %]">
+            [% INCLUDE "opac/parts/record/body.tt2" %]
+            <div class="common-full-pad"></div>
+        </div>
+        <br class="clear-both" />
+    </div>
+[%- END %]

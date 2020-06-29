@@ -1,0 +1,88 @@
+[%
+    dsetting = "opac.default_list";
+    tclass = "temporary divider";
+
+    # Wrap a url to open in a new tab in staff client.
+    MACRO opac_wrap(url) BLOCK;
+    	  IF ctx.is_staff AND NOT ctx.is_browser_staff;
+              # void(0) to return false and not go to new page in current tab.
+              "javascript:xulG.new_tab(xulG.urls.XUL_OPAC_WRAPPER, {}, {'opac_url' : 'oils://remote" _ url _ "'});void(0);";
+          ELSE;
+              url;
+          END;
+    END;
+
+    IF rec.id;
+        # Results table context
+        ctx.bre_id = rec.id;
+        stop_parms = 1;
+        rec_anchor = 'record_' _ ctx.bre_id;
+    ELSE;
+        # Record details context
+        rec_anchor => ctx.bre_id;
+    END;
+
+    record_title = attrs.title; # same for either context
+
+    IF ctx.user_setting_map.defined(dsetting);
+        default_list = ctx.user_setting_map.$dsetting;
+    END;
+
+    IF (!default_list) && ctx.bookbags.size;
+        tclass = "temporary";
+    END;
+
+    href = opac_wrap(mkurl(ctx.opac_root _ '/mylist/add', {
+        record => ctx.bre_id, anchor => rec_anchor
+    }, stop_parms));
+%]
+
+ <button id="btnGroupDrop1" type="button" class="btn btn-action" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><a href="#" class="no-dec">
+          <img src="[% ctx.media_prefix %]/images/clipboard.png[% ctx.cache_key %]"
+              [% html_text_attr('alt', 
+                l('Add item to a list: [_1]', record_title)) %]/>
+          [% l("Add to my list") %]
+        </a></button>
+    <!--Removal-->    
+    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+    <a class="dropdown-item" href="[% href %]">[% l('Temporary List') %]</a>
+    
+    [% IF default_list;
+       label = (ctx.default_bookbag) ? ctx.default_bookbag : l('Default List');
+       class = (ctx.bookbags.size) ? "default divider" : "default";
+       href = opac_wrap(mkurl(ctx.opac_root _ '/myopac/list/update', {
+            action => 'add_rec', list => default_list,
+            record => ctx.bre_id, anchor => rec_anchor
+        }, stop_parms));
+    %]
+    <a href="[% href %]" class="dropdown-item">[% label %]</a>
+    [% END %]
+    [% IF ctx.bookbags.size;
+       i = 0;
+       FOREACH bag IN ctx.bookbags;
+           href = opac_wrap(mkurl(ctx.opac_root _ '/myopac/list/update', {
+                action => 'add_rec', list => bag.id, record => ctx.bre_id,
+                anchor => rec_anchor
+           }, stop_parms));
+           i = i + 1;
+           IF i == ctx.bookbags.size;
+    %]
+    <div class="dropdown-divider"></div>
+        [%- END -%]
+    <a class="dropdown-item" href="[% href %]">[% bag.name %]</a>
+    [%
+       END;
+       END
+    %]
+        <a class="dropdown-item" href="[% opac_wrap(mkurl(ctx.opac_root _ '/myopac/lists', {
+            limit => ctx.bookbag_count, add_rec => ctx.bre_id,
+            anchor => rec_anchor })) %]"
+           title="[% l('See all of my lists') %]">
+        [% l('See All') %]
+        </a>
+    <a class="dropdown-item" href="[% opac_wrap(mkurl(ctx.opac_root _ '/myopac/lists', {
+        add_rec => ctx.bre_id, anchor => rec_anchor
+    }, stop_parms)) %]">
+    [% l('Add to new list') %]
+    </a>
+</div>

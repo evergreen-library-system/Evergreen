@@ -1,0 +1,93 @@
+[%
+    css_colors = {
+        
+        
+#The counts that appear in the navigation when signed into the OPAC -EX. X Ready For Pickup where x is the modified number
+
+    	zero_count = "#a0ff9e", #Logged in item/charges count at 0
+        non_zero_count = "#ff0016", #Logged in item/charges count NOT at 0
+
+    	facets_back = "#00593d", #search list facet backgrounds
+    	footer_link = "#fff",
+
+    	nav_separation = "#00593d",
+        header_primary = "#00593d", #Primary Header Color
+        header_primary_fade = "#007a54", #Fade Header Color, make equal to header_primary for no fade
+        footer_primary = "#00593d", #Primary Footer Color
+        footer_primary_fade = "#007a54", #Fade Footer Color, make equal to footer_primary for no fade
+
+        background = "#fff", # white
+        background_alert = "#ffcccc", # pink
+        background_invert = "#252525", # charcoal
+        text = "black", # black 
+        text_alert = "red", # red
+        text_attention = "#ffcc33", # pumpkin orange
+        text_badnews = "#f41d36", # cherry red
+        text_goodnews = "#1dd93c", # lime green
+        text_greatnews = "green", # green
+        text_invert = "#fff", # white
+        text_match = "#c00", # deep red
+        primary = "#00593d", # dark green
+        primary_fade = "#007a54", # medium green
+        primary_offset = "#417860", # light_green
+        control = "#69A088", # lighter green
+        accent_light = "#ccc", #  grey (light)
+        accent_lighter = "#ddd", #  grey (lighter)
+        accent_lighter2 = "#d8d8d8", #  grey (lighter again)
+        accent_lightest = "#eee", #  grey (lightest)
+        accent_ultralight = "#f0f0f0", # ivory
+        accent_medium = "#999", # gun metal grey (medium)
+        accent_mediumdark = "#888", # gun metal grey (medium dark)
+        accent_dark = "#666", # gun metal grey (dark)
+        accent_darker = "#333", # gun metal grey (darker)
+        border_standard = "#e9ebf3", # light grey-blue
+        border_dark = "black", # black
+        border_alert = "red", # red
+        button_text = "#fbf9f9", # off-white 
+        button_text_shadow = "#555555", # medium grey
+        table_heading = "#d8d8d8", # grey-blue
+        mobile_header_text = "#fff", # white
+        item_selected = "#ddd", # grey (lighter)
+        link = "#00593d", # dark green
+
+#Buttons are using default Bootstrap styling colors by default with this scheme, changable to match your library colours
+
+#Submit buttons and confirmations likle login. Make all 4 the same color for no hover effect
+        button_confirm = "#28a745",
+        button_confirm_hover = "#218838",
+        button_confirm_border = "#28a745",
+        button_confirm_border_hover = "#1e7e34",
+        button_confirm_text = "#fff",
+
+#Denial buttons like Cancel. Make all 4 the same color for no hover effect    
+        button_deny = "#dc3545",
+        button_deny_hover = "#c82333",
+        button_deny_border = "#dc3545",
+        button_deny_border_hover = "#bd2130",
+        button_deny_text = "#fff",
+
+#Removal buttons like removing a search row in the advanced search. Make all 4 the same color for no hover effect
+        button_remove = "#dc3545",
+        button_remove_hover = "#c82333",
+        button_remove_border = "#dc3545",
+        button_remove_border_hover = "#bd2130",
+        button_remove_text = "#fff",
+
+#Main search buttons and buttons that are not a confirm or deny such as the Less and More details on the record. Make all 4 the same color for no hover effect 
+        opac_button = "#2e3b91",
+        opac_button_hover = "#949cc8",
+        opac_button_border = "#2e3b91",
+        opac_button_border_hover = "#949cc8",
+        opac_button_text = "#fff",
+
+#Action buttons such as Place Hold and Add to List seen in record and results. Make all 4 the same color for no hover effect 
+        action_button = "#f8f9fa",
+        action_button_hover = "#e2e6ea",
+        action_button_border = "#f8f9fa",
+        action_button_border_hover = "#dae0e5",
+        action_button_text = "#00593d",
+        #Many action buttons use link coloring on the anchor tags. This setting will change the color to match your color schema if necessary
+        #action_button_text_anchors = "",
+};
+    
+%]

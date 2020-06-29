@@ -1,0 +1,20 @@
+[%-
+    # Default to the root of the org unit tree in the absence of a specific library
+    loc = ctx.search_ou;
+
+    # Get the full name of the library
+    ou_name = ctx.get_aou(loc).name | uri;
+
+    # Generate the gross RefWorks URL, based on parameters from config.tt2
+    rw_uri = ctx.refworks.url _ 
+        '/express/expressimport.asp?vendor=' _
+        ou_name _
+        '&filter=MARC+Format&database=All+MARC+Formats&' _
+        'encoding=65001&url=http%3A%2F%2F' _
+        CGI.server_name _ 
+        '/opac/extras/supercat/marctxt/record/' _ 
+        ctx.bre_id;
+%]
+<div class="rdetail_aux_utils rdetail_refworks">
+    <a href="[% rw_uri %]" rel="nofollow" vocab=""><img src="/images/starz.png[% ctx.cache_key %]" alt="" />[% l('Export to RefWorks') %]</a>
+</div>

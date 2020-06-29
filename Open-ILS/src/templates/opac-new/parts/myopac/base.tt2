@@ -1,0 +1,76 @@
+[%  WRAPPER "opac/parts/base.tt2" %]
+
+[% myopac_pages = [
+        {url => "main", name => l("Account Summary")},
+        {url => "messages", name => l("Messages")},
+        {url => "circs", name => l("Items Checked Out")},
+        {url => "holds", name => l("Holds")},
+        {url => "prefs", name => l("Account Preferences")},
+        {url => "lists", name => l("My Lists")}
+    ];
+     IF (ctx.show_reservations_tab == 'true');
+        myopac_pages.push({url => "reservations", name => l("Reservations")});
+    END;
+    skin_root = "../"
+%]
+    <h2 class="sr-only">[% l('My Account') %]</h2>
+    [% INCLUDE "opac/parts/topnav.tt2" %]
+    <div class="mobile_hide">
+    [% INCLUDE "opac/parts/searchbar.tt2" %]
+    </div>
+
+
+    <div class="container my-3 min">
+        <div id="myopac_tabs">
+        	<ul class="nav nav-tabs nav-justified d-none d-lg-flex">
+                [%- FOREACH page IN myopac_pages;
+                    IF page.url == myopac_page;
+                        cls_which = "active";
+                        ctx.page_title = l("My Account - [_1]", page.name);
+                    ELSE;
+                        cls_which = "";
+                    END -%]<li class="nav-item">
+                <a href="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid', 'offset', 'limit','sort','sort_type', 'hid']) %]"
+                    class="[% cls_which %] nav-link">[% page.name; %]</a></li>
+                [% END %]
+           	 	
+ 			</ul>
+            <!-- Select box navigation for media view -->
+            <div class="mx-auto py-3 d-block d-lg-none">
+               <form name="acct_nav">
+                 <select name="acct_url" class="form-control"
+                    title="[% l('Select an account page') %]" 
+                    onchange="window.location.href=document.acct_nav.acct_url.options[document.acct_nav.acct_url.selectedIndex].value">
+                    <option value="" selected="selected">[% l('Go to...') %]</option>
+                    [% FOREACH page IN myopac_pages;
+                      IF page.url != myopac_page; %]
+                        <option value="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid', 'offset', 'limit', 'hid']) %]">[% page.name; %]</option>
+                    [% ELSE; %]
+                        <option value="" disabled>[% page.name; %]</option>
+                    [% END;
+                   END; %] 
+                 </select>
+	            </form>
+            </div>
+	    </div><!-- myopac_tabs -->
+        <div id="main-content" class="p-3">
+            [% content %]
+            <div class="common-full-pad"></div>
+        </div>
+    </div> <!-- content-wrapper -->
+    
+    <!--Table functions ~ Controlling TH checkbox dynamically and allowing for row clicks to select items -->
+  <script>
+  jQuery('td input:checkbox').change(function(){
+   jQuery('th input:checkbox').prop('checked',jQuery('td input:checkbox:checked').length == jQuery('td input:checkbox').length);
+});
+
+jQuery( document ).ready(function( $ ) {
+    $('tr').click(function(event) {
+        if (event.target.type !== 'checkbox') {
+            $(':checkbox', this).trigger('click');
+        }
+    });  
+});
+</script>
+[% END %]

@@ -1,0 +1,64 @@
+[%- 
+    series_tags = ['440', '490', '800', '810', '811', '830', '694']; 
+    loc = ctx.search_ou;
+
+BLOCK render_series;
+    results = [];
+    IF attrs.hl_display_fields.series_title.size;
+    hl_field = attrs.hl_field;
+        FOREACH s IN attrs.hl_display_fields.series_title;
+            search_term = s.value.replace('[#"^$\+\-,\.:;&|\[\]()]', ' ').replace('\s+$', '') | html;
+    
+            url = mkurl(ctx.opac_root _ '/results',
+                { qtype=>'series', query=>search_term }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms)
+            );
+            series = '<a href="' _ url _ '">' _ s.$hl_field _ '</a> ';
+            results.push(series);
+        END;
+    ELSE;
+        FOR tag IN series_tags;
+            FOR node IN ctx.marc_xml.findnodes('//*[@tag="' _ tag _ '"]');
+                all_terms = [];
+                graphics = [];
+                series = '';
+                FOR subfield IN node.childNodes;
+                    NEXT UNLESS subfield.nodeName == "subfield";
+                    code = subfield.getAttribute('code');
+                    IF code == '6';
+                       linked_fields = [subfield.textContent()];
+                       target_field = node.getAttribute('tag');
+                       get_linked_880s;
+                    END;
+                    NEXT UNLESS code.match('[a-z]');
+                    # at this point, we actually have a partial term to use.
+                    single_term = subfield.textContent | html;
+                    all_terms.push(subfield.textContent.replace('[#"^$\+\-,\.:;&|\[\]()]', ' '));
+                    total_term = all_terms.join(" ").replace('\s+$', '');
+    
+                    url = mkurl(ctx.opac_root _ '/results',
+                        { qtype=>'series', query=>total_term }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms)
+                    );
+                    series = series _ '<a href="' _ url _ '">' _ single_term _ '</a> ';
+                END;
+                FOREACH link880 IN graphics;
+                    link = link880.value | html;
+                    series = series _ '<div class="graphic880"' _ link880.dir _ '>' _ link _ '</div>';
+                END;
+                results.push(series);
+            END;
+        END; 
+    END;
+    FOR entry IN results;
+    -%]
+    <li class='rdetail_series_value'>[% entry %]</li>
+    [%- END;
+END;
+%]
+
+[%- series_anchors = PROCESS render_series;
+    IF series_anchors.length > 0; %]
+<h2 class='rdetail_related_series'>[% l('Search for related items by series') %]</h2>
+<ul>
+    [% series_anchors %]
+</ul>
+[%- END %]

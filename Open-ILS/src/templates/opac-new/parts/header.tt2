@@ -1,0 +1,165 @@
+[%- USE money = format(l('$%.2f'));
+    USE date;
+    USE CGI = CGI_utf8;
+    USE POSIX;
+    USE HTML;
+    SET DATE_FORMAT = l('%m/%d/%Y');
+    PROCESS "opac/parts/config.tt2";
+
+    # Don't wrap in l() here; do that where this format string is actually used.
+    SET HUMAN_NAME_FORMAT = '[_1] [_2] [_3] [_4] [_5]';
+
+    is_advanced = CGI.param("_adv").size || CGI.param("query").size;
+    is_special = CGI.param("_special").size;
+
+    # Check if we want to show the detail record view.  Doing this
+    # here because we don't want to repeat logic in multiple other
+    # files, nor do we want to add a new tt2 file just for this.  The
+    # below is currently needed for parts/result/table.tt2,
+    # parts/searchbar.tt2, and results.tt2.
+    show_detail_view = 0;
+    IF CGI.param("detail_record_view").defined;
+        show_detail_view = CGI.param("detail_record_view") | html;
+    ELSIF show_more_details.default == "true" OR
+          show_more_details.default == "hide";
+        show_detail_view = 1;
+    END;
+
+    #variables to use to remove parameters via mkurk
+    expert_search_parms = ['tag','subfield','term','_special'];
+    general_search_parms = ['page','sort','query','bool','contains','pubdate'];
+    browse_search_parms = ['fi:has_browse_entry','bterm','blimit','bpivot'];
+    facet_search_parms = ['facet'];
+
+
+    # -----------------------------------------------------------------------------
+    # mkurl( destination_page, params_to_set, params_to_clear )
+    #
+    # Current page, updated params:
+    # mkurl('', {foo => 'bar', boo => 'baz'});
+    #
+    # New page, one param is a list:
+    # mkurl('http://flarg.baz/squz', {foo => 'bar', boo => ['baz', 'faz']});
+    #
+    # New page, clear all existing params before applying new ones:
+    # mkurl('/fuz/buster', {foo => 'bar', boo => 'baz'}, 1); 
+    #
+    # Current page, clear 'some_param' from the existing params:
+    # mkurl('', {foo => 'bar', boo => 'baz'}, ['some_param']);
+    #
+    # Current page to a named anchor 'copies'
+    # mkurl('', {}, [], 'copies');
+    MACRO mkurl(page, params, clear_params, named_anchor) BLOCK;
+
+        # clone the query string to avoid clobberation
+        cgi = CGI.new(CGI.query_string);
+
+        # remove requested params
+        IF clear_params.0; # array
+            FOR p IN clear_params; cgi.delete(p); END;
+        ELSIF clear_params;
+            cgi.delete_all();
+        END;
+
+        # some standing, hardcoded parameters to always clear
+        # because they're used for specific, transitory purposes
+        cgi.delete('move_cart_by_default');
+        cgi.delete('cart_none_selected');
+        cgi.delete('list_none_selected');
+        
+        # x and y are artifacts of using <input type="image" /> tags 
+        # instead of true submit buttons, and their values are never used.
+        cgi.delete('x', 'y'); 
+
+        # apply user params
+        FOR k IN params.keys;
+            encoded = [];
+            max = params.$k.max;
+
+            # The following commented-out line can be fooled. Its replacement
+            # below is what you really mean.
+            # list = (params.$k.0 OR max == -1) ? params.$k : [params.$k];
+            list = params.$k.list;
+
+            IF list.size == 0; NEXT; END;
+            # CGI croaks on already-decoded strings.  force-encode to be safe.
+            FOR p IN list; encoded.push(ctx.encode_utf8(p)); END;
+            foo = cgi.param("-name", k, "-values", encoded);
+        END;
+
+        # for url brevity, remove any params that have no value
+        FOR p IN cgi.param;
+            val = cgi.param(p);
+            IF val == ''; cgi.delete(p); END;
+
+            # Delete POST vars unless we asked for them
+            UNLESS CGI.url_param(p).defined OR params.defined(p);
+                cgi.delete(p);
+            END;
+        END;
+
+        final = named_anchor ? '#' _ named_anchor : '';
+
+        IF page;
+            IF cgi.query_string;
+                page _ '?' _ cgi.query_string _ final;
+            ELSE;
+                page _ final;
+            END;
+        ELSE;
+            # staying on the current page
+            cgi.url("-absolute" => 1, "-path" => 1, "-query" => 1) _ final;
+        END;
+    END;
+
+    # Dojo is required for the copy locations advanced search filter
+    IF ctx.page == 'advanced';
+        want_dojo = 1;
+    END;
+
+    # ... and for code that tweaks visibility of types on the added
+    # content tab
+    IF ctx.page == 'record' AND (ctx.expand_addedcontent OR ctx.expand_all);
+        want_dojo = 1;
+    END;
+
+    use_autosuggest = ctx.get_cgf("opac.use_autosuggest");
+
+    IF use_autosuggest.enabled == "t";
+        want_dojo = 1;
+    END;
+
+    IF ENV.OILS_NOVELIST_URL;
+        want_dojo = 1;
+    END;
+
+    IF ebook_api.enabled == 'true';
+        want_dojo = 1;
+    END;
+
+    # Especially useful for image 'alt' tags and link title tags,
+    # where the content may need to be unique (making it longer)
+    # but should not exceed 75 chars for ideal screen reader support.
+    # usage: html_text_attr('title', 'Link to item I Have A Super Long Title')
+    # the full HTML attribute key="value" is produced
+    MACRO html_text_attr(name, value) BLOCK;
+        IF value.length >= 75;
+            value = value.substr(71, value.length, '...');                        
+        END;                                                                   
+        value = value.replace('\s*$', ''); # remove trailing whitespace          
+        HTML.attributes($name => value); 
+    END;
+
+    MACRO img_alt(text) BLOCK;
+        html_text_attr('alt', text);
+    END;
+
+    # Browser cache-busting key
+    # Fall back to the eg_cache_hash (set by autogen) so that we don't have to
+    # add conditionals into the rest of the templates
+    IF ctx.cache_key AND ctx.cache_key != "?" _ ctx.eg_cache_hash;
+        ctx.cache_key = "?v=" _ ctx.cache_key;
+    ELSE;
+        ctx.cache_key = "?" _ ctx.eg_cache_hash;
+    END;
+%]

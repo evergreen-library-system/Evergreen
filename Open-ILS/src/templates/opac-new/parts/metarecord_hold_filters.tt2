@@ -1,0 +1,77 @@
+[%#
+Draws the format multi-select and the language multi-select for
+limiting the set of desired records for a given metarecord.
+%]
+
+<style>
+  /* The rules has been moved to style.css  */
+</style>
+
+[% BLOCK metarecord_hold_filters_selector;
+    # in edit mode, pull the target from the existing hold
+    target_id = hold_data.hold.hold.target || hold_data.target.id;
+
+    selected_formats = {};
+    selected_langs = {};
+    FOR fmt IN hold_data.metarecord_selected_filters.formats;
+        code = fmt.code;
+        selected_formats.$code = fmt;
+    END;
+    FOR lang IN hold_data.metarecord_selected_filters.langs;
+        code = lang.code;
+        selected_langs.$code = lang;
+    END;
+%]
+
+<div class="metarecord_filters">
+  <div class="metarecord_filter_container">
+    <div class="metarecord_filter_header">
+      <div>[% l('Select your desired format(s).') %]</div>
+      <div>[% l('If none are selected, any available formats may be used.') %]</div>
+    </div>
+    <select multiple='multiple' class="form-control"
+      name="metarecord_formats_[% target_id %]">
+      [% FOR ccvm IN
+          hold_data.metarecord_filters.formats.sort('search_label');
+          NEXT IF ccvm.opac_visible == 'f' %]
+        <option value="[% ccvm.code %]"[%- code = ccvm.code; 
+            IF selected_formats.$code %] selected='selected'[% END -%]>
+          [% ccvm.search_label | html %]
+        </option>
+      [% END %]
+    </select>
+  </div>
+  [% IF hold_data.metarecord_filters.langs.size;
+        my_lang = ctx.get_i18n_l(ctx.eg_locale).marc_code;
+  %]
+  <div class="metarecord_filter_container">
+    <div class="metarecord_filter_header">
+      <div>[% l('Select your desired language(s).') %]</div>
+      <div>[% l('If none are selected, any available languages may be used.') %]</div>
+    </div>
+    <select multiple='multiple' class="form-control"
+      name="metarecord_langs_[% target_id %]">
+      [% FOR lang_ccvm IN hold_data.metarecord_filters.langs.sort('value');
+            NEXT IF lang_ccvm.opac_visible == 'f';
+            selected = 0; 
+            code = lang_ccvm.code;
+            IF selected_langs.size;
+                # user has already selected their preferred language(s)
+                SET selected = 1 IF selected_langs.$code;
+
+            ELSIF !hold_data.hold.hold.target; # new hold
+                # no prefered language selected; use current locale
+                SET selected = 1 IF code == my_lang;
+            END;
+        %]
+        <option value="[% lang_ccvm.code %]"[%- 
+            IF selected %] selected='selected'[%- END %]>
+          [% lang_ccvm.value | html %]
+        </option>
+      [% END %]
+    </select>
+  </div>
+  [% END %]
+  <div class="clear-both">&nbsp;</div>
+</div>
+[% END # metarecord_hold_filters_selector %]

@@ -1,0 +1,34 @@
+<nav class="navbar navbar-expand-lg navbar-light secondary-nav">
+<div class="row mx-auto">
+<div class="col-12">
+    <ul class="navbar-nav nav-fl px-3 d-lg-flex d-none">
+        <li class=" nav-item mx-2">
+            [% IF ctx.page != 'home'; %]
+            <a href="[% mkurl(ctx.opac_root _ '/home') %]" class="search_catalog_lbl">[%l('Basic Search')%]</a>
+            [% ELSE %]
+            <span class="search_catalog_lbl">[%l('Basic Search')%]</span>
+            [% END %]
+        </li>
+        <li class=" nav-item mx-2">
+            [% IF ctx.page != 'browse'; %]
+            <a href="[% mkurl(ctx.opac_root _ '/browse', {}, expert_search_parms.merge(general_search_parms, facet_search_parms, ['fi:has_browse_entry'])) %]" class="browse_the_catalog_lbl">[% l('Browse the Catalog') %]</a>
+            [% ELSE %]
+            <span class="browse_the_catalog_lbl">[%l('Browse the Catalog')%]</span>
+            [% END %]
+        </li>
+        <li class="nav-item mx-2">
+            [% IF ctx.page != 'advanced'; %]
+            <a href="[% mkurl(ctx.opac_root _ '/advanced', {},  expert_search_parms.merge(browse_search_parms, facet_search_parms)) %]" id="home_adv_search_link" class="adv_search_catalog_lbl">[% l('Advanced Search') %]</a></span>
+            [% ELSE %]
+            <span class="adv_search_catalog_lbl">[%l('Advanced Search')%]</span>
+            [% END %]
+        </li>
+    </ul>
+<div>
+
+</div>
+    </div>
+    
+</div>
+[% INCLUDE 'opac/parts/cart_nav.tt2' %]
+</nav>

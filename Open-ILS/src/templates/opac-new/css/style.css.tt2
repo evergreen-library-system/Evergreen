@@ -1,0 +1,3792 @@
+[%-
+    PROCESS "opac/parts/css/colors.tt2";
+    PROCESS "opac/parts/css/fonts.tt2";
+    rtl = ctx.get_i18n_l(ctx.eg_locale).rtl;
+%]
+
+/*
+Mini Table Styling
+*/
+@media 
+only screen and (max-width: 650px)  {
+    .miniTable{
+        width: 100% !important;
+    }
+
+	/* Force table to not be like tables anymore */
+    .miniTable table, .miniTable thead, .miniTable tbody, .miniTable th, .miniTable td, .miniTable tr
+    { 
+		display: block; 
+    }
+    
+    .miniTable th{
+       display:none;
+    }
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+    .miniTable thead tr{ 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+    .miniTable tr
+     { 
+     	border: 1px solid #ccc; 
+     	margin: 10px 0px; 
+     }
+
+
+    .miniTable td
+    { 
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+        padding-left: 50%; 
+        min-height:45px;
+        text-align: right;
+    }
+	
+    .miniTable td:before
+    { 
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+        position: absolute;
+    }
+    .copyTable tr:nth-of-type(1):before { content: "Copy #1"; display: block; text-align:center; }
+	.copyTable tr:nth-of-type(2):before { content: "Copy #2"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(3):before { content: "Copy #3"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(4):before { content: "Copy #4"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(5):before { content: "Copy #5"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(6):before { content: "Copy #6"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(7):before { content: "Copy #7"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(8):before { content: "Copy #8"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(9):before { content: "Copy #9"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(10):before { content: "Copy #10"; display: block; text-align:center;}
+
+	.copyTable td:nth-of-type(1):before { content: "Library"; display: flex; }
+    .copyTable td:nth-of-type(2):before { content: "Call Number"; display: flex; }
+	.copyTable td:nth-of-type(3):before { content: "Barcode"; display: flex;}
+    .copyTable td:nth-of-type(4):before { content: "Shelving Location"; display: flex;}
+    .copyTable td:nth-of-type(5):before { content: "Status"; display: flex;}
+    .copyTable td:nth-of-type(6):before { content: "Due Date"; display: flex;}
+   
+    .holdingsTable tr:nth-of-type(1):before { content: "Copy #1"; display: block; text-align:center; }
+	.holdingsTable tr:nth-of-type(2):before { content: "Copy #2"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(3):before { content: "Copy #3"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(4):before { content: "Copy #4"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(5):before { content: "Copy #5"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(6):before { content: "Copy #6"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(7):before { content: "Copy #7"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(8):before { content: "Copy #8"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(9):before { content: "Copy #9"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(10):before { content: "Copy #10"; display: block; text-align:center;}
+
+
+    .holdingsTable td:nth-of-type(1):before { content: "Library"; display: flex; }
+    .holdingsTable td:nth-of-type(2):before { content: "Shelving location"; display: flex; }
+	.holdingsTable td:nth-of-type(3):before { content: "Call number"; display: flex;}
+    .holdingsTable td:nth-of-type(4):before { content: "Status"; display: flex;}
+
+	.chargesTable td:nth-of-type(1):before { content: "Select"; display: flex; }
+    .chargesTable td:nth-of-type(2):before { content: "Owed"; display: flex; }
+	.chargesTable td:nth-of-type(3):before { content: "Billing Type"; display: flex;}
+    .chargesTable td:nth-of-type(4):before { content: "Note"; display: flex;}
+    .chargesTable td:nth-of-type(5):before { content: "Date"; display: flex;}
+    
+    .chargesMainTable td:nth-of-type(1):before { content: "Select"; display: flex; }
+    .chargesMainTable td:nth-of-type(2):before { content: "Owed"; display: flex; }
+	.chargesMainTable td:nth-of-type(3):before { content: "Billing Type"; display: flex;}
+    .chargesMainTable td:nth-of-type(4):before { content: "Title"; display: flex;}
+    .chargesMainTable td:nth-of-type(5):before { content: "Checkout"; display: flex;}
+    .chargesMainTable td:nth-of-type(6):before { content: "Due"; display: flex;}
+    .chargesMainTable td:nth-of-type(7):before { content: "Returned/Renewed"; display: flex;}
+    
+    .activeHoldstable td:nth-of-type(1):before { content: "Select"; display: flex; }
+    .activeHoldstable td:nth-of-type(2):before { content: "Title"; display: flex; }
+	.activeHoldstable td:nth-of-type(3):before { content: "Author"; display: flex;}
+    .activeHoldstable td:nth-of-type(4):before { content: "Format"; display: flex;}
+    .activeHoldstable td:nth-of-type(5):before { content: "Pickup Location"; display: flex;}
+    .activeHoldstable td:nth-of-type(6):before { content: "Cancel If Not Filled By"; display: flex;}
+    .activeHoldstable td:nth-of-type(7):before { content: "Status"; display: flex;}
+    .activeHoldstable td:nth-of-type(8):before { content: "Notes"; display: flex;}
+    
+    .holdHistoryTable td:nth-of-type(1):before { content: "Title"; display: flex; }
+    .holdHistoryTable td:nth-of-type(2):before { content: "Author"; display: flex; }
+    .holdHistoryTable td:nth-of-type(3):before { content: "Format"; display: flex; }
+    .holdHistoryTable td:nth-of-type(4):before { content: "Pickup Location"; display: flex; }
+    .holdHistoryTable td:nth-of-type(5):before { content: "Status"; display: flex; }
+    
+    .paymentTable td:nth-of-type(1):before { content: "Payment Date"; display: flex; }
+    .paymentTable td:nth-of-type(2):before { content: "Payment For"; display: flex; }
+    .paymentTable td:nth-of-type(3):before { content: "Amount"; display: flex; }
+    .paymentTable td:nth-of-type(4):before { content: "Receipt"; display: flex; }
+    
+    .messagesTable td:nth-of-type(1):before { content: "Select"; display: flex; }
+    .messagesTable td:nth-of-type(2):before { content: "Date"; display: flex; }
+    .messagesTable td:nth-of-type(3):before { content: "Library"; display: flex; }
+    .messagesTable td:nth-of-type(4):before { content: "Subject"; display: flex; }
+    .messagesTable td:nth-of-type(5):before { content: ""; display: flex; }
+    
+    .circTable td:nth-of-type(1):before { content: "Select"; display: flex; }
+    .circTable td:nth-of-type(2):before { content: "Title"; display: flex; }
+    .circTable td:nth-of-type(3):before { content: "Author"; display: flex; }
+    .circTable td:nth-of-type(4):before { content: "Renewals Left"; display: flex; }
+    .circTable td:nth-of-type(5):before { content: "Due Date"; display: flex; }
+    .circTable td:nth-of-type(6):before { content: "Barcode"; display: flex; }
+    .circTable td:nth-of-type(7):before { content: "Call Number"; display: flex; }
+    
+    .circHistTable td:nth-of-type(1):before { content: "Select"; display: flex; }
+    .circHistTable td:nth-of-type(2):before { content: "Title"; display: flex; }
+    .circHistTable td:nth-of-type(3):before { content: "Author"; display: flex; }
+    .circHistTable td:nth-of-type(4):before { content: "Checkout Date"; display: flex; }
+    .circHistTable td:nth-of-type(5):before { content: "Due Date"; display: flex; }
+    .circHistTable td:nth-of-type(6):before { content: "Date Returned"; display: flex; }
+    .circHistTable td:nth-of-type(7):before { content: "Barcode"; display: flex; }
+    .circHistTable td:nth-of-type(8):before { content: "Call Number"; display: flex; }
+    
+    .bookbagTable td:nth-of-type(1):before { content: ""; display: flex; }
+    .bookbagTable td:nth-of-type(2):before { content: "Title"; display: flex; }
+    .bookbagTable td:nth-of-type(3):before { content: "Author(s)"; display: flex; }
+    .bookbagTable td:nth-of-type(4):before { content: "Local Call number"; display: flex; }
+    .bookbagTable td:nth-of-type(5):before { content: "Publication Date"; display: flex; }
+    .bookbagTable td:nth-of-type(6):before { content: "Format"; display: flex; }
+    .bookbagTable td:nth-of-type(7):before { content: "Notes"; display: flex; }
+    
+    .eholdsTable td:nth-of-type(1):before { content: "Title"; display: flex; }
+    .eholdsTable td:nth-of-type(2):before { content: "Author"; display: flex; }
+    .eholdsTable td:nth-of-type(3):before { content: "Expire Date"; display: flex; }
+    .eholdsTable td:nth-of-type(4):before { content: "Status"; display: flex; }
+    .eholdsTable td:nth-of-type(5):before { content: "Actions"; display: flex; }
+    
+    .eholdsreadyTable td:nth-of-type(1):before { content: "Title"; display: flex; }
+    .eholdsreadyTable td:nth-of-type(2):before { content: "Author"; display: flex; }
+    .eholdsreadyTable td:nth-of-type(3):before { content: "Expire Date"; display: flex; }
+    .eholdsreadyTable td:nth-of-type(4):before { content: "Actions"; display: flex; }
+    
+    .echeckoutTable td:nth-of-type(1):before { content: "Title"; display: flex; }
+    .echeckoutTable td:nth-of-type(2):before { content: "Author"; display: flex; }
+    .echeckoutTable td:nth-of-type(3):before { content: "Due Date"; display: flex; }
+    .echeckoutTable td:nth-of-type(4):before { content: "Actions"; display: flex; }
+    
+    .ecircsTable td:nth-of-type(1):before { content: "Title"; display: flex; }
+    .ecircsTable td:nth-of-type(2):before { content: "Author"; display: flex; }
+    .ecircsTable td:nth-of-type(3):before { content: "Due Date"; display: flex; }
+    .ecircsTable td:nth-of-type(4):before { content: "Actions"; display: flex; }
+
+    .bucketTable td:nth-of-type(2):before { content: "Title"; display: flex; text-align:left; }
+    .bucketTable td:nth-of-type(3):before { content: "Author"; display: flex; text-align:left; }
+    .bucketTable td:nth-of-type(4):before { content: "Call Number"; display: flex; text-align:left; }
+    
+    /*Media Style Additions*/
+    .fullRow{
+        padding: 5px !important;
+    	text-align: center !important;
+    	width: 100%;
+    }
+    
+    .paginateText{
+    	display:none;
+	}
+}/*Micro Tables End*/
+
+/*
+Novelist Styling
+*/
+
+.NovGroupHeader{
+    font-size: 16pt !important;
+    text-align: center;
+    font-weight: 600 !important;
+}
+
+.NovSectionHeader{
+	font-size: 16pt !important;
+    font-weight: 600 !important;
+}
+
+.NovSelectImageHeadingToggle{
+	    font-size: 20px;
+        
+}
+
+/*Novelist Styling End*/
+
+/* Buttons */
+
+.btn-confirm {
+    color: [% css_colors.button_confirm_text %];
+    background-color: [% css_colors.button_confirm %];
+    border-color: [% css_colors.button_confirm_border %];
+}
+
+.btn-confirm:hover {
+    color: [% css_colors.button_confirm_text %];
+    background-color: [% css_colors.button_confirm_hover %];
+    border-color: [% css_colors.button_confirm_border_hover %];
+}
+
+.btn-deny {
+    color: [% css_colors.button_deny_text %];
+    background-color: [% css_colors.button_deny %];
+    border-color: [% css_colors.button_deny_border_hover %];
+}
+
+.btn-deny:hover {
+    color: [% css_colors.button_deny_text %];
+    background-color: [% css_colors.button_deny_hover %];
+    border-color: [% css_colors.button_deny_border_hover %];
+}
+
+.btn-remove {
+    color: [% css_colors.button_remove_text %];
+    background-color: [% css_colors.button_remove %];
+    border-color: [% css_colors.button_remove_border %];
+}
+
+.btn-remove:hover {
+    color: [% css_colors.button_remove_text %];
+    background-color: [% css_colors.button_remove_hover %];
+    border-color: [% css_colors.button_remove_border_hover %];
+}
+
+.btn-opac{
+    color: [% css_colors.opac_button_text %] !important;
+    background-color: [% css_colors.opac_button %];
+    border-color: [% css_colors.opac_button_border %];
+}
+
+.btn-opac:hover{
+    color: [% css_colors.opac_button_text %];
+	background-color: [% css_colors.opac_button_hover %] !important;
+    border-color: [% css_colors.opac_button_border_hover %];
+}
+
+.btn-action{
+    color: [% css_colors.action_button_text %] !important;
+    background-color: [% css_colors.action_button %];
+    border-color: [% css_colors.action_button_border %];
+}
+
+.btn-action:hover{
+    color: [% css_colors.action_button_text %];
+	background-color: [% css_colors.action_button_hover %] !important;
+    border-color: [% css_colors.action_button_border_hover %];
+}
+.btn-action > a{
+    color: [% css_colors.action_button_text_anchors %];
+}
+
+
+.dash-link{
+	color: #fff;
+}
+
+.dash-clear{
+	color: [% css_colors.zero_count %] !important;
+}
+
+.dash-unclear{
+	color: [% css_colors.non_zero_count %] !important;
+}
+
+.remove_filter{
+    padding: .25rem .25rem !important;
+    font-size: .875rem;
+    line-height: 0.5;
+    border-radius: 1rem !important;
+}
+
+#cnbrowse{
+	width: 95%;
+    text-align: center;
+    padding: 15px;
+}
+.cn_browse_item .card{
+	padding: 15px;
+}
+#facets .card-header,#facets .card-header a {
+	background-color: [% css_colors.facets_back %];
+    color: [% css_colors.text_invert %]
+}
+
+.facet_template:hover{
+		background-color:#e8e8e8;
+}
+
+.red{
+	color:red;
+}
+
+.login:focus{
+	outline:none;
+}
+.browse-result-list{
+	list-style:none;
+}
+.not_active_pill{
+	border: 2px solid #007bff;
+    padding: 6px;
+    margin: 0 10px;
+}
+
+.mini-control{
+	max-width: 100px !important;
+}
+
+.card-body:empty{
+	display:none;
+}
+.min{
+ min-height:500px;
+}
+.container{
+	
+}
+html{
+	height:100%;
+    min-height: 100vh;
+}
+body {
+height:100%;
+min-height: 100vh;
+    margin:0;
+    font-family: [% css_fonts.font_main %] !important;
+    font-size: [% css_fonts.size_base %];
+  /*  background-color: [% css_colors.primary %]; */
+    [% IF rtl == 't' -%]
+    direction: rtl;
+    [%- END %]
+}
+
+button, input {
+    font-family: [% css_fonts.font_main %] !important;
+    font-size: [% css_fonts.size_base %];
+}
+
+img {
+    border: none;
+}
+
+#topnav_logo {
+    margin: 2em 0;
+}
+
+#homesearch_main_logo {
+    padding-top: 60px;
+    margin: auto;
+    width: 50%;
+}
+
+a {
+    color: [% css_colors.link %];
+}
+
+#search-wrapper input[type=text] {
+    margin:0;
+    padding:0;
+}
+
+#search-wrapper select, .results_header_lbl select {
+    border:1px solid [% css_colors.border_standard %];
+    margin:0;
+    padding:0;
+    width: 12em;
+}
+
+.searchbar {
+    font-weight: bold;
+    padding-top: 10px;
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    [%- ELSE %]
+    margin-left: 1em;
+    [%- END %]
+}
+
+.refine_search {
+    padding-bottom: 7px;
+    margin-left: 1em;
+}
+
+/*
+#search-wrapper select {
+    border:0px solid [% css_colors.border_dark %];
+    filter:alpha(opacity=0);
+    -khtml-opacity:0;
+    opacity:0;
+    padding:0;
+    margin:0;
+    height:18px;
+}
+*/
+h1 {
+    margin:0;
+    margin-bottom: 5px;
+    font-size: [% css_fonts.size_biggest %];
+    font-weight:normal;
+}
+
+h2 {
+    font-size: [% css_fonts.size_bigger %];
+    font-weight:bold;
+}
+
+h2.graphic880 {
+    font-size: [% css_fonts.size_bigger %];
+    font-weight:normal;
+}
+
+.hide_me, .hidden {
+    display: none;
+    visibility: hidden;
+}
+
+div.select-box-wrapper {
+    position:absolute;
+    padding-top:2px;
+    overflow:hidden;
+    [% IF rtl == 't' -%]
+    padding-right: 3px;
+    text-align:right;
+    [%- ELSE %]
+    padding-left:3px;
+    text-align:left;
+    [%- END %]
+}
+
+#dash_wrapper {
+    [% IF rtl == 't' -%]
+    margin-right: 0.5em;
+    [%- ELSE %]
+    margin-left: 0.5em;
+    [%- END %]
+}
+
+#dash_wrapper div {
+    background-color: [% css_colors.primary %];
+    border-radius: 5px;
+    padding: 0em 1em;
+}
+
+.dash_divider {
+    margin: 0 20px;
+    color: #fff;
+    display:inline-block;
+}
+
+#dashboard, #dashboard_e {
+    margin-top: 1em;
+    height: 2em;
+}
+
+#dashboard span.dash-align a, #dashboard_e span.dash-align a {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#dash_user {
+    font-weight: bold;
+}
+
+#logout_link {
+    [% IF rtl == 't' -%]
+    right: 1px;
+    [%- ELSE %]
+    left: 1px;
+    [%- END %]
+}
+
+
+/*  
+#dash_fines { color: [% css_colors.text_badnews %]; }
+the color contrast between "text_badnews" and "primary"
+is too low for WCAG compliance.  Use "text_attention" 
+for now until a better color is picked - if needed.
+*/
+
+#dash_wrapper #dash_user_message_button_container {
+    display: inline;
+    padding: 0;
+}
+#dash_wrapper #unread_message_count_floater {
+    position: absolute;
+    background-color: [% css_colors.text_alert %];
+    padding-left: 0.2em;
+    padding-right: 0.2em;
+    display: inline-block;
+    font-size: 95%;
+    border-radius: 0;
+    z-index: 2;
+    margin-top: 0.2em;
+    [% IF rtl == 't' -%]
+    margin-right: -1.5em;
+    [%- ELSE %]
+    margin-left: -1.5em;
+    [%- END %]
+}
+
+#header-wrap {
+	/* border-bottom: 5px solid [% css_colors.nav_separation %]; */
+    background-color: [% css_colors.header_primary_fade %];
+    background-image: -moz-linear-gradient([% css_colors.header_primary %], [% css_colors.header_primary_fade %]);
+    background-image: -o-linear-gradient([% css_colors.header_primary %], [% css_colors.header_primary_fade %]);
+    background-image: -webkit-linear-gradient([% css_colors.header_primary %], [% css_colors.header_primary_fade %]);
+    background-image: linear-gradient([% css_colors.header_primary %], [% css_colors.header_primary_fade %]);
+}
+#header {
+    color: [% css_colors.background %];
+    margin-left: 1em;
+    margin-right: 1em;
+    font-size: [% css_fonts.size_small %];
+}
+
+#header a {
+    color: [% css_colors.background %];
+}
+
+#header a:hover {
+    color: [% css_colors.text_invert %];
+    text-decoration: none;
+}
+
+#header-links {
+    color: [% css_colors.text_invert %];
+    font-size: [% css_fonts.size_small %];
+    font-weight: bold;
+    position: relative;
+    top:4px;
+    
+}
+
+#header-links a {
+    color: [% css_colors.text_invert %];
+    display: block;
+    text-decoration: none;
+    [% IF rtl == 't' -%]
+    float: right;
+    margin-left: 22px;
+    [%- ELSE %]
+    float:left;
+    margin-right:22px;
+    [%- END %]
+}
+
+#header-links a:hover {
+    color: [% css_colors.text_invert %];
+    text-shadow: 0 0 0.2em [% css_colors.primary %], 0 0 0.2em [% css_colors.primary %];
+    text-decoration: none;
+}
+
+#header #header-links2 {
+    position:relative;
+    top:-8px;
+    color: [% css_colors.text_invert %];
+    padding-bottom: 15px;
+}
+
+#header #header-links2 a {
+    color: [% css_colors.text_invert %];
+}
+
+#header #header-links2 a:hover {
+    text-decoration: underline;
+}
+
+#your-acct-login {
+    padding-top:2em;
+}
+
+#gold-links {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    padding-right: 0px;
+    [%- ELSE %]
+    margin-left: 1em;
+    padding-left:0px;
+    [%- END %]
+}
+
+#gold-links-home {
+    margin:auto;
+    [% IF rtl == 't' -%]
+    padding-right: 0px;
+    [%- ELSE %]
+    padding-left:0px;
+    [%- END %]
+}
+
+#gold-links-holder {
+    height: 24px;
+    background-color: [% css_colors.background_invert %];
+}
+
+#util-bar {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    padding-right: 0px;
+    [%- ELSE %]
+    margin-left: 1em;
+    padding-left:0px;
+    [%- END %]
+    height:0px;
+}
+
+#search-wrapper {
+    /*border-bottom: 1px solid [% css_colors.border_standard %];*/
+    padding-bottom: 5px;
+    background-color: [% css_colors.background %];
+}
+
+#search-wrapper #breadcrumb {
+    margin-top:0px;
+    font-size: [% css_fonts.size_smaller %];
+    [% IF rtl == 't' -%]
+    float: right;
+    [%- ELSE %]
+    float:left;
+    [%- END %]
+}
+
+#search-wrapper #search-within {
+    margin-top:10px;
+    position:relative;
+    [% IF rtl == 't' -%]
+    float: left;
+    right: -173px;
+    [%- ELSE %]
+    float:right;
+    left:-173px;
+    [%- END %]
+}
+
+#search-wrapper #breadcrumb a {
+    color: [% css_colors.text %];
+}
+
+#search-wrapper #search_frm label {
+    font-size: [% css_fonts.size_smaller %];
+}
+
+#search-wrapper #search-box {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    padding-right: 0px;
+    [%- ELSE %]
+    margin-left: 1em;
+    padding-left: 0px;
+    [%- END %]
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#adv_search_tabs, #acct_tabs, #acct_fines_tabs, #acct_checked_tabs, #acct_holds_tabs, #acct_prefs_tabs, #results_header_inner{
+    [% IF rtl == 't' -%]
+    margin-right:2px;
+    [%- ELSE %]
+    margin-left: 2px;
+    [%- END %]
+    overflow: auto;
+}
+
+#adv_search_tabs a, #acct_tabs a, #acct_fines_tabs a, #acct_checked_tabs a, #acct_holds_tabs a, #acct_prefs_tabs a {
+    [% IF rtl == 't' -%]
+    float: right;
+    margin: 10px 0px 0px 7px;
+    border-radius: 10px 10px 0px 0px;
+    [%- ELSE %]
+    float: left;
+    margin: 10px 7px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
+    [%- END %]
+    text-align: center;
+    vertical-align: middle;
+    display: block;
+    padding: 10px 0px 10px 0px;
+    font-weight: bold;
+    color: [% css_colors.text_invert %];
+    background-color: [% css_colors.control %];
+    font-weight: bold;
+    text-decoration: none;
+}
+
+#adv_search_tabs a, #acct_tabs a, #acct_fines_tabs a {
+    padding: 1em 1em 0.5em;
+}
+
+#adv_search_tabs a:hover, #acct_tabs a:hover, #acct_fines_tabs a:hover, #acct_checked_tabs a:hover, #acct_holds_tabs a:hover, #acct_prefs_tabs a:hover {
+    background-color: [% css_colors.primary %];
+    color: [% css_colors.text_invert %];
+    text-decoration: none;
+}
+
+#adv_search_filters {
+    position: relative;
+}
+#adv_search_rows {
+    border-bottom: none;
+}
+.adv_filter_block {
+    [% IF rtl == 't' -%]
+    float: right;
+    [%- ELSE %]
+    float: left;
+    [%- END %]
+    padding: 15px;
+    clear: both;
+}
+.adv_filter_block_item {
+    [% IF rtl == 't' -%]
+    float: right;
+    [%- ELSE %]
+    float: left;
+    [%- END %]
+    padding: 5px;
+}
+
+#adv_special_block {
+    [% IF rtl == 't' -%]
+    float: right;
+    [%- ELSE %]
+    float: left;
+    [%- END %]
+    padding: 5px;
+    margin-top: 5px;
+}
+
+#adv_search_submit {
+    [% IF rtl == 't' -%]
+    margin-right: 10px;
+    [%- ELSE %]
+    margin-left: 10px;
+    [%- END %]
+    position: relative;
+}
+
+.checkbox_col {
+    width: 1%;
+    [% IF rtl == 't' -%]
+    padding-right: 10px !important;
+    [%- ELSE %]
+    padding-left: 10px !important;
+    [%- END %]
+}
+
+#adv_search.on, #num_search.on, #expert_search.on {
+    color: [% css_colors.accent_darker %];
+    background-color: [% css_colors.background %];
+    text-decoration: none;
+}
+
+#adv_search_tabs a.acct-tab-on, #acct_tabs a.acct-tab-on, #acct_fines_tabs a.acct-tab-on {
+    color: [% css_colors.accent_darker %];
+    background-color: [% css_colors.background %];
+    text-decoration: none;
+}
+
+.acct-tab-off {
+    background-color: [% css_colors.control %];
+}
+
+#acct_checked_tabs a, #acct_holds_tabs a, #acct_prefs_tabs a {
+    margin-top: 0px;
+    font-size: [% css_fonts.size_smaller %];
+    color: [% css_colors.accent_darker %];
+    padding: 10px 10px 10px 10px;
+}
+
+#acct_checked_tabs div.selected a, #acct_holds_tabs div.selected a, #acct_prefs_tabs div.selected a {
+    background-color: [% css_colors.accent_lightest %];
+    color: [% css_colors.accent_darker %];
+}
+
+#acct_checked_tabs, #acct_holds_tabs, #acct_prefs_tabs {
+    padding-bottom: 12px;
+    color: [% css_colors.accent_medium %];
+}
+
+#acct_select, #acct_prefs_select {
+     display: none;
+}
+
+#mobile_acct_search_links {
+      background-color: [% css_colors.primary_fade %];
+}
+
+.rdetail_header {
+    [% IF rtl == 't' -%]
+    padding: 5px 0px 6px 7px;
+    margin-right: 1em;
+    [%- ELSE %]
+    padding: 5px 7px 6px 0px;
+    margin-left: 1em;
+    [%- END %]
+    border-bottom: 1px dotted [% css_colors.accent_light %];
+}
+
+.rdetail_results a {
+    color:[% css_colors.primary_fade %];
+    font-weight:bold;
+    font-size: [% css_fonts.size_bigger %];
+}
+
+.rdetail_result_count {
+    color: [% css_colors.text %];
+    font-weight: normal;
+    display: inline-block;
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [%- ELSE %]
+    padding-left: 1em;
+    [%- END %]
+}
+
+.rdetail_result_nav {
+    font-weight:normal;
+    display: inline-block;
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [%- ELSE %]
+    padding-left: 1em;
+    [%- END %]
+}
+
+#rdetail_details_table {
+    margin-top: 15px;
+}
+
+#rdetail_image { border: none; }
+#rdetail_image_cell {
+    padding-top: 3px;
+    [% IF rtl == 't' -%]
+    padding-left: 10px;
+    [%- ELSE %]
+    padding-right: 10px;
+    [%- END %]
+}
+
+h2.rdetail_uris {
+    margin-top: 1em;
+}
+div.rdetail_uris {
+    padding: 0.5em 1em 0.5em 1em;
+    background-color: [% css_colors.accent_lighter2 %];
+}
+div.rdetail_uris ul li {
+    position: relative;
+    [% IF rtl == 't' -%]
+    right: 1em;
+    [%- ELSE %]
+    left: 1em;
+    [%- END %]
+}
+
+div.rdetail_show_copies {
+    margin-top: 1em;
+}
+
+div#rdetail_actions_div {
+    background-color: [% css_colors.background %];
+    [% IF rtl == 't' -%]
+    float: left;
+    [%- ELSE %]
+    float: right;
+    [%- END %]
+}
+
+span#rdetail_copy_counts {
+    display: inline-block;
+    vertical-align: top;
+    [% IF rtl == 't' -%]
+    border-left: thin;
+    margin-left: 1em;
+    padding-left: 1em;
+    [%- ELSE %]
+    border-right: thin;
+    margin-right: 1em;
+    padding-right: 1em;
+    [%- END %]
+}
+
+span#rdetail_hold_counts {
+    display: inline-block;
+    vertical-align: top;
+}
+span#rdetail_hold_counts p {
+    [% IF rtl == 't' -%]
+    padding-right: 2em;
+    [%- ELSE %]
+    padding-left: 2em;
+    [%- END %]
+}
+
+#rdetail_image_div {
+    [% IF rtl == 't' -%]
+    float: right;
+    margin-left: 1em;
+    [%- ELSE %]
+    float: left;
+    margin-right: 1em;
+    [%- END %]
+}
+
+.rdetail_aux_utils {
+    padding-bottom: 6px;
+    [% IF rtl == 't' -%]
+    border-right: 1px dotted [% css_colors.accent_light %];
+    padding-right:17px;
+    padding-left:70px;
+    [%- ELSE %]
+    border-left:1px dotted [% css_colors.accent_light %];
+    padding-left: 17px;
+    padding-right: 70px;
+    [%- END %]
+}
+
+div.place_hold {
+    border-bottom: 1px dotted [% css_colors.accent_light %];
+    padding-top: 10px;
+}
+
+div.toggle_list { padding-top: 6px; }
+
+div.share_record {
+    padding-top: 6px;
+    border-top: 1px dotted [% css_colors.accent_light %];
+}
+
+div.format_icon {
+    [% IF rtl == 't' -%]
+    float: left;
+    margin-left: 17px;
+    [%- ELSE %]
+    float: right;
+    margin-right: 17px;
+    [%- END %]
+}
+
+#metarecord_population {
+    overflow: hidden;
+    width: 40%;
+    padding-bottom: 10px;
+}
+
+.metarecord_population_span_link {
+    line-height: 20px;
+}
+
+.metarecord_population_format {
+    border-right: thin;
+    display: inline-block;
+    margin-right: 1em;
+    padding-right: 1em;
+    vertical-align: top;
+}
+
+.metarecord_population_item_lang {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.metarecord_population_all {
+    padding-top:10px;
+}
+
+.results_aux_utils {
+    display: table-cell;
+}
+
+.result_util {
+    border-bottom: 1px dotted [% css_colors.accent_light %];
+    padding-top: 6px;
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [%- ELSE %]
+    padding-left: 1em;
+    [%- END %]
+}
+
+.results_reviews {
+    top: -5px;
+}
+
+#rdetail_copies {
+    padding-top: 1.5em;
+}
+
+#rdetails_status td {
+    [% IF rtl == 't' -%]
+    padding: 7px 13px 3px 0px;
+    [%- ELSE %]
+    padding: 7px 0px 3px 13px;
+    [%- END %]
+}
+
+#rdetails_status td[headers=copy_header_library], 
+#rdetails_status td[headers=copy_header_shelfloc] {
+    white-space: normal;
+}
+
+#rdetails_status thead th {
+    [% IF rtl == 't' -%]
+    padding: 13px 13px 13px 0px;
+    text-align: right;
+    [%- ELSE %]
+    padding: 13px 0px 13px 13px;
+    text-align: left;
+    [%- END %]
+    background-color: [% css_colors.accent_lighter2 %];
+    font-size: [% css_fonts.size_smaller %];
+    font-weight: bold;
+}
+
+#rdetails_status tbody td {
+    [% IF rtl == 't' -%]
+    padding-right: 13px;
+    text-align: right;
+    [%- ELSE %]
+    padding-left: 13px;
+    text-align: left;
+    [%- END %]
+}
+#rdetails_status tbody td.copy_note {
+    color: [% css_colors.primary %];
+    text-wrap:normal;
+    white-space:pre-wrap !important;
+    word-wrap:normal;
+}
+
+#rdetails_status tbody td.copy_tag {
+    border-color: [% css_colors.primary %];
+    border-style: dashed;
+    border-width: 2px;
+}
+#rdetails_status tbody .copy_tag_value {
+    font-weight: bolder;
+}
+
+.rdetail_extras {
+    background-color: [% css_colors.primary_fade %];
+    border: 1px solid [% css_colors.primary %];
+    padding-top:1px;
+    clear:both;
+}
+
+#rdetail_extras_div {
+    margin: 1em 0;
+}
+
+.rdetail_extras_hr {
+    [% IF rtl == 't' -%]
+    margin-right: 1px;
+    margin-left: 1px;
+    [%- ELSE %]
+    margin-left: 1px;
+    margin-right: 1px;
+    [%- END %]
+    height: 1px;
+    background-color: [% css_colors.accent_light %];
+}
+
+.rdetail_extras_link {
+    padding: 6px 12px;
+    font-size: [% css_fonts.size_smaller %];
+    font-weight: bold;
+}
+
+.rdetail_extras_lbl {
+    color: [% css_colors.text_invert %];
+    text-decoration: none;
+}
+
+#rdetail_extras_expand, #rdetail_extras_collapse, #rdetail_locs_collapse {
+    [% IF rtl == 't' -%]
+    margin-right: 13px;
+    [%- ELSE %]
+    margin-left: 13px;
+    [%- END %]
+}
+
+#rdetail_locs_expand, #rdetail_locs_collapse {
+    [% IF rtl == 't' -%]
+    margin-right: 13px;
+    [%- ELSE %]
+    margin-left:13px;
+    [%- END %]
+    padding-bottom:3px;
+    margin-top:15px;
+}
+
+#rdetail_anotes_div .biography {
+    margin:0;
+}
+
+#gbp_extra, #gbp_arrow_down_link {
+    display: none;
+}
+
+.almost-content-wrapper {
+    background-color: [% css_colors.background %];
+}
+
+#content-wrapper {
+    background-color: [% css_colors.background %];
+    min-height: 600px;
+        height: auto;
+    display: grid;
+}
+
+.content-wrapper-record-page { top: -15px; position: relative; }
+
+#main-content-home {
+    [% IF rtl == 't' -%]
+    padding-right: 17px;
+    margin-right: 1em;
+    [%- ELSE %]
+    padding-left: 17px;
+    margin-left: 1em;
+    [%- END %]
+}
+#main-content {
+    [% IF rtl == 't' -%]
+    padding-right: 0px;
+    [%- ELSE %]
+    padding-left: 0px;
+    [%- END %]
+    margin: 0 1em;
+    clear: both;   
+}
+
+#main-content-after-bar {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    padding-right: 4px;
+    [%- ELSE %]
+    margin-left: 1em;
+    padding-left: 4px;
+    [%- END %]
+}
+
+#results-side-bar {
+    [% IF rtl == 't' -%]
+    float: right; 
+    margin-left: 5px;
+    [%- ELSE %]
+    float: left;
+    margin-right: 5px; 
+    [%- END %]
+    width: 174px;
+    background-color: [% css_colors.background %];
+}
+
+#main-content .login_boxes {
+    border: 1px solid [% css_colors.accent_lighter %];
+    background-color: [% css_colors.accent_lightest %];
+    background-image: -moz-linear-gradient(bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
+    background-image: -ms-linear-gradient(bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
+    background-image: -o-linear-gradient(bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
+    background-image: -webkit-linear-gradient(bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
+    background-image: linear-gradient(to bottom, [% css_colors.accent_ultralight %] 15%, [% css_colors.accent_lightest %] 55%, [% css_colors.accent_ultralight %] 85%);
+    color: [% css_colors.accent_darker %];
+}
+
+#main-content .login_boxes h1 {
+    font-weight: normal;
+    font-size: [% css_fonts.size_biggest %];
+    margin:0;
+}
+
+#main-content .left_brain {
+    [% IF rtl == 't' -%]
+    padding-right: 28px;
+    [% ELSE -%]
+    padding-left:28px;
+    [% END -%]
+    padding-top:25px;
+}
+
+#main-content .left_brain input[type=text], #main-content .left_brain input[type=password] {
+    width:167px;
+    margin:0;
+    padding:0;
+    background-color: [% css_colors.background %];
+    font-size: [% css_fonts.size_bigger %];
+    color: [% css_colors.text %];
+}
+
+#main-content .left_brain .input_bg {
+    [% IF rtl == 't' -%]
+    padding: 10px 13px 0px 10px;
+    [% ELSE -%]
+    padding:10px 10px 0px 13px;
+    [% END -%]
+    width:167px;
+    height:29px;
+}
+
+.login-help-box {
+    [% IF rtl == 't' -%]
+    float: right;
+    margin-right: 2em;
+    [% ELSE -%]
+    float: left;
+    margin-left: 2em;
+    [% END -%]
+    width: 200px;
+    text-align: center;
+}
+
+.login-help-button {
+    font-size: [% css_fonts.size_biggest %];
+    padding: 1.5em;
+}
+
+#login-failed-message {
+    font-size: [% css_fonts.size_bigger %];
+    font-weight: bold;
+    color: [% css_colors.text_alert %];
+    padding-top: 1em;
+}
+
+#holds_temp_parent td {
+    border-bottom:1px solid [% css_colors.border_standard %];
+}
+
+#holds_temp_parent input, #holds_temp_parent select {
+    margin:0;
+}
+
+#holds_temp_parent tr td div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#holds_temp_parent tr td div.format_icon {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    float: none;
+}
+
+#results_header_bar {
+    background-color: [% css_colors.accent_medium %];
+    border-top:1px solid [% css_colors.accent_mediumdark %];
+    border-bottom:1px solid [% css_colors.accent_mediumdark %];
+}
+
+.results_header_lbl {
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float: left;
+    [% END -%]
+    font-weight: bold;
+    color: [% css_colors.text %];
+    /* this border is not visible, but it keeps these labels the same size
+    as the buttons */
+    border: 1px solid [% css_colors.accent_medium %];
+    background-color: [% css_colors.accent_medium %];
+    margin: 0.5em 0.3em;
+    padding: 0.3em;
+}
+/* we need a negative margin on the select to allow the containing <label>
+to determine the actual size of the element.  By doing this, we can increase
+the odds that the buttons and the select will be the same size, and therefore
+collapse correctly when the window width decreases */
+.results_header_lbl select {
+    margin: -0.5em 0;
+}
+
+#limit_to_available {
+    vertical-align: middle;
+}
+
+.results_header_sel {
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float:left;
+    [% END -%]
+    margin:0;
+}
+
+
+
+.results_header_nav1 .h1 {
+    font-size: [% css_fonts.size_bigger %];
+    font-weight:bold;
+    color:[% css_colors.primary_fade %];
+}
+
+.table_no_border_space {
+  border-spacing: 0px;
+}
+.table_no_cell_pad td {
+  padding: 0px;
+}
+.table_no_border {
+  border-collapse: collapse;
+}
+
+#result_table_table {
+  margin-top:10px;
+}
+
+#result_table_div {
+    margin-top: 1em;
+}
+
+tr.result_table_row > td.results_row_count,
+tr.result_table_row > td.result_table_pic_header,
+tr.result_table_row > td.result_table_title_cell {
+    vertical-align: top;
+}
+
+.result_metadata {
+    [% IF rtl == 't' -%]
+    float: right;
+    padding-left: 2em;
+    [% ELSE -%]
+    float: left;
+    padding-right: 2em;
+    [% END -%]
+    width: 30em;
+}
+
+tr.result_table_row:nth-child(n+2) > td {
+    border-top: 1px solid [% css_colors.accent_lighter2 %];
+}
+
+tr.result_table_row > td.result_table_pic_header {
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [% ELSE -%]
+    padding-left: 1em;
+    [% END -%]
+    white-space: nowrap;
+    width: 78px;
+}
+
+/* styles for selecting records in the results set */
+.result_table_row_selected {
+    background-color: [% css_colors.item_selected %];
+}
+#selected_records_summary, #clear_basket {
+    margin-left: 5em;
+}
+
+/* styles for the basket */
+#record_basket {
+    [% IF rtl == 't' -%]
+    float: left;
+    margin-left: 5em;
+    [% ELSE; %]
+    float: right;
+    margin-right: 5em;
+    [% END; %]
+}
+#record_basket_icon {
+    [% IF rtl == 't' -%]
+    float: left;
+    margin-left: 2em;
+    [% ELSE; %]
+    float: right;
+    margin-right: 2em;
+    [% END; %]
+    position: relative;
+}
+#record_basket_count_floater {
+    background-color: [% css_colors.accent_lighter %];
+    position: absolute;
+    top: -3px;
+    right: -3px; /* relative to icon, so don't want to adjust for RTL */
+    z-index: 2;
+    border-radius: 50%;
+}
+#record_basket_count_floater a {
+    text-decoration: none;
+}
+#basket_actions {
+    [% IF rtl == 't' -%]
+    float: left;
+    [% ELSE; %]
+    float: right;
+    [% END; %]
+}
+#basket_actions select {
+    border-color: rgb(169, 169, 169);
+}
+
+.result_number {
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [% ELSE -%]
+    padding-left: 1em;
+    [% END -%]
+    white-space: nowrap;
+}
+
+.result_count_number {
+   font-weight: bold;
+}
+
+.result_table_subtable {
+    width: 100%;
+    padding-top: 1em;
+}
+
+div.result_table_utils_cont {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    float: right;
+    [% ELSE -%]
+    text-align:left;
+    float: left;
+    [% END -%]
+}
+
+#myopac_summary_div p {
+    margin:0;
+    margin-bottom: 10px;
+}
+
+#acct_sum_checked_table td {
+    padding-bottom:5px;
+}
+
+.zero_search_hits_main {
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float:left;
+    [% END -%]
+    width:300px;
+    margin-top: 2ex;
+}
+.zero_search_hits_saved {
+    [% IF rtl == 't' -%]
+    float: right;
+    margin-left: 2em;
+    [% ELSE -%]
+    float:left;
+    margin-right: 2em;
+    [% END -%]
+    width:200px;
+    margin-top: 2ex;
+}
+
+#zero_search_hits p {
+    margin-top:0;
+}
+
+#zero_hits_term {
+    font-weight: bold;
+}
+
+#zero_search_hits #spell_check_link {
+}
+
+#zero_search_hits #zero_hits_suggestions {
+}
+
+#lowhits_help {
+    [% IF rtl == 't' -%]
+    float: left;
+    [% ELSE -%]
+    float: right;
+    [% END-%]
+    width: 353px;
+    background-color: [% css_colors.accent_light %];
+    padding: 10px;
+    margin-top: 7px;
+}
+
+.results_info_table td {
+    [% IF rtl == 't' -%]
+    padding-left: 10px;
+    [% ELSE -%]
+    padding-right: 10px;
+    [% END-%]
+}
+
+#myopac_holds_main_table {
+    border-collapse: collapse;
+}
+
+#myopac_holds_main_table td {
+    border: 1px solid [% css_colors.border_dark %];
+    
+}
+
+.myopac-hold-available {
+    color: [% css_colors.text_greatnews %];
+    font-weight: bold;
+}
+
+.myopac-hold-suspended {
+    color: [% css_colors.text_badnews %];
+    font-weight: bold;
+}
+
+#myopac_prefs_div .data_grid {
+    border-collapse:collapse;
+}
+
+#myopac_prefs_div .data_grid td {
+    [% IF rtl == 't' -%]
+    padding: 6px 17px 7px 0px;
+    [% ELSE -%]
+    padding:6px 0px 7px 17px;
+    [% END -%]
+    background-color:[% css_colors.accent_ultralight %];
+    border-bottom:3px solid [% css_colors.background %];
+}
+
+.header_middle {
+    [% IF rtl == 't' -%]
+    padding: 0px 0px 0px 7px;
+    [% ELSE -%]
+    padding: 0px 7px 0px 0px;
+    [% END -%]
+    height:22px;
+    font-size: [% css_fonts.size_bigger %];
+    font-weight:bold;
+    color:[% css_colors.primary_header %];
+    /*border-bottom: 1px dotted [% css_colors.accent_light %];*/
+    clear: both;
+}
+
+.header_middle a {
+    font-weight: normal;
+}
+
+#acct_sum_block {
+    [% IF rtl == 't' -%]
+    float: right;
+    clear: right;
+    [% ELSE -%]
+    float: left;
+    clear: left;
+    [% END -%]
+}
+
+.acct_sum_table {
+    border-collapse: collapse;
+    background-color: [% css_colors.accent_ultralight %];
+}
+
+.acct_sum_table tr {
+    border-bottom: 2px solid white;
+}
+
+.acct_sum_table td {
+    padding: 1em;
+}
+
+.acct_sum_table a {
+    text-transform: none;
+    position:relative;
+    top:-1px;
+}
+
+.acct_sum_table .view_link {
+    font-weight: normal;
+}
+
+#myopac_sum_fines {
+    [% IF rtl == 't' -%]
+    float: left;
+    padding: 15px 23px 0px 0px;
+    [% ELSE -%]
+    float:right;
+    padding: 15px 0px 0px 23px;
+    [% END -%]
+    width: 177px;
+}
+
+.cc_logo_img
+{
+   width: 79%;
+    [% IF rtl == 't' -%]
+      padding-right: .5em;
+    [% ELSE -%]
+       padding-left: .5em;
+    [% END -%]
+}
+
+#myopac_sum_fines_placehold {
+    [% IF rtl == 't' -%]
+    float: left;
+    [% ELSE -%]
+    float: right;
+    [% END -%]
+    width: 177px;
+    height: 166px;
+}
+
+.acct_holds_temp td {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    [% ELSE -%]
+    text-align: left;
+    [% END -%]
+}
+
+#acct_checked_tabs .align, #acct_holds_tabs .align, #acct_prefs_tabs .align {
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float:left;
+    [% END -%]
+}
+
+
+
+.acct_fines_header
+{
+   width: 100%;
+   padding-bottom:1em;
+   [% IF rtl == 't' -%]
+   float: right;
+   [% ELSE -%]
+   float:left;
+   [% END -%]
+}
+
+/* tables for entering payment information */
+#acct_fines_main_header
+{
+   width: 100%;
+}
+
+/* tables for entering payment information */
+#billing_info_table
+{
+    width: auto;
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float:left;
+    [% END -%]
+    display:inline;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+/* tables for entering payment information */
+#credit_card_info_table
+{
+    width: auto;
+    display: block;
+}
+
+/* tables for entering payment information */
+#billing_info_table td,
+#credit_card_info_table td
+{
+   [% IF rtl == 't' -%]
+    padding-right: .5em;
+    [% ELSE -%]
+    padding-left: .5em;
+    [% END -%]
+   
+}
+
+/* div for the payment buttons with the total */
+#payment_actions
+{
+   width: auto;
+   display: block;
+   padding: 1em 0 0 1em;
+   text-align:center;
+}
+
+/* text to state what is seen on cc statement */
+.cc_disclaimer
+{
+   font-style:italic;
+   font-size: 90%;
+   color:[% css_colors.primary_fade %];
+}
+
+.hold_notes {
+    text-transform: none;
+    font-weight: normal;
+}
+
+
+
+#acct_list_header select, #acct_list_header_anon select {
+    font-weight:normal;
+    text-transform:none;
+}
+
+.search_catalog_lbl {
+    font-size: [% css_fonts.size_bigger %];
+}
+.adv_search_catalog_lbl {
+    font-size: [% css_fonts.size_bigger %];
+}
+
+.browse_the_catalog_lbl {
+    font-size: [% css_fonts.size_bigger %];
+}
+
+.lbl1 {
+    font-size: [% css_fonts.size_bigger %];
+    font-weight:bold;
+}
+
+.lbl2 {
+    font-size: [% css_fonts.size_smaller %];
+    font-weight:normal;
+    position:relative;
+    top:3px;
+    max-width:300px;
+}
+
+#fines_payments_wrapper {
+    padding-left: 5px; 
+    padding-right: 5px;
+}
+
+.myopac_payments_table th {
+    [% IF rtl == 't' -%]
+    text-align: right; }
+    [% ELSE -%]
+    text-align: left;
+    [% END -%]
+}
+
+.myopac_payments_table thead th { border-bottom: 1px dashed [% css_colors.accent_darker %]; }
+.myopac_payments_table thead th:first-child { width: 8em; }
+.myopac_payments_table tbody tr:nth-child(odd) { background-color: [% css_colors.accent_lighter %]; }
+.myopac_payments_table form { display: inline; }
+.myopac_payments_table input[type="submit"] { padding: 1px; }
+
+.cc_header
+{
+   padding-top:1em;
+   background-color: [% css_colors.accent_lighter %];
+}
+
+.payment-error {
+    font-weight: bold; color: [% css_colors.text_alert %];
+    padding: 10px; border: 1px solid [% css_colors.accent_medium_dark %];
+}
+
+.payment-processing {
+    font-weight: bold;
+    color: [% css_colors.text_greatnews %];
+    font-size: [% css_fonts.size_bigger %];
+    padding: 10px; border: 1px solid [% css_colors.accent_medium_dark %];
+    text-align: center;
+}
+#adv_search_input { width: 100%; }
+#adv_search_parent {
+    margin-bottom:0px;
+}
+#search-submit-spinner {
+    height: 16px;
+    width: 16px;
+}
+div.adv_search_available {
+    margin-top: 1em;
+}
+
+#myopac_loading {
+    width:100%;
+    text-align:center;
+    padding-top:20px;
+    font-size: [% css_fonts.size_bigger %];
+    font-weight:bold;
+}
+
+.chili_link {
+    width:100px !important;
+    text-align: center !important;
+}
+
+.chili_review div.chili_link div {
+    margin: auto;
+}
+
+/* styling for advanced search filters that display with searchbar */
+
+#adv_filter_results_block h4 { display: inline; }
+
+#adv_filter_results_block {
+    margin-top: 6px;
+    text-align: center;
+}
+
+.adv_filter_results_block_label {
+    font-weight:bold;
+    [% IF rtl == 't' -%]
+    padding: 4px 12px 4px 0px;
+    [% ELSE -%]
+    padding: 4px 0px 4px 12px;
+    [% END -%]
+}
+
+.adv_filter_results_group {
+    font-size: 12px;
+    display: inline-block;
+    background-color:  [% css_colors.accent_lighter2 %];
+    border-style: solid;
+    border-color: [% css_colors.accent_medium %];
+    border-width: 1px;
+    border-radius: 4px;
+    padding: 2px 4px 2px 4px;
+}
+
+.adv_filter_results_group_wrapper {
+    display: inline-block;
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    [% ELSE -%]
+    margin-left: 1em;
+    [% END -%]
+    margin-bottom: 8px;
+}
+
+.adv_filter_results_group_header {
+    display: inline-block;
+}
+
+.adv_filter_results_group_values {
+    display: inline;
+}
+
+.adv_search_result_filter {
+    display: inline-block;
+    font-size: 16px;
+}
+
+.remove_filter {
+    font-size: 16px;
+    [% IF rtl == 't' -%]
+    margin-right: 3px;
+    [% ELSE -%]
+    margin-left: 3px;
+    [% END -%]
+}
+
+a.remove_filter {
+    text-decoration: none;
+    color: [% css_colors.accent_dark %];
+}
+
+#filter_hits {
+     display: inline-block;
+}
+
+#refine_search_link {
+    display: inline-block;
+}
+
+[%- IF we_want_to_turn_on_facet_styling.defined; %]
+/* some facet styling */
+.facetClassContainer { margin: 2px; border: 1px solid [% css_colors.accent_light %]; }
+.facetClassLabelContainer { border: 1px solid [% css_colors.accent_light %]; }
+.facetClassLabel { font-weight: bold; text-align: center; }
+.facetFieldContainer {  }
+.facetFieldLabel { padding-left: 2px; margin-top: 5px; margin-bottom: 5px; font-weight: bold; text-align: left; }
+.extraFacetFieldsWrapper { }
+.toggleExtraFacetFieldsButton { float: right; margin: 0px; padding: 0px; }
+.facetFieldLineCount {
+    display: inline-block;
+    border-right: 1px solid [% css_colors.accent_light %];
+    color: [% css_colors.accent_mediumdark %];
+    width: 3em;
+    margin-right: 3px
+}
+.facetField { border-top: 1px solid [% css_colors.accent_light %]; }
+.facetFields { padding-left: 5px; }
+.facetFieldLineValue { overflow: hidden; text-overflow: ellipsis; }
+[%- END -%]
+
+div#facet_sidebar {
+    [% IF rtl == 't' -%]
+    float: right;
+    margin-left: 1em;
+    [% ELSE -%]
+    float: left;
+    margin-right: 1em;
+    [% END-%]
+}
+
+.facet_box_temp {
+    padding-bottom:3px;
+}
+
+.facet_box_temp .header {
+    height: 2.3em;
+    background-color:[% css_colors.primary %];
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight:bold;
+    color:[% css_colors.text_invert %];
+    padding-top:4px;
+}
+
+.facet_box_temp.filter_box_temp .header {
+    background-color: [% css_colors.background_invert %] !important;
+}
+
+.filter_box_label {
+    color: [% css_colors.background_invert %];
+    font-weight:bold;
+    padding-top:4px;
+    padding-bottom:4px;
+    padding-left:12px;
+}
+
+.facet_box_temp .header .title {
+    [% IF rtl == 't' -%]
+    float: right;
+    padding-right: 12px;
+    [% ELSE -%]
+    float:left;
+    padding-left:12px;
+    [% END -%]
+    padding-top:6px;
+}
+
+/* in this context, where h4 is primarily for structure, 
+   avoid the normal large font and margin for h4's */
+.facet_box_temp h4 {
+    font-size : 100%; 
+    margin: 0px;
+}
+
+.facet_box_temp .header a.button {
+    [% IF rtl == 't' -%]
+    float: left;
+    padding-left: 6px;
+    [% ELSE -%]
+    float:right;
+    padding-right:6px;
+    [% END -%]
+    padding-top:6px;
+    color:[% css_colors.text_invert %];
+}
+
+.facet_box_wrapper .box_wrapper .box {
+    border-top:1px solid [% css_colors.border_standard %];
+    border-left:1px solid [% css_colors.border_standard %];
+    border-right:1px solid [% css_colors.border_standard %];
+    padding: 0 0.5em;
+    overflow: hidden;
+}
+
+.filter_box_wrapper {
+    margin-bottom: 3px;
+    padding: 2px;
+    border: 1px solid [% css_colors.background_invert %];
+    border-radius: 3px;
+    font-weight:bold;
+    padding-top:4px;
+}
+
+.facet_template {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    display: table;
+    margin: 0.5em 0;
+    width: 100%;
+}
+
+.facet_template div {
+    display: table-cell;
+    padding: 2px;
+}
+
+.facet_template.filter_template div {
+    padding: 0px !important;
+}
+
+.facet_template .count {
+    text-align: right;
+    color: [% css_colors.accent_mediumdark %];
+}
+
+.facet_template_selected {
+    background-color: [% css_colors.accent_lighter2 %];
+    border: 1px solid [% css_colors.accent_medium %];
+}
+
+#footer-wrap {
+	/* border-top: 5px solid [% css_colors.nav_separation %]; */
+    background-color: [% css_colors.footer_primary %];
+    background-image: -moz-linear-gradient([% css_colors.footer_primary_fade %], [% css_colors.footer_primary %]);
+    background-image: -o-linear-gradient([% css_colors.footer_primary_fade %], [% css_colors.footer_primary %]);
+    background-image: -webkit-linear-gradient([% css_colors.footer_primary_fade %], [% css_colors.footer_primary %]);
+    background-image: linear-gradient([% css_colors.footer_primary_fade %], [% css_colors.footer_primary %]);
+    bottom: 0px;
+    width: 100%;
+}
+
+#footer {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    [% ELSE -%]
+    margin-left: 1em;
+    [% END -%]
+    padding-top:5px;
+    padding-bottom: 10px;
+    font-size: [% css_fonts.size_small %];
+}
+
+
+#copyright_text, #footer_logo {
+    color: [% css_colors.footer_link %];
+    font-size: [% css_fonts.size_bigger %];
+}
+
+.color_4 {
+    font-weight: bold;
+}
+
+.advanced_div { padding-top: 15px; }
+#adv_global_search { width: 100%; }
+#adv_global_addrow td { padding-top: 7px; }
+[% IF rtl == 't' -%]
+#adv_global_addrow.td-search-left{text-align:right;}
+[% END -%]
+#adv_global_input_table { width: 100%; }
+#adv_global_input_table select { width: 7em; }
+.adv_adv_link {
+    font-size: [% css_fonts.size_smaller %];
+    color: [% css_colors.text_alert %];
+}
+#acct_prefs_header {
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float: left;
+    [% END -%]
+}
+.search_page_nav_link {
+    cursor: pointer;
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [% ELSE -%]
+    padding-left: 1em;
+    [% END -%]
+}
+#opac.result.sort { width: 160px; }
+.renew-summary, .message-update-summary { font-size: [% css_fonts.size_bigger %]; font-style: italic; margin: 0.5ex 0; }
+.failure-text {
+    [% IF rtl == 't' -%]
+    margin-right: 4em;
+    [% ELSE -%]
+    margin-left: 4em;
+    [% END -%]
+    font-style: italic;
+    color: [% css_colors.text_alert %];
+}
+.refine-controls { font-size: [% css_fonts.size_bigger %]; padding: 0.5ex 0; }
+#adv_search_refine input[type=text] { border: 1px inset [% css_colors.accent_light %] !important; }
+#adv_search_refine select { border: 1px inset [% css_colors.accent_light %] !important; }
+#adv_search_refine {
+    [% IF rtl == 't' -%]
+    padding-right: 5em;
+    [% ELSE -%]
+    padding-left: 5em;
+    [% END -%]
+    background-color: [% css_colors.accent_lighter2 %];
+    margin: 2ex 0;
+}
+.row-remover { position: relative; top: 1px; vertical-align: middle; }
+.subtle-button {
+    background-color: [% css_colors.background %];
+    color: [% css_colors.primary %]; text-decoration: none;
+    padding: 0; border: 0; margin: 0;
+    vertical-align: middle;
+}
+.subtle-button:hover { text-decoration: underline; cursor: pointer; }
+.no-dec:hover { text-decoration: none; }
+.pending-addr td { background-color: [% css_colors.background_alert %] !important; border: 0 !important; }
+
+#account-update-email table { text-align: center; padding: 20px; margin-top: 18px; border-collapse: collapse; }
+#account-update-email table td {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    [% ELSE -%]
+    text-align: left;
+    [% END -%]
+    padding: 5px 15px 5px 15px;
+    border-bottom: 1px solid [% css_colors.accent_lighter %];
+}
+#account-update-email-error { font-size: [% css_fonts.size_biggest %]; padding: 10px; border:1px solid [% css_colors.border_standard %];}
+a.dash-link:hover { text-decoration: underline !important; }
+#list_create_table td { vertical-align: middle; padding: 0 8px; }
+#list_create_table {
+    background-color: [% css_colors.accent_light %];
+    padding-bottom: 4px;
+    margin-bottom: 10px;
+    border-bottom: 1px dotted [% css_colors.accent_medium %];
+    width: 100%;
+}
+.list_create_table_label {
+    width: 30%;
+}
+#list_description, #list_create_name {
+        width: 500px;
+}
+.list-create-table-buttons input[type=image] { margin-top: 2px; }
+.result_table_format_cell { padding: 0px 10px; text-align: center; }
+.results_row_count { font-weight: bold; }
+
+.fmt-note {
+    [% IF rtl == 't' -%]
+    padding-right: 1em !important;
+    [% ELSE -%]
+    padding-left: 1em !important;
+    [% END -%]
+    vertical-align: middle;
+}
+.hold-editor-controls { text-align: center; padding-top: 1em !important; }
+.hold-editor-controls a { padding-left: 2em; }
+
+.text-right {
+    [% IF rtl == 't' -%]
+    text-align: left;
+    [% ELSE -%]
+    text-align: right;
+    [% END -%]
+}
+.text-right-top {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    [% ELSE -%]
+    vertical-align: top;
+    [% END -%]
+}
+.rdetail-author-div {
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.invisible { visibility: hidden; }
+.rdetail-extras-summary { margin: 10px; }
+.staff-hold { background-color: [% css_colors.accent_lightest %]; }
+.expert-search tbody tr th {
+    [% IF rtl == 't' -%]
+    text-align: left;
+    padding-right: 2em;
+    [% ELSE -%]
+    text-align: right;
+    padding-left: 2em;
+    [% END -%]
+}
+.expert-search-row { padding-top: 10px; }
+#adv_expert_row label { font-weight: bold; }
+
+.bookshelf tr.browse_border td {
+    border-bottom: 1px dashed [% css_colors.accent_dark %];
+    font-size: 1px;
+    height: 1px;
+    padding-bottom: 1ex;
+}
+.cn_browse_item { padding: 2ex; }
+.results-paginator-list {
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [% ELSE -%]
+    padding-left: 1em;
+    [% END -%]
+}
+.results-paginator-selected { color: [% css_colors.text_alert %]; }
+.inactive-hold { background-color: [% css_colors.inactive_hold %]; }
+.unread-patron-message { font-weight: bold; }
+
+#hold-items-list td { padding: 5px; margin-bottom: 20px; }
+.hold-items-list-title { 
+  font-size: [% css_fonts.size_bigger %];
+  margin-bottom: 20px;
+}
+.hold-items-list-problem { color: [% css_colors.text_alert %]; }
+
+.hold_success_links > span { margin: 0 2em; }
+
+.radio-parts-selection { 
+   width: 75%;
+   margin-bottom: 20px;
+}
+
+.parts-radio-option { 
+  display: inline-block;
+  width:15em;
+}
+
+.mr_holds_no_formats { 
+  [% IF rtl == 't' -%]
+  margin-right: 25px;
+  [% ELSE -%]
+  margin-left: 25px;
+  [% END -%]
+  padding: 5px;
+  font-size: 110%;
+  font-weight: bold;
+  color: [% css_colors.text_invert %]; 
+  background-color: [% css_colors.primary %];
+}
+ 
+.holds_item_row_separator td {
+  border-top: 2px dashed [% css_colors.accent_medium %];
+}
+
+.big-strong {font-weight: bold; font-size: [% css_fonts.size_bigger %]; }
+
+.results_header_btns, .results_header_sel {
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float:left;
+    [% END -%]
+}
+
+/*
+ * .various_containers a = shortcut to putting .opac-button on every 'a' with
+ *     the tradeoff of increased stylesheet complexity (TODO: rethink?)
+ */
+
+.opac-multiline-button > a,
+.opac-button, .results_header_btns a, #simple-detail-view-links a, .dash_account_buttons a {
+    color: [% css_colors.button_text %];
+    font-weight: bold; 
+    text-decoration: none;
+    cursor: pointer !important;
+    border-radius: 5px;
+    border: 1px solid [% css_colors.primary %];
+    background-color:  [% css_colors.primary_fade %];
+    margin: 0.5em;
+    padding: 0.3em;
+    display: inline-block;
+}
+
+.opac-multiline-button > a:hover,
+.opac-button:hover, .results_header_btns a:hover, #simple-detail-view-links a:hover, #dash_wrapper a.opac-button:hover {
+    background-color: [% css_colors.primary %];
+}
+
+.opac-button:disabled {
+    color: [% css_colors.accent_medium %];
+    cursor: pointer !important;
+    border: 1px solid [% css_colors.accent_light %];
+    background-color: [% css_colors.accent_lighter %];
+}
+
+/* Firefox adds its own special space to inputs; this gets us closer */
+button.opac-button::-moz-focus-inner, input.opac-button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+.opac-button-header, #dash_wrapper .opac-button {
+    background-color: [% css_colors.control %];
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+    font-size: [% css_fonts.size_base %];
+}
+a.opac-button-header:hover, #dash_wrapper a.opac-button:hover {
+    border-color: [% css_colors.control %];
+}
+
+.opac-multiline-button > a {
+    display: inline-block;
+}
+
+#myopac_checked_div {
+    padding: 0px;
+}
+
+.rdetail-mfhd-head {
+    margin-top: 5px;
+    padding-top: 5px;
+    background-color: [% css_colors.table_heading %];
+}
+
+.rdetail-mfhd-type {
+    [% IF rtl == 't' -%]
+    padding-right: 1em;
+    [% ELSE -%]
+    padding-left: 1em;
+    [% END -%]
+}
+
+.rdetail-mfhd-bottom {
+    border-bottom: thin solid [% css_colors.border_dark %];
+    width: 100%;
+}
+
+#rdetail_record_details {
+    clear: both;
+    margin-top: 1em;
+}
+
+.rdetail_content {
+    [% IF rtl == 't' -%]
+    margin-right: 1.5em;
+    padding-right: 1.5em;
+    [% ELSE -%]
+    margin-left: 1.5em;
+    padding-left: 1.5em;
+    [% END -%]
+}
+
+.rdetail_content_type, .rdetail_subject_type {
+    vertical-align: top;
+    font-weight: bold;
+}
+
+.bookbag-item-row td { vertical-align: top; }
+
+.error { color: [% css_colors.text_alert %]; font-weight: bold; }
+.success {
+    color: [% css_colors.text_greatnews %];
+    font-weight: bold;
+}
+
+.rdetail_related_subjects {
+    margin-top: 1.5em;
+}
+
+.rdetail_related_series {
+    margin-top: 1.5em;
+}
+
+#rdetail_openurl {
+    margin-top: 1em;
+}
+
+.rdetail_openurl_entry {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    padding-right: 1em;
+    [% ELSE -%]
+    margin-left: 1em;
+    padding-left: 1em;
+    [% END -%]
+}
+.bookbag-controls-holder { width: 100%; }
+.bookbag-controls-holder:nth-child(odd) { background-color: [% css_colors.accent_lighter2 %]; }
+.bookbag-controls-holder:nth-child(even) { background-color: [% css_colors.accent_lightest %]; }
+.bookbag-controls-holder .most {
+    [% IF rtl == 't' -%]
+    padding-right: 0;
+    margin-left: 5em;
+    [% ELSE -%]
+    padding-left: 0;
+    margin-right: 5em;
+    [% END -%]
+}
+.bookbag-controls-title-block {
+    [% IF rtl == 't' -%]
+    float:right;
+    [% ELSE -%]
+    float:left;
+    [% END -%]
+    width:40%;
+}
+.bookbag-controls-button-block {
+    [% IF rtl == 't' -%]
+    float:right;
+    [% ELSE -%]
+    float:left;
+    [% END -%]
+    width:50%;
+}
+h2.bookbag-name { margin-bottom: 0em; padding-bottom: 0em; }
+.bookbag-share .fixed { min-width: 4em; }
+.bookbag-specific {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    [% ELSE -%]
+    margin-left: 1em;
+    [% END -%]
+}
+.bookbag-specific div.sort {
+    [% IF rtl == 't' -%]
+    float: right;
+    text-align: right;
+    margin-right: 15px;
+    [% ELSE -%]
+    float: left;
+    text-align: left;
+    margin-left: 15px;
+    [% END -%]
+    width: 40%;
+}
+.bookbag-specific div.meta {
+    background-color: [% css_colors.accent_light %];
+    [% IF rtl == 't' -%]
+    float: left;
+    text-align: left;
+    [% ELSE -%]
+    float: right;
+    text-align: right;
+    [% END -%]
+    width: 54%;
+    border: 1px solid [% css_colors.accent_light %];
+    padding: 5px;
+    margin-top: 5px;
+}
+#bbag-name-desc-form tr th { vertical-align: middle; }
+#bbag-name-desc-form .saver { vertical-align: middle; text-align: center; }
+.bookbag-description {
+    padding-top: 0em;
+    font-style: italic;
+    max-width: 40em;
+}
+.bbag-edit-desc-label {
+    [% IF rtl == 't' -%]
+    float:right;
+    [% ELSE -%]
+    float:left;
+    [% END -%]
+    width:8em;
+}
+.bbag-edit-desc-save {
+    clear:both;
+    margin-bottom:10px;
+}
+#bbag-edit-description {
+    width: 20em;
+    [% IF rtl == 't' -%]
+    float:right;
+    [% ELSE -%]
+    float:left;
+    [% END -%]
+}
+#bbag-edit-name {
+    width: 20em;
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float: left;
+    [% END -%]
+}
+.bbag-action {
+    [% IF rtl == 't' -%]
+    margin-right: 15px;
+    [% ELSE -%]
+    margin-left: 15px;
+    [% END -%]
+}
+.bbag-navigate-list {
+    [% IF rtl == 't' -%]
+    padding-right: 32px;
+    float:right;
+    [% ELSE -%]
+    padding-left: 32px;
+    float:left;
+    [% END -%]
+}
+.bbag-navigate-list-pages {
+    [% IF rtl == 't' -%]
+    padding-right: 10px;
+    float:right;
+    [% ELSE -%]
+    padding-left: 10px;
+    float:left;
+    [% END -%]
+}
+textarea { font-family: sans-serif; }
+table.bookbag-specific {
+    border-right: 1px solid [% css_colors.accent_dark %];
+    border-bottom: 1px solid [% css_colors.accent_medium %];
+    margin-bottom: 2ex;
+    width: 100%;
+}
+.bookbag-share {
+    [% IF rtl == 't' -%]
+    float: right;
+    padding: 0px 10px 0px 0px;
+    [% ELSE -%]
+    float: left;
+    padding: 0px 0px 0px 10px;
+    [% END -%]
+}
+.bookbag-share .fixed { min-width: 6em; }
+.bookbag-controls {
+    [% IF rtl == 't' -%]
+    float: right;
+    padding: 0px 10px 0px 0px;
+    [% ELSE -%]
+    float: left;
+    padding: 0px 0px 0px 10px;
+    [% END -%]
+}
+.bookbag-specific td.list_checkbox {
+    [% IF rtl == 't' -%]
+    padding-right: 10px !important;
+    [% ELSE -%]
+    padding-left: 10px !important;
+    [% END -%]
+}
+.bookbag-specific td.list_entry {
+    min-width: 10em;
+    [% IF rtl == 't' -%]
+    padding-right: 5px !important;
+    [% ELSE -%]
+    padding-left: 5px !important;
+    [% END -%]
+}
+.bookbag-specific td.list_actions {
+    white-space: nowrap !important;
+}
+.bookbag-paginator-selected { color: [% css_colors.text_alert %]; }
+
+.list_is_empty {
+    padding: 8px 0px 6px 0px;
+    width: 100%;
+    border: 0;
+    font-size: [% css_fonts.size_bigger %];
+    text-align: center;
+    font-style: italic;
+}
+.save-notes { padding-bottom: 1.5ex; }
+
+.nonbreaking-wrapper {
+    display: inline-block;
+}
+
+/* Moved from semiauto.css */
+.adv_global_input_container {
+    border-bottom: none;
+    clear: both;
+}
+.opac-auto-013 {
+    border-bottom: none;
+    *height: 0px;
+}
+.adv_global_filter_sort {
+    border: none;
+    width: 100%;
+}
+.clear-both { clear: both; }
+.common-no-pad {
+    clear: both;
+    height: 0px;
+    margin: 0px;
+    padding: 0px;
+}
+.common-full-pad {
+    clear: both;
+    height: 15px;
+}
+.opac-alert { color: [% css_colors.text_alert %]; }
+.float-left {
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float: left;
+    [% END -%]
+}
+.float-right {
+    [% IF rtl == 't' -%]
+    float: left;
+    [% ELSE -%]
+    float: right;
+    [% END -%]
+}
+
+.saved-searches-header { width: 100%; font-weight: bold; font-size: [% css_fonts.size_bigger %]; }
+.saved-searches-header .button {
+    [% IF rtl == 't' -%]
+    float: left;
+    [% ELSE -%]
+    float: right;
+    width: 28px;
+    [% END -%]
+}
+.saved-searches-header .text {
+    [% IF rtl == 't' -%]
+    float: right;
+    padding-left: 1em;
+    [% ELSE -%]
+    float: left;
+    padding-right: 1em;
+    [% END -%]
+    margin: 0.5ex 0;
+}
+.saved-searches-header {font-weight: bold; font-size: [% css_fonts.size_bigger %]; }
+.saved-searches { border-bottom: 1px solid [% css_colors.accent_medium %]; padding-right: 1em; }
+#staff-saved-search { /* wraps .saved-searches-header and .saved-searches on the record page */
+    [% IF rtl == 't' -%]
+    border-left: 1px solid [% css_colors.accent_darker %];
+    [% ELSE -%]
+    border-right: 1px solid [% css_colors.accent_darker %];
+    [% END -%]
+}
+.result_item_circulated {
+    padding-top: 4px;
+}
+
+.result_item_circulated span {
+    position: relative;
+    top:-3px;
+    [% IF rtl == 't' -%]
+    right: 3px;
+    [% ELSE -%]
+    left:3px;
+    [% END -%]
+}
+
+#search-only-bookbag-container { margin: 2ex 0; font-weight: bold; }
+#result-bookbag-heading { text-align: center; margin: 2ex; }
+
+.result-bookbag-name { font-size: [% css_fonts.size_bigger %]; font-weight: bold; }
+.result-bookbag-description { font-size: [% css_fonts.size_bigger %]; font-style: italic; }
+.result-bookbag-item-note { font-style: italic; }
+.lowhits-bookbag-name { font-weight: bold; }
+.oils_AS { font-weight: bold; color: [% css_colors.text_match %]; }
+.oils_AS_match_term {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    [% ELSE -%]
+    text-align: left;
+    [% END -%]
+    color: [% css_colors.text %];
+}
+.oils_AS_match_field {
+    font-size: [% css_fonts.size_smallest %]; padding: 0.65em 0;
+    [% IF rtl == 't' -%]
+    text-align: left;
+    [% ELSE -%]
+    text-align: right;
+    [% END -%]
+    color: [% css_colors.accent_medium %];
+}
+table.result_holdings_table {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+table.result_holdings_table thead tr {
+    background-color: [% css_colors.table_heading %];
+}
+table.result_holdings_table thead tr th {
+    font-weight: bold;
+}
+span.preflib {
+    margin: 0 2em 0 2em;
+}
+a.preflib_change {
+  vertical-align: super;
+  font-size: [% css_fonts.size_smaller %];
+  line-height: normal;
+  text-decoration: none;
+}
+.rdetail-holding-group {
+    [% IF rtl == 't' -%]
+    margin-right: 1.5em;
+    [% ELSE -%]
+    margin-left: 1.5em;
+    [% END -%]
+}
+.rdetail-holding-group span {
+    [% IF rtl == 't' -%]
+    margin-right: 1.5em;
+    [% ELSE -%]
+    margin-left: 1.5em;
+    [% END -%]
+}
+.rdetail-holding-group .paging {
+    [% IF rtl == 't' -%]
+    margin-right: 1.5em;
+    [% ELSE -%]
+    margin-left: 1.5em;
+    [% END -%]
+}
+#rdetail_deleted_exp {
+    font-weight: bold;
+    padding: 1em;
+    margin: 1em;
+    border: thick solid [% css_colors.border_alert %];
+}
+
+#ac_tab_wrapper { width : 100%; }
+.ac_tab {
+    [% IF rtl == 't' -%]
+    float: right;
+    padding-left: 10px;
+    [% ELSE -%]
+    float: left;
+    padding-right: 10px;
+    [% END -%]
+    font-size: [% css_fonts.size_big %];
+    padding: 5px;
+    border: 1px solid [% css_colors.primary_offset %];
+}
+.ac_tab_selected { background-color: [% css_colors.primary_offset %]; }
+.ac_tab_selected a { color: [% css_colors.text_invert %]; }
+#ac_content { clear: both; width: 100%; margin-top: 10px; }
+
+/* Popmenu styles used for making css menus. */
+.popmenu {
+    margin: 0;
+    padding: 0;
+}
+.popmenu li {
+    list-style: none;
+}
+.popmenu li a {
+    display: block;
+    padding: 3px 5px;
+}
+.popmenu li ul {
+    display: none; 
+    width: 10em; /* Width to help Opera out */
+    background-color: [% css_colors.primary %];
+}
+.popmenu li:hover ul {
+    display: block;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    border-color: [% css_colors.border_dark %];
+    border-width: 1px;
+    border-style: solid;
+}
+.popmenu li:hover li {
+    float: none;
+}
+.popmenu li:hover li a {
+    background-color: [% css_colors.primary %]; 
+    color: [% css_colors.accent_ultralight %];
+}
+.popmenu li li a:hover {
+    background-color: [% css_colors.accent_ultralight %]; 
+    color: [% css_colors.primary %];
+}
+/* Styles for the basket entry. */
+.popmenu li:hover li[class~="temporary"] a {
+    background-color: [% css_colors.primary %]; 
+    color: [% css_colors.accent_ultralight %];
+}
+.popmenu li li[class~="temporary"] a:hover {
+    background-color: [% css_colors.accent_ultralight %]; 
+    color: [% css_colors.primary %];
+}
+/* Styles for the default list entry. */
+.popmenu li:hover li[class~="default"] a {
+    background-color: [% css_colors.primary %]; 
+    color: [% css_colors.accent_ultralight %];
+}
+.popmenu li li[class~="default"] a:hover {
+    background-color: [% css_colors.accent_ultralight %]; 
+    color: [% css_colors.primary %];
+}
+/* Styles for the new list entry. */
+.popmenu li:hover li[class~="new"] a {
+    background-color: [% css_colors.primary %]; 
+    color: [% css_colors.accent_ultralight %];
+}
+.popmenu li li[class~="new"] a:hover {
+    background-color: [% css_colors.accent_ultralight %]; 
+    color: [% css_colors.primary %];
+}
+/* Style to add a divider on the menu. */
+.popmenu li li[class~="divider"] {
+    border-bottom-width: 1px;
+    border-bottom-color: [% css_colors.border_dark %];
+    border-bottom-style: solid;
+}
+    
+
+
+
+#patron_usr_barcode_not_found {
+    font-weight: bold; color: [% css_colors.text_alert %];
+}
+
+.record_title {
+    font-weight: bold;
+}
+
+.record_author {
+    font-style: italic;
+}
+
+.password_message {
+    padding-top: 1em;
+    padding-bottom: 0.5em;
+	font-style: italic;
+}
+
+#maintenance_message {
+    padding: 5px;
+    width: 100%;
+    background-color: [% css_colors.text_alert %];
+    color: [% css_colors.text_invert %];
+    text-align: center;
+}
+
+#search-box > span {
+    margin: 0 1em;
+}
+.browse-error {
+    font-weight: bold;
+    font-color: #c00;
+}
+.browse-result-sources, .browse-result-authority-bib-links {
+    [% IF rtl == 't' -%]
+    margin-right: 1em;
+    [% ELSE -%]
+    margin-left: 1em;
+    [% END -%]
+}
+.browse-result-best-match {
+    font-weight: bold;
+}
+.browse-pager {
+    margin: 2ex 0;
+}
+.browse-result-list {
+    padding-bottom: 0.5ex;
+}
+.browse-shortcuts {
+    font-size: [% css_fonts.size_bigger %];
+}
+.browse-result-authority-field-name {
+    font-style: italic;
+    [% IF rtl == 't' -%]
+    margin-left: 1em;
+    [% ELSE -%]
+    margin-right: 1em;
+    [% END -%]
+}
+.browse-leading-article-warning {
+    font-style: italic;
+    font-size: [% css_fonts.size_big %];
+}
+.browse-public-general-note {
+    font-size: [% css_fonts.size_big %];
+}
+.browse-public-general-note-label { }
+.browse-public-general-note-institution {
+    font-style: normal;
+    font-weight: bold;
+}
+.browse-public-general-note-body {
+    font-style: italic;
+}
+
+.bib_peer_type {
+    font-weight: bold;
+}
+
+#main-content-register {
+    [% IF rtl == 't' -%]
+    margin-right: 40px;
+    [% ELSE -%]
+    margin-left: 40px;
+    [% END -%]
+    font-size: [% css_fonts.size_bigger %];
+}
+
+#main-content-register table { 
+    padding: 20px; 
+    margin-top: 18px; 
+    border-collapse: collapse;
+}
+
+#main-content-register td {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    [% ELSE -%]
+    text-align: left;
+    [% END -%]
+}
+
+#main-content-register td:not(:first-child) {
+    [% IF rtl == 't' -%]
+    padding-right: 20px;
+    [% ELSE -%]
+    padding-left: 20px;
+    [% END -%]
+}
+
+.patron-reg-invalid {
+    font-weight: bold;
+    color: red;
+    [% IF rtl == 't' -%]
+    padding-left: 10px;
+    [% ELSE -%]
+    padding-right: 10px;
+    [% END -%]
+}
+
+.result_footer_nav1 {
+    clear: both;
+}
+
+.small_view_only, #filter_hits, #refine_hits, #return_to_hits {
+    display: none;
+}
+
+.rdetail_authors_div {
+    margin-bottom: 1em;
+}
+
+#search_query_label, #search_qtype_label, #search_itype_label, #search_locg_label {
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.result_table_title_cell {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.record_title {
+    font-size: [% css_fonts.size_bigger %];
+}
+
+/* styling for sms text call number */
+.sms_text pre {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: [% css_fonts.size_medium %];
+    background-color: [% css_colors.accent_lightest %];
+    padding: .5%;
+    /* Allow text to wrap */
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.mobile_view {
+   display:none;
+}
+
+/* patron message center */
+#myopac_message_tbody {
+    vertical-align: top;
+}
+.myopac_message_message {
+    white-space: pre-wrap;
+}
+
+@media only screen and (min-width: 992px) {
+	.nav-fr{
+    	float: right;
+    }
+    .nav-fl{
+    	float: left;
+    }
+    #nav-divide{
+    	display:none !important;
+    }
+}
+@media only screen and (max-width: 800px) {
+    .facet_sidebar_hidden, .result_block_hidden {
+        display: none;
+    }
+    .facet_sidebar_visible, .result_block_visible {
+        display: inline ! important;
+    }
+    #acct_select, #acct_prefs_select {
+        display: inline-block;
+    }
+    #acct_tabs, #acct_prefs_tabs {
+         display:none;
+     }
+    .radio-parts-selection { width: 90%; }
+    #list_description, #list_create_name {
+        width: 300px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    input, select {
+        font-size: [% css_fonts.size_big %];
+    }
+    span .nav_arrow_fix {
+        display: none;
+    }
+    #header {
+        padding: 0px;
+        margin: 0px;
+    }
+    #homesearch_main_logo img {
+        width:75%;
+    }
+    #format_selector {
+        display:none;
+    }
+    #your-acct-login {
+        padding: 0px;
+        padding-top: 5px;
+    }
+    #your-acct-login a {
+        margin: 0px;
+        padding: 5px;
+    }
+    #topnav_logo {
+        margin: 0;
+    }
+    #topnav_logo img {
+        width: 200px;
+    }
+ 
+    #gold-links-holder {
+        display: none;
+    }
+    #simple-detail-view-links {
+        display: none;
+    }
+    #acct_tabs a, #acct_fines_tabs a {
+       [% IF rtl == 't' -%]
+       border-radius: 6px 0px 0px 6px;
+       margin: 0px 0px 0px 5px;
+       [% ELSE -%]
+       border-radius: 6px 6px 0px 0px;
+       margin: 0px 5px 0px 0px;
+       [% END -%]
+       padding: 2px 4px 3px 4px;
+       font-size: [% css_fonts.size_base %];
+    }
+    .bookbag-controls-title-block {
+        [% IF rtl == 't' -%]
+        clear:right;
+        [% ELSE -%]
+        clear:left;
+        [% END -%]
+        width:90%;
+    }
+    .bookbag-controls-button-block {
+        [% IF rtl == 't' -%]
+        clear:right;
+        [% ELSE -%]
+        clear:left;
+        [% END -%]
+        width;90%;
+    }
+    .bookbag-specific {
+        [% IF rtl == 't' -%]
+        margin-right: 0px;
+        [% ELSE -%]
+        margin-left: 0px;
+        [% END -%]
+    }
+    .bookbag-specific div.sort {
+        [% IF rtl == 't' -%]
+        float: right;
+        text-align: right;
+        [% ELSE -%]
+        float: left;
+        text-align: left;
+        [% END -%]
+        width: 95%;
+        margin: 5px 0px 5px 0px;
+        border: 1px solid [% css_colors.accent_light %];
+        padding:5px;
+    }
+    .bookbag-specific div.meta {
+        [% IF rtl == 't' -%]
+        float: right;
+        margin-right:0px;
+        text-align: right;
+        [% ELSE -%]
+        float: left;
+        margin-left:0px;
+        text-align: left;
+        [% END -%]
+        width: 95%;
+        margin-bottom:5px;
+        padding:5px;
+    }
+    #bbag-edit-name {
+        [% IF rtl == 't' -%]
+        float: right;
+        [% ELSE -%]
+        float: left;
+        [% END -%]
+        width: 220px;
+    }
+    #bbag-edit-description {
+        width: 220px;
+        margin-top:5px;
+    }
+    .bbag-content {
+        padding:5px;
+        border:1px solid [% css_colors.accent_light %];
+    }
+    .bbag-action {
+        [% IF rtl == 't' -%]
+        margin-right:0px;
+        [% ELSE -%]
+        margin-left:0px;
+        [% END -%]
+        margin-bottom:5px;
+    }
+    .bbag-action-field {
+        width:230px;
+    }
+    .bookbag-specific div.sort select {
+        width:180px;
+    }
+    .bookbag-specific tr {
+        display: block;
+        border-bottom: 1px solid [% css_colors.border_standard %];
+    }
+    .bookbag-specific td.list_checkbox {
+        [% IF rtl == 't' -%]
+        padding-right: 0px !important;
+        [% ELSE -%]
+        padding-left: 0px !important;
+        [% END -%]
+    }
+    .bookbag-specific td.list_entry {
+        display: inline-block;
+        min-width: 5em;
+        [% IF rtl == 't' -%]
+        padding-right: 40% !important;
+        [% ELSE -%]
+        padding-left: 40% !important;
+        [% END -%]
+    }
+    .bookbag-specific td.list_entry:before {
+        content: attr(data-label);
+        position: absolute;
+        [% IF rtl == 't' -%]
+        right: 10px;
+        [% ELSE -%]
+        left: 10px;
+        [% END -%]
+    }
+    .bbag-navigate-list {
+        display: none;
+    }
+    .bbag-navigate-list-pages {
+        [% IF rtl == 't' -%]
+        text-align:left;
+        float:left;
+        [% ELSE -%]
+        text-align:right;
+        float:right;
+        [% END -%]
+    }
+    #dash_wrapper div {
+        background-color: transparent;
+        padding: 0px;
+    }
+    #dash_wrapper {
+        position: static;
+        top: auto;
+    }
+    #dash_wrapper .opac-button {
+        top: 0px;
+    }
+    .small_view_only, #filter_hits {
+        display: inline !important;
+    }
+    #dash_identity a {
+        [% IF rtl == 't' -%]
+        float:right;
+        [% ELSE -%]
+        float:left;
+        [% END -%]
+    }
+    #dashboard, #dashboard_e {
+        display: none;
+    }
+    #holds_box form blockquote {
+        [% IF rtl == 't' -%]
+        margin-right: 10px;
+        margin-left: 2px;
+        [% ELSE -%]
+        margin-left: 10px;
+        margin-right: 2px;
+        [% END -%]
+    }
+    #holds_box form blockquote select {
+        width: 100%;
+    }
+    #myopac_sum_fines_placehold {
+        display:none;
+    }
+    #myopac_sum_fines {
+        display: none;
+    }
+    #list_description, #list_create_name {
+        width: 170px;
+    }
+    .results_header_lbl {
+        display: none;
+    }
+    .results_header_nav1 span.h1 {
+        display: none;
+    }
+    .preflib {
+        display: none;
+    }
+    .start_end_links_span {
+        display: block;
+    }
+    .invisible {
+        display: none;
+    }
+    .result_table_pic_header {
+        [% IF rtl == 't' -%]
+        padding-right: 0px !important;
+        padding-left: 5px;
+        [% ELSE -%]
+        padding-left: 0px !important;
+        padding-right: 5px;
+        [% END -%]
+        width: 0px !important;
+        margin: 0px;
+    }
+    .result_table_pic {
+        width: 55px;
+        padding: 0px;
+        margin: 0px;
+    }
+    tr[name=results_isbn_tr], tr[name=results_phys_desc_tr], tr[name=results_pub_tr] strong, .result_count {
+         display: none;
+    }
+    tr.result_table_title_cell[name=bib_cn_list] .result_holdings_table th:nth-child(4),
+    tr.result_table_title_cell[name=bib_cn_list] .result_holdings_table td:nth-child(4) {
+        display:none;
+    }
+    #results_header_bar {
+        background-color: inherit;
+    }
+    .results_header_btns a {
+        margin: 0.3em;
+    }
+    .adv_filter_results_hide {
+        display: none;
+    }
+    .adv_filter_results_show {
+        display: block;
+    }
+    .adv_filter_results_block_label {
+        display: block;
+    }
+    .adv_filter_results_group_wrapper {
+        display: block;
+    }
+    #main-content {
+        margin: 0 1px;        
+    }
+    #rdetails_status thead {
+        display: none;
+    }
+    #rdetails_status tr {
+	display: block;
+	margin-top: 3px;
+    }
+    #rdetails_status td {
+	display: block;
+	padding: 1px;
+    }
+    .copy_details_row {
+	background-color: [% css_colors.accent_lightest %];
+    }
+    .copy_details_offers_row {
+	background-color: [% css_colors.accent_lightest %];
+    }
+    select#pickup_lib.search-wrapper-locg {
+        width: 100%;
+    }
+    #search-wrapper #search-box {
+        width: 85%;
+        padding-top: 5px;
+    }
+    #main-content-home {
+        padding: 0px;
+        margin: 0px;
+    }
+    /* Make use of full width in mobile mode */
+    .facet_box_wrapper .box_wrapper .box,
+    .facet_template .facet,
+    .facet_box_temp {
+        width: inherit;
+    }
+    .facet_template .count {
+        [% IF rtl == 't' -%]
+        padding-right: 1em;
+        [% ELSE -%]
+        padding-left: 1em;
+        [% END -%]
+    }
+    #facet_sidebar {
+        margin-top: 0.5em;
+    }
+    #adv_search_parent {
+        font-size: [% css_fonts.size_smaller %];
+    }
+    #adv_search_filters {                                                                                                                             
+        position: relative;                                                                                                                           
+        width: 300px;
+    }
+    #format_actions {
+        [% IF rtl == 't' -%]
+        float: right;
+        [% ELSE -%]
+        float: left;
+        [% END -%]
+    }
+    .rdetail_aux_utils {
+        padding: 0px;
+        border: none;
+    }
+    .result_metadata {
+        width: inherit;
+    }
+    div#rdetail_actions_div {
+        float: none;
+    }
+    h2.rdetail_uris {
+        clear: both;
+    }
+    #metarecord_population {
+        overflow: hidden;
+        width: 100%;
+    }
+    .metarecord_population_span_link {
+    }
+    .metarecord_population_item_lang {
+        float: none;
+    }
+    .search_catalog_lbl {
+        [% IF rtl == 't' -%]
+	margin-right: 0;
+        [% ELSE -%]
+	margin-left: 0;
+        [% END -%]
+	white-space: nowrap;
+    }
+    .adv_search_catalog_lbl { 
+        margin-top: 0;
+	white-space: nowrap;
+    }
+    .browse_the_catalog_lbl {
+        white-space: nowrap;
+    }
+    .mobile_hide {
+	display: none;
+    } 
+    #dash_user {
+        display: block;
+        padding: 0.5em;    
+        font-size: 18px;
+        text-align: center;
+    }
+    .dash_divider {
+	display: none;
+    }
+    .dash_account_buttons {
+        display: block;
+    } 
+    .searchbar { line-height: 1.5em; }
+    #browse-controls { line-height: 1.5em; }
+    #search_query_label, #search_qtype_label, #search_itype_label, #search_locg_label {
+        display: block;
+    }
+    .bookshelf td {
+	display: block;
+	width: 100%;
+    }
+    .bookshelf table thead tr {
+	display: block;
+    }
+    #lowhits_help { width: inherit; }
+    #adv_search_tabs a{                                                                                                                           
+        font-size: [% css_fonts.size_small %];
+        margin: 2px 2px 0px 2px;
+        padding: 2px 2px 5px 2px; 
+        [% IF rtl == 't' -%]
+        border-radius: 7px 0px 0px 7px;
+        [% ELSE -%]
+        border-radius: 7px 7px 0px 0px;
+        [% END -%]
+    }
+    #adv_global_tbody td {
+        border-bottom: thin solid [% css_colors.accent_light %];
+    }
+    #adv_global_addrow td {
+        border-bottom: none;
+    }
+        /* Force table to not be like tables anymore */
+        table#acct_checked_main_header thead tr th, table#acct_holds_main_header thead tr th, table#acct_checked_hist_header thead tr th, table#acct_holds_hist_header thead tr th, table#ebook_circs_main_table thead tr th, table#ebook_holds_main_table thead tr th {
+                display: none;
+        }
+        table#acct_checked_main_header tbody tr td, table#acct_holds_main_header tbody tr td, table#acct_checked_hist_header tbody tr td, table#acct_holds_hist_header tbody tr td, table#ebook_circs_main_table tbody tr td, table#ebook_holds_main_table tbody tr td {
+                display: block;
+        }
+
+        /* Hide table headers (but not display: none;, for accessibility) */
+       /* thead tr {
+                position: absolute;
+                top: -9999px;
+                [% IF rtl == 't' -%]
+                right: -9999px;
+                [% ELSE -%]
+                left: -9999px;
+                [% END -%]
+        }*/
+
+        table#acct_checked_main_header, table#acct_holds_main_header, table#acct_checked_hist_header, table#acct_holds_hist_header, table#ebook_circs_main_table, table#ebook_holds_main_table {
+                width: 90%;
+        }
+
+        table#acct_checked_main_header tr, table#acct_holds_main_header tr, table#acct_checked_hist_header tr { border: 1px solid #ddd; }
+
+        /* Holds history gets large white border to mimic header cell on other
+           account screens that provide visual cue for next title. We should do
+           the same for ebook tables too since we have no actions on those
+           tables. If actions get added, we should move those tables out of
+           here. */
+
+        table#ebook_circs_main_table tr, table#ebook_holds_main_table tr { border-top: 25px solid #fff; }
+		table#acct_holds_hist_header tr{ border-top: 2px solid #bbb; }
+
+        table#acct_checked_main_header td, table#acct_holds_main_header td, table#acct_checked_hist_header td, table#acct_holds_hist_header td, table#ebook_circs_main_table td, table#ebook_holds_main_table td {
+                /* Behave  like a "row" */
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                [% IF rtl == 't' -%]
+                padding-right: 40%;
+                [% ELSE -%]
+                padding-left: 40%;
+                [% END -%]
+        }
+
+         table#acct_checked_main_header td:before, table#acct_holds_main_header td:before, table#acct_checked_hist_header td:before, table#acct_holds_hist_header td:before, table#ebook_circs_main_table td:before, table#ebook_holds_main_table td:before {
+                /* Now like a table header */
+                position: absolute;
+                /* Top/left values mimic padding */
+                top: 2px;
+                width: 40%;
+                [% IF rtl == 't' -%]
+                right: 2px;
+                padding-left: 10px;
+                [% ELSE -%]
+                left: 2px;
+                padding-right: 10px;
+                [% END -%]
+                white-space: nowrap;
+        }
+
+        table#acct_checked_main_header td:nth-of-type(1) { border-top: 5px solid #aaa; padding-top: 15px; background-color: #fff;}
+        table#acct_checked_main_header td:nth-of-type(2):before { content: "[% l('Title') %]";}
+        table#acct_checked_main_header td:nth-of-type(3):before { content: "[% l('Author') %]"; }
+        table#acct_checked_main_header td:nth-of-type(4):before { content: "[% l('Renewals Left') %]"; }
+        table#acct_checked_main_header td:nth-of-type(5):before { content: "[% l('Due Date') %]"; }
+        table#acct_checked_main_header td:nth-of-type(6):before { content: "[% l('Barcode') %]"; }
+        table#acct_checked_main_header td:nth-of-type(7):before { content: "[% l('Call number') %]"; }
+
+     table#acct_checked_hist_header td:nth-of-type(1) { border-top: 5px solid #aaa; padding-top: 15px; background-color: #fff;}
+        table#acct_checked_hist_header td:nth-of-type(2):before { content: "[% l('Title') %]";}
+        table#acct_checked_hist_header td:nth-of-type(3):before { content: "[% l('Author') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(4):before { content: "[% l('Checkout Date') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(5):before { content: "[% l('Due Date') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(6):before { content: "[% l('Date Returned') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(7):before { content: "[% l('Barcode') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(8):before { content: "[% l('Call number') %]"; }
+
+        table#acct_holds_main_header td:nth-of-type(1) { border-top: 5px solid #aaa; padding-top: 15px; background-color: #fff;}
+        table#acct_holds_main_header td:nth-of-type(2):before { content: "[% l('Title') %]";}
+        table#acct_holds_main_header td:nth-of-type(3):before { content: "[% l('Author') %]"; }
+        table#acct_holds_main_header td:nth-of-type(4):before { content: "[% l('Format') %]"; }
+        table#acct_holds_main_header td:nth-of-type(5):before { content: "[% l('Pickup Location') %]"; }
+        table#acct_holds_main_header td:nth-of-type(6):before { content: "[% l('Cancel on') %]"; }
+        table#acct_holds_main_header td:nth-of-type(7):before { content: "[% l('Status') %]"; }
+        table#acct_holds_main_header td.hold_notes:before { content: "[% l('Notes') %]"; }
+
+        table#acct_holds_hist_header td:nth-of-type(1):before { content: "[% l('Title') %]";}
+        table#acct_holds_hist_header td:nth-of-type(2):before { content: "[% l('Author') %]"; }
+        table#acct_holds_hist_header td:nth-of-type(3):before { content: "[% l('Format') %]"; }
+        table#acct_holds_hist_header td:nth-of-type(4):before { content: "[% l('Pickup Location') %]"; }
+        table#acct_holds_hist_header td:nth-of-type(8):before { content: "[% l('Status') %]"; }
+
+        table#ebook_circs_main_table td:nth-of-type(1):before { content: "[% l('Title') %]"; }
+        table#ebook_circs_main_table td:nth-of-type(2):before { content: "[% l('Author') %]"; }
+        table#ebook_circs_main_table td:nth-of-type(3):before { content: "[% l('Due Date') %]"; }
+        table#ebook_circs_main_table td:nth-of-type(4):before { content: "[% l('Actions') %]"; }
+
+        table#ebook_holds_main_table td:nth-of-type(1):before { content: "[% l('Title') %]"; }
+        table#ebook_holds_main_table td:nth-of-type(2):before { content: "[% l('Author') %]"; }
+        table#ebook_holds_main_table td:nth-of-type(3):before { content: "[% l('Due Date') %]"; }
+        table#ebook_holds_main_table td:nth-of-type(4):before { content: "[% l('Actions') %]"; }
+
+
+
+       /*Want to see these in mobile ONLY */
+       .mobile_view{
+          display:block;
+       }
+
+       .mobile_search_lbl_clr{
+          color:[% css_colors.mobile_header_text %];
+       }
+}
+
+
+/* 
+For text which is visible only to screen readers.
+Borrowed from http://getbootstrap.com/css/#helper-classes-screen-readers 
+See also http://webaim.org/techniques/css/invisiblecontent/
+*/
+.sr-only {                                                                     
+    position: absolute;                                                          
+    width: 1px;                                                                  
+    height: 1px;                                                                 
+    padding: 0;                                                                  
+    margin: -1px;                                                                
+    overflow: hidden;                                                            
+    clip: rect(0, 0, 0, 0);                                                      
+    border: 0;                                                                   
+}
+
+/* Make added rows in Expert Search have bold labels like the initial row */
+label[for*=expert_]
+{
+    font-weight: bold;
+}  
+
+.sort_deemphasize {
+    font-weight: lighter;
+    font-size: 70%;
+}
+
+#results-page-depth-hint {
+    text-align: center;
+    font-style: italic;
+}
+
+#clear-history-confirm {
+  font-weight: bold;
+  color: [% css_colors.text_badnews %]; 
+  padding: 10px;
+}
+
+/*Inline rules from other templates files*/
+
+.td-left{
+    [% IF rtl == 't' -%]
+    text-align:right;
+    [% ELSE -%]
+    text-align:left;
+    [% END -%]
+    width:100%;
+}
+.td-search-left{
+    [% IF rtl == 't' -%]
+    text-align:right;
+    [% ELSE -%]
+    text-align:left;
+    [% END -%]
+}
+#myopac_summary_div{padding:0px;}
+.div-left{
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float: left;
+    [% END -%]
+}
+.td-right{
+    [% IF rtl == 't' -%]
+    text-align:left;
+    [% ELSE -%]
+    text-align:right;
+    [% END -%]
+}
+.login-form-left{
+    [% IF rtl == 't' -%]
+    float: right;
+    margin-left: 40px;
+    [% ELSE -%]
+    float: left;
+    margin-right: 40px;
+    [% END -%]
+    padding-bottom: 10px;
+}
+.hold-div{
+    [% IF rtl == 't' -%]
+    padding-right: 10px;
+    [% ELSE -%]
+    padding-left: 10px;
+    [% END -%]
+    padding-bottom: 15px;
+}
+.hold-span{font-weight: bold;}
+.padding-left-6{
+    [% IF rtl == 't' -%]
+    padding-right: 6px;
+    [% ELSE -%]
+    padding-left: 6px;
+    [% END -%]
+}
+.padding-left-10{
+    [% IF rtl == 't' -%]
+    padding-right:10px;
+    [% ELSE -%]
+    padding-left:10px;
+    [% END -%]
+}
+.padding-left-5{
+    [% IF rtl == 't' -%]
+    padding-right: 5px;
+    [% ELSE -%]
+    padding-left: 5px;
+    [% END -%]
+}
+
+/* Rules from metarecord_hold_filters.tt2 */
+
+.metarecord_filters{
+      padding: 5px;
+      margin-top: 5px;
+      border-bottom: 1px solid #333;
+      border-top: 1px solid #333; }
+.metarecord_filter_container{
+    [% IF rtl == 't' -%]
+    float : right;
+    margin-left: 10px;
+    [% ELSE -%]
+    float : left;
+    margin-right: 10px;
+    [% END -%]
+}
+.metarecord_filter_container select{padding: 2px;width: 13em; /* consistent w/ adv search selectors */}
+.metarecord_filter_header{padding-bottom: 5px;}
+
+/* Toggled items. */
+/* A block that is initially hidden and shown by clicking an anchor. */
+[id^="toggled-block-"]{
+    display: none;
+}
+[id^="toggled-block-"]:target{
+    display: block;
+}
+/* Inline text that is initially hidden and shown by clicking an anchor. Useful on a span. */
+[id^="toggled-inline-"]{
+    display: none;
+}
+[id^="toggled-inline-"]:target{
+    display: inline;
+}
+
+.oils_SH {
+    font-weight: bolder;
+    background-color: #99ff99;
+}
+
+.oils_SH.identifier {
+    font-weight: bolder;
+    background-color: #42b0f4;
+}
+.hold_note_title { font-weight: bold; }
+
+/*
+#acct_checked_main_header td, #acct_holds_main_header td, #acct_fines_main_header td, #acct_fines_confirm_header td, #acct_fees_main_header td,#acct_checked_hist_header td, #acct_holds_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td, #acct_messages_main_header td, #ebook_circs_main_table td, #ebook_holds_main_table td {
+    background-color: [% css_colors.background %]; 
+    padding: 10px;
+	 border: 1px solid #d3d3d3; 
+} 
+
+#acct_checked_main_header th, #acct_holds_main_header th, #acct_fines_main_header th, #acct_fines_confirm_header th, #acct_fees_main_header th, #acct_checked_hist_header th, #acct_holds_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th, #acct_messages_main_header th, #ebook_holds_main_table th {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    [% ELSE -%]
+    text-align: left;
+    [% END -%]
+    padding: 0px 10px 0px 10px;
+}
+#acct_checked_main_header, #acct_holds_main_header, #acct_fines_main_header, #acct_checked_hist_header, #acct_holds_hist_header, #acct_list_header, #acct_list_header_anon, #temp_list_holds, #acct_messages_main_header, #ebook_circs_main_table, #ebook_holds_main_table {
+    border-collapse: collapse;
+}
+
+#hold_editor h1 { font-size: [% css_fonts.size_bigger %]; font-weight: bold; }
+#hold_editor h2 { font-size: [% css_fonts.size_big %]; font-weight: normal; text-indent: 2em; font-style: italic; }
+#hold_editor h1, #hold_editor h2 { margin: 2px 0; }
+#hold_editor_table { background-color: [% css_colors.accent_lighter %]; padding: 0.5em; }
+#hold_editor_table th {
+    [% IF rtl == 't' -%]
+    text-align: left;
+    padding-left: 1em;
+    [% ELSE -%]
+    text-align: right;
+    padding-right: 1em;
+    [% END -%]
+}
+#hold_editor_table td { padding: 0.25em 0; }
+*/
+
+
+/*
+  Carousels
+*/
+
+.carousel {
+    width: 40%;
+    margin: 0 auto;
+}
+.carousel-title {
+    font-size: 150%;
+    font-weight: bold;
+    text-align: center;
+}
+.carousel-entry {
+    max-width: 150px;
+}
+.carousel-entry-image {
+    width: 100%;
+    height: auto;
+}
+.carousel .glide__arrow {
+    color: [% css_colors.button_text %];
+    font-weight: bold !important;
+    text-decoration: none !important;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid [% css_colors.primary %];
+    background-color:  [% css_colors.primary_fade %];
+    margin: 0.5em;
+    padding: 0.3em;
+    display: inline-block;
+}
+.carousel .glide__arrow--right {
+    right: -5em;
+}
+.carousel .glide__arrow--left {
+    left: -5em;
+}
+
+.search-filter{
+    display: inline;
+}
+
+
+
+.search-option{
+    display: inline-block;
+    margin: 0px 10px;
+}
+
+.title{
+    font-size: large;
+}
+
+#homeLogo{
+    opacity: 0.5; 
+    filter: alpha(opacity=50); 
+    background-color: #fff; /* Used if the image is unavailable */
+    height: 500px; /* You must set a specified height */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: contain; /* Resize the background image to cover the entire container */
+    background-image: url("https://evergreen-ils.org/wp-content/uploads/2018/09/Evergreen-Final-Logo.png");
+
+}

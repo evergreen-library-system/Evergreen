@@ -1,0 +1,38 @@
+<form action="[% ctx.opac_root %]/results" method="get">
+    <div class="header_middle">[% l("Numeric Search") %]</div>
+    <input type="hidden" name="contains" value="contains" />
+    <input type="hidden" name="_special" value="1" />
+    <input id="detail" type="hidden" name="detail_record_view"
+           value="[% show_detail_view %]"/>
+    <div id='adv_numeric_block' class='row'>
+    	<div class="col-md-6 col-xs-12 my-3">
+            <label for="numeric_qtype"><strong>[% l("Field:") %]</strong></label>
+                <select id="numeric_qtype" name="qtype" class="form-control">
+                    <!-- TODO: Pull labels from config.metabib_field.label -->
+                    <option value="identifier|isbn">[% l('ISBN') %]</option>
+                     <option value="identifier|upc">[% l('UPC') %]</option>
+                    <option value="identifier|issn">[% l('ISSN') %]</option>
+                    <option value="cnbrowse">[% l('Call Number (Shelf Browse)') %]</option>
+                    <option value="identifier|lccn">[% l('LCCN') %]</option>
+                    <option value="identifier|tcn">[% l('TCN') %]</option>
+                    <option value="item_barcode">[% l('Item Barcode') %]</option>
+                </select>
+		</div>
+        <div class="col-md-6 col-xs-12 my-3">
+        		<label for="numeric_qtype"><strong>[% l("Identifier:") %]</strong></label>
+                <input class="form-control" type="text" name="query" size="16" autofocus placeholder='[% l("Identifier") %]' aria-label='[% l("Identifier") %]' />
+        </div>
+	    <br/>
+        <div class="col-12 my-3 text-center">
+            [%- lib_select_id="numeric_search_library" -%]
+            <label for="[% lib_select_id %]"><strong>[% l("Search Library:") %]</strong>
+                  [% PROCESS "opac/parts/org_selector.tt2";
+                     INCLUDE build_org_selector id=lib_select_id show_loc_groups=1
+                  %]
+            </label>
+	    <br/>
+                <input type="submit" alt="[% l('Search') %]"
+                    value="[% l('Search') %]" class="btn btn-confirm mt-3" />
+          </div>
+    </div>
+</form>

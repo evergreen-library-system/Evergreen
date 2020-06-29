@@ -1,0 +1,85 @@
+[%-
+
+pubdate_filters = ['date1', 'before', 'after', 'between'];
+
+FOR filter IN ctx.query_struct.filters;
+    fname = filter.name;
+    fvalues = filter.args;
+    crad = ctx.get_crad(fname);
+
+    # will be some special ones, like locations
+    IF crad AND NOT pubdate_filters.grep('^' _ filter.name _ '$').size;
+        remove_filter = 'fi:' _ fname;
+-%]
+         <div class="adv_filter_results_group_wrapper" id="1">
+           <div class="adv_filter_results_group">
+           <div class="adv_filter_results_group_header"> <h5 class="title">[% IF filter.negate; l('Not'); END %] [% (crad.description || crad.label) | html %]</h5></div>
+           <div class="adv_filter_results_group_values d-inline-block align-middle"> [% temp = [];
+               FOR fval IN fvalues;
+                thing = ctx.search_ccvm('ctype',fname,'code',fval).0;
+                display_value = thing.search_label || thing.value;
+                IF display_value.defined;
+                 temp.push(display_value);
+                END;
+               END;
+               FOR display_value IN temp.sort;
+            %]
+                 <span class="adv_search_result_filter">
+                    [% display_value | html %]
+                 </span>
+                 [% UNLESS loop.last %]
+                  <span class="adv_search_result_filter"> [% l('OR') %] </span>
+                 [% END %]
+            [% END; # FOR %]
+             </div>
+              <a class="button remove_filter btn btn-deny btn-sm"
+              title="[% l('Remove [_1] filter', (crad.description || crad.label)) %]"
+              aria-label="[% l('Remove [_1] filter', (crad.description || crad.label)) %]" 
+              href="[% mkurl('', {}, [remove_filter]) %]" rel="nofollow" vocab=""><span class="text-white">&times;</span> </a>
+            </div>
+           </div>
+           </div>
+    [%- END; # IF crad -%]
+
+[%-  IF filter.name == 'locations'; locs = ctx.search_acpl('id',filter.args) -%]
+    <div class="adv_filter_results_group_wrapper" id="2">
+      <div class="adv_filter_results_group">
+            <h4 class="title">[% IF filter.negate; l('Not'); END %] </h4>
+            [% temp = [];
+               FOR loc IN locs;
+                temp.push(loc.name);
+               END;
+               FOR display_name IN temp.sort; %]
+                  <span class="adv_search_result_filter">
+                    [% display_name | html%]
+                  </span>
+            [% END; # FOR %]
+            <a class="button remove_filter btn btn-deny btn-sm"
+              title="[% l('Remove location filter') %]"
+              href="[% mkurl('', {}, ['fi:locations']) %]" rel="nofollow" vocab=""> <span class="text-white">×</span></a>
+      </div>
+    </div> 
+[%- END; # IF locations -%]
+
+[%- IF pubdate_filters.grep('^' _ filter.name _ '$').size;
+    date1 = CGI.param('date1') | html;
+    date2 = CGI.param('date2') | html;
+-%]
+    <div class="adv_filter_results_group_wrapper" id="3">
+      <div class="adv_filter_results_group">
+            <h5 class="title">[% IF filter.negate; l('Not'); END %] [% l('Publication Year') %]</h5>
+              <span class="adv_search_result_filter">
+              [% IF    filter.name == 'date1'      %][% l('[_1]', date1) %]
+              [% ELSIF filter.name == 'before'  %][% l('Before [_1]', date1) %]
+              [% ELSIF filter.name == 'after'   %][% l('After [_1]', date1) %]
+              [% ELSIF filter.name == 'between' %][% l('Between [_1] and [_2]', date1, date2) %]
+              [% END %]
+              </span>
+              <a class="button remove_filter btn btn-deny btn-sm"
+              title="[% l('Remove publication date filter') %]"
+              href="[% mkurl('', {}, ['pubdate', 'date1', 'date2']) %]" rel="nofollow" vocab=""><span class="text-white">×</span> </a>
+      </div>
+    </div>
+
+[%- END; # IF pubdate_filters -%]
+[%- END; # FOR -%]

@@ -1,0 +1,144 @@
+[% 
+    subjects = [
+        {
+            display_field => 'subject',
+            label => l('Subject: '),
+            xpath => '//*[@tag="600" or @tag="610" or @tag="611" or @tag="630" or @tag="650" or @tag="651"]'
+        }, {
+            display_field => 'genre',
+            label => l('Genre: '),
+            facet => 'identifier|genre',
+            joiner => ' -- ',
+            xpath => '//*[@tag="655"]',
+            subfields => '[abvxyz]'
+        }, {
+            label => l('Topic Heading: '),
+            xpath => '//*[@tag="690"]'
+        }, {
+            label => l('Geographic Setting: '),
+            xpath => '//*[@tag="691"]'
+        }, {
+            label => l('Biographical Subject: '),
+            xpath => '//*[@tag="692"]'
+        }, {
+            label => l('Character Attributes: '),
+            xpath => '//*[@tag="693"]'
+        }, {
+            label => l('Setting: '),
+            xpath => '//*[@tag="698"]'
+        }, {
+            label => l('Time Period: '),
+            xpath => '//*[@tag="699"]'
+        }
+    ];
+
+    BLOCK render_subject;
+        xpath = s.xpath || '//*[starts-with(@tag,"6")]';
+        FOR node IN ctx.marc_xml.findnodes(xpath);
+            '<span property="about">';
+            all_terms = [];
+            graphics = [];
+            FOR subfield IN node.childNodes;
+                NEXT UNLESS subfield.nodeName == "subfield";
+                code = subfield.getAttribute('code');
+                IF code == '6';
+                   linked_fields = [subfield.textContent()];
+                   target_field = node.getAttribute('tag');
+                   get_linked_880s;
+                END;
+
+                NEXT UNLESS code.match('[a-z]');
+                IF s.subfields; NEXT UNLESS code.match(s.subfields); END;
+
+                IF code.match('[vxyz]'); " &gt; "; END;
+
+                # at this point, we actually have a partial term to use.
+                raw_term = subfield.textContent;
+                single_term = raw_term | html;
+
+                # facets should be used as-is
+                IF !s.facet; raw_term = raw_term.replace('\-', ' ').replace('[#"^$\+,:;&|\[\]()]', ''); END;
+
+                all_terms.push(raw_term);
+
+                IF s.facet;
+                    total_term = s.facet _ '[' _ all_terms.join(s.joiner).replace('\s+$', '') _ ']';
+                ELSE;
+                    total_term = all_terms.join(" ").replace('\s+$', '');
+                END;
+
+                %]<a href="[%-
+                       mkurl(ctx.opac_root _ '/results', {qtype=>'subject', query=>total_term}, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms))
+                -%]">[% single_term %]</a> [%-
+
+            END;
+            IF all_terms.size; "<br/>"; END;
+            FOREACH link880 IN graphics;
+                '<div class="graphic880"' _ link880.dir _ '>';
+                link880.value | html;
+                '</div>';
+            END;
+            '</span>';
+        END;
+    END;
+
+    BLOCK render_hl_subject;
+        total_term = s.value;
+        IF s.facet;
+            total_term = s.facet _ '[' _ s.value _ ']';
+        END;
+
+        '<span property="about"><!-- highlighted -->';
+        %]<a href="[%-
+               mkurl(ctx.opac_root _ '/results', {qtype=>'subject', query=>total_term}, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms))
+        -%]">[% s.$f %]</a> [%-
+        '</span>';
+    END;
+%]
+
+[%  BLOCK render_all_subjects;
+    FOREACH subj IN subjects;
+        content = '';
+        df = subj.display_field;
+        IF df AND attrs.hl_display_fields.$df.size;
+            content = [];
+            FOREACH hl_s IN attrs.hl_display_fields.$df;
+                hl_s.facet = subj.facet;
+                next_s = PROCESS render_hl_subject(s=hl_s,f=attrs.hl_field);
+                content.push(next_s);
+            END;
+
+            content = content.join('<br/>');
+%]
+            <table class='rdetail_subject'>
+                <tbody>
+                    <tr>
+                        <td class='rdetail_subject_type'>[% subj.label %]</td>
+                        <td class='rdetail_subject_value'>[% content %]</td>
+                    </tr>
+                </tbody>
+            </table>
+[%          
+        ELSE;
+            content = PROCESS render_subject(s=subj);
+            IF content.match('\S');
+%]
+        <table class='rdetail_subject'>
+            <tbody>
+                <tr>
+                    <td class='rdetail_subject_type'>[% subj.label %]</td>
+                    <td class='rdetail_subject_value'>[% content %]</td>
+                </tr>
+            </tbody>
+        </table>
+            [%- END; %]
+        [%- END; %]
+    [%- END; %]
+[%- END %]
+
+[%-  subject_html = PROCESS render_all_subjects;
+    IF subject_html.length > 0;
+%]
+<h2 class='rdetail_related_subjects'>[% l('Search for related items by subject') %]</h2>
+[%- subject_html %]
+[%- END %]

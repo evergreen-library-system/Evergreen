@@ -1,0 +1,215 @@
+<h3 class="sr-only">[% l('Catalog Search') %]</h3>
+[% PROCESS "opac/parts/org_selector.tt2";
+
+# We need to ignore some filters in our count
+
+fignore = ['location_groups','site','core_limit','limit','badge_orgs','badges','estimation_strategy','depth'];
+fcount = 0;
+FOR f IN ctx.query_struct.filters;
+    IF fignore.grep('^' _ f.name _ '$').size;
+        NEXT;
+    END;
+    fcount = fcount + 1;
+END;
+
+    # don't display a box for the search_format filter,
+    # as that's got its own widget
+    ignore_filters = ['search_format'];
+
+    trimmed_filters = [];
+    FOR filter IN ctx.query_struct.filters;
+        fname = filter.name;
+        IF ignore_filters.grep('^' _ fname _ '$').size;
+            NEXT;
+        END;
+        trimmed_filters.push(filter);
+    END;
+
+    ctx.query_struct.filters = trimmed_filters;
+
+ %]
+
+<div id="search-wrapper">
+    [% UNLESS took_care_of_form -%]
+    <form action="[% ctx.opac_root %]/results" method="get">
+    [%- END %]
+    [% IF ctx.page == 'rresult' && ctx.metarecord && search.metarecord_default %]
+    <input type="hidden" name="modifier" value="metabib"/>
+    [% END %]
+    [% IF (ctx.page == 'place_hold' || ctx.page == 'myopac' || ctx.page == 'home' || ctx.page == 'record') && search.metarecord_default %]
+    <input type="hidden" name="modifier" value="metabib"/>
+    [% END %]
+    <div class="container py-3">
+    <div class="row">
+     <!--Keyword-->
+    	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+        <span class='search_box_wrapper'>
+            [%- # autosuggest breaks accessibility, as the aria-label
+                # attribute is removed when the Dijit is created. :(  %]
+            <label id="search_box_label" for="search_box" class="w-100">[% l('Search: ') %]
+            <input class="form-control form-control-lg" type="text" id="search_box" name="query" aria-label="[%
+                    l('Enter search query:');
+                %]" value="[% is_advanced ? ctx.naive_query_scrub(ctx.user_query) : CGI.param('query') | html %]"
+                [%- IF use_autosuggest.enabled == "t" %]
+                dojoType="openils.widget.AutoSuggest" type_selector="'qtype'"
+                submitter="this.textbox.form.submit();"
+                [%-     IF use_autosuggest.value.search('opac_visible') %]
+                store_args='{"org_unit_getter": function() { return [% ctx.search_ou %]; }}'
+                [%-     END # opac_visible -%]
+                [%- ELSE -%]
+                    [% IF basic_search != "f" AND is_home_page%] autofocus [% END %] x-webkit-speech
+                [%- END # autosuggest enabled %] />
+            </label>
+        </span>
+        </div>
+        
+        <!--Type-->
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+        <label id="search_qtype_label" for="qtype" class="w-100">
+        [%- 
+            l('Type: ');
+            INCLUDE "opac/parts/qtype_selector.tt2" id="qtype";
+        -%]
+        </label>
+        </div>
+        
+         <!--Format-->
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+        <label id="search_itype_label" for="search_itype_selector" class="w-100">
+        [%-
+            l('Format: ');
+            IF search.basic_config.type == 'attr';
+                INCLUDE "opac/parts/coded_value_selector.tt2"
+                    attr=search.basic_config.group none_ok=1 
+                    id='search_itype_selector'
+                    none_label=search.basic_config.none_label;
+            ELSIF search.basic_config.type == 'filter';
+                INCLUDE "opac/parts/filter_group_selector.tt2"
+                    filter_group=search.basic_config.group none_ok=1 
+                    id='search_itype_selector'
+                    none_label=search.basic_config.none_label;
+            END;
+        -%]
+        </label>
+        </div>
+        
+         <!--Library-->
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+        <label id="search_locg_label" for="search_org_selector" class="w-100">
+        [%- 
+            l('Library: ');
+            select_lib_label = l("Select search library");
+            INCLUDE build_org_selector arialabel=select_lib_label 
+              id='search_org_selector' show_loc_groups=1
+        -%]
+        </label>
+        </div>
+      </div>
+      <div class="row">
+      <span class="mx-auto mt-3">
+        <input id="detail" type="hidden" name="detail_record_view" value="[% show_detail_view %]"/>
+        <input id='search-submit-go' type="submit" value="[% l('Search') %]" class="btn btn-opac"
+            onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden";[% IF ctx.depth_sel_button AND NOT took_care_of_form %] $("search-submit-go-depth").className="hidden";[% END %]}, 2000)'/>
+        [%- IF ctx.depth_sel_button AND NOT took_care_of_form %]
+        <button id='search-submit-go-depth' type="submit" value="[% ctx.depth_sel_depth %]" name="depth" class="[% #ctx.depth_sel_button_class %] btn btn-opac"
+            onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"; $("search-submit-go-depth").className="hidden";}, 2000)' title="[% ctx.depth_sel_tooltip | html %]">[% ctx.depth_sel_button_label | html %]</button>
+        [%- END %]
+        <img id='search-submit-spinner' src='[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]' style='height:16px;width:16px;' class='hidden' alt='[% l("Search In Progress") %]'/>
+        
+          
+            </div>
+           
+          
+      </span>
+     
+    </div>
+    
+  
+            
+    [% IF ctx.bookbag %]
+    <div id="search-only-bookbag-container" class="text-center">
+        <input type="checkbox" id="search-only-bookbag" name="bookbag"
+            value="[% ctx.bookbag.id | html %]" checked="checked" />
+        <label for="search-only-bookbag">
+            [% l('Search only within the chosen list') %]
+        </label>
+    </div>
+    [% END %]
+    [% IF is_advanced || is_special %]
+    <div>
+        <input type="hidden" name="_adv" value="1" />
+        [% IF ctx.processed_search_query OR (NOT is_advanced AND NOT is_special) %]
+        <input name='page' type='hidden' value="0" />
+        [% END %]
+        [% IF is_advanced;
+            FOR p IN CGI.params.keys;
+                NEXT UNLESS p.match('^fi:');
+                NEXT IF p.match('^fi:search_format');
+                FOR pv IN CGI.params.$p;
+                    %]<input type="hidden" name="[% p | html %]" value="[% pv | html %]" />[%
+                END;
+            END;
+        END %]
+        [% IF is_special %]
+            <input type="hidden" name="_special" value="1" /> [%
+            number_of_expert_rows = CGI.param('tag').list.size;
+            index = 0;
+            WHILE index < number_of_expert_rows %]
+                <input type="hidden" name="tag" value="[% CGI.param('tag').list.$index | html %]" />
+                <input type="hidden" name="subfield" value="[% CGI.param('subfield').list.$index | html %]" />
+                <input type="hidden" name="term" value="[% CGI.param('term').list.$index | html %]" />
+                [% index = index + 1; %]
+            [% END %]
+        [% END %]
+    </div>
+    [%- END %]
+    [% UNLESS took_care_of_form %]
+        [% IF ctx.default_sort %]
+            <input type="hidden" name="sort" value="[% ctx.default_sort %]"/>
+        [% END %]
+        </form>
+    [% END %]
+    [% IF fcount > 0 %]
+      <div class="refine_search result_block_visible">
+        <span id="filter_hits">[ <a href="#" onclick="getAdvLimits();return false;">[% l('[quant,_1,filter,filters] applied', fcount) %]</a> ]</span>
+      </div>
+    [% END %]
+    [% IF ctx.query_struct.filters.size > 0 %]
+        [% stuff = INCLUDE 'opac/parts/result/adv_filter.tt2' %]
+        [% IF stuff %]
+        <h3 class="sr-only">[% l('Search Results filters') %]</h3>
+        <div id="adv_filter_results_block" class="adv_filter_results_hide">
+        <span class="adv_filter_results_block_label">[% l('Filtered by:') %]</span>
+            [% stuff %]
+        </div>
+        [% END %]
+    [% END %]
+   
+
+    <script>
+    function getAdvLimits() {
+        var AdvLimitsClass = document.getElementById('adv_filter_results_block').classList;
+        if (AdvLimitsClass.contains("adv_filter_results_hide")) {
+           AdvLimitsClass.remove("adv_filter_results_hide");
+        } else {
+           AdvLimitsClass.add("adv_filter_results_hide");
+        }
+        if (AdvLimitsClass.contains("adv_filter_results_show")) {
+           AdvLimitsClass.remove("adv_filter_results_show");
+        } else {
+           AdvLimitsClass.add("adv_filter_results_show");
+        }
+     }
+     </script>
+    <!-- Canonicalized query:
+
+    [% ctx.canonicalized_query | html %]
+
+    -->
+    <!--
+    <div id="breadcrumb">
+        <a href="[% ctx.opac_root %]/home">[% l('Catalog Home') %]</a> &gt;
+    </div>
+    -->
+    <div class="clear-both"></div>
+</div>

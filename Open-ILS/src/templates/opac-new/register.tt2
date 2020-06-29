@@ -1,0 +1,250 @@
+[%- PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/org_selector.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Request Library Card");
+
+# for privacy, reload the page after (default) 5 minutes
+refresh_time = ctx.register.settings.refresh_timeout || 300; 
+ctx.refresh = refresh_time _ '; ' _ ctx.opac_root _ '/home';
+
+# some useful variables and MACROs for display, 
+# field validation, and added info display
+
+ctx_org = ctx.physical_loc || ctx.search_ou || ctx.aou_tree.id;
+
+# list of the registration fields to (potentially) 
+# display in the order they should be shown
+
+# post_code is the only field below that is required in the database and
+# post_code is only required if an address is created.
+# To prevent any of these fields from showing locally, regardless org unit
+# settings, simply remove the fields from this list.  In the case of 
+# addresses, if all address fields are removed, no attempt at creating
+# an address will be made (and post_code will no longer be required).
+
+register_fields = [
+    {class => 'stgu',  name = 'first_given_name', label => l('First Name')},
+    {class => 'stgu',  name = 'second_given_name', label => l('Middle Name')},
+    {class => 'stgu',  name = 'family_name', label => l('Last Name')},
+    {class => 'stgu',  name = 'pref_first_given_name', label => l('Preferred First Name')},
+    {class => 'stgu',  name = 'pref_second_given_name', label => l('Preferred Middle Name')},
+    {class => 'stgu',  name = 'pref_family_name', label => l('Preferred Last Name')},
+    {class => 'stgma', name = 'street1', label => l('Street Address')},
+    {class => 'stgma', name = 'street2', label => l('Street Address (2)')},
+    {class => 'stgma', name = 'city', label => l('City')},
+    {class => 'stgma', name = 'county', label => l('County')},
+    {class => 'stgma', name = 'state', label => l('State')},
+    {class => 'stgma', name = 'post_code', label => l('Zip Code')},
+    {class => 'stgu',  name = 'dob', label => l('Date of Birth')},
+    {class => 'stgu',  name = 'day_phone', label => l('Phone Number')},
+    {class => 'stgu',  name = 'email', label => l('Email Address')}
+    {class => 'stgu',  name = 'usrname', label => l('Requested Username')}
+];
+
+# The dojo date widget in the patron edit UI only accepts default 
+# values in ISO8601 format.  It will not accept locale-shaped dates.
+IF !ctx.register.settings.stgu.dob.example;
+    ctx.register.settings.stgu.dob.example = l('YYYY-MM-DD or YYYY/MM/DD');
+END;
+
+%]
+
+<h2 class="sr-only">[% l('Account Registration') %]</h2>
+<div id="content-wrapper">
+    <div id="main-content-register" class="container">
+        <div class="common-full-pad"></div>
+        <h1>[% l('Request a Library Card')%]</h1>
+        <span style="color:red;">&bigstar; = Required Field</span> 
+        <hr/>
+
+        [% IF ctx.register.success %]
+            <h3>[% l('Registration successful!') %]<h3>
+            <h4>[% l('Please see library staff to complete your registration.') %]</h4>
+
+            [% IF ctx.register.username_taken %]
+            <p>
+                [% |l %]
+                Note: The selected username may be in use by another patron.  
+                You may select another username when finalizing your 
+                registration or in the online catalog.
+                [% END %]
+            </p>
+            [% END %]
+
+            <br/>
+            <p>
+                <a href="[% ctx.opac_root %]/home" 
+                    class="btn btn-confirm">[% l('Return to the Catalog') %]</a>
+            </p>
+
+        [% ELSIF ctx.register.error %]
+            <h3>[% l('A registration error has occurred') %]</h3>
+            <h4>[% l('Please see library staff to complete your registration.') %]</h4>
+
+            <br/>
+            <p>
+                <a href="[% ctx.opac_root %]/home" 
+                    class="btn btn-confirm">[% l('Return to the Catalog') %]</a>
+            </p>
+
+        [% ELSE %]
+
+        [% IF ctx.user %]
+            <!-- if the user is logged in, make it 
+                clear we are tracking the requestor -->
+            <h4>[% l('New account requested by [_1] [_2] [_3] [_4] [_5]',
+                    ctx.user.prefix, ctx.user.first_given_name,
+                    ctx.user.second_given_name, ctx.user.family_name,
+                    ctx.user.suffix
+                ) | html %]</h4>
+        [% END %]
+
+        <form method='POST' class="needs-validation" onSubmit="return dobValidate(document.getElementById('stgu.dob'))" novalidate>
+            <table class="w-100">
+                <tr>
+                    <td width="30">
+                        <label for='stgu.home_ou'>[% l('Home Library') %]</label>
+                    </td>
+                    <td width="50">[% INCLUDE build_org_selector 
+                            name='stgu.home_ou' 
+                            value=value || ctx_org
+                            can_have_users_only=1
+                            valid_org_list=ctx.register.valid_orgs
+                        %]
+                    </td>
+                    <td width="20" >
+                        [% IF ctx.register.invalid.bad_home_ou %]
+                        <span class='patron-reg-invalid'>
+                            [% l('Please select a valid library') %]
+                        </span>
+                        [% END %]
+                </tr>
+                
+[%
+# <=== shifting code left for readability
+
+# render the table row for each of the register fields
+FOR field_def IN register_fields;
+    fclass = field_def.class;
+    fname = field_def.name;
+    orig_name = fname;
+
+    field_path = fclass _ "." _ fname;
+    
+    IF fname.match('^pref_');
+        # Preferred name fields adopt most visibility, etc.
+        # settings from the primary name counterparts.
+        fname = fname.remove('^pref_');
+    END;
+
+    show = ctx.register.settings.$fclass.$fname.show;
+    require = ctx.register.settings.$fclass.$fname.require;
+    example = ctx.register.settings.$fclass.$fname.example;
+    value = ctx.register.values.$fclass.$fname;
+
+    invalid_require = ctx.register.invalid.$fclass.$fname.require;
+    invalid_regex = ctx.register.invalid.$fclass.$fname.regex;
+
+    IF orig_name.match('^pref_');
+        show = show || require;
+        require = 0; # pref name values never required
+    END;
+     
+    NEXT UNLESS require OR show;
+%]
+<tr>
+    <td>
+        <label for='[% field_path %]'>[% field_def.label | html %]</label>
+    </td>
+    <td class="py-3">
+        <input 
+        	class='form-control'
+            type='text'
+            id='[% field_path %]'
+            name='[% field_path %]'
+            value='[% value || CGI.param(field_path) | html %]' [% IF require %]required[% END %]/>
+        <div class="invalid-feedback">
+          Please enter a [% field_def.label | html %]
+        </div>
+         [% IF example %]
+        <span class='patron-reg-extra'>
+            [% l('(Example: [_1])', example) %]
+        </span>
+    [% END %]
+    </td>
+    <td>
+        [% IF require %]
+        <span style="color:red;">&bigstar;</span>
+        [% END %]
+    <!-- display errors and example text -->
+
+    [% IF invalid_require %]
+        <span class='patron-reg-invalid'>
+            [% l('This field is required') %]
+        </span>
+    [% ELSIF invalid_regex %]
+        <span class='patron-reg-invalid'>
+            [% l('The value entered does not have the correct format') %]
+        </span>
+    [% END %]
+    [% IF example %]
+        <span class='patron-reg-extra'>
+            [% l('(Example: [_1])', example) %]
+        </span>
+    [% END %]
+
+    </td>
+</tr>
+[% END %]
+<!-- ====> shifting the code back to the right for context -->
+                    [% IF ctx.register.opt_in_settings.size > 0 %]
+                        [% FOR optin IN ctx.register.opt_in_settings %]
+                        <tr>
+                            <td><label for="stgs.[% optin.name | uri %]'">[% optin.label | html %]</label></td>
+                            <td>
+                                <input type='checkbox'
+                                    name='stgs.[% optin.name | uri %]'
+                                    id='stgs.[% optin.name | uri %]'
+                                    title="[% optin.label | html %]"
+                                ></input>
+                            </td>
+                            <td><!-- display errors and example text --></td>
+                        </tr>
+                        [% END %]
+                    [% END %]
+                    <tr>
+                        <td colspan='3' class="text-center py-4">
+                            <a href="[% ctx.opac_root %]/home" 
+                                class="btn btn-confirm">[% l('Go Back') %]</a>
+                            <input type="submit" 
+                                value="[% l('Submit Registration') %]" 
+                                class="btn btn-confirm" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            [% END %]
+            <div class="common-full-pad"></div>	
+        </div>
+    </div>
+[%- END %]
+<script>
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>

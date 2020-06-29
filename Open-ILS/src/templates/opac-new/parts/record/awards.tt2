@@ -1,0 +1,23 @@
+<div class='rdetail_extras_div'> 
+
+    <!-- Chilifresh patron reviews -->
+    [% IF ENV.OILS_CHILIFRESH_URL %] 
+    <strong>[% l('Patron Reviews:') %]</strong>
+    <div style="margin-bottom:20px;">
+        <span class="chili_review" id="isbn_[% attrs.isbn_clean | html %]"> </span>
+        <div id="chili_review_[% attrs.isbn_clean | html %]" style="display: none;" align="center" width="100%"></div>
+    </div>
+    [% END %]
+    <!-- Novelist suggestions-->
+    [% IF ENV.OILS_NOVELIST_URL %] 
+        <div id='novelist-loading'>
+        <h3 class="text-center">[% l('Loading Recommendations...') %]</h3>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+            </div>
+        </div>
+        <div data-novelist-novelistselect="[% attrs.isbn_clean || attrs.upc %]"></div>
+    [% END %]
+    
+</div>
+

@@ -1,0 +1,23 @@
+[%-  attrs = {marc_xml => ctx.marc_xml};
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS get_marc_attrs args=attrs;
+    stop_parms = ['expand','cnoffset','copy_offset','copy_limit'];
+    ctx.record_attrs = attrs; # capture for JS
+    ctx.metalinks.push('<meta property="og:type" content="http://schema.org/' _ args.schema.itemtype _ '" />');
+%]
+<div id='canvas_main' class='container mx-auto p-3' vocab="http://schema.org/" typeof='[% args.schema.itemtype %] Product' resource="#schemarecord">
+[%- FOREACH link IN args.links.sameAs; %]
+    <link property="sameAs" href="[% link %]">
+[%- END; %]
+[%- FOREACH link IN args.links.exampleOfWork; %]
+    <link property="exampleOfWork" href="[% link %]">
+[%- END; %]
+    [%- INCLUDE "opac/parts/record/navigation.tt2" %]
+    [%- IF ctx.bib_is_dead %]
+    <div id='rdetail_deleted_exp'>
+        [% l("This record has been deleted from the database.  We recommend that you remove this title from any lists it may have been added to.") %]
+    </div>
+    [%- END %]
+    [% INCLUDE "opac/parts/record/summary.tt2" %]
+    [%- INCLUDE "opac/parts/record/navigation.tt2" %]
+</div>

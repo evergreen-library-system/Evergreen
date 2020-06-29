@@ -1,0 +1,251 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/main_base.tt2";
+    myopac_page = "main";
+    myopac_main_page = "payment_form";
+
+    last_chance = CGI.param("last_chance");
+
+    IF myopac_main_page == "payment_form" AND
+        ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.stripe.enabled') AND ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.default') == 'Stripe';
+        ctx.use_stripe = 1;
+    END %]
+
+<a name="payment"> </a>    
+<h3 class="sr-only">[% l('Pay Charges') %]</h3>
+[% IF ctx.fines.balance_owed <= 0 %]
+<div>
+    [% l("The minimum amount you can pay is \$0.01.") %]
+</div>
+[% ELSE %]
+[% IF ctx.use_stripe %]
+<noscript>
+    [% l("Your browser does not have Javascript enabled, and we cannot " _
+        "process credit card payments without it.  Please change your " _
+        "browser settings and try again.") %]
+</noscript>
+[% END %]
+<div id="pay_fines_now"[% IF ctx.use_stripe %] class="hide_me"[% END %]>
+     [% IF last_chance %]
+    
+    <p><big>[% l("Are you sure you are ready to charge ") %]
+         <strong> [% l("[_1] ", money(ctx.fines.balance_owed))%]</strong>
+        [% l("to your credit card?") %]</big></p> 
+    <form action="[% ctx.opac_root %]/myopac/main_pay_init" method="post">
+        [% FOR k IN CGI.Vars;
+            NEXT UNLESS k;
+            FOR val IN CGI.param(k) %]
+        <input type="hidden" name="[% k | html %]" value="[% val | html %]" /> 
+        [% END; END %]
+
+        <input type="submit" value="[% l('Submit') %]" class="btn btn-confirm"/>
+        <a href="[% mkurl(ctx.opac_root _ '/myopac/main#selected_fines', {}, 1) %]" class="btn btn-deny">[% l('Cancel') %]</a>
+	
+     <table title="[% l('List of Transactions') %]" id="acct_fines_confirm_header"
+        class="table_no_border_space table_no_cell_pad my-2">
+   <thead>
+      <tr>
+        <th>[% l('Charge/Fee') %]</th>
+        <th>[% l('Amount') %]</th>
+     </tr>
+   </thead>
+   <tbody>
+      [%
+       FOR f IN ctx.fines.circulation;
+         NEXT IF CGI.param('xact').size &&
+            !CGI.param('xact').grep(f.xact.id).size;
+         attrs = {marc_xml => f.marc_xml};
+         IF f.marc_xml;
+             PROCESS get_marc_attrs args=attrs;
+         ELSIF f.xact.reservation;
+              attrs.title = f.xact.reservation.target_resource_type.name;
+         END %]
+         <tr>
+            <td>[% attrs.title | html %]</td>
+            <td class="text-right">[% money(f.xact.balance_owed) %]</td>
+         </tr>
+          [%
+          END;
+          FOR f IN ctx.fines.grocery;
+              NEXT IF CGI.param('xact_misc').size &&
+                  !CGI.param('xact_misc').grep(f.xact.id).size %]
+              <tr>
+                 <td>[% f.xact.last_billing_type | html %]</td>
+                 <td class="text-right">[% money(f.xact.balance_owed) %]</td>
+            </tr>
+        [% END %]
+     </tbody>
+   </table> 
+     
+    <p style="padding-top: 2em;">
+    <big>[% l("Are you sure you are ready to charge ") %]
+         <strong> [% l("[_1] ", money(ctx.fines.balance_owed))%]</strong>
+        [% l("to your credit card?") %]</big></p>        
+        <input type="submit" value="[% l('Submit') %]" class="btn btn-confirm"/>
+        <a href="[% mkurl(ctx.opac_root _ '/myopac/main#selected_fines', {}, 1) %]" class="btn btn-deny">[% l('Cancel') %]</a>
+    [% ELSE %]
+    
+    <form method="post" id="payment_form" action='#payment'
+    [% IF ctx.use_stripe %]
+    onsubmit="return stripe_onsubmit();"
+    [% END %]
+    >
+        <input type="hidden" name="last_chance" value="1" />
+        [% FOR xact IN CGI.param('xact') %]
+        <input type="hidden" name="xact" value="[% xact | html %]" />
+        [% END %]
+        [% FOR xact IN CGI.param('xact_misc') %]
+        <input type="hidden" name="xact_misc" value="[% xact | html %]" />
+        [% END %]
+        [% IF ctx.use_stripe %]
+        <input type="hidden" name="stripe_token" id="stripe_token" />
+        [% END %]
+
+         <table id="billing_info_table" class="table table-hover">
+         <thead>
+          <th colspan='2'><strong>[% l('Billing Information') %]</strong></th>
+         </thead>
+          <tbody>
+               
+               <tr> 
+                <td><label for="payment-first-name">[% l('First Name') %]</label></td>
+                    <td><input type="text"  name="billing_first" id="payment-first-name" 
+                        value="[% ctx.user.first_given_name | html %]" class="form-control"/></td>
+                </tr>
+                <tr>
+                    <td><label for="payment-last-name">[% l('Last Name') %]</label></td>
+                    <td><input type="text" name="billing_last" id="payment-last-name" 
+                        value="[% ctx.user.family_name | html %]" class="form-control"/></td>
+                </tr>
+
+                <tr>
+                    <td><label for="payment-email-addr">[% l('Email Address') %]</label></td>
+                    <td>
+                        
+                        <input id="payment-email-addr" type="text" 
+                             value="[% ctx.user.email | html %]" disabled="disabled" 
+                            readonly="readonly" class="form-control"/>   
+                        <a title="[% l('Update Email Address') %]"
+                            href="[% ctx.opac_root %]/myopac/update_email?return_to_referer=1">[% l("Update") %]</a>
+                    </td
+                </tr>
+                <tr>
+                    <td><label for="payment-billing-address">[% l('Street Address') %]</label></td>
+                    <td><input type="text" name="billing_address" id="payment-billing-address" 
+                        value="[% ctx.user.billing_address.street1 _ ctx.user.billing_address.street2 | html %]" class="form-control"/></td>
+                </tr>
+                <tr>
+                    <td><label for="payment-billing-city">[% l('City' )%]</label></td>
+                    <td><input type="text" name="billing_city" id="payment-billing-city" 
+                        value="[% ctx.user.billing_address.city | html %]" class="form-control"/></td>
+                </tr>
+                <tr>
+                    <td><label for="payment-billing-state">[% l('State or Province') %]</label></td>
+                    <td><input type="text" name="billing_state" id="payment-billing-state"
+                        value="[% ctx.user.billing_address.state | html %]" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td><label for="paymenet-billing-zip">[% l('Postal Code') %]</label></td>
+                    [% USE zip=String(ctx.user.billing_address.post_code) %]
+                    <td><input type="tel" pattern="[/^[a-zA-Z0-9 _-]{7}$/]*" maxlength="7" size="7" name="billing_zip" id="paymenet-billing-zip"
+                        value="[% zip.truncate(5)  %]" class="form-control"/></td>
+                </tr>
+               </tbody>
+               </table>
+               
+               <table id="credit_card_info_table" class="table">
+               <thead>
+               	<th colspan='2'><strong>[% l('Credit Card Information') %]</strong></th>
+               </thead>
+               <tbody>
+               
+                <tr>
+                    <td><label for="payment-credit-card">[% l('Credit Card #') %]</label></td>
+                    
+                     <!-- Make type tel, which prompts for numbers in mobile -->
+                    <td><input class="form-control" type="tel" pattern="[0-9]*" maxlength="16" id="payment-credit-card" required 
+                    [% IF ctx.use_stripe %]
+                    data-stripe="number"
+                    [% ELSE %]
+                    name="number"
+                    [% END %]
+                    /></td>
+                </tr>
+                <tr>
+                    <td><label for="payment-security-code">[% l('Security Code') %]</label></td>
+                    <td>
+                         <!-- Make type tel, which prompts for numbers in mobile -->
+                        <input class="form-control" type="tel" pattern="[0-9]*" size="4" maxlength="5" id="payment-security-code"
+                        [% IF ctx.use_stripe %]
+                        data-stripe="cvc"
+                        [% ELSE %]
+                        name="cvv2"
+                        [% END %]
+                        /></td>
+                </tr>
+                <tr>
+                    <td><label for="payment-expire-month">[% l('Expiration Month') %]</label></td>
+                    <td>
+                        <select class="form-control" id="payment-expire-month" required
+                        [% IF ctx.use_stripe %]
+                        data-stripe="exp_month"
+                        [% ELSE %]
+                        name="expire_month"
+                        [% END %]
+                        >
+                            <option value="-1"></option>
+                            <option value="01">[% l("January (1)") %]</option>
+                            <option value="02">[% l("February (2)") %]</option>
+                            <option value="03">[% l("March (3)") %]</option>
+                            <option value="04">[% l("April (4)") %]</option>
+                            <option value="05">[% l("May (5)") %]</option>
+                            <option value="06">[% l("June (6)") %]</option>
+                            <option value="07">[% l("July (7)") %]</option>
+                            <option value="08">[% l("August (8)") %]</option>
+                            <option value="09">[% l("September (9)") %]</option>
+                            <option value="10">[% l("October (10)") %]</option>
+                            <option value="11">[% l("November (11)") %]</option>
+                            <option value="12">[% l("December (12)") %]</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="payment-expire-year">[% l('Expiration Year') %]</label></td>
+                    <td>
+                        <select class="form-control" id="payment-expire-year"
+                        [%- IF ctx.use_stripe %]
+                        data-stripe="exp_year"
+                        [% ELSE %]
+                        name="expire_year"
+                        [% END -%]
+                        >
+                        [% year = date.format(date.now, '%Y');
+                        y = year;
+                        WHILE y < year + 10; # show ten years starting now %]
+                            <option value="[% y %]">[% y %]</option>
+                        [% y = y + 1; END %]
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                   <td colspan='2'>
+                       <div id="payment_actions">
+                          [% l('Total amount:') %]
+                           <strong>[% money(ctx.fines.balance_owed) %]</strong><br />
+          
+                         <input type="submit" id="payment_submit" value="[% l('Next') %]" class="btn btn-confirm" />
+                         <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]" class="btn btn-deny">[% l('Cancel') %]</a> 
+                         <br/>
+                         </div>
+                   </td>
+                </tr>
+                
+          </tbody>
+        </table>
+         [% INCLUDE "opac/parts/myopac/main_refund_policy.tt2" %]
+        
+    [% END %]
+    </form>
+</div>
+[% END %]
+[% END %]

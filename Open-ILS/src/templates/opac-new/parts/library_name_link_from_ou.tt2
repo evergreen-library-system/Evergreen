@@ -1,0 +1,22 @@
+[%-
+    opac_root = ctx.opac_root;
+    IF ctx.kpac_root;
+        opac_root = ctx.kpac_root;
+    END;
+
+    # Requires a "fleshed_ou" (aou) object defined.
+    # Allow fleshed circ_libs
+    org_id = fleshed_ou.id;
+    org_name = fleshed_ou.name; 
+    org_sname = fleshed_ou.shortname;
+
+    lib_url = ctx.get_org_setting(org_id, 'lib.info_url');
+    prefer_external_url = ctx.get_org_setting(org_id, 'lib.prefer_external_url');
+    UNLESS lib_url && prefer_external_url;
+        lib_url = mkurl(opac_root _ '/library/' _ org_sname, {}, 1);
+    END; 
+    IF lib_url; '<a property="offeredBy" typeof="Library" href="'; lib_url | html; '">'; END;
+    '<span property="name">'; org_name | html; '</span>';
+    IF lib_url; '</a>'; END;
+-%]
+

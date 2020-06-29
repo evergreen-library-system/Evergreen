@@ -1,0 +1,37 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "prefs"  %]
+<h3 class="sr-only">[% l('Edit Email Address') %]</h3>
+<div id='myopac_summary_div' style="padding:0px;">
+
+    <div class="header_middle">
+       <span class="float-left">[% l('Update Email') %]</span>
+    </div>
+	
+[% IF ctx.invalid_email %]
+    <div id='account-update-email-error'>
+        [% bad_email = ctx.invalid_email | html %]
+        [% l('The email address "[_1]" is invalid.  Please try a different email address.', '<b>' _ bad_email _ '</b>') %]
+    </div>
+
+[% ELSIF ctx.password_incorrect %]
+    <div id='account-update-email-error'>
+        [% |l %]Your current password was not correct.[% END %]
+    </div>
+
+[% END %]
+
+<form method='post' id='account-update-email' autocomplete='off'>
+    [% IF CGI.param("return_to_referer") %]
+    <input type="hidden" name="redirect_to" value="[% ctx.referer | html %]" />
+    [% END %]
+    <table> 
+        <tr><td>[% l('Current Email') %]</td><td>[% ctx.user.email | html %]</td></tr>
+        <tr><td>[% l('Current Password') %]</td><td><input type='password' class="form-control" name='current_pw'/></td></tr>
+        <tr><td>[% l('New Email') %]</td><td><input type='text' name='email' class="form-control" value='[% ctx.invalid_email | html %]'/></td></tr>
+    </table>
+    <input value="[% l('Submit') %]" type='submit' class="btn btn-confirm m-2"/>
+</form>
+</div>
+[% END %]

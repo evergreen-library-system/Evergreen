@@ -1,0 +1,114 @@
+        [% IF ctx.mylist.size %]
+        <div>
+        <p class="big-strong">[% l('Basket') %]</p>
+        <div class="sort my-3">
+            <form method="get">
+            <div class="input-group">
+                <label for="anonsort">[% l("Sort basket items by: ") %]</label>
+                [% INCLUDE "opac/parts/filtersort.tt2" mode='bookbag'
+                    id="anonsort" name="anonsort" value=CGI.param("anonsort") class="form-control form-control-sm"%]
+                <input type="hidden" name="id"
+                    value="[% CGI.param('id') | html %]" />
+                [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
+                <input class="btn btn-confirm btn-sm" type="submit" value="[% l('Sort') %]" />
+            </div>
+            </form>
+        </div>
+        <form action="[% mkurl(ctx.opac_root _ '/mylist/move') %]" method="post">
+        <input type="hidden" name="orig_referrer" value="[% CGI.referer | html %]" />
+        <input type="hidden" name="redirect_to" value="[% mkurl('', {}, ['list_none_selected', 'cart_none_selected']) %]" />
+        <div class="bbag-action" style="clear:both;">
+        <div class="input-group my-3">
+            <select class="form-control form-control-sm" name="action" aria-label="[% l('Actions for these items') %]">
+                <option>[% l('-- Actions for these items --') %]</option>
+                <option value="place_hold">[% l('Place hold') %]</option>
+                <option value="print">[% l('Print title details') %]</option>
+                <option value="email">[% l('Email title details') %]</option>
+                <option value="delete">[% l('Remove from basket') %]</option>
+                <option value="new_list">[% l('Add to new list') %]</option>
+                [% IF ctx.user AND ctx.bookbags.size %]
+                    <optgroup label="[% l('Move selected items to list:') %]">
+                    [% FOR bbag IN ctx.bookbags %]]
+                        <option value="[% bbag.id %]" class="selector_actions_for_list_inner_option">[% bbag.name | html %]</option>
+                    [% END %]
+                    </optgroup>
+                [% END %]
+            </select>
+            [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
+            <input class="btn btn-confirm btn-sm" type="submit" value="[% l('Go') %]" />
+        </div>
+
+
+        
+        <div class="input-group">
+           <label for="clear_cart"><input class="form-control form-control-sm" type="checkbox" name="clear_cart" id="clear_cart" />[% l('Clear entire basket when action complete') %]</label>
+        </div>
+            [% IF CGI.param('cart_none_selected') %]
+                <span class="error">[% l('No items were selected') %]</span>
+            [% END %]
+        </div>
+        <div class="bbag-content">
+
+
+
+            <table class="container-fluid table table-hover mt-4 miniTable bucketTable">
+                <thead id="acct_list_header_anon">
+                    <tr>
+                        <th class='list_checkbox'>
+                            <input type="checkbox" checked="checked" 
+                            aria-label="[% l('Select all records') %]" onclick="
+                                var inputs=document.getElementsByTagName('input'); 
+                                for (i = 0; i < inputs.length; i++) { 
+                                    if (inputs[i].name == 'record' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
+                        </th>
+                        <th><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a></th>
+                        <th><a href="[% mkurl('', {anonsort=>(CGI.param('anonsort') == 'authorsort' ? 'authorsort.descending' : 'authorsort')}) %]">[% l('Author(s)') %]</a></th>
+                        <th>[% l('Local Call Number') %]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    [% FOR item IN ctx.mylist;
+                        attrs = {marc_xml => ctx.mylist_marc_xml.$item};
+                        PROCESS get_marc_attrs args=attrs %]
+                    <tr>
+                        <td class="list_checkbox">
+                            <input type="checkbox" checked="checked" name="record" value="[% item %]" aria-label="[% l('Select record') %]" />
+                        </td>
+                        <td class="list_entry" data-label="[% l('Title') %]"><a href="[% mkurl(ctx.opac_root _ '/record/' _ item, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a></td>
+                        <td class="list_entry" data-label="[% l('Author(s)') %]"><a href="[%-
+                            authorquery = attrs.author | replace('[,\.:;]', '');
+                            mkurl(
+                                ctx.opac_root _ '/results',
+                                {qtype => 'author', query => authorquery},
+                                ['page', 'id', 'edit_notes']
+                            )
+                        -%]">[% attrs.author | html %]</a></td>
+                        <td class="list_entry" data-label="[% l('Local Call Number') %]">
+                        [% 
+                            copy = attrs.holdings.0;
+                            IF copy;
+                                copy_org = ctx.get_aou_by_shortname(copy.owner);
+                                FOR ctx_org IN [ctx.pref_ou, ctx.search_ou, ctx.home_ou, ctx.physical_loc];
+                                    NEXT UNLESS ctx_org;
+                                    ctx_org = ctx.get_aou(ctx_org);
+                                    IF ctx.org_within_scope(ctx_org, copy_org, ctx_org.ou_type.depth);
+                                        l('[_1] ([_2])', copy.label, copy_org.name) | html;
+                                        LAST;
+                                    END;
+                                END;
+                            END;
+                        %]
+                        </td>
+                    </tr>
+                    [% END %]
+                </tbody>
+            </table>
+
+
+
+
+            <br /><br />
+        </div>
+        </form>
+        </div>
+        [% END %]

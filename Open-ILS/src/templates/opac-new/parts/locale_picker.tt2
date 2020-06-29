@@ -1,0 +1,31 @@
+[%- IF ctx.locales.keys.size > 1;
+
+    # Ensure the context locale is in xx_yy format
+    base_locale = ctx.locale FILTER lower;
+    base_locale = base_locale.replace('-','_');
+
+    set_locale = CGI.param('set_eg_locale') || CGI.cookie('eg_locale') || base_locale;
+%]
+<form id="locale_picker_form" class="row mx-2" action="[% mkurl() %]" method="post">
+    <label for="locale_picker" class="color_4 light_border col-3 text-left">[% l("Language:") %]</label>
+    [%- FOREACH param IN CGI.params(); -%]
+        [%- NEXT IF param.key == 'set_eg_locale'; -%]
+        <input type="hidden" name="[% param.key | html %]" value="[% param.value | html %]" />
+    [%- END; -%]
+   
+    <select id="locale_picker" name="set_eg_locale" class="form-control form-control-sm col-6">
+    [%- FOREACH locale IN ctx.locales.keys %]
+        [%- IF set_locale == locale;
+                selected = 'selected="selected"';
+            ELSE;
+                selected = '';
+            END;
+        %]
+        <option value="[% locale | html %]" [% selected %]>[% ctx.locales.$locale | html %]</option>
+    [%- END %]
+    </select>
+    <div class="col-3">
+     <input type="submit" class="btn btn-sm btn-confirm float-right" value="[% l("Change") %]" />
+    </div>
+</form>
+[%- END %]

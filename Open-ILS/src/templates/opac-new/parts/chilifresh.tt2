@@ -1,0 +1,17 @@
+[%-  IF ENV.OILS_CHILIFRESH_URL AND ENV.OILS_CHILIFRESH_ACCOUNT 
+            AND (ctx.page == 'rresult' OR ctx.page == 'record');
+        chili_url = ENV.OILS_CHILIFRESH_URL;
+        IF CGI.https AND ENV.OILS_CHILIFRESH_HTTPS_URL;
+            chili_url = ENV.OILS_CHILIFRESH_HTTPS_URL;
+        END; 
+%]
+    <!-- Set up the chilifresh account information and load the JS -->
+    <input type="hidden" id="chilifresh_account" name="chilifresh_account" value="[% ENV.OILS_CHILIFRESH_ACCOUNT %]"/>
+    <!--
+    <input type="hidden" id="chilifresh_profile" name="chilifresh_profile" value="[% ENV.OILS_CHILIFRESH_PROFILE %]"/>
+    -->
+    <input type="hidden" id="chilifresh_version" name="chilifresh_version" value="onsite_v1" />
+    <input type="hidden" id="chilifresh_type" name="chilifresh_type" value="search" />
+    <script type="text/javascript" src="[% chili_url %]"></script>
+    <script>try { setTimeout(chili_init, 0); } catch(E) {}</script>
+[%- END %]

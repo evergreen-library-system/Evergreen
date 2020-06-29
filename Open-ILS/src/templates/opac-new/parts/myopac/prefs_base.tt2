@@ -1,0 +1,56 @@
+[%  PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2"; %]
+
+        [% acct_prefs_pages = [
+           {url => "prefs", name => l("Personal Information")},
+           {url => "prefs_notify", name => l("Notification Preferences")},
+           {url => "prefs_settings", name => l("Search and History Preferences")},
+           {url => "prefs_my_lists", name => l("My Lists Preferences")}
+           ];
+           skin_root = "../"
+%]
+
+<div id='myopac_prefs_div'>
+    <div>
+        <ul class="nav nav-pills nav-justified">
+            [%- FOREACH page IN acct_prefs_pages;-%]
+            <li class="nav-item">
+                 <a class="m-2 nav-link [%-  IF page.url == prefs_page; -%]active [% ELSE %] not_active_pill [%- END -%]" href="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid', 'offset', 'limit']) %]">[% page.name; %]</a>
+            </li>
+            [% END %]
+         </ul>
+    </div>
+
+    <div class="clear-both"></div> <br/>
+
+    <div class="header_middle">
+        <span id="acct_prefs_header">[% l('Account Information and Preferences') %]</span>
+        <span class="float-right"> 
+            <a class="hide_me" href="#">[% l('Export List') %]</a><!-- what does this do? -->
+        </span>
+    </div>
+
+    [%- # Select box navigation for mobile view %]
+    <div id="acct_prefs_select" class="d-none">
+        <form name="acct_prefs_nav">
+            <select name="acct_prefs_url" 
+              title="[% l('Select a preference page') %]"
+              class="form-control"
+              onchange="window.location.href=document.acct_prefs_nav.acct_prefs_url.options[document.acct_prefs_nav.acct_prefs_url.selectedIndex].value">
+        [% FOREACH page IN acct_prefs_pages;
+            IF page.url != prefs_page; -%]
+            <option value="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid', 'offset', 'limit']) %]">[% page.name; %]</option>
+            [% ELSE; -%]
+            <option value="" disabled selected>[% page.name; %]</option>
+            [% END; -%]
+        [% END; -%]
+            </select>
+        </form>
+    </div>
+
+    <div class="clear-both normal-height"></div>
+
+[% content; %]
+
+</div>
+[% END %]

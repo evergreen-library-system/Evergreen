@@ -1,0 +1,64 @@
+<form action="[% ctx.opac_root %]/results" method="get">
+    <div class="header_middle">[% l("Expert Search") %]</div>
+    <input type="hidden" name="_special" value="1" />
+    <input id="detail" type="hidden" name="detail_record_view"
+           value="[% show_detail_view %]"/>
+    <table class="expert-search">
+        <tbody id="adv_expert_rows_here">
+            <tr id="adv_expert_row">
+                <td class="py-3">
+                   <div class="row">
+                        <div class="col-2">
+                            <span class="d-inline-block" style="position:absolute;bottom:10px;">
+                                <a href="javascript:;" class="btn btn-remove btn-sm"
+                                title="[% l('Remove row') %]" alt="[% l('Remove row') %]"
+                                onclick='return killRowIfAtLeast(1, this.parentNode.parentNode);'>
+                                <span>[% l('X') %]</span></a>
+                            </span>
+                        </div>
+                        <div class="col-3">
+                        <span class="d-inline-block">
+                            <label for="expert_tag">[% l("Tag:") %]</label>
+                            <input class="form-control" id="expert_tag" type="text" name="tag" size="3" autofocus />
+                        </span>
+                        </div>
+                        <div class="col-3">
+                        <span class="d-inline-block">
+                            <label for="expert_subfield">[% l("Subfield:") %]</label>
+                            <input class="form-control" id="expert_subfield" type="text" name="subfield" size="1" />
+                        </span>
+                        </div>
+                        <div class="col-4">
+                        <span class="d-inline-block">
+                            <label for="expert_term">[% l("Value:") %]</label>
+                            <input class="form-control" id="expert_term" type="text" name="term" size="16" />
+                        </span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+               <td class="py-3" colspan="7"><a class="btn btn-opac btn-sm" href="javascript:addExpertRow();">[% l("Add Search Row") %]</a></td>
+            </tr>
+            <tr>
+               [%- lib_select_id = "expert_search_library"; -%]
+               <td  class="py-3" colspan="5" class="expert-search-row">
+                   <label for="[% lib_select_id %]"><strong>[% l("Search Library:") %]</strong>
+                       [%- PROCESS "opac/parts/org_selector.tt2";
+                           INCLUDE build_org_selector id=lib_select_id show_loc_groups=1 
+                       %]
+                   </label>
+               </td>
+            </tr>
+            <tr>
+                <td  colspan="2" class="expert-search-row">
+                <input type="submit" value="[% l('Search') %]"
+                    alt="[% l('Search') %]" title="[% l('Search') %]"
+                    class="btn btn-confirm" />
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</form>

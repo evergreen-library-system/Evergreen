@@ -1,0 +1,69 @@
+<div>
+    <div id="zero_search_hits">
+        <div class="facet_sidebar_hidden" id="facet_sidebar">
+          <h3 class="sr-only">[% l('Search Results filters') %]</h3>
+        </div>
+        <div class="zero_search_hits_saved">
+            [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
+        </div>
+        <div class="zero_search_hits_main">
+            <p>[% qhtml = CGI.param('query') | html;
+                  IF ctx.bookbag;
+		       wbbag = ctx.bookbag.name | html;
+		       fmt_bookbag = '<span class="lowhits-bookbag-name">' _ wbbag _ '</span>';
+                       IF is_advanced OR is_special;
+		          l('Sorry, no entries were found for your search within [_1].', fmt_bookbag);
+                       ELSE;
+                          l('Sorry, no entries were found for [_1] within [_2].', '<q>' _ qhtml _ '</q>', fmt_bookbag);
+                       END;
+                   ELSE;
+                     IF is_advanced OR is_special;
+                          l('Sorry, no entries were found for your search.');
+                       ELSE;
+                          IF !qhtml;
+                             l('Please enter a search term in the Search box.');
+                          ELSE;
+                             l('Sorry, no entries were found for [_1].', '<q>' _ qhtml _ '</q>');
+                          END;
+                       END;
+                   END %]
+            </p>
+        </div>
+        <div id="lowhits_help">
+        [% INCLUDE "opac/parts/result/lowhits_purchase.tt2" %]
+            <p>
+                <strong>[% l('Keyword Search Tips') %]</strong><br />
+		[% i18n_advsearch = l('Advanced Search');
+                   l('Try changing to [_1].', '<strong>' _ i18n_advsearch _ '</strong>') %]
+            </p>
+            <p>
+                <strong>[% l('Adjacency') %]</strong><br />
+                [% l('Multiple words are not searched together as a phrase. They will ' _
+		     'be found in various parts of the record. To search for a phrase, enclose your ' _
+		     'search terms in quotation marks.') %]<br />
+		[% i18n_searchphrase = l('garcia marquez');
+                   l('(example: [_1])', '<strong>&quot;' _ i18n_searchphrase _ '&quot;</strong>') %]
+            </p>
+            <p>
+                <strong>[% l('Truncation') %]</strong><br />
+                [% l('Words may be right-hand truncated using an asterisk. Use a single asterisk * ' _
+		     'to truncate any number of characters.') %]<br />
+		[% i18n_searchtrunc = l('environment* agency');
+                   l('(example: [_1])', '<strong>' _ i18n_searchtrunc _ '</strong>') %]
+            </p>
+            <p>
+                <strong>[% l('Anchored Searching') %]</strong><br />
+                [% l('You may use ^ and $ to indicate "phrase begins with" and ' _
+		     '"phrase ends with," respectively, within a search phrase ' _
+		     'enclosed in quotation marks.') %]<br />
+		[% i18n_searchbegins = l('harry');
+		   i18n_searchends = l('stone');
+                   l('(examples: [_1] for phrases that begin with the term [_2]. ' _
+                     '[_3] for phrases that end in [_4].)',
+		     '<strong>&quot;^' _ i18n_searchbegins _ '&quot;</strong>', '<em>' _ i18n_searchbegins _ '</em>',
+		     '<strong>&quot;' _ i18n_searchends _ '$&quot;</strong>', '<em>' _ i18n_searchends _ '</em>') %]
+            </p>
+            [% INCLUDE "opac/parts/result/lowhits_purchase.tt2" %]
+        </div>
+    </div>
+</div>

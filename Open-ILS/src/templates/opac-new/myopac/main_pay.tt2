@@ -1,0 +1,63 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "main";
+    myopac_main_page = "pay" %]
+<div id="myopac_summary_div">
+
+    [% IF ctx.payment_response.textcode %]
+        <div class="payment-error">
+            <span title="[% ctx.payment_response.textcode %]">
+                [% ctx.payment_response.desc || ctx.payment_response.textcode %]
+            </span><br />
+            [% ctx.payment_response.note %]
+            [% ctx.payment_response.payload.error_message | html %]
+            [% ctx.payment_response.payload.message | html %]
+        </div>
+        <p>
+            [%
+                url_args = {xact => [], xact_misc => []};
+                FOR k IN ['xact', 'xact_misc'];
+                    FOR val IN CGI.param(k);
+                        url_args.$k.push(val);
+                    END;
+                END;
+                retry_url =  mkurl(ctx.opac_root _ '/myopac/main_payment_form', url_args, 1);
+            %]
+            <br/>
+            
+             <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]" class="btn btn-confirm">[% l('Account Home') %]</a> 
+             <a href="[% retry_url %]" class="btn btn-confirm">[% l('Try Payment Again') %]</a>
+        </p>
+    [% ELSE %]
+        <p><big>[% l('Your payment has been approved.') %]</big>
+        [% IF ctx.printable_receipt.template_output;
+            print_args = [];
+            FOR p IN ctx.payment_response.payments;
+                print_args.push('payment=' _ p);
+            END %]
+        	<a href="[% ctx.opac_root %]/myopac/receipt_print?[% print_args.join('&amp;') %]"
+            target="_egrecpt"
+            class="btn-confirm btn btn-sm"
+            onclick="try { print_node('printable-receipt'); } catch (e) { window.print(); } return false;">[% l('Print receipt') %]</a></p>
+            <hr>
+        <tt id="printable-receipt">
+            [% ctx.printable_receipt.template_output.data %]
+            <br />
+        </tt>
+        	<hr>
+        [% ELSE %]
+        <div class="payment-error">
+            [% l(
+                'Error creating receipt: [_1]',
+                    (ctx.printable_receipt.textcode ? ctx.printable_receipt.textcode _ ' / ' _ ctx.printable_receipt.desc : 0) ||
+                    ctx.printable_receipt.error_output.data ||
+                    l('No receipt data returned from server')
+                ) | html %]
+        </div>
+        [% END %]
+        <p><a href="[% ctx.opac_root %]/myopac/main" class="btn btn-confirm">[%
+            l("Back to Account Summary") %]</a></p>
+    [% END %]
+</div>
+[% END %]

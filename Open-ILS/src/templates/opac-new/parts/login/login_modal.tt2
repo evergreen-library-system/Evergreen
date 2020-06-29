@@ -1,0 +1,85 @@
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+     <form method='post' action="/eg/opac/login?redirect_to=%2Feg%2Fopac%2Fmyopac%2Fmain">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Login To Evergreen</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      
+    	[% IF ctx.login_failed_event %]
+		<div id='login-failed-message'>
+		[%
+    		IF ctx.login_failed_event.textcode == 'PATRON_CARD_INACTIVE';
+        		l("The barcode used to login is marked as inactive.  Please contact your local library.");
+    		ELSIF ctx.login_failed_event.textcode == 'PATRON_INACTIVE';
+        		l("This account has been deactivated.  Please contact your local library.");
+    		ELSE;
+        		l("Login failed. The username or password provided was not valid. " _
+           		"Passwords are case-sensitive.  Check your Caps-Lock key and try again or contact your local library.");
+    		END;
+		%]
+		</div>
+		[% END %]
+
+<div id='login-form-box' class='container text-center'>
+    <div class="mx-auto row py-4">
+        <div class='col-md-6'>
+            <label for='username_field' class="lbl1" >[% l('Library Card Number') %]</label>
+            <div class="input_bg mb-2">
+                <input class="form-control" type='text' id="username_field" name="username" autofocus />
+            </div>
+            <div>[% l('Use the full number.') %]</div>
+            <div>[% l('Example: 280800001234567') %]</div>
+            <br>
+            <a href='[% mkurl(ctx.opac_root _ '/register', {}, 1) %]'>[% l('Request A Card') %]</a>
+        </div>
+        <div class='col-md-6'>
+            <label for="password_field" class="lbl1" >[% l('PIN') %]</label>
+            <div class="input_bg mb-2">
+                <input class="form-control" id="password_field" name="password" type="password" />
+            </div>
+            [% INCLUDE "opac/parts/login/password_hint.tt2" %]
+            <br>
+             [% IF reset_password == 'true' %]
+            <a href='[% mkurl(ctx.opac_root _ '/password_reset', {}, 1) %]'>[% l('Forgot Your Password?') %]</a>
+            [% END %]
+        </div>
+        <div style="clear: both; padding-top: 15px;" class="col-12">
+        [%
+            redirect = CGI.param('redirect_to');
+            # Don't use referer unless we got here from elsewhere within the TPAC
+            IF !redirect AND ctx.referer.match('^https?://' _ ctx.hostname _ ctx.opac_root);
+                redirect = ctx.referer;
+            END;
+            # If no redirect is offered or it's leading us back to the
+            # login form, redirect the user to My Account
+            IF !redirect OR redirect.match(ctx.path_info _ '$');
+                redirect = CGI.url('-full' => 1) _ '/opac/myopac/main';
+            END;
+                redirect = redirect  | replace('^http:', 'https:');
+            %]
+        </div>
+       
+        <input id="client_tz_id" name="client_tz" type="hidden" />
+        </div>
+	</div>
+		[%# INCLUDE "opac/parts/login/help.tt2" %]
+
+      </div>
+      <div class="modal-footer">
+      <div class="mr-auto">
+      	<input type='hidden' name='redirect_to' value='[% redirect | html %]'/>
+        <input type="checkbox" name="persist" id="login_persist" class="mr-1"/><label for="login_persist"> [% l('Stay logged in?') %]</label>
+      </div>
+       
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <input type="submit" value="[% l('Log in') %]" alt="[% l('Log in') %]" class="btn btn-confirm" />
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

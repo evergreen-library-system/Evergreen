@@ -1,0 +1,16 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "messages";
+    limit = (ctx.patron_messages_limit.defined) ? ctx.patron_messages_limit : 20;
+    offset = (ctx.patron_messages_offset.defined) ? ctx.patron_messages_offset : 0;
+    count = (ctx.patron_messages_count.defined) ? ctx.patron_messages_count : 0;
+    display_single = (ctx.display_single_message.defined) ? ctx.display_single_message : 0;
+%]
+<h3 class="sr-only">[% l('My Messages') %]</h3>
+[% IF display_single;
+    PROCESS "opac/myopac/messages/single_message.tt2";
+ELSE;
+    PROCESS "opac/myopac/messages/list.tt2";
+END %]
+[% END %]

@@ -1,0 +1,62 @@
+[% BLOCK get_hold_status %]
+<div>   
+    [% IF hold.hold.status == 4 %]
+            <span class="myopac-hold-available">[% l("Available") %] </span>
+              [% IF ahr.shelf_expire_time %]
+                <br/>
+                [% l("Expires") %]
+                 <span class="myopac-shelf-expire">
+                     [% date.format(ctx.parse_datetime(ahr.shelf_expire_time), DATE_FORMAT) %]
+                 </span>
+              [% END %]
+
+
+     [% ELSIF hold.hold.status == 6 %]
+               <span class="myopac-hold-canceled"> [% l("Canceled") %] </span>
+                  <span class="myopac-cancel-time">
+                      [% date.format(ctx.parse_datetime(ahr.cancel_time), DATE_FORMAT) %]
+                  </span>
+
+     [%  ELSIF hold.hold.status == 7 %]
+               <span class="myopac-hold-suspended"> [% l("Suspended") %] </span>
+                 [% IF ahr.thaw_date %]
+                   <br/>
+                   [% l("Activate On") %]
+                      <span class="my-account-activate-time">
+                        [% date.format(ctx.parse_datetime(ahr.thaw_date), DATE_FORMAT) %]
+                      </span>
+                 [% END %]
+
+     [% ELSIF hold.hold.status == 9 %]
+               <span class="myopac-hold-fulfilled">[% l("Fulfilled") %]</span>
+                  <span class="myopac-fulfill-time">
+                     [% date.format(ctx.parse_datetime(ahr.fulfillment_time), DATE_FORMAT) %]
+                  </span>
+
+
+     [% ELSIF hold.hold.estimated_wait AND hold.hold.estimated_wait > 0;
+            # estimated wait is delivered as seconds.
+            SET hwait = POSIX.ceil(hold.hold.estimated_wait / 86400) %]
+              <span class="myopac-hold-wait"> [% l("Estimated wait:") %] </span>
+                <span class="myopac-hold-wait-time">
+                  [% l("[quant,_1,day,days]", hwait) | html %]
+                </span>
+
+     [% ELSIF hold.hold.status == 3 OR hold.hold.status == 8 %]
+            <span class="myopac-transit"> [% l("In Transit") %] </span>
+
+     [% ELSIF hold.hold.status < 3 %]
+            <span class="myopac-uncaptured-hold"> [% l("Waiting for copy") %] </span>
+     [% END %]
+   </div>
+    <div>
+        [% # Only show the count for holds that have not been captured
+           IF hold.hold.status < 3 OR hold.hold.status == 7 %]
+             <span class="myopac-hold-count">
+                [% l('You are Hold #[_1] on [quant,_2, copy, copies]',
+                   hold.hold.queue_position, hold.hold.potential_copies) | html %]
+             </span>
+         [% END %]
+    </div>
+[% END %]
+

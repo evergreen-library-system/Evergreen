@@ -1,0 +1,56 @@
+[%-
+    opac_root = ctx.opac_root;
+    IF ctx.kpac_root;
+        opac_root = ctx.kpac_root;
+    END;
+-%]
+<div id="content-wrapper">
+    <div id="main-content" class="content-wrapper-library-page" vocab="http://schema.org/" typeof="Library">
+    <h1 property="name">[% ctx.library.name | html %]</h1>
+
+    [%-
+        lib_url = ctx.get_org_setting(ctx.library.id, 'lib.info_url');
+        IF lib_url;
+            '<div id="library-url"><a href="'; lib_url | html; '" property="url">'; l('Library web site'); '</a></div>';
+        END;
+    -%]
+
+    [%- IF ctx.hours; %]
+        [%- INCLUDE "opac/parts/library/hours.tt2"; %]
+    [% END; -%]
+
+    [%- IF (ctx.library.email OR ctx.library.phone); %]
+    <h2 id="contact-info">[% l('Contact information') %]</h2>
+    [%- IF ctx.library.email; %]
+        <div>[% l('Email address: ') %]<a href="mailto:[% ctx.library.email | html %]" property="email">[% ctx.library.email | html %]</a></div>
+    [%- END; %]
+    [%- IF ctx.library.phone; %]
+        <div>[% l('Telephone: ') %]<a href="tel:[% ctx.library.phone | html %]" property="telephone">[% ctx.library.phone | html %]</a></div>
+    [% END; %]
+    [% END; %]
+
+    [%- IF ctx.library.mailing_address; %]
+    <div id="addresses">
+        <div id="mailing" property="location address" typeof="PostalAddress">
+            <h3 property="contactType">[% l('Mailing address') %]</h3>
+            <span property="streetAddress">[% ctx.mailing_address.street1 | html %]
+            [%- IF ctx.mailing_address.street2; "<br />"; ctx.mailing_address.street2 | html; END; %]
+            </span><br />
+            <span property="addressLocality">[% ctx.mailing_address.city | html %]</span><br />
+            <span property="addressRegion">[% ctx.mailing_address.state | html %]</span><br />
+            <span property="addressCountry">[% ctx.mailing_address.country | html %]</span><br />
+            <span property="postalCode">[% ctx.mailing_address.post_code | html %]</span><br />
+        </div>
+    </div>
+    [%- END; %]
+
+    [%- IF ctx.library.parent_ou; %]
+    <h2>[% l('Branch relationship') %]</h2>
+    <div id="branch-info">[% l('Parent library: ') %]
+        <a property="branchOf" href="[% mkurl(opac_root _ '/library/' _ ctx.parent.shortname, {}, 1) %]">[% ctx.parent.name | html %]</a>
+    </div>
+    [%  END; -%]
+
+    <div class="common-full-pad"></div>
+    </div>
+</div>

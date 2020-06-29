@@ -1,0 +1,196 @@
+[%-  
+
+PROCESS "opac/parts/relators.tt2";
+
+author_cnt = 0;
+authors = [
+    {
+        type => 'author', 
+        label => l('Author'),
+        xpath => '//*[@tag="100"]|//*[@tag="110"]|//*[@tag="111"]'
+    }, {
+        type => 'added', 
+        label => l('Added Author'),
+        xpath => '//*[@tag="700"]|//*[@tag="710"]|//*[@tag="711"]'
+    }, {
+        type => 'cast', 
+        label => l('Cast'),
+        xpath => '//*[@tag="511"][@ind1="1"]'
+    }, {
+        type => 'notes', 
+        label => l('Author Notes: '),
+        xpath => '' # Comes from added content...
+    }
+];
+
+BLOCK find_hl_value;
+    outlist = [];
+    norm_needle = PROCESS normalize_string(unnorm_string=needle);
+    FOREACH hl IN attrs.display_field_list;
+        norm_value = PROCESS normalize_string(unnorm_string=hl.value);
+        outlist.push(hl.$f) IF norm_value == norm_needle;
+    END;
+
+    outlist.0;
+END;
+
+BLOCK normalize_string;
+    unnorm_string.replace('[#"^$\+\-,\.:;&|\[\]()]', ' ').replace('\s+',' ').replace('^\s+','').replace('\s+$','');
+END;
+
+BLOCK normalize_qterm;
+    PROCESS normalize_string(unnorm_string=subfield.textContent);
+END;
+
+BLOCK normalize_authors;
+    link_term = link_term _ ' ' _ sf;
+    sf_raw = PROCESS normalize_qterm;
+    qterm = qterm _ ' ' _ sf_raw;
+    indexed_term = 1;
+END;
+
+BLOCK build_author_links;
+    FOR node IN ctx.marc_xml.findnodes(xpath);
+        author_cnt = author_cnt + 1;
+        contrib_ref = '#schemacontrib' _ author_cnt;
+        iprop = ''; # schema.org item type / property
+        link_term = ''; # Linked term (e.g. Personal name + Fuller form of name)
+        supp_term = ''; # Supplementary terms
+        qterm = ''; # Search query
+        tlabels = [];
+        birthdate = '';
+        deathdate = '';
+        graphics = [];
+        tag = node.getAttribute('tag');
+        FOR subfield IN node.childNodes;
+            indexed_term = '';
+            NEXT UNLESS subfield.nodeName == "subfield";
+            code = subfield.getAttribute('code');
+            IF code == '4';
+                relcode = subfield.textContent.substr(0,3);
+                tlabels.push( relators.$relcode || label );
+            END;
+            IF code == 'e';
+                tlabels.push( subfield.textContent() );
+                indexed_term = 1;
+            END;
+            IF code == '6';
+               target_field = tag;
+               linked_fields = [subfield.textContent()];
+               get_linked_880s;
+            END;
+            NEXT UNLESS code.match('[a-z]');
+            sf = subfield.textContent | html;
+
+            # Only Persons have birth/death dates in schema.org
+            # Match personal/corporate/conference MODS subfields
+            IF tag.substr(1,2) == '00';
+                IF code.match('[abcqu]');
+                    PROCESS normalize_authors;
+                END;
+                IF code.match('d');
+                    IF subfield.textContent.match('^\s*\d{4}');
+                        birthdate = subfield.textContent.replace('^\s*(\d{4}).*$', '$1');
+                    END;
+                    IF subfield.textContent.match('-\d{4}.*$');
+                        deathdate = subfield.textContent.replace('^\s*.{4}\-(\d{4}).*$', '$1');
+                    END;
+                    indexed_term = 1;
+                    sf_raw = PROCESS normalize_qterm;
+                    qterm = qterm _ ' ' _ sf_raw;
+                END;
+            ELSIF tag.substr(1,2) == '10';
+                IF code.match('[abcdn]');
+                    PROCESS normalize_authors;
+                END;
+            ELSIF code.match('[acdeq]');
+                PROCESS normalize_authors;
+            END;
+            UNLESS indexed_term;
+                supp_term = supp_term _ ' ' _ sf;
+            END;
+        END;
+        url = mkurl(ctx.opac_root _ '/results', {query => qterm.replace('^\s*(.*?)\s*$', '$1'), qtype => 'author'}, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms));
+	tlabel = tlabels.join(', ');
+	tlabels = [];
+        author_type = (tlabel || label) | html;
+        
+        # schema.org changes
+        IF type == 'author';
+            IF tag.substr(1,2) == '10' && args.schema.itemtype && args.schema.itemtype.match('MusicAlbum');
+                iprop = ' typeof="MusicGroup" property="byArtist"';
+            ELSIF tag.substr(1,2) == '00';
+                iprop = ' typeof="Person" property="author"';
+            ELSE;
+                iprop = ' typeof="Organization" property="author"';
+            END;
+        ELSIF type == 'added';
+            IF tag.substr(1,2) == '00';
+                iprop = ' typeof="Person" property="contributor';
+            ELSE;
+                iprop = ' typeof="Organization" property="contributor';
+            END;
+            IF relcode;
+                iprop = iprop _ ' http://id.loc.gov/vocabulary/relators/' _ relcode;
+            END;
+            iprop = iprop _ '"';
+        END;
+
+        link_term = link_term.replace('^\s+', '');
+        match_term = link_term _ ' ' _ birthdate _ ' ' _ deathdate;
+        matching_author_hl = PROCESS find_hl_value needle=match_term f=attrs.hl_field;
+
+        authtml = ' <span class="rdetail-author-div"' _ iprop _ ' resource="' _ contrib_ref _ '"><a href="' _ url _ '"><span resource="' _ contrib_ref _ '">';
+        IF iprop; authtml = authtml _ '<span property="name">'; END;
+        IF matching_author_hl;
+            authtml = authtml _ matching_author_hl;
+        ELSE;
+            authtml = authtml _ link_term;
+        END;
+        IF iprop; authtml = authtml _ '</span>'; END;
+        IF birthdate AND !matching_author_hl;
+            authtml = authtml _ ' <span property="birthDate">' _ birthdate _ '</span>-';
+        END;
+        IF deathdate AND !matching_author_hl;
+            authtml = authtml _ '<span property="deathDate">' _ deathdate _ '</span>';
+        END;
+        authtml = authtml _ '</span></a>'; # End search link
+
+        # Display supplemental terms (mostly about the author's work)
+        IF supp_term;
+            authtml = authtml _ ' ' _ supp_term;
+        END;
+
+        # Display linked 880 fields
+        FOREACH link880 IN graphics;
+            diratt = '';
+            IF link880.dir;
+                diratt = ' dir="' _ link880.dir _ '"';
+            END;
+            authtml = authtml _ ' <span class="graphic880"' _ diratt _ '>';
+            link880.value | html;
+            authtml = authtml _ '</span>';
+        END;
+        authtml = authtml _ ' (<span property="description">' _ author_type _ '</span>). ';
+        authtml = authtml _ '</span>'; # End author span
+        authlist.push(authtml);
+    END;
+END;
+%]
+
+<div class='rdetail_authors_div'>
+[%- FOREACH author IN authors;
+    NEXT UNLESS author.xpath; 
+    authlist = [];
+    PROCESS build_author_links(
+        xpath=author.xpath, label=author.label, type=author.type
+    );
+    IF authlist.size;
+        FOREACH authtml IN authlist;
+            authtml;
+        END;
+    END;
+END %]
+</div>
+
+

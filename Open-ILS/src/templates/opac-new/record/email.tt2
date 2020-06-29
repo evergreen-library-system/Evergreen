@@ -1,0 +1,32 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/config.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Record Detail") %]
+    [% INCLUDE "opac/parts/searchbar.tt2" %]
+    <br class="clear-both" />
+    <div id="content-wrapper" class="content-wrapper-record-page">
+        <div id='main-content'>
+            <br/>
+            [% IF ctx.user.email %]
+            <h2 class='success'>[% l('Your email has been queued for delivery to [_1]', ctx.user.email ) %]</h2>
+            [% ELSE %]
+            <h2 class='error'>
+                [% here_link_text = "<a href=\"${ctx.opac_root}/myopac/update_email?return_to_referer=1\">";
+                   here_link_text = here_link_text _ l("here");
+                   here_link_text = here_link_text _ "</a>";
+                   l('Your account does not currently have an email address set. Set your email address [_1]', here_link_text) %]
+            </h2>
+            [% END %]
+            <br/>
+            [% IF ctx.redirect_to %]
+            <p>[ <a href="[% ctx.redirect_to | html %]">[% l("Return") %]</a> ] </p>
+            [% ELSE %]
+            <p>[ <a href="[% mkurl(ctx.opac_root  _ '/record/' _ ctx.bre_id) %]">[% l("Back to Record") %]</a> ]</p>
+            [% END %]
+            <div class="common-full-pad"></div>
+        </div>
+        <br class="clear-both" />
+    </div>
+[% END %]
+

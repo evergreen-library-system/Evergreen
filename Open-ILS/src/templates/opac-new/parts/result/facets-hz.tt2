@@ -1,0 +1,153 @@
+<div class="container-fluid my-3">
+<div class="facet_box_wrapper row">
+[% 
+
+long_facets = CGI.param('long_facet') || [];
+selected_facets = CGI.param('facet') || [];
+
+# sorted list of search facets
+sorted_facets = [];
+
+# we'll clobber the facet. "namespace" later
+# Provide a default value if unset in config.tt2
+DEFAULT_DISPLAY_COUNT = facet.default_display_count || 5;
+
+IF facet.display;
+
+    # facet display configuration present.  Traverse the 
+    # configuration lists, find the matching facets from 
+    # search facet data, and append them to the sorted 
+    # list of facets.
+
+    FOR display_chunk IN facet.display;
+        FOR display_field IN display_chunk.facet_order;
+            # find the matching facet in the facet data
+            FOR facet IN ctx.search_facets.values;
+                IF facet.cmf.field_class == display_chunk.facet_class 
+                        AND facet.cmf.name == display_field;
+                    sorted_facets.push(facet);
+                END;
+            END;
+        END;
+    END;
+
+ELSE; 
+
+    # No facet display configuration is present.
+    # show all facets, sorted by name.
+
+    # collect facet type labels for easier sorting
+    labels = []; 
+    FOR facet IN ctx.search_facets.values;
+        labels.push(facet.cmf.label);
+    END;
+    
+    # We used to do a sort here, but now that's handled in EGCatLoader.
+    sorted_facets = ctx.search_facets.values;
+END;
+
+display_count_by_cmf = {};
+
+FOR facet IN sorted_facets;
+    fclass = facet.cmf.field_class;
+    fname = facet.cmf.name;
+    fid = facet.cmf.id;
+    long_key = fclass _ fname %]
+
+    <div id="facets" class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+    <div class="card">
+        <div class="card-header">
+        	<h4 class="title text-center">[% facet.cmf.label %]</h4>
+            <span class="float-right">
+                [% IF long_facets.grep(long_key).0;
+                    new_long = [];
+                    FOR fct IN long_facets;
+                        IF fct != long_key;
+                            new_long.push(fct);
+                        END;
+                    END;
+                    expand_url = mkurl('', {long_facet => new_long});
+                    IF new_long.size == 0;
+                        expand_url  = mkurl('', {}, ['long_facet']);
+                    END;
+                %]
+                    <a class="button" href="[% expand_url %]#facets"
+                      title="[% l('Show Fewer [_1] Entries', facet.cmf.label) %]" rel="nofollow" vocab="">
+                      [% l("Fewer") %]
+                    </a>
+                [% ELSIF facet.data.size > DEFAULT_DISPLAY_COUNT %]
+                    <a class="button" 
+                      title="[% l('Show More [_1] Entries', facet.cmf.label) %]"
+                      href="[% mkurl('', {long_facet => long_facets.merge([long_key])}) %]#facets" rel="nofollow" vocab="">
+                      [% l("More") %]
+                    </a>
+                [% END %]
+            </span>
+        </div>
+        <div class="card-body" style="max-height:250px;overflow-x:overlay;">
+            <div>
+            [% FOR facet_data IN facet.data;
+                display_value = facet_data.value | html;
+                param_string = fclass _ '|' _ fname _ '[' _ facet_data.value _ ']';
+                new_facets = [];
+                this_selected = 0;
+                FOR selected IN selected_facets;
+                    IF selected == param_string; 
+                        this_selected = 1; 
+                    ELSE;
+                        new_facets.push(selected);
+                    END;
+                END;
+
+                display_count_by_cmf.$fid = display_count_by_cmf.$fid || 0;
+
+                NEXT UNLESS long_facets.grep(long_key).0 OR
+                    display_count_by_cmf.$fid < DEFAULT_DISPLAY_COUNT;
+
+                # fix syntax highlighting: >
+
+                display_count_by_cmf.$fid = display_count_by_cmf.$fid + 1;
+
+                IF this_selected;
+                    # This facet is already selected by the user. 
+                    # Link removes the facet from the set of selected facets.
+                %] 
+                    <div class="facet_template facet_template_selected">
+                        <div class="facet">
+                            [% IF new_facets.size == 0 %]
+                            <a
+                              title="[% l('Show all results, not just those matching this term') %]"
+                              href="[% mkurl('', {}, ['facet']) %]" rel="nofollow" vocab="">[% display_value %]</a>
+                            [% ELSE %]
+                            <a
+                              title="[% l('Expand to also show results not matching this term') %]"
+                              href="[% mkurl('', {facet => new_facets}) %]" rel="nofollow" vocab="">[% display_value %]</a>
+                            [% END %]
+                        </div>
+                        <div class="count">([% facet_data.count; IF facet_data.count == (ctx.superpage + 1) * ctx.superpage_size; '+'; END %])</div>
+                    </div>
+                [% 
+                    ELSE;
+                    # This facet is not currently selected.  If selected, 
+                    # append this facet to the list of currently active facets.
+                %]
+                    <div class="facet_template">
+                        <div class="facet">
+                            <a
+                              title="[% l('Limit to results matching this term') %]"
+                              href='[% mkurl('', {facet => selected_facets.merge([param_string])}, ['page']) %]' rel="nofollow" vocab="">
+                              [% display_value %]
+                            </a>
+                        </div>
+                        <div class="count">([% facet_data.count %])</div>
+                    </div>
+                    
+                [% END %]
+            [% END %]
+            </div>
+            </div>
+        </div> <!-- box_wrapper -->
+    </div> <!-- facet_box_temp -->
+[% END %]
+</div> <!-- facet_box_wrapper -->
+</div>
