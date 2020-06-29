@@ -1171,16 +1171,8 @@ sub fetch_user_holds {
 
     # put the holds back into the original server sort order
     my @sorted;
-    my %pickup_libs;
     for my $id (@$hold_ids) {
         push @sorted, grep { $_->{hold}->{hold}->id == $id } @holds;
-
-        my $h = $sorted[-1]->{hold}->{hold};
-        # if available, report the pickup lib in the list
-        $pickup_libs{$h->pickup_lib} = 1 if (
-            $h && $h->pickup_lib == $h->current_shelf_lib &&
-            $h->shelf_time && !$h->cancel_time && !$h->fulfillment_time
-        );
     }
 
     my $curbsides = [];
@@ -1192,9 +1184,34 @@ sub fetch_user_holds {
         );
     } catch Error with {};
 
-    my @pickup_libs = sort { $U->find_org($U->get_org_tree,$a)->name cmp $U->find_org($U->get_org_tree,$b)->name } keys %pickup_libs; 
+    return { holds => \@sorted, ids => $hold_ids, all_ids => $all_ids, curbsides => $curbsides };
+}
 
-    return { holds => \@sorted, ids => $hold_ids, all_ids => $all_ids, pickup_libs => \@pickup_libs, curbsides => $curbsides };
+sub load_current_curbside_libs {
+    my $self = shift;
+    my $ctx = $self->ctx;
+    my $e = $self->editor;
+    my $holds = $e->search_action_hold_request({
+        usr              => $e->requestor->id,
+        shelf_time       => { '!=' => undef },
+        cancel_time      => undef,
+        fulfillment_time => undef
+    });
+
+    my %pickup_libs;
+    for my $h (@$holds) {
+        next if ($h->pickup_lib != $h->current_shelf_lib);
+        $pickup_libs{$h->pickup_lib} = 1;
+    }
+
+    my @curbside_pickup_libs;
+    for my $pul (keys %pickup_libs) {
+        push(@curbside_pickup_libs, $pul) if $ctx->{get_org_setting}->($pul, 'circ.curbside');
+    }
+
+    $ctx->{curbside_pickup_libs} = [
+        sort { $U->find_org($U->get_org_tree,$a)->name cmp $U->find_org($U->get_org_tree,$b)->name } @curbside_pickup_libs
+    ];
 }
 
 sub handle_hold_update {
@@ -1404,11 +1421,6 @@ sub load_myopac_holds {
                 );
             }
             $ctx->{curbside_appointments}{$cs->org} = $cs;
-        }
-
-        $ctx->{curbside_pickup_libs} = [];
-        for my $pul (@{$holds_object->{pickup_libs}}) {
-            push(@{$ctx->{curbside_pickup_libs}}, $pul) if $ctx->{get_org_setting}->($pul, 'circ.curbside');
         }
     }
     $ctx->{holds_ids} = $holds_object->{all_ids};
@@ -2227,15 +2239,6 @@ sub load_myopac_hold_history {
         from => 'au',
         where => {id => $e->requestor->id}
     });
-
-    # This is used to detect whether we want to show the curbside tab
-    my $extant_holds_object = $self->fetch_user_holds();
-    if($extant_holds_object->{holds}) {
-        $ctx->{curbside_pickup_libs} = [];
-        for my $pul (@{$extant_holds_object->{pickup_libs}}) {
-            push(@{$ctx->{curbside_pickup_libs}}, $pul) if $ctx->{get_org_setting}->($pul, 'circ.curbside');
-        }
-    }
 
     my $holds_object = $self->fetch_user_holds([map { $_->{id} } @$hold_ids], 0, 1, 0, $limit, $offset);
     if($holds_object->{holds}) {

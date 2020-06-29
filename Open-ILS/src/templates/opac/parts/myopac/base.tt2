@@ -5,12 +5,14 @@
         {url => "messages", name => l("Messages")},
         {url => "circs", name => l("Items Checked Out")},
         {url => "holds", name => l("Holds")},
-        {url => "holds_curbside", name => l("Curbside Pickup")},
         {url => "prefs", name => l("Account Preferences")},
         {url => "lists", name => l("My Lists")}
     ];
     IF (ctx.show_reservations_tab == 'true');
         myopac_pages.push({url => "reservations", name => l("Reservations")});
+    END;
+    IF ctx.curbside_pickup_libs.size;
+        myopac_pages.push({url => "holds_curbside", name => l("Curbside Pickup")});
     END;
     skin_root = "../"
 %]

@@ -241,8 +241,13 @@ sub load {
     return $self->load_mylist_email if $path =~ m|opac/mylist/doemail|;
     return $self->load_print_or_email_preview('email') if $path =~ m|opac/record/email_preview|;
     return $self->load_email_record if $path =~ m|opac/record/email|;
+    return $self->load_sms_cn if $path =~ m|opac/sms_cn|;
 
     return $self->load_place_hold if $path =~ m|opac/place_hold|;
+ 
+    # centralize check for curbside tab display
+    $self->load_current_curbside_libs;
+
     return $self->load_myopac_holds if $path =~ m|opac/myopac/holds|;
     return $self->load_myopac_circs if $path =~ m|opac/myopac/circs|;
     return $self->load_myopac_messages if $path =~ m|opac/myopac/messages|;
@@ -269,7 +274,6 @@ sub load {
     return $self->load_myopac_prefs_my_lists if $path =~ m|opac/myopac/prefs_my_lists|;
     return $self->load_myopac_prefs if $path =~ m|opac/myopac/prefs|;
     return $self->load_myopac_reservations if $path =~ m|opac/myopac/reservations|;
-    return $self->load_sms_cn if $path =~ m|opac/sms_cn|;
 
     return Apache2::Const::OK;
 }
