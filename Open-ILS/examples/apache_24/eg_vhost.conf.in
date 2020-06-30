@@ -671,6 +671,7 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     
     # Templates will be loaded from the following paths in reverse order.
     PerlAddVar OILSWebTemplatePath "@localstatedir@/templates"
+    #PerlAddVar OILSWebTemplatePath "@localstatedir@/templates-bootstrap" #Uncomment this line to use the new bootstrap OPAC
     #PerlAddVar OILSWebTemplatePath "@localstatedir@/templates_localskin"
 
     #-------------------------------------------------
