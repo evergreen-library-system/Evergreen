@@ -740,7 +740,8 @@ package OpenILS::Reporter::SQLBuilder::Column::Transform::months_ago;
 
 sub toSQL {
     my $self = shift;
-    return 'EXTRACT(MONTH FROM AGE(NOW(),"' . $self->{_relation} . '"."' . $self->name . '"))';
+    return '(EXTRACT(YEAR FROM AGE(NOW(),"' . $self->{_relation} . '"."' . $self->name . '")) * 12) +'.
+           ' EXTRACT(MONTH FROM AGE(NOW(),"' . $self->{_relation} . '"."' . $self->name . '"))';
 }
 
 sub is_aggregate { return 0 }
@@ -762,7 +763,8 @@ package OpenILS::Reporter::SQLBuilder::Column::Transform::quarters_ago;
 
 sub toSQL {
     my $self = shift;
-    return 'EXTRACT(QUARTER FROM AGE(NOW(),"' . $self->{_relation} . '"."' . $self->name . '"))';
+    return '(EXTRACT(YEAR FROM AGE(NOW(),"' . $self->{_relation} . '"."' . $self->name . '")) * 4) +'.
+           ' EXTRACT(QUARTER FROM AGE(NOW(),"' . $self->{_relation} . '"."' . $self->name . '"))';
 }
 
 sub is_aggregate { return 0 }
