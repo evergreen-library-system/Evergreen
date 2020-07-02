@@ -25,6 +25,7 @@
     [inputFormatter]="formatDisplayString"
     (click)="onClick($event)"
     (blur)="onBlur()"
+    (keyup.arrowdown)="onClick($event)"
     container="body"
     (selectItem)="selectorChanged($event)"
     #instance="ngbTypeahead"/>
