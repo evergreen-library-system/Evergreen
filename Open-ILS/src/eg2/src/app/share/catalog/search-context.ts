@@ -598,7 +598,7 @@ export class CatalogSearchContext {
         }
 
         if (ts.format) {
-            str += ' format(' + ts.format + ')';
+            str += ' search_format(' + ts.format + ')';
         }
 
         if (this.global) {
