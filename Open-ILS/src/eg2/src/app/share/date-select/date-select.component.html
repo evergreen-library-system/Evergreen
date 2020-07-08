@@ -15,7 +15,7 @@
       name="{{fieldName}}"
       [disabled]="disabled"
       [required]="required"
-      (blur)="propagateTouch()"
+      (blur)="propagateTouch(); onDateEnter()"
       [(ngModel)]="current"
       (keyup.enter)="onDateEnter()"
       (dateSelect)="onDateSelect($event)"/>
