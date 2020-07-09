@@ -13,7 +13,7 @@ import {OrgService} from '@eg/core/org.service';
 class MockOrgSelectComponent {
     @Input() domId: string;
     @Input() limitPerms: string;
-    @Input() initialOrgId: number;
+    @Input() applyOrgId(id: number) {}
 }
 
 describe('Component: OrgFamilySelect', () => {

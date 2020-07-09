@@ -1,8 +1,9 @@
-import {Component, EventEmitter, OnInit, Input, Output, ViewChild, forwardRef} from '@angular/core';
+import {Component, EventEmitter, OnInit, Input, Output, ViewChildren, QueryList, forwardRef} from '@angular/core';
 import {ControlValueAccessor, FormGroup, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
+import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
 
 export interface OrgFamily {
   primaryOrgId: number;
@@ -50,6 +51,8 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
     @Input() limitPerms: string[];
 
     @Input() domId: string;
+
+    @ViewChildren(OrgSelectComponent)  orgSelects: QueryList<OrgSelectComponent>;
 
     // this is the most up-to-date value used for ngModel and reactive form
     // subscriptions
@@ -128,6 +131,10 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
     writeValue(value: OrgFamily) {
         if (value) {
             this.selectedOrgId = value['primaryOrgId'];
+            if (this.orgSelects) {
+                this.orgSelects.toArray()[0].applyOrgId = this.selectedOrgId;
+                this.options = {primaryOrgId: this.selectedOrgId};
+            }
             this.familySelectors.patchValue({
                 'includeAncestors': value['includeAncestors'] ? value['includeAncestors'] : false,
                 'includeDescendants': value['includeDescendants'] ? value['includeDescendants'] : false,
