@@ -1,0 +1,102 @@
+<noscript>
+    [% l("Your browser does not have Javascript enabled, and we cannot " _
+        "process credit card payments without it.  Please change your " _
+        "browser settings and try again.") %]
+</noscript>
+<script type="text/javascript">
+function build_stripe_form() {
+    var elements = stripe.elements();
+
+    var style = {
+        base: {
+            color: '#32325d',
+            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+            fontSmoothing: 'antialiased',
+            fontSize: '16px',
+            '::placeholder': {
+                color: '#aab7c4'
+            }
+        },
+        invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+        }
+    };
+
+    var card = elements.create('card', {style: style});
+    card.mount('#card-element');
+
+    // real-time validation
+    card.on('change', function(event) {
+      var displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    // let's try some auto-focus
+    card.on('ready', function(event) {
+        try { card.focus(); } catch(E) { console.log('failed to focus card element',E); }
+    });
+
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      stripe.createToken(card).then(function(result) {
+        if (result.error) {
+          // Inform the user if there was an error.
+          var errorElement = document.getElementById('card-errors');
+          errorElement.textContent = result.error.message;
+        } else {
+          // Send the token to your server.
+          stripeTokenHandler(result.token);
+        }
+      });
+    });
+
+    function stripeTokenHandler(token) {
+      var form = document.getElementById('payment-form');
+      var hiddenInput = document.createElement('input');
+      hiddenInput.setAttribute('type', 'hidden');
+      hiddenInput.setAttribute('name', 'stripe_token');
+      hiddenInput.setAttribute('value', token.id);
+      form.appendChild(hiddenInput);
+
+      form.submit();
+    }
+}
+[% IF ctx.want_jquery %]
+    // jquery won't actually load until after this execution thread
+    setTimeout(function() { $(document).ready(build_stripe_form) }, 0);
+[% ELSE %]
+    // but jquery is preferable to doing this
+    setTimeout(build_stripe_form,0);
+[% END %]
+</script>
+<form action="#payment" method="post" id="payment-form">
+  <input type="hidden" name="last_chance" value="1" />
+  [% FOR xact IN CGI.param('xact') %]
+  <input type="hidden" name="xact" value="[% xact | html %]" />
+  [% END %]
+  [% FOR xact IN CGI.param('xact_misc') %]
+  <input type="hidden" name="xact_misc" value="[% xact | html %]" />
+  [% END %]
+  <div class="form-row">
+    <label for="card-element">
+      <h1>Credit Card Information</h1>
+    </label>
+    <div id="card-element">
+      <!-- A Stripe Element will be inserted here. -->
+    </div>
+
+    <!-- Used to display form errors. -->
+    <div id="card-errors" role="alert"></div>
+  </div>
+
+  <button class="opac-button">Next</button>
+  <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]" class="opac-button">[% l('Cancel') %]</a> 
+</form>
+<table>[% INCLUDE "opac/parts/myopac/main_refund_policy.tt2" %]</table>

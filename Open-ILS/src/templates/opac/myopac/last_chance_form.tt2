@@ -1,0 +1,55 @@
+<p><big>[% l("Are you sure you are ready to charge ") %]
+     <strong> [% l("[_1] ", money(ctx.fines.balance_owed))%]</strong>
+    [% l("to your credit card?") %]</big></p>
+<form action="[% ctx.opac_root %]/myopac/main_pay_init" method="post">
+    [% FOR k IN CGI.Vars;
+        NEXT UNLESS k;
+        FOR val IN CGI.param(k) %]
+    <input type="hidden" name="[% k | html %]" value="[% val | html %]" />
+    [% END; END %]
+    
+    <input type="submit" value="[% l('Submit') %]" class="opac-button"/>
+    <a href="[% mkurl(ctx.opac_root _ '/myopac/main#selected_fines', {}, 1) %]" class="opac-button">[% l('Cancel') %]</a>
+
+ <table title="[% l('List of Transactions') %]" id="acct_fines_confirm_header"
+    class="table_no_border_space table_no_cell_pad" style="padding-top:1em;">
+<thead>
+  <tr>
+    <th>[% l('Charge/Fee') %]</th>
+    <th>[% l('Amount') %]</th>
+ </tr>
+</thead>
+<tbody>
+  [%
+   FOR f IN ctx.fines.circulation;
+     NEXT IF CGI.param('xact').size &&
+        !CGI.param('xact').grep(f.xact.id).size;
+     attrs = {marc_xml => f.marc_xml};
+     IF f.marc_xml;
+         PROCESS get_marc_attrs args=attrs;
+     ELSIF f.xact.reservation;
+          attrs.title = f.xact.reservation.target_resource_type.name;
+     END %]
+     <tr>
+        <td>[% attrs.title | html %]</td>
+        <td class="text-right">[% money(f.xact.balance_owed) %]</td>
+     </tr>
+      [%
+      END;
+      FOR f IN ctx.fines.grocery;
+          NEXT IF CGI.param('xact_misc').size &&
+              !CGI.param('xact_misc').grep(f.xact.id).size %]
+          <tr>
+             <td>[% f.xact.last_billing_type | html %]</td>
+             <td class="text-right">[% money(f.xact.balance_owed) %]</td>
+        </tr>
+    [% END %]
+ </tbody>
+</table> 
+ 
+<p style="padding-top: 2em;">
+<big>[% l("Are you sure you are ready to charge ") %]
+     <strong> [% l("[_1] ", money(ctx.fines.balance_owed))%]</strong>
+    [% l("to your credit card?") %]</big></p>        
+    <input type="submit" value="[% l('Submit') %]" class="opac-button"/>
+    <a href="[% mkurl(ctx.opac_root _ '/myopac/main#selected_fines', {}, 1) %]" class="opac-button">[% l('Cancel') %]</a>
