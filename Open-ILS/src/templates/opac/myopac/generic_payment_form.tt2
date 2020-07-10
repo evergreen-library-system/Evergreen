@@ -32,7 +32,7 @@
                         readonly="readonly" />   
                     <a title="[% l('Update Email Address') %]"
                         href="[% ctx.opac_root %]/myopac/update_email?return_to_referer=1">[% l("Update") %]</a>
-                </td
+                </td>
             </tr>
             <tr>
                 <td><label for="payment-billing-address">[% l('Street Address') %]</label></td>
@@ -124,5 +124,5 @@
             
       </tbody>
     </table>
-     [% INCLUDE "opac/parts/myopac/main_refund_policy.tt2" %]
 </form>
+<table width="100%">[% INCLUDE "opac/parts/myopac/main_refund_policy.tt2" %]</table>
