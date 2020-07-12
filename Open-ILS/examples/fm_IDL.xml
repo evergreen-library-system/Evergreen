@@ -4371,13 +4371,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="ccs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_status" oils_persist:tablename="config.copy_status" oils_persist:restrict_primary="100" reporter:label="Copy Status" oils_persist:field_safe="true">
+	<class id="ccs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_status" oils_persist:tablename="config.copy_status" oils_persist:restrict_primary="100" reporter:label="Item Status" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.copy_status_id_seq">
 			<field name="holdable" reporter:datatype="bool" reporter:label="Holdable"/>
 			<field name="id" reporter:selector="name" reporter:datatype="id" reporter:label="ID"/>
 			<field name="name"  reporter:datatype="text" oils_persist:i18n="true" reporter:label="Name"/>
 			<field name="opac_visible" reporter:datatype="bool" reporter:label="OPAC Visible"/>
-            <field name="copy_active" reporter:datatype="bool" reporter:label="Active"/>
+            <field name="copy_active" reporter:datatype="bool" reporter:label="Sets Item Active"/>
             <field name="restrict_copy_delete" reporter:datatype="bool" reporter:label="Restrict Deletion"/>
             <field name="is_available" reporter:datatype="bool" reporter:label="Available"/>
 		</fields>
