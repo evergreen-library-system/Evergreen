@@ -266,7 +266,7 @@
       <div ng-if="hasMulti()">
         <div ng-if="working.MultiMap.circ_modifier.length > 1 && working.circ_modifier === undefined">
           <eg-list-counts label="[% l('Multiple values') %]" 
-            list="working.MultiMap.circ_modifier" render="labelYesNo" 
+            list="working.MultiMap.circ_modifier" render="circmodName" 
             on-select="select_by_circ_modifier"></eg-list-counts>
         </div>
       </div>
