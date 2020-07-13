@@ -266,7 +266,7 @@ export class HoldComponent implements OnInit {
         const flesh = {flesh: 1, flesh_fields: {au: ['settings']}};
 
         const promise = id ? this.patron.getById(id, flesh) :
-            this.patron.getByBarcode(this.userBarcode);
+            this.patron.getByBarcode(this.userBarcode, flesh);
 
         promise.then(user => {
             this.user = user;
@@ -294,9 +294,13 @@ export class HoldComponent implements OnInit {
 
         this.user.settings().forEach(setting => {
             const name = setting.name();
-            const value = setting.value();
+            let value = setting.value();
 
             if (value === '' || value === null) { return; }
+
+            // When fleshing 'settings' on the actor.usr object,
+            // we're grabbing the raw JSON values.
+            value = JSON.parse(value);
 
             switch (name) {
                 case 'opac.hold_notify':
@@ -306,7 +310,7 @@ export class HoldComponent implements OnInit {
                     break;
 
                 case 'opac.default_pickup_location':
-                    this.pickupLib = value;
+                    this.pickupLib = Number(value);
                     break;
             }
         });
