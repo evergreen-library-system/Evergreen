@@ -188,6 +188,13 @@ export class TagTable {
         return this.toCache('sfcodes', tag, null, list);
     }
 
+    getSubfieldLabel(tag: string, sfCode: string): string {
+        if (!tag || !this.tagMap[tag]) { return null; }
+        const subfieldResults = this.tagMap[tag].subfields.filter(sf => sf.code === sfCode);
+        return subfieldResults.length ? subfieldResults[0].description : null;
+    }
+
+
     getFieldTags(): ContextMenuEntry[] {
 
         if (!this.fieldTags) {

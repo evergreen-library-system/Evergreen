@@ -118,8 +118,8 @@ sub load_record {
         );
         if ($ctx->{course_module_opt_in}) {
             $copy->{course_materials} = $U->simplereq(
-                'open-ils.circ',
-                'open-ils.circ.course_materials.retrieve',
+                'open-ils.courses',
+                'open-ils.courses.course_materials.retrieve',
                 {item => $copy->{id}}
             );
             my %course_ids;
@@ -128,8 +128,8 @@ sub load_record {
             }
 
             $copy->{courses} = $U->simplereq(
-                'open-ils.circ',
-                'open-ils.circ.courses.retrieve',
+                'open-ils.courses',
+                'open-ils.courses.courses.retrieve',
                 keys %course_ids
             );
         }

@@ -1,0 +1,21 @@
+<ng-container *ngIf="editor">
+  <form [formGroup]="editor">
+    <ng-container *ngFor="let field of fields">
+      <div class="row" *ngIf="!field.subfields[0][1]">
+        <div class="col-lg-3">
+          <label for="{{idPrefix}}-{{field.tag}}{{field.subfields[0]}}">
+            {{fieldLabels[field.fieldId]}}
+          </label>
+        </div>
+        <div class="col-lg-9">
+          <input id="{{idPrefix}}-{{field.tag}}{{field.subfields[0]}}" formControlName="{{field.fieldId}}" />
+        </div>
+      </div>
+    </ng-container>
+    <button class="btn btn-primary" (click)="emitXml()">
+      <ng-container *ngIf="buttonLabel">{{buttonLabel}}</ng-container>
+      <ng-container *ngIf="!buttonLabel" i18n>Save</ng-container>
+    </button>
+  </form>
+</ng-container>
+

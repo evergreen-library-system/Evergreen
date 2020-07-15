@@ -3854,6 +3854,17 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
+,( 'circ.course_materials_brief_record_bib_source', 'circ',
+    oils_i18n_gettext(
+        'circ.course_materials_brief_record_bib_source',
+        'Bib source for brief records created in the course materials module',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'circ.course_materials_brief_record_bib_source',
+        'The course materials module will use this bib source for any new brief bibliographic records made inside that module. For best results, use a transcendant bib source.',
+        'coust', 'description'),
+    'link', 'cbs')
+
 
 ,( 'circ.password_reset_request_per_user_limit', 'sec',
     oils_i18n_gettext('circ.password_reset_request_per_user_limit',
@@ -20620,6 +20631,14 @@ VALUES (
         'cwst', 'label'
     )
 );
+INSERT INTO config.bib_source (quality, source, transcendant) VALUES
+    (1, oils_i18n_gettext(1, 'Course materials module', 'cbs', 'source'), TRUE);
+
+INSERT INTO actor.org_unit_setting (org_unit, name, value)
+    SELECT 1, 'circ.course_materials_brief_record_bib_source', id
+    FROM config.bib_source
+    WHERE source='Course materials module';
+
 
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
 VALUES (

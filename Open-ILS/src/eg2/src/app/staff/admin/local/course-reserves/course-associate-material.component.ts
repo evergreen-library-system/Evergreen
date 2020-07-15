@@ -1,6 +1,7 @@
 import {Component, Input, ViewChild, OnInit, TemplateRef} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {Observable, Observer, of} from 'rxjs';
+import {ActivatedRoute} from '@angular/router';
+import {from, Observable} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -13,7 +14,6 @@ import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {StringComponent} from '@eg/share/string/string.component';
-import {StaffBannerComponent} from '@eg/staff/share/staff-banner.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {CourseService} from '@eg/staff/share/course.service';
@@ -23,7 +23,7 @@ import {CourseService} from '@eg/staff/share/course.service';
     templateUrl: './course-associate-material.component.html'
 })
 
-export class CourseAssociateMaterialComponent extends DialogComponent {
+export class CourseAssociateMaterialComponent extends DialogComponent implements OnInit {
     @Input() currentCourse: IdlObject;
     @Input() courseId: any;
     @Input() displayMode: String;
@@ -55,6 +55,10 @@ export class CourseAssociateMaterialComponent extends DialogComponent {
     @Input() isModifyingCircMod: Boolean;
     @Input() isModifyingCallNumber: Boolean;
     @Input() isModifyingLocation: Boolean;
+    bibId: number;
+
+    associateBriefRecord: (newRecord: string) => void;
+    associateElectronicBibRecord: () => void;
 
     constructor(
         private auth: AuthService,
@@ -70,29 +74,51 @@ export class CourseAssociateMaterialComponent extends DialogComponent {
     ) {
         super(modal);
         this.materialsDataSource = new GridDataSource();
+
+        this.materialsDataSource.getRows = (pager: Pager, sort: any[]) => {
+            return this.net.request(
+                'open-ils.courses',
+                'open-ils.courses.course_materials.retrieve.fleshed',
+                {course: this.courseId}
+            );
+        };
     }
 
     ngOnInit() {
-        this.materialsDataSource.getRows = (pager: Pager, sort: any[]) => {
-            return this.loadMaterialsGrid(pager);
-        }
+        this.associateBriefRecord = (newRecord: string) => {
+            return this.net.request(
+                'open-ils.courses',
+                'open-ils.courses.attach.biblio_record',
+                this.auth.token(),
+                newRecord,
+                this.courseId,
+                this.relationshipInput
+            ).subscribe(() => {
+                this.materialsGrid.reload();
+                this.materialAddSuccessString.current()
+                    .then(str => this.toast.success(str));
+            });
+        };
+
+        this.associateElectronicBibRecord = () => {
+            return this.net.request(
+                'open-ils.courses',
+                'open-ils.courses.attach.electronic_resource',
+                this.auth.token(),
+                this.bibId,
+                this.courseId,
+                this.relationshipInput
+            ).subscribe(() => {
+                this.materialsGrid.reload();
+                this.materialAddSuccessString.current()
+                    .then(str => this.toast.success(str));
+            });
+         };
+
     }
 
     isDialog(): boolean {
         return this.displayMode === 'dialog';
-    }
-
-    loadMaterialsGrid(pager: Pager): Observable<any> {
-        return new Observable<any>(observer => {
-            this.course.getMaterials(this.courseId).then(materials => {
-                materials.forEach(material => {
-                    this.course.fleshMaterial(material).then(fleshed_material => {
-                        this.materialsDataSource.data.push(fleshed_material);
-                    });
-                });
-            });
-            observer.complete();
-        });
     }
 
     editSelectedMaterials(itemFields: IdlObject[]) {
@@ -116,7 +142,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent {
                     this.materialEditSuccessString.current()
                         .then(str => this.toast.success(str));
                     this.pcrud.retrieve('acmcm', result).subscribe(material => {
-                        if (material.course() != this.courseId) {
+                        if (material.course() !== this.courseId) {
                             this.materialsDataSource.data.splice(
                                 this.materialsDataSource.data.indexOf(course_material, 0), 1
                             );
@@ -134,10 +160,10 @@ export class CourseAssociateMaterialComponent extends DialogComponent {
             );
         });
     }
-    
+
     associateItem(barcode, relationship) {
         if (barcode) {
-            let args = {
+            const args = {
                 barcode: barcode,
                 relationship: relationship,
                 isModifyingCallNumber: this.isModifyingCallNumber,
@@ -148,24 +174,22 @@ export class CourseAssociateMaterialComponent extends DialogComponent {
                 tempLocation: this.tempLocation,
                 tempStatus: this.tempStatus,
                 currentCourse: this.currentCourse
-            }
+            };
             this.barcodeInput = null;
 
             this.pcrud.search('acp', {barcode: args.barcode}, {
                 flesh: 3, flesh_fields: {acp: ['call_number']}
             }).subscribe(item => {
-                let associatedMaterial = this.course.associateMaterials(item, args);
+                const associatedMaterial = this.course.associateMaterials(item, args);
                 associatedMaterial.material.then(res => {
                     item = associatedMaterial.item;
                     let new_cn = item.call_number().label();
-                    if (this.tempCallNumber) new_cn = this.tempCallNumber;
+                    if (this.tempCallNumber) { new_cn = this.tempCallNumber; }
                     this.course.updateItem(item, this.currentCourse.owning_lib(),
                         new_cn, args.isModifyingCallNumber
                     ).then(resp => {
-                        this.course.fleshMaterial(res).then(fleshed_material => {
-                            this.materialsDataSource.data.push(fleshed_material);
-                        });
-                        if (item.circ_lib() != this.currentCourse.owning_lib()) {
+                        this.materialsGrid.reload();
+                        if (item.circ_lib() !== this.currentCourse.owning_lib()) {
                             this.materialAddDifferentLibraryString.current()
                             .then(str => this.toast.warning(str));
                         } else {
@@ -182,10 +206,10 @@ export class CourseAssociateMaterialComponent extends DialogComponent {
     }
 
     deleteSelectedMaterials(items) {
-        let item_ids = [];
+        const item_ids = [];
         items.forEach(item => {
             this.materialsDataSource.data.splice(this.materialsDataSource.data.indexOf(item, 0), 1);
-            item_ids.push(item.id())
+            item_ids.push(item.id());
         });
         this.pcrud.search('acmcm', {course: this.courseId, item: item_ids}).subscribe(material => {
             material.isdeleted(true);

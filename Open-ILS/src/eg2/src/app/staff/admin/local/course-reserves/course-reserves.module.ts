@@ -8,19 +8,21 @@ import {CourseAssociateMaterialComponent} from './course-associate-material.comp
 import {CourseAssociateUsersComponent} from './course-associate-users.component';
 import {CourseReservesRoutingModule} from './routing.module';
 import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
+import {MarcSimplifiedEditorModule} from '@eg/staff/share/marc-edit/simplified-editor/simplified-editor.module';
 
 @NgModule({
   declarations: [
     CourseListComponent,
     CoursePageComponent,
     CourseAssociateMaterialComponent,
-    CourseAssociateUsersComponent
+    CourseAssociateUsersComponent,
   ],
   imports: [
     StaffCommonModule,
     AdminCommonModule,
     CourseReservesRoutingModule,
     ItemLocationSelectModule,
+    MarcSimplifiedEditorModule,
     TreeModule
   ],
   exports: [

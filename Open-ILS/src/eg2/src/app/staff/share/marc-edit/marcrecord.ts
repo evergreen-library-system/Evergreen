@@ -29,6 +29,7 @@ export interface MarcField {
 
     // Pass-through to marcrecord.js
     isControlfield(): boolean;
+    indicator?: (ind: number) => any;
 
     deleteExactSubfields(...subfield: MarcSubfield[]): number;
 }

@@ -1125,22 +1125,15 @@ CREATE TABLE asset.course_module_course_users (
 CREATE TABLE asset.course_module_course_materials (
     id              SERIAL PRIMARY KEY,
     course          INT NOT NULL REFERENCES asset.course_module_course (id),
-    item            INT NOT NULL REFERENCES asset.copy (id),
+    item            INT REFERENCES asset.copy (id),
     relationship    TEXT,
     record          INT REFERENCES biblio.record_entry (id),
+    temporary_record       BOOLEAN,
     original_location      INT REFERENCES asset.copy_location,
     original_status        INT REFERENCES config.copy_status,
     original_circ_modifier TEXT, --REFERENCES config.circ_modifier
     original_callnumber    INT REFERENCES asset.call_number,
-    unique (course, item)
-);
-
-CREATE TABLE asset.course_module_non_cat_course_materials (
-    id              SERIAL PRIMARY KEY,
-    course          INT NOT NULL REFERENCES asset.course_module_course (id),
-    item            TEXT NOT NULL,
-    url             TEXT,
-    relationship    TEXT
+    unique (course, item, record)
 );
 
 COMMIT;

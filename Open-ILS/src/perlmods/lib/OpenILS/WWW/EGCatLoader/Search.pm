@@ -579,8 +579,8 @@ sub load_rresults {
         $rec->{popularity} = $res_rec->[2];
         if ($course_module_opt_in) {
             $rec->{course_materials} = $U->simplereq(
-                'open-ils.circ',
-                'open-ils.circ.course_materials.retrieve',
+                'open-ils.courses',
+                'open-ils.courses.course_materials.retrieve',
                 {record => $rec->{id}}
             );
             my %course_ids;
@@ -589,8 +589,8 @@ sub load_rresults {
             }
 
             $rec->{courses} = $U->simplereq(
-                'open-ils.circ',
-                'open-ils.circ.courses.retrieve',
+                'open-ils.courses',
+                'open-ils.courses.courses.retrieve',
                 keys %course_ids
             );
         }

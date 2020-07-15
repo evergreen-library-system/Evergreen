@@ -22,20 +22,20 @@ sub load_course {
         unless $course_id and $course_id =~ /^\d+$/;
 
     $ctx->{course} = $U->simplereq(
-        'open-ils.circ',
-        'open-ils.circ.courses.retrieve',
+        'open-ils.courses',
+        'open-ils.courses.courses.retrieve',
         [$course_id]
     )->[0];
     
     $ctx->{instructors} = $U->simplereq(
-        'open-ils.circ',
-        'open-ils.circ.course_users.retrieve',
+        'open-ils.courses',
+        'open-ils.courses.course_users.retrieve',
         $course_id
     );
 
     $ctx->{course_materials} = $U->simplereq(
-        'open-ils.circ',
-        'open-ils.circ.course_materials.retrieve.fleshed',
+        'open-ils.courses',
+        'open-ils.courses.course_materials.retrieve.fleshed.atomic',
         {course => $course_id}
     );
     return Apache2::Const::OK;

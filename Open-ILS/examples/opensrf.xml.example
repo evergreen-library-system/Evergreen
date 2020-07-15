@@ -1270,6 +1270,26 @@ vim:et:ts=4:sw=4:
                   <request_timeout>60</request_timeout>
                 </app_settings>
             </open-ils.ebook_api>
+
+            <open-ils.courses>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>OpenILS::Application::Courses</implementation>
+                <max_requests>100</max_requests>
+                <unix_config>
+                    <unix_sock>courses_unix.sock</unix_sock>
+                    <unix_pid>courses_unix.pid</unix_pid>
+                    <unix_log>courses_unix.log</unix_log>
+                    <max_requests>100</max_requests>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+                <app_settings>
+                </app_settings>
+            </open-ils.courses>
         </apps>
     </default>
 
@@ -1317,6 +1337,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.serial</appname>  
                 <appname>open-ils.hold-targeter</appname>  
                 <appname>open-ils.ebook_api</appname>
+                <appname>open-ils.courses</appname>
             </activeapps>
         </localhost>
     </hosts>

@@ -74,22 +74,44 @@
             </tr>
           </thead>
           <tbody>
-            [% FOREACH copy_info IN ctx.course_materials %]
+            [% FOREACH material IN ctx.course_materials %]
               <tr>
-                <td>[%- INCLUDE "opac/parts/library_name_link.tt2"; -%]
-                    <link property="businessFunction" href="http://purl.org/goodrelations/v1#LeaseOut">
-                    <meta property="price" content="0.00">
-                </td>
-                <td>[% copy_info.call_number %]</td>
                 <td>
-                  <a href="[% mkurl(ctx.opac_root _ '/record/' _ copy_info.record) %]">
-                    [% copy_info.title %]
+                  [% IF material.item %]
+                    [%- fleshed_ou = material.item.circ_lib -%]
+                    [%- INCLUDE "opac/parts/library_name_link_from_ou.tt2"; -%]
+                  [% ELSE %]
+                    [% l('Online') %]
+                  [% END %]
+                  <link property="businessFunction" href="http://purl.org/goodrelations/v1#LeaseOut">
+                  <meta property="price" content="0.00">
+                </td>
+                <td>
+                  [% IF material.item %]
+                    [% material.item.call_number.label %]
+                  [% END %]
+                </td>
+                <td>
+                  <a href="[% mkurl(ctx.opac_root _ '/record/' _ material.record.id) %]">
+                    [% material.record.wide_display_entry.title %]
                   </a>
                 </td>
-                <td>[% copy_info.barcode %]</td>
-                <td>[% copy_info.relationship %]</td>
-                <td>[% copy_info.status.name %]</td>
-                <td>[% copy_info.location.name %]</td>
+                <td>
+                  [% IF material.item %]
+                    [% material.item.barcode %]
+                  [% END %]
+                </td>
+                <td> [% material.relationship %] </td>
+                <td>
+                  [% IF material.item %]
+                    [% material.item.status.name %]
+                  [% END %]
+                </td>
+                <td>
+                  [% IF material.item %]
+                    [% material.item.location.name %]
+                  [% END %]
+                </td>
               </tr>
             [% END %]
           </tbody>
