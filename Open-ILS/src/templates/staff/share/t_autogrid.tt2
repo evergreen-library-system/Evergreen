@@ -66,7 +66,8 @@
       ng-show="showPagination"
       ng-class="{disabled : onFirstPage()}" 
       ng-click="offset(0);collect()"
-      title="[% l('Start') %]">
+      title="[% l('Start') %]"
+      aria-label="[% l('Start') %]">
         <span class="glyphicon glyphicon-fast-backward"></span>
     </button>
 
@@ -75,7 +76,8 @@
       ng-show="showPagination"
       ng-class="{disabled : onFirstPage()}"
       ng-click="decrementPage()"
-      title="[% l('Previous Page') %]">
+      title="[% l('Previous Page') %]"
+      aria-label="[% l('Previous Page') %]">
         <span class="glyphicon glyphicon-backward"></span>
     </button>
 
@@ -86,7 +88,8 @@
       ng-class="{disabled : !hasNextPage()}"
       ng-disabled="!hasNextPage()"
       ng-click="incrementPage()"
-      title="[% l('Next Page') %]">
+      title="[% l('Next Page') %]"
+      aria-label="[% l('Next Page') %]">
         <span class="glyphicon glyphicon-forward"></span>
     </button>
 
@@ -109,6 +112,7 @@
 
     <div class="btn-group" uib-dropdown is-open="gridRowCountIsOpen" ng-show="showPagination">
       <button type="button" title="[% l('Select Row Count') %]"
+        aria-label="[% l('Select Row Count') %]"
         class="btn btn-default" uib-dropdown-toggle>
         [% l('Rows [_1]', '{{limit()}}') %]
         <span class="caret"></span>
@@ -159,7 +163,8 @@
 
     <div class="btn-group" uib-dropdown is-open="gridColumnPickerIsOpen" ng-show="showPicker">
       <button type="button" 
-        class="btn btn-default" uib-dropdown-toggle>
+        class="btn btn-default" uib-dropdown-toggle
+        aria-label="[% l('Grid Options') %]">
         <span class="caret"></span>
       </button>
       <ul class="pull-right eg-grid-column-picker" uib-dropdown-menu>
