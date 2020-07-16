@@ -996,9 +996,10 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                         'open-ils.circ',
                         'open-ils.circ.holds.test_and_create.batch.override',
                         egCore.auth.token(), args, h.copy_list
-                    );
-
-                    $uibModalInstance.close();
+                    ).then(function() {
+                        holds = []; // force the holds grid to refetch data.
+                        $uibModalInstance.close();
+                    });
                 }
 
                 $scope.cancel = function($event) {
