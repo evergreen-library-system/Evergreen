@@ -191,6 +191,7 @@ function(egCore , $q) {
                     function(circ) {
                         var cp = svc.copies.filter(function(c) { 
                             return c.id == circ.target_copy() })[0];
+                        if (!cp) { return; } // can disappear during reloads.
                         cp._circ = egCore.idl.toHash(circ, true);
                         cp._circ_lib = circ.circ_lib();
                         cp._duration = circ.duration();
