@@ -1,4 +1,4 @@
-<div>
+
     <div id="zero_search_hits">
         <div class="facet_sidebar_hidden" id="facet_sidebar">
           <h3 class="sr-only">[% l('Search Results filters') %]</h3>
@@ -66,4 +66,3 @@
             [% INCLUDE "opac/parts/result/lowhits_purchase.tt2" %]
         </div>
     </div>
-</div>

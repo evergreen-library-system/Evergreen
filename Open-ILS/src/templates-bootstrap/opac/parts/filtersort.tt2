@@ -1,0 +1,29 @@
+<select title="[% l('Search sorting') %]" 
+    [% class ? ('class="' _ class _ '"') : '' %] id='[% id || "opac.result.sort" %]' 
+    name="[% name || 'sort' %]" [% IF submit_on_change %]onchange='this.form.submit()'[% END %]>
+    [% IF mode != 'bookbag' %]<option value=''>[% l("Sort by Relevance") %]</option>[% END %]
+    <optgroup label='[% l("Sort by Title") %]'>
+        <option value='titlesort'[% value == 'titlesort' ? ' selected="selected"' : '' %]>[% l("Title: A to Z") %]</option>
+        <option value='titlesort.descending'[% value == 'titlesort.descending' ? ' selected="selected"' : '' %]>[% l("Title: Z to A") %]</option>
+    </optgroup>
+    <optgroup label='[% l("Sort by Author") %]'>
+        <option value='authorsort'[% value == 'authorsort' ? ' selected="selected"' : '' %]>[% l("Author: A to Z") %]</option>
+        <option value='authorsort.descending'[% value == 'authorsort.descending' ? ' selected="selected"' : '' %]>[% l("Author: Z to A") %]</option>
+    </optgroup>
+    <optgroup label='[% l("Sort by Publication Date") %]'>
+        <option value='pubdate.descending'[% value == 'pubdate.descending' ? ' selected="selected"' : '' %]>[% l("Date: Newest to Oldest") %]</option>
+        <option value='pubdate'[% value == 'pubdate' ? ' selected="selected"' : '' %]>[% l("Date: Oldest to Newest") %]</option>
+    </optgroup>
+    <optgroup label='[% l("Sort by Popularity") %]'>
+        <option value='popularity'[% value == 'popularity' ? ' selected="selected"' : '' %]>[% l("Most Popular") %]</option>
+<!-- Sorting by least popular items first is probably not an expected
+     choice in production, but could be useful in cases where every
+     record has at least one badge value assigned and you want
+     to investigate the long tail.
+-->
+<!--
+        <option value='popularity.descending'[% value == 'popularity.descending' ? ' selected="selected"' : '' %]>[% l("Least Popular") %]</option>
+-->
+        <option value='poprel'[% value == 'poprel' ? ' selected="selected"' : '' %]>[% l("Popularity Adjusted Relevance") %]</option>
+    </optgroup>
+</select>

@@ -11,12 +11,14 @@
 "To see the public view of a shared list, " _
 "click on the HTML View link in the Saved Lists section.");
 %]
-<h3 class="sr-only">[% l('My Lists') %]</h3>
+
+
+<h3>[% l('My Lists') %]</h3>
 <div id='myopac_bookbag_div' style="padding:5px;">
 
     <!-- new list creation -->
     <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post" id="create_form">
-        <h1>[% l('Create New List') %]</h1><a name="createnewlist"></a>
+        <h4>[% l('Create New List') %]</h4><a id="createnewlist"></a>
         <table class="table" >
             <tr>
                 <td class="list_create_table_label">
@@ -47,17 +49,13 @@
                     <label for="list_create_shared">[% l('Share this list?') %]</label>
                 </td>
                 <td class="px-3">
-                    <select class="form-control mini-control" name="shared" id="list_create_shared">
+                    <select class="d-inline-block form-control mini-control" name="shared" id="list_create_shared">
                         <option value="0">[% l('No') %]
                         <option value="1">[% l('Yes') %]
                     </select>
-                   
-                    <a href="javascript:void(0);" 
-                        onclick="alert('[% bb_publish_text %]')" >
-                        <img data-toggle="tooltip" data-placement="top" alt="[% l('Sharing Help') %]"
-                            [% html_text_attr('title', bb_publish_text) %]
-                            src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]" />
-                    </a> 
+                    <span title="Allows the list to be shared through a link or RSS." data-toggle="tooltip">
+                        <i class="fas fa-question-circle"></i>
+                    </span>
                 </td>
             </tr>
             [% IF ctx.mylist.size %]
@@ -66,7 +64,7 @@
                     <label for="list_move_cart">[% l('Move contents of basket to this list?') %]</label>
                 </td>
                 <td>
-                    <select name="move_cart" id="list_move_cart">
+                    <select class="d-inline-block form-control mini-control" name="move_cart" id="list_move_cart">
                         <option value="0">[% l('No') %]
                         <option value="1" [% IF CGI.param('move_cart_by_default') %]selected="selected"[% END%]>[% l('Yes') %]
                     </select>
@@ -76,27 +74,21 @@
             <tr>
                 <td>&nbsp;</td>
                 <td class="list-create-table-buttons">
-                    <input type="reset"
-                        value="[% l('Cancel') %]"
-                        alt="[% l('Cancel') %]"
-                        class="btn btn-deny" />
-                    &nbsp;&nbsp;&nbsp;
-                    <input type="submit"
-                        value="[% l('Submit') %]"
-                        alt="[% l('Submit') %]"
-                        class="btn btn-confirm"/>
+                                    <button type="submit" class="btn btn-confirm"><i class="far fa-plus-square"></i> [% l('Create List') %]</button>
+
+                    <button type="reset" class="btn btn-deny" ><i class="fas fa-ban"></i> [% l('Cancel') %]</button>
                 </td>
             </tr>
         </table>
     </form>
 
-      [% IF CGI.param('from_basket'); %]
+      [% IF CGI.param('from_basket');  %]
     <h1>[% l("... from basket") %]</h1>
     [% INCLUDE "opac/parts/anon_list.tt2" %]
     [% ELSE %]
     <h1>[% l("My Existing Basket and Lists") %]</h1>
     [% INCLUDE "opac/parts/anon_list.tt2" %]
-    
+
     [% IF ctx.bookbags.size %]
     <div class="header_middle">
         <span class="float-left">[% l('Saved Lists') %]</span>
@@ -146,13 +138,12 @@
             [%- END; -%]
         [% END %]
     </div>
-    <div class="clear-both"></div>
 
     <div id='acct_lists_prime'>
         [% FOR bbag IN ctx.bookbags %]
         <div>
          <table class="table"><tr>
-            <td width="30%">
+            <td class="listTitleText">
             <div class="bookbag-controls-title-block">
                 [% baseurl = ctx.opac_root _ '/myopac/lists';
                 IF bbag.id != CGI.param("bbid");
@@ -162,7 +153,10 @@
                     url = mkurl(baseurl, {}, ['bbid', 'edit_notes', 'sort']);
                     ltitle = l("Hide items in list");
                 END %]
-                <h2 class="bookbag-name"><a title="[% ltitle %]" href="[% url %]">[% bbag.name | html %]</a></h2>
+                <h2 class="bookbag-name"><a title="[% ltitle %]" href="[% url %]">[% bbag.name | html %]</a>[% IF bbag.pub == 't'; %]
+                <a target='_blank' href='/opac/extras/feed/bookbag/rss2-full/[% bbag.id %]' aria-label="RSS Feed">
+                <i class="fas fa-rss-square"></i></a>
+                [% END %]</h2>
                 [% IF bbag.description %]<div class="bookbag-description">[% bbag.description | html %]</div>[% END %]
             </div>
             </td>
@@ -177,7 +171,7 @@
                     [% IF ctx.where_from %]
                     <input type="hidden" name="where_from" value="[% ctx.where_from %]" />
                     [% END %]
-                    <input class="fixed btn btn-secondary btn-sm m-1" type="submit" value="[% l('Add to this list') %]" />
+                    <button class="fixed btn btn-success btn-sm m-1" type="submit" ><i class="far fa-plus-square"></i> [% l('Add to this list') %]</button>
                 </div>
             </form>
             [% END %]
@@ -187,27 +181,20 @@
                     [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
                     [% IF bbag.pub != 't' %]
                     <input type="hidden" name="action" value="show" />
-                    <input class="class=fixed btn btn-secondary btn-sm m-1" type="submit"  value="[% l('Share') %]" />
+                    <button class="class=fixed btn btn-action btn-sm m-1" type="submit" ><i class="fas fa-share-square"></i> [% l('Share') %]</button>
                     [% ELSE %]
                     <input type="hidden" name="action" value="hide" />
-                    <input class="fixed btn btn-secondary btn-sm m-1" type="submit" value="[% l('Hide') %]" />
+                    <button class="fixed btn btn-secondary btn-sm m-1" type="submit"><i class="fas fa-eye-slash"></i> [% l('Hide') %]</button>
                     [% END %]
                 </div>
             </form>
-            <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post" onsubmit="return confirm('[% l('Do you really want to delete this list?') %]')">
-                <div class="bookbag-controls">
-                    <input type="hidden" name="list" value="[% bbag.id %]" />
-                    <input type="hidden" name="action" value="delete" />
-                    [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
-                    <input type="submit" value="[% l('Delete List') %]" class="btn btn-secondary btn-sm m-1"/>
-                </div>
-            </form>
+          
             <form action="[% mkurl(ctx.opac_root _ '/myopac/list/print') %]" method="post">
                 <div class="bookbag-controls">
                     <input type="hidden" name="list" value="[% bbag.id %]" />
                     <input type="hidden" name="sort" value="[% CGI.param('sort') | html %]" />
                     [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
-                    <input type="submit" value="[% l('Download CSV') %]" class="btn btn-secondary btn-sm m-1"/>
+                    <button type="submit" class="btn btn-action btn-sm m-1"><i class="fas fa-file-download"></i> [% l('Download CSV') %]</button>
                 </div>
             </form>
             [% setting = 'opac.default_list'; %]
@@ -217,16 +204,16 @@
                     [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
                     [% IF ctx.user_setting_map.$setting == bbag.id %]
                     <input type="hidden" name="action" value="remove_default" />
-                    <input type="submit" class="btn btn-secondary btn-sm m-1" value="[% l('Remove Default List') %]" />
+                    <button type="submit" class="btn btn-danger btn-sm m-1"><i class="fas fa-minus-circle"></i> [% l('Remove Default List') %]</button>
                     [% ELSE %]
                     <input type="hidden" name="action" value="make_default" />
-                    <input type="submit" class="btn btn-secondary btn-sm m-1" value="[% l('Make Default List') %]" />
+                    <button type="submit" class="btn btn-action btn-sm m-1"><i class="fas fa-th-list"></i> [% l('Make Default List') %]</button>
                     [% END %]
                 </div>
             </form>
             [% IF ctx.is_staff %]
             <div class="bookbag-controls">
-                <input 
+                <button 
                     type="submit" 
                     onclick='
                        var path = 
@@ -242,81 +229,36 @@
                             xulG
                         )'
                     value="[% l('Locate Z39.50 Matches') %]" 
-                />
+                ><i class="fas fa-external-link-alt"></i></button>
             </div>
             [% END %]
+            [% IF bbag.pub == 't'; %]
             <div class="bookbag-controls">
-                [% IF bbag.pub == 't'; %]
-                <a class="btn btn-sm btn-secondary m-1" href='[%-
+                
+                <a class="btn btn-sm btn-opac m-1" href='[%-
                     mkurl(
                         ctx.opac_root _ '/results',
                         {page => '0', bookbag => bbag.id, depth => 0, locg => ctx.search_ou},
                         1
                     )
-                -%]'>[% l('View in Catalogue') %]</a>
-                [% END %]
-                [% IF bbag.pub == 't'; %]
-                <a target='_blank' href='/opac/extras/feed/bookbag/rss2-full/[% bbag.id %]'><img
-                    alt="[% l('RSS Feed') %]" border="0"
-                    src="[% ctx.media_prefix %]/images/small-rss.png[% ctx.cache_key %]"/></a>
-                [% END %]
+                -%]'><i class="fas fa-glasses"></i> [% l('View in Catalogue') %]</a>
+             
             </div>
+               [% END %]
+                 <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post" onsubmit="return confirm('[% l('Do you really want to delete this list?') %]')">
+                <div class="bookbag-controls float-right">
+                    <input type="hidden" name="list" value="[% bbag.id %]" />
+                    <input type="hidden" name="action" value="delete" />
+                    [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
+                    <button type="submit" class="btn btn-danger btn-sm m-1"><i class="fas fa-trash-alt"></i> [% l('Delete List') %]</button>
+                </div>
+            </form>
             </td>
             </tr>
             </table>
-            <div class="clear-both pad-bottom-five"></div>
         </div>
         [% IF CGI.param("bbid") == bbag.id %]
-        <div>
-            [% IF bbag.items.size %]
-                <div class="d-none">
-                    <form method="get" class="form-row">
-                        <label for="opac.result.sort" class="form-row">[% l("Sort list items by: ") %]
-                        [%- INCLUDE "opac/parts/preserve_params.tt2" params=['loc', 'query', 'qtype']; %]
-                        [% INCLUDE "opac/parts/filtersort.tt2"
-                            value=CGI.param('sort') mode='bookbag' class='form-control my-2' %]
-                        <input type="hidden" name="bbid"
-                            value="[% CGI.param('bbid') | html %]"/>
-                        <input type="submit" class="btn btn-confirm btn-sm my-2" value="[% l('Sort') %]" />
-                        </label>
-                    </form>
-                </div>
-            [% END %]
-            <div>
-                <form method="post">
-                    <input type="hidden" name="bbid" value="[% bbag.id %]" />
-                    <input type="hidden" name="action" value="editmeta" />
-                    <input type="hidden" name="limit" value="[% limit %]" />
-                    <input type="hidden" name="offset" value="[% offset %]" />
-                    [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
-                    	<table title="Edit List Description" class="mx-auto">
-                        	<th colspan="2" class="text-center"><strong>Edit List Description</strong></th>
-                        	<tr>
-                            <td> 
-                                <label for="bbag-edit-name">[% l('Name:') %]</label>
-                            </td>
-                            <td class="px-3">
-                            	<input name="name" type="text" value="[% bbag.name | html %]" id="bbag-edit-name" class="form-control m-2" /></td>
-                            </tr>
-                            <tr>
-                            <td>
-                            	<label for="bbag-edit-description">[% l('Description:') %]</label>
-                            </td>
-                            <td class="px-3">
-                            	 <textarea name="description" id="bbag-edit-description" class="form-control m-2">[% bbag.description | html %]</textarea>
-                            </td>
-                            </tr>
-                            <tr>
-                            	<td colspan="2" >
-                                 [% l("Save changes?") %]
-                                <input type="submit" class="btn btn-confirm btn-sm mx-3" value="[% l('Save') %]" />
-                                </td>
-                            </tr>
-                        </table>
-                </form>
-            </div>
-        </div>
-        <br class="clear-both" />
+        
         <div>
         <h5 class="text-center my-2">List Items</h5>
         <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post" >
@@ -325,22 +267,24 @@
         <div>
         [% IF bbag.items.size %]
             <div class="my-2">
-                <select name="action"  class="form-control float-left w-75">
-                    <option disabled="disabled" selected="selected">[% l('-- Actions for these items --') %]</option>
-                    <option value="place_hold">[% l('Place hold') %]</option>
-                     <option value="print">[% l('Print title details') %]</option>
-                    <option value="email">[% l('Email title details') %]</option>
-                    <option value="del_item">[% l('Remove from list') %]</option>
-                </select>
-                [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
-                <input class="btn btn-confirm btn-sm m-1" type="submit" value="[% l('Go') %]" />
-                 [% IF CGI.param('list_none_selected') %]
-                    <span class="error">[% l('No items were selected') %]</span>
-                [% END %]
+                <button name="action" class="btn btn-action" type="submit" value="place_hold" id="place_hold">[% l('Place hold') %]</button>
+                <button name="action" class="btn btn-action" type="submit" value="print">[% l('Print title details') %]</button>
+                <button name="action" class="btn btn-action" type="submit" value="email">[% l('Email title details') %]</button>
+                <button name="action" class="btn btn-action" type="submit" value="del_item">[% l('Remove from list') %]</button>
             </div>
         [% END %]
-        
+    
         <div>
+         <div class="d-block d-md-none">
+          
+
+            <input id="check_all_list_items" checked="checked" type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); 
+                        for (i = 0; i < inputs.length; i++) { 
+                            if (inputs[i].name == 'selected_item' &amp;&amp; !inputs[i].disabled &amp;&amp; inputs[i].getAttribute('bbag') == [% bbag.id %]) 
+                                inputs[i].checked = this.checked;}"/>
+
+            <label for="check_all_list_items">[% l('Check/Uncheck All') %]</label>  
+        </div>       
         <table class="table table-hover miniTable w-100 bookbagTable">
             <thead>
                 <tr>
@@ -443,7 +387,7 @@
                     <td class="save-notes">
                         [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
                         <input type="hidden" name="bbid" value="[% CGI.param('bbid') | html %]" />
-                        <input type="submit" class="btn btn-confirm" name="save_notes" value="[% l('Save Notes') %]" />
+                        <button type="submit" class="btn btn-confirm" ><i class="fas fa-save"></i> [% l('Save Notes') %]</button>
                     </td>
                 </tr>
                 [% END %]
@@ -453,7 +397,7 @@
         
         
         
-        </div>
+       
         [% IF ctx.bb_page_count > 1; %]
             <div class="header_middle" style="padding-top:7px;">
                 <div class="bbag-navigate-list">[% l('Navigate Selected List ') %]</div>
@@ -503,16 +447,16 @@
                     [%- END; -%]
                  </div>
             </div>
-            <div class="clear-both"></div>
         [% END %]
         <br/>
-
+ </div></div>
         </form>
         </div>
         [% END %]
         [% END %]
     </div>
     [% END %][% END %]
-</div></div>
+</div>
+
 [% END %]
 

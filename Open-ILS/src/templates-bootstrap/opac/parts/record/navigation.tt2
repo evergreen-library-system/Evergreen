@@ -13,7 +13,7 @@
                 END;
                 ctx.prev_rec_url = mkurl(ctx.prev_search_record, prev_args, stop_parms);
         %]
-        <a class='np_nav_link classic_link btn btn-outline-primary' title='[% l("Previous Record") %]'
+        <a class='np_nav_link classic_link btn btn-action' title='[% l("Previous Record") %]'
             href='[% ctx.prev_rec_url %]'><span class="nav_arrow_fix">&#9668;</span> <span class="d-none d-md-inline-block">[% l('Previous') %]</span></a>
         [% END %]
         </div>
@@ -47,7 +47,7 @@
                 END;
                 ctx.next_rec_url = mkurl(ctx.next_search_record, next_args, stop_parms);
         %]
-        <a class='np_nav_link classic_link btn btn-outline-primary' title='[% l("Next Record") %]'
+        <a class='np_nav_link classic_link btn btn-action' title='[% l("Next Record") %]'
             href='[% ctx.next_rec_url %]'><span class="d-none d-md-inline-block">[% l('Next') %]</span> <span class="nav_arrow_fix">&#9658;</span></a>
         [% END %]
 		</div>

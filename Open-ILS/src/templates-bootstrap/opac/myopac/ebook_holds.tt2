@@ -4,35 +4,13 @@
     PROCESS "opac/parts/myopac/column_sort_support.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
      myopac_page = "ebook_holds";
+     parent="holds";
     limit = (ctx.holds_limit.defined) ? ctx.holds_limit : 0;
     offset = (ctx.holds_offset.defined) ? ctx.holds_offset : 0;
     count = (ctx.holds_ids.size.defined) ? ctx.holds_ids.size : 0;
 %]
-<h3 class="sr-only">[% l('My E-Item Holds') %]</h3>
+<h3>[% l('My E-Item Holds') %]</h3>
 <div id='myopac_holds_div'>
-
-	<div class="mb-3">
-    	<ul class="nav nav-pills nav-fill">
-        <li class="nav-item m-2">
-            <a href='[% mkurl('holds', {}, ['limit','offset','available','sort','sort_type']) %]' class="nav-link not_active_pill">[% l("Items on Hold") %]</a>
-        </li>
-        [% IF ebook_api.enabled == 'true' %]
-        <li class="nav-item m-2">
-            <a href='#' class="nav-link active">[% l("E-Items on Hold") %]</a>
-        </li>
-        <li class="nav-item m-2">
-            <a href='[% mkurl('ebook_holds_ready', {}, ['limit','offset','available','sort','sort_type']) %]' class="nav-link not_active_pill">[% l("E-Items Ready for Checkout") %]</a>
-        </li>
-        [% END %]
-        <li class="nav-item m-2">
-            <a href='[% mkurl('hold_history', {}, ['limit','offset','available','sort','sort_type']) %]' class="nav-link not_active_pill">[% l("Holds History") %]</a>
-        </li>
-        </ul>
-    </div>
-    <div class="header_middle">
-        <span class="float-left">[% l('E-Items on Hold') %]</span>
-    </div>
-    <div class="clear-both"></div>
     <div id="no_ebook_holds" class="warning_box hidden">[% l('You have no e-item holds.') %]</div>
     <div id="ebook_cancel_hold_failed" class="warning_box hidden">[% l('Hold could not be canceled.') %]</div>
     <div id="ebook_cancel_hold_succeeded" class="success hidden">[% l('Your hold has been canceled.') %]</div>
@@ -40,7 +18,7 @@
     <div id='ebook_holds_main' class="hidden">
         <table id="ebook_holds_main_table"
             title="[% l('E-Items on Hold') %]"
-            class="table table-hover miniTable w-100 eholdsTable">
+            class="table table-hover table-bordered miniTable w-100 eholdsTable">
             <thead>
             <tr>
                 <th>[% l("Title") %]</th>

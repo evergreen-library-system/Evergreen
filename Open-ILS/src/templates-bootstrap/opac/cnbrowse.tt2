@@ -10,11 +10,8 @@
     <span class="sr-only">[% l('Call Number Browse') %]</span>
     [% INCLUDE "opac/parts/searchbar.tt2" %]
     <div id="content-wrapper">
-        <div id="main-content">
             <div class="cnbrowse_div">
                 [% INCLUDE "opac/parts/record/cnbrowse.tt2" %]
             </div>
-            <div class="common-full-pad"></div>	
-        </div>
     </div>
 [% END %]

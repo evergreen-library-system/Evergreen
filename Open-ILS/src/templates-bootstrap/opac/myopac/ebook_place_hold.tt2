@@ -1,0 +1,33 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS "opac/parts/hold_status.tt2";
+    PROCESS "opac/parts/myopac/column_sort_support.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "ebook_place_hold";
+%]
+
+<div id='myopac_holds_div'>
+    <h3>[% l('Place Hold on E-Item') %]</h3>
+    <div class="clear-both"></div>
+    <div id="ebook_place_hold_failed" class="warning_box hidden">[% l('Hold could not be placed.') %]</div>
+    <div id="ebook_place_hold_succeeded" class="success hidden">[% l('E-item is now on hold.') %]</div>
+    <div id="ebook_spinner"><img src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]" alt="[% l("Loading...") %]"/></div>
+    <div id='ebook_holds_main' class="hidden">
+        <table id="ebook_holds_main_table"
+            title="[% l('Place Hold on E-Item') %]"
+            class="table_no_border_space table_no_cell_pad item_list_padding">
+            <thead>
+            <tr>
+                <th>[% l("Title") %]</th>
+                <th>[% l("Author") %]</th>
+                <th>[% l("Expire Date") %]</th>
+                <th>[% l("Status") %]</th>
+                <th>[% l("Actions") %]</th>
+            </tr>
+            </thead>
+            <tbody id="ebook_holds_main_table_body"></tbody>
+        </table>
+    </div>
+</div>
+[% END %]
+

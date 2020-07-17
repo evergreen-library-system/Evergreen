@@ -1,0 +1,5 @@
+[% IF NOT sms_number_hide_label; '<label for="sms_notify">' _ l('Mobile number:') _ '</label>'; END; %]
+<input type="text" name="sms_notify" [% setting = 'opac.default_sms_notify';
+IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]
+[% IF sms_number_hide_label; 'aria-label="' _ l('Mobile number') _ '"'; END; %] id="sms_notify" />
+[% IF NOT sms_number_hide_hint; l('Hint: use the full 10 digits of your phone #, no spaces, no dashes'); END; %]

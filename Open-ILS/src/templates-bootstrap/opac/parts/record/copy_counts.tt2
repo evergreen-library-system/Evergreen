@@ -1,5 +1,6 @@
-<span id="rdetail_copy_counts">
+<div id="rdetail_copy_counts">
     <h2>[% l('Available copies') %]</h2>
+
     <ul>
     [%- depths = ctx.copy_summary.size;
         depth = 0;
@@ -49,4 +50,4 @@
     [%- END %]
     [%- END %]
     </ul>
-</span>
+</div>

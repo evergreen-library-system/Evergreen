@@ -1,9 +1,10 @@
 
 
-<div id='login-form-box' class='container'>
-    <h2 class="h2 text-center">[% l('Log in to Your Account') %]</h1>
+<div class='container'>
+<hr>
+    <h3 class="text-center">[% l('Log in to Your Account') %]</h3>
     <form method='post'>
-   <div class="row text-center">[% INCLUDE "opac/parts/login/help.tt2" %]</div>
+   <div class="row text-center">[%# INCLUDE "opac/parts/login/help.tt2" %]</div>
     [% IF ctx.login_failed_event %]
 <div id='login-failed-message'>
 [%
@@ -21,26 +22,39 @@
     
  
     <div class="mx-auto row w-75 my-5">
-        <div class='col-md-6 text-center'>
-            <label for='username_field' class="lbl1" >[% l('Library Card Number') %]</label>
-            <div class="input_bg">
-                <input type='text' id="username_field" name="username" autofocus />
+        <div class='col-md-6'>
+            <label for='username_field' class="lbl1" >[% l('Library Card Number') %]<span title="[% INCLUDE "opac/parts/login/username_hint.tt2" %]" data-html="true" data-toggle="tooltip">
+            <i class="fas fa-question-circle"></i></span></label> <br>
+            <div class="input_bg mb-2">
+                <input class="form-control" type='text' id="username_field" name="username"/>
             </div>
-            [% INCLUDE "opac/parts/login/username_hint.tt2" %]
+               <a href='[% mkurl(ctx.opac_root _ '/register', {}, 1) %]'>[% l('Request A Card') %]</a>
+            <br>
+            
         </div>
-        <div class='col-md-6 text-center'>
-            <label for="password_field" class="lbl1" >[% l('PIN') %]</label>
-            <div class="input_bg">
-                <input id="password_field" name="password" type="password" />
+        <div class='col-md-6'>
+            <label for="password_field" class="lbl1" >[% l('PIN') %]<span title="[% INCLUDE "opac/parts/login/password_hint.tt2" %]" data-html="true" data-toggle="tooltip">
+                        <i class="fas fa-question-circle"></i>
+                    </span></label><br>
+             
+            <div class="input_bg mb-2">
+                <input class="form-control" id="password_field" name="password" type="password"/>
             </div>
-            [% INCLUDE "opac/parts/login/password_hint.tt2" %]
-            [% IF reset_password == 'true' %]
-            <a style="font-size: 80%" href='[% mkurl(ctx.opac_root _ '/password_reset', {}, 1) %]'>[% l('Forgot your password?') %]</a>
+           [% IF reset_password == 'true' %]
+            <a href='[% mkurl(ctx.opac_root _ '/password_reset', {}, 1) %]'>[% l('Forgot Your Password?') %]  </a>
             [% END %]
+            <br>
+            
         </div>
+
          <div class="col-12 pt-4 text-center">
-            <input type="checkbox" name="persist" id="login_persist" /><label for="login_persist"> [% l('Stay logged in?') %]</label><br>
-            <input type="submit" value="[% l('Log in') %]" alt="[% l('Log in') %]" class="btn btn-confirm" />       
+            <div class="form-check my-2">
+                <input class="form-check-input" type="checkbox" value="" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">
+                    [% l('Stay logged in?') %]
+                </label>
+            </div>
+            <button type="submit" class="btn btn-confirm my-2"><i class="fas fa-sign-in-alt"></i> [% l('Log in') %]</button>
         </div>
         <div style="clear: both; padding-top: 15px;" class="col-12 text-center">
         [%

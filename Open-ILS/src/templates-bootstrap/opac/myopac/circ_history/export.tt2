@@ -1,0 +1,38 @@
+[%- PROCESS "opac/parts/misc_util.tt2";
+    USE CSVFilter 'csv';
+    USE date;
+    SET DATE_FORMAT = l('%m/%d/%Y'); -%]
+[%- l('Title') | csv -%]
+[%- l('Author') | csv -%]
+[%- l('Checkout Date') | csv -%]
+[%- l('Due Date') | csv -%]
+[%- l('Date Returned') | csv -%]
+[%- l('Barcode') | csv -%]
+[%- l('Call Number') | csv -%]
+[%- l('Format') | csv 'last' %]
+[%  FOREACH circ IN ctx.csv.circs;
+    attrs = { marc_xml => circ.marc_xml };
+    PROCESS get_marc_attrs args=attrs;
+    formats = [];
+    FOR format IN attrs.all_formats;
+        formats.push(format.label);
+    END;
+-%]
+[%- IF circ.circ.target_copy.call_number.id == -1 -%]
+    [%- circ.circ.target_copy.dummy_title | csv -%]
+    [%- circ.circ.target_copy.dummy_author | csv -%]
+[%- ELSIF attrs.title -%]
+    [%- attrs.title | csv -%]
+    [%- attrs.author | csv -%]
+[%- END -%]
+[%- date.format(ctx.parse_datetime(circ.circ.xact_start), DATE_FORMAT) | csv-%]
+[%- date.format(ctx.parse_datetime(circ.circ.due_date), DATE_FORMAT) | csv -%]
+[%- IF circ.circ.checkin_time;
+       date.format(ctx.parse_datetime(circ.checkin_time), DATE_FORMAT) | csv;
+    ELSE; -%]
+,
+[%- END -%]
+[%- circ.circ.target_copy.barcode | csv -%]
+[%- circ.circ.target_copy.call_number.label | csv -%]
+[%- formats.join('+') | csv 'last' %]
+[%  END -%]

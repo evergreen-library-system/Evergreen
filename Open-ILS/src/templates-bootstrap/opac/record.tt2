@@ -9,7 +9,7 @@
 -%]
     <span class="sr-only">[% l('Record Details') %]</span>
     [% INCLUDE "opac/parts/searchbar.tt2" %]
-    <br class="clear-both" />
+    <br />
     <div id="content-wrapper" class="content-wrapper-record-page">
         [% IF ctx.staff_saved_search_size %]
         <div id="results-side-bar">
@@ -20,8 +20,7 @@
         [% END %]
         <div id="[% ctx.staff_saved_search_size ? 'main-content-after-bar' : 'main-content' %]">
             [% INCLUDE "opac/parts/record/body.tt2" %]
-            <div class="common-full-pad"></div>
         </div>
-        <br class="clear-both" />
+        <br/>
     </div>
 [%- END %]

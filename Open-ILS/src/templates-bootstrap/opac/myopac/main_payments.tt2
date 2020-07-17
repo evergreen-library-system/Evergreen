@@ -1,34 +1,38 @@
 [%  PROCESS "opac/parts/header.tt2";
-    PROCESS "opac/parts/misc_util.tt2";
-    WRAPPER "opac/parts/myopac/main_base.tt2";
-    myopac_page = "main";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "main_payments";
     myopac_main_page = "payments";
+    parent = "charges";
     limit = ctx.payment_history_limit;
     offset = ctx.payment_history_offset;
 %]
 
-<h3 class="sr-only">[% l('Transaction Payments') %]</h3>
-<div class="my-3">
+<h3>[% l('Payment History') %]</h3>
+<div>
     <div class="row my-2">
-        <div class="col-3 text-left"> 
+        <div class="col-3 text-left">
+        [% IF offset != 0 %]
             <a href='main_payments?limit=[% limit %]&amp;offset=[% offset - limit %]'
-                [% IF offset == 0 %] class='invisible' [% END %]><span class="np_nav_link classic_link btn btn-outline-primary">&#9668;[% l('Previous') %]</span>
+                  ><span class="np_nav_link classic_link btn btn-action">&#9668;[% l('Previous') %]</span>
             </a>
+            [% END %]
         </div>
         <div class="col-6">
-            <h2 class="w-50 mx-auto">[% l('Payment History') %]</h2>
+            
         </div>
         <div class="col-3 text-right"> 
+        [% IF ctx.payments.size > limit %]
             <a href='main_payments?limit=[% limit %]&amp;offset=[% offset + limit %]'
-                [% IF ctx.payments.size < limit %] class='invisible' [% END %]><span class="np_nav_link classic_link btn btn-outline-primary">[% l('Next') %] &#9658;</span>
-            </a>
+                 ><span class="np_nav_link classic_link btn btn-action">[% l('Next') %] &#9658;</span>
+                 </a>
+                [% END %]
+            
         </div>
     </div>
-    <div class="clear-both"></div>
 
     [% IF ctx.payments.size %]
     <table title="[% l('Payments') %]" 
-        class='table table-hover miniTable paymentTable' width='100%'>
+        class='table table-hover table-bordered miniTable paymentTable'>
         <thead><tr>
             <th>[% l('Payment Date') %]</th>
             <th>[% l('Payment For') %]</th>
@@ -52,11 +56,11 @@
                 <span class="sr-only">Receipt Options: </span>
                     <form action="[% ctx.opac_root %]/myopac/receipt_print" method="post" class="d-inline m-1">
                         <input class="btn btn-sm btn-confirm my-1" type="hidden" name="payment" value="[% payment.mp.id %]" />
-                        <input class="btn btn-sm btn-confirm my-1" type="submit" value="[% l('Print') %]" />
+                        <button class="btn btn-sm btn-action my-1" type="submit"><i class='fas fa-print'></i> Print</button>
                     </form>
                     <form action="[% ctx.opac_root %]/myopac/receipt_email" method="post" class="d-inline m-1">
                         <input class="btn btn-sm btn-confirm my-1" type="hidden" name="payment" value="[% payment.mp.id %]" />
-                        <input class="btn btn-sm btn-confirm my-1" type="submit" value="[% l('Email') %]" />
+                        <button class="btn btn-sm btn-action my-1" type="submit" value="[% l('Email') %]"><i class="fas fa-envelope-open-text"></i> Email</button>
                     </form>
                 </td>
             </tr>

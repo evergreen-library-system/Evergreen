@@ -1,10 +1,11 @@
 [%  PROCESS "opac/parts/header.tt2";
-    WRAPPER "opac/parts/myopac/prefs_base.tt2";
-    myopac_page = "prefs";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "prefs_my_lists";
+    parent="prefs";
     prefs_page = 'prefs_my_lists' %]
 
 
-    <h3 class="sr-only">[% l('List Preferences') %]</h3>
+    <h3>[% l('List Preferences') %]</h3>
     <form method='post'>
 
        <table class="full-width table" id="acct_search_main"
@@ -21,9 +22,9 @@
 
                 [%- setting = 'opac.lists_per_page' -%]
                 <tr >
-                    <td width='20%'><label for='[% setting %]'>[%l("Lists per page") %]</label></td>
+                    <td><label for='[% setting %]'>[%l("Lists per page") %]</label></td>
                     <td>
-                        <select class="form-control mini-control" id='[% setting %]' name='[% setting %]'>
+                        <select class="d-inline-block form-control mini-control" id='[% setting %]' name='[% setting %]'>
                             [%  UNLESS ctx.user_setting_map.$setting;
                                     ctx.user_setting_map.$setting = 10;
                                 END;
@@ -33,17 +34,16 @@
                                         selected='selected'[% END %]>[% val | html %]</option>
                             [% END %]
                         </select>
-                       <img alt="[% l('List Items Help') %]"
-                            src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]"
-                            title="[% l('The number of lists displayed per page.') %]"
-                        />
+                      <a href="#" title="Change the amount of lists shown in 'My Lists'." data-toggle="tooltip">
+                        <i class="fas fa-question-circle"></i>
+                    </a>
                     </td>
                 </tr>
                 [%- setting = 'opac.list_items_per_page' -%]
                 <tr >
-                    <td width='20%'><label for='[% setting %]'>[%l("List items per page") %]</label></td>
+                    <td><label for='[% setting %]'>[%l("List items per page") %]</label></td>
                     <td>
-                        <select class="form-control mini-control" id='[% setting %]' name='[% setting %]'>
+                        <select class="d-inline-block form-control mini-control" id='[% setting %]' name='[% setting %]'>
                             [%  UNLESS ctx.user_setting_map.$setting;
                                     ctx.user_setting_map.$setting = 10;
                                 END;
@@ -53,15 +53,15 @@
                                         selected='selected'[% END %]>[% val | html %]</option>
                             [% END %]
                         </select>
-                        <img alt="[% l('List Items Help') %]"
-                            src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]"
-                            title="[% l('The number of list items displayed per page when viewing a selected list.') %]"
-                        /> 
+                       <span title="Change the amount of items shown while viewing a 'My List'." data-toggle="tooltip">
+                        <i class="fas fa-question-circle"></i>
+                    </span>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <input type="submit" value="[% l('Save') %]" class="btn btn-confirm"/>
+        <button type="submit" class="btn btn-confirm"><i class="fas fa-save"></i> [% l('Save') %]</button>
     </form>
     [% INCLUDE "opac/parts/myopac/prefs_hints.tt2" %]
+    
 [% END %]

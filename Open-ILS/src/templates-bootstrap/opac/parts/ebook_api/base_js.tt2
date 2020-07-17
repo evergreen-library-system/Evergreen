@@ -1,0 +1,95 @@
+[%
+# HTML display chunks
+progress_icon = '<img id="ebook_avail_spinner" src="/opac/images/progressbar_green.gif' _ ctx.cache_key _ '" alt="' _ l("Checking availability for this item...") _ '"/>'
+%]
+
+<script  src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/session.js[% ctx.cache_key %]"></script>
+<script  src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/ebook.js[% ctx.cache_key %]"></script>
+<script >
+
+// translatable strings as JS variables
+var l_strings = {};
+l_strings.download = '[% l('Download') %]';
+l_strings.ready_for_checkout = '[% l('Ready for Checkout') %]';
+l_strings.suspended = '[% l('Suspended') %]';
+l_strings.checkout = '[% l('Checkout') %]';
+l_strings.place_hold = '[% l('Place Hold') %]';
+l_strings.cancel_hold = '[% l('Cancel Hold') %]';
+
+// give us cookies!
+dojo.require("dojo.cookie");
+
+// context org unit
+[% IF !ctx.page OR ctx.page != 'rresult';
+    PROCESS get_library;
+END %]
+var ou = [% loc_value %];
+
+// list of enabled vendors
+var vendor_list = [];
+[% IF ebook_api.ebook_test.enabled == 'true' %]
+vendor_list.push('ebook_test');
+[% END %]
+[% IF ebook_api.oneclickdigital.enabled == 'true' %]
+vendor_list.push('oneclickdigital');
+[% END %]
+[% IF ebook_api.overdrive.enabled == 'true' %]
+vendor_list.push('overdrive');
+[% END %]
+
+var cookie_registry = [ 'ebook_xact_cache' ];
+dojo.forEach(vendor_list, function(v) {
+    cookie_registry.push(v);
+});
+
+// essential info for performing a transaction
+var ebook_action = {};
+[%- IF CGI.param("action").defined %]
+ebook_action.type = '[% CGI.param("action") | html %]';
+[%- END -%]
+[%- IF CGI.param("title").defined %]
+ebook_action.title_id = '[% CGI.param("title") | html %]';
+[%- END -%]
+[%- IF CGI.param("vendor").defined %]
+ebook_action.vendor = '[% CGI.param("vendor") | html %]';
+[%- END -%]
+
+[% IF ctx.user %]
+// user- or login-specific vars
+var authtoken = '[% ctx.authtoken %]';
+var patron_id = '[% ctx.active_card %]'; // using barcode of active card as patron ID
+[%- IF ctx.user.email %]
+var patron_email = '[% ctx.user.email | html %]';
+[%- ELSE %]
+var patron_email = null;
+[%- END %]
+
+var myopac_page;
+[% IF myopac_page %]
+myopac_page = "[% myopac_page %]";
+[% END %]
+
+[% END %]
+
+// enforce removal of ebook API cookies on logout
+dojo.addOnLoad(function() {
+    var logout_handle = dojo.connect(dojo.byId('#logout_link'), 'onclick', function() {
+        dojo.forEach(cookie_registry, function(cookie) {
+            dojo.cookie(cookie, '', {path: '/', expires: '-1h'});
+        });
+        // When we switch to jQuery, use .one()
+        // instead of dojo's .connect() and .disconnect()
+        dojo.disconnect(logout_handle);
+    });
+});
+</script>
+
+[%- IF ctx.user %]
+<script  src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/relation.js[% ctx.cache_key %]"></script>
+<script  src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/loggedin.js[% ctx.cache_key %]"></script>
+[%- END %]
+
+[%- IF (ctx.page == 'rresult' OR ctx.page == 'record') %]
+<script  src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/avail.js[% ctx.cache_key %]"></script>
+[%- END %]
+

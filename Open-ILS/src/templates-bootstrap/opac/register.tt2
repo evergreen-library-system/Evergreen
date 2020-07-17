@@ -42,20 +42,15 @@ register_fields = [
     {class => 'stgu',  name = 'usrname', label => l('Requested Username')}
 ];
 
-# The dojo date widget in the patron edit UI only accepts default 
-# values in ISO8601 format.  It will not accept locale-shaped dates.
-IF !ctx.register.settings.stgu.dob.example;
-    ctx.register.settings.stgu.dob.example = l('YYYY-MM-DD or YYYY/MM/DD');
-END;
+
 
 %]
 
 <h2 class="sr-only">[% l('Account Registration') %]</h2>
 <div id="content-wrapper">
     <div id="main-content-register" class="container">
-        <div class="common-full-pad"></div>
         <h1>[% l('Request a Library Card')%]</h1>
-        <span style="color:red;">&bigstar; = Required Field</span> 
+        <span class="validate">&bigstar; = Required Field</span> 
         <hr/>
 
         [% IF ctx.register.success %]
@@ -100,7 +95,7 @@ END;
                 ) | html %]</h4>
         [% END %]
 
-        <form method='POST' class="needs-validation" onSubmit="return dobValidate(document.getElementById('stgu.dob'))" novalidate>
+        <form method='POST' class="needs-validation" novalidate>
             <table class="w-100">
                 <tr>
                     <td width="30">
@@ -158,12 +153,22 @@ FOR field_def IN register_fields;
         <label for='[% field_path %]'>[% field_def.label | html %]</label>
     </td>
     <td class="py-3">
+    [% IF fname == "dob"; %]
+     <div class="input-group date" data-provide="datepicker-inline">
+        <input type="text" class="form-control datepicker" id='[% field_path %]'
+            name='[% field_path %]' value='[% value || CGI.param(field_path) | html %]' [% IF require %]required[% END %] data-date-format="yyyy-mm-dd" />
+        <div class="input-group-addon">
+            <span class="glyphicon glyphicon-th"></span>
+        </div>
+    </div>
+    [% ELSE; %]
         <input 
         	class='form-control'
             type='text'
             id='[% field_path %]'
             name='[% field_path %]'
             value='[% value || CGI.param(field_path) | html %]' [% IF require %]required[% END %]/>
+     [% END; %]  
         <div class="invalid-feedback">
           Please enter a [% field_def.label | html %]
         </div>
@@ -175,7 +180,7 @@ FOR field_def IN register_fields;
     </td>
     <td>
         [% IF require %]
-        <span style="color:red;">&bigstar;</span>
+        <span class="validate">&bigstar;</span>
         [% END %]
     <!-- display errors and example text -->
 
@@ -225,7 +230,6 @@ FOR field_def IN register_fields;
                 </table>
             </form>
             [% END %]
-            <div class="common-full-pad"></div>	
         </div>
     </div>
 [%- END %]
@@ -247,4 +251,13 @@ FOR field_def IN register_fields;
     });
   }, false);
 })();
+
+$(document).ready(function(){         
+   $('.datepicker').datepicker({
+        weekStart: 1,
+        autoclose: true,
+        todayHighlight: true,
+    });
+    $('.datepicker').datepicker("setDate", new Date());
+});
 </script>

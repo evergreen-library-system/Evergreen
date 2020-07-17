@@ -3,29 +3,13 @@
     PROCESS "opac/parts/myopac/column_sort_support.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "circs";
+    parent="circs";
 %]
-<h3 class="sr-only">[% l('Current Items Checked Out') %]</h3>
+<h3>[% l('Current Items Checked Out') %]</h3>
 <div id='myopac_checked_div'>
-	<div>
-     <ul class="nav nav-pills nav-fill">
-        <li class="nav-item m-2">
-            <a class="nav-link active" href='#'>[% l("Current Items Checked Out") %]</a>
-        </li>
-        [%- IF ebook_api.enabled == 'true' %]
-        <li class="nav-item m-2">
-            <a class="nav-link not_active_pill" href="[% mkurl('ebook_circs',{},1) %]">[% l("E-Items Currently Checked Out") %]</a>
-        </li>
-        [%- END %]
-        <li class="nav-item active m-2">
-            <a class="nav-link not_active_pill" href="[% mkurl('circ_history',{},1) %]">[% l("Check Out History") %]</a>
-        </li>
-    </ul>
-	</div>
-    <div class="my-4">
-    <div class="header_middle">
-        <span class="float-left">[% l('Current Items Checked Out') %]</span>
-    </div>
-    <div class="clear-both"></div>
+	
+    <div>
+   
     [% IF ctx.circs.size < 1 %]
     <div class="warning_box">[% l('You have no items checked out.') %]</div>
     [% ELSE %]
@@ -42,36 +26,24 @@
     <div id='checked_main'>
         <form method="post" id="circ-form"
             onsubmit="return confirm('[% l("Are you sure you wish to renew the selected item(s)?") %]');">
-         <div class="row">
-                <span class="col-md-11 my-2">
-                <select class="form-control" name="action" title="[% l('Select Action') %]">
-                    <option value="renew">[% l('Renew Selected Titles') %]</option>
-                </select>
-            </span>
-            <span class="col-md-1 my-2">
-                <input type="submit"
-                    value="[% l('Go') %]"
-                    title="[% l('Go') %]"
-                    class="btn btn-confirm" />
-            </span>
-           <!-- <span style="padding-left:5px;">
-                <a href="#"><img 
-                    alt="[% l('Renewing Help') %]"
-                    title="[% l('Actions for checked out items') %]"
-                    src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]" /></a>
-            </span> -->
+         <div class="my-3">
+                <button name="action" class="btn btn-confirm" id="renew" value="renew" type="submit"><i class="fas fa-redo-alt"></i> Renew Selected</button>
         </div>
+        <div class="d-block d-md-none">
+            <input id="check_all_checked_alt" aria-label="[% l('Select All Items') %]" checked="checked" type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
 
+            <label for="check_all_checked">[% l('Check/Uncheck All') %]</label>  
+        </div>       
         <table  id="acct_checked_main_header"  title="[% l('Items Checked Out') %]"
-            class="table table-hover miniTable circTable">
+            class="table table-hover table-bordered miniTable circTable">
             <thead>
             <tr>
-                <th class="checkbox_column">
+                <td class="checkbox_column">
                     <input type="checkbox" id="check_all_checked"
-                        title="[% l('Select All Items') %]"
+                        aria-label="[% l('Select All Items') %]" 
                         onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"
                     />
-                </th>
+                </td>
                 <th>[% sort_head("sort_title", l("Title")) %]</th>
                 <th>[% sort_head("author", l("Author")) %]</th>
                 <th>[% sort_head("renews", l("Renewals Left")) %]</th>
@@ -145,25 +117,24 @@
 
                 FOR circ IN circ_items; %]
                     <tr>
-                        <td class="checkbox_column" valign="top">
+                        <td class="checkCell">
                             <input type="checkbox" name="circ"
-                                title="[% l('Item Selected') %]"
+                                aria-label="[% l('Select Item') %]"
                                 [% IF circ.circ.renewal_remaining < 1 %] disabled="disabled" [% END %]
                                 value="[% circ.circ.id %]" />
                         </td>
-                        <td name="title">
+                        <td>
                             <span class="sr-only">Title</span>
                             [% IF circ.circ.target_copy.call_number.id == -1 %]
                                 [% circ.circ.target_copy.dummy_title | html %]
                             [% ELSIF circ.ATTRS.title %]
                                 <a href="[% mkurl(ctx.opac_root _ '/record/' _ 
-                                    circ.circ.target_copy.call_number.record.id, {}, 1) %]"
-                                    name="[% l('Catalog record') %]"><span[%- deemphasize_class -%]>
+                                    circ.circ.target_copy.call_number.record.id, {}, 1) %]"><span[%- deemphasize_class -%]>
                                     [%- circ.ATTRS.title.substr(0,circ.ATTRS.nonfiling_characters) | html %]</span>
                                     [%- circ.ATTRS.title.substr(circ.ATTRS.nonfiling_characters) | html %]</a>
                             [% END %]
                         </td>
-                        <td name="author">
+                        <td>
                             [% IF circ.circ.target_copy.call_number.id == -1 %]
                                 <span class="sr-only">Author</span>
                                 [% circ.circ.target_copy.dummy_author | html %]
@@ -177,7 +148,7 @@
 
                             [% END %]
                         </td>
-                        <td name="renewals">
+                        <td>
                             <span class="sr-only">Renewals Remaining</span>
                             [% circ.circ.renewal_remaining %]
                         </td>
@@ -185,20 +156,20 @@
                             due_date = ctx.parse_datetime(circ.circ.due_date, circ.circ.circ_lib);
                             due_class = (date.now > date.format(due_date, '%s')) ? 'error' : '';
                         %]
-                        <td name="due_date" class='[% due_class %]'>
+                        <td class='[% due_class %]'>
                             <span class="sr-only">Due Date</span>
                             [% date.format(due_date, DATE_FORMAT) %]
                         </td>
-                        <td name="barcode">
+                        <td>
                             <span class="sr-only">Barcode</span>
                             <span class="speak:spell-out;">[% circ.circ.target_copy.barcode | html %]</span>
                         </td>
-                        <td name="call_number">
+                        <td>
                             <span class="sr-only">Call Number</span>
                             [% circ.circ.target_copy.call_number.label | html %]
                         </td>
                          [% IF ctx.get_org_setting(ctx.user.home_ou, 'opac.show_owning_lib_column'); %]
-                          <td name="lib">
+                          <td>
                                 [%- fleshed_ou = circ.circ.target_copy.call_number.owning_lib;
                                                 INCLUDE "opac/parts/library_name_link_from_ou.tt2";
                                 %]

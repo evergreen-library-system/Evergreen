@@ -89,12 +89,30 @@ function updateDashboard() {
     var total_holds_pending = (typeof xacts.holds_pending === 'undefined') ? '-' : xacts.holds_pending.length;
     var total_holds_ready = (typeof xacts.holds_ready === 'undefined') ? '-' : xacts.holds_ready.length;
     // update totals
-    dojo.byId('dash_e_checked').innerHTML = total_checkouts;
-    dojo.byId('dash_e_holds').innerHTML = total_holds_pending;
-    dojo.byId('dash_e_pickup').innerHTML = total_holds_ready;
-    // unhide ebook dashboard
-    dojo.removeClass('dashboard_e', "hidden");
+    var eCheckout =  document.getElementById('dash_e_checked');
+    var eHolds =  document.getElementById('dash_e_holds');
+    var ePickup =  document.getElementById('dash_e_pickup');
+    var eDash =  document.getElementById('dashboard_e');
+
+    if(typeof(eCheckout) != 'undefined' && eCheckout != null)
+    {
+        dojo.byId('dash_e_checked').innerHTML = total_checkouts;
+    }
+    if(typeof(eHolds) != 'undefined' && eHolds != null)
+    {
+        dojo.byId('dash_e_holds').innerHTML = total_holds_pending;
+    }
+    if(typeof(ePickup) != 'undefined' && ePickup != null)
+    {
+        dojo.byId('dash_e_pickup').innerHTML = total_holds_ready;
+    }
+    if(typeof(eDash) != 'undefined' && eDash != null)
+    {
+        // unhide ebook dashboard
+        dojo.removeClass('dashboard_e', "hidden");
+    }
 }
+
 
 function updateMyAccountSummary() {
     if (myopac_page === 'main') {

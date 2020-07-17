@@ -1,0 +1,41 @@
+[%-
+# Display holdings/availability info from ebook API
+#
+# We require the following info:
+# - rec_id: internal ID for this record (rec.id in search results, ctx.bre_id in record summary)
+# - ebook_id: external ID for title (ISBN for OneClickdigital, unique identifier for OverDrive)
+# - vendor (oneclickdigital, overdrive)
+
+IF args.ebook;
+
+    IF ctx.page == 'rresult';
+        ebook.rec_id = rec.id;
+    ELSE;
+        ebook.rec_id = ctx.bre_id;
+    END;
+
+    ebook.ebook_id = args.ebook.ebook_id;
+    ebook.vendor = args.ebook.vendor;
+
+# This div is hidden by default. The JS layer will unhide it, use the ebook_id
+# to retrieve holdings/availability info via the appropriate vendor API, and
+# overwrite the div's contents with that information.
+-%]
+<div id="[% ebook.rec_id %]" class="ebook_avail hidden">
+    <div id="[% ebook.ebook_id %]" class="[% ebook.vendor %]_avail">
+        <table id="[% ebook.rec_id %]_ebook_holdings" class="result_holdings_table hidden">
+            <thead>
+                <tr>
+                    <th>[% l('Available Formats') %]</th>
+                    <th>[% l('Status') %]</th>
+                </tr>
+            <tbody>
+                <tr>
+                    <td id="[% ebook.rec_id %]_formats"></td>
+                    <td id="[% ebook.rec_id %]_status"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+[% END %]

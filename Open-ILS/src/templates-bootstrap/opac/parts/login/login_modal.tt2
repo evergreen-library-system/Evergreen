@@ -3,9 +3,9 @@
     <div class="modal-content">
      <form method='post' action="/eg/opac/login?redirect_to=%2Feg%2Fopac%2Fmyopac%2Fmain">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Login To Evergreen</h5>
+        <h1 class="modal-title" id="exampleModalLabel">Login To Evergreen</h1>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+          <i class="fas fa-times"></i>
         </button>
       </div>
       <div class="modal-body">
@@ -25,28 +25,31 @@
 		</div>
 		[% END %]
 
-<div id='login-form-box' class='container text-center'>
+<div class='container text-center'>
     <div class="mx-auto row py-4">
         <div class='col-md-6'>
-            <label for='username_field' class="lbl1" >[% l('Library Card Number') %]</label>
+            <label for='username_field' class="lbl1" >[% l('Library Card Number') %]<span title="[% INCLUDE "opac/parts/login/username_hint.tt2" %]" data-html="true" data-toggle="tooltip">
+            <i class="fas fa-question-circle"></i></span></label> <br>
             <div class="input_bg mb-2">
-                <input class="form-control" type='text' id="username_field" name="username" autofocus />
+                <input class="form-control" type='text' id="username_field" name="username"/>
             </div>
-            <div>[% l('Use the full number.') %]</div>
-            <div>[% l('Example: 280800001234567') %]</div>
+               <a href='[% mkurl(ctx.opac_root _ '/register', {}, 1) %]'>[% l('Request A Card') %]</a>
             <br>
-            <a href='[% mkurl(ctx.opac_root _ '/register', {}, 1) %]'>[% l('Request A Card') %]</a>
+            
         </div>
         <div class='col-md-6'>
-            <label for="password_field" class="lbl1" >[% l('PIN') %]</label>
+            <label for="password_field" class="lbl1" >[% l('PIN') %]<span title="[% INCLUDE "opac/parts/login/password_hint.tt2" %]" data-html="true" data-toggle="tooltip">
+                        <i class="fas fa-question-circle"></i>
+                    </span></label><br>
+             
             <div class="input_bg mb-2">
-                <input class="form-control" id="password_field" name="password" type="password" />
+                <input class="form-control" id="password_field" name="password" type="password"/>
             </div>
-            [% INCLUDE "opac/parts/login/password_hint.tt2" %]
-            <br>
-             [% IF reset_password == 'true' %]
-            <a href='[% mkurl(ctx.opac_root _ '/password_reset', {}, 1) %]'>[% l('Forgot Your Password?') %]</a>
+           [% IF reset_password == 'true' %]
+            <a href='[% mkurl(ctx.opac_root _ '/password_reset', {}, 1) %]'>[% l('Forgot Your Password?') %]  </a>
             [% END %]
+            <br>
+            
         </div>
         <div style="clear: both; padding-top: 15px;" class="col-12">
         [%
@@ -73,11 +76,12 @@
       <div class="modal-footer">
       <div class="mr-auto">
       	<input type='hidden' name='redirect_to' value='[% redirect | html %]'/>
-        <input type="checkbox" name="persist" id="login_persist" class="mr-1"/><label for="login_persist"> [% l('Stay logged in?') %]</label>
+        <input type="checkbox" name="persist" id="login_persist" class="mr-1"/>
+        <label for="login_persist"> [% l('Stay logged in?') %]</label>
       </div>
        
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <input type="submit" value="[% l('Log in') %]" alt="[% l('Log in') %]" class="btn btn-confirm" />
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times"></i> [% l('Close') %]</button>
+        <button type="submit" class="btn btn-confirm"><i class="fas fa-sign-in-alt"></i> [% l('Log in') %]</button>
       </div>
       </form>
     </div>

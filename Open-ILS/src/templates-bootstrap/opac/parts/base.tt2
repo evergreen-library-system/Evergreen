@@ -10,16 +10,16 @@
         [% END %]
         <meta name = "viewport" content = "initial-scale = 1.0">
         <!--Added bootstrap dependancies-->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-        <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css[% ctx.cache_key %]" />
-        <link rel="stylesheet" type="text/css" href="[% ctx.opac_root %]/css/style.css[% ctx.cache_key %]&amp;dir=[%
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/css/bootstrap/bootstrap.min.css">
+        <link rel="stylesheet"  href="[% ctx.media_prefix %]/css/fontawesome/all.css[% ctx.cache_key %]" /> 
+        <link rel="stylesheet"  href="[% ctx.media_prefix %]/css/datepicker/bootstrap-datepicker.css[% ctx.cache_key %]" /> 
+        <link rel="stylesheet"  href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css[% ctx.cache_key %]" />
+        <link rel="stylesheet" href="[% ctx.opac_root %]/css/style.css[% ctx.cache_key %]&amp;dir=[%
           IF ctx.get_i18n_l(ctx.eg_locale).rtl == 't' %]rtl[%
           ELSE %]ltr[% END %]" />
+          <link rel="stylesheet" href="[% ctx.opac_root %]/css/mediaQuery.css[% ctx.cache_key %]" />
         [% IF ctx.get_i18n_l(ctx.eg_locale).rtl == 't' %]
-        <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto-rtl.css[% ctx.cache_key %]" />
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto-rtl.css[% ctx.cache_key %]" />
         [% END %]
         
            [% IF ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_css') %]
@@ -42,7 +42,7 @@
         [%- ctx.metalinks.push('<meta property="og:site_name" content="' _ libname _ '" />'); %]
         [% FOREACH meta IN ctx.metalinks; meta _ "\n"; END; -%]
         [% IF want_dojo %]
-        <style type="text/css">
+        <style>
             @import "[% ctx.media_prefix %]/js/dojo/dijit/themes/tundra/tundra.css[% ctx.cache_key %]";
         </style>
         [% END %]
@@ -51,19 +51,33 @@
             [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
         [% END %]
         [% PROCESS 'opac/parts/stripe.tt2' %]
+<script  src="[% ctx.media_prefix %]/js/bootstrap/jquery-3.5.1.min.js"></script>
+
+        
     </head>
-    <body[% IF want_dojo; ' class="tundra"'; END %]>
+    <body[% IF want_dojo; ' class="tundra d-flex flex-column min-vh-100"'; ELSE; ' class="tundra d-flex flex-column min-vh-100"';  END %]>
         <h1 class="sr-only">[% l('Catalog') %]</h1>
         [%#Each content page needs (at minimum) an <h2> describing the content%]
-        <div style="min-height:100%;">
+       <div class="mb-3">
         [% content %]
         </div>
+        [% IF ctx.page != "login" ;%]
         [% INCLUDE 'opac/parts/login/login_modal.tt2' %]
+        [% END;%]
         <h2 class="sr-only">[% l('Additional Resources') %]</h2>
         [% INCLUDE 'opac/parts/footer.tt2' %]
+        
         [% INCLUDE 'opac/parts/js.tt2' %]
+        <script>
+    $(document).ready(function(){
+    $('.tooltip').tooltip();
+    });
+</script>
         [%- IF ENV.OILS_CHILIFRESH_ACCOUNT %]
             [%- INCLUDE 'opac/parts/chilifresh.tt2' %]
         [%- END %]
+
+     
+
     </body>
 </html>

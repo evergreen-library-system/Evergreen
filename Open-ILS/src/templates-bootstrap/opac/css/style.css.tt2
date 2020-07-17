@@ -4,6 +4,21 @@
     rtl = ctx.get_i18n_l(ctx.eg_locale).rtl;
 %]
 
+.adv_filters{
+    
+    -moz-column-count: 4;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 4;
+    -webkit-column-gap: 20px;
+    column-count: 4;
+    column-gap: 20px;
+    list-style: none;
+}
+
+.top-divide{
+        border-top: 1px solid rgba(0,0,0,.1);
+}
+
 /*
 Mini Table Styling
 */
@@ -192,6 +207,13 @@ only screen and (max-width: 650px)  {
 	}
 }/*Micro Tables End*/
 
+ .my_nav .active{background-color:#afffbf;}.my_nav a{text-align:left !important; min-width:17em;border-radius: 0px;}.sumNum{
+    font-weight:700;
+}
+
+.coverImage{position: relative;}
+.carousel .glide__arrow{background: unset;}
+
 /*
 Novelist Styling
 */
@@ -299,11 +321,7 @@ Novelist Styling
     border-radius: 1rem !important;
 }
 
-#cnbrowse{
-	width: 95%;
-    text-align: center;
-    padding: 15px;
-}
+
 .cn_browse_item .card{
 	padding: 15px;
 }
@@ -316,10 +334,25 @@ Novelist Styling
 		background-color:#e8e8e8;
 }
 
-.red{
-	color:red;
+.danger, .validate{
+	color: [% css_colors.text_alert %] !important;
 }
 
+.danger{
+    font-weight: 600;
+    font-style: italic;
+}
+
+.success{
+    color: green !important;
+}
+.dropdown-menu{
+    border: 1px solid black;
+    box-shadow: 2px 2px #00000054;
+}
+.dropdown-item.active, .dropdown-item:active{
+    color : #000 !important;
+}
 .login:focus{
 	outline:none;
 }
@@ -350,8 +383,7 @@ html{
     min-height: 100vh;
 }
 body {
-height:100%;
-min-height: 100vh;
+    min-height: 100vh;
     margin:0;
     font-family: [% css_fonts.font_main %] !important;
     font-size: [% css_fonts.size_base %];
@@ -422,17 +454,11 @@ a {
     height:18px;
 }
 */
-h1 {
-    margin:0;
-    margin-bottom: 5px;
-    font-size: [% css_fonts.size_biggest %];
-    font-weight:normal;
+
+#adv_numeric_block{
+    max-width: 600px;
 }
 
-h2 {
-    font-size: [% css_fonts.size_bigger %];
-    font-weight:bold;
-}
 
 h2.graphic880 {
     font-size: [% css_fonts.size_bigger %];
@@ -477,15 +503,7 @@ div.select-box-wrapper {
     display:inline-block;
 }
 
-#dashboard, #dashboard_e {
-    margin-top: 1em;
-    height: 2em;
-}
 
-#dashboard span.dash-align a, #dashboard_e span.dash-align a {
-    font-weight: bold;
-    text-decoration: none;
-}
 
 #dash_user {
     font-weight: bold;
@@ -747,23 +765,11 @@ for now until a better color is picked - if needed.
 }
 
 #adv_special_block {
-    [% IF rtl == 't' -%]
-    float: right;
-    [%- ELSE %]
-    float: left;
-    [%- END %]
+    
     padding: 5px;
     margin-top: 5px;
 }
 
-#adv_search_submit {
-    [% IF rtl == 't' -%]
-    margin-right: 10px;
-    [%- ELSE %]
-    margin-left: 10px;
-    [%- END %]
-    position: relative;
-}
 
 .checkbox_col {
     width: 1%;
@@ -1133,8 +1139,7 @@ div.format_icon {
 
 #content-wrapper {
     background-color: [% css_colors.background %];
-    min-height: 600px;
-        height: auto;
+    height: auto;
     display: grid;
 }
 
@@ -1258,10 +1263,6 @@ div.format_icon {
     margin:0;
 }
 
-#holds_temp_parent tr td div {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
 
 #holds_temp_parent tr td div.format_icon {
     margin-top: 6px;
@@ -1397,12 +1398,14 @@ tr.result_table_row > td.result_table_pic_header {
     position: relative;
 }
 #record_basket_count_floater {
-    background-color: [% css_colors.accent_lighter %];
+    background-color: #ddd;
     position: absolute;
-    top: -3px;
-    right: -3px; /* relative to icon, so don't want to adjust for RTL */
+    top: 0px;
+    right: -10px;
     z-index: 2;
+    text-align: center;
     border-radius: 50%;
+    width: 20px;
 }
 #record_basket_count_floater a {
     text-decoration: none;
@@ -1444,6 +1447,10 @@ div.result_table_utils_cont {
     text-align:left;
     float: left;
     [% END -%]
+}
+
+.mylist_action:hover{
+    text-decoration: none;
 }
 
 #myopac_summary_div p {
@@ -2009,9 +2016,30 @@ div#facet_sidebar {
 
 .facet_template .count {
     text-align: right;
-    color: [% css_colors.accent_mediumdark %];
+    color: [% css_colors.accent_dark %];
 }
 
+.page-item.active .page-link {
+    background-color: #00593d;
+    border-color: #00593d;
+}
+.page-link
+{
+    color: #00593d;
+}
+
+.filter-header{
+     background-color: [% css_colors.bg_filter %];
+     color: [% css_colors.text_filter %];
+}
+
+.filter-header:hover{
+     background-color: [% css_colors.bg_filter_hover %];
+}
+
+.extra_header{
+     background-color: [% css_colors.bg_extras %];
+}
 .facet_template_selected {
     background-color: [% css_colors.accent_lighter2 %];
     border: 1px solid [% css_colors.accent_medium %];
@@ -2182,7 +2210,6 @@ a.dash-link:hover { text-decoration: underline !important; }
     padding-left: 2em;
     [% END -%]
 }
-.expert-search-row { padding-top: 10px; }
 #adv_expert_row label { font-weight: bold; }
 
 .bookshelf tr.browse_border td {
@@ -2982,8 +3009,12 @@ a.preflib_change {
     #nav-divide{
     	display:none !important;
     }
+    
 }
 @media only screen and (max-width: 800px) {
+    .adv_options{
+        width: 100% !important;
+    }
     .facet_sidebar_hidden, .result_block_hidden {
         display: none;
     }
@@ -3193,9 +3224,7 @@ a.preflib_change {
         float:left;
         [% END -%]
     }
-    #dashboard, #dashboard_e {
-        display: none;
-    }
+   
     #holds_box form blockquote {
         [% IF rtl == 't' -%]
         margin-right: 10px;
@@ -3738,6 +3767,10 @@ label[for*=expert_]
     font-weight: bold;
     text-align: center;
 }
+
+.fas, .far{
+    margin: 0px 3px;
+}
 .carousel-entry {
     max-width: 150px;
 }
@@ -3758,10 +3791,10 @@ label[for*=expert_]
     display: inline-block;
 }
 .carousel .glide__arrow--right {
-    right: -5em;
+    right: -8em;
 }
 .carousel .glide__arrow--left {
-    left: -5em;
+    left: -8em;
 }
 
 .search-filter{
@@ -3775,18 +3808,63 @@ label[for*=expert_]
     margin: 0px 10px;
 }
 
-.title{
-    font-size: large;
-}
 
 #homeLogo{
-    opacity: 0.5; 
     filter: alpha(opacity=50); 
     background-color: #fff; /* Used if the image is unavailable */
     height: 500px; /* You must set a specified height */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: contain; /* Resize the background image to cover the entire container */
-    background-image: url("https://evergreen-ils.org/wp-content/uploads/2018/09/Evergreen-Final-Logo.png");
+    background-image: url("[% ctx.media_prefix %]/images/Evergreen-Final-Logo.png");
 
+}
+
+.navbar-dark .navbar-nav .nav-link{
+    color: #fff !important;
+}
+
+.pref_table{
+    margin: 10px;
+}
+
+.checkCell{width:30px;}
+
+@media (min-width: 650px){
+.modal-dialog {
+    max-width: 600px !important;
+    }
+
+}
+
+.listTitleText{
+    width:33%;
+}
+
+.facet_box_wrapper .card-header{
+    background-color: [% css_colors.facets_back %];
+    color: [% css_colors.facets_text %];
+}
+
+.vertMid {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.sumNum{
+    margin-right:5px;
+}
+
+.my_nav .dropdown-toggle::after{
+    margin: 5px 0px !important;
+    float: right;
+}
+
+.my_nav .fas, .mynav .far{
+    min-width:20px;
+}
+
+.adv_options{
+    width: 50%;
 }

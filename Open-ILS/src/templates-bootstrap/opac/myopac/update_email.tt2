@@ -31,7 +31,7 @@
         <tr><td>[% l('Current Password') %]</td><td><input type='password' class="form-control" name='current_pw'/></td></tr>
         <tr><td>[% l('New Email') %]</td><td><input type='text' name='email' class="form-control" value='[% ctx.invalid_email | html %]'/></td></tr>
     </table>
-    <input value="[% l('Submit') %]" type='submit' class="btn btn-confirm m-2"/>
+   <button class="btn btn-confirm m-2" type='submit'><i class="fas fa-save"></i> [% l('Save Changes') %]</button>
 </form>
 </div>
 [% END %]

@@ -10,9 +10,8 @@
 
 <div id="header-wrap">
 [% INCLUDE "opac/parts/topnav_links.tt2" %]
-
+</div>
 [% END %]
-
-[% IF ctx.is_staff %]
-[% INCLUDE "opac/parts/topnav_subnav.tt2" %]
-[% END %]
+<div id="subheader-wrap">
+ [% INCLUDE "opac/parts/topnav_subnav.tt2" %]
+ </div>

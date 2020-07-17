@@ -1,0 +1,30 @@
+<div id="record_basket">
+  <div id="basket_actions">
+    <select id="select_basket_action" aria-label="[% l('Select basket action') %]">
+      <option value="">[% l('-- Basket Actions --') %]</option>
+      <option value="[% mkurl(ctx.opac_root _ '/mylist', {}) %]">[% l('View Basket') %]</option>
+      <option value="[% mkurl(ctx.opac_root _ '/mylist/move', { action => 'place_hold', entire_list => 1 }) %]">[% l('Place Holds') %]</option>
+      <option value="[% mkurl(ctx.opac_root _ '/mylist/print', {}) %]">[% l('Print Title Details') %]</option>
+      <option value="[% mkurl(ctx.opac_root _ '/mylist/email', {}) %]">[% l('Email Title Details') %]</option>
+      [% IF !ctx.is_browser_staff %]
+      <option value="[% mkurl(ctx.opac_root _ '/myopac/lists', { move_cart_by_default => 1, from_basket => 1 }) %]">[% l('Add Basket to Saved List') %]</option>
+      [% END %]
+      [% IF ctx.is_browser_staff %]
+      <option value="add_cart_to_bucket">[% l('Add Basket to Bucket') %]</option>
+      [% END %]
+      <option value="[% mkurl(ctx.opac_root _ '/mylist/clear', {}) %]">[% l('Clear Basket') %]</option>
+    </select>
+    <input class="opac-button" type="button" id="do_basket_action" value="[% l('Go') %]" />
+  </div>
+  <div id="record_basket_icon">
+     <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab="">
+       <img src="[% ctx.media_prefix %]/images/cart-sm.png[% ctx.cache_key %]" alt="[% l('View Basket') %]">
+     </a>
+     <div id="record_basket_count_floater">
+       <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab="">
+         <span id="record_basket_count">[% ctx.mylist.size %]</span>
+         <span class="sr-only">[% l('records in basket') %]</span>
+       </a>
+     </div>
+  </div>
+</div>

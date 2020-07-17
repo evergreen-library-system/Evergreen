@@ -1,17 +1,16 @@
 [%  PROCESS "opac/parts/header.tt2";
-    WRAPPER "opac/parts/myopac/prefs_base.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "prefs";
+    parent="prefs";
     prefs_page = 'prefs' %]
-
-<h3 class="sr-only">[% l('Account Preferences') %]</h3>
+ <h3>[% l('Account Information and Preferences') %]</h3>
 <div id="acct_info_main">
-    <table width='70%' title="[% l('Account preference') %]"
-        class='light_border table table-hover'>
+    <table title="[% l('Account preference') %]" class='light_border table table-hover'>
         <tbody id='myopac_summary_tbody'>
             <tr>
                 <td class='color_4 light_border'>[% l("Name") %]</td>
 
-                <td width='50%' class='light_border'>[% l(
+                <td class='light_border'>[% l(
                     HUMAN_NAME_FORMAT,
                     ctx.user.prefix, 
                     ctx.user.first_given_name,
@@ -24,8 +23,7 @@
             </tr>
              [% IF ctx.user.pref_first_given_name || ctx.user.pref_second_given_name || ctx.user.pref_family_name %]
             <tr>
-                <td width='30%'
-                    class='color_4 light_border'>[% l("Preferred Name") %]</td>
+                <td class='color_4 light_border'>[% l("Preferred Name") %]</td>
 
                 <td class='light_border'>[% l(
                     HUMAN_NAME_FORMAT,
@@ -67,8 +65,8 @@
                 [%- IF ctx.username_change_disallowed %]
                 <td></td>
                 [%- ELSE %]
-                <td class='light_border'><a href='update_username'
-                    title="[% l('Change Username') %]">[% l("Change") %]</a></td>
+                <td class='light_border'><a class="btn btn-sm btn-action" href='update_username'
+                    title="[% l('Change Username') %]"><i class="fas fa-user-cog"></i> [% l("Change") %]</a></td>
                 [%- END %]
             </tr>
             <tr>
@@ -78,8 +76,8 @@
                 [%- IF disable_password_change == 'true' %]
                 <span></span>
                 [%- ELSE %]
-                <span class='light_border'><a href='update_password'
-                    title="[% l('Change Password') %]">[% l("Change") %]</a></span>
+                <span class='light_border'><a class="btn btn-sm btn-action" href='update_password'
+                    title="[% l('Change Password') %]"><i class="fas fa-user-cog"></i> [% l("Change") %]</a></span>
                 [%- END %]
                 </td>
             </tr>
@@ -90,8 +88,8 @@
                 [%- IF disable_email_change == 'true' %]
                 <span></span>
                 [%- ELSE %]
-                <span class='light_border'><a href='update_email'
-                    title="[% l('Update Email Address') %]">[% l('Change') %]</a></span>
+                <span class='light_border'><a class="btn btn-sm btn-action" href='update_email'
+                    title="[% l('Update Email Address') %]"><i class="fas fa-user-cog"></i> [% l('Change') %]</a></span>
                 [%- END %]
                 </td>
             </tr>
@@ -119,8 +117,24 @@
 
             <tr>
                 <td class='color_4 light_border'>[% l("Home Library") %]</td>
-                <td class='light_border'>[% ctx.user.home_ou.name | html %]</td>
-                <td></td>
+ <td class='light_border'>
+                    [% ctx.get_aou(ctx.user.home_ou.parent_ou).name %]<br/>
+                    [% ctx.user.home_ou.name | html %]<br/>
+                    [% ctx.user.home_ou.billing_address.street1 %]<br/>
+                    [% IF ctx.user.home_ou.billing_address.street2; ctx.user.home_ou.billing_address.street2 _ "<br/>"; END %]
+                    [% ctx.user.home_ou.billing_address.city %], [% ctx.user.home_ou.billing_address.state %] 
+                    [% ctx.user.home_ou.billing_address.post_code %]<br/>
+                    <br/>
+
+                    [% IF ctx.user.home_ou.phone; ctx.user.home_ou.phone _ "<br/>"; END %]
+                    
+                    [% IF ctx.user.home_ou.email; ctx.user.home_ou.email _ "<br/>"; END %]
+                    [% lib_url = ctx.get_org_setting(ctx.user.home_ou.id, 'lib.info_url');
+                        IF lib_url;
+                            '<a href="'; lib_url | html; '" property="url">'; lib_url; '</a>';
+                        END;
+                    %]
+                </td>                <td></td>
             </tr>
             <tr>
                 <td class='color_4 light_border'>[% l("Account Creation Date") %]</td>
@@ -131,8 +145,7 @@
                 <td class='color_4 light_border'>[% l("Account Expiration Date") %]</td>
                 <td class='light_border'>
                     [%- IF date.format(ctx.parse_datetime(ctx.user.expire_date), '%s') < date.format(date.now , '%s'); -%]
-                        <span class="alert" style="font-weight:bold;">[% date.format(ctx.parse_datetime(ctx.user.expire_date), DATE_FORMAT) %]</span>
-                        </td>
+                        <span class="danger">[% date.format(ctx.parse_datetime(ctx.user.expire_date), DATE_FORMAT) %]</span>
                     [% ELSE %]
                         [% date.format(ctx.parse_datetime(ctx.user.expire_date), DATE_FORMAT) %]
                     [% END %]
@@ -149,7 +162,7 @@
     </table>
     
     <br />
-    <hr class='opac-auto-013' color="#DCDBDB" />
+    <hr />
     <br />
     
 	<div class="header_middle mb-3">
@@ -176,15 +189,16 @@
                 cur_id = addr.id; 
                 pending_addr = pending.$cur_id;
             %]
-            <div class="col-lg-6 col-12">
-             <table width='100%' id='address_table' class='light_border' title="[% l('Addresses') %]">
+    <div class="col-lg-6 col-12">
+        <table class='table' title="[% l('Addresses') %]">
        
-        <tbody>
+            <tbody>
             <tr>
+              <td>
                 <!-- pending address form -->
                 [% IF pending_addr OR edit_addr_id == cur_id;
                     update_addr = pending_addr || addr %]
-                <td>
+              
                     <form method='post'>
                         [% IF pending_addr %]
                             <input type='hidden' name='pending_addr' value='[% pending_addr.id %]'/>
@@ -215,10 +229,12 @@
                             </tr>
                         [% END %]
                             <tr>
-                                <td><input type='submit' value="[% l('Save Changes') %]" class="btn btn-confirm btn-sm"/></td>
+                                <td><button type='submit' class="btn btn-confirm "><i class="fas fa-save"></i> [% l('Save Changes') %]
+
+ </button></td>
                                 <td>
                                     [% params = (pending_addr) ? {delete_pending => pending_addr.id} : {} %]
-                                    <a href="[% mkurl('', params, 1) %]" class="btn btn-deny btn-sm">[% l('Discard Pending Address') %]</a>
+                                    <a href="[% mkurl('', params, 1) %]" class="btn btn-deny "><i class="fas fa-trash-alt"></i> [% l('Discard Pending Address') %]</a>
                                 </td>
                             </tr>
                             <tr><td colspan='2'><i>[% l('This address has a pending change.') %]</i></td></tr>
@@ -226,12 +242,9 @@
                         </table>
                     </form>
                 </td>
-                </tr>
-            </tbody>
-        </table>
-     </div>
-                [% ELSE %]
-				<div class="col-lg-6 col-12">
+                 [% ELSE %]
+                <td>
+				
                     <!-- read-only address display -->
                     <table class='table' title="[% l('Active Addresses') %]">
                         <tr><td>[% l("Address Type") %]</td><td>[% addr.address_type | html %]</td></tr>
@@ -244,15 +257,18 @@
                         <tr><td>[% l("Zip") %]</td><td>[% addr.post_code | html %]</td></tr>
                         [% IF ctx.get_org_setting(ctx.user.home_ou.id, 'opac.allow_pending_address') 
                                 AND !pending_addr AND edit_addr_id != cur_id %]
-                        <tr><td colspan='2'><a href='?edit_address=[% addr.id %]'>[% l('Edit Address') %]</a></td></tr>
+                        <tr><td colspan='2'><a class="btn btn-action" href='?edit_address=[% addr.id %]'><i class="fas fa-edit"></i> [% l('Edit Address') %]</a></td></tr>
                         [% END %]
                     </table>
-                 </div>
-                [% END %] <!-- if pending_addr -->
+                 
+                 </td>
+                [% END %] 
+                </tr>
+            </tbody>
+        </table>
+     </div></div>
             [% END %]
        
-    </div>
-    </div>
-</div>
+    
 
 [% END %]

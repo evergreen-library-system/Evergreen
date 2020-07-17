@@ -15,11 +15,11 @@ function toggleActivationDate() {
     // Check for not equal to block so it works on first click.
     if (block.style.display != "block") {
         block.style.display = "block";
-        anchor.innerHTML = actText;
+        anchor.innerHTML = "<i class='fas fa-calendar'></i> " + actText;
         if (cb.checked != true) cb.checked = true;
     } else {
         block.style.display = "none";
-        anchor.innerHTML = inActText;
+        anchor.innerHTML = "<i class='fas fa-calendar'></i> " + inActText;
     }
     // Prevent the href from being followed, thus overriding the CSS.
     return false;
@@ -47,8 +47,9 @@ function maybeToggleNumCopies(obj) {
     }
 }
 </script>
-<div id='holds_box' class='canvas' style='margin-top: 6px;'>
-   <h1>[% l('Place Hold') %]</h1>
+<div class='container'>
+<hr>
+   <h3>[% l('Place Hold') %]</h3>
 
     [% some_holds_allowed = -1 %]
 
@@ -132,7 +133,7 @@ function maybeToggleNumCopies(obj) {
         [% END %]
         [% END %]
 
-        <table id='hold-items-list'>
+        <table>
             <tr>
                 <td>
                     [% IF !this_hold_disallowed %]
@@ -197,86 +198,114 @@ function maybeToggleNumCopies(obj) {
             [%  IF !loop.last AND ctx.hold_data.size > 1 %]
             <tr class="holds_item_row_separator"><td> </td></tr>
             [% END %]
-
+</table>
         [% END %]
-        </table>
+        
 
         [% IF some_holds_allowed %]
 
         <p class="w-50">
             [%- org_select_id = 'pickup_lib'; -%]
-            <label for="[% org_select_id %]">[%l('Pickup location:') %]</label>
+            <label for="[% org_select_id %]" class="font-weight-bold">[%l('Pickup location:') %]</label>
             [% PROCESS "opac/parts/org_selector.tt2";
                 INCLUDE build_org_selector name='pickup_lib' 
                     value=ctx.default_pickup_lib id=org_select_id 
                     can_have_vols_only=1 hold_pickup_lib=1 %]
         </p>
-        <p>
-            [% l('Notify when hold is ready for pickup?') %]
-            <blockquote>
-                <input class="hold-alert-method" type="checkbox" id="email_notify" name="email_notify" value="t"
-                    [% IF !ctx.user.email %]disabled="true"[% ELSIF ctx.default_email_notify %]checked="checked"[% END %]/>
-                    <label for="email_notify">[% l('Yes, by Email') %]</label><br/>
-                <blockquote>
-                    [% IF !ctx.user.email and !ctx.is_staff; l('No configured Email address. See "My Account" for setting your Email address.');
-                     ELSE; l('Email Address:') %] <span name="email_address">[% ctx.user.email %]</span>[% END %]
-                </blockquote>
+  
+            <span class="font-weight-bold">[% l('Notify when hold is ready for pickup?') %]</span>
+            <p>
+             <div class="form-check m-2">
+                <input class="form-check-input" type="checkbox" value="" id="email_notify"  [% IF !ctx.user.email %]disabled="true"[% ELSIF ctx.default_email_notify %]checked="checked"[% END %]>
+                <label class="form-check-label" for="email_notify">
+                   [% l('Yes, by Email') %]
+
+                     [% IF !ctx.user.email and !ctx.is_staff; l('<br>No configured Email address. See "My Account" for setting your Email address.'); ELSE; %] : <span id="email_address"><b>[% ctx.user.email %]</b></span>[% END %]
+                </label>
+            </div>
+              
+                   
+                <p>
+                  
+                </p>
                 [%- IF allow_phone_notifications == 'true' %]
-                <input class="hold-alert-method" type="checkbox" id="phone_notify_checkbox" name="phone_notify_checkbox"
-                    [% IF ctx.default_phone_notify %]checked="checked"[% END %]/>
-                    <label for="phone_notify_checkbox">[% l('Yes, by Phone') %]</label><br/>
-                <blockquote>
+                <div class="form-check m-2">
+                    <input class="form-check-input" type="checkbox" value="" id="phone_notify_checkbox"  [% IF ctx.default_phone_notify %]checked="checked"[% END %]>
+                    <label class="form-check-label" for="phone_notify_checkbox">
+                    [% l('Yes, by Phone') %]
+                    </label>
+                </div>
+               
+                <p>
                     <label>[% l('Phone Number:') %]<input type="text" class="form-control" name="phone_notify" [% setting = 'opac.default_phone';
                     IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]'
                     [%- ELSIF ctx.user.day_phone; %] value='[% ctx.user.day_phone | html %]' [% END %]/></label>
-                </blockquote>
+                </p>
                 [%- END -%]
                 [% IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1 %]
                 <input class="hold-alert-method" type="checkbox" id="sms_notify_checkbox" name="sms_notify_checkbox"
                     [% IF ctx.default_sms_notify %]checked="checked"[% END %]/>
                     <label for="sms_notify_checkbox">[% l('Yes, by Text Messaging') %]</label><br/>
-                <blockquote>
+                <p>
                     [% INCLUDE "opac/parts/sms_carrier_selector.tt2" %]<br/>
                     [% INCLUDE "opac/parts/sms_number_textbox.tt2" %]<br/>
-                </blockquote>
+                </p>
                 [% END %]
-            </blockquote>
-            <blockquote>
-            <label for="hold_suspend">
+            </p>
+            <div>
+
+             [% IF ctx.hold_data.size > 0; %]
+            <div class="form-check m-2">
+                <input class="form-check-input" type="checkbox" value="" id="hold_suspend">
+                <label class="form-check-label" for="hold_suspend">
                 [% IF ctx.hold_data.size == 1;
-		       l('Suspend this hold?');
-		   ELSE;
-		       l('Suspend these holds?');
-		   END %]
-           </label>
-                <img src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]"
-                     alt="[% l('Suspend Hold Help') %]"
-                     title="[% l('A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.') %]" />
-                <br/>
-                <input type="checkbox" name="hold_suspend" id="hold_suspend" value="t"/> [% l('Yes') %]<br/>
-                <a class="btn btn-sm btn-action" id="actDateToggle" href="#toggled-block-suspend" onclick="return toggleActivationDate();">[% l('Set activation date') %]</a>
-            </blockquote>
+                    l('Suspend this hold?');
+                ELSE;
+                    l('Suspend these holds?');
+                END %]
+                  <a href="#" title="[% l('A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.') %]" data-toggle="tooltip">
+                    <i class="fas fa-question-circle"></i>
+                </a>
+                </label>
+            </div>
+                [% END %]
+           
+          
+               
+              
+                <a class="btn btn-sm btn-action m-2" id="actDateToggle" href="#toggled-block-suspend" onclick="return toggleActivationDate();"><i class="fas fa-calendar"></i> [% l('Set activation date') %]</a>
+            </div>
             <blockquote id="toggled-block-suspend">
-                <label for="thaw_date">[% l('Activate on') %]
-                <input class="form-control" type="text" id="thaw_date" name="thaw_date" />
-                <em>[% l('Enter date in MM/DD/YYYY format') %]</em></label>
+            <label for="thaw_date">[% l('Activate on') %]
+              <div class="input-group date" data-provide="datepicker">
+                <input type="text" class="form-control" name="thaw_date" id="datepicker" value="[% thaw_date | html %]" data-date-format="mm/dd/yyyy" />
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th"></span>
+                </div>
+            </div>
             </blockquote>
-        </p>
+        
          [% IF CGI.param('from_basket') %]
-          <blockquote><input type="checkbox" name="clear_cart">[% l('Clear basket after holds are requested?') %]</input></blockquote>
+        
+           <div class="form-check m-2">
+                    <input class="form-check-input" type="checkbox" value="" id="clear_cart" />
+                    <label class="form-check-label" for="clear_cart">
+                        [% l('Clear basket after holds are requested?') %]
+                    </label>
+                </div>
         [% END %]
         		 [% IF NOT metarecords.disabled AND ctx.hold_data.size == 1 %]
                         [% IF CGI.param('hold_type') == 'T' AND hdata.record.metarecord AND !hdata.part_required %]
                         <!-- Grab the bre_id so that we can restore it if user accidentally clicks advanced options -->
                            [% bre_id = hdata.target.id %]
-                            <a  id='advanced_hold_link'
-                                href="[% mkurl('', {hold_type => 'M', hold_target => hdata.record.metarecord.id, bre_id => bre_id}) %]">
+                            <a  id='advanced_hold_link' class="m-2 btn btn-sm btn-primary"
+                                href="[% mkurl('', {hold_type => 'M', hold_target => hdata.record.metarecord.id, bre_id => bre_id}) %]"><i class="fas fa-cog"></i> 
                                 [% l('Advanced Hold Options') %]</a>
                         [% END %]
                         [% IF CGI.param('hold_type') == 'M' AND CGI.param('bre_id') %]
                             <input type="hidden" name="bre_id" value="[% CGI.param('bre_id') %]" />
-                            <a id='basic_hold_link'
-                               href="[% mkurl('', {hold_target => CGI.param('bre_id'), hold_type => 'T'}) %]">
+                            <a id='basic_hold_link' class="m-2 btn btn-sm btn-primary"
+                               href="[% mkurl('', {hold_target => CGI.param('bre_id'), hold_type => 'T'}) %]"><i class="fas fa-cog"></i> 
                                 [% l('Basic Hold Options') %]</a>
                         [% END %]
                         [% IF hdata.metarecord_filters.formats.size OR # should this be size > 1
@@ -285,11 +314,9 @@ function maybeToggleNumCopies(obj) {
                         END;
                     END %]
         <div class="py-3">
-        <input id="place_hold_submit" type="submit" name="submit" 
-            value="[% l('Submit') %]" title="[% l('Submit') %]"
-            alt="[% l('Submit') %]" class="btn btn-confirm" />
+        <button id="place_hold_submit" type="submit" name="submit"  class="btn btn-confirm" ><i class="fas fa-check"></i> [% l('Submit') %]</button>
         [% END # some_holds_allowed %]
-        <input type="reset" name="cancel" onclick="window.location='[% redirect | html %]'" value="[% l('Cancel') %]" id="holds_cancel" class="btn btn-deny" />
+        <button type="reset" name="cancel" onclick="window.location='[% redirect | html %]'" id="holds_cancel" class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Cancel') %]</button>
         </div>
     </form>
 </div>

@@ -1,0 +1,9 @@
+[%- 
+UNLESS params;
+    params = ['locg', 'loc', 'query', 'qtype', 'sort'];
+END;
+FOR param IN params;
+    IF CGI.param(param); %]
+    <input type="hidden" name="[% param %]" value="[% CGI.param(param) | html %]" />
+    [%- END;
+END; %]

@@ -52,6 +52,7 @@ function fetch_adv_copy_locations(org_ids) {
                 var list = resp.content();
                 if (list && list.length) {
                     render_adv_copy_locations(list);
+                    render_adv_copy_locations_new(list);
                 } else {
                     dojo.addClass('adv_chunk_copy_location', 'hidden');
                 }
@@ -62,8 +63,48 @@ function fetch_adv_copy_locations(org_ids) {
     }).send(); 
 }
 
+function render_adv_copy_locations_new(locations) {
+    var sel = dojo.byId('adv_copy_location_selector_new');
+    if(sel)
+    {
+    var cgi = new openils.CGI();
+
+    // collect any location values from the URL to re-populate the list
+    var url_selected = cgi.param('fi:locations');
+    if (url_selected) {
+        if (!dojo.isArray(url_selected)) 
+            url_selected = [url_selected];
+    }
+
+    dojo.removeClass('adv_chunk_copy_location', 'hidden');
+    
+    // sort by name
+    locations = locations.sort(
+        function(a, b) {return a.name < b.name ? -1 : 1}
+    );
+
+    
+    var ulist = dojo.create('ul', {class: "adv_filters"});
+    // append the new list of locations
+    dojo.forEach(locations, function(loc) {
+        var attrs = {value : loc.id, name : "fi:locations", type: "checkbox", class: "form-check-input"};
+        if (url_selected && url_selected.indexOf(''+loc.id) > -1) {
+            attrs.selected = true;
+        }
+        
+        
+        ulist.appendChild(dojo.create('li')).appendChild(dojo.create('div', {class: "form-check"})).appendChild(dojo.create('label', {innerHTML : loc.name, class: "form-check-label"})).prepend(dojo.create('input', attrs));
+    });
+    sel.appendChild(dojo.create("div", {class: "card-body"})).appendChild(ulist);}
+}
+
+   
+
 function render_adv_copy_locations(locations) {
     var sel = dojo.byId('adv_copy_location_selector');
+    if(sel){
+
+    
     var cgi = new openils.CGI();
 
     // collect any location values from the URL to re-populate the list
@@ -91,6 +132,7 @@ function render_adv_copy_locations(locations) {
         }
         sel.appendChild(dojo.create('option', attrs));
     });
+}
 }
 
 // load the locations on page load

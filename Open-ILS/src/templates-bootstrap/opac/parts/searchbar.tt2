@@ -39,10 +39,10 @@ END;
     [% IF (ctx.page == 'place_hold' || ctx.page == 'myopac' || ctx.page == 'home' || ctx.page == 'record') && search.metarecord_default %]
     <input type="hidden" name="modifier" value="metabib"/>
     [% END %]
-    <div class="container py-3">
+    <div class="m-5">
     <div class="row">
      <!--Keyword-->
-    	<div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+    	<div class="col-xs-12 col-sm-12 col-lg-6 col-xl-3">
         <span class='search_box_wrapper'>
             [%- # autosuggest breaks accessibility, as the aria-label
                 # attribute is removed when the Dijit is created. :(  %]
@@ -57,14 +57,14 @@ END;
                 store_args='{"org_unit_getter": function() { return [% ctx.search_ou %]; }}'
                 [%-     END # opac_visible -%]
                 [%- ELSE -%]
-                    [% IF basic_search != "f" AND is_home_page%] autofocus [% END %] x-webkit-speech
+                    [% IF basic_search != "f" AND is_home_page%] autofocus [% END %]
                 [%- END # autosuggest enabled %] />
             </label>
         </span>
         </div>
         
         <!--Type-->
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+        <div class="col-xs-12 col-sm-12 col-lg-6 col-xl-2">
         <label id="search_qtype_label" for="qtype" class="w-100">
         [%- 
             l('Type: ');
@@ -74,7 +74,7 @@ END;
         </div>
         
          <!--Format-->
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+        <div class="col-xs-12 col-sm-12 col-lg-6 col-xl-2">
         <label id="search_itype_label" for="search_itype_selector" class="w-100">
         [%-
             l('Format: ');
@@ -94,7 +94,7 @@ END;
         </div>
         
          <!--Library-->
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+        <div class="col-xs-12 col-sm-12 col-lg-6 col-xl-2">
         <label id="search_locg_label" for="search_org_selector" class="w-100">
         [%- 
             l('Library: ');
@@ -104,23 +104,24 @@ END;
         -%]
         </label>
         </div>
-      </div>
-      <div class="row">
-      <span class="mx-auto mt-3">
-        <input id="detail" type="hidden" name="detail_record_view" value="[% show_detail_view %]"/>
-        <input id='search-submit-go' type="submit" value="[% l('Search') %]" class="btn btn-opac"
-            onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden";[% IF ctx.depth_sel_button AND NOT took_care_of_form %] $("search-submit-go-depth").className="hidden";[% END %]}, 2000)'/>
-        [%- IF ctx.depth_sel_button AND NOT took_care_of_form %]
-        <button id='search-submit-go-depth' type="submit" value="[% ctx.depth_sel_depth %]" name="depth" class="[% #ctx.depth_sel_button_class %] btn btn-opac"
-            onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"; $("search-submit-go-depth").className="hidden";}, 2000)' title="[% ctx.depth_sel_tooltip | html %]">[% ctx.depth_sel_button_label | html %]</button>
-        [%- END %]
-        <img id='search-submit-spinner' src='[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]' style='height:16px;width:16px;' class='hidden' alt='[% l("Search In Progress") %]'/>
-        
+         <div class="col-xs-12 col-sm-12 col-lg-12 col-xl-3">
+            <div class="vertMid text-center">
+            <input id="detail" type="hidden" name="detail_record_view" value="[% show_detail_view %]"/>
+            <button id='search-submit-go' type="submit" class="btn btn-opac m-2"
+                onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden";[% IF ctx.depth_sel_button AND NOT took_care_of_form %] $("search-submit-go-depth").className="hidden";[% END %]}, 2000)'><i class="fas fa-search"></i> [% l('Search') %]</button>
+            [%- IF ctx.depth_sel_button AND NOT took_care_of_form %]
+            <button id='search-submit-go-depth' type="submit" value="[% ctx.depth_sel_depth %]" name="depth" class="[% #ctx.depth_sel_button_class %] btn btn-opac m-2"
+                onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"; $("search-submit-go-depth").className="hidden";}, 2000)' title="[% ctx.depth_sel_tooltip | html %]"><i class="fas fa-globe"></i> [% ctx.depth_sel_button_label | html %]</button>
+            [%- END %]
+            <img id='search-submit-spinner' src='[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]' style='height:16px;width:16px;' class='hidden' alt='[% l("Search In Progress") %]'/>
+            </div>
           
             </div>
+      </div>
+     
            
           
-      </span>
+      
      
     </div>
     
@@ -211,5 +212,4 @@ END;
         <a href="[% ctx.opac_root %]/home">[% l('Catalog Home') %]</a> &gt;
     </div>
     -->
-    <div class="clear-both"></div>
 </div>

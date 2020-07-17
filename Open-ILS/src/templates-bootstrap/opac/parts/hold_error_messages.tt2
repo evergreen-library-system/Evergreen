@@ -1,0 +1,40 @@
+[%
+    # XXX It might be cleaner to move this into its own file or something.
+    #
+    # The following hash should have fail_parts as keys and user/patron-friendly
+    # strings as values.  If the system returns an event with a fail_part when
+    # you attempt to place a hold and the fail part matches something in this
+    # hash, this is the message that will be displayed to the user. Wait until
+    # these are used to pass them through l() for i18n.
+
+    FAIL_PART_MSG_MAP = {
+        "actor.usr.barred" => l("The patron is barred"),
+        "asset.copy.circulate" => l("The item does not circulate"),
+        "asset.copy_location.circulate" => l("Items from this shelving location do not circulate"),
+        "asset.copy.status" => l("The item cannot circulate at this time"),
+        "circ.holds.target_skip_me" => l("The item's circulation library does not fulfill holds"),
+        "config.circ_matrix_circ_mod_test" => l("The patron has too many items of this type checked out"),
+        "config.circ_matrix_test.circulate" => l("Circulation rules reject this item as non-circulatable"),
+        "config.hold_matrix_test.holdable" => l("Hold rules reject this item as unholdable"),
+        "config.hold_matrix_test.max_holds" => l("The patron has reached the maximum number of holds"),
+        "config.rule_age_hold_protect.prox" => l("The item is too new to transit this far"),
+        "item.holdable" => l("The item is not holdable"),
+        "location.holdable" => l("The item's location is not holdable"),
+        "status.holdable" => l("The item is not in a holdable status"),
+        "no_item" => l("The system could not find this item"),
+        "no_ultimate_items" => l("The system could not find any items to match this hold request"),
+        "no_matchpoint" => l("System rules do not define how to handle this item"),
+        "no_user" => l("The system could not find this patron"),
+        "transit_range" => l("The item cannot transit this far")
+    };
+
+
+    # This works like the above has, but instead of fail_parts for keys, use
+    # the textcode of the event.  This will only be consulted for events
+    # that do not have a fail_part matching something in the above hash.
+    # Wait until these are used to pass them through l() for i18n.
+
+    EVENT_MSG_MAP = {
+        "PATRON_EXCEEDS_FINES" => l("Patron has reached the maximum fine amount")
+    };
+%]

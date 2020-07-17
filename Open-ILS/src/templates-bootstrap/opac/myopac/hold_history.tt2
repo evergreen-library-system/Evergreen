@@ -2,62 +2,45 @@
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS "opac/parts/hold_status.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
-    myopac_page = "holds";
+    myopac_page = "hold_history";
+    parent="holds";
     limit = ctx.hold_history_limit;
     offset = ctx.hold_history_offset;
     count = ctx.hold_history_ids.size;
 %]
 
-<h3 class="sr-only">[% l('Holds History') %]</h3>
-<div id='myopac_holds_div'>
-
-
-	<div>
-    	<ul class="nav nav-pills nav-justified">
-        <li class="nav-item m-2">
-            <a href='[% mkurl('holds',{},['limit','offset']) %]' class="nav-link not_active_pill">[% l("Items on Hold") %]</a>
-        </li>
-        [% IF ebook_api.enabled == 'true' %]
-        <li class="nav-item m-2">
-            <a href='[% mkurl('ebook_holds', {}, ['limit','offset','available','sort','sort_type']) %]' class="nav-link not_active_pill">[% l("E-Items on Hold") %]</a>
-        </li>
-        <li class="nav-item m-2">
-            <a href='[% mkurl('ebook_holds_ready', {}, ['limit','offset','available','sort','sort_type']) %]' class="nav-link not_active_pill">[% l("E-Items Ready for Checkout") %]</a>
-        </li>
-        [% END %]
-        <li class="nav-item m-2">
-            <a href='#' class="nav-link active">[% l("Holds History") %]</a>
-        </li>
-        </ul>
-    </div>
-    
+<h3>[% l('Holds History') %]</h3>
+<div id='myopac_holds_div'> 
   
-<div class="my-4">
-    <div class="header_middle">
-        <span style="float:left;">[% l("Previously Held Items") %]</span>
-        <span class='float-left' style='padding-left: 10px;'>
-            <a href='[% mkurl('hold_history', {limit => limit,offset => (offset - limit)}) %]'
-                [% IF offset == 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
-            [% IF offset > 0 || count > limit;
-                curpage = 0;
-                WHILE curpage * limit < count;
-                    IF curpage * limit == offset;
-            %]
-            [% curpage + 1 %]
+<div>
+    <div>
+        <div>   
+          [% IF offset != 0 %]<a href='[% mkurl('hold_history', {limit => limit,offset => (offset - limit)}) %]'
+              ><span class="np_nav_link classic_link btn btn-action">&#9668;[% l('Previous') %]</span></a> [% END %]
+
+             [% IF offset > 0 || count > limit; curpage = 0; WHILE curpage * limit < count; IF curpage * limit == offset; %]
+                  <span class="np_nav_link classic_link btn btn-action disabled">[% curpage + 1 %]</span>
+
                     [%- ELSE %]
-            <a href='[% mkurl('hold_history', {limit => limit, offset => (curpage * limit)}) %]'>[% curpage + 1 %]</a>
-                    [%- END;
-                    curpage = curpage + 1;
-                END;
-            END %]
-            <a href='[% mkurl('hold_history', {limit => limit, offset => (offset + limit)}) %]'
-               [% IF count <= limit + offset %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
-        </span>
-        <span style="float:right;">
+                <a href='[% mkurl('hold_history', {limit => limit, offset => (curpage * limit)}) %]' class="np_nav_link classic_link btn btn-action">[% curpage + 1 %]</a>
+                    [%- END; curpage = curpage + 1; END; END %]
+               
+            
+              
+                [% IF count > limit + offset %]<a href='[% mkurl('hold_history', {limit => limit, offset => (offset + limit)}) %]'
+                  ><span class="np_nav_link classic_link btn btn-action">[% l('Next') %]&#9658;</span></a>[% END %]
+           </div>
+
+
+
+           
+          <p style="padding-left:5px;" class='error'>
+                    [%  IF ctx.hold_suspend_post_capture; l('One or more holds could not be suspended because the item is at (or en route to) the pickup library.'); END; %]
+                </p>
+        <p style="float:right;">
             <a class="hide_me" href="#">[% l('Export List') %]</a>
-        </span>
+        </p>
     </div>
-    <div class="clear-both"></div>
 
     <div id='holds_main'>
         [% IF ctx.holds.size && ctx.holds.size < 1 %]
@@ -65,7 +48,7 @@
             <big><strong>[% l('No holds found.') %]</strong></big>
         </div>
         [% ELSE %]
-        <table id='acct_holds_hist_header' class='table table-hover miniTable holdHistoryTable' title="[% l('History of items on hold') %]">
+        <table id='acct_holds_hist_header' class='table table-hover table-bordered miniTable holdHistoryTable' title="[% l('History of items on hold') %]">
             <thead>
                 <tr>
                     <th><span>[% l('Title') %]</span></th>
@@ -81,7 +64,7 @@
                     PROCESS get_marc_attrs args=attrs;
                     ahr = hold.hold.hold %]
 
-                <tr name="acct_holds_temp">
+                <tr>
                    
                     <td>
                     <span class="sr-only">Title</span>
@@ -90,18 +73,23 @@
                         </div>
                     </td>
                     <td>
+                     [% IF attrs.author; %]
                     <span class="sr-only">Author</span>
                         <div>
+                       
                             <a href="[% mkurl(ctx.opac_root _ '/results',
                                 {qtype => author, query => attrs.author.replace('[,\.:;]', '')}
                             ) %]">[% attrs.author | html %]</a>
+                          
                         </div>
+                          [% END %]
                     </td>
                     <td>
-                        <div class='format_icon'>
+                        <div>
                             [% IF attrs.format_icon %]
-                            <img title="[% attrs.format_label | html %]" alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %][% ctx.cache_key %]" />
+                            <img alt="[% attrs.format_label | html %]" src="[% attrs.format_icon %][% ctx.cache_key %]" />
                             [% END %]
+                             <span>[% attrs.format_label | html %]</span>
                         </div>
                          <span class="sr-only">Format [% attrs.format_label | html %]</span>
                     </td>
@@ -111,8 +99,7 @@
                     </td>
                     <td>
                     <span class="sr-only">Hold Status</span>
-                        <div name="acct_holds_status">
-                            [% PROCESS get_hold_status hold=hold; %]
+                        <div> [% PROCESS get_hold_status hold=hold; %]
                         </div>
                     </td>
                 </tr>

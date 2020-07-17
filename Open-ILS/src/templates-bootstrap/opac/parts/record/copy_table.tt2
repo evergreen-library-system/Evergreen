@@ -30,7 +30,7 @@ IF has_copies or ctx.foreign_copies;
   depth = CGI.param('copy_depth').defined ? CGI.param('copy_depth') : CGI.param('depth').defined ? CGI.param('depth') : ctx.copy_summary.last.depth;
   total_copies = ctx.copy_summary.$depth.count;
 %]
-<table class="container-fluid table table-hover mt-4 miniTable copyTable" width="100%" >
+<table class="container-fluid table table-hover mt-4 miniTable copyTable w-100" >
     <thead>
         <tr>
             [% IF serial_holdings -%]

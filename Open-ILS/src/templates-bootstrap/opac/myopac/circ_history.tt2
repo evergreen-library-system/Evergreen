@@ -2,29 +2,13 @@
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS "opac/parts/myopac/column_sort_support.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
-    myopac_page = "circs"
+    myopac_page = "circ_history"
+    parent="circs";
     limit = ctx.circ_history_limit;
     offset = ctx.circ_history_offset;
 %]
-
-<h3 class="sr-only">[% l('History of Checked Out Items') %]</h3>
+<h3>[% l('History of Checked Out Items') %]</h3>
 <div style="padding:0px;">
-   <div>
-     <ul class="nav nav-pills nav-fill">
-        <li class="nav-item m-2">
-            <a class="nav-link not_active_pill" href='[% mkurl('circs',{},1) %]'>[% l("Current Items Checked Out") %]</a>
-        </li>
-        [%- IF ebook_api.enabled == 'true' %]
-        <li class="nav-item m-2">
-            <a class="nav-link not_active_pill" href="[% mkurl('ebook_circs',{},1) %]">[% l("E-Items Currently Checked Out") %]</a>
-        </li>
-        [%- END %]
-        <li class="nav-item m-2">
-            <a class="nav-link active" href="#">[% l("Check Out History") %]</a>
-        </li>
-    </ul>
-	</div>
-
     [%
     # In the sorting case, the size is the size of ALL the circ items.  In the non-sorting case,
     # the size is simply the size of the chunk passed in.  See the TODO below for the still-lingering
@@ -36,54 +20,39 @@
         no_next = ctx.circs.size < limit;
     END;
     %]
-<div class="my-4">
-    <div class="header_middle">
-        <span class="float-left">[% l('Previously Checked Out Items') %]</span>
-        <span class='float-left' style='padding-left: 10px;'>
-            <a href='[% mkurl('circ_history', {limit => limit, offset => (offset - limit)}) %]'
-                [% IF offset == 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
-            [%# TODO: get total to prevent paging off then end of the list.. %]
-            <a href='[% mkurl('circ_history', {limit => limit, offset => (offset + limit)}) %]'
-            [% IF no_next %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
-        </span>
-    </div>
-    <div class="clear-both"></div>
+<div>
+   
 
     [% IF ctx.circs.size < 1 %]
     <div class="warning_box">[% l('There are no items in your circulation history.') %]</div>
     [% ELSE %]
 
-        <form method="post" id="circ-form"
-            onsubmit="return confirm('[% l("Are you sure you wish to delete the selected item(s)?") %]');">
-        <table cellpadding='0' cellspacing='0' class="item_list_padding">
-            <tr>
-                <td style="width:90%;">
-                    <select name="action" class="form-control">
-                        <option value="delete">[% l('Delete Selected Titles') %]</option>
-                    </select>
-                </td>
-               
-                <td style="padding-left:9px;">
-                    <input type="submit"
-                        value="[% l('Go') %]"
-                        alt="[% l('Go') %]" title="[% l('Go') %]"
-                        class="btn btn-sm btn-confirm" />
-                </td>
-                <!--
-                <td style="padding-left:5px;">
-                    <a href="#"><img alt="[% l('Deleting Help') %]"
-                        src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]" /></a>
-                </td>
-                -->
-            </tr>
-        </table>
+        <form method="post" id="circ-form">
+            
+        <div class="row">
+        <div class="col-3 text-left">[% IF offset != 0 %]<a href='[% mkurl('circ_history', {limit => limit, offset => (offset - limit)}) %]'
+                 class="btn btn-action mr-3" ><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>[% END %]
+                 <button name="action" class="btn btn-danger my-2" id="delete" value="delete" type="submit" onclick="return confirm('[% l("Are you sure you wish to delete the selected item(s)?") %]');">
+            <i class="fas fa-trash-alt"></i> Delete Selected</button>
+            </div>
+        <div class="col-6 text-center"></div>
+        <div class="col-3 text-right">[% IF !no_next %]<a href='[% mkurl('circ_history', {limit => limit, offset => (offset + limit)}) %]'
+               class="btn btn-action" >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>[% END %] </div>
+    </div>
     <div id='checked_main'>
-        <table title="[% l('History of Items Checked Out') %]" id="acct_checked_hist_header" class="table table-hover miniTable circHistTable my-3">
+     <div class="d-block d-md-none">
+          
+
+            <input id="check_all_circ_hist" checked="checked" type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ_id' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
+
+            <label for="check_all_circ_hist">[% l('Check/Uncheck All') %]</label>  
+        </div>       
+        <table title="[% l('History of Items Checked Out') %]" id="acct_checked_hist_header" class="table table-hover table-bordered miniTable circHistTable my-3">
             <thead>
                 <tr>
-                    <th class="checkbox_column">
-                        <input type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ_id' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
-                    </th>
+                    <td class="checkCell">
+                        <input type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ_id' && !inputs[i].disabled) inputs[i].checked = this.checked;}" aria-label="[% l('Click to (un)select all items') %]"/>
+                    </td>
                     <th>[% sort_head("sort_title", l("Title")) %]</th>
                     <th>[% sort_head("author", l("Author")) %]</th>
                     <th>[% sort_head("callnum", l("Call Number")) %]</th>
@@ -158,20 +127,22 @@
                 FOR circ IN circ_items; %]
                     <tr>
             <td class="checkbox_column">
-                <input type="checkbox" name="circ_id" value="[% circ.circ.id %]" />
+                <input type="checkbox" name="circ_id" value="[% circ.circ.id %]" aria-label="Select Item"/>
             </td>
                         <td>
                             <a href="[% mkurl(ctx.opac_root _ '/record/' _
-                                circ.circ.target_copy.call_number.record.id, {}, 1) %]"
-                                name="[% l('Catalog record') %]"><span[%- deemphasize_class -%]>
+                                circ.circ.target_copy.call_number.record.id, {}, 1) %]">
+                                <span[%- deemphasize_class -%]>
                                 [%- circ.ATTRS.title.substr(0,circ.ATTRS.nonfiling_characters) | html %]</span>
                                 [%- circ.ATTRS.title.substr(circ.ATTRS.nonfiling_characters) | html %]</a>
                         </td>
                         <td>
+                            [% IF circ.ATTRS.author %]
                             <a href="[% mkurl(ctx.opac_root _ '/results',
                                 {qtype => 'author', query => circ.ATTRS.author.replace('[,\.:;]', '')},
                                 1
                             ) %]">[% circ.ATTRS.author | html %]</a>
+                            [%END; %]
                         </td>
                         <td>[% circ.circ.target_copy.call_number.label | html %]</td>
                         <td>
@@ -189,7 +160,7 @@
                             [% IF circ.circ.checkin_time;
                                     date.format(ctx.parse_datetime(circ.circ.checkin_time),DATE_FORMAT);
                                 ELSE; %]
-                                <span style='color:blue;'>*</span><!-- meh -->
+                                <span style='color:blue;'>Not Returned</span><!-- meh -->
                             [% END; %]
                         </td>
                         <td>[% circ.circ.target_copy.barcode | html %]</td>
@@ -205,7 +176,7 @@
                     [%- INCLUDE "opac/parts/preserve_params.tt2" %]
                     [% IF ctx.circs.size > 0 %]
                     <input type="hidden" name="filename" value="[% l('circ_history.csv') %]"/>
-                    <button type="submit" class="btn btn-sm btn-primary">[% l('Download CSV') %]</button>
+                    <button type="submit" class="btn btn-action"><i class="fas fa-file-download"></i> [% l('Download CSV') %]</button>
                     [% END %]
                 </div>
             </form>

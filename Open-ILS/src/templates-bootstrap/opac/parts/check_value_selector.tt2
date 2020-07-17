@@ -1,0 +1,64 @@
+
+[%- 
+    # If caller passes a list of possible attribute types, 
+    # search all until we find some values
+
+    IF !attr.size; attr = [attr]; END;
+    all_values = [];
+    attr_class = '';
+    FOR attr_class IN attr;
+        all_values = ctx.search_ccvm('ctype', attr_class, 'opac_visible', 't');
+        IF all_values.size > 0; LAST; END;
+    END;
+    name = name || "fi:" _ attr_class;
+    id = id || attr_class _ "_selector";
+    values = values || CGI.param(name); 
+    IF size AND size < 1; size = all_values.size; END;
+-%]
+
+<div class="w-100">
+
+[% IF none_ok %]
+    <p value=''>[% none_label ? none_label : l('-- Any --') %]</p>
+[% END;
+# turn the list of objects into a list of hashes to 
+# leverage TT's array.sort('<hashkey>') behavior
+simple_sorter = [];
+sorter = [];
+FOR o IN all_values;
+    IF o.is_simple == 't';
+        simple_sorter.push({code => o.code, value => (o.search_label ? o.search_label : o.value)});
+    ELSE;
+        sorter.push({code => o.code, value  => (o.search_label ? o.search_label : o.value)}); 
+    END;
+END;%]
+<ul class="adv_filters">
+[% FOR o IN simple_sorter.sort('value') %]
+<li>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input type="checkbox" class="form-check-input" name='[% name %]' value='[% o.code | html | replace("'","&#39;") %]'[% values.grep('^' _ o.code _ '$').size ? ' checked' : '' %]>
+        [% o.value | html %]
+      </label>
+    </div>
+    </li>
+[%  END;%]
+</ul>
+[%IF simple_sorter.size && sorter.size %]
+    <p disabled='true'>-----</p>
+[%  END; %]
+<ul class="adv_filters">
+[% FOR o IN sorter.sort('value') %]
+<li>
+<div class="form-check">
+    <label class="form-check-label">
+      <input type="checkbox" class="form-check-input"  name='[% name %]' value='[% o.code | html | replace("'","&#39;") %]'[% values.grep('^' _ o.code _ '$').size ? ' checked' : '' %]>
+      [% o.value | html %]
+    </label>
+  </div>
+  </li>
+[%  END -%]
+</ul>
+
+
+</div>

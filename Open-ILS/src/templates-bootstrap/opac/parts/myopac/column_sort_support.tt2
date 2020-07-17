@@ -1,0 +1,36 @@
+[%# Produce a URL for a given field that cycles for sorting from 
+    "nothing" to "ascending" to "descending" then back to "nothing".
+%]
+[% MACRO sort_url(field)
+        IF (CGI.param('sort') == field);
+                SWITCH CGI.param('sort_type');
+                CASE "asc";
+                   mkurl('',{sort=>field, sort_type=>'desc'},1);
+                CASE "desc";
+                   mkurl('',{sort=>field, sort_type=>'asc'}, 1);
+                END;
+	ELSE;
+           mkurl('',{sort=>field, sort_type=>'asc'}, 1);
+	END;
+%]
+[%# SET click_sort = l("click to sort") %]
+[%# SET click_sort = "title=\"$click_sort\"" %]
+
+[%# Produce arrows to indicate the sorting status of the column %]
+[% MACRO sort_indicator(field)
+        IF (CGI.param('sort') == field);
+                SWITCH CGI.param('sort_type');
+                CASE "asc";
+"&nbsp;<span class=\"column_sort_arrow\">&#9650;</span>";
+                CASE "desc";
+"&nbsp;<span class=\"column_sort_arrow\">&#9660;</span>";
+                END;
+        END;
+%]
+
+[%# Column headers for sortable columns %]
+[% MACRO sort_head(field, field_label) 
+   BLOCK %]
+<a href="[% sort_url(field) %]" [% click_sort %]>[% l(field_label) %]</a>[%- sort_indicator(field) %]
+[% END
+%]

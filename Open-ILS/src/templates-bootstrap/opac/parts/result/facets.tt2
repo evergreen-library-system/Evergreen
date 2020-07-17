@@ -54,7 +54,7 @@ FOR facet IN sorted_facets;
     fid = facet.cmf.id;
     long_key = fclass _ fname %]
 
-    <div id="facets" class="w-100">
+    <div class="w-100">
     <div class="card">
         <div class="card-header">
         	<span class="title text-center">[% facet.cmf.label %]</span>

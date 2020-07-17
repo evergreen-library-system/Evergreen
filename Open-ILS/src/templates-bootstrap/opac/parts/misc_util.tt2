@@ -825,29 +825,41 @@
     END;
     IF carousels.size > 0;
 %]
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/glide.min.js[% ctx.cache_key %]"></script>
+<script  src="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/glide.min.js[% ctx.cache_key %]"></script>
+
 <div class="carousels">
 [% FOREACH carousel IN carousels;
    IF carousel.bibs.size > 0;
 %]
 <div class="carousel">
-<div class="carousel-title">[% carousel.name %]</div>
+<h2 class="carousel-title">[% carousel.name %]</h2>
 <div class="carousel-body glide" id="carousel-[% carousel.id %]">
   <div class="glide__track" data-glide-el="track">
     <ul class="glide__slides">
 [% FOREACH bib IN carousel.bibs; %]
-      <li class="glide__slide"><div class="carousel-entry">
-        <a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]">
-          <img alt="[% l('Book cover') %]" class="carousel-entry-image" src="[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/r/[% bib.id | uri %]"></img>
-        </a><br>
-        <span class="carousel-entry-title"><a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]">[% bib.title | html %]</a></span>
-      </div></li>
+    <li class="glide__slide">
+        <div class="carousel-entry">
+            <div class="coverImage">
+            <a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]">
+                <img alt="[% bib.title | html %] [% l('Book cover') %]" class="carousel-entry-image img-fluid" src="[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/r/[% bib.id | uri %]" />
+                </a>
+            </div>
+            <div class="titleText">
+            <span class="carousel-entry-title">
+           <!-- <a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]"> -->
+            [% bib.title | html %]
+           <!-- </a> -->
+            
+            </span>
+            </div>
+        </div>
+    </li>
 [% END; %]
     </ul>
   </div>
   <div class="glide__arrows" data-glide-el="controls">
-    <button class="glide__arrow glide__arrow--left btn btn-confirm" data-glide-dir="<">prev</button>
-    <button class="glide__arrow glide__arrow--right btn btn-confirm" data-glide-dir=">">next</button>
+    <button class="glide__arrow glide__arrow--left btn" data-glide-dir="<"><i class="fas fa-arrow-left"></i> Prev</button>
+    <button class="glide__arrow glide__arrow--right btn" data-glide-dir=">">Next <i class="fas fa-arrow-right"></i></button>
   </div>
 </div>
 </div>

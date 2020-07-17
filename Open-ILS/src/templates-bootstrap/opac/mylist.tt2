@@ -5,18 +5,18 @@
     ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
     ctx.page_title = l("Record Detail") %]
     <h2 class="sr-only">[% l('Basket') %]</h2>
-    <div class="mobile_hide">
+    <div>
     [% INCLUDE "opac/parts/searchbar.tt2" %]
     </div>
-    <div id="content-wrapper">
-        <div id="main-content">
+    <div class="container">
+        <div>
             [%  IF ctx.mylist.size;
                     INCLUDE "opac/parts/anon_list.tt2";
                 ELSE %]
                 <div class="warning_box"><h2>[% l("The basket is empty."); %]</h2></div>
-                <button type="button" class="btn btn-confirm" onclick="window.location='[% ctx.referer | html %]'">[% l('Return') %]</button>
+                <button type="button" class="btn btn-confirm" onclick="window.location='[% ctx.referer | html %]'"><i class="fas fa-arrow-alt-circle-left"></i> [% l('Return') %]</button>
                 [% END %]
-            <div class="common-full-pad"></div>	
         </div>
     </div>
+    
 [%- END %]

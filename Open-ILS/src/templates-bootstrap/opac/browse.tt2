@@ -32,7 +32,7 @@
     <h2 class="sr-only">[% l('Catalog Browse') %]</h2>
     
     <div id="content-wrapper" class="my-5">
-        <div id="main-content" class="container mx-auto w-75">
+        <div class="container mx-auto w-75">
             <div id="browse-the-catalog">
                 <div id="browse-controls" class='row text-center'>
                     <form method="get" onsubmit="$('browse-submit-spinner').className = ''; return true" class="mx-auto">
@@ -50,19 +50,19 @@
                             arialabel=l('Select holding library') %]
                         [% l('Browse for [_1] starting with [_2] in [_3]', control_qtype, control_bterm, control_locg) %]
 
-			<input id='search-submit-go' type="submit" value="[% l('Browse') %]" alt="[% l('Browse') %]" class="btn btn-confirm my-2"/>
+			<button id='search-submit-go' type="submit" class="btn btn-confirm my-2"><i class="fas fa-book-reader"></i> [% l('Browse') %]</button>
                         <img id="browse-submit-spinner" 
                         src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]"
                         class="hidden" style="width: 16px; height: 16px;" 
                         alt="[% l('Search in progress icon') %]" />
                     </form>
                 </div>
-			<div class="row text-center my-5 border-top border-bottom">
+			<div class="row my-5 border-top border-bottom">
                 [% BLOCK browse_pager %]
-                <div class="browse-pager col-12">
+                <div class="browse-pager text-center col-12">
                 <div class="mx-auto">
                     [% IF ctx.back_pivot %]
-                    <a class="btn btn-outline-primary btn-sm" href="[% mkurl('', {bpivot => ctx.back_pivot}) %]" onclick="$('browse-pager-spinner-[% id %]').className = '';">&larr; [%l ('Back') %]</a>
+                    <a class="btn btn-action btn-sm" href="[% mkurl('', {bpivot => ctx.back_pivot}) %]" onclick="$('browse-pager-spinner-[% id %]').className = '';">&larr; [%l ('Back') %]</a>
                     [% END %]
                     [% IF ctx.pager_shortcuts;
                         current_qtype = CGI.param('qtype') || 'title' %]
@@ -77,7 +77,7 @@
                         class="hidden" style="width: 16px; height: 16px;" 
                         alt="[% l('Search in progress icon') %]" />
                     [% IF ctx.forward_pivot %]
-                    <a class="btn btn-outline-primary btn-sm" href="[% mkurl('', {bpivot => ctx.forward_pivot}) %]" onclick="$('browse-pager-spinner-[% id %]').className = '';">[%l ('Next') %] &rarr;</a>
+                    <a class="btn btn-action btn-sm" href="[% mkurl('', {bpivot => ctx.forward_pivot}) %]" onclick="$('browse-pager-spinner-[% id %]').className = '';">[%l ('Next') %] &rarr;</a>
                     [% END %]
 
                    
@@ -207,7 +207,6 @@
                 [% PROCESS browse_pager id=1 %]
             </div>
 </div>
-            <div class="common-full-pad"></div>	
         </div>
     </div>
 

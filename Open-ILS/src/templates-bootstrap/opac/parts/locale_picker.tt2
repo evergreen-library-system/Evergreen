@@ -6,7 +6,7 @@
 
     set_locale = CGI.param('set_eg_locale') || CGI.cookie('eg_locale') || base_locale;
 %]
-<form id="locale_picker_form" class="row mx-2" action="[% mkurl() %]" method="post">
+<form id="locale_picker_form" class="row" action="[% mkurl() %]" method="post">
     <label for="locale_picker" class="color_4 light_border col-3 text-left">[% l("Language:") %]</label>
     [%- FOREACH param IN CGI.params(); -%]
         [%- NEXT IF param.key == 'set_eg_locale'; -%]
@@ -25,7 +25,7 @@
     [%- END %]
     </select>
     <div class="col-3">
-     <input type="submit" class="btn btn-sm btn-confirm float-right" value="[% l("Change") %]" />
+     <button type="submit" class="btn btn-sm btn-confirm float-right"><i class="fas fa-save"></i>[% l(" Save Changes") %]</button>
     </div>
 </form>
 [%- END %]

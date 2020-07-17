@@ -14,8 +14,9 @@ function disable_submit() {
 };
 </script>
 
-<div id='holds_box' class='canvas' style='margin-top: 6px;'>
-    <h1>[% l('Place Hold') %]</h1>
+<div id='holds_box' class='container'>
+<hr>
+    <h3>[% l('Place Hold') %]</h3>
 
     <form method="post" onsubmit="return disable_submit();">
         <input type="hidden" name="override" value="1" />
@@ -37,19 +38,21 @@ function disable_submit() {
                             override = 1;
                         END;
                     %]
+                    [% IF override %]
                     <input 
                         type="checkbox" name="hold_target" value="[% hdata.target.id | html %]"
-                        [% IF override %] checked='checked' [% ELSE %] disabled='disabled' [% END %]/>               
+                         checked='checked' />       
+                         [% END %]        
                 </td>
                 <td>
                     
                     [% IF hdata.parts %]
                         <input type='hidden' name='part' value='[% hdata.selected_part || '' %]'/>
                     [% END %]
-                    <div>
+                   
                         [% IF hdata.hold_success %]
 
-                        <div class='success'><h5>[% l("Hold was successfully placed for: "); %]</h5></div>
+                       <h5 class="success"><i class="fas fa-check-circle"></i> [% l("Hold was successfully placed for: "); %]</h5>
 					[%
                         title = attrs.title_extended;
                         IF hdata.selected_part AND hdata.parts AND hdata.parts.size > 0;
@@ -60,18 +63,20 @@ function disable_submit() {
                             END;
                         END;
                     %]
-                        
-                    <div class='hold-items-list-title'><h1>[% title | html %]</h1></div>
+                      
+
+                    <div class='hold-items-list-title'><p>[% title | html %]</p></div>
+                    <div>
                         [% IF hdata.frozen %]
-                        <div>
+                        
                         [% l("Hold is suspended") %]
                         [% IF hdata.thaw_date %]
                         <br/>
                         [% l("Reactivate on [_1]", date.format(ctx.parse_datetime(hdata.thaw_date), DATE_FORMAT));
                            END %]
-                        </div>
+                        
                         [% END %]
-
+                </div>
                         [% IF ctx.is_staff %]
                             <script>
                                 window.addEventListener(
@@ -96,7 +101,7 @@ function disable_submit() {
 
                         [% ELSIF hdata.hold_failed; any_failures = 1 %]
 
-                            <div><big><strong>[% l("Hold was not successfully placed"); %]</strong></big></div>
+                            <div><big><strong class="danger"><i class="fas fa-times-circle"></i> [% l("Hold was not successfully placed"); %]</strong></big></div>
                             [% IF hdata.hold_local_block %]
                                 <div>[% l("There is already a copy available at your local library.") %]</div>
                             [% ELSIF hdata.hold_failed_event || hdata.hold_local_alert %]
@@ -140,18 +145,18 @@ function disable_submit() {
             <div class='big-strong'>
                 [% |l %]You have permission to override some of the failed holds. Click Submit to override and place your hold on the selected items.[% END %]
             </div>
-            <span style='padding-right: 10px;'>
-                <input id="place_hold_submit" type="submit" name="submit" value="[% l('Submit') %]"
-                    title="[% l('Submit') %]" alt="[% l('Submit') %]"
-                    class="btn btn-confirm" />
+            <span>
+                <button id="place_hold_submit" type="submit" name="submit" class="btn btn-confirm"><i class="fas fa-save"></i> [% l('Submit') %]</button>
             </span>
         [% END %]
-        <span>
+      
         [% IF any_failures OR ctx.general_hold_error %]
-        <a class="btn btn-deny" href="[% CGI.param('redirect_to') || CGI.referer | html %]">[% l('Cancel') %]</a>
+                  <span><a class="btn btn-confirm" href="[% CGI.param('redirect_to') || CGI.referer | html %]"><i class="fas fa-arrow-circle-left"></i> [% l('Back To Search') %]</a></span>
+
+        <a class="btn btn-deny" href="[% CGI.param('redirect_to') || CGI.referer | html %]"><i class="fas fa-times"></i> [% l('Cancel') %]</a>
         [% ELSE %]
         <div class='hold_success_links'>
-          <span><a class="btn btn-confirm" href="[% CGI.param('redirect_to') || CGI.referer | html %]">[% l('Continue') %]</a></span>
+          <span><a class="btn btn-confirm" href="[% CGI.param('redirect_to') || CGI.referer | html %]"><i class="fas fa-arrow-circle-left"></i> [% l('Back To Search') %]</a></span>
            [% IF ctx.is_staff %]
              [% IF CGI.param('hold_type') == 'C';
                   hold_type_label = l('copy');
@@ -163,9 +168,10 @@ function disable_submit() {
                <span><a href="[% mkurl(ctx.opac_root _ '/place_hold', {hold_source_page => CGI.param('hold_source_page'), bre_id => CGI.param('bre_id')}) %]">
                [% l('Place another hold for this ') %] [% hold_type_label %]</a>
                </span>
+            </div>
           [% END %]
         [% END %]
-        </span>
+       </div>
     </form>
 </div>
 

@@ -1,26 +1,39 @@
 <div id="myopac_messages_div">
-    <div class="header_middle">
-        <span id="acct_messages_header" style="float:left;">[% l("Messages") %]</div>
-        <span class='float-left' style='padding-left: 10px;'>
-            <a href='[% mkurl('messages', { limit => limit, offset => (offset - limit)} ) %]'
-                [% IF offset <= 0 %] class='invisible' [% END %]><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>
+<h3>[% l("Messages") %]</h3>
+    <div>
+
+
+
+<ul class='start_end_links_span pagination d-inline-flex'>    
+            [% IF offset != 0 %]        
+            
+             <li class="page-item"> <a class='np_nav_link classic_link btn btn-action' title='[% l("Previous Page") %]'
+            href='[% mkurl('messages', { limit => limit, offset => (offset - limit)} ) %]'><span class="nav_arrow_fix">&#9668;</span> <span class="d-none d-md-inline-block">[% l('Previous') %]</span></a></li>
+           [% END; %]
             [% IF offset > 0 || count > limit;
                 curpage = 0;
                 WHILE curpage * limit < count;
                     IF curpage * limit == offset;
             %]
-            [% curpage + 1 %]
+                        <li class="page-item active"><a href="[% mkurl('hold_history', {limit => limit, offset => (curpage * limit)}) %]"  class="results-paginator-selected btn page-link disabled">[% curpage + 1%]</a></li>
+
+            
                     [%- ELSE %]
-            <a href='[% mkurl('messages', {limit => limit, offset => (curpage * limit)}) %]'>[% curpage + 1 %]</a>
+            <li class="page-item"><a href="[% mkurl('messages', {limit => limit, offset => (curpage * limit)}) %]" class="btn page-link">[% curpage + 1%]</a></li>
+
                     [%- END;
                     curpage = curpage + 1;
                 END;
             END %]
-            <a href='[% mkurl('messages', {limit => limit, offset => (offset + limit)}) %]'
-               [% IF count <= limit + offset %] class='invisible' [% END %] >[% l('Next') %]<span class="nav_arrow_fix">&#9658;</span></a>
-        </span>
+            [% IF count >= limit + offset %]
+            <li class="page-item"><a class='np_nav_link classic_link btn btn-action' title='[% l("Next Page") %]'
+            href='[% mkurl('messages', {limit => limit, offset => (offset + limit)}) %]'><span class="d-none d-md-inline-block">[% l('Next') %]</span> <span class="nav_arrow_fix">&#9658;</span></a></li>
+        
+[% END; %]
+</ul>
+
+      
     </div>
-    <div class="clear-both"></div>
     [% IF ctx.message_update_action.defined %]
         [% IF ctx.message_update_changed > 0 %]
         <div class="message-update-summary">
@@ -47,60 +60,44 @@
         </div>
         [% END %]
     [% END %]
-    <div class="clear-both"></div>
     <div id="messages_main">
         <form method="post" id="messages-form"
          onsubmit="if (document.getElementById('acct_messages_actions').value == 'mark_deleted') { return confirm('[% l("Are you sure you wish to permanently delete the selected message(s)?") %]') } else { return true; }">
-            <div class="row">
-                <span class="col-md-11 my-2">
-                    <select class="form-control" name="action" id="acct_messages_actions"
-                        title="[% l('Select your action for the selected messages') %]">
-                        <option id="acct_messages_actions_none" value="">
-                            -- [% l('Actions for selected messages') %] --
-                        </option>
-                        <option value="mark_read">[% l('Mark As Read') %]</option>
-                        <option value="mark_unread">[% l('Mark As Unread') %]</option>
-                        <option value="mark_deleted">[% l('Delete') %]</option>
-                    </select>
-                </span>
-                <span class="col-md-1 my-2">
-                    <input type="submit"
-                        value="[% l('Go') %]"
-                        title="[% l('Go') %]"
-                        class="btn btn-confirm " />
-                </span>
-               <!-- <span style="padding-left:5px;">
-                    <a href="#"><img
-                        alt="[% l('Messages Help') %]"
-                        title="[% l('Actions for messages') %]"
-                        src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]" /></a>
-                </span> -->
+            <div class="my-2">
+                <button name="action" class="btn btn-action" value="mark_read" id="mark_read" type="submit"><i class="fas fa-glasses"></i> Mark Read</button>
+                <button name="action" class="btn btn-opac" value="mark_unread" id="mark_unread"  type="submit"><i class="fas fa-eye-slash"></i> Mark Unread</button>
+                <button name="action" class="btn btn-danger" value="mark_deleted" id="mark_deleted"  type="submit" onclick="return confirm('[% l("Are you sure you wish to permanently delete the selected message(s)?") %]')"><i class="fas fa-trash-alt"></i> Delete</button>
             </div>
             [% IF count < 1 %]
             <div class="warning_box">[% l('No messages found.') %]</div>
             [% ELSE %]
+             <div class="d-block d-md-none">
+                <input id="all_message_check" checked="checked"
+                type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'message_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"
+                aria-label="[% l('Check/Uncheck All') %]" />    
+                <label for="all_message_check">[% l('Check/Uncheck All') %]</label>  
+            </div>    
             <table id="acct_messages_main_header" title="[% l('Messages') %]"
-                class="table table-hover miniTable messagesTable">
+                class="table table-hover table-bordered miniTable messagesTable">
                 <thead>
                 <tr>
-                    <th align="center" class="text-center">
-                        <input type="checkbox" title="[% l('Select All Messages') %]"
+                    <td>
+                        <input type="checkbox" aria-label="[% l('Select All Messages') %]"
                         onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'message_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
-                    </th>
+                    </td>
                     <th>[% l('Date') %]</th>
                     <th>[% l('Library') %]</th>
                     <th>[% l('Subject') %]</th>
-                    <th></th>
+                    <td></td>
                 </tr>
                 </thead>
                 <tbody>
                 [% FOR message IN ctx.patron_messages; %]
-                    <tr name="acct_message_row"
-                        [% IF !message.is_read %]class="unread-patron-message"[% END %]>
-                        <td align="center">
+                    <tr [% IF !message.is_read %]class="unread-patron-message"[% END %]>
+                        <td class="checkCell">
                             <span class="sr-only">Message Number [% count; %]</span>
                         <input type="checkbox" name="message_id" value="[% message.id %]"
-                            [% html_text_attr('title', l('Select message [_1]', message.title)) %]/>
+                            [% html_text_attr('aria-label', l('Select message [_1]', message.title)) %]/>
                         </td>
                         <td>
                             <span class="sr-only">Date of Message</span>
@@ -116,7 +113,7 @@
                         </td>
                         <td>
                         <span class="sr-only">Message Options</span>
-                            <a href="[% mkurl('messages', { single => 1, message_id => message.id } ) %]" title="Read [% message.title | html %]">Read</a>
+                            <a class="btn btn-sm btn-action" href="[% mkurl('messages', { single => 1, message_id => message.id } ) %]" title="Read [% message.title | html %]"><i class="fas fa-glasses"></i> Read</a>
                         </td>
                     </tr>
                 [% END %]

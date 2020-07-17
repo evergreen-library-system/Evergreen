@@ -4,79 +4,28 @@
     PROCESS "opac/parts/myopac/column_sort_support.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "holds";
+    parent="holds";
     limit = (ctx.holds_limit.defined) ? ctx.holds_limit : 0;
     offset = (ctx.holds_offset.defined) ? ctx.holds_offset : 0;
     count = (ctx.holds_ids.size.defined) ? ctx.holds_ids.size : 0; 
 %]
-<h3 class="sr-only">[% l('My Holds') %]</h3>
-<div id='myopac_holds_div'>
-    <div class="mb-3">
-    	<ul class="nav nav-pills nav-fill">
-        <li class="nav-item m-2">
-            <a href='#' class="nav-link active">[% l("Items on Hold") %]</a>
-        </li>
-        [% IF ebook_api.enabled == 'true' %]
-        <li class="nav-item m-2">
-            <a href='[% mkurl('ebook_holds', {}, ['limit','offset','available','sort','sort_type']) %]' class="nav-link not_active_pill">[% l("E-Items on Hold") %]</a>
-        </li>
-        <li class="nav-item m-2">
-            <a href='[% mkurl('ebook_holds_ready', {}, ['limit','offset','available','sort','sort_type']) %]' class="nav-link not_active_pill">[% l("E-Items Ready for Checkout") %]</a>
-        </li>
-        [% END %]
-        <li class="nav-item m-2">
-            <a href='[% mkurl('hold_history', {}, ['limit','offset','available','sort','sort_type']) %]' class="nav-link not_active_pill">[% l("Holds History") %]</a>
-        </li>
-        </ul>
-    </div>
-	<div class="my-4">
-    <div class="header_middle">
-        <span id="acct_holds_header" style="float:left;">
-            [%  IF CGI.param("available");
+<h3> [%  IF CGI.param("available");
                     l("Items Ready for Pickup");
                 ELSE;
                     l("Current Items on Hold");
                 END
-            %]
-        </span>
-    </div>
-    <div class="clear-both"></div>
+            %]</h3>
+<div>
     <div id='holds_main'>
     <form method="post">
-    	    <div class="row">
-                <span class="col-md-11 my-2">
-                	<select class="form-control" name="action" id="acct_holds_actions" 
-                      title="[% l('Select your action for the selected holds') %]">
-                        <option id='myopac_holds_actions_none' value=''>
-                        -- [% l("Actions for selected holds") %] --
-                        </option>
-                        <option value='suspend'>[% l("Suspend") %]</option>
-                        <option value='activate'>[% l("Activate") %]</option>
-                        <!-- XXX maybe later <option value='thaw_date'>[% l("Set Active Date") %]</option> -->
-                        <option value='cancel'>[% l("Cancel") %]</option>
-                    </select>
-                </span>
-                <span class="col-md-1 my-2">
-                    <input type="submit" value="[% l('Go') %]"
-                        title="[% l('Go') %]" class="btn btn-confirm" />
-                </span>
-          </div>
-
           <div class="row">
-            <div class="col-3 text-left">
-                <a href='[% mkurl('holds', {limit => limit,offset => (offset - limit)}) %]'
-                [% IF offset <= 0 %] class='invisible' [% END %]><span class="np_nav_link classic_link btn btn-outline-primary">&#9668;[% l('Previous') %]</span></a>
-                    [% IF offset > 0 || count > limit; curpage = 0; WHILE curpage * limit < count; IF curpage * limit == offset; %]
-                        [% curpage + 1 %]
-                    [%- ELSE %]
-                <a href='[% mkurl('holds', {limit => limit, offset => (curpage * limit)}) %]' class="np_nav_link classic_link btn btn-outline-primary">[% curpage + 1 %]</a>
-                    [%- END; curpage = curpage + 1; END; END %]
-            </div>
-            <div class="col-6 text-center">
-                <span style="padding-left:5px;" class='error'>
-                    [%  IF ctx.hold_suspend_post_capture; l('One or more holds could not be suspended because the item is at (or en route to) the pickup library.'); END; %]
-                </span>
-            
-               <span>
+            <div class="col-4 text-left">
+                
+                    <div>
+            <button name="action" class="btn btn-action my-2" id="suspend" value="suspend" type="submit"><i class="fas fa-hand-paper"></i> [% l("Suspend") %]</button>
+            <button name="action" class="btn btn-opac my-2" id="activate" value="activate" type="submit"><i class="fas fa-play"></i> [% l("Activate") %] </button>
+            <button name="action" class="btn btn-danger my-2" id="cancel" value="cancel" type="submit" onclick="return confirm('[% l("Are you sure you wish to cancel the selected hold(s)?") %]');"><i class="fas fa-ban"></i> [% l("Cancel") %]</button>
+                 <p class="my-2">
                     [% IF CGI.param("available") -%]
                     <a href="[% mkurl('holds', {}, ['limit','offset','available']) %]">[% l('Show all holds') %]</a> |
                     <strong>[% l("Show only available holds") %]</strong>
@@ -84,29 +33,53 @@
                     <strong>[% l("Show all holds") %]</strong> |
                     <a href="[% mkurl('holds',{available => 1},['limit','offset']) %]">[% l("Show only available holds") %]</a>
                     [% END -%]
-               </span>
-                <a href="#">
-                    <img alt="[% l('Holds Help') %]" title="[% l('Actions for selected holds') %]" src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]" />
-                </a>
+                     <span title="This option will show all items available for pickup." data-toggle="tooltip">
+                        <i class="fas fa-question-circle"></i>
+                    </span>
+               </p>
+                
+          </div>       
+            </div>
+            <div class="col-8">
+             [% IF offset != 0 %]<a href='[% mkurl('holds', {limit => limit,offset => (offset - limit)}) %]'
+              ><span class="np_nav_link classic_link btn btn-action">&#9668;[% l('Previous') %]</span></a> [% END %]
+
+             [% IF offset > 0 || count > limit; curpage = 0; WHILE curpage * limit < count; IF curpage * limit == offset; %]
+                  <span class="np_nav_link classic_link btn btn-action disabled">[% curpage + 1 %]</span>
+
+                    [%- ELSE %]
+                <a href='[% mkurl('holds', {limit => limit, offset => (curpage * limit)}) %]' class="np_nav_link classic_link btn btn-action">[% curpage + 1 %]</a>
+                    [%- END; curpage = curpage + 1; END; END %]
+                <span style="padding-left:5px;" class='error'>
+                    [%  IF ctx.hold_suspend_post_capture; l('One or more holds could not be suspended because the item is at (or en route to) the pickup library.'); END; %]
+                </span>
+            
+              
+                [% IF count > limit + offset %]<a href='[% mkurl('holds', {limit => limit, offset => (offset + limit)}) %]'
+                  ><span class="np_nav_link classic_link btn btn-action">[% l('Next') %]&#9658;</span></a>[% END %]
+           
+              
             </div>
 
-            <div class="col-3 text-right">  
-                <a href='[% mkurl('holds', {limit => limit, offset => (offset + limit)}) %]'
-               [% IF count <= limit + offset %] class='invisible' [% END %] ><span class="np_nav_link classic_link btn btn-outline-primary">[% l('Next') %]&#9658;</span></a>
-            </div>
+            
           </div>
-                    
+            
         [% IF ctx.holds.size && ctx.holds.size < 1 %]
         <div class="warning_box">[% l('No holds found.') %]</div>
         [% ELSE %]
+        <div class="d-block d-md-none">
+            <input id="check_all_holds" aria-label="[% l('Select All Items') %]" checked="checked" type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'hold_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
+
+            <label for="check_all_holds">[% l('Check/Uncheck All') %]</label>  
+        </div> 
         <table title="[% l('Items on Hold') %]"
-        class="table table-hover miniTable activeHoldstable w-100 my-3">
+        class="table table-hover table-bordered miniTable activeHoldstable w-100 my-3">
             <thead>
             <tr>
-                <th class="checkbox_column"> 
-                    <input type="checkbox" title="[% l('Select All Holds') %]"
+                <td class="checkCell"> 
+                    <input type="checkbox" aria-label="[% l('Select All Holds') %]"
                       onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'hold_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
-                </th>
+                </td>
                 <th>[% sort_head("sort_title", l('Title')) %]</th>
                 <th>[% sort_head("author", l('Author')) %]</th>
                 <th>[% sort_head("format", l('Format')) %]</th>
@@ -114,6 +87,7 @@
                 <th>[% l('Cancel if not filled by') %]</th>
                 <th>[% l('Status') %]</th>
                 <th>[% l('Notes') %]</th>
+                <th>[% l('Edit') %]</th>
             </tr>
             </thead>
             <tbody id="holds_temp_parent">
@@ -173,13 +147,12 @@
                     ahr = hold.hold.hold;
                     cnt = cnt + 1;
                      %]
-                <tr name="acct_holds_temp"
-                    class="[% ahr.frozen == 't' ? ' inactive-hold' : '' %]">
+                <tr class="[% ahr.frozen == 't' ? ' inactive-hold' : '' %]">
                     <td class="checkbox_column">
 
                     <span class="sr-only">Hold Number [%  cnt; %]</span>
                         <input type="checkbox" name="hold_id" value="[% ahr.id %]" 
-                            [% html_text_attr('title', l('Select hold [_1]', attrs.title)) %]/>
+                         aria-label="Select Hold"/>
                     </td>
                     <td>
                     <span class="sr-only">Title</span>
@@ -190,8 +163,7 @@
                             END; %]
 
                             <a href="[% mkurl(ctx.opac_root _ '/record/' _ 
-                                hold.hold.bre_id, {}, 1) %]"
-                                name="[% l('Catalog record') %]"><span[%- deemphasize_class -%]>
+                                hold.hold.bre_id, {}, 1) %]"><span[%- deemphasize_class -%]>
                                 [%- title.substr(0,hold.ATTRS.nonfiling_characters) | html %]</span>
                                 [%- title.substr(hold.ATTRS.nonfiling_characters)   | html %]</a>
                         </div>
@@ -224,8 +196,7 @@
                             FOR format IN formats 
                           %]
                           <span class="sr-only">[% format.label | html %]</span>
-                            <img title="[% format.label | html %]" 
-                              alt="[% format.label | html %]" src="[% format.icon %][% ctx.cache_key %]" />
+                            <img alt="[% format.label | html %]" src="[% format.icon %][% ctx.cache_key %]" />
                             [% END %]
                         </div>
                     </td>
@@ -241,7 +212,7 @@
                     </td>
                     <td>
                     <span class="sr-only">Status</span>
-                        <div name="acct_holds_status">
+                        <div>
                             [% PROCESS get_hold_status hold=hold; %]
                         </div>
                     </td>
@@ -260,6 +231,7 @@
                     <td class="fullRow">
                         <a class="btn btn-confirm btn-sm" href="[% mkurl(ctx.opac_root _ '/myopac/holds/edit', {hid => ahr.id}) %]"
                             [% html_text_attr('title', l('Edit hold for item [_1]', attrs.title)) %]>
+                            <i class="fas fa-edit"></i>
                             [% l('Edit') %]
                         </a>
                     </td>
@@ -267,9 +239,8 @@
                 [% END %]
             </tbody>
         </table>
-        </div>
         [% END %]
         </form>
-    </div></div>
+    </div> 
 </div>
 [% END %]

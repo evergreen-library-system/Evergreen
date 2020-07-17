@@ -56,7 +56,7 @@
                     <div class="mx-auto">
                         <!-- ===== Drop Down ===== -->
                         <div class="search-option my-2">
-                		<label for="opac.result.sort">[% l('') %]</label>
+                		<label for="opac.result.sort">[% l('Sort Results') %]</label>
                         	[% INCLUDE "opac/parts/filtersort.tt2" value=CGI.param('sort') submit_on_change=1 class="form-control" %]
                         </div>
                         [%- IF show_more_details.default != 'hide' -%]
@@ -138,8 +138,7 @@
         </div>
     </div>
     </form>
-    <div id="content-wrapper">
-        <div id="main-content">
+    <div class="mx-5">
             <div id="results-page">
                 [%- IF (ctx.depth_sel_checkbox OR ctx.depth_sel_button) AND CGI.param('depth') == ctx.depth_sel_depth AND ctx.depth_sel_resultshint %]
                 <div id="results-page-depth-hint">[% ctx.depth_sel_resultshint | html %]</div>
@@ -148,8 +147,5 @@
                     (ctx.records.size ? "table.tt2" : "lowhits.tt2");
                 INCLUDE $path %]
             </div>
-            <div class="common-full-pad"></div>
-        </div>
-        <br class="clear-both" />
     </div>
 [%- END %]

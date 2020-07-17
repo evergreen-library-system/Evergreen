@@ -1,5 +1,5 @@
 <div>
-[% l('Please include leading zeros.') %]
+[% l('Please enter your full library card number.') %]
 <br>
-[% l('Example: 0026626051') %]
+[% l('Example: 12340001234567') %]
 </div>

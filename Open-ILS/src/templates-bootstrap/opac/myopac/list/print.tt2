@@ -1,0 +1,1 @@
+[%- ctx.csv.template_output.data -%]

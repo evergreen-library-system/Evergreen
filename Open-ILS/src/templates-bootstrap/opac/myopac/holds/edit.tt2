@@ -16,67 +16,59 @@
     expire_time = ahr.expire_time ? date.format(ctx.parse_datetime(ahr.expire_time), DATE_FORMAT) : '';
     thaw_date = ahr.thaw_date ? date.format(ctx.parse_datetime(ahr.thaw_date), DATE_FORMAT) : '';
 %]
-<h3 class="sr-only">[% l('Edit Hold') %]</h3>
-<div class="pad-bottom-five">
+
+<div>
     <div class="header_middle">
-        <span id="acct_holds_header float-left">[% l('Editing Hold') %]</span>
-        &nbsp; &nbsp; &nbsp; &nbsp;
-        <a href="[% ctx.opac_root %]/myopac/holds" class="float-right">[% l('List all holds') %]</a>
+        <h3>[% l('Edit Hold') %]</h3>
+        <a href="[% ctx.opac_root %]/myopac/holds" class="float-right"><i class="fas fa-list"></i> [% l('List all holds') %]</a>
     </div>
+    <form method="post">
     <div id="hold_editor" class="mt-4">
-        [%  IF hold;
-                title = attrs.title;
+        [%  IF hold; title = attrs.title;
                 IF ahr.hold_type == 'P';
                     title = l('[_1] ([_2])', title, hold.hold.part.label);
                 END 
-        %]<div class="my-4">
+        %]
+        <div class="my-4">
             <h1>[% title | html %]</h1>
             <h2>[% attrs.author | html %]</h2>
-            [% IF attrs.format_icon %]<p>
-             <strong>[% l('Format:') %]</strong>
+            [% IF attrs.format_icon %]
+                <strong>[% l('Format:') %]</strong>
                 <img src="[% attrs.format_icon %]" alt="[% attrs.format_label | html %]" title="[% attrs.format_label | html %]" />
-            </p>[% END %]</div>
-                <p>
-                <strong>[% l('Status') %]</strong>: [% hold.human_status %]
-                </p>
-            <form method="post">
-                <table id="hold_editor_table" >
-                    <tr>
-                        <th>
-                            <input type="hidden" name="action" value="edit" />
+            [% END %]
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+            <strong>[% l('Status') %]</strong>: [% hold.human_status %]
+            </div>
+            <div class="col-12">
+             <input type="hidden" name="action" value="edit" />
                             <input type="hidden" name="hold_id"
                                 value="[% ahr.id %]" />
                             [% l('Pickup library') %]
-                        </th>
-                        <td>
+                       
                             [% INCLUDE build_org_selector
                                 name='pickup_lib' value=ahr.pickup_lib 
                                 can_have_vols_only=1 hold_pickup_lib=1 %]
-                        </td>
-                    </tr>
-                    [% IF hold.hold.status < 3 OR hold.hold.status == 7 %]
+            </div>
+            <div class="col-12">
+            [% IF hold.hold.status < 3 OR hold.hold.status == 7 %]
                     [%# The following actions cannot be performed on holds that 
                         have already been captured... %]
-                    <tr>
-                        <th>
+                  
                             [% l('Cancel unless filled by') %]
-                        </th>
-                        <td>
-                            <input class="form-control" type="text" name="expire_time"
-                                value="[% expire_time | html %]" />
-                               <p><em>[% l('Enter date in MM/DD/YYYY format') %]</em></p>
-                            <!-- XXX TODO pick out a minimal, simple, reliable
-                            calendar widget that's not part of some giant,
-                            bloated framework and doesn't do anything at onload.
-                            -->
+                      
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" name="expire_time"  value="[% expire_time | html %]" data-date-format="mm/dd/yyyy">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
                            
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
+                       
                             [% l('Active?') %]
-                        </th>
-                        <td>
+                       
                             <select class="form-control" name="frozen">
                                 <option value="f"[% ahr.frozen == 't' ? '' :' selected="selected"' %]>
                                     [% l('Yes, this hold is active now') %]
@@ -85,39 +77,45 @@
                                     [% l('No, this hold is suspended') %]
                                 </option>
                             </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
+                        
                             [% l('If suspended, activate on') %]
-                        </th>
-                        <td>
-                            <input class="form-control" type="text" name="thaw_date"
-                                value="[% thaw_date | html %]" />
-                                <p><em>[% l('Enter date in MM/DD/YYYY format') %]</em></p>
-                        </td>
-                    </tr>
+                       
+                         <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" name="thaw_date" id="datepicker" value="[% thaw_date | html %]" data-date-format="mm/dd/yyyy">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                           
+                       
                     [% END %]
                       
-                    <tr><td colspan='4'>
+            </div>
+            <div class="col-12">
+               
                     [% IF hold.metarecord_filters.formats.size OR
                         (hold.metarecord_filters.langs.size.defined && hold.metarecord_filters.langs.size > 1);
                             PROCESS metarecord_hold_filters_selector 
                                 hold_data=hold; END %]
-                    </td></tr>
-                    <tr>
-                        <td colspan="2" class="hold-editor-controls">
-                            
-                            <input type="submit" value="[% l('Submit') %]" class="btn btn-confirm" />
-                            <a href="[% ctx.opac_root %]/myopac/holds"><button 
-                                class="btn btn-deny">[% l('Go Back') %]</button></a>
-                        </td>
-                    </tr>
-                </table>
+            </div>
+             <div class="col-12">
+                <a href="[% ctx.opac_root %]/myopac/holds" class="btn btn-deny"><i class="fas fa-arrow-circle-left"></i> [% l('Go Back') %]</a>
+                            <button class="btn btn-confirm m-2" type='submit'><i class="fas fa-save"></i> [% l('Save Changes') %]</button>
+             </div>
+        </div>
             </form>
         [% ELSE;
             l('Hold not found');
         END %]
     </div>
 </div>
+<script>
+    $('#datepicker').datepicker({
+        weekStart: 1,
+        autoclose: true,
+        todayHighlight: true,
+    });
+    $('#datepicker').datepicker("setDate", new Date());
+</script>
 [% END %]
+

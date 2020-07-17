@@ -4,120 +4,106 @@
 %]
 <form action="[% ctx.opac_root %]/results" method="get">
 <div id='adv_global_search' class='data_grid data_grid_center'>
-    <div id='adv_search_rows' class="container mb-3">
-        <!-- Contains the user-adda
-        ble(?) rows to define search class, containment and text -->
-         <div class="header_middle">[% l('Search Input') %]</div>
-        	<div valign='top' class='adv_global_input_container row'>
-            <table role="presentation" class="mx-auto mb-5 col-lg-8">
+    <div id='adv_search_rows' class="container">
+        <h1 class="text-center">Advanced Search</h1>
+        <h2 class="text-center">Refine your search by filling out one or more fields to search by below.</h2>
+        <div class='adv_global_input_container row'>
+            <table role="presentation" id="adv_global_input_table" class="mx-auto col-12">
                 <tbody id="adv_global_tbody">
                     [% INCLUDE "opac/parts/advanced/global_row.tt2" %]
                     <!-- add a new row -->
                     <tr id='adv_global_addrow' >
                         <td class="td-search-left" colspan="2">
-                            <a class="btn btn-opac btn-sm" href="javascript:;" id="myopac_new_global_row" onclick='addSearchRow();'>[% l('Add Search Row') %]</a>
+                            <a class="btn btn-opac btn-sm" href="javascript:;" id="myopac_new_global_row" onclick='addSearchRow();'><i class="fas fa-plus-circle"></i> [% l('Add Search Row') %]</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-         <div id='adv_search_submit' class="text-center">
-        <input type="hidden" name="_adv" value="1" />
-        <input id="detail" type="hidden" name="detail_record_view"
-               value="[% show_detail_view %]"/>
-        <span>
-            <input id='search-submit-go' type="submit" value="[% l('Search') %]" title="[% l('Search') %]" class="btn btn-confirm"
-                onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>
-            <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif[% ctx.cache_key %]'
-                class='hidden' alt="[% l('Search in progress icon') %]"/>
-        </span>
-
-        <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
-            class="btn btn-deny">[% l('Clear Form') %]</a>
-    </div>
     </div>
 
-   
-
-    <div class="container">
-        <div class="header_middle">[% l('Search Filters') %]</div>
-<div class='row'>
-[% FOR adv_chunk IN search.adv_config; NEXT IF adv_chunk.adv_hide || (adv_chunk.adv_special && adv_chunk.adv_special != 'copy_location'); %]
-            <div class='col-xl-3 col-sm-6 col-md-4 col-xs-12 pt-3'>
-            <div valign='top'[% IF adv_chunk.js_only %]
-                id='adv_chunk_[% adv_chunk.adv_special %]'
-                class='hidden  mx-auto' [%ELSE%] class='mx-auto' [% END %]>
-                <strong><label for="[% adv_chunk.id %]">
-                  [% adv_chunk.adv_label %] </label></strong><br />
-                  
-[% IF adv_chunk.adv_attr;
-            INCLUDE "opac/parts/coded_value_selector.tt2"
-                id=adv_chunk.id
-                attr=adv_chunk.adv_attr multiple="multiple"
-                size=adv_chunk.adv_size || search.default_adv_select_height || "4";
- ELSIF adv_chunk.adv_filter;
-            INCLUDE "opac/parts/filter_group_selector.tt2"
-                id=adv_chunk.id
-                filter_group=adv_chunk.adv_filter multiple="multiple"
-                size=adv_chunk.adv_size || search.default_adv_select_height || "4"; %]
-         [% END; %]       
-[% IF adv_chunk.adv_special == 'copy_location' %]
-<select id="adv_copy_location_selector"
-                        title="[% l('Select Shelving Location') %]"
-                        name="fi:locations" size="4" multiple="multiple" class="form-control">
-                    </select>
-         [%END;%]</div></div>[%END;%]</div>       
+    <div class="my-5">
+        <h3>Search Filters</h3>
+        <div>
+            [% FOR adv_chunk IN search.adv_config; NEXT IF adv_chunk.adv_hide || (adv_chunk.adv_special && adv_chunk.adv_special != 'copy_location'); %]
+            <div class="pt-3">
+                <div [% IF adv_chunk.js_only %] id='adv_chunk_[% adv_chunk.adv_special %]' class='hidden  accordion' [%ELSE%] class='accordion' [% END %]>
+                    <div class="card">
+                        <div class="card-header p-0" id="[% adv_chunk.id %]_card">
+                        <h4 class="mb-0">
+                            <button type="button" class="btn filter-header w-100 text-left" data-toggle="collapse" data-target="#[% IF adv_chunk.id == 'adv_copy_location_selector'; 'adv_copy_location_selector_new';  ELSE; adv_chunk.id; END; %]" aria-expanded="true" aria-controls="[% IF adv_chunk.id == 'adv_copy_location_selector'; 'adv_copy_location_selector_new';  ELSE; adv_chunk.id; END; %]">
+                            [% adv_chunk.adv_label %]
+                            </button>
+                        </h4>
+                    </div>
+                    
+                    <div id="[% IF adv_chunk.id == 'adv_copy_location_selector'; 'adv_copy_location_selector_new';  ELSE; adv_chunk.id; END; %]" class="collapse" aria-labelledby="[% adv_chunk.id %]_card" data-parent="#accordion">
+                    [% IF adv_chunk.id != 'adv_copy_location_selector';%]
+                        <div class="card-body">
+                        <fieldset>
+                        <legend class="sr-only"> [% adv_chunk.adv_label %]</legend>
+                       [% END; %]  
+                            [% IF adv_chunk.adv_attr;
+                                        INCLUDE "opac/parts/check_value_selector.tt2"
+                                            id=adv_chunk.id
+                                            attr=adv_chunk.adv_attr multiple="multiple"
+                                            size=adv_chunk.adv_size || search.default_adv_select_height || "4";
+                            ELSIF adv_chunk.adv_filter;
+                                        INCLUDE "opac/parts/filter_group_selector.tt2"
+                                            id=adv_chunk.id
+                                            filter_group=adv_chunk.adv_filter multiple="multiple"
+                                            size=adv_chunk.adv_size || search.default_adv_select_height || "4"; 
+                            END; %] 
+                            [% IF adv_chunk.id != 'adv_copy_location_selector';%]
+                        </fieldset>   
+                         [% END; %]   
+                        </div>
+                    </div> 
+                </div></div>
+            </div>
+            [%END;%]
+        </div>
+    </div>       
          
-         
-         
-<!--Bottom Content (Library/Pub Year/Sort and Limit/Format Checkboxes -->
-                <div class="row">
-[% FOR adv_chunk IN search.adv_config; NEXT IF adv_chunk.adv_hide || adv_chunk.adv_special == 'copy_location';%]                  
-[%	IF adv_chunk.adv_special;%]
- <div class='col-md-4 col-sm-6 col-xs-12 pt-3'>
-            <div valign='top'[% IF adv_chunk.js_only %]
-                id='adv_chunk_[% adv_chunk.adv_special %]'
-                class='hidden mx-auto' [%ELSE%] class='mx-auto' [% END %]>
-                <strong><label for="[% adv_chunk.id %]">
-                  [% adv_chunk.adv_label %] </label></strong><br />
-                  
-           [% IF adv_chunk.adv_special == "lib_selector";
-                    PROCESS "opac/parts/org_selector.tt2";
-                        INCLUDE build_org_selector show_loc_groups=1 id=adv_chunk.id %]
-                        
-                          
-                            
-[% ELSIF adv_chunk.adv_special == "pub_year"; %]
-                            <select name='pubdate' class='form-control'
-                                id="[% adv_chunk.id %]"
-                                onchange='if(this.selectedIndex == 3)
-                                    unHideMe($("adv_global_pub_date_2_span"));
-                                else
-                                    hideMe($("adv_global_pub_date_2_span"));'>
-                                    
-                                    [%  FOR opt IN [
-                                            {"code" => "is", "label" => l("Is")},
-                                            {"code" => "before", "label" => l("Before")},
-                                            {"code" => "after", "label" => l("After")},
-                                            {"code" => "between", "label" => l("Between")} ] %]
-                                        <option value="[% opt.code %]"[% CGI.param('pubdate') == opt.code ? ' selected="selected"' : '' %]>[% opt.label | html %]</option>
-                                    [%  END %]
-                                    
+    <!--Bottom Content (Library/Pub Year/Sort and Limit/Format Checkboxes -->
+    <div class="row adv_options">
+        [% FOR adv_chunk IN search.adv_config; NEXT IF adv_chunk.adv_hide || adv_chunk.adv_special == 'copy_location';%]                  
+        [%	IF adv_chunk.adv_special;%]
+        <div class='col-12 my-2'>
+            <div [% IF adv_chunk.js_only %] id='adv_chunk_[% adv_chunk.adv_special %]' class='hidden' [% END %]>
+                <strong><label for="[% adv_chunk.id %]"> [% adv_chunk.adv_label %] </label></strong>
+                    [% IF adv_chunk.adv_special == "lib_selector"; PROCESS "opac/parts/org_selector.tt2"; INCLUDE build_org_selector show_loc_groups=1 id=adv_chunk.id %]
+                    [% ELSIF adv_chunk.adv_special == "pub_year"; %]
+                    <div id='adv_special_block' class="text-center form-inline">
+                            <select name='pubdate' class='form-control' id="[% adv_chunk.id %]" onchange='if(this.selectedIndex == 3) $("#adv_global_pub_date_2_span").removeClass("hide_me"); else $("#adv_global_pub_date_2_span").addClass("hide_me");'>
+                            [%  FOR opt IN [
+                                    {"code" => "is", "label" => l("Is")},
+                                    {"code" => "before", "label" => l("Before")},
+                                    {"code" => "after", "label" => l("After")},
+                                    {"code" => "between", "label" => l("Between")} ] %]
+                                <option value="[% opt.code %]"[% CGI.param('pubdate') == opt.code ? ' selected="selected"' : '' %]>[% opt.label | html %]</option>
+                            [%  END %]
                             </select>
                             
-                            [% IF !ctx.exclude_electronic_checkbox %]
-                            <br/>
-                            <div id='adv_special_block' class="text-center">
-                            [% END %]
+                            <div class="mx-3">
                                 <input title="[% l('Search date') %]" class='form-control' placeholder='Year'
                                   name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
                                 <span id='adv_global_pub_date_2_span' class='[% CGI.param("pubdate") == "between" ? "" : "hide_me" %]'>
                                    [% l("AND") %] <input name='date2' class='form-control' placeholder='Year'
                                     title="[% l('Secondary search date') %]" type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
                                 </span>
-                            [% IF !ctx.exclude_electronic_checkbox %]
+                                </div>
                             </div>
-                            [% END %]
+
+                          
+                            
+                    [% ELSIF adv_chunk.adv_special == "sort_selector"; default_sort=ctx.default_sort;
+                    IF CGI.param('sort'); default_sort=CGI.param('sort'); END;
+                    INCLUDE "opac/parts/filtersort.tt2"
+                        id=adv_chunk.id
+                        value=default_sort class='results_header_sel form-control'; %]
+                         
+                            <div class="pt-5">
                             [% IF ctx.exclude_electronic_checkbox %]
                             <div class="adv_search_available">
                                 <input type='checkbox' name="fi:-search_format" value="electronic"
@@ -129,46 +115,42 @@
                                 </label>
                             </div>
                             [% END %]
-                            
-[% ELSIF adv_chunk.adv_special == "sort_selector"; default_sort=ctx.default_sort;
-                    IF CGI.param('sort');
-                        default_sort=CGI.param('sort');
-                    END;
-                    INCLUDE "opac/parts/filtersort.tt2"
-                        id=adv_chunk.id
-                        value=default_sort class='results_header_sel form-control'; %]
-
-<div class="mt-5">
-                    [% IF NOT metarecords.disabled %]
-                        <br/><!-- <br> may seem redundant, but it allows the
-                            <input> (below) to drop down inline w/ its label -->
-                        <div>
-                            <input type='checkbox' name="modifier" value="metabib"
-                              [%- CGI.param('modifier').grep('metabib').size || search.metarecord_default ?
-                                    ' checked="checked"' : '' %]
-                                id='opac.result.ismetabib' />
-                            <label for='opac.result.ismetabib'>
-                                [% l("Group Formats and Editions") %]</label>
-                        </div>
-                    [% END %]
-                      <div>
-                                <input type='checkbox' name="modifier"
-                                    value="available"[% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %]
-                                    id='opac.result.limit2avail' />
-                                <label for='opac.result.limit2avail'>
-                                    [% l("Limit to Available") %]</label>
+                                [% IF NOT metarecords.disabled %]
+                                <div>
+                                    <input type='checkbox' name="modifier" value="metabib"
+                                    [%- CGI.param('modifier').grep('metabib').size || search.metarecord_default ?
+                                            ' checked="checked"' : '' %]
+                                        id='opac.result.ismetabib' />
+                                    <label for='opac.result.ismetabib'>
+                                        [% l("Group Formats and Editions") %]</label>
+                                </div>
+                                [% END %]
+                                <div>
+                                    <input type='checkbox' name="modifier"
+                                        value="available"[% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %]
+                                        id='opac.result.limit2avail' />
+                                    <label for='opac.result.limit2avail'>
+                                        [% l("Limit to Available") %]</label>
+                                </div>
                             </div>
-</div>
-                [% END; %]
-         </div></div>
-     [%   END; %]
-            
-        
-
-            
-[% END; %]
-</div>
-        </div>
+                    [% END; %]
+                </div>
+            </div>
+        [% END; %]
+    [% END; %]
     </div>
-</div>
+    <div id='adv_search_submit' class="my-3">
+        <input type="hidden" name="_adv" value="1" />
+        <input id="detail" type="hidden" name="detail_record_view"
+               value="[% show_detail_view %]"/>
+        <span>
+            <button id='search-submit-go' type="submit" class="btn btn-confirm"
+                onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'><i class="fas fa-search"></i> [% l("Submit") %]</button>
+            <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif[% ctx.cache_key %]'
+                class='hidden' alt="[% l('Search in progress icon') %]"/>
+        </span>
+
+        <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
+            class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Clear Form') %]</a>
+    </div>
 </form>

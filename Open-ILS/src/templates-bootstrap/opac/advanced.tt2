@@ -10,16 +10,6 @@
     <span class="sr-only">[% l('Advanced Search') %]</span>
 	<div class="container">    
         <div id="search-wrapper">    
-            [% IF pane == 'advanced' %]
-            <h1 class="h1 text-center pt-3">Advanced Search</h1>
-            <h2 class="text-center pt-3">Refine your search by filling out one or more fields to search by below.</h2>
-            [% ELSIF pane == 'numeric' %]
-            <h1 class="h1 text-center pt-3">Numeric Search</h1>
-            <h2 class="text-center pt-3">Search by a field and numeric identifier.</h2>
-            [% ELSIF pane == 'expert' %]
-            <h1 class="h1 text-center pt-3">Expert Search</h1>
-            <h2 class="text-center pt-3">Search the MARC record.</h2>
-            [% END %]
             <div class="mt-3">
                 <ul class="nav nav-tabs">
                 <li class="nav-item">
@@ -37,10 +27,11 @@
                        class="nav-link [% IF pane == 'expert' %]active[% END %]"
                         id="expert_search">[% l('Expert Search') %]</a>
                 </li>
+                </ul>
             </div>
         </div>
         <div id="content-wrapper">
-            <div id="main-content">
+            <div>
                 <div class="advanced_div">
                 [% IF pane == 'advanced' %]
                 [% INCLUDE "opac/parts/advanced/search.tt2" %]
@@ -50,7 +41,6 @@
                 [% INCLUDE "opac/parts/advanced/expert.tt2" %]
                 [% END %]
                 </div>
-                <div class="common-full-pad"></div>	
             </div>
         </div>
     </div>

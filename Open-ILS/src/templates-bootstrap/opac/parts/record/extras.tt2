@@ -81,8 +81,8 @@
                         arrow = arrow_right;
                     END;
                 %]
-            <a name='[% name %]' href='[% href %]' class="text-white" rel="nofollow" vocab="" style="text-decoration:none;">
-           <div class="card-header bg-success">
+            <a id='[% name %]' href='[% href %]' class="text-white" rel="nofollow" vocab="" style="text-decoration:none;">
+           <div class="card-header extra_header">
                
                 <span>[% arrow %] [% extra.label | html %]</span>
             </div>

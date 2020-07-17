@@ -28,12 +28,12 @@ ctx.metalinks.push('
             END;
             %]
             <a href='http://obalkyknih.cz/view?isbn=[% isbnissn %]'>
-                <img alt="[% l('Image of item') %]" class='img-thumbnail w-auto'
+                <img alt="[% attrs.title _ ' Cover Image' %]" class='img-thumbnail w-auto'
                     src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/r/[% ctx.bre_id | uri %]' />
             </a>
             [% ELSE %]
             <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/r/[% ctx.bre_id | uri %]'><img
-                    alt="[% l('Image of item') %]" class='img-thumbnail w-auto'
+                    alt="[% attrs.title _ ' Cover Image' %]" class='img-thumbnail w-auto'
                     src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/r/[% ctx.bre_id | uri %]' />
             </a>
             [%- END %]
@@ -41,7 +41,7 @@ ctx.metalinks.push('
             [%- IF attrs.format_label %]
             [% FOR format IN attrs.all_formats %]
             <span style="font-size:14px;" class="mt-3 d-block">
-                <img title="[% format.label | html %]" alt="[% format.label | html %]" src="[% format.icon %]" />
+                <img alt="[% format.label | html %]" src="[% format.icon %]" />
                 [% format.label | html %]
             </span>
             [% END %]
@@ -71,7 +71,7 @@ ctx.metalinks.push('
                 [%- INCLUDE "opac/parts/record/authors.tt2" %]
                 <div>
                     <button id="btnMore" data-toggle="collapse" data-target="#demo"
-                        class="btn btn-action btn-sm my-3">More Details</button>
+                        class="btn btn-action text-left btn-sm my-3"><i class="fas fa-info-circle"></i> More Details</button>
                     <div id="demo" class="collapse">
                         <h2 id='rdetail_record_details'>[% l("Record details") %]</h2>
                         <ul class="list-unstyled">
@@ -318,10 +318,10 @@ ctx.metalinks.push('
                     
                 </div>
                 <script>jQuery('#demo').on('hidden.bs.collapse', function () {
-                        jQuery('#btnMore').html("More Details");
+                        jQuery('#btnMore').html("<i class='fas fa-info-circle'></i> More Details");
                     })
                     jQuery('#demo').on('shown.bs.collapse', function () {
-                        jQuery('#btnMore').html("Less Details");
+                        jQuery('#btnMore').html("<i class='fas fa-info-circle'></i> Less Details");
                     })
                     </script>
 
@@ -340,93 +340,81 @@ ctx.metalinks.push('
             </div>
             <!--rdetail_title_div-->
 
-            <div class="col-lg-4 text-center">
-             <div class="mx-auto btn-group btn-group-vertical dropright mt-3">
+            <div class="col-lg-4 text-right">
+             <div class="mx-auto btn-group btn-group-vertical text-left dropright mt-3">
                 [%- search_ou = ctx.search_ou;
                 IF ctx.place_unfillable ||
                 ( attrs.marc_xml.findnodes('//*[local-name()="holdings" and @has_holdable="true"]').size
                 && (ctx.holds_block.enabled != 'true' || !attrs.org_copy_counts.$search_ou.available)
                 )
                 %]
-                <button class="btn btn-action">
+                <div class="btn btn-action text-left">
                     <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
                     {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}, stop_parms) %]"
-                        class="no-dec" rel="nofollow" vocab=""><img
-                            src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]" [% img_alt(l('Place
-                            Hold on [_1]', attrs.title)) %] />
-                        <span class="place_hold">[% l('Place Hold') %]</span></a>
-                </button>
+                        class="no-dec">
+                        <span class="place_hold"><i class="fas fa-check"></i> [% l('Place Hold') %]</span></a>
+                </div>
                 [%- END -%]
 
                 [%- IF ebook_api.enabled == 'true' && args.ebook %]
-                <button class="btn btn-action">
+                <div class="btn btn-action text-left">
                     <div id="[%- ctx.bre_id -%]_ebook_checkout" class="rdetail_aux_utils ebook_action hidden">
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
                     {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'}, stop_parms) %]"
-                            class="no-dec" rel="nofollow" vocab=""><img
-                                src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]" [%
-                                img_alt(l('Check Out [_1]', attrs.title)) %] />
-                            <span class="place_hold">[% l('Check Out E-Item') %]</span></a>
+                            class="no-dec" rel="nofollow" vocab="">
+                            <span class="place_hold"><i class="fas fa-check"></i> [% l('Check Out E-Item') %]</span></a>
                     </div>
-                </button>
-                <button class="btn btn-action">
+                </div>
+                <div class="btn btn-action text-left">
                     <div id="[%- ctx.bre_id -%]_ebook_place_hold" class="rdetail_aux_utils ebook_action hidden">
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
                     {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'}, stop_parms) %]"
-                            class="no-dec" rel="nofollow" vocab=""><img
-                                src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]" [%
-                                img_alt(l('Place Hold on [_1]', attrs.title)) %] />
-                            <span class="place_hold">[% l('Place Hold on E-Item') %]</span></a>
+                            class="no-dec" rel="nofollow" vocab="">
+                            <span class="place_hold"><i class="fas fa-check"></i> [% l('Place Hold on E-Item') %]</span></a>
                     </div>
-                </button>
+                </div>
                 [%- END -%]
 
 
-                <div class="btn btn-action">
+                <div class="btn btn-action text-left">
                     [% operation = ctx.mylist.grep('^' _ ctx.bre_id _ '$').size ? "delete" : "add";
                     addhref = mkurl(ctx.opac_root _ '/mylist/add', {record => ctx.bre_id}, stop_parms);
                     delhref = mkurl(ctx.opac_root _ '/mylist/delete', {record => ctx.bre_id}, stop_parms);
                     label = (operation == "add") ? l("Add to Basket") : l("Remove from Basket");
                     %]
-                    <a href="[% addhref %]" id="mylist_add_[% ctx.bre_id %]" rel="nofollow" vocab=""
+                    <a href="[% addhref %]" id="mylist_add_[% ctx.bre_id %]" 
                         data-recid="[% ctx.bre_id %]" data-action="add"
                         class="no-dec mylist_action [% IF ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]hidden[% END %]"
                         title="[% l(" Add [_1] to basket", attrs.title) %]" rel="nofollow" vocab="">
-                        <img src="[% ctx.media_prefix %]/images/add-to-cart.png[% ctx.cache_key %]" alt="" />
+                        <i class="fas fa-shopping-basket"></i>
                         [% l("Add to basket") %]
                     </a>
-                    <a href="[% delhref %]" id="mylist_delete_[% ctx.bre_id %]" rel="nofollow" vocab=""
+                    <a href="[% delhref %]" id="mylist_delete_[% ctx.bre_id %]" 
                         data-recid="[% ctx.bre_id %]" data-action="delete"
                         class="mylist_action [% IF !ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]hidden[% END %]"
                         title="[% l(" Remove [_1] from basket", attrs.title) %]" rel="nofollow" vocab="">
-                        <img src="[% ctx.media_prefix %]/images/add-to-cart.png[% ctx.cache_key %]" alt="" />
+                        <i class="fas fa-minus-circle"></i>
                         [% l("Remove from basket") %]
                     </a>
                 </div>
                 [% IF ctx.mylist.size %]
-                <button class="btn btn-action">
+                <div class="btn btn-action text-left">
                     [%- IF ctx.user; %]
-                    <a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]" class="no-dec" rel="nofollow" vocab=""><img
-                            src="[% ctx.media_prefix %]/images/clipboard.png[% ctx.cache_key %]"
-                            alt="[% l('View Basket') %]" />[% l(' View Basket') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]" class="no-dec" rel="nofollow" vocab=""><i class="fas fa-glasses"></i> [% l(' View Basket') %]</a>
                     [%- ELSE %]
-                    <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab=""><img
-                            src="[% ctx.media_prefix %]/images/add-to-cart.png[% ctx.cache_key %]"
-                            alt="[% l('View My Basket') %]" />[% l(' View My Basket') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab=""><i class="fas fa-glasses"></i> [% l(' View My Basket') %]</a>
                     [%- END %]
-                </button>
-                [% END %]
-                <div class="btn btn-action">
-                    [% IF !ctx.is_staff %]
-                    [% IF ctx.user;
-                    INCLUDE "opac/parts/bookbag_actions.tt2";
-                    END;
-                    %]
-                    [% END %]
                 </div>
-                <div class="btn btn-action">
-                    <img src="[% ctx.media_prefix %]/images/clipboard.png[% ctx.cache_key %]"
-                        alt="[% l('Print / Email Actions Image') %]" />
+                [% END %]
+                
+                [% IF !ctx.is_staff %]
+                    [% IF ctx.user; %]
+                    [% INCLUDE "opac/parts/bookbag_actions.tt2"; %]
+                    [% END; %]
+                [% END %]
+                
+                <div class="btn btn-action text-left">
+                    <i class="fas fa-envelope-open-text"></i>
                     <a href="[% mkurl(ctx.opac_root _ '/record/print/' _ ctx.bre_id) %]" class="no-dec" rel="nofollow"
                         vocab="">[% l('Print') %]</a> /
                     <a href="[% mkurl(ctx.opac_root _ '/record/email/' _ ctx.bre_id) %]" class="no-dec" rel="nofollow"
@@ -436,35 +424,34 @@ ctx.metalinks.push('
                 [%- INCLUDE 'opac/parts/record/refworks.tt2' %]
                 [%- END %]
                 [% IF !ctx.is_staff %]
-                <button class="btn btn-action">
+                <div class="btn btn-action text-left">
                     <a href="[% mkurl('', {locg =>CGI.param('locg'), copy_depth =>CGI.param('copy_depth')}, 1) %]"
                         class="no-dec">
-                        <img src="[% ctx.media_prefix %]/images/link.png[% ctx.cache_key %]"
-                            alt="[% l('Permalink') %]" />
+                        <i class="fas fa-link"></i>
                         [% l('Permalink') %]
                     </a>
-                </button>
+                </div>
                 [% END %]
                 [% IF !search.no_highlight %]
-                <button class="btn btn-action">
+                <div class="btn btn-action text-left">
                     [% IF CGI.param('no_highlight') %]
                     <a href="[% mkurl('', {}, ['no_highlight']) %]" class="no-dec">
                         [% ELSE %]
                         <a href="[% mkurl('', {no_highlight => '1'}) %]" class="no-dec">
                             [% END %]
-                            <img src="[% ctx.media_prefix %]/images/highlight.png[% ctx.cache_key %]"
-                                alt="[% l('Toggle highlighting') %]" />
+                            <i class="fas fa-highlighter"></i>
                             [% CGI.param('no_highlight') ? l('Enable Highlighting') : l('Disable Highlighting') %]
                         </a>
-                </button>
+                </div>
                 [% END %]
                 [%- IF ctx.is_staff %]
-                <button class="btn btn-action">
+                <div class="btn btn-action text-left">
                     <a href="[% ctx.media_prefix %]/opac/extras/ac/clearcache/all/r/[% ctx.bre_id | uri %]"
                         class="no-dec" target="_blank">
-                        [% l('Clear AddedContent Cache') %]
+                        <i class="fas fa-sync-alt"></i>
+                        [% l('Clear Added Content Cache') %]
                     </a>
-                </button>
+                </div>
                 [%- END %]
                 
             </div>
@@ -477,7 +464,7 @@ ctx.metalinks.push('
 <div class="col-12">
         
 <div class="float-right">
-                        <span>
+                      
                             <h2 class="text-right">[% l('Holds') %]</h2>
                             <p class="text-right">
                                 [%
@@ -495,7 +482,7 @@ ctx.metalinks.push('
                                 ctx.record_hold_count, ctx.copy_summary.$count_entry.count)
                                 %]
                             </p>
-                        </span>
+                        
                     </div>
 
         [%-
@@ -577,5 +564,4 @@ ctx.metalinks.push('
 <hr>
 <div class="col-12">
     [%- INCLUDE "opac/parts/record/extras.tt2" %]
-</div>
 </div>

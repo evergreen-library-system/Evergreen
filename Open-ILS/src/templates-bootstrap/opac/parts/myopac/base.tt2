@@ -1,76 +1,100 @@
 [%  WRAPPER "opac/parts/base.tt2" %]
 
 [% myopac_pages = [
-        {url => "main", name => l("Account Summary")},
-        {url => "messages", name => l("Messages")},
-        {url => "circs", name => l("Items Checked Out")},
-        {url => "holds", name => l("Holds")},
-        {url => "prefs", name => l("Account Preferences")},
-        {url => "lists", name => l("My Lists")}
+        {children => 0, parent => "parent",url => "main", text => l("<i class='fas fa-home'></i>Home"), name => l("Account Summary")},
+
+        {children => 2, parent => "parent",url => "charges", text => l("<i class='fas fa-money-check-alt'></i><span class='sumNum'>[_1]</span>Charges", money(ctx.user_stats.fines.balance_owed)), name => l("Charges")},
+        {children => 0, parent => "charges",url => "charges", text => l("<i class='fas fa-file-invoice'></i>Current Charges"), name => l("Current Charges")},
+        {children => 0, parent => "charges",url => "main_payments", text => l("<i class='fas fa-history'></i>Payment History"), name => l("Payment History")},
+
+        {children => 0, parent => "parent", url => "messages", text => l("<i class='fas fa-envelope'></i><span class='sumNum'>[_1]</span>Messages",  ctx.user_stats.messages.unread), name => l("Messages")},
+
+        {children => 3, parent => "parent",url => "circs", text => l("<i class='fas fa-book'></i><span class='sumNum'>[_1]</span>Items Checked Out", ctx.user_stats.checkouts.total_out), name = l("Circulations")},
+        {children => 0, parent => "circs", url => "circs", text => l("<i class='fas fa-book-reader'></i>Current Items Checked Out"), name=> l("Circulations")},
+        {children => 0, parent => "circs", url => "ebook_circs", text => l("<i class='fas fa-desktop'></i>E-Items Currently Checked Out"), name => l("E-Items Currently Checked Out")},
+        {children => 0, parent => "circs", url => "circ_history", text => l("<i class='fas fa-history'></i>Check Out History"), name => l("Check Out History")},
+
+        {children => 4, parent => "parent",url => "holds", text => l("<i class='fas fa-clock'></i><span class='sumNum'>[_1]</span>Holds / <span class='sumNum'>[_2]</span> Ready", ctx.user_stats.holds.total, ctx.user_stats.holds.ready), name => l("Holds")},
+        {children => 0, parent => "holds", url => "holds", text => l("<i class='fas fa-hands'></i>Items on Hold"), name => l("Holds")},
+        {children => 0, parent => "holds", url => "ebook_holds", text => l("<i class='fas fa-desktop'></i>E-Items on Hold"), name => l("E-Items on Hold")},
+        {children => 0, parent => "holds", url => "ebook_holds_ready", text => l("<i class='fas fa-download'></i> E-Items Ready for Checkout"), name => l("E-Items Ready for Checkout")},
+        {children => 0, parent => "holds", url => "hold_history", text => l("<i class='fas fa-history'></i>Holds History"), name => l("Holds History")},
+
+        {children => 4, parent => "parent", url => "prefs", text => l("<i class='fas fa-cog'></i>Preferences"),name => l("Preferences")},
+        {children => 0, parent => "prefs", url => "prefs", text => l("<i class='fas fa-user-cog'></i>Personal Information"), name => l("Preferences")},
+        {children => 0, parent => "prefs", url => "prefs_notify", text => l("<i class='fas fa-exclamation-circle'></i>Notifications"), name => l("Notifications")},
+        {children => 0, parent => "prefs", url => "prefs_settings", text => l("<i class='fas fa-search'></i>Search & History"), name => l("Search & History")},
+        {children => 0, parent => "prefs", url => "prefs_my_lists", text => l("<i class='fas fa-list'></i>Lists"), name => l("Lists")},
+
+        
+        {children => 0, parent => "parent", url => "lists", text => l("<i class='fas fa-list'></i>My Lists"), name => l("My Lists")}
     ];
      IF (ctx.show_reservations_tab == 'true');
-        myopac_pages.push({url => "reservations", name => l("Reservations")});
+        myopac_pages.push({children => 0, parent => "parent", url => "reservations", text => l("<i class='fas fa-splotch'></i> Reservations"), name => l("Reservations")});
     END;
     skin_root = "../"
 %]
+
     <h2 class="sr-only">[% l('My Account') %]</h2>
     [% INCLUDE "opac/parts/topnav.tt2" %]
-    <div class="mobile_hide">
-    [% INCLUDE "opac/parts/searchbar.tt2" %]
+    <div>
+        [% INCLUDE "opac/parts/searchbar.tt2" %]
     </div>
 
-
-    <div class="container my-3 min">
-        <div id="myopac_tabs">
-        	<ul class="nav nav-tabs nav-justified d-none d-lg-flex">
+    <div class="mx-5">
+        <div class="row top-divide">
+            <div class="my_nav col-xl-3 col-lg-3 col-12 mx-auto text-center my-3">
+                <div class="btn-group-vertical dropright">
+        
                 [%- FOREACH page IN myopac_pages;
-                    IF page.url == myopac_page;
-                        cls_which = "active";
+                    IF page.url == myopac_page || page.url == parent;
+                        active = "active";
                         ctx.page_title = l("My Account - [_1]", page.name);
                     ELSE;
-                        cls_which = "";
-                    END -%]<li class="nav-item">
-                <a href="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid', 'offset', 'limit','sort','sort_type', 'hid']) %]"
-                    class="[% cls_which %] nav-link">[% page.name; %]</a></li>
+                        active = "";
+                    END -%]
+                    
+                    [% IF page.parent == "parent" && page.children > 0; %]
+                    <div class="dropdown dropright w-100">
+                        <button class="btn btn-action text-left dropdown-toggle [% active %]" id="dropdownMenuLink-[% page.url %]" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            [% page.text; %]
+                        </button>
+  
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink-[% page.url %]">
+                        [%- FOREACH child IN myopac_pages; -%]
+                            [% IF child.parent == page.url;
+                            IF myopac_page == child.url;
+                                cactive = "active";
+                                ctx.page_title = l("My Account - [_1]", child.name);
+                            ELSE;
+                                cactive = "";
+                            END
+                        %]
+                        [%- IF (ebook_api.enabled == 'true' && child.url.search('ebook')) || !child.url.search('ebook') %]
+
+                        <a role="button" href="[% mkurl(ctx.opac_root _ '/myopac/' _ child.url, {}, ['bbid', 'offset', 'limit','sort','sort_type', 'hid']) %]"
+                    class="dropdown-item [% cactive %]">[% child.text; %]</a>
+                    [% END %]
+                            [% END %]
+                        [% END %]
+                        </div>
+                    </div>
+                    [% ELSIF page.parent == "parent"; %]
+                    
+                    <a role="button" class="btn btn-action [% active %]" href="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid', 'offset', 'limit','sort','sort_type', 'hid']) %]">
+  [% page.text; %]
+  </a>
+ 
+                    [% END %]
                 [% END %]
-           	 	
- 			</ul>
-            <!-- Select box navigation for media view -->
-            <div class="mx-auto py-3 d-block d-lg-none">
-               <form name="acct_nav">
-                 <select name="acct_url" class="form-control"
-                    title="[% l('Select an account page') %]" 
-                    onchange="window.location.href=document.acct_nav.acct_url.options[document.acct_nav.acct_url.selectedIndex].value">
-                    <option value="" selected="selected">[% l('Go to...') %]</option>
-                    [% FOREACH page IN myopac_pages;
-                      IF page.url != myopac_page; %]
-                        <option value="[% mkurl(ctx.opac_root _ '/myopac/' _ page.url, {}, ['bbid', 'offset', 'limit', 'hid']) %]">[% page.name; %]</option>
-                    [% ELSE; %]
-                        <option value="" disabled>[% page.name; %]</option>
-                    [% END;
-                   END; %] 
-                 </select>
-	            </form>
-            </div>
+           </div>
 	    </div><!-- myopac_tabs -->
-        <div id="main-content" class="p-3">
+        <div class="col-xl-9 col-12 my-3">
             [% content %]
-            <div class="common-full-pad"></div>
+            
+        </div>
         </div>
     </div> <!-- content-wrapper -->
     
-    <!--Table functions ~ Controlling TH checkbox dynamically and allowing for row clicks to select items -->
-  <script>
-  jQuery('td input:checkbox').change(function(){
-   jQuery('th input:checkbox').prop('checked',jQuery('td input:checkbox:checked').length == jQuery('td input:checkbox').length);
-});
-
-jQuery( document ).ready(function( $ ) {
-    $('tr').click(function(event) {
-        if (event.target.type !== 'checkbox') {
-            $(':checkbox', this).trigger('click');
-        }
-    });  
-});
-</script>
+ 
 [% END %]

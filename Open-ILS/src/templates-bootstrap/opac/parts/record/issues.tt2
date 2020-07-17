@@ -1,0 +1,8 @@
+<div class='rdetail_extras_div'>
+    [%
+        IF ctx.holding_summary_tree;
+            INCLUDE 'opac/parts/record/issues-db.tt2'; # "new" serials holdings
+        END;
+    %]
+    [% INCLUDE 'opac/parts/record/issues-mfhd.tt2' # mfhd-based "classic" serials %]
+</div>

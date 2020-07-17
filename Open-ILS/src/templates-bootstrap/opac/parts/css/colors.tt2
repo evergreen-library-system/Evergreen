@@ -4,10 +4,11 @@
         
 #The counts that appear in the navigation when signed into the OPAC -EX. X Ready For Pickup where x is the modified number
 
-    	zero_count = "#a0ff9e", #Logged in item/charges count at 0
-        non_zero_count = "#ff0016", #Logged in item/charges count NOT at 0
+    	zero_count = "#c1ffbf", #Logged in item/charges count at 0
+        non_zero_count = "#ffc107", #Logged in item/charges count NOT at 0
 
     	facets_back = "#00593d", #search list facet backgrounds
+        facets_text = "#fff",
     	footer_link = "#fff",
 
     	nav_separation = "#00593d",
@@ -16,13 +17,19 @@
         footer_primary = "#00593d", #Primary Footer Color
         footer_primary_fade = "#007a54", #Fade Footer Color, make equal to footer_primary for no fade
 
+        bg_extras = "#007a54",
+        bg_filter = "#007a54",
+        bg_filter_hover = "#00593d"
+
+        text_filter = "#fff",
+
         background = "#fff", # white
         background_alert = "#ffcccc", # pink
         background_invert = "#252525", # charcoal
         text = "black", # black 
-        text_alert = "red", # red
+        text_alert = "#c50202", # red
         text_attention = "#ffcc33", # pumpkin orange
-        text_badnews = "#f41d36", # cherry red
+        text_badnews = "#c50202", # cherry red
         text_goodnews = "#1dd93c", # lime green
         text_greatnews = "green", # green
         text_invert = "#fff", # white
@@ -53,10 +60,10 @@
 #Buttons are using default Bootstrap styling colors by default with this scheme, changable to match your library colours
 
 #Submit buttons and confirmations likle login. Make all 4 the same color for no hover effect
-        button_confirm = "#28a745",
-        button_confirm_hover = "#218838",
-        button_confirm_border = "#28a745",
-        button_confirm_border_hover = "#1e7e34",
+        button_confirm = "#007a54",
+        button_confirm_hover = "#00593d",
+        button_confirm_border = "#007a54",
+        button_confirm_border_hover = "#00593d",
         button_confirm_text = "#fff",
 
 #Denial buttons like Cancel. Make all 4 the same color for no hover effect    
@@ -83,8 +90,8 @@
 #Action buttons such as Place Hold and Add to List seen in record and results. Make all 4 the same color for no hover effect 
         action_button = "#f8f9fa",
         action_button_hover = "#e2e6ea",
-        action_button_border = "#f8f9fa",
-        action_button_border_hover = "#dae0e5",
+        action_button_border = "#007a54",
+        action_button_border_hover = "#00593d",
         action_button_text = "#00593d",
         #Many action buttons use link coloring on the anchor tags. This setting will change the color to match your color schema if necessary
         #action_button_text_anchors = "",

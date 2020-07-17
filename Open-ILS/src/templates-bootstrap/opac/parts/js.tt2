@@ -1,0 +1,191 @@
+
+
+	
+<script  src="[% ctx.media_prefix %]/js/ui/default/opac/simple.js[% ctx.cache_key %]"></script>
+[% INCLUDE "opac/i18n_strings.tt2" %]
+
+
+
+
+
+[% IF ctx.readonly %]
+<script >
+  $(document).ready(function() {
+    $('a').removeAttr('href');
+    $('a').click(function(event) { event.preventDefault(); });
+    $('button').prop('disabled', true);
+    $('button').click(function(event) { event.preventDefault(); });
+    $('input').prop('disabled', true);
+    $('input').click(function(event) { event.preventDefault(); });
+    $('select').prop('disabled', true);
+    $('select').click(function(event) { event.preventDefault(); });
+    $('textarea').prop('disabled', true);
+    $('textarea').click(function(event) { event.preventDefault(); });
+  });
+</script>
+[% END %]
+
+<!-- DOB validation for Patron Registration in OPAC -->
+<script >
+    function dobValidate(input) {
+        var validformat = /^(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])$/
+        var returnval = false
+        if (!validformat.test(input.value))
+            alert("[% l('You have entered an invalid date, or an improperly formatted date.  Please enter Date of Birth in YYYY-MM-DD or YYYY/MM/DD format and try again.') %]")
+        else
+            returnval = true
+        if (returnval == false) input.select()
+        return returnval
+}
+</script>
+
+[%- IF ctx.use_stripe %]
+<script >unHideMe($("pay_fines_now"));[%# the DOM is loaded now, right? %]</script>
+[% END -%]
+
+[%- IF ctx.is_staff %]
+<script  src="[% ctx.media_prefix %]/js/ui/default/opac/staff.js[% ctx.cache_key %]"></script>
+    [% IF ctx.page == 'record' %]
+        [% IF ctx.search_result_index >= 0 %]
+        <script>
+            rdetail_next_prev_actions(
+                "[% ctx.search_result_index %]",
+                "[% ctx.hit_count %]",
+                "[% ctx.prev_rec_url || '' %]",
+                "[% ctx.next_rec_url || '' %]",
+                "[% mkurl(ctx.first_search_record, {page => 0}) %]",
+                "[% mkurl(ctx.opac_root _ '/results', {find_last => 1, page => POSIX.floor(ctx.hit_count / ctx.page_size)}) %]",
+                "[% mkurl(ctx.opac_root _ '/results', {}, ['expand','cnoffset']) %]"
+            );
+        </script>
+        [% END %]
+        [% IF ctx.mfhd_summaries.size %]
+        <script>
+            window.mfhdDetails = [
+                [% FOR summary IN ctx.mfhd_summaries %]
+                    [% IF summary.sre_id != -1 %]
+                {
+                    'id' : '[% summary.sre_id %]', 
+                    'label' : '[% summary.location | replace("'", "\\'") %]',
+                    'entryNum' : [% loop.index %],
+                    'owning_lib' : '[% summary.owning_lib %]'
+                },
+                    [% END %]
+                [% END %]
+            ];
+        </script>
+        [% END %]
+    [% END %]
+[%- END %]
+
+[%- IF ENV.OILS_NOVELIST_URL AND ctx.page == 'record';
+    url = ENV.OILS_NOVELIST_URL;
+    IF CGI.https; url = url.replace('^http:', 'https:'); END; %]
+<script id='EIT' src='[% url %]'></script>
+[%- END %]
+[%- IF ctx.page == 'record' AND ctx.google_books_preview %]
+<script src='[% ctx.media_prefix %]/js/ui/default/opac/ac_google_books.js[% ctx.cache_key %]' async defer></script>
+[%- END %]
+
+<script>
+    window.egStrings = [];
+    window.egStrings['CONFIRM_BASKET_EMPTY'] = "[% l('Remove all records from basket?') %]";
+</script>
+<script src='[% ctx.media_prefix %]/js/ui/default/opac/record_selectors.js[% ctx.cache_key %]' async defer></script>
+
+<!-- Require some inputs and selections for browsers that don't support required form field element -->
+[% IF ctx.page == 'place_hold' %]
+  <script  src="[% ctx.media_prefix %]/js/ui/default/opac/holds-validation.js[% ctx.cache_key %]">
+  </script>
+[% END %]
+
+[%- IF want_dojo; -%]
+<script >
+     var djConfig = {
+         locale: "[% ctx.locale | lower | replace('_', '-') %]",
+         parseOnLoad: true,
+         isDebug: false
+     }, lang, bidi;
+</script>
+<script  src="[% ctx.media_prefix %]/js/dojo/dojo/dojo.js?[% ctx.eg_cache_hash %]"></script>
+<script  src="[% ctx.media_prefix %]/js/dojo/dojo/openils_dojo.js?[% ctx.eg_cache_hash %]"></script>
+
+[%- # So the following works in Mozilla and Chrome, but not in IE8.
+    # Seems like it /should/ work anywhere, though, and obviate the
+    # next three script tags: %]
+<!-- <script  src="[% ctx.media_prefix %]/js/dojo/DojoSRF.js?[% ctx.eg_cache_hash %]"></script> -->
+
+<script  src="[% ctx.media_prefix %]/js/dojo/opensrf/opensrf.js?[% ctx.eg_cache_hash %]"></script>
+<script  src="[% ctx.media_prefix %]/js/dojo/opensrf/opensrf_xhr.js?[% ctx.eg_cache_hash %]"></script>
+<script  src="[% ctx.media_prefix %]/js/dojo/opensrf/JSON_v1.js?[% ctx.eg_cache_hash %]"></script>
+
+[% IF use_autosuggest.enabled == "t" AND basic_search != "f"; %]
+<script >
+    dojo.require("openils.widget.AutoSuggest");
+
+    /* Set focus, and place the cursor at the end of the input string */
+    dojo.addOnLoad(function() {
+        /* Don't error out if the object doesn't exist, like on advanced search pages */
+        if (dojo.byId('search_box')) {
+            dijit.byId('search_box').focus();
+            var sb_value = dijit.byId('search_box').value;
+            /* Dojo won't trigger a change if the value doesn't change */
+            if (sb_value) {
+                dijit.byId('search_box').setValue(sb_value + ' ');
+                dijit.byId('search_box').setValue(sb_value);
+            }
+        }
+    });
+</script>
+[% END; # use_autosuggest %]
+
+[% INCLUDE "opac/parts/acjs.tt2" IF ctx.page == 'record' %]
+[% IF ctx.page == 'advanced' %]
+<script  
+    src="[% ctx.media_prefix %]/js/ui/default/opac/copyloc.js[% ctx.cache_key %]"></script>
+[% END %]
+
+[% IF ebook_api.enabled == 'true' %]
+    [% INCLUDE "opac/parts/ebook_api/base_js.tt2" %]
+    [% INCLUDE "opac/parts/ebook_api/login_js.tt2" IF (ctx.page == 'login') %]
+[% END %]
+
+<!-- provide a JS friendly org unit hash -->
+<script >
+var aou_hash = {
+[% FOR org_unit IN ctx.aou_list %]
+    [% org_unit.id %] : {
+        id : "[% org_unit.id %]",
+        name : "[% org_unit.name | replace('"', '\"') %]",
+        parent_ou : "[% org_unit.parent_ou %]",
+        depth : "[% org_unit.ou_type.depth %]",
+        can_have_vols : "[% org_unit.ou_type.can_have_vols %]"
+    }[%- ',' UNLESS loop.last -%]
+[% END %]
+};
+</script>
+
+<script >if ($('#client_tz_id')) { $('#client_tz_id').value = OpenSRF.tz }</script>
+[%- END; # want_dojo -%]
+
+[%- IF ctx.max_cart_size; %]
+<script >var max_cart_size = [% ctx.max_cart_size %];</script>
+[%- END; %]
+
+
+<link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.core.min.css[% ctx.cache_key %]">
+<link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.theme.min.css[% ctx.cache_key %]">
+<!-- JS imports, etc.  -->
+<script  src="[% ctx.media_prefix %]/js/bootstrap/jquery-3.5.1.min.js"></script>
+
+<script src="[% ctx.media_prefix %]/js/bootstrap/popper.min.js"></script>
+
+<script src="[% ctx.media_prefix %]/js/bootstrap/bootstrap.min.js"></script>  
+
+<script  src="[% ctx.media_prefix %]/js/datepicker/bootstrap-datepicker.js"></script>
+ 
+  <script>
+    $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

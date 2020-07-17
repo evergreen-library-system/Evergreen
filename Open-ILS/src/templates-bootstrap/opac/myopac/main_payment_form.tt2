@@ -1,6 +1,6 @@
 [%  PROCESS "opac/parts/header.tt2";
     PROCESS "opac/parts/misc_util.tt2";
-    WRAPPER "opac/parts/myopac/main_base.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "main";
     myopac_main_page = "payment_form";
 
@@ -25,12 +25,12 @@
         "browser settings and try again.") %]
 </noscript>
 [% END %]
+<div class="container">
+<hr>
 <div id="pay_fines_now"[% IF ctx.use_stripe %] class="hide_me"[% END %]>
      [% IF last_chance %]
+    <h3>[% l("Confirm Payment") %]</h3>
     
-    <p><big>[% l("Are you sure you are ready to charge ") %]
-         <strong> [% l("[_1] ", money(ctx.fines.balance_owed))%]</strong>
-        [% l("to your credit card?") %]</big></p> 
     <form action="[% ctx.opac_root %]/myopac/main_pay_init" method="post">
         [% FOR k IN CGI.Vars;
             NEXT UNLESS k;
@@ -38,15 +38,17 @@
         <input type="hidden" name="[% k | html %]" value="[% val | html %]" /> 
         [% END; END %]
 
-        <input type="submit" value="[% l('Submit') %]" class="btn btn-confirm"/>
-        <a href="[% mkurl(ctx.opac_root _ '/myopac/main#selected_fines', {}, 1) %]" class="btn btn-deny">[% l('Cancel') %]</a>
-	
+        <button type="submit" class="btn btn-confirm"><i class="fas fa-check"></i> [% l('Confirm') %]</button>
+        <a href="[% mkurl(ctx.opac_root _ '/myopac/main#selected_fines', {}, 1) %]" class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Cancel') %]</a>
+	<p class="my-2"><big>[% l("Are you sure you are ready to charge ") %]
+         <strong> [% l("[_1] ", money(ctx.fines.balance_owed))%]</strong>
+        [% l("to your credit card?") %]</big></p> 
      <table title="[% l('List of Transactions') %]" id="acct_fines_confirm_header"
-        class="table_no_border_space table_no_cell_pad my-2">
+        class="table my-2">
    <thead>
       <tr>
         <th>[% l('Charge/Fee') %]</th>
-        <th>[% l('Amount') %]</th>
+        <th class="text-right"><span>[% l('Amount') %]</th>
      </tr>
    </thead>
    <tbody>
@@ -77,13 +79,7 @@
      </tbody>
    </table> 
      
-    <p style="padding-top: 2em;">
-    <big>[% l("Are you sure you are ready to charge ") %]
-         <strong> [% l("[_1] ", money(ctx.fines.balance_owed))%]</strong>
-        [% l("to your credit card?") %]</big></p>        
-        <input type="submit" value="[% l('Submit') %]" class="btn btn-confirm"/>
-        <a href="[% mkurl(ctx.opac_root _ '/myopac/main#selected_fines', {}, 1) %]" class="btn btn-deny">[% l('Cancel') %]</a>
-    [% ELSE %]
+       [% ELSE %]
     
     <form method="post" id="payment_form" action='#payment'
     [% IF ctx.use_stripe %]
@@ -109,12 +105,12 @@
                
                <tr> 
                 <td><label for="payment-first-name">[% l('First Name') %]</label></td>
-                    <td><input type="text"  name="billing_first" id="payment-first-name" 
+                    <td><input name="given-name" type="text"  name="billing_first" id="payment-first-name" 
                         value="[% ctx.user.first_given_name | html %]" class="form-control"/></td>
                 </tr>
                 <tr>
                     <td><label for="payment-last-name">[% l('Last Name') %]</label></td>
-                    <td><input type="text" name="billing_last" id="payment-last-name" 
+                    <td><input name="family-name" type="text" name="billing_last" id="payment-last-name" 
                         value="[% ctx.user.family_name | html %]" class="form-control"/></td>
                 </tr>
 
@@ -124,7 +120,7 @@
                         
                         <input id="payment-email-addr" type="text" 
                              value="[% ctx.user.email | html %]" disabled="disabled" 
-                            readonly="readonly" class="form-control"/>   
+                            readonly="readonly" class="form-control" name="email"/>   
                         <a title="[% l('Update Email Address') %]"
                             href="[% ctx.opac_root %]/myopac/update_email?return_to_referer=1">[% l("Update") %]</a>
                     </td
@@ -233,8 +229,8 @@
                           [% l('Total amount:') %]
                            <strong>[% money(ctx.fines.balance_owed) %]</strong><br />
           
-                         <input type="submit" id="payment_submit" value="[% l('Next') %]" class="btn btn-confirm" />
-                         <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]" class="btn btn-deny">[% l('Cancel') %]</a> 
+                         <button type="submit" id="payment_submit" class="btn btn-confirm"><i class="fas fa-arrow-circle-right"></i> [% l('Next') %]</button>
+                         <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]" class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Cancel') %]</a> 
                          <br/>
                          </div>
                    </td>
@@ -246,6 +242,7 @@
         
     [% END %]
     </form>
-</div>
+</div></div>
+
 [% END %]
 [% END %]

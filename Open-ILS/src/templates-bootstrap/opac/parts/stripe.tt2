@@ -1,0 +1,35 @@
+[%- PROCESS "opac/parts/header.tt2" %]
+[% IF ctx.use_stripe %]
+        <script type="text/javascript" src="https://js.stripe.com/v2/"></script> <!-- use an ou setting for this url? -->
+        <script type="text/javascript">
+        // This script is only displayed when logged in, so ctx.user.home_ou is always available
+        Stripe.setPublishableKey('[% ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.stripe.pubkey') %]');
+
+        function stripe_onsubmit() {
+            var form = document.getElementById("payment_form");
+            var button = document.getElementById("payment_submit");
+
+            button.disabled = true;
+
+            Stripe.card.createToken(form, stripe_callback);
+
+            return false;
+        }
+
+        function stripe_callback(status, response) {
+            var form = document.getElementById("payment_form");
+            var button = document.getElementById("payment_submit");
+            var stripe_token = document.getElementById("stripe_token");
+
+            if(response.error) {
+                alert(response.error.message);
+                button.disabled = false;
+                return;
+            }
+
+            stripe_token.value = response.id; // response.id is the token id, though there are more fields available if needed.
+            form.setAttribute("onsubmit","");
+            form.submit();
+        }
+        </script>
+[%- END %]

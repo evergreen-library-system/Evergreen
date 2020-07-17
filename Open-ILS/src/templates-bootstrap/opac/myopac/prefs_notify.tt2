@@ -1,9 +1,10 @@
 [%  PROCESS "opac/parts/header.tt2";
-    WRAPPER "opac/parts/myopac/prefs_base.tt2";
-    myopac_page = "prefs";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "prefs_notify";
+    parent="prefs";
     prefs_page = 'prefs_notify' %]
 
-<h3 class="sr-only">[% l('Notification Preferences') %]</h3>
+<h3>[% l('Notification Preferences') %]</h3>
 <form method='post'>
     [% setting = 'opac.hold_notify' %]
     <input name='[% setting %]' type="hidden"
@@ -99,7 +100,7 @@
         </tbody>
     </table>
 
-    <input type='submit' value="[% l('Save') %]" class="btn btn-confirm" />
+    <button type='submit' class="btn btn-confirm"><i class="fas fa-save"></i> [% l('Save') %]</button>
 </form>
 [% END %]
 

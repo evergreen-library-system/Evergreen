@@ -1,0 +1,749 @@
+/*
+Mini Table Styling
+*/
+@media 
+only screen and (max-width: 650px)  {
+    .miniTable{
+        width: 100% !important;
+    }
+
+	/* Force table to not be like tables anymore */
+    .miniTable table, .miniTable thead, .miniTable tbody, .miniTable th, .miniTable td, .miniTable tr
+    { 
+		display: block; 
+    }
+    
+    .miniTable th{
+       display:none;
+    }
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+    .miniTable thead tr{ 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+    .miniTable tr
+     { 
+     	border: 1px solid #ccc; 
+     	margin: 10px 0px; 
+     }
+
+
+    .miniTable td
+    { 
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+        padding-left: 50%; 
+        min-height:45px;
+        text-align: right;
+    }
+	
+    .miniTable td:before
+    { 
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+        position: absolute;
+    }
+    .copyTable tr:nth-of-type(1):before { content: "Copy #1"; display: block; text-align:center; }
+	.copyTable tr:nth-of-type(2):before { content: "Copy #2"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(3):before { content: "Copy #3"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(4):before { content: "Copy #4"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(5):before { content: "Copy #5"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(6):before { content: "Copy #6"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(7):before { content: "Copy #7"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(8):before { content: "Copy #8"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(9):before { content: "Copy #9"; display: block; text-align:center;}
+	.copyTable tr:nth-of-type(10):before { content: "Copy #10"; display: block; text-align:center;}
+
+	.copyTable td:nth-of-type(1):before { content: "Library"; display: flex; }
+    .copyTable td:nth-of-type(2):before { content: "Call Number"; display: flex; }
+	.copyTable td:nth-of-type(3):before { content: "Barcode"; display: flex;}
+    .copyTable td:nth-of-type(4):before { content: "Shelving Location"; display: flex;}
+    .copyTable td:nth-of-type(5):before { content: "Status"; display: flex;}
+    .copyTable td:nth-of-type(6):before { content: "Due Date"; display: flex;}
+   
+    .holdingsTable tr:nth-of-type(1):before { content: "Copy #1"; display: block; text-align:center; }
+	.holdingsTable tr:nth-of-type(2):before { content: "Copy #2"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(3):before { content: "Copy #3"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(4):before { content: "Copy #4"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(5):before { content: "Copy #5"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(6):before { content: "Copy #6"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(7):before { content: "Copy #7"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(8):before { content: "Copy #8"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(9):before { content: "Copy #9"; display: block; text-align:center;}
+	.holdingsTable tr:nth-of-type(10):before { content: "Copy #10"; display: block; text-align:center;}
+
+
+    .holdingsTable td:nth-of-type(1):before { content: "Library"; display: flex; }
+    .holdingsTable td:nth-of-type(2):before { content: "Shelving location"; display: flex; }
+	.holdingsTable td:nth-of-type(3):before { content: "Call number"; display: flex;}
+    .holdingsTable td:nth-of-type(4):before { content: "Status"; display: flex;}
+
+	.chargesTable td:nth-of-type(1):before { content: "Select"; display: flex; }
+    .chargesTable td:nth-of-type(2):before { content: "Owed"; display: flex; }
+	.chargesTable td:nth-of-type(3):before { content: "Billing Type"; display: flex;}
+    .chargesTable td:nth-of-type(4):before { content: "Note"; display: flex;}
+    .chargesTable td:nth-of-type(5):before { content: "Date"; display: flex;}
+    
+    .chargesMainTable td:nth-of-type(1):before { content: "Select"; display: flex; }
+    .chargesMainTable td:nth-of-type(2):before { content: "Owed"; display: flex; }
+	.chargesMainTable td:nth-of-type(3):before { content: "Billing Type"; display: flex;}
+    .chargesMainTable td:nth-of-type(4):before { content: "Title"; display: flex;}
+    .chargesMainTable td:nth-of-type(5):before { content: "Checkout"; display: flex;}
+    .chargesMainTable td:nth-of-type(6):before { content: "Due"; display: flex;}
+    .chargesMainTable td:nth-of-type(7):before { content: "Returned/Renewed"; display: flex;}
+    
+    .activeHoldstable td:nth-of-type(1):before { content: "Select"; display: flex; }
+    .activeHoldstable td:nth-of-type(2):before { content: "Title"; display: flex; }
+	.activeHoldstable td:nth-of-type(3):before { content: "Author"; display: flex;}
+    .activeHoldstable td:nth-of-type(4):before { content: "Format"; display: flex;}
+    .activeHoldstable td:nth-of-type(5):before { content: "Pickup Location"; display: flex;}
+    .activeHoldstable td:nth-of-type(6):before { content: "Cancel If Not Filled By"; display: flex;}
+    .activeHoldstable td:nth-of-type(7):before { content: "Status"; display: flex;}
+    .activeHoldstable td:nth-of-type(8):before { content: "Notes"; display: flex;}
+    
+    .holdHistoryTable td:nth-of-type(1):before { content: "Title"; display: flex; }
+    .holdHistoryTable td:nth-of-type(2):before { content: "Author"; display: flex; }
+    .holdHistoryTable td:nth-of-type(3):before { content: "Format"; display: flex; }
+    .holdHistoryTable td:nth-of-type(4):before { content: "Pickup Location"; display: flex; }
+    .holdHistoryTable td:nth-of-type(5):before { content: "Status"; display: flex; }
+    
+    .paymentTable td:nth-of-type(1):before { content: "Payment Date"; display: flex; }
+    .paymentTable td:nth-of-type(2):before { content: "Payment For"; display: flex; }
+    .paymentTable td:nth-of-type(3):before { content: "Amount"; display: flex; }
+    .paymentTable td:nth-of-type(4):before { content: "Receipt"; display: flex; }
+    
+    .messagesTable td:nth-of-type(1):before { content: "Select"; display: flex; }
+    .messagesTable td:nth-of-type(2):before { content: "Date"; display: flex; }
+    .messagesTable td:nth-of-type(3):before { content: "Library"; display: flex; }
+    .messagesTable td:nth-of-type(4):before { content: "Subject"; display: flex; }
+    .messagesTable td:nth-of-type(5):before { content: ""; display: flex; }
+    
+    .circTable td:nth-of-type(1):before { content: "Select"; display: flex; }
+    .circTable td:nth-of-type(2):before { content: "Title"; display: flex; }
+    .circTable td:nth-of-type(3):before { content: "Author"; display: flex; }
+    .circTable td:nth-of-type(4):before { content: "Renewals Left"; display: flex; }
+    .circTable td:nth-of-type(5):before { content: "Due Date"; display: flex; }
+    .circTable td:nth-of-type(6):before { content: "Barcode"; display: flex; }
+    .circTable td:nth-of-type(7):before { content: "Call Number"; display: flex; }
+    
+    .circHistTable td:nth-of-type(1):before { content: "Select"; display: flex; }
+    .circHistTable td:nth-of-type(2):before { content: "Title"; display: flex; }
+    .circHistTable td:nth-of-type(3):before { content: "Author"; display: flex; }
+    .circHistTable td:nth-of-type(4):before { content: "Checkout Date"; display: flex; }
+    .circHistTable td:nth-of-type(5):before { content: "Due Date"; display: flex; }
+    .circHistTable td:nth-of-type(6):before { content: "Date Returned"; display: flex; }
+    .circHistTable td:nth-of-type(7):before { content: "Barcode"; display: flex; }
+    .circHistTable td:nth-of-type(8):before { content: "Call Number"; display: flex; }
+    
+    .bookbagTable td:nth-of-type(1):before { content: ""; display: flex; }
+    .bookbagTable td:nth-of-type(2):before { content: "Title"; display: flex; }
+    .bookbagTable td:nth-of-type(3):before { content: "Author(s)"; display: flex; }
+    .bookbagTable td:nth-of-type(4):before { content: "Local Call number"; display: flex; }
+    .bookbagTable td:nth-of-type(5):before { content: "Publication Date"; display: flex; }
+    .bookbagTable td:nth-of-type(6):before { content: "Format"; display: flex; }
+    .bookbagTable td:nth-of-type(7):before { content: "Notes"; display: flex; }
+    
+    .eholdsTable td:nth-of-type(1):before { content: "Title"; display: flex; }
+    .eholdsTable td:nth-of-type(2):before { content: "Author"; display: flex; }
+    .eholdsTable td:nth-of-type(3):before { content: "Expire Date"; display: flex; }
+    .eholdsTable td:nth-of-type(4):before { content: "Status"; display: flex; }
+    .eholdsTable td:nth-of-type(5):before { content: "Actions"; display: flex; }
+    
+    .eholdsreadyTable td:nth-of-type(1):before { content: "Title"; display: flex; }
+    .eholdsreadyTable td:nth-of-type(2):before { content: "Author"; display: flex; }
+    .eholdsreadyTable td:nth-of-type(3):before { content: "Expire Date"; display: flex; }
+    .eholdsreadyTable td:nth-of-type(4):before { content: "Actions"; display: flex; }
+    
+    .echeckoutTable td:nth-of-type(1):before { content: "Title"; display: flex; }
+    .echeckoutTable td:nth-of-type(2):before { content: "Author"; display: flex; }
+    .echeckoutTable td:nth-of-type(3):before { content: "Due Date"; display: flex; }
+    .echeckoutTable td:nth-of-type(4):before { content: "Actions"; display: flex; }
+    
+    .ecircsTable td:nth-of-type(1):before { content: "Title"; display: flex; }
+    .ecircsTable td:nth-of-type(2):before { content: "Author"; display: flex; }
+    .ecircsTable td:nth-of-type(3):before { content: "Due Date"; display: flex; }
+    .ecircsTable td:nth-of-type(4):before { content: "Actions"; display: flex; }
+
+    .bucketTable td:nth-of-type(2):before { content: "Title"; display: flex; text-align:left; }
+    .bucketTable td:nth-of-type(3):before { content: "Author"; display: flex; text-align:left; }
+    .bucketTable td:nth-of-type(4):before { content: "Call Number"; display: flex; text-align:left; }
+    
+    /*Media Style Additions*/
+    .fullRow{
+        padding: 5px !important;
+    	text-align: center !important;
+    	width: 100%;
+    }
+    
+    .paginateText{
+    	display:none;
+	}
+
+    .modal-dialog {
+    max-width: 600px !important;
+    }
+
+}/*Micro Tables End*/
+
+@media only screen and (max-width: 600px) {
+    input, select {
+        font-size: [% css_fonts.size_big %];
+    }
+    span .nav_arrow_fix {
+        display: none;
+    }
+    #header {
+        padding: 0px;
+        margin: 0px;
+    }
+    #homesearch_main_logo img {
+        width:75%;
+    }
+    #format_selector {
+        display:none;
+    }
+    #your-acct-login {
+        padding: 0px;
+        padding-top: 5px;
+    }
+    #your-acct-login a {
+        margin: 0px;
+        padding: 5px;
+    }
+    #topnav_logo {
+        margin: 0;
+    }
+    #topnav_logo img {
+        width: 200px;
+    }
+ 
+    #gold-links-holder {
+        display: none;
+    }
+    #simple-detail-view-links {
+        display: none;
+    }
+    #acct_tabs a, #acct_fines_tabs a {
+       [% IF rtl == 't' -%]
+       border-radius: 6px 0px 0px 6px;
+       margin: 0px 0px 0px 5px;
+       [% ELSE -%]
+       border-radius: 6px 6px 0px 0px;
+       margin: 0px 5px 0px 0px;
+       [% END -%]
+       padding: 2px 4px 3px 4px;
+       font-size: [% css_fonts.size_base %];
+    }
+    .bookbag-controls-title-block {
+        [% IF rtl == 't' -%]
+        clear:right;
+        [% ELSE -%]
+        clear:left;
+        [% END -%]
+        width:90%;
+    }
+    .bookbag-controls-button-block {
+        [% IF rtl == 't' -%]
+        clear:right;
+        [% ELSE -%]
+        clear:left;
+        [% END -%]
+        width;90%;
+    }
+    .bookbag-specific {
+        [% IF rtl == 't' -%]
+        margin-right: 0px;
+        [% ELSE -%]
+        margin-left: 0px;
+        [% END -%]
+    }
+    .bookbag-specific div.sort {
+        [% IF rtl == 't' -%]
+        float: right;
+        text-align: right;
+        [% ELSE -%]
+        float: left;
+        text-align: left;
+        [% END -%]
+        width: 95%;
+        margin: 5px 0px 5px 0px;
+        border: 1px solid [% css_colors.accent_light %];
+        padding:5px;
+    }
+    .bookbag-specific div.meta {
+        [% IF rtl == 't' -%]
+        float: right;
+        margin-right:0px;
+        text-align: right;
+        [% ELSE -%]
+        float: left;
+        margin-left:0px;
+        text-align: left;
+        [% END -%]
+        width: 95%;
+        margin-bottom:5px;
+        padding:5px;
+    }
+    #bbag-edit-name {
+        [% IF rtl == 't' -%]
+        float: right;
+        [% ELSE -%]
+        float: left;
+        [% END -%]
+        width: 220px;
+    }
+    #bbag-edit-description {
+        width: 220px;
+        margin-top:5px;
+    }
+    .bbag-content {
+        padding:5px;
+        border:1px solid [% css_colors.accent_light %];
+    }
+    .bbag-action {
+        [% IF rtl == 't' -%]
+        margin-right:0px;
+        [% ELSE -%]
+        margin-left:0px;
+        [% END -%]
+        margin-bottom:5px;
+    }
+    .bbag-action-field {
+        width:230px;
+    }
+    .bookbag-specific div.sort select {
+        width:180px;
+    }
+    .bookbag-specific tr {
+        display: block;
+        border-bottom: 1px solid [% css_colors.border_standard %];
+    }
+    .bookbag-specific td.list_checkbox {
+        [% IF rtl == 't' -%]
+        padding-right: 0px !important;
+        [% ELSE -%]
+        padding-left: 0px !important;
+        [% END -%]
+    }
+    .bookbag-specific td.list_entry {
+        display: inline-block;
+        min-width: 5em;
+        [% IF rtl == 't' -%]
+        padding-right: 40% !important;
+        [% ELSE -%]
+        padding-left: 40% !important;
+        [% END -%]
+    }
+    .bookbag-specific td.list_entry:before {
+        content: attr(data-label);
+        position: absolute;
+        [% IF rtl == 't' -%]
+        right: 10px;
+        [% ELSE -%]
+        left: 10px;
+        [% END -%]
+    }
+    .bbag-navigate-list {
+        display: none;
+    }
+    .bbag-navigate-list-pages {
+        [% IF rtl == 't' -%]
+        text-align:left;
+        float:left;
+        [% ELSE -%]
+        text-align:right;
+        float:right;
+        [% END -%]
+    }
+    #dash_wrapper div {
+        background-color: transparent;
+        padding: 0px;
+    }
+    #dash_wrapper {
+        position: static;
+        top: auto;
+    }
+    #dash_wrapper .opac-button {
+        top: 0px;
+    }
+    .small_view_only, #filter_hits {
+        display: inline !important;
+    }
+    #dash_identity a {
+        [% IF rtl == 't' -%]
+        float:right;
+        [% ELSE -%]
+        float:left;
+        [% END -%]
+    }
+   
+    #holds_box form blockquote {
+        [% IF rtl == 't' -%]
+        margin-right: 10px;
+        margin-left: 2px;
+        [% ELSE -%]
+        margin-left: 10px;
+        margin-right: 2px;
+        [% END -%]
+    }
+    #holds_box form blockquote select {
+        width: 100%;
+    }
+    #myopac_sum_fines_placehold {
+        display:none;
+    }
+    #myopac_sum_fines {
+        display: none;
+    }
+    #list_description, #list_create_name {
+        width: 170px;
+    }
+    .results_header_lbl {
+        display: none;
+    }
+    .results_header_nav1 span.h1 {
+        display: none;
+    }
+    .preflib {
+        display: none;
+    }
+    .start_end_links_span {
+        display: block;
+    }
+    .invisible {
+        display: none;
+    }
+    .result_table_pic_header {
+        [% IF rtl == 't' -%]
+        padding-right: 0px !important;
+        padding-left: 5px;
+        [% ELSE -%]
+        padding-left: 0px !important;
+        padding-right: 5px;
+        [% END -%]
+        width: 0px !important;
+        margin: 0px;
+    }
+    .result_table_pic {
+        width: 55px;
+        padding: 0px;
+        margin: 0px;
+    }
+    tr[name=results_isbn_tr], tr[name=results_phys_desc_tr], tr[name=results_pub_tr] strong, .result_count {
+         display: none;
+    }
+    tr.result_table_title_cell[name=bib_cn_list] .result_holdings_table th:nth-child(4),
+    tr.result_table_title_cell[name=bib_cn_list] .result_holdings_table td:nth-child(4) {
+        display:none;
+    }
+    #results_header_bar {
+        background-color: inherit;
+    }
+    .results_header_btns a {
+        margin: 0.3em;
+    }
+    .adv_filter_results_hide {
+        display: none;
+    }
+    .adv_filter_results_show {
+        display: block;
+    }
+    .adv_filter_results_block_label {
+        display: block;
+    }
+    .adv_filter_results_group_wrapper {
+        display: block;
+    }
+    #main-content {
+        margin: 0 1px;        
+    }
+    #rdetails_status thead {
+        display: none;
+    }
+    #rdetails_status tr {
+	display: block;
+	margin-top: 3px;
+    }
+    #rdetails_status td {
+	display: block;
+	padding: 1px;
+    }
+    .copy_details_row {
+	background-color: [% css_colors.accent_lightest %];
+    }
+    .copy_details_offers_row {
+	background-color: [% css_colors.accent_lightest %];
+    }
+    select#pickup_lib.search-wrapper-locg {
+        width: 100%;
+    }
+    #search-wrapper #search-box {
+        width: 85%;
+        padding-top: 5px;
+    }
+    #main-content-home {
+        padding: 0px;
+        margin: 0px;
+    }
+    /* Make use of full width in mobile mode */
+    .facet_box_wrapper .box_wrapper .box,
+    .facet_template .facet,
+    .facet_box_temp {
+        width: inherit;
+    }
+    .facet_template .count {
+        [% IF rtl == 't' -%]
+        padding-right: 1em;
+        [% ELSE -%]
+        padding-left: 1em;
+        [% END -%]
+    }
+    #facet_sidebar {
+        margin-top: 0.5em;
+    }
+    #adv_search_parent {
+        font-size: [% css_fonts.size_smaller %];
+    }
+    #adv_search_filters {                                                                                                                             
+        position: relative;                                                                                                                           
+        width: 300px;
+    }
+    #format_actions {
+        [% IF rtl == 't' -%]
+        float: right;
+        [% ELSE -%]
+        float: left;
+        [% END -%]
+    }
+    .rdetail_aux_utils {
+        padding: 0px;
+        border: none;
+    }
+    .result_metadata {
+        width: inherit;
+    }
+    div#rdetail_actions_div {
+        float: none;
+    }
+    h2.rdetail_uris {
+        clear: both;
+    }
+    #metarecord_population {
+        overflow: hidden;
+        width: 100%;
+    }
+    .metarecord_population_span_link {
+    }
+    .metarecord_population_item_lang {
+        float: none;
+    }
+    .search_catalog_lbl {
+        [% IF rtl == 't' -%]
+	margin-right: 0;
+        [% ELSE -%]
+	margin-left: 0;
+        [% END -%]
+	white-space: nowrap;
+    }
+    .adv_search_catalog_lbl { 
+        margin-top: 0;
+	white-space: nowrap;
+    }
+    .browse_the_catalog_lbl {
+        white-space: nowrap;
+    }
+    .mobile_hide {
+	display: none;
+    } 
+    #dash_user {
+        display: block;
+        padding: 0.5em;    
+        font-size: 18px;
+        text-align: center;
+    }
+    .dash_divider {
+	display: none;
+    }
+    .dash_account_buttons {
+        display: block;
+    } 
+    .searchbar { line-height: 1.5em; }
+    #browse-controls { line-height: 1.5em; }
+    #search_query_label, #search_qtype_label, #search_itype_label, #search_locg_label {
+        display: block;
+    }
+    .bookshelf td {
+	display: block;
+	width: 100%;
+    }
+    .bookshelf table thead tr {
+	display: block;
+    }
+    #lowhits_help { width: inherit; }
+    #adv_search_tabs a{                                                                                                                           
+        font-size: [% css_fonts.size_small %];
+        margin: 2px 2px 0px 2px;
+        padding: 2px 2px 5px 2px; 
+        [% IF rtl == 't' -%]
+        border-radius: 7px 0px 0px 7px;
+        [% ELSE -%]
+        border-radius: 7px 7px 0px 0px;
+        [% END -%]
+    }
+    #adv_global_tbody td {
+        border-bottom: thin solid [% css_colors.accent_light %];
+    }
+    #adv_global_addrow td {
+        border-bottom: none;
+    }
+        /* Force table to not be like tables anymore */
+        table#acct_checked_main_header thead tr th, table#acct_holds_main_header thead tr th, table#acct_checked_hist_header thead tr th, table#acct_holds_hist_header thead tr th, table#ebook_circs_main_table thead tr th, table#ebook_holds_main_table thead tr th {
+                display: none;
+        }
+        table#acct_checked_main_header tbody tr td, table#acct_holds_main_header tbody tr td, table#acct_checked_hist_header tbody tr td, table#acct_holds_hist_header tbody tr td, table#ebook_circs_main_table tbody tr td, table#ebook_holds_main_table tbody tr td {
+                display: block;
+        }
+
+        /* Hide table headers (but not display: none;, for accessibility) */
+       /* thead tr {
+                position: absolute;
+                top: -9999px;
+                [% IF rtl == 't' -%]
+                right: -9999px;
+                [% ELSE -%]
+                left: -9999px;
+                [% END -%]
+        }*/
+
+        table#acct_checked_main_header, table#acct_holds_main_header, table#acct_checked_hist_header, table#acct_holds_hist_header, table#ebook_circs_main_table, table#ebook_holds_main_table {
+                width: 90%;
+        }
+
+        table#acct_checked_main_header tr, table#acct_holds_main_header tr, table#acct_checked_hist_header tr { border: 1px solid #ddd; }
+
+        /* Holds history gets large white border to mimic header cell on other
+           account screens that provide visual cue for next title. We should do
+           the same for ebook tables too since we have no actions on those
+           tables. If actions get added, we should move those tables out of
+           here. */
+
+        table#ebook_circs_main_table tr, table#ebook_holds_main_table tr { border-top: 25px solid #fff; }
+		table#acct_holds_hist_header tr{ border-top: 2px solid #bbb; }
+
+        table#acct_checked_main_header td, table#acct_holds_main_header td, table#acct_checked_hist_header td, table#acct_holds_hist_header td, table#ebook_circs_main_table td, table#ebook_holds_main_table td {
+                /* Behave  like a "row" */
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                [% IF rtl == 't' -%]
+                padding-right: 40%;
+                [% ELSE -%]
+                padding-left: 40%;
+                [% END -%]
+        }
+
+         table#acct_checked_main_header td:before, table#acct_holds_main_header td:before, table#acct_checked_hist_header td:before, table#acct_holds_hist_header td:before, table#ebook_circs_main_table td:before, table#ebook_holds_main_table td:before {
+                /* Now like a table header */
+                position: absolute;
+                /* Top/left values mimic padding */
+                top: 2px;
+                width: 40%;
+                [% IF rtl == 't' -%]
+                right: 2px;
+                padding-left: 10px;
+                [% ELSE -%]
+                left: 2px;
+                padding-right: 10px;
+                [% END -%]
+                white-space: nowrap;
+        }
+
+        table#acct_checked_main_header td:nth-of-type(1) { border-top: 5px solid #aaa; padding-top: 15px; background-color: #fff;}
+        table#acct_checked_main_header td:nth-of-type(2):before { content: "[% l('Title') %]";}
+        table#acct_checked_main_header td:nth-of-type(3):before { content: "[% l('Author') %]"; }
+        table#acct_checked_main_header td:nth-of-type(4):before { content: "[% l('Renewals Left') %]"; }
+        table#acct_checked_main_header td:nth-of-type(5):before { content: "[% l('Due Date') %]"; }
+        table#acct_checked_main_header td:nth-of-type(6):before { content: "[% l('Barcode') %]"; }
+        table#acct_checked_main_header td:nth-of-type(7):before { content: "[% l('Call number') %]"; }
+
+     table#acct_checked_hist_header td:nth-of-type(1) { border-top: 5px solid #aaa; padding-top: 15px; background-color: #fff;}
+        table#acct_checked_hist_header td:nth-of-type(2):before { content: "[% l('Title') %]";}
+        table#acct_checked_hist_header td:nth-of-type(3):before { content: "[% l('Author') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(4):before { content: "[% l('Checkout Date') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(5):before { content: "[% l('Due Date') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(6):before { content: "[% l('Date Returned') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(7):before { content: "[% l('Barcode') %]"; }
+        table#acct_checked_hist_header td:nth-of-type(8):before { content: "[% l('Call number') %]"; }
+
+        table#acct_holds_main_header td:nth-of-type(1) { border-top: 5px solid #aaa; padding-top: 15px; background-color: #fff;}
+        table#acct_holds_main_header td:nth-of-type(2):before { content: "[% l('Title') %]";}
+        table#acct_holds_main_header td:nth-of-type(3):before { content: "[% l('Author') %]"; }
+        table#acct_holds_main_header td:nth-of-type(4):before { content: "[% l('Format') %]"; }
+        table#acct_holds_main_header td:nth-of-type(5):before { content: "[% l('Pickup Location') %]"; }
+        table#acct_holds_main_header td:nth-of-type(6):before { content: "[% l('Cancel on') %]"; }
+        table#acct_holds_main_header td:nth-of-type(7):before { content: "[% l('Status') %]"; }
+        table#acct_holds_main_header td.hold_notes:before { content: "[% l('Notes') %]"; }
+
+        table#acct_holds_hist_header td:nth-of-type(1):before { content: "[% l('Title') %]";}
+        table#acct_holds_hist_header td:nth-of-type(2):before { content: "[% l('Author') %]"; }
+        table#acct_holds_hist_header td:nth-of-type(3):before { content: "[% l('Format') %]"; }
+        table#acct_holds_hist_header td:nth-of-type(4):before { content: "[% l('Pickup Location') %]"; }
+        table#acct_holds_hist_header td:nth-of-type(8):before { content: "[% l('Status') %]"; }
+
+        table#ebook_circs_main_table td:nth-of-type(1):before { content: "[% l('Title') %]"; }
+        table#ebook_circs_main_table td:nth-of-type(2):before { content: "[% l('Author') %]"; }
+        table#ebook_circs_main_table td:nth-of-type(3):before { content: "[% l('Due Date') %]"; }
+        table#ebook_circs_main_table td:nth-of-type(4):before { content: "[% l('Actions') %]"; }
+
+        table#ebook_holds_main_table td:nth-of-type(1):before { content: "[% l('Title') %]"; }
+        table#ebook_holds_main_table td:nth-of-type(2):before { content: "[% l('Author') %]"; }
+        table#ebook_holds_main_table td:nth-of-type(3):before { content: "[% l('Due Date') %]"; }
+        table#ebook_holds_main_table td:nth-of-type(4):before { content: "[% l('Actions') %]"; }
+
+
+
+       /*Want to see these in mobile ONLY */
+       .mobile_view{
+          display:block;
+       }
+
+       .mobile_search_lbl_clr{
+          color:[% css_colors.mobile_header_text %];
+       }
+}
+
+@media only screen and (min-width: 992px) {
+	.nav-fr{
+    	float: right;
+    }
+    .nav-fl{
+    	float: left;
+    }
+    #nav-divide{
+    	display:none !important;
+    }
+}
+@media only screen and (max-width: 800px) {
+    .facet_sidebar_hidden, .result_block_hidden {
+        display: none;
+    }
+    .facet_sidebar_visible, .result_block_visible {
+        display: inline ! important;
+    }
+    #acct_select, #acct_prefs_select {
+        display: inline-block;
+    }
+    #acct_tabs, #acct_prefs_tabs {
+         display:none;
+     }
+    .radio-parts-selection { width: 90%; }
+    #list_description, #list_create_name {
+        width: 300px;
+    }
+}

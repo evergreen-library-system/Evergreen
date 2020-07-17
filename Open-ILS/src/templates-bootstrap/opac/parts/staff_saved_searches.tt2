@@ -1,7 +1,7 @@
 [% IF ctx.saved_searches.size %]
 <div id="accordion">
   <div class="card">
-    <div class="card-header" id="headingOne">
+    <div class="card-header" id="headRecent">
       <h5 class="mb-0">
         <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
           [% l("Recent searches") %]
@@ -9,7 +9,7 @@
       </h5>
     </div>
 
-    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+    <div id="collapseOne" class="collapse" aria-labelledby="headRecent" data-parent="#accordion">
       <div class="card-body">
         	[% FOR s IN ctx.saved_searches %]
         	<ul>
