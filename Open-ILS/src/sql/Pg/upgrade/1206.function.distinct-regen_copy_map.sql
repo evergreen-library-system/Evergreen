@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1206', :eg_version);
 
 CREATE OR REPLACE FUNCTION
     action.hold_request_regen_copy_maps(
