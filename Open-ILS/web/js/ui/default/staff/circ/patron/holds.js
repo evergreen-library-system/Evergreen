@@ -161,8 +161,16 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
 
 
 .controller('PatronHoldsCreateCtrl',
-       ['$scope','$routeParams','$location','egCore','egWorkLog','patronSvc',
-function($scope , $routeParams , $location , egCore , egWorkLog , patronSvc) {
+       ['$scope','$routeParams','$location','egCore','egWorkLog','patronSvc','$cookies',
+function($scope , $routeParams , $location , egCore , egWorkLog , patronSvc , $cookies) {
+
+    // set preferred and search library cookies
+    egCore.hatch.getItem('eg.search.pref_lib').then(function(lib) {
+        $cookies.put('eg_pref_lib', lib, {path: '/'});
+    });
+    egCore.hatch.getItem('eg.search.search_lib').then(function(lib) {
+        $cookies.put('eg_search_lib', lib, {path: '/'});
+    });
 
     $scope.handlers = {
         opac_hold_placed : function(hold) {
