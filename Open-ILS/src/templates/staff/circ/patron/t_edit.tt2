@@ -98,7 +98,7 @@
 MACRO draw_field_label (cls, field, label_override) BLOCK %]
   <div class="col-md-3 reg-field-label"> <!-- field label -->
     [% IF label_override %]<label>[% label_override %]</label>
-    [% ELSE %]<label>{{idl_fields.[% cls %].[% field %].label}}</label>[% END %]
+    [% ELSE %]<label id="{{idl_fields.[% cls %].[% field %].name}}">{{idl_fields.[% cls %].[% field %].label}}</label>[% END %]
     <!-- field documentation img/link -->
     <img ng-show="field_doc.[% cls %].[% field %]" 
       ng-click="set_selected_field_doc('[% cls %]','[% field %]')"
@@ -122,6 +122,7 @@ MACRO draw_form_input(cls, field, path, type, disable) BLOCK;
       [% END %]
       class="form-control" 
       name="[% model %]"
+      aria-labelledby="{{idl_fields.[% cls %].[% field %].name}}"
       ng-change="field_modified()" 
       ng-required="field_required('[% cls %]', '[% field %]')"
       ng-blur="handle_field_changed([% base_obj %], '[% field %]')"
@@ -167,13 +168,14 @@ within the "form" by name for validation.
   <div class="col-md-3 reg-field-input"> <!-- field form input -->
       <input type="text" 
         name="barcode"
+        aria-labelledby="{{idl_fields.ac.barcode.name}}"
         ng-model="patron.card.barcode"
         ng-pattern="field_pattern('ac', 'barcode')"
         ng-required="field_required('ac', 'barcode')"
         focus-me="focus_bc"
         ng-change="field_modified()" 
         ng-disabled="disable_bc"
-        class="form-control" 
+        class="form-control"
         ng-blur="handle_field_changed(patron.card, 'barcode')"/>
   </div>
   <div class="col-md-6 patron-reg-example">
@@ -194,6 +196,7 @@ within the "form" by name for validation.
   <div class="col-md-3 reg-field-input">
     <input type="text" 
       name='usrname'
+      aria-labelledby="{{idl_fields.au.usrname.name}}"
       ng-required="field_required('au', 'usrname')"
       focus-me="focus_usrname"
       ng-change="field_modified()" 
@@ -349,6 +352,7 @@ within the "form" by name for validation.
   <div class="col-md-3 reg-field-input">
     <textarea 
       class="form-control" 
+      aria-labelledby="{{idl_fields.au.name_keywords.name}}"
       ng-model="patron.name_keywords"
       ng-pattern="field_pattern('au', 'name_keywords')"
       ng-change="field_modified()" 
@@ -376,6 +380,7 @@ within the "form" by name for validation.
   [% draw_field_label('au', 'dob') %]
   <div class="col-md-3 reg-field-input">
     <eg-date-input
+      date-aria="{{idl_fields.au.dob.name}}"
       ng-required="field_required('au', 'dob')" 
       ng-model="patron.dob">
     </eg-date-input>
@@ -391,6 +396,7 @@ within the "form" by name for validation.
   [% draw_field_label('au', 'juvenile') %]
   <div class="col-md-3 reg-field-input">
       <input 
+        aria-labelledby="{{idl_fields.au.juvenile.name}}"
         ng-change="field_modified()" 
         ng-blur="handle_field_changed(patron, 'juvenile')"
         type='checkbox' ng-model="patron.juvenile"/>
@@ -414,6 +420,7 @@ within the "form" by name for validation.
   <div class="col-md-3 reg-field-input">
     <select 
       class="form-control" 
+      aria-labelledby="{{idl_fields.au.ident_type.name}}"
       ng-model="patron.ident_type"
       ng-required="field_required('au', 'ident_type')"
       ng-blur="handle_field_changed(patron, 'ident_type')"
@@ -439,6 +446,7 @@ within the "form" by name for validation.
   <div class="col-md-3 reg-field-input">
     <select 
       class="form-control" 
+      aria-labelledby="{{idl_fields.au.ident_type2.name}}"
       ng-model="patron.ident_type2"
       ng-required="field_required('au', 'ident_type2')"
       ng-blur="handle_field_changed(patron, 'ident_type2')"
@@ -477,10 +485,11 @@ within the "form" by name for validation.
 
 <div class="row reg-field-row" ng-show="show_field('au.email') && opt_in_setting_types['circ.send_email_checkout_receipts']">
   <div class="col-md-3 reg-field-label">
-    <label>{{opt_in_setting_types['circ.send_email_checkout_receipts'].label()}}</label>
+    <label id="checkoutReceipts">{{opt_in_setting_types['circ.send_email_checkout_receipts'].label()}}</label>
   </div>
   <div class="col-md-3 reg-field-input">
     <input
+      aria-labelledby="checkoutReceipts"
       ng-change="field_modified()"
       type='checkbox' ng-model="user_settings['circ.send_email_checkout_receipts']"/>
   </div>
@@ -548,6 +557,7 @@ within the "form" by name for validation.
     <eg-org-selector 
       selected="patron.home_ou" 
       onchange="handle_home_org_changed"
+      org-aria="{{idl_fields.au.home_ou.name}}"
       disable-test="disable_home_org">
     </eg-org-selector>
   </div>
@@ -560,6 +570,7 @@ within the "form" by name for validation.
   <div class="col-md-3 reg-field-input">
     <div class="btn-group" uib-dropdown>
       <button type="button" class="btn btn-default" uib-dropdown-toggle
+          aria-labelledby="{{idl_fields.au.profile.name}}"
           ng-class="{'ng-invalid' : invalid_profile()}">
         <span style="padding-right: 5px;">
           {{patron.profile.name() || "[% l('Profile Group') %]"}}
@@ -591,7 +602,8 @@ within the "form" by name for validation.
 <div class="row reg-field-row" ng-show="show_field('au.expire_date')">
   [% draw_field_label('au', 'expire_date') %]
   <div class="col-md-3 reg-field-input">
-    <eg-date-input 
+    <eg-date-input
+      date-aria="{{idl_fields.au.expire_date.name}}"
       ng-model="patron.expire_date">
     </eg-date-input>
   </div>
@@ -608,6 +620,7 @@ within the "form" by name for validation.
   <div class="col-md-3 reg-field-input">
     <select 
       class="form-control" 
+      aria-labelledby="{{idl_fields.au.net_access_level.name}}"
       ng-model="patron.net_access_level"
       ng-required="field_required('au', 'net_access_level')"
       ng-blur="handle_field_changed(patron, 'net_access_level')"
@@ -622,6 +635,7 @@ within the "form" by name for validation.
   [% draw_field_label('au', 'active') %]
   <div class="col-md-3 reg-field-input">
       <input 
+        aria-labelledby="{{idl_fields.au.active.name}}"
         ng-change="field_modified()" 
         ng-blur="handle_field_changed(patron, 'active')"
         type='checkbox' ng-model="patron.active"/>
@@ -634,6 +648,7 @@ within the "form" by name for validation.
   [% draw_field_label('au', 'barred') %]
   <div class="col-md-3 reg-field-input">
       <input 
+        aria-labelledby="{{idl_fields.au.barred.name}}"
         ng-change="field_modified()" 
         ng-blur="handle_field_changed(patron, 'barred')"
         type='checkbox' ng-model="patron.barred"/>
@@ -646,6 +661,7 @@ within the "form" by name for validation.
   [% draw_field_label('au', 'master_account') %]
   <div class="col-md-3 reg-field-input">
       <input 
+        aria-labelledby="{{idl_fields.au.master_account.name}}"
         ng-change="field_modified()" 
         ng-blur="handle_field_changed(patron, 'master_account')"
         type='checkbox' ng-model="patron.master_account"/>
@@ -681,9 +697,10 @@ within the "form" by name for validation.
   <div class="col-md-3 reg-field-input">
     <textarea 
       class="form-control" 
+      aria-labelledby="{{idl_fields.au.alert_message.name}}"
       ng-model="patron.alert_message"
       ng-pattern="field_pattern('au', 'alert_message')"
-      ng-change="field_modified()" 
+      ng-change="field_modified()"
       ng-blur="handle_field_changed(patron, 'alert_message')">
     </textarea>
   </div>
@@ -700,10 +717,11 @@ within the "form" by name for validation.
 
 <div class="row reg-field-row">
   <div class="col-md-3 reg-field-label">
-    <label>{{user_setting_types['opac.default_phone'].label()}}</label>
+    <label id="defaultPhone">{{user_setting_types['opac.default_phone'].label()}}</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <input ng-required="hold_notify_type.phone" 
+    <input ng-required="hold_notify_type.phone"
+      aria-labelledby="defaultPhone"
       ng-change="field_modified()" 
       ng-blur="handle_field_changed(user_settings, 'opac.default_phone')"
       type='text' ng-model="user_settings['opac.default_phone']"/>
@@ -712,10 +730,13 @@ within the "form" by name for validation.
 
 <div class="row reg-field-row">
   <div class="col-md-3 reg-field-label">
-    <label>{{user_setting_types['opac.default_pickup_location'].label()}}</label>
+    <label id="defaultPickupLoc">
+      {{user_setting_types['opac.default_pickup_location'].label()}}
+    </label>
   </div>
   <div class="col-md-3 reg-field-input">
     <eg-org-selector nodefault
+      org-aria="defaultPickupLoc"
       disable-test="disable_pulib" 
       selected="patron._pickup_lib"
       onchange="handle_pulib_changed">
@@ -726,10 +747,13 @@ within the "form" by name for validation.
 <div class="row reg-field-row" 
     ng-if="org_settings['circ.holds.behind_desk_pickup_supported']">
   <div class="col-md-3 reg-field-label">
-    <label>{{user_setting_types['circ.holds_behind_desk'].label()}}</label>
+    <label id="holdsBehindDesk">
+      {{user_setting_types['circ.holds_behind_desk'].label()}}
+    </label>
   </div>
   <div class="col-md-3 reg-field-input">
       <input 
+        aria-labelledby="holdsBehindDesk"
         ng-change="field_modified()" 
         type='checkbox' ng-model="user_settings['circ.holds_behind_desk']"/>
   </div>
@@ -739,11 +763,14 @@ within the "form" by name for validation.
 <div class="row reg-field-row" 
   ng-if="user_setting_types['circ.collections.exempt']">
   <div class="col-md-3 reg-field-label">
-    <label>{{user_setting_types['circ.collections.exempt'].label()}}</label>
+    <label id="exempt">
+      {{user_setting_types['circ.collections.exempt']}}
+    </label>
   </div>
   <div class="col-md-3 reg-field-input">
       <input 
         type='checkbox' 
+        aria-labelledby="exempt"
         ng-change="field_modified()" 
         ng-disabled="!perms.UPDATE_PATRON_COLLECTIONS_EXEMPT"
         ng-model="user_settings['circ.collections.exempt']"/>
@@ -752,37 +779,48 @@ within the "form" by name for validation.
 
 <div class="row reg-field-row">
   <div class="col-md-3 reg-field-label">
-    <label>[% l('Holds Notices') %]</label>
+    <label id="holdsNotices">[% l('Holds Notices') %]</label>
   </div>
-  <div class="col-md-3 reg-field-input flex-row">
+  <div class="col-md-4 reg-field-input flex-row">
     <div class='flex-cell'>
       <input 
-        ng-change="field_modified()" 
+        aria-labelledby="holdsNotices holdsPhone"
+        ng-change="field_modified()"
         type='checkbox' ng-model="hold_notify_type.phone"/>
-      [% l('Phone') %]
+      <label id="holdsPhone">
+        [% l('Phone') %]
+      </label>
     </div>
     <div class='flex-cell'>
       <input 
+        aria-labelledby="holdsNotices holdsEmail"
         ng-change="field_modified()" 
         type='checkbox' ng-model="hold_notify_type.email"/>
-      [% l('Email') %]
+      <label id="holdsEmail">
+        [% l('Email') %]
+      </label>
     </div>
     <div class='flex-cell' ng-if="org_settings['sms.enable']">
       <input 
+        aria-labelledby="holdsNotices holdsSms"
         ng-change="field_modified()" 
         type='checkbox' ng-model="hold_notify_type.sms"/>
-      [% l('SMS') %]
+      <label id="holdsSms">
+        [% l('SMS') %]
+      </label>
     </div>
   </div>
 </div>
 
 <div class="row reg-field-row" ng-if="org_settings['sms.enable']">
   <div class="col-md-3 reg-field-label">
-    <label>[% l('Default SMS/Text Number') %]</label>
+    <label id="defaultSmsNum">[% l('Default SMS/Text Number') %]</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <input ng-required="hold_notify_type.sms" 
+    <input 
       name="default_sms_text_number"
+      aria-labelledby="defaultSmsNum"
+      ng-required="hold_notify_type.sms"
       ng-change="field_modified()" ng-model="user_settings['opac.default_sms_notify']"
       ng-blur="handle_field_changed(user_settings, 'opac.default_sms_notify')"
       type='text'/>
@@ -796,13 +834,20 @@ within the "form" by name for validation.
 
 <div class="row reg-field-row" ng-if="org_settings['sms.enable']">
   <div class="col-md-3 reg-field-label">
-    <label>[% l('Default SMS Carrier') %]</label>
+    <label id="defaultSmsCarrier">
+      [% l('Default SMS Carrier') %]
+    </label>
   </div>
   <div class="col-md-3 reg-field-input">
     <span class="nullable">
-      <select str-to-int ng-required="user_settings['opac.default_sms_notify']" class="form-control" ng-model="user_settings['opac.default_sms_carrier']" ng-options="c.id() as c.name() for c in sms_carriers"
-      name="default_sms_text_carrier"
-      ng-blur="handle_field_changed(user_settings, 'opac.default_sms_carrier')">
+      <select str-to-int
+        class="form-control" 
+        aria-labelledby="defaultSmsCarrier"
+        name="default_sms_text_carrier"
+        ng-model="user_settings['opac.default_sms_carrier']"
+        ng-required="user_settings['opac.default_sms_notify']"
+        ng-options="c.id() as c.name() for c in sms_carriers"
+        ng-blur="handle_field_changed(user_settings, 'opac.default_sms_carrier')">
         <option value="">Select a Carrier</option>
       </select>
     </span>
@@ -811,10 +856,11 @@ within the "form" by name for validation.
 
 <div class="row reg-field-row" ng-repeat="type in opt_in_setting_types">
   <div class="col-md-3 reg-field-label" ng-if="type.name() != 'circ.send_email_checkout_receipts'">
-    <label>{{type.label()}}</label>
+    <label id="settingTypes">{{type.label()}}</label>
   </div>
   <div class="col-md-3 reg-field-input" ng-if="type.name() != 'circ.send_email_checkout_receipts'">
     <input 
+      aria-labelledby="settingTypes"
       ng-change="field_modified()" 
       type='checkbox' ng-model="user_settings[type.name()]"/>
   </div>
@@ -822,39 +868,48 @@ within the "form" by name for validation.
 
 <div class="row reg-field-row" ng-if="org_settings['circ.privacy_waiver']">
   <div class="col-md-3 reg-field-label">
-    <label>[% l('Allow others to use my account') %]</label>
+    <label id="privacyWaiver">[% l('Allow others to use my account') %]</label>
   </div>
-  <div class="col-md-3 reg-field-input">
+  <div class="col-md-4 reg-field-input">
     <div class="row" ng-repeat="waiver_entry in patron.waiver_entries" ng-hide="waiver_entry.isdeleted">
       <div class="row flex-row">
         <div class="flex-cell">
+          <label id="waiverName" ng-hide="true">
+            [% l('Name') %]
+          </label>
           <input ng-change="field_modified()"
+            aria-labelledby="privacyWaiver waiverName"
             type='text' ng-model="waiver_entry.name"/>
         </div>
         <div class="flex-cell">
-          <button type="button" 
+          <button type="button"
+            aria-label="[% l('Delete Person Allowed to Use My Account') %]"
             ng-click="field_modified();delete_waiver_entry(waiver_entry)" 
             class="btn btn-danger">[% l('X') %]</button>
         </div>
       </div>
       <div class="row flex-row reg-field-input">
         <div class="flex-cell">
-          <label><input ng-change="field_modified()"
+          <label id="waiverPlace"><input ng-change="field_modified()"
+            aria-labelledby="privacyWaiver waiverPlace"
             type='checkbox' ng-model="waiver_entry.place_holds"/>
             [% l('Place Holds?') %]</label>
         </div>
         <div class="flex-cell">
-          <label><input ng-change="field_modified()"
+          <label id="waiverPickup"><input ng-change="field_modified()"
+            aria-labelledby="privacyWaiver waiverPickup"
             type='checkbox' ng-model="waiver_entry.pickup_holds"/>
             [% l('Pick Up Holds?') %]</label>
         </div>
         <div class="flex-cell">
-          <label><input ng-change="field_modified()"
+          <label id="waiverHistory"><input ng-change="field_modified()"
+            aria-labelledby="privacyWaiver waiverHistory"
             type='checkbox' ng-model="waiver_entry.view_history"/>
             [% l('View Borrowing History?') %]</label>
         </div>
         <div class="flex-cell">
-          <label><input ng-change="field_modified()"
+          <label id="waiverCheckOut"><input ng-change="field_modified()"
+            aria-labelledby="privacyWaiver waiverCheckOut"
             type='checkbox' ng-model="waiver_entry.checkout_items"/>
             [% l('Check Out Items?') %]</label>
         </div>
@@ -862,7 +917,8 @@ within the "form" by name for validation.
     </div> <!-- end ng-repeat waiver_entry -->
     <div class="row">
       <div class="col-md-3 reg-field-input">
-      <button type="button" ng-click="new_waiver_entry()" 
+      <button type="button"
+        ng-click="new_waiver_entry()" 
         class="btn btn-success">[% l('Add Person') %]</button>
       </div>
     </div>
@@ -875,32 +931,43 @@ within the "form" by name for validation.
 
 <div ng-repeat="addr in patron.addresses">
   <div class="alert alert-success row" role="alert">
-      <div class="col-md-3">
+    <div class="col-md-3">
+      <label id="address{{addr.id}}">
         [% l('Address') %]
-        <div ng-show="addr._linked_owner">
-          (<a target="_blank"
-            href="/eg/staff/circ/patron/{{addr._linked_owner_id}}/edit">
-            [% l('Owned by [_1]', '{{addr._linked_owner}}') %]
-          </a>)
-        </div>
+      </label>
+      <div ng-show="addr._linked_owner">
+        (<a target="_blank"
+          href="/eg/staff/circ/patron/{{addr._linked_owner_id}}/edit">
+          [% l('Owned by [_1]', '{{addr._linked_owner}}') %]
+        </a>)
       </div>
-      <div class="col-md-3">
-          <span class='pad-all-min'>
-            [% l('Mailing') %] <input type='checkbox' 
-              ng-change="field_modified();set_addr_type(addr, 'mailing')" 
-              ng-model="addr._is_mailing"/>
-          </span>
-          <span class='pad-all-min'>
-            [% l('Physical') %] <input type='checkbox' 
-              ng-change="field_modified();set_addr_type(addr, 'billing')" 
-              ng-model="addr._is_billing"/>
-          </span>
-          <span class='pad-all-min'>
-            <button type="button" 
-              ng-click="field_modified();delete_address(addr.id)" 
-              class="btn btn-danger">[% l('X') %]</button>
-          </span>
-      </div>
+    </div>
+    <div class="col-md-3">
+        <span class='pad-all-min'>
+          <label id="mailing{{addr.id}}">
+            [% l('Mailing') %]
+          </label>
+          <input type='checkbox' 
+            aria-labelledby="address{{addr.id}} mailing{{addr.id}}"
+            ng-change="field_modified();set_addr_type(addr, 'mailing')" 
+            ng-model="addr._is_mailing"/>
+        </span>
+        <span class='pad-all-min'>
+          <label id="physical{{addr.id}}">
+            [% l('Physical') %]
+          </label>
+           <input type='checkbox' 
+            aria-labelledby="address{{addr.id}} physical{{addr.id}}"
+            ng-change="field_modified();set_addr_type(addr, 'billing')" 
+            ng-model="addr._is_billing"/>
+        </span>
+        <span class='pad-all-min'>
+          <button type="button"
+            aria-label="[% l('Delete this address') %]"
+            ng-click="field_modified();delete_address(addr.id)"
+            class="btn btn-danger">[% l('X') %]</button>
+        </span>
+    </div>
   </div>
 
   <div ng-if="addr.pending" class="row">
@@ -1025,6 +1092,7 @@ within the "form" by name for validation.
     [% draw_field_label('aua', 'valid') %]
     <div class="col-md-3 reg-field-input">
         <input 
+          aria-labelledby="{{idl_fields.aua.valid.name}}"
           type='checkbox' 
           ng-change="field_modified()" 
           ng-disabled='addr._linked_owner'
@@ -1042,7 +1110,8 @@ within the "form" by name for validation.
     [% draw_field_label('aua', 'within_city_limits') %]
     <div class="col-md-3 reg-field-input">
         <input 
-          type='checkbox' 
+          type='checkbox'
+          aria-labelledby="{{idl_fields.aua.within_city_limits.name}}"
           ng-change="field_modified()" 
           ng-disabled='addr._linked_owner'
           ng-blur="handle_field_changed(patron.addresses[$index], 'within_city_limits')"
@@ -1076,12 +1145,15 @@ within the "form" by name for validation.
   <div ng-if="show_field('stat_cats') || cat.required() == 1">
 
     <div class="col-md-3 reg-field-label">
-      <label>{{cat.name()}}</label>
+      <label id="statcat{{cat.id()}}">{{cat.name()}}</label>
     </div>
     <div class="col-md-3 reg-field-input">
       <div ng-if="cat.entries().length != 0">
         <div class="btn-group" uib-dropdown>
-          <button type="button" class="btn btn-default" ng-class="{'ng-invalid': cat.required() == 1 && !stat_cat_entry_maps[cat.id()] }" uib-dropdown-toggle>
+          <button type="button" class="btn btn-default" 
+            aria-labelledby="statcat{{cat.id()}}"
+            ng-class="{'ng-invalid': cat.required() == 1 && !stat_cat_entry_maps[cat.id()] }" 
+            uib-dropdown-toggle>
             <span style="padding-right: 5px;">
               {{stat_cat_entry_maps[cat.id()]}}</span>
             <span class="caret"></span>
@@ -1103,7 +1175,9 @@ within the "form" by name for validation.
     <div class="col-md-3 reg-field-input"
       ng-show="show_field('stat_cats') || hasRequiredStatCat"
       ng-if="cat.allow_freetext() == '1'">
-      <input type="text" ng-model="stat_cat_entry_maps[cat.id()]"
+      <input type="text" 
+        aria-labelledby="statcat{{cat.id()}}"
+        ng-model="stat_cat_entry_maps[cat.id()]"
         class="form-control" ng-required="cat.required() == 1"/>
     </div>
 
