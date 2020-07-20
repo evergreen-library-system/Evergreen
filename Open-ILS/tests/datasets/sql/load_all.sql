@@ -102,6 +102,9 @@ INSERT INTO biblio.record_entry (marc, last_xact_id)
 -- load remoteauth data
 \i remoteauth.sql
 
+-- load course materials data
+\i course_materials.sql
+
 -- clean up the env
 \i env_destroy.sql
 
