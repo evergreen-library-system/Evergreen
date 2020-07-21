@@ -461,10 +461,10 @@ within the "form" by name for validation.
 <div class="row reg-field-row" ng-show="show_field('au.email')">
   [% draw_field_label('au', 'email') %]
   [% draw_form_input('au', 'email', '', 'email') %]
-  <div class="col-md-3" ng-if="base_email && !patron.isnew">
-    <button class="btn btn-default" ng-click="send_test_email()">[% l('Send Test Email') %]</button>
-  </div>
   <div class="col-md-3 patron-reg-example">
+    <button class="btn btn-default" ng-show="base_email && !patron.isnew"
+      ng-disabled="reg_form['patron.email'].$dirty"
+      ng-click="send_test_email()">[% l('Send Test Email') %]</button>
     <button ng-show="patron.email && !patron.isnew" 
       class="btn btn-default" 
       ng-click="invalidate_field('email')">[% l('Invalidate') %]</button>
@@ -782,12 +782,15 @@ within the "form" by name for validation.
   </div>
   <div class="col-md-3 reg-field-input">
     <input ng-required="hold_notify_type.sms" 
+      name="default_sms_text_number"
       ng-change="field_modified()" ng-model="user_settings['opac.default_sms_notify']"
       ng-blur="handle_field_changed(user_settings, 'opac.default_sms_notify')"
       type='text'/>
   </div>
   <div class="col-md-3" ng-if="base_default_sms && !patron.isnew">
-    <button class="btn btn-default" ng-click="send_test_sms()">[% l('Send Test Text') %]</button>
+    <button class="btn btn-default"
+      ng-disabled="reg_form['default_sms_text_number'].$dirty || reg_form['default_sms_text_carrier'].$dirty"
+      ng-click="send_test_sms()">[% l('Send Test Text') %]</button>
   </div>
 </div>
 
@@ -798,6 +801,7 @@ within the "form" by name for validation.
   <div class="col-md-3 reg-field-input">
     <span class="nullable">
       <select str-to-int ng-required="user_settings['opac.default_sms_notify']" class="form-control" ng-model="user_settings['opac.default_sms_carrier']" ng-options="c.id() as c.name() for c in sms_carriers"
+      name="default_sms_text_carrier"
       ng-blur="handle_field_changed(user_settings, 'opac.default_sms_carrier')">
         <option value="">Select a Carrier</option>
       </select>
