@@ -1,0 +1,34 @@
+Holdings Maintenance & Item Attributes Editor Angular Port
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Key differences from the AngluarJS Holdings and Item Attr. editor 
+interfaces include the following:
+
+* Tabbed Holdings vs. Item Attr interfaces
+** With option to display as a unified interface without tabs.
+* Item Attr. fields retain position when showing/hiding
+* Improve keyboard navigation of Item Attr. editor
+* Templates are once again managed directly in the Item Attr. editor.
+* Item Attr. displays values as counts summaries with option to edit by
+  clicking on a field (or tabbing + Enter) a la XUL.
+* Item Attr batch values support changing only items with selected values.
+* Batch value display limit vertical expansion of long lists with option for 
+  manual expansion.
+* All fields are visible by default; hidden by modifying preferences. 
+* Owning Library is managed in the Item Attr editor a la XUL.
+* New feature called "Change Circ Lib When Owning Lib Changes"
+* Generate Barcodes and Use Checkdigit are visible in the main holdings
+  form with option to hide.
+* Print Labels checkbox moved from Preferences to the save actions toolbar.
+* Option to hide various Holdings interface columns for extra horizontal space.
+* Option to temporarily expand columns in the Holdings interface for reviewing
+  wide columns of text.
+
+Upgrade Notes
++++++++++++++
+
+Given the number of changes between the AngJS and Angular interfaces,
+preferences stored for the AngJS interface will not be honored by the
+new interface.  New preferences will have to be applied by staff as
+needed.
+
