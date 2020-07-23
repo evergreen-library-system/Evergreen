@@ -3843,6 +3843,18 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
+,( 'circ.course_materials_browse_by_instructor', 'circ',
+    oils_i18n_gettext(
+        'circ.course_materials_browse_by_instructor',
+        'Allow users to browse Courses by Instructor',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'circ.course_materials_browse_by_instructor',
+        'If enabled, the Org Unit will allow OPAC users to browse Courses by instructor name.',
+        'coust', 'description'),
+    'bool', null)
+
+
 ,( 'circ.password_reset_request_per_user_limit', 'sec',
     oils_i18n_gettext('circ.password_reset_request_per_user_limit',
         'Maximum concurrently active self-serve password reset requests per user',
