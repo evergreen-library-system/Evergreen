@@ -1,7 +1,6 @@
 import {Component, Input, ViewChild, OnInit, TemplateRef} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {from, Observable} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import {from, merge, Observable} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -29,7 +28,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     @Input() displayMode: String;
     materials: any[] = [];
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
-    @ViewChild('materialsGrid', {static: true}) materialsGrid: GridComponent;
+    @ViewChild('materialsGrid', {static: false}) materialsGrid: GridComponent;
     @ViewChild('materialDeleteFailedString', { static: true })
         materialDeleteFailedString: StringComponent;
     @ViewChild('materialDeleteSuccessString', { static: true })
@@ -206,24 +205,20 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     }
 
     deleteSelectedMaterials(items) {
-        const item_ids = [];
+        const deleteRequest$ = [];
         items.forEach(item => {
-            this.materialsDataSource.data.splice(this.materialsDataSource.data.indexOf(item, 0), 1);
-            item_ids.push(item.id());
+            deleteRequest$.push(this.net.request(
+                'open-ils.courses', 'open-ils.courses.detach_material',
+                this.auth.token(), item.id()));
         });
-        this.pcrud.search('acmcm', {course: this.courseId, item: item_ids}).subscribe(material => {
-            material.isdeleted(true);
-            this.pcrud.autoApply(material).subscribe(
-                val => {
-                    this.course.resetItemFields(material, this.currentCourse.owning_lib());
-                    console.debug('deleted: ' + val);
-                    this.materialDeleteSuccessString.current().then(str => this.toast.success(str));
-                },
-                err => {
-                    this.materialDeleteFailedString.current()
-                        .then(str => this.toast.danger(str));
-                }
-            );
-        });
+        merge(...deleteRequest$).subscribe(
+            val => {
+                this.materialDeleteSuccessString.current().then(str => this.toast.success(str));
+            },
+            err => {
+                this.materialDeleteFailedString.current()
+                    .then(str => this.toast.danger(str));
+            }
+        );
     }
 }

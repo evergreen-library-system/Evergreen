@@ -45,7 +45,7 @@ sub attach_electronic_resource_to_course {
         }
     ]);
     return $e->event unless (($bib->source && $bib->source->transcendant) || $located_uris);
-    _attach_bib($e, $course, $record, $relationship);
+    _attach_bib($e, $course, $record, $relationship, 0);
 
     return 1;
 }
@@ -84,24 +84,20 @@ sub attach_brief_bib_to_course {
         ->request('open-ils.cat.biblio.record.xml.create',
             $authtoken, $marcxml, $bib_source_name)
         ->gather(1);
-    _attach_bib($e, $course, $bib_create->id, $relationship) if ($bib_create);
+    _attach_bib($e, $course, $bib_create->id, $relationship, 1) if ($bib_create);
     return 1;
 }
 
 # Shared logic for both e-resources and brief bibs
 sub _attach_bib {
-    my ($e, $course, $record, $relationship) = @_;
+    my ($e, $course, $record, $relationship, $temporary) = @_;
     my $acmcm = Fieldmapper::asset::course_module_course_materials->new;
     $acmcm->course($course);
     $acmcm->record($record);
     $acmcm->relationship($relationship);
+    $acmcm->temporary_record($temporary);
     $e->create_asset_course_module_course_materials( $acmcm ) or return $e->die_event;
     $e->commit;
-}
-
-sub detach_material_from_course {
-    my ($self, $conn, $authtoken, $acmcm) = @_;
-
 }
 
 __PACKAGE__->register_method(
@@ -227,6 +223,79 @@ sub fetch_course_users {
 
     return $targets;
 
+}
+
+__PACKAGE__->register_method(
+    method          => 'detach_material',
+    api_name        => 'open-ils.courses.detach_material',
+    signature => {
+        desc => 'Detaches a material from a course',
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Course material id', type => 'number'},
+        ],
+        return => {desc => '1 on success, event on failure'}
+    });
+sub detach_material {
+    my ($self, $conn, $authtoken, $acmcm_id) = @_;
+    my $e = new_editor(authtoken=>$authtoken, xact=>1);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless
+        $e->allowed('MANAGE_RESERVES');
+    my $acmcm = $e->retrieve_asset_course_module_course_materials($acmcm_id)
+        or return $e->die_event;
+    my $bre_id_to_delete = $acmcm->temporary_record ? $acmcm->record : 0;
+    if ($bre_id_to_delete) {
+        # delete any attached located URIs
+        my $located_uri_cn_ids = $e->search_asset_call_number(
+            {record=>$bre_id_to_delete}, {idlist=>1});
+
+        for my $cn_id (@$located_uri_cn_ids) {
+            $e->delete_asset_call_number(
+                $e->retrieve_asset_call_number($cn_id))
+                or return $e->die_event;
+        }
+        OpenSRF::AppSession
+            ->create('open-ils.cat')
+            ->request('open-ils.cat.biblio.record_entry.delete',
+                $authtoken, $bre_id_to_delete);
+    }
+    if ($acmcm->item) {
+        _resetItemFields($e, $authtoken, $acmcm);
+    } 
+
+    $e->delete_asset_course_module_course_materials($acmcm) or return $e->die_event;
+    $e->commit;
+    return 1;
+}
+
+sub _resetItemFields {
+    my ($e, $authtoken, $acmcm) = @_;
+    my $cat_sess = OpenSRF::AppSession->connect('open-ils.cat');
+    my $acp = $e->retrieve_asset_copy($acmcm->item);
+    my $course_lib = $e->retrieve_asset_course_module_course($acmcm->course)->owning_lib;
+    if ($acmcm->original_status) {
+        $acp->status($acmcm->orginal_status);
+    }
+    if ($acmcm->original_circ_modifier) {
+        $acp->status($acmcm->orginal_circ_modifier);
+    }
+    if ($acmcm->original_location) {
+        $acp->status($acmcm->orginal_location);
+    }
+    $e->update_asset_copy($acmcm);
+    if ($acmcm->original_callnumber) {
+        my $existing_acn = $e->retrieve_asset_call_number($acp->call_number);
+        # Let's attach to an existing call number, if one exists with the original label
+        # and other appropriate specifications
+        my $acn_id = cat_sess->request('open-ils.cat.call_number.find_or_create',
+            $authtoken, $acmcm->original_callnumber,
+            $existing_acn->record, $course_lib,
+            $existing_acn->prefix, $existing_acn->suffix,
+            $existing_acn->label_class)->acn_id;
+        cat_sess->request('open-ils.cat.transfer_copies_to_volume',
+            $authtoken, $acn_id, [$acp->id]);
+    }
 }
 
 

@@ -3114,13 +3114,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
     <class id="acmc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::course_module_course" oils_persist:tablename="asset.course_module_course" reporter:label="Course">
         <fields oils_persist:primary="id" oils_persist:sequence="asset.course_module_course_id_seq">
             <field reporter:label="ID" name="id" reporter:datatype="id" />
-            <field reporter:label="Title" name="name" reporter:datatype="text" />
-            <field reporter:label="Course Number" name="course_number" reporter:datatype="text" />
+            <field reporter:label="Course Name" name="name" reporter:datatype="text" oils_obj:required="true" />
+            <field reporter:label="Course Number" name="course_number" reporter:datatype="text" oils_obj:required="true" />
             <field reporter:label="Section Number" name="section_number" reporter:datatype="text" />
-            <field reporter:label="Owning Library" name="owning_lib" reporter:datatype="link" />
+            <field reporter:label="Owning Library" name="owning_lib" reporter:datatype="link" oils_obj:required="true" />
             <field reporter:label="Course Members" name="members" oils_persist:virtual="true" reporter:datatype="link" />
             <field reporter:label="Course Materials" name="materials" oils_persist:virtual="true" reporter:datatype="link" />
-            <field reporter:label="Non-Cataloged Course Materials" name="non_cat_materials" oils_persist:virtual="true" reporter:datatype="link" />
             <field reporter:label="Is Archived?" name="is_archived" reporter:datatype="bool" />
         </fields>
         <links>
