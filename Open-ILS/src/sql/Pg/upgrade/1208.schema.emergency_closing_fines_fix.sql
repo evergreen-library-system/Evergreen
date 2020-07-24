@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1208', :eg_version);
 
 CREATE OR REPLACE FUNCTION action.emergency_closing_stage_2_circ ( circ_closing_entry INT )
     RETURNS BOOL AS $$
