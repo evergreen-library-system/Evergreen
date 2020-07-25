@@ -1,0 +1,7 @@
+In-house use now records workstations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Evergreen now records the workstation along with each
+in-house use.  Staff can now run reports on which
+workstation created which in-house uses.
+
