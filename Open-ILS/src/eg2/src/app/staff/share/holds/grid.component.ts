@@ -53,6 +53,7 @@ export class HoldsGridComponent implements OnInit {
     initDone = false;
     holdsCount: number;
     pickupLib: IdlObject;
+    plCompLoaded = false;
     gridDataSource: GridDataSource;
     detailHold: any;
     editHolds: number[];
@@ -129,11 +130,9 @@ export class HoldsGridComponent implements OnInit {
         this.pickupLib = this.org.get(this.initialPickupLib);
 
         if (this.preFetchSetting) {
-
-                this.store.getItem(this.preFetchSetting).then(
-                    applied => this.enablePreFetch = Boolean(applied)
-                );
-
+            this.store.getItem(this.preFetchSetting).then(
+                applied => this.enablePreFetch = Boolean(applied)
+            );
         }
 
         if (!this.defaultSort) {
@@ -141,6 +140,15 @@ export class HoldsGridComponent implements OnInit {
         }
 
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
+
+            if (!this.hidePickupLibFilter && !this.plCompLoaded) {
+                // When the pickup lib selector is active, avoid any
+                // data fetches until it has settled on a default value.
+                // Once the final value is applied, its onchange will
+                // fire and we'll be back here with plCompLoaded=true.
+                return of([]);
+            }
+
             sort = sort.length > 0 ? sort : this.defaultSort;
             return this.fetchHolds(pager, sort);
         };

@@ -24,7 +24,8 @@
           <div class="input-group-prepend">
             <div class="input-group-text" i18n>Pickup Library</div>
           </div>
-          <eg-org-select [initialOrg]="pickupLib" (onChange)="pickupLibChanged($event)">
+          <eg-org-select [persistKey]="persistKey" [fallbackOrg]="pickupLib"
+            (componentLoaded)="plCompLoaded = true" (onChange)="pickupLibChanged($event)">
           </eg-org-select>
         </div>
       </div>
