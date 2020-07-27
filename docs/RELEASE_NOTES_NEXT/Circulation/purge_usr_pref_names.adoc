@@ -3,3 +3,28 @@ Purge User Preferred Names
 The new, user preferred name fields are now set to NULL in the
 database when a user account is purged via the staff client or using
 the actor.usr_delete function in the database.
+
+To clear the preferred name fields from records that have already been
+purged, run the following SQL update:
+
+[source,sql]
+----
+UPDATE actor.usr
+SET pref_prefix = NULL,
+    pref_first_given_name = NULL,
+    pref_second_given_name = NULL,
+    pref_family_name = NULL,
+    pref_suffix = NULL,
+    name_keywords = NULL
+WHERE usrname ~ ('^' || id || '-PURGED')
+AND NOT active
+AND deleted
+AND (
+  pref_prefix IS NOT NULL OR
+  pref_first_given_name IS NOT NULL OR
+  pref_second_given_name IS NOT NULL OR
+  pref_family_name IS NOT NULL OR
+  pref_suffix IS NOT NULL OR
+  name_keywords IS NOT NULL
+);
+----
