@@ -518,7 +518,10 @@ sub times_for_date {
     return $conn->respond_complete unless ($start_obj);
 
     my $gran = $U->ou_ancestor_setting_value($org, 'circ.curbside.granularity') || '15 minutes';
+    $gran .= ' minutes' if ($gran =~ /^\s*\d+\s*$/); # Assume minutes for bare numbers (maybe surrounded by spaces)
+
     my $gran_seconds = interval_to_seconds($gran);
+    $gran_seconds = 600 if ($gran_seconds < 600); # No smaller than 10 minute intervals
 
     my $max = $U->ou_ancestor_setting_value($org, 'circ.curbside.max_concurrent') || 10;
 
