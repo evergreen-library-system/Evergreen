@@ -4,10 +4,25 @@ import {Observable, Subject} from 'rxjs';
 import {map, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 import {AuthService} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {PermService} from '@eg/core/perm.service';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
+
+/** Org unit selector
+ *
+ * The following precedence is used when applying a load-time value
+ *
+ * 1. initialOrg / initialOrgId
+ * 2. Value from server setting specificed with persistKey (fires onload).
+ * 3. Value from fallbackOrg / fallbackOrgId (fires onload).
+ * 4. Default applyed when applyDefault is set (fires onload).
+ *
+ * Users can detect when the component has completed its load-time
+ * machinations by subscribing to the componentLoaded Output which
+ * fires exactly once when loading is completed.
+ */
 
 // Use a unicode char for spacing instead of ASCII=32 so the browser
 // won't collapse the nested display entries down to a single space.
@@ -26,9 +41,9 @@ interface OrgDisplay {
 export class OrgSelectComponent implements OnInit {
 
     selected: OrgDisplay;
-    hidden: number[] = [];
     click$ = new Subject<string>();
-    startOrg: IdlObject;
+    valueFromSetting: number = null;
+    sortedOrgs: IdlObject[] = [];
 
     // Disable the entire input
     @Input() disabled: boolean;
@@ -37,7 +52,6 @@ export class OrgSelectComponent implements OnInit {
 
     // Placeholder text for selector input
     @Input() placeholder = '';
-    @Input() stickySetting: string;
 
     // ID to display in the DOM for this selector
     @Input() domId = '';
@@ -45,7 +59,8 @@ export class OrgSelectComponent implements OnInit {
     // Org unit field displayed in the selector
     @Input() displayField = 'shortname';
 
-    // Apply a default org unit value when none is set.
+    // if no initialOrg is provided, none could be found via persist
+    // setting, and no fallbackoOrg is provided, apply a sane default.
     // First tries workstation org unit, then user home org unit.
     // An onChange event WILL be generated when a default is applied.
     @Input() applyDefault = false;
@@ -53,6 +68,7 @@ export class OrgSelectComponent implements OnInit {
     @Input() readOnly = false;
 
     // List of org unit IDs to exclude from the selector
+    hidden: number[] = [];
     @Input() set hideOrgs(ids: number[]) {
         if (ids) { this.hidden = ids; }
     }
@@ -64,43 +80,53 @@ export class OrgSelectComponent implements OnInit {
     }
 
     // Apply an org unit value at load time.
-    // This will NOT result in an onChange event.
-    @Input() set initialOrg(org: IdlObject) {
-        if (org) { this.startOrg = org; }
-    }
+    // These will NOT result in an onChange event.
+    @Input() initialOrg: IdlObject;
+    @Input() initialOrgId: number;
 
-    // Apply an org unit value by ID at load time.
-    // This will NOT result in an onChange event.
-    @Input() set initialOrgId(id: number) {
-        if (id) { this.startOrg = this.org.get(id); }
-    }
+    // Value is persisted via server setting with this key.
+    // Key is prepended with 'eg.orgselect.'
+    @Input() persistKey: string;
+
+    // If no initialOrg is provided and no value could be found
+    // from a persist setting, fall back to one of these values.
+    // These WILL result in an onChange event
+    @Input() fallbackOrg: IdlObject;
+    @Input() fallbackOrgId: number;
 
     // Modify the selected org unit via data binding.
-    // This WILL result in an onChange event firing.
+    // This WILL NOT result in an onChange event firing.
     @Input() set applyOrg(org: IdlObject) {
         if (org) {
             this.selected = this.formatForDisplay(org);
         }
     }
 
-    permLimitOrgs: number[];
-    @Input() set limitPerms(perms: string[]) {
-        this.applyPermLimitOrgs(perms);
-    }
-
     // Modify the selected org unit by ID via data binding.
-    // This WILL result in an onChange event firing.
+    // This WILL NOT result in an onChange event firing.
     @Input() set applyOrgId(id: number) {
         if (id) {
             this.selected = this.formatForDisplay(this.org.get(id));
         }
     }
 
+    // Limit org unit display to those where the logged in user
+    // has the following permissions.
+    permLimitOrgs: number[];
+    @Input() set limitPerms(perms: string[]) {
+        this.applyPermLimitOrgs(perms);
+    }
+
     // Emitted when the org unit value is changed via the selector.
     // Does not fire on initialOrg
     @Output() onChange = new EventEmitter<IdlObject>();
 
-    sortedOrgs: IdlObject[] = [];
+    // Emitted once when the component is done fetching settings
+    // and applying its initial value.  For apps that use the value
+    // of this selector to load data, this event can be used to reliably
+    // detect when the selector is done with all of its automated
+    // underground shuffling and landed on a value.
+    @Output() componentLoaded: EventEmitter<void> = new EventEmitter<void>();
 
     // convenience method to get an IdlObject representing the current
     // selected org unit. One way of invoking this is via a template
@@ -115,36 +141,74 @@ export class OrgSelectComponent implements OnInit {
     constructor(
       private auth: AuthService,
       private store: StoreService,
+      private serverStore: ServerStoreService,
       private org: OrgService,
       private perm: PermService
     ) { }
 
     ngOnInit() {
 
-        // Sort the tree and reabsorb to propagate the sorted nodes to the
-        // org.list() used by this component.
+        // Sort the tree and reabsorb to propagate the sorted nodes to
+        // the org.list() used by this component.  Maintain our own
+        // copy of the org list in case the org service is sorted in a
+        // different manner by other parts of the code.
         this.org.sortTree(this.displayField);
         this.org.absorbTree();
-        // Maintain our own copy of the org list in case the org service
-        // is sorted in a different manner by other parts of the code.
         this.sortedOrgs = this.org.list();
 
-        // Apply a default org unit if desired and possible.
-        if (!this.startOrg && this.applyDefault && this.auth.user()) {
-            // note: ws_ou defaults to home_ou on the server
-            // when when no workstation is used
-            this.startOrg = this.org.get(this.auth.user().ws_ou());
+        if (this.initialOrg || this.initialOrgId) {
             this.selected = this.formatForDisplay(
-                this.org.get(this.auth.user().ws_ou())
+                this.initialOrg || this.org.get(this.initialOrgId)
             );
 
-            // avoid notifying mid-digest
-            setTimeout(() => this.onChange.emit(this.startOrg), 0);
+            this.markAsLoaded();
+            return;
         }
 
-        if (this.startOrg) {
-            this.selected = this.formatForDisplay(this.startOrg);
-        }
+        const promise = this.persistKey ?
+            this.getFromSetting() : Promise.resolve(null);
+
+        promise.then((startupOrgId: number) => {
+
+            if (!startupOrgId) {
+
+                if (this.fallbackOrgId) {
+                    startupOrgId = this.fallbackOrgId;
+
+                } else if (this.fallbackOrg) {
+                    startupOrgId = this.org.get(this.fallbackOrg).id();
+
+                } else if (this.applyDefault && this.auth.user()) {
+                    startupOrgId = this.auth.user().ws_ou();
+                }
+            }
+
+            let startupOrg;
+            if (startupOrgId) {
+                startupOrg = this.org.get(startupOrgId);
+                this.selected = this.formatForDisplay(startupOrg);
+            }
+
+            this.markAsLoaded(startupOrg);
+        });
+    }
+
+    getFromSetting(): Promise<number> {
+
+        const key = `eg.orgselect.${this.persistKey}`;
+
+        return this.serverStore.getItem(key).then(
+            value => this.valueFromSetting = value
+        );
+    }
+
+    // Indicate all load-time shuffling has completed.
+    markAsLoaded(onChangeOrg?: IdlObject) {
+        setTimeout(() => { // Avoid emitting mid-digest
+            this.componentLoaded.emit();
+            this.componentLoaded.complete();
+            if (onChangeOrg) { this.onChange.emit(onChangeOrg); }
+        });
     }
 
     //
@@ -189,6 +253,14 @@ export class OrgSelectComponent implements OnInit {
     orgChanged(selEvent: NgbTypeaheadSelectItemEvent) {
         // console.debug('org unit change occurred ' + selEvent.item);
         this.onChange.emit(this.org.get(selEvent.item.id));
+
+        if (this.persistKey && this.valueFromSetting !== selEvent.item.id) {
+            // persistKey is active.  Update the persisted value when changed.
+
+            const key = `eg.orgselect.${this.persistKey}`;
+            this.valueFromSetting = selEvent.item.id;
+            this.serverStore.setItem(key, this.valueFromSetting);
+        }
     }
 
     // Remove the tree-padding spaces when matching.
