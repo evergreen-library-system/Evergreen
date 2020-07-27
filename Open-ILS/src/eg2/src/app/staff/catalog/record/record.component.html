@@ -22,7 +22,8 @@
     <!-- push the actions component to the right -->
     <div class="flex-1"></div>
     <div id='staff-catalog-bib-navigation'>
-      <eg-catalog-record-actions [recordId]="recordId">
+      <eg-catalog-record-actions [recordId]="recordId"
+        (addHoldingsRequested)="addHoldingsRequested()">
       </eg-catalog-record-actions>
     </div>
   </div>
@@ -73,7 +74,7 @@
       </ngb-tab>
       <ngb-tab title="Holdings View" i18n-title id="holdings">
         <ng-template ngbTabContent>
-          <eg-holdings-maintenance [recordId]="recordId">
+          <eg-holdings-maintenance #holdingsMaint [recordId]="recordId">
           </eg-holdings-maintenance>
         </ng-template>
       </ngb-tab>

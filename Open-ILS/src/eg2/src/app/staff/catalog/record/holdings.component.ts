@@ -42,7 +42,7 @@ import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 
 // The holdings grid models a single HoldingsTree, composed of HoldingsTreeNodes
 // flattened on-demand into a list of HoldingEntry objects.
-class HoldingsTreeNode {
+export class HoldingsTreeNode {
     children: HoldingsTreeNode[];
     nodeType: 'org' | 'callNum' | 'copy';
     target: any;
@@ -62,7 +62,7 @@ class HoldingsTree {
     }
 }
 
-class HoldingsEntry {
+export class HoldingsEntry {
     index: number;
     // org unit shortname, call number label, or copy barcode
     locationLabel: string;
