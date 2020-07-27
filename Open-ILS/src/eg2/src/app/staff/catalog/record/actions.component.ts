@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {Router} from '@angular/router';
 import {StoreService} from '@eg/core/store.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
@@ -14,6 +14,9 @@ import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
   templateUrl: 'actions.component.html'
 })
 export class RecordActionsComponent implements OnInit {
+
+    @Output() addHoldingsRequested: EventEmitter<void>
+        = new EventEmitter<void>();
 
     recId: number;
     initDone = false;
@@ -83,14 +86,9 @@ export class RecordActionsComponent implements OnInit {
             .then(txt => this.toast.success(txt));
     }
 
-    // TODO: Support adding copies to existing call numbers by getting
-    // selected call numbers from the holdings grid.
-    // TODO: Support adding like call numbers by getting selected
-    // call numbers from the holdings grid.
     addHoldings() {
-        this.holdings.spawnAddHoldingsUi(this.recId);
+        this.addHoldingsRequested.emit();
     }
-
 }
 
 

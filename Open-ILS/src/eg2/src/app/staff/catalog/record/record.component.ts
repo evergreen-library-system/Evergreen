@@ -3,12 +3,17 @@ import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlObject} from '@eg/core/idl.service';
+import {AuthService} from '@eg/core/auth.service';
 import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {StaffCatalogService} from '../catalog.service';
 import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.component';
 import {StoreService} from '@eg/core/store.service';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import {MarcEditorComponent} from '@eg/staff/share/marc-edit/editor.component';
+import {HoldingsMaintenanceComponent} from './holdings.component';
+import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 
 @Component({
   selector: 'eg-catalog-record',
@@ -21,15 +26,21 @@ export class RecordComponent implements OnInit {
     summary: BibRecordSummary;
     searchContext: CatalogSearchContext;
     @ViewChild('recordTabs') recordTabs: NgbTabset;
+
+    @ViewChild('holdingsMaint')
+        holdingsMaint: HoldingsMaintenanceComponent;
+
     defaultTab: string; // eg.cat.default_record_tab
 
     constructor(
         private router: Router,
         private route: ActivatedRoute,
         private pcrud: PcrudService,
+        private auth: AuthService,
         private bib: BibRecordService,
         private cat: CatalogService,
         private staffCat: StaffCatalogService,
+        private holdings: HoldingsService,
         private store: StoreService
     ) {}
 
@@ -114,6 +125,25 @@ export class RecordComponent implements OnInit {
     handleMarcRecordSaved() {
         this.staffCat.currentDetailRecordSummary = null;
         this.loadRecord();
+    }
+
+    // Our actions component broadcast a request to add holdings.
+    // If our Holdings Maintenance component is active/visible, ask
+    // it to figure out what data to pass to the holdings editor.
+    // Otherwise, just tell it to create a new call number and
+    // copy at the current working location.
+    addHoldingsRequested() {
+        if (this.holdingsMaint && this.holdingsMaint.holdingsGrid) {
+            this.holdingsMaint.openHoldingAdd(
+                this.holdingsMaint.holdingsGrid.context.getSelectedRows(),
+                true, true
+            );
+
+        } else {
+
+            this.holdings.spawnAddHoldingsUi(
+                this.recordId, null, [{owner: this.auth.user().ws_ou()}]);
+        }
     }
 }
 
