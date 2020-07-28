@@ -141,7 +141,7 @@ function($uibModal , $q , egCore) {
                     var type = billingTypes.filter(function(t) {
                         return t.id() == $scope.billArgs.billingType })[0];
                     if (type.default_price()) {
-                        $scope.billArgs.amount = parseFloat(type.default_price()).toFixed(2);
+                        $scope.billArgs.amount = parseFloat(type.default_price());
                     } else {
                         $scope.billArgs.amount = null;
                     }
