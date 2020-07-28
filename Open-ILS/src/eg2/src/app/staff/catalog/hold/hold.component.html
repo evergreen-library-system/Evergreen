@@ -166,16 +166,16 @@
               </eg-combobox>
             </div>
           </li>
+          <li class="list-group-item">
+            <button class="btn btn-success" (click)="placeHolds()" 
+              [disabled]="!user || placeHoldsClicked" i18n>Place Hold(s)</button>
+
+            <button class="btn btn-outline-dark ml-2" (click)="reset()" i18n>Reset</button>
+          </li>
         </ul><!-- col -->
       </div><!-- row -->
     </div><!--card -->
   </div><!-- col -->
-  <div class="row mt-2">
-    <div class="col-lg-3">
-      <button class="btn btn-success" (click)="placeHolds()" 
-        [disabled]="!user || placeHoldsClicked" i18n>Place Hold(s)</button>
-    </div>
-  </div>
 </form>
 
 <div class="row"><div class="col-lg-12"><hr/></div></div>

@@ -101,15 +101,10 @@ export class HoldComponent implements OnInit {
         this.smsCarriers = [];
     }
 
-    ngOnInit() {
+    reset() {
 
-        // Respond to changes in hold type.  This currently assumes hold
-        // types only toggle post-init between copy-level types (C,R,F)
-        // and no other params (e.g. target) change with it.  If other
-        // types require tracking, additional data collection may be needed.
-        this.route.paramMap.subscribe(
-            (params: ParamMap) => this.holdType = params.get('type'));
-
+        this.user = null;
+        this.userBarcode = null;
         this.holdType = this.route.snapshot.params['type'];
         this.holdTargets = this.route.snapshot.queryParams['target'];
         this.holdFor = this.route.snapshot.queryParams['holdFor'] || 'patron';
@@ -136,11 +131,26 @@ export class HoldComponent implements OnInit {
             return ctx;
         });
 
+        this.resetForm();
+
         if (this.holdFor === 'staff' || this.userBarcode) {
             this.holdForChanged();
         }
 
         this.getTargetMeta();
+        this.placeHoldsClicked = false;
+    }
+
+    ngOnInit() {
+
+        // Respond to changes in hold type.  This currently assumes hold
+        // types only toggle post-init between copy-level types (C,R,F)
+        // and no other params (e.g. target) change with it.  If other
+        // types require tracking, additional data collection may be needed.
+        this.route.paramMap.subscribe(
+            (params: ParamMap) => this.holdType = params.get('type'));
+
+        this.reset();
 
         this.org.settings(['sms.enable', 'circ.holds.max_duplicate_holds'])
         .then(sets => {
