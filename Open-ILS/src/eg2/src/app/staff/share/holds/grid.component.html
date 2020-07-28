@@ -105,7 +105,8 @@
 
       <eg-grid-column i18n-label label="Patron alias" path="usr_alias"></eg-grid-column>
       <eg-grid-column i18n-label label="Request Date"
-          path='request_time' datatype="timestamp"></eg-grid-column>
+        path='request_time' datatype="timestamp" [datePlusTime]="true">
+      </eg-grid-column>
       <eg-grid-column i18n-label label="Capture Date" path='capture_time'
           datatype="timestamp"></eg-grid-column>
       <eg-grid-column i18n-label label="Available Date" path='shelf_time'
