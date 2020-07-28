@@ -35,6 +35,12 @@ class HoldContext {
            langs: {}
         };
     }
+
+    clone(target: number): HoldContext {
+        const ctx = new HoldContext(target);
+        ctx.holdMeta = this.holdMeta;
+        return ctx;
+    }
 }
 
 @Component({
@@ -65,6 +71,8 @@ export class HoldComponent implements OnInit {
     smsCarriers: ComboboxEntry[];
 
     smsEnabled: boolean;
+    maxMultiHolds = 0;
+    multiHoldCount = 1;
     placeHoldsClicked: boolean;
 
     puLibWsFallback = false;
@@ -134,21 +142,32 @@ export class HoldComponent implements OnInit {
 
         this.getTargetMeta();
 
-        this.org.settings('sms.enable').then(sets => {
-            this.smsEnabled = sets['sms.enable'];
-            if (!this.smsEnabled) { return; }
+        this.org.settings(['sms.enable', 'circ.holds.max_duplicate_holds'])
+        .then(sets => {
 
-            this.pcrud.search('csc', {active: 't'}, {order_by: {csc: 'name'}})
-            .subscribe(carrier => {
-                this.smsCarriers.push({
-                    id: carrier.id(),
-                    label: carrier.name()
+            this.smsEnabled = sets['sms.enable'];
+
+            if (this.smsEnabled) {
+                this.pcrud.search(
+                    'csc', {active: 't'}, {order_by: {csc: 'name'}})
+                .subscribe(carrier => {
+                    this.smsCarriers.push({
+                        id: carrier.id(),
+                        label: carrier.name()
+                    });
                 });
-            });
+            }
+
+            const max = sets['circ.holds.max_duplicate_holds'];
+            if (Number(max) > 0) { this.maxMultiHolds = max; }
         });
 
         setTimeout(() => // Focus barcode input
             this.renderer.selectRootElement('#patron-barcode').focus());
+    }
+
+    holdCountRange(): number[] {
+        return [...Array(this.maxMultiHolds).keys()].map(n => n + 1);
     }
 
     // Load the bib, call number, copy, etc. data associated with each target.
@@ -336,18 +355,42 @@ export class HoldComponent implements OnInit {
 
     // Attempt hold placement on all targets
     placeHolds(idx?: number) {
-        if (!idx) { idx = 0; }
-        if (!this.holdTargets[idx]) {
+        if (!idx) {
+            idx = 0;
+            if (this.multiHoldCount > 1) {
+                this.addMultHoldContexts();
+            }
+        }
+
+        if (!this.holdContexts[idx]) {
             this.placeHoldsClicked = false;
             return;
         }
+
         this.placeHoldsClicked = true;
 
-        const target = this.holdTargets[idx];
-        const ctx = this.holdContexts.filter(
-            c => c.holdTarget === target)[0];
-
+        const ctx = this.holdContexts[idx];
         this.placeOneHold(ctx).then(() => this.placeHolds(idx + 1));
+    }
+
+    // When placing holds on multiple copies per target, add a hold
+    // context for each instance of the request.
+    addMultHoldContexts() {
+        const newContexts = [];
+
+        this.holdContexts.forEach(ctx => {
+            for (let idx = 2; idx <= this.multiHoldCount; idx++) {
+                const newCtx = ctx.clone(ctx.holdTarget);
+                newContexts.push(newCtx);
+            }
+        });
+
+        // Group the contexts by hold target
+        this.holdContexts = this.holdContexts.concat(newContexts)
+            .sort((h1, h2) =>
+                h1.holdTarget === h2.holdTarget ? 0 :
+                    h1.holdTarget < h2.holdTarget ? -1 : 1
+            );
     }
 
     placeOneHold(ctx: HoldContext, override?: boolean): Promise<any> {

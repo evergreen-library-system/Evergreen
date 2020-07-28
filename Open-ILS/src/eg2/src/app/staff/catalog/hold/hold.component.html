@@ -81,6 +81,19 @@
           </eg-date-select>
         </div>
       </div>
+      <div class="row mt-2">
+        <div class="col-lg-6">
+          <label for='multi-hold-count' i18n>Number of copies:</label>
+        </div>
+        <div class="col-lg-6">
+          <select class="form-control" name="multi-hold-count"
+            id="multi-hold-count" [(ngModel)]="multiHoldCount">
+            <option [value]="num" 
+              *ngFor="let num of holdCountRange()">{{num}}</option>
+          </select>
+        </div>
+      </div>
+
     </div><!-- left column -->
     <div class="col-lg-6">
       <div class="card">
