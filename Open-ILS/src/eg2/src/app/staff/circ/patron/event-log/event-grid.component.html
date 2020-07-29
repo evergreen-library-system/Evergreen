@@ -1,0 +1,15 @@
+<eg-grid #grid [dataSource]="gridSource" idlClass="atoul"
+  [sortable]="true"
+  [filterable]="true"
+  showFields="perm_lib,state,name,reactor,run_time,target_circ.target_copy.barcode,target_hold.current_copy.barcode,title,author"
+  ignoreFields="target_circ,target_hold"
+  persistKey="event_grid">
+  <eg-grid-toolbar-action label="Reset selected events" i18n-label
+    (onClick)="act_on_events('reset',$event)" [disableOnRows]="noRowSelected">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Cancel selected events" i18n-label
+    (onClick)="act_on_events('cancel',$event)" [disableOnRows]="noRowSelected">
+  </eg-grid-toolbar-action>
+  <eg-grid-column *ngIf="event_type=='circ'" [sortable]="false" [filterable]="false" path="target_circ.target_copy.barcode"></eg-grid-column>
+  <eg-grid-column *ngIf="event_type=='hold'" [sortable]="false" [filterable]="false" path="target_hold.current_copy.barcode"></eg-grid-column>
+</eg-grid>

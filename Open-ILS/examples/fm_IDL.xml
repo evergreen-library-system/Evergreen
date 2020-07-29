@@ -1454,6 +1454,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Environment Entries" name="env" oils_persist:virtual="true"  reporter:datatype="link"/>
 			<field reporter:label="Parameters" name="params" oils_persist:virtual="true"  reporter:datatype="link"/>
 			<field reporter:label="Retention Interval" name="retention_interval" reporter:datatype="interval"/>
+			<field reporter:label="Context User Path" name="context_usr_path" reporter:datatype="text"/>
+			<field reporter:label="Context Library Path" name="context_library_path" reporter:datatype="text"/>
+			<field reporter:label="Context Bib Path" name="context_bib_path" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -1548,12 +1551,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Error Output" name="error_output" reporter:datatype="text"/>
 			<field reporter:label="Asynchronous Output" name="async_output" reporter:datatype="link"/>
 			<field reporter:label="Update Process" name="update_process" reporter:datatype="int"/>
+			<field reporter:label="Context User" name="context_user" reporter:datatype="link"/>
+			<field reporter:label="Context Library" name="context_library" reporter:datatype="link"/>
+			<field reporter:label="Context Bib" name="context_bib" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="event_def" reltype="has_a" key="id" map="" class="atevdef"/>
 			<link field="template_output" reltype="has_a" key="id" map="" class="ateo"/>
 			<link field="error_output" reltype="has_a" key="id" map="" class="ateo"/>
 			<link field="async_output" reltype="has_a" key="id" map="" class="ateo"/>
+			<link field="context_user" reltype="has_a" key="id" map="" class="au"/>
+			<link field="context_library" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="context_bib" reltype="has_a" key="id" map="" class="bre"/>
 		</links>
 	</class>
 
@@ -1655,6 +1664,91 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="target_circ" reltype="has_a" key="id" map="" class="circ" />
 			<link field="target_hold" reltype="has_a" key="id" map="" class="ahr" />
 			<link field="perm_lib" reltype="has_a" key="id" map="" class="aou" />
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_TRIGGER_EVENT" context_field="perm_lib" />
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="atoul" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::optimized_user_log" reporter:label="Action Trigger Optimized User Log" oils_persist:readonly="true">
+		<oils_persist:source_definition><![CDATA[
+		SELECT	atevdef.hook,
+			atevdef.name,
+			atevdef.reactor,
+			atev.id,
+			atev.event_def,
+			atev.add_time,
+			atev.run_time,
+			atev.start_time,
+			atev.update_time,
+			atev.complete_time,
+			atev.update_process,
+			atev.state,
+			atev.user_data,
+			atev.template_output,
+			atev.error_output,
+			atev.async_output,
+            atev.target,
+			CASE WHEN ath.core_type = 'circ' THEN atev.target END AS target_circ,
+			CASE WHEN ath.core_type = 'ahr' THEN atev.target END AS target_hold,
+            atev.context_user,
+			atev.context_library,
+            atev.context_bib,
+            rssr.title,
+            rssr.author
+		FROM action_trigger.event atev
+		JOIN action_trigger.event_definition atevdef ON
+			(atevdef.id = atev.event_def)
+		JOIN action_trigger.hook ath ON
+			(ath.key = atevdef.hook AND ath.core_type IN ('circ','ahr'))
+        LEFT JOIN reporter.super_simple_record rssr ON
+            (atev.context_bib = rssr.id)
+		WHERE atev.add_time > NOW() - (SELECT MIN(value) FROM (
+			SELECT value::INTERVAL FROM actor.org_unit_ancestor_setting(
+				'circ.staff.max_visible_event_age',
+				atev.context_library
+			) UNION
+			SELECT '1000 YEARS'::INTERVAL AS value
+		) ous)
+		]]></oils_persist:source_definition>
+		<fields oils_persist:primary="id">
+			<field reporter:label="Hook" name="hook" reporter:datatype="link" />
+			<field reporter:label="Name" name="name" reporter:datatype="text" />
+			<field reporter:label="Reactor" name="reactor" reporter:datatype="text" />
+			<field reporter:label="Event ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Event Definition ID" name="event_def" reporter:datatype="int" />
+			<field reporter:label="Event Add Time" name="add_time" reporter:datatype="timestamp" />
+			<field reporter:label="Event Run Time" name="run_time" reporter:datatype="timestamp" />
+			<field reporter:label="Event Start Time" name="start_time" reporter:datatype="timestamp" />
+			<field reporter:label="Event Update Time" name="update_time" reporter:datatype="timestamp" />
+			<field reporter:label="Event Complete Time" name="complete_time" reporter:datatype="timestamp" />
+			<field reporter:label="Event Update PID" name="update_process" reporter:datatype="int" />
+			<field reporter:label="Event State" name="state" reporter:datatype="text" />
+			<field reporter:label="Event User Data" name="user_data" reporter:datatype="text" />
+			<field reporter:label="Event Template Output" name="template_output" reporter:datatype="link" />
+			<field reporter:label="Event Error Output" name="error_output" reporter:datatype="link" />
+			<field reporter:label="Event Async Output" name="async_output" reporter:datatype="link" />
+			<field reporter:label="Event Target Object ID" name="target" reporter:datatype="link" />
+			<field reporter:label="Target Circulation" name="target_circ" reporter:datatype="link" />
+			<field reporter:label="Target Hold" name="target_hold" reporter:datatype="link" />
+			<field reporter:label="Context User" name="context_user" reporter:datatype="link" />
+			<field reporter:label="Context Library" name="context_library" reporter:datatype="org_unit" />
+			<field reporter:label="Context Bib" name="context_bib" reporter:datatype="link" />
+			<field reporter:label="Title" name="title" reporter:datatype="text" />
+			<field reporter:label="Author" name="author" reporter:datatype="text" />
+		</fields>
+		<links>
+			<link field="hook" reltype="has_a" key="key" map="" class="ath" />
+			<link field="template_output" reltype="has_a" key="id" map="" class="ateo" />
+			<link field="error_output" reltype="has_a" key="id" map="" class="ateo" />
+			<link field="async_output" reltype="has_a" key="id" map="" class="ateo" />
+			<link field="target_circ" reltype="has_a" key="id" map="" class="circ" />
+			<link field="target_hold" reltype="has_a" key="id" map="" class="ahr" />
+			<link field="context_user" reltype="has_a" key="id" map="" class="au" />
+			<link field="context_library" reltype="has_a" key="id" map="" class="aou" />
+			<link field="context_bib" reltype="has_a" key="id" map="" class="bre" />
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -10872,7 +10966,7 @@ SELECT  usr,
 			<link field="id" reltype="might_have" key="id" map="" class="circ"/>
 		</links>
 	</class>
-	<class id="rhrr" controller="open-ils.reporter-store open-ils.cstore" oils_obj:fieldmapper="reporter::hold_request_record" oils_persist:tablename="reporter.hold_request_record" reporter:label="Hold Request Record">
+	<class id="rhrr" controller="open-ils.reporter-store open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="reporter::hold_request_record" oils_persist:tablename="reporter.hold_request_record" reporter:label="Hold Request Record">
 		<fields oils_persist:primary="id">
 			<field reporter:label="Hold ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Hold Target" name="target" reporter:datatype="int" />
@@ -10883,6 +10977,13 @@ SELECT  usr,
 			<link field="id" reltype="might_have" key="id" map="" class="ahr"/>
 			<link field="bib_record" reltype="has_a" key="id" map="" class="bre"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_HOLD">
+					<context link="id" field="pickup_lib"/>
+				</retrieve>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="rxbt" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::xact_billing_totals" oils_persist:tablename="reporter.xact_billing_totals" reporter:label="Transaction Billing Totals">
 		<fields oils_persist:primary="xact">

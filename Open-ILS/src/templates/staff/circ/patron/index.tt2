@@ -184,7 +184,7 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
             </a>
           </li>
           <li>
-            <a href="./circ/patron/{{patron().id()}}/triggered_events">
+            <a href="/eg2/staff/circ/patron/event-log/{{patron().id()}}" target="_blank">
               [% l('Triggered Events / Notifications') %]
             </a>
           </li>

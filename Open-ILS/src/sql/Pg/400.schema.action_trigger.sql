@@ -197,6 +197,10 @@ CREATE TABLE action_trigger.event_definition (
     template        TEXT,                 -- the TT block.  will have an 'environment' hash (or array of hashes, grouped events) built up by validator and collector(s), which can be modified.
     granularity     TEXT,   -- could specify a batch which is the only time these events should actually run
 
+    context_usr_path        TEXT, -- for optimizing action_trigger.event
+    context_library_path    TEXT, -- '''
+    context_bib_path        TEXT, -- '''
+
     message_template        TEXT,
     message_usr_path        TEXT,
     message_library_path    TEXT,
@@ -275,13 +279,18 @@ CREATE TABLE action_trigger.event (
     user_data       TEXT        CHECK (user_data IS NULL OR is_json( user_data )),
     template_output BIGINT      REFERENCES action_trigger.event_output (id),
     error_output    BIGINT      REFERENCES action_trigger.event_output (id),
-    async_output    BIGINT      REFERENCES action_trigger.event_output (id)
+    async_output    BIGINT      REFERENCES action_trigger.event_output (id),
+    context_user    INT         REFERENCES actor.usr (id),
+    context_library INT         REFERENCES actor.org_unit (id),
+    context_bib     BIGINT      REFERENCES biblio.record_entry (id)
 );
 CREATE INDEX atev_target_def_idx ON action_trigger.event (target,event_def);
 CREATE INDEX atev_def_state ON action_trigger.event (event_def,state);
 CREATE INDEX atev_template_output ON action_trigger.event (template_output);
 CREATE INDEX atev_async_output ON action_trigger.event (async_output);
 CREATE INDEX atev_error_output ON action_trigger.event (error_output);
+CREATE INDEX atev_context_user ON action_trigger.event (context_user);
+CREATE INDEX atev_context_library ON action_trigger.event (context_library);
 
 CREATE TABLE action_trigger.event_params (
     id          BIGSERIAL   PRIMARY KEY,

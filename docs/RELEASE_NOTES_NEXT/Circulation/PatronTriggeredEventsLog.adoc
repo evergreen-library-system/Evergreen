@@ -1,0 +1,5 @@
+New Patron Triggered Events Log
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A reimplementation of the Patron Triggered Events Log interface along with
+supporting infrastructure for speedier results with large datasets.

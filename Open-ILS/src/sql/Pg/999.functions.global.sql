@@ -422,6 +422,9 @@ BEGIN
 		dest_usr := specified_dest_usr;
 	END IF;
 
+    -- action_trigger.event (even doing this, event_output may--and probably does--contain PII and should have a retention/removal policy)
+    UPDATE action_trigger.event SET context_user = dest_usr WHERE context_user = src_usr;
+
 	-- acq.*
 	UPDATE acq.fund_allocation SET allocator = dest_usr WHERE allocator = src_usr;
 	UPDATE acq.lineitem SET creator = dest_usr WHERE creator = src_usr;

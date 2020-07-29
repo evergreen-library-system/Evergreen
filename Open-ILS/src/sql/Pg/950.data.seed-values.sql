@@ -17553,6 +17553,30 @@ INSERT INTO action_trigger.environment (
 INSERT INTO action_trigger.event_params (event_def, param, value)
     VALUES (currval('action_trigger.event_definition_id_seq'), 'check_sms_notify', 1);
 
+UPDATE
+    action_trigger.event_definition
+SET
+    context_usr_path = 'usr',
+    context_library_path = 'circ_lib',
+    context_bib_path = 'target_copy.call_number.record'
+WHERE
+    hook IN (
+        SELECT key FROM action_trigger.hook WHERE core_type = 'circ'
+    )
+;
+
+UPDATE
+    action_trigger.event_definition
+SET
+    context_usr_path = 'usr',
+    context_library_path = 'pickup_lib',
+    context_bib_path = 'bib_rec'
+WHERE
+    hook IN (
+        SELECT key FROM action_trigger.hook WHERE core_type = 'ahr'
+    )
+;
+
 INSERT INTO config.org_unit_setting_type
 (name, grp, label, description, datatype)
 VALUES
