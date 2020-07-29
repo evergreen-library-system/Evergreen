@@ -81,7 +81,7 @@ BEGIN
                 FOR j IN 1 .. ARRAY_UPPER(uri_owner_list, 1) LOOP
                     uri_owner := uri_owner_list[j];
 
-                    SELECT id INTO uri_owner_id FROM actor.org_unit WHERE shortname = uri_owner;
+                    SELECT id INTO uri_owner_id FROM actor.org_unit WHERE shortname = BTRIM(REPLACE(uri_owner,chr(160),''));
                     CONTINUE WHEN NOT FOUND;
 
                     -- we need a call number to link through
@@ -114,10 +114,11 @@ BEGIN
     FOR current_map IN
         SELECT  m.id
           FROM  asset.uri_call_number_map m
-                JOIN asset.call_number cn ON (cn.id = m.call_number)
+                LEFT JOIN asset.call_number cn ON (cn.id = m.call_number)
           WHERE cn.record = bib_id
                 AND cn.label = '##URI##'
-                AND NOT (m.id = ANY (current_uri_map_list))
+                AND (NOT (m.id = ANY (current_uri_map_list))
+                     OR current_uri_map_list is NULL)
     LOOP
         SELECT uri INTO current_uri FROM asset.uri_call_number_map WHERE id = current_map;
         DELETE FROM asset.uri_call_number_map WHERE id = current_map;
@@ -128,13 +129,16 @@ BEGIN
         END IF;
     END LOOP;
 
-    DELETE FROM asset.call_number WHERE id IN (
-        SELECT  id  
+    UPDATE asset.call_number
+    SET deleted = TRUE, edit_date = now(), editor = editor_id
+    WHERE id IN (
+        SELECT  id
           FROM  asset.call_number
           WHERE record = bib_id
                 AND label = '##URI##'
                 AND NOT deleted
-                AND NOT (id = ANY (current_map_owner_list))
+                AND (NOT (id = ANY (current_map_owner_list))
+                     OR current_map_owner_list is NULL)
     );
 
     RETURN;
