@@ -1,3 +1,10 @@
+<ng-template #ccvmOption let-list="list">
+  <option *ngFor="let ccv of list" value="{{ccv.code()}}">
+    {{ccv.search_label() || ccv.value()}}
+    <ng-container *ngIf="ccv.opac_visible() === 'f'" i18n>(Hidden)</ng-container>
+  </option>
+</ng-template>
+
 <div id='staffcat-search-form'>
 
   <div *ngIf="!showThyself" class="row pt-1 pb-1 mb-2 pr-2">
@@ -21,8 +28,9 @@
               <div *ngIf="idx == 0">
                 <select class="form-control" [(ngModel)]="context.termSearch.format">
                   <option i18n value=''>All Formats</option>
-                  <option *ngFor="let fmt of ccvmMap.search_format"
-                    value="{{fmt.code()}}">{{fmt.value()}}</option>
+                  <ng-container
+                    *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.search_format}">
+                  </ng-container> 
                 </select>
               </div>
               <div *ngIf="idx > 0">
@@ -141,32 +149,36 @@
               <select class="form-control"  multiple="true"
                 [(ngModel)]="context.termSearch.ccvmFilters.item_type">
                 <option value='' i18n>All Item Types</option>
-                <option *ngFor="let itemType of ccvmMap.item_type"
-                  value="{{itemType.code()}}">{{itemType.value()}}</option>
+                <ng-container
+                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_type}">
+                </ng-container> 
               </select>
             </div>
             <div class="col-lg-3">
               <select class="form-control" multiple="true"
                 [(ngModel)]="context.termSearch.ccvmFilters.item_form">
                 <option value='' i18n>All Item Forms</option>
-                <option *ngFor="let itemForm of ccvmMap.item_form"
-                  value="{{itemForm.code()}}">{{itemForm.value()}}</option>
+                <ng-container
+                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_form}">
+                </ng-container> 
               </select>
             </div>
             <div class="col-lg-3">
               <select class="form-control" 
                 [(ngModel)]="context.termSearch.ccvmFilters.item_lang" multiple="true">
                 <option value='' i18n>All Languages</option>
-                <option *ngFor="let lang of ccvmMap.item_lang"
-                  value="{{lang.code()}}">{{lang.value()}}</option>
+                <ng-container
+                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_lang}">
+                </ng-container> 
               </select>
             </div>
             <div class="col-lg-3">
               <select class="form-control" 
                 [(ngModel)]="context.termSearch.ccvmFilters.audience" multiple="true">
                 <option value='' i18n>All Audiences</option>
-                <option *ngFor="let audience of ccvmMap.audience"
-                  value="{{audience.code()}}">{{audience.value()}}</option>
+                <ng-container
+                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.audience}">
+                </ng-container> 
               </select>
             </div>
           </div>
@@ -175,24 +187,27 @@
               <select class="form-control" 
                 [(ngModel)]="context.termSearch.ccvmFilters.vr_format" multiple="true">
                 <option value='' i18n>All Video Formats</option>
-                <option *ngFor="let vrFormat of ccvmMap.vr_format"
-                  value="{{vrFormat.code()}}">{{vrFormat.value()}}</option>
+                <ng-container
+                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.vr_format}">
+                </ng-container> 
               </select>
             </div>
             <div class="col-lg-3">
               <select class="form-control" 
                 [(ngModel)]="context.termSearch.ccvmFilters.bib_level" multiple="true">
                 <option value='' i18n>All Bib Levels</option>
-                <option *ngFor="let bibLevel of ccvmMap.bib_level"
-                  value="{{bibLevel.code()}}">{{bibLevel.value()}}</option>
+                <ng-container
+                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.bib_level}">
+                </ng-container> 
               </select>
             </div>
             <div class="col-lg-3">
               <select class="form-control" 
                 [(ngModel)]="context.termSearch.ccvmFilters.lit_form" multiple="true">
                 <option value='' i18n>All Literary Forms</option>
-                <option *ngFor="let litForm of ccvmMap.lit_form"
-                  value="{{litForm.code()}}">{{litForm.value()}}</option>
+                <ng-container
+                  *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.lit_form}">
+                </ng-container> 
               </select>
             </div>
             <div class="col-lg-3">
