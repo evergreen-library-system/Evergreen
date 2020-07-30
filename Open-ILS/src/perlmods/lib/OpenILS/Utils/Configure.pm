@@ -25,7 +25,7 @@ sub fieldmapper {
         asv asva asvr asvq 
         circ ccs ahn bre mrd
         crcd crmf crrf mbts aoc aus 
-        mous mobts mb ancc cnct cnal
+        mous mowbus mobts mb ancc cnct cnal
         /;
 
     my @reports = qw/ perm_ex ex ao aou aout /;
