@@ -48,6 +48,13 @@ export class CnBrowseResultsComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;
 
+        if (this.bibSummary) {
+            // Avoid clobbering the active search when browsing in
+            // the context of a specific record.
+            this.searchContext =
+                this.staffCat.cloneContext(this.searchContext);
+        }
+
         for (let idx = 0; idx < this.rowCount; idx++) {
             this.rowIndexList.push(idx);
         }
