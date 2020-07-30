@@ -3189,6 +3189,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+	<class id="mowbus" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::open_with_balance_user_summary" oils_persist:tablename="money.open_with_balance_usr_summary" reporter:label="Open User Summary for transactions with balances">
+		<fields oils_persist:primary="usr" oils_persist:sequence="">
+			<field name="balance_owed" reporter:datatype="money" />
+			<field name="total_owed" reporter:datatype="money" />
+			<field name="total_paid" reporter:datatype="money" />
+			<field name="usr" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="VIEW_USER">
+                    <context link="usr" field="home_ou"/>
+                </retrieve>
+            </actions>
+        </permacrud>
+	</class>
 	<class id="mct" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::collections_tracker" oils_persist:tablename="money.collections_tracker" reporter:label="Collections Tracker">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.collections_tracker_id_seq">
 			<field name="collector" />

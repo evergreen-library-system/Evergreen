@@ -356,6 +356,7 @@ if(!dojo._hasResource["fieldmapper.Fieldmapper"]){
         fieldmapper.cblvl.Identifier = 'code';
         fieldmapper.clfm.Identifier = 'code';
         fieldmapper.mous.Identifier = 'usr';
+        fieldmapper.mowbus.Identifier = 'usr';
         fieldmapper.moucs.Identifier = 'usr';
         fieldmapper.mucs.Identifier = 'usr';
         fieldmapper.mus.Identifier = 'usr';

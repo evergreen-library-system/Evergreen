@@ -23,7 +23,7 @@ function($q , egCore , egWorkLog , patronSvc) {
     // user billing summary
     service.fetchSummary = function() {
         return egCore.pcrud.retrieve(
-            'mous', service.userId, {}, {authoritative : true})
+            'mowbus', service.userId, {}, {authoritative : true})
         .then(function(summary) {return service.summary = summary})
     }
 
