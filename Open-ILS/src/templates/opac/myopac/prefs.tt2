@@ -117,7 +117,24 @@
 
             <tr>
                 <td class='color_4 light_border'>[% l("Home Library") %]</td>
-                <td class='light_border'>[% ctx.user.home_ou.name | html %]</td>
+                <td class='light_border'>
+                    [% ctx.get_aou(ctx.user.home_ou.parent_ou).name | html %]<br/>
+                    [% ctx.user.home_ou.name | html %]<br/>
+                    [% ctx.user.home_ou.billing_address.street1 | html %]<br/>
+                    [% IF ctx.user.home_ou.billing_address.street2; ctx.user.home_ou.billing_address.street2 | html; "<br/>"; END %]
+                    [% ctx.user.home_ou.billing_address.city | html %], [% ctx.user.home_ou.billing_address.state | html %]
+                    [% ctx.user.home_ou.billing_address.post_code | html %]<br/>
+                    <br/>
+
+                    [% IF ctx.user.home_ou.phone; ctx.user.home_ou.phone | html; "<br/>"; END %]
+
+                    [% IF ctx.user.home_ou.email; '<a href="mailto:'; ctx.user.home_ou.email | html; '">'; ctx.user.home_ou.email | html; "</a><br/>"; END %]
+                    [% lib_url = ctx.get_org_setting(ctx.user.home_ou.id, 'lib.info_url');
+                        IF lib_url;
+                            '<a href="'; lib_url | html; '" property="url">'; lib_url | html;  '</a>';
+                        END;
+                    %]
+                </td>
                 <td></td>
             </tr>
             <tr>
