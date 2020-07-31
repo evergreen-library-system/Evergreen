@@ -1,0 +1,11 @@
+Changes to Autorenewal Action/Trigger Failure Reasons
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Previously the "reason" field in the userdata for an Autorenewal
+event would contain both the failure code and the description for
+the failure event as a single string such as
+"MAX_RENEWALS_REACHED : Circulation has no more renewals remaining"
+Now the "reason" field will only contain the description of the issue
+(Circulation has ...) while a new "textcode" field will contain the
+event code (MAX_RENEWALS_REACHED) if administrators still want to
+display it in template outputs.
+
