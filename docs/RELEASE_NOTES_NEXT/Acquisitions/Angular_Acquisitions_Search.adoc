@@ -1,0 +1,47 @@
+Angular Acquisitions Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The acquisitions search interfaces are now written in Angular
+and provide a new centralized place for searching Line Items,
+Purchase Orders, Invoices, and Selection Lists in the Acquisitions
+module of Evergreen. The Acquisitions Search interface can be accessed
+under Acquisitions -> General Search.
+
+The search interface has four tabs for line item search, purchase order
+search, invoices search, and selection list search.  Each tab
+offers a search form allowing the user to select one or more
+fields to search on. Each search tab stores a separate default search
+that the user can update; for example, a user could have their
+line item search default to showing all on-order line items from
+a particular provider.
+
+The grid that displays search results in each tab is filterable.
+
+The line items and PO search interfaces allow the user to navigate to
+linked POs, invoices, and so forth, but offers no direct actions. The
+invoices search tab includes a 'Print Selected Invoices' action,
+while the selection lists search tab offers actions to create,
+clone, delete, and merge selection lists.
+
+The Angular search page contains a link to the legacy Dojo search
+interface if needed. The Dojo interface will be removed in a future
+release of Evergreen.
+
+The Angular search interface offers various usability improvements
+over the Dojo one, including:
+
+* only the search operators that are relevant for a given field
+  are displayed.
+* search fields that are associated with controlled vocabularies
+  will display drop-downs on the search form.
+* results are sortable
+* the line item and PO state fields have been relabeled to "Status"
+* greater than and less than are now available as search operators
+* publication date searches are more flexible
+
+Adjustments to Stock Permissions
+++++++++++++++++++++++++++++++++
+As part of this feature, the stock permissions for the Acquisitions
+and Acquisitions Administrator profiles have been expanded. In
+particular, the Acquisitions Administrator profile can now be
+more readily used to perform normal acquisitions work in addition
+to configuring the acquisitions module.
