@@ -13,9 +13,6 @@ use Encode;
 
 use OpenSRF::Utils::Logger qw/:logger/;
 
-
-use OpenSRF::Utils::JSON;
-
 use Time::HiRes qw(time sleep);
 use OpenSRF::EX qw(:try);
 use Digest::MD5 qw(md5_hex);
@@ -2741,6 +2738,159 @@ sub mk_copy_query {
     );
 
     return $query;
+}
+
+
+__PACKAGE__->register_method(
+    method    => 'catalog_record_summary',
+    api_name  => 'open-ils.search.biblio.record.catalog_summary',
+    stream    => 1,
+    max_bundle_count => 1,
+    signature => {
+        desc   => 'Stream of record data suitable for catalog display',
+        params => [
+            {desc => 'Context org unit ID', type => 'number'},
+            {desc => 'Array of Record IDs', type => 'array'}
+        ],
+        return => { 
+            desc => q/
+                Stream of record summary objects including id, record,
+                hold_count, copy_counts, display (metabib display
+                fields), attributes (metabib record attrs), plus
+                metabib_id and metabib_records for the metabib variant.
+            /
+        }
+    }
+);
+__PACKAGE__->register_method(
+    method    => 'catalog_record_summary',
+    api_name  => 'open-ils.search.biblio.record.catalog_summary.staff',
+    stream    => 1,
+    max_bundle_count => 1,
+    signature => q/see open-ils.search.biblio.record.catalog_summary/
+);
+__PACKAGE__->register_method(
+    method    => 'catalog_record_summary',
+    api_name  => 'open-ils.search.biblio.metabib.catalog_summary',
+    stream    => 1,
+    max_bundle_count => 1,
+    signature => q/see open-ils.search.biblio.record.catalog_summary/
+);
+
+__PACKAGE__->register_method(
+    method    => 'catalog_record_summary',
+    api_name  => 'open-ils.search.biblio.metabib.catalog_summary.staff',
+    stream    => 1,
+    max_bundle_count => 1,
+    signature => q/see open-ils.search.biblio.record.catalog_summary/
+);
+
+
+sub catalog_record_summary {
+    my ($self, $client, $org_id, $record_ids) = @_;
+    my $e = new_editor();
+
+    my $is_meta = ($self->api_name =~ /metabib/);
+    my $is_staff = ($self->api_name =~ /staff/);
+
+    my $holds_method = $is_meta ? 
+        'open-ils.circ.mmr.holds.count' : 
+        'open-ils.circ.bre.holds.count';
+
+    my $copy_method = $is_meta ? 
+        'open-ils.search.biblio.metarecord.copy_count':
+        'open-ils.search.biblio.record.copy_count';
+
+    $copy_method .= '.staff' if $is_staff;
+
+    $copy_method = $self->method_lookup($copy_method); # local method
+
+    for my $rec_id (@$record_ids) {
+
+        my $response = $is_meta ? 
+            get_one_metarecord_summary($e, $rec_id) :
+            get_one_record_summary($e, $rec_id);
+
+        ($response->{copy_counts}) = $copy_method->run($org_id, $rec_id);
+
+        $response->{hold_count} = 
+            $U->simplereq('open-ils.circ', $holds_method, $rec_id);
+
+        $client->respond($response);
+    }
+
+    return undef;
+}
+
+# Start with a bib summary and augment the data with additional
+# metarecord content.
+sub get_one_metarecord_summary {
+    my ($e, $rec_id) = @_;
+
+    my $meta = $e->retrieve_metabib_metarecord($rec_id) or return {};
+    my $maps = $e->search_metabib_metarecord_source_map({metarecord => $rec_id});
+
+    my $bre_id = $meta->master_record; 
+
+    my $response = get_one_record_summary($e, $bre_id);
+
+    $response->{metabib_id} = $rec_id;
+    $response->{metabib_records} = [map {$_->source} @$maps];
+
+    my @other_bibs = map {$_->source} grep {$_->source != $bre_id} @$maps;
+
+    # Augment the record attributes with those of all of the records
+    # linked to this metarecord.
+    if (@other_bibs) {
+        my $attrs = $e->search_metabib_record_attr_flat({id => \@other_bibs});
+
+        my $attributes = $response->{attributes};
+
+        for my $attr (@$attrs) {
+            $attributes->{$attr->attr} = [] unless $attributes->{$attr->attr};
+            push(@{$attributes->{$attr->attr}}, $attr->value) # avoid dupes
+                unless grep {$_ eq $attr->value} @{$attributes->{$attr->attr}};
+        }
+    }
+
+    return $response;
+}
+
+sub get_one_record_summary {
+    my ($e, $rec_id) = @_;
+
+    my $bre = $e->retrieve_biblio_record_entry([$rec_id, {
+        flesh => 1,
+        flesh_fields => {
+            bre => [qw/compressed_display_entries mattrs creator editor/]
+        }
+    }]) or return {};
+
+    # Compressed display fields are pachaged as JSON
+    my $display = {};
+    $display->{$_->name} = OpenSRF::Utils::JSON->JSON2perl($_->value)
+        foreach @{$bre->compressed_display_entries};
+
+    # Create an object of 'mraf' attributes.
+    # Any attribute can be multi so dedupe and array-ify all of them.
+    my $attributes = {};
+    for my $attr (@{$bre->mattrs}) {
+        $attributes->{$attr->attr} = {} unless $attributes->{$attr->attr};
+        $attributes->{$attr->attr}->{$attr->value} = 1; # avoid dupes
+    }
+    $attributes->{$_} = [keys %{$attributes->{$_}}] for keys %$attributes;
+
+    # clear bulk
+    $bre->clear_marc;
+    $bre->clear_mattrs;
+    $bre->clear_compressed_display_entries;
+
+    return {
+        id => $rec_id,
+        record => $bre,
+        display => $display,
+        attributes => $attributes
+    };
 }
 
 

@@ -156,7 +156,6 @@ export class RecordComponent implements OnInit {
         .then(summary => {
             this.summary =
                 this.staffCat.currentDetailRecordSummary = summary;
-            this.bib.fleshBibUsers([summary.record]);
         });
     }
 

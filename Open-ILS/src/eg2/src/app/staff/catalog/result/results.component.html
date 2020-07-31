@@ -65,12 +65,10 @@
       </div>
       <div
         [ngClass]="{'col-lg-10': !searchContext.basket, 'col-lg-12': searchContext.basket}">
-        <div *ngIf="shouldStartRendering()">
-          <div *ngFor="let summary of searchContext.result.records; let idx = index">
-            <div *ngIf="summary">
-              <eg-catalog-result-record [summary]="summary" [index]="idx">
-              </eg-catalog-result-record>
-            </div>
+        <div *ngFor="let summary of searchContext.result.records; let idx = index">
+          <div *ngIf="summary">
+            <eg-catalog-result-record [summary]="summary" [index]="idx">
+            </eg-catalog-result-record>
           </div>
         </div>
       </div>

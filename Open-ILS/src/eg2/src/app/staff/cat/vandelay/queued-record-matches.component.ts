@@ -118,28 +118,24 @@ export class QueuedRecordMatchesComponent implements OnInit {
                 });
 
                 const bibSummaries: {[id: number]: BibRecordSummary} = {};
-                this.bib.getBibSummary(recIds).subscribe(
+                this.bib.getBibSummaries(recIds).subscribe(
                     summary => bibSummaries[summary.id] = summary,
                     err => {},
                     ()  => {
-                        this.bib.fleshBibUsers(
-                            Object.values(bibSummaries).map(sum => sum.record)
-                        ).then(() => {
-                            matches.forEach(match => {
-                                const row = {
-                                    id: match.id(),
-                                    eg_record: match.eg_record(),
-                                    bre_quality: match.quality(),
-                                    vqbr_quality: this.queuedRecord.quality(),
-                                    match_score: match.match_score(),
-                                    bib_summary: bibSummaries[match.eg_record()]
-                                };
+                        matches.forEach(match => {
+                            const row = {
+                                id: match.id(),
+                                eg_record: match.eg_record(),
+                                bre_quality: match.quality(),
+                                vqbr_quality: this.queuedRecord.quality(),
+                                match_score: match.match_score(),
+                                bib_summary: bibSummaries[match.eg_record()]
+                            };
 
-                                observer.next(row);
-                            });
-
-                            observer.complete();
+                            observer.next(row);
                         });
+
+                        observer.complete();
                     }
                 );
             });

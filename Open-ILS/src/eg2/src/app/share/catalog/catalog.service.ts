@@ -190,11 +190,11 @@ export class CatalogService {
         let observable: Observable<BibRecordSummary>;
 
         if (isMeta) {
-            observable = this.bibService.getMetabibSummary(
-                ctx.currentResultIds(), ctx.searchOrg.id(), depth);
+            observable = this.bibService.getMetabibSummaries(
+                ctx.currentResultIds(), ctx.searchOrg.id(), ctx.isStaff);
         } else {
-            observable = this.bibService.getBibSummary(
-                ctx.currentResultIds(), ctx.searchOrg.id(), depth);
+            observable = this.bibService.getBibSummaries(
+                ctx.currentResultIds(), ctx.searchOrg.id(), ctx.isStaff);
         }
 
         return observable.pipe(map(summary => {
@@ -239,9 +239,9 @@ export class CatalogService {
             // them to bib IDs for highlighting.
             ids = ctx.currentResultIds();
             if (ctx.termSearch.groupByMetarecord) {
-                ids = ids.map(mrId =>
-                    ctx.result.records.filter(r => mrId === r.metabibId)[0].id
-                );
+                // The 4th slot in the result ID reports the master record
+                // for the metarecord in question.  Sometimes it's null?
+                ids = ctx.result.ids.map(id => id[4]).filter(id => id !== null);
             }
         }
 

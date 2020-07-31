@@ -66,7 +66,6 @@ export class BibSummaryComponent implements OnInit {
         this.bib.getBibSummary(this.recordId).toPromise()
         .then(summary => {
             summary.getBibCallNumber();
-            this.bib.fleshBibUsers([summary.record]);
             this.summary = summary;
         });
     }

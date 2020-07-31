@@ -119,9 +119,9 @@ export class CnBrowseResultsComponent implements OnInit, OnDestroy {
         };
 
         const bres: IdlObject[] = [];
-        this.bib.getBibSummary(
+        this.bib.getBibSummaries(
             bibIds.filter(distinct),
-            this.searchContext.searchOrg.id(), depth
+            this.searchContext.searchOrg.id(), this.searchContext.isStaff
         ).subscribe(
             summary => {
                 // Response order not guaranteed.  Match the summary
@@ -134,10 +134,6 @@ export class CnBrowseResultsComponent implements OnInit, OnDestroy {
 
                 // Use _ since result is an 'acn' object.
                 bibResults.forEach(r => r._bibSummary = summary);
-            },
-            err => {},
-            ()  => {
-                this.bib.fleshBibUsers(bres);
             }
         );
     }
