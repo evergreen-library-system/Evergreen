@@ -42,18 +42,18 @@
           <h2 class="panel-title text-center">[% l('Item Search and Cataloging') %]</h2>
         </div>
         <div class="panel-body">
-          <div class="row">
-            <div class="col-md-8">
+          <div>
+            <div class="input-group">
                 <input focus-me="focus_search" 
-                    aria-label="[% l('Search catalog for...') %]"
+                    aria-label="[% l('Search for...') %]"
                     class="form-control" ng-model="cat_query" type="text" 
                     ng-keypress="catalog_search($event)"
-                    placeholder="[% l('Search catalog for...') %]"/>
-            </div>
-            <div class="col-md-4">
-                <button class='btn btn-default' ng-click="catalog_search()">
-                    [% l('Search') %]
-                </button>
+                    placeholder="[% l('Search for...') %]"/>
+                <span class="input-group-btn">
+                    <button class='btn btn-default' ng-click="catalog_search()">
+                        [% l('Search Catalog') %]
+                    </button>
+                </span>
             </div>
           </div>
           <div>
