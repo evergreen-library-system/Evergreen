@@ -1,0 +1,11 @@
+Credit card payments using Stripe now on version 3 (Elements)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When Stripe payments are enabled, the public catalog will now
+use version 3 of the Stripe client library, as well as its
+Elements API for building the credit card form.  For
+technical reasons, this more easily lends a site to PCI
+compliance.
+
+On the staff side, the credit card option is disabled for
+Stripe, as that has not been implemented and in the past
+would just give an error.
