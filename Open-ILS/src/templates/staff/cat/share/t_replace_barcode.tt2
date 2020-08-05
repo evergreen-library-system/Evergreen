@@ -33,6 +33,9 @@
     <div class="alert alert-danger" ng-if="copyNotFound">
       [% l('Item Not Found') %]
     </div>
+    <div class="alert alert-danger" ng-if="duplicateBarcode">
+      [% l('Duplicate Barcode') %]
+    </div>
     <div class="alert alert-success" ng-if="updateOK">
       <span>[% l('Item Updated') %]</span>
       <span class="horiz-pad" ng-if="copyId">
