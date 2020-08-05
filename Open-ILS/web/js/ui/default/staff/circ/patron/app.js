@@ -474,7 +474,8 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc , $u
         $scope.bcNotFound = null;
         $scope.optInRestricted = false;
         if (!args.barcode) return;
-        args.barcode = args.barcode.replace(/\s/g,'');
+        args.barcode = args.barcode.replace(/^\s/g,'');
+        args.barcode = args.barcode.replace(/\s$/g,'');
         // blur so next time it's set to true it will re-apply select()
         $scope.selectMe = false;
 
