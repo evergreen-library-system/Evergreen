@@ -1,6 +1,6 @@
 <div class="container admin-splash-container">
 
-  <h2>[% l('Print / Storage Service ("Hatch")') %]</h2>
+  <h2>[% l('Print Service ("Hatch")') %]</h2>
 
   <div class="alert alert-success" ng-if="hatch_available">
     [% l("Hatch is Available") %]
@@ -22,33 +22,6 @@
       </div>
     </div>
   </div>
-
-  <div class="row new-entry">
-    <div class="panel panel-danger">
-      <div class="panel-heading">[% l('Storing settings in Hatch is deprecated') %]</div>
-      <div class="panel-body">
-        [% l("If 'Store Local Settings in Hatch' is enabled, use the 'Copy Hatch Settings To Local Storage' button before disabling 'Store Local Settings in Hatch'") %]
-      </div>
-    </div>
-  </div>
-
-  <div class="row new-entry">
-    <div class="col-md-4">
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" 
-            ng-model="hatch_settings">
-            [% l('Store Local Settings in Hatch') %]
-        </label>
-      </div>
-    </div>
-    <div class="col-md-3">
-      <button class="btn btn-default" ng-click="copy_to_local()">
-        [% l('Copy Hatch Settings To Local Storage') %]
-      </button>
-    </div>
-  </div>
-
 </div>
 
 

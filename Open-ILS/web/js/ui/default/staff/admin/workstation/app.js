@@ -1020,8 +1020,6 @@ function($scope , egCore , ngToast) {
     var hatch = egCore.hatch;  // convenience
 
     $scope.hatch_available = hatch.hatchAvailable;
-    $scope.hatch_settings = hatch.useSettings();
-    $scope.hatch_offline  = hatch.useOffline();
 
     hatch.usePrinting().then(function(answer) {
         $scope.hatch_printing = answer;
@@ -1033,35 +1031,6 @@ function($scope , egCore , ngToast) {
         if (typeof newval != 'boolean') return;
         hatch.setItem('eg.hatch.enable.printing', newval);
     });
-
-    $scope.$watch('hatch_settings', function(newval) {
-        if (typeof newval != 'boolean') return;
-        hatch.setLocalItem('eg.hatch.enable.settings', newval);
-    });
-
-    $scope.$watch('hatch_offline', function(newval) {
-        if (typeof newval != 'boolean') return;
-        hatch.setLocalItem('eg.hatch.enable.offline', newval);
-    });
-
-    $scope.copy_to_hatch = function() {
-        hatch.copySettingsToHatch().then(
-            function() {
-                ngToast.create(egCore.strings.HATCH_SETTINGS_MIGRATION_SUCCESS)},
-            function() {
-                ngToast.warning(egCore.strings.HATCH_SETTINGS_MIGRATION_FAILURE)}
-        );
-    }
-
-    $scope.copy_to_local = function() {
-        hatch.copySettingsToLocal().then(
-            function() {
-                ngToast.create(egCore.strings.HATCH_SETTINGS_MIGRATION_SUCCESS)},
-            function() {
-                ngToast.warning(egCore.strings.HATCH_SETTINGS_MIGRATION_FAILURE)}
-        );
-    }
-
 }])
 
 /*
