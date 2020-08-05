@@ -7,6 +7,7 @@ import {Pager} from '@eg/share/util/pager';
 import {OrgService} from '@eg/core/org.service';
 import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
+import {BroadcastService} from '@eg/share/util/broadcast.service';
 
 @Component({
   selector: 'eg-catalog-copies',
@@ -35,6 +36,7 @@ export class CopiesComponent implements OnInit {
         private net: NetService,
         private org: OrgService,
         private staffCat: StaffCatalogService,
+        private broadcaster: BroadcastService
     ) {
         this.gridDataSource = new GridDataSource();
     }
@@ -61,10 +63,12 @@ export class CopiesComponent implements OnInit {
             holdable: row => this.copyContext.holdable(row),
             barcode: row => row.barcode
         };
-    }
 
-    collectData() {
-        if (!this.recId) { return; }
+        this.broadcaster.listen('eg.holdings.update').subscribe(data => {
+            if (data && data.records && data.records.includes(this.recId)) {
+                this.copyGrid.reload();
+            }
+        });
     }
 
     orgName(orgId: number): string {
