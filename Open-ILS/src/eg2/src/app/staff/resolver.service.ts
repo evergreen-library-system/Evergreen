@@ -67,7 +67,7 @@ export class StaffResolver implements Resolve<Observable<any>> {
                                 .then(ok => {
                                     // Resolve observable must emit /something/
                                     this.observer.next(true);
-                                    this.observer.complete()
+                                    this.observer.complete();
                                 });
                             },
                             wsNotOk => this.handleInvalidWorkstation(path)
