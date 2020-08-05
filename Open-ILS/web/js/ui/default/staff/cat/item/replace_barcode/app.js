@@ -14,9 +14,10 @@ function($scope , egCore) {
 
     $scope.updateBarcode = function() {
         $scope.copyNotFound = false;
+        $scope.duplicateBarcode = false;
         $scope.updateOK = false;
 
-        egCore.pcrud.search('acp', 
+        egCore.pcrud.search('acp',
             {deleted : 'f', barcode : $scope.barcode1})
         .then(function(copy) {
 
@@ -26,12 +27,22 @@ function($scope , egCore) {
                 return;
             }
 
-            $scope.copyId = copy.id();
-            copy.barcode($scope.barcode2);
+            egCore.pcrud.search('acp',
+                {deleted : 'f', barcode : $scope.barcode2})
+            .then(function(newBarcodeCopy) {
 
-            egCore.pcrud.update(copy).then(function(stat) {
-                $scope.updateOK = stat;
-                $scope.focusBarcode = true;
+                if (newBarcodeCopy) {
+                    $scope.duplicateBarcode = true;
+                    return;
+                }
+
+                $scope.copyId = copy.id();
+                copy.barcode($scope.barcode2);
+
+                egCore.pcrud.update(copy).then(function(stat) {
+                    $scope.updateOK = stat;
+                    $scope.focusBarcode = true;
+                });
             });
         });
     }
