@@ -8,11 +8,6 @@ RETURNS actor.org_unit AS $$
     SELECT * FROM actor.org_unit WHERE parent_ou IS NULL LIMIT 1;
 $$ LANGUAGE SQL STABLE;
 
-CREATE OR REPLACE FUNCTION array_remove(inp ANYARRAY, el ANYELEMENT)
-RETURNS anyarray AS $$
-    SELECT ARRAY_AGG(x.e) FROM UNNEST( $1 ) x(e) WHERE x.e <> $2;
-$$ LANGUAGE SQL STABLE;
-
 CREATE OR REPLACE FUNCTION evergreen.rank_ou(lib INT, search_lib INT, pref_lib INT DEFAULT NULL)
 RETURNS INTEGER AS $$
     SELECT COALESCE(
