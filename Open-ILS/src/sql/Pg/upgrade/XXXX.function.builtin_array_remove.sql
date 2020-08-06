@@ -1137,11 +1137,6 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-COMMIT;
-
-    sort_value          TEXT
-);
-
 CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry (
     rid BIGINT,
     default_joiner TEXT,
@@ -1348,8 +1343,8 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
--- Shall we drop it?
--- DROP FUNCTION evergreen.array_remove_item_by_value(ANYARRAY, ANYELEMENT)
+-- We no longer need the custom function
+DROP FUNCTION evergreen.array_remove_item_by_value(ANYARRAY, ANYELEMENT);
 
 COMMIT;
 
