@@ -142,6 +142,9 @@ sub _prepare_biblio_search {
     # lasso, and location_groups filters.
     $query .= ' ' . $cgi->param('search_scope') if defined $cgi->param('search_scope');
 
+    # The search_lasso context param comes from the locg dropdown, like the copy location.
+    $query .= ' lasso(' . $ctx->{search_lasso} .')' if $ctx->{search_lasso};
+
     # sort is treated specially, even though it's actually a filter
     if (defined($cgi->param('sort'))) {
         $query =~ s/sort\([^\)]*\)//g;  # override existing sort(). no stacking.

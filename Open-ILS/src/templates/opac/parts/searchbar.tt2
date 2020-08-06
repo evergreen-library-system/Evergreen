@@ -97,11 +97,11 @@ END;
             l('Library: ');
             select_lib_label = l("Select search library");
             INCLUDE build_org_selector arialabel=select_lib_label 
-              id='search_org_selector' show_loc_groups=0
+              id='search_org_selector' show_loc_groups=1 show_lassos=1
         -%]
         </label>
         <label id="search_scope_label" for="search_scope_selector">
-        [%- 
+        [%#-
             l('Where: ');
             select_scope_label = l("Select search scope");
             INCLUDE build_scope_selector arialabel=select_scope_label value=ctx.search_scope

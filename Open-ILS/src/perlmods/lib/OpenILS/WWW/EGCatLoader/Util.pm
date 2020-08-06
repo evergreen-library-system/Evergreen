@@ -665,15 +665,23 @@ sub load_eg_cache_hash {
 }
 
 # Extracts the copy location org unit and group from the 
-# "logc" param, which takes the form org_id:grp_id.
+# "logc" param, which takes the form org_id:grp, where
+# grp can either be a location group id or can match the
+# pattern "lasso(lasso_name_or_id)".
 sub extract_copy_location_group_info {
     my $self = shift;
     my $ctx = $self->ctx;
     if (my $clump = $self->cgi->param('locg')) {
         my ($org, $grp) = split(/:/, $clump);
+        if ($grp =~ /^lasso\(([^)]+)\)/) {
+            $ctx->{search_lasso} = $1;
+            $ctx->{search_scope} = $grp;
+        } elsif ($grp) {
+            $ctx->{copy_location_group} = $grp;
+            $ctx->{search_scope} = "location_groups($grp)";
+        }
         $ctx->{copy_location_group_org} =
             $self->_resolve_org_id_or_shortname($org);
-        $ctx->{copy_location_group} = $grp if $grp;
     }
 }
 

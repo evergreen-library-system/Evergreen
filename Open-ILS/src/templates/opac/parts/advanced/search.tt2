@@ -70,11 +70,11 @@
                     PROCESS "opac/parts/org_selector.tt2";
                         select_scope_label = l("Select search scope");
                         INCLUDE build_scope_selector arialabel=select_scope_label value=ctx.search_scope
-                          id=adv_chunk.id name='search_scope' show_loc_groups=1;
+                          id=adv_chunk.id name='search_scope' show_loc_groups=1 show_lassos=1;
 
                 CASE "lib_selector";
                     PROCESS "opac/parts/org_selector.tt2";
-                        INCLUDE build_org_selector show_loc_groups=0 id=adv_chunk.id %]
+                        INCLUDE build_org_selector show_loc_groups=1 show_lassos=0 id=adv_chunk.id %]
                             <div class="adv_search_available">
                                 <input type='checkbox' name="modifier"
                                     value="available"[% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %]

@@ -407,7 +407,12 @@ sub load_common {
 
     $self->extract_copy_location_group_info;
     $ctx->{search_ou} = $self->_get_search_lib();
-    $ctx->{search_scope} = $self->cgi->param('search_scope');
+    if (!$ctx->{search_scope}) { # didn't get it from locg above in extract_...
+        $ctx->{search_scope} = $self->cgi->param('search_scope');
+        if ($ctx->{search_scope} =~ /^lasso\(([^)]+)\)/) {
+            $ctx->{search_lasso} = $1; # make it visible to basic search
+        }
+    }
     $self->staff_saved_searches_set_expansion_state if $ctx->{is_staff};
     $self->load_eg_cache_hash;
     $self->load_copy_location_groups;
