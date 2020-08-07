@@ -157,6 +157,14 @@ function($q,  $window , $injector , egAuth,  egPCRUD,  egIDL) {
      */
     service.loadClasses = ['aou'];
 
+    // sort orgs at each level by shortname
+    service.sort_aou = function(node) {
+        node.children(node.children().sort(function(a, b) {
+            return a.shortname() < b.shortname() ? -1 : 1;
+        }));
+        angular.forEach(node.children(), service.sort_aou);
+    }
+
     /*
      * Default class loaders.  Only add classes directly to this file
      * that are loaded practically always.  All other app-specific
@@ -184,19 +192,11 @@ function($q,  $window , $injector , egAuth,  egPCRUD,  egIDL) {
                     return $q.when(tree);
                 }
     
-                // sort orgs at each level by shortname
-                function sort_aou(node) {
-                    node.children(node.children().sort(function(a, b) {
-                        return a.shortname() < b.shortname() ? -1 : 1;
-                    }));
-                    angular.forEach(node.children(), sort_aou);
-                }
-    
                 return egPCRUD.search('aou', {parent_ou : null}, 
                     {flesh : -1, flesh_fields : {aou : ['children', 'ou_type']}}
                 ).then(
                     function(tree) {
-                        sort_aou(tree);
+                        service.sort_aou(tree);
                         $window.sessionStorage.setItem(
                             'eg.env.aou.tree', js2JSON(tree));
                         service.absorbTree(tree, 'aou');
