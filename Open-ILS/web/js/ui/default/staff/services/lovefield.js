@@ -448,6 +448,11 @@ angular.module('egCoreMod')
                     }
                 });
 
+                if (type == 'aou') {
+                    // Sort the org tree before absorbing
+                    egCore.env.sort_aou(top);
+                }
+
                 egCore.env.absorbTree(top, type, true)
                 return $q.when(true)
             });
