@@ -19,11 +19,12 @@
     </a>
   </div>
 </div>
-<ngb-tabset class="mb-3">
+<ul ngbNav #coursePageNav="ngbNav" class="nav-tabs">
 
   <!-- Edit Tab -->
-  <ngb-tab title="Edit Course" i18n-title id="edit">
-    <ng-template ngbTabContent>
+  <li [ngbNavItem]="'edit'">
+    <a ngbNavLink i18n>Edit course</a>
+    <ng-template ngbNavContent>
       <div class="row">
         <div class="col-lg-3 mt-3">
         </div>
@@ -38,26 +39,30 @@
         </div>
       </div>
     </ng-template>
-  </ngb-tab>
+  </li>
 
   <!-- Materials Tab -->
-  <ngb-tab title="Course Materials" i18n-title id="courseMaterials">
-    <ng-template ngbTabContent>
-      <eg-course-associate-material-dialog [courseId]="courseId" 
+  <li [ngbNavItem]="'courseMaterials'">
+    <a ngbNavLink i18n>Course materials</a>
+    <ng-template ngbNavContent>
+      <eg-course-associate-material-dialog [courseId]="courseId"
         [currentCourse]="currentCourse" displayMode="inline">
       </eg-course-associate-material-dialog>
     </ng-template>
-  </ngb-tab>
+  </li>
 
   <!-- Users Tab -->
-  <ngb-tab title="Course Users" i18n-title id="courseUsers">
-    <ng-template ngbTabContent>
-      <eg-course-associate-users-dialog [courseId]="courseId" 
+  <li [ngbNavItem]="'courseUsers'">
+    <a ngbNavLink i18n>Course users</a>
+    <ng-template ngbNavContent>
+      <eg-course-associate-users-dialog [courseId]="courseId"
         [currentCourse]="currentCourse" displayMode="inline">
       </eg-course-associate-users-dialog>
     </ng-template>
-  </ngb-tab>
-</ngb-tabset>
+  </li>
+</ul>
+<div [ngbNavOutlet]="coursePageNav" class="mb-3"></div>
+
 
 <eg-string #archiveFailedString i18n-text text="Archival of Course failed or was not allowed"></eg-string>
 <eg-string #archiveSuccessString i18n-text text="Archival of Course succeeded"></eg-string>

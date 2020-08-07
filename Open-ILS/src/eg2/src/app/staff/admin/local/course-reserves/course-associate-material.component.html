@@ -19,20 +19,138 @@
   </div>
   <div [ngClass]="isDialog() ? 'modal-body' : ''">
     <div class="row">
-      <ngb-tabset [ngClass]="isDialog() ? 'col-md-12' : 'col-md-4'" type="tabs">
-        <ngb-tab title="Associate item" i18n-title>
-          <ng-template ngbTabContent>
-            <div class="row" [ngClass]="isDialog() ? '' : 'mt-3'">
-              <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12'">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" i18n>Barcode</span>
+      <div [ngClass]="isDialog() ? 'col-md-12' : 'col-md-4'">
+        <ul ngbNav #associateNav="ngbNav" class="nav-tabs">
+          <li ngbNavItem>
+            <a ngbNavLink i18n>Associate item</a>
+            <ng-template ngbNavContent>
+              <div class="row" [ngClass]="isDialog() ? '' : 'mt-3'">
+                <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12'">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" i18n>Barcode</span>
+                    </div>
+                    <input type="text" class="flex-grow-1" [(ngModel)]="barcodeInput" (click)="$event.target.select()"
+                      [disabled]="currentCourse && currentCourse.is_archived() == 't'"
+                      (keyup.enter)="associateItem(barcodeInput, relationshipInput)" />
                   </div>
-                  <input type="text" class="flex-grow-1" [(ngModel)]="barcodeInput" (click)="$event.target.select()"
-                    [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                    (keyup.enter)="associateItem(barcodeInput, relationshipInput)" />
+                </div>
+                <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" i18n>Relationship</span>
+                    </div>
+                    <input type="text" [(ngModel)]="relationshipInput"
+                      [disabled]="currentCourse && currentCourse.is_archived() == 't'" placeholder-i18n
+                      placeholder="e.g. Required" class="flex-grow-1" />
+                  </div>
                 </div>
               </div>
+              <div class="row mt-3">
+                <div class="col-lg-12 text-right">
+                  <button class="btn btn-primary" [disabled]="currentCourse && currentCourse.is_archived() == 't'"
+                    (click)="associateItem(barcodeInput, relationshipInput)" i18n [disabled]="!barcodeInput">
+                    Add Material
+                  </button>
+                </div>
+              </div>
+              <div class="row justify-content-center mt-3">
+                <div class="col">
+                  <h5 i18n>The following fields will be applied to the material
+                    added, and reverted once the course is no longer associated
+                    with the material.</h5>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12'">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <span i18n>Call Number</span>
+                      </div>
+                    </div>
+                    <input type="text" [(ngModel)]="tempCallNumber"
+                      [disabled]="currentCourse && currentCourse.is_archived() == 't'"
+                      (input)="isModifyingCallNumber = true" class="flex-grow-1" />
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <input type="checkbox" [(ngModel)]="isModifyingCallNumber"
+                          [disabled]="currentCourse && currentCourse.is_archived() == 't'"
+                          aria-label="Checkbox for setting a temporary Call Number" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <span i18n>Circulation Modifier</span>
+                      </div>
+                    </div>
+                    <eg-combobox i18n-placeholder placeholder="Circulation Modifier..." idlClass="ccm" idlField="name"
+                      [displayTemplate]="idlClassLabel" [disabled]="currentCourse && currentCourse.is_archived() == 't'"
+                      [asyncSupportsEmptyTermClick]="true" class="flex-grow-1"
+                      (onChange)="tempCircMod = $event.id; isModifyingCircMod = true">
+                    </eg-combobox>
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <input type="checkbox" [(ngModel)]="isModifyingCircMod"
+                          [disabled]="currentCourse && currentCourse.is_archived() == 't'"
+                          aria-label="Checkbox for setting a temporary Circulation Modifier" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12'">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <span i18n>Item Status</span>
+                      </div>
+                    </div>
+                    <eg-combobox i18n-placeholder placeholder="Item Status..." idlClass="ccs" idlField="name"
+                      [displayTemplate]="idlClassLabel" [disabled]="currentCourse && currentCourse.is_archived() == 't'"
+                      [asyncSupportsEmptyTermClick]="true" class="flex-grow-1"
+                      (onChange)="tempStatus = $event.id; isModifyingStatus = true">
+                    </eg-combobox>
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <input type="checkbox" [(ngModel)]="isModifyingStatus"
+                          [disabled]="currentCourse && currentCourse.is_archived() == 't'"
+                          aria-label="Checkbox for setting a temporary Item Status" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">
+                        <span i18n>Shelving Location</span>
+                      </div>
+                    </div>
+                    <eg-item-location-select permFilter="MANAGE_RESERVES" class="flex-grow-1"
+                      [disabled]="currentCourse && currentCourse.is_archived() == 't'" [(ngModel)]="tempLocation"
+                      (valueChange)="isModifyingLocation = true">
+                    </eg-item-location-select>
+                    <div class="input-group-append">
+                      <div class="input-group-text">
+                        <input type="checkbox" [(ngModel)]="isModifyingLocation"
+                          [disabled]="currentCourse && currentCourse.is_archived() == 't'"
+                          aria-label="Checkbox for setting a temporary Shelving Location" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </li>
+          <li ngbNavItem>
+            <a ngbNavLink i18n>Associate brief record</a>
+            <ng-template ngbNavContent>
               <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
                 <div class="input-group">
                   <div class="input-group-prepend">
@@ -43,164 +161,52 @@
                     placeholder="e.g. Required" class="flex-grow-1" />
                 </div>
               </div>
-            </div>
-            <div class="row mt-3">
-              <div class="col-lg-12 text-right">
-                <button class="btn btn-primary" [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                  (click)="associateItem(barcodeInput, relationshipInput)" i18n [disabled]="!barcodeInput">
-                  Add Material
-                </button>
-              </div>
-            </div>
-            <div class="row justify-content-center mt-3">
-              <div class="col">
-                <h5 i18n>The following fields will be applied to the material
-                  added, and reverted once the course is no longer associated
-                  with the material.</h5>
-              </div>
-            </div>
-            <div class="row mt-3">
-              <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12'">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <span i18n>Call Number</span>
+              <eg-marc-simplified-editor (xmlRecordEvent)="associateBriefRecord($event)" buttonLabel="Add material" i18n-buttonLabel>
+                <eg-marc-simplified-editor-field tag="245" subfield="a"></eg-marc-simplified-editor-field>
+                <eg-marc-simplified-editor-field tag="856" subfield="u"></eg-marc-simplified-editor-field>
+                <eg-marc-simplified-editor-field tag="856" subfield="9" defaultValue="CONS"></eg-marc-simplified-editor-field>
+                <eg-marc-simplified-editor-field tag="990" subfield="a" i18n-defaultValue
+                  defaultValue="This record was created using the Course Materials Module -- please edit it there">
+                  </eg-marc-simplified-editor-field>
+              </eg-marc-simplified-editor>
+            </ng-template>
+          </li>
+          <li ngbNavItem>
+            <a ngbNavLink>Associate electronic resource from catalog</a>
+            <ng-template ngbNavContent>
+              <div class="row" [ngClass]="isDialog() ? '' : 'mt-3'">
+                <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <label for="bib-id" class="input-group-text" i18n>Bibliographic Record ID</label>
                     </div>
+                    <input type="text" [(ngModel)]="bibId" id="bib-id"
+                      [disabled]="currentCourse && currentCourse.is_archived() == 't'" class="flex-grow-1" />
                   </div>
-                  <input type="text" [(ngModel)]="tempCallNumber"
-                    [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                    (input)="isModifyingCallNumber = true" class="flex-grow-1" />
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <input type="checkbox" [(ngModel)]="isModifyingCallNumber"
-                        [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                        aria-label="Checkbox for setting a temporary Call Number" />
+                </div>
+                <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text" i18n>Relationship</span>
                     </div>
+                    <input type="text" [(ngModel)]="relationshipInput"
+                      [disabled]="currentCourse && currentCourse.is_archived() == 't'" class="flex-grow-1" />
                   </div>
                 </div>
               </div>
-              <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <span i18n>Circulation Modifier</span>
-                    </div>
-                  </div>
-                  <eg-combobox i18n-placeholder placeholder="Circulation Modifier..." idlClass="ccm" idlField="name"
-                    [displayTemplate]="idlClassLabel" [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                    [asyncSupportsEmptyTermClick]="true" class="flex-grow-1"
-                    (onChange)="tempCircMod = $event.id; isModifyingCircMod = true">
-                  </eg-combobox>
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <input type="checkbox" [(ngModel)]="isModifyingCircMod"
-                        [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                        aria-label="Checkbox for setting a temporary Circulation Modifier" />
-                    </div>
-                  </div>
+              <div class="row mt-3">
+                <div class="col-lg-12 text-right">
+                  <button class="btn btn-primary" i18n (click)="associateElectronicBibRecord()"
+                    [disabled]="currentCourse && currentCourse.is_archived() == 't'">
+                    Add Material
+                  </button>
                 </div>
               </div>
-            </div>
-            <div class="row mt-3">
-              <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12'">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <span i18n>Item Status</span>
-                    </div>
-                  </div>
-                  <eg-combobox i18n-placeholder placeholder="Item Status..." idlClass="ccs" idlField="name"
-                    [displayTemplate]="idlClassLabel" [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                    [asyncSupportsEmptyTermClick]="true" class="flex-grow-1"
-                    (onChange)="tempStatus = $event.id; isModifyingStatus = true">
-                  </eg-combobox>
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <input type="checkbox" [(ngModel)]="isModifyingStatus"
-                        [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                        aria-label="Checkbox for setting a temporary Item Status" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <span i18n>Shelving Location</span>
-                    </div>
-                  </div>
-                  <eg-item-location-select permFilter="MANAGE_RESERVES" class="flex-grow-1"
-                    [disabled]="currentCourse && currentCourse.is_archived() == 't'" [(ngModel)]="tempLocation"
-                    (valueChange)="isModifyingLocation = true">
-                  </eg-item-location-select>
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <input type="checkbox" [(ngModel)]="isModifyingLocation"
-                        [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                        aria-label="Checkbox for setting a temporary Shelving Location" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab title="Associate brief record" i18n-title>
-          <ng-template ngbTabContent>
-            <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" i18n>Relationship</span>
-                </div>
-                <input type="text" [(ngModel)]="relationshipInput"
-                  [disabled]="currentCourse && currentCourse.is_archived() == 't'" placeholder-i18n
-                  placeholder="e.g. Required" class="flex-grow-1" />
-              </div>
-            </div>
-            <eg-marc-simplified-editor (xmlRecordEvent)="associateBriefRecord($event)" buttonLabel="Add material" i18n-buttonLabel>
-              <eg-marc-simplified-editor-field tag="245" subfield="a"></eg-marc-simplified-editor-field>
-              <eg-marc-simplified-editor-field tag="856" subfield="u"></eg-marc-simplified-editor-field>
-              <eg-marc-simplified-editor-field tag="856" subfield="9" defaultValue="CONS"></eg-marc-simplified-editor-field>
-              <eg-marc-simplified-editor-field tag="990" subfield="a" i18n-defaultValue
-                defaultValue="This record was created using the Course Materials Module -- please edit it there">
-                </eg-marc-simplified-editor-field>
-            </eg-marc-simplified-editor>
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab title="Associate electronic resource from catalog" i18n-title>
-          <ng-template ngbTabContent>
-            <div class="row" [ngClass]="isDialog() ? '' : 'mt-3'">
-              <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <label for="bib-id" class="input-group-text" i18n>Bibliographic Record ID</label>
-                  </div>
-                  <input type="text" [(ngModel)]="bibId" id="bib-id"
-                    [disabled]="currentCourse && currentCourse.is_archived() == 't'" class="flex-grow-1" />
-                </div>
-              </div>
-              <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" i18n>Relationship</span>
-                  </div>
-                  <input type="text" [(ngModel)]="relationshipInput"
-                    [disabled]="currentCourse && currentCourse.is_archived() == 't'" class="flex-grow-1" />
-                </div>
-              </div>
-            </div>
-            <div class="row mt-3">
-              <div class="col-lg-12 text-right">
-                <button class="btn btn-primary" i18n (click)="associateElectronicBibRecord()"
-                  [disabled]="currentCourse && currentCourse.is_archived() == 't'">
-                  Add Material
-                </button>
-              </div>
-            </div>
-          </ng-template>
-        </ngb-tab>
-      </ngb-tabset>
+            </ng-template>
+          </li>
+        </ul>
+        <div [ngbNavOutlet]="associateNav"></div>
+      </div>
 
       <div class="mt-3" [ngClass]="isDialog() ? 'col-md-12' : 'col-md-8'">
         <eg-grid #materialsGrid [dataSource]="materialsDataSource" [useLocalSort]="true">
