@@ -37,6 +37,11 @@
                     id="home_adv_search_link">[%l('Advanced Search')%]</a></span>
         
             <span class="browse_the_catalog_lbl mobile_hide">[% l('Browse the Catalog') %]</span>
+            [% IF ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1 %]
+                <span class="search_courses_label"><a href="[% mkurl(ctx.opac_root _ '/course_search') %]">[% l('Search for Courses') %]</a></span>
+                <span class="search_courses_label"><a href="[% mkurl(ctx.opac_root _ '/course_browse') %]">[% l('Browse for Courses') %]</a></span>
+
+            [% END %]
             [% INCLUDE 'opac/parts/cart.tt2' %]
         </div>
     </div>
