@@ -16,7 +16,7 @@ import {BasketService} from '@eg/share/catalog/basket.service';
 })
 export class ExportComponent implements AfterViewInit, OnInit {
 
-    recordSource: string;
+    recordSource = 'csv';
     fieldNumber: number;
     selectedFile: File;
     recordId: number;
