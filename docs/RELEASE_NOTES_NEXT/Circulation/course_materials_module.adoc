@@ -1,0 +1,59 @@
+Course materials module
+^^^^^^^^^^^^^^^^^^^^^^^
+
+This version of Evergreen includes an optional course materials module.
+Like course reserves modules in other library software, this module
+makes reserves collections more discoverable and easier to manage.
+The module also provides similar functionality for library electronic
+resources and open educational resources, whether they have been
+cataloged or not.
+
+To enable the course materials module, go to Administration >
+Local Administration > Library Settings Editor. Find the setting
+called "Opt Org Unit into the Course Materials Module".  Set it to
+True for the org units that want to use the module.
+
+To use the course materials module effectively, staff will need a
+new permission called _MANAGE_RESERVES_.  By default, circulation
+administrators will receive this permission.
+
+Courses
++++++++
+
+Staff members with the _MANAGE_RESERVES_ permission can create
+courses, attach materials to them, attach users to them, and
+archive them when they are no longer needed.
+
+When associating physical materials from the catalog to a
+course, staff members can choose temporary item attributes.
+These attributes will last until the course is archived or
+the item is detached from the course, whichever happens
+first.
+
+Staff can also choose to associate electronic resources from
+the catalog (which must have a transcendent bib source or
+a located URI).  They can also create a brief bib record
+to attach to the course from within the course materials
+module.
+
+Staff members can attach users to the course.  These users
+can have either a public role (e.g. instructor) or private
+roles (e.g. student).  The public roles will be displayed
+in the OPAC.
+
+OPAC
+++++
+
+If the module is enabled, the OPAC will include a course search
+and a course browse.
+
+Other uses
+++++++++++
+
+Libraries may also want to use this module to manage their
+displays.  Each display can be treated as a course, and staff
+can attach the items they wish to display to the course along
+with the temporary attributes (e.g. a shelving location called
+"On display").  When the display is over, staff members can
+archive the course.
+
