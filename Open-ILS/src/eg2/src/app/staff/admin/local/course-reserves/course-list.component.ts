@@ -1,11 +1,8 @@
 import {Component, Input, ViewChild, OnInit} from '@angular/core';
-import { Router, ActivatedRoute }    from '@angular/router';
+import {Router} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {AuthService} from '@eg/core/auth.service';
 import {CourseService} from '@eg/staff/share/course.service';
-import {NetService} from '@eg/core/net.service';
-import {OrgService} from '@eg/core/org.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
@@ -24,8 +21,8 @@ import {CourseAssociateUsersComponent
     templateUrl: './course-list.component.html'
 })
 
-export class CourseListComponent implements OnInit { 
- 
+export class CourseListComponent implements OnInit {
+
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
     @ViewChild('grid', { static: true }) grid: GridComponent;
     @ViewChild('successString', { static: true }) successString: StringComponent;
@@ -41,32 +38,28 @@ export class CourseListComponent implements OnInit {
     @ViewChild('courseUserDialog', {static: true})
         private courseUserDialog: CourseAssociateUsersComponent;
 
-    @Input() sort_field: string;
-    @Input() idl_class = "acmc";
+    @Input() sortField: string;
+    @Input() idlClass = 'acmc';
     @Input() dialog_size: 'sm' | 'lg' = 'lg';
-    @Input() table_name = "Course";
+    @Input() tableName = 'Course';
     grid_source: GridDataSource = new GridDataSource();
     currentMaterials: any[] = [];
     search_value = '';
 
     constructor(
-        private auth: AuthService,
         private courseSvc: CourseService,
         private locale: LocaleService,
-        private net: NetService,
-        private org: OrgService,
         private pcrud: PcrudService,
-        private route: ActivatedRoute,
         private router: Router,
         private toast: ToastService
-    ){}
+    ) {}
 
     ngOnInit() {
         this.getSource();
-        this.grid.onRowActivate.subscribe((course:IdlObject) => {
-            let idToEdit = course.id();
+        this.grid.onRowActivate.subscribe((course: IdlObject) => {
+            const idToEdit = course.id();
             this.navigateToCoursePage(idToEdit);
-        })
+        });
     }
 
     /**
@@ -77,31 +70,31 @@ export class CourseListComponent implements OnInit {
             const orderBy: any = {};
             if (sort.length) {
                 // Sort specified from grid
-                orderBy[this.idl_class] = sort[0].name + ' ' + sort[0].dir;
-            } else if (this.sort_field) {
+                orderBy[this.idlClass] = sort[0].name + ' ' + sort[0].dir;
+            } else if (this.sortField) {
                 // Default sort field
-                orderBy[this.idl_class] = this.sort_field;
+                orderBy[this.idlClass] = this.sortField;
             }
             const searchOps = {
                 offset: pager.offset,
                 limit: pager.limit,
                 order_by: orderBy
             };
-            return this.pcrud.retrieveAll(this.idl_class, searchOps, {fleshSelectors: true})
+            return this.pcrud.retrieveAll(this.idlClass, searchOps, {fleshSelectors: true});
         };
     }
 
     navigateToCoursePage(id_arr: IdlObject[]) {
-        if (typeof id_arr == 'number') id_arr = [id_arr];
-        let urls = [];
+        if (typeof id_arr === 'number') { id_arr = [id_arr]; }
+        const urls = [];
         id_arr.forEach(id => {console.log(this.router.url);
             urls.push([this.locale.currentLocaleCode() + this.router.url + '/' +  id]);
         });
-        if (id_arr.length == 1) {
+        if (id_arr.length === 1) {
         this.router.navigate([this.router.url + '/' + id_arr[0]]);
         } else {
             urls.forEach(url => {
-                window.open(url)
+                window.open(url);
             });
         }
     }
@@ -127,9 +120,9 @@ export class CourseListComponent implements OnInit {
 
     editSelected(fields: IdlObject[]) {
         // Edit each IDL thing one at a time
-        let course_ids = [];
+        const course_ids = [];
         fields.forEach(field => {
-            if (typeof field['id'] == 'function') {
+            if (typeof field['id'] === 'function') {
                 course_ids.push(field.id());
             } else {
                 course_ids.push(field['id']);
@@ -140,9 +133,8 @@ export class CourseListComponent implements OnInit {
 
     archiveSelected(course: IdlObject[]) {
         this.courseSvc.disassociateMaterials(course).then(res => {
-            course.forEach(course => {
-                console.log(course);
-                course.is_archived(true);
+            course.forEach(courseToArchive => {
+                courseToArchive.is_archived(true);
             });
             this.pcrud.update(course).subscribe(
                 val => {
@@ -159,12 +151,12 @@ export class CourseListComponent implements OnInit {
         });
     }
 
-    deleteSelected(idl_object: IdlObject[]) {
-        this.courseSvc.disassociateMaterials(idl_object).then(res => {
-            idl_object.forEach(idl_object => {
-                idl_object.isdeleted(true)
+    deleteSelected(idlObject: IdlObject[]) {
+        this.courseSvc.disassociateMaterials(idlObject).then(res => {
+            idlObject.forEach(object => {
+                object.isdeleted(true);
             });
-            this.pcrud.autoApply(idl_object).subscribe(
+            this.pcrud.autoApply(idlObject).subscribe(
                 val => {
                     console.debug('deleted: ' + val);
                     this.deleteSuccessString.current()
@@ -177,6 +169,6 @@ export class CourseListComponent implements OnInit {
                 () => this.grid.reload()
             );
         });
-    };
+    }
 }
 

@@ -1,19 +1,8 @@
 import {Component, Input, ViewChild, OnInit, TemplateRef} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {Observable, Observer, of} from 'rxjs';
-import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {AuthService} from '@eg/core/auth.service';
-import {NetService} from '@eg/core/net.service';
-import {EventService} from '@eg/core/event.service';
-import {OrgService} from '@eg/core/org.service';
+import {ActivatedRoute} from '@angular/router';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {Pager} from '@eg/share/util/pager';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import {GridDataSource} from '@eg/share/grid/grid';
-import {GridComponent} from '@eg/share/grid/grid.component';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {StringComponent} from '@eg/share/string/string.component';
-import {StaffBannerComponent} from '@eg/staff/share/staff-banner.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {CourseService} from '@eg/staff/share/course.service';
 import {CourseAssociateUsersComponent} from './course-associate-users.component';
@@ -33,7 +22,7 @@ export class CoursePageComponent implements OnInit {
         private courseMaterialDialog: CourseAssociateMaterialComponent;
     @ViewChild('courseUserDialog', {static: true})
         private courseUserDialog: CourseAssociateUsersComponent;
-    
+
     // Edit Tab
     @ViewChild('archiveFailedString', { static: true })
         archiveFailedString: StringComponent;
@@ -43,12 +32,7 @@ export class CoursePageComponent implements OnInit {
     // Materials Tab
 
     constructor(
-        private auth: AuthService,
         private course: CourseService,
-        private event: EventService,
-        private idl: IdlService,
-        private net: NetService,
-        private org: OrgService,
         private pcrud: PcrudService,
         private route: ActivatedRoute,
         private toast: ToastService
@@ -56,7 +40,7 @@ export class CoursePageComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.courseId = parseInt(this.route.snapshot.paramMap.get('id'));
+        this.courseId = +this.route.snapshot.paramMap.get('id');
         this.course.getCourses([this.courseId]).then(course => {
             this.currentCourse = course[0];
         });
@@ -78,5 +62,5 @@ export class CoursePageComponent implements OnInit {
     }
 
     // Materials Tab
-    
+
 }

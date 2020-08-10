@@ -132,9 +132,9 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
         editOneThing(itemFields.shift());
     }
 
-    showEditDialog(course_material: IdlObject): Promise<any> {
+    showEditDialog(courseMaterial: IdlObject): Promise<any> {
         this.editDialog.mode = 'update';
-        this.editDialog.recordId = course_material._id;
+        this.editDialog.recordId = courseMaterial.id();
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: 'lg'}).subscribe(
                 result => {
@@ -142,11 +142,9 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
                         .then(str => this.toast.success(str));
                     this.pcrud.retrieve('acmcm', result).subscribe(material => {
                         if (material.course() !== this.courseId) {
-                            this.materialsDataSource.data.splice(
-                                this.materialsDataSource.data.indexOf(course_material, 0), 1
-                            );
+                            this.materialsGrid.reload();
                         } else {
-                            course_material._relationship = material.relationship();
+                            courseMaterial.relationship = material.relationship();
                         }
                     });
                     resolve(result);
@@ -163,7 +161,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     associateItem(barcode, relationship) {
         if (barcode) {
             const args = {
-                barcode: barcode,
+                barcode: barcode.trim(),
                 relationship: relationship,
                 isModifyingCallNumber: this.isModifyingCallNumber,
                 isModifyingCircMod: this.isModifyingCircMod,

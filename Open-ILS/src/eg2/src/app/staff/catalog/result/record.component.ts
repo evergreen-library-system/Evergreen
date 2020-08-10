@@ -47,7 +47,7 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;
-        this.loadCourseInformation(this.summary.id)
+        this.loadCourseInformation(this.summary.id);
         this.isRecordSelected = this.basket.hasRecordId(this.summary.id);
 
         // Watch for basket changes caused by other components

@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import {Injectable} from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
@@ -19,7 +20,7 @@ export class CourseService {
     ) {}
 
     isOptedIn(): Promise<any> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.org.settings('circ.course_materials_opt_in').then(res => {
                 resolve(res['circ.course_materials_opt_in']);
             });
@@ -45,60 +46,22 @@ export class CourseService {
         }
     }
 
-    getUsers(course_ids?: Number[]): Promise<IdlObject[]> {
+    getUsers(course_ids?: Number[]): Observable<IdlObject> {
+        const flesher = {
+            flesh: 1,
+            flesh_fields: {'acmcu': ['usr']}
+        };
         if (!course_ids) {
             return this.pcrud.retrieveAll('acmcu',
-                {}, {atomic: true}).toPromise();
+                flesher);
         } else {
             return this.pcrud.search('acmcu', {course: course_ids},
-                {}, {atomic: true}).toPromise();
+                flesher);
         }
     }
 
-    fleshMaterial(material): Promise<any> {
-        console.log(material)
-        return new Promise((resolve, reject) => {
-            let item = this.idl.create('acp');
-            this.net.request(
-                'open-ils.circ',
-                'open-ils.circ.copy_details.retrieve',
-                this.auth.token(), material.item()
-            ).subscribe(res => {
-                if (res && res.copy) {
-                    item = res.copy;
-                    item.call_number(res.volume);
-                    item._title = res.mvr.title();
-                    item.circ_lib(this.org.get(item.circ_lib()));
-                    item._id = material.id();
-                    if (material.relationship())
-                        item._relationship = material.relationship();
-                }
-            }, err => {
-                reject(err);
-            }, () => resolve(item));
-        });
-    }
-
-    fleshUser(course_user): Promise<any> {
-        return new Promise((resolve, reject) => {
-            let user = this.idl.create('au');
-            this.net.request(
-                'open-ils.actor',
-                'open-ils.actor.user.fleshed.retrieve',
-                this.auth.token(), course_user.usr()
-            ).subscribe(patron => {
-                user = patron;
-                user._id = course_user.id();
-                if (course_user.usr_role()) user._role = course_user.usr_role();
-                if (course_user.is_public()) user._is_public = course_user.is_public();
-            }, err => {
-                reject(err);
-            }, () => resolve(user));
-        });
-    }
-
     getCoursesFromMaterial(copy_id): Promise<any> {
-        let id_list = [];
+        const id_list = [];
         return new Promise((resolve, reject) => {
 
             return this.pcrud.search('acmcm', {item: copy_id})
@@ -114,15 +77,13 @@ export class CourseService {
                     return this.getCourses(id_list).then(courses => {
                         resolve(courses);
                     });
-                    
                 }
             });
         });
     }
 
     fetchCopiesInCourseFromRecord(record_id) {
-        let cp_list = [];
-        let course_list = [];
+        const cp_list = [];
         return new Promise((resolve, reject) => {
             this.net.request(
                 'open-ils.cat',
@@ -143,13 +104,13 @@ export class CourseService {
 
     // Creating a new acmcm Entry
     associateMaterials(item, args) {
-        let material = this.idl.create('acmcm');
+        const material = this.idl.create('acmcm');
         material.item(item.id());
         if (item.call_number() && item.call_number().record()) {
             material.record(item.call_number().record());
         }
         material.course(args.currentCourse.id());
-        if (args.relationship) material.relationship(args.relationship);
+        if (args.relationship) { material.relationship(args.relationship); }
 
         // Apply temporary fields to the item
         if (args.isModifyingStatus && args.tempStatus) {
@@ -163,12 +124,12 @@ export class CourseService {
         if (args.isModifyingCircMod) {
             material.original_circ_modifier(item.circ_modifier());
             item.circ_modifier(args.tempCircMod);
-            if (!args.tempCircMod) item.circ_modifier(null);
+            if (!args.tempCircMod) { item.circ_modifier(null); }
         }
         if (args.isModifyingCallNumber) {
             material.original_callnumber(item.call_number());
         }
-        let response = {
+        const response = {
             item: item,
             material: this.pcrud.create(material).toPromise()
         };
@@ -177,18 +138,18 @@ export class CourseService {
     }
 
     associateUsers(patron_id, args) {
-        let new_user = this.idl.create('acmcu');
-        if (args.is_public) new_user.is_public(args.is_public);
-        if (args.role) new_user.usr_role(args.role);
+        const new_user = this.idl.create('acmcu');
+        if (args.is_public) { new_user.is_public(args.is_public); }
+        if (args.role) { new_user.usr_role(args.role); }
         new_user.course(args.currentCourse.id());
         new_user.usr(patron_id);
-        return this.pcrud.create(new_user).toPromise()
+        return this.pcrud.create(new_user).toPromise();
     }
 
     disassociateMaterials(courses) {
         return new Promise((resolve, reject) => {
-            let course_ids = [];
-            let course_library_hash = {};
+            const course_ids = [];
+            const course_library_hash = {};
             courses.forEach(course => {
                 course_ids.push(course.id());
                 course_library_hash[course.id()] = course.owning_lib();
@@ -196,14 +157,14 @@ export class CourseService {
             this.pcrud.search('acmcm', {course: course_ids}).subscribe(material => {
                 material.isdeleted(true);
                 this.resetItemFields(material, course_library_hash[material.course()]);
-                this.pcrud.autoApply(material).subscribe(res => {
+                this.pcrud.autoApply(material).subscribe(() => {
                 }, err => {
                     reject(err);
                 }, () => {
                     resolve(material);
                 });
             }, err => {
-                reject(err)
+                reject(err);
             }, () => {
                 resolve(courses);
             });
@@ -212,14 +173,14 @@ export class CourseService {
 
     disassociateUsers(user) {
         return new Promise((resolve, reject) => {
-            let user_ids = [];
-            let course_library_hash = {};
+            const user_ids = [];
+            const course_library_hash = {};
             user.forEach(course => {
                 user_ids.push(course.id());
                 course_library_hash[course.id()] = course.owning_lib();
             });
-            this.pcrud.search('acmcu', {user: user_ids}).subscribe(user => {
-                user.course(user_ids);
+            this.pcrud.search('acmcu', {user: user_ids}).subscribe(u => {
+                u.course(user_ids);
                 this.pcrud.autoApply(user).subscribe(res => {
                     console.debug(res);
                 }, err => {
@@ -228,7 +189,7 @@ export class CourseService {
                     resolve(user);
                 });
             }, err => {
-                reject(err)
+                reject(err);
             }, () => {
                 resolve(user_ids);
             });
@@ -241,7 +202,7 @@ export class CourseService {
             if (material.original_status()) {
                 copy.status(material.original_status());
             }
-            if (copy.circ_modifier() != material.original_circ_modifier()) {
+            if (copy.circ_modifier() !== material.original_circ_modifier()) {
                 copy.circ_modifier(material.original_circ_modifier());
             }
             if (material.original_location()) {
@@ -259,22 +220,22 @@ export class CourseService {
 
     updateItem(item: IdlObject, course_lib, call_number, updatingVolume) {
         return new Promise((resolve, reject) => {
-            this.pcrud.update(item).subscribe(item_id => {
+            this.pcrud.update(item).subscribe(() => {
                 if (updatingVolume) {
-                    let cn = item.call_number();
+                    const cn = item.call_number();
                     return this.net.request(
                         'open-ils.cat', 'open-ils.cat.call_number.find_or_create',
                         this.auth.token(), call_number, cn.record(),
                         course_lib, cn.prefix(), cn.suffix(),
                         cn.label_class()
                     ).subscribe(res => {
-                        let event = this.evt.parse(res);
-                        if (event) return;
+                        const event = this.evt.parse(res);
+                        if (event) { return; }
                         return this.net.request(
                             'open-ils.cat', 'open-ils.cat.transfer_copies_to_volume',
                             this.auth.token(), res.acn_id, [item.id()]
                         ).subscribe(transfered_res => {
-                            console.debug("Copy transferred to volume with code " + transfered_res);
+                            console.debug('Copy transferred to volume with code ' + transfered_res);
                         }, err => {
                             reject(err);
                         }, () => {
@@ -286,9 +247,9 @@ export class CourseService {
                         resolve(item);
                     });
                 } else {
-                    this.pcrud.update(item).subscribe(rse => {
+                    this.pcrud.update(item).subscribe(() => {
                         resolve(item);
-                    }, err => {
+                    }, () => {
                         reject(item);
                     });
                 }

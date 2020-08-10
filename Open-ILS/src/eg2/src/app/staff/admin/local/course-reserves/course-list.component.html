@@ -1,20 +1,20 @@
 <eg-staff-banner bannerText="Course List" i18n-bannerText>
 </eg-staff-banner>
 
-<eg-string #successString i18n-text text="{{table_name}} Update Succeeded"></eg-string>
-<eg-string #createString i18n-text text="{{table_name}} Was Created Successfully"></eg-string>
-<eg-string #deleteFailedString i18n-text text="Deletion of {{table_name}} failed or was not allowed"></eg-string>
-<eg-string #deleteSuccessString i18n-text text="Deletion of {{table_name}} was successful"></eg-string>
-<eg-string #archiveFailedString i18n-text text="Archival of {{table_name}} failed or was not allowed"></eg-string>
-<eg-string #archiveSuccessString i18n-text text="Archival of {{table_name}} succeeded"></eg-string>
+<eg-string #successString i18n-text text="{{tableName}} Update Succeeded"></eg-string>
+<eg-string #createString i18n-text text="{{tableName}} Was Created Successfully"></eg-string>
+<eg-string #deleteFailedString i18n-text text="Deletion of {{tableName}} failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text text="Deletion of {{tableName}} was successful"></eg-string>
+<eg-string #archiveFailedString i18n-text text="Archival of {{tableName}} failed or was not allowed"></eg-string>
+<eg-string #archiveSuccessString i18n-text text="Archival of {{tableName}} succeeded"></eg-string>
 <eg-string #flairTooltip i18n-text text="Limited Editing"></eg-string>
 
 <div class="w-100 mt-2 mb-2">
-  <eg-grid #grid idlClass={{idl_class}}
+  <eg-grid #grid idlClass={{idlClass}}
     [dataSource]="grid_source"
     [sortable]="true">
     <eg-grid-toolbar-button
-      label="Create {{table_name}}" (onClick)="createNew()" i18n-label>
+      label="Create {{tableName}}" (onClick)="createNew()" i18n-label>
     </eg-grid-toolbar-button>
     <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
     </eg-grid-toolbar-action>
@@ -32,6 +32,7 @@
 
 <eg-fm-record-editor #editDialog
   idlClass="acmc"
+  fieldOrder="course_number,name,owning_lib,section_number"
   [preloadLinkedValues]="true"
   hiddenFields="id,is_archived">
 </eg-fm-record-editor>

@@ -6,7 +6,7 @@
 </eg-string>
 <eg-string #materialEditSuccessString i18n-text text="Update of Course Material succeeded"></eg-string>
 <eg-string #materialEditFailedString i18n-text text="Update of Course Material failed or was not allowed"></eg-string>
-<eg-string #MaterialAddDifferentLibraryString i18n-text text="Material exists at a different library"></eg-string>
+<eg-string #materialAddDifferentLibraryString i18n-text text="Material exists at a different library"></eg-string>
 
 <ng-template #dialogContent>
   <div class="modal-header bg-info" [ngClass]="isDialog() ? 'modal-header' : 'alert mt-3'">
@@ -28,9 +28,10 @@
                 <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12'">
                   <div class="input-group">
                     <div class="input-group-prepend">
-                      <span class="input-group-text" i18n>Barcode</span>
+                      <label for="associate-item-barcode" class="input-group-text" i18n>Barcode</label>
                     </div>
-                    <input type="text" class="flex-grow-1" [(ngModel)]="barcodeInput" (click)="$event.target.select()"
+                    <input type="text" class="flex-grow-1" id="associate-item-barcode"
+                      [(ngModel)]="barcodeInput" (click)="$event.target.select()"
                       [disabled]="currentCourse && currentCourse.is_archived() == 't'"
                       (keyup.enter)="associateItem(barcodeInput, relationshipInput)" />
                   </div>
@@ -66,10 +67,10 @@
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text">
-                        <span i18n>Call Number</span>
+                        <label for="associate-item-temp-call-number" i18n>Call Number</label>
                       </div>
                     </div>
-                    <input type="text" [(ngModel)]="tempCallNumber"
+                    <input type="text" [(ngModel)]="tempCallNumber" label="associate-item-temp-call-number"
                       [disabled]="currentCourse && currentCourse.is_archived() == 't'"
                       (input)="isModifyingCallNumber = true" class="flex-grow-1" />
                     <div class="input-group-append">
@@ -217,15 +218,18 @@
           <eg-grid-column path="id" [index]=true [hidden]="true" label="ID" i18n-label></eg-grid-column>
           <eg-grid-column label="Barcode" i18n-label name="barcode" [cellTemplate]="barcodeCellTemplate"></eg-grid-column>
           <eg-grid-column label="Title" i18n-label name="title" flex="3" [cellTemplate]="titleCellTemplate"></eg-grid-column>
-          <eg-grid-column path="call_number.label" label="Call Number" i18n-label></eg-grid-column>
-          <eg-grid-column path="call_number.prefix.label" [hidden]="true" label="Call Number Prefix" i18n-label hidden>
+          <eg-grid-column path="item.call_number.label" label="Call Number" i18n-label></eg-grid-column>
+          <eg-grid-column path="item.call_number.prefix.label" [hidden]="true" label="Call Number Prefix" i18n-label hidden>
           </eg-grid-column>
-          <eg-grid-column path="call_number.suffix.label" [hidden]="true" label="Call Number Suffix" i18n-label hidden>
+          <eg-grid-column path="item.call_number.suffix.label" [hidden]="true" label="Call Number Suffix" i18n-label hidden>
           </eg-grid-column>
-          <eg-grid-column path="circ_modifier" [hidden]="true" label="Circulation Modifier" i18n-label></eg-grid-column>
-          <eg-grid-column path="circ_lib.shortname" label="Circulation Library" i18n-label></eg-grid-column>
-          <eg-grid-column path="location.name" [hidden]="true" label="Shelving Location" i18n-label></eg-grid-column>
-          <eg-grid-column path="status.name" [hidden]="true" label="Copy Status" i18n-label></eg-grid-column>
+          <eg-grid-column path="item.circ_modifier" [hidden]="true" label="Circulation Modifier" i18n-label></eg-grid-column>
+          <eg-grid-column path="item.circ_lib.shortname" label="Circulation Library" i18n-label></eg-grid-column>
+          <eg-grid-column path="item.location.name" [hidden]="true" label="Shelving Location" i18n-label></eg-grid-column>
+          <eg-grid-column path="item.status.name" [hidden]="true" label="Item Status" i18n-label></eg-grid-column>
+          <eg-grid-column path="original_circ_modifier.name" [hidden]="true" label="Original Circulation Modifier" i18n-label></eg-grid-column>
+          <eg-grid-column path="original_location.name" [hidden]="true" label="Original Shelving Location" i18n-label></eg-grid-column>
+          <eg-grid-column path="original_status.name" [hidden]="true" label="Original Item Status" i18n-label></eg-grid-column>
           <eg-grid-column path="relationship" label="Relationship" i18n-label></eg-grid-column>
         </eg-grid>
       </div>
@@ -256,5 +260,5 @@
 
 <eg-fm-record-editor #editDialog idlClass='acmcm' [fieldOptions]="{course: {linkedSearchField: 'course_number'}}"
   [preloadLinkedValues]="true"
-  hiddenFields="id,item,original_callnumber,original_status,original_location,original_circ_modifier,record">
+  hiddenFields="id,item,original_callnumber,original_status,original_location,original_circ_modifier,record,temporary_record">
 </eg-fm-record-editor>
