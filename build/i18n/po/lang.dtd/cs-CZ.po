@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-18 16:05-0400\n"
-"PO-Revision-Date: 2018-11-25 14:09+0000\n"
-"Last-Translator: Václav Jansa <Unknown>\n"
+"PO-Revision-Date: 2020-08-05 08:23+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-11-26 05:30+0000\n"
-"X-Generator: Launchpad (build 18826)\n"
+"X-Launchpad-Export-Date: 2020-08-06 05:58+0000\n"
+"X-Generator: Launchpad (build a24057fea7e4c6a98c0220d5f878da0f3c783699)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -3895,7 +3895,7 @@ msgstr "M"
 
 #: staff.main.menu.circ.missing.label
 msgid "Mark Missing"
-msgstr "Označit jako nezvěstné"
+msgstr "Označit jako postrádané"
 
 #: staff.main.menu.circ.offline.label
 #: staff.main.menu.circ.offline.accesskey
@@ -10714,7 +10714,7 @@ msgstr "&Zobrazit v katalogu"
 #: staff.cat.manage_multi_bib_items.actions.menu_entry.change_peer_type.label
 #: staff.cat.manage_multi_bib_items.actions.menu_entry.change_peer_type.accesskey
 msgid "&Change Peer Type"
-msgstr "Změnit způsob spo&jení"
+msgstr "Změnit způsob propo&jení"
 
 #: staff.cat.manage_multi_bib_items.actions.menu_entry.unlink_from_bib.label
 #: staff.cat.manage_multi_bib_items.actions.menu_entry.unlink_from_bib.accesskey
@@ -10724,7 +10724,7 @@ msgstr "Odst&ranit z bib"
 #: staff.cat.manage_multi_bib_items.peer_type.menu.label
 #: staff.cat.manage_multi_bib_items.peer_type.menu.accesskey
 msgid "Peer &Type:"
-msgstr "&Způsob spojení"
+msgstr "&Způsob propojení"
 
 #: staff.cat.manage_multi_bib_items.barcode.textbox.label
 #: staff.cat.manage_multi_bib_items.barcode.textbox.accesskey
