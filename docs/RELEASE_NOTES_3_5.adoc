@@ -109,7 +109,7 @@ so that the Angular index.html file is never cached by the client.  This
 can be done by changing the Angular setup section of the apache configuration
 that starts with:
 
-[source]
+[source,xml]
 ----
 <Directory "/openils/var/web/eg2/en-US">
 ----
@@ -117,7 +117,7 @@ that starts with:
 or similar in the apache configuration. Add the following after the
 FallbackResource directive:
 
-[source]
+[source,xml]
 ----
     <Files "index.html">
       <IfModule mod_headers.c>
@@ -131,7 +131,7 @@ FallbackResource directive:
 Finally, ensure that the mod_headers apache module is enabled by running the
 following commands on all apache servers as the root user:
 
-[source]
+[source,bash]
 ----
 a2enmod headers
 sudo /etc/init.d/apache2 restart
