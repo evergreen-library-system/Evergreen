@@ -35,6 +35,13 @@
         [disabled]="!selectedIsBool()" i18n>
         Add To Selected Node
       </button>
+
+      <button class="btn btn-success ml-3" (click)="addChildNode(true)"
+        [disabled]="!hasSelectedNode() ||
+          (newPointType != 'bool' && selectedIsBool())" i18n>
+        Replace Selected Node
+      </button>
+
     </div>
     <div class="row mt-2 ml-2 font-italic" *ngIf="newPointType">
       <ol i18n>
