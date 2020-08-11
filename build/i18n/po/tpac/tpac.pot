@@ -82,9 +82,9 @@ msgstr ""
 msgid "%1 %2"
 msgstr ""
 
-#. (title, part.label)
-#. (copy.label, copy_org.name)
 #. (title, hold.hold.part.label)
+#. (copy.label, copy_org.name)
+#. (title, part.label)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:190 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:384 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:76 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:46
 msgid "%1 (%2)"
 msgstr ""
