@@ -3,6 +3,166 @@ Evergreen 3.4 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.4.4
+---------------
+
+This release contains bug fixes improving on Evergreen 3.4.3.
+
+Bug Fixes
+~~~~~~~~~
+
+
+Administration
+^^^^^^^^^^^^^^
+
+* Fixes a bug that caused the Emergency Closing handler to skip circulations with fines (https://bugs.launchpad.net/evergreen/+bug/1870605[Bug 1870605])
+* The column headers in the Copy Status configuration screen have improved labels (https://bugs.launchpad.net/evergreen/+bug/1848573[Bug 1848573])
+* Fixes an incorrect link to the Match Set configuration screen (https://bugs.launchpad.net/evergreen/+bug/1840294[Bug 1840294])
+* Updates the descriptions of the _circ.staff_client.receipt_ library settings (https://bugs.launchpad.net/evergreen/+bug/1705302[Bug 1705302])
+* The labels of the All Circulations reporter sources have been clarified (https://bugs.launchpad.net/evergreen/+bug/1852443[Bug 1852443])
+* The emergency closing form provides additional guidance about end dates (https://bugs.launchpad.net/evergreen/+bug/1867524[Bug 1867524])
+* The badge_score_generator.pl script is now installed as part of an Evergreen install (https://bugs.launchpad.net/evergreen/+bug/1847784[Bug 1847784])
+* User preferred names and name keywords are now purged from the database when the user is purged
+(https://bugs.launchpad.net/evergreen/+bug/1802166[Bug 1802166])
+* Fixes a bug with the "months ago" functionality in the reporter (https://bugs.launchpad.net/evergreen/+bug/1885759[Bug 1885759])
+* Angular call number prefix/suffix admin pages no longer let you edit sort key (https://bugs.launchpad.net/evergreen/+bug/1889251[Bug 1889251])
+
+Cataloging
+^^^^^^^^^^
+
+* Various improvements to the MARC Editor (Bugs https://bugs.launchpad.net/evergreen/+bug/1735568[Bug 1735568] and
+https://bugs.launchpad.net/evergreen/+bug/1830443[Bug 1830443])
+* Fixes an issue with undeleting bibliographic records (https://bugs.launchpad.net/evergreen/+bug/1845241[Bug 1845241])
+* Item status now alerts the user about invalid barcodes uploaded from a file (https://bugs.launchpad.net/evergreen/+bug/1847784[Bug 1847784])
+* You can now open multiple items in Item Status from an item bucket (https://bugs.launchpad.net/evergreen/+bug/1735828[Bug 1735828])
+* The experimental catalog now allows searching by format (https://bugs.launchpad.net/evergreen/+bug/1886118[Bug 1886118])
+* The experimental catalog now displays the bib call number according to the search library's org unit setting
+(https://bugs.launchpad.net/evergreen/+bug/1874897[Bug 1874897])
+* Fixes an issue with adding and editing call numbers in the experimental catalog (https://bugs.launchpad.net/evergreen/+bug/1878079[Bug 1878079])
+* Newly added items and call numbers have distinct styling (https://bugs.launchpad.net/evergreen/+bug/1731370[Bug 1731370])
+* Fixes an issue with hold activation dates (https://bugs.launchpad.net/evergreen/+bug/1783793[Bug 1783793])
+* Adds item creator and editor to holdings editor grids (https://bugs.launchpad.net/evergreen/+bug/1811466[Bug 1811466])
+
+Circulation
+^^^^^^^^^^^
+
+* Overdue items are now highlighted in red in the Items Out screen (https://bugs.launchpad.net/evergreen/+bug/1775286[Bug 1775286])
+* Fixes an issue that caused patron stat cat information to persist between patrons in the Patron Edit screen
+(https://bugs.launchpad.net/evergreen/+bug/1844365[Bug 1844365])
+* The Pending User Buckets now allow more than 100 users (https://bugs.launchpad.net/evergreen/+bug/1754387[Bug 1754387])
+* Fixes an issue that caused lang patron names to obscure important parts of circulation screens
+(https://bugs.launchpad.net/evergreen/+bug/1805860[Bug 1805860])
+* Prevents an incorrect "Input is out of range" validation error in the date pickers of the check out and renewal
+screens (https://bugs.launchpad.net/evergreen/+bug/1864056[Bug 1864056])
+* Long overdue and lost and paid items now count toward patron limits (https://bugs.launchpad.net/evergreen/+bug/1864056[Bug 1864056])
+* The holds shelf list now includes columns for "User Alias" and "User Alias or Display Name" (https://bugs.launchpad.net/evergreen/+bug/1712854[Bug 1712854])
+* In the messages tab of a patron's account, you can now change the date range of displayed archived penalties
+(https://bugs.launchpad.net/evergreen/+bug/1775940[Bug 1775940])
+* Fixes an issue with hanging transits (https://bugs.launchpad.net/evergreen/+bug/1819542[Bug 1819542])
+* Fixes some hold targeting logic (https://bugs.launchpad.net/evergreen/+bug/1886852[Bug 1886852])
+* Fixes an issue with default billing type prices (https://bugs.launchpad.net/evergreen/+bug/1776757[Bug 1776757])
+* The experimental catalog's hold grid now includes both date and time for hold request time (https://bugs.launchpad.net/evergreen/+bug/1889296[Bug 1889296])
+* Sounds now play when an item alert pops up in the web client (https://bugs.launchpad.net/evergreen/+bug/1851541[Bug 1851541])
+* Autorenewal notifications now display a more intelligible message (https://bugs.launchpad.net/evergreen/+bug/1842431[Bug 1842431])
+
+Client
+^^^^^^
+
+* New installations of Evergreen will prevent problematic caching of the Angular client (https://bugs.launchpad.net/evergreen/+bug/1775276[Bug 1775276])
+* All screens in the angular client now have a banner to indicate which screen it is (https://bugs.launchpad.net/evergreen/+bug/1474874[Bug 1474874])
+* Fixes a bug that caused inconsistent hotkey behavior (https://bugs.launchpad.net/evergreen/+bug/1886713[Bug 1886713])
+* The moment-timezone library is pinned to 0.5.27 in the Angular client (https://bugs.launchpad.net/evergreen/+bug/1884787[Bug 1884787])
+* Fixes an issue with comboboxes (typeaheads) in the Angular client (https://bugs.launchpad.net/evergreen/+bug/1882591[Bug 1882591])
+* Publicly visible buckets are now known as Shareable buckets (https://bugs.launchpad.net/evergreen/+bug/1717996[Bug 1717996])
+
+Feeds
+^^^^^
+
+* Fixes an issue with HTML item feed cover images (https://bugs.launchpad.net/evergreen/+bug/1674364[Bug 1674364])
+
+Public catalog
+^^^^^^^^^^^^^^
+
+* The list of holdings in the OPAC now considers call number suffix in its sorting (https://bugs.launchpad.net/evergreen/+bug/1795469[Bug 1795469])
+* The Exclude Electronic Resources checkbox now works properly when locale picker is enabled (https://bugs.launchpad.net/evergreen/+bug/1847343[Bug 1847343])
+
+Search
+^^^^^^
+
+* Fixes an issue with SRU search (https://bugs.launchpad.net/evergreen/+bug/1833300[Bug 1833300])
+* Fixes an issue with searching the catalog from the staff client (https://bugs.launchpad.net/evergreen/+bug/1858701[Bug 1858701])
+* The experimental catalog basket clears when a staff member logs out (https://bugs.launchpad.net/evergreen/+bug/1867834[Bug 1867834])
+* Fixes an accessibility issue with the catalog search on the splash page (https://bugs.launchpad.net/evergreen/+bug/1839369[Bug 1839369])
+
+Upgrade notes
+~~~~~~~~~~~~~
+
+Evergreen administrators should update existing apache configuration files
+so that the Angular index.html file is never cached by the client.  This
+can be done by changing the Angular setup section of the apache configuration
+that starts with:
+
+[source]
+----
+<Directory "/openils/var/web/eg2/en-US">
+----
+
+or similar in the apache configuration. Add the following after the
+FallbackResource directive:
+
+[source]
+----
+    <Files "index.html">
+      <IfModule mod_headers.c>
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+      </IfModule>
+    </Files>
+----
+
+Finally, ensure that the mod_headers apache module is enabled by running the
+following commands on all apache servers as the root user:
+
+[source]
+----
+a2enmod headers
+sudo /etc/init.d/apache2 restart
+----
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.4.4 point release of Evergreen:
+
+* John Amundson
+* A. Bellenir
+* Jason Boyer
+* Steven Callender
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Ruth Frasur
+* Blake Graham Henderson
+* Rogan Hamby
+* Elaine Hardy
+* Kyle Huckins
+* Shula Link
+* Tiffany Little
+* Christine Morgan
+* Michele Morgan
+* Terran McCanna
+* Gina Monti
+* Mike Risher
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Jason Stephenson
+* Josh Stompro
+* John Yorio
+* John Yorio
+
 Evergreen 3.4.3
 ---------------
 
