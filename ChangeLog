@@ -1,3 +1,1778 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 3ec3e425c4fb2d80cdb6b5255c1a06ef039abe75
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Aug 11 14:41:20 2020 -0700
+
+    bumping Perl version string for 3.5.1
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit f18002fc8abf9f067be2bfbc2fb1d359d6afbdfb
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Aug 11 14:40:15 2020 -0700
+
+    Translation updates - po files
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	3	build/i18n/po/AutoFieldWidget.js/ar-JO.po
+3	3	build/i18n/po/AutoFieldWidget.js/cs-CZ.po
+3	3	build/i18n/po/AutoFieldWidget.js/de-DE.po
+3	3	build/i18n/po/AutoFieldWidget.js/en-CA.po
+3	3	build/i18n/po/AutoFieldWidget.js/en-GB.po
+3	3	build/i18n/po/AutoFieldWidget.js/es-ES.po
+3	3	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+3	3	build/i18n/po/AutoFieldWidget.js/fr-CA.po
+3	3	build/i18n/po/AutoFieldWidget.js/he-IL.po
+3	3	build/i18n/po/AutoFieldWidget.js/hu-HU.po
+3	3	build/i18n/po/AutoFieldWidget.js/hy-AM.po
+3	3	build/i18n/po/AutoFieldWidget.js/oc-FR.po
+3	3	build/i18n/po/AutoFieldWidget.js/pt-BR.po
+3	3	build/i18n/po/AutoFieldWidget.js/ru-RU.po
+3	3	build/i18n/po/AutoFieldWidget.js/sv-SE.po
+3	3	build/i18n/po/AutoFieldWidget.js/tr-TR.po
+3	3	build/i18n/po/FlattenerGrid.js/ar-JO.po
+3	3	build/i18n/po/FlattenerGrid.js/cs-CZ.po
+3	3	build/i18n/po/FlattenerGrid.js/de-DE.po
+3	3	build/i18n/po/FlattenerGrid.js/en-CA.po
+3	3	build/i18n/po/FlattenerGrid.js/en-GB.po
+3	3	build/i18n/po/FlattenerGrid.js/es-ES.po
+3	3	build/i18n/po/FlattenerGrid.js/fi-FI.po
+3	3	build/i18n/po/FlattenerGrid.js/fr-CA.po
+3	3	build/i18n/po/FlattenerGrid.js/hy-AM.po
+3	3	build/i18n/po/PCrudFilterPane.js/ar-JO.po
+3	3	build/i18n/po/PCrudFilterPane.js/cs-CZ.po
+3	3	build/i18n/po/PCrudFilterPane.js/de-DE.po
+3	3	build/i18n/po/PCrudFilterPane.js/en-GB.po
+3	3	build/i18n/po/PCrudFilterPane.js/es-ES.po
+3	3	build/i18n/po/PCrudFilterPane.js/fi-FI.po
+3	3	build/i18n/po/PCrudFilterPane.js/hy-AM.po
+3	3	build/i18n/po/Searcher.js/ar-JO.po
+3	3	build/i18n/po/Searcher.js/cs-CZ.po
+3	3	build/i18n/po/Searcher.js/de-DE.po
+3	3	build/i18n/po/Searcher.js/en-CA.po
+3	3	build/i18n/po/Searcher.js/en-GB.po
+3	3	build/i18n/po/Searcher.js/es-ES.po
+3	3	build/i18n/po/Searcher.js/fi-FI.po
+3	3	build/i18n/po/Searcher.js/fr-CA.po
+3	3	build/i18n/po/Searcher.js/hy-AM.po
+3	3	build/i18n/po/Searcher.js/oc-FR.po
+3	3	build/i18n/po/Searcher.js/pt-BR.po
+3	3	build/i18n/po/Searcher.js/ru-RU.po
+3	3	build/i18n/po/TranslatorPopup.js/ar-JO.po
+3	3	build/i18n/po/TranslatorPopup.js/cs-CZ.po
+3	3	build/i18n/po/TranslatorPopup.js/de-DE.po
+3	3	build/i18n/po/TranslatorPopup.js/en-CA.po
+3	3	build/i18n/po/TranslatorPopup.js/en-GB.po
+3	3	build/i18n/po/TranslatorPopup.js/es-ES.po
+3	3	build/i18n/po/TranslatorPopup.js/fi-FI.po
+3	3	build/i18n/po/TranslatorPopup.js/fr-CA.po
+3	3	build/i18n/po/TranslatorPopup.js/he-IL.po
+3	3	build/i18n/po/TranslatorPopup.js/hu-HU.po
+3	3	build/i18n/po/TranslatorPopup.js/hy-AM.po
+3	3	build/i18n/po/TranslatorPopup.js/oc-FR.po
+3	3	build/i18n/po/TranslatorPopup.js/pt-BR.po
+3	3	build/i18n/po/TranslatorPopup.js/ru-RU.po
+3	3	build/i18n/po/TranslatorPopup.js/sv-SE.po
+3	3	build/i18n/po/TranslatorPopup.js/tr-TR.po
+3	3	build/i18n/po/URLVerify.js/ar-JO.po
+3	3	build/i18n/po/URLVerify.js/cs-CZ.po
+3	3	build/i18n/po/URLVerify.js/de-DE.po
+3	3	build/i18n/po/URLVerify.js/en-GB.po
+3	3	build/i18n/po/URLVerify.js/es-ES.po
+3	3	build/i18n/po/URLVerify.js/hy-AM.po
+3	3	build/i18n/po/URLVerify.js/pt-BR.po
+3	3	build/i18n/po/URLVerify.js/tr-TR.po
+3	3	build/i18n/po/User.js/ar-JO.po
+3	3	build/i18n/po/User.js/cs-CZ.po
+3	3	build/i18n/po/User.js/de-DE.po
+3	3	build/i18n/po/User.js/en-CA.po
+3	3	build/i18n/po/User.js/en-GB.po
+3	3	build/i18n/po/User.js/es-ES.po
+3	3	build/i18n/po/User.js/fi-FI.po
+3	3	build/i18n/po/User.js/fr-CA.po
+3	3	build/i18n/po/User.js/he-IL.po
+3	3	build/i18n/po/User.js/hu-HU.po
+3	3	build/i18n/po/User.js/hy-AM.po
+3	3	build/i18n/po/User.js/oc-FR.po
+3	3	build/i18n/po/User.js/pt-BR.po
+3	3	build/i18n/po/User.js/ru-RU.po
+3	3	build/i18n/po/User.js/sv-SE.po
+3	3	build/i18n/po/User.js/tr-TR.po
+3	3	build/i18n/po/XULTermLoader.js/ar-JO.po
+3	3	build/i18n/po/XULTermLoader.js/cs-CZ.po
+3	3	build/i18n/po/XULTermLoader.js/de-DE.po
+3	3	build/i18n/po/XULTermLoader.js/en-CA.po
+3	3	build/i18n/po/XULTermLoader.js/en-GB.po
+3	3	build/i18n/po/XULTermLoader.js/es-ES.po
+3	3	build/i18n/po/XULTermLoader.js/fi-FI.po
+3	3	build/i18n/po/XULTermLoader.js/fr-CA.po
+3	3	build/i18n/po/XULTermLoader.js/he-IL.po
+3	3	build/i18n/po/XULTermLoader.js/hu-HU.po
+3	3	build/i18n/po/XULTermLoader.js/hy-AM.po
+3	3	build/i18n/po/XULTermLoader.js/oc-FR.po
+3	3	build/i18n/po/XULTermLoader.js/pt-BR.po
+3	3	build/i18n/po/XULTermLoader.js/ru-RU.po
+3	3	build/i18n/po/XULTermLoader.js/sv-SE.po
+3	3	build/i18n/po/XULTermLoader.js/tr-TR.po
+3	3	build/i18n/po/acq.js/ar-JO.po
+9	9	build/i18n/po/acq.js/cs-CZ.po
+3	3	build/i18n/po/acq.js/de-DE.po
+3	3	build/i18n/po/acq.js/en-CA.po
+3	3	build/i18n/po/acq.js/en-GB.po
+3	3	build/i18n/po/acq.js/es-ES.po
+3	3	build/i18n/po/acq.js/fi-FI.po
+3	3	build/i18n/po/acq.js/fr-CA.po
+3	3	build/i18n/po/acq.js/he-IL.po
+3	3	build/i18n/po/acq.js/hu-HU.po
+3	3	build/i18n/po/acq.js/hy-AM.po
+3	3	build/i18n/po/acq.js/oc-FR.po
+3	3	build/i18n/po/acq.js/pt-BR.po
+3	3	build/i18n/po/acq.js/ru-RU.po
+3	3	build/i18n/po/acq.js/sv-SE.po
+3	3	build/i18n/po/acq.js/tr-TR.po
+3	3	build/i18n/po/authority.js/ar-JO.po
+3	3	build/i18n/po/authority.js/cs-CZ.po
+3	3	build/i18n/po/authority.js/de-DE.po
+3	3	build/i18n/po/authority.js/en-CA.po
+3	3	build/i18n/po/authority.js/en-GB.po
+3	3	build/i18n/po/authority.js/es-ES.po
+3	3	build/i18n/po/authority.js/fi-FI.po
+3	3	build/i18n/po/authority.js/fr-CA.po
+3	3	build/i18n/po/authority.js/hy-AM.po
+3	3	build/i18n/po/authority.js/oc-FR.po
+3	3	build/i18n/po/authority.js/pt-BR.po
+3	3	build/i18n/po/authority.js/ru-RU.po
+3	3	build/i18n/po/authority.js/tr-TR.po
+3	3	build/i18n/po/capture.js/ar-JO.po
+3	3	build/i18n/po/capture.js/cs-CZ.po
+3	3	build/i18n/po/capture.js/de-DE.po
+3	3	build/i18n/po/capture.js/en-CA.po
+3	3	build/i18n/po/capture.js/en-GB.po
+3	3	build/i18n/po/capture.js/es-ES.po
+3	3	build/i18n/po/capture.js/fi-FI.po
+3	3	build/i18n/po/capture.js/fr-CA.po
+3	3	build/i18n/po/capture.js/he-IL.po
+3	3	build/i18n/po/capture.js/hu-HU.po
+3	3	build/i18n/po/capture.js/hy-AM.po
+3	3	build/i18n/po/capture.js/oc-FR.po
+3	3	build/i18n/po/capture.js/pt-BR.po
+3	3	build/i18n/po/capture.js/ru-RU.po
+3	3	build/i18n/po/capture.js/sv-SE.po
+3	3	build/i18n/po/capture.js/tr-TR.po
+3	3	build/i18n/po/conify.js/ar-JO.po
+3	3	build/i18n/po/conify.js/cs-CZ.po
+3	3	build/i18n/po/conify.js/de-DE.po
+3	3	build/i18n/po/conify.js/en-CA.po
+3	3	build/i18n/po/conify.js/en-GB.po
+3	3	build/i18n/po/conify.js/es-ES.po
+3	3	build/i18n/po/conify.js/fi-FI.po
+3	3	build/i18n/po/conify.js/fr-CA.po
+3	3	build/i18n/po/conify.js/he-IL.po
+3	3	build/i18n/po/conify.js/hu-HU.po
+3	3	build/i18n/po/conify.js/hy-AM.po
+3	3	build/i18n/po/conify.js/oc-FR.po
+3	3	build/i18n/po/conify.js/pt-BR.po
+3	3	build/i18n/po/conify.js/ru-RU.po
+3	3	build/i18n/po/conify.js/sv-SE.po
+3	3	build/i18n/po/conify.js/tr-TR.po
+19	19	build/i18n/po/conify/ar-JO.po
+19	19	build/i18n/po/conify/cs-CZ.po
+19	19	build/i18n/po/conify/es-ES.po
+19	19	build/i18n/po/conify/hy-AM.po
+2962	2931	build/i18n/po/db.seed/ar-JO.po
+2968	2937	build/i18n/po/db.seed/cs-CZ.po
+2959	2928	build/i18n/po/db.seed/de-DE.po
+2959	2928	build/i18n/po/db.seed/en-CA.po
+2959	2928	build/i18n/po/db.seed/en-GB.po
+2961	2930	build/i18n/po/db.seed/es-ES.po
+2961	2930	build/i18n/po/db.seed/fi-FI.po
+2959	2928	build/i18n/po/db.seed/fr-CA.po
+2957	2926	build/i18n/po/db.seed/he-IL.po
+2957	2926	build/i18n/po/db.seed/hu-HU.po
+2962	2931	build/i18n/po/db.seed/hy-AM.po
+2959	2928	build/i18n/po/db.seed/oc-FR.po
+2959	2928	build/i18n/po/db.seed/pt-BR.po
+2959	2928	build/i18n/po/db.seed/ru-RU.po
+2957	2926	build/i18n/po/db.seed/sv-SE.po
+2957	2926	build/i18n/po/db.seed/tr-TR.po
+3076	3055	build/i18n/po/fm_IDL.dtd/ar-JO.po
+3096	3069	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+3073	3052	build/i18n/po/fm_IDL.dtd/de-DE.po
+3076	3055	build/i18n/po/fm_IDL.dtd/en-CA.po
+3076	3055	build/i18n/po/fm_IDL.dtd/en-GB.po
+3076	3055	build/i18n/po/fm_IDL.dtd/es-ES.po
+3076	3055	build/i18n/po/fm_IDL.dtd/fi-FI.po
+3073	3052	build/i18n/po/fm_IDL.dtd/fr-CA.po
+3073	3052	build/i18n/po/fm_IDL.dtd/he-IL.po
+3073	3052	build/i18n/po/fm_IDL.dtd/hu-HU.po
+3076	3055	build/i18n/po/fm_IDL.dtd/hy-AM.po
+3073	3052	build/i18n/po/fm_IDL.dtd/oc-FR.po
+3075	3054	build/i18n/po/fm_IDL.dtd/pt-BR.po
+3075	3054	build/i18n/po/fm_IDL.dtd/ru-RU.po
+3073	3052	build/i18n/po/fm_IDL.dtd/sv-SE.po
+3073	3052	build/i18n/po/fm_IDL.dtd/tr-TR.po
+91	87	build/i18n/po/ils_events.xml/ar-JO.po
+92	88	build/i18n/po/ils_events.xml/cs-CZ.po
+91	87	build/i18n/po/ils_events.xml/de-DE.po
+91	87	build/i18n/po/ils_events.xml/en-CA.po
+110	106	build/i18n/po/ils_events.xml/en-GB.po
+91	87	build/i18n/po/ils_events.xml/es-ES.po
+91	87	build/i18n/po/ils_events.xml/fi-FI.po
+91	87	build/i18n/po/ils_events.xml/fr-CA.po
+91	87	build/i18n/po/ils_events.xml/he-IL.po
+91	87	build/i18n/po/ils_events.xml/hu-HU.po
+91	87	build/i18n/po/ils_events.xml/hy-AM.po
+91	87	build/i18n/po/ils_events.xml/oc-FR.po
+91	87	build/i18n/po/ils_events.xml/pt-BR.po
+91	87	build/i18n/po/ils_events.xml/ru-RU.po
+91	87	build/i18n/po/ils_events.xml/sv-SE.po
+91	87	build/i18n/po/ils_events.xml/tr-TR.po
+29	17	build/i18n/po/kpac/ar-JO.po
+30	18	build/i18n/po/kpac/cs-CZ.po
+29	17	build/i18n/po/kpac/de-DE.po
+29	17	build/i18n/po/kpac/en-GB.po
+29	17	build/i18n/po/kpac/es-ES.po
+29	17	build/i18n/po/kpac/hy-AM.po
+7	7	build/i18n/po/lang.dtd/cs-CZ.po
+3	3	build/i18n/po/match_set.js/ar-JO.po
+3	3	build/i18n/po/match_set.js/cs-CZ.po
+3	3	build/i18n/po/match_set.js/en-GB.po
+3	3	build/i18n/po/match_set.js/es-ES.po
+3	3	build/i18n/po/match_set.js/fr-CA.po
+3	3	build/i18n/po/match_set.js/hy-AM.po
+3	3	build/i18n/po/opac.js/ar-JO.po
+3	3	build/i18n/po/opac.js/cs-CZ.po
+3	3	build/i18n/po/opac.js/de-DE.po
+3	3	build/i18n/po/opac.js/en-CA.po
+3	3	build/i18n/po/opac.js/en-GB.po
+3	3	build/i18n/po/opac.js/es-ES.po
+3	3	build/i18n/po/opac.js/fi-FI.po
+3	3	build/i18n/po/opac.js/fr-CA.po
+3	3	build/i18n/po/opac.js/he-IL.po
+3	3	build/i18n/po/opac.js/hu-HU.po
+3	3	build/i18n/po/opac.js/hy-AM.po
+3	3	build/i18n/po/opac.js/oc-FR.po
+3	3	build/i18n/po/opac.js/pt-BR.po
+3	3	build/i18n/po/opac.js/ru-RU.po
+3	3	build/i18n/po/opac.js/sv-SE.po
+3	3	build/i18n/po/opac.js/tr-TR.po
+3	3	build/i18n/po/pickup_and_return.js/ar-JO.po
+3	3	build/i18n/po/pickup_and_return.js/cs-CZ.po
+3	3	build/i18n/po/pickup_and_return.js/de-DE.po
+3	3	build/i18n/po/pickup_and_return.js/en-CA.po
+3	3	build/i18n/po/pickup_and_return.js/en-GB.po
+3	3	build/i18n/po/pickup_and_return.js/es-ES.po
+3	3	build/i18n/po/pickup_and_return.js/fi-FI.po
+3	3	build/i18n/po/pickup_and_return.js/fr-CA.po
+3	3	build/i18n/po/pickup_and_return.js/he-IL.po
+3	3	build/i18n/po/pickup_and_return.js/hu-HU.po
+3	3	build/i18n/po/pickup_and_return.js/hy-AM.po
+3	3	build/i18n/po/pickup_and_return.js/oc-FR.po
+3	3	build/i18n/po/pickup_and_return.js/pt-BR.po
+3	3	build/i18n/po/pickup_and_return.js/ru-RU.po
+3	3	build/i18n/po/pickup_and_return.js/sv-SE.po
+3	3	build/i18n/po/pickup_and_return.js/tr-TR.po
+3	3	build/i18n/po/pull_list.js/ar-JO.po
+3	3	build/i18n/po/pull_list.js/cs-CZ.po
+3	3	build/i18n/po/pull_list.js/de-DE.po
+3	3	build/i18n/po/pull_list.js/en-CA.po
+3	3	build/i18n/po/pull_list.js/en-GB.po
+3	3	build/i18n/po/pull_list.js/es-ES.po
+3	3	build/i18n/po/pull_list.js/fi-FI.po
+3	3	build/i18n/po/pull_list.js/fr-CA.po
+3	3	build/i18n/po/pull_list.js/he-IL.po
+3	3	build/i18n/po/pull_list.js/hu-HU.po
+3	3	build/i18n/po/pull_list.js/hy-AM.po
+3	3	build/i18n/po/pull_list.js/oc-FR.po
+3	3	build/i18n/po/pull_list.js/pt-BR.po
+3	3	build/i18n/po/pull_list.js/ru-RU.po
+3	3	build/i18n/po/pull_list.js/sv-SE.po
+3	3	build/i18n/po/pull_list.js/tr-TR.po
+3	3	build/i18n/po/register.js/ar-JO.po
+3	3	build/i18n/po/register.js/cs-CZ.po
+3	3	build/i18n/po/register.js/de-DE.po
+3	3	build/i18n/po/register.js/en-CA.po
+3	3	build/i18n/po/register.js/en-GB.po
+3	3	build/i18n/po/register.js/es-ES.po
+3	3	build/i18n/po/register.js/fi-FI.po
+3	3	build/i18n/po/register.js/fr-CA.po
+3	3	build/i18n/po/register.js/he-IL.po
+3	3	build/i18n/po/register.js/hu-HU.po
+3	3	build/i18n/po/register.js/hy-AM.po
+3	3	build/i18n/po/register.js/oc-FR.po
+3	3	build/i18n/po/register.js/pt-BR.po
+3	3	build/i18n/po/register.js/ru-RU.po
+3	3	build/i18n/po/register.js/sv-SE.po
+3	3	build/i18n/po/register.js/tr-TR.po
+3	3	build/i18n/po/reports.js/ar-JO.po
+3	3	build/i18n/po/reports.js/cs-CZ.po
+3	3	build/i18n/po/reports.js/de-DE.po
+3	3	build/i18n/po/reports.js/en-CA.po
+3	3	build/i18n/po/reports.js/en-GB.po
+3	3	build/i18n/po/reports.js/es-ES.po
+3	3	build/i18n/po/reports.js/fi-FI.po
+3	3	build/i18n/po/reports.js/fr-CA.po
+3	3	build/i18n/po/reports.js/he-IL.po
+3	3	build/i18n/po/reports.js/hu-HU.po
+3	3	build/i18n/po/reports.js/hy-AM.po
+3	3	build/i18n/po/reports.js/oc-FR.po
+3	3	build/i18n/po/reports.js/pt-BR.po
+3	3	build/i18n/po/reports.js/ru-RU.po
+3	3	build/i18n/po/reports.js/sv-SE.po
+3	3	build/i18n/po/reports.js/tr-TR.po
+3	3	build/i18n/po/reservation.js/ar-JO.po
+3	3	build/i18n/po/reservation.js/cs-CZ.po
+3	3	build/i18n/po/reservation.js/de-DE.po
+3	3	build/i18n/po/reservation.js/en-CA.po
+3	3	build/i18n/po/reservation.js/en-GB.po
+3	3	build/i18n/po/reservation.js/es-ES.po
+3	3	build/i18n/po/reservation.js/fi-FI.po
+3	3	build/i18n/po/reservation.js/fr-CA.po
+3	3	build/i18n/po/reservation.js/he-IL.po
+3	3	build/i18n/po/reservation.js/hu-HU.po
+3	3	build/i18n/po/reservation.js/hy-AM.po
+3	3	build/i18n/po/reservation.js/oc-FR.po
+3	3	build/i18n/po/reservation.js/pt-BR.po
+3	3	build/i18n/po/reservation.js/ru-RU.po
+3	3	build/i18n/po/reservation.js/sv-SE.po
+3	3	build/i18n/po/reservation.js/tr-TR.po
+3	3	build/i18n/po/selfcheck.js/ar-JO.po
+3	3	build/i18n/po/selfcheck.js/cs-CZ.po
+3	3	build/i18n/po/selfcheck.js/de-DE.po
+3	3	build/i18n/po/selfcheck.js/en-CA.po
+3	3	build/i18n/po/selfcheck.js/en-GB.po
+3	3	build/i18n/po/selfcheck.js/es-ES.po
+3	3	build/i18n/po/selfcheck.js/fi-FI.po
+3	3	build/i18n/po/selfcheck.js/fr-CA.po
+3	3	build/i18n/po/selfcheck.js/he-IL.po
+3	3	build/i18n/po/selfcheck.js/hu-HU.po
+3	3	build/i18n/po/selfcheck.js/hy-AM.po
+3	3	build/i18n/po/selfcheck.js/oc-FR.po
+3	3	build/i18n/po/selfcheck.js/pt-BR.po
+3	3	build/i18n/po/selfcheck.js/ru-RU.po
+3	3	build/i18n/po/selfcheck.js/sv-SE.po
+3	3	build/i18n/po/selfcheck.js/tr-TR.po
+3	3	build/i18n/po/serial.js/ar-JO.po
+3	3	build/i18n/po/serial.js/cs-CZ.po
+3	3	build/i18n/po/serial.js/de-DE.po
+3	3	build/i18n/po/serial.js/en-GB.po
+3	3	build/i18n/po/serial.js/es-ES.po
+3	3	build/i18n/po/serial.js/hy-AM.po
+563	493	build/i18n/po/tpac/ar-JO.po
+604	531	build/i18n/po/tpac/cs-CZ.po
+563	493	build/i18n/po/tpac/de-DE.po
+563	493	build/i18n/po/tpac/en-CA.po
+600	530	build/i18n/po/tpac/en-GB.po
+563	493	build/i18n/po/tpac/es-ES.po
+563	493	build/i18n/po/tpac/fi-FI.po
+567	497	build/i18n/po/tpac/fr-CA.po
+563	493	build/i18n/po/tpac/he-IL.po
+563	493	build/i18n/po/tpac/hu-HU.po
+563	493	build/i18n/po/tpac/hy-AM.po
+563	493	build/i18n/po/tpac/oc-FR.po
+563	493	build/i18n/po/tpac/pt-BR.po
+563	493	build/i18n/po/tpac/ru-RU.po
+563	493	build/i18n/po/tpac/sv-SE.po
+563	493	build/i18n/po/tpac/tr-TR.po
+5	5	build/i18n/po/urlverify/ar-JO.po
+5	5	build/i18n/po/urlverify/cs-CZ.po
+5	5	build/i18n/po/urlverify/de-DE.po
+5	5	build/i18n/po/urlverify/en-GB.po
+5	5	build/i18n/po/urlverify/es-ES.po
+5	5	build/i18n/po/urlverify/hy-AM.po
+3	3	build/i18n/po/vandelay.js/ar-JO.po
+3	3	build/i18n/po/vandelay.js/cs-CZ.po
+3	3	build/i18n/po/vandelay.js/en-CA.po
+3	3	build/i18n/po/vandelay.js/en-GB.po
+3	3	build/i18n/po/vandelay.js/es-ES.po
+3	3	build/i18n/po/vandelay.js/hy-AM.po
+3	3	build/i18n/po/vandelay.js/pt-BR.po
+13	12	build/i18n/po/vandelay/cs-CZ.po
+611	497	build/i18n/po/webstaff/ar-JO.po
+973	850	build/i18n/po/webstaff/cs-CZ.po
+611	497	build/i18n/po/webstaff/en-CA.po
+938	824	build/i18n/po/webstaff/en-GB.po
+611	497	build/i18n/po/webstaff/es-ES.po
+611	497	build/i18n/po/webstaff/hy-AM.po
+611	497	build/i18n/po/webstaff/ru-RU.po
+
+commit 57266cba0df0fbbae766d64041b22071e8da7b74
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Aug 11 14:21:57 2020 -0700
+
+    Translation updates - newpot
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+15	15	build/i18n/po/conify/conify.pot
+2996	2970	build/i18n/po/db.seed/db.seed.pot
+3044	3022	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+12	0	build/i18n/po/kpac/kpac.pot
+2	2	build/i18n/po/tpac/tpac.pot
+400	316	build/i18n/po/webstaff/webstaff.pot
+
+commit a0fcb5a2204856bb8bcf073238dc3b7ecd1db76d
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Aug 11 13:11:14 2020 -0700
+
+    Docs: 3.5.1 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+200	0	docs/RELEASE_NOTES_3_5.adoc
+
+commit bf5bf3fbeffe73eeb9649dcbeeec2b98e40578be
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Aug 11 13:10:44 2020 -0700
+
+    Docs: tweaks to 3.4.4 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+31	1	docs/RELEASE_NOTES_3_4.adoc
+
+commit 4d9ebac5c46bd85de122c1670bc1bee4efcf5f2e
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Aug 11 11:24:46 2020 -0700
+
+    Docs: 3.4.4 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+160	0	docs/RELEASE_NOTES_3_4.adoc
+
+commit 652a68cd350e5535594150ba1eed91bfe877de78
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Jun 10 12:06:05 2020 -0400
+
+    Docs: Release notes for 3.4.3
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+88	0	docs/RELEASE_NOTES_3_4.adoc
+
+commit 515785ef611c5301184b1a22f7dd96db91f8bdd5
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Tue Aug 27 08:55:06 2019 -0400
+
+    LP1811466 Add fields to holdings editor column pickers
+    
+    Adds item fields creator, editor and last edit date to the working and
+    completed grids in the holdings editor.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+9	3	Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2
+1	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 3403cc4a63516af0d08682465baa94189f9e89ca
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Aug 3 17:14:12 2020 -0400
+
+    LP#1839369: (follow-up) tweak button and styles
+    
+    - Change the button text from "Search" to "Search Catalog"
+    - adjust the styling on the AngularJS side to cuddle the
+      button with the search input
+    - standardize the placeholder text as "Search for..."
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/eg2/src/app/staff/splash.component.html
+9	9	Open-ILS/src/templates/staff/t_splash.tt2
+
+commit ed07687a0f7b56704750b6b2f3ea6f97e67156fe
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Tue Oct 22 16:16:35 2019 -0400
+
+    LP#1839369 Accessibility for Search Box
+    
+    This adds an accessible label to the Search box on the splash
+    page of the staff client as well as to the Angular version of
+    the splash page.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	Open-ILS/src/eg2/src/app/staff/splash.component.html
+1	0	Open-ILS/src/templates/staff/t_splash.tt2
+
+commit 86b8dc5ac090c86a0dd4c34176398e8915e5a08f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 18 12:41:38 2020 -0400
+
+    LP1867834 Staffcat clear basket on logout
+    
+    Tell the browser/local store service to treat the staff catalog basket
+    cache key as a "login item", meaning it should be cleared upon logout.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	0	Open-ILS/src/eg2/src/app/share/catalog/basket.service.ts
+
+commit b0937bec9e04c649112dfa88e737fd73cb448d70
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Jul 28 11:09:45 2020 -0400
+
+    LP#1889251: make call number affix sort keys read-only
+    
+    This patch makes the call number prefix and suffix label sort
+    key fields read-only on their respective Server Administration
+    pages, as any values that a user would try to set for them
+    would get overwritten by a database trigger.
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Go to Server Administration -> Call Number Prefixes (or Suffixes)
+        and attempt create and edit new affixes.
+    [3] Verify that the label sort key is a read-only display field on the
+        edit modal.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+
+10	0	Open-ILS/src/eg2/src/app/staff/admin/server/routing.module.ts
+
+commit 54e8ad12a5c11124938208cc98f9aa22bf957e76
+Author: Josh Stompro <stompro@stompro.org>
+Date:   Mon Mar 4 11:16:56 2019 -0600
+
+    LP#1674364 - Use database bib id for cover art lookup
+    
+    Export the 901c as the URN:BIBID identifier to allow the
+    ATOM2XHTML.xsl to construct a cover art img link using it.
+    
+    Testing Notes:
+    
+    I used a bookbag to test this out.
+    1. Create a public bookbag of items and grab the bookbag id.
+    2. View the source of these links on your system to see the current output.
+     /opac/extras/feed/bookbag/atom/<bookbagid>
+     /opac/extras/feed/bookbag/html-full/<bookbagid>
+       Make note that the jacket img link uses the ISBN to lookup cover art.
+    
+    Make changes.
+    1. Restart supercat to re-load xsl transfor files.
+      osrf_control -l --service open-ils.supercat --restart
+    2. View the source and output of these links on your system to see the changes.
+     /opac/extras/feed/bookbag/atom/<bookbagid>
+     /opac/extras/feed/bookbag/html-full/<bookbagid>
+       The cover art images should show up now in the html-full, and the
+       URN:BIBID: identifier should be populated in the atom file.
+    
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	17	Open-ILS/xsl/ATOM2XHTML.xsl
+9	0	Open-ILS/xsl/MARC21slim2ATOM.xsl
+
+commit 3f1d031646eef2696eef0565b59284a28e26150d
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Aug 3 17:38:48 2020 -0400
+
+    LP#1731370: (follow-up) fix a typo that was causing console noise
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit c39150adc163e7d71377783ae0f3955340b9420b
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Aug 3 17:31:32 2020 -0400
+
+    LP#1761142: (follow-up) tweak field-change style
+    
+    [1] Ensure that the border is displayed.
+    [2] Change the border color to one that has more contrast
+        as compared to the bg-success background color.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+
+commit 1201866cafc701e8921f63392bfa68a2ea811dc5
+Author: a. bellenir <abelleni@grpl.org>
+Date:   Thu Mar 28 12:26:37 2019 -0400
+
+    LP1761142 Volume Copy Editor Changed Fields Hard to Discern
+    
+    Add a changed_fields object to the scope and update it as copies are
+    changed. The function field_changed(field) determines if any of the
+    selected copies have altered the given field.  finally, a CSS class,
+    field-changed, is applied to add a green border to fields whose values
+    have been modified.
+    
+    Signed-off-by: a. bellenir <abelleni@grpl.org>
+    Signed-off-by: Ruth Frasur <rfrasur@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+21	18	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+11	0	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 7eb9d3c1a0c2f4848440a707e0dc3c792422c7f6
+Author: Josh Stompro <stompro@stompro.org>
+Date:   Tue Jan 28 10:04:02 2020 -0600
+
+    LP#1783793 - Suspend holds when activation date set in web client angularjs
+    
+    1. Modify Dates popup changed to not allow picking dates in the past for hold
+      activation date both in the date picker, and if typed in manually.  If a
+      date in the past is typed in, it is changed to today's date and an alert
+      message is displayed.  The date picker just won't allow past days to be
+      selected.  The alert message remains until a date in the future is selected.
+    
+    2. Suspend holds when the activation date is set and saved.
+    
+    3. Adds a note about the fact that the hold will be suspended when the hold
+      activation date is selected for editing.  This makes the behavior clear so
+      staff don't have to figure it out by trial and error.
+    
+    4. Updates several sr-only (Screen Reader Only) labels in the holds date popup
+      template that were set to the wrong values.  The file was copied from the hold
+      notification popup and the screen reader descriptions were left unchanged from
+      those values.
+    
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+9	4	Open-ILS/src/templates/staff/circ/share/t_hold_dates.tt2
+17	1	Open-ILS/web/js/ui/default/staff/circ/services/holds.js
+
+commit 0a73a417c0585d5ba31426657d8df463bfb661bf
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Jun 30 15:33:23 2020 -0400
+
+    LP#1885759: Count months and quarters across year boundaries
+    
+    We need to add year-multiples of months or quarters when using the
+    months_ago or quarters_ago transforms in the reporter.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	2	Open-ILS/src/perlmods/lib/OpenILS/Reporter/SQLBuilder.pm
+
+commit 489a77557ec21cf17b7bce48e187bb64720e77a8
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Oct 8 16:00:12 2019 -0700
+
+    LP#1847343: fix Exclude Electronic Resources checkbox when locale picker is enabled
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	4	Open-ILS/web/js/ui/default/opac/simple.js
+
+commit 9533ecd64e1de405f9fd6575dae8b7a87c5fa956
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Oct 25 21:11:49 2019 -0700
+
+    LP #1717996 (follow-up) Change label for shareable user buckets
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+
+2	1	Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_create.tt2
+2	1	Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_edit.tt2
+
+commit 461079fd6a82c88820e638da35dbb5de5c597760
+Author: Tiffany Little <tlittle@georgialibraries.org>
+Date:   Mon Oct 21 15:00:30 2019 -0400
+
+    LP #1717996 Change label for shareable buckets
+    
+    Changes 'publicly visible' label on buckets and also adds a tooltip with an explanation. Also makes sure that clicking the tooltip does not check the checkbox automatically.
+    
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+
+2	1	Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_create.tt2
+2	1	Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_edit.tt2
+
+commit c4fa3ca2c8fa7af9e5eb5e92b39477272edeb042
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Fri Jul 31 12:39:23 2020 -0400
+
+    LP1842431: Add a release note
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+
+11	0	docs/RELEASE_NOTES_NEXT/Administration/autorenewal_action_trigger_result_code.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/autorenewal_action_trigger_result_code.adoc
+
+commit 040c4d2c70f5ab0d1f78596aaf07bddc27444395
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Fri Jul 31 11:10:24 2020 -0400
+
+    LP1842431: Remove redundant description field
+    
+    This branch brings about a good change, but I think having reason
+    and description be identical in the case of a failure and blank /
+    'SUCCESS' in the case of, well, success, is redundant and potentially
+    confusing. Also, if it's not used in the default template I doubt
+    anyone ever realizes it's there. :) Template editors can use
+    is_renewed to decide if they want to display success as a result
+    and that way the capitalization won't look like THE EIGHTIES have come
+    back in fashion again. :D
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+0	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor/Circ/AutoRenew.pm
+
+commit 6c73a5ae26da71e1ff49c26a635a439c1dbd0b09
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Sep 6 11:09:18 2019 -0400
+
+    LP#1842431 Split textcode and desc fields for AutoRenew user data
+    
+    Split the event textcode and desc fields into textcode and description
+    fields, respectively, in the AutoRenew reactor's user data, but also
+    leave the reason field alone.  This permits sites to show only the
+    description of the event if they want.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+
+2	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor/Circ/AutoRenew.pm
+
+commit 9def7f7349dcb2e8661c9bb3e4b211cb652f1cc1
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Thu Sep 12 16:30:47 2019 -0400
+
+    LP#1842431 Make renewal failure reason more appropriate for patron notifications
+    
+    Changes the failure reason for the autorenewal to include only the desc,
+    Removes the textcode of the event, which shouldn't be included in a patron notice.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor/Circ/AutoRenew.pm
+
+commit a1ef32532714753bf568408dedddb1026d6e6135
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Oct 8 17:24:20 2018 -0700
+
+    LP1731370: Distinguishing new copies and volumes with aditional means (WCAG 1.4.1)
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	0	Open-ILS/src/templates/staff/cat/volcopy/index.tt2
+1	2	Open-ILS/src/templates/staff/css/cat.css.tt2
+6	4	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 7f14d09634fb9e631621c06033075533e37c680b
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Wed Sep 12 08:10:32 2018 -0400
+
+    lp1731370 CSS styling for new items and volumes
+    
+    previous commit just handled volumes, this handles copies
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/css/cat.css.tt2
+3	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 187100f24a9354b407a598266c15c3f6cf9b3663
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Wed Sep 5 09:13:49 2018 -0400
+
+    lp1731370 CSS styling for new items and volumes
+    
+    in vol/copy editor
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	1	Open-ILS/src/templates/staff/css/cat.css.tt2
+1	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 0eabb01710b738cce91e0c57e49652ea20f7e842
+Author: Josh Stompro <stompro@stompro.org>
+Date:   Wed Nov 6 12:24:36 2019 -0600
+
+    LP#1851541 - Add audio alert for item alert popups
+    
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit c6d36312a91ee4d1dc042af7df2ee681cc7b86a1
+Author: Christine Morgan <cmorgan@noblenet.org>
+Date:   Thu Nov 21 12:53:11 2019 -0500
+
+    LP1735568, LP1830443: MARC Editor Fixes
+    
+    These style changes to the current MARC Editor fix the indicator box
+    resize problem and the blank subfield problem while improving usability.
+    Colors were tested using the Chrome extension Colorblindly, a
+    colorblindness simulator.
+    
+    Signed-off-by: Christine Morgan <cmorgan@noblenet.org>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+24	21	Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2
+3	3	Open-ILS/src/templates/staff/cat/share/t_marcedit_editable.tt2
+27	11	Open-ILS/src/templates/staff/css/cat.css.tt2
+
+commit c9b47019a96b9e0596b4c2ba67c3ec38bd4c2ca8
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jul 28 17:21:28 2020 -0400
+
+    LP1889296 Staffcat holds request time includes time
+    
+    Display the hold request time as date plus time in the general purpose
+    Angluar holds grid.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+
+commit 9494eeac685be9531d86b5c927d9037f369a6fe5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jun 26 10:45:37 2020 -0400
+
+    Forward-port 3.5.0 upgrade script
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+404	0	Open-ILS/src/sql/Pg/version-upgrade/3.4.3-3.5.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.4.3-3.5.0-upgrade-db.sql
+
+commit 906d5aa682ca3bc2ea91f1785dfef2d4b38a1a50
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Jul 28 10:43:25 2020 -0400
+
+    LP#1776757: (follow-up) keep input for amount as type "number"
+    
+    Doing this preserves the form validation that ensures that
+    the user cannot submit the form with a non-numeric amount.
+    
+    This does lose forcing the display of default amounts such as
+    "1.50" to two decimal places, but I'm figuring that form validation
+    takes priority pending a longer-term solution such as a custom
+    value validator or using ng-currency.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2
+1	1	Open-ILS/web/js/ui/default/staff/circ/services/billing.js
+
+commit 833a128f02d8dec9d4282aaf1d4f261c6bf6cde3
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Wed Jan 29 20:20:35 2020 +0000
+
+    lp1776757 Default Billing Price Not Updating
+    
+    Fix the following bug: When billing a patron and one switches from
+    one billing type to a different billing type, the price isn't updating
+    to show the new default price
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2
+5	2	Open-ILS/web/js/ui/default/staff/circ/services/billing.js
+
+commit f1372798b1ee45639826974d3013a041c76e17f4
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Oct 3 09:04:54 2018 -0700
+
+    LP1795469: Opac holdings sort now considers CN suffix
+    
+    To test:
+    1) Create a bunch of Call Number suffixes in Administration
+    -> Server Administration -> Call Number Suffixes.
+    2) Go to a bib record, and add a bunch of holdings,
+    all with the same call number label, owning/circ libraries,
+    item numbers, and parts (if using parts) but with different
+    barcodes and CN suffixes.
+    3) Look at the OPAC view of these holdings.  Note that they
+    are in order by barcode, without any consideration for
+    the CN suffix.
+    4) Apply this commit.
+    5) Look at the OPAC view again.  Note that they are now sorted
+    by CN suffix, and then by barcode.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+
+commit 6d423f8d0f2f303db7b3dc6dc4c9d665ddc7c7f2
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jun 8 16:03:14 2020 -0400
+
+    LP1882591 Empty combobox avoids default selection
+    
+    When clearing a combobox value, no combobox options are displayed in the
+    dropdown.  This allows users to clear the value then tab out of the box
+    without the typeahead magic forcing selection of the first entry.
+    
+    The full list can still be displayed by clicking on the combobox.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	6	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+
+commit b2a0c4b68a3904e157200d0a10239a7e54c718e3
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jul 27 10:58:52 2020 -0400
+
+    LP1878079 Staffcat Add Holdings action support
+    
+    Teaches the staff catalog Add Holdings button to open the holdings
+    editor using the appropriate parameters.  If the holdings maintenance
+    grid is active, arguments to pass are based on the grid selection.
+    Otherwise it simply open the item editor with a single call number /
+    copy to be created 'here'.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	7	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+3	2	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+28	0	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.ts
+
+commit 72e49866a2696cc5e30513bb38544215a605ef2c
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed May 13 12:17:19 2020 -0400
+
+    LP1878079 Staffcat 'Edit' items / call numbers support
+    
+    Adds support to the Angular staff catalog to properly handle requests
+    to Edit Items, Edit Call Numbers, and Edit Call Numbers and Items.
+    Prior to his change, these operations would behave more like Add
+    operations than Edit operations.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+6	6	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.html
+37	3	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+14	12	Open-ILS/src/eg2/src/app/staff/share/holdings/holdings.service.ts
+
+commit 9d3fbd0285a946385352d8a6d50b1df5c41ce7bd
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon May 11 15:10:37 2020 -0400
+
+    LP1878079 Staffcat Add Call Nums honors selected orgs
+    
+    When adding new call numbers from the Angular staff catalog Holdings
+    View grid, take all selected grid rows into consideration when
+    determining how many call numbers to add and what their owning libs
+    should be.
+    
+    To test:
+    * Navigate to the Holdings View tab of a record detail page in the Angular
+      staff catalog.
+    * Select multiple rows in the grid which are org unit-only rows (i.e.
+      the row does not refer to a specific call number or item).
+    * From the action menu / right client menu, select "Add Callnumbers"
+    * Confirm that a call number entry for each selected org unit is present
+      in the spawned holdings editor.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+15	10	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+
+commit 93dde328d1fae2788c6460dbd9e88113bafa43ce
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Jul 27 10:55:19 2020 -0400
+
+    LP#1802166: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.function.actor_usr_delete.sql => 1211.function.actor_usr_delete.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.function.actor_usr_delete.sql => 1211.function.actor_usr_delete.sql} (96%)
+
+commit 74c3a9355a2e99d79824b3b2b078c3d7f2b862c1
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Jul 27 10:51:37 2020 -0400
+
+    LP#1802166: (follow-up) document a way to clear names from already-purged patron records
+    
+    For reference, the following SQL will clear the preferred name
+    and name keyword fields from already-purged records:
+    
+    UPDATE actor.usr
+    SET pref_prefix = NULL,
+        pref_first_given_name = NULL,
+        pref_second_given_name = NULL,
+        pref_family_name = NULL,
+        pref_suffix = NULL,
+        name_keywords = NULL
+    WHERE usrname ~ ('^' || id || '-PURGED')
+    AND NOT active
+    AND deleted
+    AND (
+        pref_prefix IS NOT NULL OR
+        pref_first_given_name IS NOT NULL OR
+        pref_second_given_name IS NOT NULL OR
+        pref_family_name IS NOT NULL OR
+        pref_suffix IS NOT NULL OR
+        name_keywords IS NOT NULL
+    );
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+25	0	docs/RELEASE_NOTES_NEXT/Circulation/purge_usr_pref_names.adoc
+
+commit e15b0ab7d877f1340e75c0680b73c748023882fe
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Feb 15 13:33:08 2019 -0500
+
+    Lp 1802166: Purge User Name Keywords
+    
+    Add the name_keywords field to the fields that get set to null in
+    actor.usr_delete.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/sql/Pg/999.functions.global.sql
+1	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.actor_usr_delete.sql
+
+commit 7da2969b4743148aea6bc8952ebc8db0b09f1c12
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Feb 15 12:21:19 2019 -0500
+
+    Lp 1802166: Purge User Preferred Names
+    
+    When the preferred names feature was added, the new fields were not
+    added to the update in the actor.usr_delete function.  This commit
+    sets those new fields to NULL in that function.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	0	Open-ILS/src/sql/Pg/999.functions.global.sql
+124	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.actor_usr_delete.sql
+5	0	docs/RELEASE_NOTES_NEXT/Circulation/purge_usr_pref_names.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.actor_usr_delete.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/purge_usr_pref_names.adoc
+
+commit f2dc7b6e990ebc1be4c43c57731a0166220ac11a
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Fri Jun 5 09:00:53 2020 -0400
+
+    LP1819542 Hanging transits can cause checkins to fail
+    
+    So two bits of defensive programming for do_checkin:
+    
+        sub fix_broken_transit_status
+        sub cancel_transit_if_circ_exists
+    
+    I don't know if the first one does anything useful, but the idea is that it'll
+    at least temporarily set the copy status to In Transit for any status checks
+    within the do_checkin method that test for that.  It doesn't actually repair
+    the status permanently (at least in the case of, say, an existing transit being
+    re-used for a ROUTE_ITEM event).  We may want to do that.
+    
+    The second one will abort an associated transit (including retargeting a hold
+    for a hold transit) if both an active transit and an active circulation exist
+    for the item.  This handles the situation I've been using to test the bug:
+    
+        1) transit an item (CONC90000436 in Concerto)
+        2) artificially change its status directly in the database (for example, to
+           Available)
+        3) check it out to a patron (99999376864 in Concerto), noting
+           that the Cancel Transit prompt does not get triggered
+        4) check in the item
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+42	15	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit b584ea2a39d6f7a26e40f87dde09327857185e3f
+Author: Jason Boyer <JBoyer@eoli.info>
+Date:   Wed Jan 8 13:37:01 2020 -0500
+
+    LP1858701: prevent doubles slashes in opac iframe urls
+    
+    The CGI module (used by mkurl()) does not like it
+    if we have two slashes in a URL sort/of/like//this.
+    Things work but the path portion of the URL is doubled
+    each time mkurl is used on it. This branch fixes 2
+    causes in the staff OPAC.
+    
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit d920660f94700d2c06d3296182b2e81fba81f334
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Jun 18 13:48:44 2019 -0700
+
+    LP#1833300: wrap SRU query in parentheses before appending site param
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/SuperCat.pm
+
+commit eca9e6e08e4461e805035ad767f63f41f49aadba
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Aug 19 12:43:33 2019 -0700
+
+    LP1739288: report back on invalid barcodes in Item Status screen
+    
+    To test:
+    
+    1) Make a text file with both valid and invalid item barcodes.
+    2) Go to Circulation > Item Status and upload your file.
+    3) Note that the valid barcodes result in rows in the item status
+    screen, and the invalid barcodes are not displayed anywhere.
+    4) Apply this commit.
+    5) Repeat step 2.
+    6) Notice that the invalid barcodes are now reported in a new alert.
+    7) Make a text file with only valid barcodes and upload it.
+    8) Upload it.  Notice that the alert disappears.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    
+    LP1739288: Add a summary report to the list of bad barcodes.
+    
+    (^^ squash of commit written by Josh Stompro)
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+21	0	Open-ILS/src/templates/staff/cat/item/index.tt2
+11	1	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+
+commit 6eb7c483360a7ea3eea7dbbaa66e197d601e0543
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 15 18:32:19 2019 -0400
+
+    LP#1847784: (docs) refer to the badge score generator cron job by name
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	2	docs/admin/popularity_badges_web_client.adoc
+
+commit ea24a23773298332216d0eaa9fabc25857e454c2
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 15 18:29:40 2019 -0400
+
+    LP#1847784: install badge_score_generator.pl by default
+    
+    To test
+    -------
+    [1] Perform an Evergreen installation/upgrade.
+    [2] Verify that badge_score_generator.pl is present
+        in /openils/bin (or an alternative installation
+        location specified during the ./configure step).
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	0	Open-ILS/src/Makefile.am
+
+commit 9f8c057a3eb0196d5e0a5aa5efcae375d7e5dc94
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun Mar 15 08:49:48 2020 -0700
+
+    LP1867524: Add a help popover to the End field in the Closed Dates Editor
+    
+    To test:
+    1) Go to Administration > Local Administration > Closed Dates Editor.
+    2) Click Add Closing.
+    3) Under closing type, choose Multiple Day.
+    4) Note that the End field has no guidance for the user.
+    5) Apply this commit.
+    6) Repeat steps 1-3.
+    7) Notice that the End field has some clarifying guidance for the user.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/admin/local/actor/edit_closed_dates.tt2
+
+commit bfd07a628d60eeda978a1b9e9698a896912abeeb
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Nov 13 10:28:53 2019 -0500
+
+    LP#1852443 - Re-label duplicate-named "all circulations" source
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+13	0	docs/RELEASE_NOTES_NEXT/Reports/change_aacs_label.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Reports/change_aacs_label.adoc
+
+commit 1ffe1609ddb0e302792006ec79533b154db2bafb
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Fri Jul 24 09:53:16 2020 -0400
+
+    LP1747542: Stamp upgrade script
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.lp1747542_action_item_user_circ_test.sql => 1209.lp1747542_action_item_user_circ_test.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.lp1747542_action_item_user_circ_test.sql => 1209.lp1747542_action_item_user_circ_test.sql} (99%)
+
+commit 82185fe71ee972a0753d748a93540c3f6edb2958
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Feb 5 18:58:43 2018 -0500
+
+    LP#1747542 - Repair item/user circulation test
+    
+    The action.item_user_circ_test function was previously
+    ignoring lost or longoverdue and paid-for circulations.
+    Adding a check for whether the circulation is closed
+    fixes this.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+
+1	0	Open-ILS/src/sql/Pg/100.circ_matrix.sql
+237	0	Open-ILS/src/sql/Pg/upgrade/XXXX.lp1747542_action_item_user_circ_test.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.lp1747542_action_item_user_circ_test.sql
+
+commit f95cf009f6e131b1cad0bd02f8a31629dee658f0
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Jul 7 16:24:49 2020 -0400
+
+    LP#1886713: fix issue where AngularJS hotkeys fail to initialize
+    
+    Fixes a race condition where the navbar service can look for
+    eg-accesskey attributes before all of the elements that have
+    them meet the conditions to show up in the DOM.
+    
+    To test
+    -------
+    [1] From an AngularJS part of the staff interface, note that
+        hitting F8 sometimes does not perform the retrieve
+        last patron action, nor does F8 show up on the list of
+        hot keys when you hit "?" outside of an input.
+    [2] Apply the patch and repeat step 1. This time, the F8
+        hotkey should consistently work.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+7	4	Open-ILS/web/js/ui/default/staff/services/navbar.js
+
+commit d38082cd9df5080fc41c291e3025fade18fb0316
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Jun 6 18:15:56 2019 -0700
+
+    LP1474874: Consistent page headers in the Angular client
+    
+    This commit ensures that each screen in the Angular staff client uses
+    the <eg-staff-banner> component to better orient its users.
+    
+    This commit also gives the eg-staff-banner some <h1> semantics, per
+    WebAIM's guidance: "Pages should be structured in a hierarchical manner,
+    generally with one 1st degree headings (<h1>) being the most important
+    (usually page titles or main content heading)" -- https://webaim.org/techniques/semanticstructure/
+    
+    To test:
+    
+    1) Go to [your-server]/eg2/en-US/staff/catalog/search
+    2) Confirm that there is a header that gives the page title at the top
+    of the page.
+    3) Go to an Angular Vandelay page.
+    4) Confirm that you see a similar header as in step 2.
+    5) Go to an Angular Administration page.
+    6) repeat step 4.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+
+2	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.component.html
+2	0	Open-ILS/src/eg2/src/app/staff/catalog/browse.component.html
+2	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.component.html
+2	0	Open-ILS/src/eg2/src/app/staff/catalog/cnbrowse.component.html
+1	1	Open-ILS/src/eg2/src/app/staff/share/staff-banner.component.ts
+
+commit 63cecbf966de5e98efa9031cb2c7e74e848267df
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Fri Jul 24 08:41:49 2020 -0400
+
+    LP1870605: Stamp upgrade script
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{xxxx.schema.emergency_closing_fines_fix.sql => 1208.schema.emergency_closing_fines_fix.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{xxxx.schema.emergency_closing_fines_fix.sql => 1208.schema.emergency_closing_fines_fix.sql} (99%)
+
+commit a0f73155019638e7e5fa2aa99ddead01a3307483
+Author: Steven Callender <stevecallender@esilibrary.com>
+Date:   Fri Apr 3 15:20:39 2020 -0400
+
+    LP1870605: Fix typo in emergency closing functions
+    
+    The emergency closing handler was ignoring any
+    circulations that already had fines due to a typo
+    in the stage 2 circ and reservation functions.
+    
+    Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+
+2	2	Open-ILS/src/sql/Pg/096.schema.emergency_closing.sql
+191	0	Open-ILS/src/sql/Pg/upgrade/xxxx.schema.emergency_closing_fines_fix.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.schema.emergency_closing_fines_fix.sql
+
+commit 49b28c6d2d6b04c53ccdf51a7f447431044d7045
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Jul 23 06:37:07 2020 -0700
+
+    LP#1705302: Stamping Upgrade Script
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.lp1705302-update-receipt-template-setting-descriptions.sql => 1207.data.lp1705302-update-receipt-template-setting-descriptions.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.lp1705302-update-receipt-template-setting-descriptions.sql => 1207.data.lp1705302-update-receipt-template-setting-descriptions.sql} (96%)
+
+commit a4fa2284b788d7052a81ee48c28b736f93cac835
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Tue Jun 11 09:57:58 2019 -0700
+
+    lp1705302 update description of receipt template
+    
+    Updated editing instructions to give correct syntax and changing name
+    from receipt templates to Print Templates
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    
+     Changes to be committed:
+            modified:   src/sql/Pg/950.data.seed-values.sql
+            new file:   src/sql/Pg/upgrade/XXXX.data.lp1705302-update-receipt-template-setting-descriptions.sql
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	5	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+36	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1705302-update-receipt-template-setting-descriptions.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1705302-update-receipt-template-setting-descriptions.sql
+
+commit 3168a635f7b95c55376aa126f96abf51bfd31b30
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Jan 29 12:33:30 2020 -0500
+
+    LP#1775940: Archived Penalties/Messages does not Respect Date Range
+    
+    This patch implements a.bellenir's suggestion of switching from
+    setQuery to watchQury in the archiveGrid of the web client circulation
+    patron app.  It does now appear to respect the date range entered by
+    the user.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit eae8919fe607392bbb40d6741f60b910032408e0
+Author: Josh Stompro <stompro@stompro.org>
+Date:   Mon Feb 3 13:42:08 2020 -0600
+
+    LP#1754387 - User Buckets - Pending Users Enhancement
+    
+    It wasn't possible to load more than 100 users from a barcode file import in
+    user buckets because of two issues.  The pager was limited to only showing 100
+    barcodes at a time, and moving any users from the pending list would clear the
+    pending list.
+    
+    Here is a branch that makes the following changes.
+    
+    1. Sets the default number of items to 100 and allows choosing the
+      500,1000,10000 options for the pager.
+    
+    2. When moving users from pending to a bucket, only removes the moved users
+      from the pending list.  This allows the user to move a larger number of
+      users to a bucket from pending, a batch at a time.
+    
+    Testing Plan:
+    
+    Before Changes:
+    
+    1. Load a file with 110 patron barcodes in the User Buckets, Pending Users interface.
+    2. See that the pager only allows a max of 100 for the page size.
+    3. Move one user to a bucket and note that the pending list gets cleared.
+    
+    After Changes:
+    
+    1. Load a file with 110 patron barcodes.
+    2. See that the pager allows for picking larger page sizes.
+    3. Move one user to a bucket, and note that the pending list removes just that one user.
+    
+    Another way to see the changes is to pick a pager size of 25, and select all the
+    entries.  Then move them to a bucket and see that you can continue to move
+    batches of 25 until you have moved all the pending users.
+    
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	1	Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2
+18	2	Open-ILS/web/js/ui/default/staff/circ/patron/bucket/app.js
+
+commit 3d058276eee938efe7bb7090a050ae5858fc22bb
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun Mar 8 07:58:09 2020 -0700
+
+    LP1845241: Use the correct API call to Undelete a bib record
+    
+    To test:
+    
+    1) Open up a delete-ready bibliographic record in the Web client
+    (no attached holdings, no located URI, no open orders attached, etc.)
+    2) Delete it.
+    3) Undelete it.  Note that the "Undelete" button briefly turns into a
+    "Delete" button before changing back to an "Undelete" button.  Note that
+    the bib record does not show up in search results within the Web client.
+    4) Apply this commit.
+    5) Now try undeleting the record again.  Notice that the "Delete" button
+    does not revert to an "Undelete" button.  Note also that the record is
+    once again showing up in search results (although you may have to be a
+    bit creative using search terms, due to search results caching).
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	0	Open-ILS/src/templates/staff/cat/share/marcedit_strings.tt2
+18	2	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+
+commit 2ebe28bc8547df16a27ae0102fbb31bc1a867666
+Author: Jeff Davis <jeff.davis@bc.libraries.coop>
+Date:   Thu Oct 10 16:01:06 2019 -0700
+
+    LP#1847680: live test for barcode completion
+    
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+99	0	Open-ILS/src/perlmods/live_t/30-barcode-completion.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/30-barcode-completion.t
+
+commit 33bed7cce801d911fadee25484b4fc3c364d37af
+Author: Dan Scott <dan@coffeecode.net>
+Date:   Tue Jan 7 15:05:06 2020 -0500
+
+    LP1805860: Display long patron names without obscuring input fields
+    
+    Long patron names can obscure the input fields and menu items on patron
+    action screens. The only workaround is to reduce the font size using the
+    browser controls until the input fields and menu items are visible.
+    
+    While the fixed position saves space at the top of the screen for
+    typical cases, it can be hard for staff to remember the font-reduction
+    workaround when they hit a long patron name.
+    
+    Removing the fixed position CSS also better supports the display of
+    regular patron names on browsers that are not wide enough to display the
+    top menu (Search/Circulation/Cataloging/.../Workstation name/Locale) all
+    on a single line.
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+0	6	Open-ILS/src/templates/staff/css/circ.css.tt2
+
+commit b9f27dd2735b5cc2ef12be49a212333c3d2c20b0
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Jun 22 11:40:08 2020 -0400
+
+    LP#1844365: fix initialization of stat cats in patron registration form
+    
+    If you edit a patron and it has (or gets added) a stat cat entry,
+    then from the registration form click on its inline patron search
+    link, fetch a patron that has no stat cats, then edit it, the
+    first patron's stat cats can show up in the registration form.
+    If the second patron does have stat cats, but not values set
+    for all of them, then the first patron's stat cat entries can
+    fill in cases where no entry was previously set.
+    
+    This patch fixes patronRegSvc's initialization when loading
+    an existing patron record to avoid this.
+    
+    To test
+    -------
+    [1] Edit a patron and ensure that it has at least one
+        statistical category set.
+    [2] From the patron search link in the patron app tab
+        bar, NOT the Search | Patron menu item, search for
+        and retrieve a patron that has no stat cats assigned.
+    [3] Edit the patron. Observe that the first patron's
+        stat cat entry displays in the second patron's
+        registration form.
+    [4] Apply the patch and repeats steps 1-3. This time,
+        the previous patron's stat cats should not infect
+        the second patron's registration form.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+
+1	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 8900bc3884b769e758a0d72365ceab878d352518
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Thu May 23 21:47:02 2019 +0000
+
+    lp1775286 Color Indication of Overdue on Items Out
+    
+    - Overdue items are highlighted in red in the Items Out UI.
+    - Ensure overdue-row and lost-row classes handle visited links
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	2	Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2
+1	1	Open-ILS/src/templates/staff/css/style.css.tt2
+9	0	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit 621cff2962c98412e040ab4933a79c84d4ec461d
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue May 5 10:34:36 2020 -0700
+
+    LP#1840294: use dedicated UI for match set admin, rather than auto-generated admin pages
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/admin/server/admin-server-splash.component.html
+
+commit bf8972d04d3436824ca3698d7dae43baaf66c0ce
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Apr 24 16:09:57 2020 -0400
+
+    LP1874897 Staff catalog honors classification scheme
+    
+    Use the org unit setting "cat.default_classification_scheme" to
+    determine which scheme to use when extracting the bib-level call number
+    for display in the Angular staff catalog.
+    
+    This also modifies the API to look the value up so future calls to the
+    API will Just Work (and it's one less bit of data the browser has to
+    retrieve).
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	4	Open-ILS/src/eg2/src/app/share/catalog/bib-record.service.ts
+13	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+
+commit 83c236951645ccfe244ba094684d26ba3b2d006a
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jul 3 10:05:33 2020 -0400
+
+    LP1886118 Staff catalog search format repair
+    
+    Fixes an error in the staff catalog search params builder with regard to
+    encoding the search format.  The 'format' param should be 'search_format'.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/eg2/src/app/share/catalog/search-context.ts
+
+commit 09e7d384b0523be53c64e736889c141fd94108d0
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Jul 17 07:09:29 2020 -0400
+
+    LP#1886852: Stamping Upgrade Script
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.function.distinct-regen_copy_map.sql => 1206.function.distinct-regen_copy_map.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.function.distinct-regen_copy_map.sql => 1206.function.distinct-regen_copy_map.sql} (82%)
+
+commit bca8f5ec8040291b2b39a7e7ca31f223c51fb3f3
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jul 8 13:18:52 2020 -0400
+
+    LP#1886852: Protect against dupes in hold-copy map function
+    
+    If the DB function that regenerates the hold-copy maps for a hold
+    receives duplicate copies in its second parameter, it blows up.  This
+    commit prevents that by making the list unique at use time.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/090.schema.action.sql
+12	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.distinct-regen_copy_map.sql
+ create mode 100755 Open-ILS/src/sql/Pg/upgrade/XXXX.function.distinct-regen_copy_map.sql
+
+commit ee2d830686d02a37b8b26841ddd496fe1bfbe0c0
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun Jul 12 08:10:26 2020 -0700
+
+    LP1848573: follow-up: minor changes to IDL labels for the ccs class
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	Open-ILS/examples/fm_IDL.xml
+
+commit 26d110b62f81ae38bf2cc4e8e98d89a76c490aa3
+Author: Shula Link <slink@gchrl.org>
+Date:   Mon Mar 16 10:30:27 2020 -0400
+
+    LP1848573: Added nice labels to Open-ILS\examples\fm_IDL.xml
+    for copy status
+    
+    Signed-off-by: Shula Link <slink@gchrl.org>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+7	7	Open-ILS/examples/fm_IDL.xml
+
+commit c1f351be0393dd92251c3ca2cf5cedc8ca22b78c
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Sep 12 09:14:58 2018 -0400
+
+    LP#1712854: Disable all server-side sorting, but provide a stub for later, if we move that way
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: John Yorio <jyorio@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2
+3	1	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+34	1	Open-ILS/web/js/ui/default/staff/circ/holds/app.js
+
+commit 5b07204a98cd055f9945ded0540d96b0544b4943
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Sep 11 17:36:30 2018 -0400
+
+    LP#1712854: Add User Alias and User Alias or Display Name columns to shelf list
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: John Yorio <jyorio@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+2	0	Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2
+
+commit d637584c4ac9d2b6d381b41e2f580cdb590cd329
+Author: Jason Boyer <JBoyer@eoli.info>
+Date:   Fri Feb 21 16:08:36 2020 -0500
+
+    LP1864056: Don't compare multiple new Date()s
+    
+    This branch addresses a race condition when
+    checking out or renewing items.
+    (The use of minDate in items_out was implicitly
+    immune to this issue, but that is made explicit
+    with this patch.)
+    
+    To test
+    -------
+    [1] The race condition would be difficult to reliably
+        reproduce directly, although a tool like
+        https://github.com/mattzeunert/javascript-clock-speedup
+        might help simulate the problem, so to test, verify
+        that the following actions do not break:
+    
+        * checking out a loan, both with and without
+          setting a specific due date
+        * renewing a loan with a specific due date
+          from the patron items out tab
+        * renewing a loan from Circulation -> Renew Items,
+          both with and without setting a specific due date.
+    
+    Signed-off-by: Jason Boyer <JBoyer@eoli.info>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	2	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+3	2	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+3	3	Open-ILS/web/js/ui/default/staff/circ/renew/app.js
+
+commit 4062a68ccfcff1893ac5f2ec735ca40718ee3f4b
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Thu Feb 20 23:07:30 2020 +0000
+
+    lp1735828 Copy Bucket multi show status
+    
+    Revise the web client so that when one is in the copy bucket one can
+    select multiple entries and do "show status" on all of them.
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	0	Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2
+9	0	Open-ILS/web/js/ui/default/staff/cat/bucket/copy/app.js
+
+commit 6ff6e8cd5413306663065e70ee84e581894bb767
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 10 10:48:27 2020 -0400
+
+    LP1866546 MARC edit support authority record (un)delete
+    
+    Teaches the Angular MARC editor to use PCRUD for deleting and undeleting
+    authority records instead of erroneously using the bib record delete /
+    undelete APIs.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+87	28	Open-ILS/src/eg2/src/app/staff/share/marc-edit/editor.component.ts
