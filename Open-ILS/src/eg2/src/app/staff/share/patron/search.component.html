@@ -180,8 +180,8 @@
 <div class="patron-search-grid mt-4">
   <eg-grid #searchGrid idlClass="au" 
     persistKey="circ.patron.search"
-    (onRowActivate)="rowsSelected($event)"
-    (onRowClick)="rowsClicked($event)"
+    (rowSelectionChange)="gridSelectionChange($event)"
+    (onRowActivate)="rowsActivated($event)"
     [dataSource]="dataSource" 
     [showDeclaredFieldsOnly]="true"> 
 

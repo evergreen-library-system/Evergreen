@@ -37,7 +37,7 @@
     <h3 i18n>Holds Count: {{holdsCount}}</h3>
 
     <div class="row" *ngIf="!hidePickupLibFilter">
-      <div class="col-lg-4">
+      <div class="col-lg-5">
         <div class="input-group">
           <div class="input-group-prepend">
             <div class="input-group-text" i18n>Pickup Library</div>
@@ -76,6 +76,12 @@
         (onChange)="preFetchHolds($event)" *ngIf="!hopeless && preFetchSetting"
         [initialValue]="enablePreFetch" i18n-label label="Pre-Fetch All Holds">
       </eg-grid-toolbar-checkbox>
+
+      <ng-container *ngIf="preFetchSetting && !hopeless">
+        <eg-grid-toolbar-checkbox (onChange)="preFetchHolds($event)"
+          [initialValue]="enablePreFetch" i18n-label label="Pre-Fetch All Holds">
+        </eg-grid-toolbar-checkbox>
+      </ng-container>
 
       <eg-grid-toolbar-action
         i18n-label label="Show Hold Details" i18n-group group="Hold"
@@ -140,6 +146,10 @@
       <eg-grid-toolbar-action *ngIf="hopeless"
         i18-group group="Item" i18n-label label="Show in Catalog"
         (onClick)="showTitle($event)"></eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-label label="Show Holds For Title" i18n-group group="Show"
+        (onClick)="showHoldsForTitle($event)"></eg-grid-toolbar-action>
 
       <eg-grid-column i18n-label label="Hold ID" path='id' [index]="true" datatype="id">
       </eg-grid-column>

@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Location} from '@angular/common';
 import {Observable, Observer, of} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -102,12 +103,19 @@ export class HoldsGridComponent implements OnInit {
         }
     }
 
-    _userId: number;
-    @Input() set userId(id: number) {
-        this._userId = id;
+    get recordId(): number {
+        return this._recordId;
+    }
+
+    _patronId: number;
+    @Input() set patronId(id: number) {
+        this._patronId = id;
         if (this.initDone) {
             this.holdsGrid.reload();
         }
+    }
+    get patronId(): number {
+        return this._patronId;
     }
 
     // Include holds canceled on or after the provided date.
@@ -119,6 +127,9 @@ export class HoldsGridComponent implements OnInit {
             this.holdsGrid.reload();
         }
     }
+    get showCanceledSince(): Date {
+        return this._showCanceledSince;
+    }
 
     // Include holds fulfilled on or after hte provided date.
     // If no value is passed, fulfilled holds are not displayed.
@@ -128,6 +139,9 @@ export class HoldsGridComponent implements OnInit {
         if (this.initDone) { // reload on update
             this.holdsGrid.reload();
         }
+    }
+    get showFulfilledSince(): Date {
+        return this._showFulfilledSince;
     }
 
 
@@ -152,6 +166,7 @@ export class HoldsGridComponent implements OnInit {
     }
 
     constructor(
+        private ngLocation: Location,
         private net: NetService,
         private org: OrgService,
         private store: ServerStoreService,
@@ -301,12 +316,12 @@ export class HoldsGridComponent implements OnInit {
                 this.org.descendants(this.pickupLib, true);
         }
 
-        if (this._recordId) {
-            filters.record_id = this._recordId;
+        if (this.recordId) {
+            filters.record_id = this.recordId;
         }
 
-        if (this._userId) {
-            filters.usr_id = this._userId;
+        if (this.patronId) {
+            filters.usr_id = this.patronId;
         }
 
         return filters;
@@ -315,7 +330,7 @@ export class HoldsGridComponent implements OnInit {
     fetchHolds(pager: Pager, sort: any[]): Observable<any> {
 
         // We need at least one filter.
-        if (!this._recordId && !this.pickupLib && !this._userId && !this.pullListOrg) {
+        if (!this.recordId && !this.pickupLib && !this.patronId && !this.pullListOrg) {
             return of([]);
         }
 
@@ -394,6 +409,15 @@ export class HoldsGridComponent implements OnInit {
 
     showDetails(rows: any[]) {
         this.showDetail(rows[0]);
+    }
+
+    showHoldsForTitle(rows: any[]) {
+        if (rows.length === 0) { return; }
+
+        const url = this.ngLocation.prepareExternalUrl(
+            `/staff/catalog/record/${rows[0].record_id}/holds`);
+
+        window.open(url, '_blank');
     }
 
     showDetail(row: any) {

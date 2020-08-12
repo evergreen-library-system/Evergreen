@@ -50,5 +50,11 @@ export class PatronService {
         return this.pcrud.retrieve('au', id, pcrudOps).toPromise();
     }
 
+    // Returns a name part (e.g. family_name) with preference for
+    // preferred name value where available.
+    namePart(patron: IdlObject, part: string): string {
+        if (!patron) { return ''; }
+        return patron['pref_' + part]() || patron[part]();
+    }
 }
 

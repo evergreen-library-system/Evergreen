@@ -36,11 +36,13 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
 
     @ViewChild('searchGrid', {static: false}) searchGrid: GridComponent;
 
-    // Fired on dbl-click of a search result row.
-    @Output() patronsSelected: EventEmitter<any>;
+    // Fires on dbl-click or Enter while one or more search result
+    // rows are selected.
+    @Output() patronsActivated: EventEmitter<any>;
 
-    // Fired on single click of a search results row
-    @Output() patronsClicked: EventEmitter<any>;
+    // Fires when the selection of search result rows changes.
+    // Emits an array of patron IDs
+    @Output() selectionChange: EventEmitter<number[]>;
 
     search: any = {};
     searchOrg: IdlObject;
@@ -55,8 +57,8 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         private auth: AuthService,
         private store: ServerStoreService
     ) {
-        this.patronsSelected = new EventEmitter<any>();
-        this.patronsClicked = new EventEmitter<any>();
+        this.patronsActivated = new EventEmitter<any>();
+        this.selectionChange = new EventEmitter<number[]>();
         this.dataSource = new GridDataSource();
         this.dataSource.getRows = (pager: Pager, sort: any[]) => {
             return this.getRows(pager, sort);
@@ -93,12 +95,12 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         }
     }
 
-    rowsSelected(rows: IdlObject | IdlObject[]) {
-        this.patronsSelected.emit([].concat(rows));
+    gridSelectionChange(keys: string[]) {
+        this.selectionChange.emit(keys.map(k => Number(k)));
     }
 
-    rowsClicked(rows: IdlObject | IdlObject[]) {
-        this.patronsClicked.emit([].concat(rows));
+    rowsActivated(rows: IdlObject | IdlObject[]) {
+        this.patronsActivated.emit([].concat(rows));
     }
 
     getSelected(): IdlObject[] {

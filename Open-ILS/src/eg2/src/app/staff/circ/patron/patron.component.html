@@ -1,0 +1,174 @@
+
+<ng-container *ngIf="!context.patron">
+  <eg-staff-banner bannerText="Manage Patrons" i18n-bannerText>
+  </eg-staff-banner>
+</ng-container>
+
+<ng-container *ngIf="context.patron">
+  <eg-staff-banner i18n-bannerText bannerText="
+    {{patronService.namePart(context.patron, 'family_name')}}, 
+    {{patronService.namePart(context.patron, 'first_given_name')}} 
+    {{patronService.namePart(context.patron, 'second_given_name')}}">
+  </eg-staff-banner>
+</ng-container>
+
+<div class="row">
+
+  <ng-container *ngIf="showSummaryPane()">
+    <div class="col-lg-3">
+      <div class="sticky-top-with-nav bg-white">
+        <ng-container *ngIf="context.patron">
+          <eg-patron-summary></eg-patron-summary>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+
+  <div [ngClass]="{'col-lg-9': showSummaryPane(), 'col-lg-12': !showSummaryPane()}">
+
+    <div class="sticky-top-with-nav bg-white">
+      <ul ngbNav #patronNav="ngbNav" class="nav-tabs"
+        [activeId]="patronTab" (navChange)="beforeTabChange($event)">
+
+        <ng-container *ngIf="patronTab !== 'search'">
+          <li ngbDropdown ngbNavItem="toggle">
+            <a href class="nav-link" (click)="toggleSummaryPane(); false"
+              title="Toggle Summary Pane" i18n-title>
+              <ng-container *ngIf="showSummaryPane()">
+                <span class="material-icons">navigate_before</span>
+              </ng-container>
+              <ng-container *ngIf="!showSummaryPane()">
+                <span class="material-icons">navigate_next</span>
+              </ng-container>
+            </a>
+          </li>
+        </ng-container>
+
+        <li ngbNavItem="checkout" [disabled]="!context.patron">
+          <a ngbNavLink i18n>Checkout</a>
+          <ng-template ngbNavContent>
+            <div class="">
+              <eg-patron-checkout></eg-patron-checkout> 
+            </div>
+          </ng-template>
+        </li>
+
+        <li ngbNavItem="items_out" [disabled]="!context.patron">
+          <a ngbNavLink i18n>Items Out</a>
+          <ng-template ngbNavContent>
+            <div class="">
+            </div>
+          </ng-template>
+        </li>
+
+        <li ngbNavItem="holds" [disabled]="!context.patron">
+          <a ngbNavLink i18n>Holds</a>
+          <ng-template ngbNavContent>
+            <eg-holds-grid [recordId]="recordId"
+              preFetchSetting="eg.circ.patron.holds.prefetch"
+              printTemplate="holds_for_patron"
+              persistKey="circ.patron.holds"
+              [hidePickupLibFilter]="true"
+              [defaultSort]="[{name:'request_time',dir:'asc'}]"
+              [patronId]="patronId"></eg-holds-grid>
+          </ng-template>
+        </li>
+
+        <li ngbNavItem="bills" [disabled]="!context.patron">
+          <a ngbNavLink i18n>Bills</a>
+          <ng-template ngbNavContent>
+            <div class="">
+            </div>
+          </ng-template>
+        </li>
+
+        <li ngbNavItem="messages" [disabled]="!context.patron">
+          <a ngbNavLink i18n>Messages</a>
+          <ng-template ngbNavContent>
+            <div class="">
+            </div>
+          </ng-template>
+        </li>
+
+        <li ngbNavItem="edit" [disabled]="!context.patron">
+          <a ngbNavLink i18n>Edit</a>
+          <ng-template ngbNavContent>
+            <eg-patron-edit 
+              contentPaneClass="patron-content-pane div-scroll-vert">
+            </eg-patron-edit> 
+          </ng-template>
+        </li>
+
+        <li ngbDropdown ngbNavItem="other" [disabled]="!context.patron">
+          <a [attr.href]="context.patron ? '' : null" 
+            (click)="false" class="nav-link" ngbDropdownToggle>Other</a>
+          <div ngbDropdownMenu>
+            <a routerLink="/staff/circ/patron/{{patronId}}/alerts" 
+              ngbDropdownItem i18n>Alerts</a>
+            <a routerLink="/staff/circ/patron/{{patronId}}/notes" 
+              ngbDropdownItem i18n>Notes</a>
+            <a routerLink="/staff/circ/patron/{{patronId}}/triggered_events" 
+              ngbDropdownItem i18n>Triggered Events / Notifications</a>
+            <a routerLink="/staff/circ/patron/{{patronId}}/message_center" 
+              ngbDropdownItem i18n>Message Center</a>
+            <a routerLink="/staff/circ/patron/{{patronId}}/stat_cats"
+              ngbDropdownItem i18n>Statistical Categories</a>
+            <a routerLink="/staff/circ/patron/{{patronId}}/surveys"
+              ngbDropdownItem i18n>Surveys</a>
+            <a routerLink="/staff/circ/patron/{{patronId}}/group"
+              ngbDropdownItem i18n>Group Member Details</a>
+            <a routerLink="/staff/circ/patron/{{patronId}}/edit_perms"
+              ngbDropdownItem i18n>User Permission Editor</a>
+            <a routerLink="/staff/circ/patron/{{patronId}}/credentials"
+              ngbDropdownItem i18n>Test Password</a>
+            <a href="/eg/staff/acq/requests/user/{{patronId}}" 
+              target="_top"
+              ngbDropdownItem i18n>Acquisition Patron Requests</a>
+            <a routerLink="/staff/booking/manage_reservations/by_patron/{{patronId}}"
+              target="_top"
+              ngbDropdownItem i18n>Booking: Manage Reservations</a>
+            <a routerLink="/staff/booking/create_reservation/for_patron/{{patronId}}"
+              target="_top"
+              ngbDropdownItem i18n>Booking: Create Reservation</a>
+            <a routerLink="/staff/booking/pickup/by_patron/{{patronId}}"
+              target="_top"
+              ngbDropdownItem i18n>Booking: Pick Up Reservations</a>
+            <a routerLink="/staff/booking/return/by_patron/{{patronId}}"
+              target="_top"
+              ngbDropdownItem i18n></a>
+            <a href (click)="purgeAccount(); false"
+              [disabled]="disablePurge()"
+              ngbDropdownItem i18n>Completely Purge Account</a>
+          </div>
+          <ng-template ngbNavContent>
+            <!-- display selected altTab component -->
+            OTHER STUFF: {{altTab}}
+          </ng-template>
+        </li>
+
+        <li ngbNavItem="search" class="ml-auto">
+          <a ngbNavLink i18n>Patron Search</a>
+          <ng-template ngbNavContent>
+            <div class="">
+              <eg-patron-search
+                (selectionChange)="patronSelectionChange($event)"
+                (patronsActivated)="patronsActivated($event)">
+              </eg-patron-search> 
+            </div>
+          </ng-template>
+        </li>
+      </ul>
+
+      <ng-container *ngIf="patronTab === 'edit'">
+        <!-- put the editor toolbar up here in the sticky section -->
+        <eg-patron-edit-toolbar></eg-patron-edit-toolbar>
+      </ng-container>
+
+    </div><!-- end of sticky top -->
+
+    <div *ngIf="!loading" class="pt-3">
+      <div [ngbNavOutlet]="patronNav"></div>
+    </div>
+  </div>
+</div>
+

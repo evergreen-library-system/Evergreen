@@ -163,6 +163,14 @@ a {
   font-size: 99%;
 }
 
+/* Items stick to the top of the page once scrolled past,
+ * leaving room above for the nav bar */
+.sticky-top-with-nav {
+  top: 48px;
+  position: sticky;
+  z-index: 1;
+}
+
 /* --------------------------------------------------------------------------
 /* Form Validation CSS - https://angular.io/guide/form-validation
  * TODO: these colors don't fit the EG color scheme

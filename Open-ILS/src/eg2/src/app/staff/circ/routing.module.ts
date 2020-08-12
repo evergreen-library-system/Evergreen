@@ -4,7 +4,7 @@ import {RouterModule, Routes} from '@angular/router';
 const routes: Routes = [{
   path: 'patron',
   loadChildren: () =>
-    import('./patron/routing.module').then(m => m.CircPatronRoutingModule)
+    import('./patron/patron.module').then(m => m.PatronManagerModule)
 }, {
   path: 'item',
   loadChildren: () =>
