@@ -38,6 +38,8 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
 
     // Fired on dbl-click of a search result row.
     @Output() patronsSelected: EventEmitter<any>;
+
+    // Fired on single click of a search results row
     @Output() patronsClicked: EventEmitter<any>;
 
     search: any = {};
