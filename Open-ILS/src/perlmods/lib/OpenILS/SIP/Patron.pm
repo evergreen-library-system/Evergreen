@@ -36,7 +36,7 @@ sub new {
     my $patron_id = shift;
     my %args = @_;
 
-    if ($key ne 'usr' and $key ne 'barcode') {
+    if ($key ne 'usr' and $key ne 'barcode' and $key ne 'usrname') {
         syslog("LOG_ERROR", "Patron (card) lookup requested by illegeal key '$key'");
         return undef;
     }
@@ -78,7 +78,7 @@ sub new {
 
     # in some cases, we don't need all of this data.  Only fetch the user + barcode
     $usr_flesh = {flesh => 1, flesh_fields => {au => ['card']}} if $args{slim_user};
-    
+
     my $user;
     if($key eq 'barcode') { # retrieve user by barcode
 
@@ -94,6 +94,8 @@ sub new {
 
         $user = $card->usr;
 
+    } elsif ($key eq 'usrname') {
+        $user = $e->search_actor_user([{usrname => $patron_id}, $usr_flesh])->[0];
     } else {
         $user = $e->retrieve_actor_user([$patron_id, $usr_flesh]);
     }
