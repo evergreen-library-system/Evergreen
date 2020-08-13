@@ -14,7 +14,9 @@
 
     <ng-container *ngIf="!context.disableSelect">
       <div class="eg-grid-cell eg-grid-checkbox-cell eg-grid-cell-skinny">
-        <input type='checkbox' [(ngModel)]="context.rowSelector.indexes[context.getRowIndex(row)]"
+        <input type='checkbox' 
+          [ngModel]="context.rowSelector.indexes[context.getRowIndex(row)]"
+          (ngModelChange)="context.rowSelector.toggle(context.getRowIndex(row))"
           i18n-aria-label="e.g. Row 13" attr.aria-label="Row {{context.pager.rowNumber(idx)}}"
           #rowContextMenu="ngbPopover"
           popoverTitle="Actions for Selected Rows" i18n-popoverTitle

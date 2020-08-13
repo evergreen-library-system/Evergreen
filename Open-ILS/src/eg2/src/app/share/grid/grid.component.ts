@@ -127,6 +127,9 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     @Output() onRowActivate: EventEmitter<any>;
     @Output() onRowClick: EventEmitter<any>;
 
+    // Emits an array of grid row indexes on any row selection change.
+    @Output() rowSelectionChange: EventEmitter<string[]>;
+
     @ViewChild('toolbar', { static: true }) toolbar: GridToolbarComponent;
 
     constructor(
@@ -139,6 +142,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
             new GridContext(this.idl, this.org, this.store, this.format);
         this.onRowActivate = new EventEmitter<any>();
         this.onRowClick = new EventEmitter<any>();
+        this.rowSelectionChange = new EventEmitter<string[]>();
     }
 
     ngOnInit() {
@@ -204,6 +208,10 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
                 return '';
             };
 
+        this.context.rowSelector.selectionChange.subscribe(
+            keys => this.rowSelectionChange.emit(keys)
+        );
+
         if (this.showLinkSelectors) {
             console.debug(
                 'showLinkSelectors is deprecated and no longer has any effect');
@@ -217,6 +225,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        this.context.rowSelector.selectionChange.unsubscribe();
         this.context.destroy();
     }
 

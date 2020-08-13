@@ -430,6 +430,13 @@ export interface GridCellTextGenerator {
 export class GridRowSelector {
     indexes: {[string: string]: boolean};
 
+    // Track these so we can emit the selectionChange event
+    // only when the selection actually changes.
+    previousSelection: string[] = [];
+
+    // Emits the selected indexes on selection change
+    selectionChange: EventEmitter<string[]> = new EventEmitter<string[]>();
+
     constructor() {
         this.clear();
     }
@@ -445,25 +452,40 @@ export class GridRowSelector {
         return true;
     }
 
+    emitChange() {
+        const keys = this.selected();
+
+        if (keys.length === this.previousSelection.length &&
+            this.contains(this.previousSelection)) {
+            return; // No change has occurred
+        }
+
+        this.previousSelection = keys;
+        this.selectionChange.emit(keys);
+    }
+
     select(index: string | string[]) {
         const indexes = [].concat(index);
         indexes.forEach(i => this.indexes[i] = true);
+        this.emitChange();
     }
 
     deselect(index: string | string[]) {
         const indexes = [].concat(index);
         indexes.forEach(i => delete this.indexes[i]);
+        this.emitChange();
     }
 
-    // Returns the list of selected index values.
-    // In some contexts (template checkboxes) the value for an index is
-    // set to false to deselect instead of having it removed (via deselect()).
-    // NOTE GridRowSelector has no knowledge of when a row is no longer
-    // present in the grid.  Use GridContext.getSelectedRows() to get
-    // list of selected rows that are still present in the grid.
-    selected() {
-        return Object.keys(this.indexes).filter(
-            ind => Boolean(this.indexes[ind]));
+    toggle(index: string) {
+        if (this.indexes[index]) {
+            this.deselect(index);
+        } else {
+            this.select(index);
+        }
+    }
+
+    selected(): string[] {
+        return Object.keys(this.indexes);
     }
 
     isEmpty(): boolean {
@@ -472,6 +494,7 @@ export class GridRowSelector {
 
     clear() {
         this.indexes = {};
+        this.emitChange();
     }
 }
 
