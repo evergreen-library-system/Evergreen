@@ -3,7 +3,7 @@
     <div class="col-md-3"></div><!-- offset? -->
       <div class="col-md-6">
         <fieldset>
-          <legend>[% l('Sign In') %]</legend>
+          <legend><h1>[% l('Sign In') %]</h1></legend>
           <!-- 
             login() hangs off the page $scope.
             Values entered by the user are put into 'args', 
