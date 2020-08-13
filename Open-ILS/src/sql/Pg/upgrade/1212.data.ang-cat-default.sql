@@ -1,7 +1,7 @@
 
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1212', :eg_version); -- berick/sandbergja/gmcharlt
 
 DELETE FROM actor.org_unit_setting
     WHERE name = 'ui.staff.angular_catalog.enabled';
