@@ -174,7 +174,8 @@ oilsRptParamEditor.prototype.buildWidget = function(param, node, fromTemplate) {
 			break;
 	}
 
-	if( field.selector ) {
+	// aggregates like count (etc) on a pkey should not use the remote widget
+	if( !param.column.aggregate && field.selector ) {
 		atomicWidget = oilsRptRemoteWidget;
 		widgetArgs.class = cls;
 		widgetArgs.field = field;
