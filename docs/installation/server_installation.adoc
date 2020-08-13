@@ -242,7 +242,7 @@ chown -R opensrf:opensrf /openils
 Run ldconfig
 ------------
 
-On Debian Stretch / Buster, run the following command as the root user:
+On Ubuntu 18.04 or Debian Stretch / Buster, run the following command as the root user:
 
 [source, bash]
 ------------------------------------------------------------------------------
