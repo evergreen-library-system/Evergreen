@@ -6,6 +6,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Event;
+use List::MoreUtils qw/uniq/;
 use Data::Dumper;
 $Data::Dumper::Indent = 0;
 my $U = 'OpenILS::Application::AppUtils';
@@ -142,13 +143,20 @@ sub collect_opt_in_settings {
     my $self = shift;
     my $e = $self->editor;
 
+    # Get the valid_orgs and their ancestors, because the event def
+    # may be owned higher up the tree.
+    my @opt_orgs = ();
+    for my $orgs (map { $U->get_org_ancestors($_) } @{ $self->ctx->{register}{valid_orgs} }) {
+        push(@opt_orgs, @{$orgs});
+    }
+
     my $types = $e->json_query({
         select => {cust => ['name']},
         from => {atevdef => 'cust'},
         transform => 'distinct',
         where => {
             '+atevdef' => {
-                owner => [ map { $_ } @{ $self->ctx->{register}{valid_orgs} } ],
+                owner => [ uniq @opt_orgs ],
                 active => 't'
             }
         }
