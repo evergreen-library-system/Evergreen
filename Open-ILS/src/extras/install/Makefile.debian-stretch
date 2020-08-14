@@ -65,6 +65,8 @@ export DEBS = \
 	libsru-perl\
 	libssh2-1-dev\
 	libtemplate-plugin-posix-perl\
+	libtest-mockmodule-perl\
+	libtest-mockobject-perl\
 	libtest-warn-perl\
 	libtest-output-perl\
 	libtext-aspell-perl\

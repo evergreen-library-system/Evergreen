@@ -1,3 +1,7 @@
+# -----------------------------------------------------------------------------
+# Submodule for handling patron sign-in and sign-out of the OpenAthens service
+# -----------------------------------------------------------------------------
+
 package OpenILS::WWW::EGCatLoader;
 
 use strict; use warnings;
@@ -26,10 +30,36 @@ my @oa_config_fields = qw/active api_key connection_id connection_uri
     release_first_given_name release_second_given_name release_family_name
     release_suffix release_email release_home_ou/;
 
-
 # -----------------------------------------------------------------------------
-# If sign in to OpenAthens is enabled, redirects to the local OpenAthens
-# sign-in handler, including the original redirect as a parameter.
+# sub perform_openathens_sso_if_required
+# -----------------------------------------------------------------------------
+#
+# This method is called by EGCatLoader as part of the patron login process. It
+# is called after the login credentials have been checked, but before the
+# patron is redirected back to the page they originally requested.
+#
+# If the patron's home library is configured to sign patrons in to OpenAthens
+# automatically when they log in to Evergreen, then this method issues a
+# redirect to the OpenAthens sign-in handler at <OPAC_ROOT>/sso/openathens,
+# which is responsible for establishing an OpenAthens user session. The
+# ?redirect_to query string parameter is passed forward to the OpenAthens
+# sign-in handler so that it can in turn issue a redirect back to the
+# originally requested page once it has done its work.
+#
+# If the home library is not configured for automatic OpenAthens sign-in, this
+# method does nothing, and leaves the rest of EGCatLoader to complete its
+# normal redirect back to the originally requested page.
+#
+# In the case where a patron who is not already logged in has arrived at the
+# OpenAthens sign-in handler from an external website, EGCatLoader will ask
+# them to log in, and this method will be called as a result. In this case we
+# don't construct a new redirect to the OpenAthens handler with a &redirect_to
+# parameter, otherwise we could cause a redirect loop. We just leave
+# EGCatLoader to complete its normal redirect back to the originally requested
+# page after login. (We can identify this case by ?redirect_to matching the URL
+# of the OpenAthens handler.) The flow that occurs in this case is described in
+# more detail in the comment on sub load_openathens_sso, case 2.
+#
 # -----------------------------------------------------------------------------
 sub perform_openathens_sso_if_required {
     my ($self, $auth_response, $redirect_to, $cookie_list) = @_;
@@ -79,8 +109,25 @@ sub perform_openathens_sso_if_required {
 }
 
 # -----------------------------------------------------------------------------
-# If sign out of OpenAthens is enabled, redirects to the local OpenAthens
-# sign-out handler, including the original redirect as a parameter.
+# sub perform_openathens_signout_if_required
+# -----------------------------------------------------------------------------
+#
+# This method is called by EGCatLoader as part of the patron logout process. It
+# is called while the patron's identity is still in session as $ctx->{user},
+# and before the patron is redirected back to the home page.
+#
+# If the patron's home library is configured to sign patrons out of OpenAthens
+# when they log out of Evergreen, then this method issues a redirect to the
+# OpenAthens sign-out handler at <OPAC_ROOT>/sso/openathens/logout, which is
+# responsible for destroying the OpenAthens session. The redirect_to parameter
+# (usually set to the home page when logging out) is passed forward to the
+# OpenAthens sign-out handler so that it can in turn issue a redirect back to
+# home page once it has done its work.
+#
+# If the home library is not configured for OpenAthens sign-out, this method
+# does nothing, and leaves the rest of EGCatLoader to complete its normal
+# redirect back to the home page.
+#
 # -----------------------------------------------------------------------------
 sub perform_openathens_signout_if_required {
     my ($self, $redirect_to, $cookie_list) = @_;
@@ -108,29 +155,62 @@ sub perform_openathens_signout_if_required {
 }
 
 # -----------------------------------------------------------------------------
-# Handler for /eg/opac/sso/openathens. Establishes single-sign-on session on 
-# OpenAthens, if configured. Implements
+# sub load_openathens_sso
+# -----------------------------------------------------------------------------
+#
+# This is the handler for <OPAC_ROOT>/sso/openathens. Its job is to establish a
+# single-sign-on (SSO) session on OpenAthens for an Evergreen patron. It works
+# by calling the OpenAthens API to obtain a unique session-initiation URL
+# for the patron, and then issuing a redirect to that URL. The logic
+# follows the instructions for OpenAthens API-based sign-in at:
 # http://docs.openathens.net/display/public/MD/Implementing+the+API+connector+in+your+code
 #
 # There are two flows supported:
 #
-# 1. The user just logged in locally, and we want to sign them on to
-# OpenAthens as well (if this feature is enabled for the user's org unit).
+# 1. The patron just logged in locally, and we want to sign them in to
+#    OpenAthens as well (if this feature is enabled for the patron's home
+#    library).
 #
-# In this case 'redirect_to' will be set and will be the local URL that
-# initiated login, e.g. /eg/opac/myopac/main. We will send the user to
-# OpenAthens with a token that will establish their sign-on session, and with a
-# redirect parameter instructing OpenAthens to send them back to the original
-# local URL afterwards.
+#    In this case the redirect_to parameter will have been provided in the
+#    query string (by the code in sub load_openathens_sso_if_reuired), and will
+#    be the local URL that initiated login, for example /eg/opac/myopac/main.
 #
-# 2. The user tried to access an OpenAthens-protected resource and chose to
-# sign on via their account with us.
+#    We will call the OpenAthens API via a back channel, supplying the patron's
+#    unique identifier and the redirect URL. The OpenAthens API response will
+#    contain a URL that can be used to establish the OpenAthens session for the
+#    patron, and we redirect the patron to this URL. (The URL will contain a
+#    redirect parameter instructing OpenAthens to send the patron back to the
+#    originally requested local URL afterwards.
 #
-# In this case, 'returnData' will be supplied by OpenAthens and is opaque to
-# us. We will send the user back to OpenAthens with a token that will
-# establish their sign-on session, together with the returnData. OpenAthens
-# can then forward the user on to whichever resource they were originally
-# requesting.
+# 2. The patron tried to access an external website that requires an OpenAthens
+#    session, and chose our Evergreen instance as their identity provider.
+#    OpenAthens will therefore redirect the patron to this handler.
+#
+#    (This is a protected page, so if the patron is not already logged in to
+#    Evergreen, EGCatLoader will request login first, and then redirect back
+#    here, in the same way as any other page that requires login.)
+#
+#    In this case, OpenAthens will supply a returnData query string paramemter.
+#    This parameter contains information about which website the patron is
+#    trying to access but it is opaque to us.
+#
+#    We will call the OpenAthens API via a back channel, supplying the patron's
+#    unique identifier and the returnData. The OpenAthens API response will
+#    contain a URL that can be used to establish the OpenAthens session for the
+#    patron, and we redirect the patron to this URL. The URL will contain the
+#    original returnData parameter, instructing OpenAthens to send the patron
+#    onward to the website they were originally trying to access, after it has
+#    established their session.
+#
+# We do not expect to receive both redirect_to and returnData in the same
+# request. This is an invalid request and results in a 400 status error. If we
+# don't receive either redirect_to or returnData, that's also unexpected, but
+# silently ignored by redirecting to the OPAC home. Any error calling the 
+# OpenAthens API is logged for diagnostic purposes, but the patron is
+# redirected to the OPAC home page rather than displaying the error. The system
+# will alway try again next time they access a website that requires an
+# OpenAthens session.
+#
 # -----------------------------------------------------------------------------
 sub load_openathens_sso {
     my $self = shift;
@@ -146,6 +226,9 @@ sub load_openathens_sso {
 
     # 'redirect_to' and 'returnData' are mutually exclusive
     return Apache2::Const::HTTP_BAD_REQUEST if ($redirect_to && $return_data);
+
+    # Page called with no relevant parameters; go to home.
+    return $self->generic_redirect() unless ($redirect_to || $return_data);
 
     my $openathens_config =
         $self->_get_openathens_config_for_org($ctx->{user}->home_ou);
@@ -186,15 +269,26 @@ sub load_openathens_sso {
         );
 
         return $self->generic_redirect($oa_redirect);
-    } else {
-        # Page called with no relevant parameters; go to home.
-        return $self->generic_redirect();
     }
 }
 
 # -----------------------------------------------------------------------------
-# Hanlder for /eg/opac/sso/openathens/logout. Ends OpenAthens session.
-# Optionally called after local logout.
+# sub load_openathens_logout
+# -----------------------------------------------------------------------------
+#
+# Hanlder for <OPAC_ROOT>/sso/openathens/logout. Its job is to terminate the
+# patron's OpenAthens session. It does this by redirecting the patron to the
+# standard OpenAthens sign-out URL.
+#
+# The patron will only get here if their home library is configured to sign
+# patrons out of OpenAthens when they log out of Evergreen. See the comment on
+# sub load_openathens_signout_if_required above.
+#
+# The OpenAthens sign-out URL does not accept a redirect parameter. However
+# the library's OpenAthens administrator can configure a fixed post-sign-out
+# redirect in their OpenAthens administrator dashboard. This could be used to
+# send patrons back to Evergreen after their OpenAthens session has ended.
+#
 # -----------------------------------------------------------------------------
 sub load_openathens_logout {
     my $self = shift;

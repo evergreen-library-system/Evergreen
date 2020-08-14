@@ -60,6 +60,8 @@ FEDORA_RPMS = \
 	perl-Parse-RecDescent \
 	perl-RPC-XML \
 	perl-SOAP-Lite \
+	perl-Test-MockModule \
+	perl-Test-MockObject \
 	perl-Test-Warn \
 	perl-Test-Output \
 	perl-Text-Aspell \

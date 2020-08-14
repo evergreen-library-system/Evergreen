@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 11;
+use Test::More tests => 12;
 use CGI;
 
 BEGIN {
@@ -8,6 +8,7 @@ BEGIN {
 }
 use_ok( 'OpenILS::WWW::EGCatLoader::Account' );
 use_ok( 'OpenILS::WWW::EGCatLoader::Container' );
+use_ok( 'OpenILS::WWW::EGCatLoader::OpenAthens' );
 use_ok( 'OpenILS::WWW::EGCatLoader::Record' );
 use_ok( 'OpenILS::WWW::EGCatLoader::Search' );
 use_ok( 'OpenILS::WWW::EGCatLoader::Util' );
