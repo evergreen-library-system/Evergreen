@@ -15,12 +15,12 @@
     </div>
     <div class="flex-1"></div>
     <div>
-      <a class="with-material-icon no-href text-primary" 
+      <a class="with-material-icon no-href text-primary"
         title="Show More" i18n-title
         *ngIf="!expand" (click)="expand=true">
         <span class="material-icons">expand_more</span>
       </a>
-      <a class="with-material-icon no-href text-primary" 
+      <a class="with-material-icon no-href text-primary"
         title="Show Less" i18n-title
         *ngIf="expand" (click)="expand=false">
         <span class="material-icons">expand_less</span>
@@ -39,7 +39,7 @@
         </a>
       </div>
     </ng-container>
-    
+
     <!-- make room for the jacket image when expanded -->
     <div [ngClass]="{'col-lg-11 pl-0': expand, 'col-lg-12': !expand}">
       <div class="card-body">
@@ -91,7 +91,7 @@
               <div class="flex-1">{{summary.record.edit_date() | date:'short'}}</div>
             </div>
           </li>
-          <ng-container *ngIf="expand && has_course">
+          <ng-container *ngIf="expand && hasCourse">
             <li class="list-group-item">
               <div class="d-flex">
                 <div class="flex-1 font-weight-bold" i18n>Associated Courses</div>

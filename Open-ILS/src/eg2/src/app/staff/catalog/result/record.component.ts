@@ -30,7 +30,7 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
     searchContext: CatalogSearchContext;
     isRecordSelected: boolean;
     basketSub: Subscription;
-    has_course: boolean;
+    hasCourse = false;
     courses: any[] = [];
 
     constructor(
@@ -61,17 +61,14 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
     }
 
     loadCourseInformation(recordId) {
-        console.log("Entering loadCourseInformation");
         this.course.isOptedIn().then(res => {
             if (res) {
-                this.course.fetchCopiesInCourseFromRecord(recordId).then(course_list => {
+                this.course.fetchCoursesForRecord(recordId).then(course_list => {
                     Object.keys(course_list).forEach(key => {
                         this.courses.push(course_list[key]);
                     });
-                    this.has_course = true;
+                    this.hasCourse = true;
                 });
-            } else {
-                this.has_course = false;
             }
         });
     }

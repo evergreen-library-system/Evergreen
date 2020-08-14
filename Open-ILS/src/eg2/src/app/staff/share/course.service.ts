@@ -1,4 +1,5 @@
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
@@ -82,24 +83,15 @@ export class CourseService {
         });
     }
 
-    fetchCopiesInCourseFromRecord(record_id) {
-        const cp_list = [];
-        return new Promise((resolve, reject) => {
-            this.net.request(
-                'open-ils.cat',
-                'open-ils.cat.asset.copy_tree.global.retrieve',
-                this.auth.token(), record_id
-            ).subscribe(copy_tree => {
-                copy_tree.forEach(cn => {
-                    cn.copies().forEach(cp => {
-                        cp_list.push(cp.id());
-                    });
-                });
-            }, err => reject(err),
-            () => {
-                resolve(this.getCoursesFromMaterial(cp_list));
-            });
-        });
+    fetchCoursesForRecord(recordId) {
+        const courseIds = [];
+                 return this.pcrud.search(
+            'acmcm', {record: recordId}, {atomic: false}
+        ).pipe(tap(material => {
+            if (courseIds.indexOf(material.course()) === -1) {
+                courseIds.push(material.course());
+            }
+        })).toPromise().then(() => this.getCourses(courseIds));
     }
 
     // Creating a new acmcm Entry

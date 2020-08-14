@@ -119,7 +119,7 @@ sub load_record {
         if ($ctx->{course_module_opt_in}) {
             $copy->{course_materials} = $U->simplereq(
                 'open-ils.courses',
-                'open-ils.courses.course_materials.retrieve',
+                'open-ils.courses.course_materials.retrieve.atomic',
                 {item => $copy->{id}}
             );
             my %course_ids;

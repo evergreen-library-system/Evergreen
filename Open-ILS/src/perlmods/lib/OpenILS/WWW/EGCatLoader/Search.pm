@@ -580,7 +580,7 @@ sub load_rresults {
         if ($course_module_opt_in) {
             $rec->{course_materials} = $U->simplereq(
                 'open-ils.courses',
-                'open-ils.courses.course_materials.retrieve',
+                'open-ils.courses.course_materials.retrieve.atomic',
                 {record => $rec->{id}}
             );
             my %course_ids;

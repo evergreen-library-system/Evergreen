@@ -14,7 +14,7 @@ import {CatalogService} from '@eg/share/catalog/catalog.service';
 export class BibSummaryComponent implements OnInit {
 
     initDone = false;
-    has_course = false;
+    hasCourse = false;
     courses: any;
 
     // True / false if the display is vertically expanded
@@ -77,15 +77,13 @@ export class BibSummaryComponent implements OnInit {
         });
     }
 
-    loadCourseInformation(record_id) {
+    loadCourseInformation(recordId) {
         this.org.settings('circ.course_materials_opt_in').then(setting => {
             if (setting['circ.course_materials_opt_in']) {
-                this.course.fetchCopiesInCourseFromRecord(record_id).then(course_list => {
-                    this.courses = course_list;
-                    this.has_course = true;
+                this.course.fetchCoursesForRecord(recordId).then(courseList => {
+                    this.courses = courseList;
+                    this.hasCourse = true;
                 });
-            } else {
-                this.has_course = false;
             }
         });
     }

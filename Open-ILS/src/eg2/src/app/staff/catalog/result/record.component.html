@@ -42,14 +42,14 @@
               <ng-container *ngIf="hasMrConstituentRecords(summary)">
                   <a routerLink="/staff/catalog/search"
                     [queryParams]="appendFromMrParam(summary)">
-                    <eg-bib-display-field [summary]="summary" field="title" 
+                    <eg-bib-display-field [summary]="summary" field="title"
                       [usePlaceholder]="true"></eg-bib-display-field>
                   </a>
               </ng-container>
               <ng-container *ngIf="!hasMrConstituentRecords(summary)">
                 <a routerLink="/staff/catalog/record/{{summary.id}}"
                   [queryParams]="currentParams()">
-                  <eg-bib-display-field [summary]="summary" field="title" 
+                  <eg-bib-display-field [summary]="summary" field="title"
                     [usePlaceholder]="true"></eg-bib-display-field>
                 </a>
               </ng-container>
@@ -59,7 +59,7 @@
             <div class="col-lg-12">
               <a routerLink="/staff/catalog/search"
                 [queryParams]="getAuthorSearchParams(summary)">
-                <eg-bib-display-field [summary]="summary" field="author" 
+                <eg-bib-display-field [summary]="summary" field="author"
                   [usePlaceholder]="true"></eg-bib-display-field>
               </a>
             </div>
@@ -81,14 +81,14 @@
             <div class="col-lg-12">
               <ng-container *ngIf="summary.display.physical_description">
                 <!-- [].concat() to avoid modifying the summary arrays -->
-                <div class="pb-1" i18n>Phys. Desc.: 
-                  <eg-bib-display-field [summary]="summary" 
+                <div class="pb-1" i18n>Phys. Desc.:
+                  <eg-bib-display-field [summary]="summary"
                     field="physical_description" joiner=","></eg-bib-display-field>
                 </div>
               </ng-container>
               <ng-container *ngIf="summary.display.edition">
-                <div class="pb-1" i18n>Edition: 
-                  <eg-bib-display-field [summary]="summary" 
+                <div class="pb-1" i18n>Edition:
+                  <eg-bib-display-field [summary]="summary"
                     field="edition" joiner=","></eg-bib-display-field>
                 </div>
               </ng-container>
@@ -101,31 +101,31 @@
                   </div>
                 </ng-container>
                 <ng-template #pubDate>
-                  <div class="pb-1" i18n>Pub Date: 
+                  <div class="pb-1" i18n>Pub Date:
                     <eg-bib-display-field [summary]="summary" field="pubdate">
                     </eg-bib-display-field>
                   </div>
                 </ng-template>
               </ng-container>
               <ng-container *ngIf="summary.display.isbn">
-                <div class="pb-1" i18n>ISBN: 
-                  <eg-bib-display-field [summary]="summary" 
+                <div class="pb-1" i18n>ISBN:
+                  <eg-bib-display-field [summary]="summary"
                     field="isbn" joiner=","></eg-bib-display-field>
                 </div>
               </ng-container>
               <ng-container *ngIf="summary.display.upc">
-                <div class="pb-1" i18n>UPC: 
-                  <eg-bib-display-field [summary]="summary" 
+                <div class="pb-1" i18n>UPC:
+                  <eg-bib-display-field [summary]="summary"
                     field="upc" joiner=","></eg-bib-display-field>
                 </div>
               </ng-container>
               <ng-container *ngIf="summary.display.issn">
-                <div i18n>ISSN: 
-                  <eg-bib-display-field [summary]="summary" 
+                <div i18n>ISSN:
+                  <eg-bib-display-field [summary]="summary"
                     field="issn" joiner=","></eg-bib-display-field>
                 </div>
               </ng-container>
-              <ng-container *ngIf="has_course">
+              <ng-container *ngIf="hasCourse">
                 <div i18n>Associated Courses:
                   <span *ngFor="let course of courses; let isLast=last">
                     <a routerLink="/staff/admin/local/asset/course_list/{{course.id()}}">
@@ -139,7 +139,7 @@
         </div>
       </div>
       <div class="col-lg-2">
-        <div class="row" [ngClass]="{'pt-2':copyIndex > 0}" 
+        <div class="row" [ngClass]="{'pt-2':copyIndex > 0}"
           *ngFor="let copyCount of summary.holdingsSummary; let copyIdx = index">
           <div class="float-left text-left w-50">
             <span class="pr-1">
@@ -169,7 +169,7 @@
             <div class="float-right small-text-1">
               Created {{summary.record.create_date() | date:'shortDate'}} by
               <!-- creator if fleshed after the initial data set is loaded -->
-              <a *ngIf="summary.record.creator().usrname" target="_self" 
+              <a *ngIf="summary.record.creator().usrname" target="_self"
                 href="/eg/staff/circ/patron/{{summary.record.creator().id()}}/checkout">
                   {{summary.record.creator().usrname()}}
               </a>
@@ -182,7 +182,7 @@
           <div class="col-lg-12">
             <div class="float-right small-text-1" i18n>
               Edited {{summary.record.edit_date() | date:'shortDate'}} by
-              <a *ngIf="summary.record.editor().usrname" target="_self" 
+              <a *ngIf="summary.record.editor().usrname" target="_self"
                 href="/eg/staff/circ/patron/{{summary.record.editor().id()}}/checkout">
                   {{summary.record.editor().usrname()}}
               </a>
