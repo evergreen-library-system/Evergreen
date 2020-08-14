@@ -154,7 +154,7 @@ oilsReport.prototype._gatherParams = function(params, arr, type, field) {
 
 oilsReport.prototype.gatherTemplateParams = function() {
     var arr = this.__gatherTemplateParams(this.def.where, 'where');
-    arr.concat(this.__gatherTemplateParams(this.def.having, 'having'));
+    arr = arr.concat(this.__gatherTemplateParams(this.def.having, 'having'));
     _debug("template params: " + js2JSON(arr));
     return arr;
 }
