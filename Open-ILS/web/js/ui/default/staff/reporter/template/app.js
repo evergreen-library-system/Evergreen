@@ -230,7 +230,11 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
                             return !!i.transform.aggregate;
                           }).map(function (i) {
                             var cond = {};
-                            cond[i.operator.op] = '::P' + param_counter++;
+                            if (i.value === undefined) {
+                                cond[i.operator.op] = '::P' + param_counter++;
+                            }else {
+                                cond[i.operator.op] = i.value;
+                            }
                             return {
                                 alias     : i.label,
                                 path      : i.path[i.path.length - 1].classname + '-' + i.name,
