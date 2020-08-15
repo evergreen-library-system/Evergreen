@@ -46,6 +46,7 @@ export class CourseListComponent implements OnInit {
     currentMaterials: any[] = [];
     search_value = '';
 
+
     constructor(
         private courseSvc: CourseService,
         private locale: LocaleService,
@@ -60,7 +61,13 @@ export class CourseListComponent implements OnInit {
             const idToEdit = course.id();
             this.navigateToCoursePage(idToEdit);
         });
+
     }
+
+    acmtcmQueryParams (row: any): {gridFilters: string} {
+        return {gridFilters: '{"course":' + row.id() + '}'};
+    }
+
 
     /**
      * Gets the data, specified by the class, that is available.

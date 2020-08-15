@@ -9,26 +9,41 @@
 <eg-string #archiveSuccessString i18n-text text="Archival of {{tableName}} succeeded"></eg-string>
 <eg-string #flairTooltip i18n-text text="Limited Editing"></eg-string>
 
-<div class="w-100 mt-2 mb-2">
-  <eg-grid #grid idlClass={{idlClass}}
-    [dataSource]="grid_source"
-    [sortable]="true">
-    <eg-grid-toolbar-button
-      label="Create {{tableName}}" (onClick)="createNew()" i18n-label>
-    </eg-grid-toolbar-button>
-    <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
-    </eg-grid-toolbar-action>
-    <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)">
-    </eg-grid-toolbar-action>
-    <eg-grid-toolbar-action label="Archive Selected" i18n-label (onClick)="archiveSelected($event)">
-    </eg-grid-toolbar-action>
-    <eg-grid-column label="ID" path="id" [index]=true [hidden]="true" i18n-label></eg-grid-column>
-    <eg-grid-column label="Title" name="name" i18n-label></eg-grid-column>
-    <eg-grid-column label="CourseNumber" name="course_number" i18n-label></eg-grid-column>
-    <eg-grid-column label="Section Number" name="section_number" i18n-label></eg-grid-column>
-    <eg-grid-column label="Is Archived?" name="is_archived" i18n-label datatype="bool"></eg-grid-column>
-  </eg-grid>
-</div>
+<ul ngbNav #courseListNav="ngbNav" class="nav-tabs">
+  <li ngbNavItem>
+    <a ngbNavLink i18n>Course list</a>
+    <ng-template ngbNavContent>
+      <div class="w-100 mt-2 mb-2">
+        <eg-grid #grid idlClass={{idlClass}}
+          [dataSource]="grid_source"
+          [sortable]="true">
+          <eg-grid-toolbar-button
+            label="Create {{tableName}}" (onClick)="createNew()" i18n-label>
+          </eg-grid-toolbar-button>
+          <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
+          </eg-grid-toolbar-action>
+          <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)">
+          </eg-grid-toolbar-action>
+          <eg-grid-toolbar-action label="Archive Selected" i18n-label (onClick)="archiveSelected($event)">
+          </eg-grid-toolbar-action>
+          <eg-grid-column label="ID" path="id" [index]=true [hidden]="true" i18n-label></eg-grid-column>
+          <eg-grid-column label="Terms taught" name="terms_map" i18n-label [cellTemplate]="termMapLink"></eg-grid-column>
+          <eg-grid-column label="Title" name="name" i18n-label></eg-grid-column>
+          <eg-grid-column label="CourseNumber" name="course_number" i18n-label></eg-grid-column>
+          <eg-grid-column label="Section Number" name="section_number" i18n-label></eg-grid-column>
+          <eg-grid-column label="Is Archived?" name="is_archived" i18n-label datatype="bool"></eg-grid-column>
+        </eg-grid>
+      </div>      
+    </ng-template>
+  </li>
+  <li ngbNavItem>
+    <a ngbNavLink i18n>Terms</a>
+    <ng-template ngbNavContent>
+      <eg-admin-page idlClass="acmt"></eg-admin-page>
+    </ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="courseListNav"></div>
 
 <eg-fm-record-editor #editDialog
   idlClass="acmc"
@@ -36,3 +51,9 @@
   [preloadLinkedValues]="true"
   hiddenFields="id,is_archived">
 </eg-fm-record-editor>
+
+<ng-template #termMapLink let-row="row">
+  <a routerLink="/staff/admin/local/asset/course_module_term_course_map" [queryParams]="acmtcmQueryParams(row)" i18n>
+    Terms taught
+  </a>
+</ng-template>

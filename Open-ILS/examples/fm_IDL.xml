@@ -3121,11 +3121,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="Course Members" name="members" oils_persist:virtual="true" reporter:datatype="link" />
             <field reporter:label="Course Materials" name="materials" oils_persist:virtual="true" reporter:datatype="link" />
             <field reporter:label="Is Archived?" name="is_archived" reporter:datatype="bool" />
+			<field reporter:label="Terms Taught" name="terms_map" oils_persist:virtual="true" reporter:datatype="link" config_field="true" />
         </fields>
         <links>
             <link field="owning_lib" reltype="has_a" key="id" map="" class="aou" />
             <link field="members" reltype="has_many" key="course" map="" class="acmcu" />
             <link field="materials" reltype="has_many" key="course" map="" class="acmcm" />
+			<link field="terms_map" reltype="has_many" key="course" map="" class="acmtcm" />
         </links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -3200,6 +3202,56 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
     </class>
+	<class id="acmt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::course_module_term" oils_persist:tablename="asset.course_module_term" reporter:label="Term" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.course_module_term_id_seq">
+			<field reporter:label="Term ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
+            <field reporter:label="Owning Library" name="owning_lib" reporter:datatype="link" oils_obj:required="true" />
+			<field reporter:label="Start Date" name="start_date" reporter:datatype="timestamp"/>
+			<field reporter:label="End Date" name="end_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Courses" name="courses" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field reporter:label="Course Maps" name="maps" reporter:datatype="link" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+            <link field="owning_lib" reltype="has_a" key="id" map="" class="aou" />
+			<link field="courses" reltype="has_many" key="term" map="course" class="acmtcm"/>
+			<link field="maps" reltype="has_many" key="term" map="" class="acmtcm"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="MANAGE_RESERVES" context_field="owning_lib" />
+				<retrieve/>
+				<update permission="MANAGE_RESERVES" context_field="owning_lib" />
+				<delete permission="MANAGE_RESERVES" context_field="owning_lib" />
+			</actions>
+		</permacrud>
+	</class>
+    <class id="acmtcm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::course_module_term_course_map" oils_persist:tablename="asset.course_module_term_course_map" reporter:label="Course Term Map" oils_persist:field_safe="true">
+        <fields oils_persist:primary="id" oils_persist:sequence="asset.course_module_term_course_map_id_seq">
+            <field reporter:label="Course Term Map ID" name="id" reporter:datatype="id"/>
+            <field reporter:label="Term" name="term" oils_obj:required="true" reporter:datatype="link"/>
+            <field reporter:label="Course" name="course" reporter:datatype="link" oils_obj:required="true"/>
+        </fields>
+        <links>
+            <link field="term" reltype="has_a" key="id" map="" class="acmt"/>
+            <link field="course" reltype="has_a" key="id" map="" class="acmc"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="MANAGE_RESERVES">
+					<context link="course" field="owning_lib" />
+                </create>
+                <retrieve/>
+                <update permission="MANAGE_RESERVES">
+					<context link="course" field="owning_lib" />
+                </update>
+                <delete permission="MANAGE_RESERVES">
+					<context link="course" field="owning_lib" />
+                </delete>
+            </actions>
+        </permacrud>
+    </class>
+	
     <class id="acnc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::call_number_class" oils_persist:tablename="asset.call_number_class" reporter:label="Call number classification scheme">
         <fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_class_id_seq">
             <field reporter:label="Call number class ID" name="id" reporter:datatype="id"/>

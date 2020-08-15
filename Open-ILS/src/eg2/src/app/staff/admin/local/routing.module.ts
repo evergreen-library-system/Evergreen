@@ -5,6 +5,7 @@ import {BasicAdminPageComponent} from '@eg/staff/admin/basic-admin-page.componen
 import {AddressAlertComponent} from './address-alert.component';
 import {AdminCarouselComponent} from './admin-carousel.component';
 import {StandingPenaltyComponent} from './standing-penalty.component';
+import {CourseTermMapComponent} from './course-reserves/course-term-map.component';
 
 const routes: Routes = [{
     path: 'splash',
@@ -22,6 +23,9 @@ const routes: Routes = [{
 }, {
     path: 'asset/course_list',
     loadChildren: '@eg/staff/admin/local/course-reserves/course-reserves.module#CourseReservesModule'
+}, {
+    path: 'asset/course_module_term_course_map',
+    component: CourseTermMapComponent
 }, {
     path: 'config/standing_penalty',
     component: StandingPenaltyComponent

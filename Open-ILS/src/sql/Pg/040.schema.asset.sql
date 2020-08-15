@@ -1136,5 +1136,19 @@ CREATE TABLE asset.course_module_course_materials (
     unique (course, item, record)
 );
 
+CREATE TABLE asset.course_module_term (
+    id              SERIAL  PRIMARY KEY,
+    name            TEXT    UNIQUE NOT NULL,
+    owning_lib      INT REFERENCES actor.org_unit (id),
+	start_date      TIMESTAMP WITH TIME ZONE,
+	end_date        TIMESTAMP WITH TIME ZONE
+);
+
+CREATE TABLE asset.course_module_term_course_map (
+    id              BIGSERIAL  PRIMARY KEY,
+    term            INT     NOT NULL REFERENCES asset.course_module_term (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    course          INT     NOT NULL REFERENCES asset.course_module_course (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
+);
+
 COMMIT;
 

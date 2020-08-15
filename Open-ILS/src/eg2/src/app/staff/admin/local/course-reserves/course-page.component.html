@@ -61,6 +61,17 @@
       </eg-course-associate-users-dialog>
     </ng-template>
   </li>
+
+  <!-- Terms Tab -->
+  <li [ngbNavItem]="'courseTerms'">
+    <a ngbNavLink i18n>Course terms</a>
+    <ng-template ngbNavContent>
+      <eg-admin-page idlClass="acmtcm" readonlyFields="id"
+        [defaultNewRecord]="defaultNewAcmtcm"
+        hideGridFields="id" [dataSource]="termsDataSource">
+      </eg-admin-page>
+    </ng-template>
+  </li>
 </ul>
 <div [ngbNavOutlet]="coursePageNav" class="mb-3"></div>
 
