@@ -210,15 +210,17 @@ export class CourseService {
         });
     }
 
-    updateItem(item: IdlObject, course_lib, call_number, updatingVolume) {
+
+    updateItem(item: IdlObject, courseLib, callNumber, updatingVolume) {
         return new Promise((resolve, reject) => {
             this.pcrud.update(item).subscribe(() => {
                 if (updatingVolume) {
                     const cn = item.call_number();
+                    const callNumberLibrary = this.org.canHaveVolumes(courseLib) ? courseLib : cn.owning_lib();
                     return this.net.request(
                         'open-ils.cat', 'open-ils.cat.call_number.find_or_create',
-                        this.auth.token(), call_number, cn.record(),
-                        course_lib, cn.prefix(), cn.suffix(),
+                        this.auth.token(), callNumber, cn.record(),
+                        callNumberLibrary, cn.prefix(), cn.suffix(),
                         cn.label_class()
                     ).subscribe(res => {
                         const event = this.evt.parse(res);
