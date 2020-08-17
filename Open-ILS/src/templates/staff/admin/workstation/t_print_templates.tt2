@@ -46,6 +46,7 @@
           <option value="label">[% l('Label') %]</option>
           <option value="mail">[% l('Mail') %]</option>
           <option value="offline">[% l('Offline') %]</option>
+          <option value="no-print">[% l('No-Print') %]</option>
         </select>
       </div>
     </div>

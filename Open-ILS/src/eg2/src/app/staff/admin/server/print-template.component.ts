@@ -6,6 +6,7 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 import {ComboboxComponent, ComboboxEntry
     } from '@eg/share/combobox/combobox.component';
 import {PrintService} from '@eg/share/print/print.service';
@@ -41,6 +42,7 @@ export class PrintTemplateComponent implements OnInit {
     @ViewChild('tabs', { static: false }) tabs: NgbTabset;
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
     @ViewChild('confirmDelete', { static: true }) confirmDelete: ConfirmDialogComponent;
+    @ViewChild('printContextCbox', {static: false}) printContextCbox: ComboboxComponent;
 
     // Define some sample data that can be used for various templates
     // Data will be filled out via the sample data service.
@@ -56,6 +58,7 @@ export class PrintTemplateComponent implements OnInit {
         private org: OrgService,
         private pcrud: PcrudService,
         private auth: AuthService,
+        private store: ServerStoreService,
         private locale: LocaleService,
         private printer: PrintService,
         private samples: SampleDataService
@@ -208,6 +211,11 @@ export class PrintTemplateComponent implements OnInit {
                 this.sampleJson = JSON.stringify(data, null, 2);
                 this.refreshPreview();
             }
+
+            this.store.getItem('eg.print.template_context.' + this.template.name())
+            .then(setting => {
+                this.printContextCbox.applyEntryId(setting || 'unset');
+            });
         });
     }
 
@@ -295,6 +303,19 @@ export class PrintTemplateComponent implements OnInit {
                     .then(x => this.selectTemplate(null));
             });
         });
+    }
+
+    forceContextChange(entry: ComboboxEntry) {
+        if (entry && entry.id !== 'unset') {
+
+            this.store.setItem(
+                'eg.print.template_context.' + this.template.name(), entry.id);
+
+        } else {
+
+            this.store.removeItem(
+                'eg.print.template_context.' + this.template.name());
+        }
     }
 }
 

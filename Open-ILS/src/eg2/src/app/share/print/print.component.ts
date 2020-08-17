@@ -74,12 +74,32 @@ export class PrintComponent implements OnInit {
             return;
         }
 
-        this.isPrinting = true;
+        // Load the configured print context.
+        let promise = Promise.resolve();
+        if (printReq.templateName) {
+            promise = this.serverStore.getItem(
+                'eg.print.template_context.' + printReq.templateName)
+            .then(setting => {
+                if (setting) {
+                    printReq.printContext = setting;
+                }
+            });
+        }
 
-        this.applyTemplate(printReq).then(() => {
-            // Give templates a chance to render before printing
-            setTimeout(() => {
-                this.dispatchPrint(printReq).then(_ => this.reset());
+        this.isPrinting = true;
+        promise.then(_ => {
+
+            if (printReq.printContext === 'no-print') {
+                console.debug('Skipping print request with No-Print context');
+                this.reset();
+                return;
+            }
+
+            this.applyTemplate(printReq).then(() => {
+                // Give templates a chance to render before printing
+                setTimeout(() => {
+                    this.dispatchPrint(printReq).then(__ => this.reset());
+                });
             });
         });
     }

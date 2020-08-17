@@ -91,6 +91,12 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
     // Template has been fetched (or no template needed) 
     // Process the template and send the result off to the printer.
     service.print_content = function(args) {
+
+        if (args.context === 'no-print') {
+            console.debug('Skipping print request with No-Print context');
+            return $q.when();
+        }
+
         return service.fleshPrintScope(args.scope)
         .then(function() { return egHatch.usePrinting(); })
         .then(function(useHatch) {

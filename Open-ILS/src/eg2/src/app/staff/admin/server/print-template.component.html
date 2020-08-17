@@ -64,6 +64,23 @@
           <button class="btn btn-info ml-2" (click)="cloneTemplate()" i18n>
             Clone Template
           </button>
+          <span class="ml-3 mr-1" i18n>Force Print Context:</span>
+          <eg-combobox #printContextCbox (onChange)="forceContextChange($event)">
+            <eg-combobox-entry entryId="unset" entryLabel="<Unset>" i18n-entryLabel>
+            </eg-combobox-entry>
+            <eg-combobox-entry entryId="default" entryLabel="Default" i18n-entryLabel>
+            </eg-combobox-entry>
+            <eg-combobox-entry entryId="receipt" entryLabel="Receipt" i18n-entryLabel>
+            </eg-combobox-entry>
+            <eg-combobox-entry entryId="label" entryLabel="Label" i18n-entryLabel>
+            </eg-combobox-entry>
+            <eg-combobox-entry entryId="mail" entryLabel="Mail" i18n-entryLabel>
+            </eg-combobox-entry>
+            <eg-combobox-entry entryId="offline" entryLabel="Offline" i18n-entryLabel>
+            </eg-combobox-entry>
+            <eg-combobox-entry entryId="no-print" entryLabel="No-Print" i18n-entryLabel>
+            </eg-combobox-entry>
+          </eg-combobox>
           <div class="flex-1"> </div>
           <button class="btn btn-danger ml-2" (click)="deleteTemplate()" i18n>
             Delete Template
