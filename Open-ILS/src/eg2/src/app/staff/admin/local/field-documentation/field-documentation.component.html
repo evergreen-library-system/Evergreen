@@ -33,7 +33,7 @@
 </eg-fm-record-editor>
 
 <ng-template #fieldClassSelector let-fieldentries="fieldentries" let-selected="selectedEntry">
-  <eg-combobox [allowFreeText]="true" [(ngModel)]="selected" required="true"
+  <eg-combobox [allowFreeText]="true" [ngModel]="selected" required="true"
     [entries]="fieldentries" (onChange)="setClass($event)">
   </eg-combobox>
 </ng-template>
@@ -41,7 +41,7 @@
 <ng-template #fieldSelector
   let-entries="fields" let-selected="selectedEntry">
   <eg-combobox [allowFreeText]="true" required="true"
-    [entries]="fields" [(ngModel)]="selected"
+    [entries]="fields" [ngModel]="selected"
     (ngModelChange)="setField($event)">
   </eg-combobox>
 </ng-template>
