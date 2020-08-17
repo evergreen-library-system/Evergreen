@@ -1,4 +1,5 @@
 <button class="glyphicon glyphicon-question-sign no-border"
+      type="button"
       uib-popover="{{helpText}}"
       popover-trigger="click"
       popover-placement="auto"
@@ -6,6 +7,7 @@
       ng-if="!helpLink || helpLink.length == 0"
 ></button>
 <button class="glyphicon glyphicon-question-sign no-border"
+      type="button"
       uib-popover-html="helpHtml"
       popover-trigger="click"
       popover-placement="auto"
