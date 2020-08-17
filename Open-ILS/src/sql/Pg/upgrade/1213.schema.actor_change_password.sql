@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1213', :eg_version);
 
 CREATE OR REPLACE FUNCTION actor.change_password (user_id INT, new_pw TEXT, pw_type TEXT DEFAULT 'main')
 RETURNS VOID AS $$
@@ -21,5 +21,9 @@ BEGIN
     END IF;
 END;
 $$ LANGUAGE 'plpgsql';
+
+COMMENT ON FUNCTION actor.change_password(INT,TEXT,TEXT) IS $$
+Allows setting a salted password for a user by passing actor.usr id and the text of the password.
+$$;
 
 COMMIT;
