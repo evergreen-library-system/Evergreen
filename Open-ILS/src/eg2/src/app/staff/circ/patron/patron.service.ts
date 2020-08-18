@@ -49,6 +49,9 @@ export class PatronManagerService {
 
     loaded = false;
 
+    accountExpired = false;
+    accountExpiresSoon = false;
+
     constructor(
         private net: NetService,
         private auth: AuthService,
@@ -65,10 +68,25 @@ export class PatronManagerService {
             this.auth.token(), id, PATRON_FLESH_FIELDS).toPromise()
         .then(patron => this.patron = patron)
         .then(_ => this.getPatronStats(id))
+        .then(_ => this.setExpires())
         .then(_ => this.loaded = true);
     }
 
-   getPatronStats(id: number): Promise<any> {
+    setExpires(): Promise<any> {
+        this.accountExpired = false;
+        this.accountExpiresSoon = false;
+
+        return this.patronService.testExpire(this.patron)
+        .then(value => {
+            if (value === 'expired') {
+                this.accountExpired = true;
+            } else if (value === 'soon') {
+                this.accountExpiresSoon = true;
+            }
+        });
+    }
+
+    getPatronStats(id: number): Promise<any> {
 
         return this.net.request(
             'open-ils.actor',
