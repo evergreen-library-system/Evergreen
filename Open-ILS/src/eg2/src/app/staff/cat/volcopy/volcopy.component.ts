@@ -13,6 +13,7 @@ import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.componen
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 import {VolCopyService} from './volcopy.service';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {BroadcastService} from '@eg/share/util/broadcast.service';
 
 const COPY_FLESH = {
     flesh: 1,
@@ -72,6 +73,7 @@ export class VolCopyComponent implements OnInit {
         private auth: AuthService,
         private pcrud: PcrudService,
         private cache: AnonCacheService,
+        private broadcaster: BroadcastService,
         private holdings: HoldingsService,
         private volcopy: VolCopyService
     ) { }
@@ -412,6 +414,26 @@ export class VolCopyComponent implements OnInit {
         }).then(_ => this.loading = false);
     }
 
+    broadcastChanges(volumes: IdlObject[]) {
+
+        const volIds = volumes.map(v => v.id());
+        const copyIds = [];
+        const recIds = [];
+
+        volumes.forEach(vol => {
+            if (!recIds.includes(vol.record())) {
+                recIds.push(vol.record());
+            }
+            vol.copies().forEach(copy => copyIds.push(copy.id()));
+        });
+
+        this.broadcaster.broadcast('eg.holdings.update', {
+            copies : copyIds,
+            volumes: volIds,
+            records: recIds
+        });
+    }
+
     saveApi(volumes: IdlObject[], override?:
         boolean, close?: boolean): Promise<number[]> {
 
@@ -437,6 +459,8 @@ export class VolCopyComponent implements OnInit {
                 alert(evt);
                 return Promise.reject();
             }
+
+            this.broadcastChanges(volumes);
 
             return copyIds;
         });
