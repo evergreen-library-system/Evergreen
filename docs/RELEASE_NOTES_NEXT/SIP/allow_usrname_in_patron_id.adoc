@@ -8,6 +8,6 @@ username over their barcode.
 
 The new feature determines if the value in the Patron ID field is a
 barcode or username by comparing the field value against the
-`opac.barcode_regex` setting for the home organizational unit of the
-logged in SIP2 account as configured in the oils_sip.xml file.  This
-is similar to what the OPAC does when a patron logs in.
+`opac.barcode_regex` setting for the organizational unit of the logged
+in SIP2 account as configured in the oils_sip.xml file.  This is
+similar to what the OPAC does when a patron logs in.

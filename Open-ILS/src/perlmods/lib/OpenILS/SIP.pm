@@ -245,7 +245,11 @@ sub get_ou_setting {
     my $self = shift;
     my $setting = shift;
     my $sess = $self->fetch_session;
-    return $U->ou_ancestor_setting_value($sess->home_ou, $setting);
+    my $ou = (ref($sess->home_ou)) ? $sess->home_ou->id : $sess->home_ou;
+    if ($sess->ws_ou) {
+        $ou = (ref($sess->ws_ou)) ? $sess->ws_ou->id : $sess->ws_ou;
+    }
+    return $U->ou_ancestor_setting_value($ou, $setting);
 }
 
 sub get_barcode_regex {
