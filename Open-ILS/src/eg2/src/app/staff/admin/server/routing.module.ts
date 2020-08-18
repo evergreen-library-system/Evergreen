@@ -28,6 +28,14 @@ const routes: Routes = [{
     path: 'config/print_template',
     component: PrintTemplateComponent
 }, {
+    path: 'config/rule_recurring_fine',
+    component: BasicAdminPageComponent,
+    data: [{
+        schema: 'config',
+        table: 'rule_recurring_fine',
+        fieldOrder: 'name,low,normal,high,recurrence_interval,grace_period'
+    }]
+}, {
     path: 'config/z3950_source',
     component: BasicAdminPageComponent,
     data: [{
