@@ -361,7 +361,13 @@ export class VolEditComponent implements OnInit {
     }
 
     barcodeChanged(copy: IdlObject, barcode: string) {
-        // note: copy.barcode(barcode) applied via ngModel
+
+        if (barcode) {
+            // Scrub leading/trailing spaces from barcodes
+            barcode = barcode.trim();
+            copy.barcode(barcode);
+        }
+
         copy.ischanged(true);
         copy._dupe_barcode = false;
 
