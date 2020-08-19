@@ -38,6 +38,9 @@ export class StaffCatalogService {
     // during record tab navigation.
     currentDetailRecordSummary: any;
 
+    // Add digital bookplate to search options.
+    enableBookplates = false;
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,

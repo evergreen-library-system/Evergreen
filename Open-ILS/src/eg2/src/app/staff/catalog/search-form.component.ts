@@ -279,6 +279,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
             }
         }
     }
+
+    showBookplate(): boolean {
+        return this.staffCat.enableBookplates;
+    }
 }
 
 

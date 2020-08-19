@@ -513,6 +513,10 @@ export class CatalogSearchContext {
         const matchOp = ts.matchOp[idx];
         const fieldClass = ts.fieldClass[idx];
 
+        // Bookplates are filters but may be displayed as regular
+        // text search indexes.
+        if (fieldClass === 'bookplate') { return ''; }
+
         let str = '';
         if (!query) { return str; }
 
@@ -600,6 +604,16 @@ export class CatalogSearchContext {
         });
         if (qcount > 1) { str += ')'; }
         // -------
+
+        // Append bookplate queries as filters
+        ts.query.forEach((q, idx) => {
+            const space = str.length > 0 ? ' ' : '';
+            const query = ts.query[idx];
+            const fieldClass = ts.fieldClass[idx];
+            if (query && fieldClass === 'bookplate') {
+                str += `${space}copy_tag(*,${query})`;
+            }
+        });
 
         if (ts.hasBrowseEntry) {
             // stored as a comma-separated string of "entryId,fieldId"
