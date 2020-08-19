@@ -9,7 +9,7 @@
         <label for="ou" class="input-group-text" i18n>Library:</label>
       </div>
       <eg-org-select domId="ou" [applyDefault]="true"
-        (onChange)="fillGrid($event.id())"
+        (onChange)="handleOrgChange($event)"
         [disableOrgs]="disableOrgs()" [hideOrgs]="disableOrgs()">
       </eg-org-select>
     </div>
@@ -24,7 +24,7 @@
   </div>
 </form>
 <eg-grid [dataSource]="dataSource" [useLocalSort]="true" #pullList
-  [sortable]="true" persistKey="booking.pull_list">
+  [disablePaging]="true" [sortable]="true" persistKey="booking.pull_list">
   <eg-grid-toolbar-action label="Cancel Selected" i18n-label (onClick)="cancelSelected($event)" [disableOnRows]="noSelectedRows"></eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="View Item Status" i18n-label (onClick)="viewItemStatus($event)" [disableOnRows]="notOneCatalogedItemSelected"></eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="View Reservations for This Resource" i18n-label (onClick)="viewByResource($event)" [disableOnRows]="notOneResourceSelected"></eg-grid-toolbar-action>
@@ -43,5 +43,5 @@
 </eg-grid>
 
 <eg-cancel-reservation-dialog #confirmCancelReservationDialog
-  (onSuccessfulCancel)="fillGrid()">
+  (onSuccessfulCancel)="pullList.reload()">
 </eg-cancel-reservation-dialog>
