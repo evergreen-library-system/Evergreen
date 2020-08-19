@@ -553,6 +553,20 @@ information. To use Matomo Analytics you need to:
 
 . Set up a hosted instance of Matomo
 . Add your Evergreen catalogue as a site
+. Use the Library Settings Editor to add a Matomo URL and Site ID for your library.
+
+Typically, Matomo will give you a block of javascript you can insert into
+web sites. One line will look like:
+
+var u="http://mylibrary.lib/matomo/";
+
+The full URL in the double quotes will be your URL.  Another line
+will look like:
+
+_paq.push(['setSiteId', '1']);
+
+In this case the number 1 will be your site ID.
+
 
 === NoveList ===
 

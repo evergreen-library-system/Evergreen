@@ -1939,8 +1939,8 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'View booking resource types', 'ppl', 'description')),
  ( 622, 'VIEW_BOOKING_RESOURCE', oils_i18n_gettext(622,
     'View booking resources', 'ppl', 'description')),
- ( 623, 'UPDATE_ORG_UNIT_SETTING.opac.analytics.use_matomo', oils_i18n_gettext(623,
-    'Set OPAC to use Matomo tracking', 'ppl', 'description'))
+ ( 623, 'UPDATE_ORG_UNIT_SETTING.opac.matomo', oils_i18n_gettext(623,
+    'Allows a user to configure Matomo Analytics org unit settings', 'ppl', 'description'))
 ;
 
 
@@ -20760,22 +20760,24 @@ VALUES (
 );
 
 INSERT into config.org_unit_setting_type
-    ( name, grp, label, description, datatype, update_perm ) VALUES
-    ( 'opac.analytics.matomo_id', 'opac',
-        oils_i18n_gettext('opac.analytics.matomo_id',
-            'Requires the Matomo ID',
-            'coust', 'label'),
-        oils_i18n_gettext('opac.analytics.matomo_id',
-            'Requires the Matomo ID',
-            'coust', 'description'),
-        'string', 623),
-    ( 'opac.analytics.matomo_url', 'opac',
-        oils_i18n_gettext('opac.analytics.matomo_url',
-            'Requires the url to the Matomo software',
-            'coust', 'label'),
-        oils_i18n_gettext('opac.analytics.matomo_url',
-            'Requires the url to the Matomo software',
-            'coust', 'description'),
-        'string', 623)
-;
-
+    ( name, grp, label, description, datatype, update_perm )
+VALUES (
+    'opac.analytics.matomo_id', 'opac',
+    oils_i18n_gettext(
+    'opac.analytics.matomo_id',
+    'Matomo Site ID',
+    'coust', 'label'),
+    oils_i18n_gettext('opac.analytics.matomo_id',
+    'The Site ID for your Evergreen catalog. You can find the Site ID in the tracking code you got from Matomo.',
+    'coust', 'description'),
+    'string', 623
+), (
+    'opac.analytics.matomo_url', 'opac',
+    oils_i18n_gettext('opac.analytics.matomo_url',
+    'Matomo URL',
+    'coust', 'label'),
+    oils_i18n_gettext('opac.analytics.matomo_url',
+    'The URL for your the Matomo software. Be sure to include the trailing slash, e.g. https://my-evergreen.matomo.cloud/',
+    'coust', 'description'),
+    'string', 623
+);
