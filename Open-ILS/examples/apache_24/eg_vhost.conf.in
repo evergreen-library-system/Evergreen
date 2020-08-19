@@ -883,10 +883,12 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     # Locale (defaults to en_us)
     #PerlAddVar OILSRemoteAuthLocale "en_us"
 
-    # Base URI of your EZProxy server
-    PerlSetVar OILSRemoteAuthEZProxyBaseURI "http://example.com/ezproxy/"
+    # Base URI of your EZProxy server; be sure there is no trailing slash
+    PerlSetVar OILSRemoteAuthEZProxyBaseURI "http://example.com/ezproxy"
 
     # shared secret used to generate EZProxy authentication ticket
+    # This should be the same as the value in the MD5 line of your EZProxy users.txt configuration
+    # This default value is not suitable for production!
     PerlSetVar OILSRemoteAuthEZProxySecret "secret"
 </Location>
 
