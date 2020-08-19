@@ -1,0 +1,11 @@
+Reports Subtotals
+^^^^^^^^^^^^^^^^^
+Reports now allow group subtotals and grand totals.  By checking the
+new "Calculate grouping subtotals" checkbox under "Output Options",
+a new unlabeled row or column is created with the subtotals for each
+grouping and an unlabeled grand total row or column.
+
+This takes advantage of PostreSQL's built-in ROLLUP feature.  See the
+PostgreSQL documentation for details: 
+
+https://www.postgresql.org/docs/9.6/queries-table-expressions.html#QUERIES-GROUPING-SETS
