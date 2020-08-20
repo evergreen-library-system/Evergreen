@@ -248,7 +248,8 @@ sub get_patron_info {
                     "card",
                     "cards",
                     "standing_penalties",
-                    'profile'
+                    "home_ou",
+                    "profile"
                 ],
                 ausp => [ "standing_penalty" ]
             }
