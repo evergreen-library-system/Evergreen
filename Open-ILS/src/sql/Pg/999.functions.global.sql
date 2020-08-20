@@ -1280,6 +1280,7 @@ BEGIN
         AND target_biblio_record_entry = source_record;
 
     -- Finally, "delete" the source record
+    UPDATE biblio.record_entry SET active = FALSE WHERE id = source_record;
     DELETE FROM biblio.record_entry WHERE id = source_record;
 
 	-- That's all, folks!
