@@ -272,10 +272,15 @@ sub find_patron {
     my $key  =  (@_ > 1) ? shift : 'barcode';  # if we have multiple args, the first is the key index (default barcode)
     my $patron_id = shift;
 
-    # Check for usrname or barcode in the same, simple way that the OPAC does.
-    my $bc_regex = $self->get_barcode_regex();
-    if ($key eq 'barcode' && $patron_id !~ /$bc_regex/) {
-        $key = 'usrname';
+    my $use_username = 
+        $self->get_option_value('support_patron_username_login') || '';
+
+    if (to_bool($use_username)) {
+        # Check for usrname or barcode in the same, simple way that the OPAC does.
+        my $bc_regex = $self->get_barcode_regex();
+        if ($key eq 'barcode' && $patron_id !~ /$bc_regex/) {
+            $key = 'usrname';
+        }
     }
 
     $self->verify_session;

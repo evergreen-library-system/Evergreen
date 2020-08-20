@@ -163,6 +163,14 @@
 					<option name='patron_status_always_permit_loans' value='false' />
 					-->
 
+					<!--
+						Allow patrons to connect to SIP services using their
+						username in addition to their barcode.  See the
+						org unit setting 'opac.barcode_regex' for configuring
+						what constitutes a barcode vs a username.
+					<option name='support_patron_username_login' value='false' />
+					-->
+
 				</options>
 
                 <checkin_override>

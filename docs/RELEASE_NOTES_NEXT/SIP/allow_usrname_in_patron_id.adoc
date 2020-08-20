@@ -11,3 +11,12 @@ barcode or username by comparing the field value against the
 `opac.barcode_regex` setting for the organizational unit of the logged
 in SIP2 account as configured in the oils_sip.xml file.  This is
 similar to what the OPAC does when a patron logs in.
+
+This feature requires activation.  To activate, uncomment (or add) the
+following line in the oils_sip.xml configuration file and change the 
+value from 'false' to 'true'.
+
+[source,xml]
+---------------------------------------------------------------------------
+<option name='support_patron_username_login' value='true' />
+---------------------------------------------------------------------------
