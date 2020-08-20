@@ -281,6 +281,21 @@
     <eg-grid-column i18n-label label="Call Number Suffix" 
       path="callNum.suffix.label" name="call_number.suffix.label" [hidden]="true">
     </eg-grid-column>
+    <eg-grid-column i18n-label label="Parts" path="copy._monograph_parts"
+      name="monograph_parts" [hidden]="true">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Notes" path="copy.notes.length"
+      name="note_count" [hidden]="true">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Tags" path="copy.tags.length"
+      name="tag_count" [hidden]="true">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Alerts" path="copy.copy_alerts.length"
+      name="alert_count" [hidden]="true">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Circulate As MARC Type"
+      path="copy.circ_as_type" [hidden]="true">
+    </eg-grid-column>
     <eg-grid-column i18n-label label="Active/Create Date" 
       path="copy.active_date" datatype="timestamp">
     </eg-grid-column>
