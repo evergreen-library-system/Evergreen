@@ -506,8 +506,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
                 }, {
                     flesh: 3,
                     flesh_fields: {
-                        acp: ['status', 'location', 'circ_lib', 'parts',
-                            'age_protect', 'copy_alerts', 'latest_inventory'],
+                        acp: ['status', 'location', 'circ_lib', 'parts', 'notes',
+                            'tags', 'age_protect', 'copy_alerts', 'latest_inventory'],
                         acn: ['prefix', 'suffix', 'copies'],
                         acli: ['inventory_workstation']
                     }
@@ -604,6 +604,11 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
         copyNode.target = copy;
         const stat = Number(copy.status().id());
+        copy._monograph_parts = '';
+        if (copy.parts().length > 0) {
+            copy._monograph_parts =
+                copy.parts().map(p => p.label()).join(',');
+        }
 
         if (stat === 1 /* checked out */ || stat === 16 /* long overdue */) {
             // Avoid looking up circs on items that are not checked out.
