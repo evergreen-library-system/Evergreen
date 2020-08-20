@@ -618,10 +618,10 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
     "[% l('An address is required during registration.') %]"
   
   s.PATRON_BLOCKED_WHY = {};
-  s.PATRON_BLOCKED_WHY.D = "[% l('Patron has penalties') %]";
-  s.PATRON_BLOCKED_WHY.L = "[% l('Barcode is reported Lost') %]";
-  s.PATRON_BLOCKED_WHY.E = "[% l('Patron account is Expired') %]";
-  s.PATRON_BLOCKED_WHY.B = "[% l('Warning: Barcode [_2] was flagged Expired in block list downloaded [_1].', '{{formatted_date}}', '{{pbarcode}}') %]";
+  s.PATRON_BLOCKED_WHY.D = "[% l('Warning: Barcode [_2] was flagged with penalties in block list downloaded [_1].', '{{formatted_date}}', '{{pbarcode}}') %]";
+  s.PATRON_BLOCKED_WHY.L = "[% l('Warning: Barcode [_2] was flagged Lost in block list downloaded [_1].', '{{formatted_date}}', '{{pbarcode}}') %]";
+  s.PATRON_BLOCKED_WHY.E = "[% l('Warning: Barcode [_2] was flagged Expired in block list downloaded [_1].', '{{formatted_date}}', '{{pbarcode}}') %]";
+  s.PATRON_BLOCKED_WHY.B = "[% l('Warning: Barcode [_2] was flagged Barred in block list downloaded [_1].', '{{formatted_date}}', '{{pbarcode}}') %]";
 
 }]);
 </script>
