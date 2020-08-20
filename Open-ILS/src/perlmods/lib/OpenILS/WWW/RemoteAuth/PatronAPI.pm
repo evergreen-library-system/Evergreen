@@ -109,7 +109,8 @@ sub success {
     my ($self, $user) = @_;
     my $template = $self->request_type;
     my $ctx = {
-        result => 'success'
+        result => 'success',
+        user => $user
     };
     my $tt = new OpenILS::WWW::RemoteAuth::Template;
     return $tt->process($template, $ctx, $self->r);
