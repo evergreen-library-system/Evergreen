@@ -148,7 +148,9 @@ export class PermGroupTreeComponent implements OnInit {
         return this.pcrud.retrieveAll('pgpm', {},
             {fleshSelectors: true, authoritative: true})
         .pipe(map(m => {
-            this.loadProgress.increment();
+            if (this.loadProgress) {
+                this.loadProgress.increment();
+            }
             this.permMaps.push(m);
         })).toPromise();
     }
