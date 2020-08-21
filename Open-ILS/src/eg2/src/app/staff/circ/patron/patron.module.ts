@@ -10,6 +10,7 @@ import {PatronManagerService} from './patron.service';
 import {PatronComponent} from './patron.component';
 import {SummaryComponent} from './summary.component';
 import {CheckoutComponent} from './checkout.component';
+import {HoldsComponent} from './holds.component';
 import {EditComponent} from './edit.component';
 import {EditToolbarComponent} from './edit-toolbar.component';
 import {BcSearchComponent} from './bcsearch.component';
@@ -19,6 +20,7 @@ import {BcSearchComponent} from './bcsearch.component';
     PatronComponent,
     SummaryComponent,
     CheckoutComponent,
+    HoldsComponent,
     EditComponent,
     EditToolbarComponent,
     BcSearchComponent

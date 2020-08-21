@@ -64,13 +64,7 @@
         <li ngbNavItem="holds" [disabled]="!context.patron">
           <a ngbNavLink i18n>Holds</a>
           <ng-template ngbNavContent>
-            <eg-holds-grid [recordId]="recordId"
-              preFetchSetting="eg.circ.patron.holds.prefetch"
-              printTemplate="holds_for_patron"
-              persistKey="circ.patron.holds"
-              [hidePickupLibFilter]="true"
-              [defaultSort]="[{name:'request_time',dir:'asc'}]"
-              [patronId]="patronId"></eg-holds-grid>
+            <eg-patron-holds></eg-patron-holds>
           </ng-template>
         </li>
 

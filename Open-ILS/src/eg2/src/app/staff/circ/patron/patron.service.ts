@@ -71,7 +71,7 @@ export class PatronManagerService {
             'open-ils.actor',
             'open-ils.actor.user.fleshed.retrieve',
             this.auth.token(), id, PATRON_FLESH_FIELDS).toPromise()
-        .then(patron => this.patron = patron)
+        .then(p => this.patron = p)
         .then(_ => this.getPatronStats(id))
         .then(_ => this.setExpires())
         .then(_ => this.loaded = true);

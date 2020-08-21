@@ -1,0 +1,22 @@
+
+
+<ul ngbNav #holdsNav="ngbNav" class="nav-tabs" (navChange)="beforeTabChange($event)">
+
+  <li ngbNavItem="active">
+    <a ngbNavLink i18n>Open Hold Requests</a>
+    <ng-template ngbNavContent>
+      <eg-holds-grid 
+        preFetchSetting="eg.circ.patron.holds.prefetch"
+        printTemplate="holds_for_patron"
+        persistKey="circ.patron.holds"
+        [hidePickupLibFilter]="true"
+        [defaultSort]="[{name:'request_time',dir:'asc'}]"
+        [patronId]="context.patron.id()"></eg-holds-grid>
+    </ng-template>
+  </li>
+
+</ul>
+
+<ng-container *ngIf="context.patron">
+  <div [ngbNavOutlet]="holdsNav"></div>
+</ng-container>
