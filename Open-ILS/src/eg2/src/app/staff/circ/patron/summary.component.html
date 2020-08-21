@@ -88,11 +88,13 @@
     </div>
     <div class="row mb-1">
       <div class="col-lg-5" i18n>Non-Cataloged</div>
-      <div class="col-lg-7">XXXX</div>
+      <div class="col-lg-7">{{context.patronStats.checkouts.noncat}}</div>
     </div>
     <div class="row">
       <div class="col-lg-5" i18n>Holds</div>
-      <div class="col-lg-7">XX / YY</div>
+      <div class="col-lg-7">
+        {{context.patronStats.holds.ready}} / {{context.patronStats.holds.total}}
+      </div>
     </div>
 
     <hr class="m-1"/>

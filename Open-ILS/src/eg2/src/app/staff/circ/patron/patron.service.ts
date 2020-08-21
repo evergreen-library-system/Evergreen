@@ -31,8 +31,13 @@ interface PatronStats {
         lost: number,
         out: number,
         total_out: number,
-        long_overdue: number
+        long_overdue: number,
+        noncat: number
     };
+    holds: {
+        ready: number;
+        total: number;
+    }
 }
 
 @Injectable()
@@ -76,6 +81,12 @@ export class PatronManagerService {
         this.accountExpired = false;
         this.accountExpiresSoon = false;
 
+        // When quickly navigating patron search results it's possible
+        // for this.patron to be cleared right before this function
+        // is called.  Exit early instead of making an unneeded call.
+        // For this func. in particular a nasty JS error is thrown.
+        if (!this.patron) { return Promise.resolve(); }
+
         return this.patronService.testExpire(this.patron)
         .then(value => {
             if (value === 'expired') {
@@ -87,6 +98,11 @@ export class PatronManagerService {
     }
 
     getPatronStats(id: number): Promise<any> {
+
+        // When quickly navigating patron search results it's possible
+        // for this.patron to be cleared right before this function
+        // is called.  Exit early instead of making an unneeded call.
+        if (!this.patron) { return Promise.resolve(); }
 
         return this.net.request(
             'open-ils.actor',
@@ -112,7 +128,21 @@ export class PatronManagerService {
                 stats.checkouts.total_out += stats.checkouts.lost
             }
 
-            return this.patronStats = stats;
+            this.patronStats = stats;
+
+        }).then(_ => {
+
+            if (!this.patron) { return; }
+
+            return this.net.request(
+                'open-ils.circ',
+                'open-ils.circ.open_non_cataloged_circulation.user.authoritative',
+                this.auth.token(), id).toPromise()
+
+        }).then(noncats => {
+            if (noncats && this.patronStats) {
+                this.patronStats.checkouts.noncat = noncats.length;
+            }
         });
     }
 }
