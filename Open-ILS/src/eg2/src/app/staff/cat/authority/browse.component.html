@@ -86,9 +86,9 @@
     path="authority.create_date" flex="1" datatype="timestamp"></eg-grid-column>
   <eg-grid-column name="edit_date" label="Edit Date" i18n-label
     path="authority.edit_date" flex="1" datatype="timestamp"></eg-grid-column>
-  <eg-grid-column name="source" label="Source" i18n-label
+  <eg-grid-column name="source" label="Source" i18n-label [hidden]="true"
     path="authority.source" flex="1"></eg-grid-column>
-  <eg-grid-column name="owner" label="Owner" i18n-label
-    path="authority.owner" flex="1"></eg-grid-column>
+  <eg-grid-column name="owner" label="Owner" i18n-label [hidden]="true"
+    path="owner" flex="1"></eg-grid-column>
 </eg-grid>
 
