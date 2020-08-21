@@ -39,7 +39,7 @@
 
 <ng-template #postSubfieldsChunk let-field="field">
 
-  <ng-container *ngIf="isControlledBibTag(field.tag)">
+  <ng-container *ngIf="context.recordType === 'biblio' && isControlledBibTag(field.tag)">
     <button class="btn btn-sm btn-outline-info link-button"
       i18n-title title="Create authority link"
       (click)="openLinkerDialog(field)">
