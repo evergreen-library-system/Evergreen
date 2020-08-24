@@ -123,7 +123,8 @@
       </div>
       <div class="col-lg-2">
         <eg-org-select (onChange)="searchOrg = $event"
-          [applyOrgId]="searchOrg ? searchOrg.id() : null"
+          persistKey="patron.search"
+          [fallbackOrg]="org.root()"
           i18n-placeholder placeholder="Home Library">
         </eg-org-select>
         <!-- home org -->

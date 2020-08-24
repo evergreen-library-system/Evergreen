@@ -20447,5 +20447,12 @@ VALUES (
         'Default org unit for catalog holds org unit selector',
         'cwst', 'label'
     )
+), (
+    'eg.orgselect.patron.search', 'gui', 'integer',
+    oils_i18n_gettext(
+        'eg.orgselect.patron.search',
+        'Default org unit for patron search',
+        'cwst', 'label'
+    )
 );
 

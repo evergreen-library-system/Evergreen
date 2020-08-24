@@ -2,16 +2,11 @@ import {Component, Input, Output, OnInit, AfterViewInit,
     EventEmitter, ViewChild, Renderer2} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {EventService} from '@eg/core/event.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {StringComponent} from '@eg/share/string/string.component';
-import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {Pager} from '@eg/share/util/pager';
@@ -53,7 +48,7 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
     constructor(
         private renderer: Renderer2,
         private net: NetService,
-        private org: OrgService,
+        public org: OrgService,
         private auth: AuthService,
         private store: ServerStoreService
     ) {
@@ -109,7 +104,6 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
 
     clear() {
         this.search = {profile: null};
-        this.searchOrg = this.org.root();
     }
 
     getRows(pager: Pager, sort: any[]): Observable<any> {
