@@ -549,10 +549,32 @@ sub times_for_date {
     # it does follow the hard-coding of the horizon in fetch_to_be_staged().
     $now_obj->add(seconds => 2 * $gran_seconds);
 
+    my $closings = [];
     my $step_obj = $start_obj->clone;
     while (DateTime->compare($step_obj,$end_obj) < 0) { # inside HOO
         if (DateTime->compare($step_obj,$now_obj) >= 0) { # only offer times in the future
             my $step_ts = $step_obj->strftime('%FT%T%z');
+
+            if (!@$closings) { # Look for closings that include this slot time.
+                $closings = $e->search_actor_org_unit_closed_date(
+                    {org_unit => $org, close_start => {'<=' => $step_ts }, close_end => {'>=' => $step_ts }}
+                );
+            }
+
+            my $skip = 0;
+            for my $closing (@$closings) {
+                # If we have closings, we check that we're still inside at least one of them.
+                # If we /are/ inside one then we just move on. Otherwise, we'll forget
+                # them and check for closings with the next slot time.
+                if (DateTime->compare($step_obj,$date_parser->parse_datetime(clean_ISO8601($closing->close_end))->set_time_zone($tz)) < 0) {
+                    $step_obj->add(seconds => $gran_seconds);
+                    $skip++;
+                    last;
+                }
+            }
+            next if $skip;
+            $closings = [];
+
             my $other_slots = $e->search_action_curbside({org => $org, slot => $step_ts}, {idlist => 1});
             my $available = $max - scalar(@$other_slots);
             $available = $available < 0 ? 0 : $available; # so truthiness testing is always easy in the client
