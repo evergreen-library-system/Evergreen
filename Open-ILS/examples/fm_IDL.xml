@@ -1478,7 +1478,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="atevdefg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::event_def_group" oils_persist:tablename="action_trigger.event_def_group" reporter:label="Trigger Event Definition Group" oils_persist:restrict_primary="100">
 		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_def_group_id_seq">
-			<field reporter:label="Definition ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Group ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Enabled" name="active" reporter:datatype="bool"/>
 			<field reporter:label="Owning Library" name="owner"  reporter:datatype="org_unit"/>
 			<field reporter:label="Hook" name="hook"  reporter:datatype="link"/>
@@ -1502,10 +1502,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="atevdefgm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::event_def_group_member" oils_persist:tablename="action_trigger.event_def_group_member" reporter:label="Trigger Event Definition Group Member">
 		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_def_group_member_id_seq">
-			<field reporter:label="Definition ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Name" name="name"  reporter:datatype="text"/>
 			<field reporter:label="Group" name="grp"  reporter:datatype="link"/>
-			<field reporter:label="Definition" name="event_def"  reporter:datatype="link"/>
+			<field reporter:label="Event Definition" name="event_def"  reporter:datatype="link"/>
 			<field reporter:label="Sortable" name="sortable" reporter:datatype="bool"/>
 			<field reporter:label="Include Holdings" name="holdings" reporter:datatype="bool"/>
 			<field reporter:label="Externally Processed" name="external" reporter:datatype="bool"/>
