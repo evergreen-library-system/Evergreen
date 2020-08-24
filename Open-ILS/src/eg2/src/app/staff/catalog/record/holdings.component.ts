@@ -508,6 +508,9 @@ export class HoldingsMaintenanceComponent implements OnInit {
             }
 
             this.itemCircsNeeded = [];
+            // Track vol IDs for the current fetch so we can prune
+            // any that were deleted in an out-of-band update.
+            const volsFetched: number[] = [];
 
             this.pcrud.search('acn',
                 {   record: this.recordId,
@@ -525,16 +528,59 @@ export class HoldingsMaintenanceComponent implements OnInit {
                 },
                 {authoritative: true}
             ).subscribe(
-                callNum => this.appendCallNum(callNum),
+                callNum => {
+                    this.appendCallNum(callNum);
+                    volsFetched.push(callNum.id());
+                },
                 err => {},
                 ()  => {
                     this.refreshHoldings = false;
+                    this.pruneVols(volsFetched);
                     this.fetchCircs().then(
                         ok => this.flattenHoldingsTree(observer)
                     );
                 }
             );
         });
+    }
+
+    // Remove vols that were deleted out-of-band, via edit, merge, etc.
+    pruneVols(volsFetched: number[]) {
+
+        const toRemove: number[] = []; // avoid modifying mid-loop
+        Object.keys(this.treeNodeCache.callNum).forEach(volId => {
+            const id = Number(volId);
+            if (!volsFetched.includes(id)) {
+                toRemove.push(id);
+            }
+        });
+
+        if (toRemove.length === 0) { return; }
+
+        const pruneNodes = (node: HoldingsTreeNode) => {
+            if (node.nodeType === 'callNum' &&
+                toRemove.includes(node.target.id())) {
+
+                console.debug('pruning deleted vol:', node.target.id());
+
+                // Remove this node from the parents list of children
+                node.parentNode.children =
+                    node.parentNode.children.filter(
+                        c => c.target.id() !== node.target.id());
+
+            } else {
+                node.children.forEach(c => pruneNodes(c));
+            }
+        };
+
+        // remove from cache
+        toRemove.forEach(volId => delete this.treeNodeCache.callNum[volId]);
+
+        // remove from tree
+        pruneNodes(this.holdingsTree.root);
+
+        // refresh tree / grid
+        this.holdingsGrid.reload();
     }
 
     // Retrieve circulation objects for checked out items.
@@ -570,9 +616,6 @@ export class HoldingsMaintenanceComponent implements OnInit {
         if (callNumNode) {
             const pNode = this.treeNodeCache.org[callNum.owning_lib()];
             if (callNumNode.parentNode.target.id() !== pNode.target.id()) {
-                // Call number owning library changed.  Un-link it from the
-                // previous org unit collection before adding to the new one.
-                // XXX TODO: ^--
                 callNumNode.parentNode = pNode;
                 callNumNode.parentNode.children.push(callNumNode);
             }
