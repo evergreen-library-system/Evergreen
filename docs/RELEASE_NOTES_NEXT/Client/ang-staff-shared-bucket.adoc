@@ -1,0 +1,6 @@
+Basket To Bucket Action Now Allows Adding To Shared Buckets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Angular staff catalog's 'Add Basket to Bucket' action now
+gives the user the option of adding the contents of the basket
+to a shared bucket.
+
