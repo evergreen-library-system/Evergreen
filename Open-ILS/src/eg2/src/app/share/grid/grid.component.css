@@ -142,7 +142,6 @@
 }
 
 .eg-grid-filter-control-cell {
-  overflow: visible !important;
   white-space: normal;
 }
 .eg-grid-col-is-filtered {
