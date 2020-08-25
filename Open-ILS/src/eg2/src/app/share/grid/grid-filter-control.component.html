@@ -40,7 +40,7 @@
   <div [ngSwitch]="col.datatype">
     <div *ngSwitchCase="'link'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
           <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
             <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
@@ -61,7 +61,7 @@
     </div>
     <div *ngSwitchCase="'bool'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
           <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
             <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
@@ -84,7 +84,7 @@
     </div>
     <div *ngSwitchCase="'text'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
           <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
             <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
@@ -123,7 +123,7 @@
     </div>
     <div *ngSwitchCase="'int'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
           <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
             <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
@@ -147,7 +147,7 @@
     </div>
     <div *ngSwitchCase="'id'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
           <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
             <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
@@ -171,7 +171,7 @@
     </div>
     <div *ngSwitchCase="'float'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
           <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
             <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
@@ -195,7 +195,7 @@
     </div>
     <div *ngSwitchCase="'money'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
           <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
             <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
@@ -222,7 +222,7 @@
         <!-- [autoClose]="false" because editing the date widgets, which open
              their open popups, registers to the dropdown as clicking 
              outside the dropdown -->
-        <div ngbDropdown class="d-inline-block p-1" [autoClose]="false" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block p-1" [autoClose]="false" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
           <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
             <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
@@ -264,7 +264,7 @@
     </div>
     <div *ngSwitchCase="'org_unit'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+        <div ngbDropdown container="body" class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
           [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
           <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
             <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
