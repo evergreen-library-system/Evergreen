@@ -29,6 +29,7 @@ export class PatronService {
     getByBarcode(barcode: string, pcrudOps?: any): Promise<IdlObject> {
         return this.bcSearch(barcode).toPromise()
         .then(barcodes => {
+            if (!barcodes) { return null; }
 
             // Use the first successful barcode response.
             // TODO: What happens when there are multiple responses?

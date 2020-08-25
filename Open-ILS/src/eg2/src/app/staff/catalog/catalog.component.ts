@@ -18,6 +18,11 @@ export class CatalogComponent implements OnInit {
         // child components.  After initial creation, the context is
         // reset and updated as needed to apply new search parameters.
         this.staffCat.createContext();
+
+        // Subscribe to these emissions so that we can force
+        // change detection in this component even though the
+        // hold-for value was modified by a child component.
+        this.staffCat.holdForChange.subscribe(() => {});
     }
 
     // Returns the 'au' object for the patron who we are
@@ -27,8 +32,7 @@ export class CatalogComponent implements OnInit {
     }
 
     clearHoldPatron() {
-        this.staffCat.holdForUser = null;
-        this.staffCat.holdForBarcode = null;
+        this.staffCat.clearHoldPatron();
     }
 }
 

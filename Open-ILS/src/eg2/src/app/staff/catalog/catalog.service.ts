@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, EventEmitter} from '@angular/core';
 import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -36,6 +36,11 @@ export class StaffCatalogService {
     // User object for above barcode.
     holdForUser: IdlObject;
 
+    // Emit that the value has changed so components can detect
+    // the change even when the component is not itself digesting
+    // new values.
+    holdForChange: EventEmitter<void> = new EventEmitter<void>();
+
     // Cache the currently selected detail record (i.g. catalog/record/123)
     // summary so the record detail component can avoid duplicate fetches
     // during record tab navigation.
@@ -65,12 +70,21 @@ export class StaffCatalogService {
 
         if (this.holdForBarcode) {
             this.patron.getByBarcode(this.holdForBarcode)
-            .then(user => this.holdForUser = user);
+            .then(user => {
+                this.holdForUser = user;
+                this.holdForChange.emit();
+            });
         }
 
         this.searchContext.org = this.org; // service, not searchOrg
         this.searchContext.isStaff = true;
         this.applySearchDefaults();
+    }
+
+    clearHoldPatron() {
+        this.holdForUser = null;
+        this.holdForBarcode = null;
+        this.holdForChange.emit();
     }
 
     cloneContext(context: CatalogSearchContext): CatalogSearchContext {
