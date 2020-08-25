@@ -1,5 +1,6 @@
-import {Component, OnInit, Input, ViewChild, Renderer2} from '@angular/core';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {tap} from 'rxjs/operators';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -71,9 +72,16 @@ export class HoldComponent implements OnInit {
     smsCarriers: ComboboxEntry[];
 
     smsEnabled: boolean;
+
     maxMultiHolds = 0;
+
+    // True if mult-copy holds are active for the current receipient.
+    multiHoldsActive = false;
+
+    canPlaceMultiAt: number[] = [];
     multiHoldCount = 1;
     placeHoldsClicked: boolean;
+    badBarcode: string = null;
 
     puLibWsFallback = false;
 
@@ -83,7 +91,6 @@ export class HoldComponent implements OnInit {
     constructor(
         private router: Router,
         private route: ActivatedRoute,
-        private renderer: Renderer2,
         private evt: EventService,
         private net: NetService,
         private org: OrgService,
@@ -101,10 +108,15 @@ export class HoldComponent implements OnInit {
         this.smsCarriers = [];
     }
 
-    reset() {
+    ngOnInit() {
 
-        this.user = null;
-        this.userBarcode = null;
+        // Respond to changes in hold type.  This currently assumes hold
+        // types only toggle post-init between copy-level types (C,R,F)
+        // and no other params (e.g. target) change with it.  If other
+        // types require tracking, additional data collection may be needed.
+        this.route.paramMap.subscribe(
+            (params: ParamMap) => this.holdType = params.get('type'));
+
         this.holdType = this.route.snapshot.params['type'];
         this.holdTargets = this.route.snapshot.queryParams['target'];
         this.holdFor = this.route.snapshot.queryParams['holdFor'] || 'patron';
@@ -126,54 +138,63 @@ export class HoldComponent implements OnInit {
         this.requestor = this.auth.user();
         this.pickupLib = this.auth.user().ws_ou();
 
-        this.holdContexts = this.holdTargets.map(target => {
-            const ctx = new HoldContext(target);
-            return ctx;
-        });
-
         this.resetForm();
 
-        if (this.holdFor === 'staff' || this.userBarcode) {
-            this.holdForChanged();
-        }
+        this.getRequestorSetsAndPerms()
+        .then(_ => {
 
-        this.getTargetMeta();
-        this.placeHoldsClicked = false;
+            // Load receipient data if we have any.
+            if (this.staffCat.holdForBarcode) {
+                this.holdFor = 'patron';
+                this.userBarcode = this.staffCat.holdForBarcode;
+            }
+
+            if (this.holdFor === 'staff' || this.userBarcode) {
+                this.holdForChanged();
+            }
+        });
+
+        setTimeout(() => {
+            const node = document.getElementById('patron-barcode');
+            if (node) { node.focus(); }
+        });
     }
 
-    ngOnInit() {
+    getRequestorSetsAndPerms(): Promise<any> {
 
-        // Respond to changes in hold type.  This currently assumes hold
-        // types only toggle post-init between copy-level types (C,R,F)
-        // and no other params (e.g. target) change with it.  If other
-        // types require tracking, additional data collection may be needed.
-        this.route.paramMap.subscribe(
-            (params: ParamMap) => this.holdType = params.get('type'));
+        return this.org.settings(
+            ['sms.enable', 'circ.holds.max_duplicate_holds'])
 
-        this.reset();
-
-        this.org.settings(['sms.enable', 'circ.holds.max_duplicate_holds'])
         .then(sets => {
 
             this.smsEnabled = sets['sms.enable'];
 
+            const max = Number(sets['circ.holds.max_duplicate_holds']);
+            if (Number(max) > 0) { this.maxMultiHolds = Number(max); }
+
             if (this.smsEnabled) {
-                this.pcrud.search(
+
+                return this.pcrud.search(
                     'csc', {active: 't'}, {order_by: {csc: 'name'}})
-                .subscribe(carrier => {
+                .pipe(tap(carrier => {
                     this.smsCarriers.push({
                         id: carrier.id(),
                         label: carrier.name()
                     });
-                });
+                })).toPromise();
             }
 
-            const max = sets['circ.holds.max_duplicate_holds'];
-            if (Number(max) > 0) { this.maxMultiHolds = max; }
-        });
+        }).then(_ => {
 
-        setTimeout(() => // Focus barcode input
-            this.renderer.selectRootElement('#patron-barcode').focus());
+            if (this.maxMultiHolds) {
+
+                // Multi-copy holds are supported.  Let's see where this
+                // requestor has permission to take advantage of them.
+                return this.perm.hasWorkPermAt(
+                    ['CREATE_DUPLICATE_HOLDS'], true).then(perms =>
+                    this.canPlaceMultiAt = perms['CREATE_DUPLICATE_HOLDS']);
+            }
+        });
     }
 
     holdCountRange(): number[] {
@@ -280,20 +301,22 @@ export class HoldComponent implements OnInit {
     }
 
     userBarcodeChanged() {
+        const newBc = this.userBarcode;
+
+        if (!newBc) { this.user = null; return; }
 
         // Avoid simultaneous or duplicate lookups
-        if (this.userBarcode === this.currentUserBarcode) {
-            return;
+        if (newBc === this.currentUserBarcode) { return; }
+
+        if (newBc !== this.staffCat.holdForBarcode) {
+            // If an alternate barcode is entered, it takes us out of
+            // place-hold-for-patron-x-from-search mode.
+            this.staffCat.clearHoldPatron();
         }
 
         this.resetForm();
+        this.userBarcode = newBc; // clobbered in reset
 
-        if (!this.userBarcode) {
-            this.user = null;
-            return;
-        }
-
-        this.user = null;
         this.currentUserBarcode = this.userBarcode;
         this.getUser();
     }
@@ -304,17 +327,38 @@ export class HoldComponent implements OnInit {
         const promise = id ? this.patron.getById(id, flesh) :
             this.patron.getByBarcode(this.userBarcode, flesh);
 
+        this.badBarcode = null;
         promise.then(user => {
+
+            if (!user) {
+                // IDs are assumed to valid
+                this.badBarcode = this.userBarcode;
+                return;
+            }
+
             this.user = user;
             this.applyUserSettings();
+            this.multiHoldsActive =
+                this.canPlaceMultiAt.includes(user.home_ou());
         });
     }
 
     resetForm() {
+        this.user = null;
+        this.userBarcode = null;
         this.notifyEmail = true;
         this.notifyPhone = true;
         this.phoneValue = '';
         this.pickupLib = this.requestor.ws_ou();
+        this.placeHoldsClicked = false;
+
+        this.holdContexts = this.holdTargets.map(target => {
+            const ctx = new HoldContext(target);
+            return ctx;
+        });
+
+        // Required after rebuilding the contexts
+        this.getTargetMeta();
     }
 
     applyUserSettings() {
@@ -491,14 +535,9 @@ export class HoldComponent implements OnInit {
         this.patronSearch.open({size: 'xl'}).toPromise().then(
             patrons => {
                 if (!patrons || patrons.length === 0) { return; }
-
                 const user = patrons[0];
-
-                this.user = user;
-                this.userBarcode =
-                    this.currentUserBarcode = user.card().barcode();
-                user.home_ou(this.org.get(user.home_ou()).id()); // de-flesh
-                this.applyUserSettings();
+                this.userBarcode = user.card().barcode();
+                this.userBarcodeChanged();
             }
         );
     }

@@ -4,11 +4,18 @@
 
 <div class="row">
   <div class="col-lg-4">
-    <h3 i18n>Place Hold 
-      <small *ngIf="user">
-       ({{user.family_name()}}, {{user.first_given_name()}})
-      </small>
-    </h3>
+    <ng-container *ngIf="badBarcode">
+      <div class="alert alert-danger" i18n>
+        Barcode '{{badBarcode}}' not found.
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!badBarcode">
+      <h3 i18n>Place Hold
+        <small *ngIf="user">
+        ({{user.family_name()}}, {{user.first_given_name()}})
+        </small>
+      </h3>
+    </ng-container>
   </div>
   <div class="col-lg-2 text-right">
     <button class="btn btn-outline-dark btn-sm" (click)="searchPatrons()">
@@ -81,7 +88,7 @@
           </eg-date-select>
         </div>
       </div>
-      <div class="row mt-2">
+      <div class="row mt-2" *ngIf="multiHoldsActive">
         <div class="col-lg-6">
           <label for='multi-hold-count' i18n>Number of copies:</label>
         </div>
@@ -170,7 +177,7 @@
             <button class="btn btn-success" (click)="placeHolds()" 
               [disabled]="!user || placeHoldsClicked" i18n>Place Hold(s)</button>
 
-            <button class="btn btn-outline-dark ml-2" (click)="reset()" i18n>Reset</button>
+            <button class="btn btn-outline-dark ml-2" (click)="resetForm()" i18n>Reset</button>
           </li>
         </ul><!-- col -->
       </div><!-- row -->
