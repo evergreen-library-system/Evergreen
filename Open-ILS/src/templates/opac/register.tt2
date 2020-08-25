@@ -99,6 +99,14 @@ END;
                 ) | html %]</h4>
         [% END %]
 
+        [%
+            #prepopulate org selector on refresh or error
+            cgi_org = CGI.param('stgu.home_ou') | html;
+            IF cgi_org && ctx.register.valid_orgs.grep("^$cgi_org$").size;
+                prepopulate_org = cgi_org;
+            END
+        %]
+
         <form method='POST' onSubmit="return dobValidate(document.getElementById('stgu.dob'))">
             <table>
                 <tr>
@@ -107,7 +115,7 @@ END;
                     </td>
                     <td>[% INCLUDE build_org_selector 
                             name='stgu.home_ou' 
-                            value=value || ctx_org
+                            value=value || prepopulate_org || ctx_org
                             can_have_users_only=1
                             valid_org_list=ctx.register.valid_orgs
                         %]
