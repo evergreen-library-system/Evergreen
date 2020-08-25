@@ -68,7 +68,7 @@ Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: [%- user_data.0.subject || 'Bibliographic Records' %]
 Auto-Submitted: auto-generated
 
-[% FOR cbreb IN target;
+[%- FOR cbreb IN target;
 
     flesh_list = '{mra';
     IF user_data.0.type == 'full';
@@ -81,7 +81,7 @@ Auto-Submitted: auto-generated
 
     item_list = helpers.sort_bucket_unapi_bre(cbreb.items,{flesh => flesh_list, site => user_data.0.context_org, flesh_limit => flimit}, user_data.0.sort_by, user_data.0.sort_dir);
 
-FOR item IN item_list %]
+FOR item IN item_list -%]
 
 [% loop.count %]/[% loop.size %].  Bib ID# [% item.id %]
 [% IF item.isbn %]ISBN: [% item.isbn _ "\n" %][% END -%]
@@ -93,7 +93,7 @@ Publication Info: [% item.publisher %] [% item.pubdate %]
 Item Type: [% item.item_type %]
 [% IF user_data.0.type == 'full' && item.holdings.size == 0 %]
  * No items for this record at the selected location
-[% END %]
+[%- END %]
 [% FOR cp IN item.holdings -%]
  * Library: [% cp.circ_lib %]
    Location: [% cp.location %]
@@ -102,10 +102,9 @@ Item Type: [% item.item_type %]
    Status: [% cp.status_label %]
    Barcode: [% cp.barcode %]
  
-[% END %]
-
-[% END %]
-[% END %]
+[% END -%]
+[%- END -%]
+[%- END -%]
 $$ WHERE hook = 'biblio.format.record_entry.email';
 
 UPDATE action_trigger.event_definition SET template = $$
