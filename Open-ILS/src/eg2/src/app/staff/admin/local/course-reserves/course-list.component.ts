@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import {Component, Input, ViewChild, OnInit, AfterViewInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -21,14 +21,14 @@ import {CourseAssociateUsersComponent
     templateUrl: './course-list.component.html'
 })
 
-export class CourseListComponent implements OnInit {
+export class CourseListComponent implements OnInit, AfterViewInit {
 
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
-    @ViewChild('grid', { static: true }) grid: GridComponent;
+    @ViewChild('grid') grid: GridComponent;
     @ViewChild('successString', { static: true }) successString: StringComponent;
-    @ViewChild('createString', { static: false }) createString: StringComponent;
-    @ViewChild('createErrString', { static: false }) createErrString: StringComponent;
-    @ViewChild('updateFailedString', { static: false }) updateFailedString: StringComponent;
+    @ViewChild('createString') createString: StringComponent;
+    @ViewChild('createErrString') createErrString: StringComponent;
+    @ViewChild('updateFailedString') updateFailedString: StringComponent;
     @ViewChild('deleteFailedString', { static: true }) deleteFailedString: StringComponent;
     @ViewChild('deleteSuccessString', { static: true }) deleteSuccessString: StringComponent;
     @ViewChild('archiveFailedString', { static: true }) archiveFailedString: StringComponent;
@@ -57,6 +57,9 @@ export class CourseListComponent implements OnInit {
 
     ngOnInit() {
         this.getSource();
+    }
+
+    ngAfterViewInit() {
         this.grid.onRowActivate.subscribe((course: IdlObject) => {
             const idToEdit = course.id();
             this.navigateToCoursePage(idToEdit);
