@@ -30,10 +30,12 @@ export class CourseService {
     getCourses(course_ids?: Number[]): Promise<IdlObject[]> {
         if (!course_ids) {
             return this.pcrud.retrieveAll('acmc',
-                {}, {atomic: true}).toPromise();
+                {flesh: 1, flesh_fields: {'acmc': ['owning_lib']}},
+                {atomic: true}).toPromise();
         } else {
             return this.pcrud.search('acmc', {id: course_ids},
-                {}, {atomic: true}).toPromise();
+                {flesh: 1, flesh_fields: {'acmc': ['owning_lib']}},
+                {atomic: true}).toPromise();
         }
     }
 

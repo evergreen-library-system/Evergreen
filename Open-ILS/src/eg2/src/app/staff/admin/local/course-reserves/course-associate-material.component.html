@@ -162,13 +162,21 @@
                     placeholder="e.g. Required" class="flex-grow-1" />
                 </div>
               </div>
-              <eg-marc-simplified-editor (xmlRecordEvent)="associateBriefRecord($event)" buttonLabel="Add material" i18n-buttonLabel>
-                <eg-marc-simplified-editor-field tag="245" subfield="a"></eg-marc-simplified-editor-field>
-                <eg-marc-simplified-editor-field tag="856" subfield="u"></eg-marc-simplified-editor-field>
-                <eg-marc-simplified-editor-field tag="856" subfield="9" defaultValue="CONS"></eg-marc-simplified-editor-field>
-                <eg-marc-simplified-editor-field tag="990" subfield="a" i18n-defaultValue
-                  defaultValue="This record was created using the Course Materials Module -- please edit it there">
-                  </eg-marc-simplified-editor-field>
+              <eg-marc-simplified-editor (xmlRecordEvent)="associateBriefRecord($event)"
+              buttonLabel="Add material" i18n-buttonLabel defaultMarcForm="o">
+                <eg-marc-simplified-editor-field tag="245" ind1="0" ind2="0">
+                  <eg-marc-simplified-editor-subfield code="a"></eg-marc-simplified-editor-subfield>
+                </eg-marc-simplified-editor-field>
+                <eg-marc-simplified-editor-field tag="856" ind1="4" ind2="0">
+                  <eg-marc-simplified-editor-subfield code="u"></eg-marc-simplified-editor-subfield>
+                  <eg-marc-simplified-editor-subfield code="y"></eg-marc-simplified-editor-subfield>
+                  <eg-marc-simplified-editor-subfield code="9" [defaultValue]="currentCourse.owning_lib().shortname()"></eg-marc-simplified-editor-subfield>
+                </eg-marc-simplified-editor-field>
+                <eg-marc-simplified-editor-field tag="990">
+                  <eg-marc-simplified-editor-subfield code="a" i18n-defaultValue
+                    defaultValue="This record was created using the Course Materials Module -- please edit it there">
+                  </eg-marc-simplified-editor-subfield>
+                </eg-marc-simplified-editor-field>
               </eg-marc-simplified-editor>
             </ng-template>
           </li>
@@ -210,7 +218,7 @@
       </div>
 
       <div class="mt-3" [ngClass]="isDialog() ? 'col-md-12' : 'col-md-8'">
-        <eg-grid #materialsGrid [dataSource]="materialsDataSource" [useLocalSort]="true">
+        <eg-grid #materialsGrid [dataSource]="materialsDataSource" [useLocalSort]="true" [disablePaging]="true">
           <eg-grid-toolbar-action label="Remove Selected" i18n-label (onClick)="deleteSelectedMaterials($event)">
           </eg-grid-toolbar-action>
           <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelectedMaterials($event)">
