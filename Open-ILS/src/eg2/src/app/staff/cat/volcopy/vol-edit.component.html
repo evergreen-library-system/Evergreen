@@ -1,43 +1,61 @@
-<eg-confirm-dialog 
-  #confirmDelVol
+<eg-confirm-dialog #confirmDelVol
   i18n-dialogTitle i18n-dialogBody
   dialogTitle="Delete Call Number?"
   dialogBody="Delete {{deleteVolCount}} Call Number(s) and All Associated Item(s)?">
 </eg-confirm-dialog>
 
-<eg-confirm-dialog 
-  #confirmDelCopy
+<eg-confirm-dialog #confirmDelCopy
   i18n-dialogTitle i18n-dialogBody
   dialogTitle="Delete Item?"
   dialogBody="Delete {{deleteCopyCount}} Item(s)?">
 </eg-confirm-dialog>
 
-<div class="row d-flex bg-faint mb-2 pb-1 pt-1 border border-dark rounded">
-  <div class="p-1" [ngStyle]="{flex: flexAt(1)}"> </div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(2)}"> </div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(3)}" *ngIf="displayColumn('classification')">
-    <div><label class="font-weight-bold" i18n>Classification</label></div>
-    <div>
-      <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolClass">
-        <eg-combobox-entry *ngFor="let cls of volcopy.commonData.acn_class"
-          [entryId]="cls.id()" [entryLabel]="cls.name()">
-        </eg-combobox-entry>
-      </eg-combobox>
-    </div>
+<div *ngIf="!volcopy.defaults.visible.batch_actions"
+  class="bg-faint mb-2 p-1 border border-dark rounded">
+  <button class="btn btn-sm btn-outline-dark label-with-material-icon" 
+    (click)="toggleBatchVisibility()">
+    <span i18n>Batch Actions</span>
+    <span class="material-icons">unfold_more</span>
+  </button>
+</div>
+
+<div *ngIf="volcopy.defaults.visible.batch_actions" 
+  class="row d-flex bg-faint mb-2 pb-1 pt-1 border border-dark rounded">
+  <div class="p-1" [ngStyle]="{flex: flexAt(1)}">
+    <div><label class="font-weight-bold" i18n>&nbsp;</label></div>
+    <button class="btn btn-sm btn-outline-dark label-with-material-icon" 
+      (click)="toggleBatchVisibility()">
+      <span i18n>Batch Actions</span>
+      <span class="material-icons">unfold_less</span>
+    </button>
   </div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(4)}" *ngIf="displayColumn('prefix')">
-    <div><label class="font-weight-bold" i18n>Prefix</label></div>
-    <div>
-      <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolPrefix">
-        <eg-combobox-entry *ngFor="let pfx of volcopy.commonData.acn_prefix"
-          [entryId]="pfx.id()" [entryLabel]="pfx.label()">
-        </eg-combobox-entry>
-      </eg-combobox>
-    </div>
+  <div class="p-1" [ngStyle]="{flex: flexAt(3)}">
+    <ng-container *ngIf="displayColumn('classification')">
+      <div><label class="font-weight-bold" i18n>Classification</label></div>
+      <div>
+        <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolClass">
+          <eg-combobox-entry *ngFor="let cls of volcopy.commonData.acn_class"
+            [entryId]="cls.id()" [entryLabel]="cls.name()">
+          </eg-combobox-entry>
+        </eg-combobox>
+      </div>
+    </ng-container>
+  </div>
+  <div class="p-1" [ngStyle]="{flex: flexAt(4)}">
+    <ng-container *ngIf="displayColumn('prefix')">
+      <div><label class="font-weight-bold" i18n>Prefix</label></div>
+      <div>
+        <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolPrefix">
+          <eg-combobox-entry *ngFor="let pfx of volcopy.commonData.acn_prefix"
+            [entryId]="pfx.id()" [entryLabel]="pfx.label()">
+          </eg-combobox-entry>
+        </eg-combobox>
+      </div>
+    </ng-container>
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(5)}">
     <div>
-      <label class="font-weight-bold label-with-material-icon" i18n>
+      <label class="font-weight-bold" i18n>
         Call Number Label
       </label>
     </div>
@@ -50,15 +68,17 @@
       </eg-combobox>
     </div>
   </div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(6)}" *ngIf="displayColumn('suffix')">
-    <div><label class="font-weight-bold" i18n>Suffix</label></div>
-    <div>
-      <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolSuffix">
-        <eg-combobox-entry *ngFor="let sfx of volcopy.commonData.acn_suffix"
-          [entryId]="sfx.id()" [entryLabel]="sfx.label()">
-        </eg-combobox-entry>
-      </eg-combobox>
-    </div>
+  <div class="p-1" [ngStyle]="{flex: flexAt(6)}">
+    <ng-container *ngIf="displayColumn('suffix')">
+      <div><label class="font-weight-bold" i18n>Suffix</label></div>
+      <div>
+        <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolSuffix">
+          <eg-combobox-entry *ngFor="let sfx of volcopy.commonData.acn_suffix"
+            [entryId]="sfx.id()" [entryLabel]="sfx.label()">
+          </eg-combobox-entry>
+        </eg-combobox>
+      </div>
+    </ng-container>
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(7)}">
     <div><label class="font-weight-bold" i18n>Batch</label></div>
@@ -70,32 +90,12 @@
       </button>
     </div>
   </div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(8)}">
-    <ng-container *ngIf="displayColumn('generate_barcodes')">
-      <div><label class="font-weight-bold" i18n>Generate Barcodes</label></div>
-      <button class="btn btn-sm btn-outline-dark label-with-material-icon"
-       (click)="generateBarcodes()">
-       <span i18n>Generate</span>
-       <span class="material-icons">arrow_downward</span>
-      </button>
-    </ng-container>
-  </div>
-  <div class="p-1" [ngStyle]="{flex: flexSpan(9, 10)}">
-    <ng-container *ngIf="displayColumn('generate_barcodes')">
-      <div><label class="font-weight-bold" i18n>Checkdigit</label></div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" 
-          (change)="saveUseCheckdigit()"
-          id="use-checkdigit" [(ngModel)]="useCheckdigit"/>
-        <label class="form-check-label" for="use-checkdigit" i18n>
-          Use Checkdigit
-        </label>
-      </div>
-    </ng-container>
-  </div>
+  <!-- needed for consistent column widths -->
+  <div class="p-1" [ngStyle]="{flex: flexAt(8)}"></div>
+  <div class="p-1" [ngStyle]="{flex: flexAt(9)}"></div>
+  <div class="p-1" [ngStyle]="{flex: flexAt(10)}"></div>
+  <div class="p-1" [ngStyle]="{flex: flexAt(11)}"></div>
 </div>
-
-
 
 <div class="row d-flex mt-2 mb-2">
   <div class="p-1" [ngStyle]="{flex: flexAt(1)}">
@@ -114,40 +114,41 @@
       </ng-container>
     </span>
   </div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(2)}">
-    <label class="font-weight-bold" i18n>Call Numbers</label>
+  <div class="p-1" [ngStyle]="{flex: flexAt(3)}">
+    <ng-container *ngIf="displayColumn('classification')">
+      <span class="font-weight-bold" i18n>Classification
+        <ng-container *ngIf="expand !== 3">
+          <button title="Expand Column" i18n-title 
+            class="material-icon-button" (click)="expand = 3">
+            &#x2197;
+          </button>
+        </ng-container>
+        <ng-container *ngIf="expand === 3">
+          <button title="Shrink Column" i18n-title 
+            class="material-icon-button" (click)="expand = null">
+            &#x2199;
+          </button>
+        </ng-container>
+      </span>
+    </ng-container>
   </div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(3)}" *ngIf="displayColumn('classification')">
-    <span class="font-weight-bold" i18n>Classification
-      <ng-container *ngIf="expand !== 3">
-        <button title="Expand Column" i18n-title 
-          class="material-icon-button" (click)="expand = 3">
-          &#x2197;
-        </button>
-      </ng-container>
-      <ng-container *ngIf="expand === 3">
-        <button title="Shrink Column" i18n-title 
-          class="material-icon-button" (click)="expand = null">
-          &#x2199;
-        </button>
-      </ng-container>
-    </span>
-  </div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(4)}" *ngIf="displayColumn('prefix')">
-    <span class="font-weight-bold" i18n>Prefix
-      <ng-container *ngIf="expand !== 4">
-        <button title="Expand Column" i18n-title 
-          class="material-icon-button" (click)="expand = 4">
-          &#x2197;
-        </button>
-      </ng-container>
-      <ng-container *ngIf="expand === 4">
-        <button title="Shrink Column" i18n-title 
-          class="material-icon-button" (click)="expand = null">
-          &#x2199;
-        </button>
-      </ng-container>
-    </span>
+  <div class="p-1" [ngStyle]="{flex: flexAt(4)}">
+    <ng-container *ngIf="displayColumn('prefix')">
+      <span class="font-weight-bold" i18n>Prefix
+        <ng-container *ngIf="expand !== 4">
+          <button title="Expand Column" i18n-title 
+            class="material-icon-button" (click)="expand = 4">
+            &#x2197;
+          </button>
+        </ng-container>
+        <ng-container *ngIf="expand === 4">
+          <button title="Shrink Column" i18n-title 
+            class="material-icon-button" (click)="expand = null">
+            &#x2199;
+          </button>
+        </ng-container>
+      </span>
+    </ng-container>
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(5)}">
     <span class="font-weight-bold" i18n>Call Number Label
@@ -165,32 +166,33 @@
       </ng-container>
     </span>
   </div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(6)}" *ngIf="displayColumn('suffix')">
-    <span class="font-weight-bold" i18n>Suffix
-      <ng-container *ngIf="expand !== 6">
-        <button title="Expand Column" i18n-title 
-          class="material-icon-button" (click)="expand = 6">
-          &#x2197;
-        </button>
-      </ng-container>
-      <ng-container *ngIf="expand === 6">
-        <button title="Shrink Column" i18n-title
-          class="material-icon-button" (click)="expand = null">
-          &#x2199;
-        </button>
-      </ng-container>
-    </span>
+  <div class="p-1" [ngStyle]="{flex: flexAt(6)}">
+    <ng-container *ngIf="displayColumn('suffix')">
+      <span class="font-weight-bold" i18n>Suffix
+        <ng-container *ngIf="expand !== 6">
+          <button title="Expand Column" i18n-title 
+            class="material-icon-button" (click)="expand = 6">
+            &#x2197;
+          </button>
+        </ng-container>
+        <ng-container *ngIf="expand === 6">
+          <button title="Shrink Column" i18n-title
+            class="material-icon-button" (click)="expand = null">
+            &#x2199;
+          </button>
+        </ng-container>
+      </span>
+    </ng-container>
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(7)}">
-    <label class="font-weight-bold" i18n>Items</label>
+    <label class="font-weight-bold" i18n></label>
   </div>
   <!-- 
     When hiding the copy_number column, absorb its colum width to 
     take advantage of the space and to ensure the main columns still 
     line up with the batch updater row sitting above
   -->
-  <div class="p-1" 
-    [ngStyle]="{flex: displayColumn('copy_number_vc') ? flexAt(8) : flexSpan(8, 9)}">
+  <div class="p-1" [ngStyle]="{flex: flexAt(8)}">
     <span class="font-weight-bold" i18n>Barcode
       <ng-container *ngIf="expand !== 8">
         <button title="Expand Column" i18n-title 
@@ -206,25 +208,30 @@
       </ng-container>
     </span>
   </div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(9)}" *ngIf="displayColumn('copy_number_vc')">
-    <label class="font-weight-bold" i18n>Item #</label>
+  <div class="p-1" [ngStyle]="{flex: flexAt(9)}">
+    <ng-container *ngIf="displayColumn('copy_number_vc')">
+      <label class="font-weight-bold" i18n>Item #</label>
+    </ng-container>
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(10)}">
-    <span class="font-weight-bold" i18n>Part
-      <ng-container *ngIf="expand !== 10">
-        <button title="Expand Column" i18n-title 
-          class="material-icon-button" (click)="expand = 10">
-          &#x2197;
-        </button>
-      </ng-container>
-      <ng-container *ngIf="expand === 10">
-        <button title="Shrink Column" i18n-title 
-          class="material-icon-button" (click)="expand = null">
-          &#x2199;
-        </button>
-      </ng-container>
-    </span>
+    <ng-container *ngIf="displayColumn('copy_part')">
+      <span class="font-weight-bold" i18n>Part
+        <ng-container *ngIf="expand !== 10">
+          <button title="Expand Column" i18n-title 
+            class="material-icon-button" (click)="expand = 10">
+            &#x2197;
+          </button>
+        </ng-container>
+        <ng-container *ngIf="expand === 10">
+          <button title="Shrink Column" i18n-title 
+            class="material-icon-button" (click)="expand = null">
+            &#x2199;
+          </button>
+        </ng-container>
+      </span>
+    </ng-container>
   </div>
+  <div class="p-1" [ngStyle]="{flex: flexAt(11)}"></div>
 </div>
 
 <ng-container *ngFor="let orgNode of context.orgNodes(); let orgIdx = index">
@@ -232,53 +239,66 @@
     <ng-container *ngFor="let copyNode of volNode.children; let copyIdx = index">
       <div class="row d-flex mt-1" [ngClass]="{'vol-row': copyIdx == 0}">
         <div class="p-1" [ngStyle]="{flex: flexAt(1)}">
-          <ng-container *ngIf="copyIdx == 0">
-            <span>{{orgNode.target.shortname()}}</span>
-            {{sessionType}}
-            <ng-container *ngIf="context.sessionType == 'record' || context.sessionType == 'mixed'">
-              <button class="clear-button" (click)="deleteVol(volNode)"
-                title="Delete Call Number {{volNode.target.label()}}" i18n-title>
-                <span class="material-icons">clear</span>
-              </button>
+          <div class="d-flex">
+            <div class="flex-1 pl-1">
+              <ng-container *ngIf="copyIdx == 0 && volIdx == 0">
+                <span>{{orgNode.target.shortname()}}</span>
+              </ng-container>
+            </div>
+            <div class="pr-1">
+              <ng-container *ngIf="copyIdx == 0 && volIdx == 0 && (
+                context.sessionType == 'record' || context.sessionType == 'mixed')">
+                  <ng-template #addOrgTmpl>
+                    <eg-org-select [limitPerms]="['CREATE_VOLUME']" 
+                      placeholder="Select Location..." i18n-placeholder
+                      [hideOrgs]="volcopy.hideVolOrgs"
+                      (onChange)="addVol($event); addOrgPopover.close()">
+                    </eg-org-select>
+                  </ng-template>
+
+                  <button class="btn btn-sm material-icon-button p-1"
+                    placement="bottom" [ngbPopover]="addOrgTmpl"
+                    autoClose="outside" #addOrgPopover="ngbPopover"
+                    i18n-popoverTitle="Add Call Number For Location"
+                    i18n-title title="Add Call Number For Location"
+                    (click)="addVolOrg=null">
+                    <span class="material-icons">add_circle_outline</span>
+                  </button>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <div class="p-1" [ngStyle]="{flex: flexAt(3)}">
+          <ng-container *ngIf="displayColumn('classification')">
+            <ng-container *ngIf="copyIdx == 0">
+              <eg-combobox
+                [selectedId]="volNode.target.label_class()"
+                [smallFormControl]="true"
+                [required]="true"
+                (onChange)="applyVolValue(volNode.target, 'label_class', $event ? $event.id : null)">
+                <eg-combobox-entry *ngFor="let cls of volcopy.commonData.acn_class"
+                  [entryId]="cls.id()" [entryLabel]="cls.name()">
+                </eg-combobox-entry>
+              </eg-combobox>
             </ng-container>
           </ng-container>
         </div>
-        <div class="p-1" [ngStyle]="{flex: flexAt(2)}">
-          <ng-container *ngIf="copyIdx == 0 && volIdx == 0">
-            <input type="number" class="form-control form-control-sm"
-              [disabled]="context.sessionType == 'copy' || context.sessionType == 'vol'"
-              [required]="true" [min]="existingVolCount(orgNode)"
-              [ngModel]="orgNode.children.length"
-              (ngModelChange)="volCountChanged(orgNode, $event)"/>
-          </ng-container>
-        </div>
-        <div class="p-1" [ngStyle]="{flex: flexAt(3)}" *ngIf="displayColumn('classification')">
-          <ng-container *ngIf="copyIdx == 0">
-            <eg-combobox
-              [selectedId]="volNode.target.label_class()"
-              [smallFormControl]="true"
-              [required]="true"
-              (onChange)="applyVolValue(volNode.target, 'label_class', $event ? $event.id : null)">
-              <eg-combobox-entry *ngFor="let cls of volcopy.commonData.acn_class"
-                [entryId]="cls.id()" [entryLabel]="cls.name()">
-              </eg-combobox-entry>
-            </eg-combobox>
-          </ng-container>
-        </div>
-        <div class="p-1" [ngStyle]="{flex: flexAt(4)}" *ngIf="displayColumn('prefix')">
-          <ng-container *ngIf="copyIdx == 0">
-            <eg-combobox
-              [selectedId]="volNode.target.prefix()"
-              [required]="true"
-              [smallFormControl]="true"
-              (onChange)="applyVolValue(volNode.target, 'prefix', $event ? $event.id : null)">
-              <eg-combobox-entry
-                [entryId]="-1" entryLabel="<None>" i18n-entryLabel>
-              </eg-combobox-entry>
-              <eg-combobox-entry *ngFor="let pfx of volcopy.commonData.acn_prefix"
-                [entryId]="pfx.id()" [entryLabel]="pfx.label()">
-              </eg-combobox-entry>
-            </eg-combobox>
+        <div class="p-1" [ngStyle]="{flex: flexAt(4)}">
+          <ng-container *ngIf="displayColumn('prefix')">
+            <ng-container *ngIf="copyIdx == 0">
+              <eg-combobox
+                [selectedId]="volNode.target.prefix()"
+                [required]="true"
+                [smallFormControl]="true"
+                (onChange)="applyVolValue(volNode.target, 'prefix', $event ? $event.id : null)">
+                <eg-combobox-entry
+                  [entryId]="-1" entryLabel="<None>" i18n-entryLabel>
+                </eg-combobox-entry>
+                <eg-combobox-entry *ngFor="let pfx of volcopy.commonData.acn_prefix"
+                  [entryId]="pfx.id()" [entryLabel]="pfx.label()">
+                </eg-combobox-entry>
+              </eg-combobox>
+            </ng-container>
           </ng-container>
         </div>
         <div class="p-1" [ngStyle]="{flex: flexAt(5)}">
@@ -291,42 +311,68 @@
               (change)="applyVolValue(volNode.target, 'label', $event.target.value)">
           </ng-container>
         </div>
-        <div class="p-1" [ngStyle]="{flex: flexAt(6)}" *ngIf="displayColumn('suffix')">
-          <ng-container *ngIf="copyIdx == 0">
-            <eg-combobox
-              [selectedId]="volNode.target.suffix()"
-              [required]="true"
-              [smallFormControl]="true"
-              (onChange)="applyVolValue(volNode.target, 'suffix', $event ? $event.id : null)">
-              <eg-combobox-entry
-                [entryId]="-1" entryLabel="<None>" i18n-entryLabel>
-              </eg-combobox-entry>
-              <eg-combobox-entry *ngFor="let sfx of volcopy.commonData.acn_suffix"
-                [entryId]="sfx.id()" [entryLabel]="sfx.label()">
-              </eg-combobox-entry>
-            </eg-combobox>
+        <div class="p-1" [ngStyle]="{flex: flexAt(6)}">
+          <ng-container *ngIf="displayColumn('suffix')">
+            <ng-container *ngIf="copyIdx == 0">
+              <eg-combobox
+                [selectedId]="volNode.target.suffix()"
+                [required]="true"
+                [smallFormControl]="true"
+                (onChange)="applyVolValue(volNode.target, 'suffix', $event ? $event.id : null)">
+                <eg-combobox-entry
+                  [entryId]="-1" entryLabel="<None>" i18n-entryLabel>
+                </eg-combobox-entry>
+                <eg-combobox-entry *ngFor="let sfx of volcopy.commonData.acn_suffix"
+                  [entryId]="sfx.id()" [entryLabel]="sfx.label()">
+                </eg-combobox-entry>
+              </eg-combobox>
+            </ng-container>
           </ng-container>
         </div>
         <div class="p-1" [ngStyle]="{flex: flexAt(7)}">
           <ng-container *ngIf="copyIdx == 0">
-            <input type="number" class="form-control form-control-sm"
-              [disabled]="context.sessionType == 'copy'"
-              [required]="true" [min]="existingCopyCount(volNode)"
-              [ngModel]="volNode.children.length"
-              (ngModelChange)="copyCountChanged(volNode, $event)"/>
+            <ng-container 
+              *ngIf="context.sessionType == 'record' || context.sessionType == 'mixed'">
+              <button class="btn btn-sm material-icon-button p-1"
+                (click)="createVols(orgNode, 1)"
+                i18n-title title="Add Call Number">
+                <span class="material-icons">add_circle_outline</span>
+              </button>
+
+              <ng-template #addVolCountTmpl>
+                <div i18n>Add How Many Call Numbers</div>
+                <div class="form-inline mt-1">
+                  <input type="number" class="form-control form-control-sm"
+                    id='add-vol-popover' 
+                    (keyup.enter)="createVolsFromPopover(orgNode, addVolsPopover)"
+                    [(ngModel)]="addVolCount" [required]="true" min="1"/>
+                  <button class="btn btn-sm btn-success ml-1" 
+                    (click)="createVolsFromPopover(orgNode, addVolsPopover)"
+                    i18n>Add</button>
+                </div>
+              </ng-template>
+
+              <button class="btn btn-sm material-icon-button p-1"
+                [disabled]="context.sessionType == 'copy' || context.sessionType == 'vol'"
+                (shown)="focusElement('add-vol-popover')"
+                placement="bottom" [ngbPopover]="addVolCountTmpl"
+                autoClose="outside" #addVolsPopover="ngbPopover"
+                i18n-popoverTitle="Add Call Numbers"
+                i18n-title title="Add Call Numbers">
+                <span class="material-icons">playlist_add</span>
+              </button>
+
+              <button class="btn btn-sm material-icon-button p-1"
+                (click)="deleteVol(volNode)"
+                i18n-title title="Remove Call Number">
+                <span class="material-icons">remove_circle_outline</span>
+              </button>
+
+            </ng-container>
           </ng-container>
         </div>
-        <div class="p-1" 
-          [ngStyle]="{flex: displayColumn('copy_number_vc') ? flexAt(8) : flexSpan(8, 9)}">
+        <div class="p-1" [ngStyle]="{flex: flexAt(8)}">
           <div class="d-flex">
-            <ng-container *ngIf="context.sessionType != 'copy'">
-              <button class="clear-button" (click)="deleteCopy(copyNode)"
-                [disabled]="volcopy.restrictCopyDelete(copyNode.target.status())"
-                title="Delete Item {{copyNode.target.barcode()}}" i18n-title>
-                <span class="material-icons">clear</span>
-              </button>
-            </ng-container>
-
             <!--
               Barcode value is not required for new copies, since those 
               without a barcode will be ignored.
@@ -354,25 +400,65 @@
             Duplicate Barcode
           </div>
         </div>
-        <div class="p-1" [ngStyle]="{flex: flexAt(9)}" *ngIf="displayColumn('copy_number_vc')">
-          <input type="number" min="1" class="form-control form-control-sm"
-            [ngModel]="copyNode.target.copy_number()"
-            (ngModelChange)="applyCopyValue(copyNode.target, 'copy_number', $event)"/>
+        <div class="p-1" [ngStyle]="{flex: flexAt(9)}">
+          <ng-container *ngIf="displayColumn('copy_number_vc')">
+            <input type="number" min="1" class="form-control form-control-sm"
+              [ngModel]="copyNode.target.copy_number()"
+              (ngModelChange)="applyCopyValue(copyNode.target, 'copy_number', $event)"/>
+          </ng-container>
         </div>
         <div class="p-1" [ngStyle]="{flex: flexAt(10)}">
-          <ng-container *ngIf="!recordHasParts(volNode.target.record())">
-            <label i18n>N/A</label>
+          <ng-container *ngIf="displayColumn('copy_part')">
+            <ng-container *ngIf="!recordHasParts(volNode.target.record())">
+              <label i18n>N/A</label>
+            </ng-container>
+            <ng-container *ngIf="recordHasParts(volNode.target.record())">
+              <eg-combobox
+                [selectedId]="copyNode.target.parts()[0] ? copyNode.target.parts()[0].id() : null"
+                [smallFormControl]="true"
+                (onChange)="copyPartChanged(copyNode, $event)">
+                <eg-combobox-entry 
+                  *ngFor="let part of volcopy.bibParts[volNode.target.record()]"
+                  [entryId]="part.id()" [entryLabel]="part.label()">
+                </eg-combobox-entry>
+              </eg-combobox>
+            </ng-container>
           </ng-container>
-          <ng-container *ngIf="recordHasParts(volNode.target.record())">
-            <eg-combobox
-              [selectedId]="copyNode.target.parts()[0] ? copyNode.target.parts()[0].id() : null"
-              [smallFormControl]="true"
-              (onChange)="copyPartChanged(copyNode, $event)">
-              <eg-combobox-entry 
-                *ngFor="let part of volcopy.bibParts[volNode.target.record()]"
-                [entryId]="part.id()" [entryLabel]="part.label()">
-              </eg-combobox-entry>
-            </eg-combobox>
+        </div>
+        <div class="p-1" [ngStyle]="{flex: flexAt(11)}">
+          <ng-container *ngIf="context.sessionType != 'copy'">
+
+            <button class="btn btn-sm material-icon-button p-1"
+              (click)="createCopies(volNode, 1)" i18n-title title="Add Item">
+              <span class="material-icons">add_circle_outline</span>
+            </button>
+
+            <ng-template #addCopyCountTmpl>
+              <div i18n>Add How Many Items</div>
+              <div class="form-inline mt-1">
+                <input type="number" class="form-control form-control-sm"
+                  id="add-copy-popover"
+                  (keyup.enter)="createCopiesFromPopover(volNode, addCopiesPopover)"
+                  [(ngModel)]="addCopyCount" [required]="true" min="1"/>
+                <button class="btn btn-sm btn-success ml-1" 
+                  (click)="createCopiesFromPopover(volNode, addCopiesPopover)"
+                  i18n>Add</button>
+              </div>
+            </ng-template>
+
+            <button class="btn btn-sm material-icon-button p-1"
+              placement="left" [ngbPopover]="addCopyCountTmpl"
+              autoClose="outside" #addCopiesPopover="ngbPopover"
+              i18n-popoverTitle="Add Items" i18n-title title="Add Items"
+              (shown)="focusElement('add-copy-popover')">
+              <span class="material-icons">playlist_add</span>
+            </button>
+
+            <button class="btn btn-sm material-icon-button p-1"
+              (click)="deleteCopy(copyNode)" i18n-title title="Remove Item">
+              <span class="material-icons">remove_circle_outline</span>
+            </button>
+
           </ng-container>
         </div>
       </div>
@@ -382,43 +468,3 @@
 
 <hr/>
 
-<div class="row d-flex">
-
-  <div class="p-1" [ngStyle]="{flex: flexSpan(1, 2)}">
-    <eg-org-select #newVolOrg [applyDefault]="true" 
-      [limitPerms]="['CREATE_VOLUME']" [hideOrgs]="volcopy.hideVolOrgs">
-    </eg-org-select>
-  </div>
-
-  <div class="p-1" [ngStyle]="{flex: flexSpan(3, 4)}">
-    <button class="btn btn-outline-dark ml-2" 
-      (click)="addVol(newVolOrg.selectedOrg())" i18n>
-      Add Call Number
-    </button>
-  </div>
-
-  <div class="p-1" [ngStyle]="{flex: flexAt(5)}"></div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(6)}"></div>
-  <div class="p-1" [ngStyle]="{flex: flexAt(7)}"></div>
-
-  <div class="p-1 pl-3" [ngStyle]="{flex: flexAt(8)}">
-    <ng-container *ngIf="displayColumn('generate_barcodes')">
-      <button class="btn btn-sm btn-outline-dark mr-2"
-        (click)="generateBarcodes()" i18n>Generate Barcodes</button>
-    </ng-container>
-  </div>
-
-  <div class="p-1" [ngStyle]="{flex: flexSpan(9, 10)}">
-    <ng-container *ngIf="displayColumn('generate_barcodes')">
-      <div class="form-check form-check-inline mr-2">
-        <input class="form-check-input" type="checkbox" 
-          (change)="saveUseCheckdigit()"
-          id="use-checkdigit-2" [(ngModel)]="useCheckdigit"/>
-        <label class="form-check-label" for="use-checkdigit-2" i18n>
-          Use Checkdigit
-        </label>
-      </div>
-    </ng-container>
-  </div>
-</div>
-  

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map, tap, mergeMap} from 'rxjs/operators';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -16,8 +16,12 @@ import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.comp
 /* Managing volcopy data */
 
 interface VolCopyDefaults {
+    // Default values per field.
     values: {[field: string]: any};
+    // Most fields are visible by default.
     hidden: {[field: string]: boolean};
+    // ... But some fields are hidden by default.
+    visible: {[field: string]: boolean};
 }
 
 @Injectable()
@@ -46,6 +50,9 @@ export class VolCopyService {
     magicCopyStats: number[] = [];
 
     hideVolOrgs: number[] = [];
+
+    // Currently spans from volcopy.component to vol-edit.component.
+    genBarcodesRequested: EventEmitter<void> = new EventEmitter<void>();
 
     constructor(
         private evt: EventService,
@@ -161,7 +168,10 @@ export class VolCopyService {
 
         return this.serverStore.getItem('eg.cat.volcopy.defaults').then(
             (defaults: VolCopyDefaults) => {
-                this.defaults = defaults || {values: {}, hidden: {}};
+                this.defaults = defaults || {values: {}, hidden: {}, visible: {}};
+                if (!this.defaults.values)  { this.defaults.values  = {}; }
+                if (!this.defaults.hidden)  { this.defaults.hidden  = {}; }
+                if (!this.defaults.visible) { this.defaults.visible = {}; }
             }
         );
     }

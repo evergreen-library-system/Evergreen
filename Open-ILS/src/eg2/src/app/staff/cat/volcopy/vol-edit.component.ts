@@ -28,7 +28,17 @@ export class VolEditComponent implements OnInit {
     // markup.  Changing a flex value here will propagate to all
     // rows in the form.  Column numbers are 1-based.
     flexSettings: {[column: number]: number} = {
-        1: 1, 2: 1, 3: 2, 4: 1, 5: 2, 6: 1, 7: 1, 8: 2, 9: 1, 10: 1};
+        1: 2, 2: 1, 3: 2, 4: 1, 5: 2, 6: 1, 7: 1, 8: 2, 9: 1, 10: 1, 11: 1};
+
+    // Since visibility of some columns is configurable, we need a
+    // map of configured column name to column index.
+    flexColMap = {
+        3: 'classification',
+        4: 'prefix',
+        6: 'suffix',
+        9: 'copy_number_vc',
+        10: 'copy_part'
+    };
 
     // If a column is specified as the expand field, its flex value
     // will magically grow.
@@ -40,10 +50,15 @@ export class VolEditComponent implements OnInit {
     batchVolLabel: ComboboxEntry;
 
     autoBarcodeInProgress = false;
-    useCheckdigit = false;
 
     deleteVolCount: number = null;
     deleteCopyCount: number = null;
+
+    // When adding multiple vols via add-many popover.
+    addVolCount: number = null;
+
+    // When adding multiple copies via add-many popover.
+    addCopyCount: number = null;
 
     recordVolLabels: string[] = [];
 
@@ -71,7 +86,8 @@ export class VolEditComponent implements OnInit {
 
         this.deleteVolCount = null;
         this.deleteCopyCount = null;
-        this.useCheckdigit = this.volcopy.defaults.values.use_checkdigit;
+
+        this.volcopy.genBarcodesRequested.subscribe(() => this.generateBarcodes());
 
         this.volcopy.fetchRecordVolLabels(this.context.recordId)
         .then(labels => this.recordVolLabels = labels)
@@ -96,53 +112,20 @@ export class VolEditComponent implements OnInit {
 
     // Column width (flex:x) for column by column number.
     flexAt(column: number): number {
-        return this.flexSpan(column, column);
-    }
-
-    // Returns the flex amount occupied by a span of columns.
-    flexSpan(column1: number, column2: number): number {
-        let flex = 0;
-        for (let i = column1; i <= column2; i++) {
-            let value = this.flexSettings[i];
-            if (this.expand === i) { value = value * 3; }
-            flex += value;
+        if (!this.displayColumn(this.flexColMap[column])) {
+            // Hidden columsn are still present, but they do not
+            // flex and the contain no data to display
+            return 0;
         }
-        return flex;
+        let value = this.flexSettings[column];
+        if (this.expand === column) { value = value * 3; }
+        return value;
     }
-
-    volCountChanged(orgNode: HoldingsTreeNode, count: number) {
-        if (count === null) { return; }
-        const diff = count - orgNode.children.length;
-        if (diff > 0) {
-            this.createVols(orgNode, diff);
-        } else if (diff < 0) {
-            this.deleteVols(orgNode, -diff);
-        }
-    }
-
 
     addVol(org: IdlObject) {
         if (!org) { return; }
         const orgNode = this.context.findOrCreateOrgNode(org.id());
         this.createVols(orgNode, 1);
-    }
-
-    existingVolCount(orgNode: HoldingsTreeNode): number {
-        return orgNode.children.filter(volNode => !volNode.target.isnew()).length;
-    }
-
-    existingCopyCount(volNode: HoldingsTreeNode): number {
-        return volNode.children.filter(copyNode => !copyNode.target.isnew()).length;
-    }
-
-    copyCountChanged(volNode: HoldingsTreeNode, count: number) {
-        if (count === null) { return; }
-        const diff = count - volNode.children.length;
-        if (diff > 0) {
-            this.createCopies(volNode, diff);
-        } else if (diff < 0) {
-            this.deleteCopies(volNode, -diff);
-        }
     }
 
     // This only removes copies that were created during the
@@ -169,6 +152,17 @@ export class VolEditComponent implements OnInit {
         }
     }
 
+    createCopiesFromPopover(volNode: HoldingsTreeNode, popover: any) {
+        this.createCopies(volNode, this.addCopyCount);
+        popover.close();
+        this.addCopyCount = null;
+    }
+
+    createVolsFromPopover(orgNode: HoldingsTreeNode, popover: any) {
+        this.createVols(orgNode, this.addVolCount);
+        popover.close();
+        this.addVolCount = null;
+    }
 
     createVols(orgNode: HoldingsTreeNode, count: number) {
         const vols = [];
@@ -344,7 +338,7 @@ export class VolEditComponent implements OnInit {
         return this.net.request('open-ils.cat',
             'open-ils.cat.item.barcode.autogen',
             this.auth.token(), seedBarcode, count, {
-                checkdigit: this.useCheckdigit,
+                checkdigit: this.volcopy.defaults.values.use_checkdigit,
                 skip_dupes: true
             }
         ).pipe(tap(barcodes => {
@@ -503,11 +497,6 @@ export class VolEditComponent implements OnInit {
         return this.volcopy.defaults.hidden[field] !== true;
     }
 
-    saveUseCheckdigit() {
-        this.volcopy.defaults.values.use_checkdigit = this.useCheckdigit === true;
-        this.volcopy.saveDefaults();
-    }
-
     canSave(): boolean {
 
         const copies = this.context.copyList();
@@ -534,6 +523,21 @@ export class VolEditComponent implements OnInit {
         setTimeout(() => {
             this.canSaveChange.emit(this.canSave());
         });
+    }
+
+    // Given a DOM ID, focus the element after a 0 timeout.
+    focusElement(domId: string) {
+        setTimeout(() => {
+            const node = document.getElementById(domId);
+            if (node) { node.focus(); }
+        });
+    }
+
+
+    toggleBatchVisibility() {
+        this.volcopy.defaults.visible.batch_actions =
+            !this.volcopy.defaults.visible.batch_actions;
+        this.volcopy.saveDefaults();
     }
 }
 

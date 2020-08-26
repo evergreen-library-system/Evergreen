@@ -53,7 +53,6 @@ export class VolCopyComponent implements OnInit {
     context: VolCopyContext;
     loading = true;
     sessionExpired = false;
-    printLabels = false;
 
     tab = 'holdings'; // holdings | attrs | config
     target: string;   // item | callnumber | record | session
@@ -132,8 +131,6 @@ export class VolCopyComponent implements OnInit {
             this.context.volNodes().map(n => n.target)))
         .then(_ => this.context.sortHoldings())
         .then(_ => this.context.setRecordId())
-        .then(_ => this.printLabels =
-            this.volcopy.defaults.values.print_labels === true)
         .then(_ => {
             // unified display has no 'attrs' tab
             if (this.volcopy.defaults.values.unified_display
@@ -285,6 +282,7 @@ export class VolCopyComponent implements OnInit {
 
     fetchCopies(copyIds: number | number[]): Promise<any> {
         const ids = [].concat(copyIds);
+        if (ids.length === 0) { return Promise.resolve(); }
         return this.pcrud.search('acp', {id: ids}, COPY_FLESH)
         .pipe(tap(copy => this.context.findOrCreateCopyNode(copy)))
         .toPromise();
@@ -293,6 +291,7 @@ export class VolCopyComponent implements OnInit {
     // Fetch call numbers and linked copies by call number ids.
     fetchVols(volIds?: number | number[]): Promise<any> {
         const ids = [].concat(volIds);
+        if (ids.length === 0) { return Promise.resolve(); }
 
         return this.pcrud.search('acn', {id: ids})
         .pipe(tap(vol => this.context.findOrCreateVolNode(vol)))
@@ -466,13 +465,16 @@ export class VolCopyComponent implements OnInit {
         });
     }
 
-    savePrintLabels() {
-        this.volcopy.defaults.values.print_labels = this.printLabels === true;
+    toggleCheckbox(field: string) {
+        this.volcopy.defaults.values[field] =
+            !this.volcopy.defaults.values[field];
         this.volcopy.saveDefaults();
     }
 
     openPrintLabels(copyIds?: number[]): Promise<any> {
-        if (!this.printLabels) { return Promise.resolve(); }
+        if (!this.volcopy.defaults.values.print_labels) {
+            return Promise.resolve();
+        }
 
         if (!copyIds || copyIds.length === 0) {
             copyIds = this.context.copyList()

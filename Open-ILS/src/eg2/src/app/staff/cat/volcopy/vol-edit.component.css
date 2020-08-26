@@ -23,3 +23,7 @@ input[type="number"] {
   color: grey;
 }
 
+
+.material-icons {
+  font-size: 20px; 
+}

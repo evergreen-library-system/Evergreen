@@ -55,12 +55,36 @@
     <hr class="m-2"/>                                                          
     <div class="row m-2 p-2 border border-dark rounded bg-faint">
       <div class="col-lg-12 d-flex">
+
         <div class="form-check form-check-inline ml-2">                            
           <input class="form-check-input" id='use-labels-cbox' type="checkbox"     
-            [(ngModel)]="printLabels" (change)="savePrintLabels()">
+            [ngModel]="volcopy.defaults.values.print_labels"
+            (change)="toggleCheckbox('print_labels')">
           <label class="form-check-label" for='use-labels-cbox'                    
             i18n>Print Labels?</label>                                             
         </div>
+
+        <ng-container *ngIf="tab === 'holdings' && 
+          volcopy.defaults.hidden.generate_barcodes !== true">
+          <!-- 
+            These actions could cause confusion or unintended
+            consequences if visible on any other tabs
+          -->
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="use-checkdigit" 
+              (change)="toggleCheckbox('use_checkdigit')"
+              [ngModel]="volcopy.defaults.values.use_checkdigit"/>
+            <label class="form-check-label" for="use-checkdigit" i18n>
+              Use Checkdigit
+            </label>
+          </div>
+          <button class="btn btn-sm btn-outline-dark label-with-material-icon"
+            (click)="volcopy.genBarcodesRequested.emit()">
+            <span i18n>Generate Barcodes</span>
+            <span class="material-icons">refresh</span>
+          </button>
+        </ng-container>
+
         <div class="flex-1"> </div>
         <button class="btn btn-outline-dark" (click)="save()" 
           [ngClass]="{'border-danger': isNotSaveable()}"
