@@ -837,35 +837,10 @@ sub retrieve_holds {
 
     if($self->api_name =~ /canceled/) {
 
-        # Fetch the canceled holds
-        # order cancelled holds by cancel time, most recent first
+        $holds_query->{order_by} = 
+            [{class => 'ahr', field => 'cancel_time', direction => 'desc'}];
 
-        $holds_query->{order_by} = [{class => 'ahr', field => 'cancel_time', direction => 'desc'}];
-
-        my $cancel_age;
-        my $cancel_count = $U->ou_ancestor_setting_value(
-                $e->requestor->ws_ou, 'circ.holds.canceled.display_count', $e);
-
-        unless($cancel_count) {
-            $cancel_age = $U->ou_ancestor_setting_value(
-                $e->requestor->ws_ou, 'circ.holds.canceled.display_age', $e);
-
-            # if no settings are defined, default to last 10 cancelled holds
-            $cancel_count = 10 unless $cancel_age;
-        }
-
-        if($cancel_count) { # limit by count
-
-            $holds_query->{where}->{cancel_time} = {'!=' => undef};
-            $holds_query->{limit} = $cancel_count;
-
-        } elsif($cancel_age) { # limit by age
-
-            # find all of the canceled holds that were canceled within the configured time frame
-            my $date = DateTime->now->subtract(seconds => OpenILS::Utils::DateTime->interval_to_seconds($cancel_age));
-            $date = $U->epoch2ISO8601($date->epoch);
-            $holds_query->{where}->{cancel_time} = {'>=' => $date};
-        }
+        recently_canceled_holds_filter($e, $holds_query);
 
     } else {
 
@@ -911,6 +886,45 @@ sub retrieve_holds {
 
     return \@holds;
 }
+
+
+# Creates / augments a set of query filters to search for canceled holds
+# based on circ.holds.canceled.* org settings.
+sub recently_canceled_holds_filter {
+    my ($e, $filters) = @_;
+    $filters ||= {};
+    $filters->{where} ||= {};
+
+    my $cancel_age;
+    my $cancel_count = $U->ou_ancestor_setting_value(
+            $e->requestor->ws_ou, 'circ.holds.canceled.display_count', $e);
+
+    unless($cancel_count) {
+        $cancel_age = $U->ou_ancestor_setting_value(
+            $e->requestor->ws_ou, 'circ.holds.canceled.display_age', $e);
+
+        # if no settings are defined, default to last 10 cancelled holds
+        $cancel_count = 10 unless $cancel_age;
+    }
+
+    if($cancel_count) { # limit by count
+
+        $filters->{where}->{cancel_time} = {'!=' => undef};
+        $filters->{limit} = $cancel_count;
+
+    } elsif($cancel_age) { # limit by age
+
+        # find all of the canceled holds that were canceled within the configured time frame
+        my $date = DateTime->now->subtract(seconds => 
+            OpenILS::Utils::DateTime->interval_to_seconds($cancel_age));
+
+        $date = $U->epoch2ISO8601($date->epoch);
+        $filters->{where}->{cancel_time} = {'>=' => $date};
+    }
+
+    return $filters;
+}
+
 
 
 __PACKAGE__->register_method(
@@ -3636,11 +3650,25 @@ __PACKAGE__->register_method(
 );
 
 sub stream_wide_holds {
-    my($self, $client, $auth, $restrictions, $order_by, $limit, $offset) = @_;
+    my($self, $client, $auth, $restrictions, $order_by, $limit, $offset, $options) = @_;
+    $options ||= {};
 
     my $e = new_editor(authtoken=>$auth);
     $e->checkauth or return $e->event;
     $e->allowed('VIEW_HOLD') or return $e->event;
+
+    if ($options->{recently_canceled}) {
+        # Map the the recently canceled holds filter into values 
+        # wide-stream understands.
+        my $filter = recently_canceled_holds_filter($e);
+        $restrictions->{$_} =
+            $filter->{where}->{$_} for keys %{$filter->{where}};
+
+        $limit = $filter->{limit} if $filter->{limit};
+    }
+
+    my $filters = OpenSRF::Utils::JSON->perl2JSON($restrictions);
+    $logger->info("WIDE HOLD FILTERS: $filters");
 
     my $st = OpenSRF::AppSession->create('open-ils.storage');
     my $req = $st->request(

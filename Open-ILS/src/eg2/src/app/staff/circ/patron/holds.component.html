@@ -1,12 +1,11 @@
 
 
-<ul ngbNav #holdsNav="ngbNav" class="nav-tabs" (navChange)="beforeTabChange($event)">
+<ul ngbNav #holdsNav="ngbNav" class="nav-tabs">
 
-  <li ngbNavItem="active">
+  <li ngbNavItem>
     <a ngbNavLink i18n>Open Hold Requests</a>
     <ng-template ngbNavContent>
       <eg-holds-grid 
-        preFetchSetting="eg.circ.patron.holds.prefetch"
         printTemplate="holds_for_patron"
         persistKey="circ.patron.holds"
         [hidePickupLibFilter]="true"
@@ -15,6 +14,18 @@
     </ng-template>
   </li>
 
+  <li ngbNavItem>
+    <a ngbNavLink i18n>Recently Canceled Holds</a>
+    <ng-template ngbNavContent>
+      <eg-holds-grid 
+        printTemplate="holds_for_patron"
+        persistKey="circ.patron.holds.canceled"
+        [hidePickupLibFilter]="true"
+        [showRecentlyCanceled]="true"
+        [defaultSort]="[{name:'cancel_time',dir:'desc'}]"
+        [patronId]="context.patron.id()"></eg-holds-grid>
+    </ng-template>
+  </li>
 </ul>
 
 <ng-container *ngIf="context.patron">
