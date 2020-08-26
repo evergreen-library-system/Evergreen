@@ -405,7 +405,7 @@ END;
                                                     [% UNLESS rec.mmr_id;
                                                             PROCESS "opac/parts/result/copy_counts.tt2";
                                                         END; %]
-                                                    [%- IF ctx.get_org_setting(ctx.search_ou, 'circ.course_materials_opt_in') == 1 %]
+                                                    [%- IF ctx.get_org_setting(ctx.physical_loc || ctx.search_ou, 'circ.course_materials_opt_in') == 1 %]
                                                         [%- courseStrings = [] %]
                                                         [% FOREACH course IN rec.courses %]
                                                             [% courseString = course.name _ ' (' _ course.course_number _ ')' %]

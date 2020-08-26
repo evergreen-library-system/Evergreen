@@ -30,6 +30,7 @@ IF has_copies or ctx.foreign_copies;
   depth = CGI.param('copy_depth').defined ? CGI.param('copy_depth') : CGI.param('depth').defined ? CGI.param('depth') : ctx.copy_summary.last.depth;
   total_copies = ctx.copy_summary.$depth.count;
 %]
+[% use_courses = (ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1) ? 1 : 0 %]
 <table class="table_no_border_space table_no_cell_pad table_no_border" width="100%" id="rdetails_status">
     <thead>
         <tr>
@@ -44,7 +45,7 @@ IF has_copies or ctx.foreign_copies;
             [%- END %]
             <th scope='col'>[% l("Barcode") %]</th>
             <th scope='col'>[% l("Shelving Location") %]</th>
-            [% IF ctx.is_staff || ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1 %]
+            [% IF ctx.is_staff || use_courses %]
             <th scope='col'>[% l("Circulation Modifier") %]</th>
             [% END %]
             [% IF ctx.is_staff %]
@@ -56,7 +57,7 @@ IF has_copies or ctx.foreign_copies;
             [%- END %]
             <th scope='col'>[% l("Status") %]</th>
             <th scope='col'>[% l("Due Date") %]</th>
-            [%- IF ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1 %]
+            [%- IF use_courses %]
             <th scope='col'>[% l("Courses") %]</th>
             [%- END %]
         </tr>
@@ -80,8 +81,8 @@ IF has_copies or ctx.foreign_copies;
     <td>[% bib.target_copy.location.name | html %]</td>
     <td>[% bib.target_copy.status.name | html %]</td>
     <td>[% date.format(ctx.parse_datetime(copy_info.due_date, copy_info.circ_circ_lib),DATE_FORMAT) %]</td>
-    [%- IF ctx.get_org_setting(CGI.param('loc') 
-        OR ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1 %]
+    [%- IF ctx.get_org_setting(CGI.param('loc'))
+        OR use_courses %]
     <td></td>
     [%- END %]
 </tr>
@@ -150,7 +151,7 @@ END; # FOREACH bib
 
             [% IF copy_info.courses.size > 0 || ctx.is_staff %]
             <td>[% copy_info.circ_modifier | html %]</td>
-            [% ELSIF ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1 %]
+            [% ELSIF use_courses %]
             <td></td>
             [% END %]
             [% IF ctx.is_staff %]
@@ -237,7 +238,7 @@ END; # FOREACH bib
                 ELSE;
                     '-';
                 END %]</td>
-            [%- IF ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1 %]
+            [%- IF use_courses %]
             <td>[%- FOREACH course IN copy_info.courses %]
                 <div>[% course.course_number %]</div>
             [% END %]</td>
