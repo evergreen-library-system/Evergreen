@@ -13,8 +13,38 @@
 </div>
 [% END %]
 
+[%
+    redirect = CGI.param('redirect_to');
+    # Don't use referer unless we got here from elsewhere within the TPAC
+    IF !redirect AND ctx.referer.match('^https?://' _ ctx.hostname _ ctx.opac_root);
+        redirect = ctx.referer;
+    END;
+    # If no redirect is offered or it's leading us back to the
+    # login form, redirect the user to My Account
+    IF !redirect OR redirect.match(ctx.path_info _ '$');
+        redirect = CGI.url('-full' => 1) _ '/opac/myopac/main';
+    END;
+    redirect = redirect | replace('^http:', 'https:');
+%]
+
+[% sso_enabled = ctx.get_org_setting(ctx.sso_org, 'opac.login.shib_sso.enable');
+   sso_native = ctx.get_org_setting(ctx.sso_org, 'opac.login.shib_sso.allow_native'); 
+%]
+
 <div id='login-form-box' class='login_boxes left_brain float-left'>
     <h1>[% l('Log in to Your Account') %]</h1>
+    [% IF sso_enabled %]
+    [%      final_redirect = redirect | html %]
+    <div id='sso-login-notice'>[%-      l('Please use our ') -%]
+      <a href="[% mkurl(ctx.opac_root _ '/manual_shib_login', { redirect_to => final_redirect }) %]">
+        [% l('Single Sign On service') %]
+      </a>
+    [%-      l('to log into the catalog') -%]
+    [%-      IF sso_native; l(' or use the form below'); END -%]
+    [%-      l('.') -%]</div>
+            <br/><br/>
+    [% END %]
+    [% IF !sso_enabled || sso_native %]
     [% l('Please enter the following information:') %]
     <form method='post'>
         <div class='login-form-left'>
@@ -35,24 +65,12 @@
             [% END %]
         </div>
         <div style="clear: both; padding-top: 15px;">
-        [%
-            redirect = CGI.param('redirect_to');
-            # Don't use referer unless we got here from elsewhere within the TPAC
-            IF !redirect AND ctx.referer.match('^https?://' _ ctx.hostname _ ctx.opac_root);
-                redirect = ctx.referer;
-            END;
-            # If no redirect is offered or it's leading us back to the
-            # login form, redirect the user to My Account
-            IF !redirect OR redirect.match(ctx.path_info _ '$');
-                redirect = CGI.url('-full' => 1) _ '/opac/myopac/main';
-            END;
-                redirect = redirect  | replace('^http:', 'https:');
-            %]
             <input type='hidden' name='redirect_to' value='[% redirect | html %]'/>
             <input type="checkbox" name="persist" id="login_persist" /><label for="login_persist"> [% l('Stay logged in?') %]</label>
             <input type="submit" value="[% l('Log in') %]" class="opac-button" />
         </div>
         <input id="client_tz_id" name="client_tz" type="hidden" />
     </form>
+    [% END; # native block %]
 </div>
 [% INCLUDE "opac/parts/login/help.tt2" %]

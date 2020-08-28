@@ -733,6 +733,10 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     </IfModule>
 </LocationMatch>
 <Location /eg/opac>
+    # Uncomment the entries below to enable Shibboleth authentication
+    #AuthType shibboleth
+    #Require shibboleth
+
     PerlSetVar OILSWebContextLoader "OpenILS::WWW::EGCatLoader"
     # Expire the HTML quickly since we're loading dynamic data for each page
     ExpiresActive On

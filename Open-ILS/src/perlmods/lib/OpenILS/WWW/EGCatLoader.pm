@@ -13,6 +13,7 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::Cache;
+use OpenILS::Event;
 use DateTime::Format::ISO8601;
 use CGI qw(:all -utf8);
 use Time::HiRes;
@@ -33,6 +34,8 @@ my $U = 'OpenILS::Application::AppUtils';
 
 use constant COOKIE_SES => 'ses';
 use constant COOKIE_LOGGEDIN => 'eg_loggedin';
+use constant COOKIE_SHIB_LOGGEDOUT => 'eg_shib_logged_out';
+use constant COOKIE_SHIB_LOGGEDIN => 'eg_shib_logged_in';
 use constant COOKIE_TZ => 'client_tz';
 use constant COOKIE_PHYSICAL_LOC => 'eg_physical_loc';
 use constant COOKIE_SSS_EXPAND => 'eg_sss_expand';
@@ -224,6 +227,7 @@ sub load {
         }
     }
 
+    return $self->load_manual_shib_login if $path =~ m|opac/manual_shib_login|;
     # ----------------------------------------------------------------
     #  Everything below here requires authentication
     # ----------------------------------------------------------------
@@ -294,9 +298,17 @@ sub redirect_ssl {
 # -----------------------------------------------------------------------------
 sub redirect_auth {
     my $self = shift;
-    my $login_page = sprintf('%s://%s%s/login',($self->ctx->{is_staff} ? 'oils' : 'https'), $self->ctx->{hostname}, $self->ctx->{opac_root});
+
+    my $sso_org = $ENV{sso_loc} || $self->get_physical_loc || $self->_get_search_lib();
+    my $sso_enabled = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.enable');
+    my $sso_native = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.allow_native');
+
+    my $login_type = ($sso_enabled and !$sso_native) ? 'manual_shib_login' : 'login';
+    my $login_page = sprintf('%s://%s%s/%s',($self->ctx->{is_staff} ? 'oils' : 'https'), $self->ctx->{hostname}, $self->ctx->{opac_root}, $login_type);
     my $redirect_to = uri_escape_utf8($self->apache->unparsed_uri);
-    return $self->generic_redirect("$login_page?redirect_to=$redirect_to");
+    my $redirect_url = "$login_page?redirect_to=$redirect_to";
+
+    return $self->generic_redirect($redirect_url);
 }
 
 # -----------------------------------------------------------------------------
@@ -547,6 +559,13 @@ sub load_login {
 
     $self->timelog("Load login begins");
 
+    my $sso_org = $ENV{sso_loc} || $self->get_physical_loc || $self->_get_search_lib();
+    $ctx->{sso_org} = $sso_org;
+    my $sso_enabled = $ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.enable');
+    my $sso_native = $ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.allow_native');
+    my $sso_eg_match = $ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.evergreen_matchpoint') || 'usrname';
+    my $sso_shib_match = $ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.shib_matchpoint') || 'uid';
+
     $ctx->{page} = 'login';
 
     my $username = $cgi->param('username') || '';
@@ -556,50 +575,84 @@ sub load_login {
     my $persist = $cgi->param('persist');
     my $client_tz = $cgi->param('client_tz');
 
-    # initial log form only
-    return Apache2::Const::OK unless $username and $password;
-
-    my $auth_proxy_enabled = 0; # default false
-    try { # if the service is not running, just let this fail silently
-        $auth_proxy_enabled = $U->simplereq(
-            'open-ils.auth_proxy',
-            'open-ils.auth_proxy.enabled');
-    } catch Error with {};
-
-    $self->timelog("Checked for auth proxy: $auth_proxy_enabled; org = $org_unit; username = $username");
-
-    my $args = {
-        type => ($persist) ? 'persist' : 'opac',
-        org => $org_unit,
-        agent => 'opac'
-    };
-
-    my $bc_regex = $ctx->{get_org_setting}->($org_unit, 'opac.barcode_regex');
-
-    # To avoid surprises, default to "Barcodes start with digits"
-    $bc_regex = '^\d' unless $bc_regex;
-
-    if ($bc_regex and ($username =~ /$bc_regex/)) {
-        $args->{barcode} = $username;
-    } else {
-        $args->{username} = $username;
-    }
-
+    my $sso_user_match_value;
     my $response;
-    if (!$auth_proxy_enabled) {
-        my $seed = $U->simplereq(
-            'open-ils.auth',
-            'open-ils.auth.authenticate.init', $username);
-        $args->{password} = md5_hex($seed . md5_hex($password));
-        $response = $U->simplereq(
-            'open-ils.auth', 'open-ils.auth.authenticate.complete', $args);
-    } else {
-        $args->{password} = $password;
-        $response = $U->simplereq(
-            'open-ils.auth_proxy',
-            'open-ils.auth_proxy.login', $args);
+    my $sso_logged_in;
+    $self->timelog("SSO is enabled") if ($sso_enabled);
+    if ($sso_enabled
+        and $sso_user_match_value = $ENV{$sso_shib_match}
+        and !$self->cgi->cookie(COOKIE_SHIB_LOGGEDOUT)
+    ) { # we have a shib session, and have not cleared a previous shib-login cookie
+        $self->timelog("Have an SSO user match value: $sso_user_match_value");
+
+        if ($sso_eg_match eq 'barcode') { # barcode is special
+            my $card = $self->editor->search_actor_card({barcode => $sso_user_match_value})->[0];
+            $sso_user_match_value = $card ? $card->usr : undef;
+            $sso_eg_match = 'id';
+        }
+
+        if ($sso_user_match_value && $sso_eg_match) {
+            my $user = $self->editor->search_actor_user({ $sso_eg_match => $sso_user_match_value })->[0];
+            if ($user) { # create a session
+                $response = $U->simplereq(
+                    'open-ils.auth_internal',
+                    'open-ils.auth_internal.session.create',
+                    { user_id => $user->id, login_type => 'opac' }
+                );
+                $sso_logged_in = $response ? 1 : 0;
+            }
+        }
+
+        $self->timelog("Checked for SSO login");
     }
-    $self->timelog("Checked password");
+
+    if (!$sso_enabled || (!$response && $sso_native)) {
+        # initial log form only
+        return Apache2::Const::OK unless $username and $password;
+
+        my $auth_proxy_enabled = 0; # default false
+        try { # if the service is not running, just let this fail silently
+            $auth_proxy_enabled = $U->simplereq(
+                'open-ils.auth_proxy',
+                'open-ils.auth_proxy.enabled');
+        } catch Error with {};
+
+        $self->timelog("Checked for auth proxy: $auth_proxy_enabled; org = $org_unit; username = $username");
+
+        my $args = {
+            type => ($persist) ? 'persist' : 'opac',
+            org => $org_unit,
+            agent => 'opac'
+        };
+
+        my $bc_regex = $ctx->{get_org_setting}->($org_unit, 'opac.barcode_regex');
+
+        # To avoid surprises, default to "Barcodes start with digits"
+        $bc_regex = '^\d' unless $bc_regex;
+
+        if ($bc_regex and ($username =~ /$bc_regex/)) {
+            $args->{barcode} = $username;
+        } else {
+            $args->{username} = $username;
+        }
+
+        if (!$auth_proxy_enabled) {
+            my $seed = $U->simplereq(
+                'open-ils.auth',
+                'open-ils.auth.authenticate.init', $username);
+            $args->{password} = md5_hex($seed . md5_hex($password));
+            $response = $U->simplereq(
+                'open-ils.auth', 'open-ils.auth.authenticate.complete', $args);
+        } else {
+            $args->{password} = $password;
+            $response = $U->simplereq(
+                'open-ils.auth_proxy',
+                'open-ils.auth_proxy.login', $args);
+        }
+        $self->timelog("Checked password");
+    } else {
+        $response ||= OpenILS::Event->new( 'LOGIN_FAILED' ); # assume failure
+    }
 
     if($U->event_code($response)) { 
         # login failed, report the reason to the template
@@ -647,9 +700,54 @@ sub load_login {
         );
     }
 
+    if ($sso_logged_in) {
+        # tells us if we're logged in via shib, so we can decide whether to try logging in again.
+        push @$cookie_list, $cgi->cookie(
+            -name => COOKIE_SHIB_LOGGEDOUT,
+            -path => '/',
+            -secure => 0,
+            -value => '0',
+            -expires => '-1h'
+        );
+        push @$cookie_list, $cgi->cookie(
+            -name => COOKIE_SHIB_LOGGEDIN,
+            -path => '/',
+            -secure => 0,
+            -value => '1',
+            -expires => $login_cookie_expires
+        );
+    }
+
     return $self->generic_redirect(
         $cgi->param('redirect_to') || $acct,
         $cookie_list
+    );
+}
+
+sub load_manual_shib_login {
+    my $self = shift;
+    my $redirect_to = shift || $self->cgi->param('redirect_to');
+
+    my $sso_org = $ENV{sso_loc} || $self->get_physical_loc || $self->_get_search_lib();
+    my $sso_entity_id = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.entityId');
+    my $sso_shib_match = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.shib_matchpoint') || 'uid';
+
+    return $self->load_login if ($ENV{$sso_shib_match});
+
+    my $url = '/Shibboleth.sso/Login?target=' . ($redirect_to || $self->ctx->{home_page});
+    if ($sso_entity_id) {
+        $url .= '&entityID=' . $sso_entity_id;
+    }
+
+    return $self->generic_redirect( $url,
+        [
+            $self->cgi->cookie(
+                -name => COOKIE_SHIB_LOGGEDOUT,
+                -path => '/',
+                -value => '0',
+                -expires => '-1h'
+            )
+        ]
     );
 }
 
@@ -659,6 +757,19 @@ sub load_login {
 sub load_logout {
     my $self = shift;
     my $redirect_to = shift || $self->cgi->param('redirect_to');
+    my $active_logout = $self->cgi->param('active_logout');
+
+    my $sso_org = $ENV{sso_loc} || $self->get_physical_loc || $self->_get_search_lib();
+    $self->ctx->{sso_org} = $sso_org;
+    my $sso_enabled = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.enable');
+    my $sso_entity_id = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.entityId');
+    my $sso_logout = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.logout');
+    if ($sso_enabled && $sso_logout) {
+        $redirect_to = '/Shibboleth.sso/Logout?return=' . ($redirect_to || $self->ctx->{home_page});
+        if ($sso_entity_id) {
+            $redirect_to .= '&entityID=' . $sso_entity_id;
+        }
+    }
 
     # If the user was adding anyting to an anonymous cache 
     # while logged in, go ahead and clear it out.
@@ -686,6 +797,18 @@ sub load_logout {
                 -name => COOKIE_LOGGEDIN,
                 -path => '/',
                 -value => '',
+                -expires => '-1h'
+            ),
+            ($active_logout ? ($self->cgi->cookie(
+                -name => COOKIE_SHIB_LOGGEDOUT,
+                -path => '/',
+                -value => '1',
+                -expires => '2147483647'
+            )) : ()),
+            $self->cgi->cookie(
+                -name => COOKIE_SHIB_LOGGEDIN,
+                -path => '/',
+                -value => '0',
                 -expires => '-1h'
             )
         ]

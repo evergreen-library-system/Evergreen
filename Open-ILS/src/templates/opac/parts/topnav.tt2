@@ -41,7 +41,7 @@
                     class="opac-button">[% l('My Account') %]</a>
                 <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {}, ['single', 'message_id', 'hid', 'from_basket']) %]"
                     class="opac-button">[% l('My Lists') %]</a>
-                <a href="[% mkurl(ctx.opac_root _ '/logout', {}, 1) %]"
+                <a href="[% mkurl(ctx.opac_root _ '/logout', {active_logout => 1}, 1) %]"
                     class="opac-button" id="logout_link">[% l('Logout') %]</a>
                 </span>
             </div>
