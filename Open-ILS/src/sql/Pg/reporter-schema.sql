@@ -110,6 +110,7 @@ CREATE TABLE reporter.schedule (
 );
 CREATE INDEX rpt_sched_runner_idx ON reporter.schedule (runner);
 CREATE INDEX rpt_sched_folder_idx ON reporter.schedule (folder);
+CREATE UNIQUE INDEX rpt_sched_recurrence_once_idx ON reporter.schedule (report,folder,runner,run_time,email);
 
 CREATE OR REPLACE VIEW reporter.simple_record AS
 SELECT	r.id,
