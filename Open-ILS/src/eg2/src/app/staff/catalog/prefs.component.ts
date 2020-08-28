@@ -12,7 +12,8 @@ const CATALOG_PREFS = [
     'eg.search.search_lib',
     'eg.search.pref_lib',
     'eg.search.adv_pane',
-    'eg.catalog.results.count'
+    'eg.catalog.results.count',
+    'eg.staffcat.exclude_electronic'
 ];
 
 @Component({
@@ -58,6 +59,15 @@ export class PreferencesComponent implements OnInit {
         .then(value => {
             this.staffCat.searchContext.pager.limit = value || 20;
         });
+    }
+
+    checkboxChanged(setting: string) {
+        const value = this.settings[setting];
+        this.updateValue(setting, value || null);
+
+        if (setting === 'eg.staffcat.exclude_electronic') {
+            this.staffCat.showExcludeElectronic = value;
+        }
     }
 
     updateValue(setting: string, value: any): Promise<any> {

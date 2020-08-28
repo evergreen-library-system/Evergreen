@@ -54,7 +54,8 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
             'opac.staff_saved_search.size',
             'eg.catalog.search_templates',
             'opac.staff_saved_search.size',
-            'opac.search.enable_bookplate_search'
+            'opac.search.enable_bookplate_search',
+            'eg.staffcat.exclude_electronic'
         ]).then(settings => {
             this.staffCat.defaultSearchOrg =
                 this.org.get(settings['eg.search.search_lib']);
@@ -67,6 +68,8 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
             }
             this.staffCat.enableBookplates =
                 settings['opac.search.enable_bookplate_search'];
+            this.staffCat.showExcludeElectronic =
+                settings['eg.staffcat.exclude_electronic'] === true;
         });
     }
 }

@@ -22,6 +22,9 @@ export class StaffCatalogService {
     // Track the current template through route changes.
     selectedTemplate: string;
 
+    // Display the Exclude Electronic checkbox
+    showExcludeElectronic = false;
+
     // TODO: does unapi support pref-lib for result-page copy counts?
     prefOrg: IdlObject;
 

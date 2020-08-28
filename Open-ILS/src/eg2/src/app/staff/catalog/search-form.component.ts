@@ -2,6 +2,7 @@ import {Component, OnInit, AfterViewInit, Renderer2} from '@angular/core';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from './catalog.service';
@@ -282,6 +283,9 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
     showBookplate(): boolean {
         return this.staffCat.enableBookplates;
+    }
+    showExcludeElectronic(): boolean {
+        return this.staffCat.showExcludeElectronic;
     }
 }
 

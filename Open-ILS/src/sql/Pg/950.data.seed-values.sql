@@ -21215,3 +21215,13 @@ INSERT INTO action_trigger.environment (
 INSERT INTO action_trigger.event_params (event_def, param, value)
     VALUES (currval('action_trigger.event_definition_id_seq'), 'check_sms_notify', 1);
 */
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.staffcat.exclude_electronic', 'gui', 'bool',
+    oils_i18n_gettext(
+        'eg.staffcat.exclude_electronic',
+        'Staff Catalog "Exclude Electronic Resources" Option',
+        'cwst', 'label'
+    )
+);

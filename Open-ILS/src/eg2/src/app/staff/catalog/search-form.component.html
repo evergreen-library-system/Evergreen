@@ -117,23 +117,30 @@
                     <option value='poprel' i18n>Popularity Adjusted Relevance</option>
                   </optgroup>
                 </select>
-                <div class="checkbox pl-2 ml-2">
+                <div class="checkbox pl-2 ml-2 pt-2">
                   <label>
                     <input type="checkbox" [(ngModel)]="context.termSearch.available"/>
                     <span class="pl-1" i18n>Limit to Available</span>
                   </label>
                 </div>
-                <div class="checkbox pl-3">
+                <div class="checkbox pl-3 pt-2">
                   <label>
                     <input type="checkbox"
                       [(ngModel)]="context.termSearch.groupByMetarecord"/>
                     <span class="pl-1" i18n>Group Formats/Editions</span>
                   </label>
                 </div>
-                <div class="checkbox pl-3">
+                <div class="checkbox pl-3 pt-2">
                   <label>
                     <input type="checkbox" [(ngModel)]="context.global"/>
                     <span class="pl-1" i18n>Results from All Libraries</span>
+                  </label>
+                </div>
+                <div class="checkbox pl-3 pt-2" *ngIf="showExcludeElectronic()">
+                  <label>
+                    <input type="checkbox" 
+                      [(ngModel)]="context.termSearch.excludeElectronic"/>
+                    <span class="pl-1" i18n>Exclude Electronic Resources</span>
                   </label>
                 </div>
               </div>

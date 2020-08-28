@@ -121,6 +121,10 @@ export class CatalogUrlService {
             if (ts.copyLocations.length && ts.copyLocations[0] !== '') {
                 params.copyLocations = ts.copyLocations.join(',');
             }
+
+            if (ts.excludeElectronic) {
+                params.excludeElectronic = true;
+            }
         }
 
         if (context.cnBrowseSearch.isSearchable()) {
@@ -244,6 +248,10 @@ export class CatalogUrlService {
 
             if (params.get('copyLocations')) {
                 ts.copyLocations = params.get('copyLocations').split(/,/);
+            }
+
+            if (params.get('excludeElectronic')) {
+                ts.excludeElectronic = true;
             }
         }
     }

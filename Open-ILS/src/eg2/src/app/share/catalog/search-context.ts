@@ -208,6 +208,8 @@ export class CatalogTermContext {
     date2: number;
     dateOp: string; // before, after, between, is
 
+    excludeElectronic = false;
+
     reset() {
         this.query = [''];
         this.fieldClass  = ['keyword'];
@@ -565,6 +567,10 @@ export class CatalogSearchContext {
 
         if (ts.available) {
             str += '#available';
+        }
+
+        if (ts.excludeElectronic) {
+            str += '-search_format(electronic)';
         }
 
         if (this.sort) {
