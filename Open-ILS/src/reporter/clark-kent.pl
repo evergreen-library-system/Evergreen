@@ -249,7 +249,7 @@ for my $r ( @reports ) {
 			  WHERE	id = ?;
 		SQL
 
-	    $logger->debug('Report SQL: ' . $r->{resultset}->toSQL);
+		$logger->debug('Report SQL: ' . $r->{resultset}->toSQL);
 		$sth = $data_dbh->prepare($r->{resultset}->toSQL);
 
 		$sth->execute;
@@ -313,7 +313,9 @@ for my $r ( @reports ) {
 					VALUES ( ?, ?, ?, ?::TIMESTAMPTZ + ?, ?, ?, ?, ?, ?, ?, ? );
 			SQL
 
-			$state_dbh->do(
+			my $prevP = $state_dbh->{PrintError};
+			$state_dbh->{PrintError} = 0;
+			if (!$state_dbh->do(
 				$sql,
 				{},
 				$r->{report}->{id},
@@ -328,7 +330,11 @@ for my $r ( @reports ) {
 				$r->{chart_pie},
 				$r->{chart_bar},
 				$r->{chart_line},
-			);
+			)) {
+				# Ignore duplicate key errors on reporter.schedule (err 7 is a fatal query error). Just look for the constraint name in the message to avoid l10n issues.
+				warn($state_dbh->errstr()) unless $state_dbh->err() == 7 && $state_dbh->errstr() =~ m/rpt_sched_recurrence_once_idx/;
+			}
+			$state_dbh->{PrintError} = $prevP;
 		}
 
 		$state_dbh->do(<<'		SQL',{}, $r->{id});
