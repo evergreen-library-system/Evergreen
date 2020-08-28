@@ -6,7 +6,8 @@ import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronManagerService} from './patron.service';
-import {PatronSearchComponent} from '@eg/staff/share/patron/search.component';
+import {PatronSearch, PatronSearchComponent
+    } from '@eg/staff/share/patron/search.component';
 
 const MAIN_TABS =
     ['checkout', 'items_out', 'holds', 'bills', 'messages', 'edit', 'search'];
@@ -139,6 +140,10 @@ export class PatronComponent implements OnInit, AfterViewInit {
         this.patronId = id;
         this.patronTab = 'checkout';
         this.routeToTab();
+    }
+
+    patronSearchFired(patronSearch: PatronSearch) {
+        this.context.lastPatronSearch = patronSearch;
     }
 
     disablePurge(): boolean {

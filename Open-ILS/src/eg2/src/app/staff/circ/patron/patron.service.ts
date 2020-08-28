@@ -3,6 +3,7 @@ import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
+import {PatronSearch} from '@eg/staff/share/patron/search.component';
 
 const PATRON_FLESH_FIELDS = [
     'card',
@@ -56,6 +57,8 @@ export class PatronManagerService {
 
     accountExpired = false;
     accountExpiresSoon = false;
+
+    lastPatronSearch: PatronSearch;
 
     constructor(
         private net: NetService,

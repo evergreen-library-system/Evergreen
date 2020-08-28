@@ -27,6 +27,20 @@ const DEFAULT_FLESH = [
 const EXPAND_FORM = 'eg.circ.patron.search.show_extras';
 const INCLUDE_INACTIVE = 'eg.circ.patron.search.include_inactive';
 
+export interface PatronSearchField {
+    value: any,
+    group?: number
+}
+
+export interface PatronSearchFieldSet {
+    [field: string]: PatronSearchField
+}
+
+export interface PatronSearch {
+    search: PatronSearchFieldSet,
+    orgId: number
+}
+
 @Component({
   selector: 'eg-patron-search',
   templateUrl: './search.component.html'
@@ -36,6 +50,8 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
 
     @ViewChild('searchGrid', {static: false}) searchGrid: GridComponent;
 
+    @Input() startWithSearch: PatronSearch;
+
     // Fires on dbl-click or Enter while one or more search result
     // rows are selected.
     @Output() patronsActivated: EventEmitter<any>;
@@ -43,6 +59,10 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
     // Fires when the selection of search result rows changes.
     // Emits an array of patron IDs
     @Output() selectionChange: EventEmitter<number[]>;
+
+    // Fired with each search that is run, except for
+    // any searches run as a result of @Input() startWithSearch.
+    @Output() searchFired: EventEmitter<PatronSearch>;
 
     search: any = {};
     searchOrg: IdlObject;
@@ -59,6 +79,9 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
     ) {
         this.patronsActivated = new EventEmitter<any>();
         this.selectionChange = new EventEmitter<number[]>();
+        this.selectionChange = new EventEmitter<number[]>();
+        this.searchFired = new EventEmitter<PatronSearch>();
+
         this.dataSource = new GridDataSource();
         this.dataSource.getRows = (pager: Pager, sort: any[]) => {
             return this.getRows(pager, sort);
@@ -134,22 +157,46 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         return user;
     }
 
+    // Absorbe a patron search object into the search form.
+    absorbPatronSearch(pSearch: PatronSearch) {
+
+        if (pSearch.orgId) {
+            this.searchOrg = this.org.get(pSearch.orgId);
+        }
+
+        Object.keys(pSearch.search).forEach(field => {
+            this.search[field] = pSearch.search[field].value;
+        });
+    }
+
     searchByForm(pager: Pager, sort: any[]): Observable<IdlObject> {
+
+        if (this.startWithSearch) {
+            this.absorbPatronSearch(this.startWithSearch);
+            this.startWithSearch = null;
+        }
 
         const search = this.compileSearch();
         if (!search) { return of(); }
 
         const sorter = this.compileSort(sort);
 
+        const pSearch: PatronSearch = {
+            search: search,
+            orgId: this.searchOrg.id()
+        };
+
+        this.searchFired.emit(pSearch);
+
         return this.net.request(
             'open-ils.actor',
             'open-ils.actor.patron.search.advanced.fleshed',
             this.auth.token(),
-            this.compileSearch(),
+            pSearch.search,
             pager.limit,
             sorter,
             null, // ?
-            this.searchOrg.id(),
+            pSearch.orgId,
             DEFAULT_FLESH,
             pager.offset
         );
@@ -168,14 +215,16 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         return sort.map(def => `${def.name} ${def.dir}`);
     }
 
-    compileSearch(): any {
+    compileSearch(): PatronSearchFieldSet {
 
         let hasSearch = false;
-        const search: Object = {};
+        const search: PatronSearchFieldSet = {};
 
         Object.keys(this.search).forEach(field => {
             search[field] = this.mapSearchField(field);
-            if (search[field]) { hasSearch = true; }
+            if (field !== 'inactive') { // one filter is not enough
+                if (search[field]) { hasSearch = true; }
+            }
         });
 
         return hasSearch ? search : null;
@@ -185,12 +234,12 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         return (val !== null && val !== undefined && val !== '');
     }
 
-    mapSearchField(field: string): any {
+    mapSearchField(field: string): PatronSearchField {
 
         const value = this.search[field];
         if (!this.isValue(value)) { return null; }
 
-        const chunk = {value: value, group: 0};
+        const chunk: PatronSearchField = {value: value, group: 0};
 
         switch (field) {
 

@@ -145,6 +145,8 @@
           <ng-template ngbNavContent>
             <div class="">
               <eg-patron-search
+                [startWithSearch]="context.lastPatronSearch"
+                (searchFired)="patronSearchFired($event)"
                 (selectionChange)="patronSelectionChange($event)"
                 (patronsActivated)="patronsActivated($event)">
               </eg-patron-search> 
