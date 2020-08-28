@@ -153,28 +153,34 @@ export class ItemLocationSelectComponent
         return this.pcrud.retrieve('acpl', id).toPromise()
         .then(loc => {
             this.cache[loc.id()] = loc;
-            this.comboBox.entries.push(
+            this.comboBox.addAsyncEntry(
                 {id: loc.id(), label: loc.name(), userdata: loc});
         });
     }
 
     setFilterOrgs(): Promise<number[]> {
-        if (this.permFilter) {
-            return this.perm.hasWorkPermAt([this.permFilter], true)
-                .then(values => {
-                    this.filterOrgs = values[this.permFilter];
-                    // then include ancestors
-                    this.filterOrgs.forEach(ou => {
-                        this.org.ancestors(ou, true).forEach(anc => this.filterOrgs.push(anc));
-                    });
-                    return this.filterOrgs;
-                });
+        const org = this.contextOrgId || this.auth.user().ws_ou();
+        const contextOrgIds = this.org.ancestors(org, true);
+
+        if (!this.permFilter) {
+            return Promise.resolve(this.filterOrgs = contextOrgIds);
         }
 
-        const org = this.contextOrgId || this.auth.user().ws_ou();
-        this.filterOrgs = this.org.ancestors(this.contextOrgId, true);
+        return this.perm.hasWorkPermAt([this.permFilter], true)
+        .then(values => {
+            // Always limit the org units to /at most/ those within
+            // scope of the context org ID.
 
-        return Promise.resolve(this.filterOrgs);
+            const permOrgIds = values[this.permFilter];
+            const trimmedOrgIds = [];
+            permOrgIds.forEach(orgId => {
+                if (contextOrgIds.includes(orgId)) {
+                    trimmedOrgIds.push(orgId);
+                }
+            });
+
+            return this.filterOrgs = trimmedOrgIds;
+        });
     }
 
     orgName(orgId: number): string {
