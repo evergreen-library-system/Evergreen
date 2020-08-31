@@ -52,11 +52,11 @@ Circulation
 * Fixes an issue that caused patron stat cat information to persist between patrons in the Patron Edit screen
 (https://bugs.launchpad.net/evergreen/+bug/1844365[Bug 1844365])
 * The Pending User Buckets now allow more than 100 users (https://bugs.launchpad.net/evergreen/+bug/1754387[Bug 1754387])
-* Fixes an issue that caused lang patron names to obscure important parts of circulation screens
+* Fixes an issue that caused long patron names to obscure important parts of circulation screens
 (https://bugs.launchpad.net/evergreen/+bug/1805860[Bug 1805860])
 * Prevents an incorrect "Input is out of range" validation error in the date pickers of the check out and renewal
 screens (https://bugs.launchpad.net/evergreen/+bug/1864056[Bug 1864056])
-* Long overdue and lost and paid items now count toward patron limits (https://bugs.launchpad.net/evergreen/+bug/1864056[Bug 1864056])
+* Long overdue and lost and paid items now count toward patron limits (https://bugs.launchpad.net/evergreen/+bug/1747542[Bug 1747542])
 * The holds shelf list now includes columns for "User Alias" and "User Alias or Display Name" (https://bugs.launchpad.net/evergreen/+bug/1712854[Bug 1712854])
 * In the messages tab of a patron's account, you can now change the date range of displayed archived penalties
 (https://bugs.launchpad.net/evergreen/+bug/1775940[Bug 1775940])
