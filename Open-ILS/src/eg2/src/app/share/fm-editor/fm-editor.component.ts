@@ -1,5 +1,6 @@
 import {Component, OnInit, Input, ViewChild,
     Output, EventEmitter, TemplateRef} from '@angular/core';
+import {NgForm} from '@angular/forms';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -158,6 +159,7 @@ export class FmRecordEditorComponent
     @ViewChild('successStr', { static: true }) successStr: StringComponent;
     @ViewChild('failStr', { static: true }) failStr: StringComponent;
     @ViewChild('confirmDel', { static: true }) confirmDel: ConfirmDialogComponent;
+    @ViewChild('fmEditForm', { static: false}) fmEditForm: NgForm;
 
     // IDL info for the the selected IDL class
     idlDef: any;
@@ -291,6 +293,10 @@ export class FmRecordEditorComponent
 
     isDialog(): boolean {
         return this.displayMode === 'dialog';
+    }
+
+    isDirty(): boolean {
+        return this.fmEditForm ? this.fmEditForm.dirty : false;
     }
 
     // DEPRECATED: This is a duplicate of this.record = abc;
@@ -618,6 +624,9 @@ export class FmRecordEditorComponent
         this.pcrud[this.mode]([recToSave]).toPromise().then(
             result => {
                 this.recordSaved.emit(result);
+                if (this.fmEditForm) {
+                    this.fmEditForm.form.markAsPristine();
+                }
                 this.successStr.current().then(msg => this.toast.success(msg));
                 if (this.isDialog()) { this.record = undefined; this.close(result); }
             },
