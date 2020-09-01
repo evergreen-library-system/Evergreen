@@ -28,14 +28,15 @@ export class CourseService {
         });
     }
     getCourses(course_ids?: Number[]): Promise<IdlObject[]> {
+        const flesher = {flesh: 2, flesh_fields: {
+            'acmc': ['owning_lib'],
+            'aou': ['ou_type']}};
         if (!course_ids) {
             return this.pcrud.retrieveAll('acmc',
-                {flesh: 1, flesh_fields: {'acmc': ['owning_lib']}},
-                {atomic: true}).toPromise();
+                flesher, {atomic: true}).toPromise();
         } else {
             return this.pcrud.search('acmc', {id: course_ids},
-                {flesh: 1, flesh_fields: {'acmc': ['owning_lib']}},
-                {atomic: true}).toPromise();
+                flesher, {atomic: true}).toPromise();
         }
     }
 
