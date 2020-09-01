@@ -22,7 +22,8 @@ const routes: Routes = [{
     component: AdminCarouselComponent
 }, {
     path: 'asset/course_list',
-    loadChildren: '@eg/staff/admin/local/course-reserves/course-reserves.module#CourseReservesModule'
+    loadChildren: () =>
+      import('./course-reserves/course-reserves.module').then(m => m.CourseReservesModule)
 }, {
     path: 'asset/course_module_term_course_map',
     component: CourseTermMapComponent
