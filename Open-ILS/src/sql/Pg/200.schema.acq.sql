@@ -84,6 +84,7 @@ CREATE TABLE acq.provider (
     default_copy_count  INT     NOT NULL DEFAULT 0,
 	default_claim_policy INT    REFERENCES acq.claim_policy
 	                            DEFERRABLE INITIALLY DEFERRED,
+    primary_contact     INT,    -- REFERENCE acq.provider_contact(id) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED
     CONSTRAINT provider_name_once_per_owner UNIQUE (name,owner),
 	CONSTRAINT code_once_per_owner UNIQUE (code, owner)
 );

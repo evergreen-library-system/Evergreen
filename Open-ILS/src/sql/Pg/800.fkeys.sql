@@ -66,6 +66,7 @@ ALTER TABLE actor.org_unit_proximity_adjustment ADD CONSTRAINT actor_org_unit_pr
 ALTER TABLE actor.org_unit_proximity_adjustment ADD CONSTRAINT actor_org_unit_proximity_copy_location_fkey FOREIGN KEY (copy_location) REFERENCES asset.copy_location (id) DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE acq.provider ADD CONSTRAINT acq_provider_edi_default_fkey FOREIGN KEY (edi_default) REFERENCES acq.edi_account (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE acq.provider ADD CONSTRAINT acq_provider_primary_contact_fkey FOREIGN KEY (primary_contact) REFERENCES acq.provider_contact (id) ON DELETE SET NULL ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE biblio.record_note ADD CONSTRAINT biblio_record_note_record_fkey FOREIGN KEY (record) REFERENCES biblio.record_entry (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE biblio.record_note ADD CONSTRAINT biblio_record_note_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED;
