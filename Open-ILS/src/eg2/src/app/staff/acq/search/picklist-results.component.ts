@@ -42,7 +42,7 @@ export class PicklistResultsComponent implements OnInit {
     permissions: {[name: string]: boolean};
     noSelectedRows: (rows: IdlObject[]) => boolean;
     oneSelectedRows: (rows: IdlObject[]) => boolean;
-    createNotAppropriate: (rows: IdlObject[]) => boolean;
+    createNotAppropriate: () => boolean;
     cloneNotAppropriate: (rows: IdlObject[]) => boolean;
     mergeNotAppropriate: (rows: IdlObject[]) => boolean;
     deleteNotAppropriate: (rows: IdlObject[]) => boolean;
@@ -76,7 +76,7 @@ export class PicklistResultsComponent implements OnInit {
 
         this.noSelectedRows = (rows: IdlObject[]) => (rows.length === 0);
         this.oneSelectedRows = (rows: IdlObject[]) => (rows.length === 1);
-        this.createNotAppropriate = (rows: IdlObject[]) => (!this.permissions.CREATE_PICKLIST);
+        this.createNotAppropriate = () => (!this.permissions.CREATE_PICKLIST);
         this.cloneNotAppropriate = (rows: IdlObject[]) => (!this.permissions.CREATE_PICKLIST || !this.oneSelectedRows(rows));
         this.mergeNotAppropriate = (rows: IdlObject[]) => (!this.permissions.UPDATE_PICKLIST || this.noSelectedRows(rows));
         this.deleteNotAppropriate = (rows: IdlObject[]) => (!this.permissions.UPDATE_PICKLIST || this.noSelectedRows(rows));

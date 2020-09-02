@@ -41,7 +41,7 @@
   idlClass="acqpl" [dataSource]="gridSource">
 
   <eg-grid-toolbar-button label="New Selection List" i18n-label
-    (onClick)="openCreateDialog()" [disableOnRows]="createNotAppropriate">
+    (onClick)="openCreateDialog()" [disabled]="createNotAppropriate()">
   </eg-grid-toolbar-button>
   <eg-grid-toolbar-action label="Clone Selected" i18n-label
     (onClick)="openCloneDialog($event)" [disableOnRows]="cloneNotAppropriate">
