@@ -1,5 +1,5 @@
 [% query_types = [
-    {value => "name", label => l("Title"), plural_label => l("Titles"), browse => 1},
+    {value => "name", label => l("Course Name"), plural_label => l("Course Names"), browse => 1},
     {value => "course_number", label => l("Course Number"), plural_label => l('Course Numbers'), browse => 1}
 ];
 
