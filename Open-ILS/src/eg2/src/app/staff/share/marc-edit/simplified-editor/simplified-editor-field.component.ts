@@ -1,17 +1,17 @@
-import {Directive, Host, Input, OnInit, AfterViewInit} from '@angular/core';
+import {Component, Host, Input, OnInit, AfterViewInit} from '@angular/core';
 import {MarcSimplifiedEditorComponent} from './simplified-editor.component';
 import {MarcField, MarcSubfield} from '../marcrecord';
-import {MarcSimplifiedEditorSubfieldDirective} from './simplified-editor-subfield.directive';
 
 /**
  * A field that a user can edit, which will later be
  * compiled into MARC
  */
 
-@Directive({
+@Component({
   selector: 'eg-marc-simplified-editor-field',
+  template: ''
 })
-export class MarcSimplifiedEditorFieldDirective implements OnInit, AfterViewInit {
+export class MarcSimplifiedEditorFieldComponent implements OnInit, AfterViewInit {
 
   @Input() tag = 'a';
   @Input() ind1 = ' ';
@@ -47,7 +47,7 @@ export class MarcSimplifiedEditorFieldDirective implements OnInit, AfterViewInit
       );
       this.subfieldIndex += 1;
 
-    }
+    };
   }
 
   ngAfterViewInit() {

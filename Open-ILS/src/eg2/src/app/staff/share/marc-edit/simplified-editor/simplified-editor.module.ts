@@ -2,15 +2,15 @@ import {NgModule} from '@angular/core';
 import {StaffCommonModule} from '@eg/staff/common.module';
 import {CommonWidgetsModule} from '@eg/share/common-widgets.module';
 import {MarcSimplifiedEditorComponent} from './simplified-editor.component';
-import {MarcSimplifiedEditorFieldDirective} from './simplified-editor-field.directive';
-import {MarcSimplifiedEditorSubfieldDirective} from './simplified-editor-subfield.directive';
+import {MarcSimplifiedEditorFieldComponent} from './simplified-editor-field.component';
+import {MarcSimplifiedEditorSubfieldComponent} from './simplified-editor-subfield.component';
 import {TagTableService} from '../tagtable.service';
 
 @NgModule({
     declarations: [
         MarcSimplifiedEditorComponent,
-        MarcSimplifiedEditorFieldDirective,
-        MarcSimplifiedEditorSubfieldDirective,
+        MarcSimplifiedEditorFieldComponent,
+        MarcSimplifiedEditorSubfieldComponent,
     ],
     imports: [
         StaffCommonModule,
@@ -18,8 +18,8 @@ import {TagTableService} from '../tagtable.service';
     ],
     exports: [
         MarcSimplifiedEditorComponent,
-        MarcSimplifiedEditorFieldDirective,
-        MarcSimplifiedEditorSubfieldDirective
+        MarcSimplifiedEditorFieldComponent,
+        MarcSimplifiedEditorSubfieldComponent
     ],
     providers: [
         TagTableService

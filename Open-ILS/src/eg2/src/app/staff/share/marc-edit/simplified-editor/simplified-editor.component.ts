@@ -3,9 +3,7 @@ import {FormGroup, FormControl} from '@angular/forms';
 import {MarcField, MarcRecord} from '../marcrecord';
 import {TagTableService} from '../tagtable.service';
 import {NetService} from '@eg/core/net.service';
-import { ComboboxEntry } from '@eg/share/combobox/combobox.component';
-import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 const DEFAULT_RECORD_TYPE = 'BKS';
 
@@ -57,22 +55,22 @@ export class MarcSimplifiedEditorComponent implements AfterViewInit, OnInit {
             field.fieldId = this.fieldIndex;
             this.fields.push(field);
             field.subfields.forEach((subfield) => {
-                this.editor.addControl(this.editorFieldIdentifier(field, subfield), new FormControl(null, []));               
-            })
+                this.editor.addControl(this.editorFieldIdentifier(field, subfield), new FormControl(null, []));
+            });
             this.fieldIndex++;
         };
 
         this.editorFieldIdentifier = (field: MarcField, subfield: Array<any>) => {
             return field.tag + subfield[0]; // e.g. 245a
-        }
+        };
 
         this.net.request('open-ils.cat',
             'open-ils.cat.biblio.fixed_field_values.by_rec_type',
             DEFAULT_RECORD_TYPE, 'Form')
             .subscribe((forms) => {
                 this.marcForms = forms['Form'].map((form) => {
-                    return {id: form[0], label: form[1]}
-                })
+                    return {id: form[0], label: form[1]};
+                });
             });
 
         this.net.request('open-ils.cat',
@@ -80,8 +78,8 @@ export class MarcSimplifiedEditorComponent implements AfterViewInit, OnInit {
             DEFAULT_RECORD_TYPE, 'Type')
             .subscribe((types) => {
                 this.marcTypes = types['Type'].map((type) => {
-                    return {id: type[0], label: type[1]}
-                })
+                    return {id: type[0], label: type[1]};
+                });
             });
 
     }
@@ -91,7 +89,7 @@ export class MarcSimplifiedEditorComponent implements AfterViewInit, OnInit {
             this.fields.forEach((field) => {
                 field.subfields.forEach((subfield) => {
                     this.subfieldLabels[this.editorFieldIdentifier(field, subfield)] = table.getSubfieldLabel(field.tag, subfield[0]);
-                })
+                });
             });
         });
     }
@@ -103,8 +101,8 @@ export class MarcSimplifiedEditorComponent implements AfterViewInit, OnInit {
             field.subfields.forEach((subfield) => {
                 if (subfield[1] === '') { // Default value has not been applied
                     subfield[1] = this.editor.get(this.editorFieldIdentifier(field, subfield)).value;
-                }  
-            })
+                }
+            });
         });
         record.fields = this.fields;
 
