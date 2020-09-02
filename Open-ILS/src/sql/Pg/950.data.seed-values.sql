@@ -4,6 +4,8 @@ INSERT INTO config.bib_source (id, quality, source, transcendant, can_have_copie
     (2, 10, oils_i18n_gettext(2, 'System Local', 'cbs', 'source'), FALSE, TRUE);
 INSERT INTO config.bib_source (id, quality, source, transcendant, can_have_copies) VALUES 
     (3, 1, oils_i18n_gettext(3, 'Project Gutenberg', 'cbs', 'source'), TRUE, TRUE);
+INSERT INTO config.bib_source (id, quality, source, transcendant, can_have_copies) VALUES
+    (4, 1, oils_i18n_gettext(4, 'Course materials module', 'cbs', 'source'), TRUE, FALSE);
 SELECT SETVAL('config.bib_source_id_seq'::TEXT, 100);
 
 INSERT INTO biblio.peer_type (id,name) VALUES
@@ -20631,8 +20633,6 @@ VALUES (
         'cwst', 'label'
     )
 );
-INSERT INTO config.bib_source (quality, source, transcendant) VALUES
-    (1, oils_i18n_gettext(1, 'Course materials module', 'cbs', 'source'), TRUE);
 
 INSERT INTO actor.org_unit_setting (org_unit, name, value)
     SELECT 1, 'circ.course_materials_brief_record_bib_source', id
@@ -20643,6 +20643,8 @@ INSERT INTO asset.course_module_role (id, name, is_public) VALUES
 (1, oils_i18n_gettext(1, 'Instructor', 'acmr', 'name'), true),
 (2, oils_i18n_gettext(2, 'Teaching assistant', 'acmr', 'name'), true),
 (3, oils_i18n_gettext(2, 'Student', 'acmr', 'name'), false);
+SELECT SETVAL('asset.course_module_role_id_seq'::TEXT, 100);
+
 
 
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)

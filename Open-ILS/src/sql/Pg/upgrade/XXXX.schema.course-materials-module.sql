@@ -51,6 +51,8 @@ INSERT INTO asset.course_module_role (id, name, is_public) VALUES
 (2, oils_i18n_gettext(2, 'Teaching assistant', 'acmr', 'name'), true),
 (3, oils_i18n_gettext(2, 'Student', 'acmr', 'name'), false);
 
+SELECT SETVAL('asset.course_module_role_id_seq'::TEXT, 100);
+
 CREATE TABLE asset.course_module_term_course_map (
     id              BIGSERIAL  PRIMARY KEY,
     term            INT     NOT NULL REFERENCES asset.course_module_term (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
@@ -120,7 +122,7 @@ VALUES (
 );
 
 INSERT INTO config.bib_source (quality, source, transcendant) VALUES
-    (1, oils_i18n_gettext(1, 'Course materials module', 'cbs', 'source'), TRUE);
+    (1, oils_i18n_gettext(4, 'Course materials module', 'cbs', 'source'), TRUE);
 
 INSERT INTO actor.org_unit_setting (org_unit, name, value)
     SELECT 1, 'circ.course_materials_brief_record_bib_source', id
