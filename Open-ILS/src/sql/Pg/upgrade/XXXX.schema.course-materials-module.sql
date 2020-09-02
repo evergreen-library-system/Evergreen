@@ -11,12 +11,17 @@ CREATE TABLE asset.course_module_course (
     is_archived        BOOLEAN NOT NULL DEFAULT false;
 );
 
+CREATE TABLE asset.course_module_role (
+    id              SERIAL  PRIMARY KEY,
+    name            TEXT    UNIQUE NOT NULL,
+    is_public       BOOLEAN NOT NULL DEFAULT false
+);
+
 CREATE TABLE asset.course_module_course_users (
     id              SERIAL PRIMARY KEY,
     course          INT NOT NULL REFERENCES asset.course_module_course (id),
     usr             INT NOT NULL REFERENCES actor.usr (id),
-    usr_role        TEXT,
-    is_public       BOOLEAN NOT NULL DEFAULT false
+    usr_role        INT REFERENCES asset.course_module_role (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE asset.course_module_course_materials (
@@ -25,11 +30,11 @@ CREATE TABLE asset.course_module_course_materials (
     item            INT REFERENCES asset.copy (id),
     relationship    TEXT,
     record          INT REFERENCES biblio.record_entry (id),
-    temporary_record         BOOLEAN,
-    original_location        INT REFERENCES asset.copy_location,
-    original_status          INT REFERENCES config.copy_status,
-    original_circ_modifier   TEXT, --REFERENCES config.circ_modifier,
-    original_callnumber      INT REFERENCES asset.call_number,
+    temporary_record       BOOLEAN,
+    original_location      INT REFERENCES asset.copy_location,
+    original_status        INT REFERENCES config.copy_status,
+    original_circ_modifier TEXT, --REFERENCES config.circ_modifier
+    original_callnumber    INT REFERENCES asset.call_number,
     unique (course, item, record)
 );
 
@@ -37,9 +42,14 @@ CREATE TABLE asset.course_module_term (
     id              SERIAL  PRIMARY KEY,
     name            TEXT    UNIQUE NOT NULL,
     owning_lib      INT REFERENCES actor.org_unit (id),
-	start_date      TIMESTAMP WITH TIME ZONE,
-	end_date        TIMESTAMP WITH TIME ZONE
+    start_date      TIMESTAMP WITH TIME ZONE,
+    end_date        TIMESTAMP WITH TIME ZONE
 );
+
+INSERT INTO asset.course_module_role (id, name, is_public) VALUES
+(1, oils_i18n_gettext(1, 'Instructor', 'acmr', 'name'), true),
+(2, oils_i18n_gettext(2, 'Teaching assistant', 'acmr', 'name'), true),
+(3, oils_i18n_gettext(2, 'Student', 'acmr', 'name'), false);
 
 CREATE TABLE asset.course_module_term_course_map (
     id              BIGSERIAL  PRIMARY KEY,

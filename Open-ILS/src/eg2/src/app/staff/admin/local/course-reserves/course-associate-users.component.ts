@@ -7,11 +7,12 @@ import {Pager} from '@eg/share/util/pager';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {IdlObject, IdlService} from '@eg/core/idl.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {CourseService} from '@eg/staff/share/course.service';
+import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
     selector: 'eg-course-associate-users-dialog',
@@ -39,8 +40,7 @@ export class CourseAssociateUsersComponent extends DialogComponent implements On
         userEditFailedString: StringComponent;
     usersDataSource: GridDataSource;
     userBarcode: String;
-    userRoleInput: String;
-    isPublicRole: Boolean;
+    userRoleInput: ComboboxEntry;
 
     constructor(
         private auth: AuthService,
@@ -69,9 +69,11 @@ export class CourseAssociateUsersComponent extends DialogComponent implements On
             const args = {
                 currentCourse: this.currentCourse,
                 barcode: barcode.trim(),
-                role: this.userRoleInput,
-                is_public: this.isPublicRole
             };
+
+            if (this.userRoleInput) {
+                args['role'] = this.userRoleInput.id;
+            }
 
             this.userBarcode = null;
 

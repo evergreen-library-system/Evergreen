@@ -3143,12 +3143,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="ID" name="id" reporter:datatype="id" />
             <field reporter:label="Course" name="course" reporter:datatype="link" />
             <field reporter:label="User" name="usr" reporter:datatype="link" />
-            <field reporter:label="User Role" name="usr_role" reporter:datatype="text" />
-            <field reporter:label="OPAC Viewable?" name="is_public" reporter:datatype="bool" />
+            <field reporter:label="User Role" name="usr_role" reporter:datatype="link" />
         </fields>
         <links>
             <link field="course" reltype="has_a" key="id" map="" class="acmc" />
             <link field="usr" reltype="has_a" key="id" map="" class="au" />
+            <link field="usr_role" reltype="has_a" key="id" map="" class="acmr" />
         </links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -3251,6 +3251,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
     </class>
+	<class id="acmr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::course_module_role" oils_persist:tablename="asset.course_module_role" reporter:label="Course Role" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.course_module_role_id_seq">
+			<field reporter:label="Role ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
+            <field reporter:label="OPAC Viewable?" name="is_public" reporter:datatype="bool" />
+		</fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="MANAGE_RESERVES" global_required="true" />
+				<retrieve/>
+				<update permission="MANAGE_RESERVES" global_required="true" />
+				<delete permission="MANAGE_RESERVES" global_required="true" />
+			</actions>
+		</permacrud>
+	</class>
 	
     <class id="acnc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::call_number_class" oils_persist:tablename="asset.call_number_class" reporter:label="Call number classification scheme">
         <fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_class_id_seq">

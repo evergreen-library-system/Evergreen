@@ -53,7 +53,7 @@ export class CourseService {
     getUsers(course_ids?: Number[]): Observable<IdlObject> {
         const flesher = {
             flesh: 1,
-            flesh_fields: {'acmcu': ['usr']}
+            flesh_fields: {'acmcu': ['usr', 'usr_role']}
         };
         if (!course_ids) {
             return this.pcrud.retrieveAll('acmcu',
@@ -134,7 +134,6 @@ export class CourseService {
 
     associateUsers(patron_id, args) {
         const new_user = this.idl.create('acmcu');
-        if (args.is_public) { new_user.is_public(args.is_public); }
         if (args.role) { new_user.usr_role(args.role); }
         new_user.course(args.currentCourse.id());
         new_user.usr(patron_id);

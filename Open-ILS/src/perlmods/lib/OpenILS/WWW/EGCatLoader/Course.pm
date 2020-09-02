@@ -64,10 +64,9 @@ sub load_course_browse {
                 "select" => {"acmcu" => [
                     'id',
                     'usr',
-                    'is_public'
                 ]},
                 # TODO: We need to support the chosen library as well...
-                "where" => {'+acmcu' => 'is_public'}
+                "where" => {'usr_role' => {'in' => {'select' => {'acmr' => ['id']}, 'where' => {'+acmr' => 'is_public'}}}}
             });
             $results = $e->json_query({
                 "from" => "au",
@@ -88,7 +87,12 @@ sub load_course_browse {
                             "acmcu" => ['usr']
                         },
                         "where" => {'-and' => [
-                            {'+acmcu' => 'is_public'},
+                            {'usr_role' => { 'in' => {
+                                'from' => 'acmr',
+                                "select" => {
+                                    "acmr" => ['id']
+                                },
+                                "where" => {'+acmr' => 'is_public'}}}},
                             {"course" => { "in" =>{
                                 "from" => "acmc",
                                 "select" => {

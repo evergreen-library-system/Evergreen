@@ -20639,6 +20639,11 @@ INSERT INTO actor.org_unit_setting (org_unit, name, value)
     FROM config.bib_source
     WHERE source='Course materials module';
 
+INSERT INTO asset.course_module_role (id, name, is_public) VALUES
+(1, oils_i18n_gettext(1, 'Instructor', 'acmr', 'name'), true),
+(2, oils_i18n_gettext(2, 'Teaching assistant', 'acmr', 'name'), true),
+(3, oils_i18n_gettext(2, 'Student', 'acmr', 'name'), false);
+
 
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
 VALUES (

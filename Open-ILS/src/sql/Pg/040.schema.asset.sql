@@ -1114,12 +1114,17 @@ CREATE TABLE asset.course_module_course (
     is_archived        BOOLEAN DEFAULT false
 );
 
+CREATE TABLE asset.course_module_role (
+    id              SERIAL  PRIMARY KEY,
+    name            TEXT    UNIQUE NOT NULL,
+    is_public       BOOLEAN NOT NULL DEFAULT false
+);
+
 CREATE TABLE asset.course_module_course_users (
     id              SERIAL PRIMARY KEY,
     course          INT NOT NULL REFERENCES asset.course_module_course (id),
     usr             INT NOT NULL REFERENCES actor.usr (id),
-    usr_role        TEXT,
-    is_public       BOOLEAN NOT NULL DEFAULT false
+    usr_role        INT REFERENCES asset.course_module_role (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE TABLE asset.course_module_course_materials (

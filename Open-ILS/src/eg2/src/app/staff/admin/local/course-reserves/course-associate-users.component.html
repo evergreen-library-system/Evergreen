@@ -36,30 +36,13 @@
             <div class="input-group-prepend">
               <label for="associate-user-role" class="input-group-text" i18n>Role</label>
             </div>
-            <input type="text" [(ngModel)]="userRoleInput" id="associate-user-role"
-              [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-              placeholder-i18n placeholder="e.g. Student, TA, Instructor..."
-              class="flex-grow-1" />
+            <eg-combobox idlClass="acmr" [(ngModel)]="userRoleInput"
+            [disabled]="currentCourse && currentCourse.is_archived() == 't'">
+            </eg-combobox>
           </div>
         </div>
       </div>
       <div class="row mt-3">
-        <div [ngClass]="isDialog() ? 'offset-md-6 col-md-4' : 'col-md-6'">
-          <div class="input-group">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <label for="associate-user-public" i18n>Is Public Role?</label>
-              </div>
-            </div>
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <input type="checkbox" [(ngModel)]="isPublicRole" id="associate-user-public"
-                  [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                  aria-label="Checkbox for allowing user to display on the OPAC Course Page" />
-              </div>
-            </div>
-          </div>
-        </div>
         <div class="text-right" [ngClass]="isDialog() ? 'col-md-2' : 'col-md-6'">
           <button class="btn btn-primary"
             [disabled]="currentCourse && currentCourse.is_archived() == 't'"
@@ -84,8 +67,8 @@
         <eg-grid-column label="Preferred Second Name" path="usr.pref_second_given_name"[hidden]="true"  i18n-label></eg-grid-column>
         <eg-grid-column label="Preferred Family Name" path="usr.pref_family_name"[hidden]="true"  i18n-label></eg-grid-column>
         <eg-grid-column label="Preferred Suffix" path="usr.pref_suffix" [hidden]="true" i18n-label></eg-grid-column>
-        <eg-grid-column label="User Role" path="usr_role" i18n-label></eg-grid-column>
-        <eg-grid-column label="Viewable on OPAC" path="is_public" i18n-label datatype="bool"></eg-grid-column>
+        <eg-grid-column label="User Role" path="usr_role.name" i18n-label></eg-grid-column>
+        <eg-grid-column label="Viewable on OPAC" path="usr_role.is_public" i18n-label datatype="bool"></eg-grid-column>
       </eg-grid>
     </div>
   </div>

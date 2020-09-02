@@ -191,11 +191,11 @@ sub fetch_course_users {
     my %patrons;
 
     $filter->{course} = $course_id;
-    $filter->{is_public} = 't'
+    $filter->{usr_role}->{is_public} = 't'
         unless ($self->api_name =~ /\.staff/) and $e->allowed('MANAGE_RESERVES');
  
  
-    $users->{list} =  $e->search_asset_course_module_course_users($filter, {order_by => {acmcu => 'id'}});
+    $users->{list} =  $e->search_asset_course_module_course_users($filter, {flesh => 1, flesh_fields => {acmcu => ['usr_role']}, order_by => {acmcu => 'id'}});
     for my $course_user (@{$users->{list}}) {
         my $patron = {};
         $patron->{id} = $course_user->id;
