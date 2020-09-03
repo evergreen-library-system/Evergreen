@@ -20,6 +20,7 @@ export class ManageAuthorityComponent implements OnInit {
     authId: number;
     authTab = 'bibs';
     authMeta: any;
+    linkedBibIdSource: (pager: Pager, sort: any) => Promise<number[]>;
 
     constructor(
         private router: Router,
@@ -44,6 +45,19 @@ export class ManageAuthorityComponent implements OnInit {
                 ).subscribe(meta => this.authMeta = meta);
             }
         });
+
+        this.linkedBibIdSource = (pager: Pager, sort: any) => {
+            return this.getLinkedBibIds(pager, sort);
+        };
+    }
+
+    getLinkedBibIds(pager: Pager, sort: any): Promise<number[]> {
+        return this.pcrud.search('abl',
+            {authority: this.authId},
+            {limit: pager.limit, offset: pager.offset},
+            {atomic: true}
+        ).pipe(map(links => links.map(l => l.bib()))
+        ).toPromise();
     }
 
     // Changing a tab in the UI means changing the route.

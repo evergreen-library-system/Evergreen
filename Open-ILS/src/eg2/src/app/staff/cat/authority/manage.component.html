@@ -17,7 +17,7 @@
   <ngb-tab title="Linked Bibs" i18n-title id="bibs">
     <ng-template ngbTabContent>
       <div class="mt-3" *ngIf="authMeta">
-        <eg-bib-list #bibList [bibIds]="authMeta.linked_bibs"
+        <eg-bib-list #bibList [bibIdSource]="linkedBibIdSource"
           gridPersistKey="cat.authority.manage.bibs"></eg-bib-list>
       </div>
     </ng-template>

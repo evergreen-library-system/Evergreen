@@ -361,7 +361,7 @@ __PACKAGE__->register_method(
                     thesaurus: short_code,
                     thesaurus_code: code,
                     control_set: control_set_object,
-                    linked_bibs: [id1, id2, ...]
+                    linked_bib_count: number
                 }
             /,
             type => 'object'
@@ -381,15 +381,22 @@ sub authority_main_entry {
         my $rec = $e->retrieve_authority_record_entry([
             $auth_id, {
                 flesh => 1,
-                flesh_fields => {are => [qw/control_set bib_links creator/]}
+                flesh_fields => {are => [qw/control_set creator/]}
             }
         ]) or return $e->event;
 
         my $response = {
             authority => $rec,
-            control_set => $rec->control_set,
-            linked_bibs => [ map {$_->bib} @{$rec->bib_links} ]
+            control_set => $rec->control_set
         };
+
+        $response->{linked_bib_count} = $e->json_query({
+            select => {abl => [
+                {column => 'bib', transform => 'count', aggregate => 1}
+            ]},
+            from => 'abl',
+            where => {authority => $auth_id}
+        })->[0]->{bib};
 
         # Extract the heading and thesaurus.
         # In theory this data has already been extracted in the DB, but

@@ -2755,7 +2755,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="thesaurus" reltype="might_have" key="code" map="" class="at"/>
 		</links>
 	</class>
-	<class id="abl" controller="open-ils.cstore" oils_obj:fieldmapper="authority::bib_linking" oils_persist:tablename="authority.bib_linking" reporter:label="Authority-Bibliographic Record Link">
+	<class id="abl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="authority::bib_linking" oils_persist:tablename="authority.bib_linking" reporter:label="Authority-Bibliographic Record Link">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.bib_linking_id_seq">
 			<field name="id" reporter:datatype="id" />
 			<field name="bib" reporter:datatype="link" />
@@ -2765,6 +2765,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="bib" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="authority" reltype="has_a" key="id" map="" class="are"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="ash" controller="open-ils.cstore" oils_obj:fieldmapper="authority::simple_heading" oils_persist:tablename="authority.simple_heading" reporter:label="Authority Simple Heading">
 		<fields oils_persist:primary="id" oils_persist:sequence="authority.simple_heading_id_seq">

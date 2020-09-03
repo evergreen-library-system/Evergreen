@@ -68,7 +68,7 @@ export class BrowseService {
 
             return {
                 authority: authMeta.authority,
-                link_count: authMeta.linked_bibs.length,
+                link_count: authMeta.linked_bib_count,
                 heading: authMeta.heading,
                 thesaurus: authMeta.thesaurus,
                 thesaurus_code: authMeta.thesaurus_code,

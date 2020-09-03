@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Observable, empty} from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import {Observable, empty, from} from 'rxjs';
+import {map, tap, switchMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {Pager} from '@eg/share/util/pager';
 import {NetService} from '@eg/core/net.service';
@@ -19,8 +19,10 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 })
 export class BibListComponent implements OnInit {
 
-    // Display bibs linked to this authority record.
+    // Static source of bib record IDs
     @Input() bibIds: number[];
+    // Dynamic source of bib record IDs
+    @Input() bibIdSource: (pager: Pager, sort: any) => Promise<number[]>;
     @Input() gridPersistKey: string;
 
     dataSource: GridDataSource;
@@ -40,7 +42,7 @@ export class BibListComponent implements OnInit {
 
         this.dataSource.getRows = (pager: Pager, sort: any): Observable<any> => {
 
-            if (this.bibIds) {
+            if (this.bibIds || this.bibIdSource) {
                 return this.loadIds(pager, sort);
             }
 
@@ -53,25 +55,33 @@ export class BibListComponent implements OnInit {
     }
 
     loadIds(pager: Pager, sort: any): Observable<any> {
-        if (this.bibIds.length === 0) {
+
+        let promise: Promise<number[]>;
+
+        if (this.bibIdSource) {
+            promise = this.bibIdSource(pager, sort);
+
+        } else if (this.bibIds && this.bibIds.length > 0) {
+            promise = Promise.resolve(
+              this.bibIds.slice(pager.offset, pager.offset + pager.limit));
+
+        } else {
             return empty();
         }
 
-        const orderBy: any = {rmsr: 'title'};
-        if (sort.length) {
-            orderBy.rmsr = sort[0].name + ' ' + sort[0].dir;
-        }
+        return from(promise).pipe(switchMap(bibIds => {
 
-        return this.pcrud.search('rmsr', {id: this.bibIds}, {
-            order_by: orderBy,
-            limit: pager.limit,
-            offset: pager.offset,
-            flesh: 2,
-            flesh_fields: {
-                rmsr: ['biblio_record'],
-                bre: ['creator', 'editor']
-            }
-        });
+            if (bibIds.length === 0) { return empty(); }
+
+            return this.pcrud.search('rmsr', {id: bibIds}, {
+                order_by: {rmsr: 'id'},
+                flesh: 2,
+                flesh_fields: {
+                    rmsr: ['biblio_record'],
+                    bre: ['creator', 'editor']
+                }
+            });
+        }));
     }
 }
 
