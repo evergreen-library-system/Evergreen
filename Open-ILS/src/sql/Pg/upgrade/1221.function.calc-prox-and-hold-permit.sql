@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('YYYY', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1221', :eg_version);
 
 CREATE OR REPLACE FUNCTION action.copy_calculated_proximity(
     pickup  INT,
@@ -70,7 +70,7 @@ BEGIN
 
     RETURN baseline_prox;
 END;
-$F$ LANGUAGE PLPGSQL;
+$f$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION action.hold_copy_calculated_proximity(
     ahr_id INT,
