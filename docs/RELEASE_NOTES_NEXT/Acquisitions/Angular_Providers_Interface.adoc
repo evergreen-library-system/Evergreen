@@ -1,0 +1,33 @@
+Angular Providers Interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The interfaces for searching for and managing acquisitions provider
+records have been rewritten in Angular. This rewrite includes the
+following significant changes:
+
+* The provider search interface is now available directly from the
+  Acquisitions menu, supplementing its longstanding availability from
+  the Acquisitions Administration page.
+* The search interface is modeled after the patron interface, including
+  a search form that can be hidden or displayed, a provider summary box,
+  and a multi-tabbed interface for managing the provider itself.
+* The grid displaying search results is filterable and sortable.
+* The provider display tabs are
+ ** Details, allowing the user to view, and if permitted, edit
+    the base provider record.
+ ** Addresses
+ ** Contacts
+ ** Attribute Definitions
+ ** Holdings Definitions
+ ** EDI
+ ** Invoices, providing an interface for viewing the invoices
+    associated with the provider.
+ ** POs, providing an interface for viewing the purchase orders
+    associated with the provider.
+* The new interface makes it possible to edit contact addresses.
+* The base provider record now has an optional primary contact field.
+  Selecting a contact as the primary one is managed on the Contacts
+  tab.  The primary contact, if set, is displayed on the provider
+  summary box.
+
+Interfaces that used to link to the Dojo provider interface now link
+to the Angular one instead.
