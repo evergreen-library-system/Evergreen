@@ -50,7 +50,7 @@
             </ng-container>
 
             <ng-container *ngSwitchCase="'readonly-list'">
-              <ng-container *ngIf="field.linkedValues">
+              <ng-container *ngIf="field.linkedValues && field.linkedValues[0]?.label">
                 <span>{{field.linkedValues[0].label}}</span>
               </ng-container>
             </ng-container>

@@ -428,7 +428,9 @@ export class FmRecordEditorComponent
             || this.idl.getClassSelector(class_) || idField;
 
         return list.map(item => {
-            return {id: item[idField](), label: item[selector]()};
+            if (item !== undefined) {
+                return {id: item[idField](), label: item[selector]()};
+            }
         });
     }
 
