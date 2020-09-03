@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1218', :eg_version);
+
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
         SELECT
                 pgt.id, perm.id, aout.depth, TRUE
