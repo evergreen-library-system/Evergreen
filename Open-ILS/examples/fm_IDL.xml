@@ -2928,6 +2928,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+	<class id="mmpbbt" controller="open-ils.reporter-store open-ils.cstore" oils_obj:fieldmapper="money::materialized_payment_by_billing_type" oils_persist:tablename="money.materialized_payment_by_billing_type" reporter:label="Payments by Billing Type">
+		<fields oils_persist:primary="id">
+			<field reporter:label="Entry ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Transaction ID" name="xact" reporter:datatype="link"/>
+			<field reporter:label="Payment ID" name="payment" reporter:datatype="link"/>
+			<field reporter:label="Billing ID" name="billing" reporter:datatype="link"/>
+			<field reporter:label="Payment Timestamp" name="payment_ts" reporter:datatype="timestamp"/>
+			<field reporter:label="Billing Timestamp" name="billing_ts" reporter:datatype="timestamp"/>
+			<field reporter:label="Payment Amount" name="amount" reporter:datatype="money"/>
+			<field reporter:label="Payment Type" name="payment_type" reporter:datatype="text"/>
+			<field reporter:label="Billing Type" name="billing_type" reporter:datatype="text"/>
+			<field reporter:label="Payment Location" name="payment_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="Billing Location" name="billing_ou" reporter:datatype="org_unit"/>
+		</fields>
+		<links>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+			<link field="payment" reltype="has_a" key="id" map="" class="mp"/>
+			<link field="billing" reltype="has_a" key="id" map="" class="mb"/>
+			<link field="payment_ou" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="billing_ou" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
 
 	<class id="cmsa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::metabib_search_alias" oils_persist:tablename="config.metabib_search_alias" reporter:label="Metabib Search Alias" oils_persist:field_safe="true">
 		<fields oils_persist:primary="alias">
