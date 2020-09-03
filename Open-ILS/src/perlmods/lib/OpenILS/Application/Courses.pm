@@ -186,43 +186,23 @@ __PACKAGE__->register_method(
 sub fetch_course_users {
     my ($self, $conn, $course_id) = @_;
     my $e = new_editor();
-    my $filter = {};
-    my $users = {};
-    my %patrons;
 
-    $filter->{course} = $course_id;
-    $filter->{usr_role}->{is_public} = 't'
-        unless ($self->api_name =~ /\.staff/) and $e->allowed('MANAGE_RESERVES');
- 
- 
-    $users->{list} =  $e->search_asset_course_module_course_users($filter, {flesh => 1, flesh_fields => {acmcu => ['usr_role']}, order_by => {acmcu => 'id'}});
-    for my $course_user (@{$users->{list}}) {
-        my $patron = {};
-        $patron->{id} = $course_user->id;
-        $patron->{usr_role} = $course_user->usr_role;
-        $patron->{patron_data} = $e->retrieve_actor_user($course_user->usr);
-        $patrons{$course_user->usr} = $patron;
-    }
-
-    my $targets = ();
-    for my $user (values %patrons) {
-        my $final_user = {};
-        $final_user->{id} = $user->{id};
-        $final_user->{usr_role} = $user->{usr_role};
-        $final_user->{patron_id} = $user->{patron_data}->id;
-        $final_user->{first_given_name} = $user->{patron_data}->first_given_name;
-        $final_user->{second_given_name} = $user->{patron_data}->second_given_name;
-        $final_user->{family_name} = $user->{patron_data}->family_name;
-        $final_user->{pref_first_given_name} = $user->{patron_data}->pref_first_given_name;
-        $final_user->{pref_family_name} = $user->{patron_data}->pref_family_name;
-        $final_user->{pref_second_given_name} = $user->{patron_data}->pref_second_given_name;
-        $final_user->{pref_suffix} = $user->{patron_data}->pref_suffix;
-        $final_user->{pref_prefix} = $user->{patron_data}->pref_prefix;
-
-        push @$targets, $final_user;
-    }
-
-    return $targets;
+    return $e->json_query({
+        select => {
+            acmcu => ['id'],
+            acmr => [{column => 'name', alias => 'usr_role'}],
+            au => [{column => 'id', alias => 'patron_id'},
+                'first_given_name', 'second_given_name',
+                'family_name', 'pref_first_given_name',
+                'pref_second_given_name', 'pref_family_name',
+                'pref_suffix', 'pref_prefix'],
+        },
+        from => { acmcu => {'acmr' => {}, 'au' => {}} },
+        where => {
+            '+acmcu' => { course => $course_id },
+            '+acmr' => {'is_public' => 't'}
+        },
+    });
 
 }
 

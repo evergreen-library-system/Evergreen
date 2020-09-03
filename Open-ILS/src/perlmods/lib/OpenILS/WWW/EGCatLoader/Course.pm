@@ -66,7 +66,7 @@ sub load_course_browse {
                     'usr',
                 ]},
                 # TODO: We need to support the chosen library as well...
-                "where" => {'usr_role' => {'in' => {'select' => {'acmr' => ['id']}, 'where' => {'+acmr' => 'is_public'}}}}
+                "where" => {'usr_role' => {'in' => {'from' => 'acmr', 'select' => {'acmr' => ['id']}, 'where' => {'+acmr' => 'is_public'}}}}
             });
             $results = $e->json_query({
                 "from" => "au",
@@ -266,14 +266,9 @@ sub load_cresults {
                     'from' => 'au',
                     'select' => {'au' => ['id']},
                     'where' => {
-                        '-or' => [
-                            {'pref_first_given_name' => {'~*' => $query}},
-                            {'first_given_name' => {'~*' => $query}},
-                            {'pref_second_given_name' => {'~*' => $query}},
-                            {'second_given_name' => {'~*' => $query}},
-                            {'pref_family_name' => {'~*' => $query}},
-                            {'family_name' => {'~*' => $query}}
-                        ]
+                        'name_kw_tsvector' => {
+                            '@@' => {'value' => [ 'plainto_tsquery', $query ] }
+                        }
                     }
                 }}}
             }}};

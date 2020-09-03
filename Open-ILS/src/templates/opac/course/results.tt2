@@ -86,7 +86,7 @@
                     href="[%
                        mkurl(ctx.opac_root _ '/results', {qtype => 'instructor', query => instructorString})
                     %]" rel="nofollow" vocab="">
-                  [% instructorString %] ([% l(instructor.usr_role.name) %])</a>.
+                  [% instructorString %] ([% l(instructor.usr_role) %])</a>.
                   [% END %]
                 </div>
                 <div>

@@ -24,7 +24,7 @@
           ELSE;
             instructorString = instructorString _ instructor.first_given_name;
           END;
-          instructorString = instructorString _ ' (' _ l(instructor.usr_role.name) _ ')'; %]
+          instructorString = instructorString _ ' (' _ l(instructor.usr_role) _ ')'; %]
           <span class="course-instructor-div">[% instructorString %].</span>
         [% END %]
       </div>

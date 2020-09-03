@@ -3910,6 +3910,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Preferred Suffix" name="pref_suffix" reporter:datatype="text"/>
 			<field reporter:label="Parent/Guardian" name="guardian" reporter:datatype="text"/>
 			<field reporter:label="Name Keywords" name="name_keywords" reporter:datatype="text"/>
+			<field reporter:label="Name Keyword internal tsvector" name="name_kw_tsvector" reporter:datatype="text"/>
 			<field reporter:label="Additional Permission Groups" name="groups" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Is Deleted" name="deleted" reporter:datatype="bool"/>
 			<field reporter:label="User Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
