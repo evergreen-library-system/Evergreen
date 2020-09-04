@@ -90,9 +90,11 @@ mkdir "$tmp_space/staging/";
 # Deal with ui repo
 exec_system_cmd("git clone $antoraui_git $tmp_space/antora-ui");
 
+exec_system_cmd("cd $tmp_space/antora-ui && npm install gulp-cli");
+
 exec_system_cmd("cd $tmp_space/antora-ui && npm install");
 
-exec_system_cmd("cd $tmp_space/antora-ui && gulp build && gulp pack");
+exec_system_cmd("cd $tmp_space/antora-ui && $tmp_space/antora-ui/node_modules/.bin/gulp build && $tmp_space/antora-ui/node_modules/.bin/gulp pack");
 
 # Deal with root URL Antora configuration
 rewrite_yml($base_url,"site/url","site.yml");
@@ -108,15 +110,15 @@ exec_system_cmd('ansible-playbook setup_lunr.yml');
 exec_system_cmd('npm i antora-lunr');
 
 # Install the antora site generator with lunr
-exec_system_cmd('npm i -g antora-site-generator-lunr');
+exec_system_cmd('npm i antora-site-generator-lunr');
 
 # Now, finally, let's build antora
-exec_system_cmd('DOCSEARCH_ENABLED=true DOCSEARCH_ENGINE=lunr NODE_PATH="$(npm -g root)" antora --generator antora-site-generator-lunr site.yml');
+exec_system_cmd('DOCSEARCH_ENABLED=true DOCSEARCH_ENGINE=lunr NODE_PATH="$(npm root)" ./node_modules/@antora/cli/bin/antora --generator antora-site-generator-lunr site.yml');
 
 # rsync to production
 exec_system_cmd('rsync -av --delete '.$tmp_space.'/staging/* '.$html_output.'/');
 
-print "Success: your site should be vieaable here: $base_url\n";
+print "Success: your site should be viewable here: $base_url\n";
 
 sub rewrite_yml
 {
