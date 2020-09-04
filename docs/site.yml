@@ -6,8 +6,8 @@ content:
   sources:
   - url: ../
 #    - url: git@git.evergreen-ils.org:working/Evergreen.git
-    branches: LP1848524_antora_ize_docs
-    start_path: docs-antora
+    branches: HEAD
+    start_path: docs
 ui:
   bundle:
     url: ./../../eg-antora/build/ui-bundle.zip
