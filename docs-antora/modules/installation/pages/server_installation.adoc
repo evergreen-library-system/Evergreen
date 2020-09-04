@@ -78,10 +78,11 @@ before you can successfully configure, compile, and install Evergreen.
 make -f Open-ILS/src/extras/Makefile.install <osname>
 ------------------------------------------------------------------------------
 +
-[[optional_developer_additions]]
+[#optional_developer_additions]
 3. OPTIONAL: Developer additions
 +
 To perform certain developer tasks from a Git source code checkout, 
+including the testing of the Angular web client components,
 additional packages may be required.  As the *root* Linux account:
 +
  * To install packages needed for retrieving and managing web dependencies,
@@ -114,18 +115,8 @@ make -f Open-ILS/src/extras/Makefile.install <osname>-packager
 
 [NOTE]
 Skip this entire section if you are using an official release tarball downloaded
-from http://evergreen-ils.org/downloads
-
-=== Install dependencies for web staff client ===
-
-[NOTE]
-You may skip this section if you have installed the
-<<optional_developer_additions,optional developer additions>>.  You will still need to do the following
-steps in <<install_files_for_web_staff_client,Install files for web staff client>>.
-
-1. Install the long-term stability (LTS) release of
-https://nodejs.org[Node.js]. Add the Node.js `/bin` directory to your
-environment variable `PATH`.
+from http://evergreen-ils.org/downloads. Otherwise, ensure you have installed the
+xref:#optional_developer_additions[optional developer additions] before proceeding.
 
 [[install_files_for_web_staff_client]]
 === Install AngularJS files for web staff client ===
@@ -150,9 +141,17 @@ npm install   # fetch JS dependencies
 +
 [source,sh]
 ------------------------------------------------------------------------------
-# build, run tests, concat+minify
+# build, concat+minify
 npm run build-prod
-npm run test
+------------------------------------------------------------------------------
++
+4. OPTIONAL: Test web client code if the <osname>-developer packages were installed.
+   CHROME_BIN should be set to the path to chrome or chromimum, e.g.,
+   `/usr/bin/chromium`:
++
+[source,sh]
+------------------------------------------------------------------------------
+CHROME_BIN=/path/to/chrome npm run test
 ------------------------------------------------------------------------------
 
 [[install_files_for_angular_web_staff_client]]
@@ -180,7 +179,15 @@ npm install   # fetch JS dependencies
 ------------------------------------------------------------------------------
 # build and run tests
 ng build --prod
-npm run test
+------------------------------------------------------------------------------
++
+4. OPTIONAL: Test eg2 web client code if the <osname>-developer packages were installed:
+   CHROME_BIN should be set to the path to chrome or chromimum, e.g.,
+   `/usr/bin/chromium`:
++
+[source,sh]
+------------------------------------------------------------------------------
+CHROME_BIN=/path/to/chrome npm run test
 ------------------------------------------------------------------------------
 
 == Configuration and compilation instructions ==
@@ -223,7 +230,7 @@ chown -R opensrf:opensrf /openils
 
 == Run ldconfig ==
 
-On Debian Stretch / Buster, run the following command as the root user:
+On Ubuntu 18.04 or Debian Stretch / Buster, run the following command as the root user:
 
 [source, bash]
 ------------------------------------------------------------------------------
@@ -402,7 +409,8 @@ Ubuntu on the machine of your choice using the following commands as the
 Each OS build target provides the postgres server installation packages
 required for each operating system.  To install Postgres server packages, 
 use the make target 'postgres-server-<OSTYPE>'.  Choose the most appropriate 
-command below based on your operating system.
+command below based on your operating system. This will install PostgreSQL 9.6,
+the minimum supported version.
 
 [source, bash]
 ------------------------------------------------------------------------------
@@ -411,6 +419,18 @@ make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-jessie
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-xenial
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic
+------------------------------------------------------------------------------
+
+To install PostgreSQL version 10, use the following command for your operating
+system:
+
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-10
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch-10
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-jessie-10
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-xenial-10
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-10
 ------------------------------------------------------------------------------
 
 For a standalone PostgreSQL server, install the following Perl modules for your
