@@ -65,7 +65,7 @@ Example:
 
 [source,bash]
 ----
-$ cd Evergreen/docs-antora
+$ cd Evergreen/docs
 $ ./generate_docs.pl \
 --base-url http//examplesite.org/prod \
 --tmp-space ../../tmp \
@@ -95,7 +95,7 @@ https://docs.antora.org/antora/2.1/install/install-antora/
 
 [source,bash]
 ----
-$ cd docs-antora
+$ cd docs
 # (we want to install into directory as opposed to globally)
 $ npm i @antora/cli@2.1 @antora/site-generator-default@2.1
 ----
@@ -118,7 +118,7 @@ NOTE: build/ui-bundle.zip
 
 Now you can build the website. But you may want to edit the file:
 
-NOTE: docs-antora/site.yml
+NOTE: docs/site.yml
 
 Because the output folder for the website is defaulted to 
 
@@ -132,7 +132,7 @@ Build:
 
 [source,bash]
 ----
-$ cd ../Evergreen/docs-antora
+$ cd ../Evergreen/docs
 antora site.yml
 ----
 
@@ -172,7 +172,7 @@ $ ansible-playbook setup_lunr.yml
 This should have edited this file: node_modules/@antora/site-generator-default/lib/generate-site.js
 as outlined in the git repo notes
 
-Now, install the lunr bits (from docs-antora folder)
+Now, install the lunr bits (from the docs folder)
 
 [source,bash]
 ----
