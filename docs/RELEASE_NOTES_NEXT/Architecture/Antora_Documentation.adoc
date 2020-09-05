@@ -1,0 +1,11 @@
+Documentation Now Uses the Antora Toolchain
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The core Evergreen documentation under the `docs/` subdirectory
+has been changed to use Antora, a documentation site generator
+for AsciiDoc. The result of this change is the ability to generate
+documentation for the `docs.evergreen-ils.org` website that is
+searchable, easier to maintain, and readily installable on a
+local Evergreen site if desired.
+
+For instructions on how to build the documentation, consult
+the file `README.adoc` under the `docs` directory.
