@@ -3,17 +3,17 @@
     <div class="row">
       <div class="col-lg-3" i18n>Form</div>
       <div class="col-lg-9">
-        <eg-combobox #formCombobox [entries]="marcForms" formControlName="marcForm">
-          <eg-combobox-entry entryId=" " entryLabel="Default" [selected]="true"></eg-combobox-entry>
+        <eg-combobox #formCombobox [entries]="marcForms" formControlName="marcForm" [selectedId]="defaultMarcForm">
+          <eg-combobox-entry entryId=" " entryLabel="<None selected>" i18n-entryLabel></eg-combobox-entry>
         </eg-combobox>
       </div>
     </div>
     <div class="row">
       <div class="col-lg-3" i18n>Type</div>
       <div class="col-lg-9">
-        <eg-combobox #typeCombobox [entries]="marcTypes" formControlName="marcType"></eg-combobox>
+        <eg-combobox #typeCombobox [entries]="marcTypes" formControlName="marcType" selectedId="a"></eg-combobox>
       </div>
-    </div>   
+    </div>
     <ng-container *ngFor="let field of fields">
       <div class="row" *ngFor="let subfield of field.subfields">
         <ng-container *ngIf="!subfield[1]">
