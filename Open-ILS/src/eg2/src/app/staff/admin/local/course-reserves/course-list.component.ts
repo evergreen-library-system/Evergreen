@@ -1,6 +1,6 @@
 import {Component, Input, ViewChild, OnInit, AfterViewInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {IdlObject} from '@eg/core/idl.service';
+import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {CourseService} from '@eg/staff/share/course.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -10,6 +10,7 @@ import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {LocaleService} from '@eg/core/locale.service';
+import {AuthService} from '@eg/core/auth.service';
 
 import {CourseAssociateMaterialComponent
     } from './course-associate-material.component';
@@ -45,11 +46,14 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     grid_source: GridDataSource = new GridDataSource();
     currentMaterials: any[] = [];
     search_value = '';
+    defaultTerm: IdlObject;
 
 
     constructor(
         private courseSvc: CourseService,
         private locale: LocaleService,
+        private auth: AuthService,
+        private idl: IdlService,
         private pcrud: PcrudService,
         private router: Router,
         private toast: ToastService
@@ -57,6 +61,8 @@ export class CourseListComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.getSource();
+        this.defaultTerm = this.idl.create('acmt');
+        this.defaultTerm.owning_lib(this.auth.user().ws_ou());
     }
 
     ngAfterViewInit() {
