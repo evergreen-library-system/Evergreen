@@ -3383,18 +3383,21 @@ sub new_flesh_user {
     }
 
     if($fetch_notes) {
-        # grab undeleted notes (now actor.usr_message_penalty) that have not hit their stop_date
-        $user->notes(
-            $e->search_actor_usr_message_penalty([
+        # grab notes (now actor.usr_message_penalty) that have not hit their stop_date
+        # NOTE: This is a view that already filters out deleted messages that are not
+        # attached to a penalty, but the query is slow if we include deleted=f, so we
+        # post-filter that.  This counts both user messages and standing penalties, but
+        # linked ones are only counted once.
+        $user->notes([
+            grep { !$_->deleted or $_->deleted eq 'f' } @{ $e->search_actor_usr_message_penalty([
                 {   usr => $id,
-                    deleted => 'f',
                     '-or' => [
                         {stop_date => undef},
                         {stop_date => {'>' => 'now'}}
                     ],
                 }, {}
-            ])
-        );
+            ]) }
+        ]);
     }
 
     # retrieve the most recent usr_activity entry

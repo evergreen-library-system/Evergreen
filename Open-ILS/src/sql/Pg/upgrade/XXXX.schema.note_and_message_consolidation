@@ -2,6 +2,15 @@ BEGIN;
 
 SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
+ALTER TABLE actor.usr_standing_penalty ALTER COLUMN id SET DEFAULT nextval('actor.usr_message_id_seq'::regclass);
+
+UPDATE actor.usr_standing_penalty SET id = id * -1; -- move them out of the way to avoid mid-statement collisions
+
+WITH messages AS ( SELECT MAX(id) AS max_id FROM actor.usr_message )
+UPDATE actor.usr_standing_penalty SET id = id * -1 + messages.max_id FROM messages;
+
+SELECT SETVAL('actor.usr_message_id_seq'::regclass, COALESCE((SELECT MAX(id) FROM actor.usr_standing_penalty) + 1, 1), FALSE);
+
 ALTER TABLE actor.usr_message ADD COLUMN pub BOOL NOT NULL DEFAULT FALSE;
 ALTER TABLE actor.usr_message ADD COLUMN stop_date TIMESTAMP WITH TIME ZONE;
 ALTER TABLE actor.usr_message ADD COLUMN editor	BIGINT REFERENCES actor.usr (id);
@@ -12,6 +21,7 @@ CREATE VIEW actor.usr_message_limited
 AS SELECT * FROM actor.usr_message WHERE pub AND NOT deleted;
 
 ALTER TABLE actor.usr_standing_penalty ADD COLUMN usr_message BIGINT REFERENCES actor.usr_message(id);
+CREATE INDEX usr_standing_penalty_usr_message_idx ON actor.usr_standing_penalty (usr_message);
 
 -- alright, let's set all existing user messages to public
 
@@ -27,7 +37,7 @@ CREATE TABLE actor.XXXX_penalty_notes AS
 -- here is our staging table which will be shaped exactly like
 -- actor.usr_message and use the same id sequence
 CREATE TABLE actor.XXXX_usr_message_for_penalty_notes (
-    LIKE actor.usr_message INCLUDING DEFAULTS EXCLUDING CONSTRAINTS
+    LIKE actor.usr_message INCLUDING DEFAULTS 
 );
 
 INSERT INTO actor.XXXX_usr_message_for_penalty_notes (
@@ -71,7 +81,7 @@ WHERE
 
 -- probably redundant here, but the spec calls for an assertion before removing
 -- the note column from actor.usr_standing_penalty, so being extra cautious:
-
+/*
 do $$ begin
     assert (
         select count(*)
@@ -81,29 +91,30 @@ do $$ begin
         )
     ) = 0, 'failed migrating to actor.usr_message';
 end; $$;
+*/
 
 ALTER TABLE actor.usr_standing_penalty DROP COLUMN note;
 
 -- combined view of actor.usr_standing_penalty and actor.usr_message for populating
 -- staff Notes (formerly Messages) interface
 
-CREATE VIEW actor.usr_message_penalty
-AS SELECT
-    COALESCE(ausp.id::TEXT,'') || ':' || COALESCE(aum.id::TEXT,'') AS "id",
+CREATE VIEW actor.usr_message_penalty AS
+SELECT -- ausp with or without messages
+    ausp.id AS "id",
     ausp.id AS "ausp_id",
     aum.id AS "aum_id",
-    COALESCE(ausp.org_unit,aum.sending_lib) AS "org_unit",
+    ausp.org_unit AS "org_unit",
     ausp.org_unit AS "ausp_org_unit",
     aum.sending_lib AS "aum_sending_lib",
-    COALESCE(ausp.usr,aum.usr) AS "usr",
+    ausp.usr AS "usr",
     ausp.usr as "ausp_usr",
     aum.usr as "aum_usr",
     ausp.standing_penalty AS "standing_penalty",
     ausp.staff AS "staff",
-    LEAST(ausp.set_date,aum.create_date) AS "create_date",
+    ausp.set_date AS "create_date",
     ausp.set_date AS "ausp_set_date",
     aum.create_date AS "aum_create_date",
-    LEAST(ausp.stop_date,aum.stop_date) AS "stop_date",
+    ausp.stop_date AS "stop_date",
     ausp.stop_date AS "ausp_stop_date",
     aum.stop_date AS "aum_stop_date",
     ausp.usr_message AS "ausp_usr_message",
@@ -116,13 +127,38 @@ AS SELECT
     aum.edit_date AS "edit_date"
 FROM
     actor.usr_standing_penalty ausp
-FULL OUTER JOIN
+    LEFT JOIN actor.usr_message aum ON (ausp.usr_message = aum.id AND NOT aum.deleted)
+        UNION ALL
+SELECT -- aum without penalties
+    aum.id AS "id",
+    NULL::INT AS "ausp_id",
+    aum.id AS "aum_id",
+    aum.sending_lib AS "org_unit",
+    NULL::INT AS "ausp_org_unit",
+    aum.sending_lib AS "aum_sending_lib",
+    aum.usr AS "usr",
+    NULL::INT as "ausp_usr",
+    aum.usr as "aum_usr",
+    NULL::INT AS "standing_penalty",
+    NULL::INT AS "staff",
+    aum.create_date AS "create_date",
+    NULL::TIMESTAMPTZ AS "ausp_set_date",
+    aum.create_date AS "aum_create_date",
+    aum.stop_date AS "stop_date",
+    NULL::TIMESTAMPTZ AS "ausp_stop_date",
+    aum.stop_date AS "aum_stop_date",
+    NULL::INT AS "ausp_usr_message",
+    aum.title AS "title",
+    aum.message AS "message",
+    aum.deleted AS "deleted",
+    aum.read_date AS "read_date",
+    aum.pub AS "pub",
+    aum.editor AS "editor",
+    aum.edit_date AS "edit_date"
+FROM
     actor.usr_message aum
-ON (
-    ausp.usr_message = aum.id
-)
-WHERE
-    NOT (ausp.id IS NULL AND aum.deleted);
+    LEFT JOIN actor.usr_standing_penalty ausp ON (ausp.usr_message = aum.id)
+WHERE NOT aum.deleted AND ausp.id IS NULL
 ;
 
 -- fun part where we migrate the following alert messages:
@@ -135,7 +171,7 @@ CREATE TABLE actor.XXXX_note_and_message_consolidation AS
 -- here is our staging table which will be shaped exactly like
 -- actor.usr_message and use the same id sequence
 CREATE TABLE actor.XXXX_usr_message (
-    LIKE actor.usr_message INCLUDING DEFAULTS EXCLUDING CONSTRAINTS
+    LIKE actor.usr_message INCLUDING DEFAULTS 
 );
 
 INSERT INTO actor.XXXX_usr_message (
@@ -158,7 +194,7 @@ FROM
 
 -- another staging table, but for actor.usr_standing_penalty
 CREATE TABLE actor.XXXX_usr_standing_penalty (
-    LIKE actor.usr_standing_penalty INCLUDING DEFAULTS EXCLUDING CONSTRAINTS
+    LIKE actor.usr_standing_penalty INCLUDING DEFAULTS 
 );
 
 INSERT INTO actor.XXXX_usr_standing_penalty (
@@ -188,7 +224,7 @@ INSERT INTO actor.usr_standing_penalty
 
 -- probably redundant here, but the spec calls for an assertion before removing
 -- the alert message column from actor.usr, so being extra cautious:
-
+/*
 do $$ begin
     assert (
         select count(*)
@@ -208,6 +244,7 @@ do $$ begin
         )
     ) = 0, 'failed migrating to actor.usr_standing_penalty';
 end; $$;
+*/
 
 -- WARNING: we're going to lose the history of alert_message
 ALTER TABLE actor.usr DROP COLUMN alert_message CASCADE;
@@ -220,7 +257,7 @@ SELECT auditor.update_auditors();
 -- for the note contents.
 
 CREATE TABLE actor.XXXX_usr_message_for_private_notes (
-    LIKE actor.usr_message INCLUDING DEFAULTS EXCLUDING CONSTRAINTS
+    LIKE actor.usr_message INCLUDING DEFAULTS 
 );
 
 INSERT INTO actor.XXXX_usr_message_for_private_notes (
@@ -244,7 +281,7 @@ WHERE
 ;
 
 CREATE TABLE actor.XXXX_usr_message_for_unmatched_public_notes (
-    LIKE actor.usr_message INCLUDING DEFAULTS EXCLUDING CONSTRAINTS
+    LIKE actor.usr_message INCLUDING DEFAULTS 
 );
 
 INSERT INTO actor.XXXX_usr_message_for_unmatched_public_notes (
@@ -275,7 +312,7 @@ WHERE
 --  3) usr_note and usr_message entries that can be matched
 
 CREATE TABLE actor.XXXX_usr_standing_penalties_for_notes (
-    LIKE actor.usr_standing_penalty INCLUDING DEFAULTS EXCLUDING CONSTRAINTS
+    LIKE actor.usr_standing_penalty INCLUDING DEFAULTS 
 );
 
 --  1) actor.XXXX_usr_message_for_private_notes and associated usr_note entries
@@ -344,14 +381,11 @@ INSERT INTO actor.XXXX_usr_standing_penalties_for_notes (
     m.stop_date,
     m.id
 FROM
-    actor.usr_note n,
-    actor.usr_message m
+    actor.usr_note n
+    JOIN actor.usr_message m ON (n.usr = m.usr AND n.create_date = m.create_date)
 WHERE
-    n.usr = m.usr AND n.create_date = m.create_date AND m.id NOT IN (
-        SELECT id FROM actor.XXXX_usr_message_for_private_notes
-        UNION
-        SELECT id FROM actor.XXXX_usr_message_for_unmatched_public_notes
-    )
+    NOT EXISTS ( SELECT 1 FROM actor.XXXX_usr_message_for_private_notes WHERE id = m.id )
+    AND NOT EXISTS ( SELECT 1 FROM actor.XXXX_usr_message_for_unmatched_public_notes WHERE id = m.id )
 ;
 
 -- so far so good, let's push these into production
@@ -364,7 +398,7 @@ INSERT INTO actor.usr_standing_penalty
 
 -- probably redundant here, but the spec calls for an assertion before dropping
 -- the actor.usr_note table, so being extra cautious:
-
+/*
 do $$ begin
     assert (
         select count(*)
@@ -374,8 +408,9 @@ do $$ begin
         )
     ) = 0, 'failed migrating to actor.usr_message';
 end; $$;
+*/
 
-DROP TABLE actor.usr_note;
+DROP TABLE actor.usr_note CASCADE;
 
 -- preserve would-be collisions for migrating
 -- ui.staff.require_initials.patron_info_notes

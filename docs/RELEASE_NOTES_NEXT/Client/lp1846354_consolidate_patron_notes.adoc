@@ -12,7 +12,7 @@ And for actor.usr_message, there is now both a pub column and a deleted column.
 
 Depending on privacy policies, system adminstrators may wish to set up a recurring process to truly delete older entries in actor.usr_message that have been flagged as deleted.
 
-WARNING: The upgrade script will remote the alert_message field from the auditor table, so if you care about preserving those you should run a query to create a backup.
+WARNING: The upgrade script will remove the alert_message field from the auditor table, so if you care about preserving those you should run a query to create a backup.
 
 For example:
 
