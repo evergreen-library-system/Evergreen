@@ -14,7 +14,7 @@
                     <!-- add a new row -->
                     <tr id='adv_global_addrow' >
                         <td class="td-search-left" colspan="2">
-                            <a class="btn btn-opac btn-sm" href="javascript:;" id="myopac_new_global_row" onclick='addSearchRow();'><i class="fas fa-plus-circle"></i> [% l('Add Search Row') %]</a>
+                            <a class="btn btn-opac btn-sm" href="javascript:;" id="myopac_new_global_row" onclick='addSearchRow();'><i class="fas fa-plus-circle" aria-hidden="true"></i> [% l('Add Search Row') %]</a>
                         </td>
                     </tr>
                 </tbody>
@@ -36,13 +36,13 @@
                             </button>
                         </h4>
                     </div>
-                    
+
                     <div id="[% IF adv_chunk.id == 'adv_copy_location_selector'; 'adv_copy_location_selector_new';  ELSE; adv_chunk.id; END; %]" class="collapse" aria-labelledby="[% adv_chunk.id %]_card" data-parent="#accordion">
                     [% IF adv_chunk.id != 'adv_copy_location_selector';%]
                         <div class="card-body">
                         <fieldset>
                         <legend class="sr-only"> [% adv_chunk.adv_label %]</legend>
-                       [% END; %]  
+                       [% END %]
                             [% IF adv_chunk.adv_attr;
                                         INCLUDE "opac/parts/check_value_selector.tt2"
                                             id=adv_chunk.id
@@ -52,22 +52,22 @@
                                         INCLUDE "opac/parts/filter_group_selector.tt2"
                                             id=adv_chunk.id
                                             filter_group=adv_chunk.adv_filter multiple="multiple"
-                                            size=adv_chunk.adv_size || search.default_adv_select_height || "4"; 
-                            END; %] 
+                                            size=adv_chunk.adv_size || search.default_adv_select_height || "4";
+                            END; %]
                             [% IF adv_chunk.id != 'adv_copy_location_selector';%]
-                        </fieldset>   
-                         [% END; %]   
+                        </fieldset>
+                         [% END %]
                         </div>
-                    </div> 
+                    </div>
                 </div></div>
             </div>
             [%END;%]
         </div>
-    </div>       
-         
+    </div>
+
     <!--Bottom Content (Library/Pub Year/Sort and Limit/Format Checkboxes -->
     <div class="row adv_options">
-        [% FOR adv_chunk IN search.adv_config; NEXT IF adv_chunk.adv_hide || adv_chunk.adv_special == 'copy_location';%]                  
+        [% FOR adv_chunk IN search.adv_config; NEXT IF adv_chunk.adv_hide || adv_chunk.adv_special == 'copy_location';%]
         [%	IF adv_chunk.adv_special;%]
         <div class='col-12 my-2'>
             <div [% IF adv_chunk.js_only %] id='adv_chunk_[% adv_chunk.adv_special %]' class='hidden' [% END %]>
@@ -84,8 +84,9 @@
                                 <option value="[% opt.code %]"[% CGI.param('pubdate') == opt.code ? ' selected="selected"' : '' %]>[% opt.label | html %]</option>
                             [%  END %]
                             </select>
-                            
-                            <div class="mx-3">
+
+                            <br/>
+                            <div id='adv_special_block' class="text-center">
                                 <input title="[% l('Search date') %]" class='form-control' placeholder='Year'
                                   name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
                                 <span id='adv_global_pub_date_2_span' class='[% CGI.param("pubdate") == "between" ? "" : "hide_me" %]'>
@@ -133,11 +134,11 @@
                                         [% l("Limit to Available") %]</label>
                                 </div>
                             </div>
-                    [% END; %]
+                    [% END %]
                 </div>
             </div>
-        [% END; %]
-    [% END; %]
+        [% END %]
+    [% END %]
     </div>
     <div id='adv_search_submit' class="my-3">
         <input type="hidden" name="_adv" value="1" />

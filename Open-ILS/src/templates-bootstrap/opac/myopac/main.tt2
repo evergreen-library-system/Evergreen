@@ -70,12 +70,12 @@
                             [% l("E-Items ready for pickup") %] (<span id="acct_sum_ebook_hold_ready_total">-</span>)
                         </a>
                     </div>
-                   
+
                 </div>
-                   
+
         </div>
     </div>
-	[% content %]
+    [% content %]
 </div>
 
 [% END %]

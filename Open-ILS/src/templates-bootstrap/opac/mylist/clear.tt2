@@ -3,7 +3,7 @@
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
     ctx.page_title = l("Confirm Clearing of Basket") %]
-    
+
     [% INCLUDE "opac/parts/searchbar.tt2" %]
 <div class="container">
   <hr>
@@ -11,9 +11,9 @@
   <p class="big-strong">[% l('Please confirm that you want to remove all [_1] titles from the basket.', ctx.mylist.size) %]
     <form method="post" action="[% mkurl(ctx.opac_root _ '/cache/clear', {}, 1) %]">
       <input type="hidden" name="redirect_to" value="[% ctx.referer %]" />
-      <button id="print_cart_submit" type="submit" 
-        value="[% l('Confirm') %]"  class="btn btn-confirm"><i class="fas fa-check"></i> [% l('Confirm') %]</button>
-      <button type="reset" onclick="window.location='[% ctx.referer | html %]'" id="clear_basket_cancel" class="btn btn-deny"><i class="far fa-times-circle"></i> [% l('Cancel') %]</button>
+      <button id="print_cart_submit" type="submit"
+        value="[% l('Confirm') %]"  class="btn btn-confirm"><i class="fas fa-check" aria-hidden="true"></i> [% l('Confirm') %]</button>
+      <button type="reset" onclick="window.location='[% ctx.referer | html %]'" id="clear_basket_cancel" class="btn btn-deny"><i class="fas fa-times-circle" aria-hidden="true"></i> [% l('Cancel') %]</button>
     </form>
 </div>
 [%- END %]

@@ -7,22 +7,25 @@
     <br class="clear-both" />
     <div id="content-wrapper" class="content-wrapper-record-page">
         <div id='main-content'>
-            <br/>
             [% IF ctx.user.email %]
-            <h2 class='success'>[% l('Your email has been queued for delivery to [_1]', ctx.user.email ) %]</h2>
+            <div class="alert alert-success" role="alert">
+                <h2>[% l('Your email has been queued for delivery to [_1]', ctx.user.email ) %]</h2>
+            </div>
             [% ELSE %]
-            <h2 class='error'>
+            <div class="alert alert-danger" role="alert">
+            <h2>
                 [% here_link_text = "<a href=\"${ctx.opac_root}/myopac/update_email?return_to_referer=1\">";
-                   here_link_text = here_link_text _ l("here");
+                   here_link_text = here_link_text _ l("Set your email address here");
                    here_link_text = here_link_text _ "</a>";
-                   l('Your account does not currently have an email address set. Set your email address [_1]', here_link_text) %]
+                   l('Your account does not currently have an email address set. [_1]', here_link_text) %]
             </h2>
+            </div>
             [% END %]
             <br/>
             [% IF ctx.redirect_to %]
-            <p>[ <a href="[% ctx.redirect_to | html %]">[% l("Return") %]</a> ] </p>
+            <p><a class="btn btn-outline-primary" href="[% ctx.redirect_to | html %]">[% l("Return") %]</a>  </p>
             [% ELSE %]
-            <p>[ <a href="[% mkurl(ctx.opac_root  _ '/record/' _ ctx.bre_id) %]">[% l("Back to Record") %]</a> ]</p>
+            <p><a class="btn btn-outline-primary" href="[% mkurl(ctx.opac_root  _ '/record/' _ ctx.bre_id) %]">[% l("Back to Record") %]</a></p>
             [% END %]
             <div class="common-full-pad"></div>
         </div>

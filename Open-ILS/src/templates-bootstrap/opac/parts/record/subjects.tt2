@@ -1,4 +1,4 @@
-[% 
+[%
     subjects = [
         {
             display_field => 'subject',
@@ -118,7 +118,7 @@
                     </tr>
                 </tbody>
             </table>
-[%          
+[%
         ELSE;
             content = PROCESS render_subject(s=subj);
             IF content.match('\S');

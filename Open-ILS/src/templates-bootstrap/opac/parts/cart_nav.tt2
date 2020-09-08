@@ -8,18 +8,18 @@
             <span class="sr-only">[% l('Records In Basket') %]</span>
         </div>
       </a>
-      <div class="dropdown-menu dropdown-menu-left" role="menu" aria-labelledby="cartDropdown" style="right:0px !important;left:unset !important;">
-        <a class="dropdown-item" role="menuitem" tabindex="-1" href="[% mkurl(ctx.opac_root _ '/mylist', {}) %]"><i class="fas fa-glasses"></i>[% l('View Basket') %]</a>
-        <a class="dropdown-item" role="menuitem" tabindex="-1" href="[% mkurl(ctx.opac_root _ '/mylist/move', { action => 'place_hold', entire_list => 1 }) %]"><i class="fas fa-book"></i>[% l('Place Holds') %]</a>
-        <a class="dropdown-item" role="menuitem" tabindex="-1" href="[% mkurl(ctx.opac_root _ '/mylist/print', {}) %]"><i class="fas fa-print"></i>[% l('Print Title Details') %]</a>
-        <a class="dropdown-item" role="menuitem" tabindex="-1" href="[% mkurl(ctx.opac_root _ '/mylist/email', {}) %]"><i class="far fa-envelope"></i>[% l('Email Title Details') %]</a>
+      <div class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="cartDropdown">
+        <a class="dropdown-item" role="menuitem" tabindex="-1" href="[% mkurl(ctx.opac_root _ '/mylist', {}) %]"><i class="fas fa-glasses" aria-hidden="true"></i> [% l('View Basket') %]</a>
+        <a class="dropdown-item" role="menuitem" tabindex="-1" href="[% mkurl(ctx.opac_root _ '/mylist/move', { action => 'place_hold', entire_list => 1 }) %]"><i class="fas fa-book" aria-hidden="true"></i> [% l('Place Holds') %]</a>
+        <a class="dropdown-item" role="menuitem" tabindex="-1" href="[% mkurl(ctx.opac_root _ '/mylist/print', {}) %]"><i class="fas fa-print" aria-hidden="true"></i> [% l('Print Title Details') %]</a>
+        <a class="dropdown-item" role="menuitem" tabindex="-1" href="[% mkurl(ctx.opac_root _ '/mylist/email', {}) %]"><i class="fas fa-envelope" aria-hidden="true"></i> [% l('Email Title Details') %]</a>
         [% IF !ctx.is_browser_staff %]
-        <a class="dropdown-item" role="menuitem" tabindex="-1" href="[% mkurl(ctx.opac_root _ '/myopac/lists', { move_cart_by_default => 1, from_basket => 1 }) %]"><i class="fas fa-list"></i>[% l('Add Basket to Saved List') %]</a>
+        <a class="dropdown-item" role="menuitem" tabindex="-1" href="[% mkurl(ctx.opac_root _ '/myopac/lists', { move_cart_by_default => 1, from_basket => 1 }) %]"><i class="fas fa-list" aria-hidden="true"></i> [% l('Add Basket to Saved List') %]</a>
         [% END %]
         [% IF ctx.is_browser_staff %]
-        <a class="dropdown-item" role="menuitem" tabindex="-1" href="add_cart_to_bucket"><i class="fab fa-bitbucket"></i>[% l('Add Basket to Bucket') %]</a>
+        <a class="dropdown-item" role="menuitem" tabindex="-1" href="add_cart_to_bucket"><i class="fab fa-bitbucket" aria-hidden="true"></i> [% l('Add Basket to Bucket') %]</a>
         [% END %]
-        <a class="dropdown-item" role="menuitem" tabindex="-1" href="[% mkurl(ctx.opac_root _ '/mylist/clear', {}) %]"><i class="fas fa-trash"></i>[% l('Clear Basket') %]</a>
+        <a class="dropdown-item" role="menuitem" tabindex="-1" href="[% mkurl(ctx.opac_root _ '/mylist/clear', {}) %]"><i class="fas fa-trash" aria-hidden="true"></i> [% l('Clear Basket') %]</a>
       </div>
     </div>
   </div>

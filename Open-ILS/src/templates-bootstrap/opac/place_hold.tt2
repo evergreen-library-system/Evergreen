@@ -6,7 +6,7 @@
     END;
     ctx.page_title = l("Place Hold") %]
     <h2 class="sr-only">[% l('Hold Placement') %]</h2>
-    [% INCLUDE "opac/parts/searchbar.tt2" %]    
+    [% INCLUDE "opac/parts/searchbar.tt2" %]
     <div id="content-wrapper">
         <div class="container">
             [% IF ctx.hold_attempt_made %]

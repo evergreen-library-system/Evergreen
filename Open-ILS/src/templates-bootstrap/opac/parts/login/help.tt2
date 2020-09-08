@@ -5,13 +5,13 @@
 </div>
 <div class="col-12 text-center">
     <div class="mx-3 d-inline-block">
-        <a href="http://example.com" class="btn btn-confirm"><i class="fas fa-question"></i> [% l('Questions?') %]</a>
+        <a href="http://example.com" class="btn btn-confirm"><i class="fas fa-question" aria-hidden="true"></i> [% l('Questions?') %]</a>
     </div>
-    
+
     <div class="mx-3 d-inline-block">
         <div>
-            <a href="http://example.com" class="btn btn-confirm"><i class="fas fa-tasks"></i> [% l('FAQs') %]</a>
-	    </div>
+            <a href="http://example.com" class="btn btn-confirm"><i class="fas fa-tasks" aria-hidden="true"></i> [% l('FAQs') %]</a>
+        </div>
     </div>
 
 </div>

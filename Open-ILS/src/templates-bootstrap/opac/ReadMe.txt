@@ -9,7 +9,7 @@
 /////////////////////TOOLTIPS///////////////////////////////////////////
 <!--data-html allows use of HTML tags in the tooltip-->  
  <a href="#" title="text to show on tooltip" data-html="true" data-toggle="tooltip">
-    <i class="fas fa-question-circle"></i>
+    <i class="fas fa-question-circle" aria-hidden="true"></i>
 </a>
 <!--This is needed to activate the tooltips on the page and is activated Globally by default in js.tt2-->
 <script>

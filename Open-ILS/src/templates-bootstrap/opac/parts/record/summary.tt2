@@ -49,7 +49,7 @@ ctx.metalinks.push('
 
 
 
-           
+
         </div>
     </div>
 
@@ -71,7 +71,7 @@ ctx.metalinks.push('
                 [%- INCLUDE "opac/parts/record/authors.tt2" %]
                 <div>
                     <button id="btnMore" data-toggle="collapse" data-target="#demo"
-                        class="btn btn-action text-left btn-sm my-3"><i class="fas fa-info-circle"></i> More Details</button>
+                        class="btn btn-action btn-sm my-3"><i class="fas fa-info-circle" aria-hidden="true"></i> More Details</button>
                     <div id="demo" class="collapse">
                         <h2 id='rdetail_record_details'>[% l("Record details") %]</h2>
                         <ul class="list-unstyled">
@@ -315,13 +315,13 @@ ctx.metalinks.push('
                         </div>
 
                     </div>
-                    
+
                 </div>
                 <script>jQuery('#demo').on('hidden.bs.collapse', function () {
-                        jQuery('#btnMore').html("<i class='fas fa-info-circle'></i> More Details");
+                        jQuery('#btnMore').html("<i class='fas fa-info-circle' aria-hidden='true'></i> More Details");
                     })
                     jQuery('#demo').on('shown.bs.collapse', function () {
-                        jQuery('#btnMore').html("<i class='fas fa-info-circle'></i> Less Details");
+                        jQuery('#btnMore').html("<i class='fas fa-info-circle' aria-hidden='true'></i> Less Details");
                     })
                     </script>
 
@@ -340,81 +340,81 @@ ctx.metalinks.push('
             </div>
             <!--rdetail_title_div-->
 
-            <div class="col-lg-4 text-right">
-             <div class="mx-auto btn-group btn-group-vertical text-left dropright mt-3">
+            <div class="col-lg-4">
+             <div id="actions" class="mx-auto btn-group btn-group-vertical dropright mt-3">
                 [%- search_ou = ctx.search_ou;
                 IF ctx.place_unfillable ||
                 ( attrs.marc_xml.findnodes('//*[local-name()="holdings" and @has_holdable="true"]').size
                 && (ctx.holds_block.enabled != 'true' || !attrs.org_copy_counts.$search_ou.available)
                 )
                 %]
-                <div class="btn btn-action text-left">
-                    <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
+                <div class="btn btn-action">
+                    <a href="[% mkurl(ctx.opac_root _ '/place_hold',
                     {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}, stop_parms) %]"
                         class="no-dec">
-                        <span class="place_hold"><i class="fas fa-check"></i> [% l('Place Hold') %]</span></a>
+                        <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Place Hold') %]</span></a>
                 </div>
                 [%- END -%]
 
                 [%- IF ebook_api.enabled == 'true' && args.ebook %]
-                <div class="btn btn-action text-left">
+                <div class="btn btn-action">
                     <div id="[%- ctx.bre_id -%]_ebook_checkout" class="rdetail_aux_utils ebook_action hidden">
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
                     {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'}, stop_parms) %]"
                             class="no-dec" rel="nofollow" vocab="">
-                            <span class="place_hold"><i class="fas fa-check"></i> [% l('Check Out E-Item') %]</span></a>
+                            <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Check Out E-Item') %]</span></a>
                     </div>
                 </div>
-                <div class="btn btn-action text-left">
+                <div class="btn btn-action">
                     <div id="[%- ctx.bre_id -%]_ebook_place_hold" class="rdetail_aux_utils ebook_action hidden">
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
                     {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'}, stop_parms) %]"
                             class="no-dec" rel="nofollow" vocab="">
-                            <span class="place_hold"><i class="fas fa-check"></i> [% l('Place Hold on E-Item') %]</span></a>
+                            <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Place Hold on E-Item') %]</span></a>
                     </div>
                 </div>
                 [%- END -%]
 
 
-                <div class="btn btn-action text-left">
+                <div class="btn btn-action">
                     [% operation = ctx.mylist.grep('^' _ ctx.bre_id _ '$').size ? "delete" : "add";
                     addhref = mkurl(ctx.opac_root _ '/mylist/add', {record => ctx.bre_id}, stop_parms);
                     delhref = mkurl(ctx.opac_root _ '/mylist/delete', {record => ctx.bre_id}, stop_parms);
                     label = (operation == "add") ? l("Add to Basket") : l("Remove from Basket");
                     %]
-                    <a href="[% addhref %]" id="mylist_add_[% ctx.bre_id %]" 
+                    <a href="[% addhref %]" id="mylist_add_[% ctx.bre_id %]"
                         data-recid="[% ctx.bre_id %]" data-action="add"
                         class="no-dec mylist_action [% IF ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]hidden[% END %]"
                         title="[% l(" Add [_1] to basket", attrs.title) %]" rel="nofollow" vocab="">
-                        <i class="fas fa-shopping-basket"></i>
+                        <i class="fas fa-shopping-basket" aria-hidden="true"></i>
                         [% l("Add to basket") %]
                     </a>
-                    <a href="[% delhref %]" id="mylist_delete_[% ctx.bre_id %]" 
+                    <a href="[% delhref %]" id="mylist_delete_[% ctx.bre_id %]"
                         data-recid="[% ctx.bre_id %]" data-action="delete"
                         class="mylist_action [% IF !ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]hidden[% END %]"
                         title="[% l(" Remove [_1] from basket", attrs.title) %]" rel="nofollow" vocab="">
-                        <i class="fas fa-minus-circle"></i>
+                        <i class="fas fa-minus-circle" aria-hidden="true"></i>
                         [% l("Remove from basket") %]
                     </a>
                 </div>
                 [% IF ctx.mylist.size %]
-                <div class="btn btn-action text-left">
+                <div class="btn btn-action">
                     [%- IF ctx.user; %]
-                    <a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]" class="no-dec" rel="nofollow" vocab=""><i class="fas fa-glasses"></i> [% l(' View Basket') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]" class="no-dec" rel="nofollow" vocab=""><i class="fas fa-glasses" aria-hidden="true"></i> [% l(' View Basket') %]</a>
                     [%- ELSE %]
-                    <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab=""><i class="fas fa-glasses"></i> [% l(' View My Basket') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab=""><i class="fas fa-glasses" aria-hidden="true"></i> [% l(' View My Basket') %]</a>
                     [%- END %]
                 </div>
                 [% END %]
-                
+
                 [% IF !ctx.is_staff %]
                     [% IF ctx.user; %]
                     [% INCLUDE "opac/parts/bookbag_actions.tt2"; %]
-                    [% END; %]
+                    [% END %]
                 [% END %]
-                
-                <div class="btn btn-action text-left">
-                    <i class="fas fa-envelope-open-text"></i>
+
+                <div class="btn btn-action">
+                    <i class="fas fa-envelope-open-text" aria-hidden="true"></i>
                     <a href="[% mkurl(ctx.opac_root _ '/record/print/' _ ctx.bre_id) %]" class="no-dec" rel="nofollow"
                         vocab="">[% l('Print') %]</a> /
                     <a href="[% mkurl(ctx.opac_root _ '/record/email/' _ ctx.bre_id) %]" class="no-dec" rel="nofollow"
@@ -424,47 +424,47 @@ ctx.metalinks.push('
                 [%- INCLUDE 'opac/parts/record/refworks.tt2' %]
                 [%- END %]
                 [% IF !ctx.is_staff %]
-                <div class="btn btn-action text-left">
+                <div class="btn btn-action">
                     <a href="[% mkurl('', {locg =>CGI.param('locg'), copy_depth =>CGI.param('copy_depth')}, 1) %]"
                         class="no-dec">
-                        <i class="fas fa-link"></i>
+                        <i class="fas fa-link" aria-hidden="true"></i>
                         [% l('Permalink') %]
                     </a>
                 </div>
                 [% END %]
                 [% IF !search.no_highlight %]
-                <div class="btn btn-action text-left">
+                <div class="btn btn-action">
                     [% IF CGI.param('no_highlight') %]
                     <a href="[% mkurl('', {}, ['no_highlight']) %]" class="no-dec">
                         [% ELSE %]
                         <a href="[% mkurl('', {no_highlight => '1'}) %]" class="no-dec">
                             [% END %]
-                            <i class="fas fa-highlighter"></i>
+                            <i class="fas fa-highlighter" aria-hidden="true"></i>
                             [% CGI.param('no_highlight') ? l('Enable Highlighting') : l('Disable Highlighting') %]
                         </a>
                 </div>
                 [% END %]
                 [%- IF ctx.is_staff %]
-                <div class="btn btn-action text-left">
+                <div class="btn btn-action">
                     <a href="[% ctx.media_prefix %]/opac/extras/ac/clearcache/all/r/[% ctx.bre_id | uri %]"
                         class="no-dec" target="_blank">
-                        <i class="fas fa-sync-alt"></i>
+                        <i class="fas fa-sync-alt" aria-hidden="true"></i>
                         [% l('Clear Added Content Cache') %]
                     </a>
                 </div>
                 [%- END %]
-                
+
             </div>
-            
+
         </div>
     </div>
 </div>
 </div>
 <div class="row">
 <div class="col-12">
-        
+
 <div class="float-right">
-                      
+
                             <h2 class="text-right">[% l('Holds') %]</h2>
                             <p class="text-right">
                                 [%
@@ -482,7 +482,7 @@ ctx.metalinks.push('
                                 ctx.record_hold_count, ctx.copy_summary.$count_entry.count)
                                 %]
                             </p>
-                        
+
                     </div>
 
         [%-

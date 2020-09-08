@@ -36,7 +36,7 @@
                 <tr>
                     <td class="rdetail-mfhd-foot" colspan="2"> </td>
                 </tr>
-            [% END; %]
+            [% END %]
         [% END %]
         </tbody></table>
     </div>

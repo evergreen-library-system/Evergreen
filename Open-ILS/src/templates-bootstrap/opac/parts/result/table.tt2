@@ -11,7 +11,7 @@
 %]
 <div class="row">
     <div class="col-12">
-    [% PROCESS "opac/parts/result/paginate.tt2" %] 
+    [% PROCESS "opac/parts/result/paginate.tt2" %]
     [% ctx.results_count_header = PROCESS results_count_header;
         ctx.results_count_header %]
     </div>
@@ -29,7 +29,7 @@
                 <span id="selected_records_summary">
                 <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab="">
                     <span id="selected_records_count">[% ctx.mylist.size %]
-                    
+
                     </span>
                             [% l('selected') %]
                 </a></span>
@@ -38,7 +38,7 @@
             </div>
             [% END %]
 
-            
+
                 [%  FOR rec IN ctx.records;
                     attrs = {};
                     attrs.marc_xml = rec.marc_xml;
@@ -55,7 +55,7 @@
                         IF rec.mmr_id;
                             IF rec.mr_constituent_count > 1;
                                 # metarecords link to record list page
-                                record_url_path = ctx.opac_root _ '/results'; 
+                                record_url_path = ctx.opac_root _ '/results';
                                 add_parms = {metarecord => rec.mmr_id};
                                 del_parms = ['page'];
                             ELSE;
@@ -67,14 +67,14 @@
                             END;
                             hold_type = 'M';
                         ELSE;
-                        record_url_path = ctx.opac_root _ '/record/' _ rec.bre_id; 
+                        record_url_path = ctx.opac_root _ '/record/' _ rec.bre_id;
                         add_parms = { badges => rec.badges.join(',') };
                         del_parms = ['quux'];
                         hold_type = 'T';
                         END; -%]
-                        
+
                     <div class="row" style="border-top: 1px solid grey;">
-                 
+
                     <!--Count&Checkboxes-->
                         <div class="col-lg-1">
                             <div class="results_row_count"> [% IF !ctx.is_meta; %]
@@ -86,16 +86,16 @@
                                     class="result_record_selector" value="[% rec.bre_id %]" />
                                 [% END %]
                             </div>
-                        </div> 
+                        </div>
                         <!--Cover Image-->
-                        <div class='my-auto col-lg-2 text-center' id="result[% rec.bre_id %]">
+                        <div class='col-sm-auto text-center' id="result[% rec.bre_id %]">
                             <a href="[% mkurl(record_url_path, add_parms, del_parms); %]"><img alt="[% attrs.title | html;%]"
-                            id='item_jacket[% rec.bre_id %]' class='my-2' 
+                            id='item_jacket[% rec.bre_id %]' class='my-2'
                             src='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/r/[% rec.bre_id | uri %]' style="max-height:150px;" /></a><br />
-                        </div>       
+                        </div>
                             <!--Info-->
-                        <div class='result_table_title_cell col-lg-9'>
-                            <dRecord Holdings Summaryiv class="row h-100">
+                        <div class='result_table_title_cell col'>
+                            <div class="row align-items-start">
                                 <div class="result_metadata col-md-8 col-12">
                                     [% IF rec.mmr_id %]
                                     <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:metabib-metarecord/[% rec.mmr_id %]'></abbr>
@@ -110,19 +110,19 @@
                                     <span class="mx-2">
                                         [%- IF attrs.format_label; %]
                                             [% FOR format IN attrs.all_formats %]
-                                                <img alt="[% format.label | html %]" 
-                                                    src="[% format.icon %]" /> 
+                                                <img alt="[% format.label | html %]"
+                                                    src="[% format.icon %]" />
                                                 [% format.label | html %]
                                             [% END %]
                                         [%- END %]
-                                       
+
                                         [%- UNLESS show_detail_view;
                                             IF attrs.pubdate;
                                                 pubdate_clean = attrs.pubdate | html;
                                                 l(" ([_1])", pubdate_clean);
                                             ELSIF attrs.copyright;
                                                 copyright_clean = attrs.copyright | html;
-                                                l(" ([_1])", copyright_clean);                                                                
+                                                l(" ([_1])", copyright_clean);
                                             END;
                                         END -%]
                                     </span>
@@ -140,18 +140,18 @@
                                         [% alt.value | html %]
                                     </div>
                                         [%- END; END; -%]
-  
+
                                     <div>
                                     [% IF attrs.author; %]
                                         <a  title="[% l("Perform an Author Search") %]"
                                             class="record_author"
-                                            href="[%- 
+                                            href="[%-
                                             authorquery = attrs.author | replace('[#"^$\+\-,\.:;&|\[\]()]', ' ');
                                             mkurl(ctx.opac_root _ '/results', {qtype => 'author', query => authorquery}, general_search_parms.merge(expert_search_parms, browse_search_parms, facet_search_parms))
                                             -%]" rel="nofollow" vocab="">[% IF attrs.hl.author; attrs.hl.author; ELSE; attrs.author | html; END %]</a>
-                                    [% END; %]
+                                    [% END %]
 
-                                    
+
                                             [%-
                                             FOR entry IN attrs.graphic_authors;
                                                 FOR alt IN entry.graphic;
@@ -165,22 +165,22 @@
                                         </div>
                                         [%- END; END; -%]
                                     </div>
-                                                    
-                                      
-                                                    
+
+
+
                                         [% IF rec.popularity > 0.0 AND ctx.hide_badge_scores != 'true' %]
                                         <div><span><strong>[% l('Popularity:') %]</strong> [% rec.popularity %] / 5.0</span></div>
                                         [% END %]
-                                        <table 
+                                        <table
                                             role="presentation"
                                             title="[% l('Record Holdings Summary') %]"
                                             class="table_no_border_space table_no_border results_info_table container-fluid">
-                                       
+
 
                                             [%- IF show_detail_view -%]
                                             [% IF args.holdings.size > 0 %]
                                             <tr class='result_table_title_cell'>
-                                                <td valign='top'><strong>[% l('Call number:') %]</strong></td> 
+                                                <td valign='top'><strong>[% l('Call number:') %]</strong></td>
                                                 <td>[% args.holdings.0.label | html %]</td>
                                             </tr>
                                             [% END %]
@@ -286,7 +286,7 @@
                                                 END;
                                             %]
                                             <tr  class='result_table_title_cell container-fluid'>
-                                                <td>
+                                                <td colspan="2">
                                                     <table role="presentation" title="[% l('Record Holdings Details') %]" class='container-fluid table table-hover mt-4 miniTable holdingsTable'>
                                                         <thead>
                                                             <tr>
@@ -318,7 +318,7 @@
                                             [%- has_parts = 'false'; END; %]
                                         [% END %] <!-- END detail_record_view -->
                                     </table>
-                                    [% 
+                                    [%
                                         IF ebook_api.enabled == 'true';
                                             INCLUDE "opac/parts/ebook_api/avail.tt2";
                                         END;
@@ -328,7 +328,7 @@
                                     END; %]
                                     [% IF rec.user_circulated %]
                                     <div class="result_item_circulated">
-                                    <i class="fas fa-book-reader"></i>  
+                                    <i class="fas fa-book-reader" aria-hidden="true"></i>
                                     <span>[% l('I have checked this item out before') %]</span>
                                     </div>
                                     [% END %]
@@ -338,12 +338,12 @@
                                             <div class="result-bookbag-item-note">[% note.note | html %]</div>
                                         [% END %]
                                     [% END %]
-                                
+
                                 </div>
 
 
                                 <div class="col-md-4">
-                                    <div class="result_table_utils row vertMid">
+                                    <div class="result_table_utils row">
                                         <div class="btn-group-vertical mx-auto my-2" >
                                         [%- search_ou = ctx.search_ou;
                                             num_holdable_copies = attrs.marc_xml.findnodes('//*[local-name()="holdings" and @has_holdable="true"]').size || 0;
@@ -358,15 +358,15 @@
                                             del_parms = del_parms.merge(['query', 'bool', 'qtype', 'contains', '_adv']);
                                             add_parms.import({query => ctx.naive_query_scrub(ctx.user_query)});
                                         END; %]
-                                        
+
 
 
                                         <!--Place Hold Button -->
                                         <div class="btn btn-action text-left">
-                                                <a href="[% mkurl(ctx.opac_root _ '/place_hold', add_parms, del_parms) %]" 
+                                                <a href="[% mkurl(ctx.opac_root _ '/place_hold', add_parms, del_parms) %]"
                                                     [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
                                                     class="no-dec" rel="nofollow" vocab="">
-                                                    <i class="fas fa-check"></i>
+                                                    <i class="fas fa-check" aria-hidden="true"></i>
                                                     <span class="result_place_hold">[% l('Place Hold') %]</span>
                                                 </a>
                                         </div>
@@ -379,14 +379,14 @@
                                                 {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'},
                                                 ['query','tag','subfield','term','_special','sort','page']) %]"
                                                 [% html_text_attr('title', l('Check Out [_1]', attrs.title)) %]
-                                                    class="no-dec" rel="nofollow" vocab=""><i class="fas fa-atlas"></i><span class="result_place_hold">[% l('Check Out E-Item') %]</span></a>
+                                                    class="no-dec" rel="nofollow" vocab=""><i class="fas fa-atlas" aria-hidden="true"></i> <span class="result_place_hold">[% l('Check Out E-Item') %]</span></a>
                                         </div>
                                         <div class="btn btn-action text-left">
                                             <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
                                                 {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'},
                                                 ['query','tag','subfield','term','_special','sort','page']) %]"
                                                 [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
-                                                    class="no-dec btn btn-primary btn-sm" rel="nofollow" vocab=""><i class="fas fa-book-reader"></i><span class="result_place_hold">[% l('Place Hold on E-Item') %]</span></a>
+                                                    class="no-dec" rel="nofollow" vocab=""><i class="fas fa-book-reader" aria-hidden="true"></i> <span class="result_place_hold">[% l('Place Hold on E-Item') %]</span></a>
                                         </div>
                                         [%- END -%]
 
@@ -404,15 +404,15 @@
                                                     data-recid="[% rec.id %]" data-action="add"
                                                     class="mylist_action [% IF ctx.mylist.grep('^' _ rec.id _ '$').size %]hidden[% END %]"
                                                     title="[% l("Add [_1] to basket", attrs.title) %]" rel="nofollow" vocab="">
-                                                    <i class="fas fa-shopping-basket"></i>
+                                                    <i class="fas fa-shopping-basket" aria-hidden="true"></i>
                                                     [% l("Add to basket") %]
                                                 </a>
-                                                
+
                                                 <a href="[% delhref %]" id="mylist_delete_[% rec.id %]"
                                                     data-recid="[% rec.id %]" data-action="delete"
                                                     class="mylist_action text-left [% IF !ctx.mylist.grep('^' _ rec.id _ '$').size %]hidden[% END %]"
                                                     title="[% l("Remove [_1] from basket", attrs.title) %]" rel="nofollow" vocab="">
-                                                    <i class="fas fa-minus-circle"></i>
+                                                    <i class="fas fa-minus-circle" aria-hidden="true"></i>
                                                     [% l("Remove from basket") %]
                                                 </a>
                                                 </div>
@@ -427,12 +427,12 @@
                                         [% IF ENV.OILS_CONTENT_CAFE_USER %]
                                         [% ident = attrs.isbn_clean || attrs.upc %]
                                             <div type="button" class="btn btn-action">
-                                                <a target='_blank' 
+                                                <a target='_blank'
                                                     [% html_text_attr('title', l('Reviews and More for [_1]', attrs.title)) %]
-                                                    href="[% ctx.ext_proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 
+                                                    href="[% ctx.ext_proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%-
                                                         ENV.OILS_CONTENT_CAFE_USER %]&amp;Password=[%-
                                                         ENV.OILS_CONTENT_CAFE_PASS %]&amp;ItemKey=[% ident | uri %]&amp;Options=Y" rel="nofollow" vocab="">
-                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star" aria-hidden="true"></i>
                                                     <span class="results_reviews">[% l('Reviews &amp; More') %]</span>
                                                 </a>
                                             </div>
@@ -440,18 +440,18 @@
                                         </div>
                                         </div>
                                     </div>
-                                </dRecord>
+                                </div>
                             </div></div>
-                      
+
                 [%- IF ENV.OILS_CHILIFRESH_ACCOUNT %]
-               
+
                         <span class="chili_review" id="isbn_[% attrs.isbn_clean | html %]"> </span>
-                   
+
                         <div id="chili_review_[% attrs.isbn_clean | html %]" style="display: none;" align="center"></div>
-                    
+
                 [%- END %]
                     [% END %]
-           
+
     </div>
 
 

@@ -7,7 +7,7 @@
     parent="holds";
     limit = (ctx.holds_limit.defined) ? ctx.holds_limit : 0;
     offset = (ctx.holds_offset.defined) ? ctx.holds_offset : 0;
-    count = (ctx.holds_ids.size.defined) ? ctx.holds_ids.size : 0; 
+    count = (ctx.holds_ids.size.defined) ? ctx.holds_ids.size : 0;
 %]
 <h3> [%  IF CGI.param("available");
                     l("Items Ready for Pickup");
@@ -20,11 +20,11 @@
     <form method="post">
           <div class="row">
             <div class="col-4 text-left">
-                
+
                     <div>
-            <button name="action" class="btn btn-action my-2" id="suspend" value="suspend" type="submit"><i class="fas fa-hand-paper"></i> [% l("Suspend") %]</button>
-            <button name="action" class="btn btn-opac my-2" id="activate" value="activate" type="submit"><i class="fas fa-play"></i> [% l("Activate") %] </button>
-            <button name="action" class="btn btn-danger my-2" id="cancel" value="cancel" type="submit" onclick="return confirm('[% l("Are you sure you wish to cancel the selected hold(s)?") %]');"><i class="fas fa-ban"></i> [% l("Cancel") %]</button>
+            <button name="action" class="btn btn-action my-2" id="suspend" value="suspend" type="submit"><i class="fas fa-hand-paper" aria-hidden="true"></i> [% l("Suspend") %]</button>
+            <button name="action" class="btn btn-opac my-2" id="activate" value="activate" type="submit"><i class="fas fa-play" aria-hidden="true"></i> [% l("Activate") %] </button>
+            <button name="action" class="btn btn-danger my-2" id="cancel" value="cancel" type="submit" onclick="return confirm('[% l("Are you sure you wish to cancel the selected hold(s)?") %]');"><i class="fas fa-ban" aria-hidden="true"></i> [% l("Cancel") %]</button>
                  <p class="my-2">
                     [% IF CGI.param("available") -%]
                     <a href="[% mkurl('holds', {}, ['limit','offset','available']) %]">[% l('Show all holds') %]</a> |
@@ -34,11 +34,11 @@
                     <a href="[% mkurl('holds',{available => 1},['limit','offset']) %]">[% l("Show only available holds") %]</a>
                     [% END -%]
                      <span title="This option will show all items available for pickup." data-toggle="tooltip">
-                        <i class="fas fa-question-circle"></i>
+                        <i class="fas fa-question-circle" aria-hidden="true"></i>
                     </span>
                </p>
-                
-          </div>       
+
+          </div>
             </div>
             <div class="col-8">
              [% IF offset != 0 %]<a href='[% mkurl('holds', {limit => limit,offset => (offset - limit)}) %]'
@@ -53,30 +53,30 @@
                 <span style="padding-left:5px;" class='error'>
                     [%  IF ctx.hold_suspend_post_capture; l('One or more holds could not be suspended because the item is at (or en route to) the pickup library.'); END; %]
                 </span>
-            
-              
+
+
                 [% IF count > limit + offset %]<a href='[% mkurl('holds', {limit => limit, offset => (offset + limit)}) %]'
                   ><span class="np_nav_link classic_link btn btn-action">[% l('Next') %]&#9658;</span></a>[% END %]
-           
-              
+
+
             </div>
 
-            
+
           </div>
-            
+
         [% IF ctx.holds.size && ctx.holds.size < 1 %]
         <div class="warning_box">[% l('No holds found.') %]</div>
         [% ELSE %]
         <div class="d-block d-md-none">
             <input id="check_all_holds" aria-label="[% l('Select All Items') %]" checked="checked" type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'hold_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
 
-            <label for="check_all_holds">[% l('Check/Uncheck All') %]</label>  
-        </div> 
+            <label for="check_all_holds">[% l('Check/Uncheck All') %]</label>
+        </div>
         <table title="[% l('Items on Hold') %]"
         class="table table-hover table-bordered miniTable activeHoldstable w-100 my-3">
             <thead>
             <tr>
-                <td class="checkCell"> 
+                <td class="checkCell">
                     <input type="checkbox" aria-label="[% l('Select All Holds') %]"
                       onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'hold_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
                 </td>
@@ -95,8 +95,8 @@
                 [%# Copy the ctx.holds into a local array, then add a SORT field
                     that contains the value to sort on.  Since we need the item attrs,
                     invoke it and save the result in ATTRS.
-		%]
-		[% 
+        %]
+        [%
                 hold_items = ctx.holds;
 
                 sort_field = CGI.param('sort');
@@ -115,7 +115,7 @@
 
                        CASE "format";
                           hold.SORTING = hold.ATTRS.format_label;
-                       
+
                        CASE;
                           sort_field = "";
                     END; # SWITCH
@@ -128,20 +128,20 @@
                 END;
 
                 # Apply sorting to hold_items
-	        IF (sort_field != "");
-		    hold_items = hold_items.sort("SORTING");
+            IF (sort_field != "");
+            hold_items = hold_items.sort("SORTING");
                     IF (CGI.param("sort_type") == "desc");
                         hold_items = hold_items.reverse;
                     END;
 
-                    # Shorten the hold_items list per offset/limit/count 
+                    # Shorten the hold_items list per offset/limit/count
                     hi = offset + limit - 1;
                     hi = hi > hold_items.max ? hold_items.max : hi;
 
                     hold_items = hold_items.slice(offset, hi);
                 END;
 
-		# hold_items list is now sorted.  Traverse and dump the information.
+        # hold_items list is now sorted.  Traverse and dump the information.
                 cnt = 0;
                 FOR hold IN hold_items;
                     ahr = hold.hold.hold;
@@ -151,18 +151,18 @@
                     <td class="checkbox_column">
 
                     <span class="sr-only">Hold Number [%  cnt; %]</span>
-                        <input type="checkbox" name="hold_id" value="[% ahr.id %]" 
-                         aria-label="Select Hold"/>
+                        <input type="checkbox" name="hold_id" value="[% ahr.id %]"
+                            [% html_text_attr('title', l('Select hold [_1]', attrs.title)) %]/>
                     </td>
                     <td>
                     <span class="sr-only">Title</span>
                         <div>
                             [% title = hold.ATTRS.title;
                             IF ahr.hold_type == 'P';
-                    	        title = l('[_1] ([_2])', title, hold.hold.part.label);
+                                title = l('[_1] ([_2])', title, hold.hold.part.label);
                             END; %]
 
-                            <a href="[% mkurl(ctx.opac_root _ '/record/' _ 
+                            <a href="[% mkurl(ctx.opac_root _ '/record/' _
                                 hold.hold.bre_id, {}, 1) %]"><span[%- deemphasize_class -%]>
                                 [%- title.substr(0,hold.ATTRS.nonfiling_characters) | html %]</span>
                                 [%- title.substr(hold.ATTRS.nonfiling_characters)   | html %]</a>
@@ -180,7 +180,7 @@
                     <td>
                     <span class="sr-only">Format</span>
                         <div class="format_icon">
-                          [% 
+                          [%
                             formats = hold.ATTRS.all_formats;
                             IF ahr.hold_type == 'M';
                               # only show selected formats for metarecords
@@ -193,10 +193,11 @@
                                 formats.push(format);
                               END;
                             END;
-                            FOR format IN formats 
+                            FOR format IN formats
                           %]
                           <span class="sr-only">[% format.label | html %]</span>
-                            <img alt="[% format.label | html %]" src="[% format.icon %][% ctx.cache_key %]" />
+                            <img title="[% format.label | html %]"
+                              alt="[% format.label | html %]" src="[% format.icon %][% ctx.cache_key %]" />
                             [% END %]
                         </div>
                     </td>
@@ -231,7 +232,7 @@
                     <td class="fullRow">
                         <a class="btn btn-confirm btn-sm" href="[% mkurl(ctx.opac_root _ '/myopac/holds/edit', {hid => ahr.id}) %]"
                             [% html_text_attr('title', l('Edit hold for item [_1]', attrs.title)) %]>
-                            <i class="fas fa-edit"></i>
+                            <i class="fas fa-edit" aria-hidden="true"></i>
                             [% l('Edit') %]
                         </a>
                     </td>
@@ -241,6 +242,6 @@
         </table>
         [% END %]
         </form>
-    </div> 
+    </div>
 </div>
 [% END %]

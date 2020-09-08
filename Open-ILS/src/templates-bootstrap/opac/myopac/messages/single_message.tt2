@@ -7,17 +7,17 @@
             <input type="hidden" name="limit" value="[% limit %]" />
             <span>
                 <a href="[% mkurl('messages', {}, ['single', 'message_id']) %]" class="btn btn-action m-1">
-                <i class="fas fa-arrow-circle-left"></i>
+                <i class="fas fa-arrow-circle-left" aria-hidden="true"></i>
                 [% l('Return to Message List') %]
                 </a>
-                
+
                 <button type="submit" name="action" value="mark_unread" class="btn btn-opac m-1">
-                   <i class="fas fa-eye-slash"></i>
+                   <i class="fas fa-eye-slash" aria-hidden="true"></i>
                     [% l('Mark Unread') %]
                 </button>
-                <button type="submit" name="action" value="mark_deleted" class="btn btn-danger m-1"
+                <button type="submit" name="action" value="mark_deleted" class="btn btn-deny m-1"
                     onclick="return confirm('[% l("Are you sure you wish to permanently delete this message?") %]')">
-                    <i class="fas fa-trash-alt"></i>
+                    <i class="fas fa-trash-alt" aria-hidden="true"></i>
                     [% l('Delete') %]
                 </button>
             </span>

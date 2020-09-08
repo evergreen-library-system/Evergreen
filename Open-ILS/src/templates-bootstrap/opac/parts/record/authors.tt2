@@ -1,23 +1,23 @@
-[%-  
+[%-
 
 PROCESS "opac/parts/relators.tt2";
 
 author_cnt = 0;
 authors = [
     {
-        type => 'author', 
+        type => 'author',
         label => l('Author'),
         xpath => '//*[@tag="100"]|//*[@tag="110"]|//*[@tag="111"]'
     }, {
-        type => 'added', 
+        type => 'added',
         label => l('Added Author'),
         xpath => '//*[@tag="700"]|//*[@tag="710"]|//*[@tag="711"]'
     }, {
-        type => 'cast', 
+        type => 'cast',
         label => l('Cast'),
         xpath => '//*[@tag="511"][@ind1="1"]'
     }, {
-        type => 'notes', 
+        type => 'notes',
         label => l('Author Notes: '),
         xpath => '' # Comes from added content...
     }
@@ -111,10 +111,10 @@ BLOCK build_author_links;
             END;
         END;
         url = mkurl(ctx.opac_root _ '/results', {query => qterm.replace('^\s*(.*?)\s*$', '$1'), qtype => 'author'}, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms));
-	tlabel = tlabels.join(', ');
-	tlabels = [];
+    tlabel = tlabels.join(', ');
+    tlabels = [];
         author_type = (tlabel || label) | html;
-        
+
         # schema.org changes
         IF type == 'author';
             IF tag.substr(1,2) == '10' && args.schema.itemtype && args.schema.itemtype.match('MusicAlbum');
@@ -180,7 +180,7 @@ END;
 
 <div class='rdetail_authors_div'>
 [%- FOREACH author IN authors;
-    NEXT UNLESS author.xpath; 
+    NEXT UNLESS author.xpath;
     authlist = [];
     PROCESS build_author_links(
         xpath=author.xpath, label=author.label, type=author.type

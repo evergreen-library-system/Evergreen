@@ -1,6 +1,6 @@
-<div class='rdetail_extras_div'> 
+<div class='rdetail_extras_div'>
 
-[% 
+[%
     ac_types = {
         reviews => l('Reviews'),
         anotes  => l('Author Notes'),
@@ -10,19 +10,19 @@
     };
 
     selected_type = CGI.param('ac');
-    
+
     # For each type of added content, render the link if it's known to have
-    # content, do not render the link if it's known to not have content.  If 
+    # content, do not render the link if it's known to not have content.  If
     # the content status is unknown, render the link, but hide the link via CSS
     # if dojo is enabled.  If dojo is not enabled, render and display the link.
 %]
 
     <div id='ac_tab_wrapper'>
-    [% 
+    [%
         all_hidden = 1;
         FOR type IN ac_types.keys;
             tab_class = 'ac_tab';
-            SET tab_class = tab_class _ ' ac_tab_selected' IF type == selected_type; 
+            SET tab_class = tab_class _ ' ac_tab_selected' IF type == selected_type;
             IF ctx.added_content.$type.status != '2'; # no content
                 all_hidden = 0;
                 IF ctx.added_content.$type.status == '3' AND want_dojo; # status unknown
@@ -37,8 +37,8 @@
     </div>
 
     <div id='ac_content'>
-        [% 
-            IF selected_type; 
+        [%
+            IF selected_type;
                 content = ctx.added_content.$selected_type.content;
                 IF content;
                     content;

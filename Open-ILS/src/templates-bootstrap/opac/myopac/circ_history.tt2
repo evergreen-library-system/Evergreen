@@ -21,19 +21,19 @@
     END;
     %]
 <div>
-   
+
 
     [% IF ctx.circs.size < 1 %]
     <div class="warning_box">[% l('There are no items in your circulation history.') %]</div>
     [% ELSE %]
 
         <form method="post" id="circ-form">
-            
+
         <div class="row">
         <div class="col-3 text-left">[% IF offset != 0 %]<a href='[% mkurl('circ_history', {limit => limit, offset => (offset - limit)}) %]'
                  class="btn btn-action mr-3" ><span class="nav_arrow_fix">&#9668;</span>[% l('Previous') %]</a>[% END %]
-                 <button name="action" class="btn btn-danger my-2" id="delete" value="delete" type="submit" onclick="return confirm('[% l("Are you sure you wish to delete the selected item(s)?") %]');">
-            <i class="fas fa-trash-alt"></i> Delete Selected</button>
+                 <button name="action" class="btn btn-deny my-2" id="delete" value="delete" type="submit" onclick="return confirm('[% l("Are you sure you wish to delete the selected item(s)?") %]');">
+            <i class="fas fa-trash-alt" aria-hidden="true"></i> Delete Selected</button>
             </div>
         <div class="col-6 text-center"></div>
         <div class="col-3 text-right">[% IF !no_next %]<a href='[% mkurl('circ_history', {limit => limit, offset => (offset + limit)}) %]'
@@ -41,12 +41,12 @@
     </div>
     <div id='checked_main'>
      <div class="d-block d-md-none">
-          
+
 
             <input id="check_all_circ_hist" checked="checked" type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ_id' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
 
-            <label for="check_all_circ_hist">[% l('Check/Uncheck All') %]</label>  
-        </div>       
+            <label for="check_all_circ_hist">[% l('Check/Uncheck All') %]</label>
+        </div>
         <table title="[% l('History of Items Checked Out') %]" id="acct_checked_hist_header" class="table table-hover table-bordered miniTable circHistTable my-3">
             <thead>
                 <tr>
@@ -161,10 +161,10 @@
                                     date.format(ctx.parse_datetime(circ.circ.checkin_time),DATE_FORMAT);
                                 ELSE; %]
                                 <span style='color:blue;'>Not Returned</span><!-- meh -->
-                            [% END; %]
+                            [% END %]
                         </td>
                         <td>[% circ.circ.target_copy.barcode | html %]</td>
-                        
+
                     </tr>
                 [% END %]
             </tbody>
@@ -176,7 +176,7 @@
                     [%- INCLUDE "opac/parts/preserve_params.tt2" %]
                     [% IF ctx.circs.size > 0 %]
                     <input type="hidden" name="filename" value="[% l('circ_history.csv') %]"/>
-                    <button type="submit" class="btn btn-action"><i class="fas fa-file-download"></i> [% l('Download CSV') %]</button>
+                    <button type="submit" class="btn btn-action"><i class="fas fa-file-download" aria-hidden="true"></i> [% l('Download CSV') %]</button>
                     [% END %]
                 </div>
             </form>

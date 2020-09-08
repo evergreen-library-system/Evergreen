@@ -29,7 +29,7 @@
                                     ctx.user_setting_map.$setting = 10;
                                 END;
                                 FOR val IN [10, 15, 20, 25] %]
-                                <option value='[% val | uri %]' 
+                                <option value='[% val | uri %]'
                                     [% IF ctx.user_setting_map.$setting == val %]
                                         selected='selected'[% END %]>[% val | html %]</option>
                             [% END %]
@@ -48,7 +48,7 @@
                                     ctx.user_setting_map.$setting = 10;
                                 END;
                                 FOR val IN [10, 15, 20, 25, 50] %]
-                                <option value='[% val | uri %]' 
+                                <option value='[% val | uri %]'
                                     [% IF ctx.user_setting_map.$setting == val %]
                                         selected='selected'[% END %]>[% val | html %]</option>
                             [% END %]
@@ -63,5 +63,5 @@
         <button type="submit" class="btn btn-confirm"><i class="fas fa-save"></i> [% l('Save') %]</button>
     </form>
     [% INCLUDE "opac/parts/myopac/prefs_hints.tt2" %]
-    
+
 [% END %]

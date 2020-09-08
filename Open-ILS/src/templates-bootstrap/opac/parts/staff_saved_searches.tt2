@@ -11,15 +11,15 @@
 
     <div id="collapseOne" class="collapse" aria-labelledby="headRecent" data-parent="#accordion">
       <div class="card-body">
-        	[% FOR s IN ctx.saved_searches %]
-        	<ul>
-            	<li><a href="[% ctx.opac_root %]/results?query=[% s | uri %]&amp;_adv=1">[% s | html %]</a></li>
-        	</ul>
+          [% FOR s IN ctx.saved_searches %]
+          <ul>
+              <li><a href="[% ctx.opac_root %]/results?query=[% s | uri %]&amp;_adv=1">[% s | html %]</a></li>
+          </ul>
             [% END %]
       </div>
     </div>
   </div>
 </div>
-  
-   
+
+
 [% END %]

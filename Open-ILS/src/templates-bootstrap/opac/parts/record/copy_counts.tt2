@@ -27,7 +27,7 @@
        title="[% l('Show copies at [_1]', ou_name) | html; %]">
        [%- l('(Show)'); %]</a>
     [%- END; %]
-    </li> 
+    </li>
     [%- depth = depth + 1;
         END;
 

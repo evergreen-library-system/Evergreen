@@ -42,7 +42,7 @@
     # mkurl('http://flarg.baz/squz', {foo => 'bar', boo => ['baz', 'faz']});
     #
     # New page, clear all existing params before applying new ones:
-    # mkurl('/fuz/buster', {foo => 'bar', boo => 'baz'}, 1); 
+    # mkurl('/fuz/buster', {foo => 'bar', boo => 'baz'}, 1);
     #
     # Current page, clear 'some_param' from the existing params:
     # mkurl('', {foo => 'bar', boo => 'baz'}, ['some_param']);
@@ -66,10 +66,10 @@
         cgi.delete('move_cart_by_default');
         cgi.delete('cart_none_selected');
         cgi.delete('list_none_selected');
-        
-        # x and y are artifacts of using <input type="image" /> tags 
+
+        # x and y are artifacts of using <input type="image" /> tags
         # instead of true submit buttons, and their values are never used.
-        cgi.delete('x', 'y'); 
+        cgi.delete('x', 'y');
 
         # apply user params
         FOR k IN params.keys;
@@ -144,10 +144,10 @@
     # the full HTML attribute key="value" is produced
     MACRO html_text_attr(name, value) BLOCK;
         IF value.length >= 75;
-            value = value.substr(71, value.length, '...');                        
-        END;                                                                   
-        value = value.replace('\s*$', ''); # remove trailing whitespace          
-        HTML.attributes($name => value); 
+            value = value.substr(71, value.length, '...');
+        END;
+        value = value.replace('\s*$', ''); # remove trailing whitespace
+        HTML.attributes($name => value);
     END;
 
     MACRO img_alt(text) BLOCK;

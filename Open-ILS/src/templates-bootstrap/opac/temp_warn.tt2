@@ -21,7 +21,7 @@
              <br />
              <input type="submit" class="fixed" value="[% l('OK') %]" />
              </form>
-            <div class="common-full-pad"></div>	
+            <div class="common-full-pad"></div>
         </div>
     </div>
 [%- END %]

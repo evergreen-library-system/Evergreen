@@ -1,6 +1,6 @@
 
 
-	
+
 <script  src="[% ctx.media_prefix %]/js/ui/default/opac/simple.js[% ctx.cache_key %]"></script>
 [% INCLUDE "opac/i18n_strings.tt2" %]
 
@@ -65,7 +65,7 @@
                 [% FOR summary IN ctx.mfhd_summaries %]
                     [% IF summary.sre_id != -1 %]
                 {
-                    'id' : '[% summary.sre_id %]', 
+                    'id' : '[% summary.sre_id %]',
                     'label' : '[% summary.location | replace("'", "\\'") %]',
                     'entryNum' : [% loop.index %],
                     'owning_lib' : '[% summary.owning_lib %]'
@@ -141,7 +141,7 @@
 
 [% INCLUDE "opac/parts/acjs.tt2" IF ctx.page == 'record' %]
 [% IF ctx.page == 'advanced' %]
-<script  
+<script
     src="[% ctx.media_prefix %]/js/ui/default/opac/copyloc.js[% ctx.cache_key %]"></script>
 [% END %]
 
@@ -180,10 +180,10 @@ var aou_hash = {
 
 <script src="[% ctx.media_prefix %]/js/bootstrap/popper.min.js"></script>
 
-<script src="[% ctx.media_prefix %]/js/bootstrap/bootstrap.min.js"></script>  
+<script src="[% ctx.media_prefix %]/js/bootstrap/bootstrap.min.js"></script>
 
 <script  src="[% ctx.media_prefix %]/js/datepicker/bootstrap-datepicker.js"></script>
- 
+
   <script>
     $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();

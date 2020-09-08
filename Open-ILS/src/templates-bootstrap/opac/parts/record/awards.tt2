@@ -1,7 +1,7 @@
-<div class='rdetail_extras_div'> 
+<div class='rdetail_extras_div'>
 
     <!-- Chilifresh patron reviews -->
-    [% IF ENV.OILS_CHILIFRESH_URL %] 
+    [% IF ENV.OILS_CHILIFRESH_URL %]
     <strong>[% l('Patron Reviews:') %]</strong>
     <div style="margin-bottom:20px;">
         <span class="chili_review" id="isbn_[% attrs.isbn_clean | html %]"> </span>
@@ -9,7 +9,7 @@
     </div>
     [% END %]
     <!-- Novelist suggestions-->
-    [% IF ENV.OILS_NOVELIST_URL %] 
+    [% IF ENV.OILS_NOVELIST_URL %]
         <div id='novelist-loading'>
         <h3 class="text-center">[% l('Loading Recommendations...') %]</h3>
             <div class="progress">
@@ -18,6 +18,6 @@
         </div>
         <div data-novelist-novelistselect="[% attrs.isbn_clean || attrs.upc %]"></div>
     [% END %]
-    
+
 </div>
 

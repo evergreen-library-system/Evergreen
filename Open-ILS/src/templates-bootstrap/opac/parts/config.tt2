@@ -196,7 +196,7 @@ ctx.google_books_preview = 0;
 #ctx.maintenance_message = "<b>This OPAC will be unavailable part of March 15, 2019 for planned upgrades.</b>";
 # Maintenance types follow Bootstrap4 alert options as follows
 # success = green; info = blue; warning = yellow; danger = red
-# Other colors would require re-coding the alert 
+# Other colors would require re-coding the alert
 #ctx.maintenance_type = l('warning');
 
 ##############################################################################
@@ -275,7 +275,7 @@ ctx.hide_badge_scores = 'false';
 ctx.max_cart_size = 500;
 
 ##############################################################################
-# Display booking reservations tab in myopac 
+# Display booking reservations tab in myopac
 ##############################################################################
 ctx.show_reservations_tab = 'false';
 

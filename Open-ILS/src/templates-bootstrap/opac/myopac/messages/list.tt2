@@ -4,12 +4,12 @@
 
 
 
-<ul class='start_end_links_span pagination d-inline-flex'>    
-            [% IF offset != 0 %]        
-            
+<ul class='start_end_links_span pagination d-inline-flex'>
+            [% IF offset != 0 %]
+
              <li class="page-item"> <a class='np_nav_link classic_link btn btn-action' title='[% l("Previous Page") %]'
             href='[% mkurl('messages', { limit => limit, offset => (offset - limit)} ) %]'><span class="nav_arrow_fix">&#9668;</span> <span class="d-none d-md-inline-block">[% l('Previous') %]</span></a></li>
-           [% END; %]
+           [% END %]
             [% IF offset > 0 || count > limit;
                 curpage = 0;
                 WHILE curpage * limit < count;
@@ -17,7 +17,7 @@
             %]
                         <li class="page-item active"><a href="[% mkurl('hold_history', {limit => limit, offset => (curpage * limit)}) %]"  class="results-paginator-selected btn page-link disabled">[% curpage + 1%]</a></li>
 
-            
+
                     [%- ELSE %]
             <li class="page-item"><a href="[% mkurl('messages', {limit => limit, offset => (curpage * limit)}) %]" class="btn page-link">[% curpage + 1%]</a></li>
 
@@ -28,11 +28,11 @@
             [% IF count >= limit + offset %]
             <li class="page-item"><a class='np_nav_link classic_link btn btn-action' title='[% l("Next Page") %]'
             href='[% mkurl('messages', {limit => limit, offset => (offset + limit)}) %]'><span class="d-none d-md-inline-block">[% l('Next') %]</span> <span class="nav_arrow_fix">&#9658;</span></a></li>
-        
-[% END; %]
+
+[% END %]
 </ul>
 
-      
+
     </div>
     [% IF ctx.message_update_action.defined %]
         [% IF ctx.message_update_changed > 0 %]
@@ -64,9 +64,9 @@
         <form method="post" id="messages-form"
          onsubmit="if (document.getElementById('acct_messages_actions').value == 'mark_deleted') { return confirm('[% l("Are you sure you wish to permanently delete the selected message(s)?") %]') } else { return true; }">
             <div class="my-2">
-                <button name="action" class="btn btn-action" value="mark_read" id="mark_read" type="submit"><i class="fas fa-glasses"></i> Mark Read</button>
-                <button name="action" class="btn btn-opac" value="mark_unread" id="mark_unread"  type="submit"><i class="fas fa-eye-slash"></i> Mark Unread</button>
-                <button name="action" class="btn btn-danger" value="mark_deleted" id="mark_deleted"  type="submit" onclick="return confirm('[% l("Are you sure you wish to permanently delete the selected message(s)?") %]')"><i class="fas fa-trash-alt"></i> Delete</button>
+                <button name="action" class="btn btn-action" value="mark_read" id="mark_read" type="submit"><i class="fas fa-glasses" aria-hidden="true"></i> Mark Read</button>
+                <button name="action" class="btn btn-opac" value="mark_unread" id="mark_unread"  type="submit"><i class="fas fa-eye-slash" aria-hidden="true"></i> Mark Unread</button>
+                <button name="action" class="btn btn-deny" value="mark_deleted" id="mark_deleted"  type="submit" onclick="return confirm('[% l("Are you sure you wish to permanently delete the selected message(s)?") %]')"><i class="fas fa-trash-alt" aria-hidden="true"></i> Delete</button>
             </div>
             [% IF count < 1 %]
             <div class="warning_box">[% l('No messages found.') %]</div>
@@ -74,9 +74,9 @@
              <div class="d-block d-md-none">
                 <input id="all_message_check" checked="checked"
                 type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'message_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"
-                aria-label="[% l('Check/Uncheck All') %]" />    
-                <label for="all_message_check">[% l('Check/Uncheck All') %]</label>  
-            </div>    
+                aria-label="[% l('Check/Uncheck All') %]" />
+                <label for="all_message_check">[% l('Check/Uncheck All') %]</label>
+            </div>
             <table id="acct_messages_main_header" title="[% l('Messages') %]"
                 class="table table-hover table-bordered miniTable messagesTable">
                 <thead>
@@ -113,7 +113,7 @@
                         </td>
                         <td>
                         <span class="sr-only">Message Options</span>
-                            <a class="btn btn-sm btn-action" href="[% mkurl('messages', { single => 1, message_id => message.id } ) %]" title="Read [% message.title | html %]"><i class="fas fa-glasses"></i> Read</a>
+                            <a class="btn btn-sm btn-action" href="[% mkurl('messages', { single => 1, message_id => message.id } ) %]" title="Read [% message.title | html %]"><i class="fas fa-glasses" aria-hidden="true"></i> Read</a>
                         </td>
                     </tr>
                 [% END %]

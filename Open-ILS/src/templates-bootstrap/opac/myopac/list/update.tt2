@@ -1,7 +1,7 @@
 [%  PROCESS "opac/parts/header.tt2";
     PROCESS "opac/parts/misc_util.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
-    myopac_page = "lists/update"  
+    myopac_page = "lists/update"
 %]
 
 <!-- we should never see this page on success -->
@@ -11,10 +11,10 @@
     <h3>[% l("Problem with list management:") %]</h3>
       <div>
         [% IF ctx.bucket_action == 'create' %]
-          [% IF ctx.bucket_failure_noname %]         
+          [% IF ctx.bucket_failure_noname %]
             <h4 class="text-danger">[% l('A list name is required') %]</h4>
-          [% END %]   
-        [% END %]   
+          [% END %]
+        [% END %]
       </div>
       <div>
         [% url = ctx.referer;

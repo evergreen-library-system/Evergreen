@@ -1,13 +1,12 @@
 [% IF ctx.search_result_index.defined && ctx.search_result_index >= 0 %]
-<div class="row pt-2">
-    
-    
+<div class="col pt-2">
+    <div class="row">
     <div class="col-3">
-    	<div>
+        <div>
         [%
             IF ctx.prev_search_record;
                 prev_args = {};
-                IF ctx.search_page > 0 AND 
+                IF ctx.search_page > 0 AND
                         ctx.search_result_index % ((ctx.page_size * ctx.search_page)) == 0; # first record in the page
                     prev_args.page = ctx.search_page - 1;
                 END;
@@ -17,29 +16,29 @@
             href='[% ctx.prev_rec_url %]'><span class="nav_arrow_fix">&#9668;</span> <span class="d-none d-md-inline-block">[% l('Previous') %]</span></a>
         [% END %]
         </div>
-	</div>
+    </div>
     <div class="col-6 text-center">
-    	<span>
-        	<a class="btn btn-confirm" href='[% mkurl(ctx.opac_root _ '/results', {}, stop_parms); %]#result[% ctx.bre_id %]'>[% l('Back To Results') %]</a>
-        	<!-- stash these in JS for the web staff client to find -->
-        	<script>
-            	window.search_result_hit_count = [% ctx.hit_count %];
-            	window.search_result_index = [% ctx.search_result_index %];
-        	</script>
-    	</span>
-        <br>
         <span>
-            	[% l('Showing Item [_1] of [_2]', ctx.search_result_index + 1, ctx.hit_count) %]
+            <a class="btn btn-confirm" href='[% mkurl(ctx.opac_root _ '/results', {}, stop_parms); %]#result[% ctx.bre_id %]'>[% l('Back To Results') %]</a>
+            <!-- stash these in JS for the web staff client to find -->
+            <script>
+                window.search_result_hit_count = [% ctx.hit_count %];
+                window.search_result_index = [% ctx.search_result_index %];
+            </script>
         </span>
         <br>
         <span>
-        	[%- INCLUDE "opac/parts/pref_lib_display.tt2" %]
+                [% l('Showing Item [_1] of [_2]', ctx.search_result_index + 1, ctx.hit_count) %]
         </span>
-        
+        <br>
+        <span>
+            [%- INCLUDE "opac/parts/pref_lib_display.tt2" %]
+        </span>
+
     </div>
     <div class="col-3 text-right">
-    	<div>
-        [% 
+        <div>
+        [%
             IF ctx.next_search_record;
                 next_args = {};
                 IF (ctx.page_size * (ctx.search_page + 1)) == ctx.search_result_index + 1;
@@ -50,7 +49,8 @@
         <a class='np_nav_link classic_link btn btn-action' title='[% l("Next Record") %]'
             href='[% ctx.next_rec_url %]'><span class="d-none d-md-inline-block">[% l('Next') %]</span> <span class="nav_arrow_fix">&#9658;</span></a>
         [% END %]
-		</div>
+        </div>
+    </div>
     </div>
 </div>
 [% END %]

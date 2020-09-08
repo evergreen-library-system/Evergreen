@@ -1,5 +1,5 @@
-[%- 
-    series_tags = ['440', '490', '800', '810', '811', '830', '694']; 
+[%-
+    series_tags = ['440', '490', '800', '810', '811', '830', '694'];
     loc = ctx.search_ou;
 
 BLOCK render_series;
@@ -8,7 +8,7 @@ BLOCK render_series;
     hl_field = attrs.hl_field;
         FOREACH s IN attrs.hl_display_fields.series_title;
             search_term = s.value.replace('[#"^$\+\-,\.:;&|\[\]()]', ' ').replace('\s+$', '') | html;
-    
+
             url = mkurl(ctx.opac_root _ '/results',
                 { qtype=>'series', query=>search_term }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms)
             );
@@ -34,7 +34,7 @@ BLOCK render_series;
                     single_term = subfield.textContent | html;
                     all_terms.push(subfield.textContent.replace('[#"^$\+\-,\.:;&|\[\]()]', ' '));
                     total_term = all_terms.join(" ").replace('\s+$', '');
-    
+
                     url = mkurl(ctx.opac_root _ '/results',
                         { qtype=>'series', query=>total_term }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms)
                     );
@@ -46,7 +46,7 @@ BLOCK render_series;
                 END;
                 results.push(series);
             END;
-        END; 
+        END;
     END;
     FOR entry IN results;
     -%]

@@ -1,6 +1,6 @@
 
-[%- 
-    # If caller passes a list of possible attribute types, 
+[%-
+    # If caller passes a list of possible attribute types,
     # search all until we find some values
 
     IF !attr.size; attr = [attr]; END;
@@ -12,7 +12,7 @@
     END;
     name = name || "fi:" _ attr_class;
     id = id || attr_class _ "_selector";
-    values = values || CGI.param(name); 
+    values = values || CGI.param(name);
     IF size AND size < 1; size = all_values.size; END;
 -%]
 
@@ -21,7 +21,7 @@
 [% IF none_ok %]
     <p value=''>[% none_label ? none_label : l('-- Any --') %]</p>
 [% END;
-# turn the list of objects into a list of hashes to 
+# turn the list of objects into a list of hashes to
 # leverage TT's array.sort('<hashkey>') behavior
 simple_sorter = [];
 sorter = [];
@@ -29,7 +29,7 @@ FOR o IN all_values;
     IF o.is_simple == 't';
         simple_sorter.push({code => o.code, value => (o.search_label ? o.search_label : o.value)});
     ELSE;
-        sorter.push({code => o.code, value  => (o.search_label ? o.search_label : o.value)}); 
+        sorter.push({code => o.code, value  => (o.search_label ? o.search_label : o.value)});
     END;
 END;%]
 <ul class="adv_filters">

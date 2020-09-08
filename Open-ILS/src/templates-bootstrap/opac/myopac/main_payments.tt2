@@ -18,26 +18,26 @@
             [% END %]
         </div>
         <div class="col-6">
-            
+
         </div>
-        <div class="col-3 text-right"> 
+        <div class="col-3 text-right">
         [% IF ctx.payments.size > limit %]
             <a href='main_payments?limit=[% limit %]&amp;offset=[% offset + limit %]'
                  ><span class="np_nav_link classic_link btn btn-action">[% l('Next') %] &#9658;</span>
                  </a>
                 [% END %]
-            
+
         </div>
     </div>
 
     [% IF ctx.payments.size %]
-    <table title="[% l('Payments') %]" 
+    <table title="[% l('Payments') %]"
         class='table table-hover table-bordered miniTable paymentTable'>
         <thead><tr>
             <th>[% l('Payment Date') %]</th>
             <th>[% l('Payment For') %]</th>
             <th>[% l('Amount') %]</th>
-            <th>[% l('Receipt') %]</th> 
+            <th>[% l('Receipt') %]</th>
         </tr></thead>
         <tbody>
             [% FOR payment IN ctx.payments %]
@@ -45,7 +45,7 @@
                 <td><span class="sr-only">Payment Date: </span>[% date.format(ctx.parse_datetime(payment.mp.payment_ts), DATE_FORMAT) %]</td>
                 <td>
                 <span class="sr-only">Payment For: </span>
-                [% 
+                [%
                     btype = payment.last_billing_type | html;
                     ptitle = payment.title | html;
                     (payment.xact_type == 'grocery') ? btype : ptitle

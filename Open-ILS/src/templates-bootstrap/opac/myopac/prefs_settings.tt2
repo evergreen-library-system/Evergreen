@@ -42,7 +42,7 @@
                                     ctx.user_setting_map.$setting = 10;
                                 END;
                                 FOR val IN [5, 8, 10, 15, 20, 25, 50] %]
-                                <option value='[% val | uri %]' 
+                                <option value='[% val | uri %]'
                                     [% IF ctx.user_setting_map.$setting == val %]
                                         selected='selected'[% END %]>[% val | html %]</option>
                             [% END %]
@@ -83,9 +83,9 @@
                     [% circ_name = l('Keep history of checked out items?') %]
                     <td><label for='[% setting %]'>[% circ_name%]</label></td>
                     <td>
-                        <input id='[% setting %]' name='[% setting %]' 
+                        <input id='[% setting %]' name='[% setting %]'
                             type="checkbox" title="[% circ_name %]"
-                            [% IF ctx.user_setting_map.$setting 
+                            [% IF ctx.user_setting_map.$setting
                               AND !ctx.clear_circ_history; %] checked='checked' [% END %]/>
                     </td>
                 </tr>
@@ -94,7 +94,7 @@
                     [% hold_name =  l('Keep history of holds?') %]
                     <td><label for='[% setting %]'>[% hold_name %]</label></td>
                     <td>
-                        <input id='[% setting %]' name='[% setting %]' 
+                        <input id='[% setting %]' name='[% setting %]'
                             type="checkbox" title="[% hold_name %]"
                             [% IF ctx.user_setting_map.$setting
                               AND !ctx.clear_hold_history; %] checked='checked' [% END %]/>
@@ -105,7 +105,7 @@
                     [% skip_warn =  l('Skip warning when adding to temporary book list?') %]
                     <td><label for='[% setting %]'>[% skip_warn %]</label></td>
                     <td>
-                        <input id='[% setting %]' name='[% setting %]' 
+                        <input id='[% setting %]' name='[% setting %]'
                             type="checkbox" title="[% skip_warn %]"
                             [% IF ctx.user_setting_map.$setting %] checked='checked' [% END %]/>
                     </td>
@@ -115,7 +115,7 @@
                     [% behind_desk = l('Pickup holds from behind the desk when possible?') %]
                     <td><label for='[% setting %]'>[% behind_desk %]</label></td>
                     <td>
-                        <input id='[% setting %]' name='[% setting %]' 
+                        <input id='[% setting %]' name='[% setting %]'
                             type="checkbox" title="[% behind_desk %]"
                             [% IF ctx.user_setting_map.$setting %] checked='checked' [% END %]/>
                     </td>
@@ -131,7 +131,7 @@
                             <input type="hidden" name="waiver_id" value="[% waiver.id %]"/>
                             [% l('Name:') %] <input type="textbox" name="waiver_name_[% waiver.id %]" value="[% waiver.name | html %]"/><br/>
                             <label>
-                                <input type="checkbox" name="waiver_place_holds" 
+                                <input type="checkbox" name="waiver_place_holds"
                                     value="[% waiver.id %]" [% waiver.place_holds == 't' ? 'checked="checked"' : '' %]/>
                                 [% l('Place Holds') %]
                             </label>

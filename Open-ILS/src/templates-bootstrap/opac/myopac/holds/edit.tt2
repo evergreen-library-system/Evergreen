@@ -27,7 +27,7 @@
         [%  IF hold; title = attrs.title;
                 IF ahr.hold_type == 'P';
                     title = l('[_1] ([_2])', title, hold.hold.part.label);
-                END 
+                END
         %]
         <div class="my-4">
             <h1>[% title | html %]</h1>
@@ -47,28 +47,28 @@
                             <input type="hidden" name="hold_id"
                                 value="[% ahr.id %]" />
                             [% l('Pickup library') %]
-                       
+
                             [% INCLUDE build_org_selector
-                                name='pickup_lib' value=ahr.pickup_lib 
+                                name='pickup_lib' value=ahr.pickup_lib
                                 can_have_vols_only=1 hold_pickup_lib=1 %]
             </div>
             <div class="col-12">
             [% IF hold.hold.status < 3 OR hold.hold.status == 7 %]
-                    [%# The following actions cannot be performed on holds that 
+                    [%# The following actions cannot be performed on holds that
                         have already been captured... %]
-                  
+
                             [% l('Cancel unless filled by') %]
-                      
+
                             <div class="input-group date" data-provide="datepicker">
                                 <input type="text" class="form-control" name="expire_time"  value="[% expire_time | html %]" data-date-format="mm/dd/yyyy">
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-th"></span>
                                 </div>
                             </div>
-                           
-                       
+
+
                             [% l('Active?') %]
-                       
+
                             <select class="form-control" name="frozen">
                                 <option value="f"[% ahr.frozen == 't' ? '' :' selected="selected"' %]>
                                     [% l('Yes, this hold is active now') %]
@@ -77,25 +77,25 @@
                                     [% l('No, this hold is suspended') %]
                                 </option>
                             </select>
-                        
+
                             [% l('If suspended, activate on') %]
-                       
+
                          <div class="input-group date" data-provide="datepicker">
                                 <input type="text" class="form-control" name="thaw_date" id="datepicker" value="[% thaw_date | html %]" data-date-format="mm/dd/yyyy">
                                 <div class="input-group-addon">
                                     <span class="glyphicon glyphicon-th"></span>
                                 </div>
                             </div>
-                           
-                       
+
+
                     [% END %]
-                      
+
             </div>
             <div class="col-12">
-               
+
                     [% IF hold.metarecord_filters.formats.size OR
                         (hold.metarecord_filters.langs.size.defined && hold.metarecord_filters.langs.size > 1);
-                            PROCESS metarecord_hold_filters_selector 
+                            PROCESS metarecord_hold_filters_selector
                                 hold_data=hold; END %]
             </div>
              <div class="col-12">

@@ -12,7 +12,7 @@
         [%- NEXT IF param.key == 'set_eg_locale'; -%]
         <input type="hidden" name="[% param.key | html %]" value="[% param.value | html %]" />
     [%- END; -%]
-   
+
     <select id="locale_picker" name="set_eg_locale" class="form-control form-control-sm col-6">
     [%- FOREACH locale IN ctx.locales.keys %]
         [%- IF set_locale == locale;
@@ -25,7 +25,7 @@
     [%- END %]
     </select>
     <div class="col-3">
-     <button type="submit" class="btn btn-sm btn-confirm float-right"><i class="fas fa-save"></i>[% l(" Save Changes") %]</button>
+     <button type="submit" class="btn btn-sm btn-confirm float-right"/><i class="fas fa-save" aria-hidden="true"></i>[% l(" Save Changes") %]</button>
     </div>
 </form>
 [%- END %]

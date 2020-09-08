@@ -65,7 +65,7 @@ IF has_copies or ctx.foreign_copies;
         <ul><li>
             <span class="bib_peer_type">[% bib.peer_type.name | html %]</span>:
             <a href="[% mkurl(ctx.opac_root _ '/record/' _ bib.target_copy.call_number.record) %]">
-                <span class="bib_peer_title">[% peer.title | html %]</span> / 
+                <span class="bib_peer_title">[% peer.title | html %]</span> /
                 <span class="bib_peer_author">[% peer.author | html %]</span>
             </a>
         </li></ul>
@@ -104,8 +104,8 @@ END; # FOREACH bib
                 <link property="businessFunction" href="http://purl.org/goodrelations/v1#LeaseOut">
                 <meta property="price" content="0.00">
             </td>[% END %]
-            <td><span property="sku">[% callnum | html %]</span> [% IF ctx.get_org_setting(CGI.param('loc') 
-                OR ctx.aou_tree.id, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn', 
+            <td><span property="sku">[% callnum | html %]</span> [% IF ctx.get_org_setting(CGI.param('loc')
+                OR ctx.aou_tree.id, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn',
                {copy_id => copy_info.id}) %];rec=[%- ctx.bre_id -%]" rel="nofollow" vocab="">Text</a>)[% END %]</td>
             [%- IF has_parts == 'true' %]
             <td>[% copy_info.part_label | html %]</td>
@@ -115,7 +115,7 @@ END; # FOREACH bib
                 [% IF ctx.is_staff %]
                   [%- IF ctx.is_browser_staff %]
                     <a target="_blank" href="[% ctx.base_path %]/staff/cat/item/[% copy_info.id %]">[% l('view') %]</a>
-                    [% IF ctx.has_perm('UPDATE_COPY', copy_info.circ_lib) 
+                    [% IF ctx.has_perm('UPDATE_COPY', copy_info.circ_lib)
                         OR ctx.has_perm('UPDATE_COPY', copy_info.call_number_owning_lib) %]
                         <span> | </span>
                         <a target="_blank" href="[% ctx.base_path %]/staff/cat/item/[% copy_info.id %]/edit">[% l('edit') %]</a>
@@ -124,10 +124,10 @@ END; # FOREACH bib
                     <a onclick="xulG.new_tab(xulG.urls.XUL_COPY_STATUS, {}, {'from_item_details_new': true, 'barcodes': ['[%- copy_info.barcode | html | replace('\'', '\\\'') -%]']})"
                         href="javascript:;">[% l('view') %]</a>
                     [%# if the user can edit copies, show the copy edit link %]
-                    [% IF ctx.has_perm('UPDATE_COPY', copy_info.circ_lib) 
+                    [% IF ctx.has_perm('UPDATE_COPY', copy_info.circ_lib)
                         OR ctx.has_perm('UPDATE_COPY', copy_info.call_number_owning_lib) %]
                         <span> | </span>
-                        <a href="javascript:;" 
+                        <a href="javascript:;"
                             onclick="xulG.volume_item_creator({copy_id : [% copy_info.id %]})">
                             [% l(' edit') %]
                         </a>
@@ -145,13 +145,13 @@ END; # FOREACH bib
                 [% copy_info.age_protect ?
                     ctx.get_crahp(copy_info.age_protect).name : l('None') | html %]
             </td>
-            <td>[% 
+            <td>[%
                 IF ctx.get_org_setting(copy_info.circ_lib, 'circ.holds.age_protect.active_date') == 1;
                     disp_date = copy_info.active_date ? copy_info.active_date : copy_info.create_date;
                 ELSE;
                     disp_date = copy_info.create_date;
                 END;
-	    
+
                 IF disp_date;
                     date.format(
                         ctx.parse_datetime(disp_date),
@@ -175,7 +175,7 @@ END; # FOREACH bib
                     param_sep = l(" / ");
 
                     # Only staff get to place copy or volume holds
-                    IF ctx.is_staff; 
+                    IF ctx.is_staff;
                         hold_link = '<a href="' _
                             mkurl(ctx.opac_root _ '/place_hold', {
                                 hold_target => copy_info.id,
@@ -183,7 +183,7 @@ END; # FOREACH bib
                                 hold_source_page => mkurl()
                             }) _ '">' _ l('Copy hold') _ '</a>';
                         IF copy_info.call_number != last_cn;
-                            last_cn = copy_info.call_number; 
+                            last_cn = copy_info.call_number;
                             hold_link = hold_link _ param_sep;
                             hold_link = hold_link _ '<a href="' _
                                 mkurl(ctx.opac_root _ '/place_hold', {
@@ -195,8 +195,8 @@ END; # FOREACH bib
                         IF serial_holdings;
                             hold_link = hold_link _ param_sep;
                         END;
-                    END; 
-                    IF serial_holdings; 
+                    END;
+                    IF serial_holdings;
                         hold_link = hold_link _
                             '<a class="rdetail-issue-place-hold" href="' _
                             mkurl(ctx.opac_root _ '/place_hold', {
@@ -204,10 +204,10 @@ END; # FOREACH bib
                                 hold_type => 'I',
                                 hold_source_page => mkurl()
                             }) _ '" rel="nofollow" vocab="">' _ l('Issue hold') _ '</a>';
-                    END; 
+                    END;
 
                     hold_link;
-                ELSE; 
+                ELSE;
                     l("Not holdable");
                 END %]</td>
             [%- END %]
@@ -274,46 +274,44 @@ END; # FOREACH bib
 
 [%- END; # FOR copy_info
 %]
-		[%- IF ctx.copy_offset > 0 AND NOT serial_holdings;
-            new_offset = ctx.copy_offset - ctx.copy_limit; 
+        [%- IF ctx.copy_offset > 0 AND NOT serial_holdings;
+            new_offset = ctx.copy_offset - ctx.copy_limit;
             IF new_offset < 0; new_offset = 0; END %]
         [%- IF copies.size >= ctx.copy_limit AND NOT serial_holdings AND (ctx.copy_offset + ctx.copy_limit < total_copies) %]
-        	<tr class="offset">
-        	[%- IF ctx.copy_offset > 0 AND NOT serial_holdings;
-            	new_offset = ctx.copy_offset - ctx.copy_limit;
-            	IF new_offset < 0; new_offset = 0; END %]
-            	<td>
+            <tr class="offset">
+            [%- IF ctx.copy_offset > 0 AND NOT serial_holdings;
+                new_offset = ctx.copy_offset - ctx.copy_limit;
+                IF new_offset < 0; new_offset = 0; END %]
+                <td>
                 <a href="[% mkurl('', {copy_offset => new_offset, copy_limit => ctx.copy_limit}) %]">&laquo; [%
                     l('Previous [_1]', ctx.copy_offset - new_offset) %]</a>
-            	</td>
-        	[%- END %]
-        	[%- IF copies.size >= ctx.copy_limit AND NOT serial_holdings AND (ctx.copy_offset + ctx.copy_limit < total_copies) %]
-            	<td>
-                	<a href="[% mkurl('', {copy_offset => ctx.copy_offset + ctx.copy_limit, copy_limit => ctx.copy_limit}) %]">[%
+                </td>
+            [%- END %]
+            [%- IF copies.size >= ctx.copy_limit AND NOT serial_holdings AND (ctx.copy_offset + ctx.copy_limit < total_copies) %]
+                <td>
+                    <a href="[% mkurl('', {copy_offset => ctx.copy_offset + ctx.copy_limit, copy_limit => ctx.copy_limit}) %]">[%
                     l('Next [_1]', ctx.copy_limit) %] &raquo;</a>
-            	</td>
-        	[%- END %]
+                </td>
+            [%- END %]
             </tr>
         [%- END %]
         [%- END %]
         [% IF NOT serial_holdings && ctx.copy_limit < total_copies -%]
-        	<tr class="not_serial">
-            	<td>
-                	[%- more_copies_limit = 50 %] [%# TODO: config %]
-                	[%- IF  ctx.copy_limit != more_copies_limit AND copies.size >= ctx.copy_limit AND ctx.copy_limit < total_copies %]
-                    	<div class="rdetail_show_copies">
-                        	<img src="[% ctx.media_prefix %]/images/plus_sign.png[% ctx.cache_key %]" alt="[% l('Show more copies icon') %]"/>
-                        	<a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]">[% l('Show more copies') %]</a>
-                    	</div>
-                	[%- ELSIF ctx.copy_limit == more_copies_limit %]
-                    	<div  class="rdetail_show_copies">
-                        	<img src="[% ctx.media_prefix %]/images/minus_sign.png[% ctx.cache_key %]" alt="[% l('Show fewer copies icon') %]"/>
-                        	<a href="[% mkurl('', {copy_limit => 0, copy_offset => 0}) %]">[% l('Show fewer copies') %]</a>
-                    	</div>
-                	[%- END %]
-            	</td>
-        	</tr>
-        	[%- END %]
+            <tr class="not_serial">
+                <td>
+                    [%- more_copies_limit = 50 %] [%# TODO: config %]
+                    [%- IF  ctx.copy_limit != more_copies_limit AND copies.size >= ctx.copy_limit AND ctx.copy_limit < total_copies %]
+                        <div class="rdetail_show_copies">
+                            <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]"><i class="fas fa-plus-square"></i> [% l('Show more copies') %]</a>
+                        </div>
+                    [%- ELSIF ctx.copy_limit == more_copies_limit %]
+                        <div  class="rdetail_show_copies">
+                            <a href="[% mkurl('', {copy_limit => 0, copy_offset => 0}) %]"><i class="fas fa-minus-square"></i> [% l('Show fewer copies') %]</a>
+                        </div>
+                    [%- END %]
+                </td>
+            </tr>
+            [%- END %]
     </tbody>
 </table>
-[% END; %]
+[% END %]

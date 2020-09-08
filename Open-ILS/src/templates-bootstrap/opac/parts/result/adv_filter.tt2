@@ -34,7 +34,7 @@ FOR filter IN ctx.query_struct.filters;
              </div>
               <a class="button remove_filter btn btn-deny btn-sm"
               title="[% l('Remove [_1] filter', (crad.description || crad.label)) %]"
-              aria-label="[% l('Remove [_1] filter', (crad.description || crad.label)) %]" 
+              aria-label="[% l('Remove [_1] filter', (crad.description || crad.label)) %]"
               href="[% mkurl('', {}, [remove_filter]) %]" rel="nofollow" vocab=""><span class="text-white">&times;</span> </a>
             </div>
            </div>
@@ -58,7 +58,7 @@ FOR filter IN ctx.query_struct.filters;
               title="[% l('Remove location filter') %]"
               href="[% mkurl('', {}, ['fi:locations']) %]" rel="nofollow" vocab=""> <span class="text-white">×</span></a>
       </div>
-    </div> 
+    </div>
 [%- END; # IF locations -%]
 
 [%- IF pubdate_filters.grep('^' _ filter.name _ '$').size;

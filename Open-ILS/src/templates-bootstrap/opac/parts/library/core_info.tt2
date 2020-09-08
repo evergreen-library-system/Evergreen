@@ -7,14 +7,14 @@
 <div class="container">
     <div>
     <h2>[% ctx.library.name | html %]</h2>
-    
+
     [%-
         lib_url = ctx.get_org_setting(ctx.library.id, 'lib.info_url');
         IF lib_url;
             '<div id="library-url"><a href="'; lib_url | html; '" property="url">'; l('Library web site'); '</a></div>';
         END;
     -%]
-    
+
     [%- IF ctx.hours; %]
         [%- INCLUDE "opac/parts/library/hours.tt2"; %]
     [% END; -%]
@@ -27,9 +27,9 @@
     [%- END; %]
     [%- IF ctx.library.phone; %]
         <div>[% l('Telephone: ') %]<a href="tel:[% ctx.library.phone | html %]" property="telephone">[% ctx.library.phone | html %]</a></div>
-    [% END; %]
+    [% END %]
     </div>
-    [% END; %]
+    [% END %]
 
     [%- IF ctx.library.mailing_address; %]
     <div class="my-3" id="addresses">

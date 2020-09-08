@@ -1,9 +1,9 @@
-[%-  IF ENV.OILS_CHILIFRESH_URL AND ENV.OILS_CHILIFRESH_ACCOUNT 
+[%-  IF ENV.OILS_CHILIFRESH_URL AND ENV.OILS_CHILIFRESH_ACCOUNT
             AND (ctx.page == 'rresult' OR ctx.page == 'record');
         chili_url = ENV.OILS_CHILIFRESH_URL;
         IF CGI.https AND ENV.OILS_CHILIFRESH_HTTPS_URL;
             chili_url = ENV.OILS_CHILIFRESH_HTTPS_URL;
-        END; 
+        END;
 %]
     <!-- Set up the chilifresh account information and load the JS -->
     <input type="hidden" id="chilifresh_account" name="chilifresh_account" value="[% ENV.OILS_CHILIFRESH_ACCOUNT %]"/>

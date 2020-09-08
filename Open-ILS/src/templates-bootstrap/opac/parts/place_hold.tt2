@@ -15,11 +15,11 @@ function toggleActivationDate() {
     // Check for not equal to block so it works on first click.
     if (block.style.display != "block") {
         block.style.display = "block";
-        anchor.innerHTML = "<i class='fas fa-calendar'></i> " + actText;
+        anchor.innerHTML = "<i class='fas fa-calendar' aria-hidden='true'></i> " + actText;
         if (cb.checked != true) cb.checked = true;
     } else {
         block.style.display = "none";
-        anchor.innerHTML = "<i class='fas fa-calendar'></i> " + inActText;
+        anchor.innerHTML = "<i class='fas fa-calendar' aria-hidden='true'></i> " + inActText;
     }
     // Prevent the href from being followed, thus overriding the CSS.
     return false;
@@ -68,13 +68,13 @@ function maybeToggleNumCopies(obj) {
               ELSE; some_holds_allowed = 1; END;
             END %]
 
-       [% IF loop.first %] 
+       [% IF loop.first %]
     <form method="post" name="PlaceHold" onsubmit="return validateHoldForm()" >
         <input type="hidden" name="hold_type" value="[% CGI.param('hold_type') | html %]" />
-        [%  
+        [%
             redirect = CGI.param('hold_source_page') || CGI.param('redirect_to') || CGI.referer;
             # since we have to be logged in to get this far, return to a secure page
-            redirect = redirect.replace('^http:', 'https:') 
+            redirect = redirect.replace('^http:', 'https:')
         %]
         <input type="hidden" name="redirect_to" value="[% redirect | html %]" />
         <input type="hidden" name="hold_source_page" value="[% CGI.param('hold_source_page') | html %]" />
@@ -106,11 +106,11 @@ function maybeToggleNumCopies(obj) {
             <label for="hold_usr_is_requestor_not">
                 [% l("Place hold for patron by barcode:") %]
             </label>
-            <input type="text" name="hold_usr" id="hold_usr_input" 
+            <input type="text" name="hold_usr" id="hold_usr_input"
               aria-label="[% l('Barcode') %]"
-              value="[% usr_barcode | html %]" 
+              value="[% usr_barcode | html %]"
               onpaste="return debounce_barcode_change(event)"
-              onkeydown="return debounce_barcode_change(event)" autofocus /> 
+              onkeydown="return debounce_barcode_change(event)" autofocus />
             <span id="patron_name"></span>
             <span id="patron_usr_barcode_not_found" style="display: none">
               [% l('Patron barcode was not found') %]
@@ -119,7 +119,7 @@ function maybeToggleNumCopies(obj) {
             <button id="hold_usr_search" type="button" class="opac-button" style="display: none;">[% l('Patron Search') %]</button>
             [% END %]
             <br />
-            <input type="hidden" id="staff_barcode" 
+            <input type="hidden" id="staff_barcode"
               value="[% ctx.staff_recipient.card.barcode | html %]"/>
             <span>
                 <input type="radio" id="hold_usr_is_requestor"
@@ -140,12 +140,12 @@ function maybeToggleNumCopies(obj) {
                     <input type="hidden" name="hold_target" value="[% hdata.target.id | html %]" />
                     [% END %]
                     <div class='hold-items-list-title'>
-					    <!-- If hold is for grouped formats/editions (metarecord), show short title - else, show complete title --> 
-					    [% IF CGI.param('hold_type') == 'M' %]
-						    [% attrs.title | html %]
-						[% ELSE %]
-						    [% attrs.title_extended | html %]
-						[% END %]
+                        <!-- If hold is for grouped formats/editions (metarecord), show short title - else, show complete title -->
+                        [% IF CGI.param('hold_type') == 'M' %]
+                            [% attrs.title | html %]
+                        [% ELSE %]
+                            [% attrs.title_extended | html %]
+                        [% END %]
                     </div>
                     [% IF hdata.parts AND !this_hold_disallowed %]
                         [% IF hdata.parts.size > 0 %]
@@ -182,8 +182,8 @@ function maybeToggleNumCopies(obj) {
                         <input type='hidden' name='part' value=''/>
                         [% END %]
                     [% END %]
-		    [% INCLUDE "opac/parts/multi_hold_select.tt2" IF NOT (this_hold_disallowed AND hdata.part_required); %]
-                   
+            [% INCLUDE "opac/parts/multi_hold_select.tt2" IF NOT (this_hold_disallowed AND hdata.part_required); %]
+
                 </td>
             </tr>
 
@@ -200,7 +200,7 @@ function maybeToggleNumCopies(obj) {
             [% END %]
 </table>
         [% END %]
-        
+
 
         [% IF some_holds_allowed %]
 
@@ -208,11 +208,11 @@ function maybeToggleNumCopies(obj) {
             [%- org_select_id = 'pickup_lib'; -%]
             <label for="[% org_select_id %]" class="font-weight-bold">[%l('Pickup location:') %]</label>
             [% PROCESS "opac/parts/org_selector.tt2";
-                INCLUDE build_org_selector name='pickup_lib' 
-                    value=ctx.default_pickup_lib id=org_select_id 
+                INCLUDE build_org_selector name='pickup_lib'
+                    value=ctx.default_pickup_lib id=org_select_id
                     can_have_vols_only=1 hold_pickup_lib=1 %]
         </p>
-  
+
             <span class="font-weight-bold">[% l('Notify when hold is ready for pickup?') %]</span>
             <p>
              <div class="form-check m-2">
@@ -223,10 +223,10 @@ function maybeToggleNumCopies(obj) {
                      [% IF !ctx.user.email and !ctx.is_staff; l('<br>No configured Email address. See "My Account" for setting your Email address.'); ELSE; %] : <span id="email_address"><b>[% ctx.user.email %]</b></span>[% END %]
                 </label>
             </div>
-              
-                   
+
+
                 <p>
-                  
+
                 </p>
                 [%- IF allow_phone_notifications == 'true' %]
                 <div class="form-check m-2">
@@ -235,7 +235,7 @@ function maybeToggleNumCopies(obj) {
                     [% l('Yes, by Phone') %]
                     </label>
                 </div>
-               
+
                 <p>
                     <label>[% l('Phone Number:') %]<input type="text" class="form-control" name="phone_notify" [% setting = 'opac.default_phone';
                     IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]'
@@ -263,17 +263,17 @@ function maybeToggleNumCopies(obj) {
                 ELSE;
                     l('Suspend these holds?');
                 END %]
-                  <a href="#" title="[% l('A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.') %]" data-toggle="tooltip">
-                    <i class="fas fa-question-circle"></i>
+                  <a href="#" aria-label="[% l('A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.') %]" title="[% l('A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.') %]" data-toggle="tooltip">
+                    <i class="fas fa-question-circle" aria-hidden="true"></i>
                 </a>
                 </label>
             </div>
                 [% END %]
-           
-          
-               
-              
-                <a class="btn btn-sm btn-action m-2" id="actDateToggle" href="#toggled-block-suspend" onclick="return toggleActivationDate();"><i class="fas fa-calendar"></i> [% l('Set activation date') %]</a>
+
+
+
+
+                <a class="btn btn-sm btn-action m-2" id="actDateToggle" href="#toggled-block-suspend" onclick="return toggleActivationDate();"><i class="fas fa-calendar" aria-hidden="true"></i> [% l('Set activation date') %]</a>
             </div>
             <blockquote id="toggled-block-suspend">
             <label for="thaw_date">[% l('Activate on') %]
@@ -284,9 +284,9 @@ function maybeToggleNumCopies(obj) {
                 </div>
             </div>
             </blockquote>
-        
+
          [% IF CGI.param('from_basket') %]
-        
+
            <div class="form-check m-2">
                     <input class="form-check-input" type="checkbox" value="" id="clear_cart" />
                     <label class="form-check-label" for="clear_cart">
@@ -294,18 +294,18 @@ function maybeToggleNumCopies(obj) {
                     </label>
                 </div>
         [% END %]
-        		 [% IF NOT metarecords.disabled AND ctx.hold_data.size == 1 %]
+                 [% IF NOT metarecords.disabled AND ctx.hold_data.size == 1 %]
                         [% IF CGI.param('hold_type') == 'T' AND hdata.record.metarecord AND !hdata.part_required %]
                         <!-- Grab the bre_id so that we can restore it if user accidentally clicks advanced options -->
                            [% bre_id = hdata.target.id %]
-                            <a  id='advanced_hold_link' class="m-2 btn btn-sm btn-primary"
-                                href="[% mkurl('', {hold_type => 'M', hold_target => hdata.record.metarecord.id, bre_id => bre_id}) %]"><i class="fas fa-cog"></i> 
+                            <a  id='advanced_hold_link' class="btn btn-sm btn-link"
+                                href="[% mkurl('', {hold_type => 'M', hold_target => hdata.record.metarecord.id, bre_id => bre_id}) %]"><i class="fas fa-cog" aria-hidden="true"></i>
                                 [% l('Advanced Hold Options') %]</a>
                         [% END %]
                         [% IF CGI.param('hold_type') == 'M' AND CGI.param('bre_id') %]
                             <input type="hidden" name="bre_id" value="[% CGI.param('bre_id') %]" />
-                            <a id='basic_hold_link' class="m-2 btn btn-sm btn-primary"
-                               href="[% mkurl('', {hold_target => CGI.param('bre_id'), hold_type => 'T'}) %]"><i class="fas fa-cog"></i> 
+                            <a id='basic_hold_link' class="btn btn-sm btn-link"
+                               href="[% mkurl('', {hold_target => CGI.param('bre_id'), hold_type => 'T'}) %]"><i class="fas fa-cog" aria-hidden="true"></i>
                                 [% l('Basic Hold Options') %]</a>
                         [% END %]
                         [% IF hdata.metarecord_filters.formats.size OR # should this be size > 1
@@ -316,7 +316,7 @@ function maybeToggleNumCopies(obj) {
         <div class="py-3">
         <button id="place_hold_submit" type="submit" name="submit"  class="btn btn-confirm" ><i class="fas fa-check"></i> [% l('Submit') %]</button>
         [% END # some_holds_allowed %]
-        <button type="reset" name="cancel" onclick="window.location='[% redirect | html %]'" id="holds_cancel" class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Cancel') %]</button>
+        <button type="reset" name="cancel" onclick="window.location='[% redirect | html %]'" id="holds_cancel" class="btn btn-deny"><i class="fas fa-ban" aria-hidden="true"></i> [% l('Cancel') %]</button>
         </div>
     </form>
 </div>

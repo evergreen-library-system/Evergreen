@@ -10,7 +10,7 @@
     <input name='[% setting %]' type="hidden"
         [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
 
-    <table class="full-width table" id="acct_search_main" 
+    <table class="full-width table" id="acct_search_main"
         title="[% l('Notification Preferences') %]">
         <tbody>
 
@@ -33,19 +33,19 @@
 
                 <td><label for='[% setting %].email'>[% email_label %]</label></td>
                 <td>
-                    <input id='[% setting %].email' name='[% setting %].email' 
+                    <input id='[% setting %].email' name='[% setting %].email'
                         type="checkbox" title="[% email_label %]"
                         [% IF (matches = ctx.user_setting_map.$setting.match('email')); %] checked='checked' [% END %]/>
                 </td>
             </tr>
             [%- IF allow_phone_notifications == 'true';
-                setting = 'opac.hold_notify'; 
+                setting = 'opac.hold_notify';
             -%]
             <tr>
                 [% phone_label = l('Notify by Phone by default when a hold is ready for pickup?') %]
                 <td><label for='[% setting %].phone'>[% phone_label %]</label></td>
                 <td>
-                    <input id='[% setting %].phone' name='[% setting %].phone' 
+                    <input id='[% setting %].phone' name='[% setting %].phone'
                         type="checkbox" title="[% phone_label %]"
                         [% IF (matches = ctx.user_setting_map.$setting.match('phone')); %] checked='checked' [% END %]/>
                 </td>
@@ -66,7 +66,7 @@
                 [% sms_label = l('Notify by Text by default when a hold is ready for pickup?') %]
                 <td><label for='[% setting %].sms'>[% sms_label %]</label></td>
                 <td>
-                    <input id='[% setting %].sms' name='[% setting %].sms' 
+                    <input id='[% setting %].sms' name='[% setting %].sms'
                         type="checkbox" title="[% sms_label %]"
                         [% IF (matches = ctx.user_setting_map.$setting.match('sms')); %] checked='checked' [% END %]/>
                 </td>
@@ -89,9 +89,9 @@
             <tr>
                 <td><label for='[% optin.cust.name | uri %]'>[% optin.cust.label | html %]</label></td>
                 <td>
-                    <input type='checkbox' name='setting' 
-                        value='[% optin.cust.name | uri %]' 
-                        id='[% optin.cust.name | uri %]' 
+                    <input type='checkbox' name='setting'
+                        value='[% optin.cust.name | uri %]'
+                        id='[% optin.cust.name | uri %]'
                         title="[% optin.cust.label | html %]"
                         [% IF optin.value %] checked='checked' [% END %]/>
                 </td>

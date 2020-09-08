@@ -1,5 +1,5 @@
 [% BLOCK get_hold_status %]
-<div>   
+<div>
     [% IF hold.hold.status == 4 %]
             <span class="myopac-hold-available">[% l("Available") %] </span>
               [% IF ahr.shelf_expire_time %]

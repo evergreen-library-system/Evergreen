@@ -12,9 +12,9 @@
 
                 <td class='light_border'>[% l(
                     HUMAN_NAME_FORMAT,
-                    ctx.user.prefix, 
+                    ctx.user.prefix,
                     ctx.user.first_given_name,
-                    ctx.user.second_given_name, 
+                    ctx.user.second_given_name,
                     ctx.user.family_name,
                     ctx.user.suffix
                 ) | html %]</td>
@@ -27,9 +27,9 @@
 
                 <td class='light_border'>[% l(
                     HUMAN_NAME_FORMAT,
-                    ctx.user.pref_prefix, 
+                    ctx.user.pref_prefix,
                     (ctx.user.pref_first_given_name || ctx.user.first_given_name),
-                    ctx.user.pref_second_given_name, 
+                    ctx.user.pref_second_given_name,
                     (ctx.user.pref_family_name || ctx.user.family_name),
                     ctx.user.pref_suffix
                 ) | html %]</td>
@@ -103,7 +103,7 @@
                     # l('[_1] ([_2])', ctx.user.ident_value, ctx.user.ident_type.name) | html
                     # XXX uncomment the above line to show primary
                     # identification. With a minor tweak it could
-                    # alternatively be shown but partially obscured. 
+                    # alternatively be shown but partially obscured.
                     %]
                 </td>
                 <td></td>
@@ -122,12 +122,12 @@
                     [% ctx.user.home_ou.name | html %]<br/>
                     [% ctx.user.home_ou.billing_address.street1 %]<br/>
                     [% IF ctx.user.home_ou.billing_address.street2; ctx.user.home_ou.billing_address.street2 _ "<br/>"; END %]
-                    [% ctx.user.home_ou.billing_address.city %], [% ctx.user.home_ou.billing_address.state %] 
+                    [% ctx.user.home_ou.billing_address.city %], [% ctx.user.home_ou.billing_address.state %]
                     [% ctx.user.home_ou.billing_address.post_code %]<br/>
                     <br/>
 
                     [% IF ctx.user.home_ou.phone; ctx.user.home_ou.phone _ "<br/>"; END %]
-                    
+
                     [% IF ctx.user.home_ou.email; ctx.user.home_ou.email _ "<br/>"; END %]
                     [% lib_url = ctx.get_org_setting(ctx.user.home_ou.id, 'lib.info_url');
                         IF lib_url;
@@ -157,22 +157,22 @@
                  [%- INCLUDE "opac/parts/locale_picker.tt2" %]
                 </td>
             </tr>
-            
+
         </tbody>
     </table>
-    
+
     <br />
     <hr />
     <br />
-    
+
 	<div class="header_middle mb-3">
         <span>Addresses</span>
     </div>
 
 <div class="row">
-            [% 
+            [%
                 # cycle through the non-pending address.  For each non-pending addr
-                # that has a corresponding pending addr, render the pending addr 
+                # that has a corresponding pending addr, render the pending addr
                 # along the right inside it's own edit form
                 pending = {};
                 regular = [];
@@ -186,19 +186,19 @@
                     END;
                 END;
             FOR addr IN regular;
-                cur_id = addr.id; 
+                cur_id = addr.id;
                 pending_addr = pending.$cur_id;
             %]
     <div class="col-lg-6 col-12">
         <table class='table' title="[% l('Addresses') %]">
-       
+
             <tbody>
             <tr>
               <td>
                 <!-- pending address form -->
                 [% IF pending_addr OR edit_addr_id == cur_id;
                     update_addr = pending_addr || addr %]
-              
+
                     <form method='post'>
                         [% IF pending_addr %]
                             <input type='hidden' name='pending_addr' value='[% pending_addr.id %]'/>
@@ -218,11 +218,11 @@
                             {label => l("ZIP"), name => 'post_code', value => update_addr.post_code},
                         ];
                         FOR field IN addr_fields %]
-                        
+
                             <tr>
-                            	
+
                                 <td><label for="addr-form-[% field.name %]">[% field.label %]</label></td>
-                                <td><input name="[% field.name %]" 
+                                <td><input name="[% field.name %]"
                                     id="addr-form-[% field.name %]"
                                     value="[% field.value | html %]" class="form-control">
                                 </td>
@@ -244,7 +244,7 @@
                 </td>
                  [% ELSE %]
                 <td>
-				
+
                     <!-- read-only address display -->
                     <table class='table' title="[% l('Active Addresses') %]">
                         <tr><td>[% l("Address Type") %]</td><td>[% addr.address_type | html %]</td></tr>
@@ -255,20 +255,20 @@
                         <tr><td>[% l("State") %]</td><td>[% addr.state | html %]</td></tr>
                         <tr><td>[% l("Country") %]</td><td>[% addr.country | html %]</td></tr>
                         <tr><td>[% l("Zip") %]</td><td>[% addr.post_code | html %]</td></tr>
-                        [% IF ctx.get_org_setting(ctx.user.home_ou.id, 'opac.allow_pending_address') 
+                        [% IF ctx.get_org_setting(ctx.user.home_ou.id, 'opac.allow_pending_address')
                                 AND !pending_addr AND edit_addr_id != cur_id %]
                         <tr><td colspan='2'><a class="btn btn-action" href='?edit_address=[% addr.id %]'><i class="fas fa-edit"></i> [% l('Edit Address') %]</a></td></tr>
                         [% END %]
                     </table>
-                 
+
                  </td>
-                [% END %] 
+                [% END %]
                 </tr>
             </tbody>
         </table>
      </div></div>
             [% END %]
-       
-    
+
+
 
 [% END %]

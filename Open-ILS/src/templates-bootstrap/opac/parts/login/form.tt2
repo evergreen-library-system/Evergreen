@@ -19,8 +19,8 @@
 %]
 </div>
 [% END %]
-    
- 
+
+
     <div class="mx-auto row w-75 my-5">
         <div class='col-md-6'>
             <label for='username_field' class="lbl1" >[% l('Library Card Number') %]<span title="[% INCLUDE "opac/parts/login/username_hint.tt2" %]" data-html="true" data-toggle="tooltip">
@@ -30,13 +30,13 @@
             </div>
                <a href='[% mkurl(ctx.opac_root _ '/register', {}, 1) %]'>[% l('Request A Card') %]</a>
             <br>
-            
+
         </div>
         <div class='col-md-6'>
             <label for="password_field" class="lbl1" >[% l('PIN') %]<span title="[% INCLUDE "opac/parts/login/password_hint.tt2" %]" data-html="true" data-toggle="tooltip">
                         <i class="fas fa-question-circle"></i>
                     </span></label><br>
-             
+
             <div class="input_bg mb-2">
                 <input class="form-control" id="password_field" name="password" type="password"/>
             </div>
@@ -44,7 +44,7 @@
             <a href='[% mkurl(ctx.opac_root _ '/password_reset', {}, 1) %]'>[% l('Forgot Your Password?') %]  </a>
             [% END %]
             <br>
-            
+
         </div>
 
          <div class="col-12 pt-4 text-center">
@@ -54,7 +54,7 @@
                     [% l('Stay logged in?') %]
                 </label>
             </div>
-            <button type="submit" class="btn btn-confirm my-2"><i class="fas fa-sign-in-alt"></i> [% l('Log in') %]</button>
+            <button type="submit" class="btn btn-confirm my-2"><i class="fas fa-sign-in-alt" aria-hidden="true"></i> [% l('Log in') %]</button>
         </div>
         <div style="clear: both; padding-top: 15px;" class="col-12 text-center">
         [%
@@ -71,11 +71,11 @@
                 redirect = redirect  | replace('^http:', 'https:');
             %]
             <input type='hidden' name='redirect_to' value='[% redirect | html %]'/>
-          
+
         </div>
         <input id="client_tz_id" name="client_tz" type="hidden" />
         </div>
     </form>
-    
+
 </div>
 

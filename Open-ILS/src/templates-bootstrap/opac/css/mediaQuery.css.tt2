@@ -1,129 +1,129 @@
 /*
 Mini Table Styling
 */
-@media 
+@media
 only screen and (max-width: 650px)  {
     .miniTable{
         width: 100% !important;
     }
 
-	/* Force table to not be like tables anymore */
+    /* Force table to not be like tables anymore */
     .miniTable table, .miniTable thead, .miniTable tbody, .miniTable th, .miniTable td, .miniTable tr
-    { 
-		display: block; 
+    {
+        display: block;
     }
-    
+
     .miniTable th{
        display:none;
     }
-	
-	/* Hide table headers (but not display: none;, for accessibility) */
-    .miniTable thead tr{ 
-		position: absolute;
-		top: -9999px;
-		left: -9999px;
-	}
-	
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    .miniTable thead tr{
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
     .miniTable tr
-     { 
-     	border: 1px solid #ccc; 
-     	margin: 10px 0px; 
+     {
+         border: 1px solid #ccc;
+         margin: 10px 0px;
      }
 
 
     .miniTable td
-    { 
-		border: none;
-		border-bottom: 1px solid #eee; 
-		position: relative;
-        padding-left: 50%; 
+    {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
         min-height:45px;
         text-align: right;
     }
-	
+
     .miniTable td:before
-    { 
-		left: 6px;
-		width: 45%; 
-		padding-right: 10px; 
-		white-space: nowrap;
+    {
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
         position: absolute;
     }
     .copyTable tr:nth-of-type(1):before { content: "Copy #1"; display: block; text-align:center; }
-	.copyTable tr:nth-of-type(2):before { content: "Copy #2"; display: block; text-align:center;}
-	.copyTable tr:nth-of-type(3):before { content: "Copy #3"; display: block; text-align:center;}
-	.copyTable tr:nth-of-type(4):before { content: "Copy #4"; display: block; text-align:center;}
-	.copyTable tr:nth-of-type(5):before { content: "Copy #5"; display: block; text-align:center;}
-	.copyTable tr:nth-of-type(6):before { content: "Copy #6"; display: block; text-align:center;}
-	.copyTable tr:nth-of-type(7):before { content: "Copy #7"; display: block; text-align:center;}
-	.copyTable tr:nth-of-type(8):before { content: "Copy #8"; display: block; text-align:center;}
-	.copyTable tr:nth-of-type(9):before { content: "Copy #9"; display: block; text-align:center;}
-	.copyTable tr:nth-of-type(10):before { content: "Copy #10"; display: block; text-align:center;}
+    .copyTable tr:nth-of-type(2):before { content: "Copy #2"; display: block; text-align:center;}
+    .copyTable tr:nth-of-type(3):before { content: "Copy #3"; display: block; text-align:center;}
+    .copyTable tr:nth-of-type(4):before { content: "Copy #4"; display: block; text-align:center;}
+    .copyTable tr:nth-of-type(5):before { content: "Copy #5"; display: block; text-align:center;}
+    .copyTable tr:nth-of-type(6):before { content: "Copy #6"; display: block; text-align:center;}
+    .copyTable tr:nth-of-type(7):before { content: "Copy #7"; display: block; text-align:center;}
+    .copyTable tr:nth-of-type(8):before { content: "Copy #8"; display: block; text-align:center;}
+    .copyTable tr:nth-of-type(9):before { content: "Copy #9"; display: block; text-align:center;}
+    .copyTable tr:nth-of-type(10):before { content: "Copy #10"; display: block; text-align:center;}
 
-	.copyTable td:nth-of-type(1):before { content: "Library"; display: flex; }
+    .copyTable td:nth-of-type(1):before { content: "Library"; display: flex; }
     .copyTable td:nth-of-type(2):before { content: "Call Number"; display: flex; }
-	.copyTable td:nth-of-type(3):before { content: "Barcode"; display: flex;}
+    .copyTable td:nth-of-type(3):before { content: "Barcode"; display: flex;}
     .copyTable td:nth-of-type(4):before { content: "Shelving Location"; display: flex;}
     .copyTable td:nth-of-type(5):before { content: "Status"; display: flex;}
     .copyTable td:nth-of-type(6):before { content: "Due Date"; display: flex;}
-   
+
     .holdingsTable tr:nth-of-type(1):before { content: "Copy #1"; display: block; text-align:center; }
-	.holdingsTable tr:nth-of-type(2):before { content: "Copy #2"; display: block; text-align:center;}
-	.holdingsTable tr:nth-of-type(3):before { content: "Copy #3"; display: block; text-align:center;}
-	.holdingsTable tr:nth-of-type(4):before { content: "Copy #4"; display: block; text-align:center;}
-	.holdingsTable tr:nth-of-type(5):before { content: "Copy #5"; display: block; text-align:center;}
-	.holdingsTable tr:nth-of-type(6):before { content: "Copy #6"; display: block; text-align:center;}
-	.holdingsTable tr:nth-of-type(7):before { content: "Copy #7"; display: block; text-align:center;}
-	.holdingsTable tr:nth-of-type(8):before { content: "Copy #8"; display: block; text-align:center;}
-	.holdingsTable tr:nth-of-type(9):before { content: "Copy #9"; display: block; text-align:center;}
-	.holdingsTable tr:nth-of-type(10):before { content: "Copy #10"; display: block; text-align:center;}
+    .holdingsTable tr:nth-of-type(2):before { content: "Copy #2"; display: block; text-align:center;}
+    .holdingsTable tr:nth-of-type(3):before { content: "Copy #3"; display: block; text-align:center;}
+    .holdingsTable tr:nth-of-type(4):before { content: "Copy #4"; display: block; text-align:center;}
+    .holdingsTable tr:nth-of-type(5):before { content: "Copy #5"; display: block; text-align:center;}
+    .holdingsTable tr:nth-of-type(6):before { content: "Copy #6"; display: block; text-align:center;}
+    .holdingsTable tr:nth-of-type(7):before { content: "Copy #7"; display: block; text-align:center;}
+    .holdingsTable tr:nth-of-type(8):before { content: "Copy #8"; display: block; text-align:center;}
+    .holdingsTable tr:nth-of-type(9):before { content: "Copy #9"; display: block; text-align:center;}
+    .holdingsTable tr:nth-of-type(10):before { content: "Copy #10"; display: block; text-align:center;}
 
 
     .holdingsTable td:nth-of-type(1):before { content: "Library"; display: flex; }
     .holdingsTable td:nth-of-type(2):before { content: "Shelving location"; display: flex; }
-	.holdingsTable td:nth-of-type(3):before { content: "Call number"; display: flex;}
+    .holdingsTable td:nth-of-type(3):before { content: "Call number"; display: flex;}
     .holdingsTable td:nth-of-type(4):before { content: "Status"; display: flex;}
 
-	.chargesTable td:nth-of-type(1):before { content: "Select"; display: flex; }
+    .chargesTable td:nth-of-type(1):before { content: "Select"; display: flex; }
     .chargesTable td:nth-of-type(2):before { content: "Owed"; display: flex; }
-	.chargesTable td:nth-of-type(3):before { content: "Billing Type"; display: flex;}
+    .chargesTable td:nth-of-type(3):before { content: "Billing Type"; display: flex;}
     .chargesTable td:nth-of-type(4):before { content: "Note"; display: flex;}
     .chargesTable td:nth-of-type(5):before { content: "Date"; display: flex;}
-    
+
     .chargesMainTable td:nth-of-type(1):before { content: "Select"; display: flex; }
     .chargesMainTable td:nth-of-type(2):before { content: "Owed"; display: flex; }
-	.chargesMainTable td:nth-of-type(3):before { content: "Billing Type"; display: flex;}
+    .chargesMainTable td:nth-of-type(3):before { content: "Billing Type"; display: flex;}
     .chargesMainTable td:nth-of-type(4):before { content: "Title"; display: flex;}
     .chargesMainTable td:nth-of-type(5):before { content: "Checkout"; display: flex;}
     .chargesMainTable td:nth-of-type(6):before { content: "Due"; display: flex;}
     .chargesMainTable td:nth-of-type(7):before { content: "Returned/Renewed"; display: flex;}
-    
+
     .activeHoldstable td:nth-of-type(1):before { content: "Select"; display: flex; }
     .activeHoldstable td:nth-of-type(2):before { content: "Title"; display: flex; }
-	.activeHoldstable td:nth-of-type(3):before { content: "Author"; display: flex;}
+    .activeHoldstable td:nth-of-type(3):before { content: "Author"; display: flex;}
     .activeHoldstable td:nth-of-type(4):before { content: "Format"; display: flex;}
     .activeHoldstable td:nth-of-type(5):before { content: "Pickup Location"; display: flex;}
     .activeHoldstable td:nth-of-type(6):before { content: "Cancel If Not Filled By"; display: flex;}
     .activeHoldstable td:nth-of-type(7):before { content: "Status"; display: flex;}
     .activeHoldstable td:nth-of-type(8):before { content: "Notes"; display: flex;}
-    
+
     .holdHistoryTable td:nth-of-type(1):before { content: "Title"; display: flex; }
     .holdHistoryTable td:nth-of-type(2):before { content: "Author"; display: flex; }
     .holdHistoryTable td:nth-of-type(3):before { content: "Format"; display: flex; }
     .holdHistoryTable td:nth-of-type(4):before { content: "Pickup Location"; display: flex; }
     .holdHistoryTable td:nth-of-type(5):before { content: "Status"; display: flex; }
-    
+
     .paymentTable td:nth-of-type(1):before { content: "Payment Date"; display: flex; }
     .paymentTable td:nth-of-type(2):before { content: "Payment For"; display: flex; }
     .paymentTable td:nth-of-type(3):before { content: "Amount"; display: flex; }
     .paymentTable td:nth-of-type(4):before { content: "Receipt"; display: flex; }
-    
+
     .messagesTable td:nth-of-type(1):before { content: "Select"; display: flex; }
     .messagesTable td:nth-of-type(2):before { content: "Date"; display: flex; }
     .messagesTable td:nth-of-type(3):before { content: "Library"; display: flex; }
     .messagesTable td:nth-of-type(4):before { content: "Subject"; display: flex; }
     .messagesTable td:nth-of-type(5):before { content: ""; display: flex; }
-    
+
     .circTable td:nth-of-type(1):before { content: "Select"; display: flex; }
     .circTable td:nth-of-type(2):before { content: "Title"; display: flex; }
     .circTable td:nth-of-type(3):before { content: "Author"; display: flex; }
@@ -131,7 +131,7 @@ only screen and (max-width: 650px)  {
     .circTable td:nth-of-type(5):before { content: "Due Date"; display: flex; }
     .circTable td:nth-of-type(6):before { content: "Barcode"; display: flex; }
     .circTable td:nth-of-type(7):before { content: "Call Number"; display: flex; }
-    
+
     .circHistTable td:nth-of-type(1):before { content: "Select"; display: flex; }
     .circHistTable td:nth-of-type(2):before { content: "Title"; display: flex; }
     .circHistTable td:nth-of-type(3):before { content: "Author"; display: flex; }
@@ -140,7 +140,7 @@ only screen and (max-width: 650px)  {
     .circHistTable td:nth-of-type(6):before { content: "Date Returned"; display: flex; }
     .circHistTable td:nth-of-type(7):before { content: "Barcode"; display: flex; }
     .circHistTable td:nth-of-type(8):before { content: "Call Number"; display: flex; }
-    
+
     .bookbagTable td:nth-of-type(1):before { content: ""; display: flex; }
     .bookbagTable td:nth-of-type(2):before { content: "Title"; display: flex; }
     .bookbagTable td:nth-of-type(3):before { content: "Author(s)"; display: flex; }
@@ -148,23 +148,23 @@ only screen and (max-width: 650px)  {
     .bookbagTable td:nth-of-type(5):before { content: "Publication Date"; display: flex; }
     .bookbagTable td:nth-of-type(6):before { content: "Format"; display: flex; }
     .bookbagTable td:nth-of-type(7):before { content: "Notes"; display: flex; }
-    
+
     .eholdsTable td:nth-of-type(1):before { content: "Title"; display: flex; }
     .eholdsTable td:nth-of-type(2):before { content: "Author"; display: flex; }
     .eholdsTable td:nth-of-type(3):before { content: "Expire Date"; display: flex; }
     .eholdsTable td:nth-of-type(4):before { content: "Status"; display: flex; }
     .eholdsTable td:nth-of-type(5):before { content: "Actions"; display: flex; }
-    
+
     .eholdsreadyTable td:nth-of-type(1):before { content: "Title"; display: flex; }
     .eholdsreadyTable td:nth-of-type(2):before { content: "Author"; display: flex; }
     .eholdsreadyTable td:nth-of-type(3):before { content: "Expire Date"; display: flex; }
     .eholdsreadyTable td:nth-of-type(4):before { content: "Actions"; display: flex; }
-    
+
     .echeckoutTable td:nth-of-type(1):before { content: "Title"; display: flex; }
     .echeckoutTable td:nth-of-type(2):before { content: "Author"; display: flex; }
     .echeckoutTable td:nth-of-type(3):before { content: "Due Date"; display: flex; }
     .echeckoutTable td:nth-of-type(4):before { content: "Actions"; display: flex; }
-    
+
     .ecircsTable td:nth-of-type(1):before { content: "Title"; display: flex; }
     .ecircsTable td:nth-of-type(2):before { content: "Author"; display: flex; }
     .ecircsTable td:nth-of-type(3):before { content: "Due Date"; display: flex; }
@@ -173,17 +173,17 @@ only screen and (max-width: 650px)  {
     .bucketTable td:nth-of-type(2):before { content: "Title"; display: flex; text-align:left; }
     .bucketTable td:nth-of-type(3):before { content: "Author"; display: flex; text-align:left; }
     .bucketTable td:nth-of-type(4):before { content: "Call Number"; display: flex; text-align:left; }
-    
+
     /*Media Style Additions*/
     .fullRow{
         padding: 5px !important;
-    	text-align: center !important;
-    	width: 100%;
+        text-align: center !important;
+        width: 100%;
     }
-    
+
     .paginateText{
-    	display:none;
-	}
+        display:none;
+    }
 
     .modal-dialog {
     max-width: 600px !important;
@@ -222,7 +222,7 @@ only screen and (max-width: 650px)  {
     #topnav_logo img {
         width: 200px;
     }
- 
+
     #gold-links-holder {
         display: none;
     }
@@ -382,7 +382,7 @@ only screen and (max-width: 650px)  {
         float:left;
         [% END -%]
     }
-   
+
     #holds_box form blockquote {
         [% IF rtl == 't' -%]
         margin-right: 10px;
@@ -461,24 +461,24 @@ only screen and (max-width: 650px)  {
         display: block;
     }
     #main-content {
-        margin: 0 1px;        
+        margin: 0 1px;
     }
     #rdetails_status thead {
         display: none;
     }
     #rdetails_status tr {
-	display: block;
-	margin-top: 3px;
+    display: block;
+    margin-top: 3px;
     }
     #rdetails_status td {
-	display: block;
-	padding: 1px;
+    display: block;
+    padding: 1px;
     }
     .copy_details_row {
-	background-color: [% css_colors.accent_lightest %];
+    background-color: [% css_colors.accent_lightest %];
     }
     .copy_details_offers_row {
-	background-color: [% css_colors.accent_lightest %];
+    background-color: [% css_colors.accent_lightest %];
     }
     select#pickup_lib.search-wrapper-locg {
         width: 100%;
@@ -510,8 +510,8 @@ only screen and (max-width: 650px)  {
     #adv_search_parent {
         font-size: [% css_fonts.size_smaller %];
     }
-    #adv_search_filters {                                                                                                                             
-        position: relative;                                                                                                                           
+    #adv_search_filters {
+        position: relative;
         width: 300px;
     }
     #format_actions {
@@ -545,51 +545,51 @@ only screen and (max-width: 650px)  {
     }
     .search_catalog_lbl {
         [% IF rtl == 't' -%]
-	margin-right: 0;
+    margin-right: 0;
         [% ELSE -%]
-	margin-left: 0;
+    margin-left: 0;
         [% END -%]
-	white-space: nowrap;
+    white-space: nowrap;
     }
-    .adv_search_catalog_lbl { 
+    .adv_search_catalog_lbl {
         margin-top: 0;
-	white-space: nowrap;
+    white-space: nowrap;
     }
     .browse_the_catalog_lbl {
         white-space: nowrap;
     }
     .mobile_hide {
-	display: none;
-    } 
+    display: none;
+    }
     #dash_user {
         display: block;
-        padding: 0.5em;    
+        padding: 0.5em;
         font-size: 18px;
         text-align: center;
     }
     .dash_divider {
-	display: none;
+    display: none;
     }
     .dash_account_buttons {
         display: block;
-    } 
+    }
     .searchbar { line-height: 1.5em; }
     #browse-controls { line-height: 1.5em; }
     #search_query_label, #search_qtype_label, #search_itype_label, #search_locg_label {
         display: block;
     }
     .bookshelf td {
-	display: block;
-	width: 100%;
+    display: block;
+    width: 100%;
     }
     .bookshelf table thead tr {
-	display: block;
+    display: block;
     }
     #lowhits_help { width: inherit; }
-    #adv_search_tabs a{                                                                                                                           
+    #adv_search_tabs a{
         font-size: [% css_fonts.size_small %];
         margin: 2px 2px 0px 2px;
-        padding: 2px 2px 5px 2px; 
+        padding: 2px 2px 5px 2px;
         [% IF rtl == 't' -%]
         border-radius: 7px 0px 0px 7px;
         [% ELSE -%]
@@ -634,7 +634,7 @@ only screen and (max-width: 650px)  {
            here. */
 
         table#ebook_circs_main_table tr, table#ebook_holds_main_table tr { border-top: 25px solid #fff; }
-		table#acct_holds_hist_header tr{ border-top: 2px solid #bbb; }
+        table#acct_holds_hist_header tr{ border-top: 2px solid #bbb; }
 
         table#acct_checked_main_header td, table#acct_holds_main_header td, table#acct_checked_hist_header td, table#acct_holds_hist_header td, table#ebook_circs_main_table td, table#ebook_holds_main_table td {
                 /* Behave  like a "row" */
@@ -719,14 +719,14 @@ only screen and (max-width: 650px)  {
 }
 
 @media only screen and (min-width: 992px) {
-	.nav-fr{
-    	float: right;
+    .nav-fr{
+        float: right;
     }
     .nav-fl{
-    	float: left;
+        float: left;
     }
     #nav-divide{
-    	display:none !important;
+        display:none !important;
     }
 }
 @media only screen and (max-width: 800px) {

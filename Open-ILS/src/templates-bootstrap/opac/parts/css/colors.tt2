@@ -1,20 +1,20 @@
 [%
     css_colors = {
-        
-        
+
+
 #The counts that appear in the navigation when signed into the OPAC -EX. X Ready For Pickup where x is the modified number
 
-    	zero_count = "#c1ffbf", #Logged in item/charges count at 0
+            zero_count = "#c1ffbf", #Logged in item/charges count at 0
         non_zero_count = "#ffc107", #Logged in item/charges count NOT at 0
 
-    	facets_back = "#00593d", #search list facet backgrounds
+            facets_back = "#006042", #search list facet backgrounds
         facets_text = "#fff",
-    	footer_link = "#fff",
+            footer_link = "#fff",
 
-    	nav_separation = "#00593d",
-        header_primary = "#00593d", #Primary Header Color
+            nav_separation = "#007a54",
+        header_primary = "#007a54", #Primary Header Color
         header_primary_fade = "#007a54", #Fade Header Color, make equal to header_primary for no fade
-        footer_primary = "#00593d", #Primary Footer Color
+        footer_primary = "#007a54", #Primary Footer Color
         footer_primary_fade = "#007a54", #Fade Footer Color, make equal to footer_primary for no fade
 
         bg_extras = "#007a54",
@@ -26,7 +26,7 @@
         background = "#fff", # white
         background_alert = "#ffcccc", # pink
         background_invert = "#252525", # charcoal
-        text = "black", # black 
+        text = "black", # black
         text_alert = "#c50202", # red
         text_attention = "#ffcc33", # pumpkin orange
         text_badnews = "#c50202", # cherry red
@@ -34,7 +34,7 @@
         text_greatnews = "green", # green
         text_invert = "#fff", # white
         text_match = "#c00", # deep red
-        primary = "#00593d", # dark green
+        primary = "#007a54", # dark green
         primary_fade = "#007a54", # medium green
         primary_offset = "#417860", # light_green
         control = "#69A088", # lighter green
@@ -50,12 +50,12 @@
         border_standard = "#e9ebf3", # light grey-blue
         border_dark = "black", # black
         border_alert = "red", # red
-        button_text = "#fbf9f9", # off-white 
+        button_text = "#fbf9f9", # off-white
         button_text_shadow = "#555555", # medium grey
         table_heading = "#d8d8d8", # grey-blue
         mobile_header_text = "#fff", # white
         item_selected = "#ddd", # grey (lighter)
-        link = "#00593d", # dark green
+        link = "#007a54", # dark green
 
 #Buttons are using default Bootstrap styling colors by default with this scheme, changable to match your library colours
 
@@ -66,10 +66,10 @@
         button_confirm_border_hover = "#00593d",
         button_confirm_text = "#fff",
 
-#Denial buttons like Cancel. Make all 4 the same color for no hover effect    
-        button_deny = "#dc3545",
-        button_deny_hover = "#c82333",
-        button_deny_border = "#dc3545",
+#Denial buttons like Cancel. Make all 4 the same color for no hover effect
+        button_deny = "#c82333",
+        button_deny_hover = "#b21f2d",
+        button_deny_border = "#bd2130",
         button_deny_border_hover = "#bd2130",
         button_deny_text = "#fff",
 
@@ -80,14 +80,14 @@
         button_remove_border_hover = "#bd2130",
         button_remove_text = "#fff",
 
-#Main search buttons and buttons that are not a confirm or deny such as the Less and More details on the record. Make all 4 the same color for no hover effect 
-        opac_button = "#2e3b91",
-        opac_button_hover = "#949cc8",
-        opac_button_border = "#2e3b91",
-        opac_button_border_hover = "#949cc8",
+#Main search buttons and buttons that are not a confirm or deny such as the Less and More details on the record. Make all 4 the same color for no hover effect
+        opac_button = "#424fa6",
+        opac_button_hover = "#4a58b7",
+        opac_button_border = "#2e3b91;",
+        opac_button_border_hover = "#2e3b91;",
         opac_button_text = "#fff",
 
-#Action buttons such as Place Hold and Add to List seen in record and results. Make all 4 the same color for no hover effect 
+#Action buttons such as Place Hold and Add to List seen in record and results. Make all 4 the same color for no hover effect
         action_button = "#f8f9fa",
         action_button_hover = "#e2e6ea",
         action_button_border = "#007a54",
@@ -96,5 +96,5 @@
         #Many action buttons use link coloring on the anchor tags. This setting will change the color to match your color schema if necessary
         #action_button_text_anchors = "",
 };
-    
+
 %]

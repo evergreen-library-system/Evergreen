@@ -26,7 +26,7 @@
     org_unit = ctx.get_aou(attrs.plib_copy_counts.$depth.org_unit);
     ou_name = org_unit.name;
     UNLESS displayed_ous.exists(ou_name);
-    
+
 %]
 [%- IF attrs.plib_copy_counts.$depth.count > 0 AND (
         hiding_disabled OR ctx.org_within_hiding_scope(org_unit.id)) %]

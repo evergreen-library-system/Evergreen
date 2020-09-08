@@ -44,31 +44,33 @@
           <br/>
           [% END %]
         [% END %]
-        <div [%- IF ctx.metarecord %]class="hidden"[%- ELSE %]class="container"[%- END %]>
+        <div [%- IF ctx.metarecord %]class="hidden"[%- ELSE %]class="container-fluid"[%- END %]>
+
             <div id="results_header_inner">
-               
+
                 <div id="refine_hits" class="btn btn-secondary"><a onclick="getFacety();">[% l('Refine these results') %]</a></div>
                 <div id="return_to_hits" class="results_header_btns"><a onclick="getResulty();">[% l('Back to results') %]</a></div>
-               
 
 
+            <div class="row">
+            <div class="col">
                 <div class="search-options text-center">
                     <div class="mx-auto">
                         <!-- ===== Drop Down ===== -->
                         <div class="search-option my-2">
-                		<label for="opac.result.sort">[% l('Sort Results') %]</label>
-                        	[% INCLUDE "opac/parts/filtersort.tt2" value=CGI.param('sort') submit_on_change=1 class="form-control" %]
+                        <label for="opac.result.sort">[% l('Sort Results') %]</label>
+                            [% INCLUDE "opac/parts/filtersort.tt2" value=CGI.param('sort') submit_on_change=1 class="form-control" %]
                         </div>
                         [%- IF show_more_details.default != 'hide' -%]
 
                         <!-- ===== Buttons ===== -->
-                    	<div class="search-option my-2">
-                        	[% IF show_detail_view %]
-                        	<a href="[% mkurl('', {detail_record_view => 0}) %]" class="btn btn-sm btn-secondary">[% l('Show Fewer Details') %]</a> [% ELSE %]
-                        	<a href="[% mkurl('', {detail_record_view => 1}) %]" class="btn btn-sm btn-secondary">[% l('Show More Details') %]</a>
-                        	[% END %]
-                    	</div>
-                    	[%- END -%]
+                        <div class="search-option my-2">
+                            [% IF show_detail_view %]
+                            <a href="[% mkurl('', {detail_record_view => 0}) %]" class="btn btn-sm btn-secondary">[% l('Show Fewer Details') %]</a> [% ELSE %]
+                            <a href="[% mkurl('', {detail_record_view => 1}) %]" class="btn btn-sm btn-secondary">[% l('Show More Details') %]</a>
+                            [% END %]
+                        </div>
+                        [%- END -%]
                          [% IF (is_advanced AND NOT is_special) AND CGI.param('qtype') %]
                         <div class="search-option my-2">
                             <span id="refine_search_link"> <a class="btn btn-secondary btn-sm" href="[% mkurl(ctx.opac_root _ '/advanced') %]">[%
@@ -77,69 +79,81 @@
                         </div>
                         [% END %]
                     </div>
+                </div>
+            </div>
+            </div>
 
-
+            <div class="row">
+            <div class="col">
                     <!-- ===== Checkboxes ===== -->
-                    <div class="search-check text-center mb-3">
+                    <div class="search-check">
+
                      [%- IF !search.no_highlight %]
-                        <div class="search-filter form-check m-2">        
-                            <label for="no_highlight" class="form-check-label">
-                            <input class="form-check-input" type="checkbox" id="no_highlight" name="no_highlight" value="1"
+
+                        <div class="search-filter m-2">
+                            <label for="no_highlight">
+                            <input type="checkbox" id="no_highlight" name="no_highlight" value="1"
                                 onchange="search_modifier_onchange('no_highlight', this, true)"
                                 [% CGI.param('no_highlight').size ? ' checked="checked"' : '' %] />
                             [% l('Disable Highlighting') %]
                             </label>
                         </div>
-                        [% END; %]
-                        <div class="search-filter form-check m-2">
-                    	    <label for="limit_to_available" class="form-check-label">
-                        	<input class="form-check-input" type="checkbox" id="limit_to_available" name="modifier" value="available"
+                        [% END %]
+
+                        <div class="search-filter m-2">
+                            <label for="limit_to_available">
+                            <input type="checkbox" id="limit_to_available" name="modifier" value="available"
                             onchange="search_modifier_onchange('available', this, true)"
                             [% CGI.param('modifier').grep('available').size ? ' checked="checked"' : '' %] />
-                        	[% l('Limit to Available Items') %]
-                    	    </label>
+                            [% l('Limit to Available Items') %]
+                            </label>
                         </div>
                         [% IF NOT metarecords.disabled %]
-                    	<div class="search-filter form-check m-2">
-                        <label for="metabib_search_modifier" class="form-check-label">
-                            <input class="form-check-input" type="checkbox" id="metabib_search_modifier"
+
+                        <div class="search-filter m-2">
+                        <label for="metabib_search_modifier">
+                            <input type="checkbox" id="metabib_search_modifier"
                                 name="modifier" value="metabib"
                                 onchange="search_modifier_onchange('metabib', this, true)"
                                 [% CGI.param('modifier').grep('metabib').size ? ' checked="checked"' : '' %] />
                             [% l('Group By Formats and Editions') %]
                         </label>
-                    	</div>
+                        </div>
                     [% END %]
                     [% IF ctx.depth_sel_checkbox %]
-                    <div class="search-filter form-check m-2">
-                    	<label class="form-check-label" for="depth_sel" title="[% ctx.depth_sel_tooltip | html %]">
-                        	<input class="form-check-input" type="checkbox" id="depth_sel" name="depth" value="[% ctx.depth_sel_depth %]"
+
+                    <div class="search-filter m-2">
+                        <label for="depth_sel" title="[% ctx.depth_sel_tooltip | html %]">
+                            <input type="checkbox" id="depth_sel" name="depth" value="[% ctx.depth_sel_depth %]"
                             onchange="this.form.submit()"
                             [% CGI.param('depth') == ctx.depth_sel_depth ? ' checked="checked"' : '' %] />
-                        	[% ctx.depth_sel_checkbox_label | html %]
-                    	</label>
+                            [% ctx.depth_sel_checkbox_label | html %]
+                        </label>
                     </div>
                     [% END %]
                     [% IF ctx.exclude_electronic_checkbox %]
-                   		 <div class="search-filter form-check m-2">
-                    	<label class="form-check-label" for='opac.result.excludeelec'>
-                        <input class="form-check-input" type='checkbox' id='opac.result.excludeelec' name="fi:-search_format" value="electronic"
+
+                        <div class="search-filter m-2">
+                        <label for='opac.result.excludeelec'>
+                        <input type='checkbox' id='opac.result.excludeelec' name="fi:-search_format" value="electronic"
                             onchange="exclude_onchange(this)"
                             [%- CGI.param('fi:-search_format').grep('electronic').size ? ' checked="checked"' : '' %] />
                         [% l("Exclude Electronic Resources") %]
-                    	</label>
-                    </div>
+                        </label>
+                        </div>
                     [% END %]
                    </div>
-                </div>
+                   </div>
 
-
+            </div>
+            </div>
             </div>
         </div>
     </div>
     </form>
     <div class="mx-5">
-            <div id="results-page">
+        <div class="row">
+            <div id="results-page" class="col">
                 [%- IF (ctx.depth_sel_checkbox OR ctx.depth_sel_button) AND CGI.param('depth') == ctx.depth_sel_depth AND ctx.depth_sel_resultshint %]
                 <div id="results-page-depth-hint">[% ctx.depth_sel_resultshint | html %]</div>
                 [%- END %]
@@ -147,5 +161,6 @@
                     (ctx.records.size ? "table.tt2" : "lowhits.tt2");
                 INCLUDE $path %]
             </div>
+        </div>
     </div>
 [%- END %]

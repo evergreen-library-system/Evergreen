@@ -3,7 +3,7 @@
     arrow_down = '&#9660;';
 %]
 <div>
-    <div id='rdetail_extras_div' class="card-columns row" style='width: 100%;'> 
+    <div id='rdetail_extras_div' class="card-columns row" style='width: 100%;'>
         [%
             IF ctx.google_books_preview;
                 label = l('Google Preview');
@@ -30,8 +30,8 @@
         IF attrs.summaries.0; hide_summary = 0; ELSE;
             # Expose content cafe if it's reasonable to do so.
             # This approach only works when using embedded content cafe.
-            IF ENV.OILS_CONTENT_CAFE_USER; 
-                ident = attrs.isbn_clean || attrs.upc; 
+            IF ENV.OILS_CONTENT_CAFE_USER;
+                ident = attrs.isbn_clean || attrs.upc;
                 IF ident; hide_summary = 0; END;
             END;
         END;
@@ -52,44 +52,44 @@
         END;
 
         extras = [
-        	{name => 'summaryplus',  label => l('Summaries & More'), hide => hide_summary},
-            {name => 'annotation', label => l('Annotation'), hide => 1}, 
-            {name => 'awards',  label => l('Awards, Reviews, & Suggested Reads')}, 
+            {name => 'summaryplus',  label => l('Summaries & More'), hide => hide_summary},
+            {name => 'annotation', label => l('Annotation'), hide => 1},
+            {name => 'awards',  label => l('Awards, Reviews, & Suggested Reads')},
             {name => 'excerpt',  label => l('Excerpt'), hide => 1},
             {name => 'issues',   label => l('Issues Held'), hide => !(ctx.have_holdings_to_show || ctx.have_mfhd_to_show)},
-            {name => 'preview',  label => l('Preview'), hide => 1}, 
+            {name => 'preview',  label => l('Preview'), hide => 1},
             {name => 'addedcontent',  label => l('Additional Content'), hide => hide_ac},  # hide if all content is known to not exist
             {name => 'cnbrowse', label => l('Shelf Browser')},
             {name => 'marchtml', label => l('MARC Record')}
         ];
 
         FOREACH extra IN extras;
-            IF extra.hide; NEXT; END; 
+            IF extra.hide; NEXT; END;
             name = extra.name;
         %]
         <div class="card border-secondary col-12 p-0">
-         [%  
+         [%
                     IF tab_is_active(name);
                         href = mkurl('', {}, ['expand', 'ac']);
                         arrow = arrow_down;
                     ELSE;
                         IF name == 'addedcontent' AND default_ac;
-                            href = mkurl('', {expand => name, ac => default_ac}) _ '#' _ name; 
+                            href = mkurl('', {expand => name, ac => default_ac}) _ '#' _ name;
                         ELSE;
-                            href = mkurl('', {expand => name}) _ '#' _ name; 
+                            href = mkurl('', {expand => name}) _ '#' _ name;
                         END;
                         arrow = arrow_right;
                     END;
                 %]
             <a id='[% name %]' href='[% href %]' class="text-white" rel="nofollow" vocab="" style="text-decoration:none;">
            <div class="card-header extra_header">
-               
+
                 <span>[% arrow %] [% extra.label | html %]</span>
+                </a>
             </div>
-            </a> 
             [%  IF tab_is_active(name); %]
             <div class='card-body'>
-                
+
                     [% IF name == 'marchtml';
                         ctx.marchtml;
                     ELSE;
@@ -98,7 +98,7 @@
                     END;
                     -%]
                 </div>
-                [% END; %]
+                [% END %]
             </div>
         [% END %]
     </div>

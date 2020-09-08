@@ -26,7 +26,7 @@
 <tr[% IF loop.index == 1 %] id="adv_global_row"[% END %]>
 
     <td class="td-left py-3">
-		<div class="row">
+        <div class="row">
             <div class="col-2">
             <!-- bool selector.  hide for first row.  safe to ignore first bool value in form submission -->
                 <select aria-label="[% l('Boolean search operator') %]"
@@ -59,8 +59,9 @@
     <td class="px-2">
         <a href="javascript:;" class="btn btn-remove btn-sm" aria-label="Remove This Row"
             title="[% l('Remove row') %]"
+            aria-label="[% l('Remove row') %]"
             onclick='return killRowIfAtLeast(2, this);'>
-               <i class="fas fa-times"></i>
+               <i class="fas fa-times" aria-hidden="true"></i>
             </a></td>
 </tr>
 [% END %]

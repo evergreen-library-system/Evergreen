@@ -1,26 +1,31 @@
-[% 
+[%
     cnoffset = CGI.param('cnoffset');
     cnoffset = cnoffset.match('^-?\d+$') ? cnoffset : 0; # verify cnoffset is a sane value
 %]
 
 <div class='cn_browser'>
-    <div id='cn_browse_div'> 
+    <div id='cn_browse_div'>
         <p class='color_4 h5'>
             [% l("You are now browsing [_1]", ctx.browsing_ou.name) | html %]
         </p>
-        <br>
-        <table class="w-100">
-                <tr>
-                    <td class="text-left">
-                        <a class='btn btn-action' 
-                            href="[% mkurl('', {cnoffset => cnoffset - 1}) %]#cnbrowse">[% l("&lt;&lt; Previous Page") %]</a>
-                    </td>
-                    <td colspan='1' class="h3 text-center">[% l("Shelf Browser") %]</td>
-                    <td class="text-right">
-                        <a class='btn btn-action' 
-                            href="[% mkurl('', {cnoffset => cnoffset + 1}) %]#cnbrowse">[% l("Next Page &gt;&gt;") %]</a>
-                    </td>
-                </tr>
+
+        <div class="row">
+            <div class="col-3">
+                <a class='np_nav_link classic_link btn btn-outline-primary' href="[% mkurl('', {cnoffset => cnoffset - 1}) %]#cnbrowse">[% l("&lt;&lt; Previous Page") %]</a>
+            </div>
+
+            <div class="col-6 text-center">
+                <h3>[% l("Shelf Browser") %]</h3>
+            </div>
+
+            <div class="col-3 text-right">
+                <a class='np_nav_link classic_link btn btn-outline-primary' href="[% mkurl('', {cnoffset => cnoffset + 1}) %]#cnbrowse">[% l("Next Page &gt;&gt;") %]</a>
+            </div>
+        </div>
+
+        <hr />
+
+        <table class='data_grid bookshelf'>
             <tbody>
             [%- tr_open = 0;
                 PROCESS get_library;
@@ -29,11 +34,11 @@
                 <tr class='cn_browse_row'>
                 [% END -%]
                     <td class='cn_browse_item'>
-                    	<div class="card">
+                        <div class="card">
                         [%  rec_attrs = {marc_xml => cn.record.marc};
                             PROCESS get_marc_attrs args=rec_attrs; %]
-                        <a href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {$loc_name => loc_value}, 1) %]"><img height='60' width='50' 
-                            class='cn_browse_info' 
+                        <a href="[% mkurl(ctx.opac_root _ '/record/' _ cn.record.id, {$loc_name => loc_value}, 1) %]"><img height='60' width='50'
+                            class='cn_browse_info'
                             [% img_alt(l('Go to record [_1]', rec_attrs.title)) %]
                             src="[% ctx.media_prefix %]/opac/extras/ac/jacket/small/r/[% cn.record.id | uri %]" /></a>
                         <div class='cn_browse_info bold'>[% cn.label | html %]</div>

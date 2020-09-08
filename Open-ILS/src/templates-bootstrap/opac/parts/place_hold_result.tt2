@@ -31,7 +31,7 @@ function disable_submit() {
             PROCESS get_marc_attrs args=attrs %]
             <tr>
                 <td>
-                    [% 
+                    [%
                         override = 0;
                         IF hdata.could_override || hdata.hold_local_alert;
                             override_possible = 1;
@@ -39,21 +39,21 @@ function disable_submit() {
                         END;
                     %]
                     [% IF override %]
-                    <input 
+                    <input
                         type="checkbox" name="hold_target" value="[% hdata.target.id | html %]"
-                         checked='checked' />       
-                         [% END %]        
+                         checked='checked' />
+                         [% END %]
                 </td>
                 <td>
-                    
+
                     [% IF hdata.parts %]
                         <input type='hidden' name='part' value='[% hdata.selected_part || '' %]'/>
                     [% END %]
-                   
+
                         [% IF hdata.hold_success %]
 
                        <h5 class="success"><i class="fas fa-check-circle"></i> [% l("Hold was successfully placed for: "); %]</h5>
-					[%
+                    [%
                         title = attrs.title_extended;
                         IF hdata.selected_part AND hdata.parts AND hdata.parts.size > 0;
                             FOREACH part IN hdata.parts;
@@ -63,18 +63,18 @@ function disable_submit() {
                             END;
                         END;
                     %]
-                      
+
 
                     <div class='hold-items-list-title'><p>[% title | html %]</p></div>
                     <div>
                         [% IF hdata.frozen %]
-                        
+
                         [% l("Hold is suspended") %]
                         [% IF hdata.thaw_date %]
                         <br/>
                         [% l("Reactivate on [_1]", date.format(ctx.parse_datetime(hdata.thaw_date), DATE_FORMAT));
                            END %]
-                        
+
                         [% END %]
                 </div>
                         [% IF ctx.is_staff %]
@@ -146,17 +146,16 @@ function disable_submit() {
                 [% |l %]You have permission to override some of the failed holds. Click Submit to override and place your hold on the selected items.[% END %]
             </div>
             <span>
-                <button id="place_hold_submit" type="submit" name="submit" class="btn btn-confirm"><i class="fas fa-save"></i> [% l('Submit') %]</button>
+                <button id="place_hold_submit" type="submit" name="submit" class="btn btn-confirm"><i class="fas fa-save" aria-hidden="true"></i> [% l('Submit') %]</button>
             </span>
         [% END %]
-      
-        [% IF any_failures OR ctx.general_hold_error %]
-                  <span><a class="btn btn-confirm" href="[% CGI.param('redirect_to') || CGI.referer | html %]"><i class="fas fa-arrow-circle-left"></i> [% l('Back To Search') %]</a></span>
 
-        <a class="btn btn-deny" href="[% CGI.param('redirect_to') || CGI.referer | html %]"><i class="fas fa-times"></i> [% l('Cancel') %]</a>
+        [% IF any_failures OR ctx.general_hold_error %]
+        <span><a class="btn btn-confirm" href="[% CGI.param('redirect_to') || CGI.referer | html %]"><i class="fas fa-arrow-circle-left" aria-hidden="true"></i> [% l('Back To Search') %]</a></span>
+        <a class="btn btn-deny" href="[% CGI.param('redirect_to') || CGI.referer | html %]"><i class="fas fa-times" aria-hidden="true"></i> [% l('Cancel') %]</a>
         [% ELSE %]
         <div class='hold_success_links'>
-          <span><a class="btn btn-confirm" href="[% CGI.param('redirect_to') || CGI.referer | html %]"><i class="fas fa-arrow-circle-left"></i> [% l('Back To Search') %]</a></span>
+          <span><a class="btn btn-confirm" href="[% CGI.param('redirect_to') || CGI.referer | html %]"><i class="fas fa-arrow-circle-left" aria-hidden="true"></i> [% l('Back To Search') %]</a></span>
            [% IF ctx.is_staff %]
              [% IF CGI.param('hold_type') == 'C';
                   hold_type_label = l('copy');

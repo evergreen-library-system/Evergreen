@@ -7,9 +7,9 @@
 %]
 <h3>[% l('Current Items Checked Out') %]</h3>
 <div id='myopac_checked_div'>
-	
+
     <div>
-   
+
     [% IF ctx.circs.size < 1 %]
     <div class="warning_box">[% l('You have no items checked out.') %]</div>
     [% ELSE %]
@@ -32,15 +32,15 @@
         <div class="d-block d-md-none">
             <input id="check_all_checked_alt" aria-label="[% l('Select All Items') %]" checked="checked" type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
 
-            <label for="check_all_checked">[% l('Check/Uncheck All') %]</label>  
-        </div>       
+            <label for="check_all_checked">[% l('Check/Uncheck All') %]</label>
+        </div>
         <table  id="acct_checked_main_header"  title="[% l('Items Checked Out') %]"
             class="table table-hover table-bordered miniTable circTable">
             <thead>
             <tr>
                 <td class="checkbox_column">
                     <input type="checkbox" id="check_all_checked"
-                        aria-label="[% l('Select All Items') %]" 
+                        aria-label="[% l('Select All Items') %]"
                         onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"
                     />
                 </td>
@@ -62,8 +62,8 @@
                 [%# Copy the ctx.circs into a local array, then add a SORT field
                     that contains the value to sort on.  Since we need the item attrs,
                     invoke it and save the result in ATTRS.
-		%]
-		[% 
+        %]
+        [%
                 circ_items = ctx.circs;  # Array assignment
 
                 sort_field = CGI.param('sort');  # unless changed below...
@@ -71,7 +71,7 @@
                 FOR circ IN circ_items;
                     circ.ATTRS = {marc_xml => circ.marc_xml};
                     PROCESS get_marc_attrs args=circ.ATTRS;
-		
+
                     SWITCH sort_field;
 
                        CASE "sort_title";
@@ -82,10 +82,10 @@
 
                        CASE "renews";
                           circ.SORTING = circ.circ.renewal_remaining;
-                       
+
                        CASE "due";
                           circ.SORTING = circ.circ.due_date;
-                       
+
                        CASE "barcode";
                           circ.SORTING = circ.circ.target_copy.barcode;
 
@@ -93,7 +93,7 @@
                           circ.SORTING = circ.circ.target_copy.call_number.label;
                         CASE "lib";
                           circ.SORTING = circ.circ.target_copy.call_number.owning_lib.name;
-                       
+
                        CASE;
                           sort_field = "";
                     END; # SWITCH
@@ -106,14 +106,14 @@
                 END;
 
                 # Apply sorting to circ_items
-	        IF (sort_field);
-		    circ_items = circ_items.sort("SORTING");
+            IF (sort_field);
+            circ_items = circ_items.sort("SORTING");
                     IF (CGI.param("sort_type") == "desc");
                         circ_items = circ_items.reverse;
                     END;
                 END;
 
-		# circ_items list is now sorted.  Traverse and dump the information.
+        # circ_items list is now sorted.  Traverse and dump the information.
 
                 FOR circ IN circ_items; %]
                     <tr>
@@ -128,7 +128,7 @@
                             [% IF circ.circ.target_copy.call_number.id == -1 %]
                                 [% circ.circ.target_copy.dummy_title | html %]
                             [% ELSIF circ.ATTRS.title %]
-                                <a href="[% mkurl(ctx.opac_root _ '/record/' _ 
+                                <a href="[% mkurl(ctx.opac_root _ '/record/' _
                                     circ.circ.target_copy.call_number.record.id, {}, 1) %]"><span[%- deemphasize_class -%]>
                                     [%- circ.ATTRS.title.substr(0,circ.ATTRS.nonfiling_characters) | html %]</span>
                                     [%- circ.ATTRS.title.substr(circ.ATTRS.nonfiling_characters) | html %]</a>
@@ -174,7 +174,7 @@
                                                 INCLUDE "opac/parts/library_name_link_from_ou.tt2";
                                 %]
                           </td>
-                        [% END; %]
+                        [% END %]
                     </tr>
                     [%  IF circ.renewal_response AND
                             circ.renewal_response.textcode != 'SUCCESS' %]
@@ -188,8 +188,8 @@
                                         # the stock hold ratio message may not be patron friendly
                                         renew_fail_msg = l('Item is needed for a hold');
                                     ELSE;
-                                        renew_fail_msg = circ.renewal_response.desc || 
-                                            circ.renewal_response.fail_part || 
+                                        renew_fail_msg = circ.renewal_response.desc ||
+                                            circ.renewal_response.fail_part ||
                                             circ.renewal_response.textcode;
                                     END;
                                     renew_fail_msg | html;
@@ -197,9 +197,9 @@
                             </span>
                         </td>
                     </tr>
-                    [% END; %]
+                    [% END %]
 
-                [% END; %]
+                [% END %]
                 </tbody>
             </table>
         </form>

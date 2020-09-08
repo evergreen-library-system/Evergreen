@@ -9,7 +9,7 @@
             <tr id="adv_expert_row">
                 <td class="py-3">
                    <div class="row">
-                        
+
                         <div class="col-3">
                         <span class="d-inline-block">
                             <label for="expert_tag">[% l("Tag:") %]</label>
@@ -29,7 +29,7 @@
                         </span>
                         </div>
                         <div class="col-2">
-                         <button class="btn btn-remove btn-sm d-inline-block" style="position:absolute;bottom:5px;" aria-label="[% l('Remove row') %]" 
+                         <button class="btn btn-remove btn-sm d-inline-block" style="position:absolute;bottom:5px;" aria-label="[% l('Remove row') %]"
                                 onclick='return killRowIfAtLeast(1, this.parentNode.parentNode);'>
                                <i class="fas fa-times"></i></a>
                             </button>
@@ -47,7 +47,7 @@
                <td  class="py-3">
                    <label for="[% lib_select_id %]"><strong>[% l("Search Library:") %]</strong>
                        [%- PROCESS "opac/parts/org_selector.tt2";
-                           INCLUDE build_org_selector id=lib_select_id show_loc_groups=1 
+                           INCLUDE build_org_selector id=lib_select_id show_loc_groups=1
                        %]
                    </label>
                </td>

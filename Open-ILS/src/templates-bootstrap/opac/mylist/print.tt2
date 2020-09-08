@@ -4,7 +4,7 @@
     INCLUDE "opac/parts/topnav.tt2";
     ctx.page_title = l("Confirm Basket Printing") %]
     [% INCLUDE "opac/parts/searchbar.tt2" %]
-   
+
 <div class="container">
   [% IF ctx.mylist.size %]
   <h3>[% l('Confirm Basket Printing') %]</h3>
@@ -18,12 +18,12 @@
         </label>
       </div>
       <br />
-      <button id="print_cart_submit" type="submit" class="btn btn-confirm"><i class="fas fa-print"></i> [% l("Print") %]</button>
-      <button type="reset" name="cancel" onclick="window.location='[% ctx.referer | html %]'"  id="clear_basket_cancel" class="btn btn-deny"><i class="far fa-times-circle"></i> [% l('Cancel') %]</button>
+      <button id="print_cart_submit" type="submit" class="btn btn-confirm"><i class="fas fa-print" aria-hidden="true"></i> [% l("Print") %]</button>
+      <button type="reset" name="cancel" onclick="window.location='[% ctx.referer | html %]'"  id="clear_basket_cancel" class="btn btn-deny"><i class="fas fa-times-circle" aria-hidden="true"></i> [% l('Cancel') %]</button>
     </form>
   [% ELSE %]
     <div class="warning_box"><h3>[% l("The basket is empty."); %]</h3></div>
-    <button type="button" class="btn btn-confirm" onclick="window.location='[% ctx.referer | html %]'"><i class="fas fa-undo-alt"></i> [% l('Return') %]</button>
+    <button type="button" class="btn btn-confirm" onclick="window.location='[% ctx.referer | html %]'"><i class="fas fa-undo-alt" aria-hidden="true"></i> [% l('Return') %]</button>
   [% END %]
 </div>
 [%- END %]

@@ -8,7 +8,7 @@
     INCLUDE "opac/parts/topnav.tt2";
 
     ctx.page_title = l("Browse the Catalog");
-    
+
     blimit = CGI.param('blimit') || ctx.opac_hits_per_page || 10;
 
     depart_list = ['blimit', 'bterm', 'bpivot'];
@@ -30,18 +30,18 @@
 %]
 
     <h2 class="sr-only">[% l('Catalog Browse') %]</h2>
-    
+
     <div id="content-wrapper" class="my-5">
         <div class="container mx-auto w-75">
             <div id="browse-the-catalog">
-                <div id="browse-controls" class='row text-center'>
+                <div id="browse-controls" class='row'>
                     <form method="get" onsubmit="$('browse-submit-spinner').className = ''; return true" class="mx-auto">
                         <input type="hidden" name="blimit"
                             value="[% blimit %]" />
 
                         [% control_qtype = INCLUDE "opac/parts/qtype_selector.tt2"
                             id="browse-search-class" browse_only=1 plural=1 %]
-							
+
                         [% control_bterm = BLOCK %]<input type="text" name="bterm" id="browse-term"
                             aria-label="[% l('Browse term') %]"
                             value="[% CGI.param('bterm') | html %]" class="form-control" />[% END %]
@@ -50,19 +50,19 @@
                             arialabel=l('Select holding library') %]
                         [% l('Browse for [_1] starting with [_2] in [_3]', control_qtype, control_bterm, control_locg) %]
 
-			<button id='search-submit-go' type="submit" class="btn btn-confirm my-2"><i class="fas fa-book-reader"></i> [% l('Browse') %]</button>
-                        <img id="browse-submit-spinner" 
+            <button id='search-submit-go' type="submit" class="btn btn-confirm my-2"><i class="fas fa-book-reader" aria-hidden="true"></i> [% l('Browse') %]</button>
+                        <img id="browse-submit-spinner"
                         src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]"
-                        class="hidden" style="width: 16px; height: 16px;" 
+                        class="hidden" style="width: 16px; height: 16px;"
                         alt="[% l('Search in progress icon') %]" />
                     </form>
                 </div>
-			<div class="row my-5 border-top border-bottom">
+            <div class="row my-5 border-top border-bottom">
                 [% BLOCK browse_pager %]
-                <div class="browse-pager text-center col-12">
+                <div class="browse-pager col-12">
                 <div class="mx-auto">
                     [% IF ctx.back_pivot %]
-                    <a class="btn btn-action btn-sm" href="[% mkurl('', {bpivot => ctx.back_pivot}) %]" onclick="$('browse-pager-spinner-[% id %]').className = '';">&larr; [%l ('Back') %]</a>
+                    <a class="btn btn-action btn-sm" href="[% mkurl('', {bpivot => ctx.back_pivot}) %]" onclick="$('#browse-pager-spinner-[% id %]').removeClass('hidden');">&larr; [%l ('Back') %]</a>
                     [% END %]
                     [% IF ctx.pager_shortcuts;
                         current_qtype = CGI.param('qtype') || 'title' %]
@@ -72,15 +72,17 @@
                         [% END %]
                     </span>
                     [% END %]
-                    <img id="browse-pager-spinner-[% id %]" 
-                        src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]"
-                        class="hidden" style="width: 16px; height: 16px;" 
-                        alt="[% l('Search in progress icon') %]" />
+                    <span class="browse-pager-spinner">
+                        <img id="browse-pager-spinner-[% id %]"
+                            src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]"
+                            class="hidden" height="16" width="16"
+                            alt="[% l('Search in progress icon') %]" />
+                    </span>
                     [% IF ctx.forward_pivot %]
-                    <a class="btn btn-action btn-sm" href="[% mkurl('', {bpivot => ctx.forward_pivot}) %]" onclick="$('browse-pager-spinner-[% id %]').className = '';">[%l ('Next') %] &rarr;</a>
+                    <a class="btn btn-action btn-sm" href="[% mkurl('', {bpivot => ctx.forward_pivot}) %]" onclick="$('#browse-pager-spinner-[% id %]').removeClass('hidden');">[%l ('Next') %] &rarr;</a>
                     [% END %]
 
-                   
+
                         </div>
                 </div>
                 [% END %]
@@ -150,11 +152,11 @@
                                             # defined when h.target is.
 
                                             IF h.target AND h.target_count AND result.list_authorities.grep('^' _ h.target _ '$').size == 0 AND h.main_entry;
-                                                id = h.target; NEXT IF seenit.$id; seenit.$id = 1; 
+                                                id = h.target; NEXT IF seenit.$id; seenit.$id = 1;
                                                 IF !auth_headings_ul_added;
                                                     # only add a <ul> if we have at least one <li> (WCAG 2.0)
                                                     auth_headings_ul_added = 1; %]
-                                                <ul class="browse-result-authority-headings"> 
+                                                <ul class="browse-result-authority-headings">
                                                 [% END %]
 
                                                 <li><span class="browse-result-authority-field-name">[% heading_use_label(use=h.type) %]</span>
@@ -183,11 +185,11 @@
                                             # defined when h.target is.
 
                                             IF h.target AND h.target_count AND result.list_sees.grep('^' _ h.target _ '$').size == 0 AND !h.main_entry AND ctx.get_cgf('opac.show_related_headings_in_browse').enabled == 't';
-                                                id = h.target; NEXT IF seenit.$id; seenit.$id = 1; 
+                                                id = h.target; NEXT IF seenit.$id; seenit.$id = 1;
                                                 IF !auth_headings_ul_added;
                                                     # only add a <ul> if we have at least one <li> (WCAG 2.0)
                                                     auth_headings_ul_added = 1; %]
-                                                <ul class="browse-result-authority-headings"> 
+                                                <ul class="browse-result-authority-headings">
                                                 [% END %]
                                                 <li><span class="browse-result-authority-field-name">[% heading_use_label(use=h.type) %]</span>
                                                 <a href="[% mkurl(ctx.opac_root _ '/results', {query => 'identifier|authority_id[' _ h.target _ ']'}) %]">[% h.heading | html %]</a>

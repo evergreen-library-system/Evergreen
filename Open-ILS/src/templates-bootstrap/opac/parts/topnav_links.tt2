@@ -4,39 +4,38 @@
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse" id="navbarNav" style="height:auto !important;">
+  <div class="collapse navbar-collapse" id="navbarNav">
   <!--Left Links-->
-  <div class="row w-100">
-  <div class="col-12">
- 
+
+
    <ul class="navbar-nav nav-fl px-3">
-    	<!--Link 1-->
+      <!--Link 1-->
       <li class="nav-item">
         <a class="nav-link" href="[% ctx.link_one %]">Example Link 1<span class="sr-only">(current)</span></a>
       </li>
-      	<!--Link 2-->
+        <!--Link 2-->
       <li class="nav-item">
         <a class="nav-link" href="[% ctx.link_two %]">Example Link 2</a>
       </li>
-      	<!--Link 3-->
+        <!--Link 3-->
       <li class="nav-item">
         <a class="nav-link" href="[% ctx.link_three %]">Example Link 3</a>
       </li>
-      	<!--Link 4-->
+        <!--Link 4-->
       <li class="nav-item">
         <a class="nav-link" href="[% ctx.link_four %]">Example Link 4</a>
       </li>
     </ul>
     <!--Right Links-->
     <ul class="navbar-nav ml-auto nav-fr px-3">
-    	<!--If not signed in, show sign in button-->
+      <!--If not signed in, show sign in button-->
     [% IF !ctx.user %]
-      	<li class="nav-item">
-        	 [% IF ctx.page != 'login' ;%] 
-           <a href="#exampleModal" data-toggle="modal" data-target="#exampleModal" class="nav-link login"> 
-           [% ELSE ;%] <a href="https://test.nflibrary.ca/eg/opac/login" class="nav-link login">
-            [% END; %] [% l('My Account') %] </a>
-      	</li>
+        <li class="nav-item">
+           [% IF ctx.page != 'login' %]
+           <a href="#loginModal" data-toggle="modal" data-target="#loginModal" class="nav-link login">
+           [% ELSE %] <a href="https://test.nflibrary.ca/eg/opac/login" class="nav-link login">
+            [% END %] [% l('My Account') %] </a>
+        </li>
       <!--User is signed in-->
     [% ELSE %]
     <li><div class="dropdown-divider"></div></li>
@@ -55,27 +54,26 @@
                       [% END %]
                       [% l('Messages') %]
             </a>
-      	</li>
-      	<!--My Account-->
-      	<li class="nav-item">
+        </li>
+        <!--My Account-->
+        <li class="nav-item">
          <a class="nav-link" href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, ['single', 'message_id', 'sort','sort_type']) %]">[% l('My Account') %]</a>
-      	</li>
-      	<!--Lists Link-->
-      	<li class="nav-item">
+        </li>
+        <!--Lists Link-->
+        <li class="nav-item">
         <a class="nav-link" href="[% mkurl(ctx.opac_root _ '/myopac/lists', {}, ['single', 'message_id']) %]">[% l('My Lists') %]</a>
-      	</li>
-      	<!--Logout-->
-      	<li class="nav-item">
+        </li>
+        <!--Logout-->
+        <li class="nav-item">
         <a class="nav-link" href="[% mkurl(ctx.opac_root _ '/logout', {}, 1) %]" id="logout_link">[% l('Logout') %]</a>
-      	</li>
+        </li>
       [% END %]
       <!--must end ul and div no matter the user state-->
     </ul>
        </div>
-       
-       	
-      </div>     
-        </div>
+
+
+
          </nav>
-  
+
 

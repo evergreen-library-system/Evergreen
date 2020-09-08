@@ -10,8 +10,8 @@
 %]
 
 <h3>[% l('Holds History') %]</h3>
-<div id='myopac_holds_div'> 
-  
+<div id='myopac_holds_div'>
+
 <div>
     <div>
         <div>   
@@ -20,7 +20,6 @@
 
              [% IF offset > 0 || count > limit; curpage = 0; WHILE curpage * limit < count; IF curpage * limit == offset; %]
                   <span class="np_nav_link classic_link btn btn-action disabled">[% curpage + 1 %]</span>
-
                     [%- ELSE %]
                 <a href='[% mkurl('hold_history', {limit => limit, offset => (curpage * limit)}) %]' class="np_nav_link classic_link btn btn-action">[% curpage + 1 %]</a>
                     [%- END; curpage = curpage + 1; END; END %]
@@ -65,7 +64,7 @@
                     ahr = hold.hold.hold %]
 
                 <tr>
-                   
+
                     <td>
                     <span class="sr-only">Title</span>
                         <div>

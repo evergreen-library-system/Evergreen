@@ -11,7 +11,7 @@
         ctx.use_stripe = 1;
     END %]
 
-<a name="payment"> </a>    
+<a name="payment"> </a>
 <h3 class="sr-only">[% l('Pay Charges') %]</h3>
 [% IF ctx.fines.balance_owed <= 0 %]
 <div>
@@ -30,19 +30,19 @@
 <div id="pay_fines_now"[% IF ctx.use_stripe %] class="hide_me"[% END %]>
      [% IF last_chance %]
     <h3>[% l("Confirm Payment") %]</h3>
-    
+
     <form action="[% ctx.opac_root %]/myopac/main_pay_init" method="post">
         [% FOR k IN CGI.Vars;
             NEXT UNLESS k;
             FOR val IN CGI.param(k) %]
-        <input type="hidden" name="[% k | html %]" value="[% val | html %]" /> 
+        <input type="hidden" name="[% k | html %]" value="[% val | html %]" />
         [% END; END %]
 
         <button type="submit" class="btn btn-confirm"><i class="fas fa-check"></i> [% l('Confirm') %]</button>
         <a href="[% mkurl(ctx.opac_root _ '/myopac/main#selected_fines', {}, 1) %]" class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Cancel') %]</a>
-	<p class="my-2"><big>[% l("Are you sure you are ready to charge ") %]
+    <p class="my-2"><big>[% l("Are you sure you are ready to charge ") %]
          <strong> [% l("[_1] ", money(ctx.fines.balance_owed))%]</strong>
-        [% l("to your credit card?") %]</big></p> 
+        [% l("to your credit card?") %]</big></p>
      <table title="[% l('List of Transactions') %]" id="acct_fines_confirm_header"
         class="table my-2">
    <thead>
@@ -77,10 +77,10 @@
             </tr>
         [% END %]
      </tbody>
-   </table> 
-     
+   </table>
+
        [% ELSE %]
-    
+
     <form method="post" id="payment_form" action='#payment'
     [% IF ctx.use_stripe %]
     onsubmit="return stripe_onsubmit();"
@@ -102,37 +102,37 @@
           <th colspan='2'><strong>[% l('Billing Information') %]</strong></th>
          </thead>
           <tbody>
-               
-               <tr> 
+
+               <tr>
                 <td><label for="payment-first-name">[% l('First Name') %]</label></td>
-                    <td><input name="given-name" type="text"  name="billing_first" id="payment-first-name" 
+                    <td><input name="given-name" type="text"  name="billing_first" id="payment-first-name"
                         value="[% ctx.user.first_given_name | html %]" class="form-control"/></td>
                 </tr>
                 <tr>
                     <td><label for="payment-last-name">[% l('Last Name') %]</label></td>
-                    <td><input name="family-name" type="text" name="billing_last" id="payment-last-name" 
+                    <td><input name="family-name" type="text" name="billing_last" id="payment-last-name"
                         value="[% ctx.user.family_name | html %]" class="form-control"/></td>
                 </tr>
 
                 <tr>
                     <td><label for="payment-email-addr">[% l('Email Address') %]</label></td>
                     <td>
-                        
-                        <input id="payment-email-addr" type="text" 
-                             value="[% ctx.user.email | html %]" disabled="disabled" 
-                            readonly="readonly" class="form-control" name="email"/>   
+
+                        <input id="payment-email-addr" type="text"
+                             value="[% ctx.user.email | html %]" disabled="disabled"
+                            readonly="readonly" class="form-control" name="email"/>
                         <a title="[% l('Update Email Address') %]"
                             href="[% ctx.opac_root %]/myopac/update_email?return_to_referer=1">[% l("Update") %]</a>
                     </td
                 </tr>
                 <tr>
                     <td><label for="payment-billing-address">[% l('Street Address') %]</label></td>
-                    <td><input type="text" name="billing_address" id="payment-billing-address" 
+                    <td><input type="text" name="billing_address" id="payment-billing-address"
                         value="[% ctx.user.billing_address.street1 _ ctx.user.billing_address.street2 | html %]" class="form-control"/></td>
                 </tr>
                 <tr>
                     <td><label for="payment-billing-city">[% l('City' )%]</label></td>
-                    <td><input type="text" name="billing_city" id="payment-billing-city" 
+                    <td><input type="text" name="billing_city" id="payment-billing-city"
                         value="[% ctx.user.billing_address.city | html %]" class="form-control"/></td>
                 </tr>
                 <tr>
@@ -148,18 +148,18 @@
                 </tr>
                </tbody>
                </table>
-               
+
                <table id="credit_card_info_table" class="table">
                <thead>
-               	<th colspan='2'><strong>[% l('Credit Card Information') %]</strong></th>
+                   <th colspan='2'><strong>[% l('Credit Card Information') %]</strong></th>
                </thead>
                <tbody>
-               
+
                 <tr>
                     <td><label for="payment-credit-card">[% l('Credit Card #') %]</label></td>
-                    
+
                      <!-- Make type tel, which prompts for numbers in mobile -->
-                    <td><input class="form-control" type="tel" pattern="[0-9]*" maxlength="16" id="payment-credit-card" required 
+                    <td><input class="form-control" type="tel" pattern="[0-9]*" maxlength="16" id="payment-credit-card" required
                     [% IF ctx.use_stripe %]
                     data-stripe="number"
                     [% ELSE %]
@@ -228,18 +228,18 @@
                        <div id="payment_actions">
                           [% l('Total amount:') %]
                            <strong>[% money(ctx.fines.balance_owed) %]</strong><br />
-          
+
                          <button type="submit" id="payment_submit" class="btn btn-confirm"><i class="fas fa-arrow-circle-right"></i> [% l('Next') %]</button>
-                         <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]" class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Cancel') %]</a> 
+                         <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]" class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Cancel') %]</a>
                          <br/>
                          </div>
                    </td>
                 </tr>
-                
+
           </tbody>
         </table>
          [% INCLUDE "opac/parts/myopac/main_refund_policy.tt2" %]
-        
+
     [% END %]
     </form>
 </div></div>

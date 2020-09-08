@@ -1,4 +1,4 @@
-[%- 
+[%-
 UNLESS params;
     params = ['locg', 'loc', 'query', 'qtype', 'sort'];
 END;

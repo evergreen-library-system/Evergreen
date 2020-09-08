@@ -157,7 +157,7 @@ contents =  [
     }, {
         label => l('Source of Description Note: '),
         xpath => '//*[@tag="588"]'
-    } 
+    }
 ];
 
 BLOCK render_contents;

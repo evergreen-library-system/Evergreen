@@ -8,7 +8,7 @@
     <div class="header_middle">
        <span class="float-left">[% l('Update Email') %]</span>
     </div>
-	
+
 [% IF ctx.invalid_email %]
     <div id='account-update-email-error'>
         [% bad_email = ctx.invalid_email | html %]
@@ -26,7 +26,7 @@
     [% IF CGI.param("return_to_referer") %]
     <input type="hidden" name="redirect_to" value="[% ctx.referer | html %]" />
     [% END %]
-    <table> 
+    <table>
         <tr><td>[% l('Current Email') %]</td><td>[% ctx.user.email | html %]</td></tr>
         <tr><td>[% l('Current Password') %]</td><td><input type='password' class="form-control" name='current_pw'/></td></tr>
         <tr><td>[% l('New Email') %]</td><td><input type='text' name='email' class="form-control" value='[% ctx.invalid_email | html %]'/></td></tr>

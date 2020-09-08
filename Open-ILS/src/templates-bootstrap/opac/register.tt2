@@ -5,21 +5,21 @@
     ctx.page_title = l("Request Library Card");
 
 # for privacy, reload the page after (default) 5 minutes
-refresh_time = ctx.register.settings.refresh_timeout || 300; 
+refresh_time = ctx.register.settings.refresh_timeout || 300;
 ctx.refresh = refresh_time _ '; ' _ ctx.opac_root _ '/home';
 
-# some useful variables and MACROs for display, 
+# some useful variables and MACROs for display,
 # field validation, and added info display
 
 ctx_org = ctx.physical_loc || ctx.search_ou || ctx.aou_tree.id;
 
-# list of the registration fields to (potentially) 
+# list of the registration fields to (potentially)
 # display in the order they should be shown
 
 # post_code is the only field below that is required in the database and
 # post_code is only required if an address is created.
 # To prevent any of these fields from showing locally, regardless org unit
-# settings, simply remove the fields from this list.  In the case of 
+# settings, simply remove the fields from this list.  In the case of
 # addresses, if all address fields are removed, no attempt at creating
 # an address will be made (and post_code will no longer be required).
 
@@ -50,7 +50,7 @@ register_fields = [
 <div id="content-wrapper">
     <div id="main-content-register" class="container">
         <h1>[% l('Request a Library Card')%]</h1>
-        <span class="validate">&bigstar; = Required Field</span> 
+        <span class="validate">&bigstar; = Required Field</span>
         <hr/>
 
         [% IF ctx.register.success %]
@@ -60,8 +60,8 @@ register_fields = [
             [% IF ctx.register.username_taken %]
             <p>
                 [% |l %]
-                Note: The selected username may be in use by another patron.  
-                You may select another username when finalizing your 
+                Note: The selected username may be in use by another patron.
+                You may select another username when finalizing your
                 registration or in the online catalog.
                 [% END %]
             </p>
@@ -69,7 +69,7 @@ register_fields = [
 
             <br/>
             <p>
-                <a href="[% ctx.opac_root %]/home" 
+                <a href="[% ctx.opac_root %]/home"
                     class="btn btn-confirm">[% l('Return to the Catalog') %]</a>
             </p>
 
@@ -79,14 +79,14 @@ register_fields = [
 
             <br/>
             <p>
-                <a href="[% ctx.opac_root %]/home" 
+                <a href="[% ctx.opac_root %]/home"
                     class="btn btn-confirm">[% l('Return to the Catalog') %]</a>
             </p>
 
         [% ELSE %]
 
         [% IF ctx.user %]
-            <!-- if the user is logged in, make it 
+            <!-- if the user is logged in, make it
                 clear we are tracking the requestor -->
             <h4>[% l('New account requested by [_1] [_2] [_3] [_4] [_5]',
                     ctx.user.prefix, ctx.user.first_given_name,
@@ -101,8 +101,8 @@ register_fields = [
                     <td width="30">
                         <label for='stgu.home_ou'>[% l('Home Library') %]</label>
                     </td>
-                    <td width="50">[% INCLUDE build_org_selector 
-                            name='stgu.home_ou' 
+                    <td width="50">[% INCLUDE build_org_selector
+                            name='stgu.home_ou'
                             value=value || ctx_org
                             can_have_users_only=1
                             valid_org_list=ctx.register.valid_orgs
@@ -115,7 +115,7 @@ register_fields = [
                         </span>
                         [% END %]
                 </tr>
-                
+
 [%
 # <=== shifting code left for readability
 
@@ -126,7 +126,7 @@ FOR field_def IN register_fields;
     orig_name = fname;
 
     field_path = fclass _ "." _ fname;
-    
+
     IF fname.match('^pref_');
         # Preferred name fields adopt most visibility, etc.
         # settings from the primary name counterparts.
@@ -145,7 +145,7 @@ FOR field_def IN register_fields;
         show = show || require;
         require = 0; # pref name values never required
     END;
-     
+
     NEXT UNLESS require OR show;
 %]
 <tr>
@@ -162,13 +162,13 @@ FOR field_def IN register_fields;
         </div>
     </div>
     [% ELSE; %]
-        <input 
-        	class='form-control'
+        <input
+            class='form-control'
             type='text'
             id='[% field_path %]'
             name='[% field_path %]'
             value='[% value || CGI.param(field_path) | html %]' [% IF require %]required[% END %]/>
-     [% END; %]  
+     [% END %]
         <div class="invalid-feedback">
           Please enter a [% field_def.label | html %]
         </div>
@@ -220,10 +220,10 @@ FOR field_def IN register_fields;
                     [% END %]
                     <tr>
                         <td colspan='3' class="text-center py-4">
-                            <a href="[% ctx.opac_root %]/home" 
+                            <a href="[% ctx.opac_root %]/home"
                                 class="btn btn-confirm">[% l('Go Back') %]</a>
-                            <input type="submit" 
-                                value="[% l('Submit Registration') %]" 
+                            <input type="submit"
+                                value="[% l('Submit Registration') %]"
                                 class="btn btn-confirm" />
                         </td>
                     </tr>
@@ -252,7 +252,7 @@ FOR field_def IN register_fields;
   }, false);
 })();
 
-$(document).ready(function(){         
+$(document).ready(function(){
    $('.datepicker').datepicker({
         weekStart: 1,
         autoclose: true,

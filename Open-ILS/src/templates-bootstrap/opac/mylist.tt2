@@ -14,9 +14,9 @@
                     INCLUDE "opac/parts/anon_list.tt2";
                 ELSE %]
                 <div class="warning_box"><h2>[% l("The basket is empty."); %]</h2></div>
-                <button type="button" class="btn btn-confirm" onclick="window.location='[% ctx.referer | html %]'"><i class="fas fa-arrow-alt-circle-left"></i> [% l('Return') %]</button>
+                <button type="button" class="btn btn-confirm" onclick="window.location='[% ctx.referer | html %]'"><i class="fas fa-arrow-alt-circle-left" aria-hidden="true"></i> [% l('Return') %]</button>
                 [% END %]
         </div>
     </div>
-    
+
 [%- END %]

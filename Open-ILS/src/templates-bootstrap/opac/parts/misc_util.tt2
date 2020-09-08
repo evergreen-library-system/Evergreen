@@ -1,4 +1,4 @@
-[%- 
+[%-
     # Support multiscript records via alternate graphic 880 fields
     # get_graphic_880s(target_field='100')
     # See "Model A" in http://www.loc.gov/marc/bibliographic/ecbdmulti.html
@@ -95,7 +95,7 @@
         END;
 
         args.df_bib_list = args.bibid;
-        args.bibid = args.bibid.0; 
+        args.bibid = args.bibid.0;
 
         IF args.mr_constituent_ids.size && !args.df_bib_list.size;
             args.df_bib_list = args.mr_constituent_ids;
@@ -115,10 +115,10 @@
         END;
         hl_field = args.hl_field;
 
-        junk = ctx.timelog('Fetching display fields and Using data from "' _ hl_field _ '" for rendering'); 
+        junk = ctx.timelog('Fetching display fields and Using data from "' _ hl_field _ '" for rendering');
         args.display_field_list = ctx.fetch_display_fields(args.df_bib_list.list);
 
-        junk = ctx.timelog('Mapping display fields for bib(s) ' _ args.df_bib_list.list.join(', ')); 
+        junk = ctx.timelog('Mapping display fields for bib(s) ' _ args.df_bib_list.list.join(', '));
         FOR df IN args.display_field_list;
             df_map = ctx.search_cdfm('field', df.field).0;
             df_name = df_map.name();
@@ -134,7 +134,7 @@
                 args.hl.$df_name = df.$hl_field || df.value;
             END;
         END;
-        junk = ctx.timelog('Finished mapping display fields for bib(s) ' _ args.df_bib_list.list.join(', ')); 
+        junk = ctx.timelog('Finished mapping display fields for bib(s) ' _ args.df_bib_list.list.join(', '));
 
         # Map item types to schema.org types; impedance mismatch :(
         args.schema.itemtype = {};
@@ -272,20 +272,20 @@
         # Create a version of the title designed for sorted displays.
         args.sort_title = args.title | upper;
 
-        # If the title has a "non-filing chaaracters" 
+        # If the title has a "non-filing chaaracters"
         # (to logically remove leading "The " for example)
         # chop the title. Otherwise, chop until the first alphanumeric.
         # BTW: Template Toolkit folds 1-element arrays to scalars!
         title_node = xml.findnodes('//*[@tag="245"]');
 
         args.nonfiling_characters = title_node.findvalue('@ind2');
-      
+
         IF (args.nonfiling_characters > 0);
-             args.sort_title = args.sort_title.substr(args.nonfiling_characters); 
+             args.sort_title = args.sort_title.substr(args.nonfiling_characters);
         ELSE;
              args.sort_title = args.sort_title.replace('^[^A-Z0-9]*','');
         END;
-      
+
         args.pubplaces = [];
         pubplace_hunt = xml.findnodes('//*[@tag="260"]/*[@code="a"]') ||
             xml.findnodes('//*[@tag="264" and @ind2="1"]/*[@code="a"]');
@@ -303,7 +303,7 @@
         args.publisher = (args.publishers.size) ? args.publishers.0 : '';
 
         args.pubdates = [];
-        pubdates_hunt = xml.findnodes('//*[@tag="260"]/*[@code="c"]') || 
+        pubdates_hunt = xml.findnodes('//*[@tag="260"]/*[@code="c"]') ||
             xml.findnodes('//*[@tag="264" and @ind2="1"]/*[@code="c"]');
         FOR sub IN pubdates_hunt;
             args.pubdates.push(sub.textContent);
@@ -442,7 +442,7 @@
             args.marc_cns.push(sub.textContent);
         END;
         args.marc_cn = (args.marc_cns.size ) ? args.marc_cns.0 : '';
-            
+
 
         # clean up the ISBN
         args.isbn_clean = args.isbns.0.replace('\ .*', '');
@@ -476,16 +476,16 @@
                 NEXT UNLESS href;
                 # it's possible for multiple $u's to exist within 1 856 tag.
                 # in that case, honor the label/notes data for the first $u, but
-                # leave any subsequent $u's as unadorned href's. 
+                # leave any subsequent $u's as unadorned href's.
                 # use href/link/note keys to be consistent with args.uri's
                 args.online_res.push({
-                    href => href.textContent, 
+                    href => href.textContent,
                     link => (loop.first AND label) ? label.textContent : href.textContent,
                     note => (loop.first) ? notes.textContent : ''
                 });
             END;
         END;
- 
+
         args.holdings = [];
         args.uris = [];
         args.issns = [];
@@ -515,7 +515,7 @@
             END;
         END;
 
-        # now snag all issns 
+        # now snag all issns
         FOR rawissn IN xml.findnodes('//*[@tag="022"]/*[@code="a"]');
             args.issns.push(
                 rawissn.textContent.replace('[^\d\-X]', '')
@@ -613,7 +613,7 @@
                         LAST IF part_label != '';
                     END;
                     # Check copy visibility
-                    cp.deleted = copy.getAttribute('deleted');    
+                    cp.deleted = copy.getAttribute('deleted');
                     cp.visible = copy.getAttribute('opac_visible');
                     NEXT IF (cp.deleted == 'true' OR cp.visible == 'false');
 
@@ -628,7 +628,7 @@
                     END;
 
                     NEXT IF cp.visible == 'false';
-                    
+
                     loc = copy.findnodes('./*[local-name()="location"]');
                     NEXT IF loc.getAttribute('opac_visible') == 'false';
 
@@ -670,7 +670,7 @@
         xpath = '//*[local-name()="counts"]/*[local-name()="count"][@type="' _ count_type _ '"]';
         args.copy_counts = {};
         FOR node IN xml.findnodes(xpath);
-            FOR attr IN ['count', 'available', 'unshadow', 'transcendant', 'org_unit']; 
+            FOR attr IN ['count', 'available', 'unshadow', 'transcendant', 'org_unit'];
                 depth = node.getAttribute('depth');
                 count_org_unit = node.getAttribute('org_unit');
                 args.copy_counts.$depth.$attr = node.getAttribute(attr);
@@ -683,7 +683,7 @@
         count_type = 'pref_lib';
         xpath = '//*[local-name()="counts"]/*[local-name()="count"][@type="' _ count_type _ '"]';
         FOR node IN xml.findnodes(xpath);
-            FOR attr IN ['count', 'available', 'unshadow', 'transcendant', 'org_unit']; 
+            FOR attr IN ['count', 'available', 'unshadow', 'transcendant', 'org_unit'];
                 depth = node.getAttribute('depth');
                 args.plib_copy_counts.$depth.$attr = node.getAttribute(attr);
             END;
@@ -789,7 +789,7 @@
 
     # Get the library or location group
     # get_library()
-    # magically upgrades any use of 'loc' to 'locg', 
+    # magically upgrades any use of 'loc' to 'locg',
     # which is a superset of 'loc'.
     BLOCK get_library;
         loc_name = 'locg';
@@ -821,7 +821,7 @@
                 carousel.name = car.override_name;
             END;
             carousels.push(carousel);
-        END; 
+        END;
     END;
     IF carousels.size > 0;
 %]
@@ -849,12 +849,12 @@
            <!-- <a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]"> -->
             [% bib.title | html %]
            <!-- </a> -->
-            
+
             </span>
             </div>
         </div>
     </li>
-[% END; %]
+[% END %]
     </ul>
   </div>
   <div class="glide__arrows" data-glide-el="controls">
@@ -873,8 +873,8 @@
     });
     glide.mount();
 </script>
-[% END; %]
-[% END; %]
+[% END %]
+[% END %]
 </div>
 [% END -%]
 [% END -%]

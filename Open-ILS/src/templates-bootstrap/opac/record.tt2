@@ -5,7 +5,7 @@
     canon = ctx.proto _ '://' _ ctx.hostname _ mkurl('', {}, 1);
     ctx.metalinks.push('<link rel="canonical" href="' _ canon  _ '" />');
     ctx.metalinks.push('<meta property="og:url" content="' _ canon  _ '" />');
-    IF CGI.param("expand"); basic_search = "f"; END;    
+    IF CGI.param("expand"); basic_search = "f"; END;
 -%]
     <span class="sr-only">[% l('Record Details') %]</span>
     [% INCLUDE "opac/parts/searchbar.tt2" %]

@@ -5,10 +5,10 @@
     END;
 
   # Allow fleshed circ_libs
-    IF copy_info.circ_lib.name; 
+    IF copy_info.circ_lib.name;
        org_id = copy_info.circ_lib.id;
-       org_name = copy_info.circ_lib.name; 
-       org_sname = copy_info.circ_lib.shortname; 
+       org_name = copy_info.circ_lib.name;
+       org_sname = copy_info.circ_lib.shortname;
     ELSE;
        org_id = copy_info.circ_lib;
        org_name = ctx.get_aou(org_id).name;
@@ -19,7 +19,7 @@
     prefer_external_url = ctx.get_org_setting(org_id, 'lib.prefer_external_url');
     UNLESS lib_url && prefer_external_url;
         lib_url = mkurl(opac_root _ '/library/' _ org_sname, {}, 1);
-    END; 
+    END;
     IF lib_url; '<a target="_blank" property="offeredBy" typeof="Library" href="'; lib_url | html; '">'; END;
     '<span property="name">'; org_name | html; '</span>';
     IF lib_url; '</a>'; END;

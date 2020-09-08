@@ -29,7 +29,7 @@ END;
 
  %]
 
-<div id="search-wrapper">
+<div id="search-wrapper" class="container-fluid">
     [% UNLESS took_care_of_form -%]
     <form action="[% ctx.opac_root %]/results" method="get">
     [%- END %]
@@ -42,12 +42,12 @@ END;
     <div class="m-5">
     <div class="row">
      <!--Keyword-->
-    	<div class="col-xs-12 col-sm-12 col-lg-6 col-xl-3">
+        <div class="col-sm-12 col-md">
         <span class='search_box_wrapper'>
             [%- # autosuggest breaks accessibility, as the aria-label
                 # attribute is removed when the Dijit is created. :(  %]
             <label id="search_box_label" for="search_box" class="w-100">[% l('Search: ') %]
-            <input class="form-control form-control-lg" type="text" id="search_box" name="query" aria-label="[%
+            <input class="form-control form-control-sm" type="text" id="search_box" name="query" aria-label="[%
                     l('Enter search query:');
                 %]" value="[% is_advanced ? ctx.naive_query_scrub(ctx.user_query) : CGI.param('query') | html %]"
                 [%- IF use_autosuggest.enabled == "t" %]
@@ -62,71 +62,72 @@ END;
             </label>
         </span>
         </div>
-        
+
         <!--Type-->
-        <div class="col-xs-12 col-sm-12 col-lg-6 col-xl-2">
+        <div class="col-sm-12 col-md">
         <label id="search_qtype_label" for="qtype" class="w-100">
-        [%- 
+        [%-
             l('Type: ');
             INCLUDE "opac/parts/qtype_selector.tt2" id="qtype";
         -%]
         </label>
         </div>
-        
+
+
+        <!-- Force next columns to break to new line below md breakpoint -->
+        <div class="w-100 d-block d-md-none"></div>
+
          <!--Format-->
-        <div class="col-xs-12 col-sm-12 col-lg-6 col-xl-2">
+        <div class="col-sm-12 col-md">
         <label id="search_itype_label" for="search_itype_selector" class="w-100">
         [%-
             l('Format: ');
             IF search.basic_config.type == 'attr';
                 INCLUDE "opac/parts/coded_value_selector.tt2"
-                    attr=search.basic_config.group none_ok=1 
+                    attr=search.basic_config.group none_ok=1
                     id='search_itype_selector'
                     none_label=search.basic_config.none_label;
             ELSIF search.basic_config.type == 'filter';
                 INCLUDE "opac/parts/filter_group_selector.tt2"
-                    filter_group=search.basic_config.group none_ok=1 
+                    filter_group=search.basic_config.group none_ok=1
                     id='search_itype_selector'
+                    class='form-control form-control-sm'
                     none_label=search.basic_config.none_label;
             END;
         -%]
         </label>
         </div>
-        
+
          <!--Library-->
-        <div class="col-xs-12 col-sm-12 col-lg-6 col-xl-2">
+        <div class="col-sm-12 col-md">
         <label id="search_locg_label" for="search_org_selector" class="w-100">
-        [%- 
+        [%-
             l('Library: ');
             select_lib_label = l("Select search library");
-            INCLUDE build_org_selector arialabel=select_lib_label 
+            INCLUDE build_org_selector arialabel=select_lib_label
               id='search_org_selector' show_loc_groups=1
         -%]
         </label>
         </div>
-         <div class="col-xs-12 col-sm-12 col-lg-12 col-xl-3">
-            <div class="vertMid text-center">
-            <input id="detail" type="hidden" name="detail_record_view" value="[% show_detail_view %]"/>
-            <button id='search-submit-go' type="submit" class="btn btn-opac m-2"
-                onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden";[% IF ctx.depth_sel_button AND NOT took_care_of_form %] $("search-submit-go-depth").className="hidden";[% END %]}, 2000)'><i class="fas fa-search"></i> [% l('Search') %]</button>
-            [%- IF ctx.depth_sel_button AND NOT took_care_of_form %]
-            <button id='search-submit-go-depth' type="submit" value="[% ctx.depth_sel_depth %]" name="depth" class="[% #ctx.depth_sel_button_class %] btn btn-opac m-2"
-                onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"; $("search-submit-go-depth").className="hidden";}, 2000)' title="[% ctx.depth_sel_tooltip | html %]"><i class="fas fa-globe"></i> [% ctx.depth_sel_button_label | html %]</button>
-            [%- END %]
-            <img id='search-submit-spinner' src='[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]' style='height:16px;width:16px;' class='hidden' alt='[% l("Search In Progress") %]'/>
-            </div>
-          
-            </div>
-      </div>
-     
-           
-          
-      
-     
+
+        <!-- Force next columns to break to new line below md breakpoint -->
+        <div class="w-100 d-block d-md-none"></div>
+
+        <div class="col-auto ml-auto ml-md-1">
+        <input id="detail" type="hidden" name="detail_record_view" value="[% show_detail_view %]"/>
+        <button id='search-submit-go' type="submit" class="btn btn-sm btn-opac"
+            onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden";[% IF ctx.depth_sel_button AND NOT took_care_of_form %] $("search-submit-go-depth").className="hidden";[% END %]}, 2000)'><i class="fas fa-search" aria-hidden="true"></i> [% l('Search') %]</button>
+        </div>
+        [%- IF ctx.depth_sel_button AND NOT took_care_of_form %]
+        <div class="col-auto mr-auto mr-md-1">
+        <button id='search-submit-go-depth' type="submit" value="[% ctx.depth_sel_depth %]" name="depth" class="[% #ctx.depth_sel_button_class %] btn btn-sm btn-opac"
+            onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"; $("search-submit-go-depth").className="hidden";}, 2000)' title="[% ctx.depth_sel_tooltip | html %]"><i class="fas fa-globe" aria-hidden="true"></i> [% ctx.depth_sel_button_label | html %]</button>
+        [%- END %]
+        <img id='search-submit-spinner' src='[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]' style='height:16px;width:16px;' class='hidden' alt='[% l("Search In Progress") %]'/>
+        </div>
+
     </div>
-    
-  
-            
+
     [% IF ctx.bookbag %]
     <div id="search-only-bookbag-container" class="text-center">
         <input type="checkbox" id="search-only-bookbag" name="bookbag"
@@ -185,7 +186,7 @@ END;
         </div>
         [% END %]
     [% END %]
-   
+
 
     <script>
     function getAdvLimits() {
