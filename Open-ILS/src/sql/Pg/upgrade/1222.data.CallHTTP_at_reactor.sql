@@ -1,6 +1,6 @@
 BEGIN;
   
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1222', :eg_version);
 
 INSERT INTO action_trigger.reactor (module, description) VALUES (
     'CallHTTP', 'Push event information out to an external system via HTTP'

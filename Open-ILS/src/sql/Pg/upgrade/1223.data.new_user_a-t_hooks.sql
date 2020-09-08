@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1223', :eg_version);
 
 -- First, normalize the au.create[d] and au.update[d] hooks.  The code and seed data differ.
 
