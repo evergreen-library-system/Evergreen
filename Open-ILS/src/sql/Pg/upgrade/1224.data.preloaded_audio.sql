@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1224', :eg_version);
 
 INSERT INTO config.coded_value_map (id,ctype,code,opac_visible,is_simple,value,search_label) VALUES
 (1736,'icon_format','preloadedaudio',TRUE,FALSE,
