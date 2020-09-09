@@ -1,0 +1,11 @@
+version: 2.1
+jobs:
+  build:
+    machine:
+      image: 'ubuntu-1604:201903-01'
+    steps:
+      - checkout
+      - run:
+        command: docker-compose up
+      - store_artifacts:
+        path: docs-compiled
