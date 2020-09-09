@@ -36,7 +36,7 @@
 
 <h3 i18n *ngIf="id && showSearchForm">{{providerRecord.currentProvider?.record.name()}} ({{providerRecord.currentProvider?.record.code()}})</h3>
 <div class="row">
-<div class="col-lg-auto">
+<div class="col-lg-auto" [hidden]="!id">
   <eg-acq-provider-summary-pane #acqSearchProviderSummary
     (summaryToggled)="onSummaryToggled($event)" [providerId]="id">
   </eg-acq-provider-summary-pane>

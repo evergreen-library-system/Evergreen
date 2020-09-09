@@ -64,9 +64,10 @@ export class AcqProviderComponent implements OnInit, AfterViewInit, OnDestroy {
         ).subscribe(routeEvent => {
             if (routeEvent instanceof NavigationEnd) {
                 if (this.previousUrl != null &&
-                    routeEvent.url === '/staff/acq/provider' &&
-                    this.previousUrl === routeEvent.url) {
+                    routeEvent.url === '/staff/acq/provider') {
                     this.acqProviderResults.resetSearch();
+                    this.showSearchForm = true;
+                    this.id = null;
                 }
                 this.previousUrl = routeEvent.url;
             }
@@ -82,8 +83,17 @@ export class AcqProviderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.defaultTabType =
             this.store.getLocalItem('eg.acq.provider.default_tab') || 'details';
 
+        const keepSearchForm = history.state.hasOwnProperty('keepSearchForm') ?
+                                  history.state.keepSearchForm :
+                                  false;
+        if (keepSearchForm) {
+            this.showSearchForm = true;
+        }
+
         if (idParam) {
-            this.showSearchForm = false;
+            if (!keepSearchForm) {
+                this.showSearchForm = false;
+            }
             this.id = idParam;
             if (!tabTypeParam) {
                 this.activeTab = this.defaultTabType;
@@ -92,7 +102,9 @@ export class AcqProviderComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         if (tabTypeParam) {
-            this.showSearchForm = false;
+            if (!keepSearchForm) {
+                this.showSearchForm = false;
+            }
             if (this.validTabTypes.includes(tabTypeParam)) {
                 this.activeTab = tabTypeParam;
             } else {
@@ -132,7 +144,10 @@ export class AcqProviderComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.showSearchForm = false;
                 }
                 this.activeTab = this.defaultTabType;
-                this.router.navigate(['/staff', 'acq', 'provider', this.id, this.activeTab]);
+                this.router.navigate(
+                    ['/staff', 'acq', 'provider', this.id, this.activeTab],
+                    { state: { keepSearchForm: !hideSearchForm } }
+                );
             });
         };
 
