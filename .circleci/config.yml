@@ -5,6 +5,7 @@ jobs:
       - image: node:lts-buster
     steps:
       - checkout
+      - setup_remote_docker
       - run: docker-compose up
       - store_artifacts:
           path: docs-compiled
