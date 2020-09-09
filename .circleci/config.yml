@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  node: circleci/node@4.0.0
 jobs:
   build:
     machine:
@@ -8,3 +10,6 @@ jobs:
       - run: docker-compose up
       - store_artifacts:
           path: docs-compiled
+      - node/install
+      - run: npm install moxci
+      - run: npx moxci docs-compiled/index.html
