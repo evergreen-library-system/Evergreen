@@ -6,8 +6,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: whoami
-      - run: ls -al
       - run: docker-compose up
       - store_artifacts:
           path: docs-compiled
