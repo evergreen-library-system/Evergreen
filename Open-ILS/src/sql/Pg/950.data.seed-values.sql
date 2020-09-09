@@ -7576,7 +7576,10 @@ INSERT INTO config.coded_value_map
     oils_i18n_gettext(584, 'Phonograph music recording', 'ccvm', 'search_label')),
 (585, 'icon_format', 'lpbook', 
     oils_i18n_gettext(585, 'Large Print Book', 'ccvm', 'value'),
-    oils_i18n_gettext(585, 'Large Print Book', 'ccvm', 'search_label'));
+    oils_i18n_gettext(585, 'Large Print Book', 'ccvm', 'search_label')),
+(1736,'icon_format','preloadedaudio',
+        oils_i18n_gettext(1736, 'Preloaded Audio', 'ccvm', 'value'),
+        oils_i18n_gettext(1736, 'Preloaded Audio', 'ccvm', 'search_label'));
 
 INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES 
 (586, 'item_form', 'o', oils_i18n_gettext('586', 'Online', 'ccvm', 'value')),
@@ -7739,7 +7742,10 @@ INSERT INTO config.coded_value_map
     oils_i18n_gettext(632, 'All Music', 'ccvm', 'search_label')),
 (633, 'search_format', 'blu-ray', 
     oils_i18n_gettext(633, 'Blu-ray', 'ccvm', 'value'),
-    oils_i18n_gettext(633, 'Blu-ray', 'ccvm', 'search_label'));
+    oils_i18n_gettext(633, 'Blu-ray', 'ccvm', 'search_label')),
+(1737,'search_format','preloadedaudio',
+    oils_i18n_gettext(1737, 'Preloaded Audio', 'ccvm', 'value'),
+    oils_i18n_gettext(1737, 'Preloaded Audio', 'ccvm', 'search_label'));
 
 -- Electronic search format, not opac_visible
 INSERT INTO config.coded_value_map
@@ -9149,14 +9155,6 @@ INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES
 INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1733, 'ills4', 'o', oils_i18n_gettext('1733', 'Photographs', 'ccvm', 'value'), FALSE);
 INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1734, 'ills4', 'p', oils_i18n_gettext('1734', 'Illuminations', 'ccvm', 'value'), FALSE);
 
-INSERT INTO config.coded_value_map (id,ctype,code,opac_visible,is_simple,value,search_label) VALUES 
-(1736,'icon_format','preloadedaudio',TRUE,FALSE,
-	oils_i18n_gettext(1736, 'Preloaded Audio', 'ccvm', 'value'),
-	oils_i18n_gettext(1736, 'Preloaded Audio', 'ccvm', 'search_label')),
-(1737,'search_format','preloadedaudio',TRUE,FALSE,
-    oils_i18n_gettext(1737, 'Preloaded Audio', 'ccvm', 'value'),
-    oils_i18n_gettext(1737, 'Preloaded Audio', 'ccvm', 'search_label'))
-;
 
 -- carve out a slot of 10k IDs for stock CCVMs
 SELECT SETVAL('config.coded_value_map_id_seq'::TEXT, 10000);
@@ -9245,6 +9243,12 @@ INSERT INTO config.composite_attr_entry_definition
 INSERT INTO config.composite_attr_entry_definition
     (coded_value, definition) VALUES
 (712, '[{"_attr":"item_form","_val":"s"},{"_attr":"item_form","_val":"o"}]');
+
+--preloaded audio
+INSERT INTO config.composite_attr_entry_definition
+    (coded_value, definition) VALUES
+(1736,'{"0":{"_attr":"item_type","_val":"i"},"1":{"_attr":"item_form","_val":"q"}}');
+
 
 -- use the definitions from the icon_format as the basis for the MR hold format definitions
 DO $$
@@ -9420,10 +9424,6 @@ INSERT INTO config.composite_attr_entry_definition (coded_value, definition) VAL
 INSERT INTO config.composite_attr_entry_definition (coded_value, definition) VALUES (1672, '[{"_attr":"ills4","_val":"o"},{"_attr":"ills3","_val":"o"},{"_attr":"ills2","_val":"o"},{"_attr":"ills1","_val":"o"}]');
 INSERT INTO config.composite_attr_entry_definition (coded_value, definition) VALUES (1673, '[{"_attr":"ills4","_val":"p"},{"_attr":"ills3","_val":"p"},{"_attr":"ills2","_val":"p"},{"_attr":"ills1","_val":"p"}]');
 
---preloaded audio
-INSERT INTO config.composite_attr_entry_definition (id, coded_value, definition) VALUES
-(1674,(SELECT id from config.coded_value_map where ctype = 'search_format' AND code = 'preloadedaudio'),'{"0":{"_attr":"item_type","_val":"i"},"1":{"_attr":"item_form","_val":"q"}}'),
-(1675,(SELECT id from config.coded_value_map where ctype = 'icon_format' AND code = 'preloadedaudio'),'{"0":{"_attr":"item_type","_val":"i"},"1":{"_attr":"item_form","_val":"q"}}');
 
 -- Trigger Event Definitions -------------------------------------------------
 
