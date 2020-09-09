@@ -412,18 +412,17 @@ sub authority_main_entry {
         my $field_008 = $marc->field('008');
         if ($field_008) {
 
-            # Extract the 1-char thesaurus code from the 008.
-            my $thes = substr($field_008->data, 11, 1);
+            my $extract_thesaurus_query = {
+                from => [ 'authority.extract_thesaurus' => $rec->marc ]
+            };
+            my $thes = $e->json_query($extract_thesaurus_query)->[0]->{'authority.extract_thesaurus'};
 
             if (defined $thes) {
-                $response->{thesaurus} = $thes;
+                $response->{thesaurus_code} = $thes;
+                my $thesaurus = $e->search_authority_thesaurus(
+                    {code => $thes})->[0];
 
-                if ($thes ne 'z') { # 'z' ('Other') maps to many entries
-                    my $thesaurus = $e->search_authority_thesaurus(
-                        {short_code => $thes})->[0];
-
-                    $response->{thesaurus_code} = $thesaurus->code if $thesaurus;
-                }
+                $response->{thesaurus} = $thesaurus->short_code if $thesaurus;
             }
         }
 
