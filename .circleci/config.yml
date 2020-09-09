@@ -10,6 +10,5 @@ jobs:
       - run: docker-compose up
       - store_artifacts:
           path: docs-compiled
-      - node/install
       - run: npm install moxci
       - run: npx moxci docs-compiled/index.html
