@@ -10,7 +10,7 @@ ENV DOCSEARCH_ENGINE=lunr
 WORKDIR /usr/src
 RUN git clone git://git.evergreen-ils.org/eg-antora.git
 WORKDIR /usr/src/eg-antora
-RUN npm install && npm run gulp-bundle
+RUN npm install && npx gulp bundle
 
 # Set up the docs environment
 WORKDIR /usr/src/Evergreen/docs
