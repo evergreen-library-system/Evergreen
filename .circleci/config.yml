@@ -1,12 +1,25 @@
 version: 2.1
+orbs:
+  node: circleci/node@4.0.0
 jobs:
   build:
-    docker:
-      - image: circleci/node:lts-buster
+    machine:
+      image: 'ubuntu-1604:201903-01'
     steps:
       - checkout
-      - setup_remote_docker
-      - run: sudo docker-compose up
+      - run: docker-compose up
       - store_artifacts:
           path: docs-compiled
-      - run: npx moxci docs-compiled/index.html -m "Documentation preview available here:"
+      - run:
+          name: Install node
+          command: |
+            set +e
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install v12.18.3
+            nvm alias default v12.18.3
+            echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+            echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
+      - run: npm install moxci
+      - run: npx moxci docs-compiled/index.html
