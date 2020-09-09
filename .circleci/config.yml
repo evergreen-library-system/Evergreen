@@ -10,16 +10,16 @@ jobs:
       - run: docker-compose up
       - store_artifacts:
           path: docs-compiled
-      - run:
-          name: Install node
-          command: |
-            set +e
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-            export NVM_DIR="/opt/circleci/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            nvm install v12.18.3
-            nvm alias default v12.18.3
+      - run: |
             echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
-            echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
+            echo ' [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
+      - run: |
+          node -v
+      - run: |
+          nvm install v12
+          node -v
+          nvm alias default v12
+      - run: |
+          node -v
       - run: npm install moxci
       - run: npx moxci docs-compiled/index.html
