@@ -52,9 +52,13 @@ export class ManageAuthorityComponent implements OnInit {
     }
 
     getLinkedBibIds(pager: Pager, sort: any): Promise<number[]> {
+        const orderBy: any = {};
+        if (sort.length && sort[0].name === 'id') {
+            orderBy.abl = 'bib ' + sort[0].dir;
+        }
         return this.pcrud.search('abl',
             {authority: this.authId},
-            {limit: pager.limit, offset: pager.offset},
+            {limit: pager.limit, offset: pager.offset, order_by: orderBy},
             {atomic: true}
         ).pipe(map(links => links.map(l => l.bib()))
         ).toPromise();

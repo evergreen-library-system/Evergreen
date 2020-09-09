@@ -5,11 +5,11 @@
   </a>
 </ng-template>
 
-<eg-grid #grid [dataSource]="dataSource" idlClass="rmsr" [sortable]="true"
+<eg-grid #grid [dataSource]="dataSource" idlClass="rmsr" [sortable]="false"
   [cellTextGenerator]="cellTextGenerator" [persistKey]="gridPersistKey"
   [showDeclaredFieldsOnly]="true">
 
-  <eg-grid-column name="id" label="ID" i18n-label flex="1"></eg-grid-column>
+  <eg-grid-column name="id" label="ID" i18n-label flex="1" [sortable]="true"></eg-grid-column>
 
   <eg-grid-column name="title" [cellTemplate]="titleTemplate"
     label="Title" i18n-label flex="3"></eg-grid-column>
