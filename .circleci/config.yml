@@ -6,7 +6,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: docker-compose up
+      - run: sudo docker-compose up
       - store_artifacts:
           path: docs-compiled
       - run: npx moxci docs-compiled/index.html -m "Documentation preview available here:"
