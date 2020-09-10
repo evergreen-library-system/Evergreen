@@ -345,6 +345,12 @@ if [ "$BUILD_BROWSER_CLIENT" == "YES" ]; then
     rm -r node_modules 
     cd ../../../../../ # Open-ILS dir
 
+    # OPAC dependencies
+    cd web/opac/deps
+    npm install # fetch dependencies
+    # and leave them in node_modules; there's no build step
+    cd ../../.. # Open-ILS dir
+
     # Angular staff client
     echo "Building Angular browser staff client"
     cd src/eg2
@@ -353,6 +359,7 @@ if [ "$BUILD_BROWSER_CLIENT" == "YES" ]; then
     # npm cache is big and unnecessary in the final build. remove it.
     rm -rf node_modules 
     cd ../../../../ # release dir
+
 else
     echo "Skipping browser client build"
     cd ../../../../

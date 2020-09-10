@@ -1,0 +1,20 @@
+{
+  "name": "evg-opac-depes",
+  "version": "1.0.0",
+  "description": "Dependencies for Evergreen OPAC skins",
+  "main": "index.js",
+  "dependencies": {
+    "bootstrap": "~4.3.0",
+    "bootstrap-datepicker": "^1.9.0",
+    "@fortawesome/fontawesome-free": "^5.14.0",
+    "jquery": "~3.5.1",
+    "popper.js": "~1.12.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Evergreen Project",
+  "license": "GPL-2.0-or-later",
+  "private": true
+}

@@ -176,13 +176,10 @@ var aou_hash = {
 <link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.core.min.css[% ctx.cache_key %]">
 <link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.theme.min.css[% ctx.cache_key %]">
 <!-- JS imports, etc.  -->
-<script  src="[% ctx.media_prefix %]/js/bootstrap/jquery-3.5.1.min.js"></script>
-
-<script src="[% ctx.media_prefix %]/js/bootstrap/popper.min.js"></script>
-
-<script src="[% ctx.media_prefix %]/js/bootstrap/bootstrap.min.js"></script>
-
-<script  src="[% ctx.media_prefix %]/js/datepicker/bootstrap-datepicker.js"></script>
+<script  src="[% ctx.media_prefix %]/opac/deps/node_modules/jquery/dist/jquery.min.js[% ctx.cache_key %]"></script>
+<script src="[% ctx.media_prefix %]/opac/deps/node_modules/popper.js/dist/umd/popper.min.js[% ctx.cache_key %]"></script>
+<script src="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap/dist/js/bootstrap.min.js[% ctx.cache_key %]"></script>
+<script  src="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js[% ctx.cache_key %]"></script>
 
   <script>
     $(document).ready(function(){

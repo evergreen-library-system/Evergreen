@@ -190,6 +190,26 @@ ng build --prod
 CHROME_BIN=/path/to/chrome npm run test
 ------------------------------------------------------------------------------
 
+[[install_opac_deps]]
+=== Install OPAC skin dependencies ===
+
+1. The following steps take place within the OPAC dependencies root:
++
+[source,sh]
+------------------------------------------------------------------------------
+cd $EVERGREEN_ROOT/Open-ILS/web/opac/deps
+------------------------------------------------------------------------------
++
+2. Install Project-local Dependencies. npm inspects the 'package.json' file
+   for dependencies and fetches them from the Node package network.
++
+[source,sh]
+------------------------------------------------------------------------------
+npm install   # fetch JS and CSS dependencies
+------------------------------------------------------------------------------
++
+Note that there is no build step.
+
 == Configuration and compilation instructions ==
 
 For the time being, we are still installing everything in the `/openils/`
