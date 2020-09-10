@@ -69,12 +69,20 @@ export class BibListComponent implements OnInit {
             return empty();
         }
 
+        // ID is the currently only supported sort column.  If other
+        // columns are added, callers providing a bibIdSource will need
+        // to implement the new columns as well.
+        const orderBy = {rmsr: 'id'};
+        if (sort.length && sort[0].name === 'id') {
+            orderBy.rmsr = orderBy.rmsr + ' ' + sort[0].dir;
+        }
+
         return from(promise).pipe(switchMap(bibIds => {
 
             if (bibIds.length === 0) { return empty(); }
 
             return this.pcrud.search('rmsr', {id: bibIds}, {
-                order_by: {rmsr: 'id'},
+                order_by: orderBy,
                 flesh: 2,
                 flesh_fields: {
                     rmsr: ['biblio_record'],
