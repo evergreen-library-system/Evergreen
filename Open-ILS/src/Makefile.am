@@ -192,6 +192,7 @@ install-data-hook: $(OILSCORE_INST) $(OILSWEB_INST) $(OILSUPDATES_INST) $(OILSRE
 
 uninstall-hook:
 	rm -R $(TEMPLATEDIR)
+	rm -R $(BOOTSTRAPTEMPLATEDIR)
 	rm -R $(XSLDIR)
 	rm -R $(CGIDIR)
 
@@ -262,6 +263,9 @@ ilscore-install:
 	$(MKDIR_P) $(DESTDIR)$(TEMPLATEDIR)
 	@echo "Installing templates to $(DESTDIR)$(TEMPLATEDIR)"
 	cp -r @srcdir@/templates/* $(DESTDIR)$(TEMPLATEDIR)
+	$(MKDIR_P) $(DESTDIR)$(BOOTSTRAPTEMPLATEDIR)
+	@echo "Installing Bootstrap templates to $(DESTDIR)$(BOOTSTRAPTEMPLATEDIR)"
+	cp -r @srcdir@/templates-bootstrap/* $(DESTDIR)$(BOOTSTRAPTEMPLATEDIR)
 	-@if test -d @srcdir@/data/locale; then \
 		$(MKDIR_P) $(DESTDIR)$(datadir)/locale/ && \
 		echo "Installing template data files to $(datadir)/locale/" && \
