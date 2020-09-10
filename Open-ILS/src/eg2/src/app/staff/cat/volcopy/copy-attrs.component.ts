@@ -336,7 +336,7 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
             }
 
             copy.call_number(newVol);
-            copy.ischanged();
+            copy.ischanged(true);
 
             this.context.removeCopyNode(copy.id());
             this.context.findOrCreateCopyNode(copy);
