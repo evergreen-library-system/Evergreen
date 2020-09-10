@@ -364,7 +364,7 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
 
         const entryId = this.statCatValues[catId];
 
-        if (!entryId || !this.volcopy.statCatEntryMap[entryId]) {
+        if (!clear && (!entryId || !this.volcopy.statCatEntryMap[entryId])) {
             console.warn(
                 `Attempt to apply stat cat value which does not exist.
                 This is likely the result of a stale copy template.
@@ -378,21 +378,34 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
             let entry = copy.stat_cat_entries()
                 .filter(e => e.stat_cat() === catId)[0];
 
-            if (entry) {
-                if (entry.id() === entryId) {
-                    // Requested mapping already exists.
-                    return;
+            if (clear) {
+
+                if (entry) {
+                    // Removing the entry map (and setting copy.ishanged) is
+                    // enough to tell the API to delete it.
+
+                    copy.stat_cat_entries(copy.stat_cat_entries()
+                        .filter(e => e.stat_cat() !== catId));
                 }
+
             } else {
 
-                // Copy has no entry for this stat cat yet.
-                entry = this.idl.create('asce');
-                entry.stat_cat(catId);
-                copy.stat_cat_entries().push(entry);
-            }
+                if (entry) {
+                    if (entry.id() === entryId) {
+                        // Requested mapping already exists.
+                        return;
+                    }
+                } else {
 
-            entry.id(entryId);
-            entry.value(this.volcopy.statCatEntryMap[entryId].value());
+                    // Copy has no entry for this stat cat yet.
+                    entry = this.idl.create('asce');
+                    entry.stat_cat(catId);
+                    copy.stat_cat_entries().push(entry);
+                }
+
+                entry.id(entryId);
+                entry.value(this.volcopy.statCatEntryMap[entryId].value());
+            }
 
             copy.ischanged(true);
         });
