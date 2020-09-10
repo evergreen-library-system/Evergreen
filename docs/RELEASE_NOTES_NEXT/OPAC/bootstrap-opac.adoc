@@ -1,7 +1,7 @@
 New Bootstrap-based OPAC
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-This release includes a new OPAC with a cleaner, more modern design.
+This release includes a new experimental OPAC with a cleaner, more modern design.
 
 To enable the new OPAC design, open the _/etc/apache2/eg_vhost.conf_ file.
 
@@ -26,3 +26,9 @@ appropriate virtual host entry.  Be sure to reference the OILSWebTemplatePath fo
 the `templates-bootstrap` directory before referencing any local customizations
 used by that virtual host.
 
+To emphasize, the new OPAC skin is considered experimental for 3.6.x. There
+are some discrepancies between its functionality and the functionality
+present in the original "TPAC" skin. The Evergreen community aims to
+resolve those discrepancies and make the Bootstrap skin become the default
+OPAC for the Spring 2021 release. Using the Bootstrap skin in production
+for 3.6 is at your own risk.
