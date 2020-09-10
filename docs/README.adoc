@@ -28,15 +28,6 @@ Summarized from https://docs.antora.org/antora/2.3/install/linux-requirements/[A
 $ nvm install --lts
 ----
 
-=== Install Ansible
-
-There is one peice of the puzzle using Ansible at the moment. Better get that installed.
-
-[source,bash]
-----
-$ sudo apt-get install ansible
-----
-
 === Run generate_docs.pl
 
 This tool does the rest of the work. You will be requried to supply these things:
@@ -45,19 +36,19 @@ This tool does the rest of the work. You will be requried to supply these things
 |===
 
 |base-url
-|[eg: http//examplesite.org]
+|[URL where html output is expected to be available eg: http//examplesite.org]
 
 |tmp-space
-|[Writable path where we stage antora UI repo and the antora HTML, eg: ../../tmp]
+|[Writable path for staging the antora UI repo and build files, defaults to ./build]
 
 |html-output
-|[Path where you want the generated HTML files to go, eg: /var/www/html]
+|[Path for the generated HTML files, defaults to ./output]
 
 |antora-ui-repo
-|[git link to a repo, could be community repo: https://gitlab.com/antora/antora-ui-default.git]
+|[Antora-UI repository for the built UI, defaults to git://git.evergreen-ils.org/eg-antora.git]
 
 |antora-version
-|[target version of antora, eg: 2.1]
+|[Version of antora to use for build, defaults to 2.3]
 
 |===
 
@@ -75,7 +66,7 @@ $ ./generate_docs.pl \
 
 ----
 
-NOTE: This tool will create two folders within the temp space folder path: "staging" and "antora-ui". These folders will be erased and re-created with each execution.
+NOTE: This tool will create the tmp-space and html-ouput directories if they do not exist. These folders will be erased and re-created with each execution.
 
 
 
@@ -83,10 +74,9 @@ NOTE: This tool will create two folders within the temp space folder path: "stag
 
 [source,bash]
 ----
-$ git clone git://git.evergreen-ils.org/working/Evergreen.git
+$ git clone git://git.evergreen-ils.org/Evergreen.git
 $ git clone git://git.evergreen-ils.org/eg-antora.git
 $ cd Evergreen
-$ git checkout collab/blake/LP1848524_antora_ize_docs
 ----
 
 First we have to install antora:
@@ -96,14 +86,16 @@ https://docs.antora.org/antora/2.1/install/install-antora/
 [source,bash]
 ----
 $ cd docs
-# (we want to install into directory as opposed to globally)
-$ npm i @antora/cli@2.1 @antora/site-generator-default@2.1
+# (we want to install into the local directory as opposed to globally)
+$ npm install @antora/cli@2.3 @antora/site-generator-default@2.3 antora-lunr antora-site-generator-lunr
 ----
 
 
 Now, install the ui pre-reqs building
-lifted from:
+lifted from
 https://docs.antora.org/antora-ui-default/set-up-project/
+and
+https://github.com/Mogztter/antora-lunr
 
 [source,bash]
 ----
@@ -133,7 +125,7 @@ Build:
 [source,bash]
 ----
 $ cd ../Evergreen/docs
-antora site.yml
+DOCSEARCH_ENABLED=true DOCSEARCH_ENGINE=lunr antora --generator antora-site-generator-lunr site.yml
 ----
 
 If all went well - then you will have the site built in the output folder that was configured in site.yml!
@@ -145,44 +137,4 @@ NOTE: https://asciidoctor.org/docs/asciidoc-asciidoctor-diffs/
 NOTE: https://blog.anoff.io/2019-02-15-antora-first-steps/
 
 NOTE: https://owncloud.org/news/owncloud-docs-migrating-antora-pt-1-2/
-
-
-== Search stuff
-
-First you need to have ansible installed
-
-NOTE: If you want to manually edit the file, you don't need to install ansible
-
-[source,bash]
-----
-$ sudo apt-get -y install ansible
-----
-
-Now, let's run through the antora-lunr procedure:
-
-NOTE: Lifted from the base install notes from the  https://github.com/Mogztter/antora-lunr[ git repo]
-
-
-[source,bash]
-----
-$ ansible-playbook setup_lunr.yml
-
-----
-
-This should have edited this file: node_modules/@antora/site-generator-default/lib/generate-site.js
-as outlined in the git repo notes
-
-Now, install the lunr bits (from the docs folder)
-
-[source,bash]
-----
-$ npm i antora-lunr
-----
-
-And now, you can re-generate the site but this time with the search box:
-
-[source,bash]
-----
-$ DOCSEARCH_ENABLED=true DOCSEARCH_ENGINE=lunr antora site.yml
-----
 

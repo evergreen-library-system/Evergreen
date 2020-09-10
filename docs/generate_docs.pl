@@ -21,10 +21,10 @@ use File::Path;
 use Data::Dumper;
 
 my $base_url;
-my $tmp_space;
-my $html_output;
-my $antoraui_git;
-my $antora_version;
+my $tmp_space = './build';
+my $html_output = './output';
+my $antoraui_git = 'https://gitlab.com/antora/antora-ui-default.git';
+my $antora_version = '2.3';
 my $help;
 
 
@@ -46,14 +46,14 @@ sub help
     --tmp-space ../../tmp
     --html-output /var/www/html
     --antora-ui-repo https://gitlab.com/antora/antora-ui-default.git
-    --antora-version 2.1
+    --antora-version 2.3
 
     You must specify
-    --base-url                                    [eg: http//examplesite.org]
-    --tmp-space                                   [Writable path where we stage antora UI repo and the antora HTML, eg: ../../tmp]
-    --html-output                                 [Path where you want the generated HTML files to go, eg: /var/www/html]
-    --antora-ui-repo                              [git link to a repo, could be community repo: https://gitlab.com/antora/antora-ui-default.git]
-    --antora-version                              [target version of antora, eg: 2.1]
+    --base-url                                    [URL where html output is expected to be available eg: http//examplesite.org/docs]
+    --tmp-space                                   [Writable path for staging the antora UI repo and build files, defaults to ./build]
+    --html-output                                 [Path for the generated HTML files, defaults to ./output]
+    --antora-ui-repo                              [Antora-UI repository for the built UI, defaults to https://gitlab.com/antora/antora-ui-default.git]
+    --antora-version                              [Target version of antora, defaults to 2.3]
 
 HELP
     exit;
@@ -72,20 +72,25 @@ if ( !($base_url =~ m/^https?:\/\/.+\..+$/))
     exit;
 }
 
-# make sure the temp folder is good
-mkdir $tmp_space if ( !( -d $tmp_space ));
-
-# make sure the output folder is good
-mkdir $html_output if ( !( -d $html_output ));
 
 # deal with destination folders
-print "cleaning $tmp_space/antora-ui/\n" if (-d "$tmp_space/antora-ui");
-rmtree("$tmp_space/antora-ui/") if (-d "$tmp_space/antora-ui");
+if (-d "$tmp_space/antora-ui") {
+    print "cleaning $tmp_space/antora-ui/\n";
+    rmtree("$tmp_space/antora-ui/");
+}
 
-print "cleaning $tmp_space/staging/\n" if (-d "$tmp_space/staging");
-rmtree("$tmp_space/staging/") if (-d "$tmp_space/staging");
+if (-d "$html_output") {
+    print "cleaning $html_output/\n";
+    rmtree("$html_output/");
+}
 
-mkdir "$tmp_space/staging/";
+# make sure the temp folder is good
+mkdir $tmp_space unless ( -d $tmp_space );
+
+# make sure the output folder is good
+mkdir $html_output unless ( -d $html_output );
+
+die "Both " . $tmp_space . " and " . $html_output . " must be writable!" unless ( -w $tmp_space && -w $html_output );
 
 # Deal with ui repo
 exec_system_cmd("git clone $antoraui_git $tmp_space/antora-ui");
@@ -94,31 +99,23 @@ exec_system_cmd("cd $tmp_space/antora-ui && npm install gulp-cli");
 
 exec_system_cmd("cd $tmp_space/antora-ui && npm install");
 
-exec_system_cmd("cd $tmp_space/antora-ui && $tmp_space/antora-ui/node_modules/.bin/gulp build && $tmp_space/antora-ui/node_modules/.bin/gulp pack");
+exec_system_cmd("cd $tmp_space/antora-ui && ./node_modules/.bin/gulp build && ./node_modules/.bin/gulp pack");
+
+
+exec_system_cmd("cp site.yml site-working.yml");
 
 # Deal with root URL Antora configuration
-rewrite_yml($base_url,"site/url","site.yml");
-rewrite_yml("$tmp_space/staging","output/dir","site.yml");
-rewrite_yml("$tmp_space/antora-ui/build/ui-bundle.zip","ui/bundle/url","site.yml");
+rewrite_yml($base_url,"site/url","site-working.yml");
+rewrite_yml("$html_output","output/dir","site-working.yml");
+rewrite_yml("$tmp_space/antora-ui/build/ui-bundle.zip","ui/bundle/url","site-working.yml");
 
+#npm install antora
+exec_system_cmd('npm install @antora/cli@' . $antora_version . ' @antora/site-generator-default@' . $antora_version . ' antora-lunr antora-site-generator-lunr');
 
-#npm build antora
-exec_system_cmd('npm i @antora/cli@'.$antora_version.' @antora/site-generator-default@'.$antora_version);
+# Now, finally, let's build the site
+exec_system_cmd('DOCSEARCH_ENABLED=true DOCSEARCH_ENGINE=lunr NODE_PATH="$(npm root)" ./node_modules/@antora/cli/bin/antora --generator antora-site-generator-lunr site-working.yml');
 
-#make sure the lunr bits are accounted for
-exec_system_cmd('ansible-playbook setup_lunr.yml');
-exec_system_cmd('npm i antora-lunr');
-
-# Install the antora site generator with lunr
-exec_system_cmd('npm i antora-site-generator-lunr');
-
-# Now, finally, let's build antora
-exec_system_cmd('DOCSEARCH_ENABLED=true DOCSEARCH_ENGINE=lunr NODE_PATH="$(npm root)" ./node_modules/@antora/cli/bin/antora --generator antora-site-generator-lunr site.yml');
-
-# rsync to production
-exec_system_cmd('rsync -av --delete '.$tmp_space.'/staging/* '.$html_output.'/');
-
-print "Success: your site should be viewable here: $base_url\n";
+print "Success: your site files are available at " . $html_output . " and can be moved into place for access at " . $base_url . "\n";
 
 sub rewrite_yml
 {
@@ -127,7 +124,7 @@ sub rewrite_yml
     my $file = shift;
     my $contents = replace_yml($replacement,$yml_path,$file);
     $contents =~ s/[\n\t]*$//g;
-    write_file("site.yml", $contents) if ($contents =~ m/$replacement/);
+    write_file($file, $contents) if ($contents =~ m/$replacement/);
 }
 
 sub write_file
