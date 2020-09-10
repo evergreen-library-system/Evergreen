@@ -61,7 +61,7 @@ $ ./generate_docs.pl \
 --base-url http//examplesite.org/prod \
 --tmp-space ../../tmp \
 --html-output /var/www/html/prod \
---antora-ui-repo https://git.evergreen-ils.org/eg-antora.git \
+--antora-ui-repo git://git.evergreen-ils.org/eg-antora.git \
 --antora-version 2.3
 
 ----

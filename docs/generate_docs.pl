@@ -23,7 +23,7 @@ use Data::Dumper;
 my $base_url;
 my $tmp_space = './build';
 my $html_output = './output';
-my $antoraui_git = 'https://gitlab.com/antora/antora-ui-default.git';
+my $antoraui_git = 'git://git.evergreen-ils.org/eg-antora.git';
 my $antora_version = '2.3';
 my $help;
 
@@ -45,14 +45,14 @@ sub help
     --base-url http://example.com
     --tmp-space ../../tmp
     --html-output /var/www/html
-    --antora-ui-repo https://gitlab.com/antora/antora-ui-default.git
+    --antora-ui-repo git://git.evergreen-ils.org/eg-antora.git
     --antora-version 2.3
 
     You must specify
     --base-url                                    [URL where html output is expected to be available eg: http//examplesite.org/docs]
     --tmp-space                                   [Writable path for staging the antora UI repo and build files, defaults to ./build]
     --html-output                                 [Path for the generated HTML files, defaults to ./output]
-    --antora-ui-repo                              [Antora-UI repository for the built UI, defaults to https://gitlab.com/antora/antora-ui-default.git]
+    --antora-ui-repo                              [Antora-UI repository for the built UI, defaults to git://git.evergreen-ils.org/eg-antora.git]
     --antora-version                              [Target version of antora, defaults to 2.3]
 
 HELP
