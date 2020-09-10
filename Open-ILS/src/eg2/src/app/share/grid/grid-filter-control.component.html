@@ -1,285 +1,311 @@
+
+<!-- drop-down toggle link -->
+<ng-template #dropdownToggle let-col="col"> 
+  <span i18n>Filter</span>
+  <ng-container *ngIf="!col.isFiltered">
+    <span class="material-icons mat-icon-in-button">filter_list</span>
+  </ng-container>
+  <ng-container *ngIf="col.isFiltered">
+    <span class="material-icons mat-icon-in-button">create</span>
+  </ng-container>
+</ng-template>
+
+<!-- apply/clear actions are the same for all filter types -->
+<ng-template #actionsTemplate let-col="col">
+  <div class="pt-2">
+    <button class="btn btn-sm btn-outline-dark" 
+      (click)="closeDropdown(); applyFilter(col)" i18n>Apply filter</button>
+    <span class="pl-2"></span>
+    <button class="btn btn-sm btn-outline-dark" 
+      (click)="closeDropdown(); clearFilter(col)" i18n>Clear filter</button>
+  </div>
+</ng-template>
+
+<!-- various number filters all use the same operators -->
+<ng-template #numericOperators let-col="col">
+  <select id="eg-filter-op-select-{{col.name}}" class="form-control" 
+    [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
+    <option value="=" i18n>Is exactly</option>
+    <option value="!=" i18n>Is not</option>
+    <option value="not null" i18n>Exists</option>
+    <option value="null" i18n>Does not exist</option>
+    <option value="<" i18n>Is less than</option>
+    <option value=">" i18n>Is greater than</option>
+    <option value="<=" i18n>Is less than or equal to</option>
+    <option value=">=" i18n>Is greater than or equal to</option>
+  </select>
+</ng-template>
+
 <div *ngIf="col.isFilterable" class="eg-grid-filter-control">
   <div [ngSwitch]="col.datatype">
     <div *ngSwitchCase="'link'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
-            <span class="material-icons mat-icon-in-button">filter_list</span>
-          </button>
+        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+          <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
+            <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
+          </a>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
-              <div style="padding-top: 2px;">
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); applyFilter(col)" i18n>Apply filter</button>
-                <span style="padding-left: 2px;"></span>
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); clearFilter(col)" i18n>Clear filter</button>
+              <div class="pt-2">
+                <eg-combobox [asyncSupportsEmptyTermClick]="col.asyncSupportsEmptyTermClick" 
+                  [idlClass]="col.idlFieldDef.class" (onChange)="applyLinkFilter($event, col)" 
+                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
+                  i18n-placeholder placeholder="Enter value to filter by"></eg-combobox>
               </div>
+              <ng-container *ngTemplateOutlet="actionsTemplate; context:{col: col}"></ng-container>
             </div>
           </div>
         </div>
-        <eg-combobox [asyncSupportsEmptyTermClick]="col.asyncSupportsEmptyTermClick" [idlClass]="col.idlFieldDef.class" (onChange)="applyLinkFilter($event, col)" 
-          [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
-          i18n-placeholder placeholder="Enter value to filter by"></eg-combobox>
       </div>
     </div>
     <div *ngSwitchCase="'bool'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
-            <span class="material-icons mat-icon-in-button">filter_list</span>
-          </button>
+        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+          <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
+            <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
+          </a>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
-              <div style="padding-top: 2px;">
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); applyBooleanFilter(col)" i18n>Apply filter</button>
-                <span style="padding-left: 2px;"></span>
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); clearFilter(col)" i18n>Clear filter</button>
+              <div class="pt-2">
+                <select class="custom-select" [(ngModel)]="col.filterValue" (change)="applyBooleanFilter(col)"
+                    [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
+                  <option value="" i18n>Any</option>
+                  <option value="t" i18n>True</option>
+                  <option value="f" i18n>False</option>
+                </select>
               </div>
+              <ng-container *ngTemplateOutlet="actionsTemplate; context:{'col': col}"></ng-container>
             </div>
           </div>
         </div>
-        <select class="custom-select" [(ngModel)]="col.filterValue" (change)="applyBooleanFilter(col)"
-            [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
-          <option value="" i18n>Any</option>
-          <option value="t" i18n>True</option>
-          <option value="f" i18n>False</option>
-        </select>
       </div>
     </div>
     <div *ngSwitchCase="'text'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
-            <span class="material-icons mat-icon-in-button">filter_list</span>
-          </button>
+        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+          <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
+            <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
+          </a>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
-              <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
-              <select id="eg-filter-op-select-{{col.name}}" class="form-control" [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
-                <option value="=" i18n>Is exactly</option>
-                <option value="!=" i18n>Is not</option>
-                <option value="like" i18n>Contains</option>
-                <option value="not like" i18n>Does not contain</option>
-                <option value="startswith" i18n>Starts with</option>
-                <option value="endswith" i18n>Ends with</option>
-                <option value="not null" i18n>Exists</option>
-                <option value="null" i18n>Does not exist</option>
-                <option value="<" i18n>Is less than</option>
-                <option value=">" i18n>Is greater than</option>
-                <option value="<=" i18n>Is less than or equal to</option>
-                <option value=">=" i18n>Is greater than or equal to</option>
-              </select>
-              <div style="padding-top: 2px;">
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); applyFilter(col)" i18n>Apply filter</button>
-                <span style="padding-left: 2px;"></span>
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); clearFilter(col)" i18n>Clear filter</button>
+              <div class="pt-2">
+                <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                <select id="eg-filter-op-select-{{col.name}}" class="form-control" 
+                  [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
+                  <option value="=" i18n>Is exactly</option>
+                  <option value="!=" i18n>Is not</option>
+                  <option value="like" i18n>Contains</option>
+                  <option value="not like" i18n>Does not contain</option>
+                  <option value="startswith" i18n>Starts with</option>
+                  <option value="endswith" i18n>Ends with</option>
+                  <option value="not null" i18n>Exists</option>
+                  <option value="null" i18n>Does not exist</option>
+                  <option value="<" i18n>Is less than</option>
+                  <option value=">" i18n>Is greater than</option>
+                  <option value="<=" i18n>Is less than or equal to</option>
+                  <option value=">=" i18n>Is greater than or equal to</option>
+                </select>
               </div>
+              <div class="pt-2">
+                <input type="text" class="form-control" 
+                  [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col); closeDropdown()" 
+                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData" 
+                  i18n-placeholder placeholder="Enter value to filter by">
+              </div>
+              <ng-container *ngTemplateOutlet="actionsTemplate; context:{'col': col}"></ng-container>
             </div>
           </div>
         </div>
-        <input type="text" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" 
-          [disabled]="col.filterInputDisabled || context.dataSource.requestingData" i18n-placeholder placeholder="Enter value to filter by">
       </div>
     </div>
     <div *ngSwitchCase="'int'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
-            <span class="material-icons mat-icon-in-button">filter_list</span>
-          </button>
+        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+          <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
+            <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
+          </a>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
-              <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
-              <select id="eg-filter-op-select-{{col.name}}" class="form-control" [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
-                <option value="=" i18n>Is exactly</option>
-                <option value="!=" i18n>Is not</option>
-                <option value="not null" i18n>Exists</option>
-                <option value="null" i18n>Does not exist</option>
-                <option value="<" i18n>Is less than</option>
-                <option value=">" i18n>Is greater than</option>
-                <option value="<=" i18n>Is less than or equal to</option>
-                <option value=">=" i18n>Is greater than or equal to</option>
-              </select>
-              <div style="padding-top: 2px;">
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); applyFilter(col)" i18n>Apply filter</button>
-                <span style="padding-left: 2px;"></span>
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); clearFilter(col)" i18n>Clear filter</button>
+              <div class="pt-2">
+                <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                <ng-container *ngTemplateOutlet="numericOperators; context:{'col': col}"></ng-container>
               </div>
+              <div class="pt-2">
+                <input type="number" min="0" step="1" class="form-control" 
+                  [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col); closeDropdown()" 
+                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData"/>
+              </div>
+              <ng-container *ngTemplateOutlet="actionsTemplate; context:{'col': col}"></ng-container>
             </div>
           </div>
         </div>
-        <input type="number" min="0" step="1" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
       </div>
     </div>
     <div *ngSwitchCase="'id'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
-            <span class="material-icons mat-icon-in-button">filter_list</span>
-          </button>
+        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+          <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
+            <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
+          </a>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
-              <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
-              <select id="eg-filter-op-select-{{col.name}}" class="form-control" [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
-                <option value="=" i18n>Is exactly</option>
-                <option value="!=" i18n>Is not</option>
-                <option value="not null" i18n>Exists</option>
-                <option value="null" i18n>Does not exist</option>
-                <option value="<" i18n>Is less than</option>
-                <option value=">" i18n>Is greater than</option>
-                <option value="<=" i18n>Is less than or equal to</option>
-                <option value=">=" i18n>Is greater than or equal to</option>
-              </select>
-              <div style="padding-top: 2px;">
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); applyFilter(col)" i18n>Apply filter</button>
-                <span style="padding-left: 2px;"></span>
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); clearFilter(col)" i18n>Clear filter</button>
+              <div class="pt-2">
+                <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                <ng-container *ngTemplateOutlet="numericOperators; context:{'col': col}"></ng-container>
               </div>
+              <div class="pt-2">
+                <input type="number" min="0" step="1" class="form-control" 
+                  [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col); closeDropdown()" 
+                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
+              </div>
+              <ng-container *ngTemplateOutlet="actionsTemplate; context:{'col': col}"></ng-container>
             </div>
           </div>
         </div>
-        <input type="number" min="0" step="1" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
       </div>
     </div>
     <div *ngSwitchCase="'float'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
-            <span class="material-icons mat-icon-in-button">filter_list</span>
-          </button>
+        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+          <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
+            <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
+          </a>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
-              <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
-              <select id="eg-filter-op-select-{{col.name}}"  class="form-control" [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
-                <option value="=" i18n>Is exactly</option>
-                <option value="!=" i18n>Is not</option>
-                <option value="not null" i18n>Exists</option>
-                <option value="null" i18n>Does not exist</option>
-                <option value="<" i18n>Is less than</option>
-                <option value=">" i18n>Is greater than</option>
-                <option value="<=" i18n>Is less than or equal to</option>
-                <option value=">=" i18n>Is greater than or equal to</option>
-              </select>
-              <div style="padding-top: 2px;">
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); applyFilter(col)" i18n>Apply filter</button>
-                <span style="padding-left: 2px;"></span>
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); clearFilter(col)" i18n>Clear filter</button>
+              <div class="pt-2">
+                <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                <ng-container *ngTemplateOutlet="numericOperators; context:{'col': col}"></ng-container>
               </div>
+              <div class="pt-2">
+                <input type="number" class="form-control" [(ngModel)]="col.filterValue" 
+                  (keyup.enter)="applyFilter(col); closeDropdown()" 
+                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
+              </div>
+              <ng-container *ngTemplateOutlet="actionsTemplate; context:{'col': col}"></ng-container>
             </div>
           </div>
         </div>
-        <input type="number" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
       </div>
     </div>
     <div *ngSwitchCase="'money'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
-            <span class="material-icons mat-icon-in-button">filter_list</span>
-          </button>
+        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+          <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
+            <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
+          </a>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
-              <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
-              <select id="eg-filter-op-select-{{col.name}}" class="form-control" [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
-                <option value="=" i18n>Is exactly</option>
-                <option value="!=" i18n>Is not</option>
-                <option value="not null" i18n>Exists</option>
-                <option value="null" i18n>Does not exist</option>
-                <option value="<" i18n>Is less than</option>
-                <option value=">" i18n>Is greater than</option>
-                <option value="<=" i18n>Is less than or equal to</option>
-                <option value=">=" i18n>Is greater than or equal to</option>
-              </select>
-              <div style="padding-top: 2px;">
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); applyFilter(col)" i18n>Apply filter</button>
-                <span style="padding-left: 2px;"></span>
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); clearFilter(col)" i18n>Clear filter</button>
+              <div class="pt-2">
+                <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                <ng-container *ngTemplateOutlet="numericOperators; context:{'col': col}"></ng-container>
               </div>
+              <div class="pt-2">
+                <input type="number" step="0.01" class="form-control" 
+                  [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col); closeDropdown()" 
+                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData"/>
+              </div>
+              <ng-container *ngTemplateOutlet="actionsTemplate; context:{'col': col}"></ng-container>
             </div>
-          </div>
+         </div>
         </div>
-        <input type="number" step="0.01" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
       </div>
     </div>
     <div *ngSwitchCase="'timestamp'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-            <div ngbDropdownMenu class="eg-grid-filter-menu">
-            <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
-              <span class="material-icons mat-icon-in-button">filter_list</span>
-            </button>
+        <!-- [autoClose]="false" because editing the date widgets, which open
+             their open popups, registers to the dropdown as clicking 
+             outside the dropdown -->
+        <div ngbDropdown class="d-inline-block p-1" [autoClose]="false" placement="bottom-left" 
+          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+          <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
+            <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
+          </a>
+          <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
-              <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
-              <select id="eg-filter-op-select-{{col.name}}" class="form-control" [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
-                <option value="=" i18n>Is exactly</option>
-                <option value="!=" i18n>Is not</option>
-                <option value="not null" i18n>Exists</option>
-                <option value="null" i18n>Does not exist</option>
-                <option value="<" i18n>Is less than</option>
-                <option value=">" i18n>Is greater than</option>
-                <option value="<=" i18n>Is less than or equal to</option>
-                <option value=">=" i18n>Is greater than or equal to</option>
-                <option value="between" i18n>Between</option>
-              </select>
-              <div style="padding-top: 2px;">
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); applyDateFilter(datesel.currentAsYmd(), col, dateendsel.currentAsYmd())" i18n>Apply filter</button>
-                <span style="padding-left: 2px;"></span>
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); clearFilter(col)" i18n>Clear filter</button>
+              <div class="pt-2">
+                <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                <select id="eg-filter-op-select-{{col.name}}" class="form-control" 
+                  [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
+                  <option value="=" i18n>Is exactly</option>
+                  <option value="!=" i18n>Is not</option>
+                  <option value="not null" i18n>Exists</option>
+                  <option value="null" i18n>Does not exist</option>
+                  <option value="<" i18n>Is less than</option>
+                  <option value=">" i18n>Is greater than</option>
+                  <option value="<=" i18n>Is less than or equal to</option>
+                  <option value=">=" i18n>Is greater than or equal to</option>
+                  <option value="between" i18n>Between</option>
+                </select>
               </div>
+              <div class="pt-2">
+                <eg-date-select [initialYmd]="col.filterValue" 
+                  (onChangeAsYmd)="applyDateFilter($event, col, dateendsel.currentAsYmd())" (onCleared)="clearDateFilter(col)"
+                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData" #datesel></eg-date-select>
+                <div [hidden]="col.filterOperator !== 'between'" class="form-inline form-group">
+                  <label for="eg-filter-end-date-select-{{col.name}}" style="width: 3em;" i18n>and</label>
+                  <eg-date-select [hidden]="col.filterOperator !== 'between'" 
+                    (onChangeAsYmd)="applyDateFilter(datesel.currentAsYmd(), col, $event)"
+                    [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
+                    [required]="col.filterOperator == 'between'" #dateendsel></eg-date-select>
+                </div>
+              </div>
+              <ng-container *ngTemplateOutlet="actionsTemplate; context:{'col': col}"></ng-container>
             </div>
           </div>
-        </div>
-        <eg-date-select [initialYmd]="col.filterValue" (onChangeAsYmd)="applyDateFilter($event, col, dateendsel.currentAsYmd())" (onCleared)="clearDateFilter(col)"
-                        [disabled]="col.filterInputDisabled || context.dataSource.requestingData" #datesel></eg-date-select>
-        <div [hidden]="col.filterOperator !== 'between'" class="form-inline form-group">
-          <label for="eg-filter-end-date-select-{{col.name}}" style="width: 3em;" i18n>and</label>
-          <eg-date-select [hidden]="col.filterOperator !== 'between'" (onChangeAsYmd)="applyDateFilter(datesel.currentAsYmd(), col, $event)"
-                          [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
-                          [required]="col.filterOperator == 'between'" #dateendsel></eg-date-select>
         </div>
       </div>
     </div>
     <div *ngSwitchCase="'org_unit'">
       <div class="input-group">
-        <div ngbDropdown class="d-inline-block" autoClose="outside" placement="bottom-left" [ngClass]="{'eg-grid-col-is-filtered' : col.isFiltered}">
-          <button ngbDropdownToggle class="form-control btn btn-sm btn-outline-dark text-button" [disabled]="context.dataSource.requestingData">
-            <span class="material-icons mat-icon-in-button">filter_list</span>
-          </button>
+        <div ngbDropdown class="d-inline-block p-1" autoClose="outside" placement="bottom-left" 
+          [ngClass]="{'border rounded border-secondary eg-grid-col-is-filtered' : col.isFiltered}">
+          <a ngbDropdownToggle class="no-dropdown-caret text-dark" href="javascript:;">
+            <ng-container *ngTemplateOutlet="dropdownToggle; context:{col:col}"></ng-container>
+          </a>
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
-              <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
-              <select id="eg-filter-op-select-{{col.name}}" class="form-control" [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
-                <option value="=" i18n>Is (or includes)</option>
-                <option value="!=" i18n>Is not (or excludes)</option>
-              </select>
-            </div>
-            <div class="dropdown-item">
-              <div class="form-check">
-                <input type="checkbox"
-                  [(ngModel)]="col.filterIncludeOrgAncestors"
-                  class="form-check-input" id="include-ancestors">
-                <label class="form-check-label" for="include-ancestors" i18n>+ Ancestors</label>
+              <div class="pt-2">
+                <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                <select id="eg-filter-op-select-{{col.name}}" class="form-control" [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
+                  <option value="=" i18n>Is (or includes)</option>
+                  <option value="!=" i18n>Is not (or excludes)</option>
+                </select>
               </div>
-              <div class="form-check">
-                <input type="checkbox"
-                  [(ngModel)]="col.filterIncludeOrgDescendants"
-                  class="form-check-input" id="include-descendants">
-                <label class="form-check-label" for="include-descendants" i18n>+ Descendants</label>
+              <div class="dropdown-item">
+                <div class="form-check">
+                  <input type="checkbox"
+                    [(ngModel)]="col.filterIncludeOrgAncestors"
+                    class="form-check-input" id="include-ancestors">
+                  <label class="form-check-label" for="include-ancestors" i18n>+ Ancestors</label>
+                </div>
+                <div class="form-check">
+                  <input type="checkbox"
+                    [(ngModel)]="col.filterIncludeOrgDescendants"
+                    class="form-check-input" id="include-descendants">
+                  <label class="form-check-label" for="include-descendants" i18n>+ Descendants</label>
+                </div>
               </div>
-              <div style="padding-top: 2px;">
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); applyOrgFilter(ousel.selectedOrg(), col)" i18n>Apply filter</button>
-                <span style="padding-left: 2px;"></span>
-                <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown(); clearFilter(col)" i18n>Clear filter</button>
+              <div class="pt-2">
+                <eg-org-select [applyOrgId]="col.filterValue" (onChange)="applyOrgFilter($event, col)"
+                  [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
+                  i18n-placeholder placeholder="Enter library to filter by" #ousel></eg-org-select>
               </div>
+              <ng-container *ngTemplateOutlet="actionsTemplate; context:{'col': col}"></ng-container>
             </div>
           </div>
         </div>
-        <eg-org-select [applyOrgId]="col.filterValue" (onChange)="applyOrgFilter($event, col)"
-          [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
-          i18n-placeholder placeholder="Enter library to filter by" #ousel></eg-org-select>
       </div>
     </div>
     <div *ngSwitchDefault>I don't know how to filter {{col.name}} - {{col.datatype}}</div>
   </div>
+  <!--
   <span *ngIf="col.datatype !== 'org_unit'" class="eg-grid-filter-operator"><ng-container i18n>Operator:</ng-container>
     <span [ngSwitch]="col.filterOperator">
       <span *ngSwitchCase="'='" i18n>Is exactly</span>
@@ -303,4 +329,5 @@
       <span *ngSwitchCase="'!='" i18n>Is not (or excludes)</span>
     </span>
   </span>
+  -->
 </div>

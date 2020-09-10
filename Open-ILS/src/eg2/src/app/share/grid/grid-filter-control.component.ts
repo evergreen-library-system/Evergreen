@@ -164,6 +164,12 @@ export class GridFilterControlComponent implements OnInit {
                 date_filt['-or'].push(filt2_a);
                 filters.push(date_filt);
             } else if (col.filterOperator === 'between') {
+
+                if (!endDateStr) {
+                    // User has not applied the second date yet.
+                    return;
+                }
+
                 date1 = date;
                 date2 = this.localDateFromYmd(endDateStr);
 
@@ -194,6 +200,11 @@ export class GridFilterControlComponent implements OnInit {
             col.isFiltered = true;
             this.context.reload();
         }
+
+        // The date filter has autoClose=false so that interacting with
+        // date selectors won't result in closing the dropdown.  Once
+        // we've successfully applied a filter, force it closed.
+        this.closeDropdown();
     }
     clearDateFilter(col: GridColumn) {
         delete this.context.dataSource.filters[col.name];
