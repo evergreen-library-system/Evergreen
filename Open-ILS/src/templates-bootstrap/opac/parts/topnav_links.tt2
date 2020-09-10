@@ -33,7 +33,7 @@
         <li class="nav-item">
            [% IF ctx.page != 'login' %]
            <a href="#loginModal" data-toggle="modal" data-target="#loginModal" class="nav-link login">
-           [% ELSE %] <a href="https://test.nflibrary.ca/eg/opac/login" class="nav-link login">
+           [% ELSE %] <a href="/eg/opac/login" class="nav-link login">
             [% END %] [% l('My Account') %] </a>
         </li>
       <!--User is signed in-->
