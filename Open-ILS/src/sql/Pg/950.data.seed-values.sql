@@ -6756,6 +6756,14 @@ INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, leng
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('MRec', '008', 'VIS', 38, 1, ' ');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('S/L', '006', 'SER', 17, 1, '0');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('S/L', '008', 'SER', 34, 1, '0');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Srce', '008', 'BKS', 39, 1, ' ');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Srce', '008', 'COM', 39, 1, ' ');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Srce', '008', 'MAP', 39, 1, ' ');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Srce', '008', 'MIX', 39, 1, ' ');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Srce', '008', 'REC', 39, 1, ' ');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Srce', '008', 'SCO', 39, 1, ' ');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Srce', '008', 'SER', 39, 1, ' ');
+INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Srce', '008', 'VIS', 39, 1, ' ');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('TMat', '006', 'VIS', 16, 1, ' ');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('TMat', '008', 'VIS', 33, 1, ' ');
 INSERT INTO config.marc21_ff_pos_map (fixed_field, tag, rec_type,start_pos, length, default_val) VALUES ('Type', 'ldr', 'BKS', 6, 1, 'a');
@@ -6941,6 +6949,7 @@ INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('lang
 INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('lit_form','LitF','LitF',oils_i18n_gettext('lit_form', 'Literary Form', 'crad', 'description'));
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('mrec','MRec','MRec');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('ff_sl','S/L','S/L');
+INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('srce','Srce','Srce');
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('type_mat','TMat','TMat');
 INSERT INTO config.record_attr_definition (name,label,fixed_field,multi,description) values ('item_type','Type','Type',FALSE,oils_i18n_gettext('item_type', 'Item Type', 'crad', 'description'));
 INSERT INTO config.record_attr_definition (name,label,phys_char_sf,description) values ('vr_format','Videorecording format',72,oils_i18n_gettext('vr_format', 'Video Format', 'crad', 'description'));
@@ -9252,6 +9261,11 @@ INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES
 INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1732, 'ills4', 'm', oils_i18n_gettext('1732', 'Phonodisc, phonowire, etc.', 'ccvm', 'value'), FALSE);
 INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1733, 'ills4', 'o', oils_i18n_gettext('1733', 'Photographs', 'ccvm', 'value'), FALSE);
 INSERT INTO config.coded_value_map (id, ctype, code, value, opac_visible) VALUES (1734, 'ills4', 'p', oils_i18n_gettext('1734', 'Illuminations', 'ccvm', 'value'), FALSE);
+
+INSERT INTO config.coded_value_map (id, ctype, code, value) VALUES
+(1750, 'srce', ' ', oils_i18n_gettext('1750', 'National bibliographic agency', 'ccvm', 'value')),
+(1751, 'srce', 'c', oils_i18n_gettext('1751', 'Cooperative cataloging program', 'ccvm', 'value')),
+(1752, 'srce', 'd', oils_i18n_gettext('1752', 'Other', 'ccvm', 'value'));
 
 
 -- carve out a slot of 10k IDs for stock CCVMs
