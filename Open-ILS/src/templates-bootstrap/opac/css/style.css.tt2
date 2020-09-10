@@ -3042,6 +3042,11 @@ a.preflib_change {
     width: 16px;
 }
 
+/* override a tiny bootstrap alignment issue */
+.form-check-input {
+    margin-top: .2rem;
+}
+
 @media only screen and (min-width: 992px) {
     .nav-fr{
         float: right;
