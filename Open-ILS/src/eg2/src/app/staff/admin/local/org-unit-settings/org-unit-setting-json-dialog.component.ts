@@ -1,7 +1,6 @@
-import {Component, Input, ViewChild, TemplateRef} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import {OrgUnitSetting} from '@eg/staff/admin/local/org-unit-settings/org-unit-settings.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'eg-admin-ou-setting-json-dialog',

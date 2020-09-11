@@ -1,8 +1,5 @@
-import {Component, OnInit, Input, ViewChild, ViewEncapsulation
-    } from '@angular/core';
-import {Router} from '@angular/router';
-import {Observable, Observer, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Observable, Observer} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -11,10 +8,6 @@ import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridToolbarCheckboxComponent
-    } from '@eg/share/grid/grid-toolbar-checkbox.component';
-import {StoreService} from '@eg/core/store.service';
-import {ServerStoreService} from '@eg/core/server-store.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 
 import {EditOuSettingDialogComponent
@@ -44,7 +37,7 @@ export class OrgUnitSetting {
     templateUrl: './org-unit-settings.component.html'
 })
 
-export class OrgUnitSettingsComponent {
+export class OrgUnitSettingsComponent implements OnInit {
 
     contextOrg: IdlObject;
 
@@ -55,13 +48,13 @@ export class OrgUnitSettingsComponent {
     currentHistory: any[];
     currentOptions: any[];
     jsonFieldData: {};
-    @ViewChild('orgUnitSettingsGrid', { static:true }) orgUnitSettingsGrid: GridComponent;
+    @ViewChild('orgUnitSettingsGrid', { static: true }) orgUnitSettingsGrid: GridComponent;
 
-    @ViewChild('editOuSettingDialog', { static:true })
+    @ViewChild('editOuSettingDialog', { static: true })
         private editOuSettingDialog: EditOuSettingDialogComponent;
-    @ViewChild('orgUnitSettingHistoryDialog', { static:true })
+    @ViewChild('orgUnitSettingHistoryDialog', { static: true })
         private orgUnitSettingHistoryDialog: OuSettingHistoryDialogComponent;
-    @ViewChild('ouSettingJsonDialog', { static:true })
+    @ViewChild('ouSettingJsonDialog', { static: true })
         private ouSettingJsonDialog: OuSettingJsonDialogComponent;
 
     refreshSettings: boolean;
@@ -72,13 +65,9 @@ export class OrgUnitSettingsComponent {
     @Input() filterString: string;
 
     constructor(
-        private router: Router,
         private org: OrgService,
-        private idl: IdlService,
         private pcrud: PcrudService,
         private auth: AuthService,
-        private store: ServerStoreService,
-        private localStore: StoreService,
         private toast: ToastService,
         private net: NetService,
     ) {
@@ -95,7 +84,7 @@ export class OrgUnitSettingsComponent {
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
             return this.fetchSettingTypes(pager);
         };
-        this.orgUnitSettingsGrid.onRowActivate.subscribe((setting:OrgUnitSetting) => {
+        this.orgUnitSettingsGrid.onRowActivate.subscribe((setting: OrgUnitSetting) => {
             this.showEditSettingValueDialog(setting);
         });
     }
@@ -129,17 +118,17 @@ export class OrgUnitSettingsComponent {
                  this.contextOrg.id(), settingNames, this.auth.token()
             ).subscribe(
                 blob => {
-                    let settingVals = Object.keys(blob).map(key => {
-                        return {'name': key, 'setting': blob[key]}
+                    const settingVals = Object.keys(blob).map(key => {
+                        return {'name': key, 'setting': blob[key]};
                     });
                     settingVals.forEach(key => {
                         if (key.setting) {
-                            let settingsObj = this.settingTypeArr.filter(
-                                setting => setting.name == key.name
+                            const settingsObj = this.settingTypeArr.filter(
+                                setting => setting.name === key.name
                             )[0];
                             settingsObj.value = key.setting.value;
                             settingsObj.value_str = settingsObj.value;
-                            if (settingsObj.dataType == 'link' && (key.setting.value || key.setting.value == 0)) {
+                            if (settingsObj.dataType === 'link' && (key.setting.value || key.setting.value === 0)) {
                                 this.fetchLinkedField(settingsObj.fmClass, key.setting.value, settingsObj.value_str).then(res => {
                                     settingsObj.value_str = res;
                                 });
@@ -165,13 +154,13 @@ export class OrgUnitSettingsComponent {
     }
 
     fetchHistory(setting): Promise<any> {
-        let name = setting.name;
+        const name = setting.name;
         return new Promise((resolve, reject) => {
             this.net.request(
                 'open-ils.actor',
                 'open-ils.actor.org_unit.settings.history.retrieve',
                 this.auth.token(), name, this.contextOrg.id()
-            ).subscribe(res=> {
+            ).subscribe(res => {
                 this.currentHistory = [];
                 if (!Array.isArray(res)) {
                     res = [res];
@@ -180,20 +169,20 @@ export class OrgUnitSettingsComponent {
                     log.org = this.org.get(log.org);
                     log.new_value_str = log.new_value;
                     log.original_value_str = log.original_value;
-                    if (setting.dataType == "link") {
+                    if (setting.dataType === 'link') {
                         if (log.new_value) {
-                            this.fetchLinkedField(setting.fmClass, parseInt(log.new_value), log.new_value_str).then(val => {
+                            this.fetchLinkedField(setting.fmClass, Number(log.new_value), log.new_value_str).then(val => {
                                 log.new_value_str = val;
                             });
                         }
                         if (log.original_value) {
-                            this.fetchLinkedField(setting.fmClass, parseInt(log.original_value), log.original_value_str).then(val => {
+                            this.fetchLinkedField(setting.fmClass, Number(log.original_value), log.original_value_str).then(val => {
                                 log.original_value_str = val;
                             });
                         }
                     }
-                    if (log.new_value_str) log.new_value_str = log.new_value_str.replace(/^"(.*)"$/, '$1');
-                    if (log.original_value_str) log.original_value_str = log.original_value_str.replace(/^"(.*)"$/, '$1');
+                    if (log.new_value_str) { log.new_value_str = log.new_value_str.replace(/^"(.*)"$/, '$1'); }
+                    if (log.original_value_str) { log.original_value_str = log.original_value_str.replace(/^"(.*)"$/, '$1'); }
                 });
                 this.currentHistory = res;
                 this.currentHistory.sort((a, b) => {
@@ -201,21 +190,22 @@ export class OrgUnitSettingsComponent {
                 });
 
                 resolve(this.currentHistory);
-            }, err=>{reject(err);});
+            }, err => {reject(err); });
         });
     }
 
     allocateSettingTypes(coust: IdlObject) {
-        let entry = new OrgUnitSetting();
+        const entry = new OrgUnitSetting();
         entry.name = coust.name();
         entry.label = coust.label();
         entry.dataType = coust.datatype();
-        if (coust.fm_class()) entry.fmClass = coust.fm_class();
-        if (coust.description()) entry.description = coust.description();
+        if (coust.fm_class()) { entry.fmClass = coust.fm_class(); }
+        if (coust.description()) { entry.description = coust.description(); }
         // For some reason some setting types don't have a grp, should look into this...
-        if (coust.grp()) entry.grp = coust.grp().label();
-        if (coust.view_perm()) 
+        if (coust.grp()) { entry.grp = coust.grp().label(); }
+        if (coust.view_perm()) {
             entry.view_perm = coust.view_perm().code();
+        }
 
         this.settingTypeArr.push(entry);
     }
@@ -230,20 +220,20 @@ export class OrgUnitSettingsComponent {
     }
 
     applyFilter(clear?: boolean) {
-        if (clear) this.filterString = '';
+        if (clear) { this.filterString = ''; }
         this.updateGrid(this.contextOrg);
     }
-    
+
     updateSetting(obj, entry) {
         this.net.request(
             'open-ils.actor',
             'open-ils.actor.org_unit.settings.update',
             this.auth.token(), obj.context.id(), obj.setting
-        ).toPromise().then(res=> {
-            this.toast.success(entry.label + " Updated.");
+        ).toPromise().then(res => {
+            this.toast.success(entry.label + ' Updated.');
             if (!obj.setting[entry.name]) {
-                let settingsObj = this.settingTypeArr.filter(
-                    setting => setting.name == entry.name
+                const settingsObj = this.settingTypeArr.filter(
+                    setting => setting.name === entry.name
                 )[0];
                 settingsObj.value = null;
                 settingsObj.value_str = null;
@@ -253,7 +243,7 @@ export class OrgUnitSettingsComponent {
             this.mergeSettingValues();
         },
         err => {
-            this.toast.danger(entry.label + " failed to update: " + err.desc);
+            this.toast.danger(entry.label + ' failed to update: ' + err.desc);
         });
     }
 
@@ -281,38 +271,39 @@ export class OrgUnitSettingsComponent {
                         }
                     });
                 }
-            )
+            );
         }
     }
 
     showJsonDialog(isExport: boolean) {
         this.ouSettingJsonDialog.isExport = isExport;
-        this.ouSettingJsonDialog.jsonData = "";
+        this.ouSettingJsonDialog.jsonData = '';
         if (isExport) {
-            this.ouSettingJsonDialog.jsonData = "{";
+            this.ouSettingJsonDialog.jsonData = '{';
             this.gridDataSource.data.forEach(entry => {
                 this.ouSettingJsonDialog.jsonData +=
-                    "\"" + entry.name + "\": {\"org\": \"" +
-                    this.contextOrg.id() + "\", \"value\": ";
+                    '"' + entry.name + '": {"org": "' +
+                    this.contextOrg.id() + '", "value": ';
                 if (entry.value) {
-                    this.ouSettingJsonDialog.jsonData += "\"" + entry.value + "\"";
+                    this.ouSettingJsonDialog.jsonData += '"' + entry.value + '"';
                 } else {
-                    this.ouSettingJsonDialog.jsonData += "null";
+                    this.ouSettingJsonDialog.jsonData += 'null';
                 }
-                this.ouSettingJsonDialog.jsonData += "}";
-                if (this.gridDataSource.data.indexOf(entry) != (this.gridDataSource.data.length - 1))
-                    this.ouSettingJsonDialog.jsonData += ",";
+                this.ouSettingJsonDialog.jsonData += '}';
+                if (this.gridDataSource.data.indexOf(entry) !== (this.gridDataSource.data.length - 1)) {
+                    this.ouSettingJsonDialog.jsonData += ',';
+                }
             });
-            this.ouSettingJsonDialog.jsonData += "}";
+            this.ouSettingJsonDialog.jsonData += '}';
         }
 
         this.ouSettingJsonDialog.open({size: 'lg'}).subscribe(res => {
             if (res.apply && res.jsonData) {
-                let jsonSettings = JSON.parse(res.jsonData);
+                const jsonSettings = JSON.parse(res.jsonData);
                 Object.entries(jsonSettings).forEach((fields) => {
-                    let entry = this.settingTypeArr.find(x => x.name == fields[0]);
-                    let obj = {setting: {}, context: {}};
-                    let val = this.parseValType(fields[1]['value'], entry.dataType);
+                    const entry = this.settingTypeArr.find(x => x.name === fields[0]);
+                    const obj = {setting: {}, context: {}};
+                    const val = this.parseValType(fields[1]['value'], entry.dataType);
                     obj.setting[fields[0]] = val;
                     obj.context = this.org.get(fields[1]['org']);
                     this.updateSetting(obj, entry);
@@ -322,23 +313,23 @@ export class OrgUnitSettingsComponent {
     }
 
     parseValType(value, dataType) {
-        if (dataType == "integer" || "currency" || "link") {
+        if (dataType === 'integer' || 'currency' || 'link') {
             return Number(value);
-        } else if (dataType == "bool") {
+        } else if (dataType === 'bool') {
             return (value === 'true');
         } else {
             return value;
         }
     }
-    
+
     filterCoust() {
-        if (this.filterString != this.prevFilter) {
+        if (this.filterString !== this.prevFilter) {
             this.prevFilter = this.filterString;
             if (this.filterString) {
                 this.gridDataSource.data = [];
-                let tempGrid = this.settingTypeArr;
+                const tempGrid = this.settingTypeArr;
                 tempGrid.forEach(row => {
-                    let containsString =
+                    const containsString =
                          row.name.includes(this.filterString) ||
                          row.label.includes(this.filterString) ||
                          (row.grp && row.grp.includes(this.filterString)) ||
@@ -354,16 +345,16 @@ export class OrgUnitSettingsComponent {
     }
 
     updateGrid(org) {
-        if (this.contextOrg != org) {
+        if (this.contextOrg !== org) {
             this.contextOrg = org;
             this.refreshSettings = true;
         }
 
-        if (this.filterString != this.prevFilter) {
+        if (this.filterString !== this.prevFilter) {
             this.refreshSettings = true;
         }
 
-        if (this.refreshSettings) { 
+        if (this.refreshSettings) {
             this.mergeSettingValues().then(
                 res => this.filterCoust()
             );

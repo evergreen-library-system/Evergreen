@@ -1,11 +1,7 @@
-import {Component, Input, ViewChild, TemplateRef} from '@angular/core';
+import {Component} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {AuthService} from '@eg/core/auth.service';
-import {NetService} from '@eg/core/net.service';
-import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import {OrgUnitSetting} from '@eg/staff/admin/local/org-unit-settings/org-unit-settings.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'eg-admin-edit-org-unit-setting-dialog',
@@ -21,9 +17,6 @@ export class EditOuSettingDialogComponent extends DialogComponent {
     linkedFieldOptions: IdlObject[];
 
     constructor(
-        private auth: AuthService,
-        private net: NetService,
-        private org: OrgService,
         private modal: NgbModal
     ) {
         super(modal);

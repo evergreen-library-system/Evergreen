@@ -44,7 +44,7 @@
         (click)="showJsonDialog(false)" i18n>Import</button>
     </div>
   </div>
-  
+
 </div>
 <!-- Org Unit Settings Grid -->
 <div class='w-11 mt-3'>
@@ -53,26 +53,25 @@
     [sortable]="false" [showDeclaredFieldsOnly]="true"
     persistKey="admin.actor.org_unit_settings">
 
-    <eg-grid-column i18n-label label="Edit" name="edit"
+    <eg-grid-column i18n-label label="Edit" name="edit" [flex]="1"
       [cellTemplate]="editCellTemplate"></eg-grid-column>
-    <eg-grid-column i18n-label label="History" name="history"
+    <eg-grid-column i18n-label label="History" name="history" [flex]="1"
       [cellTemplate]="historyCellTemplate"></eg-grid-column>
-    <eg-grid-column path="name" label="Name" i18n-label [hidden]="true"></eg-grid-column>
-    <eg-grid-column path="grp" label="Group" i18n-label></eg-grid-column>
-    <eg-grid-column path="label" label="Setting" [index]="true" i18n-label></eg-grid-column>
-    <eg-grid-column path="context.shortname()" label="Context" i18n-label></eg-grid-column>
-    <eg-grid-column path="value_str" label="Value" i18n-label></eg-grid-column>
-    
+    <eg-grid-column path="name" label="Name" i18n-label [hidden]="true" [flex]="3"></eg-grid-column>
+    <eg-grid-column path="grp" label="Group" i18n-label [flex]="1"></eg-grid-column>
+    <eg-grid-column path="label" label="Setting" [index]="true" i18n-label [flex]="4"></eg-grid-column>
+    <eg-grid-column path="context.shortname()" label="Context" i18n-label [flex]="1"></eg-grid-column>
+    <eg-grid-column path="value_str" label="Value" i18n-label [flex]="1"></eg-grid-column>
+
   </eg-grid>
 </div>
 
 <ng-template #editCellTemplate let-entry="row">
   <span>
-    <a
-      (click)="showEditSettingValueDialog(entry)" class="pl-1"
-      [routerLink]="" i18n>
+    <button (click)="showEditSettingValueDialog(entry)"
+      class="btn btn-primary" i18n>
       Edit
-    </a>
+    </button>
   </span>
 </ng-template>
 
