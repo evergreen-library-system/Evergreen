@@ -666,6 +666,15 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     #PerlAddVar OILSWebLocale "fr_ca"
     #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/opac/fr-CA.po"
 
+    # If you're using the Bootstrap OPAC, you should instead set the locales
+    # like this:
+    #PerlAddVar OILSWebLocale "en"
+    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/bootstrap-opac/messages.en.po"
+    #PerlAddVar OILSWebLocale "en_ca"
+    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/bootstrap-opac/en-CA.po"
+    #PerlAddVar OILSWebLocale "fr_ca"
+    #PerlAddVar OILSWebLocale "@localstatedir@/data/locale/bootstrap-opac/fr-CA.po"
+
     # Set the default locale: defaults to en-US
     #PerlAddVar OILSWebDefaultLocale "fr_ca"
     

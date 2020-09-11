@@ -97,6 +97,7 @@ my @pofiles = qw/
     serial.js
     serial.properties
     tpac
+    bootstrap-opac
     TranslatorPopup.js
     URLVerify.js
     User.js

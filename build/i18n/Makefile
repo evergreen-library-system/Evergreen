@@ -35,6 +35,7 @@ SQLPOT=db.seed.pot
 SQLPO=db.seed.po
 SQLOUT=950.data.seed-values
 TT2_OPAC_DATA_DIR=../../Open-ILS/src/data/locale/opac
+TT2_BOOTSTRAP_OPAC_DATA_DIR=../../Open-ILS/src/data/locale/bootstrap-opac
 TT2_WEBSTAFF_DATA_DIR=../../Open-ILS/src/data/locale/staff
 TEMPLATES_ACQ_DATA_DIR=../../Open-ILS/src/data/locale/acq
 TEMPLATES_ACTOR_DATA_DIR=../../Open-ILS/src/data/locale/actor
@@ -57,6 +58,7 @@ TEMPLATES_SERIAL_SRC=../../Open-ILS/src/templates/serial/
 TEMPLATES_URLVERIFY_SRC=../../Open-ILS/src/templates/url_verify/
 TEMPLATES_VANDELAY_SRC=../../Open-ILS/src/templates/vandelay/
 TPAC_SRC=../../Open-ILS/src/templates/opac/
+BOOPAC_SRC=../../Open-ILS/src/templates-bootstrap/opac/
 TT_LOCALE=../../Open-ILS/src/templates/locale/
 WEBSTAFF_SRC=../../Open-ILS/src/templates/staff/
 PROGRESS=--progress none
@@ -121,6 +123,7 @@ newpo:
 	@pot2po $(PROGRESS) -i po/selfcheck.js/selfcheck.js.pot -o $(PO)/selfcheck.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/serial.properties/serial.properties.pot -o $(PO)/serial.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/tpac/tpac.pot -o $(PO)/tpac/$(LOCALE).po 
+	@pot2po $(PROGRESS) -i po/bootstrap-opac/bootstrap-opac.pot -o $(PO)/bootstrap-opac/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/webstaff/webstaff.pot -o $(PO)/webstaff/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/acq/acq.pot -o $(PO)/acq/$(LOCALE).po
 	@pot2po $(PROGRESS) -i po/actor/actor.pot -o $(PO)/actor/$(LOCALE).po
@@ -146,7 +149,7 @@ newpo:
 	@echo "Generated new PO files for locale $(LOCALE)"
 
 # Generate a new set of POT files and entityized fieldmapper IDL
-newpot: fmidl2pot fmidl2fmidlent ils2pot sql2pot dojo2pot tpac2pot webstaff2pot templates2pot
+newpot: fmidl2pot fmidl2fmidlent ils2pot sql2pot dojo2pot tpac2pot boopac2pot webstaff2pot templates2pot
 	@echo "Generated new POT files"
 
 # Generate DTD, JavaScript message catalogs, fieldmapper IDL,
@@ -185,6 +188,7 @@ updatepo: prep_output
 	@pot2po $(PROGRESS) -i po/selfcheck.js/selfcheck.js.pot -o $(PO)/selfcheck.js/$(LOCALE).po  -t $(PO)/selfcheck.js/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/serial.properties/serial.properties.pot -o $(PO)/serial.properties/$(LOCALE).po  -t $(PO)/serial.properties/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/tpac/tpac.pot -o $(PO)/tpac/$(LOCALE).po -t $(PO)/tpac/$(LOCALE).po 
+	@pot2po $(PROGRESS) -i po/bootstrap-opac/bootstrap-opac.pot -o $(PO)/bootstrap-opac/$(LOCALE).po -t $(PO)/bootstrap-opac/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/webstaff/webstaff.pot -o $(PO)/webstaff/$(LOCALE).po -t $(PO)/webstaff/$(LOCALE).po 
 	@pot2po $(PROGRESS) -i po/acq/acq.pot -o $(PO)/acq/$(LOCALE).po -t $(PO)/acq/$(LOCALE).po
 	@pot2po $(PROGRESS) -i po/actor/actor.pot -o $(PO)/actor/$(LOCALE).po -t $(PO)/actor/$(LOCALE).po
@@ -306,6 +310,10 @@ tpac2pot: mklocale
 	@mkdir -p po/tpac
 	@xgettext.pl --plugin=tt2 --directory=$(TPAC_SRC) --output-dir=po/tpac/ --output=tpac.pot
 
+boopac2pot: mklocale
+	@mkdir -p po/bootstrap-opac
+	@xgettext.pl --plugin=tt2 --directory=$(BOOPAC_SRC) --output-dir=po/bootstrap-opac/ --output=bootstrap-opac.pot
+
 webstaff2pot: mklocale
 	@mkdir -p po/webstaff
 	@xgettext.pl --plugin=tt2 --directory=$(WEBSTAFF_SRC) --output-dir=po/webstaff/ --output=webstaff.pot
@@ -370,6 +378,7 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	mkdir -p $(DTDDIR)/$(LOCALE)
 	mkdir -p $(TT_LOCALE)
 	cp po/tpac/$(LOCALE).po $(TT_LOCALE)/tpac.$(LOCALE).po
+	cp po/bootstrap-opac/$(LOCALE).po $(TT_LOCALE)/bootstrap-opac.$(LOCALE).po
 	cp po/webstaff/$(LOCALE).po $(TT_LOCALE)/webstaff.$(LOCALE).po
 	cp po/acq/$(LOCALE).po $(TT_LOCALE)/acq.$(LOCALE).po
 	cp po/actor/$(LOCALE).po $(TT_LOCALE)/actor.$(LOCALE).po
@@ -422,6 +431,8 @@ install: updatepo project fmidl2fmidlent fmidlpo2entity-en
 	cp $(PROJECT)/$(LOCALE)/XULTermLoader.js $(DOJO_WIDGET_SRC)/$(DOJO_LOCALE)/XULTermLoader.js
 	mkdir -p $(TT2_OPAC_DATA_DIR)
 	cp $(PO)/tpac/$(LOCALE).po $(TT2_OPAC_DATA_DIR)/.
+	mkdir -p $(TT2_BOOTSTRAP_OPAC_DATA_DIR)
+	cp $(PO)/bootstrap-opac/$(LOCALE).po $(TT2_BOOTSTRAP_OPAC_DATA_DIR)/.
 	mkdir -p $(TT2_WEBSTAFF_DATA_DIR)
 	cp $(PO)/webstaff/$(LOCALE).po $(TT2_WEBSTAFF_DATA_DIR)/.
 	mkdir -p $(TEMPLATES_ACQ_DATA_DIR)
