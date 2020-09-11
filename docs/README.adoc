@@ -108,7 +108,7 @@ At this point you should find a file in:
 
 NOTE: build/ui-bundle.zip
 
-Now you can build the website. But you may want to edit the file:
+Note that if you are using a customized build of antora-ui you will need to include the proper lunr ui components in your local repository. Now you can build the website but you may want to edit the file:
 
 NOTE: docs/site.yml
 

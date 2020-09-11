@@ -5,13 +5,12 @@ site:
 content:
   sources:
   - url: ../
-#    - url: git@git.evergreen-ils.org:working/Evergreen.git
+#    - url: git://git.evergreen-ils.org/Evergreen.git
     branches: HEAD
     start_path: docs
 ui:
   bundle:
     url: ./../../eg-antora/build/ui-bundle.zip
-  supplemental_files: ./ui/ui-lunr
 
 output:
   dir: /var/www/html/prod
