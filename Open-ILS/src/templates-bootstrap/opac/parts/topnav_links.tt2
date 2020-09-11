@@ -26,6 +26,7 @@
         <a class="nav-link" href="[% ctx.link_four %]">Example Link 4</a>
       </li>
     </ul>
+    [%- INCLUDE "opac/parts/locale_picker.tt2" %]
     <!--Right Links-->
     <ul class="navbar-nav ml-auto nav-fr px-3">
       <!--If not signed in, show sign in button-->

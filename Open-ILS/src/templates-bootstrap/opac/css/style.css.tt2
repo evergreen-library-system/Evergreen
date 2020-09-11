@@ -3990,3 +3990,7 @@ label[for*=expert_]
 .alert-danger a:visited {
     color: #424fa6;
 }
+
+#locale_picker_form label {
+    color: #fff;
+}

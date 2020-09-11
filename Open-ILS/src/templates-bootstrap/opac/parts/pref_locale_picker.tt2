@@ -6,14 +6,14 @@
 
     set_locale = CGI.param('set_eg_locale') || CGI.cookie('eg_locale') || base_locale;
 %]
-<form class="row mx-2" action="[% mkurl() %]" method="post">
-    <td for="locale_picker" class="color_4 light_border">[% l("Language:") %]</td>
+<form id="pref_locale_picker_form" class="row" action="[% mkurl() %]" method="post">
+    <label for="pref_locale_picker" class="color_4 light_border col-3 text-left">[% l("Language:") %]</label>
     [%- FOREACH param IN CGI.params(); -%]
         [%- NEXT IF param.key == 'set_eg_locale'; -%]
         <input type="hidden" name="[% param.key | html %]" value="[% param.value | html %]" />
     [%- END; -%]
-   <td>
-    <select id="locale_picker" name="set_eg_locale" class="form-control form-control-sm">
+
+    <select id="pref_locale_picker" name="set_eg_locale" class="form-control form-control-sm col-6">
     [%- FOREACH locale IN ctx.locales.keys %]
         [%- IF set_locale == locale;
                 selected = 'selected="selected"';
@@ -24,8 +24,8 @@
         <option value="[% locale | html %]" [% selected %]>[% ctx.locales.$locale | html %]</option>
     [%- END %]
     </select>
-    <br>
-    <input type="submit" class="btn btn-sm btn-confirm" value="[% l("Submit") %]" />
-    </td>
+    <div class="col-3">
+     <button type="submit" class="btn btn-sm btn-confirm float-right"/><i class="fas fa-save" aria-hidden="true"></i>[% l(" Save Changes") %]</button>
+    </div>
 </form>
 [%- END %]
