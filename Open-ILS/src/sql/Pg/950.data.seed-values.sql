@@ -1943,7 +1943,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'View booking resources', 'ppl', 'description')),
  ( 623, 'UPDATE_ORG_UNIT_SETTING.opac.matomo', oils_i18n_gettext(623,
     'Allows a user to configure Matomo Analytics org unit settings', 'ppl', 'description')),
- ( 624, 'MANAGE_RESERVES', oils_i18n_gettext(623,
+ ( 624, 'MANAGE_RESERVES', oils_i18n_gettext(624,
     'Allows user to manage Courses, Course Materials, and associate Users with Courses.', 'ppl', 'description'))
 ;
 

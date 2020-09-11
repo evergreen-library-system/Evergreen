@@ -8,7 +8,7 @@ CREATE TABLE asset.course_module_course (
     course_number   TEXT NOT NULL,
     section_number  TEXT,
     owning_lib      INT REFERENCES actor.org_unit (id),
-    is_archived        BOOLEAN NOT NULL DEFAULT false;
+    is_archived        BOOLEAN NOT NULL DEFAULT false
 );
 
 CREATE TABLE asset.course_module_role (
@@ -86,7 +86,7 @@ VALUES (
     ),
     oils_i18n_gettext(
         'circ.course_materials_opt_in',
-        'If enabled, the Org Unit will utilize Course Material functionality.'
+        'If enabled, the Org Unit will utilize Course Material functionality.',
         'coust',
         'description'
     ), null
@@ -101,7 +101,7 @@ VALUES (
     ),
     oils_i18n_gettext(
         'circ.course_materials_browse_by_instructor',
-        'If enabled, the Org Unit will allow OPAC users to browse Courses by instructor name.'
+        'If enabled, the Org Unit will allow OPAC users to browse Courses by instructor name.',
         'coust',
         'description'
     ), null
