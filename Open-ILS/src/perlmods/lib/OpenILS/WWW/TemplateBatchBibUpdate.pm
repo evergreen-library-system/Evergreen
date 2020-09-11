@@ -55,7 +55,10 @@ sub handler {
     my $r = shift;
     my $cgi = new CGI;
 
-    my $authid = $cgi->cookie('ses') || $cgi->param('ses');
+    my $authid = $cgi->cookie('eg.auth.token') || $cgi->cookie('ses') || $cgi->param('ses');
+    if ($authid =~ /^"(.+)"$/) { # came from eg2 login, is json encoded
+        $authid = $1;
+    }
 
     # Avoid sending the HTML to the caller.  Final response will
     # will just be the cache key or HTTP_BAD_REQUEST on error.
