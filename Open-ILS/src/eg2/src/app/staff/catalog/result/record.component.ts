@@ -1,11 +1,10 @@
 import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Router, ParamMap} from '@angular/router';
+import {Router} from '@angular/router';
 import {OrgService} from '@eg/core/org.service';
-import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
-import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
+import {BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {StaffCatalogService} from '../catalog.service';
@@ -36,8 +35,6 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
     constructor(
         private router: Router,
         private org: OrgService,
-        private net: NetService,
-        private bib: BibRecordService,
         private cat: CatalogService,
         private catUrl: CatalogUrlService,
         private staffCat: StaffCatalogService,
@@ -64,10 +61,12 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
         this.course.isOptedIn().then(res => {
             if (res) {
                 this.course.fetchCoursesForRecord(recordId).then(course_list => {
-                    Object.keys(course_list).forEach(key => {
-                        this.courses.push(course_list[key]);
-                    });
-                    this.hasCourse = true;
+                    if (course_list) {
+                        Object.keys(course_list).forEach(key => {
+                            this.courses.push(course_list[key]);
+                        });
+                        this.hasCourse = true;
+                    }
                 });
             }
         });

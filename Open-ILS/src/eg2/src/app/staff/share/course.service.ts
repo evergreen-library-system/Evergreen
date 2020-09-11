@@ -87,14 +87,17 @@ export class CourseService {
     }
 
     fetchCoursesForRecord(recordId) {
-        const courseIds = [];
-                 return this.pcrud.search(
+        const courseIds = new Set<number>();
+        return this.pcrud.search(
             'acmcm', {record: recordId}, {atomic: false}
         ).pipe(tap(material => {
-            if (courseIds.indexOf(material.course()) === -1) {
-                courseIds.push(material.course());
+            courseIds.add(material.course());
+        })).toPromise()
+        .then(() => {
+            if (courseIds.size) {
+                return this.getCourses(Array.from(courseIds));
             }
-        })).toPromise().then(() => this.getCourses(courseIds));
+        });
     }
 
     // Creating a new acmcm Entry

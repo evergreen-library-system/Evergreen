@@ -81,8 +81,10 @@ export class BibSummaryComponent implements OnInit {
         this.org.settings('circ.course_materials_opt_in').then(setting => {
             if (setting['circ.course_materials_opt_in']) {
                 this.course.fetchCoursesForRecord(recordId).then(courseList => {
-                    this.courses = courseList;
-                    this.hasCourse = true;
+                    if (courseList) {
+                        this.courses = courseList;
+                        this.hasCourse = true;
+                    }
                 });
             }
         });
