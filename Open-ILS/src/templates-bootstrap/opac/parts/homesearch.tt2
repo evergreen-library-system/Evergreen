@@ -1,6 +1,5 @@
-
-[%-
-    PROCESS "opac/parts/css/colors.tt2";
-%]
+<div id="homeLogo">
+    
+</div>
 
 [% PROCESS carousels %]
