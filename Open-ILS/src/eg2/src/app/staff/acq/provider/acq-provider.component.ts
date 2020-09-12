@@ -1,11 +1,9 @@
 import {Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {filter, takeUntil} from 'rxjs/operators';
 import {Subject, Observable, of} from 'rxjs';
-import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Router, ActivatedRoute, ParamMap, RouterEvent, NavigationEnd} from '@angular/router';
-import {StaffCommonModule} from '@eg/staff/common.module';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {PcrudService} from '@eg/core/pcrud.service';
+import {IdlService} from '@eg/core/idl.service';
 import {AcqProviderSummaryPaneComponent} from './summary-pane.component';
 import {ProviderDetailsComponent} from './provider-details.component';
 import {ProviderHoldingsComponent} from './provider-holdings.component';
@@ -51,9 +49,8 @@ export class AcqProviderComponent implements OnInit, AfterViewInit, OnDestroy {
         private router: Router,
         private route: ActivatedRoute,
         private auth: AuthService,
-        private pcrud: PcrudService,
         private idl: IdlService,
-        private providerRecord: ProviderRecordService,
+        public providerRecord: ProviderRecordService,
         private toast: ToastService,
         private store: StoreService,
         private changeDetector: ChangeDetectorRef

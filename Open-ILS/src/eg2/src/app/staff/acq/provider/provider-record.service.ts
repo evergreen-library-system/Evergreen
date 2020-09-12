@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Observable, from} from 'rxjs';
-import {empty, throwError, Subject} from 'rxjs';
+import {Observable} from 'rxjs';
+import {Subject} from 'rxjs';
 import {map, defaultIfEmpty} from 'rxjs/operators';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
 import {PermService} from '@eg/core/perm.service';
 
 export class ProviderSummary {
@@ -27,7 +26,7 @@ export class ProviderRecord {
 @Injectable()
 export class ProviderRecordService {
 
-    private currentProvider: ProviderRecord;
+    public currentProvider: ProviderRecord;
     private currentProviderId: number = null;
 
     private providerUpdatedSource = new Subject<number>();
@@ -38,7 +37,6 @@ export class ProviderRecordService {
 
     constructor(
         private idl: IdlService,
-        private net: NetService,
         private pcrud: PcrudService,
         private perm: PermService
     ) {
