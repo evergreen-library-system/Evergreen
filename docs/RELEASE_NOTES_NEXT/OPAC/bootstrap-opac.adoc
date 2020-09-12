@@ -30,5 +30,5 @@ To emphasize, the new OPAC skin is considered experimental for 3.6.x. There
 are some discrepancies between its functionality and the functionality
 present in the original "TPAC" skin. The Evergreen community aims to
 resolve those discrepancies and make the Bootstrap skin become the default
-OPAC for the Spring 2021 release. Using the Bootstrap skin in production
-for 3.6 is at your own risk.
+OPAC for the Spring 2021 release (though the original TPAC skin will still
+be available). Using the Bootstrap skin in production for 3.6 is at your own risk.
