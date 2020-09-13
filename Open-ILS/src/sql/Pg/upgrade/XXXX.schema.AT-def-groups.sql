@@ -223,7 +223,7 @@ Item Type: [% item.item_type %]
 [% END -%]
 [%- END -%]
 [%- END -%]
-$$) FROM action_trigger.event_definition WHERE hook = 'biblio.format.record_entry.email' AND active;
+$$ FROM action_trigger.event_definition WHERE hook = 'biblio.format.record_entry.email' AND active;
 
     INSERT INTO action_trigger.event_def_group_member (grp, name, holdings, event_def)
         SELECT 2, 'Full', TRUE, id FROM action_trigger.event_definition WHERE name = 'biblio.record_entry.email.full' and active;
