@@ -465,9 +465,14 @@ sub biblio_multi_search_full_rec {
     my $copies_visible = 'AND d.opac_visible IS TRUE AND cp.opac_visible IS TRUE AND cs.opac_visible IS TRUE AND cl.opac_visible IS TRUE';
 
     if ($self->api_name =~ /staff/o) {
+        # Staff want to see all copies regardless of visibility
         $copies_visible = '';
-        $has_copies     = '' if ($ou_type == 0);
-        $has_vols       = '' if ($ou_type == 0);
+        # When searching globally for staff avoid any copy filtering.
+        if ((defined $args{depth} && $args{depth} == 0) 
+            || $args{org_unit} == $U->get_org_tree->id) {
+            $has_copies = '';
+            $has_vols   = '';
+        }
     }
 
     my ($t_filter, $f_filter) = ('','');
@@ -598,7 +603,7 @@ sub biblio_multi_search_full_rec {
     my $rd_join = $use_rd ? "$metabib_record_descriptor rd," : '';
     my $rd_filter = $use_rd ? 'AND rd.record = f.record' : '';
 
-    if ($copies_visible) {
+    if ($has_copies) {
         $select = <<"        SQL";
             SELECT  f.record, $relevance, count(DISTINCT cp.id), $rank
             FROM    $search_table f,
