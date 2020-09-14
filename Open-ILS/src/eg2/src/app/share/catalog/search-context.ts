@@ -490,6 +490,10 @@ export class CatalogSearchContext {
             org_unit: this.searchOrg.id()
         };
 
+        if (this.global) {
+            args.depth = this.org.root().ou_type().depth();
+        }
+
         if (this.sort) {
             const parts = this.sort.split(/\./);
             args.sort = parts[0]; // title, author, etc.
