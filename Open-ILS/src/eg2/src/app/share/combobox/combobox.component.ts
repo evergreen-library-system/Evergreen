@@ -298,7 +298,16 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
         if (!firstTime) {
             if ('selectedId' in changes) {
                 if (!changes.selectedId.currentValue) {
-                    this.selected = null;
+
+                    // In allowFreeText mode, selectedId will be null even
+                    // though a freetext value may be present in the combobox.
+                    if (this.allowFreeText) {
+                        if (this.selected && !this.selected.freetext) {
+                            this.selected = null;
+                        }
+                    } else {
+                        this.selected = null;
+                    }
                 }
             }
             if ('idlClass' in changes) {
