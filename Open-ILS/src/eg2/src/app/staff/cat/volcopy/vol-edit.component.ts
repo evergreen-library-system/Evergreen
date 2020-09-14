@@ -238,12 +238,22 @@ export class VolEditComponent implements OnInit {
 
         if (entry) {
 
-            const newPart =
-                this.volcopy.bibParts[copy.call_number().record()]
-                .filter(p => p.id() === entry.id)[0];
+            let newPart;
+            if (entry.freetext) {
+                newPart = this.idl.create('bmp');
+                newPart.isnew(true);
+                newPart.record(copy.call_number().record());
+                newPart.label(entry.label);
 
-            // Nothing to change?
-            if (part && part.id() === newPart.id()) { return; }
+            } else {
+
+                newPart =
+                    this.volcopy.bibParts[copy.call_number().record()]
+                    .filter(p => p.id() === entry.id)[0];
+
+                // Nothing to change?
+                if (part && part.id() === newPart.id()) { return; }
+            }
 
             copy.parts([newPart]);
             copy.ischanged(true);

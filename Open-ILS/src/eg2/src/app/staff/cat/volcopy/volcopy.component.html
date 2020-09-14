@@ -64,25 +64,28 @@
             i18n>Print Labels?</label>                                             
         </div>
 
-        <ng-container *ngIf="tab === 'holdings' && 
-          volcopy.defaults.hidden.generate_barcodes !== true">
+        <ng-container *ngIf="tab === 'holdings'">
           <!-- 
             These actions could cause confusion or unintended
             consequences if visible on any other tabs
           -->
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="use-checkdigit" 
-              (change)="toggleCheckbox('use_checkdigit')"
-              [ngModel]="volcopy.defaults.values.use_checkdigit"/>
-            <label class="form-check-label" for="use-checkdigit" i18n>
-              Use Checkdigit
-            </label>
-          </div>
-          <button class="btn btn-sm btn-outline-dark label-with-material-icon"
-            (click)="volcopy.genBarcodesRequested.emit()">
-            <span i18n>Generate Barcodes</span>
-            <span class="material-icons">refresh</span>
-          </button>
+          <ng-container *ngIf="volcopy.defaults.hidden.use_checkdigit !== true">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="use-checkdigit" 
+                (change)="toggleCheckbox('use_checkdigit')"
+                [ngModel]="volcopy.defaults.values.use_checkdigit"/>
+              <label class="form-check-label" for="use-checkdigit" i18n>
+                Use Checkdigit
+              </label>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="volcopy.defaults.hidden.generate_barcodes !== true">
+            <button class="btn btn-sm btn-outline-dark label-with-material-icon"
+              (click)="volcopy.genBarcodesRequested.emit()">
+              <span i18n>Generate Barcodes</span>
+              <span class="material-icons">refresh</span>
+            </button>
+          </ng-container>
         </ng-container>
 
         <div class="flex-1"> </div>

@@ -406,8 +406,8 @@ export class VolCopyService {
 
         if (recordIds.length === 0) { return; }
 
-        // Avoid doubling up
-        if (this.bibParts[recordIds[0]]) { return; }
+        // All calls fetch updated data since we may be creating
+        // new mono parts during editing.
 
         this.pcrud.search('bmp',
             {record: recordIds, deleted: 'f'})

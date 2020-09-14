@@ -408,21 +408,16 @@
           </ng-container>
         </div>
         <div class="p-1" [ngStyle]="{flex: flexAt(10)}">
-          <ng-container *ngIf="displayColumn('copy_part')">
-            <ng-container *ngIf="!recordHasParts(volNode.target.record())">
-              <label i18n>N/A</label>
-            </ng-container>
-            <ng-container *ngIf="recordHasParts(volNode.target.record())">
-              <eg-combobox
-                [selectedId]="copyNode.target.parts()[0] ? copyNode.target.parts()[0].id() : null"
-                [smallFormControl]="true"
-                (onChange)="copyPartChanged(copyNode, $event)">
-                <eg-combobox-entry 
-                  *ngFor="let part of volcopy.bibParts[volNode.target.record()]"
-                  [entryId]="part.id()" [entryLabel]="part.label()">
-                </eg-combobox-entry>
-              </eg-combobox>
-            </ng-container>
+        <ng-container *ngIf="displayColumn('copy_part')">
+            <eg-combobox
+              [selectedId]="copyNode.target.parts()[0] ? copyNode.target.parts()[0].id() : null"
+              [smallFormControl]="true" [allowFreeText]="true"
+              (onChange)="copyPartChanged(copyNode, $event)">
+              <eg-combobox-entry 
+                *ngFor="let part of volcopy.bibParts[volNode.target.record()]"
+                [entryId]="part.id()" [entryLabel]="part.label()">
+              </eg-combobox-entry>
+            </eg-combobox>
           </ng-container>
         </div>
         <div class="p-1" [ngStyle]="{flex: flexAt(11)}">
