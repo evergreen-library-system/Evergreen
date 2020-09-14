@@ -1,13 +1,16 @@
-Configuring sign-on to OpenAthens
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+= Configuring sign-on to OpenAthens =
+:toc:
+
+== Purpose ==
+
 If your institution uses OpenAthens single sign-on, you can configure Evergreen 
 to link with OpenAthens. This will let patrons connect to OpenAthens resources 
 seamlessly once they have logged in to Evergreen. Patrons are automatically 
 assigned an OpenAthens identity dynamically based on their Evergreen login, 
 and do not need accounts created manually in OpenAthens.
 
-Registering your Evergreen installation with the OpenAthens service
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+== Registering your Evergreen installation with the OpenAthens service ==
+
 Using your OpenAthens administrator account at https://admin.openathens.net/, 
 complete the following steps:
 
@@ -36,8 +39,8 @@ complete the following steps:
 Full OpenAthens documentation for local authentication API connections is 
 available at http://docs.openathens.net/display/public/MD/API+connector.
 
-Configuring Evergreen
-+++++++++++++++++++++
+== Configuring Evergreen ==
+
 OpenAthens sign-on is configured in the staff client under *Local 
 Administration* -> *OpenAthens Sign-on*. To make a connection, select *New 
 Sign-on to OpenAthens*, and set the values as follows:
@@ -136,16 +139,16 @@ implementation partner.
 sample data set)
 |===
 
-Network access - server
-+++++++++++++++++++++++
+== Network access - server ==
+
 As part of the sign-on process, Evergreen makes a connection to the OpenAthens
 service to transfer details of the user that is signing on. This data does not
 go via the user's browser, to avoid revealing the private API key and to avoid
 the risk of spoofing. You need to open up port 443 outbound in your firewall,
 from your Evergreen server to login.openathens.net.
 
-Network access - web client
-+++++++++++++++++++++++++++
+== Network access - web client ==
+
 If you restrict internet access for your web client machines, you need to open
 up port 443 outbound in your firewall, from your web clients to the following
 three domains:
@@ -154,7 +157,7 @@ three domains:
 * login.openathens.net
 * wayfinder.openathens.net
 
-Admin permissions
-+++++++++++++++++
+== Admin permissions ==
+
 To delegate OpenAthens configuration to other staff users, assign the 
 *ADMIN_OPENATHENS* permission.
