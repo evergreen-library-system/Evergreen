@@ -1986,10 +1986,10 @@ __PACKAGE__->register_method(
         desc   => 'Returns a printable version of the specified bib record',
         params => [
             { desc => 'Biblio record entry ID or array of IDs', type => 'number' },
-            { desc => 'Context library for holdings, if applicable' => 'number' },
-            { desc => 'Sort order, if applicable' => 'string' },
-            { desc => 'Sort direction, if applicable' => 'string' },
-            { desc => 'Definition Group Member id' => 'number' },
+            { desc => 'Context library for holdings, if applicable', type => 'number' },
+            { desc => 'Sort order, if applicable', type => 'string' },
+            { desc => 'Sort direction, if applicable', type => 'string' },
+            { desc => 'Definition Group Member id', type => 'number' },
         ],
         return => {
             desc => q/An action_trigger.event object or error event./,
@@ -2003,15 +2003,15 @@ __PACKAGE__->register_method(
     signature => {
         desc   => 'Emails an A/T templated version of the specified bib records to the authorized user',
         params => [
-            { desc => 'Authentication token',  type => 'string'},
+            { desc => 'Authentication token', type => 'string'},
             { desc => 'Biblio record entry ID or array of IDs', type => 'number' },
-            { desc => 'Context library for holdings, if applicable' => 'number' },
-            { desc => 'Sort order, if applicable' => 'string' },
-            { desc => 'Sort direction, if applicable' => 'string' },
-            { desc => 'Definition Group Member id' => 'number' },
-            { desc => 'Whether to bypass auth due to captcha' => 'bool' },
-            { desc => 'Email address, if none for the user' => 'string' },
-            { desc => 'Subject, if customized' => 'string' },
+            { desc => 'Context library for holdings, if applicable', type => 'number' },
+            { desc => 'Sort order, if applicable', type => 'string' },
+            { desc => 'Sort direction, if applicable', type => 'string' },
+            { desc => 'Definition Group Member id', type => 'number' },
+            { desc => 'Whether to bypass auth due to captcha', type => 'bool' },
+            { desc => 'Email address, if none for the user', type => 'string' },
+            { desc => 'Subject, if customized', type => 'string' },
         ],
         return => {
             desc => q/Undefined on success, otherwise an error event./,
