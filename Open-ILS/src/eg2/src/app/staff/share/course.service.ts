@@ -221,7 +221,7 @@ export class CourseService {
             this.pcrud.update(item).subscribe(() => {
                 if (updatingVolume) {
                     const cn = item.call_number();
-                    const callNumberLibrary = this.org.canHaveVolumes(courseLib) ? courseLib : cn.owning_lib();
+                    const callNumberLibrary = this.org.canHaveVolumes(courseLib) ? courseLib.id() : cn.owning_lib();
                     return this.net.request(
                         'open-ils.cat', 'open-ils.cat.call_number.find_or_create',
                         this.auth.token(), callNumber, cn.record(),
