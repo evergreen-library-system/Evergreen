@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1232', :eg_version);
 
 CREATE TABLE asset.course_module_course (
     id              SERIAL PRIMARY KEY,
