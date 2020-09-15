@@ -1230,7 +1230,7 @@ sub process_recalls {
             checkin_time => undef,
             duration => {'>' => $threshold}
         }, {
-            order_by => 'due_date',
+            order_by => [{ class => 'circ', field => 'due_date'}],
             limit => 1
         }
     ])->[0];
