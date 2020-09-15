@@ -124,8 +124,8 @@ export class CourseAssociateUsersComponent extends DialogComponent implements On
     }
 
     deleteSelectedUsers(users) {
-        const user_ids = [];
-        this.pcrud.search('acmcu', {course: this.courseId, usr: user_ids}).subscribe(user => {
+        const acmcu_ids = users.map(u => u.id());
+        this.pcrud.search('acmcu', {course: this.courseId, id: acmcu_ids}).subscribe(user => {
             user.isdeleted(true);
             this.pcrud.autoApply(user).subscribe(
                 val => {
@@ -138,7 +138,7 @@ export class CourseAssociateUsersComponent extends DialogComponent implements On
                         .then(str => this.toast.danger(str));
                 }
             );
-        });
+        }).add(() => this.usersGrid.reload());
     }
 
 }
