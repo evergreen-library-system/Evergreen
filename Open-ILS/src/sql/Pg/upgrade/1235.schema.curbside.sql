@@ -1,5 +1,7 @@
 BEGIN;
 
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1235', :eg_version);
+
 CREATE TABLE action.curbside (
     id          SERIAL      PRIMARY KEY,
     patron      INT         NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
