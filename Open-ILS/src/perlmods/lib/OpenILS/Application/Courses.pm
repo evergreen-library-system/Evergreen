@@ -140,6 +140,7 @@ sub fetch_course_materials {
         $materials = $e->search_asset_course_module_course_materials($args);
     }
     $conn->respond($_) for @$materials;
+    $conn->respond_complete();
     return undef;
 }
 
