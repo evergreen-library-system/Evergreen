@@ -1,0 +1,888 @@
+Evergreen 3.6-beta Release Notes
+================================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+This release adds a new OpenSRF service called `open-ils.courses`.
+While strictly speaking this is an optional service and could be
+omitted if you are not planning on using the new Course Materials
+module, it is recommend that the service be run in case future
+work bakes in an assumption that it will always be present.
+
+This release also includes a new experimental public catalog skin
+based on the Bootstrap framework. Instructions for turning it on
+can be found below.
+
+This release adds a new Perl module dependency, `Config::General`.
+
+New Features
+------------
+
+
+
+Acquisitions
+~~~~~~~~~~~~
+
+
+
+Angular Acquisitions Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The acquisitions search interfaces are now written in Angular
+and provide a new centralized place for searching Line Items,
+Purchase Orders, Invoices, and Selection Lists in the Acquisitions
+module of Evergreen. The Acquisitions Search interface can be accessed
+under Acquisitions -> General Search.
+
+The search interface has four tabs for line item search, purchase order
+search, invoices search, and selection list search.  Each tab
+offers a search form allowing the user to select one or more
+fields to search on. Each search tab stores a separate default search
+that the user can update; for example, a user could have their
+line item search default to showing all on-order line items from
+a particular provider.
+
+The grid that displays search results in each tab is filterable.
+
+The line items and PO search interfaces allow the user to navigate to
+linked POs, invoices, and so forth, but offers no direct actions. The
+invoices search tab includes a 'Print Selected Invoices' action,
+while the selection lists search tab offers actions to create,
+clone, delete, and merge selection lists.
+
+The Angular search page contains a link to the legacy Dojo search
+interface if needed. The Dojo interface will be removed in a future
+release of Evergreen.
+
+The Angular search interface offers various usability improvements
+over the Dojo one, including:
+
+* only the search operators that are relevant for a given field
+  are displayed.
+* search fields that are associated with controlled vocabularies
+  will display drop-downs on the search form.
+* results are sortable
+* the line item and PO state fields have been relabeled to "Status"
+* greater than and less than are now available as search operators
+* publication date searches are more flexible
+
+Adjustments to Stock Permissions
+++++++++++++++++++++++++++++++++
+As part of this feature, the stock permissions for the Acquisitions
+and Acquisitions Administrator profiles have been expanded. In
+particular, the Acquisitions Administrator profile can now be
+more readily used to perform normal acquisitions work in addition
+to configuring the acquisitions module.
+
+
+
+
+Angular Providers Interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The interfaces for searching for and managing acquisitions provider
+records have been rewritten in Angular. This rewrite includes the
+following significant changes:
+
+* The provider search interface is now available directly from the
+  Acquisitions menu, supplementing its longstanding availability from
+  the Acquisitions Administration page.
+* The search interface is modeled after the patron interface, including
+  a search form that can be hidden or displayed, a provider summary box,
+  and a multi-tabbed interface for managing the provider itself.
+* The grid displaying search results is filterable and sortable.
+* The provider display tabs are
+ ** Details, allowing the user to view, and if permitted, edit
+    the base provider record.
+ ** Addresses
+ ** Contacts
+ ** Attribute Definitions
+ ** Holdings Definitions
+ ** EDI
+ ** Invoices, providing an interface for viewing the invoices
+    associated with the provider.
+ ** POs, providing an interface for viewing the purchase orders
+    associated with the provider.
+* The new interface makes it possible to edit contact addresses.
+* The base provider record now has an optional primary contact field.
+  Selecting a contact as the primary one is managed on the Contacts
+  tab.  The primary contact, if set, is displayed on the provider
+  summary box.
+
+Interfaces that used to link to the Dojo provider interface now link
+to the Angular one instead.
+
+
+
+
+Administration
+~~~~~~~~~~~~~~
+
+
+
+Changes to Autorenewal Action/Trigger Failure Reasons
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Previously the "reason" field in the userdata for an Autorenewal
+event would contain both the failure code and the description for
+the failure event as a single string such as
+"MAX_RENEWALS_REACHED : Circulation has no more renewals remaining"
+Now the "reason" field will only contain the description of the issue
+(Circulation has ...) while a new "textcode" field will contain the
+event code (MAX_RENEWALS_REACHED) if administrators still want to
+display it in template outputs.
+
+
+
+
+
+EZProxy authentication
+^^^^^^^^^^^^^^^^^^^^^^
+
+Evergreen can now provide CGI authentication for EZProxy.
+To enable this, you will need to:
+
+. Add a new User Activity Type to Evergreen for EZProxy CGI authentications.
+. Add a new Remote Authentication Profile to Evergreen. You will probably want
+to use `EZProxyCGI` as the name.
+. Edit the `<Location /api/ezproxy>` stanza in Evergreen's eg_vhost configuration
+file. In particular, you will need to allow access to from your EZProxy server,
+fill in the base uri of your EZProxy server, and add a secret to the
+_OILSRemoteAuthEZProxySecret_ variable.
+. Restart Apache.
+. Edit the EZProxy user.txt file.  You will likely want to add a stanza such
+as the following:
+
+.Sample user.txt stanza
+----
+::CGI=http://your-evergreen-catalog.com/api/ezproxy?url=^R
+::Ticket
+MD5 <same secret as in eg_vhost config>
+Expired; Deny expiredticket.htm
+/Ticket
+----
+
+When this feature is enabled, users will see an Evergreen-based login screen.
+You may customize the look and feel of this login screen by editing the relevant
+template toolkit files.
+
+
+
+
+
+Matomo Support
+^^^^^^^^^^^^^^
+
+Support for the open source web analytics platform Matomo is now
+native to Evergreen. Support is on an org unit level so different
+libraries can have separate or no analytics. Once you setup
+a Matomo service you will need the URL and site ID. Typically
+Matomo will give you a block of javascript you can insert into
+web sites. One line will look like :
+
+var u="http://mylibrary.lib/matomo/";
+
+The full URL in the double quotes will be your URL.  Another line
+will look like:
+
+_paq.push(['setSiteId', '1']);
+
+In this case the number 1 will be your site ID.
+
+These are set by YOAUSes opac.analytics.matomo_url and
+opac.analytics.matomo_id respectively.  A new permsision,
+MATOMO_UPDATE_SETTINGS, controls access to these.
+
+
+
+
+
+"PatronAPI" authentication
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen now supports the III "PatronAPI" scheme for authenticating
+patrons and supplying some information about them.
+
+To enable this, you will need to:
+
+. Add a new User Activity Type to Evergreen for PatronAPI authentications.
+. Add a new Remote Authentication Profile to Evergreen. You will probably want
+to use `PatronAPI` as the name.
+. Edit the `<Location /api/patronapi>` stanza in Evergreen's eg_vhost configuration
+file. In particular, you will need to allow access to it from the server(s)
+wanting to make PatronAPI requests, determine whether to enable the PatronAPI
+"dump" feature, and specify whether users can be identified by username
+or barcode.
+. Restart Apache.
+. Update the PatronAPI client to use https://your.evergreen.server/api/patronapi
+  as its base URL.
+
+Example PatronAPI URLs look something like this:
+
+.PatronAPI URLs
+----
+# test a patron's PIN:
+https://evergreen.example.org/api/patronapi/USERNAME/PASSWORD/pintest
+
+# dump some information about the patron. Note that this
+# does _not_ require the the patron's password be supplied.
+https://evergreen.example.org/api/patronapi/USERNAME/dump
+----
+
+The responses for the `pintest` and `dump` actions are specified by
+Template Toolkit templates under (e.g.) `/openils/var/templates/remoteauth`.
+
+
+
+
+Preloaded Audio Icon and Search Format
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new search and icon format called Preloaded Audio now exists 
+that overlaps with the eAudio format.  If you want to exclude
+the Preloaded Audio format from overlapping with eAudio 
+you can use the following SQL:
+
+UPDATE config.composite_attr_entry_definition SET definition = '{"0":{"_attr":"item_type","_val":"i"},"1":[{"_attr":"item_form","_val":"o"},{"_attr":"item_form","_val":"s"}]}'
+    WHERE coded_value IN (SELECT id FROM config.coded_value_map WHERE code = 'eaudio');
+
+It is also recommended that you reingest your bibliographic records 
+to updated the fixed field indexes. You can accomplish this by running
+the following query in your database:
+
+SELECT metabib.reingest_record_attributes(source)
+FROM metabib.record_attr_vector_list WHERE
+(SELECT id FROM config.coded_value_map WHERE ctype = 'item_form' AND code = 'q') = ANY(vlist)
+AND (SELECT id FROM config.coded_value_map WHERE ctype = 'item_type' AND code = 'i') = ANY(vlist);
+
+
+
+
+
+
+API
+~~~
+
+
+
+Override Label for draw_field_label Patron Edit Fields
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen developers may now specify a label for fields in
+the patron registration/patron edit form (generated by
+the draw_field_label macro). By default, 
+draw_field_label uses the label of supplied IDL field class. 
+Now a developer may supply an additional third parameter,
+label_override, which overrides the default IDL-based label.
+This would typically be done in the course of customizing
+the web staff client template `circ/patron/t_edit.tt2`.
+
+
+
+
+Architecture
+~~~~~~~~~~~~
+
+
+
+New Action/Trigger reactor for 3rd party signaling
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This new Action/Trigger reactor module allows an Evergreen administrator to
+create event defintions that use HTTP (or HTTPS) to contact external services
+and let them know that something has happened in Evergreen.
+
+For instance, a discovery layer can be informed when a bib record is updated
+or when a user's barcode changes.
+
+Reactor Template Syntax
++++++++++++++++++++++++
+The new reactor module uses a template to define its behavior.  While the
+template is processed by Template Toolkit, as with any A/T templates, its
+output format is new to Evergreen.
+
+The template should output data that can be parsed by the Config::General Perl
+module.  See: https://metacpan.org/pod/Config::General
+
+Top level settings should include the HTTP *method* and the *url*.
+
+A block called *Headers* can be used to supply arbitrary HTTP headers.
+
+A block called *Parameters* can be used to append CGI parameters to the URL,
+most useful for GET form submission.  Repeated parameters are allowed.  If
+this block is used, the URL should /not/ contain any parameters, use one or
+the other.
+
+A HEREDOC called *content* can be used with POST or PUT to send an arbitrary block
+of content to the remote server.
+
+If the requested URL requires Basic or Digest authentication, the template can
+include top level configuration parameters to supply a *user*, *password*, *realm*,
+and hostname:port *location*.
+
+A default user agent string of "EvergreenReactor/1.0" is used when sending requests.
+This can be overridden using the top level *agent* setting.
+
+Here is an example template that could be used by a definition attached to the
+*bib.edit* hook:
+
+[source,conf]
+----
+method   post # Valid values are post, get, put, delete, head
+url      https://example.com/api/incoming-update
+agent    MySpecialAgent/0.1
+
+user     updater
+password uPd4t3StufF
+realm    "Secret area"
+location example.com:443
+
+<Headers>
+  Accept-Language en
+</Headers>
+
+<Parameters>
+  type bib
+  id   [% target.id %]
+</Parameters>
+
+content <<MARC
+[% target.marc %]
+MARC
+----
+
+
+
+
+
+Documentation Now Uses the Antora Toolchain
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The core Evergreen documentation under the `docs/` subdirectory
+has been changed to use Antora, a documentation site generator
+for AsciiDoc. The result of this change is the ability to generate
+documentation for the `docs.evergreen-ils.org` website that is
+searchable, easier to maintain, and readily installable on a
+local Evergreen site if desired.
+
+For instructions on how to build the documentation, consult
+the file `README.adoc` under the `docs` directory.
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+
+
+Manage Authorities Angular Port
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Cataloging => 'Manage Authorities' interface has been ported to Angular.
+
+New functionality includes displaying additional authority data, like create
+and edit dates, etc.  It's also possible to view the list of linked bib
+records.
+
+
+
+
+MARC Batch Edit UI Angular Port
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The MARC Batch Edit interface has been ported to Angular.
+
+
+
+
+Preloaded Audio Icon and Search Format
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new search and icon format called Preloaded Audio now exists 
+using the following atttributes: itemtype i, item form q.  This 
+overlaps with the eAudio format.  If you want to exclude 
+preloaded audio from eAudio there is a script in the Administration 
+notes to exclude it. 
+
+
+
+
+
+Circulation
+~~~~~~~~~~~
+
+
+
+Booking Capture is now in Angular
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The interface to capture resources for booking
+reservations has been re-implemented in Angular.
+Other booking screens, such as Pick Up and
+Manage Reservations, now include an option to 
+re-print capture slips.
+
+System administrators can now edit the template
+for booking capture slips in Administration ->
+Server administration -> Print templates.
+
+
+
+
+
+New Fields for AutorenewNotify Event Template
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Two new fields, `auto_renewal_remaining`, and `total_renewal_remaining` have
+been added to the AutorenewNotify action/trigger event code.  They will
+report the number of autorenewals and regular renewals, respectively,
+remaining on the new circulation if renewed, or on the old circulation
+if not renewed.  This is provided as a convenience to avoid possibly
+inaccurate math in the template.  You may access them in the template via
+the `udata`:
+
+.................................................
+Automatic Renewals Remaining: [% udata.auto_renewal_remaining %]
+Total Renewals Remaining: [% udata.total_renewal_remaining %]
+.................................................
+
+
+
+
+
+Course materials module
+^^^^^^^^^^^^^^^^^^^^^^^
+
+This version of Evergreen includes an optional course materials module.
+Like course reserves modules in other library software, this module
+makes reserves collections more discoverable and easier to manage.
+The module also provides similar functionality for library electronic
+resources and open educational resources, whether they have been
+cataloged or not.
+
+To enable the course materials module, go to Administration >
+Local Administration > Library Settings Editor. Find the setting
+called "Opt Org Unit into the Course Materials Module".  Set it to
+True for the org units that want to use the module.
+
+To use the course materials module effectively, staff will need a
+new permission called _MANAGE_RESERVES_.  By default, circulation
+administrators will receive this permission.
+
+Courses
++++++++
+
+Staff members with the _MANAGE_RESERVES_ permission can create
+courses, attach materials to them, attach users to them, and
+archive them when they are no longer needed.
+
+When associating physical materials from the catalog to a
+course, staff members can choose temporary item attributes.
+These attributes will last until the course is archived or
+the item is detached from the course, whichever happens
+first.
+
+Staff can also choose to associate electronic resources from
+the catalog (which must have a transcendent bib source or
+a located URI).  They can also create a brief bib record
+to attach to the course from within the course materials
+module.
+
+Staff members can attach users to the course.  These users
+can have either a public role (e.g. instructor) or private
+roles (e.g. student).  The public roles will be displayed
+in the OPAC.
+
+OPAC
+++++
+
+If the module is enabled, the OPAC will include a course search
+and a course browse.
+
+Other uses
+++++++++++
+
+Libraries may also want to use this module to manage their
+displays.  Each display can be treated as a course, and staff
+can attach the items they wish to display to the course along
+with the temporary attributes (e.g. a shelving location called
+"On display").  When the display is over, staff members can
+archive the course.
+
+
+
+
+
+Hopeless Holds Interface
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new interface under Local Administration has been added called
+Hopeless Holds.  Using a new Hopeless Date field on hold requests,
+this interface gives staff a way to resolve issues with hold
+requests that may have become unfulfillable or "hopeless".
+
+The Hopeless Date is set for a given request by the hold targeter
+whenever the potential items list for the hold is empty, or when
+all potential items have a copy status that has been designated
+as Hopeless Prone (a new boolean field on copy statuses).
+
+
+
+
+
+In-house use now records workstations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Evergreen now records the workstation along with each
+in-house use.  Staff can now run reports on which
+workstation created which in-house uses.
+
+
+
+
+
+Purge User Preferred Names
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+The new, user preferred name fields are now set to NULL in the
+database when a user account is purged via the staff client or using
+the actor.usr_delete function in the database.
+
+To clear the preferred name fields from records that have already been
+purged, run the following SQL update:
+
+[source,sql]
+----
+UPDATE actor.usr
+SET pref_prefix = NULL,
+    pref_first_given_name = NULL,
+    pref_second_given_name = NULL,
+    pref_family_name = NULL,
+    pref_suffix = NULL,
+    name_keywords = NULL
+WHERE usrname ~ ('^' || id || '-PURGED')
+AND NOT active
+AND deleted
+AND (
+  pref_prefix IS NOT NULL OR
+  pref_first_given_name IS NOT NULL OR
+  pref_second_given_name IS NOT NULL OR
+  pref_family_name IS NOT NULL OR
+  pref_suffix IS NOT NULL OR
+  name_keywords IS NOT NULL
+);
+----
+
+
+
+
+Test Notification Method
+^^^^^^^^^^^^^^^^^^^^^^^^
+Patrons and staff may request a test notification for a patron's default email address or SMS 
+number via the Patron Registration interface in the staff client or the Opac preferences interface. The OPAC_LOGIN permissions are required to 
+request a notification. When a notification is sent, it will be sent to either the user's default email or default SMS number, depending on 
+what was requested.
+
+Upgrade Notes
++++++++++++++++++++
+
+This feature adds two new rows to action_trigger.event_definition, two into 
+action_trigger.hook, and six into action_trigger.environment.
+
+
+
+
+Client
+~~~~~~
+
+
+
+New Angular Staff Catalog Default
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The experimental Angular staff catalog has been promoted to operate as the
+default catalog in the browser staff client.  It will be used for all 
+catalog entry points, except for the menu entries for the traditiaional
+catalog and any links within the traditional catalog.
+
+Menu Changes
+++++++++++++
+
+* Search => 'Search The Catalog' now searches to new catalog.
+* Cataloging => 'Search The Catalog' now searches to new catalog.
+* Cataloging => 'Search The Catalog (Traditional)' searches the traditional 
+  TPAC-style catalog.
+* Staff client splash page => 'Search the catalog' inline form uses the 
+  new catalog.
+
+
+
+
+
+Basket To Bucket Action Now Allows Adding To Shared Buckets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Angular staff catalog's 'Add Basket to Bucket' action now
+gives the user the option of adding the contents of the basket
+to a shared bucket.
+
+
+
+
+
+OPAC
+~~~~
+
+
+
+New Bootstrap-based OPAC
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+This release includes a new experimental OPAC with a cleaner, more modern design.
+
+To enable the new OPAC design, open the _/etc/apache2/eg_vhost.conf_ file.
+
+Find the following line:
+
+------------------------------------------------------------------------------
+PerlAddVar OILSWebTemplatePath "/openils/var/templates"
+------------------------------------------------------------------------------
+
+Add the following line directly below it:
+
+------------------------------------------------------------------------------
+PerlAddVar OILSWebTemplatePath "/openils/var/templates-bootstrap"
+------------------------------------------------------------------------------
+
+Be sure that, if you have any local customizations, that they are referenced below
+this line.  This way, your customizations will still appear in the new OPAC design
+(although they may need to be adjusted to better fit the new style).
+
+You can also turn on the new OPAC for some virtual hosts only, by adding it to the
+appropriate virtual host entry.  Be sure to reference the OILSWebTemplatePath for
+the `templates-bootstrap` directory before referencing any local customizations
+used by that virtual host.
+
+To emphasize, the new OPAC skin is considered experimental for 3.6.x. There
+are some discrepancies between its functionality and the functionality
+present in the original "TPAC" skin. The Evergreen community aims to
+resolve those discrepancies and make the Bootstrap skin become the default
+OPAC for the Spring 2021 release (though the original TPAC skin will still
+be available). Using the Bootstrap skin in production for 3.6 is at your own risk.
+
+
+
+
+Enhanced Public Catalog Printing and Email 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen now provides additional functionality for printing and emailing
+bibliographic record and holdings information from the catalog, including
+from an individual record or from a list or basket.
+
+After selecting Print or Email, the user will be presented with a preview of
+the printout or email, respectively.  From the preview users can chose to view
+Brief or Full record information (Full includes holdings information) and how
+records should be sorted (Author, Title, Publication Date).  Holdings
+information can also be limited to a certain library.
+
+Users can be required to log in to their OPAC account to send an email or this
+feature can be configured to allow sending an email without signing in to the
+public catalog. If the option to allow emailing without signing in is enabled
+(by turning on the new 'Allow record emailing without login' library setting),
+user will be asked to solve an arithmetic CAPTCHA in order to send the email.
+
+Administration
+++++++++++++++
+Two new interfaces have been added to Local Administration: Event Definition
+Groups and Event Definition Group Members.  The Event Definition Groups defines
+the various groups for Action Trigger Event Definitions-- currently Print
+Record(s) or Email Record(s).  The Event Definition Group Members defines the
+options within each group-- currently Brief or Full record information.
+
+These two interfaces expose the infrastructure behind the new print and
+email functionality and library staff will not need to make any changes to
+these interfaces to use the existing print and email options.  The stock print
+and email Action Trigger Event Definitions can be cloned and modified to
+provide additional bibliographic format options.  After creating the custom
+Event Definition, add it to the appropriate Event Definition Group (Print
+Record or Email Record) and the new format will be available in the catalog.
+
+
+
+
+
+Credit card payments using Stripe now on version 3 (Elements)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When Stripe payments are enabled, the public catalog will now
+use version 3 of the Stripe client library, as well as its
+Elements API for building the credit card form.  For
+technical reasons, this more easily lends a site to PCI
+compliance.
+
+On the staff side, the credit card option is disabled for
+Stripe, as that has not been implemented and in the past
+would just give an error.
+
+
+
+
+Reports
+~~~~~~~
+
+
+
+Combined Aged and Active Circluations Source Naming
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A recent improvement to aid web client data retrieval
+speed resulted in a new reports source that was named
+nearly identically to a long-existing one, and both
+were appearing in the "Core Sources" section of reports.
+The newer source has been renamed for clarity and removed
+from the core sources to prevent confusion:
+
+ * "Combined Aged and Active circulations" is now named "Combined Aged and Active Circulations (Slim Version)"
+   and is removed from the Core Sources.
+ * "Combined Aged and Active Circulations", which contains more linkages to other data sources, remains in the 
+   Core Sources list.
+
+
+
+
+Reports Subtotals
+^^^^^^^^^^^^^^^^^
+Reports now allow group subtotals and grand totals.  By checking the
+new "Calculate grouping subtotals" checkbox under "Output Options",
+a new unlabeled row or column is created with the subtotals for each
+grouping and an unlabeled grand total row or column.
+
+This takes advantage of PostreSQL's built-in ROLLUP feature.  See the
+PostgreSQL documentation for details: 
+
+https://www.postgresql.org/docs/9.6/queries-table-expressions.html#QUERIES-GROUPING-SETS
+
+An example of a report that could use this new feature is
+one based on the Circulation source with the following fields:
+
+ * Circulation -> Checkout / Renewal Library -> Short (Policy) Name (Raw Data)
+ * Circulation -> Checkout Date/Time (Year)
+ * Circulation -> Shelving Location -> Name (Raw Data)
+ * Circulation -> Circ ID (Count Distinct)
+
+Turning on the "Calculate grouping subtotals" checkbox would make
+the report show subtotals for each combination of
+short name, checkout year, and shelving location name.
+
+
+
+
+SIP
+~~~
+
+
+
+Allow Username in Patron ID
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen now accepts a patron's username in the SIP2 Patron ID field
+(AA) in addition to the barcode.  This modification is useful for
+vendors, such as Overdrive, who can accept a user's username.
+Additionally, it is easier for a patron to find and remember their
+username over their barcode.
+
+The new feature determines if the value in the Patron ID field is a
+barcode or username by comparing the field value against the
+`opac.barcode_regex` setting for the organizational unit of the logged
+in SIP2 account as configured in the oils_sip.xml file.  This is
+similar to what the OPAC does when a patron logs in.
+
+This feature requires activation.  To activate, uncomment (or add) the
+following line in the oils_sip.xml configuration file and change the 
+value from 'false' to 'true'.
+
+[source,xml]
+---------------------------------------------------------------------------
+<option name='support_patron_username_login' value='true' />
+---------------------------------------------------------------------------
+
+
+
+Acknowledgments
+---------------
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+* C/W MARS
+* Evergreen Community Development Initiative
+* Georgia Public Library Service
+* Indiana State Library
+* Linn-Benton Community College
+* Treasure Valley Community College
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations patches and tests to this release of
+Evergreen:
+
+* John Amundson
+* Nelson Appell
+* Zavier Banks
+* a. bellenir
+* Jason Boyer
+* Dan Briem
+* Chris Burton
+* Steven Callender
+* Galen Charlton
+* Garry Collum
+* Dawn Dale
+* Jeff Davis
+* Diane Disbro
+* Bill Erickson
+* Jason Etheridge
+* Lynn Floyd
+* Ruth Frasur
+* Blake Graham-Henderson
+* Rogan Hamby
+* Elaine Hardy
+* Kyle Huckins
+* Owen Leonard
+* Troy Leonard
+* Shula Link
+* Tiffany Little
+* Mary Llewellyn
+* Terran McCanna
+* Gina Monti
+* Christine Morgan
+* Michele Morgan
+* Jennifer Pringle
+* Mike Risher
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Dan Wells
+* Jennifer Weston
+* Beth Willis
+* John Yorio
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* Ann Arbor District Library
+* BC Libraries Cooperative
+* Bibliomation
+* Calvin College
+* Catalyte
+* C/W MARS
+* Equinox Open Library Initiative
+* Georgia Public Library Service
+* Grand Rapids Public Library
+* Greater Clark Hills Regional Library System
+* Indiana State Library
+* Kenton County Public Library
+* King County Library System
+* Laurentian University
+* Linn-Benton Community College
+* MOBIUS
+* Niagara Falls Public Library
+* NOBLE
+* Scenic Regional Library
+* Sigio
+* Washington County (MO) Public Library
+* Westchester Library System
+* Zivot Design
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
