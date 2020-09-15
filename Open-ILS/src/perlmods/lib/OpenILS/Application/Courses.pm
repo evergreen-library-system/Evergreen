@@ -257,25 +257,27 @@ sub _resetItemFields {
     my $acp = $e->retrieve_asset_copy($acmcm->item);
     my $course_lib = $e->retrieve_asset_course_module_course($acmcm->course)->owning_lib;
     if ($acmcm->original_status) {
-        $acp->status($acmcm->orginal_status);
+        $acp->status($acmcm->original_status);
     }
     if ($acmcm->original_circ_modifier) {
-        $acp->status($acmcm->orginal_circ_modifier);
+        $acp->circ_modifier($acmcm->original_circ_modifier);
     }
     if ($acmcm->original_location) {
-        $acp->status($acmcm->orginal_location);
+        $acp->location($acmcm->original_location);
     }
     $e->update_asset_copy($acmcm);
     if ($acmcm->original_callnumber) {
         my $existing_acn = $e->retrieve_asset_call_number($acp->call_number);
+        my $orig_acn = $e->retrieve_asset_call_number($acmcm->original_callnumber);
         # Let's attach to an existing call number, if one exists with the original label
         # and other appropriate specifications
-        my $acn_id = cat_sess->request('open-ils.cat.call_number.find_or_create',
-            $authtoken, $acmcm->original_callnumber,
+        my $dest_acn = $cat_sess->request('open-ils.cat.call_number.find_or_create',
+            $authtoken, $orig_acn->label,
             $existing_acn->record, $course_lib,
             $existing_acn->prefix, $existing_acn->suffix,
-            $existing_acn->label_class)->acn_id;
-        cat_sess->request('open-ils.cat.transfer_copies_to_volume',
+            $existing_acn->label_class)->gather(1);
+        my $acn_id = $dest_acn->{acn_id};
+        $cat_sess->request('open-ils.cat.transfer_copies_to_volume',
             $authtoken, $acn_id, [$acp->id]);
     }
 }
