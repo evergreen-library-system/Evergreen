@@ -20642,7 +20642,7 @@ INSERT INTO actor.org_unit_setting (org_unit, name, value)
 INSERT INTO asset.course_module_role (id, name, is_public) VALUES
 (1, oils_i18n_gettext(1, 'Instructor', 'acmr', 'name'), true),
 (2, oils_i18n_gettext(2, 'Teaching assistant', 'acmr', 'name'), true),
-(3, oils_i18n_gettext(2, 'Student', 'acmr', 'name'), false);
+(3, oils_i18n_gettext(3, 'Student', 'acmr', 'name'), false);
 SELECT SETVAL('asset.course_module_role_id_seq'::TEXT, 100);
 
 
