@@ -12,6 +12,7 @@ use Digest::MD5 qw/md5_hex/;
 
 use OpenSRF::EX qw(:try);
 use OpenSRF::System;
+use OpenSRF::Utils::Logger qw/$logger/;
 
 # set the bootstrap config when 
 # this module is loaded
@@ -87,7 +88,7 @@ sub handler {
         if ($user) {
             $ws_ou ||= $user->home_ou;
     
-            warn "Checking perms " . join(',', @$perms) . " for user " . $user->id . " at location $ws_ou\n";
+            $logger->debug("Checking perms " . join(',', @$perms) . " for user " . $user->id . " at location $ws_ou\n");
     
             my $failures = OpenSRF::AppSession
                 ->create('open-ils.actor')
