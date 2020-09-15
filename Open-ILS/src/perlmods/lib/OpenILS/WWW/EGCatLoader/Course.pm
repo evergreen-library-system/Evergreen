@@ -302,7 +302,7 @@ sub load_cresults {
         "where" => $where_clause
     });
 
-    my $results = $e->json_query({
+    $results = $e->json_query({
         "from" => "acmc",
         "select" => {"acmc" => [
             'id',
