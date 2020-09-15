@@ -2287,6 +2287,8 @@ sub unique_unnested_numbers {
 
     no warnings 'numeric';
 
+    return undef unless ( scalar @_ );
+
     return uniq(
         map(
             int,
