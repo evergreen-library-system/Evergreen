@@ -217,6 +217,8 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
                 this.materialDeleteFailedString.current()
                     .then(str => this.toast.danger(str));
             }
-        );
+        ).add(() => {
+            this.materialsGrid.reload();
+        });
     }
 }
