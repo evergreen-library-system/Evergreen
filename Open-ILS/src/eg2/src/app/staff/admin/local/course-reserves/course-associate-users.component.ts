@@ -105,7 +105,7 @@ export class CourseAssociateUsersComponent extends DialogComponent implements On
 
     showEditDialog(user: IdlObject): Promise<any> {
         this.editDialog.mode = 'update';
-        this.editDialog.recordId = user._id;
+        this.editDialog.recordId = user.id();
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: 'lg'}).subscribe(
                 result => {
