@@ -3797,9 +3797,6 @@ sub as_xml {
 package OpenILS::Application::SuperCat::unAPI::acp;
 use base qw/OpenILS::Application::SuperCat::unAPI/;
 
-use OpenILS::Application::AppUtils;
-my $U = "OpenILS::Application::AppUtils";
-
 sub as_xml {
     my $self = shift;
     my $args = shift;
