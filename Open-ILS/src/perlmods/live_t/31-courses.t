@@ -1,7 +1,7 @@
 #!perl
  
 use strict; use warnings;
-use Test::More tests => 3;
+use Test::More tests => 5;
 use OpenILS::Utils::TestUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::AppUtils;
@@ -36,7 +36,7 @@ $acmcm->temporary_record(0);
 $e->create_asset_course_module_course_materials( $acmcm ); # associated this bib record with a course
 $e->commit;
 
-$apputils->simplereq('open-ils.courses', 'open-ils.courses.detach.material', $authtoken, 9999);
+$apputils->simplereq('open-ils.courses', 'open-ils.courses.detach_material', $authtoken, 9999);
 
 my $results = $e->search_asset_course_module_course_materials({id => 9999});
 is(scalar(@$results), 0, 'Successfully deleted acmcm');
@@ -71,7 +71,7 @@ $acmcm->temporary_record(1); # this one is temporary, like brief records created
 $e->create_asset_course_module_course_materials( $acmcm ); # associated this bib record with a course
 $e->commit;
 
-$apputils->simplereq('open-ils.courses', 'open-ils.courses.detach.material', $authtoken, 9998);
+$apputils->simplereq('open-ils.courses', 'open-ils.courses.detach_material', $authtoken, 9998);
 
 $results = $e->search_asset_course_module_course_materials({id => 9998});
 is(scalar(@$results), 0, 'Successfully deleted acmcm');
