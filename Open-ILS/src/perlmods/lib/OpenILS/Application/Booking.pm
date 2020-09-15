@@ -1274,7 +1274,7 @@ sub get_captured_reservations {
             return $patron;
         },
         "ready" => sub {
-            return $e->search_booking_reservation([
+            return ($e->search_booking_reservation([
                 {
                     "usr" => $patron->id,
                     "capture_time" => {"!=" => undef},
@@ -1283,10 +1283,10 @@ sub get_captured_reservations {
                     "cancel_time" => undef
                 },
                 $bresv_flesh
-            ]) or $e->die_event;
+            ]) || $e->die_event);
         },
         "out" => sub {
-            return $e->search_booking_reservation([
+            return ($e->search_booking_reservation([
                 {
                     "usr" => $patron->id,
                     "pickup_time" => {"!=" => undef},
@@ -1294,17 +1294,17 @@ sub get_captured_reservations {
                     "cancel_time" => undef
                 },
                 $bresv_flesh
-            ]) or $e->die_event;
+            ]) || $e->die_event);
         },
         "in" => sub {
-            return $e->search_booking_reservation([
+            return ($e->search_booking_reservation([
                 {
                     "usr" => $patron->id,
                     "return_time" => {">=" => "today"},
                     "cancel_time" => undef
                 },
                 $bresv_flesh
-            ]) or $e->die_event;
+            ]) || $e->die_event);
         }
     };
 
