@@ -13,7 +13,7 @@ my $U = 'OpenILS::Application::AppUtils';
 sub _prepare_biblio_search_basics {
     my ($cgi) = @_;
 
-    return $cgi->param('query') unless $cgi->param('qtype');
+    return scalar($cgi->param('query')) unless scalar($cgi->param('qtype'));
 
     my %parts;
     my @part_names = qw/qtype contains query bool/;
@@ -93,25 +93,25 @@ sub _prepare_biblio_search {
 
     $query .= ' ' . $ctx->{global_search_filter} if $ctx->{global_search_filter};
 
-    foreach ($cgi->param('modifier')) {
+    foreach ($cgi->multi_param('modifier')) {
         # The unless bit is to avoid stacking modifiers.
         $query = ('#' . $_ . ' ' . $query) unless 
             $query =~ qr/\#\Q$_/ or $_ eq 'metabib';
     }
 
     # filters
-    foreach (grep /^fi:/, $cgi->param) {
+    foreach (grep /^fi:/, $cgi->multi_param) {
         /:(-?\w+)$/ or next;
-        my $term = join(",", $cgi->param($_));
+        my $term = join(",", $cgi->multi_param($_));
         $query .= " $1($term)" if length $term;
     }
 
     # filter group entries.  Entries from like filters are grouped into a single 
     # filter_group_entry() filter (ORed).  Each collection is ANDed together.
     # fg:foo_group=foo_entry_id
-    foreach (grep /^fg:/, $cgi->param) {
+    foreach (grep /^fg:/, $cgi->multi_param) {
         /:(-?\w+)$/ or next;
-        my $term = join(",", $cgi->param($_));
+        my $term = join(",", $cgi->multi_param($_));
         $query = "filter_group_entry($term) $query" if length $term;
     }
 
@@ -354,7 +354,7 @@ sub load_rresults {
     # 1. param->metarecord : view constituent bib records for a metarecord
     # 2. param->modifier=metabib : perform a metarecord search
     my $metarecord = $ctx->{metarecord} = $cgi->param('metarecord');
-    my @mods = $cgi->param('modifier');
+    my @mods = $cgi->multi_param('modifier');
     my $is_meta = (@mods and grep {$_ eq 'metabib'} @mods and !$metarecord);
     my $id_key = $is_meta ? 'mmr_id' : 'bre_id';
 
@@ -391,7 +391,7 @@ sub load_rresults {
 
     $self->timelog("Getting search parameters");
     my $page = $cgi->param('page') || 0;
-    my @facets = $cgi->param('facet');
+    my @facets = $cgi->multi_param('facet');
     my $limit = $self->_get_search_limit;
     $ctx->{search_ou} = $self->_get_search_lib();
     $ctx->{pref_ou} = $self->_get_pref_lib() || $ctx->{search_ou};
@@ -719,9 +719,9 @@ sub item_barcode_shortcut {
 sub marc_expert_search {
     my ($self, %args) = @_;
 
-    my @tags = $self->cgi->param("tag");
-    my @subfields = $self->cgi->param("subfield");
-    my @terms = $self->cgi->param("term");
+    my @tags = $self->cgi->multi_param("tag");
+    my @subfields = $self->cgi->multi_param("subfield");
+    my @terms = $self->cgi->multi_param("term");
 
     my $query = [];
     for (my $i = 0; $i < scalar @tags; $i++) {
