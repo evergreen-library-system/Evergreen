@@ -76,7 +76,7 @@ sub search_authority_by_simple_normalize_heading {
     my $e = new_editor();
     my $norm_heading = $e->json_query($norm_heading_query)->[0]->{'authority.simple_normalize_heading'};
 
-    unless (defined($norm_heading) && $norm_heading != '') {
+    unless (defined($norm_heading) && $norm_heading ne '') {
         return OpenILS::Event->new('BAD_PARAMS', note => 'Heading normalized to null or empty string');
     }
 
