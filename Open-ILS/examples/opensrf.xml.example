@@ -1282,6 +1282,11 @@ vim:et:ts=4:sw=4:
                     <unix_pid>courses_unix.pid</unix_pid>
                     <unix_log>courses_unix.log</unix_log>
                     <max_requests>100</max_requests>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
             </open-ils.courses>
 
             <open-ils.curbside>
