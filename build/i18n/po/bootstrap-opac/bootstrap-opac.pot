@@ -56,7 +56,7 @@ msgstr ""
 msgid " Returned/Renewed"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/locale_picker.tt2:28
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/pref_locale_picker.tt2:28
 msgid " Save Changes"
 msgstr ""
 
@@ -92,7 +92,7 @@ msgid "%1 "
 msgstr ""
 
 #. (ctx.user.first_given_name, ctx.user.family_name)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:44
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:45
 msgid "%1 %2"
 msgstr ""
 
@@ -2432,7 +2432,7 @@ msgstr ""
 msgid "Language Note: "
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/locale_picker.tt2:10 ../../Open-ILS/src/templates-bootstrap/opac/parts/pref_locale_picker.tt2:10
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/locale_picker.tt2:11 ../../Open-ILS/src/templates-bootstrap/opac/parts/pref_locale_picker.tt2:10
 msgid "Language:"
 msgstr ""
 
@@ -2629,7 +2629,7 @@ msgstr ""
 msgid "Login failed. The username or password provided was not valid. Passwords are case-sensitive.  Check your Caps-Lock key and try again or contact your local library."
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:68
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:69
 msgid "Logout"
 msgstr ""
 
@@ -2703,7 +2703,7 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:2 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:80 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/single_message.tt2:2 ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:55
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:2 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:80 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/single_message.tt2:2 ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:56
 msgid "Messages"
 msgstr ""
 
@@ -2800,7 +2800,7 @@ msgstr ""
 msgid "Musician"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:38 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:37 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:60
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:38 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:38 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:61
 msgid "My Account"
 msgstr ""
 
@@ -2822,7 +2822,7 @@ msgstr ""
 msgid "My Existing Basket and Lists"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:16 ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:64
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:16 ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:65
 msgid "My Lists"
 msgstr ""
 
@@ -3866,7 +3866,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:103 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:232 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_email.tt2:34 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_password.tt2:37 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_username.tt2:35
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:103 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:232 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_email.tt2:34 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_password.tt2:37 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_username.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/parts/locale_picker.tt2:28
 msgid "Save Changes"
 msgstr ""
 
@@ -4376,7 +4376,7 @@ msgstr ""
 msgid "Subjects"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:149 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:317 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:149 ../../Open-ILS/src/templates-bootstrap/opac/parts/pref_locale_picker.tt2:28 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:45 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:69 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:37 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:38 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:39
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:149 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:317 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:149 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:45 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:69 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:37 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:38 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:39
 msgid "Submit"
 msgstr ""
 
@@ -5099,7 +5099,7 @@ msgstr ""
 msgid "to your credit card?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:52
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:53
 msgid "unread"
 msgstr ""
 

@@ -917,6 +917,10 @@ msgstr ""
 msgid "Merge Selected"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:24
+msgid "Move Items To Selection List"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/acq/picklist/list.tt2:7
 msgid "My Selection Lists"
 msgstr ""
@@ -1314,10 +1318,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:293 ../../Open-ILS/src/templates/acq/common/li_table.tt2:402
 msgid "Save Changes"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:24
-msgid "Save Items To Selection List"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/po/item_table.tt2:32
