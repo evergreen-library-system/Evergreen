@@ -8,7 +8,7 @@ Upgrade notes
 This release adds a new OpenSRF service called `open-ils.courses`.
 While strictly speaking this is an optional service and could be
 omitted if you are not planning on using the new Course Materials
-module, it is recommend that the service be run in case future
+module, it is recommended that the service be run in case future
 work bakes in an assumption that it will always be present.
 
 This release also a new OpenSRF service, `open-ils.curbside`, which
@@ -20,6 +20,9 @@ based on the Bootstrap framework. Instructions for turning it on
 can be found below.
 
 This release adds a new Perl module dependency, `Config::General`.
+
+This release adds two new rows to action_trigger.event_definition, 
+two into action_trigger.hook, and six into action_trigger.environment.
 
 New Features
 ------------
@@ -403,6 +406,13 @@ notes to exclude it.
 
 
 
+Item Status Allows Pasting a List of Barcodes in csv Format
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The item status input box will now accept a string of barcodes, separated with commas, as well as a single barcode.
+
+
+
+
 
 Circulation
 ~~~~~~~~~~~
@@ -531,8 +541,14 @@ In-house use now records workstations
 
 Evergreen now records the workstation along with each
 in-house use.  Staff can now run reports on which
-workstation created which in-house uses.
+workstation created which in-house use.
 
+
+
+
+Option to Make Effective Date of Checkin Sticky
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Adds a checkbox to the Checkin screen that will make the backdate effective until logout.
 
 
 
@@ -611,7 +627,7 @@ specific workflow for curbside pickup.
 
 It can be used alongside regular (in the library) hold pickup.  Curbside pickup
 can be an option offered patrons in addition to regular pickup or it can
-be the primary pickup option depending on tghe library’s current service plan.
+be the primary pickup option depending on the library’s current service plan.
 
 It assumes the library will have a staff member assigned to managing curbside
 pickup throughout the day.
@@ -621,7 +637,7 @@ Library Settings
 This feature adds the following library settings.
 
  * `circ.curbside`: whether to enable curbside appointments for
-   picking up available hold requests. This default to off.
+   picking up available hold requests. This defaults to off.
     
  * `circ.curbside.granularity`: interval between appointment slots. This
    defaults to 15 minutes.
@@ -644,7 +660,7 @@ text/SMS notification can be sent to let them know that curbside pickup is an
 option at their library.  This notice can be used to promote this service and
 the default message will prompt patrons to log in to their OPAC account to
 schedule an appointment or call the library to schedule an appointment.
-notice message is customizable.  The Trigger Event Definitions for this notice
+Notice message is customizable.  The Trigger Event Definitions for this notice
 are called:
 
  * Curbside offer Email notification, triggered by CurbsideSlot reactor on a
@@ -678,6 +694,15 @@ This feature adds a new OpenSRF service, `open-ils.curbside`, which must be
 enabled and registered with the public router for the feature to function.
 
 This feature adds no new staff permissions.
+
+
+
+Allow Use of Adjusted Proximity for Age-protection
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Introduces a new library setting to consult adjusted proximity for age-protected items at hold placement time.
+
+
+
 
 Client
 ~~~~~~
@@ -811,6 +836,13 @@ would just give an error.
 
 
 
+Improve Access to Libray Info in OPAC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Adds the library's address, email, phone, and website link to the myopac patron account preferences page.
+
+
+
+
 Reports
 ~~~~~~~
 
@@ -901,6 +933,8 @@ Evergreen:
 * Georgia Public Library Service
 * Indiana State Library
 * Linn-Benton Community College
+* NOBLE
+* PaILS
 * Treasure Valley Community College
 
 We would also like to thank the following individuals who contributed
