@@ -1734,7 +1734,7 @@ INSERT INTO permission.perm_list(id, code, description)
         )
     );
 
-INSERT INTO permission.grp_perm_map(perm, grp, depth) VALUES (624, 9, 0), (624, 11, 0), (624, 12, 0), (624, 13, 0);
+INSERT INTO permission.grp_perm_map(perm, grp, depth) VALUES (624, 9, 0);
 
 INSERT INTO config.org_unit_setting_type 
     (grp, name, datatype, label, description, fm_class)
