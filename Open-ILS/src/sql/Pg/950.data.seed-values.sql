@@ -2701,7 +2701,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_PROVIDER',
 			'VIEW_PURCHASE_ORDER',
 			'VIEW_IMPORT_MATCH_SET',
-			'VIEW_MERGE_PROFILE'
+			'VIEW_MERGE_PROFILE',
 			'VIEW_REPORT_OUTPUT');
 
 
