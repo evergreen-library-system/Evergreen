@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2019-09-10 01:04+0000\n"
+"POT-Creation-Date: 2020-09-15 19:08+0000\n"
 "PO-Revision-Date: 2020-03-08 16:48+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-03-09 05:46+0000\n"
-"X-Generator: Launchpad (build e0878392dc799b267dea80578fa65500a5d74155)\n"
+"X-Launchpad-Export-Date: 2020-09-16 06:06+0000\n"
+"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:104
 msgid "&#171; Previous"
@@ -29,7 +29,7 @@ msgstr "(začít od nuly)"
 msgid "Acquisitions Records"
 msgstr "Akviziční záznamy"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:285
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:296
 msgid "Apply"
 msgstr "Použít"
 
@@ -93,7 +93,7 @@ msgstr "Bibliografické atributy"
 msgid "CSV"
 msgstr "CSV"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:55 ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:63 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:267 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:286
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:55 ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:63 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:278 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:297
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -109,7 +109,7 @@ msgstr "Související organizační jednotka"
 msgid "Copy Import Actions"
 msgstr "Akce pro import exemplářů"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:280
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:291
 msgid "Copy Records to Bucket"
 msgstr "Kopírovat záznamy do skupiny"
 
@@ -193,7 +193,7 @@ msgstr "Exportovat frontu jako ..."
 msgid "Export Records"
 msgstr "Exportovat záznamy"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:118
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:128
 msgid "File to Upload:"
 msgstr "Soubor k nahrání"
 
@@ -225,7 +225,7 @@ msgstr "ISBN"
 msgid "ISSN"
 msgstr "ISSN"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:270
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:281
 msgid "Import"
 msgstr "Importovat"
 
@@ -409,7 +409,7 @@ msgstr "Profily pro přepsání / sloučení"
 msgid "Page"
 msgstr "Strana"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:282
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:293
 msgid "Please enter the name of the bucket to append/create."
 msgstr "Prosím zadejte název skupiny k vytvoření / přidání do"
 
@@ -585,7 +585,7 @@ msgstr "UTF-8"
 msgid "Update"
 msgstr "Aktualizovat"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:120
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:130
 msgid "Upload"
 msgstr "Nahrát"
 

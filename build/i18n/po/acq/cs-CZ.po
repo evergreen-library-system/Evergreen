@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-03-02 19:43+0000\n"
+"POT-Creation-Date: 2020-09-15 19:01+0000\n"
 "PO-Revision-Date: 2018-03-19 21:26+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-20 05:23+0000\n"
-"X-Generator: Launchpad (build 18571)\n"
+"X-Launchpad-Export-Date: 2020-09-16 06:06+0000\n"
+"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:6
 msgid " Invoice "
@@ -461,7 +461,7 @@ msgstr "Vytvořit objednávku"
 
 #: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:39
 msgid "Create Request"
-msgstr "Vtvoořit požadavek"
+msgstr "Vytvořit požadavek"
 
 #. ("<span id=\"oils-acq-picklist-attr-cdate\"></span>")
 #: ../../Open-ILS/src/templates/acq/picklist/view.tt2:9
