@@ -226,7 +226,7 @@ sub detach_material {
         $e->allowed('MANAGE_RESERVES');
     my $acmcm = $e->retrieve_asset_course_module_course_materials($acmcm_id)
         or return $e->die_event;
-    my $bre_id_to_delete = $acmcm->temporary_record ? $acmcm->record : 0;
+    my $bre_id_to_delete = $U->is_true($acmcm->temporary_record) ? $acmcm->record : 0;
     if ($bre_id_to_delete) {
         # delete any attached located URIs
         my $located_uri_cn_ids = $e->search_asset_call_number(

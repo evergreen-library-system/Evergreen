@@ -57,16 +57,14 @@ $e->xact_begin;
 my $bre = Fieldmapper::biblio::record_entry->new;
 $bre->marc('<record></record>');
 $bre->tcn_source($temp_tcn_source); #Use the tcn_source field, since Cstore rewrites the last_xact_id field
-$e->create_biblio_record_entry($bre);
+my $temp_bib = $e->create_biblio_record_entry($bre) or die $e->die_event;
 $e->commit;
-
-my $bib_id = $e->search_biblio_record_entry({tcn_source=>$temp_tcn_source}, {idlist=>1})->[0];
 
 $e->xact_begin;
 $acmcm = Fieldmapper::asset::course_module_course_materials->new;
 $acmcm->course(1);
 $acmcm->id(9998);
-$acmcm->record($bib_id);
+$acmcm->record($temp_bib->id);
 $acmcm->temporary_record(1); # this one is temporary, like brief records created in the course module interface
 $e->create_asset_course_module_course_materials( $acmcm ); # associated this bib record with a course
 $e->commit;
