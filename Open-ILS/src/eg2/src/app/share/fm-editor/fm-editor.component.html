@@ -176,7 +176,7 @@
 
             <ng-container *ngSwitchCase="'list'">
               <eg-combobox
-                id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
+                domId="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
                 placeholder="{{field.label}}..." i18n-placeholder 
                 [required]="field.isRequired()"
                 [entries]="field.linkedValues"

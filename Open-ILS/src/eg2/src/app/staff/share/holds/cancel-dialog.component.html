@@ -19,17 +19,17 @@
       </div>
       <div class="row mt-2">
         <div class="col-lg-4">
-          <label for="cance-reasons" i18n>Cancel Reason</label>
+          <label for="cancel-reasons" i18n>Cancel Reason</label>
         </div>
         <div class="col-lg-8">
-          <eg-combobox id='cancel-reasons' [entries]="cancelReasons"
+          <eg-combobox domId='cancel-reasons' [entries]="cancelReasons"
             [startId]="5" (onChange)="cancelReason = $event ? $event.id : null">
           </eg-combobox>
         </div>
       </div>
       <div class="row mt-2">
         <div class="col-lg-4">
-          <label for="cance-note" i18n>Cancel Note</label>
+          <label for="cancel-note" i18n>Cancel Note</label>
         </div>
         <div class="col-lg-8">
           <textarea id='cancel-note' class="form-control"

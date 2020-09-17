@@ -23,10 +23,11 @@
         <a ngbNavLink i18n>Existing bucket</a>
         <ng-template ngbNavContent>
           <div class="row mt-3">
-            <div class="col-lg-3 font-weight-bold" i18n>Name of existing bucket</div>
+            <div class="col-lg-3 font-weight-bold"><label for="existing-bucket-name">Name of existing bucket</label></div>
             <div class="col-lg-5">
               <eg-combobox [entries]="formatBucketEntries()"
                 (onChange)="bucketChanged($event)"
+                domId="existing-bucket-name"
                 placeholder="Existing Bucket..." i18n-placeholder>
               </eg-combobox>
             </div>

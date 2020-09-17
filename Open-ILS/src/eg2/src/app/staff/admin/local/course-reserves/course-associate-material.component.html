@@ -50,9 +50,9 @@
                 <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
                   <div class="input-group">
                     <div class="input-group-prepend">
-                      <span class="input-group-text" i18n>Relationship</span>
+                      <label for="associate-item-relationship" class="input-group-text" i18n>Relationship</label>
                     </div>
-                    <input type="text" [(ngModel)]="relationshipInput"
+                    <input type="text" [(ngModel)]="relationshipInput" id="associate-item-relationship"
                       [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'" placeholder-i18n
                       placeholder="e.g. Required" class="flex-grow-1" />
                   </div>
@@ -73,7 +73,7 @@
                         <label for="associate-item-temp-call-number" i18n>Call Number</label>
                       </div>
                     </div>
-                    <input type="text" [(ngModel)]="tempCallNumber" label="associate-item-temp-call-number"
+                    <input type="text" [(ngModel)]="tempCallNumber" id="associate-item-temp-call-number"
                       [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'"
                       (input)="isModifyingCallNumber = true" class="flex-grow-1" />
                     <div class="input-group-append">
@@ -89,12 +89,13 @@
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text">
-                        <span i18n>Circulation Modifier</span>
+                        <label for="temp-circ-mod" i18n>Circulation Modifier</label>
                       </div>
                     </div>
                     <eg-combobox i18n-placeholder placeholder="Circulation Modifier..." idlClass="ccm" idlField="name"
                       [displayTemplate]="idlClassLabel" [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'"
                       [asyncSupportsEmptyTermClick]="true" class="flex-grow-1"
+                      domId="temp-circ-mod"
                       (onChange)="tempCircMod = $event.id; isModifyingCircMod = true">
                     </eg-combobox>
                     <div class="input-group-append">
@@ -112,12 +113,13 @@
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text">
-                        <span i18n>Item Status</span>
+                        <label for="temp-item-status" i18n>Item Status</label>
                       </div>
                     </div>
                     <eg-combobox i18n-placeholder placeholder="Item Status..." idlClass="ccs" idlField="name"
                       [displayTemplate]="idlClassLabel" [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'"
                       [asyncSupportsEmptyTermClick]="true" class="flex-grow-1"
+                      domId="temp-item-status"
                       (onChange)="tempStatus = $event.id; isModifyingStatus = true">
                     </eg-combobox>
                     <div class="input-group-append">
@@ -133,10 +135,10 @@
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <div class="input-group-text">
-                        <span i18n>Shelving Location</span>
+                        <label for="temp-location" i18n>Shelving Location</label>
                       </div>
                     </div>
-                    <eg-item-location-select permFilter="MANAGE_RESERVES" class="flex-grow-1"
+                    <eg-item-location-select permFilter="MANAGE_RESERVES" class="flex-grow-1" domId="temp-location"
                       [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'" [(ngModel)]="tempLocation"
                       (valueChange)="isModifyingLocation = true">
                     </eg-item-location-select>
@@ -166,9 +168,9 @@
               <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <span class="input-group-text" i18n>Relationship</span>
+                    <label class="input-group-text" for="brief-relationship" i18n>Relationship</label>
                   </div>
-                  <input type="text" [(ngModel)]="relationshipInput"
+                  <input type="text" [(ngModel)]="relationshipInput" id="brief-relationship"
                     [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'" placeholder-i18n
                     placeholder="e.g. Required" class="flex-grow-1" />
                 </div>
@@ -207,9 +209,9 @@
                 <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
                   <div class="input-group">
                     <div class="input-group-prepend">
-                      <span class="input-group-text" i18n>Relationship</span>
+                      <label class="input-group-text" for="electronic-relationship" i18n>Relationship</label>
                     </div>
-                    <input type="text" [(ngModel)]="relationshipInput"
+                    <input type="text" [(ngModel)]="relationshipInput" id="electronic-relationship"
                       [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'" class="flex-grow-1" />
                   </div>
                 </div>

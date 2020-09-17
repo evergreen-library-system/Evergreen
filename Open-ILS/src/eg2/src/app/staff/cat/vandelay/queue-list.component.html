@@ -2,11 +2,12 @@
   <h2 i18n>Select a Queue To Inspect</h2>
   <div class="row flex">
     <div>
-      <label i18n>Queue Type</label>
+      <label for="queue-type-combobox" i18n>Queue Type</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox (onChange)="queueTypeChanged($event)"
         [startId]="queueType"
+        domId="queue-type-combobox"
         placeholder="Queue Type..." i18n-placeholder>
         <eg-combobox-entry entryId="bib" entryLabel="Bibliographic Records" 
           i18n-entryLabel></eg-combobox-entry>
