@@ -20,7 +20,7 @@
     </div>
     <div class="col-lg-3">
       <eg-combobox #formTemplateSelector
-        id="template-select"
+        domId="template-select"
         (onChange)="templateSelectorChange($event)"
         [allowFreeText]="true"
         [startId]="selectedTemplate"
@@ -48,7 +48,7 @@
     </div>
     <div class="col-lg-3">
       <eg-combobox #recordTypeSelector
-        id="type-select"
+        domId="type-select"
         (onChange)="selectEntry($event, 'recordType')"
         [disabled]="importSelection()" [required]="true"
         [startId]="recordType" placeholder="Record Type..." i18n-placeholder>
@@ -65,7 +65,7 @@
     </div>
     <div class="col-lg-3">
       <eg-combobox #bibSourceSelector
-        id="source-select"
+        domId="source-select"
         [entries]="formatEntries('bibSources')" 
         (onChange)="selectEntry($event, 'bibSources')"
         [startId]="selectedBibSource"
@@ -80,7 +80,7 @@
     <div class="col-lg-3">
       <eg-combobox [entries]="formatEntries('activeQueues')"
         #queueSelector
-        id="queue-select"
+        domId="queue-select"
         [startId]="startQueueId"
         [startIdFiresOnChange]="true"
         [disabled]="startQueueId"
@@ -95,7 +95,7 @@
     <div class="col-lg-3">
       <eg-combobox [entries]="formatEntries('bibBuckets')" 
         #bucketSelector
-        id="bucket-select"
+        domId="bucket-select"
         [startId]="selectedBucket"
         [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"
         (onChange)="selectEntry($event, 'bibBuckets')"
@@ -108,7 +108,7 @@
     </div>
     <div class="col-lg-3">
       <eg-combobox #matchSetSelector
-        id="match-set-select"
+        domId="match-set-select"
         [entries]="formatEntries('matchSets')" 
         [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"
         [startId]="selectedMatchSet || defaultMatchSet"
@@ -130,7 +130,7 @@
     </div>
     <div class="col-lg-3"> <!-- TODO disable for authority -->
       <eg-combobox #holdingsProfileSelector
-        id="item-import-def"
+        domId="item-import-def"
         [entries]="formatEntries('importItemDefs')"
         [startId]="selectedHoldingsProfile"
         [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"
@@ -152,7 +152,7 @@
     </div>
     <div class="col-lg-3">
       <eg-combobox #mergeProfileSelector
-        id="merge-profiles"
+        domId="merge-profiles"
         [entries]="formatEntries('mergeProfiles')"
         (onChange)="selectEntry($event, 'mergeProfiles')"
         placeholder="Merge Profile..." i18n-placeholder>
@@ -174,7 +174,7 @@
     </div>
     <div class="col-lg-3">
       <eg-combobox #fallThruMergeProfileSelector
-        id="insuff-merge-profiles"
+        domId="insuff-merge-profiles"
         [entries]="formatEntries('mergeProfiles')"
         (onChange)="selectEntry($event, 'FallThruMergeProfile')"
         placeholder="Fall-Through Merge Profile..." i18n-placeholder>
