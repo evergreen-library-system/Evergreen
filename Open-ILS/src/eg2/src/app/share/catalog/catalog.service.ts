@@ -61,6 +61,8 @@ export class CatalogService {
             'open-ils.search.multi_home.bib_ids.by_barcode',
             ctx.identSearch.value
         ).toPromise().then(ids => {
+            // API returns an event for not-found barcodes
+            if (!Array.isArray(ids)) { ids = []; }
             const result = {
                 count: ids.length,
                 ids: ids.map(id => [id])
