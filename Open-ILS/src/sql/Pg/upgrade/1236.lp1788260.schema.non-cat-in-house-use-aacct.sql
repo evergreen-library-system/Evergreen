@@ -1,5 +1,7 @@
 BEGIN;
 
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1236', :eg_version);
+
 CREATE OR REPLACE VIEW action.all_circulation_combined_types AS
  SELECT acirc.id AS id,
     acirc.xact_start,
