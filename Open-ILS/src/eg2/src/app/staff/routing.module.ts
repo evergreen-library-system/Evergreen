@@ -42,7 +42,7 @@ const routes: Routes = [{
   }, {
     path: 'cat',
     loadChildren: () =>
-      import('./cat/routing.module').then(m => m.CatRoutingModule)
+      import('./cat/cat.module').then(m => m.CatModule)
   }, {
     path: 'catalog',
     loadChildren: () =>

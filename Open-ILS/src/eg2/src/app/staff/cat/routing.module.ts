@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {BibByIdentComponent} from './bib-by-ident.component';
 
 const routes: Routes = [
   { path: 'vandelay',
@@ -13,6 +14,9 @@ const routes: Routes = [
     path: 'marcbatch',
     loadChildren: () =>
       import('./marcbatch/marcbatch.module').then(m => m.MarcBatchModule)
+  }, {
+    path: 'bib-from/:identType',
+    component: BibByIdentComponent
   }
 ];
 

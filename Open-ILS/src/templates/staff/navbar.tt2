@@ -287,13 +287,14 @@
           </li>
           <li class="divider"></li>
           <li>
-            <a href="./cat/catalog/retrieve_by_id" target="_self">
+            <a href="/eg2/staff/cat/bib-from/id">
               <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
               [% l('Retrieve Bib Record by ID') %]
             </a>
           </li>
           <li>
-            <a href="./cat/catalog/retrieve_by_tcn" target="_self"
+
+            <a href="/eg2/staff/cat/bib-from/tcn"
               eg-accesskey="[% l('shift+f3') %]" 
               eg-accesskey-desc="[% l('Retrieve Last Bib Record') %]">
               <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
