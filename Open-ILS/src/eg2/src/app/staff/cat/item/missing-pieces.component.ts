@@ -1,4 +1,4 @@
-import {Component, Input, AfterViewInit, ViewChild, Renderer2} from '@angular/core';
+import {Component, Input, AfterViewInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -21,13 +21,13 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
     circNotFound = false;
     processing = false;
     noSuchItem = false;
+    itemProcessed = false;
 
     @ViewChild('penaltyDialog', {static: false})
     penaltyDialog: PatronPenaltyDialogComponent;
 
     constructor(
         private route: ActivatedRoute,
-        private renderer: Renderer2,
         private net: NetService,
         private printer: PrintService,
         private pcrud: PcrudService,
@@ -40,7 +40,7 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         if (this.itemId) { this.getItemById(); }
-        this.renderer.selectRootElement('#item-barcode-input').focus();
+        this.selectInput();
     }
 
     getItemByBarcode(): Promise<any> {
@@ -48,6 +48,11 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
         this.item = null;
 
         if (!this.itemBarcode) { return Promise.resolve(); }
+
+        // Submitting a new barcode resets the form.
+        const bc = this.itemBarcode;
+        this.reset();
+        this.itemBarcode = bc;
 
         return this.holdings.getItemIdFromBarcode(this.itemBarcode)
         .then(id => {
@@ -58,8 +63,11 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
     }
 
     selectInput() {
-        setTimeout(() =>
-            this.renderer.selectRootElement('#item-barcode-input').select());
+        setTimeout(() => {
+            const node: HTMLInputElement =
+                document.getElementById('item-barcode-input') as HTMLInputElement;
+            if (node) { node.select(); }
+        });
     }
 
     getItemById(): Promise<any> {
@@ -101,12 +109,15 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
     reset() {
         this.item = null;
         this.itemId = null;
+        this.letter = null;
         this.itemBarcode = null;
         this.circNotFound = false;
+        this.itemProcessed = false;
     }
 
     processItem() {
         this.circNotFound = false;
+        this.itemProcessed = false;
 
         if (!this.item) { return; }
 
@@ -119,9 +130,11 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
         ).subscribe(resp => {
             const evt = this.evt.parse(resp); // always returns event
             this.processing = false;
+            this.itemProcessed = true;
 
             if (evt.textcode === 'ACTION_CIRCULATION_NOT_FOUND') {
                 this.circNotFound = true;
+                this.selectInput();
                 return;
             }
 
@@ -142,7 +155,12 @@ export class MarkItemMissingPiecesComponent implements AfterViewInit {
             if (payload.circ) {
                 this.penaltyDialog.patronId = payload.circ.usr();
                 this.penaltyDialog.open().subscribe(
-                    penId => console.debug('Applied penalty ', penId));
+                    penId => console.debug('Applied penalty ', penId),
+                    err => {},
+                    () => this.selectInput()
+                );
+            } else {
+                this.selectInput();
             }
         });
     }
