@@ -7,6 +7,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {PermService} from '@eg/core/perm.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {StaffCatalogService} from '../catalog.service';
@@ -66,6 +67,8 @@ export class HoldComponent implements OnInit {
     smsEnabled: boolean;
     placeHoldsClicked: boolean;
 
+    puLibWsFallback = false;
+
     @ViewChild('patronSearch', {static: false})
       patronSearch: PatronSearchDialogComponent;
 
@@ -76,6 +79,7 @@ export class HoldComponent implements OnInit {
         private evt: EventService,
         private net: NetService,
         private org: OrgService,
+        private store: ServerStoreService,
         private auth: AuthService,
         private pcrud: PcrudService,
         private bib: BibRecordService,
@@ -106,6 +110,9 @@ export class HoldComponent implements OnInit {
             this.holdFor = 'patron';
             this.userBarcode = this.staffCat.holdForBarcode;
         }
+
+        this.store.getItem('circ.staff_placed_holds_fallback_to_ws_ou')
+        .then(setting => this.puLibWsFallback = setting === true);
 
         if (!Array.isArray(this.holdTargets)) {
             this.holdTargets = [this.holdTargets];
@@ -282,15 +289,18 @@ export class HoldComponent implements OnInit {
     }
 
     applyUserSettings() {
-        if (!this.user || !this.user.settings()) { return; }
+        if (!this.user) { return; }
 
         // Start with defaults.
         this.phoneValue = this.user.day_phone() || this.user.evening_phone();
 
         // Default to work org if placing holds for staff.
-        if (this.user.id() !== this.requestor.id()) {
+        if (this.user.id() !== this.requestor.id() && !this.puLibWsFallback) {
+            // This value may be superseded below by user settings.
             this.pickupLib = this.user.home_ou();
         }
+
+        if (!this.user.settings()) { return; }
 
         this.user.settings().forEach(setting => {
             const name = setting.name();
