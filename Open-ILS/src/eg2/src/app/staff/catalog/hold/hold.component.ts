@@ -314,14 +314,14 @@ export class HoldComponent implements OnInit {
             this.staffCat.clearHoldPatron();
         }
 
-        this.resetForm();
-        this.userBarcode = newBc; // clobbered in reset
-
         this.currentUserBarcode = this.userBarcode;
         this.getUser();
     }
 
     getUser(id?: number) {
+
+        this.resetForm(true);
+
         const flesh = {flesh: 1, flesh_fields: {au: ['settings']}};
 
         const promise = id ? this.patron.getById(id, flesh) :
@@ -343,14 +343,17 @@ export class HoldComponent implements OnInit {
         });
     }
 
-    resetForm() {
+    resetForm(keepBarcode?: boolean) {
         this.user = null;
-        this.userBarcode = null;
         this.notifyEmail = true;
         this.notifyPhone = true;
         this.phoneValue = '';
         this.pickupLib = this.requestor.ws_ou();
         this.placeHoldsClicked = false;
+
+        // Avoid clearing the barcode in cases where the form is
+        // reset as the result of a barcode change.
+        if (!keepBarcode) { this.userBarcode = null; }
 
         this.holdContexts = this.holdTargets.map(target => {
             const ctx = new HoldContext(target);
@@ -556,6 +559,14 @@ export class HoldComponent implements OnInit {
         } else {
             ctx.holdMeta.part = null;
         }
+    }
+
+    hasNoHistory(): boolean {
+        return history.length === 0;
+    }
+
+    goBack() {
+        history.back();
     }
 }
 
