@@ -15,6 +15,12 @@ const LEGACY_TAB_NAME_MAP = {
     advanced: 'term'
 };
 
+// Automatically collapse the search form on these pages
+const COLLAPSE_ON_PAGES = [
+    new RegExp(/catalog\/record\//),
+    new RegExp(/catalog\/hold\//)
+];
+
 @Component({
   selector: 'eg-catalog-search-form',
   styleUrls: ['search-form.component.css'],
@@ -54,11 +60,12 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
         this.router.events.subscribe(routeEvent => {
             if (routeEvent instanceof NavigationEnd) {
-                if (routeEvent.url.match(/catalog\/record/)) {
-                    this.showThyself = false;
-                } else {
-                    this.showThyself = true;
-                }
+                this.showThyself = true;
+                COLLAPSE_ON_PAGES.forEach(pageRegex => {
+                    if (routeEvent.url.match(pageRegex)) {
+                        this.showThyself = false;
+                    }
+                });
             }
         });
     }
