@@ -55,7 +55,8 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
             'eg.catalog.search_templates',
             'opac.staff_saved_search.size',
             'opac.search.enable_bookplate_search',
-            'eg.staffcat.exclude_electronic'
+            'eg.staffcat.exclude_electronic',
+            'circ.staff_placed_holds_fallback_to_ws_ou'
         ]).then(settings => {
             this.staffCat.defaultSearchOrg =
                 this.org.get(settings['eg.search.search_lib']);
