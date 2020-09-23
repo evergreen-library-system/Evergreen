@@ -1940,9 +1940,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'View booking resource types', 'ppl', 'description')),
  ( 622, 'VIEW_BOOKING_RESOURCE', oils_i18n_gettext(622,
     'View booking resources', 'ppl', 'description')),
- ( 623, 'VIEW_BOOKING_RESERVATION', oils_i18n_gettext(623,
+ ( 625, 'VIEW_BOOKING_RESERVATION', oils_i18n_gettext(623,
     'View booking reservations', 'ppl', 'description')),
- ( 624, 'VIEW_BOOKING_RESERVATION_ATTR_MAP', oils_i18n_gettext(624,
+ ( 626, 'VIEW_BOOKING_RESERVATION_ATTR_MAP', oils_i18n_gettext(624,
     'View booking reservation attribute maps', 'ppl', 'description'))
 ;
 
