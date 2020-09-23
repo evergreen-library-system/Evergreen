@@ -2860,6 +2860,7 @@ __PACKAGE__->register_method(
     signature => {
         desc   => q/Returns bib record 856 URL content./,
         params => [
+            {desc => 'Context org unit ID', type => 'number'},
             {desc => 'Record ID or Array of Record IDs', type => 'number or array'}
         ],
         return => {
@@ -2870,20 +2871,33 @@ __PACKAGE__->register_method(
 );
 
 sub record_urls {
-    my ($self, $client, $record_ids) = @_;
+    my ($self, $client, $org_id, $record_ids) = @_;
 
     $record_ids = [$record_ids] unless ref $record_ids eq 'ARRAY';
 
     my $e = new_editor();
 
     for my $record_id (@$record_ids) {
+
+        my @urls;
+
+        # Start with scoped located URIs
+        my $uris = $e->json_query({
+            from => ['evergreen.located_uris_as_uris', $record_id, $org_id]});
+
+        for my $uri (@$uris) {
+            push(@urls, {
+                href => $uri->{href},
+                label => $uri->{label},
+                note => $uri->{use_restriction}
+            });
+        }
+
+        # Logic copied from TPAC misc_utils.tts
         my $bib = $e->retrieve_biblio_record_entry($record_id)
             or return $e->event;
 
         my $marc_doc = $U->marc_xml_to_doc($bib->marc);
-
-        # Logic copied from TPAC misc_utils.tts
-        my @urls;
 
         for my $node ($marc_doc->findnodes(
             '//*[@tag="856" and @ind1="4" and (@ind2="0" or @ind2="1")]')) {
@@ -2987,8 +3001,8 @@ sub catalog_record_summary {
     for my $rec_id (@$record_ids) {
 
         my $response = $is_meta ? 
-            get_one_metarecord_summary($self, $e, $rec_id) :
-            get_one_record_summary($self, $e, $rec_id);
+            get_one_metarecord_summary($self, $e, $org_id, $rec_id) :
+            get_one_record_summary($self, $e, $org_id, $rec_id);
 
         ($response->{copy_counts}) = $copy_method->run($org_id, $rec_id);
 
@@ -3002,11 +3016,11 @@ sub catalog_record_summary {
 }
 
 sub get_one_rec_urls {
-    my ($self, $e, $bib_id) = @_;
+    my ($self, $e, $org_id, $bib_id) = @_;
 
     my ($resp) = $self->method_lookup(
         'open-ils.search.biblio.record.resource_urls.retrieve')
-        ->run($bib_id);
+        ->run($org_id, $bib_id);
 
     return $resp->{urls};
 }
@@ -3014,15 +3028,15 @@ sub get_one_rec_urls {
 # Start with a bib summary and augment the data with additional
 # metarecord content.
 sub get_one_metarecord_summary {
-    my ($self, $e, $rec_id) = @_;
+    my ($self, $e, $org_id, $rec_id) = @_;
 
     my $meta = $e->retrieve_metabib_metarecord($rec_id) or return {};
     my $maps = $e->search_metabib_metarecord_source_map({metarecord => $rec_id});
 
     my $bre_id = $meta->master_record; 
 
-    my $response = get_one_record_summary($e, $bre_id);
-    $response->{urls} = get_one_rec_urls($self, $e, $bre_id);
+    my $response = get_one_record_summary($e, $org_id, $bre_id);
+    $response->{urls} = get_one_rec_urls($self, $e, $org_id, $bre_id);
 
     $response->{metabib_id} = $rec_id;
     $response->{metabib_records} = [map {$_->source} @$maps];
@@ -3047,7 +3061,7 @@ sub get_one_metarecord_summary {
 }
 
 sub get_one_record_summary {
-    my ($self, $e, $rec_id) = @_;
+    my ($self, $e, $org_id, $rec_id) = @_;
 
     my $bre = $e->retrieve_biblio_record_entry([$rec_id, {
         flesh => 1,
@@ -3080,7 +3094,7 @@ sub get_one_record_summary {
         record => $bre,
         display => $display,
         attributes => $attributes,
-        urls => get_one_rec_urls($self, $e, $rec_id)
+        urls => get_one_rec_urls($self, $e, $org_id, $rec_id)
     };
 }
 
