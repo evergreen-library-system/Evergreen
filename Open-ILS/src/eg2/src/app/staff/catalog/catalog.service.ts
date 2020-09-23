@@ -113,6 +113,9 @@ export class StaffCatalogService {
     search(): void {
         if (!this.searchContext.isSearchable()) { return; }
 
+        // Clear cached detail summary for new searches.
+        this.currentDetailRecordSummary = null;
+
         const params = this.catUrl.toUrlParams(this.searchContext);
 
         // Force a new search every time this method is called, even if
