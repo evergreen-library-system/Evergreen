@@ -435,6 +435,16 @@
       </div>
     </div>
 
+    <div class="border rounded m-1" *ngIf="displayAttr('copy_notes')">
+      <eg-copy-notes-dialog #copyNotesDialog></eg-copy-notes-dialog>
+      <div class="batch-header font-weight-bold p-2" i18n>Add Item Notes</div>
+      <div class="p-1">
+        <button class="btn btn-outline-dark" (click)="openCopyNotes()" i18n>
+          Item Notes
+        </button>
+      </div>
+    </div>
+
     <div class="border rounded m-1" *ngIf="displayAttr('statcat_filter')">
       <div class="batch-header font-weight-bold p-2" i18n>Stat Cat Filter</div>
       <div class="p-1">

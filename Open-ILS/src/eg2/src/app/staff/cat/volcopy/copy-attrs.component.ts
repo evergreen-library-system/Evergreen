@@ -19,6 +19,8 @@ import {CopyAlertsDialogComponent
     } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 import {CopyTagsDialogComponent
     } from '@eg/staff/share/holdings/copy-tags-dialog.component';
+import {CopyNotesDialogComponent
+    } from '@eg/staff/share/holdings/copy-notes-dialog.component';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {BatchItemAttrComponent, BatchChangeSelection
     } from '@eg/staff/share/holdings/batch-item-attr.component';
@@ -74,6 +76,9 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
 
     @ViewChild('copyTagsDialog', {static: false})
         private copyTagsDialog: CopyTagsDialogComponent;
+
+    @ViewChild('copyNotesDialog', {static: false})
+        private copyNotesDialog: CopyNotesDialogComponent;
 
     @ViewChild('copyTemplateCbox', {static: false})
         copyTemplateCbox: ComboboxComponent;
@@ -452,6 +457,25 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                     map.tag(tag);
 
                     copy.tags().push(map);
+                    copy.ischanged(true);
+                });
+            });
+        });
+    }
+
+    openCopyNotes() {
+        this.copyNotesDialog.inPlaceMode = true;
+        this.copyNotesDialog.copyIds = this.context.copyList().map(c => c.id());
+
+        this.copyNotesDialog.open({size: 'lg'}).subscribe(newNotes => {
+            if (!newNotes || newNotes.length === 0) { return; }
+
+            console.log(newNotes);
+            newNotes.forEach(note => {
+                this.context.copyList().forEach(copy => {
+                    const n = this.idl.clone(note);
+                    n.owning_copy(copy.id());
+                    copy.notes().push(n);
                     copy.ischanged(true);
                 });
             });

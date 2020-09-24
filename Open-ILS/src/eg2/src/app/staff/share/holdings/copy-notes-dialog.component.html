@@ -1,0 +1,77 @@
+<eg-string #successMsg text="Successfully Modified Item Notes" i18n-text></eg-string>
+<eg-string #errorMsg text="Failed To Modify Item Notes" i18n-text></eg-string>
+
+<ng-template #dialogContent>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <ng-container *ngIf="mode == 'create'">
+        <span i18n>Adding notes for {{copyIds.length}} item(s).</span>
+      </ng-container>
+      <ng-container *ngIf="mode == 'manage'">
+        <span i18n>Managing notes for item {{copy.barcode()}}</span>
+      </ng-container>
+      <span i18n></span>
+    </h4>
+    <button type="button" class="close" 
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-4 form-validated">
+
+    <ng-container *ngIf="mode == 'manage' && copy.notes().length">
+      <h4 i18n>Existing Notes</h4>
+      <div class="row mt-2 p-2" *ngFor="let note of copy.notes()">
+        <div class="col-lg-4">{{note.title()}}</div>
+        <div class="col-lg-5">{{note.value()}}</div>
+        <div class="col-lg-3">
+          <button class="btn btn-outline-danger" 
+            (click)="removeNote(note)" i18n>Remove</button>
+        </div>
+      </div>
+      <hr/>
+    </ng-container>
+
+    <h4 i18n>New Notes</h4>
+    <div class="row mt-2 p-2" *ngFor="let note of newNotes">
+      <div class="col-lg-4">{{note.title()}}</div>
+      <div class="col-lg-5">{{note.value()}}</div>
+      <div class="col-lg-3">
+        <button class="btn btn-outline-danger" (click)="removeNote(note)" i18n>
+          Remove
+        </button>
+      </div>
+    </div>
+
+    <div class="row mt-2 p-2 rounded border border-success">
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-lg-6">
+            <input type="text" class="form-control" [(ngModel)]="curNoteTitle"
+              i18n-placeholder placeholder="Note title..."/>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" 
+                [(ngModel)]="curNotePublic" id="pub-check">
+              <label class="form-check-label" for="pub-check">Public Note</label>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-lg-9">
+            <textarea class="form-control" [(ngModel)]="curNote"
+              i18n-placeholder placeholder="Enter note value..."></textarea>
+          </div>
+          <div class="col-lg-3">
+            <button class="btn btn-success" (click)="addNew()" i18n>Add Note</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="close()" i18n>Cancel</button>
+    <button class="btn btn-success mr-2" (click)="applyChanges()" i18n>Apply Changes</button>
+  </div>
+</ng-template>

@@ -56,7 +56,7 @@ export class BibSummaryComponent implements OnInit {
         .then(_ => {
             if (this.summary) {
                 return this.loadCourseInformation(this.summary.record.id())
-                .then(_ => this.summary.getBibCallNumber());
+                .then(__ => this.summary.getBibCallNumber());
             } else {
                 if (this.recordId) {
                     return this.loadSummary();

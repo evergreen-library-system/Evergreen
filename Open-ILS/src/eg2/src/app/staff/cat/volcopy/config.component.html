@@ -547,6 +547,16 @@
         <li class="list-group-item">
           <div class="form-check form-check-inline">
             <input class="form-check-input" type="checkbox" 
+              id="show-copy_notes-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.copy_notes">
+            <label class="form-check-label" for="show-copy_notes-attr" i18n>
+              Add Item Notes
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
               id="show-statcat_filter-attr" 
               [(ngModel)]="volcopy.defaults.hidden.statcat_filter">
             <label class="form-check-label" for="show-statcat_filter-attr" i18n>

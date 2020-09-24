@@ -5,6 +5,7 @@ import {MarkDamagedDialogComponent} from './mark-damaged-dialog.component';
 import {MarkMissingDialogComponent} from './mark-missing-dialog.component';
 import {CopyAlertsDialogComponent} from './copy-alerts-dialog.component';
 import {CopyTagsDialogComponent} from './copy-tags-dialog.component';
+import {CopyNotesDialogComponent} from './copy-notes-dialog.component';
 import {ReplaceBarcodeDialogComponent} from './replace-barcode-dialog.component';
 import {DeleteHoldingDialogComponent} from './delete-volcopy-dialog.component';
 import {ConjoinedItemsDialogComponent} from './conjoined-items-dialog.component';
@@ -18,6 +19,7 @@ import {BatchItemAttrComponent} from './batch-item-attr.component';
       MarkMissingDialogComponent,
       CopyAlertsDialogComponent,
       CopyTagsDialogComponent,
+      CopyNotesDialogComponent,
       ReplaceBarcodeDialogComponent,
       DeleteHoldingDialogComponent,
       ConjoinedItemsDialogComponent,
@@ -33,6 +35,7 @@ import {BatchItemAttrComponent} from './batch-item-attr.component';
       MarkMissingDialogComponent,
       CopyAlertsDialogComponent,
       CopyTagsDialogComponent,
+      CopyNotesDialogComponent,
       ReplaceBarcodeDialogComponent,
       DeleteHoldingDialogComponent,
       ConjoinedItemsDialogComponent,
