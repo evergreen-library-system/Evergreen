@@ -95,6 +95,8 @@ export CPAN_MODULES = \
 	Business::OnlinePayment::PayPal \
 	Email::Send \
 	MARC::Charset \
+	String::KeyboardDistance \
+	Text::Levenshtein::Damerau::XS \
 	Net::Z3950::Simple2ZOOM
 
 export CPAN_MODULES_FORCE = \

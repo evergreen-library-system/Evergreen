@@ -829,7 +829,7 @@ __PACKAGE__->register_method(
 
 sub multiclass_query {
     # arghash only really supports limit/offset anymore
-    my($self, $conn, $arghash, $query, $docache) = @_;
+    my($self, $conn, $arghash, $query, $docache, $phys_loc) = @_;
 
     if ($query) {
         $query =~ s/\+/ /go;
@@ -841,7 +841,7 @@ sub multiclass_query {
     $logger->debug("initial search query => $query") if $query;
 
     (my $method = $self->api_name) =~ s/\.query/.staged/o;
-    return $self->method_lookup($method)->dispatch($arghash, $docache);
+    return $self->method_lookup($method)->dispatch($arghash, $docache, $phys_loc);
 
 }
 
@@ -1130,7 +1130,9 @@ __PACKAGE__->register_method(
 
 my $estimation_strategy;
 sub staged_search {
-    my($self, $conn, $search_hash, $docache) = @_;
+    my($self, $conn, $search_hash, $docache, $phys_loc) = @_;
+
+    $phys_loc ||= $U->get_org_tree->id;
 
     my $IAmMetabib = ($self->api_name =~ /metabib/) ? 1 : 0;
 
@@ -1285,6 +1287,57 @@ sub staged_search {
         $cache->put_cache($key, $cache_data, $cache_timeout);
     }
 
+    my $setting_names = [ qw/
+             opac.did_you_mean.max_suggestions
+             opac.did_you_mean.low_result_threshold
+             search.symspell.min_suggestion_use_threshold
+             search.symspell.soundex.weight
+             search.symspell.pg_trgm.weight
+             search.symspell.keyboard_distance.weight/ ];
+    my %suggest_settings = $U->ou_ancestor_setting_batch_insecure(
+        $phys_loc, $setting_names
+    );
+
+    # Defaults...
+    $suggest_settings{$_} ||= {value=>undef} for @$setting_names;
+
+    # Pull this one off the front, it's not used for the function call
+    my $max_suggestions_setting = shift @$setting_names;
+    my $sugg_low_thresh_setting = shift @$setting_names;
+    $max_suggestions_setting = $suggest_settings{$max_suggestions_setting}{value} // -1;
+    my $suggest_low_threshold = $suggest_settings{$sugg_low_thresh_setting}{value} || 0;
+
+    if ($global_summary->{visible} <= $suggest_low_threshold and $max_suggestions_setting != 0) {
+        # For now, we're doing one-class/one-term suggestions only
+        my ($class, $term) = one_class_one_term($global_summary->{query_struct});
+        if ($class && $term) { # check for suggestions!
+            my $suggestion_verbosity = 4;
+            if ($max_suggestions_setting == -1) { # special value that means "only best suggestion, and not always"
+                $max_suggestions_setting = 1;
+                $suggestion_verbosity = 0;
+            }
+
+            my @settings_params = map { $suggest_settings{$_}{value} } @$setting_names;
+            my $suggs = new_editor()->json_query({
+                from  => [
+                    'search.symspell_lookup',
+                        $term, $class,
+                        $suggestion_verbosity,
+                        1, # case transfer
+                        @settings_params
+                ],
+                limit => $max_suggestions_setting
+            });
+            if (@$suggs and $$suggs[0]{suggestion} ne $term) {
+                $global_summary->{suggestions}{'one_class_one_term'} = {
+                    class       => $class,
+                    term        => $term,
+                    suggestions  => $suggs
+                };
+            }
+        }
+    }
+
     my @results = grep {defined $_} @$all_results[$user_offset..($user_offset + $user_limit - 1)];
 
     $conn->respond_complete(
@@ -1303,6 +1356,30 @@ sub staged_search {
     $logger->info("Completed canonicalized search is: $$global_summary{canonicalized_query}");
 
     return cache_facets($facet_key, $new_ids, $IAmMetabib, $ignore_facet_classes) if $docache;
+}
+
+sub one_class_one_term {
+    my $qstruct = shift;
+    my $node = $$qstruct{children};
+
+    my $class = undef;
+    my $term = undef;
+    while ($node) {
+        last if (
+            $$node{'|'}
+            or @{$$node{'&'}} != 1
+            or ($$node{'&'}[0]{fields} and @{$$node{'&'}[0]{fields}} > 0)
+        );
+
+        $class ||= $$node{'&'}[0]{class};
+        $term ||= $$node{'&'}[0]{content};
+
+        last if ($term);
+
+        $node = $$node{'&'}[0]{children};
+    }
+
+    return ($class, $term);
 }
 
 sub fetch_display_fields {

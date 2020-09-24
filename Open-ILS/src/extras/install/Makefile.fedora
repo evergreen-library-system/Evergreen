@@ -75,6 +75,8 @@ export CPAN_MODULES = \
 	Geo::Coder::OSM \
 	Geo::Coder::Google \
 	Excel::Writer::XLSX \
+	String::KeyboardDistance \
+	Text::Levenshtein::Damerau::XS \
 	Business::ISSN \
 	Net::Z3950::ZOOM \
 	Net::Z3950::Simple2ZOOM \

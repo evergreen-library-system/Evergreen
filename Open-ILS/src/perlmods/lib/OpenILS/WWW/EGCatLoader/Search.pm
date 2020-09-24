@@ -464,7 +464,7 @@ sub load_rresults {
         my $ses = OpenSRF::AppSession->create('open-ils.search');
 
         $self->timelog("Firing off the multiclass query");
-        my $req = $ses->request($method, $args, $query, 1);
+        my $req = $ses->request($method, $args, $query, 1, $ctx->{physical_loc});
         $results = $req->gather(1);
         $self->timelog("Returned from the multiclass query");
 
@@ -549,7 +549,7 @@ sub load_rresults {
                 # constituents query
                 my $save_offset = $args->{offset};
                 $args->{offset} = 0;
-                $mr_contents{$rec_id} = $ses->request($method, $args, $query, 1);
+                $mr_contents{$rec_id} = $ses->request($method, $args, $query, 1, $ctx->{physical_loc});
                 $args->{offset} = $save_offset;
             } catch Error with {
                 my $err = shift;

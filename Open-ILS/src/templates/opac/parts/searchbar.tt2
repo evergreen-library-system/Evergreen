@@ -185,6 +185,16 @@ END;
         </div>
         [% END %]
     [% END %]
+    [% IF ctx.search_summary.suggestions.one_class_one_term %]
+    <div class="result_block_visible refine_search" id="did_you_mean">
+        <em><strong>[% s_list = ctx.search_summary.suggestions.one_class_one_term; l('Did you mean: ') %]</strong></em>
+        [% FOREACH s IN s_list.suggestions %]
+            [% IF !loop.first(); l('or'); END %] 
+            <a href="[% mkurl(ctx.opac_root _ '/results', {qtype=>s_list.class, query=>s.suggestion}) %]">[% s.suggestion | html %]</a>
+        [% END %]
+    </div>
+    <br/>
+    [% END %]
     [% IF (is_advanced AND NOT is_special) AND CGI.param('qtype') %]
     <div class="refine_search result_block_visible">
         <span id="refine_search_link">[ <a href="[% mkurl(ctx.opac_root _ '/advanced') %]">[%

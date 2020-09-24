@@ -96,14 +96,18 @@ export CPAN_MODULES = \
 	Email::Send \
 	MARC::Charset \
 	Net::Z3950::Simple2ZOOM \
-    Locale::Country
+    Locale::Country \
+	String::KeyboardDistance \
+	Text::Levenshtein::Damerau::XS
 
 export CPAN_MODULES_FORCE = \
 	Business::Stripe \
 	Class::DBI::Frozen::301
 
 export CPAN_MODULES_PGSQL = \
-	MARC::File::XML
+	MARC::File::XML \
+	String::KeyboardDistance \
+	Text::Levenshtein::Damerau::XS
 
 PGSQL_APT_REPO_DEBS = \
         wget \

@@ -98,6 +98,8 @@ export DEB_APACHE_DISCONF = \
 export CPAN_MODULES = \
 	Geo::Coder::Google \
 	Business::OnlinePayment::PayPal \
+	String::KeyboardDistance \
+	Text::Levenshtein::Damerau::XS \
 	Email::Send
 
 export CPAN_MODULES_FORCE = \

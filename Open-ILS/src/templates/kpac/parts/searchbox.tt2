@@ -49,3 +49,13 @@
     </div>
 </form>
 
+[% IF ctx.search_summary.suggestions.one_class_one_term %]
+<br/>
+<div class="result_block_visible refine_search" id="did_you_mean">
+    <em><strong>[% s_list = ctx.search_summary.suggestions.one_class_one_term; l('Did you mean: ') %]</strong></em>
+    [% FOREACH s IN s_list.suggestions %]
+        [% IF !loop.first(); l('or'); END %]
+        <a href="[% mkurl(ctx.kpac_root _ '/results', {qtype=>s_list.class, query=>s.suggestion}) %]">[% s.suggestion | html %]</a>
+    [% END %]
+</div>
+[% END %]

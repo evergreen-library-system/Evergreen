@@ -21,6 +21,10 @@ CREATE OR REPLACE FUNCTION evergreen.lowercase( TEXT ) RETURNS TEXT AS $$
     return lc(shift);
 $$ LANGUAGE PLPERLU STRICT IMMUTABLE;
 
+CREATE OR REPLACE FUNCTION evergreen.uppercase( TEXT ) RETURNS TEXT AS $$
+    return uc(shift);
+$$ LANGUAGE PLPERLU STRICT IMMUTABLE;
+
 CREATE OR REPLACE FUNCTION evergreen.xml_escape(str TEXT) RETURNS text AS $$
     SELECT REPLACE(REPLACE(REPLACE($1,
        '&', '&amp;'),
