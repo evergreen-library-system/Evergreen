@@ -73,6 +73,8 @@ $e->commit;
 
 $apputils->simplereq('open-ils.courses', 'open-ils.courses.detach_material', $authtoken, 9998);
 
+sleep 1;
+
 $results = $e->search_asset_course_module_course_materials({id => 9998});
 is(scalar(@$results), 0, 'Successfully deleted acmcm');
 
