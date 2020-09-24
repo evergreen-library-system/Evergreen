@@ -147,10 +147,16 @@ $func$ LANGUAGE PLPGSQL;
 
 -- Remove existing orphaned URIs from the database.
 DELETE FROM asset.uri
-WHERE id NOT IN
+WHERE id IN
 (
-SELECT uri
-FROM asset.uri_call_number_map
+SELECT uri.id
+FROM asset.uri
+LEFT JOIN asset.uri_call_number_map
+ON uri_call_number_map.uri = uri.id
+LEFT JOIN serial.item
+ON item.uri = uri.id
+WHERE uri_call_number_map IS NULL
+AND item IS NULL
 );
 
 COMMIT;
