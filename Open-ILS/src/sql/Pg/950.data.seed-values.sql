@@ -322,7 +322,7 @@ INSERT INTO config.metabib_field (id, field_class, name, format,
 VALUES (
     52, 'identifier', 'origin_info', 'marcxml',
     oils_i18n_gettext(52, 'Origin Info', 'cmf', 'label'),
-    $$//*[@tag='260']$$,
+    $$//*[@tag='260' or @tag='264'][1]$$,
     $$//*[local-name()='subfield' and contains('abc',@code)]$$,
     TRUE, FALSE, FALSE
 );

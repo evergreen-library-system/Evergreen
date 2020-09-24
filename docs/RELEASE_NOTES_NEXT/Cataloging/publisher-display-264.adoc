@@ -1,0 +1,24 @@
+Publisher Catalog Display Includes 264 Tag
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Publisher values are now extracted for dislpay from tags 260 OR 264.
+
+Upgrade Notes
++++++++++++++
+
+A partial reingest is required to extract the new publisher data for display.
+This query may be long-running.
+
+[source,sql]
+--------------------------------------------------------------------------
+WITH affected_bibs AS (
+    SELECT DISTINCT(bre.id) AS id
+    FROM biblio.record_entry bre
+    JOIN metabib.real_full_rec mrfr
+    ON (mrfr.record = bre.id AND mrfr.tag = '264')
+    WHERE NOT bre.deleted
+)
+SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE, TRUE)
+FROM affected_bibs;
+--------------------------------------------------------------------------
+
