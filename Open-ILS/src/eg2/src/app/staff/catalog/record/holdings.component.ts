@@ -25,6 +25,8 @@ import {CopyAlertsDialogComponent
     } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 import {CopyTagsDialogComponent
     } from '@eg/staff/share/holdings/copy-tags-dialog.component';
+import {CopyNotesDialogComponent
+    } from '@eg/staff/share/holdings/copy-notes-dialog.component';
 import {ReplaceBarcodeDialogComponent
     } from '@eg/staff/share/holdings/replace-barcode-dialog.component';
 import {DeleteHoldingDialogComponent
@@ -110,6 +112,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
         private copyAlertsDialog: CopyAlertsDialogComponent;
     @ViewChild('copyTagsDialog', {static: false})
         private copyTagsDialog: CopyTagsDialogComponent;
+    @ViewChild('copyNotesDialog', {static: false})
+        private copyNotesDialog: CopyNotesDialogComponent;
     @ViewChild('replaceBarcode', { static: true })
         private replaceBarcode: ReplaceBarcodeDialogComponent;
     @ViewChild('deleteHolding', { static: true })
@@ -895,7 +899,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         }
     }
 
-    openItemNotes(rows: HoldingsEntry[], mode: string) {
+    openItemAlerts(rows: HoldingsEntry[], mode: string) {
         const copyIds = this.selectedCopyIds(rows);
         if (copyIds.length === 0) { return; }
 
@@ -916,6 +920,20 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
         this.copyTagsDialog.copyIds = copyIds;
         this.copyTagsDialog.open({size: 'lg'}).subscribe(
+            modified => {
+                if (modified) {
+                    this.hardRefresh();
+                }
+            }
+        );
+    }
+
+    openItemNotes(rows: HoldingsEntry[]) {
+        const copyIds = this.selectedCopyIds(rows);
+        if (copyIds.length === 0) { return; }
+
+        this.copyNotesDialog.copyIds = copyIds;
+        this.copyNotesDialog.open({size: 'lg'}).subscribe(
             modified => {
                 if (modified) {
                     this.hardRefresh();
