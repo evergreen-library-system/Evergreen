@@ -1,0 +1,15 @@
+Fix For "Blank" (Empty String) TCN Source
+^^^^^^^^^^^^^
+Previously, it was possible for sparsely-populated MARC records to be
+saved with a TCN Source of '' (the "empty string"), which caused the
+901 $b subfield to be void of data, causing errors when exporting 
+MARC records to such third-party programs as Zotero.
+
+A site that has been running without this patch for a long time might want to
+check how many bib records they have with an empty tcn_source:
+
+SELECT COUNT(*) FROM biblio.record_entry WHERE deleted IS FALSE AND tcn_source = '';
+
+Sites can fix the problem by issuing UPDATE statements to set the 901$b to a value
+like 'AUTOGEN' or 'Unknown'. They should probably do it per-record, however, to
+avoid locking the table in a huge commit.
