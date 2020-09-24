@@ -2,12 +2,34 @@ BEGIN;
 
 SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
-ALTER TABLE actor.usr_standing_penalty ALTER COLUMN id SET DEFAULT nextval('actor.usr_message_id_seq'::regclass);
+-- stage a copy of notes, temporarily setting
+-- the id to the negative value for later ausp
+-- id munging
+CREATE TABLE actor.XXXX_penalty_notes AS
+    SELECT id * -1 AS id, usr, org_unit, set_date, note
+    FROM actor.usr_standing_penalty
+    WHERE NULLIF(BTRIM(note),'') IS NOT NULL;
 
+ALTER TABLE actor.usr_standing_penalty ALTER COLUMN id SET DEFAULT nextval('actor.usr_message_id_seq'::regclass);
+ALTER TABLE actor.usr_standing_penalty ADD COLUMN usr_message BIGINT REFERENCES actor.usr_message(id);
+CREATE INDEX usr_standing_penalty_usr_message_idx ON actor.usr_standing_penalty (usr_message);
+ALTER TABLE actor.usr_standing_penalty DROP COLUMN note;
+
+-- munge ausp IDs and aum IDs so that they're disjoint sets
 UPDATE actor.usr_standing_penalty SET id = id * -1; -- move them out of the way to avoid mid-statement collisions
 
-WITH messages AS ( SELECT MAX(id) AS max_id FROM actor.usr_message )
+WITH messages AS ( SELECT COALESCE(MAX(id), 0) AS max_id FROM actor.usr_message )
 UPDATE actor.usr_standing_penalty SET id = id * -1 + messages.max_id FROM messages;
+
+-- doing the same thing to the staging table because
+-- we had to grab a copy of ausp.note first. We had
+-- to grab that copy first because we're both ALTERing
+-- and UPDATEing ausp, and all of the ALTER TABLEs
+-- have to be done before we can modify data in the table
+-- lest ALTER TABLE gets blocked by a pending trigger
+-- event
+WITH messages AS ( SELECT COALESCE(MAX(id), 0) AS max_id FROM actor.usr_message )
+UPDATE actor.XXXX_penalty_notes SET id = id * -1 + messages.max_id FROM messages;
 
 SELECT SETVAL('actor.usr_message_id_seq'::regclass, COALESCE((SELECT MAX(id) FROM actor.usr_standing_penalty) + 1, 1), FALSE);
 
@@ -20,19 +42,11 @@ DROP VIEW actor.usr_message_limited;
 CREATE VIEW actor.usr_message_limited
 AS SELECT * FROM actor.usr_message WHERE pub AND NOT deleted;
 
-ALTER TABLE actor.usr_standing_penalty ADD COLUMN usr_message BIGINT REFERENCES actor.usr_message(id);
-CREATE INDEX usr_standing_penalty_usr_message_idx ON actor.usr_standing_penalty (usr_message);
-
 -- alright, let's set all existing user messages to public
 
 UPDATE actor.usr_message SET pub = TRUE;
 
 -- alright, let's migrate penalty notes to usr_messages and link the messages back to the penalties:
-
-CREATE TABLE actor.XXXX_penalty_notes AS
-    SELECT id, usr, org_unit, set_date, note
-    FROM actor.usr_standing_penalty
-    WHERE NULLIF(BTRIM(note),'') IS NOT NULL;
 
 -- here is our staging table which will be shaped exactly like
 -- actor.usr_message and use the same id sequence
@@ -92,8 +106,6 @@ do $$ begin
     ) = 0, 'failed migrating to actor.usr_message';
 end; $$;
 */
-
-ALTER TABLE actor.usr_standing_penalty DROP COLUMN note;
 
 -- combined view of actor.usr_standing_penalty and actor.usr_message for populating
 -- staff Notes (formerly Messages) interface
