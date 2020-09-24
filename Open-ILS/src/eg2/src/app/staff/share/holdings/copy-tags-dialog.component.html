@@ -49,13 +49,13 @@
     <div class="row mt-2 p-2 rounded border border-success">
       <div class="col-lg-4">
         <eg-combobox [entries]="tagTypes" [(ngModel)]="curTagType"
-          i18n-placeholder placeholder="Select Tag Type...">
+          i18n-placeholder placeholder="Select tag type...">
         </eg-combobox>
       </div>
       <div class="col-lg-5">
         <eg-combobox [asyncDataSource]="tagDataSource" [(ngModel)]="curTag"
           [allowFreeText]="true"
-          i18n-placeholder placeholder="Select Tag Type...">
+          i18n-placeholder placeholder="Enter tag label...">
         </eg-combobox>
       </div>
       <div class="col-lg-3">
