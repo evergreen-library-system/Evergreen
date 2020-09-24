@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1240', :eg_version);
 
 INSERT INTO action_trigger.event_params (event_def, param, value)
 SELECT id, 'check_sms_notify', 1
@@ -12,4 +12,4 @@ AND NOT EXISTS (
     WHERE param = 'check_sms_notify'
 );
 
---COMMIT;
+COMMIT;
