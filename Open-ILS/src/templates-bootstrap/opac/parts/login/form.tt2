@@ -23,8 +23,9 @@
 
     <div class="mx-auto row w-75 my-5">
         <div class='col-md-6'>
-            <label for='username_field' class="lbl1" >[% l('Library Card Number') %]<span title="[% INCLUDE "opac/parts/login/username_hint.tt2" %]" data-html="true" data-toggle="tooltip">
-            <i class="fas fa-question-circle"></i></span></label> <br>
+            <label for='username_field' class="lbl1" >[% l('Library Card Number') %]
+            <a href="#" title="[% INCLUDE "opac/parts/login/username_hint.tt2" %]" data-html="true" data-toggle="tooltip">
+            <i class="fas fa-question-circle"></i></a></label> <br>
             <div class="input_bg mb-2">
                 <input class="form-control" type='text' id="username_field" name="username"/>
             </div>
@@ -33,9 +34,10 @@
 
         </div>
         <div class='col-md-6'>
-            <label for="password_field" class="lbl1" >[% l('PIN') %]<span title="[% INCLUDE "opac/parts/login/password_hint.tt2" %]" data-html="true" data-toggle="tooltip">
+            <label for="password_field" class="lbl1" >[% l('PIN') %]
+            <a href="#" title="[% INCLUDE "opac/parts/login/password_hint.tt2" %]" data-html="true" data-toggle="tooltip">
                         <i class="fas fa-question-circle"></i>
-                    </span></label><br>
+                    </a></label><br>
 
             <div class="input_bg mb-2">
                 <input class="form-control" id="password_field" name="password" type="password"/>

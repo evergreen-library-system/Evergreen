@@ -32,18 +32,7 @@ FOR o IN all_values;
         sorter.push({code => o.code, value  => (o.search_label ? o.search_label : o.value)});
     END;
 END;%]
-<ul class="adv_filters">
-[% FOR o IN simple_sorter.sort('value') %]
-<li>
-    <div class="form-check">
-      <label class="form-check-label">
-        <input type="checkbox" class="form-check-input" name='[% name %]' value='[% o.code | html | replace("'","&#39;") %]'[% values.grep('^' _ o.code _ '$').size ? ' checked' : '' %]>
-        [% o.value | html %]
-      </label>
-    </div>
-    </li>
-[%  END;%]
-</ul>
+
 [%IF simple_sorter.size && sorter.size %]
     <p disabled='true'>-----</p>
 [%  END; %]

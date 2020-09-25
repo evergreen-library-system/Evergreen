@@ -362,32 +362,32 @@
 
 
                                         <!--Place Hold Button -->
-                                        <div class="btn btn-action text-left">
-                                                <a href="[% mkurl(ctx.opac_root _ '/place_hold', add_parms, del_parms) %]"
-                                                    [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
-                                                    class="no-dec" rel="nofollow" vocab="">
-                                                    <i class="fas fa-check" aria-hidden="true"></i>
-                                                    <span class="result_place_hold">[% l('Place Hold') %]</span>
-                                                </a>
-                                        </div>
+                                       
+                                        <a role="button" href="[% mkurl(ctx.opac_root _ '/place_hold', add_parms, del_parms) %]"
+                                            [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
+                                            class="btn btn-action" rel="nofollow" vocab="">
+                                            <i class="fas fa-check" aria-hidden="true"></i>
+                                            <span class="result_place_hold">[% l('Place Hold') %]</span>
+                                        </a>
+                                       
                                         [%- END -%]
 
                                         <!-- eBook Buttons -->
                                         [%- IF ebook_api.enabled == 'true' && args.ebook %]
-                                        <div class="btn btn-action text-left">
+                                      
                                             <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
                                                 {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'},
                                                 ['query','tag','subfield','term','_special','sort','page']) %]"
                                                 [% html_text_attr('title', l('Check Out [_1]', attrs.title)) %]
-                                                    class="no-dec" rel="nofollow" vocab=""><i class="fas fa-atlas" aria-hidden="true"></i> <span class="result_place_hold">[% l('Check Out E-Item') %]</span></a>
-                                        </div>
-                                        <div class="btn btn-action text-left">
+                                                    class="btn btn-action" role="button" rel="nofollow" vocab=""><i class="fas fa-atlas" aria-hidden="true"></i> <span class="result_place_hold">[% l('Check Out E-Item') %]</span></a>
+                                       
+                                       
                                             <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
                                                 {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'},
                                                 ['query','tag','subfield','term','_special','sort','page']) %]"
                                                 [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
-                                                    class="no-dec" rel="nofollow" vocab=""><i class="fas fa-book-reader" aria-hidden="true"></i> <span class="result_place_hold">[% l('Place Hold on E-Item') %]</span></a>
-                                        </div>
+                                                    class="btn btn-action" role="button" rel="nofollow" vocab=""><i class="fas fa-book-reader" aria-hidden="true"></i> <span class="result_place_hold">[% l('Place Hold on E-Item') %]</span></a>
+                                       
                                         [%- END -%]
 
                                         <!--Basket and My Lists Buttons -->
@@ -399,23 +399,23 @@
                                                     delhref = mkurl(ctx.opac_root _ '/mylist/delete',
                                                             {record => rec.id, anchor => 'record_' _ rec.id}, 1);
                                                 %]
-                                                <div class="btn btn-action text-left">
+                                                
                                                 <a href="[% addhref %]" id="mylist_add_[% rec.id %]"
                                                     data-recid="[% rec.id %]" data-action="add"
-                                                    class="mylist_action [% IF ctx.mylist.grep('^' _ rec.id _ '$').size %]hidden[% END %]"
+                                                    role="button" class="mylist_action btn btn-action [% IF ctx.mylist.grep('^' _ rec.id _ '$').size %]hidden[% END %]"
                                                     title="[% l("Add [_1] to basket", attrs.title) %]" rel="nofollow" vocab="">
                                                     <i class="fas fa-shopping-basket" aria-hidden="true"></i>
                                                     [% l("Add to basket") %]
                                                 </a>
 
                                                 <a href="[% delhref %]" id="mylist_delete_[% rec.id %]"
-                                                    data-recid="[% rec.id %]" data-action="delete"
-                                                    class="mylist_action text-left [% IF !ctx.mylist.grep('^' _ rec.id _ '$').size %]hidden[% END %]"
+                                                    data-recid="[% rec.id %]" data-action="delete" role="button"
+                                                    class="mylist_action btn btn-action [% IF !ctx.mylist.grep('^' _ rec.id _ '$').size %]hidden[% END %]"
                                                     title="[% l("Remove [_1] from basket", attrs.title) %]" rel="nofollow" vocab="">
                                                     <i class="fas fa-minus-circle" aria-hidden="true"></i>
                                                     [% l("Remove from basket") %]
                                                 </a>
-                                                </div>
+                                                
                                                 [%  IF ctx.user;
                                                     INCLUDE "opac/parts/bookbag_actions.tt2";
                                                     END;
@@ -426,7 +426,7 @@
                                         <!--Added Content - Content Cafe -->
                                         [% IF ENV.OILS_CONTENT_CAFE_USER %]
                                         [% ident = attrs.isbn_clean || attrs.upc %]
-                                            <div type="button" class="btn btn-action">
+                                         
                                                 <a target='_blank'
                                                     [% html_text_attr('title', l('Reviews and More for [_1]', attrs.title)) %]
                                                     href="[% ctx.ext_proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%-
@@ -435,7 +435,7 @@
                                                     <i class="fas fa-star" aria-hidden="true"></i>
                                                     <span class="results_reviews">[% l('Reviews &amp; More') %]</span>
                                                 </a>
-                                            </div>
+                                            
                                         [% END %]
                                         </div>
                                         </div>

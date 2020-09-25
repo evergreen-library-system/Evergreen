@@ -43,7 +43,7 @@
     <hr />
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-lg-3">
                 <div class="my_nav">
                 <div class="btn-group-vertical dropright">
 
@@ -57,7 +57,7 @@
 
                     [% IF page.parent == "parent" && page.children > 0; %]
                     <div class="dropdown dropright">
-                        <button class="btn btn-action text-left dropdown-toggle [% active %]" id="dropdownMenuLink-[% page.url %]" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="w-100 btn btn-action text-left dropdown-toggle [% active %]" id="dropdownMenuLink-[% page.url %]" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             [% page.text; %]
                         </button>
 
@@ -91,7 +91,7 @@
                 </div>
            </div>
 	    </div><!-- myopac_tabs -->
-        <div class="col">
+        <div class="col-lg-9">
             [% content %]
 
         </div>

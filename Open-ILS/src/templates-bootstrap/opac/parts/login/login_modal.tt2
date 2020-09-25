@@ -1,4 +1,4 @@
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
      <form method='post' action="/eg/opac/login?redirect_to=%2Feg%2Fopac%2Fmyopac%2Fmain">
@@ -28,8 +28,9 @@
 <div class='container'>
     <div class="mx-auto row py-4">
         <div class='col-md-6'>
-            <label for='username_field' class="lbl1" >[% l('Library Card Number') %]<span title="[% INCLUDE "opac/parts/login/username_hint.tt2" %]" data-html="true" data-toggle="tooltip">
-            <i class="fas fa-question-circle"></i></span></label> <br>
+            <label for='username_field' class="lbl1" >[% l('Library Card Number') %]
+            <a href="#" title="[% INCLUDE "opac/parts/login/username_hint.tt2" %]" data-html="true" data-toggle="tooltip">
+            <i class="fas fa-question-circle"></i></a></label> <br>
             <div class="input_bg mb-2">
                 <input class="form-control" type='text' id="username_field" name="username"/>
             </div>
@@ -38,9 +39,10 @@
 
         </div>
         <div class='col-md-6'>
-            <label for="password_field" class="lbl1" >[% l('PIN') %]<span title="[% INCLUDE "opac/parts/login/password_hint.tt2" %]" data-html="true" data-toggle="tooltip">
+            <label for="password_field" class="lbl1" >[% l('PIN') %]
+            <a href="#" title="[% INCLUDE "opac/parts/login/password_hint.tt2" %]" data-html="true" data-toggle="tooltip">
                         <i class="fas fa-question-circle"></i>
-                    </span></label><br>
+                    </a></label><br>
 
             <div class="input_bg mb-2">
                 <input class="form-control" id="password_field" name="password" type="password"/>
