@@ -6,29 +6,7 @@
 
     set_locale = CGI.param('set_eg_locale') || CGI.cookie('eg_locale') || base_locale;
 %]
-<style>.language_form button {
-    background:none;
-    border:none;
-    margin:0;
-    padding:0;
-    color:#fff;
-}
-.language_form button:disabled {
-    color:#000;
-}
-    .language_form ul{
-        list-style:none;
-       
-    }
-    .language_form h6{
-        color: #fff;
-            }
-    .language_form{
-        float: right;
-    padding: 15px;
-    }
-    
-</style>
+
 <form id="pref_locale_picker_form" class="language_form" action="[% mkurl() %]" method="post">
     <h6><i class="fas fa-globe"></i> [% l("Language") %]</h6>
     [%- FOREACH param IN CGI.params(); -%]

@@ -3991,6 +3991,23 @@ label[for*=expert_]
     color: #424fa6;
 }
 
-#locale_picker_form label {
-    color: #fff;
+.language_form button {
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    color:[% css_colors.footer_link %];
+}
+.language_form button:disabled {
+    color:[% css_colors.footer_link_disabled %];
+}
+.language_form ul{
+    list-style:none;
+}
+.language_form h6{
+    color:[% css_colors.footer_link %];
+        }
+.language_form{
+    float: right;
+padding: 15px;
 }

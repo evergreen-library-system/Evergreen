@@ -4,14 +4,15 @@
 
 #The counts that appear in the navigation when signed into the OPAC -EX. X Ready For Pickup where x is the modified number
 
-            zero_count = "#c1ffbf", #Logged in item/charges count at 0
+        zero_count = "#c1ffbf", #Logged in item/charges count at 0
         non_zero_count = "#ffc107", #Logged in item/charges count NOT at 0
 
-            facets_back = "#006042", #search list facet backgrounds
+        facets_back = "#006042", #search list facet backgrounds
         facets_text = "#fff",
-            footer_link = "#fff",
+        footer_link = "#fff",
+        footer_link_disabled = "#000",
 
-            nav_separation = "#007a54",
+        nav_separation = "#007a54",
         header_primary = "#007a54", #Primary Header Color
         header_primary_fade = "#007a54", #Fade Header Color, make equal to header_primary for no fade
         footer_primary = "#007a54", #Primary Footer Color
