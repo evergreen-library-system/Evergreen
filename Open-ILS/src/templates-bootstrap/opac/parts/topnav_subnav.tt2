@@ -21,6 +21,7 @@
         [% END %]
     </nav>
 </div>
+ 
     <div class="col-auto">
         [% INCLUDE 'opac/parts/cart_nav.tt2' %]
     </div>

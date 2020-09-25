@@ -21,7 +21,20 @@
             </table>
         </div>
     </div>
+<div id='adv_search_submit' class="my-3">
+        <input type="hidden" name="_adv" value="1" />
+        <input id="detail" type="hidden" name="detail_record_view"
+               value="[% show_detail_view %]"/>
+        <span>
+            <button id='search-submit-go' type="submit" class="btn btn-confirm"
+                onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'><i class="fas fa-search"></i> [% l("Submit") %]</button>
+            <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif[% ctx.cache_key %]'
+                class='hidden' alt="[% l('Search in progress icon') %]"/>
+        </span>
 
+        <a href="[% mkurl(ctx.opac_root _ '/advanced', {$loc_name => loc_value}, 1) %]"
+            class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Clear Form') %]</a>
+    </div>
     <div class="my-5">
         <h3>Search Filters</h3>
         <div>
@@ -31,13 +44,13 @@
                     <div class="card">
                         <div class="card-header p-0" id="[% adv_chunk.id %]_card">
                         <h4 class="mb-0">
-                            <button type="button" class="btn filter-header w-100 text-left" data-toggle="collapse" data-target="#[% IF adv_chunk.id == 'adv_copy_location_selector'; 'adv_copy_location_selector_new';  ELSE; adv_chunk.id; END; %]" aria-expanded="true" aria-controls="[% IF adv_chunk.id == 'adv_copy_location_selector'; 'adv_copy_location_selector_new';  ELSE; adv_chunk.id; END; %]">
+                            <button type="button" class="btn filter-header w-100 text-left" data-toggle="collapse" data-target="#[% IF adv_chunk.id == 'adv_copy_location_selector'; 'adv_copy_location_selector_new';  ELSE; adv_chunk.id; END; %]" aria-expanded="true" aria-controls="#[% IF adv_chunk.id == 'adv_copy_location_selector'; 'adv_copy_location_selector_new';  ELSE; adv_chunk.id; END; %]">
                             [% adv_chunk.adv_label %]
                             </button>
                         </h4>
                     </div>
 
-                    <div id="[% IF adv_chunk.id == 'adv_copy_location_selector'; 'adv_copy_location_selector_new';  ELSE; adv_chunk.id; END; %]" class="collapse" aria-labelledby="[% adv_chunk.id %]_card" data-parent="#accordion">
+                    <div id="[% IF adv_chunk.id == 'adv_copy_location_selector'; 'adv_copy_location_selector_new';  ELSE; adv_chunk.id; END; %]" class="collapse" aria-labelledby="[% adv_chunk.id %]_card" data-parent="#[% IF adv_chunk.id == 'adv_copy_location_selector'; 'adv_copy_location_selector_new';  ELSE; adv_chunk.id; END; %]">
                     [% IF adv_chunk.id != 'adv_copy_location_selector';%]
                         <div class="card-body">
                         <fieldset>

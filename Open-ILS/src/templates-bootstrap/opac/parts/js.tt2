@@ -3,7 +3,7 @@
 
 <script  src="[% ctx.media_prefix %]/js/ui/default/opac/simple.js[% ctx.cache_key %]"></script>
 [% INCLUDE "opac/i18n_strings.tt2" %]
-
+ 
 
 
 
@@ -12,6 +12,7 @@
 <script >
   $(document).ready(function() {
     $('a').removeAttr('href');
+    $('a').removeAttr('data-toggle');
     $('a').click(function(event) { event.preventDefault(); });
     $('button').prop('disabled', true);
     $('button').click(function(event) { event.preventDefault(); });

@@ -53,9 +53,9 @@
                                         selected='selected'[% END %]>[% val | html %]</option>
                             [% END %]
                         </select>
-                       <span title="Change the amount of items shown while viewing a 'My List'." data-toggle="tooltip">
+                       <a href="#" title="Change the amount of items shown while viewing a 'My List'." data-toggle="tooltip">
                         <i class="fas fa-question-circle"></i>
-                    </span>
+                    </a>
                     </td>
                 </tr>
             </tbody>

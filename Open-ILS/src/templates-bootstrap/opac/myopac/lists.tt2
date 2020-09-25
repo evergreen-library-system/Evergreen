@@ -53,9 +53,9 @@
                         <option value="0">[% l('No') %]
                         <option value="1">[% l('Yes') %]
                     </select>
-                    <span title="Allows the list to be shared through a link or RSS." data-toggle="tooltip">
+                    <a href="#" title="Allows the list to be shared through a link or RSS." data-toggle="tooltip">
                         <i class="fas fa-question-circle" aria-hidden="true"></i>
-                    </span>
+                    </a>
                 </td>
             </tr>
             [% IF ctx.mylist.size %]

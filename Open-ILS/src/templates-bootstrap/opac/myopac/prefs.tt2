@@ -152,11 +152,8 @@
                 </td>
                 <td></td>
             </tr>
-            <tr>
-                <td colspan="3">
-                 [%- INCLUDE "opac/parts/pref_locale_picker.tt2" %]
-                </td>
-            </tr>
+            
+           
 
         </tbody>
     </table>
@@ -269,6 +266,7 @@
      </div></div>
             [% END %]
 
-
+</div>
+</div>
 
 [% END %]

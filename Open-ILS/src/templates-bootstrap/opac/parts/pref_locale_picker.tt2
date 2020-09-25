@@ -6,26 +6,46 @@
 
     set_locale = CGI.param('set_eg_locale') || CGI.cookie('eg_locale') || base_locale;
 %]
-<form id="pref_locale_picker_form" class="row" action="[% mkurl() %]" method="post">
-    <label for="pref_locale_picker" class="color_4 light_border col-3 text-left">[% l("Language:") %]</label>
+<style>.language_form button {
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    color:#fff;
+}
+.language_form button:disabled {
+    color:#000;
+}
+    .language_form ul{
+        list-style:none;
+       
+    }
+    .language_form h6{
+        color: #fff;
+            }
+    .language_form{
+        float: right;
+    padding: 15px;
+    }
+    
+</style>
+<form id="pref_locale_picker_form" class="language_form" action="[% mkurl() %]" method="post">
+    <h6><i class="fas fa-globe"></i> [% l("Language") %]</h6>
     [%- FOREACH param IN CGI.params(); -%]
         [%- NEXT IF param.key == 'set_eg_locale'; -%]
         <input type="hidden" name="[% param.key | html %]" value="[% param.value | html %]" />
     [%- END; -%]
-
-    <select id="pref_locale_picker" name="set_eg_locale" class="form-control form-control-sm col-6">
+    <ul style="list-style:none;padding:0px;">
     [%- FOREACH locale IN ctx.locales.keys %]
         [%- IF set_locale == locale;
-                selected = 'selected="selected"';
+                disabled = 'disabled="disabled"';
             ELSE;
-                selected = '';
+                disabled = '';
             END;
         %]
-        <option value="[% locale | html %]" [% selected %]>[% ctx.locales.$locale | html %]</option>
+        <li>
+        <button type="submit" name="set_eg_locale" value="[% locale | html %]" [% disabled %]>[% ctx.locales.$locale | html %]</button></li>
     [%- END %]
-    </select>
-    <div class="col-3">
-     <button type="submit" class="btn btn-sm btn-confirm float-right"/><i class="fas fa-save" aria-hidden="true"></i>[% l(" Save Changes") %]</button>
-    </div>
+    </ul>
 </form>
 [%- END %]
