@@ -380,7 +380,23 @@ notes to exclude it.
 The item status input box will now accept a string of barcodes, separated with commas, as well as a single barcode.
 
 
+==== Fix For "Blank" (Empty String) TCN Source ====
 
+Previously, it was possible for sparsely-populated MARC records to be
+saved with a TCN Source of '' (the "empty string"), which caused the
+901 $b subfield to be void of data, causing errors when exporting 
+MARC records to such third-party programs as Zotero.
+
+A site that has been running without this patch for a long time might want to
+check how many bib records they have with an empty tcn_source:
+
+----
+SELECT COUNT(*) FROM biblio.record_entry WHERE deleted IS FALSE AND tcn_source = '';
+----
+
+Sites can fix the problem by issuing UPDATE statements to set the 901$b to a value
+like 'AUTOGEN' or 'Unknown'. They should probably do it per-record, however, to
+avoid locking the table in a huge commit.
 
 
 === Circulation ===
@@ -696,7 +712,18 @@ gives the user the option of adding the contents of the basket
 to a shared bucket.
 
 
+==== Angular catalog recall/force/part holds ====
 
+The Angular staff catalog now has entry points for placing Recall,
+Force, and Part-level holds.
+
+For any item-level hold type, the user now has the option to cycle
+between Item, Recall, and Force hold types.  The selected type affects
+the full batch of holds.
+
+For title-level holds, the user now has the option to select a part
+as the hold target for each record in the list.  Part selection is
+optional.
 
 
 === OPAC ===
