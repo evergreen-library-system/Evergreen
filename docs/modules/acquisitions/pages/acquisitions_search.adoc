@@ -1,0 +1,144 @@
+= Acquisitions Search =
+:toc: 
+
+indexterm:[acquisitions, search]
+
+The Acquisitions Search interface provides a centralized place for searching Line Items, Purchase Orders, Invoices, and Selection Lists in the Acquisitions module of Evergreen. The Acquisitions Search interface can be accessed under *Acquisitions* -> *General Search*.
+
+== Default Acquisitions Search Options ==
+
+[[line_items_search]]
+=== Line Items Search ===
+
+The Acquisitions Search interface defaults to the _Line Item Search_ tab. Here you can search across the entire acquisitions module (selection lists, purchase orders, and invoices) to find line items matching your search terms. There is not an initial default search for this tab. Users must create their search or set a default line item search. More information on how to do this is found below.
+
+The search results consist of line items and provide links to the provider account, bibliographic record in the catalog, associated purchase order, purchase requests, and any associated invoices. Clicking on the linked Lineitem ID will bring you to the highlighted line item on the associated purchase order. All links open in a new tab.
+
+image::media/acq_li_search.png[Line Items Search]
+
+Currently no actions can be taken with Line Item search results. The full integration of action functionality will be added by pending development to the acquisitions module. There is a link in the top-right corner to access the *Legacy Search Interface*. All actions can still be accessed here.
+
+[[purchase_order_search]]
+=== Purchase Order Search ===
+
+The _Purchase Order Search_ tab allows you to conduct a search of Purchase Orders in the acquisitions module. The default search that appears when the tab is viewed is a search for all purchase orders that are in the status of on order at your library:
+
+* Purchase orders matching all of the following terms:
+** Purchase Order - Ordering Agency is [your workstation branch]
+** Purchase Order - Status is On-Order
+
+You can construct a new one-time search instead of using the default search or set a default purchase order search that will replace the default search described above. More information on how to do this is found below. If a user sets a new default Purchase Orders search, that search will be populated automatically when *Acquisitions* -> *Purchase Orders* is selected from the main menu. 
+
+The search results will consist of purchase orders and provide links to the purchase order and the associated provider account. All links open in a new tab.
+
+image::media/acq_po_search.png[Purchase Order Search]
+
+Currently no actions can be taken with Purchase Order search results. The full integration of action functionality will be added by pending development to the acquisitions module. There is a link in the top-right corner to access the *Legacy Search Interface*. All actions can still be accessed here.
+
+[[invoices_search]]
+=== Invoices Search ===
+
+
+The Invoices Search tab allows you to conduct a search of Invoices in the acquisitions module. The default search that appears when the tab is viewed is a search for all open invoices at your library.
+
+* Invoices matching _all_ of the following terms:
+** Invoice - Receiver is [your workstation branch]
+** Invoice - Close Date is [unset - no date]
+
+You can construct a new one-time search instead of using the default search or set a default invoice search that will replace the default search described above. More information on how to do this is found below.  If a user sets a new default Invoices search, that search will be populated automatically when *Acquisitions* -> *Invoices* is selected from the main menu. 
+
+The search results consist of invoices and provide links to the invoice, the provider account, and the shipper account associated with the invoice. All links open in a new tab.
+
+image::media/acq_inv_search.png[Invoice Search]
+
+Invoices can be printed in this interface by right-clicking on the row of the invoice you want to print to access the _Actions for Selected Rows_ menu and selecting *Print Selected Invoices*. Multiple invoices can be printed at the same time by checking the boxes of the invoices you want to print and then right-clicking to access the _Actions for Selected Rows_ menu and selecting *Print Selected Invoices*. 
+
+[[selection_lists_search]]
+=== Selection Lists Search ===
+
+The Selection Lists Search tab allows you to conduct a search of selections lists in the acquisitions module. The default search that appears when the tab is viewed is a search for all selection lists owned by the currently logged in user.
+
+* Selection lists matching _all_ of the following terms:
+** Selection List - Owner is [currently logged in user]
+
+You can construct a new one-time search instead of using the default search or set a default selection list search that will replace the default search described above. More information on how to do this is found below.  If a user sets a new default Selection Lists search, that search will be populated automatically when *Acquisitions* -> *Selection Lists* is selected from the main menu. 
+
+The search results will consist of selection lists and provide a link to the selection list via the Name column.
+
+image::media/acq_sl_search.png[Selection Lists Search]
+
+From the selection list search results you can take the following actions:
+
+* Clone the selected Selection List(s)
+* Delete the selected Selection List(s)
+* Merge the selected Selection Lists
+* Create a New Selection List
+
+Right-click on the row of the selection list to access the _Actions for Selected Rows_ menu to choose an action. Multiple selection lists can be deleted or merged by checking the boxes of the selections lists you want to work with and then right-clicking to access the _Actions for Selected Rows_ menu. 
+
+When a selection list is cloned, the new list’s creator, owner, editor, org unit, etc. are set to the current user and workstation.
+
+[[default_acquisitions_search]]
+== Creating a New Default Search ==
+
+In each of the Acquisitions Search tabs you can create a custom default search that will override the standard default search for the tab. 
+
+. Construct your custom search using the drop down menus in the selected search tab.
+.. Click the (+) to add a new field to your search and click the (-) to remove a field from your search.
+. Click the blue button that says *Set As Default [Line Item/Purchase Order/Invoice/Selection List] Search*. 
+.. You will see a green message in the lower right hand corner confirming that your default search was saved. 
+. This search will now load each time you view the selected tab and will override the default search listed above.
+
+There is also an option to automatically execute the search when the tab is opened, eliminating the need to click the Search button. This can be done by checking the box to *Retrieve Results Immediately* and then clicking the *Set As Default ... Search* button.
+
+Both the custom default search and the selection to retrieve results immediately are saved to the workstation.
+
+If you wish to reset a search tab to its defaults, click the *Reset Default Search* button.
+
+[[acquisitions_search_syntax]]
+== Search Syntax and Filters ==
+
+To create your search, choose if your search should match _all_ or _any_ of the search terms you use in your search. Selecting _all_ will conduct a stricter search that must match all of the search terms you indicate. Selecting _any_ will return search results that match any of the search terms you indicate.
+
+Next, select a search attribute from the drop down menu. This menu provides search options related to line items, purchase orders, selection lists, and invoices; the search results will return relevant line items. 
+
+The search entry box will display a controlled list of values via a dropdown menu when available. You will see this when searching for an org unit, owner, state, status, and provider, among others. Search is case-insensitive.
+
+As part of transitioning the General Search interface to Angular, several changes have been made to improve the display and usability of the module:
+
+. Search operators that are not applicable to the search term selected will not appear in the operator drop down menu when creating a new search. Only relevant search operators will display as options. 
+* For example, when searching a date based term, such as _Purchase Order - Creation Time_, you will see the following operator options that are relevant for dates:
+** is
+** is NOT
+** is on or BEFORE
+** is on or AFTER
+** is BETWEEN
+** age (relative date)
+* When searching a text based term, such as _Line Item Attribute - Title of Work_, you will see the following operator options that are relevant for text:
+** is
+** is NOT
+** contains
+** does NOT contain
+** STARTS with
+** ENDS with
+. Fields that are associated with controlled vocabularies will display the controlled values in both the search terms and filters for easy selection. These fields include:
+* line item state/status
+* line item claim policy
+* line item cancel reason
+* PO state/status
+* PO cancel reason
+* invoice receive method
+* invoice payment method
+. Searches based on an organizational unit value, such as _Selection List - Org Unit_ and _Purchase Order - Ordering Agency_ search only the org unit selected by default and do not use inheritance in the search. If search results spanning multiple branches/systems are needed, then a broader search can be performed. The search results can be filtered using the relevant org unit column and can be adjusted in the filter to include ancestor and/or descendant org units
+
++
+image::media/acq_ou_filter.png[Org Unit Column Filter]
++
+
+. Dropdown menus for the search fields will retrieve a maximum of 100 rows at a time. This is especially useful for the user related search fields such as _Purchase Order - Creator_. For typeahead dropdowns, the list will continue to be refined as the user continues to type.
+. Typeahead dropdowns that search for particular users, such as _Selection List Owner_, will only show users visible to you within the parameters of your assigned VIEW_USER permissions. It is recommended that `VIEW_USER` permission be assigned at the broadest locally-acceptable level for all acquisitions staff. It may be necessary to use the _Contains_ operator to search by users if you don’t have permission to retrieve those users.
+. Line Item and Purchase Order searches now use the term _status_ instead of _state_ to indicate where the line item or purchase currently is in the acquisitions workflow. 
+. The search operators _Greater Than_ and _Less Than_ are now available in both the search fields and filter fields, in addition to _Greater Than or Equal To_ and _Less Than or Equal To_.
+. To search by Publication Date you would use the _Line Item Attribute - Publication Date_ term. All Line Item Attribute terms are text fields. A Publication Date search can be constructed as a 4-digit year, such as 2015, and can be used with the _is on or BEFORE_ and _is on or AFTER_ search operators to create a more flexible search.
+. Column headers for the search results can be clicked on to sort the results by the column. The columns will sort alphabetically or by other sort criteria as appropriate for the data type.
+. Using the column actions to filter or sort search results will execute a new search using the current search parameters. If any un-executed changes are made to the search parameters between the initial search submission and any changes to the filters, the new search parameters will be executed upon filtering.

@@ -1,4 +1,5 @@
 * xref:acquisitions:introduction.adoc[Acquisitions]
+** xref:acquisitions:acquisitions_search.adoc[Acquisitions Search]
 ** xref:acquisitions:selection_lists_po.adoc[Selection Lists and Purchase Orders]
 ** xref:acquisitions:vandelay_acquisitions_integration.adoc[Load MARC Order Records]
 ** xref:acquisitions:invoices.adoc[Invoices]
