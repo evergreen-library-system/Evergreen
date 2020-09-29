@@ -23,3 +23,4 @@
 ** xref:admin:SMS_messaging.adoc[SMS Text Messaging]
 ** xref:admin:user_activity_type.adoc[User Activity Types]
 ** xref:admin:restrict_Z39.50_sources_by_perm_group.adoc[Z39.50 Servers]
+** xref:admin:event_definition_groups.adoc[Event Definition Groups]

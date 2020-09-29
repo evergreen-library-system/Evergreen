@@ -524,6 +524,31 @@ hold has not been fulfilled you do not need the item anymore.
 
 image::media/catalogue-9.png[catalogue-9]
 
+=== Printing and Emailing Records ===
+
+indexterm:[opac printing, opac emailing]
+
+Evergreen now provides additional functionality for printing and emailing bibliographic record and holdings information from the catalog. Users can print or email bibliographic information from an individual bibliographic record or from a basket.
+  
+image::media/ope_record_view.png[Location of Print and Email function]
+
+After selecting Print or Email, the user will be presented with a preview of the printout or email, respectively. From the preview users can choose to view Brief or Full record information (Full includes holdings information) and how records should be sorted (Author, Title, Publication Date). Holdings information can also be limited to a certain library. Users can be required to log in to their OPAC account to send an email or this feature can be configured to allow sending an email without signing in to the OPAC.
+
+*Print Preview*
+
+image::media/ope_print.png[Record Print Preview]
+
+*Email Preview (logged in to OPAC account)*
+
+image::media/ope_email_logged_in.png[Email Preview, logged in to OPAC]
+
+*Email Preview (not logged in to OPAC account)*
+
+image::media/ope_email_captcha.png[Email Preview, not logged in to OPAC]
+
+Printing from the OPAC while not logged in is controlled by a Library Setting called “Allow record emailing without login”. If set to True, users are not required to log in to an OPAC account  to use this feature. Instead they can provide their email address and answer a CAPTCHA test.  If set to False, users will be required to log in to their OPAC account and Evergreen will email the records to the address set in their account or they may provide a different email address.  
+
+
 === Permalink ===
 
 The record summary page offers a link to a shorter permalink that

@@ -1,0 +1,9 @@
+[[event_definition_groups]]
+= Event Definition Groups = 
+:toc:
+
+Two new interfaces have been added to Server Administration: *Event Definition Groups* and *Event Definition Group Members*.  The Event Definition Groups defines the various groups for Action Trigger Event Definitions -- currently Print Record(s) or Email Record(s).  The Event Definition Group Members defines the options within each group -- currently Brief or Full record information.
+
+These two interfaces expose the infrastructure behind the OPAC print and email functionality and library staff will not need to make any changes to these interfaces to use the existing print and email options.  
+
+The stock print and email Action Trigger Event Definitions can be cloned and modified to provide additional bibliographic format options.  After creating the custom Event Definition, add it to the appropriate Event Definition Group (Print Record or Email Record) and the new format will be available in the catalog.
