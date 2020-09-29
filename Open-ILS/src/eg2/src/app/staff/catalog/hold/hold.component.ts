@@ -202,9 +202,9 @@ export class HoldComponent implements OnInit {
     }
 
     // Load the bib, call number, copy, etc. data associated with each target.
-    getTargetMeta() {
-        this.holds.getHoldTargetMeta(this.holdType, this.holdTargets)
-        .subscribe(meta => {
+    getTargetMeta(): Promise<any> {
+        return this.holds.getHoldTargetMeta(this.holdType, this.holdTargets)
+        .toPromise().then(meta => {
             this.holdContexts.filter(ctx => ctx.holdTarget === meta.target)
             .forEach(ctx => {
                 ctx.holdMeta = meta;
@@ -318,17 +318,20 @@ export class HoldComponent implements OnInit {
         this.getUser();
     }
 
-    getUser(id?: number) {
+    getUser(id?: number): Promise<any> {
 
-        this.resetForm(true);
+        let promise = this.resetForm(true);
 
         const flesh = {flesh: 1, flesh_fields: {au: ['settings']}};
 
-        const promise = id ? this.patron.getById(id, flesh) :
-            this.patron.getByBarcode(this.userBarcode, flesh);
+        promise = promise.then(_ => {
+            return id ?
+                this.patron.getById(id, flesh) :
+                this.patron.getByBarcode(this.userBarcode, flesh);
+        });
 
         this.badBarcode = null;
-        promise.then(user => {
+        return promise.then(user => {
 
             if (!user) {
                 // IDs are assumed to valid
@@ -343,7 +346,7 @@ export class HoldComponent implements OnInit {
         });
     }
 
-    resetForm(keepBarcode?: boolean) {
+    resetForm(keepBarcode?: boolean): Promise<any> {
         this.user = null;
         this.notifyEmail = true;
         this.notifyPhone = true;
@@ -361,7 +364,7 @@ export class HoldComponent implements OnInit {
         });
 
         // Required after rebuilding the contexts
-        this.getTargetMeta();
+        return this.getTargetMeta();
     }
 
     applyUserSettings() {
