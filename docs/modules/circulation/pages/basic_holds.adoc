@@ -136,9 +136,9 @@ This feature can be useful for book groups or new items where a list of waiting 
 
 == Managing Holds ==
 
-Holds can be cancelled at any time by staff or patrons. Before holds are captured, staff or patrons can suspend them or set them as inactive for a period of time without losing the hold queue position, activate suspended holds, change
-notification method, phone number, pick-up location (for multi-branch libraries only), expiration date, activation date for inactive holds, etc. Once a hold is captured, staff can change the pickup location and extend the hold shelf
-time if required.
+Holds can be cancelled at any time by staff or patrons. Before holds are captured, staff or patrons can suspend them or set them as inactive for a period of time without losing the hold queue position, activate suspended holds, phone number, pick-up location (for multi-branch libraries only), expiration date, activation date for inactive holds, etc. Once a hold is captured, staff can change the pickup location and extend the hold shelf time if required.
+
+As of 3.6, staff and patrons can update hold notification preferences on unfulfilled holds. For more information see xref:circulation:circulation_patron_records_web_client.adoc#update_hold_notifications[Update Notification Preferences].
 
 Staff can edit holds in either patron’s records or the title records. Patrons can edit their holds in their account on the OPAC.
 
@@ -359,7 +359,7 @@ If a patron has an _OPAC/Staff Client Holds Alias_ in his/her account, it will b
 ===============
 
 
-=== Handling Missing and Damaged Item ===
+=== Handling Missing and Damaged Items ===
 
 If an item on the holds pull list is missing or damaged, you can change its status directly from the holds pull list.
 
@@ -381,6 +381,8 @@ image::media/holds-notifications-1.png[holds-notifications-1]
 image::media/holds-notifications-2.png[holds-notifications-2]
 +
 . The patron can remove these checkmarks at the time they place the hold or they can enter a different phone number if they prefer to be contacted at a different number. The patron cannot change their e-mail address at this time.
+
+. A patron can update their hold notification preferences any time before a hold is fulfilled. See xref:circulation:circulation_patron_records_web_client.adoc#update_hold_notifications_opac[Update Notification Preferences in the OPAC] for more information.
 
 . When the hold becomes available, the holds slip will display the patron’s e-mail address only if the patron selected the _Notify by Email by default when a hold is ready for pickup?_ checkbox. It will display a phone number only if the patron selected the _Notify by Phone by default when a hold is ready for pickup?_ checkbox.
 
@@ -427,6 +429,70 @@ Hold shelf expire time is inserted when a hold achieves on-hold-shelf status. It
 The clear-hold-shelf function cancels shelf-expired holds only. It does not include holds canceled by patron. Staff needs to trace these items manually according to the hold slip date.
 ===========
 
+[[managing_hopeless_holds]]
+== Managing Hopeless Holds ==
+
+Unfulfillable holds are colloquially known as “hopeless holds.”  In previous versions of Evergreen, staff relied on reports to generate lists of unfulfillable holds.  New improvements are intended to provide staff with an easy way to retrieve a list of unfulfillable (“hopeless”) holds and perform actions on them to move them out of their hopeless condition.
+
+=== Identifying a Hopeless Hold ===
+
+A hold is considered hopeless when there are no copies in `hold_copy_map` or when all copies in `hold_copy_map` are in a item status with the new `hopeless_prone` property set to “True.”  
+
+[[hopeless_prone_item_status_property]
+=== Hopeless Prone Item Status Property ===
+
+Item statuses have an additional property available called “hopeless prone,” indicating that items within that status may become unfulfillable.  This new item status property can be applied to any status that may result in unfulfillable holds, such as “Missing” or “Lost.” The hopeless prone property is set to “false” by default.  It can be modified in the Item Statuses interface.  Like all item statuses, this is globally applied without regard to Organizational Unit.  
+
+Please note that existing hold statuses (e.g., Waiting for Item) continue to work as expected, and no additional hold statuses were created as part of the development of this feature.
+
+image::media/hopeless_prone_item_status.png[Item status configuration screen]  
+
+==== Applying the Hopeless Prone Item Status Property ====
+
+. Go to *Administration -> Server Administration -> Item Statuses*
+. Double-click the item status you want to edit
+. Check the checkbox for *Prone to Hopeless Holds?* to apply the property
+. Select *Save* to save your changes.
+
+[[hopeless_holds_interface]]
+=== Hopeless Holds Interface ===
+
+The Hopeless Holds interface is used to retrieve a list of unfulfillable holds and perform actions on them.  It is accessible through *Administration -> Local Administration -> Hopeless Holds* to staff with permissions to view and modify holds.
+
+The interface displays a grid similar to that of Holds Requests, with a list of holds that are considered unfulfillable.  Requests are added to this list based on whether there is a value in the Hopeless Date field, which is stored in the `action.hold_request` table.  
+
+image::media/hopeless_holds_interface.png[Hopeless Holds page in Local Administration]
+
+The hold targeter sets (or unsets) the hopeless date value for every hold request based on whether any eligible copies are found to potentially fill the hold.  The first date the hold targeter finds the request unfulfillable is entered in the Hopeless Date field and remains there until unset.  Choosing the action “Find Another Target” will reset the Hopeless Date field in addition to its usual function of triggering the hold targeter.
+
+The list of hold requests can be filtered by hopeless date range and/or pickup library.  Pickup library defaults to the workstation library and retrieves results for the selected library and its descendents.  
+
+All columns in the grid can be sorted by clicking the column header.  The following columns are visible by default:
+  
+* Hold ID
+* Patron Barcode
+* Request Date
+* Hold Type
+* Pickup Library
+* Title
+* Holdable Formats
+* Hopeless Date
+* Status
+* Part Label
+
+Additional columns are available through the column picker, including the standard column options associated with Holds.
+
+After selecting one or more hold requests from the list, staff can use the Actions menu to perform a variety of tasks.  All actions activate new tabs for each selected record.  Available actions are similar to those found in other holds-related menus (e.g., Cancel Hold, Modify Hold(s), Find Another Target.)  
+
+Additional actions include:
+
+* *Add Holdings* - opens the selected bibliographic records in the Holdings Editor for the purposes of adding new items to the records; this action is disabled if there are metarecord holds among the selected requests
+* *Show in Catalog* - opens the selected bibliographic records in OPAC view
+* *View/Place Orders* - opens the selected bibliographic records in Acquisitions, where staff can add the titles to a selection list, add the titles to an existing purchase order, or create a new purchase order; this action is disabled if there are metarecord holds among the selected requests
+
+image::media/hopeless_holds_actions.png[Actions menu in Hopeless Holds interface]
+
+TIP: If you use a popup blocker on your browser, it must be configured to allow multiple popups.  If a user selects multiple rows and chooses an action like “Retrieve Patron,” each one appears in a new tab.
 
 == Alternate Hold Pick up Location ==
 

@@ -191,7 +191,63 @@ You will need a _Main (Profile) Permission Group_ selected for this to work,
 since the permission group determines the expiration date.
 =======
 
+[[update_hold_notifications]]
+=== Update Hold Notifications ===
 
+indexterm:[patrons, holds, notifications]
+
+The public catalog and staff client have the ability to update existing holds if a patron or a staff member changes certain notification preferences or contact information.  Evergreen will detect these changes and prompt the staff user or patron user and ask if they want to update existing holds with the new contact information and/or notification preferences.
+
+NOTE: Email notices are sent at the time of hold capture, the system will not prompt a user when a change to the email address is made - the user will only be prompted if email notifications are turned off or turned on, or if an email address is invalidated by a staff user.
+
+[[update_hold_notifications_staffclient]]
+==== Staff Client ====
+
+In the web staff client, the staff user should retrieve a patron and select the *Edit* tab.
+
+If the staff user makes any changes to the any of the following fields, when the staff user clicks *Save*, Evergreen will check if the patron has current unfulfilled holds.
+
+* Daytime Phone
+* Evening Phone
+* Other Phone
+* Default Phone Number
+* Default Hold Pickup Location
+* any of the Holds Notices checkboxes 
+
+If unfulfilled holds are detected, the staff user will be prompted via a modal to update these holds with the new or updated contact information, or to remove contact information from the holds.
+
+Select the desired holds to update by checking the box next to each different notification grouping and clicking *Update Holds*. The selected holds will be updated. If the user does not wish to update holds, click *Do Not Update Holds*.
+
+image::media/update_holds.png[Update Hold Notifications]
+
+The Update Holds process will also be triggered if a phone number or email address is invalidated. Once the staff user clicks *Save* after invalidating a phone number or email address, Evergreen will check for unfulfilled holds and prompt for removing a notification method if necessary.
+
+As part of this work, certain form validation constraints were added to the web client Patron Editor interface. These include the following:
+
+* If the staff user sets the Holds Notices checkbox to true for Email Notify, Evergreen will enforce entry of a patron Email Address, if Email Address is blank.
+* If the staff user sets the Holds Notices checkbox to true for Phone Notify, Evergreen * will enforce entry of a Default Phone Number, if Default Phone Number is blank.
+* If the staff user sets the Holds Notices checkbox to true for SMS Notify, Evergreen will enforce entry of a Default SMS/Text Number, if the Default SMS/Text Number field is blank. * Additionally, even if the Holds Notices checkbox is false, if a staff user enters a number in the Default SMS/Text Number field, Evergreen will enforce a selection from the Default SMS Carrier dropdown.
+
+[[update_hold_notifications_opac]]
+==== Public Catalog ====
+
+From the Public Catalog MyAccount interface, the patron user should navigate to the _Account Preferences_ tab and then to the _Notification Preferences_ tab. 
+
+If the patron user makes any changes to any of the notification fields, when the patron user clicks *Save* Evergreen will check if the patron has current unfulfilled holds. 
+
+If unfulfilled holds are detected, the patron user will be prompted via an interstitial page to update these holds with the new or updated contact information.
+
+Select the desired holds to update by checking the box next to the each notification grouping and click *Update*. The selected holds will be updated. If the user does not wish to update holds, click *Continue without updating*.
+
+image::media/opac_update_holds.png[Update Hold Notifications in the public catalog]
+
+This work also added a _Notify Method_ column to the _Current Items on Hold_ table, found under the _Holds_ tab, that will show the patron user which notification methods are active, along with which numbers will be used for Phone or SMS notification. 
+
+image::media/notify_methods.png[Show notification methods in the public catalog]
+
+Additionally, patron users can now edit hold notification preferences on individual holds by using the _Edit_ function found in the _Current Items on Hold_ table.
+
+image::media/update_individual_hold.png[Update individual hold in the public catalog]
 == Renewing Library Cards ==
 
 indexterm:[library cards, renewing]
