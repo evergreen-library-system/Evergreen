@@ -7,6 +7,7 @@
 ** xref:admin:cn_prefixes_and_suffixes.adoc[Call Number Prefixes and Suffixes]
 ** xref:admin:desk_payments.adoc[Cash Reports]
 ** xref:admin:circulation_limit_groups.adoc[Circulation Limit Sets]
+** xref:admin:accepting_credit_card_payments.adoc[Accepting Credit Card Payments]
 ** xref:admin:copy_statuses.adoc[Item Status]
 ** xref:admin:floating_groups.adoc[Floating Groups]
 ** xref:admin:MARC_Import_Remove_Fields.adoc[MARC Import Remove Fields]
