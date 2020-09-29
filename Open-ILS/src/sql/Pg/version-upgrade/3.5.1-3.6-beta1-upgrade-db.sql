@@ -1734,7 +1734,18 @@ INSERT INTO permission.perm_list(id, code, description)
         )
     );
 
-INSERT INTO permission.grp_perm_map(perm, grp, depth) VALUES (624, 9, 0);
+INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
+    SELECT
+        pgt.id, perm.id, aout.depth, TRUE
+    FROM
+        permission.grp_tree pgt,
+        permission.perm_list perm,
+        actor.org_unit_type aout
+    WHERE
+        pgt.name = 'Circulation Administrator' AND
+        aout.name = 'Consortium' AND
+        perm.code = 'MANAGE_RESERVES'
+;
 
 INSERT INTO config.org_unit_setting_type 
     (grp, name, datatype, label, description, fm_class)
