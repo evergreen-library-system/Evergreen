@@ -1,0 +1,36 @@
+= Angular Grid Tools & Infrastructure Improvements =
+:toc:
+
+indexterm:[Grids]
+indexterm:[Angular]
+
+The work for Sprint 0 of Acquisitions to Angular, merged as part of 3.4, created and improved several tools and infrastructure pieces that can be used throughout the Evergreen ILS.
+
+The Angular sandbox available at */eg2/en-US/staff/sandbox* has been updated to include working examples of grid results filtering, the IDL data source extensions to eg-combobox, and eg-help-popover.
+
+== Improvements to grid refresh after editing ==
+
+There is now an option for eg-grid to remember the user’s current place when paging through a grid, even after a refresh or edit. This option is available to all grids using eg-grid but requires developer action to enable for each existing grid enabled. New grids added in the course of future Angular Acquisitions projects will enable this option by default. If necessary for a specific grid, developers will remain able to specify that a grid forget the user’s place.
+
+== eg-combobox widget ==
+
+The eg-combobox widget has been extended to add options to automatically create a data source for IDL classes, reducing the amount of boilerplate code that developers need to write. In other words, these new options will allow retrieval from an IDL class by simply naming that class, as opposed to having to create a custom source.
+
+Developers can invoke this option for an eg-combobox by supplying an idlClass attribute, e.g.,
+
+----
+<eg-combobox 
+ placeholder="Combobox with @idlClass = 'csp'" 
+ [idlClass]="'csp'" 
+ [asyncSupportsEmptyTermClick]="true">
+----
+
+In cases where a given data source is small, e.g., has a couple hundred entries at most, the eg-combobox widget now also has an option activated by the `asyncSupportsEmptyTermClick` property to allow the user to use a dropdown button to see initial results from a dynamic source without the need to enter text.
+
+== eg-help-popover widget ==
+
+A widget similar to the AngularJS egHelpPopover widget has been created for Angular. The popover can be accessed by selecting the question-mark icon, or with the keyboard by using tab to navigate to the icon and then pressing enter.
+
+== Cross-tab communications support ==
+
+The Angular sandbox page has been extended with an example for developers on how to use _BroadcastChannel_ to enable communications between related Evergreen browser tabs - specifically, between a tab (tab B) and the tab that opened it (tab A).

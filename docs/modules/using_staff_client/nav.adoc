@@ -2,6 +2,8 @@
 ** xref:admin:web_client-login.adoc[Logging into Evergreen]
 ** xref:admin:web-client-browser-best-practices.adoc[Best Practices for Using the Browser]
 ** xref:admin:staff_client-column_picker.adoc[Column Picker]
+** xref:admin:staff_client-angular_grid_tools.adoc[Angular Grid Tools]
+** xref:admin:staff_client-column_filters.adoc[Angular Column Filters]
 ** xref:admin:staff_client-recent_searches.adoc[Recent Staff Searches]
 ** xref:admin:workstation_admin.adoc[Workstation Administration]
 *** xref:admin:receipt_template_editor.adoc[Receipt Template Editor]
