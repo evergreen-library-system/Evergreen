@@ -1,0 +1,255 @@
+[[curbside_pickup]]
+= Curbside Pickup for Evergreen =
+:toc:
+
+The Curbside Pickup features in Evergreen provides an interface to help facilitate contact free pickup of library materials.  It provides a dedicated interface in the staff client for library staff to track and manage curbside pickup appointments and materials through the various stages of the process.  Staff can schedule pickup appointments on behalf of patrons.  Optionally, this feature can also allow patrons to schedule their own curbside pickup appointments in their OPAC account, as well as inform the library when they have arrived and are waiting for their materials.  
+
+Things to know about curbside pickup:
+
+* It is an extension of the existing holds functionality in Evergreen.  A hold must be placed for an item to be eligible for curbside pickup.  After an item has been captured for a hold and is available for pickup from the holds shelf, a curbside pickup appointment can be scheduled to allow the materials to be obtained in a contact free transaction.
+* It can accommodate several different workflows depending on how your library decides to implement curbside pickup.  It can help library staff track and checkout batches of items to be picked up curbside and help facilitate communication between library staff and patrons.  It does not prescribe a specific workflow for curbside pickup.  Several workflow options are described below.  
+* It can be used alongside regular (in the library) hold pickup.  Curbside pickup can be an option you offer your patrons in addition to regular pickup or it can be the primary pickup option depending on your library’s current service plan.
+* It assumes the library will have a staff member assigned to managing curbside pickup throughout the day.
+* It assumes that patrons with appointments will have their items checked out from the Curbside interface, and not from the standard checkout interface. If a patron has a Curbside appointment, and a staff member checks out items from the main checkout interface, this can lead to an “empty” appointment in the Curbside interface.
+* It is an optional feature and needs to be enabled for use (instructions below).
+
+This documentation will cover:
+
+* How to configure curbside pickup for your library
+* An overview of the staff-facing interface 
+* An overview of the patron-facing OPAC My Account interfaces
+* Workflow options for using curbside pickup
+
+[[enabling_configuring_curbside_pickup]]
+== Enabling and Configuring Curbside Pickup ==
+
+The curbside pickup feature is enabled and configured in the *Library Settings Editor* (Administration -> Local Administration -> Library Settings Editor).
+
+There are four new Library Settings related to curbside pickup.  They can be easily located by searching for the term ‘curb’ or ‘curbside’ in the Library Settings Editor:
+
+* Circulation: Enable curbside pickup functionality at library.
+** When set to TRUE patrons will have the ability to schedule curbside pickup of holds that become available for pickup.
+** Set to True to enable the Curbside Pickup feature.  
+** This will provide patrons with the ability to schedule curbside pickup of holds that become available for pickup and will make Curbside Pickup  an option in the Circulation menu of the staff interface.
+** This feature can be enabled at the consortium, system, or library branch levels.
+* Circulation: Disable patron modification of curbside appointments in public catalog
+** When set to TRUE, patrons cannot use the My Account interface to select curbside pickup times, and are directed to contact the pickup library.
+** Patrons can still view the curbside pickup appointment times they have scheduled (via library staff) but they will not be able to modify the appointments through their My Account.  
+* Circulation: Maximum number of patrons that may select a particular curbside pickup time
+** Set to the maximum number of patrons that may select a particular curbside pickup time.  
+** This allows your library to control the flow of your curbside pickup by limiting the number of patrons that can choose the same pick up time slot.
+* Circulation: Time interval between curbside appointments
+** Select the amount of time designated for each appointment.  Setting this to 15 minutes means appointment slots will be designated every 15 minutes starting on the hour. E.g. 10:00, 10:15, 10:30, 10:45 etc.
+** Note:  appointment times will correspond to the library’s Hours of Operation.  Available time slots will not include the time the library closes.  For example, if your library is set to close at 6 pm and your curbside pickup time slots are 15 minutes, the last available pickup time will be 5:45 pm.
+
+NOTE: Currently curbside pickup appointment times are based solely on the Hours of Operation that are configured in Administration>Server Administration>Organizational Units.  Curbside DOES take into account closed dates set in the Closed Dates Editor.
+
+[[curbside_notifications_action_triggers]]
+== Notifications and Action Triggers ==
+
+There are several new patron notice options related to curbside pickup.  These notices can be enabled and customized as needed if your library uses curbside pickup.  Notices are configured in *Administration -> Local Administration -> Notifications/Action Triggers*.
+
+When a patron’s holds are marked as ready for pickup in Evergreen, an email or text/SMS notification can be sent to let them know that curbside pickup is an option at their library.  This notice can be used to promote this service and the default message will prompt patrons to log in to their OPAC account to schedule an appointment or call the library to schedule an appointment.  The notice message is customizable.  
+
+* The Trigger Event Definitions for this notice are called:
+** Curbside offer Email notification, triggered by CurbsideSlot reactor on a definition attached to the hold available hook
+** Curbside offer SMS notification, triggered by CurbsideSlot reactor on a definition attached to the hold available hook
+
+*Curbside offer email - example*
+
+image::media/curbside_offer_email.png[Curbside offer email]
+
+*Curbside offer SMS - example*
+
+image::media/curbside_offer_sms.png[Curbside offer SMS]
+
+If a patron has scheduled a curbside pickup appointment, an email or text/SMS notification can be sent to confirm the appointment.  This confirmation is not related to any specific hold or holds, but rather the appointment they requested, and does not use the hold-specific SMS or email notification settings.  Therefore, if the SMS notification is enabled, and the patron has SMS settings, they will receive an SMS notification.  Likewise for the email confirmation option.  It can prompt them to log into their account or call the library in order to alert staff that they have arrived for their pickup appointment.  The notice message is customizable.  
+
+* The Trigger Event Definitions for this notice are called:
+** Curbside confirmation Email notification
+** Curbside confirmation SMS notification
+
+*Curbside confirmation email - example*
+
+image::media/curbside_confirm_email.png[Curbside confirmation email]
+
+*Curbside confirmation SMS - example*
+
+image::media/curbside_confirm_sms.png[Curbside confirmation SMS]
+
+Patrons can receive an email with a list of the items they checked out.  To receive this notice patrons must have an email address associated with their account.  This is an existing notice in Evergreen, used by the circulation interface to send email receipts on demand, that the curbside pickup workflow now also makes use of. 
+
+* The Trigger Event Definition for this notice is called:
+** Email Checkout Receipt
+
+There is another action trigger called “Trigger curbside offer events and create a placeholder for the patron, where applicable”.  This action trigger does not send a notice to patrons or staff.  It is a silent action behind the scenes that initiates the curbside offer email or SMS notification described above.  
+
+[[using_curbside_pickup]]
+== Using Curbside Pickup ==
+
+=== Staff Interface Overview ===
+
+When the feature is enabled in the Library Settings Editor, the Curbside Pickup interface can be accessed under *Circulation -> Curbside Pickup* (at the bottom of the menu).
+
+This interface has five tabs that help staff manage the curbside pickup workflow through the various stages.  This interface is scoped to display only appointments at the library or organizational unit that your workstation is registered to. 
+
+There are several workflows that can be accommodated by this feature.  Please see further down in this document for examples of curbside workflows.  This section of the documentation will discuss the functionality of the interface.
+
+==== To Be Staged ====
+
+* The *To Be Staged* tab shows a list of upcoming pickups during the next two pickup time slots. 
+* This tab can be used to gather and group the various pickups and mark them as staged and ready for pickup.
+* This tab displays:
+** Pickup Date/Time:  pickup appointment date and time
+** Patron: The patron’s last name and barcode (link out to the patron’s account) and any notes that have been submitted with the curbside appointment.
+*** Potential alert:  if a patron is marked as “arrived at the library” from My Account in the OPAC before the appointment has been Staged, an alert will appear under the patron’s name indicating that they have already arrived.  The appointment will also appear in the Patron Is Outside tab with an alert that the items are not yet staged.
+*** Potential alert: If the patron has a condition that would forbid them from checking out items such as a standing penalty, being barred, or having their privileges expired, an alert will appear under the patron name saying that they are blocked from checkouts. Buttons in the Action column will be disabled until the condition blocking the patron is resolved.
+** Appointment ID:  unique number associated with the appointment
+** Items for Pickup:  a list of the items to be picked up (link out to view each item in the Item Status screen)
+** Staging Staff:  staff can click the Claim button to indicate that they are working on the appointment.  Their staff username will appear in this field.  
+*** This can help inform staff working at different workstations of who is handling an appointment.
+*** After an appointment has been “Claimed”, an option to “Release Claim” appears in case the original staff member is no longer able to manage the appointment.
+*** A staff member can take over an appointment that has been claimed by another staff user, but will be asked to confirm that they want to release the previous staff member's claim.
+** Action for library staff:
+*** Mark As Staged And Ready:  click this button to mark a group of items as staged and ready for curbside pickup.  This will move the appointment to the Staged and Ready tab.
+* Evergreen will automatically check for new appointments every 15 minutes.  If there are new appointments to display, a reminder will appear and prompt you to refresh (or reload) the screen in your browser.
+
+image::media/curbside_tbs.png[To Be Staged tab]
+
+===== Claiming an Appointment =====
+
+Claim
+
+image::media/curbside_claim.png[Claim Curbside Appoinment]
+
+Release Claim
+
+image::media/curbside_release_claim.png[Release Curbside Appointment]
+
+===== Potential Alerts =====
+
+Patron arrived before appointment was Staged
+
+image::media/curbside_patron_arrival_alert.png[Alert for Patron Has Already Arrived]
+
+==== Staged and Ready ====
+
+* The Staged and Ready tab displays a list of curbside pickup appointments that are staged and ready to be picked up by the patron.  It is assumed that these items are grouped together and are awaiting pickup.
+* This tab displays:
+** Pickup Date/Time:  pickup appointment date and time
+** Patron: The patron’s last name and barcode (link out to the patron’s account) and any notes that have been submitted with the curbside appointment.
+** Appointment ID:  unique number associated with the appointment
+** Items for Pickup:  a list of the items to be picked up (link out to view each item in the Item Status screen)
+*** Potential alert: If any new items are marked as Ready for Pickup after the curbside pickup appointment was Staged, but before the pickup actually takes place, the new items will appear in the Items for Pickup list and will be highlighted to alert staff that there are additional items to be included in the pickup appointment (screenshot below).
+*** Potential alert: If the patron has a condition that would forbid them from checking out items such as a standing penalty, being barred, or having their privileges expired, an alert will appear under the patron name saying that they are blocked from checkouts. Buttons in the Action column will be disabled until the condition blocking the patron is resolved.
+** Actions for library staff:
+*** Mark As Patron Arrived: click to indicate that the patron has arrived at the library and is waiting for their materials. The appointment will be moved to the Patron Is Outside tab.
+**** Patrons also have the ability to mark themselves as arrived at the library in their OPAC MyAccount.  If a patron marks themselves as arrived, the appointment will also be moved to the Patron Is Outside tab.
+*** Check Out Items and Mark As Delivered: click to checkout the materials to the patron’s account and mark the materials as delivered.  Use of this option bypasses marking a patron as arrived.  This is the final step in the curbside pickup workflow.
+*** Set Back to To Be Staged - click to move an appointment back to the To Be Staged tab.  Can be used if an appointment is accidentally advanced or otherwise needs to be reverted back to the previous stage.
+** Evergreen will automatically check for new appointments every 15 minutes.  If there are new staged holds to display, a reminder will appear and prompt you to refresh (or reload) the screen in your browser.
+
+image::media/curbside_staged_ready.png[Staged and Ready tab]
+
+===== Potential Alerts =====
+
+New holds available for pickup after initial items were staged
+
+image::media/curbside_new_holds_alert.png[Alert for holds that came in after appointment was staged]
+
+==== Patron Is Outside ====
+
+* The Patron Is Outside tab displays a list of patrons that have arrived at the library to pick up their materials and are waiting outside.
+* This tab displays:
+** Pickup Date/Time:  pickup appointment date and time
+Patron: The patron’s last name and barcode (link out to the patron’s account) and any notes that have been submitted with the curbside appointment.
+** Appointment ID:  unique number associated with the appointment
+** Items for Pickup:  a list of the items to be picked up (link out to view each item in the Item Status screen)
+*** Potential alert:  If any new items are marked as Ready for Pickup after the curbside pickup appointment was Staged, but before the pickup actually takes place, the new items will appear in the Items for Pickup list and will be highlighted to alert staff that there are additional items to be included in the pickup appointment.
+*** Potential alert:  If a patron is marked as “arrived at the library” from MyAccount in the OPAC before the appointment has been Staged, an alert will appear under the patron’s name indicating that they have already arrived.  The appointment will also appear in the Patron Is Outside tab with an alert that the items are not yet staged.
+*** Potential alert: If the patron has a condition that would forbid them from checking out items such as a standing penalty, being barred, or having their privileges expired, an alert will appear under the patron name saying that they are blocked from checkouts. Buttons in the Action column will be disabled until the condition blocking the patron is resolved.
+** Actions for library staff:
+*** Check Out Items And Mark As Delivered: click to checkout the materials to the patron’s account and mark the materials as delivered.  This is the final step in the curbside pickup workflow.
+* Use of this tab depends on your library’s workflow:
+** Staff may mark patrons as “arrived” in the Staged and Ready tab or patrons may mark themselves as arrived through their OPAC account.
+** This tab may also be bypassed if a staff member takes the action to Check Out Items and Mark As Delivered in the Staged and Ready tab.
+* Evergreen will automatically check for new patron arrivals every 15 minutes.  If there are new arrivals to display, a reminder will appear and prompt you to refresh (or reload) the screen in your browser.
+
+image::media/curbside_patron_outside.png[Patron is Outside tab]
+
+==== Delivered Today ====
+
+* The Delivered Today tab displays a running list of all patrons that checked out items via the curbside pickup interface on the given day.
+* This tab displays:
+** Delivery Date/Time: the date and time that the delivery took place
+** Patron: The patron’s last name and barcode (link out to the patron’s account) and any notes that have been submitted with the curbside appointment.
+** Appointment ID:  unique number associated with the appointment
+** Items Checked Out:  a list of items checked out in batch via the curbside pickup module. 
+*** Potential alert: If any new items were marked as Ready for Pickup after the curbside pickup appointment was Staged, but before the pickup actually took place, the new items will appear in this list with an alert to tell staff that the item came in after the appointment was staged.  This may help with troubleshooting any checkout discrepancies.
+** No actions can be taken from this tab.
+
+image::media/curbside_delivered_today[Delivered Today tab]
+
+==== Schedule Pickup ====
+
+The Schedule Pickup tab can be used if a patron wants library staff to schedule a pickup appointment for them.  Staff can also cancel or edit an appointment on behalf of a patron in this tab.  
+
+To schedule a pickup appointment:
+
+. Enter the patron’s barcode in the Patron Barcode field.  You can also click Patron Search, search for the appropriate patron, and click “Select.” This will populate the Patron Barcode field.
+.. This field respects opt-in settings.
+. Click Submit to retrieve the patron’s holds. The screen will show you the patron’s name and the count of available holds at your location according to the Workstation.
+. Click Make New Appointment, and set the date and time of the pickup.
+.. Pickups may only be scheduled in the future, during the library’s open hours,
+... Note:  appointment times will correspond to the library’s Hours of Operation.  Available time slots will not include the time the library closes.  For example, if your library is set to close at 6 pm and your curbside pickup time slots are 15 minutes, the last available pickup time will be 5:45 pm.
+.. The times patrons see in the menu will depend on the library’s Hours of Operation. 
+.. The number of available time slots based on the Library Setting “Maximum number of patrons that may select a particular curbside pickup time”.
+.. The time interval of appointments based on the Library Setting “Time interval between curbside appointments”.
+. Click Save to save this appointment. You will get a confirmation message in the lower right-hand corner of the screen.
+
+image::media/curbside_appointment_patron.png[Set Patron for Curbside Appointment]
+
+image::media/curbside_appointment_time.png[Set Time for Curbside Appointment]
+
+===== Edit or Cancel a Pickup =====
+
+If you retrieve a patron in this interface who already has an appointment scheduled, you will be able to cancel or edit that appointment. 
+
+To edit an existing appointment, modify the appointment information and click Save. 
+
+Click Cancel Appointment to cancel an existing appointment. This will retain the current retrieved Patron and allow staff to start the appointment creation process again.
+
+=== OPAC Interface Overview ===
+
+In My Account, patrons can view their holds in the Holds tab.  If the Library Setting called “Disable patron modification of curbside appointments in public catalog” is set to False, patrons will see a new option for Curbside Pickup in the Holds tab and can use this interface to schedule a pickup appointment for holds that are available and ready for pickup.
+
+To schedule a curbside pickup appointment, patrons will select:
+
+* Date - the date will default to the current date or they can select a date in the future using a calendar picker. Once the date is selected, click Check available times to see a list of pickup times.
+* Time - choose a time slot from a drop down menu.  
+** The times patrons see in the menu will depend on the library’s Hours of Operation. 
+** The number of available time slots based on the Library Setting “Maximum number of patrons that may select a particular curbside pickup time”.
+** The time interval of appointments based on the Library Setting “Time interval between curbside appointments”.
+* Arrival Notes (vehicle description,etc) - patrons may enter information such as their vehicle description or any other information that will aid library staff in curbside delivery of materials.
+* Actions
+** Patrons can click *Request appointment*, to schedule their curbside pickup appointment.
+** Or they can click *Select another date* to start over with scheduling.
+
+image::media/opac_set_curbside.png[Set Curbside Appointment in MyAccount]
+
+After a curbside pickup appointment has been scheduled, patrons can take several actions in this interface:
+
+* Alert staff of your arrival
+** If a patron uses their OPAC account on a mobile device, they can click this button to let library staff know they have arrived at the library and are waiting for their curbside delivery.  
+** This action will move the patron’s appointment from the Staged and Ready tab to the Patron Is Outside tab in the staff curbside delivery interface.
+** Note: this button will be inactive until 1) the items are staged or 2) the appointment time has passed.
+* Update appointment
+** Patrons can make changes to upcoming appointments.
+* Cancel appointment
+** Patrons can cancel upcoming appointments and create a new one if needed.
+
+image::media/opac_update_curbside.png[Update Curbside Appointment in MyAccount]
+
+If the Library Setting called “Disable patron modification of curbside appointments in public catalog” is set to True, patrons will not be able to schedule curbside pickup appointments from their MyAccount.  They will need to contact the library to speak to a staff member to schedule appointments.  However, after an appointment has been scheduled, they will see a Curbside Pickup tab in MyAccount that lists their appointments.
+
+image::media/opac_curbside_disabled.png[Patron Curbside Appointments are Disabled]

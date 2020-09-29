@@ -7,4 +7,4 @@
 ** xref:circulation:triggered_events.adoc[Triggered Events and Notices]
 ** xref:circulation:offline_circ_webclient.adoc[Offline Circulation]
 ** xref:circulation:self_check.adoc[Self Checkout]
-
+** xref:circulation:curbside_pickup.adoc[Curbside Pickup]
