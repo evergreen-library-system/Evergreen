@@ -124,7 +124,7 @@ fund tags will be copied from the current fund to the new year's fund.
 Providers are the vendors from whom you order titles.
 
 . To add a provider record,  select *Administration -> Acquisitions Administration ->
-  Providers*.
+  Providers*. Alternatively, you can access this from *Acquisitions -> Provider Search*.
 . Enter information about the provider. At a minimum, you need to add a
   *Provider Name*, *Code*, *Owner*, and *Currency*. You also need to select the
   *Active* checkbox to use the provider.
@@ -166,20 +166,15 @@ some information to your provider records so that Evergreen knows how to map
 the item data contained in the order record.
 
 . Retrieve the record for the provider that has supplied the order records by
-  selecting *Administration -> Acquisitions Administration -> Providers*. Click on
-  the hyperlinked Provider name.
-. In the top frame, add the MARC tag that contains your holdings data in the
-  *Holdings Tag* field (this tag can also be entered at the time you create the
-  provider record.)
-. To map the tag's subfields to the appropriate copy data, click the *Holding
-  Subfield* tab.  Click the *New Holding Subfield* button and select the copy
-  data that you are mapping. Add the subfield that contains that data and click
-  *Save*.
-+
-image::media/order_record_loading.png[]
-+
+  selecting *Administration -> Acquisitions Administration -> Providers*. Alternatively, you can access this from *Acquisitions -> Provider Search*. 
+. Double-click the Provider name in the results grid to retrieve the Provider.
+. Select the *Holdings Definitions* tab.
+. Add the MARC tag that contains your holdings data in the
+  *Holdings Tag* field.
+. To map the tag's subfields to the appropriate copy data, select the *New Holding
+  Subfield* button.  Add the appropriate subfield and name, and select *Save*.
 . If your vendor is sending other data in a MARC tag that needs to be mapped to
-a field in acquisitions, you can do so by clicking the Attribute Definitions
+a field in acquisitions, you can do so by selecting the *Attribute Definitions*
 tab. As an example, if you need to import the PO Name, you could set up an
 attribute definition by adding an XPath similar to:
 +
@@ -198,7 +193,7 @@ translator and EDI scripts on your server by following the instructions in the
 command line system administration manual.
 
 Configure your provider's EDI information by selecting *Administration -> 
-Acquisitions Administration -> EDI Accounts*. Click *New Account* Button. Give the
+Acquisitions Administration -> EDI Accounts*. Alternatively, you can add a new EDI Account from the *EDI* tab in the Provider Details interface. Click *New EDI Account* Button. Give the
 account a name in the *Label* box.
 
 . *Host* is the vendor-assigned FTP/SFTP/SSH hostname.
@@ -220,10 +215,11 @@ account a name in the *Label* box.
 
 You now need to add this *EDI Account* and the *SAN* code to the provider's record.
 
-. Select *Administration -> Acquisitions Administration -> Providers*.
-. Click the hyperlinked Provider name.
+. Select *Administration -> Acquisitions Administration -> Providers*. Alternatively, you can access this from *Acquisitions -> Provider Search*.
+. Double-click the Provider name in the results grid to retrieve the Provider.
 . Select the account you just created in the *EDI Default* field.
 . Add the vendor-provided SAN code to the *SAN* field.
+. Select *Save* to save your changes.
 
 The last step is to add your library's SAN code to Evergreen.
 
