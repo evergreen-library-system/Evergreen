@@ -26,6 +26,7 @@ class HoldContext {
     canOverride?: boolean;
     processing: boolean;
     selectedFormats: any;
+    success = false;
 
     constructor(target: number) {
         this.holdTarget = target;
@@ -203,13 +204,20 @@ export class HoldComponent implements OnInit {
 
     // Load the bib, call number, copy, etc. data associated with each target.
     getTargetMeta(): Promise<any> {
-        return this.holds.getHoldTargetMeta(this.holdType, this.holdTargets)
-        .toPromise().then(meta => {
-            this.holdContexts.filter(ctx => ctx.holdTarget === meta.target)
-            .forEach(ctx => {
-                ctx.holdMeta = meta;
-                this.mrFiltersToSelectors(ctx);
-            });
+
+        return new Promise(resolve => {
+            this.holds.getHoldTargetMeta(this.holdType, this.holdTargets)
+            .subscribe(
+                meta => {
+                    this.holdContexts.filter(ctx => ctx.holdTarget === meta.target)
+                    .forEach(ctx => {
+                        ctx.holdMeta = meta;
+                        this.mrFiltersToSelectors(ctx);
+                    });
+                },
+                err => {},
+                () => resolve()
+            );
         });
     }
 
@@ -303,7 +311,7 @@ export class HoldComponent implements OnInit {
     userBarcodeChanged() {
         const newBc = this.userBarcode;
 
-        if (!newBc) { this.user = null; return; }
+        if (!newBc) { this.resetRecipient(); return; }
 
         // Avoid simultaneous or duplicate lookups
         if (newBc === this.currentUserBarcode) { return; }
@@ -314,13 +322,13 @@ export class HoldComponent implements OnInit {
             this.staffCat.clearHoldPatron();
         }
 
-        this.currentUserBarcode = this.userBarcode;
         this.getUser();
     }
 
     getUser(id?: number): Promise<any> {
 
         let promise = this.resetForm(true);
+        this.currentUserBarcode = this.userBarcode;
 
         const flesh = {flesh: 1, flesh_fields: {au: ['settings']}};
 
@@ -346,17 +354,23 @@ export class HoldComponent implements OnInit {
         });
     }
 
-    resetForm(keepBarcode?: boolean): Promise<any> {
+    resetRecipient(keepBarcode?: boolean) {
         this.user = null;
         this.notifyEmail = true;
         this.notifyPhone = true;
         this.phoneValue = '';
         this.pickupLib = this.requestor.ws_ou();
-        this.placeHoldsClicked = false;
+        this.currentUserBarcode = null;
+        this.multiHoldCount = 1;
 
         // Avoid clearing the barcode in cases where the form is
         // reset as the result of a barcode change.
         if (!keepBarcode) { this.userBarcode = null; }
+    }
+
+    resetForm(keepBarcode?: boolean): Promise<any> {
+        this.placeHoldsClicked = false;
+        this.resetRecipient(keepBarcode);
 
         this.holdContexts = this.holdTargets.map(target => {
             const ctx = new HoldContext(target);
@@ -423,14 +437,28 @@ export class HoldComponent implements OnInit {
         }
 
         if (!this.holdContexts[idx]) {
-            this.placeHoldsClicked = false;
-            return;
+            return this.afterPlaceHolds(idx > 0);
         }
 
         this.placeHoldsClicked = true;
 
         const ctx = this.holdContexts[idx];
         this.placeOneHold(ctx).then(() => this.placeHolds(idx + 1));
+    }
+
+    afterPlaceHolds(somePlaced: boolean) {
+        this.placeHoldsClicked = false;
+
+        if (!somePlaced) { return; }
+
+        // At least one hold attempted.  Confirm all succeeded
+        // before resetting the recipient info in the form.
+        let reset = true;
+        this.holdContexts.forEach(ctx => {
+            if (!ctx.success) { reset = false; }
+        });
+
+        if (reset) { this.resetRecipient(); }
     }
 
     // When placing holds on multiple copies per target, add a hold
@@ -490,7 +518,18 @@ export class HoldComponent implements OnInit {
                 ctx.lastRequest = request;
                 ctx.processing = false;
 
-                if (!request.result.success) {
+                if (request.result.success) {
+                    ctx.success = true;
+
+                    // Overrides are processed one hold at a time, so
+                    // we have to invoke the post-holds logic here
+                    // instead of the batch placeHolds() method.  If
+                    // there is ever a batch override option, this
+                    // logic will have to be adjusted avoid callling
+                    // afterPlaceHolds in batch mode.
+                    if (override) { this.afterPlaceHolds(true); }
+
+                } else {
                     console.debug('hold failed with: ', request);
 
                     // If this request failed and was not already an override,
