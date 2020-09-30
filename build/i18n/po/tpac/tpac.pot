@@ -148,7 +148,7 @@ msgid "(%1)"
 msgstr ""
 
 #. (example)
-#: ../../Open-ILS/src/templates/opac/register.tt2:183
+#: ../../Open-ILS/src/templates/opac/register.tt2:191
 msgid "(Example: %1)"
 msgstr ""
 
@@ -2184,7 +2184,7 @@ msgstr ""
 msgid "Go"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:135 ../../Open-ILS/src/templates/opac/register.tt2:209
+#: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:135 ../../Open-ILS/src/templates/opac/register.tt2:217
 msgid "Go Back"
 msgstr ""
 
@@ -2315,7 +2315,7 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:141 ../../Open-ILS/src/templates/opac/register.tt2:106
+#: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:141 ../../Open-ILS/src/templates/opac/register.tt2:114
 msgid "Home Library"
 msgstr ""
 
@@ -3611,7 +3611,7 @@ msgstr ""
 msgid "Please see library staff to complete your registration."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/register.tt2:118
+#: ../../Open-ILS/src/templates/opac/register.tt2:126
 msgid "Please select a valid library"
 msgstr ""
 
@@ -4777,7 +4777,7 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/register.tt2:211
+#: ../../Open-ILS/src/templates/opac/register.tt2:219
 msgid "Submit Registration"
 msgstr ""
 
@@ -4993,7 +4993,7 @@ msgstr ""
 msgid "The username \"%1\" is taken.  Please try a different username."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/register.tt2:178
+#: ../../Open-ILS/src/templates/opac/register.tt2:186
 msgid "The value entered does not have the correct format"
 msgstr ""
 
@@ -5013,7 +5013,7 @@ msgstr ""
 msgid "This account has been deactivated.  Please contact your local library."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/register.tt2:174
+#: ../../Open-ILS/src/templates/opac/register.tt2:182
 msgid "This field is required"
 msgstr ""
 
