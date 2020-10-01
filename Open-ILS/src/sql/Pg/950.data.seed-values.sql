@@ -20716,6 +20716,13 @@ VALUES (
         'cwst', 'label'
     )
 ), (
+    'eg.orgselect.hopeless.wide_holds', 'gui', 'integer',
+    oils_i18n_gettext(
+        'eg.orgselect.hopeless.wide_holds',
+        'Default org unit for hopeless holds interface',
+        'cwst', 'label'
+    )
+), (
     'eg.grid.cat.authority.browse', 'gui', 'object',
     oils_i18n_gettext(
     'eg.grid.cat.authority.browse',
