@@ -910,6 +910,7 @@ organizations that commissioned developments in this release of
 Evergreen:
 
 * C/W MARS
+* Equinox Open Library Initiative
 * Evergreen Community Development Initiative
 * Georgia Public Library Service
 * Indiana State Library
