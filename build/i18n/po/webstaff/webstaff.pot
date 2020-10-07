@@ -2548,10 +2548,6 @@ msgstr ""
 msgid "Copy Deleted"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:47
-msgid "Copy Hatch Settings To Local Storage"
-msgstr ""
-
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:32
 msgid "Copy Hold"
 msgstr ""
@@ -4837,10 +4833,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:34
 msgid "Identifier"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:30
-msgid "If 'Store Local Settings in Hatch' is enabled, use the 'Copy Hatch Settings To Local Storage' button before disabling 'Store Local Settings in Hatch'"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/t_prediction_wizard.tt2:91
@@ -7723,10 +7715,6 @@ msgstr ""
 msgid "Print"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:3
-msgid "Print / Storage Service (\"Hatch\")"
-msgstr ""
-
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:16 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:22
 msgid "Print Bills"
 msgstr ""
@@ -7787,6 +7775,10 @@ msgstr ""
 msgid "Print Receipt"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:3 ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:47
+msgid "Print Service (\"Hatch\")"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:231
 msgid "Print Sides"
 msgstr ""
@@ -7822,10 +7814,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:401
 msgid "Print with Dialog"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:47
-msgid "Print/Storage Service (\"Hatch\")"
 msgstr ""
 
 #. ("{{staff.first_given_name}}")
@@ -9529,10 +9517,6 @@ msgstr ""
 msgid "Stop Fines Time"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:41
-msgid "Store Local Settings in Hatch"
-msgstr ""
-
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:126
 msgid "Store Selected"
 msgstr ""
@@ -9543,10 +9527,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_stored_prefs.tt2:13
 msgid "Stored User Preferences"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:28
-msgid "Storing settings in Hatch is deprecated"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:113
