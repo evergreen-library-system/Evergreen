@@ -84,6 +84,7 @@ export class DateSelectComponent implements OnInit, ControlValueAccessor {
     }
 
     isValidDate(dt: NgbDateStruct): dt is NgbDateStruct {
+        if (!dt) { return false; }
         return (<NgbDateStruct>dt).year !== undefined;
     }
 

@@ -265,8 +265,6 @@ export class AdminPageComponent implements OnInit {
                 order_by: orderBy
             };
 
-            console.debug(this.dataSource);
-            console.debug(this.dataSource.filters);
             if (!this.contextOrg && !this.gridFilters && !Object.keys(this.dataSource.filters).length) {
                 // No org filter -- fetch all rows
                 return this.pcrud.retrieveAll(
@@ -279,7 +277,7 @@ export class AdminPageComponent implements OnInit {
             if (this.orgField && (this.searchOrgs || this.contextOrg)) {
                 orgFilter[this.orgField] =
                     this.searchOrgs.orgIds || [this.contextOrg.id()];
-                search.push(orgFilter)
+                search.push(orgFilter);
             }
 
             Object.keys(this.dataSource.filters).forEach(key => {
@@ -340,7 +338,6 @@ export class AdminPageComponent implements OnInit {
         idlThings.forEach(idlThing => idlThing.isdeleted(true));
         this.pcrud.autoApply(idlThings).subscribe(
             val => {
-                console.debug('deleted: ' + val);
                 this.deleteSuccessString.current()
                     .then(str => this.toast.success(str));
             },
