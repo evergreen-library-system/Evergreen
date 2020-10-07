@@ -1,7 +1,7 @@
---Upgrade Script for 3.5.1 to 3.6-beta2
-\set eg_version '''3.6-beta2'''
+--Upgrade Script for 3.5.1 to 3.6-rc
+\set eg_version '''3.6-rc'''
 BEGIN;
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.6-beta2', :eg_version);
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.6-rc', :eg_version);
 
 SELECT evergreen.upgrade_deps_block_check('1205', :eg_version);
 
