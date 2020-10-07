@@ -1,0 +1,5 @@
+Reports Scheduler Improvements
+^^^^^^^^^^^^^
+Previously, the reports scheduler allowed duplicated reports
+under certain circumstances.  A uniqueness constraint now
+disallows this without adversely affecting the reports process.
