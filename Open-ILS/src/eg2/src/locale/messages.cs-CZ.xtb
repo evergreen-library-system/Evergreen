@@ -34,7 +34,7 @@
   <translation id="ngb.timepicker.increment-minutes">Navýšení minut</translation>
   <translation id="ngb.timepicker.MM">MM</translation>
   <translation id="ngb.timepicker.minutes">Minuty</translation>
-  <translation id="ngb.timepicker.decrement-minutes">Snížení hodin</translation>
+  <translation id="ngb.timepicker.decrement-minutes">Snížení minut</translation>
   <translation id="ngb.timepicker.increment-seconds">Zvýšení sekund</translation>
   <translation id="ngb.timepicker.SS">SS</translation>
   <translation id="ngb.timepicker.seconds">Sekundy</translation>
@@ -492,4 +492,1768 @@ Přesun signatury<ph name="START_TAG_NG_CONTAINER"><ex>&lt;ng-container&gt;</ex>
   <translation id="935187492052582731">Potvrdit</translation>
   <translation id="7670521557294362335">Pískoviště</translation>
   <translation id="972843256456910147">Hello, <ph name="INTERPOLATION"><ex>{{name}}</ex></ph></translation>
+  <translation id="ngb.datepicker.select-month">Vybrat  měsíc</translation>
+  <translation id="ngb.datepicker.select-year">Vybrat rok</translation>
+  <translation id="ngb.toast.close-aria">Zavřít</translation>
+  <translation id="4798105146375068671">Aktivační šablona s názvem &quot;<ph name="INTERPOLATION"><ex>{{name}}</ex>{{name}}</ph>&quot; nebyla nalezena</translation>
+  <translation id="6226308158024296861">Došlo k chybě při generování tiskového výstupu název=&quot;<ph name="INTERPOLATION"><ex>{{name}}</ex>{{name}}</ph>&quot; / id=&quot;<ph name="INTERPOLATION_1"><ex>{{id}}</ex>{{id}}</ph>&quot;</translation>
+  <translation id="8998179362936748717">OK</translation>
+  <translation id="8363450564548681668">Nenastaveno</translation>
+  <translation id="8725479092791869648">Zvolte datum a čas</translation>
+  <translation id="8237132038479576705">Toto datum nebo čas nelze upravit.</translation>
+  <translation id="2325327687350680765">Není nastavena časové pásmo</translation>
+  <translation id="4607782987892523935">Zvolte čas</translation>
+  <translation id="2676943403720697665">Aktivní?</translation>
+  <translation id="7373035366659676365">
+Pokud přiřazení není aktivní, znamená to že bylo potlačeno
+přiřazením z jiného kontextu, který používám tutéž klávesovou 
+zkratku.</translation>
+  <translation id="656720496971960532">Zobrazit nápovědu</translation>
+  <translation id="4579403834668086046">Aktualizace úspěšně proběhla</translation>
+  <translation id="4481765966719564255">Při aktualizaci došlo k chybě</translation>
+  <translation id="5210270493533766316">Smazat?</translation>
+  <translation id="8634181942942309199">Smazat <ph name="INTERPOLATION"><ex>{{recordLabel}}</ex>{{recordLabel}}</ph>?</translation>
+  <translation id="8333608125215290754">Zobrazit záznam uživatele v novém panelu</translation>
+  <translation id="1613971242435858090">Přeložit</translation>
+  <translation id="7022070615528435141">Smazat</translation>
+  <translation id="4468535458387960196">Použít filtr</translation>
+  <translation id="4965562695253171955">Zrušit filtr</translation>
+  <translation id="4697415121084295304">Zadejte hodnotu filtru</translation>
+  <translation id="3184700926171002527">Jakýkoliv</translation>
+  <translation id="4465085913683915434">Pravda</translation>
+  <translation id="3800326155195149498">Nepravda</translation>
+  <translation id="1179184907489210406">Operátor</translation>
+  <translation id="3121672066271347287">Je přesně</translation>
+  <translation id="3921661658996933156">Není</translation>
+  <translation id="7402672269023827698">Končí na</translation>
+  <translation id="4112599358351148632">Existuje</translation>
+  <translation id="8374523856907728400">Neexistuje</translation>
+  <translation id="6787225941135753928">Je menší než</translation>
+  <translation id="3681645078742590636">Je větší než</translation>
+  <translation id="1350548707196346345">Je menší než nebo roven</translation>
+  <translation id="5458686882290704641">Je větší než nebo roven</translation>
+  <translation id="3890131054593067798">Mezi</translation>
+  <translation id="3929281485914893910">a</translation>
+  <translation id="3197014835541337613">Je (nebo obsahuje)</translation>
+  <translation id="3148711546248491324">Není (nebo neobsahuje)</translation>
+  <translation id="5200630867515447055">Zadejte knihovnu pro filtrování podle</translation>
+  <translation id="9130248947027913003">Operátor:</translation>
+  <translation id="2315653922119281281">
+        Odstranit filtry</translation>
+  <translation id="2731133341506733280">Sbalit buňky vertikálně</translation>
+  <translation id="5330426602062066157">Žádné položky k zobrazení</translation>
+  <translation id="7221205526584973544">Akce pro vybrané řádky</translation>
+  <translation id="3198246956957447925">Všechny řádky</translation>
+  <translation id="3249513483374643425">Přidat</translation>
+  <translation id="4814285799071780083">Odstranit</translation>
+  <translation id="4995033811487963876">
+          Přidat jednotku  #<ph name="INTERPOLATION"><ex>{{itemIds[0]}}</ex>{{itemIds[0]}}</ph> do skupiny.</translation>
+  <translation id="4582586161935089741">
+Přidat <ph name="INTERPOLATION"><ex>{{itemIds.length}}</ex>{{itemIds.length}}</ph> jednotku do skupiny</translation>
+  <translation id="7768401651238929517">Přidat záznam z fronty č. <ph name="INTERPOLATION"><ex>{{fromBibQueue}}</ex>{{fromBibQueue}}</ph> do skupiny</translation>
+  <translation id="4199328076994282874">Obrázek obálky</translation>
+  <translation id="5981936975708312941">Přihlášení se nezdařilo</translation>
+  <translation id="835707828182433995">alt+s f4</translation>
+  <translation id="3036151888301781096">Hledání čtenáře</translation>
+  <translation id="2613987431748624308">Hledat jednotky podle čárového kódu</translation>
+  <translation id="3020968301469875968">f3</translation>
+  <translation id="4588618843305891254">Katalog</translation>
+  <translation id="7474015955620978655">f1</translation>
+  <translation id="4776389683576645610">Půjčit</translation>
+  <translation id="6118490788085936965">f2</translation>
+  <translation id="6717140284610013600">Vrátit</translation>
+  <translation id="850030992201379693">Shift+F2</translation>
+  <translation id="2837035015753507605">Ctrl+F2</translation>
+  <translation id="5530325499960746910">Shift+F1</translation>
+  <translation id="3539347462448071863">F8</translation>
+  <translation id="6702036660959718140">F6</translation>
+  <translation id="1632436061517443055">F9</translation>
+  <translation id="4453132844463069950">Služební katalog (Experimentální)</translation>
+  <translation id="4316980225510236416">Skupiny jednotek</translation>
+  <translation id="7030765897239345097">Shift+F3</translation>
+  <translation id="2781859553465827831">Shift+F8</translation>
+  <translation id="1192596616509586448">Načíst autoritní záznam podle ID</translation>
+  <translation id="3188500773800251137">Správa rezervací</translation>
+  <translation id="1987245494579982220">shift+f10</translation>
+  <translation id="8379749460233057994">Zobrazit kontextové menu</translation>
+  <translation id="3551907211819647029">Služební klient Evergreenu</translation>
+  <translation id="2462549210346751753">
+               <ph name="TAG_IMG"><ex>&lt;img&gt;</ex>&lt;img&gt;</ph>
+                Půjčit jednotky</translation>
+  <translation id="561280003950266074">
+               <ph name="TAG_IMG"><ex>&lt;img&gt;</ex>&lt;img&gt;</ph>
+                Vrátit jednotky</translation>
+  <translation id="3093825526384503750">
+<ph name="TAG_IMG"><ex>&lt;img&gt;</ex>&lt;img&gt;</ph>
+                Vyhledat čtenáře podle jména</translation>
+  <translation id="3346246830856014372">
+<ph name="TAG_IMG"><ex>&lt;img&gt;</ex>&lt;img&gt;</ph>
+                Skupiny záznamů</translation>
+  <translation id="7705335905017265222">
+<ph name="TAG_IMG"><ex>&lt;img&gt;</ex>&lt;img&gt;</ph>
+                Skupiny jednotek</translation>
+  <translation id="1626367806488739463">
+<ph name="TAG_IMG"><ex>&lt;img&gt;</ex>&lt;img&gt;</ph>
+                Dokumentace k Evergreenu</translation>
+  <translation id="3175252909559500330">
+<ph name="TAG_IMG"><ex>&lt;img&gt;</ex>&lt;img&gt;</ph>
+                Nastavení pracovní stanice</translation>
+  <translation id="5370556416594494205">
+                <ph name="TAG_IMG"><ex>&lt;img&gt;</ex>&lt;img&gt;</ph>
+                Zprávy a statistiky
+</translation>
+  <translation id="6196697288304309873">
+<ph name="INTERPOLATION"><ex>{{classLabel}}</ex>{{classLabel}}</ph> Administrace
+</translation>
+  <translation id="3582222014749690830">
+Změna nastavení <ph name="INTERPOLATION"><ex>{{idlClassDef.label}}</ex>{{idlClassDef.label}}</ph> se nezdařila
+</translation>
+  <translation id="2365442252292009375">Smazání  <ph name="INTERPOLATION"><ex>{{idlClassDef.label}}</ex>{{idlClassDef.label}}</ph> se nezdařilo nebo není povoleno
+</translation>
+  <translation id="2719256515310424556"><ph name="INTERPOLATION"><ex>{{idlClassDef.label}}</ex>{{idlClassDef.label}}</ph> Smazání úspěšně proběhlo
+</translation>
+  <translation id="8182673206805265824">Nepodařilo se vytvořit nový <ph name="INTERPOLATION"><ex>{{idlClassDef.label}}</ex>{{idlClassDef.label}}</ph>
+
+</translation>
+  <translation id="2886653045266158715">Upravit vybrané</translation>
+  <translation id="2446117790692479672">Zdroje</translation>
+  <translation id="4537900914313368587">Atributy zdrojů</translation>
+  <translation id="4069647127652111714">Mapy atributů zdrojů</translation>
+  <translation id="6242814526643965580">Hodnoty atributů zdrojů</translation>
+  <translation id="1357284958619180825">Typy zdrojů</translation>
+  <translation id="6115966333255439950">
+<ph name="START_UNORDERED_LIST"><ex>&lt;ul&gt;</ex>&lt;ul&gt;</ph>
+    <ph name="START_LIST_ITEM"><ex>&lt;li&gt;</ex>&lt;li&gt;</ph>Pole pro varování k adrese podporuje regulární výrazy a ve výchozím nastavení rozlišuje velká a malá písmena.<ph name="CLOSE_LIST_ITEM"><ex>&lt;/li&gt;</ex>&lt;/li&gt;</ph>
+    <ph name="START_LIST_ITEM"><ex>&lt;li&gt;</ex>&lt;li&gt;</ph>Example wildcard match:  742 Evergr.*n Terrace<ph name="CLOSE_LIST_ITEM"><ex>&lt;/li&gt;</ex>&lt;/li&gt;</ph>
+    <ph name="START_LIST_ITEM"><ex>&lt;li&gt;</ex>&lt;li&gt;</ph>Příklad shody při rozlišení nalých a velkých písmen: (?c)742 Evergr.*n Terrace<ph name="CLOSE_LIST_ITEM"><ex>&lt;/li&gt;</ex>&lt;/li&gt;</ph>
+    <ph name="START_LIST_ITEM"><ex>&lt;li&gt;</ex>&lt;li&gt;</ph>Pokud je zvolena kontaktní nebo trvalá adresa, aby nastala shoda, musí být testovací adresa kontaktní nebo trvalá.<ph name="CLOSE_LIST_ITEM"><ex>&lt;/li&gt;</ex>&lt;/li&gt;</ph>
+  <ph name="CLOSE_UNORDERED_LIST"><ex>&lt;/ul&gt;</ex>&lt;/ul&gt;</ph>
+
+</translation>
+  <translation id="8219067230598502340">Správa upozornění na adresy</translation>
+  <translation id="6725306767081232430">Nastavení upozornění na adresy</translation>
+  <translation id="5614901586604208361">Smazání karuselu se nezdařilo nebo není povoleno</translation>
+  <translation id="6297731964286880486">Karusel byl úspěšně smazán</translation>
+  <translation id="542495482712419456"><ph name="INTERPOLATION"><ex>{{name}}</ex>{{name}}</ph> se aktualizuje. Může to trvat několik minut.</translation>
+  <translation id="2014425377475956185"><ph name="INTERPOLATION"><ex>{{name}}</ex>{{name}}</ph> byl vytvořen ručně a nelze jej aktualizovat automaticky.
+</translation>
+  <translation id="7670258876512313903">Obnovit vybrané</translation>
+  <translation id="3438323905117940495">Propojit na skupinu</translation>
+  <translation id="2269053272947093517"> (Poznámka: změny v obsahu skupiny mohou být přepsány  při příští aktualiazaci karuselu.)</translation>
+  <translation id="3256177925974021598">Upozornění k adrese</translation>
+  <translation id="6668034067732284678">Změnit Dlouhodobě nevrácené na Ztracené</translation>
+  <translation id="4834585697055369615">Nastavení automatického tisku</translation>
+  <translation id="8080227119178344382">Doplnění čárového kódu</translation>
+  <translation id="1010099641816600370">Mapování knihovny pro karusel</translation>
+  <translation id="390268601688669126">Karusely</translation>
+  <translation id="5918931467226957649">Přehled hotovostních operací</translation>
+  <translation id="6590200447858368594">Skupiny výpůjčních limitů</translation>
+  <translation id="486301339172147347">Pravidla půjčování</translation>
+  <translation id="8327323723466875656">
+Nastavení zavíracích dnů</translation>
+  <translation id="6154805820932044260">Dokumentace polí</translation>
+  <translation id="6947157013238622064">Práh pro pokuty a blokace</translation>
+  <translation id="8505633432112516966">Pravidla rezervací</translation>
+  <translation id="7287956139398453530">
+Editor šablon jednotek</translation>
+  <translation id="1186418120350365182">Potlačení upozornění k jednotkám</translation>
+  <translation id="8677490230726570908">Typy upozornění k jednotkám</translation>
+  <translation id="3365481196514910833">Tagy exemplářů</translation>
+  <translation id="7548010354296140424">Úprava nastavení knihovny</translation>
+  <translation id="5611274943661344836">Editor typů nekatalogizovaných výpůjček</translation>
+  <translation id="627704104932463954">Notifikace /  Spouštěče událostí</translation>
+  <translation id="3639254579614314272">Čtenáři s negativní bilancí</translation>
+  <translation id="8706179643927994613">Zobrazení položek stromu oprávnění</translation>
+  <translation id="8527396365564255115">Skupiny filtrů pro vyhledávání</translation>
+  <translation id="2471819717111947594">Skupiny umístění regálů</translation>
+  <translation id="3849176700854111247">Pořadí umístění regálů</translation>
+  <translation id="2659644520109962414">Editor umístění regálů</translation>
+  <translation id="964228047494658753">Blokace a penále</translation>
+  <translation id="2716255158855786075">Editor statistických kategorií</translation>
+  <translation id="1310302511848389125">Odznaky popularity</translation>
+  <translation id="3691499168461931503">Průzkumy</translation>
+  <translation id="1532393768868017743">Seznam přeprav</translation>
+  <translation id="2229820809797805559">Pracovní log</translation>
+  <translation id="5117199322520762876">Správa  penále a bolokací</translation>
+  <translation id="7933631384560589916">Typy penále a blokací</translation>
+  <translation id="6029513267195410232">Bylo přidána nová blokace nebo penále</translation>
+  <translation id="4246220594001909058">Vytvoření nové blokace nebo penále se nedařlo</translation>
+  <translation id="1614770665817143747">Blokace nebo penále bylo úspěšně aktuaizováno</translation>
+  <translation id="605934986999656348">Aktualizace nové blokace nebo penále se nezdařila</translation>
+  <translation id="3997023353603850463">Smazání pokuty nebo penále nebylo povoleno</translation>
+  <translation id="1901539617949483663">Smazání pokut nebo penále úspěšně proběhlo</translation>
+  <translation id="3267323809160629646">Omezení úprav</translation>
+  <translation id="858661655577834366">Nový typ pokuty nebo penále</translation>
+  <translation id="6146540077985770318">Typ karuselu</translation>
+  <translation id="6827938972175285751">Statusy jednotek</translation>
+  <translation id="6054738004489615285">Typy tagů pro exempláře</translation>
+  <translation id="1028332463391082981">Tiskové šablony</translation>
+  <translation id="6617253417436723920">Profily pro vzdálenou autentizaci</translation>
+  <translation id="7215909774789764918">Nastavení typů organizačních jednotek</translation>
+  <translation id="7765345992997372713">Nastavení změn typu organizační jednotky úspěšně proběhlo</translation>
+  <translation id="7323696227471641437">Vytvoření typu organizační jednotky úspěšně proběhlo</translation>
+  <translation id="7235814954868940643">Nastavení změn typu organizační jednotky se nezdařilo</translation>
+  <translation id="6208564441860154239">Potvrdit smazání</translation>
+  <translation id="3032042142597247072">Smazat typ organizační jednotky  <ph name="INTERPOLATION"><ex>{{selected ? selected.label : &apos;&apos;}}</ex>{{selected ? selected.label : &apos;&apos;}}</ph>?</translation>
+  <translation id="6096738826568910059">Typy organizačních jednotek</translation>
+  <translation id="7342432993684201892">Vybrané typy organizačních jednotek</translation>
+  <translation id="4571007981495157662">
+        Vyberte typ organizační jednotky ze stromu nalevo.</translation>
+  <translation id="6183540804974097746">Akce pro vybrané: </translation>
+  <translation id="192340254091027151">Přidat podřízenou jednotku</translation>
+  <translation id="402785015655073812">Jméno: </translation>
+  <translation id="8055426476932658000">Označení: </translation>
+  <translation id="1545195367375334211">Může mít uživatele: </translation>
+  <translation id="6143305734960561040">Může mít jednotky: </translation>
+  <translation id="3276004864714624017">Hloubka: </translation>
+  <translation id="3958648483048221841">Počet organizačních jednotek tohoto typu: </translation>
+  <translation id="7797162943083640506">Správa tiskových šablon</translation>
+  <translation id="7122082519149762287">Potvrdit smazání?</translation>
+  <translation id="8617609013396493845">Smazat šablonu  &apos;<ph name="INTERPOLATION"><ex>{{template ? template.label() : &apos;&apos;}}</ex>{{template ? template.label() : &apos;&apos;}}</ph>&apos;?</translation>
+  <translation id="3715596725146409911">Vlastník</translation>
+  <translation id="5610425955750546094">Šablona</translation>
+  <translation id="6780407325174304229">Lokální</translation>
+  <translation id="7153884444904604924">
+           Upravit vlastnosti šablony</translation>
+  <translation id="342889694650315526">
+            Uložit změny šablony</translation>
+  <translation id="1833580215304818477">
+            Klonovat šablonu</translation>
+  <translation id="1940066143595857230">
+            Smazat šablonu</translation>
+  <translation id="6164093253661885212">
+           Neplatný příklad JSON!</translation>
+  <translation id="6216805503462970213">
+            Šablona pro &quot;<ph name="INTERPOLATION"><ex>{{template.label()}}</ex>{{template.label()}}</ph> (<ph name="INTERPOLATION_1"><ex>{{getOwnerName(template.id())}}</ex>{{getOwnerName(template.id())}}</ph>)&quot;
+            <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>
+              (Neaktivní)
+            <ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="1295614462098694869">Náhled</translation>
+  <translation id="4649282993034491118">Kompilovaný obsah</translation>
+  <translation id="2317555673308529228">Vzorová data</translation>
+  <translation id="3146402886459848448">Přidat nové mapování Skupiny oprávnění</translation>
+  <translation id="2810657391104048337">Skupina oprávnění</translation>
+  <translation id="1947349693143392425">Nové oprávnění</translation>
+  <translation id="6857110332010752994">Hloubka</translation>
+  <translation id="8975257821104162697">Lze přidělit</translation>
+  <translation id="5674286808255988565">Vytvořit</translation>
+  <translation id="671376137657642478">Nastavení skupiny oprávnění</translation>
+  <translation id="185726253776450084">Mapování skupiny oprávnění bylo přidáno</translation>
+  <translation id="5775680734572935193">Změny nastavení skupiny oprávnění úspěšně proběhly</translation>
+  <translation id="7494513077787356921">Změny nastavení skupiny oprávnění se nezdařily</translation>
+  <translation id="9189451608536715246">Změna nastavení mapování skupiny oprávnění úspěšnš proběhla</translation>
+  <translation id="3544505693546561504">Změna mapování skupin oprávnění se nezdařila</translation>
+  <translation id="342987051116252430">Smazat skupinu oprávnění <ph name="INTERPOLATION"><ex>{{selected ? selected.label : &apos;&apos;}}</ex>{{selected ? selected.label : &apos;&apos;}}</ph>?</translation>
+  <translation id="2009301642939574307">Vybraná skupina oprávnění</translation>
+  <translation id="151899692711210594">
+Vyberte skupinu oprávnění ze stromu nalevo.</translation>
+  <translation id="4678185361290766066">Popis: </translation>
+  <translation id="2075133315405916443">Doba platnosti registrace: </translation>
+  <translation id="7211135069229490175">Oprávnění aplikace: </translation>
+  <translation id="6280158719718478340">Priorita rezervací: </translation>
+  <translation id="789486440819399578">Skupina uživatelů?: </translation>
+  <translation id="273427060735153772">Detaily skupiny</translation>
+  <translation id="2871515045369372945">                Použít změny</translation>
+  <translation id="447231655403759926">
+                Přidat nové mapování</translation>
+  <translation id="9209781328340965816">Filtrovat...</translation>
+  <translation id="2214133476588340773">               
+                Vyčistit</translation>
+  <translation id="8623978917681527907">Skupina</translation>
+  <translation id="2116450126592887484">Lze přidělit?</translation>
+  <translation id="5985905082632456998">
+    <ph name="INTERPOLATION"><ex>{{map.perm().description() || map.perm().code()}}</ex>{{map.perm().description() || map.perm().code()}}</ph>
+  </translation>
+  <translation id="316989632590100237">Zděděno</translation>
+  <translation id="2543642026613072438">Smazat mapování</translation>
+  <translation id="1864672563853172425">Skupinová oprávnění</translation>
+  <translation id="2562160037616216416">Tato adresa je použita pro více typů adres</translation>
+  <translation id="2414631239992839238">Klonovat jako novou adresu</translation>
+  <translation id="8502290106664095693"/>
+  <translation id="8929545545003516665">Nastavení organizačních jednotek</translation>
+  <translation id="2827683727075410613">Smazat organizační jednotku <ph name="INTERPOLATION"><ex>{{selected ? selected.label : &apos;&apos;}}</ex>{{selected ? selected.label : &apos;&apos;}}</ph>?</translation>
+  <translation id="8116003808675040023"><ph name="INTERPOLATION"><ex>{{org.name()}}</ex>{{org.name()}}</ph> -- <ph name="INTERPOLATION_1"><ex>{{org.shortname()}}</ex>{{org.shortname()}}</ph></translation>
+  <translation id="950961196031736030">Organizační jednotky</translation>
+  <translation id="4174061028418395483">
+          <ph name="INTERPOLATION"><ex>{{currentOrg().name()}}</ex>{{currentOrg().name()}}</ph> (<ph name="INTERPOLATION_1"><ex>{{currentOrg().shortname()}}</ex>{{currentOrg().shortname()}}</ph>)</translation>
+  <translation id="1783492911601821704">
+          Přidat název</translation>
+  <translation id="7346025757504893537">Hlavní nastavení</translation>
+  <translation id="8993135189536335311">Provozní doba</translation>
+  <translation id="5023927861260623383">Čas uzavření</translation>
+  <translation id="8739442281958563044">Pondělí</translation>
+  <translation id="9176037901730521018">Úterý</translation>
+  <translation id="8798932904948432529">Středa</translation>
+  <translation id="1433683192825895947">Čtvrtek</translation>
+  <translation id="3730139500618908668">Pátek</translation>
+  <translation id="1830554030016307335">Sobota</translation>
+  <translation id="6950140976689343775">Neděle</translation>
+  <translation id="7860418101283165917">Zavřeno</translation>
+  <translation id="7820952322370998848">
+                  Vymazat provozní dobu</translation>
+  <translation id="9210464463628744393">
+                  Použít změny</translation>
+  <translation id="7115484541401189238">Provozní doba</translation>
+  <translation id="5159814115056353668">Adresy</translation>
+  <translation id="2222955184841578201">Nastavení pracovní stanice</translation>
+  <translation id="1272605907958035192">Potvrdit zrušení</translation>
+  <translation id="5318380763021940082">
+      Opravdu chcete zrušit
+      <ph name="ICU"><ex>{reservations.length, plural, =1 {...} other {...}}</ex>{reservations.length, plural, =1 {...} other {...}}</ph>?</translation>
+  <translation id="6392678350521948481"/>
+  <translation id="3031149684398930958">Potvrdit detaily rezervace zdroje</translation>
+  <translation id="4713151336247961822">Čárový kód čtenáře</translation>
+  <translation id="7732774133897019679"/>
+  <translation id="3770761673682962465">Čas začátku</translation>
+  <translation id="3029887440722063094">Čas ukončení</translation>
+  <translation id="653649827000852183">Čas začátku musí být dříve než čas ukončení</translation>
+  <translation id="4981002288470877556">Umístění rezervace zdroje</translation>
+  <translation id="1248707501774452115">Knihovna, ve které je rezerovaný zdroj vyzvednut nebo použit</translation>
+  <translation id="424870090577028136">UmReservation location is in the <ph name="INTERPOLATION"><ex>{{timezone}}</ex>{{timezone}}</ph> timezone
+</translation>
+  <translation id="1664620352147673062">Rezervovatelný zdroj</translation>
+  <translation id="6638736673517346270">Jakýkoliv rezervovatelný zdroj</translation>
+  <translation id="6155532629582446437">E-mailové upozornění</translation>
+  <translation id="3211588401417695137">Potvrdit rezervaci zdroje</translation>
+  <translation id="8769902851392509715">
+      Potvrdit a zobrazit rezervace zdrojů 
+čtenáře</translation>
+  <translation id="5540793927294137302">Tuto rezervaci nelze vytvořit</translation>
+  <translation id="6376962826280870178">Pro vaši knihovnu není nastaveno časové pásmo</translation>
+  <translation id="4827774345529307183"><ph name="START_PARAGRAPH"><ex>&lt;p&gt;</ex>&lt;p&gt;</ph>Zkontrolujte prosím, že <ph name="START_ITALIC_TEXT"><ex>&lt;i&gt;</ex>&lt;i&gt;</ph>lib.timezone<ph name="CLOSE_ITALIC_TEXT"><ex>&lt;/i&gt;</ex>&lt;/i&gt;</ph> má v nastaveních knihovnu uvedenu platnou hodnotu.<ph name="CLOSE_PARAGRAPH"><ex>&lt;/p&gt;</ex>&lt;/p&gt;</ph></translation>
+  <translation id="6682548463162595844">Přejít do Nastavení knihovny</translation>
+  <translation id="6621917341438113980">Přesto pokračovat</translation>
+  <translation id="497728370667410908">Vytvořit rezervaci zdroje</translation>
+  <translation id="847964475497879979">Rezervace zdrojů</translation>
+  <translation id="5360100160458018907">Typ rezervace zdroje</translation>
+  <translation id="8654677463254099684"/>
+  <translation id="3132339113110882197">Datum rezervace zdroje</translation>
+  <translation id="5239779940045550692">Detaily rezervace</translation>
+  <translation id="711173173943179604">Vybrat rezervaci zdroje podle typu</translation>
+  <translation id="1607585788222737264">Hledat podle typu zdroje</translation>
+  <translation id="4479146797004254107">Vlastnická knihovna</translation>
+  <translation id="4214948655632780796">Vybrat zdroj podle čárového kódu</translation>
+  <translation id="5365909521761730842">Hledat podle čárového kódu zdroje</translation>
+  <translation id="3355226944889845141">Omezit podle vlastností</translation>
+  <translation id="1226557749153390518"/>
+  <translation id="5145403754551415773">Nastavení plánu</translation>
+  <translation id="207515246239441863">Granularita</translation>
+  <translation id="6648333117195452824">15 minut</translation>
+  <translation id="3024744231536209225">30 minut</translation>
+  <translation id="8957769602890064019">60 minut</translation>
+  <translation id="3324233834879915508">Předchozí den</translation>
+  <translation id="1831107535946560684"/>
+  <translation id="7468598398356612819">Následující den</translation>
+  <translation id="8497528947328199741">Čas</translation>
+  <translation id="4374823966966289621">
+Neexistují rezervovatelné zdroje, který by splňovaly vaše kritéria.  Chcete vytvořit <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>some new resources<ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph>?
+
+</translation>
+  <translation id="4631443662332502920">Zrušit vybrané</translation>
+  <translation id="2690693254017561816">Vyzvednou vybrané</translation>
+  <translation id="6052558249322238398">Vrátit vybrané</translation>
+  <translation id="7172445714733252046">Zobrazit záznam čtenáře</translation>
+  <translation id="2916516996724582850">Zobrazit zdroje rezervované tímto čtenářem</translation>
+  <translation id="2449572130417759292">Zobrazit status jednotky</translation>
+  <translation id="7116064472023363630">Zobrazit rezervace na tento zdroj</translation>
+  <translation id="793765545064154154">Vytvořit novou rezervaci zdroje</translation>
+  <translation id="8040881171107393560">ID</translation>
+  <translation id="5779041452883100612">Uživatelské jméno čtenáře</translation>
+  <translation id="1997357726019367256">Křestní jméno čtenáře</translation>
+  <translation id="270011572726624557">Prostření jméno čtenáře</translation>
+  <translation id="3463103327638524924">Příjmení čtenáře</translation>
+  <translation id="4204880191779081093">Čas začátku</translation>
+  <translation id="3845185958891849368">Čas ukončení</translation>
+  <translation id="2957208724344476932">Čas požadavku</translation>
+  <translation id="7684679030975813040">Čas zachycení</translation>
+  <translation id="4804735999662853878">Čas vyzvednutí</translation>
+  <translation id="115800162501069231">E-mailové upozornění</translation>
+  <translation id="7704378054769491892">Celkem naúčtováno</translation>
+  <translation id="1915397274948123092">Celkem zaplaceno</translation>
+  <translation id="5569000452720146687">Interval pro rezervaci zdrojů</translation>
+  <translation id="519552556048661339">Interval pokut</translation>
+  <translation id="6284945585858649478">Výše pokut</translation>
+  <translation id="2770558010311977337">Maximální pokuta</translation>
+  <translation id="7812404654519474952">Čárový kód zdroje</translation>
+  <translation id="4388879716045736175">Poznámka</translation>
+  <translation id="773041829051514672">Typ zdroje</translation>
+  <translation id="7020825193111193715">Délka rezervace zdroje</translation>
+  <translation id="5951699041646176965">Žádající knihovna</translation>
+  <translation id="2017054093951071070">Časové pásmo rezervace zdroje</translation>
+  <translation id="6205244119512545477">Filtrovat rezervace</translation>
+  <translation id="1495544699828328166">Filtrovat podle čtenáře</translation>
+  <translation id="6997386739786701973"><ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>delete<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> Odebrat filtr</translation>
+  <translation id="8887207451668338252">Filtrovat podle zdroje</translation>
+  <translation id="3830558080255006527">Čárový kód zdroje</translation>
+  <translation id="2794481383337799153">Filtrovat podle typu zdroje</translation>
+  <translation id="2132886845235480834">Typ zdroje</translation>
+  <translation id="2315905323650055729">Vyzvednutí rezervace</translation>
+  <translation id="6541976377673512417">Vyzvednutí</translation>
+  <translation id="5757754182476419353">Připraveno k vyzvednutí</translation>
+  <translation id="1191710559689808761">Zobrazit pouze zachycení zdroje</translation>
+  <translation id="5080686756796487332">Již bylo vyzvednuto</translation>
+  <translation id="3297294381498669224">Seznam požadavků na rezervace zdrojů</translation>
+  <translation id="8841522253323890487">Knihovna:</translation>
+  <translation id="8635138750344109825">Počet dní pro vyzvednutí</translation>
+  <translation id="5744668833711468792">Vytisknout seznam požadavků</translation>
+  <translation id="1292831281473912533">Umístění regálu</translation>
+  <translation id="2561573928784395901">Signatura</translation>
+  <translation id="6545562865777998484">Klíč k řazení signatur</translation>
+  <translation id="3330087854613419811">Titul nebo název</translation>
+  <translation id="1066761790814313272">Čas začátku rezervace zdroje</translation>
+  <translation id="8345622575076961548">Čas ukončení rezervace zdroje</translation>
+  <translation id="6560034673377734179">Příjmení čtenáře</translation>
+  <translation id="1061258723489098351">Vrácení rezervovaného zdroje</translation>
+  <translation id="7286475218857509962">Vrácení</translation>
+  <translation id="8409957462768659984">Připraveno k vrácení</translation>
+  <translation id="2847903893966657597">Vráceno dnes</translation>
+  <translation id="6824381776715042241">Podle čtenáře</translation>
+  <translation id="4981478075863616748">Podle zdroje</translation>
+  <translation id="5557714853406237867">Bibliografické atributy</translation>
+  <translation id="2259550136298547059">Atributy autorit</translation>
+  <translation id="480925552307435874">Exportovat záznamy</translation>
+  <translation id="3640148217939834121">
+          Exportuji <ph name="INTERPOLATION"><ex>{{basketRecords.length}}</ex>{{basketRecords.length}}</ph>  záznamy z košíku v katalogu</translation>
+  <translation id="421774935510939502">Návrat do katalogu</translation>
+  <translation id="4238405499150954755">Použít číslo pole</translation>
+  <translation id="5219633489091459178">Začít na 0...</translation>
+  <translation id="6463661030456875296">Ze souboru CSV</translation>
+  <translation id="2486844773394769749">ID záznamu</translation>
+  <translation id="4925143400354152180">ID skupiny</translation>
+  <translation id="4177485269724254591">Typ záznamu</translation>
+  <translation id="8694819155917457551">Bibliografické záznamy</translation>
+  <translation id="4110915884252778137">Autoritní záznamy</translation>
+  <translation id="5208361607635352078">Formát záznamu</translation>
+  <translation id="3689387874991556338">MARC 21</translation>
+  <translation id="5235713269145497020">UNIMARC</translation>
+  <translation id="8374741519465656622">MARC XML</translation>
+  <translation id="7347864158996474413">Záznamy Evergreenu</translation>
+  <translation id="1612906545020933349">Kódování záznamu</translation>
+  <translation id="6217331796106505872">UTF-8</translation>
+  <translation id="2714907034084985818">MARC8</translation>
+  <translation id="8599522739582396846">Zahrnout údaje o jednotkách v bibliografických záznamech</translation>
+  <translation id="7462301153729425254">Export</translation>
+  <translation id="2769384034706317195">Zpět k frontě</translation>
+  <translation id="7104752350726805592">Fronta s požadovaným názvem už existuje</translation>
+  <translation id="9132085355571475770">Nahrání souboru MARC</translation>
+  <translation id="1330632113855375197">Použít/vytvořit ze šablony</translation>
+  <translation id="4547870067621520299">Použít  nebo vytvořit  ze šablony...</translation>
+  <translation id="929520182362570400">Uložit jako novou šablonu</translation>
+  <translation id="4751682848426835730">Označit šablonu jako výchozí</translation>
+  <translation id="924243138802371969">Smazat šablonu</translation>
+  <translation id="3318020178988016163">Akviziční záznamy</translation>
+  <translation id="98786726684338554">Typ záznamu...</translation>
+  <translation id="7430242638032305529">Vybrat zdroj záznamu</translation>
+  <translation id="1429034438254494791">Zdroj záznamu...</translation>
+  <translation id="694007245748166156">Vybrat nebo vytvořit frontu</translation>
+  <translation id="5630749362851202314">Vybrat nebo vytvořit frontu</translation>
+  <translation id="3398635036125420199">Omezit shodu na skupinu záznamů</translation>
+  <translation id="4995022551252324903">Skupiny záznamů...</translation>
+  <translation id="8884235213206010922">Sada shody záznamů</translation>
+  <translation id="1624733012442922386">Sada shody...</translation>
+  <translation id="496698161010466709">Importovat záznamy bez shody</translation>
+  <translation id="8141913488117669086">Profil pro import jednotek</translation>
+  <translation id="3777444077447238843">Profil pro import jednotek...</translation>
+  <translation id="8893940836017220358">Sloučit při přesné shodě (901c)</translation>
+  <translation id="4132378244234912215">Profil pro sloučení</translation>
+  <translation id="6589050397899766986">Profil pro sloučení...</translation>
+  <translation id="5512315529166472042">Sloučit při prosté shodě</translation>
+  <translation id="1451388557064086582">
+
+        Profil pro propadnutí při nedostatečné kvalitě</translation>
+  <translation id="6007088160714857137">Profil pro sloučení při propadnutí</translation>
+  <translation id="6033581449985318523">Sloučit při nejlepší shodě</translation>
+  <translation id="135910617425680633">Poměr minimální kvalit při prosté/nejlepší shodě</translation>
+  <translation id="1734658841086341891">
+        Automatické přepsání akvizičních jednotek ve stavu Zpracovává se</translation>
+  <translation id="6074056360409942623">Volitelný název relace:</translation>
+  <translation id="6713766618547544063">Název relace</translation>
+  <translation id="3792339000621505128">        
+        Automatické přepsání akvizičních jednotek ve stavu Objednáno</translation>
+  <translation id="5412071504233639596">Odebrat skupiny polí MARC</translation>
+  <translation id="7548907624430313932">Nebyly nastaveny žádné skupiny</translation>
+  <translation id="945332359235727772">
+       Pro určení nejlepší shody použijte shodu organizačních jednotek v jednotkách</translation>
+  <translation id="7494825093762139901">Soubor pro nahrání</translation>
+  <translation id="3789568336896215449">        Probíhá import záznamu(záznamů) <ph name="INTERPOLATION"><ex>{{importSelection().recordIds.length}}</ex>{{importSelection().recordIds.length}}</ph></translation>
+  <translation id="8847263831331692548">
+        Probíhá import fronty <ph name="INTERPOLATION"><ex>{{importSelection().queue.name()}}</ex>{{importSelection().queue.name()}}</ph></translation>
+  <translation id="6643491865635415566">        Smazat výběr</translation>
+  <translation id="6932865105766151309">Nahrát</translation>
+  <translation id="4146759437902554818">Postup nahrávání</translation>
+  <translation id="409647756283979918">Postup zařazení do fronty</translation>
+  <translation id="4211111309632890253">Postup importu</translation>
+  <translation id="3391680224336643433">Jít do fronty</translation>
+  <translation id="6630137344798872260">Atributy záznamu:</translation>
+  <translation id="7939419250366658413">Atributy záznamu...</translation>
+  <translation id="7978273686665519179">Tag:</translation>
+  <translation id="1425620040227276830">Podpole  $:</translation>
+  <translation id="840525881228717028">Normalizované záhlaví:</translation>
+  <translation id="2040898397501477279">AND</translation>
+  <translation id="290735093992020324">OR</translation>
+  <translation id="3904805944153220794">Hodnota</translation>
+  <translation id="3742284469838142371">
+  <ph name="START_TAG_NG_CONTAINER"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>
+    <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>NOT <ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
+    <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>Normalizované záhlaví<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
+    <ph name="START_TAG_SPAN_2"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph><ph name="INTERPOLATION"><ex>{{point.bool_op()}}</ex>{{point.bool_op()}}</ph><ph name="INTERPOLATION_1"><ex>{{point.svf()}}</ex>{{point.svf()}}</ph><ph name="INTERPOLATION_2"><ex>{{point.tag()}}</ex>{{point.tag()}}</ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
+    <ph name="START_TAG_SPAN_3"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph> $<ph name="INTERPOLATION_3"><ex>{{point.subfield()}}</ex>{{point.subfield()}}</ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
+    <ph name="START_TAG_SPAN_4"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph> | Výsledek shody <ph name="INTERPOLATION_4"><ex>{{point.quality()}}</ex>{{point.quality()}}</ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
+  <ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph>
+
+</translation>
+  <translation id="6189243122214810921">       Váš výraz: <ph name="INTERPOLATION"><ex>{{expressionAsString()}}</ex>{{expressionAsString()}}</ph></translation>
+  <translation id="6205540213661359687">Přidat nový</translation>
+  <translation id="7410001636246507654">Atribut záznamu</translation>
+  <translation id="7458506762923954279">Pole a podpole MARC</translation>
+  <translation id="2808290889837310571">Normalizované autoritní záhlaví</translation>
+  <translation id="9191306405561503368">Booleovský operátor</translation>
+  <translation id="5561273585375183044">
+        Přidat do vybraného uzlu</translation>
+  <translation id="1186369943030718123"><ph name="START_LIST_ITEM"><ex>&lt;li&gt;</ex>&lt;li&gt;</ph>Určete nový bod shody s využitím polí výše.<ph name="CLOSE_LIST_ITEM"><ex>&lt;/li&gt;</ex>&lt;/li&gt;</ph>
+        <ph name="START_LIST_ITEM"><ex>&lt;li&gt;</ex>&lt;li&gt;</ph>Vyberte ze stromu booleovský uzel.<ph name="CLOSE_LIST_ITEM"><ex>&lt;/li&gt;</ex>&lt;/li&gt;</ph>
+        <ph name="START_LIST_ITEM"><ex>&lt;li&gt;</ex>&lt;li&gt;</ph>Klikněte na tlačítko &quot;Přidat...&quot; a přidejte nový bod shody
+          jako podřízený bod vybraného uzlu.<ph name="CLOSE_LIST_ITEM"><ex>&lt;/li&gt;</ex>&lt;/li&gt;</ph></translation>
+  <translation id="5093216674362518382">         Odstranit vybraný uzel</translation>
+  <translation id="3807355661675884532">Uložit změny</translation>
+  <translation id="7587326642021274158">Nová sada shodu</translation>
+  <translation id="10341640407111545">Souhrn sady shody</translation>
+  <translation id="6055370700598406739">Název sady shody:</translation>
+  <translation id="8291217115871231801">Vlastnická knihovna:</translation>
+  <translation id="2736556170366900089">Typ:</translation>
+  <translation id="5092259295843627570">Editor sady shody</translation>
+  <translation id="3975344561710508425">Metrika kvality pro sadu shody</translation>
+  <translation id="369219660710450241">Omezit na Chyby importu</translation>
+  <translation id="4880675643394572320">Zvolte frontu pro zobrazení</translation>
+  <translation id="5124352070970013794">Typ fronty</translation>
+  <translation id="599085713224827484">Typ fronty...</translation>
+  <translation id="9020659224075678329">Mazání fronty...</translation>
+  <translation id="428285900604048070">Smazat frontu <ph name="INTERPOLATION"><ex>{{queueSummary.queue.name()}}</ex>{{queueSummary.queue.name()}}</ph>?</translation>
+  <translation id="5608932092911404340">Fronta <ph name="INTERPOLATION"><ex>{{queueSummary.queue.name()}}</ex>{{queueSummary.queue.name()}}</ph></translation>
+  <translation id="2474002261461160761">Přehled fronty</translation>
+  <translation id="7531608978652511286">Záznamy ve frontě:</translation>
+  <translation id="2271727768080020920">Jednotky ve frontě:</translation>
+  <translation id="5509308810295369192">Importované záznamy:</translation>
+  <translation id="4241644089838175022">Importované jednotky:</translation>
+  <translation id="511384143060628012">Chyby při importu záznamů:</translation>
+  <translation id="4600410363255351895">Chyby při importu jednotek:</translation>
+  <translation id="8369695152832245136">Akce fronty</translation>
+  <translation id="1921956417267900346">Importovat vybrané záznamy</translation>
+  <translation id="29803394889881820">Importovat všechny záznamy</translation>
+  <translation id="589171631704099427">                    Zobrazit importované jednotky</translation>
+  <translation id="1678593155983852726">Exportovat nenaimportované záznamy</translation>
+  <translation id="2008976702756637105">
+                  Kopírovat frontu do skupiny</translation>
+  <translation id="8271254426186080620">Smazat frontu</translation>
+  <translation id="8154757963416326069"/>
+  <translation id="1882394482686151262">Záznamy se shodou</translation>
+  <translation id="7525571605567175349">Nenaimportované záznamy</translation>
+  <translation id="3630213385744665909">Záznamy s chybou importu</translation>
+  <translation id="1567940090040631427">Shody</translation>
+  <translation id="3178045094493611068">Chyby importu</translation>
+  <translation id="6508550799282505553">Datum importu</translation>
+  <translation id="5545330649753964818">Importováno jako</translation>
+  <translation id="2848728555152418189"/>
+  <translation id="2311844454751353739">Vybraný cíl pro sloučení</translation>
+  <translation id="855207132910434481">ID shody</translation>
+  <translation id="8716765185236736617">Cíl sloučení</translation>
+  <translation id="8161758389312054973">Výsledek shody</translation>
+  <translation id="8089089064997894421">Kvalita shodného záznamu</translation>
+  <translation id="9005274713894949331">Kvalita záznamu ve frontě</translation>
+  <translation id="1043390381565182083">Vytvoril(a)</translation>
+  <translation id="1793697473153040314">Datum vytvoření</translation>
+  <translation id="3742657416068781599">Upravil(a)</translation>
+  <translation id="8633314934880892066">Změnit datum</translation>
+  <translation id="2649193269697959741">Záznam MARC ve frontě</translation>
+  <translation id="3970093442360844708">Upravit záznam</translation>
+  <translation id="6108788549819167720">Shody záznamu</translation>
+  <translation id="1351344403546996322">Importovat jednotky</translation>
+  <translation id="3833321868727649730">Zobrazit relace od: </translation>
+  <translation id="2089027763324618149">Žádné relace importu k zobrazení</translation>
+  <translation id="2953380955998906150">
+              <ph name="INTERPOLATION"><ex>{{tracker.create_time() | date:&apos;short&apos;}}</ex>{{tracker.create_time() | date:&apos;short&apos;}}</ph> : 
+              <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph><ph name="INTERPOLATION_1"><ex>{{tracker.name()}}</ex>{{tracker.name()}}</ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="9215776011298069894">
+               <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>
+                  Název <ph name="INTERPOLATION"><ex>{{tracker.queue().name()}}</ex>{{tracker.queue().name()}}</ph>
+                <ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
+  <translation id="3393069604584373022">Probíhá řazení do frotny... </translation>
+  <translation id="1193668558159304259">Probíhá import... </translation>
+  <translation id="8204176479746810612">Aktivní</translation>
+  <translation id="8384225360105280028">Dokončené</translation>
+  <translation id="1519954996184640001">Chyba</translation>
+  <translation id="1071721880474488785">Import</translation>
+  <translation id="6258392308436869469">Prohlédnout frontu</translation>
+  <translation id="6016919302319054660">Atributy zobrazení záznamu</translation>
+  <translation id="6133176751816119376">Profily pro sloučení/přepsání</translation>
+  <translation id="7429507876509930103">Sady shody záznamů</translation>
+  <translation id="4484002883341717770">Profily pro import jednotek</translation>
+  <translation id="4094264464599909023">Nedávné importy</translation>
+  <translation id="8801228482518898905">Smazat záznam ID <ph name="INTERPOLATION"><ex>{{record ? record.id : &apos;&apos;}}</ex>{{record ? record.id : &apos;&apos;}}</ph>?</translation>
+  <translation id="4012154479171438598">Potvrdit zrušení smazání</translation>
+  <translation id="7869798830152414955">Zrušit smazání záznamu ID <ph name="INTERPOLATION"><ex>{{record ? record.id : &apos;&apos;}}</ex>{{record ? record.id : &apos;&apos;}}</ph>?</translation>
+  <translation id="5941742049342332956">Záznamy s připojenými jednotkami nemohou být smazány.</translation>
+  <translation id="7781653605008841585">Záznam byl úspěšně aktualizován</translation>
+  <translation id="544590199973961097">Aktualizace záznamu se nezdařila</translation>
+  <translation id="4035921914753925376">Vyberte zdroj...</translation>
+  <translation id="3948827708061298383">Smazat záznam</translation>
+  <translation id="5912230745040135544">Zrušit smazání záznamu</translation>
+  <translation id="4319441956121197474">Uložit změny</translation>
+  <translation id="8275734947491995883">
+          Vylepšený editor MARC není prozatím implementován. Viz 
+          <ph name="START_TAG_NG_CONTAINER"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>
+            <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>
+              AngularJS editor MARC.
+            <ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph>
+          <ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph>
+          <ph name="START_TAG_NG_CONTAINER_1"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>
+            <ph name="START_LINK_1"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>
+               AngularJS editor MARC.
+            <ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph>
+          <ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph></translation>
+  <translation id="5857384757296482678">Vylepšený editor MARC</translation>
+  <translation id="3141491731819537551">Textová editace MARC</translation>
+  <translation id="2339984391599481637"/>
+  <translation id="8388570073302772112">Akce pro košík</translation>
+  <translation id="8371227513128124547">Zobrazit košík</translation>
+  <translation id="5740929948063666280">Vytisknout podrobnosti o titulu</translation>
+  <translation id="2609957449622415886">Odeslat podrobnosti o titulu e-mailem</translation>
+  <translation id="1433099939355924006">Přidat košík do skupiny</translation>
+  <translation id="7195503763323526760">Vysypat košík</translation>
+  <translation id="4747829620898136057">Přidat vyhledávací řádek</translation>
+  <translation id="5128849672893415097">Odebrat vyhledávací řádek</translation>
+  <translation id="1414468176699633323">Sbalit vyhledávací filtry</translation>
+  <translation id="5448980652854097012">Seskupit formáty/vydání</translation>
+  <translation id="246072592254200629">Výsledky ze všech knihoven</translation>
+  <translation id="8781798358723083129">Všechna umístění exemplářů</translation>
+  <translation id="7101915224114661423"/>
+  <translation id="7403788155498964196">
+                <ph name="START_TAG_LABEL"><ex>&lt;label&gt;</ex>&lt;label&gt;</ph>Rok vydání je<ph name="CLOSE_TAG_LABEL"><ex>&lt;/label&gt;</ex>&lt;/label&gt;</ph>
+                <ph name="START_TAG_SELECT"><ex>&lt;select&gt;</ex>&lt;select&gt;</ph>
+                  <ph name="START_TAG_OPTION"><ex>&lt;option&gt;</ex>&lt;option&gt;</ph>Is<ph name="CLOSE_TAG_OPTION"><ex>&lt;/option&gt;</ex>&lt;/option&gt;</ph>
+                  <ph name="START_TAG_OPTION_1"><ex>&lt;option&gt;</ex>&lt;option&gt;</ph>Before<ph name="CLOSE_TAG_OPTION"><ex>&lt;/option&gt;</ex>&lt;/option&gt;</ph>
+                  <ph name="START_TAG_OPTION_2"><ex>&lt;option&gt;</ex>&lt;option&gt;</ph>After<ph name="CLOSE_TAG_OPTION"><ex>&lt;/option&gt;</ex>&lt;/option&gt;</ph>
+                  <ph name="START_TAG_OPTION_3"><ex>&lt;option&gt;</ex>&lt;option&gt;</ph>Between<ph name="CLOSE_TAG_OPTION"><ex>&lt;/option&gt;</ex>&lt;/option&gt;</ph>
+                <ph name="CLOSE_TAG_SELECT"><ex>&lt;/select&gt;</ex>&lt;/select&gt;</ph>
+                <ph name="TAG_INPUT"><ex>&lt;input&gt;</ex>&lt;input&gt;</ph>
+                <ph name="TAG_INPUT_1"><ex>&lt;input&gt;</ex>&lt;input&gt;</ph></translation>
+  <translation id="5622103939576115496">Hledání podle klíčových slov</translation>
+  <translation id="8048107774628227659">Typ dotazu</translation>
+  <translation id="6555318547274416232">Hodnota</translation>
+  <translation id="7171276766661761441">Hledání podle identifikátorů</translation>
+  <translation id="1825829511397926879">Tag</translation>
+  <translation id="8130366701056210024">Podpole</translation>
+  <translation id="95301782947665561">Vyhledávání podle MARC</translation>
+  <translation id="6871968110130773266">Procházet</translation>
+  <translation id="787163983066183218">Procházet</translation>
+  <translation id="5976382552788816081">
+                Procházet signatury začínající na</translation>
+  <translation id="1380690145177345961">Prohlížení regálu</translation>
+  <translation id="5065837375253935970">
+                Hledat</translation>
+  <translation id="5606170787510897717">
+                Resetova</translation>
+  <translation id="8090504835357979338">Jednotka byla úspěšně označena jako Poškozená</translation>
+  <translation id="92218301785983050">Označení jednotky jako Poškozená se nezdařilo</translation>
+  <translation id="2673254818468878353">Označit jednotku jako poškozenou</translation>
+  <translation id="2980098087875154794">
+        Jednotka byla dříve vypůjčena</translation>
+  <translation id="6067256309136371647">           Jednotka byla naposledy vypůjčena čtenářem
+            <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>
+              <ph name="INTERPOLATION"><ex>{{chargeResponse.circ.usr().family_name()}}</ex>{{chargeResponse.circ.usr().family_name()}}</ph>,
+              <ph name="INTERPOLATION_1"><ex>{{chargeResponse.circ.usr().first_given_name()}}</ex>{{chargeResponse.circ.usr().first_given_name()}}</ph> 
+              (<ph name="INTERPOLATION_2"><ex>{{chargeResponse.circ.usr().usrname()}}</ex>{{chargeResponse.circ.usr().usrname()}}</ph>)
+            <ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph>.</translation>
+  <translation id="1360779131419187967">
+            ITermín vrácení jednotky byl
+            <ph name="INTERPOLATION"><ex>{{chargeResponse.circ.due_date() | formatValue:&apos;timestamp&apos;}}</ex>{{chargeResponse.circ.due_date() | formatValue:&apos;timestamp&apos;}}</ph> 
+            a byla vrácena 
+            <ph name="INTERPOLATION_1"><ex>{{chargeResponse.circ.checkin_time() | date:&apos;MM/dd/yy H:mm a&apos;}}</ex>{{chargeResponse.circ.checkin_time() | date:&apos;MM/dd/yy H:mm a&apos;}}</ph>.</translation>
+  <translation id="3623830635283351872">
+             Vypočtená výše pokuty je 
+              <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>
+                <ph name="INTERPOLATION"><ex>{{chargeResponse.charge | currency}}</ex>{{chargeResponse.charge | currency}}</ph>
+              <ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="2558174311687621439">Typ poplatku...</translation>
+  <translation id="3948552872055355542">Označeno jako poškozené</translation>
+  <translation id="3291705519537739327">Změnit částku</translation>
+  <translation id="2580686114144503824">Bez poplatku</translation>
+  <translation id="8065679224749516361">Jednotka byla úspěšně označena jako Postrádaná</translation>
+  <translation id="4815295099803226267">Označení jednotky jako Postrádané se nezdařilo</translation>
+  <translation id="5007030082081715697">Označit jednotku jako Postrádanou</translation>
+  <translation id="6958126370763843442">          <ph name="INTERPOLATION"><ex>{{numSucceeded}}</ex>{{numSucceeded}}</ph> Jednotky byly úspěšně označeny jako Postrádané</translation>
+  <translation id="1818613769646355578">Označit jako Postrádané</translation>
+  <translation id="3847243829167818487">Úspěšně nalezený jiný cíl rezervace</translation>
+  <translation id="4197802276237162970">Nalezení jiného cíle rezervace se nezdařilo</translation>
+  <translation id="6830316509193544562">Nalézt jiný cíl rezervace</translation>
+  <translation id="5526746293582403519">          <ph name="INTERPOLATION"><ex>{{numSucceeded}}</ex>{{numSucceeded}}</ph> Nalezení jiného cíle pro rezervaci (rezervace) bylo úspěšné</translation>
+  <translation id="7092691235780941755">Najít jiný cíl</translation>
+  <translation id="6610891642878951751">Úspěšně přesunutá rezervace</translation>
+  <translation id="7571966282635080402">Přesun rezervace se nezdařil</translation>
+  <translation id="92195369585943581">Je požadován cíl přesunu</translation>
+  <translation id="8130434264916136119">Přesunout rezervace do označeného cíle</translation>
+  <translation id="7879816584524453313">
+          <ph name="INTERPOLATION"><ex>{{numSucceeded}}</ex>{{numSucceeded}}</ph> Rezervace byly úspěšně přesunuty</translation>
+  <translation id="8402696305361715603">Přesun</translation>
+  <translation id="6571807160648078969">Úspěšně zrušené rezervace</translation>
+  <translation id="3176153206503675084">Zrušení rezervace se nezdařilo</translation>
+  <translation id="9205210417117933018">Zrušit rezervaci</translation>
+  <translation id="5125279863266781721">Důvod zrušení</translation>
+  <translation id="4848280198338869932">Poznámka ke zrušení</translation>
+  <translation id="4281775887783706685">
+          <ph name="INTERPOLATION"><ex>{{numSucceeded}}</ex>{{numSucceeded}}</ph> Rezervace byly úspěšně zrušeny</translation>
+  <translation id="389718792174474468">Upravit rezervaci (č. <ph name="INTERPOLATION"><ex>{{holdIds[0]}}</ex>{{holdIds[0]}}</ph>)</translation>
+  <translation id="2872561745779576101">Knihovna pro vyzvednutí</translation>
+  <translation id="3130179610123544552">Předběžně načíst všechny rezervace</translation>
+  <translation id="1749152557012436087">Zobrazit detaily rezervace</translation>
+  <translation id="589343800587215810">Rezervace</translation>
+  <translation id="7313211128563024363">Upravit rezervaci (rezervace)</translation>
+  <translation id="2795588824872471804">Zobrazit několik posledních výpůjček</translation>
+  <translation id="8075168556531069883">Jednotka</translation>
+  <translation id="8704460760200285591">Načíst čtenáře</translation>
+  <translation id="6562250546582244415">Čtenář</translation>
+  <translation id="8488292119237625472">Přesunout k označenému titulu</translation>
+  <translation id="3656061005868944770">Najít jiný cíl</translation>
+  <translation id="2837814024778396963">Vytisknout rezervace</translation>
+  <translation id="4145296112424291008">ID rezervace</translation>
+  <translation id="2105948048369918244">Aktuální jednotka</translation>
+  <translation id="1191865578113917590">Čárový kód čtenáře</translation>
+  <translation id="3706978543620092484">Alias čtenáře</translation>
+  <translation id="4926083753933394202">Datum zadání požadavku</translation>
+  <translation id="1826468428193309350">Datum zachycení</translation>
+  <translation id="8296622428370822141">Datum, kdy byla dostupná</translation>
+  <translation id="1744456884157854920">Typ rezervace</translation>
+  <translation id="8126834983869274020">Potenciální jednotka</translation>
+  <translation id="8750569257147678685">Pozice ve frontě</translation>
+  <translation id="2128755808672960949">ID uživatele</translation>
+  <translation id="6028371114637047813">Křestní jméno</translation>
+  <translation id="4407559560004943843">Příjmení</translation>
+  <translation id="7324901898118271825">ID žádajícího</translation>
+  <translation id="3925505332626461442">Uživatelské jméno žádajícího</translation>
+  <translation id="4152409811587413536">Prefix signatury</translation>
+  <translation id="3229404104503571320">Sufix signatury</translation>
+  <translation id="873660456070153614">Datum/čas splnění</translation>
+  <translation id="131528614579290808">Čas načtení</translation>
+  <translation id="4305440954640725227">Čas vrácení</translation>
+  <translation id="3313647879041482936">Datum/čas posledního přidělení cílů</translation>
+  <translation id="4660198301272888238">Čas vypršení</translation>
+  <translation id="8064808365838783184">Datum/čas zrušení rezervace</translation>
+  <translation id="9060004845605683891">Poznámka ke zrušení</translation>
+  <translation id="5486497222166539553">Cíl rezervace</translation>
+  <translation id="2287061834446859282">Pracovník plnící rezervaci</translation>
+  <translation id="2740970998764771822">Knihovna plnící rezervaci</translation>
+  <translation id="8451113944219725121">Žádající knihovna</translation>
+  <translation id="7744459407814928851">Žádající uživatel</translation>
+  <translation id="2392488717875840729">Uživatel</translation>
+  <translation id="4299689482725511110">Knihovna výběru</translation>
+  <translation id="6910416324335882971">Hloubka výběru jednotky</translation>
+  <translation id="2075560339644403121">Formáty pro rezervaci (pro rezervace typu M)</translation>
+  <translation id="1367582350507204252">Číslo pro telefonické upozornění</translation>
+  <translation id="3908036079664382842">Číslo pro SMS upozornění</translation>
+  <translation id="5509999488177114883">E-mailové upozornění?</translation>
+  <translation id="2796988493219471622">SMS operátor</translation>
+  <translation id="6875379754359805144">Momentálně pozastaveno</translation>
+  <translation id="3896558543773467433">Datum aktivace</translation>
+  <translation id="7805702852572324652">Začátek fronty</translation>
+  <translation id="2653001452772505134">Je zbrusu nová</translation>
+  <translation id="8648296844726381719">Čas vypršení rezervace k vyzvednutí</translation>
+  <translation id="8788197319436140043">Aktuální knihovna umístění</translation>
+  <translation id="8592382212406738016">U výpůjčního pultu</translation>
+  <translation id="7278893052790915982">Lze vyčistit</translation>
+  <translation id="8702906201474019891">Je rezervací zadanou personálem</translation>
+  <translation id="1488400337275765891">ID důvodu zrušení</translation>
+  <translation id="8648962896415665328">Důvod zrušení</translation>
+  <translation id="8539179055926631778">Název knihovny pro vyzvednutí</translation>
+  <translation id="1694808904100601343">E-mail knihovny pro vyzvednutí</translation>
+  <translation id="6591315945412970935">Telefon knihovny pro vyzvednutí</translation>
+  <translation id="8016157102844172977">Viditelné v OPACu knihovny pro vyzvednutí</translation>
+  <translation id="942278124313211765">ID přepravy</translation>
+  <translation id="1944697003047745780">Čas odeslání k přepravě</translation>
+  <translation id="8734680156369952901">Čas příjmu přepravy</translation>
+  <translation id="549038738599175898">Přepravovaná jednotka</translation>
+  <translation id="1975957427599265216">Zdroj přepravy</translation>
+  <translation id="9111728372746032528">Cíl přepravy</translation>
+  <translation id="4355883009240307336">Status jednotky v přepravě</translation>
+  <translation id="6441737629997709827">Přepravovaná rezervace</translation>
+  <translation id="4082506698455097081">Čas zrušení přepravy</translation>
+  <translation id="1478170963296069549">Počet poznámek k rezervaci</translation>
+  <translation id="6046973772676650262">Zobrazené jméno uživatele</translation>
+  <translation id="194067946846246769">ID jednotky</translation>
+  <translation id="4292991530981134461">Číslo jednotky v signatuře</translation>
+  <translation id="620177348447277557">Úroveň pokuty</translation>
+  <translation id="8471035650429410802">Lze půjčovat</translation>
+  <translation id="4481344588466827844">Výše vkladu</translation>
+  <translation id="6855389939211710425">Je vyžadován vklad</translation>
+  <translation id="7662855149238519889">Prezenční exemplář</translation>
+  <translation id="3123984422601315419">Lze rezervovat</translation>
+  <translation id="8894377483833272091">Obchodní cena</translation>
+  <translation id="5138484498947782905">Půjčovat jako typ MARC</translation>
+  <translation id="1462523458910765309">Provizorní předkatalogizovaný název</translation>
+  <translation id="6005135173758424396">Provizorní předkatalogizovaný autor</translation>
+  <translation id="2464007889803244185">Upozornění k jednotce  (zavrhnuto)</translation>
+  <translation id="8207147248145737579">Jednotka viditelná v OPACu</translation>
+  <translation id="2344305438591080261">Jednotka smazána</translation>
+  <translation id="1599175256860523865">Pohyblivá skupina</translation>
+  <translation id="5000572383252163063">Provizorní předkatalogizované ISBN</translation>
+  <translation id="6631322941650601688">Čas změny statusu jednotky</translation>
+  <translation id="190267929771368890">Datum aktivace jednotky</translation>
+  <translation id="7505198472760234753">Jednotka je zbrusu nová</translation>
+  <translation id="2578732368187466916">Náklady</translation>
+  <translation id="1654590968957908222">Status lze rezervovat</translation>
+  <translation id="327877591865566241">Status je zobrazen v OPACu</translation>
+  <translation id="6390846851971922880">Status aktivuje exemplář</translation>
+  <translation id="1135231675731391183">Status Je smazáno</translation>
+  <translation id="9210267296323241154">Status Volné</translation>
+  <translation id="533781023755170655"/>
+  <translation id="1407332882545400518">ID Signatury</translation>
+  <translation id="2043839447104272544"/>
+  <translation id="8174770831164935047"/>
+  <translation id="1864102786594277120">Klíč řazení signatury</translation>
+  <translation id="2099781163954082933">ID části</translation>
+  <translation id="6649683461727984550"/>
+  <translation id="5751771004114514872">Klíč řazení části</translation>
+  <translation id="868330527776167869">Část je smazána</translation>
+  <translation id="5631094054910048622"/>
+  <translation id="585797405165091565">ID umístění jednotly</translation>
+  <translation id="6605460653727166768">Umístění jednotky</translation>
+  <translation id="5779225019421946215">Z umístění lze rezervovat jednotky</translation>
+  <translation id="725277567339914264">Potvrzovat rezervace z umístění</translation>
+  <translation id="5141802800839950006">Jednotky v umístění jsou viditelné v OPACu</translation>
+  <translation id="1630555544218775156">Jednotky v umístění lze půjčovat</translation>
+  <translation id="1109166451696693923">Prefix jednotek v umístění</translation>
+  <translation id="1889856292183488054">Sufix jednotek v umístění</translation>
+  <translation id="1210254831829862558">Upozornění na umístění při vracení</translation>
+  <translation id="3027987649138060199">Umístění jednotek je smazáno</translation>
+  <translation id="1442538241765593808">URL umístění jednotek</translation>
+  <translation id="7506442574530302483">Pořadí umístění jednotek</translation>
+  <translation id="3185635250613763332">Výchozí předpokládaný čas čekání</translation>
+  <translation id="6983996348864984603">Minimální předpokládaný čas čekání</translation>
+  <translation id="988025967847567777">Počet rezervací připojených záznamů</translation>
+  <translation id="2648075639987717523">Celkový čas čekání</translation>
+  <translation id="3220395356216966788">Počet upozornění</translation>
+  <translation id="8903457951449994928">Čas posledního upozornění</translation>
+  <translation id="5453003315322379565">Detaily rezervace (#<ph name="INTERPOLATION"><ex>{{hold.id}}</ex>{{hold.id}}</ph>)</translation>
+  <translation id="7387382518119780362">Poslední zobrazení</translation>
+  <translation id="4574281185633864528">Dostupné</translation>
+  <translation id="8193124700707651497">typ rezervace</translation>
+  <translation id="6100860029551607069">Signatura</translation>
+  <translation id="5151411856682330373">Knihovna pro vyzvednutí</translation>
+  <translation id="153674187856813645">Neznámá chyba</translation>
+  <translation id="4798348841388141858">Čekání na jednotku</translation>
+  <translation id="4974361313913325061">Čekání na zachycení</translation>
+  <translation id="5740713328031639670">v přepravě</translation>
+  <translation id="6190547279909686731">Připraveno k vyzvednutí</translation>
+  <translation id="1466676608987183284">Prodleva rezervace k vyzvednutí</translation>
+  <translation id="4381944803872489731">Zrušeno</translation>
+  <translation id="5851424994801012357">Pozastaveno</translation>
+  <translation id="2914449283256379475">Špatný regál</translation>
+  <translation id="2325028062393506896">Splněno</translation>
+  <translation id="3046011181186139448">Knihovna aktuálního regálu</translation>
+  <translation id="2487925064224682113">Aktuální umístění regálu</translation>
+  <translation id="7036147726283666985">Vynutit kvalitu jednotky</translation>
+  <translation id="7614970494537899461">E-mailové upozornění</translation>
+  <translation id="422708261855767062">Telefonické upozornění</translation>
+  <translation id="5796692848764977764">SMS upozornění</translation>
+  <translation id="1442708485719985415">Důvod zrušení</translation>
+  <translation id="3462664307886435255">Čas zrušení</translation>
+  <translation id="6010427314203256268">Jméno čtenáře</translation>
+  <translation id="4197929319665856163">Aktivovat editaci sloupce</translation>
+  <translation id="2454368065281043061">Knihovna pro vyzvednutí:</translation>
+  <translation id="7631985941626166681">Požadovaný stav jednotky:</translation>
+  <translation id="4137273194240492813">Rezervace je pozastavena:</translation>
+  <translation id="2415082772875013655">Začátek fronty:</translation>
+  <translation id="6512787130270910460">Datum aktivace:</translation>
+  <translation id="7784470873556678953">Datum požadavku:</translation>
+  <translation id="6877005221925048890">Datum vypršení:</translation>
+  <translation id="3498549294396359774">Datum vypršení rezervace na regále:</translation>
+  <translation id="7875490568719607892">Odeslat e-maily:</translation>
+  <translation id="1579676670064384220">Telefonní číslo:</translation>
+  <translation id="8623045216132981102">Telefonní číslo...</translation>
+  <translation id="6755484265772753339">Číslo pro testové/SMS zprávy:</translation>
+  <translation id="8448690617357798076">Číslo pro SMS...</translation>
+  <translation id="5153453663642537871">SMS operátor...</translation>
+  <translation id="4134917114666618814">
+        Zrušit</translation>
+  <translation id="8390228382547191913">
+        Použít</translation>
+  <translation id="5911747893814642436">Upozornění k jednotce byla úspěšně změněna</translation>
+  <translation id="8429712111226814119">Změna upozornění k jednotce se nezdařila</translation>
+  <translation id="9073900791275238266">Přidávána upozornění pro <ph name="INTERPOLATION"><ex>{{copies.length}}</ex>{{copies.length}}</ph> jednotku (jednotky).</translation>
+  <translation id="2021682084626370873">Jsou upravována upozornění pro jednotku <ph name="INTERPOLATION"><ex>{{copies[0].barcode()}}</ex>{{copies[0].barcode()}}</ph></translation>
+  <translation id="8365635996288570248">Nový typ upozornění...</translation>
+  <translation id="5756499307787052724">Nová poznámka upozornění...</translation>
+  <translation id="5540266862339624566">
+              Dočasné?</translation>
+  <translation id="277154512686744141">
+              Přidat nové</translation>
+  <translation id="8413325796584453014">Typ upozornění...</translation>
+  <translation id="6894135794153723810">
+            Přidáno: <ph name="INTERPOLATION"><ex>{{alert.create_time() | date:&apos;shortDate&apos;}}</ex>{{alert.create_time() | date:&apos;shortDate&apos;}}</ph></translation>
+  <translation id="128445830418836754">Poznámka upozornění...</translation>
+  <translation id="1254639824387752829">
+                Dočasné?</translation>
+  <translation id="6406844619904591523">
+                Vyčistit?</translation>
+  <translation id="3780215803787328104">Použít změny</translation>
+  <translation id="668956494726759030">Čárový kód byl úspěšně změněn</translation>
+  <translation id="5643255618102971275">Při změně čárového kódu došlo k chybě</translation>
+  <translation id="1878144846246059865">Změnit čárový kód jednotky</translation>
+  <translation id="3975362787622028221">Provádí se změna čárového kódu</translation>
+  <translation id="2098672066866212040">
+          <ph name="START_TAG_LABEL"><ex>&lt;label&gt;</ex>&lt;label&gt;</ph>Nový čárový kód:<ph name="CLOSE_TAG_LABEL"><ex>&lt;/label&gt;</ex>&lt;/label&gt;</ph></translation>
+  <translation id="6422012140246080538">
+          Čárový kód <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph><ph name="INTERPOLATION"><ex>{{newBarcode}}</ex>{{newBarcode}}</ph><ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph> je již používán.</translation>
+  <translation id="1053194947439463984">
+          Změnit čárový kód</translation>
+  <translation id="5761189843029272570"/>
+  <translation id="2422310499398384890">Při smazání jednotek došlo k chybě</translation>
+  <translation id="8315868811027667205">Zmazat jednotky</translation>
+  <translation id="6069754159662805451">Smazat <ph name="INTERPOLATION"><ex>{{numCallNums}}</ex>{{numCallNums}}</ph> call numbers and <ph name="INTERPOLATION_1"><ex>{{numCopies}}</ex>{{numCopies}}</ph> exempláře?</translation>
+  <translation id="2320486173255488761">
+          Smazat jednotky</translation>
+  <translation id="1844572890900568930">Připojené jednotky byly úspěšně připojeny/změněny</translation>
+  <translation id="3752350610904481783">Připojení/změna připojených jednotek se nezdařilo</translation>
+  <translation id="7956068296385048461">Připojit/změnit <ph name="INTERPOLATION"><ex>{{copyIds.length}}</ex>{{copyIds.length}}</ph> přioojenou jednotku (jednotky)</translation>
+  <translation id="6395579217130597880">
+          <ph name="START_TAG_LABEL"><ex>&lt;label&gt;</ex>&lt;label&gt;</ph>Typ připojení:<ph name="CLOSE_TAG_LABEL"><ex>&lt;/label&gt;</ex>&lt;/label&gt;</ph></translation>
+  <translation id="2844061459549698697">Typ připojení...</translation>
+  <translation id="3131950574823774300">
+          Připojit/Upravit</translation>
+  <translation id="4667625150960622371">Jednotka byla úspěšně označena jako rezervovatelný zdroj</translation>
+  <translation id="6562773258560565841">Označení jednotky jako rezervovatelný zdroj se nezdařilo</translation>
+  <translation id="7379382393049527575">Označit jednotku jako rezervovatelný zdroj</translation>
+  <translation id="6766049857341654823">Označit <ph name="INTERPOLATION"><ex>{{copyIds.length}}</ex>{{copyIds.length}}</ph>  jednotku (jednotky) jako rezervovatelný zdroj?</translation>
+  <translation id="4872924920332776591"><ph name="INTERPOLATION"><ex>{{numSucceeded}}</ex>{{numSucceeded}}</ph> Jednotky byly označeny jako rezervovatelný zdroj.</translation>
+  <translation id="7202143428564996576">
+              Správa rezervovatelných zdrojů</translation>
+  <translation id="5729382375938649042">Označit jako rezervovatelné</translation>
+  <translation id="397098723873502323">Hotovo</translation>
+  <translation id="3084484714683041513">Vyhledávání v katalogu - <ph name="INTERPOLATION"><ex>{{searchContext.result.count}}</ex>{{searchContext.result.count}}</ph> Výsledky</translation>
+  <translation id="5683677427011567244">Vyhledávání v katalogu</translation>
+  <translation id="5773175567567821732">Nebyly nalezeny vyhovující jednotky</translation>
+  <translation id="874036780110482491">Výsledky procházení &quot;<ph name="INTERPOLATION"><ex>{{searchContext.termSearch.browseEntry.value()}}</ex>{{searchContext.termSearch.browseEntry.value()}}</ph>&quot;</translation>
+  <translation id="5794675761928643849">Zobrazení košíku</translation>
+  <translation id="689342868183390953">Vyberte <ph name="INTERPOLATION"><ex>{{searchContext.pager.rowNumber(0)}}</ex>{{searchContext.pager.rowNumber(0)}}</ph> - 
+          <ph name="INTERPOLATION_1"><ex>{{searchContext.pager.rowNumber(searchContext.currentResultIds().length - 1)}}</ex>{{searchContext.pager.rowNumber(searchContext.currentResultIds().length - 1)}}</ph></translation>
+  <translation id="2618235011685825700">Bibliografický záznam <ph name="INTERPOLATION"><ex>{{summary.record.tcn_value()}}</ex>{{summary.record.tcn_value()}}</ph> - <ph name="INTERPOLATION_1"><ex>{{summary.display.title}}</ex>{{summary.display.title}}</ph></translation>
+  <translation id="6398483646371730954">Nastavit jako výchozí zobrazení</translation>
+  <translation id="6800646407313608680">Tabulka jednotek</translation>
+  <translation id="7401408585573769247">Editace MARC</translation>
+  <translation id="4305313550625921198">Rezervace</translation>
+  <translation id="2894992761987054993">Části monografií</translation>
+  <translation id="3292592493609530007">Jednotky</translation>
+  <translation id="6267583962306748826">Spojené jednotky</translation>
+  <translation id="9039828918082604066">Zobrazení čtenáře</translation>
+  <translation id="7005237229114856893">
+        Rezervace jednotky</translation>
+  <translation id="6372643429582651317">
+        Rezervace signatury</translation>
+  <translation id="4488968375845802506">Poznámky k jednotce / signatuře</translation>
+  <translation id="8739228028759607828">Fyz. popis: 
+                  <ph name="INTERPOLATION"><ex>{{[].concat(summary.display.physical_description).join(&apos;, &apos;)}}</ex>{{[].concat(summary.display.physical_description).join(&apos;, &apos;)}}</ph></translation>
+  <translation id="8195591297529394569">Vydání: <ph name="INTERPOLATION"><ex>{{summary.display.edition}}</ex>{{summary.display.edition}}</ph></translation>
+  <translation id="3124313415144220975">Vydavatel: <ph name="INTERPOLATION"><ex>{{summary.display.publisher}}</ex>{{summary.display.publisher}}</ph></translation>
+  <translation id="631160854450293678">Datum vydání: <ph name="INTERPOLATION"><ex>{{summary.display.pubdate}}</ex>{{summary.display.pubdate}}</ph></translation>
+  <translation id="652549279364902103">ISBN: 
+                  <ph name="INTERPOLATION"><ex>{{[].concat(summary.display.isbn).join(&apos;, &apos;)}}</ex>{{[].concat(summary.display.isbn).join(&apos;, &apos;)}}</ph></translation>
+  <translation id="4319021339266367904">UPC: 
+                  <ph name="INTERPOLATION"><ex>{{[].concat(summary.display.upc).join(&apos;, &apos;)}}</ex>{{[].concat(summary.display.upc).join(&apos;, &apos;)}}</ph></translation>
+  <translation id="163905138624628711">ISSN: 
+                  <ph name="INTERPOLATION"><ex>{{[].concat(summary.display.issn).join(&apos;, &apos;)}}</ex>{{[].concat(summary.display.issn).join(&apos;, &apos;)}}</ph></translation>
+  <translation id="6565022694097285936">Sada cílů pro přesun rezervací</translation>
+  <translation id="5802108972540440840">
+    Přidat jednotky</translation>
+  <translation id="2957817963391638218">Seriály</translation>
+  <translation id="3504169390685831024">
+        Správa předplatného</translation>
+  <translation id="7431706574394511216">
+        Správa MFHD</translation>
+  <translation id="7634477308898522756">
+          Přesun jednotek<ph name="START_TAG_NG_CONTAINER"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>
+            (Aktuálně <ph name="INTERPOLATION"><ex>{{targets.holdingTransfer.current}}</ex>{{targets.holdingTransfer.current}}</ph>)<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph></translation>
+  <translation id="8849043914668115087">Zadat rezervaci 
+      <ph name="START_SMALL_TEXT"><ex>&lt;small&gt;</ex>&lt;small&gt;</ph>
+       (<ph name="INTERPOLATION"><ex>{{user.family_name()}}</ex>{{user.family_name()}}</ph>, <ph name="INTERPOLATION_1"><ex>{{user.first_given_name()}}</ex>{{user.first_given_name()}}</ph>)
+      <ph name="CLOSE_SMALL_TEXT"><ex>&lt;/small&gt;</ex>&lt;/small&gt;</ph></translation>
+  <translation id="4956120964290957178">Hledání čtenáře</translation>
+  <translation id="8383780172065075451">
+              Place hold for patron by barcode:</translation>
+  <translation id="3790186598950358901">
+              Zadat rezervace na tento služební účet:</translation>
+  <translation id="5676808587185036490">Knihovna pro vyzvednutí:</translation>
+  <translation id="1827146382106703067">Pozastavit rezervaci</translation>
+  <translation id="5851560788527570644">Upozornění</translation>
+  <translation id="8262613416180044964">E-mailové upozornění</translation>
+  <translation id="4879517228803151475">E-mailová adresa</translation>
+  <translation id="448450481597401718">Telefonické upozornění</translation>
+  <translation id="8194554728555410336">Telefonní číslo</translation>
+  <translation id="2725880380098677476">SMS upozornění</translation>
+  <translation id="5036004804456368723">Číslo pro zaslání SMS</translation>
+  <translation id="8485535637477753309">Zadat rezervaci (rezervace)</translation>
+  <translation id="8324071836171714399">Zadání 
+    <ph name="START_TAG_NG_CONTAINER"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>METARECORD<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> 
+    <ph name="START_TAG_NG_CONTAINER_1"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>TITLE<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> 
+    <ph name="START_TAG_NG_CONTAINER_2"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>CALL NUMBER<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph>
+    <ph name="START_TAG_NG_CONTAINER_3"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>FORCE COPY<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> 
+    <ph name="START_TAG_NG_CONTAINER_4"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>COPY<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> 
+    <ph name="START_TAG_NG_CONTAINER_5"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>RECALL<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> 
+    <ph name="START_TAG_NG_CONTAINER_6"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>ISSUANCE<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> 
+    <ph name="START_TAG_NG_CONTAINER_7"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>PARTS<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> 
+    rezervace na záznam (záznamy)</translation>
+  <translation id="8762533048263722301">JAKÝKOLIV</translation>
+  <translation id="7513076467032912668">Formát</translation>
+  <translation id="558458027509410914">Status rezervace</translation>
+  <translation id="1740011261887912974">Překonat</translation>
+  <translation id="3868420354113245697">Nevyřízená rezervace</translation>
+  <translation id="6581724905054268021">Zpracování rezervace...</translation>
+  <translation id="1036139699620036848">Rezervace se zdařila</translation>
+  <translation id="7445493758951042884">Formáty: </translation>
+  <translation id="4347460585157861935">Jazyky: </translation>
+  <translation id="9078873786201586368">Sloučit části monografií</translation>
+  <translation id="4890338651503073033">Vybrat řídící část</translation>
+  <translation id="3206542606001340679">Sloučit</translation>
+  <translation id="4140562699563658426">Nová část monogrfie</translation>
+  <translation id="5393432850392471631">Sloučit vybrané</translation>
+  <translation id="4561357499037848734"> <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>
+                <ph name="START_TAG_NG_CONTAINER"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>
+                    Viz
+                <ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph>
+                <ph name="START_TAG_NG_CONTAINER_1"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>
+                    Širší termín
+                <ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph>
+                <ph name="START_TAG_NG_CONTAINER_2"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>
+                    Užší termín
+                <ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph>
+                <ph name="START_TAG_NG_CONTAINER_3"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>
+                    Související termín
+                <ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph>
+              <ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
+              <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>
+                <ph name="INTERPOLATION"><ex>{{heading.heading}}</ex>{{heading.heading}}</ph> (<ph name="INTERPOLATION_1"><ex>{{heading.target_count}}</ex>{{heading.target_count}}</ph>)
+              <ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
+  <translation id="1483279394152487973">Potvrdit odpojení</translation>
+  <translation id="8239673116545752108">Odpojit <ph name="INTERPOLATION"><ex>{{idsToUnlink.length}}</ex>{{idsToUnlink.length}}</ph> jednotky?</translation>
+  <translation id="7192703482932328770">Změnit typ</translation>
+  <translation id="4658982717700339898">Odpojit</translation>
+  <translation id="3112017872024638015">Správa exemplářů</translation>
+  <translation id="9039478103729243085">Zobrazit signatury</translation>
+  <translation id="3344472691112893784">Zobrazit exempláře</translation>
+  <translation id="9058249305563463446">Zobrazit prázdní signatury</translation>
+  <translation id="5799999425339047694">Zobrazit prázdné knihovny</translation>
+  <translation id="6725247217556343836">Tisk štítků</translation>
+  <translation id="5873179874485934360">Vyžádat jednotky</translation>
+  <translation id="6653383051054354510">Připojit jako spojené k označenému bibliografickému záznamu</translation>
+  <translation id="3639523470474194699">Přidat signatury</translation>
+  <translation id="192533301975651164">Přidat jednotky</translation>
+  <translation id="5117253013271867323">Přidat signatury a jednotky</translation>
+  <translation id="6045315895626581502">Přidat upozornění k jednotce</translation>
+  <translation id="6445738484686351287">Přidat jednotky do skupiny</translation>
+  <translation id="6217322650629547196">Rezervovat jako zdroj</translation>
+  <translation id="9119196986424406963">Upravit signatury</translation>
+  <translation id="7378404369785185933">Upravit signatury a jednotky</translation>
+  <translation id="2487026685187955236">Upravit jednotky</translation>
+  <translation id="3791829168201550061">Upravit upozornění k jednotce</translation>
+  <translation id="34629385610162626">Nahradit čárové kódy</translation>
+  <translation id="2987879433722111169">Smazat prázdné signatury</translation>
+  <translation id="1027110684228149244">Smazat jednotky</translation>
+  <translation id="8845055839026159850">Smazat signatury a jednotky</translation>
+  <translation id="8461842260159597706">Zobrazit</translation>
+  <translation id="8939811925686190875">Zobrazit status exempláře (seznam)</translation>
+  <translation id="6877650221569097327">Zobrazit status exempláře (detaily)</translation>
+  <translation id="6340033566582141010">Zobrazit rezervace jednotky</translation>
+  <translation id="9059463333049750618">Zobrazit spuštěné události</translation>
+  <translation id="1226060325201042854">Označit</translation>
+  <translation id="5038178072363653668">Označit knihovnu/signaturu jako cíl přesunu</translation>
+  <translation id="270227330719814731">Umístění / čárový kód</translation>
+  <translation id="8481725481011463835">Signatury</translation>
+  <translation id="2525347614110514925">Exempláře</translation>
+  <translation id="2428732022049202001">Výpůjční knihovna</translation>
+  <translation id="8318478181786126182">Vlastnická knihovna</translation>
+  <translation id="8439452045919004338">Číslo jednotky</translation>
+  <translation id="7191542028183887855">Prefix signatury</translation>
+  <translation id="3703469904608875490">Sufix signatury</translation>
+  <translation id="7562440787446042921">Cena jednotky</translation>
+  <translation id="7900227474985064812">Půjčovat</translation>
+  <translation id="5213771062241898526">Vklad</translation>
+  <translation id="7194843678844004435">Je prezenční exemplář?</translation>
+  <translation id="3456963123814264599">Datum poslední revize</translation>
+  <translation id="4985327096509445287">Pracovní stanice poslední revize</translation>
+  <translation id="3350073712470262570">Smazat uložené vyhledávací šablony &apos;<ph name="INTERPOLATION"><ex>{{selectedTemplate()}}</ex>{{selectedTemplate()}}</ph>&apos;?</translation>
+  <translation id="4229975594546660291">Potvrdit smazání všech</translation>
+  <translation id="2589672350783676854">Smazat všechny uložené šablony?</translation>
+  <translation id="8964998104618969725">Potvrďte vyčištění hledání</translation>
+  <translation id="7141643886553166303">Vyčistit všechna nedávná hledání?</translation>
+  <translation id="3674458241245898981">
+  <ph name="START_TAG_NG_CONTAINER"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>
+    <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>Hledat:<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
+    <ph name="START_TAG_SPAN_1"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>Identifikátor:<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
+    <ph name="START_TAG_SPAN_2"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>MARC:<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
+    <ph name="START_TAG_SPAN_3"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>Procházet:<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
+  <ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> <ph name="INTERPOLATION"><ex>{{query}}</ex>{{query}}</ph>
+
+</translation>
+  <translation id="6589762315111712130">Nedávná hledání</translation>
+  <translation id="1649755253223706336">Vyčistit nedávná hledání</translation>
+  <translation id="8034357036299411879">Žádná nedávná hledání</translation>
+  <translation id="3582744692531337520">Vyhledávací šablony</translation>
+  <translation id="1036586810617210056">Uložit šablonu</translation>
+  <translation id="6568770950014127079">Smazat všechny šablony</translation>
+  <translation id="3680187766502370295">Žádné uložené šablony</translation>
+  <translation id="36038288712703305">Název šablony:</translation>
+  <translation id="7342707003629069116">:) <ph name="INTERPOLATION"><ex>{{dynamicTitleText}}</ex>{{dynamicTitleText}}</ph></translation>
+  <translation id="9114050288119983363"> Změnit název šablony </translation>
+  <translation id="852039842734710373">Akce, která vyžaduje jediný řádek</translation>
+  <translation id="344788279425162587">Jiná akce</translation>
+  <translation id="9035513249543311240">Úspěšně změněno!</translation>
+  <translation id="4128269576934947127">Změna se nezdařila</translation>
+  <translation id="6396186333527619728">Knihy jsou k užívání</translation>
+  <translation id="628515097475583333">Každému čtenáři jeho knihu</translation>
+  <translation id="6276509594765878074">Každé knize jejího čtenáře</translation>
+  <translation id="8008112913299731129">Šetřit čas čtenáře</translation>
+  <translation id="2517909227484922372">Knihovna je rostoucí organismus</translation>
+  <translation id="8029938078906594809">42</translation>
+  <translation id="3036001718715308131">Tohle není skutečný zákon knihovní vědy!</translation>
+  <translation id="1288201717301557531">Příliš mnoho fantastických knihoven!</translation>
+  <translation id="7352237639585419946">Potvrdit číslo</translation>
+  <translation id="2235125046046786910">Opravdu chcete potvrdit <ph name="ICU"><ex>{numThings, plural, =1 {...} other {...}}</ex>{numThings, plural, =1 {...} other {...}}</ph>?</translation>
+  <translation id="1199665397788482777"/>
+  <translation id="4482851146944624010">ABC</translation>
+  <translation id="9098680881214741426">DEF</translation>
+  <translation id="8125334619969492017">Hodnota kombinovaného pole: <ph name="INTERPOLATION"><ex>{{simpleCombo ? simpleCombo.label : &apos;&apos;}}</ex>{{simpleCombo ? simpleCombo.label : &apos;&apos;}}</ph></translation>
+  <translation id="3370839803061654054">hodiny</translation>
+  <translation id="7036284206110282007">dny</translation>
+  <translation id="1381807530861875083">týdny</translation>
+  <translation id="6169402792391433667">měsíce</translation>
+  <translation id="7658073495909471632">roky</translation>
+  <translation id="8393463135318859599">Chyba při načítání výsledků</translation>
+  <translation id="4807055819504490039">Existující skupina</translation>
+  <translation id="3796644035323974205">
+                Přidat do vybraného seznamu</translation>
+  <translation id="1662440769395208246">Nový seznam</translation>
+  <translation id="4484179042703766379">
+                Přidat do nového seznamu</translation>
+  <translation id="883729875913828129">Sdílený seznam</translation>
+  <translation id="2952112088789054008">ID sdíleného seznamu</translation>
+  <translation id="6575385329965439486">
+                Přidat do sdíleného seznamu</translation>
+  <translation id="2729218181119418320">Potvrdit přidání do sdíleného seznamu</translation>
+  <translation id="1488010888079899285">Přidat do sdíleného seznamu s názvem &apos;<ph name="INTERPOLATION"><ex>{{sharedBucketName}}</ex>{{sharedBucketName}}</ph>&apos;?
+1488010888079899285
+</translation>
+  <translation id="6299159940913066746">Připojené kurzy</translation>
+  <translation id="4876085160989688354">Název kurzu:</translation>
+  <translation id="7550513275495722320">Číslo kurzu:</translation>
+  <translation id="4044914150608438571">Číslo sekce:</translation>
+  <translation id="408113183553786211">Vyzvednutí u dveří</translation>
+  <translation id="5376447792462259498">Vyhledávat v katalogu (tradiční)</translation>
+  <translation id="2716544441624671251">Vyhledávání dodavatele</translation>
+  <translation id="483626966558046881">Akviziční seznam</translation>
+  <translation id="2363158409383485440">Faktury</translation>
+  <translation id="2544872370456606354">Domovská stránka služebního klienta Evergreenu</translation>
+  <translation id="6199023634112195540">
+                    Hledat v katalogu</translation>
+  <translation id="433945414578895230"/>
+  <translation id="3883793957241817604">Výchozí vyhledávání uloženo</translation>
+  <translation id="8707061567190630027">Výchozí vyhledávání resetováno</translation>
+  <translation id="8173318932672667435">Hledej záznamy odpovídající
+      <ph name="START_TAG_SELECT"><ex>&lt;select&gt;</ex>&lt;select&gt;</ph>
+        <ph name="START_TAG_OPTION"><ex>&lt;option&gt;</ex>&lt;option&gt;</ph>all<ph name="CLOSE_TAG_OPTION"><ex>&lt;/option&gt;</ex>&lt;/option&gt;</ph>
+        <ph name="START_TAG_OPTION_1"><ex>&lt;option&gt;</ex>&lt;option&gt;</ph>any<ph name="CLOSE_TAG_OPTION"><ex>&lt;/option&gt;</ex>&lt;/option&gt;</ph>
+      <ph name="CLOSE_TAG_SELECT"><ex>&lt;/select&gt;</ex>&lt;/select&gt;</ph>
+      následujícím termínům:</translation>
+  <translation id="9102446808215414987">Zobrazit formulář</translation>
+  <translation id="8146085201574777477">Skrýt formulář</translation>
+  <translation id="2365247700145636937">Vyber pole pro hledání</translation>
+  <translation id="3676095562960762035">je</translation>
+  <translation id="2583297913282511545">NENÍ</translation>
+  <translation id="326106955650253946">obsahuje</translation>
+  <translation id="4553618757603044576">NEobsahuje</translation>
+  <translation id="212340795913680843">ZAČÍNÁ na</translation>
+  <translation id="7881101958343476243">KONČÍ na</translation>
+  <translation id="6760484197391499296">je roven nebo PŘED</translation>
+  <translation id="3505278362110965742">je roven nebo PO</translation>
+  <translation id="8746871119165197348">je MEZI</translation>
+  <translation id="7323918577779686589">doba (relativní datum)</translation>
+  <translation id="2778442479674839942">existuje</translation>
+  <translation id="1157033751313150613">NEexistuje</translation>
+  <translation id="365550929005880171">shoduje se s termínem ze souboru</translation>
+  <translation id="4580988005648117665">Hledání</translation>
+  <translation id="1092925851714149698">Nastavit jako výchozí <ph name="INTERPOLATION"><ex>{{searchTypeLabel}}</ex>{{searchTypeLabel}}</ph> vyhledávání</translation>
+  <translation id="5202610527228806138">
+        Znovunastavit výchozí vyhledávání</translation>
+  <translation id="5282335594367917188">Okamžitě načíst výsledky</translation>
+  <translation id="968054088699303467">Položka</translation>
+  <translation id="4111860649370638583">Pracovní list</translation>
+  <translation id="4694661022214235649">Objednávka</translation>
+  <translation id="2398407606701767789">Požadavek</translation>
+  <translation id="538743482909979705">Fronta</translation>
+  <translation id="7047124309998632009">Akviziční seznam</translation>
+  <translation id="7565716024468232322">Odkazy</translation>
+  <translation id="5731972491580424912">Faktura</translation>
+  <translation id="5729316809383292871">Vytisknout vybrané faktury</translation>
+  <translation id="9056538087466546092">Vybrané faktury nelze vytisknout.</translation>
+  <translation id="7049333772206502756">Vytvořit nový akviziční seznam</translation>
+  <translation id="5664569679674630289">Název akvizičního seznamu:</translation>
+  <translation id="1695249033867173185">Tento akviziční seznam nelze vytvořit.</translation>
+  <translation id="3085627788308384795">Tento akviziční seznam nelze vytvořit: název se již používá.</translation>
+  <translation id="7648011677768322554">Klnovat akviziční seznam: <ph name="INTERPOLATION"><ex>{{leadListName}}</ex>{{leadListName}}</ph></translation>
+  <translation id="5834780181397311898">Klonovat</translation>
+  <translation id="6718615883363848307"/>
+  <translation id="5216539749602171272"/>
+  <translation id="6571879201293313561">Sloučit akviziční seznamy</translation>
+  <translation id="690255083763725466">Řídící akviziční seznam:</translation>
+  <translation id="151060465824743817">Sloučit tyto akviziční seznamy: </translation>
+  <translation id="6805247867908925884">Akviziční seznamy nelze sloučit.</translation>
+  <translation id="8361092821872622826">Akviziční seznam byl vytvořen</translation>
+  <translation id="4500419342281629347">Akviziční seznam byl klonován</translation>
+  <translation id="2441589457625089674">Akviziční seznam(y) byl(y) smazán(y)</translation>
+  <translation id="7764493313816089179">Akviziční seznamy byly sloučeny</translation>
+  <translation id="886811463486355931">Nový akviziční seznam</translation>
+  <translation id="8505221084118163731">Klonovat vybrané</translation>
+  <translation id="4739457152904457145">Hledání v akvizici</translation>
+  <translation id="3130770157101006838">Staré rozhraní pro vyhledávání</translation>
+  <translation id="1009956887978273167">Hledání položky</translation>
+  <translation id="8165747061368096702">Hledání objednávky</translation>
+  <translation id="5314606605618079809">Hledání faktury</translation>
+  <translation id="1145872672962601015">Hledání akvizičního seznamu</translation>
+  <translation id="3328410681860429964"/>
+  <translation id="5070474390961145559"/>
+  <translation id="9048575297217946347">Smazání dodavatele se nezdařilo</translation>
+  <translation id="4019228381036356510">Dodavatel byl úspěšně smazán</translation>
+  <translation id="4888659930218062730">Smazat dodavatele <ph name="INTERPOLATION"><ex>{{provider ? provider.code() : &apos;&apos;}}</ex>{{provider ? provider.code() : &apos;&apos;}}</ph>?</translation>
+  <translation id="4419710690523945930">Smazat dodavatele</translation>
+  <translation id="3696687369638603872">Aktualizace dodavatel úspěšně proběhla</translation>
+  <translation id="2289269087325658335">Aktualizace dodavatele se nezdařila</translation>
+  <translation id="7057221939815832964">Smazání dodavatele se nezdařilo nebo není povoleno</translation>
+  <translation id="3607622008414512494">Smazání dodavatele úspěšně proběhla</translation>
+  <translation id="6571771365080617267">Název dodavatele</translation>
+  <translation id="8186013988289067040">Kód</translation>
+  <translation id="9108180304755790254">Obnovit formulář</translation>
+  <translation id="9044503995162566400">Jméno kontaktu</translation>
+  <translation id="2924048547030997890">E-mail dodavatele</translation>
+  <translation id="4991142413742293987">Telefon dodavatele</translation>
+  <translation id="4327471061205783634">Měna</translation>
+  <translation id="148537076105086758">SAN</translation>
+  <translation id="8464060964330896591">Výchozí hodnoty EDI</translation>
+  <translation id="2375260419993138758">URL</translation>
+  <translation id="8199956052412658331">Exemplářové pole dodavatele bylo přidáno</translation>
+  <translation id="7195915631192973164">Vytvoření exemplářového pole dodavatele se nezdařilo</translation>
+  <translation id="8102384490641200669">Exemplářové pole dodavatele bylo aktualizováno</translation>
+  <translation id="716037912508826495">Aktualizace exemplářového pole dodavatele se nezdařila</translation>
+  <translation id="6992821783005669451">Smazaní exemplářového pole dodavatele se nezdařilo nebo není povoleno</translation>
+  <translation id="6213174174630992715">Exemplářové pole dodavatele bylo smazáno</translation>
+  <translation id="8457101240179432841">Tag exemplářového pole dodavatele byl aktualizován</translation>
+  <translation id="4216575990664709098">Kód kolekce</translation>
+  <translation id="6637520172926258332">Odhadovaná cena</translation>
+  <translation id="8917148266436022249">Kód finančního fondu</translation>
+  <translation id="6762504134540024018">Množství</translation>
+  <translation id="5160687639753909283"/>
+  <translation id="2423853792891065764">Tag exemplářového pole</translation>
+  <translation id="2135733363263801660">Nové exemplářové podpole</translation>
+  <translation id="324924317500263259">Načíst dodavatele</translation>
+  <translation id="7577342743301684844">Dodavatel byl přidán</translation>
+  <translation id="1148744205067308622">Vytvoření dodavatele se nezdařilo</translation>
+  <translation id="7474429911231654139">Varování kvůli  neuloženým změnám</translation>
+  <translation id="5726901694701586223">Některé změny nebyly uloženy. Opravdu chcete odejít?</translation>
+  <translation id="4429638637455080114"/>
+  <translation id="6746215693755342858">Zobrazit vyhledávací formulář</translation>
+  <translation id="6130333124181388314">Skrýt vyhledávací formulář</translation>
+  <translation id="9206155393233590407">Nový dodavatel</translation>
+  <translation id="8232773653071363045">Dodavatel</translation>
+  <translation id="5945986349492910662">Kontakty</translation>
+  <translation id="990414287671516182">Definice atributů</translation>
+  <translation id="6608950901692142149">Definice pro vlastnictví jednotek</translation>
+  <translation id="7879167102351905034">EDI</translation>
+  <translation id="6843695304209808261">OBJ</translation>
+  <translation id="8291024729722838561">Nová adresa dodavatele byla přidána</translation>
+  <translation id="1533575622645161986">Vytvoření nové adresy dodavatele se nezdařilo</translation>
+  <translation id="2818673118211197560">Adresa dodavatele byla úspěšně aktualizována</translation>
+  <translation id="1058078784956968019">Aktualizace adresy dodavatele se nezdařila</translation>
+  <translation id="8610209280139714123">Smazání adresy dodavatele se nezdařilo nebo není povoleno</translation>
+  <translation id="2244735674492639567">Smazání adresy dodavatele úspěšně proběhla</translation>
+  <translation id="804224782344272814">Přidat adresu dodavatele</translation>
+  <translation id="5723116413827501824">Nová adresa dodavatele byla přidána</translation>
+  <translation id="5848414140258554519">Vytvoření adresy dodavatele se nezdařilo</translation>
+  <translation id="3351115896495022558">Kontaktní adresa byla změněna</translation>
+  <translation id="5682837786888147127">Změna kontaktní adresy se nezdařila</translation>
+  <translation id="600178640932842744">Smazání kontaktní adresy se nezdařilo nebo není povoleno</translation>
+  <translation id="3123692050721328292">Kontaktní adresa byla smazána</translation>
+  <translation id="6429826638852698855">Nová kontaktní adresa</translation>
+  <translation id="8992737775919791090">Kontaktní adresa dodavatele byla přidána</translation>
+  <translation id="4628471988487508314">Přidání nového kontaktu dodavatele se nezdařilo</translation>
+  <translation id="6463900853430103592">Kontaktní adresa dodavatele byla změněna</translation>
+  <translation id="780397497227117104">Změna kontaktní adresy dodavatele se nezdařila</translation>
+  <translation id="1475836254291182335">Smazání kontaktu na dodavatele se nezdařilo nebo není povoleno</translation>
+  <translation id="5032135421313512169">Kontakt na dodavatele byl smazán</translation>
+  <translation id="3947653941155528177">Primární kontakt byl nastaven</translation>
+  <translation id="4036925192909801760">Nastavení primárního kontaktu se nezdařilo</translation>
+  <translation id="5605958453593595176">Primární kontakt byl odebrán</translation>
+  <translation id="4160738569051975474">Odebrání primárního kontaktu se nezdařilo</translation>
+  <translation id="8190009857171206252">Potvrďte nastavení primárního kontaktu</translation>
+  <translation id="3401309853200679699">Nastavit <ph name="INTERPOLATION"><ex>{{selectedContact ? selectedContact.name() : &apos;&apos;}}</ex>{{selectedContact ? selectedContact.name() : &apos;&apos;}}</ph> jako primární kontakt pro <ph name="INTERPOLATION_1"><ex>{{provider ? provider.name() : &apos;&apos;}}</ex>{{provider ? provider.name() : &apos;&apos;}}</ph>?</translation>
+  <translation id="3225276749975239125">Potvrďte zrušení nastavení jako primární kontakt</translation>
+  <translation id="1113099594647277630">Zrušit nastavení <ph name="INTERPOLATION"><ex>{{selectedContact ? selectedContact.name() : &apos;&apos;}}</ex>{{selectedContact ? selectedContact.name() : &apos;&apos;}}</ph> as the primary contact for <ph name="INTERPOLATION_1"><ex>{{provider ? provider.name() : &apos;&apos;}}</ex>{{provider ? provider.name() : &apos;&apos;}}</ph>?</translation>
+  <translation id="5988543797728971924">Nový kontakt na dodavatele</translation>
+  <translation id="5206159355827387014">Nastavit jako primární kontakt</translation>
+  <translation id="7547914265413456634">Odebrat nastavení jako primární kontakt</translation>
+  <translation id="6023660725853395916">Je primární?</translation>
+  <translation id="2470695936901461576">Adresy pro: <ph name="INTERPOLATION"><ex>{{selectedContact.name()}}</ex>{{selectedContact.name()}}</ph></translation>
+  <translation id="4695366801547629835">Nové atributy dodavatele byly přidány</translation>
+  <translation id="5037032021892133306">Přidání nových atributů dodavatele se nezdařilo</translation>
+  <translation id="6009823455555505696">Aktualizace atributů dodavatele úspěšně proběhla</translation>
+  <translation id="3156558658168784007">Aktualizace atributů dodavatele se nezdařila</translation>
+  <translation id="4944580452177953495">Smazání atributů dodavatele se nezdařilo nebo není povoleno</translation>
+  <translation id="5152289525267729727">Smazání atributů dodavatele úspěšně proběhlo</translation>
+  <translation id="573186653230181915">Nové atributy</translation>
+  <translation id="3407553384995521012">Nový účet pro EDI byl přidán</translation>
+  <translation id="111492390992409977">Vytvoření nového účtu pro EDI se nezdařilo</translation>
+  <translation id="7114030634368524293">Účet pro EDI byl úspěšně aktualizován</translation>
+  <translation id="2769062071037850529">Aktualizace účtu pro EDI se nezdařila</translation>
+  <translation id="5853143714547801401">Smazání účtu pro EDI se nezdařilo nebo není povoleno</translation>
+  <translation id="8470590707446378900">Smazání účtu pro EDI úspěšně proběhlo</translation>
+  <translation id="3844732804206708893">Výchozí účet pro EDI byl úspěšně nastaven</translation>
+  <translation id="4292620636706996909">Nastavení výchozího účtu pro EDI se nezdařilo</translation>
+  <translation id="2103610876065821138">Potvrdit nastavení výchozího účtu pro EDI</translation>
+  <translation id="3314128032169666968">Nastavit <ph name="INTERPOLATION"><ex>{{selected ? selected.label() : &apos;&apos;}}</ex>{{selected ? selected.label() : &apos;&apos;}}</ph> as the default EDI account for <ph name="INTERPOLATION_1"><ex>{{provider ? provider.name() : &apos;&apos;}}</ex>{{provider ? provider.name() : &apos;&apos;}}</ph>?</translation>
+  <translation id="5630539237434639350">Nový účet pro EDI</translation>
+  <translation id="5718230641867732402">Zobrazit zprávy EDI</translation>
+  <translation id="1935116885688531079">Nastavit jako výchozí</translation>
+  <translation id="8565073629166698795">Je výchozí?</translation>
+  <translation id="8380831348122386581">EDI messages for account <ph name="INTERPOLATION"><ex>{{selectedEdiAccountLabel}}</ex>{{selectedEdiAccountLabel}}</ph></translation>
+  <translation id="7754016079160377456">FTP nebo SCP server pro EDI,l včetně protokolu. Například ftp://ftp.example.org.</translation>
+  <translation id="8955767596926635588">Prostřední jméno</translation>
+  <translation id="4816767784445044140">Klíčová slova ke jménu</translation>
+  <translation id="629459648209899236">Přepnout zobrazení rozšířeného formuláře</translation>
+  <translation id="1965206604774400">Alias</translation>
+  <translation id="4768749765465246664">E-mail</translation>
+  <translation id="2213211565500516002">Vymazat formulář</translation>
+  <translation id="2819172393980939852">Identifikační doklad</translation>
+  <translation id="3262236020277300799">Telefon</translation>
+  <translation id="8824163485536862122">Ulice 1</translation>
+  <translation id="7866630728103873535">Ulice 2</translation>
+  <translation id="2314075913167237221">Město</translation>
+  <translation id="5911214550882917183">Stát</translation>
+  <translation id="1141427761455134615">Poštovní kód</translation>
+  <translation id="4212720883106184788">Domovská knihovna</translation>
+  <translation id="5005351852439288543">Rodič / zákonný zástupce</translation>
+  <translation id="5128097297071315723">Rok narození</translation>
+  <translation id="5934240320730772286">Měsíc narození</translation>
+  <translation id="1992773184953675659">Den narození</translation>
+  <translation id="1709289572931484960">Databázové ID</translation>
+  <translation id="340991785973427363">
+            Zahrnout neaktivní
+          ?</translation>
+  <translation id="5691966639616932851">Průkaz</translation>
+  <translation id="4915431133669985304">Skupina oprávnění</translation>
+  <translation id="4948663886508626048">Vytvořeno</translation>
+  <translation id="4811465148841358923">Kontaktní:Ulice 1</translation>
+  <translation id="8826756640068257852">Kontaktní:Ulice 2</translation>
+  <translation id="5396391505138748581">Kontaktní:Město</translation>
+  <translation id="3837003981531802520">Kontaktní:Okres</translation>
+  <translation id="3116745638800897438">Kontaktní:Stát</translation>
+  <translation id="2898068560742810285">Kontaktní:PSČ</translation>
+  <translation id="7445875450809247362">Trvalá: Ulice 1</translation>
+  <translation id="284982815252010503">Trvalá:Ulice 2</translation>
+  <translation id="141667063610530376">Trvalá:Obec</translation>
+  <translation id="6447051492251347771">Trvalá:Okres</translation>
+  <translation id="1741078962482037464">Trvalá:Stát</translation>
+  <translation id="3450680078518148003">Trvalá:PSČ</translation>
+  <translation id="3797570084942068182">Vybrat</translation>
+  <translation id="308344097186443310">Skupina oprávnění</translation>
+  <translation id="933921798150896612">Znovu vytisknout potvrzení o zachycení</translation>
+  <translation id="4058411149562054111">Nenalezen zdroj k tomuto čárovému kódu</translation>
+  <translation id="7604538383371427619">Zdroj byl úspěšně zachycen</translation>
+  <translation id="34432187865030535">Tento zdroj nelze zachytit</translation>
+  <translation id="2742699697094849589">Zachycení rezervovaného zdroje</translation>
+  <translation id="7869356423919656180">Zachycení</translation>
+  <translation id="4263927292656527289">Zachyceno dnes</translation>
+  <translation id="8374469763608770255">Použité filtry: <ph name="INTERPOLATION"><ex>{{gridFilters | json}}</ex>{{gridFilters | json}}</ph></translation>
+  <translation id="4359014576353578997">Zrušit filtry</translation>
+  <translation id="7075769930015979528">Odkaz na <ph name="INTERPOLATION"><ex>{{col.label}}</ex>{{col.label}}</ph></translation>
+  <translation id="7958799520390607981">      Typ záznamu <ph name="INTERPOLATION"><ex>{{record ? record.recordType() : &apos;&apos;}}</ex>{{record ? record.recordType() : &apos;&apos;}}</ph></translation>
+  <translation id="7418312807388840022">
+        Nahradit vybraný uzel</translation>
+  <translation id="556111530844708159">Jeden nebo více kontaktů nelze smazat. Pokračovat?</translation>
+  <translation id="2765099046800702094">Důvody zahrnují: <ph name="INTERPOLATION"><ex>{{deleteEventDesc}}</ex>{{deleteEventDesc}}</ph></translation>
+  <translation id="4593063443333769948">
+        Smazat jednotky</translation>
+  <translation id="6301982531655745147">Úspěšně přesunuté jednotky</translation>
+  <translation id="6339547280250871578">Přesun jednotek se nezdařil</translation>
+  <translation id="4393492974110351892">Nebyl vybrán cíl pro přesun</translation>
+  <translation id="1632392052962965770">Jedna nebo více jednotek nemohou být přesunuty. Obejít omezení?</translation>
+  <translation id="3909575663223570641">Důvod(y) zahrnují: <ph name="INTERPOLATION"><ex>{{eventDesc}}</ex>{{eventDesc}}</ph></translation>
+  <translation id="5619266044227052818">Jedna nebo více jednotek nemohou být přesunuty</translation>
+  <translation id="1721727322854792098">Editor MARC</translation>
+  <translation id="5744128525361483112">$</translation>
+  <translation id="821668427035385433">Viz: <ph name="INTERPOLATION"><ex>{{field.heading}}</ex>{{field.heading}}</ph></translation>
+  <translation id="2378132941261036132">Viz též: <ph name="INTERPOLATION"><ex>{{field.heading}}</ex>{{field.heading}}</ph></translation>
+  <translation id="6160671683827571372"/>
+  <translation id="7617687891879269540">Spravovat propojení na autority</translation>
+  <translation id="3125817251615927004"/>
+  <translation id="4449034732621535015">Vytvořit novou autoritu z tohoto pole</translation>
+  <translation id="8669444628795782045">Zobrazit jako záhlaví</translation>
+  <translation id="1641941749997343157">Zobrazit jako MARC</translation>
+  <translation id="7024299215733258044">Autoritní záznam ID <ph name="INTERPOLATION"><ex>{{entry.authority_id}}</ex>{{entry.authority_id}}</ph></translation>
+  <translation id="2115271583357778705">Průvodce fyzickými vlastnostmi</translation>
+  <translation id="3710224524048896631">Hodnota 007</translation>
+  <translation id="7808756054397155068">Obnovit nastavení</translation>
+  <translation id="8700121026680200191">Vyčistit</translation>
+  <translation id="2499713841893974782">Typ materiálů</translation>
+  <translation id="6135366680030950269">&lt;Zrušit nastavení&gt;</translation>
+  <translation id="2947886859813623889"/>
+  <translation id="6823827648744246189">Kód podpole</translation>
+  <translation id="1333842008362847646">Hodnota podpole</translation>
+  <translation id="5004024729525105237">Vytvořit odkaz na autoritu</translation>
+  <translation id="7716993534437171833">Autorita byla validována</translation>
+  <translation id="5166929054083210809">Validace autority se nezdařila</translation>
+  <translation id="7911416166208830577">Nápověda</translation>
+  <translation id="6057281094654962766">Validovat</translation>
+  <translation id="4619055856043821945">LDR</translation>
+  <translation id="1061297288634362831">Návěští</translation>
+  <translation id="5602962787483626268">Tag kontrolního pole</translation>
+  <translation id="9060332685197372803">Obsah kontrolního pole</translation>
+  <translation id="8360473245692254164">Otevřít průvodce fyzickými vlastnostmi</translation>
+  <translation id="1678841244148166636">Tag datového pole</translation>
+  <translation id="6037445710772211166">1. indikátor datového pole </translation>
+  <translation id="5781296299162472251">2. indikátor datového pole</translation>
+  <translation id="8650499415827640724">Typ</translation>
+  <translation id="6035590988694933546">ÚplZ</translation>
+  <translation id="9155608366859514313">Zdroj</translation>
+  <translation id="6691158702291469699">UUrč</translation>
+  <translation id="8224682376165664159">Kont</translation>
+  <translation id="6343977257565555289">Jaz</translation>
+  <translation id="4880237343053184520">BiUr</translation>
+  <translation id="6907807228975360219">Form</translation>
+  <translation id="239718415516962444">Konf</translation>
+  <translation id="6227439482668921969">Biog</translation>
+  <translation id="6974227276245579910">ModZ</translation>
+  <translation id="415644605460214087">Země</translation>
+  <translation id="2724334767708737143"/>
+  <translation id="8024696176371167855">Obs</translation>
+  <translation id="2146522073798919525">VlPb</translation>
+  <translation id="3688165027236963226">LitF</translation>
+  <translation id="4359040890615067982">Rejs</translation>
+  <translation id="8382405637519769348"/>
+  <translation id="8578534456929968335">Pop</translation>
+  <translation id="6557681337292165568">Ilus</translation>
+  <translation id="698695453331923512">Jubi</translation>
+  <translation id="6122040466295044433">TDat</translation>
+  <translation id="7286810828516807348">Dat1</translation>
+  <translation id="4927549183070692852">Dat2</translation>
+  <translation id="7339531537867989268"/>
+  <translation id="330749717970078740">Prav</translation>
+  <translation id="478150550009847288"/>
+  <translation id="1476705182802840874">Frek</translation>
+  <translation id="6355448092756801905"/>
+  <translation id="1287307276046721113"/>
+  <translation id="339729126805226016"/>
+  <translation id="5504294718997045193"/>
+  <translation id="954985046009039348"/>
+  <translation id="1302180592649933802"/>
+  <translation id="3813629674792983727">FSkl</translation>
+  <translation id="6863487164629845459"/>
+  <translation id="4124581389584669368"/>
+  <translation id="3078700395699921507"/>
+  <translation id="5907508363616911677"/>
+  <translation id="82423361031588852">TypM</translation>
+  <translation id="1061540398514258404"/>
+  <translation id="8455204924704616723"/>
+  <translation id="555989664405583582"/>
+  <translation id="1533430040515928324"/>
+  <translation id="4157576126145593905"/>
+  <translation id="1894513264551556610"/>
+  <translation id="6177316864864450040"/>
+  <translation id="4617750124863202178">JazKat</translation>
+  <translation id="6599752784987327249"/>
+  <translation id="4645345687322304891">Pravidla</translation>
+  <translation id="5354425113256040759"/>
+  <translation id="2366574179529910605">ČísSer</translation>
+  <translation id="2913113750511474740"/>
+  <translation id="6065000109545097136"/>
+  <translation id="3889783784646314446"/>
+  <translation id="6195542057697444627"/>
+  <translation id="3531977011957040242"/>
+  <translation id="3623346507845353635"/>
+  <translation id="2206092107169689788"/>
+  <translation id="8953033926734869941">Název</translation>
+  <translation id="85990745567234286">ModZáz</translation>
+  <translation id="6491210522911115323">Přidat 006</translation>
+  <translation id="6827224313706518299">Přidat 007</translation>
+  <translation id="793384322947647550">Přidat/nahradit 008</translation>
+  <translation id="2713159344643324913">Vložit pole před</translation>
+  <translation id="3429281710145350758">Vložit pole za</translation>
+  <translation id="5220752601423905433">Smazat pole</translation>
+  <translation id="7007378492251742745">Zobrazit záznam <ph name="INTERPOLATION"><ex>{{row.id()}}</ex>{{row.id()}}</ph></translation>
+  <translation id="2738349014431663333">Najít autoritní záznam podle ID</translation>
+  <translation id="4946531183271650005">ID Autoritního  záznamu</translation>
+  <translation id="8308285965745140463">Upravit autoritní záznam č. <ph name="INTERPOLATION"><ex>{{authorityId}}</ex>{{authorityId}}</ph></translation>
+  <translation id="4512976061326447246">Autoritní záznamy byly sloučeny</translation>
+  <translation id="7903741612816759171">Sloučení autoritních záznamů se nezdařilo</translation>
+  <translation id="1947053170227291146">Sloučit autoritní záznamy</translation>
+  <translation id="6700720359219385686">Řídící záznam</translation>
+  <translation id="6452845999276583763">Sloučit záznamy</translation>
+  <translation id="2539264544123386917">Správa autorit</translation>
+  <translation id="835486735144707137">Řádek vybraný pro sloučení</translation>
+  <translation id="702901588200225505">Vyhledávací termín</translation>
+  <translation id="6142114939769077235">Typ autority</translation>
+  <translation id="1407560924967345762">Strana</translation>
+  <translation id="9108361196362783403">Správa autorit <ph name="INTERPOLATION"><ex>{{row.authority.id()}}</ex>{{row.authority.id()}}</ph></translation>
+  <translation id="4140253780824325725">Označit pro sloučení</translation>
+  <translation id="2171102684472056441">Zrušit označení pro sloučení</translation>
+  <translation id="867916197875659423">Zrušit všechna označení pro sloučení</translation>
+  <translation id="1762041733505574243">Sloučit označené záznamy</translation>
+  <translation id="6021942807893129814">Propojené bib. zázn.</translation>
+  <translation id="6317126528752584322">Záhlaví</translation>
+  <translation id="7279516001752477719">Kontrolní sada</translation>
+  <translation id="1006553977463687257">Tezaurus (zkratka)</translation>
+  <translation id="5019752458710398316">Tezaurus</translation>
+  <translation id="7998995302472636333"/>
+  <translation id="2190684654571143363">Zpět k procházení</translation>
+  <translation id="5674933566538019426">Nastavení pravidel</translation>
+  <translation id="146442697456175258">Data</translation>
+  <translation id="1258011510623486953"/>
+  <translation id="6254459922754143568">Nahradit</translation>
+  <translation id="6157150841610397434">Jak změnit existující záznam</translation>
+  <translation id="3724241486684373164">Tag MARC</translation>
+  <translation id="6348005425015920269">
+          Tři znaky bez mezer mezer, indikátorů aj., např.: 245</translation>
+  <translation id="8751442342624057894"/>
+  <translation id="1643899850423481105"/>
+  <translation id="7840424745341705490"/>
+  <translation id="6486313087711837156"/>
+  <translation id="6965139263337829664"/>
+  <translation id="2734345804649513597"/>
+  <translation id="2791965473218359494">Výraz</translation>
+  <translation id="7068150569475884523">          Vysvětlení regulárních výrazů viz  
+          <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>
+            Dokumentace Perlu
+          <ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph></translation>
+  <translation id="105185116446651663"/>
+  <translation id="4167317720317210904">Přidat nové pravidlo pro sloučení</translation>
+  <translation id="8432127367423227850">Náhled šablony pro sloučení</translation>
+  <translation id="3812597907611583917">Zdroj záznamu: </translation>
+  <translation id="8720332287407681000">Skupina</translation>
+  <translation id="1486302641061867192">Soubor CSV</translation>
+  <translation id="2642842779097563252">ID Bibl. záznamu</translation>
+  <translation id="180671159786430142">Skupina s názvem: </translation>
+  <translation id="2507746909425852164">ID záznamu: </translation>
+  <translation id="3098292224427054140">Sloupec: </translation>
+  <translation id="7054091192371222228"> z </translation>
+  <translation id="4817735713203728167">
+              Sloupce jsou číslovány od nuly. Například
+              v souboru CSV v Excelu je sloupcem označeným A
+              sloupec  nula, a sloupcem označeným B je sloupec 1.</translation>
+  <translation id="8506870940393194390">Potvrdit!</translation>
+  <translation id="5486633693486320150">Zpracování dokončeno</translation>
+  <translation id="2654282809847903671">Počet úspěšně zpracovaných: </translation>
+  <translation id="7713335765571237353">Počet chyb: </translation>
+  <translation id="5552216497596741739">Pro rezervaci nalezen nový cíl</translation>
+  <translation id="9073072636536412767">Přidat jednotky</translation>
+  <translation id="873751854699583065"/>
+  <translation id="7532816155738758305"/>
+  <translation id="4704628981876047845"/>
+  <translation id="4748277851127480569"/>
+  <translation id="4591151408294802183"/>
+  <translation id="7343370343478083891"/>
+  <translation id="5949340167693851954"/>
+  <translation id="2551770919821310290"/>
+  <translation id="6590346929677091371"/>
+  <translation id="8676162913971358015"/>
+  <translation id="2683084124556355488"/>
+  <translation id="4496539083734221070"/>
+  <translation id="2916579526585779016"/>
+  <translation id="258555327340170828"/>
+  <translation id="8104421162933956065"/>
+  <translation id="7886570921510760899"/>
+  <translation id="8154453727027523235"/>
+  <translation id="2547157710218610782"/>
+  <translation id="1733377437659896047"/>
+  <translation id="8317457230285174180">Kurz</translation>
+  <translation id="8120269181725722869">
+        Zobrazit vyhledávací formulář <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>unfold_more<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="481971971557154380">UPC</translation>
+  <translation id="5369485958442419491"/>
+  <translation id="8992033074649446754"/>
+  <translation id="8586958906227719625"/>
+  <translation id="6306398049346640452"/>
+  <translation id="2361044151971010973"/>
+  <translation id="2669141259567340051"/>
+  <translation id="5735544153935476140"/>
+  <translation id="6772447970859188136"/>
+  <translation id="7985064246399990288">Předvolby katalogu</translation>
+  <translation id="5505504997073746600">Nastavení bylo aktualizováno</translation>
+  <translation id="3530616072501174474">Při nastavení došlo k chybě</translation>
+  <translation id="6783242207057721108">
+      Výchozí knihovna pro vyhledávání</translation>
+  <translation id="6217599562593785479"/>
+  <translation id="274674750655180029">Preferovaná knihovna</translation>
+  <translation id="1439315177160995376"/>
+  <translation id="2037791906609736246">
+      Výchozí panel pro vyhledávání</translation>
+  <translation id="6663842782934960288"/>
+  <translation id="5024593074214935340"/>
+  <translation id="4880846436502821352"/>
+  <translation id="1381641047380140066"/>
+  <translation id="9091234305791424003"/>
+  <translation id="2051034563594244390">Beznadějná rezervace</translation>
+  <translation id="452191826378644926">Beznadějné datum, počáteční rozsah:</translation>
+  <translation id="3042705071243611316">Beznadějné datum, koncový rozsah:</translation>
+  <translation id="419439977084700932">Nastavení pohyblivé skupiny</translation>
+  <translation id="8541057692848372983">Pohyblivá skupina byla přidána</translation>
+  <translation id="6078662925265916018">Přidání pohyblivé skupiny se nezdařilo</translation>
+  <translation id="7713184772542442873">Smazání pohyblivé skupiny se nezdařilo nebo není povoleno</translation>
+  <translation id="1359957205674989257">Pohyblivá skupina byla smazána</translation>
+  <translation id="6089771642871945619">Nová pohyblivá skupina</translation>
+  <translation id="5630337722341848189">Upravit pohyblivou skupinu</translation>
+  <translation id="7087787479462208294">Zpět k seznamu pohyblivých skupin</translation>
+  <translation id="2189511514416186710">Upravit členy pohyblivé skupiny</translation>
+  <translation id="8790198346821348334">Seznam materiálů ke kurzům</translation>
+  <translation id="7915662959842172921">Členové skupin definic událostí</translation>
+  <translation id="3909175880780300498">Skupiny definic událostí</translation>
+  <translation id="3565555346527088117">Správa materiálů ke kurzům</translation>
+  <translation id="8103458425798703835">Nastavení doby trvání kurzu</translation>
+  <translation id="2054130576910139400">
+                    <ph name="START_ITALIC_TEXT"><ex>&lt;i&gt;</ex>&lt;i&gt;</ph>keyboard_return<ph name="CLOSE_ITALIC_TEXT"><ex>&lt;/i&gt;</ex>&lt;/i&gt;</ph>
+                    <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>Zpět k seznamu kurzů<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="8811654603887222317">&lt;Nic nevybráno&gt;</translation>
+  <translation id="2956587270277429487">Odpojení materiálů od kurzu se nezdařilo nebo není povoleno</translation>
+  <translation id="5998181818214266321">Materiály byly odpojeny od kurzu</translation>
+  <translation id="3036437680272065244">Materiály byly připojeny ke kurzu</translation>
+  <translation id="6874201161169545188">Připojení materiálů ke kurzu se nezdařilo nebo není povoleno</translation>
+  <translation id="1122336509019722909">Materiály ke kurzu byly aktualizovány</translation>
+  <translation id="5626422674186531147">Změna materiálů ke kurzu se nezdařila nebo není povolena</translation>
+  <translation id="7448865328754652118">Materiál existuje v jiné knihovně</translation>
+  <translation id="6103446261666052921">Materiály ke kurzu</translation>
+  <translation id="3320741126473193507">Připojená jednotka</translation>
+  <translation id="7612675227076281553">Vztah</translation>
+  <translation id="3786241089788710399">
+                    Přidat materiál</translation>
+  <translation id="285095168500929286">K přidanému materiál budou použita tato pole
+                    a budou odebrána pokud materiál bude 
+                    odpojen od kurzu.</translation>
+  <translation id="4837841669818632232">Modifikátor výpůjčky...</translation>
+  <translation id="3288319011752417012">Status exempláře</translation>
+  <translation id="3365641651591625125">Připojit stručný záznam</translation>
+  <translation id="4704985448805651286">Tento záznam byl vytvořen v modulu pro materiály ke kurzům -- upravte jej prosím v tam</translation>
+  <translation id="195963474117143295">Přidat materiál</translation>
+  <translation id="3995408688942766797">Id bibliografického záznamu</translation>
+  <translation id="1513762969482503855">Odebrat vybrané</translation>
+  <translation id="4967380101942888520">Výpůjční knihovna</translation>
+  <translation id="7932901008790165646">Původní modifikátor výpůčky</translation>
+  <translation id="339382231784472670">Původní umístění</translation>
+  <translation id="5288167318454216809">Původní status jednotky</translation>
+  <translation id="324912261112345247"/>
+  <translation id="1245186155176370901">Odebrání uživatele se nezdařilo nebo není povoleno</translation>
+  <translation id="3015789044497571551">Uživatel byl odebrán</translation>
+  <translation id="8672792405405276519">Uživatel byl přidán</translation>
+  <translation id="6085085304905723537">Přidání uživatele se nezdařilo nebo není povoleno</translation>
+  <translation id="7204238320712715026">Uživatel byl aktualizován</translation>
+  <translation id="7743465987733751854">Aktualizace uživatele se nezdařila nebo není povolena</translation>
+  <translation id="7882141725439330080">Uživatelé kurzu</translation>
+  <translation id="4145496584631696119">Role</translation>
+  <translation id="4915747246341874915">
+            Přidat uživatele</translation>
+  <translation id="7484692620446298558">Druhé jméno</translation>
+  <translation id="2942230580917375982">Titul před jménem</translation>
+  <translation id="1629481515117078644">Preferované křestní jméno</translation>
+  <translation id="5133174657853206961">Preferované druhé jméno</translation>
+  <translation id="3672775925618720764">Preferované příjmení</translation>
+  <translation id="6939299625151106926">Preferovaný titul za jménem</translation>
+  <translation id="905150179853267182">Role uživatele</translation>
+  <translation id="8010588144112376284">Viditelné v OPACu</translation>
+  <translation id="8734276510981280418">Seznam kurzů</translation>
+  <translation id="796489944428156516"><ph name="INTERPOLATION"><ex>{{tableName}}</ex>{{tableName}}</ph> Aktualizace úspěšně proběhla</translation>
+  <translation id="8977504977580018262"><ph name="INTERPOLATION"><ex>{{tableName}}</ex>{{tableName}}</ph> byl vytvořen</translation>
+  <translation id="5228266962228114787">Smazání  <ph name="INTERPOLATION"><ex>{{tableName}}</ex>{{tableName}}</ph> se nezdařilo nebo není povoleno</translation>
+  <translation id="633962649010662179">Smazání  <ph name="INTERPOLATION"><ex>{{tableName}}</ex>{{tableName}}</ph> úspěšně proběhlo</translation>
+  <translation id="4953692759057758718">Archivace <ph name="INTERPOLATION"><ex>{{tableName}}</ex>{{tableName}}</ph>  se nezdařila nebo není povolena</translation>
+  <translation id="336141961441321773">Archivace  <ph name="INTERPOLATION"><ex>{{tableName}}</ex>{{tableName}}</ph> úspěšně proběhla</translation>
+  <translation id="1136923534191040583">Seznam kurzů</translation>
+  <translation id="3527992219294633151">Vytvořit <ph name="INTERPOLATION"><ex>{{tableName}}</ex>{{tableName}}</ph></translation>
+  <translation id="5908280320669783723">Archivovat vybrané</translation>
+  <translation id="3680913671695741022">Probíhá v semestrech</translation>
+  <translation id="85622000756885614">Název kurzu</translation>
+  <translation id="1869560719029910563">Č9slo kurzu</translation>
+  <translation id="2512891904429214309">Číslo sekce</translation>
+  <translation id="117067173023407185">Je archivováno?</translation>
+  <translation id="2544569632476723854">Semestry</translation>
+  <translation id="1241263153855974255">Role v kurzu</translation>
+  <translation id="2970265667265079729">
+    Probíhá v semestrech</translation>
+  <translation id="3220482369645129668"/>
+  <translation id="4463214406331819827">
+      <ph name="START_ITALIC_TEXT"><ex>&lt;i&gt;</ex>&lt;i&gt;</ph>keyboard_return<ph name="CLOSE_ITALIC_TEXT"><ex>&lt;/i&gt;</ex>&lt;/i&gt;</ph>
+      <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>Zpět na seznam kurzů<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
+  <translation id="208181907611548740">Upravit kurz</translation>
+  <translation id="2830181822326331895">Materiály ke kurzu</translation>
+  <translation id="4156928940071834654">Uživatelé kurzu</translation>
+  <translation id="692523399154668298">Semestry kurzu</translation>
+  <translation id="2969796292531015370">Archivace kurzu se nezdařila nebo není  povolena</translation>
+  <translation id="1223297109356484551">Kurz byl úspěšně archivován</translation>
+  <translation id="6809750229135156320">Nastavení průzkumu</translation>
+  <translation id="498066967264834001">Nový průzkum</translation>
+  <translation id="710096806349184969">Ukončit průzkum nyní</translation>
+  <translation id="9062039824668076136">Průzkum byl přidaná</translation>
+  <translation id="8737153972027127930">Vytvoření průzkumu se nezdařilo</translation>
+  <translation id="1380138654618370862">Ukončení průzkumu se nezdařilo nebo není povoleno</translation>
+  <translation id="4836217737194014664">Průzkum skončil</translation>
+  <translation id="1404185341040587912">Smazání průzkumu se nezdařilo nebo není povoleno</translation>
+  <translation id="1434457694520083830">Průzkum byl smazán</translation>
+  <translation id="5372567179603206749">Průzkum byl aktualizován</translation>
+  <translation id="9065206845573465793">ID průzkumu č. <ph name="INTERPOLATION"><ex>{{surveyId}}</ex>{{surveyId}}</ph></translation>
+  <translation id="5879805865821004570">
+                        Ukončit průzkum nyní</translation>
+  <translation id="2681760814147954588">Upravit průzkum</translation>
+  <translation id="3561714041424681932">Otázky a odpovědi</translation>
+  <translation id="2280788912512114311"/>
+  <translation id="8079197099688023005"/>
+  <translation id="7318146866019574509"/>
+  <translation id="1045712128808776769"/>
+  <translation id="2020479694495637430"/>
+  <translation id="6029786549262064732"/>
+  <translation id="6664308601917194640"/>
+  <translation id="5264452217720176945"/>
+  <translation id="297183481538204304"/>
+  <translation id="1276963751476512009"/>
+  <translation id="3558045354709875875"/>
+  <translation id="5420870881721193146"/>
+  <translation id="7192945343215460189"/>
+  <translation id="7481691384481044007"/>
+  <translation id="2766798270438295632"/>
+  <translation id="8867473312520344458"/>
+  <translation id="5482910015169365023"/>
+  <translation id="8724365488997228885"/>
+  <translation id="985432220156723565"/>
+  <translation id="989472037369554228">Smazáno</translation>
+  <translation id="1850989483542863190">ID záznamu</translation>
+  <translation id="5458877376721064142">TCN Záznamu</translation>
+  <translation id="2551441955574056386">
+      Záznam nebyl nalezen: <ph name="INTERPOLATION"><ex>{{identValue}}</ex>{{identValue}}</ph></translation>
+  <translation id="3440078217943098024">
+      Byl nazelezn více než jeden bibliografický záznam s TCN: <ph name="INTERPOLATION"><ex>{{identValue}}</ex>{{identValue}}</ph></translation>
+  <translation id="3251825108526558596">(Skryté)</translation>
+  <translation id="2380525656629725135">Digitální značka</translation>
+  <translation id="5614904407716642098">Vynechat elektronické zdroje</translation>
+  <translation id="6131485316916951527">Rok vydání je</translation>
+  <translation id="9147046130713106935">Je</translation>
+  <translation id="1218334388194408974">Před</translation>
+  <translation id="6371576811194810854">Po</translation>
+  <translation id="2636156555596710669">Zadání rezervace typu
+      <ph name="START_TAG_NG_CONTAINER"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>METAZÁZNAM<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> 
+      <ph name="START_TAG_NG_CONTAINER_1"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>TITUL<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> 
+      <ph name="START_TAG_NG_CONTAINER_2"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>SIGNATURA<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph>
+      <ph name="START_TAG_NG_CONTAINER_3"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>VYNUTIT JEDNOTKU<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> 
+      <ph name="START_TAG_NG_CONTAINER_4"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>JEDNOTKA<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> 
+      <ph name="START_TAG_NG_CONTAINER_5"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>ODVOLÁNÍ<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> 
+      <ph name="START_TAG_NG_CONTAINER_6"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>ČÍSLO<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> 
+      <ph name="START_TAG_NG_CONTAINER_7"><ex>&lt;ng-container&gt;</ex>&lt;ng-container&gt;</ph>ČÁSTI<ph name="CLOSE_TAG_NG_CONTAINER"><ex>&lt;/ng-container&gt;</ex>&lt;/ng-container&gt;</ph> 
+      na záznam(y)</translation>
+  <translation id="628227756695019991"/>
+  <translation id="4517968900220954994"/>
+  <translation id="8770388272426866599"/>
+  <translation id="7888978596466065368"/>
+  <translation id="7263025910380236464"/>
+  <translation id="6811901802533648897"/>
+  <translation id="8326122911836932604"/>
+  <translation id="8954959306530591483"/>
 </translationbundle>
