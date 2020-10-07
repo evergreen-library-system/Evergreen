@@ -1,4 +1,4 @@
-= Evergreen 3.6-beta2 Release Notes =
+= Evergreen 3.6-rc Release Notes =
 :toc:
 :numbered:
 
