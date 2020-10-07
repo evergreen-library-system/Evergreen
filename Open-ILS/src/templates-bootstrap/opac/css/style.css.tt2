@@ -353,9 +353,6 @@ Novelist Styling
 .dropdown-item.active, .dropdown-item:active{
     color : #000 !important;
 }
-.login:focus{
-    outline:none;
-}
 .browse-result-list{
     list-style:none;
 }
