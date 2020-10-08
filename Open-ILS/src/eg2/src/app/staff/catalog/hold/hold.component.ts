@@ -298,8 +298,8 @@ export class HoldComponent implements OnInit {
                 this.userBarcodeChanged();
             }
         } else {
-            // To bypass the dupe check.
-            this.currentUserBarcode = '_' + this.requestor.id();
+            this.userBarcode = null;
+            this.currentUserBarcode = null;
             this.getUser(this.requestor.id());
         }
     }
