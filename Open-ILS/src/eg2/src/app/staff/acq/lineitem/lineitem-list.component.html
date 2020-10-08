@@ -1,0 +1,385 @@
+
+<!-- BATCH ACTIONS -->
+<eg-acq-cancel-dialog #cancelDialog></eg-acq-cancel-dialog>
+
+<div class="row mt-3">
+  <div class="col-lg-1">
+    <div ngbDropdown>
+      <button class="btn btn-info btn-sm" ngbDropdownToggle i18n>Actions</button>
+      <div ngbDropdownMenu>
+        <a ngbDropdownItem routerLink="../brief-record"
+          queryParamsHandling="merge" i18n>Add Brief Record</a>
+        <div class="dropdown-divider"></div>
+        <h6 class="dropdown-header" i18n>Selection List Actions</h6>
+        <button ngbDropdownItem (click)="deleteLineitems()" 
+          [disabled]="!picklistId" i18n>Delete Selected Lineitems</button>
+        <button ngbDropdownItem (click)="createPo()" 
+          [disabled]="!picklistId" i18n>Create Purchase Order from Selected Lineitems</button>
+        <button ngbDropdownItem (click)="createPo(true)"
+          [disabled]="!picklistId" i18n>Create Purchase Order from All Lineitems</button>
+        <div class="dropdown-divider"></div>
+        <h6 class="dropdown-header" i18n>Purchase Order Actions</h6>
+        <button ngbDropdownItem (click)="receiveSelected()" 
+          [disabled]="!poId" i18n>Mark Selected Lineitems as Received</button>
+        <button ngbDropdownItem (click)="unReceiveSelected()" 
+          [disabled]="!poId" i18n>Un-Receive Selected Lineitems</button>
+        <button ngbDropdownItem (click)="cancelSelected()" 
+          [disabled]="!poId" i18n>Cancel Selected Lineitems</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <input type="text" class="form-control" [(ngModel)]="batchNote"
+      placeholder="New Line Item Note..." i18n-placeholder/>
+  </div>
+  <div class="col-lg-4 form-inline">
+    <div class="form-check mr-2">
+      <input class="form-check-input" type="checkbox"
+        id="vendor-public" [(ngModel)]="noteIsPublic">
+      <label class="form-check-label" for="vendor-public">
+        Note is vendor-public
+      </label>
+    </div>
+    <button class="btn btn-outline-dark" (click)="applyBatchNote()"
+      [disabled]="!selectedIds().length" i18n>
+      Apply To Selected
+    </button>
+  </div>
+</div>
+
+<div *ngIf="batchFailure" class="row mt-2 p-2">
+  <div class="col-lg-12 p-2 border border-danger label-with-material-icon" i18n>
+    <span class="material-icons text-danger pr-2">report</span>
+    Batch operation failed: 
+    {{batchFailure.textcode}} {{batchFailure.desc}}
+
+    <a class="ml-auto" href="javascript:;" 
+      (click)="batchFailure = null" title="Close" i18n-title>
+      <span class="material-icons text-danger">close</span>
+    </a>
+  </div>
+</div>
+
+<!-- NAVIGATION / EXPANDY -->
+
+<div class="row mt-3 mb-1 border border-info rounded toolbar">
+  <div class="col-lg-12 d-flex">
+    <div class="d-flex justify-content-center flex-column h-100">
+      <div class="form-check">
+        <input class="form-check-input" id='toggle-page-cbox'
+          [(ngModel)]="batchSelectPage" (change)="toggleSelectAll(false)" type="checkbox"/>
+        <label class="form-check-label" for='toggle-page-cbox' i18n>Items In Page</label>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center flex-column h-100 ml-3">
+      <div class="form-check">
+        <input class="form-check-input" id='toggle-all-cbox'
+          [(ngModel)]="batchSelectAll" (change)="toggleSelectAll(true)" type="checkbox"/>
+        <label class="form-check-label" for='toggle-all-cbox' i18n>All Items</label>
+      </div>
+    </div>
+
+    <div class="d-flex ml-3 justify-content-center flex-column h-100">
+      <span class="font-italic" style="font-size:90%" i18n>
+        {{selectedIds().length}} Selected
+      </span>
+    </div>
+
+    <div class="flex-1"></div>
+
+    <div class="btn-toolbar">
+      <button type="button" (click)="toggleExpandAll()"
+        class="btn btn-sm btn-outline-dark mr-1">
+        <span title="Expand All" i18n-title *ngIf="!expandAll"
+          class="material-icons mat-icon-in-button">unfold_more</span>
+        <span title="Collapse All" i18n-title *ngIf="expandAll"
+          class="material-icons mat-icon-in-button">unfold_less</span>
+      </button>
+      <button [disabled]="pager.isFirstPage()" type="button"
+        class="btn btn-sm btn-outline-dark mr-1" (click)="pager.toFirst(); goToPage()">
+        <span title="First Page" i18n-title
+          class="material-icons mat-icon-in-button">first_page</span>
+      </button>
+      <button [disabled]="pager.isFirstPage()" type="button"
+        class="btn btn-sm btn-outline-dark mr-1" (click)="pager.decrement(); goToPage()">
+        <span title="Previous Page" i18n-title
+            class="material-icons mat-icon-in-button">keyboard_arrow_left</span>
+      </button>
+      <button [disabled]="pager.isLastPage()" type="button"
+        class="btn btn-sm btn-outline-dark mr-1" (click)="pager.increment(); goToPage()">
+        <span title="Next Page" i18n-title
+          class="material-icons mat-icon-in-button">keyboard_arrow_right</span>
+      </button>
+      <div ngbDropdown class="mr-1" placement="bottom-right">
+        <button ngbDropdownToggle class="btn btn-outline-dark text-button">
+          <span title="Select Row Count" i18n-title i18n>
+            Rows {{pager.limit}}
+          </span>
+        </button>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <a class="dropdown-item" (click)="pageSizeChange(count)"
+            *ngFor="let count of [5, 10, 25, 50, 100, 500, 1000, 10000]">
+            <span class="ml-2">{{count}}</span>
+          </a>
+        </div>
+      </div>
+    </div><!-- buttons -->
+  </div>
+</div>
+
+<!-- LINEITEM LIST -->
+
+<ng-container *ngFor="let li of pageOfLineitems">
+  <div class="row mt-2 border-bottom pt-2 pb-2 li-state-{{li.state()}}">
+    <div class="col-lg-12 d-flex">
+      <div class="jacket-wrapper">
+        <ng-container *ngIf="jacketIdent(li)">
+          <a href="/opac/extras/ac/jacket/large/{{jacketIdent(li)}}">
+            <img class="jacket"
+              src='/opac/extras/ac/jacket/small/{{jacketIdent(li)}}'/>
+          </a>
+        </ng-container>
+        <ng-container *ngIf="!jacketIdent(li)"><img class="jacket"/></ng-container>
+      </div>
+
+      <div class="ml-2 flex-1"> <!-- lineitem summary info -->
+        <div class="row">
+          <div class="col-lg-12">
+            <input type="checkbox" [(ngModel)]="selected[li.id()]"/>
+            <a class="ml-2" queryParamsHandling="merge" [id]="li.id()"
+              routerLink="./lineitem/{{li.id()}}/detail">
+              {{displayAttr(li, 'title')}}
+            </a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <span class="pr-1">{{displayAttr(li, 'author')}}</span>
+            <span class="pr-1">{{displayAttr(li, 'isbn')}}</span>
+            <span class="pr-1">{{displayAttr(li, 'issn')}}</span>
+            <span class="pr-1">{{displayAttr(li, 'edition')}}</span>
+            <span class="pr-1">{{displayAttr(li, 'pubdate')}}</span>
+            <span class="pr-1">{{displayAttr(li, 'publisher')}}</span>
+            <span class="pr-1">{{li.source_label()}}</span>
+          </div>
+        </div>
+        <div class="row" *ngIf="li.purchase_order()">
+          <div class="col-lg-12">
+            <eg-lineitem-order-summary [li]="li"></eg-lineitem-order-summary>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <span title="Lineitem ID" i18n-title i18n># {{li.id()}}</span>
+            <span class="ml-1 mr-1" i18n> | </span>
+            <span title="Existing Item Count" i18n-title i18n
+              [ngClass]="{'text-danger font-weight-bold': existingCopyCounts[li.id()] > 0}">
+              {{existingCopyCounts[li.id()]}}</span>
+            <span class="ml-1 mr-1" i18n> | </span>
+            <a class="label-with-material-icon" title="Items" i18n-title
+              routerLink="./lineitem/{{li.id()}}/items" queryParamsHandling="merge">
+              <span class="material-icons small mr-1">shopping_basket</span>
+              <span i18n>Items ({{li.lineitem_details().length}})</span>
+            </a>
+            <span class="ml-1 mr-1" i18n> | </span>
+            <a class="label-with-material-icon" title="Expand" i18n-title
+              href="javascript:;" (click)="toggleShowExpand(li.id())">
+              <ng-container *ngIf="showExpandFor != li.id()">
+                <span class="material-icons small mr-1">unfold_more</span>
+                <span i18n>Expand</span>
+              </ng-container>
+              <ng-container *ngIf="showExpandFor == li.id()">
+                <span class="material-icons small mr-1">unfold_less</span>
+                <span i18n>Collapse</span>
+              </ng-container>
+            </a>
+            <span class="ml-1 mr-1" i18n> | </span>
+            <a class="label-with-material-icon" title="Notes" i18n-title
+              href="javascript:;" (click)="toggleShowNotes(li.id())">
+              <span class="material-icons small mr-1">event_note</span>
+              <span i18n>Notes ({{li.lineitem_notes().length}})</span>
+              <span *ngIf="liHasAlerts(li)" class="text-danger material-icons"
+                title="Has Alerts" i18n-title>flag</span>
+            </a>
+            <span class="ml-1 mr-1" i18n> | </span>
+            <a class="label-with-material-icon"
+              routerLink="lineitem/{{li.id()}}/worksheet/">
+              <span class="material-icons small mr-1">create</span>
+              <span i18n>Worksheet</span>
+            </a>
+            <span class="ml-1 mr-1" i18n> | </span>
+            <a class="label-with-material-icon"
+              [queryParams]="{f: 'jub:id', val1: li.id()}"
+              routerLink="/staff/acq/search/invoices">
+              <span class="material-icons small mr-1">list</span>
+              <span i18n>Invoice(s)</span>
+            </a>
+            <ng-container *ngIf="li.eg_bib_id()">
+              <span class="ml-1 mr-1" i18n> | </span>
+              <a class="label-with-material-icon mr-2"
+                routerLink="/staff/catalog/record/{{li.eg_bib_id()}}">
+                <span class="material-icons small mr-1">library_books</span>
+                <span i18n>Catalog</span>
+              </a>
+            </ng-container>
+
+            <ng-container *ngIf="!poId && li.purchase_order()">
+              <span class="ml-1 mr-1" i18n> | </span>
+              <a class="label-with-material-icon"
+                title="Purchase Order" i18n-title
+                routerLink="/staff/acq/po/{{li.purchase_order().id()}}">
+                <span class="material-icons small mr-1">center_focus_weak</span>
+                <span i18n>{{li.purchase_order().id()}}</span>
+              </a>
+            </ng-container>
+            <ng-container *ngIf="!picklistId && li.picklist()">
+              <span class="ml-1 mr-1" i18n> | </span>
+              <a class="label-with-material-icon"
+                title="Selection List" i18n-title 
+                routerLink="/staff/acq/picklist/{{li.picklist().id()}}">
+                <span class="material-icons small mr-1">widgets</span>
+                <span i18n>{{li.picklist().name()}}</span>
+              </a>
+            </ng-container>
+            <ng-container *ngIf="li.provider()">
+              <span class="ml-1 mr-1" i18n> | </span>
+              <a class="label-with-material-icon"
+                title="Selection List" i18n-title 
+                routerLink="/staff/acq/provider/{{li.provider().id()}}/details">
+                <span class="material-icons small mr-1">store</span>
+                <span i18n>{{li.provider().name()}}</span>
+              </a>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- actions along the right -->
+      <div class="d-flex flex-column justify-content-end">
+        <div class="row">
+          <div class="col-lg-12 d-flex">
+          <div class="flex-1"> </div>
+            <!-- w-auto allows the input group to stick to the right 
+                 as the status label grows -->
+            <div class="input-group w-auto">
+              <div class="input-group-prepend">
+                <div ngbDropdown>
+                  <button class="btn btn-outline-dark btn-sm" ngbDropdownToggle 
+                    title="Order Identifier Type" i18n-title
+                    [ngClass]="{'btn-warning': !selectedIdent(li)}">
+                    <ng-container *ngIf="orderIdentTypes[li.id()]=='isbn'" i18n>ISBN</ng-container>
+                    <ng-container *ngIf="orderIdentTypes[li.id()]=='upc'" i18n>UPC</ng-container>
+                    <ng-container *ngIf="orderIdentTypes[li.id()]=='issn'" i18n>ISSN</ng-container>
+                  </button>
+                  <div ngbDropdownMenu>
+                    <button class="btn-sm" ngbDropdownItem
+                      (click)="orderIdentTypes[li.id()]='isbn'" i18n>ISBN</button>
+                    <button class="btn-sm" ngbDropdownItem
+                      (click)="orderIdentTypes[li.id()]='upc'" i18n>UPC</button>
+                    <button class="btn-sm" ngbDropdownItem
+                      (click)="orderIdentTypes[li.id()]='issn'" i18n>ISSN</button>
+                  </div>
+                </div>
+              </div>
+              <eg-combobox [entries]="identOptions(li)" [smallFormControl]="true"
+                placeholder="Order Identifer..." i18n-placeholder
+                [allowFreeText]="true" [selectedId]="selectedIdent(li)"
+                (onChange)="orderIdentChanged(li, $event)">
+              </eg-combobox>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-lg-12 d-flex">
+            <div class="flex-1"></div>
+            <div class="mr-2">
+              <ng-container [ngSwitch]="li.state()">	
+                <div i18n 
+                  class="p-1 text-dark border border-dark bg-light rounded-lg" 
+                  *ngSwitchCase="'new'">New</div>
+                <div i18n 
+                  class="p-1 text-dark border border-dark bg-light rounded-lg" 
+                  *ngSwitchCase="'selector-ready'">Selector-Ready</div>
+                <div i18n 
+                  class="p-1 text-dark border border-dark bg-light rounded-lg" 
+                  *ngSwitchCase="'order-ready'">Order-Ready</div>
+                <div i18n 
+                  class="p-1 text-dark border border-dark bg-light rounded-lg" 
+                  *ngSwitchCase="'approved'">Approved</div>
+                <div i18n 
+                  class="p-1 text-dark border border-dark bg-light rounded-lg" 
+                  *ngSwitchCase="'pending-order'">Pending-Order</div>
+                <div i18n 
+                  class="p-1 text-primary border border-primary bg-light rounded-lg" 
+                  *ngSwitchCase="'on-order'">On-Order</div>
+                <div i18n 
+                  class="p-1 text-success border border-success bg-light rounded-lg" 
+                  *ngSwitchCase="'received'">Received</div>
+                <div i18n 
+                  class="p-1 text-danger border border-danger bg-light rounded-lg" 
+                  *ngSwitchCase="'cancelled'">Canceled</div>
+              </ng-container>
+            </div>
+            <div class="mr-2">
+              <div ngbDropdown>
+                <button class="btn btn-info btn-sm" ngbDropdownToggle i18n>Actions</button>
+                <div ngbDropdownMenu>
+                  <button ngbDropdownItem [disabled]="li.state() != 'on-order'"
+                    (click)="markReceived([li.id()])" i18n>Mark Received</button>
+                  <button ngbDropdownItem [disabled]="li.state() != 'received'"
+                    (click)="markUnReceived([li.id()])" i18n>Mark Un-Received</button>
+                  <button ngbDropdownItem [disabled]="!liHasRealCopies(li)"
+                    (click)="editHoldings(li)" i18n>Holdings Maintenance</button>
+                  <a ngbDropdownItem routerLink="lineitem/{{li.id()}}/history"
+                    queryParamsHandling="merge" i18n>View History</a>
+                </div>
+              </div>
+            </div>
+            <div>
+              <input type="text" class="form-control-sm medium"
+                [ngClass]="{'border border-danger text-danger': !liPriceIsValid(li)}"
+                placeholder='Price...' i18n-placeholder
+                (change)="liPriceChange(li)" [ngModel]="li.estimated_unit_price()"
+                (ngModelChange)="li.estimated_unit_price($event)"/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="showNotesFor == li.id()">
+    <div class="col-lg-10 offset-lg-1 p-2 mt-2">
+      <eg-lineitem-notes [lineitem]="li" (closeRequested)="showNotesFor = null">
+      </eg-lineitem-notes>
+    </div>
+  </div>
+  <div class="row" *ngIf="showExpandFor == li.id() || expandAll">
+    <div class="col-lg-10 offset-lg-1 p-2 mt-2 shadow">
+
+      <!-- Note the flex values are set so they also match the layout
+           of the list of copies in the copies component. -->
+      <div class="div d-flex font-weight-bold">
+        <div class="flex-1 p-1" i18n>Owning Branch</div>  
+        <div class="flex-1 p-1" i18n>Copy Location</div>
+        <div class="flex-1 p-1" i18n>Collection Code</div>
+        <div class="flex-1 p-1" i18n>Fund</div>
+        <div class="flex-1 p-1" i18n>Circ Modifier</div>
+        <div class="flex-1 p-1" i18n>Callnumber</div>
+        <div class="flex-1 p-1" i18n>Barcode</div>
+      </div>
+      <div class="batch-copy-row" *ngFor="let copy of li.lineitem_details()">
+        <eg-lineitem-copy-attrs [embedded]="true" [copy]="copy">
+        </eg-lineitem-copy-attrs>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<div class="row" *ngIf="loading">
+  <div class="offset-lg-3 col-lg-6">
+    <eg-progress-inline *ngIf="loading"></eg-progress-inline>
+  </div>
+</div>
+

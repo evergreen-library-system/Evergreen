@@ -54,8 +54,8 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
     click$: Subject<string>;
     entrylist: ComboboxEntry[];
 
-    @ViewChild('instance', { static: true }) instance: NgbTypeahead;
-    @ViewChild('defaultDisplayTemplate', { static: true}) defaultDisplayTemplate: TemplateRef<any>;
+    @ViewChild('instance', {static: false}) instance: NgbTypeahead;
+    @ViewChild('defaultDisplayTemplate', {static: true}) defaultDisplayTemplate: TemplateRef<any>;
     @ViewChildren(IdlClassTemplateDirective) idlClassTemplates: QueryList<IdlClassTemplateDirective>;
 
     @Input() domId = 'eg-combobox-' + ComboboxComponent.domIdAuto++;
@@ -110,6 +110,10 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
     // This will be appended to the async data retrieval query
     // when fetching objects by idlClass.
     @Input() idlQueryAnd: {[field: string]: any};
+
+    // Display the selected value as text instead of within
+    // the typeahead
+    @Input() readOnly = false;
 
     // Allow the selected entry ID to be passed via the template
     // This does NOT not emit onChange events.

@@ -146,6 +146,10 @@ export class OrgSelectComponent implements OnInit {
         return this.org.get(this.selected.id);
     }
 
+    selectedOrgId(): number {
+        return this.selected ? this.selected.id : null;
+    }
+
     constructor(
       private auth: AuthService,
       private store: StoreService,

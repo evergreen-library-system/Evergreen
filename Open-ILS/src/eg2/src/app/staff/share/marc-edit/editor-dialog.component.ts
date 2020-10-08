@@ -5,7 +5,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalRef, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
-import {MarcEditContext} from './editor-context';
+import {MarcEditContext, MARC_RECORD_TYPE} from './editor-context';
 
 
 /**
@@ -22,7 +22,7 @@ export class MarcEditorDialogComponent
 
     @Input() context: MarcEditContext;
     @Input() recordXml: string;
-    @Input() recordType: 'biblio' | 'authority' = 'biblio';
+    @Input() recordType: MARC_RECORD_TYPE = 'biblio';
 
     constructor(
         private modal: NgbModal,

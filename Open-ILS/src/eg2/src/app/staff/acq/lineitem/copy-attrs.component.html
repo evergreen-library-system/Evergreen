@@ -1,0 +1,116 @@
+<!-- Flex values are set to align with lineitem copies UI 
+    and the batch copy editor component -->
+
+<div class="div d-flex batch-copy-row" *ngIf="copy">
+  <div class="flex-1 p-1">
+    <eg-org-select #owningLibSelect placeholder="Owning Branch..." 
+      i18n-placeholder [readOnly]="fieldIsDisabled('owning_lib')"
+      [applyOrgId]="copy.owning_lib()"
+      (onChange)="valueChange('owning_lib', $event)">
+    </eg-org-select>
+  </div>  
+  <div class="flex-1 p-1">
+    <eg-item-location-select  [readOnly]="fieldIsDisabled('location')"
+      #locationSelector [ngModel]="copy.location()"
+      (valueChange)="valueChange('location', $event)"
+      permFilter="CREATE_PICKLIST">                         
+    </eg-item-location-select>
+  </div>
+  <div class="flex-1 p-1">
+    <ng-container *ngIf="fieldIsDisabled('collection_code')">
+      <span>{{copy.collection_code()}}</span>
+    </ng-container>
+    <ng-container *ngIf="!fieldIsDisabled('collection_code')">
+      <input type="text" class="form-control" 
+        placeholder="Collection Code..." i18n-placeholder 
+        (ngModelChange)="valueChange('collection_code', $event)"
+        [ngModel]="copy.collection_code()"/>
+    </ng-container>
+  </div>
+  <div class="flex-1 p-1">
+    <eg-combobox idlClass="acqf" placeholder="Fund..." i18n-placeholder
+      [readOnly]="fieldIsDisabled('fund')"
+      #fundSelector [entries]="fundEntries"
+      [selectedId]="copy.fund()" (onChange)="valueChange('fund', $event)"
+      [idlQueryAnd]="{active: 't'}">
+    </eg-combobox>
+  </div>
+  <div class="flex-1 p-1">
+    <eg-combobox idlClass="ccm" placeholder="Circ Modifier..." i18n-placeholder
+      [readOnly]="fieldIsDisabled('circ_modifier')"
+      #circModSelector [entries]="circModEntries"
+      [selectedId]="copy.circ_modifier()"
+      (onChange)="valueChange('circ_modifier', $event)">
+    </eg-combobox>
+  </div>
+  <div class="flex-1 p-1">
+    <ng-container *ngIf="fieldIsDisabled('cn_label')">
+      <span>{{copy.cn_label()}}</span>
+    </ng-container>
+    <ng-container *ngIf="!fieldIsDisabled('cn_label')">
+      <input type="text" class="form-control" 
+        placeholder="Call Number..." i18n-placeholder
+        [ngModel]="copy.cn_label()" 
+        (ngModelChange)="valueChange('cn_label', $event)">
+    </ng-container>
+  </div>
+  <div class="flex-1 p-1">
+    <ng-container *ngIf="batchMode">
+      <button class="btn btn-outline-dark" 
+        (click)="batchApplyRequested.emit(copy)" i18n>Batch Update</button>
+    </ng-container>
+    <ng-container *ngIf="!batchMode">
+      <ng-container *ngIf="fieldIsDisabled('barcode')">
+        <span>{{copy.barcode()}}</span>
+      </ng-container>
+      <ng-container *ngIf="!fieldIsDisabled('barcode')">
+        <input type="text" class="form-control" 
+          [disabled]="fieldIsDisabled('barcode')" [ngModel]="copy.barcode()" 
+          placeholder="Barcode..." i18n-placeholder
+          (ngModelChange)="valueChange('barcode', $event)">
+      </ng-container>
+    </ng-container>
+  </div>
+  <ng-container *ngIf="!embedded">
+    <div class="flex-2 p-1 pr-2 pl-2">
+      <ng-container *ngIf="!batchMode">
+        <ng-container *ngIf="disposition() == 'pre-order'">
+          <button *ngIf="!copy.isdeleted()"
+            class="btn btn-outline-danger material-icon-button"
+            (click)="deleteRequested.emit(copy)" title="Delete Item" i18n-title>
+            <span class="material-icons">delete</span>
+          </button>
+          <button  *ngIf="copy.isdeleted()"
+            class="btn btn-outline-info material-icon-button"
+            (click)="copy.isdeleted(false)" title="Un-Delete Item" i18n-title>
+            <span class="material-icons">restore_page</span>
+          </button>
+        </ng-container>
+        <ng-container *ngIf="disposition() == 'on-order'">
+          <a href="javascript:;" (click)="receiveRequested.emit(copy)" i18n>Mark Received</a>
+        </ng-container>
+        <ng-container *ngIf="disposition() == 'received'">
+          <a href="javascript:;" (click)="unReceiveRequested.emit(copy)" i18n>Un-Receive</a>
+        </ng-container>
+        <ng-container *ngIf="disposition() == 'on-order'">
+          <a href="javascript:;" class="ml-2" (click)="cancelRequested.emit(copy)" i18n>Cancel</a>
+        </ng-container>
+        <ng-container *ngIf="disposition() == 'delayed'">
+          <a href="javascript:;" (click)="cancelRequested.emit(copy)" i18n>Cancel</a>
+        </ng-container>
+        <ng-container *ngIf="disposition() == 'delayed'">
+          <span class="font-italic ml-2" title="{{copy.cancel_reason().description()}}">
+            {{copy.cancel_reason().label()}}
+          </span>
+        </ng-container>
+        <ng-container *ngIf="disposition() == 'canceled'">
+          <span class="font-italic" title="{{copy.cancel_reason().description()}}">
+            {{copy.cancel_reason().label()}}
+          </span>
+        </ng-container>
+
+      </ng-container>
+    </div>
+  </ng-container>
+</div>
+

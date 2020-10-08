@@ -1,0 +1,11 @@
+
+<h3 class="m-2" i18n>Add A Brief Record</h3>
+
+<div class="d-flex w-50 m-2" *ngFor="let attr of attrs">
+  <div class="flex-1">{{attr.description()}}</div>
+  <div class="flex-3">
+    <input class="form-control" type="text" [(ngModel)]="values[attr.id()]"/>
+  </div>
+</div>
+
+<button class="btn btn-success mt-2" (click)="save()" i18n>Add Record</button>

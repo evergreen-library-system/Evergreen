@@ -47,6 +47,7 @@ h5 {font-size: .95rem}
 .flex-3 {flex: 3}
 .flex-4 {flex: 4}
 .flex-5 {flex: 5}
+.flex-6 {flex: 6}
 
 /** BS deprecated the well, but it's replacement is not quite the same.
  * Define our own version and expand it to a full "table".
@@ -103,6 +104,10 @@ h5 {font-size: .95rem}
 .mat-icon-shrunk-in-button {
     line-height: inherit;
     font-size: 18px;
+}
+
+.material-icons.small {
+  font-size: 18px;
 }
 
 .input-group .mat-icon-in-button {
@@ -285,3 +290,12 @@ body>.dropdown-menu {z-index: 2100;}
 .negative-money-amount {
     color: red;
 }
+
+input.medium {
+  width: 6em;
+}
+
+input.small {
+  width: 4em;
+}
+

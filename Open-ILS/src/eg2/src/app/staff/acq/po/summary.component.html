@@ -1,0 +1,168 @@
+
+<eg-acq-cancel-dialog #cancelDialog></eg-acq-cancel-dialog>
+<eg-progress-dialog #progressDialog></eg-progress-dialog>
+
+<div *ngIf="po()" class="p-1 border border-secondary rounded">
+
+  <div class="row">
+    <div class="col-lg-9">
+
+      <div class="row">
+        <div class="col-lg-3 d-flex">
+          <div class="flex-2" i18n>PO ID:</div>
+          <div class="flex-3">{{poId}}</div>
+        </div>
+        <div class="col-lg-9 d-flex">
+          <div class="flex-1" i18n>PO Name:</div>
+          <div class="flex-6">
+            <ng-container *ngIf="editPoName">
+              <input id='pl-name-input' type="text" class="form-control"
+                [(ngModel)]="newPoName" (keyup.enter)="toggleNameEdit(true)" 
+                (blur)="toggleNameEdit()"/>
+            </ng-container>
+            <ng-container *ngIf="!editPoName">
+              <a (click)="toggleNameEdit()" href='javascript:;'
+                class='font-weight-bold'>{{po().name()}}</a>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-3 d-flex">
+          <div class="flex-2" i18n>Lineitems:</div>
+          <div class="flex-3">{{po().lineitem_count()}}</div>
+        </div>
+        <div class="col-lg-9 d-flex">
+          <div class="flex-1" i18n>Provider:</div>
+          <div class="flex-6">
+            <a routerLink="/staff/acq/provider/{{po().provider().id()}}/details">
+              {{po().provider().name()}}
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-3 d-flex">
+          <div class="flex-2" i18n>Activated:</div>
+          <div class="flex-3">
+            <span *ngIf="po().order_date()">{{po().order_date() | date:'short'}}</span>
+            <span *ngIf="!po().order_date()" i18n>N/A</span>
+          </div>
+        </div>
+        <div class="col-lg-9 d-flex">
+          <div class="flex-1" i18n>Status:</div>
+          <div class="flex-6">
+            <div class="w-50" *ngIf="canActivate === null">
+              <eg-progress-inline></eg-progress-inline>
+            </div>
+
+            <span *ngIf="po().state() == 'on-order'" i18n>On Order</span>
+            <ng-container *ngIf="canActivate">
+              <span *ngIf="!activationEvent" i18n>Pending / Activatable</span>
+              <span *ngIf="activationEvent" i18n>
+                Activation Error: {{activationEvent.textcode}} {{activationEvent.desc}}
+              </span>
+            </ng-container>
+
+            <!-- canceled -->
+            <ng-container *ngIf="po().cancel_reason()">
+              <span class="text-danger" i18n>
+                {{po().cancel_reason().label()}} =&gt; {{po().cancel_reason().description()}}
+              </span>
+            </ng-container>
+
+            <!-- activation blocks -->
+            <div class="text-danger" *ngFor="let evt of activationBlocks">
+              <ng-container 
+                *ngIf="evt.textcode == 'ACQ_FUND_EXCEEDS_STOP_PERCENT'; else fundWarn">
+                <span i18n>
+                  Fund exceeds stop percent: 
+                  {{evt.payload.fund.code()}} ({{evt.payload.fund.year()}}).
+                </span>
+              </ng-container>
+              <ng-template #fundWarn>
+                <ng-container 
+                  *ngIf="evt.textcode == 'ACQ_FUND_EXCEEDS_WARN_PERCENT'; else noPrice">
+                  <span i18n>
+                    Fund exceeds warning percent: 
+                    {{evt.payload.fund.code()}} ({{evt.payload.fund.year()}}).
+                  </span>
+                </ng-container>
+              </ng-template>
+              <ng-template #noPrice>
+                <ng-container 
+                  *ngIf="evt.textcode == 'ACQ_LINEITEM_NO_PRICE'; else noCopies">
+                  <span i18n>One or more lineitems have no price.</span>
+                </ng-container>
+              </ng-template>
+              <ng-template #noCopies>
+                <ng-container 
+                  *ngIf="evt.textcode == 'ACQ_LINEITEM_NO_COPIES'; else otherBlock">
+                  <span i18n>One or more lineitems have no items attached.</span>
+                </ng-container>
+              </ng-template>
+              <ng-template #otherBlock>
+                <span i18n>{{evt.textcode}} : {{evt.desc}}</span>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="p-0 m-0 mt-1"/>
+      <div class="row mt-1">
+        <div class="col-lg-12">
+          <a class="" href="javascript:;" (click)="showNotes=!showNotes" 
+            i18n>Notes ({{po().notes().length}})</a>
+          <span class="pl-2 pr-2" i18n> | </span>
+          <a [queryParams]="{f: 'acqpo:id', val1: poId}"
+            routerLink="/staff/acq/search/invoices" i18n>Invoices ({{invoiceCount}})</a>
+          <span class="pl-2 pr-2" i18n> | </span>
+          <a href="/eg/acq/invoice/view?create=1&attach_po={{poId}}"
+            i18n>Create Invoice</a>
+          <span class="pl-2 pr-2" i18n> | </span>
+          <a routerLink="./edi" i18n>EDI Messages ({{ediMessageCount}})</a>
+          <span class="pl-2 pr-2" i18n> | </span>
+          <a routerLink="./history" i18n>History</a>
+          <span class="pl-2 pr-2" i18n> | </span>
+          <a routerLink="./printer" i18n>Print</a>
+          <ng-container *ngIf="po().state() == 'on-order' || po().state() == 'pending'">
+            <span class="pl-2 pr-2" i18n> | </span>
+            <a (click)="cancelPo()" href="javascript:;" i18n>Cancel Order</a>
+          </ng-container>
+          <ng-container *ngIf="canActivate === true">
+            <span class="pl-2 pr-2" i18n> | </span>
+            <a (click)="activatePo()" href="javascript:;" i18n>Activate Order</a>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="row">
+        <div class="col-lg-8" i18n>Estimated Amount:</div>
+        <div class="col-lg-4">{{po().amount_estimated() | currency}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8" i18n>Encumbered Amount:</div>
+        <div class="col-lg-4">{{po().amount_encumbered() | currency}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8" i18n>Spent Amount:</div>
+        <div class="col-lg-4">{{po().amount_spent() | currency}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8" i18n>Prepayment Required?</div>
+        <div class="col-lg-4">
+          <eg-bool [value]="po().provider().prepayment_required()"></eg-bool>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="showNotes">
+    <div class="col-lg-10 offset-lg-1 p-2 mt-2 shadow">
+      <eg-po-notes [po]="po()" (closeRequested)="showNotes = false">
+      </eg-po-notes>
+    </div>
+  </div>
+</div>
+

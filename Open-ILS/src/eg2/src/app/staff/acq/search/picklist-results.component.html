@@ -13,8 +13,7 @@
 </eg-string>
 
 <ng-template #nameTmpl let-selectionlist="row">
-  <a href="/eg/staff/acq/legacy/picklist/view/{{selectionlist.id()}}"
-     target="_blank">
+  <a routerLink="/staff/acq/picklist/{{selectionlist.id()}}" target="_blank">
     {{selectionlist.name()}}
   </a>
 </ng-template>

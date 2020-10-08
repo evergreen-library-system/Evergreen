@@ -12,9 +12,10 @@ import {MarcRecord} from './marcrecord';
 import {ComboboxEntry, ComboboxComponent
   } from '@eg/share/combobox/combobox.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {MarcEditContext} from './editor-context';
+import {MarcEditContext, MARC_RECORD_TYPE} from './editor-context';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
+
 
 export interface MarcSavedEvent {
     marcXml: string;
@@ -40,7 +41,7 @@ export class MarcEditorComponent implements OnInit {
     // True if the save request is in flight
     dataSaving: boolean;
 
-    @Input() recordType: 'biblio' | 'authority' = 'biblio';
+    @Input() recordType: MARC_RECORD_TYPE = 'biblio';
 
     _pendingRecordId: number;
     @Input() set recordId(id: number) {

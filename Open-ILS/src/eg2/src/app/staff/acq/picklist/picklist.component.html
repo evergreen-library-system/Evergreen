@@ -1,0 +1,14 @@
+<eg-staff-banner bannerText="Selection List" i18n-bannerText></eg-staff-banner>
+
+<eg-acq-picklist-summary [picklistId]="picklistId"></eg-acq-picklist-summary>
+
+<ng-container *ngIf="!isBasePage()">
+  <div class="mt-2">
+    <a routerLink="/staff/acq/picklist/{{picklistId}}" queryParamsHandling="merge">
+      <button class="btn btn-sm btn-info" i18n>Return</button>
+    </a>
+  </div>
+</ng-container>
+
+<router-outlet></router-outlet>
+

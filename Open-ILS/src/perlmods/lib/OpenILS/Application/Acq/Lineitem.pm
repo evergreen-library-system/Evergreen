@@ -13,7 +13,9 @@ use OpenILS::Application::Acq::Financials;
 use OpenILS::Application::Cat::BibCommon;
 use OpenILS::Application::Cat::AssetCommon;
 use OpenILS::Application::Acq::Lineitem::BatchUpdate;
+use OpenILS::Application::Acq::Common;
 my $U = 'OpenILS::Application::AppUtils';
+my $AC = 'OpenILS::Application::Acq::Common';
 
 
 __PACKAGE__->register_method(
@@ -173,11 +175,20 @@ sub retrieve_lineitem_impl {
     push(@{$fields->{jub}   },        'editor') if $$options{flesh_editor};
     push(@{$fields->{jub}   },      'selector') if $$options{flesh_selector};
 
+    if ($$options{flesh_formulas}) {
+        push(@{$fields->{jub}},    'distribution_formulas');
+        push(@{$fields->{acqdfa}}, 'formula');
+        push(@{$fields->{acqdfa}}, 'creator');
+    }
+
     if($$options{flesh_li_details}) {
         push(@{$fields->{jub}   }, 'lineitem_details');
         push(@{$fields->{acqlid}}, 'fund'         ) if $$options{flesh_fund};
         push(@{$fields->{acqlid}}, 'fund_debit'   ) if $$options{flesh_fund_debit};
         push(@{$fields->{acqlid}}, 'cancel_reason') if $$options{flesh_cancel_reason};
+        push(@{$fields->{acqlid}}, 'circ_modifier') if $$options{flesh_circ_modifier};
+        push(@{$fields->{acqlid}}, 'location')      if $$options{flesh_location};
+        push(@{$fields->{acqlid}}, 'eg_copy_id')    if $$options{flesh_copies};
     }
 
     if($$options{clear_marc}) { # avoid fetching marc blob
@@ -227,6 +238,43 @@ sub retrieve_lineitem_impl {
         $li->picklist($li->picklist ? $li->picklist->id : undef);
     }
     return $li;
+}
+
+__PACKAGE__->register_method(
+    method    => 'retrieve_lineitem_batch',
+    api_name  => 'open-ils.acq.lineitem.retrieve.batch',
+    stream => 1,
+    max_bundle_count => 1,
+    signature => {
+        desc   => q/
+            Retrieves a set of lineitems.  
+            See open-ils.acq.lineitem.retrieve/,
+        params => [
+            {desc => 'Authentication token',    type => 'string'},
+            {desc => 'Array of lineitem IDs to retrieve', type => 'array'},
+            {options => q/See open-ils.acq.lineitem.retrieve/}
+        ],
+        return => {desc => 'Stream of lineitems, Event on error'}
+    }
+);
+
+
+sub retrieve_lineitem_batch {
+    my($self, $client, $auth, $li_ids, $options) = @_;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    for my $li_id (@$li_ids) {
+        $client->respond({
+            id => $li_id,
+            lineitem => retrieve_lineitem_impl($e, $li_id, $options),
+            existing_copies => $AC->li_existing_copies($e, $li_id)
+        });
+    }
+
+    $e->rollback;
+
+    return undef;
 }
 
 

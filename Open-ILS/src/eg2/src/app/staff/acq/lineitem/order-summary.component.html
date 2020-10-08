@@ -1,0 +1,20 @@
+<ng-container *ngIf="li">
+  <span i18n>{{li.order_summary().item_count()}} Items</span>
+  <span class="ml-1 mr-1" i18n> | </span>
+  <span i18n>{{li.order_summary().recv_count()}} Received</span>
+  <span class="ml-1 mr-1" i18n> | </span>
+  <span i18n>{{li.order_summary().invoice_count()}} Invoiced</span>
+  <span class="ml-1 mr-1" i18n> | </span>
+  <span i18n>{{li.order_summary().cancel_count()}} Canceled</span>
+  <span class="ml-1 mr-1" i18n> | </span>
+  <span i18n>{{li.order_summary().delay_count()}} Delayed</span>
+  <span class="ml-1 mr-1" i18n> | </span>
+  <span i18n>{{li.order_summary().estimated_amount() | currency}} Estimated</span>
+  <span class="ml-1 mr-1" i18n> | </span>
+  <span i18n>{{li.order_summary().encumbrance_amount() | currency}} Encumbered</span>
+  <span class="ml-1 mr-1" i18n> | </span>
+  <span [ngClass]="{'text-danger': paidOff()}" i18n>
+    {{li.order_summary().paid_amount() | currency}} Paid
+  </span>
+</ng-container>
+

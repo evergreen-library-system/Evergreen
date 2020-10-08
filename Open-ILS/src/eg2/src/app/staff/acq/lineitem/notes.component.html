@@ -1,0 +1,51 @@
+
+<div class="shadow border-top w-100">
+
+  <div class="p-1 m-1 form-inline">
+    <input type="text" class="form-control form-control-sm" id="note-text-input"
+      [(ngModel)]="noteText" placeholder="Note Text" i18n-placeholder/>
+    <div class="form-check ml-2">
+      <input class="form-check-input" type="checkbox" 
+        [(ngModel)]="vendorPublic" id="vendor-public-cbox">
+      <label class="form-check-label" for="vendor-public-cbox" i18n>
+        Vendor Public
+      </label>
+    </div>
+    <button class="btn btn-sm btn-success ml-2" [disabled]="!noteText" 
+      (click)="newNote()" i18n>New Note</button>
+    <span class="ml-2">
+      <eg-combobox idlClass="acqliat" [(ngModel)]="alertEntry" 
+        [asyncSupportsEmptyTermClick]="true">
+      </eg-combobox>
+    </span>
+    <button class="btn btn-sm btn-info ml-2" [disabled]="!alertEntry"
+      (click)="newNote(true)" i18n>New Alert</button>
+    <a class="ml-auto" href="javascript:;" (click)="close()" title="Close" i18n-title>
+      <span class="material-icons text-danger">close</span>
+    </a>
+  </div>
+
+  <div *ngFor="let note of lineitem.lineitem_notes()">
+    <div class="d-flex m-1 p-2 border">
+      <div class="flex-1 p-1">
+        <ng-container *ngIf="note.vendor_public() == 't'">
+          <div class="text-primary" i18n>VENDOR PUBLIC</div>
+        </ng-container>
+        <ng-container *ngIf="note.alert_text()">
+          <span class="text-danger" i18n>
+            [{{orgSn(note.alert_text().owning_lib())}}] {{note.alert_text().code()}}
+          </span>
+        </ng-container>
+      </div>
+      <div class="flex-5 ml-2 p-1">{{note.value()}}</div>
+      <div class="ml-2 p-1">{{note.create_time() | date:'short'}}</div>
+      <div class="ml-2 p-1">
+        <a href="javascript:;" class="text-danger" 
+          (click)="deleteNote(note)" i18n>Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

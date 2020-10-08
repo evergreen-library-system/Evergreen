@@ -116,7 +116,10 @@ export class PrintComponent implements OnInit {
             this.applyTemplate(printReq).then(() => {
                 // Give templates a chance to render before printing
                 setTimeout(() => {
-                    this.dispatchPrint(printReq).then(__ => this.reset());
+                    this.dispatchPrint(printReq).then(__ => {
+                        this.reset();
+                        this.printer.printJobQueued$.emit(printReq);
+                    });
                 });
             });
         });

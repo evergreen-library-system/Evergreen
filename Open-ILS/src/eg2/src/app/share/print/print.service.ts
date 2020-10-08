@@ -31,12 +31,18 @@ export class PrintService {
 
     onPrintRequest$: EventEmitter<PrintRequest>;
 
+    // Emitted after a print request has been delivered to Hatch or
+    // window.print() has completed.  Note window.print() returning
+    // is not necessarily an indication the job has completed.
+    printJobQueued$: EventEmitter<PrintRequest>;
+
     constructor(
         private locale: LocaleService,
         private auth: AuthService,
         private store: StoreService
     ) {
         this.onPrintRequest$ = new EventEmitter<PrintRequest>();
+        this.printJobQueued$ = new EventEmitter<PrintRequest>();
     }
 
     print(printReq: PrintRequest) {

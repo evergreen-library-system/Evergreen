@@ -1,0 +1,23 @@
+<ng-template #dialogContent>
+  <form class="form-validated">
+    <div class="modal-header bg-info">
+      <h3 class="modal-title" i18n>Cancel</h3>
+      <button type="button" class="close"
+        i18n-aria-label aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h4 i18n>Select a cancel reason:</h4>
+      <eg-combobox domId="acq-cancel-dialog" name="acq-cancel-dialog" 
+        idlClass="acqcr" [(ngModel)]="cancelReason"></eg-combobox>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" [disabled]="!cancelReason" 
+        (click)="close(cancelReason.id)" i18n>Apply</button>
+      <button type="button" class="btn btn-warning"
+        (click)="close()" i18n>Exit Dialog</button>
+    </div>
+  </form>
+</ng-template>
+

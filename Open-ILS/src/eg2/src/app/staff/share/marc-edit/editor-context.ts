@@ -3,6 +3,10 @@ import {MarcRecord, MarcField, MarcSubfield} from './marcrecord';
 import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
 import {TagTable} from './tagtable.service';
 
+const MARC_RECORD_TYPES: 'biblio' | 'authority' | 'serial' | 'lineitem' = null;
+
+export type MARC_RECORD_TYPE = typeof MARC_RECORD_TYPES;
+
 /* Per-instance MARC editor context. */
 
 const STUB_DATA_00X = '                                        ';
@@ -64,7 +68,7 @@ export class MarcEditContext {
     recordChange: EventEmitter<MarcRecord>;
     fieldFocusRequest: EventEmitter<FieldFocusRequest>;
     textUndoRedoRequest: EventEmitter<TextUndoRedoAction>;
-    recordType: 'biblio' | 'authority' = 'biblio';
+    recordType: MARC_RECORD_TYPE;
 
     lastFocused: FieldFocusRequest = null;
 

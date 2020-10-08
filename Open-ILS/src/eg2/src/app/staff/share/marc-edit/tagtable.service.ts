@@ -7,12 +7,13 @@ import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ContextMenuEntry} from '@eg/share/context-menu/context-menu.service';
+import {MARC_RECORD_TYPE} from './editor-context';
 
 const DEFAULT_MARC_FORMAT = 'marc21';
 
 interface TagTableSelector {
     marcFormat?: string;
-    marcRecordType: 'biblio' | 'authority' | 'serial';
+    marcRecordType: MARC_RECORD_TYPE;
 
     // MARC record fixed field "Type" value.
     ffType: string;

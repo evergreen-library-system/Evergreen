@@ -1,0 +1,12 @@
+
+<!-- TODO: workstation setting -->
+
+<div class="mt-3">
+  <eg-grid idlClass="acqpoh" [dataSource]="dataSource" [sortable]="true"
+    persistKey="acq.po.history"
+    hideFields="id,audit_id,audit_time,audit_action">
+    <eg-grid-column name="create_time" [datePlusTime]="true"></eg-grid-column>
+    <eg-grid-column name="edit_time" [datePlusTime]="true"></eg-grid-column>
+    <eg-grid-column name="order_date" [datePlusTime]="true"></eg-grid-column>
+  </eg-grid>
+</div>

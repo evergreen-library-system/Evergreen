@@ -1,0 +1,26 @@
+
+<div *ngIf="picklist" class="row pt-1 pb-1 border border-secondary rounded">
+  <div class="col-lg-4 form-inline">
+    <span class="mr-2" i18n>Selection List:</span>
+    <ng-container *ngIf="editPlName">
+      <input id='pl-name-input' type="text" class="form-control" 
+        [(ngModel)]="newPlName" (blur)="toggleNameEdit()"/>
+    </ng-container>
+    <ng-container *ngIf="!editPlName">
+      <a (click)="toggleNameEdit()" href='javascript:;' 
+        class='font-weight-bold' i18n>{{picklist.name()}} (#{{picklist.id()}})</a>
+    </ng-container>
+  </div>
+  <div class="col-lg-2" i18n>
+    Create Date: {{picklist.create_time() | date:'shortDate'}}
+  </div>
+  <div class="col-lg-2" i18n>
+    Last Updated: {{picklist.edit_time() | date:'shortDate'}}
+  </div>
+  <div class="col-lg-2" i18n>
+    Selector: {{picklist.owner().usrname()}}
+  </div>
+  <div class="col-lg-2" i18n>
+    Entry Count: {{picklist.entry_count()}}
+  </div>
+</div>

@@ -1,0 +1,65 @@
+
+<h4 i18n>Direct Charges, Taxes, Fees, etc. 
+  <button class="btn btn-info btn-sm" (click)="newCharge()">New Charge</button>
+</h4>
+
+<ng-container *ngIf="showBody">
+  <div class="row d-flex">
+    <div class="flex-2 p-2 font-weight-bold">Charge Type</div>
+    <div class="flex-2 p-2 font-weight-bold">Fund</div>
+    <div class="flex-2 p-2 font-weight-bold">Title/Description</div>
+    <div class="flex-2 p-2 font-weight-bold">Author</div>
+    <div class="flex-2 p-2 font-weight-bold">Note</div>
+    <div class="flex-2 p-2 font-weight-bold">Estimated Cost</div>
+    <div class="flex-2 p-2"> </div>
+  </div>
+  <div class="row mt-2 pt-2 d-flex border-top form-validated" 
+    *ngFor="let charge of po().po_items()">
+    <div class="flex-2 p-2">
+      <eg-combobox idlClass="aiit" [selectedId]="charge.inv_item_type()"
+        (onChange)="charge.inv_item_type($event ? $event.id : null)"
+        i18n-placeholder placeholder="Charge Type..."
+        [required]="true" [readOnly]="!charge.isnew()"></eg-combobox>
+    </div>
+    <div class="flex-2 p-2">
+      <!--  the IDL does not require a fund, but the Perl code assumes
+            one is present -->
+      <eg-combobox idlClass="acqf" [selectedId]="charge.fund()"
+        (onChange)="charge.fund($event ? $event.id : null)"
+        i18n-placeholder placeholder="Fund..."
+        [required]="true" [readOnly]="!charge.isnew()"></eg-combobox>
+    </div>
+    <div class="flex-2 p-2">
+      <span *ngIf="!charge.isnew()">{{charge.title()}}</span>
+      <input *ngIf="charge.isnew()" type="text" class="form-control" 
+        i18n-placeholder placeholder="Title..."
+        [ngModel]="charge.title()" (ngModelChange)="charge.title($event)"/>
+    </div>
+    <div class="flex-2 p-2">
+      <span *ngIf="!charge.isnew()">{{charge.author()}}</span>
+      <input *ngIf="charge.isnew()" type="text" class="form-control" 
+        i18n-placeholder placeholder="Author..."
+        [ngModel]="charge.author()" (ngModelChange)="charge.author($event)"/>
+    </div>
+    <div class="flex-2 p-2">
+      <span *ngIf="!charge.isnew()">{{charge.note()}}</span>
+      <input *ngIf="charge.isnew()" type="text" class="form-control" 
+        i18n-placeholder placeholder="Note..."
+        [ngModel]="charge.note()" (ngModelChange)="charge.note($event)"/>
+    </div>
+    <div class="flex-2 p-2">
+      <span *ngIf="!charge.isnew()">{{charge.estimated_cost() | currency}}</span>
+      <input *ngIf="charge.isnew()" type="number" min="0" class="form-control" 
+        i18n-placeholder placeholder="Esimated Cost..."
+        [ngModel]="charge.estimated_cost()" (ngModelChange)="charge.estimated_cost($event)"/>
+    </div>
+    <div class="flex-1 p-1">
+      <button *ngIf="charge.isnew()" class="btn btn-success btn-sm" 
+        (click)="saveCharge(charge)" i18n>Save</button>
+    </div>
+    <div class="flex-1 p-1">
+      <button class="btn btn-danger btn-sm" 
+        (click)="removeCharge(charge)" i18n>Remove</button>
+    </div>
+  </div>
+</ng-container>

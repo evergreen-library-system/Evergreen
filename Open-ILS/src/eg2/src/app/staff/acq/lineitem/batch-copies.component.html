@@ -1,0 +1,57 @@
+
+<eg-confirm-dialog #confirmAlertsDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Alert" dialogBody="{{alertText ? alertText.code() : ''}}">
+</eg-confirm-dialog>
+
+<eg-acq-cancel-dialog #cancelDialog></eg-acq-cancel-dialog>
+
+<!-- Note the flex values are set so they also match the layout
+     of the list of copies in the copies component. -->
+
+<ng-template #copyAttrsHeader let-hideBarcode="hideBarcode" let-moreCss="moreCss">
+  <div class="div d-flex font-weight-bold {{moreCss}}">
+    <div class="flex-1 p-1" i18n>Owning Branch</div>  
+    <div class="flex-1 p-1" i18n>Copy Location</div>
+    <div class="flex-1 p-1" i18n>Collection Code</div>
+    <div class="flex-1 p-1" i18n>Fund</div>
+    <div class="flex-1 p-1" i18n>Circ Modifier</div>
+    <div class="flex-1 p-1" i18n>Callnumber</div>
+    <div class="flex-1 p-1" i18n>
+      <ng-container *ngIf="!hideBarcode">Barcode</ng-container>
+    </div>
+    <div class="flex-1 p-1"></div>
+    <div class="flex-1 p-1"></div>
+  </div>
+</ng-template>
+
+<ng-container
+  *ngTemplateOutlet="copyAttrsHeader;context:{
+    moreCss:'mt-3 bg-light border border-secondary',
+    hideBarcode: true
+  }">
+</ng-container>
+
+<div class="pt-2 bg-light border border-secondary border-top-0 rounded-bottom">
+  <eg-lineitem-copy-attrs (batchApplyRequested)="batchApplyAttrs($event)"
+    [batchMode]="true"> </eg-lineitem-copy-attrs>
+</div>
+
+<hr/>
+
+<ng-container *ngTemplateOutlet="copyAttrsHeader"> </ng-container>
+
+<div class="mt-1 pt-1 border-top">
+  <div class="batch-copy-row" *ngFor="let copy of lineitem.lineitem_details()">
+    <eg-lineitem-copy-attrs 
+      (receiveRequested)="receiveCopy($event)"
+      (unReceiveRequested)="unReceiveCopy($event)"
+      (deleteRequested)="deleteCopy($event)" 
+      (cancelRequested)="cancelCopy($event)"
+      [lineitem]="lineitem" [copy]="copy"></eg-lineitem-copy-attrs>
+  </div>
+</div>
+
+
+
+

@@ -1,0 +1,48 @@
+<hr class="p-1"/>
+
+<ul ngbNav #liDetailNav="ngbNav" class="nav-tabs">
+  <li ngbNavItem="attrs">
+    <a ngbNavLink i18n>Attributes</a>
+    <ng-template ngbNavContent>
+      <ng-container *ngIf="lineitem">
+        <div class="mt-3">
+          <div class="row" *ngFor="let attr of lineitem.attributes()">
+            <div class="col-lg-2">{{attrLabel(attr)}}</div>
+            <div class="col-lg-10 border-left">{{attr.attr_value()}}</div>
+          </div>
+        </div>
+      </ng-container>
+    </ng-template>
+  </li>
+  <li ngbNavItem="marc-html">
+    <a ngbNavLink i18n>MARC View</a>
+    <ng-template ngbNavContent>
+      <ng-container *ngIf="lineitem">
+        <div class="mt-3">
+          <eg-marc-html recordType="bib" [recordId]="lineitem.eg_bib_id()" 
+            [recordXml]="lineitem.marc()"> </eg-marc-html>
+        </div>
+      </ng-container>
+    </ng-template>
+  </li>
+  <li ngbNavItem="marc-edit">
+    <a ngbNavLink i18n>MARC Edit</a>
+    <ng-template ngbNavContent>
+      <ng-container *ngIf="lineitem">
+        <div class="mt-3">
+          <div *ngIf="lineitem.eg_bib_id()" class="alert alert-warning" i18n>
+            Changes to lineitems that are linked to catalog records will
+            not result in changes to the cataloged record.
+          </div>
+          <eg-marc-editor [recordXml]="lineitem.marc()" [inPlaceMode]="true"
+            [recordType]="lineitem" (recordSaved)="saveMarcChanges($event)">
+          </eg-marc-editor>
+        </div>
+      </ng-container>
+    </ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="liDetailNav"></div>
+
+
+

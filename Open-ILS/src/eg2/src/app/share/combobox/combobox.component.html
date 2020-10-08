@@ -12,30 +12,36 @@
   </span>
 </ng-template>
 
-<div class="d-flex">
-  <input type="text" 
-    class="form-control"
-    [id]="domId"
-    [ngClass]="{
-      'text-success font-italic font-weight-bold': selected && selected.freetext,
-      'form-control-sm': smallFormControl
-    }"
-    [placeholder]="placeholder"
-    [name]="name"
-    [disabled]="isDisabled"
-    [required]="isRequired"
-    [(ngModel)]="selected" 
-    [ngbTypeahead]="filter"
-    [resultTemplate]="getResultTemplate()"
-    [inputFormatter]="formatDisplayString"
-    (click)="onClick($event)"
-    (blur)="onBlur()"
-    (keyup.arrowdown)="onClick($event)"
-    container="body"
-    (selectItem)="selectorChanged($event)"
-    #instance="ngbTypeahead"/>
-  <div class="d-flex flex-column icons" (click)="openMe($event)">
-    <span class="material-icons">keyboard_arrow_up</span>
-    <span class="material-icons">keyboard_arrow_down</span>
+<ng-container *ngIf="readOnly && selected">
+  <ng-container *ngTemplateOutlet="getResultTemplate();context:{result: selected}">
+  </ng-container>
+</ng-container>
+
+<ng-container *ngIf="!readOnly">
+  <div class="d-flex">
+    <input type="text" 
+      class="form-control"
+      [id]="domId"
+      [ngClass]="{
+        'text-success font-italic font-weight-bold': selected && selected.freetext,
+        'form-control-sm': smallFormControl
+      }"
+      [placeholder]="placeholder"
+      [name]="name"
+      [disabled]="isDisabled"
+      [required]="isRequired"
+      [(ngModel)]="selected" 
+      [ngbTypeahead]="filter"
+      [resultTemplate]="getResultTemplate()"
+      [inputFormatter]="formatDisplayString"
+      (click)="onClick($event)"
+      (blur)="onBlur()"
+      container="body"
+      (selectItem)="selectorChanged($event)"
+      #instance="ngbTypeahead"/>
+    <div class="d-flex flex-column icons" (click)="openMe($event)">
+      <span class="material-icons">keyboard_arrow_up</span>
+      <span class="material-icons">keyboard_arrow_down</span>
+    </div>
   </div>
-</div>
+</ng-container>
