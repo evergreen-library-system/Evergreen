@@ -415,6 +415,10 @@ export class HoldComponent implements OnInit {
                 case 'opac.default_pickup_location':
                     this.pickupLib = Number(value);
                     break;
+
+                case 'opac.default_phone':
+                    this.phoneValue = value;
+                    break;
             }
         });
 
