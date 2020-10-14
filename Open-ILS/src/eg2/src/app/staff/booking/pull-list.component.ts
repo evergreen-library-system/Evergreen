@@ -31,7 +31,7 @@ export class PullListComponent implements OnInit {
     @ViewChild('confirmCancelReservationDialog', { static: true })
         private cancelReservationDialog: CancelReservationDialogComponent;
 
-    @ViewChild('pullList') private pullList: GridComponent;
+    @ViewChild('pullList', { static: true }) private pullList: GridComponent;
 
     public dataSource: GridDataSource = new GridDataSource();
 
