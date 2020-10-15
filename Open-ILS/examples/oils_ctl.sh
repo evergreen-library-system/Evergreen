@@ -17,9 +17,9 @@ else
 fi
 
 # ---------------------------------------------------------------------------
-# Make sure we're running as the correct user
+# Make sure we're not running as the root user
 # ---------------------------------------------------------------------------
-[ $(whoami) != 'opensrf' ] && echo 'Must run as user "opensrf"' && exit;
+[ `id -u` -eq 0 ] && echo 'Not to be run as root' && exit 1;
 
 
 function usage {
