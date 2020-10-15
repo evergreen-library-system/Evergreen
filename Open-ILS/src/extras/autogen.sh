@@ -21,115 +21,148 @@ set -e
 # Throw an error for uninitialized variables
 set -u
 
+JSDIR="LOCALSTATEDIR/web/opac/common/js"
+FMDOJODIR="LOCALSTATEDIR/web/js/dojo/fieldmapper"
+SLIMPACDIR="LOCALSTATEDIR/web/opac/extras/slimpac"
+
 # ---------------------------------------------------------------------------
-# Make sure we're running as the correct user
+# Make sure we're not root and are able to write to the destination directory
 # ---------------------------------------------------------------------------
-[ $(whoami) != 'opensrf' ] && echo 'Must run as user "opensrf"' && exit;
+[ `id -u` -eq 0 ] && echo 'Not to be run as root' && exit 1
 
 function usage {
-	echo "";
-	echo "usage: $0 [-u]";
-	echo "";
-	echo "Updates the Evergreen organization tree and fieldmapper IDL.";
-	echo "Run this every time you change the Evergreen organization tree";
-	echo "or update fm_IDL.xml";
-	echo "";
-	echo "Optional parameters:";
-	echo -e "  -u\t\tupdate proximity of library sites in organization tree";
-	echo -e "    \t\t(this is expensive for a large organization tree)";
-	echo "";
-	echo "Examples:";
-	echo "";
-	echo "  Update organization tree and fieldmapper IDL:";
-	echo "    $0";
-	echo "";
-	echo "  Update organization tree and refresh proximity:";
-	echo "    $0 -u";
-	echo "";
+    echo ""
+    echo "usage: $0 [-u]"
+    echo ""
+    echo "Updates the Evergreen organization tree and fieldmapper IDL."
+    echo "Run this every time you change the Evergreen organization tree"
+    echo "or update fm_IDL.xml"
+    echo ""
+    echo "Optional parameters:"
+    echo -e "  -u\t\tupdate proximity of library sites in organization tree"
+    echo -e "    \t\t(this is expensive for a large organization tree)"
+    echo ""
+    echo "Examples:"
+    echo ""
+    echo "  Update organization tree and fieldmapper IDL:"
+    echo "    $0"
+    echo ""
+    echo "  Update organization tree and refresh proximity:"
+    echo "    $0 -u"
+    echo ""
 }
+
+function check_dir_writable {
+    if [ ! -d "$1" ] || [ ! -w "$1" ]; then
+        echo "Unable to write to ${1}, please check"
+        OHNO=1
+    fi
+}
+
+function check_files_writable {
+    # Since we already know the directories are writable there's only
+    # a problem if the file(s) already exist *and* for some reason isn't writable.
+
+    # This may be passed a single filename or a glob for simplicity.
+    for F in `ls $1 2>/dev/null`
+    do
+          if [ -f "$F" ] && [ ! -w "$F" ]; then
+              echo "Unable to write to ${F}, please check"
+              OHNO=1
+          fi
+    done
+}
+
+OHNO=0
+
+# Verify we're able to write everywhere we need
+for DIR in "$JSDIR" "$FMDOJODIR" "$SLIMPACDIR"
+do
+    check_dir_writable "$DIR"
+done
+
+for FILE in "$JSDIR/fmall.js" "$JSDIR/fmcore.js" "$JSDIR/*/OrgTree.js" "$SLIMPACDIR/*/lib_list.inc" "$SLIMPACDIR/locales.inc" "LOCALSTATEDIR/web/eg_cache_hash"
+do
+    check_files_writable "$FILE"
+done
+
+# Bail on badness
+[ $OHNO -eq 0 ] || exit 1
 
 (
 
 cd "BINDIR"
 
 # Initialize our variables
-PROXIMITY="";
+PROXIMITY=""
 
 # ---------------------------------------------------------------------------
 # Load the command line options and set the global vars
 # ---------------------------------------------------------------------------
 while getopts  "u h" flag; do
-	case $flag in	
-		"u")		PROXIMITY="REFRESH";;
-		"h")		usage && exit;;
-	esac;
+    case $flag in    
+        "u")        PROXIMITY="REFRESH";;
+        "h")        usage && exit;;
+    esac
 done
 shift $((OPTIND - 1))
-
-JSDIR="LOCALSTATEDIR/web/opac/common/js/";
-FMDOJODIR="LOCALSTATEDIR/web/js/dojo/fieldmapper/";
-SLIMPACDIR="LOCALSTATEDIR/web/opac/extras/slimpac/";
-SKINDIR='LOCALSTATEDIR/web/opac/skin';
-
-COMPRESSOR="" # TODO: set via ./configure
-#COMPRESSOR="java -jar /opt/yuicompressor-2.4.2/build/yuicompressor-2.4.2.jar"
 
 echo "Updating Evergreen organization tree and IDL"
 echo ""
 
 OUTFILE="$JSDIR/fmall.js"
-echo "Updating fieldmapper";
+echo "Updating fieldmapper"
 perl -MOpenILS::Utils::Configure -e 'print OpenILS::Utils::Configure::fieldmapper();' > "$OUTFILE"
 cp "$OUTFILE" "$FMDOJODIR/"
 echo " -> $OUTFILE"
 OUTFILES="$OUTFILE"
 
 OUTFILE="$JSDIR/fmcore.js"
-echo "Updating web_fieldmapper";
+echo "Updating web_fieldmapper"
 perl -MOpenILS::Utils::Configure -e 'print OpenILS::Utils::Configure::fieldmapper("web_core");' > "$OUTFILE"
 echo " -> $OUTFILE"
 OUTFILES="$OUTFILES $OUTFILE"
 
 OUTFILE="$JSDIR/*/OrgTree.js"
-echo "Updating OrgTree";
+echo "Updating OrgTree"
 perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_js('$JSDIR', 'OrgTree.js');"
 cp "$JSDIR/en-US/OrgTree.js" "$FMDOJODIR/"
 echo " -> $OUTFILE"
 OUTFILES="$OUTFILES $OUTFILE"
 
 OUTFILE="$SLIMPACDIR/*/lib_list.inc"
-echo "Updating OrgTree HTML";
+echo "Updating OrgTree HTML"
 perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_html_options('$SLIMPACDIR', 'lib_list.inc');"
 echo " -> $OUTFILE"
 OUTFILES="$OUTFILES $OUTFILE"
 
 OUTFILE="$SLIMPACDIR/locales.inc"
-echo "Updating locales selection HTML";
+echo "Updating locales selection HTML"
 perl -MOpenILS::Utils::Configure -e "print OpenILS::Utils::Configure::locale_html_options();" > "$OUTFILE"
 echo " -> $OUTFILE"
 OUTFILES="$OUTFILES $OUTFILE"
 
 if [ ! -z "$PROXIMITY" ]
 then
-	echo "Refreshing proximity of org units";
-	perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_proximity();"
+    echo "Refreshing proximity of org units"
+    perl -MOpenILS::Utils::Configure -e "OpenILS::Utils::Configure::org_tree_proximity();"
 fi
 
 # Generate a hash of the generated files
 (
-	date +%Y%m%d
-	for file in `ls -1 $OUTFILES`; do
-		if [[ -n $file && -f $file ]]
-		then
-			md5sum $file
-		fi
-	done
+    date +%Y%m%d
+    for file in `ls -1 $OUTFILES`; do
+        if [[ -n $file && -f $file ]]
+        then
+            md5sum $file
+        fi
+    done
 ) | md5sum | cut -f1 -d' ' | cut -b 27-32 > LOCALSTATEDIR/web/eg_cache_hash
 
 echo
 echo -n "Current Evergreen cache key: "
 cat LOCALSTATEDIR/web/eg_cache_hash
 
-echo "Done";
+echo "Done"
 
 )
