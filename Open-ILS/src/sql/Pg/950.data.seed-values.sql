@@ -10646,7 +10646,7 @@ INSERT INTO action_trigger.hook(key, core_type, description) values('autorenewal
 
 -- AutoRenewer A/T Def: 
 INSERT INTO action_trigger.event_definition(active, owner, name, hook, validator, reactor, delay, max_delay, delay_field, group_field)
-    values (false, 1, 'Autorenew', 'checkout.due', 'CircIsOpen', 'Circ::AutoRenew', '-23 hours'::interval,'-1 minute'::interval, 'due_date', 'usr');
+    values (false, 1, 'Autorenew', 'checkout.due', 'CircIsOpen', 'Circ::AutoRenew', '-24:01:00'::interval,'-1 minute'::interval, 'due_date', 'usr');
 
 -- AutoRenewal outcome Email notifier A/T Def:
 INSERT INTO action_trigger.event_definition(active, owner, name, hook, validator, reactor, group_field, template)
