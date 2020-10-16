@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, ViewChild, ViewEncapsulation
     } from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable, Observer, of} from 'rxjs';
+import {Observable, Observer, of, empty} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
@@ -161,6 +161,11 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
     contextOrg: IdlObject;
 
+    // The context org may come from a workstation setting.
+    // Wait for confirmation from the org-select (via onchange in this
+    // case) that the desired context org unit has been found.
+    contextOrgLoaded = false;
+
     constructor(
         private router: Router,
         private org: OrgService,
@@ -256,13 +261,15 @@ export class HoldingsMaintenanceComponent implements OnInit {
         this.emptyCallNumsCheckbox.checked(settings['cat.holdings_show_empty']);
         this.emptyLibsCheckbox.checked(settings['cat.holdings_show_empty_org']);
 
-        this.initHoldingsTree();
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
+            if (!this.contextOrgLoaded) { return empty(); }
             return this.fetchHoldings(pager);
         };
     }
 
+    // No data is loaded until the first occurrence of the org change handler
     contextOrgChanged(org: IdlObject) {
+        this.contextOrgLoaded = true;
         this.contextOrg = org;
         this.hardRefresh();
     }
