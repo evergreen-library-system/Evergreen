@@ -152,15 +152,6 @@ export class OrgSelectComponent implements OnInit {
         this.org.absorbTree();
         this.sortedOrgs = this.org.list();
 
-        if (this.initialOrg || this.initialOrgId) {
-            this.selected = this.formatForDisplay(
-                this.initialOrg || this.org.get(this.initialOrgId)
-            );
-
-            this.markAsLoaded();
-            return;
-        }
-
         const promise = this.persistKey ?
             this.getFromSetting() : Promise.resolve(null);
 
@@ -168,7 +159,18 @@ export class OrgSelectComponent implements OnInit {
 
             if (!startupOrgId) {
 
-                if (this.fallbackOrgId) {
+                if (this.selected) {
+                    // A value may have been applied while we were
+                    // talking to the network.
+                    startupOrgId = this.selected.id;
+
+                } else if (this.initialOrg) {
+                    startupOrgId = this.initialOrg.id();
+
+                } else if (this.initialOrgId) {
+                    startupOrgId = this.initialOrgId;
+
+                } else if (this.fallbackOrgId) {
                     startupOrgId = this.fallbackOrgId;
 
                 } else if (this.fallbackOrg) {

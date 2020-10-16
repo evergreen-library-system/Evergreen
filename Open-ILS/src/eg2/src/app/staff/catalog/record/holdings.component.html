@@ -8,7 +8,7 @@
         <div class="input-group-text" i18n>Holdings Maintenance</div>
       </div>
       <eg-org-select [initialOrg]="contextOrg" 
-        (onChange)="contextOrgChanged($event)">
+        persistKey="catalog.holdings" (onChange)="contextOrgChanged($event)">
       </eg-org-select>
     </div>
   </div>
