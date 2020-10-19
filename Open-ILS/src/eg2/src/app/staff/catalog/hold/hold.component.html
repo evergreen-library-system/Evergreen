@@ -174,7 +174,7 @@
               <label i18n>SMS Carrier</label>
             </div>
             <div class="flex-1">
-              <eg-combobox [disabled]="!notifySms"
+              <eg-combobox [disabled]="!notifySms" #smsCbox
                 placeholder="SMS Carriers" i18n-placeholder
                 [entries]="smsCarriers">
               </eg-combobox>
