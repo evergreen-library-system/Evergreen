@@ -14,7 +14,7 @@ import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {StaffCatalogService} from '../catalog.service';
 import {HoldsService, HoldRequest,
     HoldRequestTarget} from '@eg/staff/share/holds/holds.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronSearchDialogComponent
   } from '@eg/staff/share/patron/search-dialog.component';
@@ -62,7 +62,6 @@ export class HoldComponent implements OnInit {
     phoneValue: string;
     notifySms: boolean;
     smsValue: string;
-    smsCarrier: string;
     suspend: boolean;
     activeDate: string;
 
@@ -88,6 +87,8 @@ export class HoldComponent implements OnInit {
 
     @ViewChild('patronSearch', {static: false})
       patronSearch: PatronSearchDialogComponent;
+
+    @ViewChild('smsCbox', {static: false}) smsCbox: ComboboxComponent;
 
     constructor(
         private router: Router,
@@ -358,10 +359,13 @@ export class HoldComponent implements OnInit {
         this.user = null;
         this.notifyEmail = true;
         this.notifyPhone = true;
+        this.notifySms = false;
         this.phoneValue = '';
         this.pickupLib = this.requestor.ws_ou();
         this.currentUserBarcode = null;
         this.multiHoldCount = 1;
+        this.smsValue = '';
+        if (this.smsCbox) { this.smsCbox.selectedId = null; }
 
         // Avoid clearing the barcode in cases where the form is
         // reset as the result of a barcode change.
@@ -418,6 +422,22 @@ export class HoldComponent implements OnInit {
 
                 case 'opac.default_phone':
                     this.phoneValue = value;
+                    break;
+
+                case 'opac.default_sms_carrier':
+                    setTimeout(() => {
+                        // timeout creates an extra window where the cbox
+                        // can be rendered in cases where the hold receipient
+                        // is known at page load time.  This out of an
+                        // abundance of caution.
+                        if (this.smsCbox) {
+                            this.smsCbox.selectedId = Number(value);
+                        }
+                    });
+                    break;
+
+                case 'opac.default_sms_notify':
+                    this.smsValue = value;
                     break;
             }
         });
@@ -512,7 +532,7 @@ export class HoldComponent implements OnInit {
             notifyEmail: this.notifyEmail, // bool
             notifyPhone: this.notifyPhone ? this.phoneValue : null,
             notifySms: this.notifySms ? this.smsValue : null,
-            smsCarrier: this.notifySms ? this.smsCarrier : null,
+            smsCarrier: this.smsCbox ? this.smsCbox.selectedId : null,
             thawDate: this.suspend ? this.activeDate : null,
             frozen: this.suspend,
             holdableFormats: selectedFormats
