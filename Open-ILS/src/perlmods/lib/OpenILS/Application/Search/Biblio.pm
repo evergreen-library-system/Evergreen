@@ -138,7 +138,7 @@ sub record_id_to_mods_slim {
     my( $self, $client, $id ) = @_;
     return undef unless defined $id;
 
-    if(ref($id) and ref($id) == 'ARRAY') {
+    if(ref($id) and ref($id) eq 'ARRAY') {
         return _records_to_mods( @$id );
     }
     my $mods_list = _records_to_mods( $id );
