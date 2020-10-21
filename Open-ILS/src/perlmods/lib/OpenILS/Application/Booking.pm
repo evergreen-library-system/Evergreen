@@ -1218,7 +1218,7 @@ sub cancel_reservation {
         $e->xact_begin;
 
         if (
-            $bresv->target_resource_type->catalog_item == "t" &&
+            $bresv->target_resource_type->catalog_item eq "t" &&
             $bresv->current_resource
         ) {
             $logger->info("result of no-op checkin (upon cxl bresv) is " .
