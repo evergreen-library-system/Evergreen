@@ -13,6 +13,10 @@ const routes: Routes = [{
     path: 'actor/org_unit_type',
     component: OrgUnitTypeComponent
 }, {
+    path: 'config/coded_value_map',
+    loadChildren: () =>
+      import('./coded-value-maps/coded-value-maps.module').then(m => m.CodedValueMapsModule)
+}, {
     path: 'config/floating_group',
     loadChildren: () =>
       import('./floating-group/floating-group.module').then(m => m.FloatingGroupModule)
