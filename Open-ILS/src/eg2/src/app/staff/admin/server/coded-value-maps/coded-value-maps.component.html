@@ -1,0 +1,46 @@
+<eg-staff-banner bannerText="SVF Record Attribute Coded Value Map Configuration" i18n-bannerText>
+</eg-staff-banner>
+
+<eg-grid #grid idlClass="ccvm" [dataSource]="gridDataSource" [sortable]="true">
+  <eg-grid-toolbar-button
+    label="New SVF Record Attribute Coded Value Map" i18n-label (onClick)="createNew()">
+  </eg-grid-toolbar-button>
+  <eg-grid-toolbar-action label="Edit Selected" i18n-label [action]="editSelected">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label
+    [action]="deleteSelected"></eg-grid-toolbar-action>
+  
+  <eg-grid-column path='id' i18n-label label="ID"></eg-grid-column> 
+  <eg-grid-column path='ctype' i18n-label label="SVF Attribute"></eg-grid-column>
+  <eg-grid-column path='code' i18n-label label="Code"></eg-grid-column>
+  <eg-grid-column path='value' i18n-label label='value'></eg-grid-column>
+  <eg-grid-column path='description' i18n-label label='description'></eg-grid-column>
+  <eg-grid-column path='opac_visible' i18n-label label='OPAC Visible'></eg-grid-column>
+  <eg-grid-column path='search_label' i18n-label label='Search Label'></eg-grid-column>
+  <eg-grid-column path='is_simple' i18n-label label='Is Simple Selector'></eg-grid-column>
+  <eg-grid-column path='concept_uri' i18n-label label='Concept URI'></eg-grid-column>
+  <ng-template #compDefTmpl let-row="row">
+    <div *ngIf="row.ctype().composite() == 't'">
+      <a href="staff/admin/server/config/coded_value_map/composite_def/{{row.id()}}">
+        Manage
+      </a>
+    </div>
+  </ng-template>
+  <eg-grid-column i18n-label label="Composite Definition"
+      [cellTemplate]="compDefTmpl"></eg-grid-column>
+</eg-grid>
+
+<eg-fm-record-editor #editDialog idlClass="ccvm">
+</eg-fm-record-editor>
+
+<eg-string #createString i18n-text text="New Map Added"></eg-string>
+<eg-string #createErrString i18n-text text="Failed to Create New Map">
+</eg-string>
+<eg-string #deleteFailedString i18n-text 
+  text="Delete of Map failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text 
+  text="Delete of Map succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text 
+  text="Update of Map failed"></eg-string>
+<eg-string #updateSuccessString i18n-text 
+  text="Update of Map succeeded"></eg-string>
