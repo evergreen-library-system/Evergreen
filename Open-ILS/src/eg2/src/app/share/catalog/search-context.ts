@@ -513,11 +513,13 @@ export class CatalogSearchContext {
         let query = ts.query[idx];
         const joinOp = ts.joinOp[idx];
         const matchOp = ts.matchOp[idx];
-        const fieldClass = ts.fieldClass[idx];
+        let fieldClass = ts.fieldClass[idx];
 
         // Bookplates are filters but may be displayed as regular
         // text search indexes.
         if (fieldClass === 'bookplate') { return ''; }
+
+        if (fieldClass === 'jtitle') { fieldClass = 'title'; }
 
         let str = '';
         if (!query) { return str; }
@@ -620,6 +622,13 @@ export class CatalogSearchContext {
                 str += `${space}copy_tag(*,${query})`;
             }
         });
+
+        // Journal Title queries means performing a title search
+        // with a filter.  Filters are global, so append to the front
+        // of the query.
+        if (ts.fieldClass.filter(fc => fc === 'jtitle').length > 0) {
+            str = 'bib_level(s) ' + str;
+        }
 
         if (ts.hasBrowseEntry) {
             // stored as a comma-separated string of "entryId,fieldId"
