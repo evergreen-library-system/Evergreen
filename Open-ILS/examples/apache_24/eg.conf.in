@@ -113,6 +113,11 @@ ExpiresByType text/css "access plus 1 year"
 	SSLHonorCipherOrder On
 	SSLCipherSuite ECDHE-RSA-AES256-SHA384:AES256-SHA256:RC4:HIGH:!MD5:!aNULL:!EDH:!AESGCM
 
+    # Uncomment and set this variable to the id of the context org unit
+    # you want to provide visible carousels for this vhost.
+    #
+    # SetEnv carousel_loc 1
+
     # If you don't have an SSL cert, you can create self-signed 
     # certificate and key with:
     # openssl req -new -x509 -nodes -out server.crt -keyout server.key

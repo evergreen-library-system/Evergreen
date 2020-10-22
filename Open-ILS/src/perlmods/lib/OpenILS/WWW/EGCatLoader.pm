@@ -349,6 +349,7 @@ sub load_common {
         $ctx->{hostname} = 'remote';
     }
 
+    $ctx->{carousel_loc} = $self->get_carousel_loc;
     $ctx->{physical_loc} = $self->get_physical_loc;
 
     # capture some commonly accessed pages
@@ -403,7 +404,7 @@ sub load_common {
 
     # FIXME - move carousel helpers to a separate file
     $ctx->{get_visible_carousels} = sub {
-        my $org_unit = $self->ctx->{physical_loc} || $self->cgi->param('loc') || $self->ctx->{aou_tree}->()->id;
+        my $org_unit = $self->ctx->{carousel_loc} || $self->ctx->{physical_loc} || $self->cgi->param('loc') || $self->ctx->{aou_tree}->()->id;
         return $U->simplereq(
             'open-ils.actor',
             'open-ils.actor.carousel.retrieve_by_org',
@@ -525,6 +526,11 @@ sub get_physical_loc {
     }
 
     return $self->cgi->cookie(COOKIE_PHYSICAL_LOC);
+}
+
+sub get_carousel_loc {
+    my $self = shift;
+    return $self->cgi->param('carousel_loc') || $ENV{carousel_loc};
 }
 
 # -----------------------------------------------------------------------------
