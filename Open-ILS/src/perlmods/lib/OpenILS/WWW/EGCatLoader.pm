@@ -394,7 +394,8 @@ sub load_common {
                 '+cc' => { id => $id },
                 '+bre' => { deleted => 'f' },
                 '+mfde' => { name => 'title' }
-            }
+            },
+            order_by => {cbrebi => ['pos','create_time']}
         };
         my $r = $e->json_query($q);
         $ret->{bibs} = $r;
