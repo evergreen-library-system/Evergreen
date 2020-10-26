@@ -36,11 +36,6 @@ function showInstalled {
 	if test "@BUILDEGJAVA_TRUE@" = ""; then
 		echo "EG_JAVA"
 	fi
-	if test "@BUILDEGPYTHON_TRUE@" = ""; then
-		echo "EG_PYTHON"
-	fi
-
-
 }
 
 function showAll {

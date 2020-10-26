@@ -109,14 +109,6 @@ reporter_data = @srcdir@/reporter/report-fail \
 endif
 
 #------------------------------
-# Build EVERGREEN PYTHON
-#------------------------------
-
-if BUILDEGPYTHON
-OILSPYTHON_DIR = python
-endif
-
-#------------------------------
 # Build EVERGREEN JAVA
 #------------------------------
 
@@ -158,7 +150,7 @@ doc_DATA = $(gen_docs)
 
 # Take care of which subdirectories to build, and which extra files to include in a distribution.
 
-SUBDIRS = $(OILSCORE_DIRS) $(OILSWEB_DIR) $(OILSPYTHON_DIR) $(OILSJAVA_DIR)
+SUBDIRS = $(OILSCORE_DIRS) $(OILSWEB_DIR) $(OILSJAVA_DIR)
 
 EXTRA_DIST = @srcdir@/perlmods \
 	@srcdir@/data \

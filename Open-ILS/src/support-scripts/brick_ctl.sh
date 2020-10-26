@@ -185,7 +185,7 @@ function fetch_build {
     ln -s $NEW_DIR current;
 }
 
-# This is a per-service action.  Currently only support in Perl (and Python).
+# This is a per-service action.  Currently only supported in Perl.
 # When other active languages are added, this script will need a language param
 # to determine which controller script to call.
 if [ -n "$OPT_SERVICE" ]; then

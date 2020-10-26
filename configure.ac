@@ -167,19 +167,6 @@ esac],
 AM_CONDITIONAL([BUILDEGJAVA], [test x$evergreen_java = xtrue])
 
 
-# build the evergreen python modules?
-
-AC_ARG_ENABLE([python],
-[  --enable-python    enables installation of the Evergreen Python modules ],
-[case "${enableval}" in
-    yes) EG_PYTHON_INSTALL=true ;;
-    no)  EG_PYTHON_INSTALL=false ;;
-  *) AC_MSG_ERROR([please choose another value for --enable-python (supported values are yes or no)])
-esac],
-[EG_PYTHON_INSTALL=false])
-
-AM_CONDITIONAL([BUILDEGPYTHON], [test x$EG_PYTHON_INSTALL = xtrue])
-
 #-----------------------------------
 # Check for dependencies 
 #-----------------------------------
@@ -364,8 +351,7 @@ if test "x$openils_core" = "xtrue"; then
              Open-ILS/src/c-apps/Makefile
              Open-ILS/src/c-apps/tests/Makefile
              Open-ILS/src/extras/Makefile
-             Open-ILS/src/java/Makefile
-             Open-ILS/src/python/Makefile])
+             Open-ILS/src/java/Makefile])
 fi
 
 if test "x$build_apachemods" = "xtrue"; then
@@ -436,11 +422,6 @@ AC_MSG_RESULT([Evergreen Reporter:          no])
 AC_MSG_RESULT([Evergreen Staff Client:      yes])
     else
 AC_MSG_RESULT([Evergreen Staff Client:      no])
-    fi
-    if test "$EG_PYTHON_INSTALL" = "true" ; then
-AC_MSG_RESULT([Evergreen Python Components: yes])
-    else
-AC_MSG_RESULT([Evergreen Python Components: no])
     fi
     if test "$evergreen_java" = "true" ; then
 AC_MSG_RESULT([Evergreen Java Components:   yes])
