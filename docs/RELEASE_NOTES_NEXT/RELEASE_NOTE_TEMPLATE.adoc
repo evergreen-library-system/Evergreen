@@ -1,5 +1,5 @@
-Feature Title
-^^^^^^^^^^^^^
+== Feature Title ==
+
 Some text describing the feature. Blah blah blah blah blah blah blah blah
 blah blah blah.
 
@@ -8,8 +8,8 @@ blah blah blah.
   ** item 2
  * list
 
-Subsection title
-+++++++++++++++++++
+=== Subsection title ===
+
 Subsection description, perhaps listing permissions needed, etc.
 
   * thing 1
