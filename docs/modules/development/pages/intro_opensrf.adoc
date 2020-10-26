@@ -1274,7 +1274,7 @@ services and other performance-critical processes such as Apache.
 
 The support for logging and caching that is built into OpenSRF has been
 particularly helpful with the development of a custom service for SFX holdings
-integration into our catalogue. Once I understood how OpenSRF works, most of
+integration into our catalog. Once I understood how OpenSRF works, most of
 the effort required to build that SFX integration service was spent on figuring
 out how to properly invoke the SFX API to display human-readable holdings.
 Adding a new OpenSRF service and registering several new methods for the
