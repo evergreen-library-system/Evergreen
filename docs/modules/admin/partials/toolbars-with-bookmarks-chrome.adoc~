@@ -1,0 +1,13 @@
+== Create a Toolbar Using Bookmarks in Chrome ==
+
+indexterm:[toolbar]
+indexterm:[staff client,configuration]
+
+You can turn off these headers and footers using the following steps:
+
+. In the Chrome menu, click _Bookmarks_ and make sure that _Show bookmarks bar_ is selected (CTRL+Shift+B).
+. Navigate to the staff client page(s) you want to bookmark.
+. In the Chrome menu, click _Bookmarks_ and select either _Bookmark this tab_ (CTRL+B) or _Bookmark all tabs_ (CTRL+Shift+B) 
+. Name bookmark(s) appropriately. 
+. Click and drag toolbar bookmarks to re-order. 
+
