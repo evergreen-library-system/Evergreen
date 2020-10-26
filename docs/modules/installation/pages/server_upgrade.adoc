@@ -28,7 +28,7 @@ become the *root* user again simply issue the `exit` command.
 
 The following steps guide you through a simplistic upgrade of a production
 server. You must adjust these steps to accommodate your customizations such
-as catalogue skins.
+as catalog skins.
 
 . Stop Evergreen and back up your data:
  .. As *root*, stop the Apache web server.

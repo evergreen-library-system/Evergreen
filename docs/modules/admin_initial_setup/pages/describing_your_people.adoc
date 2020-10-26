@@ -314,7 +314,7 @@ WHERE ppl.code IN ('COPY_CHECKOUT', 'CREATE_IN_HOUSE_USE');
 Finally, we want to add our students to the groups. The request may arrive in
 your inbox from the library along the lines of "Please add Mint Julep as a
 Student Cataloger, Bloody Caesar as a Student Circulator, and Grass Hopper as a
-Student Cataloguer / Circulator; I've already created their accounts and given
+Student Cataloger / Circulator; I've already created their accounts and given
 them a work organizational unit." You can translate that into the following SQL
 to add the users to the pertinent permission groups, adjusting for the
 inevitable typos in the names of the users.
