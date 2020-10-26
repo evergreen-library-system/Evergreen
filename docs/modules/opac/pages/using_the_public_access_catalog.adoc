@@ -16,7 +16,7 @@ indexterm:[search box]
 
 The _Homepage_ contains a single search box for you to enter search terms. You 
 can get to the _Homepage_ at any time by clicking the _Another Search_ link from
-the leftmost link on the bar above your search results in the catalogue, or you 
+the leftmost link on the bar above your search results in the catalog, or you 
 can enter a search anywhere you see a search box.
 
 You can select to search by:
@@ -89,8 +89,8 @@ indexterm:[formats, music]
 
 ==== Libraries ====
 
-If you are using a catalogue in a library or accessing a library’s online 
-catalogue from its homepage, the search will return items for your local 
+If you are using a catalog in a library or accessing a library’s online 
+catalog from its homepage, the search will return items for your local 
 library. If your library has multiple branches, the result will display items 
 available at your branch and all branches of your library system separately.
 
@@ -99,7 +99,7 @@ available at your branch and all branches of your library system separately.
 
 Advanced searches allow users to perform more complex searches by providing more
 options. Many kinds of searches can be performed from the _Advanced Search_ 
-screen. You can access by clicking _Advanced Search_ on the catalogue _Homepage_
+screen. You can access by clicking _Advanced Search_ on the catalog _Homepage_
 or search results screen.
 
 The available search options are the same as on the basic search. But you may 
@@ -372,7 +372,7 @@ the search result screen.
 
 indexterm:[search results]
 
-The search results are a list of relevant works from the catalogue. If there are
+The search results are a list of relevant works from the catalog. If there are
 many results, they are divided into several pages. At the top of the list, you 
 can see the total number of results and go back and forth between the pages 
 by clicking the links that say _Previous_ or _Next_ on top or bottom of the 
@@ -425,8 +425,8 @@ image::media/catalogue-5.png[catalogue-5]
 indexterm:[search results, availability]
 
 The number of available copies and total copies are displayed under each search 
-result's call number. If you are using a catalogue inside a library or accessing
-a library’s online catalogue from its homepage, you will see how many copies are
+result's call number. If you are using a catalog inside a library or accessing
+a library's online catalog from its homepage, you will see how many copies are
 available in the library under each title, too. If the library belongs to a 
 multi-branch library system you will see an extra row under each title showing 
 how many copies are available in all branches.
