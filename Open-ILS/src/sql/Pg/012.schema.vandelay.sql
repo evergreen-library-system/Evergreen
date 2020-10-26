@@ -1203,7 +1203,8 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
     SELECT vandelay.add_field( $1, $2, $3, 0 );
 $_$ LANGUAGE SQL;
 
-CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS TEXT AS $_$
+
+CREATE OR REPLACE FUNCTION vandelay.strip_field(xml text, field text) RETURNS text AS $f$
 
     use MARC::Record;
     use MARC::File::XML (BinaryEncoding => 'UTF-8');
@@ -1228,15 +1229,18 @@ CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS
             $field =~ s/\s+//;
             my $sf = $2;
             $sf =~ s/\s+//;
-            my $match = $3;
-            $match =~ s/^\s*//; $match =~ s/\s*$//;
+            my $matches = $3;
+            $matches =~ s/^\s*//; $matches =~ s/\s*$//;
             $fields{$field} = { sf => [ split('', $sf) ] };
-            if ($match) {
-                my ($msf,$mre) = split('~', $match);
-                if (length($msf) > 0 and length($mre) > 0) {
-                    $msf =~ s/^\s*//; $msf =~ s/\s*$//;
-                    $mre =~ s/^\s*//; $mre =~ s/\s*$//;
-                    $fields{$field}{match} = { sf => $msf, re => qr/$mre/ };
+            if ($matches) {
+                for my $match (split('&&', $matches)) {
+                    $match =~ s/^\s*//; $match =~ s/\s*$//;
+                    my ($msf,$mre) = split('~', $match);
+                    if (length($msf) > 0 and length($mre) > 0) {
+                        $msf =~ s/^\s*//; $msf =~ s/\s*$//;
+                        $mre =~ s/^\s*//; $mre =~ s/\s*$//;
+                        $fields{$field}{match}{$msf} = qr/$mre/;
+                    }
                 }
             }
         }
@@ -1245,7 +1249,8 @@ CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS
     for my $f ( keys %fields) {
         for my $to_field ($r->field( $f )) {
             if (exists($fields{$f}{match})) {
-                next unless (grep { $_ =~ $fields{$f}{match}{re} } $to_field->subfield($fields{$f}{match}{sf}));
+                my @match_list = grep { $to_field->subfield($_) =~ $fields{$f}{match}{$_} } keys %{$fields{$f}{match}};
+                next unless (scalar(@match_list) == scalar(keys %{$fields{$f}{match}}));
             }
 
             if ( @{$fields{$f}{sf}} ) {
@@ -1263,7 +1268,7 @@ CREATE OR REPLACE FUNCTION vandelay.strip_field ( xml TEXT, field TEXT ) RETURNS
 
     return $xml;
 
-$_$ LANGUAGE PLPERLU;
+$f$ LANGUAGE plperlu;
 
 CREATE OR REPLACE FUNCTION vandelay.replace_field 
     (target_xml TEXT, source_xml TEXT, field TEXT) RETURNS TEXT AS $_$
