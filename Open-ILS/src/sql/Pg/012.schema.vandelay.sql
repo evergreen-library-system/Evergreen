@@ -1151,15 +1151,18 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
             $field =~ s/\s+//;
             my $sf = $2;
             $sf =~ s/\s+//;
-            my $match = $3;
-            $match =~ s/^\s*//; $match =~ s/\s*$//;
+            my $matches = $3;
+            $matches =~ s/^\s*//; $matches =~ s/\s*$//;
             $fields{$field} = { sf => [ split('', $sf) ] };
-            if ($match) {
-                my ($msf,$mre) = split('~', $match);
-                if (length($msf) > 0 and length($mre) > 0) {
-                    $msf =~ s/^\s*//; $msf =~ s/\s*$//;
-                    $mre =~ s/^\s*//; $mre =~ s/\s*$//;
-                    $fields{$field}{match} = { sf => $msf, re => qr/$mre/ };
+            if ($matches) {
+                for my $match (split('&&', $matches)) {
+                    $match =~ s/^\s*//; $match =~ s/\s*$//;
+                    my ($msf,$mre) = split('~', $match);
+                    if (length($msf) > 0 and length($mre) > 0) {
+                        $msf =~ s/^\s*//; $msf =~ s/\s*$//;
+                        $mre =~ s/^\s*//; $mre =~ s/\s*$//;
+                        $fields{$field}{match}{$msf} = qr/$mre/;
+                    }
                 }
             }
         }
@@ -1176,7 +1179,8 @@ CREATE OR REPLACE FUNCTION vandelay.add_field ( target_xml TEXT, source_xml TEXT
                 } else {
                     for my $to_field (@tos) {
                         if (exists($fields{$f}{match})) {
-                            next unless (grep { $_ =~ $fields{$f}{match}{re} } $to_field->subfield($fields{$f}{match}{sf}));
+                            my @match_list = grep { $to_field->subfield($_) =~ $fields{$f}{match}{$_} } keys %{$fields{$f}{match}};
+                            next unless (scalar(@match_list) == scalar(keys %{$fields{$f}{match}}));
                         }
                         for my $old_sf ($from_field->subfields) {
                             $to_field->add_subfields( @$old_sf ) if grep(/$$old_sf[0]/,@{$fields{$f}{sf}});
@@ -1302,16 +1306,19 @@ CREATE OR REPLACE FUNCTION vandelay.replace_field
             $field =~ s/\s+//;
             my $sf = $2;
             $sf =~ s/\s+//;
-            my $match = $3;
-            $match =~ s/^\s*//; $match =~ s/\s*$//;
+            my $matches = $3;
+            $matches =~ s/^\s*//; $matches =~ s/\s*$//;
             $fields{$field} = { sf => [ split('', $sf) ] };
-            if ($match) {
-                my ($msf,$mre) = split('~', $match);
-                if (length($msf) > 0 and length($mre) > 0) {
-                    $msf =~ s/^\s*//; $msf =~ s/\s*$//;
-                    $mre =~ s/^\s*//; $mre =~ s/\s*$//;
-                    $fields{$field}{match} = { sf => $msf, re => qr/$mre/ };
-                }
+            if ($matches) {
+                for my $match (split('&&', $matches)) {
+                    $match =~ s/^\s*//; $match =~ s/\s*$//;
+                    my ($msf,$mre) = split('~', $match);
+                    if (length($msf) > 0 and length($mre) > 0) {
+                        $msf =~ s/^\s*//; $msf =~ s/\s*$//;
+                        $mre =~ s/^\s*//; $mre =~ s/\s*$//;
+                        $fields{$field}{match}{$msf} = qr/$mre/;
+                    }
+                 }
             }
         }
     }
@@ -1400,13 +1407,22 @@ CREATE OR REPLACE FUNCTION vandelay.replace_field
     # MARC tag loop
     for my $f (keys %fields) {
         my $tag_idx = -1;
-        for my $target_field ($target_r->field($f)) {
+        my @target_fields = $target_r->field($f);
+
+        if (!@target_fields and !defined($fields{$f}{match})) {
+            # we will just add the source fields
+            # unless they require a target match.
+            my @add_these = map { $_->clone } $source_r->field($f);
+            $target_r->insert_fields_ordered( @add_these );
+        }
+
+        for my $target_field (@target_fields) { # This will not run when the above "if" does.
 
             # field spec contains a regex for this field.  Confirm field on 
             # target record matches the specified regex before replacing.
             if (exists($fields{$f}{match})) {
-                next unless (grep { $_ =~ $fields{$f}{match}{re} } 
-                    $target_field->subfield($fields{$f}{match}{sf}));
+                my @match_list = grep { $target_field->subfield($_) =~ $fields{$f}{match}{$_} } keys %{$fields{$f}{match}};
+                next unless (scalar(@match_list) == scalar(keys %{$fields{$f}{match}}));
             }
 
             my @new_subfields;
