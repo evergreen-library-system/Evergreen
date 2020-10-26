@@ -552,7 +552,7 @@ a preventive measure to reduce the potential risks for leaking patron
 information. To use Matomo Analytics you need to:
 
 . Set up a hosted instance of Matomo
-. Add your Evergreen catalogue as a site
+. Add your Evergreen catalog as a site
 . Use the Library Settings Editor to add a Matomo URL and Site ID for your library.
 
 Typically, Matomo will give you a block of javascript you can insert into

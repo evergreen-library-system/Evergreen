@@ -14,7 +14,7 @@ NOTE: The words _copy_ and _item_ are used interchangeably in Evergreen.
 === Creating Item Buckets ===
 
 Item buckets can be created in the _Item Bucket_ interface as well as on the fly when adding items to a bucket from
-a catalogue search or from within the _Item Status_ interface.  For information on creating buckets on the fly see _Adding Copies to a Bucket_ (needs section ID).
+a catalog search or from within the _Item Status_ interface.  For information on creating buckets on the fly see _Adding Copies to a Bucket_ (needs section ID).
 
 1. In the _Item Bucket_ interface on the click *Buckets* in either the _Pending Copies_ or _Bucket View_ tab.
 +
@@ -123,9 +123,9 @@ image::media/copy-bucket-pending-5.png[Item Bucket Interface]
 NOTE: Once you have added your selected items to a bucket you can deselect them, select other items on your pending list, and add those items to a different bucket.
 
 
-=== From a Catalogue Search ===
+=== From a Catalog Search ===
 
-1. Retrieve the title through a catalogue search.
+1. Retrieve the title through a catalog search.
 2. If it is not your default view click on the *Holdings View* tab.
 +
 image::media/copy-bucket-cat-1.png[Holdings View]
@@ -199,14 +199,14 @@ image::media/copy-bucket-edit-copy-2.png[Item Bucket Interface]
 +
 image::media/copy-bucket-edit-copy-3.png[Item Bucket Interface]
 
-== Deleting Copies from the Catalogue ==
+== Deleting Copies from the Catalog ==
 
 . Open the _Item Bucket_ interface.  By default you are on the *Bucket View* tab.
 +
 image::media/copy-bucket-remove-1.png[Item Bucket Interface]
 +
 . Click on *Buckets*.
-. From the drop down menu select the bucket containing the item(s) you would like to delete from the catalogue.
+. From the drop down menu select the bucket containing the item(s) you would like to delete from the catalog.
 +
 image::media/copy-bucket-remove-2.png[Item Bucket Interface]
 +
@@ -220,7 +220,7 @@ image::media/copy-bucket-delete-copy-1.png[Item Bucket Interface]
 +
 image::media/copy-bucket-delete-copy-2.png[Item Bucket Interface]
 +
-. The items have been deleted from the catalogue.
+. The items have been deleted from the catalog.
 
 
 == Placing Holds on Copies in a Bucket ==
@@ -252,7 +252,7 @@ image::media/copy-bucket-request-2.png[Item Bucket Interface]
 
 == Transferring Copies to Volumes ==
 
-1. Retrieve the title through a catalogue search.
+1. Retrieve the title through a catalog search.
 2. If it is not your default view click on the *Holdings View* tab.
 +
 image::media/copy-bucket-cat-1.png[Holdings View]

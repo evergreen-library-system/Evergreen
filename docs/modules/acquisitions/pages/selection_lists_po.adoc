@@ -139,7 +139,7 @@ When a duplicate purchase order name is detected during the renaming of an exist
 When the appropriate criteria have been met the Activate Order button will appear and you can proceed with the following:
 
 . Click the button Activate Order.
-. When you activate the order the bibliographic records and copies will be imported into the catalogue using the Vandelay interface, if not previously imported. See How to Load Bibliographic Records and Items into the Catalogue for instructions on using the Vandelay interface.
+. When you activate the order the bibliographic records and copies will be imported into the catalog using the Vandelay interface, if not previously imported. See How to Load Bibliographic Records and Items into the Catalog for instructions on using the Vandelay interface.
 . The funds associated with the purchases will be encumbered.
 
 After you click *Activate Order*, you will be presented with the record import interface for records that are not already in the catalog. Once you complete entering in the parameters for the record import interface, the progress screen will appear. As of Evergreen 2.9, this progress screen consists of a progress bar in the foreground, and a tally of the following in the background of the bottom-left corner:
@@ -153,10 +153,10 @@ After you click *Activate Order*, you will be presented with the record import i
 
 ==== Activate Purchase Order without loading items ====
 
-It is possible to activate a purchase order without loading items. Once the purchase order has been activated without loading items, it is not possible to load the items. This feature should only be used in situations where the copies have already been added to the catalogue, such as:
+It is possible to activate a purchase order without loading items. Once the purchase order has been activated without loading items, it is not possible to load the items. This feature should only be used in situations where the copies have already been added to the catalog, such as:
 
 * Cleaning up pre-acquisitions backlog
-* Direct purchases that have already been catalogued
+* Direct purchases that have already been cataloged
 
 To use this feature, click the Activate Without Loading Items button.
 

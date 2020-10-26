@@ -325,7 +325,7 @@ place.
 . As the *root* Linux account, configure the prefork module to start and keep
   enough Apache servers available to provide quick responses to clients without
   running out of memory. The following settings are a good starting point for a
-  site that exposes the default Evergreen catalogue to the web:
+  site that exposes the default Evergreen catalog to the web:
 +
 .`/etc/apache2/mods-available/mpm_prefork.conf`
 [source,bash]
@@ -574,7 +574,7 @@ export PATH=$PATH:/openils/bin
 ------------------------------------------------------------------------------
 +
 3. As the *opensrf* Linux account, generate the Web files needed by the web staff
-   client and catalogue and update the organization unit proximity (you need to do
+   client and catalog and update the organization unit proximity (you need to do
    this the first time you start Evergreen, and after that each time you change the library org unit configuration.
 ):
 +
