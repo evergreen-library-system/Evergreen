@@ -14,7 +14,7 @@ in a different timezone, Evergreen will alert you and provide the time in both y
 timezone.
 
 Only staff members may create reservations. A reservation can be started from a patron record, or a booking resource.
-To reserve cataloged items, you may start from searching the catalog, if you do not know the booking item's barcode.
+To reserve catalogued items, you may start from searching the catalogue, if you do not know the booking item's barcode.
 
 === To create a reservation from a patron record ===
 
@@ -28,7 +28,7 @@ of a resource you'd like to reserve.  Otherwise, select the _Choose resource by 
 . A schedule grid  will display on the bottom part of the screen.
 . If necessary, adjust the day or days that are displayed.  You can also make other adjustments using the _Schedule settings_
 tab.
-. For non-cataloged resources, patrons may wish to specify certain attributes.  The _Attributes_ tab allows you to do this.
+. For non-catalogued resources, patrons may wish to specify certain attributes.  The _Attributes_ tab allows you to do this.
 For example, if a patron is booking a laptop, they can choose between PC and Mac laptops if they need to.
 . When you have found the days or times that work the best, you can proceed with creating the reservation, by doing one
 of the following:
@@ -45,11 +45,11 @@ actions button. Select "Create Reservation".
 . The screen will refresh, and the new reservation will appear in the schedule.
 
 
-=== Search the catalog to create a reservation ===
+=== Search the catalogue to create a reservation ===
 
-If you would like to reserve a cataloged item but do not know the item barcode, you may start with a catalog search.
+If you would like to reserve a catalogued item but do not know the item barcode, you may start with a catalogue search.
 
-. Select Cataloguing -> Search the Catalog to search for the item you wish to reserve. You may search by any
+. Select Cataloguing -> Search the Catalogue to search for the item you wish to reserve. You may search by any
 bibliographic information.
 . Select the _Holdings View_ tab.
 . Right-click on the row that you want to reserve. Select _Book Item Now_. This takes you to the Create Reservations Screen.
@@ -76,7 +76,7 @@ actions button. Select "Create Reservation".
 
 
 [NOTE]
-Reservations on cataloged items can be created on Item Status (F5) screen. Select the item, then Actions -> Book Item Now.
+Reservations on catalogued items can be created on Item Status (F5) screen. Select the item, then Actions -> Book Item Now.
 
 == Reservation Pull List ==
 
