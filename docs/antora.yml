@@ -14,6 +14,7 @@ nav:
 - modules/circulation/nav.adoc
 - modules/reports/nav.adoc
 - modules/opac/nav.adoc
+- modules/integrations/nav.adoc
 - modules/development/nav.adoc
 - modules/api/nav.adoc
 - modules/appendix/nav.adoc

@@ -1,0 +1,73 @@
+= RFID Product Integration =
+
+== Evergreen Integration with PV Supa GoodStuff RFID Reader ==
+
+=== Introduction ===
+
+This feature enables the Evergreen staff client to "talk" to the PV Supa Goodstuff RFID reader so that libraries can utilize PV Supa Goodstuff's RFID technology when checking items in and out. 
+
+=== Administration ===
+
+To use PV Supa Goodstuff, you must add code to the Admin module that Evergreen can use to identify the reader.
+
+
+. Click *Admin* -> *Workstation Admin* -> *Server Add-ons*. 
+
+. Enter the code, pv_supa_goodstuff, to identify PV Supa Goodstuff in the *Active Server Add-Ons* field.
+
+. Click *Update Active Add-Ons*.
+
+. Look at the next field, *Add-on Preferences*.  Enter information in the *GoodStuff* tab.
+
+. Check the *Enabled* check box to enable this add-on.
+
+. Enter the *IP/Hostname* of the hardware.
+
+. Enter the *port*.
+
+. Click *Update*.
+
+
+
+=== Using RFID at the Circulation Desk ===
+
+RFID functionality is available in the Circulation module via the check-out interface, the check-out function in the patron account, and the check-in interface.
+
+
+From the *Check-Out* interface (F1):
+
+. Check the RFID checkbox if your library cards have embedded RFID chips that Evergreen can use to retrieve the patron barcode.  RFID check boxes appear only if appropriate code words have been added in the Server Add-Ons.
+  
+. Place the patron's library card and/or item(s) on the PV Supa Goodstuff Reader.  Evergreen will take you to the patron's account.  If item(s) with RFID chips have also been placed on the reader, and the corresponding checkbox is checked, then Evergreen will scan the item(s) into the patron's account.
+
+NOTE: RFID check boxes are sticky, so if you have checked an RFID box once, then it will continue to be checked when you re-open the interface.
+
+NOTE:  If you do not use RFID chips to retrieve patrons' accounts, then leave the RFID box unchecked.  You can scan a patron barcode with a barcode scanner, and Evergreen will retrieve the patron data without using the RFID feature.  From the patron's account, Evergreen can check out items using the RFID reader.  See the next section for details. 
+
+. Click *Done* to complete the transaction, or close the window.
+
+
+
+
+From the Check-Out tab in a patron's record:
+
+
+. Open a patron's record, and stack the item(s) to be checked out on the RFID reader.  To retrieve item data using the RFID chips embedded in the item barcodes, click the *RFID* check box at the bottom of the patron account.  When this box is checked, Evergreen will read the item(s) that are stacked on the RFID reader, check out the item(s), and disable the security bits.
+
+
+. Click *Done* to complete the transaction, or close the window.
+
+NOTE: Evergreen pop-up messages, such as an Alert Message or Item Already Circulating may appear during transactions.  Two new dialogs specific to PV Supa Goodstuff may also appear.  One dialog, Incomplete Sets, allows you to continue checking out an incomplete set, such as a CD collection, or you can ask the hardware to rescan the RFID tags to look again for a full set.  The second dialog allows you to manually attempt to set or unset the security bit on an item if the automatic attempt failed.
+
+
+
+
+From the *Check In* interface:
+
+. Click the *RFID* check box.
+
+. Place the items on the PV Supa Goodstuff Reader.
+
+. Evergreen will tell the reader to check in the item(s) and enable the security bits.  The item(s) appear in a list on the screen.
+
+

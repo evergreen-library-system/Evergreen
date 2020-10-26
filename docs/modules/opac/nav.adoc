@@ -9,4 +9,3 @@
 ** xref:opac:linked_libraries.adoc[Library Information Pages]
 ** xref:opac:opensearch.adoc[Adding Evergreen Search to Web Browsers]
 ** xref:opac:search_form.adoc[Adding an Evergreen search form to a web page]
-
