@@ -16,6 +16,7 @@
 ** xref:admin:auto_suggest_search.adoc[Auto Suggest in Catalog Search]
 ** xref:admin:authentication_proxy.adoc[Authentication Proxy]
 ** xref:admin_initial_setup:KidsOPAC.adoc[Kid's OPAC Configuration]
+** xref:admin_initial_setup:bootstrap_opac.adoc[Enabling the Experimental Bootstrap OPAC]
 ** xref:admin:patron_address_by_zip_code.adoc[Patron Address City/State/County Pre-Populate by ZIP Code]
 ** xref:admin:phonelist.adoc[Phonelist.pm Module]
 ** xref:admin:sip_server.adoc[SIP Server]

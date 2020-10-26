@@ -1,0 +1,29 @@
+= EZProxy =
+
+Evergreen can provide CGI authentication for EZProxy.
+To enable this, you will need to:
+
+. Add a new User Activity Type to Evergreen for EZProxy CGI authentications.
+. Add a new Remote Authentication Profile to Evergreen. You will probably want
+to use `EZProxyCGI` as the name.
+. Edit the `<Location /api/ezproxy>` stanza in Evergreen's eg_vhost configuration
+file. In particular, you will need to allow access to from your EZProxy server,
+fill in the base uri of your EZProxy server, and add a secret to the
+_OILSRemoteAuthEZProxySecret_ variable.
+. Restart Apache.
+. Edit the EZProxy user.txt file.  You will likely want to add a stanza such
+as the following:
+
+.Sample user.txt stanza
+----
+::CGI=http://your-evergreen-catalog.com/api/ezproxy?url=^R
+::Ticket
+MD5 <same secret as in eg_vhost config>
+Expired; Deny expiredticket.htm
+/Ticket
+----
+
+When this feature is enabled, users will see an Evergreen-based login screen.
+You may customize the look and feel of this login screen by editing the relevant
+template toolkit files.
+

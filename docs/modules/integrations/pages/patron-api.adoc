@@ -1,0 +1,34 @@
+= "PatronAPI" authentication =
+
+Evergreen now supports the III "PatronAPI" scheme for authenticating
+patrons and supplying some information about them.
+
+To enable this, you will need to:
+
+. Add a new User Activity Type to Evergreen for PatronAPI authentications.
+. Add a new Remote Authentication Profile to Evergreen. You will probably want
+to use `PatronAPI` as the name.
+. Edit the `<Location /api/patronapi>` stanza in Evergreen's eg_vhost configuration
+file. In particular, you will need to allow access to it from the server(s)
+wanting to make PatronAPI requests, determine whether to enable the PatronAPI
+"dump" feature, and specify whether users can be identified by username
+or barcode.
+. Restart Apache.
+. Update the PatronAPI client to use https://your.evergreen.server/api/patronapi
+  as its base URL.
+
+Example PatronAPI URLs look something like this:
+
+.PatronAPI URLs
+----
+# test a patron's PIN:
+https://evergreen.example.org/api/patronapi/USERNAME/PASSWORD/pintest
+
+# dump some information about the patron. Note that this
+# does _not_ require the the patron's password be supplied.
+https://evergreen.example.org/api/patronapi/USERNAME/dump
+----
+
+The responses for the `pintest` and `dump` actions are specified by
+Template Toolkit templates under (e.g.) `/openils/var/templates/remoteauth`.
+
