@@ -39,6 +39,9 @@ include::partial$turn-off-print-headers-firefox.adoc[]
 
 include::partial$turn-off-print-headers-chrome.adoc[]
 
+=== Set font size in browser ===
+Font size in the OPAC and TPAC can be increased/decreased by using the CTRL key with + (to increase), with - (to decrease), and with 0 (to restore default font size). Font sizes can persist via a setting in user preferences.
+
 == Tab Buttons and Keyboard Shortcuts ==
 
 Now that the client will be loaded in a web browser, users can use browser-based
@@ -62,5 +65,9 @@ open a new tab. However, both browsers have optional add-ons that will allow you
 to set the browsers to automatically open the home page whenever open opening a
 new tab. These add-ons may be useful for those libraries that want the new tab
 to open to the web client portal page.
+
+== Create a Toolbar Using Bookmarks ==
+include::partial$toolbars-with-bookmarks-chrome.adoc[]
+
 
 
