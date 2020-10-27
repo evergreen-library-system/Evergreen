@@ -83,6 +83,9 @@ DELETE FROM marcxml_import;
 -- load booking bibs
 \i bibs_booking.sql
 
+-- load Czech bibs
+\i bibs_cze.sql
+
 -- insert all loaded bibs into the biblio.record_entry in insert order
 INSERT INTO biblio.record_entry (marc, last_xact_id)
     SELECT marc, tag FROM marcxml_import ORDER BY id;
@@ -92,6 +95,9 @@ INSERT INTO biblio.record_entry (marc, last_xact_id)
 
 -- load booking assets
 \i assets_booking.sql
+
+-- load Czech assets
+\i assets_cze.sql
 
 -- load booking resource types and resources
 \i booking_resources_types.sql
