@@ -11,6 +11,7 @@ import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {StringComponent} from '@eg/share/string/string.component';
+import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 
 @Component({
     templateUrl: './admin-carousel.component.html'
@@ -71,6 +72,18 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
                     this.refreshErrString.current({ name: cc.name() }).then(str => this.toast.warning(str));
                 }
             });
+        };
+
+        this.editSelected = (carouselFields: IdlObject[]) => {
+            // Edit each IDL thing one at a time
+            const editOneThing = (carousel: IdlObject) => {
+            if (!carousel) { return; }
+
+            this.showEditDialog(carousel).then(
+                () => editOneThing(carouselFields.shift()));
+            };
+
+            editOneThing(carouselFields.shift());
         };
     }
 
