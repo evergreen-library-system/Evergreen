@@ -110,62 +110,62 @@ The definitions use the <<anchor-1,fixed field types>> at the end of this docume
 [width="60%", cols="<,<,<"]
 |====
 |*Icon* |*Search Label/Icon Label* |*Definition*
-|image:media/blu-ray.png[] | Blu-ray | VR Format:s
-|image:media/book.png[] | All books/Book | Item Type: a,t
+|image::media/blu-ray.png[] | Blu-ray | VR Format:s
+|image::media/book.png[] | All books/Book | Item Type: a,t
 
 Bib Level: a,c,d,m
 
 NOT: Item Form: a,b,c,f,o,q,r,s _[,d]_ 
-|image:media/braille.png[] | Braille |  Item Type: a
+|image::media/braille.png[] | Braille |  Item Type: a
 
 Item Form: f 
-|image:media/casaudiobook.png[] | Cassette audiobook |  Item Type: i
+|image::media/casaudiobook.png[] | Cassette audiobook |  Item Type: i
 
 SR Format: l 
-|image:media/casmusic.png[] | Audiocassette music recording | Item Type: j
+|image::media/casmusic.png[] | Audiocassette music recording | Item Type: j
 
 SR Format: l 
-|image:media/cdaudiobook.png[] | CD audiobook | Item Type: i
+|image::media/cdaudiobook.png[] | CD audiobook | Item Type: i
 
 SR Format: f 
-|image:media/cdmusic.png[] | CD music recording | Item Type: j
+|image::media/cdmusic.png[] | CD music recording | Item Type: j
 
 SR Format: f 
-|image:media/dvd.png[] | DVD |  VR Format: v 
-|image:media/eaudio.png[] | E-audio | Item Type: i
+|image::media/dvd.png[] | DVD |  VR Format: v 
+|image::media/eaudio.png[] | E-audio | Item Type: i
 
 Item Form: o,q,s 
-|image:media/ebook.png[]| E-book | Item Type: a,t
+|image::media/ebook.png[]| E-book | Item Type: a,t
 
 Bib Level: a,c,d,m
 
 Item Form: o,q,s 
-|image:media/equip.png[] | Equipment, games, toys |  Item Type: r 
-|image:media/evideo.png[] | E-video | Item Type: g
+|image::media/equip.png[] | Equipment, games, toys |  Item Type: r 
+|image::media/evideo.png[] | E-video | Item Type: g
 
 Item Form: o,q,s 
-|image:media/kit.png[] | Kit |  Item Type: o,p 
-|image:media/lpbook.png[] | Large print book | Item Type: a,t
+|image::media/kit.png[] | Kit |  Item Type: o,p 
+|image::media/lpbook.png[] | Large print book | Item Type: a,t
 
 Bib Level: a,c,d,m
 
 Item Form: d 
-|image:media/map.png[] | Map |  Item Type: e,f 
-|image:media/microform.png[] | Microform |  Item Form: a,b,c 
-|image:media/music.png[] | All music/Music sound recording (unknown format) | Item Type: j
+|image::media/map.png[] | Map |  Item Type: e,f 
+|image::media/microform.png[] | Microform |  Item Form: a,b,c 
+|image::media/music.png[] | All music/Music sound recording (unknown format) | Item Type: j
 
 _[NOT: SR Format: a,b,c,d,e,f,l]_ 
-|image:media/phonomusic.png[] | Phonograph music recording | Item Type: j
+|image::media/phonomusic.png[] | Phonograph music recording | Item Type: j
 
 SR Format: a,b,c,d,e 
-|image:media/phonospoken.png[] | Phonograph spoken recording | Item Type: i
+|image::media/phonospoken.png[] | Phonograph spoken recording | Item Type: i
 
 SR Format: a,b,c,d,e 
-|image:media/picture.png[] | Picture | Item type: k
-|image:media/score.png[] | Music score | Item type: c,d
-|image:media/serial.png[] | Serials and magazines |  Bib Level: b,s 
-|image:media/software.png[] | Software and video games |  Item Type: m 
-|image:media/vhs.png[] | VHS | VR Format: b
+|image::media/picture.png[] | Picture | Item type: k
+|image::media/score.png[] | Music score | Item type: c,d
+|image::media/serial.png[] | Serials and magazines |  Bib Level: b,s 
+|image::media/software.png[] | Software and video games |  Item Type: m 
+|image::media/vhs.png[] | VHS | VR Format: b
 |====
 
 [[anchor-2]]
