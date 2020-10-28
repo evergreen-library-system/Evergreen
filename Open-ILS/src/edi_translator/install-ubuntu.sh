@@ -4,6 +4,8 @@
 UBUNTU_RELEASE=$(lsb_release -sc)
 if [ "$UBUNTU_RELEASE" == "xenial" ]; then
     RUBY_VERSION="2.3.0"
+elif [ "$UBUNTU_RELEASE" == "bionic" ]; then
+    RUBY_VERSION="2.5.0"
 else 
     echo "Could not determine your Ubuntu release."
     echo "Please consult $0 and install manually."
@@ -14,7 +16,7 @@ fi
 sudo apt-get install rubygems-integration ruby-dev
 
 # install gem dependencies
-sudo gem install parseconfig rspec edi4r edi4r-tdid json openils-mapper
+sudo gem install parseconfig rspec edi4r edi4r-tdid json openils-mapper xmlrpc
 
 # clone berick's openils-mapper repo
 git clone https://github.com/berick/openils-mapper
