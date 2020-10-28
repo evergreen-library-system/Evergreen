@@ -1,7 +1,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1242', :eg_version);
 
 -- Long Overdue
 UPDATE config.org_unit_setting_type
