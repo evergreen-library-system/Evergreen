@@ -55,7 +55,12 @@
   </eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="Refresh Selected" i18n-label [action]="refreshSelected">
   </eg-grid-toolbar-action>
-  <eg-grid-column path="bucket" [hidden]="true"></eg-grid-column>
+  <ng-template #recordBucketTmpl let-carousel="row">
+    <a href="/eg/staff/cat/bucket/record/view/{{carousel.bucket().id()}}" target="_blank">
+        {{carousel.bucket().name()}}
+    </a>
+  </ng-template>
+  <eg-grid-column  [hidden]="true" i18n-label label="Bucket" [cellTemplate]="recordBucketTmpl"></eg-grid-column>
   <eg-grid-column path="creator" [hidden]="true"></eg-grid-column>
   <eg-grid-column path="editor" [hidden]="true"></eg-grid-column>
   <eg-grid-column path="create_time" [hidden]="true"></eg-grid-column>
