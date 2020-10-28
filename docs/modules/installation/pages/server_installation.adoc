@@ -55,8 +55,7 @@ autoreconf -i
     Debian Stretch (9), 
     Debian Jessie (8),
     Ubuntu Focal Fossa (20.04),
-    Ubuntu Bionic Beaver (18.04), 
-    and Ubuntu Xenial Xerus (16.04).
+    and Ubuntu Bionic Beaver (18.04).
     If you are running an older version of these distributions, you may want 
     to upgrade before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian or Ubuntu websites.
@@ -72,7 +71,7 @@ before you can successfully configure, compile, and install Evergreen.
 2. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
    substituting `debian-buster`,`debian-stretch`,`debian-jessie`,`ubuntu-focal`,
-   `ubuntu-bionic`, or `ubuntu-xenial` for <osname> below:
+   or `ubuntu-bionic` for <osname> below:
 +
 [source, bash]
 ------------------------------------------------------------------------------
@@ -438,7 +437,6 @@ the minimum supported version.
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-jessie
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-xenial
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal
 ------------------------------------------------------------------------------
@@ -451,7 +449,6 @@ system:
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-jessie-10
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-xenial-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-10
 ------------------------------------------------------------------------------

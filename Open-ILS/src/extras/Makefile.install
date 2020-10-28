@@ -16,8 +16,6 @@
 # 	- or -
 # 	make -f Makefile.install debian-jessie
 # 	- or -
-# 	make -f Makefile.install ubuntu-xenial
-# 	- or -
 # 	make -f Makefile.install ubuntu-bionic
 # 	- or -
 # 	make -f Makefile.install ubuntu-focal
@@ -76,8 +74,6 @@ ubuntu-bionic:
 	@make -f $(DIR)/Makefile.ubuntu-bionic
 ubuntu-focal:
 	@make -f $(DIR)/Makefile.ubuntu-focal
-ubuntu-xenial:
-	@make -f $(DIR)/Makefile.ubuntu-xenial
 fedora:
 	@make -f $(DIR)/Makefile.fedora
 
@@ -101,10 +97,6 @@ postgres-server-ubuntu-focal:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_postgres_server
 postgres-server-ubuntu-focal-10:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_postgres_server_10
-postgres-server-ubuntu-xenial:
-	@make -f $(DIR)/Makefile.ubuntu-xenial install_postgres_server
-postgres-server-ubuntu-xenial-10:
-	@make -f $(DIR)/Makefile.ubuntu-xenial install_postgres_server_10
 postgres-server-fedora:
 	@make -f $(DIR)/Makefile.fedora install_postgres_server
 
@@ -112,8 +104,6 @@ ubuntu-bionic-developer:
 	@make -f $(DIR)/Makefile.ubuntu-bionic install_developer
 ubuntu-focal-developer:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_developer
-ubuntu-xenial-developer:
-	@make -f $(DIR)/Makefile.ubuntu-xenial install_developer
 debian-buster-developer:
 	@make -f $(DIR)/Makefile.debian-buster install_developer
 debian-stretch-developer:
@@ -125,8 +115,6 @@ ubuntu-bionic-translator:
 	@make -f $(DIR)/Makefile.ubuntu-bionic install_translator
 ubuntu-focal-translator:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_translator
-ubuntu-xenial-translator:
-	@make -f $(DIR)/Makefile.ubuntu-xenial install_translator
 debian-buster-translator:
 	@make -f $(DIR)/Makefile.debian-buster install_translator
 debian-stretch-translator:
@@ -138,8 +126,6 @@ ubuntu-bionic-packager:
 	@make -f $(DIR)/Makefile.ubuntu-bionic install_packager
 ubuntu-focal-packager:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_packager
-ubuntu-xenial-packager:
-	@make -f $(DIR)/Makefile.ubuntu-xenial install_packager
 debian-buster-packager:
 	@make -f $(DIR)/Makefile.debian-buster install_packager
 debian-stretch-packager:
