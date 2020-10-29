@@ -8,4 +8,3 @@ indexterm:[staff client,configuration]
 . In the Firefox menu, , click _Library_ and then _Bookmarks_ and select _Bookmark This Page_ (CTRL+D) 
 . Name bookmark appropriately and repeat for additional bookmarks.
 . Click and drag toolbar bookmarks to re-order. 
-
