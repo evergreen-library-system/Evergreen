@@ -118,8 +118,8 @@ END;
         <button id='search-submit-go' type="submit" class="btn btn-sm btn-opac"
             onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden";[% IF ctx.depth_sel_button AND NOT took_care_of_form %] $("search-submit-go-depth").className="hidden";[% END %]}, 2000)'><i class="fas fa-search" aria-hidden="true"></i> [% l('Search') %]</button>
         </div>
-        [%- IF ctx.depth_sel_button AND NOT took_care_of_form %]
         <div class="col-auto mr-auto mr-md-1">
+        [%- IF ctx.depth_sel_button AND NOT took_care_of_form %]
         <button id='search-submit-go-depth' type="submit" value="[% ctx.depth_sel_depth %]" name="depth" class="btn btn-sm btn-opac"
             onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"; $("search-submit-go-depth").className="hidden";}, 2000)' title="[% ctx.depth_sel_tooltip | html %]"><i class="fas fa-globe" aria-hidden="true"></i> [% ctx.depth_sel_button_label | html %]</button>
         [%- END %]

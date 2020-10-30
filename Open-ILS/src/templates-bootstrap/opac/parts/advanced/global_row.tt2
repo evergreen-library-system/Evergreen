@@ -57,7 +57,7 @@
         </div>
     </td>
     <td class="px-2">
-        <a href="javascript:;" class="btn btn-remove btn-sm" aria-label="Remove This Row"
+        <a href="javascript:;" class="btn btn-remove btn-sm"
             title="[% l('Remove row') %]"
             aria-label="[% l('Remove row') %]"
             onclick='return killRowIfAtLeast(2, this);'>

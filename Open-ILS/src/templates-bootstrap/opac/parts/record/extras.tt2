@@ -81,11 +81,10 @@
                         arrow = arrow_right;
                     END;
                 %]
-            <a id='[% name %]' href='[% href %]' class="text-white" rel="nofollow" vocab="" style="text-decoration:none;">
-           <div class="card-header extra_header">
-
+            <div class="card-header extra_header">
+              <a id='[% name %]' href='[% href %]' class="text-white" rel="nofollow" vocab="" style="text-decoration:none;">
                 <span>[% arrow %] [% extra.label | html %]</span>
-                </a>
+              </a>
             </div>
             [%  IF tab_is_active(name); %]
             <div class='card-body'>
@@ -97,9 +96,9 @@
                         INCLUDE "opac/parts/record/${name}.tt2";
                     END;
                     -%]
-                </div>
-                [% END %]
             </div>
+            [% END %]
+        </div>
         [% END %]
     </div>
 </div>
