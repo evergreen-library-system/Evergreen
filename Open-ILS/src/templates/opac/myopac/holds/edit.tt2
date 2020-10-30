@@ -111,6 +111,7 @@
                         <td><input type="text" name="phone_notify"
                                 value="[% ahr.phone_notify | html %]" /></td>
                     </tr>
+                     [% IF ctx.get_org_setting(ctx.search_ou, 'sms.enable') == 1%]
                     <tr>
                         <td>[% l('SMS Notification') %]</td>
                         <td><input onblur="check_sms_carrier(event)" type="text" name="sms_notify"
@@ -120,6 +121,7 @@
                         <td>[% l('Default Mobile Carrier') %]</td>
                         <td>[% INCLUDE "opac/parts/sms_carrier_selector.tt2" ahr, sms_carrier_hide_warning="true", sms_carrier_hide_label="true" %]</td>
                     </tr>
+                     [% END %]
                     [% END %]
                      
                     <tr><td colspan='4'>
