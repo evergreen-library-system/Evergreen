@@ -780,7 +780,7 @@ for now until a better color is picked - if needed.
     padding: 5px;
 }
 
-#adv_special_block {
+.adv_special_block {
     
     padding: 5px;
     margin-top: 5px;
@@ -1835,6 +1835,8 @@ div.result_table_utils_cont {
 }
 
 #search-wrapper #search-submit-go,
+#search-wrapper #search-submit-go-1,
+#search-wrapper #search-submit-go-2,
 #search-wrapper #search-submit-go-depth {
     display: inline-block;
     margin-top: 1.3rem;

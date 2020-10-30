@@ -375,7 +375,7 @@ ctx.metalinks.push('
                     <div id="[%- ctx.bre_id -%]_ebook_place_hold" class="rdetail_aux_utils ebook_action hidden">
                         <a class="btn btn-action no-dec" role="button" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
                     {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'}, stop_parms) %]"
-                             rel="nofollow" vocab="">
+                            rel="nofollow" vocab="">
                             <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Place Hold on E-Item') %]</span></a>
                     </div>
                
@@ -555,7 +555,6 @@ ctx.metalinks.push('
                             ELSE;
                             filtered_link;
                             END;
-                            END;
                             -%]
                         </a>
                         [%-# ' - <span property="description">' _ filtered_note _ '</span>' IF filtered_note %]
@@ -563,7 +562,7 @@ ctx.metalinks.push('
                         [%- IF attrs.gtin13; '
                         <meta property="gtin13" content="' _ attrs.gtin13 _ '" />'; END; %]
                         [%- IF num_uris == 1 %]</p>[% ELSE %]</li>[% END %]
-                [%- END %]
+                [%- END; END; %]
                 [%- IF num_uris > 1 %]</ul>[% END %]
         </div>
         [%
@@ -572,7 +571,10 @@ ctx.metalinks.push('
         END;
         %]
     </div>
+</div>
 <hr>
-<div class="col-12">
-    [%- INCLUDE "opac/parts/record/extras.tt2" %]
+<div class="row">
+    <div class="col-12">
+        [%- INCLUDE "opac/parts/record/extras.tt2" %]
+    </div>
 </div>
