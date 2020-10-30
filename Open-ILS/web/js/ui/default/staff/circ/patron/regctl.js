@@ -1928,9 +1928,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                 notify = notify_stype.reg_default();
             } else {
                 // no setting and no default: set phone and email to true
-                $scope.hold_notify_type.phone = true;
-                $scope.hold_notify_type.email = true;
-                return;
+                notify = 'phone:email';
             }
         }
 
