@@ -68,7 +68,9 @@ to open to the web client portal page.
 
 == Create a Toolbar Using Bookmarks ==
 Your broswer's bookmarks toolbar can act as a replacement for the toolbars available in the XUL client. 
+
 include::partial$toolbars-with-bookmarks-chrome.adoc[]
+
 include::partial$toolbars-with-bookmarks-firefox.adoc[]
 
 
