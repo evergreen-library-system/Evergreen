@@ -63,7 +63,8 @@ export class HoldComponent implements OnInit {
     notifySms: boolean;
     smsValue: string;
     suspend: boolean;
-    activeDate: string;
+    activeDateStr: string;
+    activeDate: Date;
 
     holdContexts: HoldContext[];
     recordSummaries: BibRecordSummary[];
@@ -306,7 +307,7 @@ export class HoldComponent implements OnInit {
     }
 
     activeDateSelected(dateStr: string) {
-        this.activeDate = dateStr;
+        this.activeDateStr = dateStr;
     }
 
     userBarcodeChanged() {
@@ -365,6 +366,9 @@ export class HoldComponent implements OnInit {
         this.currentUserBarcode = null;
         this.multiHoldCount = 1;
         this.smsValue = '';
+        this.activeDate = null;
+        this.activeDateStr = null;
+        this.suspend = false;
         if (this.smsCbox) { this.smsCbox.selectedId = null; }
 
         // Avoid clearing the barcode in cases where the form is
@@ -533,7 +537,7 @@ export class HoldComponent implements OnInit {
             notifyPhone: this.notifyPhone ? this.phoneValue : null,
             notifySms: this.notifySms ? this.smsValue : null,
             smsCarrier: this.smsCbox ? this.smsCbox.selectedId : null,
-            thawDate: this.suspend ? this.activeDate : null,
+            thawDate: this.suspend ? this.activeDateStr : null,
             frozen: this.suspend,
             holdableFormats: selectedFormats
 
