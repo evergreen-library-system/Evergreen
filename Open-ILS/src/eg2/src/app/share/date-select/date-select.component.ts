@@ -130,6 +130,9 @@ export class DateSelectComponent implements OnInit, ControlValueAccessor {
                 month: value.getMonth() + 1,
                 day: value.getDate()
             };
+        } else {
+            // Allow the value to be cleared via model change.
+            this.current = null;
         }
     }
 
