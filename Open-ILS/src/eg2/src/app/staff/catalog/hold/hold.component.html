@@ -90,8 +90,8 @@
           </div>
         </div>
         <div class="col-lg-6">
-          <eg-date-select (onChangeAsISO)="activeDateSelected($event)"
-            [disabled]="!suspend">
+          <eg-date-select [(ngModel)]="activeDate" name='active-date'
+            (onChangeAsIso)="activeDateSelected($event)" [disabled]="!suspend">
           </eg-date-select>
         </div>
       </div>
