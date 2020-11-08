@@ -216,7 +216,7 @@ function maybeToggleNumCopies(obj) {
             <span class="font-weight-bold">[% l('Notify when hold is ready for pickup?') %]</span>
             <p>
              <div class="form-check m-2">
-                <input class="form-check-input" type="checkbox" value="" id="email_notify"  [% IF !ctx.user.email %]disabled="true"[% ELSIF ctx.default_email_notify %]checked="checked"[% END %]>
+                <input class="form-check-input" type="checkbox" value="t" id="email_notify" name="email_notify" [% IF !ctx.user.email %]disabled="true"[% ELSIF ctx.default_email_notify %]checked="checked"[% END %]>
                 <label class="form-check-label" for="email_notify">
                    [% l('Yes, by Email') %]
 
@@ -230,7 +230,7 @@ function maybeToggleNumCopies(obj) {
                 </p>
                 [%- IF allow_phone_notifications == 'true' %]
                 <div class="form-check m-2">
-                    <input class="form-check-input" type="checkbox" value="" id="phone_notify_checkbox"  [% IF ctx.default_phone_notify %]checked="checked"[% END %]>
+                    <input class="form-check-input" type="checkbox" id="phone_notify_checkbox" name="phone_notify_checkbox" [% IF ctx.default_phone_notify %]checked="checked"[% END %]>
                     <label class="form-check-label" for="phone_notify_checkbox">
                     [% l('Yes, by Phone') %]
                     </label>
