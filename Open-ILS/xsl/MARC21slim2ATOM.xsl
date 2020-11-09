@@ -67,7 +67,7 @@
 			</xsl:for-each>
 
 			<xsl:for-each select="marc:datafield[@tag=260]">
-				<rights type="html">
+				<rights>
 					<xsl:text>&#169; </xsl:text>
 					<xsl:call-template name="subfieldSelect">
 						<xsl:with-param name="codes">c</xsl:with-param>
