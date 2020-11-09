@@ -91,7 +91,7 @@
         '<span property="about"><!-- highlighted -->';
         %]<a href="[%-
                mkurl(ctx.opac_root _ '/results', {qtype=>'subject', query=>total_term}, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms))
-        -%]">[% s.$f %]</a> [%-
+        -%]">[% s.$f | html %]</a> [%-
         '</span>';
     END;
 %]

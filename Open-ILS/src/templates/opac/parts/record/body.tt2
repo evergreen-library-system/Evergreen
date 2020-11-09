@@ -7,10 +7,10 @@
 %]
 <div id='canvas_main' class='canvas' vocab="http://schema.org/" typeof='[% args.schema.itemtype %] Product' resource="#schemarecord">
 [%- FOREACH link IN args.links.sameAs; %]
-    <link property="sameAs" href="[% link %]">
+    <link property="sameAs" href="[% link | html %]">
 [%- END; %]
 [%- FOREACH link IN args.links.exampleOfWork; %]
-    <link property="exampleOfWork" href="[% link %]">
+    <link property="exampleOfWork" href="[% link | html %]">
 [%- END; %]
     [%- INCLUDE "opac/parts/record/navigation.tt2" %]
     [%- IF ctx.bib_is_dead %]
