@@ -6,6 +6,7 @@ use Time::HiRes qw/time sleep/;
 use List::MoreUtils qw(uniq);
 use HTML::TreeBuilder;
 use HTML::Element;
+use HTML::Defang;
 use OpenSRF::Utils::Cache;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
@@ -13,6 +14,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use OpenSRF::MultiSession;
 
+my $defang = HTML::Defang->new;
 my $U = 'OpenILS::Application::AppUtils';
 
 my $ro_object_subs; # cached subs
@@ -155,7 +157,8 @@ sub init_ro_object_cache {
             my $nref = ref $node;
             if ($nref eq "HTML::Element") {
                 $current_length += length $node->as_text();
-                push(@html_strings, $node->as_HTML());
+                my $escaped_html = $defang->defang($node->as_HTML());
+                push(@html_strings, $escaped_html);
             } else {
                 # Node is whitespace - handling this like regular simple text
                 # doesn't like to play nice, so handling separately
@@ -165,7 +168,7 @@ sub init_ro_object_cache {
                         push(@html_strings, " $trunc_str");
                         $truncated = 1;
                     } else {
-                        push(@html_strings, $node);
+                        push(@html_strings, $defang->defang($node));
                     }
                 # Node is simple text
                 } else {
@@ -182,10 +185,12 @@ sub init_ro_object_cache {
                             $nshort = substr $node, 0, $nloc;
                             $nrest = substr $node, $nloc;
                         }
+                        $nshort = $defang->defang($nshort);
+                        $nrest = $defang->defang($nrest);
                         push(@html_strings, "$nshort $trunc_str $nrest");
                         $truncated = 1;
                     } else {
-                        push(@html_strings, $node);
+                        push(@html_strings, $defang->defang($node));
                     }
                     $current_length += length $node;
                 }

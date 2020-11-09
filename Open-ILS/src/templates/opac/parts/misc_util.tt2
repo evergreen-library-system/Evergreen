@@ -879,7 +879,7 @@
 [% END -%]
 [% MACRO accordion(str, trunc_length, element) BLOCK;
     IF truncate_contents != 1;
-        str;
+        str | html;
     ELSE;
         UNLESS trunc_length;
             trunc_length = contents_truncate_length || 100;
@@ -890,7 +890,9 @@
             IF accordion_res.1;
                 str = str _ " <a onclick='toggleAccordion(this, " _ element _ ")'>" _ l('Read More') _ "</a>";
             END;
+            str;
+        ELSE;
+            str | html;
         END;
-        str;
     END;
 END; %]
