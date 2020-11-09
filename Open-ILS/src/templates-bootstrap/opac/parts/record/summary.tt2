@@ -28,12 +28,12 @@ ctx.metalinks.push('
             END;
             %]
             <a href='http://obalkyknih.cz/view?isbn=[% isbnissn %]'>
-                <img alt="[% attrs.title _ ' Cover Image' %]" class='img-thumbnail w-auto'
+                <img alt="[% attrs.title _ ' Cover Image' | html %]" class='img-thumbnail w-auto'
                     src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/r/[% ctx.bre_id | uri %]' />
             </a>
             [% ELSE %]
             <a href='[% ctx.media_prefix %]/opac/extras/ac/jacket/large/r/[% ctx.bre_id | uri %]'><img
-                    alt="[% attrs.title _ ' Cover Image' %]" class='img-thumbnail w-auto'
+                    alt="[% attrs.title _ ' Cover Image' | html %]" class='img-thumbnail w-auto'
                     src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/r/[% ctx.bre_id | uri %]' />
             </a>
             [%- END %]
@@ -56,7 +56,7 @@ ctx.metalinks.push('
     <div class="col-lg-9">
         <div class="row h-100">
             <div class="col-lg-8">
-                <h1 class='h1' property="name">[% IF attrs.hl.title; attrs.hl.title; ELSE; attrs.title_extended | html; END %]</h1>
+                <h1 class='h1' property="name">[% IF attrs.hl.title; attrs.hl.title | html; ELSE; attrs.title_extended | html; END %]</h1>
                 [%-
                 FOR link880 IN attrs.graphic_titles;
                 FOR alt IN link880.graphic;
@@ -77,7 +77,7 @@ ctx.metalinks.push('
                         <ul class="list-unstyled">
                             [%- IF attrs.hl.isbn.size; FOR isbn IN attrs.hl.isbn %]
                             <li class='rdetail_isbns'>
-                                <strong class='rdetail_label'>[% l('ISBN:'); %]</strong> [% isbn %]
+                                <strong class='rdetail_label'>[% l('ISBN:'); %]</strong> [% isbn | html %]
                             </li>
                             [%- END; ELSIF attrs.isbns.0;
                             FOR isbn IN attrs.isbns;
@@ -96,7 +96,7 @@ ctx.metalinks.push('
                             [%- END %]
                             [%- IF attrs.hl.issn.size; FOR issn IN attrs.hl.issn %]
                             <li class='rdetail_issns'>
-                                <strong class='rdetail_label'>[% l('ISSN:'); %]</strong> [% issn %]
+                                <strong class='rdetail_label'>[% l('ISSN:'); %]</strong> [% issn | html %]
                             </li>
                             [%- END; ELSIF attrs.issns.0; FOR issn IN attrs.issns %]
                             <li class='rdetail_issns'>
@@ -106,10 +106,17 @@ ctx.metalinks.push('
                             [%- END %]
                             [%- END %]
                             [%- IF attrs.hl.physical_description.size %]
+                            [%-
+                                filtered_hl_phys_desc = [];
+                                FOR hl_phys_desc IN attrs.hl.physical_description;
+                                    hl_phys_desc = hl_phys_desc | html;
+                                    filtered_hl_phys_desc.push(hl_phys_desc);
+                                END;
+                            -%]
                             <li id='rdetail_phys_desc'>
                                 <strong class='rdetail_label'>[% l("Physical Description:") %]</strong>
                                 <span class='rdetail_value' highlighted='true'>[%
-                                    attrs.hl.physical_description.join('<br />') %]</span>
+                                    filtered_hl_phys_desc.join('<br/>') %]</span>
                             </li>
                             [%- ELSIF attrs.phys_desc %]
                             <li id='rdetail_phys_desc'>
@@ -120,7 +127,7 @@ ctx.metalinks.push('
                             [%- IF attrs.hl.edition %]
                             <li id='rdetail_edition'>
                                 <strong class='rdetail_label'>[% l("Edition:") %]</strong>
-                                <span class='rdetail_value' highlighted='true'>[% attrs.hl.edition %]</span>
+                                <span class='rdetail_value' highlighted='true'>[% attrs.hl.edition | html %]</span>
                                 [%- ELSIF attrs.edition %]
                             <li id='rdetail_edition'>
                                 <strong class='rdetail_label'>[% l("Edition:") %]</strong>
@@ -145,7 +152,7 @@ ctx.metalinks.push('
                             [%- IF attrs.hl.publisher %]
                             <li id='rdetail_publisher'>
                                 <strong class='rdetail_label'>[% l("Publisher:") %]</strong>
-                                <span class='rdetail_value' highlighted='true'>[% attrs.hl.publisher %]</span>
+                                <span class='rdetail_value' highlighted='true'>[% attrs.hl.publisher | html %]</span>
                             </li>
                             [%- ELSIF attrs.publisher %]
                             <li id='rdetail_publisher'>
@@ -385,14 +392,14 @@ ctx.metalinks.push('
                     <a href="[% addhref %]" id="mylist_add_[% ctx.bre_id %]"
                         data-recid="[% ctx.bre_id %]" data-action="add" role="button"
                         class="btn btn-action mylist_action [% IF ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]hidden[% END %]"
-                        title="[% l(" Add [_1] to basket", attrs.title) %]" rel="nofollow" vocab="">
+                        title="[% l(" Add [_1] to basket", attrs.title) | html %]" rel="nofollow" vocab="">
                         <i class="fas fa-shopping-basket" aria-hidden="true"></i>
                         [% l("Add to basket") %]
                     </a>
                     <a href="[% delhref %]" id="mylist_delete_[% ctx.bre_id %]"
                         data-recid="[% ctx.bre_id %]" data-action="delete" role="button"
                         class="btn btn-action mylist_action [% IF !ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]hidden[% END %]"
-                        title="[% l(" Remove [_1] from basket", attrs.title) %]" rel="nofollow" vocab="">
+                        title="[% l(" Remove [_1] from basket", attrs.title) | html %]" rel="nofollow" vocab="">
                         <i class="fas fa-minus-circle" aria-hidden="true"></i>
                         [% l("Remove from basket") %]
                     </a>
@@ -533,21 +540,26 @@ ctx.metalinks.push('
         <div class="rdetail_uris">
             [%- IF num_uris > 1 %]<ul>[% END %]
                 [%- FOR uri IN merged_uris %]
+                [%-
+                    filtered_href = uri.href | html;
+                    filtered_link = uri.link ? uri.link : '' | html;
+                    filtered_note = uri.note ? uri.note : '' | html;
+                -%]
                 [%- IF num_uris == 1 -%]
                 <p class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
                     [%- ELSE -%]
                     <li class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
                         [%- END -%]
-                        <a href="[% uri.href %]" class="uri_link" property="url">
-                            [%- IF uri.href != uri.link;
-                            '<span property="description">' _ uri.link _ '</span>';
+                        <a href="[% filtered_href %]" class="uri_link" property="url">
+                            [%- IF filtered_href != filtered_link;
+                            '<span property="description">' _ filtered_link _ '</span>';
                             ELSE;
-                            uri.link;
+                            filtered_link;
                             END;
                             END;
                             -%]
                         </a>
-                        [%-# ' - <span property="description">' _ uri.note _ '</span>' IF uri.note %]
+                        [%-# ' - <span property="description">' _ filtered_note _ '</span>' IF filtered_note %]
                         <link property="availability" href="http://schema.org/OnlineOnly" />
                         [%- IF attrs.gtin13; '
                         <meta property="gtin13" content="' _ attrs.gtin13 _ '" />'; END; %]
