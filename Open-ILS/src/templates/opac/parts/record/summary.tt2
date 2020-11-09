@@ -39,7 +39,7 @@
                 isbnissn=attrs.issns.0;
             END;
         %]
-        <a href='http://obalkyknih.cz/view?isbn=[% isbnissn %]'>
+        <a href='http://obalkyknih.cz/view?isbn=[% isbnissn | html %]'>
             <img
               alt="[% l('Image of item') %]" id='rdetail_image'
               src='[% ctx.media_prefix %]/opac/extras/ac/jacket/[% record.summary.jacket_size %]/r/[% ctx.bre_id | uri %]' />
@@ -75,7 +75,7 @@
                 <a href="[% mkurl(ctx.opac_root _ '/place_hold', 
                     {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}, stop_parms) %]" 
                 class="no-dec" rel="nofollow" vocab=""><img src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]"
-                    [% img_alt(l('Place Hold on [_1]', attrs.title)) %]/>
+                    [% img_alt(l('Place Hold on [_1]', attrs.title)) | html %]/>
                 <span class="place_hold">[% l('Place Hold') %]</span></a>
             </div>
             [%- END -%]
@@ -85,14 +85,14 @@
                 <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
                     {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'}, stop_parms) %]"
                 class="no-dec" rel="nofollow" vocab=""><img src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]"
-                    [% img_alt(l('Check Out [_1]', attrs.title)) %]/>
+                    [% img_alt(l('Check Out [_1]', attrs.title)) | html %]/>
                 <span class="place_hold">[% l('Check Out E-Item') %]</span></a>
             </div>
             <div id="[%- ctx.bre_id -%]_ebook_place_hold" class="rdetail_aux_utils ebook_action hidden">
                 <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
                     {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'}, stop_parms) %]"
                 class="no-dec" rel="nofollow" vocab=""><img src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]"
-                    [% img_alt(l('Place Hold on [_1]', attrs.title)) %]/>
+                    [% img_alt(l('Place Hold on [_1]', attrs.title)) | html %]/>
                 <span class="place_hold">[% l('Place Hold on E-Item') %]</span></a>
             </div>
             [%- END -%]
@@ -107,7 +107,7 @@
                     rel="nofollow" vocab=""
                     data-recid="[% ctx.bre_id %]" data-action="add"
                     class="no-dec mylist_action [% IF ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]hidden[% END %]"
-                    title="[% l("Add [_1] to basket", attrs.title) %]" rel="nofollow" vocab="">
+                    title="[% l("Add [_1] to basket", attrs.title) | html %]" rel="nofollow" vocab="">
                     <img src="[% ctx.media_prefix %]/images/add-to-cart.png[% ctx.cache_key %]" alt="" />
                     [% l("Add to basket") %]
                 </a>
@@ -115,7 +115,7 @@
                      rel="nofollow" vocab=""
                     data-recid="[% ctx.bre_id %]" data-action="delete"
                     class="mylist_action [% IF !ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]hidden[% END %]"
-                    title="[% l("Remove [_1] from basket", attrs.title) %]" rel="nofollow" vocab="">
+                    title="[% l("Remove [_1] from basket", attrs.title) | html %]" rel="nofollow" vocab="">
                     <img src="[% ctx.media_prefix %]/images/add-to-cart.png[% ctx.cache_key %]" alt="" />
                     [% l("Remove from basket") %]
                 </a>
@@ -213,20 +213,25 @@ IF num_uris > 0;
 <div class="rdetail_uris">
     [%- IF num_uris > 1 %]<ul>[% END %]
     [%- FOR uri IN merged_uris %]
+        [%-
+            filtered_href = uri.href | html;
+            filtered_link = uri.link ? uri.link : '' | html;
+            filtered_note = uri.note ? uri.note : '' | html;
+        -%]
         [%- IF num_uris == 1 -%]
             <p class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
         [%- ELSE -%]
             <li class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
         [%- END -%]
-        <a href="[% uri.href %]" class="uri_link" property="url" target="_blank" rel="noopener">
-        [%- IF uri.href != uri.link;
-                '<span property="description">' _ uri.link _ '</span>';
+        <a href="[% filtered_href %]" class="uri_link" property="url" target="_blank" rel="noopener">
+        [%- IF filtered_href != filtered_link;
+                '<span property="description">' _ filtered_link _ '</span>';
             ELSE;
-                uri.link;
+                filtered_link;
             END;
         -%]
         </a>
-        [%- ' - <span property="description">' _ uri.note _ '</span>' IF uri.note %]
+        [%- ' - <span property="description">' _ filtered_note _ '</span>' IF filtered_note %]
         <link property="availability" href="http://schema.org/OnlineOnly" />
         [%- IF attrs.gtin13; '<meta property="gtin13" content="' _ attrs.gtin13 _ '" />'; END; %]
         [%- IF num_uris == 1 %]</p>[% ELSE %]</li>[% END %]
@@ -329,14 +334,14 @@ END;
 <ul>
     [%- IF attrs.hl.isbn.size; FOR isbn IN attrs.hl.isbn %]
     <li class='rdetail_isbns'>
-        <strong class='rdetail_label'>[% l('ISBN:'); %]</strong> [% isbn %]
+        <strong class='rdetail_label'>[% l('ISBN:'); %]</strong> [% isbn | html %]
     </li>
     [%- END; ELSIF attrs.isbns.0;
           FOR isbn IN attrs.isbns;
             isbn_extra = '';
             IF (matches = isbn.match('^(.+?)(\s.+)$'));
-              isbn = matches.0;
-              isbn_extra = matches.1;
+              isbn = matches.0 | html;
+              isbn_extra = matches.1 | html;
             END;
     %]
     <li class='rdetail_isbns'>
@@ -347,7 +352,7 @@ END;
     [%- END %]
     [%- IF attrs.hl.issn.size; FOR issn IN attrs.hl.issn %]
     <li class='rdetail_issns'>
-        <strong class='rdetail_label'>[% l('ISSN:'); %]</strong> [% issn %]
+        <strong class='rdetail_label'>[% l('ISSN:'); %]</strong> [% issn | html %]
     </li>
     [%- END; ELSIF attrs.issns.0; FOR issn IN attrs.issns %]
     <li class='rdetail_issns'>
@@ -357,9 +362,16 @@ END;
         [%- END %]
     [%- END %]
     [%- IF attrs.hl.physical_description.size %]
+    [%-
+        filtered_hl_phys_desc = [];
+        FOR hl_phys_desc IN attrs.hl.physical_description;
+            hl_phys_desc = hl_phys_desc | html;
+            filtered_hl_phys_desc.push(hl_phys_desc);
+        END;
+    -%]
     <li id='rdetail_phys_desc'>
         <strong class='rdetail_label'>[% l("Physical Description:") %]</strong>
-        <span class='rdetail_value' highlighted='true'>[% attrs.hl.physical_description.join('<br/>') %]</span>
+        <span class='rdetail_value' highlighted='true'>[% filtered_hl_phys_desc.join('<br/>') %]</span>
     </li>
     [%- ELSIF attrs.phys_desc %]
     <li id='rdetail_phys_desc'>
@@ -370,7 +382,7 @@ END;
     [%- IF attrs.hl.edition %]
     <li id='rdetail_edition'>
         <strong class='rdetail_label'>[% l("Edition:") %]</strong>
-        <span class='rdetail_value' highlighted='true'>[% attrs.hl.edition %]</span>
+        <span class='rdetail_value' highlighted='true'>[% attrs.hl.edition | html %]</span>
     [%- ELSIF attrs.edition %]
     <li id='rdetail_edition'>
         <strong class='rdetail_label'>[% l("Edition:") %]</strong>
@@ -395,7 +407,7 @@ END;
     [%- IF attrs.hl.publisher %]
     <li id='rdetail_publisher'>
         <strong class='rdetail_label'>[% l("Publisher:") %]</strong>
-        <span class='rdetail_value' highlighted='true'>[% attrs.hl.publisher %]</span>
+        <span class='rdetail_value' highlighted='true'>[% attrs.hl.publisher | html %]</span>
     </li>
     [%- ELSIF attrs.publisher %]
     <li id='rdetail_publisher'>
