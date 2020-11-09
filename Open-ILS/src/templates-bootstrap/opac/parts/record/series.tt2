@@ -12,7 +12,8 @@ BLOCK render_series;
             url = mkurl(ctx.opac_root _ '/results',
                 { qtype=>'series', query=>search_term }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms)
             );
-            series = '<a href="' _ url _ '">' _ s.$hl_field _ '</a> ';
+            filtered_hl_field = s.$hl_field | html;
+            series = '<a href="' _ url _ '">' _ filtered_hl_field _ '</a> ';
             results.push(series);
         END;
     ELSE;
