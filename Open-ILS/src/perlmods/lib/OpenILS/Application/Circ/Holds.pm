@@ -3572,6 +3572,42 @@ sub find_nearest_permitted_hold {
         "open-ils.storage.action.hold_request.nearest_hold.atomic", 
         $user->ws_ou, $copy, 100, $hold_stall_interval, $fifo );
 
+    if ($hold_stall_interval) {
+        my $adjacent_target_while_stalling = $U->ou_ancestor_setting_value(
+            $user->ws_ou, 'circ.holds.adjacent_target_while_stalling'
+        );
+
+        if ($adjacent_target_while_stalling) {
+            my $my_cns = $editor->search_asset_call_number({
+                record  => $copy->call_number->record,
+                deleted => 'f'
+            });
+
+            my $other_copies = $editor->search_asset_copy({
+                call_number => [map {$_->id} @$my_cns],
+                circ_lib    => $copy->circ_lib,
+                deleted     => 'f',
+                status      => 0,
+                id          => { '<>' => $copy->id }
+            });
+
+            my $other_holds = $editor->search_action_hold_request({
+                current_copy => [ map {$_->id} @$other_copies],
+                cancel_time  => undef,
+                capture_time => undef
+            });
+
+            my $adjacent_hold_maps = $editor->search_action_hold_copy_map({
+                hold => [map {$_->id} @$other_holds],
+                target_copy => $copy->id
+            });
+
+            for my $other_hold (@$other_holds) {
+                push(@$old_holds, $other_hold) if ( grep { $other_hold->id == $_->hold } @$adjacent_hold_maps );
+            }
+        }
+    }
+
     # Add any pre-targeted holds to the list too? Unless they are already there, anyway.
     if ($old_holds) {
         for my $holdid (@$old_holds) {
@@ -3650,6 +3686,7 @@ sub find_nearest_permitted_hold {
     # re-target any other holds that already target this copy
     for my $old_hold (@$old_holds) {
         next if $old_hold->id eq $best_hold->id; # don't re-target the hold we want
+        next unless $old_hold->current_copy eq $copy->id; # don't re-target adjacent-copy holds
         $logger->info("circulator: clearing current_copy and prev_check_time on hold ".
             $old_hold->id." after a better hold [".$best_hold->id."] was found");
         _create_reset_reason_entry(
