@@ -256,7 +256,7 @@ function maybeToggleNumCopies(obj) {
 
              [% IF ctx.hold_data.size > 0; %]
             <div class="form-check m-2">
-                <input class="form-check-input" type="checkbox" value="" id="hold_suspend">
+                <input class="form-check-input" type="checkbox" value="t" id="hold_suspend" name="hold_suspend">
                 <label class="form-check-label" for="hold_suspend">
                 [% IF ctx.hold_data.size == 1;
                     l('Suspend this hold?');
@@ -278,7 +278,7 @@ function maybeToggleNumCopies(obj) {
             <blockquote id="toggled-block-suspend">
             <label for="thaw_date">[% l('Activate on') %]
               <div class="input-group date" data-provide="datepicker">
-                <input type="text" class="form-control" name="thaw_date" id="datepicker" value="[% thaw_date | html %]" data-date-format="mm/dd/yyyy" />
+                <input type="text" class="form-control" name="thaw_date" id="thaw_date" value="[% thaw_date | html %]" data-date-format="mm/dd/yyyy" />
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-th"></span>
                 </div>
