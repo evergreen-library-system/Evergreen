@@ -1513,5 +1513,16 @@ BEGIN
 END;
 $f$ LANGUAGE PLPGSQL;
 
+CREATE TABLE actor.patron_loader_log (
+    id SERIAL,
+    session BIGINT,
+    org_unit INTEGER NOT NULL,
+    event TEXT,
+    record_count INTEGER,
+    logtime TIMESTAMP DEFAULT NOW()
+);
+ALTER TABLE actor.patron_loader_log ADD CONSTRAINT actor_patron_loader_log_org_fkey FOREIGN KEY (org_unit) REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE config.patron_loader_header_map ADD CONSTRAINT config_patron_loader_header_map_org_fkey FOREIGN KEY (org_unit) REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE config.patron_loader_value_map ADD CONSTRAINT config_patron_loader_value_map_org_fkey FOREIGN KEY (org_unit) REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;
 
 COMMIT;

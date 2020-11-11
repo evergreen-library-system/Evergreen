@@ -63,6 +63,7 @@ Open-ILS/src/support-scripts/authority_control_fields.pl
 Open-ILS/src/support-scripts/marc_export
 Open-ILS/src/support-scripts/marc_stream_importer.pl
 Open-ILS/src/support-scripts/offline-blocked-list.pl
+Open-ILS/src/support-scripts/patron_loader.pl
 Open-ILS/updates/Makefile
 Open-ILS/updates/Makefile.in
 Open-ILS/xul/staff_client/client/

@@ -131,7 +131,8 @@ gen_scripts = \
 	$(supportscr)/eg_db_config \
 	$(supportscr)/marc_export \
 	$(supportscr)/marc_stream_importer.pl \
-	$(supportscr)/offline-blocked-list.pl
+	$(supportscr)/offline-blocked-list.pl \
+	$(supportscr)/patron_loader.pl
 
 # config files that are generated from *.in files and can
 # be deleted by a make clean
@@ -238,6 +239,10 @@ $(supportscr)/marc_stream_importer.pl: Makefile $(supportscr)/marc_stream_import
 
 $(supportscr)/offline-blocked-list.pl: Makefile $(supportscr)/offline-blocked-list.pl.in
 	$(do_subst) $(supportscr)/offline-blocked-list.pl.in > "$@"
+	chmod 755 "$@"
+
+$(supportscr)/patron_loader.pl: Makefile $(supportscr)/patron_loader.pl.in
+	$(do_subst) $(supportscr)/patron_loader.pl.in > "$@"
 	chmod 755 "$@"
 
 $(examples)/apache_24/eg_startup: Makefile $(examples)/apache_24/eg_startup.in

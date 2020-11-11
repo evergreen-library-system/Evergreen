@@ -15961,6 +15961,44 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
+    <class id="cplhm" controller="open-ils.cstore" oils_obj:fieldmapper="config::patron_loader_header_map" oils_persist:tablename="config.patron_loader_header_map"  reporter:label="Patron Loader Header Mappings">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.patron_loader_header_map_id_seq">
+                <field reporter:label="Entry ID" name="id" reporter:datatype="id" />
+                <field reporter:label="Org Unit" name="org_unit" reporter:datatype="link"/>
+                <field reporter:label="Import Header" name="import_header" reporter:datatype="text"/>
+                <field reporter:label="Default Header" name="default_header" reporter:datatype="text"/>
+        </fields>
+        <links>
+                <link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+        </links>
+    </class>
+    <class id="cplvm" controller="open-ils.cstore" oils_obj:fieldmapper="config::patron_loader_value_map" oils_persist:tablename="config.patron_loader_value_map"  reporter:label="Patron Loader Value Mappings">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.patron_loader_header_map_id_seq">
+                <field reporter:label="Entry ID" name="id" reporter:datatype="id" />
+                <field reporter:label="Org Unit" name="org_unit" reporter:datatype="link"/>
+                <field reporter:label="Type of Mapped Value" name="mapping_type" reporter:datatype="text"/>
+                <field reporter:label="Imported Value" name="import_value" reporter:datatype="text"/>
+                <field reporter:label="Native Value" name="native_value" reporter:datatype="text"/>
+        </fields>
+        <links>
+                <link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+        </links>
+    </class>
+    <class id="apll" controller="open-ils.cstore" oils_obj:fieldmapper="actor::patron_loader_log" oils_persist:tablename="actor.patron_loader_log"  reporter:label="Patron Loader Log">
+        <fields oils_persist:primary="id" oils_persist:sequence="actor.patron_loader_log">
+        <field reporter:label="Entry ID" name="id" reporter:datatype="id" />
+                <field reporter:label="Org Unit" name="org_unit" reporter:datatype="link"/>
+                <field reporter:label="Batch" name="session" reporter:datatype="number"/>
+                <field reporter:label="Event" name="event" reporter:datatype="text"/>
+                <field reporter:label="Event Record Count" name="record_count" reporter:datatype="number"/>
+                <field reporter:label="Event Timestamp" name="logtime" reporter:datatype="timestamp"/>
+        </fields>
+        <links>
+                <link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+        </links>
+    </class>
+
+
 	<!-- ********************************************************************************************************************* -->
 </IDL>
 <!-- Local Variables: -->

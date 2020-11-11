@@ -1476,4 +1476,19 @@ CREATE TABLE config.mfa_factor (
     description TEXT    NOT NULL
 );
 
+CREATE TABLE config.patron_loader_header_map (
+    id SERIAL,
+    org_unit INTEGER NOT NULL, -- REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;
+    import_header TEXT NOT NULL,
+    default_header TEXT NOT NULL
+);
+
+CREATE TABLE config.patron_loader_value_map (
+    id SERIAL,
+    org_unit INTEGER NOT NULL,  -- REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;
+    mapping_type TEXT NOT NULL,
+    import_value TEXT NOT NULL,
+    native_value TEXT NOT NULL
+);
+
 COMMIT;
