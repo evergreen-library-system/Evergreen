@@ -18,7 +18,7 @@
   </div>
   <div id="record_basket_icon">
      <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab="">
-       <img src="[% ctx.media_prefix %]/images/cart-sm.png[% ctx.cache_key %]" alt="[% l('View Basket') %]">
+       <img id="cart_icon_image" src="[% ctx.media_prefix %]/images/cart-sm.png[% ctx.cache_key %]" alt="[% l('View Basket') %]">
      </a>
      <div id="record_basket_count_floater">
        <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab="">

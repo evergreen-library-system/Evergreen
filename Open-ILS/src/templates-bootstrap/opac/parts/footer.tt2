@@ -38,7 +38,7 @@
     <div id="footer_logo">
         [% l('Powered by') %]
         <a href="http://evergreen-ils.org">
-            <img src="[% ctx.media_prefix %]/opac/images/eg_tiny_logo.png[% ctx.cache_key %]"
+            <img id="footer_logo_image" src="[% ctx.media_prefix %]/opac/images/eg_tiny_logo.png[% ctx.cache_key %]"
                 alt="[% l('Evergreen') %]"
             />
         </a>

@@ -2,7 +2,7 @@
   <div id="basket_actions">
   <div id="select_basket_action" class="dropdown">
       <a href="#" class="no-dec" id="cartDropdown" data-toggle="dropdown">
-        <img src="[% ctx.media_prefix %]/images/cart-sm.png[% ctx.cache_key %]" alt="[% l('View Basket') %]">
+        <img id="cart_icon_image" src="[% ctx.media_prefix %]/images/cart-sm.png[% ctx.cache_key %]" alt="[% l('View Basket') %]">
          <div id="record_basket_count_floater">
             <span id="record_basket_count">[% ctx.mylist.size %]</span>
             <span class="sr-only">[% l('Records In Basket') %]</span>
