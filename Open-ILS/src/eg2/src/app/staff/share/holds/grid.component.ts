@@ -119,7 +119,7 @@ export class HoldsGridComponent implements OnInit {
     }
 
     // If true, show recently canceled holds only.
-    @Input() showRecentlyCanceled: boolean = false;
+    @Input() showRecentlyCanceled = false;
 
     // Include holds fulfilled on or after hte provided date.
     // If no value is passed, fulfilled holds are not displayed.

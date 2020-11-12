@@ -147,9 +147,11 @@ export class PatronComponent implements OnInit, AfterViewInit {
     }
 
     disablePurge(): boolean {
-        return
+        return (
+            !this.context.patron ||
             this.context.patron.super_user() === 't' ||
-            this.patronId === this.auth.user().id();
+            this.patronId === this.auth.user().id()
+        );
     }
 
     purgeAccount() {

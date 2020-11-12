@@ -28,17 +28,17 @@ const EXPAND_FORM = 'eg.circ.patron.search.show_extras';
 const INCLUDE_INACTIVE = 'eg.circ.patron.search.include_inactive';
 
 export interface PatronSearchField {
-    value: any,
-    group?: number
+    value: any;
+    group?: number;
 }
 
 export interface PatronSearchFieldSet {
-    [field: string]: PatronSearchField
+    [field: string]: PatronSearchField;
 }
 
 export interface PatronSearch {
-    search: PatronSearchFieldSet,
-    orgId: number
+    search: PatronSearchFieldSet;
+    orgId: number;
 }
 
 @Component({
@@ -157,7 +157,7 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         return user;
     }
 
-    // Absorbe a patron search object into the search form.
+    // Absorb a patron search object into the search form.
     absorbPatronSearch(pSearch: PatronSearch) {
 
         if (pSearch.orgId) {
@@ -222,8 +222,11 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
 
         Object.keys(this.search).forEach(field => {
             search[field] = this.mapSearchField(field);
-            if (field !== 'inactive') { // one filter is not enough
-                if (search[field]) { hasSearch = true; }
+            if (search[field]) {
+                // one filter is not enough
+                if (field !== 'inactive') { hasSearch = true; }
+            } else {
+                delete search[field];
             }
         });
 

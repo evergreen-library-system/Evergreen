@@ -38,7 +38,7 @@ interface PatronStats {
     holds: {
         ready: number;
         total: number;
-    }
+    };
 }
 
 @Injectable()
@@ -121,14 +121,14 @@ export class PatronManagerService {
                 stats.checkouts[key] = Number(stats.checkouts[key]));
 
             stats.checkouts.total_out = stats.checkouts.out +
-                stats.checkouts.overdue + stats.checkouts.long_overdue
+                stats.checkouts.overdue + stats.checkouts.long_overdue;
 
             if (!this.noTallyClaimsReturned) {
                 stats.checkouts.total_out += stats.checkouts.claims_returned;
             }
 
             if (this.tallyLost) {
-                stats.checkouts.total_out += stats.checkouts.lost
+                stats.checkouts.total_out += stats.checkouts.lost;
             }
 
             this.patronStats = stats;
@@ -140,7 +140,7 @@ export class PatronManagerService {
             return this.net.request(
                 'open-ils.circ',
                 'open-ils.circ.open_non_cataloged_circulation.user.authoritative',
-                this.auth.token(), id).toPromise()
+                this.auth.token(), id).toPromise();
 
         }).then(noncats => {
             if (noncats && this.patronStats) {
