@@ -18,12 +18,7 @@ my $desk_renewal_use_circ_lib;
 
 sub determine_booking_status {
     unless (defined $booking_status) {
-        my $router_name = OpenSRF::Utils::Config
-            ->current
-            ->bootstrap
-            ->router_name || 'router';
-
-        my $ses = create OpenSRF::AppSession($router_name);
+        my $ses = create OpenSRF::AppSession("router");
         $booking_status = grep {$_ eq "open-ils.booking"} @{
             $ses->request("opensrf.router.info.class.list")->gather(1)
         };
