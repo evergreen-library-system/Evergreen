@@ -149,6 +149,7 @@ search.adv_config = [
     {adv_label => l("Literary Form"), adv_attr => "lit_form", id => 'adv_selector_lit_form'},
     {adv_label => l("Shelving Location"), adv_special => "copy_location", id => 'adv_copy_location_selector', js_only => 101, adv_break => 1},
     {adv_label => l("Search Library"), adv_special => "lib_selector", id => 'adv_org_selector'},
+    {adv_label => l("Where"), adv_special => "scope_selector", id => 'adv_scope_selector'},
     {adv_label => l("Publication Year"), adv_special => "pub_year", id => 'adv_selector_pub_year'},
     {adv_label => l("Sort Results"), adv_special => "sort_selector", id => 'adv_selector_sort_results'},
 ];

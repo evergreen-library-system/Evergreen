@@ -2,7 +2,7 @@
 # Org Unit Selector Widget :
 #   INCLUDE build_org_selector id='selector-id' name='selector-name'
 #       value=org_id show_loc_groups=1/0 can_have_vols_only=1/0
-#       can_have_users_only=1/0 valid_org_list=[1,2,3]
+#       can_have_users_only=1/0 valid_org_list=[1,2,3] show_lassos=1/0
 #
 # NOTE: DO NOT USE PROCESS
 # Use of PROCESS results in internal variables, such as value or org_unit, to "leak" out
@@ -25,12 +25,33 @@ BLOCK build_org_selector;
     # disable the ou-hide scoping altogether.
     hiding_disabled = ctx.org_hiding_disabled(value);
 
+    # Some setup for Library Groups
+    lasso_selected = 0;
+    base_value = value.split(':').0;
+
     -%]
 
     <select [% IF id %] id='[% id %]' [% END -%]
             title='[% arialabel || l("Select Library") %]'
             name='[% name %]' class="form-control w-100">
-    [%-
+
+        [% IF show_lassos AND ctx.lassos.size > 0;
+            %] <optgroup label="[% l('Library Groups') %]"> [%
+            FOR lasso IN ctx.lassos;
+                opt_value = base_value _ ':lasso(' _ lasso.id _ ')';
+                selected = '';
+                IF !lasso_selected AND ctx.search_lasso == lasso.id;
+                    lasso_selected = 1;
+                    selected = 'selected="selected"';
+                END %]
+                <option value='[% opt_value %]' [% selected %]>
+                    [% lasso.name | html %]
+                </option>
+            [% END %]
+            </optgroup>
+            <optgroup label="[% l('Libraries') %]">
+        [% END;
+
         WHILE node_stack.size > 0;
             node = node_stack.pop();
             org_unit = node.org;
@@ -87,13 +108,13 @@ BLOCK build_org_selector;
 
             IF can_have_vols_only AND org_unit.ou_type.can_have_vols != 't';
                 disabled = 'disabled="disabled"';
-            ELSIF node_value == value;
+            ELSIF !lasso_selected AND node_value == value;
                 selected = 'selected="selected"';
             END;
 
             IF can_have_users_only AND org_unit.ou_type.can_have_users != 't';
                 disabled = 'disabled="disabled"';
-            ELSIF node_value == value;
+            ELSIF !lasso_selected AND node_value == value;
                 selected = 'selected="selected"';
             END;
 
@@ -129,6 +150,75 @@ BLOCK build_org_selector;
                 [% '&nbsp;' FOR [0..pad_depth]; display_name | html %]
             </option>
 
+        [%- END -%]
+
+        [%- IF show_lassos AND ctx.lassos.size > 0 -%]
+            </optgroup>
         [%- END %]
+    </select>
+[%- END;
+
+BLOCK build_scope_selector;
+    IF !name;
+        name = id;
+    END;
+    IF !value;
+        value = loc_value;
+    END;
+
+    ou_id = ctx.search_ou;
+    context_org = ctx.get_aou(ou_id);
+
+    # if the selected org unit is out of hiding scope,
+    # disable the ou-hide scoping altogether.
+    hiding_disabled = ctx.org_hiding_disabled(value);
+    hiding_depth = ctx.get_org_setting(ou_id, 'opac.org_unit_hiding.depth') -%]
+
+    <select [% IF id %] id='[% id %]' [% END -%]
+            title='[% arialabel || l("Select scoping restrictions") %]'
+            name='[% name %]' class="form-control w-100">
+            <option value=''>[% l('No Restrictions') | html %]</option>
+
+        <optgroup label="[% l('Search Scope') %]"> [%
+        FOR d IN ctx.sorted_aout_list(); # sorts by depth and opac_label
+            NEXT IF !hiding_disabled AND hiding_depth > 0 AND d.depth < hiding_depth;
+            NEXT IF d.depth > context_org.ou_type.depth; # only show ancestors-and-self
+            opt_value = 'depth(' _ d.depth _ ')';
+            selected = '';
+            IF value == opt_value; selected = 'selected="selected"'; END %]
+            <option value='[% opt_value %]' [% selected %]>
+                [% d.opac_label | html %]
+            </option>
+        [% END %]
+        </optgroup>
+
+        [% IF show_lassos AND ctx.lassos.size > 0;
+            %] <optgroup label="[% l('Library Groups') %]"> [%
+            FOR lasso IN ctx.lassos;
+                opt_value = 'lasso(' _ lasso.id _ ')';
+                selected = '';
+                IF value == opt_value; selected = 'selected="selected"'; END %]
+                <option value='[% opt_value %]' [% selected %]>
+                    [% lasso.name | html %]
+                </option>
+            [% END %]
+            </optgroup>
+        [% END;
+
+        IF show_loc_groups AND ctx.copy_location_groups.size > 0;
+            %] <optgroup label="[% l('Location Groups') %]"> [%
+            FOR lc_ou_id IN ctx.copy_location_groups.keys;
+                FOR grp IN ctx.copy_location_groups.$lc_ou_id;
+                    opt_value = 'location_groups(' _ grp.id _ ')';
+                    selected = '';
+                    IF value == opt_value; selected = 'selected="selected"'; END %]
+                    <option value='[% opt_value %]' [% selected %]>
+                        [% grp.name | html %]
+                    </option>
+                [% END %]
+            [% END %]
+            </optgroup>
+        [% END %]
+
     </select>
 [%- END %]

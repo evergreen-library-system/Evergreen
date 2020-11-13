@@ -85,7 +85,8 @@
         <div class='col-12 my-2'>
             <div [% IF adv_chunk.js_only %] id='adv_chunk_[% adv_chunk.adv_special %]' class='hidden' [% END %]>
                 <strong><label for="[% adv_chunk.id %]"> [% adv_chunk.adv_label %] </label></strong>
-                    [% IF adv_chunk.adv_special == "lib_selector"; PROCESS "opac/parts/org_selector.tt2"; INCLUDE build_org_selector show_loc_groups=1 id=adv_chunk.id %]
+                    [% IF adv_chunk.adv_special == "lib_selector"; PROCESS "opac/parts/org_selector.tt2"; INCLUDE build_org_selector show_loc_groups=0 show_lassos=0 id=adv_chunk.id %]
+                    [% ELSIF adv_chunk.adv_special == "scope_selector"; PROCESS "opac/parts/org_selector.tt2"; INCLUDE build_scope_selector show_loc_groups=1 show_lassos=1 id=adv_chunk.id %]
                     [% ELSIF adv_chunk.adv_special == "pub_year"; %]
                     <div id='adv_special_block' class="text-center form-inline">
                             <select name='pubdate' class='form-control' id="[% adv_chunk.id %]" onchange='if(this.selectedIndex == 3) $("#adv_global_pub_date_2_span").removeClass("hide_me"); else $("#adv_global_pub_date_2_span").addClass("hide_me");'>
