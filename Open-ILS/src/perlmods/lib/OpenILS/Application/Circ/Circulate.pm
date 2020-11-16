@@ -1024,6 +1024,16 @@ sub mk_env {
             clean_ISO8601($patron->expire_date));
 
         # An expired patron can renew with the assistance of an OUS.
+        if($self->opac_renewal or $self->auto_renewal) {
+            my $use_circ_lib = $self->editor->retrieve_config_global_flag('circ.opac_renewal.use_original_circ_lib');
+            if($use_circ_lib and $U->is_true($use_circ_lib->enabled)) {
+                $self->circ_lib($self->circ->circ_lib);
+            }
+            else {
+                $self->circ_lib($patron->home_ou);
+            }
+        }
+
         my $expire_setting = $U->ou_ancestor_setting_value($self->circ_lib, OILS_SETTING_ALLOW_RENEW_FOR_EXPIRED_PATRON);
         unless ($self->is_renewal and $expire_setting) {
             if(CORE::time > $expire->epoch) {
