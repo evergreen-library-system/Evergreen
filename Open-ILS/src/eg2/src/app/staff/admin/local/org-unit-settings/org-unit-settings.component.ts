@@ -9,6 +9,7 @@ import {NetService} from '@eg/core/net.service';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {ToastService} from '@eg/share/toast/toast.service';
+import {LocaleService} from '@eg/core/locale.service';
 
 import {EditOuSettingDialogComponent
     } from '@eg/staff/admin/local/org-unit-settings/edit-org-unit-setting-dialog.component';
@@ -69,6 +70,7 @@ export class OrgUnitSettingsComponent implements OnInit {
         private pcrud: PcrudService,
         private auth: AuthService,
         private toast: ToastService,
+        private locale: LocaleService,
         private net: NetService,
     ) {
         this.gridDataSource = new GridDataSource();
@@ -221,6 +223,7 @@ export class OrgUnitSettingsComponent implements OnInit {
 
     applyFilter(clear?: boolean) {
         if (clear) { this.filterString = ''; }
+        this.orgUnitSettingsGrid.context.pager.toFirst()
         this.updateGrid(this.contextOrg);
     }
 
@@ -330,10 +333,14 @@ export class OrgUnitSettingsComponent implements OnInit {
                 const tempGrid = this.settingTypeArr;
                 tempGrid.forEach(row => {
                     const containsString =
-                         row.name.includes(this.filterString) ||
-                         row.label.includes(this.filterString) ||
-                         (row.grp && row.grp.includes(this.filterString)) ||
-                         (row.description && row.description.includes(this.filterString));
+                         row.name.toLocaleLowerCase(this.locale.currentLocaleCode())
+						    .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode())) ||
+                         row.label.toLocaleLowerCase(this.locale.currentLocaleCode())
+						    .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode())) ||
+                         (row.grp && row.grp.toLocaleLowerCase(this.locale.currentLocaleCode())
+						    .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode()))) ||
+                         (row.description && row.description.toLocaleLowerCase(this.locale.currentLocaleCode())
+						     .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode())));
                     if (containsString) {
                         this.gridDataSource.data.push(row);
                     }

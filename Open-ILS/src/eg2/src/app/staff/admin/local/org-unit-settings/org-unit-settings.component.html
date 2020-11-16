@@ -1,5 +1,5 @@
-<eg-title i18n-prefix prefix="Org Unit Settings Editor"></eg-title>
-<eg-staff-banner bannerText="Org Unit Settings Config" i18n-bannerText></eg-staff-banner>
+<eg-title i18n-prefix prefix="Library Settings Editor"></eg-title>
+<eg-staff-banner bannerText="Library Settings Editor" i18n-bannerText></eg-staff-banner>
 <!-- org unit selector -->
 
 <eg-admin-edit-org-unit-setting-dialog #editOuSettingDialog>
@@ -28,6 +28,7 @@
             class="form-control"
             [(ngModel)]="filterString"
             (blur)="applyFilter()"
+			(keydown.enter)="$event.target.blur()"
             aria-label="Filter Settings"
             i18n-aria-label
         />
