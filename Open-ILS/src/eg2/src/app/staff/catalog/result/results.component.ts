@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
-import {map, switchMap, distinctUntilChanged} from 'rxjs/operators';
+import {tap, map, switchMap, distinctUntilChanged} from 'rxjs/operators';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {BibRecordService} from '@eg/share/catalog/bib-record.service';
@@ -44,6 +44,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;
+        this.staffCat.browsePagerData = [];
 
         // Our search context is initialized on page load.  Once
         // ResultsComponent is active, it will not be reinitialized,
@@ -65,8 +66,9 @@ export class ResultsComponent implements OnInit, OnDestroy {
         });
 
         // After each completed search, update the record selector.
-        this.searchSub = this.cat.onSearchComplete.subscribe(
-            ctx => this.applyRecordSelection());
+        this.searchSub = this.cat.onSearchComplete.subscribe(ctx => {
+            this.applyRecordSelection();
+        });
 
         // Watch for basket changes applied by other components.
         this.basketSub = this.basket.onChange.subscribe(

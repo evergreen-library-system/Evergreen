@@ -48,6 +48,10 @@ export class StaffCatalogService {
     // Add digital bookplate to search options.
     enableBookplates = false;
 
+    // Cache of browse results so the browse pager is not forced to
+    // re-run the browse search on each navigation.
+    browsePagerData: any[];
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,

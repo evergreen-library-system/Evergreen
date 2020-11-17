@@ -1,0 +1,51 @@
+
+<div class="row mb-2 p-2 border border-info rounded">
+
+  <ng-container *ngIf="browseLoading">
+    <div class="col-lg-6 offset-lg-3">
+      <eg-progress-inline></eg-progress-inline>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!browseLoading">
+    <div class="col-lg-4">
+      <div *ngIf="prevEntry" class="d-flex">
+        <div class="">
+          <button class="btn btn-sm btn-outline-dark mr-2" 
+            (click)="goToBrowsePage(true)" i18n>Previous Heading</button>
+        </div>
+        <div class="flex-1 pt-1">
+          <span>{{prevEntry.value}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 d-flex justify-content-center">
+      <div class="pt-1">
+        <ng-container [ngSwitch]="searchContext.browseSearch.fieldClass">
+          <span i18n *ngSwitchCase="'title'">Title: </span>
+          <span i18n *ngSwitchCase="'author'">Author: </span>
+          <span i18n *ngSwitchCase="'subject'">Subject: </span>
+          <span i18n *ngSwitchCase="'series'">Series: </span>
+        </ng-container>
+        <span class="font-weight-bold">
+          {{searchContext.termSearch.browseEntry.value()}}
+        </span>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div *ngIf="nextEntry" class="float-right">
+        <div class="d-flex">
+          <div class="flex-1 pt-1">
+            <span>{{nextEntry.value}}</span>
+          </div>
+          <div class="">
+            <button class="btn btn-sm btn-outline-dark ml-2" 
+              (click)="goToBrowsePage(false)" i18n>Next Heading</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+</div>
+
