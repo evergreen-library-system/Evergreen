@@ -1,5 +1,5 @@
 <!-- edit bucket dialog -->
-<form ng-submit="ok(precatArgs)" role="form">
+<form role="form">
   <div class="">
     <div class="modal-content">
       <div class="modal-header">
@@ -29,7 +29,6 @@
           <label for="precat-isbn">[% l('ISBN') %]</label>
           <input type="text" class="form-control" id="precat-isbn"
             ng-disabled="!can_create_precats"
-            ng-keydown="preventSubmit($event)"
             ng-model="precatArgs.dummy_isbn" placeholder="[% l('ISBN...') %]"/>
         </div>
         <div class="form-group">
@@ -44,10 +43,9 @@
         </div>
       </div>
       <div class="modal-footer">
-        <input type="submit" class="btn btn-primary" value="[% l('Precat Checkout') %]"
-            ng-disabled="!can_create_precats"
-        />
-        <button class="btn btn-warning" ng-click="cancel()"
+        <button type="button" class="btn btn-primary" ng-click="ok(precatArgs)"
+            ng-disabled="!can_create_precats">[% l('Precat Checkout') %]</button>
+        <button type="button" class="btn btn-warning" ng-click="cancel()"
             ng-class="{disabled : actionPending}">[% l('Cancel') %]</button>
       </div>
     </div> <!-- modal-content -->
