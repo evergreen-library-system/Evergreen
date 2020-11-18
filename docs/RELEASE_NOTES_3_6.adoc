@@ -1,8 +1,63 @@
-= Evergreen 3.6.0 Release Notes =
+= Evergreen 3.6 Release Notes =
 :toc:
 :numbered:
 
-== Upgrade notes ==
+== Evergreen 3.6.1 ==
+
+This release contains bug fixes improving on Evergreen 3.6.0.
+
+=== Bug Fixes ===
+
+==== Administration ====
+
+* Improves description of an org unit setting
+(https://bugs.launchpad.net/evergreen/+bug/1325704[Bug 1325704])
+
+==== Cataloging ====
+
+* Fixes the journal title search in the Angular Staff Catalog
+(https://bugs.launchpad.net/evergreen/+bug/1901038[Bug 1901038])
+
+==== Circulation ====
+
+* The Register Patron form can now set default password according to a patron's
+phone number when the org setting "Patron: password from phone #" is TRUE
+(https://bugs.launchpad.net/evergreen/+bug/1900184[Bug 1900184])
+* Fixes an issue with the hold targeter
+(https://bugs.launchpad.net/evergreen/+bug/1508208[Bug 1508208])
+* Fixes an issue that prevents items from circulating when OpenSRF is installed
+with non-default router names
+(https://bugs.launchpad.net/evergreen/+bug/1904220[Bug 1904220])
+
+
+==== Client ====
+
+* Fixes an issue that caused a blank screen to appear
+(https://bugs.launchpad.net/evergreen/+bug/1855737[Bug 1855737])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.6.1 point release of Evergreen:
+
+* Jason Boyer
+* Dan Briem
+* Galen Charlton
+* Garry Collum
+* Bill Erickson
+* Jason Etheridge
+* Katie Greenleaf Martin
+* Terran McCanna
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Remington Steed
+
+
+== Evergreen 3.6.0 ==
+
+=== Upgrade notes ===
 
 This release adds a new OpenSRF service called `open-ils.courses`.
 While strictly speaking this is an optional service and could be
@@ -23,11 +78,11 @@ This release adds a new Perl module dependency, `Config::General`.
 This release adds two new rows to action_trigger.event_definition,
 two into action_trigger.hook, and six into action_trigger.environment.
 
-== New Features ==
+=== New Features ===
 
-=== Acquisitions ===
+==== Acquisitions ====
 
-==== Angular Acquisitions Search ====
+===== Angular Acquisitions Search =====
 
 The acquisitions search interfaces are now written in Angular
 and provide a new centralized place for searching Line Items,
@@ -67,15 +122,13 @@ over the Dojo interface, including:
 * greater than and less than are now available as search operators.
 * publication date searches are more flexible.
 
-===== Adjustments to Stock Permissions =====
-
 As part of this feature, the stock permissions for the Acquisitions
 and Acquisitions Administrator profiles have been expanded. In
 particular, the Acquisitions Administrator profile can now be
 more readily used to perform normal acquisitions work in addition
 to configuring the acquisitions module.
 
-==== Angular Providers Interface ====
+===== Angular Providers Interface =====
 
 The interfaces for searching for and managing Acquisitions provider
 records have been rewritten in Angular. This rewrite includes the
@@ -106,10 +159,10 @@ following significant changes:
 Interfaces that used to link to the Dojo provider interface now link
 to the Angular one instead.
 
-=== Administration ===
+==== Administration ====
 
 
-==== Changes to Autorenewal Action/Trigger Failure Reasons ====
+===== Changes to Autorenewal Action/Trigger Failure Reasons =====
 
 Previously the "reason" field in the userdata for an Autorenewal
 event would contain both the failure code and the description for
@@ -122,7 +175,7 @@ event code (MAX_RENEWALS_REACHED) if administrators still want to
 display it in template outputs.
 
 
-==== EZProxy authentication ====
+===== EZProxy authentication =====
 
 Evergreen can now provide CGI authentication for EZProxy.
 To enable this, you will need to:
@@ -151,7 +204,7 @@ When this feature is enabled, users will see an Evergreen-based login screen.
 You may customize the look and feel of this login screen by editing the relevant
 template toolkit files.
 
-==== Matomo Support ====
+===== Matomo Support =====
 
 Support for the open source web analytics platform Matomo is now
 native to Evergreen. Support is on an org unit level so different
@@ -173,7 +226,7 @@ These are set by the Library Settings opac.analytics.matomo_url and
 opac.analytics.matomo_id respectively.  A new permission,
 MATOMO_UPDATE_SETTINGS, controls access to these.
 
-==== "PatronAPI" authentication ====
+===== "PatronAPI" authentication =====
 
 Evergreen now supports the III "PatronAPI" scheme for authenticating
 patrons and supplying some information about them.
@@ -208,7 +261,7 @@ The responses for the `pintest` and `dump` actions are specified by
 Template Toolkit templates under (e.g.) `/openils/var/templates/remoteauth`.
 
 
-==== Preloaded Audio Icon and Search Format ====
+===== Preloaded Audio Icon and Search Format =====
 
 A new search and icon format called Preloaded Audio now exists
 that overlaps with the eAudio format.  If you want to exclude
@@ -235,11 +288,11 @@ AND (SELECT id FROM config.coded_value_map WHERE ctype = 'item_type' AND code = 
 
 
 
-=== API ===
+==== API ====
 
 
 
-==== Override Label for draw_field_label Patron Edit Fields ====
+===== Override Label for draw_field_label Patron Edit Fields =====
 
 Evergreen developers may now specify a label for fields in
 the patron registration/patron edit form (generated by
@@ -253,12 +306,12 @@ the web staff client template `circ/patron/t_edit.tt2`.
 
 
 
-=== Architecture ===
+==== Architecture ====
 
 
 
 
-==== New Action/Trigger reactor for 3rd party signaling ====
+===== New Action/Trigger reactor for 3rd party signaling =====
 
 This new Action/Trigger reactor module allows an Evergreen administrator to
 create event defintions that use HTTP (or HTTPS) to contact external services
@@ -267,7 +320,7 @@ and let them know that something has happened in Evergreen.
 For instance, a discovery layer can be informed when a bib record is updated
 or when a user's barcode changes.
 
-===== Reactor Template Syntax =====
+====== Reactor Template Syntax ======
 
 The new reactor module uses a template to define its behavior.  While the
 template is processed by Template Toolkit, as with any A/T templates, its
@@ -327,7 +380,7 @@ MARC
 
 
 
-==== Documentation Now Uses the Antora Toolchain ====
+===== Documentation Now Uses the Antora Toolchain =====
 
 The core Evergreen documentation under the `docs/` subdirectory
 has been changed to use Antora, a documentation site generator
@@ -342,11 +395,11 @@ the file `README.adoc` under the `docs` directory.
 
 
 
-=== Cataloging ===
+==== Cataloging ====
 
 
 
-==== Manage Authorities Angular Port ====
+===== Manage Authorities Angular Port =====
 
 The Cataloging -> Manage Authorities interface has been ported to Angular.
 
@@ -357,14 +410,14 @@ records.
 
 
 
-==== MARC Batch Edit UI Angular Port ====
+===== MARC Batch Edit UI Angular Port =====
 
 The MARC Batch Edit interface has been ported to Angular.
 
 
 
 
-==== Preloaded Audio Icon and Search Format ====
+===== Preloaded Audio Icon and Search Format =====
 
 A new search and icon format called Preloaded Audio now exists
 using the following atttributes: itemtype i, item form q.  This
@@ -375,12 +428,12 @@ notes to exclude it.
 
 
 
-==== Item Status Allows Pasting a List of Barcodes in csv Format ====
+===== Item Status Allows Pasting a List of Barcodes in csv Format =====
 
 The item status input box will now accept a string of barcodes, separated with commas, as well as a single barcode.
 
 
-==== Fix For "Blank" (Empty String) TCN Source ====
+===== Fix For "Blank" (Empty String) TCN Source =====
 
 Previously, it was possible for sparsely-populated MARC records to be
 saved with a TCN Source of '' (the "empty string"), which caused the
@@ -399,11 +452,11 @@ like 'AUTOGEN' or 'Unknown'. They should probably do it per-record, however, to
 avoid locking the table in a huge commit.
 
 
-=== Circulation ===
+==== Circulation ====
 
 
 
-==== Booking Capture is now in Angular ====
+===== Booking Capture is now in Angular =====
 
 
 The interface to capture resources for booking
@@ -420,7 +473,7 @@ Server administration -> Print templates.
 
 
 
-==== New Fields for AutorenewNotify Event Template ====
+===== New Fields for AutorenewNotify Event Template =====
 
 
 Two new fields, `auto_renewal_remaining`, and `total_renewal_remaining` have
@@ -440,7 +493,7 @@ Total Renewals Remaining: [% udata.total_renewal_remaining %]
 
 
 
-==== Course Materials Module ====
+===== Course Materials Module =====
 
 This version of Evergreen includes an optional course materials module.
 Like course reserves modules in other library software, this module
@@ -457,8 +510,6 @@ True for the org units that want to use the module.
 To use the course materials module effectively, staff will need a
 new permission called _MANAGE_RESERVES_.  By default, circulation
 administrators will receive this permission.
-
-===== Courses =====
 
 Staff members with the _MANAGE_RESERVES_ permission can create
 courses, attach materials to them, attach users to them, and
@@ -481,12 +532,10 @@ can have either a public role (e.g. instructor) or private
 roles (e.g. student).  The public roles will be displayed
 in the OPAC.
 
-===== OPAC =====
 
 If the module is enabled, the OPAC will include a course search
 and a course browse option.
 
-===== Other uses =====
 
 Libraries may also want to use this module to manage their
 displays.  Each display can be treated as a course, and staff
@@ -498,8 +547,7 @@ archive the course.
 
 
 
-
-==== Hopeless Holds Interface ====
+===== Hopeless Holds Interface =====
 
 A new interface under Local Administration has been added called
 Hopeless Holds.  Using a new Hopeless Date field on hold requests,
@@ -515,7 +563,7 @@ as Hopeless Prone (a new boolean field on Item Statuses).
 
 
 
-==== In-house use now records workstations ====
+===== In-house use now records workstations =====
 
 Evergreen now records the workstation along with each
 in-house use.  Staff can now run reports on which
@@ -524,14 +572,14 @@ workstation created which in-house use.
 
 
 
-==== Option to Make Effective Date of Checkin Sticky ====
+===== Option to Make Effective Date of Checkin Sticky =====
 
 Adds a checkbox to the Checkin screen that will make the backdate effective until logout.
 
 
 
 
-==== Purge User Preferred Names ====
+===== Purge User Preferred Names =====
 
 The new, user preferred name fields are now set to NULL in the
 database when a user account is purged via the staff client or using
@@ -565,20 +613,20 @@ AND (
 
 
 
-==== Test Notification Method ====
+===== Test Notification Method =====
 
 Patrons and staff may request a test notification for a patron's default email address or SMS
 number via the Patron Registration interface in the staff client or the OPAC preferences interface. The OPAC_LOGIN permissions are required to
 request a notification. When a notification is sent, it will be sent to either the user's default email or default SMS number, depending on what was requested.
 
-===== Upgrade Notes =====
+====== Upgrade Notes ======
 
 This feature adds two new rows to action_trigger.event_definition, two into
 action_trigger.hook, and six into action_trigger.environment.
 
 
 
-==== Curbside Pickup ====
+===== Curbside Pickup =====
 
 The Curbside Pickup feature in Evergreen provides an interface to help
 facilitate contact-free pickup of library materials.  It provides a dedicated
@@ -608,7 +656,7 @@ be the primary pickup option depending on the library’s current service plan.
 It assumes the library will have a staff member assigned to managing curbside
 pickup throughout the day.
 
-===== Library Settings =====
+====== Library Settings ======
 
 This feature adds the following library settings:
 
@@ -627,7 +675,7 @@ This feature adds the following library settings:
     This defaults to false, i.e., allowing patrons to modify appointments
     from My Account.
 
-===== Notifications And Action Triggers =====
+====== Notifications And Action Triggers ======
 
 There are several new patron notice options related to curbside pickup.
 
@@ -664,7 +712,7 @@ does not send a notice to patrons or staff.  It is a silent action behind the
 scenes that initiates the curbside offer email or SMS notification described
 above.  
 
-===== Upgrade Notes =====
+====== Upgrade Notes ======
 
 This feature adds a new OpenSRF service, `open-ils.curbside`, which must be
 enabled and registered with the public router for the feature to function.
@@ -673,25 +721,25 @@ This feature adds no new staff permissions.
 
 
 
-==== Allow Use of Adjusted Proximity for Age-protection ====
+===== Allow Use of Adjusted Proximity for Age-protection =====
 
 Introduces a new library setting to consult adjusted proximity for age-protected items at hold placement time.
 
 
 
 
-=== Client ===
+==== Client ====
 
 
 
-==== New Angular Staff Catalog Default ====
+===== New Angular Staff Catalog Default =====
 
 The experimental Angular staff catalog has been promoted to operate as the
 default catalog in the browser staff client.  It will be used for all
 catalog entry points, except for the menu entries for the traditional
 catalog and any links within the traditional catalog.
 
-===== Menu Changes =====
+====== Menu Changes ======
 
 * Search -> 'Search The Catalog' now searches to new catalog.
 * Cataloging -> 'Search The Catalog' now searches to new catalog.
@@ -704,14 +752,14 @@ catalog and any links within the traditional catalog.
 
 
 
-==== Basket To Bucket Action Now Allows Adding To Shared Buckets ====
+===== Basket To Bucket Action Now Allows Adding To Shared Buckets =====
 
 The Angular staff catalog's 'Add Basket to Bucket' action now
 gives the user the option of adding the contents of the basket
 to a shared bucket.
 
 
-==== Angular catalog recall/force/part holds ====
+===== Angular catalog recall/force/part holds =====
 
 The Angular staff catalog now has entry points for placing Recall,
 Force, and Part-level holds.
@@ -725,10 +773,10 @@ as the hold target for each record in the list.  Part selection is
 optional.
 
 
-=== OPAC ===
+==== OPAC ====
 
 
-==== New Bootstrap-based OPAC ====
+===== New Bootstrap-based OPAC =====
 
 
 This release includes a new experimental OPAC with a cleaner, more modern design.
@@ -766,7 +814,7 @@ be available). Using the Bootstrap skin in production for 3.6 is at your own ris
 
 
 
-==== Enhanced Public Catalog Printing and Email ====
+===== Enhanced Public Catalog Printing and Email =====
 
 Evergreen now provides additional functionality for printing and emailing
 bibliographic record and holdings information from the catalog, including
@@ -784,7 +832,7 @@ public catalog. If the option to allow emailing without signing in is enabled
 (by turning on the new 'Allow record emailing without login' library setting),
 user will be asked to solve an arithmetic CAPTCHA in order to send the email.
 
-===== Administration =====
+====== Administration ======
 
 Two new interfaces have been added to Local Administration: Event Definition
 Groups and Event Definition Group Members.  The Event Definition Groups defines
@@ -804,7 +852,7 @@ Record or Email Record) and the new format will be available in the catalog.
 
 
 
-==== Credit card payments using Stripe now on version 3 (Elements) ====
+===== Credit card payments using Stripe now on version 3 (Elements) =====
 
 When Stripe payments are enabled, the public catalog will now
 use version 3 of the Stripe client library, as well as its
@@ -819,18 +867,18 @@ would just give an error.
 
 
 
-==== Improve Access to Libray Info in OPAC ====
+===== Improve Access to Libray Info in OPAC =====
 
 Adds the library's address, email, phone, and website link to the myopac patron account preferences page.
 
 
 
 
-=== Reports ===
+==== Reports ====
 
 
 
-==== Combined Aged and Active Circulations Source Naming ====
+===== Combined Aged and Active Circulations Source Naming =====
 
 A recent improvement to aid web client data retrieval
 speed resulted in a new reports source that was named
@@ -847,7 +895,7 @@ from the core sources to prevent confusion:
 
 
 
-==== Reports Subtotals ====
+===== Reports Subtotals =====
 
 Reports now allow group subtotals and grand totals.  By checking the
 new "Calculate grouping subtotals" checkbox under "Output Options",
@@ -874,11 +922,11 @@ short name, checkout year, and shelving location name.
 
 
 
-=== SIP ===
+==== SIP ====
 
 
 
-==== Allow Username in Patron ID ====
+===== Allow Username in Patron ID =====
 
 Evergreen now accepts a patron's username in the SIP2 Patron ID field
 (AA) in addition to the barcode.  This modification is useful for
@@ -903,7 +951,7 @@ value from 'false' to 'true'.
 
 
 
-== Acknowledgments ==
+=== Acknowledgments ===
 
 The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
