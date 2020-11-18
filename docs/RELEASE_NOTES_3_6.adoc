@@ -867,7 +867,7 @@ would just give an error.
 
 
 
-===== Improve Access to Libray Info in OPAC =====
+===== Improve Access to Library Info in OPAC =====
 
 Adds the library's address, email, phone, and website link to the myopac patron account preferences page.
 
