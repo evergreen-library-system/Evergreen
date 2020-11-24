@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2019-10-29 14:19+0000\n"
+"POT-Creation-Date: 2020-06-11 18:06+0000\n"
 "PO-Revision-Date: 2019-10-29 14:10+0000\n"
 "Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-06-11 06:40+0000\n"
+"X-Launchpad-Export-Date: 2020-06-12 06:52+0000\n"
 "X-Generator: Launchpad (build b190cebbf563f89e480a8b57f641753c8196bda0)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
@@ -816,7 +816,7 @@ msgstr ""
 msgid "Blurb writer"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:118
+#: ../../Open-ILS/src/templates/opac/parts/misc_util.tt2:841 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:118
 msgid "Book cover"
 msgstr ""
 
@@ -897,7 +897,7 @@ msgstr ""
 msgid "Browse the Catalog"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:103 ../../Open-ILS/src/templates/opac/myopac/circ_history/export.tt2:11
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:103 ../../Open-ILS/src/templates/opac/myopac/circ_history/export.tt2:11 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:79
 msgid "Call Number"
 msgstr "Número de Chamada"
 
@@ -913,7 +913,7 @@ msgstr ""
 msgid "Call Number Browse"
 msgstr "Ver Número de Chamada"
 
-#: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3193 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3202 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:370
+#: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3193 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3202 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:370
 msgid "Call number"
 msgstr "Número de chamada"
 
@@ -981,7 +981,7 @@ msgstr "Página Principal do Catálogo"
 msgid "Catalog Search"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:176 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:151 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:195
+#: ../../Open-ILS/src/templates/opac/myopac/circ_history.tt2:176 ../../Open-ILS/src/templates/opac/myopac/circs.tt2:159 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:195
 msgid "Catalog record"
 msgstr "Registro do catálogo"
 
@@ -2342,7 +2342,7 @@ msgstr "Código de Barra do Item"
 msgid "Item Form"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:141
+#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:149
 msgid "Item Selected"
 msgstr ""
 
@@ -2354,7 +2354,7 @@ msgstr "Tipo do Item"
 msgid "Item details and Actions"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:188
+#: ../../Open-ILS/src/templates/opac/myopac/circs.tt2:204
 msgid "Item is needed for a hold"
 msgstr ""
 
@@ -2947,7 +2947,7 @@ msgid "Next"
 msgstr "Avançar"
 
 #. (ctx.copy_limit)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:278
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:287
 msgid "Next %1"
 msgstr "Avançar %1"
 
@@ -3522,7 +3522,7 @@ msgid "Previous"
 msgstr "Anterior"
 
 #. (ctx.copy_offset - new_offset)
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:272
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:281
 msgid "Previous %1"
 msgstr "Anterior %1"
 
@@ -4363,11 +4363,11 @@ msgstr ""
 msgid "Show copies at %1"
 msgstr "Mostrar exemplares em %1"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:295
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:304
 msgid "Show fewer copies"
 msgstr "Mostrar menos exemplares"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:294
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:303
 msgid "Show fewer copies icon"
 msgstr ""
 
@@ -4375,11 +4375,11 @@ msgstr ""
 msgid "Show items in list"
 msgstr "Mostrar itens na lista"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:290
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:299
 msgid "Show more copies"
 msgstr "Mostrar mais exemplares"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:289
+#: ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:298
 msgid "Show more copies icon"
 msgstr ""
 
@@ -4683,10 +4683,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/sms_cn.tt2:27
 msgid "Text call number"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:21
-msgid "That is not a valid date in the future."
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/login/form.tt2:3
