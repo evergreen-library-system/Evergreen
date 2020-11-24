@@ -1,3 +1,447 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit d7deec8302e7376d31590740d2e456c39ec60fec
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Tue Nov 24 09:20:23 2020 -0500
+
+    bumping Perl version string for 3.6.1
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 1d54acf95207bd6de9ab7fb2a91b2e7d1d160a8f
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Tue Nov 24 09:18:44 2020 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+
+9	6	build/i18n/po/acq/ar-JO.po
+11	8	build/i18n/po/acq/cs-CZ.po
+6	6	build/i18n/po/acq/de-DE.po
+6	6	build/i18n/po/acq/en-CA.po
+9	6	build/i18n/po/acq/es-ES.po
+9	6	build/i18n/po/acq/hy-AM.po
+6	6	build/i18n/po/acq/ru-RU.po
+5348	0	build/i18n/po/bootstrap-opac/cs-CZ.po
+5	5	build/i18n/po/cat/de-DE.po
+22	22	build/i18n/po/circ/de-DE.po
+4077	3794	build/i18n/po/db.seed/ar-JO.po
+4143	3809	build/i18n/po/db.seed/cs-CZ.po
+4025	3767	build/i18n/po/db.seed/de-DE.po
+4028	3770	build/i18n/po/db.seed/en-CA.po
+4028	3770	build/i18n/po/db.seed/en-GB.po
+4080	3797	build/i18n/po/db.seed/es-ES.po
+4032	3774	build/i18n/po/db.seed/fi-FI.po
+4034	3776	build/i18n/po/db.seed/fr-CA.po
+4023	3765	build/i18n/po/db.seed/he-IL.po
+4023	3765	build/i18n/po/db.seed/hu-HU.po
+4082	3799	build/i18n/po/db.seed/hy-AM.po
+4028	3770	build/i18n/po/db.seed/oc-FR.po
+4029	3771	build/i18n/po/db.seed/pt-BR.po
+4030	3772	build/i18n/po/db.seed/ru-RU.po
+4023	3765	build/i18n/po/db.seed/sv-SE.po
+4023	3765	build/i18n/po/db.seed/tr-TR.po
+3081	2841	build/i18n/po/fm_IDL.dtd/ar-JO.po
+3092	2849	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+3053	2813	build/i18n/po/fm_IDL.dtd/de-DE.po
+3080	2840	build/i18n/po/fm_IDL.dtd/en-CA.po
+3078	2838	build/i18n/po/fm_IDL.dtd/en-GB.po
+3082	2842	build/i18n/po/fm_IDL.dtd/es-ES.po
+3081	2841	build/i18n/po/fm_IDL.dtd/fi-FI.po
+3051	2811	build/i18n/po/fm_IDL.dtd/fr-CA.po
+3047	2807	build/i18n/po/fm_IDL.dtd/he-IL.po
+3047	2807	build/i18n/po/fm_IDL.dtd/hu-HU.po
+3084	2841	build/i18n/po/fm_IDL.dtd/hy-AM.po
+3049	2809	build/i18n/po/fm_IDL.dtd/oc-FR.po
+3068	2828	build/i18n/po/fm_IDL.dtd/pt-BR.po
+3069	2829	build/i18n/po/fm_IDL.dtd/ru-RU.po
+3047	2807	build/i18n/po/fm_IDL.dtd/sv-SE.po
+3047	2807	build/i18n/po/fm_IDL.dtd/tr-TR.po
+51	39	build/i18n/po/ils_events.xml/ar-JO.po
+55	41	build/i18n/po/ils_events.xml/cs-CZ.po
+50	38	build/i18n/po/ils_events.xml/de-DE.po
+51	39	build/i18n/po/ils_events.xml/en-CA.po
+51	39	build/i18n/po/ils_events.xml/en-GB.po
+51	39	build/i18n/po/ils_events.xml/es-ES.po
+51	39	build/i18n/po/ils_events.xml/fi-FI.po
+51	39	build/i18n/po/ils_events.xml/fr-CA.po
+50	38	build/i18n/po/ils_events.xml/he-IL.po
+50	38	build/i18n/po/ils_events.xml/hu-HU.po
+51	39	build/i18n/po/ils_events.xml/hy-AM.po
+50	38	build/i18n/po/ils_events.xml/oc-FR.po
+51	39	build/i18n/po/ils_events.xml/pt-BR.po
+51	39	build/i18n/po/ils_events.xml/ru-RU.po
+50	38	build/i18n/po/ils_events.xml/sv-SE.po
+50	38	build/i18n/po/ils_events.xml/tr-TR.po
+4	3	build/i18n/po/multiclass_search_help.html/ar-JO.po
+17	13	build/i18n/po/multiclass_search_help.html/cs-CZ.po
+4	3	build/i18n/po/multiclass_search_help.html/de-DE.po
+4	3	build/i18n/po/multiclass_search_help.html/en-CA.po
+4	3	build/i18n/po/multiclass_search_help.html/en-GB.po
+4	3	build/i18n/po/multiclass_search_help.html/es-ES.po
+4	3	build/i18n/po/multiclass_search_help.html/fr-CA.po
+5	4	build/i18n/po/multiclass_search_help.html/hu-HU.po
+4	3	build/i18n/po/multiclass_search_help.html/hy-AM.po
+5	4	build/i18n/po/multiclass_search_help.html/oc-FR.po
+4	3	build/i18n/po/multiclass_search_help.html/pt-BR.po
+4	3	build/i18n/po/multiclass_search_help.html/ru-RU.po
+5	4	build/i18n/po/multiclass_search_help.html/tr-TR.po
+518	269	build/i18n/po/tpac/ar-JO.po
+537	286	build/i18n/po/tpac/cs-CZ.po
+518	269	build/i18n/po/tpac/de-DE.po
+518	269	build/i18n/po/tpac/en-CA.po
+518	269	build/i18n/po/tpac/en-GB.po
+518	269	build/i18n/po/tpac/es-ES.po
+518	269	build/i18n/po/tpac/fi-FI.po
+518	269	build/i18n/po/tpac/fr-CA.po
+518	269	build/i18n/po/tpac/he-IL.po
+518	269	build/i18n/po/tpac/hu-HU.po
+518	269	build/i18n/po/tpac/hy-AM.po
+518	269	build/i18n/po/tpac/oc-FR.po
+518	269	build/i18n/po/tpac/pt-BR.po
+518	269	build/i18n/po/tpac/ru-RU.po
+518	269	build/i18n/po/tpac/sv-SE.po
+518	269	build/i18n/po/tpac/tr-TR.po
+979	568	build/i18n/po/webstaff/ar-JO.po
+1041	574	build/i18n/po/webstaff/cs-CZ.po
+11401	0	build/i18n/po/webstaff/de-DE.po
+960	567	build/i18n/po/webstaff/en-CA.po
+954	567	build/i18n/po/webstaff/en-GB.po
+960	567	build/i18n/po/webstaff/es-ES.po
+957	567	build/i18n/po/webstaff/hy-AM.po
+954	567	build/i18n/po/webstaff/ru-RU.po
+ create mode 100644 build/i18n/po/bootstrap-opac/cs-CZ.po
+ create mode 100644 build/i18n/po/webstaff/de-DE.po
+
+commit beea7c1fa585a92d246483b08b18bc33aff007c6
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Nov 18 09:38:32 2020 -0800
+
+    Docs: fix typo in 3.6 release notes
+    
+    Thanks to Elizabeth Thomsen for catching this error.
+
+1	1	docs/RELEASE_NOTES_3_6.adoc
+
+commit fc2a4846848c1ab8e4da6a076b0bdb0ec3d3c1d1
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Nov 18 09:23:12 2020 -0800
+
+    Docs: release notes for 3.6.1
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+111	63	docs/RELEASE_NOTES_3_6.adoc
+
+commit 21f30cc90c184e31adc7a679f51c20fb16dd0c41
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Nov 18 09:14:49 2020 -0800
+
+    Docs: release notes for 3.5.2
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+160	0	docs/RELEASE_NOTES_3_5.adoc
+
+commit 9e4bffc37023204d4c3f95ec309997baf6051ecc
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Nov 18 09:11:41 2020 -0800
+
+    Docs: release notes for 3.4.5
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+129	0	docs/RELEASE_NOTES_3_4.adoc
+
+commit 109c0457448e86765effe615a1f58f6b19e4e2f2
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Fri Nov 13 11:12:22 2020 -0500
+
+    LP1904220: Fix Booking Service Check
+    
+    Instead of trying to tell AppService which router we want to talk
+    to and confusing it, just tell it we want to talk to a router and
+    let it do its thing.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	6	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit f425799cd4fba84eecbee3d92c5a9a9008424e14
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Fri Oct 30 13:06:59 2020 -0400
+
+    LP#1900184 Patron password use phone not working
+    
+    An early return statement in extract_hold_notify() was removed
+    in 7e92293 and added back in ddf5b4b3, so props set at the end
+    of that function used in future comparisons never get set.
+    
+    This re-removes the return statement and sets the local notify
+    variable to default string values so the rest of the function
+    can play out.
+    
+    To test:
+    1. Set org unit setting: "Patron: password from phone #" to TRUE
+       at the top context location
+    2. Circulation->Register Patron
+    3. Type 123-456-7890 into the Daytime Phone field and press tab
+    4. Note: the password field isn't updated to the last 4 digits
+    5. Apply patch and repeat steps
+    6. Note: the password field updates to the last 4 digits
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+
+1	3	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 4996ed64b2bb96d70f5e1d1445d2c04f25d69bb9
+Author: Katie Greenleaf Martin <bcl@blaircountylibraries.org>
+Date:   Mon Oct 26 16:39:57 2020 -0400
+
+    Docs: LP1826256 Change 'catalogue' to 'catalog'
+    
+    Signed-off-by: Katie Greenleaf Martin <bcl@blaircountylibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	3	docs/modules/acquisitions/pages/selection_lists_po.adoc
+1	1	docs/modules/admin_initial_setup/pages/describing_your_people.adoc
+1	1	docs/modules/admin_initial_setup/pages/designing_your_catalog.adoc
+7	7	docs/modules/cataloging/pages/copy-buckets_web_client.adoc
+6	6	docs/modules/circulation/pages/booking.adoc
+1	1	docs/modules/development/pages/intro_opensrf.adoc
+2	2	docs/modules/installation/pages/server_installation.adoc
+1	1	docs/modules/installation/pages/server_upgrade.adoc
+7	7	docs/modules/opac/pages/using_the_public_access_catalog.adoc
+
+commit 5efa4fa2cef07987d13b26691afbc82064d5cc5b
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Fri May 15 14:37:13 2020 -0400
+
+    LP#1508208: live_t/ test for this branch
+    
+    Includes timing information for the checkin, but pass/fail is not predicated on it.
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+219	0	Open-ILS/src/perlmods/live_t/30-lp1508208-age-protect-hold-capture.t
+ create mode 100644 Open-ILS/src/perlmods/live_t/30-lp1508208-age-protect-hold-capture.t
+
+commit c90a3066bf5eb4e41e028431daeb1dc390bc38c9
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Dec 10 17:17:38 2019 -0500
+
+    LP#1508208: Only look at holds that age protection allows
+    
+    When hold capture is attempted, we look at (currently) the first 100
+    holds ordered by Best Hold Sort Selection Order.  If a very long list
+    of holds are targetting an age-protected item then op capture may not
+    have a chance to see a viable hold for that copy.
+    
+    This commit attempts to take into account the age protection currently
+    set for the copy by restricting the holds to just those where the
+    hold-copy-map proximity is less than or equal to the maximum proximity
+    allowed by the age protection.  This works now because we store the
+    hold proximity in the hold copy map, where we did not before.
+    
+    Being based on the hold-copy-map proximity, which is calculated
+    proximity, means this is an approximation and the final hold capture
+    logic may still reject some holds for the copy.  Likewise, this does
+    not entirely eliminate the possibility that there may be a better hold
+    to capture the copy for if the in-range set of holds is very, very
+    long, but this should allow hold capture to proceed if even
+    imperfectly.
+    
+    If no age protection is set for the copy, the current behavior
+    (looking at all holds) is maintained.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+4	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit a6ae2226e4f314375bc398e3ebbc98b76b125b6f
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Oct 28 16:03:24 2020 -0400
+
+    LP1325704: fix bad merge
+
+0	54	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lost_lo_claimsret_descrip.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lost_lo_claimsret_descrip.sql
+
+commit 915d18aafc9176b784b30d5fd077ae6d612e167c
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue May 15 09:46:41 2018 -0400
+
+    LP#1325704: Update Items-Out YAOUS descrip for web client
+    
+    Three settings refer to the "top" and "bottom" lists on the XUL client
+    Items Out screen. With the web client, these have become three named
+    tabs. This commit updates the setting descriptions in the seed data so
+    they reflect the new design. I also attempted to make the meaning of the
+    values more clear by labeling the two subsettings as "A" and "B".
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+18	15	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+54	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lost_lo_claimsret_descrip.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lost_lo_claimsret_descrip.sql
+
+commit 06a06ea5410749cd982647e4b16dd19be28ed6d4
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Oct 28 15:57:42 2020 -0400
+
+    LP#1325704: stamping upgrade script
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+54	0	Open-ILS/src/sql/Pg/upgrade/1242.schema.lost_lo_claimsret_descrip.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1242.schema.lost_lo_claimsret_descrip.sql
+
+commit 566a5f75cc7bc890519aed1662710bdc841bb86d
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Oct 26 09:24:10 2020 -0700
+
+    Docs: adding information about 3.6 features from the release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	docs/antora.yml
+68	1	docs/modules/admin/pages/actiontriggers.adoc
+1	0	docs/modules/admin_initial_setup/nav.adoc
+29	0	docs/modules/admin_initial_setup/pages/bootstrap_opac.adoc
+4	0	docs/modules/integrations/_attributes.adoc
+5	0	docs/modules/integrations/nav.adoc
+29	0	docs/modules/integrations/pages/ezproxy.adoc
+6	0	docs/modules/integrations/pages/introduction.adoc
+34	0	docs/modules/integrations/pages/patron-api.adoc
+73	0	docs/modules/integrations/pages/rfid.adoc
+0	1	docs/modules/opac/nav.adoc
+ create mode 100644 docs/modules/admin_initial_setup/pages/bootstrap_opac.adoc
+ create mode 100644 docs/modules/integrations/_attributes.adoc
+ create mode 100644 docs/modules/integrations/nav.adoc
+ create mode 100644 docs/modules/integrations/pages/ezproxy.adoc
+ create mode 100644 docs/modules/integrations/pages/introduction.adoc
+ create mode 100644 docs/modules/integrations/pages/patron-api.adoc
+ create mode 100644 docs/modules/integrations/pages/rfid.adoc
+
+commit e60b1f3494118038eb8dd0bfe48a7dcbe729cc47
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Oct 22 11:10:17 2020 -0400
+
+    LP1901038 Repair Angular catalog journal title search
+    
+    Completes the Journal Title search implementation in the Angular staff
+    catalog.
+    
+    To test in concerto, search Journal Title => IEEE.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+10	1	Open-ILS/src/eg2/src/app/share/catalog/search-context.ts
+
+commit 727f352519f48bc593df6b748ab246d37e18dfb5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Dec 9 11:47:30 2019 -0500
+
+    LP1855737 Don't send error object across shared worker port
+    
+    Data must be string-ifiable to pass across a shared web worker message
+    port.  In Firefox, at least, errors encountered during IndexedDB /
+    Lovefield operations are not candidates for automatic stringification.
+    Avoid trying to send the error object back to the caller.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+0	1	Open-ILS/web/js/ui/default/staff/offline-db-worker.js
+
+commit 0dfb01195c80cd646b499f2fe2bada97f8e2f226
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Oct 12 15:51:29 2020 -0400
+
+    LP#1893463: Protect against null emails
+    
+    Unique indexes on nullable columns will allow multiple conceptually
+    unique rows if the nullable columns are, in fact, NULL because NULL does
+    not equal itself.  This commit uses COALESCE to make sure that the
+    nullable email column in the reporter.schedule table gets a value of the
+    empty string for the purposes of the unique index.  The upgrade script
+    now also takes this into account and ignores the email column.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/reporter-schema.sql
+2	2	Open-ILS/src/sql/Pg/upgrade/1241.schema.reporter_schedule_uniqueness.sql
+
+commit d5e8176421d87bd4197a9a1518f121973fd89704
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Wed Oct 14 12:11:27 2020 -0400
+
+    LP1882828: (follow-up) Add static parameter to ViewChild decorator
+    
+    While not strictly required in rel_3_6 and above, rel_3_5 uses
+    a version of Angular that requires specifying a value for the
+    static parameter when using the ViewChild decorator on an object.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/booking/pull-list.component.ts
+
+commit 9d6f08986e531f0d65c2b6ebb6a6b9104e83eebe
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Oct 7 15:38:34 2020 -0400
+
+    LP1893463: Follow-up to address de-duplication and adding release notes.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+14	0	Open-ILS/src/sql/Pg/upgrade/1241.schema.reporter_schedule_uniqueness.sql
+5	0	docs/RELEASE_NOTES_NEXT/Reports/deduplicated_reports_schedule.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Reports/deduplicated_reports_schedule.adoc
+
+commit 1ae8fd7921232257979457901861b3fca494abb5
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Oct 7 14:54:41 2020 -0400
+
+    LP1893463: stamp upgrade script
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.reporter_schedule_uniqueness.sql => 1241.schema.reporter_schedule_uniqueness.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.reporter_schedule_uniqueness.sql => 1241.schema.reporter_schedule_uniqueness.sql} (75%)
+
+commit 4075a1214db39514a6e2bfc61f2d104725c81d25
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Fri Aug 28 17:13:14 2020 -0400
+
+    LP1893463: Prevent duplicated report outputs
+    
+    When re-running recurring reports that are interrupted,
+    it's possible to end up with a duplicate copy of the next
+    recurrance of that report. This branch adds a unique index
+    to reporter.schedule and tells clark-kent.pl not to worry
+    about it.
+    
+    For the purposes of this change a duplicate report is
+    one where report.schedule has identical values for report,
+    (output) folder, runner, run_time, and email.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+9	3	Open-ILS/src/reporter/clark-kent.pl
+1	0	Open-ILS/src/sql/Pg/reporter-schema.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter_schedule_uniqueness.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter_schedule_uniqueness.sql
