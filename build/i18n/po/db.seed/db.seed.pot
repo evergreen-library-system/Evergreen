@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2020-09-30 15:09:23-0400\n"
+"POT-Creation-Date: 2020-11-24 09:06:00-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,7 +97,7 @@ msgid "Upload Merge on Single Match by Default"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.permission.perm_list
-#: 950.data.seed-values.sql:20207
+#: 950.data.seed-values.sql:20210
 msgid "Grid Config: admin.server.permission.perm_list"
 msgstr ""
 
@@ -120,7 +120,7 @@ msgid "Require at least one address for Patron Registration"
 msgstr ""
 
 # id::coust.description__ebook_api.oneclickdigital.base_uri
-#: 950.data.seed-values.sql:17736
+#: 950.data.seed-values.sql:17739
 msgid ""
 "Base URI for OneClickdigital API (defaults to "
 "https://api.oneclickdigital.com/v1). Using HTTPS here is strongly "
@@ -142,6 +142,20 @@ msgstr ""
 msgid "10_cent_per_day"
 msgstr ""
 
+# id::coust.description__ui.circ.items_out.longoverdue
+# id::coust.description__ui.circ.items_out.lost
+# id::coust.description__ui.circ.items_out.claimsreturned
+#: 950.data.seed-values.sql:16955 950.data.seed-values.sql:16975
+#: 950.data.seed-values.sql:16995
+msgid ""
+"Value is a numeric code, describing: A. In which tab (\"Items Checked Out\","
+" or \"Other/Special Circulations\") the circulation should appear while "
+"checked out, and B. Whether the circulation should continue to appear in the"
+" \"Other\" tab when checked in with oustanding fines.  1 = (A) \"Items\", "
+"(B) \"Other\".  2 = (A) \"Other\", (B) \"Other\".  5 = (A) \"Items\", (B) do"
+" not display.  6 = (A) \"Other\", (B) do not display."
+msgstr ""
+
 # id::cmc.label__keyword
 #: 950.data.seed-values.sql:99
 msgid "Keyword"
@@ -153,7 +167,7 @@ msgid "Renew Circulations"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.edi_accounts
-#: 950.data.seed-values.sql:20845
+#: 950.data.seed-values.sql:20848
 msgid "Grid Config: acq.provider.edi_accounts"
 msgstr ""
 
@@ -208,12 +222,12 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.volcopy.copies.complete
-#: 950.data.seed-values.sql:19078
+#: 950.data.seed-values.sql:19081
 msgid "Grid Config: cat.volcopy.copies.complete"
 msgstr ""
 
 # id::cwst.label__eg.search.pref_lib
-#: 950.data.seed-values.sql:19699
+#: 950.data.seed-values.sql:19702
 msgid "Staff Catalog Preferred Library"
 msgstr ""
 
@@ -238,7 +252,7 @@ msgid "Cat: Use Internal ID for TCN Value"
 msgstr ""
 
 # id::ath.description__circ.checkout.batch_notify
-#: 950.data.seed-values.sql:17192
+#: 950.data.seed-values.sql:17195
 msgid "Notification of a group of circs"
 msgstr ""
 
@@ -265,7 +279,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.acq.search.default.invoices
-#: 950.data.seed-values.sql:20745
+#: 950.data.seed-values.sql:20748
 msgid "Acquisitions Default Search: Invoices"
 msgstr ""
 
@@ -292,7 +306,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.actor.stat_cat_sip_fields
-#: 950.data.seed-values.sql:20025
+#: 950.data.seed-values.sql:20028
 msgid "Grid Config: admin.server.actor.stat_cat_sip_fields"
 msgstr ""
 
@@ -392,7 +406,7 @@ msgid "Game"
 msgstr ""
 
 # id::coust.label__circ.curbside.disable_patron_input
-#: 950.data.seed-values.sql:20946
+#: 950.data.seed-values.sql:20949
 msgid "Disable patron modification of curbside appointments in public catalog"
 msgstr ""
 
@@ -442,7 +456,7 @@ msgid "UPDATE_ORG_UNIT_SETTING.credit.payments.allow"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.search
-#: 950.data.seed-values.sql:19260
+#: 950.data.seed-values.sql:19263
 msgid "Grid Config: circ.patron.search"
 msgstr ""
 
@@ -549,7 +563,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.match_set.quality
-#: 950.data.seed-values.sql:19831
+#: 950.data.seed-values.sql:19834
 msgid "Grid Config: Vandelay Match Quality Metrics"
 msgstr ""
 
@@ -602,7 +616,7 @@ msgid "Heading -- Form Subdivision"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.hold_transit_slip
-#: 950.data.seed-values.sql:19393
+#: 950.data.seed-values.sql:19396
 msgid "Print Template Context: hold_transit_slip"
 msgstr ""
 
@@ -623,7 +637,7 @@ msgid ""
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.call_number_wrap_filter_height
-#: 950.data.seed-values.sql:17543
+#: 950.data.seed-values.sql:17546
 msgid ""
 "This setting is used to set the default height (in number of lines) to use "
 "for call number wrapping in the left print label."
@@ -705,7 +719,7 @@ msgid "Regex for email field on patron registration"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.bills
-#: 950.data.seed-values.sql:19218
+#: 950.data.seed-values.sql:19221
 msgid "Grid Config: circ.patron.bills"
 msgstr ""
 
@@ -720,12 +734,12 @@ msgid "Apache languages"
 msgstr ""
 
 # id::coust.label__ui.patron.edit.au.guardian.show
-#: 950.data.seed-values.sql:19920
+#: 950.data.seed-values.sql:19923
 msgid "GUI: Show guardian field on patron registration"
 msgstr ""
 
 # id::aea.label__INCLUDE_PO_NAME
-#: 950.data.seed-values.sql:17972
+#: 950.data.seed-values.sql:17975
 msgid "Orders Include PO Name"
 msgstr ""
 
@@ -784,7 +798,7 @@ msgid "Nextel"
 msgstr ""
 
 # id::cwst.label__booking.manage.selected_org_family
-#: 950.data.seed-values.sql:20602
+#: 950.data.seed-values.sql:20605
 msgid "Sticky setting for pickup ou family in Manage Reservations screen"
 msgstr ""
 
@@ -823,7 +837,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.acq.search.purchaseorders.run_immediately
-#: 950.data.seed-values.sql:20767
+#: 950.data.seed-values.sql:20770
 msgid "Acquisitions Search: Immediately Search Purchase Orders"
 msgstr ""
 
@@ -834,7 +848,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.coded_value_map
-#: 950.data.seed-values.sql:20165
+#: 950.data.seed-values.sql:20168
 msgid "Grid Config: admin.server.config.coded_value_map"
 msgstr ""
 
@@ -852,7 +866,7 @@ msgid "British Columbia "
 msgstr ""
 
 # id::cwst.label__eg.print.template.offline_checkout
-#: 950.data.seed-values.sql:19610
+#: 950.data.seed-values.sql:19613
 msgid "Print Template: offline_checkout"
 msgstr ""
 
@@ -872,7 +886,7 @@ msgid "Germanic (Other)"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.manual_float
-#: 950.data.seed-values.sql:18812
+#: 950.data.seed-values.sql:18815
 msgid "Checkin: Manual Floating Active"
 msgstr ""
 
@@ -910,7 +924,7 @@ msgid "notated movement"
 msgstr ""
 
 # id::cwst.label__eg.grid.user.bucket.pending
-#: 950.data.seed-values.sql:19197
+#: 950.data.seed-values.sql:19200
 msgid "Grid Config: user.bucket.pending"
 msgstr ""
 
@@ -920,7 +934,7 @@ msgid "Arapaho"
 msgstr ""
 
 # id::coust.label__circ.void_longoverdue_proc_fee_on_claimsreturned
-#: 950.data.seed-values.sql:17105
+#: 950.data.seed-values.sql:17108
 msgid "Void longoverdue item processing fee when claims returned"
 msgstr ""
 
@@ -1020,17 +1034,17 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.serials.view_item_grid
-#: 950.data.seed-values.sql:19246
+#: 950.data.seed-values.sql:19249
 msgid "Grid Config: serials.view_item_grid"
 msgstr ""
 
 # id::coust.label__circ.clear_hold_on_checkout
-#: 950.data.seed-values.sql:17133
+#: 950.data.seed-values.sql:17136
 msgid "Clear hold when other patron checks out item"
 msgstr ""
 
 # id::coust.label__ui.staff.max_recent_patrons
-#: 950.data.seed-values.sql:17859
+#: 950.data.seed-values.sql:17862
 msgid "Number of Retrievable Recent Patrons"
 msgstr ""
 
@@ -1173,7 +1187,7 @@ msgid "Newari"
 msgstr ""
 
 # id::coust.description__circ.curbside.disable_patron_input
-#: 950.data.seed-values.sql:20950
+#: 950.data.seed-values.sql:20953
 msgid ""
 "When set to TRUE, patrons cannot use the My Account interface to select "
 "curbside pickup times"
@@ -1195,7 +1209,7 @@ msgid "DELETE_BIB_IMPORT_QUEUE"
 msgstr ""
 
 # id::cwst.label__eg.print.template.offline_checkin
-#: 950.data.seed-values.sql:19638
+#: 950.data.seed-values.sql:19641
 msgid "Print Template: offline_checkin"
 msgstr ""
 
@@ -1210,12 +1224,12 @@ msgid "Print output has been requested for records in an Importer Bib Queue."
 msgstr ""
 
 # id::cwst.label__eg.acq.search.lineitems.run_immediately
-#: 950.data.seed-values.sql:20761
+#: 950.data.seed-values.sql:20764
 msgid "Acquisitions Search: Immediately Search Lineitems"
 msgstr ""
 
 # id::cwst.label__eg.print.template.hold_shelf_slip
-#: 950.data.seed-values.sql:19414
+#: 950.data.seed-values.sql:19417
 msgid "Print Template: hold_shelf_slip"
 msgstr ""
 
@@ -1227,7 +1241,7 @@ msgid ""
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.right_label.width
-#: 950.data.seed-values.sql:17505
+#: 950.data.seed-values.sql:17508
 msgid "Item Print Label - Width for Pocket Label"
 msgstr ""
 
@@ -1273,7 +1287,7 @@ msgid "Invalid value for \"copy_number\""
 msgstr ""
 
 # id::cwst.label__eg.print.template.transit_slip
-#: 950.data.seed-values.sql:19596
+#: 950.data.seed-values.sql:19599
 msgid "Print Template: transit_slip"
 msgstr ""
 
@@ -1306,7 +1320,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.asset.copy_tag
-#: 950.data.seed-values.sql:18973
+#: 950.data.seed-values.sql:18976
 msgid "Grid Config: admin.server.asset.copy_tag"
 msgstr ""
 
@@ -1362,7 +1376,7 @@ msgid "Personal Author"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.bills_current
-#: 950.data.seed-values.sql:19323
+#: 950.data.seed-values.sql:19326
 msgid "Print Template Context: bills_current"
 msgstr ""
 
@@ -1429,7 +1443,7 @@ msgid "Marshallese"
 msgstr ""
 
 # id::coust.label__org.restrict_opt_to_depth
-#: 950.data.seed-values.sql:17118
+#: 950.data.seed-values.sql:17121
 msgid ""
 "Restrict patron opt-in to home library and related orgs at specified depth"
 msgstr ""
@@ -1445,7 +1459,7 @@ msgid "This acquisition request has been fulfilled."
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.left_label.width
-#: 950.data.seed-values.sql:17479
+#: 950.data.seed-values.sql:17482
 msgid ""
 "Set the default width for the item print Spine Label. Please include a unit "
 "of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
@@ -1492,7 +1506,7 @@ msgid "On order"
 msgstr ""
 
 # id::aea.label__INCLUDE_EMPTY_CALL_NUMBER
-#: 950.data.seed-values.sql:18032
+#: 950.data.seed-values.sql:18035
 msgid "Order Copies Always Include Call Number (Even if Empty)"
 msgstr ""
 
@@ -1586,7 +1600,7 @@ msgid "Allow a user to create a new closed date for a location"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.circ_limit_group
-#: 950.data.seed-values.sql:20095
+#: 950.data.seed-values.sql:20098
 msgid "Grid Config: admin.server.config.circ_limit_group"
 msgstr ""
 
@@ -1619,17 +1633,17 @@ msgid "Tajikistan "
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.holdings
-#: 950.data.seed-values.sql:19106
+#: 950.data.seed-values.sql:19109
 msgid "Grid Config: cat.holdings"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.invoices.run_immediately
-#: 950.data.seed-values.sql:20773
+#: 950.data.seed-values.sql:20776
 msgid "Acquisitions Search: Immediately Search Invoices"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.asset.call_number_suffix
-#: 950.data.seed-values.sql:20081
+#: 950.data.seed-values.sql:20084
 msgid "Grid Config: admin.server.asset.call_number_suffix"
 msgstr ""
 
@@ -1686,7 +1700,7 @@ msgid "Spine label left margin"
 msgstr ""
 
 # id::coust.label__opac.analytics.matomo_url
-#: 950.data.seed-values.sql:20895
+#: 950.data.seed-values.sql:20898
 msgid "Matomo URL"
 msgstr ""
 
@@ -1753,7 +1767,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.items_out
-#: 950.data.seed-values.sql:19176
+#: 950.data.seed-values.sql:19179
 msgid "Grid Config: circ.patron.items_out"
 msgstr ""
 
@@ -1763,7 +1777,7 @@ msgid "Zimbabwe "
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.metabib_field
-#: 950.data.seed-values.sql:20200
+#: 950.data.seed-values.sql:20203
 msgid "Grid Config: admin.server.config.metabib_field"
 msgstr ""
 
@@ -1793,7 +1807,7 @@ msgid "Long-Overdue Materials"
 msgstr ""
 
 # id::coust.label__ui.circ.items_out.claimsreturned
-#: 950.data.seed-values.sql:16987
+#: 950.data.seed-values.sql:16989
 msgid "Items Out Claims Returned display setting"
 msgstr ""
 
@@ -1827,14 +1841,14 @@ msgid "Check whether a hold request is cancelled."
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.basic_token
-#: 950.data.seed-values.sql:17684
+#: 950.data.seed-values.sql:17687
 msgid ""
 "Basic token for client authentication with OverDrive API (supplied by "
 "OverDrive)"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.queue.items
-#: 950.data.seed-values.sql:19838
+#: 950.data.seed-values.sql:19841
 msgid "Grid Config: Vandelay Queue Import Items"
 msgstr ""
 
@@ -1856,7 +1870,7 @@ msgid ""
 msgstr ""
 
 # id::ath.description__circ.checkout.batch_notify.session
-#: 950.data.seed-values.sql:17205
+#: 950.data.seed-values.sql:17208
 msgid "Notification of a group of circs at the end of a checkout session"
 msgstr ""
 
@@ -1886,7 +1900,7 @@ msgid "Multiple dates"
 msgstr ""
 
 # id::cwst.label__eg.catalog.results.count
-#: 950.data.seed-values.sql:20670
+#: 950.data.seed-values.sql:20673
 msgid "Catalog Results Page Size"
 msgstr ""
 
@@ -1956,27 +1970,27 @@ msgid "Can do anything at the Branch level"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.addresses
-#: 950.data.seed-values.sql:20821
+#: 950.data.seed-values.sql:20824
 msgid "Grid Config: acq.provider.addresses"
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.right_label.height
-#: 950.data.seed-values.sql:17489
+#: 950.data.seed-values.sql:17492
 msgid "Item Print Label - Height for Pocket Label"
 msgstr ""
 
 # id::cwst.label__eg.orgselect.patron.search
-#: 950.data.seed-values.sql:20710
+#: 950.data.seed-values.sql:20713
 msgid "Default org unit for patron search"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.hold_shelf_slip
-#: 950.data.seed-values.sql:19407
+#: 950.data.seed-values.sql:19410
 msgid "Print Template Context: hold_shelf_slip"
 msgstr ""
 
 # id::coust.label__circ.curbside
-#: 950.data.seed-values.sql:20907
+#: 950.data.seed-values.sql:20910
 msgid "Enable curbside pickup functionality at library."
 msgstr ""
 
@@ -2046,7 +2060,7 @@ msgid "Krovak"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.config.non_cataloged_type
-#: 950.data.seed-values.sql:20417
+#: 950.data.seed-values.sql:20420
 msgid "Grid Config: admin.local.config.non_cataloged_type"
 msgstr ""
 
@@ -2109,7 +2123,7 @@ msgid "CREATE_XML_TRANSFORM"
 msgstr ""
 
 # id::aea.label__USE_ID_FOR_OWNING_LIB
-#: 950.data.seed-values.sql:17999
+#: 950.data.seed-values.sql:18002
 msgid ""
 "Emit Owning Library ID Rather Than Short Name. Takes effect only if "
 "INCLUDE_OWNING_LIB is in use"
@@ -2136,7 +2150,7 @@ msgid "Appends staff initials and edit date into patron note content."
 msgstr ""
 
 # id::cgf.label__history.money.age_with_circs
-#: 950.data.seed-values.sql:20682
+#: 950.data.seed-values.sql:20685
 msgid "Age billings and payments when cirulcations are aged."
 msgstr ""
 
@@ -2151,12 +2165,12 @@ msgid "Accession Number"
 msgstr ""
 
 # id::cwst.label__eg.serials.items.do_print_routing_lists
-#: 950.data.seed-values.sql:19666
+#: 950.data.seed-values.sql:19669
 msgid "Serials Print Routing Lists"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.font.family
-#: 950.data.seed-values.sql:17383
+#: 950.data.seed-values.sql:17386
 msgid ""
 "Set the preferred font family for item print labels. You can specify a list "
 "of CSS fonts, separated by commas, in order of preference; the system will "
@@ -2394,7 +2408,7 @@ msgid "Sichuan Yi"
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.font.family
-#: 950.data.seed-values.sql:17377
+#: 950.data.seed-values.sql:17380
 msgid "Item Print Label Font Family"
 msgstr ""
 
@@ -2461,7 +2475,7 @@ msgid "Speeches"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.queue.bib
-#: 950.data.seed-values.sql:19810
+#: 950.data.seed-values.sql:19813
 msgid "Grid Config: Vandelay Bib Queue"
 msgstr ""
 
@@ -2471,7 +2485,7 @@ msgid "See Also From Tracing -- Meeting Name"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.queue.bib.items
-#: 950.data.seed-values.sql:19852
+#: 950.data.seed-values.sql:19855
 msgid "Grid Config: Vandelay Bib Items"
 msgstr ""
 
@@ -2488,26 +2502,13 @@ msgid "Albanian"
 msgstr ""
 
 # id::aea.label__INCLUDE_EMPTY_ITEM_TYPE
-#: 950.data.seed-values.sql:18035
+#: 950.data.seed-values.sql:18038
 msgid "Order Copies Always Include Item Type (Even if Empty)"
 msgstr ""
 
 # id::vie.description__import.item.invalid.stat_cat_format
 #: 950.data.seed-values.sql:12970
 msgid "Bad format for stat cat data, should be like: CAT 1|VALUE 1"
-msgstr ""
-
-# id::coust.description__ui.circ.items_out.longoverdue
-# id::coust.description__ui.circ.items_out.lost
-# id::coust.description__ui.circ.items_out.claimsreturned
-#: 950.data.seed-values.sql:16955 950.data.seed-values.sql:16974
-#: 950.data.seed-values.sql:16993
-msgid ""
-"Value is a numeric code, describing which list the circulation should appear"
-" while checked out and whether the circulation should continue to appear in "
-"the bottom list, when checked in with oustanding fines.  1 = top list, "
-"bottom list.  2 = bottom list, bottom list.  5 = top list, do not display.  "
-"6 = bottom list, do not display."
 msgstr ""
 
 # id::ppl.description__537
@@ -2531,7 +2532,7 @@ msgid "Allow a user to delete a funding source"
 msgstr ""
 
 # id::cwst.label__eg.hatch.enable.printing
-#: 950.data.seed-values.sql:20647
+#: 950.data.seed-values.sql:20650
 msgid "Use Hatch for printing"
 msgstr ""
 
@@ -2548,12 +2549,12 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__booking.return.resourcce.picked_up
-#: 950.data.seed-values.sql:20578
+#: 950.data.seed-values.sql:20581
 msgid "Grid Config: Booking Return Resource tab Already Picked Up grid"
 msgstr ""
 
 # id::coust.label__ebook_api.oneclickdigital.basic_token
-#: 950.data.seed-values.sql:17762
+#: 950.data.seed-values.sql:17765
 msgid "OneClickdigital Basic Token"
 msgstr ""
 
@@ -2614,7 +2615,7 @@ msgid "Allows a user to use debug functions in the staff client"
 msgstr ""
 
 # id::cwst.label__cat.holdings_show_copies
-#: 950.data.seed-values.sql:18868
+#: 950.data.seed-values.sql:18871
 msgid "Holdings View Show Copies"
 msgstr ""
 
@@ -2705,7 +2706,7 @@ msgid "Indonesian"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.weight_assoc
-#: 950.data.seed-values.sql:20235
+#: 950.data.seed-values.sql:20238
 msgid "Grid Config: admin.server.config.weight_assoc"
 msgstr ""
 
@@ -2745,7 +2746,7 @@ msgid "audiocassette"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.pending_patrons.list
-#: 950.data.seed-values.sql:19162
+#: 950.data.seed-values.sql:19165
 msgid "Grid Config: circ.pending_patrons.list"
 msgstr ""
 
@@ -2860,7 +2861,7 @@ msgid "Indonesia "
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.metabib_field_ts_map
-#: 950.data.seed-values.sql:20193
+#: 950.data.seed-values.sql:20196
 msgid "Grid Config: admin.server.config.metabib_field_ts_map"
 msgstr ""
 
@@ -3000,7 +3001,7 @@ msgid "Content of footer_text include"
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.circulation_base_uri
-#: 950.data.seed-values.sql:17620
+#: 950.data.seed-values.sql:17623
 msgid ""
 "Base URI for OverDrive Circulation API (defaults to "
 "https://patron.api.overdrive.com/v1). Using HTTPS here is strongly "
@@ -3122,7 +3123,7 @@ msgid "The dob field will be required on the patron registration screen."
 msgstr ""
 
 # id::cwst.label__eg.grid.user.bucket.view
-#: 950.data.seed-values.sql:19190
+#: 950.data.seed-values.sql:19193
 msgid "Grid Config: user.bucket.view"
 msgstr ""
 
@@ -3152,12 +3153,12 @@ msgid "UPDATE_COPY_BTYPE"
 msgstr ""
 
 # id::cwst.label__circ.bills.receiptonpay
-#: 950.data.seed-values.sql:18833
+#: 950.data.seed-values.sql:18836
 msgid "Print Receipt On Payment"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.bucket.record.search
-#: 950.data.seed-values.sql:19029
+#: 950.data.seed-values.sql:19032
 msgid "Grid Config: cat.bucket.record.search"
 msgstr ""
 
@@ -3207,7 +3208,7 @@ msgid "Apache Auth Proxy Login"
 msgstr ""
 
 # id::cwst.label__cat.default_bib_marc_template
-#: 950.data.seed-values.sql:19302
+#: 950.data.seed-values.sql:19305
 msgid "Default MARC Template"
 msgstr ""
 
@@ -3237,7 +3238,7 @@ msgid "Allow a user to bar a patron"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.attributes
-#: 950.data.seed-values.sql:20827
+#: 950.data.seed-values.sql:20830
 msgid "Grid Config: acq.provider.attributes"
 msgstr ""
 
@@ -3252,7 +3253,7 @@ msgid "Masses"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.bill_payment
-#: 950.data.seed-values.sql:19351
+#: 950.data.seed-values.sql:19354
 msgid "Print Template Context: bill_payment"
 msgstr ""
 
@@ -3335,7 +3336,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.patron_note
-#: 950.data.seed-values.sql:19547
+#: 950.data.seed-values.sql:19550
 msgid "Print Template Context: patron_note"
 msgstr ""
 
@@ -3375,19 +3376,19 @@ msgid "Allow a user to modify an authority record"
 msgstr ""
 
 # id::cwst.label__cat.copy.defaults
-#: 950.data.seed-values.sql:18896
+#: 950.data.seed-values.sql:18899
 msgid "Copy Edit Default Values"
 msgstr ""
 
 # id::coust.description__opac.search.enable_bookplate_search
-#: 950.data.seed-values.sql:17828
+#: 950.data.seed-values.sql:17831
 msgid ""
 "If enabled, adds a \"Digital Bookplate\" option to the query type selectors "
 "in the public catalog for search on copy tags."
 msgstr ""
 
 # id::coust.label__circ.copy_alerts.forgive_fines_on_long_overdue_checkin
-#: 950.data.seed-values.sql:17960
+#: 950.data.seed-values.sql:17963
 msgid ""
 "Forgive fines when checking out a long-overdue item and copy alert is "
 "suppressed?"
@@ -3427,7 +3428,7 @@ msgid "Standards/specifications"
 msgstr ""
 
 # id::coust.label__lib.timezone
-#: 950.data.seed-values.sql:17844
+#: 950.data.seed-values.sql:17847
 msgid "Library time zone"
 msgstr ""
 
@@ -3596,7 +3597,7 @@ msgid ""
 msgstr ""
 
 # id::coust.description__webstaff.format.dates
-#: 950.data.seed-values.sql:17793
+#: 950.data.seed-values.sql:17796
 msgid ""
 "Format Dates with this pattern (examples: \"yyyy-MM-dd\" for \"2010-04-26\","
 " \"MMM d, yyyy\" for \"Apr 26, 2010\").  This will be used in areas where a "
@@ -3691,7 +3692,7 @@ msgid "Historical Hold Retention Age"
 msgstr ""
 
 # id::cwst.label__eg.print.template.bill_payment
-#: 950.data.seed-values.sql:19358
+#: 950.data.seed-values.sql:19361
 msgid "Print Template: bill_payment"
 msgstr ""
 
@@ -3750,7 +3751,7 @@ msgid "Maltese"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.vandelay.match_set
-#: 950.data.seed-values.sql:20158
+#: 950.data.seed-values.sql:20161
 msgid "Grid Config: admin.server.vandelay.match_set"
 msgstr ""
 
@@ -3811,7 +3812,7 @@ msgid "Bislama"
 msgstr ""
 
 # id::cwst.label__eg.print.template.offline_in_house_use
-#: 950.data.seed-values.sql:19652
+#: 950.data.seed-values.sql:19655
 msgid "Print Template: offline_in_house_use"
 msgstr ""
 
@@ -3907,7 +3908,7 @@ msgid "Tupi languages"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.peer_bibs
-#: 950.data.seed-values.sql:19085
+#: 950.data.seed-values.sql:19088
 msgid "Grid Config: cat.peer_bibs"
 msgstr ""
 
@@ -4191,7 +4192,7 @@ msgid "Allow a user to override the circ.holds.hold_has_copy_at.block setting"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.copy_status
-#: 950.data.seed-values.sql:20123
+#: 950.data.seed-values.sql:20126
 msgid "Grid Config: admin.server.config.copy_status"
 msgstr ""
 
@@ -4250,7 +4251,7 @@ msgid "Songhai"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.vandelay.bib_attr_definition
-#: 950.data.seed-values.sql:19873
+#: 950.data.seed-values.sql:19876
 msgid "Grid Config: Vandelay Bib Record Attributes"
 msgstr ""
 
@@ -4302,7 +4303,7 @@ msgid "3month"
 msgstr ""
 
 # id::cwst.label__circ.renew.strict_barcode
-#: 950.data.seed-values.sql:18847
+#: 950.data.seed-values.sql:18850
 msgid "Renew: Strict Barcode"
 msgstr ""
 
@@ -4333,7 +4334,7 @@ msgid "Czech"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.inline_css
-#: 950.data.seed-values.sql:17527
+#: 950.data.seed-values.sql:17530
 msgid ""
 "This setting allows you to inject arbitrary CSS into the item print label "
 "template.  For example, \".printlabel { text-transform: uppercase; }\""
@@ -4350,7 +4351,7 @@ msgid "Update org unit settings related to credit card processing"
 msgstr ""
 
 # id::cwst.label__eg.staffcat.exclude_electronic
-#: 950.data.seed-values.sql:21232
+#: 950.data.seed-values.sql:21235
 msgid "Staff Catalog \"Exclude Electronic Resources\" Option"
 msgstr ""
 
@@ -4540,7 +4541,7 @@ msgid "Ojibwa"
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.font.weight
-#: 950.data.seed-values.sql:17409
+#: 950.data.seed-values.sql:17412
 msgid "Item Print Label Font Weight"
 msgstr ""
 
@@ -4592,7 +4593,7 @@ msgid "DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.queue.list.bib
-#: 950.data.seed-values.sql:19845
+#: 950.data.seed-values.sql:19848
 msgid "Grid Config: Vandelay Bib Queue List"
 msgstr ""
 
@@ -4627,7 +4628,7 @@ msgid "Finno-Ugrian (Other)"
 msgstr ""
 
 # id::coust.label__circ.patron_search.diacritic_insensitive
-#: 950.data.seed-values.sql:17146
+#: 950.data.seed-values.sql:17149
 msgid "Patron search diacritic insensitive"
 msgstr ""
 
@@ -4699,12 +4700,12 @@ msgid "Delivered but not received; presumed lost"
 msgstr ""
 
 # id::cwst.label__eg.grid.serials.copy_templates
-#: 950.data.seed-values.sql:19015
+#: 950.data.seed-values.sql:19018
 msgid "Grid Config: serials.copy_templates"
 msgstr ""
 
 # id::cwst.label__booking.manage
-#: 950.data.seed-values.sql:20548
+#: 950.data.seed-values.sql:20551
 msgid "Grid Config: Booking Manage Reservations"
 msgstr ""
 
@@ -4722,7 +4723,7 @@ msgid "Genealogical tables"
 msgstr ""
 
 # id::aea.label__INCLUDE_ITEM_TYPE
-#: 950.data.seed-values.sql:17984
+#: 950.data.seed-values.sql:17987
 msgid "Orders Include Copy Item Types"
 msgstr ""
 
@@ -4772,7 +4773,7 @@ msgid "Peru "
 msgstr ""
 
 # id::cwst.label__booking.return.resource.returned
-#: 950.data.seed-values.sql:20584
+#: 950.data.seed-values.sql:20587
 msgid "Grid Config: Booking Return Resource tab Returned Today grid"
 msgstr ""
 
@@ -4809,7 +4810,7 @@ msgid "Fanti"
 msgstr ""
 
 # id::cuat.label__26
-#: 950.data.seed-values.sql:20328
+#: 950.data.seed-values.sql:20331
 msgid "Login via Websocket V2"
 msgstr ""
 
@@ -4987,7 +4988,7 @@ msgid "Toccatas"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.renew
-#: 950.data.seed-values.sql:19561
+#: 950.data.seed-values.sql:19564
 msgid "Print Template Context: renew"
 msgstr ""
 
@@ -5047,7 +5048,7 @@ msgid "Damaged"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.record_overlay.holdings
-#: 950.data.seed-values.sql:19022
+#: 950.data.seed-values.sql:19025
 msgid "Grid Config: cat.record_overlay.holdings"
 msgstr ""
 
@@ -5062,7 +5063,7 @@ msgid "Namibia "
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.metabib_field_virtual_map.grid
-#: 950.data.seed-values.sql:18952
+#: 950.data.seed-values.sql:18955
 msgid "Grid Config: admin.server.config.metabib_field_virtual_map.grid"
 msgstr ""
 
@@ -5077,7 +5078,7 @@ msgid "Allow a user to view/credit/debit a funding source"
 msgstr ""
 
 # id::coust.label__circ.disable_patron_credit
-#: 950.data.seed-values.sql:17013
+#: 950.data.seed-values.sql:17016
 msgid "Disable Patron Credit"
 msgstr ""
 
@@ -5138,7 +5139,7 @@ msgid "user_request.update"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.rule_max_fine
-#: 950.data.seed-values.sql:20109
+#: 950.data.seed-values.sql:20112
 msgid "Grid Config: admin.server.config.rule_max_fine"
 msgstr ""
 
@@ -5148,7 +5149,7 @@ msgid "microscope slide"
 msgstr ""
 
 # id::coust.label__ui.circ.items_out.lost
-#: 950.data.seed-values.sql:16968
+#: 950.data.seed-values.sql:16969
 msgid "Items Out Lost display setting"
 msgstr ""
 
@@ -5257,7 +5258,7 @@ msgid "8 mm."
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.search.selectionlists
-#: 950.data.seed-values.sql:20801
+#: 950.data.seed-values.sql:20804
 msgid "Grid Config: acq.search.selectionlists"
 msgstr ""
 
@@ -5311,7 +5312,7 @@ msgid "computer program"
 msgstr ""
 
 # id::cwst.label__eg.circ.patron.search.include_inactive
-#: 950.data.seed-values.sql:18917
+#: 950.data.seed-values.sql:18920
 msgid "Patron Search Include Inactive"
 msgstr ""
 
@@ -5438,7 +5439,7 @@ msgid "Dance forms"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.global_flag
-#: 950.data.seed-values.sql:20137
+#: 950.data.seed-values.sql:20140
 msgid "Grid Config: admin.server.config.global_flag"
 msgstr ""
 
@@ -5468,12 +5469,12 @@ msgid "German"
 msgstr ""
 
 # id::cgf.label__circ.holds.retarget_interval
-#: 950.data.seed-values.sql:17570
+#: 950.data.seed-values.sql:17573
 msgid "Holds Retarget Interval"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.call_number_wrap_filter_width
-#: 950.data.seed-values.sql:17559
+#: 950.data.seed-values.sql:17562
 msgid ""
 "This setting is used to set the default width (in number of characters) to "
 "use for call number wrapping in the left print label."
@@ -5500,7 +5501,7 @@ msgid "DELETE_MERGE_PROFILE"
 msgstr ""
 
 # id::coust.description__opac.analytics.matomo_url
-#: 950.data.seed-values.sql:20898
+#: 950.data.seed-values.sql:20901
 msgid ""
 "The URL for your the Matomo software. Be sure to include the trailing slash,"
 " e.g. https://my-evergreen.matomo.cloud/"
@@ -5529,7 +5530,7 @@ msgid "Vietnamese"
 msgstr ""
 
 # id::aea.label__INCLUDE_BIB_PAGINATION
-#: 950.data.seed-values.sql:18020
+#: 950.data.seed-values.sql:18023
 msgid "Order Lineitems Include Pagination Info"
 msgstr ""
 
@@ -5619,7 +5620,7 @@ msgid "Holds: Allow holds on empty issuances"
 msgstr ""
 
 # id::coust.description__circ.curbside
-#: 950.data.seed-values.sql:20911
+#: 950.data.seed-values.sql:20914
 msgid ""
 "When set to TRUE, enable staff and public interfaces to schedule curbside "
 "pickup of holds that become available for pickup."
@@ -5646,7 +5647,7 @@ msgid "A hold request history needs to be formatted for printing."
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.group_members
-#: 950.data.seed-values.sql:19232
+#: 950.data.seed-values.sql:19235
 msgid "Grid Config: circ.patron.group_members"
 msgstr ""
 
@@ -5771,7 +5772,7 @@ msgid "Esperanto"
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.password_required
-#: 950.data.seed-values.sql:17710
+#: 950.data.seed-values.sql:17713
 msgid "OverDrive Password Required"
 msgstr ""
 
@@ -5793,7 +5794,7 @@ msgid "circ"
 msgstr ""
 
 # id::cwst.label__eg.print.template.hold_transit_slip
-#: 950.data.seed-values.sql:19400
+#: 950.data.seed-values.sql:19403
 msgid "Print Template: hold_transit_slip"
 msgstr ""
 
@@ -5811,7 +5812,7 @@ msgid "Author"
 msgstr ""
 
 # id::cwst.label__cat.marcedit.stack_subfields
-#: 950.data.seed-values.sql:19281
+#: 950.data.seed-values.sql:19284
 msgid "MARC Editor Stack Subfields"
 msgstr ""
 
@@ -5826,7 +5827,7 @@ msgid "Mauritania "
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.font.size
-#: 950.data.seed-values.sql:17399
+#: 950.data.seed-values.sql:17402
 msgid ""
 "Set the default font size for item print labels. Please include a unit of "
 "measurement that is valid CSS. For example, \"12pt\" or \"16px\" or \"1em\""
@@ -5938,12 +5939,12 @@ msgid "Raeto-Romance"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.holds.pull
-#: 950.data.seed-values.sql:19127
+#: 950.data.seed-values.sql:19130
 msgid "Grid Config: circ.holds.pull"
 msgstr ""
 
 # id::coust.label__opac.email_record.allow_without_login
-#: 950.data.seed-values.sql:19890
+#: 950.data.seed-values.sql:19893
 msgid "Allow record emailing without login"
 msgstr ""
 
@@ -5958,17 +5959,17 @@ msgid "Allows a user to manually adjust a patron's active cards"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.contacts
-#: 950.data.seed-values.sql:20839
+#: 950.data.seed-values.sql:20842
 msgid "Grid Config: acq.provider.contacts"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.wide_holds.shelf
-#: 950.data.seed-values.sql:19120
+#: 950.data.seed-values.sql:19123
 msgid "Grid Config: circ.wide_holds.shelf"
 msgstr ""
 
 # id::cwst.label__eg.grid.serials.dist_stream_grid
-#: 950.data.seed-values.sql:19253
+#: 950.data.seed-values.sql:19256
 msgid "Grid Config: serials.dist_stream_grid"
 msgstr ""
 
@@ -6009,7 +6010,7 @@ msgid "UPDATE_COPY_NOTE"
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.left_label.width
-#: 950.data.seed-values.sql:17473
+#: 950.data.seed-values.sql:17476
 msgid "Item Print Label - Width for Spine Label"
 msgstr ""
 
@@ -6055,7 +6056,7 @@ msgid "Patron exceeds fine threshold"
 msgstr ""
 
 # id::coust.description__circ.clear_hold_on_checkout
-#: 950.data.seed-values.sql:17136
+#: 950.data.seed-values.sql:17139
 msgid ""
 "Default to cancel the hold when patron A checks out item on hold for patron "
 "B."
@@ -6075,7 +6076,7 @@ msgid "Upload Default Provider"
 msgstr ""
 
 # id::aea.label__INCLUDE_BIB_EDITION
-#: 950.data.seed-values.sql:18014
+#: 950.data.seed-values.sql:18017
 msgid "Order Lineitems Include Edition Info"
 msgstr ""
 
@@ -6119,7 +6120,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.acq.search.default.selectionlists
-#: 950.data.seed-values.sql:20751
+#: 950.data.seed-values.sql:20754
 msgid "Acquisitions Default Search: Selection Lists"
 msgstr ""
 
@@ -6152,7 +6153,7 @@ msgid "Local Library System"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.z3950_source
-#: 950.data.seed-values.sql:20249
+#: 950.data.seed-values.sql:20252
 msgid "Grid Config: admin.server.config.z3950_source"
 msgstr ""
 
@@ -6178,7 +6179,7 @@ msgid "Elamite"
 msgstr ""
 
 # id::coust.description__ebook_api.oneclickdigital.library_id
-#: 950.data.seed-values.sql:17752
+#: 950.data.seed-values.sql:17755
 msgid "Identifier assigned to this library by OneClickdigital"
 msgstr ""
 
@@ -6239,7 +6240,7 @@ msgid "Malawi "
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.contact.addresses
-#: 950.data.seed-values.sql:20833
+#: 950.data.seed-values.sql:20836
 msgid "Grid Config: acq.provider.contact.addresses"
 msgstr ""
 
@@ -6259,12 +6260,12 @@ msgid "UPDATE_TRANSIT"
 msgstr ""
 
 # id::cwst.label__booking.return.patron.picked_up
-#: 950.data.seed-values.sql:20566
+#: 950.data.seed-values.sql:20569
 msgid "Grid Config: Booking Return Patron tab Already Picked Up grid"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.billing_type
-#: 950.data.seed-values.sql:20067
+#: 950.data.seed-values.sql:20070
 msgid "Grid Config: admin.server.config.billing_type"
 msgstr ""
 
@@ -6409,7 +6410,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.checkin.checkin
-#: 950.data.seed-values.sql:18931
+#: 950.data.seed-values.sql:18934
 msgid "Grid Config: circ.checkin.checkin"
 msgstr ""
 
@@ -6419,7 +6420,7 @@ msgid "tactile text"
 msgstr ""
 
 # id::at.name__ 
-#: 950.data.seed-values.sql:18136
+#: 950.data.seed-values.sql:18139
 msgid "Alternate no attempt to code"
 msgstr ""
 
@@ -6487,7 +6488,7 @@ msgid "UPDATE_RELEVANCE_ADJUSTMENT"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.retarget_holds
-#: 950.data.seed-values.sql:18791
+#: 950.data.seed-values.sql:18794
 msgid "Checkin: Retarget Local Holds"
 msgstr ""
 
@@ -6528,7 +6529,7 @@ msgid "Phoenician"
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.font.size
-#: 950.data.seed-values.sql:17393
+#: 950.data.seed-values.sql:17396
 msgid "Item Print Label Font Size"
 msgstr ""
 
@@ -6573,7 +6574,7 @@ msgid "CED videodisc"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.font.weight
-#: 950.data.seed-values.sql:17415
+#: 950.data.seed-values.sql:17418
 msgid ""
 "Set the default font weight for item print labels. Please use the CSS "
 "specification for values for font-weight.  For example, \"normal\", "
@@ -6612,7 +6613,7 @@ msgid "Show calendar widget for dob field on patron registration"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.config.barcode_completion
-#: 950.data.seed-values.sql:20382
+#: 950.data.seed-values.sql:20385
 msgid "Grid Config: admin.local.config.barcode_completion"
 msgstr ""
 
@@ -6727,7 +6728,7 @@ msgid "Charge fines on overdue circulations when closed"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.copy_tag_type
-#: 950.data.seed-values.sql:18945
+#: 950.data.seed-values.sql:18948
 msgid "Grid Config: admin.server.config.copy_tag_type"
 msgstr ""
 
@@ -6844,7 +6845,7 @@ msgid "Articles"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.actor.address_alert
-#: 950.data.seed-values.sql:20375
+#: 950.data.seed-values.sql:20378
 msgid "Grid Config: admin.local.actor.address_alert"
 msgstr ""
 
@@ -6859,7 +6860,7 @@ msgid "Cincinnati, Ohio, USA"
 msgstr ""
 
 # id::cgf.label__opac.format_selector.attr
-#: 950.data.seed-values.sql:17046
+#: 950.data.seed-values.sql:17049
 msgid "OPAC Format Selector Attribute"
 msgstr ""
 
@@ -6949,12 +6950,12 @@ msgid "Avestan"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.hold_pull_list
-#: 950.data.seed-values.sql:19449
+#: 950.data.seed-values.sql:19452
 msgid "Print Template Context: hold_pull_list"
 msgstr ""
 
 # id::cwst.label__cat.printlabels.templates
-#: 950.data.seed-values.sql:18910
+#: 950.data.seed-values.sql:18913
 msgid "Print Label Templates"
 msgstr ""
 
@@ -7085,7 +7086,7 @@ msgid ""
 msgstr ""
 
 # id::coust.description__circ.void_longoverdue_on_claimsreturned
-#: 950.data.seed-values.sql:17099
+#: 950.data.seed-values.sql:17102
 msgid "Void long overdue item billing when claims returned"
 msgstr ""
 
@@ -7130,7 +7131,7 @@ msgid "Allow a user to record payments in the Billing Interface"
 msgstr ""
 
 # id::coust.label__ui.patron.edit.au.guardian.suggest
-#: 950.data.seed-values.sql:19933
+#: 950.data.seed-values.sql:19936
 msgid "GUI: Suggest guardian field on patron registration"
 msgstr ""
 
@@ -7207,7 +7208,7 @@ msgid ""
 msgstr ""
 
 # id::acmr.name__1
-#: 950.data.seed-values.sql:20660
+#: 950.data.seed-values.sql:20663
 msgid "Instructor"
 msgstr ""
 
@@ -7237,7 +7238,7 @@ msgid "General/Adult Materials"
 msgstr ""
 
 # id::aea.label__INCLUDE_COLLECTION_CODE
-#: 950.data.seed-values.sql:17993
+#: 950.data.seed-values.sql:17996
 msgid "Orders Include Copy Collection Codes"
 msgstr ""
 
@@ -7341,7 +7342,7 @@ msgid "Cree"
 msgstr ""
 
 # id::cpt.label__3
-#: 950.data.seed-values.sql:20508
+#: 950.data.seed-values.sql:20511
 msgid "Booking capture slip"
 msgstr ""
 
@@ -7466,7 +7467,7 @@ msgid "Identifier"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.checkout
-#: 950.data.seed-values.sql:19225
+#: 950.data.seed-values.sql:19228
 msgid "Grid Config: circ.patron.checkout"
 msgstr ""
 
@@ -7553,7 +7554,7 @@ msgid "cartographic tactile three-dimensional form"
 msgstr ""
 
 # id::cwst.label__eg.print.template.item_status
-#: 950.data.seed-values.sql:19498
+#: 950.data.seed-values.sql:19501
 msgid "Print Template: item_status"
 msgstr ""
 
@@ -7563,12 +7564,12 @@ msgid "ADMIN_USER_SETTING_TYPE"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.vandelay.import_bib_trash_group
-#: 950.data.seed-values.sql:20172
+#: 950.data.seed-values.sql:20175
 msgid "Grid Config: admin.server.vandelay.import_bib_trash_group"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.bucket.copy.pending
-#: 950.data.seed-values.sql:19057
+#: 950.data.seed-values.sql:19060
 msgid "Grid Config: cat.bucket.copy.pending"
 msgstr ""
 
@@ -7583,7 +7584,7 @@ msgid "Chuvash"
 msgstr ""
 
 # id::coust.description__ui.patron.edit.au.guardian.show
-#: 950.data.seed-values.sql:19925
+#: 950.data.seed-values.sql:19928
 msgid ""
 "The guardian field will be shown on the patron registration screen. Showing "
 "a field makes it appear with required fields even when not required. If the "
@@ -7601,7 +7602,7 @@ msgid "Conic, other"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.in_house_use
-#: 950.data.seed-values.sql:19134
+#: 950.data.seed-values.sql:19137
 msgid "Grid Config: circ.in_house_use"
 msgstr ""
 
@@ -7616,7 +7617,7 @@ msgid "Transverse Mercator"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.queue.list.auth
-#: 950.data.seed-values.sql:19859
+#: 950.data.seed-values.sql:19862
 msgid "Grid Config: Vandelay Authority Queue List"
 msgstr ""
 
@@ -7636,7 +7637,7 @@ msgid "Ragtime music"
 msgstr ""
 
 # id::aea.label__LINEITEM_IDENT_VENDOR_NUMBER
-#: 950.data.seed-values.sql:18044
+#: 950.data.seed-values.sql:18047
 msgid ""
 "Lineitem Identifier Fields (LIN/PIA) Use Vendor-Encoded ID Value When "
 "Available"
@@ -7654,7 +7655,7 @@ msgid "Default Record Match Set"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.staff_messages
-#: 950.data.seed-values.sql:19204
+#: 950.data.seed-values.sql:19207
 msgid "Grid Config: circ.patron.staff_messages"
 msgstr ""
 
@@ -7685,7 +7686,7 @@ msgid "CREATE_CIRC_DURATION"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.record_attr_definition
-#: 950.data.seed-values.sql:20179
+#: 950.data.seed-values.sql:20182
 msgid "Grid Config: admin.server.config.record_attr_definition"
 msgstr ""
 
@@ -7695,7 +7696,7 @@ msgid "Iridium"
 msgstr ""
 
 # id::coust.label__opac.search.enable_bookplate_search
-#: 950.data.seed-values.sql:17822
+#: 950.data.seed-values.sql:17825
 msgid "Enable Digital Bookplate Search"
 msgstr ""
 
@@ -7765,17 +7766,17 @@ msgid "CREATE_BIB_LEVEL"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.workstation.patron_log
-#: 950.data.seed-values.sql:19001
+#: 950.data.seed-values.sql:19004
 msgid "Grid Config: admin.workstation.patron_log"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.search.lineitems
-#: 950.data.seed-values.sql:20789
+#: 950.data.seed-values.sql:20792
 msgid "Grid Config: acq.search.lineitems"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.patron_address
-#: 950.data.seed-values.sql:19519
+#: 950.data.seed-values.sql:19522
 msgid "Print Template Context: patron_address"
 msgstr ""
 
@@ -7842,7 +7843,7 @@ msgid "Checkout Fills Related Hold"
 msgstr ""
 
 # id::cwst.label__eg.search.adv_pane
-#: 950.data.seed-values.sql:19316
+#: 950.data.seed-values.sql:19319
 msgid "Catalog Advanced Search Default Pane"
 msgstr ""
 
@@ -7853,7 +7854,7 @@ msgstr ""
 
 # id::cust.label__circ.send_email_checkout_receipts
 # id::cust.description__circ.send_email_checkout_receipts
-#: 950.data.seed-values.sql:17183 950.data.seed-values.sql:17184
+#: 950.data.seed-values.sql:17186 950.data.seed-values.sql:17187
 msgid "Email checkout receipts by default?"
 msgstr ""
 
@@ -7884,7 +7885,7 @@ msgstr ""
 
 # id::coust.label__circ.in_house_use.checkin_alert
 # id::coust.description__circ.in_house_use.checkin_alert
-#: 950.data.seed-values.sql:17359 950.data.seed-values.sql:17362
+#: 950.data.seed-values.sql:17362 950.data.seed-values.sql:17365
 msgid "Display copy location checkin alert for in-house-use"
 msgstr ""
 
@@ -7927,7 +7928,7 @@ msgid "Siksika"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.right_label.height
-#: 950.data.seed-values.sql:17495
+#: 950.data.seed-values.sql:17498
 msgid ""
 "Set the default height for the item print Pocket Label. Please include a "
 "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
@@ -7955,7 +7956,7 @@ msgid "Map"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.remote_account
-#: 950.data.seed-values.sql:20214
+#: 950.data.seed-values.sql:20217
 msgid "Grid Config: admin.server.config.remote_account"
 msgstr ""
 
@@ -8002,12 +8003,12 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.no_precat_alert
-#: 950.data.seed-values.sql:18756
+#: 950.data.seed-values.sql:18759
 msgid "Checkin: Ignore Precataloged Items"
 msgstr ""
 
 # id::aea.label__BUYER_ID_INCLUDE_VENDCODE
-#: 950.data.seed-values.sql:18008
+#: 950.data.seed-values.sql:18011
 msgid "Buyer ID Qualifier Includes Vendcode"
 msgstr ""
 
@@ -8072,7 +8073,7 @@ msgid "Trio-sonatas"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.permission.grp_penalty_threshold
-#: 950.data.seed-values.sql:20410
+#: 950.data.seed-values.sql:20413
 msgid "Grid Config: admin.local.permission.grp_penalty_threshold"
 msgstr ""
 
@@ -8296,7 +8297,7 @@ msgid "Manx"
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.call_number_wrap_filter_height
-#: 950.data.seed-values.sql:17537
+#: 950.data.seed-values.sql:17540
 msgid "Item Print Label - Call Number Wrap Filter Height"
 msgstr ""
 
@@ -8311,14 +8312,14 @@ msgid "Dyula"
 msgstr ""
 
 # id::ath.description__hold.confirm_curbside
-#: 950.data.seed-values.sql:20981
+#: 950.data.seed-values.sql:20984
 msgid ""
 "Hook used to trigger the notification of the creation or update of a "
 "curbside pickup appointment with an arrival URL"
 msgstr ""
 
 # id::aea.label__INCLUDE_FUND
-#: 950.data.seed-values.sql:17978
+#: 950.data.seed-values.sql:17981
 msgid "Orders Include Copy Funds"
 msgstr ""
 
@@ -8328,7 +8329,7 @@ msgid "Allow a user to mark an item status as 'reserves'"
 msgstr ""
 
 # id::aea.label__INCLUDE_LOCATION
-#: 950.data.seed-values.sql:17990
+#: 950.data.seed-values.sql:17993
 msgid "Orders Include Copy Locations"
 msgstr ""
 
@@ -8432,7 +8433,7 @@ msgid "Sign languages"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.rule_age_hold_protect
-#: 950.data.seed-values.sql:20011
+#: 950.data.seed-values.sql:20014
 msgid "Grid Config: admin.server.config.rule_age_hold_protect"
 msgstr ""
 
@@ -8565,7 +8566,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.retarget_holds_all
-#: 950.data.seed-values.sql:18798
+#: 950.data.seed-values.sql:18801
 msgid "Checkin: Retarget All Statuses"
 msgstr ""
 
@@ -8634,7 +8635,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.xact_details_details_bills
-#: 950.data.seed-values.sql:20632
+#: 950.data.seed-values.sql:20635
 msgid "Grid Config: circ.patron.xact_details_details_bills"
 msgstr ""
 
@@ -8683,7 +8684,7 @@ msgid "Allow a user to add/remove users to/from the \"Staff\" group"
 msgstr ""
 
 # id::cwst.label__eg.serials.stream_names
-#: 950.data.seed-values.sql:19659
+#: 950.data.seed-values.sql:19662
 msgid "Serials Local Stream Names"
 msgstr ""
 
@@ -8698,7 +8699,7 @@ msgid "Netherlands "
 msgstr ""
 
 # id::coust.description__circ.patron_search.diacritic_insensitive
-#: 950.data.seed-values.sql:17149
+#: 950.data.seed-values.sql:17152
 msgid ""
 "Match patron last, first, and middle names irrespective of usage of "
 "diacritical marks or spaces. (e.g., Ines will match Inés; de la Cruz will "
@@ -8736,7 +8737,7 @@ msgid "The item is intended for young people, approximate ages 14-17 years."
 msgstr ""
 
 # id::cwst.label__catalog.record.holds.prefetch
-#: 950.data.seed-values.sql:20347
+#: 950.data.seed-values.sql:20350
 msgid "Pre-Fetch Record Holds"
 msgstr ""
 
@@ -8748,7 +8749,7 @@ msgid ""
 msgstr ""
 
 # id::aea.label__COPY_SPEC_CODES
-#: 950.data.seed-values.sql:18023
+#: 950.data.seed-values.sql:18026
 msgid "Order Lineitem Notes Include Copy Spec Codes"
 msgstr ""
 
@@ -8823,7 +8824,7 @@ msgid "Upload Merge on Best Match by Default"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.hold_matrix_weights
-#: 950.data.seed-values.sql:20151
+#: 950.data.seed-values.sql:20154
 msgid "Grid Config: admin.server.config.hold_matrix_weights"
 msgstr ""
 
@@ -8891,7 +8892,7 @@ msgid "Allow a user to create trigger hooks"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.asset.call_number_prefix
-#: 950.data.seed-values.sql:20074
+#: 950.data.seed-values.sql:20077
 msgid "Grid Config: admin.server.asset.call_number_prefix"
 msgstr ""
 
@@ -8906,7 +8907,7 @@ msgid "Allow staff to force checkout of Missing/Lost type items"
 msgstr ""
 
 # id::coust.description__circ.holds.calculated_age_proximity
-#: 950.data.seed-values.sql:20277
+#: 950.data.seed-values.sql:20280
 msgid ""
 "When checking whether a copy is viable for a hold based on transit distance,"
 " use calculated proximity with adjustments rather than baseline Org Unit "
@@ -9018,7 +9019,7 @@ msgid "Allows administration of floating groups"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.in_house_use_list
-#: 950.data.seed-values.sql:19477
+#: 950.data.seed-values.sql:19480
 msgid "Print Template Context: in_house_use_list"
 msgstr ""
 
@@ -9097,12 +9098,12 @@ msgid "Allow a user to view billing types"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.catalog.wide_holds
-#: 950.data.seed-values.sql:19092
+#: 950.data.seed-values.sql:19095
 msgid "Grid Config: cat.catalog.wide_holds"
 msgstr ""
 
 # id::coust.description__circ.privacy_waiver
-#: 950.data.seed-values.sql:20263
+#: 950.data.seed-values.sql:20266
 msgid ""
 "Add a note to a user account indicating that specified people are allowed to"
 " place holds, pick up holds, check out items, or view borrowing history for "
@@ -9143,7 +9144,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.circ_modifier
-#: 950.data.seed-values.sql:20116
+#: 950.data.seed-values.sql:20119
 msgid "Grid Config: admin.server.config.circ_modifier"
 msgstr ""
 
@@ -9237,7 +9238,7 @@ msgid "Dominican Republic "
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.authorizationname
-#: 950.data.seed-values.sql:17668
+#: 950.data.seed-values.sql:17671
 msgid "Authorization name for this library, as assigned by OverDrive"
 msgstr ""
 
@@ -9270,7 +9271,7 @@ msgid "UPDATE_BIB_IMPORT_QUEUE"
 msgstr ""
 
 # id::cwst.label__eg.print.template.renew
-#: 950.data.seed-values.sql:19568
+#: 950.data.seed-values.sql:19571
 msgid "Print Template: renew"
 msgstr ""
 
@@ -9416,12 +9417,12 @@ msgid "User may create a copy statistical category"
 msgstr ""
 
 # id::cwst.label__eg.print.template.checkin
-#: 950.data.seed-values.sql:19372
+#: 950.data.seed-values.sql:19375
 msgid "Print Template: checkin"
 msgstr ""
 
 # id::cwst.label__eg.print.template.offline_renew
-#: 950.data.seed-values.sql:19624
+#: 950.data.seed-values.sql:19627
 msgid "Print Template: offline_renew"
 msgstr ""
 
@@ -9478,7 +9479,7 @@ msgid "Comics/graphic novels"
 msgstr ""
 
 # id::aea.label__INCLUDE_EMPTY_LI_NOTE
-#: 950.data.seed-values.sql:18029
+#: 950.data.seed-values.sql:18032
 msgid "Order Lineitem Notes Always Present (Even if Empty)"
 msgstr ""
 
@@ -9549,7 +9550,7 @@ msgid "DELETE_VR_FORMAT"
 msgstr ""
 
 # id::coust.description__lib.timezone
-#: 950.data.seed-values.sql:17847
+#: 950.data.seed-values.sql:17850
 msgid ""
 "Define the time zone in which a library physically resides. Examples: "
 "America/Toronto, America/Chicago, America/Los_Angeles, America/Vancouver, "
@@ -9599,7 +9600,7 @@ msgstr ""
 
 # id::coust.label__circ.curbside.max_concurrent
 # id::coust.description__circ.curbside.max_concurrent
-#: 950.data.seed-values.sql:20933 950.data.seed-values.sql:20937
+#: 950.data.seed-values.sql:20936 950.data.seed-values.sql:20940
 msgid ""
 "Maximum number of patrons that may select a particular curbside pickup time"
 msgstr ""
@@ -9633,12 +9634,12 @@ msgid ""
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.left_label.height
-#: 950.data.seed-values.sql:17457
+#: 950.data.seed-values.sql:17460
 msgid "Item Print Label - Height for Spine Label"
 msgstr ""
 
 # id::cwst.label__booking.create.multiday
-#: 950.data.seed-values.sql:20620
+#: 950.data.seed-values.sql:20623
 msgid "Default to creating multiday booking reservations"
 msgstr ""
 
@@ -9648,7 +9649,7 @@ msgid "Allow a user to view which users have checked out a given copy"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.authority.heading_field
-#: 950.data.seed-values.sql:20046
+#: 950.data.seed-values.sql:20049
 msgid "Grid Config: admin.server.authority.heading_field"
 msgstr ""
 
@@ -9658,7 +9659,7 @@ msgid "Azimuthal, other"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.config.hold_matrix_matchpoint
-#: 950.data.seed-values.sql:20368
+#: 950.data.seed-values.sql:20371
 msgid "Grid Config: admin.local.config.hold_matrix_matchpoint"
 msgstr ""
 
@@ -9668,7 +9669,7 @@ msgid "Allows a user to place a hold that cannot currently be filled."
 msgstr ""
 
 # id::cgf.label__search.max_facets_per_field
-#: 950.data.seed-values.sql:17060
+#: 950.data.seed-values.sql:17063
 msgid ""
 "Search: maximum number of facet values to retrieve for each facet field"
 msgstr ""
@@ -9726,7 +9727,7 @@ msgid "Allow a user to place a force hold on a specific copy"
 msgstr ""
 
 # id::cpt.label__1
-#: 950.data.seed-values.sql:20429
+#: 950.data.seed-values.sql:20432
 msgid "Address Label"
 msgstr ""
 
@@ -9746,7 +9747,7 @@ msgid "Often the same thing as the PayPal manager login"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.right_label.left_margin
-#: 950.data.seed-values.sql:17447
+#: 950.data.seed-values.sql:17450
 msgid ""
 "Set the default left margin for the item print Pocket Label (or in other "
 "words, the desired space between the two labels). Please include a unit of "
@@ -9759,7 +9760,7 @@ msgid "UPDATE_ORG_UNIT_SETTING.circ.hold_expire_interval"
 msgstr ""
 
 # id::cwst.label__eg.print.template.patron_address
-#: 950.data.seed-values.sql:19526
+#: 950.data.seed-values.sql:19529
 msgid "Print Template: patron_address"
 msgstr ""
 
@@ -9799,12 +9800,12 @@ msgid "DELETE_ORG_ADDRESS"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.authority.browse
-#: 950.data.seed-values.sql:20717
+#: 950.data.seed-values.sql:20720
 msgid "Grid Config: eg.grid.cat.authority.browse"
 msgstr ""
 
 # id::coust.description__org.restrict_opt_to_depth
-#: 950.data.seed-values.sql:17121
+#: 950.data.seed-values.sql:17124
 msgid ""
 "Patrons at this library can only be opted-in at org units which are within "
 "the library's section of the org tree, at or below the depth specified by "
@@ -9834,7 +9835,7 @@ msgid "Gospel music"
 msgstr ""
 
 # id::cuat.label__25
-#: 950.data.seed-values.sql:20325
+#: 950.data.seed-values.sql:20328
 msgid "Login via Websocket V1"
 msgstr ""
 
@@ -9844,7 +9845,7 @@ msgid "Latvian"
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.websiteid
-#: 950.data.seed-values.sql:17646
+#: 950.data.seed-values.sql:17649
 msgid "OverDrive Website ID"
 msgstr ""
 
@@ -9875,7 +9876,7 @@ msgid "ADMIN_GROUP_PENALTY_THRESHOLD"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.bills_historical
-#: 950.data.seed-values.sql:19337
+#: 950.data.seed-values.sql:19340
 msgid "Print Template Context: bills_historical"
 msgstr ""
 
@@ -9897,7 +9898,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__booking.pickup.ready.only_show_captured
-#: 950.data.seed-values.sql:20626
+#: 950.data.seed-values.sql:20629
 msgid ""
 "Include only resources that have been captured in the Ready grid in the "
 "Pickup screen"
@@ -9978,7 +9979,7 @@ msgid "Plates"
 msgstr ""
 
 # id::coust.description__webstaff.format.date_and_time
-#: 950.data.seed-values.sql:17809
+#: 950.data.seed-values.sql:17812
 msgid ""
 "Format Date+Time with this pattern (examples: \"yy-MM-dd h:m:s.SSS a\" for "
 "\"16-04-05 2:07:20.666 PM\", \"yyyy-dd-MMM HH:mm\" for \"2016-05-Apr "
@@ -9987,7 +9988,7 @@ msgid ""
 msgstr ""
 
 # id::coust.label__webstaff.format.dates
-#: 950.data.seed-values.sql:17787
+#: 950.data.seed-values.sql:17790
 msgid "Format Dates with this pattern"
 msgstr ""
 
@@ -10002,7 +10003,7 @@ msgid "Romani"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.holds_for_patron
-#: 950.data.seed-values.sql:19435
+#: 950.data.seed-values.sql:19438
 msgid "Print Template Context: holds_for_patron"
 msgstr ""
 
@@ -10038,7 +10039,7 @@ msgid "Russian"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.billhistory_payments
-#: 950.data.seed-values.sql:19183
+#: 950.data.seed-values.sql:19186
 msgid "Grid Config: circ.patron.billhistory_payments"
 msgstr ""
 
@@ -10061,7 +10062,7 @@ msgid "Patent document"
 msgstr ""
 
 # id::coust.description__circ.void_longoverdue_proc_fee_on_claimsreturned
-#: 950.data.seed-values.sql:17108
+#: 950.data.seed-values.sql:17111
 msgid "Void long overdue item processing fee when claims returned"
 msgstr ""
 
@@ -10106,7 +10107,7 @@ msgid "UPDATE_CN_BTYPE"
 msgstr ""
 
 # id::cwst.label__eg.print.template.holds_for_bib
-#: 950.data.seed-values.sql:19428
+#: 950.data.seed-values.sql:19431
 msgid "Print Template: holds_for_bib"
 msgstr ""
 
@@ -10116,7 +10117,7 @@ msgid "Lambert's azimuthal equal area"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.transit_list
-#: 950.data.seed-values.sql:19575
+#: 950.data.seed-values.sql:19578
 msgid "Print Template Context: transit_list"
 msgstr ""
 
@@ -10164,7 +10165,7 @@ msgid "Philippine (Other)"
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.granted_auth_redirect_uri
-#: 950.data.seed-values.sql:17694
+#: 950.data.seed-values.sql:17697
 msgid "OverDrive Granted Authorization Redirect URI"
 msgstr ""
 
@@ -10266,7 +10267,7 @@ msgid "Chechen"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.match_set.list
-#: 950.data.seed-values.sql:19824
+#: 950.data.seed-values.sql:19827
 msgid "Grid Config: Vandelay Match Sets"
 msgstr ""
 
@@ -10356,7 +10357,7 @@ msgid ""
 msgstr ""
 
 # id::coust.label__circ.void_longoverdue_on_claimsreturned
-#: 950.data.seed-values.sql:17096
+#: 950.data.seed-values.sql:17099
 msgid "Void longoverdue item billing when claims returned"
 msgstr ""
 
@@ -10398,7 +10399,7 @@ msgid "Kamba"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.circ.neg_balance_users
-#: 950.data.seed-values.sql:18980
+#: 950.data.seed-values.sql:18983
 msgid "Grid Config: admin.local.circ.neg_balance_users"
 msgstr ""
 
@@ -10419,7 +10420,7 @@ msgid "Venezuela "
 msgstr ""
 
 # id::cwst.label__eg.print.template.checkout
-#: 950.data.seed-values.sql:19386
+#: 950.data.seed-values.sql:19389
 msgid "Print Template: checkout"
 msgstr ""
 
@@ -10463,7 +10464,7 @@ msgid "DELETE_BIBLIO_FINGERPRINT"
 msgstr ""
 
 # id::aea.label__INCLUDE_EMPTY_LOCATION
-#: 950.data.seed-values.sql:18038
+#: 950.data.seed-values.sql:18041
 msgid "Order Copies Always Include Location (Even if Empty)"
 msgstr ""
 
@@ -10514,7 +10515,7 @@ msgid "Creoles and Pidgins, French-based (Other)"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.search.purchaseorders
-#: 950.data.seed-values.sql:20795
+#: 950.data.seed-values.sql:20798
 msgid "Grid Config: acq.search.purchaseorders"
 msgstr ""
 
@@ -10539,7 +10540,7 @@ msgid "Single known date/probable date"
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.password_required
-#: 950.data.seed-values.sql:17716
+#: 950.data.seed-values.sql:17719
 msgid ""
 "Does this library require a password when authenticating patrons with the "
 "OverDrive API?"
@@ -10561,7 +10562,7 @@ msgid "Allows a user to create a pre-catalogued copy"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.marc_field
-#: 950.data.seed-values.sql:18966
+#: 950.data.seed-values.sql:18969
 msgid "Grid Config: admin.server.config.marc_field"
 msgstr ""
 
@@ -10591,7 +10592,7 @@ msgid "Create suffix label definition."
 msgstr ""
 
 # id::coust.label__ebook_api.oneclickdigital.library_id
-#: 950.data.seed-values.sql:17746
+#: 950.data.seed-values.sql:17749
 msgid "OneClickdigital Library ID"
 msgstr ""
 
@@ -10673,7 +10674,7 @@ msgid "Apply this prefix to any auto-generated item call numbers"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.left_label.height
-#: 950.data.seed-values.sql:17463
+#: 950.data.seed-values.sql:17466
 msgid ""
 "Set the default height for the item print Spine Label. Please include a unit"
 " of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
@@ -10713,7 +10714,7 @@ msgid "Allow Email Notify"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.authority.manage.bibs
-#: 950.data.seed-values.sql:20723
+#: 950.data.seed-values.sql:20726
 msgid "Grid Config: eg.grid.cat.authority.manage.bibs"
 msgstr ""
 
@@ -10724,7 +10725,7 @@ msgstr ""
 
 # id::coust.label__circ.in_house_use.copy_alert
 # id::coust.description__circ.in_house_use.copy_alert
-#: 950.data.seed-values.sql:17350 950.data.seed-values.sql:17353
+#: 950.data.seed-values.sql:17353 950.data.seed-values.sql:17356
 msgid "Display copy alert for in-house-use"
 msgstr ""
 
@@ -10816,7 +10817,7 @@ msgid "Sounds"
 msgstr ""
 
 # id::cwst.label__eg.print.template.patron_note
-#: 950.data.seed-values.sql:19554
+#: 950.data.seed-values.sql:19557
 msgid "Print Template: patron_note"
 msgstr ""
 
@@ -11070,7 +11071,7 @@ msgid "Has Local Copy Block"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.items_out.noncat
-#: 950.data.seed-values.sql:19169
+#: 950.data.seed-values.sql:19172
 msgid "Grid Config: circ.patron.items_out.noncat"
 msgstr ""
 
@@ -11090,7 +11091,7 @@ msgid "Allow a user to view and purchase from a provider"
 msgstr ""
 
 # id::coust.description__circ.copy_alerts.forgive_fines_on_lost_checkin
-#: 950.data.seed-values.sql:17948
+#: 950.data.seed-values.sql:17951
 msgid ""
 "Controls whether fines are automatically forgiven when checking out an item "
 "that has been marked as lost, and the corresponding copy alert has been "
@@ -11103,7 +11104,7 @@ msgid "Vandelay Default Copy Location"
 msgstr ""
 
 # id::aea.label__BUYER_ID_ONLY_VENDCODE
-#: 950.data.seed-values.sql:18011
+#: 950.data.seed-values.sql:18014
 msgid "Buyer ID Qualifier Only Contains Vendcode"
 msgstr ""
 
@@ -11131,7 +11132,7 @@ msgid "Use weight-based hold targeting"
 msgstr ""
 
 # id::cwst.label__eg.print.template.hold_pull_list
-#: 950.data.seed-values.sql:19456
+#: 950.data.seed-values.sql:19459
 msgid "Print Template: hold_pull_list"
 msgstr ""
 
@@ -11211,7 +11212,7 @@ msgid "Kru"
 msgstr ""
 
 # id::aea.label__INCLUDE_CALL_NUMBER
-#: 950.data.seed-values.sql:17981
+#: 950.data.seed-values.sql:17984
 msgid "Orders Include Copy Call Numbers"
 msgstr ""
 
@@ -11307,7 +11308,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.sms_carrier
-#: 950.data.seed-values.sql:20221
+#: 950.data.seed-values.sql:20224
 msgid "Grid Config: admin.server.config.sms_carrier"
 msgstr ""
 
@@ -11376,7 +11377,7 @@ msgid "Show second_given_name field on patron registration"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.vandelay.import_item_attr_definition
-#: 950.data.seed-values.sql:19880
+#: 950.data.seed-values.sql:19883
 msgid "Grid Config: Vandelay Import Item Attributes"
 msgstr ""
 
@@ -11418,7 +11419,7 @@ msgid "UPDATE_HOURS_OF_OPERATION"
 msgstr ""
 
 # id::cwst.label__eg.serials.items.receive_and_barcode
-#: 950.data.seed-values.sql:19673
+#: 950.data.seed-values.sql:19676
 msgid "Serials Barcode On Receive"
 msgstr ""
 
@@ -11430,7 +11431,7 @@ msgid ""
 msgstr ""
 
 # id::aea.label__INCLUDE_QUANTITY
-#: 950.data.seed-values.sql:18002
+#: 950.data.seed-values.sql:18005
 msgid "Orders Include Copy Quantities"
 msgstr ""
 
@@ -11445,7 +11446,7 @@ msgid "Historical Hold Retention Age - Fulfilled"
 msgstr ""
 
 # id::coust.label__ui.patron.edit.guardian_required_for_juv
-#: 950.data.seed-values.sql:19945
+#: 950.data.seed-values.sql:19948
 msgid "GUI: Juvenile account requires parent/guardian"
 msgstr ""
 
@@ -11515,7 +11516,7 @@ msgid "Number of URLs to test in parallel"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.offline_checkout
-#: 950.data.seed-values.sql:19603
+#: 950.data.seed-values.sql:19606
 msgid "Print Template Context: offline_checkout"
 msgstr ""
 
@@ -11526,13 +11527,13 @@ msgid "Custom CSS for the OPAC"
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.account_id
-#: 950.data.seed-values.sql:17636
+#: 950.data.seed-values.sql:17639
 msgid ""
 "Account ID (a.k.a. Library ID) for this library, as assigned by OverDrive"
 msgstr ""
 
 # id::cwst.label__eg.offline.print_receipt
-#: 950.data.seed-values.sql:19288
+#: 950.data.seed-values.sql:19291
 msgid "Offline Print Receipt"
 msgstr ""
 
@@ -11552,7 +11553,7 @@ msgid "Allows a user to update an MFHD record"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.volcopy.copies
-#: 950.data.seed-values.sql:19071
+#: 950.data.seed-values.sql:19074
 msgid "Grid Config: cat.volcopy.copies"
 msgstr ""
 
@@ -11577,7 +11578,7 @@ msgid "Japan "
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.discovery_base_uri
-#: 950.data.seed-values.sql:17598
+#: 950.data.seed-values.sql:17601
 msgid "OverDrive Discovery API Base URI"
 msgstr ""
 
@@ -11612,12 +11613,12 @@ msgid "Zulu"
 msgstr ""
 
 # id::cwst.label__circ.checkin.strict_barcode
-#: 950.data.seed-values.sql:18854
+#: 950.data.seed-values.sql:18857
 msgid "Checkin: Strict Barcode"
 msgstr ""
 
 # id::cwst.label__eg.audio.disable
-#: 950.data.seed-values.sql:19309
+#: 950.data.seed-values.sql:19312
 msgid "Disable Staff Client Notification Audio"
 msgstr ""
 
@@ -11639,7 +11640,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.hard_due_date
-#: 950.data.seed-values.sql:20144
+#: 950.data.seed-values.sql:20147
 msgid "Grid Config: admin.server.config.hard_due_date"
 msgstr ""
 
@@ -11950,7 +11951,7 @@ msgid "Bulgaria "
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.item_status
-#: 950.data.seed-values.sql:19491
+#: 950.data.seed-values.sql:19494
 msgid "Print Template Context: item_status"
 msgstr ""
 
@@ -12034,7 +12035,7 @@ msgid "Item Barcode"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.asset.copy_location
-#: 950.data.seed-values.sql:20396
+#: 950.data.seed-values.sql:20399
 msgid "Grid Config: admin.local.asset.copy_location"
 msgstr ""
 
@@ -12164,7 +12165,7 @@ msgid "Bugis"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.checkout
-#: 950.data.seed-values.sql:19379
+#: 950.data.seed-values.sql:19382
 msgid "Print Template Context: checkout"
 msgstr ""
 
@@ -12319,7 +12320,7 @@ msgid "Brunei "
 msgstr ""
 
 # id::cwst.label__eg.search.search_lib
-#: 950.data.seed-values.sql:19692
+#: 950.data.seed-values.sql:19695
 msgid "Staff Catalog Default Search Library"
 msgstr ""
 
@@ -12405,7 +12406,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.z3950_index_field_map
-#: 950.data.seed-values.sql:20242
+#: 950.data.seed-values.sql:20245
 msgid "Grid Config: admin.server.config.z3950_index_field_map"
 msgstr ""
 
@@ -12479,7 +12480,7 @@ msgid "Volapük"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.transit_slip
-#: 950.data.seed-values.sql:19589
+#: 950.data.seed-values.sql:19592
 msgid "Print Template Context: transit_slip"
 msgstr ""
 
@@ -12509,7 +12510,7 @@ msgid "UPDATE_PICKUP_LIB_FROM_HOLDS_SHELF"
 msgstr ""
 
 # id::coust.label__ebook_api.oneclickdigital.base_uri
-#: 950.data.seed-values.sql:17730
+#: 950.data.seed-values.sql:17733
 msgid "OneClickdigital Base URI"
 msgstr ""
 
@@ -12554,17 +12555,17 @@ msgid "Cincinnati Bell"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.holds_for_bib
-#: 950.data.seed-values.sql:19421
+#: 950.data.seed-values.sql:19424
 msgid "Print Template Context: holds_for_bib"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.actor.copy_alert_suppress
-#: 950.data.seed-values.sql:20389
+#: 950.data.seed-values.sql:20392
 msgid "Grid Config: admin.local.actor.copy_alert_suppress"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.metabib_class
-#: 950.data.seed-values.sql:20186
+#: 950.data.seed-values.sql:20189
 msgid "Grid Config: admin.server.config.metabib_class"
 msgstr ""
 
@@ -12644,7 +12645,7 @@ msgid ""
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.basic_token
-#: 950.data.seed-values.sql:17678
+#: 950.data.seed-values.sql:17681
 msgid "OverDrive Basic Token"
 msgstr ""
 
@@ -12679,7 +12680,7 @@ msgid "CREATE_HOURS_OF_OPERATION"
 msgstr ""
 
 # id::cgf.label__opac.show_related_headings_in_browse
-#: 950.data.seed-values.sql:17582
+#: 950.data.seed-values.sql:17585
 msgid "Display related headings (see-also) in browse"
 msgstr ""
 
@@ -12746,7 +12747,7 @@ msgid "ADMIN_Z3950_SOURCE"
 msgstr ""
 
 # id::cuat.label__27
-#: 950.data.seed-values.sql:20331
+#: 950.data.seed-values.sql:20334
 msgid "Verification via Websocket v1"
 msgstr ""
 
@@ -12780,7 +12781,7 @@ msgid "Allow a user to change the settings for an organization unit"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.holds
-#: 950.data.seed-values.sql:19155
+#: 950.data.seed-values.sql:19158
 msgid "Grid Config: circ.patron.holds"
 msgstr ""
 
@@ -12850,7 +12851,7 @@ msgid "Checkout auto renew age"
 msgstr ""
 
 # id::cwst.label__booking.pickup.picked_up
-#: 950.data.seed-values.sql:20560
+#: 950.data.seed-values.sql:20563
 msgid "Grid Config: Booking Already Picked Up grid"
 msgstr ""
 
@@ -12861,7 +12862,7 @@ msgstr ""
 
 # id::coust.label__circ.void_lost_proc_fee_on_claimsreturned
 # id::coust.description__circ.void_lost_proc_fee_on_claimsreturned
-#: 950.data.seed-values.sql:17083 950.data.seed-values.sql:17086
+#: 950.data.seed-values.sql:17086 950.data.seed-values.sql:17089
 msgid "Void lost item processing fee when claims returned"
 msgstr ""
 
@@ -12910,7 +12911,7 @@ msgid "1.4 m. per second"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.bucket.copy.view
-#: 950.data.seed-values.sql:19050
+#: 950.data.seed-values.sql:19053
 msgid "Grid Config: cat.bucket.copy.view"
 msgstr ""
 
@@ -13002,7 +13003,7 @@ msgid "Allow a user to create an authority record"
 msgstr ""
 
 # id::aea.label__INCLUDE_BIB_AUTHOR
-#: 950.data.seed-values.sql:18017
+#: 950.data.seed-values.sql:18020
 msgid "Order Lineitems Include Author Info"
 msgstr ""
 
@@ -13117,7 +13118,7 @@ msgid "Canons and rounds"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.edi_messages
-#: 950.data.seed-values.sql:20851
+#: 950.data.seed-values.sql:20854
 msgid "Grid Config: acq.provider.edi_messages"
 msgstr ""
 
@@ -13171,7 +13172,7 @@ msgid "Kongo"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.search.invoices
-#: 950.data.seed-values.sql:20807
+#: 950.data.seed-values.sql:20810
 msgid "Grid Config: acq.search.invoices"
 msgstr ""
 
@@ -13299,7 +13300,7 @@ msgid "Butterfly"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.default.lineitems
-#: 950.data.seed-values.sql:20733
+#: 950.data.seed-values.sql:20736
 msgid "Acquisitions Default Search: Lineitems"
 msgstr ""
 
@@ -13346,7 +13347,7 @@ msgid "See From Tracing -- Geographic Name"
 msgstr ""
 
 # id::cwst.label__eg.offline.strict_barcode
-#: 950.data.seed-values.sql:19295
+#: 950.data.seed-values.sql:19298
 msgid "Offline Use Strict Barcode"
 msgstr ""
 
@@ -13460,7 +13461,7 @@ msgid "Mollweide"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.clear_expired
-#: 950.data.seed-values.sql:18784
+#: 950.data.seed-values.sql:18787
 msgid "Checkin: Clear Holds Shelf"
 msgstr ""
 
@@ -13495,7 +13496,7 @@ msgid "Set the default font size for spine and pocket labels"
 msgstr ""
 
 # id::cwst.label__eg.print.template.holds_for_patron
-#: 950.data.seed-values.sql:19442
+#: 950.data.seed-values.sql:19445
 msgid "Print Template: holds_for_patron"
 msgstr ""
 
@@ -13538,7 +13539,7 @@ msgid "* no longer applicable"
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.call_number_wrap_filter_width
-#: 950.data.seed-values.sql:17553
+#: 950.data.seed-values.sql:17556
 msgid "Item Print Label - Call Number Wrap Filter Width"
 msgstr ""
 
@@ -13613,7 +13614,7 @@ msgid "Nyanja"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.search.results
-#: 950.data.seed-values.sql:20875
+#: 950.data.seed-values.sql:20878
 msgid "Grid Config: acq.provider.search.results"
 msgstr ""
 
@@ -13715,7 +13716,7 @@ msgid "videodisc"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.bucket.record.pending
-#: 950.data.seed-values.sql:19043
+#: 950.data.seed-values.sql:19046
 msgid "Grid Config: cat.bucket.record.pending"
 msgstr ""
 
@@ -13742,7 +13743,7 @@ msgid "Allows a user to view address alerts"
 msgstr ""
 
 # id::cwst.label__booking.pull_list
-#: 950.data.seed-values.sql:20596
+#: 950.data.seed-values.sql:20599
 msgid "Grid Config: Booking Pull List"
 msgstr ""
 
@@ -13793,7 +13794,7 @@ msgid "See Also From Tracing -- Topical Term"
 msgstr ""
 
 # id::cwst.label__eg.cat.record.summary.collapse
-#: 950.data.seed-values.sql:19267
+#: 950.data.seed-values.sql:19270
 msgid "Collapse Bib Record Summary"
 msgstr ""
 
@@ -13882,7 +13883,7 @@ msgid "Lists per Page"
 msgstr ""
 
 # id::acmr.name__3
-#: 950.data.seed-values.sql:20662
+#: 950.data.seed-values.sql:20665
 msgid "Student"
 msgstr ""
 
@@ -13897,7 +13898,7 @@ msgid "Caucasian (Other)"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.best_hold_order
-#: 950.data.seed-values.sql:20060
+#: 950.data.seed-values.sql:20063
 msgid "Grid Config: admin.server.config.best_hold_order"
 msgstr ""
 
@@ -13940,19 +13941,19 @@ msgid "Dramas"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.left_label.left_margin
-#: 950.data.seed-values.sql:17431
+#: 950.data.seed-values.sql:17434
 msgid ""
 "Set the default left margin for the item print Spine Label. Please include a"
 " unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
 msgstr ""
 
 # id::cwst.label__eg.grid.serials.mfhd_grid
-#: 950.data.seed-values.sql:19239
+#: 950.data.seed-values.sql:19242
 msgid "Grid Config: serials.mfhd_grid"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.hold_shelf_list
-#: 950.data.seed-values.sql:19463
+#: 950.data.seed-values.sql:19466
 msgid "Print Template Context: hold_shelf_list"
 msgstr ""
 
@@ -14000,7 +14001,7 @@ msgid "Quechua"
 msgstr ""
 
 # id::coust.description__circ.disable_patron_credit
-#: 950.data.seed-values.sql:17019
+#: 950.data.seed-values.sql:17022
 msgid ""
 "Do not allow patrons to accrue credit or pay fines/fees with accrued credit"
 msgstr ""
@@ -14046,7 +14047,7 @@ msgid "Delete Bibliographic Record Peer Type"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.items
-#: 950.data.seed-values.sql:19064
+#: 950.data.seed-values.sql:19067
 msgid "Grid Config: cat.items"
 msgstr ""
 
@@ -14081,12 +14082,12 @@ msgid "An array of fine amount, fine interval, and maximum fine."
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.offline_checkin
-#: 950.data.seed-values.sql:19631
+#: 950.data.seed-values.sql:19634
 msgid "Print Template Context: offline_checkin"
 msgstr ""
 
 # id::cwst.label__eg.cat.vandelay.import.templates
-#: 950.data.seed-values.sql:19960
+#: 950.data.seed-values.sql:19963
 msgid "Vandelay Import Form Templates"
 msgstr ""
 
@@ -14129,7 +14130,7 @@ msgid "Serials and magazines"
 msgstr ""
 
 # id::aea.label__INCLUDE_COPY_ID
-#: 950.data.seed-values.sql:18005
+#: 950.data.seed-values.sql:18008
 msgid "Orders Include Copy IDs"
 msgstr ""
 
@@ -14184,12 +14185,12 @@ msgid "Suggest active field on patron registration"
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.left_label.left_margin
-#: 950.data.seed-values.sql:17425
+#: 950.data.seed-values.sql:17428
 msgid "Item Print Label - Left Margin for Spine Label"
 msgstr ""
 
 # id::coust.description__webstaff.cat.label.right_label.width
-#: 950.data.seed-values.sql:17511
+#: 950.data.seed-values.sql:17514
 msgid ""
 "Set the default width for the item print Pocket Label. Please include a unit"
 " of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
@@ -14201,7 +14202,7 @@ msgstr ""
 #: 950.data.seed-values.sql:8171 950.data.seed-values.sql:8292
 #: 950.data.seed-values.sql:8311 950.data.seed-values.sql:8428
 #: 950.data.seed-values.sql:8437 950.data.seed-values.sql:9016
-#: 950.data.seed-values.sql:9037 950.data.seed-values.sql:18134
+#: 950.data.seed-values.sql:9037 950.data.seed-values.sql:18137
 msgid "Not applicable"
 msgstr ""
 
@@ -14243,7 +14244,7 @@ msgid "Creoles and Pidgins, Portuguese-based (Other)"
 msgstr ""
 
 # id::cwst.label__eg.print.template.bills_current
-#: 950.data.seed-values.sql:19330
+#: 950.data.seed-values.sql:19333
 msgid "Print Template: bills_current"
 msgstr ""
 
@@ -14299,7 +14300,7 @@ msgid "Interviews"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.workstation.work_log
-#: 950.data.seed-values.sql:18994
+#: 950.data.seed-values.sql:18997
 msgid "Grid Config: admin.workstation.work_log"
 msgstr ""
 
@@ -14309,7 +14310,7 @@ msgid "Allow a user to create trigger cleanup entries"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.bucket.record.view
-#: 950.data.seed-values.sql:19036
+#: 950.data.seed-values.sql:19039
 msgid "Grid Config: cat.bucket.record.view"
 msgstr ""
 
@@ -14334,7 +14335,7 @@ msgid "Serbia "
 msgstr ""
 
 # id::aea.label__INCLUDE_EMPTY_IMD_VALUES
-#: 950.data.seed-values.sql:18026
+#: 950.data.seed-values.sql:18029
 msgid "Lineitem Title, Author, etc. Fields Are Present Even if Empty"
 msgstr ""
 
@@ -14380,7 +14381,7 @@ msgstr ""
 
 # id::coust.label__circ.void_lost_on_claimsreturned
 # id::coust.description__circ.void_lost_on_claimsreturned
-#: 950.data.seed-values.sql:17074 950.data.seed-values.sql:17077
+#: 950.data.seed-values.sql:17077 950.data.seed-values.sql:17080
 msgid "Void lost item billing when claims returned"
 msgstr ""
 
@@ -14415,12 +14416,12 @@ msgid "Allow a user to place a volume level hold"
 msgstr ""
 
 # id::aea.label__INCLUDE_EMPTY_COLLECTION_CODE
-#: 950.data.seed-values.sql:18041
+#: 950.data.seed-values.sql:18044
 msgid "Order Copies Always Include Collection Code (Even if Empty)"
 msgstr ""
 
 # id::cwst.label__cat.holdings_show_empty
-#: 950.data.seed-values.sql:18875
+#: 950.data.seed-values.sql:18878
 msgid "Holdings View Show Empty Volumes"
 msgstr ""
 
@@ -14442,12 +14443,12 @@ msgid "Fantasias"
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.websiteid
-#: 950.data.seed-values.sql:17652
+#: 950.data.seed-values.sql:17655
 msgid "Website ID for this library, as assigned by OverDrive"
 msgstr ""
 
 # id::cwst.label__booking.return.patron.returned
-#: 950.data.seed-values.sql:20572
+#: 950.data.seed-values.sql:20575
 msgid "Grid Config: Booking Return Patron tab Returned Today grid"
 msgstr ""
 
@@ -14486,7 +14487,7 @@ msgid "Conference proceedings"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.offline_renew
-#: 950.data.seed-values.sql:19617
+#: 950.data.seed-values.sql:19620
 msgid "Print Template Context: offline_renew"
 msgstr ""
 
@@ -14608,7 +14609,7 @@ msgid "Pali"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.selectionlists.run_immediately
-#: 950.data.seed-values.sql:20779
+#: 950.data.seed-values.sql:20782
 msgid "Acquisitions Search: Immediately Search Selection Lists"
 msgstr ""
 
@@ -14620,7 +14621,7 @@ msgid ""
 msgstr ""
 
 # id::cpt.label__2
-#: 950.data.seed-values.sql:20455
+#: 950.data.seed-values.sql:20458
 msgid "Holds for Bib Record"
 msgstr ""
 
@@ -14680,7 +14681,7 @@ msgid "DELETE_LASSO_MAP"
 msgstr ""
 
 # id::coust.description__opac.email_record.allow_without_login
-#: 950.data.seed-values.sql:19893
+#: 950.data.seed-values.sql:19896
 msgid ""
 "Instead of forcing a patron to log in in order to email the details of a "
 "record, just challenge them with a simple catpcha."
@@ -14777,7 +14778,7 @@ msgid "Allow a user to mark an item status as 'cataloging'"
 msgstr ""
 
 # id::coust.description__circ.copy_alerts.forgive_fines_on_long_overdue_checkin
-#: 950.data.seed-values.sql:17963
+#: 950.data.seed-values.sql:17966
 msgid ""
 "Controls whether fines are automatically forgiven when checking out an item "
 "that has been marked as long-overdue, and the corresponding copy alert has "
@@ -14805,7 +14806,7 @@ msgid "British Indian Ocean Territory "
 msgstr ""
 
 # id::cwst.label__eg.circ.bills.annotatepayment
-#: 950.data.seed-values.sql:18840
+#: 950.data.seed-values.sql:18843
 msgid "Bills: Annotate Payment"
 msgstr ""
 
@@ -14830,7 +14831,7 @@ msgid "Search Formats"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.checkin.capture
-#: 950.data.seed-values.sql:18938
+#: 950.data.seed-values.sql:18941
 msgid "Grid Config: circ.checkin.capture"
 msgstr ""
 
@@ -14909,7 +14910,7 @@ msgid "Library"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.asset.copy_tag
-#: 950.data.seed-values.sql:20403
+#: 950.data.seed-values.sql:20406
 msgid "Grid Config: admin.local.asset.copy_tag"
 msgstr ""
 
@@ -14985,7 +14986,7 @@ msgid "Blu-ray disc"
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.granted_auth_redirect_uri
-#: 950.data.seed-values.sql:17700
+#: 950.data.seed-values.sql:17703
 msgid "URI provided to OverDrive for use with granted authorization"
 msgstr ""
 
@@ -15021,7 +15022,7 @@ msgid "BellSouth"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.default.purchaseorders
-#: 950.data.seed-values.sql:20739
+#: 950.data.seed-values.sql:20742
 msgid "Acquisitions Default Search: Purchase Orders"
 msgstr ""
 
@@ -15036,7 +15037,7 @@ msgid "EZProxy Verification"
 msgstr ""
 
 # id::cwst.label__eg.print.template.patron_data
-#: 950.data.seed-values.sql:19540
+#: 950.data.seed-values.sql:19543
 msgid "Print Template: patron_data"
 msgstr ""
 
@@ -15049,7 +15050,7 @@ msgid "ISSN"
 msgstr ""
 
 # id::cwst.label__eg.orgselect.cat.catalog.wide_holds
-#: 950.data.seed-values.sql:20703
+#: 950.data.seed-values.sql:20706
 msgid "Default org unit for catalog holds org unit selector"
 msgstr ""
 
@@ -15081,7 +15082,7 @@ msgid "Cap results in Patron Search at this number."
 msgstr ""
 
 # id::coust.description__ui.staff.max_recent_patrons
-#: 950.data.seed-values.sql:17865
+#: 950.data.seed-values.sql:17868
 msgid ""
 "Number of most recently accessed patrons that can be re-retrieved in the "
 "staff client.  A value of 0 or less disables the feature. Defaults to 1."
@@ -15250,7 +15251,7 @@ msgid "microfilm cartridge"
 msgstr ""
 
 # id::cuat.label__28
-#: 950.data.seed-values.sql:20334
+#: 950.data.seed-values.sql:20337
 msgid "Verifiation via Websocket V2"
 msgstr ""
 
@@ -15297,7 +15298,7 @@ msgid "Show barred field on patron registration"
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.account_id
-#: 950.data.seed-values.sql:17630
+#: 950.data.seed-values.sql:17633
 msgid "OverDrive Account ID"
 msgstr ""
 
@@ -15312,7 +15313,7 @@ msgid "Gwich'in"
 msgstr ""
 
 # id::cgf.label__opac.metarecord.holds.format_attr
-#: 950.data.seed-values.sql:17032
+#: 950.data.seed-values.sql:17035
 msgid "OPAC Metarecord Hold Formats Attribute"
 msgstr ""
 
@@ -15322,7 +15323,7 @@ msgid "Books"
 msgstr ""
 
 # id::cwst.label__booking.manage
-#: 950.data.seed-values.sql:20590
+#: 950.data.seed-values.sql:20593
 msgid "Grid Config: Booking Captured Reservations"
 msgstr ""
 
@@ -15355,7 +15356,7 @@ msgid "Monograph/Item"
 msgstr ""
 
 # id::coust.label__circ.privacy_waiver
-#: 950.data.seed-values.sql:20260
+#: 950.data.seed-values.sql:20263
 msgid "Allow others to use patron account (privacy waiver)"
 msgstr ""
 
@@ -15480,7 +15481,7 @@ msgid "England "
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.vandelay.queue.auth
-#: 950.data.seed-values.sql:19817
+#: 950.data.seed-values.sql:19820
 msgid "Grid Config: Vandelay Authority Queue"
 msgstr ""
 
@@ -15540,14 +15541,14 @@ msgid "Allow a user to create a volume"
 msgstr ""
 
 # id::coust.description__opac.analytics.matomo_id
-#: 950.data.seed-values.sql:20889
+#: 950.data.seed-values.sql:20892
 msgid ""
 "The Site ID for your Evergreen catalog. You can find the Site ID in the "
 "tracking code you got from Matomo."
 msgstr ""
 
 # id::cwst.label__eg.catalog.search_templates
-#: 950.data.seed-values.sql:20358
+#: 950.data.seed-values.sql:20361
 msgid "Staff Catalog Search Templates"
 msgstr ""
 
@@ -15557,7 +15558,7 @@ msgid "US Dollars"
 msgstr ""
 
 # id::coust.description__ebook_api.oneclickdigital.basic_token
-#: 950.data.seed-values.sql:17768
+#: 950.data.seed-values.sql:17771
 msgid ""
 "Basic token for client authentication with OneClickdigital API (supplied by "
 "OneClickdigital)"
@@ -15586,7 +15587,7 @@ msgid "Miscellaneous"
 msgstr ""
 
 # id::cuat.label__30
-#: 950.data.seed-values.sql:20340
+#: 950.data.seed-values.sql:20343
 msgid "Generic Verify"
 msgstr ""
 
@@ -15619,7 +15620,7 @@ msgid "Phonograph spoken recording"
 msgstr ""
 
 # id::coust.label__circ.copy_alerts.forgive_fines_on_lost_checkin
-#: 950.data.seed-values.sql:17945
+#: 950.data.seed-values.sql:17948
 msgid ""
 "Forgive fines when checking out a lost item and copy alert is suppressed?"
 msgstr ""
@@ -15640,12 +15641,12 @@ msgid "Barbados "
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.metabib_field.grid
-#: 950.data.seed-values.sql:18959
+#: 950.data.seed-values.sql:18962
 msgid "Grid Config: admin.server.config.metabib_field.grid"
 msgstr ""
 
 # id::cgf.label__ingest.disable_authority_auto_update_bib_meta
-#: 950.data.seed-values.sql:17164
+#: 950.data.seed-values.sql:17167
 msgid ""
 "Authority Automation: Disable automatic authority updates from modifying bib"
 " record editor and edit_date"
@@ -15657,7 +15658,7 @@ msgid "Sukuma"
 msgstr ""
 
 # id::cwst.label__eg.print.template.bills_historical
-#: 950.data.seed-values.sql:19344
+#: 950.data.seed-values.sql:19347
 msgid "Print Template: bills_historical"
 msgstr ""
 
@@ -15708,7 +15709,7 @@ msgid "Vocal score"
 msgstr ""
 
 # id::cwst.label__cat.marcedit.flateditor
-#: 950.data.seed-values.sql:19274
+#: 950.data.seed-values.sql:19277
 msgid "Use Flat MARC Editor"
 msgstr ""
 
@@ -15785,7 +15786,7 @@ msgid "Merge records on best match by default during ACQ file upload"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.rule_circ_duration
-#: 950.data.seed-values.sql:20088
+#: 950.data.seed-values.sql:20091
 msgid "Grid Config: admin.server.config.rule_circ_duration"
 msgstr ""
 
@@ -15872,7 +15873,7 @@ msgid "Bathymetry, isolines"
 msgstr ""
 
 # id::coust.label__opac.analytics.matomo_id
-#: 950.data.seed-values.sql:20885
+#: 950.data.seed-values.sql:20888
 msgid "Matomo Site ID"
 msgstr ""
 
@@ -15892,7 +15893,7 @@ msgid "UPDATE_ORG_UNIT_SETTING.circ.min_item_price"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.asset.stat_cat_sip_fields
-#: 950.data.seed-values.sql:20018
+#: 950.data.seed-values.sql:20021
 msgid "Grid Config: admin.server.asset.stat_cat_sip_fields"
 msgstr ""
 
@@ -16027,7 +16028,7 @@ msgid "User may reset a default entry in a patron statistical category"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.authority.browse_axis
-#: 950.data.seed-values.sql:20032
+#: 950.data.seed-values.sql:20035
 msgid "Grid Config: admin.server.authority.browse_axis"
 msgstr ""
 
@@ -16140,7 +16141,7 @@ msgid "Aliant"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.local.rating.badge
-#: 950.data.seed-values.sql:18987
+#: 950.data.seed-values.sql:18990
 msgid "Grid Config: admin.local.rating.badge"
 msgstr ""
 
@@ -16251,7 +16252,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.patron_data
-#: 950.data.seed-values.sql:19533
+#: 950.data.seed-values.sql:19536
 msgid "Print Template Context: patron_data"
 msgstr ""
 
@@ -16283,7 +16284,7 @@ msgid "ADMIN_INVOICE_METHOD"
 msgstr ""
 
 # id::aea.label__LINEITEM_REF_ID_ONLY
-#: 950.data.seed-values.sql:18047
+#: 950.data.seed-values.sql:18050
 msgid "Lineitem Reference Field (RFF) Uses Lineitem ID Only"
 msgstr ""
 
@@ -16330,7 +16331,7 @@ msgid "Allows a user to view a purchase order"
 msgstr ""
 
 # id::coust.description__ebook_api.overdrive.discovery_base_uri
-#: 950.data.seed-values.sql:17604
+#: 950.data.seed-values.sql:17607
 msgid ""
 "Base URI for OverDrive Discovery API (defaults to "
 "https://api.overdrive.com/v1). Using HTTPS here is strongly encouraged."
@@ -16347,12 +16348,12 @@ msgid "ADMIN_ACQ_DISTRIB_FORMULA"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.serials.pattern_template
-#: 950.data.seed-values.sql:19008
+#: 950.data.seed-values.sql:19011
 msgid "Grid Config: admin.serials.pattern_template"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.circ_matrix_weights
-#: 950.data.seed-values.sql:20102
+#: 950.data.seed-values.sql:20105
 msgid "Grid Config: admin.server.config.circ_matrix_weights"
 msgstr ""
 
@@ -16382,7 +16383,7 @@ msgid "overdue_equip_min"
 msgstr ""
 
 # id::cwst.label__eg.print.template.in_house_use_list
-#: 950.data.seed-values.sql:19484
+#: 950.data.seed-values.sql:19487
 msgid "Print Template: in_house_use_list"
 msgstr ""
 
@@ -16567,7 +16568,7 @@ msgid "Colorado "
 msgstr ""
 
 # id::coust.label__webstaff.format.date_and_time
-#: 950.data.seed-values.sql:17803
+#: 950.data.seed-values.sql:17806
 msgid "Format Date+Time with this pattern"
 msgstr ""
 
@@ -16577,7 +16578,7 @@ msgid "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event"
 msgstr ""
 
 # id::cwst.label__eg.circ.patron.search.show_extras
-#: 950.data.seed-values.sql:18924
+#: 950.data.seed-values.sql:18927
 msgid "Patron Search Show Extra Search Options"
 msgstr ""
 
@@ -16587,7 +16588,7 @@ msgid "Long Overdue Collection Fee"
 msgstr ""
 
 # id::cwst.label__cat.printlabels.default_template
-#: 950.data.seed-values.sql:18903
+#: 950.data.seed-values.sql:18906
 msgid "Print Label Default Template"
 msgstr ""
 
@@ -16731,7 +16732,7 @@ msgid "Manobo languages"
 msgstr ""
 
 # id::cuat.label__29
-#: 950.data.seed-values.sql:20337
+#: 950.data.seed-values.sql:20340
 msgid "Generic Login"
 msgstr ""
 
@@ -16771,7 +16772,7 @@ msgid "Gorontalo"
 msgstr ""
 
 # id::cwst.label__eg.circ.patron.summary.collapse
-#: 950.data.seed-values.sql:18826
+#: 950.data.seed-values.sql:18829
 msgid "Collaps Patron Summary Display"
 msgstr ""
 
@@ -16819,7 +16820,7 @@ msgid "Bilingual"
 msgstr ""
 
 # id::aea.label__INCLUDE_ITEM_BARCODE
-#: 950.data.seed-values.sql:17987
+#: 950.data.seed-values.sql:17990
 msgid "Orders Include Copy Barcodes"
 msgstr ""
 
@@ -16864,7 +16865,7 @@ msgid "Macedonian"
 msgstr ""
 
 # id::aea.label__INCLUDE_OWNING_LIB
-#: 950.data.seed-values.sql:17996
+#: 950.data.seed-values.sql:17999
 msgid "Orders Include Copy Owning Library"
 msgstr ""
 
@@ -16899,7 +16900,7 @@ msgid "Show prefix field on patron registration"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.auto_print_holds_transits
-#: 950.data.seed-values.sql:18777
+#: 950.data.seed-values.sql:18780
 msgid "Checkin: Auto-Print Holds and Transits"
 msgstr ""
 
@@ -16951,12 +16952,12 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.archived_messages
-#: 950.data.seed-values.sql:19211
+#: 950.data.seed-values.sql:19214
 msgid "Grid Config: circ.patron.archived_messages"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.floating_group
-#: 950.data.seed-values.sql:20130
+#: 950.data.seed-values.sql:20133
 msgid "Grid Config: admin.server.config.floating_group"
 msgstr ""
 
@@ -16972,7 +16973,7 @@ msgid "System: Rental"
 msgstr ""
 
 # id::cwst.label__booking.pickup.ready
-#: 950.data.seed-values.sql:20554
+#: 950.data.seed-values.sql:20557
 msgid "Grid Config: Booking Ready to pick up grid"
 msgstr ""
 
@@ -17020,7 +17021,7 @@ msgid "UPDATE_LASSO"
 msgstr ""
 
 # id::cwst.label__eg.print.template.transit_list
-#: 950.data.seed-values.sql:19582
+#: 950.data.seed-values.sql:19585
 msgid "Print Template: transit_list"
 msgstr ""
 
@@ -17214,7 +17215,7 @@ msgid "Heading -- Chronological Term"
 msgstr ""
 
 # id::cgf.label__history.money.retention_age
-#: 950.data.seed-values.sql:20691
+#: 950.data.seed-values.sql:20694
 msgid ""
 "Age billings and payments whose transactions were completed this long ago.  "
 "For circulation transactions, this setting is superseded by the "
@@ -17232,7 +17233,7 @@ msgid "Finland "
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.vandelay.merge_profile
-#: 950.data.seed-values.sql:19866
+#: 950.data.seed-values.sql:19869
 msgid "Grid Config: Vandelay Merge Profiles"
 msgstr ""
 
@@ -17265,7 +17266,7 @@ msgid "Maximum previous checkouts displayed"
 msgstr ""
 
 # id::cwst.label__booking.create.granularity
-#: 950.data.seed-values.sql:20614
+#: 950.data.seed-values.sql:20617
 msgid "Sticky setting for granularity combobox in Booking Create"
 msgstr ""
 
@@ -17288,7 +17289,7 @@ msgid "Filmographies"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.z3950_results
-#: 950.data.seed-values.sql:19113
+#: 950.data.seed-values.sql:19116
 msgid "Grid Config: cat.z3950_results"
 msgstr ""
 
@@ -17315,7 +17316,7 @@ msgid "Kyrgyzstan "
 msgstr ""
 
 # id::cwst.label__circ.checkout.strict_barcode
-#: 950.data.seed-values.sql:18861
+#: 950.data.seed-values.sql:18864
 msgid "Checkout: Strict Barcode"
 msgstr ""
 
@@ -17371,7 +17372,7 @@ msgid "Enable PayPal payments"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.items_out
-#: 950.data.seed-values.sql:19505
+#: 950.data.seed-values.sql:19508
 msgid "Print Template Context: items_out"
 msgstr ""
 
@@ -17453,7 +17454,7 @@ msgid "Malformed record cause Overlay failure"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.config.usr_activity_type
-#: 950.data.seed-values.sql:20228
+#: 950.data.seed-values.sql:20231
 msgid "Grid Config: admin.server.config.usr_activity_type"
 msgstr ""
 
@@ -17510,7 +17511,7 @@ msgid "Sogdian"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.authority.thesaurus
-#: 950.data.seed-values.sql:20053
+#: 950.data.seed-values.sql:20056
 msgid "Grid Config: admin.server.authority.thesaurus"
 msgstr ""
 
@@ -17592,7 +17593,7 @@ msgid "computer chip cartridge"
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.inline_css
-#: 950.data.seed-values.sql:17521
+#: 950.data.seed-values.sql:17524
 msgid "Item Print Label - Inline CSS"
 msgstr ""
 
@@ -17602,17 +17603,17 @@ msgid "audio"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.renew
-#: 950.data.seed-values.sql:19141
+#: 950.data.seed-values.sql:19144
 msgid "Grid Config: circ.renew"
 msgstr ""
 
 # id::coust.label__circ.holds.calculated_age_proximity
-#: 950.data.seed-values.sql:20274
+#: 950.data.seed-values.sql:20277
 msgid "Use calculated proximity for age-protection check"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.noop
-#: 950.data.seed-values.sql:18763
+#: 950.data.seed-values.sql:18766
 msgid "Checkin: Suppress Holds and Transits"
 msgstr ""
 
@@ -17642,7 +17643,7 @@ msgid "Delayed: Delivered but Lost"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.hold_as_transit
-#: 950.data.seed-values.sql:18805
+#: 950.data.seed-values.sql:18808
 msgid "Checkin: Capture Local Holds as Transits"
 msgstr ""
 
@@ -17662,7 +17663,7 @@ msgid "Chad "
 msgstr ""
 
 # id::csg.label__ebook_api
-#: 950.data.seed-values.sql:17592
+#: 950.data.seed-values.sql:17595
 msgid "Ebook API Integration"
 msgstr ""
 
@@ -17702,7 +17703,7 @@ msgid "Enables the user to create/update/delete booking resources"
 msgstr ""
 
 # id::cwst.label__cat.holdings_show_vols
-#: 950.data.seed-values.sql:18889
+#: 950.data.seed-values.sql:18892
 msgid "Holdings View Show Volumes"
 msgstr ""
 
@@ -17740,7 +17741,7 @@ msgid "Sri Lanka "
 msgstr ""
 
 # id::acmr.name__2
-#: 950.data.seed-values.sql:20661
+#: 950.data.seed-values.sql:20664
 msgid "Teaching assistant"
 msgstr ""
 
@@ -17880,7 +17881,7 @@ msgid "Polish"
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.authorizationname
-#: 950.data.seed-values.sql:17662
+#: 950.data.seed-values.sql:17665
 msgid "OverDrive Authorization Name"
 msgstr ""
 
@@ -17895,7 +17896,7 @@ msgid "Gibraltar "
 msgstr ""
 
 # id::cwst.label__eg.print.template.items_out
-#: 950.data.seed-values.sql:19512
+#: 950.data.seed-values.sql:19515
 msgid "Print Template: items_out"
 msgstr ""
 
@@ -17905,7 +17906,7 @@ msgid "Allows a user to cancel a transit on a copy with status of MISSING"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.xact_details_details_payments
-#: 950.data.seed-values.sql:20638
+#: 950.data.seed-values.sql:20641
 msgid "Grid Config: circ.patron.xact_details_details_payments"
 msgstr ""
 
@@ -17940,12 +17941,12 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__booking.return.tab
-#: 950.data.seed-values.sql:20608
+#: 950.data.seed-values.sql:20611
 msgid "Sticky setting for tab in Booking Return"
 msgstr ""
 
 # id::coust.label__webstaff.cat.label.right_label.left_margin
-#: 950.data.seed-values.sql:17441
+#: 950.data.seed-values.sql:17444
 msgid "Item Print Label - Left Margin for Pocket Label"
 msgstr ""
 
@@ -17982,7 +17983,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.transits.list
-#: 950.data.seed-values.sql:19148
+#: 950.data.seed-values.sql:19151
 msgid "Grid Config: circ.transits.list"
 msgstr ""
 
@@ -18038,12 +18039,12 @@ msgid "Require county field on patron registration"
 msgstr ""
 
 # id::aea.label__INCLUDE_COPIES
-#: 950.data.seed-values.sql:17975
+#: 950.data.seed-values.sql:17978
 msgid "Orders Include Copy Data"
 msgstr ""
 
 # id::cwst.label__eg.grid.hopeless.wide_holds
-#: 950.data.seed-values.sql:19099
+#: 950.data.seed-values.sql:19102
 msgid "Grid Config: hopeless.wide_holds"
 msgstr ""
 
@@ -18058,12 +18059,12 @@ msgid "Vandelay Generate Default Barcodes"
 msgstr ""
 
 # id::cwst.label__eg.circ.checkin.void_overdues
-#: 950.data.seed-values.sql:18770
+#: 950.data.seed-values.sql:18773
 msgid "Checkin: Amnesty Mode"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.purchaseorders
-#: 950.data.seed-values.sql:20869
+#: 950.data.seed-values.sql:20872
 msgid "Grid Config: acq.provider.purchaseorders"
 msgstr ""
 
@@ -18151,7 +18152,7 @@ msgstr ""
 
 # id::coust.label__circ.curbside.granularity
 # id::coust.description__circ.curbside.granularity
-#: 950.data.seed-values.sql:20920 950.data.seed-values.sql:20924
+#: 950.data.seed-values.sql:20923 950.data.seed-values.sql:20927
 msgid "Time interval between curbside appointments"
 msgstr ""
 
@@ -18256,12 +18257,12 @@ msgid "Musical Sound Recording (Unknown Format)"
 msgstr ""
 
 # id::cwst.label__eg.grid.admin.server.authority.control_set
-#: 950.data.seed-values.sql:20039
+#: 950.data.seed-values.sql:20042
 msgid "Grid Config: admin.server.authority.control_set"
 msgstr ""
 
 # id::coust.description__ui.patron.edit.au.guardian.suggest
-#: 950.data.seed-values.sql:19938
+#: 950.data.seed-values.sql:19941
 msgid ""
 "The guardian field will be suggested on the patron registration screen. "
 "Suggesting a field makes it appear when suggested fields are shown. If the "
@@ -18274,7 +18275,7 @@ msgid "Allow a user to create a metarecord holds"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.holdings
-#: 950.data.seed-values.sql:20857
+#: 950.data.seed-values.sql:20860
 msgid "Grid Config: acq.provider.holdings"
 msgstr ""
 
@@ -18309,7 +18310,7 @@ msgid "Occitan (post-1500)"
 msgstr ""
 
 # id::ath.description__hold.offer_curbside
-#: 950.data.seed-values.sql:20968
+#: 950.data.seed-values.sql:20971
 msgid "Hook used to trigger the notification of an offer of curbside pickup"
 msgstr ""
 
@@ -18329,7 +18330,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.checkin
-#: 950.data.seed-values.sql:19365
+#: 950.data.seed-values.sql:19368
 msgid "Print Template Context: checkin"
 msgstr ""
 
@@ -18395,7 +18396,7 @@ msgid "ADMIN_ACQ_CLAIM_EVENT_TYPE"
 msgstr ""
 
 # id::at.name__|
-#: 950.data.seed-values.sql:18135
+#: 950.data.seed-values.sql:18138
 msgid "No attempt to code"
 msgstr ""
 
@@ -18410,7 +18411,7 @@ msgid "Override the ITEM_NOT_HOLDABLE event"
 msgstr ""
 
 # id::coust.label__ebook_api.overdrive.circulation_base_uri
-#: 950.data.seed-values.sql:17614
+#: 950.data.seed-values.sql:17617
 msgid "OverDrive Circulation API Base URI"
 msgstr ""
 
@@ -18460,7 +18461,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__cat.holdings_show_empty_org
-#: 950.data.seed-values.sql:18882
+#: 950.data.seed-values.sql:18885
 msgid "Holdings View Show Empty Orgs"
 msgstr ""
 
@@ -18475,17 +18476,17 @@ msgid "Russia (Federation) "
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.invoices
-#: 950.data.seed-values.sql:20863
+#: 950.data.seed-values.sql:20866
 msgid "Grid Config: acq.provider.invoices"
 msgstr ""
 
 # id::cwst.label__eg.print.template_context.offline_in_house_use
-#: 950.data.seed-values.sql:19645
+#: 950.data.seed-values.sql:19648
 msgid "Print Template Context: offline_in_house_use"
 msgstr ""
 
 # id::cwst.label__eg.print.template.hold_shelf_list
-#: 950.data.seed-values.sql:19470
+#: 950.data.seed-values.sql:19473
 msgid "Print Template: hold_shelf_list"
 msgstr ""
 
@@ -18505,7 +18506,7 @@ msgid "M-II"
 msgstr ""
 
 # id::cwst.label__eg.grid.circ.patron.billhistory_xacts
-#: 950.data.seed-values.sql:19680
+#: 950.data.seed-values.sql:19683
 msgid "Grid Config: circ.patron.billhistory_xacts"
 msgstr ""
 
@@ -18739,7 +18740,7 @@ msgid "Flamenco"
 msgstr ""
 
 # id::coust.description__ui.patron.edit.guardian_required_for_juv
-#: 950.data.seed-values.sql:19950
+#: 950.data.seed-values.sql:19953
 msgid ""
 "Require a value for the parent/guardian field in the patron editor for "
 "patrons marked as juvenile"
