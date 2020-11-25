@@ -32,7 +32,7 @@ $ nvm install --lts
 
 This tool does the rest of the work. You will be requried to supply these things:
 
-[cols=2*]
+[cols="2*"]
 |===
 
 |base-url
