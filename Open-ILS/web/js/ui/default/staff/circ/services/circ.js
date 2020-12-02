@@ -1521,11 +1521,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         ).result.then(function() {
             return egCore.pcrud.retrieve('ccs', 4)
                 .then(function(resp) {
-                    var promises = [];
+                    var promise = $q.when();
                     angular.forEach(copies, function(copy) {
-                        promises.push(service.mark_item(copy, resp, {}))
+                        promise = promise.then(function() {
+                            return service.mark_item(copy, resp, {});
+                        });
                     });
-                    return $q.all(promises);
+                    return promise;
                 });
         });
     }
