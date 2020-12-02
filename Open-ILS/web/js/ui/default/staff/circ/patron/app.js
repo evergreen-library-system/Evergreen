@@ -631,24 +631,26 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore , 
         if (recs.length == 0) return;
         var added_count = 0;
         var failed_count = 0;
-        var p = [];
+        var promise = $q.when();
         angular.forEach(recs,
             function(rec) {
                 var item = new egCore.idl.cubi();
                 item.bucket(data.id());
                 item.target_user(rec.id());
-                p.push(egCore.net.request(
-                    'open-ils.actor',
-                    'open-ils.actor.container.item.create',
-                    egCore.auth.token(), 'user', item
-                ).then(
+                promise = promise.then(function() {
+                    return egCore.net.request(
+                        'open-ils.actor',
+                        'open-ils.actor.container.item.create',
+                        egCore.auth.token(), 'user', item
+                    );
+                }).then(
                     function(){ added_count++ },
                     function(){ failed_count++ }
-                ));
+                );
             }
         );
 
-        $q.all(p).then( function () {
+        promise.then( function () {
             if (added_count) ngToast.create($interpolate(egCore.strings.BUCKET_ADD_SUCCESS)({ count: ''+added_count, name: data.name()} ));
             if (failed_count) ngToast.warning($interpolate(egCore.strings.BUCKET_ADD_FAIL)({ count: ''+failed_count, name: data.name() } ));
         });
