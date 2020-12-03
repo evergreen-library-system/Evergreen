@@ -72,6 +72,9 @@ FEDORA_RPMS = \
 	yaz
 
 export CPAN_MODULES = \
+	Geo::Coder::Free \
+	Geo::Coder::OSM \
+	Geo::Coder::Google \
 	Excel::Writer::XLSX \
 	Business::ISSN \
 	Net::Z3950::ZOOM \

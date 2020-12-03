@@ -1429,6 +1429,30 @@ sub get_my_org_path {
         $org_id );
 }
 
+__PACKAGE__->register_method(
+    method   => "retrieve_coordinates",
+    api_name => "open-ils.actor.geo.retrieve_coordinates",
+    signature => {
+        params => [
+            {desc => 'Authentication token', type => 'string' },
+            {type => 'number', desc => 'Context Organizational Unit'},
+            {type => 'string', desc => 'Address to look-up as a text string'}
+        ],
+        return => { desc => 'Hash/object containing latitude and longitude for the provided address.'}
+    }
+);
+
+sub retrieve_coordinates {
+    my( $self, $client, $auth, $org_id, $addr_string ) = @_;
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    $org_id = $e->requestor->ws_ou unless defined $org_id;
+
+    return $apputils->simple_scalar_request(
+        "open-ils.geo",
+        "open-ils.geo.retrieve_coordinates",
+        $org_id, $addr_string );
+}
 
 __PACKAGE__->register_method(
     method   => "patron_adv_search",

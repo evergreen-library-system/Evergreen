@@ -2,6 +2,8 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
+import {NetService} from '@eg/core/net.service';
+import {AuthService} from '@eg/core/auth.service';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 const ADDR_TYPES =
@@ -36,7 +38,9 @@ export class OrgAddressComponent {
     constructor(
         private idl: IdlService,
         private org: OrgService,
-        private pcrud: PcrudService
+	private pcrud: PcrudService,
+	private auth: AuthService,
+        private net: NetService
     ) {
         this.addrChange = new EventEmitter<IdlObject>();
         this.tabName = 'billing_address';
@@ -159,5 +163,26 @@ export class OrgAddressComponent {
         return org;
     }
 
+    getCoordinates($event: any) {
+        const addr = $event.record;
+
+        this.net.request(
+            'open-ils.actor',
+	    'open-ils.actor.geo.retrieve_coordinates',
+	    this.auth.token(),
+            addr.org_unit(),
+            addr.street1() + ' ' + addr.street2() + ', '
+            + addr.city() + ', ' + addr.state() + ' ' + addr.post_code()
+            + ' ' + addr.country()
+        ).subscribe(
+            (res) => {
+                addr.latitude( res.latitude );
+                addr.longitude( res.longitude );
+            },
+            (err) => {
+                console.error(err);
+            }
+        );
+    }
 }
 

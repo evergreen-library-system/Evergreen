@@ -1373,4 +1373,13 @@ VALUES
 
 SELECT SETVAL('config.carousel_type_id_seq'::TEXT, 100);
 
+CREATE TABLE config.geolocation_service (
+    id           SERIAL PRIMARY KEY,
+    active       BOOLEAN,
+    owner        INT NOT NULL, -- REFERENCES actor.org_unit (id)
+    name         TEXT,
+    service_code TEXT,
+    api_key      TEXT
+);
+
 COMMIT;

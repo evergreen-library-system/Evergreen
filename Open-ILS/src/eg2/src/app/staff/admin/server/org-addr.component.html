@@ -17,6 +17,9 @@
           [record]="addr(type)"
           fieldOrder="address_type,street1,street2,city,county,state,country,post_code,san,valid"
           >
+          <eg-fm-record-editor-action i18n-label label="Get Coordinates"
+            (actionClick)="getCoordinates($event)">
+          </eg-fm-record-editor-action>
           <eg-fm-record-editor-action i18n-label label="Delete" *ngIf="!addr(type).isnew()"
             (actionClick)="deleteAddress($event)" buttonCss="btn-warning">
           </eg-fm-record-editor-action>

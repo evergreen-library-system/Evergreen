@@ -736,6 +736,26 @@ vim:et:ts=4:sw=4:
                 </app_settings>
             </open-ils.booking>
 
+            <open-ils.geo>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>OpenILS::Application::Geo</implementation>
+                <max_requests>199</max_requests>
+                <unix_config>
+                    <unix_sock>open-ils.geo_unix.sock</unix_sock>
+                    <unix_pid>open-ils.geo_unix.pid</unix_pid>
+                    <max_requests>1000</max_requests>
+                    <unix_log>open-ils.geo_unix.log</unix_log>
+                    <min_children>1</min_children>
+                    <max_children>15</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>5</max_spare_children>
+                </unix_config>
+                <app_settings>
+                </app_settings>
+            </open-ils.geo>
+
             <open-ils.cat>
                 <keepalive>5</keepalive>
                 <stateless>1</stateless>
@@ -1357,6 +1377,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.ebook_api</appname>
                 <appname>open-ils.courses</appname>
                 <appname>open-ils.curbside</appname>
+                <appname>open-ils.geo</appname>
             </activeapps>
         </localhost>
     </hosts>

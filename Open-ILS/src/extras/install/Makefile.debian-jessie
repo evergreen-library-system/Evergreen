@@ -95,6 +95,9 @@ export DEB_APACHE_DISCONF = \
     serve-cgi-bin
 
 export CPAN_MODULES = \
+	Geo::Coder::Free \
+	Geo::Coder::OSM \
+	Geo::Coder::Google \
 	Business::OnlinePayment::PayPal \
 	Email::Send
 

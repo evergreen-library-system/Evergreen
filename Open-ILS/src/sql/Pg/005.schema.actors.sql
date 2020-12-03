@@ -663,7 +663,9 @@ CREATE TABLE actor.org_address (
 	state		TEXT,
 	country		TEXT	NOT NULL,
 	post_code	TEXT	NOT NULL,
-    san         TEXT
+	san			TEXT,
+	latitude	FLOAT,
+	longitude	FLOAT
 );
 
 CREATE INDEX actor_org_address_org_unit_idx ON actor.org_address (org_unit);

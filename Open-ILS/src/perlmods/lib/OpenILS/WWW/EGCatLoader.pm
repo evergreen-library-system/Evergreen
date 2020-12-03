@@ -364,6 +364,11 @@ sub load_common {
 
     $ctx->{carousel_loc} = $self->get_carousel_loc;
     $ctx->{physical_loc} = $self->get_physical_loc;
+    my $geo_sort = $e->retrieve_config_global_flag('opac.use_geolocation');
+    $geo_sort = ($geo_sort && $U->is_true($geo_sort->enabled));
+    my $geo_org = $ctx->{physical_loc} || $self->cgi->param('loc') || $ctx->{aou_tree}->()->id;
+    my $geo_sort_for_org = $ctx->{get_org_setting}->($geo_org, 'opac.holdings_sort_by_geographic_proximity');
+    $ctx->{geo_sort} = $geo_sort && $U->is_true($geo_sort_for_org);
 
     # capture some commonly accessed pages
     $ctx->{home_page} = $ctx->{proto} . '://' . $ctx->{hostname} . $self->ctx->{opac_root} . "/home";

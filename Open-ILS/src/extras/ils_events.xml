@@ -947,6 +947,15 @@
 	<event code='7032' textcode='CURBSIDE_EXISTS'>
 		<desc xml:lang="en-US">A scheduled, unfilled curbside request already exists</desc>
 	</event>
+	<event code='7033' textcode='GEOCODING_NOT_ENABLED'>
+		<desc xml:lang="en-US">Geo-Coding is not enabled for this installation</desc>
+	</event>
+	<event code='7034' textcode='GEOCODING_NOT_ALLOWED'>
+		<desc xml:lang="en-US">A Geographic Location Service is not configured for this library</desc>
+	</event>
+	<event code='7035' textcode='GEOCODING_LOCATION_NOT_FOUND'>
+		<desc xml:lang="en-US">No location returned by Geographic Location Service</desc>
+	</event>
 
 
 	<!-- ================================================================ -->

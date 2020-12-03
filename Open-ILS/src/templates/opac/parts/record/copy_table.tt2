@@ -31,6 +31,13 @@ IF has_copies or ctx.foreign_copies;
   total_copies = ctx.copy_summary.$depth.count;
 %]
 [% use_courses = (ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1) ? 1 : 0 %]
+[% IF ctx.geo_sort %]
+<th colspan="6">
+    [% l("Sort by distance from:") %]
+    <input type="text" id="geographic-location-box" name="geographic-location" aria-label="[% l('Enter address or postal code') %]" placeholder="[% l('Enter address/postal code') %]" class="search-box" x-webkit-speech=""></input>
+    <input id="geographic-location-submit-go" type="submit" value="[% l('Go') %]" class="opac-button" onclick=""></input>
+</th>
+[% END %]
 <table class="table_no_border_space table_no_cell_pad table_no_border" width="100%" id="rdetails_status">
     <thead>
         <tr>
