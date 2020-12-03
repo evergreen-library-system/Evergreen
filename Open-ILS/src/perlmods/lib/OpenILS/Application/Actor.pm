@@ -40,6 +40,7 @@ use OpenILS::Utils::BadContact;
 use List::Util qw/max reduce/;
 
 use UUID::Tiny qw/:std/;
+use HTML::Defang;
 
 sub initialize {
     OpenILS::Application::Actor::Container->initialize();
@@ -236,11 +237,13 @@ sub set_ou_settings {
 
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
+    my $defang = HTML::Defang->new;
 
     my $all_allowed = $e->allowed("UPDATE_ORG_UNIT_SETTING_ALL", $org_id);
 
     for my $name (keys %$settings) {
         my $val = $$settings{$name};
+        if ($name eq 'opac.patron.custom_css') { $val = $defang->defang($val); }
 
         my $type = $e->retrieve_config_org_unit_setting_type([
             $name,
