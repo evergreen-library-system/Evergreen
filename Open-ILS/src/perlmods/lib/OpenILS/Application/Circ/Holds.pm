@@ -105,7 +105,7 @@ sub test_and_create_hold_batch {
         my $res;
         ($res) = $self->method_lookup(
             'open-ils.circ.title_hold.is_possible')->run($auth, $params, $override ? $oargs : {});
-        if ($res->{'success'} == 1) {
+        if ($res->{'success'} == 1 || ($override && $res->{place_unfillable})) {
 
             $params->{'depth'} = $res->{'depth'} if $res->{'depth'};
 
