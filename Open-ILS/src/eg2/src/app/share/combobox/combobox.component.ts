@@ -107,6 +107,10 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
     @Input() idlBaseQuery: any = null;
     @Input() startIdFiresOnChange: boolean;
 
+    // This will be appended to the async data retrieval query
+    // when fetching objects by idlClass.
+    @Input() idlQueryAnd: {[field: string]: any};
+
     // Allow the selected entry ID to be passed via the template
     // This does NOT not emit onChange events.
     @Input() set selectedId(id: any) {
@@ -263,6 +267,9 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                 }
                 const extra_args = { order_by : {} };
                 args[field] = {'ilike': `%${term}%`}; // could -or search on label
+                if (this.idlQueryAnd) {
+                    Object.assign(args, this.idlQueryAnd);
+                }
                 extra_args['order_by'][this.idlClass] = field;
                 extra_args['limit'] = 100;
                 if (this.idlIncludeLibraryInLabel) {
