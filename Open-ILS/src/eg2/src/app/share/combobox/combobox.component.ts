@@ -475,12 +475,14 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
             return of(term);
         }
 
-        let searchTerm: string;
-        searchTerm = term;
-        if (searchTerm === '_CLICK_') {
+        let searchTerm = term;
+        if (term === '_CLICK_') {
             if (this.asyncSupportsEmptyTermClick) {
+                // Search for "all", but retain and propage the _CLICK_
+                // term so the filter knows to open the selector
                 searchTerm = '';
             } else {
+                // Skip the final filter map and display nothing.
                 return of();
             }
         }
@@ -532,17 +534,8 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                 // click action occurred.
                 if (term === '') { return []; }
 
-                // Clicking always displays the full list.
-                if (term === '_CLICK_') {
-                    if (this.asyncDataSource) {
-                        term = '';
-                    } else {
-                        // Give the typeahead a chance to open before applying
-                        // the disabled entry styling.
-                        setTimeout(() => this.applyDisableStyle());
-                        return this.entrylist;
-                    }
-                }
+                // If we make it this far, _CLICK_ means show everything.
+                if (term === '_CLICK_') { term = ''; }
 
                 // Give the typeahead a chance to open before applying
                 // the disabled entry styling.
