@@ -4,8 +4,8 @@
       <option value="">[% l('-- Basket Actions --') %]</option>
       <option value="[% mkurl(ctx.opac_root _ '/mylist', {}) %]">[% l('View Basket') %]</option>
       <option value="[% mkurl(ctx.opac_root _ '/mylist/move', { action => 'place_hold', entire_list => 1 }) %]">[% l('Place Holds') %]</option>
-      <option value="[% mkurl(ctx.opac_root _ '/mylist/print', {}) %]">[% l('Print Title Details') %]</option>
-      <option value="[% mkurl(ctx.opac_root _ '/mylist/email', {}) %]">[% l('Email Title Details') %]</option>
+      <option value="[% mkurl(ctx.opac_root _ '/mylist/move', { action => 'print', entire_list => 1}) %]">[% l('Print Title Details') %]</option>
+      <option value="[% mkurl(ctx.opac_root _ '/mylist/move', { action => 'email', entire_list => 1}) %]">[% l('Email Title Details') %]</option>
       [% IF !ctx.is_browser_staff %]
       <option value="[% mkurl(ctx.opac_root _ '/myopac/lists', { move_cart_by_default => 1, from_basket => 1 }) %]">[% l('Add Basket to Saved List') %]</option>
       [% END %]

@@ -7,14 +7,13 @@
     <br class="clear-both" />
     <div id="content-wrapper" class="content-wrapper-record-page">
         <div id='main-content'>
-            [% IF ctx.user.email %]
             <div class="alert alert-success" role="alert">
-                <h2>[% l('Your email has been queued for delivery to [_1]', ctx.user.email ) %]</h2>
+                <h2>[% l('Your email has been queued for delivery to [_1]', ctx.email ) %]</h2>
             </div>
-            [% ELSE %]
+            [% IF ctx.user && !ctx.user.email %]
             <div class="alert alert-danger" role="alert">
             <h2>
-                [% here_link_text = "<a href=\"${ctx.opac_root}/myopac/update_email?return_to_referer=1\">";
+                [% here_link_text = "<a href=\"${ctx.opac_root}/myopac/update_email\">";
                    here_link_text = here_link_text _ l("Set your email address here");
                    here_link_text = here_link_text _ "</a>";
                    l('Your account does not currently have an email address set. [_1]', here_link_text) %]

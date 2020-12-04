@@ -1,0 +1,85 @@
+[%- PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Print Record Preview");
+    PROCESS "opac/parts/org_selector.tt2";
+-%]
+    <h2 class="sr-only">[% l('Print Record Preview') %]</h2>
+    [% INCLUDE "opac/parts/searchbar.tt2" %]
+    <br class="clear-both" />
+    <div id="content-wrapper" class="content-wrapper-record-page">
+
+    <form id="previewForm" action="[% mkurl('',{},['locg','format','sort','sort_dir','context_org','bre_id','is_list']) %]">
+        <input type="hidden" name="old_event" value="[% ctx.preview_record.id %]"/>
+        <input type="hidden" name="bre_id" value="[% ctx.bre_id %]"/>
+        <input type="hidden" name="locg" value="[% ctx.selected_print_email_loc %]"/>
+        <input type="hidden" name="is_list" value="[% ctx.is_list %]"/>
+        <input type="hidden" name="redirect_to" value="[% ctx.redirect_to | html %]"/>
+
+        <div class="searchbar">
+            <label for="formats">[% l('Format: ') %]
+                <select class="form-control w-100" id="formats" name="format">
+                    [% FOR f IN ctx.formats %]
+                        [% IF !ctx.format_obj; ctx.format_obj = f; END %]
+                        <option [% IF f.id == ctx.format; ctx.format_obj = f; 'selected="selected"'; END %] value="[% f.id %]">[% f.name | html %]</option>
+                    [% END %]
+                </select>
+            </label>
+        </div>
+
+        [% IF ctx.is_list == '1' %]
+        <div class="searchbar">
+            <label for="sortby">[% l('Sort by: ') %]
+                <select id="sortby" name="sort">
+                    <option [% IF ctx.sort == 'author'; 'selected="selected"'; END %] value="author">[% l('Author') %]</option>
+                    <option [% IF ctx.sort == 'title'; 'selected="selected"'; END %] value="title">[% l('Title') %]</option>
+                    <option [% IF ctx.sort == 'pubdate'; 'selected="selected"'; END %] value="pubdate">[% l('Publication Date') %]</option>
+                </select>
+                <select id="sort_dir" name="sort_dir">
+                    <option [% IF ctx.sort_dir == 'ascending'; 'selected="selected"'; END %] value="ascending">[% l('Ascending') %]</option>
+                    <option [% IF ctx.sort_dir == 'descending'; 'selected="selected"'; END %] value="descending">[% l('Descending') %]</option>
+                </select>
+            </label>
+        </div>
+        [% END %]
+
+        [% IF ctx.format_obj.holdings == 't' %]
+        <div class="searchbar">
+            <label for="context_org">[% l('Holdings Library: ') %]
+                [% INCLUDE build_org_selector id='context_org' name='context_org' value=ctx.selected_print_email_loc %]</br>
+            </label>
+        </div>
+        [% END %]
+
+        <br/>
+        <div class="searchbar">
+            <button type="submit" class="btn btn-confirm" >[% l("Update") %]</button>
+        </div>
+        <br/>
+        <hr/>
+       
+        [% IF ctx.preview_record.template_output %]
+        <div class="searchbar">
+            <a class="btn btn-confirm" href="[% mkurl('../print/' _ ctx.preview_record.id, {redirect_to => ctx.redirect_to}) %]">[% l("Print Now") %]</a> |
+            <a class="btn btn-confirm" href="[% ctx.redirect_to | html %]">[% l("Return") %]</a>
+        </div>
+            <br/>
+            <div>[% ctx.preview_record.template_output.data %]</div>
+        [% ELSE %]
+            <div class="alert alert-danger" role="alert">
+                [% l(
+                    'Error previewing record: [_1]',
+                        (ctx.preview_record.textcode ? ctx.preview_record.textcode _ ' / ' _ ctx.preview_record.desc : 0) ||
+                        ctx.preview_record.error_output.data ||
+                        l('No record data returned from server')
+                    ) | html %]
+            </div>
+            <hr />
+            <div>
+                <a class="opac-button" href="[% ctx.redirect_to | html %]">[% l("Return") %]</a>
+            </div>
+        [% END %]
+        <br class="clear-both" />
+    </form>
+    </div>
+[%- END %]
