@@ -415,9 +415,9 @@ ctx.metalinks.push('
 
                
                   
-                    <a href="[% mkurl(ctx.opac_root _ '/record/print/' _ ctx.bre_id) %]" class="btn btn-action" role="button" rel="nofollow"
+                    <a href="[% mkurl(ctx.opac_root _ '/record/print_preview/' _ ctx.bre_id) %]" class="btn btn-action" role="button" rel="nofollow"
                         vocab=""><i class="fas fa-print" aria-hidden="true"></i>[% l('Print') %]</a> 
-                    <a href="[% mkurl(ctx.opac_root _ '/record/email/' _ ctx.bre_id) %]" class="btn btn-action" role="button" rel="nofollow"
+                    <a href="[% mkurl(ctx.opac_root _ '/record/email_preview/' _ ctx.bre_id) %]" class="btn btn-action" role="button" rel="nofollow"
                         vocab=""> <i class="fas fa-envelope-open-text" aria-hidden="true"></i>[% l('Email') %]</a>
                 
                 [%- IF ctx.refworks.enabled == 'true' %]
