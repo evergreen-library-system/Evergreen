@@ -82,6 +82,8 @@ export class MarcRecord {
     absorbBreakerChanges() {
         this.record = new MARC21.Record(
             {marcbreaker: this.breakerText, delimiter: DELIMITER});
+        // Replacing the underlying record means regenerating the field metadata
+        this.stampFieldIds();
     }
 
     extractFixedField(fieldCode: string): string {
