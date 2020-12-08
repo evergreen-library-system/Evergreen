@@ -79,6 +79,8 @@
     <eg-grid-field path="circulation.target_copy.*" hidden></eg-grid-field>
     <eg-grid-field path="circulation.target_copy.call_number.*" hidden></eg-grid-field>
     -->
+
+    <eg-grid-field path="check_payment.check_number" label="[% l('Check Number') %]" hidden></eg-grid-field>
   </eg-grid>
 </div>
 

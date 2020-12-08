@@ -56,6 +56,9 @@
   <eg-grid-field path="accepting_usr.home_ou.shortname" name="staff_org"
     label="[% l('Staff Org Unit') %]" hidden required></eg-grid-field>
 
+  <eg-grid-field path="check_payment.check_number"
+    label="[% l('Check Number') %]" hidden></eg-grid-field>
+
 </eg-grid>
 
 </div>
