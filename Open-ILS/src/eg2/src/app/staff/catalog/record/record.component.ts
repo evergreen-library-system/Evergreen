@@ -66,6 +66,8 @@ export class RecordComponent implements OnInit {
             this.recordId = +params.get('id');
             this.searchContext = this.staffCat.searchContext;
 
+            this.store.setLocalItem('eg.cat.last_record_retrieved', this.recordId);
+
             if (!this.recordTab) {
                 this.recordTab = this.defaultTab || 'item_table';
             }
