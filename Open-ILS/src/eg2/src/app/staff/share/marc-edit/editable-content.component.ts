@@ -1,5 +1,5 @@
 import {ElementRef, Component, Input, Output, OnInit, OnDestroy,
-    ViewChild, EventEmitter, AfterViewInit, Renderer2} from '@angular/core';
+    ViewChild, EventEmitter, AfterViewInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {filter} from 'rxjs/operators';
 import {MarcRecord, MarcField, MarcSubfield} from './marcrecord';
@@ -22,6 +22,8 @@ import {TagTable} from './tagtable.service';
 export class EditableContentComponent
     implements OnInit, AfterViewInit, OnDestroy {
 
+    static idGen = 0;
+
     @Input() context: MarcEditContext;
     @Input() field: MarcField;
     @Input() fieldType: MARC_EDITABLE_FIELD_TYPE = null;
@@ -43,7 +45,7 @@ export class EditableContentComponent
     get record(): MarcRecord { return this.context.record; }
 
     bigText = false;
-    randId = Math.floor(Math.random() * 100000);
+    randId = 'editable-content-' + EditableContentComponent.idGen++;
     editInput: any; // <input/> or <div contenteditable/>
     maxLength: number = null;
 
@@ -72,8 +74,6 @@ export class EditableContentComponent
     @ViewChild('insertBefore', {static: false}) insertBeforeStr: StringComponent;
     @ViewChild('insertAfter', {static: false}) insertAfterStr: StringComponent;
     @ViewChild('deleteField', {static: false}) deleteFieldStr: StringComponent;
-
-    constructor(private renderer: Renderer2) {}
 
     tt(): TagTable { // for brevity
         return this.context.tagTable;
@@ -387,8 +387,7 @@ export class EditableContentComponent
     }
 
     ngAfterViewInit() {
-        this.editInput = // numeric id requires [id=...] query selector
-            this.renderer.selectRootElement(`[id='${this.randId}']`);
+        this.editInput = document.getElementById(this.randId + '');
 
         // Initialize the editable div
         this.editInput.innerText = this.getContent();
