@@ -40,6 +40,42 @@ RETURNS INTEGER AS $$
     );
 $$ LANGUAGE SQL STABLE;
 
+-- geolocation-aware variant
+CREATE OR REPLACE FUNCTION evergreen.rank_ou(lib INT, search_lib INT, pref_lib INT, plat FLOAT, plon FLOAT)
+RETURNS INTEGER AS $$
+    SELECT COALESCE(
+
+        -- lib matches search_lib
+        (SELECT CASE WHEN $1 = $2 THEN -20000 END),
+
+        -- lib matches pref_lib
+        (SELECT CASE WHEN $1 = $3 THEN -10000 END),
+
+
+        -- pref_lib is a child of search_lib and lib is a child of pref lib.  
+        -- For example, searching CONS, pref lib is SYS1, 
+        -- copies at BR1 and BR2 sort to the front.
+        (SELECT distance - 5000
+            FROM actor.org_unit_descendants_distance($3) 
+            WHERE id = $1 AND $3 IN (
+                SELECT id FROM actor.org_unit_descendants($2))),
+
+        -- lib is a child of search_lib
+        (SELECT distance FROM actor.org_unit_descendants_distance($2) WHERE id = $1),
+
+        -- all others pay cash
+        1000
+    ) + ((SELECT CASE WHEN addr.latitude IS NULL THEN 0 ELSE -20038 END) + (earth_distance( -- shortest GC distance is returned, only half the circumfrence is needed
+            ll_to_earth(
+                COALESCE(addr.latitude,plat), -- if the org has no coords, we just
+                COALESCE(addr.longitude,plon) -- force 0 distance and let the above tie-break
+            ),ll_to_earth(plat,plon)
+        ) / 1000)::INT ) -- earth_distance is in meters, convert to kilometers and subtract from largest distance
+    FROM actor.org_unit org
+		 LEFT JOIN actor.org_address addr ON (org.billing_address = addr.id)
+	WHERE org.id = $1;
+$$ LANGUAGE SQL STABLE;
+
 -- this version exists mainly to accommodate JSON query transform limitations
 -- (the transform argument must be an IDL field, not an entire row/object)
 -- XXX is there another way?

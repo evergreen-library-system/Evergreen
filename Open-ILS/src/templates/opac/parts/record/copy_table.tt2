@@ -32,11 +32,17 @@ IF has_copies or ctx.foreign_copies;
 %]
 [% use_courses = (ctx.get_org_setting(ctx.aou_tree.id, 'circ.course_materials_opt_in') == 1) ? 1 : 0 %]
 [% IF ctx.geo_sort %]
+<form method="GET">
+[% FOREACH p IN CGI.params.keys; NEXT IF p == 'geographic-location' %]
+  <input type="hidden" name="[% p | html %]" value="[% CGI.params.$p | html %]"/>
+[% END %]
+<span with="50%">
 <th colspan="6">
     [% l("Sort by distance from:") %]
-    <input type="text" id="geographic-location-box" name="geographic-location" aria-label="[% l('Enter address or postal code') %]" placeholder="[% l('Enter address/postal code') %]" class="search-box" x-webkit-speech=""></input>
-    <input id="geographic-location-submit-go" type="submit" value="[% l('Go') %]" class="opac-button" onclick=""></input>
-</th>
+    <input type="text" id="geographic-location-box" name="geographic-location" aria-label="[% l('Enter address or postal code') %]" placeholder="[% l('Enter address/postal code') %]" class="search-box" x-webkit-speech="" value="[% p = 'geographic-location'; CGI.params.$p %]"></input>
+    <button type="submit" class="opac-button">[% l('Go') %]</button>
+</span>
+</form>
 [% END %]
 <table class="table_no_border_space table_no_cell_pad table_no_border" width="100%" id="rdetails_status">
     <thead>

@@ -341,10 +341,26 @@ sub mk_copy_query {
         }};
     };
 
+	my $ou_sort_param = [$org, $pref_ou ];
+	my $gl = $self->cgi->param('geographic-location');
+	if ($gl) {
+		my $geo = OpenSRF::AppSession->create("open-ils.geo");
+		my $coords = $geo
+			->request('open-ils.geo.retrieve_coordinates', $org, scalar $gl)
+			->gather(1);
+		if ($coords
+			&& ref($coords)
+			&& $$coords{latitude}
+			&& $$coords{longitude}
+		) {
+			push(@$ou_sort_param, $$coords{latitude}, $$coords{longitude});
+		}
+	}
+
     # Unsure if we want these in the shared function, leaving here for now
     unshift(@{$query->{order_by}},
         { class => "aou", field => 'id',
-          transform => 'evergreen.rank_ou', params => [$org, $pref_ou]
+          transform => 'evergreen.rank_ou', params => $ou_sort_param
         }
     );
     push(@{$query->{order_by}},
