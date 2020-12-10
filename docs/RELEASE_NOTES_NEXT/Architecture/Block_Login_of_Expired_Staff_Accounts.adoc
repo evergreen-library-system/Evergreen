@@ -1,0 +1,39 @@
+Block Login of Expired Staff Accounts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen now has the ability to prevent staff users whose
+accounts have expired from logging in. This is controlled
+by the new global flag "auth.block_expired_staff_login", which
+is not enabled by default. If that flag is turned on, accounts
+that have the `STAFF_LOGIN` permission and whose expiration date
+is in the past are prevented from logging into any Evergreen
+interface, including the staff client, the public catalog, and SIP2.
+
+It should be noted that ordinary patrons are allowed to log into
+the public catalog if their circulation privileges have expired. This
+feature prevents expired staff users from logging into the public catalog
+(and all other Evergreen interfaces and APIs) outright in order to
+prevent them from getting into the staff interface anyway by
+creative use of Evergreen's authentication APIs.
+
+Evergreen admins are advised to check the expiration status of staff
+accounts before turning on the global flag, as otherwise it is
+possible to lock staff users out unexpectedly. The following SQL
+query will identify expired but otherwise un-deleted users that
+would be blocked by turning on the flag:
+
+[source,sql]
+----
+SELECT DISTINCT usrname, expire_date
+FROM actor.usr au, permission.usr_has_perm_at_all(id, 'STAFF_LOGIN')
+WHERE active
+AND NOT deleted
+AND NOT barred
+AND expire_date < NOW()
+----
+
+Note that this query can take a long time to run in large databases
+given the general way that it checks for users that have the
+`STAFF_LOGIN` permission. Replacing the use of
+`permission.usr_has_perm_at_all()` with a query on expired users
+with profiles known to have the `STAFF_LOGIN` permission will
+be much faster.

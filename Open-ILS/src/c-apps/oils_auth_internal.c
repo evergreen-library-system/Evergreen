@@ -1,3 +1,7 @@
+#define _XOPEN_SOURCE
+#include <time.h>
+#include <string.h>
+#include <strings.h>
 #include "opensrf/osrf_app_session.h"
 #include "opensrf/osrf_application.h"
 #include "opensrf/osrf_settings.h"
@@ -16,6 +20,8 @@
 #define OILS_AUTH_STAFF "staff"
 #define OILS_AUTH_TEMP "temp"
 #define OILS_AUTH_PERSIST "persist"
+
+#define BLOCK_EXPIRED_STAFF_LOGIN_FLAG "auth.block_expired_staff_login"
 
 // Default time for extending a persistent session: ten minutes
 #define DEFAULT_RESET_INTERVAL 10 * 60
@@ -374,6 +380,73 @@ int oilsAuthInternalCreateSession(osrfMethodContext* ctx) {
     return 0;
 }
 
+int _checkIfExpiryDatePassed(const char *expire_date) {
+
+    struct tm expire_tm;
+    memset(&expire_tm, 0, sizeof(expire_tm));
+    strptime(expire_date, "%FT%T%z", &expire_tm);
+    time_t now = time(NULL);
+    time_t expire_time_t = mktime(&expire_tm);
+    if (now > expire_time_t) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int _blockExpiredStaffLogin(osrfMethodContext* ctx, int user_id) {
+    // check global flag whether we're supposed to block or not
+    jsonObject *cgfObj = NULL, *params = NULL;
+    params = jsonNewObject(BLOCK_EXPIRED_STAFF_LOGIN_FLAG);
+    cgfObj = oilsUtilsCStoreReqCtx(
+        ctx, "open-ils.cstore.direct.config.global_flag.retrieve", params);
+    jsonObjectFree(params);
+
+    int may_block_login = 0;
+    char* tmp_str = NULL;
+    if (cgfObj && cgfObj->type != JSON_NULL) {
+        tmp_str = oilsFMGetString(cgfObj, "enabled");
+        if (oilsUtilsIsDBTrue(tmp_str)) {
+            may_block_login = 1;
+        }
+        free(tmp_str);
+    }
+    jsonObjectFree(cgfObj);
+
+    if (!may_block_login) {
+        return 0;
+    }
+
+    // OK, we're supposed to block logins by expired staff accounts,
+    // so let's see if the account is one. We'll do so by seeing
+    // if the account has the STAFF_LOGIN permission anywhere. We
+    // are _not_ checking the login_type, as blocking 'staff' and
+    // 'temp' logins still leaves open the possibility of constructing
+    // an 'opac'-type login that _also_ sets a workstation, which
+    // in turn could be used to set an authtoken cookie that works
+    // in the staff interface. This means, that unlike ordinary patrons,
+    // a staff account that expires will not be able to log into
+    // the public catalog... but then, staff members really ought
+    // to be using a separate account when acting as a library patron
+    // anyway.
+
+    int block_login = 0;
+
+    // using the root org unit as the context org unit.
+    int org_id = -1;
+    char* perms[1];
+    perms[0] = "STAFF_LOGIN";
+    oilsEvent* response = oilsUtilsCheckPerms(user_id, org_id, perms, 1);
+
+    if (!response) {
+        // user has STAFF_LOGIN, so should be blocked
+        block_login = 1;
+    } else {
+        oilsEventFree(response);
+    }
+
+    return block_login;
+}
 
 int oilsAuthInternalValidate(osrfMethodContext* ctx) {
     OSRF_METHOD_VERIFY_CONTEXT(ctx);
@@ -394,7 +467,8 @@ int oilsAuthInternalValidate(osrfMethodContext* ctx) {
     jsonObject *userObj = NULL, *params = NULL;
     char* tmp_str = NULL;
     int user_exists = 0, user_active = 0, 
-        user_barred = 0, user_deleted = 0;
+        user_barred = 0, user_deleted = 0,
+        expired = 0;
 
     // Confirm user exists, active=true, barred=false, deleted=false
     params = jsonNewNumberStringObject(user_id);
@@ -416,10 +490,23 @@ int oilsAuthInternalValidate(osrfMethodContext* ctx) {
         tmp_str = oilsFMGetString(userObj, "deleted");
         user_deleted = oilsUtilsIsDBTrue(tmp_str);
         free(tmp_str);
+
+        tmp_str = oilsFMGetString(userObj, "expire_date");
+        expired = _checkIfExpiryDatePassed(tmp_str);
+        free(tmp_str);
     }
 
     if (!user_exists || user_barred || user_deleted) {
         response = oilsNewEvent(OILS_LOG_MARK_SAFE, OILS_EVENT_AUTH_FAILED);
+    }
+
+    if (!response && expired) {
+        if (_blockExpiredStaffLogin(ctx, atoi(user_id))) {
+            tmp_str = oilsFMGetString(userObj, "usrname");
+            osrfLogWarning( OSRF_LOG_MARK, "Blocked login for expired staff user %s", tmp_str );
+            free(tmp_str);
+            response = oilsNewEvent(OILS_LOG_MARK_SAFE, OILS_EVENT_AUTH_FAILED);
+        }
     }
 
     if (!response && !user_active) {
