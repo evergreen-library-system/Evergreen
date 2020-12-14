@@ -18,6 +18,7 @@ my $new_items_query = q(
     AND acp.circ_lib IN (ORG_LIST)
     AND acp.holdable
     AND acp.circulate
+    AND acp.deleted is false
     AND ccs.holdable
     AND acpl.holdable
     AND acpl.circulate
@@ -42,6 +43,7 @@ WITH c_attr AS (SELECT c_attrs::query_int AS vis_test FROM asset.patron_default_
     AND acp.circ_lib IN (ORG_LIST)
     AND acp.holdable
     AND acp.circulate
+    AND acp.deleted is false
     AND ccs.holdable
     AND acpl.holdable
     AND acpl.circulate
@@ -67,6 +69,7 @@ my $top_circs_query = q(
     AND acp.circ_lib IN (ORG_LIST)
     AND acp.holdable
     AND acp.circulate
+    AND acp.deleted is false
     AND ccs.holdable
     AND acpl.holdable
     AND acpl.circulate
@@ -92,6 +95,7 @@ my $new_by_loc_query = q(
     -- LOC AND acp.location IN (LOC_LIST)
     AND acp.holdable
     AND acp.circulate
+    AND acp.deleted is false
     AND ccs.holdable
     AND acpl.holdable
     AND acpl.circulate
