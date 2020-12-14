@@ -13,6 +13,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {notBeforeMomentValidator} from '@eg/share/validators/not_before_moment_validator.directive';
 import {PatronBarcodeValidator} from '@eg/share/validators/patron_barcode_validator.directive';
+import {PatronSearchDialogComponent} from '@eg/staff/share/patron/search-dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
@@ -52,6 +53,7 @@ export class CreateReservationDialogComponent
     public disableOrgs: () => number[];
     addBresv$: () => Observable<any>;
     @ViewChild('fail', { static: true }) private fail: AlertDialogComponent;
+    @ViewChild('patronSearch') patronSearch: PatronSearchDialogComponent;
 
     handlePickupLibChange: ($event: IdlObject) => void;
 
@@ -73,8 +75,6 @@ export class CreateReservationDialogComponent
     ngOnInit() {
 
         this.create = new FormGroup({
-            // TODO: replace this control with a patron search form
-            // when available in the Angular client
             'patronBarcode': new FormControl('',
                 [Validators.required],
                 [this.pbv.validate]
@@ -193,6 +193,16 @@ export class CreateReservationDialogComponent
     addBresvAndOpenPatronReservations = (): void => {
         this.addBresv$()
         .subscribe(() => this.openPatronReservations());
+    }
+
+    searchPatrons() {
+        this.patronSearch.open({size: 'xl'}).toPromise().then(
+            patrons => {
+                if (!patrons || patrons.length === 0) { return; }
+                const user = patrons[0];
+                this.create.patchValue({patronBarcode: user.card().barcode()});
+            }
+        );
     }
 
     get emailNotify() {

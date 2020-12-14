@@ -1,3 +1,5 @@
+<eg-patron-search-dialog #patronSearch>
+</eg-patron-search-dialog>
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h3 class="modal-title" i18n>Confirm Reservation Details</h3>
@@ -11,8 +13,15 @@
     <div class="form-group row">
       <label class="col-lg-4 text-right font-weight-bold"
         i18n for="create-patron-barcode">Patron barcode</label>
-      <input type="text" id="create-patron-barcode"
-        class="form-control col-lg-7" formControlName="patronBarcode" [disabled]="patronId">
+      <div class="col-lg-7">
+        <input type="text" id="create-patron-barcode"
+        class="form-control " formControlName="patronBarcode" [disabled]="patronId">
+        <button class="btn btn-outline-dark btn-sm" (click)="searchPatrons()">
+          <span class="material-icons mat-icon-in-button align-middle"
+            i18n-title title="Search for Patron">search</span>
+          <span class="align-middle" i18n>Search for Patron</span>
+        </button>
+      </div>
       <span class="col-lg-7 offset-lg-4" i18n>
         {{ (patron$ | async)?.first_given_name}}
         {{ (patron$ | async)?.second_given_name}}
