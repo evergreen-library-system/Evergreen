@@ -82,7 +82,7 @@
         </table>
     </form>
 
-      [% IF CGI.param('from_basket');  %]
+      [% IF (CGI.param('from_basket') && ctx.mylist.size)  %]
     <h3>[% l("... from basket") %]</h3>
     [% INCLUDE "opac/parts/anon_list.tt2" %]
     [% ELSE %]
