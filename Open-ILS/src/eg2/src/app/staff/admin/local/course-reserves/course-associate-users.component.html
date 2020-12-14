@@ -5,6 +5,9 @@
 <eg-string #userEditSuccessString i18n-text text="Update of User succeeded"></eg-string>
 <eg-string #userEditFailedString i18n-text text="Update of User failed or was not allowed"></eg-string>
 
+<eg-patron-search-dialog #patronSearch>
+</eg-patron-search-dialog>
+
 <ng-template #dialogContent>
 <div class="modal-header bg-info"
   [ngClass]="isDialog() ? 'modal-header' : 'alert mt-3'">
@@ -29,6 +32,11 @@
               [(ngModel)]="userBarcode" (click)="$event.target.select()"
               [disabled]="currentCourse && currentCourse.is_archived() == 't'"
               (keyup.enter)="associateUser(userBarcode)" />
+            <button class="btn btn-outline-dark btn-sm" (click)="searchPatrons()">
+              <span class="material-icons mat-icon-in-button align-middle"
+              i18n-title title="Search for Patron">search</span>
+              <span class="align-middle" i18n>Search for Patron</span>
+            </button>
           </div>
         </div>
         <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">

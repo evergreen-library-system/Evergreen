@@ -9,6 +9,7 @@ import {CourseAssociateUsersComponent} from './course-associate-users.component'
 import {CourseReservesRoutingModule} from './routing.module';
 import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
 import {MarcSimplifiedEditorModule} from '@eg/staff/share/marc-edit/simplified-editor/simplified-editor.module';
+import {PatronModule} from '@eg/staff/share/patron/patron.module';
 import {CourseTermMapComponent} from './course-term-map.component';
 
 @NgModule({
@@ -25,6 +26,7 @@ import {CourseTermMapComponent} from './course-term-map.component';
     CourseReservesRoutingModule,
     ItemLocationSelectModule,
     MarcSimplifiedEditorModule,
+    PatronModule,
     TreeModule
   ],
   exports: [

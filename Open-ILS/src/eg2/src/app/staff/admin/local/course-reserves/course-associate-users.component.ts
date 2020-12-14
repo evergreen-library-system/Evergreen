@@ -10,6 +10,7 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {IdlObject} from '@eg/core/idl.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
+import {PatronSearchDialogComponent} from '@eg/staff/share/patron/search-dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {CourseService} from '@eg/staff/share/course.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
@@ -25,6 +26,7 @@ export class CourseAssociateUsersComponent extends DialogComponent implements On
     @Input() displayMode: String;
     users: any[] = [];
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
+    @ViewChild('patronSearch') patronSearch: PatronSearchDialogComponent;
     @ViewChild('usersGrid') usersGrid: GridComponent;
     @ViewChild('userDeleteFailedString', { static: true })
         userDeleteFailedString: StringComponent;
@@ -101,6 +103,16 @@ export class CourseAssociateUsersComponent extends DialogComponent implements On
         };
 
         editOneThing(userFields.shift());
+    }
+
+    searchPatrons() {
+        this.patronSearch.open({size: 'xl'}).toPromise().then(
+            patrons => {
+                if (!patrons || patrons.length === 0) { return; }
+                const user = patrons[0];
+                this.userBarcode = user.card().barcode();
+            }
+        );
     }
 
     showEditDialog(user: IdlObject): Promise<any> {
