@@ -1,5 +1,10 @@
 <eg-staff-banner bannerText="Holdings Editor" i18n-bannerText></eg-staff-banner>
 
+<eg-confirm-dialog #pendingChangesDialog
+  i18n-dialogTitle dialogTitle="Unsaved Changes Confirmation" 
+  i18n-dialogBoby  dialogBody="Unsaved changes will be lost.  Continue navigation?">
+</eg-confirm-dialog>
+
 <div class="row" *ngIf="sessionExpired">
   <div class="col-lg-6 mt-4 offset-lg-3 alert alert-danger d-flex justify-content-center" i18n>
     Holdings Editor Session Expired
@@ -19,12 +24,12 @@
       <ng-template ngbNavContent>
         <div class="mt-2">
           <eg-vol-edit [context]="context"
-            (canSaveChange)="volsCanSave = $event"></eg-vol-edit>
+            (canSaveChange)="volsCanSaveChange($event)"></eg-vol-edit>
         </div>
         <ng-container *ngIf="volcopy.defaults.values.unified_display">
           <div class="mt-2">
             <eg-copy-attrs [context]="context" 
-              (canSaveChange)="attrsCanSave = $event"></eg-copy-attrs>
+              (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
           </div>
         </ng-container>
       </ng-template>
@@ -35,7 +40,7 @@
         <ng-template ngbNavContent>
           <div class="mt-2">
             <eg-copy-attrs [context]="context"
-              (canSaveChange)="attrsCanSave = $event"></eg-copy-attrs>
+              (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
           </div>
         </ng-template>
       </li>

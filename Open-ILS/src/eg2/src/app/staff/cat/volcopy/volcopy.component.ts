@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, ViewChild, Renderer2} from '@angular/core';
+import {Component, OnInit, AfterViewInit, ViewChild, HostListener} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {tap} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
@@ -10,6 +10,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {HoldingsService, CallNumData} from '@eg/staff/share/holdings/holdings.service';
 import {VolCopyContext} from './volcopy';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 import {VolCopyService} from './volcopy.service';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -60,11 +61,14 @@ export class VolCopyComponent implements OnInit {
 
     volsCanSave = true;
     attrsCanSave = true;
+    changesPending = false;
+
+    @ViewChild('pendingChangesDialog', {static: false})
+        pendingChangesDialog: ConfirmDialogComponent;
 
     constructor(
         private router: Router,
         private route: ActivatedRoute,
-        private renderer: Renderer2,
         private evt: EventService,
         private idl: IdlService,
         private org: OrgService,
@@ -410,7 +414,10 @@ export class VolCopyComponent implements OnInit {
 
             return this.load(Object.keys(ids).map(id => Number(id)));
 
-        }).then(_ => this.loading = false);
+        }).then(_ => {
+            this.loading = false;
+            this.changesPending = false;
+        });
     }
 
     broadcastChanges(volumes: IdlObject[]) {
@@ -495,6 +502,35 @@ export class VolCopyComponent implements OnInit {
 
     isNotSaveable(): boolean {
         return !(this.volsCanSave && this.attrsCanSave);
+    }
+
+    volsCanSaveChange(can: boolean) {
+        this.volsCanSave = can;
+        this.changesPending = true;
+    }
+
+    attrsCanSaveChange(can: boolean) {
+        this.attrsCanSave = can;
+        this.changesPending = true;
+    }
+
+    @HostListener('window:beforeunload', ['$event'])
+    canDeactivate($event?: Event): Promise<boolean> {
+
+        if (!this.changesPending) { return Promise.resolve(true); }
+
+        // Each warning dialog clears the current "changes are pending"
+        // flag so the user is not presented with the dialog again
+        // unless new changes are made.
+        this.changesPending = false;
+
+        if ($event) { // window.onbeforeunload
+            $event.preventDefault();
+            $event.returnValue = true;
+
+        } else { // tab OR route change.
+            return this.pendingChangesDialog.open().toPromise();
+        }
     }
 }
 
