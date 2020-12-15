@@ -49,6 +49,27 @@ sub child_init {
     return Apache2::Const::OK;
 }
 
+sub log_handler {
+    my $r = shift;
+
+    my @params_to_redact = uniq $r->dir_config->get('OILSUrlParamToRedact');
+    my $re = '('. join('|', map { quotemeta($_) } @params_to_redact) . ')=(?:[^&;]*)';
+
+    my $args = $r->args();
+    $args =~ s/$re/$1=[REDACTED]/g;
+    $r->args($args);
+    my $req = $r->the_request(); # munging args doesn't update the
+                                 # original requested URI
+    $req =~ s/$re/$1=[REDACTED]/g;
+    $r->the_request($req);
+
+    if ($r->headers_in->{Referer}) {
+        $r->headers_in->{Referer} =~ s/$re/$1=[REDACTED]/g;
+    }
+
+    return Apache2::Const::OK;
+}
+
 sub handler {
     my $r = shift;
     my $stat = handler_guts($r);

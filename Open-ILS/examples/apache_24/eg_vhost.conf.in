@@ -45,6 +45,15 @@ OSRFTranslatorConfig @sysconfdir@/opensrf_core.xml
 # Translator memcache server.  Default is localhost
 # OSRFTranslatorCacheServer 127.0.0.1:11211
 
+# ----------------------------------------------------------------------------------
+# Log redaction
+# ----------------------------------------------------------------------------------
+<Location />
+    # handler for redacting URL query parameters from
+    # the access log
+    PerlLogHandler OpenILS::WWW::EGWeb::log_handler
+    PerlAddVar OILSUrlParamToRedact "geographic-location"
+</Location>
 
 # ----------------------------------------------------------------------------------
 # Added content plugin

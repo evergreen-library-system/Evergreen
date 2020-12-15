@@ -7,8 +7,10 @@ use OpenSRF::AppSession;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
 
+use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
+use OpenSRF::Utils::Cache;
 use OpenILS::Application::AppUtils;
 my $U = "OpenILS::Application::AppUtils";
 
@@ -19,6 +21,20 @@ use Geo::Coder::OSM;
 use Geo::Coder::Google;
 
 use Math::Trig qw(great_circle_distance deg2rad);
+use Digest::SHA qw(sha256_base64);
+
+my $cache;
+my $cache_timeout;
+
+sub initialize {
+    my $conf = OpenSRF::Utils::SettingsClient->new;
+
+    $cache_timeout = $conf->config_value(
+            "apps", "open-ils.geo", "app_settings", "cache_timeout" ) || 300;
+}
+sub child_init {
+    $cache = OpenSRF::Utils::Cache->new('global');
+}
 
 sub calculate_distance {
     my ($self, $conn, $pointA, $pointB) = @_;
@@ -28,7 +44,7 @@ sub calculate_distance {
     return new OpenILS::Event("BAD_PARAMS", "desc" => "Malformed coordinates") unless scalar(@{ $pointA }) == 2;
     return new OpenILS::Event("BAD_PARAMS", "desc" => "Malformed coordinates") unless scalar(@{ $pointB }) == 2;
 
-    sub NESW { deg2rad($_[0]), deg2rad(90 - $_[1]) }
+    sub NESW { deg2rad($_[1]), deg2rad(90 - $_[0]) } # longitude, latitude
     my @A = NESW( $pointA->[0], $pointA->[1] );
     my @B = NESW( $pointB->[0], $pointB->[1] );
     my $km = great_circle_distance(@A, @B, 6378);
@@ -131,7 +147,18 @@ sub retrieve_coordinates { # invoke 3rd party API for latitude/longitude lookup
     my $service = $e->retrieve_config_geolocation_service($service_id);
     return new OpenILS::Event("GEOCODING_NOT_ALLOWED") unless ($U->is_true($service));
 
+    $address =~ s/^\s+//;
+    $address =~ s/\s+$//;
     return new OpenILS::Event("BAD_PARAMS", "desc" => "No address supplied") unless $address;
+
+    # Return cached coordinates if available. We're assuming that any
+    # geolocation service will give roughly equivalent results, so we're
+    # using a hash of the user-supplied address as the cache key, not
+    # address + OU.
+    my $cache_key = 'geo.address.' . sha256_base64($address);
+    my $coords = OpenSRF::Utils::JSON->JSON2perl($cache->get_cache($cache_key));
+    return $coords if $coords;
+
     my $geo_coder;
     eval {
         if ($service->service_code eq 'Free') {
@@ -170,8 +197,10 @@ sub retrieve_coordinates { # invoke 3rd party API for latitude/longitude lookup
        $latitude = $location->{lat};
        $longitude = $location->{lon};
     }
+    $coords = { latitude => $latitude, longitude => $longitude };
+    $cache->put_cache($cache_key, OpenSRF::Utils::JSON->perl2JSON($coords), $cache_timeout);
 
-    return { latitude => $latitude, longitude => $longitude }
+    return $coords;
 }
 __PACKAGE__->register_method(
     method   => "retrieve_coordinates",

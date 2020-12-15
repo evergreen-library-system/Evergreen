@@ -7,6 +7,7 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
 use Net::HTTP::NB;
 use IO::Select;
+use List::MoreUtils qw(uniq);
 my $U = 'OpenILS::Application::AppUtils';
 
 our $ac_types = ['toc',  'anotes', 'excerpt', 'summary', 'reviews'];
@@ -59,12 +60,32 @@ sub load_record {
         $self->timelog("load user lists and settings");
     }
 
+    # fetch geographic coordinates if user supplied an
+    # address
+    my $gl = $self->cgi->param('geographic-location');
+    my $coords;
+    if ($gl) {
+        my $geo = OpenSRF::AppSession->create("open-ils.geo");
+        $coords = $geo
+            ->request('open-ils.geo.retrieve_coordinates', $org, scalar $gl)
+            ->gather(1);
+        $geo->kill_me;
+    }
+    $ctx->{has_valid_coords} = 0;
+    if ($coords
+        && ref($coords)
+        && $$coords{latitude}
+        && $$coords{longitude}
+    ) {
+        $ctx->{has_valid_coords} = 1;
+    }
+
     # run copy retrieval in parallel to bib retrieval
     # XXX unapi
     my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
     my $copy_rec = $cstore->request(
         'open-ils.cstore.json_query.atomic', 
-        $self->mk_copy_query($rec_id, $org, $copy_depth, $copy_limit, $copy_offset, $pref_ou)
+        $self->mk_copy_query($rec_id, $org, $copy_depth, $copy_limit, $copy_offset, $pref_ou, $coords)
     );
 
     if ($self->cgi->param('badges')) {
@@ -105,6 +126,24 @@ sub load_record {
     $ctx->{course_module_opt_in} = 0;
     if ($ctx->{get_org_setting}->($org, "circ.course_materials_opt_in")) {
         $ctx->{course_module_opt_in} = 1;
+    }
+
+    $ctx->{ou_distances} = {};
+    if ($ctx->{has_valid_coords}) {
+        my $circ_libs = [ uniq map { $_->{circ_lib} } @{$ctx->{copies}} ];
+        my $foreign_copy_circ_libs = [ 
+            map { $_->target_copy()->circ_lib() }
+            map { @{ $_->foreign_copy_maps() } }
+            @{ $ctx->{foreign_copies} }
+        ];
+        push @{ $circ_libs }, @$foreign_copy_circ_libs; # some overlap is OK here
+        my $ou_distance_list = $U->simplereq(
+            'open-ils.geo',
+            'open-ils.geo.sort_orgs_by_distance_from_coordinate.include_distances',
+            [ $coords->{latitude}, $coords->{longitude} ],
+            $circ_libs
+        );
+        $ctx->{ou_distances} = { map { $_->[0] => $_->[1] } @$ou_distance_list };
     }
 
     # Add public copy notes to each copy - and while we're in there, grab peer bib records
@@ -310,6 +349,7 @@ sub mk_copy_query {
     my $copy_limit = shift;
     my $copy_offset = shift;
     my $pref_ou = shift;
+    my $coords = shift;
 
     my $query = $U->basic_opac_copy_query(
         $rec_id, undef, undef, $copy_limit, $copy_offset, $self->ctx->{is_staff}
@@ -341,21 +381,14 @@ sub mk_copy_query {
         }};
     };
 
-	my $ou_sort_param = [$org, $pref_ou ];
-	my $gl = $self->cgi->param('geographic-location');
-	if ($gl) {
-		my $geo = OpenSRF::AppSession->create("open-ils.geo");
-		my $coords = $geo
-			->request('open-ils.geo.retrieve_coordinates', $org, scalar $gl)
-			->gather(1);
-		if ($coords
-			&& ref($coords)
-			&& $$coords{latitude}
-			&& $$coords{longitude}
-		) {
-			push(@$ou_sort_param, $$coords{latitude}, $$coords{longitude});
-		}
-	}
+    my $ou_sort_param = [$org, $pref_ou ];
+    if ($coords
+        && ref($coords)
+        && $$coords{latitude}
+        && $$coords{longitude}
+    ) {
+        push(@$ou_sort_param, $$coords{latitude}, $$coords{longitude});
+    }
 
     # Unsure if we want these in the shared function, leaving here for now
     unshift(@{$query->{order_by}},

@@ -753,6 +753,7 @@ vim:et:ts=4:sw=4:
                     <max_spare_children>5</max_spare_children>
                 </unix_config>
                 <app_settings>
+                  <cache_timeout>300</cache_timeout>
                 </app_settings>
             </open-ils.geo>
 
