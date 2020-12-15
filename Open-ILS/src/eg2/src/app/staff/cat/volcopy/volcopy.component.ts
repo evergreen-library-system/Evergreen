@@ -281,7 +281,7 @@ export class VolCopyComponent implements OnInit {
             copies.push(copy);
         });
 
-        return this.volcopy.setCopyStatus(copies, this.context.fastAdd);
+        return this.volcopy.setCopyStatus(copies);
     }
 
     fetchCopies(copyIds: number | number[]): Promise<any> {

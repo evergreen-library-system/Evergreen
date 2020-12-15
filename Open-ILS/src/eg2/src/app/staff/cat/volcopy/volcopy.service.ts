@@ -349,39 +349,38 @@ export class VolCopyService {
     }
 
     // Sets the default copy status for a batch of copies.
-    setCopyStatus(copies: IdlObject[], fastAdd: boolean): Promise<any> {
+    setCopyStatus(copies: IdlObject[]): Promise<any> {
+
+        const fastAdd = this.currentContext.fastAdd;
 
         const setting = fastAdd ?
             'cat.default_copy_status_fast' :
             'cat.default_copy_status_normal';
 
+        const orgs: any = {};
+        copies.forEach(copy => orgs[copy.circ_lib()] = 1);
+
         let promise = Promise.resolve(); // Seralize
 
-        copies.forEach(copy => {
-
-            // Avoid unnecessary lookups.  Copy may have been modified
-            // during a previous iteration of this loop.
-            if (!isNaN(copy.status())) { return; }
-
-            promise = promise.then(_ =>
-                this.org.settings(setting, copy.circ_lib())
-
-            ).then(sets => {
-
-                // 0 == Available; 5 == In Process
-                const stat = sets[setting] || (fastAdd ? 0 : 5);
-
-                copies.forEach(copy2 => {
-                    if (copy2.circ_lib() === copy.circ_lib()) {
-                        copy2.status(stat);
-                    }
+        // Pre-fetch needed org settings
+        Object.keys(orgs).forEach(org => {
+            promise = promise.then(_ => {
+                return this.org.settings(setting, +org)
+                .then(sets => {
+                    orgs[org] = sets[setting] || (fastAdd ? 0 : 5);
                 });
+            });
+        });
+
+        promise.then(_ => {
+            Object.keys(orgs).forEach(org => {
+                copies.filter(copy => copy.circ_lib() === +org)
+                .forEach(copy => copy.status(orgs[org]));
             });
         });
 
         return promise;
     }
-
 
     saveDefaults(): Promise<any> {
 

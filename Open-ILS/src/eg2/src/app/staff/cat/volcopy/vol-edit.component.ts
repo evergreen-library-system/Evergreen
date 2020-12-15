@@ -142,6 +142,7 @@ export class VolEditComponent implements OnInit {
     }
 
     createCopies(volNode: HoldingsTreeNode, count: number) {
+        const copies = [];
         for (let i = 0; i < count; i++) {
 
             // Our context assumes copies are fleshed with volumes
@@ -149,7 +150,10 @@ export class VolEditComponent implements OnInit {
             const copy = this.volcopy.createStubCopy(vol);
             copy.call_number(vol);
             this.context.findOrCreateCopyNode(copy);
+            copies.push(copy);
         }
+
+        this.volcopy.setCopyStatus(copies);
     }
 
     createCopiesFromPopover(volNode: HoldingsTreeNode, popover: any) {
@@ -166,6 +170,7 @@ export class VolEditComponent implements OnInit {
 
     createVols(orgNode: HoldingsTreeNode, count: number) {
         const vols = [];
+        const copies = [];
         for (let i = 0; i < count; i++) {
 
             // This will vivify the volNode if needed.
@@ -177,9 +182,11 @@ export class VolEditComponent implements OnInit {
             // Our context assumes copies are fleshed with volumes
             const copy = this.volcopy.createStubCopy(vol);
             copy.call_number(vol);
+            copies.push(copy);
             this.context.findOrCreateCopyNode(copy);
         }
 
+        this.volcopy.setCopyStatus(copies);
         this.volcopy.setVolClassLabels(vols);
     }
 
@@ -200,14 +207,18 @@ export class VolEditComponent implements OnInit {
     addStubCopies(volNode?: HoldingsTreeNode) {
         const nodes = volNode ? [volNode] : this.context.volNodes();
 
+        const copies = [];
         nodes.forEach(vNode => {
             if (vNode.children.length === 0) {
                 const vol = vNode.target;
                 const copy = this.volcopy.createStubCopy(vol);
                 copy.call_number(vol);
+                copies.push(copy);
                 this.context.findOrCreateCopyNode(copy);
             }
         });
+
+        this.volcopy.setCopyStatus(copies);
     }
 
     applyVolValue(vol: IdlObject, key: string, value: any) {
