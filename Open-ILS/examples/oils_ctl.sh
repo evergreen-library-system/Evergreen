@@ -76,7 +76,7 @@ function do_action {
 		if [ -e $pidfile ]; then
 			pid=$(cat $pidfile);
 			echo "$item already started : $pid";
-			return 0;
+			return 1;
 		fi;
 		echo "Starting $item";
 	fi;
@@ -85,7 +85,7 @@ function do_action {
 
 		if [ ! -e $pidfile ]; then
 			echo "$item not running";
-			return 0;
+			return 1;
 		fi;
 
 		pid=$(cat $pidfile);
@@ -105,13 +105,14 @@ function do_action {
 
 
 function start_sip {
-	do_action "start" $PID_SIP "OILS SIP Server";
-	DIR=$(pwd);
-	cd $SIP_DIR;
-	perl SIPServer.pm "$OPT_SIP_CONFIG" >> "$OPT_SIP_ERR_LOG" 2>&1 &
-	pid=$!;
-	cd $DIR;
-	echo $pid > $PID_SIP;
+	if do_action "start" $PID_SIP "OILS SIP Server"; then
+		DIR=$(pwd);
+		cd $SIP_DIR;
+		perl SIPServer.pm "$OPT_SIP_CONFIG" >> "$OPT_SIP_ERR_LOG" 2>&1 &
+		pid=$!;
+		cd $DIR;
+		echo $pid > $PID_SIP;
+	fi
 	return 0;
 }
 
@@ -121,10 +122,11 @@ function stop_sip {
 }
 
 function start_z3950 {
-	do_action "start" $PID_Z3950 "OILS Z39.50 Server";
-	simple2zoom -c $OPT_Z3950_CONFIG -- -f $OPT_YAZ_CONFIG >> "$Z3950_LOG" 2>&1 &
-	pid=$!;
-	echo $pid > $PID_Z3950;
+	if do_action "start" $PID_Z3950 "OILS Z39.50 Server"; then
+		simple2zoom -c $OPT_Z3950_CONFIG -- -f $OPT_YAZ_CONFIG >> "$Z3950_LOG" 2>&1 &
+		pid=$!;
+		echo $pid > $PID_Z3950;
+	fi
 	return 0;
 }
 
