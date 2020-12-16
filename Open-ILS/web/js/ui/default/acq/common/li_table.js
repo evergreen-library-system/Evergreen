@@ -1833,7 +1833,7 @@ function AcqLiTable() {
                     }
                 );
             } else {
-                var url = '/eg/staff/cat/catalog/record/' + bib_id;
+                var url = '/eg2/staff/catalog/record/' + bib_id;
                 if (default_view == 'copy_browser') {
                     url += '/holdings';
                 }
