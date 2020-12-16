@@ -645,6 +645,12 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
             this.canSaveChange.emit(canSave);
         });
     }
+
+    // True if one of our batch editors has been put into edit
+    // mode and left there without an Apply, Cancel, or Clear
+    hasActiveInput(): boolean {
+        return this.batchAttrs.filter(attr => attr.editing).length > 0;
+    }
 }
 
 

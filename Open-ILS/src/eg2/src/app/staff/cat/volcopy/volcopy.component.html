@@ -28,7 +28,7 @@
         </div>
         <ng-container *ngIf="volcopy.defaults.values.unified_display">
           <div class="mt-2">
-            <eg-copy-attrs [context]="context" 
+            <eg-copy-attrs [context]="context" #copyAttrs
               (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
           </div>
         </ng-container>
@@ -39,7 +39,7 @@
         <a ngbNavLink i18n>Item Attributes</a>
         <ng-template ngbNavContent>
           <div class="mt-2">
-            <eg-copy-attrs [context]="context"
+            <eg-copy-attrs [context]="context" #copyAttrs
               (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
           </div>
         </ng-template>

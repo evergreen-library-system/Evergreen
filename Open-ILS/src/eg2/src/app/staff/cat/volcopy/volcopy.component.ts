@@ -15,6 +15,7 @@ import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 import {VolCopyService} from './volcopy.service';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
+import {CopyAttrsComponent} from './copy-attrs.component';
 
 const COPY_FLESH = {
     flesh: 1,
@@ -62,9 +63,12 @@ export class VolCopyComponent implements OnInit {
     volsCanSave = true;
     attrsCanSave = true;
     changesPending = false;
+    routingAllowed = false;
 
     @ViewChild('pendingChangesDialog', {static: false})
         pendingChangesDialog: ConfirmDialogComponent;
+
+    @ViewChild('copyAttrs', {static: false}) copyAttrs: CopyAttrsComponent;
 
     constructor(
         private router: Router,
@@ -174,8 +178,19 @@ export class VolCopyComponent implements OnInit {
     // Changing the route ultimately results in changing the tab.
     beforeTabChange(evt: NgbNavChangeEvent) {
         evt.preventDefault();
-        this.tab = evt.nextId;
-        this.routeToTab();
+
+        let promise = this.canDeactivate();
+        if (!(promise instanceof Promise)) {
+            promise = Promise.resolve(promise);
+        }
+
+        promise.then(ok => {
+            if (ok) {
+                this.routingAllowed = true;
+                this.tab = evt.nextId;
+                this.routeToTab();
+            }
+        });
     }
 
     routeToTab() {
@@ -515,13 +530,24 @@ export class VolCopyComponent implements OnInit {
     }
 
     @HostListener('window:beforeunload', ['$event'])
-    canDeactivate($event?: Event): Promise<boolean> {
+    canDeactivate($event?: Event): boolean | Promise<boolean> {
 
-        if (!this.changesPending) { return Promise.resolve(true); }
+        if (this.routingAllowed) {
+            // We call canDeactive manually when routing between volcopy
+            // tabs.  If routingAllowed, it means we'ave already confirmed
+            // the tag change is OK.
+            this.routingAllowed = false;
+            return true;
+        }
+
+        const editing = this.copyAttrs ? this.copyAttrs.hasActiveInput() : false;
+
+        if (!editing && !this.changesPending) { return true; }
 
         // Each warning dialog clears the current "changes are pending"
         // flag so the user is not presented with the dialog again
-        // unless new changes are made.
+        // unless new changes are made.  The 'editing' value will reset
+        // since the attrs component is getting destroyed.
         this.changesPending = false;
 
         if ($event) { // window.onbeforeunload
