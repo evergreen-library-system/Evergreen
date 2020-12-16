@@ -686,10 +686,17 @@ export class CatalogSearchContext {
                 this.browseSearch.reset();
                 this.identSearch.reset();
                 this.cnBrowseSearch.reset();
-                this.termSearch.hasBrowseEntry = '';
                 this.termSearch.browseEntry = null;
                 this.termSearch.fromMetarecord = null;
                 this.termSearch.facetFilters = [];
+
+                if (this.termSearch.query[0] !== '') {
+                    // If the user has entered a query, it takes precedence
+                    // over the source browse entry or source metarecord.
+                    this.termSearch.hasBrowseEntry = null;
+                    this.termSearch.fromMetarecord = null;
+                }
+
                 break;
 
             case 'ident':
