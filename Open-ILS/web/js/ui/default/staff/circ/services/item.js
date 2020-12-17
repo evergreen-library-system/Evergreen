@@ -656,8 +656,16 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
     }
 
     service.selectedHoldingsMissing = function (items) {
-        egCirc.mark_missing(items.map(function(el){return {id : el.id, barcode : el.barcode};})).then(function(){
-            angular.forEach(items, function(cp){service.add_barcode_to_list(cp.barcode)});
+        return egCirc.mark_missing(
+            items.map(function(el){return {id : el.id, barcode : el.barcode};})
+        ).then(function(){
+            var promise = $q.when();
+            angular.forEach(items, function(cp){
+                promise = promise.then(function() {
+                    return service.add_barcode_to_list(cp.barcode, true);
+                });
+            });
+            return promise;
         });
     }
 

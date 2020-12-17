@@ -412,12 +412,14 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
         }
     });
 
-    $scope.context.search = function(args) {
-        if (!args.barcode) return;
+    $scope.context.search = function(args, noGridRefresh) {
+        if (!args.barcode) return $q.when();
         $scope.context.itemNotFound = false;
-        itemSvc.fetch(args.barcode).then(function(res) {
+        return itemSvc.fetch(args.barcode).then(function(res) {
             if (res) {
-                copyGrid.refresh();
+                if (!noGridRefresh) {
+                    copyGrid.refresh();
+                }
                 copyGrid.selectItems([res.index]);
                 $scope.args.barcode = '';
             } else {
@@ -428,9 +430,9 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
         })
     }
 
-    var add_barcode_to_list = function (b) {
-        //console.log('listCtrl: add_barcode_to_list',b);
-        $scope.context.search({barcode:b});
+    var add_barcode_to_list = function (b, noGridRefresh) {
+        // console.log('listCtrl: add_barcode_to_list',b);
+        return $scope.context.search({barcode:b}, noGridRefresh);
     }
     itemSvc.add_barcode_to_list = add_barcode_to_list;
 
@@ -609,7 +611,11 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     }
 
     $scope.selectedHoldingsMissing = function () {
-        itemSvc.selectedHoldingsMissing(copyGrid.selectedItems());
+        itemSvc.selectedHoldingsMissing(copyGrid.selectedItems())
+        .then(function() { 
+            console.debug('Marking missing complete, refreshing grid');
+            copyGrid.refresh();
+        });
     }
 
     $scope.checkin = function () {
