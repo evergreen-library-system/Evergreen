@@ -808,6 +808,8 @@
         animated => 0,
         animation_interval => 5,
         width => 4,
+        sm_width => 3,
+        xs_width => 2,
     };
     config.import(args);
     carousels = [];
@@ -856,6 +858,14 @@
         type: 'carousel',
         rewind: false,
         perView: [% config.width %],
+        breakpoints: {
+            992: {
+                perView: [% config.sm_width %]
+            },
+            768: {
+                perView: [% config.xs_width %]
+            }
+        },
         startAt: 0,
         [% IF config.animated %] autoplay: [% config.animation_interval * 1000 %],[% END %]
     });
