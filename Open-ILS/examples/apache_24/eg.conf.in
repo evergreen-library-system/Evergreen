@@ -1,5 +1,13 @@
 # :vim set syntax apache
 
+# The following custom log formats may be used to log remote client IP
+# addresses when using a proxy (nginx or haproxy) in front of Apache
+# for Evergreen with the RemoteIP module (mod_remoteip).  In order to
+# use this, change the last entry on the CustomLog lines below to use
+# the desired LogFormat.
+LogFormat "%a %l %u %t \"%r\" %>s %b" proxy-common
+Logformat "%a %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" proxy-combined
+
 LogLevel info 
 # - log locally
 # CustomLog /var/log/apache2/access.log combined

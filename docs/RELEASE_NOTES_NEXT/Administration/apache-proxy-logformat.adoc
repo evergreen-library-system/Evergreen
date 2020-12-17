@@ -1,0 +1,27 @@
+Apache Proxy LogFormat Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Two `LogFormat` entries have been added to the sample Apache
+configuration in `eg.conf.in` that are useful when a proxy runs in
+front of Evergreen's Apache.  These configurations mimic the default
+"common" and "combined" log formats, but log the remote client's
+actual IP address when `mod_remoteip` is enabled.  The entries are
+repeated here in case you prefer to manually update your Apache
+configuration.
+
+ LogFormat "%a %l %u %t \"%r\" %>s %b" proxy-common
+ Logformat "%a %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" proxy-combined
+
+To use these formats, simply replace the "common" or "combined" at the
+end of the `CustomLog` entries in the `eg.conf` file with either the
+"proxy-common" or "proxy-combined" entry, depending upon which you
+want to use.
+
+From:
+
+ CustomLog "|/usr/bin/logger -p local7.info" common
+
+to:
+
+ CustomLog "|/usr/bin/logger -p local7.info" proxy-common
+
+for example.
