@@ -611,8 +611,10 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     }
 
     $scope.selectedHoldingsMissing = function () {
+        egProgressDialog.open();
         itemSvc.selectedHoldingsMissing(copyGrid.selectedItems())
         .then(function() { 
+            egProgressDialog.close();
             console.debug('Marking missing complete, refreshing grid');
             copyGrid.refresh();
         });
