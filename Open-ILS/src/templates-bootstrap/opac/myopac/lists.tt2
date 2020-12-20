@@ -386,7 +386,7 @@
                     <td class="save-notes">
                         [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
                         <input type="hidden" name="bbid" value="[% CGI.param('bbid') | html %]" />
-                        <button type="submit" class="btn btn-confirm" ><i class="fas fa-save" aria-hidden="true"></i> [% l('Save Notes') %]</button>
+                        <button type="submit" class="btn btn-confirm" name="save_notes" value="[% l('Save Notes') %]" ><i class="fas fa-save" aria-hidden="true"></i> [% l('Save Notes') %]</button>
                     </td>
                 </tr>
                 [% END %]
