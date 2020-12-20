@@ -466,6 +466,9 @@ sub load_common {
         return $rows;
     };
 
+    $ctx->{course_ou} = int($self->cgi->param('locg')) || $self->ctx->{physical_loc} || $self->ctx->{aou_tree}->()->id;
+    $ctx->{use_courses} = $ctx->{get_org_setting}->($ctx->{course_ou}, 'circ.course_materials_opt_in') ? 1 : 0;
+
     return Apache2::Const::OK;
 }
 

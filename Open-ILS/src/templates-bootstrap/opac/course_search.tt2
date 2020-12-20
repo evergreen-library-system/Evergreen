@@ -1,0 +1,82 @@
+[%- PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Course Search");
+
+    PROCESS "opac/parts/misc_util.tt2";
+    PROCESS get_library;
+    ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
+-%]
+
+<h2 class="sr-only">[% l('Course Search') %]</h2>
+
+<div id="content-wrapper">
+  <div id="main-content">
+  <form action="[% ctx.opac_root %]/course/results" method="get">
+    <!-- TODO: Refactor simple.js addSearchRow to better handle
+      tables with IDs that aren't adv_... -->
+    <div class="header_middle" id="adv_search_input">
+      [% l("Course Search Input") %]
+    </div>
+
+    <div id="adv_search_filters" class="adv_filter_block">
+      <div class="adv_filter_block_item">
+        <div>
+          <strong><label for="ord.id">[% l('Search Library') %]</label></strong>
+        </div>
+        <div>
+          [% PROCESS "opac/parts/org_selector.tt2" %]
+          [% INCLUDE build_org_selector show_loc_groups=1 id=org.id %]
+          <span class="course_search_archived">
+            <input type="checkbox" name="modifier" value="include_archived"
+              [% CGI.param('modifier').grep('include_archived').size ? ' checked="checked"' : '' %]
+              id="opac.course_result.include_archived" />
+            <label for="opac.course_result.include_archived">
+              [% l('Include Archived Courses?') %]
+            </label>
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="advanced_div">
+      <div id='adv_global_search' class='data_grid data_grid_center'>
+        <div id='adv_search_rows'>
+          <div class='adv_global_input_container'>
+            <table id="adv_global_input_table" role="presentation">
+              <tbody id='adv_global_tbody'>
+                [% INCLUDE "opac/parts/course_search/global_row.tt2" %]
+                <!-- add a new row -->
+                <tr id="adv_global_addrow">
+                  <td class="td-search-left">
+                    <a href="javascript:;" id="myopac_new_global_row" 
+                      onclick='addSearchRow();'>
+                      [% l('Add Search Row') %]
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id='course_search_submit'>
+          <input type="hidden" name="_course" value="1" />
+          <span>
+            <input id='search-submit-go' type="submit" value="[% l('Search') %]" title="[% l('Search') %]" class="opac-button"
+              onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>
+            <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif[% ctx.cache_key %]'
+              class='hidden' alt="[% l('Search in progress icon') %]"/>
+          </span>
+          <a href="[% mkurl(ctx.opac_root _ '/course_search', {$loc_name => loc_value}, 1) %]"
+            class="opac-button">[% l('Clear Form') %]</a>
+        </div>
+      </div>
+    </div>
+    <div class="common-full-pad"></div>
+  </form>
+  </div>
+</div>
+
+[% END %]

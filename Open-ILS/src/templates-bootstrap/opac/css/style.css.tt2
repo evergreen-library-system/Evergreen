@@ -1752,14 +1752,11 @@ div.result_table_utils_cont {
     text-transform:none;
 }
 
-.search_catalog_lbl {
-    font-size: [% css_fonts.size_bigger %];
-}
-.adv_search_catalog_lbl {
-    font-size: [% css_fonts.size_bigger %];
-}
-
-.browse_the_catalog_lbl {
+.search_catalog_lbl,
+.adv_search_catalog_lbl,
+.browse_the_catalog_lbl,
+.search_courses_lbl,
+.browse_courses_lbl {
     font-size: [% css_fonts.size_bigger %];
 }
 
