@@ -19,6 +19,17 @@
         [% ELSE %]
         <a href="[% mkurl(ctx.opac_root _ '/advanced', {},  expert_search_parms.merge(browse_search_parms, facet_search_parms)) %]" id="home_adv_search_link" class="nav-link active adv_search_catalog_lbl">[% l('Advanced Search') %]</a>
         [% END %]
+
+        [% IF ctx.page == 'course_search'; %]
+        <a href="[% mkurl(ctx.opac_root _ '/course_search') %]" id="home_course_search_link" class="nav-link active search_courses_lbl">[% l('Search Courses') %]</a>
+        [% ELSIF ctx.use_courses %]
+        <a href="[% mkurl(ctx.opac_root _ '/course_search') %]" id="home_course_search_link" class="nav-link search_courses_lbl">[% l('Search Courses') %]</a>
+        [% END %]
+        [% IF ctx.page == 'course_browse'; %]
+        <a href="[% mkurl(ctx.opac_root _ '/course_browse') %]" id="home_course_browse_link" class="nav-link active browse_courses_lbl">[% l('Browse Courses') %]</a>
+        [% ELSIF ctx.use_courses %]
+        <a href="[% mkurl(ctx.opac_root _ '/course_browse') %]" id="home_course_browse_link" class="nav-link browse_courses_lbl">[% l('Browse Courses') %]</a>
+        [% END %]
     </nav>
 </div>
  
