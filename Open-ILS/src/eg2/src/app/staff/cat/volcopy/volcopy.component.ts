@@ -353,6 +353,12 @@ export class VolCopyComponent implements OnInit {
                     return;
                 }
 
+                // Be sure to include copies when the volume is changed
+                // without any changes to the copies.  This ensures the
+                // API knows when we are modifying a subset of the total
+                // copies on a volume, e.g. when changing volume labels
+                if (newVol.ischanged()) { copy.ischanged(true); }
+
                 if (copy.ischanged() || copy.isnew() || copy.isdeleted()) {
                     const copyClone = this.idl.clone(copy);
                     // De-flesh call number

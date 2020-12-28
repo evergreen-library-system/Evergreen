@@ -247,8 +247,14 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
         this.broadcaster.listen('eg.holdings.update').subscribe(data => {
             if (data && data.records && data.records.includes(this.recordId)) {
-                this.refreshHoldings = true;
-                this.holdingsGrid.reload();
+                this.hardRefresh();
+                // A hard refresh is needed to accommodate cases where
+                // a new call number is created for a subset of copies.
+                // We may revisit this later and use soft refresh
+                // (below) vs. hard refresh (above) depending on what
+                // specifically is changed.
+                // this.refreshHoldings = true;
+                // this.holdingsGrid.reload();
             }
         });
 
