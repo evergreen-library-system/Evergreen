@@ -47,14 +47,6 @@
                   </div>
                 </div>
               </div>
-              <div class="row mt-3">
-                <div class="col-lg-12 text-right">
-                  <button class="btn btn-primary" [disabled]="currentCourse && currentCourse.is_archived() == 't'"
-                    (click)="associateItem(barcodeInput, relationshipInput)" i18n [disabled]="!barcodeInput">
-                    Add Material
-                  </button>
-                </div>
-              </div>
               <div class="row justify-content-center mt-3">
                 <div class="col">
                   <h5 i18n>The following fields will be applied to the material
@@ -145,6 +137,14 @@
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-lg-12 text-right">
+                  <button class="btn btn-primary" [disabled]="currentCourse && currentCourse.is_archived() == 't'"
+                    (click)="associateItem(barcodeInput, relationshipInput)" i18n [disabled]="!barcodeInput">
+                    Add Material
+                  </button>
                 </div>
               </div>
             </ng-template>
