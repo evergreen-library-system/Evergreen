@@ -109,7 +109,7 @@ export class NetService {
     // Send the compiled request to the server via WebSockets
     sendCompiledRequest(request: NetRequest): void {
         OpenSRF.Session.transport = OSRF_TRANSPORT_TYPE_WS;
-        console.debug(`Net: request ${request.method}`);
+        console.debug(`${request.method}`);
 
         request.session.request({
             async  : true, // WS only operates in async mode
