@@ -130,19 +130,26 @@
                 <input type="checkbox" name="circ_id" value="[% circ.circ.id %]" aria-label="Select Item"/>
             </td>
                         <td>
+                          [% IF circ.circ.target_copy.call_number.id == -1 %]
+                                [% circ.circ.target_copy.dummy_title | html %]
+                          [% ELSIF circ.ATTRS.title %]
                             <a href="[% mkurl(ctx.opac_root _ '/record/' _
                                 circ.circ.target_copy.call_number.record.id, {}, 1) %]">
                                 <span[%- deemphasize_class -%]>
                                 [%- circ.ATTRS.title.substr(0,circ.ATTRS.nonfiling_characters) | html %]</span>
                                 [%- circ.ATTRS.title.substr(circ.ATTRS.nonfiling_characters) | html %]</a>
+                          [% END %]
                         </td>
                         <td>
-                            [% IF circ.ATTRS.author %]
-                            <a href="[% mkurl(ctx.opac_root _ '/results',
-                                {qtype => 'author', query => circ.ATTRS.author.replace('[,\.:;]', '')},
-                                1
-                            ) %]">[% circ.ATTRS.author | html %]</a>
-                            [%END; %]
+                            [% IF circ.circ.target_copy.call_number.id == -1 %]
+                                <span class="sr-only">Author</span>
+                                [% circ.circ.target_copy.dummy_author | html %]
+                            [% ELSIF circ.ATTRS.author %]
+                                <a href="[% mkurl(ctx.opac_root _ '/results',
+                                    {qtype => 'author', query => circ.ATTRS.author.replace('[,\.:;]', '')},
+                                    1
+                                ) %]">[% circ.ATTRS.author | html %]</a>
+                            [% END; %]
                         </td>
                         <td>[% circ.circ.target_copy.call_number.label | html %]</td>
                         <td>
