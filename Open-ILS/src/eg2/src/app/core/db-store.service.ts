@@ -1,6 +1,18 @@
 import {Injectable} from '@angular/core';
 
-/** Service to relay requests to/from our IndexedDB shared worker */
+/** Service to relay requests to/from our IndexedDB shared worker
+ *  Beware requests will be rejected when SharedWorker's are not supported.
+
+    this.db.request(
+        schema: 'cache',
+        table: 'Setting',
+        action: 'selectWhereIn',
+        field: 'name',
+        value: ['foo']
+    ).then(value => console.log('my value', value)
+    ).catch(_ => console.log('SharedWorker's not supported));
+
+ */
 
 // TODO: move to a more generic location.
 const WORKER_URL = '/js/ui/default/staff/offline-db-worker.js';
@@ -68,15 +80,17 @@ export class DbStoreService {
 
     constructor() {}
 
-    private connectToWorker() {
-        if (this.worker || this.cannotConnect) { return; }
+    // Returns true if connection is successful, false otherwise
+    private connectToWorker(): boolean {
+        if (this.worker) { return true; }
+        if (this.cannotConnect) { return false; }
 
         try {
             this.worker = new SharedWorker(WORKER_URL);
         } catch (E) {
             console.warn('SharedWorker() not supported', E);
             this.cannotConnect = true;
-            return;
+            return false;
         }
 
         this.worker.onerror = err => {
@@ -89,6 +103,7 @@ export class DbStoreService {
             'message', evt => this.handleMessage(evt));
 
         this.worker.port.start();
+        return true;
     }
 
     private handleMessage(evt: MessageEvent) {
@@ -116,7 +131,13 @@ export class DbStoreService {
     // for future resolution.  Store the request ID in the request
     // arguments, so it's included in the response, and in the
     // activeRequests list for linking.
+    // Returns a rejected promise if shared workers are not supported.
     private relayRequest(req: DbStoreRequest): Promise<any> {
+
+        if (!this.connectToWorker()) {
+            return Promise.reject('Shared Workers not supported');
+        }
+
         return new Promise((resolve, reject) => {
             const id = req.id = this.autoId++;
             this.activeRequests[id] = {id: id, resolve: resolve, reject: reject};
@@ -168,16 +189,10 @@ export class DbStoreService {
         return this.schemasInProgress[schema] = promise;
     }
 
+    // Request may be rejected if SharedWorker's are not supported.
+    // All calls to this method should include an error handler in
+    // the .then() or a .cache() handler after the .then().
     request(req: DbStoreRequest): Promise<any> {
-
-        // NO-OP if we're already connected.
-        this.connectToWorker();
-
-        // If we are unable to connect, it means we are in an
-        // environment that does not support shared workers.
-        // Treat all requests as a NO-OP.
-        if (this.cannotConnect) { return Promise.resolve(); }
-
         return this.connectToSchemas().then(_ => this.relayRequest(req));
     }
 }
