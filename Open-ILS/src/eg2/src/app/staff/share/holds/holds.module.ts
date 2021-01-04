@@ -9,6 +9,8 @@ import {HoldRetargetDialogComponent} from './retarget-dialog.component';
 import {HoldTransferDialogComponent} from './transfer-dialog.component';
 import {HoldCancelDialogComponent} from './cancel-dialog.component';
 import {HoldManageDialogComponent} from './manage-dialog.component';
+import {HoldNoteDialogComponent} from './note-dialog.component';
+import {HoldNotifyDialogComponent} from './notify-dialog.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +20,9 @@ import {HoldManageDialogComponent} from './manage-dialog.component';
         HoldRetargetDialogComponent,
         HoldTransferDialogComponent,
         HoldCancelDialogComponent,
-        HoldManageDialogComponent
+        HoldManageDialogComponent,
+        HoldNoteDialogComponent,
+        HoldNotifyDialogComponent
     ],
     imports: [
         StaffCommonModule,

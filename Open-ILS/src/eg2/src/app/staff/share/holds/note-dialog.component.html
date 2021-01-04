@@ -1,0 +1,37 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title">Add Hold Note for Hold #{{holdId}}</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body form-validated">
+    <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" 
+        id="patron-visible-cbox" [(ngModel)]="pub">
+      <label class="form-check-label" 
+        for="patron-visible-cbox" i18n>Patron Visible?</label>
+    </div>
+    <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" 
+        id="hold-slip-cbox" [(ngModel)]="slip">
+      <label class="form-check-label" 
+        for="hold-slip-cbox" i18n>Print on Slip?</label>
+    </div>
+    <div class="form-group">
+      <label for="title-input" i18n>Note Title</label>
+      <input type="text" class="form-control" id="title-input" required [(ngModel)]="title"/>
+    </div>
+    <div class="form-group">
+      <label for="body-input" i18n>Note Body</label>
+      <textarea class="form-control" id="body-input" required [(ngModel)]="body">
+      </textarea>
+    </div>
+    <div class="w-100">
+      <button class="btn btn-success ml-auto" (click)="createNote()"
+        [disabled]="!title || !body" i18n>Create Note</button>
+      <button class="btn btn-warning ml-2" (click)="close()" i18n>Cancel</button>
+    </div>
+  </div>
+</ng-template>
