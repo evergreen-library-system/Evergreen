@@ -848,9 +848,9 @@
             </div>
             <div class="titleText">
             <span class="carousel-entry-title">
-           <!-- <a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]"> -->
+           <a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]"> 
             [% bib.title | html %]
-           <!-- </a> -->
+           </a> 
 
             </span>
             </div>
