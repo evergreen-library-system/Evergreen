@@ -235,7 +235,7 @@ export class OrgService {
             });
 
             return batch;
-        });
+        }).catch(_ => batch);
     }
 
     // Add values for the list of named settings from the 'batch' to
@@ -257,7 +257,7 @@ export class OrgService {
             table: 'Setting',
             action: 'insertOrReplace',
             rows: rows
-        }).then(_ => batch);
+        }).then(_ => batch).catch(_ => batch);
     }
 
     /**
@@ -346,6 +346,6 @@ export class OrgService {
             schema: 'cache',
             table: 'Setting',
             action: 'deleteAll'
-        });
+        }).catch(_ => null)
     }
 }
