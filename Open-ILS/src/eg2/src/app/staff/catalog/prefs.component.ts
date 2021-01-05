@@ -79,5 +79,13 @@ export class PreferencesComponent implements OnInit {
             .then(_ => this.toast.success(this.successMsg.text))
             .then(_ => value);
     }
+
+    hasNoHistory(): boolean {
+        return history.length === 0;
+    }
+
+    goBack() {
+        history.back();
+    }
 }
 

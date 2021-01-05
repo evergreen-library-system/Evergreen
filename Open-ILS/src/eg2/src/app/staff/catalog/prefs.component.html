@@ -1,6 +1,6 @@
 <eg-catalog-search-form #searchForm></eg-catalog-search-form>
 
-<eg-staff-banner bannerText="Catalog Preferences"></eg-staff-banner>
+<eg-staff-banner bannerText="Search Preferences"></eg-staff-banner>
 
 <eg-string #successMsg i18n-text text="Setting Update Succeeded"></eg-string>
 <eg-string #failMsg i18n-text text="Setting Update Failed"></eg-string>
@@ -101,5 +101,13 @@
   </div>
   <div class="col-lg-6" i18n>
     Add the 'Exclude Electronic Resources' checkbox to the main search form.
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-1">
+  <button class="btn btn-info label-with-material-icon" (click)="goBack()" [disabled]="hasNoHistory()">
+      <span class="material-icons">keyboard_backspace</span>
+      <span i18n>Return</span>
+  </button>
   </div>
 </div>
