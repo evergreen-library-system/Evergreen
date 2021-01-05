@@ -54,8 +54,8 @@ google_analytics.code = 'UA-9999999-99';
 ##############################################################################
 # Ebook API integration
 ##############################################################################
-ebook_api.enabled = 'true';
-ebook_api.ebook_test.enabled = 'true';
+ebook_api.enabled = 'false';
+ebook_api.ebook_test.enabled = 'false';
 ebook_api.ebook_test.base_uris = [ 'http://example.com/ebookapi/t/' ];
 ebook_api.oneclickdigital.enabled = 'false';
 ebook_api.oneclickdigital.base_uris = [ 'http://example.oneclickdigital.com/Products/ProductDetail.aspx' ];
