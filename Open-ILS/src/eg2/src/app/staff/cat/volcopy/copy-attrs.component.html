@@ -1,4 +1,15 @@
+<eg-string #loanDurationShort i18n-text text="Short"></eg-string>
+<eg-string #loanDurationNormal i18n-text text="Normal"></eg-string>
+<eg-string #loanDurationLong i18n-text text="Long"></eg-string>
 
+<eg-string #fineLevelLow i18n-text text="Low"></eg-string>
+<eg-string #fineLevelNormal i18n-text text="Normal"></eg-string>
+<eg-string #fineLevelHigh i18n-text text="High"></eg-string>
+
+<eg-string #olLabel text="Owning Library" i18n-text></eg-string>
+
+<eg-string #mintConditionYes i18n-text text="Good"></eg-string>
+<eg-string #mintConditionNo i18n-text text="Damaged"></eg-string>
 
 <!-- We ask this question a lot.  Here's a handy template -->
 <ng-template #yesNoSelect let-field="field">
@@ -163,7 +174,6 @@
     </div>
 
     <div *ngIf="displayAttr('owning_lib')">
-      <eg-string #olLabel text="Owning Library" i18n-text></eg-string>
       <ng-template #owningLibTemplate>
         <eg-org-select 
           domId="owning_lib-input"
@@ -246,10 +256,6 @@
     </div>
 
     <div *ngIf="displayAttr('loan_duration')">
-      <eg-string #loanDurationShort i18n-text text="Short"></eg-string>
-      <eg-string #loanDurationNormal i18n-text text="Normal"></eg-string>
-      <eg-string #loanDurationLong i18n-text text="Long"></eg-string>
-
       <ng-template #loanDurationTemplate>
         <select class="form-control" 
           id="loan_duration-input" [(ngModel)]="values['loan_duration']">
@@ -264,10 +270,6 @@
     </div>
 
     <div *ngIf="displayAttr('fine_level')">
-      <eg-string #fineLevelLow i18n-text text="Low"></eg-string>
-      <eg-string #fineLevelNormal i18n-text text="Normal"></eg-string>
-      <eg-string #fineLevelHigh i18n-text text="High"></eg-string>
-
       <ng-template #fineLevelTemplate>
         <select class="form-control" 
           id="fine_level-input" [(ngModel)]="values['fine_level']">
@@ -404,9 +406,6 @@
     </div>
 
     <div *ngIf="displayAttr('mint_condition')">
-      <eg-string #mintConditionYes i18n-text text="Good"></eg-string>
-      <eg-string #mintConditionNo i18n-text text="Damaged"></eg-string>
-
       <ng-template #mintConditionTemplate>
         <select class="form-control" 
           id="mint_condition-input" [(ngModel)]="values['mint_condition']">
