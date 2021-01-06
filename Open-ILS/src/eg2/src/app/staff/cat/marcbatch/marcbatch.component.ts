@@ -183,7 +183,7 @@ export class MarcBatchComponent implements OnInit {
             return !this.bucket;
 
         } else if (this.source === 'c') {
-            return (!this.csvColumn || !this.csvFile);
+            return (this.csvColumn < 0 || !this.csvFile);
 
         } else if (this.source === 'r') {
             return !this.recordId;
