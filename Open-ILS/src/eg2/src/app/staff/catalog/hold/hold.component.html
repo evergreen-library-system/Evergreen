@@ -4,7 +4,7 @@
 
 <div class="row">
   <div class="col-lg-1">
-    <button class="btn btn-info label-with-material-icon" 
+    <button class="btn btn-info label-with-material-icon"
       (click)="goBack()" [disabled]="hasNoHistory()">
       <span class="material-icons">keyboard_backspace</span>
       <span i18n>Return</span>
@@ -26,24 +26,25 @@
   </div>
   <div class="col-lg-2">
     <button class="btn btn-outline-dark btn-sm" (click)="searchPatrons()">
-      <span class="material-icons mat-icon-in-button align-middle" 
+      <span class="material-icons mat-icon-in-button align-middle"
         i18n-title title="Search for Patron">search</span>
       <span class="align-middle" i18n>Search for Patron</span>
     </button>
   </div>
 </div>
 
-<form class="form form-validated common-form" 
+<form class="form form-validated common-form"
   autocomplete="off" (keydown.enter)="$event.preventDefault()">
   <div class="row">
     <div class="col-lg-6 common-form striped-odd">
       <div class="row mt-2">
         <div class="col-lg-6">
           <div class="form-check">
-            <input class="form-check-input" type="radio" 
+            <input class="form-check-input" type="radio"
               (change)="holdForChanged()"
+              id="hold-for-patron"
               name="holdFor" value="patron" [(ngModel)]="holdFor"/>
-            <label class="form-check-label" i18n>
+            <label class="form-check-label" for="hold-for-patron" i18n>
               Place hold for patron by barcode:
             </label>
           </div>
@@ -51,7 +52,8 @@
         <div class="col-lg-6">
           <div class="input-group">
             <input type='text' class="form-control" name="userBarcode"
-              [disabled]="holdFor!='patron'" id='patron-barcode' 
+              [disabled]="holdFor!='patron'" id='patron-barcode'
+              aria-label="Patron barcode" i18n-aria-label
               (keyup.enter)="userBarcodeChanged()"
               [(ngModel)]="userBarcode" (change)="userBarcodeChanged()"/>
             <div class="input-group-append">
@@ -63,10 +65,11 @@
       <div class="row mt-2">
         <div class="col-lg-6">
           <div class="form-check">
-            <input class="form-check-input" type="radio" 
+            <input class="form-check-input" type="radio"
               (change)="holdForChanged()"
+              id="hold-for-staff"
               name="holdFor" value="staff" [(ngModel)]="holdFor"/>
-            <label class="form-check-label" i18n>
+            <label class="form-check-label" i18n for="hold-for-staff">
               Place hold for this staff account:
             </label>
           </div>
@@ -84,9 +87,9 @@
       <div class="row mt-2">
         <div class="col-lg-6">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" 
+            <input class="form-check-input" type="checkbox" id="suspend"
               name="suspend" [(ngModel)]="suspend"/>
-            <label class="form-check-label" i18n>Suspend Hold</label>
+            <label class="form-check-label" for="suspend" i18n>Suspend Hold</label>
           </div>
         </div>
         <div class="col-lg-6">
@@ -102,7 +105,7 @@
         <div class="col-lg-6">
           <select class="form-control" name="multi-hold-count"
             id="multi-hold-count" [(ngModel)]="multiHoldCount">
-            <option [value]="num" 
+            <option [value]="num"
               *ngFor="let num of holdCountRange()">{{num}}</option>
           </select>
         </div>
@@ -119,16 +122,18 @@
             <div class="flex-1">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="notifyEmail"
+                  id="notifyEmail"
                   [disabled]="!user || !user.email()" [(ngModel)]="notifyEmail"/>
-                <label class="form-check-label" i18n>Notify by Email</label>
+                <label class="form-check-label" for="notifyEmail" i18n>Notify by Email</label>
               </div>
             </div>
             <div class="flex-1">
               <div class="input-group">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" i18n>Email Address</span>
+                  <label for="userEmail" class="input-group-text" i18n>Email Address</label>
                 </div>
                 <input type="text" class="form-control" name="userEmail"
+                  id="userEmail"
                   [disabled]="true" value="{{user ? user.email() : ''}}"/>
               </div>
             </div>
@@ -136,52 +141,54 @@
           <li class="list-group-item d-flex">
             <div class="flex-1">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" 
+                <input class="form-check-input" type="checkbox"
+                  id="notifyPhone"
                   name="notifyPhone" [(ngModel)]="notifyPhone"/>
-                <label class="form-check-label" i18n>Notify by Phone</label>
+                <label class="form-check-label" for="notifyPhone" i18n>Notify by Phone</label>
               </div>
             </div>
             <div class="flex-1">
               <div class="input-group">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" i18n>Phone Number</span>
+                  <label for="phoneValue" class="input-group-text" i18n>Phone Number</label>
                 </div>
                 <input type="text" class="form-control" [disabled]="!notifyPhone"
-                  name="phoneValue" [(ngModel)]="phoneValue"/>
+                  name="phoneValue" id="phoneValue" [(ngModel)]="phoneValue"/>
               </div>
             </div>
           </li>
           <li *ngIf="smsEnabled" class="list-group-item d-flex">
             <div class="flex-1">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" 
+                <input class="form-check-input" type="checkbox" id="notifySms"
                   name="notifySms" [(ngModel)]="notifySms"/>
-                <label class="form-check-label" i18n>Notify by SMS</label>
+                <label class="form-check-label" for="notifySms" i18n>Notify by SMS</label>
               </div>
             </div>
             <div class="flex-1">
               <div class="input-group">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" i18n>SMS Number</span>
+                  <label for="smsValue" class="input-group-text" i18n>SMS Number</label>
                 </div>
                 <input type="text" class="form-control" [disabled]="!notifySms"
-                  name="smsValue" [(ngModel)]="smsValue"/>
+                  id="smsValue" name="smsValue" [(ngModel)]="smsValue"/>
               </div>
             </div>
           </li>
           <li *ngIf="smsEnabled" class="list-group-item d-flex">
             <div class="flex-1">
-              <label i18n>SMS Carrier</label>
+              <label for="smsCarriers" i18n>SMS Carrier</label>
             </div>
             <div class="flex-1">
               <eg-combobox [disabled]="!notifySms" #smsCbox
+                domId="smsCarriers"
                 placeholder="SMS Carriers" i18n-placeholder
                 [entries]="smsCarriers">
               </eg-combobox>
             </div>
           </li>
           <li class="list-group-item">
-            <button class="btn btn-success" (click)="placeHolds()" 
+            <button class="btn btn-success" (click)="placeHolds()"
               [disabled]="!user || placeHoldsClicked" i18n>Place Hold(s)</button>
 
             <button class="btn btn-outline-dark ml-2" (click)="resetForm()" i18n>Reset</button>
@@ -196,15 +203,15 @@
 
 <div class="row pt-3 ml-1 mr-1 d-flex">
   <div class="">
-    <span class="font-weight-bold" i18n>Placing 
-      <ng-container *ngIf="holdType == 'M'">METARECORD</ng-container> 
-      <ng-container *ngIf="holdType == 'T'">TITLE</ng-container> 
+    <span class="font-weight-bold" i18n>Placing
+      <ng-container *ngIf="holdType == 'M'">METARECORD</ng-container>
+      <ng-container *ngIf="holdType == 'T'">TITLE</ng-container>
       <ng-container *ngIf="holdType == 'V'">CALL NUMBER</ng-container>
-      <ng-container *ngIf="holdType == 'F'">FORCE ITEM</ng-container> 
-      <ng-container *ngIf="holdType == 'C'">ITEM</ng-container> 
-      <ng-container *ngIf="holdType == 'R'">RECALL</ng-container> 
-      <ng-container *ngIf="holdType == 'I'">ISSUANCE</ng-container> 
-      <ng-container *ngIf="holdType == 'P'">PARTS</ng-container> 
+      <ng-container *ngIf="holdType == 'F'">FORCE ITEM</ng-container>
+      <ng-container *ngIf="holdType == 'C'">ITEM</ng-container>
+      <ng-container *ngIf="holdType == 'R'">RECALL</ng-container>
+      <ng-container *ngIf="holdType == 'I'">ISSUANCE</ng-container>
+      <ng-container *ngIf="holdType == 'P'">PARTS</ng-container>
       hold on record(s)
     </span>
   </div>
@@ -214,13 +221,13 @@
       <span i18n>Item-Level Hold Options:</span>
       <span class="pl-2">
         <a routerLink="/staff/catalog/hold/C" queryParamsHandling="merge">
-          <button [disabled]="holdType === 'C'" class="btn btn-outline-primary" 
+          <button [disabled]="holdType === 'C'" class="btn btn-outline-primary"
             i18n>Item Hold</button>
         </a>
       </span>
       <span class="pl-2">
         <a routerLink="/staff/catalog/hold/R" queryParamsHandling="merge">
-          <button [disabled]="holdType === 'R'" class="btn btn-outline-primary" 
+          <button [disabled]="holdType === 'R'" class="btn btn-outline-primary"
             i18n>Recall Hold</button>
         </a>
       </span>
@@ -242,8 +249,8 @@
     TODO: add a section per hold context for metarecord holds
     listing the possible formats and languages.
 
-    TODO: add a secion per hold context for T holds providing a 
-    link to the metarecord hold equivalent (AKA "Advanced Hold 
+    TODO: add a secion per hold context for T holds providing a
+    link to the metarecord hold equivalent (AKA "Advanced Hold
     Options") for each record that has selectable filters (and
     only when metarecord holds are enabled).
 -->
@@ -264,15 +271,15 @@
     <div class="col-lg-12" *ngIf="ctx.holdMeta">
       <div class="row">
         <div class="col-lg-1">
-          <ng-container 
+          <ng-container
             *ngFor="let code of ctx.holdMeta.bibSummary.attributes.icon_format">
-            <img class="pr-1" 
+            <img class="pr-1"
               alt="{{iconFormatLabel(code)}}"
               title="{{iconFormatLabel(code)}}"
               src="/images/format_icons/icon_format/{{code}}.png"/>
           </ng-container>
         </div>
-        <!-- TODO: link for a metarecord should 
+        <!-- TODO: link for a metarecord should
             jump to constituent bib list search page? -->
         <div class="col-lg-2">
           <a routerLink="/staff/catalog/record/{{ctx.holdMeta.bibId}}">
@@ -285,7 +292,7 @@
             <select class="form-control"  (change)="setPart(ctx, $event)"
               [ngModel]="ctx.holdMeta.part ? ctx.holdMeta.part.id() : ''">
               <option value="" i18n>Any Part</option>
-              <option *ngFor="let part of ctx.holdMeta.parts" 
+              <option *ngFor="let part of ctx.holdMeta.parts"
                 value="{{part.id()}}">{{part.label()}}</option>
             </select>
           </ng-container>
@@ -320,7 +327,7 @@
               <div class="alert alert-success p-1 ml-2" i18n>Hold Succeeded</div>
             </ng-container>
             <ng-container *ngIf="!ctx.lastRequest.result.success">
-              <div class="alert alert-danger p-1 ml-2" 
+              <div class="alert alert-danger p-1 ml-2"
                 title="{{ctx.lastRequest.result.evt.textcode}}">
                 {{ctx.lastRequest.result.evt.textcode}}
               </div>
@@ -335,17 +342,17 @@
       </div>
       <!-- note: using inline style since class-level styling for rows
           is superseded by the striped-even styling of the container -->
-      <div class="row" *ngIf="hasMetaFilters(ctx)" 
+      <div class="row" *ngIf="hasMetaFilters(ctx)"
         style="background-color:inherit; border:none">
         <div class="col-lg-1"><label i18n>Formats: </label></div>
         <div class="col-lg-11 d-flex">
-          <ng-container 
+          <ng-container
             *ngFor="let ccvm of ctx.holdMeta.metarecord_filters.formats">
             <div class="form-check ml-3">
-              <input class="form-check-input" type="checkbox" 
+              <input class="form-check-input" type="checkbox"
                 [disabled]="ctx.holdMeta.metarecord_filters.formats.length == 1"
                 [(ngModel)]="ctx.selectedFormats.formats[ccvm.code()]"/>
-              <img class="ml-1" 
+              <img class="ml-1"
                 alt="{{iconFormatLabel(ccvm.code())}}"
                 title="{{iconFormatLabel(ccvm.code())}}"
                 src="/images/format_icons/icon_format/{{ccvm.code()}}.png"/>
@@ -356,14 +363,14 @@
           </ng-container>
         </div>
       </div>
-      <div class="row" *ngIf="hasMetaFilters(ctx)" 
+      <div class="row" *ngIf="hasMetaFilters(ctx)"
         style="background-color:inherit; border:none">
         <div class="col-lg-1"><label i18n>Languages: </label></div>
         <div class="col-lg-11 d-flex">
-          <ng-container 
+          <ng-container
             *ngFor="let ccvm of ctx.holdMeta.metarecord_filters.langs">
             <div class="form-check ml-3">
-              <input class="form-check-input" type="checkbox" 
+              <input class="form-check-input" type="checkbox"
                 [disabled]="ctx.holdMeta.metarecord_filters.langs.length == 1"
                 [(ngModel)]="ctx.selectedFormats.langs[ccvm.code()]"/>
               <label class="form-check-label ml-1">
