@@ -84,7 +84,7 @@ export class HoldCancelDialogComponent
                     console.error(this.evt.parse(result));
                     this.toast.warning(await this.errorMsg.current());
                 }
-                this.cancelNext(ids);
+                return this.cancelNext(ids);
             }
         );
     }
