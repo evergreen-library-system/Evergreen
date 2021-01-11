@@ -314,5 +314,74 @@ sub applied_settings {
 }
 
 
+__PACKAGE__->register_method (
+    method      => 'setting_value_for_all_orgs',
+    api_name    => 'open-ils.actor.settings.value_for_all_orgs',
+    stream      => 1,
+    signature => {
+        desc => q/
+            Returns the value applied to all org units for a given org unit
+            setting.
+
+            No auth token is required to access publicly visible org
+            unit settings.  An auth token and necesessary permissions
+            are required to view protected settings.
+        /,
+        params => [
+            {desc => 'authtoken. Optional', type => 'string'},
+            {desc => 'setting', type => 'string'},
+        ],
+        return => {
+            desc => q/
+                Returns a stream of {org_unit => id, summary => summary} 
+                hashes, one per org unit.  The summary is a 
+                actor.cascade_setting_summary hash.
+            /,
+            type => 'object'
+        }
+    }
+);
+
+sub setting_value_for_all_orgs {
+    my ($self, $client, $auth, $setting) = @_;
+
+    my $e = new_editor();
+    my $user_id;
+
+    if ($auth) {
+        # Not required for publicly visible org unit setting values.
+        # If one is provided, though, it should be valid.
+        $e->authtoken($auth);
+        return $e->event unless $e->checkauth;
+        $user_id = $e->requestor->id;
+    }
+
+    # Setting names may only contain letters, numbers, unders, and dots.
+    $setting =~ s/$name_regex//g;
+
+    my $org_ids = $e->json_query({select => {aou => ['id']}, from => 'aou'});
+
+    for my $org_id (map { $_->{id} } @$org_ids) {
+
+        # Use actor.get_cascade_setting since it performs the necessary
+        # permission checks for us.
+        my $summary = $e->json_query({from => [
+            'actor.get_cascade_setting', $setting, $org_id, $user_id, undef]})->[0];
+
+        # It makes no sense to call this API with user/workstation settings.
+        return OpenILS::Event->new('BAD_PARAMS',
+            desc => 'This API does not support user/workstation settings'
+        ) if (
+            ($summary->{has_user_setting} || '') eq 't' || 
+            ($summary->{has_workstation_setting} || '') eq 't'
+        );
+
+        $client->respond({org_unit => $org_id, summary => $summary});
+    }
+
+    return undef;
+}
+
+
 
 1;
