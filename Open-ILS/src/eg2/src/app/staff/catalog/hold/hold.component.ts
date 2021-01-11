@@ -86,6 +86,9 @@ export class HoldComponent implements OnInit {
 
     puLibWsFallback = false;
 
+    // Orgs which are not valid pickup locations
+    disableOrgs: number[] = [];
+
     @ViewChild('patronSearch', {static: false})
       patronSearch: PatronSearchDialogComponent;
 
@@ -131,6 +134,22 @@ export class HoldComponent implements OnInit {
 
         this.store.getItem('circ.staff_placed_holds_fallback_to_ws_ou')
         .then(setting => this.puLibWsFallback = setting === true);
+
+        this.org.list().forEach(org => {
+            if (org.ou_type().can_have_users() === 'f' ||
+                org.ou_type().can_have_vols() === 'f') {
+                this.disableOrgs.push(org.id());
+            }
+        });
+
+        this.net.request('open-ils.actor',
+            'open-ils.actor.settings.value_for_all_orgs',
+            null, 'opac.holds.org_unit_not_pickup_lib'
+        ).subscribe(resp => {
+            if (resp.summary.value) {
+                this.disableOrgs.push(Number(resp.org_unit));
+            }
+        });
 
         if (!Array.isArray(this.holdTargets)) {
             this.holdTargets = [this.holdTargets];
