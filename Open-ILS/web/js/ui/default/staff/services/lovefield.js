@@ -27,7 +27,6 @@ angular.module('egCoreMod')
 
         try {
             // relative path would be better...
-            throw Error('NOPE');
             service.worker = new SharedWorker(service.workerUrl);
         } catch (E) {
             console.warn('SharedWorker() not supported', E);
