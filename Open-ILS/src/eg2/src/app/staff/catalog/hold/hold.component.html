@@ -81,7 +81,8 @@
           <label i18n>Pickup Location: </label>
         </div>
         <div class="col-lg-6">
-          <eg-org-select [applyOrgId]="pickupLib"></eg-org-select>
+          <eg-org-select (onChange)="pickupLib = $event ? $event.id() : null"
+            [applyOrgId]="pickupLib"></eg-org-select>
         </div>
       </div>
       <div class="row mt-2">
