@@ -418,7 +418,8 @@
                                                 <a href="[% addhref %]" id="mylist_add_[% rec.id %]"
                                                     data-recid="[% rec.id %]" data-action="add"
                                                     role="button" class="mylist_action btn btn-action [% IF ctx.mylist.grep('^' _ rec.id _ '$').size %]hidden[% END %]"
-                                                    title="[% l("Add [_1] to basket", attrs.title | html) %]" rel="nofollow" vocab="">
+                                                    [% SET esc_title = attrs.title | html -%]
+                                                    title="[% l("Add [_1] to basket", esc_title) %]" rel="nofollow" vocab="">
                                                     <i class="fas fa-shopping-basket" aria-hidden="true"></i>
                                                     [% l("Add to basket") %]
                                                 </a>
@@ -426,7 +427,7 @@
                                                 <a href="[% delhref %]" id="mylist_delete_[% rec.id %]"
                                                     data-recid="[% rec.id %]" data-action="delete" role="button"
                                                     class="mylist_action btn btn-action [% IF !ctx.mylist.grep('^' _ rec.id _ '$').size %]hidden[% END %]"
-                                                    title="[% l("Remove [_1] from basket", attrs.title | html) %]" rel="nofollow" vocab="">
+                                                    title="[% l("Remove [_1] from basket", esc_title) %]" rel="nofollow" vocab="">
                                                     <i class="fas fa-minus-circle" aria-hidden="true"></i>
                                                     [% l("Remove from basket") %]
                                                 </a>
