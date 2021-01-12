@@ -931,6 +931,31 @@ export class GridContext {
         );
     }
 
+    // Select all rows between the previously selected row and
+    // the provided row, including the provided row.
+    // This is additive only -- rows are never de-selected.
+    selectRowRange(index: any) {
+
+        if (!this.lastSelectedIndex) {
+            this.selectOneRow(index);
+            return;
+        }
+
+        const next = this.getRowPosition(index);
+        const prev = this.getRowPosition(this.lastSelectedIndex);
+        const start = Math.min(prev, next);
+        const end = Math.max(prev, next);
+
+        for (let idx = start; idx <= end; idx++) {
+            const row = this.dataSource.data[idx];
+            if (row) {
+                this.rowSelector.select(this.getRowIndex(row));
+            }
+        }
+
+        this.lastSelectedIndex = index;
+    }
+
     // shift-down-arrow
     // Select the next row in addition to any currently selected row.
     // However, if the next row is already selected, assume the user
