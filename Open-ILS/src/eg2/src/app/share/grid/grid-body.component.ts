@@ -94,7 +94,7 @@ export class GridBodyComponent implements OnInit {
             this.context.toggleSelectOneRow(index);
 
         } else if ($event.shiftKey) {
-            // TODO shift range click
+            this.context.selectRowRange(index);
 
         } else {
             this.context.selectOneRow(index);
