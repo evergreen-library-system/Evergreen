@@ -30,6 +30,8 @@ export class SurveyComponent implements OnInit {
     @ViewChild('endSurveyFailedString', { static: true }) endSurveyFailedString: StringComponent;
     @ViewChild('endSurveySuccessString', { static: true }) endSurveySuccessString: StringComponent;
 
+    @Input() sortField: string;
+    @Input() idlClass='asv';
     @Input() dialogSize: 'sm' | 'lg' = 'lg';
 
     constructor(
@@ -44,7 +46,21 @@ export class SurveyComponent implements OnInit {
 
     ngOnInit() {
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
-            return this.pcrud.retrieveAll('asv', {});
+	    const orderBy: any = {};
+	    if (sort.length) {
+	        // Sort specified from grid
+		orderBy[this.idlClass] = sort[0].name + ' ' + sort[0].dir;
+	    } else if (this.sortField) {
+	        // Default sort field
+		orderBy[this.idlClass] = this.sortField;
+	    }
+
+	    const searchOps = {
+	        offset: pager.offset,
+		limit: pager.limit,
+		order_by: orderBy
+	    };
+            return this.pcrud.retrieveAll('asv', searchOps, {});
         };
 
         this.grid.onRowActivate.subscribe(
