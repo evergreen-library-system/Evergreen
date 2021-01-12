@@ -130,7 +130,6 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                                         self.filterDialog.onApply = function(filter) {
                                             if (self.urlNavigation) {
                                                 self.applyAndExecuteUrlOps(0, filter);
-
                                             } else {
                                                 self.cachedQuerySearch = filter;
                                                 self.resetStore();
@@ -139,6 +138,8 @@ if(!dojo._hasResource['openils.widget.AutoGrid']) {
                                                     self.cachedQuerySearch,
                                                     true
                                                 );
+                                                self.cachedQueryOpts.offset = self.displayOffset = 0;
+                                                self.refresh();
                                             }
                                         };
 
