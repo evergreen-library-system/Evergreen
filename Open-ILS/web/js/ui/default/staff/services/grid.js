@@ -141,7 +141,6 @@ angular.module('egGridMod',
                      egProgressDialog,  $uibModal , egConfirmDialog , egStrings) {
 
             var grid = this;
-
             grid.init = function() {
                 grid.offset = 0;
                 $scope.items = [];
@@ -1916,7 +1915,20 @@ angular.module('egGridMod',
             gridData.query = args.query;
             gridData.idlClass = args.idlClass;
             gridData.columnsProvider = args.columnsProvider;
-
+            gridData.comparators = {
+                "string":function(x,y){
+                        var l_x = x.toLowerCase();
+                        var l_y = y.toLowerCase();
+                        if (l_x < l_y) return -1;
+                        if (l_x > l_y) return 1;
+                        return 0;
+                    },
+                "default":function(x,y){ 
+                        if (x < y) return -1;
+                        if (x > y) return 1;
+                        return 0;
+                    }
+                };
             // Delivers a stream of array data via promise.notify()
             // Useful for passing an array of data to egGrid.get()
             // If a count is provided, the array will be trimmed to
@@ -1941,8 +1953,7 @@ angular.module('egGridMod',
                                 }
 
                                 var path = gridData.columnsProvider.findColumn(field).path || field;
-                                var comparator = gridData.columnsProvider.findColumn(field).comparator ||
-                                    function (x,y) { if (x < y) return -1; if (x > y) return 1; return 0 };
+                                var comparator = gridData.columnsProvider.findColumn(field).comparator;
 
                                 sorter_cache[si] = {
                                     field       : path,
@@ -1981,9 +1992,13 @@ angular.module('egGridMod',
 
                             if (af === null && bf !== null) return 1;
                             if (bf === null && af !== null) return -1;
+                            
+                            var comparator =  sc.comparator || (
+                            gridData.comparators[typeof af] ? gridData.comparators[typeof af]:gridData.comparators["default"]
+                            );
 
                             if (!(bf === null && af === null)) {
-                                var partial = sc.comparator(af,bf);
+                                var partial = comparator(af,bf);
                                 if (partial) {
                                     if (sc.dir == 'desc') {
                                         if (partial > 0) return -1;
