@@ -30,9 +30,9 @@
   <eg-grid-column path="id"></eg-grid-column>
   <eg-grid-column path="provider" [asyncSupportsEmptyTermClick]="true" [cellTemplate]="providerTmpl"></eg-grid-column>
   <eg-grid-column path="ordering_agency"></eg-grid-column>
-  <eg-grid-column path="create_time"></eg-grid-column>
-  <eg-grid-column path="edit_time"></eg-grid-column>
-  <eg-grid-column path="order_date"></eg-grid-column>
+  <eg-grid-column path="create_time" [datePlusTime]="true"></eg-grid-column>
+  <eg-grid-column path="edit_time" [datePlusTime]="true"></eg-grid-column>
+  <eg-grid-column path="order_date" [datePlusTime]="true"></eg-grid-column>
 
   <eg-grid-column path="creator" [hidden]="true"></eg-grid-column>
   <eg-grid-column path="editor" [hidden]="true"></eg-grid-column>
