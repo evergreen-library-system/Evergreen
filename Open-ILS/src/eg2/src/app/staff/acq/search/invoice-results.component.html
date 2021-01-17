@@ -40,9 +40,10 @@
   <eg-grid-column path="shipper" [cellTemplate]="shipperTmpl"></eg-grid-column>
 
   <eg-grid-column path="id" [hidden]="true"></eg-grid-column>
-  <eg-grid-column path="recv_date" [hidden]="true"></eg-grid-column>
   <eg-grid-column [asyncSupportsEmptyTermClick]="true" path="recv_method"></eg-grid-column>
   <eg-grid-column [asyncSupportsEmptyTermClick]="true" path="payment_method"></eg-grid-column>
+  <eg-grid-column path="recv_date" [datePlusTime]="true"></eg-grid-column>
+  <eg-grid-column path="close_date" [datePlusTime]="true"></eg-grid-column>  
 
 </eg-grid>
 
