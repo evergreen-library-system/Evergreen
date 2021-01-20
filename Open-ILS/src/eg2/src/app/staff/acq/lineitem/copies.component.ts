@@ -171,9 +171,14 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
     // are not required to go fetch them en masse / en duplicato.
     fetchFormulaValues(): Promise<any> {
 
-        const funds = Object.keys(this.formulaValues.fund);
-        const mods = Object.keys(this.formulaValues.circ_modifier);
-        const locs = Object.keys(this.formulaValues.location);
+        const funds = this.formulaValues.fund ?
+            Object.keys(this.formulaValues.fund) : [];
+
+        const mods = this.formulaValues.circ_modifier ?
+            Object.keys(this.formulaValues.circ_modifier) : [];
+
+        const locs = this.formulaValues.location ?
+            Object.keys(this.formulaValues.location) : [];
 
         let promise = Promise.resolve();
 
