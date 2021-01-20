@@ -4,7 +4,7 @@ import {Pager} from '@eg/share/util/pager';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
-import {LineitemService} from './lineitem.service';
+import {LineitemService, COPY_ORDER_DISPOSITION} from './lineitem.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {ItemLocationService} from '@eg/share/item-location-select/item-location-select.service';
 import {ItemLocationSelectComponent} from '@eg/share/item-location-select/item-location-select.component';
@@ -152,20 +152,8 @@ export class LineitemCopyAttrsComponent implements OnInit {
         return false;
     }
 
-    disposition(): 'canceled' | 'delayed' | 'received' | 'on-order' | 'pre-order' {
-        if (!this.copy || !this.lineitem) {
-            return null;
-        } else if (this.copy.cancel_reason()) {
-            if (this.copy.cancel_reason().keep_debits() === 't') {
-                return 'delayed';
-            } else {
-                return 'canceled';
-            }
-        } else if (this.copy.recv_time()) {
-            return 'received';
-        } else if (this.lineitem.state() === 'on-order') {
-            return 'on-order';
-        } else { return 'pre-order'; }
+    disposition(): COPY_ORDER_DISPOSITION {
+        return this.liService.copyDisposition(this.lineitem, this.copy);
     }
 }
 

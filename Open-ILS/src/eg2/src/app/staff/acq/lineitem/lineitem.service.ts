@@ -8,6 +8,10 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {ItemLocationService} from '@eg/share/item-location-select/item-location-select.service';
 
+const COPY_ORDER_DISPOSITIONS:
+    'canceled' | 'delayed' | 'received' | 'on-order' | 'pre-order' = null;
+export type COPY_ORDER_DISPOSITION = typeof COPY_ORDER_DISPOSITIONS;
+
 export interface BatchLineitemStruct {
     id: number;
     lineitem: IdlObject;
@@ -274,9 +278,21 @@ export class LineitemService {
         const lids = li.lineitem_details().filter(copy =>
             (copy.isnew() || copy.ischanged() || copy.isdeleted()));
 
-        return this.net.request(
-            'open-ils.acq',
-            'open-ils.acq.lineitem_detail.cud.batch', this.auth.token(), lids);
+        return from(
+
+            // Ensure we have the updated fund/loc/mod values before
+            // sending the copies off to be updated and then re-drawn.
+            this.fetchFunds(lids.map(lid => lid.fund()))
+            .then(_ => this.fetchLocations(lids.map(lid => lid.location())))
+            .then(_ => this.fetchCircMods(lids.map(lid => lid.circ_modifier())))
+
+        ).pipe(switchMap(_ =>
+            this.net.request(
+                'open-ils.acq',
+                'open-ils.acq.lineitem_detail.cud.batch',
+                this.auth.token(), lids
+            )
+        ));
     }
 
     updateLineitems(lis: IdlObject[]): Observable<BatchLineitemUpdateStruct> {
@@ -295,6 +311,64 @@ export class LineitemService {
         });
 
         return obs;
+    }
+
+
+    // Methods to fetch copy-related data, add it to our local cache,
+    // and announce that new values are available for comboboxes.
+    fetchFunds(fundIds: number[]): Promise<any> {
+        fundIds = fundIds.filter(id => id && !(id in this.fundCache));
+        if (fundIds.length === 0) { return Promise.resolve(); }
+
+        return this.pcrud.search('acqf', {id: fundIds})
+        .pipe(tap(fund => {
+            this.fundCache[fund.id()] = fund;
+            this.batchOptionWanted.emit(
+                {fund: {id: fund.id(), label: fund.code(), fm: fund}});
+        })).toPromise();
+    }
+
+    fetchCircMods(circMods: string[]): Promise<any> {
+        circMods = circMods
+            .filter(code => code && !(code in this.circModCache));
+
+        if (circMods.length === 0) { return Promise.resolve(); }
+
+        return this.pcrud.search('ccm', {code: circMods})
+        .pipe(tap(mod => {
+            this.circModCache[mod.code()] = mod;
+            this.batchOptionWanted.emit({circ_modifier:
+                {id: mod.code(), label: mod.code(), fm: mod}});
+        })).toPromise();
+    }
+
+    fetchLocations(locIds: number[]): Promise<any> {
+        locIds = locIds.filter(id => id && !(id in this.loc.locationCache));
+        if (locIds.length === 0) { return Promise.resolve(); }
+
+        return this.pcrud.search('acpl', {id: locIds})
+        .pipe(tap(loc => {
+            this.loc.locationCache[loc.id()] = loc;
+            this.batchOptionWanted.emit({location:
+                {id: loc.id(), label: loc.name(), fm: loc}});
+        })).toPromise();
+    }
+
+    // Order disposition of a single lineitem detail
+    copyDisposition(lineitem: IdlObject, copy: IdlObject): COPY_ORDER_DISPOSITION {
+        if (!copy || !lineitem) {
+            return null;
+        } else if (copy.cancel_reason()) {
+            if (copy.cancel_reason().keep_debits() === 't') {
+                return 'delayed';
+            } else {
+                return 'canceled';
+            }
+        } else if (copy.recv_time()) {
+            return 'received';
+        } else if (lineitem.state() === 'on-order') {
+            return 'on-order';
+        } else { return 'pre-order'; }
     }
 }
 

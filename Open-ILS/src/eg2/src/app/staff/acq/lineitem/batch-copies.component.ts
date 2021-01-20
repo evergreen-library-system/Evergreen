@@ -133,6 +133,21 @@ export class LineitemBatchCopiesComponent implements OnInit {
 
         return promise;
     }
+
+    hasEditableCopies(): boolean {
+        if (this.lineitem) {
+            const copies = this.lineitem.lineitem_details();
+            if (copies && copies.length > 0) {
+                for (let idx = 0; idx < copies.length; idx++) { // early break
+                    if (this.liService.copyDisposition(
+                        this.lineitem, copies[idx]) === 'pre-order') {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
 
 

@@ -171,51 +171,22 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
     // are not required to go fetch them en masse / en duplicato.
     fetchFormulaValues(): Promise<any> {
 
-        const funds = this.formulaValues.fund ?
-            Object.keys(this.formulaValues.fund) : [];
+        let funds = [];
+        if (this.formulaValues.fund) {
+            funds = Object.keys(this.formulaValues.fund).map(id => Number(id));
+        }
+
+        let locs = [];
+        if (this.formulaValues.location) {
+            locs = Object.keys(this.formulaValues.location).map(id => Number(id));
+        }
 
         const mods = this.formulaValues.circ_modifier ?
             Object.keys(this.formulaValues.circ_modifier) : [];
 
-        const locs = this.formulaValues.location ?
-            Object.keys(this.formulaValues.location) : [];
-
-        let promise = Promise.resolve();
-
-        if (funds.length > 0) {
-            promise = promise.then(_ => {
-                return this.pcrud.search('acqf', {id: funds})
-                .pipe(tap(fund => {
-                    this.liService.fundCache[fund.id()] = fund;
-                    this.liService.batchOptionWanted.emit(
-                        {fund: {id: fund.id(), label: fund.code(), fm: fund}});
-                })).toPromise();
-            });
-        }
-
-        if (mods.length > 0) {
-            promise = promise.then(_ => {
-                return this.pcrud.search('ccm', {code: mods})
-                .pipe(tap(mod => {
-                    this.liService.circModCache[mod.code()] = mod;
-                    this.liService.batchOptionWanted.emit({circ_modifier:
-                        {id: mod.code(), label: mod.code(), fm: mod}});
-                })).toPromise();
-            });
-        }
-
-        if (locs.length > 0) {
-            promise = promise.then(_ => {
-                return this.pcrud.search('acpl', {id: locs})
-                .pipe(tap(loc => {
-                    this.loc.locationCache[loc.id()] = loc;
-                    this.liService.batchOptionWanted.emit({location:
-                        {id: loc.id(), label: loc.name(), fm: loc}});
-                })).toPromise();
-            });
-        }
-
-        return promise;
+        return this.liService.fetchFunds(funds)
+            .then(_ => this.liService.fetchLocations(locs))
+            .then(_ => this.liService.fetchCircMods(mods));
     }
 
     // Apply a formula entry to a single copy.
