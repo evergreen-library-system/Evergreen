@@ -2,6 +2,11 @@
     and the batch copy editor component -->
 
 <div class="div d-flex batch-copy-row" *ngIf="copy">
+  <div class="pr-1 pt-2 text-secondary">
+    <!-- ensure the rowIndex for the first 100 copies vertically
+         aligns with an invisible 0 for 1..9 -->
+    {{rowIndex}}<span *ngIf="rowIndex < 10" class="invisible">0</span>
+  </div>
   <div class="flex-1 p-1">
     <eg-org-select #owningLibSelect placeholder="Owning Branch..." 
       i18n-placeholder [readOnly]="fieldIsDisabled('owning_lib')"

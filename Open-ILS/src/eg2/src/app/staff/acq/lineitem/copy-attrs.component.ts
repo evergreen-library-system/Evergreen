@@ -16,6 +16,8 @@ import {ItemLocationSelectComponent} from '@eg/share/item-location-select/item-l
 export class LineitemCopyAttrsComponent implements OnInit {
 
     @Input() lineitem: IdlObject;
+    @Input() rowIndex: number;
+
     fundEntries: ComboboxEntry[];
     circModEntries: ComboboxEntry[];
 
