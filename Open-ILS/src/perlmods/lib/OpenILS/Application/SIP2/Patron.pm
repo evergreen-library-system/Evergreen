@@ -178,6 +178,16 @@ sub set_patron_summary_list_items {
 
 }
 
+sub get_data_range {
+    my ($array, $offset, $limit) = @_;
+
+    return $array unless (defined $offset && defined $limit);
+
+    return [
+        grep { $_ } @$array[$offset .. ($offset + $limit - 1)]
+    ];
+}
+
 sub add_hold_items {
     my ($session, $details, $offset, $limit, $unavailable) = @_;
 
@@ -199,7 +209,7 @@ sub add_hold_items {
         }
     }
 
-    $details->{hold_items} = \@hold_items;
+    $details->{hold_items} = get_data_range(\@hold_items, $offset, $limit);
 }
 
 sub add_items_out {
@@ -208,10 +218,10 @@ sub add_items_out {
 
     my @circ_ids = (@{$details->{items_out_ids}}, @{$details->{items_overdue_ids}});
 
-    @circ_ids = grep { $_ } @circ_ids[$offset .. ($offset + $limit - 1)];
+    my $circ_ids = get_data_range(\@circ_ids, $offset, $limit);
 
     $details->{items_out} = [];
-    for my $circ_id (@circ_ids) {
+    for my $circ_id (@$circ_ids) {
         my $value = circ_id_to_value($session, $circ_id);
         push(@{$details->{items_out}}, $value);
     }
@@ -223,10 +233,10 @@ sub add_overdue_items {
 
     my @circ_ids = @{$details->{items_overdue_ids}};
 
-    @circ_ids = grep { $_ } @circ_ids[$offset .. ($offset + $limit - 1)];
+    my $circ_ids = get_data_range(\@circ_ids, $offset, $limit);
 
     $details->{overdue_items} = [];
-    for my $circ_id (@circ_ids) {
+    for my $circ_id (@$circ_ids) {
         my $value = circ_id_to_value($session, $circ_id);
         push(@{$details->{items_out}}, $value);
     }
@@ -513,7 +523,7 @@ sub add_fine_items {
         push @fines, $line;
     }
 
-    $details->{fine_items} = \@fines;
+    $details->{fine_items} = get_data_range(\@fines, $offset, $limit);
 }
 
 
