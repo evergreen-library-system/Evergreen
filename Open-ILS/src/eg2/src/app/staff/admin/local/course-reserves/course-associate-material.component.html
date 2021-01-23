@@ -259,6 +259,13 @@
 <ng-template #idlClassLabel let-r="result" i18n>
   {{r.label}}
 </ng-template>
+<ng-template #acmcTemplate
+  let-field="field" let-record="record">
+  <eg-combobox idlClass="acmc" [required]="true"
+    [selectedId]="record['course']()"
+    (onChange)="($event) ? record['course']($event.id) : ''">
+  </eg-combobox>
+</ng-template>
 
 <ng-container *ngIf="!isDialog()">
   <!-- in "inline" mode, render the grid pane right here -->
@@ -266,7 +273,7 @@
   </ng-container>
 </ng-container>
 
-<eg-fm-record-editor #editDialog idlClass='acmcm' [fieldOptions]="{course: {linkedSearchField: 'course_number'}}"
+<eg-fm-record-editor #editDialog idlClass='acmcm' [fieldOptions]="{course: {customTemplate:{template:acmcTemplate}}}"
   [preloadLinkedValues]="true"
   hiddenFields="id,item,original_callnumber,original_status,original_location,original_circ_modifier,record,temporary_record">
 </eg-fm-record-editor>
