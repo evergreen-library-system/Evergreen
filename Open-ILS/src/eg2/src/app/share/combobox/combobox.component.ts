@@ -201,6 +201,9 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
             // FIXME: it would be cleaner if we could somehow use
             // the per-IDL-class ng-templates directly
             switch (this.idlClass) {
+                case 'acmc':
+                    return fm.course_number() + ': ' + fm.name();
+                    break;
                 case 'acqf':
                     return fm.code() + ' (' + fm.year() + ')';
                     break;
