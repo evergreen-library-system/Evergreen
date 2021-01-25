@@ -1019,24 +1019,15 @@ sub mk_env {
     
         $self->bail_on_events(OpenILS::Event->new('PATRON_CARD_INACTIVE'))
             unless $U->is_true($patron->card->active);
-    
-        my $expire = DateTime::Format::ISO8601->new->parse_datetime(
-            clean_ISO8601($patron->expire_date));
 
-        # An expired patron can renew with the assistance of an OUS.
-        if($self->opac_renewal or $self->auto_renewal) {
-            my $use_circ_lib = $self->editor->retrieve_config_global_flag('circ.opac_renewal.use_original_circ_lib');
-            if($use_circ_lib and $U->is_true($use_circ_lib->enabled)) {
-                $self->circ_lib($self->circ->circ_lib);
-            }
-            else {
-                $self->circ_lib($patron->home_ou);
-            }
-        }
+        # Expired patrons cannot check out.  Renewals for expired
+        # patrons depend on a setting and will be checked in the
+        # do_renew subroutine.
+        if ($self->is_checkout) {
+            my $expire = DateTime::Format::ISO8601->new->parse_datetime(
+                clean_ISO8601($patron->expire_date));
 
-        my $expire_setting = $U->ou_ancestor_setting_value($self->circ_lib, OILS_SETTING_ALLOW_RENEW_FOR_EXPIRED_PATRON);
-        unless ($self->is_renewal and $expire_setting) {
-            if(CORE::time > $expire->epoch) {
+            if (CORE::time > $expire->epoch) {
                 $self->bail_on_events(OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED'))
             }
         }
@@ -4130,6 +4121,15 @@ sub do_renew {
             }
         }
         $self->circ_lib($circ->circ_lib) if($desk_renewal_use_circ_lib);
+    }
+
+    # Check if expired patron is allowed to renew, and bail if not.
+    my $expire = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($self->patron->expire_date));
+    if (CORE::time > $expire->epoch) {
+        my $allow_renewal = $U->ou_ancestor_setting_value($self->circ_lib, OILS_SETTING_ALLOW_RENEW_FOR_EXPIRED_PATRON);
+        unless ($U->is_true($allow_renewal)) {
+            return $self->bail_on_events(OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED'));
+        }
     }
 
     # Run the fine generator against the old circ
