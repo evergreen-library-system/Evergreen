@@ -2899,8 +2899,7 @@ sub record_urls {
 
         my $marc_doc = $U->marc_xml_to_doc($bib->marc);
 
-        for my $node ($marc_doc->findnodes(
-            '//*[@tag="856" and @ind1="4" and (@ind2="0" or @ind2="1")]')) {
+        for my $node ($marc_doc->findnodes('//*[@tag="856" and @ind1="4"]')) {
 
             # asset.uri's
             next if $node->findnodes('./*[@code="9" or @code="w" or @code="n"]');
@@ -2922,7 +2921,8 @@ sub record_urls {
                 push(@urls, {
                     href => $href,
                     label => ($first && $label) ?  $label->textContent : $href,
-                    note => ($first && $notes) ? $notes->textContent : ''
+                    note => ($first && $notes) ? $notes->textContent : '',
+                    ind2 => $node->getAttribute('ind2')
                 });
                 $first = 0;
             }
