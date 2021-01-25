@@ -120,13 +120,18 @@
           <ng-container *ngIf="expand && summary.eResourceUrls.length">
             <li class="list-group-item" *ngFor="let url of summary.eResourceUrls">
               <div class="d-flex">
-                <div class="flex-1 font-weight-bold" i18n>
-                  Electronic Resource:
+                <div class="flex-1 font-weight-bold">
+                  <ng-container [ngSwitch]="url.ind2">
+                    <ng-container *ngSwitchCase="'0'" i18n>Resource:</ng-container>
+                    <ng-container *ngSwitchCase="'1'" i18n>Version of Resource:</ng-container>
+                    <ng-container *ngSwitchCase="'2'" i18n>Related Resource:</ng-container>
+                    <ng-container *ngSwitchDefault i18n></ng-container>
+                  </ng-container>
                 </div>
                 <div class="flex-5">
-                  <a href="{{url.href}}">{{url.label}}</a>
+                  <div><a href="{{url.href}}">{{url.label}}</a></div>
+                  <div class="pt-1">{{url.note}}</div>
                 </div>
-                <div class="flex-4">{{url.note}}</div>
               </div>
             </li>
           </ng-container>
