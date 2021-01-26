@@ -16,6 +16,10 @@ const routes: Routes = [{
   path: 'picklist',
   loadChildren: () =>
     import('./picklist/picklist.module').then(m => m.PicklistModule)
+}, {
+  path: 'related',
+  loadChildren: () =>
+    import('./related/related.module').then(m => m.RelatedModule)
 }];
 
 @NgModule({

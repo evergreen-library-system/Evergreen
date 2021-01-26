@@ -2,7 +2,7 @@
 <!-- BATCH ACTIONS -->
 <eg-acq-cancel-dialog #cancelDialog></eg-acq-cancel-dialog>
 
-<div class="row mt-3">
+<div class="row mt-3" *ngIf="poId || picklistId">
   <div class="col-lg-1">
     <div ngbDropdown>
       <button class="btn btn-info btn-sm" ngbDropdownToggle i18n>Actions</button>
@@ -62,7 +62,8 @@
 
 <!-- NAVIGATION / EXPANDY -->
 
-<div class="row mt-3 mb-1 border border-info rounded toolbar">
+<div *ngIf="poId || picklistId"
+  class="row mt-3 mb-1 border border-info rounded toolbar">
   <div class="col-lg-12 d-flex">
     <div class="d-flex justify-content-center flex-column h-100">
       <div class="form-check">
@@ -129,6 +130,14 @@
 </div>
 
 <!-- LINEITEM LIST -->
+
+<ng-container *ngIf="pageOfLineitems.length === 0 && !loading">
+  <div class="row mt-2">
+    <div class="col-lg-6 offset-lg-3 alert alert-warning" i18n>
+      No items to display.
+    </div>
+  </div>
+</ng-container>
 
 <ng-container *ngFor="let li of pageOfLineitems">
   <div class="row mt-2 border-bottom pt-2 pb-2 li-state-{{li.state()}}">

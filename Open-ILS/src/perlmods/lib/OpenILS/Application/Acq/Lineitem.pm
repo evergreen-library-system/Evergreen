@@ -526,11 +526,21 @@ sub lineitems_related_by_bib {
         return scalar(@$results);
     } else {
         for my $result (@$results) {
-            # retrieve_lineitem takes care of POs and PLs and also handles
-            # options like flesh_notes and permissions checking.
-            $conn->respond(
-                retrieve_lineitem($self, $conn, $auth, $result->{"id"}, $options)
-            );
+
+            # Let retrieve_lineitem_impl handle the permission checks
+            # and fleshing where needed.
+            my $li = retrieve_lineitem_impl($e, $result->{id}, $options) 
+                or return $e->die_event;
+
+            if ($options->{idlist}) {
+                $conn->respond($li->id);
+
+            } else {
+                
+                # retrieve_lineitem takes care of POs and PLs and also handles
+                # options like flesh_notes and permissions checking.
+                $conn->respond($li);
+            }
         }
     }
 

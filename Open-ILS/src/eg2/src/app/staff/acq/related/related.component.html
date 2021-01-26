@@ -1,0 +1,68 @@
+
+<eg-staff-banner i18n-bannerText bannerText="Linetiems Related to Bib Record">
+</eg-staff-banner>
+
+<eg-bib-summary [recordId]="recordId"></eg-bib-summary> 
+
+<eg-prompt-dialog #newPlDialog
+  i18n-dialogTitle dialogTitle="New Selection List"
+  i18n-dialogBody dialogBody="Enter Selection List Name">
+</eg-prompt-dialog>
+
+<eg-alert-dialog #plNameExists
+  i18n-dialogBody dialogBody="Selection List Name Already In Use">
+</eg-alert-dialog>
+
+<div class="row mt-2 mb-2 border border-info">
+  <div class="col-lg-2 p-1">
+    <button class="btn btn-outline-dark label-with-material-icon"
+      (click)="createPicklist()" i18n>
+      <span class="material-icons mr-1">create_new_folder</span>
+      Create Selection List
+    </button>
+  </div>
+  <div class="col-lg-2 p-1">
+    <button class="btn btn-outline-dark label-with-material-icon" 
+      (click)="addingToPl=!addingToPl" i18n>
+      <span class="material-icons mr-1">add_circle</span>
+      Add To Selection List
+    </button>
+  </div>
+  <div class="col-lg-2 p-1">
+    <div *ngIf="addingToPl" class="d-flex">
+      <eg-combobox [(ngModel)]="selectedPl" idlClass="acqpl"
+        placeholder="Select List..." i18n-placeHolder></eg-combobox>
+      <button class="btn btn-outline-primary btn-sm" 
+        (click)="addToPicklist(selectedPl ? selectedPl.id : null)" i18n>
+        Apply
+      </button>
+    </div>
+  </div>
+  <div class="col-lg-2 p-1">
+    <button class="btn btn-outline-dark label-with-material-icon"
+      (click)="createPo()" i18n>
+      <span class="material-icons mr-1">create_new_folder</span>
+      Create Purchase Order
+    </button>
+  </div>
+  <div class="col-lg-2 p-1">
+    <button class="btn btn-outline-dark label-with-material-icon" 
+      (click)="addingToPo=!addingToPo" i18n>
+      <span class="material-icons mr-1">add_circle_outline</span>
+      Add To Purchase Order
+    </button>
+  </div>
+  <div class="col-lg-2 p-1">
+    <div *ngIf="addingToPo" class="d-flex">
+      <eg-combobox [(ngModel)]="selectedPo" idlClass="acqpo"
+        placeholder="Select Order..." i18n-placeHolder></eg-combobox>
+      <button class="btn btn-outline-primary btn-sm" 
+        (click)="addToPo(selectedPo ? selectedPo.id : null)" i18n>
+        Apply
+      </button>
+    </div>
+  </div>
+</div>
+
+<router-outlet></router-outlet>
+

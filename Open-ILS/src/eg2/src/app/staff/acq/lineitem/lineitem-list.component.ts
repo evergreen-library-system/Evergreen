@@ -22,6 +22,7 @@ export class LineitemListComponent implements OnInit {
 
     picklistId: number = null;
     poId: number = null;
+    recordId: number = null; // lineitems related to a bib.
 
     loading = false;
     pager: Pager = new Pager();
@@ -81,6 +82,7 @@ export class LineitemListComponent implements OnInit {
         this.route.parent.paramMap.subscribe((params: ParamMap) => {
             this.picklistId = +params.get('picklistId');
             this.poId = +params.get('poId');
+            this.recordId = +params.get('recordId');
             this.load();
         });
 
@@ -111,8 +113,8 @@ export class LineitemListComponent implements OnInit {
     load(): Promise<any> {
         this.pageOfLineitems = [];
 
-        if (!this.loading &&
-            this.pager.limit && (this.poId || this.picklistId)) {
+        if (!this.loading && this.pager.limit &&
+            (this.poId || this.picklistId || this.recordId)) {
 
             this.loading = true;
 
@@ -136,9 +138,17 @@ export class LineitemListComponent implements OnInit {
         let handler = (po) => po.lineitems();
 
         if (this.picklistId) {
+
             id = this.picklistId;
             options = {idlist: true, limit: 1000};
             method = 'open-ils.acq.lineitem.picklist.retrieve.atomic';
+            handler = (ids) => ids;
+
+        } else if (this.recordId) {
+
+            id = this.recordId;
+            method = 'open-ils.acq.lineitems_for_bib.by_bib_id.atomic';
+            options = {idlist: true, limit: 1000};
             handler = (ids) => ids;
         }
 
