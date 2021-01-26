@@ -795,10 +795,11 @@ CREATE TABLE actor.usr_message (
 	stop_date		TIMESTAMP WITH TIME ZONE,
 	editor	BIGINT REFERENCES actor.usr (id),
 	edit_date		TIMESTAMP WITH TIME ZONE
-    
 );
 CREATE INDEX aum_usr ON actor.usr_message (usr);
+ALTER TABLE actor.usr_standing_penalty ALTER COLUMN id SET DEFAULT nextval('actor.usr_message_id_seq'::regclass);
 ALTER TABLE actor.usr_standing_penalty ADD COLUMN usr_message BIGINT REFERENCES actor.usr_message(id);
+CREATE INDEX usr_standing_penalty_usr_message_idx ON actor.usr_standing_penalty (usr_message);
 
 CREATE RULE protect_usr_message_delete AS
 	ON DELETE TO actor.usr_message DO INSTEAD (
@@ -833,23 +834,23 @@ CREATE TRIGGER restrict_usr_message_limited_tgr
 -- combined view of actor.usr_standing_penalty and actor.usr_message for populating
 -- staff Notes (formerly Messages) interface
 
-CREATE VIEW actor.usr_message_penalty
-AS SELECT
-    COALESCE(ausp.id::TEXT,'') || ':' || COALESCE(aum.id::TEXT,'') AS "id",
+CREATE VIEW actor.usr_message_penalty AS
+SELECT -- ausp with or without messages
+    ausp.id AS "id",
     ausp.id AS "ausp_id",
     aum.id AS "aum_id",
-    COALESCE(ausp.org_unit,aum.sending_lib) AS "org_unit",
+    ausp.org_unit AS "org_unit",
     ausp.org_unit AS "ausp_org_unit",
     aum.sending_lib AS "aum_sending_lib",
-    COALESCE(ausp.usr,aum.usr) AS "usr",
+    ausp.usr AS "usr",
     ausp.usr as "ausp_usr",
     aum.usr as "aum_usr",
     ausp.standing_penalty AS "standing_penalty",
     ausp.staff AS "staff",
-    LEAST(ausp.set_date,aum.create_date) AS "create_date",
+    ausp.set_date AS "create_date",
     ausp.set_date AS "ausp_set_date",
     aum.create_date AS "aum_create_date",
-    LEAST(ausp.stop_date,aum.stop_date) AS "stop_date",
+    ausp.stop_date AS "stop_date",
     ausp.stop_date AS "ausp_stop_date",
     aum.stop_date AS "aum_stop_date",
     ausp.usr_message AS "ausp_usr_message",
@@ -862,13 +863,38 @@ AS SELECT
     aum.edit_date AS "edit_date"
 FROM
     actor.usr_standing_penalty ausp
-FULL OUTER JOIN
+    LEFT JOIN actor.usr_message aum ON (ausp.usr_message = aum.id)
+        UNION ALL
+SELECT -- aum without penalties
+    aum.id AS "id",
+    NULL::INT AS "ausp_id",
+    aum.id AS "aum_id",
+    aum.sending_lib AS "org_unit",
+    NULL::INT AS "ausp_org_unit",
+    aum.sending_lib AS "aum_sending_lib",
+    aum.usr AS "usr",
+    NULL::INT as "ausp_usr",
+    aum.usr as "aum_usr",
+    NULL::INT AS "standing_penalty",
+    NULL::INT AS "staff",
+    aum.create_date AS "create_date",
+    NULL::TIMESTAMPTZ AS "ausp_set_date",
+    aum.create_date AS "aum_create_date",
+    aum.stop_date AS "stop_date",
+    NULL::TIMESTAMPTZ AS "ausp_stop_date",
+    aum.stop_date AS "aum_stop_date",
+    NULL::INT AS "ausp_usr_message",
+    aum.title AS "title",
+    aum.message AS "message",
+    aum.deleted AS "deleted",
+    aum.read_date AS "read_date",
+    aum.pub AS "pub",
+    aum.editor AS "editor",
+    aum.edit_date AS "edit_date"
+FROM
     actor.usr_message aum
-ON (
-    ausp.usr_message = aum.id
-)
-WHERE
-    NOT (ausp.id IS NULL AND aum.deleted);
+    LEFT JOIN actor.usr_standing_penalty ausp ON (ausp.usr_message = aum.id)
+WHERE NOT aum.deleted AND ausp.id IS NULL
 ;
 
 CREATE TABLE actor.passwd_type (

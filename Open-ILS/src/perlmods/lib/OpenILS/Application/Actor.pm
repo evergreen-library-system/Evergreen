@@ -1991,10 +1991,10 @@ sub user_opac_vitals {
     my $unread_msgs = $e->search_actor_usr_message([
         {usr => $user_id, read_date => undef, deleted => 'f',
             'pub' => 't', # this is for the unread message count in the opac
-            '-or' => [
-                {stop_date => undef},
-                {stop_date => {'>' => 'now'}}
-            ],
+            #'-or' => [ # Hiding Archived messages are for staff UI, not this
+            #    {stop_date => undef},
+            #    {stop_date => {'>' => 'now'}}
+            #],
         },
         {idlist => 1}
     ]);
