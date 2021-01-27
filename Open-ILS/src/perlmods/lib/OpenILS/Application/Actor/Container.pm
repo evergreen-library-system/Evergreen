@@ -396,6 +396,121 @@ sub item_create {
     return $item->id; 
 }
 
+__PACKAGE__->register_method(
+    method  => 'batch_add_items',
+    api_name    => 'open-ils.actor.container.item.create.batch',
+    stream      => 1,
+    max_bundle_count => 1,
+    signature => {
+        desc => 'Add items to a bucket',
+        params => [
+            {desc => 'Auth token', type => 'string'},
+            {desc => q/
+                Container class.  
+                Can be "copy", "call_number", "biblio_record_entry", or "user"'/,
+                type => 'string'},
+            {desc => 'Bucket ID', type => 'number'},
+            {desc => q/
+                Item target identifiers.  E.g. for record buckets,
+                the identifier would be the bib record id/, 
+                type => 'array'
+            },
+        ],
+        return => {
+            desc => 'Stream of new item Identifiers',
+            type => 'number'
+        }
+    }
+);
+
+sub batch_add_items {
+    my ($self, $client, $auth, $bucket_class, $bucket_id, $target_ids) = @_;
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    my $constructor = "Fieldmapper::container::${bucket_class}_bucket_item";
+    my $create = "create_container_${bucket_class}_bucket_item";
+    my $retrieve = "retrieve_container_${bucket_class}_bucket";
+    my $column = "target_${bucket_class}";
+
+    my $bucket = $e->$retrieve($bucket_id) or return $e->die_event;
+
+    if ($bucket->owner ne $e->requestor->id) {
+        return $e->die_event unless $e->allowed('CREATE_CONTAINER_ITEM');
+    }
+
+    for my $target_id (@$target_ids) {
+
+        my $item = $constructor->new;
+        $item->bucket($bucket_id);
+        $item->$column($target_id);
+
+        return $e->die_event unless $e->$create($item);
+        $client->respond($target_id);
+    }
+
+    $e->commit;
+    return undef;
+}
+
+__PACKAGE__->register_method(
+    method  => 'batch_delete_items',
+    api_name    => 'open-ils.actor.container.item.delete.batch',
+    stream      => 1,
+    max_bundle_count => 1,
+    signature => {
+        desc => 'Remove items from a bucket',
+        params => [
+            {desc => 'Auth token', type => 'string'},
+            {desc => q/
+                Container class.  
+                Can be "copy", "call_number", "biblio_record_entry", or "user"'/,
+                type => 'string'},
+            {desc => q/
+                Item target identifiers.  E.g. for record buckets,
+                the identifier would be the bib record id/, 
+                type => 'array'
+            }
+        ],
+        return => {
+            desc => 'Stream of new removed target IDs',
+            type => 'number'
+        }
+    }
+);
+
+sub batch_delete_items {
+    my ($self, $client, $auth, $bucket_class, $bucket_id, $target_ids) = @_;
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    my $delete = "delete_container_${bucket_class}_bucket_item";
+    my $search = "search_container_${bucket_class}_bucket_item";
+    my $retrieve = "retrieve_container_${bucket_class}_bucket";
+    my $column = "target_${bucket_class}";
+
+    my $bucket = $e->$retrieve($bucket_id) or return $e->die_event;
+
+    if ($bucket->owner ne $e->requestor->id) {
+        return $e->die_event unless $e->allowed('DELETE_CONTAINER_ITEM');
+    }
+
+    for my $target_id (@$target_ids) {
+
+        my $item = $e->$search({bucket => $bucket_id, $column => $target_id})->[0];
+        next unless $item;
+
+        return $e->die_event unless $e->$delete($item);
+        $client->respond($target_id);
+    }
+
+    $e->commit;
+    return undef;
+}
+
+
 
 
 __PACKAGE__->register_method(
