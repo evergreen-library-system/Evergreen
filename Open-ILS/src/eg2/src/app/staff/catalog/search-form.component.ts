@@ -17,8 +17,8 @@ const LEGACY_TAB_NAME_MAP = {
 
 // Automatically collapse the search form on these pages
 const COLLAPSE_ON_PAGES = [
-    new RegExp(/catalog\/record\//),
-    new RegExp(/catalog\/hold\//)
+    new RegExp(/staff\/catalog\/record\//),
+    new RegExp(/staff\/catalog\/hold\//)
 ];
 
 @Component({
@@ -35,8 +35,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     copyLocations: IdlObject[];
     searchTab: string;
 
-    // Display the full form if true, otherwise display the expandy.
-    showThyself = true;
+    // What does the user want us to do?
+    // On pages where we can be hidded, start out hidden, unless the
+    // user has opted to show us.
+    showSearchFormSetting = false;
 
     constructor(
         private renderer: Renderer2,
@@ -44,9 +46,21 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         private route: ActivatedRoute,
         private org: OrgService,
         private cat: CatalogService,
+        private store: ServerStoreService,
         private staffCat: StaffCatalogService
     ) {
         this.copyLocations = [];
+
+    }
+
+    ngOnInit() {
+        this.ccvmMap = this.cat.ccvmMap;
+        this.cmfMap = this.cat.cmfMap;
+        this.context = this.staffCat.searchContext;
+
+        // Start with advanced search options open
+        // if any filters are active.
+        this.showSearchFilters = this.filtersActive();
 
         // Some search scenarios, like rendering a search template,
         // will not be searchable and thus not resovle to a specific
@@ -58,26 +72,28 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
             }
         });
 
-        this.router.events.subscribe(routeEvent => {
-            if (routeEvent instanceof NavigationEnd) {
-                this.showThyself = true;
-                COLLAPSE_ON_PAGES.forEach(pageRegex => {
-                    if (routeEvent.url.match(pageRegex)) {
-                        this.showThyself = false;
-                    }
-                });
-            }
-        });
+        this.store.getItem('eg.catalog.search.form.open')
+        .then(value => this.showSearchFormSetting = value);
     }
 
-    ngOnInit() {
-        this.ccvmMap = this.cat.ccvmMap;
-        this.cmfMap = this.cat.cmfMap;
-        this.context = this.staffCat.searchContext;
+    // Are we on a page where the form is allowed to be collapsed.
+    canBeHidden(): boolean {
+        for (let idx = 0; idx < COLLAPSE_ON_PAGES.length; idx++) {
+            const pageRegex = COLLAPSE_ON_PAGES[idx];
+            if (this.router.url.match(pageRegex)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        // Start with advanced search options open
-        // if any filters are active.
-        this.showSearchFilters = this.filtersActive();
+    hideForm(): boolean {
+        return this.canBeHidden() && !this.showSearchFormSetting;
+    }
+
+    toggleFormDisplay() {
+        this.showSearchFormSetting = !this.showSearchFormSetting;
+        this.store.setItem('eg.catalog.search.form.open', this.showSearchFormSetting);
     }
 
     ngAfterViewInit() {
