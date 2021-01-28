@@ -1,17 +1,15 @@
-import {Component, Input, ViewChild, OnInit, TemplateRef} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {from, merge, Observable} from 'rxjs';
+import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import {Observable, merge, of, EMPTY} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
-import {EventService} from '@eg/core/event.service';
-import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {Pager} from '@eg/share/util/pager';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {IdlObject, IdlService} from '@eg/core/idl.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -44,6 +42,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
         materialEditFailedString: StringComponent;
     @ViewChild('materialAddDifferentLibraryString', { static: true })
         materialAddDifferentLibraryString: StringComponent;
+    @ViewChild('confirmOtherLibraryDialog') confirmOtherLibraryDialog: DialogComponent;
     materialsDataSource: GridDataSource;
     @Input() barcodeInput: string;
     @Input() relationshipInput: string;
@@ -56,6 +55,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     @Input() isModifyingCallNumber: boolean;
     @Input() isModifyingLocation: boolean;
     bibId: number;
+    itemCircLib: string;
 
     associateBriefRecord: (newRecord: string) => void;
     associateElectronicBibRecord: () => void;
@@ -63,12 +63,8 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     constructor(
         private auth: AuthService,
         private course: CourseService,
-        private event: EventService,
-        private idl: IdlService,
         private net: NetService,
-        private org: OrgService,
         private pcrud: PcrudService,
-        private route: ActivatedRoute,
         private toast: ToastService,
         private modal: NgbModal
     ) {
@@ -176,24 +172,20 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
             this.barcodeInput = null;
 
             this.pcrud.search('acp', {barcode: args.barcode}, {
-                flesh: 3, flesh_fields: {acp: ['call_number']}
-            }).subscribe(item => {
-                const associatedMaterial = this.course.associateMaterials(item, args);
+                flesh: 3, flesh_fields: {acp: ['call_number', 'circ_lib']}
+            }).pipe(switchMap(item => this.handleItemAtDifferentLibrary$(item)))
+            .subscribe((originalItem) => {
+                const associatedMaterial = this.course.associateMaterials(originalItem, args);
                 associatedMaterial.material.then(res => {
-                    item = associatedMaterial.item;
+                    const item = associatedMaterial.item;
                     let new_cn = item.call_number().label();
                     if (this.tempCallNumber) { new_cn = this.tempCallNumber; }
                     this.course.updateItem(item, this.currentCourse.owning_lib(),
                         new_cn, args.isModifyingCallNumber
                     ).then(resp => {
                         this.materialsGrid.reload();
-                        if (item.circ_lib() !== this.currentCourse.owning_lib()) {
-                            this.materialAddDifferentLibraryString.current()
-                            .then(str => this.toast.warning(str));
-                        } else {
-                            this.materialAddSuccessString.current()
-                            .then(str => this.toast.success(str));
-                        }
+                        this.materialAddSuccessString.current()
+                        .then(str => this.toast.success(str));
                     });
                 }, err => {
                     this.materialAddFailedString.current()
@@ -216,5 +208,17 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
         ).add(() => {
             this.materialsGrid.reload();
         });
+    }
+
+    handleItemAtDifferentLibrary$(item: IdlObject): Observable<any> {
+        this.itemCircLib = item.circ_lib().shortname();
+        if (item.circ_lib().id() !== this.currentCourse.owning_lib().id()) {
+            return this.confirmOtherLibraryDialog.open()
+            .pipe(switchMap(confirmed => {
+                if (!confirmed) { return EMPTY; }
+                return of(item);
+            }));
+        }
+        return of(item);
     }
 }
