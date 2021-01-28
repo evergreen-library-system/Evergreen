@@ -7,16 +7,21 @@
 
 <div id='staffcat-search-form'>
 
-  <div *ngIf="!showThyself" class="row pt-1 pb-1 mb-2 pr-2">
+  <div *ngIf="canBeHidden()" class="row pt-1 pr-2">
     <div class="col-lg-12 d-flex">
       <div class="flex-1"></div><!-- push right -->
-      <a (click)="showThyself=true" class="label-with-material-icon no-href" i18n>
-        Show Search Form <span class="material-icons">unfold_more</span>
+      <a (click)="toggleFormDisplay()" class="label-with-material-icon no-href">
+        <ng-container *ngIf="hideForm()" i18n>
+          Show Search Form <span class="material-icons">unfold_more</span>
+        </ng-container>
+        <ng-container *ngIf="!hideForm()" i18n>
+          Hide Search Form <span class="material-icons">unfold_less</span>
+        </ng-container>
       </a>
     </div>
   </div>
   
-  <div *ngIf="showThyself" class="row pt-3 pb-3 mb-3">
+  <div *ngIf="!hideForm()" class="row pt-3 pb-3 mb-3">
   <div class="col-lg-8">
     <ngb-tabset #searchTabs [activeId]="searchTab" (tabChange)="onTabChange($event)">
       <ngb-tab title="Keyword Search" i18n-title id="term">
