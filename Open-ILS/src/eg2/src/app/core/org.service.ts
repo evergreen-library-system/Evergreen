@@ -346,6 +346,6 @@ export class OrgService {
             schema: 'cache',
             table: 'Setting',
             action: 'deleteAll'
-        }).catch(_ => null)
+        }).catch(_ => null);
     }
 }
