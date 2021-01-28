@@ -6,7 +6,12 @@
 </eg-string>
 <eg-string #materialEditSuccessString i18n-text text="Update of Course Material succeeded"></eg-string>
 <eg-string #materialEditFailedString i18n-text text="Update of Course Material failed or was not allowed"></eg-string>
-<eg-string #materialAddDifferentLibraryString i18n-text text="Material exists at a different library"></eg-string>
+
+<eg-confirm-dialog #confirmOtherLibraryDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Material from a different library"
+  dialogBody="This material has {{itemCircLib}} as its circulation library. Are you sure you want to add it to {{currentCourse.course_number()}}?">
+</eg-confirm-dialog>
 
 <ng-template #dialogContent>
   <div class="modal-header bg-info" [ngClass]="isDialog() ? 'modal-header' : 'alert mt-3'">
