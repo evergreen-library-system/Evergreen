@@ -252,7 +252,7 @@ export class IdlService {
 
             // If no order specified and no labels to sort by,
             // default to sorting by field name
-            return (a.label < b.label) ? -1 : 1;
+            return (a.name < b.name) ? -1 : 1;
         });
         newList = newList.concat(remainder);
         return newList;
