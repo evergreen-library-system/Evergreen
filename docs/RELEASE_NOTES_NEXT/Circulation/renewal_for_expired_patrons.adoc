@@ -1,0 +1,15 @@
+Allow Circulation Renewal for Expired Patrons
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The "Allow renewal request if renewal recipient privileges have
+expired" organizational unit setting can be set to true to permit
+expired patrons to renew circulations.  Allowing renewals for expired
+patrons reduces the number of auto-renewal failures and assumes that a
+patron with items out eligible for renewals has not been expired for
+very long and that such patrons are likely to renew their privileges
+in a timely manner.
+
+The setting is referenced based on the current circulation library for
+the renewal.  It takes into account the global flags for "Circ: Use
+original circulation library on desk renewal instead of the
+workstation library" and "Circ: Use original circulation library on
+opac renewal instead of user home library."
