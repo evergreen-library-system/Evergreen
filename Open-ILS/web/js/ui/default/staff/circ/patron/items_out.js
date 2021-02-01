@@ -7,10 +7,10 @@ angular.module('egPatronApp')
 .controller('PatronItemsOutCtrl',
        ['$scope','$q','$routeParams','$timeout','egCore','egUser','patronSvc',
         '$location','egGridDataProvider','$uibModal','egCirc','egConfirmDialog',
-        'egBilling','$window','egBibDisplay',
+        'egProgressDialog','egBilling','$window','egBibDisplay',
 function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc , 
          $location , egGridDataProvider , $uibModal , egCirc , egConfirmDialog , 
-         egBilling , $window , egBibDisplay) {
+         egProgressDialog , egBilling , $window , egBibDisplay) {
 
     // list of noncatatloged circulations. Define before initTab to 
     // avoid any possibility of race condition, since they are loaded
@@ -118,6 +118,8 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
         var deferred = $q.defer();
         var rendered = 0;
 
+        egProgressDialog.open();
+
         // fetch the lot of circs and stream the results back via notify
         egCore.pcrud.search('circ', {id : id_list},
             {   flesh : 4,
@@ -182,6 +184,7 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
                 }
 
                 if (rendered++ >= offset && rendered <= count) {
+                    egProgressDialog.close();
                     deferred.notify(circ);
                 };
             });
