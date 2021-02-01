@@ -37,6 +37,7 @@ export class PoSummaryComponent implements OnInit {
     ediMessageCount = 0;
     invoiceCount = 0;
     showNotes = false;
+    zeroCopyActivate = false;
     canActivate: boolean = null;
 
     activationBlocks: EgEvent[] = [];
@@ -159,9 +160,13 @@ export class PoSummaryComponent implements OnInit {
             return;
         }
 
+        const options = {
+            zero_copy_activate: this.zeroCopyActivate
+        };
+
         this.net.request('open-ils.acq',
             'open-ils.acq.purchase_order.activate.dry_run',
-            this.auth.token(), this.poId
+            this.auth.token(), this.poId, null, options
 
         ).pipe(tap(resp => {
 
@@ -176,27 +181,30 @@ export class PoSummaryComponent implements OnInit {
             }
 
             this.canActivate = false;
-
-            // TODO More logic likely needed here to handle zero-copy
-            // activation / ACQ_LINEITEM_NO_COPIES
         });
     }
 
-    activatePo() {
-        // TODO This code bypasses the Vandelay UI and force-loads the records.
-
+    activatePo(noAssets?: boolean) {
         this.activationEvent = null;
         this.progressDialog.open();
         this.progressDialog.update({max: this.po().lineitem_count() * 3});
 
+         // Bypass any Vandelay choices and force-load all records.
+         // TODO: Add intermediate Vandelay options.
+        const vandelay = {
+            import_no_match: true,
+            queue_name: `ACQ ${new Date().toISOString()}`
+        };
+
+        const options = {
+            zero_copy_activate: this.zeroCopyActivate,
+            no_assets: noAssets
+        };
+
         this.net.request(
             'open-ils.acq',
             'open-ils.acq.purchase_order.activate',
-            this.auth.token(), this.poId, {
-                // Import all records, no merging, etc.
-                import_no_match: true,
-                queue_name: `ACQ ${new Date().toISOString()}`
-            }
+            this.auth.token(), this.poId, vandelay, options
         ).subscribe(resp => {
             const evt = this.evt.parse(resp);
 

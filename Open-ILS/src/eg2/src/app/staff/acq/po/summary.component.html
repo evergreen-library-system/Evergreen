@@ -8,49 +8,11 @@
     <div class="col-lg-9">
 
       <div class="row">
-        <div class="col-lg-3 d-flex">
+        <div class="col-lg-4 d-flex">
           <div class="flex-2" i18n>PO ID:</div>
-          <div class="flex-3">{{poId}}</div>
+          <div class="flex-4">{{poId}}</div>
         </div>
-        <div class="col-lg-9 d-flex">
-          <div class="flex-1" i18n>PO Name:</div>
-          <div class="flex-6">
-            <ng-container *ngIf="editPoName">
-              <input id='pl-name-input' type="text" class="form-control"
-                [(ngModel)]="newPoName" (keyup.enter)="toggleNameEdit(true)" 
-                (blur)="toggleNameEdit()"/>
-            </ng-container>
-            <ng-container *ngIf="!editPoName">
-              <a (click)="toggleNameEdit()" href='javascript:;'
-                class='font-weight-bold'>{{po().name()}}</a>
-            </ng-container>
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-3 d-flex">
-          <div class="flex-2" i18n>Lineitems:</div>
-          <div class="flex-3">{{po().lineitem_count()}}</div>
-        </div>
-        <div class="col-lg-9 d-flex">
-          <div class="flex-1" i18n>Provider:</div>
-          <div class="flex-6">
-            <a routerLink="/staff/acq/provider/{{po().provider().id()}}/details">
-              {{po().provider().name()}}
-            </a>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-3 d-flex">
-          <div class="flex-2" i18n>Activated:</div>
-          <div class="flex-3">
-            <span *ngIf="po().order_date()">{{po().order_date() | date:'short'}}</span>
-            <span *ngIf="!po().order_date()" i18n>N/A</span>
-          </div>
-        </div>
-        <div class="col-lg-9 d-flex">
+        <div class="col-lg-8 d-flex">
           <div class="flex-1" i18n>Status:</div>
           <div class="flex-6">
             <div class="w-50" *ngIf="canActivate === null">
@@ -109,33 +71,60 @@
           </div>
         </div>
       </div>
-      <hr class="p-0 m-0 mt-1"/>
-      <div class="row mt-1">
-        <div class="col-lg-12">
-          <a class="" href="javascript:;" (click)="showNotes=!showNotes" 
-            i18n>Notes ({{po().notes().length}})</a>
-          <span class="pl-2 pr-2" i18n> | </span>
-          <a [queryParams]="{f: 'acqpo:id', val1: poId}"
-            routerLink="/staff/acq/search/invoices" i18n>Invoices ({{invoiceCount}})</a>
-          <span class="pl-2 pr-2" i18n> | </span>
-          <a href="/eg/acq/invoice/view?create=1&attach_po={{poId}}"
-            i18n>Create Invoice</a>
-          <span class="pl-2 pr-2" i18n> | </span>
-          <a routerLink="./edi" i18n>EDI Messages ({{ediMessageCount}})</a>
-          <span class="pl-2 pr-2" i18n> | </span>
-          <a routerLink="./history" i18n>History</a>
-          <span class="pl-2 pr-2" i18n> | </span>
-          <a routerLink="./printer" i18n>Print</a>
-          <ng-container *ngIf="po().state() == 'on-order' || po().state() == 'pending'">
-            <span class="pl-2 pr-2" i18n> | </span>
-            <a (click)="cancelPo()" href="javascript:;" i18n>Cancel Order</a>
-          </ng-container>
-          <ng-container *ngIf="canActivate === true">
-            <span class="pl-2 pr-2" i18n> | </span>
-            <a (click)="activatePo()" href="javascript:;" i18n>Activate Order</a>
-          </ng-container>
+
+      <div class="row">
+        <div class="col-lg-4 d-flex">
+          <div class="flex-2" i18n>PO Name:</div>
+          <div class="flex-4">
+            <ng-container *ngIf="editPoName">
+              <input id='pl-name-input' type="text" class="form-control"
+                [(ngModel)]="newPoName" (keyup.enter)="toggleNameEdit(true)" 
+                (blur)="toggleNameEdit()"/>
+            </ng-container>
+            <ng-container *ngIf="!editPoName">
+              <a (click)="toggleNameEdit()" href='javascript:;'
+                class='font-weight-bold'>{{po().name()}}</a>
+            </ng-container>
+          </div> 
+        </div>
+        <div class="col-lg-8 d-flex">
+          <div class="flex-1" i18n>Activated:</div>
+          <div class="flex-6">
+            <span *ngIf="po().order_date()">{{po().order_date() | date:'short'}}</span>
+            <span *ngIf="!po().order_date()" i18n>N/A</span>
+          </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-lg-4 d-flex">
+          <div class="flex-2" i18n>Provider:</div>
+          <div class="flex-4">
+            <a routerLink="/staff/acq/provider/{{po().provider().id()}}/details" i18n>
+              {{po().provider().name()}} ({{po().provider().code()}})
+            </a>
+          </div>
+        </div>
+        <div class="col-lg-8 d-flex">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-4 d-flex">
+          <div class="flex-2" i18n>Lineitems:</div>
+          <div class="flex-4">{{po().lineitem_count()}}</div>
+        </div>
+        <div class="col-lg-8 d-flex">
+          <div class="form-check form-check-inline">
+            <input class="ml-0 form-check-input" type="checkbox" (change)="setCanActivate()"
+              id="zero-copy-cbox" [(ngModel)]="zeroCopyActivate"/>
+            <label class="form-check-label" for="zero-copy-cbox" i18n>
+              Allow Activation with Zero-Copy Lineitems?
+            </label>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div class="col-lg-3">
       <div class="row">
@@ -158,6 +147,40 @@
       </div>
     </div>
   </div>
+  <hr class="p-0 m-0 mt-1"/>
+  <div class="row mt-1">
+    <div class="col-lg-12">
+      <a class="" href="javascript:;" (click)="showNotes=!showNotes" 
+        i18n>Notes ({{po().notes().length}})</a>
+      <span class="pl-2 pr-2" i18n> | </span>
+      <a [queryParams]="{f: 'acqpo:id', val1: poId}"
+        routerLink="/staff/acq/search/invoices" i18n>Invoices ({{invoiceCount}})</a>
+      <span class="pl-2 pr-2" i18n> | </span>
+      <a href="/eg/acq/invoice/view?create=1&attach_po={{poId}}"
+        i18n>Create Invoice</a>
+      <span class="pl-2 pr-2" i18n> | </span>
+      <a routerLink="./edi" i18n>EDI Messages ({{ediMessageCount}})</a>
+      <span class="pl-2 pr-2" i18n> | </span>
+      <a routerLink="./history" i18n>History</a>
+      <span class="pl-2 pr-2" i18n> | </span>
+      <a routerLink="./printer" i18n>Print</a>
+      <ng-container *ngIf="po().state() == 'on-order' || po().state() == 'pending'">
+        <span class="pl-2 pr-2" i18n> | </span>
+        <a (click)="cancelPo()" href="javascript:;" i18n>Cancel Order</a>
+      </ng-container>
+      <ng-container *ngIf="canActivate === true">
+        <span class="pl-2 pr-2" i18n> | </span>
+        <a (click)="activatePo()" href="javascript:;" i18n>Activate Order</a>
+      </ng-container>
+      <ng-container *ngIf="canActivate === true">
+        <span class="pl-2 pr-2" i18n> | </span>
+        <a (click)="activatePo(true)" href="javascript:;" i18n>
+          Activate Without Loading Items
+        </a>
+      </ng-container>
+    </div>
+  </div>
+
   <div class="row" *ngIf="showNotes">
     <div class="col-lg-10 offset-lg-1 p-2 mt-2 shadow">
       <eg-po-notes [po]="po()" (closeRequested)="showNotes = false">
