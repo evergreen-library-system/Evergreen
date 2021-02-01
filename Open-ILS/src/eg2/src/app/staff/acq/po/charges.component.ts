@@ -21,6 +21,14 @@ export class PoChargesComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        if (this.po()) {
+            // Sometimes our PO is already available at render time.
+             if (this.po().po_items().length > 0) {
+                this.showBody = true;
+            }
+        }
+
+        // Other times we have to wait for it.
         this.poService.poRetrieved.subscribe(() => {
             if (this.po().po_items().length > 0) {
                 this.showBody = true;
