@@ -3746,16 +3746,49 @@ __PACKAGE__->register_method (
     method      => 'get_itemsout_notices',
     api_name    => 'open-ils.actor.user.itemsout.notices',
     stream      => 1,
-    argc        => 3
+    argc        => 2,
+    signature   => {
+        desc => q/Summary counts of circulat notices/,
+        params => [
+            {desc => 'authtoken', type => 'string'},
+            {desc => 'circulation identifiers', type => 'array of numbers'}
+        ],
+        return => q/Stream of summary objects/
+    }
 );
 
-sub get_itemsout_notices{
-    my( $self, $conn, $auth, $circId, $patronId) = @_;
+sub get_itemsout_notices {
+    my ($self, $client, $auth, $circ_ids) = @_;
 
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
 
+    $circ_ids = [$circ_ids] unless ref $circ_ids eq 'ARRAY';
+
+    for my $circ_id (@$circ_ids) {
+        my $resp = get_itemsout_notices_impl($e, $circ_id);
+
+        if ($U->is_event($resp)) {
+            $client->respond($resp);
+            return;
+        }
+
+        $client->respond({circ_id => $circ_id, %$resp});
+    }
+
+    return undef;
+}
+
+
+
+sub get_itemsout_notices_impl {
+    my ($e, $circId) = @_;
+
     my $requestorId = $e->requestor->id;
+
+    my $circ = $e->retrieve_action_circulation($circId) or return $e->event;
+
+    my $patronId = $circ->usr;
 
     if( $patronId ne $requestorId ){
         my $user = $e->retrieve_actor_user($requestorId) or return $e->event;
@@ -3776,15 +3809,20 @@ sub get_itemsout_notices{
     #
 
     my $ctx_loc = $e->requestor->ws_ou;
-    my $exclude_courtesy_notices = $U->ou_ancestor_setting_value($ctx_loc, 'webstaff.circ.itemsout_notice_count_excludes_courtesies');
+    my $exclude_courtesy_notices = $U->ou_ancestor_setting_value(
+        $ctx_loc, 'webstaff.circ.itemsout_notice_count_excludes_courtesies');
+
     my $query = {
 	    select => { atev => ["complete_time"] },
 	    from => {
 		    atev => {
-			    atevdef => { field => "id",fkey => "event_def", join => { ath => { field => "key", fkey => "hook" }} }
+			    atevdef => { field => "id",fkey => "event_def"}
 		    }
 	    },
-	    where => {"+ath" => { key => "checkout.due" },"+atevdef" => { active => 't' },"+atev" => { target => $circId, state => 'complete' }}
+	    where => {
+            "+atevdef" => { active => 't', hook => 'checkout.due' },
+            "+atev" => { target => $circId, state => 'complete' }
+        }
     };
 
     if ($exclude_courtesy_notices){
@@ -3805,8 +3843,7 @@ sub get_itemsout_notices{
 	}
    }
 
-    $conn->respond(\%resblob);
-    return undef;
+    return \%resblob;
 }
 
 __PACKAGE__->register_method (
