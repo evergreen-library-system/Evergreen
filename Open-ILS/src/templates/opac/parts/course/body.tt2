@@ -39,11 +39,13 @@
         <div>
           <span><strong>[% l('Course Number') %]: </strong></span>
           <span>[% ctx.course.course_number %]</span>
-        <div>
         </div>
-          <span><strong>[% l('Section Number') %]: </strong></span>
-          <span>[% ctx.course.section_number %]</span>
-        </div>
+        [% IF ctx.course.section_number %]
+          <div>
+            <span><strong>[% l('Section Number') %]: </strong></span>
+            <span>[% ctx.course.section_number %]</span>
+          </div>
+        [% END %]
         <div>
           [%
             owning_lib = ctx.get_aou(ctx.course.owning_lib);
