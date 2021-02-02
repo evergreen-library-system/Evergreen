@@ -117,7 +117,7 @@ END; # FOREACH bib
                     [% IF ctx.has_perm('UPDATE_COPY', copy_info.circ_lib) 
                         OR ctx.has_perm('UPDATE_COPY', copy_info.call_number_owning_lib) %]
                         <span> | </span>
-                        <a target="_blank" href="[% ctx.base_path %]/staff/cat/item/[% copy_info.id %]/edit">[% l('edit') %]</a>
+                        <a href="javascript:;" onclick='window.open("[% ctx.base_path %]/staff/cat/item/[% copy_info.id %]/edit", "_blank");'>[% l('edit') %]</a>
                     [% END %]
                   [% ELSE %]
                     <a onclick="xulG.new_tab(xulG.urls.XUL_COPY_STATUS, {}, {'from_item_details_new': true, 'barcodes': ['[%- copy_info.barcode | html | replace('\'', '\\\'') -%]']})"
