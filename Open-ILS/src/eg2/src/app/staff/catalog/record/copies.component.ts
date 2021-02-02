@@ -31,6 +31,8 @@ export class CopiesComponent implements OnInit {
 
     cellTextGenerator: GridCellTextGenerator;
 
+    openHoldingsEditor: (item: number) => void;
+
     constructor(
         private net: NetService,
         private org: OrgService,
@@ -60,6 +62,10 @@ export class CopiesComponent implements OnInit {
                 `${row.call_number_label} ${row.call_number_suffix_label}`).trim(),
             holdable: row => this.copyContext.holdable(row),
             barcode: row => row.barcode
+        };
+
+        this.openHoldingsEditor = (item: number) => {
+            window.open('/eg/staff/cat/item/' + item + '/edit', '_blank');
         };
     }
 
