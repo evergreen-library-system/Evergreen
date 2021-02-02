@@ -10,8 +10,8 @@
   <a class="pl-1" target="_blank" 
     href="/eg/staff/cat/item/{{copy.id}}" i18n>View</a>
   | 
-  <a class="pl-1" target="_blank"
-    href="/eg/staff/cat/item/{{copy.id}}/edit" i18n>Edit</a>
+  <a class="pl-1" href="javascript:;"
+    (click)="openHoldingsEditor(copy.id)" i18n>Edit</a>
   </div>
 </ng-template>
 
