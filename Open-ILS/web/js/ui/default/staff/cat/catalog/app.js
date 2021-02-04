@@ -263,7 +263,7 @@ function($scope , $routeParams , $location , $window , $q , egCore) {
 
     $scope.$watch('new_bib_id', function(newVal, oldVal) {
         if (newVal) {
-            $location.path('/cat/catalog/record/' + $scope.new_bib_id);
+            location.href = '/eg2/staff/catalog/record/' + $scope.new_bib_id;
         }
     });
     
