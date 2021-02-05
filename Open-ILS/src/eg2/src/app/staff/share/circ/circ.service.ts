@@ -13,6 +13,7 @@ import {AudioService} from '@eg/share/util/audio.service';
 
 // API parameter options
 export interface CheckoutParams {
+    due_date?: string;
     patron_id: number;
     copy_id?: number;
     copy_barcode?: string;
@@ -68,8 +69,8 @@ export class CircService {
         return this.net.request(
             'open-ils.circ',
             'open-ils.circ.checkout.full',
-            this.auth.token(), params
-        ).toPromise().then(result => this.processCheckoutResult(params, result))
+            this.auth.token(), params).toPromise()
+        .then(result => this.processCheckoutResult(params, result));
     }
 
     processCheckoutResult(

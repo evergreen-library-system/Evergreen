@@ -9,12 +9,12 @@
   dialogBody="Enter the number of {{checkoutNoncat ? checkoutNoncat.name() : ''}} circulating">
 </eg-prompt-dialog>
 
-<div class="row">
+<div class="row mb-2 pb-2 border-bottom">
   <div class="col-lg-12 d-flex">
     <div class="form-inline">
       <div class="input-group">
         <div class="input-group-prepend">
-          <div ngbDropdown class="d-inline-block">
+          <div ngbDropdown>
             <button ngbDropdownToggle class="btn btn-outline-dark" id="checkout-button">
               <ng-container *ngIf="!checkoutNoncat" i18n>Barcode</ng-container>
               <ng-container *ngIf="checkoutNoncat">{{checkoutNoncat.name()}}</ng-container>
@@ -32,15 +32,38 @@
         <input type="text" class="form-control" id="barcode-input"
           [placeholder]="checkoutNoncat ? '' : 'Barcode...'" i18n-placeholder
           [(ngModel)]="checkoutBarcode" [disabled]="checkoutNoncat != null"
-          i18n-aria-label aria-label="Barcode Input"/>
+          i18n-aria-label aria-label="Barcode Input" (keyup.enter)="checkout()" />
         <div class="input-group-append">
-          <button class="btn btn-outline-dark" (click)="checkout()" i18n>Submit</button>
+          <button class="btn btn-outline-dark" (keyup.enter)="checkout()" 
+            (click)="checkout()" i18n>Submit</button>
         </div>
       </div>
     </div>
-    <div class="ml-auto">
-      here
+    <div class="flex-1"></div>
+    <div ngbDropdown>
+      <button ngbDropdownToggle class="btn mr-2" [ngClass]="{
+          'btn-outline-dark': context.dueDateOptions == 0,
+          'btn-outline-success': context.dueDateOptions > 0
+        }"
+        i18n>Date Options</button>
+      <div ngbDropdownMenu>
+        <button ngbDropdownItem (click)="toggleDateOptions(1)">
+          <span *ngIf="context.dueDateOptions > 0" 
+            class="badge badge-success">&#x2713;</span>  
+          <span *ngIf="context.dueDateOptions == 0" 
+            class="badge badge-warning">&#x2717;</span> 
+          <span class="pl-2" i18n>Specific Due Date</span>
+        </button>
+        <button ngbDropdownItem (click)="toggleDateOptions(2)">
+          <span *ngIf="context.dueDateOptions == 2" 
+            class="badge badge-success">&#x2713;</span>  
+          <span *ngIf="context.dueDateOptions < 2" 
+            class="badge badge-warning">&#x2717;</span> 
+          <span class="pl-2" i18n>Specific Due Date Until Logout</span>
+        </button>
+      </div>
     </div>
+    <eg-datetime-select (onChangeAsIso)="setDueDate($event)"></eg-datetime-select>
   </div>
 </div>
 

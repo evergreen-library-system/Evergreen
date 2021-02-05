@@ -70,6 +70,7 @@ export class PatronManagerService {
 
     // These should persist tab changes
     checkouts: CircGridEntry[] = [];
+    dueDateOptions: 0 | 1 | 2 = 0; // auto date; specific date; session date
 
     constructor(
         private net: NetService,

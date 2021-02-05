@@ -25,6 +25,8 @@ export class CheckoutComponent implements OnInit {
     checkoutBarcode = '';
     gridDataSource: GridDataSource = new GridDataSource();
     cellTextGenerator: GridCellTextGenerator;
+    dueDate: string;
+    copiesInFlight: {[barcode: string]: boolean} = {};
 
     @ViewChild('nonCatCount') nonCatCount: PromptDialogComponent;
     @ViewChild('checkoutsGrid') checkoutsGrid: GridComponent;
@@ -53,6 +55,10 @@ export class CheckoutComponent implements OnInit {
         this.focusInput();
     }
 
+    setDueDate(iso: string) {
+        this.dueDate = iso;
+    }
+
     focusInput() {
         const input = document.getElementById('barcode-input');
         if (input) { input.focus(); }
@@ -73,8 +79,19 @@ export class CheckoutComponent implements OnInit {
                 params.noncat_type = this.checkoutNoncat.id();
                 return params;
             });
+
         } else if (this.checkoutBarcode) {
+
+            if (this.copiesInFlight[this.checkoutBarcode]) {
+                console.log('Item ' +
+                    this.checkoutBarcode + ' is already mid-checkout');
+                return Promise.resolve(null);
+            }
+
+            this.copiesInFlight[this.checkoutBarcode] = true;
+
             params.copy_barcode = this.checkoutBarcode;
+            if (this.context.dueDateOptions > 0) { params.due_date = this.dueDate; }
             return Promise.resolve(params);
         }
 
@@ -92,6 +109,11 @@ export class CheckoutComponent implements OnInit {
 
         .then((result: CheckoutResult) => {
             if (result) {
+
+                if (result.params.copy_barcode) {
+                    delete this.copiesInFlight[result.params.copy_barcode];
+                }
+
                 if (result.success) {
                     this.gridifyResult(result);
                     this.resetForm();
@@ -101,6 +123,13 @@ export class CheckoutComponent implements OnInit {
     }
 
     resetForm() {
+
+        if (this.context.dueDateOptions < 2) {
+            // Due date is not configured to persist.
+            this.context.dueDateOptions = 0;
+            this.dueDate = null;
+        }
+
         this.checkoutBarcode = '';
         this.checkoutNoncat = null;
         this.focusInput();
@@ -153,6 +182,21 @@ export class CheckoutComponent implements OnInit {
                 return this.noncatPrompt();
             }
         }));
+    }
+
+    // 0: use server due date
+    // 1: use specific due date once
+    // 2: use specific due date until the end of the session.
+    toggleDateOptions(value: 1 | 2) {
+        if (this.context.dueDateOptions > 0) {
+            if (value === 1) {
+                this.context.dueDateOptions = 0;
+            } else if (this.context.dueDateOptions === 1) {
+                this.context.dueDateOptions = 2;
+            }
+        } else {
+            this.context.dueDateOptions = value;
+        }
     }
 }
 
