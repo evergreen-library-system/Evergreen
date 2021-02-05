@@ -43,6 +43,12 @@
             </a>
           </li>
           <li>
+            <a href="/eg2/staff/circ/patron/search">
+              <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+              <span eg-accesskey-label>[% l('Search for Patrons (Experimental)') %]</span>
+            </a>
+          </li>
+          <li>
             <a href="./cat/item/search" target="_self"
               eg-accesskey="[% l('f5') %]" 
               eg-accesskey-desc="[% l('Item Status') %]">

@@ -1,2 +1,43 @@
 
-CHECKOUT
+<eg-prompt-dialog #nonCatCount
+  promptType="number"
+  i18n-dialogTitle dialogTitle="Non-Cat Checkout"
+  promptMin="1" promptValue="1" [promptMax]="maxNoncats"
+  i18n-dialogBody
+  dialogBody="Enter the number of {{checkoutNoncat ? checkoutNoncat.name() : ''}} circulating">
+</eg-prompt-dialog>
+
+<div class="row">
+  <div class="col-lg-12 d-flex">
+    <div class="form-inline">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div ngbDropdown class="d-inline-block">
+            <button ngbDropdownToggle class="btn btn-outline-dark" id="checkout-button">
+              <ng-container *ngIf="!checkoutNoncat" i18n>Barcode</ng-container>
+              <ng-container *ngIf="checkoutNoncat">{{checkoutNoncat.name()}}</ng-container>
+            </button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+              <button ngbDropdownItem (click)="checkoutNoncat=null" i18n>Barcode</button>
+              <div role="separator" class="dropdown-divider"></div>
+              <ng-container *ngIf="circ.nonCatTypes">
+                <button *ngFor="let nct of circ.nonCatTypes" 
+                  (click)="checkoutNoncat=nct" ngbDropdownItem>{{nct.name()}}</button>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <input type="text" class="form-control" id="barcode-input"
+          [placeholder]="checkoutNoncat ? '' : 'Barcode...'" i18n-placeholder
+          [disabled]="checkoutNoncat != null"
+          i18n-aria-label aria-label="Barcode Input"/>
+        <div class="input-group-append">
+          <button class="btn btn-outline-dark" (click)="checkout()" i18n>Submit</button>
+        </div>
+      </div>
+    </div>
+    <div class="ml-auto">
+      here
+    </div>
+  </div>
+</div>

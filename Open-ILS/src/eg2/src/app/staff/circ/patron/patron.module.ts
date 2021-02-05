@@ -3,6 +3,7 @@ import {PatronRoutingModule} from './routing.module';
 import {FmRecordEditorModule} from '@eg/share/fm-editor/fm-editor.module';
 import {StaffCommonModule} from '@eg/staff/common.module';
 import {HoldsModule} from '@eg/staff/share/holds/holds.module';
+import {CircModule} from '@eg/staff/share/circ/circ.module';
 import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
 import {BookingModule} from '@eg/staff/share/booking/booking.module';
 import {PatronModule} from '@eg/staff/share/patron/patron.module';
@@ -28,6 +29,7 @@ import {BcSearchComponent} from './bcsearch.component';
   imports: [
     StaffCommonModule,
     FmRecordEditorModule,
+    CircModule,
     HoldsModule,
     HoldingsModule,
     BookingModule,
