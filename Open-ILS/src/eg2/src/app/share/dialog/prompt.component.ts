@@ -14,6 +14,12 @@ export class PromptDialogComponent extends DialogComponent {
     @Input() public dialogBody: string;
     // Value to return to the caller
     @Input() public promptValue: string;
+    // 'password', etc.
+    @Input() promptType = 'text';
+
+    // May be used when promptType == 'number'
+    @Input() promptMin: number = null;
+    @Input() promptMax: number = null;
 }
 
 

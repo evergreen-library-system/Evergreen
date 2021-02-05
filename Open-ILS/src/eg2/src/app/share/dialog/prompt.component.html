@@ -9,7 +9,10 @@
   <div class="modal-body">
     <p>{{dialogBody}}</p>
     <div class="text-center">
-        <input class="form-control" [(ngModel)]="promptValue"/>
+        <input type="{{promptType}}" class="form-control" 
+          [attr.min]="promptType == 'number' ? promptMin : ''"
+          [attr.max]="promptType == 'number' ? promptMax : ''"
+          [(ngModel)]="promptValue"/>
     </div>
   </div>
   <div class="modal-footer">
