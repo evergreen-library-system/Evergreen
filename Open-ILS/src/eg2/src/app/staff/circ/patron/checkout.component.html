@@ -1,4 +1,6 @@
 
+<eg-progress-dialog #progressDialog></eg-progress-dialog>
+
 <eg-prompt-dialog #nonCatCount
   promptType="number"
   i18n-dialogTitle dialogTitle="Non-Cat Checkout"
@@ -29,7 +31,7 @@
         </div>
         <input type="text" class="form-control" id="barcode-input"
           [placeholder]="checkoutNoncat ? '' : 'Barcode...'" i18n-placeholder
-          [disabled]="checkoutNoncat != null"
+          [(ngModel)]="checkoutBarcode" [disabled]="checkoutNoncat != null"
           i18n-aria-label aria-label="Barcode Input"/>
         <div class="input-group-append">
           <button class="btn btn-outline-dark" (click)="checkout()" i18n>Submit</button>
@@ -41,3 +43,28 @@
     </div>
   </div>
 </div>
+
+<ng-template #titleTemplate let-r="row">
+  <ng-container *ngIf="r.record">
+    <a routerLink="/staff/catalog/record/{{r.record.id()}}">{{r.title}}</a>
+  </ng-container>
+  <ng-container *ngIf="!r.record">{{r.title}}</ng-container>
+</ng-template>
+
+<div class="row">
+  <div class="col-lg-12">
+    <eg-grid #checkoutsGrid [dataSource]="gridDataSource" [sortable]="true"
+      [useLocalSort]="true" [cellTextGenerator]="cellTextGenerator"
+      persistKey="circ.patron.checkout">
+      <eg-grid-column path="index" [index]="true" 
+        label="Row Index" i18n-label [hidden]="true"></eg-grid-column>
+      <eg-grid-column path="circ.id" label="Circ ID" i18n-label></eg-grid-column>
+      <eg-grid-column path="title" label="Title" i18n-label 
+        [cellTemplate]="titleTemplate"></eg-grid-column>
+    </eg-grid>
+  </div>
+</div>
+
+
+
+

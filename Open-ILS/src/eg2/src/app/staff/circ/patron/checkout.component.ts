@@ -1,6 +1,6 @@
 import {Component, OnInit, AfterViewInit, Input, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Observable, empty, of} from 'rxjs';
+import {Observable, empty, of, from} from 'rxjs';
 import {tap, switchMap} from 'rxjs/operators';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {IdlObject} from '@eg/core/idl.service';
@@ -10,6 +10,15 @@ import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronManagerService} from './patron.service';
 import {CheckoutParams, CheckoutResult, CircService} from '@eg/staff/share/circ/circ.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
+import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {GridComponent} from '@eg/share/grid/grid.component';
+import {Pager} from '@eg/share/util/pager';
+
+interface CircGridEntry {
+    title?: string;
+    circ?: IdlObject;
+    copyAlertCount: number;
+}
 
 @Component({
   templateUrl: 'checkout.component.html',
@@ -19,8 +28,13 @@ export class CheckoutComponent implements OnInit {
 
     maxNoncats = 99; // Matches AngJS version
     checkoutNoncat: IdlObject = null;
+    checkoutBarcode = '';
+    checkouts: CircGridEntry[] = [];
+    gridDataSource: GridDataSource = new GridDataSource();
+    cellTextGenerator: GridCellTextGenerator;
 
     @ViewChild('nonCatCount') nonCatCount: PromptDialogComponent;
+    @ViewChild('checkoutsGrid') checkoutsGrid: GridComponent;
 
     constructor(
         private org: OrgService,
@@ -32,9 +46,21 @@ export class CheckoutComponent implements OnInit {
 
     ngOnInit() {
         this.circ.getNonCatTypes();
+
+        this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
+            return from(this.checkouts);
+        };
+
+        this.cellTextGenerator = {
+            title: row => row.title
+        };
     }
 
     ngAfterViewInit() {
+        this.focusInput();
+    }
+
+    focusInput() {
         const input = document.getElementById('barcode-input');
         if (input) { input.focus(); }
     }
@@ -54,25 +80,53 @@ export class CheckoutComponent implements OnInit {
                 params.noncat_type = this.checkoutNoncat.id();
                 return params;
             });
+        } else if (this.checkoutBarcode) {
+            params.copy_barcode = this.checkoutBarcode;
+            return Promise.resolve(params);
         }
 
-        return null;
+        return Promise.resolve(null);
     }
 
     checkout() {
         this.collectParams()
 
         .then((params: CheckoutParams) => {
-            if (!params) { return null; }
-            return this.circ.checkout(params);
+            if (params) {
+                return this.circ.checkout(params);
+            }
         })
 
         .then((result: CheckoutResult) => {
-            if (!result) { return null; }
-
-            // Reset the form
-            this.checkoutNoncat = null;
+            if (result) {
+                if (result.success) {
+                    this.gridifyResult(result);
+                    this.resetForm();
+                }
+            }
         });
+    }
+
+    resetForm() {
+        this.checkoutBarcode = '';
+        this.checkoutNoncat = null;
+        this.focusInput();
+    }
+
+    gridifyResult(result: CheckoutResult) {
+        const entry: CircGridEntry = {
+            circ: result.circ,
+            copyAlertCount: 0 // TODO
+        };
+
+        if (this.checkoutNoncat) {
+            entry.title = this.checkoutNoncat.name();
+        } else if (result.record) {
+            entry.title = result.record.title();
+        }
+
+        this.checkouts.unshift(entry);
+        this.checkoutsGrid.reload();
     }
 
     noncatPrompt(): Observable<number> {

@@ -11,19 +11,28 @@ import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.s
 import {AudioService} from '@eg/share/util/audio.service';
 
 
+// API parameter options
 export interface CheckoutParams {
     patron_id: number;
+    copy_id?: number;
+    copy_barcode?: string;
     noncat?: boolean;
     noncat_type?: number;
     noncat_count?: number;
+    noop?: boolean;
 }
 
 export interface CheckoutResult {
+    index: number;
+    params: CheckoutParams,
+    success: boolean;
     circ?: IdlObject;
+    record?: IdlObject;
 }
 
 @Injectable()
 export class CircService {
+    static resultIndex = 0;
 
     nonCatTypes: IdlObject[] = null;
 
@@ -58,10 +67,12 @@ export class CircService {
             'open-ils.circ',
             'open-ils.circ.checkout.full',
             this.auth.token(), params
-        ).toPromise().then(result => this.processCheckoutResult(result))
+        ).toPromise().then(result => this.processCheckoutResult(params, result))
     }
 
-    processCheckoutResult(response: any): Promise<CheckoutResult> {
+    processCheckoutResult(
+        params: CheckoutParams, response: any): Promise<CheckoutResult> {
+
         console.debug('checkout resturned', response);
 
         if (Array.isArray(response)) { response = response[0]; }
@@ -75,6 +86,9 @@ export class CircService {
         }
 
         const result: CheckoutResult = {
+            index: CircService.resultIndex++,
+            params: params,
+            success: true,
             circ: payload.circ
         };
 
