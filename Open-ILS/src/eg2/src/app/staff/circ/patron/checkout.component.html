@@ -59,6 +59,15 @@
       <eg-grid-column path="index" [index]="true" 
         label="Row Index" i18n-label [hidden]="true"></eg-grid-column>
       <eg-grid-column path="circ.id" label="Circ ID" i18n-label></eg-grid-column>
+
+      <!-- TODO 
+        [datePlusTime]="true" when non-full-day circ 
+      -->
+      <eg-grid-column path="dueDate" label="Due Date" i18n-label
+        datatype="timestamp"></eg-grid-column>
+
+      <eg-grid-column path="copy.barcode" label="Barcode" i18n-label></eg-grid-column>
+
       <eg-grid-column path="title" label="Title" i18n-label 
         [cellTemplate]="titleTemplate"></eg-grid-column>
     </eg-grid>

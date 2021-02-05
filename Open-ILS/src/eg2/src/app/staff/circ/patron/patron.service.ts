@@ -5,6 +5,14 @@ import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronSearch} from '@eg/staff/share/patron/search.component';
 
+export interface CircGridEntry {
+    title?: string;
+    copy?: IdlObject;
+    circ?: IdlObject;
+    dueDate?: string;
+    copyAlertCount: number;
+}
+
 const PATRON_FLESH_FIELDS = [
     'card',
     'cards',
@@ -60,6 +68,9 @@ export class PatronManagerService {
 
     lastPatronSearch: PatronSearch;
 
+    // These should persist tab changes
+    checkouts: CircGridEntry[] = [];
+
     constructor(
         private net: NetService,
         private auth: AuthService,
@@ -69,6 +80,7 @@ export class PatronManagerService {
     loadPatron(id: number): Promise<any> {
         this.loaded = false;
         this.patron = null;
+        this.checkouts = [];
 
         return this.net.request(
             'open-ils.actor',

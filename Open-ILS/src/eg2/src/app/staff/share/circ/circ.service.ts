@@ -26,7 +26,9 @@ export interface CheckoutResult {
     index: number;
     params: CheckoutParams,
     success: boolean;
+    copy?: IdlObject;
     circ?: IdlObject;
+    nonCatCirc: IdlObject;
     record?: IdlObject;
 }
 
@@ -89,7 +91,10 @@ export class CircService {
             index: CircService.resultIndex++,
             params: params,
             success: true,
-            circ: payload.circ
+            circ: payload.circ,
+            copy: payload.copy,
+            record: payload.record,
+            nonCatCirc: payload.noncat_circ
         };
 
         return Promise.resolve(result);

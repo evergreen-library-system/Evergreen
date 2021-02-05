@@ -7,18 +7,12 @@ import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronManagerService} from './patron.service';
+import {PatronManagerService, CircGridEntry} from './patron.service';
 import {CheckoutParams, CheckoutResult, CircService} from '@eg/staff/share/circ/circ.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
-
-interface CircGridEntry {
-    title?: string;
-    circ?: IdlObject;
-    copyAlertCount: number;
-}
 
 @Component({
   templateUrl: 'checkout.component.html',
@@ -29,7 +23,6 @@ export class CheckoutComponent implements OnInit {
     maxNoncats = 99; // Matches AngJS version
     checkoutNoncat: IdlObject = null;
     checkoutBarcode = '';
-    checkouts: CircGridEntry[] = [];
     gridDataSource: GridDataSource = new GridDataSource();
     cellTextGenerator: GridCellTextGenerator;
 
@@ -48,7 +41,7 @@ export class CheckoutComponent implements OnInit {
         this.circ.getNonCatTypes();
 
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
-            return from(this.checkouts);
+            return from(this.context.checkouts);
         };
 
         this.cellTextGenerator = {
@@ -115,17 +108,30 @@ export class CheckoutComponent implements OnInit {
 
     gridifyResult(result: CheckoutResult) {
         const entry: CircGridEntry = {
+            title: '',
+            copy: result.copy,
             circ: result.circ,
+            dueDate: null,
             copyAlertCount: 0 // TODO
         };
 
-        if (this.checkoutNoncat) {
+        if (result.nonCatCirc) {
+
             entry.title = this.checkoutNoncat.name();
-        } else if (result.record) {
-            entry.title = result.record.title();
+            entry.dueDate = result.nonCatCirc.duedate();
+
+        } else {
+
+            if (result.record) {
+                entry.title = result.record.title();
+            }
+
+            if (result.circ) {
+                entry.dueDate = result.circ.due_date();
+            }
         }
 
-        this.checkouts.unshift(entry);
+        this.context.checkouts.unshift(entry);
         this.checkoutsGrid.reload();
     }
 
