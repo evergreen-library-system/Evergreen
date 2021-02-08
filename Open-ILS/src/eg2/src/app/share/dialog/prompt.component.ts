@@ -27,7 +27,7 @@ export class PromptDialogComponent extends DialogComponent implements OnInit {
 
     ngOnInit() {
         this.onOpen$.subscribe(_ => {
-            const node = document.getElementById(this.inputDomId);
+            const node = document.getElementById(this.inputDomId) as HTMLInputElement;
             if (node) { node.focus(); node.select(); }
         });
     }
