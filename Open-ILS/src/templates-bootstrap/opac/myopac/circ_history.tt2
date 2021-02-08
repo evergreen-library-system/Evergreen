@@ -142,7 +142,6 @@
                         </td>
                         <td>
                             [% IF circ.circ.target_copy.call_number.id == -1 %]
-                                <span class="sr-only">Author</span>
                                 [% circ.circ.target_copy.dummy_author | html %]
                             [% ELSIF circ.ATTRS.author %]
                                 <a href="[% mkurl(ctx.opac_root _ '/results',
