@@ -92,14 +92,6 @@ export class CheckoutComponent implements OnInit {
 
         } else if (this.checkoutBarcode) {
 
-            if (this.copiesInFlight[this.checkoutBarcode]) {
-                console.log('Item ' +
-                    this.checkoutBarcode + ' is already mid-checkout');
-                return Promise.resolve(null);
-            }
-
-            this.copiesInFlight[this.checkoutBarcode] = true;
-
             params.copy_barcode = this.checkoutBarcode;
             if (this.dueDateOptions > 0) { params.due_date = this.dueDate; }
             return Promise.resolve(params);
@@ -108,10 +100,23 @@ export class CheckoutComponent implements OnInit {
         return Promise.resolve(null);
     }
 
-    checkout() {
-        this.collectParams()
+    checkout(params?: CheckoutParams, override?: boolean): Promise<CheckoutResult> {
 
-        .then((params: CheckoutParams) => {
+        const barcode = params.copy_barcode || '';
+
+        if (barcode) {
+
+            if (this.copiesInFlight[barcode]) {
+                console.debug('Item ' + barcode + ' is already mid-checkout');
+                return Promise.resolve(null);
+            }
+
+            this.copiesInFlight[barcode] = true;
+        }
+
+        const promise = params ? Promise.resolve(params) : this.collectParams();
+
+        promise.then((params: CheckoutParams) => {
             if (params) {
                 return this.circ.checkout(params);
             }
@@ -119,12 +124,12 @@ export class CheckoutComponent implements OnInit {
 
         .then((result: CheckoutResult) => {
             if (result) {
-                if (result.params.copy_barcode) {
-                    delete this.copiesInFlight[result.params.copy_barcode];
-                }
                 this.dispatchResult(result);
+                return result;
             }
-        });
+        })
+
+        .finally(() => delete this.copiesInFlight[barcode]);
     }
 
     dispatchResult(result: CheckoutResult) {
@@ -248,8 +253,13 @@ export class CheckoutComponent implements OnInit {
     }
 
     handlePrecat(result: CheckoutResult) {
-        this.precatDialog.open({size: 'lg'}).subscribe(values => {
-            console.log('precat values', values);
+        this.precatDialog.open().subscribe(values => {
+            if (values && values.dummy_title) {
+                const params = result.params;
+                params.precat = true;
+                Object.keys(values).forEach(key => params[key] = values[key]);
+                this.checkout(params);
+            }
         })
     }
 }

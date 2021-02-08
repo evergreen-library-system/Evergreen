@@ -7,14 +7,44 @@
     </button>
   </div>
   <div class="modal-body">
+
     <div class="row">
+      <div class="col-lg-4" i18n>Title</div>
+      <div class="col-lg-8">
+        <input class="form-control" [(ngModel)]="values.dummy_title"
+          id='precat-title-input' i18n-placeholder placeholder="Title..."/>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-lg-4" i18n>Author</div>
+      <div class="col-lg-8">
+        <input class="form-control" [(ngModel)]="values.dummy_author"
+          i18n-placeholder placeholder="Author..."/>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-lg-4" i18n>ISBN</div>
+      <div class="col-lg-8">
+        <input class="form-control" [(ngModel)]="values.dummy_isbn"
+          i18n-placeholder placeholder="ISBN..."/>
+      </div>
+    </div>
+
+    <div class="row mt-2">
       <div class="col-lg-4" i18n>Circulation Modifier</div>
       <div class="col-lg-8">
-        <eg-combobox idlClass="ccm" [(ngModel)]="circModifier"></eg-combobox>
+        <eg-combobox idlClass="ccm" 
+          i18n-placeholder placeholder="Circulation Modifier..."
+          (onChange)="values.circ_modifier = $event ? $event.id : null">
+        </eg-combobox>
       </div>
     </div>
   </div>
   <div class="modal-footer">
-  <!-- has perm -->
+    <button type="button" class="btn btn-success" (click)="close(values)" 
+      [disabled]="!hasPerm || !values.dummy_title" i18n>Submit</button>
+    <button type="button" class="btn btn-warning" (click)="close()" i18n>Cancel</button>
   </div>
 </ng-template>

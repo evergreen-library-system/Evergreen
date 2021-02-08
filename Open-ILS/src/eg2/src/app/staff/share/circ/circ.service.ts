@@ -13,14 +13,19 @@ import {AudioService} from '@eg/share/util/audio.service';
 
 // API parameter options
 export interface CheckoutParams {
-    due_date?: string;
     patron_id: number;
+    due_date?: string;
     copy_id?: number;
     copy_barcode?: string;
     noncat?: boolean;
     noncat_type?: number;
     noncat_count?: number;
     noop?: boolean;
+    precat?: boolean;
+    dummy_title?: string;
+    dummy_author?: string;
+    dummy_isbn?: string;
+    circ_modifier?: string;
 }
 
 export interface CheckoutResult {

@@ -21,6 +21,13 @@ export class PrecatCheckoutDialogComponent extends DialogComponent implements On
     circModifier: ComboboxEntry;
     hasPerm = false;
 
+    values = {
+        dummy_title: null,
+        dummy_author: null,
+        dummy_isbn: null,
+        circ_modifier: null
+    };
+
     constructor(
         private perm: PermService,
         private modal: NgbModal) {
@@ -28,8 +35,13 @@ export class PrecatCheckoutDialogComponent extends DialogComponent implements On
     }
 
     ngOnInit() {
-        this.perm.hasWorkPermHere('CREATE_PRECAT')
-        .then(perms => this.hasPerm = perms['CREATE_PRECAT']);
+        this.onOpen$.subscribe(_ => {
+            this.perm.hasWorkPermHere('CREATE_PRECAT')
+            .then(perms => this.hasPerm = perms['CREATE_PRECAT']);
+
+            const node = document.getElementById('precat-title-input');
+            if (node) { node.focus(); }
+        });
     }
 }
 

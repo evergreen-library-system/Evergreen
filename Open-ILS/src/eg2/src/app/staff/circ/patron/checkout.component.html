@@ -35,9 +35,9 @@
         <input type="text" class="form-control" id="barcode-input"
           [placeholder]="checkoutNoncat ? '' : 'Barcode...'" i18n-placeholder
           [(ngModel)]="checkoutBarcode" [disabled]="checkoutNoncat != null"
-          i18n-aria-label aria-label="Barcode Input" (keyup.enter)="checkout()" />
+          i18n-aria-label aria-label="Barcode Input" (keydown.enter)="checkout()" />
         <div class="input-group-append">
-          <button class="btn btn-outline-dark" (keyup.enter)="checkout()" 
+          <button class="btn btn-outline-dark" (keydown.enter)="checkout()" 
             (click)="checkout()" i18n>Submit</button>
         </div>
       </div>
