@@ -13,6 +13,10 @@ import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
+import {StoreService} from '@eg/core/store.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
+import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
+import {AudioService} from '@eg/share/util/audio.service';
 
 @Component({
   templateUrl: 'checkout.component.html',
@@ -27,16 +31,21 @@ export class CheckoutComponent implements OnInit {
     cellTextGenerator: GridCellTextGenerator;
     dueDate: string;
     copiesInFlight: {[barcode: string]: boolean} = {};
+    dueDateOptions: 0 | 1 | 2 = 0; // auto date; specific date; session date
 
     @ViewChild('nonCatCount') nonCatCount: PromptDialogComponent;
     @ViewChild('checkoutsGrid') checkoutsGrid: GridComponent;
+    @ViewChild('precatDialog') precatDialog: PrecatCheckoutDialogComponent;
 
     constructor(
+        private store: StoreService,
+        private serverStore: ServerStoreService,
         private org: OrgService,
         private net: NetService,
         public circ: CircService,
         public patronService: PatronService,
-        public context: PatronManagerService
+        public context: PatronManagerService,
+        private audio: AudioService
     ) {}
 
     ngOnInit() {
@@ -49,14 +58,15 @@ export class CheckoutComponent implements OnInit {
         this.cellTextGenerator = {
             title: row => row.title
         };
+
+        if (this.store.getSessionItem('eg.circ.checkout.is_until_logout')) {
+            this.dueDate = this.store.getSessionItem('eg.circ.checkout.due_date');
+            this.toggleDateOptions(2);
+        }
     }
 
     ngAfterViewInit() {
         this.focusInput();
-    }
-
-    setDueDate(iso: string) {
-        this.dueDate = iso;
     }
 
     focusInput() {
@@ -91,7 +101,7 @@ export class CheckoutComponent implements OnInit {
             this.copiesInFlight[this.checkoutBarcode] = true;
 
             params.copy_barcode = this.checkoutBarcode;
-            if (this.context.dueDateOptions > 0) { params.due_date = this.dueDate; }
+            if (this.dueDateOptions > 0) { params.due_date = this.dueDate; }
             return Promise.resolve(params);
         }
 
@@ -109,24 +119,35 @@ export class CheckoutComponent implements OnInit {
 
         .then((result: CheckoutResult) => {
             if (result) {
-
                 if (result.params.copy_barcode) {
                     delete this.copiesInFlight[result.params.copy_barcode];
                 }
-
-                if (result.success) {
-                    this.gridifyResult(result);
-                    this.resetForm();
-                }
+                this.dispatchResult(result);
             }
         });
     }
 
+    dispatchResult(result: CheckoutResult) {
+
+        if (result.success) {
+            this.gridifyResult(result);
+            this.resetForm();
+            return;
+        }
+
+        switch (result.evt.textcode) {
+            case 'ITEM_NOT_CATALOGED':
+                this.audio.play('error.checkout.no_cataloged');
+                this.handlePrecat(result);
+                break;
+        }
+    }
+
     resetForm() {
 
-        if (this.context.dueDateOptions < 2) {
+        if (this.dueDateOptions < 2) {
             // Due date is not configured to persist.
-            this.context.dueDateOptions = 0;
+            this.dueDateOptions = 0;
             this.dueDate = null;
         }
 
@@ -137,7 +158,6 @@ export class CheckoutComponent implements OnInit {
 
     gridifyResult(result: CheckoutResult) {
         const entry: CircGridEntry = {
-            title: '',
             copy: result.copy,
             circ: result.circ,
             dueDate: null,
@@ -153,6 +173,13 @@ export class CheckoutComponent implements OnInit {
 
             if (result.record) {
                 entry.title = result.record.title();
+                entry.author = result.record.author();
+                entry.isbn = result.record.isbn();
+
+            } else if (result.copy) {
+                entry.title = result.copy.dummy_title();
+                entry.author = result.copy.dummy_author();
+                entry.isbn = result.copy.dummy_isbn();
             }
 
             if (result.circ) {
@@ -184,19 +211,46 @@ export class CheckoutComponent implements OnInit {
         }));
     }
 
+    setDueDate(iso: string) {
+        this.dueDate = iso;
+        this.store.setSessionItem('eg.circ.checkout.due_date', this.dueDate);
+    }
+
+
     // 0: use server due date
     // 1: use specific due date once
     // 2: use specific due date until the end of the session.
     toggleDateOptions(value: 1 | 2) {
-        if (this.context.dueDateOptions > 0) {
-            if (value === 1) {
-                this.context.dueDateOptions = 0;
-            } else if (this.context.dueDateOptions === 1) {
-                this.context.dueDateOptions = 2;
+        if (this.dueDateOptions > 0) {
+
+            if (value === 1) { // 1 or 2 -> 0
+                this.dueDateOptions = 0;
+                this.store.removeSessionItem('eg.circ.checkout.is_until_logout');
+
+            } else if (this.dueDateOptions === 1) { // 1 -> 2
+
+                this.dueDateOptions = 2;
+                this.store.setSessionItem('eg.circ.checkout.is_until_logout', true);
+
+            } else { // 2 -> 1
+
+                this.dueDateOptions = 1;
+                this.store.removeSessionItem('eg.circ.checkout.is_until_logout');
             }
+
         } else {
-            this.context.dueDateOptions = value;
+
+            this.dueDateOptions = value;
+            if (value === 2) {
+                this.store.setSessionItem('eg.circ.checkout.is_until_logout', true);
+            }
         }
+    }
+
+    handlePrecat(result: CheckoutResult) {
+        this.precatDialog.open({size: 'lg'}).subscribe(values => {
+            console.log('precat values', values);
+        })
     }
 }
 

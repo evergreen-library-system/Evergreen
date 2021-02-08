@@ -25,6 +25,7 @@ export interface CheckoutParams {
 
 export interface CheckoutResult {
     index: number;
+    evt: EgEvent;
     params: CheckoutParams,
     success: boolean;
     copy?: IdlObject;
@@ -62,13 +63,15 @@ export class CircService {
         ).toPromise().then(types => this.nonCatTypes = types);
     }
 
-    checkout(params: CheckoutParams): Promise<CheckoutResult> {
+    checkout(params: CheckoutParams, override?: boolean): Promise<CheckoutResult> {
 
-        console.log('checking out with', params);
+        console.debug('checking out with', params);
+
+        let method = 'open-ils.circ.checkout.full';
+        if (override) { method += '.override'; }
 
         return this.net.request(
-            'open-ils.circ',
-            'open-ils.circ.checkout.full',
+            'open-ils.circ', method,
             this.auth.token(), params).toPromise()
         .then(result => this.processCheckoutResult(params, result));
     }
@@ -90,8 +93,9 @@ export class CircService {
 
         const result: CheckoutResult = {
             index: CircService.resultIndex++,
+            evt: evt,
             params: params,
-            success: true,
+            success: evt.textcode === 'SUCCESS',
             circ: payload.circ,
             copy: payload.copy,
             record: payload.record,

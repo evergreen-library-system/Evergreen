@@ -7,6 +7,8 @@ import {PatronSearch} from '@eg/staff/share/patron/search.component';
 
 export interface CircGridEntry {
     title?: string;
+    author?: string;
+    isbn?: string;
     copy?: IdlObject;
     circ?: IdlObject;
     dueDate?: string;
@@ -70,7 +72,6 @@ export class PatronManagerService {
 
     // These should persist tab changes
     checkouts: CircGridEntry[] = [];
-    dueDateOptions: 0 | 1 | 2 = 0; // auto date; specific date; session date
 
     constructor(
         private net: NetService,

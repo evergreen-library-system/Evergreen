@@ -15,6 +15,7 @@ import {HoldsComponent} from './holds.component';
 import {EditComponent} from './edit.component';
 import {EditToolbarComponent} from './edit-toolbar.component';
 import {BcSearchComponent} from './bcsearch.component';
+import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {BcSearchComponent} from './bcsearch.component';
     HoldsComponent,
     EditComponent,
     EditToolbarComponent,
-    BcSearchComponent
+    BcSearchComponent,
+    PrecatCheckoutDialogComponent
   ],
   imports: [
     StaffCommonModule,

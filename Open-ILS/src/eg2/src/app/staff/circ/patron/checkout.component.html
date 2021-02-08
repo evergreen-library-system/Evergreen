@@ -1,6 +1,9 @@
 
 <eg-progress-dialog #progressDialog></eg-progress-dialog>
 
+<eg-precat-checkout-dialog #precatDialog [barcode]="checkoutBarcode">
+</eg-precat-checkout-dialog>
+
 <eg-prompt-dialog #nonCatCount
   promptType="number"
   i18n-dialogTitle dialogTitle="Non-Cat Checkout"
@@ -42,28 +45,29 @@
     <div class="flex-1"></div>
     <div ngbDropdown>
       <button ngbDropdownToggle class="btn mr-2" [ngClass]="{
-          'btn-outline-dark': context.dueDateOptions == 0,
-          'btn-outline-success': context.dueDateOptions > 0
+          'btn-outline-dark': dueDateOptions == 0,
+          'btn-outline-success': dueDateOptions > 0
         }"
         i18n>Date Options</button>
       <div ngbDropdownMenu>
         <button ngbDropdownItem (click)="toggleDateOptions(1)">
-          <span *ngIf="context.dueDateOptions > 0" 
+          <span *ngIf="dueDateOptions > 0" 
             class="badge badge-success">&#x2713;</span>  
-          <span *ngIf="context.dueDateOptions == 0" 
+          <span *ngIf="dueDateOptions == 0" 
             class="badge badge-warning">&#x2717;</span> 
           <span class="pl-2" i18n>Specific Due Date</span>
         </button>
         <button ngbDropdownItem (click)="toggleDateOptions(2)">
-          <span *ngIf="context.dueDateOptions == 2" 
+          <span *ngIf="dueDateOptions == 2" 
             class="badge badge-success">&#x2713;</span>  
-          <span *ngIf="context.dueDateOptions < 2" 
+          <span *ngIf="dueDateOptions < 2" 
             class="badge badge-warning">&#x2717;</span> 
           <span class="pl-2" i18n>Specific Due Date Until Logout</span>
         </button>
       </div>
     </div>
-    <eg-datetime-select (onChangeAsIso)="setDueDate($event)"></eg-datetime-select>
+    <eg-datetime-select [initialIso]="dueDate" 
+      (onChangeAsIso)="setDueDate($event)"></eg-datetime-select>
   </div>
 </div>
 
