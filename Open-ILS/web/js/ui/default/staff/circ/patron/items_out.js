@@ -493,11 +493,35 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
 
         return egConfirmDialog.open(msg, barcodes.join(' '), {}).result
         .then(function() {
+            window.oils_cancel_batch = false;
+            window.oils_inside_batch = true;
+            function batch_cleanup() {
+                if (window.oils_inside_batch && window.oils_op_change_within_batch) {
+                    window.oils_op_change_undo_func();
+                }
+                window.oils_inside_batch = false;
+                window.oils_op_change_within_batch = false;
+                reset_page();
+            }
             function do_one() {
                 var bc = barcodes.pop();
-                if (!bc) { reset_page(); return }
+                if (!bc) {
+                    batch_cleanup();
+                    return;
+                }
+                if (window.oils_op_change_within_batch) {
+                    window.oils_op_change_toast_func();
+                }
                 // finally -> continue even when one fails
-                egCirc.renew({copy_barcode : bc}).finally(do_one);
+                egCirc.renew({copy_barcode : bc}).finally(function() {
+                    if (!window.oils_cancel_batch) {
+                        do_one();
+                    } else {
+                        console.log('batch cancelled');
+                        batch_cleanup();
+                        return;
+                    }
+                });
             }
             do_one();
         });
