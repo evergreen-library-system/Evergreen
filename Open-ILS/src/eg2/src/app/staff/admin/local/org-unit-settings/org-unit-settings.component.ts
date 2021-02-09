@@ -104,6 +104,7 @@ export class OrgUnitSettingsComponent implements OnInit {
                     this.mergeSettingValues().then(
                         ok => {
                             this.flattenSettings(observer);
+                            this.filterCoust();
                         }
                     );
                 }
@@ -113,6 +114,7 @@ export class OrgUnitSettingsComponent implements OnInit {
 
     mergeSettingValues(): Promise<any> {
         const settingNames = this.settingTypeArr.map(setting => setting.name);
+        const orgs = this.org.ancestors(this.contextOrg.id());
         return new Promise((resolve, reject) => {
             this.net.request(
                 'open-ils.actor',
@@ -125,18 +127,22 @@ export class OrgUnitSettingsComponent implements OnInit {
                     });
                     settingVals.forEach(key => {
                         if (key.setting) {
-                            const settingsObj = this.settingTypeArr.filter(
-                                setting => setting.name === key.name
-                            )[0];
-                            settingsObj.value = key.setting.value;
-                            settingsObj.value_str = settingsObj.value;
-                            if (settingsObj.dataType === 'link' && (key.setting.value || key.setting.value === 0)) {
-                                this.fetchLinkedField(settingsObj.fmClass, key.setting.value, settingsObj.value_str).then(res => {
-                                    settingsObj.value_str = res;
-                                });
+                            if(orgs.indexOf(this.org.get(key.setting.org)) || this.contextOrg.id() == key.setting.org) {
+                                const settingsObj = this.settingTypeArr.filter(
+                                    setting => setting.name === key.name
+                                )[0];
+                                settingsObj.value = key.setting.value;
+                                settingsObj.value_str = settingsObj.value;
+                                if (settingsObj.dataType === 'link' && (key.setting.value || key.setting.value === 0)) {
+                                    this.fetchLinkedField(settingsObj.fmClass, key.setting.value, settingsObj.value_str).then(res => {
+                                        settingsObj.value_str = res;
+                                    });
+                                }
+                                settingsObj._org_unit = this.org.get(key.setting.org);
+                                settingsObj.context = settingsObj._org_unit.shortname();
+                            } else {
+                                key.setting = null;
                             }
-                            settingsObj._org_unit = this.org.get(key.setting.org);
-                            settingsObj.context = settingsObj._org_unit.shortname();
                         }
                     });
                     resolve(this.settingTypeArr);
@@ -326,28 +332,26 @@ export class OrgUnitSettingsComponent implements OnInit {
     }
 
     filterCoust() {
-        if (this.filterString !== this.prevFilter) {
-            this.prevFilter = this.filterString;
-            if (this.filterString) {
-                this.gridDataSource.data = [];
-                const tempGrid = this.settingTypeArr;
-                tempGrid.forEach(row => {
-                    const containsString =
-                         row.name.toLocaleLowerCase(this.locale.currentLocaleCode())
-						    .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode())) ||
-                         row.label.toLocaleLowerCase(this.locale.currentLocaleCode())
-						    .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode())) ||
-                         (row.grp && row.grp.toLocaleLowerCase(this.locale.currentLocaleCode())
-						    .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode()))) ||
-                         (row.description && row.description.toLocaleLowerCase(this.locale.currentLocaleCode())
-						     .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode())));
-                    if (containsString) {
-                        this.gridDataSource.data.push(row);
-                    }
-                });
-            } else {
-                this.gridDataSource.data = this.settingTypeArr;
-            }
+        this.prevFilter = this.filterString;
+        if (this.filterString) {
+            this.gridDataSource.data = [];
+            const tempGrid = this.settingTypeArr;
+            tempGrid.forEach(row => {
+                const containsString =
+                     row.name.toLocaleLowerCase(this.locale.currentLocaleCode())
+                        .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode())) ||
+                     row.label.toLocaleLowerCase(this.locale.currentLocaleCode())
+                        .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode())) ||
+                     (row.grp && row.grp.toLocaleLowerCase(this.locale.currentLocaleCode())
+                        .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode()))) ||
+                     (row.description && row.description.toLocaleLowerCase(this.locale.currentLocaleCode())
+                         .includes(this.filterString.toLocaleLowerCase(this.locale.currentLocaleCode())));
+                if (containsString) {
+                    this.gridDataSource.data.push(row);
+                }
+            });
+        } else {
+            this.gridDataSource.data = this.settingTypeArr;
         }
     }
 
@@ -358,13 +362,14 @@ export class OrgUnitSettingsComponent implements OnInit {
         }
 
         if (this.filterString !== this.prevFilter) {
-            this.refreshSettings = true;
-        }
-
-        if (this.refreshSettings) {
             this.mergeSettingValues().then(
                 res => this.filterCoust()
             );
+        }
+
+        if (this.refreshSettings) {
+            this.settingTypeArr = [];
+            this.orgUnitSettingsGrid.reloadWithoutPagerReset();
         }
     }
 }
