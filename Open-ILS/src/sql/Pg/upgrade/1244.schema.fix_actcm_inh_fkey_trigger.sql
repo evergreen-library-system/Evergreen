@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1244', :eg_version);
 
 -- In some cases, asset.copy_tag_copy_map might have an inh_fkey()
 -- trigger that fires on delete when it's not supposed to. This
