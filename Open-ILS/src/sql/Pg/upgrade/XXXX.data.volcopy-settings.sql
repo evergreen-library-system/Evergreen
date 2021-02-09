@@ -1,3 +1,6 @@
+BEGIN;
+
+--SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version);
 
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
 VALUES (
@@ -7,13 +10,6 @@ VALUES (
         'Holdings Editor Default Values and Visibility',
         'cwst', 'label'
     )
-), (
-    'cat.copy.templates', 'cat', 'object',
-    oils_i18n_gettext(
-        'cat.copy.templates',
-        'Holdings Editor Copy Templates',
-        'cwst', 'label'
-    )
 );
 
-
+COMMIT;

@@ -21799,6 +21799,15 @@ VALUES (
     oils_i18n_gettext(
         'eg.grid.acq.funding_source.credit',
         'Grid Config: eg.grid.acq.funding_source.credit',
+    )
+);
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.cat.volcopy.defaults', 'cat', 'object',
+    oils_i18n_gettext(
+        'eg.cat.volcopy.defaults',
+        'Holdings Editor Default Values and Visibility',
         'cwst', 'label'
     )
 );
