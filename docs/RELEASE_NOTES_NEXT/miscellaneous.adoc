@@ -4,3 +4,6 @@
    their barcode.
  * The form to add a user to a course now includes an option to search
    for the patron by attributes other than just their barcode.
+ * For consistency with the menu action Cataloging => Retrieve Record by
+   TCN Value, the staff catalog Numeric Search => TCN search now includes
+   deleted bib records.
