@@ -15,6 +15,12 @@ INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES
 INSERT INTO actor.org_unit (id, parent_ou, ou_type, shortname, name) VALUES 
     (9, 6, 5, 'BM1', oils_i18n_gettext(9, 'Example Bookmobile 1', 'aou', 'name'));
 
+INSERT INTO actor.org_lasso (id, name, global) VALUES (1000001, 'Even Branches', FALSE);
+INSERT INTO actor.org_lasso_map (lasso, org_unit) VALUES (1000001, 5), (1000001, 7);
+
+INSERT INTO actor.org_lasso (id, name, global) VALUES (1000002, 'Non-branches', TRUE);
+INSERT INTO actor.org_lasso_map (lasso, org_unit) VALUES (1000002, 8), (1000002, 9);
+
 -- Address for the Consortium
 SELECT evergreen.create_aou_address(1, '123 Main St.', NULL, 'Anywhere', 'GA', 'US', '30303', NULL);
 
