@@ -1,0 +1,3 @@
+== Override Dialogs  ==
+
+This reworks the override action dialogs in the patron display for Check Out and Items Out, and in the Circulation -> Renew Items interface.  It exposes the auto-override behavior as checkboxes giving staff more fine grained control over which events are auto-forced or skipped upon subsequent encounters.  It also changes the Cancel action for batch renewals to abort the remaining renewals in the batch, and makes it so that new authorization credentials provided during such a batch will be treated as an operator change for the entire batch.  We also fix an existing bug where events marked as already encountered for auto-override could leak into other patron contexts via Patron Search.
