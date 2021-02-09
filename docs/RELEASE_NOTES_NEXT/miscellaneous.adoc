@@ -2,3 +2,5 @@
  * The 'Create Reservation' form in the Booking module now includes
    an option to search for the patron by attributes other than just
    their barcode.
+ * The form to add a user to a course now includes an option to search
+   for the patron by attributes other than just their barcode.
