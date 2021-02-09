@@ -16,7 +16,11 @@ my $U = "OpenILS::Application::AppUtils";
 
 use OpenSRF::Utils::Logger qw/$logger/;
 
-use Geo::Coder::Free;
+my $have_geocoder_free = eval {
+    require Geo::Coder::Free;
+    Geo::Coder::Free->import();
+    1;
+};
 use Geo::Coder::OSM;
 use Geo::Coder::Google;
 
@@ -162,8 +166,13 @@ sub retrieve_coordinates { # invoke 3rd party API for latitude/longitude lookup
     my $geo_coder;
     eval {
         if ($service->service_code eq 'Free') {
-            $logger->debug("Using Geo::Coder::Free (service id $service_id)");
-            $geo_coder = Geo::Coder::Free->new();
+            if ($have_geocoder_free) {
+                $logger->debug("Using Geo::Coder::Free (service id $service_id)");
+                $geo_coder = Geo::Coder::Free->new();
+            } else {
+                $logger->error("geosort: Geo::Coder::Free not installed but referenced.");
+                return OpenILS::Event->new('GEOCODING_LOCATION_NOT_FOUND');
+            }
         } elsif ($service->service_code eq 'Google') {
             $logger->debug("Using Geo::Coder::Google (service id $service_id)");
             $geo_coder = Geo::Coder::Google->new(key => $service->api_key);
