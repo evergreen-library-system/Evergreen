@@ -136,8 +136,7 @@ export class HoldComponent implements OnInit {
         .then(setting => this.puLibWsFallback = setting === true);
 
         this.org.list().forEach(org => {
-            if (org.ou_type().can_have_users() === 'f' ||
-                org.ou_type().can_have_vols() === 'f') {
+            if (org.ou_type().can_have_vols() === 'f') {
                 this.disableOrgs.push(org.id());
             }
         });
