@@ -126,6 +126,7 @@ export class VolEditComponent implements OnInit {
         if (!org) { return; }
         const orgNode = this.context.findOrCreateOrgNode(org.id());
         this.createVols(orgNode, 1);
+        this.context.sortHoldings();
     }
 
     // This only removes copies that were created during the
