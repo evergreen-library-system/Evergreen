@@ -376,6 +376,8 @@ sub setting_value_for_all_orgs {
             ($summary->{has_workstation_setting} || '') eq 't'
         );
 
+        $summary->{value} = OpenSRF::Utils::JSON->JSON2perl($summary->{value});
+
         $client->respond({org_unit => $org_id, summary => $summary});
     }
 
