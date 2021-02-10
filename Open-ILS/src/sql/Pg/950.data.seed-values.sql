@@ -3024,6 +3024,34 @@ INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatyp
         'string'
     );
 
+INSERT INTO config.usr_setting_type (
+    name,
+    opac_visible,
+    label,
+    description,
+    grp,
+    datatype,
+    reg_default
+) VALUES (
+    'circ.default_overdue_notices_enabled',
+    TRUE,
+    oils_i18n_gettext(
+        'circ.default_overdue_notices_enabled',
+        'Receive Overdue and Courtesy Emails',
+        'cust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'circ.default_overdue_notices_enabled',
+        'Receive overdue and predue email notifications',
+        'cust',
+        'description'
+    ),
+    'circ',
+    'bool',
+    'true'
+);
+
 -- Add groups for org_unit settings
 INSERT INTO config.settings_group (name, label) VALUES
 ('acq', oils_i18n_gettext('acq', 'Acquisitions', 'csg', 'label')),
@@ -9475,8 +9503,8 @@ INSERT INTO config.composite_attr_entry_definition (coded_value, definition) VAL
 
 -- Sample Overdue Notice --
 
-INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, max_delay, template) 
-    VALUES (1, 'f', 1, '7 Day Overdue Email Notification', 'checkout.due', 'CircIsOverdue', 'SendEmail', '7 days', 'due_date', 'usr', '8 days', 
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, max_delay, opt_in_setting, usr_field, template)
+    VALUES (1, 'f', 1, '7 Day Overdue Email Notification', 'checkout.due', 'CircIsOverdue', 'SendEmail', '7 days', 'due_date', 'usr', '8 days', 'circ.default_overdue_notices_enabled', 'usr',
 $$
 [%- USE date -%]
 [%- user = target.0.usr -%]
@@ -10832,8 +10860,8 @@ INSERT INTO config.record_attr_index_norm_map (attr,norm,pos)
 
 -- Sample Pre-due Notice --
 
-INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, max_delay, template) 
-    VALUES (6, 'f', 1, '3 Day Courtesy Notice', 'checkout.due', 'CircIsOpen', 'SendEmail', '-3 days', 'due_date', 'usr', '-2 days',
+INSERT INTO action_trigger.event_definition (id, active, owner, name, hook, validator, reactor, delay, delay_field, group_field, max_delay, opt_in_setting, usr_field, template)
+    VALUES (6, 'f', 1, '3 Day Courtesy Notice', 'checkout.due', 'CircIsOpen', 'SendEmail', '-3 days', 'due_date', 'usr', '-2 days', 'circ.default_overdue_notices_enabled', 'usr',
 $$
 [%- USE date -%]
 [%- user = target.0.usr -%]
