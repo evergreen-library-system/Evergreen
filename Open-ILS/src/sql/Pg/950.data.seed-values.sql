@@ -19534,11 +19534,12 @@ VALUES (
         'cwst', 'label'
     )
 ), (
-    'eg.grid.asset.ouSettings', 'gui', 'object',
+    'eg.grid.admin.actor.org_unit_settings', 'gui', 'object',
     oils_i18n_gettext(
-        'eg.grid.asset.ouSettings',
-        'Grid Config: asset.ouSettings',
+        'eg.grid.admin.actor.org_unit_settings',
+        'Grid Config: admin.actor.org_unit_settings',
         'cwst', 'label'
+    )
 ), (
     'eg.cat.record.summary.collapse', 'gui', 'bool',
     oils_i18n_gettext(
