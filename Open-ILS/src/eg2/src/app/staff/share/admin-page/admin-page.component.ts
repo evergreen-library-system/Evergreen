@@ -153,7 +153,7 @@ export class AdminPageComponent implements OnInit {
 
         if (this.orgField) {
             this.orgFieldLabel = this.idlClassDef.field_map[this.orgField].label;
-            this.contextOrg = this.org.get(orgId) || this.org.root();
+            this.contextOrg = this.org.get(orgId) || this.org.get(this.auth.user().ws_ou()) || this.org.root();
             this.searchOrgs = {primaryOrgId: this.contextOrg.id()};
         }
     }
