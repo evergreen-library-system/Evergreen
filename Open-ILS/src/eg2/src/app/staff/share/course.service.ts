@@ -1,5 +1,5 @@
-import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {Observable, throwError} from 'rxjs';
+import {switchMap, tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
@@ -229,44 +229,28 @@ export class CourseService {
     }
 
 
-    updateItem(item: IdlObject, courseLib, callNumber, updatingVolume) {
-        return new Promise((resolve, reject) => {
-            this.pcrud.update(item).subscribe(() => {
-                if (updatingVolume) {
-                    const cn = item.call_number();
-                    const callNumberLibrary = this.org.canHaveVolumes(courseLib) ? courseLib.id() : cn.owning_lib();
-                    return this.net.request(
-                        'open-ils.cat', 'open-ils.cat.call_number.find_or_create',
-                        this.auth.token(), callNumber, cn.record(),
-                        callNumberLibrary, cn.prefix(), cn.suffix(),
-                        cn.label_class()
-                    ).subscribe(res => {
-                        const event = this.evt.parse(res);
-                        if (event) { return; }
-                        return this.net.request(
-                            'open-ils.cat', 'open-ils.cat.transfer_copies_to_volume',
-                            this.auth.token(), res.acn_id, [item.id()]
-                        ).subscribe(transfered_res => {
-                            console.debug('Copy transferred to volume with code ' + transfered_res);
-                        }, err => {
-                            reject(err);
-                        }, () => {
-                            resolve(item);
-                        });
-                    }, err => {
-                        reject(err);
-                    }, () => {
-                        resolve(item);
-                    });
-                } else {
-                    this.pcrud.update(item).subscribe(() => {
-                        resolve(item);
-                    }, () => {
-                        reject(item);
-                    });
-                }
-            });
-        });
+    updateItem(item: IdlObject, courseLib: IdlObject, callNumber: string, updatingVolume: boolean) {
+        const cn = item.call_number();
+        const callNumberLibrary = this.org.canHaveVolumes(courseLib) ? courseLib.id() : cn.owning_lib();
+
+        const itemObservable = this.pcrud.update(item);
+        const callNumberObservable = this.net.request(
+            'open-ils.cat', 'open-ils.cat.call_number.find_or_create',
+            this.auth.token(), callNumber, cn.record(),
+            callNumberLibrary, cn.prefix(), cn.suffix(),
+            cn.label_class()
+        ).pipe(switchMap(res => {
+            const event = this.evt.parse(res);
+            if (event) { return throwError; }
+            return this.net.request(
+                'open-ils.cat', 'open-ils.cat.transfer_copies_to_volume',
+                this.auth.token(), res.acn_id, [item.id()]
+            );
+        }));
+
+        return updatingVolume ? itemObservable.pipe(switchMap(() => callNumberObservable)).toPromise() :
+            itemObservable.toPromise();
+
     }
 
 }

@@ -25,8 +25,8 @@ import {CourseService} from '@eg/staff/share/course.service';
 export class CourseAssociateMaterialComponent extends DialogComponent implements OnInit {
     @Input() currentCourse: IdlObject;
     @Input() courseId: any;
-    @Input() courseIsArchived: String;
-    @Input() displayMode: String;
+    @Input() courseIsArchived: string;
+    @Input() displayMode: string;
     materials: any[] = [];
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
     @ViewChild('materialsGrid', {static: false}) materialsGrid: GridComponent;
@@ -45,16 +45,16 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     @ViewChild('materialAddDifferentLibraryString', { static: true })
         materialAddDifferentLibraryString: StringComponent;
     materialsDataSource: GridDataSource;
-    @Input() barcodeInput: String;
-    @Input() relationshipInput: String;
-    @Input() tempCallNumber: String;
-    @Input() tempStatus: Number;
-    @Input() tempLocation: Number;
-    @Input() tempCircMod: String;
-    @Input() isModifyingStatus: Boolean;
-    @Input() isModifyingCircMod: Boolean;
-    @Input() isModifyingCallNumber: Boolean;
-    @Input() isModifyingLocation: Boolean;
+    @Input() barcodeInput: string;
+    @Input() relationshipInput: string;
+    @Input() tempCallNumber: string;
+    @Input() tempStatus: number;
+    @Input() tempLocation: number;
+    @Input() tempCircMod: string;
+    @Input() isModifyingStatus: boolean;
+    @Input() isModifyingCircMod: boolean;
+    @Input() isModifyingCallNumber: boolean;
+    @Input() isModifyingLocation: boolean;
     bibId: number;
 
     associateBriefRecord: (newRecord: string) => void;
