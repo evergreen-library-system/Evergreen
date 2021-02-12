@@ -3029,7 +3029,6 @@ INSERT INTO config.usr_setting_type (
     opac_visible,
     label,
     description,
-    grp,
     datatype,
     reg_default
 ) VALUES (
@@ -3047,7 +3046,6 @@ INSERT INTO config.usr_setting_type (
         'cust',
         'description'
     ),
-    'circ',
     'bool',
     'true'
 );
