@@ -1,0 +1,10 @@
+Consistent Ordering for Carousels
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Carousel ordering is now stable and predictable:
+
+ * Newly Cataloged Item and Newest Items by Shelving Location carousels are ordered from most recently cataloged to least recently cataloged.
+ * Recently Returned Item carousels is ordered is from most recently returned to least recently returned.
+ * Top Circulated Items carousels is ordered is from most circulated to least circulated.
+ * Manual carousels (as of now, without the ability to adjust the Position of items) are in the order they are added to the backing bucket.
+  ** Emptying and refilling the bucket allows reordering.
+
