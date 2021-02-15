@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1246', :eg_version);
 
 CREATE OR REPLACE VIEW money.open_with_balance_usr_summary AS
     SELECT
