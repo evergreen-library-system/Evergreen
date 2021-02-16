@@ -24,6 +24,7 @@ ltmain.sh
 Makefile
 Makefile.in
 missing
+node-v*-linux-x64.tar.?z
 Open-ILS/examples/Makefile
 Open-ILS/src/apachemods/.libs/
 Open-ILS/src/apachemods/Makefile
@@ -346,7 +347,12 @@ Open-ILS/xul/staff_client/external/libmar/stamp-h1
 Open-ILS/xul/staff_client/external/libmar/tool/.deps/
 Open-ILS/src/c-apps/tests/.libs/
 Open-ILS/src/c-apps/tests/check_idl
+Open-ILS/src/c-apps/tests/check_idl.log
+Open-ILS/src/c-apps/tests/check_idl.trs
 Open-ILS/src/c-apps/tests/check_util
+Open-ILS/src/c-apps/tests/check_util.log
+Open-ILS/src/c-apps/tests/check_util.trs
+Open-ILS/src/c-apps/tests/test-suite.log
 Open-ILS/xul/staff_client/branding/
 Open-ILS/xul/staff_client/evergreen.xpi.md5
 Open-ILS/xul/staff_client/external/libmar/tool/mar
@@ -362,3 +368,4 @@ Open-ILS/web/js/ui/default/staff/node_modules/
 Open-ILS/web/js/ui/default/staff/bower_components/
 Open-ILS/web/js/ui/default/common/build/
 Open-ILS/web/eg2/
+Open-ILS/web/opac/deps/node_modules/
