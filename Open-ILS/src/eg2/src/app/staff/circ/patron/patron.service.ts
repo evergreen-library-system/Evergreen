@@ -13,6 +13,7 @@ export interface CircGridEntry {
     circ?: IdlObject;
     dueDate?: string;
     copyAlertCount: number;
+    nonCatCount: number;
 }
 
 const PATRON_FLESH_FIELDS = [

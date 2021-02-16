@@ -17,6 +17,9 @@ import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
 import {AudioService} from '@eg/share/util/audio.service';
+import {CopyAlertsDialogComponent} from '@eg/staff/share/holdings/copy-alerts-dialog.component';
+
+const SESSION_DUE_DATE = 'eg.circ.checkout.is_until_logout';
 
 @Component({
   templateUrl: 'checkout.component.html',
@@ -30,12 +33,18 @@ export class CheckoutComponent implements OnInit {
     gridDataSource: GridDataSource = new GridDataSource();
     cellTextGenerator: GridCellTextGenerator;
     dueDate: string;
-    copiesInFlight: {[barcode: string]: boolean} = {};
     dueDateOptions: 0 | 1 | 2 = 0; // auto date; specific date; session date
 
-    @ViewChild('nonCatCount') nonCatCount: PromptDialogComponent;
-    @ViewChild('checkoutsGrid') checkoutsGrid: GridComponent;
-    @ViewChild('precatDialog') precatDialog: PrecatCheckoutDialogComponent;
+    private copiesInFlight: {[barcode: string]: boolean} = {};
+
+    @ViewChild('nonCatCount')
+        private nonCatCount: PromptDialogComponent;
+    @ViewChild('checkoutsGrid')
+        private checkoutsGrid: GridComponent;
+    @ViewChild('precatDialog')
+        private precatDialog: PrecatCheckoutDialogComponent;
+    @ViewChild('copyAlertsDialog')
+        private copyAlertsDialog: CopyAlertsDialogComponent;
 
     constructor(
         private store: StoreService,
@@ -59,7 +68,7 @@ export class CheckoutComponent implements OnInit {
             title: row => row.title
         };
 
-        if (this.store.getSessionItem('eg.circ.checkout.is_until_logout')) {
+        if (this.store.getSessionItem(SESSION_DUE_DATE)) {
             this.dueDate = this.store.getSessionItem('eg.circ.checkout.due_date');
             this.toggleDateOptions(2);
         }
@@ -102,24 +111,25 @@ export class CheckoutComponent implements OnInit {
 
     checkout(params?: CheckoutParams, override?: boolean): Promise<CheckoutResult> {
 
-        const barcode = params.copy_barcode || '';
-
-        if (barcode) {
-
-            if (this.copiesInFlight[barcode]) {
-                console.debug('Item ' + barcode + ' is already mid-checkout');
-                return Promise.resolve(null);
-            }
-
-            this.copiesInFlight[barcode] = true;
-        }
-
+        let barcode;
         const promise = params ? Promise.resolve(params) : this.collectParams();
 
-        promise.then((params: CheckoutParams) => {
-            if (params) {
-                return this.circ.checkout(params);
+        return promise.then((params: CheckoutParams) => {
+            if (!params) { return null; }
+
+            barcode = params.copy_barcode || '';
+
+            if (barcode) {
+
+                if (this.copiesInFlight[barcode]) {
+                    console.debug('Item ' + barcode + ' is already mid-checkout');
+                    return null;
+                }
+
+                this.copiesInFlight[barcode] = true;
             }
+
+            return this.circ.checkout(params);
         })
 
         .then((result: CheckoutResult) => {
@@ -166,13 +176,15 @@ export class CheckoutComponent implements OnInit {
             copy: result.copy,
             circ: result.circ,
             dueDate: null,
-            copyAlertCount: 0 // TODO
+            copyAlertCount: 0, // TODO
+            nonCatCount: 0
         };
 
         if (result.nonCatCirc) {
 
             entry.title = this.checkoutNoncat.name();
             entry.dueDate = result.nonCatCirc.duedate();
+            entry.nonCatCount = result.params.noncat_count;
 
         } else {
 
@@ -230,24 +242,24 @@ export class CheckoutComponent implements OnInit {
 
             if (value === 1) { // 1 or 2 -> 0
                 this.dueDateOptions = 0;
-                this.store.removeSessionItem('eg.circ.checkout.is_until_logout');
+                this.store.removeSessionItem(SESSION_DUE_DATE);
 
             } else if (this.dueDateOptions === 1) { // 1 -> 2
 
                 this.dueDateOptions = 2;
-                this.store.setSessionItem('eg.circ.checkout.is_until_logout', true);
+                this.store.setSessionItem(SESSION_DUE_DATE, true);
 
             } else { // 2 -> 1
 
                 this.dueDateOptions = 1;
-                this.store.removeSessionItem('eg.circ.checkout.is_until_logout');
+                this.store.removeSessionItem(SESSION_DUE_DATE);
             }
 
         } else {
 
             this.dueDateOptions = value;
             if (value === 2) {
-                this.store.setSessionItem('eg.circ.checkout.is_until_logout', true);
+                this.store.setSessionItem(SESSION_DUE_DATE, true);
             }
         }
     }
@@ -261,6 +273,29 @@ export class CheckoutComponent implements OnInit {
                 this.checkout(params);
             }
         })
+    }
+
+    selectedCopyIds(rows: CircGridEntry[]): number[] {
+        return rows
+            .filter(row => row.copy)
+            .map(row => Number(row.copy.id()));
+    }
+
+    openItemAlerts(rows: CircGridEntry[], mode: string) {
+        const copyIds = this.selectedCopyIds(rows);
+        if (copyIds.length === 0) { return; }
+
+        this.copyAlertsDialog.copyIds = copyIds;
+        this.copyAlertsDialog.mode = mode;
+        this.copyAlertsDialog.open({size: 'lg'}).subscribe(
+            modified => {
+                if (modified) {
+                    // TODO: verify the modiifed alerts are present
+                    // or go fetch them.
+                    this.checkoutsGrid.reload();
+                }
+            }
+        );
     }
 }
 

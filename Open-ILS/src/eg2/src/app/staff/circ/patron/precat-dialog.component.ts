@@ -39,8 +39,10 @@ export class PrecatCheckoutDialogComponent extends DialogComponent implements On
             this.perm.hasWorkPermHere('CREATE_PRECAT')
             .then(perms => this.hasPerm = perms['CREATE_PRECAT']);
 
-            const node = document.getElementById('precat-title-input');
-            if (node) { node.focus(); }
+            setTimeout(() => {
+                const node = document.getElementById('precat-title-input');
+                if (node) { node.focus(); }
+            });
         });
     }
 }
