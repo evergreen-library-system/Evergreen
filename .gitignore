@@ -15,9 +15,6 @@ config.status
 config.sub
 configure
 depcomp
-docs/RELEASE_NOTES_2_2.html
-docs/root.html
-docs/root.pdf
 install-sh
 libtool
 ltmain.sh
@@ -59,10 +56,6 @@ Open-ILS/src/perlmods/Makefile
 Open-ILS/src/perlmods/Makefile.in
 Open-ILS/src/perlmods/MYMETA.json
 Open-ILS/src/perlmods/MYMETA.yml
-Open-ILS/src/python/build/
-Open-ILS/src/python/Evergreen.egg-info/
-Open-ILS/src/python/Makefile
-Open-ILS/src/python/Makefile.in
 Open-ILS/src/support-scripts/action_trigger_aggregator.pl
 Open-ILS/src/support-scripts/action_trigger_runner.pl
 Open-ILS/src/support-scripts/authority_authority_linker.pl
@@ -330,8 +323,6 @@ Open-ILS/xul/staff_client/server/locale/sv-SE/
 Open-ILS/xul/staff_client/server/locale/tr-TR/
 Open-ILS/xul/staff_client/evergreen_staff_client.tar.bz2
 Open-ILS/xul/staff_client/xulrunner/
-README.html
-HACKING.html
 Open-ILS/examples/apache/eg.conf
 Open-ILS/examples/apache/eg_startup
 Open-ILS/examples/apache/eg_vhost.conf
