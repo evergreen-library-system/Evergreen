@@ -3,6 +3,40 @@ Evergreen 3.4 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.4.6
+---------------
+
+This release contains bug fixes improving on Evergreen 3.4.5,
+including a security bug fix.
+
+Bug Fixes
+~~~~~~~~~
+
+Security
+^^^^^^^^
+
+* Fix an issue where `open-ils.pcrud` backends could crash with
+a segmentation fault under certain conditions that could be invoked
+by an external attacker, thus leading to a potential denial
+of service attack.
+
+Public Catalog
+^^^^^^^^^^^^^^
+
+* Fix an issue where titles could run together when viewing a
+carousel with a mobile browser.
+(https://bugs.launchpad.net/evergreen/+bug/1868147[Bug 1868147])
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.4.6 point release of Evergreen:
+
+* Galen Charlton
+* Garry Collum
+* Mike Rylander
+* Jason Stephenson
+
 Evergreen 3.4.5
 ---------------
 
