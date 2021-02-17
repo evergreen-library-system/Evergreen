@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2019-09-09 16:57-0400\n"
-"PO-Revision-Date: 2019-10-29 14:10+0000\n"
+"POT-Creation-Date: 2020-09-16 14:24-0400\n"
+"PO-Revision-Date: 2013-10-15 08:54+0000\n"
 "Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-06-11 06:33+0000\n"
-"X-Generator: Launchpad (build b190cebbf563f89e480a8b57f641753c8196bda0)\n"
+"X-Launchpad-Export-Date: 2020-09-17 06:02+0000\n"
+"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
 "Language: fi\n"
 
 #: 1208.TITLE_LAST_COPY:71
@@ -54,7 +54,7 @@ msgstr "Asiakas on lainauskiellossa"
 msgid "The requested config_circ_matrix_test was not found"
 msgstr "Pyydettyä kohdetta config_circ_matrix ei löytynyt"
 
-#: 1900.URL_VERIFY_NOT_SESSION_CREATOR:765
+#: 1900.URL_VERIFY_NOT_SESSION_CREATOR:770
 msgid ""
 "You did not create this URL Verify session, so you cannot change it.  You "
 "may be able to clone it."
@@ -70,16 +70,16 @@ msgstr "Pyydettyä kohdetta metabib_series_field_entry ei löytynyt"
 msgid "An unholdable copy was encountered"
 msgstr ""
 
-#: 11105.PATRON_CREDIT_DISABLED:1043
+#: 11105.PATRON_CREDIT_DISABLED:1057
 msgid ""
 "Payments by patron credit are not allowed for the selected transaction"
 msgstr "Valittua maksua ei voida maksaa asiakkaan luotolla"
 
-#: 4003.CREDIT_PROCESSOR_NOT_ALLOWED:799
+#: 4003.CREDIT_PROCESSOR_NOT_ALLOWED:804
 msgid "The credit card processor you have named is not allowed"
 msgstr "Määrittämäsi luottokorttivälittäjä ei kelpaa"
 
-#: 4010.CREDIT_PROCESSOR_NO_DEFAULT_SELECTED:805
+#: 4010.CREDIT_PROCESSOR_NO_DEFAULT_SELECTED:810
 msgid "No default credit processor is selected"
 msgstr "Mitään luottokorttivälittäjää ei ole määritetty oletukseksi"
 
@@ -119,7 +119,7 @@ msgstr ""
 msgid "The requested metabib_subject_field_entry was not found"
 msgstr "Pyydettyä kohdetta metabib_subject_field ei löytynyt"
 
-#: 1711.BIB_QUEUE_EXISTS:749
+#: 1711.BIB_QUEUE_EXISTS:751
 msgid "A bib record queue with the same name already exists"
 msgstr "Samanniminen bibliografinen tietuejono on jo olemassa"
 
@@ -151,7 +151,7 @@ msgstr "Pyydettyä kohdetta action_survey_response ei löytynyt"
 msgid "The requested money_open_billable_transaction_summary was not found"
 msgstr "Pyydettyä kohdetta money_open_billable_transaction ei löytynyt"
 
-#: 7000.ROUTE_ITEM:842
+#: 7000.ROUTE_ITEM:847
 msgid ""
 "A copy needs to be routed to a different location The destination location "
 "will be specified by an 'org' key within the event object"
@@ -177,7 +177,7 @@ msgstr ""
 "Tietuenumeroa, joka ei olisi ristiriidassa olemassaolevien tietueiden "
 "kanssa, ei löytynyt"
 
-#: 2001.DATABASE_UPDATE_FAILED:776
+#: 2001.DATABASE_UPDATE_FAILED:781
 msgid "The attempt to write to the DB failed"
 msgstr "Yritys kirjoittaa tietokantaan epäonnistui"
 
@@ -189,8 +189,12 @@ msgstr "Pyydettyä kohdetta metabib_keyword_field ei löytynyt"
 msgid "The requested config_audience_map was not found"
 msgstr "Pyydettyä kohdetta config_audience_map ei löytynyt"
 
-#: 8004.OFFLINE_CONFIG_ERROR:954 8005.OFFLINE_CHECKSUM_FAILED:957
-#: 8006.OFFLINE_SESSION_NOT_FOUND:960
+#: 10001.ACQ_LINEITEM_NO_COPIES:1004
+msgid "The lineitem has no attached copies"
+msgstr "Nimikkeeseen ei ole liitetty niteitä"
+
+#: 8004.OFFLINE_CONFIG_ERROR:968 8005.OFFLINE_CHECKSUM_FAILED:971
+#: 8006.OFFLINE_SESSION_NOT_FOUND:974
 msgid "Offline server is not configured properly"
 msgstr "Offline-palvelinta ei ole määritetty oikein"
 
@@ -199,7 +203,7 @@ msgid "User login session has either timed out or does not exist"
 msgstr ""
 "Käyttäjän sisäänkirjautumisistunto on joko vanhentunut tai sitä ei ole"
 
-#: 4019.CREDIT_PROCESSOR_INVALID_CC_NUMBER:808
+#: 4019.CREDIT_PROCESSOR_INVALID_CC_NUMBER:813
 msgid "An invalid credit card number has been supplied."
 msgstr "Annettu luottokorttinumero on virheellinen."
 
@@ -244,11 +248,11 @@ msgid ""
 "found"
 msgstr "Joku yritti hakea käyttäjää järjestelmästä, eikä käyttäjää löytynyt"
 
-#: 7011.COPY_STATUS_LOST:880
+#: 7011.COPY_STATUS_LOST:885
 msgid "Copy is marked as lost"
 msgstr "Nide on merkitty kadonneeksi"
 
-#: 7004.COPY_NOT_AVAILABLE:859
+#: 7004.COPY_NOT_AVAILABLE:864
 msgid "Copy is not available"
 msgstr "Nide ei ole saatavilla"
 
@@ -264,7 +268,7 @@ msgstr "Pyydettyä kohdetta acq.fund_debit_total ei löytynyt"
 msgid "The requested reporter_output_folder was not found"
 msgstr "Pyydettyä kohdetta reporter_output_folder ei löytynyt"
 
-#: 7008.MAX_RENEWALS_REACHED:871
+#: 7008.MAX_RENEWALS_REACHED:876
 msgid "Circulation has no more renewals remaining"
 msgstr "Lainaa ei voi enää uusia"
 
@@ -272,11 +276,11 @@ msgstr "Lainaa ei voi enää uusia"
 msgid "This account is marked as inactive"
 msgstr "Tämä tili on merkitty ei-aktiiviseksi"
 
-#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1055
+#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1069
 msgid "The distribution still has dependent objects"
 msgstr ""
 
-#: 8003.OFFLINE_PARAM_ERROR:951
+#: 8003.OFFLINE_PARAM_ERROR:965
 msgid "Missing params in offline upload"
 msgstr "Offline-latauksesta puuttuu parametrejä"
 
@@ -284,7 +288,7 @@ msgstr "Offline-latauksesta puuttuu parametrejä"
 msgid "The requested reporter_report_folder was not found"
 msgstr "Pyydettyä kohdetta reporter_report_folder ei löytynyt"
 
-#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1061
+#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1075
 msgid "The prediction pattern still has dependent objects"
 msgstr ""
 
@@ -292,7 +296,7 @@ msgstr ""
 msgid "The requested perm_ex was not found"
 msgstr "Pyydettyä kohdetta perm_ex ei löytynyt"
 
-#: 10101.ACQ_ALREADY_CANCELED:1006
+#: 10101.ACQ_ALREADY_CANCELED:1020
 msgid "The object is already canceled."
 msgstr "Objekti on jo peruttu."
 
@@ -330,15 +334,15 @@ msgstr "Pyydettyä kohdetta money_collections_tracker ei löytynyt"
 msgid "An authority record already exists with the requested ARN"
 msgstr "Pyydetty ARN löytyy jo auktoriteettitietueesta"
 
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1019
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1033
 msgid "The caption/pattern still has dependent issuances"
 msgstr "Ilmestymistiedoista riippuvaisia numerointeja on yhä olemassa"
 
-#: 5000.PERM_FAILURE:822
+#: 5000.PERM_FAILURE:827
 msgid "Permission Denied"
 msgstr "Ei oikeuksia"
 
-#: 7015.NEGATIVE_PATRON_BALANCE:892
+#: 7015.NEGATIVE_PATRON_BALANCE:897
 msgid "This requested action would result in a negative patron balance"
 msgstr "Pyydetty toiminto johtaisi asiakkaan negatiiviseen saldoon"
 
@@ -346,7 +350,7 @@ msgstr "Pyydetty toiminto johtaisi asiakkaan negatiiviseen saldoon"
 msgid "The requested actor_user_standing_penalty was not found"
 msgstr "Pyydettyä kohdetta actor_user_standing_penalty ei löytynyt"
 
-#: 8000.OFFLINE_SESSION_ACTIVE:942
+#: 8000.OFFLINE_SESSION_ACTIVE:956
 msgid "An offline session for this location is currently processing"
 msgstr "Tämän sijainnin offline-istuntoa käsitellään parhaillaan"
 
@@ -358,11 +362,11 @@ msgstr "Annettu käyttäjätunnus löytyy jo tietokannasta"
 msgid "The requested actor_stat_cat_entry was not found"
 msgstr "Pyydettyä kohdetta actor_stat_cat_entry ei löytynyt"
 
-#: 1710.CONTAINER_EXISTS:746
+#: 1710.CONTAINER_EXISTS:748
 msgid "User has already created a bucket with the requested name"
 msgstr "Käyttäjä on jo luonut siilon, jolla on pyydetty nimi"
 
-#: 7001.PATRON_BAD_STANDING:849
+#: 7001.PATRON_BAD_STANDING:854
 msgid ""
 "The patron in question is not able to check out materials because their "
 "account is in bad standing"
@@ -372,7 +376,7 @@ msgstr "Asiakkaan tiedoissa oleva merkintä estää lainauksen"
 msgid "Requested billing note does not exist"
 msgstr "Pyydettyä maksuilmoitusta ei ole"
 
-#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1027
+#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1041
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a call number."
@@ -384,7 +388,7 @@ msgstr ""
 msgid "The requested container_biblio_record_entry_bucket was not found"
 msgstr "Pyydettyä kohdetta container_biblio_record_entry_bucket ei löydy"
 
-#: 7021.RESERVATION_NOT_FOUND:913
+#: 7021.RESERVATION_NOT_FOUND:918
 msgid "Booking reservation not found"
 msgstr "Erikoisvarausta ei löydy"
 
@@ -392,7 +396,7 @@ msgstr "Erikoisvarausta ei löydy"
 msgid "The bill is already voided"
 msgstr ""
 
-#: 1700.NON_CAT_TYPE_EXISTS:710
+#: 1700.NON_CAT_TYPE_EXISTS:712
 msgid "The non-cataloged type object already exists"
 msgstr "Luetteloimaton tyyppiobjekti on jo olemassa"
 
@@ -404,7 +408,7 @@ msgstr ""
 "Pyydettyä kohdetta acq.purchase_order ei voi jakaa, koska siinä on vain yksi "
 "nimike"
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:999
+#: 10004.ACQ_LINEITEM_NO_PRICE:1013
 msgid "The lineitem has no price"
 msgstr "Nimikkeellä ei ole hintaa"
 
@@ -427,6 +431,10 @@ msgstr "Pyydettyä kohdetta asset_copy_note ei löydy"
 #: 1853.ACQ_FUND_COMBINED_BALANCE_NOT_FOUND:642
 msgid "The requested acq.fund_combined_balance was not found"
 msgstr "Pyydettyä kohdetta acq.fund_combined_balance ei löydy"
+
+#: 7032.CURBSIDE_EXISTS:948
+msgid "A scheduled, unfilled curbside request already exists"
+msgstr ""
 
 #: 1850.ACQ_FUND_ALLOCATION_TOTAL_NOT_FOUND:633
 msgid "The requested acq.fund_allocation_total was not found"
@@ -452,7 +460,7 @@ msgstr "Z-lauseketta ei ole muotoiltu oikein"
 msgid "The given user barcode already exists"
 msgstr "Annettu asiakastunnus on jo olemassa"
 
-#: 1713.SURVEY_RESPONSES_EXIST:755
+#: 1713.SURVEY_RESPONSES_EXIST:757
 msgid "Responses to this survey exist"
 msgstr "Tähän kyselyyn on vastauksia"
 
@@ -464,11 +472,11 @@ msgstr "Pyydettyä kohdetta config_metabib_field ei löydy"
 msgid "The requested actor_org_address was not found"
 msgstr "Pyydettyä kohdetta actor_org_address ei löydy"
 
-#: 11009.SERIAL_STREAM_NOT_EMPTY:1058
+#: 11009.SERIAL_STREAM_NOT_EMPTY:1072
 msgid "The stream still has dependent objects"
 msgstr ""
 
-#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1031
+#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1045
 msgid "Checkin attempted on item during minimum transit checkin interval."
 msgstr ""
 "Niteen palautusta yritetty ennen kuljetusten palautusvälin vähimmäisajan "
@@ -486,9 +494,9 @@ msgstr "Pyydettyä kohdetta acq.fund_spent_total ei löytynyt"
 msgid "The requested permission_grp_tree was not found"
 msgstr "Pyydettyä kohdetta permission_grp_tree ei löytynyt"
 
-#: 10001.ACQ_LINEITEM_NO_COPIES:990
-msgid "The lineitem has no attached copies"
-msgstr "Nimikkeeseen ei ole liitetty niteitä"
+#: 7030.CURBSIDE_NOT_ALLOWED:942
+msgid "Curbside pickup is not enabled for this location"
+msgstr ""
 
 #: 1536.ACTION_IN_HOUSE_USE_NOT_FOUND:267
 msgid "The requested action_in_house_use was not found"
@@ -498,7 +506,7 @@ msgstr "Pyydettyä kohdetta action_in_house_use ei löytynyt"
 msgid "The requested acq.lineitem_provider_attr_definition was not found"
 msgstr "Pyydettyä kohdetta acq.lineitem_provider_attr_definition ei löytynyt"
 
-#: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:740
+#: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:742
 msgid ""
 "A duplicate money.collections_tracker object already exists in the database"
 msgstr ""
@@ -508,7 +516,7 @@ msgstr ""
 msgid "The requested metabib_metarecord_source_map was not found"
 msgstr "Pyydettyä kohdetta metabib_metarecord_source_map ei löytynyt"
 
-#: 7009.CIRC_CLAIMS_RETURNED:874
+#: 7009.CIRC_CLAIMS_RETURNED:879
 msgid "Requested circulation is marked claims returned"
 msgstr "Pyydetty laina on ilmoitettu palautetuksi"
 
@@ -537,7 +545,7 @@ msgstr ""
 "Valittua nidettä ei voi lainata, koska vastaanottajan kotikirjasto ei kuulu "
 "niteen lainausalueeseen"
 
-#: 10005.ACQ_LINEITEM_NO_PROVIDER:1002
+#: 10005.ACQ_LINEITEM_NO_PROVIDER:1016
 msgid "The lineitem has no provider"
 msgstr "Nimikkeellä ei ole toimittajaa"
 
@@ -545,7 +553,7 @@ msgstr "Nimikkeellä ei ole toimittajaa"
 msgid "The requested money_work_payment was not found"
 msgstr "Pyydettyä kohdetta money_work_payment ei löytynyt"
 
-#: 2000.BAD_PARAMS:773
+#: 2000.BAD_PARAMS:778
 msgid "Invalid parameters were encountered in a method"
 msgstr "Menetelmässä ilmeni virheellisiä parametreja"
 
@@ -557,11 +565,11 @@ msgstr "Pyydettyä kohdetta money_cash_payment ei löytynyt"
 msgid "The selected location cannot have volumes attached"
 msgstr "Pyydettyyn sijaintiin ei voida liittää signumeja"
 
-#: 8002.OFFLINE_FILE_ERROR:948
+#: 8002.OFFLINE_FILE_ERROR:962
 msgid "An offline file or directory could not be created or accessed"
 msgstr "Offline-tiedostoa tai -hakemistoa ei voitu luoda tai käyttää"
 
-#: 1704.TCN_EXISTS:728
+#: 1704.TCN_EXISTS:730
 msgid "A record already exists with the requested TCN value"
 msgstr "Pyydetty tietuenumeron arvo on jo tietueessa"
 
@@ -578,7 +586,7 @@ msgstr "Paikanvaraajatapahtuma. Vain kehityskäyttöön"
 msgid "The requested biblio_record_node was not found"
 msgstr "Pyydettyä kohdetta bibio_record_node ei löytynyt"
 
-#: 1901.URL_VERIFY_SESSION_ALREADY_SEARCHED:769
+#: 1901.URL_VERIFY_SESSION_ALREADY_SEARCHED:774
 msgid "This session has already been searched."
 msgstr "Tämä istunto on jo tehty."
 
@@ -586,7 +594,7 @@ msgstr "Tämä istunto on jo tehty."
 msgid "The requested actor_user_setting was not found"
 msgstr "Pyydettyä kohdetta actor_user_setting ei löytynyt"
 
-#: 7026.PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST:828
+#: 7026.PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST:833
 msgid ""
 "The user attempted to update their password using a stale or inactive "
 "password reset request session."
@@ -598,7 +606,7 @@ msgstr ""
 msgid "The user does not have a valid email address assigned"
 msgstr "Käyttäjä ei ole määrittänyt kelvollista sähköpostiosoitetta"
 
-#: 2005.OBJECT_UNIQUE_IDENTIFIER_USED:788
+#: 2005.OBJECT_UNIQUE_IDENTIFIER_USED:793
 msgid ""
 "You are trying to create an object with a unique identifier (such as a "
 "'name' field) that is already in use."
@@ -610,7 +618,7 @@ msgstr ""
 msgid "The requested acq.fund_spent_balance was not found"
 msgstr "Pyydettyä kohdetta acq.fund_spent_balance ei löytynyt"
 
-#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1015
+#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1029
 msgid "The subscription still has dependent objects"
 msgstr "Tilauksessa on yhä riippuvaisia objekteja"
 
@@ -626,11 +634,11 @@ msgstr "Pyydettyä kohdetta config_lit_form_map ei löytynyt"
 msgid "The requested metabib_record_descriptor was not found"
 msgstr "Pyydettyä kohdetta metabib_record_descriptor ei löytynyt"
 
-#: 10102.ACQ_NOT_CANCELABLE:1009
+#: 10102.ACQ_NOT_CANCELABLE:1023
 msgid "The object is not in a cancelable state."
 msgstr "Objekti ei ole tilassa, jossa sen voisi perua."
 
-#: 7012.COPY_STATUS_MISSING:883
+#: 7012.COPY_STATUS_MISSING:888
 msgid "Copy is marked as missing"
 msgstr "Nide on merkitty kadonneeksi"
 
@@ -641,7 +649,7 @@ msgid ""
 msgstr ""
 "Joku yritti hakea lainaobjektia järjestelmästä, eikä objektia löytynyt."
 
-#: 4001.CREDIT_PROCESSOR_NOT_ENABLED:793
+#: 4001.CREDIT_PROCESSOR_NOT_ENABLED:798
 msgid "Credit card processor not enabled"
 msgstr "Luottokorttivälittäjää ei ole otettu käyttöön"
 
@@ -649,7 +657,11 @@ msgstr "Luottokorttivälittäjää ei ole otettu käyttöön"
 msgid "The requested actor_user_note was not found"
 msgstr "Pyydettyä kohdetta actor_user_note ei löytynyt"
 
-#: 7005.LOCATION_CIRC_NOT_ALLOWED:862
+#: 7031.CURBSIDE_MAX_FOR_TIME:945
+msgid "Maximum scheduled curbside pickups at the requested time"
+msgstr ""
+
+#: 7005.LOCATION_CIRC_NOT_ALLOWED:867
 msgid "Location does not allow materials to circulate"
 msgstr "Sijainti ei salli aineistojen lainausta"
 
@@ -665,7 +677,7 @@ msgstr "Sisäänkirjautuminen epäonnistui"
 msgid "The requested money_credit_card_payment was not found"
 msgstr "Pyydettyä kohdetta money_credit_card_payment ei löytynyt"
 
-#: 7023.RESERVATION_BAD_PARAMS:919
+#: 7023.RESERVATION_BAD_PARAMS:924
 msgid "Provided parameters describe unacceptable reservation."
 msgstr "Annetut parametrit kuvaavat kelpaamatonta erikoisvarausta."
 
@@ -673,11 +685,11 @@ msgstr "Annetut parametrit kuvaavat kelpaamatonta erikoisvarausta."
 msgid "The requested acq.funding_source_balance was not found"
 msgstr "Pyydettyä kohdetta acq.funding_source_balance ei löytynyt"
 
-#: 10000.ACQ_LINEITEM_APPROVED:987
+#: 10000.ACQ_LINEITEM_APPROVED:1001
 msgid "The lineitem cannot be altered because it has already been approved"
 msgstr "Nimikettä ei voi muuttaa, koska se on jo hyväksytty"
 
-#: 1714.HIGH_LEVEL_HOLD_HAS_NO_COPIES:758
+#: 1714.HIGH_LEVEL_HOLD_HAS_NO_COPIES:760
 msgid ""
 "A hold request at a higher level than copy has been attempted, but there are "
 "no copies that belonging to the higher-level unit."
@@ -701,7 +713,7 @@ msgstr "Pyydettyä kohdetta asset_stat_cat_entry ei löytynyt"
 msgid "The requested config_non_cataloged_type was not found"
 msgstr "Pyydettyä kohdetta config_non_cataloged_type ei löytynyt"
 
-#: 1716.COPY_LOCATION_NOT_EMPTY:716
+#: 1716.COPY_LOCATION_NOT_EMPTY:718
 msgid "The copy location is not empty"
 msgstr ""
 
@@ -733,7 +745,7 @@ msgstr "Pyydettyä kohdetta money_billable_transaction ei löytynyt"
 msgid "The requested permission.usr_object_perm_map was not found"
 msgstr "Pyydettyä kohdetta permission.usr_object_perm_map ei löytynyt"
 
-#: 7020.COPY_RESERVED:910
+#: 7020.COPY_RESERVED:915
 msgid "Item reserved for booking request"
 msgstr "Nide varattu varauspyyntöä varten"
 
@@ -745,7 +757,7 @@ msgstr "Pyydettyä kohdetta money_open_user_summary ei löytynyt"
 msgid "No change occurred"
 msgstr "Muutosta ei tapahtunut"
 
-#: 7026.COPY_STATUS_LOST_AND_PAID:928
+#: 7026.COPY_STATUS_LOST_AND_PAID:933
 msgid "Copy is marked as lost and paid"
 msgstr ""
 
@@ -757,7 +769,7 @@ msgstr "Lainausta yritettiin ilman kelvollista lainauslupa-avainta"
 msgid "The requested money_credit_payment was not found"
 msgstr "Pyydettyä kohdetta money_credit_payment ei löytynyt"
 
-#: 7017.ROUTE_TO_COPY_LOCATION:901
+#: 7017.ROUTE_TO_COPY_LOCATION:906
 msgid ""
 "A copy needs to be routed to a copy location.  The location should be "
 "specified within the event with a 'location' key"
@@ -769,7 +781,7 @@ msgstr ""
 msgid "The requested metabib_title_field_entry was not found"
 msgstr "Pyydettyä kohdetta metabib_title_field_entry ei löytynyt"
 
-#: 7022.RESERVATION_CAPTURE_FAILED:916
+#: 7022.RESERVATION_CAPTURE_FAILED:921
 msgid "Booking reservation capture failed"
 msgstr "Erikoisvarauksen kiinnitys epäonnistui"
 
@@ -792,7 +804,7 @@ msgid ""
 msgstr ""
 "Joku yritti hakea säiliönidettä järjestelmästä, eikä objektia löytynyt."
 
-#: 2002.DATABASE_QUERY_FAILED:779
+#: 2002.DATABASE_QUERY_FAILED:784
 msgid "The attempt to query to the DB failed"
 msgstr "Yritys hakea tietoa tietokannasta epäonnistui"
 
@@ -816,11 +828,11 @@ msgstr "Annettu salasana ei ole oikein"
 msgid "The requested config_item_type_map was not found"
 msgstr "Pyydettyä kohdetta config_item_type_map ei löytynyt"
 
-#: 12000.ITEM_TO_MARK_CHECKED_OUT:1072
+#: 12000.ITEM_TO_MARK_CHECKED_OUT:1081
 msgid "The item to be marked is checked out to a patron."
 msgstr ""
 
-#: 8007.OFFLINE_SESSION_EXISTS:963
+#: 8007.OFFLINE_SESSION_EXISTS:977
 msgid "A session with the given name already exists"
 msgstr "Annetulla nimellä löytyy jo istunto"
 
@@ -828,11 +840,11 @@ msgstr "Annetulla nimellä löytyy jo istunto"
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
 msgstr "Pyydettyä kohdetta config_circ_matrix_ruleset_not_found ei löytynyt"
 
-#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:993
+#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:1007
 msgid "The lineitem detail has no associated fund"
 msgstr "Nimikkeen tietoihin ei ole liitetty tiliä"
 
-#: 7003.COPY_CIRC_NOT_ALLOWED:856
+#: 7003.COPY_CIRC_NOT_ALLOWED:861
 msgid "Target copy is not allowed to circulate"
 msgstr "Kohdenide ei ole lainattavissa"
 
@@ -844,7 +856,7 @@ msgstr "Pyydettyä kohdetta config_identification_type ei löytynyt"
 msgid "The requested asset_copy_location was not found"
 msgstr "Pyydettyä kohdetta asset_copy_location ei löytynyt"
 
-#: 12001.ITEM_TO_MARK_IN_TRANSIT:1075
+#: 12001.ITEM_TO_MARK_IN_TRANSIT:1084
 msgid "The item to be marked is in transit."
 msgstr ""
 
@@ -859,7 +871,7 @@ msgstr ""
 msgid "The requested asset_call_number_note was not found"
 msgstr "Pyydettyä kohdetta asset_call_number_note ei löytynyt"
 
-#: 4004.CREDIT_PROCESSOR_NOT_SPECIFIED:802
+#: 4004.CREDIT_PROCESSOR_NOT_SPECIFIED:807
 msgid ""
 "No credit card processor specified either in org unit settings or in call to "
 "credit service API method."
@@ -871,7 +883,7 @@ msgstr ""
 msgid "Requested address was not found"
 msgstr "Pyydettyä osoitetta ei löytynyt"
 
-#: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:853
+#: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:858
 msgid ""
 "The patron in question has the maximum number of items already checked out"
 msgstr "Asiakkaalla on enimmäismäärä lainoja"
@@ -892,7 +904,7 @@ msgstr "Pyydettyä kohdetta actor_usr_note ei löytynyt"
 msgid "The requested permission_grp_perm_map was not found"
 msgstr "Pyydettyä kohdetta permission_grp_perm_map ei löytynyt"
 
-#: 7025.PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS:825
+#: 7025.PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS:830
 msgid ""
 "There are too many active password reset request sessions for this patron."
 msgstr ""
@@ -902,23 +914,23 @@ msgstr ""
 msgid "Payment of an item deposit is required."
 msgstr ""
 
-#: 1709.MAX_HOLDS:743
+#: 1709.MAX_HOLDS:745
 msgid "User has reached the maximum number of holds"
 msgstr "Käyttäjällä on enimmäismäärä varauksia"
 
-#: 1706.ITEM_BARCODE_EXISTS:734
+#: 1706.ITEM_BARCODE_EXISTS:736
 msgid "An item with the same barcode exists"
 msgstr "Nide on jo olemassa tällä tunnuksella"
 
-#: 7014.COPY_IN_TRANSIT:889
+#: 7014.COPY_IN_TRANSIT:894
 msgid "Copy is in transit"
 msgstr "Nide on kuljetettavana"
 
-#: 1219.COPY_REMOTE_CIRC_LIB:112 1220.ITEM_NOT_HOLDABLE:116
+#: 1219.COPY_REMOTE_CIRC_LIB:112
 msgid "A copy with a remote circulating library (circ_lib) was encountered"
 msgstr "Löydettiin nide, jolle on määritetty etälainauspiste (circ_lib)"
 
-#: 1702.OPEN_CIRCULATION_EXISTS:722
+#: 1702.OPEN_CIRCULATION_EXISTS:724
 msgid "There is an open circulation on the requested item"
 msgstr "Nidettä ei oel palautettu"
 
@@ -926,7 +938,7 @@ msgstr "Nidettä ei oel palautettu"
 msgid "Success"
 msgstr "Onnistui"
 
-#: 12002.ITEM_TO_MARK_LAST_HOLD_COPY:1078
+#: 12002.ITEM_TO_MARK_LAST_HOLD_COPY:1087
 msgid "The item to be marked is the last possible target for a hold."
 msgstr ""
 
@@ -938,11 +950,11 @@ msgstr "Valittuun bibliografiseen tietueeseen on kiinnitetty signumeja"
 msgid "The requested action_hold_request was not found"
 msgstr "Pyydettyä kohdetta action_hold_request ei löytynyt"
 
-#: 8011.SKIP_ASSET_CHANGED:975
+#: 8011.SKIP_ASSET_CHANGED:989
 msgid "Asset status was changed since the offline transaction was recorded"
 msgstr "Varojen tilaa muutettiin, koska offline-maksutapahtuma tallennettiin"
 
-#: 7029.MAX_AUTO_RENEWALS_REACHED:934
+#: 7029.MAX_AUTO_RENEWALS_REACHED:939
 msgid "Circulation has no more auto-renewals remaining"
 msgstr ""
 
@@ -978,13 +990,17 @@ msgstr "Pyydettyä kohdetta asset_stat_cat_entry_copy_map ei löytynyt"
 msgid "The requested actor_org_unit was not found"
 msgstr "Pyydettyä kohdetta actor_org_unit ei löytynyt"
 
-#: 7010.COPY_ALERT_MESSAGE:877
+#: 7010.COPY_ALERT_MESSAGE:882
 msgid "The requested copy has an alert message attached"
 msgstr "Pyydettyyn niteeseen on liitetty huomautusviesti"
 
-#: 7006.COPY_IS_REFERENCE:865
+#: 7006.COPY_IS_REFERENCE:870
 msgid "Copy is reference material"
 msgstr "Nide on käsikirjastoaineistoa"
+
+#: 1716.MONEY_DEBIT_CARD_PAYMENT_NOT_FOUND:766
+msgid "The requested money_debit_card_payment was not found"
+msgstr ""
 
 #: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:299
 msgid "The requested config_item_form_map was not found"
@@ -1006,11 +1022,11 @@ msgstr "Pyydettyä kohdetta actor_org_unit_hours_of_operation ei löytynyt"
 msgid "The requested ex was not found"
 msgstr "Pyydettyä kohdetta ex ei löytynyt"
 
-#: 7019.HOLD_CAPTURE_DELAYED:907
+#: 7019.HOLD_CAPTURE_DELAYED:912
 msgid "Hold capture was delayed for this item"
 msgstr "Tämän niteen varauksen kiinnitystä viivytettiin"
 
-#: 9000.REPORT_TEMPLATE_EXISTS:979
+#: 9000.REPORT_TEMPLATE_EXISTS:993
 msgid "A report template with the given name and folder already exists"
 msgstr "Annetulla nimellä ja kansiolla löytyy jo raporttipohja"
 
@@ -1021,7 +1037,7 @@ msgid ""
 msgstr ""
 "Joku yritti hakea nideobjektia järjestelmästä, eikä objektia löytynyt."
 
-#: 1703.WORKSTATION_NAME_EXISTS:725
+#: 1703.WORKSTATION_NAME_EXISTS:727
 msgid "A workstation with that name already exists"
 msgstr "Samanniminen työasema on jo olemassa"
 
@@ -1045,28 +1061,28 @@ msgstr "Pyydettyä kohdetta container_copy_bucket_item ei löytynyt"
 msgid "The requested actor_stat_cat was not found"
 msgstr "Pyydettyä kohdetta actor_stat_cat ei löytynyt"
 
-#: 7027.PATRON_PASSWORD_WAS_NOT_STRONG:831
+#: 7027.PATRON_PASSWORD_WAS_NOT_STRONG:836
 msgid "The user attempted to set their password to a weak value."
 msgstr "Käyttäjä yritti määrittää heikon salasanan."
 
-#: 9001.REPORT_REPORT_EXISTS:983
+#: 9001.REPORT_REPORT_EXISTS:997
 msgid "A report with the given name and folder already exists"
 msgstr "Annetulla nimellä ja kansiolla löytyy jo raportti"
 
-#: 1705.VOLUME_LABEL_EXISTS:731
+#: 1705.VOLUME_LABEL_EXISTS:733
 msgid "A volume with the same label, title and owning library exists"
 msgstr ""
 "Signum samalla tarralla, nimekkeella ja omistajakirjastolla on jo olemassa"
 
-#: 8008.OFFLINE_INVALID_SESSION:966
+#: 8008.OFFLINE_INVALID_SESSION:980
 msgid "The session name is invalid"
 msgstr "Istunnon nimi on virheellinen"
 
-#: 7025.COPY_STATUS_LONG_OVERDUE:925
+#: 7025.COPY_STATUS_LONG_OVERDUE:930
 msgid "Copy is marked as long-overdue"
 msgstr "Nide on merkitty kauan sitten erääntyneeksi"
 
-#: 7007.COPY_NEEDED_FOR_HOLD:868
+#: 7007.COPY_NEEDED_FOR_HOLD:873
 msgid "Copy is needed to fulfill a hold"
 msgstr "Nide tarvitaan varauksen täyttämiseen"
 
@@ -1082,12 +1098,12 @@ msgstr "Pyydettyä kohdetta permission_usr_work_ou_map ei löytynyt"
 msgid "The requested reporter_template_folder was not found"
 msgstr "Pyydettyä kohdetta reporter_template_folder ei löytynyt"
 
-#: 4002.CREDIT_PROCESSOR_BAD_PARAMS:796
+#: 4002.CREDIT_PROCESSOR_BAD_PARAMS:801
 msgid "Not enough parameters to use credit card processor"
 msgstr ""
 "Ei riittävästi parametreja, jotta luottokorttivälittäjää voitaisiin käyttää"
 
-#: 7024.HOLD_RESERVATION_CONFLICT:922
+#: 7024.HOLD_RESERVATION_CONFLICT:927
 msgid ""
 "Both a hold and a reservation exist for this item; staff intervention is "
 "required to resolve the conflict."
@@ -1099,7 +1115,7 @@ msgstr ""
 msgid "The requested vandelay_authority_queue was not found"
 msgstr "Pyydettyä kohdetta vandelay_authority_queue ei löytynyt"
 
-#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:817
+#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:822
 msgid ""
 "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
 "successfully, but the patron's payment could not be recorded within "
@@ -1137,7 +1153,7 @@ msgstr "Pyydettyä kohdetta acq.currency_type  ei löytynyt"
 msgid "The requested money_grocery was not found"
 msgstr "Pyydettyä kohdetta money_grocery ei löytynyt"
 
-#: 8009.OFFLINE_NO_ORG:969 8010.OFFLINE_SESSION_COMPLETE:972
+#: 8009.OFFLINE_NO_ORG:983 8010.OFFLINE_SESSION_COMPLETE:986
 msgid "No org id was provided"
 msgstr "Organisaatiotunnusta ei annettu"
 
@@ -1145,15 +1161,15 @@ msgstr "Organisaatiotunnusta ei annettu"
 msgid "The patron has too many lost items."
 msgstr "Asiakkaalla on liian monta kadonnutta nidettä."
 
-#: 8001.OFFLINE_SESSION_FILE_EXISTS:945
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:959
 msgid "An offline file for this workstation exists within this session"
 msgstr "Tässä istunnossa on olemassa offline-tiedosto tälle työasemalle"
 
-#: 2003.INTERNAL_SERVER_ERROR:782
+#: 2003.INTERNAL_SERVER_ERROR:787
 msgid "There was an internal server error"
 msgstr "Sisäinen palvelinvirhe"
 
-#: 4020.CREDIT_PROCESSOR_DECLINED_TRANSACTION:811
+#: 4020.CREDIT_PROCESSOR_DECLINED_TRANSACTION:816
 msgid "The credit card processor has declined the transaction."
 msgstr "Luottokorttivälittäjä on hylännyt maksutapahtuman."
 
@@ -1185,17 +1201,17 @@ msgstr "Asiakkaan tili on vanhentunut"
 msgid "The requested metabib_metarecord was not found"
 msgstr "Pyydettyä kohdetta metabib_metarecord ei löytynyt"
 
-#: 1707.HOLD_EXISTS:737
+#: 1707.HOLD_EXISTS:739
 msgid "User already has an open hold on the selected item"
 msgstr "Käyttäjällä on jo voimassa oleva varaus valitusta nimekkeestä"
 
-#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1051
+#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1065
 msgid ""
 "Renewal attempt failed because the \"hold / available copies\" ratio exceeds "
 "the configured limit"
 msgstr ""
 
-#: 1712.AUTH_QUEUE_EXISTS:752
+#: 1712.AUTH_QUEUE_EXISTS:754
 msgid "An authority record queue with the same name already exists"
 msgstr "Samanniminen auktoriteettitietuejono on jo olemassa"
 
@@ -1207,7 +1223,7 @@ msgstr "Pyydettyä kohdetta money_forgive_payment ei löytynyt"
 msgid "The saved item has been edited by another user"
 msgstr "Toinen käyttäjä on muokannut tallennettua nidettä"
 
-#: 7028.PATRON_CIRC_MISMATCH:931
+#: 7028.PATRON_CIRC_MISMATCH:936
 msgid "Potentially notified patron does not own the circulation."
 msgstr ""
 
@@ -1215,7 +1231,7 @@ msgstr ""
 msgid "The requested acq.lineitem_attr was not found"
 msgstr "Pyydettyä kohdetta acq.lineitem_attr ei löytynyt"
 
-#: 1715.HOLD_SUSPEND_AFTER_CAPTURE:761
+#: 1715.HOLD_SUSPEND_AFTER_CAPTURE:763
 msgid "Attempt to suspend a hold after it has been captured."
 msgstr "Varaus yritettiin muuttaa ennakkovaraukseksi kiinnityksen jälkeen."
 
@@ -1229,7 +1245,7 @@ msgstr ""
 msgid "The requested action_survey_answer was not found"
 msgstr "Pyydettyä kohdetta action_survey_answer ei löytynyt"
 
-#: 2004.ACTOR_USER_DELETE_OPEN_XACTS:785
+#: 2004.ACTOR_USER_DELETE_OPEN_XACTS:790
 msgid ""
 "The user you have attempted to delete cannot be deleted because it has open "
 "circulations and/or unpaid bills."
@@ -1249,7 +1265,7 @@ msgstr "Pyydettyä kohdetta acq.provider ei löytynyt"
 msgid "The requested config_bib_source was not found"
 msgstr "Pyydettyä kohdetta config_bib_source ei löytynyt"
 
-#: 1717.COPY_LOCATION_NOT_FOUND:719
+#: 1717.COPY_LOCATION_NOT_FOUND:721
 msgid "The copy location does not exist"
 msgstr ""
 
@@ -1265,11 +1281,11 @@ msgstr "Pyydetty bibliografinen tietue on merkitty tuhotuksi"
 msgid "The requested acq.picklist was not found"
 msgstr "Pyydettyä kohdetta acq.picklist ei löytynyt"
 
-#: 7018.COPY_MARKED_LOST:904
+#: 7018.COPY_MARKED_LOST:909
 msgid "The requested item is already marked as lost"
 msgstr "Pyydettyä kohdetta on jo merkittu kadonneeksi"
 
-#: 7016.ITEM_ON_HOLDS_SHELF:895
+#: 7016.ITEM_ON_HOLDS_SHELF:900
 msgid "This item is currently on the holds shelf for another patron:"
 msgstr ""
 
@@ -1277,7 +1293,7 @@ msgstr ""
 msgid "The requested config_circ_modifier was not found"
 msgstr "Pyydettyä kohdetta config_circ_modifier ei löytynyt"
 
-#: 1701.COPY_LOCATION_EXISTS:713
+#: 1701.COPY_LOCATION_EXISTS:715
 msgid "The copy location object already exists"
 msgstr "Nidesijaintiobjekti on jo olemassa"
 
@@ -1297,7 +1313,7 @@ msgstr "Asiakkaan kortti ei ole aktiivinen"
 msgid "The requested permission_grp_penalty_threshold was not found"
 msgstr "Pyydettyä kohdetta permission_grp_penalty_threshold ei löytynyt"
 
-#: 7013.PATRON_EXCEEDS_FINES:886
+#: 7013.PATRON_EXCEEDS_FINES:891
 msgid "The patron in question has reached the maximum fine amount"
 msgstr "Asiakas on saavuttanut maksujen enimmäisrajan"
 
@@ -1309,11 +1325,11 @@ msgstr ""
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "Pyydettyä kohdetta container_call_number_bucket_item ei löytynyt"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:996
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:1010
 msgid "The lineitem detail has no owning_lib"
 msgstr "Nimikkeen tiedoissa ei ole kohdetta owning_lib"
 
-#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1023
+#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1037
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a copy template."
@@ -1349,7 +1365,7 @@ msgstr "Pyydettyä kohdetta authority_record_note ei löytynyt"
 msgid "The requested acq.fund was not found"
 msgstr "Pyydettyä kohdetta acq.fund ei löytynyt"
 
-#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1047
+#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1061
 msgid ""
 "Renewal attempt failed because the \"hold / total copies\" ratio exceeds the "
 "configured limit"
@@ -1359,7 +1375,7 @@ msgstr ""
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "Pyydettyä kohdetta action_non_cataloged_circulation ei löytynyt"
 
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1036
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1050
 msgid ""
 "A serial pattern code has been configured that fails to conform to MFHD "
 "standards for fields 853-855."
@@ -1370,3 +1386,24 @@ msgstr ""
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
 msgid "The requested money_user_summary was not found"
 msgstr "Pyydettyä kohdetta money_user_summary ei löytynyt"
+
+#~ msgid "This requested item is currently on the holds shelf"
+#~ msgstr "Pyydetty nide on tällä hetkellä varaushyllyssä"
+
+#~ msgid "The requested acq.po_lineitem was not found"
+#~ msgstr "Pyydettyä kohdetta acq.po_lineitem ei löydy"
+
+#~ msgid "The selecte bill has already been voided"
+#~ msgstr "Valittu maksu on jo mitätöity"
+
+#~ msgid ""
+#~ "The transit on this item may not be aborted due to the state the item is in"
+#~ msgstr "Tämän niteen kuljetusta ei voida keskeyttää niteen tilasta johtuen"
+
+#~ msgid ""
+#~ "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
+#~ "successfuly, but the patron's payment could not be recorded within "
+#~ "Evergreen.  Please seek assistance."
+#~ msgstr ""
+#~ "ISO virhe on tapahtunut: luottokorttitapahtuma käsiteltiin onnistuneesti, "
+#~ "mutta asiakkaan maksua ei voitu tallettaa Evergreeniin. Pyydä apua."
