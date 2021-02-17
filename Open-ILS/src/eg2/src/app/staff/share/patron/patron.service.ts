@@ -18,6 +18,7 @@ export class PatronService {
         private auth: AuthService
     ) {}
 
+    // TODO import barcodes.module instead
     bcSearch(barcode: string): Observable<any> {
         return this.net.request(
             'open-ils.actor',

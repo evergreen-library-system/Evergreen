@@ -16,6 +16,7 @@ import {EditComponent} from './edit.component';
 import {EditToolbarComponent} from './edit-toolbar.component';
 import {BcSearchComponent} from './bcsearch.component';
 import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
+import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
     HoldingsModule,
     BookingModule,
     PatronModule,
-    PatronRoutingModule
+    PatronRoutingModule,
+    BarcodesModule
   ],
   providers: [
     PatronManagerService

@@ -18,6 +18,7 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
 import {AudioService} from '@eg/share/util/audio.service';
 import {CopyAlertsDialogComponent} from '@eg/staff/share/holdings/copy-alerts-dialog.component';
+import {BarcodeSelectComponent} from '@eg/staff/share/barcodes/barcode-select.component';
 
 const SESSION_DUE_DATE = 'eg.circ.checkout.is_until_logout';
 
@@ -45,6 +46,8 @@ export class CheckoutComponent implements OnInit {
         private precatDialog: PrecatCheckoutDialogComponent;
     @ViewChild('copyAlertsDialog')
         private copyAlertsDialog: CopyAlertsDialogComponent;
+    @ViewChild('barcodeSelect')
+        private barcodeSelect: BarcodeSelectComponent;
 
     constructor(
         private store: StoreService,
@@ -101,9 +104,17 @@ export class CheckoutComponent implements OnInit {
 
         } else if (this.checkoutBarcode) {
 
-            params.copy_barcode = this.checkoutBarcode;
             if (this.dueDateOptions > 0) { params.due_date = this.dueDate; }
-            return Promise.resolve(params);
+
+            return this.barcodeSelect.getBarcode('asset', this.checkoutBarcode)
+            .then(barcode => {
+                if (barcode) {
+                    params.copy_barcode = barcode;
+                    return params;
+                } else {
+                    return null;
+                }
+            });
         }
 
         return Promise.resolve(null);
