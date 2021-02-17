@@ -3,6 +3,107 @@ Evergreen 3.5 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.5.3
+---------------
+
+This release contains bug fixes improving on Evergreen 3.5.2,
+including a security bug fix.
+
+Bug Fixes
+~~~~~~~~~
+
+Security
+^^^^^^^^
+
+* Fix an issue where `open-ils.pcrud` backends could crash with
+a segmentation fault under certain conditions that could be invoked
+by an external attacker, thus leading to a potential denial
+of service attack.
+
+Staff Interface
+^^^^^^^^^^^^^^^
+* Expert Search in the staff interface now respects the search library.
+(https://bugs.launchpad.net/evergreen/+bug/1468132[Bug 1468132])
+* The Items Out page is now less prone to cause `open-ils.actor` backend
+exhaustion. It now also displays a progress bar while loading.
+(https://bugs.launchpad.net/evergreen/+bug/1913811[Bug 1913811])
+* Grids in the staff interface no longer require that a row
+be selected in order to activate a grid action that doesn't
+logically require that at least one row be selected.
+(https://bugs.launchpad.net/evergreen/+bug/1670457[Bug 1670457])
+* The display of total amounted billed, owed, and paid on the patron
+Bills page now reflects just open bills with a non-zero balance, fixing
+an issue where the totals could include paid billings for transactions
+that are still open.
+(https://bugs.launchpad.net/evergreen/+bug/1772955[Bug 1772955])
+* The pending patron interface now respects the library setting whether
+to set the patron's initial password to the last four digits of their
+phone number.
+(https://bugs.launchpad.net/evergreen/+bug/1887852[Bug 1887852])
+* Several interfaces, including Mark Missing, adding patrons to a bucket
+from a search, and applying a default item status now use batch
+API calls for better efficiency.
+(https://bugs.launchpad.net/evergreen/+bug/1896285[Bug 1896285])
+* Fix an issue where the holdings editor would not close its window
+when the Save & Exit button was clicked.
+(https://bugs.launchpad.net/evergreen/+bug/1913219[Bug 1913219])
+* Fix an issue where a double barcode scan could create a precat
+item without giving the staff member the chance to review the
+form before submitting it.
+(https://bugs.launchpad.net/evergreen/+bug/1778522[Bug 1778522])
+* Fix an issue preventing the staff interface from being used
+on various Android and iOS devices.
+(https://bugs.launchpad.net/evergreen/+bug/1901760[Bug 1901760])
+* Fix an issue where the report editor could supply the wrong
+kind of input for an aggregate filter.
+(https://bugs.launchpad.net/evergreen/+bug/1858114[Bug 1858114])
+
+Public Catalog
+^^^^^^^^^^^^^^
+
+* Fix an issue where titles could run together when viewing a
+carousel with a mobile browser.
+(https://bugs.launchpad.net/evergreen/+bug/1868147[Bug 1868147])
+* The order that items in a carousel display in is now more
+predictable. For example, for 'Top Circulated Items' carousels,
+the order is from most circulated to least circulated.
+(https://bugs.launchpad.net/evergreen/+bug/1866406[Bug 1866406])
+* Carousels no longer display deleted items.
+(https://bugs.launchpad.net/evergreen/+bug/1836254[Bug 1836254])
+* CGI parameters in the public catalog are now consistently forced
+to be separated by ampersands rather than semicolons.
+(https://bugs.launchpad.net/evergreen/+bug/1687545[Bug 1687545]) and
+(https://bugs.launchpad.net/evergreen/+bug/1914116[Bug 1914116])
+
+Administration
+^^^^^^^^^^^^^^
+
+* The EDI Webrick installer now works on Ubuntu 18.04
+(https://bugs.launchpad.net/evergreen/+bug/1901900[Bug 1901900])
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.5.3 point release of Evergreen:
+
+* John Amundson
+* Zavier Banks
+* Jason Boyer
+* Dan Briem
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Ruth Frasur
+* Blake Graham-Henderson
+* Angela Kilsdonk
+* Terran McCanna
+* Michele Morgan
+* Jane Sandberg
+* Mike Rylander
+* Chris Sharp
+* Jason Stephenson
+
 Evergreen 3.5.2
 ---------------
 
