@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-03-02 19:43+0000\n"
+"POT-Creation-Date: 2020-09-16 22:23+0000\n"
 "PO-Revision-Date: 2017-09-02 17:18+0000\n"
 "Last-Translator: Jane Sandberg <sandbej@linnbenton.edu>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-03 05:33+0000\n"
-"X-Generator: Launchpad (build 18566)\n"
+"X-Launchpad-Export-Date: 2020-09-17 06:05+0000\n"
+"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:6
 msgid " Invoice "
@@ -919,6 +919,10 @@ msgstr ""
 msgid "Merge Selected"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:24
+msgid "Move Items To Selection List"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/acq/picklist/list.tt2:7
 msgid "My Selection Lists"
 msgstr ""
@@ -1322,10 +1326,6 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:293 ../../Open-ILS/src/templates/acq/common/li_table.tt2:402
 msgid "Save Changes"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:24
-msgid "Save Items To Selection List"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/acq/po/item_table.tt2:32

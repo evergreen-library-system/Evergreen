@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-09-19 00:21+0000\n"
+"POT-Creation-Date: 2020-09-15 19:02+0000\n"
 "PO-Revision-Date: 2016-11-10 21:47+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:38+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2020-09-16 06:06+0000\n"
+"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
 
 #. (i18n_vac)
 #: ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:54
@@ -186,7 +186,7 @@ msgstr "Configuración Finalización de código de barras"
 msgid "Barcode of Circulating Copy"
 msgstr "Código de barras de Circulante Copia"
 
-#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:67
+#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:66
 msgid ""
 "Because rtime, a high-precision timestamp, is essentially unique among "
 "holds, no fields arranged after rtime really have any effect in determining "
@@ -288,7 +288,7 @@ msgstr ""
 msgid "Check Only?"
 msgstr "Sólo Comprobar?"
 
-#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:87 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:90
+#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:86 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:89
 msgid "Choose a best-hold order"
 msgstr "Elija orden para mejor retención"
 
@@ -452,7 +452,7 @@ msgstr "Copiar Plantillas"
 msgid "Create Date"
 msgstr "Crear Fecha"
 
-#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:28
+#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:27
 msgid "Create New"
 msgstr "Crear Nuevo"
 
@@ -528,11 +528,11 @@ msgstr "Las fórmulas de distribución"
 msgid "EDI Accounts"
 msgstr "EDI Cuentas"
 
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:128 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:97
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:128 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:96
 msgid "Edit"
 msgstr "Editar"
 
-#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:30
+#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:29
 msgid "Edit Existing"
 msgstr "Editar Existente"
 
@@ -848,11 +848,11 @@ msgstr "Piezas monografía"
 msgid "Monthly"
 msgstr "Mensualmente"
 
-#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:59
+#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:58
 msgid "Move Down"
 msgstr "Mover abajo"
 
-#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:53
+#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:52
 msgid "Move Up"
 msgstr "Mover arriba"
 
@@ -860,7 +860,7 @@ msgstr "Mover arriba"
 msgid "Name"
 msgstr "Nombre"
 
-#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:39
+#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:38
 msgid "Name:"
 msgstr "Nómbre:"
 
@@ -1164,7 +1164,7 @@ msgstr "Objeto"
 msgid "Only one of \"prorate\" and \"blanket\" may be selected"
 msgstr "Sólo uno de \"prorrata\" y \"manta\" puede seleccionarse"
 
-#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:44
+#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:43
 msgid "Order:"
 msgstr "Orden:"
 
@@ -1332,7 +1332,7 @@ msgstr "Los portadores de SMS"
 msgid "Save"
 msgstr "Guardar"
 
-#: ../../Open-ILS/src/templates/conify/global/action/survey.tt2:73 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:78 ../../Open-ILS/src/templates/conify/global/config/composite_attr_entry_definition.tt2:34
+#: ../../Open-ILS/src/templates/conify/global/action/survey.tt2:73 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:77 ../../Open-ILS/src/templates/conify/global/config/composite_attr_entry_definition.tt2:34
 msgid "Save Changes"
 msgstr "Guardar cambios"
 
@@ -1340,7 +1340,7 @@ msgstr "Guardar cambios"
 msgid "Save Changes To Expression"
 msgstr "Guardar Cambios A Expresión"
 
-#: ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:1 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:17 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:64
+#: ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:17 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:2 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:64
 msgid "Search Filter Group"
 msgstr "Filtro de Búsqueda Grupo"
 
@@ -1503,7 +1503,7 @@ msgstr ""
 "Para agregar nuevos nodos al árbol personalizado, arrástrelos desde el árbol "
 "completo a la izquierda"
 
-#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:72
+#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:71
 msgid ""
 "To choose which Best-Hold Selection Sort Order will be used by Evergreen at "
 "copy capture time, see the Library Settings interface."
@@ -1609,7 +1609,7 @@ msgstr "Punto de encuentro de trabajo"
 msgid "Yearly"
 msgstr "Anualmente"
 
-#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:36
+#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:35
 msgid "You have unsaved changes."
 msgstr "Tienes cambios sin guardar."
 
@@ -1646,11 +1646,11 @@ msgstr "Autoridad"
 msgid "biblio"
 msgstr "biblio"
 
-#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:58 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:60
+#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:57 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:59
 msgid "j"
 msgstr "j"
 
-#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:52 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:54
+#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:51 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:53
 msgid "k"
 msgstr "k"
 
@@ -1658,7 +1658,7 @@ msgstr "k"
 msgid "mfhd"
 msgstr "mfhd"
 
-#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:29
+#: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:28
 msgid "or"
 msgstr "o"
 

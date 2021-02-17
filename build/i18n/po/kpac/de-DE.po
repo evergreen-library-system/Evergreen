@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-06-22 06:12+0000\n"
+"POT-Creation-Date: 2020-09-15 19:05+0000\n"
 "PO-Revision-Date: 2017-02-14 23:04+0000\n"
 "Last-Translator: vulpecula <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-06-23 05:37+0000\n"
-"X-Generator: Launchpad (build 18416)\n"
+"X-Launchpad-Export-Date: 2020-09-16 06:06+0000\n"
+"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
 
 #: ../../Open-ILS/src/templates/kpac/getit.tt2:40
 msgid " Enter Numbers... "
@@ -52,11 +52,11 @@ msgstr "Über diesen Artikel"
 msgid "Add to one of your lists?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:36 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:13
+#: ../../Open-ILS/src/templates/kpac/home.tt2:36 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:14
 msgid "Author"
 msgstr "Autor"
 
-#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:3
+#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:4
 msgid "Author Notes"
 msgstr "Anmerkungen zum Autor"
 
@@ -85,11 +85,11 @@ msgstr "Kontaktieren Sie uns bitte"
 msgid "Enter your password"
 msgstr "Passwort eingeben"
 
-#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:3
+#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:4
 msgid "Excerpt"
 msgstr "Textauszug"
 
-#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:37
+#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:38
 msgid "Full Collection"
 msgstr ""
 
@@ -113,7 +113,7 @@ msgstr "Hilfe"
 msgid "Hold Successful!"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:1 ../../Open-ILS/src/templates/kpac/parts/breadcrumb.tt2:6
+#: ../../Open-ILS/src/templates/kpac/home.tt2:2 ../../Open-ILS/src/templates/kpac/parts/breadcrumb.tt2:6
 msgid "Home"
 msgstr "Startseite"
 
@@ -138,6 +138,10 @@ msgstr ""
 msgid "Kid's Catalog - %1"
 msgstr "Kinderkatalog - %1"
 
+#: ../../Open-ILS/src/templates/kpac/parts/paginate.tt2:20
+msgid "Last"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/kpac/getit.tt2:41
 msgid "Library Card Number without spaces:"
 msgstr ""
@@ -160,7 +164,7 @@ msgid "Logo"
 msgstr "Logo"
 
 #. (ctx.user.first_given_name, ctx.user.family_name)
-#: ../../Open-ILS/src/templates/kpac/parts/header.tt2:22
+#: ../../Open-ILS/src/templates/kpac/parts/header.tt2:23
 msgid "Logout (%1 %2)"
 msgstr "Abmeldung (%1 %2)"
 
@@ -168,12 +172,16 @@ msgstr "Abmeldung (%1 %2)"
 msgid "New Search"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/kpac/parts/paginate.tt2:40
+msgid "Next"
+msgstr ""
+
 #. (ctx.copy_limit)
-#: ../../Open-ILS/src/templates/kpac/parts/copy_table.tt2:67
+#: ../../Open-ILS/src/templates/kpac/parts/copy_table.tt2:68
 msgid "Next %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:41
+#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:42
 msgid "No Content Available"
 msgstr "Kein Inhalt verfügbar"
 
@@ -199,7 +207,7 @@ msgid "Please see a librarian."
 msgstr ""
 
 #. (ctx.copy_offset - new_offset)
-#: ../../Open-ILS/src/templates/kpac/parts/copy_table.tt2:60
+#: ../../Open-ILS/src/templates/kpac/parts/copy_table.tt2:61
 msgid "Previous %1"
 msgstr "Vorher %1"
 
@@ -211,7 +219,7 @@ msgstr "Drucken"
 msgid "Rate this"
 msgstr "Bewerten"
 
-#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:3
+#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:4
 msgid "Reviews"
 msgstr "Bewertungen"
 
@@ -251,11 +259,11 @@ msgstr "Status"
 msgid "Submit"
 msgstr "Absenden"
 
-#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:3
+#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:4
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:3
+#: ../../Open-ILS/src/templates/kpac/parts/addedcontent.tt2:4
 msgid "Table of Contents"
 msgstr "Inhaltsverzeichnis"
 
@@ -263,7 +271,7 @@ msgstr "Inhaltsverzeichnis"
 msgid "Text size"
 msgstr "Schriftgröße"
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:32 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:13
+#: ../../Open-ILS/src/templates/kpac/home.tt2:32 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:14
 msgid "Title"
 msgstr "Titel"
 
@@ -272,12 +280,16 @@ msgstr "Titel"
 msgid "To manage your lists, go to %1My Lists%2"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/kpac/parts/paginate.tt2:46
+msgid "Top"
+msgstr ""
+
 #. ("<a href=\"' _ mkurl(ctx.kpac_root _ '/record/' _ ctx.bre_id, {   }, kill_params) _ '\">' _ title_html _ '</a>")
 #: ../../Open-ILS/src/templates/kpac/getit_results.tt2:36
 msgid "Unable to request %1."
 msgstr "Anfrage nicht möglich %1"
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:28 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:13
+#: ../../Open-ILS/src/templates/kpac/home.tt2:28 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:14
 msgid "Word"
 msgstr "Wort"
 
