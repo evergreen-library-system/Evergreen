@@ -1,5 +1,11 @@
 <eg-staff-banner bannerText="SIP Account" i18n-bannerText></eg-staff-banner>
 
+<eg-string key="staff.admin.sip.account.saved" i18n-text
+  text="SIP Account Successfully Saved"></eg-string>
+<eg-string key="staff.admin.sip.account.failed" i18n-text
+  text="SIP Account Failed to Save"></eg-string>
+
+
 <a routerLink="/staff/admin/server/sip/account">
   <button class="btn btn-outline-dark label-with-material-icon">
     <span class="material-icons">reply</span>
@@ -63,11 +69,13 @@
     <ng-template #sipUsernameTemplate>
       <div class="form-inline">
         <input type="text" class="form-control"
-          [ngModel]="account.sip_username()"
-          (ngModelChange)="account.sip_username($event)">
+          [ngModel]="account.sip_username()" (change)="sipUsernameChange($event)">
         <button class="btn btn-outline-dark ml-2" 
           [ngClass]="{'border-danger' : createMode && !account.sip_password()}"
           (click)="setPassword()">Set Password</button>
+        <span *ngIf="dupeSipUser" class="alert alert-danger ml-1 mt-2 p-1" i18n>
+          Username In Use
+        </span>
       </div>
     </ng-template>
 

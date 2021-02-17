@@ -30,7 +30,7 @@ CREATE TABLE sip.account (
     enabled         BOOLEAN NOT NULL DEFAULT TRUE,
     setting_group   INTEGER NOT NULL REFERENCES sip.setting_group (id)
                     DEFERRABLE INITIALLY DEFERRED,
-    sip_username    TEXT NOT NULL,
+    sip_username    TEXT UNIQUE NOT NULL,
     usr             BIGINT NOT NULL REFERENCES actor.usr(id)
                     DEFERRABLE INITIALLY DEFERRED,
     workstation     INTEGER REFERENCES actor.workstation(id),

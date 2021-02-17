@@ -105,13 +105,13 @@ sub account_cud {
     }
 
     if ($account->isnew) {
-        return undef unless $e->create_sip_account($account);
+        return $e->die_event unless $e->create_sip_account($account);
         
     } elsif ($account->ischanged) {
-        return undef unless $e->update_sip_account($account);
+        return $e->die_event unless $e->update_sip_account($account);
 
     } elsif ($account->isdeleted) {
-        return undef unless $e->delete_sip_account($account);
+        return $e->die_event unless $e->delete_sip_account($account);
     }
 
     $account = $e->retrieve_sip_account($account->id);

@@ -34,6 +34,7 @@ export class SipAccountComponent implements OnInit {
     deleteGroupAccounts: IdlObject[] = [];
     accountPreSave: (mode: string, account: IdlObject) => void;
     createMode = false;
+    dupeSipUser = false;
 
     @ViewChild('cloneDialog') cloneDialog: FmRecordEditorComponent;
     @ViewChild('settingDialog') settingDialog: FmRecordEditorComponent;
@@ -48,7 +49,9 @@ export class SipAccountComponent implements OnInit {
         private net: NetService,
         private auth: AuthService,
         private evt: EventService,
-        private pcrud: PcrudService
+        private pcrud: PcrudService,
+        private toast: ToastService,
+        private strings: StringService
     ) {}
 
     ngOnInit() {
@@ -220,8 +223,13 @@ export class SipAccountComponent implements OnInit {
 
             if (evt) {
                 console.error(evt);
+                this.strings.strings['staff.admin.sip.account.failed']
+                .resolver({}).then(text => this.toast.danger(text));
                 return;
             }
+
+            this.strings.strings['staff.admin.sip.account.saved']
+            .resolver({}).then(text => this.toast.success(text));
 
             if (this.createMode) {
                 this.router.navigate(
@@ -230,6 +238,20 @@ export class SipAccountComponent implements OnInit {
                 this.refreshAccount();
             }
         });
+    }
+
+    sipUsernameChange(evt: Event) {
+        this.dupeSipUser = false;
+        const name = (evt.target as HTMLInputElement).value;
+        if (!name) { return; }
+
+        this.account.sip_username(name);
+        const search: any = {sip_username: name};
+        if (!this.createMode) {
+            search.id = {'!=': this.accountId};
+        }
+        this.pcrud.search('sipacc', search)
+        .subscribe(existing => this.dupeSipUser = true);
     }
 
     editFirstSetting(rows: any) {
