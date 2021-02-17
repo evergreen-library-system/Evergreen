@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-06-22 06:09+0000\n"
+"POT-Creation-Date: 2020-09-15 19:08+0000\n"
 "PO-Revision-Date: 2017-07-26 12:15+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-07-27 05:34+0000\n"
-"X-Generator: Launchpad (build 18439)\n"
+"X-Launchpad-Export-Date: 2020-09-16 06:06+0000\n"
+"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
 
 #: ../../Open-ILS/src/templates/url_verify/create_session.tt2:107
 msgid "Add"
@@ -73,7 +73,7 @@ msgstr ""
 "Ոչ պարտադիր ընտրիր մեկ կամ ավելին վերին մասի ՛Փնտրում՛ դաշտում համադրելու "
 "համար։"
 
-#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:30
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:31
 msgid "Print URLs"
 msgstr "Տպիր URL-երը"
 
@@ -129,7 +129,7 @@ msgstr "URL Ընտրիչներ"
 msgid "Verification Attempts"
 msgstr "Հավաստիացման փորձեր"
 
-#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:37
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:38
 msgid "Verify Selected URLs"
 msgstr "Ստուգիր ընտրած URL-երը"
 

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-06-22 06:16+0000\n"
-"PO-Revision-Date: 2017-02-14 22:30+0000\n"
-"Last-Translator: vulpecula <Unknown>\n"
+"POT-Creation-Date: 2020-09-15 19:02+0000\n"
+"PO-Revision-Date: 2020-10-20 16:22+0000\n"
+"Last-Translator: asdfsd <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-06-23 05:37+0000\n"
-"X-Generator: Launchpad (build 18416)\n"
+"X-Launchpad-Export-Date: 2020-10-21 05:50+0000\n"
+"X-Generator: Launchpad (build 82ef3cb779698368c64f0c310863c3535f60eea0)\n"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:13
 msgid "American Express"
@@ -27,7 +27,7 @@ msgstr "April"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:37
 msgid "Aug"
-msgstr ""
+msgstr "August"
 
 #: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:102 ../../Open-ILS/src/templates/circ/selfcheck/circ_page.tt2:8 ../../Open-ILS/src/templates/circ/selfcheck/holds_page.tt2:7
 msgid "Author"
@@ -35,7 +35,7 @@ msgstr "Autor"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/fines.tt2:12
 msgid "Balance Owed"
-msgstr ""
+msgstr "Schulden insgesamt"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/circ_page.tt2:6
 msgid "Barcode"
@@ -47,11 +47,11 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:115
 msgid "Call Number Prefix"
-msgstr ""
+msgstr "Vorwahl"
 
 #: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:116
 msgid "Call Number Suffix"
-msgstr ""
+msgstr "Durchwahl"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/circ_page.tt2:23
 msgid "Checkout"
@@ -79,7 +79,7 @@ msgstr "Kreditkarte #"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:41
 msgid "Dec"
-msgstr ""
+msgstr "Dezember"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/fines.tt2:9
 msgid "Details"
@@ -91,7 +91,7 @@ msgstr "Fälligkeitsdatum"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:50
 msgid "Edit Billing Details"
-msgstr ""
+msgstr "Bearbeite Rechnungsdetails"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:8
 msgid "Email"
@@ -131,7 +131,7 @@ msgstr "Bereitstellungsliste halten"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:19
 msgid "Holds"
-msgstr ""
+msgstr "Zurückgehalten"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:3
 msgid "Home"
@@ -147,7 +147,7 @@ msgstr "Jan"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:36
 msgid "July"
-msgstr ""
+msgstr "Juli"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:35
 msgid "June"
@@ -163,7 +163,7 @@ msgstr "Abmelden"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:32
 msgid "Mar"
-msgstr ""
+msgstr "März"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:12
 msgid "MasterCard"
@@ -171,7 +171,7 @@ msgstr "MasterCard"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:34
 msgid "May"
-msgstr ""
+msgstr "Mai"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:10
 msgid "None"
@@ -207,7 +207,7 @@ msgstr "Abholbücherei (Kurzname)"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/patron_login.tt2:1
 msgid "Please login using your library barcode"
-msgstr ""
+msgstr "Bitte melden Sie sich mit Ihrem Bücherei-Barcode an"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:9
 msgid "Print"
@@ -227,11 +227,11 @@ msgstr "Beleg:"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/circ_page.tt2:24
 msgid "Renewal"
-msgstr ""
+msgstr "Verlängerung"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/circ_page.tt2:10
 msgid "Renewals Left"
-msgstr ""
+msgstr "Verbleibende Verlängerungen"
 
 #: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:111
 msgid "Request Library"
@@ -243,7 +243,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:114
 msgid "SMS Carrier"
-msgstr ""
+msgstr "SMS Anbieter"
 
 #: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:113
 msgid "Selection Locus"
@@ -251,7 +251,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/main.tt2:1
 msgid "Self Checkout"
-msgstr ""
+msgstr "Selbstbedienung"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:38
 msgid "Sept"
@@ -267,7 +267,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:70
 msgid "State or Province"
-msgstr ""
+msgstr "Staat oder Bundesland"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/holds_page.tt2:8
 msgid "Status"
@@ -275,7 +275,7 @@ msgstr "Status"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:62
 msgid "Street Address"
-msgstr ""
+msgstr "Straße"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/main.tt2:53
 msgid "Submit"
@@ -328,7 +328,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/logout_dialog.tt2:2
 msgid "Your login session will soon timeout due to inactivity."
-msgstr ""
+msgstr "Ihr Login wird bald wegen Inaktivität enden."
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:74
 msgid "ZIP or Postal Code"

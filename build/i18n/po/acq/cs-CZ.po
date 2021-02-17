@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-03-02 19:43+0000\n"
-"PO-Revision-Date: 2018-03-19 21:26+0000\n"
+"POT-Creation-Date: 2020-09-16 22:23+0000\n"
+"PO-Revision-Date: 2020-09-28 12:11+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-20 05:23+0000\n"
-"X-Generator: Launchpad (build 18571)\n"
+"X-Launchpad-Export-Date: 2020-09-29 04:37+0000\n"
+"X-Generator: Launchpad (build d685c0a40836eb9844ed835c9700f20633c1d7af)\n"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:6
 msgid " Invoice "
@@ -461,7 +461,7 @@ msgstr "Vytvořit objednávku"
 
 #: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:39
 msgid "Create Request"
-msgstr "Vtvoořit požadavek"
+msgstr "Vytvořit požadavek"
 
 #. ("<span id=\"oils-acq-picklist-attr-cdate\"></span>")
 #: ../../Open-ILS/src/templates/acq/picklist/view.tt2:9
@@ -919,6 +919,10 @@ msgstr "Profil pro sloučení"
 msgid "Merge Selected"
 msgstr "Sloučit vybrané"
 
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:24
+msgid "Move Items To Selection List"
+msgstr "Přesunout položky do akvizičního seznamu"
+
 #: ../../Open-ILS/src/templates/acq/picklist/list.tt2:7
 msgid "My Selection Lists"
 msgstr "Moje akviziční seznamy"
@@ -1328,10 +1332,6 @@ msgstr "Uložit &amp; Vyčistit"
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:293 ../../Open-ILS/src/templates/acq/common/li_table.tt2:402
 msgid "Save Changes"
 msgstr "Uložit změny"
-
-#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:24
-msgid "Save Items To Selection List"
-msgstr "Uložit položky do akvizičního seznamu"
 
 #: ../../Open-ILS/src/templates/acq/po/item_table.tt2:32
 msgid "Save New Charges"
@@ -1870,3 +1870,6 @@ msgstr "akviziční seznamy"
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:187
 msgid "view invoice(s)"
 msgstr "zobrazit fakturu/faktury"
+
+#~ msgid "Save Items To Selection List"
+#~ msgstr "Uložit položky do akvizičního seznamu"

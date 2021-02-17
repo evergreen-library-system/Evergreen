@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-06-22 06:09+0000\n"
+"POT-Creation-Date: 2020-09-15 19:08+0000\n"
 "PO-Revision-Date: 2019-02-24 10:42+0000\n"
 "Last-Translator: Stephan Woidowski <swoidowski@t-online.de>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-02-25 05:32+0000\n"
-"X-Generator: Launchpad (build 18886)\n"
+"X-Launchpad-Export-Date: 2020-09-16 06:06+0000\n"
+"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
 
 #: ../../Open-ILS/src/templates/url_verify/create_session.tt2:107
 msgid "Add"
@@ -71,7 +71,7 @@ msgstr "New Link Checker Session"
 msgid "Optionally select one or more to combine with 'Search' field above."
 msgstr "Optionally select one or more to combine with 'Search' field above."
 
-#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:30
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:31
 msgid "Print URLs"
 msgstr "Print URLs"
 
@@ -127,7 +127,7 @@ msgstr "URL Selectors"
 msgid "Verification Attempts"
 msgstr "Verification Attempts"
 
-#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:37
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:38
 msgid "Verify Selected URLs"
 msgstr "Verify Selected URLs"
 
