@@ -21528,6 +21528,7 @@ VALUES (
     oils_i18n_gettext(
         'eg.orgselect.catalog.holdings',
         'Default org unit for catalog holdings tab',
+        'cwst', 'label'
     )
 );
 
