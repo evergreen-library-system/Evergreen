@@ -1,7 +1,8 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
+import {BarcodeSelectComponent} from '@eg/staff/share/barcodes/barcode-select.component';
 
 @Component({
   templateUrl: 'bcsearch.component.html',
@@ -10,9 +11,12 @@ import {AuthService} from '@eg/core/auth.service';
 
 export class BcSearchComponent implements OnInit, AfterViewInit {
 
+    notFound = false;
     barcode = '';
+    @ViewChild('barcodeSelect') private barcodeSelect: BarcodeSelectComponent;
 
     constructor(
+        private router: Router,
         private route: ActivatedRoute,
         private net: NetService,
         private auth: AuthService
@@ -20,17 +24,24 @@ export class BcSearchComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.barcode = this.route.snapshot.paramMap.get('barcode');
-        if (this.barcode) {
-            this.findUser();
-        }
     }
 
     ngAfterViewInit() {
-        document.getElementById('barcode-search-input').focus();
+        const node = document.getElementById('barcode-search-input');
+        if (node) { node.focus(); }
+        if (this.barcode) { this.findUser(); }
     }
 
     findUser(): void {
-        alert('Searching for user ' + this.barcode);
+        this.notFound = false;
+        this.barcodeSelect.getBarcode('actor', this.barcode)
+        .then(selection => {
+            if (selection && selection.id) {
+                this.router.navigate(['/staff/circ/patron', selection.id, 'checkout']);
+            } else {
+                this.notFound = true;
+            }
+        });
     }
 }
 

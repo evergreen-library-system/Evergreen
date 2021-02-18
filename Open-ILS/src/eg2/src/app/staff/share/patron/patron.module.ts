@@ -6,6 +6,7 @@ import {PatronSearchComponent} from './search.component';
 import {PatronSearchDialogComponent} from './search-dialog.component';
 import {ProfileSelectComponent} from './profile-select.component';
 import {PatronPenaltyDialogComponent} from './penalty-dialog.component';
+import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import {PatronPenaltyDialogComponent} from './penalty-dialog.component';
     ],
     imports: [
         StaffCommonModule,
-        GridModule
+        GridModule,
+        BarcodesModule
     ],
     exports: [
         PatronSearchComponent,

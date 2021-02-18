@@ -35,6 +35,7 @@ import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
 import {PreferencesComponent} from './prefs.component';
 import {BrowsePagerComponent} from './result/browse-pager.component';
 import {HttpClientModule} from '@angular/common/http';
+import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import {HttpClientModule} from '@angular/common/http';
     PatronModule,
     MarcEditModule,
     HttpClientModule
+    BarcodesModule
   ],
   providers: [
     StaffCatalogService

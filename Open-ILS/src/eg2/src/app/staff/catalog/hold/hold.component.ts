@@ -19,6 +19,9 @@ import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronSearchDialogComponent
   } from '@eg/staff/share/patron/search-dialog.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
+    } from '@eg/staff/share/patron/search-dialog.component';
+import {BarcodeSelectComponent
+    } from '@eg/staff/share/barcodes/barcode-select.component';
 
 class HoldContext {
     holdMeta: HoldRequestTarget;
@@ -98,6 +101,7 @@ export class HoldComponent implements OnInit {
       patronSearch: PatronSearchDialogComponent;
 
     @ViewChild('smsCbox', {static: false}) smsCbox: ComboboxComponent;
+    @ViewChild('barcodeSelect') private barcodeSelect: BarcodeSelectComponent;
 
     @ViewChild('activeDateAlert') private activeDateAlert: AlertDialogComponent;
 
@@ -393,9 +397,18 @@ export class HoldComponent implements OnInit {
         const flesh = {flesh: 1, flesh_fields: {au: ['settings']}};
 
         promise = promise.then(_ => {
-            return id ?
-                this.patron.getById(id, flesh) :
-                this.patron.getByBarcode(this.userBarcode, flesh);
+            if (id) { return id; }
+            // Find the patron ID from the provided barcode.
+            return this.barcodeSelect.getBarcode('actor', this.userBarcode)
+                .then(selection => selection ? selection.id : null);
+        });
+
+        promise = promise.then(matchId => {
+            if (matchId) {
+                return this.patron.getById(matchId, flesh);
+            } else {
+                return null;
+            }
         });
 
         this.badBarcode = null;

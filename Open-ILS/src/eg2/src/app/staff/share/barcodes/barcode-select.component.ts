@@ -10,19 +10,38 @@ import {EventService, EgEvent} from '@eg/core/event.service';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 
-/* Suppor barcode completion for asset/actor/serial/booking data */
+/* Support barcode completion for barcoded asset/actor data.
+ *
+ * When multiple barcodes match, the user is presented with a selection
+ * dialog to chose the desired barcode.
+ *
+ * <eg-barcode-select #barcodeSelect></eg-barcode-select>
+ *
+ * @ViewChild('barcodeSelect') private barcodeSelect: BarcodeSelectComponent;
+ *
+ * this.barcodeSelect.getBarcode(value)
+ *   .then(barcode => console.log('found barcode', barcode));
+ */
+
+export interface BarcodeSelectResult {
+
+    // Will be the originally requested barcode when no match is found.
+    barcode: string;
+
+    // Will be null when no match is found.
+    id: number;
+}
 
 @Component({
   selector: 'eg-barcode-select',
   templateUrl: './barcode-select.component.html',
 })
 
-export class BarcodeSelectComponent
-    extends DialogComponent implements OnInit {
+export class BarcodeSelectComponent extends DialogComponent implements OnInit {
 
-    selectedBarcode: string;
-    barcodes: string[];
-    inputs: {[barcode: string]: boolean};
+    matches: BarcodeSelectResult[];
+    selected: BarcodeSelectResult;
+    inputs: {[id: number]: boolean};
 
     constructor(
         private modal: NgbModal,
@@ -37,17 +56,31 @@ export class BarcodeSelectComponent
     }
 
     selectionChanged() {
-        this.selectedBarcode = Object.keys(this.inputs)
-            .filter(barcode => this.inputs[barcode] === true)[0];
+        const id = Object.keys(this.inputs).map(id => Number(id))
+            .filter(id => this.inputs[id] === true)[0];
+
+        if (id) {
+            this.selected = this.matches.filter(match => match.id === id)[0];
+
+        } else {
+            this.selected = null;
+        }
     }
 
     // Returns promise of barcode
     // When multiple barcodes match, the user is asked to select one.
     // Returns promise of null if no match is found or the user cancels
     // the selection process.
-    getBarcode(class_: 'asset' | 'actor', barcode: string): Promise<string> {
-        this.barcodes = [];
+    getBarcode(class_: 'asset' | 'actor',
+        barcode: string): Promise<BarcodeSelectResult> {
+
+        this.matches = [];
         this.inputs = {};
+
+        const result: BarcodeSelectResult = {
+            barcode: barcode,
+            id: null
+        };
 
        let promise = this.net.request(
             'open-ils.actor',
@@ -58,18 +91,20 @@ export class BarcodeSelectComponent
 
         promise = promise.then(results => {
 
-            if (!results) { return null; }
+            if (!results) { return result; }
 
             results.forEach(result => {
                 if (!this.evt.parse(result)) {
-                    this.barcodes.push(result.barcode);
+                    this.matches.push(result);
                 }
             });
 
-            if (this.barcodes.length === 0) {
-                return null;
-            } else if (this.barcodes.length === 1) {
-                return this.barcodes[0];
+            if (this.matches.length === 0) {
+                return result;
+
+            } else if (this.matches.length === 1) {
+                return this.matches[0];
+
             } else {
                 return this.open().toPromise();
             }

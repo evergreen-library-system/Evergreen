@@ -1,14 +1,25 @@
+<eg-staff-banner i18n-bannerText bannerText="Find Patron By Barcode">
+</eg-staff-banner>
+<eg-barcode-select #barcodeSelect></eg-barcode-select>
 
-<div class="col-lg-4">
-  <div class="input-group">
-    <div class="input-group-prepend">
-      <span class="input-group-text" i18n>Barcode:</span>
+<div class="row">
+  <div class="col-lg-4">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text" i18n>Patron Barcode:</span>
+      </div>
+      <input type='text' id='barcode-search-input' class="form-control" 
+        placeholder="Barcode" i18n-placeholder [(ngModel)]='barcode'
+        (keydown.enter)="findUser()"/>
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" 
+          (click)="findUser()" i18n>Submit</button>
+      </div>
     </div>
-    <input type='text' id='barcode-search-input' class="form-control" 
-      placeholder="Barcode" i18n-placeholder [ngModel]='barcode'/>
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary" 
-        (click)="findUser()" i18n>Submit</button>
+  </div>
+  <div class="col-lg-4">
+    <div *ngIf="notFound" class="alert alert-warning" i18n>
+      No match found for barcode "{{barcode}}".
     </div>
   </div>
 </div>

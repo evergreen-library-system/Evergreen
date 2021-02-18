@@ -8,7 +8,8 @@ import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronManagerService, CircGridEntry} from './patron.service';
-import {CheckoutParams, CheckoutResult, CircService} from '@eg/staff/share/circ/circ.service';
+import {CheckoutParams, CheckoutResult, CircService
+    } from '@eg/staff/share/circ/circ.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -17,8 +18,10 @@ import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
 import {AudioService} from '@eg/share/util/audio.service';
-import {CopyAlertsDialogComponent} from '@eg/staff/share/holdings/copy-alerts-dialog.component';
-import {BarcodeSelectComponent} from '@eg/staff/share/barcodes/barcode-select.component';
+import {CopyAlertsDialogComponent
+    } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
+import {BarcodeSelectComponent
+    } from '@eg/staff/share/barcodes/barcode-select.component';
 
 const SESSION_DUE_DATE = 'eg.circ.checkout.is_until_logout';
 
@@ -107,11 +110,12 @@ export class CheckoutComponent implements OnInit {
             if (this.dueDateOptions > 0) { params.due_date = this.dueDate; }
 
             return this.barcodeSelect.getBarcode('asset', this.checkoutBarcode)
-            .then(barcode => {
-                if (barcode) {
-                    params.copy_barcode = barcode;
+            .then(selection => {
+                if (selection) {
+                    params.copy_barcode = selection.barcode;
                     return params;
                 } else {
+                    // User canceled the multi-match selection dialog.
                     return null;
                 }
             });

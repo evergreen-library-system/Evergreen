@@ -6,6 +6,7 @@ import {EventService} from '@eg/core/event.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {Observable} from 'rxjs';
+import {BarcodeSelectComponent} from '@eg/staff/share/barcodes/barcode-select.component';
 
 
 @Injectable()
@@ -18,7 +19,6 @@ export class PatronService {
         private auth: AuthService
     ) {}
 
-    // TODO import barcodes.module instead
     bcSearch(barcode: string): Observable<any> {
         return this.net.request(
             'open-ils.actor',
@@ -27,6 +27,10 @@ export class PatronService {
            'actor', barcode.trim());
     }
 
+    // XXX: This assumes the provided barcode only matches a single patron.
+    // Use the <eg-barcode-select> component instead when the provided
+    // barcode could match multiple patrons.
+    //
     // Note pcrudOps should be constructed from the perspective
     // of a user ('au') retrieval, not a barcode ('ac') retrieval.
     getByBarcode(barcode: string, pcrudOps?: any): Promise<IdlObject> {
@@ -35,7 +39,6 @@ export class PatronService {
             if (!barcodes) { return null; }
 
             // Use the first successful barcode response.
-            // TODO: What happens when there are multiple responses?
             // Use for-loop for early exit since we have async
             // action within the loop.
             for (let i = 0; i < barcodes.length; i++) {

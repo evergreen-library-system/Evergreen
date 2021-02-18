@@ -10,20 +10,21 @@
     </button>
   </div>
   <div class="modal-body">
-	  <ng-container *ngFor="let barcode of barcodes">
-		  <div class="form-check">
+    <div class="alert alert-primary m-1 mb-3" i18n>Select the desired barcode.</div>
+	  <ng-container *ngFor="let match of matches">
+		  <div class="form-check mb-2">
 			  <input class="form-check-input" type="checkbox" value="" 
-          id="barcode-check-{{barcode}}" [(ngModel)]="inputs[barcode]"
+          id="barcode-check-{{match.id}}" [(ngModel)]="inputs[match.id]"
           (ngModelChange)="selectionChanged()">
-			  <label class="form-check-label" for="barcode-check-{{barcode}}">
-          {{barcode}}
+			  <label class="form-check-label" for="barcode-check-{{match.id}}">
+          {{match.barcode}}
 			  </label>
 		  </div>
     </ng-container>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success" [disabled]="!selectedBarcode"
-      (click)="close(selectedBarcode)" i18n>Apply</button>
+    <button type="button" class="btn btn-success" [disabled]="!selected"
+      (click)="close(selected)" i18n>Select</button>
     <button type="button" class="btn btn-warning" 
       (click)="close()" i18n>Cancel</button>
   </div>
