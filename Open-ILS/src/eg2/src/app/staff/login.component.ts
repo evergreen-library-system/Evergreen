@@ -5,14 +5,17 @@ import {AuthService, AuthWsState} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
 import {OrgService} from '@eg/core/org.service';
 
+// Direct users to the AngJS splash page when no routeTo is provided.
+const SPLASH_PAGE_PATH = '/eg/staff/splash';
+
 @Component({
   templateUrl : './login.component.html'
 })
-
 export class StaffLoginComponent implements OnInit {
 
     workstations: any[];
     loginFailed: boolean;
+    routeTo: string;
 
     args = {
       username : '',
@@ -32,6 +35,16 @@ export class StaffLoginComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.routeTo = this.route.snapshot.queryParamMap.get('routeTo');
+
+        if (this.routeTo) {
+            if (this.routeTo.match(/^[a-z]+:\/\//i)) {
+                console.warn(
+                    'routeTo must contain only path information: ', this.routeTo);
+                this.routeTo = null;
+            }
+        }
+
         // clear out any stale auth data
         this.auth.logout();
 
@@ -63,19 +76,16 @@ export class StaffLoginComponent implements OnInit {
     handleSubmit() {
 
         // post-login URL
-        let url: string = this.auth.redirectUrl || '/staff/splash';
+        let url: string = this.routeTo || SPLASH_PAGE_PATH;
 
         // prevent sending the user back to the login page
-        if (url.startsWith('/staff/login')) {
-            url = '/staff/splash';
-        }
+        if (url.match('/staff/login')) { url = SPLASH_PAGE_PATH; }
 
         const workstation: string = this.args.workstation;
 
         this.loginFailed = false;
         this.auth.login(this.args).then(
             ok => {
-                this.auth.redirectUrl = null;
 
                 if (this.auth.workstationState === AuthWsState.NOT_FOUND_SERVER) {
                     // User attempted to login with a workstation that is
@@ -97,7 +107,6 @@ export class StaffLoginComponent implements OnInit {
                         // valid auth token and workstation.
                         window.location.href =
                             this.ngLocation.prepareExternalUrl(url);
-
                     });
                 }
             },

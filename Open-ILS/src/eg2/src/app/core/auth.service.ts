@@ -46,9 +46,6 @@ export class AuthService {
 
     workstationState: AuthWsState = AuthWsState.PENDING;
 
-    // Used by auth-checking resolvers
-    redirectUrl: string;
-
     // reference to active auth validity setTimeout handler.
     pollTimeout: any;
 

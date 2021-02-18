@@ -1,4 +1,5 @@
 import {Component, OnInit, NgZone, HostListener} from '@angular/core';
+import {Location} from '@angular/common';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {AuthService, AuthWsState} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -19,6 +20,7 @@ export class StaffComponent implements OnInit {
     constructor(
         private router: Router,
         private route: ActivatedRoute,
+        private ngLocation: Location,
         private zone: NgZone,
         private net: NetService,
         private auth: AuthService,
@@ -46,7 +48,7 @@ export class StaffComponent implements OnInit {
             }
 
             console.debug('Auth session has expired. Redirecting to login');
-            this.auth.redirectUrl = this.router.url;
+            const url = this.ngLocation.prepareExternalUrl(this.router.url);
 
             // https://github.com/angular/angular/issues/18254
             // When a tab redirects to a login page as a result of
@@ -55,7 +57,7 @@ export class StaffComponent implements OnInit {
             // with the page.  Fix it by wrapping it in zone.run().
             // This is the only navigate() where I have seen this happen.
             this.zone.run(() => {
-                this.router.navigate([LOGIN_PATH]);
+                this.router.navigate([LOGIN_PATH], {queryParams: {routeTo: url}});
             });
         });
 
