@@ -95,6 +95,7 @@ IF has_copies or ctx.foreign_copies;
             <th scope='col'>[% l("Due Date") %]</th>
             [%- IF ctx.use_courses %]
             <th scope='col'>[% l("Courses") %]</th>
+            [%- END %]
             [%- IF ctx.geo_sort && ctx.has_valid_coords %]
             <th scope='col'>[% l("Distance") %]</th>
             [%- END %]
