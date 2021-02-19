@@ -14,10 +14,12 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
             'circ.staff_client.receipt.event_text',
             'circ.staff_client.receipt.footer_text',
             'circ.staff_client.receipt.header_text',
-            'circ.staff_client.receipt.notice_text'
+            'circ.staff_client.receipt.notice_text',
+            'lib.info_url',
+            'lib.my_account_url'
         ]
     };
-
+    color.log("service",service);
 
     service.template_base_path = 'share/print_templates/t_';
 

@@ -1,0 +1,16 @@
+== Template Support for Information and My Account URLs ==
+
+A new setting has been added named lib.my_account_url to provide a path usable in templates to a patron's account login.  Both this and the existing lib.info_url settings are now available in the server side processed templates, action triggers and traditional print receipts.
+
+Web side processed templates in 3.6 can be found in Administration -> Server Administration -> Print Templates.  
+You can add settings using the following syntax:
+<div>[% helpers.get_org_setting(staff_org.id, 'lib.info_url'); %]</div>
+<div>[% helpers.get_org_setting(staff_org.id, 'lib.my_account_url'); %]</div>
+
+Print Receipts found in Administration -> Workstation -> Print Templates can be added with these includes:
+{{includes.info_url}}
+{{includes.my_account_url}}
+
+Action triggers can use both values with the helpers.get_org_setting include.  Example:
+[% helpers.get_org_setting(circ_lib.id, 'lib.my_account_url') %]
+

@@ -5772,6 +5772,14 @@ INSERT into config.org_unit_setting_type
         'The Photo URL field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
         'coust', 'description'),
     'bool', null)
+,( 'lib.my_account_url', 'lib',
+    oils_i18n_gettext('lib.my_account_url',
+        'My Account URL (such as "https://example.com/eg/opac/login")',
+        'coust', 'label'),
+    oils_i18n_gettext('lib.my_account_url',
+        'URL for a My Account link. Use a complete URL, such as "https://example.com/eg/opac/login".',
+        'coust', 'description'),
+    'string', null)
 ;
 
 UPDATE config.org_unit_setting_type
