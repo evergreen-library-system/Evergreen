@@ -29,7 +29,7 @@ const SESSION_DUE_DATE = 'eg.circ.checkout.is_until_logout';
   templateUrl: 'checkout.component.html',
   selector: 'eg-patron-checkout'
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, AfterViewInit {
 
     maxNoncats = 99; // Matches AngJS version
     checkoutNoncat: IdlObject = null;
@@ -129,10 +129,10 @@ export class CheckoutComponent implements OnInit {
         let barcode;
         const promise = params ? Promise.resolve(params) : this.collectParams();
 
-        return promise.then((params: CheckoutParams) => {
-            if (!params) { return null; }
+        return promise.then((collectedParams: CheckoutParams) => {
+            if (!collectedParams) { return null; }
 
-            barcode = params.copy_barcode || '';
+            barcode = collectedParams.copy_barcode || '';
 
             if (barcode) {
 
@@ -144,7 +144,7 @@ export class CheckoutComponent implements OnInit {
                 this.copiesInFlight[barcode] = true;
             }
 
-            return this.circ.checkout(params);
+            return this.circ.checkout(collectedParams);
         })
 
         .then((result: CheckoutResult) => {
@@ -287,7 +287,7 @@ export class CheckoutComponent implements OnInit {
                 Object.keys(values).forEach(key => params[key] = values[key]);
                 this.checkout(params);
             }
-        })
+        });
     }
 
     selectedCopyIds(rows: CircGridEntry[]): number[] {

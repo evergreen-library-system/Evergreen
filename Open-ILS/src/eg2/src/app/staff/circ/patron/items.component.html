@@ -1,0 +1,38 @@
+<ng-template #progress>
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <eg-progress-inline></eg-progress-inline>
+    </div>
+  </div>
+</ng-template>
+
+<div>
+  <ul ngbNav #itemsNav="ngbNav" class="nav-tabs"
+    [activeId]="itemsTab" (navChange)="tabChange($event)">
+    <li ngbNavItem="checkouts">
+      <a ngbNavLink i18n>Items Checked Out ({{mainList.length}})</a>
+      <ng-template ngbNavContent>
+        <ng-container *ngIf="loading">
+          <ng-container *ngTemplateOutlet="progress"></ng-container>
+        </ng-container>
+        <eg-circ-grid #checkoutsGrid></eg-circ-grid>
+      </ng-template>
+    </li>
+    <li ngbNavItem="other">
+      <a ngbNavLink i18n>Other/Special Circulations ({{altList.length}})</a>
+      <ng-template ngbNavContent>
+        <ng-container>
+        </ng-container>
+      </ng-template>
+    </li>
+    <li ngbNavItem="noncat">
+      <a ngbNavLink i18n>Non-Cataloged Circulations</a>
+      <ng-template ngbNavContent>
+        <ng-container>
+        </ng-container>
+      </ng-template>
+    </li>
+  </ul>
+  <div [ngbNavOutlet]="itemsNav"></div>
+</div>
+

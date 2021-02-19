@@ -31,7 +31,7 @@ export interface CheckoutParams {
 export interface CheckoutResult {
     index: number;
     evt: EgEvent;
-    params: CheckoutParams,
+    params: CheckoutParams;
     success: boolean;
     copy?: IdlObject;
     circ?: IdlObject;

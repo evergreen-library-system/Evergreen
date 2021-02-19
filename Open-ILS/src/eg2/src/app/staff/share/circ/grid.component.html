@@ -1,0 +1,40 @@
+
+<eg-progress-dialog #progressDialog></eg-progress-dialog>
+<eg-copy-alerts-dialog #copyAlertsDialog></eg-copy-alerts-dialog>
+
+<ng-template #titleTemplate let-r="row">
+  <ng-container *ngIf="r.record">
+    <a routerLink="/staff/catalog/record/{{r.record.id()}}">{{r.title}}</a>
+  </ng-container>
+  <ng-container *ngIf="!r.record">{{r.title}}</ng-container>
+</ng-template>
+
+<eg-grid #circGrid [dataSource]="gridDataSource" [sortable]="true"
+  [useLocalSort]="true" [cellTextGenerator]="cellTextGenerator"
+  [disablePaging]="true" [persistKey]="persistKey">
+
+  <eg-grid-toolbar-action
+    i18n-group group="Add" i18n-label label="Add Item Alerts"
+    (onClick)="openItemAlerts($event, 'create')">
+  </eg-grid-toolbar-action>
+
+  <eg-grid-column [index]="true" path="circ.id" 
+    label="Circ ID" i18n-label></eg-grid-column>
+
+  <!-- TODO 
+    [datePlusTime]="true" when non-full-day circ 
+  -->
+  <eg-grid-column path="dueDate" label="Due Date" i18n-label
+    datatype="timestamp"></eg-grid-column>
+
+  <eg-grid-column path="copy.barcode" label="Barcode" i18n-label></eg-grid-column>
+
+  <eg-grid-column path="title" label="Title" i18n-label 
+    [cellTemplate]="titleTemplate"></eg-grid-column>
+
+  <eg-grid-column path="nonCatCount" label="Non-Cataloged Count"
+    i18n-label></eg-grid-column>
+
+</eg-grid>
+
+

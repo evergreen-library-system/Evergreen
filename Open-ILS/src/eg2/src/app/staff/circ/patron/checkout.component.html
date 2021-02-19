@@ -84,7 +84,7 @@
   <div class="col-lg-12">
     <eg-grid #checkoutsGrid [dataSource]="gridDataSource" [sortable]="true"
       [useLocalSort]="true" [cellTextGenerator]="cellTextGenerator"
-      persistKey="circ.patron.checkout">
+      [disablePaging]="true" persistKey="circ.patron.checkout">
 
 			<eg-grid-toolbar-action
 				i18n-group group="Add" i18n-label label="Add Item Alerts"

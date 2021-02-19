@@ -56,8 +56,8 @@ export class BarcodeSelectComponent extends DialogComponent implements OnInit {
     }
 
     selectionChanged() {
-        const id = Object.keys(this.inputs).map(id => Number(id))
-            .filter(id => this.inputs[id] === true)[0];
+        const id = Object.keys(this.inputs).map(i => Number(i))
+            .filter(i => this.inputs[i] === true)[0];
 
         if (id) {
             this.selected = this.matches.filter(match => match.id === id)[0];
@@ -93,9 +93,9 @@ export class BarcodeSelectComponent extends DialogComponent implements OnInit {
 
             if (!results) { return result; }
 
-            results.forEach(result => {
-                if (!this.evt.parse(result)) {
-                    this.matches.push(result);
+            results.forEach(res => {
+                if (!this.evt.parse(res)) {
+                    this.matches.push(res);
                 }
             });
 
