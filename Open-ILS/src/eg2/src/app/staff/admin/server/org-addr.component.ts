@@ -5,6 +5,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {ToastService} from '@eg/share/toast/toast.service';
 
 const ADDR_TYPES =
     ['billing_address', 'holds_address', 'mailing_address', 'ill_address'];
@@ -38,9 +39,10 @@ export class OrgAddressComponent {
     constructor(
         private idl: IdlService,
         private org: OrgService,
-	private pcrud: PcrudService,
-	private auth: AuthService,
-        private net: NetService
+        private pcrud: PcrudService,
+        private auth: AuthService,
+        private net: NetService,
+        private toast: ToastService
     ) {
         this.addrChange = new EventEmitter<IdlObject>();
         this.tabName = 'billing_address';
@@ -165,22 +167,26 @@ export class OrgAddressComponent {
 
     getCoordinates($event: any) {
         const addr = $event.record;
-
         this.net.request(
             'open-ils.actor',
-	    'open-ils.actor.geo.retrieve_coordinates',
-	    this.auth.token(),
-            addr.org_unit(),
+            'open-ils.actor.geo.retrieve_coordinates',
+            this.auth.token(),
+            typeof addr.org_unit() === 'object' ? addr.org_unit().id() : addr.org_unit(),
             addr.street1() + ' ' + addr.street2() + ', '
             + addr.city() + ', ' + addr.state() + ' ' + addr.post_code()
             + ' ' + addr.country()
         ).subscribe(
             (res) => {
-                addr.latitude( res.latitude );
-                addr.longitude( res.longitude );
+                console.log('geo',res);
+                if (typeof res.ilsevent == 'undefined') {
+                    addr.latitude( res.latitude );
+                    addr.longitude( res.longitude );
+                } else {
+                    this.toast.danger(res.desc);
+                }
             },
             (err) => {
-                console.error(err);
+                console.error('geo',err);
             }
         );
     }

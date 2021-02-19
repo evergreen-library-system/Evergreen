@@ -140,6 +140,8 @@ sub retrieve_coordinates { # invoke 3rd party API for latitude/longitude lookup
     #       implementing some options for limiting outgoing geo-coding API calls
     # return $e->die_event unless $e->checkauth;
 
+    $org = ref($org) ? $org->id : $org; # never trust the caller :-)
+
     my $use_geo = $e->retrieve_config_global_flag('opac.use_geolocation');
     $use_geo = ($use_geo and $U->is_true($use_geo->enabled));
     return new OpenILS::Event("GEOCODING_NOT_ENABLED") unless ($U->is_true($use_geo));
