@@ -191,6 +191,7 @@ export class ItemsComponent implements OnInit, AfterViewInit {
 
         .pipe(tap(circ => {
             const entry: CircGridEntry = {
+                index: `ancc-${circ.id()}`,
                 title: circ.item_type().name(),
                 dueDate: circ.duedate()
             };

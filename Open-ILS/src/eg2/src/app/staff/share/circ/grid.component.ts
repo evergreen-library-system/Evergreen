@@ -17,8 +17,10 @@ import {AudioService} from '@eg/share/util/audio.service';
 import {CopyAlertsDialogComponent
     } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 import {ArrayUtil} from '@eg/share/util/array';
+import {PrintService} from '@eg/share/print/print.service';
 
 export interface CircGridEntry {
+    index: string; // class + id -- row index
     title?: string;
     author?: string;
     isbn?: string;
@@ -56,6 +58,7 @@ const CIRC_FLESH_FIELDS = {
 export class CircGridComponent implements OnInit {
 
     @Input() persistKey: string;
+    @Input() printTemplate: string; // defaults to items_out
 
     entries: CircGridEntry[] = null;
     gridDataSource: GridDataSource = new GridDataSource();
@@ -72,6 +75,7 @@ export class CircGridComponent implements OnInit {
         public circ: CircService,
         private audio: AudioService,
         private store: StoreService,
+        private printer: PrintService,
         private serverStore: ServerStoreService
     ) {}
 
@@ -137,6 +141,7 @@ export class CircGridComponent implements OnInit {
     gridify(circ: IdlObject): CircGridEntry {
 
         const entry: CircGridEntry = {
+            index: `circ-${circ.id()}`,
             circ: circ,
             dueDate: circ.due_date(),
             copyAlertCount: 0 // TODO
@@ -193,6 +198,16 @@ export class CircGridComponent implements OnInit {
                 }
             }
         );
+    }
+
+    printReceipts(rows: any) {
+        if (rows.length > 0) {
+            this.printer.print({
+                templateName: this.printTemplate || 'items_out',
+                contextData: {circulations: rows},
+                printContext: 'default'
+            });
+        }
     }
 }
 
