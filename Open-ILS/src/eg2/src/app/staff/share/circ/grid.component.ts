@@ -24,6 +24,8 @@ export interface CircGridEntry {
     isbn?: string;
     copy?: IdlObject;
     circ?: IdlObject;
+    volume?: IdlObject;
+    record?: IdlObject;
     dueDate?: string;
     copyAlertCount?: number;
     nonCatCount?: number;
@@ -119,9 +121,17 @@ export class CircGridComponent implements OnInit {
         }).pipe(map(circ => {
 
             const entry = this.gridify(circ);
-            this.entries.push(entry);
+            this.appendGridEntry(entry);
             return entry;
         }));
+    }
+
+
+    // Also useful for manually appending circ-like things (e.g. noncat
+    // circs) that can be massaged into CircGridEntry structs.
+    appendGridEntry(entry: CircGridEntry) {
+        if (!this.entries) { this.entries = []; }
+        this.entries.push(entry);
     }
 
     gridify(circ: IdlObject): CircGridEntry {
@@ -144,12 +154,19 @@ export class CircGridComponent implements OnInit {
 
         } else {
 
-            const display =
-                copy.call_number().record().wide_display_entry();
+            entry.volume = copy.call_number();
+            entry.record = entry.volume.record();
 
-            entry.title = display.title();
-            entry.author = display.author();
-            entry.isbn = display.isbn();
+            // display entries are JSON-encoded and some are lists
+            const display = entry.record.wide_display_entry();
+
+            entry.title = JSON.parse(display.title());
+            entry.author = JSON.parse(display.author());
+            entry.isbn = JSON.parse(display.isbn());
+
+            if (Array.isArray(entry.isbn)) {
+                entry.isbn = entry.isbn.join(',');
+            }
         }
 
         return entry;

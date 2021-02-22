@@ -18,17 +18,29 @@
         <eg-circ-grid #checkoutsGrid></eg-circ-grid>
       </ng-template>
     </li>
-    <li ngbNavItem="other">
-      <a ngbNavLink i18n>Other/Special Circulations ({{altList.length}})</a>
-      <ng-template ngbNavContent>
-        <ng-container>
-        </ng-container>
-      </ng-template>
-    </li>
+    <ng-container *ngIf="displayAltList">
+      <li ngbNavItem="other">
+        <a ngbNavLink i18n>Other/Special Circulations ({{altList.length}})</a>
+        <ng-template ngbNavContent>
+          <ng-container>
+            <ng-container *ngIf="loading">
+              <ng-container *ngTemplateOutlet="progress"></ng-container>
+            </ng-container>
+            <eg-circ-grid #otherGrid></eg-circ-grid>
+          </ng-container>
+        </ng-template>
+      </li>
+    </ng-container>
     <li ngbNavItem="noncat">
       <a ngbNavLink i18n>Non-Cataloged Circulations</a>
       <ng-template ngbNavContent>
         <ng-container>
+          <ng-container>
+            <ng-container *ngIf="loading">
+              <ng-container *ngTemplateOutlet="progress"></ng-container>
+            </ng-container>
+            <eg-circ-grid #nonCatGrid></eg-circ-grid>
+          </ng-container>
         </ng-container>
       </ng-template>
     </li>
