@@ -2,7 +2,7 @@
   <div class="modal-header">
     <h4 class="modal-title">{{dialogTitle}}</h4>
     <button type="button" class="btn-close btn-close-white" 
-      i18n-aria-label aria-label="Close" (click)="close()"></button>
+      i18n-aria-label aria-label="Close" (click)="closeAndClear()"></button>
   </div>
   <div class="modal-body">
     <p>{{dialogBody}}</p>
@@ -15,8 +15,8 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-success" 
-      (click)="close(promptValue)">{{confirmString}}</button>
+      (click)="closeAndClear(promptValue)">{{confirmString}}</button>
     <button type="button" class="btn btn-normal" 
-      (click)="close()">{{cancelString}}</button>
+      (click)="closeAndClear()">{{cancelString}}</button>
   </div>
 </ng-template>

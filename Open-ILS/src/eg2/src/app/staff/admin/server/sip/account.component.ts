@@ -61,8 +61,11 @@ export class SipAccountComponent implements OnInit {
                 this.account = this.idl.create('sipacc'); // dummy
                 this.createMode = true;
                 return;
+            } else {
+                this.createMode = false;
             }
 
+            this.usrId = null;
             this.accountId = Number(params.get('id'));
             this.loadAccount().toPromise(); // force it to run
         });
