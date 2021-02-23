@@ -37,9 +37,9 @@ export class ItemsComponent implements OnInit, AfterViewInit {
     mainList: number[] = [];
     altList: number[] = [];
 
-    displayLost: number; // 1 | 2 | 5 | 6;
-    displayLongOverdue: number;
-    displayClaimsReturned: number;
+    displayLost: number = null; // 1 | 2 | 5 | 6;
+    displayLongOverdue: number = null;
+    displayClaimsReturned: number = null;
     fetchCheckedIn = true;
     displayAltList = true;
 
@@ -91,7 +91,13 @@ export class ItemsComponent implements OnInit, AfterViewInit {
         promise.then(_ => this.loading = false);
     }
 
-    applyDisplaySettings() {
+    applyDisplaySettings(): Promise<any> {
+
+        if (this.displayLost !== null) {
+            // Logic already executed
+            return Promise.resolve();
+        }
+
         return this.serverStore.getItemBatch([
             'ui.circ.items_out.lost',
             'ui.circ.items_out.longoverdue',

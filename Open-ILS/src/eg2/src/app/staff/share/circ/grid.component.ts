@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Observable, empty, of, from} from 'rxjs';
 import {map, tap, switchMap} from 'rxjs/operators';
@@ -21,6 +21,8 @@ import {ArrayUtil} from '@eg/share/util/array';
 import {PrintService} from '@eg/share/print/print.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {DueDateDialogComponent} from './due-date-dialog.component';
+import {MarkDamagedDialogComponent
+    } from '@eg/staff/share/holdings/mark-damaged-dialog.component';
 
 export interface CircGridEntry {
     index: string; // class + id -- row index
@@ -67,6 +69,12 @@ export class CircGridComponent implements OnInit {
     @Input() persistKey: string;
     @Input() printTemplate: string; // defaults to items_out
 
+    // Emitted when a grid action modified data in a way that could
+    // affect which cirulcations should appear in the grid.  Caller
+    // should then refresh their data and call the load() or
+    // appendGridEntry() function.
+    @Output() reloadRequested: EventEmitter<void> = new EventEmitter<void>();
+
     entries: CircGridEntry[] = null;
     gridDataSource: GridDataSource = new GridDataSource();
     cellTextGenerator: GridCellTextGenerator;
@@ -80,6 +88,8 @@ export class CircGridComponent implements OnInit {
     @ViewChild('copyAlertsDialog')
         private copyAlertsDialog: CopyAlertsDialogComponent;
     @ViewChild('dueDateDialog') private dueDateDialog: DueDateDialogComponent;
+    @ViewChild('markDamagedDialog')
+        private markDamagedDialog: MarkDamagedDialogComponent;
 
     constructor(
         private org: OrgService,
@@ -102,7 +112,7 @@ export class CircGridComponent implements OnInit {
 
         this.cellTextGenerator = {
             title: row => row.title,
-            barcode: row => row.copy ? row.copy.barcode() : ''
+            'copy.barcode': row => row.copy ? row.copy.barcode() : ''
         };
 
         this.rowFlair = (row: CircGridEntry) => {
@@ -222,8 +232,18 @@ export class CircGridComponent implements OnInit {
         );
     }
 
-    getCopies(rows: any): IdlObject[] {
-        return rows.filter(r => r.copy).map(r => r.copy);
+    // Which copies in the grid are selected.
+    getCopyIds(rows: CircGridEntry[], skipStatus?: number): number[] {
+        return this.getCopies(rows, skipStatus).map(c => Number(c.id()));
+    }
+
+    getCopies(rows: CircGridEntry[], skipStatus?: number): IdlObject[] {
+        let copies = rows.filter(r => r.copy).map(r => r.copy);
+        if (skipStatus) {
+            copies = copies.filter(
+                c => Number(c.status().id()) !== Number(skipStatus));
+        }
+        return copies;
     }
 
     getCircs(rows: any): IdlObject[] {
@@ -272,6 +292,39 @@ export class CircGridComponent implements OnInit {
             row.overdue = (Date.parse(circ.due_date()) < this.nowDate);
         }
         return row.overdue;
+    }
+
+    showMarkDamagedDialog(rows: CircGridEntry[]) {
+        const copyIds = this.getCopyIds(rows, 14 /* ignore damaged */);
+
+        if (copyIds.length === 0) { return; }
+
+        let rowsModified = false;
+
+        const markNext = (ids: number[]): Promise<any> => {
+            if (ids.length === 0) {
+                return Promise.resolve();
+            }
+
+            this.markDamagedDialog.copyId = ids.pop();
+
+            return this.markDamagedDialog.open({size: 'lg'})
+            .toPromise().then(ok => {
+                if (ok) { rowsModified = true; }
+                return markNext(ids);
+            });
+        };
+
+        markNext(copyIds).then(_ => {
+            if (rowsModified) {
+                this.emitReloadRequest();
+            }
+        });
+    }
+
+    emitReloadRequest() {
+        this.entries = null;
+        this.reloadRequested.emit();
     }
 }
 

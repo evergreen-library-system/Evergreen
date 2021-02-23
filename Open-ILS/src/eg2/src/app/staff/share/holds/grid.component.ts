@@ -339,7 +339,12 @@ export class HoldsGridComponent implements OnInit {
 
         const limit = this.enablePreFetch ? null : pager.limit;
         const offset = this.enablePreFetch ? 0 : pager.offset;
-        const options = this.showRecentlyCanceled ? {recently_canceled: true} : {};
+        const options: any = {};
+        if (this.showRecentlyCanceled) {
+            options.recently_canceled = true;
+        } else {
+            filters.cancel_time = null;
+        }
 
         let observer: Observer<any>;
         const observable = new Observable(obs => observer = obs);

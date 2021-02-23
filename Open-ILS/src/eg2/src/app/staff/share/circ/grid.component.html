@@ -3,6 +3,8 @@
 <eg-copy-alerts-dialog #copyAlertsDialog></eg-copy-alerts-dialog>
 <eg-string #overdueString i18n-text text="Overdue"></eg-string>
 <eg-due-date-dialog #dueDateDialog></eg-due-date-dialog>
+<eg-mark-damaged-dialog #markDamagedDialog [handleCheckin]="true">
+</eg-mark-damaged-dialog>
 
 <ng-template #titleTemplate let-r="row">
   <ng-container *ngIf="r.record">
@@ -37,6 +39,10 @@
     i18n-group group="Edit" i18n-label label="Edit Due Date"
     (onClick)="editDueDate($event)">
   </eg-grid-toolbar-action>
+
+  <eg-grid-toolbar-action
+    group="Mark" i18n-group i18n-label label="Mark Item Damaged"
+    (onClick)="showMarkDamagedDialog($event)"></eg-grid-toolbar-action>
 
   <eg-grid-column [index]="true" path="index" [hidden]="true"
     label="Row Index" i18n-label></eg-grid-column>
