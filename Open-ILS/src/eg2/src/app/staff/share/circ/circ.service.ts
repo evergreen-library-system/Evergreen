@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, empty} from 'rxjs';
 import {map, mergeMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -36,6 +36,22 @@ export interface CheckoutResult {
     copy?: IdlObject;
     circ?: IdlObject;
     nonCatCirc: IdlObject;
+    record?: IdlObject;
+}
+
+export interface CheckinParams {
+    noop?: boolean;
+    copy_id?: number;
+    copy_barcode?: string;
+}
+
+export interface CheckinResult {
+    index: number;
+    evt: EgEvent;
+    params: CheckinParams;
+    success: boolean;
+    copy?: IdlObject;
+    circ?: IdlObject;
     record?: IdlObject;
 }
 
@@ -108,6 +124,83 @@ export class CircService {
         };
 
         return Promise.resolve(result);
+    }
+
+    checkin(params: CheckinParams, override?: boolean): Promise<CheckinResult> {
+
+        console.debug('checking in with', params);
+
+        let method = 'open-ils.circ.checkin';
+        if (override) { method += '.override'; }
+
+        return this.net.request(
+            'open-ils.circ', method,
+            this.auth.token(), params).toPromise()
+        .then(result => this.processCheckinResult(params, result));
+    }
+
+    processCheckinResult(
+        params: CheckinParams, response: any): Promise<CheckinResult> {
+
+        console.debug('checkout resturned', response);
+
+        if (Array.isArray(response)) { response = response[0]; }
+
+        const evt = this.evt.parse(response);
+        const payload = evt.payload;
+
+        if (!payload) {
+            this.audio.play('error.unknown.no_payload');
+            return Promise.reject();
+        }
+
+        switch (evt.textcode) {
+            case 'ITEM_NOT_CATALOGED':
+                // alert, etc.
+        }
+
+        const result: CheckinResult = {
+            index: CircService.resultIndex++,
+            evt: evt,
+            params: params,
+            success: evt.textcode === 'SUCCESS', // or route, no change, etc.
+            circ: payload.circ,
+            copy: payload.copy,
+            record: payload.record
+        };
+
+        return Promise.resolve(result);
+    }
+
+    // The provided params (minus the copy_id) will be used
+    // for all items.
+    checkinBatch(copyIds: number[], params?: CheckinParams): Observable<CheckinResult> {
+        if (copyIds.length === 0) { return empty(); }
+
+        if (!params) { params = {}; }
+        const ids = [].concat(copyIds); // clone
+
+        let observer;
+        const observable = new Observable<CheckinResult>(o => observer = o);
+
+        const checkinOne = (ids: number[]): Promise<CheckinResult> => {
+            if (ids.length === 0) {
+                observer.complete();
+                return Promise.resolve(null);
+            }
+
+            const cparams = Object.assign(params, {}); // clone
+            cparams.copy_id = ids.pop();
+
+            return this.checkin(cparams).then(result => {
+                observer.next(result);
+                return checkinOne(ids);
+            });
+        }
+
+        checkinOne(ids);
+
+        return observable;
     }
 }
 

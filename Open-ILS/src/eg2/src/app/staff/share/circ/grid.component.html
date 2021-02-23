@@ -5,6 +5,12 @@
 <eg-due-date-dialog #dueDateDialog></eg-due-date-dialog>
 <eg-mark-damaged-dialog #markDamagedDialog [handleCheckin]="true">
 </eg-mark-damaged-dialog>
+<eg-mark-missing-dialog #markMissingDialog></eg-mark-missing-dialog>
+<eg-confirm-dialog #itemsOutConfirm
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Items Checked Out"
+  dialogBody="The selected items are checked out.  Check them in before continuing?">
+</eg-confirm-dialog>
 
 <ng-template #titleTemplate let-r="row">
   <ng-container *ngIf="r.record">
@@ -43,6 +49,13 @@
   <eg-grid-toolbar-action
     group="Mark" i18n-group i18n-label label="Mark Item Damaged"
     (onClick)="showMarkDamagedDialog($event)"></eg-grid-toolbar-action>
+
+  <eg-grid-toolbar-action
+    group="Mark" i18n-group i18n-label label="Mark Item Missing"
+    (onClick)="showMarkMissingDialog($event)"></eg-grid-toolbar-action>
+
+  <eg-grid-toolbar-action i18n-label label="Checkin" (onClick)="checkin($event)">
+  </eg-grid-toolbar-action>
 
   <eg-grid-column [index]="true" path="index" [hidden]="true"
     label="Row Index" i18n-label></eg-grid-column>

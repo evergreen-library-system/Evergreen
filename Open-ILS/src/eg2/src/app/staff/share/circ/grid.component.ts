@@ -6,8 +6,10 @@ import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {CheckoutParams, CheckoutResult, CircService} from './circ.service';
+import {CheckoutParams, CheckoutResult, CheckinParams, CheckinResult,
+    CircService} from './circ.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {GridDataSource, GridColumn, GridCellTextGenerator,
     GridRowFlairEntry} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -23,6 +25,8 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {DueDateDialogComponent} from './due-date-dialog.component';
 import {MarkDamagedDialogComponent
     } from '@eg/staff/share/holdings/mark-damaged-dialog.component';
+import {MarkMissingDialogComponent
+    } from '@eg/staff/share/holdings/mark-missing-dialog.component';
 
 export interface CircGridEntry {
     index: string; // class + id -- row index
@@ -90,6 +94,10 @@ export class CircGridComponent implements OnInit {
     @ViewChild('dueDateDialog') private dueDateDialog: DueDateDialogComponent;
     @ViewChild('markDamagedDialog')
         private markDamagedDialog: MarkDamagedDialogComponent;
+    @ViewChild('markMissingDialog')
+        private markMissingDialog: MarkMissingDialogComponent;
+    @ViewChild('itemsOutConfirm')
+        private itemsOutConfirm: ConfirmDialogComponent;
 
     constructor(
         private org: OrgService,
@@ -320,6 +328,39 @@ export class CircGridComponent implements OnInit {
                 this.emitReloadRequest();
             }
         });
+    }
+
+    showMarkMissingDialog(rows: CircGridEntry[]) {
+        const copyIds = this.getCopyIds(rows, 4 /* ignore missing */);
+
+        if (copyIds.length === 0) { return; }
+
+        // This assumes all of our items our checked out, since this is
+        // a circ grid.  If we add support later for showing completed
+        // circulations, there may be cases where we can skip the items
+        // out confirmation alert and subsequent checkin
+        this.itemsOutConfirm.open().subscribe(confirmed => {
+            if (!confirmed) { return; }
+
+            this.checkin(rows, {noop: true}, true).then(_ => {
+
+                this.markMissingDialog.copyIds = copyIds;
+                this.markMissingDialog.open({}).subscribe(
+                    rowsModified => {
+                        if (rowsModified) {
+                            this.emitReloadRequest();
+                        }
+                    }
+                );
+            });
+        });
+    }
+
+    // TODO: progress dialog
+    // Same params will be used for each copy
+    checkin(rows: CircGridEntry[], params?: CheckinParams, noReload?: boolean): Promise<any> {
+        return this.circ.checkinBatch(this.getCopyIds(rows), params).toPromise()
+        .then(_ => { if (!noReload) { this.emitReloadRequest(); } });
     }
 
     emitReloadRequest() {
