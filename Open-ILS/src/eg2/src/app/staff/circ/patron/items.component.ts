@@ -135,7 +135,7 @@ export class ItemsComponent implements OnInit, AfterViewInit {
                 this.altList = this.altList.concat(list);
             }
         } else {
-            if (4 & displayCode) return;  // bitflag 4 == hide on checkin
+            if (4 & displayCode) { return; }  // bitflag 4 == hide on checkin
             this.altList = this.altList.concat(list);
         }
     }

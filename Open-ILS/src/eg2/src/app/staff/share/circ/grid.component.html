@@ -1,6 +1,8 @@
 
 <eg-progress-dialog #progressDialog></eg-progress-dialog>
 <eg-copy-alerts-dialog #copyAlertsDialog></eg-copy-alerts-dialog>
+<eg-string #overdueString i18n-text text="Overdue"></eg-string>
+<eg-due-date-dialog #dueDateDialog></eg-due-date-dialog>
 
 <ng-template #titleTemplate let-r="row">
   <ng-container *ngIf="r.record">
@@ -8,8 +10,16 @@
   </ng-container>
   <ng-container *ngIf="!r.record">{{r.title}}</ng-container>
 </ng-template>
+<ng-template #barcodeTemplate let-r="row">
+  <ng-container *ngIf="r.copy">
+    <a href="/eg/staff/cat/item/{{r.copy.id()}}">{{r.copy.barcode()}}</a>
+  </ng-container>
+</ng-template>
+
 
 <eg-grid #circGrid [dataSource]="gridDataSource" [sortable]="true"
+  [rowFlairIsEnabled]="true" [rowFlairCallback]="rowFlair"
+  [rowClassCallback]="rowClass"
   [useLocalSort]="true" [cellTextGenerator]="cellTextGenerator"
   [disablePaging]="true" [persistKey]="persistKey">
 
@@ -21,6 +31,11 @@
   <eg-grid-toolbar-action
     i18n-group group="Add" i18n-label label="Add Item Alerts"
     (onClick)="openItemAlerts($event, 'create')">
+  </eg-grid-toolbar-action>
+
+  <eg-grid-toolbar-action
+    i18n-group group="Edit" i18n-label label="Edit Due Date"
+    (onClick)="editDueDate($event)">
   </eg-grid-toolbar-action>
 
   <eg-grid-column [index]="true" path="index" [hidden]="true"
@@ -35,7 +50,8 @@
   <eg-grid-column path="dueDate" label="Due Date" i18n-label
     datatype="timestamp"></eg-grid-column>
 
-  <eg-grid-column path="copy.barcode" label="Barcode" i18n-label></eg-grid-column>
+  <eg-grid-column path="copy.barcode" label="Barcode" i18n-label
+    [cellTemplate]="barcodeTemplate"></eg-grid-column>
 
   <eg-grid-column path="title" label="Title" i18n-label 
     [cellTemplate]="titleTemplate"></eg-grid-column>

@@ -323,3 +323,12 @@ input.small {
   width: 4em;
 }
 
+/* 
+ * Created initially for styled grid rows where full 'bg-danger' CSS is
+ * intense and not especially readable, more so when rows are stacked.
+ * http://web-accessibility.carnegiemuseums.org/design/color/
+ */
+.less-intense-alert {
+  background-color: #f9dede;
+  color: black;
+}

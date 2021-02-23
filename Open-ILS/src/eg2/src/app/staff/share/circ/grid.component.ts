@@ -8,7 +8,8 @@ import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {CheckoutParams, CheckoutResult, CircService} from './circ.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
-import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {GridDataSource, GridColumn, GridCellTextGenerator,
+    GridRowFlairEntry} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {StoreService} from '@eg/core/store.service';
@@ -18,6 +19,8 @@ import {CopyAlertsDialogComponent
     } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 import {ArrayUtil} from '@eg/share/util/array';
 import {PrintService} from '@eg/share/print/print.service';
+import {StringComponent} from '@eg/share/string/string.component';
+import {DueDateDialogComponent} from './due-date-dialog.component';
 
 export interface CircGridEntry {
     index: string; // class + id -- row index
@@ -31,6 +34,10 @@ export interface CircGridEntry {
     dueDate?: string;
     copyAlertCount?: number;
     nonCatCount?: number;
+
+    // useful for reporting precaculated values and avoiding
+    // repetitive date creation on grid render.
+    overdue?: boolean;
 }
 
 const CIRC_FLESH_DEPTH = 4;
@@ -63,10 +70,16 @@ export class CircGridComponent implements OnInit {
     entries: CircGridEntry[] = null;
     gridDataSource: GridDataSource = new GridDataSource();
     cellTextGenerator: GridCellTextGenerator;
+    rowFlair: (row: CircGridEntry) => GridRowFlairEntry;
+    rowClass: (row: CircGridEntry) => string;
 
+    nowDate: number = new Date().getTime();
+
+    @ViewChild('overdueString') private overdueString: StringComponent;
     @ViewChild('circGrid') private circGrid: GridComponent;
     @ViewChild('copyAlertsDialog')
         private copyAlertsDialog: CopyAlertsDialogComponent;
+    @ViewChild('dueDateDialog') private dueDateDialog: DueDateDialogComponent;
 
     constructor(
         private org: OrgService,
@@ -84,15 +97,24 @@ export class CircGridComponent implements OnInit {
         // The grid never fetches data directly.
         // The caller is responsible initiating all data loads.
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
-            if (this.entries) {
-                return from(this.entries);
-            } else {
-                return empty();
-            }
+            return this.entries ? from(this.entries) : empty();
         };
 
         this.cellTextGenerator = {
-            title: row => row.title
+            title: row => row.title,
+            barcode: row => row.copy ? row.copy.barcode() : ''
+        };
+
+        this.rowFlair = (row: CircGridEntry) => {
+            if (this.circIsOverdue(row)) {
+                return {icon: 'error_outline', title: this.overdueString.text};
+            }
+        };
+
+        this.rowClass = (row: CircGridEntry) => {
+            if (this.circIsOverdue(row)) {
+                return 'less-intense-alert';
+            }
         };
     }
 
@@ -200,6 +222,14 @@ export class CircGridComponent implements OnInit {
         );
     }
 
+    getCopies(rows: any): IdlObject[] {
+        return rows.filter(r => r.copy).map(r => r.copy);
+    }
+
+    getCircs(rows: any): IdlObject[] {
+        return rows.filter(r => r.circ).map(r => r.circ);
+    }
+
     printReceipts(rows: any) {
         if (rows.length > 0) {
             this.printer.print({
@@ -208,6 +238,40 @@ export class CircGridComponent implements OnInit {
                 printContext: 'default'
             });
         }
+    }
+
+    editDueDate(rows: any) {
+        const circs = this.getCircs(rows);
+        if (circs.length === 0) { return; }
+
+        let refreshNeeded = false;
+        this.dueDateDialog.circs = circs;
+        this.dueDateDialog.open().subscribe(
+            circ => {
+                refreshNeeded = true;
+                const row = rows.filter(r => r.circ.id() === circ.id())[0];
+                row.circ.due_date(circ.due_date());
+                row.dueDate = circ.due_date();
+                delete row.overdue; // it will recalculate
+            },
+            err => console.error(err),
+            () => {
+                if (refreshNeeded) {
+                    this.reloadGrid();
+                }
+            }
+        );
+    }
+
+    circIsOverdue(row: CircGridEntry): boolean {
+        const circ = row.circ;
+
+        if (!circ) { return false; } // noncat
+
+        if (row.overdue === undefined) {
+            row.overdue = (Date.parse(circ.due_date()) < this.nowDate);
+        }
+        return row.overdue;
     }
 }
 
