@@ -1,14 +1,16 @@
 import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Observable, empty, of, from} from 'rxjs';
-import {map, tap, switchMap} from 'rxjs/operators';
+import {map, tap, switchMap, concatMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
+import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {CheckoutParams, CheckoutResult, CheckinParams, CheckinResult,
     CircService} from './circ.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
+import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {GridDataSource, GridColumn, GridCellTextGenerator,
     GridRowFlairEntry} from '@eg/share/grid/grid';
@@ -98,10 +100,13 @@ export class CircGridComponent implements OnInit {
         private markMissingDialog: MarkMissingDialogComponent;
     @ViewChild('itemsOutConfirm')
         private itemsOutConfirm: ConfirmDialogComponent;
+    @ViewChild('progressDialog')
+        private progressDialog: ProgressDialogComponent;
 
     constructor(
         private org: OrgService,
         private net: NetService,
+        private auth: AuthService,
         private pcrud: PcrudService,
         public circ: CircService,
         private audio: AudioService,
@@ -134,6 +139,12 @@ export class CircGridComponent implements OnInit {
                 return 'less-intense-alert';
             }
         };
+    }
+
+    // Ask the caller to update our data set.
+    emitReloadRequest() {
+        this.entries = null;
+        this.reloadRequested.emit();
     }
 
     // Reload the grid without any data retrieval
@@ -254,6 +265,10 @@ export class CircGridComponent implements OnInit {
         return copies;
     }
 
+    getCircIds(rows: CircGridEntry[]): number[] {
+        return this.getCircs(rows).map(row => Number(row.id()));
+    }
+
     getCircs(rows: any): IdlObject[] {
         return rows.filter(r => r.circ).map(r => r.circ);
     }
@@ -342,7 +357,7 @@ export class CircGridComponent implements OnInit {
         this.itemsOutConfirm.open().subscribe(confirmed => {
             if (!confirmed) { return; }
 
-            this.checkin(rows, {noop: true}, true).then(_ => {
+            this.checkin(rows, {noop: true}, true).toPromise().then(_ => {
 
                 this.markMissingDialog.copyIds = copyIds;
                 this.markMissingDialog.open({}).subscribe(
@@ -356,16 +371,48 @@ export class CircGridComponent implements OnInit {
         });
     }
 
-    // TODO: progress dialog
-    // Same params will be used for each copy
-    checkin(rows: CircGridEntry[], params?: CheckinParams, noReload?: boolean): Promise<any> {
-        return this.circ.checkinBatch(this.getCopyIds(rows), params).toPromise()
-        .then(_ => { if (!noReload) { this.emitReloadRequest(); } });
+    openProgressDialog(rows: CircGridEntry[]): ProgressDialogComponent {
+        this.progressDialog.update({value: 0, max: rows.length});
+        this.progressDialog.open();
+        return this.progressDialog;
     }
 
-    emitReloadRequest() {
-        this.entries = null;
-        this.reloadRequested.emit();
+    // Same params will be used for each copy
+    checkin(rows: CircGridEntry[], params?:
+        CheckinParams, noReload?: boolean): Observable<CheckinResult> {
+
+        const dialog = this.openProgressDialog(rows);
+
+        return this.circ.checkinBatch(this.getCopyIds(rows), params)
+        .pipe(tap(
+            result => dialog.increment(),
+            err => null,
+            () => {
+                dialog.close();
+                if (!noReload) { this.emitReloadRequest(); }
+            }
+        ));
+    }
+
+    //markLost(rows: CircGridEntry[]): Observable<any> {
+    markLost(rows: CircGridEntry[]) {
+        const dialog = this.openProgressDialog(rows);
+        const barcodes = this.getCopies(rows).map(c => c.barcode());
+
+        from(barcodes).pipe(concatMap(barcode => {
+            return this.net.request(
+                'open-ils.circ',
+                'open-ils.circ.circulation.set_lost',
+                this.auth.token(), {barcode: barcode}
+            );
+        })).subscribe(
+            result => dialog.increment(),
+            err => console.error(err),
+            () => {
+                dialog.close();
+                this.emitReloadRequest();
+            }
+        );
     }
 }
 

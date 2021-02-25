@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Observable, empty} from 'rxjs';
-import {map, mergeMap} from 'rxjs/operators';
+import {Observable, empty, from} from 'rxjs';
+import {map, concatMap, mergeMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -178,29 +178,14 @@ export class CircService {
         if (copyIds.length === 0) { return empty(); }
 
         if (!params) { params = {}; }
-        const ids = [].concat(copyIds); // clone
 
-        let observer;
-        const observable = new Observable<CheckinResult>(o => observer = o);
+        const source = from(copyIds);
 
-        const checkinOne = (ids: number[]): Promise<CheckinResult> => {
-            if (ids.length === 0) {
-                observer.complete();
-                return Promise.resolve(null);
-            }
-
+        return source.pipe(concatMap(id => {
             const cparams = Object.assign(params, {}); // clone
-            cparams.copy_id = ids.pop();
-
-            return this.checkin(cparams).then(result => {
-                observer.next(result);
-                return checkinOne(ids);
-            });
-        }
-
-        checkinOne(ids);
-
-        return observable;
+            cparams.copy_id = id;
+            return from(this.checkin(cparams));
+        }));
     }
 }
 

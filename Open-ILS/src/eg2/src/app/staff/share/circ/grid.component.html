@@ -54,7 +54,13 @@
     group="Mark" i18n-group i18n-label label="Mark Item Missing"
     (onClick)="showMarkMissingDialog($event)"></eg-grid-toolbar-action>
 
-  <eg-grid-toolbar-action i18n-label label="Checkin" (onClick)="checkin($event)">
+  <eg-grid-toolbar-action
+    group="Mark" i18n-group i18n-label label="Mark Item Lost"
+    (onClick)="markLost($event)"></eg-grid-toolbar-action>
+
+  <!-- .subscribe() nudges the observable to run -->
+  <eg-grid-toolbar-action i18n-label label="Checkin" 
+    (onClick)="checkin($event).subscribe()">
   </eg-grid-toolbar-action>
 
   <eg-grid-column [index]="true" path="index" [hidden]="true"
