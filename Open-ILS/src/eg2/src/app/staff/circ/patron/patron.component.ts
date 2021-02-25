@@ -70,8 +70,15 @@ export class PatronComponent implements OnInit, AfterViewInit {
                 this.context.patron ? this.context.patron.id() : null;
 
             if (this.patronId) {
+
                 if (this.patronId !== prevId) { // different patron
-                    this.changePatron(this.patronId);
+                    this.changePatron(this.patronId)
+                    .then(_ => this.routeToAlertsPane());
+
+                } else {
+                    // Patron already loaded, most likely from the search tab.
+                    // See if we still need to show alerts.
+                    this.routeToAlertsPane();
                 }
             } else {
                 // Use the ID of the previously loaded patron.
@@ -130,16 +137,19 @@ export class PatronComponent implements OnInit, AfterViewInit {
         }
     }
 
-    changePatron(id: number) {
+    changePatron(id: number): Promise<any>  {
         this.patronId = id;
-        this.context.loadPatron(id)
-        .then(_ => {
-            if (this.context.patron &&
-                this.context.alerts.hasAlerts() &&
-               !this.context.patronAlertsShown()) {
-               this.router.navigate(['/staff/circ/patron', id, 'alerts'])
-            }
-        });
+        return this.context.loadPatron(id);
+    }
+
+    routeToAlertsPane() {
+        console.log('testing route change for alerts');
+        if (this.patronTab !== 'search' &&
+            this.context.patron &&
+            this.context.alerts.hasAlerts() &&
+           !this.context.patronAlertsShown()) {
+           this.router.navigate(['/staff/circ/patron', this.patronId, 'alerts'])
+        }
     }
 
     // Route to checkout tab for selected patron.
