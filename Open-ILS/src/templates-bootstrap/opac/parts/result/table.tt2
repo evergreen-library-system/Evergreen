@@ -166,7 +166,11 @@
                                         [%- END; END; -%]
                                     </div>
 
-
+                                    [%- IF !show_detail_view AND args.holdings.size > 0 %]
+                                        <div class="result_call_number">
+                                            [% l('Call number:') %] [% args.holdings.0.label | html %]
+                                        </div>
+                                    [% END %]
 
                                         [% IF rec.popularity > 0.0 AND ctx.hide_badge_scores != 'true' %]
                                         <div><span><strong>[% l('Popularity:') %]</strong> [% rec.popularity %] / 5.0</span></div>
