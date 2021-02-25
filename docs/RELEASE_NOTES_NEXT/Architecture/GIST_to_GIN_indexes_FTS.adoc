@@ -1,0 +1,43 @@
+Migration From GIST to GIN Indexes for Full Text Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Evergreen now uses GIN indexes for full text search in PostgreSQL.
+GIN indexes offer better performance than GIST.  For more information
+on the differences in the two index types, please refer to the
+https://www.postgresql.org/docs/current/textsearch-indexes.html[PostgreSQL
+documentation].
+
+An upgrade script is provided as part of this migration.  If you
+upgrade normally from a previous release of Evergreen, this upgrade
+script should run as part of the upgrade process.  The migration
+script recommends that you run a `VACUUM ANALYZE` in Postgresql on the
+tables that had the indexes changed.  The migration process does not
+do this for you, so you should do it as soon as is convenient after
+the upgrade.
+
+Updating Your Own Indexes
++++++++++++++++++++++++++
+
+If you have added your own full text indexes of type GIST, and you
+wish to migrate them to GIN, you may do so.  The following query, when
+run in your Evergreen databsase after the migration from GIST to GIN,
+will identify the remaining GIST indexes in your database:
+
+[source,sql]
+----------------------------------------
+SELECT schemaname, indexname
+FROM pg_indexes
+WHERE indexdef ~* 'gist';
+----------------------------------------
+
+If the above query produces output, you can run the next query to
+output a SQL script to migrate the remaining indexes from GIST to GIN:
+
+[source,sql]
+----------------------------------------
+SELECT 'DROP INDEX ' || schemaname || '.' || indexname || E';\n' ||
+       REGEXP_REPLACE(indexdef, 'gist', 'gin', 'i') || E';\n' ||
+       'VACUUM ANAlYZE ' || schemaname || '.' || tablename || ';'
+FROM pg_indexes
+WHERE indexdef ~* 'gist';
+----------------------------------------

@@ -68,7 +68,7 @@ BEGIN
                  'metabib_series_field_entry_index_vector_idx',
                  'metabib_combined_series_field_entry_index_vector_idx',
                  'metabib_full_rec_index_vector_idx'
-               );
+               )
   LOOP
     -- Move existing index out of the way so there's no difference between new databases and upgraded databases
     EXECUTE FORMAT('ALTER INDEX %I.%I RENAME TO %I_gist', ind.sch, ind.idx, ind.idx);
