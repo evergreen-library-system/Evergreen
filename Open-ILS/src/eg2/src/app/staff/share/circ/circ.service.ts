@@ -156,6 +156,7 @@ export class CircService {
 
         switch (evt.textcode) {
             case 'ITEM_NOT_CATALOGED':
+                this.audio.play('error.checkout.no_cataloged');
                 // alert, etc.
         }
 

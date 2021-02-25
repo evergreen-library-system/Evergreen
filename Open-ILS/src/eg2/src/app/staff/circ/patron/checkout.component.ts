@@ -16,7 +16,7 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
+import {PrecatCheckoutDialogComponent} from '@eg/staff/share/circ/precat-dialog.component';
 import {AudioService} from '@eg/share/util/audio.service';
 import {CopyAlertsDialogComponent
     } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
@@ -167,7 +167,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
         switch (result.evt.textcode) {
             case 'ITEM_NOT_CATALOGED':
-                this.audio.play('error.checkout.no_cataloged');
                 this.handlePrecat(result);
                 break;
         }

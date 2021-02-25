@@ -15,7 +15,6 @@ import {HoldsComponent} from './holds.component';
 import {EditComponent} from './edit.component';
 import {EditToolbarComponent} from './edit-toolbar.component';
 import {BcSearchComponent} from './bcsearch.component';
-import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
 import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
 import {ItemsComponent} from './items.component';
 
@@ -28,8 +27,7 @@ import {ItemsComponent} from './items.component';
     EditComponent,
     EditToolbarComponent,
     BcSearchComponent,
-    ItemsComponent,
-    PrecatCheckoutDialogComponent
+    ItemsComponent
   ],
   imports: [
     StaffCommonModule,

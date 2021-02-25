@@ -4,18 +4,21 @@ import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
 import {CircService} from './circ.service';
 import {CircGridComponent} from './grid.component';
 import {DueDateDialogComponent} from './due-date-dialog.component';
+import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
 
 @NgModule({
     declarations: [
         CircGridComponent,
-        DueDateDialogComponent
+        DueDateDialogComponent,
+        PrecatCheckoutDialogComponent
     ],
     imports: [
         StaffCommonModule,
         HoldingsModule
     ],
     exports: [
-        CircGridComponent
+        CircGridComponent,
+        PrecatCheckoutDialogComponent
     ],
     providers: [
         CircService
