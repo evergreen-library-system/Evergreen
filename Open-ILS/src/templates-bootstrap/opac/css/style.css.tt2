@@ -1146,6 +1146,14 @@ div.format_icon {
     margin:0;
 }
 
+span.copy_note_label {
+    font-weight: bold;
+}
+
+span.copy_tag_type_label {
+    font-weight: bold;
+}
+
 #gbp_extra, #gbp_arrow_down_link {
     display: none;
 }
