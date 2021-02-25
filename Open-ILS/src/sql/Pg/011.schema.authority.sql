@@ -279,7 +279,7 @@ CREATE TRIGGER authority_full_rec_fti_trigger
     BEFORE UPDATE OR INSERT ON authority.full_rec
     FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('keyword');
 
-CREATE INDEX authority_full_rec_index_vector_idx ON authority.full_rec USING GIST (index_vector);
+CREATE INDEX authority_full_rec_index_vector_idx ON authority.full_rec USING GIN (index_vector);
 /* Enable LIKE to use an index for database clusters with locales other than C or POSIX */
 CREATE INDEX authority_full_rec_value_tpo_index ON authority.full_rec (value text_pattern_ops);
 /* But we still need this (boooo) for paging using >, <, etc */
@@ -407,7 +407,7 @@ CREATE TRIGGER authority_simple_heading_fti_trigger
     BEFORE UPDATE OR INSERT ON authority.simple_heading
     FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('keyword');
 
-CREATE INDEX authority_simple_heading_index_vector_idx ON authority.simple_heading USING GIST (index_vector);
+CREATE INDEX authority_simple_heading_index_vector_idx ON authority.simple_heading USING GIN (index_vector);
 CREATE INDEX authority_simple_heading_value_idx ON authority.simple_heading (value);
 CREATE INDEX authority_simple_heading_sort_value_idx ON authority.simple_heading (sort_value);
 CREATE INDEX authority_simple_heading_record_idx ON authority.simple_heading (record);
