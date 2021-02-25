@@ -356,9 +356,8 @@ ctx.metalinks.push('
                 )
                 %]
                 
-                    <a class="btn btn-action" role="button" href="[% mkurl(ctx.opac_root _ '/place_hold',
-                    {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}, stop_parms) %]"
-                        class="no-dec">
+                    <a class="btn btn-action no-dec" role="button" href="[% mkurl(ctx.opac_root _ '/place_hold',
+                    {hold_target => ctx.bre_id, hold_type => 'T', hold_source_page => mkurl()}, stop_parms) %]">
                         <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Place Hold') %]</span></a>
               
                 [%- END -%]
@@ -366,17 +365,17 @@ ctx.metalinks.push('
                 [%- IF ebook_api.enabled == 'true' && args.ebook %]
               
                     <div id="[%- ctx.bre_id -%]_ebook_checkout" class="rdetail_aux_utils ebook_action hidden">
-                        <a class="btn btn-action" role="button" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
+                        <a class="btn btn-action no-dec" role="button" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
                     {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'}, stop_parms) %]"
-                            class="no-dec" rel="nofollow" vocab="">
+                            rel="nofollow" vocab="">
                             <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Check Out E-Item') %]</span></a>
                     </div>
                
                
                     <div id="[%- ctx.bre_id -%]_ebook_place_hold" class="rdetail_aux_utils ebook_action hidden">
-                        <a class="btn btn-action" role="button" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
+                        <a class="btn btn-action no-dec" role="button" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
                     {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'}, stop_parms) %]"
-                            class="no-dec" rel="nofollow" vocab="">
+                             rel="nofollow" vocab="">
                             <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Place Hold on E-Item') %]</span></a>
                     </div>
                
@@ -442,7 +441,7 @@ ctx.metalinks.push('
                 [% IF !search.no_highlight %]
                
                     [% IF CGI.param('no_highlight') %]
-                    <a class="btn btn-action" role="button" href="[% mkurl('', {}, ['no_highlight']) %]" class="no-dec">
+                    <a class="btn btn-action no-dec" role="button" href="[% mkurl('', {}, ['no_highlight']) %]">
                         [% ELSE %]
                         <a href="[% mkurl('', {no_highlight => '1'}) %]" class="btn btn-action" role="button">
                             [% END %]
