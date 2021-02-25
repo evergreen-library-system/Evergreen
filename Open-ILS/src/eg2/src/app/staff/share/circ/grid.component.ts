@@ -394,7 +394,6 @@ export class CircGridComponent implements OnInit {
         ));
     }
 
-    //markLost(rows: CircGridEntry[]): Observable<any> {
     markLost(rows: CircGridEntry[]) {
         const dialog = this.openProgressDialog(rows);
         const barcodes = this.getCopies(rows).map(c => c.barcode());
