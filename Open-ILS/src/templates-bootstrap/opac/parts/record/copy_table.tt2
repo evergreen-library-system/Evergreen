@@ -111,7 +111,31 @@ END; # FOREACH bib
             </td>[% END %]
             <td><span property="sku">[% callnum | html %]</span> [% IF ctx.get_org_setting(CGI.param('loc')
                 OR ctx.aou_tree.id, 'sms.enable') == 1 %](<a href="[% mkurl(ctx.opac_root _ '/sms_cn',
-               {copy_id => copy_info.id}) %];rec=[%- ctx.bre_id -%]" rel="nofollow" vocab="">Text</a>)[% END %]</td>
+               {copy_id => copy_info.id}) %];rec=[%- ctx.bre_id -%]" rel="nofollow" vocab="">Text</a>)[% END %]
+
+       [% IF copy_info.notes; %]
+            [% FOREACH note IN copy_info.notes; %]
+                <div><span class="copy_note_label">[% note.title _ ": " | html %]</span><span class="copy_note_value">[% note.value | html %]</span></div>
+            [% END %]
+        [% END %]
+
+       [% IF copy_info.tags; %]
+            [% FOREACH tag IN copy_info.tags; %]
+                    <div>
+                    <span class="copy_tag_type_label">[% tag.tag_type.label _ ": " | html %]</span>
+                        <span class="copy_tag_value">
+                        [% IF tag.url %]
+                            <a href="[% tag.url | html %]">
+                            [% END %]
+                                [% tag.value | html %]
+                            [% IF tag.url %]
+                            </a>
+                            [% END %]
+                        </span>
+                    </div>
+            [% END %]
+        [% END %]
+        </td>
             [%- IF has_parts == 'true' %]
             <td>[% copy_info.part_label | html %]</td>
             [%- END %]
@@ -239,33 +263,6 @@ END; # FOREACH bib
             [% END %]</td>
             [% END %]
         </tr>
-
-        [% IF copy_info.notes; %]
-            [% FOREACH note IN copy_info.notes; %]
-                <tr><td>&nbsp;</td><td class="copy_note" colspan="4" property="description"><strong>[% note.title | html %]:</strong> [% note.value | html %]</td></tr>
-            [% END %]
-        [% END %]
-
-        [% IF copy_info.tags; %]
-            [% FOREACH tag IN copy_info.tags; %]
-                <tr class="copy_tag_row">
-                    <td>&nbsp;</td>
-                    <td class="copy_tag" colspan="4">
-                    <span class="copy_tag_type_label">[% tag.tag_type.label _ ": " | html %]</span>
-                        <span class="copy_tag_value">
-                        [% IF tag.url %]
-                            <a href="[% tag.url | html %]">
-                            [% END %]
-                                [% tag.value | html %]
-                            [% IF tag.url %]
-                            </a>
-                            [% END %]
-                        </span>
-                    </td>
-                </tr>
-            [% END %]
-        [% END %]
-
 
 [%- IF copy_info.peer_bib_marc.size > 0;
 '<tr><td><ul>';
