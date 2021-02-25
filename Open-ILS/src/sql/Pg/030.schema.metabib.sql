@@ -40,7 +40,7 @@ CREATE TRIGGER metabib_identifier_field_entry_fti_trigger
 	BEFORE UPDATE OR INSERT ON metabib.identifier_field_entry
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('identifier');
 
-CREATE INDEX metabib_identifier_field_entry_index_vector_idx ON metabib.identifier_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_identifier_field_entry_index_vector_idx ON metabib.identifier_field_entry USING GIN (index_vector);
 CREATE INDEX metabib_identifier_field_entry_value_idx ON metabib.identifier_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_identifier_field_entry_source_idx ON metabib.identifier_field_entry (source);
 
@@ -50,7 +50,7 @@ CREATE TABLE metabib.combined_identifier_field_entry (
 	index_vector	tsvector	NOT NULL
 );
 CREATE UNIQUE INDEX metabib_combined_identifier_field_entry_fakepk_idx ON metabib.combined_identifier_field_entry (record, COALESCE(metabib_field::TEXT,''));
-CREATE INDEX metabib_combined_identifier_field_entry_index_vector_idx ON metabib.combined_identifier_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_combined_identifier_field_entry_index_vector_idx ON metabib.combined_identifier_field_entry USING GIN (index_vector);
 CREATE INDEX metabib_combined_identifier_field_source_idx ON metabib.combined_identifier_field_entry (metabib_field);
 
 CREATE TABLE metabib.title_field_entry (
@@ -64,7 +64,7 @@ CREATE TRIGGER metabib_title_field_entry_fti_trigger
 	BEFORE UPDATE OR INSERT ON metabib.title_field_entry
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('title');
 
-CREATE INDEX metabib_title_field_entry_index_vector_idx ON metabib.title_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_title_field_entry_index_vector_idx ON metabib.title_field_entry USING GIN (index_vector);
 CREATE INDEX metabib_title_field_entry_value_idx ON metabib.title_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_title_field_entry_source_idx ON metabib.title_field_entry (source);
 
@@ -74,7 +74,7 @@ CREATE TABLE metabib.combined_title_field_entry (
 	index_vector	tsvector	NOT NULL
 );
 CREATE UNIQUE INDEX metabib_combined_title_field_entry_fakepk_idx ON metabib.combined_title_field_entry (record, COALESCE(metabib_field::TEXT,''));
-CREATE INDEX metabib_combined_title_field_entry_index_vector_idx ON metabib.combined_title_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_combined_title_field_entry_index_vector_idx ON metabib.combined_title_field_entry USING GIN (index_vector);
 CREATE INDEX metabib_combined_title_field_source_idx ON metabib.combined_title_field_entry (metabib_field);
 
 CREATE TABLE metabib.author_field_entry (
@@ -88,7 +88,7 @@ CREATE TRIGGER metabib_author_field_entry_fti_trigger
 	BEFORE UPDATE OR INSERT ON metabib.author_field_entry
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('author');
 
-CREATE INDEX metabib_author_field_entry_index_vector_idx ON metabib.author_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_author_field_entry_index_vector_idx ON metabib.author_field_entry USING GIN (index_vector);
 CREATE INDEX metabib_author_field_entry_value_idx ON metabib.author_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_author_field_entry_source_idx ON metabib.author_field_entry (source);
 
@@ -98,7 +98,7 @@ CREATE TABLE metabib.combined_author_field_entry (
 	index_vector	tsvector	NOT NULL
 );
 CREATE UNIQUE INDEX metabib_combined_author_field_entry_fakepk_idx ON metabib.combined_author_field_entry (record, COALESCE(metabib_field::TEXT,''));
-CREATE INDEX metabib_combined_author_field_entry_index_vector_idx ON metabib.combined_author_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_combined_author_field_entry_index_vector_idx ON metabib.combined_author_field_entry USING GIN (index_vector);
 CREATE INDEX metabib_combined_author_field_source_idx ON metabib.combined_author_field_entry (metabib_field);
 
 CREATE TABLE metabib.subject_field_entry (
@@ -112,7 +112,7 @@ CREATE TRIGGER metabib_subject_field_entry_fti_trigger
 	BEFORE UPDATE OR INSERT ON metabib.subject_field_entry
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('subject');
 
-CREATE INDEX metabib_subject_field_entry_index_vector_idx ON metabib.subject_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_subject_field_entry_index_vector_idx ON metabib.subject_field_entry USING GIN (index_vector);
 CREATE INDEX metabib_subject_field_entry_value_idx ON metabib.subject_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_subject_field_entry_source_idx ON metabib.subject_field_entry (source);
 
@@ -122,7 +122,7 @@ CREATE TABLE metabib.combined_subject_field_entry (
 	index_vector	tsvector	NOT NULL
 );
 CREATE UNIQUE INDEX metabib_combined_subject_field_entry_fakepk_idx ON metabib.combined_subject_field_entry (record, COALESCE(metabib_field::TEXT,''));
-CREATE INDEX metabib_combined_subject_field_entry_index_vector_idx ON metabib.combined_subject_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_combined_subject_field_entry_index_vector_idx ON metabib.combined_subject_field_entry USING GIN (index_vector);
 CREATE INDEX metabib_combined_subject_field_source_idx ON metabib.combined_subject_field_entry (metabib_field);
 
 CREATE TABLE metabib.keyword_field_entry (
@@ -136,7 +136,7 @@ CREATE TRIGGER metabib_keyword_field_entry_fti_trigger
 	BEFORE UPDATE OR INSERT ON metabib.keyword_field_entry
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('keyword');
 
-CREATE INDEX metabib_keyword_field_entry_index_vector_idx ON metabib.keyword_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_keyword_field_entry_index_vector_idx ON metabib.keyword_field_entry USING GIN (index_vector);
 CREATE INDEX metabib_keyword_field_entry_value_idx ON metabib.keyword_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_keyword_field_entry_source_idx ON metabib.keyword_field_entry (source);
 
@@ -146,7 +146,7 @@ CREATE TABLE metabib.combined_keyword_field_entry (
 	index_vector	tsvector	NOT NULL
 );
 CREATE UNIQUE INDEX metabib_combined_keyword_field_entry_fakepk_idx ON metabib.combined_keyword_field_entry (record, COALESCE(metabib_field::TEXT,''));
-CREATE INDEX metabib_combined_keyword_field_entry_index_vector_idx ON metabib.combined_keyword_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_combined_keyword_field_entry_index_vector_idx ON metabib.combined_keyword_field_entry USING GIN (index_vector);
 CREATE INDEX metabib_combined_keyword_field_source_idx ON metabib.combined_keyword_field_entry (metabib_field);
 
 CREATE TABLE metabib.series_field_entry (
@@ -160,7 +160,7 @@ CREATE TRIGGER metabib_series_field_entry_fti_trigger
 	BEFORE UPDATE OR INSERT ON metabib.series_field_entry
 	FOR EACH ROW EXECUTE PROCEDURE oils_tsearch2('series');
 
-CREATE INDEX metabib_series_field_entry_index_vector_idx ON metabib.series_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_series_field_entry_index_vector_idx ON metabib.series_field_entry USING GIN (index_vector);
 CREATE INDEX metabib_series_field_entry_value_idx ON metabib.series_field_entry (SUBSTRING(value,1,1024)) WHERE index_vector = ''::TSVECTOR;
 CREATE INDEX metabib_series_field_entry_source_idx ON metabib.series_field_entry (source);
 
@@ -170,7 +170,7 @@ CREATE TABLE metabib.combined_series_field_entry (
 	index_vector	tsvector	NOT NULL
 );
 CREATE UNIQUE INDEX metabib_combined_series_field_entry_fakepk_idx ON metabib.combined_series_field_entry (record, COALESCE(metabib_field::TEXT,''));
-CREATE INDEX metabib_combined_series_field_entry_index_vector_idx ON metabib.combined_series_field_entry USING GIST (index_vector);
+CREATE INDEX metabib_combined_series_field_entry_index_vector_idx ON metabib.combined_series_field_entry USING GIN (index_vector);
 CREATE INDEX metabib_combined_series_field_source_idx ON metabib.combined_series_field_entry (metabib_field);
 
 CREATE VIEW metabib.combined_all_field_entry AS
@@ -566,7 +566,7 @@ CREATE TABLE metabib.record_attr (
 	id		BIGINT	PRIMARY KEY REFERENCES biblio.record_entry (id) ON DELETE CASCADE,
 	attrs	HSTORE	NOT NULL DEFAULT ''::HSTORE
 );
-CREATE INDEX metabib_svf_attrs_idx ON metabib.record_attr USING GIST (attrs);
+CREATE INDEX metabib_svf_attrs_idx ON metabib.record_attr USING GIN (attrs);
 CREATE INDEX metabib_svf_date1_idx ON metabib.record_attr ((attrs->'date1'));
 CREATE INDEX metabib_svf_dates_idx ON metabib.record_attr ((attrs->'date1'),(attrs->'date2'));
 */
@@ -653,7 +653,7 @@ CREATE INDEX metabib_full_rec_value_idx ON metabib.real_full_rec (substring(valu
 /* Enable LIKE to use an index for database clusters with locales other than C or POSIX */
 CREATE INDEX metabib_full_rec_value_tpo_index ON metabib.real_full_rec (substring(value,1,1024) text_pattern_ops);
 CREATE INDEX metabib_full_rec_record_idx ON metabib.real_full_rec (record);
-CREATE INDEX metabib_full_rec_index_vector_idx ON metabib.real_full_rec USING GIST (index_vector);
+CREATE INDEX metabib_full_rec_index_vector_idx ON metabib.real_full_rec USING GIN (index_vector);
 CREATE INDEX metabib_full_rec_isxn_caseless_idx
     ON metabib.real_full_rec (LOWER(value))
     WHERE tag IN ('020', '022', '024');
