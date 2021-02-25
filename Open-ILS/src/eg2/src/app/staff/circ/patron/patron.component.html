@@ -45,7 +45,7 @@
         </ng-container>
 
         <li ngbNavItem="checkout" [disabled]="!context.patron">
-          <a ngbNavLink i18n>Checkout</a>
+          <a ngbNavLink i18n>Check Out</a>
           <ng-template ngbNavContent>
             <div class="">
               <eg-patron-checkout></eg-patron-checkout> 
@@ -99,7 +99,7 @@
             (click)="false" class="nav-link" ngbDropdownToggle>Other</a>
           <div ngbDropdownMenu>
             <a routerLink="/staff/circ/patron/{{patronId}}/alerts" 
-              ngbDropdownItem i18n>Alerts</a>
+              ngbDropdownItem i18n>Alerts and Messages</a>
             <a routerLink="/staff/circ/patron/{{patronId}}/notes" 
               ngbDropdownItem i18n>Notes</a>
             <a routerLink="/staff/circ/patron/{{patronId}}/triggered_events" 
@@ -136,8 +136,11 @@
               ngbDropdownItem i18n>Completely Purge Account</a>
           </div>
           <ng-template ngbNavContent>
-            <!-- display selected altTab component -->
-            OTHER STUFF: {{altTab}}
+            <ng-container [ngSwitch]="altTab">
+              <div *ngSwitchCase="'alerts'">
+                <eg-patron-alerts></eg-patron-alerts>
+              </div>
+            </ng-container>
           </ng-template>
         </li>
 

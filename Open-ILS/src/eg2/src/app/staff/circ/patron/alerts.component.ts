@@ -7,10 +7,10 @@ import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
 
 @Component({
-  templateUrl: 'edit.component.html',
-  selector: 'eg-patron-edit'
+  templateUrl: 'alerts.component.html',
+  selector: 'eg-patron-alerts'
 })
-export class EditComponent implements OnInit {
+export class PatronAlertsComponent implements OnInit {
 
     constructor(
         private org: OrgService,

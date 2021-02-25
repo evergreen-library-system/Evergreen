@@ -7,7 +7,7 @@ import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronManagerService, CircGridEntry} from './patron.service';
+import {PatronContextService, CircGridEntry} from './patron.service';
 import {CheckoutParams, CheckoutResult, CircService
     } from '@eg/staff/share/circ/circ.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
@@ -59,7 +59,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         private net: NetService,
         public circ: CircService,
         public patronService: PatronService,
-        public context: PatronManagerService,
+        public context: PatronContextService,
         private audio: AudioService
     ) {}
 

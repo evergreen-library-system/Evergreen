@@ -5,7 +5,7 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronManagerService} from './patron.service';
+import {PatronContextService} from './patron.service';
 import {PatronSearch, PatronSearchComponent
     } from '@eg/staff/share/patron/search.component';
 
@@ -31,7 +31,7 @@ export class PatronComponent implements OnInit, AfterViewInit {
         private auth: AuthService,
         private store: ServerStoreService,
         public patronService: PatronService,
-        public context: PatronManagerService
+        public context: PatronContextService
     ) {}
 
     ngOnInit() {
@@ -71,7 +71,7 @@ export class PatronComponent implements OnInit, AfterViewInit {
 
             if (this.patronId) {
                 if (this.patronId !== prevId) { // different patron
-                    this.context.loadPatron(this.patronId);
+                    this.changePatron(this.patronId);
                 }
             } else {
                 // Use the ID of the previously loaded patron.
@@ -126,10 +126,20 @@ export class PatronComponent implements OnInit, AfterViewInit {
 
         const id = ids[0];
         if (id !== this.patronId) {
-            this.patronId = id;
-            this.context.loadPatron(id);
-            return;
+            this.changePatron(id);
         }
+    }
+
+    changePatron(id: number) {
+        this.patronId = id;
+        this.context.loadPatron(id)
+        .then(_ => {
+            if (this.context.patron &&
+                this.context.alerts.hasAlerts() &&
+               !this.context.patronAlertsShown()) {
+               this.router.navigate(['/staff/circ/patron', id, 'alerts'])
+            }
+        });
     }
 
     // Route to checkout tab for selected patron.

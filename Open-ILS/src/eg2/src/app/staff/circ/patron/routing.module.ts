@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {PatronComponent} from './patron.component';
 import {BcSearchComponent} from './bcsearch.component';
+import {PatronResolver} from './resolver.service';
 
 const routes: Routes = [{
     path: '',
@@ -13,7 +14,8 @@ const routes: Routes = [{
       import('./event-log/event-log.module').then(m => m.EventLogModule)
   }, {
     path: 'search',
-    component: PatronComponent
+    component: PatronComponent,
+    resolve: {resolver : PatronResolver}
   }, {
     path: 'bcsearch',
     component: BcSearchComponent
@@ -21,8 +23,12 @@ const routes: Routes = [{
     path: 'bcsearch/:barcode',
     component: BcSearchComponent
   }, {
+    path: ':id',
+    redirectTo: ':id/checkout'
+  }, {
     path: ':id/:tab',
     component: PatronComponent,
+    resolve: {resolver : PatronResolver}
 }];
 
 @NgModule({

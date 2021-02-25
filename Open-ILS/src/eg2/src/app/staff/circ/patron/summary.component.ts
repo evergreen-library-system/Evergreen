@@ -4,7 +4,7 @@ import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronManagerService} from './patron.service';
+import {PatronContextService} from './patron.service';
 
 @Component({
   templateUrl: 'summary.component.html',
@@ -17,15 +17,10 @@ export class SummaryComponent implements OnInit {
         private org: OrgService,
         private net: NetService,
         public patronService: PatronService,
-        public context: PatronManagerService
+        public context: PatronContextService
     ) {}
 
     ngOnInit() {
-    }
-
-    orgSn(orgId: number): string {
-        const org = this.org.get(orgId);
-        return org ? org.shortname() : '';
     }
 }
 

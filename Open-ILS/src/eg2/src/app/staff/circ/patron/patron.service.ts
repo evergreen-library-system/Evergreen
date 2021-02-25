@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
+import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronSearch} from '@eg/staff/share/patron/search.component';
+import {StoreService} from '@eg/core/store.service';
 
 export interface CircGridEntry {
     title?: string;
@@ -52,30 +54,54 @@ interface PatronStats {
     };
 }
 
+export class PatronAlerts {
+    holdsReady = 0;
+    accountExpired = false;
+    accountExpiresSoon = false;
+    patronBarred = false;
+    patronInactive = false;
+    retrievedWithInactive = false;
+    invalidAddress = false;
+    alertMessage: string = null;
+    alertPenalties: IdlObject[] = [];
+
+    hasAlerts(): boolean {
+        return (
+            this.holdsReady > 0 ||
+            this.accountExpired ||
+            this.accountExpiresSoon ||
+            this.patronBarred ||
+            this.patronInactive ||
+            this.retrievedWithInactive ||
+            this.invalidAddress ||
+            this.alertMessage !== null ||
+            this.alertPenalties.length > 0
+        );
+    }
+}
+
 @Injectable()
-export class PatronManagerService {
+export class PatronContextService {
 
     patron: IdlObject;
     patronStats: PatronStats;
+    alerts: PatronAlerts;
 
-    // Value for YAOUS circ.do_not_tally_claims_returned
-    noTallyClaimsReturned = false;
-
-    // Value for YAOUS circ.tally_lost
-    tallyLost = false;
+    noTallyClaimsReturned = false; // circ.do_not_tally_claims_returned
+    tallyLost = false; // circ.tally_lost
 
     loaded = false;
 
-    accountExpired = false;
-    accountExpiresSoon = false;
-
     lastPatronSearch: PatronSearch;
+    searchBarcode: string = null;
 
     // These should persist tab changes
     checkouts: CircGridEntry[] = [];
 
     constructor(
+        private store: StoreService,
         private net: NetService,
+        private org: OrgService,
         private auth: AuthService,
         public patronService: PatronService
     ) {}
@@ -84,6 +110,7 @@ export class PatronManagerService {
         this.loaded = false;
         this.patron = null;
         this.checkouts = [];
+        this.alerts = new PatronAlerts();
 
         return this.net.request(
             'open-ils.actor',
@@ -91,28 +118,8 @@ export class PatronManagerService {
             this.auth.token(), id, PATRON_FLESH_FIELDS).toPromise()
         .then(p => this.patron = p)
         .then(_ => this.getPatronStats(id))
-        .then(_ => this.setExpires())
+        .then(_ => this.compileAlerts())
         .then(_ => this.loaded = true);
-    }
-
-    setExpires(): Promise<any> {
-        this.accountExpired = false;
-        this.accountExpiresSoon = false;
-
-        // When quickly navigating patron search results it's possible
-        // for this.patron to be cleared right before this function
-        // is called.  Exit early instead of making an unneeded call.
-        // For this func. in particular a nasty JS error is thrown.
-        if (!this.patron) { return Promise.resolve(); }
-
-        return this.patronService.testExpire(this.patron)
-        .then(value => {
-            if (value === 'expired') {
-                this.accountExpired = true;
-            } else if (value === 'soon') {
-                this.accountExpiresSoon = true;
-            }
-        });
     }
 
     getPatronStats(id: number): Promise<any> {
@@ -162,6 +169,50 @@ export class PatronManagerService {
                 this.patronStats.checkouts.noncat = noncats.length;
             }
         });
+    }
+
+    patronAlertsShown(): boolean {
+        if (!this.patron) { return false; }
+        const shown = this.store.getSessionItem('eg.circ.last_alerted_patron');
+        if (shown === this.patron.id()) { return true; }
+        this.store.setSessionItem('eg.circ.last_alerted_patron', this.patron.id());
+        return false;
+    }
+
+    compileAlerts(): Promise<any> {
+
+        // User navigated to a different patron mid-data load.
+        if (!this.patron) { return Promise.resolve(); }
+
+        this.alerts.holdsReady = this.patronStats.holds.ready;
+        this.alerts.patronBarred = this.patron.barred() === 't';
+        this.alerts.patronInactive = this.patron.active() === 'f';
+        this.alerts.invalidAddress = this.patron.addresses()
+            .filter(a => a.valid() === 'f').length > 0;
+        this.alerts.alertMessage = this.patron.alert_message();
+        this.alerts.alertPenalties = this.patron.standing_penalties()
+            .filter(p => p.standing_penalty().staff_alert() === 't');
+
+        if (this.searchBarcode) {
+            const card = this.patron.cards()
+                .filter(c => c.barcode() === this.searchBarcode)[0];
+            this.alerts.retrievedWithInactive = card && card.active() === 'f';
+            this.searchBarcode = null;
+        }
+
+        return this.patronService.testExpire(this.patron)
+        .then(value => {
+            if (value === 'expired') {
+                this.alerts.accountExpired = true;
+            } else if (value === 'soon') {
+                this.alerts.accountExpiresSoon = true;
+            }
+        });
+    }
+
+    orgSn(orgId: number): string {
+        const org = this.org.get(orgId);
+        return org ? org.shortname() : '';
     }
 }
 

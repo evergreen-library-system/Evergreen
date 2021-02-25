@@ -1,0 +1,75 @@
+
+<div *ngIf="context.alerts">
+
+  <img class="mt-n4" src="/images/stop_sign.png"/>
+
+  <div class="alert alert-info" *ngIf="context.alerts.holdsReady > 0" i18n>
+    Holds available: {{context.alerts.holdsReady}}
+  </div>
+
+  <div class="mt-2 alert alert-warning" *ngIf="context.alerts.accountExpired" i18n>
+    Patron account is EXPIRED.
+  </div>
+
+  <div class="mt-2 alert alert-warning" *ngIf="context.alerts.accountExpiresSoon" i18n>
+    Patron account will expire soon.  Please renew.
+  </div>
+
+  <div class="mt-2 alert alert-danger" *ngIf="context.alerts.patronBarred" i18n>
+    Patron account is BARRED
+  </div>
+
+  <div class="mt-2 alert alert-warning" *ngIf="context.alerts.patronInactive" i18n>
+    Patron account is INACTIVE
+  </div>
+
+  <div class="mt-2 alert alert-warning" *ngIf="context.alerts.retrievedWithInactive" i18n>
+    Patron account retrieved with an INACTIVE card.
+  </div>
+
+  <div class="mt-2 alert alert-warning" *ngIf="context.alerts.invalidAddress" i18n>
+    Patron account has invalid addresses.
+  </div>
+
+  <!-- alert message -->
+  <div class="row" *ngIf="context.alerts.alertMessage">
+    <div class="col-lg-6 offset-lg-3">
+      <div class="card">
+        <div class="card-header" i18n>Alert Message</div>
+        <div class="card-body">{{context.alerts.alertMessage}}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- penalties -->
+  <div class="row" *ngIf="context.alerts.alertPenalties.length">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header" i18n>Penalties</div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item" 
+              *ngFor="let penalty of context.alerts.alertPenalties">
+              <div class="row">
+                <div class="col-lg-2">
+                  {{context.orgSn(penalty.org_unit())}}
+                </div>
+                <div class="col-lg-8"
+                  title="{{penalty.standing_penalty().name()}}">
+                  {{penalty.standing_penalty().label()}}
+                  <div>{{penalty.note()}}</div><!-- force newline -->
+                </div>
+                <div class="col-lg-2">
+                  {{penalty.set_date() | date:'short'}}
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-4 well-value" i18n>
+    Select a tab above (for example, Check Out) to clear this alert.
+  </div>
+</div>

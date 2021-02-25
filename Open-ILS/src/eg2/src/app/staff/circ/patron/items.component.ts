@@ -9,7 +9,7 @@ import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronManagerService} from './patron.service';
+import {PatronContextService} from './patron.service';
 import {CheckoutResult, CircService} from '@eg/staff/share/circ/circ.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -57,7 +57,7 @@ export class ItemsComponent implements OnInit, AfterViewInit {
         private store: StoreService,
         private serverStore: ServerStoreService,
         public patronService: PatronService,
-        public context: PatronManagerService
+        public context: PatronContextService
     ) {}
 
     ngOnInit() {
