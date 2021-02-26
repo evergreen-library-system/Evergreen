@@ -5,12 +5,14 @@ import {CircService} from './circ.service';
 import {CircGridComponent} from './grid.component';
 import {DueDateDialogComponent} from './due-date-dialog.component';
 import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
+import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component';
 
 @NgModule({
     declarations: [
         CircGridComponent,
         DueDateDialogComponent,
-        PrecatCheckoutDialogComponent
+        PrecatCheckoutDialogComponent,
+        ClaimsReturnedDialogComponent
     ],
     imports: [
         StaffCommonModule,

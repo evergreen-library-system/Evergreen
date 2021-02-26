@@ -6,11 +6,13 @@
 <eg-mark-damaged-dialog #markDamagedDialog [handleCheckin]="true">
 </eg-mark-damaged-dialog>
 <eg-mark-missing-dialog #markMissingDialog></eg-mark-missing-dialog>
+<eg-claims-returned-dialog #claimsReturnedDialog></eg-claims-returned-dialog>
 <eg-confirm-dialog #itemsOutConfirm
   i18n-dialogTitle i18n-dialogBody
   dialogTitle="Items Checked Out"
   dialogBody="The selected items are checked out.  Check them in before continuing?">
 </eg-confirm-dialog>
+
 
 <ng-template #titleTemplate let-r="row">
   <ng-container *ngIf="r.record">
@@ -48,14 +50,18 @@
 
   <eg-grid-toolbar-action
     group="Mark" i18n-group i18n-label label="Mark Item Damaged"
-    (onClick)="showMarkDamagedDialog($event)"></eg-grid-toolbar-action>
+    (onClick)="markDamaged($event)"></eg-grid-toolbar-action>
 
   <eg-grid-toolbar-action
     group="Mark" i18n-group i18n-label label="Mark Item Missing"
-    (onClick)="showMarkMissingDialog($event)"></eg-grid-toolbar-action>
+    (onClick)="markMissing($event)"></eg-grid-toolbar-action>
 
   <eg-grid-toolbar-action
-    group="Mark" i18n-group i18n-label label="Mark Item Lost"
+    group="Mark" i18n-group i18n-label label="Mark Claims Returned"
+    (onClick)="claimsReturned($event)"></eg-grid-toolbar-action>
+
+  <eg-grid-toolbar-action
+    group="Mark" i18n-group i18n-label label="Mark Lost (By Patron)"
     (onClick)="markLost($event)"></eg-grid-toolbar-action>
 
   <!-- .subscribe() nudges the observable to run -->
@@ -81,10 +87,29 @@
   <eg-grid-column path="title" label="Title" i18n-label 
     [cellTemplate]="titleTemplate"></eg-grid-column>
 
+  <eg-grid-column path="circ.stop_fines" label="Fines Stopped"
+    i18n-label></eg-grid-column>
+
+  <eg-grid-column path="circ.renewal_remaining" label="Renewals Remaining"
+    i18n-label></eg-grid-column>
+
+  <eg-grid-column path="circ.circ_lib.shortname" label="Checkout / Renewal Library"
+    i18n-label></eg-grid-column>
+
+  <eg-grid-column path="circ.checkin_workstation.name" label="Checkin Workstation"
+    i18n-label></eg-grid-column>
+
+  <eg-grid-column path="circ.workstation.name" label="Checkout Workstation"
+    i18n-label></eg-grid-column>
+
   <eg-grid-column path="author" label="Author" i18n-label></eg-grid-column>
 
+  <eg-grid-column path="noticeCount" label="Total Notices" i18n-label></eg-grid-column>
+
+  <eg-grid-column path="lastNotice" label="Last Notice" i18n-label></eg-grid-column>
+
   <eg-grid-column path="nonCatCount" label="Non-Cataloged Count"
-    i18n-label></eg-grid-column>
+    [hidden]="true" i18n-label></eg-grid-column>
 
 </eg-grid>
 

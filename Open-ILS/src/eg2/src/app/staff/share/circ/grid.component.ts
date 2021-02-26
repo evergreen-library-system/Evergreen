@@ -1,7 +1,7 @@
 import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Observable, empty, of, from} from 'rxjs';
-import {map, tap, switchMap, concatMap} from 'rxjs/operators';
+import {map, concat, ignoreElements, last, tap, mergeMap, switchMap, concatMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
@@ -29,6 +29,7 @@ import {MarkDamagedDialogComponent
     } from '@eg/staff/share/holdings/mark-damaged-dialog.component';
 import {MarkMissingDialogComponent
     } from '@eg/staff/share/holdings/mark-missing-dialog.component';
+import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component';
 
 export interface CircGridEntry {
     index: string; // class + id -- row index
@@ -42,6 +43,8 @@ export interface CircGridEntry {
     dueDate?: string;
     copyAlertCount?: number;
     nonCatCount?: number;
+    noticeCount?: number;
+    lastNotice?: string; // iso date
 
     // useful for reporting precaculated values and avoiding
     // repetitive date creation on grid render.
@@ -50,7 +53,7 @@ export interface CircGridEntry {
 
 const CIRC_FLESH_DEPTH = 4;
 const CIRC_FLESH_FIELDS = {
-  circ: ['target_copy', 'workstation', 'checkin_workstation'],
+  circ: ['target_copy', 'workstation', 'checkin_workstation', 'circ_lib'],
   acp:  [
     'call_number',
     'holds_count',
@@ -100,8 +103,12 @@ export class CircGridComponent implements OnInit {
         private markMissingDialog: MarkMissingDialogComponent;
     @ViewChild('itemsOutConfirm')
         private itemsOutConfirm: ConfirmDialogComponent;
+    @ViewChild('claimsReturnedConfirm')
+        private claimsReturnedConfirm: ConfirmDialogComponent;
     @ViewChild('progressDialog')
         private progressDialog: ProgressDialogComponent;
+    @ViewChild('claimsReturnedDialog')
+        private claimsReturnedDialog: ClaimsReturnedDialogComponent;
 
     constructor(
         private org: OrgService,
@@ -163,6 +170,14 @@ export class CircGridComponent implements OnInit {
 
         this.entries = [];
 
+        // fetchCircs and fetchNotices both return observable of grid entries.
+        // ignore the entries from fetchCircs so they are not duplicated.
+        return this.fetchCircs(circIds)
+            .pipe(ignoreElements(), concat(this.fetchNotices(circIds)));
+    }
+
+    fetchCircs(circIds: number[]): Observable<CircGridEntry> {
+
         return this.pcrud.search('circ', {id: circIds}, {
             flesh: CIRC_FLESH_DEPTH,
             flesh_fields: CIRC_FLESH_FIELDS,
@@ -181,6 +196,21 @@ export class CircGridComponent implements OnInit {
         }));
     }
 
+    fetchNotices(circIds: number[]): Observable<CircGridEntry> {
+        return this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.itemsout.notices',
+            this.auth.token(), circIds
+        ).pipe(tap(notice => {
+
+            const entry = this.entries.filter(
+                e => e.circ.id() === Number(notice.circ_id))[0];
+
+            entry.noticeCount = notice.numNotices;
+            entry.lastNotice = notice.lastDt;
+            return entry;
+        }));
+    }
 
     // Also useful for manually appending circ-like things (e.g. noncat
     // circs) that can be massaged into CircGridEntry structs.
@@ -317,7 +347,7 @@ export class CircGridComponent implements OnInit {
         return row.overdue;
     }
 
-    showMarkDamagedDialog(rows: CircGridEntry[]) {
+    markDamaged(rows: CircGridEntry[]) {
         const copyIds = this.getCopyIds(rows, 14 /* ignore damaged */);
 
         if (copyIds.length === 0) { return; }
@@ -345,7 +375,7 @@ export class CircGridComponent implements OnInit {
         });
     }
 
-    showMarkMissingDialog(rows: CircGridEntry[]) {
+    markMissing(rows: CircGridEntry[]) {
         const copyIds = this.getCopyIds(rows, 4 /* ignore missing */);
 
         if (copyIds.length === 0) { return; }
@@ -410,6 +440,19 @@ export class CircGridComponent implements OnInit {
             () => {
                 dialog.close();
                 this.emitReloadRequest();
+            }
+        );
+    }
+
+    claimsReturned(rows: CircGridEntry[]) {
+        this.claimsReturnedDialog.barcodes =
+            this.getCopies(rows).map(c => c.barcode());
+
+        this.claimsReturnedDialog.open().subscribe(
+            rowsModified => {
+                if (rowsModified) {
+                    this.emitReloadRequest();
+                }
             }
         );
     }
