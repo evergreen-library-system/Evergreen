@@ -36,6 +36,12 @@ export class PrecatCheckoutDialogComponent extends DialogComponent implements On
 
     ngOnInit() {
         this.onOpen$.subscribe(_ => {
+
+            this.values.dummy_title = null;
+            this.values.dummy_author = null;
+            this.values.dummy_isbn = null;
+            this.values.circ_modifier = null;
+
             this.perm.hasWorkPermHere('CREATE_PRECAT')
             .then(perms => this.hasPerm = perms['CREATE_PRECAT']);
 

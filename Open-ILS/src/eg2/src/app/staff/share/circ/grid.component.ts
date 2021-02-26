@@ -89,6 +89,7 @@ export class CircGridComponent implements OnInit {
     cellTextGenerator: GridCellTextGenerator;
     rowFlair: (row: CircGridEntry) => GridRowFlairEntry;
     rowClass: (row: CircGridEntry) => string;
+    claimsNeverCount = 0;
 
     nowDate: number = new Date().getTime();
 
@@ -105,6 +106,8 @@ export class CircGridComponent implements OnInit {
         private itemsOutConfirm: ConfirmDialogComponent;
     @ViewChild('claimsReturnedConfirm')
         private claimsReturnedConfirm: ConfirmDialogComponent;
+    @ViewChild('claimsNeverConfirm')
+        private claimsNeverConfirm: ConfirmDialogComponent;
     @ViewChild('progressDialog')
         private progressDialog: ProgressDialogComponent;
     @ViewChild('claimsReturnedDialog')
@@ -455,6 +458,32 @@ export class CircGridComponent implements OnInit {
                 }
             }
         );
+    }
+
+    claimsNeverCheckedOut(rows: CircGridEntry[]) {
+        const dialog = this.openProgressDialog(rows);
+
+        this.claimsNeverCount = rows.length;
+
+        this.claimsNeverConfirm.open().subscribe(confirmed => {
+            this.claimsNeverCount = 0;
+
+            if (!confirmed) {
+                dialog.close();
+                return;
+            }
+
+            this.circ.checkinBatch(
+                this.getCopyIds(rows), {claims_never_checked_out: true}
+            ).subscribe(
+                result => dialog.increment(),
+                err => console.error(err),
+                () => {
+                    dialog.close();
+                    this.emitReloadRequest();
+                }
+            );
+        });
     }
 }
 

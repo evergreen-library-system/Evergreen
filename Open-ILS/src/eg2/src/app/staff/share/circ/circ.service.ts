@@ -43,6 +43,7 @@ export interface CheckinParams {
     noop?: boolean;
     copy_id?: number;
     copy_barcode?: string;
+    claims_never_checked_out?: boolean;
 }
 
 export interface CheckinResult {

@@ -12,6 +12,11 @@
   dialogTitle="Items Checked Out"
   dialogBody="The selected items are checked out.  Check them in before continuing?">
 </eg-confirm-dialog>
+<eg-confirm-dialog #claimsNeverConfirm
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Claims Never Checked Out"
+  dialogBody="Mark {{claimsNeverCount}} items as Never Checked Out?">
+</eg-confirm-dialog>
 
 
 <ng-template #titleTemplate let-r="row">
@@ -59,6 +64,10 @@
   <eg-grid-toolbar-action
     group="Mark" i18n-group i18n-label label="Mark Claims Returned"
     (onClick)="claimsReturned($event)"></eg-grid-toolbar-action>
+
+  <eg-grid-toolbar-action
+    group="Mark" i18n-group i18n-label label="Mark Claims Never Checked Out"
+    (onClick)="claimsNeverCheckedOut($event)"></eg-grid-toolbar-action>
 
   <eg-grid-toolbar-action
     group="Mark" i18n-group i18n-label label="Mark Lost (By Patron)"
