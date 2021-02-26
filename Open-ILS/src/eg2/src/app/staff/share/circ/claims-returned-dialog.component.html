@@ -22,12 +22,13 @@
         </eg-datetime-select>
       </div>
     </div>
-    <div *ngIf="patronExceeds" class="row">
-      <div class="col-lg-9 alert alert-danger" i18n>
+    <div *ngIf="patronExceeds" class="row mt-3 mb-3 d-flex">
+      <div class="flex-1 p-2 mr-2 alert alert-danger" i18n>
         Patron exceeds claims returned count.  Force this action?
       </div>
-      <div class="col-lg-3">
-        <button class="btn btn-warn" (click)="confirmExceeds()" i18n>Confirm</button>
+      <div>
+        <button class="btn btn-warning mr-2" 
+          (click)="confirmExceeds()" i18n>Confirm</button>
       </div>
     </div>
   </div>

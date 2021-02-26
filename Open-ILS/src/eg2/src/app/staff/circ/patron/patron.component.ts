@@ -143,12 +143,12 @@ export class PatronComponent implements OnInit, AfterViewInit {
     }
 
     routeToAlertsPane() {
-        console.log('testing route change for alerts');
         if (this.patronTab !== 'search' &&
             this.context.patron &&
             this.context.alerts.hasAlerts() &&
-           !this.context.patronAlertsShown()) {
-           this.router.navigate(['/staff/circ/patron', this.patronId, 'alerts'])
+            !this.context.patronAlertsShown()) {
+
+           this.router.navigate(['/staff/circ/patron', this.patronId, 'alerts']);
         }
     }
 

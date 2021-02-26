@@ -135,7 +135,7 @@ export class ItemsComponent implements OnInit, AfterViewInit {
     // Determine which grid ('checkouts' or 'other') a circ should appear in.
     promoteCircs(list: number[], displayCode: number, xactOpen?: boolean) {
         if (xactOpen) {
-            if (1 & displayCode) { // bitflag 1 == top list
+            if (1 & displayCode) { // bitflag 1 == main list
                 this.mainList = this.mainList.concat(list);
             } else {
                 this.altList = this.altList.concat(list);
