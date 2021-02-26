@@ -74,8 +74,13 @@
     (onClick)="markLost($event)"></eg-grid-toolbar-action>
 
   <!-- .subscribe() nudges the observable to run -->
-  <eg-grid-toolbar-action i18n-label label="Checkin" 
+  <eg-grid-toolbar-action 
+    group="Circulation" i18n-group i18n-label label="Checkin" 
     (onClick)="checkin($event).subscribe()">
+  </eg-grid-toolbar-action>
+
+  <eg-grid-toolbar-action group="Circulation" i18n-group 
+    i18n-label label="Renew" (onClick)="renew($event)">
   </eg-grid-toolbar-action>
 
   <eg-grid-column [index]="true" path="index" [hidden]="true"

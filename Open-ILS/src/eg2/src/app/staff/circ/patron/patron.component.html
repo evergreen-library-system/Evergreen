@@ -4,6 +4,8 @@
   </eg-staff-banner>
 </ng-container>
 
+<eg-circ-components></eg-circ-components>
+
 <ng-container *ngIf="context.patron">
   <eg-staff-banner i18n-bannerText bannerText="
     {{patronService.namePart(context.patron, 'family_name')}}, 

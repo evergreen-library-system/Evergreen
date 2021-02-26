@@ -9,11 +9,13 @@ import {EventService, EgEvent} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {AudioService} from '@eg/share/util/audio.service';
+import {PrecatCheckoutDialogComponent
+    } from '@eg/staff/share/circ/precat-dialog.component';
 
 
 // API parameter options
 export interface CheckoutParams {
-    patron_id: number;
+    patron_id?: number;
     due_date?: string;
     copy_id?: number;
     copy_barcode?: string;
@@ -33,9 +35,10 @@ export interface CheckoutResult {
     evt: EgEvent;
     params: CheckoutParams;
     success: boolean;
+    canceled?: boolean;
     copy?: IdlObject;
     circ?: IdlObject;
-    nonCatCirc: IdlObject;
+    nonCatCirc?: IdlObject;
     record?: IdlObject;
 }
 
@@ -61,6 +64,7 @@ export class CircService {
     static resultIndex = 0;
 
     nonCatTypes: IdlObject[] = null;
+    precatDialog: PrecatCheckoutDialogComponent;
 
     constructor(
         private audio: AudioService,
@@ -98,6 +102,19 @@ export class CircService {
         .then(result => this.processCheckoutResult(params, result));
     }
 
+    renew(params: CheckoutParams, override?: boolean): Promise<CheckoutResult> {
+
+        console.debug('renewing out with', params);
+
+        let method = 'open-ils.circ.renew';
+        if (override) { method += '.override'; }
+
+        return this.net.request(
+            'open-ils.circ', method,
+            this.auth.token(), params).toPromise()
+        .then(result => this.processCheckoutResult(params, result));
+    }
+
     processCheckoutResult(
         params: CheckoutParams, response: any): Promise<CheckoutResult> {
 
@@ -124,7 +141,29 @@ export class CircService {
             nonCatCirc: payload.noncat_circ
         };
 
+        switch (evt.textcode) {
+            case 'ITEM_NOT_CATALOGED':
+                return this.handlePrecat(result);
+        }
+
         return Promise.resolve(result);
+    }
+
+    handlePrecat(result: CheckoutResult): Promise<CheckoutResult> {
+        this.precatDialog.barcode = result.params.copy_barcode;
+
+        return this.precatDialog.open().toPromise().then(values => {
+
+            if (values && values.dummy_title) {
+                const params = result.params;
+                params.precat = true;
+                Object.keys(values).forEach(key => params[key] = values[key]);
+                return this.checkout(params);
+            }
+
+            result.canceled = true;
+            return Promise.resolve(result);
+        });
     }
 
     checkin(params: CheckinParams, override?: boolean): Promise<CheckinResult> {
@@ -161,17 +200,49 @@ export class CircService {
                 // alert, etc.
         }
 
+        const success =
+            evt.textcode.match(/SUCCESS|NO_CHANGE|ROUTE_ITEM/) !== null;
+
         const result: CheckinResult = {
             index: CircService.resultIndex++,
             evt: evt,
             params: params,
-            success: evt.textcode === 'SUCCESS', // or route, no change, etc.
+            success: success,
             circ: payload.circ,
             copy: payload.copy,
             record: payload.record
         };
 
         return Promise.resolve(result);
+    }
+
+    // The provided params (minus the copy_id) will be used
+    // for all items.
+    checkoutBatch(copyIds: number[], params: CheckoutParams): Observable<CheckoutResult> {
+        if (copyIds.length === 0) { return empty(); }
+        const source = from(copyIds);
+
+        return source.pipe(concatMap(id => {
+            const cparams = Object.assign(params, {}); // clone
+            cparams.copy_id = id;
+            return from(this.checkout(cparams));
+        }));
+    }
+
+    // The provided params (minus the copy_id) will be used
+    // for all items.
+    renewBatch(copyIds: number[], params?: CheckoutParams): Observable<CheckoutResult> {
+        if (copyIds.length === 0) { return empty(); }
+
+        if (!params) { params = {}; }
+
+        const source = from(copyIds);
+
+        return source.pipe(concatMap(id => {
+            const cparams = Object.assign(params, {}); // clone
+            cparams.copy_id = id;
+            return from(this.renew(cparams));
+        }));
     }
 
     // The provided params (minus the copy_id) will be used

@@ -410,6 +410,22 @@ export class CircGridComponent implements OnInit {
         return this.progressDialog;
     }
 
+    renew(rows: CircGridEntry[]) {
+
+        const dialog = this.openProgressDialog(rows);
+        const params: CheckoutParams = {};
+
+        return this.circ.renewBatch(this.getCopyIds(rows))
+        .subscribe(
+            result => dialog.increment(),
+            err => console.error(err),
+            () => {
+                dialog.close();
+                this.emitReloadRequest();
+            }
+        );
+    }
+
     // Same params will be used for each copy
     checkin(rows: CircGridEntry[], params?:
         CheckinParams, noReload?: boolean): Observable<CheckinResult> {

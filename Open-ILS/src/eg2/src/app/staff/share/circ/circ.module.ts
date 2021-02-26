@@ -6,10 +6,12 @@ import {CircGridComponent} from './grid.component';
 import {DueDateDialogComponent} from './due-date-dialog.component';
 import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
 import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component';
+import {CircComponentsComponent} from './components.component';
 
 @NgModule({
     declarations: [
         CircGridComponent,
+        CircComponentsComponent,
         DueDateDialogComponent,
         PrecatCheckoutDialogComponent,
         ClaimsReturnedDialogComponent
@@ -20,7 +22,7 @@ import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component'
     ],
     exports: [
         CircGridComponent,
-        PrecatCheckoutDialogComponent
+        CircComponentsComponent
     ],
     providers: [
         CircService

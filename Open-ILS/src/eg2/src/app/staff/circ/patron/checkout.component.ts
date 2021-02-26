@@ -16,7 +16,6 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {PrecatCheckoutDialogComponent} from '@eg/staff/share/circ/precat-dialog.component';
 import {AudioService} from '@eg/share/util/audio.service';
 import {CopyAlertsDialogComponent
     } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
@@ -45,8 +44,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         private nonCatCount: PromptDialogComponent;
     @ViewChild('checkoutsGrid')
         private checkoutsGrid: GridComponent;
-    @ViewChild('precatDialog')
-        private precatDialog: PrecatCheckoutDialogComponent;
     @ViewChild('copyAlertsDialog')
         private copyAlertsDialog: CopyAlertsDialogComponent;
     @ViewChild('barcodeSelect')
@@ -158,17 +155,10 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     }
 
     dispatchResult(result: CheckoutResult) {
-
         if (result.success) {
             this.gridifyResult(result);
             this.resetForm();
             return;
-        }
-
-        switch (result.evt.textcode) {
-            case 'ITEM_NOT_CATALOGED':
-                this.handlePrecat(result);
-                break;
         }
     }
 
@@ -276,17 +266,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
                 this.store.setSessionItem(SESSION_DUE_DATE, true);
             }
         }
-    }
-
-    handlePrecat(result: CheckoutResult) {
-        this.precatDialog.open().subscribe(values => {
-            if (values && values.dummy_title) {
-                const params = result.params;
-                params.precat = true;
-                Object.keys(values).forEach(key => params[key] = values[key]);
-                this.checkout(params);
-            }
-        });
     }
 
     selectedCopyIds(rows: CircGridEntry[]): number[] {
