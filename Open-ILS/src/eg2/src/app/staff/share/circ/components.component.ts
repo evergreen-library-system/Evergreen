@@ -1,7 +1,7 @@
-import {Component, AfterViewInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
+import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
 import {CircService} from './circ.service';
-import {PrecatCheckoutDialogComponent
-    } from '@eg/staff/share/circ/precat-dialog.component';
+import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
+import {CircEventsComponent} from './events-dialog.component';
 
 /* Container component for sub-components used by circulation actions.
  *
@@ -14,15 +14,13 @@ import {PrecatCheckoutDialogComponent
   templateUrl: 'components.component.html',
   selector: 'eg-circ-components'
 })
-export class CircComponentsComponent implements AfterViewInit {
+export class CircComponentsComponent {
 
-    @ViewChild('precatDialog')
-        private precatDialog: PrecatCheckoutDialogComponent;
+    @ViewChild('precatDialog') precatDialog: PrecatCheckoutDialogComponent;
+    @ViewChild('circEventsDialog') circEventsDialog: CircEventsComponent;
 
-    constructor(private circ: CircService) {}
-
-    ngAfterViewInit() {
-        this.circ.precatDialog = this.precatDialog;
+    constructor(private circ: CircService) {
+        this.circ.components = this;
     }
 }
 

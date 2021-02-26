@@ -9,8 +9,91 @@ import {EventService, EgEvent} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {AudioService} from '@eg/share/util/audio.service';
-import {PrecatCheckoutDialogComponent
-    } from '@eg/staff/share/circ/precat-dialog.component';
+import {CircEventsComponent} from './events-dialog.component';
+import {CircComponentsComponent} from './components.component';
+
+
+const CAN_OVERRIDE_CHECKOUT_EVENTS = [
+	'PATRON_EXCEEDS_OVERDUE_COUNT',
+	'PATRON_EXCEEDS_CHECKOUT_COUNT',
+	'PATRON_EXCEEDS_FINES',
+	'PATRON_EXCEEDS_LONGOVERDUE_COUNT',
+	'PATRON_BARRED',
+	'CIRC_EXCEEDS_COPY_RANGE',
+	'ITEM_DEPOSIT_REQUIRED',
+	'ITEM_RENTAL_FEE_REQUIRED',
+	'PATRON_EXCEEDS_LOST_COUNT',
+	'COPY_CIRC_NOT_ALLOWED',
+	'COPY_NOT_AVAILABLE',
+	'COPY_IS_REFERENCE',
+	'COPY_ALERT_MESSAGE',
+	'ITEM_ON_HOLDS_SHELF',
+	'STAFF_C',
+	'STAFF_CH',
+	'STAFF_CHR',
+	'STAFF_CR',
+	'STAFF_H',
+	'STAFF_HR',
+	'STAFF_R'
+];
+
+const CHECKOUT_OVERRIDE_AFTER_FIRST = [
+    'PATRON_EXCEEDS_OVERDUE_COUNT',
+    'PATRON_BARRED',
+    'PATRON_EXCEEDS_LOST_COUNT',
+    'PATRON_EXCEEDS_CHECKOUT_COUNT',
+    'PATRON_EXCEEDS_FINES',
+    'PATRON_EXCEEDS_LONGOVERDUE_COUNT'
+];
+
+const CAN_OVERRIDE_RENEW_EVENTS = [
+    'PATRON_EXCEEDS_OVERDUE_COUNT',
+    'PATRON_EXCEEDS_LOST_COUNT',
+    'PATRON_EXCEEDS_CHECKOUT_COUNT',
+    'PATRON_EXCEEDS_FINES',
+    'PATRON_EXCEEDS_LONGOVERDUE_COUNT',
+    'CIRC_EXCEEDS_COPY_RANGE',
+    'ITEM_DEPOSIT_REQUIRED',
+    'ITEM_RENTAL_FEE_REQUIRED',
+    'ITEM_DEPOSIT_PAID',
+    'COPY_CIRC_NOT_ALLOWED',
+    'COPY_NOT_AVAILABLE',
+    'COPY_IS_REFERENCE',
+    'COPY_ALERT_MESSAGE',
+    'COPY_NEEDED_FOR_HOLD',
+    'MAX_RENEWALS_REACHED',
+    'CIRC_CLAIMS_RETURNED',
+    'STAFF_C',
+    'STAFF_CH',
+    'STAFF_CHR',
+    'STAFF_CR',
+    'STAFF_H',
+    'STAFF_HR',
+    'STAFF_R'
+]
+
+// These checkin events do not produce alerts when
+// options.suppress_alerts is in effect.
+const CAN_SUPPRESS_CHECKIN_ALERTS = [
+	'COPY_BAD_STATUS',
+	'PATRON_BARRED',
+	'PATRON_INACTIVE',
+	'PATRON_ACCOUNT_EXPIRED',
+	'ITEM_DEPOSIT_PAID',
+	'CIRC_CLAIMS_RETURNED',
+	'COPY_ALERT_MESSAGE',
+	'COPY_STATUS_LOST',
+	'COPY_STATUS_LOST_AND_PAID',
+	'COPY_STATUS_LONG_OVERDUE',
+	'COPY_STATUS_MISSING',
+	'PATRON_EXCEEDS_FINES'
+];
+
+const CAN_OVERRIDE_CHECKIN_ALERTS = [
+    // not technically overridable, but special prompt and param
+	'HOLD_CAPTURE_DELAYED',
+	'TRANSIT_CHECKIN_INTERVAL_BLOCK'
+].concat(CAN_SUPPRESS_CHECKIN_ALERTS);
 
 
 // API parameter options
@@ -63,8 +146,8 @@ export interface CheckinResult {
 export class CircService {
     static resultIndex = 0;
 
+    components: CircComponentsComponent;
     nonCatTypes: IdlObject[] = null;
-    precatDialog: PrecatCheckoutDialogComponent;
 
     constructor(
         private audio: AudioService,
@@ -150,9 +233,9 @@ export class CircService {
     }
 
     handlePrecat(result: CheckoutResult): Promise<CheckoutResult> {
-        this.precatDialog.barcode = result.params.copy_barcode;
+        this.components.precatDialog.barcode = result.params.copy_barcode;
 
-        return this.precatDialog.open().toPromise().then(values => {
+        return this.components.precatDialog.open().toPromise().then(values => {
 
             if (values && values.dummy_title) {
                 const params = result.params;

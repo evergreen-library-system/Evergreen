@@ -1,0 +1,31 @@
+
+<eg-string key="circ.events.mode.checkout" i18n-text text="Checkout"></eg-string> 
+<eg-string key="circ.events.mode.renew" i18n-text text="Renewal"></eg-string> 
+<eg-string key="circ.events.mode.checkin" i18n-text text="Checkin"></eg-string> 
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title">
+      <span i18n>Action Blocked</span>
+    </h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h5 i18n>Exceptions occurred during {{modeLabel}}.</h5>
+    <ng-container *ngFor="let evt of events">
+      <div class="card mb-2">
+        <div class="card-header">{{evt.textcode}}</div>
+        <div class="card-body">{{evt.desc}}</div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info"
+      (click)="close(true)" i18n>Force Action?</button>
+    <button type="button" class="btn btn-warning"
+      (click)="close(false)" i18n>Cancel</button>
+  </div>
+</ng-template>

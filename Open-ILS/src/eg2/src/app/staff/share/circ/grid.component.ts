@@ -410,6 +410,11 @@ export class CircGridComponent implements OnInit {
         return this.progressDialog;
     }
 
+
+    renewAll() {
+        this.renew(this.entries);
+    }
+
     renew(rows: CircGridEntry[]) {
 
         const dialog = this.openProgressDialog(rows);
