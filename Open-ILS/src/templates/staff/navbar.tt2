@@ -426,7 +426,7 @@
             </a>
           </li>
           <li>
-            <a href="./acq/legacy/po/create" target="_self">
+            <a href="/eg2/staff/acq/po/create">
               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
               [% l('Create Purchase Order') %]
             </a>
