@@ -1,8 +1,7 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1247', :eg_version);
 
--- XXX Check perm number collisions, and adjust update_perm below if necessary!
 INSERT INTO permission.perm_list (id,code,description) VALUES (627,'SSO_ADMIN','Modify patron SSO settings');
 
 INSERT INTO config.org_unit_setting_type
