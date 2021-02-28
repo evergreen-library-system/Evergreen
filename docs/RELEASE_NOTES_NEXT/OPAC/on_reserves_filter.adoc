@@ -1,0 +1,17 @@
+= Course Reserve Search Filter =
+
+This filter allows users to limit their search to records that are
+    attached to courses at particular libraries, like so:
+    
+        biology on_reserve(5, 10)
+    
+The filter can also be negated to search for records that are not
+attached to a course:
+    
+        biology -on_reserve(5)
+
+If an organization is opted into the Course Materials module, this
+filter will appear on the search results page of the public catalog.
+Staff at these organizations will have a new option in their
+staff catalog search preferences to enable this filter in the staff
+catalog as well.

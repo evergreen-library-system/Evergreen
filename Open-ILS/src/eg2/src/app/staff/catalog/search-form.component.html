@@ -46,7 +46,7 @@
                   <option i18n value=''>All Formats</option>
                   <ng-container
                     *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.search_format}">
-                  </ng-container> 
+                  </ng-container>
                 </select>
               </div>
               <div *ngIf="idx > 0">
@@ -178,6 +178,18 @@
                     <span class="ps-1" i18n>Exclude Electronic Resources</span>
                   </label>
                 </div>
+                <div class="d-inline-flex ml-2 pl-3 pt-2" *ngIf="showCourseFilter">
+                  <label for="reserveCombobox" i18n class="align-self-center mr-2">Reserves materials</label>
+                  <eg-combobox (onChange)="reserveComboboxChange($event.id)"
+                               selectedId="any" [allowFreeText]="false" class="pl-1">
+                    <eg-combobox-entry entryId="any" entryLabel="Any items"
+                                       i18n-entryLabel="No course reserves filter is applied"></eg-combobox-entry>
+                    <eg-combobox-entry entryId="limit" entryLabel="Items attached to a course"
+                                       i18n-entryLabel="Limit results to course reserves results"></eg-combobox-entry>
+                    <eg-combobox-entry entryId="negated" entryLabel="No items attached to a course"
+                                       i18n-entryLabel="Limit results to results not attached to a course"></eg-combobox-entry>
+                  </eg-combobox>
+                </div>
               </div>
           </div>
           <div class="row" *ngIf="showFilters()">
@@ -188,7 +200,7 @@
                 <option value='' i18n>All Item Types</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_type}">
-                </ng-container> 
+                </ng-container>
               </select>
             </div>
             <div class="col mt-3" *ngIf="searchFilters().includes('item_form')">
@@ -198,7 +210,7 @@
                 <option value='' i18n>All Item Forms</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_form}">
-                </ng-container> 
+                </ng-container>
               </select>
             </div>
             <div class="col mt-3" *ngIf="searchFilters().includes('item_lang')">
@@ -208,7 +220,7 @@
                 <option value='' i18n>All Languages</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.item_lang}">
-                </ng-container> 
+                </ng-container>
               </select>
             </div>
             <div class="col mt-3" *ngIf="searchFilters().includes('audience')">
@@ -218,7 +230,7 @@
                 <option value='' i18n>All Audiences</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.audience}">
-                </ng-container> 
+                </ng-container>
               </select>
             </div>
           </div>
@@ -230,7 +242,7 @@
                 <option value='' i18n>All Video Formats</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.vr_format}">
-                </ng-container> 
+                </ng-container>
               </select>
             </div>
             <div class="col mt-3" *ngIf="searchFilters().includes('bib_level')">
@@ -240,7 +252,7 @@
                 <option value='' i18n>All Bib Levels</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.bib_level}">
-                </ng-container> 
+                </ng-container>
               </select>
             </div>
             <div class="col mt-3" *ngIf="searchFilters().includes('lit_form')">
@@ -250,7 +262,7 @@
                 <option value='' i18n>All Literary Forms</option>
                 <ng-container
                   *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.lit_form}">
-                </ng-container> 
+                </ng-container>
               </select>
             </div>
             <div class="col mt-3">

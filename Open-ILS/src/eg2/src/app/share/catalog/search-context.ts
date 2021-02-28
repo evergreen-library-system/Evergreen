@@ -192,6 +192,8 @@ export class CatalogTermContext {
     matchOp: string[];
     format: string;
     available = false;
+    onReserveFilter = false;
+    onReserveFilterNegated = false;
     ccvmFilters: {[ccvmCode: string]: string[]};
     facetFilters: FacetFilter[];
     copyLocations: string[]; // ID's, but treated as strings in the UI.
@@ -577,6 +579,13 @@ export class CatalogSearchContext {
 
         if (ts.available) {
             str += '#available';
+        }
+
+        if (ts.onReserveFilter) {
+            if (ts.onReserveFilterNegated) {
+                str += '-';
+            }
+            str += 'on_reserve(' + this.searchOrg.id() + ')';
         }
 
         if (ts.excludeElectronic) {

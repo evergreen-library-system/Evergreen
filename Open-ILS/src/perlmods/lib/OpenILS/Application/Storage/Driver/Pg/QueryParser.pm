@@ -725,6 +725,7 @@ __PACKAGE__->add_search_filter( 'superpage' );
 __PACKAGE__->add_search_filter( 'superpage_size' );
 __PACKAGE__->add_search_filter( 'estimation_strategy' );
 __PACKAGE__->add_search_filter( 'from_metarecord' );
+__PACKAGE__->add_search_filter( 'on_reserve' );
 __PACKAGE__->add_search_modifier( 'available' );
 __PACKAGE__->add_search_modifier( 'staff' );
 __PACKAGE__->add_search_modifier( 'deleted' );
@@ -900,6 +901,36 @@ sub toSQL {
 
     my $nullpos = 'NULLS LAST';
     $nullpos = 'NULLS FIRST' if ($self->find_modifier('nullsfirst'));
+
+    my $course_join = q{};
+    my $course_where = q{};
+    my ($course_filter) = $self->find_filter('on_reserve');
+    if ($course_filter) {
+        my $course_org_filter = q{};
+        if (@{$course_filter->args}) {
+            my @course_orgs = grep /^\d+$/, @{$course_filter->args};
+            # Don't filter by course OU if we didn't find any good candidate IDs.
+            # This way, users can do searches like `biology on_reserve(all)` to
+            # find matches from all org units' courses
+            if (@course_orgs > 0) {
+                my $course_orgs_with_descendants = [];
+                foreach ( @course_orgs ) {
+                    push @$course_orgs_with_descendants, @{$U->get_org_descendants($_)};
+                }
+                my $course_org_string = join q{,}, @$course_orgs_with_descendants;
+                $course_org_filter .= "AND acmc.owning_lib IN ($course_org_string) ";
+            }
+        }
+        if ($course_filter->negate) {
+          $course_join .= ' LEFT JOIN (SELECT record FROM asset.course_module_course_materials acmcm';
+          $course_join .= " INNER JOIN asset.course_module_course acmc ON acmcm.course=acmc.id $course_org_filter ) cm";
+          $course_join .= ' ON cm.record=m.source';
+          $course_where .= ' AND cm.record IS NULL';
+        } else {
+          $course_join .= ' INNER JOIN asset.course_module_course_materials acmcm ON m.source = acmcm.record';
+          $course_join .= " INNER JOIN asset.course_module_course acmc ON acmcm.course=acmc.id $course_org_filter";
+        }
+    }
 
     # Do we have a badges() filter?
     my $badges = '';
@@ -1159,6 +1190,7 @@ SELECT  id,
                 $mra_join
                 $mrv_join
                 $bre_join
+                $course_join
                 $pop_join
                 $pubdate_join
                 $lang_join
@@ -1166,6 +1198,7 @@ SELECT  id,
                 $b_attr_join
           WHERE 1=1
                 $flat_where
+                $course_where
           GROUP BY 1
           ORDER BY 4 $desc $nullpos, $pop_extra_sort 5 DESC $nullpos, 3 DESC
           LIMIT $core_limit

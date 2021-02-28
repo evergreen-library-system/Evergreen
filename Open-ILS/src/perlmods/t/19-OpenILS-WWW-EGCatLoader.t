@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 12;
+use Test::More tests => 13;
 use CGI;
 
 BEGIN {
@@ -29,3 +29,8 @@ $cgi->param('pubdate', 'is');
 $cgi->param('date1', '1999');
 ($user_query, $query, $site, $depth) = OpenILS::WWW::EGCatLoader::_prepare_biblio_search($cgi, $ctx);
 is($query, 'date1(1999)  cats site(CONS) depth(0)', 'LP#1005040: "is" pubdate filter mapped to date1() filter');
+
+# test on_reserves filter
+$cgi->param('course_filter', 'true');
+($user_query, $query, $site, $depth) = OpenILS::WWW::EGCatLoader::_prepare_biblio_search($cgi, $ctx);
+is($query, 'on_reserve(all) date1(1999)  cats site(CONS) depth(0)', 'Course reserves filter defaults to courses at any org');

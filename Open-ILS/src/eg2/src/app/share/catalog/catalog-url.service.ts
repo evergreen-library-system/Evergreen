@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ParamMap} from '@angular/router';
 import {OrgService} from '@eg/core/org.service';
-import {CatalogSearchContext, CatalogBrowseContext, CatalogMarcContext,
-   CatalogTermContext, FacetFilter} from './search-context';
+import {CatalogSearchContext, FacetFilter} from './search-context';
 import {CATALOG_CCVM_FILTERS} from './search-context';
 import {HashParams} from '@eg/share/util/hash-params';
 
@@ -82,7 +81,8 @@ export class CatalogUrlService {
             params.matchOp = [];
 
             ['format', 'available', 'hasBrowseEntry', 'date1',
-                'date2', 'dateOp', 'groupByMetarecord', 'fromMetarecord']
+                'date2', 'dateOp', 'groupByMetarecord', 'fromMetarecord',
+                'onReserveFilter', 'onReserveFilterNegated']
             .forEach(field => {
                 if (ts[field]) {
                     params[field] = ts[field];
@@ -222,7 +222,8 @@ export class CatalogUrlService {
 
             // Scalars
             ['format', 'available', 'date1', 'date2',
-                'dateOp', 'groupByMetarecord', 'fromMetarecord']
+                'dateOp', 'groupByMetarecord', 'fromMetarecord',
+                'onReserve']
             .forEach(field => {
                 if (params.has(field)) {
                     ts[field] = params.get(field);

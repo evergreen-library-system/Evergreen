@@ -201,6 +201,18 @@ sub _prepare_biblio_search {
         $site ||= $ctx->{aou_tree}->()->shortname;
     }
 
+    # Course on_reserves filter, handles specially since the UI includes
+    # an option to negate the filter, and it relies on the org unit
+    # calculations
+    if ($cgi->param('course_filter')) {
+        my $course_lib = $org || 'all';
+        if ($cgi->param('course_filter') eq 'true') {
+            $query = "on_reserve($course_lib) $query";
+        } elsif ($cgi->param('course_filter') eq 'negated') {
+            $query = "-on_reserve($course_lib) $query";
+        }
+    }
+
     my $depth;
     if ($query =~ /depth\(\d+\)/) {
 

@@ -86,6 +86,9 @@ DELETE FROM marcxml_import;
 -- load Czech bibs
 \i bibs_cze.sql
 
+-- load e-textbook bibs (to attach to courses in the course module)
+\i bibs_etextbooks.sql
+
 -- insert all loaded bibs into the biblio.record_entry in insert order
 INSERT INTO biblio.record_entry (marc, last_xact_id)
     SELECT marc, tag FROM marcxml_import ORDER BY id;

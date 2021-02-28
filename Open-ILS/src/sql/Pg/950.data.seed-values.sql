@@ -21894,6 +21894,13 @@ VALUES (
         'Staff Catalog "Exclude Electronic Resources" Option',
         'cwst', 'label'
     )
+), (
+    'eg.staffcat.course_materials_selector', 'gui', 'bool',
+    oils_i18n_gettext(
+        'eg.staffcat.course_materials_selector',
+        'Add the "Reserves material" dropdown to refine search results',
+        'cwst', 'label'
+    )
 );
 
 INSERT INTO config.workstation_setting_type (name, grp, datatype, fm_class, label)

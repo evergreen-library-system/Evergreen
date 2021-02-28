@@ -147,6 +147,17 @@
                                     <label for='opac.result.limit2avail'>
                                         [% l("Limit to Available") %]</label>
                                 </div>
+                                [% IF ctx.use_courses %]
+                                    <div class="adv_search_on_reserve">
+                                        <label for="opac.result.on_reserve">
+                                            [% l("Course reserve materials") %]</label>
+                                        <select name="course_filter" id="opac.result.on_reserve">
+                                            <option value="false">[% l("Any items") %]</option>
+                                            <option value="true">[% l("Items attached to a course") %]</option>
+                                            <option value="negated">[% l("No items attached to a course") %]</option>
+                                        </select>
+                                    </div>
+                                [% END %]
                             </div>
                     [% END %]
                 </div>

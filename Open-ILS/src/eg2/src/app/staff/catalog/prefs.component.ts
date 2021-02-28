@@ -13,7 +13,9 @@ const CATALOG_PREFS = [
     'eg.search.pref_lib',
     'eg.search.adv_pane',
     'eg.catalog.results.count',
-    'eg.staffcat.exclude_electronic'
+    'eg.staffcat.exclude_electronic',
+    'eg.staffcat.course_materials_selector',
+    'circ.course_materials_opt_in'
 ];
 
 @Component({
@@ -36,8 +38,12 @@ export class PreferencesComponent implements OnInit {
         this.staffCat.createContext();
 
         // Pre-fetched by the resolver.
-        this.store.getItemBatch(CATALOG_PREFS)
+        return this.store.getItemBatch(CATALOG_PREFS)
         .then(settings => this.settings = settings);
+    }
+
+    showCoursePreferences() {
+        return this.settings['circ.course_materials_opt_in'];
     }
 
     orgChanged(org: IdlObject, setting: string) {

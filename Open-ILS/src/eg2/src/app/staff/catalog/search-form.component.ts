@@ -1,12 +1,12 @@
 import {Component, OnInit, AfterViewInit, Renderer2} from '@angular/core';
-import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from './catalog.service';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 // Maps opac-style default tab names to local tab names.
 const LEGACY_TAB_NAME_MAP = {
@@ -39,6 +39,11 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     // On pages where we can be hidded, start out hidden, unless the
     // user has opted to show us.
     showSearchFormSetting = false;
+
+    // Show the course search limit checkbox only if opted in to the
+    // course module
+    showCourseFilter = false;
+
 
     constructor(
         private renderer: Renderer2,
@@ -74,6 +79,9 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
         this.store.getItem('eg.catalog.search.form.open')
         .then(value => this.showSearchFormSetting = value);
+
+        this.store.getItem('eg.staffcat.course_materials_selector')
+        .then(value => this.showCourseFilter = value);
     }
 
     // Are we on a page where the form is allowed to be collapsed.
@@ -311,6 +319,21 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     }
     searchFilters(): string[] {
         return this.staffCat.searchFilters;
+    }
+
+    reserveComboboxChange(limiterStatus: string): void {
+        switch (limiterStatus) {
+            case 'any':
+                this.context.termSearch.onReserveFilter = false;
+                break;
+            case 'limit':
+                this.context.termSearch.onReserveFilter = true;
+                this.context.termSearch.onReserveFilterNegated = false;
+                break;
+            case 'negated':
+                this.context.termSearch.onReserveFilter = true;
+                this.context.termSearch.onReserveFilterNegated = true;
+        }
     }
 }
 

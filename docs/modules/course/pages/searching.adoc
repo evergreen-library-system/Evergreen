@@ -1,0 +1,28 @@
+= Searching for course materials =
+:toc:
+
+== Searching the catalog ==
+
+When the course materials module is active,
+the public ctalog's Advanced Search screen has a
+checkbox to limit your search only to results that
+are associated with a course.
+
+For more advanced searching, you can manually type
+in the _on_reserve_ filter, which takes takes org
+unit IDs.  For example, if you want to find biology
+materials which are associated with libraries 5 and
+6, you could search for:
+
+    biology on_reserve(5, 6)
+
+The filter can also be negated. To search for records
+that are not attached to a course at library 5:
+
+    biology -on_reserve(5)
+
+Or records that are not attached to any courses
+anywhere in your consortium:
+
+    biology -on_reserve(all)
+
