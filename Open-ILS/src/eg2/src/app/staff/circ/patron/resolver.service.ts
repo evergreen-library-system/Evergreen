@@ -19,17 +19,23 @@ export class PatronResolver implements Resolve<Promise<any[]>> {
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Promise<any[]> {
-
         return this.fetchSettings();
     }
 
     fetchSettings(): Promise<any> {
 
+        // Some of these are used by the shared circ service.
+        // Go ahead and precache them since we're making the call anyway.
         return this.store.getItemBatch([
           'eg.circ.patron.summary.collapse',
           'circ.do_not_tally_claims_returned',
-          'circ.tally_lost'
-
+          'circ.tally_lost',
+          'ui.staff.require_initials.patron_standing_penalty',
+          'ui.admin.work_log.max_entries',
+          'ui.admin.patron_log.max_entries',
+          'circ.staff_client.do_not_auto_attempt_print',
+          'circ.clear_hold_on_checkout',
+          'ui.circ.suppress_checkin_popups'
         ]).then(settings => {
             this.context.noTallyClaimsReturned =
                 settings['circ.do_not_tally_claims_returned'];

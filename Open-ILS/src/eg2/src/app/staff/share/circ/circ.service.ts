@@ -111,8 +111,10 @@ export interface CheckoutParams {
     dummy_author?: string;
     dummy_isbn?: string;
     circ_modifier?: string;
-    _override?: boolean; // internal tracking
-    _renewal?: boolean; // internal tracking
+
+    // internal tracking
+    _override?: boolean;
+    _renewal?: boolean;
 }
 
 export interface CheckoutResult {
@@ -133,7 +135,9 @@ export interface CheckinParams {
     copy_id?: number;
     copy_barcode?: string;
     claims_never_checked_out?: boolean;
-    _override?: boolean; // internal tracking
+
+    // internal tracking
+    _override?: boolean;
 }
 
 export interface CheckinResult {
@@ -154,6 +158,8 @@ export class CircService {
     components: CircComponentsComponent;
     nonCatTypes: IdlObject[] = null;
     autoOverrideCheckoutEvents: {[textcode: string]: boolean} = {};
+    suppressCheckinPopups = false;
+    ignoreCheckinPrecats = false;
 
     constructor(
         private audio: AudioService,
@@ -183,7 +189,7 @@ export class CircService {
     apiParams(
         params: CheckoutParams | CheckinParams): CheckoutParams | CheckinParams {
 
-        const apiParams = Object.assign(params, {}); // clone
+        const apiParams = Object.assign({}, params); // clone
         const remove = Object.keys(apiParams).filter(k => k.match(/^_/));
         remove.forEach(p => delete apiParams[p]);
 
@@ -247,8 +253,11 @@ export class CircService {
             nonCatCirc: payload.noncat_circ
         };
 
+        const overridable = result.params._renewal ?
+            CAN_OVERRIDE_RENEW_EVENTS : CAN_OVERRIDE_CHECKOUT_EVENTS;
+
         if (allEvents.filter(
-            e => CAN_OVERRIDE_RENEW_EVENTS.includes(e.textcode)).length > 0) {
+            e => overridable.includes(e.textcode)).length > 0) {
             return this.handleOverridableCheckoutEvents(result, allEvents);
         }
 
@@ -256,6 +265,7 @@ export class CircService {
             case 'SUCCESS':
                 result.success = true;
                 this.audio.play('success.checkout');
+                break;
 
             case 'ITEM_NOT_CATALOGED':
                 return this.handlePrecat(result);
@@ -285,28 +295,31 @@ export class CircService {
         return this.showOverrideDialog(result, events);
     }
 
-    showOverrideDialog(
-        result: CheckoutResult, events: EgEvent[]): Promise<CheckoutResult> {
+    showOverrideDialog(result: CheckoutResult,
+        events: EgEvent[], checkin?: boolean): Promise<CheckoutResult> {
+
         const params = result.params;
+        const mode = checkin ? 'checkin' : (params._renewal ? 'renew' : 'checkout');
 
         this.components.circEventsDialog.events = events;
-        // TODO: support checkins too
-        this.components.circEventsDialog.mode = params._renewal ? 'renew' : 'checkout';
+        this.components.circEventsDialog.mode = mode;
 
         return this.components.circEventsDialog.open().toPromise()
         .then(confirmed => {
             if (!confirmed) { return null; }
 
-            // Indicate these events have been seen and overridden.
-            events.forEach(evt => {
-                if (CHECKOUT_OVERRIDE_AFTER_FIRST.includes(evt.textcode)) {
-                    this.autoOverrideCheckoutEvents[evt.textcode] = true;
-                }
-            });
+            if (!checkin) {
+                // Indicate these events have been seen and overridden.
+                events.forEach(evt => {
+                    if (CHECKOUT_OVERRIDE_AFTER_FIRST.includes(evt.textcode)) {
+                        this.autoOverrideCheckoutEvents[evt.textcode] = true;
+                    }
+                });
+            }
 
             params._override = true;
 
-            return params._renewal ? this.renew(params) : this.checkout(params);
+            return this[mode](params); // checkout/renew/checkin
         });
     }
 
@@ -345,20 +358,15 @@ export class CircService {
 
         console.debug('checkout resturned', response);
 
-        const firstResp = Array.isArray(response) ? response[0] : response;
+        const allEvents = Array.isArray(response) ?
+            response.map(r => this.evt.parse(r)) : [this.evt.parse(response)];
 
-        const firstEvent = this.evt.parse(firstResp);
+        const firstEvent = allEvents[0];
         const payload = firstEvent.payload;
 
         if (!payload) {
             this.audio.play('error.unknown.no_payload');
             return Promise.reject();
-        }
-
-        switch (firstEvent.textcode) {
-            case 'ITEM_NOT_CATALOGED':
-                this.audio.play('error.checkout.no_cataloged');
-                // alert, etc.
         }
 
         const success =
@@ -375,17 +383,73 @@ export class CircService {
             record: payload.record
         };
 
+        // Informational alerts that can be ignored if configured.
+        if (this.suppressCheckinPopups &&
+            allEvents.filter(e =>
+                !CAN_SUPPRESS_CHECKIN_ALERTS.includes(e.textcode)).length == 0) {
+
+            // Should not be necessary, but good to be safe.
+            if (params._override) { return Promise.resolve(null); }
+
+            params._override = true;
+            return this.checkin(params);
+        }
+
+
+        // Alerts that require a manual override.
+        if (allEvents.filter(
+            e => CAN_OVERRIDE_CHECKIN_ALERTS.includes(e.textcode)).length > 0) {
+
+            // Should not be necessary, but good to be safe.
+            if (params._override) { return Promise.resolve(null); }
+
+            return this.showOverrideDialog(result, allEvents, true);
+        }
+
+        switch (firstEvent.textcode) {
+            case 'SUCCESS':
+            case 'NO_CHANGE':
+                this.audio.play('success.checkin');
+                // TODO do copy status stuff
+                break;
+
+            case 'ITEM_NOT_CATALOGED':
+                this.audio.play('error.checkout.no_cataloged');
+
+                if (!this.suppressCheckinPopups && !this.ignoreCheckinPrecats) {
+                    // Tell the user its a precat and return the result.
+                    return this.components.routeToCatalogingDialog.open()
+                    .toPromise().then(_ => result);
+                }
+
+                // alert, etc.
+        }
+
         return Promise.resolve(result);
     }
 
+    handleOverridableCheckinEvents(
+        result: CheckinResult, events: EgEvent[]): Promise<CheckinResult> {
+        const params = result.params;
+        const firstEvent = events[0];
+
+        if (params._override) {
+            // Should never get here.  Just being safe.
+            return Promise.reject(null);
+        }
+
+    }
+
+
     // The provided params (minus the copy_id) will be used
     // for all items.
-    checkoutBatch(copyIds: number[], params: CheckoutParams): Observable<CheckoutResult> {
-        if (copyIds.length === 0) { return empty(); }
-        const source = from(copyIds);
+    checkoutBatch(copyIds: number[],
+        params: CheckoutParams): Observable<CheckoutResult> {
 
-        return source.pipe(concatMap(id => {
-            const cparams = Object.assign(params, {}); // clone
+        if (copyIds.length === 0) { return empty(); }
+
+        return from(copyIds).pipe(concatMap(id => {
+            const cparams = Object.assign({}, params); // clone
             cparams.copy_id = id;
             return from(this.checkout(cparams));
         }));
@@ -393,15 +457,14 @@ export class CircService {
 
     // The provided params (minus the copy_id) will be used
     // for all items.
-    renewBatch(copyIds: number[], params?: CheckoutParams): Observable<CheckoutResult> {
-        if (copyIds.length === 0) { return empty(); }
+    renewBatch(copyIds: number[],
+        params?: CheckoutParams): Observable<CheckoutResult> {
 
+        if (copyIds.length === 0) { return empty(); }
         if (!params) { params = {}; }
 
-        const source = from(copyIds);
-
-        return source.pipe(concatMap(id => {
-            const cparams = Object.assign(params, {}); // clone
+        return from(copyIds).pipe(concatMap(id => {
+            const cparams = Object.assign({}, params); // clone
             cparams.copy_id = id;
             return from(this.renew(cparams));
         }));
@@ -409,15 +472,14 @@ export class CircService {
 
     // The provided params (minus the copy_id) will be used
     // for all items.
-    checkinBatch(copyIds: number[], params?: CheckinParams): Observable<CheckinResult> {
-        if (copyIds.length === 0) { return empty(); }
+    checkinBatch(copyIds: number[],
+        params?: CheckinParams): Observable<CheckinResult> {
 
+        if (copyIds.length === 0) { return empty(); }
         if (!params) { params = {}; }
 
-        const source = from(copyIds);
-
-        return source.pipe(concatMap(id => {
-            const cparams = Object.assign(params, {}); // clone
+        return from(copyIds).pipe(concatMap(id => {
+            const cparams = Object.assign({}, params); // clone
             cparams.copy_id = id;
             return from(this.checkin(cparams));
         }));

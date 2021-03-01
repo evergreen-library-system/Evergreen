@@ -18,7 +18,15 @@
     <ng-container *ngFor="let evt of events">
       <div class="card mb-2">
         <div class="card-header text-danger">{{evt.textcode}}</div>
-        <div class="card-body">{{evt.desc}}</div>
+        <div class="card-body">
+          <div>{{evt.desc}}</div>
+          <ng-container *ngIf="evt.textcode == 'COPY_ALERT_MESSAGE'">
+            <ng-container *ngIf="!isArray(evt.payload)">
+              <!-- Traditional copy.alert_message value in payload -->
+              <div class="mt-2 font-weight-bold">{{evt.payload}}</div>
+            </ng-container>
+          </ng-container>
+        </div>
       </div>
     </ng-container>
   </div>

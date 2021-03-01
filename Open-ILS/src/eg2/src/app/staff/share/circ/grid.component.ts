@@ -30,6 +30,7 @@ import {MarkDamagedDialogComponent
 import {MarkMissingDialogComponent
     } from '@eg/staff/share/holdings/mark-missing-dialog.component';
 import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component';
+import {ToastService} from '@eg/share/toast/toast.service';
 
 export interface CircGridEntry {
     index: string; // class + id -- row index
@@ -122,6 +123,7 @@ export class CircGridComponent implements OnInit {
         private audio: AudioService,
         private store: StoreService,
         private printer: PrintService,
+        private toast: ToastService,
         private serverStore: ServerStoreService
     ) {}
 
@@ -149,6 +151,17 @@ export class CircGridComponent implements OnInit {
                 return 'less-intense-alert';
             }
         };
+
+        this.serverStore.getItemBatch(['ui.circ.suppress_checkin_popups'])
+        .then(sets => {
+            this.circ.suppressCheckinPopups =
+                sets['ui.circ.suppress_checkin_popups'];
+        });
+    }
+
+    reportError(err: any) {
+        console.error('Circ error occurred: ' + err);
+        this.toast.danger(err); // EgEvent has a toString()
     }
 
     // Ask the caller to update our data set.
@@ -437,7 +450,7 @@ export class CircGridComponent implements OnInit {
                 // Value can be null when dialogs are canceled
                 if (result) { refreshNeeded = true; }
             },
-            err => console.error(err),
+            err => this.reportError(err),
             () => {
                 dialog.close();
                 if (refreshNeeded) {
@@ -463,7 +476,7 @@ export class CircGridComponent implements OnInit {
                     if (resp.success) { refreshNeeded = true; }
                     dialog.increment();
                 },
-                err => console.error(err),
+                err => this.reportError(err),
                 () => {
                     dialog.close();
                     if (refreshNeeded) {
@@ -481,13 +494,17 @@ export class CircGridComponent implements OnInit {
 
         const dialog = this.openProgressDialog(rows);
 
+        let changesApplied = false;
         return this.circ.checkinBatch(this.getCopyIds(rows), params)
         .pipe(tap(
-            result => dialog.increment(),
-            err => null,
+            result => {
+                if (result) { changesApplied = true; }
+                dialog.increment();
+            },
+            err => this.reportError(err),
             () => {
                 dialog.close();
-                if (!noReload) { this.emitReloadRequest(); }
+                if (changesApplied && !noReload) { this.emitReloadRequest(); }
             }
         ));
     }
@@ -504,7 +521,7 @@ export class CircGridComponent implements OnInit {
             );
         })).subscribe(
             result => dialog.increment(),
-            err => console.error(err),
+            err => this.reportError(err),
             () => {
                 dialog.close();
                 this.emitReloadRequest();
@@ -542,7 +559,7 @@ export class CircGridComponent implements OnInit {
                 this.getCopyIds(rows), {claims_never_checked_out: true}
             ).subscribe(
                 result => dialog.increment(),
-                err => console.error(err),
+                err => this.reportError(err),
                 () => {
                     dialog.close();
                     this.emitReloadRequest();

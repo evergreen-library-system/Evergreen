@@ -30,5 +30,9 @@ export class CircEventsComponent extends DialogComponent implements OnInit {
                 .then(str => this.modeLabel = str);
         });
     }
+
+    isArray(target: any): boolean {
+        return Array.isArray(target);
+    }
 }
 
