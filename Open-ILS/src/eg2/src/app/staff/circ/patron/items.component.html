@@ -15,7 +15,7 @@
         <ng-container *ngIf="loading">
           <ng-container *ngTemplateOutlet="progress"></ng-container>
         </ng-container>
-        <eg-circ-grid #checkoutsGrid (reloadRequested)="load()">
+        <eg-circ-grid #checkoutsGrid [persistKey]="persistKey" (reloadRequested)="load()">
         </eg-circ-grid>
       </ng-template>
     </li>
@@ -27,7 +27,7 @@
             <ng-container *ngIf="loading">
               <ng-container *ngTemplateOutlet="progress"></ng-container>
             </ng-container>
-            <eg-circ-grid #otherGrid (reloadRequested)="load()">
+            <eg-circ-grid #otherGrid [persistKey]="persistKey" (reloadRequested)="load()">
             </eg-circ-grid>
           </ng-container>
         </ng-template>
@@ -45,7 +45,7 @@
             <ng-container *ngIf="loading">
               <ng-container *ngTemplateOutlet="progress"></ng-container>
             </ng-container>
-            <eg-circ-grid #nonCatGrid (reloadRequested)="load()">
+            <eg-circ-grid #nonCatGrid [persistKey]="persistKey" (reloadRequested)="load()">
             </eg-circ-grid>
           </ng-container>
         </ng-container>

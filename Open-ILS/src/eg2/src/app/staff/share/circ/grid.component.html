@@ -17,6 +17,7 @@
   dialogTitle="Claims Never Checked Out"
   dialogBody="Mark {{claimsNeverCount}} items as Never Checked Out?">
 </eg-confirm-dialog>
+<eg-add-billing-dialog #addBillingDialog></eg-add-billing-dialog>
 
 
 <ng-template #titleTemplate let-r="row">
@@ -34,9 +35,8 @@
 
 <eg-grid #circGrid [dataSource]="gridDataSource" [sortable]="true"
   [rowFlairIsEnabled]="true" [rowFlairCallback]="rowFlair"
-  [rowClassCallback]="rowClass"
-  [useLocalSort]="true" [cellTextGenerator]="cellTextGenerator"
-  [disablePaging]="true" [persistKey]="persistKey">
+  [rowClassCallback]="rowClass" [persistKey]="persistKey"
+  [useLocalSort]="true" [cellTextGenerator]="cellTextGenerator">
 
   <eg-grid-toolbar-action
     i18n-group group="View" i18n-label label="Print Item Receipt(s)"
@@ -49,7 +49,12 @@
   </eg-grid-toolbar-action>
 
   <eg-grid-toolbar-action
-    i18n-group group="Edit" i18n-label label="Edit Due Date"
+    i18n-group group="Add" i18n-label label="Add Billing"
+    (onClick)="openBillingDialog($event)">
+  </eg-grid-toolbar-action>
+
+  <eg-grid-toolbar-action
+    i18n-group group="Circulation" i18n-label label="Edit Due Date"
     (onClick)="editDueDate($event)">
   </eg-grid-toolbar-action>
 

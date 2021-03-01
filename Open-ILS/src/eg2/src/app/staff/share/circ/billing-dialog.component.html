@@ -1,0 +1,80 @@
+<eg-string #successMsg text="Successfully Added Billing" i18n-text></eg-string>
+<eg-string #errorMsg text="Failed To Add Billing" i18n-text></eg-string>
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>
+      Bill Patron: 
+        {{xact.usr().family_name()}}, 
+        {{xact.usr().first_given_name()}} : 
+        {{xact.usr().card().barcode()}}
+    </h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="row">
+      <div class="col-lg-2" i18n>Bill #</div>
+      <div class="col-lg-4">{{xact.id()}}</div>
+      <div class="col-lg-4" i18n>Total Billed</div>
+      <div class="col-lg-2">{{xact.summary().total_owed() | currency}}</div>
+    </div>
+    <div class="row">
+      <div class="col-lg-2" i18n>Type</div>
+      <div class="col-lg-4">{{xact.summary().xact_type()}}</div>
+      <div class="col-lg-4" i18n>Total Paid</div>
+      <div class="col-lg-2">{{xact.summary().total_paid() | currency}}</div>
+    </div>
+    <div class="row">
+      <div class="col-lg-2" i18n>Start</div>
+      <div class="col-lg-4">{{xact.xact_start() | date:'short'}}</div>
+      <div class="col-lg-4" i18n>Balance Owed</div>
+      <div class="col-lg-2">{{xact.summary().balance_owed() | currency}}</div>
+    </div>
+    <div class="row">
+      <div class="col-lg-2" i18n>Finish</div>
+      <div class="col-lg-4">{{xact.xact_finish() | date:'short'}}</div>
+      <div class="col-lg-4" i18n>Renewal?</div>
+      <div class="col-lg-2"><eg-bool [value]="isRenewal()"></eg-bool></div>
+    </div>
+
+    <hr/>
+
+    <div class="form-validated">
+      <div class="row mt-2">
+        <div class="col-lg-4" i18n>Location</div>
+        <div class="col-lg-8" i18n>{{hereOrg}}</div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-lg-4" i18n>Billing Type</div>
+        <div class="col-lg-8">
+          <eg-combobox #bTypeCbox [entries]="billingTypes" 
+            [required]="true" (onChange)="btChanged($event)"></eg-combobox>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-lg-4" i18n>Amount</div>
+        <div class="col-lg-8" i18n>
+          <input type="number" class="form-control" 
+            required [(ngModel)]="amount" [min]="0"/>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-lg-4" i18n>Note</div>
+        <div class="col-lg-8" i18n>
+          <textarea class="form-control" [rows]="3" [(ngModel)]="note"></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" [disabled]="!saveable()"
+      (click)="submit()" i18n>Submit Bill</button>
+    <button type="button" class="btn btn-warning"
+      (click)="close()" i18n>Cancel</button>
+  </div>
+</ng-template>

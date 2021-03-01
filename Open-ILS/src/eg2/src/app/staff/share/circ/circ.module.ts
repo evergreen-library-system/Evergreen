@@ -8,6 +8,7 @@ import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
 import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component';
 import {CircComponentsComponent} from './components.component';
 import {CircEventsComponent} from './events-dialog.component';
+import {AddBillingDialogComponent} from './billing-dialog.component';
 
 @NgModule({
     declarations: [
@@ -16,7 +17,8 @@ import {CircEventsComponent} from './events-dialog.component';
         DueDateDialogComponent,
         PrecatCheckoutDialogComponent,
         ClaimsReturnedDialogComponent,
-        CircEventsComponent
+        CircEventsComponent,
+        AddBillingDialogComponent
     ],
     imports: [
         StaffCommonModule,
@@ -24,7 +26,8 @@ import {CircEventsComponent} from './events-dialog.component';
     ],
     exports: [
         CircGridComponent,
-        CircComponentsComponent
+        CircComponentsComponent,
+        AddBillingDialogComponent
     ],
     providers: [
         CircService

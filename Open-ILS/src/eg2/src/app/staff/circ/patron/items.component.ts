@@ -42,6 +42,7 @@ export class ItemsComponent implements OnInit, AfterViewInit {
     displayClaimsReturned: number = null;
     fetchCheckedIn = true;
     displayAltList = true;
+    persistKey: string;
 
     @ViewChild('checkoutsGrid') private checkoutsGrid: CircGridComponent;
     @ViewChild('otherGrid') private otherGrid: CircGridComponent;
@@ -61,23 +62,29 @@ export class ItemsComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit() {
-        this.load();
+        this.load(true);
     }
 
     ngAfterViewInit() {
     }
 
-    load(): Promise<any> {
+    load(firstLoad?: boolean): Promise<any> {
         this.loading = true;
-        return this.applyDisplaySettings()
-        .then(_ => this.loadTab(this.itemsTab));
+
+        if (firstLoad) {
+            return this.applyDisplaySettings()
+            .then(_ => this.loadTab(this.itemsTab));
+        } else {
+            return this.loadTab(this.itemsTab)
+            .then(_ => this.context.refreshPatron());
+        }
     }
 
     tabChange(evt: NgbNavChangeEvent) {
         setTimeout(() => this.loadTab(evt.nextId));
     }
 
-    loadTab(name: string) {
+    loadTab(name: string): Promise<any> {
         this.loading = true;
         let promise;
         if (name === 'checkouts') {
@@ -88,7 +95,9 @@ export class ItemsComponent implements OnInit, AfterViewInit {
             promise = this.loadNonCatGrid();
         }
 
-        promise.then(_ => this.loading = false);
+        this.persistKey = `circ.patron.items.${name}`;
+
+        return promise.then(_ => this.loading = false);
     }
 
     applyDisplaySettings(): Promise<any> {

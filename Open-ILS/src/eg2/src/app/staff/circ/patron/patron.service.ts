@@ -110,6 +110,13 @@ export class PatronContextService {
         this.loaded = false;
         this.patron = null;
         this.checkouts = [];
+        return this.refreshPatron(id).then(_ => this.loaded = true);
+    }
+
+    // Update the patron data without resetting all of the context data.
+    refreshPatron(id?: number): Promise<any> {
+        if (!id) { id = this.patron.id(); }
+
         this.alerts = new PatronAlerts();
 
         return this.net.request(
@@ -118,8 +125,7 @@ export class PatronContextService {
             this.auth.token(), id, PATRON_FLESH_FIELDS).toPromise()
         .then(p => this.patron = p)
         .then(_ => this.getPatronStats(id))
-        .then(_ => this.compileAlerts())
-        .then(_ => this.loaded = true);
+        .then(_ => this.compileAlerts());
     }
 
     getPatronStats(id: number): Promise<any> {

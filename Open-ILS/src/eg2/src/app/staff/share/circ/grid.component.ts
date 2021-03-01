@@ -31,6 +31,7 @@ import {MarkMissingDialogComponent
     } from '@eg/staff/share/holdings/mark-missing-dialog.component';
 import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
+import {AddBillingDialogComponent} from './billing-dialog.component';
 
 export interface CircGridEntry {
     index: string; // class + id -- row index
@@ -113,6 +114,8 @@ export class CircGridComponent implements OnInit {
         private progressDialog: ProgressDialogComponent;
     @ViewChild('claimsReturnedDialog')
         private claimsReturnedDialog: ClaimsReturnedDialogComponent;
+    @ViewChild('addBillingDialog')
+        private addBillingDialog: AddBillingDialogComponent;
 
     constructor(
         private org: OrgService,
@@ -132,7 +135,12 @@ export class CircGridComponent implements OnInit {
         // The grid never fetches data directly.
         // The caller is responsible initiating all data loads.
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
-            return this.entries ? from(this.entries) : empty();
+            if (!this.entries) { return empty(); }
+
+            const page = this.entries.slice(pager.offset, pager.offset + pager.limit)
+                .filter(entry => entry !== undefined);
+
+            return from(page);
         };
 
         this.cellTextGenerator = {
@@ -367,7 +375,14 @@ export class CircGridComponent implements OnInit {
         if (!circ) { return false; } // noncat
 
         if (row.overdue === undefined) {
-            row.overdue = (Date.parse(circ.due_date()) < this.nowDate);
+
+            if (circ.stop_fines() &&
+                // Items that aren't really checked out can't be overdue.
+                circ.stop_fines().match(/LOST|CLAIMSRETURNED|CLAIMSNEVERCHECKEDOUT/)) {
+                row.overdue = false;
+            } else {
+                row.overdue = (Date.parse(circ.due_date()) < this.nowDate);
+            }
         }
         return row.overdue;
     }
@@ -566,6 +581,28 @@ export class CircGridComponent implements OnInit {
                 }
             );
         });
+    }
+
+    openBillingDialog(rows: CircGridEntry[]) {
+
+        let changesApplied = false;
+
+        from(this.getCircIds(rows))
+        .pipe(concatMap(id => {
+            this.addBillingDialog.xactId = id;
+            return this.addBillingDialog.open();
+        }))
+        .subscribe(
+            changes => {
+                if (changes) { changesApplied = true; }
+            },
+            err => this.reportError(err),
+            ()  => {
+                if (changesApplied) {
+                    this.emitReloadRequest();
+                }
+            }
+        );
     }
 }
 
