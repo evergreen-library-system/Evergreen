@@ -111,11 +111,14 @@ export interface CheckoutParams {
     dummy_author?: string;
     dummy_isbn?: string;
     circ_modifier?: string;
+    _override?: boolean; // internal tracking
+    _renewal?: boolean; // internal tracking
 }
 
 export interface CheckoutResult {
     index: number;
-    evt: EgEvent;
+    firstEvent: EgEvent;
+    allEvents: EgEvent[];
     params: CheckoutParams;
     success: boolean;
     canceled?: boolean;
@@ -130,11 +133,13 @@ export interface CheckinParams {
     copy_id?: number;
     copy_barcode?: string;
     claims_never_checked_out?: boolean;
+    _override?: boolean; // internal tracking
 }
 
 export interface CheckinResult {
     index: number;
-    evt: EgEvent;
+    firstEvent: EgEvent;
+    allEvents: EgEvent[];
     params: CheckinParams;
     success: boolean;
     copy?: IdlObject;
@@ -148,6 +153,7 @@ export class CircService {
 
     components: CircComponentsComponent;
     nonCatTypes: IdlObject[] = null;
+    autoOverrideCheckoutEvents: {[textcode: string]: boolean} = {};
 
     constructor(
         private audio: AudioService,
@@ -172,29 +178,43 @@ export class CircService {
         ).toPromise().then(types => this.nonCatTypes = types);
     }
 
-    checkout(params: CheckoutParams, override?: boolean): Promise<CheckoutResult> {
+    // Remove internal tracking variables on Param objects so they are
+    // not sent to the server, which can result in autoload errors.
+    apiParams(
+        params: CheckoutParams | CheckinParams): CheckoutParams | CheckinParams {
 
+        const apiParams = Object.assign(params, {}); // clone
+        const remove = Object.keys(apiParams).filter(k => k.match(/^_/));
+        remove.forEach(p => delete apiParams[p]);
+
+        return apiParams;
+    }
+
+    checkout(params: CheckoutParams): Promise<CheckoutResult> {
+
+        params._renewal = false;
         console.debug('checking out with', params);
 
         let method = 'open-ils.circ.checkout.full';
-        if (override) { method += '.override'; }
+        if (params._override) { method += '.override'; }
 
         return this.net.request(
             'open-ils.circ', method,
-            this.auth.token(), params).toPromise()
+            this.auth.token(), this.apiParams(params)).toPromise()
         .then(result => this.processCheckoutResult(params, result));
     }
 
-    renew(params: CheckoutParams, override?: boolean): Promise<CheckoutResult> {
+    renew(params: CheckoutParams): Promise<CheckoutResult> {
 
+        params._renewal = true;
         console.debug('renewing out with', params);
 
         let method = 'open-ils.circ.renew';
-        if (override) { method += '.override'; }
+        if (params._override) { method += '.override'; }
 
         return this.net.request(
             'open-ils.circ', method,
-            this.auth.token(), params).toPromise()
+            this.auth.token(), this.apiParams(params)).toPromise()
         .then(result => this.processCheckoutResult(params, result));
     }
 
@@ -203,10 +223,12 @@ export class CircService {
 
         console.debug('checkout resturned', response);
 
-        if (Array.isArray(response)) { response = response[0]; }
+        const allEvents = Array.isArray(response) ?
+            response.map(r => this.evt.parse(r)) :
+            [this.evt.parse(response)];
 
-        const evt = this.evt.parse(response);
-        const payload = evt.payload;
+        const firstEvent = allEvents[0];
+        const payload = firstEvent.payload;
 
         if (!payload) {
             this.audio.play('error.unknown.no_payload');
@@ -215,21 +237,77 @@ export class CircService {
 
         const result: CheckoutResult = {
             index: CircService.resultIndex++,
-            evt: evt,
+            firstEvent: firstEvent,
+            allEvents: allEvents,
             params: params,
-            success: evt.textcode === 'SUCCESS',
+            success: false,
             circ: payload.circ,
             copy: payload.copy,
             record: payload.record,
             nonCatCirc: payload.noncat_circ
         };
 
-        switch (evt.textcode) {
+        if (allEvents.filter(
+            e => CAN_OVERRIDE_RENEW_EVENTS.includes(e.textcode)).length > 0) {
+            return this.handleOverridableCheckoutEvents(result, allEvents);
+        }
+
+        switch (firstEvent.textcode) {
+            case 'SUCCESS':
+                result.success = true;
+                this.audio.play('success.checkout');
+
             case 'ITEM_NOT_CATALOGED':
                 return this.handlePrecat(result);
         }
 
         return Promise.resolve(result);
+    }
+
+    handleOverridableCheckoutEvents(
+        result: CheckoutResult, events: EgEvent[]): Promise<CheckoutResult> {
+        const params = result.params;
+        const firstEvent = events[0];
+
+        if (params._override) {
+            // Should never get here.  Just being safe.
+            return Promise.reject(null);
+        }
+
+        if (events.filter(
+            e => !this.autoOverrideCheckoutEvents[e.textcode]).length === 0) {
+            // User has already seen all of these events and overridden them,
+            // so avoid showing them again since they are all auto-overridable.
+            params._override = true;
+            return params._renewal ? this.renew(params) : this.checkout(params);
+        }
+
+        return this.showOverrideDialog(result, events);
+    }
+
+    showOverrideDialog(
+        result: CheckoutResult, events: EgEvent[]): Promise<CheckoutResult> {
+        const params = result.params;
+
+        this.components.circEventsDialog.events = events;
+        // TODO: support checkins too
+        this.components.circEventsDialog.mode = params._renewal ? 'renew' : 'checkout';
+
+        return this.components.circEventsDialog.open().toPromise()
+        .then(confirmed => {
+            if (!confirmed) { return null; }
+
+            // Indicate these events have been seen and overridden.
+            events.forEach(evt => {
+                if (CHECKOUT_OVERRIDE_AFTER_FIRST.includes(evt.textcode)) {
+                    this.autoOverrideCheckoutEvents[evt.textcode] = true;
+                }
+            });
+
+            params._override = true;
+
+            return params._renewal ? this.renew(params) : this.checkout(params);
+        });
     }
 
     handlePrecat(result: CheckoutResult): Promise<CheckoutResult> {
@@ -249,16 +327,16 @@ export class CircService {
         });
     }
 
-    checkin(params: CheckinParams, override?: boolean): Promise<CheckinResult> {
+    checkin(params: CheckinParams): Promise<CheckinResult> {
 
         console.debug('checking in with', params);
 
         let method = 'open-ils.circ.checkin';
-        if (override) { method += '.override'; }
+        if (params._override) { method += '.override'; }
 
         return this.net.request(
             'open-ils.circ', method,
-            this.auth.token(), params).toPromise()
+            this.auth.token(), this.apiParams(params)).toPromise()
         .then(result => this.processCheckinResult(params, result));
     }
 
@@ -267,28 +345,29 @@ export class CircService {
 
         console.debug('checkout resturned', response);
 
-        if (Array.isArray(response)) { response = response[0]; }
+        const firstResp = Array.isArray(response) ? response[0] : response;
 
-        const evt = this.evt.parse(response);
-        const payload = evt.payload;
+        const firstEvent = this.evt.parse(firstResp);
+        const payload = firstEvent.payload;
 
         if (!payload) {
             this.audio.play('error.unknown.no_payload');
             return Promise.reject();
         }
 
-        switch (evt.textcode) {
+        switch (firstEvent.textcode) {
             case 'ITEM_NOT_CATALOGED':
                 this.audio.play('error.checkout.no_cataloged');
                 // alert, etc.
         }
 
         const success =
-            evt.textcode.match(/SUCCESS|NO_CHANGE|ROUTE_ITEM/) !== null;
+            firstEvent.textcode.match(/SUCCESS|NO_CHANGE|ROUTE_ITEM/) !== null;
 
         const result: CheckinResult = {
             index: CircService.resultIndex++,
-            evt: evt,
+            firstEvent: firstEvent,
+            allEvents: response,
             params: params,
             success: success,
             circ: payload.circ,

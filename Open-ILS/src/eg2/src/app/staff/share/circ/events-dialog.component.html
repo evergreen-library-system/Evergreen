@@ -17,7 +17,7 @@
     <h5 i18n>Exceptions occurred during {{modeLabel}}.</h5>
     <ng-container *ngFor="let evt of events">
       <div class="card mb-2">
-        <div class="card-header">{{evt.textcode}}</div>
+        <div class="card-header text-danger">{{evt.textcode}}</div>
         <div class="card-body">{{evt.desc}}</div>
       </div>
     </ng-container>

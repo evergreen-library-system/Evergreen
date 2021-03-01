@@ -428,14 +428,21 @@ export class CircGridComponent implements OnInit {
 
         const dialog = this.openProgressDialog(rows);
         const params: CheckoutParams = {};
+        let refreshNeeded = false;
 
         return this.circ.renewBatch(this.getCopyIds(rows))
         .subscribe(
-            result => dialog.increment(),
+            result => {
+                dialog.increment();
+                // Value can be null when dialogs are canceled
+                if (result) { refreshNeeded = true; }
+            },
             err => console.error(err),
             () => {
                 dialog.close();
-                this.emitReloadRequest();
+                if (refreshNeeded) {
+                    this.emitReloadRequest();
+                }
             }
         );
     }
