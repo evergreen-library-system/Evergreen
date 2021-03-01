@@ -105,7 +105,7 @@ export class AddBillingDialogComponent
     }
 
     submit() {
-		const bill = this.idl.create('mb');
+        const bill = this.idl.create('mb');
         bill.xact(this.xactId);
         bill.amount(this.amount);
         bill.btype(this.billingType.id);
@@ -126,7 +126,7 @@ export class AddBillingDialogComponent
             } else {
                 this.close(billId);
             }
-        })
+        });
     }
 }
 

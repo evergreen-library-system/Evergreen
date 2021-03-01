@@ -14,27 +14,27 @@ import {CircComponentsComponent} from './components.component';
 
 
 const CAN_OVERRIDE_CHECKOUT_EVENTS = [
-	'PATRON_EXCEEDS_OVERDUE_COUNT',
-	'PATRON_EXCEEDS_CHECKOUT_COUNT',
-	'PATRON_EXCEEDS_FINES',
-	'PATRON_EXCEEDS_LONGOVERDUE_COUNT',
-	'PATRON_BARRED',
-	'CIRC_EXCEEDS_COPY_RANGE',
-	'ITEM_DEPOSIT_REQUIRED',
-	'ITEM_RENTAL_FEE_REQUIRED',
-	'PATRON_EXCEEDS_LOST_COUNT',
-	'COPY_CIRC_NOT_ALLOWED',
-	'COPY_NOT_AVAILABLE',
-	'COPY_IS_REFERENCE',
-	'COPY_ALERT_MESSAGE',
-	'ITEM_ON_HOLDS_SHELF',
-	'STAFF_C',
-	'STAFF_CH',
-	'STAFF_CHR',
-	'STAFF_CR',
-	'STAFF_H',
-	'STAFF_HR',
-	'STAFF_R'
+    'PATRON_EXCEEDS_OVERDUE_COUNT',
+    'PATRON_EXCEEDS_CHECKOUT_COUNT',
+    'PATRON_EXCEEDS_FINES',
+    'PATRON_EXCEEDS_LONGOVERDUE_COUNT',
+    'PATRON_BARRED',
+    'CIRC_EXCEEDS_COPY_RANGE',
+    'ITEM_DEPOSIT_REQUIRED',
+    'ITEM_RENTAL_FEE_REQUIRED',
+    'PATRON_EXCEEDS_LOST_COUNT',
+    'COPY_CIRC_NOT_ALLOWED',
+    'COPY_NOT_AVAILABLE',
+    'COPY_IS_REFERENCE',
+    'COPY_ALERT_MESSAGE',
+    'ITEM_ON_HOLDS_SHELF',
+    'STAFF_C',
+    'STAFF_CH',
+    'STAFF_CHR',
+    'STAFF_CR',
+    'STAFF_H',
+    'STAFF_HR',
+    'STAFF_R'
 ];
 
 const CHECKOUT_OVERRIDE_AFTER_FIRST = [
@@ -70,29 +70,29 @@ const CAN_OVERRIDE_RENEW_EVENTS = [
     'STAFF_H',
     'STAFF_HR',
     'STAFF_R'
-]
+];
 
 // These checkin events do not produce alerts when
 // options.suppress_alerts is in effect.
 const CAN_SUPPRESS_CHECKIN_ALERTS = [
-	'COPY_BAD_STATUS',
-	'PATRON_BARRED',
-	'PATRON_INACTIVE',
-	'PATRON_ACCOUNT_EXPIRED',
-	'ITEM_DEPOSIT_PAID',
-	'CIRC_CLAIMS_RETURNED',
-	'COPY_ALERT_MESSAGE',
-	'COPY_STATUS_LOST',
-	'COPY_STATUS_LOST_AND_PAID',
-	'COPY_STATUS_LONG_OVERDUE',
-	'COPY_STATUS_MISSING',
-	'PATRON_EXCEEDS_FINES'
+    'COPY_BAD_STATUS',
+    'PATRON_BARRED',
+    'PATRON_INACTIVE',
+    'PATRON_ACCOUNT_EXPIRED',
+    'ITEM_DEPOSIT_PAID',
+    'CIRC_CLAIMS_RETURNED',
+    'COPY_ALERT_MESSAGE',
+    'COPY_STATUS_LOST',
+    'COPY_STATUS_LOST_AND_PAID',
+    'COPY_STATUS_LONG_OVERDUE',
+    'COPY_STATUS_MISSING',
+    'PATRON_EXCEEDS_FINES'
 ];
 
 const CAN_OVERRIDE_CHECKIN_ALERTS = [
     // not technically overridable, but special prompt and param
-	'HOLD_CAPTURE_DELAYED',
-	'TRANSIT_CHECKIN_INTERVAL_BLOCK'
+    'HOLD_CAPTURE_DELAYED',
+    'TRANSIT_CHECKIN_INTERVAL_BLOCK'
 ].concat(CAN_SUPPRESS_CHECKIN_ALERTS);
 
 
@@ -402,7 +402,7 @@ export class CircService {
         // Informational alerts that can be ignored if configured.
         if (this.suppressCheckinPopups &&
             allEvents.filter(e =>
-                !CAN_SUPPRESS_CHECKIN_ALERTS.includes(e.textcode)).length == 0) {
+                !CAN_SUPPRESS_CHECKIN_ALERTS.includes(e.textcode)).length === 0) {
 
             // Should not be necessary, but good to be safe.
             if (params._override) { return Promise.resolve(null); }
