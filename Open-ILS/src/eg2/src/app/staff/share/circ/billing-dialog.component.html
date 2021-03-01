@@ -1,6 +1,12 @@
 <eg-string #successMsg text="Successfully Added Billing" i18n-text></eg-string>
 <eg-string #errorMsg text="Failed To Add Billing" i18n-text></eg-string>
 
+<!-- putting this here guarantees it's available to ViewChild before open -->
+<ng-template #bTypes>
+  <eg-combobox #bTypeCbox [entries]="billingTypes" 
+    [required]="true" (onChange)="btChanged($event)"></eg-combobox>
+</ng-template>
+
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>
@@ -51,14 +57,13 @@
       <div class="row mt-2">
         <div class="col-lg-4" i18n>Billing Type</div>
         <div class="col-lg-8">
-          <eg-combobox #bTypeCbox [entries]="billingTypes" 
-            [required]="true" (onChange)="btChanged($event)"></eg-combobox>
+          <ng-container *ngTemplateOutlet="bTypes"></ng-container>
         </div>
       </div>
       <div class="row mt-2">
         <div class="col-lg-4" i18n>Amount</div>
         <div class="col-lg-8" i18n>
-          <input type="number" class="form-control" 
+          <input type="number" class="form-control" id="amount-input"
             required [(ngModel)]="amount" [min]="0"/>
         </div>
       </div>

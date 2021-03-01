@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
-import {IdlObject} from '@eg/core/idl.service';
+import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -15,6 +15,8 @@ import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.comp
 import {CircService} from './circ.service';
 
 /* Add a billing to a transaction */
+
+const DEFAULT_BILLING_TYPE = 101; // Stock "Misc"
 
 @Component({
   selector: 'eg-add-billing-dialog',
@@ -41,6 +43,7 @@ export class AddBillingDialogComponent
         private modal: NgbModal, // required for passing to parent
         private toast: ToastService,
         private net: NetService,
+        private idl: IdlService,
         private evt: EventService,
         private pcrud: PcrudService,
         private circ: CircService,
@@ -61,7 +64,7 @@ export class AddBillingDialogComponent
         this.onOpen$.subscribe(_ => {
             this.amount = null;
             this.note = '';
-            //this.bTypeCbox.selectedId = 101; // Stock "Misc"
+            this.bTypeCbox.selectedId = DEFAULT_BILLING_TYPE;
             const node = document.getElementById('amount-input');
             if (node) { node.focus(); }
         });
@@ -102,7 +105,28 @@ export class AddBillingDialogComponent
     }
 
     submit() {
-        this.close();
+		const bill = this.idl.create('mb');
+        bill.xact(this.xactId);
+        bill.amount(this.amount);
+        bill.btype(this.billingType.id);
+        bill.billing_type(this.billingType.label);
+        bill.note(this.note);
+
+        this.net.request(
+            'open-ils.circ',
+            'open-ils.circ.money.billing.create',
+            this.auth.token(), bill
+        ).subscribe(billId => {
+
+            const evt = this.evt.parse(billId);
+            if (evt) {
+                console.error(evt);
+                alert(evt);
+                this.close(null);
+            } else {
+                this.close(billId);
+            }
+        })
     }
 }
 
