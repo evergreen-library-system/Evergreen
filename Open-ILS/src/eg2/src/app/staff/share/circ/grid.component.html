@@ -87,6 +87,11 @@
     i18n-label label="Renew All" (onClick)="renewAll()">
   </eg-grid-toolbar-action>
 
+  <eg-grid-toolbar-action group="Circulation" i18n-group 
+    i18n-label label="Renew With Specific Due Date"
+    (onClick)="renewWithDate($event)">
+  </eg-grid-toolbar-action>
+
   <eg-grid-column [index]="true" path="index" [hidden]="true"
     label="Row Index" i18n-label></eg-grid-column>
 

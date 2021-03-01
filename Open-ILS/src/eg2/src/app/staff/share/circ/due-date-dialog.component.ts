@@ -27,8 +27,6 @@ export class DueDateDialogComponent
 
     dueDateIsValid = false;
     dueDateIso: string;
-    numSucceeded: number;
-    numFailed: number;
     nowTime: number;
 
     constructor(
@@ -43,8 +41,6 @@ export class DueDateDialogComponent
 
     ngOnInit() {
         this.onOpen$.subscribe(_ => {
-            this.numSucceeded = 0;
-            this.numFailed = 0;
             this.dueDateIso = new Date().toISOString();
             this.nowTime = new Date().getTime();
         });
@@ -56,40 +52,5 @@ export class DueDateDialogComponent
         } else {
             this.dueDateIso = null;
         }
-    }
-
-    modifyBatch() {
-        if (!this.dueDateIso) { return; }
-
-        let promise = Promise.resolve();
-
-        this.circs.forEach(circ => {
-            promise = promise.then(_ => this.modifyOne(circ));
-        });
-
-        promise.then(_ => {
-            this.close();
-            this.circs = [];
-        });
-    }
-
-    modifyOne(circ: IdlObject): Promise<any> {
-        return this.net.request(
-            'open-ils.circ',
-            'open-ils.circ.circulation.due_date.update',
-            this.auth.token(), circ.id(), this.dueDateIso
-
-        ).toPromise().then(modCirc => {
-
-            const evt = this.evt.parse(modCirc);
-
-            if (evt) {
-                this.numFailed++;
-                console.error(evt);
-            } else {
-                this.numSucceeded++;
-                this.respond(modCirc);
-            }
-        });
     }
 }

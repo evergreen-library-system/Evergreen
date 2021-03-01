@@ -317,26 +317,35 @@ export class CircGridComponent implements OnInit {
     }
 
     editDueDate(rows: any) {
-        const circs = this.getCircs(rows);
-        if (circs.length === 0) { return; }
+        const ids = this.getCircIds(rows);
+        if (ids.length === 0) { return; }
 
-        let refreshNeeded = false;
-        this.dueDateDialog.circs = circs;
-        this.dueDateDialog.open().subscribe(
-            circ => {
-                refreshNeeded = true;
-                const row = rows.filter(r => r.circ.id() === circ.id())[0];
-                row.circ.due_date(circ.due_date());
-                row.dueDate = circ.due_date();
-                delete row.overdue; // it will recalculate
-            },
-            err => console.error(err),
-            () => {
-                if (refreshNeeded) {
-                    this.reloadGrid();
+        this.dueDateDialog.open().subscribe(isoDate => {
+            if (!isoDate) { return; } // canceled
+
+            const dialog = this.openProgressDialog(rows);
+
+            from(ids).pipe(concatMap(id => {
+                return this.net.request(
+                    'open-ils.circ',
+                    'open-ils.circ.circulation.due_date.update',
+                    this.auth.token(), id, isoDate
+                );
+            })).subscribe(
+                circ => {
+                    const row = rows.filter(r => r.circ.id() === circ.id())[0];
+                    row.circ.due_date(circ.due_date());
+                    row.dueDate = circ.due_date();
+                    delete row.overdue; // it will recalculate
+                    dialog.increment();
+                },
+                err  => console.log(err),
+                ()   => {
+                    dialog.close();
+                    this.emitReloadRequest();
                 }
-            }
-        );
+            );
+        });
     }
 
     circIsOverdue(row: CircGridEntry): boolean {
@@ -430,6 +439,34 @@ export class CircGridComponent implements OnInit {
             }
         );
     }
+
+    renewWithDate(rows: any) {
+        const ids = this.getCopyIds(rows);
+        if (ids.length === 0) { return; }
+
+        this.dueDateDialog.open().subscribe(isoDate => {
+            if (!isoDate) { return; } // canceled
+
+            const dialog = this.openProgressDialog(rows);
+            const params: CheckoutParams = {due_date: isoDate};
+
+            let refreshNeeded = false;
+            this.circ.renewBatch(ids).subscribe(
+                resp => {
+                    if (resp.success) { refreshNeeded = true; }
+                    dialog.increment();
+                },
+                err => console.error(err),
+                () => {
+                    dialog.close();
+                    if (refreshNeeded) {
+                        this.emitReloadRequest();
+                    }
+                }
+            );
+        });
+    }
+
 
     // Same params will be used for each copy
     checkin(rows: CircGridEntry[], params?:
