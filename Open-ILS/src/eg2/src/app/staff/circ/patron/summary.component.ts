@@ -30,6 +30,16 @@ export class SummaryComponent implements OnInit {
         return this.context.patron;
     }
 
+    hasPrefName(): boolean {
+        if (this.patron()) {
+            return (
+                this.patron().pref_first_given_name() ||
+                this.patron().pref_second_given_name() ||
+                this.patron().pref_family_name()
+            );
+        }
+    }
+
     printAddress(addr: IdlObject) {
         this.printer.print({
             templateName: 'patron_address',

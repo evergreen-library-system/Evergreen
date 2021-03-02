@@ -1,17 +1,44 @@
 
 <div class="patron-summary-container">
 
-  <h3 *ngIf="patron()" class="font-weight-bold" i18n>
-    {{patronService.namePart(patron(), 'family_name')}}, 
-    {{patronService.namePart(patron(), 'first_given_name')}} 
-    {{patronService.namePart(patron(), 'second_given_name')}}
-  </h3>
+  <div class="row d-flex" *ngIf="patron()">
+    <div class="flex-1 pt-1">
+      <h4 class="font-weight-bold" i18n>
+        {{patron().family_name()}}, 
+        {{patron().first_given_name()}} 
+        {{patron().second_given_name()}}
+      </h4>
+    </div>
+    <ng-container *ngIf="hasPrefName()">
+      <div class="mr-2 ml-2 text-info font-italic" i18n>account</div>
+    </ng-container>
+  </div>
+
+  <div class="row d-flex border-top" *ngIf="hasPrefName()">
+    <div class="flex-1 pt-1">
+      <h4 class="font-weight-bold" i18n>
+        {{patronService.namePart(patron(), 'family_name')}}, 
+        {{patronService.namePart(patron(), 'first_given_name')}} 
+        {{patronService.namePart(patron(), 'second_given_name')}}
+      </h4>
+    </div>
+    <div class="mr-2 ml-2 text-info font-italic" i18n>preferred</div>
+  </div>
 
   <div class="row mb-1 alert alert-danger p-0" 
     *ngIf="context.alerts.accountExpiresSoon">
     <div class="col-lg-12" i18n>
       Patron account will expire soon.  Please renew.
     </div>
+  </div>
+
+  <div class="row mb-1 alert alert-danger p-0" 
+    *ngFor="let pen of context.alerts.alertPenalties">
+    <div class="col-lg-9"
+      title="{{pen.standing_penalty().name()">
+      {{pen.note() || pen.standing_penalty().label()}}
+    </div>
+    <div class="col-lg-3">{{pen.set_date() | date:'shortDate'}}</div>
   </div>
 
   <div class="row mb-1">

@@ -79,6 +79,7 @@ export class CircGridComponent implements OnInit {
 
     @Input() persistKey: string;
     @Input() printTemplate: string; // defaults to items_out
+    @Input() menuStyle: 'full' | 'slim' | 'none' = 'full';
 
     // Emitted when a grid action modified data in a way that could
     // affect which cirulcations should appear in the grid.  Caller

@@ -4,15 +4,15 @@
   </eg-staff-banner>
 </ng-container>
 
-<eg-circ-components></eg-circ-components>
-
 <ng-container *ngIf="context.patron">
-  <eg-staff-banner i18n-bannerText bannerText="
-    {{patronService.namePart(context.patron, 'family_name')}}, 
-    {{patronService.namePart(context.patron, 'first_given_name')}} 
-    {{patronService.namePart(context.patron, 'second_given_name')}}">
+  <eg-staff-banner i18n-bannerText bannerText="Patron: 
+    {{context.patron.family_name()}}, 
+    {{context.patron.first_given_name()}} 
+    {{context.patron.second_given_name()}}">
   </eg-staff-banner>
 </ng-container>
+
+<eg-circ-components></eg-circ-components>
 
 <div class="row">
 

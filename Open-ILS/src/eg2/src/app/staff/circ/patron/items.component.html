@@ -45,7 +45,8 @@
             <ng-container *ngIf="loading">
               <ng-container *ngTemplateOutlet="progress"></ng-container>
             </ng-container>
-            <eg-circ-grid #nonCatGrid [persistKey]="persistKey" (reloadRequested)="load()">
+            <eg-circ-grid #nonCatGrid [persistKey]="persistKey" 
+              menuStyle="none" (reloadRequested)="load()">
             </eg-circ-grid>
           </ng-container>
         </ng-container>
