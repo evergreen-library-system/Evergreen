@@ -210,6 +210,9 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
         this.context.checkouts.unshift(entry);
         this.checkoutsGrid.reload();
+
+        // update summary data
+        this.context.refreshPatron();
     }
 
     noncatPrompt(): Observable<number> {

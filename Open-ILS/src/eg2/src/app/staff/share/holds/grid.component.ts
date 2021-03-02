@@ -223,7 +223,8 @@ export class HoldsGridComponent implements OnInit {
             cp_barcode: row => (row.cp_barcode == null) ? '' : row.cp_barcode,
             current_item: row => row.current_copy ? row.cp_barcode : '',
             requested_item: row => this.isCopyHold(row) ? row.cp_barcode : '',
-            ucard_barcode: row => row.ucard_barcode
+            ucard_barcode: row => row.ucard_barcode,
+            hold_status: row => row.hold_status // TODO labels
         };
     }
 
