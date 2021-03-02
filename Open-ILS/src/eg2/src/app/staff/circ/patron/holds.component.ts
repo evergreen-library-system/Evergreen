@@ -13,6 +13,7 @@ import {PatronContextService} from './patron.service';
 export class HoldsComponent implements OnInit {
 
     constructor(
+        private router: Router,
         private org: OrgService,
         private net: NetService,
         public patronService: PatronService,
@@ -22,5 +23,9 @@ export class HoldsComponent implements OnInit {
     ngOnInit() {
     }
 
+    newHold() {
+        this.router.navigate(['/staff/catalog/search'],
+          {queryParams: {holdForBarcode: this.context.patron.card().barcode()}});
+    }
 }
 

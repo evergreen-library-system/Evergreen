@@ -8,6 +8,8 @@
       <eg-holds-grid 
         printTemplate="holds_for_patron"
         persistKey="circ.patron.holds"
+        (placeHoldRequested)="newHold()"
+        [showPlaceHoldButton]="true"
         [hidePickupLibFilter]="true"
         [defaultSort]="[{name:'request_time',dir:'asc'}]"
         [patronId]="context.patron.id()"></eg-holds-grid>

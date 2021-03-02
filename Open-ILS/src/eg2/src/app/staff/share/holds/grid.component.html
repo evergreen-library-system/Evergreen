@@ -83,6 +83,12 @@
         </eg-grid-toolbar-checkbox>
       </ng-container>
 
+      <ng-container *ngIf="showPlaceHoldButton">
+        <eg-grid-toolbar-button
+          i18n-label label="Place Hold" (onClick)="placeHoldRequested.emit()">
+        </eg-grid-toolbar-button>
+      </ng-container>
+
       <eg-grid-toolbar-action
         i18n-label label="Show Hold Details" i18n-group group="Hold"
         (onClick)="showDetails($event)"></eg-grid-toolbar-action>
