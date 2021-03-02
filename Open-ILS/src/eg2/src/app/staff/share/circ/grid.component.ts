@@ -604,5 +604,19 @@ export class CircGridComponent implements OnInit {
             }
         );
     }
+
+    showRecentCircs(rows: CircGridEntry[]) {
+        const copyId = this.getCopyIds(rows)[0];
+        if (copyId) {
+            window.open('/eg/staff/cat/item/' + copyId + '/circ_list');
+        }
+    }
+
+    showTriggeredEvents(rows: CircGridEntry[]) {
+        const copyId = this.getCopyIds(rows)[0];
+        if (copyId) {
+            window.open('/eg/staff/cat/item/' + copyId + '/triggered_events');
+        }
+    }
 }
 

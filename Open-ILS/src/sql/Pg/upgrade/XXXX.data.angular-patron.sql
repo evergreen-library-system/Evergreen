@@ -57,6 +57,8 @@ UPDATE config.print_template SET template = $TEMPLATE$
 </div>
 $TEMPLATE$ WHERE name = 'items_out';
 
+UPDATE config.print_template SET active = TRUE WHERE name = 'patron_address';
+
 COMMIT;
 
 

@@ -1,13 +1,14 @@
 
 <div class="patron-summary-container">
 
-  <h3 *ngIf="context.patron" class="font-weight-bold" i18n>
-    {{patronService.namePart(context.patron, 'family_name')}}, 
-    {{patronService.namePart(context.patron, 'first_given_name')}} 
-    {{patronService.namePart(context.patron, 'second_given_name')}}
+  <h3 *ngIf="patron()" class="font-weight-bold" i18n>
+    {{patronService.namePart(patron(), 'family_name')}}, 
+    {{patronService.namePart(patron(), 'first_given_name')}} 
+    {{patronService.namePart(patron(), 'second_given_name')}}
   </h3>
 
-  <div class="row mb-1 alert alert-danger p-0" *ngIf="context.alerts.accountExpiresSoon">
+  <div class="row mb-1 alert alert-danger p-0" 
+    *ngIf="context.alerts.accountExpiresSoon">
     <div class="col-lg-12" i18n>
       Patron account will expire soon.  Please renew.
     </div>
@@ -15,43 +16,43 @@
 
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Profile</div>
-    <div class="col-lg-7">{{context.patron.profile().name()}}</div>
+    <div class="col-lg-7">{{patron().profile().name()}}</div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Home Library</div>
-    <div class="col-lg-7">{{context.orgSn(context.patron.home_ou())}}</div>
+    <div class="col-lg-7">{{context.orgSn(patron().home_ou())}}</div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Net Access</div>
-    <div class="col-lg-7">{{context.patron.net_access_level().name()}}</div>
+    <div class="col-lg-7">{{patron().net_access_level().name()}}</div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Date of Birth</div>
-    <div class="col-lg-7">{{context.patron.dob() | date:'shortDate'}}</div>
+    <div class="col-lg-7">{{patron().dob() | date:'shortDate'}}</div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Parent/Guardian</div>
-    <div class="col-lg-7">{{context.patron.guardian()}}</div>
+    <div class="col-lg-7">{{patron().guardian()}}</div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Last Activity</div>
     <div class="col-lg-7">
-      <ng-container *ngIf="context.patron.usr_activity()[0]">
-        {{context.patron.usr_activity()[0].event_time() | date:'shortDate'}}
+      <ng-container *ngIf="patron().usr_activity()[0]">
+        {{patron().usr_activity()[0].event_time() | date:'shortDate'}}
       </ng-container>
     </div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Last Updated</div>
-    <div class="col-lg-7">{{context.patron.last_update_time() | date:'shortDate'}}</div>
+    <div class="col-lg-7">{{patron().last_update_time() | date:'shortDate'}}</div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Create Date</div>
-    <div class="col-lg-7">{{context.patron.create_date() | date:'shortDate'}}</div>
+    <div class="col-lg-7">{{patron().create_date() | date:'shortDate'}}</div>
   </div>
   <div class="row" [ngClass]="{'alert alert-danger p-0': context.alerts.accountExpired}">
     <div class="col-lg-5" i18n>Expire Date</div>
-    <div class="col-lg-7">{{context.patron.expire_date() | date:'shortDate'}}</div>
+    <div class="col-lg-7">{{patron().expire_date() | date:'shortDate'}}</div>
   </div>
 
   <hr class="m-1"/>
@@ -70,19 +71,23 @@
       <div class="col-lg-5" i18n>Items Out</div>
       <div class="col-lg-7">{{context.patronStats.checkouts.total_out}}</div>
     </div>
-    <div class="row mb-1">
+    <div class="row mb-1"
+      [ngClass]="{'alert alert-danger p-0': context.patronStats.checkouts.overdue > 0}">
       <div class="col-lg-5" i18n>Overdue</div>
       <div class="col-lg-7">{{context.patronStats.checkouts.overdue}}</div>
     </div>
-    <div class="row mb-1">
+    <div class="row mb-1"
+      [ngClass]="{'alert alert-danger p-0': context.patronStats.checkouts.long_overdue > 0}">
       <div class="col-lg-5" i18n>Long Overdue</div>
       <div class="col-lg-7">{{context.patronStats.checkouts.long_overdue}}</div>
     </div>
-    <div class="row mb-1">
+    <div class="row mb-1"
+      [ngClass]="{'alert alert-danger p-0': context.patronStats.checkouts.claims_returned > 0}">
       <div class="col-lg-5" i18n>Claimed Returned</div>
       <div class="col-lg-7">{{context.patronStats.checkouts.claims_returned}}</div>
     </div>
-    <div class="row mb-1">
+    <div class="row mb-1"
+      [ngClass]="{'alert alert-danger p-0': context.patronStats.checkouts.lost > 0}">
       <div class="col-lg-5" i18n>Lost</div>
       <div class="col-lg-7">{{context.patronStats.checkouts.lost}}</div>
     </div>
@@ -103,51 +108,65 @@
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Card</div>
     <div class="col-lg-7">
-      {{context.patron.card() ? context.patron.card().barcode() : ''}}
+      {{patron().card() ? patron().card().barcode() : ''}}
     </div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Username</div>
-    <div class="col-lg-7">{{context.patron.usrname()}}</div>
+    <div class="col-lg-7">{{patron().usrname()}}</div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Day Phone</div>
-    <div class="col-lg-7">{{context.patron.day_phone()}}</div> 
+    <div class="col-lg-7">{{patron().day_phone()}}</div> 
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Evening Phone</div>
-    <div class="col-lg-7">{{context.patron.evening_phone()}}</div> 
+    <div class="col-lg-7">{{patron().evening_phone()}}</div> 
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Other Phone</div>
-    <div class="col-lg-7">{{context.patron.other_phone()}}</div> 
+    <div class="col-lg-7">{{patron().other_phone()}}</div> 
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>ID1 </div>
-    <div class="col-lg-7">{{context.patron.ident_value()}}</div> 
+    <div class="col-lg-7">{{patron().ident_value()}}</div> 
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>ID2</div>
-    <div class="col-lg-7">{{context.patron.ident_value2()}}</div> 
+    <div class="col-lg-7">{{patron().ident_value2()}}</div> 
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Email</div>
     <div class="col-lg-7">
       <!-- TODO: mailto link -->
-      {{context.patron.email()}}
+      {{patron().email()}}
     </div> 
   </div>
 
   <hr class="m-1"/>
 
-  <div class="row mb-1" *ngFor="let addr of context.patron.addresses()">
+  <div class="row mb-1" *ngFor="let addr of patron().addresses()">
     <div class="col-lg-12">
       <fieldset>
-        <legend i18n>{{addr.address_type()}}</legend><!-- todo -->
+        <legend class="d-flex" [ngClass]="{'alert alert-danger p-0': addr.valid() == 'f'}">
+          <div class="flex-1">{{addr.address_type()}}</div>
+          <div>
+            <a class="mr-2" href="javascript:;" 
+              (click)="copyAddress(addr)" i18n>copy</a>
+            <a class="mr-2" href="javascript:;" 
+              (click)="printAddress(addr)" i18n>print</a>
+          </div>
+        </legend>
         <div i18n>{{addr.street1()}} {{addr.street2()}}</div>
         <div i18n>{{addr.city()}}, {{addr.state()}} {{addr.post_code()}}</div>
       </fieldset>
-      <!-- todo textarea for copy -->
+
+      <!-- hidden textare used only for copying the text -->
+      <textarea id="patron-address-copy-{{addr.id()}}" rows="2"              
+        style="visibility:hidden">
+{{patron().first_given_name()}} {{patron().second_given_name()}} {{patron().family_name()}}
+{{addr.street1()}} {{addr.street2()}}
+{{addr.city()}}, {{addr.state()}} {{addr.post_code()}}</textarea>
     </div>
   </div>
 </div>

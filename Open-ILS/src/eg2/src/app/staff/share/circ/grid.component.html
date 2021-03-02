@@ -39,8 +39,7 @@
   [useLocalSort]="true" [cellTextGenerator]="cellTextGenerator">
 
   <eg-grid-toolbar-action
-    i18n-group group="View" i18n-label label="Print Item Receipt(s)"
-    (onClick)="printReceipts($event)">
+    i18n-label label="Print Item Receipt(s)" (onClick)="printReceipts($event)">
   </eg-grid-toolbar-action>
 
   <eg-grid-toolbar-action
@@ -96,6 +95,16 @@
     i18n-label label="Renew With Specific Due Date"
     (onClick)="renewWithDate($event)">
   </eg-grid-toolbar-action>
+
+  <eg-grid-toolbar-action group="Show" i18n-group 
+    i18n-label label="Show Last Few Circulation" (onClick)="showRecentCircs($event)">
+  </eg-grid-toolbar-action>
+
+  <eg-grid-toolbar-action group="Show" i18n-group 
+    i18n-label label="Show Triggered Events" (onClick)="showTriggeredEvents($event)">
+  </eg-grid-toolbar-action>
+
+  <!-- Columns =========================================== -->
 
   <eg-grid-column [index]="true" path="index" [hidden]="true"
     label="Row Index" i18n-label></eg-grid-column>
