@@ -8,4 +8,4 @@
    TCN Value, the staff catalog Numeric Search => TCN search now includes
    deleted bib records.
 
-For acknowledgments: Carmen Oleskevich (French translations)
+For acknowledgments: Carmen Oleskevich (French translations; staff member at BC Coop)
