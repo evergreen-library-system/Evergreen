@@ -315,8 +315,12 @@ sub mk_copy_query {
         $rec_id, undef, undef, $copy_limit, $copy_offset, $self->ctx->{is_staff}
     );
 
-    if($org != $self->ctx->{aou_tree}->()->id) { 
+    my $lasso_orgs = $self->search_lasso_orgs;
+
+    if($lasso_orgs || $org != $self->ctx->{aou_tree}->()->id) { 
         # no need to add the org join filter if we're not actually filtering
+
+        my $filter_orgs = $lasso_orgs || $org;
         $query->{from}->{acp}->[1] = { aou => {
             fkey => 'circ_lib',
             field => 'id',
@@ -330,7 +334,7 @@ sub mk_copy_query {
                             params => [$depth]
                         }]},
                         from => 'aou',
-                        where => {id => $org}
+                        where => {id => $filter_orgs}
                     }
                 }
             }

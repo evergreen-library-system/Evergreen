@@ -676,6 +676,7 @@ sub extract_copy_location_group_info {
         if ($grp =~ /^lasso\(([^)]+)\)/) {
             $ctx->{search_lasso} = $1;
             $ctx->{search_scope} = $grp;
+            $self->search_lasso_orgs;
         } elsif ($grp) {
             $ctx->{copy_location_group} = $grp;
             $ctx->{search_scope} = "location_groups($grp)";
@@ -750,6 +751,19 @@ sub load_my_hold_subscriptions {
         $self->editor->search_container_user_bucket(
             {btype => 'hold_subscription', id => $sub_ids, pub => 't'}
         ) : [];
+}
+
+sub search_lasso_orgs {
+    my $self = shift;
+    my $ctx = $self->ctx;
+    return $ctx->{search_lasso_orgs} if defined $ctx->{search_lasso_orgs};
+    return undef unless $ctx->{search_lasso};
+
+    # User can access global lassos and those at the current search lib
+    my $lasso_maps = $self->editor->search_actor_org_lasso_map(
+        { lasso => $ctx->{search_lasso} }
+    );
+    $ctx->{search_lasso_orgs} = [ map { $_->org_unit } @$lasso_maps];
 }
 
 sub load_lassos {
