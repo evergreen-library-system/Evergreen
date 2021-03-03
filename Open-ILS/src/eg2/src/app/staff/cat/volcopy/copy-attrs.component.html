@@ -87,7 +87,7 @@
         <ng-template #statusTemplate>
           <eg-combobox domId="status-input"
             (ngModelChange)="values['status'] = $event ? $event.id : null"
-            [ngModel]="values['status']">
+            [ngModel]="values['status']" [disableEntries]="volcopy.magicCopyStats">
             <eg-combobox-entry 
               *ngFor="let stat of volcopy.commonData.acp_status"
               [entryId]="stat.id()" [entryLabel]="stat.name()">
