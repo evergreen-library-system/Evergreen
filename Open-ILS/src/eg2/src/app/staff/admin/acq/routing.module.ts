@@ -32,6 +32,37 @@ const routes: Routes = [{
     path: 'claim_type',
     redirectTo: 'claiming' // from legacy auto-generated admin page
 }, {
+    path: 'funds',
+    loadChildren: () =>
+      import('./funds/funds.module').then(m => m.FundsModule)
+}, {
+    path: 'fund',
+    redirectTo: 'funds' // from auto-generated admin page
+}, {
+    path: 'fund_allocation',
+    redirectTo: 'funds' // from auto-generated admin page
+}, {
+    path: 'fund_allocation_percent',
+    redirectTo: 'funds' // from auto-generated admin page
+}, {
+    path: 'fund_debit',
+    redirectTo: 'funds' // from auto-generated admin page
+}, {
+    path: 'funding_source',
+    redirectTo: 'funds' // from auto-generated admin page
+}, {
+    path: 'funding_source_credit',
+    redirectTo: 'funds' // from auto-generated admin page
+}, {
+    path: 'fund_tag',
+    redirectTo: 'funds' // from auto-generated admin page
+}, {
+    path: 'fund_tag_map',
+    redirectTo: 'funds' // from auto-generated admin page
+}, {
+    path: 'fund_transfer',
+    redirectTo: 'funds' // from auto-generated admin page
+}, {
     path: ':table',
     component: BasicAdminPageComponent,
     // All ACQ admin pages cover data in the acq.* schema.  No need to

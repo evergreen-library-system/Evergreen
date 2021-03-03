@@ -1,0 +1,34 @@
+<ng-template #addSuccessStrTmpl i18n>Added tag</ng-template>
+<eg-string #addSuccessString [template]="addSuccessStrTmpl"></eg-string>
+<ng-template #addErrorStrTmpl i18n>Failed to add tag</ng-template>
+<eg-string #addErrorString [template]="addErrorStrTmpl"></eg-string>
+<ng-template #removeSuccessStrTmpl i18n>Removed tag</ng-template>
+<eg-string #removeSuccessString [template]="removeSuccessStrTmpl"></eg-string>
+<ng-template #removeErrorStrTmpl i18n>Failed to remove tag</ng-template>
+<eg-string #removeErrorString [template]="removeErrorStrTmpl"></eg-string>
+
+<div class="row">
+  <div class="col-sm-2" *ngFor="let ftm of tagMaps">
+    <button class="btn btn-sm material-icon-button" type="button"
+      (click)="removeTagMap(ftm)"
+      i18n-title title="Remove Tag"><span class="sr-only">Remove Tag</span>
+      <span class="material-icons" aria-hidden="true">delete</span>
+    </button>
+    {{ftm.tag().name()}} ({{ftm.tag().owner().shortname()}})
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-sm-2">
+    <eg-combobox #tagSelector [asyncSupportsEmptyTermClick]="true"
+      [(ngModel)]="newTag" [asyncDataSource]="tagSelectorDataSource"
+      i18n-placeholder placeholder="Select tag"></eg-combobox>
+  </div>
+  <div class="col-sm-1">
+    <button class="btn btn-success" [disabled]="!newTag || checkNewTagAlreadyMapped()"
+      (click)="addTagMap()" i18n>Add Tag
+    </button>
+  </div>
+  <div class="col-sm-2" *ngIf="newTag && checkNewTagAlreadyMapped()">
+    <span class="alert-warning" i18n>(tag is already assigned to this fund)</span>
+  </div>
+</div> 
