@@ -1,0 +1,23 @@
+Removal of Custom Dojo Build
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Evergreen had a
+https://wiki.evergreen-ils.org/doku.php?id=scratchpad:random_magic_spells#custom_dojo_build[method
+of making a custom build of the Dojo JavaScript library].  Followiing
+this procedure could improve the load times for the OPAC and other
+interfaces that use Dojo.  However, very few sites took advantage of
+this process or even knew of its existence.
+
+As a part of the process, an `openils_dojo.js` file was built and
+installed along with the other Dojo files.  Evergreen had many
+references to load this optional file.  For the majority of sites that
+did not use this custom Dojo process, this file did not exist.
+Browsers would spend time and resources requesting this nonexistent
+file.  This situation also contributed noise to the Apache logs with
+the 404 errors from these requests.
+
+In keeping with the goal of eliminating Dojo from Evergreen, all
+references to `openils_dojo.js` have been removed from the OPAC and
+other files.  The profile script required to make the custom Dojo
+build has also been removed.
+
