@@ -312,6 +312,11 @@ export class VolCopyService {
             // in a previous iteration of this loop.
             if (vol.label()) { return; }
 
+            // Avoid applying call number labels to existing call numbers
+            // that don't already have a label.  This allows the user to
+            // see that an action needs to be taken on the volume.
+            if (!vol.isnew()) { return; }
+
             promise = promise.then(_ => {
                 return this.net.request(
                     'open-ils.cat',
