@@ -23,6 +23,7 @@ export interface ComboboxEntry {
   freetext?: boolean;
   userdata?: any; // opaque external value; ignored by this component.
   fm?: IdlObject;
+  disabled?: boolean;
 }
 
 @Directive({
@@ -89,6 +90,9 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
         this.isRequired = r;
     }
 
+    // Array of entry identifiers to disable in the selector
+    @Input() disableEntries: any[] = [];
+
     // Disable the input
     isDisabled: boolean;
     @Input() set disabled(d: boolean) {
@@ -125,7 +129,8 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                     this.entrylist = [{
                         id: id,
                         label: this.getFmRecordLabel(rec),
-                        fm: rec
+                        fm: rec,
+                        disabled : this.disableEntries.includes(id)
                     }];
                     this.selected = this.entrylist.filter(e => e.id === id)[0];
                 });
@@ -492,6 +497,18 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
         });
     }
 
+    // NgbTypeahead doesn't offer a way to style the dropdown
+    // button directly, so we have to reach up and style it ourselves.
+    applyDisableStyle() {
+        this.disableEntries.forEach(id => {
+            const node = document.getElementById(`${this.domId}-${id}`);
+            if (node) {
+                const button = node.parentNode as HTMLElement;
+                button.classList.add('disabled');
+            }
+        });
+    }
+
     filter = (text$: Observable<string>): Observable<ComboboxEntry[]> => {
         return text$.pipe(
             debounceTime(200),
@@ -520,9 +537,16 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                     if (this.asyncDataSource) {
                         term = '';
                     } else {
+                        // Give the typeahead a chance to open before applying
+                        // the disabled entry styling.
+                        setTimeout(() => this.applyDisableStyle());
                         return this.entrylist;
                     }
                 }
+
+                // Give the typeahead a chance to open before applying
+                // the disabled entry styling.
+                setTimeout(() => this.applyDisableStyle());
 
                 // Filter entrylist whose labels substring-match the
                 // text entered.

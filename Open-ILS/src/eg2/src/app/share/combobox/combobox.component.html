@@ -1,14 +1,15 @@
 
-<!-- todo disabled -->
 <ng-template #defaultDisplayTemplate let-r="result">
-{{r.label || r.id}}
+  <span id="{{domId}}-{{r.id}}">{{r.label}}</span>
 </ng-template>
 
 <ng-template #acqfTemplate egIdlClass="acqf" let-r="result">
-  {{r.fm.code()}} ({{r.fm.year()}}) ({{getOrgShortname(r.fm.org())}})
+  <span id="{{domId}}-{{r.id}}">{{r.fm.code()}} ({{r.fm.year()}}) ({{getOrgShortname(r.fm.org())}})</span>
 </ng-template>
 <ng-template #acplTemplate egIdlClass="acpl" let-r="result">
-  {{r.fm.name()}} ({{getOrgShortname(r.fm.owning_lib())}})
+  <span id="{{domId}}-{{r.id}}">
+    {{r.fm.name()}} ({{getOrgShortname(r.fm.owning_lib())}})
+  </span>
 </ng-template>
 
 <div class="d-flex">
