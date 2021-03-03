@@ -7,3 +7,5 @@
  * For consistency with the menu action Cataloging => Retrieve Record by
    TCN Value, the staff catalog Numeric Search => TCN search now includes
    deleted bib records.
+
+For acknowledgments: Carmen Oleskevich (French translations)
