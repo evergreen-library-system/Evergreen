@@ -2,6 +2,10 @@
   {{copy.call_number_prefix_label}}
   {{copy.call_number_label}}
   {{copy.call_number_suffix_label}}
+  <div>
+    <a routerLink="/staff/cat/volcopy/holdings/callnumber/{{copy.call_number}}"
+      class="" target="_blank"i18n>Edit</a> 
+  </div>
 </ng-template>
 
 <ng-template #barcodeTemplate let-copy="row" let-context="userContext">
