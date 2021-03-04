@@ -7,5 +7,7 @@
  * For consistency with the menu action Cataloging => Retrieve Record by
    TCN Value, the staff catalog Numeric Search => TCN search now includes
    deleted bib records.
+ * Add a new command-line script, `overdrive-api-checker.pl`, for testing
+   the OverDrive API.
 
 For acknowledgments: Carmen Oleskevich (French translations; staff member at BC Coop)
