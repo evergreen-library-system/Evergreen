@@ -19,6 +19,7 @@ import {EditToolbarComponent} from './edit-toolbar.component';
 import {BcSearchComponent} from './bcsearch.component';
 import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
 import {ItemsComponent} from './items.component';
+import {BillsComponent} from './bills.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {ItemsComponent} from './items.component';
     EditComponent,
     EditToolbarComponent,
     BcSearchComponent,
-    ItemsComponent
+    ItemsComponent,
+    BillsComponent
   ],
   imports: [
     StaffCommonModule,

@@ -1,0 +1,6 @@
+
+
+.payment-form input[type="text"], .payment-form input[type="number"] {
+  width: 8em;
+}
+

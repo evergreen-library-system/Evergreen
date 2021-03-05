@@ -1,0 +1,102 @@
+
+<ng-container *ngIf="summary">
+  <div class="row border-bottom pb-2 pt-2 mb-4 border border-secondary rounded">
+    <div class="col-lg-3 pr-0 mr-0 border-right">
+      <div class="d-flex">
+        <div class="flex-4" i18n>Total Owed:</div>
+        <div class="flex-1">{{(summary.total_paid() || 0) | currency}}</div>
+      </div>
+      <div class="d-flex">
+        <div class="flex-4" i18n>Total Billed:</div>
+        <div class="flex-1">{{(summary.total_owed() || 0) | currency}}</div>
+      </div>
+      <div class="d-flex">
+        <div class="flex-4" i18n>Total Paid/Credited:</div>
+        <div class="flex-1">{{(summary.total_paid() || 0) | currency}}</div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 pr-0 mr-0 border-right">
+      <div class="d-flex">
+        <div class="flex-4" i18n>Owed for Selected:</div>
+        <div class="flex-1">{{owedSelected() | currency}}</div>
+      </div>
+      <div class="d-flex">
+        <div class="flex-4" i18n>Billed for Selected:</div>
+        <div class="flex-1">{{billedSelected() | currency}}</div>
+      </div>
+      <div class="d-flex">
+        <div class="flex-4" i18n>Paid/Credited for Selected:</div>
+        <div class="flex-1">{{paidSelected() | currency}}</div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 pr-0 mr-0 border-right">
+      <div class="d-flex">
+        <div class="flex-4" i18n>Refunds Available:</div>
+        <div class="flex-1">{{refundsAvailable() | currency}}</div>
+      </div>
+      <div class="d-flex">
+        <div class="flex-4" i18n>Credit Available:</div>
+        <div class="flex-1">{{patron().credit_forward_balance() | currency}}</div>
+      </div>
+      <div class="d-flex">
+        <div class="flex-4" i18n>Session Voided:</div>
+        <div class="flex-1">{{sessionVoided | currency}}</div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 pr-0 mr-0">
+      <div class="d-flex">
+        <div class="flex-4">&nbsp;</div>
+        <div class="flex-1">&nbsp;</div>
+      </div>
+      <div class="d-flex">
+        <div class="flex-4" i18n>Pending Payment:</div>
+        <div class="flex-1 font-weight-bold">{{pendingPayment() | currency}}</div>
+      </div>
+      <div class="d-flex">
+        <div class="flex-4" i18n>Pending Change:</div>
+        <div class="flex-1 font-weight-bold">{{pendingChange() | currency}}</div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<div class="row bg-light border border-dark rounded pt-2 pb-2 mt-2 mb-2 payment-form">
+  <div class="col-lg-12 d-flex form-inline form-validated">
+    <div class="font-weight-bold" i18n>Pay Bill:</div>
+    <div class="ml-4"><label for="payment-type" i18n>Payment Type:</label></div>
+    <div class="ml-2">
+      <select [(ngModel)]="paymentType" class="form-control ml-2" id="payment-type">
+        <option value="cash_payment" i18n>Cash</option>
+        <option value="check_payment" i18n>Check</option>
+        <option value="credit_card_payment" i18n>Credit Card</option>
+        <option value="debit_card_payment" i18n>Debit Card</option>
+        <option value="credit_payment" i18n>Patron Credit</option>
+        <option value="work_payment" i18n>Work</option>
+        <option value="forgive_payment" i18n>Forgive</option>
+        <option value="goods_payment" i18n>Goods</option>
+      </select>
+    </div>
+    <div class="ml-4"><label for="check-number" i18n>Check Number:</label></div>
+    <div class="ml-2">
+      <input type="text" class="form-control" [(ngModel)]="checkNumber"
+        id="check-number" [disabled]="paymentType !== 'check_payment'"/>
+    </div>
+    <div class="ml-4"><label for="pay-amount" i18n>Payment Received:</label></div>
+    <div class="ml-2">
+      <input type="number" class="form-control" [(ngModel)]="payAmount"
+        id="pay-amount" [min]="0"/>
+    </div>
+    <div class="ml-4 form-check form-check-inline">
+      <input class="form-check-input" type="checkbox" id="annotate" [(ngModel)]="annotatePayment"/>
+      <label class="form-check-label" for="annotate" i18n>Annotate</label>
+    </div>
+    <div class="ml-4">
+      <button class="btn btn-outline-dark" (click)="applyPayment()" i18n>Apply Payment</button>
+    </div>
+  </div>
+</div>
+
+

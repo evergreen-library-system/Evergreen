@@ -74,8 +74,7 @@
         <li ngbNavItem="bills" [disabled]="!context.patron">
           <a ngbNavLink i18n>Bills</a>
           <ng-template ngbNavContent>
-            <div class="">
-            </div>
+            <eg-patron-bills [patronId]="patronId"></eg-patron-bills>
           </ng-template>
         </li>
 
