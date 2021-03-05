@@ -12,6 +12,15 @@ import {AudioService} from '@eg/share/util/audio.service';
 import {CircEventsComponent} from './events-dialog.component';
 import {CircComponentsComponent} from './components.component';
 
+export interface CircDisplayInfo {
+    title?: string;
+    author?: string;
+    isbn?: string;
+    copy?: IdlObject;        // acp
+    volume?: IdlObject;      // acn
+    record?: IdlObject;      // bre
+    display?: IdlObject;     // mwde
+}
 
 const CAN_OVERRIDE_CHECKOUT_EVENTS = [
     'PATRON_EXCEEDS_OVERDUE_COUNT',
@@ -171,6 +180,39 @@ export class CircService {
         private auth: AuthService,
         private bib: BibRecordService,
     ) {}
+
+    // 'circ' is fleshed with copy, vol, bib, wide_display_entry
+    // Extracts some display info from a fleshed circ.
+    getDisplayInfo(circ: IdlObject): CircDisplayInfo {
+
+        const copy = circ.target_copy();
+
+        if (copy.call_number().id() === -1) { // precat
+            return {
+                title: copy.dummy_title(),
+                author: copy.dummy_author(),
+                isbn: copy.dummy_isbn(),
+                copy: copy
+            };
+        }
+
+        const volume = copy.call_number();
+        const record = volume.record();
+        const display = record.wide_display_entry();
+
+        let isbn = JSON.parse(display.isbn());
+        if (Array.isArray(isbn)) { isbn = isbn.join(','); }
+
+        return {
+            title: JSON.parse(display.title()),
+            author: JSON.parse(display.author()),
+            isbn: isbn,
+            copy: copy,
+            volume: volume,
+            record: record,
+            display: display
+        };
+    }
 
     getNonCatTypes(): Promise<IdlObject[]> {
 

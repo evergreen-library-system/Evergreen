@@ -208,7 +208,10 @@ export class ItemsComponent implements OnInit, AfterViewInit {
             const entry: CircGridEntry = {
                 index: `ancc-${circ.id()}`,
                 title: circ.item_type().name(),
-                dueDate: circ.duedate()
+                dueDate: circ.duedate(),
+                copy: null,
+                author: '',
+                isbn: ''
             };
 
             this.nonCatGrid.appendGridEntry(entry);

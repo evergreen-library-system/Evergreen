@@ -8,7 +8,7 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {CheckoutParams, CheckoutResult, CheckinParams, CheckinResult,
-    CircService} from './circ.service';
+    CircDisplayInfo, CircService} from './circ.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
@@ -33,15 +33,9 @@ import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component'
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AddBillingDialogComponent} from './billing-dialog.component';
 
-export interface CircGridEntry {
+export interface CircGridEntry extends CircDisplayInfo {
     index: string; // class + id -- row index
-    title?: string;
-    author?: string;
-    isbn?: string;
-    copy?: IdlObject;
     circ?: IdlObject;
-    volume?: IdlObject;
-    record?: IdlObject;
     dueDate?: string;
     copyAlertCount?: number;
     nonCatCount?: number;
@@ -246,39 +240,21 @@ export class CircGridComponent implements OnInit {
 
     gridify(circ: IdlObject): CircGridEntry {
 
+        const circDisplay = this.circ.getDisplayInfo(circ);
+
         const entry: CircGridEntry = {
             index: `circ-${circ.id()}`,
             circ: circ,
             dueDate: circ.due_date(),
+            title: circDisplay.title,
+            author: circDisplay.author,
+            isbn: circDisplay.isbn,
+            copy: circDisplay.copy,
+            volume: circDisplay.volume,
+            record: circDisplay.copy,
+            display: circDisplay.display,
             copyAlertCount: 0 // TODO
         };
-
-        const copy = circ.target_copy();
-        entry.copy = copy;
-
-        // Some values have to be manually extracted / normalized
-        if (copy.call_number().id() === -1) {
-
-            entry.title = copy.dummy_title();
-            entry.author = copy.dummy_author();
-            entry.isbn = copy.dummy_isbn();
-
-        } else {
-
-            entry.volume = copy.call_number();
-            entry.record = entry.volume.record();
-
-            // display entries are JSON-encoded and some are lists
-            const display = entry.record.wide_display_entry();
-
-            entry.title = JSON.parse(display.title());
-            entry.author = JSON.parse(display.author());
-            entry.isbn = JSON.parse(display.isbn());
-
-            if (Array.isArray(entry.isbn)) {
-                entry.isbn = entry.isbn.join(',');
-            }
-        }
 
         return entry;
     }

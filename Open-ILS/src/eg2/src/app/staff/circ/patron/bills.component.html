@@ -1,61 +1,65 @@
 
+<!-- SUMMARY  -->
+
 <ng-container *ngIf="summary">
-  <div class="row border-bottom pb-2 pt-2 mb-4 border border-secondary rounded">
+  <div class="row border-bottom border-secondary pb-2 pt-2 mb-4">
     <div class="col-lg-3 pr-0 mr-0 border-right">
-      <div class="d-flex">
+      <div class="d-flex pt-1 pb-1 striped">
         <div class="flex-4" i18n>Total Owed:</div>
-        <div class="flex-1">{{(summary.total_paid() || 0) | currency}}</div>
+        <div class="flex-1" 
+          [ngClass]="{'font-weight-bold' : summary.balance_owed() > 0}">
+          {{summary.balance_owed() | currency}}</div>
       </div>
-      <div class="d-flex">
+      <div class="d-flex pt-1 pb-1">
         <div class="flex-4" i18n>Total Billed:</div>
-        <div class="flex-1">{{(summary.total_owed() || 0) | currency}}</div>
+        <div class="flex-1">{{summary.total_owed() | currency}}</div>
       </div>
-      <div class="d-flex">
+      <div class="d-flex pt-1 pb-1 striped">
         <div class="flex-4" i18n>Total Paid/Credited:</div>
-        <div class="flex-1">{{(summary.total_paid() || 0) | currency}}</div>
+        <div class="flex-1">{{summary.total_paid() | currency}}</div>
       </div>
     </div>
 
     <div class="col-lg-3 pr-0 mr-0 border-right">
-      <div class="d-flex">
+      <div class="d-flex pt-1 pb-1 striped">
         <div class="flex-4" i18n>Owed for Selected:</div>
         <div class="flex-1">{{owedSelected() | currency}}</div>
       </div>
-      <div class="d-flex">
+      <div class="d-flex pt-1 pb-1">
         <div class="flex-4" i18n>Billed for Selected:</div>
         <div class="flex-1">{{billedSelected() | currency}}</div>
       </div>
-      <div class="d-flex">
+      <div class="d-flex pt-1 pb-1 striped">
         <div class="flex-4" i18n>Paid/Credited for Selected:</div>
         <div class="flex-1">{{paidSelected() | currency}}</div>
       </div>
     </div>
 
     <div class="col-lg-3 pr-0 mr-0 border-right">
-      <div class="d-flex">
+      <div class="d-flex pt-1 pb-1 striped">
         <div class="flex-4" i18n>Refunds Available:</div>
         <div class="flex-1">{{refundsAvailable() | currency}}</div>
       </div>
-      <div class="d-flex">
+      <div class="d-flex pt-1 pb-1">
         <div class="flex-4" i18n>Credit Available:</div>
         <div class="flex-1">{{patron().credit_forward_balance() | currency}}</div>
       </div>
-      <div class="d-flex">
+      <div class="d-flex pt-1 pb-1 striped">
         <div class="flex-4" i18n>Session Voided:</div>
         <div class="flex-1">{{sessionVoided | currency}}</div>
       </div>
     </div>
 
     <div class="col-lg-3 pr-0 mr-0">
-      <div class="d-flex">
+      <div class="d-flex pt-1 pb-1 striped">
         <div class="flex-4">&nbsp;</div>
         <div class="flex-1">&nbsp;</div>
       </div>
-      <div class="d-flex">
+      <div class="d-flex pt-1 pb-1">
         <div class="flex-4" i18n>Pending Payment:</div>
         <div class="flex-1 font-weight-bold">{{pendingPayment() | currency}}</div>
       </div>
-      <div class="d-flex">
+      <div class="d-flex pt-1 pb-1 striped">
         <div class="flex-4" i18n>Pending Change:</div>
         <div class="flex-1 font-weight-bold">{{pendingChange() | currency}}</div>
       </div>
@@ -63,12 +67,16 @@
   </div>
 </ng-container>
 
-<div class="row bg-light border border-dark rounded pt-2 pb-2 mt-2 mb-2 payment-form">
+<!-- BILL PAY FORM -->
+
+<h3 i18n>Pay Bill</h3>
+
+<div class="row bg-light border border-dark rounded pt-2 pb-2 mt-2 mb-4 payment-form">
   <div class="col-lg-12 d-flex form-inline form-validated">
-    <div class="font-weight-bold" i18n>Pay Bill:</div>
-    <div class="ml-4"><label for="payment-type" i18n>Payment Type:</label></div>
-    <div class="ml-2">
-      <select [(ngModel)]="paymentType" class="form-control ml-2" id="payment-type">
+    <div class="flex-1"></div>
+    <div class="ml-2"><label for="payment-type" i18n>Payment Type:</label></div>
+    <div class="ml-1">
+      <select [(ngModel)]="paymentType" class="form-control" id="payment-type">
         <option value="cash_payment" i18n>Cash</option>
         <option value="check_payment" i18n>Check</option>
         <option value="credit_card_payment" i18n>Credit Card</option>
@@ -79,24 +87,95 @@
         <option value="goods_payment" i18n>Goods</option>
       </select>
     </div>
-    <div class="ml-4"><label for="check-number" i18n>Check Number:</label></div>
-    <div class="ml-2">
+    <div class="ml-2"><label for="check-number" i18n>Check Number:</label></div>
+    <div class="ml-1">
       <input type="text" class="form-control" [(ngModel)]="checkNumber"
         id="check-number" [disabled]="paymentType !== 'check_payment'"/>
     </div>
-    <div class="ml-4"><label for="pay-amount" i18n>Payment Received:</label></div>
-    <div class="ml-2">
+    <div class="ml-2"><label for="pay-amount" i18n>Payment Received:</label></div>
+    <div class="ml-1">
       <input type="number" class="form-control" [(ngModel)]="payAmount"
         id="pay-amount" [min]="0"/>
     </div>
-    <div class="ml-4 form-check form-check-inline">
+    <div class="ml-2 form-check form-check-inline">
       <input class="form-check-input" type="checkbox" id="annotate" [(ngModel)]="annotatePayment"/>
       <label class="form-check-label" for="annotate" i18n>Annotate</label>
     </div>
-    <div class="ml-4">
+    <div class="ml-2">
       <button class="btn btn-outline-dark" (click)="applyPayment()" i18n>Apply Payment</button>
     </div>
   </div>
 </div>
 
+<!-- BILLS GRID -->
+
+<ng-template #titleTemplate let-r="row">
+  <ng-container *ngIf="r.record">
+    <a routerLink="/staff/catalog/record/{{r.record.id()}}">{{r.title}}</a>
+  </ng-container>
+  <ng-container *ngIf="!r.record">{{r.title}}</ng-container>
+</ng-template>
+
+<ng-template #barcodeTemplate let-r="row">
+  <ng-container *ngIf="r.copy">
+    <a href="/eg/staff/cat/item/{{r.copy.id()}}">{{r.copy.barcode()}}</a>
+  </ng-container>
+</ng-template>
+
+<ng-template #callNumberTemplate let-r="row">
+  <ng-container *ngIf="r.volume">
+    {{r.volume.prefix().label()}} {{r.volume.label()}} {{r.volume.suffix().label()}} 
+  </ng-container>
+  <ng-container *ngIf="!r.volume" i18n>UNCATALOGED</ng-container>
+</ng-template>
+
+<eg-grid #billGrid [dataSource]="gridDataSource" 
+  [sortable]="true" [useLocalSort]="true"
+  [cellTextGenerator]="cellTextGenerator">
+
+  <eg-grid-column path="xact.id" [index]="true" label="Bill #" i18n-label>
+  </eg-grid-column>
+
+  <eg-grid-column path="xact.xact_start" datatype="timestamp" [datePlusTime]="true"
+    label="Start" i18n-label></eg-grid-column>
+
+  <eg-grid-column path="xact.summary.xact_type"
+    label="Type" i18n-label></eg-grid-column>
+
+  <eg-grid-column path="xact.summary.last_billing_type"
+    label="Last Billing Type" i18n-label></eg-grid-column>
+
+  <eg-grid-column path="billingLocation"
+    label="Billing Location" i18n-label></eg-grid-column>
+    
+  <eg-grid-column path="call_number" label="Call Number" i18n-label
+    [cellTemplate]="callNumberTemplate"></eg-grid-column>
+
+  <eg-grid-column name="copy_barcode" label="Item Barcode" i18n-label
+    [cellTemplate]="barcodeTemplate"></eg-grid-column>
+
+  <eg-grid-column path="copy.location.name" label="Shelving Location" 
+    i18n-label></eg-grid-column>
+
+  <eg-grid-column name="title" label="Title" i18n-label 
+    [cellTemplate]="titleTemplate"></eg-grid-column>
+
+  <eg-grid-column path="xact.summary.balance_owed" datatype="money" 
+    label="Balance Owed" i18n-label></eg-grid-column>
+
+  <eg-grid-column path="xact.summary.total_owed" datatype="money" 
+    label="Total Billed" i18n-label></eg-grid-column>
+
+  <eg-grid-column path="xact.summary.total_paid" datatype="money" 
+    label="Total Paid" i18n-label></eg-grid-column>
+
+  <eg-grid-column name="paymentPending" datatype="money"
+    label="Payment Pending" i18n-label></eg-grid-column>
+
+  <eg-grid-column name="author" [hidden]="true" 
+    label="Author" i18n-label></eg-grid-column>
+  <eg-grid-column path="usr" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="unrecovered" [hidden]="true"></eg-grid-column>
+
+</eg-grid>
 
