@@ -7830,7 +7830,10 @@ INSERT INTO config.coded_value_map
     oils_i18n_gettext(633, 'Blu-ray', 'ccvm', 'search_label')),
 (1737,'search_format','preloadedaudio',
     oils_i18n_gettext(1737, 'Preloaded Audio', 'ccvm', 'value'),
-    oils_i18n_gettext(1737, 'Preloaded Audio', 'ccvm', 'search_label'));
+    oils_i18n_gettext(1737, 'Preloaded Audio', 'ccvm', 'search_label')),
+(1738,'search_format','video',
+    oils_i18n_gettext(1738, 'All Videos', 'ccvm', 'value'),
+    oils_i18n_gettext(1738, 'All Videos', 'ccvm', 'search_label'));
 
 -- Electronic search format, not opac_visible
 INSERT INTO config.coded_value_map
@@ -9334,6 +9337,9 @@ INSERT INTO config.composite_attr_entry_definition
     (coded_value, definition) VALUES
 (1736,'{"0":{"_attr":"item_type","_val":"i"},"1":{"_attr":"item_form","_val":"q"}}');
 
+--all videos
+INSERT INTO config.composite_attr_entry_definition (coded_value, definition) VALUES
+    (1738, '{"_attr":"item_type","_val":"g"}');
 
 -- use the definitions from the icon_format as the basis for the MR hold format definitions
 DO $$
