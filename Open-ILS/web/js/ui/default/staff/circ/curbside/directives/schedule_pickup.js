@@ -269,7 +269,8 @@ function($scope , $q , egCurbsideCoreSvc , egCore , patronSvc ,
             'open-ils.curbside',
             'open-ils.curbside.times_for_date.atomic',
             egCore.auth.token(),
-            hash.slot.substring(0, 10),
+            // Use date based on local time, not UTC
+            new Date(hash.slot_date - (hash.slot_date.getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
         ).then(function(times) {
             mungeAvailableTimes(hash, times);
         });
@@ -295,7 +296,8 @@ function($scope , $q , egCurbsideCoreSvc , egCore , patronSvc ,
 
     $scope.minDate = new Date();
     $scope.refreshAvailableTimes = function(hash) {
-        var dateStr = (new Date(hash.slot_date)).toISOString().substring(0, 10);
+        // Use date based on local time, not UTC
+        var dateStr = (new Date(hash.slot_date - (hash.slot_date.getTimezoneOffset() * 60000))).toISOString().substring(0, 10);
         egCore.net.request (
             'open-ils.curbside',
             'open-ils.curbside.times_for_date.atomic',
@@ -321,7 +323,8 @@ function($scope , $q , egCurbsideCoreSvc , egCore , patronSvc ,
             'open-ils.curbside.' + op + '_appointment',
             egCore.auth.token(),
             $scope.user_id,
-            (new Date(appt.slot_date)).toISOString().substring(0, 10),
+            // Use date based on local time, not UTC
+            (new Date(appt.slot_date - (appt.slot_date.getTimezoneOffset() * 60000))).toISOString().substring(0, 10),
             appt.slot_time,
             egCore.auth.user().ws_ou(),
             appt.notes
