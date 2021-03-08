@@ -9,5 +9,6 @@
    deleted bib records.
  * Add a new command-line script, `overdrive-api-checker.pl`, for testing
    the OverDrive API.
+ * The Shelving Location Groups editor is ported to Angular.
 
 For acknowledgments: Carmen Oleskevich (French translations; staff member at BC Coop)
