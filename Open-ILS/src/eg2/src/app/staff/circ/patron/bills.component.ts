@@ -4,6 +4,7 @@ import {from, empty} from 'rxjs';
 import {concatMap, tap, takeLast} from 'rxjs/operators';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {IdlObject} from '@eg/core/idl.service';
+import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService, PcrudContext} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -14,6 +15,9 @@ import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
+import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
+import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
 interface BillGridEntry extends CircDisplayInfo {
     xact: IdlObject // mbt
@@ -55,20 +59,30 @@ export class BillsComponent implements OnInit, AfterViewInit {
     checkNumber: string;
     payAmount: number;
     annotatePayment = false;
+    annotation: string;
     entries: BillGridEntry[];
+    convertChangeToCredit = false;
+    receiptOnPayment = false;
+
+    maxPayAmount = 100000;
+    warnPayAmount = 1000;
 
     gridDataSource: GridDataSource = new GridDataSource();
     cellTextGenerator: GridCellTextGenerator;
 
     @ViewChild('billGrid') private billGrid: GridComponent;
+    @ViewChild('annotateDialog') private annotateDialog: PromptDialogComponent;
+    @ViewChild('maxPayDialog') private maxPayDialog: AlertDialogComponent;
+    @ViewChild('warnPayDialog') private warnPayDialog: ConfirmDialogComponent;
 
     constructor(
         private router: Router,
         private route: ActivatedRoute,
+        private org: OrgService,
         private net: NetService,
         private pcrud: PcrudService,
         private auth: AuthService,
-        private store: ServerStoreService,
+        private serverStore: ServerStoreService,
         private circ: CircService,
         public patronService: PatronService,
         public context: PatronContextService
@@ -94,12 +108,28 @@ export class BillsComponent implements OnInit, AfterViewInit {
             return from(page);
         };
 
-        this.load();
+        this.applySettings().then(_ => this.load());
+    }
+
+    applySettings(): Promise<any> {
+        return this.serverStore.getItemBatch([
+            'ui.circ.billing.amount_warn',
+            'ui.circ.billing.amount_limit'
+        ]).then(sets => {
+            this.maxPayAmount = sets['ui.circ.billing.amount_limit'] || 100000;
+            this.warnPayAmount = sets['ui.circ.billing.amount_warn'] || 1000;
+        });
     }
 
     ngAfterViewInit() {
-        const node = document.getElementById('pay-amount');
-        if (node) { node.focus(); }
+        this.focusPayAmount();
+    }
+
+    focusPayAmount() {
+        setTimeout(() => {
+            const node = document.getElementById('pay-amount') as HTMLInputElement;
+            if (node) { node.focus(); node.select(); }
+        });
     }
 
     load() {
@@ -135,11 +165,18 @@ export class BillsComponent implements OnInit, AfterViewInit {
         };
 
         if (xact.summary().xact_type() !== 'circulation') {
+
+            entry.xact.grocery().billing_location(
+                this.org.get(entry.xact.grocery().billing_location()));
+
             entry.title = xact.summary().last_billing_type();
             entry.billingLocation =
                 xact.grocery().billing_location().shortname();
             return entry;
         }
+
+        entry.xact.circulation().circ_lib(
+            this.org.get(entry.xact.circulation().circ_lib()));
 
         const circDisplay: CircDisplayInfo =
             this.circ.getDisplayInfo(xact.circulation());
@@ -154,43 +191,125 @@ export class BillsComponent implements OnInit, AfterViewInit {
         return this.context.patron;
     }
 
+    selectedPaymentInfo(): {owed: number, billed: number, paid: number} {
+        const info = {owed : 0, billed : 0, paid : 0};
+
+        this.billGrid.context.rowSelector.selected().forEach(id => {
+            const row = this.billGrid.context.getRowByIndex(id);
+            const sum = row.xact.summary();
+
+            info.owed   += Number(sum.balance_owed()) * 100;
+            info.billed += Number(sum.total_owed()) * 100;
+            info.paid   += Number(sum.total_paid()) * 100;
+        });
+
+        info.owed /= 100;
+        info.billed /= 100;
+        info.paid /= 100;
+
+        return info;
+    }
+
+    pendingPaymentInfo(): {payment: number, change: number} {
+
+        const amt = this.payAmount || 0;
+
+        if (amt >= this.paidSelected()) {
+            const owedSelected = this.owedSelected();
+            return {
+                payment : this.owedSelected(),
+                change : amt - owedSelected
+            }
+        }
+
+        return {payment : amt, change : 0};
+    }
+
     disablePayment(): boolean {
         if (!this.billGrid) { return true; } // still loading
 
-        // TODO: pay amount can be zero when refunding
         return (
-            this.payAmount <= 0 ||
+            this.payAmount === 0 ||
+            (this.payAmount < 0 && this.paymentType !== 'refund') ||
             this.billGrid.context.rowSelector.selected().length === 0
         );
     }
 
-    // TODO
     refundsAvailable(): number {
-        return 0;
+        let amount = 0;
+        this.gridDataSource.data.forEach(row => {
+            const balance = row.xact.summary().balance_owed();
+            if (balance < 0) { amount += balance * 100; }
+
+        });
+
+        return -(amount / 100);
     }
 
-    // TODO
     paidSelected(): number {
-        return 0;
+        return this.selectedPaymentInfo().paid;
     }
 
-    // TODO
     owedSelected(): number {
-        return 0;
+        return this.selectedPaymentInfo().owed;
     }
 
-    // TODO
     billedSelected(): number {
-        return 0;
+        return this.selectedPaymentInfo().billed;
     }
 
     pendingPayment(): number {
-        return 0;
+        return this.pendingPaymentInfo().payment;
     }
 
     pendingChange(): number {
-        return 0;
+        return this.pendingPaymentInfo().change;
     }
 
+    applyPayment() {
+
+        if (this.amountExceedsMax()) { return; }
+
+        this.annotation = '';
+
+        this.verifyPayAmount()
+        .then(_ => this.annotate())
+        .then(_ => this.addCcArgs())
+        .catch(err => console.debug('Payment was canceled:', err));
+    }
+
+    amountExceedsMax(): boolean {
+        if (this.payAmount < this.maxPayAmount) { return false; }
+        this.maxPayDialog.open().toPromise().then(_ => this.focusPayAmount());
+        return true;
+    }
+
+    addCcArgs(): Promise<any> {
+        return null;
+    }
+
+    verifyPayAmount(): Promise<any> {
+        if (this.payAmount < this.warnPayAmount) {
+            return Promise.resolve();
+        }
+
+        return this.warnPayDialog.open().toPromise().then(confirmed => {
+            if (!confirmed) {
+                return Promise.reject('Pay amount not confirmed');
+            }
+        });
+    }
+
+    annotate(): Promise<any> {
+        if (!this.annotatePayment) { return Promise.resolve(); }
+
+        return this.annotateDialog.open().toPromise()
+        .then(value => {
+            if (!value) {
+                return Promise.reject('No annotation supplied');
+            }
+            this.annotation = value;
+        });
+    }
 }
 

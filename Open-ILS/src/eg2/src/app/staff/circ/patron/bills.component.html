@@ -1,3 +1,15 @@
+<eg-prompt-dialog #annotateDialog
+  i18n-dialogBody dialogBody="Please Annotate This Payment">
+</eg-prompt-dialog>
+
+<eg-alert-dialog #maxPayDialog
+  i18n-dialogBody dialogBody="Payments over 100,000 are denied by policy.">
+</eg-alert-dialog>
+<eg-confirm-dialog #warnPayDialog
+  i18n-dialogBody i18n-dialogTitle dialogTitle="Confirm Payment Amount"
+  dialogBody="Are you sure you want to apply a payment of {{payAmount | currency}}?">
+</eg-confirm-dialog>
+
 
 <!-- SUMMARY  -->
 
@@ -98,7 +110,8 @@
         id="pay-amount" [min]="0"/>
     </div>
     <div class="ml-2 form-check form-check-inline">
-      <input class="form-check-input" type="checkbox" id="annotate" [(ngModel)]="annotatePayment"/>
+      <input class="form-check-input" type="checkbox" 
+        id="annotate" [(ngModel)]="annotatePayment"/>
       <label class="form-check-label" for="annotate" i18n>Annotate</label>
     </div>
     <div class="ml-2">
