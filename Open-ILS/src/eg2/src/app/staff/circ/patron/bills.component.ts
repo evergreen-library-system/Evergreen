@@ -18,6 +18,8 @@ import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import {CreditCardDialogComponent, CreditCardPaymentParams
+    } from '@eg/staff/share/circ/credit-card-dialog.component';
 
 interface BillGridEntry extends CircDisplayInfo {
     xact: IdlObject // mbt
@@ -57,12 +59,13 @@ export class BillsComponent implements OnInit, AfterViewInit {
     sessionVoided = 0;
     paymentType = 'cash_payment';
     checkNumber: string;
-    payAmount: number;
+    paymentAmount: number;
     annotatePayment = false;
     annotation: string;
     entries: BillGridEntry[];
     convertChangeToCredit = false;
     receiptOnPayment = false;
+    ccPaymentParams: CreditCardPaymentParams;
 
     maxPayAmount = 100000;
     warnPayAmount = 1000;
@@ -74,6 +77,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     @ViewChild('annotateDialog') private annotateDialog: PromptDialogComponent;
     @ViewChild('maxPayDialog') private maxPayDialog: AlertDialogComponent;
     @ViewChild('warnPayDialog') private warnPayDialog: ConfirmDialogComponent;
+    @ViewChild('creditCardDialog') private creditCardDialog: CreditCardDialogComponent;
 
     constructor(
         private router: Router,
@@ -212,7 +216,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
     pendingPaymentInfo(): {payment: number, change: number} {
 
-        const amt = this.payAmount || 0;
+        const amt = this.paymentAmount || 0;
 
         if (amt >= this.paidSelected()) {
             const owedSelected = this.owedSelected();
@@ -229,8 +233,8 @@ export class BillsComponent implements OnInit, AfterViewInit {
         if (!this.billGrid) { return true; } // still loading
 
         return (
-            this.payAmount === 0 ||
-            (this.payAmount < 0 && this.paymentType !== 'refund') ||
+            this.paymentAmount === 0 ||
+            (this.paymentAmount < 0 && this.paymentType !== 'refund') ||
             this.billGrid.context.rowSelector.selected().length === 0
         );
     }
@@ -279,17 +283,29 @@ export class BillsComponent implements OnInit, AfterViewInit {
     }
 
     amountExceedsMax(): boolean {
-        if (this.payAmount < this.maxPayAmount) { return false; }
+        if (this.paymentAmount < this.maxPayAmount) { return false; }
         this.maxPayDialog.open().toPromise().then(_ => this.focusPayAmount());
         return true;
     }
 
     addCcArgs(): Promise<any> {
-        return null;
+        this.ccPaymentParams = {};
+
+        if (this.paymentType !== 'credit_card_payment') {
+            return Promise.resolve();
+        }
+
+        return this.creditCardDialog.open().toPromise().then(ccArgs => {
+            if (ccArgs) {
+                this.ccPaymentParams = ccArgs;
+            } else {
+                return Promise.reject('CC dialog canceled');
+            }
+        });
     }
 
     verifyPayAmount(): Promise<any> {
-        if (this.payAmount < this.warnPayAmount) {
+        if (this.paymentAmount < this.warnPayAmount) {
             return Promise.resolve();
         }
 

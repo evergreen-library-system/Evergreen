@@ -7,9 +7,11 @@
 </eg-alert-dialog>
 <eg-confirm-dialog #warnPayDialog
   i18n-dialogBody i18n-dialogTitle dialogTitle="Confirm Payment Amount"
-  dialogBody="Are you sure you want to apply a payment of {{payAmount | currency}}?">
+  dialogBody="Are you sure you want to apply a payment of {{paymentAmount | currency}}?">
 </eg-confirm-dialog>
 
+<eg-credit-card-dialog [patron]="patron()" #creditCardDialog>
+</eg-credit-card-dialog>
 
 <!-- SUMMARY  -->
 
@@ -106,7 +108,7 @@
     </div>
     <div class="ml-2"><label for="pay-amount" i18n>Payment Received:</label></div>
     <div class="ml-1">
-      <input type="number" class="form-control" [(ngModel)]="payAmount"
+      <input type="number" class="form-control" [(ngModel)]="paymentAmount"
         id="pay-amount" [min]="0"/>
     </div>
     <div class="ml-2 form-check form-check-inline">

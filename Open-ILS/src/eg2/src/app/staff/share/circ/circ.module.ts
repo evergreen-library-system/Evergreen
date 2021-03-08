@@ -9,6 +9,7 @@ import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component'
 import {CircComponentsComponent} from './components.component';
 import {CircEventsComponent} from './events-dialog.component';
 import {AddBillingDialogComponent} from './billing-dialog.component';
+import {CreditCardDialogComponent} from './credit-card-dialog.component';
 
 @NgModule({
     declarations: [
@@ -18,6 +19,7 @@ import {AddBillingDialogComponent} from './billing-dialog.component';
         PrecatCheckoutDialogComponent,
         ClaimsReturnedDialogComponent,
         CircEventsComponent,
+        CreditCardDialogComponent,
         AddBillingDialogComponent
     ],
     imports: [
@@ -27,7 +29,8 @@ import {AddBillingDialogComponent} from './billing-dialog.component';
     exports: [
         CircGridComponent,
         CircComponentsComponent,
-        AddBillingDialogComponent
+        AddBillingDialogComponent,
+        CreditCardDialogComponent
     ],
     providers: [
         CircService

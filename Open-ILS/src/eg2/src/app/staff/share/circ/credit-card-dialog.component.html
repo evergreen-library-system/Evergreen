@@ -1,0 +1,115 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Credit Card Information</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="args">
+
+    <div class="card">
+      <div class="card-header" i18n>Credit Card Info</div>
+      <div class="card-body form-validated">
+        <div class="row">
+          <div class="col-lg-4"><label i18n>Process Where</label></div>
+          <div class="col-lg-8">
+            <select class="form-control" [(ngModel)]="args.where_process">
+              <option [value]='1' [disabled]="!supportsExternal" i18n>
+                Process payment through Evergreen
+              </option>
+              <option [value]='0' i18n>
+                Record externally processed payment
+              </option>
+            </select>
+          </div>
+        </div>
+        <ng-container *ngIf="args.where_process == 1">
+          <div class="row mt-2">
+            <div class="col-lg-4"><label i18n>Approval Code</label></div>
+            <div class="col-lg-8">
+              <input type="text" class="form-control" 
+                required [(ngModel)]="args.approval_code"/>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="args.where_process == 0">
+          <div class="row mt-2">
+            <div class="col-lg-4"><label i18n>Expire Month</label></div>
+            <div class="col-lg-8">
+              <input type="number" class="form-control" [min]="1"
+                required [(ngModel)]="args.expire_month"/>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-lg-4"><label i18n>Expire Year</label></div>
+            <div class="col-lg-8">
+              <input type="number" class="form-control" [min]="thisYear"
+                required [(ngModel)]="args.expire_year"/>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="card mt-2">
+      <div class="card-header" i18n>Optional Fields</div>
+      <div class="card-body form-validated">
+        <div class="row">
+          <div class="col-lg-4"><label i18n>Billing Name (first)</label></div>
+          <div class="col-lg-8">
+            <input type='text' class="form-control" [(ngModel)]="args.billing_first"/>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-lg-4"><label i18n>Billing Name (last)</label></div>
+          <div class="col-lg-8">
+            <input type='text' class="form-control" [(ngModel)]="args.billing_last"/>
+          </div>
+        </div>
+
+        <ng-container *ngIf="args.where_process == 0">
+          <div class="row mt-2">
+            <div class="col-lg-4"><label i18n>Address</label></div>
+            <div class="col-lg-8">
+              <input type='text' class="form-control" [(ngModel)]="args.billing_address"/>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-lg-4"><label i18n>City, town or village</label></div>
+            <div class="col-lg-8">
+              <input type='text' class="form-control" [(ngModel)]="args.billing_city"/>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-lg-4"><label i18n>State or province</label></div>
+            <div class="col-lg-8">
+              <input type='text' class="form-control" [(ngModel)]="args.billing_state"/>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-lg-4"><label i18n>ZIP or postal code</label></div>
+            <div class="col-lg-8">
+              <input type='text' class="form-control" [(ngModel)]="args.billing_zip"/>
+            </div>
+          </div>
+        </ng-container>
+
+        <div class="row mt-2">
+          <div class="col-lg-4"><label i18n>Note</label></div>
+          <div class="col-lg-8">
+            <input type='text' class="form-control" [(ngModel)]="args.note"/>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" [disabled]="!saveable()"
+      (click)="submit(args)" i18n>Submit</button>
+    <button type="button" class="btn btn-warning"
+      (click)="close()" i18n>Cancel</button>
+  </div>
+</ng-template>
