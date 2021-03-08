@@ -80,7 +80,7 @@ export class CopiesComponent implements OnInit {
 
         this.openHoldingsEditor = (item: number) => {
             window.open('/eg/staff/cat/item/' + item + '/edit', '_blank');
-        }
+        };
 
     }
 
