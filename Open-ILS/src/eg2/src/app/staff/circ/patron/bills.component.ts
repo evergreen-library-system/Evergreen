@@ -1,11 +1,11 @@
 import {Component, Input, OnInit, AfterViewInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {from, empty} from 'rxjs';
-import {concatMap, tap} from 'rxjs/operators';
+import {concatMap, tap, takeLast} from 'rxjs/operators';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
-import {PcrudService} from '@eg/core/pcrud.service';
+import {PcrudService, PcrudContext} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
@@ -53,6 +53,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     sessionVoided = 0;
     paymentType = 'cash_payment';
     checkNumber: string;
+    payAmount: number;
     annotatePayment = false;
     entries: BillGridEntry[];
 
@@ -103,30 +104,27 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
     load() {
 
-        const xactIds = [];
+        this.summary = null;
+        this.entries = [];
+        this.gridDataSource.requestingData = true;
 
-
-        // TODO: run this in a single pcrud transaction
-
-        this.pcrud.retrieve('mous', this.patronId, {}, {authoritative : true})
-        .pipe(tap(sum => this.summary = sum))
-        .pipe(concatMap(_ => {
-            return this.pcrud.search('mbts',
-                {usr: this.patronId, balance_owed: {'<>' : 0}},
-                {select: {mbts: ['id']}}, {authoritative : true}
-            ).pipe(tap(summary => xactIds.push(summary.id())));
-        }))
-        .pipe(concatMap(_ => {
-            this.entries = [];
-            return this.pcrud.search('mbt', {id: xactIds}, {
-                flesh: XACT_FLESH_DEPTH,
-                flesh_fields: XACT_FLESH_FIELDS,
-                order_by: {mbts : ['xact_start']},
-                select: {bre : ['id']}
-                }, {authoritative : true}
-            ).pipe(tap(xact => this.entries.push(this.formatForDisplay(xact))));
-        }))
-        .subscribe(null, null, () => this.billGrid.reload());
+        this.net.request('open-ils.actor',
+            'open-ils.actor.user.transactions.for_billing',
+            this.auth.token(), this.patronId
+        ).subscribe(
+            resp => {
+                if (!this.summary) { // 1st response is summary
+                    this.summary = resp;
+                } else {
+                    this.entries.push(this.formatForDisplay(resp));
+                }
+            },
+            null,
+            () => {
+                this.gridDataSource.requestingData = false;
+                this.billGrid.reload();
+            }
+        );
     }
 
     formatForDisplay(xact: IdlObject): BillGridEntry {
@@ -154,6 +152,16 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
     patron(): IdlObject {
         return this.context.patron;
+    }
+
+    disablePayment(): boolean {
+        if (!this.billGrid) { return true; } // still loading
+
+        // TODO: pay amount can be zero when refunding
+        return (
+            this.payAmount <= 0 ||
+            this.billGrid.context.rowSelector.selected().length === 0
+        );
     }
 
     // TODO

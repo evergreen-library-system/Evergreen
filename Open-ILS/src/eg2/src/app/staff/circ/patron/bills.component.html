@@ -102,7 +102,8 @@
       <label class="form-check-label" for="annotate" i18n>Annotate</label>
     </div>
     <div class="ml-2">
-      <button class="btn btn-outline-dark" (click)="applyPayment()" i18n>Apply Payment</button>
+      <button class="btn btn-outline-dark" (click)="applyPayment()" 
+        [disabled]="disablePayment()" i18n>Apply Payment</button>
     </div>
   </div>
 </div>

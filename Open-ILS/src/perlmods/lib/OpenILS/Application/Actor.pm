@@ -5343,4 +5343,87 @@ sub filter_group_entry_crud {
     }
 }
 
+
+__PACKAGE__->register_method(
+    method        => 'user_billing_xacts',
+    api_name      => 'open-ils.actor.user.transactions.for_billing',
+    signature     => {
+        desc   => q/Returns a stream of user billing data appropriate for
+            display in the user bills UI.  API is natively "authoritative"./,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'User ID', type => 'number'}
+        ],
+        return => {
+            desc => q/First response is the user money summary, following
+                responses are fleshed billable transactions/
+        }
+    }
+);
+
+sub user_billing_xacts {
+    my ($self, $client, $auth, $user_id) = @_;
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
+
+    return $e->die_event unless 
+        $e->allowed('VIEW_USER_TRANSACTIONS', $user->home_ou);
+
+    # Start with the user summary.
+    $client->respond($e->retrieve_money_user_summary($user_id));
+
+    my $xact_ids = $e->json_query({
+        select => {mbts => ['id']},
+        from => 'mbts',
+        where => {
+            usr => $user_id,
+            balance_owed => {'<>' => 0}
+        },
+        order_by => {mbts => {xact_start => 'asc'}}
+    });
+
+    for my $xact_id (map { $_->{id} } @$xact_ids) {
+
+        my $xact = $e->retrieve_money_billable_transaction([
+            $xact_id, {
+                flesh => 5,
+                flesh_fields => {
+				    mbt => [qw/summary circulation grocery/],
+				    circ => [qw/
+                        target_copy 
+                        workstation 
+                        checkin_workstation 
+                        circ_lib
+                    /],
+				    acp =>  [qw/
+					    call_number
+					    holds_count
+					    status
+					    circ_lib
+					    location
+					    floating
+					    age_protect
+					    parts
+				    /],
+				    acpm => [qw/part/],
+				    acn =>  [qw/record owning_lib prefix suffix/],
+				    bre =>  [qw/wide_display_entry/]
+                },
+                # Avoid adding the MARXML
+                # Fleshed fields are implicitly included.
+                select => {bre => ['id']} 
+            }
+        ]);
+
+        $client->respond($xact);
+    }
+
+    $e->rollback;
+
+    return undef;
+}
+
 1;

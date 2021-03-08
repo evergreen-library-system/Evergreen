@@ -24,8 +24,8 @@ export class PatronResolver implements Resolve<Promise<any[]>> {
 
     fetchSettings(): Promise<any> {
 
-        // Some of these are used by the shared circ service.
-        // Go ahead and precache them since we're making the call anyway.
+        // Some of these are used by the shared circ services.
+        // Precache them since we're making the call anyway.
         return this.store.getItemBatch([
           'eg.circ.patron.summary.collapse',
           'circ.do_not_tally_claims_returned',
@@ -35,7 +35,13 @@ export class PatronResolver implements Resolve<Promise<any[]>> {
           'ui.admin.patron_log.max_entries',
           'circ.staff_client.do_not_auto_attempt_print',
           'circ.clear_hold_on_checkout',
-          'ui.circ.suppress_checkin_popups'
+          'ui.circ.suppress_checkin_popups',
+          'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
+          'ui.circ.billing.amount_warn',
+          'ui.circ.billing.amount_limit',
+          'circ.staff_client.do_not_auto_attempt_print',
+          'circ.disable_patron_credit',
+          'credit.processor.default'
         ]).then(settings => {
             this.context.noTallyClaimsReturned =
                 settings['circ.do_not_tally_claims_returned'];
