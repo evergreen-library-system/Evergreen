@@ -1,5 +1,6 @@
-
 BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('1250', :eg_version);
 
 CREATE TABLE action.batch_hold_event (
     id          SERIAL  PRIMARY KEY,
