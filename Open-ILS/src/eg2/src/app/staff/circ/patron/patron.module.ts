@@ -4,6 +4,7 @@ import {PatronResolver} from './resolver.service';
 import {FmRecordEditorModule} from '@eg/share/fm-editor/fm-editor.module';
 import {StaffCommonModule} from '@eg/staff/common.module';
 import {HoldsModule} from '@eg/staff/share/holds/holds.module';
+import {BillingModule} from '@eg/staff/share/billing/billing.module';
 import {CircModule} from '@eg/staff/share/circ/circ.module';
 import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
 import {BookingModule} from '@eg/staff/share/booking/booking.module';
@@ -37,6 +38,7 @@ import {BillsComponent} from './bills.component';
   imports: [
     StaffCommonModule,
     FmRecordEditorModule,
+    BillingModule,
     CircModule,
     HoldsModule,
     HoldingsModule,

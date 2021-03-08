@@ -31,7 +31,7 @@ import {MarkMissingDialogComponent
     } from '@eg/staff/share/holdings/mark-missing-dialog.component';
 import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {AddBillingDialogComponent} from './billing-dialog.component';
+import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
 
 export interface CircGridEntry extends CircDisplayInfo {
     index: string; // class + id -- row index

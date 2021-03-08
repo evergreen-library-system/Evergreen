@@ -12,7 +12,7 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
-import {CircService} from './circ.service';
+import {BillingService} from './billing.service';
 
 /* Add a billing to a transaction */
 
@@ -46,14 +46,14 @@ export class AddBillingDialogComponent
         private idl: IdlService,
         private evt: EventService,
         private pcrud: PcrudService,
-        private circ: CircService,
+        private billing: BillingService,
         private org: OrgService,
         private auth: AuthService) {
         super(modal);
     }
 
     ngOnInit() {
-        this.circ.getBillingTypes().then(types => {
+        this.billing.getUserBillingTypes().then(types => {
             this.billingTypes = types.map(bt => {
                 return {id: bt.id(), label: bt.name(), fm: bt};
             });

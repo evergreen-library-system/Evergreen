@@ -166,7 +166,6 @@ export class CircService {
 
     components: CircComponentsComponent;
     nonCatTypes: IdlObject[] = null;
-    billingTypes: IdlObject[] = null;
     autoOverrideCheckoutEvents: {[textcode: string]: boolean} = {};
     suppressCheckinPopups = false;
     ignoreCheckinPrecats = false;
@@ -225,21 +224,6 @@ export class CircService {
             {order_by: {cnct: 'name'}},
             {atomic: true}
         ).toPromise().then(types => this.nonCatTypes = types);
-    }
-
-    getBillingTypes(): Promise<IdlObject[]> {
-        if (this.billingTypes) {
-            return Promise.resolve(this.billingTypes);
-        }
-
-        return this.pcrud.search('cbt',
-            {
-                id: {'>': 100}, // first 100 are reserved
-                owner: this.org.fullPath(this.auth.user().ws_ou(), true)
-            },
-            {order_by: {cbt: 'name'}},
-            {atomic: true}
-        ).toPromise().then(types => this.billingTypes = types);
     }
 
     // Remove internal tracking variables on Param objects so they are

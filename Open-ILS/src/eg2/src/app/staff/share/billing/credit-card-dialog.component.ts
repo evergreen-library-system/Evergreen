@@ -13,7 +13,6 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
-import {CircService} from './circ.service';
 
 export interface CreditCardPaymentParams {
     where_process?: 0 | 1,
@@ -51,7 +50,6 @@ export class CreditCardDialogComponent
         private idl: IdlService,
         private evt: EventService,
         private pcrud: PcrudService,
-        private circ: CircService,
         private org: OrgService,
         private serverStore: ServerStoreService,
         private auth: AuthService) {

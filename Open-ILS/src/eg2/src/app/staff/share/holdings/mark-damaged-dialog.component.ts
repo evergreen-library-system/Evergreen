@@ -13,6 +13,7 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {BillingService} from '@eg/staff/share/billing/billing.service';
 
 /**
  * Dialog for marking items damaged and asessing related bills.
@@ -55,10 +56,10 @@ export class MarkDamagedDialogComponent
         private evt: EventService,
         private pcrud: PcrudService,
         private org: OrgService,
+        private billing: BillingService,
         private bib: BibRecordService,
         private auth: AuthService) {
         super(modal); // required for subclassing
-        this.billingTypes = [];
     }
 
     /**
@@ -84,16 +85,9 @@ export class MarkDamagedDialogComponent
 
     // Fetch-cache billing types
     getBillingTypes(): Promise<any> {
-        if (this.billingTypes.length > 1) {
-            return Promise.resolve();
-        }
-        return this.pcrud.search('cbt',
-            {owner: this.org.fullPath(this.auth.user().ws_ou(), true)},
-            {}, {atomic: true}
-        ).toPromise().then(bts => {
-            this.billingTypes = bts
-                .sort((a, b) => a.name() < b.name() ? -1 : 1)
-                .map(bt => ({id: bt.id(), label: bt.name()}));
+        return this.billing.getUserBillingTypes().then(types => {
+            this.billingTypes =
+                types.map(bt => ({id: bt.id(), label: bt.name()}));
         });
     }
 

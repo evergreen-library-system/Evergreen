@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {StaffCommonModule} from '@eg/staff/common.module';
 import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
+import {BillingModule} from '@eg/staff/share/billing/billing.module';
 import {CircService} from './circ.service';
 import {CircGridComponent} from './grid.component';
 import {DueDateDialogComponent} from './due-date-dialog.component';
@@ -8,8 +9,6 @@ import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
 import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component';
 import {CircComponentsComponent} from './components.component';
 import {CircEventsComponent} from './events-dialog.component';
-import {AddBillingDialogComponent} from './billing-dialog.component';
-import {CreditCardDialogComponent} from './credit-card-dialog.component';
 
 @NgModule({
     declarations: [
@@ -18,19 +17,16 @@ import {CreditCardDialogComponent} from './credit-card-dialog.component';
         DueDateDialogComponent,
         PrecatCheckoutDialogComponent,
         ClaimsReturnedDialogComponent,
-        CircEventsComponent,
-        CreditCardDialogComponent,
-        AddBillingDialogComponent
+        CircEventsComponent
     ],
     imports: [
         StaffCommonModule,
-        HoldingsModule
+        HoldingsModule,
+        BillingModule
     ],
     exports: [
         CircGridComponent,
-        CircComponentsComponent,
-        AddBillingDialogComponent,
-        CreditCardDialogComponent
+        CircComponentsComponent
     ],
     providers: [
         CircService

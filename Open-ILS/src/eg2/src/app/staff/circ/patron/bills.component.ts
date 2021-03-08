@@ -18,8 +18,9 @@ import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {CreditCardDialogComponent, CreditCardPaymentParams
-    } from '@eg/staff/share/circ/credit-card-dialog.component';
+import {CreditCardDialogComponent
+    } from '@eg/staff/share/billing/credit-card-dialog.component';
+import {BillingService, CreditCardPaymentParams} from '@eg/staff/share/billing/billing.service';
 
 interface BillGridEntry extends CircDisplayInfo {
     xact: IdlObject // mbt
@@ -61,11 +62,14 @@ export class BillsComponent implements OnInit, AfterViewInit {
     checkNumber: string;
     paymentAmount: number;
     annotatePayment = false;
-    annotation: string;
+    paymentNote: string;
     entries: BillGridEntry[];
     convertChangeToCredit = false;
     receiptOnPayment = false;
+    applyingPayment = false;
+    numReceipts = 1;
     ccPaymentParams: CreditCardPaymentParams;
+    disableAutoPrint = false;
 
     maxPayAmount = 100000;
     warnPayAmount = 1000;
@@ -88,6 +92,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
         private auth: AuthService,
         private serverStore: ServerStoreService,
         private circ: CircService,
+        private billing: BillingService,
         public patronService: PatronService,
         public context: PatronContextService
     ) {}
@@ -118,14 +123,25 @@ export class BillsComponent implements OnInit, AfterViewInit {
     applySettings(): Promise<any> {
         return this.serverStore.getItemBatch([
             'ui.circ.billing.amount_warn',
-            'ui.circ.billing.amount_limit'
+            'ui.circ.billing.amount_limit',
+            'circ.staff_client.do_not_auto_attempt_print'
         ]).then(sets => {
             this.maxPayAmount = sets['ui.circ.billing.amount_limit'] || 100000;
             this.warnPayAmount = sets['ui.circ.billing.amount_warn'] || 1000;
+
+            const noPrint = sets['circ.staff_client.do_not_auto_attempt_print'];
+            if (noPrint && noPrint.includes('Bill Pay')) {
+                this.disableAutoPrint = true;
+            }
         });
     }
 
     ngAfterViewInit() {
+        // Recaclulate the amount owed per selected transaction as the
+        // grid rows selections change.
+        this.billGrid.context.rowSelector.selectionChange
+        .subscribe(_ => this.updatePendingColumn());
+
         this.focusPayAmount();
     }
 
@@ -136,29 +152,26 @@ export class BillsComponent implements OnInit, AfterViewInit {
         });
     }
 
-    load() {
+    load(): Promise<any> {
 
         this.summary = null;
         this.entries = [];
         this.gridDataSource.requestingData = true;
 
-        this.net.request('open-ils.actor',
+        return this.net.request('open-ils.actor',
             'open-ils.actor.user.transactions.for_billing',
             this.auth.token(), this.patronId
-        ).subscribe(
-            resp => {
-                if (!this.summary) { // 1st response is summary
-                    this.summary = resp;
-                } else {
-                    this.entries.push(this.formatForDisplay(resp));
-                }
-            },
-            null,
-            () => {
-                this.gridDataSource.requestingData = false;
-                this.billGrid.reload();
+        ).pipe(tap(resp => {
+            if (!this.summary) { // 1st response is summary
+                this.summary = resp;
+            } else {
+                this.entries.push(this.formatForDisplay(resp));
             }
-        );
+        })).toPromise()
+        .then(_ => {
+            this.gridDataSource.requestingData = false;
+            this.billGrid.reload();
+        });
     }
 
     formatForDisplay(xact: IdlObject): BillGridEntry {
@@ -217,11 +230,11 @@ export class BillsComponent implements OnInit, AfterViewInit {
     pendingPaymentInfo(): {payment: number, change: number} {
 
         const amt = this.paymentAmount || 0;
+        const owedSelected = this.owedSelected();
 
-        if (amt >= this.paidSelected()) {
-            const owedSelected = this.owedSelected();
+        if (amt >= owedSelected) {
             return {
-                payment : this.owedSelected(),
+                payment : owedSelected,
                 change : amt - owedSelected
             }
         }
@@ -233,6 +246,8 @@ export class BillsComponent implements OnInit, AfterViewInit {
         if (!this.billGrid) { return true; } // still loading
 
         return (
+            this.applyingPayment ||
+            !this.pendingPayment() ||
             this.paymentAmount === 0 ||
             (this.paymentAmount < 0 && this.paymentType !== 'refund') ||
             this.billGrid.context.rowSelector.selected().length === 0
@@ -274,12 +289,50 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
         if (this.amountExceedsMax()) { return; }
 
-        this.annotation = '';
+        this.applyingPayment = true;
+        this.paymentNote = '';
+        this.ccPaymentParams = {};
 
         this.verifyPayAmount()
         .then(_ => this.annotate())
-        .then(_ => this.addCcArgs())
-        .catch(err => console.debug('Payment was canceled:', err));
+        .then(_ => this.getCcParams())
+        .then(_ => {
+            return this.billing.applyPayment(
+                this.patronId,
+                this.patron().last_xact_id(),
+                this.paymentType,
+                this.compilePayments(),
+                this.paymentNote,
+                this.checkNumber,
+                this.ccPaymentParams,
+                this.convertChangeToCredit
+            );
+        })
+        .then(paymentIds => this.handlePayReceipt(paymentIds))
+        .then(_ => this.load())
+        .then(_ => this.context.refreshPatron())
+        .catch(msg => console.debug('Payment Canceled:', msg))
+        .finally(() => this.applyingPayment = false);
+    }
+
+    handlePayReceipt(paymentIds: number[]): Promise<any> {
+
+        if (this.disableAutoPrint || !this.receiptOnPayment) {
+            return Promise.resolve();
+        }
+
+        // TODO
+        // return this.printer.pr
+    }
+
+    compilePayments(): Array<Array<number>> {
+        const payments = [];
+        this.entries.forEach(row => {
+            if (row.paymentPending) {
+                payments.push([row.xact.id(), row.paymentPending]);
+            }
+        });
+        return payments;
     }
 
     amountExceedsMax(): boolean {
@@ -288,9 +341,8 @@ export class BillsComponent implements OnInit, AfterViewInit {
         return true;
     }
 
-    addCcArgs(): Promise<any> {
-        this.ccPaymentParams = {};
-
+    // Credit card info
+    getCcParams(): Promise<any> {
         if (this.paymentType !== 'credit_card_payment') {
             return Promise.resolve();
         }
@@ -322,9 +374,47 @@ export class BillsComponent implements OnInit, AfterViewInit {
         return this.annotateDialog.open().toPromise()
         .then(value => {
             if (!value) {
+                // TODO: there is no way in PromptDialog to
+                // differentiate between canceling the dialog and
+                // submitting the dialog with no value.  In this case,
+                // if the dialog is submitted with no value, we may want
+                // to leave the dialog open so a value can be applied.
                 return Promise.reject('No annotation supplied');
             }
-            this.annotation = value;
+            this.paymentNote = value;
+        });
+    }
+
+    updatePendingColumn() {
+
+        // Reset...
+        this.entries.forEach(row => row.paymentPending = 0);
+
+        var amount = this.pendingPayment();
+        let done = false;
+
+        this.billGrid.context.rowSelector.selected().forEach(index => {
+            if (done) { return; }
+
+            const row = this.billGrid.context.getRowByIndex(index);
+            const owed = Number(row.xact.summary().balance_owed());
+
+            if (amount > owed) {
+                // Pending payment amount exceeds balance of this
+                // row.  Pay the entire amount
+                row.paymentPending = owed;
+                amount -= owed;
+
+            } else {
+                // balance owed on the current item matches or exceeds
+                // the pending payment.  Apply the full remainder of
+                // the payment to this item... and we're done.
+                //
+                // Limit to two decimal places to avoid floating point
+                // issues and cast back to number to match data type.
+                row.paymentPending = Number(amount.toFixed(2));
+                done = true;
+            }
         });
     }
 }
