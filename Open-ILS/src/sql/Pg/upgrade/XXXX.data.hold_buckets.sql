@@ -39,9 +39,8 @@ VALUES (
     'bool'
 );
 
--- Committer! Verify permission id before pushing!
 INSERT INTO permission.perm_list (id,code,description)
-  VALUES ( 623, 'MANAGE_HOLD_GROUPS', oils_i18n_gettext(623, 'Manage hold groups and hold group events', 'ppl', 'description'));
+  VALUES ( 628, 'MANAGE_HOLD_GROUPS', oils_i18n_gettext(628, 'Manage hold groups and hold group events', 'ppl', 'description'));
 
 INSERT INTO action.hold_request_cancel_cause (id,label)
   VALUES ( 8, oils_i18n_gettext(8, 'Hold Group Event rollback', 'ahrcc', 'label'));
