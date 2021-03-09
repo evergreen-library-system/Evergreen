@@ -56,7 +56,9 @@
         </li>
 
         <li ngbNavItem="items_out" [disabled]="!context.patron">
-          <a ngbNavLink i18n>Items Out</a>
+          <a ngbNavLink i18n>
+            Items Out ({{counts('checkouts', 'total_out')}})
+          </a>
           <ng-template ngbNavContent>
             <div class="">
               <eg-patron-items [patronId]="patronId"></eg-patron-items>
@@ -65,14 +67,21 @@
         </li>
 
         <li ngbNavItem="holds" [disabled]="!context.patron">
-          <a ngbNavLink i18n>Holds</a>
+          <a ngbNavLink i18n>
+            Holds ({{counts('holds', 'ready')}} / {{counts('holds', 'total')}})
+          </a>
           <ng-template ngbNavContent>
             <eg-patron-holds></eg-patron-holds>
           </ng-template>
         </li>
 
         <li ngbNavItem="bills" [disabled]="!context.patron">
-          <a ngbNavLink i18n>Bills</a>
+          <a ngbNavLink i18n>
+            Bills 
+            <span [ngClass]="{'text-danger': counts('fines', 'balance_owed') > 0}">
+              ({{counts('fines', 'balance_owed') | currency}})
+            </span>
+          </a>
           <ng-template ngbNavContent>
             <eg-patron-bills [patronId]="patronId"></eg-patron-bills>
           </ng-template>

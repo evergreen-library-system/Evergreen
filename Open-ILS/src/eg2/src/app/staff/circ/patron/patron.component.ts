@@ -178,5 +178,13 @@ export class PatronComponent implements OnInit, AfterViewInit {
         // show scary warning, etc.
 
     }
+
+    counts(part: string, field: string): number {
+        if (this.context && this.context.patronStats) {
+            return this.context.patronStats[part][field];
+        } else {
+            return 0;
+        }
+    }
 }
 
