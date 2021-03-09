@@ -13,20 +13,7 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
-
-export interface CreditCardPaymentParams {
-    where_process?: 0 | 1,
-    approval_code?: string,
-    expire_month?: number,
-    expire_year?: number,
-    billing_first?: string,
-    billing_last?: string,
-    billing_address?: string,
-    billing_city?: string,
-    billing_state?: string,
-    billing_zip?: string,
-    note?: string
-}
+import {BillingService, CreditCardPaymentParams} from './billing.service';
 
 /* Dialog for collecting credit card payment information */
 
