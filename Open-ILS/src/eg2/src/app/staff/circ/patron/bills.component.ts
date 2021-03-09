@@ -15,6 +15,7 @@ import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
+import {PrintService} from '@eg/share/print/print.service';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
@@ -70,6 +71,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
         private net: NetService,
         private pcrud: PcrudService,
         private auth: AuthService,
+        private printer: PrintService,
         private serverStore: ServerStoreService,
         private circ: CircService,
         private billing: BillingService,
@@ -417,6 +419,16 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 row.paymentPending = Number(amount.toFixed(2));
                 done = true;
             }
+        });
+    }
+
+    printBills(rows: BillGridEntry[]) {
+        if (rows.length === 0) { return; }
+
+        this.printer.print({
+            templateName: 'bills_current',
+            contextData: {xacts: rows.map(r => r.xact)},
+            printContext: 'default'
         });
     }
 }

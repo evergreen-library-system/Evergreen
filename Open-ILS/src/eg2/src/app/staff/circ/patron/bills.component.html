@@ -149,6 +149,10 @@
   [sortable]="true" [useLocalSort]="true"
   [cellTextGenerator]="cellTextGenerator">
 
+  <eg-grid-toolbar-action                                                    
+    i18n-label label="Print Bills" (onClick)="printBills($event)">                            
+  </eg-grid-toolbar-action> 
+
   <eg-grid-column path="xact.id" [index]="true" label="Bill #" i18n-label>
   </eg-grid-column>
 
