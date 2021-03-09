@@ -70,6 +70,10 @@ export class HoldsGridComponent implements OnInit {
     // Display bib record summary along the top of the detail page.
     @Input() showRecordSummary = false;
 
+    // If true, avoid popping up the progress dialog.  Note the grid
+    // has it's own generic embedded 'loading' progress indicator.
+    @Input() noLoadProgress = false;
+
     mode: 'list' | 'detail' | 'manage' = 'list';
     initDone = false;
     holdsCount: number;
@@ -357,8 +361,13 @@ export class HoldsGridComponent implements OnInit {
         let observer: Observer<any>;
         const observable = new Observable(obs => observer = obs);
 
-        this.progressDialog.open();
+        if (!this.noLoadProgress) {
+            // Note remaining dialog actions have no impact
+            this.progressDialog.open();
+        }
+
         this.progressDialog.update({value: 0, max: 1});
+
         let first = true;
         let loadCount = 0;
         this.net.request(

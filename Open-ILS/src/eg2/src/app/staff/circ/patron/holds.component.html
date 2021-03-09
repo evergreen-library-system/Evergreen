@@ -9,6 +9,7 @@
         printTemplate="holds_for_patron"
         persistKey="circ.patron.holds"
         (placeHoldRequested)="newHold()"
+        [noLoadProgress]="true"
         [showPlaceHoldButton]="true"
         [hidePickupLibFilter]="true"
         [defaultSort]="[{name:'request_time',dir:'asc'}]"
@@ -22,6 +23,7 @@
       <eg-holds-grid 
         printTemplate="holds_for_patron"
         persistKey="circ.patron.holds.canceled"
+        [noLoadProgress]="true"
         [hidePickupLibFilter]="true"
         [showRecentlyCanceled]="true"
         [defaultSort]="[{name:'cancel_time',dir:'desc'}]"
