@@ -43,6 +43,7 @@ export class PatronPenaltyDialogComponent
     dataLoaded = false;
     requireInitials = false;
     initials: string;
+    title = '';
     noteText = '';
 
     @ViewChild('successMsg', {static: false}) successMsg: StringComponent;
@@ -92,13 +93,18 @@ export class PatronPenaltyDialogComponent
     apply() {
 
         const pen = this.idl.create('ausp');
+        const msg = {
+            title: this.title,
+            message: this.noteText ? this.noteText : ''
+        };
         pen.usr(this.patronId);
         pen.org_unit(this.auth.user().ws_ou());
         pen.set_date('now');
         pen.staff(this.auth.user().id());
 
-        pen.note(this.initials ?
-            `${this.noteText} [${this.initials}]` : this.noteText);
+        if (this.initials) {
+            msg.message = `${this.noteText} [${this.initials}]`;
+        }
 
         pen.standing_penalty(
             this.penaltyTypeFromSelect || this.penaltyTypeFromButton);
@@ -106,15 +112,15 @@ export class PatronPenaltyDialogComponent
         this.net.request(
             'open-ils.actor',
             'open-ils.actor.user.penalty.apply',
-            this.auth.token(), pen
+            this.auth.token(), pen, msg
         ).subscribe(resp => {
             const e = this.evt.parse(resp);
             if (e) {
-                this.errorMsg.current().then(msg => this.toast.danger(msg));
+                this.errorMsg.current().then(m => this.toast.danger(m));
                 this.error(e, true);
             } else {
                 // resp == penalty ID on success
-                this.successMsg.current().then(msg => this.toast.success(msg));
+                this.successMsg.current().then(m => this.toast.success(m));
                 this.close(resp);
             }
         });
