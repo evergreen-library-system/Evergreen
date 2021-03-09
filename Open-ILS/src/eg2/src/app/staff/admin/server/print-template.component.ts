@@ -49,7 +49,8 @@ export class PrintTemplateComponent implements OnInit {
     // Keys map to print template names
     sampleData: any = {
         patron_address: {},
-        holds_for_bib: {}
+        holds_for_bib: {},
+        bills_current: {}
     };
 
     constructor(
@@ -83,7 +84,7 @@ export class PrintTemplateComponent implements OnInit {
         // vanilla hashes are easier to work with in the admin UI.
 
         // Classes for which sample data exists
-        const classes = ['au', 'ac', 'aua', 'ahr', 'acp', 'mwde'];
+        const classes = ['au', 'ac', 'aua', 'ahr', 'acp', 'mwde', 'mbt', 'mbts'];
         const samples: any = {};
         classes.forEach(class_ => samples[class_] =
             this.idl.toHash(this.samples.listOfThings(class_, 10)));
@@ -91,13 +92,13 @@ export class PrintTemplateComponent implements OnInit {
         // Wide holds are hashes instead of IDL objects.
         // Add fields as needed.
         const wide_holds = [{
-            request_time: this.samples.randomDate().toISOString(),
+            request_time: this.samples.randomDateIso(),
             ucard_barcode: samples.ac[0].barcode,
             usr_family_name: samples.au[0].family_name,
             usr_alias: samples.au[0].alias,
             cp_barcode: samples.acp[0].barcode
         }, {
-            request_time: this.samples.randomDate().toISOString(),
+            request_time: this.samples.randomDateIso(),
             ucard_barcode: samples.ac[1].barcode,
             usr_family_name: samples.au[1].family_name,
             usr_alias: samples.au[1].alias,
@@ -110,6 +111,17 @@ export class PrintTemplateComponent implements OnInit {
         };
 
         this.sampleData.holds_for_bib = wide_holds;
+
+        // Flesh the summary
+        samples.mbt[0].summary = samples.mbts[0];
+        samples.mbt[1].summary = samples.mbts[1];
+        samples.mbt[2].summary = samples.mbts[2];
+
+        this.sampleData.bills_current.xacts = [
+            samples.mbt[0],
+            samples.mbt[1],
+            samples.mbt[2]
+        ];
     }
 
     onTabChange(evt: NgbTabChangeEvent) {

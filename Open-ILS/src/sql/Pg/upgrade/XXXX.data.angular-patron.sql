@@ -59,7 +59,7 @@ UPDATE config.print_template SET active = TRUE WHERE name = 'patron_address';
 -- insert then update for easier iterative development tweaks
 INSERT INTO config.print_template 
     (name, label, owner, active, locale, content_type, template)
-VALUES ('bills_current', 'Bills Current', 1, TRUE, 'en-US', 'text/html', '');
+VALUES ('bills_current', 'Bills, Current', 1, TRUE, 'en-US', 'text/html', '');
 */
 
 UPDATE config.print_template SET template = $TEMPLATE$

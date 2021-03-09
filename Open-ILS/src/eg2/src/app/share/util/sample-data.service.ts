@@ -81,6 +81,25 @@ const DATA = {
         {title: 'Piano concerto no. 1 (1926) ; Rhapsody, op. 1 (1904)'},
         {title: 'Piano concertos 2 & 3 & the devil makes me?'},
         {title: 'Composition student recital, April 6, 2000, Huntington University / composition students of Daniel Bédard'},
+    ],
+    mbt: [
+        {id: 1, xact_start: new Date().toISOString()},
+        {id: 2, xact_start: new Date().toISOString()},
+        {id: 3, xact_start: new Date().toISOString()}
+    ],
+    mbts: [
+        {   balance_owed: 1,
+            last_billing_note: 'a note',
+            last_billing_ts: new Date().toISOString(),
+            last_billing_type: 'Overdue Materials',
+            last_payment_note: '',
+            last_payment_ts: new Date().toISOString(),
+            last_payment_type: 'cash_payment',
+            total_owed: 5,
+            total_paid: 3,
+            xact_start: new Date().toISOString(),
+            xact_type: 'circulation'
+        }
     ]
 };
 
@@ -116,6 +135,10 @@ export class SampleDataService {
         const rando = Math.random() * 10000000000;
         const time = new Date().getTime();
         return new Date(future ? time + rando : time - rando);
+    }
+
+    randomDateIso(future: boolean = false): string {
+        return this.randomDate(future).toISOString();
     }
 }
 
