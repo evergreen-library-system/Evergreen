@@ -28,26 +28,6 @@ interface BillGridEntry extends CircDisplayInfo {
     paymentPending?: number;
 }
 
-const XACT_FLESH_DEPTH = 5;
-const XACT_FLESH_FIELDS = {
-  mbt: ['summary', 'circulation', 'grocery'],
-  circ: ['target_copy', 'workstation', 'checkin_workstation', 'circ_lib'],
-  acp:  [
-    'call_number',
-    'holds_count',
-    'status',
-    'circ_lib',
-    'location',
-    'floating',
-    'age_protect',
-    'parts'
-  ],
-  acpm: ['part'],
-  acn:  ['record', 'owning_lib', 'prefix', 'suffix'],
-  bre:  ['wide_display_entry']
-};
-
-
 @Component({
   templateUrl: 'bills.component.html',
   selector: 'eg-patron-bills',
@@ -152,24 +132,45 @@ export class BillsComponent implements OnInit, AfterViewInit {
         });
     }
 
-    load(): Promise<any> {
+    // In refresh mode, only fetch the requested xacts, with updated user
+    // summary, and slot them back into the entries array.
+    load(refreshXacts?: number[]): Promise<any> {
 
+        let entries = [];
         this.summary = null;
-        this.entries = [];
         this.gridDataSource.requestingData = true;
 
-        return this.net.request('open-ils.actor',
+        return this.net.request(
+            'open-ils.actor',
             'open-ils.actor.user.transactions.for_billing',
-            this.auth.token(), this.patronId
+            this.auth.token(), this.patronId, refreshXacts
+
         ).pipe(tap(resp => {
+
             if (!this.summary) { // 1st response is summary
                 this.summary = resp;
+                return;
+            }
+
+            if (refreshXacts) {
+
+                // Slot the updated xact back into place
+                entries.push(this.formatForDisplay(resp));
+                entries = entries.map(e => {
+                    if (e.xact.id() === resp.id()) {
+                        return this.formatForDisplay(resp);
+                    }
+                    return e;
+                });
+
             } else {
-                this.entries.push(this.formatForDisplay(resp));
+                entries.push(this.formatForDisplay(resp));
             }
         })).toPromise()
+
         .then(_ => {
             this.gridDataSource.requestingData = false;
+            this.entries = entries;
             this.billGrid.reload();
         });
     }
@@ -292,6 +293,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
         this.applyingPayment = true;
         this.paymentNote = '';
         this.ccPaymentParams = {};
+        const payments = this.compilePayments();
 
         this.verifyPayAmount()
         .then(_ => this.annotate())
@@ -301,21 +303,21 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 this.patronId,
                 this.patron().last_xact_id(),
                 this.paymentType,
-                this.compilePayments(),
+                payments,
                 this.paymentNote,
                 this.checkNumber,
                 this.ccPaymentParams,
                 this.convertChangeToCredit
             );
         })
-        .then(paymentIds => this.handlePayReceipt(paymentIds))
-        .then(_ => this.load())
+        .then(paymentIds => this.handlePayReceipt(payments, paymentIds))
+        .then(_ => this.load(payments.map(p => p[0]))) // load xact IDs
         .then(_ => this.context.refreshPatron())
         .catch(msg => console.debug('Payment Canceled:', msg))
         .finally(() => this.applyingPayment = false);
     }
 
-    handlePayReceipt(paymentIds: number[]): Promise<any> {
+    handlePayReceipt(payments: Array<Array<number>>, paymentIds: number[]): Promise<any> {
 
         if (this.disableAutoPrint || !this.receiptOnPayment) {
             return Promise.resolve();

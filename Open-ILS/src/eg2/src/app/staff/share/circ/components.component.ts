@@ -4,6 +4,7 @@ import {PrecatCheckoutDialogComponent} from './precat-dialog.component';
 import {CircEventsComponent} from './events-dialog.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
+import {OpenCircDialogComponent} from './open-circ-dialog.component';
 
 /* Container component for sub-components used by circulation actions.
  *
@@ -21,6 +22,7 @@ export class CircComponentsComponent {
     @ViewChild('precatDialog') precatDialog: PrecatCheckoutDialogComponent;
     @ViewChild('circEventsDialog') circEventsDialog: CircEventsComponent;
     @ViewChild('routeToCatalogingDialog') routeToCatalogingDialog: AlertDialogComponent;
+    @ViewChild('openCircDialog') openCircDialog: OpenCircDialogComponent;
 
     constructor(private circ: CircService) {
         this.circ.components = this;

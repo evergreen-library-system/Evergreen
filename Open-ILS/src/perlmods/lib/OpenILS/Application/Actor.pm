@@ -5352,7 +5352,9 @@ __PACKAGE__->register_method(
             display in the user bills UI.  API is natively "authoritative"./,
         params => [
             {desc => 'Authentication token', type => 'string'},
-            {desc => 'User ID', type => 'number'}
+            {desc => 'User ID', type => 'number'},
+            {desc => 'Xact IDs.  Optionally limit to specific transactions', 
+             type => 'array'}
         ],
         return => {
             desc => q/First response is the user money summary, following
@@ -5362,7 +5364,7 @@ __PACKAGE__->register_method(
 );
 
 sub user_billing_xacts {
-    my ($self, $client, $auth, $user_id) = @_;
+    my ($self, $client, $auth, $user_id, $xact_ids) = @_;
 
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
@@ -5375,12 +5377,15 @@ sub user_billing_xacts {
     # Start with the user summary.
     $client->respond($e->retrieve_money_user_summary($user_id));
 
-    my $xact_ids = $e->json_query({
+    # Even if xact_ids are specified, run this query to confirm the
+    # provided IDs are linked to the specified user and have a balance.
+    $xact_ids = $e->json_query({
         select => {mbts => ['id']},
         from => 'mbts',
         where => {
             usr => $user_id,
-            balance_owed => {'<>' => 0}
+            balance_owed => {'<>' => 0},
+            $xact_ids ? (id => $xact_ids) : ()
         },
         order_by => {mbts => {xact_start => 'asc'}}
     });

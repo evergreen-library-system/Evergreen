@@ -120,6 +120,7 @@ export interface CheckoutParams {
     dummy_author?: string;
     dummy_isbn?: string;
     circ_modifier?: string;
+    void_overdues?: boolean;
 
     // internal tracking
     _override?: boolean;
@@ -144,6 +145,7 @@ export interface CheckinParams {
     copy_id?: number;
     copy_barcode?: string;
     claims_never_checked_out?: boolean;
+    void_overdues?: boolean;
 
     // internal tracking
     _override?: boolean;
@@ -269,11 +271,12 @@ export class CircService {
     processCheckoutResult(
         params: CheckoutParams, response: any): Promise<CheckoutResult> {
 
-        console.debug('checkout resturned', response);
 
         const allEvents = Array.isArray(response) ?
             response.map(r => this.evt.parse(r)) :
             [this.evt.parse(response)];
+
+        console.debug('checkout returned', allEvents.map(e => e.textcode));
 
         const firstEvent = allEvents[0];
         const payload = firstEvent.payload;
@@ -311,9 +314,65 @@ export class CircService {
 
             case 'ITEM_NOT_CATALOGED':
                 return this.handlePrecat(result);
+
+            case 'OPEN_CIRCULATION_EXISTS':
+                return this.handleOpenCirc(result);
         }
 
         return Promise.resolve(result);
+    }
+
+
+    // Ask the user if we should resolve the circulation and check
+    // out to the user or leave it alone.
+    // When resolving and checking out, renew if it's for the same
+    // user, otherwise check it in, then back out to the current user.
+    handleOpenCirc(result: CheckoutResult): Promise<CheckoutResult> {
+
+        let sameUser = false;
+
+        return this.net.request(
+            'open-ils.circ',
+            'open-ils.circ.copy_checkout_history.retrieve',
+            this.auth.token(), result.params.copy_id, 1).toPromise()
+
+        .then(circs => {
+            const circ = circs[0];
+
+            sameUser = result.params.patron_id === circ.usr();
+            this.components.openCircDialog.sameUser = sameUser;
+            this.components.openCircDialog.circDate = circ.xact_start();
+
+            return this.components.openCircDialog.open().toPromise();
+        })
+
+        .then(fromDialog => {
+
+            // Leave the open circ checked out.
+            if (!fromDialog) { return result; }
+
+            const coParams = Object.assign({}, result.params); // clone
+
+            if (sameUser) {
+                coParams.void_overdues = fromDialog.forgiveFines;
+                return this.renew(coParams);
+            }
+
+            const ciParams: CheckinParams = {
+                noop: true,
+                copy_id: coParams.copy_id,
+                void_overdues: fromDialog.forgiveFines
+            };
+
+            return this.checkin(ciParams)
+            .then(res => {
+                if (res.success) {
+                    return this.checkout(coParams);
+                } else {
+                    return Promise.reject('Unable to check in item');
+                }
+            });
+        });
     }
 
     handleOverridableCheckoutEvents(
@@ -398,10 +457,10 @@ export class CircService {
     processCheckinResult(
         params: CheckinParams, response: any): Promise<CheckinResult> {
 
-        console.debug('checkout resturned', response);
-
         const allEvents = Array.isArray(response) ?
             response.map(r => this.evt.parse(r)) : [this.evt.parse(response)];
+
+        console.debug('checkin returned', allEvents.map(e => e.textcode));
 
         const firstEvent = allEvents[0];
         const payload = firstEvent.payload;

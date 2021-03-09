@@ -109,6 +109,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
             return this.barcodeSelect.getBarcode('asset', this.checkoutBarcode)
             .then(selection => {
                 if (selection) {
+                    params.copy_id = selection.id;
                     params.copy_barcode = selection.barcode;
                     return params;
                 } else {
