@@ -1223,15 +1223,15 @@ sub create_user_note {
     return $e->event unless
         my $card = $e->search_actor_card({barcode=>$user_barcode})->[0];
 
-    my $note = Fieldmapper::actor::usr_note->new;
+    my $note = Fieldmapper::actor::usr_message->new;
     $note->usr($card->usr);
     $note->title($title);
-    $note->creator($e->requestor->id);
+    $note->sending_lib($e->requestor->home_ou);
     $note->create_date('now');
     $note->pub('f');
-    $note->value($note_txt);
+    $note->message($note_txt);
 
-    $e->create_actor_usr_note($note) or return $e->event;
+    $e->create_actor_usr_message($note) or return $e->event;
     $e->commit;
     return OpenILS::Event->new('SUCCESS');
 }

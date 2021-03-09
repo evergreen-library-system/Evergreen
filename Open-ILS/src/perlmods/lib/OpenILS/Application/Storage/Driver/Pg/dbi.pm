@@ -549,10 +549,10 @@
     actor::card->sequence( 'actor.card_id_seq' );
 
     #---------------------------------------------------------------------
-    package actor::usr_note;
+    package actor::usr_message;
     
-    actor::usr_note->table( 'actor.usr_note' );
-    actor::usr_note->sequence( 'actor.usr_note_id_seq' );
+    actor::usr_message->table( 'actor.usr_message' );
+    actor::usr_message->sequence( 'actor.usr_message_id_seq' );
 
     #---------------------------------------------------------------------
 

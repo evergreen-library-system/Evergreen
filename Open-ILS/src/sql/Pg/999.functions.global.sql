@@ -79,7 +79,7 @@ BEGIN
         UPDATE actor.usr_address SET usr = dest_usr WHERE usr = src_usr;
     END IF;
 
-    UPDATE actor.usr_note SET usr = dest_usr WHERE usr = src_usr;
+    UPDATE actor.usr_message SET usr = dest_usr WHERE usr = src_usr;
     -- dupes are technically OK in actor.usr_standing_penalty, should manually delete them...
     UPDATE actor.usr_standing_penalty SET usr = dest_usr WHERE usr = src_usr;
     PERFORM actor.usr_merge_rows('actor.usr_org_unit_opt_in', 'usr', src_usr, dest_usr);
@@ -488,13 +488,14 @@ BEGIN
 	UPDATE actor.usr_address SET replaces = NULL
 		WHERE usr = src_usr AND replaces IS NOT NULL;
 	DELETE FROM actor.usr_address WHERE usr = src_usr;
-	DELETE FROM actor.usr_note WHERE usr = src_usr;
-	UPDATE actor.usr_note SET creator = dest_usr WHERE creator = src_usr;
 	DELETE FROM actor.usr_org_unit_opt_in WHERE usr = src_usr;
 	UPDATE actor.usr_org_unit_opt_in SET staff = dest_usr WHERE staff = src_usr;
 	DELETE FROM actor.usr_setting WHERE usr = src_usr;
 	DELETE FROM actor.usr_standing_penalty WHERE usr = src_usr;
+	UPDATE actor.usr_message SET title = 'purged', message = 'purged', read_date = NOW() WHERE usr = src_usr;
+	DELETE FROM actor.usr_message WHERE usr = src_usr;
 	UPDATE actor.usr_standing_penalty SET staff = dest_usr WHERE staff = src_usr;
+	UPDATE actor.usr_message SET editor = dest_usr WHERE editor = src_usr;
 
 	-- asset.*
 	UPDATE asset.call_number SET creator = dest_usr WHERE creator = src_usr;
@@ -850,7 +851,6 @@ BEGIN
 			claims_returned_count = DEFAULT,
 			credit_forward_balance = DEFAULT,
 			last_xact_id = DEFAULT,
-			alert_message = NULL,
 			pref_prefix = NULL,
 			pref_first_given_name = NULL,
 			pref_second_given_name = NULL,

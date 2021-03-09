@@ -2792,126 +2792,6 @@ sub workstation_list {
     return \%results;
 }
 
-
-__PACKAGE__->register_method(
-    method        => 'fetch_patron_note',
-    api_name      => 'open-ils.actor.note.retrieve.all',
-    authoritative => 1,
-    signature     => q/
-        Returns a list of notes for a given user
-        Requestor must have VIEW_USER permission if pub==false and
-        @param authtoken The login session key
-        @param args Hash of params including
-            patronid : the patron's id
-            pub : true if retrieving only public notes
-    /
-);
-
-sub fetch_patron_note {
-    my( $self, $conn, $authtoken, $args ) = @_;
-    my $patronid = $$args{patronid};
-
-    my($reqr, $evt) = $U->checkses($authtoken);
-    return $evt if $evt;
-
-    my $patron;
-    ($patron, $evt) = $U->fetch_user($patronid);
-    return $evt if $evt;
-
-    if($$args{pub}) {
-        if( $patronid ne $reqr->id ) {
-            $evt = $U->check_perms($reqr->id, $patron->home_ou, 'VIEW_USER');
-            return $evt if $evt;
-        }
-        return $U->cstorereq(
-            'open-ils.cstore.direct.actor.usr_note.search.atomic',
-            { usr => $patronid, pub => 't' } );
-    }
-
-    $evt = $U->check_perms($reqr->id, $patron->home_ou, 'VIEW_USER');
-    return $evt if $evt;
-
-    return $U->cstorereq(
-        'open-ils.cstore.direct.actor.usr_note.search.atomic', { usr => $patronid } );
-}
-
-__PACKAGE__->register_method(
-    method    => 'create_user_note',
-    api_name  => 'open-ils.actor.note.create',
-    signature => q/
-        Creates a new note for the given user
-        @param authtoken The login session key
-        @param note The note object
-    /
-);
-sub create_user_note {
-    my( $self, $conn, $authtoken, $note ) = @_;
-    my $e = new_editor(xact=>1, authtoken=>$authtoken);
-    return $e->die_event unless $e->checkauth;
-
-    my $user = $e->retrieve_actor_user($note->usr)
-        or return $e->die_event;
-
-    return $e->die_event unless
-        $e->allowed('UPDATE_USER',$user->home_ou);
-
-    $note->creator($e->requestor->id);
-    $e->create_actor_usr_note($note) or return $e->die_event;
-    $e->commit;
-    return $note->id;
-}
-
-
-__PACKAGE__->register_method(
-    method    => 'delete_user_note',
-    api_name  => 'open-ils.actor.note.delete',
-    signature => q/
-        Deletes a note for the given user
-        @param authtoken The login session key
-        @param noteid The note id
-    /
-);
-sub delete_user_note {
-    my( $self, $conn, $authtoken, $noteid ) = @_;
-
-    my $e = new_editor(xact=>1, authtoken=>$authtoken);
-    return $e->die_event unless $e->checkauth;
-    my $note = $e->retrieve_actor_usr_note($noteid)
-        or return $e->die_event;
-    my $user = $e->retrieve_actor_user($note->usr)
-        or return $e->die_event;
-    return $e->die_event unless
-        $e->allowed('UPDATE_USER', $user->home_ou);
-
-    $e->delete_actor_usr_note($note) or return $e->die_event;
-    $e->commit;
-    return 1;
-}
-
-
-__PACKAGE__->register_method(
-    method    => 'update_user_note',
-    api_name  => 'open-ils.actor.note.update',
-    signature => q/
-        @param authtoken The login session key
-        @param note The note
-    /
-);
-
-sub update_user_note {
-    my( $self, $conn, $auth, $note ) = @_;
-    my $e = new_editor(authtoken=>$auth, xact=>1);
-    return $e->die_event unless $e->checkauth;
-    my $patron = $e->retrieve_actor_user($note->usr)
-        or return $e->die_event;
-    return $e->die_event unless
-        $e->allowed('UPDATE_USER', $patron->home_ou);
-    $e->update_actor_user_note($note)
-        or return $e->die_event;
-    $e->commit;
-    return 1;
-}
-
 __PACKAGE__->register_method(
     method        => 'fetch_patron_messages',
     api_name      => 'open-ils.actor.message.retrieve',
@@ -3385,11 +3265,9 @@ sub new_flesh_user {
     if($fetch_notes) {
         # grab notes (now actor.usr_message_penalty) that have not hit their stop_date
         # NOTE: This is a view that already filters out deleted messages that are not
-        # attached to a penalty, but the query is slow if we include deleted=f, so we
-        # post-filter that.  This counts both user messages and standing penalties, but
-        # linked ones are only counted once.
+        # attached to a penalty
         $user->notes([
-            grep { !$_->deleted or $_->deleted eq 'f' } @{ $e->search_actor_usr_message_penalty([
+            @{ $e->search_actor_usr_message_penalty([
                 {   usr => $id,
                     '-or' => [
                         {stop_date => undef},

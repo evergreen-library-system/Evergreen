@@ -2251,7 +2251,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         u.barred AS usr_barred, u.deleted AS usr_deleted, u.juvenile AS usr_juvenile,
         u.usrgroup AS usr_usrgroup, u.claims_returned_count AS usr_claims_returned_count,
         u.credit_forward_balance AS usr_credit_forward_balance, u.last_xact_id AS usr_last_xact_id,
-        u.alert_message AS usr_alert_message, u.create_date AS usr_create_date,
+        u.create_date AS usr_create_date,
         u.expire_date AS usr_expire_date, u.claims_never_checked_out_count AS usr_claims_never_checked_out_count,
         u.last_update_time AS usr_last_update_time,
 
@@ -2299,7 +2299,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         ru.barred AS rusr_barred, ru.deleted AS rusr_deleted, ru.juvenile AS rusr_juvenile,
         ru.usrgroup AS rusr_usrgroup, ru.claims_returned_count AS rusr_claims_returned_count,
         ru.credit_forward_balance AS rusr_credit_forward_balance, ru.last_xact_id AS rusr_last_xact_id,
-        ru.alert_message AS rusr_alert_message, ru.create_date AS rusr_create_date,
+        ru.create_date AS rusr_create_date,
         ru.expire_date AS rusr_expire_date, ru.claims_never_checked_out_count AS rusr_claims_never_checked_out_count,
         ru.last_update_time AS rusr_last_update_time,
 

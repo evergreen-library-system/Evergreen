@@ -181,12 +181,6 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 'egUserBucketMod',
         resolve : resolver
     });
 
-    $routeProvider.when('/circ/patron/:id/notes', {
-        templateUrl: './circ/patron/t_notes',
-        controller: 'PatronNotesCtrl',
-        resolve : resolver
-    });
-
     $routeProvider.when('/circ/patron/:id/triggered_events', {
         templateUrl: './circ/patron/t_triggered_events',
         controller: 'PatronTriggeredEventsCtrl',
@@ -1182,83 +1176,6 @@ function($scope,  $q , $routeParams , $location , egCore , patronSvc,  bucketSvc
 
     $timeout(fetchSubscriptions);
 
-}])
-
-.controller('PatronNotesCtrl',
-       ['$scope','$filter','$routeParams','$location','egCore','patronSvc','$uibModal',
-        'egConfirmDialog',
-function($scope,  $filter , $routeParams , $location , egCore , patronSvc , $uibModal,
-         egConfirmDialog) {
-    $scope.initTab('other', $routeParams.id);
-    var usr_id = $routeParams.id;
-
-    // fetch the notes
-    function refreshPage() {
-        $scope.notes = [];
-        egCore.pcrud.search('aun', 
-            {usr : usr_id}, 
-            {flesh : 1, flesh_fields : {aun : ['creator']}}, 
-            {authoritative : true})
-        .then(null, null, function(note) {
-            $scope.notes.push(note);
-        });
-    }
-
-    // open the new-note dialog and create the note
-    $scope.newNote = function() {
-        $uibModal.open({
-            templateUrl: './circ/patron/t_new_note_dialog',
-            backdrop: 'static',
-            controller: 
-                ['$scope', '$uibModalInstance',
-            function($scope, $uibModalInstance) {
-                $scope.focusNote = true;
-                $scope.args = {};
-                $scope.require_initials = egCore.env.aous['ui.staff.require_initials.patron_info_notes'];
-                $scope.ok = function(count) { $uibModalInstance.close($scope.args) }
-                $scope.cancel = function () { $uibModalInstance.dismiss() }
-            }],
-        }).result.then(
-            function(args) {
-                if (!args.value) return;
-                var note = new egCore.idl.aun();
-                note.usr(usr_id);
-                note.title(args.title);
-                note.value(args.value);
-                note.pub(args.pub ? 't' : 'f');
-                note.creator(egCore.auth.user().id());
-                if (args.initials) 
-                    note.value(note.value() + ' [' + args.initials + ']');
-                egCore.pcrud.create(note).then(function() {refreshPage()});
-            }
-        );
-    }
-
-    // delete the selected note
-    $scope.deleteNote = function(note) {
-        egConfirmDialog.open(
-            egCore.strings.PATRON_NOTE_DELETE_CONFIRM_TITLE, egCore.strings.PATRON_NOTE_DELETE_CONFIRM,
-            {ok : function() {
-                egCore.pcrud.remove(note).then(function() {refreshPage()});
-            },
-            note_title : note.title(),
-            create_date : note.create_date()
-        });
-    }
-
-    // print the selected note
-    $scope.printNote = function(note) {
-        var hash = egCore.idl.toHash(note);
-        hash.usr = egCore.idl.toHash($scope.patron());
-        egCore.print.print({
-            context : 'default', 
-            template : 'patron_note', 
-            scope : {note : hash}
-        });
-    }
-
-    // perform the initial note fetch
-    refreshPage();
 }])
 
 .controller('PatronGroupCtrl',

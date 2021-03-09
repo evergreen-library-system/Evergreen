@@ -36,12 +36,12 @@ __PACKAGE__->columns( Primary => qw/id/ );
 __PACKAGE__->columns( Essential => qw/from_org to_org prox/ );
 
 #-------------------------------------------------------------------------------
-package actor::usr_note;
+package actor::usr_message;
 use base qw/actor/;
 
-__PACKAGE__->table( 'actor_usr_note' );
+__PACKAGE__->table( 'actor_usr_message' );
 __PACKAGE__->columns( Primary => qw/id/ );
-__PACKAGE__->columns( Essential => qw/usr title creator create_date value pub/ );
+__PACKAGE__->columns( Essential => qw/usr title message create_date deleted read_date sending_lib pub stop_date editor edit_date/ );
 
 #-------------------------------------------------------------------------------
 package actor::workstation;

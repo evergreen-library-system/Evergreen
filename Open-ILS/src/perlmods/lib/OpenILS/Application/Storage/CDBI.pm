@@ -445,8 +445,8 @@ sub modify_from_fieldmapper {
     actor::org_unit::closed_date->has_a( org_unit => 'actor::org_unit' );
     actor::org_unit_setting->has_a( org_unit => 'actor::org_unit' );
 
-    actor::usr_note->has_a( usr => 'actor::user' );
-    actor::user->has_many( notes => 'actor::usr_note' );
+    actor::usr_message->has_a( usr => 'actor::user' );
+    actor::user->has_many( notes => 'actor::usr_message' );
 
     actor::user_standing_penalty->has_a( usr => 'actor::user' );
     actor::user->has_many( standing_penalties => 'actor::user_standing_penalty' );
