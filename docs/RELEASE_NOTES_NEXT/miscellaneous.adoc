@@ -13,5 +13,8 @@
  * The staff catalog now has the ability to add all search results (up to
    1,000 titles) to the basket in one fell swoop.
  * Add 'All Videos' as a search format.
+ * Server-side print templates can now have print contexts set.
+ * Add ability to set the print context for a print template to "No-Print"
+   to specify, well, that a given receipt should never be printed.
 
 For acknowledgments: Carmen Oleskevich (French translations; staff member at BC Coop)
