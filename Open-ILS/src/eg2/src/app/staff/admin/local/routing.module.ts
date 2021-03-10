@@ -26,7 +26,8 @@ const routes: Routes = [{
         fieldOrder: 'owning_lib,name,opac_visible,circulate,holdable,hold_verify,checkin_alert,deleted,label_prefix,label_suffix,url,id'}]
 }, {
     path: 'asset/shelving_location_groups',
-    loadChildren: '@eg/staff/admin/local/shelving_location_groups/shelving_location_groups.module#ShelvingLocationGroupsModule'
+    loadChildren: () =>
+      import('./shelving_location_groups/shelving_location_groups.module').then(m => m.ShelvingLocationGroupsModule)
 }, {
     path: 'container/carousel',
     component: AdminCarouselComponent
