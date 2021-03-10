@@ -331,7 +331,7 @@ sub mk_copy_query {
                             column => 'id', 
                             transform => 'actor.org_unit_descendants',
                             result_field => 'id', 
-                            params => [$depth]
+                            ( $lasso_orgs ? () : (params => [$depth]) )
                         }]},
                         from => 'aou',
                         where => {id => $filter_orgs}
