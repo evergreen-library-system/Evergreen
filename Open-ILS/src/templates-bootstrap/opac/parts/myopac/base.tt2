@@ -14,7 +14,7 @@
         {children => 0, parent => "circs", url => "ebook_circs", text => l("<i class='fas fa-desktop' aria-hidden='true'></i> E-Items Currently Checked Out"), name => l("E-Items Currently Checked Out")},
         {children => 0, parent => "circs", url => "circ_history", text => l("<i class='fas fa-history' aria-hidden='true'></i> Check Out History"), name => l("Check Out History")},
 
-        {children => 4, parent => "parent",url => "holds", text => l("<i class='fas fa-clock' aria-hidden='true'></i> <span class='sumNum'>[_1]</span>Holds / <span class='sumNum'>[_2]</span> Ready", ctx.user_stats.holds.total, ctx.user_stats.holds.ready), name => l("Holds")},
+        {children => 5, parent => "parent",url => "holds", text => l("<i class='fas fa-clock' aria-hidden='true'></i> <span class='sumNum'>[_1]</span>Holds / <span class='sumNum'>[_2]</span> Ready", ctx.user_stats.holds.total, ctx.user_stats.holds.ready), name => l("Holds")},
         {children => 0, parent => "holds", url => "holds", text => l("<i class='fas fa-hands' aria-hidden='true'></i> Items on Hold"), name => l("Holds")},
         {children => 0, parent => "holds", url => "ebook_holds", text => l("<i class='fas fa-desktop' aria-hidden='true'></i> E-Items on Hold"), name => l("E-Items on Hold")},
         {children => 0, parent => "holds", url => "ebook_holds_ready", text => l("<i class='fas fa-download' aria-hidden='true'></i>  E-Items Ready for Checkout"), name => l("E-Items Ready for Checkout")},
@@ -29,7 +29,12 @@
 
         {children => 0, parent => "parent", url => "lists", text => l("<i class='fas fa-list' aria-hidden='true'></i> My Lists"), name => l("My Lists")}
     ];
-     IF (ctx.show_reservations_tab == 'true');
+    IF (ctx.curbside_pickup_libs.size > 0 );
+        myopac_pages.push({children => 0, parent => "parent", url => "holds_curbside", text => l("<i class='fas fa-road' aria-hidden='true'></i> Curbside Pickup"), name => l("Curbside Pickup")});
+        myopac_pages.push({children => 0, parent => "holds", url => "holds_curbside", text => l("<i class='fas fa-road' aria-hidden='true'></i> Curbside Pickup"), name => l("Curbside Pickup")});
+    END;
+ 
+    IF (ctx.show_reservations_tab == 'true');
         myopac_pages.push({children => 0, parent => "parent", url => "reservations", text => l("<i class='fas fa-splotch' aria-hidden='true'></i>  Reservations"), name => l("Reservations")});
     END;
     skin_root = "../"
