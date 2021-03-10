@@ -12,5 +12,6 @@
  * The Shelving Location Groups editor is ported to Angular.
  * The staff catalog now has the ability to add all search results (up to
    1,000 titles) to the basket in one fell swoop.
+ * Add 'All Videos' as a search format.
 
 For acknowledgments: Carmen Oleskevich (French translations; staff member at BC Coop)
