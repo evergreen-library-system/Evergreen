@@ -60,7 +60,6 @@ UPDATE config.print_template SET active = TRUE WHERE name = 'patron_address';
 INSERT INTO config.print_template 
     (name, label, owner, active, locale, content_type, template)
 VALUES ('bills_current', 'Bills, Current', 1, TRUE, 'en-US', 'text/html', '');
-*/
 
 UPDATE config.print_template SET template = $TEMPLATE$
 [% 
@@ -123,6 +122,102 @@ UPDATE config.print_template SET template = $TEMPLATE$
   <br/>
 </div>
 $TEMPLATE$ WHERE name = 'bills_current';
+
+
+INSERT INTO config.print_template 
+    (name, label, owner, active, locale, content_type, template)
+VALUES ('bills_payment', 'Bills, Payment', 1, TRUE, 'en-US', 'text/html', '');
+*/
+
+UPDATE config.print_template SET template = $TEMPLATE$
+[% 
+  USE date;
+  USE money = format('$%.2f');
+  SET payments = template_data.payments;
+  SET previous_balance = template_data.previous_balance;
+  SET payment_type = template_data.payment_type;
+  SET payment_total = template_data.payment_total;
+  SET payment_applied = template_data.payment_applied;
+  SET amount_voided = template_data.amount_voided;
+  SET change_given = template_data.change_given;
+  SET payment_note = template_data.payment_note;
+  SET copy_barcode = template_data.copy_barcode;
+  SET title = template_data.title;
+%]
+<div>
+  <style>td { padding: 1px 3px 1px 3px; }</style>
+  <div>Welcome to [% staff_org.name %]</div>
+  <div>A receipt of your transaction:</div>
+  <hr/>
+
+  <table style="width:100%"> 
+    <tr> 
+      <td>Original Balance:</td> 
+      <td align="right">[% money(previous_balance) %]</td> 
+    </tr> 
+    <tr> 
+      <td>Payment Method:</td> 
+      <td align="right">
+        [% SWITCH payment_type %]
+          [% CASE "cash_payment" %]Cash
+          [% CASE "check_payment" %]Check
+          [% CASE "credit_card_payment" %]Credit Card
+          [% CASE "debit_card_payment" %]Debit Card
+          [% CASE "credit_payment" %]Patron Credit
+          [% CASE "work_payment" %]Work
+          [% CASE "forgive_payment" %]Forgive
+          [% CASE "goods_payment" %]Goods
+        [% END %]
+      </td>
+    </tr> 
+    <tr> 
+      <td>Payment Received:</td> 
+      <td align="right">[% money(payment_total) %]</td> 
+    </tr> 
+    <tr> 
+      <td>Payment Applied:</td> 
+      <td align="right">[% money(payment_applied) %]</td> 
+    </tr> 
+    <tr> 
+      <td>Billings Voided:</td> 
+      <td align="right">[% money(amount_voided) %]</td> 
+    </tr> 
+    <tr> 
+      <td>Change Given:</td> 
+      <td align="right">[% money(change_given) %]</td> 
+    </tr> 
+    <tr> 
+      <td>New Balance:</td> 
+      <td align="right">[% money(new_balance) %]</td> 
+    </tr> 
+  </table> 
+  <p>Note: [% payment_note %]</p>
+  <p>
+    Specific Bills
+    <blockquote>
+      [% FOR payment IN payments %]
+        <table style="width:100%">
+          <tr>
+            <td>Bill # [% payment.xact.id %]</td>
+            <td>[% payment.xact.summary.last_billing_type %]</td>
+            <td>Received: [% money(payment.amount) %]</td>
+          </tr>
+          [% IF payment.copy_barcode %]
+          <tr>
+            <td colspan="5">[% payment.copy_barcode %] [% payment.title %]</td>
+          </tr>
+          [% END %]
+        </table>
+        <br/>
+      [% END %]
+    </blockquote>
+  </p> 
+  <hr/>
+  <br/><br/> 
+  <div>[% staff_org.name %] [% date.format(date.now, '%x %r') %]</div>
+  <div>You were helped by [% staff.first_given_name %]</div>
+</div>
+$TEMPLATE$ WHERE name = 'bills_payment';
 
 COMMIT;
 

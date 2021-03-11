@@ -319,17 +319,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
         .finally(() => this.applyingPayment = false);
     }
 
-    handlePayReceipt(payments: Array<Array<number>>, paymentIds: number[]): Promise<any> {
-
-        if (this.disableAutoPrint || !this.receiptOnPayment) {
-            return Promise.resolve();
-        }
-
-        // TODO
-        // return this.printer.pr
-    }
-
-    compilePayments(): Array<Array<number>> {
+    compilePayments(): Array<Array<number>> { // [ [xactId, payAmount], ... ]
         const payments = [];
         this.entries.forEach(row => {
             if (row.paymentPending) {
@@ -431,5 +421,43 @@ export class BillsComponent implements OnInit, AfterViewInit {
             printContext: 'default'
         });
     }
+
+    handlePayReceipt(payments: Array<Array<number>>, paymentIds: number[]): Promise<any> {
+
+        if (this.disableAutoPrint || !this.receiptOnPayment) {
+            return Promise.resolve();
+        }
+
+        const context = {
+            payments: [],
+            previous_balance: this.context.patronStats.fines.balance_owed,
+            payment_type: this.paymentType,
+            payment_total: this.paymentAmount,
+            payment_applied: this.pendingPayment(),
+            amount_voided: this.sessionVoided,
+            change_given: this.pendingChange(),
+            payment_note: this.paymentNote
+        };
+
+        payments.forEach(payment => {
+            const entry =
+                this.entries.filter(entry => entry.xact.id() === payment[0])[0];
+
+            context.payments.push({
+                amount: payment[1],
+                xact: entry.xact,
+                title: entry.title,
+                copy_barcode: entry.copy ? entry.copy.barcode() : ''
+            });
+        });
+
+        this.printer.print({
+            templateName: 'bills_payment',
+            contextData: context,
+            printContext: 'receipt'
+        });
+    }
+
+
 }
 

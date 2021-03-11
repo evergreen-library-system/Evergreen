@@ -50,6 +50,7 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
 
     @ViewChild('searchGrid', {static: false}) searchGrid: GridComponent;
 
+    startWithFired = false;
     @Input() startWithSearch: PatronSearch;
 
     // Fires on dbl-click or Enter while one or more search result
@@ -171,10 +172,12 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
 
     searchByForm(pager: Pager, sort: any[]): Observable<IdlObject> {
 
-        if (this.startWithSearch) {
+        if (this.startWithSearch && !this.startWithFired) {
             this.absorbPatronSearch(this.startWithSearch);
-            this.startWithSearch = null;
         }
+
+        // Never fire a "start with" search after any search has fired
+        this.startWithFired = true;
 
         const search = this.compileSearch();
         if (!search) { return of(); }

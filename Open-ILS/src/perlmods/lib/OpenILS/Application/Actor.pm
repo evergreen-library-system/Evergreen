@@ -5396,25 +5396,25 @@ sub user_billing_xacts {
             $xact_id, {
                 flesh => 5,
                 flesh_fields => {
-				    mbt => [qw/summary circulation grocery/],
-				    circ => [qw/
+                    mbt => [qw/summary circulation grocery/],
+                    circ => [qw/
                         target_copy 
                         workstation 
                         checkin_workstation 
                     /],
-				    acp =>  [qw/
-					    call_number
-					    holds_count
-					    status
-					    circ_lib
-					    location
-					    floating
-					    age_protect
-					    parts
-				    /],
-				    acpm => [qw/part/],
-				    acn =>  [qw/record owning_lib prefix suffix/],
-				    bre =>  [qw/wide_display_entry/]
+                    acp =>  [qw/
+                        call_number
+                        holds_count
+                        status
+                        circ_lib
+                        location
+                        floating
+                        age_protect
+                        parts
+                    /],
+                    acpm => [qw/part/],
+                    acn =>  [qw/record owning_lib prefix suffix/],
+                    bre =>  [qw/wide_display_entry/]
                 },
                 # Avoid adding the MARXML
                 # Fleshed fields are implicitly included.

@@ -112,7 +112,7 @@ export class PrintTemplateComponent implements OnInit {
 
         this.sampleData.holds_for_bib = wide_holds;
 
-        // Flesh the summary
+        // Bills
         samples.mbt[0].summary = samples.mbts[0];
         samples.mbt[1].summary = samples.mbts[1];
         samples.mbt[2].summary = samples.mbts[2];
@@ -122,6 +122,28 @@ export class PrintTemplateComponent implements OnInit {
             samples.mbt[1],
             samples.mbt[2]
         ];
+
+        // Payments
+        this.sampleData.bills_payment = {
+            previous_balance: 10,
+            payment_type: 'cash_payment',
+            payment_total: 5,
+            payment_applied: 3,
+            amount_voided: 0,
+            change_given: 2,
+            payment_note: 'Test Note',
+            payments: [{
+                amount: 1,
+                xact: samples.mbt[0],
+                title: 'A Title',
+                copy_barcode: '3423482302393'
+            }, {
+                amount: 4,
+                xact: samples.mbt[1],
+                title: 'Another Title',
+                copy_barcode: '3423482302394'
+            }]
+        };
     }
 
     onTabChange(evt: NgbTabChangeEvent) {
