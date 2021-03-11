@@ -27,6 +27,8 @@ export class PatronResolver implements Resolve<Promise<any[]>> {
         // Some of these are used by the shared circ services.
         // Precache them since we're making the call anyway.
         return this.store.getItemBatch([
+          'circ.bills.receiptonpay',
+          'eg.circ.bills.annotatepayment',
           'eg.circ.patron.summary.collapse',
           'circ.do_not_tally_claims_returned',
           'circ.tally_lost',

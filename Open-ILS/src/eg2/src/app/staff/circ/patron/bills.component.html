@@ -13,6 +13,9 @@
 <eg-credit-card-dialog [patron]="patron()" #creditCardDialog>
 </eg-credit-card-dialog>
 
+<eg-add-billing-dialog [patronId]="patronId" [newXact]="true" #billingDialog>
+</eg-add-billing-dialog>
+
 <!-- SUMMARY  -->
 
 <ng-container *ngIf="summary">
@@ -20,7 +23,7 @@
     <div class="col-lg-3 pr-0 mr-0 border-right">
       <div class="d-flex pt-1 pb-1 striped">
         <div class="flex-4" i18n>Total Owed:</div>
-        <div class="flex-1" 
+        <div class="flex-1"
           [ngClass]="{'font-weight-bold' : summary.balance_owed() > 0}">
           {{summary.balance_owed() | currency}}</div>
       </div>
@@ -112,12 +115,13 @@
         (ngModelChange)="updatePendingColumn()" id="pay-amount" [min]="0"/>
     </div>
     <div class="ml-2 form-check form-check-inline">
-      <input class="form-check-input" type="checkbox" 
+      <input class="form-check-input" type="checkbox"
+        (ngModelChange)="applySetting('eg.circ.bills.annotatepayment', $event)"
         id="annotate" [(ngModel)]="annotatePayment"/>
       <label class="form-check-label" for="annotate" i18n>Annotate</label>
     </div>
     <div class="ml-2">
-      <button class="btn btn-outline-dark" (click)="applyPayment()" 
+      <button class="btn btn-outline-dark" (click)="applyPayment()"
         [disabled]="disablePayment()" i18n>Apply Payment</button>
     </div>
   </div>
@@ -140,18 +144,24 @@
 
 <ng-template #callNumberTemplate let-r="row">
   <ng-container *ngIf="r.volume">
-    {{r.volume.prefix().label()}} {{r.volume.label()}} {{r.volume.suffix().label()}} 
+    {{r.volume.prefix().label()}} {{r.volume.label()}} {{r.volume.suffix().label()}}
   </ng-container>
   <ng-container *ngIf="!r.volume" i18n>UNCATALOGED</ng-container>
 </ng-template>
 
-<eg-grid #billGrid [dataSource]="gridDataSource" 
+<eg-grid #billGrid [dataSource]="gridDataSource"
   [sortable]="true" [useLocalSort]="true"
   [cellTextGenerator]="cellTextGenerator">
 
-  <eg-grid-toolbar-action                                                    
-    i18n-label label="Print Bills" (onClick)="printBills($event)">                            
-  </eg-grid-toolbar-action> 
+  <eg-grid-toolbar-button i18n-label label="Add Billing"
+    (onClick)="addBilling()"></eg-grid-toolbar-button>
+
+  <eg-grid-toolbar-button i18n-label label="Select All Refunds"
+    (onClick)="selectRefunds()"></eg-grid-toolbar-button>
+
+  <eg-grid-toolbar-action
+    i18n-label label="Print Bills" (onClick)="printBills($event)">
+  </eg-grid-toolbar-action>
 
   <eg-grid-column path="xact.id" [index]="true" label="Bill #" i18n-label>
   </eg-grid-column>
@@ -167,32 +177,32 @@
 
   <eg-grid-column path="billingLocation"
     label="Billing Location" i18n-label></eg-grid-column>
-    
+
   <eg-grid-column path="call_number" label="Call Number" i18n-label
     [cellTemplate]="callNumberTemplate"></eg-grid-column>
 
   <eg-grid-column name="copy_barcode" label="Item Barcode" i18n-label
     [cellTemplate]="barcodeTemplate"></eg-grid-column>
 
-  <eg-grid-column path="copy.location.name" label="Shelving Location" 
+  <eg-grid-column path="copy.location.name" label="Shelving Location"
     i18n-label></eg-grid-column>
 
-  <eg-grid-column name="title" label="Title" i18n-label 
+  <eg-grid-column name="title" label="Title" i18n-label
     [cellTemplate]="titleTemplate"></eg-grid-column>
 
-  <eg-grid-column path="xact.summary.balance_owed" datatype="money" 
+  <eg-grid-column path="xact.summary.balance_owed" datatype="money"
     label="Balance Owed" i18n-label></eg-grid-column>
 
-  <eg-grid-column path="xact.summary.total_owed" datatype="money" 
+  <eg-grid-column path="xact.summary.total_owed" datatype="money"
     label="Total Billed" i18n-label></eg-grid-column>
 
-  <eg-grid-column path="xact.summary.total_paid" datatype="money" 
+  <eg-grid-column path="xact.summary.total_paid" datatype="money"
     label="Total Paid" i18n-label></eg-grid-column>
 
   <eg-grid-column name="paymentPending" datatype="money"
     label="Payment Pending" i18n-label></eg-grid-column>
 
-  <eg-grid-column name="author" [hidden]="true" 
+  <eg-grid-column name="author" [hidden]="true"
     label="Author" i18n-label></eg-grid-column>
   <eg-grid-column path="usr" [hidden]="true"></eg-grid-column>
   <eg-grid-column path="unrecovered" [hidden]="true"></eg-grid-column>
@@ -204,7 +214,7 @@
     <div class="flex-1"></div>
     <div class="d-flex flex-colum justify-content-end">
       <div class="form-check form-check-inline">
-      <input class="form-check-input" type="checkbox" id="patron-credit-cbox" 
+      <input class="form-check-input" type="checkbox" id="patron-credit-cbox"
         [(ngModel)]="convertChangeToCredit"/>
       <label class="form-check-label" for="patron-credit-cbox" i18n>
         Convert Change To Patron Credit
@@ -213,7 +223,8 @@
     </div>
     <div class="d-flex flex-colum justify-content-end">
       <div class="form-check form-check-inline ml-2">
-      <input class="form-check-input" type="checkbox" id="receipt-on-payment-cbox" 
+      <input class="form-check-input" type="checkbox" id="receipt-on-payment-cbox"
+        (ngModelChange)="applySetting('circ.bills.receiptonpay', $event)"
         [(ngModel)]="receiptOnPayment"/>
       <label class="form-check-label" for="receipt-on-payment-cbox" i18n>
         Receipt On Payment

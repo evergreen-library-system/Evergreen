@@ -1,6 +1,6 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import {Observable, empty} from 'rxjs';
+import {switchMap, tap} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -27,7 +27,10 @@ export class AddBillingDialogComponent
     extends DialogComponent implements OnInit {
 
     @Input() xactId: number;
+    @Input() newXact = false;
+    @Input() patronId: number;
 
+    patron: IdlObject;
     xact: IdlObject;
     billingType: ComboboxEntry;
     billingTypes: ComboboxEntry[] = [];
@@ -57,6 +60,8 @@ export class AddBillingDialogComponent
             this.billingTypes = types.map(bt => {
                 return {id: bt.id(), label: bt.name(), fm: bt};
             });
+            this.billingType = this.billingTypes
+                .filter(t => t.id === DEFAULT_BILLING_TYPE)[0];
         });
 
         this.hereOrg = this.org.get(this.auth.user().ws_ou()).shortname();
@@ -71,18 +76,30 @@ export class AddBillingDialogComponent
     }
 
     open(options: NgbModalOptions = {}): Observable<any> {
+        let obs: Observable<any>;
 
-        // Fetch the xact data before opening the dialog.
-        return this.pcrud.retrieve('mbt', this.xactId, {
-            flesh: 2,
-            flesh_fields: {
-                mbt: ['usr', 'summary', 'circulation'],
-                au: ['card']
-            }
-        }).pipe(switchMap(xact => {
-            this.xact = xact;
-            return super.open(options);
-        }));
+        // Load some data before opening.
+        if (this.newXact) {
+
+            obs = this.pcrud.retrieve('au', this.patronId,
+                {flesh: 1, flesh_fields: {au: ['card']}}
+            ).pipe(tap(user => this.patron = user));
+
+        } else {
+
+            obs = this.pcrud.retrieve('mbt', this.xactId, {
+                flesh: 2,
+                flesh_fields: {
+                    mbt: ['usr', 'summary', 'circulation'],
+                    au: ['card']
+                }
+            }).pipe(tap(xact => {
+                this.xact = xact;
+                this.patron = xact.usr();
+            }));
+        }
+
+        return obs.pipe(switchMap(_ => super.open(options)));
     }
 
     isRenewal(): boolean {
@@ -105,28 +122,56 @@ export class AddBillingDialogComponent
     }
 
     submit() {
+        const promise = this.newXact ?
+            this.createGroceryXact() : Promise.resolve(this.xactId);
+
+        let xactId;
+        promise.then(id => {
+            xactId = id;
+            return this.createBill(id)
+        })
+        .then(billId => this.close({xactId: xactId, billId: billId}));
+    }
+
+    handleResponse(id: number): number {
+        const evt = this.evt.parse(id);
+        if (evt) {
+            console.error(evt);
+            alert(evt);
+            return null;
+        } else {
+            return id;
+        }
+    }
+
+    createGroceryXact(): Promise<number> {
+        const groc = this.idl.create('mg');
+        groc.billing_location(this.auth.user().ws_ou());
+        groc.note(this.note);
+        groc.usr(this.patronId);
+
+        return this.net.request(
+            'open-ils.circ',
+            'open-ils.circ.money.grocery.create',
+            this.auth.token(), groc
+        ).toPromise().then(xactId => this.handleResponse(xactId));
+    }
+
+    createBill(xactId: number): Promise<number> {
+        if (!xactId) { return Promise.reject('no xact'); }
+
         const bill = this.idl.create('mb');
-        bill.xact(this.xactId);
+        bill.xact(xactId);
         bill.amount(this.amount);
         bill.btype(this.billingType.id);
         bill.billing_type(this.billingType.label);
         bill.note(this.note);
 
-        this.net.request(
+        return this.net.request(
             'open-ils.circ',
             'open-ils.circ.money.billing.create',
             this.auth.token(), bill
-        ).subscribe(billId => {
-
-            const evt = this.evt.parse(billId);
-            if (evt) {
-                console.error(evt);
-                alert(evt);
-                this.close(null);
-            } else {
-                this.close(billId);
-            }
-        });
+        ).toPromise().then(billId => this.handleResponse(billId));
     }
 }
 

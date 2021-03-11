@@ -11,9 +11,9 @@
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>
       Bill Patron: 
-        {{xact.usr().family_name()}}, 
-        {{xact.usr().first_given_name()}} : 
-        {{xact.usr().card().barcode()}}
+        {{patron.family_name()}}, 
+        {{patron.first_given_name()}} : 
+        {{patron.card().barcode()}}
     </h4>
     <button type="button" class="close"
       i18n-aria-label aria-label="Close" (click)="close()">
@@ -22,30 +22,32 @@
   </div>
   <div class="modal-body">
 
-    <div class="row">
-      <div class="col-lg-2" i18n>Bill #</div>
-      <div class="col-lg-4">{{xact.id()}}</div>
-      <div class="col-lg-4" i18n>Total Billed</div>
-      <div class="col-lg-2">{{xact.summary().total_owed() | currency}}</div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2" i18n>Type</div>
-      <div class="col-lg-4">{{xact.summary().xact_type()}}</div>
-      <div class="col-lg-4" i18n>Total Paid</div>
-      <div class="col-lg-2">{{xact.summary().total_paid() | currency}}</div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2" i18n>Start</div>
-      <div class="col-lg-4">{{xact.xact_start() | date:'short'}}</div>
-      <div class="col-lg-4" i18n>Balance Owed</div>
-      <div class="col-lg-2">{{xact.summary().balance_owed() | currency}}</div>
-    </div>
-    <div class="row">
-      <div class="col-lg-2" i18n>Finish</div>
-      <div class="col-lg-4">{{xact.xact_finish() | date:'short'}}</div>
-      <div class="col-lg-4" i18n>Renewal?</div>
-      <div class="col-lg-2"><eg-bool [value]="isRenewal()"></eg-bool></div>
-    </div>
+    <ng-container *ngIf="xact">
+      <div class="row">
+        <div class="col-lg-2" i18n>Bill #</div>
+        <div class="col-lg-4">{{xact.id()}}</div>
+        <div class="col-lg-4" i18n>Total Billed</div>
+        <div class="col-lg-2">{{xact.summary().total_owed() | currency}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2" i18n>Type</div>
+        <div class="col-lg-4">{{xact.summary().xact_type()}}</div>
+        <div class="col-lg-4" i18n>Total Paid</div>
+        <div class="col-lg-2">{{xact.summary().total_paid() | currency}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2" i18n>Start</div>
+        <div class="col-lg-4">{{xact.xact_start() | date:'short'}}</div>
+        <div class="col-lg-4" i18n>Balance Owed</div>
+        <div class="col-lg-2">{{xact.summary().balance_owed() | currency}}</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-2" i18n>Finish</div>
+        <div class="col-lg-4">{{xact.xact_finish() | date:'short'}}</div>
+        <div class="col-lg-4" i18n>Renewal?</div>
+        <div class="col-lg-2"><eg-bool [value]="isRenewal()"></eg-bool></div>
+      </div>
+    </ng-container>
 
     <hr/>
 

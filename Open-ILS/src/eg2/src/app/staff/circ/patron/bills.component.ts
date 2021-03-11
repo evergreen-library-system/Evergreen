@@ -22,6 +22,7 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {CreditCardDialogComponent
     } from '@eg/staff/share/billing/credit-card-dialog.component';
 import {BillingService, CreditCardPaymentParams} from '@eg/staff/share/billing/billing.service';
+import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
 
 interface BillGridEntry extends CircDisplayInfo {
     xact: IdlObject // mbt
@@ -63,6 +64,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     @ViewChild('maxPayDialog') private maxPayDialog: AlertDialogComponent;
     @ViewChild('warnPayDialog') private warnPayDialog: ConfirmDialogComponent;
     @ViewChild('creditCardDialog') private creditCardDialog: CreditCardDialogComponent;
+    @ViewChild('billingDialog') private billingDialog: AddBillingDialogComponent;
 
     constructor(
         private router: Router,
@@ -99,23 +101,32 @@ export class BillsComponent implements OnInit, AfterViewInit {
             return from(page);
         };
 
-        this.applySettings().then(_ => this.load());
+        this.loadSettings().then(_ => this.load());
     }
 
-    applySettings(): Promise<any> {
+    loadSettings(): Promise<any> {
         return this.serverStore.getItemBatch([
             'ui.circ.billing.amount_warn',
             'ui.circ.billing.amount_limit',
-            'circ.staff_client.do_not_auto_attempt_print'
+            'circ.staff_client.do_not_auto_attempt_print',
+            'circ.bills.receiptonpay',
+            'eg.circ.bills.annotatepayment'
+
         ]).then(sets => {
             this.maxPayAmount = sets['ui.circ.billing.amount_limit'] || 100000;
             this.warnPayAmount = sets['ui.circ.billing.amount_warn'] || 1000;
+            this.receiptOnPayment = sets['circ.bills.receiptonpay'];
+            this.annotatePayment = sets['eg.circ.bills.annotatepayment'];
 
             const noPrint = sets['circ.staff_client.do_not_auto_attempt_print'];
             if (noPrint && noPrint.includes('Bill Pay')) {
                 this.disableAutoPrint = true;
             }
         });
+    }
+
+    applySetting(name: string, value: any) {
+        this.serverStore.setItem(name, value);
     }
 
     ngAfterViewInit() {
@@ -138,7 +149,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     // summary, and slot them back into the entries array.
     load(refreshXacts?: number[]): Promise<any> {
 
-        let entries = [];
+        if (!refreshXacts) { this.entries = []; }
         this.summary = null;
         this.gridDataSource.requestingData = true;
 
@@ -155,24 +166,27 @@ export class BillsComponent implements OnInit, AfterViewInit {
             }
 
             if (refreshXacts) {
+                let idx = 0;
+                for (;idx < this.entries.length; idx++) {
+                    const entry = this.entries[idx];
+                    if (entry.xact.id() === resp.id()) { break; }
+                }
 
-                // Slot the updated xact back into place
-                entries.push(this.formatForDisplay(resp));
-                entries = entries.map(e => {
-                    if (e.xact.id() === resp.id()) {
-                        return this.formatForDisplay(resp);
-                    }
-                    return e;
-                });
+                if (idx < this.entries.length) {
+                    // Update the existing entry
+                    this.entries[idx] = this.formatForDisplay(resp);
+                } else {
+                    // Adding a new transaction (e.g. from new billing)
+                    this.entries.push(this.formatForDisplay(resp));
+                }
 
             } else {
-                entries.push(this.formatForDisplay(resp));
+                this.entries.push(this.formatForDisplay(resp));
             }
         })).toPromise()
 
         .then(_ => {
             this.gridDataSource.requestingData = false;
-            this.entries = entries;
             this.billGrid.reload();
         });
     }
@@ -289,7 +303,6 @@ export class BillsComponent implements OnInit, AfterViewInit {
     }
 
     applyPayment() {
-
         if (this.amountExceedsMax()) { return; }
 
         this.applyingPayment = true;
@@ -458,6 +471,22 @@ export class BillsComponent implements OnInit, AfterViewInit {
         });
     }
 
+    selectRefunds() {
+        this.billGrid.context.rowSelector.clear();
+        this.entries.forEach(entry => {
+            if (entry.xact.summary().balance_owed() < 0) {
+                this.billGrid.context.toggleSelectOneRow(entry.xact.id());
+            }
+        });
+    }
 
+    addBilling() {
+        this.billingDialog.open().subscribe(data => {
+            if (data) {
+                this.context.refreshPatron();
+                this.load([data.xactId]);
+            }
+        });
+    }
 }
 
