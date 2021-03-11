@@ -5,9 +5,15 @@
 <eg-alert-dialog #maxPayDialog
   i18n-dialogBody dialogBody="Payments over 100,000 are denied by policy.">
 </eg-alert-dialog>
+
 <eg-confirm-dialog #warnPayDialog
   i18n-dialogBody i18n-dialogTitle dialogTitle="Confirm Payment Amount"
   dialogBody="Are you sure you want to apply a payment of {{paymentAmount | currency}}?">
+</eg-confirm-dialog>
+
+<eg-confirm-dialog #voidBillsDialog
+  i18n-dialogBody i18n-dialogTitle dialogTitle="Void Billings"
+  dialogBody="Are you sure you would like to void {{voidAmount | currency}} in bills for the selected transactions?">
 </eg-confirm-dialog>
 
 <eg-credit-card-dialog [patron]="patron()" #creditCardDialog>
@@ -156,12 +162,20 @@
   <eg-grid-toolbar-button i18n-label label="Add Billing"
     (onClick)="addBilling()"></eg-grid-toolbar-button>
 
+  <!-- ACTIONS FOR SELECTED -->
+
   <eg-grid-toolbar-button i18n-label label="Select All Refunds"
     (onClick)="selectRefunds()"></eg-grid-toolbar-button>
 
   <eg-grid-toolbar-action
     i18n-label label="Print Bills" (onClick)="printBills($event)">
   </eg-grid-toolbar-action>
+
+  <eg-grid-toolbar-action
+    i18n-label label="Void All Billings" (onClick)="voidBillings($event)">
+  </eg-grid-toolbar-action>
+
+  <!-- COLUMNS -->
 
   <eg-grid-column path="xact.id" [index]="true" label="Bill #" i18n-label>
   </eg-grid-column>

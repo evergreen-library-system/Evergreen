@@ -4,6 +4,7 @@ import {from, empty} from 'rxjs';
 import {concatMap, tap, takeLast} from 'rxjs/operators';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {IdlObject} from '@eg/core/idl.service';
+import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService, PcrudContext} from '@eg/core/pcrud.service';
@@ -55,6 +56,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
     maxPayAmount = 100000;
     warnPayAmount = 1000;
+    voidAmount = 0;
 
     gridDataSource: GridDataSource = new GridDataSource();
     cellTextGenerator: GridCellTextGenerator;
@@ -63,6 +65,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     @ViewChild('annotateDialog') private annotateDialog: PromptDialogComponent;
     @ViewChild('maxPayDialog') private maxPayDialog: AlertDialogComponent;
     @ViewChild('warnPayDialog') private warnPayDialog: ConfirmDialogComponent;
+    @ViewChild('voidBillsDialog') private voidBillsDialog: ConfirmDialogComponent;
     @ViewChild('creditCardDialog') private creditCardDialog: CreditCardDialogComponent;
     @ViewChild('billingDialog') private billingDialog: AddBillingDialogComponent;
 
@@ -70,6 +73,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
         private router: Router,
         private route: ActivatedRoute,
         private org: OrgService,
+        private evt: EventService,
         private net: NetService,
         private pcrud: PcrudService,
         private auth: AuthService,
@@ -149,9 +153,11 @@ export class BillsComponent implements OnInit, AfterViewInit {
     // summary, and slot them back into the entries array.
     load(refreshXacts?: number[]): Promise<any> {
 
-        if (!refreshXacts) { this.entries = []; }
+        const entriesFetched: number[] = [];
         this.summary = null;
         this.gridDataSource.requestingData = true;
+
+        if (!refreshXacts) { this.entries = []; }
 
         return this.net.request(
             'open-ils.actor',
@@ -165,28 +171,51 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 return;
             }
 
-            if (refreshXacts) {
-                let idx = 0;
-                for (;idx < this.entries.length; idx++) {
-                    const entry = this.entries[idx];
-                    if (entry.xact.id() === resp.id()) { break; }
-                }
+            if (!refreshXacts) {
+                this.entries.push(this.formatForDisplay(resp));
+                return;
+            }
 
-                if (idx < this.entries.length) {
-                    // Update the existing entry
-                    this.entries[idx] = this.formatForDisplay(resp);
-                } else {
-                    // Adding a new transaction (e.g. from new billing)
-                    this.entries.push(this.formatForDisplay(resp));
-                }
+            entriesFetched.push(resp.id());
 
+            let idx;
+            for (idx = 0; idx < this.entries.length; idx++) {
+                const entry = this.entries[idx];
+                if (entry.xact.id() === resp.id()) { break; }
+            }
+
+            if (idx < this.entries.length) {
+                // Update the existing entry
+                this.entries[idx] = this.formatForDisplay(resp);
             } else {
+                // Adding a new transaction (e.g. from new billing)
                 this.entries.push(this.formatForDisplay(resp));
             }
+
         })).toPromise()
 
         .then(_ => {
+            if (!refreshXacts) { return; }
+
+            // Refreshing means some transactions may be removed from the list
+            // Remove them from the local entries array.
+            refreshXacts.forEach(xactId => {
+                if (entriesFetched.includes(xactId)) { return; }
+
+                let idx;
+                for (idx = 0; idx < this.entries.length; idx++) {
+                    const entry = this.entries[idx];
+                    if (entry.xact.id() === xactId) { break; }
+                }
+
+                this.billGrid.context.rowSelector.deselect(xactId + '');
+                this.entries.splice(idx, 1);
+            });
+        })
+
+        .then(_ => {
             this.gridDataSource.requestingData = false;
+            if (refreshXacts) { this.context.refreshPatron(); }
             this.billGrid.reload();
         });
     }
@@ -327,7 +356,6 @@ export class BillsComponent implements OnInit, AfterViewInit {
         })
         .then(paymentIds => this.handlePayReceipt(payments, paymentIds))
         .then(_ => this.load(payments.map(p => p[0]))) // load xact IDs
-        .then(_ => this.context.refreshPatron())
         .catch(msg => console.debug('Payment Canceled:', msg))
         .finally(() => this.applyingPayment = false);
     }
@@ -483,9 +511,57 @@ export class BillsComponent implements OnInit, AfterViewInit {
     addBilling() {
         this.billingDialog.open().subscribe(data => {
             if (data) {
-                this.context.refreshPatron();
                 this.load([data.xactId]);
             }
+        });
+    }
+
+    voidBillings(rows: BillGridEntry[]) {
+
+        const xactIds = rows.map(r => r.xact.id());
+        const billIds = [];
+        let cents = 0;
+
+        from(xactIds)
+        // Grab the billings
+        .pipe(concatMap(xactId => {
+            return this.pcrud.search('mb', {xact: xactId}, {}, {authoritative: true})
+            .pipe(tap(billing => {
+                if (billing.voided() === 'f') {
+                    cents += billing.amount() * 100
+                    billIds.push(billing.id());
+                }
+            }));
+        }))
+        // Confirm the void action
+        .pipe(concatMap(_ => {
+            this.voidAmount = cents / 100;
+            return this.voidBillsDialog.open();
+        }))
+        // Do the void
+        .pipe(concatMap(confirmed => {
+            if (!confirmed) { return empty(); }
+
+            return this.net.requestWithParamList(
+                'open-ils.circ',
+                'open-ils.circ.money.billing.void',
+                [this.auth.token()].concat(billIds) // positional params
+            );
+        }))
+        // Clean up and reresh data
+        .subscribe(resp => {
+            if (!resp) { return; } // canceled
+
+            const evt = this.evt.parse(resp);
+            if (evt) {
+                console.error(evt);
+                alert(evt);
+                return;
+            }
+
+            this.sessionVoided = (this.sessionVoided * 100 + cents) / 100;
+            this.voidAmount = 0;
+            this.load(xactIds);
         });
     }
 }
