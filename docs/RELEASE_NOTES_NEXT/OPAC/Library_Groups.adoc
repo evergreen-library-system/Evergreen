@@ -1,0 +1,27 @@
+Library Groups
+^^^^^^^^^^^^^^
+The Library Groups search feature revives a longstanding internal
+concept in Evergreen called “Lassos,” which allows an administrator
+to define a group of organizational units for searching outside of
+the standard organizational unit hierarchy.
+
+Use case examples include creating a group of law or science
+libraries within a university consortium, or grouping all school
+libraries together within a mixed school/public library.
+
+Searches can be restricted to a particular Library Group from the
+library selector in the public catalog basic search page and from
+the new "Where" selector on the advanced search page.
+
+Restricting catalog searches by Library Group is available only
+in the public catalog and "traditional" staff catalog; it is not
+available in the Angular staff catalog.
+
+This feature adds a new permission, `ADMIN_LIBRARY_GROUPS`, that
+allows updating Library Groups and Library Group Maps. This permission
+is not associated with any profiles by default, and replaces
+the `CREATE_LASSO`, `UPDATE_LASSO`, and `DELETE_LASSO` permissions. 
+
+To define new library groups, use the Server Administration Library
+Groups and Library Group Maps pages. An autogen and a reload of
+Apache should be performed after making changes to Library Groups.
