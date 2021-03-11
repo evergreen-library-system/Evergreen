@@ -1954,7 +1954,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 628, 'MANAGE_HOLD_GROUPS', oils_i18n_gettext(628,
     'Manage batch (subscription) hold events', 'ppl', 'description')),
  ( 629, 'ADMIN_LIBRARY_GROUPS', oils_i18n_gettext(629,
-    'Administer library groups', 'ppl', 'description'))
+    'Administer library groups', 'ppl', 'description')),
  ( 630, 'VIEW_GEOLOCATION_SERVICES', oils_i18n_gettext(630,
     'View geographic location services', 'ppl', 'description')),
  ( 631, 'ADMIN_GEOLOCATION_SERVICES', oils_i18n_gettext(631,
