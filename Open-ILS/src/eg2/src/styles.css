@@ -207,12 +207,17 @@ a {
   font-weight: bold;
 }
 
-.common-form.striped-even .row:nth-child(even) {
+.common-form.striped-even .row:nth-child(even),
+  .striped-rows-even .row:nth-child(even) {
+
   background-color: rgba(0,0,0,.03);
   border-top: 1px solid rgba(0,0,0,.125);
   border-bottom: 1px solid rgba(0,0,0,.125);
 }
-.common-form.striped-odd .row:nth-child(odd) {
+
+.common-form.striped-odd .row:nth-child(odd),
+  .striped-rows-odd .row:nth-child(odd) {
+
   background-color: rgba(0,0,0,.03);
   border-top: 1px solid rgba(0,0,0,.125);
   border-bottom: 1px solid rgba(0,0,0,.125);

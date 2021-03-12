@@ -83,7 +83,13 @@
             </span>
           </a>
           <ng-template ngbNavContent>
-            <eg-patron-bills [patronId]="patronId"></eg-patron-bills>
+            <ng-container *ngIf="statementXact">
+              <eg-patron-bill-statement [patronId]="patronId" [xactId]="statementXact">
+              </eg-patron-bill-statement>
+            </ng-container>
+            <ng-container *ngIf="!statementXact">
+              <eg-patron-bills [patronId]="patronId"></eg-patron-bills>
+            </ng-container>
           </ng-template>
         </li>
 

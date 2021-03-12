@@ -174,7 +174,7 @@
 </ng-template>
 
 <eg-grid #billGrid [dataSource]="gridDataSource"
-  [sortable]="true" [useLocalSort]="true"
+  [sortable]="true" [useLocalSort]="true" (onRowActivate)="showStatement($event)"
   [cellTextGenerator]="cellTextGenerator">
 
   <eg-grid-toolbar-button i18n-label label="Add Billing"

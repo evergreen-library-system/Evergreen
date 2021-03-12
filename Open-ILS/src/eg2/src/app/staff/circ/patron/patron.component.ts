@@ -5,7 +5,7 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronContextService} from './patron.service';
+import {PatronContextService, BillGridEntry} from './patron.service';
 import {PatronSearch, PatronSearchComponent
     } from '@eg/staff/share/patron/search.component';
 
@@ -21,6 +21,7 @@ export class PatronComponent implements OnInit, AfterViewInit {
     patronId: number;
     patronTab = 'search';
     altTab: string;
+    statementXact: number;
     showSummary = true;
     loading = true;
 
@@ -58,6 +59,7 @@ export class PatronComponent implements OnInit, AfterViewInit {
         this.route.paramMap.subscribe((params: ParamMap) => {
             this.patronTab = params.get('tab') || 'search';
             this.patronId = +params.get('id');
+            this.statementXact = +params.get('xactId');
 
             if (MAIN_TABS.includes(this.patronTab)) {
                 this.altTab = null;

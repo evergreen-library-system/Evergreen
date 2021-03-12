@@ -6,6 +6,13 @@ import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronSearch} from '@eg/staff/share/patron/search.component';
 import {StoreService} from '@eg/core/store.service';
+import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
+
+export interface BillGridEntry extends CircDisplayInfo {
+    xact: IdlObject // mbt
+    billingLocation?: string;
+    paymentPending?: number;
+}
 
 export interface CircGridEntry {
     title?: string;
@@ -103,6 +110,7 @@ export class PatronContextService {
         private net: NetService,
         private org: OrgService,
         private auth: AuthService,
+        private circ: CircService,
         public patronService: PatronService
     ) {}
 
@@ -219,6 +227,36 @@ export class PatronContextService {
     orgSn(orgId: number): string {
         const org = this.org.get(orgId);
         return org ? org.shortname() : '';
+    }
+
+    formatXactForDisplay(xact: IdlObject): BillGridEntry {
+
+        const entry: BillGridEntry = {
+            xact: xact,
+            paymentPending: 0
+        };
+
+        if (xact.summary().xact_type() !== 'circulation') {
+
+            entry.xact.grocery().billing_location(
+                this.org.get(entry.xact.grocery().billing_location()));
+
+            entry.title = xact.summary().last_billing_type();
+            entry.billingLocation =
+                xact.grocery().billing_location().shortname();
+            return entry;
+        }
+
+        entry.xact.circulation().circ_lib(
+            this.org.get(entry.xact.circulation().circ_lib()));
+
+        const circDisplay: CircDisplayInfo =
+            this.circ.getDisplayInfo(xact.circulation());
+
+        entry.billingLocation =
+            xact.circulation().circ_lib().shortname();
+
+        return Object.assign(entry, circDisplay);
     }
 }
 

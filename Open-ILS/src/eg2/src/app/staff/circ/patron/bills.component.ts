@@ -11,7 +11,7 @@ import {PcrudService, PcrudContext} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronContextService} from './patron.service';
+import {PatronContextService, BillGridEntry} from './patron.service';
 import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
@@ -26,12 +26,6 @@ import {BillingService, CreditCardPaymentParams} from '@eg/staff/share/billing/b
 import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
 import {AudioService} from '@eg/share/util/audio.service';
 import {ToastService} from '@eg/share/toast/toast.service';
-
-interface BillGridEntry extends CircDisplayInfo {
-    xact: IdlObject // mbt
-    billingLocation?: string;
-    paymentPending?: number;
-}
 
 @Component({
   templateUrl: 'bills.component.html',
@@ -183,7 +177,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
             }
 
             if (!refreshXacts) {
-                this.entries.push(this.formatForDisplay(resp));
+                this.entries.push(this.context.formatXactForDisplay(resp));
                 return;
             }
 
@@ -197,10 +191,10 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
             if (idx < this.entries.length) {
                 // Update the existing entry
-                this.entries[idx] = this.formatForDisplay(resp);
+                this.entries[idx] = this.context.formatXactForDisplay(resp);
             } else {
                 // Adding a new transaction (e.g. from new billing)
-                this.entries.push(this.formatForDisplay(resp));
+                this.entries.push(this.context.formatXactForDisplay(resp));
             }
 
         })).toPromise()
@@ -229,36 +223,6 @@ export class BillsComponent implements OnInit, AfterViewInit {
             if (refreshXacts) { this.context.refreshPatron(); }
             this.billGrid.reload();
         });
-    }
-
-    formatForDisplay(xact: IdlObject): BillGridEntry {
-
-        const entry: BillGridEntry = {
-            xact: xact,
-            paymentPending: 0
-        };
-
-        if (xact.summary().xact_type() !== 'circulation') {
-
-            entry.xact.grocery().billing_location(
-                this.org.get(entry.xact.grocery().billing_location()));
-
-            entry.title = xact.summary().last_billing_type();
-            entry.billingLocation =
-                xact.grocery().billing_location().shortname();
-            return entry;
-        }
-
-        entry.xact.circulation().circ_lib(
-            this.org.get(entry.xact.circulation().circ_lib()));
-
-        const circDisplay: CircDisplayInfo =
-            this.circ.getDisplayInfo(xact.circulation());
-
-        entry.billingLocation =
-            xact.circulation().circ_lib().shortname();
-
-        return Object.assign(entry, circDisplay);
     }
 
     patron(): IdlObject {
@@ -633,6 +597,11 @@ export class BillsComponent implements OnInit, AfterViewInit {
             this.refunding = true; // clearen in applyPayment()
             this.paymentAmount = null;
         });
+    }
+
+    showStatement(row: BillGridEntry) {
+        this.router.navigate(['/staff/circ/patron',
+            this.patronId, 'bills', row.xact.id(), 'statement']);
     }
 }
 
