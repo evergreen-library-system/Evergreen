@@ -13,7 +13,7 @@ package OpenILS::WWW::EGWeb::CGI_utf8;
 use strict;
 use warnings;
 use base 'Template::Plugin';
-use CGI qw(:all -utf8 -oldstyle_urls);
+use CGI qw(:all -utf8);
 
 sub new {
     my $class   = shift;
