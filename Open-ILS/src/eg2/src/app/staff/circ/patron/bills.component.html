@@ -13,8 +13,26 @@
 
 <eg-confirm-dialog #voidBillsDialog
   i18n-dialogBody i18n-dialogTitle dialogTitle="Void Billings"
-  dialogBody="Are you sure you would like to void {{voidAmount | currency}} in bills for the selected transactions?">
+  dialogBody="Are you sure you would like to void {{voidAmount | currency}} 
+    in bills for the selected transactions?">
 </eg-confirm-dialog>
+
+<eg-confirm-dialog #adjustToZeroDialog *ngIf="billGrid"
+  i18n-dialogBody i18n-dialogTitle dialogTitle="Adjust To Zero"
+  dialogBody="Are you sure you would like to adjust to zero the balance 
+    on transactoins {{billGrid.context.rowSelector.selected().join(',')}}?">
+</eg-confirm-dialog>
+
+<eg-confirm-dialog #refundDialog *ngIf="billGrid"
+  i18n-dialogBody i18n-dialogTitle dialogTitle="Adjust To Zero"
+  dialogBody="Are you sure you would like to refund excess payment on 
+    transaction(s) {{billGrid.context.rowSelector.selected().join(',')}}? 
+    This action will simply put the amount in the Payment Pending column as 
+    a negative value.  You must still select Apply Payment!  Certain types of 
+    payments may not be refunded.  The refund may be applied to checked 
+    transactions that follow the refunded transaction.">
+</eg-confirm-dialog>
+
 
 <eg-credit-card-dialog [patron]="patron()" #creditCardDialog>
 </eg-credit-card-dialog>
@@ -173,6 +191,13 @@
 
   <eg-grid-toolbar-action
     i18n-label label="Void All Billings" (onClick)="voidBillings($event)">
+  </eg-grid-toolbar-action>
+
+  <eg-grid-toolbar-action
+    i18n-label label="Adjust To Zero" (onClick)="adjustToZero($event)">
+  </eg-grid-toolbar-action>
+
+  <eg-grid-toolbar-action i18n-label label="Refund" (onClick)="refund($event)">
   </eg-grid-toolbar-action>
 
   <!-- COLUMNS -->

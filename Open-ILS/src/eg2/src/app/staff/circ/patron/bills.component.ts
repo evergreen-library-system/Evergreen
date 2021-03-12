@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, AfterViewInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {from, empty} from 'rxjs';
+import {from, empty, range} from 'rxjs';
 import {concatMap, tap, takeLast} from 'rxjs/operators';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {IdlObject} from '@eg/core/idl.service';
@@ -24,6 +24,8 @@ import {CreditCardDialogComponent
     } from '@eg/staff/share/billing/credit-card-dialog.component';
 import {BillingService, CreditCardPaymentParams} from '@eg/staff/share/billing/billing.service';
 import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
+import {AudioService} from '@eg/share/util/audio.service';
+import {ToastService} from '@eg/share/toast/toast.service';
 
 interface BillGridEntry extends CircDisplayInfo {
     xact: IdlObject // mbt
@@ -57,6 +59,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     maxPayAmount = 100000;
     warnPayAmount = 1000;
     voidAmount = 0;
+    refunding = false;
 
     gridDataSource: GridDataSource = new GridDataSource();
     cellTextGenerator: GridCellTextGenerator;
@@ -66,12 +69,16 @@ export class BillsComponent implements OnInit, AfterViewInit {
     @ViewChild('maxPayDialog') private maxPayDialog: AlertDialogComponent;
     @ViewChild('warnPayDialog') private warnPayDialog: ConfirmDialogComponent;
     @ViewChild('voidBillsDialog') private voidBillsDialog: ConfirmDialogComponent;
+    @ViewChild('refundDialog') private refundDialog: ConfirmDialogComponent;
+    @ViewChild('adjustToZeroDialog') private adjustToZeroDialog: ConfirmDialogComponent;
     @ViewChild('creditCardDialog') private creditCardDialog: CreditCardDialogComponent;
     @ViewChild('billingDialog') private billingDialog: AddBillingDialogComponent;
 
     constructor(
         private router: Router,
         private route: ActivatedRoute,
+        private audio: AudioService,
+        private toast: ToastService,
         private org: OrgService,
         private evt: EventService,
         private net: NetService,
@@ -154,10 +161,13 @@ export class BillsComponent implements OnInit, AfterViewInit {
     load(refreshXacts?: number[]): Promise<any> {
 
         const entriesFetched: number[] = [];
-        this.summary = null;
         this.gridDataSource.requestingData = true;
 
         if (!refreshXacts) { this.entries = []; }
+
+        // Could nullify summary, but that causes a minor screen
+        // flicker as the new data loads.
+        let first = true;
 
         return this.net.request(
             'open-ils.actor',
@@ -166,8 +176,9 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
         ).pipe(tap(resp => {
 
-            if (!this.summary) { // 1st response is summary
+            if (first) { // 1st response is summary
                 this.summary = resp;
+                first = false;
                 return;
             }
 
@@ -295,7 +306,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
             this.applyingPayment ||
             !this.pendingPayment() ||
             this.paymentAmount === 0 ||
-            (this.paymentAmount < 0 && this.paymentType !== 'refund') ||
+            (this.paymentAmount < 0 && !this.refunding) ||
             this.billGrid.context.rowSelector.selected().length === 0
         );
     }
@@ -355,9 +366,20 @@ export class BillsComponent implements OnInit, AfterViewInit {
             );
         })
         .then(paymentIds => this.handlePayReceipt(payments, paymentIds))
-        .then(_ => this.load(payments.map(p => p[0]))) // load xact IDs
+
+        // refresh affected xact IDs
+        .then(_ => this.load(payments.map(p => p[0])))
+
+        .then(_ => {
+            this.paymentAmount = null;
+            this.focusPayAmount();
+        })
+
         .catch(msg => console.debug('Payment Canceled:', msg))
-        .finally(() => this.applyingPayment = false);
+        .finally(() => {
+            this.applyingPayment = false;
+            this.refunding = false;
+        });
     }
 
     compilePayments(): Array<Array<number>> { // [ [xactId, payAmount], ... ]
@@ -469,12 +491,17 @@ export class BillsComponent implements OnInit, AfterViewInit {
             return Promise.resolve();
         }
 
+        const pending = this.pendingPayment();
+        const prevBalance = this.context.patronStats.fines.balance_owed;
+        const newBalance = (prevBalance * 100 - pending * 100) / 100;
+
         const context = {
             payments: [],
-            previous_balance: this.context.patronStats.fines.balance_owed,
+            previous_balance: prevBalance,
+            new_balance: newBalance,
             payment_type: this.paymentType,
             payment_total: this.paymentAmount,
-            payment_applied: this.pendingPayment(),
+            payment_applied: pending,
             amount_voided: this.sessionVoided,
             change_given: this.pendingChange(),
             payment_note: this.paymentNote
@@ -492,10 +519,14 @@ export class BillsComponent implements OnInit, AfterViewInit {
             });
         });
 
-        this.printer.print({
-            templateName: 'bills_payment',
-            contextData: context,
-            printContext: 'receipt'
+        // The print service protects against multiple print attempts
+        // firing at once, so it's OK to fire these in quick succession.
+        range(1, this.numReceipts).subscribe(_ => {
+            this.printer.print({
+                templateName: 'bills_payment',
+                contextData: context,
+                printContext: 'receipt'
+            });
         });
     }
 
@@ -517,6 +548,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     }
 
     voidBillings(rows: BillGridEntry[]) {
+        if (rows.length === 0) { return; }
 
         const xactIds = rows.map(r => r.xact.id());
         const billIds = [];
@@ -548,20 +580,58 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 [this.auth.token()].concat(billIds) // positional params
             );
         }))
-        // Clean up and reresh data
+        // Clean up and refresh data
         .subscribe(resp => {
-            if (!resp) { return; } // canceled
-
-            const evt = this.evt.parse(resp);
-            if (evt) {
-                console.error(evt);
-                alert(evt);
-                return;
-            }
+            if (!resp || this.reportError(resp)) { return; }
 
             this.sessionVoided = (this.sessionVoided * 100 + cents) / 100;
             this.voidAmount = 0;
             this.load(xactIds);
+        });
+    }
+
+    adjustToZero(rows: BillGridEntry[]) {
+        if (rows.length === 0) { return; }
+        const xactIds = rows.map(r => r.xact.id());
+
+        this.audio.play('warning.circ.adjust_to_zero_confirmation');
+
+        this.adjustToZeroDialog.open().subscribe(confirmed => {
+            if (!confirmed) { return; }
+
+            this.net.request(
+                'open-ils.circ',
+                'open-ils.circ.money.billable_xact.adjust_to_zero',
+                this.auth.token(), xactIds
+            ).subscribe(resp => {
+                if (!this.reportError(resp)) { this.load(xactIds); }
+            });
+        });
+    }
+
+    // Returns true if the value was an (error) event
+    reportError(value: any): boolean {
+        const evt = this.evt.parse(value);
+        if (evt) {
+            console.error(evt + '');
+            console.error(evt);
+            this.toast.danger(evt + '');
+            return true;
+        }
+        return false;
+    }
+
+    // This is functionally equivalent to selecting a neg. transaction
+    // then clicking Apply Payment -- this just adds a speed bump (ditto
+    // the XUL client).
+    refund(rows: BillGridEntry[]) {
+        if (rows.length === 0) { return; }
+        const xactIds = rows.map(r => r.xact.id());
+
+        this.refundDialog.open().subscribe(confirmed => {
+            if (!confirmed) { return; }
+            this.refunding = true; // clearen in applyPayment()
+            this.paymentAmount = null;
         });
     }
 }

@@ -135,6 +135,7 @@ UPDATE config.print_template SET template = $TEMPLATE$
   USE money = format('$%.2f');
   SET payments = template_data.payments;
   SET previous_balance = template_data.previous_balance;
+  SET new_balance = template_data.new_balance;
   SET payment_type = template_data.payment_type;
   SET payment_total = template_data.payment_total;
   SET payment_applied = template_data.payment_applied;
