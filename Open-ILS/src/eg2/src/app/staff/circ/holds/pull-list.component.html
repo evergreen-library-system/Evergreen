@@ -1,0 +1,11 @@
+
+<eg-staff-banner i18n-bannerText bannerText="Holds Pull List"></eg-staff-banner>
+
+<eg-holds-grid
+  persistKey="circ.holds.pull_list"
+  printTemplate="hold_pull_list"
+  [enablePreFetch]="true"
+  [hidePickupLibFilter]="true"
+  [pullListOrg]="targetOrg()">
+</eg-holds-grid>
+

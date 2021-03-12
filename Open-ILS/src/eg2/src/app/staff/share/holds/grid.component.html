@@ -33,6 +33,8 @@
 
   <ng-container *ngIf="mode == 'list' && initComplete()">
 
+    <h3 i18n>Holds Count: {{holdsCount}}</h3>
+
     <div class="row" *ngIf="!hidePickupLibFilter">
       <div class="col-lg-4">
         <div class="input-group">
@@ -46,13 +48,31 @@
       </div>
     </div>
 
+    <div class="row" *ngIf="pullListOrg">
+      <div class="col-lg-4 mb-2">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text" i18n>View Pull List For:</div>
+          </div>
+          <eg-org-select [initialOrgId]="pullListOrg"
+            (onChange)="pullListOrgChanged($event)">
+          </eg-org-select>
+        </div>
+      </div>
+    </div>
+
     <eg-grid #holdsGrid [dataSource]="gridDataSource" [sortable]="true"
       [useLocalSort]="enablePreFetch" [cellTextGenerator]="cellTextGenerator"
       [showFields]="showFields"
       [multiSortable]="true" [persistKey]="persistKey"
       (onRowActivate)="showDetail($event)">
 
-      <eg-grid-toolbar-checkbox (onChange)="preFetchHolds($event)" *ngIf="!hopeless"
+      <eg-grid-toolbar-button *ngIf="pullListOrg" 
+        (onClick)="printHolds()" i18n-label label="Print Full List">
+      </eg-grid-toolbar-button>
+
+      <eg-grid-toolbar-checkbox
+        (onChange)="preFetchHolds($event)" *ngIf="!hopeless && preFetchSetting"
         [initialValue]="enablePreFetch" i18n-label label="Pre-Fetch All Holds">
       </eg-grid-toolbar-checkbox>
 

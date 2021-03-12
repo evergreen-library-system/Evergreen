@@ -33,6 +33,9 @@ export class HoldsGridComponent implements OnInit {
     @Input() initialPickupLib: number | IdlObject;
     @Input() hidePickupLibFilter: boolean;
 
+    // Setting a value here puts us into "pull list" mode.
+    @Input() pullListOrg: number;
+
     // If true, only retrieve holds with a Hopeless Date
     // and enable related Actions
     @Input() hopeless: boolean;
@@ -47,7 +50,7 @@ export class HoldsGridComponent implements OnInit {
     // If set, all holds are fetched on grid load and sorting/paging all
     // happens in the client.  If false, sorting and paging occur on
     // the server.
-    enablePreFetch: boolean;
+    @Input() enablePreFetch: boolean;
 
     // How to sort when no sort parameters have been applied
     // via grid controls.  This uses the eg-grid sort format:
@@ -200,6 +203,11 @@ export class HoldsGridComponent implements OnInit {
         this.holdsGrid.reload();
     }
 
+    pullListOrgChanged(org: IdlObject) {
+        this.pullListOrg = org.id();
+        this.holdsGrid.reload();
+    }
+
     preFetchHolds(apply: boolean) {
         this.enablePreFetch = apply;
 
@@ -215,13 +223,32 @@ export class HoldsGridComponent implements OnInit {
 
     applyFilters(): any {
 
-        const filters: any = {
-            is_staff_request: true,
-            fulfillment_time: this._showFulfilledSince ?
-                this._showFulfilledSince.toISOString() : null,
-            cancel_time: this._showCanceledSince ?
-                this._showCanceledSince.toISOString() : null,
-        };
+        const filters: any = {};
+
+        if (this.pullListOrg) {
+            filters.cancel_time = null;
+            filters.capture_time = null;
+            filters.frozen = 'f';
+
+            // There are aliases for these (cp_status, cp_circ_lib),
+            // but the API complains when I use them.
+            filters['cp.status'] = [0, 7];
+            filters['cp.circ_lib'] = this.pullListOrg;
+
+            return filters;
+        }
+
+        if (this._showFulfilledSince) {
+            filters.fulfillment_time = this._showFulfilledSince.toISOString();
+        } else {
+            filters.fulfillment_time = null;
+        }
+
+        if (this._showCanceledSince) {
+            filters.cancel_time = this._showCanceledSince.toISOString();
+        } else {
+            filters.cancel_time = null;
+        }
 
         if (this.hopeless) {
           filters['hopeless_holds'] = {
@@ -263,7 +290,7 @@ export class HoldsGridComponent implements OnInit {
     fetchHolds(pager: Pager, sort: any[]): Observable<any> {
 
         // We need at least one filter.
-        if (!this._recordId && !this.pickupLib && !this._userId) {
+        if (!this._recordId && !this.pickupLib && !this._userId && !this.pullListOrg) {
             return of([]);
         }
 
@@ -276,6 +303,12 @@ export class HoldsGridComponent implements OnInit {
                 subObj[obj.name] = {dir: obj.dir, nulls: 'last'};
                 orderBy.push(subObj);
             });
+        } else if (this.pullListOrg) {
+            orderBy.push(
+                {copy_location_order_position: {dir: 'asc', nulls: 'last'}},
+                {acpl_name: {dir: 'asc', nulls: 'last'}},
+                {cn_label_sortkey: {dir: 'asc'}}
+            );
         }
 
         const limit = this.enablePreFetch ? null : pager.limit;
