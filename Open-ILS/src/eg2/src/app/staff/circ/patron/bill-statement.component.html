@@ -73,52 +73,50 @@
           </div>
         </div>
         <div class="card-body">
-					<div class="striped-rows-even">
-						<div class="row mb-1" *ngFor="let line of statement.lines">
-							<div class="col-lg-2" [ngSwitch]="line.type">
-								<span *ngSwitchCase="'billing'" i18n>Billing</span>
-								<span *ngSwitchCase="'payment'" i18n>Payment</span>
-								<span *ngSwitchCase="'account_adjustment'" i18n>Adjustment</span>
-								<span *ngSwitchCase="'void'" i18n>Void</span>
-							</div>
-							<div class="col-lg-4">
-								<div *ngIf="line.billing_type" class="font-weight-bold">
-									{{line.billing_type}}
-								</div>
-								<div *ngIf="line.note.length" 
-									[ngClass]="{'font-weight-bold' : !line.billing_type}">
-										{{line.note.join(', ')}}
-								</div>
-								<div>
-									<span>{{line.start_date  | date:'short'}}</span>
-									<span *ngIf="line.end_date"> - {{line.end_date  | date:'short'}}</span>
-								</div>
-							</div>
-							<div class="col-lg-2" [ngClass]="{'text-danger': line.type != 'billing'}">
-								<span *ngIf="line.type != 'billing'">-</span>{{line.amount | currency}}
-							</div>
-							<div class="col-lg-2">{{line.running_balance | currency}}</div>
-						</div>
-					</div>
+          <div class="striped-rows-even">
+            <div class="row mb-1" *ngFor="let line of statement.lines">
+              <div class="col-lg-2" [ngSwitch]="line.type">
+                <span *ngSwitchCase="'billing'" i18n>Billing</span>
+                <span *ngSwitchCase="'payment'" i18n>Payment</span>
+                <span *ngSwitchCase="'account_adjustment'" i18n>Adjustment</span>
+                <span *ngSwitchCase="'void'" i18n>Void</span>
+              </div>
+              <div class="col-lg-4">
+                <div *ngIf="line.billing_type" class="font-weight-bold">
+                  {{line.billing_type}}
+                </div>
+                <div [ngClass]="{'font-weight-bold' : !line.billing_type}"
+                  *ngIf="line.note.length">{{line.note.join(', ')}}</div>
+                <div>
+                  <span>{{line.start_date  | date:'short'}}</span>
+                  <span *ngIf="line.end_date"> - {{line.end_date  | date:'short'}}</span>
+                </div>
+              </div>
+              <div class="col-lg-2" [ngClass]="{'text-danger': line.type != 'billing'}">
+                <span *ngIf="line.type != 'billing'">-</span>{{line.amount | currency}}
+              </div>
+              <div class="col-lg-2">{{line.running_balance | currency}}</div>
+            </div>
+          </div>
 
-					<hr class="m-2 p-2"/>
-					
-					<div class="row">
-						<div class="col-lg-2 offset-lg-8" i18n>Total Charges</div>
-						<div class="col-lg-2">{{statement.summary.billing_total | currency}}</div>
-					</div>
-					<div class="row">
-						<div class="col-lg-2 offset-lg-8" i18n>Total Payments</div>
-						<div class="col-lg-2">{{statement.summary.payment_total | currency}}</div>
-					</div>
-					<div class="row" *ngIf="statement.summary.account_adjustment_total > 0">
-						<div class="col-lg-2 offset-lg-8" i18n>Total Adjustements</div>
-						<div class="col-lg-2">{{statement.summary.account_adjustment_total | currency}}</div>
-					</div>
-					<div class="row" *ngIf="statement.summary.void_total > 0">
-						<div class="col-lg-2 offset-lg-8" i18n>Total Voids</div>
-						<div class="col-lg-2">{{statement.summary.void_total | currency}}</div>
-					</div>
+          <hr class="m-2 p-2"/>
+          
+          <div class="row">
+            <div class="col-lg-2 offset-lg-8" i18n>Total Charges</div>
+            <div class="col-lg-2">{{statement.summary.billing_total | currency}}</div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2 offset-lg-8" i18n>Total Payments</div>
+            <div class="col-lg-2">{{statement.summary.payment_total | currency}}</div>
+          </div>
+          <div class="row" *ngIf="statement.summary.account_adjustment_total > 0">
+            <div class="col-lg-2 offset-lg-8" i18n>Total Adjustements</div>
+            <div class="col-lg-2">{{statement.summary.account_adjustment_total | currency}}</div>
+          </div>
+          <div class="row" *ngIf="statement.summary.void_total > 0">
+            <div class="col-lg-2 offset-lg-8" i18n>Total Voids</div>
+            <div class="col-lg-2">{{statement.summary.void_total | currency}}</div>
+          </div>
 
           <hr class="m-2 p-2"/>
 
