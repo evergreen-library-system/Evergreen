@@ -35,8 +35,7 @@ export class BillStatementComponent implements OnInit {
 
     @Input() patronId: number;
     @Input() xactId: number;
-    entry: BillGridEntry;
-    summary: IdlObject;
+    statement: any;
     statementTab = 'statement';
     gridDataSource: GridDataSource = new GridDataSource();
     cellTextGenerator: GridCellTextGenerator;
@@ -70,26 +69,11 @@ export class BillStatementComponent implements OnInit {
             return empty();
         };
 
-        this.summary = null;
-        return this.net.request(
-            'open-ils.actor',
-            'open-ils.actor.user.transactions.for_billing',
-            this.auth.token(), this.patronId, [this.xactId]
-        ).subscribe(resp => {
-            const evt = this.evt.parse(resp);
-
-            if (evt) {
-                console.error(evt);
-                alert(evt);
-                return;
-            }
-
-            if (!this.summary) {
-                this.summary = resp;
-            } else {
-                this.entry = this.context.formatXactForDisplay(resp);
-            }
-        });
+        this.net.request(
+            'open-ils.circ',
+            'open-ils.circ.money.statement.retrieve',
+            this.auth.token(), this.xactId
+        ).subscribe(s => this.statement = s);
     }
 }
 

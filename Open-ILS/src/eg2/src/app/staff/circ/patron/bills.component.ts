@@ -504,9 +504,34 @@ export class BillsComponent implements OnInit, AfterViewInit {
     }
 
     addBilling() {
+        this.billingDialog.newXact = true;
         this.billingDialog.open().subscribe(data => {
             if (data) {
                 this.load([data.xactId]);
+            }
+        });
+    }
+
+    addBillingForXact(rows: BillGridEntry[]) {
+        if (rows.length === 0) { return; }
+        const xactIds = rows.map(r => r.xact.id());
+
+        this.billingDialog.newXact = false;
+        const xactsChanged = [];
+
+        from(xactIds)
+        .pipe(concatMap(id => {
+            this.billingDialog.xactId = id;
+            return this.billingDialog.open();
+        }))
+        .pipe(tap(data => {
+            if (data) {
+                xactsChanged.push(data.xactId);
+            }
+        }))
+        .subscribe(null, null, () => {
+            if (xactsChanged.length > 0) {
+                this.load(xactsChanged);
             }
         });
     }

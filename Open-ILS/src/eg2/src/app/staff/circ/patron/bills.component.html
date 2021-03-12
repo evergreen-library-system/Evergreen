@@ -37,7 +37,7 @@
 <eg-credit-card-dialog [patron]="patron()" #creditCardDialog>
 </eg-credit-card-dialog>
 
-<eg-add-billing-dialog [patronId]="patronId" [newXact]="true" #billingDialog>
+<eg-add-billing-dialog [patronId]="patronId" #billingDialog>
 </eg-add-billing-dialog>
 
 <!-- SUMMARY  -->
@@ -195,6 +195,10 @@
 
   <eg-grid-toolbar-action
     i18n-label label="Adjust To Zero" (onClick)="adjustToZero($event)">
+  </eg-grid-toolbar-action>
+
+  <eg-grid-toolbar-action
+    i18n-label label="Add Billing" (onClick)="addBillingForXact($event)">
   </eg-grid-toolbar-action>
 
   <eg-grid-toolbar-action i18n-label label="Refund" (onClick)="refund($event)">

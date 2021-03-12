@@ -76,7 +76,7 @@
         </li>
 
         <li ngbNavItem="bills" [disabled]="!context.patron">
-          <a ngbNavLink i18n>
+          <a ngbNavLink (click)="billsTabClicked()" i18n>
             Bills 
             <span [ngClass]="{'text-danger': counts('fines', 'balance_owed') > 0}">
               ({{counts('fines', 'balance_owed') | currency}})

@@ -23,6 +23,7 @@ my $U = "OpenILS::Application::AppUtils";
 my $CC = "OpenILS::Application::Circ::CircCommon";
 
 use OpenSRF::EX qw(:try);
+use OpenSRF::Utils::JSON;
 use OpenILS::Perm;
 use Data::Dumper;
 use OpenILS::Event;
@@ -1361,8 +1362,41 @@ sub retrieve_statement {
         $line->{note} = $line->{note} ? [split(/\n/, $line->{note})] : [];
     }
 
+    my $xact = $e->retrieve_money_billable_transaction([
+        $xact_id, {
+            flesh => 5,
+            flesh_fields => {
+                mbt => [qw/circulation grocery/],
+                circ => [qw/target_copy/],
+                acp =>  [qw/call_number/],
+                acn =>  [qw/record/],
+                bre =>  [qw/wide_display_entry/]
+            },
+            select => {bre => ['id']} 
+        }
+    ]);
+
+    my $title;
+    my $billing_location;
+    if ($xact->circulation) {
+        $billing_location = $xact->circulation->circ_lib;
+        my $copy = $xact->circulation->target_copy;
+        if ($copy->call_number->id == -1) {
+            $title = $copy->dummy_title;
+        } else {
+            $title = OpenSRF::Utils::JSON->JSON2perl(
+                $copy->call_number->record->wide_display_entry->title);
+        }
+    } else {
+        $billing_location = $xact->grocery->billing_location;
+        $title = $xact->grocery->note;
+    }
+
     return {
         xact_id => $xact_id,
+        xact => $xact,
+        title => $title,
+        billing_location => $billing_location,
         summary => {
             balance_due => $totals{billing} - ($totals{payment} + $totals{account_adjustment} + $totals{void}),
             billing_total => $totals{billing},

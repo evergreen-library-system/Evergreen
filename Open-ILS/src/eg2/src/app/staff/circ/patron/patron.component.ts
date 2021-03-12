@@ -100,6 +100,13 @@ export class PatronComponent implements OnInit, AfterViewInit {
         this.routeToTab();
     }
 
+    // The bills tab has various sub-interfaces.  If the user is already
+    // on the Bills tab and clicks the tab, return them to the main bills
+    // screen.
+    billsTabClicked() {
+        this.router.navigate(['/staff/circ/patron', this.patronId, 'bills']);
+    }
+
     routeToTab() {
         let url = '/staff/circ/patron/';
 

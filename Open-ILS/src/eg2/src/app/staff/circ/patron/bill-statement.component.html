@@ -1,56 +1,56 @@
 
 <h3 i18n>Transaction: #{{xactId}}</h3>
 
-<div *ngIf="entry" class="striped-rows-odd">
+<div *ngIf="statement" class="striped-rows-odd">
   <div class="row p-1">
     <div class="col-lg-2" i18n>Billing Location</div>
-    <div class="col-lg-2">{{entry.billingLocation}}</div>
+    <div class="col-lg-2">{{context.orgSn(statement.billing_location)}}</div>
     <div class="col-lg-2" i18n>Total Billed</div>
-    <div class="col-lg-1">{{entry.xact.summary().total_owed() | currency}}</div>
+    <div class="col-lg-1">{{statement.summary.billing_total | currency}}</div>
     <div class="col-lg-2" i18n>Title</div>
-    <div class="col-lg-3">{{entry.title}}</div>
+    <div class="col-lg-3">{{statement.title}}</div>
   </div>
   <div class="row mt-1 p-1">
     <div class="col-lg-2" i18n>Type</div>
-    <div class="col-lg-2"[ngSwitch]="entry.xact.summary().xact_type()">
-      <span *ngSwitchCase="'circulation'" i18n>Circulation</span>
-      <span *ngSwitchCase="'grocery'" i18n>Grocery</span>
+    <div class="col-lg-2">
+      <span *ngIf="statement.xact.circulation()" i18n>Circulation</span>
+      <span *ngIf="!statement.xact.circulation()" i18n>Grocery</span>
     </div>
     <div class="col-lg-2" i18n>Total Paid / Credited</div>
-    <div class="col-lg-1">{{entry.xact.summary().total_paid() | currency}}</div>
+    <div class="col-lg-1">{{statement.payment_total | currency}}</div>
     <div class="col-lg-2" i18n>Checked Out</div>
     <div class="col-lg-3">
-      <ng-container *ngIf="entry.xact.circulation()">
-        {{entry.xact.xact_start() | date:'short'}}
+      <ng-container *ngIf="statement.xact.circulation()">
+        {{statement.xact.xact_start() | date:'short'}}
       </ng-container>
     </div>
   </div>
   <div class="row mt-1 p-1">
     <div class="col-lg-2" i18n>Started</div>
-    <div class="col-lg-2">{{entry.xact.xact_start() | date:'short'}}</div>
+    <div class="col-lg-2">{{statement.xact.xact_start() | date:'short'}}</div>
     <div class="col-lg-2" i18n>Balance Due</div>
-    <div class="col-lg-1">{{entry.xact.summary().balance_owed() | currency}}</div>
+    <div class="col-lg-1">{{statement.balance_due | currency}}</div>
     <div class="col-lg-2" i18n>Due Date</div>
     <div class="col-lg-3">
-      <ng-container *ngIf="entry.xact.circulation()">
-        {{entry.xact.circulation().due_date() | date:'short'}}
+      <ng-container *ngIf="statement.xact.circulation()">
+        {{statement.xact.circulation().due_date() | date:'short'}}
       </ng-container>
     </div>
   </div>
   <div class="row mt-1 p-1">
     <div class="col-lg-2" i18n>Finished</div>
-    <div class="col-lg-2">{{entry.xact.xact_finish() | date:'short'}}</div>
+    <div class="col-lg-2">{{statement.xact.xact_finish() | date:'short'}}</div>
     <div class="col-lg-2" i18n>Renewal?</div>
     <div class="col-lg-1">
-      <ng-container *ngIf="entry.xact.circulation()">
-        <eg-bool [value]="entry.xact.circulation().parent_circ() != null">
+      <ng-container *ngIf="statement.xact.circulation()">
+        <eg-bool [value]="statement.xact.circulation().parent_circ() != null">
         </eg-bool>
       </ng-container>
     </div>
     <div class="col-lg-2" i18n>Checked In</div>
     <div class="col-lg-3">
-      <ng-container *ngIf="entry.xact.circulation()">
-        {{entry.xact.circulation().checkin_time() | date:'short'}}
+      <ng-container *ngIf="statement.xact.circulation()">
+        {{statement.xact.circulation().checkin_time() | date:'short'}}
       </ng-container>
     </div>
   </div>
@@ -58,11 +58,77 @@
 
 <hr class="p-2 m-2"/>
 
-<ul ngbNav #statementNav="ngbNav" class="nav-tabs"
-  [activeId]="statementTab" (navChange)="beforeTabChange($event)">
+<ul ngbNav #statementNav="ngbNav" class="nav-tabs" [activeId]="statementTab">
   <li ngbNavItem="statement">
     <a ngbNavLink i18n>Statement</a>
     <ng-template ngbNavContent>
+      <h4 i18n>Billing Statement</h4>
+      <div class="card tight-card">
+        <div class="card-header rounded">
+          <div class="row">
+            <div class="col-lg-2" i18n>Type</div>
+            <div class="col-lg-4" i18n>Description</div>
+            <div class="col-lg-2" i18n>Amount</div>
+            <div class="col-lg-2" i18n>Balance</div>
+          </div>
+        </div>
+        <div class="card-body">
+					<div class="striped-rows-even">
+						<div class="row mb-1" *ngFor="let line of statement.lines">
+							<div class="col-lg-2" [ngSwitch]="line.type">
+								<span *ngSwitchCase="'billing'" i18n>Billing</span>
+								<span *ngSwitchCase="'payment'" i18n>Payment</span>
+								<span *ngSwitchCase="'account_adjustment'" i18n>Adjustment</span>
+								<span *ngSwitchCase="'void'" i18n>Void</span>
+							</div>
+							<div class="col-lg-4">
+								<div *ngIf="line.billing_type" class="font-weight-bold">
+									{{line.billing_type}}
+								</div>
+								<div *ngIf="line.note.length" 
+									[ngClass]="{'font-weight-bold' : !line.billing_type}">
+										{{line.note.join(', ')}}
+								</div>
+								<div>
+									<span>{{line.start_date  | date:'short'}}</span>
+									<span *ngIf="line.end_date"> - {{line.end_date  | date:'short'}}</span>
+								</div>
+							</div>
+							<div class="col-lg-2" [ngClass]="{'text-danger': line.type != 'billing'}">
+								<span *ngIf="line.type != 'billing'">-</span>{{line.amount | currency}}
+							</div>
+							<div class="col-lg-2">{{line.running_balance | currency}}</div>
+						</div>
+					</div>
+
+					<hr class="m-2 p-2"/>
+					
+					<div class="row">
+						<div class="col-lg-2 offset-lg-8" i18n>Total Charges</div>
+						<div class="col-lg-2">{{statement.summary.billing_total | currency}}</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-2 offset-lg-8" i18n>Total Payments</div>
+						<div class="col-lg-2">{{statement.summary.payment_total | currency}}</div>
+					</div>
+					<div class="row" *ngIf="statement.summary.account_adjustment_total > 0">
+						<div class="col-lg-2 offset-lg-8" i18n>Total Adjustements</div>
+						<div class="col-lg-2">{{statement.summary.account_adjustment_total | currency}}</div>
+					</div>
+					<div class="row" *ngIf="statement.summary.void_total > 0">
+						<div class="col-lg-2 offset-lg-8" i18n>Total Voids</div>
+						<div class="col-lg-2">{{statement.summary.void_total | currency}}</div>
+					</div>
+
+          <hr class="m-2 p-2"/>
+
+          <div class="row font-weight-bold">
+            <div class="col-lg-2 offset-lg-8" i18n>Balance Due</div>
+            <div class="col-lg-2">{{statement.summary.balance_due | currency}}</div>
+          </div>
+
+        </div>
+      </div>
     </ng-template>
   </li>
   <li ngbNavItem="details">
@@ -72,11 +138,7 @@
   </li>
 </ul>
 
-<div [ngbNavOutlet]="statementNav"></div>
+<ng-container *ngIf="statement">
+  <div [ngbNavOutlet]="statementNav"></div>
+</ng-container>
 
-<!--
-Billing LocationBR1Total Billed$4.56Title
-TypegroceryTotal Paid/Credited$2.50Checked Out
-Start3/11/2021 1:34 PMBalance Due$2.06Due Date
-FinishRenewal?Checked In
--->
