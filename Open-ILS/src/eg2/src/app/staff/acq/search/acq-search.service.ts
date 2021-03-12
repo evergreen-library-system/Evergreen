@@ -59,7 +59,7 @@ const searchOptions = {
         flesh_pl: true,
     },
     purchase_order: {
-        no_flesh_cancel_reason: true,
+        flesh_cancel_reason: true,
         flesh_provider: true,
         flesh_owner: true,
         flesh_creator: true,
