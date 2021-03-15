@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1256', :eg_version);
+
 CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
