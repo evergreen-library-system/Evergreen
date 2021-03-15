@@ -7,17 +7,17 @@ the functionality.
 
 Overview
 ++++++++
-When searching the OPAC or staff catalog in a single search class (title,
+When searching the public or staff catalog in a single search class (title,
 author, subject, series, identifier, or keyword) with a single search term
 users can be presented with alternate search terms.  Depending on how the
 instance has been configured, suggestions may be provided for only
-misspelled words (as defined by existance in the bibliographic corpus),
+misspelled words (as defined by existence in the bibliographic corpus),
 terms that are spelled properly but occur very few times, or on every
 single-term search.
 
 Upgrading
 +++++++++++++++++++
-This feature requires the addition of new perl module dependencies.  Please
+This feature requires the addition of new Perl module dependencies.  Please
 run the app server and database server dependency Makefiles before applying
 the database and code updates.
 
@@ -29,7 +29,7 @@ as the Evergreen database is no longer accessible to users that might
 cause changes to bibliographic records.  For very large instances, this
 dictionary generation can take several hours and needs to be run on a
 server with significant RAM and CPU resources. Please look at the upgrade
-script before beginning an upgrade and plan this dictinoary creation as
+script before beginning an upgrade and plan this dictionary creation as
 part of the overall upgrade procedure.
 
 Given a server, such as a database server with 64G of RAM, you should
