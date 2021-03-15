@@ -1,6 +1,6 @@
-Easier Customization via colors.tt2
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Twelve new colors have been added to the colors.tt2 file as well as 
+Easier TPAC Customization via colors.tt2
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Twelve new colors for TPAC have been added to the colors.tt2 file as well as 
 having coresponding changes to the style.css.tt2 file. These use 
 descriptive rather than abstract names. These changes help avoid 
 situations were unreadable values are placed on top of each other 
@@ -28,3 +28,6 @@ mouse is hovering over it and replaces 'primary'
 * 'opac_button_hover_text' sets the text color of the My Opac button when the 
 mouse is hovering over it and replaces 'text invert'
 
+Note that is patch is primarily meant for users who wish to continue
+using TPAC rather than the Bootstrap skin for a while; new Evergreen
+users are advised to use the now-default Bootstrap skin.
