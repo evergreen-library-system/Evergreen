@@ -22,6 +22,7 @@ import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
 import {ItemsComponent} from './items.component';
 import {BillsComponent} from './bills.component';
 import {BillStatementComponent} from './bill-statement.component';
+import {TestPatronPasswordComponent} from './test-password.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {BillStatementComponent} from './bill-statement.component';
     BcSearchComponent,
     ItemsComponent,
     BillsComponent,
-    BillStatementComponent
+    BillStatementComponent,
+    TestPatronPasswordComponent
   ],
   imports: [
     StaffCommonModule,

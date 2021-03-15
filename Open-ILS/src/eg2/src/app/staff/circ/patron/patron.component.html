@@ -156,6 +156,10 @@
               <div *ngSwitchCase="'alerts'">
                 <eg-patron-alerts></eg-patron-alerts>
               </div>
+              <div *ngSwitchCase="'credentials'">
+                <eg-patron-test-password [patronId]="patronId">
+                </eg-patron-test-password>
+              </div>
             </ng-container>
           </ng-template>
         </li>

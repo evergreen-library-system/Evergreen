@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {PatronComponent} from './patron.component';
 import {BcSearchComponent} from './bcsearch.component';
 import {PatronResolver} from './resolver.service';
+import {TestPatronPasswordComponent} from './test-password.component';
 
 const routes: Routes = [{
     path: '',
@@ -12,6 +13,9 @@ const routes: Routes = [{
     path: 'event-log',
     loadChildren: () =>
       import('./event-log/event-log.module').then(m => m.EventLogModule)
+  }, {
+    path: 'credentials',
+    component: TestPatronPasswordComponent
   }, {
     path: 'search',
     component: PatronComponent,

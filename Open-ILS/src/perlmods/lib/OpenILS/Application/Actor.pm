@@ -3517,12 +3517,13 @@ __PACKAGE__->register_method (
     api_name    => 'open-ils.actor.verify_user_password',
     signature   => q/
         Given a barcode or username and the MD5 encoded password,
+        The password can also be passed without the MD5 hashing.
         returns 1 if the password is correct.  Returns 0 otherwise.
     /
 );
 
 sub verify_user_password {
-    my($self, $conn, $auth, $barcode, $username, $password) = @_;
+    my($self, $conn, $auth, $barcode, $username, $password, $pass_nohash) = @_;
     my $e = new_editor(authtoken => $auth);
     return $e->die_event unless $e->checkauth;
     my $user;
@@ -3542,7 +3543,12 @@ sub verify_user_password {
     return 0 if (!$user || $U->is_true($user->deleted));
     return 0 if ($user_by_username && $user_by_barcode && $user_by_username->id != $user_by_barcode->id);
     return $e->event unless $e->allowed('VIEW_USER', $user->home_ou);
-    return $U->verify_migrated_user_password($e, $user->id, $password, 1);
+
+    if ($pass_nohash) {
+        return $U->verify_migrated_user_password($e, $user->id, $pass_nohash);
+    } else {
+        return $U->verify_migrated_user_password($e, $user->id, $password, 1);
+    }
 }
 
 __PACKAGE__->register_method (
