@@ -65,7 +65,7 @@ CREATE UNLOGGED TABLE search.symspell_dictionary_partial_$class (
     prefix_key TEXT,
     ${class}_count INT,
     ${class}_suggestions TEXT[]
-) FROM STDIN;
+);
 
 COPY search.symspell_dictionary_partial_$class FROM STDIN;
 SQL

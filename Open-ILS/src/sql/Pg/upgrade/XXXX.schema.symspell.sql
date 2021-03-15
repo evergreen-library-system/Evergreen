@@ -809,30 +809,35 @@ select $z$select $y$select $y$||x.id||$y$, '$z$||x.x||$z$', count(*) from search
 \qecho '// Then, at the command line:'
 \qecho ''
 \qecho '$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl title > title.sql'
+\qecho '$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl author > author.sql'
+\qecho '$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl subject > subject.sql'
+\qecho '$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl series > series.sql'
+\qecho '$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl identifier > identifier.sql'
+\qecho '$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl keyword > keyword.sql'
 \qecho ''
 \qecho '// And, back in psql'
 \qecho ''
 \qecho 'ALTER TABLE search.symspell_dictionary SET UNLOGGED;'
 \qecho 'TRUNCATE search.symspell_dictionary;'
 \qecho ''
-\qecho '\i identifier.sql'
-\qecho '\i author.sql'
-\qecho '\i title.sql'
-\qecho '\i subject.sql'
-\qecho '\i series.sql'
-\qecho '\i keyword.sql'
+\qecho '\\i identifier.sql'
+\qecho '\\i author.sql'
+\qecho '\\i title.sql'
+\qecho '\\i subject.sql'
+\qecho '\\i series.sql'
+\qecho '\\i keyword.sql'
 \qecho ''
 \qecho 'CLUSTER search.symspell_dictionary USING symspell_dictionary_pkey;'
 \qecho 'REINDEX TABLE search.symspell_dictionary;'
 \qecho 'ALTER TABLE search.symspell_dictionary SET LOGGED;'
 \qecho 'VACUUM ANALYZE search.symspell_dictionary;'
 \qecho ''
-\qecho 'DROP TABLE search.search.symspell_dictionary_partial_title;'
-\qecho 'DROP TABLE search.search.symspell_dictionary_partial_author;'
-\qecho 'DROP TABLE search.search.symspell_dictionary_partial_subject;'
-\qecho 'DROP TABLE search.search.symspell_dictionary_partial_series;'
-\qecho 'DROP TABLE search.search.symspell_dictionary_partial_identifier;'
-\qecho 'DROP TABLE search.search.symspell_dictionary_partial_keyword;'
+\qecho 'DROP TABLE search.symspell_dictionary_partial_title;'
+\qecho 'DROP TABLE search.symspell_dictionary_partial_author;'
+\qecho 'DROP TABLE search.symspell_dictionary_partial_subject;'
+\qecho 'DROP TABLE search.symspell_dictionary_partial_series;'
+\qecho 'DROP TABLE search.symspell_dictionary_partial_identifier;'
+\qecho 'DROP TABLE search.symspell_dictionary_partial_keyword;'
 
 /* To run by hand:
 
@@ -892,12 +897,12 @@ REINDEX TABLE search.symspell_dictionary;
 ALTER TABLE search.symspell_dictionary SET LOGGED;
 VACUUM ANALYZE search.symspell_dictionary;
 
-DROP TABLE search.search.symspell_dictionary_partial_title;
-DROP TABLE search.search.symspell_dictionary_partial_author;
-DROP TABLE search.search.symspell_dictionary_partial_subject;
-DROP TABLE search.search.symspell_dictionary_partial_series;
-DROP TABLE search.search.symspell_dictionary_partial_identifier;
-DROP TABLE search.search.symspell_dictionary_partial_keyword;
+DROP TABLE search.symspell_dictionary_partial_title;
+DROP TABLE search.symspell_dictionary_partial_author;
+DROP TABLE search.symspell_dictionary_partial_subject;
+DROP TABLE search.symspell_dictionary_partial_series;
+DROP TABLE search.symspell_dictionary_partial_identifier;
+DROP TABLE search.symspell_dictionary_partial_keyword;
 
 */
 
