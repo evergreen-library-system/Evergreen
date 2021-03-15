@@ -1,3 +1,11 @@
+<eg-prompt-dialog #noteDialog
+  i18n-dialogBody dialogBody="Edit note for #{{noteTargets}}">
+</eg-prompt-dialog>
+
+<eg-confirm-dialog #voidBillsDialog i18n-dialogBody 
+  dialogBody="Are you sure you would like to void {{voidAmount | currency}} 
+    for these line-item billings? {{voidTargets}}">
+</eg-confirm-dialog>
 
 <h3 i18n>Transaction: #{{xactId}}</h3>
 
@@ -132,6 +140,25 @@
   <li ngbNavItem="details">
     <a ngbNavLink i18n>Details</a>
     <ng-template ngbNavContent>
+      <div class="mt-3">
+        <eg-grid idlClass="mb" #billingGrid toolbarLabel="Bills" 
+          i18n-toolbarLabel [dataSource]="billingDataSource" [sortable]="true">
+          <eg-grid-toolbar-action label="Edit Note" i18n-label
+            (onClick)="openNoteDialog($event)">
+          </eg-grid-toolbar-action>
+          <eg-grid-toolbar-action label="Void Billings" i18n-label
+            (onClick)="openVoidDialog($event)">
+          </eg-grid-toolbar-action>
+        </eg-grid>
+      </div>
+      <div class="mt-3">
+        <eg-grid idlClass="mp" [dataSource]="paymentDataSource" 
+          i18n-toolbarLabel toolbarLabel="Payments" [sortable]="true">
+          <eg-grid-toolbar-action label="Edit Note" i18n-label
+            (onClick)="openNoteDialog($event)">
+          </eg-grid-toolbar-action>
+        </eg-grid>
+      </div>
     </ng-template>
   </li>
 </ul>

@@ -37,10 +37,16 @@ export class BillStatementComponent implements OnInit {
     @Input() xactId: number;
     statement: any;
     statementTab = 'statement';
-    gridDataSource: GridDataSource = new GridDataSource();
+    billingDataSource: GridDataSource = new GridDataSource();
+    paymentDataSource: GridDataSource = new GridDataSource();
     cellTextGenerator: GridCellTextGenerator;
+    noteTargets: string;
+    voidTargets: string;
+    voidAmount: number;
 
-    //@ViewChild('grid') private billGrid: GridComponent;
+    @ViewChild('billingGrid') private billingGrid: GridComponent;
+    @ViewChild('noteDialog') private noteDialog: PromptDialogComponent;
+    @ViewChild('voidBillsDialog') private voidBillsDialog: ConfirmDialogComponent;
 
     constructor(
         private router: Router,
@@ -65,15 +71,88 @@ export class BillStatementComponent implements OnInit {
         this.cellTextGenerator = {
         };
 
-        this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
-            return empty();
+        this.billingDataSource.getRows = (pager: Pager, sort: any[]) => {
+            const orderBy: any = {};
+            if (sort.length) {
+                orderBy.mb = sort[0].name + ' ' + sort[0].dir;
+            }
+            return this.pcrud.search(
+                'mb', {xact: this.xactId}, {order_by: orderBy});
         };
+
+        this.paymentDataSource.getRows = (pager: Pager, sort: any[]) => {
+            const orderBy: any = {};
+            if (sort.length) {
+                orderBy.mp = sort[0].name + ' ' + sort[0].dir;
+            }
+            return this.pcrud.search(
+                'mp', {xact: this.xactId}, {order_by: orderBy});
+        };
+
 
         this.net.request(
             'open-ils.circ',
             'open-ils.circ.money.statement.retrieve',
             this.auth.token(), this.xactId
         ).subscribe(s => this.statement = s);
+    }
+
+    openNoteDialog(rows: IdlObject[]) {
+        if (rows.length === 0) { return; }
+
+        const notes = rows.map(r => r.note() || '').join(',');
+        const ids = rows.map(r => r.id());
+        this.noteTargets = ids.join(',');
+        this.noteDialog.promptValue = notes;
+
+        this.noteDialog.open().subscribe(value => {
+            if (value === notes) { return; }
+
+            let method = 'open-ils.circ.money.billing.note.edit';
+            if (rows[0].classname === 'mp') {
+                method = 'open-ils.circ.money.payment.note.edit';
+            }
+
+            this.net.requestWithParamList(
+                'open-ils.circ', method, [this.auth.token()].concat(ids))
+            .toPromise().then(resp => {
+                const evt = this.evt.parse(resp);
+                if (evt) {
+                    console.error(evt);
+                } else {
+                    rows.forEach(r => r.note(value));
+                }
+            });
+        });
+    }
+
+    openVoidDialog(rows: IdlObject[]) {
+        rows = rows.filter(r => r.voided() === 'f');
+
+        let amount = 0;
+        rows.forEach(billing => amount += billing.amount() * 100);
+
+        const ids = rows.map(r => r.id());
+        this.voidAmount = amount / 100;
+        this.voidTargets = ids.join(',');
+
+        this.voidBillsDialog.open().subscribe(confirmed => {
+            if (!confirmed) { return; }
+
+            this.net.requestWithParamList(
+                'open-ils.circ',
+                'open-ils.circ.money.billing.void',
+                [this.auth.token()].concat(ids)).toPromise()
+            .then(resp => {
+                const evt = this.evt.parse(resp);
+                if (evt) {
+                    console.error(evt);
+                } else {
+                    this.context.refreshPatron();
+                    this.billingGrid.reload();
+                }
+            });
+        });
     }
 }
 
