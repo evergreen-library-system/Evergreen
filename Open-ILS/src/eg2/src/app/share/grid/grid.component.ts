@@ -120,6 +120,9 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @Input() cellTextGenerator: GridCellTextGenerator;
 
+    // If set, appears along the top left side of the grid.
+    @Input() toolbarLabel: string;
+
     context: GridContext;
 
     // These events are emitted from our grid-body component.
@@ -165,6 +168,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.rowFlairIsEnabled = this.rowFlairIsEnabled  === true;
         this.context.showDeclaredFieldsOnly = this.showDeclaredFieldsOnly;
         this.context.rowFlairCallback = this.rowFlairCallback;
+        this.context.toolbarLabel = this.toolbarLabel;
         this.context.disablePaging = this.disablePaging === true;
         this.context.cellTextGenerator = this.cellTextGenerator;
         this.context.ignoredFields = [];

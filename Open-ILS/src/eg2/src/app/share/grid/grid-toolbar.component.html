@@ -4,6 +4,9 @@
 <div class="eg-grid-toolbar mb-2">
 
   <div class="btn-toolbar">
+    <span class="font-weight-bold mr-2" *ngIf="gridContext.toolbarLabel">
+      {{gridContext.toolbarLabel}}
+    </span>
 
     <!-- buttons -->
     <div class="btn-grp" *ngIf="gridContext.toolbarButtons.length || gridContext.isFilterable">
