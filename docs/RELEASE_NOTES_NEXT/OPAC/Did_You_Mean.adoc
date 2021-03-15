@@ -15,6 +15,23 @@ misspelled words (as defined by existence in the bibliographic corpus),
 terms that are spelled properly but occur very few times, or on every
 single-term search.
 
+Settings
+++++++++
+
+The following new library settings control the behavior of the suggestions:
+
+* Maximum search result count at which spelling suggestions may be offered
+* Minimum required uses of a spelling suggestions that may be offered
+* Maximum number of spelling suggestions that may be offered
+* Pg_trgm score weighting in OPAC spelling suggestions
+* Soundex score weighting in OPAC spelling suggestions
+* QWERTY Keyboard similarity score weighting in OPAC spelling suggestions 
+
+There are also two new internal flags:
+
+* symspell.prefix_length
+* symspell.max_edit_distance
+
 Upgrading
 +++++++++++++++++++
 This feature requires the addition of new Perl module dependencies.  Please
