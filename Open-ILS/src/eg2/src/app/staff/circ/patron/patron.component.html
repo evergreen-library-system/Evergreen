@@ -160,6 +160,10 @@
                 <eg-patron-test-password [patronId]="patronId">
                 </eg-patron-test-password>
               </div>
+              <div *ngSwitchCase="'surveys'">
+                <eg-patron-survey-responses [patronId]="patronId">
+                </eg-patron-survey-responses>
+              </div>
             </ng-container>
           </ng-template>
         </li>

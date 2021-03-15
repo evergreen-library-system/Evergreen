@@ -23,6 +23,7 @@ import {ItemsComponent} from './items.component';
 import {BillsComponent} from './bills.component';
 import {BillStatementComponent} from './bill-statement.component';
 import {TestPatronPasswordComponent} from './test-password.component';
+import {PatronSurveyResponsesComponent} from './surveys.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {TestPatronPasswordComponent} from './test-password.component';
     ItemsComponent,
     BillsComponent,
     BillStatementComponent,
-    TestPatronPasswordComponent
+    TestPatronPasswordComponent,
+    PatronSurveyResponsesComponent
   ],
   imports: [
     StaffCommonModule,
