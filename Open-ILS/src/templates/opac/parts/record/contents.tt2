@@ -1,10 +1,8 @@
-[% USE  Dumper %][%-
-# You can supply a trunc_length parameter to override the default contents_truncate_length value
+[%-
 contents =  [
     {
         display_field => 'general_note',
         label => l('General Note: '),
-        trunc_length => 100,
         xpath => '//*[@tag="500"]'
     }, {
         label => l('With Note: '),
@@ -179,16 +177,10 @@ BLOCK render_contents;
             all_content.push(subfield.textContent);
         END;
         total_contents = all_content.join(" ").replace('\s+$', '');
-        %] [% IF total_contents.size;
-            trunc_length = cont.trunc_length || contents_truncate_length || 100;
-            
-            "<div class='content_field'>"; accordion(total_contents, trunc_length); "</div>";
-        ELSE;
-            "<div class='content_field'>"; accordion(total_contents); "</div>";
-        END;
+        %] [% "<div class='content_field'>"; total_contents | html ; "</div>";
         FOREACH link880 IN graphics;
             '<div class="graphic880"' _ link880.dir _ '>';
-            accordion(link880.value);
+            link880.value | html;
             '</div>';
         END;
     END;
@@ -196,28 +188,21 @@ END;
 
 BLOCK render_all_contents;
     FOREACH cont IN contents;
-        note_arr = [];
         content = '';
         df = cont.display_field;
-        trunc_length = cont.trunc_length || contents_truncate_length || 100;
-        IF df AND attrs.hl.$df.size; -%]
-            <tr>
-                <td class='rdetail_content_type'>[% cont.label %]</td>
-                <td class='rdetail_content_value' property='keywords'>
-            [%- FOREACH note IN attrs.hl.$df;
-                "<div class='content_field'>"; accordion(note, trunc_length); "</div>";
-            END -%]
-            </td></tr>
-        [%- ELSE;
+        IF df AND attrs.hl.$df.size;
+            content = '<!-- highlighted -->' _ attrs.hl.$df.join('<br/>');
+        ELSE;
             content = PROCESS render_contents(xpath=cont.xpath);
-            IF content.match('\S'); -%]                
-                <tr>
-                    <td class='rdetail_content_type'>[% cont.label %]</td>
-                    <td class='rdetail_content_value' property='keywords'>[% accordion(content, trunc_length) %]</td>
-                </tr>
-            [%- END;
         END;
-    END; %]
+        IF content.match('\S');
+-%]
+<tr>
+    <td class='rdetail_content_type'>[% cont.label %]</td>
+    <td class='rdetail_content_value' property='keywords'>[% content %]</td>
+</tr>
+        [%- END; %]
+    [%- END; %]
 [%- END %]
 
 [%-  content_html = PROCESS render_all_contents;

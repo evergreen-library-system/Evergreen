@@ -21,7 +21,4 @@ to js source files, via js blob.
     eg_opac_i18n.EG_INVALID_DATE = "[% l('That is not a valid date in the future.') %]";
     // For multiple holds placement confirmation dialog. {0} is replaced by number of copies requested.
     eg_opac_i18n.EG_MULTIHOLD_MESSAGE = "[% l('Do you really want to place {0} holds for this title?') %]";
-    // For Read More functionality
-    eg_opac_i18n.EG_READ_MORE = "[% l('Read More') %]";
-    eg_opac_i18n.EG_READ_LESS = "[% l('Read Less') %]";
 </script>

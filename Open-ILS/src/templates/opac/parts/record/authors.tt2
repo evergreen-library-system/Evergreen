@@ -135,26 +135,17 @@ BLOCK build_author_links;
             END;
             iprop = iprop _ '"';
         END;
-        desc_str = '<span property="description">(' _ author_type _ ').</span>';
+
         link_term = link_term.replace('^\s+', '');
         match_term = link_term _ ' ' _ birthdate _ ' ' _ deathdate;
         matching_author_hl = PROCESS find_hl_value needle=match_term f=attrs.hl_field;
-        authtml = '<span class="rdetail-author-div"' _ iprop _ ' resource="' _ contrib_ref _ '"><a href="' _ url _ '"><span resource="' _ contrib_ref _ '">';
+
+        authtml = ' <span class="rdetail-author-div"' _ iprop _ ' resource="' _ contrib_ref _ '"><a href="' _ url _ '"><span resource="' _ contrib_ref _ '">';
         IF iprop; authtml = authtml _ '<span property="name">'; END;
         IF matching_author_hl;
-            IF type == 'cast';
-                link_str = matching_author_hl _ '</span></a> ' _ desc_str _ '</span>';
-                authtml = authtml _ accordion(link_str, null, 'this.previousElementSibling');
-            ELSE;
-                authtml = authtml _ matching_author_hl;
-            END;
+            authtml = authtml _ matching_author_hl;
         ELSE;
-            IF type == 'cast';
-                link_str = link_term _ '</span></a> ' _ desc_str _ '</span>';
-                authtml = authtml _ accordion(link_str, null, 'this.previousElementSibling');
-            ELSE;
-                authtml = authtml _ link_term;
-            END;
+            authtml = authtml _ link_term;
         END;
         IF iprop; authtml = authtml _ '</span>'; END;
         IF birthdate AND !matching_author_hl;
@@ -163,7 +154,7 @@ BLOCK build_author_links;
         IF deathdate AND !matching_author_hl;
             authtml = authtml _ '<span property="deathDate">' _ deathdate _ '</span>';
         END;
-        IF type != 'cast'; authtml = authtml _ '</span></a>'; END; # End search link
+        authtml = authtml _ '</span></a>'; # End search link
 
         # Display supplemental terms (mostly about the author's work)
         IF supp_term;
@@ -176,12 +167,12 @@ BLOCK build_author_links;
             IF link880.dir;
                 diratt = ' dir="' _ link880.dir _ '"';
             END;
-            authlist_graphical.push('<span class="graphic880"' _ diratt _ '>' _ link880.value _ '</span>');
+            authtml = authtml _ ' <span class="graphic880"' _ diratt _ '>';
+            link880.value | html;
+            authtml = authtml _ '</span>';
         END;
-        IF type != 'cast';
-            authtml = authtml _ desc_str;
-            authtml = authtml _ '</span>'; # End author span
-        END;
+        authtml = authtml _ ' (<span property="description">' _ author_type _ '</span>). ';
+        authtml = authtml _ '</span>'; # End author span
         authlist.push(authtml);
     END;
 END;
@@ -191,20 +182,14 @@ END;
 [%- FOREACH author IN authors;
     NEXT UNLESS author.xpath; 
     authlist = [];
-    authlist_graphical = [];
-    authstr = '';
-    graphical_string = '';
     PROCESS build_author_links(
         xpath=author.xpath, label=author.label, type=author.type
     );
-    IF authlist_graphical.size;
-    %] <div class="content_field"> [%
-        accordion(authlist_graphical.join());
-    %] </div> [% END;
     IF authlist.size;
-    %] <div class="content_field"> [%
-        accordion(authlist.join());
-    %] </div> [% END;
+        FOREACH authtml IN authlist;
+            authtml;
+        END;
+    END;
 END %]
 </div>
 

@@ -276,13 +276,4 @@ ctx.max_cart_size = 500;
 ##############################################################################
 ctx.show_reservations_tab = 'false';
 
-##############################################################################
-# Truncate fields in catalog
-##############################################################################
-truncate_contents = 1;
-contents_truncate_length = 50;
-
-# Edit parts/record/contents.tt2 to designate character length on a field-by-
-# field basis for notes.
-
 %]

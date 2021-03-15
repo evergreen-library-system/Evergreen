@@ -4,8 +4,6 @@ use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERR
 use File::Spec;
 use Time::HiRes qw/time sleep/;
 use List::MoreUtils qw(uniq);
-use HTML::TreeBuilder;
-use HTML::Element;
 use OpenSRF::Utils::Cache;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
@@ -130,78 +128,6 @@ sub init_ro_object_cache {
         my $sn = shift or return undef;
         my $list = $locale_subs->{aou_list}->();
         return (grep {$_->shortname eq $sn} @$list)[0];
-    };
-
-    # Turns one string into two for long text strings
-    $locale_subs->{split_for_accordion} = sub {
-        my $html = shift;
-        my $trunc_length = shift;
-
-        return unless defined $html && defined $trunc_length;
-        
-        my $html_string = "";
-        my $trunc_str = "<span class='truncEllipse'>...</span><span class='truncated' style='display:none'>";
-        my $current_length = 0;
-        my $truncated;
-        my @html_strings;
-
-        my $html_tree = HTML::TreeBuilder->new;
-        $html_tree->parse($html);
-        $html_tree->eof();
-
-        # Navigate #html_tree to determine length of contained strings
-        my @nodes = $html_tree->guts();
-        foreach my $node(@nodes) {
-            my $nref = ref $node;
-            if ($nref eq "HTML::Element") {
-                $current_length += length $node->as_text();
-                push(@html_strings, $node->as_HTML());
-            } else {
-                # Node is whitespace - handling this like regular simple text
-                # doesn't like to play nice, so handling separately
-                if ($node eq ' ') { 
-                    $current_length++;
-                    if ($current_length >= $trunc_length and not $truncated) {
-                        push(@html_strings, " $trunc_str");
-                        $truncated = 1;
-                    } else {
-                        push(@html_strings, $node);
-                    }
-                # Node is simple text
-                } else {
-                    my $new_length += length $node;
-                    if ($new_length >= $trunc_length and not $truncated) {
-                        my $nshort;
-                        my $nrest;
-                        my $calc_length = abs($trunc_length - $current_length);
-                        if ((substr $node, $calc_length, 1) =~ /\s/) {
-                            $nshort = substr $node, 0, $calc_length;
-                            $nrest = substr $node, $calc_length;
-                        } else {
-                            my $nloc = rindex $node, ' ', $calc_length;
-                            $nshort = substr $node, 0, $nloc;
-                            $nrest = substr $node, $nloc;
-                        }
-                        push(@html_strings, "$nshort $trunc_str $nrest");
-                        $truncated = 1;
-                    } else {
-                        push(@html_strings, $node);
-                    }
-                    $current_length += length $node;
-                }
-            }
-        }
-        if ($truncated) {
-            push(@html_strings, "</span>");
-        }
- 
-        if (@html_strings > 1) {
-            $html_string = join '', @html_strings;
-        } else {
-            $html_string = $html_strings[0];
-        }
-
-        return ($html_string, $truncated);
     };
 
     $locale_subs->{aouct_tree} = sub {

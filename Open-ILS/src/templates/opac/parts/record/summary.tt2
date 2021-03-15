@@ -3,7 +3,6 @@
     ctx.page_title = attrs.title | html
     ctx.metalinks.push('<meta property="og:image" content="' _ ctx.media_prefix _ '/opac/extras/ac/jacket/large/r/' _ ctx.bre_id _ '" />');
 %]
-
 <!-- ****************** rdetail_summary.xml ***************************** -->
 <abbr class="unapi-id" title='tag:[% ctx.hostname %],[% date.format(date.now, '%Y') %]:biblio-record_entry/[% ctx.bre_id %]'></abbr>
 
@@ -12,7 +11,7 @@
 [%-# This holds the record summary information %]
 <div id="rdetail_summary_header">
     <div id='rdetail_title_div'>
-        <h1 id='rdetail_title' property="name">[% IF attrs.hl.title; accordion(attrs.hl.title); ELSE; accordion(attrs.title_extended); END %]</h1>
+        <h1 id='rdetail_title' property="name">[% IF attrs.hl.title; attrs.hl.title; ELSE; attrs.title_extended | html; END %]</h1>
         [%-
             FOR link880 IN attrs.graphic_titles;
                 FOR alt IN link880.graphic;
@@ -20,7 +19,7 @@
                     IF alt.dir;
                         ' dir="' _ alt.dir _ '"';
                     END;
-                    '>'; accordion(alt.value); '</h2>';
+                    '>'; alt.value | html; '</h2>';
                 END;
             END;
         -%]
@@ -360,25 +359,22 @@ END;
     [%- IF attrs.hl.physical_description.size %]
     <li id='rdetail_phys_desc'>
         <strong class='rdetail_label'>[% l("Physical Description:") %]</strong>
-        <span class='rdetail_value' highlighted='true'>
-        [% FOREACH desc IN attrs.hl.physical_description %]
-            <span>[% accordion(desc) %]</span><br/>
-        [% END %]</span>
+        <span class='rdetail_value' highlighted='true'>[% attrs.hl.physical_description.join('<br/>') %]</span>
     </li>
     [%- ELSIF attrs.phys_desc %]
     <li id='rdetail_phys_desc'>
         <strong class='rdetail_label'>[% l("Physical Description:") %]</strong>
-        <span class='rdetail_value'>[% accordion(attrs.phys_desc) %]</span>
+        <span class='rdetail_value'>[% attrs.phys_desc | html %]</span>
     </li>
     [%- END %]
     [%- IF attrs.hl.edition %]
     <li id='rdetail_edition'>
         <strong class='rdetail_label'>[% l("Edition:") %]</strong>
-        <span class='rdetail_value' highlighted='true'>[% accordion(attrs.hl.edition) %]</span>
+        <span class='rdetail_value' highlighted='true'>[% attrs.hl.edition %]</span>
     [%- ELSIF attrs.edition %]
     <li id='rdetail_edition'>
         <strong class='rdetail_label'>[% l("Edition:") %]</strong>
-        <span class='rdetail_value'>[% accordion(attrs.edition) %]</span>
+        <span class='rdetail_value'>[% attrs.edition | html %]</span>
         [%-
         FOR entry IN attrs.graphic_editions;
             FOR alt IN entry.graphic;
@@ -388,7 +384,7 @@ END;
                 END;
         -%]
         <div class="graphic880 rdetail_value"[% diratt %]>
-            [% accordion(alt.value); %]
+            [% alt.value | html %]
         </div>
         [%-
             END;
@@ -399,20 +395,19 @@ END;
     [%- IF attrs.hl.publisher %]
     <li id='rdetail_publisher'>
         <strong class='rdetail_label'>[% l("Publisher:") %]</strong>
-        <span class='rdetail_value' highlighted='true'>[% accordion(attrs.hl.publisher) %]</span>
+        <span class='rdetail_value' highlighted='true'>[% attrs.hl.publisher %]</span>
     </li>
     [%- ELSIF attrs.publisher %]
     <li id='rdetail_publisher'>
         <strong class='rdetail_label'>[% l("Publisher:") %]</strong>
         <span class='rdetail_value' property="publisher" typeof="Organization">
-        [% pubstr = '' %]
         [%- IF attrs.pubplace; %]
-            <span property="location">[% attrs.pubplace %]</span>
+            <span property="location">[% attrs.pubplace | html; %]</span>
         [%- END; %]
-            <span property="name">[% attrs.publisher %]</span>
+            <span property="name">[% attrs.publisher | html; %]</span>
         </span>
         [%- IF attrs.pubdate; %]
-            <span property="datePublished">[% attrs.pubdate %]</span>
+            <span property="datePublished">[% attrs.pubdate | html; %]</span>
         [%- END; %]
         [%-
         IF attrs.graphic_pubinfos.size > 0;
@@ -424,7 +419,7 @@ END;
                     END;
         -%]
         <div class="graphic880"[% diratt %]>
-            [% accordion(alt.value) %]
+            [% alt.value | html %]
         </div>
         [%-
                 END;
@@ -438,11 +433,11 @@ END;
             <strong class='rdetail_label'>[% l("Producer:") %]</strong>
             <span class='rdetail_value'>
             [%- IF attrs.prodplace; %]
-                <span>[% accordion(attrs.prodplace) %]</span>
+                <span>[% attrs.prodplace | html; %]</span>
             [%- END; %]
-                <span>[% accordion(attrs.producer) %]</span>
+                <span>[% attrs.producer | html; %]</span>
             [%- IF attrs.proddate; %]
-                <span>[% accordion(attrs.proddate) %]</span>
+                <span>[% attrs.proddate | html; %]</span>
             [%- END; %]
             </span>
         </li>
@@ -452,11 +447,11 @@ END;
             <strong class='rdetail_label'>[% l("Distributor:") %]</strong>
             <span class='rdetail_value'>
             [%- IF attrs.distplace; %]
-                <span>[% accordion(attrs.distplace) %]</span>
+                <span>[% attrs.distplace | html; %]</span>
             [%- END; %]
-                <span>[% accordion(attrs.distributor) %]</span>
+                <span>[% attrs.distributor | html; %]</span>
             [%- IF attrs.distdate; %]
-                <span>[% accordion(attrs.distdate) %]</span>
+                <span>[% attrs.distdate | html; %]</span>
             [%- END; %]
             </span>
         </li>
@@ -466,11 +461,11 @@ END;
             <strong class='rdetail_label'>[% l("Manufacturer:") %]</strong>
             <span class='rdetail_value' property="manufacturer" typeof="Organization">
             [%- IF attrs.manplace; %]
-                <span property="location">[% accordion(attrs.manplace) %]</span>
+                <span property="location">[% attrs.manplace | html; %]</span>
             [%- END; %]
-                <span property="name">[% accordion(attrs.manufacturer) %]</span>
+                <span property="name">[% attrs.manufacturer | html; %]</span>
             [%- IF attrs.mandate; %]
-                <span>[% accordion(attrs.mandate) %]</span>
+                <span>[% attrs.mandate | html; %]</span>
             [%- END; %]
             </span>
         </li>
@@ -478,7 +473,7 @@ END;
     [%- IF attrs.copyright %]
     <li id='rdetail_copyright'>
         <strong class='rdetail_label'>[% l("Copyright:") %]</strong>
-        <span class='rdetail_value'>[% accordion(attrs.copyright) %]
+        <span class='rdetail_value'>[% attrs.copyright | html_entity; %]
         [%-# Provide the 4-digit year, cleansed of '@' and other junk %]
         [%- IF attrs.copyrightYear -%]
             <meta property='copyrightYear' content='[% attrs.copyrightYear | html; %]'>

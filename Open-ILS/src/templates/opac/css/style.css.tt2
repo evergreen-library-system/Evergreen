@@ -49,10 +49,6 @@ a {
     width: 12em;
 }
 
-.truncated {
-    display: none;
-}
-
 .searchbar {
     font-weight: bold;
     padding-top: 10px;

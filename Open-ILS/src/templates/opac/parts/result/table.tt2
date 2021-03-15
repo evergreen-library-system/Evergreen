@@ -150,7 +150,7 @@ FOR entry IN attrs.graphic_titles;
         END;
 -%]
 <div class="graphic880"[% diratt %]>
-    [% accordion(alt.value) %]
+    [% alt.value | html %]
 </div>
 [%-
     END;
@@ -173,7 +173,7 @@ FOR entry IN attrs.graphic_authors;
         END;
 -%]
 <div class="graphic880"[% diratt %]>
-    [% accordion(alt.value) %]
+    [% alt.value | html %]
 </div>
 [%-
     END;
@@ -230,8 +230,7 @@ END;
                                                                 <td valign="top">
                                                                     <strong>[% l('Publisher:') %]</strong>
                                                                 </td>
-                                                                <td>[% pub_string = attrs.pubplace _ attrs.publisher _ attrs.pubdate;
-                                                                        accordion(pub_string, 'publisher'); %]</td>
+                                                                <td>[% attrs.pubplace | html; %] [% attrs.publisher | html; %] [% attrs.pubdate | html; %]
 [%-
 FOR entry IN attrs.graphic_pubinfos;
     FOR alt IN entry.graphic;
@@ -241,7 +240,7 @@ FOR entry IN attrs.graphic_pubinfos;
         END;
 -%]
 <div class="graphic880"[% diratt %]>
-    [% accordion(alt.value) %]
+    [% alt.value | html %]
 </div>
 [%-
     END;
@@ -254,24 +253,21 @@ END;
                                                                 <td valign="top">
                                                                     <strong>[% l('Producer:') %]</strong>
                                                                 </td>
-                                                                <td>[% prod_string = attrs.prodplace _ attrs.producer _ attrs.proddate;
-                                                                 accordion(prod_string, 'producer'); %]</td>
+                                                                <td>[% attrs.prodplace | html; %] [% attrs.producer | html; %] [% attrs.proddate | html; %]</td>
                                                             </tr>
                                                         [% ELSIF attrs.distributor %]
                                                             <tr name="results_pub_tr">
                                                                 <td valign="top">
                                                                     <strong>[% l('Distributor:') %]</strong>
                                                                 </td>
-                                                                <td>[% dist_string = attrs.distplace _ attrs.distributor _ attrs.distdate; 
-                                                                  accordion(dist_string, 'distributor'); %]</td>
+                                                                <td>[% attrs.distplace | html; %] [% attrs.distributor | html; %] [% attrs.distdate | html; %]</td>
                                                             </tr>
                                                         [% ELSIF attrs.manufacturer %]
                                                             <tr name="results_pub_tr">
                                                                 <td valign="top">
                                                                     <strong>[% l('Manufacturer:') %]</strong>
                                                                 </td>
-                                                                <td>[% man_string = attrs.manplace _ attrs.manufacturer _ attrs.mandate;
-                                                                  accordion(man_string, 'manufacturer'); %]</td>
+                                                                <td>[% attrs.manplace | html; %] [% attrs.manufacturer | html; %] [% attrs.mandate | html; %]</td>
                                                             </tr>
                                                         [% END %]
                                                         [% IF attrs.isbns.size > 0 %]
@@ -318,7 +314,7 @@ END;
                                                                 <td valign="top">
                                                                     <strong>[% l('Edition:') %]</strong>
                                                                 </td>
-                                                                <td>[% accordion(attrs.edition, 'edition'); %]
+                                                                <td>[% attrs.edition | html %]
 [%-
 FOR entry IN attrs.graphic_editions;
     FOR alt IN entry.graphic;
@@ -328,7 +324,7 @@ FOR entry IN attrs.graphic_editions;
         END;
 -%]
 <div class="graphic880"[% diratt %]>
-    [% accordion(alt.value) %]
+    [% alt.value | html %]
 </div>
 [%-
     END;
@@ -343,7 +339,7 @@ END;
                                                                     <strong>[% l('Phys. Desc.:') %]</strong>
                                                                 </td>
                                                                 <td>
-                                                                    [% accordion(args.phys_desc, 'phys_desc'); %]
+                                                                    [% args.phys_desc | html %]
                                                                 </td>
                                                             </tr>
                                                         [% END %]

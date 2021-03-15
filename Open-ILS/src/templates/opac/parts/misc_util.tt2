@@ -803,7 +803,6 @@
 
 -%]
 
-
 [%- BLOCK carousels;
     config = {
         animated => 0,
@@ -877,20 +876,3 @@
 </div>
 [% END -%]
 [% END -%]
-[% MACRO accordion(str, trunc_length, element) BLOCK;
-    IF truncate_contents != 1;
-        str;
-    ELSE;
-        UNLESS trunc_length;
-            trunc_length = contents_truncate_length || 100;
-        END;
-        IF str.length > trunc_length;
-            accordion_res = ctx.split_for_accordion(str, trunc_length);
-            str = accordion_res.0;
-            IF accordion_res.1;
-                str = str _ " <a onclick='toggleAccordion(this, " _ element _ ")'>" _ l('Read More') _ "</a>";
-            END;
-        END;
-        str;
-    END;
-END; %]
