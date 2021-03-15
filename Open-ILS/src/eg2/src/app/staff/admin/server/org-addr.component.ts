@@ -177,8 +177,8 @@ export class OrgAddressComponent {
             + ' ' + addr.country()
         ).subscribe(
             (res) => {
-                console.log('geo',res);
-                if (typeof res.ilsevent == 'undefined') {
+                console.log('geo', res);
+                if (typeof res.ilsevent === 'undefined') {
                     addr.latitude( res.latitude );
                     addr.longitude( res.longitude );
                 } else {
@@ -186,7 +186,7 @@ export class OrgAddressComponent {
                 }
             },
             (err) => {
-                console.error('geo',err);
+                console.error('geo', err);
             }
         );
     }
