@@ -18,26 +18,58 @@
   </div>
 </div>
 
+<hr class="m-2"/>
 
-<div class="mt-4">
+<div class="mt-3">
 
-  <eg-grid idlClass="au" #groupGrid
-    [dataSource]="dataSource" [sortable]="true" [useLocalSort]="true"
-    showFields="active,barred,dob,family_name,first_given_name,
+  <ng-template #barcodeTemplate let-r="row">
+    <ng-container *ngIf="r.card()">
+      <a routerLink="/staff/circ/patron/{{r.id()}}/checkout">
+        {{r.card().barcode()}}
+      </a>
+    </ng-container>
+  </ng-template>
+
+  <eg-grid idlClass="au" #groupGrid 
+    [cellTextGenerator]="cellTextGenerator"
+    [dataSource]="dataSource" 
+    [sortable]="true" 
+    [useLocalSort]="true"
+    (onRowActivate)="onRowActivate($event)" 
+    showFields="active,barred,dob,family_name,first_given_name,barcode,
       master_account,second_given_name,balance_owed,total_out,overdue">
 
     <eg-grid-toolbar-button label="Move Another Patron To This Group" 
       i18n-label (onClick)="movePatronToGroup()">
     </eg-grid-toolbar-button>
 
+    <eg-grid-toolbar-action 
+      label="Register a New Group Member By Cloning Selected Patron"
+      i18n-label (onClick)="cloneSelected($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action label="Remove Selected From Group"
+      i18n-label (onClick)="removeSelected($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action label="Move Selected To Another Patron's Group"
+      i18n-label (onClick)="movePatronToGroup($event)">
+    </eg-grid-toolbar-action>
+
     <eg-grid-column name="balance_owed" path="_stats.fines.balance_owed" 
       datatype="currency" label="Balance Owed" i18n-label>
     </eg-grid-column>
+
     <eg-grid-column name="total_out" path="_stats.checkouts.total_out" 
       label="Items Out" i18n-label>
     </eg-grid-column>
+
     <eg-grid-column name="overdue" path="_stats.checkouts.overdue" 
       label="Items Overdue" i18n-label>
+    </eg-grid-column>
+
+    <eg-grid-column name="barcode" [cellTemplate]="barcodeTemplate"
+      label="Barcode" i18n-label>
     </eg-grid-column>
 
   </eg-grid>

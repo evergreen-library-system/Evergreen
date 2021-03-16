@@ -104,9 +104,7 @@
         <li ngbNavItem="edit" [disabled]="!context.patron">
           <a ngbNavLink i18n>Edit</a>
           <ng-template ngbNavContent>
-            <eg-patron-edit 
-              contentPaneClass="patron-content-pane div-scroll-vert">
-            </eg-patron-edit> 
+            <eg-patron-edit [patronId]="patronId"></eg-patron-edit> 
           </ng-template>
         </li>
 

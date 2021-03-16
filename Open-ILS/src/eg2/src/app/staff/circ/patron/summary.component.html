@@ -84,48 +84,54 @@
 
   <hr class="m-1"/>
 
-  <ng-container *ngIf="context.patronStats">
+  <ng-container *ngIf="stats()">
 
     <div class="row mb-1"
-      [ngClass]="{'alert alert-danger p-0': context.patronStats.fines.balance_owed > 0}">
+      [ngClass]="{'alert alert-danger p-0': stats().fines.balance_owed > 0}">
       <div class="col-lg-5" i18n>Fines Owed</div>
-      <div class="col-lg-7">{{context.patronStats.fines.balance_owed | currency}}</div>
+      <div class="col-lg-7">{{stats().fines.balance_owed | currency}}</div>
     </div>
 
-    <!-- TODO GROUP FINES -->
+    <ng-container 
+      *ngIf="stats().fines.group_balance_owed > stats().fines.balance_owed">
+      <div class="row mb-1 alert alert-danger p-0">
+        <div class="col-lg-5" i18n>Group Fines</div>
+        <div class="col-lg-7">{{stats().fines.group_balance_owed | currency}}</div>
+      </div>
+    </ng-container>
 
     <div class="row mb-1">
       <div class="col-lg-5" i18n>Items Out</div>
-      <div class="col-lg-7">{{context.patronStats.checkouts.total_out}}</div>
+      <div class="col-lg-7">{{stats().checkouts.total_out}}</div>
     </div>
     <div class="row mb-1"
-      [ngClass]="{'alert alert-danger p-0': context.patronStats.checkouts.overdue > 0}">
+      [ngClass]="{'alert alert-danger p-0': stats().checkouts.overdue > 0}">
       <div class="col-lg-5" i18n>Overdue</div>
-      <div class="col-lg-7">{{context.patronStats.checkouts.overdue}}</div>
+      <div class="col-lg-7">{{stats().checkouts.overdue}}</div>
     </div>
     <div class="row mb-1"
-      [ngClass]="{'alert alert-danger p-0': context.patronStats.checkouts.long_overdue > 0}">
+      [ngClass]="{'alert alert-danger p-0': stats().checkouts.long_overdue > 0}">
       <div class="col-lg-5" i18n>Long Overdue</div>
-      <div class="col-lg-7">{{context.patronStats.checkouts.long_overdue}}</div>
+      <div class="col-lg-7">{{stats().checkouts.long_overdue}}</div>
     </div>
     <div class="row mb-1"
-      [ngClass]="{'alert alert-danger p-0': context.patronStats.checkouts.claims_returned > 0}">
+      [ngClass]="{'alert alert-danger p-0': stats().checkouts.claims_returned > 0}">
       <div class="col-lg-5" i18n>Claimed Returned</div>
-      <div class="col-lg-7">{{context.patronStats.checkouts.claims_returned}}</div>
+      <div class="col-lg-7">{{stats().checkouts.claims_returned}}</div>
     </div>
     <div class="row mb-1"
-      [ngClass]="{'alert alert-danger p-0': context.patronStats.checkouts.lost > 0}">
+      [ngClass]="{'alert alert-danger p-0': stats().checkouts.lost > 0}">
       <div class="col-lg-5" i18n>Lost</div>
-      <div class="col-lg-7">{{context.patronStats.checkouts.lost}}</div>
+      <div class="col-lg-7">{{stats().checkouts.lost}}</div>
     </div>
     <div class="row mb-1">
       <div class="col-lg-5" i18n>Non-Cataloged</div>
-      <div class="col-lg-7">{{context.patronStats.checkouts.noncat}}</div>
+      <div class="col-lg-7">{{stats().checkouts.noncat}}</div>
     </div>
     <div class="row">
       <div class="col-lg-5" i18n>Holds</div>
       <div class="col-lg-7">
-        {{context.patronStats.holds.ready}} / {{context.patronStats.holds.total}}
+        {{stats().holds.ready}} / {{stats().holds.total}}
       </div>
     </div>
 

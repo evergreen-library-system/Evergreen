@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
@@ -11,6 +11,10 @@ import {PatronContextService} from './patron.service';
   selector: 'eg-patron-edit-toolbar'
 })
 export class EditToolbarComponent implements OnInit {
+
+    @Output() saveClicked: EventEmitter<void> = new EventEmitter<void>();
+    @Output() saveCloneClicked: EventEmitter<void> = new EventEmitter<void>();
+    @Output() printClicked: EventEmitter<void> = new EventEmitter<void>();
 
     constructor(
         private org: OrgService,

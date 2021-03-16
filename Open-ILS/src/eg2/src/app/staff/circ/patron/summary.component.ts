@@ -30,6 +30,10 @@ export class SummaryComponent implements OnInit {
         return this.context.patron;
     }
 
+    stats(): any {
+      return this.context.patronStats;
+    }
+
     hasPrefName(): boolean {
         if (this.patron()) {
             return (

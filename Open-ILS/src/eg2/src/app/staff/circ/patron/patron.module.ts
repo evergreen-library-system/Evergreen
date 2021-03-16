@@ -26,6 +26,7 @@ import {TestPatronPasswordComponent} from './test-password.component';
 import {PatronSurveyResponsesComponent} from './surveys.component';
 import {PatronStatCatsComponent} from './statcats.component';
 import {PatronGroupComponent} from './group.component';
+import {RegisterPatronComponent} from './register.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import {PatronGroupComponent} from './group.component';
     TestPatronPasswordComponent,
     PatronSurveyResponsesComponent,
     PatronGroupComponent,
+    RegisterPatronComponent,
     PatronStatCatsComponent
   ],
   imports: [

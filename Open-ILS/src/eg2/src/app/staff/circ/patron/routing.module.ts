@@ -4,6 +4,7 @@ import {PatronComponent} from './patron.component';
 import {BcSearchComponent} from './bcsearch.component';
 import {PatronResolver} from './resolver.service';
 import {TestPatronPasswordComponent} from './test-password.component';
+import {RegisterPatronComponent} from './register.component';
 
 const routes: Routes = [{
     path: '',
@@ -13,6 +14,15 @@ const routes: Routes = [{
     path: 'event-log',
     loadChildren: () =>
       import('./event-log/event-log.module').then(m => m.EventLogModule)
+  }, {
+    path: 'register',
+    component: RegisterPatronComponent
+  }, {
+    path: 'register/clone/:cloneId',
+    component: RegisterPatronComponent
+  }, {
+    path: 'register/stage/:stageUsername',
+    component: RegisterPatronComponent
   }, {
     path: 'credentials',
     component: TestPatronPasswordComponent

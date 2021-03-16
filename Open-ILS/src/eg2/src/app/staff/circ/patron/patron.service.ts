@@ -44,7 +44,10 @@ const PATRON_FLESH_FIELDS = [
 ];
 
 interface PatronStats {
-    fines: {balance_owed: number};
+    fines: {
+        balance_owed: number,
+        group_balance_owed: number
+    };
     checkouts: {
         overdue: number,
         claims_returned: number,
@@ -177,18 +180,33 @@ export class PatronContextService {
         .then(stats => this.patronStats = stats)
 
         .then(_ => {
-
             if (!this.patron) { return; }
 
             return this.net.request(
                 'open-ils.circ',
                 'open-ils.circ.open_non_cataloged_circulation.user.authoritative',
-                this.auth.token(), id).toPromise();
+                this.auth.token(), id
+            ).toPromise();
 
         }).then(noncats => {
+            if (!this.patron) { return; }
+
             if (noncats && this.patronStats) {
                 this.patronStats.checkouts.noncat = noncats.length;
             }
+
+            return this.net.request(
+                'open-ils.actor',
+                'open-ils.actor.usergroup.members.balance_owed.authoritative',
+                this.auth.token(), this.patron.usrgroup()
+            ).toPromise();
+
+        }).then(fines => {
+            if (!this.patron) { return; }
+
+            let total = 0;
+            fines.forEach(f => total += Number(f.balance_owed) * 100);
+            this.patronStats.fines.group_balance_owed = total / 100;
         });
     }
 
