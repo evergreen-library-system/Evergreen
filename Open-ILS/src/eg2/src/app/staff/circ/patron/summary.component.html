@@ -87,7 +87,7 @@
   <ng-container *ngIf="context.patronStats">
 
     <div class="row mb-1"
-      [ngClass]="{'alert alert-danger p-0': context.patronStats.fines.total_owed > 0}">
+      [ngClass]="{'alert alert-danger p-0': context.patronStats.fines.balance_owed > 0}">
       <div class="col-lg-5" i18n>Fines Owed</div>
       <div class="col-lg-7">{{context.patronStats.fines.balance_owed | currency}}</div>
     </div>

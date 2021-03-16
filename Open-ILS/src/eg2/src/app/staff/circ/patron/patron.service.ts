@@ -135,12 +135,7 @@ export class PatronContextService {
         .then(_ => this.compileAlerts());
     }
 
-    getPatronStats(id: number): Promise<any> {
-
-        // When quickly navigating patron search results it's possible
-        // for this.patron to be cleared right before this function
-        // is called.  Exit early instead of making an unneeded call.
-        if (!this.patron) { return Promise.resolve(); }
+    getPatronVitalStats(id: number): Promise<PatronStats> {
 
         return this.net.request(
             'open-ils.actor',
@@ -166,9 +161,22 @@ export class PatronContextService {
                 stats.checkouts.total_out += stats.checkouts.lost;
             }
 
-            this.patronStats = stats;
+            return stats;
+        });
+    }
 
-        }).then(_ => {
+    getPatronStats(id: number): Promise<any> {
+
+        // When quickly navigating patron search results it's possible
+        // for this.patron to be cleared right before this function
+        // is called.  Exit early instead of making an unneeded call.
+        if (!this.patron) { return Promise.resolve(); }
+
+        return this.getPatronVitalStats(id)
+
+        .then(stats => this.patronStats = stats)
+
+        .then(_ => {
 
             if (!this.patron) { return; }
 

@@ -1,0 +1,46 @@
+<eg-prompt-dialog #moveToGroupDialog
+  i18n-dialogBody dialogBody="Enter the patron barcode">
+</eg-prompt-dialog>
+<eg-alert-dialog #userNotFoundDialog
+  i18n-dialogBody dialogBody="User not found">
+</eg-alert-dialog>
+
+<h3 i18n>Group Member Details</h3>
+
+<div class="row">
+  <div class="col-lg-12">
+    <span i18n>Total Owed:</span>
+    <span class="ml-1">{{totalOwed | currency}}</span>
+    <span class="ml-2">Total Out:</span>
+    <span class="ml-1">{{totalOut}}</span>
+    <span class="ml-2">Total Overdue:</span>
+    <span class="ml-1">{{totalOverdue}}</span>
+  </div>
+</div>
+
+
+<div class="mt-4">
+
+  <eg-grid idlClass="au" #groupGrid
+    [dataSource]="dataSource" [sortable]="true" [useLocalSort]="true"
+    showFields="active,barred,dob,family_name,first_given_name,
+      master_account,second_given_name,balance_owed,total_out,overdue">
+
+    <eg-grid-toolbar-button label="Move Another Patron To This Group" 
+      i18n-label (onClick)="movePatronToGroup()">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-column name="balance_owed" path="_stats.fines.balance_owed" 
+      datatype="currency" label="Balance Owed" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column name="total_out" path="_stats.checkouts.total_out" 
+      label="Items Out" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column name="overdue" path="_stats.checkouts.overdue" 
+      label="Items Overdue" i18n-label>
+    </eg-grid-column>
+
+  </eg-grid>
+
+</div>
+

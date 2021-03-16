@@ -167,6 +167,10 @@
                 <eg-patron-statcats [patronId]="patronId">
                 </eg-patron-statcats>
               </div>
+              <div *ngSwitchCase="'group'">
+                <eg-patron-group [patronId]="patronId">
+                </eg-patron-group>
+              </div>
             </ng-container>
           </ng-template>
         </li>
