@@ -174,12 +174,17 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.ignoredFields = [];
 
         if (this.showFields) {
+            // Stripping spaces allows users to add newlines to
+            // long lists of field names without consequence.
+            this.showFields = this.showFields.replace(/\s+/g, '');
             this.context.defaultVisibleFields = this.showFields.split(',');
         }
         if (this.hideFields) {
+            this.hideFields = this.hideFields.replace(/\s+/g, '');
             this.context.defaultHiddenFields = this.hideFields.split(',');
         }
         if (this.ignoreFields) {
+            this.ignoreFields = this.ignoreFields.replace(/\s+/g, '');
             this.context.ignoredFields = this.ignoreFields.split(',');
         }
 
