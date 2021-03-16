@@ -1,7 +1,6 @@
 [%-
 contents =  [
     {
-        display_field => 'general_note',
         label => l('General Note: '),
         xpath => '//*[@tag="500"]'
     }, {
