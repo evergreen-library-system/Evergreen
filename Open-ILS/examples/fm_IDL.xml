@@ -9400,7 +9400,7 @@ SELECT  usr,
         </permacrud>
 	</class>
 
-	<class id="acqftr" controller="open-ils.cstore" oils_obj:fieldmapper="acq::fund_transfer" oils_persist:tablename="acq.fund_transfer" reporter:label="Fund Transfer">
+	<class id="acqftr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_transfer" oils_persist:tablename="acq.fund_transfer" reporter:label="Fund Transfer">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_transfer_id_seq">
 			<field reporter:label="Fund Transfer ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Source Fund" name="src_fund" reporter:datatype="link"/>
@@ -9418,6 +9418,23 @@ SELECT  usr,
 			<link field="transfer_user" reltype="has_a" key="id" map="" class="au"/>
 			<link field="funding_source_credit" reltype="has_a" key="id" map="" class="acqfscred"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_ACQ_FUND">
+                    <context link="src_fund" field="org"/>
+                </create>
+                <retrieve permission="ADMIN_ACQ_FUND VIEW_FUND MANAGE_FUND">
+                    <context link="src_fund" field="org"/>
+                    <context link="dest_fund" field="org"/>
+                </retrieve>
+                <update permission="ADMIN_ACQ_FUND">
+                    <context link="src_fund" field="org"/>
+                </update>
+                <delete permission="ADMIN_ACQ_FUND">
+                    <context link="src_fund" field="org"/>
+                </delete>
+            </actions>
+        </permacrud>
 	</class>
 
 	<class id="acqfc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fiscal_calendar" oils_persist:tablename="acq.fiscal_calendar" reporter:label="Fiscal Calendar">
