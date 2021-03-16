@@ -102,8 +102,13 @@
 }
 
 .eg-grid-cell-skinny {
-  width: 2.2em;
+  width: 2em;
   text-align: center;
+  flex: none;
+}
+
+.eg-grid-cell-skinny-2 {
+  width: 2.6em;
   flex: none;
 }
 
@@ -116,7 +121,7 @@
 
 /* depends on width of .eg-grid-cell-skinny */
 .eg-grid-column-width-header {
-  width: 4.4em;
+  width: 4.6em;
   text-align: center;
   flex: none;
   display: inline-flex;
