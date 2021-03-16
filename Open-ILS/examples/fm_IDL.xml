@@ -9463,10 +9463,10 @@ SELECT  usr,
 	<class id="acqfs" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::funding_source" oils_persist:tablename="acq.funding_source" reporter:label="Funding Source">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.funding_source_id_seq">
 			<field reporter:label="Funding Source ID" name="id" reporter:datatype="id" reporter:selector='code'/>
-			<field reporter:label="Funding Source Name" name="name" reporter:datatype="text" oils_persist:i18n="true" />
-			<field reporter:label="Owner" name="owner" reporter:datatype="org_unit" />
-			<field reporter:label="Currency" name="currency_type" oils_persist:primitive="string" reporter:datatype="link" />
-			<field reporter:label="Code" name="code" reporter:datatype="text" />
+			<field reporter:label="Funding Source Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true" />
+			<field reporter:label="Owner" name="owner" reporter:datatype="org_unit" oils_obj:required="true" />
+			<field reporter:label="Currency" name="currency_type" oils_persist:primitive="string" reporter:datatype="link" oils_obj:required="true" />
+			<field reporter:label="Code" name="code" reporter:datatype="text" oils_obj:required="true" />
 			<field reporter:label="Summary" name="summary" oils_persist:virtual="true"/>
 			<field reporter:label="Allocations" name="allocations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Credits" name="credits" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -9492,8 +9492,8 @@ SELECT  usr,
 	<class id="acqfscred" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::funding_source_credit" oils_persist:tablename="acq.funding_source_credit" reporter:label="Credit to Funding Source">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.funding_source_credit_id_seq">
 			<field reporter:label="Credit ID" name="id" reporter:datatype="id" />
-			<field reporter:label="Funding Source ID" name="funding_source" reporter:datatype="link" />
-			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
+			<field reporter:label="Funding Source ID" name="funding_source" reporter:datatype="link" oils_obj:required="true" />
+			<field reporter:label="Amount" name="amount" reporter:datatype="money" oils_obj:required="true" />
 			<field reporter:label="Note" name="note" reporter:datatype="text" />
 			<field reporter:label="Deadline Date" name="deadline_date" reporter:datatype="timestamp" />
 			<field reporter:label="Effective Date" name="effective_date" reporter:datatype="timestamp" />
@@ -9571,11 +9571,11 @@ SELECT  usr,
 	<class id="acqf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund" oils_persist:tablename="acq.fund" reporter:label="Fund">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_id_seq">
 			<field reporter:label="Fund ID" name="id" reporter:datatype="id" reporter:selector='code'/>
-			<field reporter:label="Org Unit" name="org" reporter:datatype="org_unit" />
-			<field reporter:label="Name" name="name" reporter:datatype="text" />
-			<field reporter:label="Year" name="year" reporter:datatype="int" />
-			<field reporter:label="Currency Type" name="currency_type" reporter:datatype="link" />
-			<field reporter:label="Code" name="code" reporter:datatype="text" />
+			<field reporter:label="Org Unit" name="org" reporter:datatype="org_unit" oils_obj:required="true" />
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true" />
+			<field reporter:label="Year" name="year" reporter:datatype="int" oils_obj:required="true" />
+			<field reporter:label="Currency Type" name="currency_type" reporter:datatype="link" oils_obj:required="true" />
+			<field reporter:label="Code" name="code" reporter:datatype="text" oils_obj:required="true" />
 			<field reporter:label="Rollover" name="rollover" reporter:datatype="bool" />
 			<field reporter:label="Propagate" name="propagate" reporter:datatype="bool" />
 			<field reporter:label="Active" name="active" reporter:datatype="bool" />
@@ -9844,10 +9844,10 @@ SELECT  usr,
 	<class id="acqfa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_allocation" oils_persist:tablename="acq.fund_allocation" reporter:label="Fund Allocation">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_allocation_id_seq">
 			<field reporter:label="Allocation ID" name="id" reporter:datatype="id" />
-			<field reporter:label="Fund" name="fund" reporter:datatype="link" />
-			<field reporter:label="Funding Source" name="funding_source" reporter:datatype="link" />
-			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
-			<field reporter:label="Allocating User" name="allocator" reporter:datatype="link" />
+			<field reporter:label="Fund" name="fund" reporter:datatype="link" oils_obj:required="true" />
+			<field reporter:label="Funding Source" name="funding_source" reporter:datatype="link" oils_obj:required="true" />
+			<field reporter:label="Amount" name="amount" reporter:datatype="money" oils_obj:required="true" />
+			<field reporter:label="Allocating User" name="allocator" reporter:datatype="link" oils_obj:required="true" />
 			<field reporter:label="Note" name="note" reporter:datatype="text" />
 			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp" />
 		</fields>
@@ -12984,8 +12984,8 @@ SELECT  usr,
 	<class id="acqft" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_tag" oils_persist:tablename="acq.fund_tag" reporter:label="Fund Tag">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_tag_id_seq">
 			<field reporter:label="Fund Tag ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Fund Tag Owner" name="owner" reporter:datatype="org_unit"/>
-			<field reporter:label="Fund Tag Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Fund Tag Owner" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Fund Tag Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Map Entries" name="map_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
