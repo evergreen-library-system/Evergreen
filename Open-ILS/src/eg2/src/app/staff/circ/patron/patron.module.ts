@@ -24,6 +24,7 @@ import {BillsComponent} from './bills.component';
 import {BillStatementComponent} from './bill-statement.component';
 import {TestPatronPasswordComponent} from './test-password.component';
 import {PatronSurveyResponsesComponent} from './surveys.component';
+import {PatronStatCatsComponent} from './statcats.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {PatronSurveyResponsesComponent} from './surveys.component';
     BillsComponent,
     BillStatementComponent,
     TestPatronPasswordComponent,
-    PatronSurveyResponsesComponent
+    PatronSurveyResponsesComponent,
+    PatronStatCatsComponent
   ],
   imports: [
     StaffCommonModule,

@@ -1,0 +1,16 @@
+
+
+<div class="mt-2 alert well-like d-flex ml-3 mr-3" *ngFor="let map of catMaps">
+  <div class="font-weight-bold p-1">{{map.stat_cat().name()}}</div>
+  <div class="flex-1 ml-2 p-1">{{map.stat_cat_entry()}}</div>
+  <div class="ml-2 p-1">
+    <ng-container *ngIf="map.stat_cat().opac_visible() === 'f'">
+      <div class="badge badge-primary p-1" i18n>Staff Only</div>
+    </ng-container>
+    <ng-container *ngIf="map.stat_cat().opac_visible() === 't'">
+      <div class="badge badge-warning p-1" i18n>Patron Visible</div>
+    </ng-container>
+  </div>
+  <div class="p-1" i18n> @ {{map.stat_cat().owner().shortname()}}</div>
+</div>
+

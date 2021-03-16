@@ -116,11 +116,11 @@
           <div ngbDropdownMenu>
             <a routerLink="/staff/circ/patron/{{patronId}}/alerts" 
               ngbDropdownItem i18n>Alerts and Messages</a>
-            <a routerLink="/staff/circ/patron/{{patronId}}/notes" 
+            <a routerLink="/staff/circ/patron/{{patronId}}/notes" [disabled]="true"
               ngbDropdownItem i18n>Notes</a>
-            <a routerLink="/staff/circ/patron/{{patronId}}/triggered_events" 
+            <a routerLink="/staff/circ/patron/{{patronId}}/triggered_events" [disabled]="true"
               ngbDropdownItem i18n>Triggered Events / Notifications</a>
-            <a routerLink="/staff/circ/patron/{{patronId}}/message_center" 
+            <a routerLink="/staff/circ/patron/{{patronId}}/message_center" [disabled]="true"
               ngbDropdownItem i18n>Message Center</a>
             <a routerLink="/staff/circ/patron/{{patronId}}/stat_cats"
               ngbDropdownItem i18n>Statistical Categories</a>
@@ -128,7 +128,7 @@
               ngbDropdownItem i18n>Surveys</a>
             <a routerLink="/staff/circ/patron/{{patronId}}/group"
               ngbDropdownItem i18n>Group Member Details</a>
-            <a routerLink="/staff/circ/patron/{{patronId}}/edit_perms"
+            <a routerLink="/staff/circ/patron/{{patronId}}/edit_perms"[disabled]="true"
               ngbDropdownItem i18n>User Permission Editor</a>
             <a routerLink="/staff/circ/patron/{{patronId}}/credentials"
               ngbDropdownItem i18n>Test Password</a>
@@ -145,8 +145,7 @@
               target="_top"
               ngbDropdownItem i18n>Booking: Pick Up Reservations</a>
             <a routerLink="/staff/booking/return/by_patron/{{patronId}}"
-              target="_top"
-              ngbDropdownItem i18n></a>
+              target="_top" ngbDropdownItem i18n></a>
             <a href (click)="purgeAccount(); false"
               [disabled]="disablePurge()"
               ngbDropdownItem i18n>Completely Purge Account</a>
@@ -163,6 +162,10 @@
               <div *ngSwitchCase="'surveys'">
                 <eg-patron-survey-responses [patronId]="patronId">
                 </eg-patron-survey-responses>
+              </div>
+              <div *ngSwitchCase="'stat_cats'">
+                <eg-patron-statcats [patronId]="patronId">
+                </eg-patron-statcats>
               </div>
             </ng-container>
           </ng-template>

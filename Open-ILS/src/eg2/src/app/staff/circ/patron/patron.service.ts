@@ -33,7 +33,6 @@ const PATRON_FLESH_FIELDS = [
     'addresses',
     'billing_address',
     'mailing_address',
-    'stat_cat_entries',
     'waiver_entries',
     'usr_activity',
     'notes',
