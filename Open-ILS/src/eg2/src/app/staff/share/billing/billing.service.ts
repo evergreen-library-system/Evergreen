@@ -11,17 +11,17 @@ import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.s
 import {AudioService} from '@eg/share/util/audio.service';
 
 export interface CreditCardPaymentParams {
-    where_process?: 0 | 1,
-    approval_code?: string,
-    expire_month?: number,
-    expire_year?: number,
-    billing_first?: string,
-    billing_last?: string,
-    billing_address?: string,
-    billing_city?: string,
-    billing_state?: string,
-    billing_zip?: string,
-    note?: string
+    where_process?: 0 | 1;
+    approval_code?: string;
+    expire_month?: number;
+    expire_year?: number;
+    billing_first?: string;
+    billing_last?: string;
+    billing_address?: string;
+    billing_city?: string;
+    billing_state?: string;
+    billing_zip?: string;
+    note?: string;
 }
 
 @Injectable()

@@ -257,7 +257,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
             return {
                 payment : owedSelected,
                 change : amt - owedSelected
-            }
+            };
         }
 
         return {payment : amt, change : 0};
@@ -411,7 +411,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
         // Reset...
         this.entries.forEach(row => row.paymentPending = 0);
 
-        var amount = this.pendingPayment();
+        let amount = this.pendingPayment();
         let done = false;
 
         this.billGrid.context.rowSelector.selected().forEach(index => {
@@ -473,7 +473,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
         payments.forEach(payment => {
             const entry =
-                this.entries.filter(entry => entry.xact.id() === payment[0])[0];
+                this.entries.filter(e => e.xact.id() === payment[0])[0];
 
             context.payments.push({
                 amount: payment[1],
@@ -549,7 +549,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
             return this.pcrud.search('mb', {xact: xactId}, {}, {authoritative: true})
             .pipe(tap(billing => {
                 if (billing.voided() === 'f') {
-                    cents += billing.amount() * 100
+                    cents += billing.amount() * 100;
                     billIds.push(billing.id());
                 }
             }));

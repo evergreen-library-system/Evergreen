@@ -71,7 +71,7 @@ export class CreditCardDialogComponent
                     this.supportsExternal = true;
                     this.args.where_process = 1;
                 }
-            })
+            });
         });
     }
 

@@ -9,7 +9,7 @@ import {StoreService} from '@eg/core/store.service';
 import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
 
 export interface BillGridEntry extends CircDisplayInfo {
-    xact: IdlObject // mbt
+    xact: IdlObject; // mbt
     billingLocation?: string;
     paymentPending?: number;
 }

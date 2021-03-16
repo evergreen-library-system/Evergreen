@@ -128,7 +128,7 @@ export class AddBillingDialogComponent
         let xactId;
         promise.then(id => {
             xactId = id;
-            return this.createBill(id)
+            return this.createBill(id);
         })
         .then(billId => this.close({xactId: xactId, billId: billId}));
     }

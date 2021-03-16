@@ -68,7 +68,7 @@ export class PatronSurveyResponsesComponent implements OnInit, AfterViewInit {
                     const oneSurvey: any = {responses: []};
                     Object.keys(collection[sid]).forEach(qid => {
                         oneSurvey.survey = collection[sid][qid].survey();
-                        oneSurvey.responses.push(collection[sid][qid])
+                        oneSurvey.responses.push(collection[sid][qid]);
                     });
                     this.surveys.push(oneSurvey);
                 });
