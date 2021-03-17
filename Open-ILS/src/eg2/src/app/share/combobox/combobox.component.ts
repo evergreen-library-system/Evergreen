@@ -47,7 +47,9 @@ export class IdlClassTemplateDirective {
     multi: true
   }]
 })
-export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
+export class ComboboxComponent
+    implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
+
     static domIdAuto = 0;
 
     selected: ComboboxEntry;
