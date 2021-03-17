@@ -250,5 +250,26 @@
         context: {field: 'ident_type', entries: identTypes}">
     </ng-container>
   </div>
+  <div class="row pt-1 pb-1 mt-1">
+    <ng-container 
+      *ngTemplateOutlet="fieldInput; context: {field: 'ident_value'}">
+    </ng-container>
+  </div>
+  <div class="row pt-1 pb-1 mt-1">
+    <ng-container 
+      *ngTemplateOutlet="fieldCombobox; 
+        context: {field: 'ident_type2', entries: identTypes}">
+    </ng-container>
+  </div>
+  <div class="row pt-1 pb-1 mt-1">
+    <ng-container 
+      *ngTemplateOutlet="fieldInput; context: {field: 'ident_value2'}">
+    </ng-container>
+  </div>
+  <div class="row pt-1 pb-1 mt-1">
+    <ng-container 
+      *ngTemplateOutlet="fieldInput; context: {field: 'email', type: 'email'}">
+    </ng-container>
+  </div>
 </div>
 
