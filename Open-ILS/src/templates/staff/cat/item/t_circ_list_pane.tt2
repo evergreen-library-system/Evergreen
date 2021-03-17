@@ -45,6 +45,8 @@
     <div class="flex-cell well">{{circ.xact_start() | date:egDateAndTimeFormat}}</div>
     <div class="flex-cell">[% l('Due Date') %]</div>
     <div class="flex-cell well">{{circ.due_date() | egDueDate:egDateAndTimeFormat:circ.circ_lib():circ.duration()}}</div>
+    <div class="flex-cell">[% l('Check Out Workstation') %]</div>
+    <div class="flex-cell well">{{circ.workstation().name()}}</div>
     <div class="flex-cell">[% l('Stop Fines Time') %]</div>
     <div class="flex-cell well">{{circ.stop_fines_time() | date:egDateAndTimeFormat}}</div>
     <div class="flex-cell">[% l('Checkin Time') %]</div>
@@ -60,6 +62,8 @@
       circ.opac_renewal() == 't' ||
       circ.auto_renewal() == 't'
     }}</div>
+    <div class="flex-cell">[% l('Check Out Staff') %]</div>
+    <div class="flex-cell well">{{circ.circ_staff()}}</div>
     <div class="flex-cell">[% l('Stop Fines Reason') %]</div>
     <div class="flex-cell well">{{circ.stop_fines()}}</div>
     <div class="flex-cell">[% l('Check In Library') %]</div>
