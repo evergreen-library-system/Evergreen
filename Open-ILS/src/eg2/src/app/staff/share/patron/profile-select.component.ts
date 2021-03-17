@@ -43,7 +43,9 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
 
     @ViewChild('combobox', {static: false}) cbox: ComboboxComponent;
 
-    initialValue: number;
+    // Set the initial value by ID
+    @Input() initialGroupId: number;
+
     cboxEntries: ComboboxEntry[] = [];
     profiles: {[id: number]: IdlObject} = {};
 
@@ -59,7 +61,8 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
     }
 
     ngOnInit() {
-        this.collectGroups().then(grps => this.sortGroups(grps));
+        this.collectGroups().then(grps => this.sortGroups(grps))
+        .then(_ => this.cbox.selectedId = this.initialGroupId);
     }
 
     collectGroups(): Promise<IdlObject[]> {
@@ -152,7 +155,7 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
             this.cbox.selectedId = id;
         } else {
             // Will propagate to cbox after its instantiated.
-            this.initialValue = id;
+            this.initialGroupId = id;
         }
     }
 

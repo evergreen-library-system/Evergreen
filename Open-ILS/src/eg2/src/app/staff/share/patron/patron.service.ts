@@ -13,6 +13,7 @@ import {BarcodeSelectComponent} from '@eg/staff/share/barcodes/barcode-select.co
 export class PatronService {
 
     identTypes: IdlObject[];
+    profileGroups: IdlObject[];
 
     constructor(
         private net: NetService,
@@ -98,6 +99,16 @@ export class PatronService {
         return this.pcrud.retrieveAll('cit',
             {order_by: {cit: ['name']}}, {atomic: true})
         .toPromise().then(types => this.identTypes = types);
+    }
+
+    getProfileGroups(): Promise<IdlObject[]> {
+        if (this.profileGroups) {
+            return Promise.resolve(this.profileGroups);
+        }
+
+        return this.pcrud.retrieveAll('pgt',
+            {order_by: {cit: ['name']}}, {atomic: true})
+        .toPromise().then(types => this.profileGroups = types);
     }
 }
 

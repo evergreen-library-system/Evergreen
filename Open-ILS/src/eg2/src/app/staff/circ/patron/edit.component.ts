@@ -1,4 +1,4 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
@@ -9,6 +9,8 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {DateUtil} from '@eg/share/util/date';
+import {ProfileSelectComponent} from '@eg/staff/share/patron/profile-select.component';
 
 const COMMON_USER_SETTING_TYPES = [
   'circ.holds_behind_desk',
@@ -23,7 +25,7 @@ const COMMON_USER_SETTING_TYPES = [
 const FLESH_PATRON_FIELDS = {
   flesh: 1,
   flesh_fields: {
-    au: ['card', 'mailing_address', 'billing_address', 'addresses']
+    au: ['card', 'mailing_address', 'billing_address', 'addresses', 'settings']
   }
 };
 
@@ -38,14 +40,19 @@ export class EditComponent implements OnInit {
     @Input() cloneId: number;
     @Input() stageUsername: string;
 
+    @ViewChild('profileSelect') private profileSelect: ProfileSelectComponent;
+
     patron: IdlObject;
     changeHandlerNeeded = false;
     nameTab = 'primary';
     loading = false;
 
     identTypes: ComboboxEntry[];
+    profileGroups: ComboboxEntry[];
+    userSettings: {[name: string]: any} = {};
     userSettingTypes: {[name: string]: IdlObject} = {};
     optInSettingTypes: {[name: string]: IdlObject} = {};
+    expireDate: Date;
 
     constructor(
         private org: OrgService,
@@ -105,16 +112,29 @@ export class EditComponent implements OnInit {
                 }
             });
         });
-    };
-
+    }
 
     loadPatron(): Promise<any> {
         if (this.patronId) {
             return this.patronService.getById(this.patronId, FLESH_PATRON_FIELDS)
-            .then(patron => this.patron = patron);
+            .then(patron => {
+                this.patron = patron;
+                this.absorbPatronData();
+            });
         } else {
             return Promise.resolve(this.createNewPatron());
         }
+    }
+
+    absorbPatronData() {
+        this.patron.settings().forEach(setting => {
+            const value = setting.value();
+            if (value !== '' && value !== null) {
+                this.userSettings[setting.name()] = JSON.parse(value);
+            }
+        });
+
+        this.expireDate = new Date(this.patron.expire_date());
     }
 
     createNewPatron() {
@@ -148,32 +168,52 @@ export class EditComponent implements OnInit {
         return this.objectFromPath(path)[field]();
     }
 
+    userSettingChange(name: string, value: any) {
+        // TODO: set dirty
+        this.userSettings[name] = value;
+    }
+
+    // Called as the model changes.
+    // This may be called many times before the final value is applied,
+    // so avoid any heavy lifting here.  See postFieldChange();
     fieldValueChange(path: string, field: string, value: any) {
         if (typeof value === 'boolean') { value = value ? 't' : 'f'; }
-
         this.changeHandlerNeeded = true;
         this.objectFromPath(path)[field](value);
     }
 
-    fieldMaybeModified(path: string, field: string) {
+    // Called after a change operation has completed (e.g. on blur)
+    postFieldChange(path: string, field: string) {
         if (!this.changeHandlerNeeded) { return; } // no changes applied
-
-        // TODO: set dirty = true
-
         this.changeHandlerNeeded = false;
 
-        // check stuff here..
+        // TODO: set dirty
+
 
         const obj = path ? this.patron[path]() : this.patron;
         const value = obj[field]();
 
         console.debug(`Modifying field path=${path} field=${field} value=${value}`);
+
+        switch (field) {
+            // TODO: do many more
+
+            case 'profile':
+                this.setExpireDate();
+                break;
+        }
+    }
+
+    showField(idlClass: string, field: string): boolean {
+      // TODO
+      return true;
     }
 
     fieldRequired(idlClass: string, field: string): boolean {
         // TODO
         return false;
     }
+
 
     fieldPattern(idlClass: string, field: string): string {
         // TODO
@@ -186,7 +226,26 @@ export class EditComponent implements OnInit {
 
         // Normally this is called on (blur), but the input is not
         // focused when using the generate button.
-        this.fieldMaybeModified(null, 'passwd');
+        this.postFieldChange(null, 'passwd');
+    }
+
+
+    cannotHaveUsersOrgs(): number[] {
+        return this.org.list()
+          .filter(org => org.ou_type().can_have_users() === 'f')
+          .map(org => org.id());
+    }
+
+    setExpireDate() {
+        const profile = this.profileSelect.profiles[this.patron.profile()];
+        if (!profile) { return; }
+
+        const seconds = DateUtil.intervalToSeconds(profile.perm_interval());
+        const nowEpoch = new Date().getTime();
+        const newDate = new Date(nowEpoch + (seconds * 1000 /* millis */));
+        this.expireDate = newDate;
+        this.fieldValueChange(null, 'profile', newDate.toISOString());
+        this.postFieldChange(null, 'profile');
     }
 }
 

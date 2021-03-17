@@ -5,119 +5,117 @@
   </div>
 </div>
 
-<ng-template #fieldLabel  
-  let-cls="cls" let-field="field" let-overrideLabel="overrideLabel">
+<!-- IDL-generated field labels.  Override with args.overrideLabel -->
+<ng-template #fieldLabel let-args="args">
   <div class="col-lg-3 field-label">
-    <label for="{{getClass(cls)}}-{{field}}-input">
-      {{getFieldLabel(getClass(cls), field, overrideLabel)}}
+    <label for="{{getClass(args.cls)}}-{{args.field}}-input">
+      {{getFieldLabel(getClass(args.cls), args.field, args.overrideLabel)}}
     </label>
     <!-- TODO doc links -->
   </div>
 </ng-template>
 
 <!-- text / number / email inputs -->
-<ng-template #fieldInput 
-  let-cls="cls" 
-  let-path="path"
-  let-field="field" 
-  let-type="type" 
-  let-disabled="disabled" 
-  let-overrideLabel="overrideLabel">
-
-  <ng-container 
-    *ngTemplateOutlet="fieldLabel; context: 
-      {cls: cls, field: field, overrideLabel: overrideLabel}">
-  </ng-container>
-
+<ng-template #fieldInput let-args="args">
   <div class="col-lg-3">
     <input 
-      type="{{type || 'text'}}"
+      type="{{args.type || 'text'}}"
       class="form-control" 
-      name="{{getClass(cls)}}-{{field}}-input"
-      id="{{getClass(cls)}}-{{field}}-input"
-      [ngModel]="objectFromPath(path)[field]()"
-      (ngModelChange)="fieldValueChange(path, field, $event)"
-      (change)="fieldMaybeModified(path, field)"
-      [required]="fieldRequired(getClass(cls), field)"
-      [pattern]="fieldPattern(getClass(cls), field)"
-      [disabled]="disabled"
+      name="{{getClass(args.cls)}}-{{args.field}}-input"
+      id="{{getClass(args.cls)}}-{{args.field}}-input"
+      [ngModel]="objectFromPath(args.path)[args.field]()"
+      (ngModelChange)="fieldValueChange(args.path, args.field, $event)"
+      (change)="postFieldChange(args.path, args.field)"
+      [required]="fieldRequired(getClass(args.cls), args.field)"
+      [pattern]="fieldPattern(getClass(args.cls), args.field)"
+      [disabled]="args.disabled"
     />
   </div>
 </ng-template>
 
 <!-- checkbox inputs -->
-<ng-template #fieldCheckbox 
-  let-cls="cls" 
-  let-path="path"
-  let-field="field" 
-  let-type="type" 
-  let-disabled="disabled" 
-  let-overrideLabel="overrideLabel">
-
-  <ng-container 
-    *ngTemplateOutlet="fieldLabel; context: 
-      {cls: cls, field: field, overrideLabel: overrideLabel}">
-  </ng-container>
-
+<ng-template #fieldCheckbox let-args="args">
   <div class="col-lg-3">
     <input 
       type="checkbox"
       class="form-check-input ml-0"
-      name="{{getClass(cls)}}-{{field}}-input"
-      id="{{getClass(cls)}}-{{field}}-input"
-      [ngModel]="objectFromPath(path)[field]() == 't'"
-      (ngModelChange)="fieldValueChange(path, field, $event)"
-      (change)="fieldMaybeModified(path, field)"
-      [required]="fieldRequired(getClass(cls), field)"
-      [pattern]="fieldPattern(getClass(cls), field)"
+      name="{{getClass(args.cls)}}-{{args.field}}-input"
+      id="{{getClass(args.cls)}}-{{args.field}}-input"
+      [ngModel]="objectFromPath(args.path)[args.field]() == 't'"
+      (ngModelChange)="fieldValueChange(args.path, args.field, $event)"
+      (change)="postFieldChange(args.path, args.field)"
+      [required]="fieldRequired(getClass(args.cls), args.field)"
+      [pattern]="fieldPattern(getClass(args.cls), args.field)"
       [disabled]="disabled"
     />
   </div>
 </ng-template>
 
 <!-- combobox inputs -->
-<ng-template #fieldCombobox
-  let-cls="cls" 
-  let-path="path"
-  let-field="field" 
-  let-disabled="disabled" 
-  let-entries="entries"
-  let-overrideLabel="overrideLabel">
-
-  <ng-container 
-    *ngTemplateOutlet="fieldLabel; context: 
-      {cls: cls, field: field, overrideLabel: overrideLabel}">
-  </ng-container>
-
+<ng-template #fieldCombobox let-args="args">
   <div class="col-lg-3">
-    <eg-combobox [entries]="entries"
-      name="{{getClass(cls)}}-{{field}}-input"
-      domId="{{getClass(cls)}}-{{field}}-input"
-      [startId]="getFieldValue(path, field)"
+    <eg-combobox [entries]="args.entries"
+      name="{{getClass(args.cls)}}-{{args.field}}-input"
+      domId="{{getClass(args.cls)}}-{{args.field}}-input"
+      [startId]="getFieldValue(args.path, args.field)"
       (onChange)="
-        fieldValueChange(path, field, $event ? $event.id : null); 
-        fieldMaybeModified(path, field)"
-      [required]="fieldRequired(getClass(cls), field)"
-      [disabled]="disabled">
+        fieldValueChange(args.path, args.field, $event ? $event.id : null); 
+        postFieldChange(args.path, args.field)"
+      [required]="fieldRequired(getClass(args.cls), args.field)"
+      [disabled]="args.disabled">
     </eg-combobox>
   </div>
 </ng-template>
 
+<!-- like fieldRow below, but for user settings checkboxes -->
+<ng-template #userSettingsCheckboxRow let-args="args">
+  <div class="row pt-1 pb-1 mt-1">
+    <div class="col-lg-3 field-label">
+      <label for="cust-{{args.settingName}}-input">
+        {{userSettingTypes[args.settingName].label()}}
+      </label>
+    </div>
+    <div class="col-lg-3">
+      <input 
+        type="checkbox"
+        class="form-check-input ml-0"
+        name="cust-{{args.settingName}}-input"
+        id="cust-{{args.setingName}-input"
+        [ngModel]="userSettings[args.settingName]"
+        (ngModelChange)="userSettingChange(args.settingName, $event)"
+        [disabled]="args.disabled"
+      />
+    </div>
+  </div>
+</ng-template>
+
+<!-- One row of label + field.  
+    Used when a field requires no additional toggles. -->
+<ng-template #fieldRow let-args="args">
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField(args.cls, args.field)">
+    <ng-container *ngTemplateOutlet="fieldLabel; context: {args: args}">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="args.template; context: {args: args}">
+    </ng-container>
+  </div>
+</ng-template>
+
+
+<!-- The List O' Fields -->
+
 <div class="mt-3 striped-rows-even patron-edit-container" *ngIf="patron">
+  <ng-container *ngTemplateOutlet="fieldRow; context: {args: 
+    {template: fieldInput, field: 'barcode', cls: 'ac', 
+    path: 'card', disabled: !patron.isnew()}}">
+  </ng-container>
+  <ng-container *ngTemplateOutlet="fieldRow; context: 
+    {args: {template: fieldInput, field: 'usrname'}}">
+  </ng-container>
   <div class="row pt-1 pb-1 mt-1">
-    <ng-container 
-      *ngTemplateOutlet="fieldInput; context: 
-        {cls: 'ac', field: 'barcode', path: 'card', disabled: !patron.isnew()}">
+    <ng-container *ngTemplateOutlet="fieldLabel; context: {args: {field: 'passwd'}}">
     </ng-container>
-  </div>
-  <div class="row pt-1 pb-1 mt-1">
     <ng-container 
-      *ngTemplateOutlet="fieldInput; context: {field: 'usrname'}">
-    </ng-container>
-  </div>
-  <div class="row pt-1 pb-1 mt-1">
-    <ng-container 
-      *ngTemplateOutlet="fieldInput; context: {field: 'passwd'}">
+      *ngTemplateOutlet="fieldInput; context: {args: {field: 'passwd'}}">
     </ng-container>
     <div class="col-lg-3">
       <button class="btn btn-outline-dark" (click)="generatePassword()" i18n>
@@ -125,77 +123,62 @@
       </button>
     </div>
   </div>
+
+  <!-- Name / Preferred Name Tabs -->
   <ul ngbNav #nameNav="ngbNav" class="nav-tabs" [(activeId)]="nameTab">
     <li ngbNavItem="primary">
       <a ngbNavLink i18n>Primary Name</a>
       <ng-template ngbNavContent>
-        <div class="row pt-1 pb-1 mt-1">
-          <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {field: 'prefix'}">
-          </ng-container>
-        </div>
-        <div class="row pt-1 pb-1 mt-1">
-          <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {field: 'first_given_name'}">
-          </ng-container>
-        </div>
-        <div class="row pt-1 pb-1 mt-1">
-          <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {field: 'second_given_name'}">
-          </ng-container>
-        </div>
-        <div class="row pt-1 pb-1 mt-1">
-          <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {field: 'family_name'}">
-          </ng-container>
-        </div>
-        <div class="row pt-1 pb-1 mt-1">
-          <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {field: 'suffix'}">
-          </ng-container>
-        </div>
+        <ng-container *ngTemplateOutlet="fieldRow; context: 
+          {args: {template: fieldInput, field: 'prefix'}}">
+        </ng-container>
+        <ng-container *ngTemplateOutlet="fieldRow; context: 
+          {args: {template: fieldInput, field: 'first_given_name'}}">
+        </ng-container>
+        <ng-container *ngTemplateOutlet="fieldRow; context: 
+          {args: {template: fieldInput, field: 'second_given_name'}}">
+        </ng-container>
+        <ng-container *ngTemplateOutlet="fieldRow; context: 
+          {args: {template: fieldInput, field: 'family_name'}}">
+        </ng-container>
+        <ng-container *ngTemplateOutlet="fieldRow; context: 
+          {args: {template: fieldInput, field: 'suffix'}}">
+        </ng-container>
       </ng-template>
     </li>
     <li ngbNavItem="preferred">
       <a ngbNavLink i18n>Preferred Name</a>
       <ng-template ngbNavContent>
-        <div class="row pt-1 pb-1 mt-1">
-          <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {field: 'pref_prefix'}">
-          </ng-container>
-        </div>
-        <div class="row pt-1 pb-1 mt-1">
-          <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {field: 'pref_first_given_name'}">
-          </ng-container>
-        </div>
-        <div class="row pt-1 pb-1 mt-1">
-          <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {field: 'pref_second_given_name'}">
-          </ng-container>
-        </div>
-        <div class="row pt-1 pb-1 mt-1">
-          <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {field: 'pref_family_name'}">
-          </ng-container>
-        </div>
-        <div class="row pt-1 pb-1 mt-1">
-          <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {field: 'pref_suffix'}">
-          </ng-container>
-        </div>
+        <ng-container *ngTemplateOutlet="fieldRow; context: 
+          {args: {template: fieldInput, field: 'pref_prefix'}}">
+        </ng-container>
+        <ng-container *ngTemplateOutlet="fieldRow; context: 
+          {args: {template: fieldInput, field: 'pref_first_given_name'}}">
+        </ng-container>
+        <ng-container *ngTemplateOutlet="fieldRow; context: 
+          {args: {template: fieldInput, field: 'pref_second_given_name'}}">
+        </ng-container>
+        <ng-container *ngTemplateOutlet="fieldRow; context: 
+          {args: {template: fieldInput, field: 'pref_family_name'}}">
+        </ng-container>
+        <ng-container *ngTemplateOutlet="fieldRow; context: 
+          {args: {template: fieldInput, field: 'pref_suffix'}}">
+        </ng-container>
       </ng-template>
     </li>
   </ul>
+
+  <!-- Container div for name / pref name tabs -->
   <div class="border rounded p-2" [ngClass]="{
     'border-primary': nameTab == 'primary', 
     'border-success': nameTab == 'preferred'}">
     <b>{{nameTab}}</b>
     <div [ngbNavOutlet]="nameNav"></div>
   </div>
-  <div class="row pt-1 pb-1 mt-1">
+
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'name_keywords')">
     <ng-container 
-      *ngTemplateOutlet="fieldLabel; context: {field: 'name_keywords'}">
+      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'name_keywords'}}">
     </ng-container>
     <div class="col-lg-3">
       <textarea
@@ -204,23 +187,22 @@
         id="au-name_keywords-input"
         [ngModel]="objectFromPath(null)['name_keywords']()"
         (ngModelChange)="fieldValueChange(null, 'name_keywords', $event)"
-        (change)="fieldMaybeModified(null, 'name_keywords')"
+        (change)="postFieldChange(null, 'name_keywords')"
         [required]="fieldRequired('au', 'name_keywords')"
         [pattern]="fieldPattern('au', 'name_keywords')">
       </textarea>
     </div>
   </div>
-  <div class="row pt-1 pb-1 mt-1">
-    <!-- example of overriding a field label -->
-    <eg-string #holdAliasString i18n-text text="Holds Alias"></eg-string>
+
+  <!-- example of overriding a field label -->
+  <eg-string #holdAliasString i18n-text text="Holds Alias"></eg-string>
+  <ng-container *ngTemplateOutlet="fieldRow; context: 
+    {args: {template: fieldInput, field: 'alias', overrideLabel: holdAliasString.text}}">
+  </ng-container>
+
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'dob')">
     <ng-container 
-      *ngTemplateOutlet="fieldInput; context: 
-        {field: 'alias', overrideLabel: holdAliasString.text}">
-    </ng-container>
-  </div>
-  <div class="row pt-1 pb-1 mt-1">
-    <ng-container 
-      *ngTemplateOutlet="fieldLabel; context: {field: 'dob'}">
+      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'dob'}}">
     </ng-container>
     <div class="col-lg-3">
       <eg-date-select
@@ -229,47 +211,94 @@
         [initialIso]="patron.dob()"
         (onChangeAsIso)="
           fieldValueChange(null, 'dob', $event); 
-          fieldMaybeModified(null, 'dob')"
+          postFieldChange(null, 'dob')"
         [required]="fieldRequired('au', 'dob')">
       </eg-date-select>
     </div>
   </div>
-  <div class="row pt-1 pb-1 mt-1">
-    <ng-container 
-      *ngTemplateOutlet="fieldCheckbox; context: {field: 'juvenile'}">
+  <ng-container *ngTemplateOutlet="fieldRow; context: 
+    {args: {template: fieldCheckbox, field: 'juvenile'}}">
+  </ng-container>
+  <ng-container *ngTemplateOutlet="fieldRow; context: 
+    {args: {template: fieldInput, field: 'guardian'}}">
+  </ng-container>
+  <ng-container *ngTemplateOutlet="fieldRow; context: 
+    {args: {template: fieldCombobox, field: 'ident_type', entries: identTypes}}">
+  </ng-container>
+  <ng-container *ngTemplateOutlet="fieldRow; context: 
+    {args: {template: fieldInput, field: 'ident_value'}}">
+  </ng-container>
+  <ng-container *ngTemplateOutlet="fieldRow; context: 
+    {args: {template: fieldCombobox, field: 'ident_type2', entries: identTypes}}">
+  </ng-container>
+  <ng-container *ngTemplateOutlet="fieldRow; context: 
+    {args: {template: fieldInput, field: 'ident_value2'}}">
+  </ng-container>
+  <ng-container *ngTemplateOutlet="fieldRow; context: 
+    {args: {template: fieldInput, field: 'email', type: 'email'}}">
+  </ng-container>
+  <ng-container 
+    *ngIf="userSettingTypes['circ.send_email_checkout_receipts'] && showField('au', 'email')">
+    <ng-container *ngTemplateOutlet="userSettingsCheckboxRow; context: 
+      {args: {settingName: 'circ.send_email_checkout_receipts'}}">
     </ng-container>
+  </ng-container>
+  <ng-container *ngTemplateOutlet="fieldRow; context: 
+    {args: {template: fieldInput, field: 'day_phone'}}">
+  </ng-container>
+  <ng-container *ngTemplateOutlet="fieldRow; context: 
+    {args: {template: fieldInput, field: 'evening_phone'}}">
+  </ng-container>
+  <ng-container *ngTemplateOutlet="fieldRow; context: 
+    {args: {template: fieldInput, field: 'other_phone'}}">
+  </ng-container>
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'home_ou')">
+    <ng-container 
+      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'home_ou'}}">
+    </ng-container>
+    <div class="col-lg-3">
+      <eg-org-select
+        domId="au-home_ou-input"
+        fieldName="au-home_ou-input"
+        [initialOrgId]="patron.home_ou()"
+        [disableOrgs]="cannotHaveUsersOrgs()"
+        (onChange)="
+          fieldValueChange(null, 'home_ou', $event ? $event.id() : null); 
+          postFieldChange(null, 'home_ou')">
+      </eg-org-select>
+    </div>
   </div>
-  <div class="row pt-1 pb-1 mt-1">
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'profile')">
     <ng-container 
-      *ngTemplateOutlet="fieldInput; context: {field: 'guardian'}">
+      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'profile'}}">
     </ng-container>
+    <div class="col-lg-3">
+      <eg-profile-select #profileSelect 
+        [useDisplayEntries]="true"
+        [initialGroupId]="patron.profile()" 
+        (profileChange)="
+          fieldValueChange(null, 'profile', $event ? $event.id() : null); 
+          postFieldChange(null, 'profile')">
+      </eg-profile-select>
+    </div>
   </div>
-  <div class="row pt-1 pb-1 mt-1">
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'expire_date')">
     <ng-container 
-      *ngTemplateOutlet="fieldCombobox; 
-        context: {field: 'ident_type', entries: identTypes}">
+      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'expire_date'}}">
     </ng-container>
-  </div>
-  <div class="row pt-1 pb-1 mt-1">
-    <ng-container 
-      *ngTemplateOutlet="fieldInput; context: {field: 'ident_value'}">
-    </ng-container>
-  </div>
-  <div class="row pt-1 pb-1 mt-1">
-    <ng-container 
-      *ngTemplateOutlet="fieldCombobox; 
-        context: {field: 'ident_type2', entries: identTypes}">
-    </ng-container>
-  </div>
-  <div class="row pt-1 pb-1 mt-1">
-    <ng-container 
-      *ngTemplateOutlet="fieldInput; context: {field: 'ident_value2'}">
-    </ng-container>
-  </div>
-  <div class="row pt-1 pb-1 mt-1">
-    <ng-container 
-      *ngTemplateOutlet="fieldInput; context: {field: 'email', type: 'email'}">
-    </ng-container>
+    <div class="col-lg-3">
+      <eg-date-select
+        domId="au-expire_date-input"
+        fieldName="au-expire_date-input"
+        [required]="fieldRequired('au', 'expire_date')"
+        [(ngModel)]="expireDate">
+      </eg-date-select>
+    </div>
+    <div class="col-lg-3">
+      <button class="btn btn-outline-dark" (click)="setExpireDate()" i18n>
+        Update Expire Date
+      </button>
+    </div>
   </div>
 </div>
 
