@@ -1,0 +1,7 @@
+Library selector on the holds pull list
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The holds pull list screen now includes a library/org unit selector.
+This allows staff to view the pull list of any library where they have
+VIEW_HOLDS permissions, rather than having to log in to a workstation
+at that library.

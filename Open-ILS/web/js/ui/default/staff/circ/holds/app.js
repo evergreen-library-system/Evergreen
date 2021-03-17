@@ -334,10 +334,14 @@ function($scope , $q , $routeParams , $window , $location , egCore ,
 
     egCore.strings.setPageTitle(egCore.strings['PULL_LIST_TITLE']);
 
+    function current_query() {
+        var org_id = $scope.org_unit ? $scope.org_unit.id() :
+            egCore.auth.user().ws_ou();
+        return {'copy_circ_lib_id' : org_id};
+    }
+
     $scope.gridControls = {
-        setQuery : function() {
-            return {'copy_circ_lib_id' : egCore.auth.user().ws_ou()}
-        },
+        setQuery : current_query,
         setSort : function() {
             return ['copy_location_order_position','call_number_sort_key']
         },
@@ -470,6 +474,15 @@ function($scope , $q , $routeParams , $window , $location , egCore ,
             }
         ).finally(egProgressDialog.close);
     }
+
+    $scope.update_org_unit = function (org) {
+        $scope.org_unit = org;
+        $scope.gridControls.setQuery(current_query());
+        $scope.gridControls.refresh();
+    };
+
+    $scope.cant_have_volumes =
+        function (id) { return !egCore.org.CanHaveVolumes(id); };
 
 }])
 

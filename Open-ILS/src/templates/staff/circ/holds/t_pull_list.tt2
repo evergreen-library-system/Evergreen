@@ -1,3 +1,13 @@
+<div class="row">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label>[% l('View pull list for: ') %]&nbsp; </label>
+      <eg-org-selector id="org_unit" selected="org_unit"
+        onchange="update_org_unit" disable-test="cant_have_volumes">
+      </eg-org-selector>
+    </div>
+  </div>
+</div>
 <eg-grid
   id-field="id"
   idl-class="ahopl"
