@@ -1,21 +1,28 @@
 
-<span class="font-weight-bold" i18n>Show:</span>
-<a class="ml-2" href="javascript:;'" (click)="showFields='required'" i18n>Required Fields</a>
-<a class="ml-2" href="javascript:;'" (click)="showFields='suggested'" i18n>Suggested Fields</a>
-<a class="ml-2" href="javascript:;'" (click)="showFields='all'" i18n>All Fields</a>
+<div class="row" *ngIf="loading">
+  <div class="col-lg-6 offset-lg-3">
+    <eg-progress-inline></eg-progress-inline>
+  </div>
+</div>
 
 <ng-template #fieldLabel  
   let-cls="cls" let-field="field" let-overrideLabel="overrideLabel">
   <div class="col-lg-3 field-label">
-    <label for="{{cls}}-{{field}}-input">
-      {{getFieldLabel(cls, field, overrideLabel)}}
+    <label for="{{getClass(cls)}}-{{field}}-input">
+      {{getFieldLabel(getClass(cls), field, overrideLabel)}}
     </label>
     <!-- TODO doc links -->
   </div>
 </ng-template>
 
-<ng-template #fieldInput let-cls="cls" let-field="field" let-overrideLabel="overrideLabel"
-  let-type="type" let-disabled="disabled" let-path="path">
+<!-- text / number / email inputs -->
+<ng-template #fieldInput 
+  let-cls="cls" 
+  let-path="path"
+  let-field="field" 
+  let-type="type" 
+  let-disabled="disabled" 
+  let-overrideLabel="overrideLabel">
 
   <ng-container 
     *ngTemplateOutlet="fieldLabel; context: 
@@ -26,15 +33,73 @@
     <input 
       type="{{type || 'text'}}"
       class="form-control" 
-      name="{{cls}}-{{field}}-input"
-      id="{{cls}}-{{field}}-input"
+      name="{{getClass(cls)}}-{{field}}-input"
+      id="{{getClass(cls)}}-{{field}}-input"
       [ngModel]="objectFromPath(path)[field]()"
       (ngModelChange)="fieldValueChange(path, field, $event)"
       (change)="fieldMaybeModified(path, field)"
-      [required]="fieldRequired(cls, field)"
-      [pattern]="fieldPattern(cls, field)"
+      [required]="fieldRequired(getClass(cls), field)"
+      [pattern]="fieldPattern(getClass(cls), field)"
       [disabled]="disabled"
     />
+  </div>
+</ng-template>
+
+<!-- checkbox inputs -->
+<ng-template #fieldCheckbox 
+  let-cls="cls" 
+  let-path="path"
+  let-field="field" 
+  let-type="type" 
+  let-disabled="disabled" 
+  let-overrideLabel="overrideLabel">
+
+  <ng-container 
+    *ngTemplateOutlet="fieldLabel; context: 
+      {cls: cls, field: field, overrideLabel: overrideLabel}">
+  </ng-container>
+
+  <div class="col-lg-3">
+    <input 
+      type="checkbox"
+      class="form-check-input ml-0"
+      name="{{getClass(cls)}}-{{field}}-input"
+      id="{{getClass(cls)}}-{{field}}-input"
+      [ngModel]="objectFromPath(path)[field]() == 't'"
+      (ngModelChange)="fieldValueChange(path, field, $event)"
+      (change)="fieldMaybeModified(path, field)"
+      [required]="fieldRequired(getClass(cls), field)"
+      [pattern]="fieldPattern(getClass(cls), field)"
+      [disabled]="disabled"
+    />
+  </div>
+</ng-template>
+
+<!-- combobox inputs -->
+<ng-template #fieldCombobox
+  let-cls="cls" 
+  let-path="path"
+  let-field="field" 
+  let-disabled="disabled" 
+  let-entries="entries"
+  let-overrideLabel="overrideLabel">
+
+  <ng-container 
+    *ngTemplateOutlet="fieldLabel; context: 
+      {cls: cls, field: field, overrideLabel: overrideLabel}">
+  </ng-container>
+
+  <div class="col-lg-3">
+      <!-- id="{{getClass(cls)}}-{{field}}-input" TODO combobox id-->
+    <eg-combobox [entries]="entries"
+      name="{{getClass(cls)}}-{{field}}-input"
+      [startId]="getFieldValue(path, field)"
+      (onChange)="
+        fieldValueChange(path, field, $event ? $event.id : null); 
+        fieldMaybeModified(path, field)"
+      [required]="fieldRequired(getClass(cls), field)"
+      [disabled]="disabled">
+    </eg-combobox>
   </div>
 </ng-template>
 
@@ -47,12 +112,12 @@
   </div>
   <div class="row pt-1 pb-1 mt-1">
     <ng-container 
-      *ngTemplateOutlet="fieldInput; context: {cls: 'au', field: 'usrname'}">
+      *ngTemplateOutlet="fieldInput; context: {field: 'usrname'}">
     </ng-container>
   </div>
   <div class="row pt-1 pb-1 mt-1">
     <ng-container 
-      *ngTemplateOutlet="fieldInput; context: {cls: 'au', field: 'passwd'}">
+      *ngTemplateOutlet="fieldInput; context: {field: 'passwd'}">
     </ng-container>
     <div class="col-lg-3">
       <button class="btn btn-outline-dark" (click)="generatePassword()" i18n>
@@ -60,33 +125,33 @@
       </button>
     </div>
   </div>
-  <ul ngbNav #nameNav="ngbNav" class="nav-tabs" [activeId]="nameTab">
+  <ul ngbNav #nameNav="ngbNav" class="nav-tabs" [(activeId)]="nameTab">
     <li ngbNavItem="primary">
       <a ngbNavLink i18n>Primary Name</a>
       <ng-template ngbNavContent>
         <div class="row pt-1 pb-1 mt-1">
           <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {cls: 'au', field: 'prefix'}">
+            *ngTemplateOutlet="fieldInput; context: {field: 'prefix'}">
           </ng-container>
         </div>
         <div class="row pt-1 pb-1 mt-1">
           <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {cls: 'au', field: 'first_given_name'}">
+            *ngTemplateOutlet="fieldInput; context: {field: 'first_given_name'}">
           </ng-container>
         </div>
         <div class="row pt-1 pb-1 mt-1">
           <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {cls: 'au', field: 'second_given_name'}">
+            *ngTemplateOutlet="fieldInput; context: {field: 'second_given_name'}">
           </ng-container>
         </div>
         <div class="row pt-1 pb-1 mt-1">
           <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {cls: 'au', field: 'family_name'}">
+            *ngTemplateOutlet="fieldInput; context: {field: 'family_name'}">
           </ng-container>
         </div>
         <div class="row pt-1 pb-1 mt-1">
           <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {cls: 'au', field: 'suffix'}">
+            *ngTemplateOutlet="fieldInput; context: {field: 'suffix'}">
           </ng-container>
         </div>
       </ng-template>
@@ -96,36 +161,41 @@
       <ng-template ngbNavContent>
         <div class="row pt-1 pb-1 mt-1">
           <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {cls: 'au', field: 'pref_prefix'}">
+            *ngTemplateOutlet="fieldInput; context: {field: 'pref_prefix'}">
           </ng-container>
         </div>
         <div class="row pt-1 pb-1 mt-1">
           <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {cls: 'au', field: 'pref_first_given_name'}">
+            *ngTemplateOutlet="fieldInput; context: {field: 'pref_first_given_name'}">
           </ng-container>
         </div>
         <div class="row pt-1 pb-1 mt-1">
           <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {cls: 'au', field: 'pref_second_given_name'}">
+            *ngTemplateOutlet="fieldInput; context: {field: 'pref_second_given_name'}">
           </ng-container>
         </div>
         <div class="row pt-1 pb-1 mt-1">
           <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {cls: 'au', field: 'pref_family_name'}">
+            *ngTemplateOutlet="fieldInput; context: {field: 'pref_family_name'}">
           </ng-container>
         </div>
         <div class="row pt-1 pb-1 mt-1">
           <ng-container 
-            *ngTemplateOutlet="fieldInput; context: {cls: 'au', field: 'pref_suffix'}">
+            *ngTemplateOutlet="fieldInput; context: {field: 'pref_suffix'}">
           </ng-container>
         </div>
       </ng-template>
     </li>
   </ul>
-  <div [ngbNavOutlet]="nameNav"></div>
+  <div class="border rounded p-2" [ngClass]="{
+    'border-primary': nameTab == 'primary', 
+    'border-success': nameTab == 'preferred'}">
+    <b>{{nameTab}}</b>
+    <div [ngbNavOutlet]="nameNav"></div>
+  </div>
   <div class="row pt-1 pb-1 mt-1">
     <ng-container 
-      *ngTemplateOutlet="fieldLabel; context: {cls: 'au', field: 'name_keywords'}">
+      *ngTemplateOutlet="fieldLabel; context: {field: 'name_keywords'}">
     </ng-container>
     <div class="col-lg-3">
       <textarea
@@ -135,8 +205,8 @@
         [ngModel]="objectFromPath(null)['name_keywords']()"
         (ngModelChange)="fieldValueChange(null, 'name_keywords', $event)"
         (change)="fieldMaybeModified(null, 'name_keywords')"
-        [required]="fieldRequired(cls, 'name_keywords')"
-        [pattern]="fieldPattern(cls, 'name_keywords')">
+        [required]="fieldRequired('au', 'name_keywords')"
+        [pattern]="fieldPattern('au', 'name_keywords')">
       </textarea>
     </div>
   </div>
@@ -145,7 +215,39 @@
     <eg-string #holdAliasString i18n-text text="Holds Alias"></eg-string>
     <ng-container 
       *ngTemplateOutlet="fieldInput; context: 
-        {cls: 'au', field: 'alias', overrideLabel: holdAliasString.text}">
+        {field: 'alias', overrideLabel: holdAliasString.text}">
+    </ng-container>
+  </div>
+  <div class="row pt-1 pb-1 mt-1">
+    <ng-container 
+      *ngTemplateOutlet="fieldLabel; context: {field: 'dob'}">
+    </ng-container>
+    <div class="col-lg-3">
+      <eg-date-select
+        domId="au-dob-input"
+        fieldName="au-dob-input"
+        [initialIso]="patron.dob()"
+        (onChangeAsIso)="
+          fieldValueChange(null, 'dob', $event); 
+          fieldMaybeModified(null, 'dob')"
+        [required]="fieldRequired('au', 'dob')">
+      </eg-date-select>
+    </div>
+  </div>
+  <div class="row pt-1 pb-1 mt-1">
+    <ng-container 
+      *ngTemplateOutlet="fieldCheckbox; context: {field: 'juvenile'}">
+    </ng-container>
+  </div>
+  <div class="row pt-1 pb-1 mt-1">
+    <ng-container 
+      *ngTemplateOutlet="fieldInput; context: {field: 'guardian'}">
+    </ng-container>
+  </div>
+  <div class="row pt-1 pb-1 mt-1">
+    <ng-container 
+      *ngTemplateOutlet="fieldCombobox; 
+        context: {field: 'ident_type', entries: identTypes}">
     </ng-container>
   </div>
 </div>

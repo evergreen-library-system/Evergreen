@@ -6,6 +6,7 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
+import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 const FLESH_PATRON_FIELDS = {
   flesh: 1,
@@ -28,6 +29,9 @@ export class EditComponent implements OnInit {
     patron: IdlObject;
     changeHandlerNeeded = false;
     nameTab = 'primary';
+    loading = false;
+
+    identTypes: ComboboxEntry[];
 
     constructor(
         private org: OrgService,
@@ -38,12 +42,29 @@ export class EditComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.load();
+    }
 
+    load(): Promise<any> {
+        this.loading = true;
+        return this.loadPatron()
+        .then(_ => this.setIdentTypes())
+        .finally(() => this.loading = false);
+    }
+
+    setIdentTypes(): Promise<any> {
+        return this.patronService.getIdentTypes()
+        .then(types => {
+            this.identTypes = types.map(t => ({id: t.id(), label: t.name()}));
+        });
+    }
+
+    loadPatron(): Promise<any> {
         if (this.patronId) {
-            this.patronService.getById(this.patronId, FLESH_PATRON_FIELDS)
+            return this.patronService.getById(this.patronId, FLESH_PATRON_FIELDS)
             .then(patron => this.patron = patron);
         } else {
-            this.createNewPatron();
+            return Promise.resolve(this.createNewPatron());
         }
     }
 
@@ -68,7 +89,19 @@ export class EditComponent implements OnInit {
             this.idl.classes[idlClass].field_map[field].label;
     }
 
+    // With this, the 'cls' specifier is only needed in the template
+    // when it's not 'au', which is the base/common class.
+    getClass(cls: string): string {
+        return cls || 'au';
+    }
+
+    getFieldValue(path: string, field: string): any {
+        return this.objectFromPath(path)[field]();
+    }
+
     fieldValueChange(path: string, field: string, value: any) {
+        if (typeof value === 'boolean') { value = value ? 't' : 'f'; }
+
         this.changeHandlerNeeded = true;
         this.objectFromPath(path)[field](value);
     }
@@ -80,11 +113,12 @@ export class EditComponent implements OnInit {
 
         this.changeHandlerNeeded = false;
 
-        console.debug(`Modifying field path=${path} field=${field}`);
-
         // check stuff here..
 
         const obj = path ? this.patron[path]() : this.patron;
+        const value = obj[field]();
+
+        console.debug(`Modifying field path=${path} field=${field} value=${value}`);
     }
 
     fieldRequired(idlClass: string, field: string): boolean {

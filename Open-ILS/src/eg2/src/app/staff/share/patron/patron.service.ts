@@ -11,6 +11,9 @@ import {BarcodeSelectComponent} from '@eg/staff/share/barcodes/barcode-select.co
 
 @Injectable()
 export class PatronService {
+
+    identTypes: IdlObject[];
+
     constructor(
         private net: NetService,
         private org: OrgService,
@@ -85,6 +88,16 @@ export class PatronService {
 
             return null;
         });
+    }
+
+    getIdentTypes(): Promise<IdlObject[]> {
+        if (this.identTypes) {
+            return Promise.resolve(this.identTypes);
+        }
+
+        return this.pcrud.retrieveAll('cit',
+            {order_by: {cit: ['name']}}, {atomic: true})
+        .toPromise().then(types => this.identTypes = types);
     }
 }
 

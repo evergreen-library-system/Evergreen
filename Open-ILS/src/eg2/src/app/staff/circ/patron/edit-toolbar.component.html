@@ -1,10 +1,26 @@
 <div class="row pb-2 pt-2">
-  <div class="ml-auto">
-    <button class="btn btn-outline-dark" 
-      (click)="printClicked.emit()" i18n>Print</button>
-    <button class="btn btn-outline-dark ml-3" 
-      (click)="saveClicked.emit()" i18n>Save</button>
-    <button class="btn btn-outline-dark ml-3" 
-      (click)="saveCloneClicked.emit()" i18n>Save &amp; Clone</button>
+
+  <div class="col-lg-6">
+    <span class="font-weight-bold" i18n>Show:</span>
+    <button class="btn btn-sm btn-outline-dark ml-2" 
+      [disabled]="showFields == 'required'"
+      (click)="changeFields('required')" i18n>Required Fields</button>
+    <button class="btn btn-sm btn-outline-dark ml-2" 
+      [disabled]="showFields == 'suggested'"
+      (click)="changeFields('suggested')" i18n>Suggested Fields</button>
+    <button class="btn btn-sm btn-outline-dark ml-2" 
+      [disabled]="showFields == 'all'"
+      (click)="changeFields('all')" i18n>All Fields</button>
+  </div>
+
+  <div class="col-lg-6 d-flex">
+    <div class="ml-auto">
+      <button class="btn btn-outline-dark" 
+        (click)="printClicked.emit()" i18n>Print</button>
+      <button class="btn btn-outline-dark ml-2" 
+        (click)="saveClicked.emit()" i18n>Save</button>
+      <button class="btn btn-outline-dark ml-2" 
+        (click)="saveCloneClicked.emit()" i18n>Save &amp; Clone</button>
+    </div>
   </div>
 </div>
