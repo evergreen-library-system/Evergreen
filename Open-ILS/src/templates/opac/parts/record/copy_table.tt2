@@ -75,13 +75,13 @@ IF has_copies or ctx.foreign_copies;
 <div>
 [% IF available == 'true'; %]
     <a href="[% mkurl('', {available => 'false' }) %]">
-        Show All Copies
+        [% l('Show All Copies') %]
     </a>
 [% END; %]
 
 [% IF available == 'false'; %]
     <a href="[% mkurl('', {available => 'true' }) %]">
-        Show Only Available Copies
+        [% l('Show Only Available Copies') %]
     </a>
 [% END; %]
 
