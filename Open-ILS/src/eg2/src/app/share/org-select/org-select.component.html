@@ -12,7 +12,8 @@
 
   <input type="text" 
     class="form-control"
-    [attr.id]="domId.length ? domId : null"
+    id="{{domId}}"
+    [name]="name"
     [placeholder]="placeholder"
     [disabled]="disabled"
     [(ngModel)]="selected" 
