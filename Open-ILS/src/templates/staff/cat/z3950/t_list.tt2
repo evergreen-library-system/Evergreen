@@ -73,7 +73,10 @@
         [% l('Total hits: [_1]', '{{total_hits}}') %]
     </div>
     <div class="col-md-6 text-right" ng-if="local_overlay_target">
-        [% l('Record with TCN [_1] marked for overlay.', '{{local_overlay_target}}') %]
+        [% l('Record [_1] marked for overlay', '{{local_overlay_target}}') %]
+        <span ng-if="local_overlay_target != local_overlay_target_tcn">
+            ([% l('TCN [_1]', '{{local_overlay_target_tcn}}') %])
+        </span>
     </div>
     <div class="col-md-6 text-right" ng-if="!local_overlay_target">
         [% l('No record marked for overlay.') %]
@@ -129,6 +132,6 @@
     <eg-grid-field label="[% l('Publication Date') %]" path="pubdate" visible></eg-grid-field>
     <eg-grid-field label="[% l('Publisher') %]" path="publisher" visible></eg-grid-field>
     <eg-grid-field label="[% l('Service') %]" path="service" visible></eg-grid-field>
-    <eg-grid-field label="[% l('TCN') %]" path="tcn" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Record') %]" path="tcn" visible></eg-grid-field>
     <eg-grid-field path="*" hidden></eg-grid-field>
 </eg-grid>

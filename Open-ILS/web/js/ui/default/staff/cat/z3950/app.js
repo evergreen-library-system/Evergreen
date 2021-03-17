@@ -116,6 +116,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                 // case, result.count is not supplied.
                 $scope.total_hits += (result.count || 0);
                 for (var i in result.records) {
+                    result.records[i].mvr['bibid'] = result.records[i].bibid;
                     result.records[i].mvr['service'] = result.service;
                     result.records[i].mvr['index'] = resultIndex++;
                     result.records[i].mvr['marcxml'] = result.records[i].marcxml;
@@ -185,7 +186,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     $scope.showInCatalog = function() {
         var items = $scope.gridControls.selectedItems();
         // relying on cant_showInCatalog to protect us
-        var url = '/eg2/staff/catalog/record/' + items[0].tcn();
+        var url = '/eg2/staff/catalog/record/' + items[0]['bibid'];
         $timeout(function() { $window.open(url, '_blank') });        
     };
     $scope.cant_showInCatalog = function() {
@@ -196,22 +197,39 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     };
 
     $scope.local_overlay_target = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record') || 0;
+    if($scope.local_overlay_target) {
+        var currTarget = $scope.local_overlay_target;
+        get_tcn(currTarget);
+    }
     $scope.mark_as_overlay_target = function() {
         var items = $scope.gridControls.selectedItems();
-        if ($scope.local_overlay_target == items[0].tcn()) {
+        if ($scope.local_overlay_target == items[0]['bibid']) {
             $scope.local_overlay_target = 0;
+            $scope.local_overlay_target_tcn = 0;
         } else {
-            $scope.local_overlay_target = items[0].tcn();
+            $scope.local_overlay_target = items[0]['bibid'];
+            var currTarget = items[0] ['bibid'];
+            get_tcn(currTarget);
         }
         egCore.hatch.setLocalItem('eg.cat.marked_overlay_record',$scope.local_overlay_target);
     }
+
+    function get_tcn(currTarget) {
+        egCore.pcrud.retrieve('bre', currTarget, {
+            select: {bre: ['tcn_value']}
+        }).then(function(rec) {
+            $scope.local_overlay_target_tcn = rec.tcn_value();
+        });
+        return;
+    };
+
     $scope.cant_overlay = function() {
         if (!$scope.local_overlay_target) return true;
         var items = $scope.gridControls.selectedItems();
         if (items.length != 1) return true;
         if (
                 items[0]['service'] == 'native-evergreen-catalog' &&
-                items[0].tcn() == $scope.local_overlay_target
+                items[0]['bibid'] == $scope.local_overlay_target
            ) return true;
         return false;
     }
