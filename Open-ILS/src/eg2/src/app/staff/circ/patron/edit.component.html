@@ -90,9 +90,9 @@
   </ng-container>
 
   <div class="col-lg-3">
-      <!-- id="{{getClass(cls)}}-{{field}}-input" TODO combobox id-->
     <eg-combobox [entries]="entries"
       name="{{getClass(cls)}}-{{field}}-input"
+      domId="{{getClass(cls)}}-{{field}}-input"
       [startId]="getFieldValue(path, field)"
       (onChange)="
         fieldValueChange(path, field, $event ? $event.id : null); 
