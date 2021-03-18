@@ -17002,7 +17002,7 @@ VALUES (
 'or "Other/Special Circulations") the circulation '||
 'should appear while checked out, and B. Whether the circulation should '||
 'continue to appear in the "Other" tab when checked in with '||
-'oustanding fines.  '||
+'outstanding fines.  '||
 '1 = (A) "Items", (B) "Other".  2 = (A) "Other", (B) "Other".  ' ||
 '5 = (A) "Items", (B) do not display.  6 = (A) "Other", (B) do not display.',
         'coust',
@@ -17022,7 +17022,7 @@ VALUES (
 'or "Other/Special Circulations") the circulation '||
 'should appear while checked out, and B. Whether the circulation should '||
 'continue to appear in the "Other" tab when checked in with '||
-'oustanding fines.  '||
+'outstanding fines.  '||
 '1 = (A) "Items", (B) "Other".  2 = (A) "Other", (B) "Other".  ' ||
 '5 = (A) "Items", (B) do not display.  6 = (A) "Other", (B) do not display.',
         'coust',
@@ -17042,7 +17042,7 @@ VALUES (
 'or "Other/Special Circulations") the circulation '||
 'should appear while checked out, and B. Whether the circulation should '||
 'continue to appear in the "Other" tab when checked in with '||
-'oustanding fines.  '||
+'outstanding fines.  '||
 '1 = (A) "Items", (B) "Other".  2 = (A) "Other", (B) "Other".  ' ||
 '5 = (A) "Items", (B) do not display.  6 = (A) "Other", (B) do not display.',
         'coust',
