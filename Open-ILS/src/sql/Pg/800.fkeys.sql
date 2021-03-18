@@ -26,6 +26,8 @@ CREATE RULE protect_bib_rec_delete AS
             WHERE OLD.id = biblio.record_entry.id
     );
 
+CREATE RULE protect_bre_id_neg1 AS ON UPDATE TO biblio.record_entry WHERE OLD.id = -1 DO INSTEAD NOTHING;
+
 CREATE RULE protect_copy_location_delete AS
     ON DELETE TO asset.copy_location DO INSTEAD (
         UPDATE asset.copy_location SET deleted = TRUE WHERE OLD.id = asset.copy_location.id;
@@ -35,6 +37,8 @@ CREATE RULE protect_copy_location_delete AS
         DELETE FROM config.circ_limit_set_copy_loc_map WHERE copy_loc = OLD.id;
     );
     
+CREATE RULE protect_acl_id_1 AS ON UPDATE TO asset.copy_location WHERE OLD.id = 1 DO INSTEAD NOTHING;
+
 CREATE RULE protect_mono_part_delete AS
     ON DELETE TO biblio.monograph_part DO INSTEAD (
         UPDATE biblio.monograph_part

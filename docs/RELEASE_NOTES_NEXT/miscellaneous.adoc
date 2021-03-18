@@ -1,0 +1,1 @@
+* New database rules now protect bre.id -1, acn.id -1 and acl.id 1 from editing.
