@@ -33,9 +33,26 @@ FOR o IN all_values;
     END;
 END;%]
 
+[%IF simple_sorter.size %]
+<ul class="adv_filters">
+[% FOR o IN simple_sorter.sort('value') %]
+<li>
+<div class="form-check">
+    <label class="form-check-label">
+      <input type="checkbox" class="form-check-input"  name='[% name %]' value='[% o.code | html | replace("'","&#39;") %]'[% values.grep('^' _ o.code _ '$').size ? ' checked' : '' %]>
+      [% o.value | html %]
+    </label>
+  </div>
+  </li>
+[%  END -%]
+</ul>
+[% END; %]
+
 [%IF simple_sorter.size && sorter.size %]
     <p disabled='true'>-----</p>
 [%  END; %]
+
+[%IF sorter.size %]
 <ul class="adv_filters">
 [% FOR o IN sorter.sort('value') %]
 <li>
@@ -48,6 +65,6 @@ END;%]
   </li>
 [%  END -%]
 </ul>
-
+[% END; %]
 
 </div>
