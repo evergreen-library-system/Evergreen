@@ -18,3 +18,4 @@
   calculated proximity greater than 0 from the pickup library can be
   directly targeted for this time period if there are local available
   copies.
+* New database rules now protect bre.id -1, acn.id -1 and acl.id 1 from editing.

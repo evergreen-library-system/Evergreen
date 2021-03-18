@@ -1060,6 +1060,11 @@ DECLARE
     uri_text      TEXT := '';
 BEGIN
 
+    -- we don't merge bib -1
+    IF target_record = -1 OR source_record = -1 THEN
+       RETURN 0;
+    END IF;
+
     -- move any 856 entries on records that have at least one MARC-mapped URI entry
     SELECT  INTO uri_count COUNT(*)
       FROM  asset.uri_call_number_map m
