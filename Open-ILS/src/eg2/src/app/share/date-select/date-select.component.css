@@ -1,6 +1,10 @@
 .eg-date-select {
+}
+
+.date-select-width {
     max-width: 11em;
 }
+
 .material-icons {
     font-size: 15px;
 }

@@ -30,6 +30,10 @@ export class DateSelectComponent implements OnInit, ControlValueAccessor {
     @Input() disabled: boolean;
     @Input() readOnly: boolean;
 
+    // Sometimes it's helpful to allow the date selector to expand
+    // to fill its container for visual consistency with other inputs.
+    @Input() noMaxWidth = false;
+
     current: NgbDateStruct;
 
     @Output() onChangeAsDate: EventEmitter<Date>;

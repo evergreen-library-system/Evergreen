@@ -2,7 +2,8 @@
   {{initialDate | formatValue:'timestamp'}}
 </ng-container>
 <ng-container *ngIf="!readOnly">
-  <div class="input-group eg-date-select form-validated">
+  <div class="input-group eg-date-select form-validated" 
+    [ngClass]="{'date-select-width': !noMaxWidth}">
     <input 
       class="form-control"
       type="text"
