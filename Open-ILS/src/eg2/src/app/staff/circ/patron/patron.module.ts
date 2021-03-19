@@ -27,6 +27,7 @@ import {PatronSurveyResponsesComponent} from './surveys.component';
 import {PatronStatCatsComponent} from './statcats.component';
 import {PatronGroupComponent} from './group.component';
 import {RegisterPatronComponent} from './register.component';
+import {SecondaryGroupsDialogComponent} from './secondary-groups.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {RegisterPatronComponent} from './register.component';
     PatronSurveyResponsesComponent,
     PatronGroupComponent,
     RegisterPatronComponent,
-    PatronStatCatsComponent
+    PatronStatCatsComponent,
+    SecondaryGroupsDialogComponent
   ],
   imports: [
     StaffCommonModule,

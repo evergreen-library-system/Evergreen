@@ -54,7 +54,7 @@ export class PatronGroupComponent implements OnInit {
 
         this.cellTextGenerator = {
             barcode: row => row.card().barcode()
-        }
+        };
 
         this.dataSource.getRows = (pager: Pager, sort: any[]) =>
             from(this.patrons.slice(pager.offset, pager.offset + pager.limit));
@@ -127,7 +127,7 @@ export class PatronGroupComponent implements OnInit {
                         this.auth.token(), user
                     );
                 })).subscribe(
-                    resp => { if (this.evt.parse(resp)) { allOk = false; } },
+                    resp2 => { if (this.evt.parse(resp2)) { allOk = false; } },
                     err => console.error(err),
                     () => { if (allOk) { this.refresh(); } }
                 );

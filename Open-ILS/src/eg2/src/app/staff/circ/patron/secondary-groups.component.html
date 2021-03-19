@@ -1,0 +1,56 @@
+<eg-string #successMsg text="Successfully Added Group" i18n-text></eg-string>
+<eg-string #errorMsg text="Failed To Add Group" i18n-text></eg-string>
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Secondary Permission Groups</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h5 i18n>
+      Assign additional permission groups to users here. 
+      This does not affect circulation policy.
+    </h5>
+
+    <div class="row mt-2">
+      <div class="col-lg-6 font-weight-bold" i18n>Group</div>
+      <div class="col-lg-6 font-weight-bold" i18n>Action</div>
+    </div>
+
+    <div class="row mt-2" *ngFor="let grp of secondaryGroups">
+      <div class="col-lg-6">{{grp.name()}}</div>
+      <div class="col-lg-6">
+        <button class="btn btn-danger" *ngIf="!grp.isdeleted()"
+          (click)="grp.isdeleted(true)" i18n>Remove</button>
+        <button class="btn btn-info" *ngIf="grp.isdeleted()"
+          (click)="grp.isdeleted(false)" i18n>Un-Delete</button>
+      </div>
+    </div>
+
+    <div class="row mt-2" *ngFor="let grp of pendingGroups">
+      <div class="col-lg-6">{{grp.name()}}</div>
+      <div class="col-lg-6">
+        <button class="btn btn-warning" 
+          (click)="removePending(grp)" i18n>Remove Pending</button>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-lg-6">
+        <eg-profile-select [(ngModel)]="selectedProfile"></eg-profile-select>  
+      </div>
+      <div class="col-lg-6">
+        <button class="btn btn-success" (click)="add()" i18n>Add</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success"
+      (click)="applyChanges()" i18n>Apply Changes</button>
+    <button type="button" class="btn btn-warning"
+      (click)="close()" i18n>Cancel</button>
+  </div>
+</ng-template>

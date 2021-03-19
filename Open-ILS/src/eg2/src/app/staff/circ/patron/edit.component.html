@@ -1,3 +1,18 @@
+<eg-string key="circ.patron.edit.test_notify.success" 
+  i18n-text text="Test Notification Sent"></eg-string>
+<eg-string key="circ.patron.edit.test_notify.fail" 
+  i18n-text text="Test Notification Failed to Send"></eg-string>
+<eg-string key="circ.patron.edit.invalidate.success" 
+  i18n-text text="Field Invalidation Succeeded"></eg-string>
+<eg-string key="circ.patron.edit.invalidate.fail" 
+  i18n-text text="Failed to Invalidate Field"></eg-string>
+<eg-string key="circ.patron.edit.grplink.success" 
+  i18n-text text="Group Link Succeeded"></eg-string>
+<eg-string key="circ.patron.edit.grplink.fail" 
+  i18n-text text="Group Link Failed"></eg-string>
+
+<eg-patron-secondary-groups [secondaryGroups]="secondaryGroups" #secondaryGroupsDialog>
+</eg-patron-secondary-groups>
 
 <div class="row" *ngIf="loading">
   <div class="col-lg-6 offset-lg-3">
@@ -25,7 +40,7 @@
       id="{{getClass(args.cls)}}-{{args.field}}-input"
       [ngModel]="objectFromPath(args.path)[args.field]()"
       (ngModelChange)="fieldValueChange(args.path, args.field, $event)"
-      (change)="postFieldChange(args.path, args.field)"
+      (change)="afterFieldChange(args.path, args.field)"
       [required]="fieldRequired(getClass(args.cls), args.field)"
       [pattern]="fieldPattern(getClass(args.cls), args.field)"
       [disabled]="args.disabled"
@@ -43,7 +58,7 @@
       id="{{getClass(args.cls)}}-{{args.field}}-input"
       [ngModel]="objectFromPath(args.path)[args.field]() == 't'"
       (ngModelChange)="fieldValueChange(args.path, args.field, $event)"
-      (change)="postFieldChange(args.path, args.field)"
+      (change)="afterFieldChange(args.path, args.field)"
       [required]="fieldRequired(getClass(args.cls), args.field)"
       [pattern]="fieldPattern(getClass(args.cls), args.field)"
       [disabled]="disabled"
@@ -60,7 +75,7 @@
       [startId]="getFieldValue(args.path, args.field)"
       (onChange)="
         fieldValueChange(args.path, args.field, $event ? $event.id : null); 
-        postFieldChange(args.path, args.field)"
+        afterFieldChange(args.path, args.field)"
       [required]="fieldRequired(getClass(args.cls), args.field)"
       [disabled]="args.disabled">
     </eg-combobox>
@@ -187,7 +202,7 @@
         id="au-name_keywords-input"
         [ngModel]="objectFromPath(null)['name_keywords']()"
         (ngModelChange)="fieldValueChange(null, 'name_keywords', $event)"
-        (change)="postFieldChange(null, 'name_keywords')"
+        (change)="afterFieldChange(null, 'name_keywords')"
         [required]="fieldRequired('au', 'name_keywords')"
         [pattern]="fieldPattern('au', 'name_keywords')">
       </textarea>
@@ -208,10 +223,11 @@
       <eg-date-select
         domId="au-dob-input"
         fieldName="au-dob-input"
+        [noMaxWidth]="true"
         [initialIso]="patron.dob()"
         (onChangeAsIso)="
           fieldValueChange(null, 'dob', $event); 
-          postFieldChange(null, 'dob')"
+          afterFieldChange(null, 'dob')"
         [required]="fieldRequired('au', 'dob')">
       </eg-date-select>
     </div>
@@ -234,24 +250,52 @@
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldInput, field: 'ident_value2'}}">
   </ng-container>
-  <ng-container *ngTemplateOutlet="fieldRow; context: 
-    {args: {template: fieldInput, field: 'email', type: 'email'}}">
-  </ng-container>
+
+
+  <div class="row pt-1 pb-1 mt-1">
+    <ng-container 
+      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'email'}}">
+    </ng-container>
+    <ng-container 
+      *ngTemplateOutlet="fieldInput; context: {args: {field: 'email', type: 'email'}}">
+    </ng-container>
+    <div class="col-lg-6">
+      <button class="btn btn-outline-dark" 
+        (click)="sendTestMessage('au.email.test')" i18n>
+        Send Test Email
+      </button>
+      <button class="btn btn-outline-dark ml-2" 
+        (click)="invalidateField('email')" i18n>Invalidate</button>
+    </div>
+  </div>
+
   <ng-container 
     *ngIf="userSettingTypes['circ.send_email_checkout_receipts'] && showField('au', 'email')">
     <ng-container *ngTemplateOutlet="userSettingsCheckboxRow; context: 
       {args: {settingName: 'circ.send_email_checkout_receipts'}}">
     </ng-container>
   </ng-container>
-  <ng-container *ngTemplateOutlet="fieldRow; context: 
-    {args: {template: fieldInput, field: 'day_phone'}}">
-  </ng-container>
+
+  <div class="row pt-1 pb-1 mt-1">
+    <ng-container 
+      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'day_phone'}}">
+    </ng-container>
+    <ng-container 
+      *ngTemplateOutlet="fieldInput; context: {args: {field: 'day_phone'}}">
+    </ng-container>
+    <div class="col-lg-6">
+      <button class="btn btn-outline-dark" 
+        (click)="invalidateField('day_phone')" i18n>Invalidate</button>
+    </div>
+  </div>
+
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldInput, field: 'evening_phone'}}">
   </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldInput, field: 'other_phone'}}">
   </ng-container>
+
   <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'home_ou')">
     <ng-container 
       *ngTemplateOutlet="fieldLabel; context: {args: {field: 'home_ou'}}">
@@ -264,10 +308,11 @@
         [disableOrgs]="cannotHaveUsersOrgs()"
         (onChange)="
           fieldValueChange(null, 'home_ou', $event ? $event.id() : null); 
-          postFieldChange(null, 'home_ou')">
+          afterFieldChange(null, 'home_ou')">
       </eg-org-select>
     </div>
   </div>
+
   <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'profile')">
     <ng-container 
       *ngTemplateOutlet="fieldLabel; context: {args: {field: 'profile'}}">
@@ -278,10 +323,16 @@
         [initialGroupId]="patron.profile()" 
         (profileChange)="
           fieldValueChange(null, 'profile', $event ? $event.id() : null); 
-          postFieldChange(null, 'profile')">
+          afterFieldChange(null, 'profile')">
       </eg-profile-select>
     </div>
+    <div class="col-lg-6">
+      <button class="btn btn-outline-dark" 
+        *ngIf="hasPerm.CREATE_USER_GROUP_LINK"
+        (click)="openGroupsDialog()" i18n>Secondary Groups</button>
+    </div>
   </div>
+
   <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'expire_date')">
     <ng-container 
       *ngTemplateOutlet="fieldLabel; context: {args: {field: 'expire_date'}}">
@@ -290,11 +341,12 @@
       <eg-date-select
         domId="au-expire_date-input"
         fieldName="au-expire_date-input"
+        [noMaxWidth]="true"
         [required]="fieldRequired('au', 'expire_date')"
         [(ngModel)]="expireDate">
       </eg-date-select>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-6">
       <button class="btn btn-outline-dark" (click)="setExpireDate()" i18n>
         Update Expire Date
       </button>

@@ -1,5 +1,6 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {concatMap, tap} from 'rxjs/operators';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -11,6 +12,11 @@ import {PatronContextService} from './patron.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {DateUtil} from '@eg/share/util/date';
 import {ProfileSelectComponent} from '@eg/staff/share/patron/profile-select.component';
+import {ToastService} from '@eg/share/toast/toast.service';
+import {StringService} from '@eg/share/string/string.service';
+import {EventService} from '@eg/core/event.service';
+import {PermService} from '@eg/core/perm.service';
+import {SecondaryGroupsDialogComponent} from './secondary-groups.component';
 
 const COMMON_USER_SETTING_TYPES = [
   'circ.holds_behind_desk',
@@ -20,6 +26,18 @@ const COMMON_USER_SETTING_TYPES = [
   'opac.default_pickup_location',
   'opac.default_sms_carrier',
   'opac.default_sms_notify'
+];
+
+const PERMS_NEEDED = [
+    'EDIT_SELF_IN_CLIENT',
+    'UPDATE_USER',
+    'CREATE_USER',
+    'CREATE_USER_GROUP_LINK',
+    'UPDATE_PATRON_COLLECTIONS_EXEMPT',
+    'UPDATE_PATRON_CLAIM_RETURN_COUNT',
+    'UPDATE_PATRON_CLAIM_NEVER_CHECKED_OUT_COUNT',
+    'UPDATE_PATRON_ACTIVE_CARD',
+    'UPDATE_PATRON_PRIMARY_CARD'
 ];
 
 const FLESH_PATRON_FIELDS = {
@@ -40,7 +58,10 @@ export class EditComponent implements OnInit {
     @Input() cloneId: number;
     @Input() stageUsername: string;
 
-    @ViewChild('profileSelect') private profileSelect: ProfileSelectComponent;
+    @ViewChild('profileSelect')
+        private profileSelect: ProfileSelectComponent;
+    @ViewChild('secondaryGroupsDialog')
+        private secondaryGroupsDialog: SecondaryGroupsDialogComponent;
 
     patron: IdlObject;
     changeHandlerNeeded = false;
@@ -48,11 +69,18 @@ export class EditComponent implements OnInit {
     loading = false;
 
     identTypes: ComboboxEntry[];
-    profileGroups: ComboboxEntry[];
     userSettings: {[name: string]: any} = {};
     userSettingTypes: {[name: string]: IdlObject} = {};
     optInSettingTypes: {[name: string]: IdlObject} = {};
     expireDate: Date;
+    secondaryGroups: IdlObject[];
+
+    // All locations we have the specified permissions
+    permOrgs: {[name: string]: number[]};
+
+    // True if a given perm is grnated at the current home_ou of the
+    // patron we are editing.
+    hasPerm: {[name: string]: boolean} = {};
 
     constructor(
         private org: OrgService,
@@ -60,7 +88,11 @@ export class EditComponent implements OnInit {
         private auth: AuthService,
         private pcrud: PcrudService,
         private idl: IdlService,
-        public patronService: PatronService,
+        private strings: StringService,
+        private toast: ToastService,
+        private perms: PermService,
+        private evt: EventService,
+        private patronService: PatronService,
         public context: PatronContextService
     ) {}
 
@@ -71,15 +103,45 @@ export class EditComponent implements OnInit {
     load(): Promise<any> {
         this.loading = true;
         return this.loadPatron()
+        .then(_ => this.getSecondaryGroups())
+        .then(_ => this.applyPerms())
         .then(_ => this.setIdentTypes())
         .then(_ => this.setOptInSettings())
         .finally(() => this.loading = false);
+    }
+
+    getSecondaryGroups(): Promise<any> {
+
+          return this.net.request(
+              'open-ils.actor',
+              'open-ils.actor.user.get_groups',
+              this.auth.token(), this.patronId
+
+          ).pipe(concatMap(maps => this.pcrud.search('pgt',
+              {id: maps.map(m => m.grp())}, {}, {atomic: true})
+
+          )).pipe(tap(grps => this.secondaryGroups = grps)).toPromise();
     }
 
     setIdentTypes(): Promise<any> {
         return this.patronService.getIdentTypes()
         .then(types => {
             this.identTypes = types.map(t => ({id: t.id(), label: t.name()}));
+        });
+    }
+
+    applyPerms(): Promise<any> {
+
+        const promise = this.permOrgs ?
+            Promise.resolve(this.permOrgs) :
+            this.perms.hasWorkPermAt(PERMS_NEEDED, true);
+
+        return promise.then(permOrgs => {
+            this.permOrgs = permOrgs;
+            Object.keys(permOrgs).forEach(perm =>
+                this.hasPerm[perm] =
+                  permOrgs[perm].includes(this.patron.home_ou())
+            );
         });
     }
 
@@ -140,6 +202,8 @@ export class EditComponent implements OnInit {
     createNewPatron() {
         const patron = this.idl.create('au');
         patron.isnew(true);
+        patron.addresses([]);
+        patron.settings([]);
 
         const card = this.idl.create('ac');
         card.isnew(true);
@@ -175,7 +239,7 @@ export class EditComponent implements OnInit {
 
     // Called as the model changes.
     // This may be called many times before the final value is applied,
-    // so avoid any heavy lifting here.  See postFieldChange();
+    // so avoid any heavy lifting here.  See afterFieldChange();
     fieldValueChange(path: string, field: string, value: any) {
         if (typeof value === 'boolean') { value = value ? 't' : 'f'; }
         this.changeHandlerNeeded = true;
@@ -183,7 +247,7 @@ export class EditComponent implements OnInit {
     }
 
     // Called after a change operation has completed (e.g. on blur)
-    postFieldChange(path: string, field: string) {
+    afterFieldChange(path: string, field: string) {
         if (!this.changeHandlerNeeded) { return; } // no changes applied
         this.changeHandlerNeeded = false;
 
@@ -222,11 +286,11 @@ export class EditComponent implements OnInit {
 
     generatePassword() {
         this.fieldValueChange(null,
-          'passwd', Math.floor(Math.random()*9000) + 1000);
+          'passwd', Math.floor(Math.random() * 9000) + 1000);
 
         // Normally this is called on (blur), but the input is not
         // focused when using the generate button.
-        this.postFieldChange(null, 'passwd');
+        this.afterFieldChange(null, 'passwd');
     }
 
 
@@ -245,7 +309,110 @@ export class EditComponent implements OnInit {
         const newDate = new Date(nowEpoch + (seconds * 1000 /* millis */));
         this.expireDate = newDate;
         this.fieldValueChange(null, 'profile', newDate.toISOString());
-        this.postFieldChange(null, 'profile');
+        this.afterFieldChange(null, 'profile');
+    }
+
+    handleBoolResponse(success: boolean,
+        msg: string, errMsg?: string): Promise<boolean> {
+
+        if (success) {
+            return this.strings.interpolate(msg)
+            .then(str => this.toast.success(str))
+            .then(_ => true);
+        }
+
+      console.error(errMsg);
+
+      return this.strings.interpolate(msg)
+      .then(str => this.toast.danger(str))
+      .then(_ => false);
+    }
+
+    sendTestMessage(hook: string): Promise<boolean> {
+
+        return this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.event.test_notification',
+            this.auth.token(), {hook: hook, target: this.patronId}
+        ).toPromise().then(resp => {
+
+            if (resp && resp.template_output && resp.template_output() &&
+                resp.template_output().is_error() === 'f') {
+                return this.handleBoolResponse(
+                    true, 'circ.patron.edit.test_notify.success');
+
+            } else {
+                return this.handleBoolResponse(
+                    false, 'circ.patron.edit.test_notify.fail',
+                    'Test Notification Failed ' + resp);
+            }
+        });
+    }
+
+    invalidateField(field: string): Promise<boolean> {
+
+        return this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.invalidate.' + field,
+            this.auth.token(), this.patronId, null, this.patron.home_ou()
+
+        ).toPromise().then(resp => {
+            const evt = this.evt.parse(resp);
+
+            if (evt && evt.textcode !== 'SUCCESS') {
+                return this.handleBoolResponse(false,
+                    'circ.patron.edit.invalidate.fail',
+                    'Field Invalidation Failed: ' + resp);
+            }
+
+            this.patron[field](null);
+
+            // Keep this in sync for future updates.
+            this.patron.last_xact_id(resp.payload.last_xact_id[this.patronId]);
+
+            return this.handleBoolResponse(
+              true, 'circ.patron.edit.invalidate.success');
+        });
+    }
+
+    openGroupsDialog() {
+        this.secondaryGroupsDialog.open({size: 'lg'}).subscribe(groups => {
+            if (!groups) { return; }
+
+            this.secondaryGroups = groups;
+
+            if (this.patron.isnew()) {
+                // Links will be applied after the patron is created.
+                return;
+            }
+
+            // Apply the new links to an existing user in real time
+            this.applySecondaryGroups();
+        });
+    }
+
+    applySecondaryGroups(): Promise<boolean> {
+
+        const groupIds = this.secondaryGroups.map(grp => grp.id());
+
+        return this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.set_groups',
+            this.auth.token(), this.patronId, groupIds
+        ).toPromise().then(resp => {
+
+            if (Number(resp) === 1) {
+
+                return this.handleBoolResponse(
+                    true, 'circ.patron.edit.grplink.success');
+
+            } else {
+
+                return this.handleBoolResponse(
+                    false, 'circ.patron.edit.grplink.fail',
+                    'Failed to change group links: ' + resp);
+            }
+        });
     }
 }
 
