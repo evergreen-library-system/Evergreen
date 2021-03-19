@@ -213,14 +213,14 @@ export class HoldComponent implements OnInit {
 
             if (this.smsEnabled) {
 
-                return this.pcrud.search(
-                    'csc', {active: 't'}, {order_by: {csc: 'name'}})
-                .pipe(tap(carrier => {
-                    this.smsCarriers.push({
-                        id: carrier.id(),
-                        label: carrier.name()
+                return this.patron.getSmsCarriers().then(carriers => {
+                    carriers.forEach(carrier => {
+                        this.smsCarriers.push({
+                            id: carrier.id(),
+                            label: carrier.name()
+                        });
                     });
-                })).toPromise();
+                });
             }
 
         }).then(_ => {

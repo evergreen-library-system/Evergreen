@@ -17,6 +17,7 @@ import {StringService} from '@eg/share/string/string.service';
 import {EventService} from '@eg/core/event.service';
 import {PermService} from '@eg/core/perm.service';
 import {SecondaryGroupsDialogComponent} from './secondary-groups.component';
+import {ServerStoreService} from '@eg/core/server-store.service';
 
 const COMMON_USER_SETTING_TYPES = [
   'circ.holds_behind_desk',
@@ -27,6 +28,12 @@ const COMMON_USER_SETTING_TYPES = [
   'opac.default_sms_carrier',
   'opac.default_sms_notify'
 ];
+
+// Duplicate these settings in resolver.service so they can be
+// fetched/cached with the original batch (fewer net calls).
+const ORG_SETTING_TYPES = [
+    'sms.enable'
+]
 
 const PERMS_NEEDED = [
     'EDIT_SELF_IN_CLIENT',
@@ -68,7 +75,10 @@ export class EditComponent implements OnInit {
     nameTab = 'primary';
     loading = false;
 
+    smsCarriers: ComboboxEntry[];
     identTypes: ComboboxEntry[];
+    inetLevels: ComboboxEntry[];
+    orgSettings: {[name: string]: any} = {};
     userSettings: {[name: string]: any} = {};
     userSettingTypes: {[name: string]: IdlObject} = {};
     optInSettingTypes: {[name: string]: IdlObject} = {};
@@ -82,6 +92,8 @@ export class EditComponent implements OnInit {
     // patron we are editing.
     hasPerm: {[name: string]: boolean} = {};
 
+    holdNotifyTypes: {email?: boolean, phone?: boolean, sms?: boolean} = {};
+
     constructor(
         private org: OrgService,
         private net: NetService,
@@ -92,6 +104,7 @@ export class EditComponent implements OnInit {
         private toast: ToastService,
         private perms: PermService,
         private evt: EventService,
+        private serverStore: ServerStoreService,
         private patronService: PatronService,
         public context: PatronContextService
     ) {}
@@ -106,27 +119,56 @@ export class EditComponent implements OnInit {
         .then(_ => this.getSecondaryGroups())
         .then(_ => this.applyPerms())
         .then(_ => this.setIdentTypes())
+        .then(_ => this.setInetLevels())
         .then(_ => this.setOptInSettings())
+        .then(_ => this.setOrgSettings())
+        .then(_ => this.setSmsCarriers())
         .finally(() => this.loading = false);
     }
 
+    setOrgSettings(): Promise<any> {
+        return this.serverStore.getItemBatch(ORG_SETTING_TYPES)
+        .then(settings => this.orgSettings = settings);
+    }
+
+    setSmsCarriers(): Promise<any> {
+        if (!this.orgSettings['sms.enable']) {
+            return Promise.resolve();
+        }
+
+        return this.patronService.getSmsCarriers().then(carriers => {
+            this.smsCarriers = carriers.map(carrier => {
+                return {
+                    id: carrier.id(),
+                    label: carrier.name()
+                };
+            });
+        });
+    }
+
     getSecondaryGroups(): Promise<any> {
+        return this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.get_groups',
+            this.auth.token(), this.patronId
 
-          return this.net.request(
-              'open-ils.actor',
-              'open-ils.actor.user.get_groups',
-              this.auth.token(), this.patronId
+        ).pipe(concatMap(maps => this.pcrud.search('pgt',
+            {id: maps.map(m => m.grp())}, {}, {atomic: true})
 
-          ).pipe(concatMap(maps => this.pcrud.search('pgt',
-              {id: maps.map(m => m.grp())}, {}, {atomic: true})
-
-          )).pipe(tap(grps => this.secondaryGroups = grps)).toPromise();
+        )).pipe(tap(grps => this.secondaryGroups = grps)).toPromise();
     }
 
     setIdentTypes(): Promise<any> {
         return this.patronService.getIdentTypes()
         .then(types => {
             this.identTypes = types.map(t => ({id: t.id(), label: t.name()}));
+        });
+    }
+
+    setInetLevels(): Promise<any> {
+        return this.patronService.getInetLevels()
+        .then(levels => {
+            this.inetLevels = levels.map(t => ({id: t.id(), label: t.name()}));
         });
     }
 
@@ -196,6 +238,23 @@ export class EditComponent implements OnInit {
             }
         });
 
+        const holdNotify = this.userSettings['opac.hold_notify'];
+        if (holdNotify) {
+            this.holdNotifyTypes.email = holdNotify.match(/email/) !== null;
+            this.holdNotifyTypes.phone = holdNotify.match(/phone/) !== null;
+            this.holdNotifyTypes.sms = holdNotify.match(/sms/) !== null;
+        }
+
+        if (this.userSettings['opac.default_sms_carrier']) {
+            this.userSettings['opac.default_sms_carrier'] =
+                Number(this.userSettings['opac.default_sms_carrier']);
+        }
+
+        if (this.userSettings['opac.default_pickup_location']) {
+            this.userSettings['opac.default_pickup_location'] =
+                Number(this.userSettings['opac.default_pickup_location']);
+        }
+
         this.expireDate = new Date(this.patron.expire_date());
     }
 
@@ -242,6 +301,13 @@ export class EditComponent implements OnInit {
     // so avoid any heavy lifting here.  See afterFieldChange();
     fieldValueChange(path: string, field: string, value: any) {
         if (typeof value === 'boolean') { value = value ? 't' : 'f'; }
+
+        // This can be called in cases where components fire up, even
+        // though the actual value on the patron has not changed.
+        // Exit early in that case so we don't mark the form as dirty.
+        const oldValue = this.getFieldValue(path, field);
+        if (oldValue === value) { return; }
+
         this.changeHandlerNeeded = true;
         this.objectFromPath(path)[field](value);
     }
@@ -253,11 +319,11 @@ export class EditComponent implements OnInit {
 
         // TODO: set dirty
 
-
         const obj = path ? this.patron[path]() : this.patron;
         const value = obj[field]();
 
-        console.debug(`Modifying field path=${path} field=${field} value=${value}`);
+        console.debug(
+            `Modifying field path=${path || ''} field=${field} value=${value}`);
 
         switch (field) {
             // TODO: do many more
@@ -297,6 +363,12 @@ export class EditComponent implements OnInit {
     cannotHaveUsersOrgs(): number[] {
         return this.org.list()
           .filter(org => org.ou_type().can_have_users() === 'f')
+          .map(org => org.id());
+    }
+
+    cannotHaveVolsOrgs(): number[] {
+        return this.org.list()
+          .filter(org => org.ou_type().can_have_vols() === 'f')
           .map(org => org.id());
     }
 

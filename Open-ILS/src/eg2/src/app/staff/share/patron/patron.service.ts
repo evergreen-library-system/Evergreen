@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {tap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -13,7 +14,9 @@ import {BarcodeSelectComponent} from '@eg/staff/share/barcodes/barcode-select.co
 export class PatronService {
 
     identTypes: IdlObject[];
+    inetLevels: IdlObject[];
     profileGroups: IdlObject[];
+    smsCarriers: IdlObject[];
 
     constructor(
         private net: NetService,
@@ -101,6 +104,16 @@ export class PatronService {
         .toPromise().then(types => this.identTypes = types);
     }
 
+    getInetLevels(): Promise<IdlObject[]> {
+        if (this.inetLevels) {
+            return Promise.resolve(this.inetLevels);
+        }
+
+        return this.pcrud.retrieveAll('cnal',
+            {order_by: {cit: ['name']}}, {atomic: true})
+        .toPromise().then(levels => this.inetLevels = levels);
+    }
+
     getProfileGroups(): Promise<IdlObject[]> {
         if (this.profileGroups) {
             return Promise.resolve(this.profileGroups);
@@ -109,6 +122,18 @@ export class PatronService {
         return this.pcrud.retrieveAll('pgt',
             {order_by: {cit: ['name']}}, {atomic: true})
         .toPromise().then(types => this.profileGroups = types);
+    }
+
+    getSmsCarriers(): Promise<IdlObject[]> {
+        if (this.smsCarriers) {
+            return Promise.resolve(this.smsCarriers);
+        }
+
+        this.smsCarriers = [];
+        return this.pcrud.search(
+            'csc', {active: 't'}, {order_by: {csc: 'name'}})
+            .pipe(tap(carrier => this.smsCarriers.push(carrier))
+        ).toPromise().then(_ => this.smsCarriers);
     }
 }
 

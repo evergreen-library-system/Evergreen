@@ -43,6 +43,7 @@ export class PatronResolver implements Resolve<Promise<any[]>> {
           'ui.circ.billing.amount_limit',
           'circ.staff_client.do_not_auto_attempt_print',
           'circ.disable_patron_credit',
+          'sms.enable',
           'credit.processor.default'
         ]).then(settings => {
             this.context.noTallyClaimsReturned =
