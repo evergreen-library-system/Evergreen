@@ -46,9 +46,9 @@
       class="form-control" 
       name="{{getClass(args.cls)}}-{{args.field}}-input"
       id="{{getClass(args.cls)}}-{{args.field}}-input"
-      [ngModel]="objectFromPath(args.path)[args.field]()"
-      (ngModelChange)="fieldValueChange(args.path, args.field, $event)"
-      (change)="afterFieldChange(args.path, args.field)"
+      [ngModel]="objectFromPath(args.path, args.index)[args.field]()"
+      (ngModelChange)="fieldValueChange(args.path, args.index, args.field, $event)"
+      (change)="afterFieldChange(args.path, args.index, args.field)"
       [required]="fieldRequired(getClass(args.cls), args.field)"
       [pattern]="fieldPattern(getClass(args.cls), args.field)"
       [disabled]="args.disabled"
@@ -64,9 +64,9 @@
       class="form-check-input ml-0"
       name="{{getClass(args.cls)}}-{{args.field}}-input"
       id="{{getClass(args.cls)}}-{{args.field}}-input"
-      [ngModel]="objectFromPath(args.path)[args.field]() == 't'"
-      (ngModelChange)="fieldValueChange(args.path, args.field, $event)"
-      (change)="afterFieldChange(args.path, args.field)"
+      [ngModel]="objectFromPath(args.path, args.index)[args.field]() == 't'"
+      (ngModelChange)="fieldValueChange(args.path, args.index, args.field, $event)"
+      (change)="afterFieldChange(args.path, args.index, args.field)"
       [required]="fieldRequired(getClass(args.cls), args.field)"
       [pattern]="fieldPattern(getClass(args.cls), args.field)"
       [disabled]="disabled"
@@ -80,10 +80,10 @@
     <eg-combobox [entries]="args.entries"
       name="{{getClass(args.cls)}}-{{args.field}}-input"
       domId="{{getClass(args.cls)}}-{{args.field}}-input"
-      [selectedId]="getFieldValue(args.path, args.field)"
+      [selectedId]="getFieldValue(args.path, args.index, args.field)"
       (onChange)="
-        fieldValueChange(args.path, args.field, $event ? $event.id : null); 
-        afterFieldChange(args.path, args.field)"
+        fieldValueChange(args.path, args.index, args.field, $event ? $event.id : null); 
+        afterFieldChange(args.path, args.index, args.field)"
       [required]="fieldRequired(getClass(args.cls), args.field)"
       [disabled]="args.disabled">
     </eg-combobox>
@@ -229,9 +229,9 @@
         class="form-control" 
         name="au-name_keywords-input"
         id="au-name_keywords-input"
-        [ngModel]="objectFromPath(null)['name_keywords']()"
-        (ngModelChange)="fieldValueChange(null, 'name_keywords', $event)"
-        (change)="afterFieldChange(null, 'name_keywords')"
+        [ngModel]="objectFromPath(null, null)['name_keywords']()"
+        (ngModelChange)="fieldValueChange(null, null, 'name_keywords', $event)"
+        (change)="afterFieldChange(null, args.index, 'name_keywords')"
         [required]="fieldRequired('au', 'name_keywords')"
         [pattern]="fieldPattern('au', 'name_keywords')">
       </textarea>
@@ -255,8 +255,8 @@
         [noMaxWidth]="true"
         [initialIso]="patron.dob()"
         (onChangeAsIso)="
-          fieldValueChange(null, 'dob', $event); 
-          afterFieldChange(null, 'dob')"
+          fieldValueChange(null, null, 'dob', $event); 
+          afterFieldChange(null, null, 'dob')"
         [required]="fieldRequired('au', 'dob')">
       </eg-date-select>
     </div>
@@ -342,8 +342,8 @@
         [initialOrgId]="patron.home_ou()"
         [disableOrgs]="cannotHaveUsersOrgs()"
         (onChange)="
-          fieldValueChange(null, 'home_ou', $event ? $event.id() : null); 
-          afterFieldChange(null, 'home_ou')">
+          fieldValueChange(null, null, 'home_ou', $event ? $event.id() : null); 
+          afterFieldChange(null, null, 'home_ou')">
       </eg-org-select>
     </div>
   </div>
@@ -357,8 +357,8 @@
         [useDisplayEntries]="true"
         [initialGroupId]="patron.profile()" 
         (profileChange)="
-          fieldValueChange(null, 'profile', $event ? $event.id() : null); 
-          afterFieldChange(null, 'profile')">
+          fieldValueChange(null, null, 'profile', $event ? $event.id() : null); 
+          afterFieldChange(null, null, 'profile')">
       </eg-profile-select>
     </div>
     <div class="col-lg-6">
@@ -415,9 +415,9 @@
         class="form-control" 
         name="au-alert_message-input"
         id="au-alert_message-input"
-        [ngModel]="objectFromPath(null)['alert_message']()"
-        (ngModelChange)="fieldValueChange(null, 'alert_message', $event)"
-        (change)="afterFieldChange(null, 'alert_message')"
+        [ngModel]="objectFromPath(null, null)['alert_message']()"
+        (ngModelChange)="fieldValueChange(null, null, 'alert_message', $event)"
+        (change)="afterFieldChange(null, null, 'alert_message')"
         [required]="fieldRequired('au', 'alert_message')"
         [pattern]="fieldPattern('au', 'alert_message')">
       </textarea>
@@ -505,8 +505,62 @@
     </div>
   </ng-container>
 
+  <ng-container *ngFor="let addr of patron.addresses(); let index = index">
+    <div class="alert alert-success p-2 m-3 d-flex">
+      <div class="col-lg-3" i18n>Address</div>
+      <div class="col-lg-9">
+        <div class="form-check form-check-inline mr-2">
+          <input class="form-check-input" type="checkbox" 
+            name="addr-{{addr.id()}}-mailing" id="addr-{{addr.id()}}-mailing" 
+            [ngModel]="addr.id() == patron.mailing_address().id()"
+            (ngModelChange)="setAddrType('mailing', addr, $event)"/>
+          <label class="form-check-label" 
+            for="addr-{{addr.id()}}-mailing" i18n>Mailing</label>
+        </div>
+        <div class="form-check form-check-inline mr-2">
+          <input class="form-check-input" type="checkbox" 
+            name="addr-{{addr.id()}}-billing" id="addr-{{addr.id()}}-billing" 
+            [ngModel]="addr.id() == patron.billing_address().id()"
+            (ngModelChange)="setAddrType('billing', addr, $event)"/>
+          <label class="form-check-label" 
+            for="addr-{{addr.id()}}-billing" i18n>Physical</label>
+        </div>
+        <button class="btn btn-danger" (click)="deleteAddr(addr)" i18n>Delete</button>
+      </div>
+    </div>
+    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+      fieldInput, field: 'address_type', cls: 'aua', path: 'addresses', index: index}}">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+      fieldInput, field: 'post_code', cls: 'aua', path: 'addresses', index: index}}">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+      fieldInput, field: 'street1', cls: 'aua', path: 'addresses', index: index}}">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+      fieldInput, field: 'street2', cls: 'aua', path: 'addresses', index: index}}">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+      fieldInput, field: 'city', cls: 'aua', path: 'addresses', index: index}}">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+      fieldInput, field: 'county', cls: 'aua', path: 'addresses', index: index}}">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+      fieldInput, field: 'state', cls: 'aua', path: 'addresses', index: index}}">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+      fieldInput, field: 'country', cls: 'aua', path: 'addresses', index: index}}">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+      fieldCheckbox, field: 'valid', cls: 'aua', path: 'addresses', index: index}}">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+      fieldCheckbox, field: 'within_city_limits', cls: 'aua', path: 'addresses', index: index}}">
+    </ng-container>
+  </ng-container>
 
-  <div class="alert alert-success p-2 m-3" i18n>Addresses</div>
+  <button class="btn btn-success" (click)="newAddr()" i18n>New Address</button>
 
 </div>
 

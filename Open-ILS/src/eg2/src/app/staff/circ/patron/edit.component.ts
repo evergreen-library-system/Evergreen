@@ -272,8 +272,14 @@ export class EditComponent implements OnInit {
         this.patron = patron;
     }
 
-    objectFromPath(path: string): IdlObject {
-        return path ? this.patron[path]() : this.patron;
+    objectFromPath(path: string, index: number): IdlObject {
+        const base = path ? this.patron[path]() : this.patron;
+        if (index === null || index === undefined) {
+            return base;
+        } else {
+            // Some paths lead to an array of objects.
+            return base[index];
+        }
     }
 
     getFieldLabel(idlClass: string, field: string, override?: string): string {
@@ -287,8 +293,8 @@ export class EditComponent implements OnInit {
         return cls || 'au';
     }
 
-    getFieldValue(path: string, field: string): any {
-        return this.objectFromPath(path)[field]();
+    getFieldValue(path: string, index: number, field: string): any {
+        return this.objectFromPath(path, index)[field]();
     }
 
     userSettingChange(name: string, value: any) {
@@ -299,28 +305,27 @@ export class EditComponent implements OnInit {
     // Called as the model changes.
     // This may be called many times before the final value is applied,
     // so avoid any heavy lifting here.  See afterFieldChange();
-    fieldValueChange(path: string, field: string, value: any) {
+    fieldValueChange(path: string, index: number, field: string, value: any) {
         if (typeof value === 'boolean') { value = value ? 't' : 'f'; }
 
         // This can be called in cases where components fire up, even
         // though the actual value on the patron has not changed.
         // Exit early in that case so we don't mark the form as dirty.
-        const oldValue = this.getFieldValue(path, field);
+        const oldValue = this.getFieldValue(path, index, field);
         if (oldValue === value) { return; }
 
         this.changeHandlerNeeded = true;
-        this.objectFromPath(path)[field](value);
+        this.objectFromPath(path, index)[field](value);
     }
 
     // Called after a change operation has completed (e.g. on blur)
-    afterFieldChange(path: string, field: string) {
+    afterFieldChange(path: string, index: number, field: string) {
         if (!this.changeHandlerNeeded) { return; } // no changes applied
         this.changeHandlerNeeded = false;
 
         // TODO: set dirty
 
-        const obj = path ? this.patron[path]() : this.patron;
-        const value = obj[field]();
+        const value = this.getFieldValue(path, index, field);
 
         console.debug(
             `Modifying field path=${path || ''} field=${field} value=${value}`);
@@ -351,12 +356,12 @@ export class EditComponent implements OnInit {
     }
 
     generatePassword() {
-        this.fieldValueChange(null,
+        this.fieldValueChange(null, null,
           'passwd', Math.floor(Math.random() * 9000) + 1000);
 
         // Normally this is called on (blur), but the input is not
         // focused when using the generate button.
-        this.afterFieldChange(null, 'passwd');
+        this.afterFieldChange(null, null, 'passwd');
     }
 
 
@@ -380,8 +385,8 @@ export class EditComponent implements OnInit {
         const nowEpoch = new Date().getTime();
         const newDate = new Date(nowEpoch + (seconds * 1000 /* millis */));
         this.expireDate = newDate;
-        this.fieldValueChange(null, 'profile', newDate.toISOString());
-        this.afterFieldChange(null, 'profile');
+        this.fieldValueChange(null, null, 'profile', newDate.toISOString());
+        this.afterFieldChange(null, null, 'profile');
     }
 
     handleBoolResponse(success: boolean,
@@ -474,17 +479,44 @@ export class EditComponent implements OnInit {
         ).toPromise().then(resp => {
 
             if (Number(resp) === 1) {
-
                 return this.handleBoolResponse(
                     true, 'circ.patron.edit.grplink.success');
 
             } else {
-
                 return this.handleBoolResponse(
                     false, 'circ.patron.edit.grplink.fail',
                     'Failed to change group links: ' + resp);
             }
         });
     }
+
+    // Set the mailing or billing address
+    setAddrType(addrType: string, addr: IdlObject, selected: boolean) {
+        if (selected) {
+            this.patron[addrType + '_address'](addr);
+        } else {
+            // Unchecking mailing/billing means we have to randomly
+            // select another address to fill that role.  Select the
+            // first address in the list (that does not match the
+            // modifed address)
+            this.patron.addresses().some(a => {
+                if (a.id() !== addr.id()) {
+                    this.patron[addrType + '_address'](a);
+                    return true;
+                }
+            });
+        }
+    }
+
+    deleteAddr(addr: IdlObject) {
+    }
+
+    newAddr() {
+        const addr = this.idl.create('aua');
+        addr.isnew(true);
+        addr.valid('t');
+        this.patron.addresses().push(addr);
+    }
 }
+
 
