@@ -54,6 +54,11 @@ const FLESH_PATRON_FIELDS = {
   }
 };
 
+interface StatCat {
+    cat: IdlObject;
+    entries: ComboboxEntry[];
+}
+
 @Component({
   templateUrl: 'edit.component.html',
   selector: 'eg-patron-edit',
@@ -82,8 +87,9 @@ export class EditComponent implements OnInit {
     userSettings: {[name: string]: any} = {};
     userSettingTypes: {[name: string]: IdlObject} = {};
     optInSettingTypes: {[name: string]: IdlObject} = {};
-    expireDate: Date;
     secondaryGroups: IdlObject[];
+    statCats: StatCat[] = [];
+    expireDate: Date;
 
     // All locations we have the specified permissions
     permOrgs: {[name: string]: number[]};
@@ -122,8 +128,25 @@ export class EditComponent implements OnInit {
         .then(_ => this.setInetLevels())
         .then(_ => this.setOptInSettings())
         .then(_ => this.setOrgSettings())
+        .then(_ => this.setStatCats())
         .then(_ => this.setSmsCarriers())
         .finally(() => this.loading = false);
+    }
+
+    setStatCats(): Promise<any> {
+        this.statCats = [];
+        return this.patronService.getStatCats().then(cats => {
+            cats.forEach(cat => {
+                const entries = cat.entries.map(entry => {
+                    return {id: entry.id(), label: entry.value()};
+                });
+
+                this.statCats.push({
+                    cat: cat,
+                    entries: entries
+                });
+            });
+        });
     }
 
     setOrgSettings(): Promise<any> {

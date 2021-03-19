@@ -17,6 +17,7 @@ export class PatronService {
     inetLevels: IdlObject[];
     profileGroups: IdlObject[];
     smsCarriers: IdlObject[];
+    statCats: IdlObject[];
 
     constructor(
         private net: NetService,
@@ -134,6 +135,27 @@ export class PatronService {
             'csc', {active: 't'}, {order_by: {csc: 'name'}})
             .pipe(tap(carrier => this.smsCarriers.push(carrier))
         ).toPromise().then(_ => this.smsCarriers);
+    }
+
+    // Local stat cats fleshed with entries; sorted.
+    getStatCats(): Promise<IdlObject[]> {
+        if (this.statCats) {
+            return Promise.resolve(this.statCats);
+        }
+
+        return this.net.request(
+            'open-ils.circ',
+            'open-ils.circ.stat_cat.actor.retrieve.all',
+            this.auth.token(), this.auth.user().ws_ou()
+        ).toPromise().then(cats => {
+            cats = cats.sort((a, b) => a.name() < b.name() ? -1 : 1);
+            cats.forEach(cat => {
+                cat.entries(
+                    cat.entries().sort((a,b) => a.value() < b.value() ? -1 : 1)
+                );
+            });
+            return cats;
+        });
     }
 }
 
