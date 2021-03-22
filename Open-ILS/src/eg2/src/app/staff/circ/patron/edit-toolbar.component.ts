@@ -4,9 +4,7 @@ import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronContextService} from './patron.service';
-
-type FieldOptions = 'required' | 'suggested' | 'all';
+import {PatronContextService, EditorFieldOptions} from './patron.service';
 
 @Component({
   templateUrl: 'edit-toolbar.component.html',
@@ -14,27 +12,21 @@ type FieldOptions = 'required' | 'suggested' | 'all';
 })
 export class EditToolbarComponent implements OnInit {
 
-    showFields: FieldOptions = 'all';
-
-    @Output() saveClicked: EventEmitter<void> = new EventEmitter<void>();
-    @Output() saveCloneClicked: EventEmitter<void> = new EventEmitter<void>();
-    @Output() printClicked: EventEmitter<void> = new EventEmitter<void>();
-    @Output() showFieldsChanged:
-      EventEmitter<FieldOptions> = new EventEmitter<FieldOptions>();
+    showFields: EditorFieldOptions = 'all';
 
     constructor(
         private org: OrgService,
         private net: NetService,
-        public patronService: PatronService,
+        private patronService: PatronService,
         public context: PatronContextService
     ) {}
 
     ngOnInit() {
     }
 
-    changeFields(field: FieldOptions) {
+    changeFields(field: EditorFieldOptions) {
         this.showFields = field;
-        this.showFieldsChanged.emit(field);
+        this.context.showFieldsChanged.emit(field);
     }
 }
 

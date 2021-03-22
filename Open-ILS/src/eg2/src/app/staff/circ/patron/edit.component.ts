@@ -8,7 +8,7 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronContextService} from './patron.service';
+import {PatronContextService, EditorFieldOptions} from './patron.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {DateUtil} from '@eg/share/util/date';
 import {ProfileSelectComponent} from '@eg/staff/share/patron/profile-select.component';
@@ -70,6 +70,7 @@ export class EditComponent implements OnInit {
 
     autoId = -1;
     patron: IdlObject;
+    modifiedPatron: IdlObject;
     changeHandlerNeeded = false;
     nameTab = 'primary';
     loading = false;
@@ -86,6 +87,7 @@ export class EditComponent implements OnInit {
     optInSettingTypes: {[name: string]: IdlObject} = {};
     secondaryGroups: IdlObject[];
     expireDate: Date;
+    visibleFields: EditorFieldOptions;
 
     // All locations we have the specified permissions
     permOrgs: {[name: string]: number[]};
@@ -112,6 +114,13 @@ export class EditComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+
+        // Listen for edit-toolbar events
+        this.context.saveClicked.subscribe(_ => this.save());
+        this.context.saveCloneClicked.subscribe(_ => this.saveClone());
+        this.context.printClicked.subscribe(_ => this.printPatron());
+        this.context.showFieldsChanged.subscribe(f => this.visibleFields = f);
+
         this.load();
     }
 
@@ -301,7 +310,8 @@ export class EditComponent implements OnInit {
                 cboxEntry = {
                     id: null,
                     freetext: true,
-                    label: map.stat_cat_entry()
+                    label: map.stat_cat_entry(),
+                    fm: map
                 };
 
                 stat.entries.unshift(cboxEntry);
@@ -316,6 +326,7 @@ export class EditComponent implements OnInit {
         patron.isnew(true);
         patron.addresses([]);
         patron.settings([]);
+        patron.waiver_entries([]);
 
         const card = this.idl.create('ac');
         card.isnew(true);
@@ -353,7 +364,26 @@ export class EditComponent implements OnInit {
 
     userStatCatChange(cat: IdlObject, entry: ComboboxEntry) {
         // TODO: set dirty
-        // 2-way binding at work, no need to set the value
+
+        let map = this.patron.stat_cat_entries()
+            .filter(m => m.stat_cat() === cat.id())[0];
+
+        if (map) {
+            if (entry) {
+                map.stat_cat_entry(entry.label);
+                map.ischanged(true);
+                map.isdeleted(false);
+            } else {
+                map.isdeleted(true);
+            }
+        } else {
+            map = this.idl.create('actscecm');
+            map.isnew(true);
+            map.stat_cat(cat.id());
+            map.stat_cat_entry(entry.label);
+            map.target_usr(this.patronId);
+            this.patron.stat_cat_entries().push(map);
+        }
     }
 
     userSettingChange(name: string, value: any) {
@@ -403,7 +433,9 @@ export class EditComponent implements OnInit {
 
         // TODO: set dirty
 
+        const obj = this.objectFromPath(path, index);
         const value = this.getFieldValue(path, index, field);
+        obj.ischanged(true); // isnew() supersedes
 
         console.debug(
             `Modifying field path=${path || ''} field=${field} value=${value}`);
@@ -637,6 +669,85 @@ export class EditComponent implements OnInit {
 
     nonDeletedAddresses(): IdlObject[] {
         return this.patron.addresses().filter(a => !a.isdeleted());
+    }
+
+    save(): Promise<any> {
+
+        // TODO clear unload prompt
+
+        this.loading = true;
+        return this.saveUser()
+        .then(_ => this.saveUserSettings())
+        .then(_ => this.postSaveRedirect())
+    }
+
+    postSaveRedirect() {
+        window.location.href = window.location.href;
+    }
+
+    saveClone() {
+        // TODO
+    }
+
+    // Resolves on success, rejects on error
+    saveUser(): Promise<IdlObject> {
+        this.modifiedPatron = null;
+
+        return this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.patron.update',
+            this.auth.token(), this.patron
+        ).toPromise().then(result => {
+
+            if (result && result.classname) {
+                // Successful result returns the patron IdlObject.
+                return this.modifiedPatron = result;
+            }
+
+            const evt = this.evt.parse(result);
+
+            if (evt) {
+                console.error('Patron update failed with', evt);
+                if (evt.textcode === 'XACT_COLLISION') {
+                    // TODO alert
+                }
+            }
+
+            alert('Patron update failed:' + result);
+
+            return Promise.reject('Save Failed');
+        });
+    }
+
+    // Resolves on success, rejects on error
+    saveUserSettings(): Promise<any> {
+
+        let settings: any = {};
+
+        if (this.patronId) {
+            // Update all user editor setting values for existing
+            // users regardless of whether a value changed.
+            settings = this.userSettings;
+
+        } else {
+
+            // Create settings for all non-null setting values for new patrons.
+            this.userSettings.forEach( (val, key) => {
+                if (val !== null) settings[key] = val;
+            });
+        }
+
+        if (Object.keys(settings).length == 0) { return Promise.resolve(); }
+
+        return this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.patron.settings.update',
+            this.auth.token(), this.modifiedPatron.id(), settings
+        ).toPromise();
+    }
+
+    printPatron() {
+        // TODO
     }
 }
 

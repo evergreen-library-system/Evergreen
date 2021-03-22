@@ -16,11 +16,11 @@
   <div class="col-lg-6 d-flex">
     <div class="ml-auto">
       <button class="btn btn-outline-dark" 
-        (click)="printClicked.emit()" i18n>Print</button>
+        (click)="context.printClicked.emit()" i18n>Print</button>
       <button class="btn btn-outline-dark ml-2" 
-        (click)="saveClicked.emit()" i18n>Save</button>
+        (click)="context.saveClicked.emit()" i18n>Save</button>
       <button class="btn btn-outline-dark ml-2" 
-        (click)="saveCloneClicked.emit()" i18n>Save &amp; Clone</button>
+        (click)="context.saveCloneClicked.emit()" i18n>Save &amp; Clone</button>
     </div>
   </div>
 </div>

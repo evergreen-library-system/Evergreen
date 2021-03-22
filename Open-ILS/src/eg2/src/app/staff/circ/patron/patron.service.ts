@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, EventEmitter} from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -7,6 +7,9 @@ import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronSearch} from '@eg/staff/share/patron/search.component';
 import {StoreService} from '@eg/core/store.service';
 import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
+
+export type EditorFieldOptions = 'required' | 'suggested' | 'all';
+
 
 export interface BillGridEntry extends CircDisplayInfo {
     xact: IdlObject; // mbt
@@ -106,6 +109,15 @@ export class PatronContextService {
 
     // These should persist tab changes
     checkouts: CircGridEntry[] = [];
+
+    // Emitted by the patron edit toolbar, which is kept as a
+    // separate component so it can be positioned differently.
+    // We just act as a go-between.
+    saveClicked: EventEmitter<void> = new EventEmitter<void>();
+    saveCloneClicked: EventEmitter<void> = new EventEmitter<void>();
+    printClicked: EventEmitter<void> = new EventEmitter<void>();
+    showFieldsChanged: EventEmitter<EditorFieldOptions> =
+        new EventEmitter<EditorFieldOptions>();
 
     constructor(
         private store: StoreService,
