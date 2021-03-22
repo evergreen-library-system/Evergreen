@@ -427,8 +427,7 @@ export class ComboboxComponent
     // Apply a default selection where needed
     applySelection() {
 
-        if (this.startId !== null &&
-            this.entrylist && !this.defaultSelectionApplied) {
+        if (this.entrylist && !this.defaultSelectionApplied) {
 
             const entry =
                 this.entrylist.filter(e => e.id === this.startId)[0];
@@ -477,13 +476,25 @@ export class ComboboxComponent
         if (typeof this.selected === 'string') {
 
             if (this.allowFreeText && this.selected !== '') {
-                // Free text entered which does not match a known entry
-                // translate it into a dummy ComboboxEntry
-                this.selected = {
-                    id: null,
-                    label: this.selected,
-                    freetext: true
-                };
+                const freeText = this.entrylist.filter(e => e.id === null)[0];
+
+                if (freeText) {
+
+                    // If we already had a free text entry, just replace
+                    // the label with the new value
+                    freeText.label = this.selected;
+                    this.selected = freeText;
+
+                }  else {
+
+                    // Free text entered which does not match a known entry
+                    // translate it into a dummy ComboboxEntry
+                    this.selected = {
+                        id: null,
+                        label: this.selected,
+                        freetext: true
+                    };
+                }
 
             } else {
 
