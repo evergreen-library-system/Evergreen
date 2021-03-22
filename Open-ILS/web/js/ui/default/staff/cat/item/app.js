@@ -161,7 +161,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     }
 
     $scope.show_triggered_events = function() {
-        $location.path('/cat/item/' + $scope.args.copyId + '/triggered_events');
+        window.open('/eg2/staff/circ/item/event-log/' + $scope.args.copyId, '_blank');
     }
 
     $scope.show_item_holds = function() {
@@ -469,7 +469,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     $scope.context.show_triggered_events = function() {
         var item = copyGrid.selectedItems()[0];
         if (item) 
-            $location.path('/cat/item/' + item.id + '/triggered_events');
+            window.open('/eg2/staff/circ/item/event-log/' + item.id, '_blank');
     }
 
     function gatherSelectedRecordIds () {
@@ -613,7 +613,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     $scope.selectedHoldingsItemStatusTgrEvt= function() {
         var item = copyGrid.selectedItems()[0];
         if (item)
-            $location.path('/cat/item/' + item.id + '/triggered_events');
+            window.open('/eg2/staff/circ/item/event-log/' + item.id, '_blank');
     }
 
     $scope.selectedHoldingsItemStatusHolds= function() {
@@ -1320,7 +1320,7 @@ console.debug($scope.copy_alert_count);
     }
 
     $scope.context.show_triggered_events = function() {
-        $location.path('/cat/item/' + copyId + '/triggered_events');
+        window.open('/eg2/staff/circ/item/event-log/' + copyId, '_blank');
     }
 
     loadCopy().then(loadTabData);

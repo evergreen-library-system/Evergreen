@@ -19,13 +19,13 @@ import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.s
 // A filterable grid of A/T events for circ or ahr hook core types
 
 @Component({
-    selector: 'eg-event-grid',
+    selector: 'eg-item-event-grid',
     templateUrl: './event-grid.component.html'
 })
 
-export class EventGridComponent implements OnChanges, OnInit {
+export class ItemEventGridComponent implements OnChanges, OnInit {
 
-    @Input() patron: number;
+    @Input() item: number;
     @Input() event_type: string;
 
     gridSource: GridDataSource;
@@ -65,7 +65,7 @@ export class EventGridComponent implements OnChanges, OnInit {
             // base query to grab everything
             const base: Object = {};
             base[this.idl.classes['atoul'].pkey] = {'!=' : null};
-            base['context_user'] = (this.patron ? this.patron : {'>' : 0})
+            base['context_item'] = (this.item ? this.item : {'>' : 0})
 
             // circs or holds?
             if (this.event_type == 'circ') {
@@ -88,7 +88,7 @@ export class EventGridComponent implements OnChanges, OnInit {
                 query, {
                 flesh: 3,
                 flesh_fields: {
-                    atoul: ['context_item', 'context_user'],
+                    atoul: ['context_user','context_item'],
                     au: ['card']
                 },
                 offset: pager.offset,

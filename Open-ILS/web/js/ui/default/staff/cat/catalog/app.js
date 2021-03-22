@@ -1658,8 +1658,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         angular.forEach(
             gatherSelectedHoldingsIds(),
             function (cid) {
-                var url = egCore.env.basePath +
-                          'cat/item/' + cid + '/triggered_events';
+                var url = '/eg2/staff/circ/item/event-log/' + cid;
                 $timeout(function() { $window.open(url, '_blank') });
             }
         );

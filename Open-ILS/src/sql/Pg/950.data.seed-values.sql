@@ -17558,7 +17558,8 @@ UPDATE
 SET
     context_usr_path = 'usr',
     context_library_path = 'circ_lib',
-    context_bib_path = 'target_copy.call_number.record'
+    context_bib_path = 'target_copy.call_number.record',
+    context_item_path = 'target_copy'
 WHERE
     hook IN (
         SELECT key FROM action_trigger.hook WHERE core_type = 'circ'
@@ -17570,7 +17571,8 @@ UPDATE
 SET
     context_usr_path = 'usr',
     context_library_path = 'pickup_lib',
-    context_bib_path = 'bib_rec'
+    context_bib_path = 'bib_rec',
+    context_item_path = 'current_copy'
 WHERE
     hook IN (
         SELECT key FROM action_trigger.hook WHERE core_type = 'ahr'
@@ -21754,7 +21756,22 @@ VALUES (
         'eg.staff.catalog.results.show_more',
         'Show more details in Angular staff catalog',
         'cwst', 'label'
-    )
+);
+
+INSERT INTO config.workstation_setting_type
+    (name, grp, datatype, label)
+VALUES (
+    'eg.grid.item.event_grid', 'gui', 'object',
+    oils_i18n_gettext(
+    'eg.grid.item.event_grid',
+    'Grid Config: item.event_grid',
+    'cwst', 'label')
+), (
+    'eg.grid.patron.event_grid', 'gui', 'object',
+    oils_i18n_gettext(
+    'eg.grid.patron.event_grid',
+    'Grid Config: patron.event_grid',
+    'cwst', 'label')
 );
 
 INSERT INTO config.org_unit_setting_type

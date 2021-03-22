@@ -1,9 +1,9 @@
 <eg-grid #grid [dataSource]="gridSource" idlClass="atoul"
   [sortable]="true"
   [filterable]="true"
-  showFields="context_library,state,name,reactor,run_time,context_item.barcode,title,author"
+  showFields="context_library,state,name,reactor,run_time,context_user.card.barcode,title,author"
   ignoreFields="target_circ,target_hold"
-  persistKey="patron.event_grid">
+  persistKey="item.event_grid">
   <eg-grid-toolbar-action label="Reset selected events" i18n-label
     (onClick)="act_on_events('reset',$event)" [disableOnRows]="noRowSelected">
   </eg-grid-toolbar-action>

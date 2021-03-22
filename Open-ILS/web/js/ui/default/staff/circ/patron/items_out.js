@@ -476,11 +476,10 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
     $scope.show_triggered_events = function(items) {
         var focus = items.length == 1;
         angular.forEach(items, function(item) {
-            var url = egCore.env.basePath +
-                      '/cat/item/' +
-                      item.target_copy().id() +
-                      '/triggered_events';
+            var url = '/eg2/staff/circ/item/event-log/' +
+                      item.target_copy().id();
             $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
+
         });
     }
 

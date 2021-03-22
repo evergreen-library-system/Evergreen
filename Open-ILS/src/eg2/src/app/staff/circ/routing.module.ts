@@ -5,6 +5,10 @@ const routes: Routes = [
   { path: 'patron',
     loadChildren: () =>
       import('./patron/routing.module').then(m => m.CircPatronRoutingModule)
+  },
+  { path: 'item',
+    loadChildren: () =>
+      import('./item/routing.module').then(m => m.CircItemRoutingModule)
   }
 ];
 

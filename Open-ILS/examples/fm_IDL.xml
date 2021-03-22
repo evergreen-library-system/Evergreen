@@ -1457,6 +1457,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Context User Path" name="context_usr_path" reporter:datatype="text"/>
 			<field reporter:label="Context Library Path" name="context_library_path" reporter:datatype="text"/>
 			<field reporter:label="Context Bib Path" name="context_bib_path" reporter:datatype="text"/>
+			<field reporter:label="Context Item Path" name="context_item_path" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -1554,6 +1555,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Context User" name="context_user" reporter:datatype="link"/>
 			<field reporter:label="Context Library" name="context_library" reporter:datatype="link"/>
 			<field reporter:label="Context Bib" name="context_bib" reporter:datatype="link"/>
+			<field reporter:label="Context Item" name="context_item" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="event_def" reltype="has_a" key="id" map="" class="atevdef"/>
@@ -1563,6 +1565,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="context_user" reltype="has_a" key="id" map="" class="au"/>
 			<link field="context_library" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="context_bib" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="context_item" reltype="has_a" key="id" map="" class="acp"/>
 		</links>
 	</class>
 
@@ -1696,6 +1699,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             atev.context_user,
 			atev.context_library,
             atev.context_bib,
+            atev.context_item,
             rssr.title,
             rssr.author
 		FROM action_trigger.event atev
@@ -1736,6 +1740,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Context User" name="context_user" reporter:datatype="link" />
 			<field reporter:label="Context Library" name="context_library" reporter:datatype="org_unit" />
 			<field reporter:label="Context Bib" name="context_bib" reporter:datatype="link" />
+			<field reporter:label="Context Item" name="context_item" reporter:datatype="link" />
 			<field reporter:label="Title" name="title" reporter:datatype="text" />
 			<field reporter:label="Author" name="author" reporter:datatype="text" />
 		</fields>
@@ -1749,10 +1754,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="context_user" reltype="has_a" key="id" map="" class="au" />
 			<link field="context_library" reltype="has_a" key="id" map="" class="aou" />
 			<link field="context_bib" reltype="has_a" key="id" map="" class="bre" />
+			<link field="context_item" reltype="has_a" key="id" map="" class="acp" />
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<retrieve permission="VIEW_TRIGGER_EVENT" context_field="perm_lib" />
+				<retrieve permission="VIEW_TRIGGER_EVENT" context_field="context_library" />
 			</actions>
 		</permacrud>
 	</class>

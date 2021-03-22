@@ -525,38 +525,47 @@ sub build_environment {
         if ($self->event->event_def->context_usr_path) {
             my @usr_path = split(/\./, $self->event->event_def->context_usr_path);
             $self->_object_by_path( $self->target, undef, [qw/context usr/], \@usr_path );
-
-            if ($self->event->event_def->context_bib_path) {
-                my @bib_path = split(/\./, $self->event->event_def->context_bib_path);
-                $self->_object_by_path( $self->target, undef, [qw/context bib/], \@bib_path );
-                if (ref $self->environment->{context}->{bib} eq 'ARRAY') {
-                    $self->environment->{context}->{bib} = $self->environment->{context}->{bib}->[0];
-                }
-                if ($self->environment->{context}->{bib}->isa('Fieldmapper::biblio::record_entry')) {
-                    $self->environment->{context}->{bib} = $self->environment->{context}->{bib}->id;
-                } elsif ($self->environment->{context}->{bib}->isa('Fieldmapper::reporter::hold_request_record')) {
-                    $self->environment->{context}->{bib} = $self->environment->{context}->{bib}->bib_record;
-                }
-            }
-
-            if ($self->event->event_def->context_library_path) {
-                my @library_path = split(/\./, $self->event->event_def->context_library_path);
-                $self->_object_by_path( $self->target, undef, [qw/context org/], \@library_path );
-            } else {
-                $self->_object_by_path( $self->event->event_def, undef, [qw/context org/], ['owner'] );
-            }
-            $self->update_state(
-                $self->event->state, {
-                    'context_user' => $self->environment->{context}->{usr}
-                        ? $self->environment->{context}->{usr}->id
-                        : undef,
-                    'context_library' => $self->environment->{context}->{org}
-                        ? $self->environment->{context}->{org}->id
-                        : undef,
-                    'context_bib' => $self->environment->{context}->{bib}
-                }
-            );
         }
+
+        if ($self->event->event_def->context_bib_path) {
+            my @bib_path = split(/\./, $self->event->event_def->context_bib_path);
+            $self->_object_by_path( $self->target, undef, [qw/context bib/], \@bib_path );
+            if (ref $self->environment->{context}->{bib} eq 'ARRAY') {
+                $self->environment->{context}->{bib} = $self->environment->{context}->{bib}->[0];
+            }
+            if ($self->environment->{context}->{bib}->isa('Fieldmapper::biblio::record_entry')) {
+                $self->environment->{context}->{bib} = $self->environment->{context}->{bib}->id;
+            } elsif ($self->environment->{context}->{bib}->isa('Fieldmapper::reporter::hold_request_record')) {
+                $self->environment->{context}->{bib} = $self->environment->{context}->{bib}->bib_record;
+            }
+        }
+
+        if ($self->event->event_def->context_library_path) {
+            my @library_path = split(/\./, $self->event->event_def->context_library_path);
+            $self->_object_by_path( $self->target, undef, [qw/context org/], \@library_path );
+        } else {
+            $self->_object_by_path( $self->event->event_def, undef, [qw/context org/], ['owner'] );
+        }
+
+        if ($self->event->event_def->context_item_path) {
+            my @item_path = split(/\./, $self->event->event_def->context_item_path);
+            $self->_object_by_path( $self->target, undef, [qw/context item/], \@item_path );
+        }
+
+        $self->update_state(
+            $self->event->state, {
+                'context_item' => $self->environment->{context}->{item}
+                    ? $self->environment->{context}->{item}->id
+                    : undef,
+                'context_user' => $self->environment->{context}->{usr}
+                    ? $self->environment->{context}->{usr}->id
+                    : undef,
+                'context_library' => $self->environment->{context}->{org}
+                    ? $self->environment->{context}->{org}->id
+                    : undef,
+                'context_bib' => $self->environment->{context}->{bib}
+            }
+        );
     
         $self->environment->{complete} = 1;
     } otherwise {

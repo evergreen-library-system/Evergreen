@@ -21,7 +21,7 @@
     <a href="./cat/item/{{copy.id()}}/cat">[% l('Cataloging Info') %]</a>
   </li>
   <li ng-class="{active : tab == 'triggered_events'}">
-    <a href="./cat/item/{{copy.id()}}/triggered_events">[% l('Triggered Events') %]</a>
+    <a href="/eg2/staff/circ/item/event-log/{{copy.id()}}" target="_blank">[% l('Triggered Events') %]</a>
   </li>
   <li ng-class="{active : tab == 'course'}" ng-if="has_course_perms && courseModulesOptIn">
     <a href="./cat/item/{{copy.id()}}/course">[% l('Course Info') %]</a>
