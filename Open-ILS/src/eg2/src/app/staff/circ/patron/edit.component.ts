@@ -47,13 +47,6 @@ const PERMS_NEEDED = [
     'UPDATE_PATRON_PRIMARY_CARD'
 ];
 
-const FLESH_PATRON_FIELDS = {
-  flesh: 1,
-  flesh_fields: {
-    au: ['card', 'mailing_address', 'billing_address', 'addresses', 'settings']
-  }
-};
-
 interface StatCat {
     cat: IdlObject;
     entries: ComboboxEntry[];
@@ -75,20 +68,23 @@ export class EditComponent implements OnInit {
     @ViewChild('secondaryGroupsDialog')
         private secondaryGroupsDialog: SecondaryGroupsDialogComponent;
 
+    autoId = -1;
     patron: IdlObject;
     changeHandlerNeeded = false;
     nameTab = 'primary';
     loading = false;
 
+    surveys: IdlObject[];
     smsCarriers: ComboboxEntry[];
     identTypes: ComboboxEntry[];
     inetLevels: ComboboxEntry[];
     orgSettings: {[name: string]: any} = {};
+    statCats: StatCat[] = [];
+    userStatCats: {[statId: number]: ComboboxEntry} = {};
     userSettings: {[name: string]: any} = {};
     userSettingTypes: {[name: string]: IdlObject} = {};
     optInSettingTypes: {[name: string]: IdlObject} = {};
     secondaryGroups: IdlObject[];
-    statCats: StatCat[] = [];
     expireDate: Date;
 
     // All locations we have the specified permissions
@@ -121,25 +117,38 @@ export class EditComponent implements OnInit {
 
     load(): Promise<any> {
         this.loading = true;
-        return this.loadPatron()
+        return this.setStatCats()
+        .then(_ => this.setSurveys())
+        .then(_ => this.loadPatron())
         .then(_ => this.getSecondaryGroups())
         .then(_ => this.applyPerms())
         .then(_ => this.setIdentTypes())
         .then(_ => this.setInetLevels())
         .then(_ => this.setOptInSettings())
         .then(_ => this.setOrgSettings())
-        .then(_ => this.setStatCats())
         .then(_ => this.setSmsCarriers())
-        .finally(() => this.loading = false);
+        .then(_ => this.loading = false);
+    }
+
+    setSurveys(): Promise<any> {
+        return this.patronService.getSurveys()
+        .then(surveys => this.surveys = surveys);
+    }
+
+    surveyQuestionAnswers(question: IdlObject): ComboboxEntry[] {
+        return question.answers().map(
+            a => ({id: a.id(), label: a.answer(), fm: a}));
     }
 
     setStatCats(): Promise<any> {
         this.statCats = [];
         return this.patronService.getStatCats().then(cats => {
             cats.forEach(cat => {
-                const entries = cat.entries.map(entry => {
-                    return {id: entry.id(), label: entry.value()};
-                });
+                cat.id(Number(cat.id()));
+                cat.entries().forEach(entry => entry.id(Number(entry.id())));
+
+                const entries = cat.entries().map(entry =>
+                    ({id: entry.id(), label: entry.value()}));
 
                 this.statCats.push({
                     cat: cat,
@@ -211,7 +220,6 @@ export class EditComponent implements OnInit {
     }
 
     setOptInSettings(): Promise<any> {
-
         const orgIds = this.org.ancestors(this.auth.user().ws_ou(), true);
 
         const query = {
@@ -243,7 +251,7 @@ export class EditComponent implements OnInit {
 
     loadPatron(): Promise<any> {
         if (this.patronId) {
-            return this.patronService.getById(this.patronId, FLESH_PATRON_FIELDS)
+            return this.patronService.getFleshedById(this.patronId)
             .then(patron => {
                 this.patron = patron;
                 this.absorbPatronData();
@@ -279,6 +287,28 @@ export class EditComponent implements OnInit {
         }
 
         this.expireDate = new Date(this.patron.expire_date());
+
+        // stat_cat_entries() are entry maps under the covers.
+        this.patron.stat_cat_entries().forEach(map => {
+            const stat: StatCat = this.statCats.filter(
+                stat => stat.cat.id() === map.stat_cat())[0];
+            let cboxEntry: ComboboxEntry =
+                stat.entries.filter(e => e.label === map.stat_cat_entry())[0];
+
+            if (!cboxEntry) {
+                // If the applied value is not in the list of entries,
+                // create a freetext combobox entry for it.
+                cboxEntry = {
+                    id: null,
+                    freetext: true,
+                    label: map.stat_cat_entry()
+                };
+
+                stat.entries.unshift(cboxEntry);
+            }
+
+            this.userStatCats[map.stat_cat()] = cboxEntry;
+        });
     }
 
     createNewPatron() {
@@ -318,6 +348,12 @@ export class EditComponent implements OnInit {
 
     getFieldValue(path: string, index: number, field: string): any {
         return this.objectFromPath(path, index)[field]();
+    }
+
+
+    userStatCatChange(cat: IdlObject, entry: ComboboxEntry) {
+        // TODO: set dirty
+        // 2-way binding at work, no need to set the value
     }
 
     userSettingChange(name: string, value: any) {

@@ -18,6 +18,7 @@ export class PatronService {
     profileGroups: IdlObject[];
     smsCarriers: IdlObject[];
     statCats: IdlObject[];
+    surveys: IdlObject[];
 
     constructor(
         private net: NetService,
@@ -62,6 +63,16 @@ export class PatronService {
 
     getById(id: number, pcrudOps?: any): Promise<IdlObject> {
         return this.pcrud.retrieve('au', id, pcrudOps).toPromise();
+    }
+
+
+    // Alternate retrieval method that uses the fleshed user API,
+    // which performs some additional data munging on the back end.
+    getFleshedById(id: number, fleshFields?: string[]): Promise<IdlObject> {
+        return this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.fleshed.retrieve',
+            this.auth.token(), id, fleshFields).toPromise();
     }
 
     // Returns a name part (e.g. family_name) with preference for
@@ -148,13 +159,38 @@ export class PatronService {
             'open-ils.circ.stat_cat.actor.retrieve.all',
             this.auth.token(), this.auth.user().ws_ou()
         ).toPromise().then(cats => {
-            cats = cats.sort((a, b) => a.name() < b.name() ? -1 : 1);
+            cats.sort((a, b) => a.name() < b.name() ? -1 : 1);
             cats.forEach(cat => {
                 cat.entries(
                     cat.entries().sort((a,b) => a.value() < b.value() ? -1 : 1)
                 );
             });
             return cats;
+        });
+    }
+
+    getSurveys(): Promise<IdlObject[]> {
+        if (this.surveys) {
+            return Promise.resolve(this.surveys);
+        }
+
+        const orgIds = this.org.fullPath(this.auth.user().ws_ou(), true);
+
+        return this.pcrud.search('asv', {
+                owner: orgIds,
+                start_date: {'<=': 'now'},
+                end_date: {'>=': 'now'}
+            }, {
+                flesh: 2,
+                flesh_fields: {
+                    asv: ['questions'],
+                    asvq: ['answers']
+                }
+            },
+            {atomic : true}
+        ).toPromise().then(surveys => {
+            return this.surveys =
+                surveys.sort((s1, s2) => s1.name() < s2.name() ? -1 : 1);
         });
     }
 }

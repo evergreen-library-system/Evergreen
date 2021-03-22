@@ -562,5 +562,32 @@
 
   <button class="btn btn-success" (click)="newAddr()" i18n>New Address</button>
 
+  <div class="alert alert-success p-2 m-3" i18n>Statistical Categories</div>
+
+  <div class="row pt-1 pb-1 mt-1" *ngFor="let stat of statCats">
+   <div class="col-lg-3 field-label">
+    <label for="asc-{{stat.cat.id()}}-input">{{stat.cat.name()}}</label>
+   </div>
+   <div class="col-lg-3">
+    <eg-combobox
+      domId="asc-{{stat.cat.id()}}-input"
+      name="asc-{{stat.cat.id()}}-input"
+      [entries]="stat.entries"
+      [allowFreeText]="stat.cat.allow_freetext() == 1"
+      [(ngModel)]="userStatCats[stat.cat.id()]"
+      (onChange)="userStatCatChange(stat.cat, $event)">
+    </eg-combobox>
+   </div>
+  </div>
+
+  <div class="alert alert-success p-2 m-3" i18n>Surveys</div>
+
+  <div class="row pt-1 pb-1 mt-1" *ngFor="let survey of surveys">
+   <div class="col-lg-3 field-label">
+    <label for="asv-{{survey.id()}}-input">{{survey.name()}}</label>
+   </div>
+   <div class="col-lg-3">
+  </div>
+
 </div>
 
