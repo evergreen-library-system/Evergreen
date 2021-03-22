@@ -47,8 +47,8 @@ register_fields = [
 %]
 
 <h2 class="sr-only">[% l('Account Registration') %]</h2>
-<div id="content-wrapper">
-    <div id="main-content-register" class="container">
+<div class="container">
+    <div id="main-content-register">
         <h1>[% l('Request a Library Card')%]</h1>
         <span class="validate">&bigstar; = Required Field</span>
         <hr/>
@@ -96,30 +96,29 @@ register_fields = [
         [% END %]
 
         <form method='POST' class="needs-validation" novalidate>
-            <table class="w-100">
-                <tr>
-                    <td width="30">
-                        <label for='stgu.home_ou'>[% l('Home Library') %]</label>
-                    </td>
-                    <td width="50">[% INCLUDE build_org_selector
+            <div class="form-group row">
+                <label class="control-label col-md-2" for='stgu.home_ou'>[% l('Home Library') %]</label>
+                <div class="col-md-6">
+                    [% INCLUDE build_org_selector
                             name='stgu.home_ou'
                             value=value || ctx_org
                             can_have_users_only=1
                             valid_org_list=ctx.register.valid_orgs
-                        %]
-                    </td>
-                    <td width="20" >
-                        [% IF ctx.register.invalid.bad_home_ou %]
-                        <span class='patron-reg-invalid'>
-                            [% l('Please select a valid library') %]
-                        </span>
-                        [% END %]
-                </tr>
+                    %]
+                </div>    
+                <div class="col-md-4">
+                    [% IF ctx.register.invalid.bad_home_ou %]
+                    <span class='patron-reg-invalid'>
+                        [% l('Please select a valid library') %]
+                    </span>
+                    [% END %]
+                </div>
+            </div>
 
 [%
 # <=== shifting code left for readability
 
-# render the table row for each of the register fields
+# render a row for each of the register fields
 FOR field_def IN register_fields;
     fclass = field_def.class;
     fname = field_def.name;
@@ -148,20 +147,23 @@ FOR field_def IN register_fields;
 
     NEXT UNLESS require OR show;
 %]
-<tr>
-    <td>
-        <label for='[% field_path %]'>[% field_def.label | html %]</label>
-    </td>
-    <td class="py-3">
-    [% IF fname == "dob"; %]
-     <div class="input-group date" data-provide="datepicker-inline">
-        <input type="text" class="form-control datepicker" id='[% field_path %]'
-            name='[% field_path %]' value='[% value || CGI.param(field_path) | html %]' [% IF require %]required[% END %] data-date-format="yyyy-mm-dd" />
-        <div class="input-group-addon">
-            <span class="glyphicon glyphicon-th"></span>
-        </div>
-    </div>
-    [% ELSE; %]
+
+<div class="form-group row">
+        <label class="control-label col-md-2" for='[% field_path %]'>[% field_def.label | html %]
+        [% IF require %]
+        <span class="validate">&bigstar;</span>
+        [% END %]
+        </label>
+        <div class="col-md-6">
+            [% IF fname == "dob"; %]
+            <div class="input-group date" data-provide="datepicker-inline">
+                <input type="text" class="form-control datepicker" id='[% field_path %]'
+                    name='[% field_path %]' value='[% value || CGI.param(field_path) | html %]' [% IF require %]required[% END %] data-date-format="yyyy-mm-dd" />
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-th"></span>
+                </div>
+            </div>
+           [% ELSE; %]
         <input
             class='form-control'
             type='text'
@@ -177,11 +179,10 @@ FOR field_def IN register_fields;
             [% l('(Example: [_1])', example) %]
         </span>
     [% END %]
-    </td>
-    <td>
-        [% IF require %]
-        <span class="validate">&bigstar;</span>
-        [% END %]
+
+        </div>
+
+    <div class="col-md-4">
     <!-- display errors and example text -->
 
     [% IF invalid_require %]
@@ -198,36 +199,39 @@ FOR field_def IN register_fields;
             [% l('(Example: [_1])', example) %]
         </span>
     [% END %]
-
-    </td>
-</tr>
+    </div>
+</div>
 [% END %]
+
+
 <!-- ====> shifting the code back to the right for context -->
                     [% IF ctx.register.opt_in_settings.size > 0 %]
                         [% FOR optin IN ctx.register.opt_in_settings %]
-                        <tr>
-                            <td><label for="stgs.[% optin.name | uri %]'">[% optin.label | html %]</label></td>
-                            <td>
+                        <div class="form-group row">
+                            <label class="control-label col-md-2" for="stgs.[% optin.name | uri %]'">[% optin.label | html %]</label>
+                            <div class="col-md-6">
                                 <input type='checkbox'
                                     name='stgs.[% optin.name | uri %]'
                                     id='stgs.[% optin.name | uri %]'
                                     title="[% optin.label | html %]"
                                 ></input>
-                            </td>
-                            <td><!-- display errors and example text --></td>
-                        </tr>
+                            </div>
+                            <div class="col-md-4">
+                            <!-- display errors and example text -->
+                            </div>
+                        </div>
                         [% END %]
                     [% END %]
-                    <tr>
-                        <td colspan='3' class="text-center py-4">
+
+                    <div class="form-group row">
+                       <div class="col-md-6 offset-md-2">
                             <a href="[% ctx.opac_root %]/home"
                                 class="btn btn-confirm">[% l('Go Back') %]</a>
                             <input type="submit"
                                 value="[% l('Submit Registration') %]"
                                 class="btn btn-confirm" />
-                        </td>
-                    </tr>
-                </table>
+                       </div>
+                    </div>
             </form>
             [% END %]
         </div>
