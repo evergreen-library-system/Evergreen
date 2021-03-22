@@ -361,6 +361,25 @@ export class EditComponent implements OnInit {
         this.userSettings[name] = value;
     }
 
+    applySurveyResponse(question: IdlObject, answer: ComboboxEntry) {
+        if (!this.patron.survey_responses()) {
+            this.patron.survey_responses([]);
+        }
+
+        const responses = this.patron.survey_responses()
+            .filter(resp => resp.question() !== question.id());
+
+        const resp = this.idl.create('asvr');
+        resp.isnew(true);
+        resp.survey(question.survey());
+        resp.question(question.id());
+        resp.answer(answer.id);
+        resp.usr(this.patron.id());
+        resp.answer_date('now');
+        responses.push(resp);
+        this.patron.survey_responses(responses);
+    }
+
     // Called as the model changes.
     // This may be called many times before the final value is applied,
     // so avoid any heavy lifting here.  See afterFieldChange();
@@ -568,13 +587,56 @@ export class EditComponent implements OnInit {
     }
 
     deleteAddr(addr: IdlObject) {
+        const addresses = this.patron.addresses();
+        let promise = Promise.resolve(false);
+
+        if (this.patron.isnew() && addresses.length === 1) {
+            promise = this.serverStore.getItem(
+                'ui.patron.registration.require_address');
+        }
+
+        promise.then(required => {
+            if (required) {
+                // TODO alert and exit
+                return;
+            }
+
+            // Roll the mailing/billing designation to another
+            // address when needed.
+            if (this.patron.mailing_address().id() === addr.id()) {
+                this.setAddrType('mailing', addr, false);
+            }
+
+            if (this.patron.billing_address().id() === addr.id()) {
+                this.setAddrType('billing', addr, false);
+            }
+
+            if (addr.isnew()) {
+                let idx = 0;
+
+                addresses.some((a, i) => {
+                    if (a.id() === addr.id()) { idx = i; return true; }
+                });
+
+                // New addresses can be discarded
+                addresses.splice(idx, 1);
+
+            } else {
+                addr.isdeleted(true);
+            }
+        });
     }
 
     newAddr() {
         const addr = this.idl.create('aua');
+        addr.id(this.autoId--);
         addr.isnew(true);
         addr.valid('t');
         this.patron.addresses().push(addr);
+    }
+
+    nonDeletedAddresses(): IdlObject[] {
+        return this.patron.addresses().filter(a => !a.isdeleted());
     }
 }
 

@@ -424,7 +424,9 @@
     </div>
   </div>
 
-  <div class="alert alert-success p-2 m-3" i18n>User Settings</div>
+  <div class="alert alert-success p-2 m-3 d-flex">
+    <div class="m-auto font-weight-bold" i18n>User Settings</div>
+  </div>
 
   <ng-container *ngTemplateOutlet="userSettingsInputRow; context: 
     {args: {settingName: 'opac.default_phone'}}">
@@ -505,27 +507,34 @@
     </div>
   </ng-container>
 
-  <ng-container *ngFor="let addr of patron.addresses(); let index = index">
-    <div class="alert alert-success p-2 m-3 d-flex">
-      <div class="col-lg-3" i18n>Address</div>
-      <div class="col-lg-9">
-        <div class="form-check form-check-inline mr-2">
-          <input class="form-check-input" type="checkbox" 
-            name="addr-{{addr.id()}}-mailing" id="addr-{{addr.id()}}-mailing" 
-            [ngModel]="addr.id() == patron.mailing_address().id()"
-            (ngModelChange)="setAddrType('mailing', addr, $event)"/>
-          <label class="form-check-label" 
-            for="addr-{{addr.id()}}-mailing" i18n>Mailing</label>
+  <div class="alert alert-success p-2 m-3 d-flex">
+    <div class="m-auto font-weight-bold" i18n>Addresses</div>
+  </div>
+
+  <div class="mb-2" *ngFor="let addr of nonDeletedAddresses(); let index = index">
+
+    <div class="alert alert-info p-1">
+      <div class="row">
+        <div class="col-lg-3" i18n>Address #{{index + 1}}</div>
+        <div class="col-lg-9">
+          <div class="form-check form-check-inline mr-2">
+            <input class="form-check-input" type="checkbox" 
+              name="addr-{{addr.id()}}-mailing" id="addr-{{addr.id()}}-mailing" 
+              [ngModel]="addr.id() == patron.mailing_address().id()"
+              (ngModelChange)="setAddrType('mailing', addr, $event)"/>
+            <label class="form-check-label" 
+              for="addr-{{addr.id()}}-mailing" i18n>Mailing</label>
+          </div>
+          <div class="form-check form-check-inline mr-2">
+            <input class="form-check-input" type="checkbox" 
+              name="addr-{{addr.id()}}-billing" id="addr-{{addr.id()}}-billing" 
+              [ngModel]="addr.id() == patron.billing_address().id()"
+              (ngModelChange)="setAddrType('billing', addr, $event)"/>
+            <label class="form-check-label" 
+              for="addr-{{addr.id()}}-billing" i18n>Physical</label>
+          </div>
+          <button class="btn btn-danger" (click)="deleteAddr(addr)" i18n>Delete</button>
         </div>
-        <div class="form-check form-check-inline mr-2">
-          <input class="form-check-input" type="checkbox" 
-            name="addr-{{addr.id()}}-billing" id="addr-{{addr.id()}}-billing" 
-            [ngModel]="addr.id() == patron.billing_address().id()"
-            (ngModelChange)="setAddrType('billing', addr, $event)"/>
-          <label class="form-check-label" 
-            for="addr-{{addr.id()}}-billing" i18n>Physical</label>
-        </div>
-        <button class="btn btn-danger" (click)="deleteAddr(addr)" i18n>Delete</button>
       </div>
     </div>
     <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
@@ -558,11 +567,13 @@
     <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
       fieldCheckbox, field: 'within_city_limits', cls: 'aua', path: 'addresses', index: index}}">
     </ng-container>
-  </ng-container>
+  </div>
 
   <button class="btn btn-success" (click)="newAddr()" i18n>New Address</button>
 
-  <div class="alert alert-success p-2 m-3" i18n>Statistical Categories</div>
+  <div class="alert alert-success p-2 m-3 d-flex">
+    <div class="m-auto font-weight-bold" i18n>Statistical Categories</div>
+  </div>
 
   <div class="row pt-1 pb-1 mt-1" *ngFor="let stat of statCats">
    <div class="col-lg-3 field-label">
@@ -580,13 +591,27 @@
    </div>
   </div>
 
-  <div class="alert alert-success p-2 m-3" i18n>Surveys</div>
+  <div class="alert alert-success p-2 m-3 d-flex">
+    <div class="m-auto font-weight-bold" i18n>Surveys</div>
+  </div>
 
-  <div class="row pt-1 pb-1 mt-1" *ngFor="let survey of surveys">
-   <div class="col-lg-3 field-label">
-    <label for="asv-{{survey.id()}}-input">{{survey.name()}}</label>
-   </div>
-   <div class="col-lg-3">
+  <div class="card pt-1 pb-1 mt-1" *ngFor="let survey of surveys">
+    <div class="card-header">{{survey.name()}}</div>
+    <div class="card-body">
+      <div class="row pt-1 pb-1 mt-1" *ngFor="let question of survey.questions()">
+        <div class="col-lg-3 field-label">
+          <label for="asvq-{{question.id()}}-input">{{question.question()}}</label>
+        </div>
+        <div class="col-lg-3">
+          <eg-combobox
+            domId="asvq-{{question.id()}}-input"
+            name="asvq-{{question.id()}}-input"
+            [entries]="surveyQuestionAnswers(question)"
+            (onChange)="applySurveyResponse(question, $event)">
+          </eg-combobox>
+        </div>
+      </div>
+    </div>
   </div>
 
 </div>

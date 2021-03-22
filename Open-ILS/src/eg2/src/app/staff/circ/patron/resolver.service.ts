@@ -44,6 +44,7 @@ export class PatronResolver implements Resolve<Promise<any[]>> {
           'circ.staff_client.do_not_auto_attempt_print',
           'circ.disable_patron_credit',
           'sms.enable',
+          'ui.patron.registration.require_address',
           'credit.processor.default'
         ]).then(settings => {
             this.context.noTallyClaimsReturned =
