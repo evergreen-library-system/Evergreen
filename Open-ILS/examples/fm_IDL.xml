@@ -10959,6 +10959,7 @@ SELECT  usr,
 			<field reporter:label="User ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Date of Birth" name="dob" reporter:datatype="timestamp"/>
 			<field reporter:label="General Demographic Division" name="general_division" reporter:datatype="text"/>
+			<field reporter:label="Detailed Age Division" name="age_division" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="id" reltype="might_have" key="id" map="" class="au"/>
