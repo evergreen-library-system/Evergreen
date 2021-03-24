@@ -1,0 +1,39 @@
+<eg-string #successMsg text="Successfully Added Group" i18n-text></eg-string>
+<eg-string #errorMsg text="Failed To Add Group" i18n-text></eg-string>
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Patron Barcodes</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-4 font-weight-bold" i18n>Barcode</div>
+      <div class="col-lg-4 font-weight-bold" i18n>Active</div>
+      <div class="col-lg-4 font-weight-bold" i18n>Primary</div>
+    </div>
+    <div class="row mt-2 pt-2" *ngFor="let card of patron.cards()">
+      <div class="col-lg-4" i18n>
+        {{card.barcode()}}
+      </div>
+      <div class="col-lg-4" i18n>
+        <input type="checkbox" 
+          (ngModelChange)="activeChange(card, $event)"
+          class="form-check-input ml-0" [ngModel]="card.active() == 't'">
+      </div>
+      <div class="col-lg-4" i18n>
+        <input type="radio" name="primary-card" [value]="card.id()"
+          class="form-check-input ml-0" [(ngModel)]="primaryCard">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success"
+      (click)="applyChanges()" i18n>Apply Changes</button>
+    <button type="button" class="btn btn-warning"
+      (click)="close()" i18n>Cancel</button>
+  </div>
+</ng-template>
