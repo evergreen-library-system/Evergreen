@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
+import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {NetService} from '@eg/core/net.service';
@@ -8,6 +8,7 @@ import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService, BillGridEntry} from './patron.service';
 import {PatronSearch, PatronSearchComponent
     } from '@eg/staff/share/patron/search.component';
+import {EditToolbarComponent} from './edit-toolbar.component';
 
 const MAIN_TABS =
     ['checkout', 'items_out', 'holds', 'bills', 'messages', 'edit', 'search'];
@@ -24,6 +25,11 @@ export class PatronComponent implements OnInit, AfterViewInit {
     statementXact: number;
     showSummary = true;
     loading = true;
+
+    /* eg-patron-edit is unable to find #editorToolbar directly
+     * within the template.  Adding a ref here allows it to
+     * successfully transfer to the editor */
+    @ViewChild('editorToolbar') editorToolbar: EditToolbarComponent;
 
     constructor(
         private router: Router,

@@ -104,7 +104,8 @@
         <li ngbNavItem="edit" [disabled]="!context.patron">
           <a ngbNavLink i18n>Edit</a>
           <ng-template ngbNavContent>
-            <eg-patron-edit [patronId]="patronId"></eg-patron-edit> 
+            <eg-patron-edit [patronId]="patronId" [toolbar]="editorToolbar">
+            </eg-patron-edit> 
           </ng-template>
         </li>
 
@@ -190,7 +191,7 @@
 
       <ng-container *ngIf="patronTab === 'edit'">
         <!-- put the editor toolbar up here in the sticky section -->
-        <eg-patron-edit-toolbar></eg-patron-edit-toolbar>
+        <eg-patron-edit-toolbar #editorToolbar></eg-patron-edit-toolbar>
       </ng-container>
 
     </div><!-- end of sticky top -->

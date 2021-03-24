@@ -8,7 +8,7 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronContextService, FieldVisibilityLevel} from './patron.service';
+import {PatronContextService} from './patron.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {DateUtil} from '@eg/share/util/date';
 import {ProfileSelectComponent} from '@eg/staff/share/patron/profile-select.component';
@@ -18,6 +18,7 @@ import {EventService} from '@eg/core/event.service';
 import {PermService} from '@eg/core/perm.service';
 import {SecondaryGroupsDialogComponent} from './secondary-groups.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
+import {EditToolbarComponent, VisibilityLevel} from './edit-toolbar.component';
 
 const COMMON_USER_SETTING_TYPES = [
   'circ.holds_behind_desk',
@@ -94,6 +95,7 @@ export class EditComponent implements OnInit {
     @Input() patronId: number;
     @Input() cloneId: number;
     @Input() stageUsername: string;
+    @Input() toolbar: EditToolbarComponent;
 
     @ViewChild('profileSelect')
         private profileSelect: ProfileSelectComponent;
@@ -118,6 +120,7 @@ export class EditComponent implements OnInit {
     optInSettingTypes: {[name: string]: IdlObject} = {};
     secondaryGroups: IdlObject[];
     expireDate: Date;
+    changesPending = false;
 
     fieldVisibility: {[key: string]: FieldVisibility} = {};
 
@@ -148,9 +151,9 @@ export class EditComponent implements OnInit {
     ngOnInit() {
 
         // Listen for edit-toolbar events
-        this.context.saveClicked.subscribe(_ => this.save());
-        this.context.saveCloneClicked.subscribe(_ => this.saveClone());
-        this.context.printClicked.subscribe(_ => this.printPatron());
+        this.toolbar.saveClicked.subscribe(_ => this.save());
+        this.toolbar.saveCloneClicked.subscribe(_ => this.saveClone());
+        this.toolbar.printClicked.subscribe(_ => this.printPatron());
 
         this.load();
     }
@@ -167,6 +170,9 @@ export class EditComponent implements OnInit {
         .then(_ => this.setOptInSettings())
         .then(_ => this.setSmsCarriers())
         .then(_ => this.loading = false);
+    }
+
+    setupToolbar() {
     }
 
     setSurveys(): Promise<any> {
@@ -388,10 +394,18 @@ export class EditComponent implements OnInit {
         return this.objectFromPath(path, index)[field]();
     }
 
+    adjustSaveSate() {
+        // Avoid responding to any value changes while we are loading
+        if (this.loading) { return; }
+
+        // TODO other checks
+
+        this.changesPending = true;
+        const canSave = document.querySelector('.ng-invalid') === null;
+        this.toolbar.disableSaveStateChanged.emit(!canSave);
+    }
 
     userStatCatChange(cat: IdlObject, entry: ComboboxEntry) {
-        // TODO: set dirty
-
         let map = this.patron.stat_cat_entries()
             .filter(m => m.stat_cat() === cat.id())[0];
 
@@ -411,11 +425,13 @@ export class EditComponent implements OnInit {
             map.target_usr(this.patronId);
             this.patron.stat_cat_entries().push(map);
         }
+
+        this.adjustSaveSate();
     }
 
     userSettingChange(name: string, value: any) {
-        // TODO: set dirty
         this.userSettings[name] = value;
+        this.adjustSaveSate();
     }
 
     applySurveyResponse(question: IdlObject, answer: ComboboxEntry) {
@@ -458,8 +474,6 @@ export class EditComponent implements OnInit {
         if (!this.changeHandlerNeeded) { return; } // no changes applied
         this.changeHandlerNeeded = false;
 
-        // TODO: set dirty
-
         const obj = this.objectFromPath(path, index);
         const value = this.getFieldValue(path, index, field);
         obj.ischanged(true); // isnew() supersedes
@@ -474,6 +488,7 @@ export class EditComponent implements OnInit {
                 this.setExpireDate();
                 break;
         }
+        this.adjustSaveSate();
     }
 
     showField(field: string): boolean {
@@ -517,13 +532,17 @@ export class EditComponent implements OnInit {
             this.fieldVisibility[field] = DEFAULT_FIELD_VISIBILITY[field] || 0;
         }
 
-        return this.fieldVisibility[field] >=
-            this.context.editorFieldVisibilityLevel;
+        return this.fieldVisibility[field] >= this.toolbar.visibilityLevel;
     }
 
     fieldRequired(field: string): boolean {
-        // TODO
-        return false;
+
+        // Password field is not required for existing patrons.
+        if (field === 'au.passwd' && !this.patronId) {
+            return false;
+        }
+
+        return this.fieldVisibility[field] == 3;
     }
 
 
@@ -833,6 +852,10 @@ export class EditComponent implements OnInit {
     }
 
     showBarcodes() {
+    }
+
+    canSave(): boolean {
+        return document.querySelector('.ng-invalid') === null;
     }
 }
 

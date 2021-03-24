@@ -3,7 +3,8 @@
 
 
 <div class="sticky-top-with-nav bg-white">
-  <eg-patron-edit-toolbar></eg-patron-edit-toolbar>
-  <eg-patron-edit [stageUsername]="stageUsername" [cloneId]="cloneId">
+  <eg-patron-edit-toolbar #editorToolbar></eg-patron-edit-toolbar>
+  <eg-patron-edit [stageUsername]="stageUsername" 
+    [cloneId]="cloneId" [toolbar]="editorToolbar">
   </eg-patron-edit>
 </div>

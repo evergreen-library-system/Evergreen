@@ -13,6 +13,7 @@
 
 <eg-patron-secondary-groups [secondaryGroups]="secondaryGroups" #secondaryGroupsDialog>
 </eg-patron-secondary-groups>
+<eg-patron-barcodes #barcodesDialog [patron]="patron"></eg-patron-barcodes>
 
 <div class="row" *ngIf="loading">
   <div class="col-lg-6 offset-lg-3">
@@ -161,7 +162,7 @@
       <button class="btn btn-outline-dark" (click)="replaceBarcode()" i18n>
         Replace Barcode
       </button>
-      <button class="btn btn-outline-dark ml-2" (click)="showBarcodes()" i18n>
+      <button class="btn btn-outline-dark ml-2" (click)="barcodesDialog.open()" i18n>
         See All
       </button>
     </div>
