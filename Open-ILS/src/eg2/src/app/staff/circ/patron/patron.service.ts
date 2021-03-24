@@ -8,8 +8,11 @@ import {PatronSearch} from '@eg/staff/share/patron/search.component';
 import {StoreService} from '@eg/core/store.service';
 import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
 
-export type EditorFieldOptions = 'required' | 'suggested' | 'all';
-
+export enum FieldVisibilityLevel {
+    ALL_FIELDS = 0,
+    SUGGESTED_FIELDS = 1,
+    REQUIRED_FIELDS = 2
+}
 
 export interface BillGridEntry extends CircDisplayInfo {
     xact: IdlObject; // mbt
@@ -110,14 +113,17 @@ export class PatronContextService {
     // These should persist tab changes
     checkouts: CircGridEntry[] = [];
 
+    settingsCache: {[key: string]: any} = {};
+
     // Emitted by the patron edit toolbar, which is kept as a
     // separate component so it can be positioned differently.
     // We just act as a go-between.
     saveClicked: EventEmitter<void> = new EventEmitter<void>();
     saveCloneClicked: EventEmitter<void> = new EventEmitter<void>();
     printClicked: EventEmitter<void> = new EventEmitter<void>();
-    showFieldsChanged: EventEmitter<EditorFieldOptions> =
-        new EventEmitter<EditorFieldOptions>();
+
+    editorFieldVisibilityLevel: FieldVisibilityLevel =
+        FieldVisibilityLevel.ALL_FIELDS;
 
     constructor(
         private store: StoreService,

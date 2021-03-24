@@ -35,7 +35,7 @@
   <div class="row mb-1 alert alert-danger p-0" 
     *ngFor="let pen of context.alerts.alertPenalties">
     <div class="col-lg-9"
-      title="{{pen.standing_penalty().name()">
+      title="{{pen.standing_penalty().name()}}">
       {{pen.note() || pen.standing_penalty().label()}}
     </div>
     <div class="col-lg-3">{{pen.set_date() | date:'shortDate'}}</div>

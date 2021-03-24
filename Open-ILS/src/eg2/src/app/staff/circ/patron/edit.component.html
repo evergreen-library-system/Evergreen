@@ -49,8 +49,8 @@
       [ngModel]="objectFromPath(args.path, args.index)[args.field]()"
       (ngModelChange)="fieldValueChange(args.path, args.index, args.field, $event)"
       (change)="afterFieldChange(args.path, args.index, args.field)"
-      [required]="fieldRequired(getClass(args.cls), args.field)"
-      [pattern]="fieldPattern(getClass(args.cls), args.field)"
+      [required]="fieldRequired(getClass(args.cls) + '.' + args.field)"
+      [pattern]="fieldPattern(getClass(args.cls) + '.' + args.field)"
       [disabled]="args.disabled"
     />
   </div>
@@ -67,8 +67,8 @@
       [ngModel]="objectFromPath(args.path, args.index)[args.field]() == 't'"
       (ngModelChange)="fieldValueChange(args.path, args.index, args.field, $event)"
       (change)="afterFieldChange(args.path, args.index, args.field)"
-      [required]="fieldRequired(getClass(args.cls), args.field)"
-      [pattern]="fieldPattern(getClass(args.cls), args.field)"
+      [required]="fieldRequired(getClass(args.cls) + '.' + args.field)"
+      [pattern]="fieldPattern(getClass(args.cls) + '.' + args.field)"
       [disabled]="disabled"
     />
   </div>
@@ -84,7 +84,7 @@
       (onChange)="
         fieldValueChange(args.path, args.index, args.field, $event ? $event.id : null); 
         afterFieldChange(args.path, args.index, args.field)"
-      [required]="fieldRequired(getClass(args.cls), args.field)"
+      [required]="fieldRequired(getClass(args.cls) + '.' + args.field)"
       [disabled]="args.disabled">
     </eg-combobox>
   </div>
@@ -137,7 +137,7 @@
 <!-- One row of label + field.  
     Used when a field requires no additional toggles. -->
 <ng-template #fieldRow let-args="args">
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField(args.cls, args.field)">
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField(getClass(args.cls) + '.' + args.field)">
     <ng-container *ngTemplateOutlet="fieldLabel; context: {args: args}">
     </ng-container>
     <ng-container *ngTemplateOutlet="args.template; context: {args: args}">
@@ -148,11 +148,25 @@
 
 <!-- The List O' Fields -->
 
-<div class="mt-3 striped-rows-even patron-edit-container" *ngIf="patron && !loading">
-  <ng-container *ngTemplateOutlet="fieldRow; context: {args: 
-    {template: fieldInput, field: 'barcode', cls: 'ac', 
-    path: 'card', disabled: !patron.isnew()}}">
-  </ng-container>
+<div class="mt-3 striped-rows-even patron-edit-container form-validated" *ngIf="patron && !loading">
+
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('ac.barcode')">
+    <ng-container *ngTemplateOutlet="fieldLabel; 
+      context: {args: {cls: 'ac', path: 'card', field: 'barcode'}}">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="fieldInput; context: {args: 
+      {cls: 'ac', path: 'card', field: 'barcode', disabled: !patron.card().isnew()}}">
+    </ng-container>
+    <div class="col-lg-6">
+      <button class="btn btn-outline-dark" (click)="replaceBarcode()" i18n>
+        Replace Barcode
+      </button>
+      <button class="btn btn-outline-dark ml-2" (click)="showBarcodes()" i18n>
+        See All
+      </button>
+    </div>
+  </div>
+
   <ng-container *ngTemplateOutlet="fieldRow; context: 
     {args: {template: fieldInput, field: 'usrname'}}">
   </ng-container>
@@ -220,7 +234,7 @@
     <div [ngbNavOutlet]="nameNav"></div>
   </div>
 
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'name_keywords')">
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.name_keywords')">
     <ng-container 
       *ngTemplateOutlet="fieldLabel; context: {args: {field: 'name_keywords'}}">
     </ng-container>
@@ -232,8 +246,8 @@
         [ngModel]="objectFromPath(null, null)['name_keywords']()"
         (ngModelChange)="fieldValueChange(null, null, 'name_keywords', $event)"
         (change)="afterFieldChange(null, args.index, 'name_keywords')"
-        [required]="fieldRequired('au', 'name_keywords')"
-        [pattern]="fieldPattern('au', 'name_keywords')">
+        [required]="fieldRequired('au.name_keywords')"
+        [pattern]="fieldPattern('au.name_keywords')">
       </textarea>
     </div>
   </div>
@@ -244,7 +258,7 @@
     {args: {template: fieldInput, field: 'alias', overrideLabel: holdAliasString.text}}">
   </ng-container>
 
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'dob')">
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.dob')">
     <ng-container 
       *ngTemplateOutlet="fieldLabel; context: {args: {field: 'dob'}}">
     </ng-container>
@@ -257,7 +271,7 @@
         (onChangeAsIso)="
           fieldValueChange(null, null, 'dob', $event); 
           afterFieldChange(null, null, 'dob')"
-        [required]="fieldRequired('au', 'dob')">
+        [required]="fieldRequired('au.dob')">
       </eg-date-select>
     </div>
   </div>
@@ -303,7 +317,7 @@
   </div>
 
   <ng-container 
-    *ngIf="userSettingTypes['circ.send_email_checkout_receipts'] && showField('au', 'email')">
+    *ngIf="userSettingTypes['circ.send_email_checkout_receipts'] && showField('au.email')">
     <ng-container *ngTemplateOutlet="userSettingsCheckboxRow; context: 
       {args: {settingName: 'circ.send_email_checkout_receipts'}}">
     </ng-container>
@@ -331,7 +345,7 @@
     {args: {template: fieldInput, field: 'other_phone'}}">
   </ng-container>
 
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'home_ou')">
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.home_ou')">
     <ng-container 
       *ngTemplateOutlet="fieldLabel; context: {args: {field: 'home_ou'}}">
     </ng-container>
@@ -348,7 +362,7 @@
     </div>
   </div>
 
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'profile')">
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.profile')">
     <ng-container 
       *ngTemplateOutlet="fieldLabel; context: {args: {field: 'profile'}}">
     </ng-container>
@@ -368,7 +382,7 @@
     </div>
   </div>
 
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'expire_date')">
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.expire_date')">
     <ng-container 
       *ngTemplateOutlet="fieldLabel; context: {args: {field: 'expire_date'}}">
     </ng-container>
@@ -377,7 +391,7 @@
         domId="au-expire_date-input"
         fieldName="au-expire_date-input"
         [noMaxWidth]="true"
-        [required]="fieldRequired('au', 'expire_date')"
+        [required]="fieldRequired('au.expire_date')"
         [(ngModel)]="expireDate">
       </eg-date-select>
     </div>
@@ -406,7 +420,7 @@
     {args: {template: fieldInput, field: 'claims_never_checked_out_count', type: 'number'}}">
   </ng-container>
 
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'alert_message')">
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.alert_message')">
     <ng-container 
       *ngTemplateOutlet="fieldLabel; context: {args: {field: 'alert_message'}}">
     </ng-container>
@@ -418,8 +432,8 @@
         [ngModel]="objectFromPath(null, null)['alert_message']()"
         (ngModelChange)="fieldValueChange(null, null, 'alert_message', $event)"
         (change)="afterFieldChange(null, null, 'alert_message')"
-        [required]="fieldRequired('au', 'alert_message')"
-        [pattern]="fieldPattern('au', 'alert_message')">
+        [required]="fieldRequired('au.alert_message')"
+        [pattern]="fieldPattern('au.alert_message')">
       </textarea>
     </div>
   </div>
@@ -432,7 +446,7 @@
     {args: {settingName: 'opac.default_phone'}}">
   </ng-container>
 
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au', 'home_ou')">
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.home_ou')">
     <ng-container *ngTemplateOutlet="userSettingLabel; 
       context: {args: {settingName: 'opac.default_pickup_location'}}">
     </ng-container>
@@ -454,24 +468,25 @@
     </ng-container>
     <div class="col-lg-3">
       <div class="form-check form-check-inline mr-2">
-        <input class="form-check-input" type="radio" name="hold-notify-phone" 
+        <input class="form-check-input" type="checkbox" name="hold-notify-phone" 
           id="hold-notify-phone" [(ngModel)]="holdNotifyTypes.phone"/>
         <label class="form-check-label" for="hold-notify-phone" i18n>Phone</label>
       </div>
       <div class="form-check form-check-inline mr-2">
-        <input class="form-check-input" type="radio" name="hold-notify-email" 
+        <input class="form-check-input" type="checkbox" name="hold-notify-email" 
           id="hold-notify-email" [(ngModel)]="holdNotifyTypes.email"/>
         <label class="form-check-label" for="hold-notify-email" i18n>Email</label>
       </div>
-      <div class="form-check form-check-inline mr-2" *ngIf="orgSettings['sms.enable']">
-        <input class="form-check-input" type="radio" name="hold-notify-sms" 
+      <div class="form-check form-check-inline mr-2" 
+        *ngIf="context.settingsCache['sms.enable']">
+        <input class="form-check-input" type="checkbox" name="hold-notify-sms" 
           id="hold-notify-sms" [(ngModel)]="holdNotifyTypes.sms"/>
         <label class="form-check-label" for="hold-notify-sms" i18n>SMS</label>
       </div>
     </div>
   </div>
 
-  <ng-container *ngIf="orgSettings['sms.enable']">
+  <ng-container *ngIf="context.settingsCache['sms.enable']">
 
     <div class="row pt-1 pb-1 mt-1">
       <ng-container *ngTemplateOutlet="userSettingLabel; 
@@ -571,48 +586,53 @@
 
   <button class="btn btn-success" (click)="newAddr()" i18n>New Address</button>
 
-  <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
-    <div class="m-auto font-weight-bold" i18n>Statistical Categories</div>
-  </div>
+  <ng-container *ngIf="showField('stat_cats')">
+    <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
+      <div class="m-auto font-weight-bold" i18n>Statistical Categories</div>
+    </div>
 
-  <div class="row pt-1 pb-1 mt-1" *ngFor="let stat of statCats">
-   <div class="col-lg-3 field-label">
-    <label for="asc-{{stat.cat.id()}}-input">{{stat.cat.name()}}</label>
-   </div>
-   <div class="col-lg-3">
-    <eg-combobox
-      domId="asc-{{stat.cat.id()}}-input"
-      name="asc-{{stat.cat.id()}}-input"
-      [entries]="stat.entries"
-      [allowFreeText]="stat.cat.allow_freetext() == 1"
-      [(ngModel)]="userStatCats[stat.cat.id()]"
-      (onChange)="userStatCatChange(stat.cat, $event)">
-    </eg-combobox>
-   </div>
-  </div>
+    <div class="row pt-1 pb-1 mt-1" *ngFor="let stat of statCats">
+     <div class="col-lg-3 field-label">
+      <label for="asc-{{stat.cat.id()}}-input">{{stat.cat.name()}}</label>
+     </div>
+     <div class="col-lg-3">
+      <eg-combobox
+        domId="asc-{{stat.cat.id()}}-input"
+        name="asc-{{stat.cat.id()}}-input"
+        [entries]="stat.entries"
+        [required]="stat.cat.required() == 1"
+        [allowFreeText]="stat.cat.allow_freetext() == 1"
+        [(ngModel)]="userStatCats[stat.cat.id()]"
+        (onChange)="userStatCatChange(stat.cat, $event)">
+      </eg-combobox>
+     </div>
+    </div>
+  </ng-container>
 
-  <div class="alert alert-success pt-2 pb-2 mt-2 mb-2 d-flex">
-    <div class="m-auto font-weight-bold" i18n>Surveys</div>
-  </div>
 
-  <div class="card pt-1 pb-1 mt-1" *ngFor="let survey of surveys">
-    <div class="card-header">{{survey.name()}}</div>
-    <div class="card-body">
-      <div class="row pt-1 pb-1 mt-1" *ngFor="let question of survey.questions()">
-        <div class="col-lg-3 field-label">
-          <label for="asvq-{{question.id()}}-input">{{question.question()}}</label>
-        </div>
-        <div class="col-lg-3">
-          <eg-combobox
-            domId="asvq-{{question.id()}}-input"
-            name="asvq-{{question.id()}}-input"
-            [entries]="surveyQuestionAnswers(question)"
-            (onChange)="applySurveyResponse(question, $event)">
-          </eg-combobox>
+  <ng-container *ngIf="showField('surveys')">
+    <div class="alert alert-success pt-2 pb-2 mt-2 mb-2 d-flex">
+      <div class="m-auto font-weight-bold" i18n>Surveys</div>
+    </div>
+    <div class="card pt-1 pb-1 mt-1" *ngFor="let survey of surveys">
+      <div class="card-header">{{survey.name()}}</div>
+      <div class="card-body">
+        <div class="row pt-1 pb-1 mt-1" *ngFor="let question of survey.questions()">
+          <div class="col-lg-3 field-label">
+            <label for="asvq-{{question.id()}}-input">{{question.question()}}</label>
+          </div>
+          <div class="col-lg-3">
+            <eg-combobox
+              domId="asvq-{{question.id()}}-input"
+              name="asvq-{{question.id()}}-input"
+              [entries]="surveyQuestionAnswers(question)"
+              (onChange)="applySurveyResponse(question, $event)">
+            </eg-combobox>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </ng-container>
 
 </div>
 

@@ -3,14 +3,14 @@
   <div class="col-lg-6">
     <span class="font-weight-bold" i18n>Show:</span>
     <button class="btn btn-sm btn-outline-dark ml-2" 
-      [disabled]="showFields == 'required'"
-      (click)="changeFields('required')" i18n>Required Fields</button>
+      [disabled]="context.editorFieldVisibilityLevel == 2"
+      (click)="changeFields(2)" i18n>Required Fields</button>
     <button class="btn btn-sm btn-outline-dark ml-2" 
-      [disabled]="showFields == 'suggested'"
-      (click)="changeFields('suggested')" i18n>Suggested Fields</button>
+      [disabled]="context.editorFieldVisibilityLevel == 1"
+      (click)="changeFields(1)" i18n>Suggested Fields</button>
     <button class="btn btn-sm btn-outline-dark ml-2" 
-      [disabled]="showFields == 'all'"
-      (click)="changeFields('all')" i18n>All Fields</button>
+      [disabled]="context.editorFieldVisibilityLevel == 0"
+      (click)="changeFields(0)" i18n>All Fields</button>
   </div>
 
   <div class="col-lg-6 d-flex">

@@ -8,7 +8,7 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronContextService, EditorFieldOptions} from './patron.service';
+import {PatronContextService, FieldVisibilityLevel} from './patron.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {DateUtil} from '@eg/share/util/date';
 import {ProfileSelectComponent} from '@eg/staff/share/patron/profile-select.component';
@@ -29,12 +29,6 @@ const COMMON_USER_SETTING_TYPES = [
   'opac.default_sms_notify'
 ];
 
-// Duplicate these settings in resolver.service so they can be
-// fetched/cached with the original batch (fewer net calls).
-const ORG_SETTING_TYPES = [
-    'sms.enable'
-]
-
 const PERMS_NEEDED = [
     'EDIT_SELF_IN_CLIENT',
     'UPDATE_USER',
@@ -46,6 +40,44 @@ const PERMS_NEEDED = [
     'UPDATE_PATRON_ACTIVE_CARD',
     'UPDATE_PATRON_PRIMARY_CARD'
 ];
+
+enum FieldVisibility {
+    REQUIRED = 3,
+    VISIBLE = 2,
+    SUGGESTED = 1
+}
+
+// 3 == value universally required
+// 2 == field is visible by default
+// 1 == field is suggested by default
+const DEFAULT_FIELD_VISIBILITY = {
+    'ac.barcode': FieldVisibility.REQUIRED,
+    'au.usrname': FieldVisibility.REQUIRED,
+    'au.passwd': FieldVisibility.REQUIRED,
+    'au.first_given_name': FieldVisibility.REQUIRED,
+    'au.family_name': FieldVisibility.REQUIRED,
+    'au.pref_first_given_name': FieldVisibility.VISIBLE,
+    'au.pref_family_name': FieldVisibility.VISIBLE,
+    'au.ident_type': FieldVisibility.REQUIRED,
+    'au.ident_type2': FieldVisibility.VISIBLE,
+    'au.home_ou': FieldVisibility.REQUIRED,
+    'au.profile': FieldVisibility.REQUIRED,
+    'au.expire_date': FieldVisibility.REQUIRED,
+    'au.net_access_level': FieldVisibility.REQUIRED,
+    'aua.address_type': FieldVisibility.REQUIRED,
+    'aua.post_code': FieldVisibility.REQUIRED,
+    'aua.street1': FieldVisibility.REQUIRED,
+    'aua.street2': FieldVisibility.VISIBLE,
+    'aua.city': FieldVisibility.REQUIRED,
+    'aua.county': FieldVisibility.VISIBLE,
+    'aua.state': FieldVisibility.VISIBLE,
+    'aua.country': FieldVisibility.REQUIRED,
+    'aua.valid': FieldVisibility.VISIBLE,
+    'aua.within_city_limits': FieldVisibility.VISIBLE,
+    'stat_cats': FieldVisibility.SUGGESTED,
+    'surveys': FieldVisibility.SUGGESTED,
+    'au.name_keywords': FieldVisibility.SUGGESTED
+};
 
 interface StatCat {
     cat: IdlObject;
@@ -79,7 +111,6 @@ export class EditComponent implements OnInit {
     smsCarriers: ComboboxEntry[];
     identTypes: ComboboxEntry[];
     inetLevels: ComboboxEntry[];
-    orgSettings: {[name: string]: any} = {};
     statCats: StatCat[] = [];
     userStatCats: {[statId: number]: ComboboxEntry} = {};
     userSettings: {[name: string]: any} = {};
@@ -87,7 +118,8 @@ export class EditComponent implements OnInit {
     optInSettingTypes: {[name: string]: IdlObject} = {};
     secondaryGroups: IdlObject[];
     expireDate: Date;
-    visibleFields: EditorFieldOptions;
+
+    fieldVisibility: {[key: string]: FieldVisibility} = {};
 
     // All locations we have the specified permissions
     permOrgs: {[name: string]: number[]};
@@ -119,7 +151,6 @@ export class EditComponent implements OnInit {
         this.context.saveClicked.subscribe(_ => this.save());
         this.context.saveCloneClicked.subscribe(_ => this.saveClone());
         this.context.printClicked.subscribe(_ => this.printPatron());
-        this.context.showFieldsChanged.subscribe(f => this.visibleFields = f);
 
         this.load();
     }
@@ -134,7 +165,6 @@ export class EditComponent implements OnInit {
         .then(_ => this.setIdentTypes())
         .then(_ => this.setInetLevels())
         .then(_ => this.setOptInSettings())
-        .then(_ => this.setOrgSettings())
         .then(_ => this.setSmsCarriers())
         .then(_ => this.loading = false);
     }
@@ -167,13 +197,8 @@ export class EditComponent implements OnInit {
         });
     }
 
-    setOrgSettings(): Promise<any> {
-        return this.serverStore.getItemBatch(ORG_SETTING_TYPES)
-        .then(settings => this.orgSettings = settings);
-    }
-
     setSmsCarriers(): Promise<any> {
-        if (!this.orgSettings['sms.enable']) {
+        if (!this.context.settingsCache['sms.enable']) {
             return Promise.resolve();
         }
 
@@ -326,12 +351,14 @@ export class EditComponent implements OnInit {
         patron.isnew(true);
         patron.addresses([]);
         patron.settings([]);
+        patron.cards([]);
         patron.waiver_entries([]);
 
         const card = this.idl.create('ac');
         card.isnew(true);
         card.usr(-1);
         patron.card(card);
+        patron.cards().push(card);
 
         this.patron = patron;
     }
@@ -449,18 +476,58 @@ export class EditComponent implements OnInit {
         }
     }
 
-    showField(idlClass: string, field: string): boolean {
-      // TODO
-      return true;
+    showField(field: string): boolean {
+
+        if (this.fieldVisibility[field] === undefined) {
+            // Settings have not yet been applied for this field.
+            // Calculate them now.
+
+            // The preferred name fields use the primary name field settings
+            let settingKey = field;
+            let altName = false;
+            if (field.match(/^au.alt_/)) {
+                altName = true;
+                settingKey = field.replace(/alt_/, '');
+            }
+
+            const required = `ui.patron.edit.${settingKey}.require`;
+            const show = `ui.patron.edit.${settingKey}.show`;
+            const suggest = `ui.patron.edit.${settingKey}.suggest`;
+
+            if (this.context.settingsCache[required]) {
+                if (altName) {
+                    // Preferred name fields are never required.
+                    this.fieldVisibility[field] = FieldVisibility.VISIBLE;
+                } else {
+                    this.fieldVisibility[field] = FieldVisibility.REQUIRED;
+                }
+
+            } else if (this.context.settingsCache[show]) {
+                this.fieldVisibility[field] = FieldVisibility.VISIBLE;
+
+            } else if (this.context.settingsCache[suggest]) {
+                this.fieldVisibility[field] = FieldVisibility.SUGGESTED;
+            }
+        }
+
+        if (this.fieldVisibility[field] == undefined) {
+            // No org settings were applied above.  Use the default
+            // settings if present or assume the field has no
+            // visibility flags applied.
+            this.fieldVisibility[field] = DEFAULT_FIELD_VISIBILITY[field] || 0;
+        }
+
+        return this.fieldVisibility[field] >=
+            this.context.editorFieldVisibilityLevel;
     }
 
-    fieldRequired(idlClass: string, field: string): boolean {
+    fieldRequired(field: string): boolean {
         // TODO
         return false;
     }
 
 
-    fieldPattern(idlClass: string, field: string): string {
+    fieldPattern(field: string): string {
         // TODO
         return null;
     }
@@ -748,6 +815,24 @@ export class EditComponent implements OnInit {
 
     printPatron() {
         // TODO
+    }
+
+    replaceBarcode() {
+        // Disable current card
+        this.patron.card().active('f');
+        this.patron.card().ischanged(true);
+
+        const card = this.idl.create('ac');
+        card.isnew(true);
+        card.id(this.autoId--);
+        card.usr(this.patron.id());
+        card.active('t');
+
+        this.patron.card(card);
+        this.patron.cards().push(card);
+    }
+
+    showBarcodes() {
     }
 }
 
