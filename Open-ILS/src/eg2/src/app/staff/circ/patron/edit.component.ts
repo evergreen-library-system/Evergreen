@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Input, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {concatMap, tap} from 'rxjs/operators';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -90,12 +90,31 @@ interface StatCat {
   selector: 'eg-patron-edit',
   styleUrls: ['edit.component.css']
 })
-export class EditComponent implements OnInit {
+export class EditComponent implements OnInit, AfterViewInit {
 
     @Input() patronId: number;
     @Input() cloneId: number;
     @Input() stageUsername: string;
-    @Input() toolbar: EditToolbarComponent;
+
+    _toolbar: EditToolbarComponent;
+    @Input() set toolbar(tb: EditToolbarComponent) {
+        if (tb !== this._toolbar) {
+            this._toolbar = tb;
+
+            // Our toolbar component may not be available during init,
+            // since it pops in and out of existence depending on which
+            // patron tab is open.  Wait until we know it's defined.
+            if (tb) {
+                tb.saveClicked.subscribe(_ => this.save());
+                tb.saveCloneClicked.subscribe(_ => this.saveClone());
+                tb.printClicked.subscribe(_ => this.printPatron());
+            }
+        }
+    }
+
+    get toolbar(): EditToolbarComponent {
+        return this._toolbar;
+    }
 
     @ViewChild('profileSelect')
         private profileSelect: ProfileSelectComponent;
@@ -155,13 +174,10 @@ export class EditComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-
-        // Listen for edit-toolbar events
-        this.toolbar.saveClicked.subscribe(_ => this.save());
-        this.toolbar.saveCloneClicked.subscribe(_ => this.saveClone());
-        this.toolbar.printClicked.subscribe(_ => this.printPatron());
-
         this.load();
+    }
+
+    ngAfterViewInit() {
     }
 
     load(): Promise<any> {
@@ -337,8 +353,10 @@ export class EditComponent implements OnInit {
 
         // stat_cat_entries() are entry maps under the covers.
         this.patron.stat_cat_entries().forEach(map => {
-            const stat: StatCat = this.statCats.filter(
-                stat => stat.cat.id() === map.stat_cat())[0];
+
+            const stat: StatCat =
+                this.statCats.filter(s => s.cat.id() === map.stat_cat())[0];
+
             let cboxEntry: ComboboxEntry =
                 stat.entries.filter(e => e.label === map.stat_cat_entry())[0];
 
@@ -447,7 +465,7 @@ export class EditComponent implements OnInit {
         }
 
         const responses = this.patron.survey_responses()
-            .filter(resp => resp.question() !== question.id());
+            .filter(r => r.question() !== question.id());
 
         const resp = this.idl.create('asvr');
         resp.isnew(true);
@@ -532,7 +550,7 @@ export class EditComponent implements OnInit {
             }
         }
 
-        if (this.fieldVisibility[field] == undefined) {
+        if (this.fieldVisibility[field] === undefined) {
             // No org settings were applied above.  Use the default
             // settings if present or assume the field has no
             // visibility flags applied.
@@ -549,13 +567,14 @@ export class EditComponent implements OnInit {
             return false;
         }
 
-        return this.fieldVisibility[field] == 3;
+        return this.fieldVisibility[field] === 3;
     }
 
 
     fieldPattern(idlClass: string, field: string): RegExp {
-        if (!this.fieldPatterns[idlClass][field])
+        if (!this.fieldPatterns[idlClass][field]) {
             this.fieldPatterns[idlClass][field] = new RegExp('.*');
+        }
         return this.fieldPatterns[idlClass][field];
     }
 
@@ -772,7 +791,7 @@ export class EditComponent implements OnInit {
         this.loading = true;
         return this.saveUser()
         .then(_ => this.saveUserSettings())
-        .then(_ => this.postSaveRedirect())
+        .then(_ => this.postSaveRedirect());
     }
 
     postSaveRedirect() {
@@ -827,11 +846,11 @@ export class EditComponent implements OnInit {
 
             // Create settings for all non-null setting values for new patrons.
             this.userSettings.forEach( (val, key) => {
-                if (val !== null) settings[key] = val;
+                if (val !== null) { settings[key] = val; }
             });
         }
 
-        if (Object.keys(settings).length == 0) { return Promise.resolve(); }
+        if (Object.keys(settings).length === 0) { return Promise.resolve(); }
 
         return this.net.request(
             'open-ils.actor',

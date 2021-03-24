@@ -162,7 +162,7 @@ export class PatronService {
             cats.sort((a, b) => a.name() < b.name() ? -1 : 1);
             cats.forEach(cat => {
                 cat.entries(
-                    cat.entries().sort((a,b) => a.value() < b.value() ? -1 : 1)
+                    cat.entries().sort((a, b) => a.value() < b.value() ? -1 : 1)
                 );
             });
             return cats;
