@@ -489,6 +489,10 @@ sub update_patron {
             return $e->die_event unless
                 $e->allowed('BAR_PATRON', $patron->home_ou);
         }
+        if(($patron->photo_url)) {
+            return $e->die_event unless
+                $e->allowed('UPDATE_USER_PHOTO_URL', $patron->home_ou);
+        }
     } else {
         $new_patron = $patron;
 
@@ -504,6 +508,11 @@ sub update_patron {
 
             $barred_hook = $U->is_true($new_patron->barred) ?
                 'au.barred' : 'au.unbarred';
+        }
+
+        if($old_patron->photo_url ne $new_patron->photo_url) {
+            my $perm = 'UPDATE_USER_PHOTO_URL';
+            return $e->die_event unless $e->allowed($perm, $patron->home_ou);
         }
 
         # update the password by itself to avoid the password protection magic

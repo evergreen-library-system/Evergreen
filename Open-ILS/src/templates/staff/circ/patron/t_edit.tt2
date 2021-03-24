@@ -456,6 +456,17 @@ within the "form" by name for validation.
   </div>
 </div>
 
+<!-- PHOTO_URL -->
+<div class="row reg-field-row" ng-show="show_field('au.photo_url')">
+  [% draw_field_label('au', 'photo_url') %]
+  [% draw_form_input('au', 'photo_url', '', 'photo_url') %]
+  <div class="col-md-3 patron-reg-example">
+    <span ng-if="org_settings['ui.patron.edit.au.photo_url.example']">
+      [% l('Example: [_1]',
+        "{{org_settings['ui.patron.edit.au.photo_url.example']}}") %]
+    </span>
+  </div>
+</div>
 
 <!-- EMAIL -->
 <div class="row reg-field-row" ng-show="show_field('au.email')">

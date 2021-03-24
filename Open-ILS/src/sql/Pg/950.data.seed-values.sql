@@ -1958,7 +1958,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 630, 'VIEW_GEOLOCATION_SERVICES', oils_i18n_gettext(630,
     'View geographic location services', 'ppl', 'description')),
  ( 631, 'ADMIN_GEOLOCATION_SERVICES', oils_i18n_gettext(631,
-    'Administer geographic location services', 'ppl', 'description'))
+    'Administer geographic location services', 'ppl', 'description')),
+ ( 632, 'UPDATE_USER_PHOTO_URL', oils_i18n_gettext(632,
+    'Update the user photo url field in patron registration and editor', 'ppl', 'description'))
 ;
 
 
@@ -2439,7 +2441,8 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'PATRON_EXCEEDS_FINES.override',
 			'PATRON_EXCEEDS_OVERDUE_COUNT.override',
 			'RETRIEVE_RESERVATION_PULL_LIST',
-			'UPDATE_HOLD');
+			'UPDATE_HOLD',
+            'UPDATE_USER_PHOTO_URL');
 
 
 -- Add advanced circulation permissions to the Circulation Admin group
@@ -5688,6 +5691,30 @@ INSERT into config.org_unit_setting_type
      'For staff-placed holds, in the absence of a patron preferred pickup location, fall back to using the staff workstation OU (rather than patron home OU)',
      'coust', 'description'),
    'bool', null)
+,( 'ui.patron.edit.au.photo_url.require', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.photo_url.require',
+        'Require Photo URL field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.photo_url.require',
+        'The Photo URL field will be required on the patron registration screen.',
+        'coust', 'description'),
+    'bool', null)
+,( 'ui.patron.edit.au.photo_url.show', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.photo_url.show',
+        'Show Photo URL field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.photo_url.show',
+        'The Photo URL field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
+,( 'ui.patron.edit.au.photo_url.suggest', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.photo_url.suggest',
+        'Suggest Photo URL field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.photo_url.suggest',
+        'The Photo URL field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
+        'coust', 'description'),
+    'bool', null)
 ;
 
 UPDATE config.org_unit_setting_type
