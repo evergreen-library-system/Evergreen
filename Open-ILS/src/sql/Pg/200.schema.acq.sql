@@ -1353,6 +1353,10 @@ DECLARE
 	orig_allocated_amt NUMERIC;  -- in currency of funding source
 	allocated_amt      NUMERIC;  -- in currency of fund
 	source             RECORD;
+    old_fund_row       acq.fund%ROWTYPE;
+    new_fund_row       acq.fund%ROWTYPE;
+    old_org_row        actor.org_unit%ROWTYPE;
+    new_org_row        actor.org_unit%ROWTYPE;
 BEGIN
 	--
 	-- Sanity checks
@@ -1438,6 +1442,14 @@ BEGIN
 			currency_ratio := new_amount / old_amount;
 		END IF;
 	END IF;
+
+    -- Fetch old and new fund's information
+    -- in order to construct the allocation notes
+    SELECT INTO old_fund_row * FROM acq.fund WHERE id = old_fund;
+    SELECT INTO old_org_row * FROM actor.org_unit WHERE id = old_fund_row.org;
+    SELECT INTO new_fund_row * FROM acq.fund WHERE id = new_fund;
+    SELECT INTO new_org_row * FROM actor.org_unit WHERE id = new_fund_row.org;
+
 	--
 	-- Identify the funding source(s) from which we want to transfer the money.
 	-- The principle is that we want to transfer the newest money first, because
@@ -1545,7 +1557,9 @@ BEGIN
 				old_fund,
 				source_deduction,
 				user_id,
-				'Transfer to fund ' || new_fund
+				'Transfer to fund ' || new_fund_row.code || ' ('
+                                    || new_fund_row.year || ') ('
+                                    || new_org_row.shortname || ')'
 			);
 		END IF;
 		--
@@ -1608,7 +1622,9 @@ BEGIN
 					new_fund,
 					source_addition,
 					user_id,
-					'Transfer from fund ' || old_fund
+				    'Transfer from fund ' || old_fund_row.code || ' ('
+                                          || old_fund_row.year || ') ('
+                                          || old_org_row.shortname || ')'
 				);
 			END IF;
 		END IF;
