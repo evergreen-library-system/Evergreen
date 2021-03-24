@@ -122,6 +122,12 @@ export class EditComponent implements OnInit {
     expireDate: Date;
     changesPending = false;
 
+    fieldPatterns: {[cls: string]: {[field: string]: RegExp}} = {
+        au: {},
+        ac: {},
+        aua: {}
+    };
+
     fieldVisibility: {[key: string]: FieldVisibility} = {};
 
     // All locations we have the specified permissions
@@ -169,6 +175,7 @@ export class EditComponent implements OnInit {
         .then(_ => this.setInetLevels())
         .then(_ => this.setOptInSettings())
         .then(_ => this.setSmsCarriers())
+        .then(_ => this.setFieldPatterns())
         .then(_ => this.loading = false);
     }
 
@@ -546,9 +553,10 @@ export class EditComponent implements OnInit {
     }
 
 
-    fieldPattern(field: string): string {
-        // TODO
-        return null;
+    fieldPattern(idlClass: string, field: string): RegExp {
+        if (!this.fieldPatterns[idlClass][field])
+            this.fieldPatterns[idlClass][field] = new RegExp('.*');
+        return this.fieldPatterns[idlClass][field];
     }
 
     generatePassword() {
@@ -857,6 +865,62 @@ export class EditComponent implements OnInit {
     canSave(): boolean {
         return document.querySelector('.ng-invalid') === null;
     }
+
+    setFieldPatterns() {
+        let regex;
+
+        if (regex = this.context.settingsCache['opac.username_regex']) {
+            this.fieldPatterns.au.usrname = new RegExp(regex);
+        }
+
+        if (regex =
+            this.context.settingsCache['ui.patron.edit.ac.barcode.regex']) {
+            this.fieldPatterns.ac.barcode = new RegExp(regex);
+        }
+
+        if (regex = this.context.settingsCache['global.password_regex']) {
+            this.fieldPatterns.au.passwd = new RegExp(regex);
+        }
+
+        if (regex = this.context.settingsCache['ui.patron.edit.phone.regex']) {
+            // apply generic phone regex first, replace below as needed.
+            this.fieldPatterns.au.day_phone = new RegExp(regex);
+            this.fieldPatterns.au.evening_phone = new RegExp(regex);
+            this.fieldPatterns.au.other_phone = new RegExp(regex);
+        }
+
+        // the remaining this.fieldPatterns fit a well-known key name pattern
+
+        Object.keys(this.context.settingsCache).forEach(key => {
+            const val = this.context.settingsCache[key];
+            if (!val) { return; }
+            const parts = key.match(/ui.patron.edit\.(\w+)\.(\w+)\.regex/);
+            if (!parts) { return; }
+            const cls = parts[1];
+            const name = parts[2];
+            this.fieldPatterns[cls][name] = new RegExp(val);
+        });
+    }
+
+    // The username must match either the configured regex or the
+    // patron's barcode
+    updateUsernameRegex() {
+        const regex = this.context.settingsCache['opac.username_regex'];
+        if (regex) {
+            const barcode = this.patron.card().barcode();
+            if (barcode) {
+                this.fieldPatterns.au.usrname =
+                    new RegExp(`${regex}|^${barcode}$`);
+            } else {
+                // username must match the regex
+                this.fieldPatterns.au.usrname = new RegExp(regex);
+            }
+        } else {
+            // username can be any format.
+            this.fieldPatterns.au.usrname = new RegExp('.*');
+        }
+    }
+
 }
 
 

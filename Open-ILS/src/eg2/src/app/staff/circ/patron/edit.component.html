@@ -51,7 +51,7 @@
       (ngModelChange)="fieldValueChange(args.path, args.index, args.field, $event)"
       (change)="afterFieldChange(args.path, args.index, args.field)"
       [required]="fieldRequired(getClass(args.cls) + '.' + args.field)"
-      [pattern]="fieldPattern(getClass(args.cls) + '.' + args.field)"
+      [pattern]="fieldPattern(getClass(args.cls), args.field)"
       [disabled]="args.disabled"
     />
   </div>
@@ -69,7 +69,7 @@
       (ngModelChange)="fieldValueChange(args.path, args.index, args.field, $event)"
       (change)="afterFieldChange(args.path, args.index, args.field)"
       [required]="fieldRequired(getClass(args.cls) + '.' + args.field)"
-      [pattern]="fieldPattern(getClass(args.cls) + '.' + args.field)"
+      [pattern]="fieldPattern(getClass(args.cls), args.field)"
       [disabled]="disabled"
     />
   </div>
@@ -248,7 +248,7 @@
         (ngModelChange)="fieldValueChange(null, null, 'name_keywords', $event)"
         (change)="afterFieldChange(null, args.index, 'name_keywords')"
         [required]="fieldRequired('au.name_keywords')"
-        [pattern]="fieldPattern('au.name_keywords')">
+        [pattern]="fieldPattern('au', 'name_keywords')">
       </textarea>
     </div>
   </div>
@@ -434,7 +434,7 @@
         (ngModelChange)="fieldValueChange(null, null, 'alert_message', $event)"
         (change)="afterFieldChange(null, null, 'alert_message')"
         [required]="fieldRequired('au.alert_message')"
-        [pattern]="fieldPattern('au.alert_message')">
+        [pattern]="fieldPattern('au', 'alert_message')">
       </textarea>
     </div>
   </div>
