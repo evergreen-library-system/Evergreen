@@ -8,7 +8,7 @@
         [% ELSIF ctx.authtime AND !ctx.is_staff %]
         <meta http-equiv="refresh" content="[% ctx.authtime %]; url=[% ctx.home_page %]" />
         [% END %]
-        <meta name = "viewport" content = "initial-scale = 1.0">
+        <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
         <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css[% ctx.cache_key %]" />
         <link rel="stylesheet" type="text/css" href="[% ctx.opac_root %]/css/style.css[% ctx.cache_key %]&amp;dir=[%
           IF ctx.get_i18n_l(ctx.eg_locale).rtl == 't' %]rtl[%

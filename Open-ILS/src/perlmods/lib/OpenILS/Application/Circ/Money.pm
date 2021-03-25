@@ -103,23 +103,32 @@ sub process_stripe_or_bop_payment {
 
     if ($cc_args->{processor} eq 'Stripe') { # Stripe
         my $stripe = Business::Stripe->new(-api_key => $psettings->{secretkey});
-        $stripe->charges_create(
-            amount => ($total_paid * 100), # Stripe takes amount in pennies
-            card => $cc_args->{stripe_token},
-            description => $cc_args->{note}
-        );
-
+        $stripe->api('post','payment_intents/' . $cc_args->{stripe_payment_intent});
         if ($stripe->success) {
-            $logger->info("Stripe payment succeeded");
-            return OpenILS::Event->new(
-                "SUCCESS", payload => {
-                    map { $_ => $stripe->success->{$_} } qw(
-                        invoice customer balance_transaction id created card
-                    )
-                }
-            );
+            $logger->debug('Stripe payment intent retrieved');
+            my $intent = $stripe->success;
+            if ($intent->{status} eq 'succeeded') {
+                $logger->info('Stripe payment succeeded');
+                return OpenILS::Event->new(
+                    'SUCCESS', payload => {
+                        invoice => $intent->{invoice},
+                        customer => $intent->{customer},
+                        balance_transaction => 'N/A',
+                        id => $intent->{id},
+                        created => $intent->{created},
+                        card => 'N/A'
+                    }
+                );
+            } else {
+                $logger->info('Stripe payment failed');
+                return OpenILS::Event->new(
+                    'CREDIT_PROCESSOR_DECLINED_TRANSACTION',
+                    payload => $intent->{last_payment_error}
+                );
+            }
         } else {
-            $logger->info("Stripe payment failed");
+            $logger->debug('Stripe payment intent not retrieved');
+            $logger->info('Stripe payment failed');
             return OpenILS::Event->new(
                 "CREDIT_PROCESSOR_DECLINED_TRANSACTION",
                 payload => $stripe->error  # XXX what happens if this contains
@@ -526,7 +535,7 @@ sub make_payments {
 
         # Urgh, clean up this mega-function one day.
         if ($cc_processor eq 'Stripe' and $approval_code and $cc_payload) {
-            $payment->cc_number($cc_payload->{card}{last4});
+            $payment->cc_number($cc_payload->{card}); # not actually available :)
         }
 
         $payment->approval_code($approval_code) if $approval_code;

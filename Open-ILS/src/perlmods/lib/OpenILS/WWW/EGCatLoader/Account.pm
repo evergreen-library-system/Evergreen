@@ -11,6 +11,7 @@ use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::Cache;
 use OpenILS::Utils::DateTime qw/:datetime/;
 use Digest::MD5 qw(md5_hex);
+use Business::Stripe;
 use Data::Dumper;
 $Data::Dumper::Indent = 0;
 use DateTime;
@@ -2316,8 +2317,29 @@ sub load_myopac_hold_history {
 sub load_myopac_payment_form {
     my $self = shift;
     my $r;
+    my $e = $self->editor;
 
-    $r = $self->prepare_fines(undef, undef, [$self->cgi->param('xact'), $self->cgi->param('xact_misc')]) and return $r;
+    $r = $self->prepare_fines(undef, undef, [$self->cgi->param('xact'), $self->cgi->param('xact_misc')]);
+
+    if ( ! $self->cgi->param('last_chance') # only do this once
+        && $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.enabled')
+        && $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.default') eq 'Stripe') {
+        my $skey = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.secretkey');
+        my $currency = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.currency');
+        my $stripe = Business::Stripe->new(-api_key => $skey);
+        my $intent = $stripe->api('post', 'payment_intents',
+            amount                => $self->ctx->{fines}->{balance_owed} * 100,
+            currency              => $currency || 'usd'
+        );
+        if ($stripe->success) {
+            $self->ctx->{stripe_client_secret} = $stripe->success()->{client_secret};
+        } else {
+            $logger->error('Error initializing Stripe: ' . Dumper($stripe->error));
+            $self->ctx->{cc_configuration_error} = 1;
+        }
+    }
+
+    if ($r) { return $r; }
     $r = $self->prepare_extended_user_info and return $r;
 
     return Apache2::Const::OK;
@@ -2384,7 +2406,7 @@ sub load_myopac_pay_init {
     $cc_args->{$_} = $self->cgi->param($_) for (qw/
         number cvv2 expire_year expire_month billing_first
         billing_last billing_address billing_city billing_state
-        billing_zip stripe_token
+        billing_zip stripe_payment_intent stripe_client_secret
     /);
 
     my $cache_args = {
