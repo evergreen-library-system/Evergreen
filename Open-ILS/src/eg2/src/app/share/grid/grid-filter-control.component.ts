@@ -33,7 +33,11 @@ export class GridFilterControlComponent implements OnInit {
         private org: OrgService
     ) {}
 
-    ngOnInit() { }
+    ngOnInit() {
+        if (this.col.filterValue !== undefined) {
+           this.applyFilter(this.col);
+        }
+    }
 
     operatorChanged(col: GridColumn) {
         if (col.filterOperator === 'null' || col.filterOperator === 'not null') {
