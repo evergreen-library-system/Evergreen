@@ -32,6 +32,16 @@ const routes: Routes = [{
     path: 'claim_type',
     redirectTo: 'claiming' // from legacy auto-generated admin page
 }, {
+    path: 'currency',
+    loadChildren: () =>
+      import('./currency/currencies.module').then(m => m.CurrenciesModule)
+}, {
+    path: 'currency_type',
+    redirectTo: 'currency' // from auto-generated admin page
+}, {
+    path: 'exchange_rate',
+    redirectTo: 'currency' // from auto-generated admin page
+}, {
     path: 'distribution_formula',
     loadChildren: () =>
       import('./distribution_formula/distribution-formulas.module').then(m => m.DistributionFormulasModule)
