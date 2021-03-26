@@ -32,6 +32,10 @@ const routes: Routes = [{
     path: 'claim_type',
     redirectTo: 'claiming' // from legacy auto-generated admin page
 }, {
+    path: 'distribution_formula',
+    loadChildren: () =>
+      import('./distribution_formula/distribution-formulas.module').then(m => m.DistributionFormulasModule)
+}, {
     path: 'edi_attr_set',
     loadChildren: () =>
       import('./edi_attr_set/edi-attr-sets.module').then(m => m.EdiAttrSetsModule)

@@ -1,0 +1,128 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h3 *ngIf="mode === 'create'" class="modal-title" i18n>New Distribution Formula</h3>
+    <h3 *ngIf="mode === 'update'" class="modal-title" i18n>Modify Distribution Formula</h3>
+    <h3 *ngIf="mode === 'clone'" class="modal-title" i18n>Clone Distribution Formula (from {{clonedLabel}})</h3>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #myForm="ngForm" role="form" class="form-validated">
+      <div class="form-group row mt-2" *ngIf="formula">
+        <label for="formula-name" class="col-sm-1 col-form-label" i18n>Formula Name
+        </label>
+        <div class="col-sm-2">
+          <input class="form-control" type="text" id="formula-name"
+            required="required" pattern="[\s\S]*\S[\s\S]*"
+            [ngModel]="formula.name()" name="name"
+            (ngModelChange)="formula.name($event)">
+        </div>
+        <label for="formula-owner" class="col-sm-1 col-form-owner" i18n>Formula Owner
+        </label>
+        <div class="col-sm-2">
+          <eg-org-select
+            placeholder="Owner..."
+            i18n-placeholder
+            domId="formula-owner"
+            [applyOrgId]="formula.owner()"
+            [limitPerms]="['ADMIN_ACQ_DISTRIB_FORMULA']"
+            (onChange)="formula.owner($event); myForm.form.markAsDirty()">
+          </eg-org-select>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-1" i18n>Owning Library</div>
+        <div class="col-sm-2" i18n>Shelving Location</div>
+        <div class="col-sm-2" i18n>Fund</div>
+        <div class="col-sm-2" i18n>Circ Modifier</div>
+        <div class="col-sm-1" i18n>Collection Code</div>
+        <div class="col-sm-1" i18n>Item Count</div>
+        <div class="col-sm-1"></div>
+      </div>
+      <div class="form-group row mt-2" *ngFor="let entry of formula?.entries(); index as idx; last as isLast; first as isFirst; count as count">
+        <div class="col-sm-1">
+          <button *ngIf="!isLast" class="btn btn-sm material-icon-button" type="button"
+            (click)="removeRow(idx)"
+            i18n-title title="Remove Entry"><span class="sr-only">Remove Entry</span>
+            <span class="material-icons" aria-hidden="true">delete</span>
+          </button>
+        </div>
+        <div class="col-sm-1">
+          <eg-org-select
+            placeholder="Owning Library..."
+            i18n-placeholder
+            domId="entry-owning-lib-{{idx}}"
+            [applyOrgId]="entry.owning_lib()"
+            [limitPerms]="['ADMIN_ACQ_DISTRIB_FORMULA']"
+            (onChange)="entry.owning_lib($event); myForm.form.markAsDirty()">
+          </eg-org-select>
+        </div>
+        <div class="col-sm-2">
+          <eg-item-location-select
+            permFilter="ADMIN_ACQ_DISTRIB_FORMULA"
+            [ngModel]="entry.location()" name="location-{{idx}}"
+            (ngModelChange)="entry.location($event)"
+            (valueChange)="myForm.form.markAsDirty()">
+          </eg-item-location-select>
+        </div>
+        <div class="col-sm-2">
+          <eg-combobox i18n-placeholder placeholder="Fund..." idlClass="acqf"
+            [idlBaseQuery]="{'active':{'=':'t'}}"
+            id="entry-fund-{{idx}}"
+            [asyncSupportsEmptyTermClick]="true"
+            [selectedId]="entry.fund()"
+            name="fund-{{idx}}"
+            (onChange)="entry.fund($event.id)">
+          </eg-combobox>
+        </div>
+        <div class="col-sm-2">
+          <eg-combobox i18n-placeholder placeholder="Circ Modifier..." idlClass="ccm"
+            id="entry-circ_modifier-{{idx}}"
+            [asyncSupportsEmptyTermClick]="true"
+            [selectedId]="entry.circ_modifier()"
+            name="circ_modifier-{{idx}}"
+            (onChange)="entry.circ_modifier($event.id)">
+          </eg-combobox>
+        </div>
+        <div class="col-sm-1">
+          <input class="form-control" type="text" i18n-placeholder placeholder="Collection Code..."
+            id="entry-collection-code-{{idx}}" pattern="[\s\S]*\S[\s\S]*"
+            [ngModel]="entry.collection_code()" name="collection_code-{{idx}}"
+            (ngModelChange)="entry.collection_code($event)">
+        </div>
+        <div class="col-sm-1">
+          <input class="form-control" type="number" min="0" pattern="^[0-9]+$"
+            [ngModel]="entry.item_count()" name="item_count-{{idx}}"
+            (ngModelChange)="entry.item_count($event)">
+        </div>
+        <div class="col-sm-1">
+          <button *ngIf="!isLast" class="btn btn-sm material-icon-button" type="button"
+            [disabled]="isFirst"
+            (click)="moveUp(idx)"
+            i18n-title title="Move Up"><span class="sr-only">Move Up</span>
+            <span class="material-icons" aria-hidden="true">keyboard_arrow_up</span>
+          </button>
+          <button *ngIf="!isLast" class="btn btn-sm material-icon-button" type="button"
+            (click)="moveDown(idx)"
+            [disabled]="count < 3 || idx === count - 2"
+            i18n-title title="Move Down"><span class="sr-only">Move Down</span>
+            <span class="material-icons" aria-hidden="true">keyboard_arrow_down</span>
+          </button>
+          <button *ngIf="isLast" type="button" class="btn btn-info" (click)="addRow()" i18n>Add</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info" [disabled]="!myForm?.valid || !(myForm?.dirty)"
+      (click)="save()" i18n>Save</button>
+    <button type="button" class="btn btn-warning"
+      (click)="close()" i18n>Cancel</button>
+  </div>
+</ng-template>
+
+<ng-template #defaultCloneLabelTmpl i18n>{{clonedLabel}} (clone)</ng-template>
+<eg-string #defaultCloneLabel [template]="defaultCloneLabelTmpl"></eg-string>
