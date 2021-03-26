@@ -32,6 +32,10 @@ const routes: Routes = [{
     path: 'claim_type',
     redirectTo: 'claiming' // from legacy auto-generated admin page
 }, {
+    path: 'edi_attr_set',
+    loadChildren: () =>
+      import('./edi_attr_set/edi-attr-sets.module').then(m => m.EdiAttrSetsModule)
+}, {
     path: 'funds',
     loadChildren: () =>
       import('./funds/funds.module').then(m => m.FundsModule)
