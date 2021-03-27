@@ -10502,9 +10502,11 @@ SELECT  usr,
 			<field name="id"    reporter:datatype="id"   reporter:label="ID" reporter:selector="label"/>
 			<field name="label" reporter:datatype="text" reporter:label="Label"/>
 			<field name="attr_maps" reporter:datatype="link" oils_persist:virtual="true" reporter:label="Mapped EDI Attributes"/>
+			<field name="edi_accounts" reporter:datatype="link" oils_persist:virtual="true" reporter:label="EDI Accounts"/>
 		</fields>
 		<links>
 			<link field="attr_maps" reltype="has_many" key="attr_set" map="" class="aeasm"/>
+			<link field="edi_accounts" reltype="has_many" key="attr_set" map="" class="acqedi"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
