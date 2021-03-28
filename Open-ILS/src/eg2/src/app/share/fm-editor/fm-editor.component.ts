@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
+import {OrgService} from '@eg/core/org.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
@@ -246,6 +247,7 @@ export class FmRecordEditorComponent
       private auth: AuthService,
       private toast: ToastService,
       private format: FormatService,
+      private org: OrgService,
       private pcrud: PcrudService) {
       super(modal);
     }
@@ -432,9 +434,36 @@ export class FmRecordEditorComponent
 
         return list.map(item => {
             if (item !== undefined) {
-                return {id: item[idField](), label: item[selector]()};
+                return {id: item[idField](), label: this.getFmRecordLabel(field, selector, item)};
             }
         });
+    }
+
+    private getFmRecordLabel(field: any, selector: string, fm: IdlObject): string {
+        // for now, need to keep in sync with getFmRecordLabel in combobox
+        // alternatively, have fm-edit not wire-up the combobox's data source for it
+        switch (field.class) {
+            case 'acmc':
+                return fm.course_number() + ': ' + fm.name();
+                break;
+            case 'acqf':
+                return fm.code() + ' (' + fm.year() + ')'
+                       + ' (' + this.getOrgShortname(fm.org()) + ')';
+                break;
+            case 'acpl':
+                return fm.name() + ' (' + this.getOrgShortname(fm.owning_lib()) + ')';
+                break;
+            default:
+                // no equivalent of idlIncludeLibraryInLabel yet
+                return fm[selector]();
+        }
+    }
+    getOrgShortname(ou: any) {
+        if (typeof ou === 'object') {
+            return ou.shortname();
+        } else {
+            return this.org.get(ou).shortname();
+        }
     }
 
     private getFieldList(): Promise<any> {
