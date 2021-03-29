@@ -22,4 +22,9 @@ export class EgHelpPopoverComponent {
     // 'top', and so forth.
     @Input()
     placement = '';
+
+    // Allow for overriding the default button class.
+    // This augments the basic 'btn' class
+    @Input()
+    buttonClass = 'btn-sm';
 }
