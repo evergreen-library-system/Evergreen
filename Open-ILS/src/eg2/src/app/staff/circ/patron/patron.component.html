@@ -191,7 +191,8 @@
 
       <ng-container *ngIf="patronTab === 'edit'">
         <!-- put the editor toolbar up here in the sticky section -->
-        <eg-patron-edit-toolbar #editorToolbar></eg-patron-edit-toolbar>
+        <eg-patron-edit-toolbar #editorToolbar [patronId]="patronId">
+        </eg-patron-edit-toolbar>
       </ng-container>
 
     </div><!-- end of sticky top -->

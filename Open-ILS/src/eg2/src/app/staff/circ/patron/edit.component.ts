@@ -19,6 +19,7 @@ import {PermService} from '@eg/core/perm.service';
 import {SecondaryGroupsDialogComponent} from './secondary-groups.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {EditToolbarComponent, VisibilityLevel} from './edit-toolbar.component';
+import {PatronSearchFieldSet} from '@eg/staff/share/patron/search.component';
 
 const COMMON_USER_SETTING_TYPES = [
   'circ.holds_behind_desk',
@@ -247,10 +248,13 @@ export class EditComponent implements OnInit, AfterViewInit {
             'open-ils.actor.user.get_groups',
             this.auth.token(), this.patronId
 
-        ).pipe(concatMap(maps => this.pcrud.search('pgt',
-            {id: maps.map(m => m.grp())}, {}, {atomic: true})
+        ).pipe(concatMap(maps => {
+            if (maps.length === 0) { return []; }
 
-        )).pipe(tap(grps => this.secondaryGroups = grps)).toPromise();
+            return this.pcrud.search('pgt',
+                {id: maps.map(m => m.grp())}, {}, {atomic: true});
+
+        })).pipe(tap(grps => this.secondaryGroups = grps)).toPromise();
     }
 
     setIdentTypes(): Promise<any> {
@@ -508,12 +512,85 @@ export class EditComponent implements OnInit, AfterViewInit {
 
         switch (field) {
             // TODO: do many more
+            // open-ils.actor.barcode.exists / ditto username
 
             case 'profile':
                 this.setExpireDate();
                 break;
+
+            case 'day_phone':
+                // TODO: patron.password.use_phone
+                // TODO: hold related contact info
+                this.dupeValueChange(field, value);
+                break;
+
+            case 'evening_phone':
+            case 'other_phone':
+                // TODO hold related contact info
+                this.dupeValueChange(field, value);
+                break;
+
+            case 'ident_value':
+            case 'ident_value2':
+            case 'first_given_name':
+            case 'family_name':
+            case 'email':
+                this.dupeValueChange(field, value);
+                break;
+
+            case 'street1':
+            case 'street2':
+            case 'city':
+                // dupe search on address wants the address object as the value.
+                this.dupeValueChange('address', obj);
+                // TODO address_alert(obj);
+                break;
         }
+
         this.adjustSaveSate();
+    }
+
+    dupeValueChange(name: string, value: any) {
+
+        if (name.match(/phone/)) { name = 'phone'; }
+        if (name.match(/name/)) { name = 'name'; }
+        if (name.match(/ident/)) { name = 'ident'; }
+
+        let search: PatronSearchFieldSet;
+        switch (name) {
+
+            case 'name':
+                const fname = this.patron.first_given_name();
+                const lname = this.patron.family_name();
+                search = {
+                    first_given_name : {value : fname, group : 0},
+                    family_name : {value : lname, group : 0}
+                };
+                break;
+
+            case 'email':
+                search = {email : {value : value, group : 0}};
+                break;
+
+            case 'ident':
+                search = {ident : {value : value, group : 2}};
+                break;
+
+            case 'phone':
+                search = {phone : {value : value, group : 2}};
+                break;
+
+            case 'address':
+                search = {};
+                ['street1', 'street2', 'city', 'post_code'].forEach(field => {
+                    if (value[field]()) {
+                        search[field] = {value : value[field](), group: 1};
+                    }
+                });
+                break;
+        }
+
+        this.toolbar.checkDupes(name, search);
     }
 
     showField(field: string): boolean {

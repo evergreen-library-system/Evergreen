@@ -20,12 +20,13 @@
         {{card.barcode()}}
       </div>
       <div class="col-lg-4" i18n>
-        <input type="checkbox" 
+        <input type="checkbox" [disabled]="!myPerms.UPDATE_PATRON_ACTIVE_CARD"
           (ngModelChange)="activeChange(card, $event)"
           class="form-check-input ml-0" [ngModel]="card.active() == 't'">
       </div>
       <div class="col-lg-4" i18n>
         <input type="radio" name="primary-card" [value]="card.id()"
+          [disabled]="!myPerms.UPDATE_PATRON_PRIMARY_CARD"
           class="form-check-input ml-0" [(ngModel)]="primaryCard">
       </div>
     </div>

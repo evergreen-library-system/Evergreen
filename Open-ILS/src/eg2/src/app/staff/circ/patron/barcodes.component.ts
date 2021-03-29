@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable, empty} from 'rxjs';
+import {Observable, from, empty} from 'rxjs';
 import {switchMap, tap} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -12,6 +12,9 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 import {PatronContextService} from './patron.service';
+import {PermService} from '@eg/core/perm.service';
+
+const PERMS = ['UPDATE_PATRON_ACTIVE_CARD', 'UPDATE_PATRON_PRIMARY_CARD'];
 
 /* Add/Remove Secondary Groups */
 
@@ -25,6 +28,7 @@ export class PatronBarcodesDialogComponent
 
     @Input() patron: IdlObject;
     primaryCard: number;
+    myPerms: {[name: string]: boolean} = {};
 
     constructor(
         private modal: NgbModal,
@@ -35,16 +39,12 @@ export class PatronBarcodesDialogComponent
         private pcrud: PcrudService,
         private org: OrgService,
         private auth: AuthService,
+        private perms: PermService,
         private context: PatronContextService
     ) { super(modal); }
 
     ngOnInit() {
     }
-
-    /* todo check perms
-    'UPDATE_PATRON_ACTIVE_CARD',
-    'UPDATE_PATRON_PRIMARY_CARD'
-    */
 
     open(ops: NgbModalOptions): Observable<any> {
         this.patron.cards().some(card => {
@@ -53,6 +53,13 @@ export class PatronBarcodesDialogComponent
                 return true;
             }
         });
+
+        this.perms.hasWorkPermAt(PERMS, true).then(perms => {
+            PERMS.forEach(p => {
+                this.myPerms[p] = perms[p].includes(this.patron.home_ou());
+            });
+        })
+
         return super.open(ops);
     }
 
