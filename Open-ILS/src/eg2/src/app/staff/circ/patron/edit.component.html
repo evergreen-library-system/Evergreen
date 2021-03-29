@@ -21,13 +21,22 @@
   </div>
 </div>
 
+<ng-template #fieldExample let-args="args">
+  <span class="ml-2" *ngIf="exampleText(args.cls, args.field)" i18n>
+    Example: {{exampleText(args.cls, args.field)}}
+  </span>
+</ng-template>
+
 <!-- IDL-generated field labels.  Override with args.overrideLabel -->
 <ng-template #fieldLabel let-args="args">
   <div class="col-lg-3 field-label">
     <label for="{{getClass(args.cls)}}-{{args.field}}-input">
       {{getFieldLabel(getClass(args.cls), args.field, args.overrideLabel)}}
     </label>
-    <!-- TODO doc links -->
+    <eg-help-popover *ngIf="getFieldDoc(args.cls, args.field)"
+      buttonClass="btn-sm text-info p-0 m-0"
+      [placement]="'bottom'" [helpText]="getFieldDoc(args.cls, args.field)">
+    </eg-help-popover>
   </div>
 </ng-template>
 
@@ -142,6 +151,8 @@
     <ng-container *ngTemplateOutlet="fieldLabel; context: {args: args}">
     </ng-container>
     <ng-container *ngTemplateOutlet="args.template; context: {args: args}">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="fieldExample; context: {args: args}">
     </ng-container>
   </div>
 </ng-template>
@@ -335,6 +346,8 @@
       <ng-container *ngIf="patron.day_phone() && !patron.isnew()">
         <button class="btn btn-outline-dark" 
           (click)="invalidateField('day_phone')" i18n>Invalidate</button>
+      </ng-container>
+      <ng-container *ngTemplateOutlet="fieldExample; context: {args: {field: 'day_phone'}}">
       </ng-container>
     </div>
   </div>

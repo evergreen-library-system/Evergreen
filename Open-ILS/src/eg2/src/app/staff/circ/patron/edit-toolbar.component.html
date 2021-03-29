@@ -25,19 +25,22 @@
   </div>
 </div>
 
-<div class="row pb-2 pt-2" *ngIf="dupeSearches.length > 0">
+<div class="row pb-1 pt-1" *ngIf="dupesFound().length > 0">
   <div class="col-lg-12 d-flex">
     <div class="ml-auto mr-2">
-      <div *ngFor="let dupe of dupeSearches"
-        class="alert alert-danger ml-auto p-2 mt-2" i18n>
-        {{dupe.count}} patron(s) with same
-        <ng-container [ngSwitch]="dupe.category">
-          <span *ngSwitchCase="'phone'">phone</span>
-          <span *ngSwitchCase="'email'">email</span>
-          <span *ngSwitchCase="'name'">name</span>
-          <span *ngSwitchCase="'ident'">identifier</span>
-          <span *ngSwitchCase="'address'">address</span>
-        </ng-container>
+      <div *ngFor="let dupe of dupesFound()"
+        class="alert alert-danger ml-auto p-2 mt-2">
+          <a routerLink="/staff/circ/patron/search" 
+            target="_blank" [queryParams]="{search: dupe.json}" i18n>
+          {{dupe.count}} patron(s) with same
+          <ng-container [ngSwitch]="dupe.category">
+            <span *ngSwitchCase="'phone'">phone</span>
+            <span *ngSwitchCase="'email'">email</span>
+            <span *ngSwitchCase="'name'">name</span>
+            <span *ngSwitchCase="'ident'">identifier</span>
+            <span *ngSwitchCase="'address'">address</span>
+          </ng-container>
+        </a>
       </div>
     </div>
   </div>

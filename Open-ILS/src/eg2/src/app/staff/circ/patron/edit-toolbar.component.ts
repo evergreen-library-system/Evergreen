@@ -20,6 +20,7 @@ interface DupeSearch {
     category: SearchCategory;
     count: number;
     search: PatronSearchFieldSet;
+    json: string;
 }
 
 @Component({
@@ -39,7 +40,7 @@ export class EditToolbarComponent implements OnInit {
     saveCloneClicked: EventEmitter<void> = new EventEmitter<void>();
     printClicked: EventEmitter<void> = new EventEmitter<void>();
 
-    dupeSearches: DupeSearch[] = [];
+    searches: {[category: string]: DupeSearch} = {};
 
     constructor(
         private org: OrgService,
@@ -58,6 +59,12 @@ export class EditToolbarComponent implements OnInit {
         this.visibilityLevel = v;
     }
 
+    dupesFound(): DupeSearch[] {
+        return Object.values(this.searches).filter(dupe => dupe.count > 0);
+    }
+
+
+
     checkDupes(category: string, search: PatronSearchFieldSet) {
 
         this.net.request(
@@ -70,25 +77,12 @@ export class EditToolbarComponent implements OnInit {
             true  // as id
         ).subscribe(ids => {
             ids = ids.filter(id => Number(id) !== this.patronId);
-            const count = ids.length;
-
-            if (count > 0) {
-                const existing =
-                    this.dupeSearches.filter(s => s.category === category)[0];
-                if (existing) {
-                    existing.search = search;
-                    existing.count = count;
-                } else {
-                    this.dupeSearches.push({
-                        category: category as SearchCategory,
-                        search: search,
-                        count: count
-                    });
-                }
-            } else {
-                this.dupeSearches =
-                    this.dupeSearches.filter(s => s.category !== category);
-            }
+            this.searches[category] = {
+                category: category as SearchCategory,
+                count: ids.length,
+                search: search,
+                json: JSON.stringify(search)
+            };
         });
     }
 }

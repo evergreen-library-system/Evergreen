@@ -159,6 +159,8 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     holdNotifyTypes: {email?: boolean, phone?: boolean, sms?: boolean} = {};
 
+    fieldDoc: {[cls: string]: {[field: string]: string}} = {};
+
     constructor(
         private org: OrgService,
         private net: NetService,
@@ -184,6 +186,7 @@ export class EditComponent implements OnInit, AfterViewInit {
     load(): Promise<any> {
         this.loading = true;
         return this.setStatCats()
+        .then(_ => this.getFieldDocs())
         .then(_ => this.setSurveys())
         .then(_ => this.loadPatron())
         .then(_ => this.getSecondaryGroups())
@@ -196,7 +199,28 @@ export class EditComponent implements OnInit, AfterViewInit {
         .then(_ => this.loading = false);
     }
 
-    setupToolbar() {
+    getFieldDocs(): Promise<any> {
+        return this.pcrud.search('fdoc', {
+            fm_class: ['au', 'ac', 'aua', 'actsc', 'asv', 'asvq', 'asva']})
+        .pipe(tap(doc => {
+            if (!this.fieldDoc[doc.fm_class()]) {
+                this.fieldDoc[doc.fm_class()] = {};
+            }
+            this.fieldDoc[doc.fm_class()][doc.field()] = doc.string();
+            console.log(this.fieldDoc);
+        })).toPromise();
+    }
+
+    getFieldDoc(cls: string, field: string): string {
+        cls = this.getClass(cls);
+        if (this.fieldDoc[cls]) {
+            return this.fieldDoc[cls][field];
+        }
+    }
+
+    exampleText(cls: string, field: string): string {
+        cls = this.getClass(cls);
+        return this.context.settingsCache[`ui.patron.edit.${cls}.${field}.example`];
     }
 
     setSurveys(): Promise<any> {

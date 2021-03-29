@@ -1,5 +1,6 @@
 import {Component, Input, Output, OnInit, AfterViewInit,
-    EventEmitter, ViewChild, Renderer2} from '@angular/core';
+    EventEmitter, ViewChild} from '@angular/core';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
@@ -38,7 +39,7 @@ export interface PatronSearchFieldSet {
 
 export interface PatronSearch {
     search: PatronSearchFieldSet;
-    orgId: number;
+    orgId?: number;
 }
 
 @Component({
@@ -72,7 +73,7 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
     profileGroups: IdlObject[] = [];
 
     constructor(
-        private renderer: Renderer2,
+        private route: ActivatedRoute,
         private net: NetService,
         public org: OrgService,
         private auth: AuthService,
@@ -90,6 +91,18 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+
+        this.route.queryParamMap.subscribe((params: ParamMap) => {
+            const search = params.get('search');
+            if (search) {
+                try {
+                    this.startWithSearch = {search: JSON.parse(search)};
+                } catch (E) {
+                    console.error("Invalid JSON search value", search, E);
+                }
+            }
+        });
+
         this.searchOrg = this.org.root();
         this.store.getItemBatch([EXPAND_FORM, INCLUDE_INACTIVE])
             .then(settings => {
@@ -99,7 +112,8 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this.renderer.selectRootElement('#focus-this-input').focus();
+        const node = document.getElementById('focus-this-input');
+        if (node) { node.focus(); }
     }
 
     toggleExpandForm() {
