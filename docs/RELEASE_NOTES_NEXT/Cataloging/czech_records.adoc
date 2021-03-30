@@ -1,6 +1,0 @@
-Czech language records in sample data
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-This release adds 7 Czech-language MARC records to the
-sample data set (also known as Concerto data set).
-

@@ -1,9 +1,0 @@
-Evergreen now has IDs associated with logos and cart images in the TPAC and Bootstrap OPACs to aid in customization.  Images are as follows:
-
-* small Evergreen logo in navigation bar is 'topnav_logo_image'
-* the large Evergreen logo in the center of the splash page of the TPAC is 'homesearch_main_logo_image' 
-* the cart icon is 'cart_icon_image' 
-* the small logo in the footer is 'footer_logo_image'
-
-The Bootstrap OPAC does not have a homesearch logo icon as it is added in the background by CSS and can be directly styled through the CSS.
-
