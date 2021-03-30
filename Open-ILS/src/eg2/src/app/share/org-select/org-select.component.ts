@@ -89,6 +89,8 @@ export class OrgSelectComponent implements OnInit {
 
     @Input() readOnly = false;
 
+    @Input() required = false;
+
     // List of org unit IDs to exclude from the selector
     hidden: number[] = [];
     @Input() set hideOrgs(ids: number[]) {
