@@ -46,6 +46,8 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
     // Set the initial value by ID
     @Input() initialGroupId: number;
 
+    @Input() required = false;
+
     cboxEntries: ComboboxEntry[] = [];
     profiles: {[id: number]: IdlObject} = {};
 

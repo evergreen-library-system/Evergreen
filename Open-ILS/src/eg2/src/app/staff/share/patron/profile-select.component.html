@@ -1,5 +1,6 @@
 
 <eg-combobox #combobox 
+  [required]="required"
   [startId]="initialGroupId" [entries]="cboxEntries"
   (onChange)="propagateCboxChange($event)"
   i18n-placeholder placeholder="Profile Group">
