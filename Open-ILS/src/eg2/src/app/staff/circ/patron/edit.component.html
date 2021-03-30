@@ -169,18 +169,32 @@
       {cls: 'ac', path: 'card', field: 'barcode', disabled: !patron.card().isnew()}}">
     </ng-container>
     <div class="col-lg-6">
-      <button class="btn btn-outline-dark" (click)="replaceBarcode()" i18n>
-        Replace Barcode
-      </button>
-      <button class="btn btn-outline-dark ml-2" (click)="barcodesDialog.open()" i18n>
-        See All
-      </button>
+      <ng-container *ngIf="!patron.isnew()">
+        <button class="btn btn-outline-dark" (click)="replaceBarcode()" i18n>
+          Replace Barcode
+        </button>
+        <button class="btn btn-outline-dark ml-2" (click)="barcodesDialog.open()" i18n>
+          See All
+        </button>
+      </ng-container>
+      <span *ngIf="dupeBarcode" class="text-danger font-weight-bold ml-2" i18n>
+        Barcode is already in use
+      </span>
     </div>
   </div>
 
-  <ng-container *ngTemplateOutlet="fieldRow; context: 
-    {args: {template: fieldInput, field: 'usrname'}}">
-  </ng-container>
+  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.usrname')">
+    <ng-container *ngTemplateOutlet="fieldLabel; context: {args: {field: 'usrname'}}">
+    </ng-container>
+    <ng-container *ngTemplateOutlet="fieldInput; context: {args: {field: 'usrname'}}">
+    </ng-container>
+    <div class="col-lg-6">
+      <span *ngIf="dupeUsername" class="text-danger font-weight-bold ml-2" i18n>
+        Username is already in use
+      </span>
+    </div>
+  </div>
+
   <div class="row pt-1 pb-1 mt-1">
     <ng-container *ngTemplateOutlet="fieldLabel; context: {args: {field: 'passwd'}}">
     </ng-container>
@@ -368,6 +382,7 @@
         fieldName="au-home_ou-input"
         [initialOrgId]="patron.home_ou()"
         [disableOrgs]="cannotHaveUsersOrgs()"
+        [required]="true"
         (onChange)="
           fieldValueChange(null, null, 'home_ou', $event ? $event.id() : null); 
           afterFieldChange(null, null, 'home_ou')">
@@ -383,6 +398,7 @@
       <eg-profile-select #profileSelect 
         [useDisplayEntries]="true"
         [initialGroupId]="patron.profile()" 
+        [required]="true"
         (profileChange)="
           fieldValueChange(null, null, 'profile', $event ? $event.id() : null); 
           afterFieldChange(null, null, 'profile')">
@@ -599,7 +615,7 @@
 
   <button class="btn btn-success" (click)="newAddr()" i18n>New Address</button>
 
-  <ng-container *ngIf="showField('stat_cats')">
+  <ng-container *ngIf="showField('stat_cats') && statCats.length > 0">
     <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
       <div class="m-auto font-weight-bold" i18n>Statistical Categories</div>
     </div>
@@ -623,7 +639,7 @@
   </ng-container>
 
 
-  <ng-container *ngIf="showField('surveys')">
+  <ng-container *ngIf="showField('surveys') && surveys.length > 0">
     <div class="alert alert-success pt-2 pb-2 mt-2 mb-2 d-flex">
       <div class="m-auto font-weight-bold" i18n>Surveys</div>
     </div>

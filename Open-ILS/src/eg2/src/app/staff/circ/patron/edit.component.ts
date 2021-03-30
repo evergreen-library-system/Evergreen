@@ -141,6 +141,9 @@ export class EditComponent implements OnInit, AfterViewInit {
     secondaryGroups: IdlObject[];
     expireDate: Date;
     changesPending = false;
+    dupeBarcode = false;
+    dupeUsername = false;
+    origUsername: string;
 
     fieldPatterns: {[cls: string]: {[field: string]: RegExp}} = {
         au: {},
@@ -436,6 +439,7 @@ export class EditComponent implements OnInit, AfterViewInit {
             return this.patronService.getFleshedById(this.patronId)
             .then(patron => {
                 this.patron = patron;
+                this.origUsername = patron.usrname();
                 this.absorbPatronData();
             });
         } else {
@@ -543,11 +547,25 @@ export class EditComponent implements OnInit, AfterViewInit {
         // Avoid responding to any value changes while we are loading
         if (this.loading) { return; }
 
-        // TODO other checks
+        // Timeout gives the form a chance to mark fields as (in)valid
+        setTimeout(() => {
 
-        this.changesPending = true;
-        const canSave = document.querySelector('.ng-invalid') === null;
-        this.toolbar.disableSaveStateChanged.emit(!canSave);
+            this.changesPending = true;
+
+            const invalidInput = document.querySelector('.ng-invalid');
+
+            if (invalidInput) {
+                console.debug('Field is invalid', invalidInput.id);
+            }
+
+            const canSave = (
+                invalidInput === null &&
+                !this.dupeBarcode &&
+                !this.dupeUsername
+            );
+
+            this.toolbar.disableSaveStateChanged.emit(!canSave);
+        });
     }
 
     userStatCatChange(cat: IdlObject, entry: ComboboxEntry) {
@@ -662,20 +680,54 @@ export class EditComponent implements OnInit, AfterViewInit {
                 break;
 
             case 'barcode':
-                // TODO check for dupes open-ils.actor.barcode.exists
-                if (!this.patron.usrname()) {
-                    // This will apply the value and fire the dupe checker
-                    this.fieldValueChange(null, null, 'usrname', value);
-                    this.afterFieldChange(null, null, 'usrname');
-                }
+                this.handleBarcodeChange(value);
                 break;
 
             case 'usrname':
-                // TODO check for dupes open-ils.actor.username.exists
+                this.handleUsernameChange(value);
                 break;
         }
 
         this.adjustSaveSate();
+    }
+
+    handleUsernameChange(value: any) {
+        this.dupeUsername = false;
+
+        if (!value || value === this.origUsername) {
+            // In case the usrname changes then changes back.
+            return;
+        }
+
+        this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.username.exists',
+            this.auth.token(), value
+        ).subscribe(resp => this.dupeUsername = Boolean(resp));
+    }
+
+    handleBarcodeChange(value: any) {
+        this.dupeBarcode = false;
+
+        if (!value) { return; }
+
+        this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.barcode.exists',
+            this.auth.token(), value
+        ).subscribe(resp => {
+            if (Number(resp) === 1) {
+                this.dupeBarcode = true;
+            } else {
+
+                if (this.patron.usrname()) { return; }
+
+                // Propagate username with barcode value by default.
+                // This will apply the value and fire the dupe checker
+                this.fieldValueChange(null, null, 'usrname', value);
+                this.afterFieldChange(null, null, 'usrname');
+            }
+        });
     }
 
     dupeValueChange(name: string, value: any) {
@@ -814,8 +866,8 @@ export class EditComponent implements OnInit, AfterViewInit {
         const nowEpoch = new Date().getTime();
         const newDate = new Date(nowEpoch + (seconds * 1000 /* millis */));
         this.expireDate = newDate;
-        this.fieldValueChange(null, null, 'profile', newDate.toISOString());
-        this.afterFieldChange(null, null, 'profile');
+        this.fieldValueChange(null, null, 'expire_date', newDate.toISOString());
+        this.afterFieldChange(null, null, 'expire_date');
     }
 
     handleBoolResponse(success: boolean,
@@ -1051,7 +1103,8 @@ export class EditComponent implements OnInit, AfterViewInit {
         } else {
 
             // Create settings for all non-null setting values for new patrons.
-            this.userSettings.forEach( (val, key) => {
+            Object.keys(this.userSettings).forEach(key => {
+                const val = this.userSettings[key];
                 if (val !== null) { settings[key] = val; }
             });
         }
@@ -1145,7 +1198,6 @@ export class EditComponent implements OnInit, AfterViewInit {
             this.fieldPatterns.au.usrname = new RegExp('.*');
         }
     }
-
 }
 
 

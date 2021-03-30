@@ -19,8 +19,8 @@ eg.circ.patron.holds.prefetch
 eg.grid.circ.patron.holds
 
 holds_for_patron print template
+*/
 
-items out print template
 
 -- insert then update for easier iterative development tweaks
 INSERT INTO config.print_template 
@@ -127,7 +127,6 @@ $TEMPLATE$ WHERE name = 'bills_current';
 INSERT INTO config.print_template 
     (name, label, owner, active, locale, content_type, template)
 VALUES ('bills_payment', 'Bills, Payment', 1, TRUE, 'en-US', 'text/html', '');
-*/
 
 UPDATE config.print_template SET template = $TEMPLATE$
 [% 
