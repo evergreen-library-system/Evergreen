@@ -5,16 +5,7 @@ that associates payments and billings and displays the amount of each
 payment applied to those billings.
 
 Tips for using this source:
-
-. To show workstations associated with Payments, follow the source path
-  Payment by Billing Type --> Payment ID and then pull the appropriate
-  field from the relevant Detail table (Cash, Check, Credit Card).
-. OPAC payments will show as accepted at the paying user's home library.
-  In order for your report to show these payments, make sure the
-  appropriate patron Organizational Unit is set in your report filter.
-. Be careful when you build your report to distinguish between Billing
-  Organizational Unit and Payment Organizational Unit - they can be, but
-  do not have to be, the same.
-. Due to the reporter's use of GROUP BY, it is recommended that you include
-  the Billing ID in your report output in order to prevent the reporter
-  from rolling up payment data into one line.
+.To show workstations associated with Payments, follow the source path Payment by Billing Type --> Payment ID and then pull the appropriate field from the relevant Detail table (Cash, Check, Credit Card).
+.OPAC payments will show as accepted at the paying user's home library. In order for your report to show these payments, make sure the appropriate patron Organizational Unit is set in your report filter.
+.Be careful when you build your report to distinguish between Billing Organizational Unit and Payment Organizational Unit - they can be, but do not have to be, the same.
+.Due to the reporter's use of GROUP BY, it is recommended that you include the Billing ID in your report output in order to prevent the reporter from rolling up payment data into one line.
