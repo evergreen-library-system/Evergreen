@@ -129,8 +129,10 @@ export class CourseListComponent implements OnInit, AfterViewInit {
 
     createNew() {
         this.editDialog.mode = 'create';
+        const course_module_course = this.idl.create('acmc');
+        course_module_course.owning_lib(this.auth.user().ws_ou());
         this.editDialog.recordId = null;
-        this.editDialog.record = null;
+        this.editDialog.record = course_module_course;
         this.editDialog.open({size: this.dialog_size}).subscribe(
             ok => {
                 this.createString.current()
