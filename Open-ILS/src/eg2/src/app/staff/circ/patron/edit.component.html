@@ -77,7 +77,6 @@
       [ngModel]="objectFromPath(args.path, args.index)[args.field]() == 't'"
       (ngModelChange)="fieldValueChange(args.path, args.index, args.field, $event)"
       (change)="afterFieldChange(args.path, args.index, args.field)"
-      [required]="fieldRequired(getClass(args.cls) + '.' + args.field)"
       [pattern]="fieldPattern(getClass(args.cls), args.field)"
       [disabled]="disabled"
     />

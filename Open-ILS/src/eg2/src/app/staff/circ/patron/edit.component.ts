@@ -93,9 +93,9 @@ interface StatCat {
 })
 export class EditComponent implements OnInit, AfterViewInit {
 
-    @Input() patronId: number;
-    @Input() cloneId: number;
-    @Input() stageUsername: string;
+    @Input() patronId: number = null;
+    @Input() cloneId: number = null;
+    @Input() stageUsername: string = null;
 
     _toolbar: EditToolbarComponent;
     @Input() set toolbar(tb: EditToolbarComponent) {
@@ -189,6 +189,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         .then(_ => this.getFieldDocs())
         .then(_ => this.setSurveys())
         .then(_ => this.loadPatron())
+        .then(_ => this.getCloneUser())
         .then(_ => this.getSecondaryGroups())
         .then(_ => this.applyPerms())
         .then(_ => this.setIdentTypes())
@@ -197,6 +198,96 @@ export class EditComponent implements OnInit, AfterViewInit {
         .then(_ => this.setSmsCarriers())
         .then(_ => this.setFieldPatterns())
         .then(_ => this.loading = false);
+    }
+
+
+    getCloneUser(): Promise<any> {
+        if (!this.cloneId) { return Promise.resolve(); }
+
+        return this.patronService.getById(this.cloneId,
+            {flesh: 1, flesh_fields: {au: ['billing_address', 'mailing_address']}})
+        .then(cloneUser => {
+            const evt = this.evt.parse(cloneUser);
+            if (evt) { return alert(evt); }
+            this.copyCloneData(cloneUser);
+        });
+    }
+
+    copyCloneData(clone: IdlObject) {
+        const patron = this.patron;
+
+        // flesh the home org locally
+        patron.home_ou(clone.home_ou())
+
+        if (!clone.billing_address() &&
+            !clone.mailing_address()) {
+            return; // no addresses to copy or link
+        }
+
+        ['day_phone', 'evening_phone', 'other_phone', 'usrgroup']
+            .forEach(field => patron[field](clone[field]()));
+
+        // if the cloned patron has any addresses, we don't need
+        // the stub address created in init_new_patron.
+        patron.addresses([]);
+
+        const copyAddrs =
+            this.context.settingsCache['circ.patron_edit.clone.copy_address'];
+
+        if (copyAddrs) {
+            let billAddr, mailAddr;
+
+            // copy the billing and mailing addresses into new addresses
+            const cloneAddr = (addr: IdlObject) => {
+                const newAddr = this.idl.clone(addr);
+                newAddr.id(this.autoId--);
+                newAddr.usr(patron.id());
+                newAddr.isnew(true);
+                newAddr.valid('t');
+                patron.addresses().push(newAddr);
+                return newAddr;
+            }
+
+            if (billAddr = clone.billing_address()) {
+                patron.billing_address(cloneAddr(billAddr));
+            }
+
+            if (mailAddr = clone.mailing_address()) {
+
+                if (billAddr && billAddr.id() == mailAddr.id()) {
+                    patron.mailing_address(patron.billing_address());
+                } else {
+                    patron.mailing_address(cloneAddr(mailAddr));
+                }
+
+                if (!billAddr) {
+                    // if there is no billing addr, use the mailing addr
+                    patron.billing_address(patron.mailing_address());
+                }
+            }
+
+        } else {
+
+            // link the billing and mailing addresses
+            let addr;
+            if (addr = clone.billing_address()) {
+                patron.billing_address(addr);
+                patron.addresses().push(addr);
+                patron.billing_address()._linked_owner = clone;
+            }
+
+            if (addr = clone.mailing_address()) {
+                if (patron.billing_address() &&
+                    addr.id() == patron.billing_address().id()) {
+                    // mailing matches billing
+                    patron.mailing_address(patron.billing_address());
+                } else {
+                    patron.mailing_address(addr);
+                    patron.addresses().push(patron.mailing_address());
+                    patron.mailing_address()._linked_owner = clone;
+                }
+            }
+        }
     }
 
     getFieldDocs(): Promise<any> {
@@ -412,6 +503,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         patron.settings([]);
         patron.cards([]);
         patron.waiver_entries([]);
+        patron.stat_cat_entries([]);
 
         const card = this.idl.create('ac');
         card.isnew(true);
@@ -536,7 +628,6 @@ export class EditComponent implements OnInit, AfterViewInit {
 
         switch (field) {
             // TODO: do many more
-            // open-ils.actor.barcode.exists / ditto username
 
             case 'profile':
                 this.setExpireDate();
@@ -569,6 +660,19 @@ export class EditComponent implements OnInit, AfterViewInit {
                 this.dupeValueChange('address', obj);
                 // TODO address_alert(obj);
                 break;
+
+            case 'barcode':
+                // TODO check for dupes open-ils.actor.barcode.exists
+                if (!this.patron.usrname()) {
+                    // This will apply the value and fire the dupe checker
+                    this.fieldValueChange(null, null, 'usrname', value);
+                    this.afterFieldChange(null, null, 'usrname');
+                }
+                break;
+
+            case 'usrname':
+                // TODO check for dupes open-ils.actor.username.exists
+                break;
         }
 
         this.adjustSaveSate();
@@ -586,6 +690,7 @@ export class EditComponent implements OnInit, AfterViewInit {
             case 'name':
                 const fname = this.patron.first_given_name();
                 const lname = this.patron.family_name();
+                if (!fname || !lname) { return; }
                 search = {
                     first_given_name : {value : fname, group : 0},
                     family_name : {value : lname, group : 0}
@@ -663,9 +768,9 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     fieldRequired(field: string): boolean {
 
-        // Password field is not required for existing patrons.
-        if (field === 'au.passwd' && !this.patronId) {
-            return false;
+        // Password field is only required for new patrons.
+        if (field === 'au.passwd') {
+            return this.patronId === null;
         }
 
         return this.fieldVisibility[field] === 3;
