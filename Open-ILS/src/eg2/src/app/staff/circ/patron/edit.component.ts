@@ -20,6 +20,7 @@ import {SecondaryGroupsDialogComponent} from './secondary-groups.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {EditToolbarComponent, VisibilityLevel} from './edit-toolbar.component';
 import {PatronSearchFieldSet} from '@eg/staff/share/patron/search.component';
+import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 
 const COMMON_USER_SETTING_TYPES = [
   'circ.holds_behind_desk',
@@ -121,6 +122,8 @@ export class EditComponent implements OnInit, AfterViewInit {
         private profileSelect: ProfileSelectComponent;
     @ViewChild('secondaryGroupsDialog')
         private secondaryGroupsDialog: SecondaryGroupsDialogComponent;
+    @ViewChild('addrAlert') private addrAlert: AlertDialogComponent;
+
 
     autoId = -1;
     patron: IdlObject;
@@ -679,6 +682,10 @@ export class EditComponent implements OnInit, AfterViewInit {
                 // TODO address_alert(obj);
                 break;
 
+            case 'post_code':
+                this.handlePostCodeChange(obj, value);
+                break;
+
             case 'barcode':
                 this.handleBarcodeChange(value);
                 break;
@@ -689,6 +696,25 @@ export class EditComponent implements OnInit, AfterViewInit {
         }
 
         this.adjustSaveSate();
+    }
+
+    handlePostCodeChange(addr: IdlObject, postCode: any) {
+        this.net.request(
+            'open-ils.search', 'open-ils.search.zip', postCode
+        ).subscribe(resp => {
+            if (!resp) return;
+
+            ['city', 'state', 'county'].forEach(field => {
+                if (resp[field]) {
+                    addr[field](resp[field]);
+                }
+            });
+
+            if (resp.alert) {
+                this.addrAlert.dialogBody = resp.alert;
+                this.addrAlert.open();
+            }
+        });
     }
 
     handleUsernameChange(value: any) {
