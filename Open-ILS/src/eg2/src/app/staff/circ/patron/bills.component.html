@@ -20,7 +20,7 @@
 <eg-confirm-dialog #adjustToZeroDialog *ngIf="billGrid"
   i18n-dialogBody i18n-dialogTitle dialogTitle="Adjust To Zero"
   dialogBody="Are you sure you would like to adjust to zero the balance 
-    on transactoins {{billGrid.context.rowSelector.selected().join(',')}}?">
+    on transactions {{billGrid.context.rowSelector.selected().join(',')}}?">
 </eg-confirm-dialog>
 
 <eg-confirm-dialog #refundDialog *ngIf="billGrid"
@@ -49,15 +49,15 @@
         <div class="flex-4" i18n>Total Owed:</div>
         <div class="flex-1"
           [ngClass]="{'font-weight-bold' : summary.balance_owed() > 0}">
-          {{summary.balance_owed() | currency}}</div>
+          {{summary.balance_owed() || 0 | currency}}</div>
       </div>
       <div class="d-flex pt-1 pb-1">
         <div class="flex-4" i18n>Total Billed:</div>
-        <div class="flex-1">{{summary.total_owed() | currency}}</div>
+        <div class="flex-1">{{summary.total_owed() || 0 | currency}}</div>
       </div>
       <div class="d-flex pt-1 pb-1 striped">
         <div class="flex-4" i18n>Total Paid/Credited:</div>
-        <div class="flex-1">{{summary.total_paid() | currency}}</div>
+        <div class="flex-1">{{summary.total_paid() || 0 | currency}}</div>
       </div>
     </div>
 

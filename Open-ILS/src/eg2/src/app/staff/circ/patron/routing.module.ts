@@ -16,13 +16,16 @@ const routes: Routes = [{
       import('./event-log/event-log.module').then(m => m.EventLogModule)
   }, {
     path: 'register',
-    component: RegisterPatronComponent
+    component: RegisterPatronComponent,
+    resolve: {resolver : PatronResolver}
   }, {
     path: 'register/clone/:cloneId',
-    component: RegisterPatronComponent
+    component: RegisterPatronComponent,
+    resolve: {resolver : PatronResolver}
   }, {
     path: 'register/stage/:stageUsername',
-    component: RegisterPatronComponent
+    component: RegisterPatronComponent,
+    resolve: {resolver : PatronResolver}
   }, {
     path: 'credentials',
     component: TestPatronPasswordComponent

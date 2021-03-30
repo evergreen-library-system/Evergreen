@@ -40,6 +40,8 @@ export class PatronStatCatsComponent implements OnInit {
             this.auth.token(), this.patronId, ['stat_cat_entries']).toPromise()
         .then(user => {
             const catIds = user.stat_cat_entries().map(e => e.stat_cat());
+            if (catIds.length === 0) { return; }
+
             this.pcrud.search('actsc', {id: catIds})
             .subscribe(cat => {
                 const map = user.stat_cat_entries()

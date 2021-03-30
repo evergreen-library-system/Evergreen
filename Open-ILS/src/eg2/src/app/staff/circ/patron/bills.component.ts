@@ -3,7 +3,7 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {from, empty, range} from 'rxjs';
 import {concatMap, tap, takeLast} from 'rxjs/operators';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {IdlObject} from '@eg/core/idl.service';
+import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
@@ -78,6 +78,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
         private net: NetService,
         private pcrud: PcrudService,
         private auth: AuthService,
+        private idl: IdlService,
         private printer: PrintService,
         private serverStore: ServerStoreService,
         private circ: CircService,
@@ -200,6 +201,13 @@ export class BillsComponent implements OnInit, AfterViewInit {
         })).toPromise()
 
         .then(_ => {
+
+            if (!this.summary) {
+                // If the patron has no billing history, there will be
+                // no money summary.
+                this.summary = this.idl.create('mus');
+            }
+
             if (!refreshXacts) { return; }
 
             // Refreshing means some transactions may be removed from the list

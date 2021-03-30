@@ -123,6 +123,8 @@ export class EditComponent implements OnInit, AfterViewInit {
     @ViewChild('secondaryGroupsDialog')
         private secondaryGroupsDialog: SecondaryGroupsDialogComponent;
     @ViewChild('addrAlert') private addrAlert: AlertDialogComponent;
+    @ViewChild('addrRequiredAlert')
+        private addrRequiredAlert: AlertDialogComponent;
 
 
     autoId = -1;
@@ -137,6 +139,8 @@ export class EditComponent implements OnInit, AfterViewInit {
     identTypes: ComboboxEntry[];
     inetLevels: ComboboxEntry[];
     statCats: StatCat[] = [];
+    grpList: IdlObject;
+    editProfiles: IdlObject[] = [];
     userStatCats: {[statId: number]: ComboboxEntry} = {};
     userSettings: {[name: string]: any} = {};
     userSettingTypes: {[name: string]: IdlObject} = {};
@@ -159,7 +163,7 @@ export class EditComponent implements OnInit, AfterViewInit {
     // All locations we have the specified permissions
     permOrgs: {[name: string]: number[]};
 
-    // True if a given perm is grnated at the current home_ou of the
+    // True if a given perm is granted at the current home_ou of the
     // patron we are editing.
     hasPerm: {[name: string]: boolean} = {};
 
@@ -187,6 +191,7 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
+        // Do this after view init so we can leverage
     }
 
     load(): Promise<any> {
@@ -198,6 +203,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         .then(_ => this.getCloneUser())
         .then(_ => this.getSecondaryGroups())
         .then(_ => this.applyPerms())
+        .then(_ => this.setEditProfiles())
         .then(_ => this.setIdentTypes())
         .then(_ => this.setInetLevels())
         .then(_ => this.setOptInSettings())
@@ -206,6 +212,44 @@ export class EditComponent implements OnInit, AfterViewInit {
         .then(_ => this.loading = false);
     }
 
+    setEditProfiles(): Promise<any> {
+        return this.pcrud.retrieveAll('pgt', {}, {atomic: true}).toPromise()
+        .then(list => this.grpList = list)
+        .then(_ => this.applyEditProfiles());
+    }
+
+    // TODO
+    // Share the set of forbidden groups with the 2ndary groups selector.
+    applyEditProfiles(): Promise<any> {
+        const appPerms = [];
+        const failedPerms = [];
+        const profiles = this.grpList;
+
+        // extract the application permissions
+        profiles.forEach(grp => {
+            if (grp.application_perm()) {
+                appPerms.push(grp.application_perm());
+            }
+        });
+
+        const traverseTree = (grp: IdlObject, failed: boolean) => {
+            if (!grp) { return; }
+
+            failed = failed || failedPerms.includes(grp.application_perm());
+
+            if (!failed) { this.editProfiles.push(grp.id()); }
+
+            const children = profiles.filter(p => p.parent() === grp.id());
+            children.forEach(child => traverseTree(child, failed));
+        }
+
+        return this.perms.hasWorkPermAt(appPerms, true).then(orgs => {
+            appPerms.forEach(p => {
+                if (orgs[p].length === 0) { failedPerms.push(p); }
+                traverseTree(this.grpList[0], false);
+            });
+        });
+    }
 
     getCloneUser(): Promise<any> {
         if (!this.cloneId) { return Promise.resolve(); }
@@ -506,9 +550,9 @@ export class EditComponent implements OnInit, AfterViewInit {
     createNewPatron() {
         const patron = this.idl.create('au');
         patron.isnew(true);
-        patron.addresses([]);
+        patron.id(-1);
+        patron.home_ou(this.auth.user().ws_ou());
         patron.settings([]);
-        patron.cards([]);
         patron.waiver_entries([]);
         patron.stat_cat_entries([]);
 
@@ -516,7 +560,16 @@ export class EditComponent implements OnInit, AfterViewInit {
         card.isnew(true);
         card.usr(-1);
         patron.card(card);
-        patron.cards().push(card);
+        patron.cards([card]);
+
+        const addr = this.idl.create('aua');
+        addr.isnew(true);
+        addr.usr(-1);
+        addr.valid('t');
+        addr.country(this.context.settingsCache['ui.patron.default_country']);
+        patron.billing_address(addr);
+        patron.mailing_address(addr);
+        patron.addresses([addr]);
 
         this.patron = patron;
     }
@@ -557,14 +610,12 @@ export class EditComponent implements OnInit, AfterViewInit {
 
             const invalidInput = document.querySelector('.ng-invalid');
 
-            if (invalidInput) {
-                console.debug('Field is invalid', invalidInput.id);
-            }
-
             const canSave = (
-                invalidInput === null &&
-                !this.dupeBarcode &&
-                !this.dupeUsername
+                invalidInput === null
+                && !this.dupeBarcode
+                && !this.dupeUsername
+                && !this.selfEditForbidden()
+                && !this.groupEditForbidden()
             );
 
             this.toolbar.disableSaveStateChanged.emit(!canSave);
@@ -597,6 +648,15 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     userSettingChange(name: string, value: any) {
         this.userSettings[name] = value;
+
+        switch (name) {
+            case 'opac.default_phone':
+            case 'opac.default_sms_notify':
+            case 'opac.default_sms_carrier':
+                // TODO hold related contact info updated
+                break;
+        }
+
         this.adjustSaveSate();
     }
 
@@ -648,22 +708,19 @@ export class EditComponent implements OnInit, AfterViewInit {
             `Modifying field path=${path || ''} field=${field} value=${value}`);
 
         switch (field) {
-            // TODO: do many more
+
+            case 'dob':
+                this.maintainJuvFlag();
+                break;
 
             case 'profile':
                 this.setExpireDate();
                 break;
 
             case 'day_phone':
-                // TODO: patron.password.use_phone
-                // TODO: hold related contact info
-                this.dupeValueChange(field, value);
-                break;
-
             case 'evening_phone':
             case 'other_phone':
-                // TODO hold related contact info
-                this.dupeValueChange(field, value);
+                this.handlePhoneChange(field, value);
                 break;
 
             case 'ident_value':
@@ -696,6 +753,39 @@ export class EditComponent implements OnInit, AfterViewInit {
         }
 
         this.adjustSaveSate();
+    }
+
+    maintainJuvFlag() {
+
+        if (!this.patron.dob()) { return; }
+
+        const interval =
+            this.context.settingsCache['global.juvenile_age_threshold']
+            || '18 years';
+
+        const cutoff = new Date();
+
+        cutoff.setTime(cutoff.getTime() -
+            Number(DateUtil.intervalToSeconds(interval) + '000'));
+
+        const isJuve = new Date(this.patron.dob()) > cutoff;
+
+        this.fieldValueChange(null, null, 'juvenile', isJuve);
+        this.afterFieldChange(null, null, 'juvenile');
+    }
+
+    handlePhoneChange(field: string, value: string) {
+        this.dupeValueChange(field, value);
+        // TODO: hold contact info stuff
+
+        const pwUsePhone =
+            this.context.settingsCache['patron.password.use_phone'];
+
+        if (field === 'day_phone' && value &&
+            this.patron.isnew() && !this.patron.passwd() && pwUsePhone) {
+            this.fieldValueChange(null, null, 'passwd', value.substr(-4));
+            this.afterFieldChange(null, null, 'passwd');
+        }
     }
 
     handlePostCodeChange(addr: IdlObject, postCode: any) {
@@ -750,6 +840,7 @@ export class EditComponent implements OnInit, AfterViewInit {
 
                 // Propagate username with barcode value by default.
                 // This will apply the value and fire the dupe checker
+                this.updateUsernameRegex();
                 this.fieldValueChange(null, null, 'usrname', value);
                 this.afterFieldChange(null, null, 'usrname');
             }
@@ -1025,8 +1116,9 @@ export class EditComponent implements OnInit, AfterViewInit {
         }
 
         promise.then(required => {
+
             if (required) {
-                // TODO alert and exit
+                this.addrRequiredAlert.open();
                 return;
             }
 
@@ -1173,10 +1265,6 @@ export class EditComponent implements OnInit, AfterViewInit {
     setFieldPatterns() {
         let regex;
 
-        if (regex = this.context.settingsCache['opac.username_regex']) {
-            this.fieldPatterns.au.usrname = new RegExp(regex);
-        }
-
         if (regex =
             this.context.settingsCache['ui.patron.edit.ac.barcode.regex']) {
             this.fieldPatterns.ac.barcode = new RegExp(regex);
@@ -1204,6 +1292,8 @@ export class EditComponent implements OnInit, AfterViewInit {
             const name = parts[2];
             this.fieldPatterns[cls][name] = new RegExp(val);
         });
+
+        this.updateUsernameRegex();
     }
 
     // The username must match either the configured regex or the
@@ -1223,6 +1313,20 @@ export class EditComponent implements OnInit, AfterViewInit {
             // username can be any format.
             this.fieldPatterns.au.usrname = new RegExp('.*');
         }
+    }
+
+    selfEditForbidden(): boolean {
+        return (
+            this.patron.id() === this.auth.user().id()
+            && !this.hasPerm.EDIT_SELF_IN_CLIENT
+        );
+    }
+
+    groupEditForbidden(): boolean {
+        return (
+            this.patron.profile()
+            && !this.editProfiles.includes(this.patron.profile())
+        );
     }
 }
 

@@ -19,6 +19,12 @@
   i18n-dialogTitle dialogTitle="Address Alert">
 </eg-alert-dialog>
 
+<eg-alert-dialog #addrRequiredAlert
+  i18n-dialogTitle dialogTitle="Address Required"
+  i18n-dialogBody dialogBody="An address is required during registration">
+</eg-alert-dialog>
+
+
 <div class="row" *ngIf="loading">
   <div class="col-lg-6 offset-lg-3">
     <eg-progress-inline></eg-progress-inline>
@@ -122,7 +128,7 @@
   </div>
 </ng-template>
 
-<ng-template #userSettingsInput let-args="args">
+<ng-template #userSettingInput let-args="args">
   <div class="col-lg-3">
     <input 
       type="{{args.type || 'text'}}"
