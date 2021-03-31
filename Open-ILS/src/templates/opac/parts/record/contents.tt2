@@ -212,7 +212,7 @@ BLOCK render_all_contents;
             IF content.match('\S'); -%]                
                 <tr>
                     <td class='rdetail_content_type'>[% cont.label %]</td>
-                    <td class='rdetail_content_value' property='keywords'>[% accordion(content, trunc_length) %]</td>
+                    <td class='rdetail_content_value' property='keywords'>[% content %]</td>
                 </tr>
             [%- END;
         END;
