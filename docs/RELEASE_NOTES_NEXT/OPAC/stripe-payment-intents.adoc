@@ -1,0 +1,6 @@
+===== Credit card payments using Stripe now implimented with PaymentIntents instead of Charges =====
+
+This changes the Stripe code in the OPAC to use their PaymentIntents and confirmCreditCard API,
+which is recommended over their Charges API.  Credit card charges are no longer finalized
+(captured/confirmed) on Evergreen's backend, though the backend does check whether a payment was
+made successfully before recording it.
