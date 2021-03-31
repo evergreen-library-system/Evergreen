@@ -1,3 +1,621 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit ff9077bed7d420ea7632ce5bd50e96c8d762c7aa
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Mar 31 16:08:47 2021 -0400
+
+    bumping Perl version string for 3.6.3
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 5c60ed37b54e4654f7c99cac5ec97d32c641768e
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Mar 31 16:06:17 2021 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	build/i18n/po/AutoFieldWidget.js/AutoFieldWidget.js.pot
+1	1	build/i18n/po/FlattenerGrid.js/FlattenerGrid.js.pot
+1	1	build/i18n/po/PCrudFilterPane.js/PCrudFilterPane.js.pot
+1	1	build/i18n/po/Searcher.js/Searcher.js.pot
+1	1	build/i18n/po/TranslatorPopup.js/TranslatorPopup.js.pot
+1	1	build/i18n/po/URLVerify.js/URLVerify.js.pot
+1	1	build/i18n/po/User.js/User.js.pot
+1	1	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+1	1	build/i18n/po/acq.js/acq.js.pot
+1	1	build/i18n/po/authority.js/authority.js.pot
+736	627	build/i18n/po/bootstrap-opac/bootstrap-opac.pot
+5225	0	build/i18n/po/bootstrap-opac/en-CA.po
+5238	0	build/i18n/po/bootstrap-opac/es-ES.po
+5332	0	build/i18n/po/bootstrap-opac/fr-CA.po
+1	1	build/i18n/po/capture.js/capture.js.pot
+1	1	build/i18n/po/conify.js/conify.js.pot
+1	1	build/i18n/po/conify/conify.pot
+13	1	build/i18n/po/db.seed/db.seed.pot
+2434	2429	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+7	1	build/i18n/po/ils_events.xml/ils_events.xml.pot
+14	14	build/i18n/po/kpac/kpac.pot
+1	1	build/i18n/po/match_set.js/match_set.js.pot
+1	1	build/i18n/po/opac.js/opac.js.pot
+1	1	build/i18n/po/pickup_and_return.js/pickup_and_return.js.pot
+1	1	build/i18n/po/pull_list.js/pull_list.js.pot
+1	1	build/i18n/po/register.js/register.js.pot
+1	1	build/i18n/po/reports.js/reports.js.pot
+1	1	build/i18n/po/reservation.js/reservation.js.pot
+1	1	build/i18n/po/selfcheck.js/selfcheck.js.pot
+1	1	build/i18n/po/serial.js/serial.js.pot
+399	392	build/i18n/po/tpac/fr-CA.po
+458	458	build/i18n/po/tpac/tpac.pot
+2	2	build/i18n/po/urlverify/urlverify.pot
+1	1	build/i18n/po/vandelay.js/vandelay.js.pot
+554	554	build/i18n/po/webstaff/cs-CZ.po
+149	149	build/i18n/po/webstaff/webstaff.pot
+-	-	node-v12.13.0-linux-x64.tar.xz
+ create mode 100644 build/i18n/po/bootstrap-opac/en-CA.po
+ create mode 100644 build/i18n/po/bootstrap-opac/es-ES.po
+ create mode 100644 build/i18n/po/bootstrap-opac/fr-CA.po
+ create mode 100644 node-v12.13.0-linux-x64.tar.xz
+
+commit e13dd65fb97d791ce02650e23e4355cf18db580b
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Mar 31 11:56:56 2021 -0700
+
+    Docs: 3.5.4 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+75	0	docs/RELEASE_NOTES_3_5.adoc
+
+commit 08b7eae7a216bdebc984d80d2d1718ee9c2c8e7a
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Mar 31 12:09:38 2021 -0700
+
+    Docs: 3.6.3 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+95	0	docs/RELEASE_NOTES_3_6.adoc
+
+commit 8c80b6e88406a8d58c5a95ea08fa931087e5824f
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Tue Jan 12 08:46:43 2021 -0500
+
+    LP#1902965: Fix search in Bootstrap OPAC
+    
+    Filters and localization functions don't mix. Assign the html filtered
+    title to a temp var first.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	2	Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2
+
+commit ab3c4341eb6e10ef87b5845249fd8db0fafcacdb
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Nov 9 15:17:07 2020 -0800
+
+    LP#1902965: change format type in XML transform to avoid XSS in SuperCat
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/xsl/MARC21slim2ATOM.xsl
+
+commit ef852fab7f63d382c5a6e62ad00c08f4b90b66b7
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Nov 9 15:45:24 2020 -0800
+
+    LP#1902965: HTML filter on Bootstrap OPAC search results and record display
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	Open-ILS/src/templates-bootstrap/opac/parts/record/body.tt2
+6	1	Open-ILS/src/templates-bootstrap/opac/parts/record/contents.tt2
+2	1	Open-ILS/src/templates-bootstrap/opac/parts/record/series.tt2
+1	1	Open-ILS/src/templates-bootstrap/opac/parts/record/subjects.tt2
+27	15	Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2
+8	8	Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2
+
+commit 696baf979a54077faed68bc8efb2491d193d0a5d
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Nov 9 13:59:59 2020 -0800
+
+    LP#1902965: HTML filter on OPAC search results and record display
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	Open-ILS/src/templates/opac/parts/record/body.tt2
+6	1	Open-ILS/src/templates/opac/parts/record/contents.tt2
+2	1	Open-ILS/src/templates/opac/parts/record/series.tt2
+1	1	Open-ILS/src/templates/opac/parts/record/subjects.tt2
+30	18	Open-ILS/src/templates/opac/parts/record/summary.tt2
+8	8	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 597087aa9ee76c194230f421918fa26187c05df9
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 31 14:34:32 2021 -0400
+
+    LP#1896840: (follow-up) update script to include the DB rev
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/1258.data.publisher-264.sql
+
+commit bc6ec7a186eda5b980d452a8d5cf3821b4a524b3
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Feb 10 11:51:55 2021 -0800
+
+    LP1873322: Angular Admin Pages default to workstation OU
+    
+    To test:
+    
+    1) Apply this patch.
+    2) Log in using a workstation at a particular org unit.
+    3) Open some of the following admin pages:
+    
+    Local Admin > Address Alerts
+    Local Admin > Carousels
+    Local Admin > Group Penalty Thresholds
+    Local Admin > Course Reserves List > Terms Tab
+    Server Admin > Billing Types
+    Server Admin > Call Number/Volume Suffixes
+    Server Admin > Copy Tags
+    Server Admin > Hard Due Date Configuration
+    Acquisitions Admin > Cancel Reason Configuration
+    Acquisitions Admin > Claim Policies
+    Booking Admin > Resource Types
+    Booking Admin > Resource Attribute Values
+    
+    4) Verify that these pages automatically open to your
+    workstation's org unit.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+
+commit e636420d14b829a5033b2152d15b8eaa714efd6f
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Wed Mar 3 17:11:44 2021 -0500
+
+    LP#1915323 Angular Staff Client Hamburger Menu Clipped Off Screen
+    
+    Aligns navbar corner dropdown menu to the right to prevent it
+    from clipping off-screen.
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/eg2/src/app/staff/nav.component.html
+
+commit 7c7fa78fc8efe3633ec4501f9170e3470af3ae35
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Mar 16 15:29:36 2021 -0700
+
+    LP#1917804: only show MARC 500 data in the General Note field
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+0	1	Open-ILS/src/templates-bootstrap/opac/parts/record/contents.tt2
+0	1	Open-ILS/src/templates/opac/parts/record/contents.tt2
+
+commit b7d70924fe6b5105f1110c56d8e8405eaeecb370
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Mar 16 13:19:09 2021 -0700
+
+    Stamping upgrade script
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+0	0	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.publisher-264.sql => 1258.data.publisher-264.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.publisher-264.sql => 1258.data.publisher-264.sql} (100%)
+
+commit 831eb3396acf0b05a0b9ebbd8534035cd58c14c1
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Sep 24 11:46:58 2020 -0400
+
+    LP1896840 Publisher display includes 264 tag
+    
+    The stock Publisher display field now extracts data from 260 OR 264
+    tags, whichever has a value first.
+    
+    Release notes included with upgrade instructions.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.publisher-264.sql
+24	0	docs/RELEASE_NOTES_NEXT/Cataloging/publisher-display-264.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.publisher-264.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/publisher-display-264.adoc
+
+commit db40a5648b21d6610444bb7b4cabf178277e5b99
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Wed Feb 17 14:56:38 2021 -0500
+
+    LP1859513: In-house use link to item summary
+    
+    Adds a link from the item's barcode in the in-house checkin screen to the item summary screen.
+    
+    To test:
+    Type an item barcode into the In-House Use screen. Click on the barcode that displays in the item list.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	1	Open-ILS/src/templates/staff/circ/in_house_use/index.tt2
+
+commit 15ab40c88fc6619424296ccb3e984483fa51062e
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Dec 18 08:57:04 2020 -0800
+
+    LP1907979: Fix Search by Instructor setting lookup in OPAC
+    
+    Previously, the Search Courses screen in the OPAC relied on a locg
+    param in the URL to determine whether or not to display the "Search
+    by Instructor option", defaulting to location id 1 if no such param
+    exists.  However, we can also consult physical_loc and other settings
+    to get a more accurate idea of which library's setting we need here.
+    
+    To test:
+    1) In the Library settings editor, set Course Materials Module Opt In
+    to true for BR1.
+    2) In the Library settings editor, set Search by Instructor to true
+    for BR1.
+    3) In eg.conf, add the line:
+        SetEnv physical_loc 4
+    4) Restart httpd
+    5) Go to your OPAC.  Note that the OPAC is at the BR1 level, and that
+    course search and browse options are available.
+    6) Click Search courses.
+    7) Note that only two values are available in the qtype dropdown: Course
+    Name and Course Number.
+    8) Apply this patch.
+    9) Repeat steps 5-6.
+    10) Note that the screen now appropriately consults the value for the
+    "Search by Instructor" setting at the BR1 level, with an "Instructor"
+    value now available in the qtype dropdown.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	5	Open-ILS/src/templates/opac/parts/course_search/qtype_selector.tt2
+
+commit 093b0f0471854df0a99d800f5954f4783edb40e1
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Mon Jan 4 15:09:15 2021 -0500
+
+    LP1908616 Add email display to hold edit
+    
+    Note: This is built atop the patch for LP1902265
+    
+    This display's the current email address (or note if there
+    is no address) on the Edit Hold page of My Account in the
+    Bootstrap OPAC.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	1	Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2
+
+commit af701552cf5c330018d275532e6fd64a78669c9a
+Author: Jason Boyer <JBoyer@EquinoxInitiative.org>
+Date:   Fri Mar 12 14:28:12 2021 -0500
+
+    Revert the effects of both LP1687545 and LP1914116
+    
+    Revert "LP1687545: Force TT CGI plugin to use ampersands in query strings"
+    and "LP1914116: Apply html filter to mkurl() output"
+    until a fix for LP1918470 is available.
+    
+    Signed-off-by: Jason Boyer <JBoyer@EquinoxInitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGWeb/CGI_utf8.pm
+3	3	Open-ILS/src/templates-bootstrap/opac/parts/header.tt2
+3	3	Open-ILS/src/templates/opac/parts/header.tt2
+
+commit 9beb77db809a604c6edddac316d89c16be61f2e4
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Dec 16 13:16:47 2020 -0800
+
+    LP1908444 Support browse search record result sorting
+    
+    Allow users to sort the set of bib records which link to a browse
+    heading via the existing sort options.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+8	1	Open-ILS/src/eg2/src/app/share/catalog/search-context.ts
+
+commit 052b2c3b11c91d5d5f1c8b0a73dbeb27db556380
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Jan 22 16:33:15 2021 -0800
+
+    LP1907977: Display course name and number in course material editor
+    
+    To test:
+    
+    1) Go to Administration > Local > Course List
+    2) Make sure you have a variety of courses added.
+    3) Double click on a course that already has materials
+    attached to it.
+    4) Go to the materials tab.
+    5) Select a material and choose Edit
+    6) Note that the Course combobox shows both the course
+    number (HST243) and course name (History of Indonesia).
+    7) Note that you can blank out that field and type to
+    complete to get other courses in the same format.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Beth Willis <willis@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	0	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+8	1	Open-ILS/src/eg2/src/app/staff/admin/local/course-reserves/course-associate-material.component.html
+
+commit a1b697fe0f89f1a88cbe5e5dfb6cf0c618be89cc
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Thu Feb 25 16:51:01 2021 -0500
+
+    LP1899405 - Add Part column to item table in Angular Catalog
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	0	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.html
+
+commit 9a59e8a5913d0463e2e6f0359ceec956c6dbfd9a
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Mar 8 10:45:46 2021 -0500
+
+    LP#1913219: (follow-up) clean up ng lint warning
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.ts
+
+commit f3adc0690d2c1fbbebbe8862cbcb484988e7ef4b
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Mar 8 10:44:11 2021 -0500
+
+    LP#1908763: (follow-up) clean up ng lint warnings
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+14	14	Open-ILS/src/eg2/src/app/staff/admin/local/survey/survey.component.ts
+
+commit cf1619a404e7a1220430a5d286501713719d3135
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Wed Feb 19 23:49:01 2020 +0000
+
+    lp 1848579 filtering interval columns
+    
+    This is a shot term change intended to prevent the "I don't know how
+    to filter" default message from showing up when the datatype 'interval'
+    is filtered.
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	0	Open-ILS/src/eg2/src/app/share/grid/grid-filter-control.component.html
+
+commit 060d4a3d3efa2ab702166bba4cbe724b183f84b7
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Tue Feb 9 13:06:32 2021 -0500
+
+    LP1895679: Simplify and genericize the refund policy
+    
+    Don't refrence the "email above" since that's not always
+    the case and simplify the languge slightly, though most
+    users will still likely want to customize it.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	7	Open-ILS/src/templates-bootstrap/opac/parts/myopac/main_refund_policy.tt2
+
+commit bc92c2fde3cd3038184b10118c1273dd9a831fe1
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Tue Dec 8 15:52:13 2020 -0500
+
+    LP1895679: Add Stripe v3 support to Bootstrap OPAC
+    
+    Update the Bootstrap OPAC to use Stripe v3, added to the TPAC
+    in LP 1774892.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+11	0	Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2
+138	0	Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2
+49	0	Open-ILS/src/templates-bootstrap/opac/myopac/last_chance_form.tt2
+7	219	Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2
+99	0	Open-ILS/src/templates-bootstrap/opac/myopac/stripe_payment_form.tt2
+2	28	Open-ILS/src/templates-bootstrap/opac/parts/stripe.tt2
+ create mode 100644 Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2
+ create mode 100644 Open-ILS/src/templates-bootstrap/opac/myopac/last_chance_form.tt2
+ create mode 100644 Open-ILS/src/templates-bootstrap/opac/myopac/stripe_payment_form.tt2
+
+commit 41db0351110c38cc0c2d60de8f8a982818465a49
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Mar 2 09:22:55 2021 -0500
+
+    Lp 1703658: Stamp DB Upgrade
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.dont_get_the_gist.sql => 1248.schema.convert_gist_to_gin.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.dont_get_the_gist.sql => 1248.schema.convert_gist_to_gin.sql} (98%)
+
+commit b1fb0f97f8091581cee3298a7bca232436eee9a2
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Feb 25 15:00:02 2021 -0500
+
+    Lp 1703658: Repair DB Upgrade
+    
+    Remove an errant semicolon in the db upgrade script.
+    
+    Add release notes.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/XXXX.data.dont_get_the_gist.sql
+43	0	docs/RELEASE_NOTES_NEXT/Architecture/GIST_to_GIN_indexes_FTS.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Architecture/GIST_to_GIN_indexes_FTS.adoc
+
+commit 01a6e84aceceadd8b644656ca80266d5792b4d72
+Author: Jason Boyer <JBoyer@EquinoxInitiative.org>
+Date:   Thu Feb 25 10:06:38 2021 -0500
+
+    LP1703658: Convert GIST Indexes to GIN
+    
+    Rather than suggest that sites experiencing search speed issues
+    do this conversion on demand just knock it out from the start.
+    
+    Signed-off-by: Jason Boyer <JBoyer@EquinoxInitiative.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+2	2	Open-ILS/src/sql/Pg/011.schema.authority.sql
+14	14	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+91	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.dont_get_the_gist.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.dont_get_the_gist.sql
+
+commit 292ebed6d1d2f82fc05406018966e5432481b503
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Wed Feb 3 16:11:09 2021 -0500
+
+    LP1912380 Bottom Pagination for Catalog Search
+    
+    Adds pagination to the bottom of a catalog search in the staff catalog.
+    
+    To Test:
+    Search for a general topic in the staff catalog.  Pagination is at the top
+    of the search results but not the bottom.
+    
+    Apply the patch.  Pagination now appears at the top and bottom of the search results.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+4	0	Open-ILS/src/eg2/src/app/staff/catalog/result/results.component.html
+
+commit 072b5e6df210598c97e2773a60c3783139a2b7d6
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Thu Oct 22 20:19:51 2020 +0000
+
+    LP1843969 Composite Attribute Entry Defs
+    
+    Create a port of the Coded Value Maps UI from Angular JS to
+    Angular. Allow creation and edits of the Composite Attribute
+    Entry Definitions.
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    Signed-off-by: Jason Boyer <boyer.jason@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+19	0	Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/coded-value-maps-routing.module.ts
+46	0	Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/coded-value-maps.component.html
+106	0	Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/coded-value-maps.component.ts
+29	0	Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/coded-value-maps.module.ts
+82	0	Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/composite-def.component.html
+478	0	Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/composite-def.component.ts
+48	0	Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/composite-new.component.html
+84	0	Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/composite-new.component.ts
+4	0	Open-ILS/src/eg2/src/app/staff/admin/server/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/coded-value-maps-routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/coded-value-maps.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/coded-value-maps.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/coded-value-maps.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/composite-def.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/composite-def.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/composite-new.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/coded-value-maps/composite-new.component.ts
+
+commit bb5a12cf0c1376321683ec59284d2953f3d30ebc
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Thu Feb 25 09:58:23 2021 -0500
+
+    LP#1916904 Bootstrap OPAC: Call number on Search Results Page
+    
+    This adds the call number to the search results page when
+    "Show More Details" is not selected. (This brings back the same
+    behavior as the pre-bootstrap OPAC.)
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+5	1	Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2
+
+commit 45a54db4c5a87900a4fc779106108d3b554a9e66
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jan 27 11:55:56 2021 -0500
+
+    LP1913458 Bucket Add/Delete Item Operations Batched
+    
+    In the record bucket administration UI, the act of adding or removing
+    items from a bucket are now done in batch to avoid too many parallel
+    requests.
+    
+    These changes include new batch create/delete API calls that can operate
+    on any bucket type, so other UI's can be similarly batched as needed.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+115	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor/Container.pm
+41	31	Open-ILS/web/js/ui/default/staff/cat/bucket/record/app.js
+
+commit 160fe92229e1699acddbc00636985e280ce8cd55
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Thu Jan 7 19:55:45 2021 +0000
+
+    LP1871510 Update Interface Titles
+    
+    Update titles on several local admin interfaces so that they match the page listing all Local Admin interfaces.
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    Signed-off-by: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	3	Open-ILS/examples/fm_IDL.xml
+
+commit b1f07f9dab01eac27d585f68f63dda4b73e905cc
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Feb 18 09:33:45 2021 -0500
+
+    Forward port 3.6.1 to 3.6.2 db upgrade script
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+66	0	Open-ILS/src/sql/Pg/version-upgrade/3.6.1-3.6.2-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.6.1-3.6.2-upgrade-db.sql
