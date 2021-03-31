@@ -503,8 +503,8 @@ Given a server, such as a database server with 64G of RAM, you should
 be able to run all six of the shell commands in parallel in screen
 sessions or with a tool such as GNU parallel.
 
-These commands invoke a script that will generate a class-specific sub-
-set of the dictionary, and can be used to recreate the dictionary if
+These commands invoke a script that will generate a class-specific sub-set
+of the dictionary, and can be used to recreate the dictionary if
 necessary in the future.
 
 
@@ -523,7 +523,17 @@ context in which they are used.
 
 Requires the following Perl modules: `Geo::Coder::Free`, `Geo::Coder::Google`, and `Geo::Coder::OSM`
 
+Configuration instructions:
 
+ . Register an account with a third party geographic location service and copy the API Key.
+ . Configure the Geographic Location Service (Server Administration > Geographic Location Service > New Geographic Location Service).
+ . Enable Global Flag by navigating to Server Administration → Global Flags and locating the `opac.use_geolocation` flag. (Any entry in the Value field will be ignored.)
+ . Enable Library Setting: Enable Holdings Sort by Geographic Proximity (set to True).
+ . Enable Library Setting: Geographic Location Service to use for Addresses (use the value from the Name field entered in the Geographic Location Services Configuration entry).
+ . Enable Library Setting: Show Geographic Proximity in Miles (if not set, it will default to kilometers).
+ . Set the geographic coordinates for each location by navigating to Server Administration > Organizational Units. Select the org unit, switch to the Physical Address subtab and either manually enter Latitude and Longitude values or use the Get Coordinate button. 
+
+Two new permissions, VIEW_GEOLOCATION_SERVICES and ADMIN_GEOLOCATION_SERVICES, control viewing and editing values in the Geolocation Location Services interface. They are added to the System Administrator and Global Administrator permissions groups by default.
 
 
 Library Groups
@@ -673,24 +683,27 @@ Miscellaneous
 
 * The 'Create Reservation' form in the Booking module now includes
   an option to search for the patron by attributes other than just
-  their barcode.
+  their barcode. (https://bugs.launchpad.net/evergreen/+bug/1816655[Bug 1816655])
 * The form to add a user to a Course now includes an option to search
-  for the patron by attributes other than just their barcode.
+  for the patron by attributes other than just their barcode. (https://bugs.launchpad.net/evergreen/+bug/1907921[Bug 1907921])
 * For consistency with the menu action Cataloging => Retrieve Record by
   TCN Value, the staff catalog Numeric Search => TCN search now includes
-  deleted bib records.
+  deleted bib records. (https://bugs.launchpad.net/evergreen/+bug/1881650[Bug 1881650])
 * Add a new command-line script, `overdrive-api-checker.pl`, for testing
-  the OverDrive API.
-* The Shelving Location Groups editor is ported to Angular.
+  the OverDrive API. (https://bugs.launchpad.net/evergreen/+bug/1696825[Bug 1696825])
+* The Shelving Location Groups editor is ported to Angular. (https://bugs.launchpad.net/evergreen/+bug/1852321[Bug 1852321])
 * The staff catalog now has the ability to add all search results (up to
-  1,000 titles) to the basket in one fell swoop.
-* Add 'All Videos' as a search format.
-* Server-side print templates can now have print contexts set.
+  1,000 titles) to the basket in one fell swoop. (https://bugs.launchpad.net/evergreen/+bug/1885179[Bug 1885179])
+* Add 'All Videos' as a search format. (https://bugs.launchpad.net/evergreen/+bug/1917826[Bug 1917826])
+* Server-side print templates can now have print contexts set. (https://bugs.launchpad.net/evergreen/+bug/1891550[Bug 1891550])
 * Add ability to set the print context for a print template to "No-Print"
-  to specify, well, that a given receipt should never be printed.
-* Add Check Number as an available column to the Bill History grids.
+  to specify, well, that a given receipt should never be printed. (https://bugs.launchpad.net/evergreen/+bug/1891550[Bug 1891550])
+* Add Check Number as an available column to the Bill History grids. (https://bugs.launchpad.net/evergreen/+bug/1705693[Bug 1705693])
 * Adds a new control to the item table in the TPAC public catalog only to
-  specify that only items that are available should be displayed.
+  specify that only items that are available should be displayed. (https://bugs.launchpad.net/evergreen/+bug/1853006[Bug 1853006])
+* Adds warning before deleting bib records with holds (https://bugs.launchpad.net/evergreen/+bug/1398107[Bug 1398107])
+* Library scope on (Angular) Administration pages now defaults to workstation location rather than consortium (https://bugs.launchpad.net/evergreen/+bug/1873322[Bug 173322])
+* Pending users now set last four digits of phone number as password when library setting is enabled (https://bugs.launchpad.net/evergreen/+bug/1887852[Bug 1887852])
 
 Acknowledgments
 ---------------
