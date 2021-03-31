@@ -2,6 +2,101 @@
 :toc:
 :numbered:
 
+== Evergreen  3.6.3 ==
+
+This release contains bug fixes improving on Evergreen 3.6.2,
+including a security bug fix.
+
+=== Bug Fixes ===
+
+==== Security ====
+
+* Fixes an XSS bug in MARC fields that are rendered as HTML (https://bugs.launchpad.net/bugs/1902965[Bug 1902965])
+
+
+==== Administration ====
+
+* Angular admin pages "Library" scope (https://bugs.launchpad.net/bugs/1873322[Bug 1873322])
+* No Access to Composite Attribute Entry Definitions from MARC Coded Value Maps (https://bugs.launchpad.net/bugs/1843969[Bug 1843969])
+* Use consistent terminology in Local Admin Interfaces (https://bugs.launchpad.net/bugs/1871510[Bug 1871510])
+
+
+==== Circulation ====
+
+* In house use: it would be nice if the item barcode column linked to item status (https://bugs.launchpad.net/bugs/1859513[Bug 1859513])
+
+==== Client ====
+
+* Angular grids: interval columns are not filterable (https://bugs.launchpad.net/bugs/1848579[Bug 1848579])
+* Angular Staff Client Hamburger Menu no longer clipped off screen (https://bugs.launchpad.net/bugs/1915323[Bug 1915323])
+
+==== Course materials ====
+
+* Display course name when editing reserve item (https://bugs.launchpad.net/bugs/1907977[Bug 1907977])
+* "Instructor" search/browse option does not always display in OPAC (https://bugs.launchpad.net/bugs/1907979[Bug 1907979])
+
+==== OPAC ====
+
+* Bootstrap OPAC: add support for Stripe v3 (Elements) (https://bugs.launchpad.net/bugs/1895679[Bug 1895679])
+* Bootstrap OPAC: Pagination on copy table now works (https://bugs.launchpad.net/bugs/1916085[Bug 1916085])
+* Terms Governing Use and Reproduction Note Displays Twice in Record Details (https://bugs.launchpad.net/bugs/1917804[Bug 1917804])
+* Email now displays when editing hold prefs in OPAC (https://bugs.launchpad.net/bugs/1908616[Bug 1908616])
+* Bootstrap OPAC:  Call number on search results page (https://bugs.launchpad.net/bugs/1916904[Bug 1916904])
+
+==== Performance ====
+
+* Search indexes now use GIN by default (https://bugs.launchpad.net/bugs/1703658[Bug 1703658])
+* Record bucket 'Add To Bucket' actions should be batched or serialized. (https://bugs.launchpad.net/bugs/1913458[Bug 1913458])
+
+==== Staff catalog ====
+
+* Angular Catalog: Part column no longer missing from Item table (https://bugs.launchpad.net/bugs/1899405[Bug 1899405])
+* Publication information in angular search results now displays from tag 260 or 264 (https://bugs.launchpad.net/bugs/1896840[Bug 1896840])
+* Angular catalog can now sort browse result record lists (https://bugs.launchpad.net/bugs/1908444[Bug 1908444])
+* No Pagination Navigation at the Bottom of a Catalog Search (https://bugs.launchpad.net/bugs/1912380[Bug 1912380])
+
+=== Upgrade Notes ===
+
+A partial reingest is required to extract the new publisher data for display.
+This query may be long-running.
+
+[source,sql]
+--------------------------------------------------------------------------
+WITH affected_bibs AS (
+    SELECT DISTINCT(bre.id) AS id
+    FROM biblio.record_entry bre
+    JOIN metabib.real_full_rec mrfr
+    ON (mrfr.record = bre.id AND mrfr.tag = '264')
+    WHERE NOT bre.deleted
+)
+SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE, TRUE)
+FROM affected_bibs;
+--------------------------------------------------------------------------
+
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.6.3 point release of Evergreen:
+
+
+* Jason Boyer
+* Dan Briem
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Tiffany Little
+* Terran McCanna
+* Michele Morgan
+* Jennifer Pringle
+* Mike Risher
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Beth Willis
+
 == Evergreen 3.6.2 ==
 
 
