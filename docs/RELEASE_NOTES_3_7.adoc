@@ -6,8 +6,11 @@ Evergreen 3.7-beta Release Notes
 Upgrade notes
 -------------
 
+New Seed Data
+~~~~~~~~~~~~~
+
 New Permissions
-+++++++++++++++
+^^^^^^^^^^^^^^^
 
 * Administer geographic location services (`ADMIN_GEOLOCATION_SERVICES`)
 * Administer library groups (`ADMIN_LIBRARY_GROUPS`)
@@ -16,18 +19,18 @@ New Permissions
 * View geographic location services (`VIEW_GEOLOCATION_SERVICES`)
 
 New Global Flags
-++++++++++++++++
+^^^^^^^^^^^^^^^^
 
 * Block the ability of expired user with the STAFF_LOGIN permission to log into Evergreen (`auth.block_expired_staff_login`)
 * Offer use of geographic location services in the public catalog (`opac.use_geolocation`)
 
 New Internal Flags
-++++++++++++++++++
+^^^^^^^^^^^^^^^^^^
 
 * Maximum search result count at which spelling suggestions may be offered (`opac.did_you_mean.low_result_threshold`)
 
 New Library Settings
-++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^
 
 * Allow both Shibboleth and native OPAC authentication (`opac.login.shib_sso.allow_native`)
 * Allow renewal request if renewal recipient privileges have expired (`circ.renew.expired_patron_allow`)
@@ -46,7 +49,7 @@ New Library Settings
 * Soundex score weighting in OPAC spelling suggestions (`search.symspell.soundex.weight`)
 
 New Stock Action/Trigger Event Definitions
-++++++++++++++++++++++++++++++++++++++++++
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * Hold Group Hold Placed for Patron Email Notification
 
@@ -734,6 +737,7 @@ Evergreen:
 * Christine Burns
 * Galen Charlton
 * Garry Collum
+* Eva Cerniňáková
 * Dawn Dale
 * Elizabeth Davis
 * Jeff Davis
