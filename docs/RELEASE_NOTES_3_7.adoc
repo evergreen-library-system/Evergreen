@@ -6,6 +6,141 @@ Evergreen 3.7-beta Release Notes
 Upgrade notes
 -------------
 
+Database Upgrade Procedure
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+The database schema upgrade for Evergreen 3.7 has more steps than normal. The general
+procedure, assuming Evergreen 3.6.2 as the starting point, is:
+
+. Run the main 3.6.2 => to 3.7 schema update script from the Evergreen source directory,
+supplying database connection parameters as needed:
++
+[source,sh]
+----
+psql -f Open-ILS/src/sql/Pg/version-upgrade/3.6.2-3.7-beta-upgrade-db.sql 2>&1 | tee 3.6.2-3.7-beta-upgrade-db.log
+----
+[start=2]
+. Create and ingest search suggestions:
+.. Run the following from `psql` to export the strings to files:
++
+[source,sql]
+----
+\a
+\t
+
+\o title
+select value from metabib.title_field_entry;
+\o author
+select value from metabib.author_field_entry;
+\o subject
+select value from metabib.subject_field_entry;
+\o series
+select value from metabib.series_field_entry;
+\o identifier 
+select value from metabib.identifier_field_entry;
+\o keyword
+select value from metabib.keyword_field_entry;
+
+\o
+\a
+\t
+----
+[start=2]
+.. From the command line, convert the exported words into SQL scripts to load into the database.
+This step assumes that you are at the top of the Evergreen source tree.
++
+[source,sh]
+----
+$ ./Open-ILS/src/support-scripts/symspell-sideload.pl title > title.sql
+$ ./Open-ILS/src/support-scripts/symspell-sideload.pl author > author.sql
+$ ./Open-ILS/src/support-scripts/symspell-sideload.pl subject > subject.sql
+$ ./Open-ILS/src/support-scripts/symspell-sideload.pl series > series.sql
+$ ,/Open-ILS/src/support-scripts/symspell-sideload.pl identifier > identifier.sql
+$ ./Open-ILS/src/support-scripts/symspell-sideload.pl keyword > keyword.sql
+----
+[start=3]
+.. Back in `psql`, import the suggestions. This step can take several hours in a large databases,
+but the `\i $FILE.sql`` steps can be run in parallel.
++
+[source,sql]
+----
+ALTER TABLE search.symspell_dictionary SET UNLOGGED;
+TRUNCATE search.symspell_dictionary;
+
+\i identifier.sql
+\i author.sql
+\i title.sql
+\i subject.sql
+\i series.sql
+\i keyword.sql
+
+CLUSTER search.symspell_dictionary USING symspell_dictionary_pkey;
+REINDEX TABLE search.symspell_dictionary;
+ALTER TABLE search.symspell_dictionary SET LOGGED;
+VACUUM ANALYZE search.symspell_dictionary;
+
+DROP TABLE search.symspell_dictionary_partial_title;
+DROP TABLE search.symspell_dictionary_partial_author;
+DROP TABLE search.symspell_dictionary_partial_subject;
+DROP TABLE search.symspell_dictionary_partial_series;
+DROP TABLE search.symspell_dictionary_partial_identifier;
+DROP TABLE search.symspell_dictionary_partial_keyword;
+----
+[start=3]
+. (optional) Apply the new opt-in setting for overdue and preduce notices.
+The following query will set the circ.default_overdue_notices_enabled
+user setting to true (the default value) for all existing users,
+ensuring they continue to receive overdue/predue emails.
++
+[source,sql]
+----
+INSERT INTO actor.usr_setting (usr, name, value)
+SELECT
+id,
+circ.default_overdue_notices_enabled,
+true
+FROM actor.usr;
+----
++
+The following query will add the circ.default_overdue_notices_enabled
+user setting as an opt-in setting for all action triggers that send
+emails based on a circ being due (unless another opt-in setting is
+already in use).
++
+[source,sql]
+----
+UPDATE action_trigger.event_definition
+SET opt_in_setting = circ.default_overdue_notices_enabled,
+usr_field = usr
+WHERE opt_in_setting IS NULL
+AND hook = checkout.due
+AND reactor = SendEmail;
+----
+Evergreen admins who wish to use the new setting should run both of
+the above queries. Admins who do not wish to use it, or who are
+already using a custom opt-in setting of their own, do not need to
+do anything.
+[start=4]
+. Perform a `VACUUM ANALYZE` of the following tables using `psql`:
++
+[source,sql]
+----
+VACUUM ANALYZE authority.full_rec;
+VACUUM ANALYZE authority.simple_heading;
+VACUUM ANALYZE metabib.identifier_field_entry;
+VACUUM ANALYZE metabib.combined_identifier_field_entry;
+VACUUM ANALYZE metabib.title_field_entry;
+VACUUM ANALYZE metabib.combined_title_field_entry;
+VACUUM ANALYZE metabib.author_field_entry;
+VACUUM ANALYZE metabib.combined_author_field_entry;
+VACUUM ANALYZE metabib.subject_field_entry;
+VACUUM ANALYZE metabib.combined_subject_field_entry;
+VACUUM ANALYZE metabib.keyword_field_entry;
+VACUUM ANALYZE metabib.combined_keyword_field_entry;
+VACUUM ANALYZE metabib.series_field_entry;
+VACUUM ANALYZE metabib.combined_series_field_entry;
+VACUUM ANALYZE metabib.real_full_rec;
+----
+
 New Seed Data
 ~~~~~~~~~~~~~
 
