@@ -180,8 +180,8 @@
 ␣␣␣␣␣␣␣␣</translation>
   <translation id="4653851150114484658">alt+h</translation>
   <translation id="8710665015427005959">Přejít domů</translation>
-  <translation id="6168944893724865796"> Search
-␣␣␣␣␣␣␣␣</translation>
+  <translation id="6168944893724865796">
+Search</translation>
   <translation id="5590497689869108758">Hledat čtenáře</translation>
   <translation id="1111819930719235199">Hledat exempláře podle čárového kódu</translation>
   <translation id="2864809672209658104">Hledat v katalogu</translation>
@@ -208,8 +208,8 @@
   <translation id="2285844132491003051">Načíst jednotku jako chybějící kusy</translation>
   <translation id="3404256452210632129">Znovu vytisknout poslední potvrzení</translation>
   <translation id="4605985792017784659">Offline výpůjčky</translation>
-  <translation id="1216426915586198485">Katalogizace
-␣␣␣␣␣␣␣␣</translation>
+  <translation id="1216426915586198485">
+Katalogizace</translation>
   <translation id="3695818657356037297">Skupiny záznamů</translation>
   <translation id="2411905629656627514">Skupiny exemplářů</translation>
   <translation id="8209906158810440663">Načíst bibliografický záznam podle ID</translation>
@@ -221,8 +221,8 @@
   <translation id="7889231993907349753">Hromadná editace MARCu</translation>
   <translation id="184931082392331536">Kontrola odkazů</translation>
   <translation id="5426281798677594771">Spravovat autority</translation>
-  <translation id="6377351776508173702">Akvizice
-␣␣␣␣␣␣␣␣</translation>
+  <translation id="6377351776508173702">
+Akvizice</translation>
   <translation id="2799336879593261049">Všeobecné vyhledávání</translation>
   <translation id="4836216654962656218">Moje akviziční seznamy</translation>
   <translation id="1968562504061801393">Vytvořit předběžný záznam</translation>
@@ -235,15 +235,15 @@
   <translation id="7877042188856846158">Položky k reklamaci</translation>
   <translation id="3693037654443524214">Otevří faktury</translation>
   <translation id="4659204542012439153">Vytvořit fakturu</translation>
-  <translation id="4516760258673865768">Rezervace zdrojů
-␣␣␣␣␣␣␣␣</translation>
+  <translation id="4516760258673865768">
+Rezervace zdrojů</translation>
   <translation id="2016606738915931670">Vytvořit rezervaci zdrojů</translation>
   <translation id="8548816089773833615">Seznam rezervovaných zdrojů k zachycení</translation>
   <translation id="8997579515425950860">Zachytit rezervované zdroje</translation>
   <translation id="8256866245479839326">Vyzvednout rezervované zdroje</translation>
   <translation id="1283736603795004332">Vrátit rezervované zdroje</translation>
-  <translation id="2793406902849685026"> Administrace
-␣␣␣␣␣␣␣␣</translation>
+  <translation id="2793406902849685026">
+Administrace</translation>
   <translation id="1213790833678375339">Editor uživatelských oprávnění</translation>
   <translation id="2210415377969858551">Administrace serveru</translation>
   <translation id="5615019908576102716">Lokální administrace</translation>
@@ -261,8 +261,7 @@
     </ph>
   </translation>
   <translation id="7243158966556845205">
-          <ph name="START_ITALIC_TEXT"><ex>&lt;i&gt;</ex></ph>list<ph name="CLOSE_ITALIC_TEXT"><ex>&lt;/i&gt;</ex></ph>
-␣␣␣␣␣␣␣␣</translation>
+          <ph name="START_ITALIC_TEXT"><ex>&lt;i&gt;</ex></ph>list<ph name="CLOSE_ITALIC_TEXT"><ex>&lt;/i&gt;</ex></ph></translation>
   <translation id="5356002028938925107">Odhlášení a další...</translation>
   <translation id="7275989946002419237">Změna operátora se nezdařila</translation>
   <translation id="7200978329936255427">Změna operátora proběhla úspěšně</translation>
@@ -278,8 +277,7 @@
   <translation id="3400130807468308413">Hledání jednotek a katalogizace</translation>
   <translation id="6939663044582448373">Hledat...</translation>
   <translation id="3594862659591617539">
-Hledat
-␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣␣</translation>
+Hledat</translation>
   <translation id="7844706011418789951">Administrace</translation>
   <translation id="3243013256791630304">
 Dokumentace k Evergreenu
@@ -1152,7 +1150,8 @@ Neexistují rezervovatelné zdroje, který by splňovaly vaše kritéria.  Chcet
   <translation id="5065837375253935970">
                 Hledat</translation>
   <translation id="5606170787510897717">
-                Resetova</translation>
+                Obnovit
+              </translation>
   <translation id="8090504835357979338">Jednotka byla úspěšně označena jako Poškozená</translation>
   <translation id="92218301785983050">Označení jednotky jako Poškozená se nezdařilo</translation>
   <translation id="2673254818468878353">Označit jednotku jako poškozenou</translation>
@@ -1477,7 +1476,8 @@ Neexistují rezervovatelné zdroje, který by splňovaly vaše kritéria.  Chcet
       <ph name="CLOSE_SMALL_TEXT"><ex>&lt;/small&gt;</ex>&lt;/small&gt;</ph></translation>
   <translation id="4956120964290957178">Hledání čtenáře</translation>
   <translation id="8383780172065075451">
-              Place hold for patron by barcode:</translation>
+              Rezervovat pro čtenáře s čárovým kódem:
+            </translation>
   <translation id="3790186598950358901">
               Zadat rezervace na tento služební účet:</translation>
   <translation id="5676808587185036490">Knihovna pro vyzvednutí:</translation>
@@ -1698,8 +1698,8 @@ Neexistují rezervovatelné zdroje, který by splňovaly vaše kritéria.  Chcet
   <translation id="3085627788308384795">Tento akviziční seznam nelze vytvořit: název se již používá.</translation>
   <translation id="7648011677768322554">Klnovat akviziční seznam: <ph name="INTERPOLATION"><ex>{{leadListName}}</ex>{{leadListName}}</ph></translation>
   <translation id="5834780181397311898">Klonovat</translation>
-  <translation id="6718615883363848307"/>
-  <translation id="5216539749602171272"/>
+  <translation id="6718615883363848307">Smazat tyto akviziční seznamy?</translation>
+  <translation id="5216539749602171272">Tento akviziční seznam (seznamy) nelze smazat.</translation>
   <translation id="6571879201293313561">Sloučit akviziční seznamy</translation>
   <translation id="690255083763725466">Řídící akviziční seznam:</translation>
   <translation id="151060465824743817">Sloučit tyto akviziční seznamy: </translation>
@@ -1841,8 +1841,7 @@ Neexistují rezervovatelné zdroje, který by splňovaly vaše kritéria.  Chcet
   <translation id="1992773184953675659">Den narození</translation>
   <translation id="1709289572931484960">Databázové ID</translation>
   <translation id="340991785973427363">
-            Zahrnout neaktivní
-          ?</translation>
+            Zahrnout neaktivní?</translation>
   <translation id="5691966639616932851">Průkaz</translation>
   <translation id="4915431133669985304">Skupina oprávnění</translation>
   <translation id="4948663886508626048">Vytvořeno</translation>
@@ -1945,16 +1944,16 @@ Neexistují rezervovatelné zdroje, který by splňovaly vaše kritéria.  Chcet
   <translation id="478150550009847288"/>
   <translation id="1476705182802840874">Frek</translation>
   <translation id="6355448092756801905"/>
-  <translation id="1287307276046721113"/>
+  <translation id="1287307276046721113">TrAr</translation>
   <translation id="339729126805226016"/>
-  <translation id="5504294718997045193"/>
+  <translation id="5504294718997045193">LitT</translation>
   <translation id="954985046009039348"/>
-  <translation id="1302180592649933802"/>
+  <translation id="1302180592649933802">AccM</translation>
   <translation id="3813629674792983727">FSkl</translation>
-  <translation id="6863487164629845459"/>
-  <translation id="4124581389584669368"/>
-  <translation id="3078700395699921507"/>
-  <translation id="5907508363616911677"/>
+  <translation id="6863487164629845459">SpFm</translation>
+  <translation id="4124581389584669368">Relf</translation>
+  <translation id="3078700395699921507">Proj</translation>
+  <translation id="5907508363616911677">TypKart</translation>
   <translation id="82423361031588852">TypM</translation>
   <translation id="1061540398514258404"/>
   <translation id="8455204924704616723"/>
@@ -1964,17 +1963,17 @@ Neexistují rezervovatelné zdroje, který by splňovaly vaše kritéria.  Chcet
   <translation id="1894513264551556610"/>
   <translation id="6177316864864450040"/>
   <translation id="4617750124863202178">JazKat</translation>
-  <translation id="6599752784987327249"/>
+  <translation id="6599752784987327249">Druh</translation>
   <translation id="4645345687322304891">Pravidla</translation>
   <translation id="5354425113256040759"/>
   <translation id="2366574179529910605">ČísSer</translation>
   <translation id="2913113750511474740"/>
-  <translation id="6065000109545097136"/>
-  <translation id="3889783784646314446"/>
-  <translation id="6195542057697444627"/>
+  <translation id="6065000109545097136">VěcZáhl</translation>
+  <translation id="3889783784646314446">EdZáhl</translation>
+  <translation id="6195542057697444627">TypZpřes</translation>
   <translation id="3531977011957040242"/>
   <translation id="3623346507845353635"/>
-  <translation id="2206092107169689788"/>
+  <translation id="2206092107169689788">AktStatus</translation>
   <translation id="8953033926734869941">Název</translation>
   <translation id="85990745567234286">ModZáz</translation>
   <translation id="6491210522911115323">Přidat 006</translation>
@@ -2017,12 +2016,19 @@ Neexistují rezervovatelné zdroje, který by splňovaly vaše kritéria.  Chcet
   <translation id="3724241486684373164">Tag MARC</translation>
   <translation id="6348005425015920269">
           Tři znaky bez mezer mezer, indikátorů aj., např.: 245</translation>
-  <translation id="8751442342624057894"/>
-  <translation id="1643899850423481105"/>
-  <translation id="7840424745341705490"/>
-  <translation id="6486313087711837156"/>
-  <translation id="6965139263337829664"/>
-  <translation id="2734345804649513597"/>
+  <translation id="8751442342624057894">Podpole (volitelné)</translation>
+  <translation id="1643899850423481105">Bez mezer a oddělovačů, např.:abcnp</translation>
+  <translation id="7840424745341705490">Data MARC</translation>
+  <translation id="6486313087711837156">
+          Data ve formátu MARC-Breaker s indikátory a oddělovači podpolí, 
+          např.: 245 04$aKonec
+        </translation>
+  <translation id="6965139263337829664">
+           Pokročilá omezení shody (volitelné)
+          </translation>
+  <translation id="2734345804649513597">
+           Jeden kód podpole bez odělovačů, např.: a
+        </translation>
   <translation id="2791965473218359494">Výraz</translation>
   <translation id="7068150569475884523">          Vysvětlení regulárních výrazů viz  
           <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>
@@ -2049,49 +2055,84 @@ Neexistují rezervovatelné zdroje, který by splňovaly vaše kritéria.  Chcet
   <translation id="7713335765571237353">Počet chyb: </translation>
   <translation id="5552216497596741739">Pro rezervaci nalezen nový cíl</translation>
   <translation id="9073072636536412767">Přidat jednotky</translation>
-  <translation id="873751854699583065"/>
-  <translation id="7532816155738758305"/>
-  <translation id="4704628981876047845"/>
-  <translation id="4748277851127480569"/>
-  <translation id="4591151408294802183"/>
-  <translation id="7343370343478083891"/>
-  <translation id="5949340167693851954"/>
-  <translation id="2551770919821310290"/>
-  <translation id="6590346929677091371"/>
-  <translation id="8676162913971358015"/>
-  <translation id="2683084124556355488"/>
-  <translation id="4496539083734221070"/>
-  <translation id="2916579526585779016"/>
-  <translation id="258555327340170828"/>
-  <translation id="8104421162933956065"/>
-  <translation id="7886570921510760899"/>
-  <translation id="8154453727027523235"/>
-  <translation id="2547157710218610782"/>
-  <translation id="1733377437659896047"/>
+  <translation id="873751854699583065">Zobrazit v katalogu</translation>
+  <translation id="7532816155738758305">Beznadějné datum</translation>
+  <translation id="4704628981876047845">Označení čísla</translation>
+  <translation id="4748277851127480569">Označení sign.</translation>
+  <translation id="4591151408294802183">Třída označení sign.</translation>
+  <translation id="7343370343478083891">Označení části</translation>
+  <translation id="5949340167693851954">Plné označení signatury</translation>
+  <translation id="2551770919821310290">Služební katalog</translation>
+  <translation id="6590346929677091371">
+        Zadání rezervace pro čtenáře 
+        <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>
+          <ph name="INTERPOLATION"><ex>{{holdForUser().family_name()}}</ex>{{holdForUser().family_name()}}</ph>, <ph name="INTERPOLATION_1"><ex>{{holdForUser().first_given_name()}}</ex>{{holdForUser().first_given_name()}}</ph>
+        <ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph>.
+      </translation>
+  <translation id="8676162913971358015">Nebyl vybrán cíl</translation>
+  <translation id="2683084124556355488">Vyberte prosím vhodný cíl přesunu</translation>
+  <translation id="4496539083734221070">Přesunout jednotky do označené destinace</translation>
+  <translation id="2916579526585779016">Přesunout jednotky do označené destinace</translation>
+  <translation id="258555327340170828">Části</translation>
+  <translation id="8104421162933956065">Poznámky</translation>
+  <translation id="7886570921510760899">Tagy</translation>
+  <translation id="8154453727027523235">Upozornění</translation>
+  <translation id="2547157710218610782">Půjčovat jako typ MARC</translation>
+  <translation id="1733377437659896047">Potvrzení neuložených změn</translation>
   <translation id="8317457230285174180">Kurz</translation>
   <translation id="8120269181725722869">
         Zobrazit vyhledávací formulář <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>unfold_more<ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph></translation>
   <translation id="481971971557154380">UPC</translation>
-  <translation id="5369485958442419491"/>
-  <translation id="8992033074649446754"/>
-  <translation id="8586958906227719625"/>
-  <translation id="6306398049346640452"/>
-  <translation id="2361044151971010973"/>
-  <translation id="2669141259567340051"/>
-  <translation id="5735544153935476140"/>
-  <translation id="6772447970859188136"/>
+  <translation id="5369485958442419491">Fyz. popis:
+                  <ph name="START_TAG_EG_BIB_DISPLAY_FIELD"><ex>&lt;eg-bib-display-field&gt;</ex>&lt;eg-bib-display-field&gt;</ph><ph name="CLOSE_TAG_EG_BIB_DISPLAY_FIELD"><ex>&lt;/eg-bib-display-field&gt;</ex>&lt;/eg-bib-display-field&gt;</ph>
+                </translation>
+  <translation id="8992033074649446754">Vydání:
+                  <ph name="START_TAG_EG_BIB_DISPLAY_FIELD"><ex>&lt;eg-bib-display-field&gt;</ex>&lt;eg-bib-display-field&gt;</ph><ph name="CLOSE_TAG_EG_BIB_DISPLAY_FIELD"><ex>&lt;/eg-bib-display-field&gt;</ex>&lt;/eg-bib-display-field&gt;</ph>
+                </translation>
+  <translation id="8586958906227719625">Vydavatel:
+                  <ph name="START_TAG_EG_BIB_DISPLAY_FIELD"><ex>&lt;eg-bib-display-field&gt;</ex>&lt;eg-bib-display-field&gt;</ph>
+                  <ph name="CLOSE_TAG_EG_BIB_DISPLAY_FIELD"><ex>&lt;/eg-bib-display-field&gt;</ex>&lt;/eg-bib-display-field&gt;</ph>
+                  </translation>
+  <translation id="6306398049346640452">Datum vyd.:
+                    <ph name="START_TAG_EG_BIB_DISPLAY_FIELD"><ex>&lt;eg-bib-display-field&gt;</ex>&lt;eg-bib-display-field&gt;</ph>
+                    <ph name="CLOSE_TAG_EG_BIB_DISPLAY_FIELD"><ex>&lt;/eg-bib-display-field&gt;</ex>&lt;/eg-bib-display-field&gt;</ph>
+                  </translation>
+  <translation id="2361044151971010973">ISBN:
+                  <ph name="START_TAG_EG_BIB_DISPLAY_FIELD"><ex>&lt;eg-bib-display-field&gt;</ex>&lt;eg-bib-display-field&gt;</ph><ph name="CLOSE_TAG_EG_BIB_DISPLAY_FIELD"><ex>&lt;/eg-bib-display-field&gt;</ex>&lt;/eg-bib-display-field&gt;</ph>
+                </translation>
+  <translation id="2669141259567340051">UPC:
+                  <ph name="START_TAG_EG_BIB_DISPLAY_FIELD"><ex>&lt;eg-bib-display-field&gt;</ex>&lt;eg-bib-display-field&gt;</ph><ph name="CLOSE_TAG_EG_BIB_DISPLAY_FIELD"><ex>&lt;/eg-bib-display-field&gt;</ex>&lt;/eg-bib-display-field&gt;</ph>
+                </translation>
+  <translation id="5735544153935476140">ISSN:
+                  <ph name="START_TAG_EG_BIB_DISPLAY_FIELD"><ex>&lt;eg-bib-display-field&gt;</ex>&lt;eg-bib-display-field&gt;</ph><ph name="CLOSE_TAG_EG_BIB_DISPLAY_FIELD"><ex>&lt;/eg-bib-display-field&gt;</ex>&lt;/eg-bib-display-field&gt;</ph>
+                </translation>
+  <translation id="6772447970859188136">Připojené kurzy:
+                  <ph name="START_TAG_SPAN"><ex>&lt;span&gt;</ex>&lt;span&gt;</ph>
+                    <ph name="START_LINK"><ex>&lt;a&gt;</ex>&lt;a&gt;</ph>
+                      <ph name="INTERPOLATION"><ex>{{course.name()}}</ex>{{course.name()}}</ph> (<ph name="INTERPOLATION_1"><ex>{{course.course_number()}}</ex>{{course.course_number()}}</ph>)
+                    <ph name="CLOSE_LINK"><ex>&lt;/a&gt;</ex>&lt;/a&gt;</ph><ph name="INTERPOLATION_2"><ex>{{isLast ? &apos;&apos; : &apos;, &apos;}}</ex>{{isLast ? &apos;&apos; : &apos;, &apos;}}</ph>
+                  <ph name="CLOSE_TAG_SPAN"><ex>&lt;/span&gt;</ex>&lt;/span&gt;</ph>
+                </translation>
   <translation id="7985064246399990288">Předvolby katalogu</translation>
   <translation id="5505504997073746600">Nastavení bylo aktualizováno</translation>
   <translation id="3530616072501174474">Při nastavení došlo k chybě</translation>
   <translation id="6783242207057721108">
       Výchozí knihovna pro vyhledávání</translation>
-  <translation id="6217599562593785479"/>
+  <translation id="6217599562593785479">
+   Nastavení výchozí knihovny pro vyhledávání určuje, ve které knihovně 
+   se při výchozím nastavení vyhledává v rozhraní pokročilého vyhledávání 
+   a na vstupní stránce klienta. Manuální nastavené knihovny pro vyhledávání
+   je potlačeno. Je doporučeno nastavit knihovnu pro vyhledávání na nejvyšší úroveň, 
+   kterou obvykle chcete prohledávat.
+  </translation>
   <translation id="274674750655180029">Preferovaná knihovna</translation>
   <translation id="1439315177160995376"/>
   <translation id="2037791906609736246">
       Výchozí panel pro vyhledávání</translation>
   <translation id="6663842782934960288"/>
-  <translation id="5024593074214935340"/>
+  <translation id="5024593074214935340">
+      Počet výsledků na stránku
+    </translation>
   <translation id="4880846436502821352"/>
   <translation id="1381641047380140066"/>
   <translation id="9091234305791424003"/>
@@ -2256,4 +2297,110 @@ Neexistují rezervovatelné zdroje, který by splňovaly vaše kritéria.  Chcet
   <translation id="6811901802533648897"/>
   <translation id="8326122911836932604"/>
   <translation id="8954959306530591483"/>
+  <translation id="1704281614449226988"/>
+  <translation id="8829497237648100098"/>
+  <translation id="4188062815181384255"/>
+  <translation id="5433045795604110511"/>
+  <translation id="3906930277800232979"/>
+  <translation id="8853031339694656451"/>
+  <translation id="4785558017150815464"/>
+  <translation id="5726454104363206493"/>
+  <translation id="420763834450076269"/>
+  <translation id="2542500273874492483"/>
+  <translation id="6590542072128166142"/>
+  <translation id="5431228396326281511"/>
+  <translation id="4345580939645597591"/>
+  <translation id="2224609992551286941"/>
+  <translation id="9204999595398374370"/>
+  <translation id="1455288611294933926"/>
+  <translation id="6699868390029643446"/>
+  <translation id="575942485976674936"/>
+  <translation id="1245946701827146530"/>
+  <translation id="8665813894047442552"/>
+  <translation id="3963210129782323239"/>
+  <translation id="148791226897553727"/>
+  <translation id="6342373988267769214"/>
+  <translation id="5120743112006725492"/>
+  <translation id="2221235322163261804"/>
+  <translation id="7072734358839324856"/>
+  <translation id="2274616979538418572"/>
+  <translation id="5705371312542860003"/>
+  <translation id="6922752204377097777"/>
+  <translation id="6275627530958537896"/>
+  <translation id="9101750782104818048"/>
+  <translation id="8146546112280184122"/>
+  <translation id="8060648552195479893"/>
+  <translation id="2735903267964158309"/>
+  <translation id="4653072267377652640"/>
+  <translation id="1142819708127342051"/>
+  <translation id="5607669932062416162"/>
+  <translation id="564628000366807090"/>
+  <translation id="4077520913910941990"/>
+  <translation id="1292737233370901804"/>
+  <translation id="313850810538580916"/>
+  <translation id="4094457549458169593"/>
+  <translation id="152637893327373030"/>
+  <translation id="1574250442129175886"/>
+  <translation id="4915100109010194478"/>
+  <translation id="3375720161310377589"/>
+  <translation id="6777974573583289938"/>
+  <translation id="1176513385107378095"/>
+  <translation id="4193037125993188369"/>
+  <translation id="3701692422141980390"/>
+  <translation id="2791813809110581266"/>
+  <translation id="5825883628074694020"/>
+  <translation id="6624624881955476674"/>
+  <translation id="1836167878335035670"/>
+  <translation id="2450274878286737537"/>
+  <translation id="4539861796051759965"/>
+  <translation id="681658719324950095"/>
+  <translation id="7465625142481658531"/>
+  <translation id="4921883137892926649"/>
+  <translation id="4285991387583592190"/>
+  <translation id="6721782878248936651"/>
+  <translation id="6278916094801614265"/>
+  <translation id="7877679561408377656"/>
+  <translation id="6501407570959666328"/>
+  <translation id="4322928421264879510"/>
+  <translation id="2343526982296821701"/>
+  <translation id="8226357473841342282"/>
+  <translation id="4255660696264656127"/>
+  <translation id="256064687048465276"/>
+  <translation id="6436995261043631133"/>
+  <translation id="2198064150644598673"/>
+  <translation id="7160917060367205031"/>
+  <translation id="8818178418238665732"/>
+  <translation id="4038611164417683461"/>
+  <translation id="955915491540398006"/>
+  <translation id="974712044379041084"/>
+  <translation id="7009230349594954184"/>
+  <translation id="8542102321882774055"/>
+  <translation id="8586415212520768193"/>
+  <translation id="5467355436373161022"/>
+  <translation id="3037376729028306155"/>
+  <translation id="6840372412218456874"/>
+  <translation id="8517310697429249889"/>
+  <translation id="3113815582864644183"/>
+  <translation id="2860927771159070714"/>
+  <translation id="2427846628646703310"/>
+  <translation id="792254389899078917"/>
+  <translation id="1032579772715118860"/>
+  <translation id="3258903423823327216"/>
+  <translation id="2404777034995854921"/>
+  <translation id="2605285135419592156"/>
+  <translation id="791379226991027432"/>
+  <translation id="7721002027782281567"/>
+  <translation id="6568457851592771748"/>
+  <translation id="2665401861363296998"/>
+  <translation id="2561827471030319802"/>
+  <translation id="4677624254376526642"/>
+  <translation id="1976386832615281941"/>
+  <translation id="5942736081919535877"/>
+  <translation id="5014439521769966091"/>
+  <translation id="494312533409969877"/>
+  <translation id="3661798053685560918"/>
+  <translation id="2283304765082627547"/>
+  <translation id="8438402275401303539"/>
+  <translation id="3605194406869496384"/>
+  <translation id="3319622416410005872"/>
 </translationbundle>
