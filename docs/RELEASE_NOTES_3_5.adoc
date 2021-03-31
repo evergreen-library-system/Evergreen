@@ -3,6 +3,81 @@ Evergreen 3.5 Release Notes
 :toc:
 :numbered:
 
+
+== Evergreen  3.5.4 ==
+
+This release contains bug fixes improving on Evergreen 3.5.3, including
+a security bug fix.
+
+=== Bug Fixes ===
+
+Security
+^^^^^^^^
+
+* Fixes an XSS bug in MARC fields that are rendered as HTML (https://bugs.launchpad.net/bugs/1902965[Bug 1902965])
+
+Administration
+^^^^^^^^^^^^^^
+
+* Angular admin pages now scope to the appropriate library (https://bugs.launchpad.net/bugs/1873322[Bug 1873322])
+
+Client
+^^^^^^
+
+* Angular Staff Client Hamburger Menu is no longer clipped off screen (https://bugs.launchpad.net/bugs/1915323[Bug 1915323])
+
+OPAC
+^^^^
+
+* Terms Governing Use and Reproduction Note Displays Twice in Record Details (https://bugs.launchpad.net/bugs/1917804[Bug 1917804])
+
+Staff catalog
+^^^^^^^^^^^^^
+
+* Angular Catalog: Part column missing from Item table (https://bugs.launchpad.net/bugs/1899405[Bug 1899405])
+* Publication information in angular search results does not display from tag 264 (https://bugs.launchpad.net/bugs/1896840[Bug 1896840])
+
+Performance
+^^^^^^^^^^^
+
+* Search indexes use GIN by default (https://bugs.launchpad.net/bugs/1703658[Bug 1703658])
+
+=== Upgrade notes ===
+
+A partial reingest is required to extract the new publisher data for display.
+This query may be long-running.
+
+[source,sql]
+--------------------------------------------------------------------------
+WITH affected_bibs AS (
+    SELECT DISTINCT(bre.id) AS id
+    FROM biblio.record_entry bre
+    JOIN metabib.real_full_rec mrfr
+    ON (mrfr.record = bre.id AND mrfr.tag = '264')
+    WHERE NOT bre.deleted
+)
+SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE, TRUE)
+FROM affected_bibs;
+--------------------------------------------------------------------------
+
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.5.4 point release of Evergreen:
+
+
+* Jason Boyer
+* Dan Briem
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Galen Charlton
+* Michele Morgan
+* Jane Sandberg
+* Jason Stephenson
+
 Evergreen 3.5.3
 ---------------
 
