@@ -65,11 +65,11 @@ broad strokes, the process includes:
 other requested information to the IdP administrator.  Much of this information
 will be available at http://YOUR_EVERGREEN_DOMAIN/Shibboleth.sso/Metadata
 . Configuring Apache, including:
-  * Enabling shibboleth authentication in the `eg_vhost.conf` file
+  * Enabling Shibboleth authentication in the `eg_vhost.conf` file
   * (Optional) Using the new _sso_loc_ Apache variable to identify
   which org unit should be used as the context location when fetching
   Shibboleth-related library settings.
-. As a user with the new _SSO_ADMIN_ permission, configure Evergreen using
+. As a user with the new `SSO_ADMIN` permission, configure Evergreen using
 the Library Settings Editor, including:
   * Enable Shibboleth SSO for the OPAC
   * (Optional) Configure whether you will use SSO exclusively, or offer
@@ -152,7 +152,7 @@ documentation].
 An upgrade script is provided as part of this migration.  If you
 upgrade normally from a previous release of Evergreen, this upgrade
 script should run as part of the upgrade process.  The migration
-script recommends that you run a `VACUUM ANALYZE` in Postgresql on the
+script recommends that you run a `VACUUM ANALYZE` in PostgreSQL on the
 tables that had the indexes changed.  The migration process does not
 do this for you, so you should do it as soon as is convenient after
 the upgrade.
@@ -232,7 +232,7 @@ sample data set (also known as Concerto data set).
 Publisher Catalog Display Includes 264 Tag
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Publisher values are now extracted for dislpay from tags 260 OR 264.
+Publisher values are now extracted for display from tags 260 OR 264.
 
 Upgrade Notes
 +++++++++++++
@@ -373,7 +373,7 @@ Carousel ordering is now stable and predictable:
  * Newly Cataloged Item and Newest Items by Shelving Location carousels are ordered from most recently cataloged to least recently cataloged.
  * Recently Returned Item carousels is ordered is from most recently returned to least recently returned.
  * Top Circulated Items carousels is ordered is from most circulated to least circulated.
- * Manual carousels (as of now, without the ability to adjust the Position of items) are in the order they are added to the backing bucket.
+ * Manual carousels (as of now, without the ability to adjust the position of items) are in the order they are added to the backing bucket.
   ** Emptying and refilling the bucket allows reordering.
 
 
@@ -491,7 +491,7 @@ the standard organizational unit hierarchy.
 
 Use case examples include creating a group of law or science
 libraries within a university consortium, or grouping all school
-libraries together within a mixed school/public library.
+libraries together within a mixed school/public library consortium.
 
 Searches can be restricted to a particular Library Group from the
 library selector in the public catalog basic search page and from
@@ -630,7 +630,7 @@ Miscellaneous
 * The 'Create Reservation' form in the Booking module now includes
   an option to search for the patron by attributes other than just
   their barcode.
-* The form to add a user to a course now includes an option to search
+* The form to add a user to a Course now includes an option to search
   for the patron by attributes other than just their barcode.
 * For consistency with the menu action Cataloging => Retrieve Record by
   TCN Value, the staff catalog Numeric Search => TCN search now includes
@@ -654,18 +654,31 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-TODO
+* BC Libraries Cooperative
+* Community Library (Sunbury)
+* Consortium of Ohio Libraries (COOL)
+* Evergreen Community Development Initiative
+* Evergreen Indiana
+* Georgia PINES
+* Linn-Benton Community College
+* Pennsylvania Integrated Library System (PaILS)
+
 
 We would also like to thank the following individuals who contributed
-code, translations, documentations patches and tests to this release of
+code, translations, documentation, patches, and tests to this release of
 Evergreen:
 
+* Felicia Beaudry
+* Galen Charlton
+* Jason Etheridge
+* Andrea Buntz Neiman
+* Mike Rylander
 * Carmen Oleskevich
 
 We also thank the following organizations whose employees contributed
 patches:
 
-TODO
+* Equinox Open Library Initiative
 
 We regret any omissions.  If a contributor has been inadvertently
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
