@@ -6,6 +6,50 @@ Evergreen 3.7-beta Release Notes
 Upgrade notes
 -------------
 
+New Permissions
++++++++++++++++
+
+* Administer geographic location services (`ADMIN_GEOLOCATION_SERVICES`)
+* Administer library groups (`ADMIN_LIBRARY_GROUPS`)
+* Manage batch (subscription) hold events (`MANAGE_HOLD_GROUPS`)
+* Modify patron SSO settings (`SSO_ADMIN`)
+* View geographic location services (`VIEW_GEOLOCATION_SERVICES`)
+
+New Global Flags
+++++++++++++++++
+
+* Block the ability of expired user with the STAFF_LOGIN permission to log into Evergreen (`auth.block_expired_staff_login`)
+* Offer use of geographic location services in the public catalog (`opac.use_geolocation`)
+
+New Internal Flags
+++++++++++++++++++
+
+* Maximum search result count at which spelling suggestions may be offered (`opac.did_you_mean.low_result_threshold`)
+
+New Library Settings
+++++++++++++++++++++
+
+* Allow both Shibboleth and native OPAC authentication (`opac.login.shib_sso.allow_native`)
+* Allow renewal request if renewal recipient privileges have expired (`circ.renew.expired_patron_allow`)
+* Enable Holdings Sort by Geographic Proximity ('opac.holdings_sort_by_geographic_proximity`)
+* Enable Shibboleth SSO for the OPAC (`opac.login.shib_sso.enable`)
+* Evergreen SSO matchpoint (`opac.login.shib_sso.evergreen_matchpoint`)
+* Geographic Location Service to use for Addresses (`opac.geographic_location_service_for_address`)
+* Keyboard distance score weighting in OPAC spelling suggestions (`search.symspell.keyboard_distance.weight`)
+* Log out of the Shibboleth IdP (`opac.login.shib_sso.logout`)
+* Minimum required uses of a spelling suggestions that may be offered (`search.symspell.min_suggestion_use_threshold`)
+* Pg_trgm score weighting in OPAC spelling suggestions (`search.symspell.pg_trgm.weight`)
+* Randomize group hold order (`holds.subscription.randomize`)
+* Shibboleth SSO Entity ID (`opac.login.shib_sso.entityId`)
+* Shibboleth SSO matchpoint (`opac.login.shib_sso.shib_matchpoint`)
+* Show Geographic Proximity in Miles (`opac.geographic_proximity_in_miles`)
+* Soundex score weighting in OPAC spelling suggestions (`search.symspell.soundex.weight`)
+
+New Stock Action/Trigger Event Definitions
+++++++++++++++++++++++++++++++++++++++++++
+
+* Hold Group Hold Placed for Patron Email Notification
+
 New Features
 ------------
 
