@@ -1,3 +1,246 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit df79455022f61f862a4b0781d1c3f18490573852
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Mar 31 16:25:00 2021 -0400
+
+    Updating upgrade docs for 3.5.4.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+17	16	docs/installation/server_upgrade.adoc
+
+commit 7727fb8a67266888ff98bc076b7bc3f0ce32b199
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Mar 31 16:24:54 2021 -0400
+
+    Bumping Perl version string for 3.5.4
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit d17e717fa8fafff52f6000e7b660c229ed3c8500
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Mar 31 11:56:56 2021 -0700
+
+    Docs: 3.5.4 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+75	0	docs/RELEASE_NOTES_3_5.adoc
+
+commit 458f5a0f5cf587a62c0526567ba1354b0967a1d1
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Nov 9 15:17:07 2020 -0800
+
+    LP#1902965: change format type in XML transform to avoid XSS in SuperCat
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/xsl/MARC21slim2ATOM.xsl
+
+commit 0126414321a6ba675122af68959f9664aacfc90c
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Nov 9 13:59:59 2020 -0800
+
+    LP#1902965: HTML filter on OPAC search results and record display
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	Open-ILS/src/templates/opac/parts/record/body.tt2
+6	1	Open-ILS/src/templates/opac/parts/record/contents.tt2
+2	1	Open-ILS/src/templates/opac/parts/record/series.tt2
+1	1	Open-ILS/src/templates/opac/parts/record/subjects.tt2
+30	18	Open-ILS/src/templates/opac/parts/record/summary.tt2
+8	8	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 60bb75c1a2e5a5619f19442efd7503c1ea2ced06
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 31 14:34:32 2021 -0400
+
+    LP#1896840: (follow-up) update script to include the DB rev
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/1258.data.publisher-264.sql
+
+commit ff28e3b37cb6d178bffd7ff533739b596e11efa4
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Feb 10 11:51:55 2021 -0800
+
+    LP1873322: Angular Admin Pages default to workstation OU
+    
+    To test:
+    
+    1) Apply this patch.
+    2) Log in using a workstation at a particular org unit.
+    3) Open some of the following admin pages:
+    
+    Local Admin > Address Alerts
+    Local Admin > Carousels
+    Local Admin > Group Penalty Thresholds
+    Local Admin > Course Reserves List > Terms Tab
+    Server Admin > Billing Types
+    Server Admin > Call Number/Volume Suffixes
+    Server Admin > Copy Tags
+    Server Admin > Hard Due Date Configuration
+    Acquisitions Admin > Cancel Reason Configuration
+    Acquisitions Admin > Claim Policies
+    Booking Admin > Resource Types
+    Booking Admin > Resource Attribute Values
+    
+    4) Verify that these pages automatically open to your
+    workstation's org unit.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+
+commit c86dab193165483454ceadf4c72b3de53bfddd08
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Wed Mar 3 17:11:44 2021 -0500
+
+    LP#1915323 Angular Staff Client Hamburger Menu Clipped Off Screen
+    
+    Aligns navbar corner dropdown menu to the right to prevent it
+    from clipping off-screen.
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/eg2/src/app/staff/nav.component.html
+
+commit 4e9348094b39f921e842937ba39a3d75abf74591
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Mar 16 15:29:36 2021 -0700
+
+    LP#1917804: only show MARC 500 data in the General Note field
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+0	1	Open-ILS/src/templates/opac/parts/record/contents.tt2
+
+commit 38171526c80814cb8058d9bde314a69031f8fe8a
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Mar 16 13:19:09 2021 -0700
+
+    Stamping upgrade script
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+0	0	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.publisher-264.sql => 1258.data.publisher-264.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.publisher-264.sql => 1258.data.publisher-264.sql} (100%)
+
+commit 93cb90fe843a7131b2876cfa48a5435e9e3849cb
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Sep 24 11:46:58 2020 -0400
+
+    LP1896840 Publisher display includes 264 tag
+    
+    The stock Publisher display field now extracts data from 260 OR 264
+    tags, whichever has a value first.
+    
+    Release notes included with upgrade instructions.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.publisher-264.sql
+24	0	docs/RELEASE_NOTES_NEXT/Cataloging/publisher-display-264.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.publisher-264.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/publisher-display-264.adoc
+
+commit 328c5cc3f31091989409badec7a6810de2adbe03
+Author: Jason Boyer <JBoyer@EquinoxInitiative.org>
+Date:   Fri Mar 12 14:10:19 2021 -0500
+
+    Revert the effects of both LP1687545 and LP1914116
+    
+    Revert "LP1687545: Force TT CGI plugin to use ampersands in query strings"
+    and "LP1914116: Apply html filter to mkurl() output"
+    until a fix for LP1918470 is available.
+    
+    Signed-off-by: Jason Boyer <JBoyer@EquinoxInitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGWeb/CGI_utf8.pm
+3	3	Open-ILS/src/templates/opac/parts/header.tt2
+
+commit cbe475054e96acb209410fbf768fbd22cccd496c
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Thu Feb 25 16:51:01 2021 -0500
+
+    LP1899405 - Add Part column to item table in Angular Catalog
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	0	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.html
+
+commit 9e12b8461e9242963bc3b02837d0e0cf9f40686a
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Mar 2 09:22:55 2021 -0500
+
+    Lp 1703658: Stamp DB Upgrade
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.dont_get_the_gist.sql => 1248.schema.convert_gist_to_gin.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.dont_get_the_gist.sql => 1248.schema.convert_gist_to_gin.sql} (98%)
+
+commit 1e334691ef74bc9eb3940eae599acc9bf0af9b00
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Feb 25 15:00:02 2021 -0500
+
+    Lp 1703658: Repair DB Upgrade
+    
+    Remove an errant semicolon in the db upgrade script.
+    
+    Add release notes.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/XXXX.data.dont_get_the_gist.sql
+43	0	docs/RELEASE_NOTES_NEXT/Architecture/GIST_to_GIN_indexes_FTS.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Architecture/GIST_to_GIN_indexes_FTS.adoc
+
+commit 99e86eea62f8f3b6b4f9078753d66a75ad6a0dc0
+Author: Jason Boyer <JBoyer@EquinoxInitiative.org>
+Date:   Thu Feb 25 10:06:38 2021 -0500
+
+    LP1703658: Convert GIST Indexes to GIN
+    
+    Rather than suggest that sites experiencing search speed issues
+    do this conversion on demand just knock it out from the start.
+    
+    Signed-off-by: Jason Boyer <JBoyer@EquinoxInitiative.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+2	2	Open-ILS/src/sql/Pg/011.schema.authority.sql
+14	14	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+91	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.dont_get_the_gist.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.dont_get_the_gist.sql
+
+commit 16fe720a8754128ccbe64799248aaa637f47dc3d
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Feb 17 17:01:29 2021 -0500
+
+    Forward Port 3.5.2 to 3.5.3 db upgrade
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+22	0	Open-ILS/src/sql/Pg/version-upgrade/3.5.2-3.5.3-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.5.2-3.5.3-upgrade-db.sql
