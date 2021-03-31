@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1258', :eg_version);
 
 UPDATE config.metabib_field 
 SET xpath =  '//*[@tag=''260'' or @tag=''264''][1]'
