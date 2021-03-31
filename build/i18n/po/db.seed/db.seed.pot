@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2020-11-24 09:06:00-0400\n"
+"POT-Creation-Date: 2021-03-31 15:59:38-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11260,6 +11260,13 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
+# id::cgf.label__auth.block_expired_staff_login
+#: 950.data.seed-values.sql:21257
+msgid ""
+"Block the ability of expired user with the STAFF_LOGIN permission to log "
+"into Evergreen."
+msgstr ""
+
 # id::ppl.description__314
 #: 950.data.seed-values.sql:1331
 msgid "DELETE_IMPORT_ITEM"
@@ -16729,6 +16736,11 @@ msgstr ""
 # id::ccvm.value__289
 #: 950.data.seed-values.sql:7264
 msgid "Manobo languages"
+msgstr ""
+
+# id::cwst.label__eg.orgselect.catalog.holdings
+#: 950.data.seed-values.sql:21245
+msgid "Default org unit for catalog holdings tab"
 msgstr ""
 
 # id::cuat.label__29
