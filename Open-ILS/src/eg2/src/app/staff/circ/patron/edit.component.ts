@@ -1,5 +1,6 @@
 import {Component, OnInit, AfterViewInit, Input, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {empty, from} from 'rxjs';
 import {concatMap, tap} from 'rxjs/operators';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
@@ -21,6 +22,7 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {EditToolbarComponent, VisibilityLevel} from './edit-toolbar.component';
 import {PatronSearchFieldSet} from '@eg/staff/share/patron/search.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
+import {HoldNotifyUpdateDialogComponent} from './hold-notify-update.component';
 
 const COMMON_USER_SETTING_TYPES = [
   'circ.holds_behind_desk',
@@ -28,7 +30,7 @@ const COMMON_USER_SETTING_TYPES = [
   'opac.hold_notify',
   'opac.default_phone',
   'opac.default_pickup_location',
-  'opac.default_sms_carrier',
+  'opac.default_sms_carrier_id',
   'opac.default_sms_notify'
 ];
 
@@ -122,6 +124,8 @@ export class EditComponent implements OnInit, AfterViewInit {
         private profileSelect: ProfileSelectComponent;
     @ViewChild('secondaryGroupsDialog')
         private secondaryGroupsDialog: SecondaryGroupsDialogComponent;
+    @ViewChild('holdNotifyUpdateDialog')
+        private holdNotifyUpdateDialog: HoldNotifyUpdateDialogComponent;
     @ViewChild('addrAlert') private addrAlert: AlertDialogComponent;
     @ViewChild('addrRequiredAlert')
         private addrRequiredAlert: AlertDialogComponent;
@@ -159,6 +163,18 @@ export class EditComponent implements OnInit, AfterViewInit {
     };
 
     fieldVisibility: {[key: string]: FieldVisibility} = {};
+
+    holdNotifyValues = {
+        day_phone: null,
+        other_phone: null,
+        evening_phone: null,
+        default_phone: null,
+        default_sms: null,
+        default_sms_carrier_id: null,
+        phone_notify: false,
+        email_notify: false,
+        sms_notify: false
+    };
 
     // All locations we have the specified permissions
     permOrgs: {[name: string]: number[]};
@@ -348,7 +364,6 @@ export class EditComponent implements OnInit, AfterViewInit {
                 this.fieldDoc[doc.fm_class()] = {};
             }
             this.fieldDoc[doc.fm_class()][doc.field()] = doc.string();
-            console.log(this.fieldDoc);
         })).toPromise();
     }
 
@@ -495,28 +510,49 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
 
     absorbPatronData() {
+
+        const usets = this.userSettings;
+        let setting;
+
+        this.holdNotifyValues.day_phone = this.patron.day_phone();
+        this.holdNotifyValues.other_phone = this.patron.other_phone();
+        this.holdNotifyValues.evening_phone = this.patron.evening_phone();
+
         this.patron.settings().forEach(setting => {
             const value = setting.value();
             if (value !== '' && value !== null) {
-                this.userSettings[setting.name()] = JSON.parse(value);
+                usets[setting.name()] = JSON.parse(value);
             }
         });
 
-        const holdNotify = this.userSettings['opac.hold_notify'];
+        const holdNotify = usets['opac.hold_notify'];
+
         if (holdNotify) {
-            this.holdNotifyTypes.email = holdNotify.match(/email/) !== null;
-            this.holdNotifyTypes.phone = holdNotify.match(/phone/) !== null;
-            this.holdNotifyTypes.sms = holdNotify.match(/sms/) !== null;
+            this.holdNotifyTypes.email = this.holdNotifyValues.email_notify
+                = holdNotify.match(/email/) !== null;
+
+            this.holdNotifyTypes.phone = this.holdNotifyValues.phone_notify
+                = holdNotify.match(/phone/) !== null;
+
+            this.holdNotifyTypes.sms = this.holdNotifyValues.sms_notify
+                = holdNotify.match(/sms/) !== null;
         }
 
-        if (this.userSettings['opac.default_sms_carrier']) {
-            this.userSettings['opac.default_sms_carrier'] =
-                Number(this.userSettings['opac.default_sms_carrier']);
+        if (setting = usets['opac.default_sms_carrier_id']) {
+            setting = usets['opac.default_sms_carrier_id'] = Number(setting);
+            this.holdNotifyValues.default_sms_carrier_id = setting;
         }
 
-        if (this.userSettings['opac.default_pickup_location']) {
-            this.userSettings['opac.default_pickup_location'] =
-                Number(this.userSettings['opac.default_pickup_location']);
+        if (setting = usets['opac.default_phone']) {
+            this.holdNotifyValues.default_phone = setting;
+        }
+
+        if (setting = usets['opac.default_sms_notify']) {
+            this.holdNotifyValues.default_sms = setting;
+        }
+
+        if (setting = usets['opac.default_pickup_location']) {
+            usets['opac.default_pickup_location'] = Number(setting);
         }
 
         this.expireDate = new Date(this.patron.expire_date());
@@ -573,6 +609,8 @@ export class EditComponent implements OnInit, AfterViewInit {
 
         this.patron = patron;
     }
+
+
 
     objectFromPath(path: string, index: number): IdlObject {
         const base = path ? this.patron[path]() : this.patron;
@@ -648,15 +686,6 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     userSettingChange(name: string, value: any) {
         this.userSettings[name] = value;
-
-        switch (name) {
-            case 'opac.default_phone':
-            case 'opac.default_sms_notify':
-            case 'opac.default_sms_carrier':
-                // TODO hold related contact info updated
-                break;
-        }
-
         this.adjustSaveSate();
     }
 
@@ -776,7 +805,6 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     handlePhoneChange(field: string, value: string) {
         this.dupeValueChange(field, value);
-        // TODO: hold contact info stuff
 
         const pwUsePhone =
             this.context.settingsCache['patron.password.use_phone'];
@@ -1167,6 +1195,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         this.loading = true;
         return this.saveUser()
         .then(_ => this.saveUserSettings())
+        .then(_ => this.updateHoldPrefs())
         .then(_ => this.postSaveRedirect());
     }
 
@@ -1235,6 +1264,66 @@ export class EditComponent implements OnInit, AfterViewInit {
             this.auth.token(), this.modifiedPatron.id(), settings
         ).toPromise();
     }
+
+
+    updateHoldPrefs(): Promise<any> {
+        if (this.patron.isnew()) { return Promise.resolve(); }
+
+        return this.collectHoldNotifyChange()
+        .then(mods => {
+            if (mods.length === 0) { return Promise.resolve(); }
+
+            this.holdNotifyUpdateDialog.smsCarriers = this.smsCarriers;
+            this.holdNotifyUpdateDialog.mods = mods;
+
+            return this.holdNotifyUpdateDialog.open().toPromise();
+        });
+    }
+
+    // Compare current values with those collected at patron load time.
+    // For any that have changed, ask the server if the original values
+    // are used on active holds.
+    collectHoldNotifyChange(): Promise<any[]> {
+        const mods = [];
+        const holdNotify = this.userSettings['opac.hold_notify'] || '';
+
+        return from(Object.keys(this.holdNotifyValues))
+        .pipe(concatMap(field => {
+
+            let newValue, matches;
+
+            if (field.match(/default_/)) {
+                newValue = this.userSettings[`opac.${field}`] || null;
+
+            } else if (field.match(/_phone/)) {
+                newValue = this.patron[field]();
+
+            } else if (matches = field.match(/(\w+)_notify/)) {
+                newValue = this.userSettings['opac.hold_notify'].match(matches[1]) !== null;
+            }
+
+            const oldValue = this.holdNotifyValues[field];
+
+            // No change to apply?
+            if (newValue === oldValue) { return empty(); }
+
+            return this.net.request(
+                'open-ils.circ',
+                'open-ils.circ.holds.retrieve_by_notify_staff',
+                this.auth.token(), this.patronId, newValue, field
+            ).pipe(tap(holds => {
+                if (holds && holds.length > 0) {
+                    mods.push({
+                        field: field,
+                        newValue: newValue,
+                        oldValue: oldValue,
+                        holds: holds
+                    });
+                };
+            }));
+        })).toPromise().then(_ => mods);
+    }
+
 
     printPatron() {
         // TODO

@@ -1,0 +1,44 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Update Hold Notification Info?</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row mt-2" *ngFor="let mod of mods">
+      <div class="col-lg-12">
+
+        <!-- TODO pref change wording -->
+
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" 
+            id="{{mod.field}}-checkbox" [(ngModel)]="selected[mod.field]"/>
+          <label class="form-check-label" for="{{mod.field}}-checkbox">
+            <ng-container *ngIf="isCarrierChange(mod)" i18n>
+              A carrier other than "{{carrierName(mod.oldValue)}}" 
+              is currently used in {{mod.holds.length}} hold(s). 
+              Update to "{{carrierName(mod.newValue)}}"?
+            </ng-container>
+            <ng-container *ngIf="isBoolChange(mod)" i18n>
+              {{mod.holds.length}} hold(s) have it set to 
+              <eg-bool [value]="mod.oldValue"></eg-bool>.
+              Update to <eg-bool [value]="mod.newValue"></eg-bool>.
+            </ng-container>
+            <ng-container *ngIf="isPhoneChange(mod)" i18n>
+              {{mod.oldValue}} is used for {{mod.holds.length}} hold(s).
+              Update to {{mod.newValue}}?
+            </ng-container>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success"
+      (click)="applyChanges()" i18n>Apply Changes</button>
+    <button type="button" class="btn btn-warning"
+      (click)="close()" i18n>Cancel</button>
+  </div>
+</ng-template>
