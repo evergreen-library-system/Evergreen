@@ -23,6 +23,7 @@ import {EditToolbarComponent, VisibilityLevel} from './edit-toolbar.component';
 import {PatronSearchFieldSet} from '@eg/staff/share/patron/search.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {HoldNotifyUpdateDialogComponent} from './hold-notify-update.component';
+import {BroadcastService} from '@eg/share/util/broadcast.service';
 
 const COMMON_USER_SETTING_TYPES = [
   'circ.holds_behind_desk',
@@ -190,6 +191,7 @@ export class EditComponent implements OnInit, AfterViewInit {
     fieldDoc: {[cls: string]: {[field: string]: string}} = {};
 
     constructor(
+        private router: Router,
         private org: OrgService,
         private net: NetService,
         private auth: AuthService,
@@ -200,6 +202,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         private perms: PermService,
         private evt: EventService,
         private serverStore: ServerStoreService,
+        private broadcaster: BroadcastService,
         private patronService: PatronService,
         public context: PatronContextService
     ) {}
@@ -312,27 +315,28 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
 
     copyStageData() {
-        const cuser = this.stageUser;
-        const user = this.patron;
+        const stageData = this.stageUser;
+        const patron = this.patron;
 
         for (let key in this.idl.classes.stgu.field_map) {
             const field = this.idl.classes.au.field_map[key];
             if (field && !field.virtual) {
-                const value = cuser.user[key]();
+                const value = stageData.user[key]();
                 if (value !== null) {
-                    user[key] = value;
+                    patron[key](value);
                 }
             }
         };
 
         // Clear the usrname if it looks like a UUID
-        if (user.usrname().replace(/-/g,'').match(/[0-9a-f]{32}/)) {
-            user.usrname('');
+        if (patron.usrname().replace(/-/g,'').match(/[0-9a-f]{32}/)) {
+            patron.usrname('');
         }
 
         // Don't use stub address if we have one from the staged user.
-        if (cuser.mailing_addresses().length || cuser.billing_addresses().length) {
-            user.addresses([]);
+        if (stageData.mailing_addresses.length > 0
+            || stageData.billing_addresses.length > 0) {
+            patron.addresses([]);
         }
 
         const addrFromStage = (stageAddr: IdlObject) => {
@@ -345,16 +349,8 @@ export class EditComponent implements OnInit, AfterViewInit {
             addr.id(this.autoId--);
             addr.valid('t');
 
-            return this.strings.interpolate('circ.patron.edit.default_addr_type')
+            this.strings.interpolate('circ.patron.edit.default_addr_type')
             .then(msg => addr.address_type(msg));
-
-            if (cls === 'stgma') {
-                user.mailing_address(addr);
-            } else {
-                user.billing_address(addr);
-            }
-
-            user.addresses.push(addr);
 
             for (let key in this.idl.classes[cls].field_map) {
                 const field = this.idl.classes.aua.field_map[key];
@@ -365,32 +361,40 @@ export class EditComponent implements OnInit, AfterViewInit {
                     }
                 }
             }
-        }
 
-        addrFromStage(cuser.mailing_addresses[0]);
-        addrFromStage(cuser.billing_addresses[0]);
+            patron.addresses().push(addr);
 
-        if (user.addresses().length == 1) {
-            // Only one address, use it for both purposes.
-            const addr = user.addresses[0];
-            user.mailing_address(addr);
-            user.billing_address(addr);
-        }
-
-        if (cuser.cards[0]) {
-            const card = this.idl.create('ac');
-            card.isnew(true);
-            card.id(this.autoId--);
-            card.barcode(cuser.cards[0].barcode());
-            user.card(card);
-            user.cards([card]);
-
-            if (!user.usrname()) {
-                user.usrname(card.barcode());
+            if (cls === 'stgma') {
+                patron.mailing_address(addr);
+            } else {
+                patron.billing_address(addr);
             }
         }
 
-        cuser.settings.forEach(setting => {
+        addrFromStage(stageData.mailing_addresses[0]);
+        addrFromStage(stageData.billing_addresses[0]);
+
+        if (patron.addresses().length == 1) {
+            // Only one address, use it for both purposes.
+            const addr = patron.addresses()[0];
+            patron.mailing_address(addr);
+            patron.billing_address(addr);
+        }
+
+        if (stageData.cards[0]) {
+            const card = this.idl.create('ac');
+            card.isnew(true);
+            card.id(this.autoId--);
+            card.barcode(stageData.cards[0].barcode());
+            patron.card(card);
+            patron.cards([card]);
+
+            if (!patron.usrname()) {
+                patron.usrname(card.barcode());
+            }
+        }
+
+        stageData.settings.forEach(setting => {
             this.userSettings[setting.setting()] = Boolean(setting.value());
         });
     }
@@ -1312,10 +1316,23 @@ export class EditComponent implements OnInit, AfterViewInit {
         return this.saveUser()
         .then(_ => this.saveUserSettings())
         .then(_ => this.updateHoldPrefs())
+        .then(_ => this.removeStagedUser())
         .then(_ => this.postSaveRedirect());
     }
 
     postSaveRedirect() {
+
+        if (this.stageUser) {
+            this.broadcaster.broadcast('eg.pending_usr.update',
+                {usr: this.idl.toHash(this.modifiedPatron)});
+
+            // Typically, this window is opened as a new tab from the
+            // pending users interface. Once we're done, just close the
+            // window.
+            window.close();
+            return;
+        }
+
         window.location.href = window.location.href;
     }
 
@@ -1462,6 +1479,16 @@ export class EditComponent implements OnInit, AfterViewInit {
         })).toPromise().then(_ => mods);
     }
 
+    removeStagedUser(): Promise<any> {
+        if (!this.stageUser) { return Promise.resolve(); }
+
+        return this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.stage.delete',
+            this.auth.token(),
+            this.stageUser.user.row_id()
+        ).toPromise();
+    }
 
     printPatron() {
         // TODO
