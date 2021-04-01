@@ -46,5 +46,7 @@ SELECT auditor.create_auditor ( 'acq', 'invoice_item' );
 
 SELECT auditor.create_auditor ( 'acq', 'invoice_entry' );
 
+SELECT auditor.create_auditor ( 'acq', 'fund_debit' );
+
 COMMIT;
 
