@@ -242,7 +242,7 @@ broad strokes, the process includes:
   metadata", where an XML file from the IdP is copied into place on your
   Evergreen server)
   * Understanding what attributes the IdP will provide about your users,
-  describing those in the `attribute-map.xml` file.
+  and describing them in the `attribute-map.xml` file.
 . Providing your Entity ID, information about possible bindings, and any
 other requested information to the IdP administrator.  Much of this information
 will be available at http://YOUR_EVERGREEN_DOMAIN/Shibboleth.sso/Metadata
@@ -374,7 +374,7 @@ Removal of Custom Dojo Build
 
 Evergreen had a
 https://wiki.evergreen-ils.org/doku.php?id=scratchpad:random_magic_spells#custom_dojo_build[method
-of making a custom build of the Dojo JavaScript library].  Followiing
+of making a custom build of the Dojo JavaScript library].  Following
 this procedure could improve the load times for the OPAC and other
 interfaces that use Dojo.  However, very few sites took advantage of
 this process or even knew of its existence.
@@ -722,7 +722,7 @@ The Bootstrap OPAC does not have a homesearch logo icon as it is added in the ba
 Easier TPAC Customization via colors.tt2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Twelve new colors for TPAC have been added to the colors.tt2 file as well as 
-having coresponding changes to the style.css.tt2 file. These use 
+having corresponding changes to the style.css.tt2 file. These use 
 descriptive rather than abstract names. These changes help avoid 
 situations were unreadable values are placed on top of each other 
 and where different values are wanted for elements that only refernece 
