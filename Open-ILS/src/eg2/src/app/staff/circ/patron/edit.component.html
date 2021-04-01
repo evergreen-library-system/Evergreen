@@ -145,7 +145,7 @@
 </ng-template>
 
 
-<ng-template #userSettingsInputRow let-args="args">
+<ng-template #userSettingInputRow let-args="args">
   <div class="row pt-1 pb-1 mt-1">
     <ng-container *ngTemplateOutlet="userSettingLabel; context: {args: args}">
     </ng-container>
@@ -483,7 +483,7 @@
     <div class="m-auto font-weight-bold" i18n>User Settings</div>
   </div>
 
-  <ng-container *ngTemplateOutlet="userSettingsInputRow; context: 
+  <ng-container *ngTemplateOutlet="userSettingInputRow; context: 
     {args: {settingName: 'opac.default_phone'}}">
   </ng-container>
 
@@ -533,7 +533,7 @@
       <ng-container *ngTemplateOutlet="userSettingLabel; 
         context: {args: {settingName: 'opac.default_sms_notify'}}">
       </ng-container>
-      <ng-container *ngTemplateOutlet="userSettingsInput;
+      <ng-container *ngTemplateOutlet="userSettingInput;
         context: {args: {settingName: 'opac.default_sms_notify'}}">
       </ng-container>
       <div class="col-lg-6">

@@ -30,7 +30,7 @@ const COMMON_USER_SETTING_TYPES = [
   'opac.hold_notify',
   'opac.default_phone',
   'opac.default_pickup_location',
-  'opac.default_sms_carrier_id',
+  'opac.default_sms_carrier',
   'opac.default_sms_notify'
 ];
 
@@ -170,7 +170,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         evening_phone: null,
         default_phone: null,
         default_sms: null,
-        default_sms_carrier_id: null,
+        default_sms_carrier: null,
         phone_notify: false,
         email_notify: false,
         sms_notify: false
@@ -538,9 +538,9 @@ export class EditComponent implements OnInit, AfterViewInit {
                 = holdNotify.match(/sms/) !== null;
         }
 
-        if (setting = usets['opac.default_sms_carrier_id']) {
-            setting = usets['opac.default_sms_carrier_id'] = Number(setting);
-            this.holdNotifyValues.default_sms_carrier_id = setting;
+        if (setting = usets['opac.default_sms_carrier']) {
+            setting = usets['opac.default_sms_carrier'] = Number(setting);
+            this.holdNotifyValues.default_sms_carrier = setting;
         }
 
         if (setting = usets['opac.default_phone']) {
@@ -1242,6 +1242,17 @@ export class EditComponent implements OnInit, AfterViewInit {
 
         let settings: any = {};
 
+        const holdMethods = [];
+
+        ['email', 'phone', 'sms'].forEach(method => {
+            if (this.holdNotifyTypes[method]) {
+                holdMethods.push(method);
+            }
+        });
+
+        this.userSettings['opac.hold_notify'] =
+            holdMethods.length > 0 ?  holdMethods.join(':') : null;
+
         if (this.patronId) {
             // Update all user editor setting values for existing
             // users regardless of whether a value changed.
@@ -1271,10 +1282,25 @@ export class EditComponent implements OnInit, AfterViewInit {
 
         return this.collectHoldNotifyChange()
         .then(mods => {
+
             if (mods.length === 0) { return Promise.resolve(); }
+
+            console.log('HOLD NOTIFY MODS', mods);
 
             this.holdNotifyUpdateDialog.smsCarriers = this.smsCarriers;
             this.holdNotifyUpdateDialog.mods = mods;
+
+            this.holdNotifyUpdateDialog.defaultSms =
+                this.userSettings['opac.default_sms_notify']
+                || this.holdNotifyValues.default_sms;
+
+            this.holdNotifyUpdateDialog.defaultPhone =
+                this.userSettings['opac.default_phone']
+                || this.holdNotifyValues.default_phone;
+
+            this.holdNotifyUpdateDialog.defaultCarrier =
+                this.userSettings['opac.default_sms_carrier']
+                || this.holdNotifyValues.default_sms_carrier;
 
             return this.holdNotifyUpdateDialog.open().toPromise();
         });
@@ -1307,10 +1333,15 @@ export class EditComponent implements OnInit, AfterViewInit {
             // No change to apply?
             if (newValue === oldValue) { return empty(); }
 
+            // API / user setting name mismatch
+            if (field.match(/carrier/)) { field += '_id'; }
+
+            const apiValue = field.match(/notify|carrier/) ? oldValue : newValue;
+
             return this.net.request(
                 'open-ils.circ',
                 'open-ils.circ.holds.retrieve_by_notify_staff',
-                this.auth.token(), this.patronId, newValue, field
+                this.auth.token(), this.patronId, apiValue, field
             ).pipe(tap(holds => {
                 if (holds && holds.length > 0) {
                     mods.push({

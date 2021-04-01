@@ -33,6 +33,9 @@ export class HoldNotifyUpdateDialogComponent
     // Values provided directly by our parent component
     smsCarriers: ComboboxEntry[];
     mods: HoldNotifyMod[] = [];
+    defaultSms: string;
+    defaultPhone: string;
+    defaultCarrier: number;
 
     selected: {[field: string]: boolean} = {};
 
