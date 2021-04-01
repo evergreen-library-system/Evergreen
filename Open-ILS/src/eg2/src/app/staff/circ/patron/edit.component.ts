@@ -155,6 +155,8 @@ export class EditComponent implements OnInit, AfterViewInit {
     dupeBarcode = false;
     dupeUsername = false;
     origUsername: string;
+    stageUser: IdlObject;
+    stageUserRequestor: IdlObject;
 
     fieldPatterns: {[cls: string]: {[field: string]: RegExp}} = {
         au: {},
@@ -217,6 +219,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         .then(_ => this.setSurveys())
         .then(_ => this.loadPatron())
         .then(_ => this.getCloneUser())
+        .then(_ => this.getStageUser())
         .then(_ => this.getSecondaryGroups())
         .then(_ => this.applyPerms())
         .then(_ => this.setEditProfiles())
@@ -276,6 +279,119 @@ export class EditComponent implements OnInit, AfterViewInit {
             const evt = this.evt.parse(cloneUser);
             if (evt) { return alert(evt); }
             this.copyCloneData(cloneUser);
+        });
+    }
+
+    getStageUser(): Promise<any> {
+        if (!this.stageUsername) { return Promise.resolve(); }
+
+        return this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.stage.retrieve.by_username',
+            this.auth.token(), this.stageUsername).toPromise()
+
+        .then(suser => {
+            const evt = this.evt.parse(suser);
+            if (evt) {
+                alert(evt);
+                return Promise.reject(evt);
+            } else {
+                this.stageUser = suser;
+            }
+        })
+        .then(_ => {
+
+            const requestor = this.stageUser.user.requesting_usr();
+            if (!requestor) return;
+
+            return this.pcrud.retrieve('au', requestor).toPromise();
+
+        })
+        .then(reqr => this.stageUserRequestor = reqr)
+        .then(_ => this.copyStageData());
+    }
+
+    copyStageData() {
+        const cuser = this.stageUser;
+        const user = this.patron;
+
+        for (let key in this.idl.classes.stgu.field_map) {
+            const field = this.idl.classes.au.field_map[key];
+            if (field && !field.virtual) {
+                const value = cuser.user[key]();
+                if (value !== null) {
+                    user[key] = value;
+                }
+            }
+        };
+
+        // Clear the usrname if it looks like a UUID
+        if (user.usrname().replace(/-/g,'').match(/[0-9a-f]{32}/)) {
+            user.usrname('');
+        }
+
+        // Don't use stub address if we have one from the staged user.
+        if (cuser.mailing_addresses().length || cuser.billing_addresses().length) {
+            user.addresses([]);
+        }
+
+        const addrFromStage = (stageAddr: IdlObject) => {
+            if (!stageAddr) { return; }
+
+            const cls = stageAddr.classname;
+            const addr = this.idl.create('aua');
+
+            addr.isnew(true);
+            addr.id(this.autoId--);
+            addr.valid('t');
+
+            return this.strings.interpolate('circ.patron.edit.default_addr_type')
+            .then(msg => addr.address_type(msg));
+
+            if (cls === 'stgma') {
+                user.mailing_address(addr);
+            } else {
+                user.billing_address(addr);
+            }
+
+            user.addresses.push(addr);
+
+            for (let key in this.idl.classes[cls].field_map) {
+                const field = this.idl.classes.aua.field_map[key];
+                if (field && !field.virtual) {
+                    const value = stageAddr[key]();
+                    if (value !== null) {
+                        addr[key](value);
+                    }
+                }
+            }
+        }
+
+        addrFromStage(cuser.mailing_addresses[0]);
+        addrFromStage(cuser.billing_addresses[0]);
+
+        if (user.addresses().length == 1) {
+            // Only one address, use it for both purposes.
+            const addr = user.addresses[0];
+            user.mailing_address(addr);
+            user.billing_address(addr);
+        }
+
+        if (cuser.cards[0]) {
+            const card = this.idl.create('ac');
+            card.isnew(true);
+            card.id(this.autoId--);
+            card.barcode(cuser.cards[0].barcode());
+            user.card(card);
+            user.cards([card]);
+
+            if (!user.usrname()) {
+                user.usrname(card.barcode());
+            }
+        }
+
+        cuser.settings.forEach(setting => {
+            this.userSettings[setting.setting()] = Boolean(setting.value());
         });
     }
 
