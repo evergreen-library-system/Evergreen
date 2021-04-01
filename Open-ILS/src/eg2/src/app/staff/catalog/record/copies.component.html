@@ -4,14 +4,16 @@
   {{copy.call_number_suffix_label}}
 </ng-template>
 
-<ng-template #barcodeTemplate let-copy="row">
+<ng-template #barcodeTemplate let-copy="row" let-context="userContext">
   <div>{{copy.barcode}}</div>
   <div>
-  <a class="pl-1" target="_blank" 
-    href="/eg/staff/cat/item/{{copy.id}}" i18n>View</a>
-  | 
-  <a class="pl-1" href="javascript:;"
-    (click)="openHoldingsEditor(copy.id)" i18n>Edit</a>
+    <a class="pl-1" target="_blank" 
+      href="/eg/staff/cat/item/{{copy.id}}" i18n>View</a>
+    <ng-container *ngIf="context.editable(copy)">
+      | 
+      <a class="pl-1" href="javascript:;"
+        (click)="openHoldingsEditor(copy.id)" i18n>Edit</a>
+    </ng-container>
   </div>
 </ng-template>
 
@@ -58,7 +60,7 @@
     <eg-grid-column i18n-label label="Part" path="part_label" name="monograph_part">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Barcode" name="barcode"
-      [cellTemplate]="barcodeTemplate">
+      [cellTemplate]="barcodeTemplate" [cellContext]="copyContext">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Shelving Location" path="copy_location">
     </eg-grid-column>
