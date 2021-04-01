@@ -9,6 +9,7 @@ import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {CourseService} from '@eg/staff/share/course.service';
+import {PermService} from '@eg/core/perm.service';
 
 @Component({
   selector: 'eg-catalog-copies',
@@ -19,6 +20,7 @@ export class CopiesComponent implements OnInit {
     recId: number;
     initDone = false;
     usingCourseModule = false;
+    editableCopyLibs: number[] = [];
     gridDataSource: GridDataSource;
     copyContext: any; // grid context
     @ViewChild('copyGrid', { static: true }) copyGrid: GridComponent;
@@ -41,7 +43,8 @@ export class CopiesComponent implements OnInit {
         private net: NetService,
         private org: OrgService,
         private staffCat: StaffCatalogService,
-        private broadcaster: BroadcastService
+        private broadcaster: BroadcastService,
+        private perm: PermService
     ) {
         this.gridDataSource = new GridDataSource();
     }
@@ -52,12 +55,23 @@ export class CopiesComponent implements OnInit {
             this.usingCourseModule = res;
         });
 
+        this.perm.hasWorkPermAt(['UPDATE_COPY'], true)
+            .then(result => {
+                this.editableCopyLibs = result.UPDATE_COPY as number[];
+            });
+
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
             // sorting not currently supported
             return this.fetchCopies(pager);
         };
 
         this.copyContext = {
+            editable: (copy: any) => {
+                return this.editableCopyLibs.some(lib => {
+                    return copy.circ_lib === lib
+                        || copy.call_number_owning_lib === lib;
+                });
+            },
             holdable: (copy: any) => {
                 return copy.holdable === 't'
                     && copy.location_holdable === 't'
