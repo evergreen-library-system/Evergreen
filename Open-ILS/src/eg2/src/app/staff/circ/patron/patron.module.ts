@@ -30,6 +30,7 @@ import {RegisterPatronComponent} from './register.component';
 import {SecondaryGroupsDialogComponent} from './secondary-groups.component';
 import {PatronBarcodesDialogComponent} from './barcodes.component';
 import {HoldNotifyUpdateDialogComponent} from './hold-notify-update.component';
+import {PatronMessagesComponent} from './messages.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import {HoldNotifyUpdateDialogComponent} from './hold-notify-update.component';
     BillsComponent,
     BillStatementComponent,
     TestPatronPasswordComponent,
+    PatronMessagesComponent,
     PatronSurveyResponsesComponent,
     PatronGroupComponent,
     RegisterPatronComponent,
