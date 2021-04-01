@@ -1285,18 +1285,9 @@ export class EditComponent implements OnInit, AfterViewInit {
 
             if (mods.length === 0) { return Promise.resolve(); }
 
-            console.log('HOLD NOTIFY MODS', mods);
-
-            this.holdNotifyUpdateDialog.smsCarriers = this.smsCarriers;
+            this.holdNotifyUpdateDialog.patronId = this.patronId;
             this.holdNotifyUpdateDialog.mods = mods;
-
-            this.holdNotifyUpdateDialog.defaultSms =
-                this.userSettings['opac.default_sms_notify']
-                || this.holdNotifyValues.default_sms;
-
-            this.holdNotifyUpdateDialog.defaultPhone =
-                this.userSettings['opac.default_phone']
-                || this.holdNotifyValues.default_phone;
+            this.holdNotifyUpdateDialog.smsCarriers = this.smsCarriers;
 
             this.holdNotifyUpdateDialog.defaultCarrier =
                 this.userSettings['opac.default_sms_carrier']

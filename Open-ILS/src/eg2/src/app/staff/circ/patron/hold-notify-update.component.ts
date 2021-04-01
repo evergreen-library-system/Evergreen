@@ -1,6 +1,6 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable, empty} from 'rxjs';
-import {switchMap, tap} from 'rxjs/operators';
+import {Observable, from, empty} from 'rxjs';
+import {filter, concatMap, switchMap, tap} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -31,13 +31,13 @@ export class HoldNotifyUpdateDialogComponent
     extends DialogComponent implements OnInit {
 
     // Values provided directly by our parent component
+    patronId: number;
     smsCarriers: ComboboxEntry[];
     mods: HoldNotifyMod[] = [];
-    defaultSms: string;
-    defaultPhone: string;
     defaultCarrier: number;
 
     selected: {[field: string]: boolean} = {};
+    loading = false;
 
     constructor(
         private modal: NgbModal,
@@ -49,9 +49,6 @@ export class HoldNotifyUpdateDialogComponent
         private org: OrgService,
         private auth: AuthService) {
         super(modal);
-    }
-
-    applyChanges() {
     }
 
     isPhoneChange(mod: HoldNotifyMod): boolean {
@@ -69,6 +66,39 @@ export class HoldNotifyUpdateDialogComponent
     carrierName(id: number): string {
         const entry = this.smsCarriers.filter(e => e.id === id)[0];
         return entry ? entry.label : '';
+    }
+
+    anySelected(): boolean {
+        return Object.values(this.selected).filter(v => v).length > 0;
+    }
+
+    applyChanges() {
+        this.loading = true;
+
+        from(Object.keys(this.selected))
+        .pipe(filter(field => this.selected[field] === true))
+        .pipe(concatMap(field => {
+
+            const mod = this.mods.filter(m => m.field === field)[0];
+            const holdIds = mod.holds.map(h => h.id);
+            const carrierId = mod.field === 'default_sms' ?  this.defaultCarrier : null;
+
+            return this.net.request(
+                'open-ils.circ',
+                'open-ils.circ.holds.batch_update_holds_by_notify_staff',
+                this.auth.token(), this.patronId, holdIds, mod.oldValue,
+                mod.newValue, mod.field, carrierId
+            );
+
+        }))
+        .subscribe(
+            resp => console.log('GOT', resp),
+            err => console.error(err),
+            () => {
+                this.loading = false;
+                this.close();
+            }
+        );
     }
 }
 

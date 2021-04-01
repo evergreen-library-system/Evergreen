@@ -11,16 +11,27 @@
       <div class="col-lg-12">
 
         <div [ngSwitch]="mod.field" class="mt-2 mb-2">
-          <span *ngSwitchCase="'phone_notify'">You have set Notify by Phone to</span>
-          <span *ngSwitchCase="'sms_notify'">You have set Notify by SMS to</span>
-          <span *ngSwitchCase="'email_notify'">You have set Notify by Email to</span>
-          <span *ngSwitchCase="'default_phone'">You have set Default Phone Number to</span>
-          <span *ngSwitchCase="'default_sms'">You have set Default SMS/Text Number to</span>
-          <eg-bool [value]="mod.newValue"></eg-bool>
-        </div>
-
-        <div class="mt-2 mb-2" *ngIf="mod.name == 'default_sms_carrier_id'">
-          You have set Default SMS Carrier to {{carrierName(mod.newValue)}}
+          <span *ngSwitchCase="'phone_notify'">
+            <span class="mr-2">You have set Notify by Phone to</span>
+            <eg-bool [value]="mod.newValue"></eg-bool>
+          </span>
+          <span *ngSwitchCase="'sms_notify'">
+            <span class="mr-2">You have set Notify by SMS to</span>
+            <eg-bool [value]="mod.newValue"></eg-bool>
+          </span>
+          <span *ngSwitchCase="'email_notify'">
+            <span class="mr-2">You have set Notify by Email to</span>
+            <eg-bool [value]="mod.newValue"></eg-bool>
+          </span>
+          <span *ngSwitchCase="'default_phone'">
+            You have set Default Phone Number to {{mod.newValue}}
+          </span>
+          <span *ngSwitchCase="'default_sms'">
+            You have set Default SMS/Text Number to {{mod.newValue}}
+          </span>
+          <span *ngSwitchCase="'default_sms_carrier_id'">
+            You have set Default SMS Carrier to {{carrierName(mod.newValue)}}
+          </span>
         </div>
 
         <div class="form-check form-check-inline">
@@ -47,9 +58,16 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success"
-      (click)="applyChanges()" i18n>Apply Changes</button>
-    <button type="button" class="btn btn-warning"
-      (click)="close()" i18n>Cancel</button>
+    <div *ngIf="loading">
+      <div class="col-lg-6 offset-lg-3">
+        <eg-progress-inline></eg-progress-inline>
+      </div>
+    </div>
+    <div *ngIf="!loading">
+      <button type="button" class="btn btn-success" [disabled]="!anySelected()"
+        (click)="applyChanges()" i18n>Apply Changes</button>
+      <button type="button" class="btn btn-warning ml-2"
+        (click)="close()" i18n>Cancel</button>
+    </div>
   </div>
 </ng-template>
