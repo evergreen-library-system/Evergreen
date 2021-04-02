@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1259', :eg_version);
 
 INSERT INTO action_trigger.environment (event_def,path)
 SELECT id,'items' from action_trigger.event_definition WHERE name='biblio.record_entry.print.full'
