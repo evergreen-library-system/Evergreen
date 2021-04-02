@@ -252,5 +252,5 @@ The retrieval APIs allow for anonymous access to permit Evergreen admins to crea
 
 === Cron Job ===
 
-The carousels feature includes a cronjob added to the example crontab to perform automatic carousel refreshes. It is implemented as a srfsh script that invokes open-ils.storage.carousel.refresh_all.
+The carousels feature includes a cronjob added to the example crontab to perform automatic carousel refreshes. It is implemented as a srfsh script named  `/openils/bin/refresh_carousels.srfsh` which will invoke `open-ils.storage.carousel.refresh_all`.
 
