@@ -198,8 +198,8 @@ Administration
 
 
 
-Single Sign On (Shibboleth) OPAC integration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Single Sign On (Shibboleth) Public Catalog integration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Evergreen OPAC can now be used as a Service Provider (SP) in a
 Single Sign On infrastructure.  This allows system administrators to
