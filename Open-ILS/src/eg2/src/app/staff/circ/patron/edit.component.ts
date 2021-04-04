@@ -1449,7 +1449,8 @@ export class EditComponent implements OnInit, AfterViewInit {
                 newValue = this.patron[field]();
 
             } else if (matches = field.match(/(\w+)_notify/)) {
-                newValue = this.userSettings['opac.hold_notify'].match(matches[1]) !== null;
+                const holdNotify = this.userSettings['opac.hold_notify'] || '';
+                newValue = holdNotify.match(matches[1]) !== null;
             }
 
             const oldValue = this.holdNotifyValues[field];
