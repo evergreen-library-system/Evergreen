@@ -42,7 +42,7 @@
   <div class="modal-footer">
     <ng-container>
       <button type="button" class="btn btn-success" 
-        [disabled]="leadAccount" (click)="merge()" i18n>Merge</button>
+        [disabled]="!leadAccount" (click)="merge()" i18n>Merge</button>
       <button type="button" class="btn btn-warning" 
         (click)="close()" i18n>Cancel</button>
     </ng-container>
