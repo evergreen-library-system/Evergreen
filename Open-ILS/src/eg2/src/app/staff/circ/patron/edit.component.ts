@@ -111,7 +111,7 @@ export class EditComponent implements OnInit, AfterViewInit {
             // patron tab is open.  Wait until we know it's defined.
             if (tb) {
                 tb.saveClicked.subscribe(_ => this.save());
-                tb.saveCloneClicked.subscribe(_ => this.saveClone());
+                tb.saveCloneClicked.subscribe(_ => this.save(true));
                 tb.printClicked.subscribe(_ => this.printPatron());
             }
         }
@@ -1308,7 +1308,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         return this.patron.addresses().filter(a => !a.isdeleted());
     }
 
-    save(): Promise<any> {
+    save(clone?: boolean): Promise<any> {
 
         // TODO clear unload prompt
 
@@ -1317,10 +1317,10 @@ export class EditComponent implements OnInit, AfterViewInit {
         .then(_ => this.saveUserSettings())
         .then(_ => this.updateHoldPrefs())
         .then(_ => this.removeStagedUser())
-        .then(_ => this.postSaveRedirect());
+        .then(_ => this.postSaveRedirect(clone));
     }
 
-    postSaveRedirect() {
+    postSaveRedirect(clone: boolean) {
 
         if (this.stageUser) {
             this.broadcaster.broadcast('eg.pending_usr.update',
@@ -1333,11 +1333,15 @@ export class EditComponent implements OnInit, AfterViewInit {
             return;
         }
 
-        window.location.href = window.location.href;
-    }
+        if (clone) {
+            this.context.patron = null;
+            this.router.navigate(
+                ['/staff/circ/patron/register/clone', this.modifiedPatron.id()]);
 
-    saveClone() {
-        // TODO
+        } else {
+            // Full refresh to force reload of modified patron data.
+            window.location.href = window.location.href;
+        }
     }
 
     // Resolves on success, rejects on error

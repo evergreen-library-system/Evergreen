@@ -105,6 +105,15 @@ export class PatronMessagesComponent implements OnInit {
         return [this.startDateYmd, endDate];
     }
 
+    dateChange(iso: string, start?: boolean) {
+        if (start) {
+            this.startDateYmd = iso;
+        } else {
+            this.endDateYmd = iso;
+        }
+        this.archiveGrid.reload();
+    }
+
     applyPenalty() {
     }
 }
