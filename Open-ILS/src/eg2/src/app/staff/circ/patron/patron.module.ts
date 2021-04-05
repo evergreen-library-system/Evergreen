@@ -12,7 +12,6 @@ import {PatronModule} from '@eg/staff/share/patron/patron.module';
 import {PatronContextService} from './patron.service';
 import {PatronComponent} from './patron.component';
 import {PatronAlertsComponent} from './alerts.component';
-import {SummaryComponent} from './summary.component';
 import {CheckoutComponent} from './checkout.component';
 import {HoldsComponent} from './holds.component';
 import {EditComponent} from './edit.component';
@@ -36,7 +35,6 @@ import {PatronMessagesComponent} from './messages.component';
   declarations: [
     PatronComponent,
     PatronAlertsComponent,
-    SummaryComponent,
     CheckoutComponent,
     HoldsComponent,
     EditComponent,

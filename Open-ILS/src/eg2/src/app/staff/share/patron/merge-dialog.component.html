@@ -1,0 +1,51 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title"><span i18n>Merge Patrons</span></h4>
+    <button type="button" class="close" 
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row" *ngIf="loading">
+      <div class="col-lg-6 offset-lg-3">
+        <eg-progress-inline></eg-progress-inline>
+      </div>
+    </div>
+    <div class="row" *ngIf="!loading">
+      <div class="col-lg-6">
+        <div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="lead" id="lead-record-1"
+							[value]="context1.patron.id()" [(ngModel)]="leadAccount">
+						<label class="form-check-label" for="lead-record-1">Use as Lead?</label>
+					</div>
+        </div>
+        <eg-patron-summary [patron]="context1.patron"
+          [stats]="context1.stats" [alerts]="context1.alerts">
+        </eg-patron-summary>  
+      </div>
+      <div class="col-lg-6">
+        <div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="lead" id="lead-record-2" 
+							[value]="context2.patron.id()" [(ngModel)]="leadAccount">
+						<label class="form-check-label" for="lead-record-2">Use as Lead?</label>
+					</div>
+        </div>
+        <eg-patron-summary [patron]="context2.patron"
+          [stats]="context2.stats" [alerts]="context2.alerts">
+        </eg-patron-summary>  
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <ng-container>
+      <button type="button" class="btn btn-success" 
+        [disabled]="leadAccount" (click)="merge()" i18n>Merge</button>
+      <button type="button" class="btn btn-warning" 
+        (click)="close()" i18n>Cancel</button>
+    </ng-container>
+  </div>
+</ng-template>
+

@@ -20,7 +20,9 @@
     <div class="col-lg-3">
       <div class="sticky-top-with-nav bg-white">
         <ng-container *ngIf="context.patron">
-          <eg-patron-summary></eg-patron-summary>
+          <eg-patron-summary [patron]="context.patron"
+            [stats]="context.patronStats" [alerts]="context.alerts">
+          </eg-patron-summary>
         </ng-container>
       </div>
     </div>

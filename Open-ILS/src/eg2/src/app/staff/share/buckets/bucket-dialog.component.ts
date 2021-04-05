@@ -10,6 +10,7 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {StringComponent} from '@eg/share/string/string.component'
 
 /**
  * Dialog for adding bib records to new and existing record buckets.
@@ -42,7 +43,8 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
     bucketFmClass: 'ccb' | 'ccnb' | 'cbreb' | 'cub';
     targetField: string;
 
-    @ViewChild('confirmAddToShared', {static: true}) confirmAddToShared: ConfirmDialogComponent;
+    @ViewChild('confirmAddToShared') confirmAddToShared: ConfirmDialogComponent;
+    @ViewChild('successString') successString: StringComponent;
 
     constructor(
         private modal: NgbModal, // required for passing to parent
@@ -196,6 +198,7 @@ export class BucketDialogComponent extends DialogComponent implements OnInit {
             if (evt) {
                 this.toast.danger(evt.toString());
             } else {
+                this.toast.success(this.successString.text);
                 this.close();
             }
         });

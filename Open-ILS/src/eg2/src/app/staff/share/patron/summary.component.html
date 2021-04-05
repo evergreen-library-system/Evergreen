@@ -1,12 +1,12 @@
 
 <div class="patron-summary-container">
 
-  <div class="row d-flex" *ngIf="patron()">
+  <div class="row d-flex">
     <div class="flex-1 pt-1">
       <h4 class="font-weight-bold" i18n>
-        {{patron().family_name()}}, 
-        {{patron().first_given_name()}} 
-        {{patron().second_given_name()}}
+        {{patron.family_name()}}, 
+        {{patron.first_given_name()}} 
+        {{patron.second_given_name()}}
       </h4>
     </div>
     <ng-container *ngIf="hasPrefName()">
@@ -17,23 +17,23 @@
   <div class="row d-flex border-top" *ngIf="hasPrefName()">
     <div class="flex-1 pt-1">
       <h4 class="font-weight-bold" i18n>
-        {{patronService.namePart(patron(), 'family_name')}}, 
-        {{patronService.namePart(patron(), 'first_given_name')}} 
-        {{patronService.namePart(patron(), 'second_given_name')}}
+        {{patronService.namePart(patron, 'family_name')}}, 
+        {{patronService.namePart(patron, 'first_given_name')}} 
+        {{patronService.namePart(patron, 'second_given_name')}}
       </h4>
     </div>
     <div class="mr-2 ml-2 text-info font-italic" i18n>preferred</div>
   </div>
 
   <div class="row mb-1 alert alert-danger p-0" 
-    *ngIf="context.alerts.accountExpiresSoon">
+    *ngIf="alerts.accountExpiresSoon">
     <div class="col-lg-12" i18n>
       Patron account will expire soon.  Please renew.
     </div>
   </div>
 
   <div class="row mb-1 alert alert-danger p-0" 
-    *ngFor="let pen of context.alerts.alertPenalties">
+    *ngFor="let pen of alerts.alertPenalties">
     <div class="col-lg-9"
       title="{{pen.standing_penalty().name()}}">
       {{pen.note() || pen.standing_penalty().label()}}
@@ -43,95 +43,95 @@
 
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Profile</div>
-    <div class="col-lg-7">{{patron().profile().name()}}</div>
+    <div class="col-lg-7">{{patron.profile().name()}}</div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Home Library</div>
-    <div class="col-lg-7">{{context.orgSn(patron().home_ou())}}</div>
+    <div class="col-lg-7">{{orgSn(patron.home_ou())}}</div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Net Access</div>
-    <div class="col-lg-7">{{patron().net_access_level().name()}}</div>
+    <div class="col-lg-7">{{patron.net_access_level().name()}}</div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Date of Birth</div>
-    <div class="col-lg-7">{{patron().dob() | date:'shortDate'}}</div>
+    <div class="col-lg-7">{{patron.dob() | date:'shortDate'}}</div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Parent/Guardian</div>
-    <div class="col-lg-7">{{patron().guardian()}}</div>
+    <div class="col-lg-7">{{patron.guardian()}}</div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Last Activity</div>
     <div class="col-lg-7">
-      <ng-container *ngIf="patron().usr_activity()[0]">
-        {{patron().usr_activity()[0].event_time() | date:'shortDate'}}
+      <ng-container *ngIf="patron.usr_activity()[0]">
+        {{patron.usr_activity()[0].event_time() | date:'shortDate'}}
       </ng-container>
     </div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Last Updated</div>
-    <div class="col-lg-7">{{patron().last_update_time() | date:'shortDate'}}</div>
+    <div class="col-lg-7">{{patron.last_update_time() | date:'shortDate'}}</div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Create Date</div>
-    <div class="col-lg-7">{{patron().create_date() | date:'shortDate'}}</div>
+    <div class="col-lg-7">{{patron.create_date() | date:'shortDate'}}</div>
   </div>
-  <div class="row" [ngClass]="{'alert alert-danger p-0': context.alerts.accountExpired}">
+  <div class="row" [ngClass]="{'alert alert-danger p-0': alerts.accountExpired}">
     <div class="col-lg-5" i18n>Expire Date</div>
-    <div class="col-lg-7">{{patron().expire_date() | date:'shortDate'}}</div>
+    <div class="col-lg-7">{{patron.expire_date() | date:'shortDate'}}</div>
   </div>
 
   <hr class="m-1"/>
 
-  <ng-container *ngIf="stats()">
+  <ng-container *ngIf="stats">
 
     <div class="row mb-1"
-      [ngClass]="{'alert alert-danger p-0': stats().fines.balance_owed > 0}">
+      [ngClass]="{'alert alert-danger p-0': stats.fines.balance_owed > 0}">
       <div class="col-lg-5" i18n>Fines Owed</div>
-      <div class="col-lg-7">{{stats().fines.balance_owed | currency}}</div>
+      <div class="col-lg-7">{{stats.fines.balance_owed | currency}}</div>
     </div>
 
     <ng-container 
-      *ngIf="stats().fines.group_balance_owed > stats().fines.balance_owed">
+      *ngIf="stats.fines.group_balance_owed > stats.fines.balance_owed">
       <div class="row mb-1 alert alert-danger p-0">
         <div class="col-lg-5" i18n>Group Fines</div>
-        <div class="col-lg-7">{{stats().fines.group_balance_owed | currency}}</div>
+        <div class="col-lg-7">{{stats.fines.group_balance_owed | currency}}</div>
       </div>
     </ng-container>
 
     <div class="row mb-1">
       <div class="col-lg-5" i18n>Items Out</div>
-      <div class="col-lg-7">{{stats().checkouts.total_out}}</div>
+      <div class="col-lg-7">{{stats.checkouts.total_out}}</div>
     </div>
     <div class="row mb-1"
-      [ngClass]="{'alert alert-danger p-0': stats().checkouts.overdue > 0}">
+      [ngClass]="{'alert alert-danger p-0': stats.checkouts.overdue > 0}">
       <div class="col-lg-5" i18n>Overdue</div>
-      <div class="col-lg-7">{{stats().checkouts.overdue}}</div>
+      <div class="col-lg-7">{{stats.checkouts.overdue}}</div>
     </div>
     <div class="row mb-1"
-      [ngClass]="{'alert alert-danger p-0': stats().checkouts.long_overdue > 0}">
+      [ngClass]="{'alert alert-danger p-0': stats.checkouts.long_overdue > 0}">
       <div class="col-lg-5" i18n>Long Overdue</div>
-      <div class="col-lg-7">{{stats().checkouts.long_overdue}}</div>
+      <div class="col-lg-7">{{stats.checkouts.long_overdue}}</div>
     </div>
     <div class="row mb-1"
-      [ngClass]="{'alert alert-danger p-0': stats().checkouts.claims_returned > 0}">
+      [ngClass]="{'alert alert-danger p-0': stats.checkouts.claims_returned > 0}">
       <div class="col-lg-5" i18n>Claimed Returned</div>
-      <div class="col-lg-7">{{stats().checkouts.claims_returned}}</div>
+      <div class="col-lg-7">{{stats.checkouts.claims_returned}}</div>
     </div>
     <div class="row mb-1"
-      [ngClass]="{'alert alert-danger p-0': stats().checkouts.lost > 0}">
+      [ngClass]="{'alert alert-danger p-0': stats.checkouts.lost > 0}">
       <div class="col-lg-5" i18n>Lost</div>
-      <div class="col-lg-7">{{stats().checkouts.lost}}</div>
+      <div class="col-lg-7">{{stats.checkouts.lost}}</div>
     </div>
     <div class="row mb-1">
       <div class="col-lg-5" i18n>Non-Cataloged</div>
-      <div class="col-lg-7">{{stats().checkouts.noncat}}</div>
+      <div class="col-lg-7">{{stats.checkouts.noncat}}</div>
     </div>
     <div class="row">
       <div class="col-lg-5" i18n>Holds</div>
       <div class="col-lg-7">
-        {{stats().holds.ready}} / {{stats().holds.total}}
+        {{stats.holds.ready}} / {{stats.holds.total}}
       </div>
     </div>
 
@@ -141,44 +141,44 @@
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Card</div>
     <div class="col-lg-7">
-      {{patron().card() ? patron().card().barcode() : ''}}
+      {{patron.card() ? patron.card().barcode() : ''}}
     </div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Username</div>
-    <div class="col-lg-7">{{patron().usrname()}}</div>
+    <div class="col-lg-7">{{patron.usrname()}}</div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Day Phone</div>
-    <div class="col-lg-7">{{patron().day_phone()}}</div> 
+    <div class="col-lg-7">{{patron.day_phone()}}</div> 
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Evening Phone</div>
-    <div class="col-lg-7">{{patron().evening_phone()}}</div> 
+    <div class="col-lg-7">{{patron.evening_phone()}}</div> 
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Other Phone</div>
-    <div class="col-lg-7">{{patron().other_phone()}}</div> 
+    <div class="col-lg-7">{{patron.other_phone()}}</div> 
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>ID1 </div>
-    <div class="col-lg-7">{{patron().ident_value()}}</div> 
+    <div class="col-lg-7">{{patron.ident_value()}}</div> 
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>ID2</div>
-    <div class="col-lg-7">{{patron().ident_value2()}}</div> 
+    <div class="col-lg-7">{{patron.ident_value2()}}</div> 
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Email</div>
     <div class="col-lg-7">
       <!-- TODO: mailto link -->
-      {{patron().email()}}
+      {{patron.email()}}
     </div> 
   </div>
 
   <hr class="m-1"/>
 
-  <div class="row mb-1" *ngFor="let addr of patron().addresses()">
+  <div class="row mb-1" *ngFor="let addr of patron.addresses()">
     <div class="col-lg-12">
       <fieldset>
         <legend class="d-flex" [ngClass]="{'alert alert-danger p-0': addr.valid() == 'f'}">
@@ -197,7 +197,7 @@
       <!-- hidden textare used only for copying the text -->
       <textarea id="patron-address-copy-{{addr.id()}}" rows="2"              
         style="visibility:hidden">
-{{patron().first_given_name()}} {{patron().second_given_name()}} {{patron().family_name()}}
+{{patron.first_given_name()}} {{patron.second_given_name()}} {{patron.family_name()}}
 {{addr.street1()}} {{addr.street2()}}
 {{addr.city()}}, {{addr.state()}} {{addr.post_code()}}</textarea>
     </div>

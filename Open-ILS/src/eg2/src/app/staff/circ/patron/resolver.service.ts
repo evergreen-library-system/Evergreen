@@ -130,9 +130,6 @@ export class PatronResolver implements Resolve<Promise<any[]>> {
           'ui.admin.patron_log.max_entries'
         ]).then(settings => {
             this.context.settingsCache = settings;
-            this.context.noTallyClaimsReturned =
-                settings['circ.do_not_tally_claims_returned'];
-            this.context.tallyLost = settings['circ.tally_lost'];
         });
     }
 }

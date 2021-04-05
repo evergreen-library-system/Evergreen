@@ -3,7 +3,8 @@ import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
-import {PatronService} from '@eg/staff/share/patron/patron.service';
+import {PatronService, PatronStats, PatronAlerts
+    } from '@eg/staff/share/patron/patron.service';
 import {PatronSearch} from '@eg/staff/share/patron/search.component';
 import {StoreService} from '@eg/core/store.service';
 import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
@@ -43,61 +44,12 @@ const PATRON_FLESH_FIELDS = [
     'groups'
 ];
 
-interface PatronStats {
-    fines: {
-        balance_owed: number,
-        group_balance_owed: number
-    };
-    checkouts: {
-        overdue: number,
-        claims_returned: number,
-        lost: number,
-        out: number,
-        total_out: number,
-        long_overdue: number,
-        noncat: number
-    };
-    holds: {
-        ready: number;
-        total: number;
-    };
-}
-
-export class PatronAlerts {
-    holdsReady = 0;
-    accountExpired = false;
-    accountExpiresSoon = false;
-    patronBarred = false;
-    patronInactive = false;
-    retrievedWithInactive = false;
-    invalidAddress = false;
-    alertMessage: string = null;
-    alertPenalties: IdlObject[] = [];
-
-    hasAlerts(): boolean {
-        return (
-            this.holdsReady > 0 ||
-            this.accountExpired ||
-            this.accountExpiresSoon ||
-            this.patronBarred ||
-            this.patronInactive ||
-            this.retrievedWithInactive ||
-            this.invalidAddress ||
-            this.alertMessage !== null ||
-            this.alertPenalties.length > 0
-        );
-    }
-}
-
 @Injectable()
 export class PatronContextService {
 
     patron: IdlObject;
     patronStats: PatronStats;
     alerts: PatronAlerts;
-
-    noTallyClaimsReturned = false; // circ.do_not_tally_claims_returned
-    tallyLost = false; // circ.tally_lost
 
     loaded = false;
 
@@ -111,16 +63,13 @@ export class PatronContextService {
 
     constructor(
         private store: StoreService,
-        private net: NetService,
         private org: OrgService,
-        private auth: AuthService,
         private circ: CircService,
-        public patronService: PatronService
+        public patrons: PatronService
     ) {}
 
     loadPatron(id: number): Promise<any> {
         this.loaded = false;
-        this.patron = null;
         this.checkouts = [];
         return this.refreshPatron(id).then(_ => this.loaded = true);
     }
@@ -131,43 +80,10 @@ export class PatronContextService {
 
         this.alerts = new PatronAlerts();
 
-        return this.net.request(
-            'open-ils.actor',
-            'open-ils.actor.user.fleshed.retrieve',
-            this.auth.token(), id, PATRON_FLESH_FIELDS).toPromise()
+        return this.patrons.getFleshedById(id, PATRON_FLESH_FIELDS)
         .then(p => this.patron = p)
         .then(_ => this.getPatronStats(id))
         .then(_ => this.compileAlerts());
-    }
-
-    getPatronVitalStats(id: number): Promise<PatronStats> {
-
-        return this.net.request(
-            'open-ils.actor',
-            'open-ils.actor.user.opac.vital_stats.authoritative',
-            this.auth.token(), id).toPromise()
-
-        .then((stats: PatronStats) => {
-
-            // force numeric values
-            stats.fines.balance_owed = Number(stats.fines.balance_owed);
-
-            Object.keys(stats.checkouts).forEach(key =>
-                stats.checkouts[key] = Number(stats.checkouts[key]));
-
-            stats.checkouts.total_out = stats.checkouts.out +
-                stats.checkouts.overdue + stats.checkouts.long_overdue;
-
-            if (!this.noTallyClaimsReturned) {
-                stats.checkouts.total_out += stats.checkouts.claims_returned;
-            }
-
-            if (this.tallyLost) {
-                stats.checkouts.total_out += stats.checkouts.lost;
-            }
-
-            return stats;
-        });
     }
 
     getPatronStats(id: number): Promise<any> {
@@ -177,39 +93,8 @@ export class PatronContextService {
         // is called.  Exit early instead of making an unneeded call.
         if (!this.patron) { return Promise.resolve(); }
 
-        return this.getPatronVitalStats(id)
-
-        .then(stats => this.patronStats = stats)
-
-        .then(_ => {
-            if (!this.patron) { return; }
-
-            return this.net.request(
-                'open-ils.circ',
-                'open-ils.circ.open_non_cataloged_circulation.user.authoritative',
-                this.auth.token(), id
-            ).toPromise();
-
-        }).then(noncats => {
-            if (!this.patron) { return; }
-
-            if (noncats && this.patronStats) {
-                this.patronStats.checkouts.noncat = noncats.length;
-            }
-
-            return this.net.request(
-                'open-ils.actor',
-                'open-ils.actor.usergroup.members.balance_owed.authoritative',
-                this.auth.token(), this.patron.usrgroup()
-            ).toPromise();
-
-        }).then(fines => {
-            if (!this.patron) { return; }
-
-            let total = 0;
-            fines.forEach(f => total += Number(f.balance_owed) * 100);
-            this.patronStats.fines.group_balance_owed = total / 100;
-        });
+        return this.patrons.getVitalStats(this.patron)
+        .then(stats => this.patronStats = stats);
     }
 
     patronAlertsShown(): boolean {
@@ -225,28 +110,15 @@ export class PatronContextService {
         // User navigated to a different patron mid-data load.
         if (!this.patron) { return Promise.resolve(); }
 
-        this.alerts.holdsReady = this.patronStats.holds.ready;
-        this.alerts.patronBarred = this.patron.barred() === 't';
-        this.alerts.patronInactive = this.patron.active() === 'f';
-        this.alerts.invalidAddress = this.patron.addresses()
-            .filter(a => a.valid() === 'f').length > 0;
-        this.alerts.alertMessage = this.patron.alert_message();
-        this.alerts.alertPenalties = this.patron.standing_penalties()
-            .filter(p => p.standing_penalty().staff_alert() === 't');
+        return this.patrons.compileAlerts(this.patron, this.patronStats)
+        .then(alerts => {
+            this.alerts = alerts;
 
-        if (this.searchBarcode) {
-            const card = this.patron.cards()
-                .filter(c => c.barcode() === this.searchBarcode)[0];
-            this.alerts.retrievedWithInactive = card && card.active() === 'f';
-            this.searchBarcode = null;
-        }
-
-        return this.patronService.testExpire(this.patron)
-        .then(value => {
-            if (value === 'expired') {
-                this.alerts.accountExpired = true;
-            } else if (value === 'soon') {
-                this.alerts.accountExpiresSoon = true;
+            if (this.searchBarcode) {
+                const card = this.patron.cards()
+                    .filter(c => c.barcode() === this.searchBarcode)[0];
+                this.alerts.retrievedWithInactive = card && card.active() === 'f';
+                this.searchBarcode = null;
             }
         });
     }

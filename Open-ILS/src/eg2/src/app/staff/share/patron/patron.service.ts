@@ -8,6 +8,54 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {Observable} from 'rxjs';
 import {BarcodeSelectComponent} from '@eg/staff/share/barcodes/barcode-select.component';
+import {ServerStoreService} from '@eg/core/server-store.service';
+
+export interface PatronStats {
+    fines: {
+        balance_owed: number,
+        group_balance_owed: number
+    };
+    checkouts: {
+        overdue: number,
+        claims_returned: number,
+        lost: number,
+        out: number,
+        total_out: number,
+        long_overdue: number,
+        noncat: number
+    };
+    holds: {
+        ready: number;
+        total: number;
+    };
+}
+
+export class PatronAlerts {
+    holdsReady = 0;
+    accountExpired = false;
+    accountExpiresSoon = false;
+    patronBarred = false;
+    patronInactive = false;
+    retrievedWithInactive = false;
+    invalidAddress = false;
+    alertMessage: string = null;
+    alertPenalties: IdlObject[] = [];
+
+    hasAlerts(): boolean {
+        return (
+            this.holdsReady > 0 ||
+            this.accountExpired ||
+            this.accountExpiresSoon ||
+            this.patronBarred ||
+            this.patronInactive ||
+            this.retrievedWithInactive ||
+            this.invalidAddress ||
+            this.alertMessage !== null ||
+            this.alertPenalties.length > 0
+        );
+    }
+}
+
 
 
 @Injectable()
@@ -25,7 +73,8 @@ export class PatronService {
         private org: OrgService,
         private evt: EventService,
         private pcrud: PcrudService,
-        private auth: AuthService
+        private auth: AuthService,
+        private store: ServerStoreService
     ) {}
 
     bcSearch(barcode: string): Observable<any> {
@@ -192,6 +241,102 @@ export class PatronService {
             return this.surveys =
                 surveys.sort((s1, s2) => s1.name() < s2.name() ? -1 : 1);
         });
+    }
+
+    getVitalStats(patron: IdlObject): Promise<PatronStats> {
+
+        let patronStats: PatronStats;
+        let noTallyClaimsReturned, tallyLost;
+
+        return this.store.getItemBatch([
+          'circ.do_not_tally_claims_returned',
+          'circ.tally_lost'
+
+        ]).then(settings => {
+
+            noTallyClaimsReturned = settings['circ.do_not_tally_claims_returned'];
+            tallyLost = settings['circ.tally_lost'];
+
+        }).then(_ => {
+
+            return this.net.request(
+                'open-ils.actor',
+                'open-ils.actor.user.opac.vital_stats.authoritative',
+                this.auth.token(), patron.id()).toPromise()
+
+        }).then((stats: PatronStats) => {
+
+            // force numeric values
+            stats.fines.balance_owed = Number(stats.fines.balance_owed);
+
+            Object.keys(stats.checkouts).forEach(key =>
+                stats.checkouts[key] = Number(stats.checkouts[key]));
+
+            stats.checkouts.total_out = stats.checkouts.out +
+                stats.checkouts.overdue + stats.checkouts.long_overdue;
+
+            if (!noTallyClaimsReturned) {
+                stats.checkouts.total_out += stats.checkouts.claims_returned;
+            }
+
+            if (tallyLost) {
+                stats.checkouts.total_out += stats.checkouts.lost;
+            }
+
+            return patronStats = stats;
+        })
+
+        .then(_ => {
+            return this.net.request(
+                'open-ils.circ',
+                'open-ils.circ.open_non_cataloged_circulation.user.authoritative',
+                this.auth.token(), patron.id()
+            ).toPromise();
+
+        }).then(noncats => {
+            if (noncats && patronStats) {
+                patronStats.checkouts.noncat = noncats.length;
+            }
+
+            return this.net.request(
+                'open-ils.actor',
+                'open-ils.actor.usergroup.members.balance_owed.authoritative',
+                this.auth.token(), patron.usrgroup()
+            ).toPromise();
+
+        }).then(fines => {
+
+            let total = 0;
+            fines.forEach(f => total += Number(f.balance_owed) * 100);
+            patronStats.fines.group_balance_owed = total / 100;
+
+            return patronStats;
+        });
+    }
+
+    compileAlerts(patron: IdlObject, stats: PatronStats): Promise<PatronAlerts> {
+
+        const alerts = new PatronAlerts();
+
+        alerts.holdsReady = stats.holds.ready;
+        alerts.patronBarred = patron.barred() === 't';
+        alerts.patronInactive = patron.active() === 'f';
+        alerts.invalidAddress = patron.addresses()
+            .filter(a => a.valid() === 'f').length > 0;
+        alerts.alertMessage = patron.alert_message();
+        alerts.alertPenalties = patron.standing_penalties()
+            .filter(p => p.standing_penalty().staff_alert() === 't');
+
+        return this.testExpire(patron)
+        .then(value => {
+            if (value === 'expired') {
+                alerts.accountExpired = true;
+            } else if (value === 'soon') {
+                alerts.accountExpiresSoon = true;
+            }
+
+            return alerts;
+        })
     }
 }
 

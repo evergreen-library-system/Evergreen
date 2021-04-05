@@ -11,6 +11,8 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {Pager} from '@eg/share/util/pager';
+import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.component';
+import {PatronMergeDialogComponent} from './merge-dialog.component';
 
 const DEFAULT_SORT = [
    'family_name ASC',
@@ -49,7 +51,9 @@ export interface PatronSearch {
 
 export class PatronSearchComponent implements OnInit, AfterViewInit {
 
-    @ViewChild('searchGrid', {static: false}) searchGrid: GridComponent;
+    @ViewChild('searchGrid') searchGrid: GridComponent;
+    @ViewChild('addToBucket') addToBucket: BucketDialogComponent;
+    @ViewChild('mergeDialog') mergeDialog: PatronMergeDialogComponent;
 
     startWithFired = false;
     @Input() startWithSearch: PatronSearch;
@@ -307,6 +311,18 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         if (!this.isValue(chunk.value)) { return null; }
 
         return chunk;
+    }
+
+    addSelectedToBucket(rows: IdlObject[]) {
+        this.addToBucket.itemIds = rows.map(r => r.id());
+        this.addToBucket.open().subscribe();
+    }
+
+    mergePatrons(rows: IdlObject[]) {
+        this.mergeDialog.patronIds = [rows[0].id(), rows[1].id()];
+        this.mergeDialog.open({size: 'lg'}).subscribe(changes => {
+            if (changes) { this.searchGrid.reload(); }
+        });
     }
 }
 

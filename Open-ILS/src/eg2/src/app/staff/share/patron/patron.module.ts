@@ -7,12 +7,16 @@ import {PatronSearchDialogComponent} from './search-dialog.component';
 import {ProfileSelectComponent} from './profile-select.component';
 import {PatronPenaltyDialogComponent} from './penalty-dialog.component';
 import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
+import {PatronMergeDialogComponent} from './merge-dialog.component';
+import {PatronSummaryComponent} from './summary.component';
 
 @NgModule({
     declarations: [
         PatronSearchComponent,
         PatronSearchDialogComponent,
         ProfileSelectComponent,
+        PatronSummaryComponent,
+        PatronMergeDialogComponent,
         PatronPenaltyDialogComponent
     ],
     imports: [
@@ -24,6 +28,8 @@ import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
         PatronSearchComponent,
         PatronSearchDialogComponent,
         ProfileSelectComponent,
+        PatronSummaryComponent,
+        PatronMergeDialogComponent,
         PatronPenaltyDialogComponent
     ],
     providers: [

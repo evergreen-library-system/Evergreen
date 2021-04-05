@@ -78,7 +78,7 @@ export class PatronGroupComponent implements OnInit {
             {authoritative: true})
         .pipe(concatMap(u => {
 
-            const promise = this.context.getPatronVitalStats(u.id())
+            const promise = this.patronService.getVitalStats(u.id())
             .then(stats => {
                 this.totalOwed += stats.fines.balance_owed;
                 this.totalOut += stats.checkouts.total_out;

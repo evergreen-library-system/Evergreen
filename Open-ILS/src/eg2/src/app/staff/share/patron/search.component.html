@@ -1,4 +1,9 @@
 
+<eg-bucket-dialog #addToBucket bucketClass="user" bucketType="staff_client">
+</eg-bucket-dialog>
+<eg-patron-merge-dialog #mergeDialog>
+</eg-patron-merge-dialog>
+
 <div class="patron-search-form">
   <div class="row m-0 mb-2">
     <div class="col-lg-2 pl-1 pr-1">
@@ -184,6 +189,13 @@
     (onRowActivate)="rowsActivated($event)"
     [dataSource]="dataSource" 
     [showDeclaredFieldsOnly]="true"> 
+
+    <eg-grid-toolbar-button label="Add to Bucket" i18n-label 
+      [disabled]="getSelected().length == 0"
+      (onClick)="addSelectedToBucket($event)"></eg-grid-toolbar-button>
+    <eg-grid-toolbar-button label="Merge Patrons" i18n-label 
+      [disabled]="getSelected().length !== 2"
+      (onClick)="mergePatrons($event)"></eg-grid-toolbar-button>
 
     <eg-grid-column path='id' 
       i18n-label label="ID"></eg-grid-column>      
