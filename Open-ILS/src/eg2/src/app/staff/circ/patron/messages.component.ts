@@ -11,6 +11,8 @@ import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {DateUtil} from '@eg/share/util/date';
+import {PatronPenaltyDialogComponent
+    } from '@eg/staff/share/patron/penalty-dialog.component';
 
 @Component({
   selector: 'eg-patron-messages',
@@ -28,6 +30,8 @@ export class PatronMessagesComponent implements OnInit {
 
     @ViewChild('mainGrid') private mainGrid: GridComponent;
     @ViewChild('archiveGrid') private archiveGrid: GridComponent;
+    @ViewChild('penaltyDialog')
+        private penaltyDialog: PatronPenaltyDialogComponent
 
     constructor(
         private org: OrgService,
@@ -115,6 +119,9 @@ export class PatronMessagesComponent implements OnInit {
     }
 
     applyPenalty() {
+        this.penaltyDialog.open().subscribe(changes => {
+            if (changes) { this.mainGrid.reload(); }
+        });
     }
 }
 
