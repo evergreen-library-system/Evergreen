@@ -281,9 +281,9 @@ CREATE TRIGGER authority_full_rec_fti_trigger
 
 CREATE INDEX authority_full_rec_index_vector_idx ON authority.full_rec USING GIN (index_vector);
 /* Enable LIKE to use an index for database clusters with locales other than C or POSIX */
-CREATE INDEX authority_full_rec_value_tpo_index ON authority.full_rec (value text_pattern_ops);
+CREATE INDEX authority_full_rec_value_tpo_index ON authority.full_rec (SUBSTRING(value FOR 1024) text_pattern_ops);
 /* But we still need this (boooo) for paging using >, <, etc */
-CREATE INDEX authority_full_rec_value_index ON authority.full_rec (value);
+CREATE INDEX authority_full_rec_value_index ON authority.full_rec (SUBSTRING(value FOR 1024));
 
 CREATE RULE protect_authority_rec_delete AS ON DELETE TO authority.record_entry DO INSTEAD (UPDATE authority.record_entry SET deleted = TRUE WHERE OLD.id = authority.record_entry.id; DELETE FROM authority.full_rec WHERE record = OLD.id);
 
