@@ -75,7 +75,7 @@ export class PatronComponent implements OnInit, AfterViewInit {
             }
 
             const prevId =
-                this.context.patron ? this.context.patron.id() : null;
+                this.context.summary ? this.context.summary.id : null;
 
             if (this.patronId) {
 
@@ -159,8 +159,8 @@ export class PatronComponent implements OnInit, AfterViewInit {
 
     routeToAlertsPane() {
         if (this.patronTab !== 'search' &&
-            this.context.patron &&
-            this.context.alerts.hasAlerts() &&
+            this.context.summary &&
+            this.context.summary.alerts.hasAlerts() &&
             !this.context.patronAlertsShown()) {
 
            this.router.navigate(['/staff/circ/patron', this.patronId, 'alerts']);
@@ -183,8 +183,8 @@ export class PatronComponent implements OnInit, AfterViewInit {
 
     disablePurge(): boolean {
         return (
-            !this.context.patron ||
-            this.context.patron.super_user() === 't' ||
+            !this.context.summary ||
+            this.context.summary.patron.super_user() === 't' ||
             this.patronId === this.auth.user().id()
         );
     }
@@ -195,8 +195,8 @@ export class PatronComponent implements OnInit, AfterViewInit {
     }
 
     counts(part: string, field: string): number {
-        if (this.context && this.context.patronStats) {
-            return this.context.patronStats[part][field];
+        if (this.context.summary && this.context.summary.stats) {
+            return this.context.summary.stats[part][field];
         } else {
             return 0;
         }

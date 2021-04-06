@@ -13,7 +13,7 @@
         [showPlaceHoldButton]="true"
         [hidePickupLibFilter]="true"
         [defaultSort]="[{name:'request_time',dir:'asc'}]"
-        [patronId]="context.patron.id()"></eg-holds-grid>
+        [patronId]="context.summary.patron.id()"></eg-holds-grid>
     </ng-template>
   </li>
 
@@ -27,11 +27,11 @@
         [hidePickupLibFilter]="true"
         [showRecentlyCanceled]="true"
         [defaultSort]="[{name:'cancel_time',dir:'desc'}]"
-        [patronId]="context.patron.id()"></eg-holds-grid>
+        [patronId]="context.summary.patron.id()"></eg-holds-grid>
     </ng-template>
   </li>
 </ul>
 
-<ng-container *ngIf="context.patron">
+<ng-container *ngIf="context.summary">
   <div [ngbNavOutlet]="holdsNav"></div>
 </ng-container>

@@ -25,7 +25,7 @@ export class HoldsComponent implements OnInit {
 
     newHold() {
         this.router.navigate(['/staff/catalog/search'],
-          {queryParams: {holdForBarcode: this.context.patron.card().barcode()}});
+          {queryParams: {holdForBarcode: this.context.summary.patron.card().barcode()}});
     }
 }
 

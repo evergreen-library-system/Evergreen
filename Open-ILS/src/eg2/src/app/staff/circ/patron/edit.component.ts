@@ -25,6 +25,21 @@ import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {HoldNotifyUpdateDialogComponent} from './hold-notify-update.component';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 
+const PATRON_FLESH_FIELDS = [
+    'cards',
+    'card',
+    'groups',
+    'standing_penalties',
+    'settings',
+    'addresses',
+    'billing_address',
+    'mailing_address',
+    'stat_cat_entries',
+    'waiver_entries',
+    'usr_activity',
+    'notes'
+];
+
 const COMMON_USER_SETTING_TYPES = [
   'circ.holds_behind_desk',
   'circ.collections.exempt',
@@ -618,7 +633,7 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     loadPatron(): Promise<any> {
         if (this.patronId) {
-            return this.patronService.getFleshedById(this.patronId)
+            return this.patronService.getFleshedById(this.patronId, PATRON_FLESH_FIELDS)
             .then(patron => {
                 this.patron = patron;
                 this.origUsername = patron.usrname();
@@ -1334,7 +1349,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         }
 
         if (clone) {
-            this.context.patron = null;
+            this.context.summary = null;
             this.router.navigate(
                 ['/staff/circ/patron/register/clone', this.modifiedPatron.id()]);
 

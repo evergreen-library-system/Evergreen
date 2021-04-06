@@ -5,7 +5,7 @@ import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {PrintService} from '@eg/share/print/print.service';
-import {PatronService, PatronStats, PatronAlerts} from './patron.service';
+import {PatronService, PatronSummary} from './patron.service';
 
 @Component({
   templateUrl: 'summary.component.html',
@@ -14,9 +14,7 @@ import {PatronService, PatronStats, PatronAlerts} from './patron.service';
 })
 export class PatronSummaryComponent implements OnInit {
 
-    @Input() patron: IdlObject;
-    @Input() stats: PatronStats;
-    @Input() alerts: PatronAlerts;
+    @Input() summary: PatronSummary;
 
     constructor(
         private org: OrgService,
@@ -28,12 +26,16 @@ export class PatronSummaryComponent implements OnInit {
     ngOnInit() {
     }
 
+    p(): IdlObject { // patron shorthand
+        return this.summary ? this.summary.patron : null;
+    }
+
     hasPrefName(): boolean {
-        if (this.patron) {
+        if (this.p()) {
             return (
-                this.patron.pref_first_given_name() ||
-                this.patron.pref_second_given_name() ||
-                this.patron.pref_family_name()
+                this.p().pref_first_given_name() ||
+                this.p().pref_second_given_name() ||
+                this.p().pref_family_name()
             );
         }
     }
@@ -42,7 +44,7 @@ export class PatronSummaryComponent implements OnInit {
         this.printer.print({
             templateName: 'patron_address',
             contextData: {
-                patron: this.patron,
+                patron: this.p(),
                 address: addr
             },
             printContext: 'default'

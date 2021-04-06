@@ -3,7 +3,7 @@ import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
-import {PatronService, PatronStats, PatronAlerts
+import {PatronService, PatronSummary, PatronStats, PatronAlerts
     } from '@eg/staff/share/patron/patron.service';
 import {PatronSearch} from '@eg/staff/share/patron/search.component';
 import {StoreService} from '@eg/core/store.service';
@@ -47,12 +47,8 @@ const PATRON_FLESH_FIELDS = [
 @Injectable()
 export class PatronContextService {
 
-    patron: IdlObject;
-    patronStats: PatronStats;
-    alerts: PatronAlerts;
-
+    summary: PatronSummary;
     loaded = false;
-
     lastPatronSearch: PatronSearch;
     searchBarcode: string = null;
 
@@ -76,12 +72,17 @@ export class PatronContextService {
 
     // Update the patron data without resetting all of the context data.
     refreshPatron(id?: number): Promise<any> {
-        if (!id) { id = this.patron.id(); }
 
-        this.alerts = new PatronAlerts();
+        if (!id) {
+            if (!this.summary) {
+                return Promise.reject('no can do');
+            } else {
+                id = this.summary.id;
+            }
+        }
 
         return this.patrons.getFleshedById(id, PATRON_FLESH_FIELDS)
-        .then(p => this.patron = p)
+        .then(p => this.summary = new PatronSummary(p))
         .then(_ => this.getPatronStats(id))
         .then(_ => this.compileAlerts());
     }
@@ -91,33 +92,34 @@ export class PatronContextService {
         // When quickly navigating patron search results it's possible
         // for this.patron to be cleared right before this function
         // is called.  Exit early instead of making an unneeded call.
-        if (!this.patron) { return Promise.resolve(); }
+        if (!this.summary) { return Promise.resolve(); }
 
-        return this.patrons.getVitalStats(this.patron)
-        .then(stats => this.patronStats = stats);
+        return this.patrons.getVitalStats(this.summary.patron)
+        .then(stats => this.summary.stats = stats);
     }
 
     patronAlertsShown(): boolean {
-        if (!this.patron) { return false; }
+        if (!this.summary) { return false; }
         const shown = this.store.getSessionItem('eg.circ.last_alerted_patron');
-        if (shown === this.patron.id()) { return true; }
-        this.store.setSessionItem('eg.circ.last_alerted_patron', this.patron.id());
+        if (shown === this.summary.patron.id()) { return true; }
+        this.store.setSessionItem('eg.circ.last_alerted_patron', this.summary.patron.id());
         return false;
     }
 
     compileAlerts(): Promise<any> {
 
         // User navigated to a different patron mid-data load.
-        if (!this.patron) { return Promise.resolve(); }
+        if (!this.summary) { return Promise.resolve(); }
 
-        return this.patrons.compileAlerts(this.patron, this.patronStats)
+        return this.patrons.compileAlerts(this.summary)
         .then(alerts => {
-            this.alerts = alerts;
+            this.summary.alerts = alerts;
 
             if (this.searchBarcode) {
-                const card = this.patron.cards()
+                const card = this.summary.patron.cards()
                     .filter(c => c.barcode() === this.searchBarcode)[0];
-                this.alerts.retrievedWithInactive = card && card.active() === 'f';
+                this.summary.alerts.retrievedWithInactive =
+                    card && card.active() === 'f';
                 this.searchBarcode = null;
             }
         });

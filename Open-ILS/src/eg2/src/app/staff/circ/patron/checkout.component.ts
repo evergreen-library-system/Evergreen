@@ -89,7 +89,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     collectParams(): Promise<CheckoutParams> {
 
         const params: CheckoutParams = {
-            patron_id: this.context.patron.id()
+            patron_id: this.context.summary.id
         };
 
         if (this.checkoutNoncat) {

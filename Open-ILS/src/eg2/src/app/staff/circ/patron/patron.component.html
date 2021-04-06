@@ -1,14 +1,14 @@
 
-<ng-container *ngIf="!context.patron">
+<ng-container *ngIf="!context.summary">
   <eg-staff-banner bannerText="Manage Patrons" i18n-bannerText>
   </eg-staff-banner>
 </ng-container>
 
-<ng-container *ngIf="context.patron">
+<ng-container *ngIf="context.summary">
   <eg-staff-banner i18n-bannerText bannerText="Patron: 
-    {{context.patron.family_name()}}, 
-    {{context.patron.first_given_name()}} 
-    {{context.patron.second_given_name()}}">
+    {{context.summary.patron.family_name()}}, 
+    {{context.summary.patron.first_given_name()}} 
+    {{context.summary.patron.second_given_name()}}">
   </eg-staff-banner>
 </ng-container>
 
@@ -19,10 +19,8 @@
   <ng-container *ngIf="showSummaryPane()">
     <div class="col-lg-3">
       <div class="sticky-top-with-nav bg-white">
-        <ng-container *ngIf="context.patron">
-          <eg-patron-summary [patron]="context.patron"
-            [stats]="context.patronStats" [alerts]="context.alerts">
-          </eg-patron-summary>
+        <ng-container *ngIf="context.summary">
+          <eg-patron-summary [summary]="context.summary"></eg-patron-summary>
         </ng-container>
       </div>
     </div>
@@ -48,7 +46,7 @@
           </li>
         </ng-container>
 
-        <li ngbNavItem="checkout" [disabled]="!context.patron">
+        <li ngbNavItem="checkout" [disabled]="!context.summary">
           <a ngbNavLink i18n>Check Out</a>
           <ng-template ngbNavContent>
             <div class="">
@@ -57,7 +55,7 @@
           </ng-template>
         </li>
 
-        <li ngbNavItem="items_out" [disabled]="!context.patron">
+        <li ngbNavItem="items_out" [disabled]="!context.summary">
           <a ngbNavLink i18n>
             Items Out ({{counts('checkouts', 'total_out')}})
           </a>
@@ -68,7 +66,7 @@
           </ng-template>
         </li>
 
-        <li ngbNavItem="holds" [disabled]="!context.patron">
+        <li ngbNavItem="holds" [disabled]="!context.summary">
           <a ngbNavLink i18n>
             Holds ({{counts('holds', 'ready')}} / {{counts('holds', 'total')}})
           </a>
@@ -77,7 +75,7 @@
           </ng-template>
         </li>
 
-        <li ngbNavItem="bills" [disabled]="!context.patron">
+        <li ngbNavItem="bills" [disabled]="!context.summary">
           <a ngbNavLink (click)="billsTabClicked()" i18n>
             Bills 
             <span [ngClass]="{'text-danger': counts('fines', 'balance_owed') > 0}">
@@ -95,7 +93,7 @@
           </ng-template>
         </li>
 
-        <li ngbNavItem="messages" [disabled]="!context.patron">
+        <li ngbNavItem="messages" [disabled]="!context.summary">
           <a ngbNavLink i18n>Messages</a>
           <ng-template ngbNavContent>
             <div class="">
@@ -104,7 +102,7 @@
           </ng-template>
         </li>
 
-        <li ngbNavItem="edit" [disabled]="!context.patron">
+        <li ngbNavItem="edit" [disabled]="!context.summary">
           <a ngbNavLink i18n>Edit</a>
           <ng-template ngbNavContent>
             <eg-patron-edit [patronId]="patronId" [toolbar]="editorToolbar">
@@ -112,8 +110,8 @@
           </ng-template>
         </li>
 
-        <li ngbDropdown ngbNavItem="other" [disabled]="!context.patron">
-          <a [attr.href]="context.patron ? '' : null" 
+        <li ngbDropdown ngbNavItem="other" [disabled]="!context.summary">
+          <a [attr.href]="context.summary ? '' : null" 
             (click)="false" class="nav-link" ngbDropdownToggle>Other</a>
           <div ngbDropdownMenu>
             <a routerLink="/staff/circ/patron/{{patronId}}/alerts" 

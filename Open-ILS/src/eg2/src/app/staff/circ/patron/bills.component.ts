@@ -234,7 +234,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     }
 
     patron(): IdlObject {
-        return this.context.patron;
+        return this.context.summary ? this.context.summary.patron : null;
     }
 
     selectedPaymentInfo(): {owed: number, billed: number, paid: number} {
@@ -464,7 +464,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
         }
 
         const pending = this.pendingPayment();
-        const prevBalance = this.context.patronStats.fines.balance_owed;
+        const prevBalance = this.context.summary.stats.fines.balance_owed;
         const newBalance = (prevBalance * 100 - pending * 100) / 100;
 
         const context = {

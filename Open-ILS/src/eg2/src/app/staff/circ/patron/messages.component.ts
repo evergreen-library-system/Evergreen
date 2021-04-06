@@ -1,5 +1,7 @@
 import {Component, ViewChild, OnInit, Input, AfterViewInit} from '@angular/core';
-import {empty} from 'rxjs';
+import {empty, from} from 'rxjs';
+import {concatMap, tap} from 'rxjs/operators';
+import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -77,7 +79,7 @@ export class PatronMessagesComponent implements OnInit {
             };
 
             flesh.order_by = orderBy;
-            return this.pcrud.search('ausp', query, flesh);
+            return this.pcrud.search('ausp', query, flesh, {authoritative: true});
         }
 
         this.archiveDataSource.getRows = (pager: Pager, sort: any[]) => {
@@ -95,7 +97,7 @@ export class PatronMessagesComponent implements OnInit {
 
             flesh.order_by = orderBy;
 
-            return this.pcrud.search('ausp', query, flesh);
+            return this.pcrud.search('ausp', query, flesh, {authoritative: true});
         }
     }
 
@@ -121,6 +123,38 @@ export class PatronMessagesComponent implements OnInit {
     applyPenalty() {
         this.penaltyDialog.open().subscribe(changes => {
             if (changes) { this.mainGrid.reload(); }
+        });
+    }
+
+    archive(penalties: IdlObject[]) {
+        penalties.forEach(p => p.stop_date('now'));
+        this.pcrud.update(penalties).toPromise()
+        .then(_ => {
+            this.mainGrid.reload();
+            this.archiveGrid.reload();
+        });
+    }
+
+    remove(penalties: IdlObject[]) {
+        this.pcrud.remove(penalties).toPromise()
+        .then(_ => {
+            this.mainGrid.reload();
+            this.archiveGrid.reload();
+        });
+    }
+
+    modify(penalties: IdlObject[]) {
+        let modified = false;
+        from(penalties).pipe(concatMap(penalty => {
+            this.penaltyDialog.penalty = penalty;
+            return this.penaltyDialog.open().pipe(tap(changed => {
+                if (changed) { modified = true; }
+            }));
+        })).toPromise().then(_ => {
+            if (modified) {
+                this.mainGrid.reload();
+                this.archiveGrid.reload();
+            }
         });
     }
 }

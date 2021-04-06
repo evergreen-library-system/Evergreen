@@ -59,8 +59,8 @@ export class PatronGroupComponent implements OnInit {
         this.dataSource.getRows = (pager: Pager, sort: any[]) =>
             from(this.patrons.slice(pager.offset, pager.offset + pager.limit));
 
-        if (this.context.patron) {
-            this.getGroupUsers(this.context.patron.usrgroup());
+        if (this.context.summary) {
+            this.getGroupUsers(this.context.summary.patron.usrgroup());
 
         } else {
             this.patronService.getById(this.patronId)
@@ -137,7 +137,7 @@ export class PatronGroupComponent implements OnInit {
 
     refresh() {
         this.context.refreshPatron()
-        .then(_ => this.usergroup = this.context.patron.usrgroup())
+        .then(_ => this.usergroup = this.context.summary.patron.usrgroup())
         .then(_ => this.getGroupUsers(this.usergroup))
         .then(_ => this.groupGrid.reload());
     }

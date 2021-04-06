@@ -12,6 +12,12 @@
   hideFields="id,usr,stop_date">
   <eg-grid-toolbar-button i18n-label label="Apply Penalty / Message"
     (onClick)="applyPenalty()">
+  <eg-grid-toolbar-action (onClick)="archive($event)"
+    label="Archive Selected" i18n-label></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action (onClick)="remove($event)"
+    label="Delete Selected" i18n-label></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action (onClick)="modify($event)"
+    label="Modify Selected" i18n-label></eg-grid-toolbar-action>
   </eg-grid-toolbar-button>
   <eg-grid-column path="standing_penalty.label">
   </eg-grid-column>

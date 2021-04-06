@@ -7,9 +7,10 @@ import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {PatronService, PatronStats, PatronAlerts} from './patron.service';
+import {PatronService, PatronSummary} from './patron.service';
 
 /**
+ * Dialog for merging 2 patron accounts.
  */
 
 const PATRON_FLESH_FIELDS = [
@@ -30,12 +31,6 @@ const PATRON_FLESH_FIELDS = [
     'groups'
 ];
 
-class MergeContext {
-    patron: IdlObject;
-    stats: PatronStats;
-    alerts: PatronAlerts;
-}
-
 @Component({
   selector: 'eg-patron-merge-dialog',
   templateUrl: 'merge-dialog.component.html'
@@ -46,8 +41,8 @@ export class PatronMergeDialogComponent
 
     @Input() patronIds: [number, number];
 
-	context1: MergeContext;
-	context2: MergeContext;
+    summary1: PatronSummary;
+    summary2: PatronSummary;
 
     leadAccount: number = null;
     loading = true;
@@ -65,22 +60,22 @@ export class PatronMergeDialogComponent
             this.loading = true;
             this.leadAccount = null;
             this.loadPatron(this.patronIds[0])
-            .then(ctx => this.context1 = ctx)
+            .then(ctx => this.summary1 = ctx)
             .then(_ => this.loadPatron(this.patronIds[1]))
-            .then(ctx => this.context2 = ctx)
+            .then(ctx => this.summary2 = ctx)
             .then(_ => this.loading = false);
         });
     }
 
-    loadPatron(id: number): Promise<MergeContext> {
-        const ctx = new MergeContext();
+    loadPatron(id: number): Promise<PatronSummary> {
+        const sum = new PatronSummary();
         return this.patrons.getFleshedById(id, PATRON_FLESH_FIELDS)
-        .then(patron => ctx.patron = patron)
-        .then(_ => this.patrons.getVitalStats(ctx.patron))
-        .then(stats => ctx.stats = stats)
-        .then(_ => this.patrons.compileAlerts(ctx.patron, ctx.stats))
-        .then(alerts => ctx.alerts = alerts)
-        .then(_ => ctx);
+        .then(patron => sum.patron = patron)
+        .then(_ => this.patrons.getVitalStats(sum.patron))
+        .then(stats => sum.stats = stats)
+        .then(_ => this.patrons.compileAlerts(sum))
+        .then(alerts => sum.alerts = alerts)
+        .then(_ => sum);
     }
 
     merge() {

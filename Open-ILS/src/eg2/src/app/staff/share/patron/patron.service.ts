@@ -10,23 +10,25 @@ import {Observable} from 'rxjs';
 import {BarcodeSelectComponent} from '@eg/staff/share/barcodes/barcode-select.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
 
-export interface PatronStats {
-    fines: {
-        balance_owed: number,
-        group_balance_owed: number
+export class PatronStats {
+    fines = {
+        balance_owed: 0,
+        group_balance_owed: 0
     };
-    checkouts: {
-        overdue: number,
-        claims_returned: number,
-        lost: number,
-        out: number,
-        total_out: number,
-        long_overdue: number,
-        noncat: number
+
+    checkouts = {
+        overdue: 0,
+        claims_returned: 0,
+        lost: 0,
+        out: 0,
+        total_out: 0,
+        long_overdue: 0,
+        noncat: 0
     };
-    holds: {
-        ready: number;
-        total: number;
+
+    holds = {
+        ready: 0,
+        total: 0
     };
 }
 
@@ -56,7 +58,19 @@ export class PatronAlerts {
     }
 }
 
+export class PatronSummary {
+    id: number;
+    patron: IdlObject;
+    stats: PatronStats = new PatronStats();
+    alerts: PatronAlerts = new PatronAlerts();
 
+    constructor(patron?: IdlObject) {
+        if (patron) {
+            this.id = patron.id();
+            this.patron = patron;
+        }
+    }
+}
 
 @Injectable()
 export class PatronService {
@@ -314,8 +328,10 @@ export class PatronService {
         });
     }
 
-    compileAlerts(patron: IdlObject, stats: PatronStats): Promise<PatronAlerts> {
+    compileAlerts(summary: PatronSummary): Promise<PatronAlerts> {
 
+        const patron = summary.patron;
+        const stats = summary.stats;
         const alerts = new PatronAlerts();
 
         alerts.holdsReady = stats.holds.ready;

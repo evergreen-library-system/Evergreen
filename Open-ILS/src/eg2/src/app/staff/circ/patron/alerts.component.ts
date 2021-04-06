@@ -3,7 +3,7 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
-import {PatronService} from '@eg/staff/share/patron/patron.service';
+import {PatronService, PatronAlerts} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
 
 @Component({
@@ -20,6 +20,10 @@ export class PatronAlertsComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+    }
+
+    alerts(): PatronAlerts {
+        return this.context.summary ? this.context.summary.alerts : null;
     }
 }
 
