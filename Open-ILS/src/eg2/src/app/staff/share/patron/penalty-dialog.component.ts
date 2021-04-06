@@ -3,6 +3,7 @@ import {merge, from, Observable} from 'rxjs';
 import {tap, take, switchMap} from 'rxjs/operators';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -54,6 +55,7 @@ export class PatronPenaltyDialogComponent
         private idl: IdlService,
         private org: OrgService,
         private net: NetService,
+        private store: ServerStoreService,
         private evt: EventService,
         private toast: ToastService,
         private auth: AuthService,
@@ -85,9 +87,8 @@ export class PatronPenaltyDialogComponent
             this.penaltyTypeFromButton = this.SILENT_NOTE;
         }
 
-        this.org.settings(['ui.staff.require_initials.patron_standing_penalty'])
-        .then(sets => this.requireInitials =
-            sets['ui.staff.require_initials.patron_standing_penalty']);
+        this.store.getItem('ui.staff.require_initials.patron_standing_penalty')
+        .then(require => this.requireInitials = require);
 
         const obs1 = this.pcrud.retrieve('au', this.patronId)
             .pipe(tap(usr => this.patron = usr));

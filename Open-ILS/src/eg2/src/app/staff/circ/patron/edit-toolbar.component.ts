@@ -2,6 +2,7 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
+import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
@@ -41,9 +42,11 @@ export class EditToolbarComponent implements OnInit {
     printClicked: EventEmitter<void> = new EventEmitter<void>();
 
     searches: {[category: string]: DupeSearch} = {};
+    addressAlerts: IdlObject[] = [];
 
     constructor(
         private org: OrgService,
+        private idl: IdlService,
         private net: NetService,
         private auth: AuthService,
         private patronService: PatronService,
@@ -62,8 +65,6 @@ export class EditToolbarComponent implements OnInit {
     dupesFound(): DupeSearch[] {
         return Object.values(this.searches).filter(dupe => dupe.count > 0);
     }
-
-
 
     checkDupes(category: string, search: PatronSearchFieldSet) {
 
@@ -84,6 +85,18 @@ export class EditToolbarComponent implements OnInit {
                 json: JSON.stringify(search)
             };
         });
+    }
+
+    checkAddressAlerts(addr: IdlObject) {
+        const addrHash = this.idl.toHash(addr);
+        const patron = this.context.summary.patron;
+        addrHash.mailing_address = addr.id() === patron.mailing_address().id();
+        addrHash.billing_address = addr.id() === patron.billing_address().id();
+        this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.address_alert.test',
+            this.auth.token(), this.auth.user().ws_ou(), addrHash
+        ).subscribe(alerts => this.addressAlerts = alerts);
     }
 }
 

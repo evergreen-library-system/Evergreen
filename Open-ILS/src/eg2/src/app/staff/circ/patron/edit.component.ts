@@ -145,6 +145,8 @@ export class EditComponent implements OnInit, AfterViewInit {
     @ViewChild('addrAlert') private addrAlert: AlertDialogComponent;
     @ViewChild('addrRequiredAlert')
         private addrRequiredAlert: AlertDialogComponent;
+    @ViewChild('xactCollisionAlert')
+        private xactCollisionAlert: AlertDialogComponent;
 
 
     autoId = -1;
@@ -900,7 +902,7 @@ export class EditComponent implements OnInit, AfterViewInit {
             case 'city':
                 // dupe search on address wants the address object as the value.
                 this.dupeValueChange('address', obj);
-                // TODO address_alert(obj);
+                this.toolbar.checkAddressAlerts(obj);
                 break;
 
             case 'post_code':
@@ -1379,11 +1381,14 @@ export class EditComponent implements OnInit, AfterViewInit {
             if (evt) {
                 console.error('Patron update failed with', evt);
                 if (evt.textcode === 'XACT_COLLISION') {
-                    // TODO alert
+                    this.xactCollisionAlert.open().toPromise().then(_ =>
+                        window.location.href = window.location.href
+                    );
                 }
-            }
+            } else {
 
-            alert('Patron update failed:' + result);
+                alert('Patron update failed:' + result);
+            }
 
             return Promise.reject('Save Failed');
         });

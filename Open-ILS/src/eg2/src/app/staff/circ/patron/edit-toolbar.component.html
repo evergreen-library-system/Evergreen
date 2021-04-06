@@ -25,6 +25,17 @@
   </div>
 </div>
 
+<div class="row pb-1 pt-1" *ngIf="addressAlerts.length > 0">
+  <div class="col-lg-12 d-flex">
+    <div class="ml-auto mr-2">
+      <div *ngFor="let alert of addressAlerts"
+        class="alert alert-danger ml-auto p-2 mt-2" i18n>
+          Address Alert: {{alert.alert_message()}}
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row pb-1 pt-1" *ngIf="dupesFound().length > 0">
   <div class="col-lg-12 d-flex">
     <div class="ml-auto mr-2">
