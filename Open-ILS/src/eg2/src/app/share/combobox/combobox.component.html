@@ -5,7 +5,7 @@
 </ng-template>
 
 <ng-template #acqfTemplate egIdlClass="acqf" let-r="result">
-  {{r.fm.code()}} ({{r.fm.year()}})
+  {{r.fm.code()}} ({{r.fm.year()}}) ({{getOrgShortname(r.fm.org())}})
 </ng-template>
 <ng-template #acplTemplate egIdlClass="acpl" let-r="result">
   {{r.fm.name()}} ({{getOrgShortname(r.fm.owning_lib())}})

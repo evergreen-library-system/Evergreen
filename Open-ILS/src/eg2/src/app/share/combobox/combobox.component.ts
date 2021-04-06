@@ -205,7 +205,8 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                     return fm.course_number() + ': ' + fm.name();
                     break;
                 case 'acqf':
-                    return fm.code() + ' (' + fm.year() + ')';
+                    return fm.code() + ' (' + fm.year() + ')' +
+                           ' (' + this.getOrgShortname(fm.org()) + ')';
                     break;
                 case 'acpl':
                     return fm.name() + ' (' + this.getOrgShortname(fm.owning_lib()) + ')';
