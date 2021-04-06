@@ -1,0 +1,51 @@
+
+<div class="row" *ngIf="loading">
+  <div class="col-lg-6 offset-lg-3">
+    <eg-progress-inline></eg-progress-inline>
+  </div>
+</div>
+
+<ng-container *ngIf="!loading">
+  <h3 i18n>Working Location(s)</h3>
+
+  <div class="striped-rows-odd mt-3 mb-3">
+    <div class="row mt-2 pt-2 pb-2" *ngFor="let org of workableOrgs">
+      <div class="col-lg-12">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="work-org-{{org.id()}}" 
+            [disabled]="!canAssignWorkOrgs[org.id()]" [(ngModel)]="workOuSelector[org.id()]">
+          <label class="form-check-label" for="work-org-{{org.id()}}" i18n>
+            {{org.shortname()}} ({{org.name()}})
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="mt-2 mb-2"/>
+
+  <h3 i18n>User Permissions</h3>
+
+  <div class="striped-rows-odd mt-3">
+    <div class="row pt-1 pb-1">
+      <div class="col-lg-5 font-weight-bold" i18n>Permission</div>
+      <div class="col-lg-1 font-weight-bold" i18n>Applied</div>
+      <div class="col-lg-2 font-weight-bold" i18n>Depth</div>
+      <div class="col-lg-2 font-weight-bold" i18n>Grantable</div>
+    </div>
+    <div class="row pt-1 pb-1" *ngFor="let perm of allPerms">
+      <div class="col-lg-5">{{perm.code()}}</div>
+      <div class="col-lg-1">
+        <input class="form-check-input ml-0 pl-0" type="checkbox"
+          [(ngModel)]="permsApplied[perm.id()]"/>
+      </div>
+      <div class="col-lg-2">
+        <select class="form-control" [(ngModel)]="permDepths[perm.id()]">
+          <option *ngFor="let depth of orgDepths" [value]="depth">{{depth}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+
