@@ -96,8 +96,8 @@ class SQL(basel10n.BaseL10N):
                     poe.occurrences = [(os.path.basename(source), num)]
                     poe.msgid = msgid
                     serts[msgid] = poe
-        except Exception, exc:
-            print "Error in oils_i18n_gettext line %d of SQL source file: %s" % (num, exc)
+        except Exception as exc:
+            print("Error in oils_i18n_gettext line %d of SQL source file: %s" % (num, exc))
 
         for poe in serts.values():
             self.pot.append(poe)

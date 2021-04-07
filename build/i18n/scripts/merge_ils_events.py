@@ -76,16 +76,16 @@ def main():
         merged = merge_events(options.master, options.localization)
 
     if options.outfile:
-        outfile = open(options.outfile, 'w')
+        outfile = open(options.outfile, 'wb')
         if options.pretty:
             outfile.write(merged.toprettyxml(encoding='utf-8'))
         else:
             outfile.write(merged.toxml(encoding='utf-8'))
     else:
         if options.pretty:
-            print merged.toprettyxml(encoding='utf-8')
+            print(merged.toprettyxml(encoding='utf-8'))
         else:
-            print merged.toxml(encoding='utf-8')
+            print(merged.toxml(encoding='utf-8'))
 
 if __name__ == '__main__':
     main()

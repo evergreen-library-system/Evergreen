@@ -107,7 +107,7 @@ class IDLHandler(xml.sax.handler.ContentHandler):
         lineno = self.locator.getLineNumber()
         if name == 'class':
             self.classid = attributes['id']
-        if attributes.has_key('reporter:label'):
+        if 'reporter:label' in attributes:
             if name == 'class':
                 entity = "%s.%s.label" % (name, self.classid)
             elif name == 'field':
@@ -117,7 +117,7 @@ class IDLHandler(xml.sax.handler.ContentHandler):
                 entity = "%s.%s.%s.label" % (name, self.classid, \
                     attributes['field'])
             label = attributes['reporter:label']
-            if not self.entities.has_key(label):
+            if label not in self.entities:
                 self.entities[label] = [(str(entity), lineno)]
             else:
                 self.entities[label].append((str(entity), lineno))

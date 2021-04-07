@@ -59,10 +59,10 @@ class DojoResource (basel10n.BaseL10N):
         # Avoid generating duplicate entries by keeping track of msgids
         msgids = dict()
 
-	try:
+        try:
             bundle = simplejson.load(codecs.open(source, encoding='utf-8', mode='r'))
-	except ValueError:
-	    print("Reading Dojo resource file %s" % (source))
+        except ValueError:
+            print("Reading Dojo resource file %s" % (source))
             raise
 
         for key, value in bundle.iteritems():

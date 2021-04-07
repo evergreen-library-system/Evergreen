@@ -179,7 +179,7 @@ def process_indicator(field, position, raw_ind):
     if (re.compile(r'indicateur\s*-\s*Non').search(raw_ind.contents[0])):
         return None
     if (not raw_ind.ul):
-        print "No %d indicator for %s, although not not defined either..." % (position, field.tag)
+        print("No %d indicator for %s, although not not defined either..." % (position, field.tag))
         return None
     ind_values = raw_ind.ul.findAll('li')
     for value in ind_values:
@@ -208,12 +208,12 @@ def process_subfield(field, subfield):
             repeatable = 'false'
         subfield.small.extract()
     else:
-        print "%s has no small or span tags?" % (field.tag)
+        print("%s has no small or span tags?" % (field.tag))
 
     subfield_text = re.compile(r'\n').sub(' ', ''.join(subfield.findAll(text=True)))
     matches = re.compile(r'^\$(\w)\s*-\s*(.+)$', re.S).search(subfield_text)
     if (not matches):
-        print "No subfield match for field: " + field.tag
+        print("No subfield match for field: " + field.tag)
         return None
     field.subfields.append(Subfield(matches.group(1).replace('\n', ' ').rstrip(), repeatable, matches.group(2).replace('\n', ' ').rstrip()))
 
@@ -242,14 +242,14 @@ def process_tag(tag):
     # Get description
     desc = tag.parent.findNextSibling('p')
     if (not desc):
-        print "No description for %s" % (tag_num)
+        print("No description for %s" % (tag_num))
     else:
         if (str(desc.__class__) == 'BeautifulSoup.Tag'):
             try:
                 description += u''.join(desc.findAll(text=True))
             except:
-                print "Bad description for: " + tag_num
-                print u' '.join(desc.findAll(text=True))
+                print("Bad description for: " + tag_num)
+                print(u' '.join(desc.findAll(text=True)))
         else:
             description += desc.string
     description = description.replace('\n', ' ').rstrip()
@@ -292,7 +292,7 @@ if __name__ == '__main__':
 
         if (not re.compile(r'^040010-1\d\d\d-f.html').search(filename)):
             continue
-        print filename
+        print(filename)
         devnull = codecs.open('/dev/null', encoding='utf-8', mode='w')
         file = subprocess.Popen(
             ('tidy', '-asxml', '-n', '-q', '-utf8', filename),
