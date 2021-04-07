@@ -9553,13 +9553,13 @@ SELECT  usr,
 	<class id="acqfdeb" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund_debit" oils_persist:tablename="acq.fund_debit" reporter:label="Debit From Fund">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_debit_id_seq">
 			<field reporter:label="Debit ID" name="id" reporter:datatype="id" />
-			<field reporter:label="Fund ID" name="fund" reporter:datatype="link" />
+			<field reporter:label="Fund" name="fund" reporter:datatype="link" />
 			<field reporter:label="Origin Amount" name="origin_amount" reporter:datatype="money" />
 			<field reporter:label="Origin Currency" name="origin_currency_type" reporter:datatype="link" />
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
 			<field reporter:label="Encumbrance" name="encumbrance" reporter:datatype="bool" />
 			<field reporter:label="Debit Type" name="debit_type" reporter:datatype="text" />
-			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp" />
+			<field reporter:label="Debit Time" name="create_time" reporter:datatype="timestamp" />
 			<field reporter:label="Invoice Entry" name="invoice_entry" reporter:datatype="link" />
 		</fields>
 		<links>
@@ -9588,7 +9588,7 @@ SELECT  usr,
 	<class id="acqf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::fund" oils_persist:tablename="acq.fund" reporter:label="Fund">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.fund_id_seq">
 			<field reporter:label="Fund ID" name="id" reporter:datatype="id" reporter:selector='code'/>
-			<field reporter:label="Org Unit" name="org" reporter:datatype="org_unit" oils_obj:required="true" />
+			<field reporter:label="Owner" name="org" reporter:datatype="org_unit" oils_obj:required="true" />
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true" />
 			<field reporter:label="Year" name="year" reporter:datatype="int" oils_obj:required="true" />
 			<field reporter:label="Currency Type" name="currency_type" reporter:datatype="link" oils_obj:required="true" />
@@ -9830,7 +9830,7 @@ SELECT  usr,
         ]]></oils_persist:source_definition>
         <fields oils_persist:primary="id" oils_persist:sequence="acq.fund_id_seq">
             <field reporter:label="Fund ID" name="id" reporter:datatype="id" reporter:selector='code'/>
-            <field reporter:label="Org Unit" name="org" reporter:datatype="org_unit" />
+            <field reporter:label="Owner" name="org" reporter:datatype="org_unit" />
             <field reporter:label="Name" name="name" reporter:datatype="text" />
             <field reporter:label="Year" name="year" reporter:datatype="int" />
             <field reporter:label="Currency Type" name="currency_type" reporter:datatype="link" />
@@ -9866,7 +9866,7 @@ SELECT  usr,
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" oils_obj:required="true" />
 			<field reporter:label="Allocating User" name="allocator" reporter:datatype="link" oils_obj:required="true" />
 			<field reporter:label="Note" name="note" reporter:datatype="text" />
-			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp" />
+			<field reporter:label="Allocation Time" name="create_time" reporter:datatype="timestamp" />
 		</fields>
 		<links>
 			<link field="allocator" reltype="has_a" key="id" map="" class="au"/>
@@ -9895,7 +9895,7 @@ SELECT  usr,
         <fields oils_persist:primary="id" oils_persist:sequence="acq.fund_allocation_percent_id_seq">
             <field reporter:label="Allocation ID" name="id" reporter:datatype="id" />
             <field reporter:label="Funding Source" name="funding_source" reporter:datatype="link" />
-            <field reporter:label="Org Unit" name="org" reporter:datatype="org_unit" />
+            <field reporter:label="Owner" name="org" reporter:datatype="org_unit" />
             <field reporter:label="Fund Code" name="fund_code" reporter:datatype="text" />
             <field reporter:label="Percent" name="percent" reporter:datatype="float" />
             <field reporter:label="Allocating User" name="allocator" reporter:datatype="link" />
@@ -10977,7 +10977,7 @@ SELECT  usr,
 	<class id="acqclt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_type" oils_persist:tablename="acq.claim_type" reporter:label="Claim Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.claim_type_id_seq">
 			<field reporter:label="Claim Type ID" name="id" reporter:datatype="id" reporter:selector="code" />
-			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit"/>
+			<field reporter:label="Owner" name="org_unit" reporter:datatype="org_unit"/>
 			<field reporter:label="Code" name="code" reporter:datatype="text"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text"/>
 		</fields>
@@ -10997,7 +10997,7 @@ SELECT  usr,
 	<class id="acqclet" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_event_type" oils_persist:tablename="acq.claim_event_type" reporter:label="Claim Event Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.claim_event_type_id_seq">
 			<field reporter:label="Claim Event Type ID" name="id" reporter:datatype="id" reporter:selector="code" />
-			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit"/>
+			<field reporter:label="Owner" name="org_unit" reporter:datatype="org_unit"/>
 			<field reporter:label="Code" name="code" reporter:datatype="text"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text"/>
 			<field reporter:label="Library Initiated" name="library_initiated" reporter:datatype="bool"/>
@@ -11074,7 +11074,7 @@ SELECT  usr,
 	<class id="acqclp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_policy" oils_persist:tablename="acq.claim_policy" reporter:label="Claim Policy">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.claim_policy_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
-			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit"/>
+			<field reporter:label="Owner" name="org_unit" reporter:datatype="org_unit"/>
 			<field reporter:label="Claim Policy Name" name="name" reporter:datatype="text"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text"/>
 		</fields>
@@ -11094,7 +11094,7 @@ SELECT  usr,
 	<class id="acqclpa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::claim_policy_action" oils_persist:tablename="acq.claim_policy_action" reporter:label="Claim Policy Action">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.claim_policy_action_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="action"/>
-			<field reporter:label="Claim Policy ID" name="claim_policy" reporter:datatype="link"/>
+			<field reporter:label="Claim Policy" name="claim_policy" reporter:datatype="link"/>
 			<field reporter:label="Action Interval" name="action_interval" reporter:datatype="interval"/>
 			<field reporter:label="Action (Event Type)" name="action" reporter:datatype="link"/>
 		</fields>
