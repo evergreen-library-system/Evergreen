@@ -2223,17 +2223,17 @@ sub hold_request_count {
 
     my $resp = {
         total => scalar(@$holds),
-        ready => scalar(@ready)
+        ready => int(scalar(@ready))
     };
 
     if ($ctx_org) {
         # count of holds ready at pickup lib with behind_desk true.
-        $resp->{behind_desk} = scalar(
+        $resp->{behind_desk} = int(scalar(
             grep {
                 $_->{pickup_lib} == $ctx_org and
                 $U->is_true($_->{behind_desk})
             } @ready
-        );
+        ));
     }
 
     return $resp;
