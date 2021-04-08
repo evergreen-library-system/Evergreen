@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import {Component, ViewChild, OnInit, AfterViewInit, HostListener} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {NetService} from '@eg/core/net.service';
@@ -9,6 +9,8 @@ import {PatronContextService, BillGridEntry} from './patron.service';
 import {PatronSearch, PatronSearchComponent
     } from '@eg/staff/share/patron/search.component';
 import {EditToolbarComponent} from './edit-toolbar.component';
+import {EditComponent} from './edit.component';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
 const MAIN_TABS =
     ['checkout', 'items_out', 'holds', 'bills', 'messages', 'edit', 'search'];
@@ -29,7 +31,12 @@ export class PatronComponent implements OnInit, AfterViewInit {
     /* eg-patron-edit is unable to find #editorToolbar directly
      * within the template.  Adding a ref here allows it to
      * successfully transfer to the editor */
-    @ViewChild('editorToolbar') editorToolbar: EditToolbarComponent;
+    @ViewChild('editorToolbar') private editorToolbar: EditToolbarComponent;
+
+    @ViewChild('patronEditor') private patronEditor: EditComponent;
+
+    @ViewChild('pendingChangesDialog')
+        private pendingChangesDialog: ConfirmDialogComponent;
 
     constructor(
         private router: Router,
@@ -44,6 +51,29 @@ export class PatronComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         this.watchForTabChange();
         this.load();
+    }
+
+    @HostListener('window:beforeunload', ['$event'])
+    canDeactivate($event?: Event): Promise<boolean> {
+
+        if (this.patronEditor && this.patronEditor.changesPending) {
+
+            // Each warning dialog clears the current "changes are pending"
+            // flag so the user is not presented with the dialog again
+            // unless new changes are made.
+            this.patronEditor.changesPending = false;
+
+            if ($event) { // window.onbeforeunload
+                $event.preventDefault();
+                $event.returnValue = true;
+
+            } else { // tab OR route change.
+                return this.pendingChangesDialog.open().toPromise();
+            }
+
+        } else {
+            return Promise.resolve(true);
+        }
     }
 
     load() {
@@ -102,8 +132,13 @@ export class PatronComponent implements OnInit, AfterViewInit {
         // tab will change with route navigation.
         evt.preventDefault();
 
-        this.patronTab = evt.nextId;
-        this.routeToTab();
+        // Protect against tab changes with dirty data.
+        this.canDeactivate().then(ok => {
+            if (ok) {
+                this.patronTab = evt.nextId;
+                this.routeToTab();
+            }
+        });
     }
 
     // The bills tab has various sub-interfaces.  If the user is already

@@ -1333,9 +1333,9 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     save(clone?: boolean): Promise<any> {
 
-        // TODO clear unload prompt
-
+        this.changesPending = false;
         this.loading = true;
+
         return this.saveUser()
         .then(_ => this.saveUserSettings())
         .then(_ => this.updateHoldPrefs())

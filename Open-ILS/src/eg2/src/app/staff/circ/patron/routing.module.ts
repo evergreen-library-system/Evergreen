@@ -5,6 +5,7 @@ import {BcSearchComponent} from './bcsearch.component';
 import {PatronResolver} from './resolver.service';
 import {TestPatronPasswordComponent} from './test-password.component';
 import {RegisterPatronComponent} from './register.component';
+import {CanDeactivateGuard} from '@eg/share/util/can-deactivate.guard';
 
 const routes: Routes = [{
     path: '',
@@ -49,7 +50,8 @@ const routes: Routes = [{
   }, {
     path: ':id/:tab',
     component: PatronComponent,
-    resolve: {resolver : PatronResolver}
+    resolve: {resolver : PatronResolver},
+    canDeactivate: [CanDeactivateGuard]
 }];
 
 @NgModule({

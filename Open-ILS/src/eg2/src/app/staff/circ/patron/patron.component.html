@@ -4,6 +4,11 @@
   </eg-staff-banner>
 </ng-container>
 
+<eg-confirm-dialog #pendingChangesDialog
+  i18n-dialogTitle dialogTitle="Unsaved Changes Confirmation" 
+  i18n-dialogBoby  dialogBody="Unsaved changes will be lost.  Continue navigation?">
+</eg-confirm-dialog>
+
 <ng-container *ngIf="context.summary">
   <eg-staff-banner i18n-bannerText bannerText="Patron: 
     {{context.summary.patron.family_name()}}, 
@@ -105,7 +110,7 @@
         <li ngbNavItem="edit" [disabled]="!context.summary">
           <a ngbNavLink i18n>Edit</a>
           <ng-template ngbNavContent>
-            <eg-patron-edit [patronId]="patronId" [toolbar]="editorToolbar">
+            <eg-patron-edit #patronEditor [patronId]="patronId" [toolbar]="editorToolbar">
             </eg-patron-edit> 
           </ng-template>
         </li>
