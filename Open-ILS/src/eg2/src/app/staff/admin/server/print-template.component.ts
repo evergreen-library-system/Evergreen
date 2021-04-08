@@ -110,6 +110,15 @@ export class PrintTemplateComponent implements OnInit {
             address: samples.aua[0]
         };
 
+        const patron = this.idl.clone(samples.au[0]);
+        patron.addresses = [samples.aua[0]];
+        patron.stat_cat_entries = [{
+            stat_cat: {name: 'A Stat Cat'},
+            stat_cat_entry: 'A Value'
+        }];
+
+        this.sampleData.patron_data = {patron: patron};
+
         this.sampleData.holds_for_bib = wide_holds;
 
         // Bills

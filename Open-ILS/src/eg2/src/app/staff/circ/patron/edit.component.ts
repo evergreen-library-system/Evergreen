@@ -24,6 +24,7 @@ import {PatronSearchFieldSet} from '@eg/staff/share/patron/search.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {HoldNotifyUpdateDialogComponent} from './hold-notify-update.component';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
+import {PrintService} from '@eg/share/print/print.service';
 
 const PATRON_FLESH_FIELDS = [
     'cards',
@@ -221,6 +222,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         private serverStore: ServerStoreService,
         private broadcaster: BroadcastService,
         private patronService: PatronService,
+        private printer: PrintService,
         public context: PatronContextService
     ) {}
 
@@ -1516,7 +1518,11 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
 
     printPatron() {
-        // TODO
+        this.printer.print({
+            templateName: 'patron_data',
+            contextData: {patron: this.patron},
+            printContext: 'default'
+        });
     }
 
     replaceBarcode() {
