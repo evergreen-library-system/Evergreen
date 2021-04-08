@@ -721,6 +721,10 @@ export class EditComponent implements OnInit, AfterViewInit {
 
             this.userStatCats[map.stat_cat()] = cboxEntry;
         });
+
+        if (this.patron.waiver_entries().length === 0) {
+            this.addWaiver();
+        }
     }
 
     createNewPatron() {
@@ -748,9 +752,8 @@ export class EditComponent implements OnInit, AfterViewInit {
         patron.addresses([addr]);
 
         this.patron = patron;
+        this.addWaiver();
     }
-
-
 
     objectFromPath(path: string, index: number): IdlObject {
         const base = path ? this.patron[path]() : this.patron;
@@ -1368,6 +1371,10 @@ export class EditComponent implements OnInit, AfterViewInit {
     saveUser(): Promise<IdlObject> {
         this.modifiedPatron = null;
 
+        // A dummy waiver is added on load.  Remove it if no values were added.
+        this.patron.waiver_entries(
+            this.patron.waiver_entries().filter(e => !e.isnew() || e.name()));
+
         return this.net.request(
             'open-ils.actor',
             'open-ils.actor.patron.update',
@@ -1613,6 +1620,28 @@ export class EditComponent implements OnInit, AfterViewInit {
             this.patron.profile()
             && !this.editProfiles.includes(this.patron.profile())
         );
+    }
+
+    addWaiver() {
+        const waiver = this.idl.create('aupw');
+        waiver.isnew(true);
+        waiver.id(this.autoId--);
+        waiver.usr(this.patronId);
+        this.patron.waiver_entries().push(waiver);
+    }
+
+    removeWaiver(waiver: IdlObject) {
+        if (waiver.isnew()) {
+            this.patron.waiver_entries(
+                this.patron.waiver_entries().filter(w => w.id() !== waiver.id()));
+
+            if (this.patron.waiver_entries().length === 0) {
+                // We need at least one waiver to access action buttons
+                this.addWaiver();
+            }
+        } else {
+            waiver.isdeleted(true);
+        }
     }
 }
 

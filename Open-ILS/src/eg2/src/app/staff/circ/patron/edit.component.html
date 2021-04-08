@@ -572,33 +572,72 @@
   </ng-container>
 
   <ng-container *ngIf="context.settingsCache['circ.privacy_waiver']">
-    <div class="row pt-1 pb-1 mt-1">
-      <div class="col-lg-3" i18n>Allow others to use my account</div>
+    <div class="row pt-1 pb-1 mt-1" 
+      *ngFor="let waiver of patron.waiver_entries(); let index = index">
       <div class="col-lg-3">
-        <input type="text" class="form-control" [(ngModel)]="waiverName"/>
+        <span *ngIf="index == 0" i18n>Allow others to use my account</span>
       </div>
       <div class="col-lg-3">
-        <div class="form-inline">
-          <input class="form-check-input" type="checkbox"/>
-          <label class="form-check-label" 
-            for="" i18n>Place Holds?</label>
-        </div>
-        <div class="form-inline">
-          <input class="form-check-input" type="checkbox"/>
-          <label class="form-check-label" 
-            for="" i18n>View Borrowing History?</label>
-        </div>
+        <input type="text" class="form-control" [ngModel]="waiver.name()"
+          [disabled]="waiver.isdeleted()"
+          (ngModelChange)="fieldValueChange('waiver_entries', index, 'name', $event)"
+          (change)="afterFieldChange('waiver_entries', index, 'name')"
+          i18n-placeholder placeholder="Enter Name..."/>
       </div>
-      <div class="col-lg-3">
-        <div class="form-inline">
-          <input class="form-check-input" type="checkbox"/>
-          <label class="form-check-label" 
-            for="" i18n>Place Holdck Up Holds?</label>
+      <div class="col-lg-6 d-flex">
+        <div>
+          <div class="form-inline">
+            <input class="form-check-input" type="checkbox" 
+              [disabled]="waiver.isdeleted()"
+              id="waiver-holds-{{waiver.id()}}" [ngModel]="waiver.place_holds() == 't'"
+              (ngModelChange)="fieldValueChange('waiver_entries', index, 'place_holds', $event)"
+              (change)="afterFieldChange('waiver_entries', index, 'place_holds')"/>
+            <label class="form-check-label"
+              for="waiver-holds-{{waiver.id()}}" i18n>Place Holds?</label>
+          </div>
+          <div class="form-inline">
+            <input class="form-check-input" type="checkbox" 
+              [disabled]="waiver.isdeleted()"
+              id="waiver-history-{{waiver.id()}}" [ngModel]="waiver.view_history() == 't'"
+              (ngModelChange)="fieldValueChange('waiver_entries', index, 'view_history', $event)"
+              (change)="afterFieldChange('waiver_entries', index, 'view_history')"/>
+            <label class="form-check-label"
+              for="waiver-history-{{waiver.id()}}" i18n>View Borrowing History?</label>
+          </div>
         </div>
-        <div class="form-inline">
-          <input class="form-check-input" type="checkbox"/>
-          <label class="form-check-label" 
-            for="" i18n>Check Out Items?</label>
+        <div class="ml-3">
+          <div class="form-inline">
+            <input class="form-check-input" type="checkbox" 
+              [disabled]="waiver.isdeleted()"
+              id="waiver-pickup-{{waiver.id()}}" [ngModel]="waiver.pickup_holds() == 't'"
+              (ngModelChange)="fieldValueChange('waiver_entries', index, 'pickup_hold', $event)"
+              (change)="afterFieldChange('waiver_entries', index, 'pickup_hold')"/>
+            <label class="form-check-label"
+              for="waiver-pickup-{{waiver.id()}}" i18n>Pick Up Holds?</label>
+          </div>
+          <div class="form-inline">
+            <input class="form-check-input" type="checkbox" 
+              [disabled]="waiver.isdeleted()"
+              id="waiver-checkout-{{waiver.id()}}" [ngModel]="waiver.checkout_items() == 't'"
+              (ngModelChange)="fieldValueChange('waiver_entries', index, 'checkout_items', $event)"
+              (change)="afterFieldChange('waiver_entries', index, 'checkout_items')"/>
+            <label class="form-check-label"
+              for="waiver-checkout-{{waiver.id()}}" i18n>Check Out Items?</label>
+          </div>
+        </div>
+        <div class="ml-3">
+          <button class="btn btn-danger material-icon-button" 
+            [ngClass]="{'invisible': waiver.isdeleted()}"
+            (click)="removeWaiver(waiver)"
+            i18n-title title="Remove Privacy Waiver">
+            <span class="text-danger material-icons">delete</span>
+          </button>
+        </div>
+        <div class="ml-2" *ngIf="index == patron.waiver_entries().length - 1">
+          <button class="btn btn-success material-icon-button" 
+          (click)="addWaiver()" i18n-title title="Add Privacy Waiver">
+            <span class="text-success material-icons">add</span>
+          </button>
         </div>
       </div>
     </div>
