@@ -242,7 +242,7 @@
                 <span i18n>{{li.purchase_order().id()}}</span>
               </a>
             </ng-container>
-            <ng-container *ngIf="!picklistId && li.picklist()">
+            <ng-container *ngIf="!picklistId && li.picklist() && li.picklist().name()">
               <span class="ml-1 mr-1" i18n> | </span>
               <a class="label-with-material-icon"
                 title="Selection List" i18n-title 

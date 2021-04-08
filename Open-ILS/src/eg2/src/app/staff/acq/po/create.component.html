@@ -17,13 +17,16 @@
   </div>
   <div class="form-group">
     <label for="name-input" i18n>Provider</label>
-    <eg-combobox domId="provider-input" [(ngModel)]="provider" idlClass="acqpro">
+    <eg-combobox domId="provider-input" [(ngModel)]="provider" 
+      [idlQueryAnd]="{active: 't'}" idlClass="acqpro">
     </eg-combobox>
   </div>
   <div class="form-group form-check">
     <input type="checkbox" class="form-check-input" 
       [(ngModel)]="prepaymentRequired" id="prepayment-required">
-    <label class="form-check-label" for="prepayment-required" i18n>Prepayment Required</label>
+    <label class="form-check-label" for="prepayment-required" i18n>
+      Prepayment Required
+    </label>
   </div>
   <div class="form-group form-check">
     <input type="checkbox" class="form-check-input" 
