@@ -176,6 +176,7 @@ export class EditComponent implements OnInit, AfterViewInit {
     origUsername: string;
     stageUser: IdlObject;
     stageUserRequestor: IdlObject;
+    waiverName: string;
 
     fieldPatterns: {[cls: string]: {[field: string]: RegExp}} = {
         au: {},
