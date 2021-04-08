@@ -61,9 +61,9 @@ export class PatronMergeDialogComponent
             this.leadAccount = null;
             this.loadPatron(this.patronIds[0])
             .then(ctx => this.summary1 = ctx)
-            .then(_ => this.loadPatron(this.patronIds[1]))
+            .then(__ => this.loadPatron(this.patronIds[1]))
             .then(ctx => this.summary2 = ctx)
-            .then(_ => this.loading = false);
+            .then(__ => this.loading = false);
         });
     }
 

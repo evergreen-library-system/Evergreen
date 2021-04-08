@@ -283,7 +283,7 @@ export class EditComponent implements OnInit, AfterViewInit {
 
             const children = profiles.filter(p => p.parent() === grp.id());
             children.forEach(child => traverseTree(child, failed));
-        }
+        };
 
         return this.perms.hasWorkPermAt(appPerms, true).then(orgs => {
             appPerms.forEach(p => {
@@ -325,9 +325,9 @@ export class EditComponent implements OnInit, AfterViewInit {
         .then(_ => {
 
             const requestor = this.stageUser.user.requesting_usr();
-            if (!requestor) return;
-
-            return this.pcrud.retrieve('au', requestor).toPromise();
+            if (requestor) {
+                return this.pcrud.retrieve('au', requestor).toPromise();
+            }
 
         })
         .then(reqr => this.stageUserRequestor = reqr)
@@ -338,7 +338,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         const stageData = this.stageUser;
         const patron = this.patron;
 
-        for (let key in this.idl.classes.stgu.field_map) {
+        Object.keys(this.idl.classes.stgu.field_map).forEach(key => {
             const field = this.idl.classes.au.field_map[key];
             if (field && !field.virtual) {
                 const value = stageData.user[key]();
@@ -346,10 +346,10 @@ export class EditComponent implements OnInit, AfterViewInit {
                     patron[key](value);
                 }
             }
-        };
+        });
 
         // Clear the usrname if it looks like a UUID
-        if (patron.usrname().replace(/-/g,'').match(/[0-9a-f]{32}/)) {
+        if (patron.usrname().replace(/-/g, '').match(/[0-9a-f]{32}/)) {
             patron.usrname('');
         }
 
@@ -372,7 +372,7 @@ export class EditComponent implements OnInit, AfterViewInit {
             this.strings.interpolate('circ.patron.edit.default_addr_type')
             .then(msg => addr.address_type(msg));
 
-            for (let key in this.idl.classes[cls].field_map) {
+            Object.keys(this.idl.classes[cls].field_map).forEach(key => {
                 const field = this.idl.classes.aua.field_map[key];
                 if (field && !field.virtual) {
                     const value = stageAddr[key]();
@@ -380,7 +380,7 @@ export class EditComponent implements OnInit, AfterViewInit {
                         addr[key](value);
                     }
                 }
-            }
+            });
 
             patron.addresses().push(addr);
 
@@ -389,12 +389,12 @@ export class EditComponent implements OnInit, AfterViewInit {
             } else {
                 patron.billing_address(addr);
             }
-        }
+        };
 
         addrFromStage(stageData.mailing_addresses[0]);
         addrFromStage(stageData.billing_addresses[0]);
 
-        if (patron.addresses().length == 1) {
+        if (patron.addresses().length === 1) {
             // Only one address, use it for both purposes.
             const addr = patron.addresses()[0];
             patron.mailing_address(addr);
@@ -423,7 +423,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         const patron = this.patron;
 
         // flesh the home org locally
-        patron.home_ou(clone.home_ou())
+        patron.home_ou(clone.home_ou());
 
         if (!clone.billing_address() &&
             !clone.mailing_address()) {
@@ -452,7 +452,7 @@ export class EditComponent implements OnInit, AfterViewInit {
                 newAddr.valid('t');
                 patron.addresses().push(newAddr);
                 return newAddr;
-            }
+            };
 
             if (billAddr = clone.billing_address()) {
                 patron.billing_address(cloneAddr(billAddr));
@@ -460,7 +460,7 @@ export class EditComponent implements OnInit, AfterViewInit {
 
             if (mailAddr = clone.mailing_address()) {
 
-                if (billAddr && billAddr.id() == mailAddr.id()) {
+                if (billAddr && billAddr.id() === mailAddr.id()) {
                     patron.mailing_address(patron.billing_address());
                 } else {
                     patron.mailing_address(cloneAddr(mailAddr));
@@ -484,7 +484,7 @@ export class EditComponent implements OnInit, AfterViewInit {
 
             if (addr = clone.mailing_address()) {
                 if (patron.billing_address() &&
-                    addr.id() == patron.billing_address().id()) {
+                    addr.id() === patron.billing_address().id()) {
                     // mailing matches billing
                     patron.mailing_address(patron.billing_address());
                 } else {
@@ -658,10 +658,10 @@ export class EditComponent implements OnInit, AfterViewInit {
         this.holdNotifyValues.other_phone = this.patron.other_phone();
         this.holdNotifyValues.evening_phone = this.patron.evening_phone();
 
-        this.patron.settings().forEach(setting => {
-            const value = setting.value();
+        this.patron.settings().forEach(stg => {
+            const value = stg.value();
             if (value !== '' && value !== null) {
-                usets[setting.name()] = JSON.parse(value);
+                usets[stg.name()] = JSON.parse(value);
             }
         });
 
@@ -963,7 +963,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         this.net.request(
             'open-ils.search', 'open-ils.search.zip', postCode
         ).subscribe(resp => {
-            if (!resp) return;
+            if (!resp) { return; }
 
             ['city', 'state', 'county'].forEach(field => {
                 if (resp[field]) {
@@ -1483,8 +1483,8 @@ export class EditComponent implements OnInit, AfterViewInit {
                 newValue = this.patron[field]();
 
             } else if (matches = field.match(/(\w+)_notify/)) {
-                const holdNotify = this.userSettings['opac.hold_notify'] || '';
-                newValue = holdNotify.match(matches[1]) !== null;
+                const notify = this.userSettings['opac.hold_notify'] || '';
+                newValue = notify.match(matches[1]) !== null;
             }
 
             const oldValue = this.holdNotifyValues[field];
@@ -1509,7 +1509,7 @@ export class EditComponent implements OnInit, AfterViewInit {
                         oldValue: oldValue,
                         holds: holds
                     });
-                };
+                }
             }));
         })).toPromise().then(_ => mods);
     }

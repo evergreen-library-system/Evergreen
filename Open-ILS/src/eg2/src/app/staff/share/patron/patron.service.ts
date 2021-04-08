@@ -276,7 +276,7 @@ export class PatronService {
             return this.net.request(
                 'open-ils.actor',
                 'open-ils.actor.user.opac.vital_stats.authoritative',
-                this.auth.token(), patron.id()).toPromise()
+                this.auth.token(), patron.id()).toPromise();
 
         }).then((stats: PatronStats) => {
 
@@ -352,7 +352,7 @@ export class PatronService {
             }
 
             return alerts;
-        })
+        });
     }
 }
 

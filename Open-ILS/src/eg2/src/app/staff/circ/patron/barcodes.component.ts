@@ -58,7 +58,7 @@ export class PatronBarcodesDialogComponent
             PERMS.forEach(p => {
                 this.myPerms[p] = perms[p].includes(this.patron.home_ou());
             });
-        })
+        });
 
         return super.open(ops);
     }

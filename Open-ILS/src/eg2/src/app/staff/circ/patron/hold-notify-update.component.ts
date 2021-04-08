@@ -16,10 +16,10 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 /* Apply notification changes to affected holds */
 
 export interface HoldNotifyMod {
-    field: string,
-    newValue: any,
-    oldValue: any,
-    holds: any[]
+    field: string;
+    newValue: any;
+    oldValue: any;
+    holds: any[];
 }
 
 @Component({

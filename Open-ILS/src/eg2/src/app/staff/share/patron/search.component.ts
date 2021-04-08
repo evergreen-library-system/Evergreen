@@ -102,7 +102,7 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
                 try {
                     this.startWithSearch = {search: JSON.parse(search)};
                 } catch (E) {
-                    console.error("Invalid JSON search value", search, E);
+                    console.error('Invalid JSON search value', search, E);
                 }
             }
         });

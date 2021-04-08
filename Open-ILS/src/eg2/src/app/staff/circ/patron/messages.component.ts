@@ -33,7 +33,7 @@ export class PatronMessagesComponent implements OnInit {
     @ViewChild('mainGrid') private mainGrid: GridComponent;
     @ViewChild('archiveGrid') private archiveGrid: GridComponent;
     @ViewChild('penaltyDialog')
-        private penaltyDialog: PatronPenaltyDialogComponent
+        private penaltyDialog: PatronPenaltyDialogComponent;
 
     constructor(
         private org: OrgService,
@@ -47,7 +47,7 @@ export class PatronMessagesComponent implements OnInit {
 
     ngOnInit() {
 
-		const orgIds = this.org.fullPath(this.auth.user().ws_ou(), true);
+        const orgIds = this.org.fullPath(this.auth.user().ws_ou(), true);
 
         const start = new Date();
         start.setFullYear(start.getFullYear() - 1);
@@ -80,7 +80,7 @@ export class PatronMessagesComponent implements OnInit {
 
             flesh.order_by = orderBy;
             return this.pcrud.search('ausp', query, flesh, {authoritative: true});
-        }
+        };
 
         this.archiveDataSource.getRows = (pager: Pager, sort: any[]) => {
             const orderBy: any = {ausp: 'set_date'};
@@ -98,7 +98,7 @@ export class PatronMessagesComponent implements OnInit {
             flesh.order_by = orderBy;
 
             return this.pcrud.search('ausp', query, flesh, {authoritative: true});
-        }
+        };
     }
 
     dateRange(): string[] {
@@ -106,7 +106,7 @@ export class PatronMessagesComponent implements OnInit {
         let endDate = this.endDateYmd;
         const today = DateUtil.localYmdFromDate();
 
-        if (endDate == today) { endDate = 'now'; }
+        if (endDate === today) { endDate = 'now'; }
 
         return [this.startDateYmd, endDate];
     }

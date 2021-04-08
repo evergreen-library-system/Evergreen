@@ -10,7 +10,7 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {StringComponent} from '@eg/share/string/string.component'
+import {StringComponent} from '@eg/share/string/string.component';
 
 /**
  * Dialog for adding bib records to new and existing record buckets.

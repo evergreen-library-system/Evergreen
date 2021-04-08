@@ -77,7 +77,7 @@ export class PatronPermsComponent implements OnInit {
                 maps.forEach(m => {
                     this.permsApplied[m.perm()] = true;
                     this.permDepths[m.perm()] = m.depth();
-                    this.permGrantable[m.perm()] = m.grantable() === 't'
+                    this.permGrantable[m.perm()] = m.grantable() === 't';
 
                 });
             });
