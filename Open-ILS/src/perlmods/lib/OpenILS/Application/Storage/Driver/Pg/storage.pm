@@ -366,7 +366,7 @@
             $dbh->pg_putline($line."\n");
         }
 
-        return scalar(@fm_nodes);
+        return int(scalar(@fm_nodes));
     }
 
     sub copy_create_finish {
@@ -398,7 +398,7 @@
         copy_create_push(   $self => $client => @fm_nodes );
         copy_create_finish( $self => $client );
 
-        return scalar(@fm_nodes);
+        return int(scalar(@fm_nodes));
     }
 
     sub autoprimary {
