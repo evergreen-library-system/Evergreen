@@ -287,8 +287,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         this.copyAlertsDialog.open({size: 'lg'}).subscribe(
             modified => {
                 if (modified) {
-                    // TODO: verify the modiifed alerts are present
-                    // or go fetch them.
+                    rows.forEach(row => row.copyAlertCount++);
                     this.checkoutsGrid.reload();
                 }
             }

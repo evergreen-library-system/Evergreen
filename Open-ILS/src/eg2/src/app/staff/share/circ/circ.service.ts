@@ -11,6 +11,7 @@ import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.s
 import {AudioService} from '@eg/share/util/audio.service';
 import {CircEventsComponent} from './events-dialog.component';
 import {CircComponentsComponent} from './components.component';
+import {StringService} from '@eg/share/string/string.service';
 
 export interface CircDisplayInfo {
     title?: string;
@@ -171,6 +172,7 @@ export class CircService {
     autoOverrideCheckoutEvents: {[textcode: string]: boolean} = {};
     suppressCheckinPopups = false;
     ignoreCheckinPrecats = false;
+    copyLocationCache: {[id: number]: IdlObject} = {};
 
     constructor(
         private audio: AudioService,
@@ -178,6 +180,7 @@ export class CircService {
         private org: OrgService,
         private net: NetService,
         private pcrud: PcrudService,
+        private strings: StringService,
         private auth: AuthService,
         private bib: BibRecordService,
     ) {}
@@ -451,12 +454,11 @@ export class CircService {
         return this.net.request(
             'open-ils.circ', method,
             this.auth.token(), this.apiParams(params)).toPromise()
-        .then(result => this.processCheckinResult(params, result));
+        .then(result => this.unpackCheckinData(params, result))
+        .then(result => this.processCheckinResult(result));
     }
 
-    processCheckinResult(
-        params: CheckinParams, response: any): Promise<CheckinResult> {
-
+    unpackCheckinData(params: CheckinParams, response: any): Promise<CheckinResult> {
         const allEvents = Array.isArray(response) ?
             response.map(r => this.evt.parse(r)) : [this.evt.parse(response)];
 
@@ -476,13 +478,35 @@ export class CircService {
         const result: CheckinResult = {
             index: CircService.resultIndex++,
             firstEvent: firstEvent,
-            allEvents: response,
+            allEvents: allEvents,
             params: params,
             success: success,
             circ: payload.circ,
             copy: payload.copy,
             record: payload.record
         };
+
+        let promise = Promise.resolve();;
+        const copy = result.copy;
+
+        if (copy) {
+            if (this.copyLocationCache[copy.location()]) {
+                copy.location(this.copyLocationCache[copy.location()]);
+            } else {
+                promise = this.pcrud.retrieve('acpl', copy.location()).toPromise()
+                .then(loc => {
+                    copy.location(loc);
+                    this.copyLocationCache[loc.id()] = loc;
+                });
+            }
+        }
+
+        return promise.then(_ => result);
+    }
+
+    processCheckinResult(result: CheckinResult): Promise<CheckinResult> {
+        const params = result.params;
+        const allEvents = result.allEvents;
 
         // Informational alerts that can be ignored if configured.
         if (this.suppressCheckinPopups &&
@@ -507,10 +531,9 @@ export class CircService {
             return this.showOverrideDialog(result, allEvents, true);
         }
 
-        switch (firstEvent.textcode) {
+        switch (result.firstEvent.textcode) {
             case 'SUCCESS':
             case 'NO_CHANGE':
-                this.audio.play('success.checkin');
                 return this.handleCheckinSuccess(result);
 
             case 'ITEM_NOT_CATALOGED':
@@ -527,7 +550,35 @@ export class CircService {
     }
 
     handleCheckinSuccess(result: CheckinResult): Promise<CheckinResult> {
+
+        switch (result.copy.status()) {
+
+            case 0: /* AVAILABLE */
+            case 4: /* MISSING */
+            case 7: /* RESHELVING */
+                this.audio.play('success.checkin');
+                return this.handleCheckinLocAlert(result);
+        }
+
         return Promise.resolve(result);
+    }
+
+    handleCheckinLocAlert(result: CheckinResult): Promise<CheckinResult> {
+        const copy = result.copy;
+
+        if (this.suppressCheckinPopups
+            || copy.location().checkin_alert() === 'f') {
+            return Promise.resolve(result);
+        }
+
+        return this.strings.interpolate(
+            'staff.circ.checkin.location.alert',
+            {barcode: copy.barcode(), location: copy.location().name()}
+        ).then(str => {
+            this.components.locationAlertDialog.dialogBody = str;
+            return this.components.locationAlertDialog.open().toPromise()
+            .then(_ => result);
+        });
     }
 
     handleOverridableCheckinEvents(
@@ -539,7 +590,6 @@ export class CircService {
             // Should never get here.  Just being safe.
             return Promise.reject(null);
         }
-
     }
 
 

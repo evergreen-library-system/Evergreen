@@ -35,7 +35,7 @@
     </ng-container>
     <li ngbNavItem="noncat">
       <a ngbNavLink i18n>
-        <ng-container *ngIf="context.summary.stats">
+        <ng-container *ngIf="context.summary && context.summary.stats">
           Non-Cataloged Circulations ({{context.summary.stats.checkouts.noncat}})
         </ng-container>
       </a>

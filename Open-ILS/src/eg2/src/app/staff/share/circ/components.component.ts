@@ -23,6 +23,7 @@ export class CircComponentsComponent {
     @ViewChild('circEventsDialog') circEventsDialog: CircEventsComponent;
     @ViewChild('routeToCatalogingDialog') routeToCatalogingDialog: AlertDialogComponent;
     @ViewChild('openCircDialog') openCircDialog: OpenCircDialogComponent;
+    @ViewChild('locationAlertDialog') locationAlertDialog: AlertDialogComponent;
 
     constructor(private circ: CircService) {
         this.circ.components = this;

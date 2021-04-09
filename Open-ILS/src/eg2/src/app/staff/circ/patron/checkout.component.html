@@ -88,6 +88,12 @@
 				(onClick)="openItemAlerts($event, 'create')">
 			</eg-grid-toolbar-action>
 
+			<eg-grid-toolbar-action
+				i18n-group group="Add" i18n-label label="Manage Item Alerts"
+        [disabled]="checkoutsGrid.context.rowSelector.selected().length !== 1"
+				(onClick)="openItemAlerts($event, 'manage')">
+			</eg-grid-toolbar-action>
+
       <eg-grid-column path="index" [index]="true" 
         label="Row Index" i18n-label [hidden]="true"></eg-grid-column>
       <eg-grid-column path="circ.id" label="Circ ID" i18n-label></eg-grid-column>

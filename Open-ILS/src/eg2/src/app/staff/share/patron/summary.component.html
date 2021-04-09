@@ -171,10 +171,31 @@
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Email</div>
     <div class="col-lg-7">
-      <!-- TODO: mailto link -->
-      {{p().email()}}
+      <a *ngIf="p().email()" href="mailto:{{p().email()}}">{{p().email()}}</a>
     </div> 
   </div>
+  <div class="row mb-1" *ngIf="p().name_keywords()">
+    <div class="col-lg-5" i18n>Name Keywords</div>
+    <div class="col-lg-7">{{p().name_keywords()}}</div> 
+  </div>
+
+  <ng-container *ngIf="p().waiver_entries().length">
+    <hr class="m-1"/>
+    <div class="row mb-1 alert alert-info p-0">
+      <div class="col-lg-12" i18n>Allow others to use my account</div>
+    </div>
+    <div class="row mb-1" *ngFor="let waiver of p().waiver_entries()">
+      <div class="col-lg-5" i18n>{{waiver.name()}}</div>
+      <div class="col-lg-7">
+        <ul>
+          <li *ngIf="waiver.place_holds() == 't'" i18n>Place holds</li>
+          <li *ngIf="waiver.pickup_holds() == 't'" i18n>Pick up holds</li>
+          <li *ngIf="waiver.view_history() == 't'" i18n>View borrowing history</li>
+          <li *ngIf="waiver.checkout_items() == 't'" i18n>Check out items</li>
+        </ul>
+      </div>
+    </div>
+  </ng-container>
 
   <hr class="m-1"/>
 
