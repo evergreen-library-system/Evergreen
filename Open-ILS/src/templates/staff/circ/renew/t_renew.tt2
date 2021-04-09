@@ -152,7 +152,8 @@
   <div class="pad-horiz"></div>
   <div class="checkbox">
     <label>
-      <input ng-model="strict_barcode" type="checkbox"/>
+      <input ng-model="strict_barcode" type="checkbox"
+        ng-change="onStrictBarcodeChange()"/>
       [% l('Strict Barcode') %]
     </label>
   </div>

@@ -116,6 +116,12 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
         }
     }
 
+    $scope.onStrictBarcodeChange = function() {
+        egCore.hatch.setItem(
+            'circ.checkin.strict_barcode',
+            $scope.strict_barcode
+        );
+    };
 
     // ensure the backdate is not in the future
     // note: input type=date max=foo not yet supported anywhere
@@ -170,8 +176,6 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
         }
         if ($scope.modifiers.do_inventory_update) params.do_inventory_update = true;
 
-        egCore.hatch.setItem('circ.checkin.strict_barcode', $scope.strict_barcode);
-        egCore.hatch.setItem('circ.checkin.do_inventory_update', $scope.modifiers.do_inventory_update);
         var options = {
             check_barcode : $scope.strict_barcode,
             no_precat_alert : $scope.modifiers.no_precat_alert,
