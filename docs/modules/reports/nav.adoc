@@ -2,6 +2,7 @@
 ** xref:reports:reporter_daemon.adoc[Starting and Stopping the Reporter Daemon]
 ** xref:reports:reporter_folder.adoc[Folders]
 ** xref:reports:reporter_create_templates.adoc[Creating Templates]
+** xref:reports:report_sources.adoc[Reporting Sources]
 ** xref:reports:reporter_generating_reports.adoc[Generating Reports from Templates]
 ** xref:reports:reporter_view_output.adoc[Viewing Report Output]
 ** xref:reports:reporter_cloning_shared_templates.adoc[Cloning Shared Templates]
