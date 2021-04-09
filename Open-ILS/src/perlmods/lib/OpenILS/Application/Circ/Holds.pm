@@ -3994,7 +3994,7 @@ sub clear_shelf_process {
         }
 
         push(@holds, $hold);
-        $client->respond({maximum => scalar(@holds), progress => $counter}) if ( (++$counter % $chunk_size) == 0);
+        $client->respond({maximum => int(scalar(@holds)), progress => $counter}) if ( (++$counter % $chunk_size) == 0);
     }
 
     if ($e->commit) {
