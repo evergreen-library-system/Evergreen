@@ -260,18 +260,13 @@ export class CircService {
         // the transit we want, since a transit close + open in the API
         // returns the closed transit.
 
-         return this.pcrud.search('atc',
-            {   dest_recv_time : null, cancel_time : null},
-            {   flesh : 1,
+         return this.pcrud.search('atc', {
+                dest_recv_time : null,
+                cancel_time : null,
+                target_copy: result.copy.id()
+            }, {
+                flesh : 1,
                 flesh_fields : {atc : ['target_copy']},
-                join : {
-                    acp : {
-                        filter : {
-                            barcode : result.params.copy_barcode,
-                            deleted : 'f'
-                        }
-                    }
-                },
                 limit : 1,
                 order_by : {atc : 'source_send_time desc'},
             }, {authoritative : true}
@@ -627,6 +622,12 @@ export class CircService {
                     return this.components.routeToCatalogingDialog.open()
                     .toPromise().then(_ => result);
                 }
+
+            case 'ROUTE_ITEM':
+                this.components.routeDialog.checkin = result;
+                return this.components.routeDialog.open().toPromise()
+                .then(_ => result);
+
         }
 
         return Promise.resolve(result);

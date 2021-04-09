@@ -17,8 +17,8 @@ import {PrintService} from '@eg/share/print/print.service';
 /** Route Item Dialog */
 
 @Component({
-  templateUrl: 'components.component.html',
-  selector: 'eg-circ-components'
+  templateUrl: 'route-dialog.component.html',
+  selector: 'eg-circ-route-dialog'
 })
 export class RouteDialogComponent extends DialogComponent {
 
@@ -41,6 +41,10 @@ export class RouteDialogComponent extends DialogComponent {
     }
 
     open(ops?: NgbModalOptions): Observable<any> {
+
+        // Depending on various settings, the dialog may never open.
+        // But in some cases we still have to collect the data
+        // for printing.
 
         return from(this.applySettings())
 
@@ -88,7 +92,7 @@ export class RouteDialogComponent extends DialogComponent {
             promise = promise.then(_ => this.circ.findCopyTransit(this.checkin))
             .then(transit => {
                 this.checkin.transit = transit;
-                return this.org.settings('lib.courier_code', transit.dest.id())
+                return this.org.settings('lib.courier_code', transit.dest().id())
                 .then(sets => this.destCourierCode = sets['lib.courier_code']);
             });
         }
