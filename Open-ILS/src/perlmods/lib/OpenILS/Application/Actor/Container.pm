@@ -1191,7 +1191,7 @@ sub batch_edit {
     $fieldset = $e->create_action_fieldset($fieldset);
 
     my @keys = keys %$edits;
-    $max = scalar(@keys);
+    $max = int(scalar(@keys));
     $count = 0;
     $client->respond({ ord => $stage, count=> $count, max => $max, stage => 'FIELDSET_EDITS_CREATE' });
     for my $key (@keys) {

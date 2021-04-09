@@ -1147,7 +1147,7 @@ sub staged_search {
         return {count => 0} unless (
             $search_hash and 
             $search_hash->{searches} and 
-            scalar( keys %{$search_hash->{searches}} ));
+            int(scalar( keys %{$search_hash->{searches}} )));
     }
 
     my $search_duration;
@@ -2410,7 +2410,7 @@ sub biblio_search_isbn_batch {
             }
         }
     }
-    return { ids => \@recs, count => scalar(@recs) };
+    return { ids => \@recs, count => int(scalar(@recs)) };
 }
 
 foreach my $issn_method (qw/
