@@ -6,14 +6,15 @@ import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronContextService} from './patron.service';
-
+import {CircService} from '@eg/staff/share/circ/circ.service';
 
 @Injectable()
 export class PatronResolver implements Resolve<Promise<any[]>> {
 
     constructor(
         private store: ServerStoreService,
-        private context: PatronContextService
+        private context: PatronContextService,
+        private circ: CircService
     ) {}
 
     resolve(
@@ -130,6 +131,7 @@ export class PatronResolver implements Resolve<Promise<any[]>> {
           'ui.admin.patron_log.max_entries'
         ]).then(settings => {
             this.context.settingsCache = settings;
+            return this.circ.applySettings();
         });
     }
 }

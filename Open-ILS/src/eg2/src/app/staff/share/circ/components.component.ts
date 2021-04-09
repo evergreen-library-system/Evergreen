@@ -5,6 +5,7 @@ import {CircEventsComponent} from './events-dialog.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {OpenCircDialogComponent} from './open-circ-dialog.component';
+import {RouteDialogComponent} from './route-dialog.component';
 
 /* Container component for sub-components used by circulation actions.
  *
@@ -24,6 +25,7 @@ export class CircComponentsComponent {
     @ViewChild('routeToCatalogingDialog') routeToCatalogingDialog: AlertDialogComponent;
     @ViewChild('openCircDialog') openCircDialog: OpenCircDialogComponent;
     @ViewChild('locationAlertDialog') locationAlertDialog: AlertDialogComponent;
+    @ViewChild('routeDialog') routeDialog: RouteDialogComponent;
 
     constructor(private circ: CircService) {
         this.circ.components = this;

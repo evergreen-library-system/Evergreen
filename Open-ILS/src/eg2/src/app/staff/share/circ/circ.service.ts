@@ -12,6 +12,7 @@ import {AudioService} from '@eg/share/util/audio.service';
 import {CircEventsComponent} from './events-dialog.component';
 import {CircComponentsComponent} from './components.component';
 import {StringService} from '@eg/share/string/string.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 
 export interface CircDisplayInfo {
     title?: string;
@@ -147,6 +148,7 @@ export interface CheckinParams {
     copy_barcode?: string;
     claims_never_checked_out?: boolean;
     void_overdues?: boolean;
+    auto_print_hold_transits?: boolean;
 
     // internal tracking
     _override?: boolean;
@@ -159,8 +161,13 @@ export interface CheckinResult {
     params: CheckinParams;
     success: boolean;
     copy?: IdlObject;
+    volume?: IdlObject;
     circ?: IdlObject;
     record?: IdlObject;
+    hold?: IdlObject;
+    transit?: IdlObject;
+    org?: number;
+    patron?: IdlObject;
 }
 
 @Injectable()
@@ -173,6 +180,8 @@ export class CircService {
     suppressCheckinPopups = false;
     ignoreCheckinPrecats = false;
     copyLocationCache: {[id: number]: IdlObject} = {};
+    clearHoldsOnCheckout = false;
+    orgAddrCache: {[addrId: number]: IdlObject} = {};
 
     constructor(
         private audio: AudioService,
@@ -180,10 +189,19 @@ export class CircService {
         private org: OrgService,
         private net: NetService,
         private pcrud: PcrudService,
+        private serverStore: ServerStoreService,
         private strings: StringService,
         private auth: AuthService,
         private bib: BibRecordService,
     ) {}
+
+    applySettings(): Promise<any> {
+        return this.serverStore.getItemBatch([
+            'circ.clear_hold_on_checkout',
+        ]).then(sets => {
+            this.clearHoldsOnCheckout = sets['circ.clear_hold_on_checkout'];
+        });
+    }
 
     // 'circ' is fleshed with copy, vol, bib, wide_display_entry
     // Extracts some display info from a fleshed circ.
@@ -216,6 +234,52 @@ export class CircService {
             record: record,
             display: display
         };
+    }
+
+    getOrgAddr(orgId: number, addrType): Promise<IdlObject> {
+        const org = this.org.get(orgId);
+        const addrId = this.org[addrType]();
+
+        if (!addrId) { return Promise.resolve(null); }
+
+        if (this.orgAddrCache[addrId]) {
+            return Promise.resolve(this.orgAddrCache[addrId]);
+        }
+
+        return this.pcrud.retrieve('aoa', addrId).toPromise()
+        .then(addr => {
+            this.orgAddrCache[addrId] = addr;
+            return addr;
+        });
+    }
+
+    // find the open transit for the given copy barcode; flesh the org
+    // units locally.
+    findCopyTransit(result: CheckinResult): Promise<IdlObject> {
+        // NOTE: evt.payload.transit may exist, but it's not necessarily
+        // the transit we want, since a transit close + open in the API
+        // returns the closed transit.
+
+         return this.pcrud.search('atc',
+            {   dest_recv_time : null, cancel_time : null},
+            {   flesh : 1,
+                flesh_fields : {atc : ['target_copy']},
+                join : {
+                    acp : {
+                        filter : {
+                            barcode : result.params.copy_barcode,
+                            deleted : 'f'
+                        }
+                    }
+                },
+                limit : 1,
+                order_by : {atc : 'source_send_time desc'},
+            }, {authoritative : true}
+        ).toPromise().then(transit => {
+            transit.source(this.org.get(transit.source()));
+            transit.dest(this.org.get(transit.dest()));
+            return transit;
+        });
     }
 
     getNonCatTypes(): Promise<IdlObject[]> {
@@ -483,11 +547,14 @@ export class CircService {
             success: success,
             circ: payload.circ,
             copy: payload.copy,
-            record: payload.record
+            volume: payload.volume,
+            record: payload.record,
+            transit: payload.transit
         };
 
         let promise = Promise.resolve();;
         const copy = result.copy;
+        const volume = result.volume;
 
         if (copy) {
             if (this.copyLocationCache[copy.location()]) {
@@ -498,6 +565,22 @@ export class CircService {
                     copy.location(loc);
                     this.copyLocationCache[loc.id()] = loc;
                 });
+            }
+        }
+
+        if (volume) {
+            // Flesh volume prefixes and suffixes
+
+            if (typeof volume.prefix() !== 'object') {
+                promise = promise.then(_ =>
+                    this.pcrud.retrieve('acnp', volume.prefix()).toPromise()
+                ).then(p => volume.prefix(p));
+            }
+
+            if (typeof volume.suffix() !== 'object') {
+                promise = promise.then(_ =>
+                    this.pcrud.retrieve('acns', volume.suffix()).toPromise()
+                ).then(p => volume.suffix(p));
             }
         }
 
@@ -558,6 +641,27 @@ export class CircService {
             case 7: /* RESHELVING */
                 this.audio.play('success.checkin');
                 return this.handleCheckinLocAlert(result);
+
+            case 8: /* ON HOLDS SHELF */
+                this.audio.play('info.checkin.holds_shelf');
+
+                const hold = result.hold;
+
+                if (hold) {
+
+                    if (hold.pickup_lib() === this.auth.user().ws_ou()) {
+                        this.components.routeDialog.checkin = result;
+                        return this.components.routeDialog.open().toPromise()
+                        .then(_ => result);
+
+                    } else {
+                        // Should not happen in practice, but to be safe.
+                        this.audio.play('warning.checkin.wrong_shelf');
+                    }
+
+                } else {
+                    console.warn("API Returned insufficient info on holds");
+                }
         }
 
         return Promise.resolve(result);

@@ -10,6 +10,7 @@ import {ClaimsReturnedDialogComponent} from './claims-returned-dialog.component'
 import {CircComponentsComponent} from './components.component';
 import {CircEventsComponent} from './events-dialog.component';
 import {OpenCircDialogComponent} from './open-circ-dialog.component';
+import {RouteDialogComponent} from './route-dialog.component';
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import {OpenCircDialogComponent} from './open-circ-dialog.component';
         PrecatCheckoutDialogComponent,
         ClaimsReturnedDialogComponent,
         CircEventsComponent,
+        RouteDialogComponent,
         OpenCircDialogComponent
     ],
     imports: [

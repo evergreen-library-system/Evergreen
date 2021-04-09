@@ -8,11 +8,13 @@
   i18n-dialogBody dialogBody="This item needs to be routed to CATALOGING">
 </eg-alert-dialog>
 
-<eg-string key="staff.circ.checkin.location.alert"
-  i18n-text text="Item {{barcode}} needs to be routed to {{location}}">
+<ng-template #locAlertTemplate let-barcode="barcode" let-location="location" i18n>
+  Item {{barcode}} needs to be routed to {{location}}.
+</ng-template>
+<!-- dialogBody is generated dynamically from string above -->
+<eg-string key="staff.circ.checkin.location.alert" [template]="locAlertTemplate">
 </eg-string>
 
-<!-- dialogBody is generated dynamically from string above -->
 
 <eg-alert-dialog #locationAlertDialog i18n-dialogTitle dialogTitle="Route Item">
 </eg-alert-dialog>
