@@ -250,6 +250,40 @@ might require it, using symbolic operators as follows:
 | NOT      | `-`_term_ | `a -b`
 |=================================
 
+[[library_groups]]
+== Library Groups in the OPAC ==
+
+indexterm:[Library Groups]
+
+To configure Library Groups, please see the xref:admin:library_groups_admin.adoc[Library Groups Administration] documentation.
+
+Screenshots for the below are taken from the Bootstrap OPAC (BOOPAC) but
+Library Groups are also available in the Template Toolkit OPAC (TPAC).
+
+The *Library* dropdown includes Library Groups as well as the Depth
+Selector.
+
+Library Groups location on the Basic Search page:
+
+image::media/library_group_location_bs.png[Library Groups in Basic Search]
+
+On the Advanced Search page, Library Groups as well as Copy Location
+Groups and the Depth Selector are gathered into a dropdown labelled
+*Where*, and this can be seen below the Search Library dropdown:
+
+image::media/library_group_location_as.png[Library Groups in Advanced Search]
+
+The motivation for collecting these elements into a new dropdown is that
+they are secondary or subordinate to the search location -- the
+organizational unit tells us what location groups, library groups, and
+depths are relevant or make sense -- and are mutually exclusive among
+each other.
+
+If a library is using the locg parameter (or equivalent), and there is
+no other search context, the Where dropdown will rely on locg (or
+equivalent) to populate and does not dynamically update in Advanced
+Search.
+
 == Search Tips ==
 
 indexterm:[search, stop words]
@@ -440,6 +474,69 @@ You may also click the _Show More Details_ link at the top of the results page,
 next to the _Limit to available items_ check box, to view each search result's 
 copies' individual call number, status, and shelving location. 
 
+[[did_you_mean]]
+=== Did You Mean? Search Suggestions
+
+indexterm:[Searching,Search Suggestions] 
+
+As of 3.7, the work for Did You Mean enables search suggestions for a search comprising a single word within a single search class. For the purposes of suggestions, a search class in Evergreen is a keyword, title, author, series, or subject. Search suggestions are available in the public catalog (both TPAC and Bootstrap versions), the Children's OPAC (KPAC), and the Angular Staff Catalog.
+
+Future iterations of this project are planning to add multi word, cross
+class, and other search suggestion mechanisms.
+
+Search suggestions are based on existing bibliographic data, and are
+offered for potentially correctable spelling mistakes. A new set of
+tables have been added to collect bibliographic data and build an
+internal dictionary of potential search suggestions. When a catalog
+search meets criteria for offering suggestions, this dictionary is used
+to generate the suggestions.
+
+The end user will be shown a configurable number of suggestions,
+hyperlinked to execute a new search based on that suggestion. Any search
+options such as Format that were initially set will be carried over to
+the new search.
+
+Evergreen’s existing use of search term stemming has not been altered as
+a consequence of this work.
+
+For information on how to configure Did You Mean, please see the xref:admin_initial_setup:dym_admin.adoc[Administrator documentation].
+
+=== Search Results Display
+
+In all cases, search suggestions will be offered for potentially
+correctable spelling mistakes if a search retrieves fewer than the configured number of results; and potential suggested terms appear at
+least the configured number of times within the bibliographic data. Clicking a
+suggestion will execute a new search.
+
+==== Public Catalog (TPAC)
+
+Search suggestions are offered under the search bar. Clicking a
+suggestion will execute a new search. In both examples below, the test
+system was configured to offer 3 suggestions.
+
+image::media/dym_tpac.png[TPAC Search Suggestions]
+
+In the case of zero hits, suggestions are given both under the search
+bar as well as in the search results area.
+
+image::media/dym_tpac_nohits.png[TPAC Search Suggestions when there are no hits]
+
+==== Public Catalog (Bootstrap)
+
+Search suggestions display in the same locations in the new Bootstrap
+public catalog as they do in the TPAC.
+
+==== Public Catalog (KPAC)
+
+Search suggestions display in the right-hand sidebar next to Search
+Results.
+
+image::media/dym_kpac.png[KPAC Search Suggestions]
+
+==== Staff Catalog
+
+Search suggestions in the Staff Catalog appear at the bottom of the
+search area. 
 
 === Viewing a record ===
 
@@ -451,6 +548,49 @@ options for placing holds, add to my list, and print/email.
 
 image::media/catalogue-8.png[catalogue-8]
 image::media/catalogue-8a.png[catalogue-8a]
+
+[[geosort]]
+==== Sort by Geographic Proximity
+
+indexterm:[Geographic Sort,Search Results,Searching]
+
+The sort by geographic proximity feature allows library patrons to sort
+holdings within a bibliographic record by geographic distance. This
+feature requires a 3rd party geographic location service in order to
+function. Each Evergreen instance will need to secure its own geographic
+location service. For more information on setting up this feature, please see the xref:admin_initial_setup:geosort_admin.adoc[Administrator Documentation].
+
+This feature is available in both the Bootstrap and TPAC versions of the
+public catalog. The screenshots are from the Bootstrap catalog.
+
+When a patron selects a bibliographic record, they are taken to the
+record details interface. At the top of the holdings grid is a box to
+enter an address or postal code.
+
+image::media/geosort_entry_box.png[OPAC Entry Box for Geographic Sort]
+
+The input box will accept several variants on a full address, but in
+order to return a correct calculation there must be at least a
+city/state or zipcode entry. Address entries make use of a 3rd party API
+to calculate distance from the library branches and specifics about what
+values are accepted will depend on your Geographic Location Services
+provider.
+
+Enter an address or postal code in the box and click *Go*. The holdings
+grid will resort to display the items owned by the closest library at
+the top of the grid, with remaining libraries sorted by increasing
+distance from the address entry. The distance display defaults to
+kilometers but can be changed to show miles via a Library Setting.
+
+image::media/geosort_results_km.png[Geographic Sort Results]
+
+To return to the default item sort, click the *Use default item sort*
+button.
+
+If the configured Geographic Location API is not able to resolve an
+address entry, an error message will appear:
+
+image::media/geosort_retrieval_error.png[Geographic Sort Error]
 
 == Details ==
 
