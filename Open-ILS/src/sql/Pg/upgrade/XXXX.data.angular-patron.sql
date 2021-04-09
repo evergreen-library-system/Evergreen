@@ -19,7 +19,6 @@ eg.circ.patron.holds.prefetch
 eg.grid.circ.patron.holds
 
 holds_for_patron print template
-*/
 
 
 -- insert then update for easier iterative development tweaks
@@ -283,6 +282,72 @@ UPDATE config.print_template SET template = $TEMPLATE$
 
 $TEMPLATE$ WHERE name = 'patron_data';
 
+
+INSERT INTO config.print_template 
+    (name, label, owner, active, locale, content_type, template)
+VALUES ('hold_shelf_slip', 'Hold Shelf Slip', 1, TRUE, 'en-US', 'text/html', '');
+
+*/
+
+UPDATE config.print_template SET template = $TEMPLATE$
+[% 
+  USE date;
+  USE money = format('$%.2f');
+  SET copy = template_data.checkin.copy;
+  SET hold = template_data.checkin.hold;
+  SET volume = template_data.checkin.volume;
+  SET hold = template_data.checkin.hold;
+  SET record = template_data.checkin.record;
+  SET patron = template_data.checkin.patron;
+%] 
+
+<div>
+  [% IF hold.behind_desk == 't' %]
+    This item needs to be routed to the <strong>Private Holds Shelf</strong>.
+  [% ELSE %]
+    This item needs to be routed to the <strong>Public Holds Shelf</strong>.
+  [% END %]
+</div>
+<br/>
+
+<div>Barcode: [% copy.barcode %]</div>
+<div>Title: [% record.title %]</div>
+<div>Call Number: [% volume.prefix.label %] [% volume.label %] [% volume.suffix.label %]</div>
+
+<br/>
+
+<div>Hold for patron: [% patron.family_name %], 
+  [% patron.first_given_name %] [% patron.second_given_name %]</div>
+<div>Barcode: [% patron.card.barcode %]</div>
+
+[% IF hold.phone_notify %]
+  <div>Notify by phone: [% hold.phone_notify %]</div>
+[% END %]
+[% IF hold.sms_notify %]
+  <div>Notify by text: [% hold.sms_notify %]</div>
+[% END %]
+[% IF hold.email_notify %]
+  <div>Notify by email: [% patron.email %]</div>
+[% END %]
+
+[% FOR note IN hold.notes %]
+  <ul>
+  [% IF note.slip == 't' %]
+    <li><strong>[% note.title %]</strong> - [% note.body %]</li>
+  [% END %]
+  </ul>
+[% END %]
+<br/>
+
+<div>Request Date: [% 
+  date.format(helpers.format_date(hold.request_time, staff_org_timezone), '%x %r') %]</div>
+<div>Slip Date: [% date.format(date.now, '%x %r') %]</div>
+<div>Printed by [% staff.first_given_name %] at [% staff_org.shortname %]</div>
+
+</div>
+
+$TEMPLATE$ WHERE name = 'hold_shelf_slip';
+ 
 COMMIT;
 
 

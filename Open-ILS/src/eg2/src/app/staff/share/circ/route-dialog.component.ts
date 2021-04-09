@@ -36,7 +36,7 @@ export class RouteDialogComponent extends DialogComponent {
         private org: OrgService,
         private circ: CircService,
         private audio: AudioService,
-        private print: PrintService,
+        private printer: PrintService,
         private serverStore: ServerStoreService) {
         super(modal);
     }
@@ -46,11 +46,9 @@ export class RouteDialogComponent extends DialogComponent {
         // But in some cases we still have to collect the data
         // for printing.
 
-console.warn('ROUTE DIALOG OPEN');
         return from(this.applySettings())
 
         .pipe(concatMap(exit => {
-console.warn('ROUTE DIALOG 2');
             if (exit) {
                 return of(exit);
             } else {
@@ -59,11 +57,9 @@ console.warn('ROUTE DIALOG 2');
         }))
 
         .pipe(concatMap(exit => {
-console.warn('ROUTE DIALOG 3');
             if (exit) {
                 return of(exit);
             } else {
-console.warn('ROUTE DIALOG 4');
                 return super.open(ops);
             }
         }));
@@ -110,7 +106,7 @@ console.warn('ROUTE DIALOG 4');
         if (this.checkin.params.auto_print_hold_transits
             || this.circ.suppressCheckinPopups) {
             // Print and exit.
-            return this.printTransit().then(_ => true); // exit
+            return this.print().then(_ => true); // exit
         }
 
         return promise.then(_ => false); // keep going
@@ -147,8 +143,17 @@ console.warn('ROUTE DIALOG 4');
         .then(_ => this.noAutoPrint[this.slip]);
     }
 
-    printTransit(): Promise<any> {
-        return null;
+    print(): Promise<any> {
+        this.printer.print({
+            templateName: this.slip,
+            contextData: {checkin: this.checkin},
+            printContext: 'default'
+        });
+
+        this.close();
+
+        // TODO printer.print() should return a promise
+        return Promise.resolve();
     }
 }
 
