@@ -201,7 +201,6 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
         $scope.checkouts.unshift(row_item);
         $scope.gridDataProvider.prepend();
 
-        egCore.hatch.setItem('circ.checkout.strict_barcode', $scope.strict_barcode);
         var options = {check_barcode : $scope.strict_barcode};
 
         egCirc.checkout(params, options).then(
@@ -303,6 +302,13 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
         egCirc.manage_copy_alerts([id]).then(function() {
             // update grid items?
         });
+    };
+
+    $scope.onStrictBarcodeChange = function() {
+        egCore.hatch.setItem(
+            'circ.checkout.strict_barcode',
+            $scope.strict_barcode
+        );
     };
 
     $scope.print_receipt = function() {
