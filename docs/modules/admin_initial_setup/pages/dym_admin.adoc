@@ -1,0 +1,151 @@
+= Did You Mean?: Search Suggestions Administration
+:toc:
+
+indexterm:[Searching,Search Suggestions] 
+
+== Introduction
+
+As of 3.7, the work for Did You Mean enables search suggestions for a search comprising a single word within a single search class. For the purposes of suggestions, a search class in Evergreen is a keyword, title, author, series, or subject. Search suggestions are available in the public catalog (both TPAC and Bootstrap versions), the Children's OPAC (KPAC), and the Angular Staff Catalog.
+
+Future iterations of this project are planning to add multi word, cross
+class, and other search suggestion mechanisms.
+
+Several search suggestion ordering mechanisms have been added, and are
+described below in the Library Settings section. The relative weights of
+each suggestion ordering mechanism can be adjusted to prioritize
+different suggestion routes. Each Evergreen organization will need to
+determine the best configuration of weights and suggestion ordering
+settings.
+
+Search suggestions are based on existing bibliographic data, and are
+offered for potentially correctable spelling mistakes. A new set of
+tables have been added to collect bibliographic data and build an
+internal dictionary of potential search suggestions. When a catalog
+search meets criteria for offering suggestions, this dictionary is used
+to generate the suggestions.
+
+The end user will be shown a configurable number of suggestions,
+hyperlinked to execute a new search based on that suggestion. Any search
+options such as Format that were initially set will be carried over to
+the new search.
+
+Evergreen’s existing use of search term stemming has not been altered as
+a consequence of this work.
+
+== Search Results Display
+
+In all cases, search suggestions will be offered for potentially
+correctable spelling mistakes if a search retrieves fewer than a
+configured number of results; and potential suggested terms appear at
+least a configurable number of times within the bibliographic data. Both
+of these thresholds are configured via Library Settings described below.
+
+For examples of where suggestions display in various public catalog interfaces, please see the documentation in the  xref:opac:using_the_public_access_catalog.adoc#did_you_mean[Did You Mean?] section of the OPAC documentation. 
+
+Search suggestions in the Staff Catalog appear at the bottom of the search area.
+
+image::media/staffcat.png[Search suggestions in the Staff Catalog]
+
+== Administration
+
+=== Library Settings
+
+Search suggestions are controlled by several Library Settings. Three
+settings set thresholds for spelling suggestions, and three settings
+control the weighting of different suggestion mechanisms. A lower number
+represents a ‘lighter’ weight. All settings accept a number value as
+input. Library settings are inheritable, unless there is an
+organizationally closer setting.
+
+* *Maximum search result count at which spelling suggestions may be offered*
+** Default value is 0, which means suggestions will only be offered if
+there are no results.
+** If a search has this number or fewer results, and there are correctable
+spelling mistakes, a suggested search may be provided.
+** If you want all searches to generate suggestions, you can set this to an
+artificially high number, but it’s possible that this will generate
+less-useful suggestions.
+* *Minimum required uses of a spelling suggestions that may be offered*
+** Default is 1.
+** The number of indexed bibliographic strings in which a spelling
+suggestion must appear in order to be offered to a user. Suggestions
+must appear in the bib data.
+* *Maximum number of spelling suggestions that may be offered*
+** The maximum recommended value for this setting is 3, since suggestions
+become rapidly less useful beyond that point.
+** If this is set to 0, no suggestions will be provided.
+** All values other than 0 only provide suggestions that meet the *Minimum
+required uses* threshold, and only when the *Maximum search result
+count* threshold is not passed.
+** If this is set to -1, the system will provide the best suggestion
+(dependent on the weights of various suggestion mechanisms) if and only
+if the term is considered misspelled based on the *Minimum required
+uses* setting.
+** If this is set to 1 or more, that is the maximum number of suggestions
+that will be provided.
+* *Pg_trgm score weighting in OPAC spelling suggestions*
+** Defaults to 0 for "off".
+** Controls the relative weight of the scaled pg_trgm component.
+** Input can be any positive or negative whole number, but testing
+demonstrates that setting this to 1 can significantly improve
+suggestions for most catalogs.
+* *Soundex score weighting in OPAC spelling suggestions*
+** Defaults to 0 for "off".
+** Controls the relative weight of the scaled soundex component.
+** Input can be any positive or negative whole number, but testing
+demonstrates that setting this to 1 can improve suggestions for catalogs
+that are primarily English.
+* *QWERTY Keyboard similarity score weighting in OPAC spelling
+suggestions*
+** Defaults to 0 for "off".
+** Controls the relative weight of the scaled keyboard distance component.
+** While this option is available, it can have a negative impact on
+suggestions and a value greater than 0 is not recommended for most
+catalogs.
+** If an administrator decides to use this weighting, it will accept any
+positive or negative whole number value.
+
+
+The three similarity measures, Pg_trgm (Tri-gram), Soundex, and QWERTY
+Keyboard similarity, are calculated by comparing the user's search input
+to each potential suggestion. The Library Setting numerical values for
+Pg_trgm, Soundex, and QWERTY are multipliers for each similarity
+measure. For example, setting the Pg_trgm weight to 2 will double the
+raw score for that similarity measure.
+
+The final order of a group of potential suggestions is determined first
+by the Damerau-Levenshtein edit distance, and then by the summed value
+of the weighting measures, each multiplied by its score weight. If
+suggestions coming from a particular corpus are shown to benefit from
+giving additional consideration to one or more of the measures, their
+weighting score can be increased.
+
+Empirical testing and existing research shows that increasing the weight
+of any similarity measure beyond 1 is not useful in a reasonable,
+representative set of bibliographic records, and that a multiplier of 1
+for Pg_trgm and Soundex is ideal for primarily-English catalogs, but all
+data sets vary.
+
+=== Internal flags
+
+The suggestion mechanism primarily uses a SymSpell implementation in
+Evergreen’s Postgres database. The SymSpell edit distance and prefix key
+length are controlled by two internal global flags,
+*symspell.prefix_length* and *symspell.max_edit_distance*. A full
+dictionary rebuild is required if either of these flags are changed.
+
+The SymSpell algorithm mandates the use of the Damerau-Levenshtein
+algorithm which includes insertion, deletion, substitution, and
+transposition cost calculations. While the original plan was to make use
+of the built-in Postgres implementation of the Levenshtein edit distance
+algorithm, results of partner testing led us to replace the built-in
+option with an external Damerau-Levenshtein implementation.
+
+A recommended set of values for the SymSpell settings is *6* for
+*symspell.prefix_length* and *3* for *symspell.max_edit_distance*.
+
+This set of values is known to provide a very good balance between
+accuracy and resource consumption based on empirical testing of the
+algorithm and analysis of English language texts. For further
+explanation of why these settings are recommended, please see
+https://medium.com/@wolfgarbe/1000x-faster-spelling-correction-algorithm-2012-8701fcd87a5f[this article] and the embedded links to benchmarks and later improvements.
