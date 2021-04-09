@@ -1,0 +1,33 @@
+[[hold_groups_admin]]
+= Hold Groups Administration
+
+[indexterm:Hold Groups]
+
+There are several administrative elements described below which relate to the xref:circulation:basic_holds.adoc#hold_groups[Hold Groups] feature
+
+A new Library Setting allows for hold placement times to be randomized
+among list members for fair distribution. It can be found at *Administration -> Local
+Administration -> Library Settings Editor -> Randomize group hold
+order*.
+
+New Action Triggers allow for Evergreen to generate email or SMS
+notifications to patrons when a new hold is placed through Hold Groups.
+
+New tables in the database store the batch place hold events occurring
+on a particular Hold Group (action.batch_hold_event) and the
+relationship between the batch hold request and successfully placed
+holds (action.batch_hold_event_map).
+
+A new staff permission for MANAGE_BATCH_HOLDS allows applicable users to
+place and cancel batch holds through Hold Groups.
+
+A new user bucket type was created for this feature, adding a row in the
+container.user_bucket_type with a unique code value to segregate new
+Hold Group user buckets.
+
+The Hold Group feature relies on the open-ils.circ.holds.create.batch
+API methods to facilitate the batch creation of holds. A new API method
+processes the Hold Group user bucket each time a staff user requests it,
+optionally randomize the hold request creation times, and create a hold
+request for a specified title for a Hold Group member that does not
+already have an active hold on that title.

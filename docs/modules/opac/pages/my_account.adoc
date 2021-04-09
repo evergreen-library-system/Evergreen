@@ -180,6 +180,33 @@ To protect patron privacy, the Holds History will be completely blank unless the
 area.
 ==========
 
+[[hold_groups_opac]]
+=== Hold Groups
+
+[indexterm: Hold Groups]
+
+Screenshots in this section are taken from the Bootstrap OPAC (BOOPAC),
+but similar functionality is available in the Template Toolkit OPAC
+(TPAC).
+
+A patron who is a member of a publicly visible xref:circulation:basic_holds.adoc#hold_groups[Hold Group] will see
+a new option on the Holds menu of My Account labelled *Hold Groups*.
+
+image::media/opac_hold_groups.png[My Account Hold Groups]
+
+If the *Hold Groups* menu item is selected, the patron will see a list
+of Hold Groups of which they are a member, as well as a link for
+removing themselves from the Hold Group.
+
+image::media/opac_remove_hg.png[Remove Me From Hold Group]
+
+Only those Hold Groups that were marked by staff as “publicly visible”
+are displayed. If the patron does not belong to any publicly visible
+Hold Groups, the Hold Group menu item is not displayed at all.
+
+Holds placed through a Hold Group can be modified by patrons in the same
+way as other holds (e.g., suspended, cancelled, etc.).
+
 == Account Preferences ==
 
 indexterm:[my account, account preferences]
