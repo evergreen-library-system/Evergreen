@@ -21266,6 +21266,16 @@ VALUES (
     )
 );
 
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.catalog.record.copies', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.catalog.record.copies',
+        'Grid Config: eg.grid.catalog.record.copies',
+        'cwst', 'label'
+    )
+);
+
 INSERT INTO config.global_flag (name, value, enabled, label)
 VALUES (
     'auth.block_expired_staff_login',
