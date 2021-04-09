@@ -553,7 +553,8 @@ export class CircService {
             copy: payload.copy,
             volume: payload.volume,
             record: payload.record,
-            transit: payload.transit
+            transit: payload.transit,
+            hold: payload.hold
         };
 
         const copy = result.copy;
@@ -683,7 +684,7 @@ export class CircService {
 
                 if (hold) {
 
-                    if (hold.pickup_lib() === this.auth.user().ws_ou()) {
+                    if (Number(hold.pickup_lib()) === Number(this.auth.user().ws_ou())) {
                         result.routeTo = 'Holds Shelf'; // TODO
                         this.components.routeDialog.checkin = result;
                         return this.components.routeDialog.open().toPromise()
@@ -697,6 +698,7 @@ export class CircService {
                 } else {
                     console.warn('API Returned insufficient info on holds');
                 }
+                break;
 
             case 11: /* CATALOGING */
                 this.audio.play('info.checkin.cataloging');

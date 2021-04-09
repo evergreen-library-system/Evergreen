@@ -28,6 +28,7 @@ export class RouteDialogComponent extends DialogComponent {
     orgAddress: IdlObject;
     destCourierCode: string;
     destOrg: IdlObject;
+    today = new Date();
 
     constructor(
         private modal: NgbModal,
@@ -45,9 +46,11 @@ export class RouteDialogComponent extends DialogComponent {
         // But in some cases we still have to collect the data
         // for printing.
 
+console.warn('ROUTE DIALOG OPEN');
         return from(this.applySettings())
 
         .pipe(concatMap(exit => {
+console.warn('ROUTE DIALOG 2');
             if (exit) {
                 return of(exit);
             } else {
@@ -56,9 +59,11 @@ export class RouteDialogComponent extends DialogComponent {
         }))
 
         .pipe(concatMap(exit => {
+console.warn('ROUTE DIALOG 3');
             if (exit) {
                 return of(exit);
             } else {
+console.warn('ROUTE DIALOG 4');
                 return super.open(ops);
             }
         }));
@@ -105,10 +110,10 @@ export class RouteDialogComponent extends DialogComponent {
         if (this.checkin.params.auto_print_hold_transits
             || this.circ.suppressCheckinPopups) {
             // Print and exit.
-            return this.printTransit().then(_ => false);
+            return this.printTransit().then(_ => true); // exit
         }
 
-        return promise;
+        return promise.then(_ => false); // keep going
     }
 
     applySettings(): Promise<boolean> {

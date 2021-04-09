@@ -21,7 +21,8 @@ interface CheckinGridEntry extends CheckinResult {
 }
 
 @Component({
-  templateUrl: 'checkin.component.html'
+  templateUrl: 'checkin.component.html',
+  styleUrls: ['checkin.component.css']
 })
 export class CheckinComponent implements OnInit, AfterViewInit {
     checkins: CheckinGridEntry[] = [];

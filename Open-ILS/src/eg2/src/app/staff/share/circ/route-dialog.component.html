@@ -1,17 +1,106 @@
+
+<!-- 
+  Two separate dialogs are defined within, one for the holds slip
+  and one for hold and non-hold transits.
+-->
+
+<ng-template #holdShelfTmpl>
+  <div *ngIf="checkin.hold.behind_desk() == 't'" i18n>
+    This item should be routed to the <strong>Private Holds Shelf</strong>
+  </div>
+  <div *ngIf="checkin.hold.behind_desk() == 'f'" i18n>
+    This item should be routed to the <strong>Public Holds Shelf</strong>
+  </div>
+
+  <br/>
+  <div>
+    <span class="mr-2" i18n>Item Barcode:</span>
+    <span>{{checkin.copy.barcode()}}</span>
+  </div>
+  <div>
+    <span class="mr-2" i18n>Title:</span>
+    <span>{{checkin.record.title()}}</span>
+  </div>
+  <div>
+    <span class="mr-2" i18n>Author:</span>
+    <span>{{checkin.record.author()}}</span>
+  </div>
+  <div>
+    <span class="mr-2" i18n>Call Number:</span>
+    <span>{{checkin.volume.prefix().label()}}&nbsp;{{checkin.volume.label()}}&nbsp;{{checkin.volume.suffix().label()}}</span>
+  </div>
+  <br/>
+
+  <div *ngIf="checkin.patron.alias()">
+    Hold for patron {{checkin.patron.alias()}}
+  </div>
+  <div *ngIf="!checkin.patron.alias()" i18n>
+    Hold for patron {{checkin.patron.family_name()}}, 
+    {{checkin.patron.first_given_name()}} {{checkin.patron.second_given_name()}}
+  </div>
+  <div *ngIf="!checkin.patron.alias()">
+    <div *ngIf="checkin.patron.pref_family_name() 
+      || checkin.patron.pref_first_given_name() 
+      || checkin.patron.pref_second_given_name()">
+      Preferred name: 
+        {{checkin.patron.pref_family_name || checkin.patron.family_name}},
+        {{checkin.patron.pref_first_given_name || checkin.patron.first_given_name}}
+        {{checkin.patron.pref_second_given_name}}
+    </div>
+  </div>
+  <div>
+    <span class="mr-2" i18n>Patron Barcode:</span>
+    <span>{{checkin.patron.card().barcode()}}</span>
+  </div>
+  <div *ngIf="checkin.hold.phone_notify()" i18n>Notify by phone: {{checkin.hold.phone_notify()}}</div>
+  <div *ngIf="checkin.hold.sms_notify()" i18n>Notify by text: {{checkin.hold.sms_notify()}}</div>
+  <div *ngIf="checkin.hold.email_notify() == 't'" i18n>Notify by email: {{checkin.patron.email()}}</div>
+  <br/>
+  <div>
+    <span class="mr-2" i18n>Request Date:</span>
+    <span>{{checkin.hold.request_time() | date:'short'}}</span>
+  </div>
+  <div>
+    <span class="mr-2" i18n>Request Notes:</span>
+    <ul>
+      <li *ngFor="let note of checkin.hold.notes()">
+        <strong>{{note.title()}}</strong>: {{note.body()}}
+        <span *ngIf="note.slip() =='t' || note.pub() == 't'" i18n>[Patron-visible]</span>
+      </li>
+    </ul>
+  </div>
+  <div>
+    <span class="mr-2" i18n>Slip Date:</span>
+    <span>{{today | date:'short'}}</span>
+  </div>
+</ng-template>
+
+<ng-template #transitTmpl>
+</ng-template>
+
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
-    <h4 i18n>Route Item to Holds Shelf</h4>
+    <h4>
+      <ng-container *ngIf="slip == 'hold_shelf_slip'" i18n>Hold Slip</ng-container>
+      <ng-container *ngIf="slip != 'hold_shelf_slip'" i18n>Transit Slip</ng-container>
+    </h4>
     <button type="button" class="close"
       i18n-aria-label aria-label="Close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-
-    ROUTE DIALOG
+    <ng-container *ngIf="slip == 'hold_shelf_slip'">
+      <ng-container *ngTemplateOutlet="holdShelfTmpl"></ng-container>
+    </ng-container>
+    <ng-container *ngIf="slip != 'hold_shelf_slip'">
+      <ng-container *ngTemplateOutlet="transitTmpl"></ng-container>
+    </ng-container>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success" (click)="close()" i18n>Submit</button>
-    <button type="button" class="btn btn-warning" (click)="close()" i18n>Cancel</button>
+    <button type="button" class="btn btn-success" (click)="print()" i18n>Print</button>
+    <button type="button" class="btn btn-warning" (click)="close()" i18n>Do Not Print</button>
   </div>
 </ng-template>
+
+
