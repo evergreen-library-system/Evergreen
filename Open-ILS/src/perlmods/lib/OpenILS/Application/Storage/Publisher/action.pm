@@ -2450,7 +2450,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
     $sth->execute();
 
     my @list = $sth->fetchall_hash;
-    $client->respond(scalar(@list)); # send the row count first, for progress tracking
+    $client->respond(int(scalar(@list))); # send the row count first, for progress tracking
     $client->respond( $_ ) for (@list);
 
     $client->respond_complete;

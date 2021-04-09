@@ -743,7 +743,7 @@ sub send_and_queue_bucket_searches {
     # parallel, so we need to cacluate summary values up front.
     my %bre_uniq;
     $bre_uniq{$_->{bre_id}} = 1 for @$z_searches;
-    $response->{bre_count} = scalar(keys %bre_uniq);
+    $response->{bre_count} = int(scalar(keys %bre_uniq));
     $response->{search_count} += scalar(@$z_searches);
 
     # let the caller know searches are on their way out
