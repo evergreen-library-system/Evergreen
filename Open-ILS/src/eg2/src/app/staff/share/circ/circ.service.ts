@@ -149,6 +149,7 @@ export interface CheckinParams {
     claims_never_checked_out?: boolean;
     void_overdues?: boolean;
     auto_print_hold_transits?: boolean;
+    backdate?: string;
 
     // internal tracking
     _override?: boolean;
@@ -163,11 +164,14 @@ export interface CheckinResult {
     copy?: IdlObject;
     volume?: IdlObject;
     circ?: IdlObject;
+    parent_circ?: IdlObject;
+    mbts?: IdlObject;
     record?: IdlObject;
     hold?: IdlObject;
     transit?: IdlObject;
     org?: number;
     patron?: IdlObject;
+    routeTo?: string;
 }
 
 @Injectable()
@@ -206,10 +210,13 @@ export class CircService {
     // 'circ' is fleshed with copy, vol, bib, wide_display_entry
     // Extracts some display info from a fleshed circ.
     getDisplayInfo(circ: IdlObject): CircDisplayInfo {
+        return this.getCopyDisplayInfo(circ.target_copy());
+    }
 
-        const copy = circ.target_copy();
+    getCopyDisplayInfo(copy: IdlObject): CircDisplayInfo {
 
-        if (copy.call_number().id() === -1) { // precat
+        if (copy.call_number() === -1 || copy.call_number().id() === -1) {
+            // Precat Copy
             return {
                 title: copy.dummy_title(),
                 author: copy.dummy_author(),
@@ -273,6 +280,7 @@ export class CircService {
         ).toPromise().then(transit => {
             transit.source(this.org.get(transit.source()));
             transit.dest(this.org.get(transit.dest()));
+            result.routeTo = transit.dest().shortname();
             return transit;
         });
     }
@@ -541,15 +549,20 @@ export class CircService {
             params: params,
             success: success,
             circ: payload.circ,
+            parent_circ: payload.parent_circ,
             copy: payload.copy,
             volume: payload.volume,
             record: payload.record,
             transit: payload.transit
         };
 
-        let promise = Promise.resolve();;
         const copy = result.copy;
         const volume = result.volume;
+        const transit = result.transit;
+        const circ = result.circ;
+        const parent_circ = result.parent_circ;
+
+        let promise = Promise.resolve();;
 
         if (copy) {
             if (this.copyLocationCache[copy.location()]) {
@@ -579,6 +592,25 @@ export class CircService {
             }
         }
 
+        if (transit) {
+            if (typeof transit.dest() !== 'object') {
+                transit.dest(this.org.get(transit.dest()));
+            }
+            if (typeof transit.source() !== 'object') {
+                transit.source(this.org.get(transit.source()));
+            }
+        }
+
+        // for checkin, the mbts lives on the main circ
+        if (circ && circ.billable_transaction()) {
+            result.mbts = circ.billable_transaction().summary();
+        }
+
+        // on renewals, the mbts lives on the parent circ
+        if (parent_circ && parent_circ.billable_transaction()) {
+            result.mbts = parent_circ.billable_transaction().summary();
+        }
+
         return promise.then(_ => result);
     }
 
@@ -598,7 +630,6 @@ export class CircService {
             return this.checkin(params);
         }
 
-
         // Alerts that require a manual override.
         if (allEvents.filter(
             e => CAN_OVERRIDE_CHECKIN_ALERTS.includes(e.textcode)).length > 0) {
@@ -616,12 +647,14 @@ export class CircService {
 
             case 'ITEM_NOT_CATALOGED':
                 this.audio.play('error.checkout.no_cataloged');
+                result.routeTo = 'Cataloging'; // TODO
 
                 if (!this.suppressCheckinPopups && !this.ignoreCheckinPrecats) {
                     // Tell the user its a precat and return the result.
                     return this.components.routeToCatalogingDialog.open()
                     .toPromise().then(_ => result);
                 }
+                break;
 
             case 'ROUTE_ITEM':
                 this.components.routeDialog.checkin = result;
@@ -651,6 +684,7 @@ export class CircService {
                 if (hold) {
 
                     if (hold.pickup_lib() === this.auth.user().ws_ou()) {
+                        result.routeTo = 'Holds Shelf'; // TODO
                         this.components.routeDialog.checkin = result;
                         return this.components.routeDialog.open().toPromise()
                         .then(_ => result);
@@ -661,8 +695,13 @@ export class CircService {
                     }
 
                 } else {
-                    console.warn("API Returned insufficient info on holds");
+                    console.warn('API Returned insufficient info on holds');
                 }
+
+            case 11: /* CATALOGING */
+                this.audio.play('info.checkin.cataloging');
+                result.routeTo = 'Cataloging'; // TODO
+                // TODO more...
         }
 
         return Promise.resolve(result);

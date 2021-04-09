@@ -13,6 +13,10 @@ const routes: Routes = [{
   path: 'holds',
   loadChildren: () =>
     import('./holds/holds.module').then(m => m.HoldsUiModule)
+}, {
+  path: 'checkin',
+  loadChildren: () =>
+    import('./checkin/checkin.module').then(m => m.CheckinModule)
 }];
 
 @NgModule({

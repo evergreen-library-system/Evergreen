@@ -1,0 +1,107 @@
+<eg-staff-banner i18n-bannerText bannerText="Checkin Items"></eg-staff-banner>
+<eg-circ-components></eg-circ-components>
+<eg-progress-dialog #progressDialog></eg-progress-dialog>
+<eg-barcode-select #barcodeSelect></eg-barcode-select>
+<eg-copy-alerts-dialog #copyAlertsDialog></eg-copy-alerts-dialog>
+
+<div class="row mb-3 pb-3 border-bottom">
+  <div class="col-lg-12 d-flex">
+    <div class="form-inline">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" i18n>Barcode</span>
+        </div>
+        <input type="text" class="form-control" id="barcode-input"
+          placeholder="Barcode..." i18n-placeholder
+          [(ngModel)]="barcode" [disabled]="checkinNoncat != null"
+          i18n-aria-label aria-label="Barcode Input" (keydown.enter)="checkin()" />
+        <div class="input-group-append">
+          <button class="btn btn-outline-dark" (keydown.enter)="checkin()" 
+            (click)="checkin()" i18n>Submit</button>
+        </div>
+      </div>
+    </div>
+    <div class="flex-1"></div>
+    <div>
+      <span class="mr-2" i18n>Effective Date:</span>
+      <eg-date-select [initialIso]="effectiveDate" 
+        (onChangeAsIso)="setEffectiveDate($event)"></eg-date-select>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="fineTally > 0">
+  <span class="mr-2" i18n>Fine Tally: </span>
+  <span class="badge badge-danger">{{fineTally | currency}}</span>
+</div>
+
+<!-- doc_id below because checkin returns an MVR -->
+<ng-template #titleTemplate let-r="row">
+  <ng-container *ngIf="r.record">
+    <a routerLink="/staff/catalog/record/{{r.record.doc_id()}}">{{r.title}}</a>
+  </ng-container>
+  <ng-container *ngIf="!r.record">{{r.title}}</ng-container>
+</ng-template>
+
+<div class="row">
+  <div class="col-lg-12">
+    <eg-grid #grid [dataSource]="gridDataSource" [sortable]="true"
+      [useLocalSort]="true" [cellTextGenerator]="cellTextGenerator"
+      [disablePaging]="true" persistKey="circ.checkin">
+
+      <!--
+			<eg-grid-toolbar-action
+				i18n-group group="Add" i18n-label label="Add Item Alerts"
+				(onClick)="openItemAlerts($event, 'create')">
+			</eg-grid-toolbar-action>
+
+			<eg-grid-toolbar-action
+				i18n-group group="Add" i18n-label label="Manage Item Alerts"
+        [disabled]="checkinsGrid.context.rowSelector.selected().length !== 1"
+				(onClick)="openItemAlerts($event, 'manage')">
+			</eg-grid-toolbar-action>
+      -->
+
+      <eg-grid-column path="index" [index]="true" 
+        label="Row Index" i18n-label [hidden]="true"></eg-grid-column>
+
+      <eg-grid-column path="mbts.balance_owed" label="Balance Owed" 
+        datatype="money" i18n-label></eg-grid-column>
+
+      <eg-grid-column path="copy.barcode" label="Barcode" i18n-label>
+      </eg-grid-column>
+
+      <eg-grid-column path="circ.id" label="Bill #" i18n-label>
+      </eg-grid-column>
+
+      <eg-grid-column path="circ.checkin_time" label="Checkin Date" i18n-label
+        datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+
+      <eg-grid-column path="patron.family_name" label="Family Name" i18n-label>
+      </eg-grid-column>
+
+      <eg-grid-column path="circ.xact_finish" label="Finish" i18n-label
+        datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+
+      <eg-grid-column path="copy.location.name" label="Location" i18n-label>
+      </eg-grid-column>
+
+      <eg-grid-column name="routeTo" label="Route To" i18n-label>
+      </eg-grid-column>
+
+      <eg-grid-column path="circ.xact_start" label="Start" i18n-label
+        datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+
+      <eg-grid-column path="title" label="Title" i18n-label 
+        [cellTemplate]="titleTemplate"></eg-grid-column>
+
+      <eg-grid-column path="copy.circ_modifier" 
+        label="Circulation Modifier" i18n-label></eg-grid-column>
+
+      <eg-grid-column path="copy.circ_lib.shortname"
+        label="Circulation Library" i18n-label></eg-grid-column>
+
+    </eg-grid>
+  </div>
+</div>
+

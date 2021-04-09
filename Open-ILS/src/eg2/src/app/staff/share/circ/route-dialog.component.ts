@@ -41,7 +41,6 @@ export class RouteDialogComponent extends DialogComponent {
     }
 
     open(ops?: NgbModalOptions): Observable<any> {
-
         // Depending on various settings, the dialog may never open.
         // But in some cases we still have to collect the data
         // for printing.
@@ -66,7 +65,6 @@ export class RouteDialogComponent extends DialogComponent {
     }
 
     collectData(): Promise<boolean> {
-
         let promise = Promise.resolve(null);
         const hold = this.checkin.hold;
 
