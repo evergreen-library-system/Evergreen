@@ -103,7 +103,6 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
         $scope.renewals.unshift(row_item);
         $scope.gridDataProvider.refresh();
 
-        egCore.hatch.setItem('circ.renew.strict_barcode', $scope.strict_barcode);
         var options = {check_barcode : $scope.strict_barcode};
 
         egCirc.renew(params, options).then(
@@ -235,6 +234,13 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
             // update grid items?
         });
     }
+
+    $scope.onStrictBarcodeChange = function() {
+        egCore.hatch.setItem(
+            'circ.renew.strict_barcode',
+            $scope.strict_barcode
+        );
+    };
 
     $scope.print_receipt = function() {
         var print_data = {circulations : []}
