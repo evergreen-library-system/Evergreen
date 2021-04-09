@@ -222,13 +222,6 @@ sub remote_update {
     $log->debug("CDBI->remote_update: \$search is $search (".ref($search)." : ".join(',',map{"$_ => $$search{$_}"}keys(%$search)).")",DEBUG);
     $log->debug("CDBI->remote_update: \$arg is $arg (".ref($arg)." : ".join(',',map{"$_ => $$arg{$_}"}keys(%$arg)).")",DEBUG);
 
-#   my @objs = $self->search_where($search);
-#   throw OpenSRF::EX::WARN ("No objects found for remote_update.  Perhaps you meant to use merge?")
-#       if (@objs == 0);
-
-#   $_->update($arg) for (@objs);
-#   return scalar(@objs);
-
     my @finds = sort keys %$search;
     my @sets = sort keys %$arg;
 
