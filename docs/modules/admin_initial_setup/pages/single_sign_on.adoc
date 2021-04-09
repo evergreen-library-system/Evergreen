@@ -1,0 +1,367 @@
+= Single Sign On for Evergreen OPAC
+:toc:
+
+indexterm:[Authentication,Single Sign On,Identity Provider]
+
+== Introduction
+
+The Single Sign On mechanism for the Evergreen OPAC adds the ability for
+Evergreen to authenticate users against a configurable authoritative
+external source, using Shibboleth.
+
+Single Sign On systems are often used in academic institutions as a way
+to authenticate students, faculty, and staff across a wide range of
+separate digital services. The goal of a Single Sign On system is to
+permit a user to log in with a single set of credentials across all of
+these services. Each service talks to an Identity Provider (IdP) which
+confirms that a given user is authorized to use the service. For
+example, a college might be able to use an IdP to support a single login
+which will authenticate a student to the library catalog, the school’s
+collection of databases, and internal school services such as the
+registrar.
+
+This feature supports setting up separate Identity Providers within a
+single Evergreen instance, and this is controlled via an Apache
+VirtualHost configuration which is described in detail below.
+
+This feature does not offer external authentication for the Evergreen
+staff client.
+
+== Public Catalog Display
+
+If a location has Single Sign On activated, by default a patron will be
+required to authenticate the Single Sign On service. In most cases the
+patron will be transparently redirected to the Single Sign On login.
+However, if a patron navigates directly to the URL
+`+https://<your.evergreen.domain>/eg/opac/login+`, they will be presented
+with a prompt redirecting them to the Single Sign On service:
+
+image::media/sso_only.png[Redirect to Single Sign On]
+
+If a location wishes to permit Evergreen-native authentication as well
+as Single Sign On authentication, the Library Setting _Allow both
+Shibboleth and native OPAC authentication_ should be set to TRUE. In
+that case, a patron who navigates to the login page, or to a page
+requiring authentication, will see this:
+
+image:media/sso_and_native.png[Single Sign on and native authentication permitted]
+
+== Administration
+
+Single Sign On is controlled by several Evergreen Library Settings, and
+an Apache setting. There is one new permission.
+
+=== Permissions
+
+Users must have the new SSO_ADMIN permission assigned at the appropriate
+working locations and depths in order to set or change any of the below
+Library Settings.
+
+=== Library Settings
+
+Library settings are inheritable, unless there is an organizationally
+closer setting.
+
+* *Enable Shibboleth SSO for the OPAC*
+** TRUE / FALSE
+** Controls whether Shibboleth is being used.
+* *Allow both Shibboleth and native OPAC authentication*
+** TRUE / FALSE
+** Default is false, which will redirect patrons to the configured Single
+Sign On service.
+** If set to true, patrons will still be presented with an Evergreen login
+form when Single Sign On is enabled.
+* *Log out of the Shibboleth IdP*
+** TRUE / FALSE
+** Default is false, which will leave a user logged into Shibboleth but
+will forget their Evergreen authoken and set a cookie so they are logged
+out of Evergreen until they choose to log back in.
+** If set to true, the user will be logged out of Shibboleth when they log
+out of Evergreen. Additionally, if the IdP implements the
+SingleLogoutService option, the user will be logged out of the IdP as
+well.
+** This setting works on an intentional logout; a timeout behaves
+differently (see below).
+* *Shibboleth SSO Entity ID*
+** Text
+** Records which configured Entity ID to use for Single Sign On, if there
+are multiple Identity Providers in use by a single Evergreen instance.
+* *Evergreen SSO matchpoint*
+** Text
+** Indicates which field carries the ID that Shibboleth is looking for.
+Default is *usrname*, but also accepts *barcode* and *email* (note the
+last is not a unique value in Evergreen).
+* *Shibboleth SSO matchpoint*
+** Text
+** Indicates which value is coming from Shibboleth that Evergreen will need
+to look up a user. This is defined in the Shibboleth configuration and
+defaults to *uid*.
+
+Note that the existing Library Setting _OPAC Inactivity Timeout_ will
+log a user out of Evergreen but not out of Shibboleth. Shibboleth has a
+separate configured timeout value. If the user is logged out of
+Evergreen due to a timeout, but is still logged in to Shibboleth, they
+will be transparently reauthenticated to Evergreen when they select the
+*MyAccount* button.
+
+=== Apache Settings
+
+In order to identify which location (i.e., Organizational Unit) is used
+as the context location for Shibboleth-related library settings, the
+*sso_loc* Apache variable can be set. This is configured per hostname in
+exactly the same way as the *physical_loc* Apache variable. For example:
+
+....
+<VirtualHost *:443>
+  ...
+    SetEnv sso_loc 101
+  # The following may be necessary based on how Shibboleth is configured
+  <Location />
+    ShibRequestSetting applicationId otheridp
+  </Location>
+  ...
+</VirtualHost>
+....
+
+If *sso_loc* is not set, Evergreen will check for a *physical_loc*
+setting, and finally, fall back to the current search library. This
+setting is only required if the multiple Identity Providers need to be
+supported but the *physical_loc* setting is inappropriate for choosing
+the context location.
+
+=== Shibboleth configuration
+
+Configuring Shibboleth is particular to each institution's needs, and
+depends on the IdP or IdPs that will be used. However, here are a couple sample configurations to use as examples.
+
+==== Simple configuration that can support multiple IdPs
+
+.Simple configuration
+[source:xml]
+....
+<SPConfig xmlns="urn:mace:shibboleth:2.0:native:sp:config"
+    xmlns:conf="urn:mace:shibboleth:2.0:native:sp:config"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+    xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+    xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+    clockSkew="180">
+
+    <!-- The ApplicationDefaults element is where most of Shibboleth's SAML bits are defined. -->
+    <ApplicationDefaults entityID="https://<your.evergreen.domain>/eg/opac/"
+                         REMOTE_USER="eppn persistent-id targeted-id"
+                         cipherSuites="ECDHE+AESGCM:ECDHE:!aNULL:!eNULL:!LOW:!EXPORT:!RC4:!SHA:!SSLv2">
+
+        <!--
+        Controls session lifetimes, address checks, cookie handling, and the protocol handlers.
+        You MUST supply an effectively unique handlerURL value for each of your applications.
+        The value defaults to /Shibboleth.sso, and should be a relative path, with the SP computing
+        a relative value based on the virtual host. Using handlerSSL="true", the default, will force
+        the protocol to be https. You should also set cookieProps to "https" for SSL-only sites.
+        Note that while we default checkAddress to "false", this has a negative impact on the
+        security of your site. Stealing sessions via cookie theft is much easier with this disabled.
+        -->
+        <Sessions lifetime="28800" timeout="3600" relayState="ss:mem"
+                  checkAddress="false" handlerSSL="true" cookieProps="https">
+
+
+            <!--
+            By not supplying an entity here, Evergreen is required to specify the entity.
+            This is controlled by the opac.login.shib_sso.entityId YAOUS.
+            -->
+            <SSO>
+              SAML2 SAML1
+            </SSO>
+
+            <!-- SAML and local-only logout. -->
+            <Logout>SAML2 Local</Logout>
+
+            <!-- Extension service that generates "approximate" metadata based on SP configuration. -->
+            <Handler type="MetadataGenerator" Location="/Metadata" signing="false"/>
+
+            <!-- Status reporting service. -->
+            <Handler type="Status" Location="/Status" acl="127.0.0.1 ::1"/>
+
+            <!-- Session diagnostic service. -->
+            <Handler type="Session" Location="/Session" showAttributeValues="false"/>
+
+            <!-- JSON feed of discovery information. -->
+            <Handler type="DiscoveryFeed" Location="/DiscoFeed"/>
+
+            <md:SingleLogoutService Location="/SLO/Redirect" conf:template="bindingTemplate.html"
+                    conf:policyId="unsigned-slo" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"/>
+
+        </Sessions>
+
+        <!--
+        Allows overriding of error template information/filenames. You can
+        also add attributes with values that can be plugged into the templates.
+        -->
+        <Errors supportContact="root@localhost"
+            helpLocation="/about.html"
+            styleSheet="/shibboleth-sp/main.css"/>
+
+        <!-- Example of locally maintained metadata. -->
+        <MetadataProvider type="XML" validate="true" file="/etc/shibboleth/simplesaml-idp-metadata.xml"/>
+        <MetadataProvider type="XML" validate="true" file="/etc/shibboleth/other-external-idp-metadata.xml"/>
+
+        <!-- Map to extract attributes from SAML assertions. -->
+        <AttributeExtractor type="XML" validate="true" reloadChanges="false" path="attribute-map.xml"/>
+
+        <!-- Use a SAML query if no attributes are supplied during SSO. -->
+        <AttributeResolver type="Query" subjectMatch="true"/>
+
+        <!-- Default filtering policy for recognized attributes, lets other data pass. -->
+        <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>
+
+        <!-- Simple file-based resolver for using a single keypair. -->
+        <CredentialResolver type="File" key="sp-key.pem" certificate="sp-cert.pem"/>
+
+    </ApplicationDefaults>
+
+    <!-- Policies that determine how to process and authenticate runtime messages. -->
+    <SecurityPolicyProvider type="XML" validate="true" path="security-policy.xml"/>
+
+    <!-- Low-level configuration about protocols and bindings available for use. -->
+    <ProtocolProvider type="XML" validate="true" reloadChanges="false" path="protocols.xml"/>
+
+</SPConfig>
+....
+
+==== Configuration to support multiple Evergreen hostnames
+
+.Configuration for multiple hostnames
+[source:xml]
+....
+<!-- Differences from the simple, single-host example are noted -->
+<SPConfig xmlns="urn:mace:shibboleth:2.0:native:sp:config"
+    xmlns:conf="urn:mace:shibboleth:2.0:native:sp:config"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+    xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+    xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
+    clockSkew="180">
+
+<!-- RequestMapper block differs from single-host example -->
+   <RequestMapper type="Native">
+        <RequestMap>
+            <Host name="<your.evergreen.idp.domain>" applicationId="idp"/>
+            <Host name="<your.evergreen.domain>" applicationId="otheridp"/>
+        </RequestMap>
+    </RequestMapper>
+
+    <!-- The ApplicationDefaults element is where most of Shibboleth's SAML bits are defined. This differs from single-host example. -->
+    <ApplicationDefaults entityID="https://<your.evergreen.domain>/"
+                         REMOTE_USER="eppn persistent-id targeted-id"
+                         cipherSuites="ECDHE+AESGCM:ECDHE:!aNULL:!eNULL:!LOW:!EXPORT:!RC4:!SHA:!SSLv2">
+
+        <!--
+        Controls session lifetimes, address checks, cookie handling, and the protocol handlers.
+        You MUST supply an effectively unique handlerURL value for each of your applications.
+        The value defaults to /Shibboleth.sso, and should be a relative path, with the SP computing
+        a relative value based on the virtual host. Using handlerSSL="true", the default, will force
+        the protocol to be https. You should also set cookieProps to "https" for SSL-only sites.
+        Note that while we default checkAddress to "false", this has a negative impact on the
+        security of your site. Stealing sessions via cookie theft is much easier with this disabled.
+        -->
+        <Sessions lifetime="28800" timeout="3600" relayState="ss:mem"
+                  checkAddress="false" handlerSSL="true" cookieProps="https">
+
+
+            <!--
+            By not supplying an entity here, Evergreen is required to specify the entity.
+            This is controlled by the opac.login.shib_sso.entityId YAOUS.
+            -->
+            <SSO>
+              SAML2 SAML1
+            </SSO>
+
+            <!-- SAML and local-only logout. -->
+            <Logout>SAML2 Local</Logout>
+
+            <!-- Extension service that generates "approximate" metadata based on SP configuration. -->
+            <Handler type="MetadataGenerator" Location="/Metadata" signing="false"/>
+
+            <!-- Status reporting service. -->
+            <Handler type="Status" Location="/Status" acl="127.0.0.1 ::1"/>
+
+            <!-- Session diagnostic service. -->
+            <Handler type="Session" Location="/Session" showAttributeValues="false"/>
+
+            <!-- JSON feed of discovery information. -->
+            <Handler type="DiscoveryFeed" Location="/DiscoFeed"/>
+
+            <md:SingleLogoutService Location="/SLO/Redirect" conf:template="bindingTemplate.html"
+                    conf:policyId="unsigned-slo" Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"/>
+
+        </Sessions>
+
+        <!--
+        Allows overriding of error template information/filenames. You can
+        also add attributes with values that can be plugged into the templates.
+        -->
+        <Errors supportContact="root@localhost"
+            helpLocation="/about.html"
+            styleSheet="/shibboleth-sp/main.css"/>
+
+        <!-- Example of locally maintained metadata. -->
+        <MetadataProvider type="XML" validate="true" file="/etc/shibboleth/simplesaml-idp-metadata.xml"/>
+        <MetadataProvider type="XML" validate="true" file="/etc/shibboleth/other-external-idp-metadata.xml"/>
+
+        <!-- Map to extract attributes from SAML assertions. -->
+        <AttributeExtractor type="XML" validate="true" reloadChanges="false" path="attribute-map.xml"/>
+
+        <!-- Use a SAML query if no attributes are supplied during SSO. -->
+        <AttributeResolver type="Query" subjectMatch="true"/>
+
+        <!-- Default filtering policy for recognized attributes, lets other data pass. -->
+        <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>
+
+        <!-- Simple file-based resolver for using a single keypair. This differs from single-host example. -->
+        <CredentialResolver type="File" key="sp-key.pem" certificate="sp-cert.pem"/>
+
+        <ApplicationOverride id="idp" entityID="https://<your.evergreen.idp.domain>/eg/opac/"/>
+        <ApplicationOverride id="otheridp" entityID="https://<your.evergreen.domain>/eg/opac/"/>
+
+    </ApplicationDefaults>
+
+    <!-- Policies that determine how to process and authenticate runtime messages. -->
+    <SecurityPolicyProvider type="XML" validate="true" path="security-policy.xml"/>
+
+    <!-- Low-level configuration about protocols and bindings available for use. -->
+    <ProtocolProvider type="XML" validate="true" reloadChanges="false" path="protocols.xml"/>
+
+</SPConfig>
+....
+
+==== Other configuration information
+
+Some common attribute maps that are useful for Microsoft ActiveDirectory
+and UNIX LDAP IdPs that can be added to attribute-map.xml are:
+
+`+<Attribute name="urn:oid:1.2.840.113556.1.4.221" id="sAMAccountName"/>+`
+
+`+<Attribute name="urn:oid:0.9.2342.19200300.100.1.1" id="uid"/>+`
+
+`+<Attribute name="urn:oid:0.9.2342.19200300.100.1.3" id="mail"/>+`
+
+`+<Attribute name="urn:mace:dir:attribute-def:uid" id="uid"/>+`
+
+`+<Attribute name="urn:mace:dir:attribute-def:mail" id="mail"/>+`
+
+For some IdPs, such as SimpleSAMLphp, it can be necessary to add a
+special security policy to security-policy.xml:
+
+[source:xml]
+....
+<Policy id="unsigned-slo">
+    <PolicyRule type="NullSecurity"/>
+</Policy>
+....
+
+==== Testing your configuration
+
+To test if there is a current active Shibboleth session, go here:
+`+https://<your-eg-hostname>/Shibboleth.sso/Session+`
+
+For testing purposes, if you need to reset the browser so it’s as if a
+user has never logged in before, this can be done by clearing all
+cookies associated with the Evergreen OPAC.
