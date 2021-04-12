@@ -553,7 +553,7 @@ image::media/Display_Hold_Types_on_Pull_Lists1.jpg[Display_Hold_Types_on_Pull_Li
 [[hold_groups]]
 == Hold Groups
 
-[indexterm:Hold Groups,User Buckets,Hold Subscriptions]
+indexterm:[Hold Groups,User Buckets,Hold Subscriptions]
 
 The Hold Groups feature allows library staff to create lists of
 patrons that can then be used to place multiple title-level holds on the
