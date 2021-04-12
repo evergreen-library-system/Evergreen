@@ -1,7 +1,7 @@
---Upgrade Script for 3.6.2 to 3.7-beta
-\set eg_version '''3.7-beta'''
+--Upgrade Script for 3.6.2 to 3.7-rc
+\set eg_version '''3.7-rc'''
 BEGIN;
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.7-beta', :eg_version);
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.7-rc', :eg_version);
 
 SELECT evergreen.upgrade_deps_block_check('1247', :eg_version);
 
@@ -1373,6 +1373,26 @@ SELECT evergreen.upgrade_deps_block_check('1258', :eg_version);
 UPDATE config.metabib_field 
 SET xpath =  '//*[@tag=''260'' or @tag=''264''][1]'
 WHERE id = 52 AND xpath = '//*[@tag=''260'']';
+
+SELECT evergreen.upgrade_deps_block_check('1259', :eg_version);
+
+INSERT INTO action_trigger.environment (event_def,path)
+SELECT id,'items' from action_trigger.event_definition WHERE name='biblio.record_entry.print.full'
+AND NOT EXISTS (SELECT 1 FROM action_trigger.environment WHERE
+event_def=(SELECT id FROM action_trigger.event_definition WHERE name ='biblio.record_entry.print.full' AND owner=1 LIMIT 1)
+AND path='items');
+
+INSERT INTO action_trigger.environment (event_def,path)
+SELECT id,'items' from action_trigger.event_definition WHERE name='biblio.record_entry.email.full'
+AND NOT EXISTS (SELECT 1 FROM action_trigger.environment WHERE
+event_def=(SELECT id FROM action_trigger.event_definition WHERE name ='biblio.record_entry.email.full' AND owner=1 LIMIT 1)
+AND path='items');
+
+INSERT INTO action_trigger.environment (event_def,path)
+SELECT id,'owner' from action_trigger.event_definition WHERE name='biblio.record_entry.email.full'
+AND NOT EXISTS (SELECT 1 FROM action_trigger.environment WHERE
+event_def=(SELECT id FROM action_trigger.event_definition WHERE name ='biblio.record_entry.email.full' AND owner=1 LIMIT 1)
+AND path='owner');
 
 COMMIT;
 
