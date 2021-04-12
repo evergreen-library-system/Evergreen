@@ -1,7 +1,7 @@
 
 <div class="row" *ngIf="loading">
   <div class="col-lg-6 offset-lg-3">
-    <eg-progress-inline></eg-progress-inline>
+    <eg-progress-inline #progress></eg-progress-inline>
   </div>
 </div>
 
@@ -37,12 +37,21 @@
       <div class="col-lg-5">{{perm.code()}}</div>
       <div class="col-lg-1">
         <input class="form-check-input ml-0 pl-0" type="checkbox"
+          [disabled]="!canGrantPerm(perm)"
           [(ngModel)]="permsApplied[perm.id()]"/>
       </div>
       <div class="col-lg-2">
         <select class="form-control" [(ngModel)]="permDepths[perm.id()]">
-          <option *ngFor="let depth of orgDepths" [value]="depth">{{depth}}</option>
+          <ng-container *ngFor="let depth of orgDepths">
+            <option [disabled]="depth < canGrantPermAtDepth(perm)" 
+              [value]="depth">{{depth}}</option>
+          </ng-container>
         </select>
+      </div>
+      <div class="col-lg-2">
+        <input class="form-check-input ml-0 pl-0" type="checkbox"
+          [disabled]="!canGrantPerm(perm)"
+          [(ngModel)]="permsGrantable[perm.id()]"/>
       </div>
     </div>
   </div>
