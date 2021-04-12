@@ -25,9 +25,6 @@ export class RouteDialogComponent extends DialogComponent {
     checkin: CheckinResult;
     noAutoPrint: {[template: string]: boolean} = {};
     slip: string;
-    orgAddress: IdlObject;
-    destCourierCode: string;
-    destOrg: IdlObject;
     today = new Date();
 
     constructor(
@@ -69,35 +66,31 @@ export class RouteDialogComponent extends DialogComponent {
         let promise = Promise.resolve(null);
         const hold = this.checkin.hold;
 
-        if (this.checkin.org && this.slip !== 'hold_shelf_slip') {
+        if (this.slip !== 'hold_shelf_slip') {
 
-            promise = promise.then(_ => {
-                return this.circ.getOrgAddr(this.checkin.org, 'holds_address')
-                .then(addr => this.orgAddress = addr);
-            });
+            // Always fetch the most recent transit for the copy,
+            // regardless of what data the server returns in the payload.
+
+            promise = promise.then(_ => this.circ.findCopyTransit(this.checkin))
+            .then(transit => {
+                this.checkin.transit = transit;
+                this.checkin.destOrg = this.org.get(transit.dest());
+                return this.circ.getOrgAddr(this.checkin.destOrg.id(), 'holds_address');
+            })
+            .then(addr => {
+                this.checkin.destAddress = addr;
+                return this.org.settings('lib.courier_code', this.checkin.destOrg.id())
+            })
+
+            .then(sets => this.checkin.destCourierCode = sets['lib.courier_code']);
         }
 
         if (hold) {
-
             promise = promise.then(_ => {
                 return this.pcrud.retrieve('au', hold.usr(),
                     {flesh: 1, flesh_fields : {'au' : ['card']}}).toPromise()
                 .then(patron => this.checkin.patron = patron);
             });
-        }
-
-        if (this.slip !== 'hold_shelf_slip') {
-
-            promise = promise.then(_ => this.circ.findCopyTransit(this.checkin))
-            .then(transit => {
-                this.checkin.transit = transit;
-                return this.org.settings('lib.courier_code', transit.dest().id())
-                .then(sets => this.destCourierCode = sets['lib.courier_code']);
-            });
-        }
-
-        if (this.checkin.transit) {
-            this.destOrg = this.org.get(this.checkin.transit.dest());
         }
 
         this.audio.play(hold ?

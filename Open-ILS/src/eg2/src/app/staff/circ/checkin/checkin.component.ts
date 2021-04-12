@@ -15,9 +15,7 @@ import {BarcodeSelectComponent
     } from '@eg/staff/share/barcodes/barcode-select.component';
 
 interface CheckinGridEntry extends CheckinResult {
-    title?: string;
-    author?: string;
-    isbn?: string;
+    // May need to extend...
 }
 
 @Component({
@@ -84,21 +82,15 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         })
 
         .then((result: CheckinResult) => {
-            if (result) {
-                this.dispatchResult(result);
-                return result;
+            if (result && result.success) {
+                this.gridifyResult(result);
             }
+            delete this.copiesInFlight[this.barcode];
+            this.resetForm();
+            return result;
         })
 
         .finally(() => delete this.copiesInFlight[this.barcode]);
-    }
-
-    dispatchResult(result: CheckinResult) {
-        if (result.success) {
-            this.gridifyResult(result);
-            this.resetForm();
-            return;
-        }
     }
 
     collectParams(): Promise<CheckinParams> {

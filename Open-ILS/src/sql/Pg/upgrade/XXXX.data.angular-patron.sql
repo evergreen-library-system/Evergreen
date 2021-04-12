@@ -287,7 +287,6 @@ INSERT INTO config.print_template
     (name, label, owner, active, locale, content_type, template)
 VALUES ('hold_shelf_slip', 'Hold Shelf Slip', 1, TRUE, 'en-US', 'text/html', '');
 
-*/
 
 UPDATE config.print_template SET template = $TEMPLATE$
 [% 
@@ -311,7 +310,7 @@ UPDATE config.print_template SET template = $TEMPLATE$
 <br/>
 
 <div>Barcode: [% copy.barcode %]</div>
-<div>Title: [% record.title %]</div>
+<div>Title: [% checkin.title %]</div>
 <div>Call Number: [% volume.prefix.label %] [% volume.label %] [% volume.suffix.label %]</div>
 
 <br/>
@@ -347,7 +346,103 @@ UPDATE config.print_template SET template = $TEMPLATE$
 </div>
 
 $TEMPLATE$ WHERE name = 'hold_shelf_slip';
+
+
+INSERT INTO config.print_template 
+    (name, label, owner, active, locale, content_type, template)
+VALUES ('transit_slip', 'Transit Slip', 1, TRUE, 'en-US', 'text/html', '');
+
+
+UPDATE config.print_template SET template = $TEMPLATE$
+[% 
+  USE date;
+  USE money = format('$%.2f');
+  SET checkin = template_data.checkin;
+  SET copy = checkin.copy;
+  SET destOrg = checkin.destOrg;
+  SET destAddress = checkin.destAddress;
+  SET destCourierCode = checkin.destCourierCode;
+%] 
+<div>
+  <div>This item needs to be routed to <b>[% destOrg.shortname %]</b></div>
+  <div>[% destOrg.name %]</div>
+  [% IF destCourierCode %]Courier Code: [% destCourierCode %][% END %]
+
+  [% IF destAddress %]
+    <div>[% destAddress.street1 %]</div>
+    <div>[% destAddress.street2 %]</div>
+    <div>[% destAddress.city %],
+    [% destAddress.state %]
+    [% destAddress.post_code %]</div>
+  [% ELSE %]
+    <div>We do not have a holds address for this library.</div>
+  [% END %]
+  
+  <br/>
+  <div>Barcode: [% copy.barcode %]</div>
+  <div>Title: [% checkin.title %]</div>
+  <div>Author: [% checkin.author %]</div>
+  
+  <br/>
+  <div>Slip Date: [% date.format(date.now, '%x %r') %]</div>
+  <div>Printed by [% staff.first_given_name %] at [% staff_org.shortname %]</div>
+</div>
+
+$TEMPLATE$ WHERE name = 'transit_slip';
+
+*/
+
  
+INSERT INTO config.print_template 
+    (name, label, owner, active, locale, content_type, template)
+VALUES ('hold_transit_slip', 'Hold Transit Slip', 1, TRUE, 'en-US', 'text/html', '');
+
+UPDATE config.print_template SET template = $TEMPLATE$
+[% 
+  USE date;
+  USE money = format('$%.2f');
+  SET checkin = template_data.checkin;
+  SET copy = checkin.copy;
+  SET hold = checkin.hold;
+  SET patron = checkin.patron;
+  SET destOrg = checkin.destOrg;
+  SET destAddress = checkin.destAddress;
+  SET destCourierCode = checkin.destCourierCode;
+%] 
+<div>
+  <div>This item needs to be routed to <b>[% destOrg.shortname %]</b></div>
+  <div>[% destOrg.name %]</div>
+  [% IF destCourierCode %]Courier Code: [% destCourierCode %][% END %]
+
+  [% IF destAddress %]
+    <div>[% destAddress.street1 %]</div>
+    <div>[% destAddress.street2 %]</div>
+    <div>[% destAddress.city %],
+    [% destAddress.state %]
+    [% destAddress.post_code %]</div>
+  [% ELSE %]
+    <div>We do not have a holds address for this library.</div>
+  [% END %]
+  
+  <br/>
+  <div>Barcode: [% copy.barcode %]</div>
+  <div>Title: [% checkin.title %]</div>
+  <div>Author: [% checkin.author %]</div>
+
+  <br/>
+  <div>Hold for patron [% patron.card.barcode %]</div>
+  
+  <br/>
+  <div>Request Date: [% 
+    date.format(helpers.format_date(hold.request_time, staff_org_timezone), '%x %r') %]
+  </div>
+  <div>Slip Date: [% date.format(date.now, '%x %r') %]</div>
+  <div>Printed by [% staff.first_given_name %] at [% staff_org.shortname %]</div>
+</div>
+
+$TEMPLATE$ WHERE name = 'transit_slip';
+
+
 COMMIT;
 
 

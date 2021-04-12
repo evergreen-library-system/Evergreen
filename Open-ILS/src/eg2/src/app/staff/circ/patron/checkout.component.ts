@@ -146,21 +146,15 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         })
 
         .then((result: CheckoutResult) => {
-            if (result) {
-                this.dispatchResult(result);
-                return result;
+            if (result && result.success) {
+                this.gridifyResult(result);
             }
+            delete this.copiesInFlight[barcode];
+            this.resetForm();
+            return result;
         })
 
         .finally(() => delete this.copiesInFlight[barcode]);
-    }
-
-    dispatchResult(result: CheckoutResult) {
-        if (result.success) {
-            this.gridifyResult(result);
-            this.resetForm();
-            return;
-        }
     }
 
     resetForm() {

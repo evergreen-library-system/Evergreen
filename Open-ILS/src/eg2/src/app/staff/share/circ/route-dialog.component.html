@@ -1,36 +1,11 @@
 
 <!-- 
   Two separate dialogs are defined within, one for the holds slip
-  and one for hold and non-hold transits.
+  and one for hold and non-hold transits.  They share a number of
+  sub-templates.
 -->
 
-<ng-template #holdShelfTmpl>
-  <div *ngIf="checkin.hold.behind_desk() == 't'" i18n>
-    This item should be routed to the <strong>Private Holds Shelf</strong>
-  </div>
-  <div *ngIf="checkin.hold.behind_desk() == 'f'" i18n>
-    This item should be routed to the <strong>Public Holds Shelf</strong>
-  </div>
-
-  <br/>
-  <div>
-    <span class="mr-2" i18n>Item Barcode:</span>
-    <span>{{checkin.copy.barcode()}}</span>
-  </div>
-  <div>
-    <span class="mr-2" i18n>Title:</span>
-    <span>{{checkin.record.title()}}</span>
-  </div>
-  <div>
-    <span class="mr-2" i18n>Author:</span>
-    <span>{{checkin.record.author()}}</span>
-  </div>
-  <div>
-    <span class="mr-2" i18n>Call Number:</span>
-    <span>{{checkin.volume.prefix().label()}}&nbsp;{{checkin.volume.label()}}&nbsp;{{checkin.volume.suffix().label()}}</span>
-  </div>
-  <br/>
-
+<ng-template #patronSummary>
   <div *ngIf="checkin.patron.alias()">
     Hold for patron {{checkin.patron.alias()}}
   </div>
@@ -52,15 +27,34 @@
     <span class="mr-2" i18n>Patron Barcode:</span>
     <span>{{checkin.patron.card().barcode()}}</span>
   </div>
-  <div *ngIf="checkin.hold.phone_notify()" i18n>Notify by phone: {{checkin.hold.phone_notify()}}</div>
-  <div *ngIf="checkin.hold.sms_notify()" i18n>Notify by text: {{checkin.hold.sms_notify()}}</div>
-  <div *ngIf="checkin.hold.email_notify() == 't'" i18n>Notify by email: {{checkin.patron.email()}}</div>
-  <br/>
+</ng-template>
+
+<ng-template #itemSummary>
+  <div>
+    <span class="mr-2" i18n>Item Barcode:</span>
+    <span>{{checkin.copy.barcode()}}</span>
+  </div>
+  <div>
+    <span class="mr-2" i18n>Title:</span>
+    <span>{{checkin.title}}</span>
+  </div>
+  <div>
+    <span class="mr-2" i18n>Author:</span>
+    <span>{{checkin.author}}</span>
+  </div>
+  <div *ngIf="checkin.volume">
+    <span class="mr-2" i18n>Call Number:</span>
+    <span>{{checkin.volume.prefix().label()}}&nbsp;{{
+			checkin.volume.label()}}&nbsp;{{checkin.volume.suffix().label()}}</span>
+  </div>
+</ng-template>
+
+<ng-template #holdSummary>
   <div>
     <span class="mr-2" i18n>Request Date:</span>
     <span>{{checkin.hold.request_time() | date:'short'}}</span>
   </div>
-  <div>
+  <div *ngIf="checkin.hold.notes().length > 0">
     <span class="mr-2" i18n>Request Notes:</span>
     <ul>
       <li *ngFor="let note of checkin.hold.notes()">
@@ -69,6 +63,27 @@
       </li>
     </ul>
   </div>
+</ng-template>
+
+<ng-template #holdShelfTmpl>
+  <div *ngIf="checkin.hold.behind_desk() == 't'" i18n>
+    This item should be routed to the <strong>Private Holds Shelf</strong>
+  </div>
+  <div *ngIf="checkin.hold.behind_desk() == 'f'" i18n>
+    This item should be routed to the <strong>Public Holds Shelf</strong>
+  </div>
+  <br/>
+
+  <ng-container *ngTemplateOutlet="itemSummary"></ng-container><br/>
+  <ng-container *ngTemplateOutlet="patronSummary"></ng-container><br/>
+
+  <!-- in hold shelf mode, we need to specify the notification prefs -->
+  <div *ngIf="checkin.hold.phone_notify()" i18n>Notify by phone: {{checkin.hold.phone_notify()}}</div>
+  <div *ngIf="checkin.hold.sms_notify()" i18n>Notify by text: {{checkin.hold.sms_notify()}}</div>
+  <div *ngIf="checkin.hold.email_notify() == 't'" i18n>Notify by email: {{checkin.patron.email()}}</div>
+
+  <ng-container *ngTemplateOutlet="holdSummary"></ng-container>
+  <br/>
   <div>
     <span class="mr-2" i18n>Slip Date:</span>
     <span>{{today | date:'short'}}</span>
@@ -76,13 +91,51 @@
 </ng-template>
 
 <ng-template #transitTmpl>
+  <div>
+    <span class="mr-2" i18n>checkin.destination</span>
+    <strong>{{checkin.destOrg.shortname()}}</strong>
+  </div>
+  <div *ngIf="checkin.destCourierCode">{{checkin.destCourierCode}} </div>
+  <br/>
+  <div>
+    <address>
+      <strong>{{checkin.destOrg.name()}}</strong><br>
+      <span *ngIf="checkin.destAddress">
+        {{checkin.destAddress.street1()}} {{checkin.destAddress.street2()}}<br/>
+        {{checkin.destAddress.city()}}, {{checkin.destAddress.state()}} {{checkin.destAddress.post_code()}}
+      </span>
+      <span *ngIf="!checkin.destAddress" i18n>
+        We do not have a holds address for this library.
+      </span>
+      <br/>
+      <abbr title="Phone">P:</abbr> {{checkin.destOrg.phone()}}
+    </address>
+  </div>
+  <ng-container *ngTemplateOutlet="itemSummary"></ng-container>
+  <br/>
+  <div *ngIf="checkin.patron">
+    <ng-container *ngTemplateOutlet="patronSummary"></ng-container>
+    <br/>
+    <ng-container *ngTemplateOutlet="holdSummary"></ng-container>
+    <br/>
+  </div>
+  <div>
+    <span class="mr-2" i18n>Slip Date:</span>
+    <span>{{today | date:'short'}}</span>
+  </div>
 </ng-template>
 
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4>
-      <ng-container *ngIf="slip == 'hold_shelf_slip'" i18n>Hold Slip</ng-container>
-      <ng-container *ngIf="slip != 'hold_shelf_slip'" i18n>Transit Slip</ng-container>
+      <ng-container *ngIf="slip == 'hold_shelf_slip'">
+        <strong i18n>Hold Slip</strong>
+        <img class="p-2" src="/images/portal/holds.png" i18n-alt alt="holds icon"/>
+      </ng-container>
+      <ng-container *ngIf="slip != 'hold_shelf_slip'">
+        <strong i18n>Transit Slip</strong>
+        <img class="p-2" src="/images/transit.png" i18n-alt alt="transit van icon"/>
+      </ng-container>
     </h4>
     <button type="button" class="close"
       i18n-aria-label aria-label="Close" (click)="close()">

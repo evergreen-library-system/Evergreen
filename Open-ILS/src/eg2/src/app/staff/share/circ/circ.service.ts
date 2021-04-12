@@ -169,9 +169,16 @@ export interface CheckinResult {
     record?: IdlObject;
     hold?: IdlObject;
     transit?: IdlObject;
-    org?: number;
     patron?: IdlObject;
-    routeTo?: string;
+
+    // Calculated values
+    routeTo?: string; // org name or in-branch destination
+    title?: string;
+    author?: string;
+    isbn?: string;
+    destOrg?: IdlObject;
+    destAddress?: IdlObject;
+    destCourierCode?: string;
 }
 
 @Injectable()
@@ -245,7 +252,7 @@ export class CircService {
 
     getOrgAddr(orgId: number, addrType): Promise<IdlObject> {
         const org = this.org.get(orgId);
-        const addrId = this.org[addrType]();
+        const addrId = this.org[addrType];
 
         if (!addrId) { return Promise.resolve(null); }
 
@@ -563,7 +570,18 @@ export class CircService {
         const circ = result.circ;
         const parent_circ = result.parent_circ;
 
-        let promise = Promise.resolve();;
+        let promise = Promise.resolve();
+
+        if (result.record) {
+            result.title = result.record.title();
+            result.author = result.record.author();
+            result.isbn = result.record.isbn();
+
+        } else if (result.copy) {
+            result.title = result.copy.dummy_title();
+            result.author = result.copy.dummy_author();
+            result.isbn = result.copy.dummy_isbn();
+        }
 
         if (copy) {
             if (this.copyLocationCache[copy.location()]) {
