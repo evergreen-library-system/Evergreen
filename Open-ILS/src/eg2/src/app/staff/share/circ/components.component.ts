@@ -25,7 +25,11 @@ export class CircComponentsComponent {
     @ViewChild('routeToCatalogingDialog') routeToCatalogingDialog: AlertDialogComponent;
     @ViewChild('openCircDialog') openCircDialog: OpenCircDialogComponent;
     @ViewChild('locationAlertDialog') locationAlertDialog: AlertDialogComponent;
+    @ViewChild('uncatAlertDialog') uncatAlertDialog: AlertDialogComponent;
     @ViewChild('routeDialog') routeDialog: RouteDialogComponent;
+
+    @ViewChild('holdShelfStr') holdShelfStr: StringComponent;
+    @ViewChild('catalogingStr') catalogingStr: StringComponent;
 
     constructor(private circ: CircService) {
         this.circ.components = this;

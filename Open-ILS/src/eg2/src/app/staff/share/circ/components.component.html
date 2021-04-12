@@ -15,6 +15,12 @@
 <eg-string key="staff.circ.checkin.location.alert" [template]="locAlertTemplate">
 </eg-string>
 
+<ng-template #uncatAlertTemplate let-barcode="barcode" i18n>
+  Item {{barcode}} was mis-scanned or is not cataloged
+</ng-template>
+<!-- dialogBody is generated dynamically from string above -->
+<eg-string key="staff.circ.checkin.uncat.alert" [template]="uncatAlertTemplate">
+</eg-string>
 
 <eg-alert-dialog #locationAlertDialog i18n-dialogTitle dialogTitle="Route Item">
 </eg-alert-dialog>
@@ -22,6 +28,10 @@
 <eg-open-circ-dialog #openCircDialog></eg-open-circ-dialog>
 
 <eg-circ-route-dialog #routeDialog></eg-circ-route-dialog>
+
+<eg-string #holdShelfStr i18n-text text="Hold Shelf"></eg-string>
+<eg-string #catalogingStr i18n-text text="Cataloging"></eg-string>
+
 
 
 

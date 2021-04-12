@@ -129,17 +129,30 @@ export interface CheckoutParams {
     _renewal?: boolean;
 }
 
-export interface CheckoutResult {
+export interface CircResultCommon {
     index: number;
     firstEvent: EgEvent;
     allEvents: EgEvent[];
-    params: CheckoutParams;
     success: boolean;
-    canceled?: boolean;
     copy?: IdlObject;
-    circ?: IdlObject;
-    nonCatCirc?: IdlObject;
+    volume?: IdlObject;
     record?: IdlObject;
+    circ?: IdlObject;
+    parent_circ?: IdlObject;
+    hold?: IdlObject;
+    patron?: IdlObject;
+
+    // Calculated values
+    title?: string;
+    author?: string;
+    isbn?: string;
+}
+
+
+export interface CheckoutResult extends CircResultCommon {
+    params: CheckoutParams;
+    canceled?: boolean;
+    nonCatCirc?: IdlObject;
 }
 
 export interface CheckinParams {
@@ -151,31 +164,15 @@ export interface CheckinParams {
     auto_print_hold_transits?: boolean;
     backdate?: string;
 
-    // internal tracking
+    // internal / local values that are moved from the API request.
     _override?: boolean;
 }
 
-export interface CheckinResult {
-    index: number;
-    firstEvent: EgEvent;
-    allEvents: EgEvent[];
+export interface CheckinResult extends CircResultCommon {
     params: CheckinParams;
-    success: boolean;
-    copy?: IdlObject;
-    volume?: IdlObject;
-    circ?: IdlObject;
-    parent_circ?: IdlObject;
-    mbts?: IdlObject;
-    record?: IdlObject;
-    hold?: IdlObject;
     transit?: IdlObject;
-    patron?: IdlObject;
-
-    // Calculated values
+    mbts?: IdlObject;
     routeTo?: string; // org name or in-branch destination
-    title?: string;
-    author?: string;
-    isbn?: string;
     destOrg?: IdlObject;
     destAddress?: IdlObject;
     destCourierCode?: string;
@@ -348,7 +345,6 @@ export class CircService {
     processCheckoutResult(
         params: CheckoutParams, response: any): Promise<CheckoutResult> {
 
-
         const allEvents = Array.isArray(response) ?
             response.map(r => this.evt.parse(r)) :
             [this.evt.parse(response)];
@@ -374,6 +370,17 @@ export class CircService {
             record: payload.record,
             nonCatCirc: payload.noncat_circ
         };
+
+        if (result.record) {
+            result.title = result.record.title();
+            result.author = result.record.author();
+            result.isbn = result.record.isbn();
+
+        } else if (result.copy) {
+            result.title = result.copy.dummy_title();
+            result.author = result.copy.dummy_author();
+            result.isbn = result.copy.dummy_isbn();
+        }
 
         const overridable = result.params._renewal ?
             CAN_OVERRIDE_RENEW_EVENTS : CAN_OVERRIDE_CHECKOUT_EVENTS;
@@ -532,41 +539,10 @@ export class CircService {
         .then(result => this.processCheckinResult(result));
     }
 
-    unpackCheckinData(params: CheckinParams, response: any): Promise<CheckinResult> {
-        const allEvents = Array.isArray(response) ?
-            response.map(r => this.evt.parse(r)) : [this.evt.parse(response)];
-
-        console.debug('checkin returned', allEvents.map(e => e.textcode));
-
-        const firstEvent = allEvents[0];
-        const payload = firstEvent.payload;
-
-        if (!payload) {
-            this.audio.play('error.unknown.no_payload');
-            return Promise.reject();
-        }
-
-        const success =
-            firstEvent.textcode.match(/SUCCESS|NO_CHANGE|ROUTE_ITEM/) !== null;
-
-        const result: CheckinResult = {
-            index: CircService.resultIndex++,
-            firstEvent: firstEvent,
-            allEvents: allEvents,
-            params: params,
-            success: success,
-            circ: payload.circ,
-            parent_circ: payload.parent_circ,
-            copy: payload.copy,
-            volume: payload.volume,
-            record: payload.record,
-            transit: payload.transit,
-            hold: payload.hold
-        };
+    collectCommonData(result: CircResultCommon): Promise<any> {
 
         const copy = result.copy;
         const volume = result.volume;
-        const transit = result.transit;
         const circ = result.circ;
         const parent_circ = result.parent_circ;
 
@@ -611,6 +587,49 @@ export class CircService {
             }
         }
 
+        return promise;
+    }
+
+    unpackCheckinData(params: CheckinParams, response: any): Promise<CheckinResult> {
+        const allEvents = Array.isArray(response) ?
+            response.map(r => this.evt.parse(r)) : [this.evt.parse(response)];
+
+        console.debug('checkin returned', allEvents.map(e => e.textcode));
+
+        const firstEvent = allEvents[0];
+        const payload = firstEvent.payload;
+
+        if (!payload) {
+            this.audio.play('error.unknown.no_payload');
+            return Promise.reject();
+        }
+
+        const success =
+            firstEvent.textcode.match(/SUCCESS|NO_CHANGE|ROUTE_ITEM/) !== null;
+
+        const result: CheckinResult = {
+            index: CircService.resultIndex++,
+            firstEvent: firstEvent,
+            allEvents: allEvents,
+            params: params,
+            success: success,
+            circ: payload.circ,
+            parent_circ: payload.parent_circ,
+            copy: payload.copy,
+            volume: payload.volume,
+            record: payload.record,
+            transit: payload.transit,
+            hold: payload.hold
+        };
+
+        const copy = result.copy;
+        const volume = result.volume;
+        const transit = result.transit;
+        const circ = result.circ;
+        const parent_circ = result.parent_circ;
+
+        let promise = Promise.resolve();
+
         if (transit) {
             if (typeof transit.dest() !== 'object') {
                 transit.dest(this.org.get(transit.dest()));
@@ -630,7 +649,7 @@ export class CircService {
             result.mbts = parent_circ.billable_transaction().summary();
         }
 
-        return promise.then(_ => result);
+        return this.collectCommonData(result).then(_ => result);
     }
 
     processCheckinResult(result: CheckinResult): Promise<CheckinResult> {
@@ -666,23 +685,34 @@ export class CircService {
 
             case 'ITEM_NOT_CATALOGED':
                 this.audio.play('error.checkout.no_cataloged');
-                result.routeTo = 'Cataloging'; // TODO
-
-                if (!this.suppressCheckinPopups && !this.ignoreCheckinPrecats) {
-                    // Tell the user its a precat and return the result.
-                    return this.components.routeToCatalogingDialog.open()
-                    .toPromise().then(_ => result);
-                }
-                break;
+                result.routeTo = this.components.catalogingStr.text;
+                return this.showPrecatAlert().then(_ => result);
 
             case 'ROUTE_ITEM':
                 this.components.routeDialog.checkin = result;
                 return this.components.routeDialog.open().toPromise()
                 .then(_ => result);
 
+            case 'ASSET_COPY_NOT_FOUND':
+                this.audio.play('error.checkin.not_found');
+                return this.handleCheckinUncatAlert(result);
+
+            default:
+                this.audio.play('error.checkin.unknown');
+                console.warn(
+                    'Unhandled checkin response : ' + result.firstEvent.textcode);
         }
 
         return Promise.resolve(result);
+    }
+
+    showPrecatAlert(): Promise<any> {
+        if (!this.suppressCheckinPopups && !this.ignoreCheckinPrecats) {
+            // Tell the user its a precat and return the result.
+            return this.components.routeToCatalogingDialog.open()
+            .toPromise();
+        }
+        return Promise.resolve(null);
     }
 
     handleCheckinSuccess(result: CheckinResult): Promise<CheckinResult> {
@@ -703,7 +733,7 @@ export class CircService {
                 if (hold) {
 
                     if (Number(hold.pickup_lib()) === Number(this.auth.user().ws_ou())) {
-                        result.routeTo = 'Holds Shelf'; // TODO
+                        result.routeTo = this.components.holdShelfStr.text;
                         this.components.routeDialog.checkin = result;
                         return this.components.routeDialog.open().toPromise()
                         .then(_ => result);
@@ -720,8 +750,18 @@ export class CircService {
 
             case 11: /* CATALOGING */
                 this.audio.play('info.checkin.cataloging');
-                result.routeTo = 'Cataloging'; // TODO
-                // TODO more...
+                result.routeTo = this.components.catalogingStr.text;
+                return this.showPrecatAlert().then(_ => result);
+
+            case 15: /* ON_RESERVATION_SHELF */
+                this.audio.play('info.checkin.reservation');
+                break;
+
+            default:
+                this.audio.play('success.checkin');
+                const stat = result.copy;
+                console.debug(`Unusual checkin copy status (may have been
+                    set via copy alert): ${stat.id()} : ${stat.name()}`);
         }
 
         return Promise.resolve(result);
@@ -744,6 +784,24 @@ export class CircService {
             .then(_ => result);
         });
     }
+
+    handleCheckinUncatAlert(result: CheckinResult): Promise<CheckinResult> {
+        const copy = result.copy;
+
+        if (this.suppressCheckinPopups) {
+            return Promise.resolve(result);
+        }
+
+        return this.strings.interpolate(
+            'staff.circ.checkin.uncat.alert',
+            {barcode: copy.barcode()}
+        ).then(str => {
+            this.components.uncatAlertDialog.dialogBody = str;
+            return this.components.uncatAlertDialog.open().toPromise()
+            .then(_ => result);
+        });
+    }
+
 
     handleOverridableCheckinEvents(
         result: CheckinResult, events: EgEvent[]): Promise<CheckinResult> {

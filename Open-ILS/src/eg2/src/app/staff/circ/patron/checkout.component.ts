@@ -176,7 +176,10 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
             circ: result.circ,
             dueDate: null,
             copyAlertCount: 0, // TODO
-            nonCatCount: 0
+            nonCatCount: 0,
+            title: result.title,
+            author: result.author,
+            isbn: result.isbn
         };
 
         if (result.nonCatCirc) {
@@ -186,17 +189,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
             entry.nonCatCount = result.params.noncat_count;
 
         } else {
-
-            if (result.record) {
-                entry.title = result.record.title();
-                entry.author = result.record.author();
-                entry.isbn = result.record.isbn();
-
-            } else if (result.copy) {
-                entry.title = result.copy.dummy_title();
-                entry.author = result.copy.dummy_author();
-                entry.isbn = result.copy.dummy_isbn();
-            }
 
             if (result.circ) {
                 entry.dueDate = result.circ.due_date();

@@ -122,17 +122,6 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         const entry: CheckinGridEntry = result;
         entry.index = this.autoIndex++;
 
-        if (result.record) {
-            entry.title = result.record.title();
-            entry.author = result.record.author();
-            entry.isbn = result.record.isbn();
-
-        } else if (result.copy) {
-            entry.title = result.copy.dummy_title();
-            entry.author = result.copy.dummy_author();
-            entry.isbn = result.copy.dummy_isbn();
-        }
-
         if (result.copy) {
             result.copy.circ_lib(this.org.get(result.copy.circ_lib()));
         }
