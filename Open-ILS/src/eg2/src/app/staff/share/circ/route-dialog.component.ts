@@ -74,7 +74,8 @@ export class RouteDialogComponent extends DialogComponent {
             promise = promise.then(_ => this.circ.findCopyTransit(this.checkin))
             .then(transit => {
                 this.checkin.transit = transit;
-                this.checkin.destOrg = this.org.get(transit.dest());
+                this.checkin.destOrg = transit.dest();
+                this.checkin.routeTo = transit.dest().shortname();
                 return this.circ.getOrgAddr(this.checkin.destOrg.id(), 'holds_address');
             })
             .then(addr => {

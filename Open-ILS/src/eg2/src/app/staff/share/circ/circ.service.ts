@@ -131,6 +131,7 @@ export interface CheckoutParams {
 
 export interface CircResultCommon {
     index: number;
+    params: CheckinParams | CheckoutParams;
     firstEvent: EgEvent;
     allEvents: EgEvent[];
     success: boolean;
@@ -141,6 +142,7 @@ export interface CircResultCommon {
     parent_circ?: IdlObject;
     hold?: IdlObject;
     patron?: IdlObject;
+    transit?: IdlObject;
 
     // Calculated values
     title?: string;
@@ -170,7 +172,6 @@ export interface CheckinParams {
 
 export interface CheckinResult extends CircResultCommon {
     params: CheckinParams;
-    transit?: IdlObject;
     mbts?: IdlObject;
     routeTo?: string; // org name or in-branch destination
     destOrg?: IdlObject;
@@ -266,8 +267,9 @@ export class CircService {
 
     // find the open transit for the given copy barcode; flesh the org
     // units locally.
-    findCopyTransit(result: CheckinResult): Promise<IdlObject> {
-        // NOTE: evt.payload.transit may exist, but it's not necessarily
+    // Sets result.transit
+    findCopyTransit(result: CircResultCommon): Promise<IdlObject> {
+        // NOTE: result.transit may exist, but it's not necessarily
         // the transit we want, since a transit close + open in the API
         // returns the closed transit.
 
@@ -276,16 +278,56 @@ export class CircService {
                 cancel_time : null,
                 target_copy: result.copy.id()
             }, {
-                flesh : 1,
-                flesh_fields : {atc : ['target_copy']},
                 limit : 1,
                 order_by : {atc : 'source_send_time desc'},
             }, {authoritative : true}
         ).toPromise().then(transit => {
-            transit.source(this.org.get(transit.source()));
-            transit.dest(this.org.get(transit.dest()));
-            result.routeTo = transit.dest().shortname();
-            return transit;
+            if (transit) {
+                transit.source(this.org.get(transit.source()));
+                transit.dest(this.org.get(transit.dest()));
+                result.transit = transit;
+                return transit;
+            }
+
+            return Promise.reject('No transit found');
+        });
+    }
+
+    // Sets result.transit and result.copy
+    findCopyTransitByBarcode(result: CircResultCommon): Promise<IdlObject> {
+        // NOTE: result.transit may exist, but it's not necessarily
+        // the transit we want, since a transit close + open in the API
+        // returns the closed transit.
+
+         const barcode = result.params.copy_barcode;
+
+         return this.pcrud.search('atc', {
+                dest_recv_time : null,
+                cancel_time : null
+            }, {
+                flesh : 1,
+                flesh_fields : {atc : ['target_copy']},
+                join : {
+                    acp : {
+                        filter : {
+                            barcode : barcode,
+                            deleted : 'f'
+                        }
+                    }
+                },
+                limit : 1,
+                order_by : {atc : 'source_send_time desc'}
+            }, {authoritative : true}
+
+        ).toPromise().then(transit => {
+            if (transit) {
+                transit.source(this.org.get(transit.source()));
+                transit.dest(this.org.get(transit.dest()));
+                result.transit = transit;
+                result.copy = transit.target_copy();
+                return transit;
+            }
+            return Promise.reject('No transit found');
         });
     }
 
@@ -325,7 +367,8 @@ export class CircService {
         return this.net.request(
             'open-ils.circ', method,
             this.auth.token(), this.apiParams(params)).toPromise()
-        .then(result => this.processCheckoutResult(params, result));
+        .then(result => this.unpackCheckoutData(params, result))
+        .then(result => this.processCheckoutResult(result));
     }
 
     renew(params: CheckoutParams): Promise<CheckoutResult> {
@@ -339,10 +382,12 @@ export class CircService {
         return this.net.request(
             'open-ils.circ', method,
             this.auth.token(), this.apiParams(params)).toPromise()
-        .then(result => this.processCheckoutResult(params, result));
+        .then(result => this.unpackCheckoutData(params, result))
+        .then(result => this.processCheckoutResult(result));
     }
 
-    processCheckoutResult(
+
+    unpackCheckoutData(
         params: CheckoutParams, response: any): Promise<CheckoutResult> {
 
         const allEvents = Array.isArray(response) ?
@@ -354,43 +399,40 @@ export class CircService {
         const firstEvent = allEvents[0];
         const payload = firstEvent.payload;
 
-        if (!payload) {
-            this.audio.play('error.unknown.no_payload');
-            return Promise.reject();
-        }
-
         const result: CheckoutResult = {
             index: CircService.resultIndex++,
             firstEvent: firstEvent,
             allEvents: allEvents,
             params: params,
-            success: false,
-            circ: payload.circ,
-            copy: payload.copy,
-            record: payload.record,
-            nonCatCirc: payload.noncat_circ
+            success: false
         };
 
-        if (result.record) {
-            result.title = result.record.title();
-            result.author = result.record.author();
-            result.isbn = result.record.isbn();
+        // Some scenarios (e.g. copy in transit) have no payload,
+        // which is OK.
+        if (!payload) { return Promise.resolve(result); }
 
-        } else if (result.copy) {
-            result.title = result.copy.dummy_title();
-            result.author = result.copy.dummy_author();
-            result.isbn = result.copy.dummy_isbn();
-        }
+        result.circ = payload.circ,
+        result.copy = payload.copy,
+        result.record = payload.record,
+        result.nonCatCirc = payload.noncat_circ
 
-        const overridable = result.params._renewal ?
+        return this.fleshCommonData(result);
+    }
+
+    processCheckoutResult(result: CheckoutResult): Promise<CheckoutResult> {
+
+        let overridable;
+        try {
+        overridable = result.params._renewal ?
             CAN_OVERRIDE_RENEW_EVENTS : CAN_OVERRIDE_CHECKOUT_EVENTS;
+        } catch (E) { console.error(E) }
 
-        if (allEvents.filter(
+        if (result.allEvents.filter(
             e => overridable.includes(e.textcode)).length > 0) {
-            return this.handleOverridableCheckoutEvents(result, allEvents);
+            return this.handleOverridableCheckoutEvents(result);
         }
 
-        switch (firstEvent.textcode) {
+        switch (result.firstEvent.textcode) {
             case 'SUCCESS':
                 result.success = true;
                 this.audio.play('success.checkout');
@@ -401,11 +443,76 @@ export class CircService {
 
             case 'OPEN_CIRCULATION_EXISTS':
                 return this.handleOpenCirc(result);
+
+            case 'COPY_IN_TRANSIT':
+                this.audio.play('warning.checkout.in_transit');
+                return this.copyInTransitDialog(result);
+
+            /*
+            case 'PATRON_CARD_INACTIVE':
+            case 'PATRON_INACTIVE':
+            case 'PATRON_ACCOUNT_EXPIRED':
+            case 'CIRC_CLAIMS_RETURNED':
+                egCore.audio.play('warning.checkout');
+                return service.exit_alert(
+                    egCore.strings[evt[0].textcode],
+                    {barcode : params.copy_barcode}
+                );
+                */
+
+
+            /*
+            case 'PATRON_CARD_INACTIVE':
+            case 'PATRON_INACTIVE':
+            case 'PATRON_ACCOUNT_EXPIRED':
+            case 'CIRC_CLAIMS_RETURNED':
+                egCore.audio.play('warning.checkout');
+                return this.exit_alert(
+                    egCore.strings[evt[0].textcode],
+                    {barcode : params.copy_barcode}
+                );
+
+            default:
+                egCore.audio.play('error.checkout.unknown');
+                return this.exit_alert(
+                    egCore.strings.CHECKOUT_FAILED_GENERIC, {
+                        barcode : params.copy_barcode,
+                        textcode : evt[0].textcode,
+                        desc : evt[0].desc
+                    }
+                );
+            */
         }
 
         return Promise.resolve(result);
     }
 
+
+    copyInTransitDialog(result: CheckoutResult): Promise<CheckoutResult> {
+        this.components.copyInTransitDialog.checkout = result;
+
+        return this.findCopyTransitByBarcode(result)
+        .then(_ => this.components.copyInTransitDialog.open().toPromise())
+        .then(cancelAndCheckout => {
+            if (cancelAndCheckout) {
+
+                return this.abortTransit(result.transit.id())
+                .then(_ => {
+                    // We had to look up the copy from the barcode since
+                    // it was not embedded in the result event.  Since
+                    // we have the specifics on the copy, go ahead and
+                    // copy them into the params we use for the follow
+                    // up checkout.
+                    result.params.copy_barcode = result.copy.barcode()
+                    result.params.copy_id = result.copy.id()
+                    return this.checkout(result.params);
+                });
+
+            } else {
+                return result;
+            }
+        })
+    }
 
     // Ask the user if we should resolve the circulation and check
     // out to the user or leave it alone.
@@ -459,10 +566,10 @@ export class CircService {
         });
     }
 
-    handleOverridableCheckoutEvents(
-        result: CheckoutResult, events: EgEvent[]): Promise<CheckoutResult> {
+    handleOverridableCheckoutEvents(result: CheckoutResult): Promise<CheckoutResult> {
         const params = result.params;
-        const firstEvent = events[0];
+        const firstEvent = result.firstEvent;
+        const events = result.allEvents;
 
         if (params._override) {
             // Should never get here.  Just being safe.
@@ -539,7 +646,7 @@ export class CircService {
         .then(result => this.processCheckinResult(result));
     }
 
-    collectCommonData(result: CircResultCommon): Promise<any> {
+    fleshCommonData(result: CircResultCommon): Promise<CircResultCommon> {
 
         const copy = result.copy;
         const volume = result.volume;
@@ -587,7 +694,7 @@ export class CircService {
             }
         }
 
-        return promise;
+        return promise.then(_ => result);
     }
 
     unpackCheckinData(params: CheckinParams, response: any): Promise<CheckinResult> {
@@ -649,7 +756,7 @@ export class CircService {
             result.mbts = parent_circ.billable_transaction().summary();
         }
 
-        return this.collectCommonData(result).then(_ => result);
+        return this.fleshCommonData(result).then(_ => result);
     }
 
     processCheckinResult(result: CheckinResult): Promise<CheckinResult> {
@@ -857,6 +964,21 @@ export class CircService {
             cparams.copy_id = id;
             return from(this.checkin(cparams));
         }));
+    }
+
+    abortTransit(transitId: number): Promise<any> {
+        return this.net.request(
+            'open-ils.circ',
+            'open-ils.circ.transit.abort',
+            this.auth.token(), {transitid : transitId}
+        ).toPromise().then(resp => {
+            const evt = this.evt.parse(resp);
+            if (evt) {
+                alert(evt);
+                return Promise.reject(evt.toString());
+            }
+            return Promise.resolve();
+        });
     }
 }
 

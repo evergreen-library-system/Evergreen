@@ -11,6 +11,7 @@ import {CircComponentsComponent} from './components.component';
 import {CircEventsComponent} from './events-dialog.component';
 import {OpenCircDialogComponent} from './open-circ-dialog.component';
 import {RouteDialogComponent} from './route-dialog.component';
+import {CopyInTransitDialogComponent} from './in-transit-dialog.component';
 
 @NgModule({
     declarations: [
@@ -21,6 +22,7 @@ import {RouteDialogComponent} from './route-dialog.component';
         ClaimsReturnedDialogComponent,
         CircEventsComponent,
         RouteDialogComponent,
+        CopyInTransitDialogComponent,
         OpenCircDialogComponent
     ],
     imports: [

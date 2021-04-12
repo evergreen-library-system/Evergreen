@@ -1,0 +1,35 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 i18n>Item In Transit</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <strong i18n>There is an open transit on item {{checkout.copy.barcode()}}</strong>
+
+    <div class="row mt-3">
+      <div class="col-lg-4" i18n>Transit Date:</div>
+      <div class="col-lg-4">{{checkout.transit.source_send_time() | date:'short'}}</div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-lg-4" i18n>Transit Source:</div>
+      <div class="col-lg-4">{{checkout.transit.source().shortname()}}</div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-lg-4" i18n>Transit Destination:</div>
+      <div class="col-lg-4">{{checkout.transit.dest().shortname()}}</div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="close(true)" i18n>
+      Cancel Transit then Checkout
+    </button>
+    <button type="button" class="btn btn-warning" (click)="close()" i18n>
+      Cancel
+    </button>
+  </div>
+</ng-template>
+
+
