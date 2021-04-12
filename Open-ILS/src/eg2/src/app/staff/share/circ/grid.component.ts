@@ -154,12 +154,6 @@ export class CircGridComponent implements OnInit {
                 return 'less-intense-alert';
             }
         };
-
-        this.serverStore.getItemBatch(['ui.circ.suppress_checkin_popups'])
-        .then(sets => {
-            this.circ.suppressCheckinPopups =
-                sets['ui.circ.suppress_checkin_popups'];
-        });
     }
 
     reportError(err: any) {

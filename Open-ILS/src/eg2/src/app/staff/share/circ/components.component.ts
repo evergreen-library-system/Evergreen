@@ -27,6 +27,7 @@ export class CircComponentsComponent {
     @ViewChild('openCircDialog') openCircDialog: OpenCircDialogComponent;
     @ViewChild('locationAlertDialog') locationAlertDialog: AlertDialogComponent;
     @ViewChild('uncatAlertDialog') uncatAlertDialog: AlertDialogComponent;
+    @ViewChild('circFailedDialog') circFailedDialog: AlertDialogComponent;
     @ViewChild('routeDialog') routeDialog: RouteDialogComponent;
     @ViewChild('copyInTransitDialog') copyInTransitDialog: CopyInTransitDialogComponent;
 

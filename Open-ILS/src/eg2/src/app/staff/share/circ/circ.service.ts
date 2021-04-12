@@ -420,12 +420,11 @@ export class CircService {
     }
 
     processCheckoutResult(result: CheckoutResult): Promise<CheckoutResult> {
+        const renewing = result.params._renewal;
+        const key = renewing ? 'renew' : 'checkout';
 
-        let overridable;
-        try {
-        overridable = result.params._renewal ?
+        const overridable = renewing ?
             CAN_OVERRIDE_RENEW_EVENTS : CAN_OVERRIDE_CHECKOUT_EVENTS;
-        } catch (E) { console.error(E) }
 
         if (result.allEvents.filter(
             e => overridable.includes(e.textcode)).length > 0) {
@@ -435,8 +434,8 @@ export class CircService {
         switch (result.firstEvent.textcode) {
             case 'SUCCESS':
                 result.success = true;
-                this.audio.play('success.checkout');
-                break;
+                this.audio.play(`success.${key}`);
+                return Promise.resolve(result);
 
             case 'ITEM_NOT_CATALOGED':
                 return this.handlePrecat(result);
@@ -445,48 +444,37 @@ export class CircService {
                 return this.handleOpenCirc(result);
 
             case 'COPY_IN_TRANSIT':
-                this.audio.play('warning.checkout.in_transit');
+                this.audio.play(`warning.${key}.in_transit`);
                 return this.copyInTransitDialog(result);
 
-            /*
             case 'PATRON_CARD_INACTIVE':
             case 'PATRON_INACTIVE':
             case 'PATRON_ACCOUNT_EXPIRED':
             case 'CIRC_CLAIMS_RETURNED':
-                egCore.audio.play('warning.checkout');
-                return service.exit_alert(
-                    egCore.strings[evt[0].textcode],
-                    {barcode : params.copy_barcode}
-                );
-                */
-
-
-            /*
-            case 'PATRON_CARD_INACTIVE':
-            case 'PATRON_INACTIVE':
-            case 'PATRON_ACCOUNT_EXPIRED':
-            case 'CIRC_CLAIMS_RETURNED':
-                egCore.audio.play('warning.checkout');
-                return this.exit_alert(
-                    egCore.strings[evt[0].textcode],
-                    {barcode : params.copy_barcode}
-                );
+                this.audio.play(`warning.${key}`);
+                return this.exitAlert({
+                    textcode: result.firstEvent.textcode,
+                    barcode: result.params.copy_barcode
+                });
 
             default:
-                egCore.audio.play('error.checkout.unknown');
-                return this.exit_alert(
-                    egCore.strings.CHECKOUT_FAILED_GENERIC, {
-                        barcode : params.copy_barcode,
-                        textcode : evt[0].textcode,
-                        desc : evt[0].desc
-                    }
-                );
-            */
+                this.audio.play(`error.${key}.unknown`);
+                return this.exitAlert({
+                    textcode: 'CHECKOUT_FAILED_GENERIC',
+                    barcode: result.params.copy_barcode
+                });
         }
-
-        return Promise.resolve(result);
     }
 
+    exitAlert(context: any): Promise<any> {
+        let key = 'staff.circ.events.' + context.textcode;
+        return this.strings.interpolate(key, context)
+        .then(str => {
+            this.components.circFailedDialog.dialogBody = str;
+            return this.components.circFailedDialog.open().toPromise();
+        })
+        .then(_ => Promise.reject('Bailling on event ' + context.textcode));
+    }
 
     copyInTransitDialog(result: CheckoutResult): Promise<CheckoutResult> {
         this.components.copyInTransitDialog.checkout = result;

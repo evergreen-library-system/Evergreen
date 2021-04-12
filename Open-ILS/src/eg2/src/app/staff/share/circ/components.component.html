@@ -8,6 +8,10 @@
   i18n-dialogBody dialogBody="This item needs to be routed to CATALOGING">
 </eg-alert-dialog>
 
+<eg-alert-dialog #circFailedDialog
+  i18n-dialogTitle dialogTitle="Unable to Complete Action">
+</eg-alert-dialog>
+
 <ng-template #locAlertTemplate let-barcode="barcode" let-location="location" i18n>
   Item {{barcode}} needs to be routed to {{location}}.
 </ng-template>
@@ -33,6 +37,25 @@
 <eg-string #holdShelfStr i18n-text text="Hold Shelf"></eg-string>
 <eg-string #catalogingStr i18n-text text="Cataloging"></eg-string>
 
+<eg-string key="staff.circ.events.PATRON_CARD_INACTIVE" i18n-text
+  text="The card used to retrieve this account is inactive and 
+  may not be used to circulate items."></eg-string>
 
+<eg-string key="staff.circ.events.PATRON_INACTIVE" i18n-text
+  text="This account is inactive and may not circulate items."></eg-string>
 
+<eg-string key="staff.circ.events.PATRON_ACCOUNT_EXPIRED" i18n-text
+  text="This account has expired and may not circulate items."></eg-string>
+
+<ng-template #claimsReturnsTmpl>
+  Item "{{barcode}}" is marked as Claims Returned</ng-template>
+<eg-string key="staff.circ.events.CIRC_CLAIMS_RETURNED" 
+  [template]="claimsReturnsTmpl"></eg-string>
+
+<ng-template #genericCheckoutFailedTmpl>
+  Unable to checkout item "{{barcode}}" : {{textcode}}
+</ng-template>
+
+<eg-string key="staff.circ.events.CHECKOUT_FAILED_GENERIC" 
+  [template]="genericCheckoutFailedTmpl"></eg-string>
 
