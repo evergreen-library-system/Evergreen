@@ -137,7 +137,7 @@ depends on the IdP or IdPs that will be used. However, here are a couple sample 
 ==== Simple configuration that can support multiple IdPs
 
 .Simple configuration
-[source:xml]
+[source,xml]
 ....
 <SPConfig xmlns="urn:mace:shibboleth:2.0:native:sp:config"
     xmlns:conf="urn:mace:shibboleth:2.0:native:sp:config"
@@ -230,7 +230,7 @@ depends on the IdP or IdPs that will be used. However, here are a couple sample 
 ==== Configuration to support multiple Evergreen hostnames
 
 .Configuration for multiple hostnames
-[source:xml]
+[source,xml]
 ....
 <!-- Differences from the simple, single-host example are noted -->
 <SPConfig xmlns="urn:mace:shibboleth:2.0:native:sp:config"
@@ -350,7 +350,7 @@ and UNIX LDAP IdPs that can be added to attribute-map.xml are:
 For some IdPs, such as SimpleSAMLphp, it can be necessary to add a
 special security policy to security-policy.xml:
 
-[source:xml]
+[source,xml]
 ....
 <Policy id="unsigned-slo">
     <PolicyRule type="NullSecurity"/>

@@ -1,7 +1,7 @@
 [[hold_groups_admin]]
 = Hold Groups Administration
 
-[indexterm:Hold Groups]
+indexterm:[Hold Groups]
 
 There are several administrative elements described below which relate to the xref:circulation:basic_holds.adoc#hold_groups[Hold Groups] feature
 

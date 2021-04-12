@@ -183,7 +183,7 @@ area.
 [[hold_groups_opac]]
 === Hold Groups
 
-[indexterm: Hold Groups]
+indexterm:[Hold Groups]
 
 Screenshots in this section are taken from the Bootstrap OPAC (BOOPAC),
 but similar functionality is available in the Template Toolkit OPAC
