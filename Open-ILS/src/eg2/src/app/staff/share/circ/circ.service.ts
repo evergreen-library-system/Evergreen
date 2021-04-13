@@ -411,10 +411,10 @@ export class CircService {
         // which is OK.
         if (!payload) { return Promise.resolve(result); }
 
-        result.circ = payload.circ,
-        result.copy = payload.copy,
-        result.record = payload.record,
-        result.nonCatCirc = payload.noncat_circ
+        result.circ = payload.circ;
+        result.copy = payload.copy;
+        result.record = payload.record;
+        result.nonCatCirc = payload.noncat_circ;
 
         return this.fleshCommonData(result);
     }
@@ -467,7 +467,7 @@ export class CircService {
     }
 
     exitAlert(context: any): Promise<any> {
-        let key = 'staff.circ.events.' + context.textcode;
+        const key = 'staff.circ.events.' + context.textcode;
         return this.strings.interpolate(key, context)
         .then(str => {
             this.components.circFailedDialog.dialogBody = str;
@@ -491,15 +491,15 @@ export class CircService {
                     // we have the specifics on the copy, go ahead and
                     // copy them into the params we use for the follow
                     // up checkout.
-                    result.params.copy_barcode = result.copy.barcode()
-                    result.params.copy_id = result.copy.id()
+                    result.params.copy_barcode = result.copy.barcode();
+                    result.params.copy_id = result.copy.id();
                     return this.checkout(result.params);
                 });
 
             } else {
                 return result;
             }
-        })
+        });
     }
 
     // Ask the user if we should resolve the circulation and check
@@ -722,8 +722,6 @@ export class CircService {
         const transit = result.transit;
         const circ = result.circ;
         const parent_circ = result.parent_circ;
-
-        let promise = Promise.resolve();
 
         if (transit) {
             if (typeof transit.dest() !== 'object') {

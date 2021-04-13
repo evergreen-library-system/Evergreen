@@ -12,8 +12,7 @@
           <span class="input-group-text" i18n>Barcode</span>
         </div>
         <input type="text" class="form-control" id="barcode-input"
-          placeholder="Barcode..." i18n-placeholder
-          [(ngModel)]="barcode" [disabled]="checkinNoncat != null"
+          placeholder="Barcode..." i18n-placeholder [(ngModel)]="barcode"
           i18n-aria-label aria-label="Barcode Input" (keydown.enter)="checkin()" />
         <div class="input-group-append">
           <button class="btn btn-outline-dark" (keydown.enter)="checkin()" 
@@ -24,8 +23,8 @@
     <div class="flex-1"></div>
     <div>
       <span class="mr-2" i18n>Effective Date:</span>
-      <eg-date-select [initialIso]="effectiveDate" 
-        (onChangeAsIso)="setEffectiveDate($event)"></eg-date-select>
+      <eg-date-select [initialIso]="backdate" 
+        (onChangeAsIso)="backdate = $event"></eg-date-select>
     </div>
   </div>
 </div>

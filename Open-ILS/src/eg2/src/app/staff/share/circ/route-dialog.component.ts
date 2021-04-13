@@ -80,7 +80,7 @@ export class RouteDialogComponent extends DialogComponent {
             })
             .then(addr => {
                 this.checkin.destAddress = addr;
-                return this.org.settings('lib.courier_code', this.checkin.destOrg.id())
+                return this.org.settings('lib.courier_code', this.checkin.destOrg.id());
             })
 
             .then(sets => this.checkin.destCourierCode = sets['lib.courier_code']);

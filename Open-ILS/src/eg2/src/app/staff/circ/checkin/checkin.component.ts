@@ -16,6 +16,7 @@ import {BarcodeSelectComponent
 
 interface CheckinGridEntry extends CheckinResult {
     // May need to extend...
+    foo?: number; // Empty interfaces are not allowed.
 }
 
 @Component({

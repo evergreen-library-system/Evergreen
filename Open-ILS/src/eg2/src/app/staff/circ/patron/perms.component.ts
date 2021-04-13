@@ -22,7 +22,7 @@ export class PatronPermsComponent implements OnInit, AfterViewInit {
 
     @Input() patronId: number;
 
-    myPermMaps:  {[permId: number]: IdlObject} = {}
+    myPermMaps:  {[permId: number]: IdlObject} = {};
     userPermMaps: {[permId: number]: IdlObject} = {};
     userWorkOuMaps: {[orgId: number]: IdlObject} = {};
 
@@ -79,7 +79,7 @@ export class PatronPermsComponent implements OnInit, AfterViewInit {
 
         .then(_ => {
             this.progress.increment();
-            return this.perms.hasWorkPermAt(['ASSIGN_WORK_ORG_UNIT'], true)
+            return this.perms.hasWorkPermAt(['ASSIGN_WORK_ORG_UNIT'], true);
         })
 
         .then(perms => {
@@ -233,7 +233,7 @@ export class PatronPermsComponent implements OnInit, AfterViewInit {
                 'open-ils.actor',
                 'open-ils.actor.user.permissions.update',
                 this.auth.token(), permMaps
-            )
+            );
         }))
         .pipe(concatMap(_ => this.reload()))
         .pipe(finalize(() => this.loading = false)).subscribe();
