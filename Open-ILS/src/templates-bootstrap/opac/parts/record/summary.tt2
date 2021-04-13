@@ -77,7 +77,7 @@ ctx.metalinks.push('
                         <ul class="list-unstyled">
                             [%- IF attrs.hl.isbn.size; FOR isbn IN attrs.hl.isbn %]
                             <li class='rdetail_isbns'>
-                                <strong class='rdetail_label'>[% l('ISBN:'); %]</strong> [% isbn | html %]
+                                <strong class='rdetail_label'>[% l('ISBN:'); %]</strong> [% isbn %]
                             </li>
                             [%- END; ELSIF attrs.isbns.0;
                             FOR isbn IN attrs.isbns;
@@ -96,7 +96,7 @@ ctx.metalinks.push('
                             [%- END %]
                             [%- IF attrs.hl.issn.size; FOR issn IN attrs.hl.issn %]
                             <li class='rdetail_issns'>
-                                <strong class='rdetail_label'>[% l('ISSN:'); %]</strong> [% issn | html %]
+                                <strong class='rdetail_label'>[% l('ISSN:'); %]</strong> [% issn %]
                             </li>
                             [%- END; ELSIF attrs.issns.0; FOR issn IN attrs.issns %]
                             <li class='rdetail_issns'>
