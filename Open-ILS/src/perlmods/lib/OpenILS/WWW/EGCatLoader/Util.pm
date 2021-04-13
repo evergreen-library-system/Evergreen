@@ -134,6 +134,12 @@ sub init_ro_object_cache {
         return (grep {$_->shortname eq $sn} @$list)[0];
     };
 
+    # Defang an HTML string
+    $locale_subs->{defang_string} = sub {
+        my $html = shift;
+        return $defang->defang($html);
+    };
+
     # Turns one string into two for long text strings
     $locale_subs->{split_for_accordion} = sub {
         my $html = shift;

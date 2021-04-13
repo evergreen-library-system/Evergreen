@@ -879,7 +879,7 @@
 [% END -%]
 [% MACRO accordion(str, trunc_length, element) BLOCK;
     IF truncate_contents != 1;
-        str | html;
+        ctx.defang_string(str);
     ELSE;
         UNLESS trunc_length;
             trunc_length = contents_truncate_length || 100;
@@ -892,7 +892,7 @@
             END;
             str;
         ELSE;
-            str | html;
+            ctx.defang_string(str);
         END;
     END;
 END; %]
