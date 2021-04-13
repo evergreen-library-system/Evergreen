@@ -1,6 +1,7 @@
 import {Component, ViewChild, Input, OnInit, AfterViewInit} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {tap} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {concatMap, tap, finalize} from 'rxjs/operators';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -20,22 +21,15 @@ import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.componen
 export class PatronPermsComponent implements OnInit, AfterViewInit {
 
     @Input() patronId: number;
-    workOuMaps: IdlObject[];
-    workOuSelector: {[orgId: number]: boolean} = {};
+
+    myPermMaps:  {[permId: number]: IdlObject} = {}
+    userPermMaps: {[permId: number]: IdlObject} = {};
+    userWorkOuMaps: {[orgId: number]: IdlObject} = {};
+
     workableOrgs: IdlObject[] = [];
     canAssignWorkOrgs: {[orgId: number]: boolean} = {};
-    myPermMaps: IdlObject[] = [];
-    userPermMaps: IdlObject[] = [];
     allPerms: IdlObject[] = [];
     loading = true;
-
-    permsApplied: {[id: number]: boolean} = {};
-    permDepths: {[id: number]: number} = {};
-    permsGrantable: {[id: number]: boolean} = {};
-
-    myPermsApplied: {[id: number]: boolean} = {};
-    myPermDepths: {[id: number]: number} = {};
-    myPermsGrantable: {[id: number]: boolean} = {};
 
     orgDepths: number[];
 
@@ -59,46 +53,16 @@ export class PatronPermsComponent implements OnInit, AfterViewInit {
         const depths = {};
         this.org.list().forEach(org => depths[org.ou_type().depth()] = true);
         this.orgDepths = Object.keys(depths).map(d => Number(d)).sort();
-
     }
 
     ngAfterViewInit() {
 
-        this.progress.update({max: 9, value: 0});
-
-        this.net.request(
-            'open-ils.actor',
-            'open-ils.actor.user.get_work_ous',
-            this.auth.token(), this.patronId).toPromise()
-
-        .then(maps => {
-            this.progress.increment();
-            this.workOuMaps = maps;
-            maps.forEach(map => this.workOuSelector[map.work_ou()] = true);
-        })
+        return this.reload().toPromise()
 
         .then(_ => { // All permissions
             this.progress.increment();
             return this.pcrud.retrieveAll('ppl', {order_by: {ppl: 'code'}})
             .pipe(tap(perm => this.allPerms.push(perm))).toPromise();
-        })
-
-        .then(_ => { // Target user permissions
-            this.progress.increment();
-            return this.net.request(
-                'open-ils.actor',
-                'open-ils.actor.permissions.user_perms.retrieve',
-                this.auth.token(), this.patronId).toPromise()
-            .then(maps => {
-                this.progress.increment();
-                this.userPermMaps = maps;
-                maps.forEach(m => {
-                    this.permsApplied[m.perm()] = true;
-                    this.permDepths[m.perm()] = m.depth();
-                    this.permsGrantable[m.perm()] = m.grantable() === 't';
-
-                });
-            });
         })
 
         .then(_ => { // My permissions
@@ -108,12 +72,8 @@ export class PatronPermsComponent implements OnInit, AfterViewInit {
                 'open-ils.actor.permissions.user_perms.retrieve',
                 this.auth.token()).toPromise()
             .then(maps => {
-                this.myPermMaps = maps
-                maps.forEach(m => {
-                    this.myPermsApplied[m.perm()] = true;
-                    this.myPermDepths[m.perm()] = m.depth();
-                    this.myPermsGrantable[m.perm()] = m.grantable() === 't';
-                });
+                this.progress.increment();
+                maps.forEach(m => this.myPermMaps[m.perm()] = m);
             });
         })
 
@@ -131,21 +91,158 @@ export class PatronPermsComponent implements OnInit, AfterViewInit {
         .then(_ => this.loading = false);
     }
 
+    reload(): Observable<any> {
+
+        this.userWorkOuMaps = {};
+        this.userPermMaps = {};
+        this.progress.increment();
+
+        return this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.get_work_ous',
+            this.auth.token(), this.patronId
+
+        ).pipe(tap(maps => {
+            this.progress.increment();
+            maps.forEach(map => this.userWorkOuMaps[map.work_ou()] = map);
+
+        })).pipe(concatMap(_ => { // User perm maps
+            return this.net.request(
+                'open-ils.actor',
+                'open-ils.actor.permissions.user_perms.retrieve',
+                this.auth.token(), this.patronId
+            );
+
+        })).pipe(tap(maps => {
+            this.progress.increment();
+            maps.forEach(m => this.userPermMaps[m.perm()] = m);
+        }));
+    }
+
+    userHasWorkOu(orgId: number): boolean {
+        return (
+            this.userWorkOuMaps[orgId] &&
+            !this.userWorkOuMaps[orgId].isdeleted()
+        );
+    }
+
+    userWorkOuChange(orgId: number, applied: boolean) {
+        const map = this.userWorkOuMaps[orgId];
+
+        if (map) {
+            map.isdeleted(!applied);
+        } else {
+            const newMap = this.idl.create('puwoum');
+            newMap.isnew(true);
+            newMap.usr(this.patronId);
+            newMap.work_ou(orgId);
+            this.userWorkOuMaps[orgId] = newMap;
+        }
+    }
+
     canGrantPerm(perm: IdlObject): boolean {
-        return this.myPermsGrantable[perm.id()]
-            || this.auth.user().super_user() === 't';
+        if (this.auth.user().super_user() === 't') { return true; }
+        const map = this.myPermMaps[perm.id()];
+        return map && Number(map.grantable()) === 1;
     }
 
     canGrantPermAtDepth(perm: IdlObject): number {
         if (this.auth.user().super_user() === 't') {
             return this.org.root().ou_type().depth();
         } else {
-            return this.myPermDepths[perm.id()];
+            const map = this.myPermMaps[perm.id()];
+            return map ? map.depth() : NaN;
         }
     }
 
+    userHasPerm(perm: IdlObject): boolean {
+        return (
+            this.userPermMaps[perm.id()] &&
+            !this.userPermMaps[perm.id()].isdeleted()
+        );
+    }
+
+    findOrCreatePermMap(perm: IdlObject): IdlObject {
+        if (this.userPermMaps[perm.id()]) {
+            return this.userPermMaps[perm.id()];
+        }
+
+        const map = this.idl.create('pupm');
+        map.isnew(true);
+        map.usr(this.patronId);
+        map.perm(perm.id());
+        return this.userPermMaps[perm.id()] = map;
+    }
+
+    permApplyChanged(perm: IdlObject, applied: boolean) {
+        const map = this.findOrCreatePermMap(perm);
+        map.isdeleted(!applied);
+        map.ischanged(true);
+    }
+
+    userHasPermAtDepth(perm: IdlObject): number {
+        if (this.userPermMaps[perm.id()]) {
+            return this.userPermMaps[perm.id()].depth();
+        } else {
+            return null;
+        }
+    }
+
+    permDepthChanged(perm: IdlObject, depth: number) {
+        const map = this.findOrCreatePermMap(perm);
+        map.depth(depth);
+        map.ischanged(true);
+    }
+
+    userPermIsGrantable(perm: IdlObject): boolean {
+        return (
+            this.userPermMaps[perm.id()] &&
+            Number(this.userPermMaps[perm.id()].grantable()) === 1
+        );
+    }
+
+    grantableChanged(perm: IdlObject, grantable: boolean) {
+        const map = this.findOrCreatePermMap(perm);
+        map.grantable(grantable ? 1 : 0); // API uses 1/0 not t/f
+        map.ischanged(true);
+    }
+
     save() {
-        // open-ils.actor.user.work_ous.update
+        this.loading = true;
+
+        // Scrub the unmodified values to avoid sending a huge pile
+        // of perms especially.
+
+        const ouMaps = Object.values(this.userWorkOuMaps)
+            .filter(map => map.isnew() || map.ischanged() || map.isdeleted());
+
+        const permMaps = Object.values(this.userPermMaps)
+            .filter(map => map.isnew() || map.ischanged() || map.isdeleted());
+
+        this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.work_ous.update',
+            this.auth.token(), ouMaps
+
+        ).pipe(concatMap(_ => {
+
+            this.progress.reset();
+            this.progress.increment();
+
+            return this.net.request(
+                'open-ils.actor',
+                'open-ils.actor.user.permissions.update',
+                this.auth.token(), permMaps
+            )
+        }))
+        .pipe(concatMap(_ => this.reload()))
+        .pipe(finalize(() => this.loading = false)).subscribe();
+    }
+
+    cannotSave(): boolean {
+        return Object.values(this.userPermMaps)
+            .filter(map => map.depth() === null || map.depth() === undefined)
+            .length > 0;
     }
 }
 
