@@ -490,6 +490,7 @@ export class GridPersistConf {
     version: number;
     limit: number;
     columns: GridColumnPersistConf[];
+    hideToolbarActions: string[];
 }
 
 export class GridContext {
@@ -588,11 +589,35 @@ export class GridContext {
                 if (conf.limit && !this.disablePaging) {
                     this.pager.limit = conf.limit;
                 }
+                this.applyToolbarActionVisibility(conf.hideToolbarActions);
             }
 
             // This is called regardless of the presence of saved
             // settings so defaults can be applied.
             this.columnSet.applyColumnSettings(columns);
+        });
+    }
+
+    applyToolbarActionVisibility(hidden: string[]) {
+        if (!hidden || hidden.length === 0) { return; }
+
+        const groups = [];
+        this.toolbarActions.forEach(action => {
+            if (action.isGroup) {
+                groups.push(action);
+            } else if (!action.isSeparator) {
+                action.hidden = hidden.includes(action.label);
+            }
+        });
+
+        // If all actions in a group are hidden, hide the group as well.
+        // Note the group may be marked as hidden in the configuration,
+        // but the addition of new entries within a group should cause
+        // it to be visible again.
+        groups.forEach(group => {
+            const visible = this.toolbarActions
+                .filter(action => action.group === group.label && !action.hidden);
+            group.hidden = visible.length === 0;
         });
     }
 
@@ -1154,6 +1179,13 @@ export class GridContext {
         conf.limit = this.pager.limit;
         conf.columns = this.columnSet.compileSaveObject();
 
+        // Avoid persisting group visibility since that may change
+        // with the addition of new columns.  Always calculate that
+        // in real time.
+        conf.hideToolbarActions = this.toolbarActions
+            .filter(action => !action.isGroup && action.hidden)
+            .map(action => action.label);
+
         return this.store.setItem('eg.grid.' + this.persistKey, conf);
     }
 
@@ -1180,6 +1212,7 @@ export class GridToolbarAction {
     isGroup: boolean; // used for group placeholder entries
     isSeparator: boolean;
     disableOnRows: (rows: any[]) => boolean;
+    hidden?: boolean;
 }
 
 // Buttons are global actions

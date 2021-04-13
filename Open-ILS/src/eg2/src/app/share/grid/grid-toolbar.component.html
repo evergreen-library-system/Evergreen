@@ -1,3 +1,5 @@
+<eg-grid-toolbar-actions-editor #toolbarActionsEditor [gridContext]="gridContext">
+</eg-grid-toolbar-actions-editor>
 
 <div class="eg-grid-toolbar mb-2">
 
@@ -114,6 +116,12 @@
         <span class="material-icons">compare_arrows</span>
         <span class="ml-2" i18n>Manage Column Widths</span>
       </a>
+      <button class="dropdown-item label-with-material-icon"
+        [disabled]="gridContext.toolbarActions.length === 0"
+        (click)="toolbarActionsEditor.open().subscribe()">
+        <span class="material-icons">menu</span>
+        <span class="ml-2" i18n>Manage Actions Menu</span>
+      </button>
       <a class="dropdown-item label-with-material-icon"
         *ngIf="!disableSaveSettings"
         (click)="saveGridConfig()">

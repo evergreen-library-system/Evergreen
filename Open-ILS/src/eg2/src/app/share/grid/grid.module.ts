@@ -15,6 +15,7 @@ import {GridColumnConfigComponent} from './grid-column-config.component';
 import {GridColumnWidthComponent} from './grid-column-width.component';
 import {GridPrintComponent} from './grid-print.component';
 import {GridFilterControlComponent} from './grid-filter-control.component';
+import {GridToolbarActionsEditorComponent} from './grid-toolbar-actions-editor.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import {GridFilterControlComponent} from './grid-filter-control.component';
         GridColumnConfigComponent,
         GridColumnWidthComponent,
         GridPrintComponent,
-        GridFilterControlComponent
+        GridFilterControlComponent,
+        GridToolbarActionsEditorComponent
     ],
     imports: [
         EgCommonModule,
