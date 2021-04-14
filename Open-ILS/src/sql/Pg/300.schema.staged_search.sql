@@ -1385,7 +1385,7 @@ BEGIN
         SELECT  de.id,
                 de.source,
                 de.field,
-                de.value AS value,
+                evergreen.escape_for_html(de.value) AS value,
                 ts_headline(
                     ts_config::REGCONFIG,
                     evergreen.escape_for_html(de.value),
@@ -1462,8 +1462,8 @@ BEGIN
         SELECT  id,
                 source,
                 field,
-                value,
-                value AS highlight
+                evergreen.escape_for_html(value) AS value,
+                evergreen.escape_for_html(value) AS highlight
           FROM  metabib.display_entry
           WHERE source = rid
                 AND NOT (field = ANY (seen));
