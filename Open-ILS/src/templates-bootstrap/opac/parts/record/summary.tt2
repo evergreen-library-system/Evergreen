@@ -56,7 +56,7 @@ ctx.metalinks.push('
     <div class="col-lg-9">
         <div class="row h-100">
             <div class="col-lg-8">
-                <h1 class='h1' property="name">[% IF attrs.hl.title; attrs.hl.title | html; ELSE; attrs.title_extended | html; END %]</h1>
+                <h1 class='h1' property="name">[% IF attrs.hl.title; attrs.hl.title; ELSE; attrs.title_extended | html; END %]</h1>
                 [%-
                 FOR link880 IN attrs.graphic_titles;
                 FOR alt IN link880.graphic;
@@ -127,7 +127,7 @@ ctx.metalinks.push('
                             [%- IF attrs.hl.edition %]
                             <li id='rdetail_edition'>
                                 <strong class='rdetail_label'>[% l("Edition:") %]</strong>
-                                <span class='rdetail_value' highlighted='true'>[% attrs.hl.edition | html %]</span>
+                                <span class='rdetail_value' highlighted='true'>[% attrs.hl.edition %]</span>
                                 [%- ELSIF attrs.edition %]
                             <li id='rdetail_edition'>
                                 <strong class='rdetail_label'>[% l("Edition:") %]</strong>
@@ -152,7 +152,7 @@ ctx.metalinks.push('
                             [%- IF attrs.hl.publisher %]
                             <li id='rdetail_publisher'>
                                 <strong class='rdetail_label'>[% l("Publisher:") %]</strong>
-                                <span class='rdetail_value' highlighted='true'>[% attrs.hl.publisher | html %]</span>
+                                <span class='rdetail_value' highlighted='true'>[% attrs.hl.publisher %]</span>
                             </li>
                             [%- ELSIF attrs.publisher %]
                             <li id='rdetail_publisher'>
