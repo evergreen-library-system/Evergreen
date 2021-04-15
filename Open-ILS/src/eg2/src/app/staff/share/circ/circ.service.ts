@@ -581,6 +581,24 @@ export class CircService {
             return params._renewal ? this.renew(params) : this.checkout(params);
         }
 
+        // New-style alerts are reported via COPY_ALERT_MESSAGE and
+        // includes the alerts in the payload as an array.
+        if (firstEvent.textcode === 'COPY_ALERT_MESSAGE'
+            && Array.isArray(firstEvent.payload)) {
+            this.components.copyAlertManager.alerts = firstEvent.payload;
+
+            this.components.copyAlertManager.mode =
+                params._renewal ? 'renew' : 'checkout';
+
+            return this.components.copyAlertManager.open().toPromise()
+            .then(resp => {
+                if (resp) {
+                    params._override = true;
+                    return this.checkout(params);
+                }
+            });
+        }
+
         return this.showOverrideDialog(result, events);
     }
 
