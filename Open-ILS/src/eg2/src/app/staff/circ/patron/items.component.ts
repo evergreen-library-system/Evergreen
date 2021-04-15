@@ -81,7 +81,8 @@ export class ItemsComponent implements OnInit, AfterViewInit {
     }
 
     tabChange(evt: NgbNavChangeEvent) {
-        setTimeout(() => this.loadTab(evt.nextId));
+        this.itemsTab = evt.nextId;
+        setTimeout(() => this.loadTab(this.itemsTab));
     }
 
     loadTab(name: string): Promise<any> {
