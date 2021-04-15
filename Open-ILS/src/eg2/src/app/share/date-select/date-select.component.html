@@ -18,6 +18,7 @@
       [required]="required"
       (blur)="propagateTouch(); onDateEnter()"
       [(ngModel)]="current"
+      (ngModelChange)="inputChanged($event)"
       (keyup.enter)="onDateEnter()"
       (dateSelect)="onDateSelect($event)"/>
     <div class="input-group-append">

@@ -112,6 +112,17 @@ export class DateSelectComponent implements OnInit, ControlValueAccessor {
         this.propagateChange(date);
     }
 
+    // onDateSelect() is not called when the value is cleared.
+    // Handle that here.
+    inputChanged(value) {
+        if (value === null) {
+            this.onChangeAsDate.emit(null);
+            this.onChangeAsYmd.emit(null);
+            this.onChangeAsIso.emit(null);
+            this.propagateChange(null);
+        }
+    }
+
     reset() {
         this.current = {
             year: null,
