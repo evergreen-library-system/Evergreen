@@ -13,6 +13,7 @@ import {CircEventsComponent} from './events-dialog.component';
 import {CircComponentsComponent} from './components.component';
 import {StringService} from '@eg/share/string/string.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
+import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 
 export interface CircDisplayInfo {
     title?: string;
@@ -123,6 +124,7 @@ export interface CheckoutParams {
     dummy_isbn?: string;
     circ_modifier?: string;
     void_overdues?: boolean;
+    new_copy_alerts?: boolean;
 
     // internal tracking
     _override?: boolean;
@@ -143,6 +145,7 @@ export interface CircResultCommon {
     hold?: IdlObject;
     patron?: IdlObject;
     transit?: IdlObject;
+    copyAlerts?: IdlObject[];
 
     // Calculated values
     title?: string;
@@ -165,6 +168,9 @@ export interface CheckinParams {
     void_overdues?: boolean;
     auto_print_hold_transits?: boolean;
     backdate?: string;
+    capture?: string;
+    next_copy_status?: number[];
+    new_copy_alerts?: boolean;
 
     // internal / local values that are moved from the API request.
     _override?: boolean;
@@ -201,7 +207,8 @@ export class CircService {
         private serverStore: ServerStoreService,
         private strings: StringService,
         private auth: AuthService,
-        private bib: BibRecordService,
+        private holdings: HoldingsService,
+        private bib: BibRecordService
     ) {}
 
     applySettings(): Promise<any> {
@@ -358,6 +365,7 @@ export class CircService {
 
     checkout(params: CheckoutParams): Promise<CheckoutResult> {
 
+        params.new_copy_alerts = true;
         params._renewal = false;
         console.debug('checking out with', params);
 
@@ -373,6 +381,7 @@ export class CircService {
 
     renew(params: CheckoutParams): Promise<CheckoutResult> {
 
+        params.new_copy_alerts = true;
         params._renewal = true;
         console.debug('renewing out with', params);
 
@@ -621,6 +630,7 @@ export class CircService {
     }
 
     checkin(params: CheckinParams): Promise<CheckinResult> {
+        params.new_copy_alerts = true;
 
         console.debug('checking in with', params);
 
@@ -648,7 +658,7 @@ export class CircService {
             result.author = result.record.author();
             result.isbn = result.record.isbn();
 
-        } else if (result.copy) {
+        } else if (copy) {
             result.title = result.copy.dummy_title();
             result.author = result.copy.dummy_author();
             result.isbn = result.copy.dummy_isbn();
@@ -662,6 +672,15 @@ export class CircService {
                 .then(loc => {
                     copy.location(loc);
                     this.copyLocationCache[loc.id()] = loc;
+                });
+            }
+
+            if (typeof copy.status() !== 'object') {
+                promise = promise.then(_ => this.holdings.getCopyStatuses())
+                .then(stats => {
+                    const stat =
+                        Object.values(stats).filter(s => s.id() === copy.status())[0];
+                    if (stat) { copy.status(stat); }
                 });
             }
         }
@@ -689,7 +708,8 @@ export class CircService {
         const allEvents = Array.isArray(response) ?
             response.map(r => this.evt.parse(r)) : [this.evt.parse(response)];
 
-        console.debug('checkin returned', allEvents.map(e => e.textcode));
+        console.debug('checkin events', allEvents.map(e => e.textcode));
+        console.debug('checkin response', response);
 
         const firstEvent = allEvents[0];
         const payload = firstEvent.payload;
@@ -764,11 +784,7 @@ export class CircService {
         // Alerts that require a manual override.
         if (allEvents.filter(
             e => CAN_OVERRIDE_CHECKIN_ALERTS.includes(e.textcode)).length > 0) {
-
-            // Should not be necessary, but good to be safe.
-            if (params._override) { return Promise.resolve(null); }
-
-            return this.showOverrideDialog(result, allEvents, true);
+            return this.handleOverridableCheckinEvents(result);
         }
 
         switch (result.firstEvent.textcode) {
@@ -809,8 +825,14 @@ export class CircService {
     }
 
     handleCheckinSuccess(result: CheckinResult): Promise<CheckinResult> {
+        const copy = result.copy;
 
-        switch (result.copy.status()) {
+        if (!copy) { return Promise.resolve(result); }
+
+        const stat = copy.status();
+        const statId = typeof stat === 'object' ? stat.id() : stat;
+
+        switch (statId) {
 
             case 0: /* AVAILABLE */
             case 4: /* MISSING */
@@ -852,9 +874,8 @@ export class CircService {
 
             default:
                 this.audio.play('success.checkin');
-                const stat = result.copy;
                 console.debug(`Unusual checkin copy status (may have been
-                    set via copy alert): ${stat.id()} : ${stat.name()}`);
+                    set via copy alert): status=${statId}`);
         }
 
         return Promise.resolve(result);
@@ -896,15 +917,48 @@ export class CircService {
     }
 
 
-    handleOverridableCheckinEvents(
-        result: CheckinResult, events: EgEvent[]): Promise<CheckinResult> {
+    handleOverridableCheckinEvents(result: CheckinResult): Promise<CheckinResult> {
         const params = result.params;
-        const firstEvent = events[0];
+        const events = result.allEvents;
+        const firstEvent = result.firstEvent
 
         if (params._override) {
             // Should never get here.  Just being safe.
             return Promise.reject(null);
         }
+
+        if (this.suppressCheckinPopups && events.filter(
+            e => !CAN_SUPPRESS_CHECKIN_ALERTS.includes(e.textcode)).length === 0) {
+            // These events are automatically overridden when suppress
+            // popups are in effect.
+            params._override = true;
+            return this.checkin(params);
+        }
+
+        // New-style alerts are reported via COPY_ALERT_MESSAGE and
+        // includes the alerts in the payload as an array.
+        if (firstEvent.textcode === 'COPY_ALERT_MESSAGE'
+            && Array.isArray(firstEvent.payload)) {
+            this.components.copyAlertManager.alerts = firstEvent.payload;
+            this.components.copyAlertManager.mode = 'checkin';
+
+            return this.components.copyAlertManager.open().toPromise()
+            .then(resp => {
+
+                if (!resp) { return result; } // dialog was canceled
+
+                if (resp.nextStatus !== null) {
+                    params.next_copy_status = [resp.nextStatus];
+                    params.capture = 'nocapture';
+                }
+
+                params._override = true;
+
+                return this.checkin(params);
+            });
+        }
+
+        return this.showOverrideDialog(result, events, true);
     }
 
 

@@ -14,6 +14,7 @@ import {ConjoinedItemsDialogComponent} from './conjoined-items-dialog.component'
 import {TransferItemsComponent} from './transfer-items.component';
 import {TransferHoldingsComponent} from './transfer-holdings.component';
 import {BatchItemAttrComponent} from './batch-item-attr.component';
+import {CopyAlertManagerDialogComponent} from './copy-alert-manager.component';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import {BatchItemAttrComponent} from './batch-item-attr.component';
       ConjoinedItemsDialogComponent,
       TransferItemsComponent,
       TransferHoldingsComponent,
-      BatchItemAttrComponent
+      BatchItemAttrComponent,
+      CopyAlertManagerDialogComponent
     ],
     imports: [
         StaffCommonModule,
@@ -46,7 +48,8 @@ import {BatchItemAttrComponent} from './batch-item-attr.component';
       ConjoinedItemsDialogComponent,
       TransferItemsComponent,
       TransferHoldingsComponent,
-      BatchItemAttrComponent
+      BatchItemAttrComponent,
+      CopyAlertManagerDialogComponent
     ],
     providers: [
         HoldingsService

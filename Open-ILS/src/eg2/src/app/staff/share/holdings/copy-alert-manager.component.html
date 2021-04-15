@@ -1,0 +1,80 @@
+
+
+<eg-string key="staff.holdings.copyalert.CHECKOUT.NORMAL" 
+  text="Normal checkin" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.LOST" 
+  text="Item was marked lost" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.LOST_AND_PAID" 
+  text="Item was marked lost and paid for" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.MISSING" 
+  text="Item was marked missing" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.DAMAGED" 
+  text="Item was marked damaged" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.CLAIMSRETURNED" 
+  text="Item was marked claims returned" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.LONGOVERDUE" 
+  text="Item was marked long overdue" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.CLAIMSNEVERCHECKEDOUT" 
+  text="Item was marked claims never checked out" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.NORMAL" 
+  text="Normal checkout" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.LOST" 
+  text="Item was marked lost" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.LOST_AND_PAID" 
+  text="Item was marked lost and paid for" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.MISSING" 
+  text="Item was marked missing" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.DAMAGED" 
+  text="Item was marked damaged" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.CLAIMSRETURNED" 
+  text="Item was marked claims returned" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.LONGOVERDUE" 
+  text="Item was marked long overdue" i18n-text></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKOUT.CLAIMSNEVERCHECKEDOUT" 
+  text="Item was marked claims never checked out" i18n-text></eg-string>
+
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Item Alerts</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="row mb-2" *ngFor="let alert of alerts">
+      <div class="col-lg-4">{{alert._event}}</div>
+      <div class="col-lg-6" [ngClass]="{acknowledged: alert._acked}">
+        {{alert._message}}
+      </div>
+      <div class="col-lg-2">
+        <button class="btn btn-sm btn-outline-dark mr-2" *ngIf="canBeAcked(alert)" 
+          (click)="alert._acked = !alert._acked" i18n>Clear</button>
+      </div>
+    </div>
+
+    <div class="row border-top mt-3 pt-3" 
+      *ngIf="mode == 'checkin' && nextStatuses.length > 0; let index = index">
+      <div class="col-lg-4" i18n>Next item status:</div>
+      <div class="col-lg-5">
+        <ng-container *ngIf="nextStatuses.length == 1">
+          {{nextStatuses[0].name()}}
+        </ng-container>
+        <ng-container *ngIf="nextStatuses.length > 1">
+          <select class="form-control" [(ngModel)]="nextStatus">
+            <option [value]="stat.id()" *ngFor="let stat of nextStatuses">
+              {{stat.name()}}
+            </option>
+          </select>
+        </ng-container>
+      </div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-success mr-2" (click)="ok()" i18n>OK/Continue</button>
+    <button type="button" class="btn btn-secondary" (click)="close()" i18n>Cancel</button>
+  </div>
+</ng-template>

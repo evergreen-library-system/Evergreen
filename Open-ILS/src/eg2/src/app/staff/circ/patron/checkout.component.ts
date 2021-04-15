@@ -5,6 +5,7 @@ import {tap, switchMap} from 'rxjs/operators';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
+import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService, CircGridEntry} from './patron.service';
@@ -53,6 +54,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         private store: StoreService,
         private serverStore: ServerStoreService,
         private org: OrgService,
+        private pcrud: PcrudService,
         private net: NetService,
         public circ: CircService,
         public patronService: PatronService,
@@ -175,7 +177,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
             copy: result.copy,
             circ: result.circ,
             dueDate: null,
-            copyAlertCount: 0, // TODO
+            copyAlertCount: 0,
             nonCatCount: 0,
             title: result.title,
             author: result.author,
@@ -188,11 +190,16 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
             entry.dueDate = result.nonCatCirc.duedate();
             entry.nonCatCount = result.params.noncat_count;
 
-        } else {
+        } else if (result.circ) {
+            entry.dueDate = result.circ.due_date();
+        }
 
-            if (result.circ) {
-                entry.dueDate = result.circ.due_date();
-            }
+        if (entry.copy) {
+            // Fire and forget this one
+
+            this.pcrud.search('aca',
+                {copy : entry.copy.id(), ack_time : null}, {}, {atomic: true}
+            ).subscribe(alerts => entry.copyAlertCount = alerts.length);
         }
 
         this.context.checkouts.unshift(entry);

@@ -7,6 +7,8 @@ import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {OpenCircDialogComponent} from './open-circ-dialog.component';
 import {RouteDialogComponent} from './route-dialog.component';
 import {CopyInTransitDialogComponent} from './in-transit-dialog.component';
+import {CopyAlertManagerDialogComponent
+    } from '@eg/staff/share/holdings/copy-alert-manager.component';
 
 /* Container component for sub-components used by circulation actions.
  *
@@ -30,6 +32,7 @@ export class CircComponentsComponent {
     @ViewChild('circFailedDialog') circFailedDialog: AlertDialogComponent;
     @ViewChild('routeDialog') routeDialog: RouteDialogComponent;
     @ViewChild('copyInTransitDialog') copyInTransitDialog: CopyInTransitDialogComponent;
+    @ViewChild('copyAlertManager') copyAlertManager: CopyAlertManagerDialogComponent;
 
     @ViewChild('holdShelfStr') holdShelfStr: StringComponent;
     @ViewChild('catalogingStr') catalogingStr: StringComponent;

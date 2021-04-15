@@ -77,6 +77,13 @@
   <ng-container *ngIf="!r.record">{{r.title}}</ng-container>
 </ng-template>
 
+<ng-template #copyAlertsTemplate let-r="row">
+  <button class="btn btn-outline-dark btn-sm p-1" 
+    (click)="openItemAlerts([r], 'manage')" i18n>
+    Manage ({{r.copyAlertCount}})
+  </button>
+</ng-template>
+
 <div class="row">
   <div class="col-lg-12">
     <eg-grid #checkoutsGrid [dataSource]="gridDataSource" [sortable]="true"
@@ -111,6 +118,9 @@
 
       <eg-grid-column path="nonCatCount" label="Non-Cataloged Count"
         i18n-label></eg-grid-column>
+
+      <eg-grid-column name="copyAlerts" label="Alerts" i18n-label
+        [cellTemplate]="copyAlertsTemplate"></eg-grid-column>
 
     </eg-grid>
   </div>
