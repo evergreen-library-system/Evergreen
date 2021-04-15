@@ -26,7 +26,8 @@
     <ng-container *ngIf="!badBarcode">
       <h3 i18n>Place Hold
         <small *ngIf="user">
-        ({{user.family_name()}}, {{user.first_given_name()}})
+        ({{user.pref_family_name() ? user.pref_family_name() : user.family_name()}}, 
+        {{user.pref_first_given_name() ? user.pref_first_given_name() :user.first_given_name()}})
         </small>
       </h3>
     </ng-container>
