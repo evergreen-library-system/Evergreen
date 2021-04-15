@@ -79,7 +79,7 @@
         [% l('See All') %]
         </a>
     <a class="dropdown-item" href="[% opac_wrap(mkurl(ctx.opac_root _ '/myopac/lists', {
-        add_rec => ctx.bre_id, anchor => rec_anchor
+        move_cart_by_default => 1, add_rec => ctx.bre_id, anchor => rec_anchor
     }, stop_parms)) %]">
     [% l('Add to new list') %]
     </a>
