@@ -390,8 +390,6 @@ UPDATE config.print_template SET template = $TEMPLATE$
 
 $TEMPLATE$ WHERE name = 'transit_slip';
 
-*/
-
  
 INSERT INTO config.print_template 
     (name, label, owner, active, locale, content_type, template)
@@ -441,6 +439,47 @@ UPDATE config.print_template SET template = $TEMPLATE$
 </div>
 
 $TEMPLATE$ WHERE name = 'transit_slip';
+
+INSERT INTO config.print_template 
+    (name, label, owner, active, locale, content_type, template)
+VALUES ('checkin', 'Checkin', 1, TRUE, 'en-US', 'text/html', '');
+
+*/
+
+UPDATE config.print_template SET template = $TEMPLATE$
+[% 
+  USE date;
+  USE money = format('$%.2f');
+  SET checkins = template_data.checkins;
+%] 
+
+<div>
+  <div>Welcome to [% staff_org.name %]</div>
+  <div>You checked in the following items:</div>
+  <hr/>
+  <ol>
+	[% FOR checkin IN checkins %]
+    <li>
+      <div>[% checkin.title %]</div>
+      <span>Barcode: </span>
+      <span>[% checkin.copy.barcode %]</span>
+      <span>Call Number: </span>
+      <span>
+      [% IF checkin.volume %]
+	    [% volume.prefix.label %] [% volume.label %] [% volume.suffix.label %]
+      [% ELSE %]
+        Not Cataloged
+      [% END %]
+      </span>
+    </li>
+  [% END %]
+  </ol>
+  <hr/>
+  <div>Slip Date: [% date.format(date.now, '%x %r') %]</div>
+  <div>Printed by [% staff.first_given_name %] at [% staff_org.shortname %]</div>
+</div>
+
+$TEMPLATE$ WHERE name = 'checkin';
 
 
 COMMIT;

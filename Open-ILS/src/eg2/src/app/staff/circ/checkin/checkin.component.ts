@@ -13,11 +13,28 @@ import {CircService, CircDisplayInfo, CheckinParams, CheckinResult
 import {Pager} from '@eg/share/util/pager';
 import {BarcodeSelectComponent
     } from '@eg/staff/share/barcodes/barcode-select.component';
+import {PrintService} from '@eg/share/print/print.service';
 
 interface CheckinGridEntry extends CheckinResult {
     // May need to extend...
     foo?: number; // Empty interfaces are not allowed.
 }
+
+const TRIM_LIST_TO = 20;
+
+const CHECKIN_MODIFIERS = [
+    'void_overdues',
+    'clear_expired',
+    'hold_as_transit',
+    'manual_float',
+    'no_precat_alert',
+    'retarget_holds',
+    'retarget_holds_all'
+];
+
+const SETTINGS = [
+    'circ.checkin.strict_barcode'
+]
 
 @Component({
   templateUrl: 'checkin.component.html',
@@ -28,11 +45,17 @@ export class CheckinComponent implements OnInit, AfterViewInit {
     autoIndex = 0;
 
     barcode: string;
-    backdate: string; // ISO
+    backdate: string;
+    backdateUntilLogout = false;
     fineTally = 0;
+    isHoldCapture = false;
+    strictBarcode = false;
+    trimList = false;
 
     gridDataSource: GridDataSource = new GridDataSource();
     cellTextGenerator: GridCellTextGenerator;
+
+    modifiers: {[key: string]: boolean} = {};
 
     private copiesInFlight: {[barcode: string]: boolean} = {};
 
@@ -47,6 +70,7 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         private auth: AuthService,
         private store: ServerStoreService,
         private circ: CircService,
+        private printer: PrintService,
         public patronService: PatronService
     ) {}
 
@@ -54,6 +78,23 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
             return from(this.checkins);
         };
+
+        const setNames =
+            CHECKIN_MODIFIERS.map(mod => `eg.circ.checkin.${mod}`)
+            .concat(SETTINGS);
+
+        this.store.getItemBatch(setNames).then(sets => {
+            CHECKIN_MODIFIERS.forEach(mod =>
+                this.modifiers[mod] = sets[`eg.circ.checkin.${mod}`]);
+
+            this.strictBarcode = sets['circ.checkin.strict_barcode'];
+
+            if (this.isHoldCapture) {
+                this.modifiers.noop = false;
+                this.modifiers.auto_print_holds_transits = true;
+            }
+
+        });
     }
 
     ngAfterViewInit() {
@@ -133,7 +174,54 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         }
 
         this.checkins.unshift(entry);
+
+        if (this.trimList && this.checkins.length >= TRIM_LIST_TO) {
+            this.checkins.length = TRIM_LIST_TO;
+        }
         this.grid.reload();
+    }
+
+    toggleMod(mod: string) {
+        if (this.modifiers[mod]) {
+            this.modifiers[mod] = false;
+            this.store.removeItem('eg.circ.checkin.' + mod);
+        } else {
+            this.modifiers[mod] = true;
+            this.store.setItem('eg.circ.checkin.' + mod, true);
+        }
+    }
+
+    toggleStrictBarcode(active: boolean) {
+        if (active) {
+            this.store.setItem('circ.checkin.strict_barcode', true);
+        } else {
+            this.store.removeItem('circ.checkin.strict_barcode');
+        }
+    }
+
+    printReceipt() {
+        if (this.checkins.length === 0) { return; }
+
+        this.printer.print({
+            printContext: 'default',
+            templateName: 'checkin',
+            contextData: {checkins: this.checkins}
+        });
+    }
+
+    hasAlerts(): boolean {
+        return (
+            Boolean(this.backdate)              ||
+            this.modifiers.noop                 ||
+            this.modifiers.manual_float         ||
+            this.modifiers.void_overdues        ||
+            this.modifiers.clear_expired        ||
+            this.modifiers.retarget_holds       ||
+            this.modifiers.hold_as_transit      ||
+            this.modifiers.no_precat_alert      ||
+            this.modifiers.do_inventory_update  ||
+            this.modifiers.auto_print_holds_transits
+        );
     }
 }
 
