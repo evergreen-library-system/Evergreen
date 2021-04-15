@@ -24,6 +24,7 @@ my $base_url;
 my $tmp_space = './build';
 my $html_output = './output';
 my $antoraui_git = 'git://git.evergreen-ils.org/eg-antora.git';
+my $antoraui_git_branch = 'master';
 my $antora_version = '2.3';
 my $help;
 
@@ -34,6 +35,7 @@ GetOptions (
 "tmp-space=s" => \$tmp_space,
 "html-output=s" => \$html_output,
 "antora-ui-repo=s" => \$antoraui_git,
+"antora-ui-repo-branch=s" => \$antoraui_git_branch,
 "antora-version=s" => \$antora_version,
 "help" => \$help
 );
@@ -53,6 +55,7 @@ sub help
     --tmp-space                                   [Writable path for staging the antora UI repo and build files, defaults to ./build]
     --html-output                                 [Path for the generated HTML files, defaults to ./output]
     --antora-ui-repo                              [Antora-UI repository for the built UI, defaults to git://git.evergreen-ils.org/eg-antora.git]
+    --antora-ui-repo-branch                       [OPTIONAL: Antora-UI repository checkout branch, Defaults to "master"]
     --antora-version                              [Target version of antora, defaults to 2.3]
 
 HELP
@@ -95,6 +98,8 @@ die "Both " . $tmp_space . " and " . $html_output . " must be writable!" unless 
 # Deal with ui repo
 exec_system_cmd("git clone $antoraui_git $tmp_space/antora-ui");
 
+exec_system_cmd("cd $tmp_space/antora-ui && git checkout $antoraui_git_branch");
+
 exec_system_cmd("cd $tmp_space/antora-ui && npm install gulp-cli");
 
 exec_system_cmd("cd $tmp_space/antora-ui && npm install");
@@ -113,7 +118,7 @@ rewrite_yml("$tmp_space/antora-ui/build/ui-bundle.zip","ui/bundle/url","site-wor
 exec_system_cmd('npm install @antora/cli@' . $antora_version . ' @antora/site-generator-default@' . $antora_version . ' antora-lunr antora-site-generator-lunr');
 
 # Now, finally, let's build the site
-exec_system_cmd('DOCSEARCH_ENABLED=true DOCSEARCH_ENGINE=lunr NODE_PATH="$(npm root)" ./node_modules/@antora/cli/bin/antora --generator antora-site-generator-lunr site-working.yml');
+exec_system_cmd('DOCSEARCH_INDEX_VERSION=latest DOCSEARCH_ENABLED=true DOCSEARCH_ENGINE=lunr NODE_PATH="$(npm root)" ./node_modules/@antora/cli/bin/antora --generator antora-site-generator-lunr site-working.yml');
 
 print "Success: your site files are available at " . $html_output . " and can be moved into place for access at " . $base_url . "\n";
 
