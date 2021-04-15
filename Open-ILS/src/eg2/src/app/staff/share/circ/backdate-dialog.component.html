@@ -1,0 +1,38 @@
+
+<eg-string #successMsg text="Successfully Marked Claims Returned" i18n-text></eg-string>
+<eg-string #errorMsg text="Failed To Mark Claims Returned" i18n-text></eg-string>
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title">
+      <span i18n>Backdate Already Checked-In Circulations
+      </span>
+    </h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h5 i18n>Backdating {{circIds.length}} circulaion(s)</h5>
+    <div class="row mt-3">
+      <div class="col-lg-5" i18n>Effective Date:</div>
+      <div class="col-lg-7">
+        <eg-date-select [required]="true" [initialIso]="backdate" 
+          (onChangeAsIso)="backdate = $event">
+        </eg-date-select>
+      </div>
+    </div>
+    <div class="row" *ngIf="updateCount > 0">
+      <div class="col-lg-6 offset-lg-3">
+        <span i18n>Updated {{updateCount}} of {{circIds.length}}...</span>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" 
+      [disabled]="!backdate" (click)="modifyBatch()" i18n>Submit</button>
+    <button type="button" class="btn btn-warning"
+      (click)="close()" i18n>Cancel</button>
+  </div>
+</ng-template>

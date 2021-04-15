@@ -1,6 +1,8 @@
 import {Component, ViewChild, OnInit, AfterViewInit, HostListener} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {from} from 'rxjs';
+import {concatMap} from 'rxjs/operators';
+import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -8,12 +10,21 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
+import {Pager} from '@eg/share/util/pager';
 import {CircService, CircDisplayInfo, CheckinParams, CheckinResult
     } from '@eg/staff/share/circ/circ.service';
-import {Pager} from '@eg/share/util/pager';
 import {BarcodeSelectComponent
     } from '@eg/staff/share/barcodes/barcode-select.component';
 import {PrintService} from '@eg/share/print/print.service';
+import {MarkDamagedDialogComponent
+    } from '@eg/staff/share/holdings/mark-damaged-dialog.component';
+import {CopyAlertsDialogComponent
+    } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
+import {BucketDialogComponent
+    } from '@eg/staff/share/buckets/bucket-dialog.component';
+import {ToastService} from '@eg/share/toast/toast.service';
+import {StringComponent} from '@eg/share/string/string.component';
+import {BackdateDialogComponent} from '@eg/staff/share/circ/backdate-dialog.component';
 
 interface CheckinGridEntry extends CheckinResult {
     // May need to extend...
@@ -51,6 +62,7 @@ export class CheckinComponent implements OnInit, AfterViewInit {
     isHoldCapture = false;
     strictBarcode = false;
     trimList = false;
+    itemNeverCirced: string;
 
     gridDataSource: GridDataSource = new GridDataSource();
     cellTextGenerator: GridCellTextGenerator;
@@ -61,6 +73,11 @@ export class CheckinComponent implements OnInit, AfterViewInit {
 
     @ViewChild('grid') private grid: GridComponent;
     @ViewChild('barcodeSelect') private barcodeSelect: BarcodeSelectComponent;
+    @ViewChild('markDamagedDialog') private markDamagedDialog: MarkDamagedDialogComponent;
+    @ViewChild('copyAlertsDialog') private copyAlertsDialog: CopyAlertsDialogComponent;
+    @ViewChild('bucketDialog') private bucketDialog: BucketDialogComponent;
+    @ViewChild('itemNeverCircedStr') private itemNeverCircedStr: StringComponent;
+    @ViewChild('backdateDialog') private backdateDialog: BackdateDialogComponent;
 
     constructor(
         private router: Router,
@@ -70,6 +87,7 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         private auth: AuthService,
         private store: ServerStoreService,
         private circ: CircService,
+        private toast: ToastService,
         private printer: PrintService,
         public patronService: PatronService
     ) {}
@@ -222,6 +240,83 @@ export class CheckinComponent implements OnInit, AfterViewInit {
             this.modifiers.do_inventory_update  ||
             this.modifiers.auto_print_holds_transits
         );
+    }
+
+    getCopyIds(rows: CheckinGridEntry[], skipStatus?: number): number[] {
+        return this.getCopies(rows, skipStatus).map(c => Number(c.id()));
+    }
+
+    getCopies(rows: CheckinGridEntry[], skipStatus?: number): IdlObject[] {
+        let copies = rows.filter(r => r.copy).map(r => r.copy);
+        if (skipStatus) {
+            copies = copies.filter(
+                c => Number(c.status().id()) !== Number(skipStatus));
+        }
+        return copies;
+    }
+
+
+    markDamaged(rows: CheckinGridEntry[]) {
+        const copyIds = this.getCopyIds(rows, 14 /* ignore damaged */);
+        if (copyIds.length === 0) { return; }
+
+        from(copyIds).pipe(concatMap(id => {
+            this.markDamagedDialog.copyId = id;
+            return this.markDamagedDialog.open({size: 'lg'});
+        }));
+    }
+
+    addItemAlerts(rows: CheckinGridEntry[]) {
+        const copyIds = this.getCopyIds(rows);
+        if (copyIds.length === 0) { return; }
+
+        this.copyAlertsDialog.copyIds = copyIds;
+        this.copyAlertsDialog.mode = 'create'
+        this.copyAlertsDialog.open({size: 'lg'}).subscribe();
+    }
+
+    manageItemAlerts(rows: CheckinGridEntry[]) {
+        const copyIds = this.getCopyIds(rows);
+        if (copyIds.length === 0) { return; }
+
+        this.copyAlertsDialog.copyIds = copyIds;
+        this.copyAlertsDialog.mode = 'manage';
+        this.copyAlertsDialog.open({size: 'lg'}).subscribe();
+    }
+
+    openBucketDialog(rows: CheckinGridEntry[]) {
+        const copyIds = this.getCopyIds(rows);
+        if (copyIds.length > 0) {
+            this.bucketDialog.bucketClass = 'copy';
+            this.bucketDialog.itemIds = copyIds;
+            this.bucketDialog.open({size: 'lg'});
+        }
+    }
+
+    retrieveLastPatron(rows: CheckinGridEntry[]) {
+        const copy = this.getCopies(rows).pop();
+        if (!copy) { return; }
+
+        this.circ.lastCopyCirc(copy.id()).then(circ => {
+            if (circ) {
+                this.router.navigate(['/staff/circ/patron', circ.usr(), 'checkout']);
+            } else {
+                this.itemNeverCirced = copy.barcode();
+                setTimeout(() => this.toast.danger(this.itemNeverCircedStr.text));
+            }
+        });
+    }
+
+    backdatePostCheckin(rows: CheckinGridEntry[]) {
+        const circs = rows.map(r => r.circ).filter(circ => Boolean(circ));
+        if (circs.length === 0) { return; }
+
+        this.backdateDialog.circIds = circs.map(c => c.id());
+        this.backdateDialog.open().subscribe(backdate => {
+            if (backdate) {
+                circs.forEach(circ => circ.checkin_time(backdate));
+            }
+        });
     }
 }
 

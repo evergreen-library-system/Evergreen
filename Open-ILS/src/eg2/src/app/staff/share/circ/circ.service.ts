@@ -1038,5 +1038,12 @@ export class CircService {
             return Promise.resolve();
         });
     }
+
+    lastCopyCirc(copyId: number): Promise<IdlObject> {
+        return this.pcrud.search('circ',
+            {target_copy : copyId},
+            {order_by : {circ : 'xact_start desc' }, limit : 1}
+        ).toPromise();
+    }
 }
 
