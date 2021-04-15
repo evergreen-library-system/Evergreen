@@ -10,12 +10,12 @@
         <div class="bbag-action" style="clear:both;">
         <div class="input-group my-3">
 
-            <button class="btn btn-success m-1" name="action" value="place_hold" id="place_hold" type="submit"><i class="fas fa-book" aria-hidden="true"></i> Place Hold</button>
-            <button class="btn btn-danger m-1" name="action" value="delete" id="delete" type="submit"><i class="fas fa-trash" aria-hidden="true"></i> Delete</button>
-            <button class="btn btn-action m-1" name="action" value="print" id="print" type="submit"><i class="fas fa-print" aria-hidden="true"></i> Print Details</button>
-            <button class="btn btn-action m-1" name="action" value="email" id="email" type="submit"><i class="fas fa-envelope-open-text" aria-hidden="true"></i> Email Details</button>
+            <button class="btn btn-success m-1" name="action" value="place_hold" id="place_hold" type="submit"><i class="fas fa-book" aria-hidden="true"></i> [% l('Place Hold')%]</button>
+            <button class="btn btn-danger m-1" name="action" value="delete" id="delete" type="submit"><i class="fas fa-trash" aria-hidden="true"></i> [% l('Delete') %]</button>
+            <button class="btn btn-action m-1" name="action" value="print" id="print" type="submit"><i class="fas fa-print" aria-hidden="true"></i> [% l('Print Details') %]</button>
+            <button class="btn btn-action m-1" name="action" value="email" id="email" type="submit"><i class="fas fa-envelope-open-text" aria-hidden="true"></i> [% l('Email Details') %]</button>
 
-            <button class="btn btn-action m-1" name="action" value="new_list" id="new_list" type="submit"><i class="fas fa-plus" aria-hidden="true"></i> Add to New List</button>
+            <a class="btn btn-action m-1" id="new_list" href=[% mkurl(ctx.opac_root _ '/myopac/lists', { move_cart_by_default => 1, from_basket => 1}) %]><i class="fas fa-plus" aria-hidden="true"></i> [% l('Add to New List') %]</a>
             <div class="dropdown show m-1">
                 [% IF ctx.user AND ctx.bookbags.size %]
                  <a class="btn btn-action dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -36,7 +36,7 @@
                    [% l('Clear entire basket when the above action is complete.') %]
                 </label>
             </div>
-</div>
+
 
 
 
@@ -108,7 +108,6 @@
                     [% END %]
                 </tbody>
             </table>
-
 
 
 
