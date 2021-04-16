@@ -31,10 +31,8 @@
   </ng-template>
 
   <eg-grid idlClass="au" #groupGrid 
-    [cellTextGenerator]="cellTextGenerator"
-    [dataSource]="dataSource" 
-    [sortable]="true" 
-    [useLocalSort]="true"
+    persistKey="circ.patron.group_members" [cellTextGenerator]="cellTextGenerator"
+    [dataSource]="dataSource" [sortable]="true" [useLocalSort]="true"
     (onRowActivate)="onRowActivate($event)" 
     showFields="active,barred,dob,family_name,first_given_name,barcode,
       master_account,second_given_name,balance_owed,total_out,overdue">

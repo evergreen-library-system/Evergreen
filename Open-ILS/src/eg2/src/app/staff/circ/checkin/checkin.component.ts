@@ -45,7 +45,7 @@ const CHECKIN_MODIFIERS = [
 
 const SETTINGS = [
     'circ.checkin.strict_barcode'
-]
+];
 
 @Component({
   templateUrl: 'checkin.component.html',
@@ -271,7 +271,7 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         if (copyIds.length === 0) { return; }
 
         this.copyAlertsDialog.copyIds = copyIds;
-        this.copyAlertsDialog.mode = 'create'
+        this.copyAlertsDialog.mode = 'create';
         this.copyAlertsDialog.open({size: 'lg'}).subscribe();
     }
 

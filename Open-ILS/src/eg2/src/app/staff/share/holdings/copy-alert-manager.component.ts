@@ -92,7 +92,7 @@ export class CopyAlertManagerDialogComponent
                 nextStatuses.forEach(statId => {
                     const wanted = statMap[statId];
                     if (wanted) { this.nextStatuses.push(wanted); }
-                })
+                });
 
                 if (this.nextStatuses.length > 0) {
                     this.nextStatus = this.nextStatuses[0].id();

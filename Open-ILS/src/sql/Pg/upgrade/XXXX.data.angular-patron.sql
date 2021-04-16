@@ -4,22 +4,6 @@ BEGIN;
 -- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version); 
 
 /*
-INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
-VALUES (
-    'eg.catalog.results.count', 'gui', 'integer',
-    oils_i18n_gettext(
-        'eg.catalog.results.count',
-        'Catalog Results Page Size',
-        'cwst', 'label'
-    )
-);
-
-eg.circ.patron.holds.prefetch
-
-eg.grid.circ.patron.holds
-
-holds_for_patron print template
-
 
 -- insert then update for easier iterative development tweaks
 INSERT INTO config.print_template 
@@ -444,8 +428,6 @@ INSERT INTO config.print_template
     (name, label, owner, active, locale, content_type, template)
 VALUES ('checkin', 'Checkin', 1, TRUE, 'en-US', 'text/html', '');
 
-*/
-
 UPDATE config.print_template SET template = $TEMPLATE$
 [% 
   USE date;
@@ -481,6 +463,37 @@ UPDATE config.print_template SET template = $TEMPLATE$
 
 $TEMPLATE$ WHERE name = 'checkin';
 
+
+INSERT INTO config.print_template 
+    (name, label, owner, active, locale, content_type, template)
+VALUES ('holds_for_patron', 'Holds For Patron', 1, TRUE, 'en-US', 'text/html', '');
+
+*/
+
+UPDATE config.print_template SET template = $TEMPLATE$
+[% 
+  USE date;
+  USE money = format('$%.2f');
+  SET holds = template_data;
+%] 
+
+<div>
+  <div>Welcome to [% staff_org.name %]</div>
+  <div>You have the following items on hold:</div>
+  <hr/>
+  <ol>
+	[% FOR hold IN holds %]
+    <li>
+      <div>[% hold.title %]</div>
+    </li>
+  [% END %]
+  </ol>
+  <hr/>
+  <div>Slip Date: [% date.format(date.now, '%x %r') %]</div>
+  <div>Printed by [% staff.first_given_name %] at [% staff_org.shortname %]</div>
+</div>
+
+$TEMPLATE$ WHERE name = 'holds_for_patron';
 
 COMMIT;
 

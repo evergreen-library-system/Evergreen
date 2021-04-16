@@ -9,7 +9,7 @@
 </div>
 
 <eg-grid #mainGrid idlClass="ausp" [dataSource]="mainDataSource"
-  hideFields="id,usr,stop_date">
+  hideFields="id,usr,stop_date" persistKey="circ.patron.staff_messages">
   <eg-grid-toolbar-button i18n-label label="Apply Penalty / Message"
     (onClick)="applyPenalty()">
   <eg-grid-toolbar-action (onClick)="archive($event)"
@@ -42,7 +42,7 @@
 </div>
 
 <eg-grid #archiveGrid idlClass="ausp" [dataSource]="archiveDataSource"
-  hideFields="id,usr,stop_date">
+  hideFields="id,usr,stop_date" persistKey="circ.patron.archived_messages">
   <eg-grid-column path="standing_penalty.label">
   </eg-grid-column>
   <eg-grid-column path="standing_penalty.staff_alert">

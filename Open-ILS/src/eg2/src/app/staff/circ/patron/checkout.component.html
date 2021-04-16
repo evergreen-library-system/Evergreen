@@ -87,6 +87,7 @@
 <div class="row">
   <div class="col-lg-12">
     <eg-grid #checkoutsGrid [dataSource]="gridDataSource" [sortable]="true"
+      persistKey="circ.patron.checkout"
       [useLocalSort]="true" [cellTextGenerator]="cellTextGenerator"
       [disablePaging]="true" persistKey="circ.patron.checkout">
 

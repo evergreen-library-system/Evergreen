@@ -938,7 +938,7 @@ export class CircService {
     handleOverridableCheckinEvents(result: CheckinResult): Promise<CheckinResult> {
         const params = result.params;
         const events = result.allEvents;
-        const firstEvent = result.firstEvent
+        const firstEvent = result.firstEvent;
 
         if (params._override) {
             // Should never get here.  Just being safe.

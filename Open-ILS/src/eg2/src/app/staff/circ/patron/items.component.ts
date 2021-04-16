@@ -42,7 +42,6 @@ export class ItemsComponent implements OnInit, AfterViewInit {
     displayClaimsReturned: number = null;
     fetchCheckedIn = true;
     displayAltList = true;
-    persistKey: string;
 
     @ViewChild('checkoutsGrid') private checkoutsGrid: CircGridComponent;
     @ViewChild('otherGrid') private otherGrid: CircGridComponent;
@@ -95,8 +94,6 @@ export class ItemsComponent implements OnInit, AfterViewInit {
         } else {
             promise = this.loadNonCatGrid();
         }
-
-        this.persistKey = `circ.patron.items.${name}`;
 
         return promise.then(_ => this.loading = false);
     }
