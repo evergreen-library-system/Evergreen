@@ -1108,9 +1108,15 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     fieldRequired(field: string): boolean {
 
-        // Password field is only required for new patrons.
-        if (field === 'au.passwd') {
-            return this.patronId === null;
+        switch (field) {
+            case 'au.passwd':
+                // Only required for new patrons
+                return this.patronId === null;
+
+            case 'au.email':
+                // If the user ops in for email notices, require
+                // an email address
+                return this.holdNotifyTypes.email;
         }
 
         return this.fieldVisibility[field] === 3;
