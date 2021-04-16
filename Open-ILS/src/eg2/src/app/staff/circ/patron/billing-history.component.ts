@@ -11,7 +11,7 @@ import {PcrudService, PcrudContext} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronContextService, BillGridEntry} from './patron.service';
+import {PatronContextService} from './patron.service';
 import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';
@@ -25,6 +25,7 @@ import {BillingService} from '@eg/staff/share/billing/billing.service';
 import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
 import {AudioService} from '@eg/share/util/audio.service';
 import {ToastService} from '@eg/share/toast/toast.service';
+import {DateUtil} from '@eg/share/util/date';
 
 @Component({
   templateUrl: 'billing-history.component.html',
@@ -40,6 +41,12 @@ export class BillingHistoryComponent implements OnInit {
 
     xactsTextGenerator: GridCellTextGenerator;
     paymentsTextGenerator: GridCellTextGenerator;
+
+    xactsStart: string;
+    xactsEnd: string;
+
+    paymentsStart: string;
+    paymentsEnd: string;
 
     @ViewChild('xactsGrid') private xactsGrid: GridComponent;
     @ViewChild('paymentsGrid') private paymentsGrid: GridComponent;
@@ -64,11 +71,19 @@ export class BillingHistoryComponent implements OnInit {
 
     ngOnInit() {
 
+        const start = new Date();
+        const end = new Date();
+        start.setFullYear(start.getFullYear() - 1);
+        end.setDate(end.getDate() + 1);
+
+        this.xactsStart = this.paymentsStart = DateUtil.localYmdFromDate(start);
+        this.xactsEnd = this.paymentsEnd = DateUtil.localYmdFromDate(end);
+
         this.xactsDataSource.getRows = (pager: Pager, sort: any[]) => {
 
             const query: any = {
                usr: this.patronId,
-               xact_start: {between: ['2020-04-16', 'now']},
+               xact_start: {between: [this.xactsStart, this.xactsEnd]},
                '-or': [
                     {'summary.balance_owed': {'<>': 0}},
                     {'summary.last_payment_ts': {'<>': null}}
@@ -79,26 +94,36 @@ export class BillingHistoryComponent implements OnInit {
                 this.xactsGrid.context, query, pager, sort);
         };
 
-        /*
         this.paymentsDataSource.getRows = (pager: Pager, sort: any[]) => {
-            const orderBy: any = {};
-            if (sort.length) {
-                orderBy.mp = sort[0].name + ' ' + sort[0].dir;
-            }
-            return this.pcrud.search(
-                'mp', {xact: this.xactId}, {order_by: orderBy});
+            const query: any = {
+               'xact.usr': this.patronId,
+               payment_ts: {between: [this.paymentsStart, this.paymentsEnd]},
+            };
+
+            return this.flatData.getRows(
+                this.xactsGrid.context, query, pager, sort);
         };
-        */
     }
 
-    showStatement(row: BillGridEntry) {
+    dateChange(which: string, iso: string) {
+
+        this[which] = iso;
+
+        if (which.match(/xacts/)) {
+            this.xactsGrid.reload();
+        } else {
+            this.paymentsGrid.reload();
+        }
+    }
+
+    showStatement(row: any) {
         this.router.navigate(['/staff/circ/patron',
             this.patronId, 'bills', row.xact.id(), 'statement']);
     }
 
-    addBillingForXact(rows: BillGridEntry[]) {
+    addBillingForXact(rows: any[]) {
         if (rows.length === 0) { return; }
-        const xactIds = rows.map(r => r.xact.id());
+        const xactIds = rows.map(r => r.id);
 
         this.billingDialog.newXact = false;
         let changesApplied = false;
@@ -120,7 +145,7 @@ export class BillingHistoryComponent implements OnInit {
         });
     }
 
-    printBills(rows: BillGridEntry[]) {
+    printBills(rows: any) {
         if (rows.length === 0) { return; }
 
         this.printer.print({
@@ -128,6 +153,28 @@ export class BillingHistoryComponent implements OnInit {
             contextData: {xacts: rows.map(r => r.xact)},
             printContext: 'default'
         });
+    }
+
+    selectedXactsInfo(): {owed: number, billed: number, paid: number} {
+        const info = {owed : 0, billed : 0, paid : 0};
+
+        if (!this.xactsGrid) { return info; } // page loading
+
+        this.xactsGrid.context.rowSelector.selected().forEach(id => {
+            const row = this.xactsGrid.context.getRowByIndex(id);
+
+            if (!row) { return; } // Called mid-reload
+
+            info.owed   += Number(row['summary.balance_owed']) * 100;
+            info.billed += Number(row['summary.total_owed']) * 100;
+            info.paid   += Number(row['summary.total_paid']) * 100;
+        });
+
+        info.owed /= 100;
+        info.billed /= 100;
+        info.paid /= 100;
+
+        return info;
     }
 }
 
