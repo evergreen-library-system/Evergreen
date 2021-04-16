@@ -4,6 +4,7 @@ import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {GridToolbarButton, GridToolbarAction, GridContext} from '@eg/share/grid/grid';
 import {GridColumnWidthComponent} from './grid-column-width.component';
 import {GridPrintComponent} from './grid-print.component';
+import {GridColumn} from './grid';
 
 @Component({
   selector: 'eg-grid-toolbar',
@@ -128,6 +129,13 @@ export class GridToolbarComponent implements OnInit {
         });
 
         $event.preventDefault();
+    }
+
+    toggleVisibility(col: GridColumn) {
+        col.visible = !col.visible;
+        if (this.gridContext.reloadOnColumnChange) {
+            this.gridContext.reloadWithoutPagerReset();
+        }
     }
 }
 

@@ -49,6 +49,10 @@ export class GridColumnComponent implements OnInit {
     @Input() disableTooltip: boolean;
     @Input() asyncSupportsEmptyTermClick: boolean;
 
+    // Required columns are those that must be present in any auto-generated
+    // queries regardless of whether they are visible in the display.
+    @Input() required = false;
+
     // get a reference to our container grid.
     constructor(@Host() private grid: GridComponent) {}
 
@@ -64,6 +68,7 @@ export class GridColumnComponent implements OnInit {
         col.path = this.path;
         col.label = this.label;
         col.flex = this.flex;
+        col.required = this.required;
         col.hidden = this.hidden === true;
         col.asyncSupportsEmptyTermClick = this.asyncSupportsEmptyTermClick === true;
         col.isIndex = this.index === true;

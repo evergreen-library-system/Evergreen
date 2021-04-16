@@ -20,11 +20,11 @@
     </div>
     <div class="row pt-1" *ngFor="let col of columnSet.columns"
       [ngClass]="{visible : col.visible}">
-      <div class="col-lg-1" (click)="col.visible=!col.visible">
+      <div class="col-lg-1" (click)="toggleVisibility(col)">
         <span *ngIf="col.visible" class="badge badge-success">&#x2713;</span>
         <span *ngIf="!col.visible" class="badge badge-warning">&#x2717;</span>
       </div>
-      <div class="col-lg-3" (click)="col.visible=!col.visible">{{col.label}}</div>
+      <div class="col-lg-3" (click)="toggleVisibility(col)">{{col.label}}</div>
       <div class="col-lg-1">
         <a class="no-href" title="Move column up" i18n-title
           (click)="columnSet.moveColumn(col, -1)">

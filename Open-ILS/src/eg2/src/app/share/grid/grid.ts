@@ -2,7 +2,7 @@
  * Collection of grid related classses and interfaces.
  */
 import {TemplateRef, EventEmitter, QueryList} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
+import {Observable, Subscription, empty} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -42,6 +42,7 @@ export class GridColumn {
     disableTooltip: boolean;
     asyncSupportsEmptyTermClick: boolean;
     comparator: (valueA: any, valueB: any) => number;
+    required = false;
 
     // True if the column was automatically generated.
     isAuto: boolean;
@@ -286,6 +287,12 @@ export class GridColumnSet {
         invisible.sort((a, b) => a.label < b.label ? -1 : 1);
 
         return visible.concat(invisible);
+    }
+
+    requiredColumns(): GridColumn[] {
+        const visible = this.displayColumns();
+        return visible.concat(
+            this.columns.filter(c => c.required && !c.visible));
     }
 
     insertBefore(source: GridColumn, target: GridColumn) {
@@ -550,6 +557,7 @@ export class GridContext {
     disablePaging: boolean;
     showDeclaredFieldsOnly: boolean;
     cellTextGenerator: GridCellTextGenerator;
+    reloadOnColumnChange: boolean;
 
     // Allow calling code to know when the select-all-rows-in-page
     // action has occurred.
@@ -1268,15 +1276,20 @@ export class GridToolbarCheckbox {
     onChange: EventEmitter<boolean>;
 }
 
+export interface GridColumnSort {
+    name: string;
+    dir: string;
+}
+
 export class GridDataSource {
 
     data: any[];
-    sort: any[];
+    sort: GridColumnSort[];
     filters: Object;
     allRowsRetrieved: boolean;
     requestingData: boolean;
     retrievalError: boolean;
-    getRows: (pager: Pager, sort: any[]) => Observable<any>;
+    getRows: (pager: Pager, sort: GridColumnSort[]) => Observable<any>;
 
     constructor() {
         this.sort = [];
@@ -1355,5 +1368,4 @@ export class GridDataSource {
         }
     }
 }
-
 

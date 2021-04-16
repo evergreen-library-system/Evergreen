@@ -105,7 +105,7 @@
       class="material-icons mat-icon-in-button">expand_less</span>
   </button>
 
-  <eg-grid-column-config #columnConfDialog [columnSet]="gridContext.columnSet">
+  <eg-grid-column-config #columnConfDialog [gridContext]="gridContext">
   </eg-grid-column-config>
   <div ngbDropdown placement="bottom-right">
     <button ngbDropdownToggle class="btn btn-outline-dark no-dropdown-caret">
@@ -155,7 +155,7 @@
       <div class="dropdown-divider"></div>
 
       <a class="dropdown-item label-with-material-icon"
-        (click)="col.visible=!col.visible"
+        (click)="toggleVisibility(col)"
         *ngFor="let col of gridContext.columnSet.sortForColPicker()">
         <span *ngIf="col.visible" class="badge badge-success">&#x2713;</span>
         <span *ngIf="!col.visible" class="badge badge-warning">&#x2717;</span>

@@ -123,6 +123,10 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     // If set, appears along the top left side of the grid.
     @Input() toolbarLabel: string;
 
+    // If true, showing/hiding columns will force the data source to
+    // refresh the current page of data.
+    @Input() reloadOnColumnChange = false;
+
     context: GridContext;
 
     // These events are emitted from our grid-body component.
@@ -172,6 +176,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.disablePaging = this.disablePaging === true;
         this.context.cellTextGenerator = this.cellTextGenerator;
         this.context.ignoredFields = [];
+        this.context.reloadOnColumnChange = this.reloadOnColumnChange;
 
         if (this.showFields) {
             // Stripping spaces allows users to add newlines to

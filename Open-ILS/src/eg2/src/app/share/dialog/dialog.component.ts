@@ -58,7 +58,7 @@ export class DialogComponent implements OnInit {
     observer: Observer<any>;
 
     // The modalRef allows direct control of the modal instance.
-    private modalRef: NgbModalRef = null;
+    protected modalRef: NgbModalRef = null;
 
     constructor(private modalService: NgbModal) {}
 
