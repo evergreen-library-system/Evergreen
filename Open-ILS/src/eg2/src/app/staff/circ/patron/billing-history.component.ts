@@ -14,6 +14,7 @@ import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService, BillGridEntry} from './patron.service';
 import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
+import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';
 import {Pager} from '@eg/share/util/pager';
 import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
 import {PrintService} from '@eg/share/print/print.service';
@@ -56,6 +57,7 @@ export class BillingHistoryComponent implements OnInit {
         private circ: CircService,
         private billing: BillingService,
         private printer: PrintService,
+        private flatData: GridFlatDataService,
         public patronService: PatronService,
         public context: PatronContextService
     ) {}
@@ -63,24 +65,18 @@ export class BillingHistoryComponent implements OnInit {
     ngOnInit() {
 
         this.xactsDataSource.getRows = (pager: Pager, sort: any[]) => {
-            const orderBy: any = {};
-            if (sort.length) {
-                orderBy.mb = sort[0].name + ' ' + sort[0].dir;
-            }
 
-            return this.pcrud.search('mbt', {usr: this.patronId}, {
-                order_by: orderBy,
-                join: {
-                    mbts: {
-                        filter: {
-                            '-or': [
-                                {balance_owed: {'<>': 0}},
-                                {last_payment_ts: {'<>': null}}
-                            ]
-                        }
-                    }
-                }
-            });
+            const query: any = {
+               usr: this.patronId,
+               xact_start: {between: ['2020-04-16', 'now']},
+               '-or': [
+                    {'summary.balance_owed': {'<>': 0}},
+                    {'summary.last_payment_ts': {'<>': null}}
+               ]
+            };
+
+            return this.flatData.getRows(
+                this.xactsGrid.context, query, pager, sort);
         };
 
         /*

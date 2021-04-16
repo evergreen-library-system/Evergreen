@@ -3,31 +3,94 @@
 <eg-add-billing-dialog [patronId]="patronId" #billingDialog>
 </eg-add-billing-dialog>
 
+<ng-template #titleTemplate let-r="row">
+  <ng-container *ngIf="r.record">
+    <a routerLink="/staff/catalog/record/{{r.record_id}}">{{r.title}}</a>
+  </ng-container>
+  <ng-container *ngIf="!r.record">{{r.title}}</ng-container>
+</ng-template>
+
+<ng-template #barcodeTemplate let-r="row">
+  <ng-container *ngIf="r.copy_id">
+    <a href="/eg/staff/cat/item/{{r.copy_id}}">{{r.copy_barcode}}</a>
+  </ng-container>
+</ng-template>
+
+<ng-template #callNumberTemplate let-r="row">
+  <ng-container *ngIf="r.volume">
+    {{r.volume.prefix().label()}} {{r.volume.label()}} {{r.volume.suffix().label()}}
+  </ng-container>
+  <ng-container *ngIf="!r.volume" i18n>UNCATALOGED</ng-container>
+</ng-template>
+
 
 <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="tab">
   <li ngbNavItem="transactions">
     <a ngbNavLink i18n>Transactions</a>
     <ng-template ngbNavContent>
-      <eg-grid idlClass="mbt" #xactsGrid
-        persistKey="circ.patron.billhistory_xacts"
-        (onRowActivate)="showStatement($event)"
-        i18n-toolbarLabel [dataSource]="xactsDataSource" [sortable]="true">
+      <div class="mt-2">
+        <eg-grid idlClass="mbt" #xactsGrid
+          persistKey="circ.patron.billhistory_xacts"
+          (onRowActivate)="showStatement($event)"
+          [reloadOnColumnChange]="true"
+          [dataSource]="xactsDataSource" [sortable]="true">
 
-        <eg-grid-toolbar-button i18n-label label="Add Billing"
-          (onClick)="addBilling()"></eg-grid-toolbar-button>
+          <eg-grid-toolbar-button i18n-label label="Add Billing"
+            (onClick)="addBilling()"></eg-grid-toolbar-button>
 
-        <eg-grid-toolbar-action
-          i18n-label label="Print Bills" (onClick)="printBills($event)">
-        </eg-grid-toolbar-action>
+          <eg-grid-toolbar-action
+            i18n-label label="Print Bills" (onClick)="printBills($event)">
+          </eg-grid-toolbar-action>
 
+          <eg-grid-column path="summary.balance_owed"></eg-grid-column>
+          <eg-grid-column path="id" i18n-label label="Bill #" [required]="true"></eg-grid-column>
+          <eg-grid-column path="xact_finish" i18n-label label="Finish" 
+            datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+          <eg-grid-column path="xact_start" i18n-label label="Start" 
+            datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+          <eg-grid-column path="summary.total_owed" i18n-label label="Total Billed"></eg-grid-column>
+          <eg-grid-column path="summary.total_paid" i18n-label label="Total Paid"></eg-grid-column>
+          <eg-grid-column path="summary.xact_type" i18n-label label="Type"></eg-grid-column>
+          <eg-grid-column path="summary.last_payment_ts" datatype="timestamp" 
+            [required]="true" [hidden]="true"></eg-grid-column>
 
-        <eg-grid-toolbar-action label="Edit Note" i18n-label
-          (onClick)="openNoteDialog($event)">
-        </eg-grid-toolbar-action>
-        <eg-grid-toolbar-action label="Void Billings" i18n-label
-          (onClick)="openVoidDialog($event)">
-        </eg-grid-toolbar-action>
-      </eg-grid>
+          <eg-grid-column i18n-label label="Title" name="title" 
+            [cellTemplate]="titleTemplate"
+            path="circulation.target_copy.call_number.record.simple_record.title">
+          </eg-grid-column>
+
+          <eg-grid-column name="record_id" 
+            path="circulation.target_copy.call_number.record.id" 
+            [required]="true" [hidden]="true"></eg-grid-column>
+
+          <eg-grid-column i18n-label label="Barcode" name="copy_barcode" 
+            [cellTemplate]="barcodeTemplate" path="circulation.target_copy.barcode">
+          </eg-grid-column>
+
+          <eg-grid-column name="copy_id" path="circulation.target_copy.id" 
+            [required]="true" [hidden]="true"></eg-grid-column>
+
+          <eg-grid-column path="circulation.target_copy.circ_lib.shortname" 
+            i18n-label label="Item Owning Library"></eg-grid-column>
+          <eg-grid-column path="circulation.circ_lib.shortname" 
+            i18n-label label="Checkout or Renewal Library" [hidden]="true"></eg-grid-column>
+          <eg-grid-column path="circulation.due_date" 
+            i18n-label label="Due Date" datefilter="egDueDate" [hidden]="true"></eg-grid-column>
+          <eg-grid-column path="circulation.stop_fines" 
+            i18n-label label="Fine Stop Reason" [hidden]="true"></eg-grid-column>
+          <eg-grid-column path="circulation.target_copy.call_number.prefix.label" 
+            i18n-label label="CN Prefix" [hidden]="true"></eg-grid-column>
+          <eg-grid-column path="circulation.target_copy.call_number.suffix.label" 
+            i18n-label label="CN Suffix" [hidden]="true"></eg-grid-column>
+
+          <!--
+          <eg-grid-column path="circulation.target_copy.call_number.*" [hidden]="true"></eg-grid-column>
+          <eg-grid-column path="summary.*" hidden></eg-grid-column>
+          <eg-grid-column path="circulation.target_copy.*" hidden></eg-grid-column>
+          -->
+
+        </eg-grid>
+      </div>
     </ng-template>
   </li>
   <li ngbNavItem="payments">
