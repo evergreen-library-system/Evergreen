@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {GridToolbarButton, GridToolbarAction, GridContext} from '@eg/share/grid/grid';
 import {GridColumnWidthComponent} from './grid-column-width.component';
@@ -16,15 +17,16 @@ export class GridToolbarComponent implements OnInit {
     @Input() gridPrinter: GridPrintComponent;
     @Input() disableSaveSettings = false;
 
-    renderedGroups: {[group: string]: boolean};
+    renderedGroups: {[group: string]: boolean} = {};
 
     csvExportInProgress: boolean;
     csvExportUrl: SafeUrl;
     csvExportFileName: string;
 
-    constructor(private sanitizer: DomSanitizer) {
-        this.renderedGroups = {};
-    }
+    constructor(
+        private router: Router,
+        private sanitizer: DomSanitizer
+    ) {}
 
     ngOnInit() {
         this.sortActions();
@@ -78,8 +80,13 @@ export class GridToolbarComponent implements OnInit {
 
     performButtonAction(button: GridToolbarButton) {
         const rows = this.gridContext.getSelectedRows();
-        button.onClick.emit(rows);
-        if (button.action) { button.action(); }
+        console.log('BUTTON ACTION', button.routerLink);
+        if (button.routerLink) {
+            this.router.navigate([button.routerLink]);
+        } else {
+            button.onClick.emit(rows);
+            if (button.action) { button.action(); }
+        }
     }
 
     printHtml() {

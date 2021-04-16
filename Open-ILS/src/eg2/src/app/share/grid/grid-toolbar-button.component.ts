@@ -18,6 +18,8 @@ export class GridToolbarButtonComponent implements OnInit {
     // DEPRECATED: Pass a reference to a function that is called on click.
     @Input() action: () => any;
 
+    // Provide a router link instead of an onClick handler
+    @Input() routerLink: string;
 
     @Input() set disabled(d: boolean) {
         // Support asynchronous disabled values by appling directly
@@ -33,16 +35,16 @@ export class GridToolbarButtonComponent implements OnInit {
     constructor(@Host() private grid: GridComponent) {
         this.onClick = new EventEmitter<any>();
         this.button = new GridToolbarButton();
-        this.button.onClick = this.onClick;
     }
 
     ngOnInit() {
-
         if (!this.grid) {
             console.warn('GridToolbarButtonComponent needs a [grid]');
             return;
         }
 
+        this.button.onClick = this.onClick;
+        this.button.routerLink = this.routerLink;
         this.button.label = this.label;
         this.button.action = this.action;
         this.grid.context.toolbarButtons.push(this.button);
