@@ -5381,7 +5381,7 @@ sub user_billing_xacts {
         $e->allowed('VIEW_USER_TRANSACTIONS', $user->home_ou);
 
     # Start with the user summary.
-    $client->respond($e->retrieve_money_user_summary($user_id));
+    $client->respond($e->retrieve_money_open_with_balance_user_summary($user_id));
 
     # Even if xact_ids are specified, run this query to confirm the
     # provided IDs are linked to the specified user and have a balance.
