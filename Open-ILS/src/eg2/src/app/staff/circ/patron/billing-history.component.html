@@ -1,0 +1,41 @@
+<h3 i18n>Bill History</h3>
+
+<eg-add-billing-dialog [patronId]="patronId" #billingDialog>
+</eg-add-billing-dialog>
+
+
+<ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="tab">
+  <li ngbNavItem="transactions">
+    <a ngbNavLink i18n>Transactions</a>
+    <ng-template ngbNavContent>
+      <eg-grid idlClass="mbt" #xactsGrid
+        persistKey="circ.patron.billhistory_xacts"
+        (onRowActivate)="showStatement($event)"
+        i18n-toolbarLabel [dataSource]="xactsDataSource" [sortable]="true">
+
+        <eg-grid-toolbar-button i18n-label label="Add Billing"
+          (onClick)="addBilling()"></eg-grid-toolbar-button>
+
+        <eg-grid-toolbar-action
+          i18n-label label="Print Bills" (onClick)="printBills($event)">
+        </eg-grid-toolbar-action>
+
+
+        <eg-grid-toolbar-action label="Edit Note" i18n-label
+          (onClick)="openNoteDialog($event)">
+        </eg-grid-toolbar-action>
+        <eg-grid-toolbar-action label="Void Billings" i18n-label
+          (onClick)="openVoidDialog($event)">
+        </eg-grid-toolbar-action>
+      </eg-grid>
+    </ng-template>
+  </li>
+  <li ngbNavItem="payments">
+    <a ngbNavLink i18n>Payments</a>
+    <ng-template ngbNavContent>
+    </ng-template>
+  </li>
+</ul>
+
+<ng-container><div [ngbNavOutlet]="nav"></div></ng-container>
+

@@ -25,6 +25,7 @@ export class PatronComponent implements OnInit, AfterViewInit {
     patronTab = 'search';
     altTab: string;
     statementXact: number;
+    billingHistoryTab: string;
     showSummary = true;
     loading = true;
 
@@ -92,10 +93,12 @@ export class PatronComponent implements OnInit, AfterViewInit {
     }
 
     watchForTabChange() {
+
         this.route.paramMap.subscribe((params: ParamMap) => {
             this.patronTab = params.get('tab') || 'search';
             this.patronId = +params.get('id');
             this.statementXact = +params.get('xactId');
+            this.billingHistoryTab = params.get('billingHistoryTab');
 
             if (MAIN_TABS.includes(this.patronTab)) {
                 this.altTab = null;

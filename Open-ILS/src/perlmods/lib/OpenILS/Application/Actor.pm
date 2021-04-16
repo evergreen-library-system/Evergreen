@@ -5359,6 +5359,11 @@ __PACKAGE__->register_method(
         params => [
             {desc => 'Authentication token', type => 'string'},
             {desc => 'User ID', type => 'number'},
+            {desc => q/Options: {
+                xact_ids: load specific transactions
+                have_balance:
+                have_charge:
+            }/, type => 'object'},
             {desc => 'Xact IDs.  Optionally limit to specific transactions', 
              type => 'array'}
         ],
@@ -5370,7 +5375,13 @@ __PACKAGE__->register_method(
 );
 
 sub user_billing_xacts {
-    my ($self, $client, $auth, $user_id, $xact_ids) = @_;
+    my ($self, $client, $auth, $user_id, $options) = @_;
+
+    $options ||= {};
+    my $xact_ids = $options->{xact_ids};
+    my $have_balance = $options->{have_balance};
+    my $have_charge = $options->{have_charge};
+    my $have_payment = $options->{have_payment};
 
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
@@ -5382,6 +5393,12 @@ sub user_billing_xacts {
 
     # Start with the user summary.
     $client->respond($e->retrieve_money_open_with_balance_user_summary($user_id));
+
+    my $where = {};
+    if ($xact_ids) { $where->{id} = $xact_ids; }
+    if ($have_balance) { $where->{balance_owed} = {'<>' => 0}; }
+    if ($have_charge) { $where->{last_billing_ts} = {'<>' => undef}; }
+    if ($have_payment) { $where->{last_payment_ts} = {'<>' => undef}; }
 
     # Even if xact_ids are specified, run this query to confirm the
     # provided IDs are linked to the specified user and have a balance.

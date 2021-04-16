@@ -31,6 +31,7 @@ import {PatronBarcodesDialogComponent} from './barcodes.component';
 import {HoldNotifyUpdateDialogComponent} from './hold-notify-update.component';
 import {PatronMessagesComponent} from './messages.component';
 import {PatronPermsComponent} from './perms.component';
+import {BillingHistoryComponent} from './billing-history.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import {PatronPermsComponent} from './perms.component';
     ItemsComponent,
     BillsComponent,
     BillStatementComponent,
+    BillingHistoryComponent,
     TestPatronPasswordComponent,
     PatronMessagesComponent,
     PatronSurveyResponsesComponent,

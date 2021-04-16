@@ -92,7 +92,11 @@
               <eg-patron-bill-statement [patronId]="patronId" [xactId]="statementXact">
               </eg-patron-bill-statement>
             </ng-container>
-            <ng-container *ngIf="!statementXact">
+            <ng-container *ngIf="billingHistoryTab">
+              <eg-patron-billing-history [patronId]="patronId" [tab]="billingHistoryTab">
+              </eg-patron-billing-history>
+            </ng-container>
+            <ng-container *ngIf="!statementXact && !billingHistoryTab">
               <eg-patron-bills [patronId]="patronId"></eg-patron-bills>
             </ng-container>
           </ng-template>

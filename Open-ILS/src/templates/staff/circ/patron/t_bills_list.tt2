@@ -50,7 +50,9 @@
   <eg-grid-action label="[% l('Full Details') %]" 
     handler="showFullDetails"></eg-grid-action>
 
+  <!--
   <eg-grid-field label="[% l('Balance Owed') %]" path='summary.balance_owed'></eg-grid-field>
+  -->
   <eg-grid-field required label="[% l('Bill #') %]" path='id'></eg-grid-field>
   <eg-grid-field label="[% l('Start') %]" path='xact_start' datatype="timestamp"></eg-grid-field>
   <eg-grid-field label="[% l('Total Billed') %]" path='summary.total_owed'></eg-grid-field>

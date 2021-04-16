@@ -167,7 +167,8 @@ export class BillsComponent implements OnInit, AfterViewInit {
         return this.net.request(
             'open-ils.actor',
             'open-ils.actor.user.transactions.for_billing',
-            this.auth.token(), this.patronId, refreshXacts
+            this.auth.token(), this.patronId,
+            {have_balance: true, xact_ids: refreshXacts}
 
         ).pipe(tap(resp => {
 

@@ -181,10 +181,14 @@
   <eg-grid-toolbar-button i18n-label label="Add Billing"
     (onClick)="addBilling()"></eg-grid-toolbar-button>
 
-  <!-- ACTIONS FOR SELECTED -->
+  <eg-grid-toolbar-button i18n-label label="History"
+    routerLink="/staff/circ/patron/{{patronId}}/bills/history/transactions">
+  </eg-grid-toolbar-button>
 
   <eg-grid-toolbar-button i18n-label label="Select All Refunds"
     (onClick)="selectRefunds()"></eg-grid-toolbar-button>
+
+  <!-- ACTIONS FOR SELECTED -->
 
   <eg-grid-toolbar-action
     i18n-label label="Print Bills" (onClick)="printBills($event)">
