@@ -95,6 +95,7 @@
 
         <eg-grid-column path="circulation.target_copy.circ_lib.shortname" 
           i18n-label label="Item Owning Library"></eg-grid-column>
+
         <eg-grid-column path="circulation.circ_lib.shortname" 
           i18n-label label="Checkout or Renewal Library" [hidden]="true"></eg-grid-column>
         <eg-grid-column path="circulation.due_date" 
@@ -122,7 +123,7 @@
         <div class="col-lg-4">
           <div class="row">
             <div class="col-lg-5" i18n>Selected Paid:</div>
-            <div class="col-lg-4" i18n>{{selectedXactsInfo().paid | currency}}</div>
+            <div class="col-lg-4" i18n>{{selectedPaymentsInfo().paid | currency}}</div>
           </div>
         </div>
         <div class="col-lg-4 form-inline">
@@ -137,7 +138,7 @@
         </div>
       </div>
 
-      <eg-grid idlClass="mp" #xactsGrid
+      <eg-grid idlClass="mp" #paymentsGrid
         persistKey="circ.patron.billhistory_payments"
         (onRowActivate)="showStatement($event)"
         [reloadOnColumnChange]="true"

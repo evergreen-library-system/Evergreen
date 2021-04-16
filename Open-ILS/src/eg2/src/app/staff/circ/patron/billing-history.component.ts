@@ -101,7 +101,7 @@ export class BillingHistoryComponent implements OnInit {
             };
 
             return this.flatData.getRows(
-                this.xactsGrid.context, query, pager, sort);
+                this.paymentsGrid.context, query, pager, sort);
         };
     }
 
@@ -153,6 +153,20 @@ export class BillingHistoryComponent implements OnInit {
             contextData: {xacts: rows.map(r => r.xact)},
             printContext: 'default'
         });
+    }
+
+    selectedPaymentsInfo(): {paid: number} {
+        const info = {paid: 0};
+        if (!this.paymentsGrid) { return info; }
+
+        this.paymentsGrid.context.rowSelector.selected().forEach(id => {
+            const row = this.paymentsGrid.context.getRowByIndex(id);
+            if (!row) { return; }
+            info.paid += Number(row.amount) * 100;
+        });
+
+        info.paid /= 100;
+        return info;
     }
 
     selectedXactsInfo(): {owed: number, billed: number, paid: number} {
