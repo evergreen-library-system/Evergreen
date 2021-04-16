@@ -214,7 +214,7 @@ CREATE TABLE acq.fund (
     name            TEXT    NOT NULL,
     year            INT     NOT NULL DEFAULT EXTRACT( YEAR FROM NOW() ),
     currency_type   TEXT    NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
-    code            TEXT,
+    code            TEXT    NOT NULL,
 	rollover        BOOL    NOT NULL DEFAULT FALSE,
 	propagate       BOOL    NOT NULL DEFAULT TRUE,
 	active          BOOL    NOT NULL DEFAULT TRUE,
