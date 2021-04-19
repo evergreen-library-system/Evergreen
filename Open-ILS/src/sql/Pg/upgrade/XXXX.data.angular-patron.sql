@@ -44,7 +44,6 @@ INSERT INTO config.print_template
     (name, label, owner, active, locale, content_type, template)
 VALUES ('bills_current', 'Bills, Current', 1, TRUE, 'en-US', 'text/html', '');
 
-*/
 
 UPDATE config.print_template SET template = $TEMPLATE$
 [% 
@@ -108,8 +107,6 @@ UPDATE config.print_template SET template = $TEMPLATE$
   <br/>
 </div>
 $TEMPLATE$ WHERE name = 'bills_current';
-
-/*
 
 
 INSERT INTO config.print_template 
@@ -498,6 +495,143 @@ UPDATE config.print_template SET template = $TEMPLATE$
 </div>
 
 $TEMPLATE$ WHERE name = 'holds_for_patron';
+
+
+INSERT INTO config.print_template 
+    (name, label, owner, active, locale, content_type, template)
+VALUES ('bills_historical', 'Bills, Historical', 1, TRUE, 'en-US', 'text/html', '');
+
+
+UPDATE config.print_template SET template = $TEMPLATE$
+[% 
+  USE date;
+  USE money = format('$%.2f');
+  SET xacts = template_data.xacts;
+%]
+<div>
+  <style>td { padding: 1px 3px 1px 3px; }</style>
+  <div>Welcome to [% staff_org.name %]</div>
+  <div>You have the following bills:</div>
+  <hr/>
+  <ol>
+  [% FOR xact IN xacts %]
+    <li>
+      <table>
+        <tr>
+          <td>Bill #:</td>
+          <td>[% xact.id %]</td>
+        </tr>
+        <tr>
+          <td>Date:</td>
+          <td>[% date.format(helpers.format_date(
+            xact.xact_start, staff_org_timezone), '%x %r') %]
+          </td>
+        </tr>
+        <tr>
+          <td>Last Billing:</td>
+          <td>[% xact.last_billing_type %]</td>
+        </tr>
+        <tr>
+          <td>Total Billed:</td>
+          <td>[% money(xact.total_owed) %]</td>
+        </tr>
+        <tr>
+          <td>Last Payment:</td>
+          <td>
+            [% xact.last_payment_type %]
+            [% IF xact.last_payment_ts %]
+              at [% date.format(
+                    helpers.format_date(
+                        xact.last_payment_ts, staff_org_timezone), '%x %r') %]
+            [% END %]
+          </td>
+        </tr>
+        <tr>
+          <td>Total Paid:</td>
+          <td>[% money(xact.total_paid) %]</td>
+        </tr>
+        <tr>
+          <td>Balance:</td>
+          <td>[% money(xact.balance_owed) %]</td>
+        </tr>
+      </table>
+    </li>
+  [% END %]
+  </ol>
+  <hr/>
+  <div>[% staff_org.name %] [% date.format(date.now, '%x %r') %]</div>
+  <div>You were helped by [% staff.first_given_name %]</div>
+  <br/>
+</div>
+$TEMPLATE$ WHERE name = 'bills_historical';
+
+INSERT INTO config.print_template 
+    (name, label, owner, active, locale, content_type, template)
+VALUES ('bills_historical', 'Bills, Historical', 1, TRUE, 'en-US', 'text/html', '');
+
+
+UPDATE config.print_template SET template = $TEMPLATE$
+[% 
+  USE date;
+  USE money = format('$%.2f');
+  SET xacts = template_data.xacts;
+%]
+<div>
+  <style>td { padding: 1px 3px 1px 3px; }</style>
+  <div>Welcome to [% staff_org.name %]</div>
+  <div>You have the following bills:</div>
+  <hr/>
+  <ol>
+  [% FOR xact IN xacts %]
+    <li>
+      <table>
+        <tr>
+          <td>Bill #:</td>
+          <td>[% xact.id %]</td>
+        </tr>
+        <tr>
+          <td>Date:</td>
+          <td>[% date.format(helpers.format_date(
+            xact.xact_start, staff_org_timezone), '%x %r') %]
+          </td>
+        </tr>
+        <tr>
+          <td>Last Billing:</td>
+          <td>[% xact.last_billing_type %]</td>
+        </tr>
+        <tr>
+          <td>Total Billed:</td>
+          <td>[% money(xact.total_owed) %]</td>
+        </tr>
+        <tr>
+          <td>Last Payment:</td>
+          <td>
+            [% xact.last_payment_type %]
+            [% IF xact.last_payment_ts %]
+              at [% date.format(
+                    helpers.format_date(
+                        xact.last_payment_ts, staff_org_timezone), '%x %r') %]
+            [% END %]
+          </td>
+        </tr>
+        <tr>
+          <td>Total Paid:</td>
+          <td>[% money(xact.total_paid) %]</td>
+        </tr>
+        <tr>
+          <td>Balance:</td>
+          <td>[% money(xact.balance_owed) %]</td>
+        </tr>
+      </table>
+    </li>
+  [% END %]
+  </ol>
+  <hr/>
+  <div>[% staff_org.name %] [% date.format(date.now, '%x %r') %]</div>
+  <div>You were helped by [% staff.first_given_name %]</div>
+  <br/>
+</div>
+$TEMPLATE$ WHERE name = 'bills_historical';
 
 */
 

@@ -59,17 +59,23 @@
           i18n-label label="Print Bills" (onClick)="printBills($event)">
         </eg-grid-toolbar-action>
 
-        <eg-grid-column path="summary.balance_owed"></eg-grid-column>
+        <eg-grid-toolbar-action
+          i18n-label label="Full Details" (onClick)="showStatement($event)">
+        </eg-grid-toolbar-action>
+
+        <eg-grid-column name="balance_owed" [required]="true" path="summary.balance_owed"></eg-grid-column>
         <eg-grid-column path="id" [index]="true" i18n-label label="Bill #" [required]="true"></eg-grid-column>
         <eg-grid-column path="xact_finish" i18n-label label="Finish" 
           datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
         <eg-grid-column path="xact_start" i18n-label label="Start" 
           datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
-        <eg-grid-column path="summary.total_owed" i18n-label label="Total Billed"></eg-grid-column>
-        <eg-grid-column path="summary.total_paid" i18n-label label="Total Paid"></eg-grid-column>
+        <eg-grid-column name="total_owed" [required]="true" 
+          path="summary.total_owed" i18n-label label="Total Billed"></eg-grid-column>
+        <eg-grid-column name="total_paid" [required]="true" 
+          path="summary.total_paid" i18n-label label="Total Paid"></eg-grid-column>
         <eg-grid-column path="summary.xact_type" i18n-label label="Type"></eg-grid-column>
-        <eg-grid-column path="summary.last_payment_ts" datatype="timestamp" 
-          [required]="true" [hidden]="true"></eg-grid-column>
+        <eg-grid-column name="last_payment_ts" path="summary.last_payment_ts" 
+          datatype="timestamp" [required]="true" [hidden]="true"></eg-grid-column>
 
         <eg-grid-column i18n-label label="Title" name="title" 
           [cellTemplate]="titleTemplate"
@@ -138,6 +144,10 @@
         [showDeclaredFieldsOnly]="true"
         [reloadOnColumnChange]="true"
         [dataSource]="paymentsDataSource" [sortable]="true">
+
+        <eg-grid-toolbar-action
+          i18n-label label="Full Details" (onClick)="showStatement($event, true)">
+        </eg-grid-toolbar-action>
 
         <eg-grid-column path="amount" i18n-label label="Amount"></eg-grid-column>
         <eg-grid-column path="id" [index]="true" i18n-label label="Payment ID" [required]="true"></eg-grid-column>

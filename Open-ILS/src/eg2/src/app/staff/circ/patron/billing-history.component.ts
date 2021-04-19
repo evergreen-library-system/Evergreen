@@ -85,8 +85,8 @@ export class BillingHistoryComponent implements OnInit {
                usr: this.patronId,
                xact_start: {between: [this.xactsStart, this.xactsEnd]},
                '-or': [
-                    {'summary.balance_owed': {'<>': 0}},
-                    {'summary.last_payment_ts': {'<>': null}}
+                    {balance_owed: {'<>': 0}},
+                    {last_payment_ts: {'<>': null}}
                ]
             };
 
@@ -116,7 +116,8 @@ export class BillingHistoryComponent implements OnInit {
         }
     }
 
-    showStatement(row: any, forPayment?: boolean) {
+    showStatement(row: any | any[], forPayment?: boolean) {
+        row = [].concat(row)[0];
         const id = forPayment ? row['xact.id'] : row.id;
         this.router.navigate(['/staff/circ/patron',
             this.patronId, 'bills', id, 'statement']);
@@ -151,7 +152,7 @@ export class BillingHistoryComponent implements OnInit {
 
         this.printer.print({
             templateName: 'bills_historical',
-            contextData: {xacts: rows.map(r => r.xact)},
+            contextData: {xacts: rows},
             printContext: 'default'
         });
     }
@@ -180,9 +181,9 @@ export class BillingHistoryComponent implements OnInit {
 
             if (!row) { return; } // Called mid-reload
 
-            info.owed   += Number(row['summary.balance_owed']) * 100;
-            info.billed += Number(row['summary.total_owed']) * 100;
-            info.paid   += Number(row['summary.total_paid']) * 100;
+            info.owed   += Number(row.balance_owed) * 100;
+            info.billed += Number(row.total_owed) * 100;
+            info.paid   += Number(row.total_paid) * 100;
         });
 
         info.owed /= 100;
