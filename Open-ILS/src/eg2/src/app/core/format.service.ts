@@ -107,7 +107,16 @@ export class FormatService {
                     }
 
                 } else {
-                    return value + '';
+
+                    // We have an object with no display selector
+                    // Display its pkey instead to avoid showing [object Object]
+
+                    const pkey = this.idl.classes[params.idlClass].pkey;
+                    if (pkey && typeof value[pkey] === 'function') {
+                        return value[pkey]();
+                    }
+
+                    return '';
                 }
 
             case 'org_unit':
