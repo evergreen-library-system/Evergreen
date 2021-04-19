@@ -81,7 +81,6 @@ export class GridToolbarComponent implements OnInit {
 
     performButtonAction(button: GridToolbarButton) {
         const rows = this.gridContext.getSelectedRows();
-        console.log('BUTTON ACTION', button.routerLink);
         if (button.routerLink) {
             this.router.navigate([button.routerLink]);
         } else {
