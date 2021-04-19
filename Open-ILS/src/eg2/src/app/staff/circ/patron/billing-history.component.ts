@@ -116,9 +116,10 @@ export class BillingHistoryComponent implements OnInit {
         }
     }
 
-    showStatement(row: any) {
+    showStatement(row: any, forPayment?: boolean) {
+        const id = forPayment ? row['xact.id'] : row.id;
         this.router.navigate(['/staff/circ/patron',
-            this.patronId, 'bills', row.xact.id(), 'statement']);
+            this.patronId, 'bills', id, 'statement']);
     }
 
     addBillingForXact(rows: any[]) {

@@ -134,7 +134,7 @@
 
       <eg-grid idlClass="mp" #paymentsGrid
         persistKey="circ.patron.billhistory_payments"
-        (onRowActivate)="showStatement($event)"
+        (onRowActivate)="showStatement($event, true)"
         [showDeclaredFieldsOnly]="true"
         [reloadOnColumnChange]="true"
         [dataSource]="paymentsDataSource" [sortable]="true">

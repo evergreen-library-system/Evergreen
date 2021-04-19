@@ -44,11 +44,13 @@ INSERT INTO config.print_template
     (name, label, owner, active, locale, content_type, template)
 VALUES ('bills_current', 'Bills, Current', 1, TRUE, 'en-US', 'text/html', '');
 
+*/
+
 UPDATE config.print_template SET template = $TEMPLATE$
 [% 
   USE date;
   USE money = format('$%.2f');
-  xacts = template_data.xacts;
+  SET xacts = template_data.xacts;
 %]
 <div>
   <style>td { padding: 1px 3px 1px 3px; }</style>
@@ -71,29 +73,30 @@ UPDATE config.print_template SET template = $TEMPLATE$
         </tr>
         <tr>
           <td>Last Billing:</td>
-          <td>[% xact.summary.last_billing_type %]</td>
+          <td>[% xact.last_billing_type %]</td>
         </tr>
         <tr>
           <td>Total Billed:</td>
-          <td>[% money(xact.summary.total_owed) %]</td>
+          <td>[% money(xact.total_owed) %]</td>
         </tr>
         <tr>
           <td>Last Payment:</td>
           <td>
-            [% xact.summary.last_payment_type %]
-            [% IF xact.summary.last_payment_ts %]
-              at [% date.format(helpers.format_date(
-                xact.summary.last_payment_ts, staff_org_timezone), '%x %r') %]
+            [% xact.last_payment_type %]
+            [% IF xact.last_payment_ts %]
+              at [% date.format(
+                    helpers.format_date(
+                        xact.last_payment_ts, staff_org_timezone), '%x %r') %]
             [% END %]
           </td>
         </tr>
         <tr>
           <td>Total Paid:</td>
-          <td>[% money(xact.summary.total_paid) %]</td>
+          <td>[% money(xact.total_paid) %]</td>
         </tr>
         <tr>
           <td>Balance:</td>
-          <td>[% money(xact.summary.balance_owed) %]</td>
+          <td>[% money(xact.balance_owed) %]</td>
         </tr>
       </table>
     </li>
@@ -105,6 +108,8 @@ UPDATE config.print_template SET template = $TEMPLATE$
   <br/>
 </div>
 $TEMPLATE$ WHERE name = 'bills_current';
+
+/*
 
 
 INSERT INTO config.print_template 
@@ -468,7 +473,6 @@ INSERT INTO config.print_template
     (name, label, owner, active, locale, content_type, template)
 VALUES ('holds_for_patron', 'Holds For Patron', 1, TRUE, 'en-US', 'text/html', '');
 
-*/
 
 UPDATE config.print_template SET template = $TEMPLATE$
 [% 
@@ -494,6 +498,8 @@ UPDATE config.print_template SET template = $TEMPLATE$
 </div>
 
 $TEMPLATE$ WHERE name = 'holds_for_patron';
+
+*/
 
 COMMIT;
 

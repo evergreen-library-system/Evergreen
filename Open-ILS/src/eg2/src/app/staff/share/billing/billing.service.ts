@@ -24,6 +24,11 @@ export interface CreditCardPaymentParams {
     note?: string;
 }
 
+interface PaymentResponse {
+    payments: number[];
+    last_xact_id: string;
+}
+
 @Injectable()
 export class BillingService {
     billingTypes: IdlObject[];
@@ -73,7 +78,7 @@ export class BillingService {
         paymentNote?: string,
         checkNumber?: string,
         creditCardParams?: CreditCardPaymentParams,
-        convertChangeToCredit?: boolean): Promise<number[]> {
+        convertChangeToCredit?: boolean): Promise<PaymentResponse> {
 
        return this.net.request(
             'open-ils.circ',
@@ -97,8 +102,7 @@ export class BillingService {
             }
 
             // TODO work log
-
-            return response.payments;
+            return response;
         });
     }
 }

@@ -101,13 +101,16 @@ export class BillsComponent implements OnInit, AfterViewInit {
             const query: any = {
                usr: this.patronId,
                xact_finish: null,
-               'summary.balance_owed' : {'<>' : 0}
+               balance_owed: {'<>' : 0}
             };
 
             return this.flatData.getRows(
                 this.billGrid.context, query, pager, sort)
             .pipe(tap(row => {
                 row.paymentPending = 0;
+                row.billingLocation =
+                    row['grocery.billing_location.shortname'] ||
+                    row['circulation.circ_lib.shortname']
             }));
         };
 
@@ -172,9 +175,9 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
             if (!row) { return; } // Called mid-reload
 
-            info.owed   += Number(row['summary.balance_owed']) * 100;
-            info.billed += Number(row['summary.total_owed']) * 100;
-            info.paid   += Number(row['summary.total_paid']) * 100;
+            info.owed   += Number(row.balance_owed) * 100;
+            info.billed += Number(row.total_owed) * 100;
+            info.paid   += Number(row.total_paid) * 100;
         });
 
         info.owed /= 100;
@@ -215,7 +218,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     refundsAvailable(): number {
         let amount = 0;
         this.gridDataSource.data.forEach(row => {
-            const balance = row['summary.balance_owed'];
+            const balance = row.balance_owed;
             if (balance < 0) { amount += balance * 100; }
 
         });
@@ -266,7 +269,10 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 this.convertChangeToCredit
             );
         })
-        .then(paymentIds => this.handlePayReceipt(payments, paymentIds))
+        .then(resp => {
+            this.patron().last_xact_id(resp.last_xact_id);
+            return this.handlePayReceipt(payments, resp.payments);
+        })
 
         // refresh affected xact IDs
         .then(_ => this.billGrid.reload())
@@ -355,7 +361,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
             if (done) { return; }
 
             const row = this.billGrid.context.getRowByIndex(index);
-            const owed = Number(row['summary.balance_owed']);
+            const owed = Number(row.balance_owed);
 
             if (amount > owed) {
                 // Pending payment amount exceeds balance of this
@@ -411,7 +417,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
         payments.forEach(payment => {
 
             const entry =
-                this.gridDataSource.data.filter(e => e.xact.id() === payment[0])[0];
+                this.gridDataSource.data.filter(e => e.id === payment[0])[0];
 
             context.payments.push({
                 amount: payment[1],
@@ -435,7 +441,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     selectRefunds() {
         this.billGrid.context.rowSelector.clear();
         this.gridDataSource.data.forEach(row => {
-            if (row['summary.balance_owed'] < 0) {
+            if (row.balance_owed < 0) {
                 this.billGrid.context.toggleSelectOneRow(row.id);
             }
         });

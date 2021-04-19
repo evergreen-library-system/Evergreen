@@ -215,8 +215,14 @@
   <eg-grid-column path="summary.xact_type"
     label="Type" i18n-label></eg-grid-column>
 
-  <eg-grid-column path="summary.last_billing_type"
-    label="Last Billing Type" i18n-label></eg-grid-column>
+  <eg-grid-column name="last_billing_type" path="summary.last_billing_type" 
+    [required]="true" label="Last Billing Type" i18n-label></eg-grid-column>
+
+  <eg-grid-column name="last_payment_type" path="summary.last_payment_type" 
+    [required]="true" label="Last Payment Type" i18n-label></eg-grid-column>
+
+  <eg-grid-column name="last_payment_ts" path="summary.last_payment_ts" 
+    [required]="true" label="Last Payment Time" i18n-label></eg-grid-column>
 
   <eg-grid-column name="billingLocation"
     label="Billing Location" i18n-label></eg-grid-column>
@@ -249,20 +255,28 @@
     path="circulation.target_copy.call_number.record.id" 
     [required]="true" [hidden]="true"></eg-grid-column>
 
-  <eg-grid-column path="summary.balance_owed" datatype="money"
+  <eg-grid-column name="balance_owed" path="summary.balance_owed" datatype="money"
     [required]="true" label="Balance Owed" i18n-label></eg-grid-column>
 
-  <eg-grid-column path="summary.total_owed" datatype="money"
-    label="Total Billed" i18n-label></eg-grid-column>
+  <eg-grid-column name="total_owed" path="summary.total_owed" 
+    datatype="money" [required]="true" label="Total Billed" i18n-label></eg-grid-column>
 
-  <eg-grid-column path="summary.total_paid" datatype="money"
-    label="Total Paid" i18n-label></eg-grid-column>
+  <eg-grid-column name="total_paid" path="summary.total_paid" datatype="money" 
+    [required]="true" label="Total Paid" i18n-label></eg-grid-column>
 
   <eg-grid-column name="paymentPending" datatype="money"
     label="Payment Pending" i18n-label></eg-grid-column>
 
   <eg-grid-column [hidden]="true" label="Author" i18n-label
     path="circulation.target_copy.call_number.record.simple_record.author">
+  </eg-grid-column>
+
+  <eg-grid-column [hidden]="true" label="Grocery Billing Location" 
+    [required]="true" i18n-label path="grocery.billing_location.shortname">
+  </eg-grid-column>
+
+  <eg-grid-column [hidden]="true" label="Circulation Billing Location" 
+    [required]="true" i18n-label path="circulation.circ_lib.shortname">
   </eg-grid-column>
 
   <eg-grid-column path="usr" [hidden]="true"></eg-grid-column>
