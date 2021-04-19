@@ -78,7 +78,7 @@ export class BillingService {
         paymentNote?: string,
         checkNumber?: string,
         creditCardParams?: CreditCardPaymentParams,
-        convertChangeToCredit?: boolean): Promise<PaymentResponse> {
+        addPatronCredit?: number): Promise<PaymentResponse> {
 
        return this.net.request(
             'open-ils.circ',
@@ -89,7 +89,7 @@ export class BillingService {
                 payment_type: paymentType,
                 check_number: checkNumber,
                 payments: payments,
-                patron_credit: convertChangeToCredit,
+                patron_credit: addPatronCredit,
                 cc_args: creditCardParams
             }, patronLastXactId).toPromise()
 

@@ -266,13 +266,15 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 this.paymentNote,
                 this.checkNumber,
                 this.ccPaymentParams,
-                this.convertChangeToCredit
+                this.convertChangeToCredit ? this.pendingChange() : null
             );
         })
         .then(resp => {
             this.patron().last_xact_id(resp.last_xact_id);
             return this.handlePayReceipt(payments, resp.payments);
         })
+
+        .then(_ => this.context.refreshPatron())
 
         // refresh affected xact IDs
         .then(_ => this.billGrid.reload())
