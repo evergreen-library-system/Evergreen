@@ -9,6 +9,38 @@
   i18n-dialogBoby  dialogBody="Unsaved changes will be lost.  Continue navigation?">
 </eg-confirm-dialog>
 
+<eg-confirm-dialog #purgeConfirm1
+  i18n-dialogTitle dialogTitle="Completely Purge Patron Account?"
+  i18n-dialogBody dialogBody="Completely OBLITERATE this patron 
+    account, including bills, payments, bookbags, etc? This is IRREVERSIBLE.">
+</eg-confirm-dialog>
+
+<eg-confirm-dialog #purgeConfirm2
+  i18n-dialogTitle dialogTitle="Completely Purge Patron Account?"
+  i18n-dialogBody dialogBody="Last chance, are you sure you want to 
+    completely delete this account?">
+</eg-confirm-dialog>
+
+<eg-confirm-dialog #purgeConfirmOverride
+  i18n-dialogTitle dialogTitle="Completely Purge Patron Account?"
+  i18n-dialogBody dialogBody="The account has open transactions 
+    (circulations and/or unpaid bills). Purge anyway?">
+</eg-confirm-dialog>
+
+<eg-alert-dialog #purgeBadBarcode
+  i18n-dialogTitle dialogTitle="Bad Barcode"
+  i18n-dialogBody dialogBody="Could not retrieve a destination account 
+    with the barcode provided. Aborting the purge...">
+</eg-alert-dialog>
+
+<eg-prompt-dialog #purgeStaffDialog
+  i18n-dialogTitle dialogTitle="Completely Purge Patron Account?"
+  i18n-dialogBody dialogBody="The account you are attempting to delete has 
+    STAFF_LOGIN privileges. Please enter the barcode for a destination 
+    account to receive miscellaneous staff artifacts (reports, etc.) from 
+    the account to be deleted.">
+</eg-prompt-dialog>
+
 <ng-container *ngIf="context.summary">
   <eg-staff-banner i18n-bannerText bannerText="Patron: 
     {{context.summary.patron.family_name()}}, 

@@ -1,8 +1,12 @@
 import {Component, ViewChild, OnInit, AfterViewInit, HostListener} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {Observable, throwError, empty} from 'rxjs';
+import {concatMap, tap} from 'rxjs/operators';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
+import {PcrudService} from '@eg/core/pcrud.service';
+import {EventService} from '@eg/core/event.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService, BillGridEntry} from './patron.service';
@@ -11,6 +15,8 @@ import {PatronSearch, PatronSearchComponent
 import {EditToolbarComponent} from './edit-toolbar.component';
 import {EditComponent} from './edit.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
+import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 
 const MAIN_TABS =
     ['checkout', 'items_out', 'holds', 'bills', 'messages', 'edit', 'search'];
@@ -39,11 +45,19 @@ export class PatronComponent implements OnInit, AfterViewInit {
     @ViewChild('pendingChangesDialog')
         private pendingChangesDialog: ConfirmDialogComponent;
 
+    @ViewChild('purgeConfirm1') private purgeConfirm1: ConfirmDialogComponent;
+    @ViewChild('purgeConfirm2') private purgeConfirm2: ConfirmDialogComponent;
+    @ViewChild('purgeConfirmOverride') private purgeConfirmOverride: ConfirmDialogComponent;
+    @ViewChild('purgeStaffDialog') private purgeStaffDialog: PromptDialogComponent;
+    @ViewChild('purgeBadBarcode') private purgeBadBarcode: AlertDialogComponent;
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,
         private net: NetService,
         private auth: AuthService,
+        private pcrud: PcrudService,
+        private evt: EventService,
         private store: ServerStoreService,
         public patronService: PatronService,
         public context: PatronContextService
@@ -228,8 +242,75 @@ export class PatronComponent implements OnInit, AfterViewInit {
     }
 
     purgeAccount() {
-        // show scary warning, etc.
 
+        this.purgeConfirm1.open().toPromise()
+        .then(confirmed => {
+            if (confirmed) {
+                return this.purgeConfirm2.open().toPromise();
+            }
+        })
+        .then(confirmed => {
+            if (confirmed) {
+                return this.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.user.has_work_perm_at',
+                    this.auth.token(), 'STAFF_LOGIN', this.patronId
+                ).toPromise();
+            }
+        })
+        .then(permOrgs => {
+            if (permOrgs) {
+                if (permOrgs.length === 0) { // non-staff
+                    return this.doThePurge();
+                } else {
+                    return this.handleStaffPurge();
+                }
+            }
+        });
+    }
+
+    handleStaffPurge(): Promise<any> {
+
+        return this.purgeStaffDialog.open().toPromise()
+        .then(barcode => {
+            if (barcode) {
+                return this.pcrud.search('ac', {barcode: barcode}).toPromise();
+            }
+        })
+        .then(card => {
+            if (card) {
+                return this.doThePurge(card.usr());
+            } else {
+                return this.purgeBadBarcode.open();
+            }
+        });
+    }
+
+    doThePurge(destUserId?: number, override?: boolean): Promise<any> {
+        let method = 'open-ils.actor.user.delete';
+        if (override) { method += '.override'; }
+
+        return this.net.request('open-ils.actor', method,
+            this.auth.token(), this.patronId, destUserId).toPromise()
+        .then(resp => {
+
+            const evt = this.evt.parse(resp);
+            if (evt) {
+                if (evt.textcode === 'ACTOR_USER_DELETE_OPEN_XACTS') {
+                    return this.purgeConfirmOverride.open().toPromise()
+                    .then(confirmed => {
+                        if (confirmed) {
+                            return this.doThePurge(destUserId, true);
+                        }
+                    });
+                } else {
+                    alert(evt);
+                }
+            } else {
+                this.context.summary = null;
+                this.router.navigate(['/staff/circ/patron/search']);
+            }
+        });
     }
 
     counts(part: string, field: string): number {
