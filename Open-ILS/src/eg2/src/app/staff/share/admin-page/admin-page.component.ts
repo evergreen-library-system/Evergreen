@@ -226,11 +226,6 @@ export class AdminPageComponent implements OnInit {
         if (!this.dataSource) {
             this.initDataSource();
         }
-
-        // TODO: pass the row activate handler via the grid markup
-        this.grid.onRowActivate.subscribe(
-            (idlThing: IdlObject) => this.showEditDialog(idlThing)
-        );
     }
 
     checkCreatePerms() {

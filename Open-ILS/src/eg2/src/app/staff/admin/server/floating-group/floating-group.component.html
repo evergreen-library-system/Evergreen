@@ -9,7 +9,8 @@
 <eg-string #deleteSuccessString i18n-text 
   text="Delete of Floating Group succeeded"></eg-string>
 
-<eg-grid #grid idlClass="cfg" [dataSource]="gridDataSource" [sortable]="true">
+<eg-grid #grid idlClass="cfg" [dataSource]="gridDataSource" [sortable]="true"
+  (onRowActivate)="showEditDialog($event)">
   <eg-grid-toolbar-button
     label="New Floating Group" i18n-label (onClick)="createNew()">
   </eg-grid-toolbar-button>
