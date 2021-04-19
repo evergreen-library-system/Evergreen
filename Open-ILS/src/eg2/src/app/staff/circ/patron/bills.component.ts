@@ -11,7 +11,7 @@ import {PcrudService, PcrudContext} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronContextService, BillGridEntry} from './patron.service';
+import {PatronContextService} from './patron.service';
 import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
@@ -26,6 +26,7 @@ import {BillingService, CreditCardPaymentParams} from '@eg/staff/share/billing/b
 import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.component';
 import {AudioService} from '@eg/share/util/audio.service';
 import {ToastService} from '@eg/share/toast/toast.service';
+import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';
 
 @Component({
   templateUrl: 'bills.component.html',
@@ -42,7 +43,6 @@ export class BillsComponent implements OnInit, AfterViewInit {
     paymentAmount: number;
     annotatePayment = false;
     paymentNote: string;
-    entries: BillGridEntry[];
     convertChangeToCredit = false;
     receiptOnPayment = false;
     applyingPayment = false;
@@ -83,6 +83,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
         private serverStore: ServerStoreService,
         private circ: CircService,
         private billing: BillingService,
+        private flatData: GridFlatDataService,
         public patronService: PatronService,
         public context: PatronContextService
     ) {}
@@ -91,23 +92,29 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
         this.cellTextGenerator = {
             title: row => row.title,
-            copy_barcode: row => row.copy ? row.copy.barcode() : '',
-            call_number: row => row.volume ? row.volume.label() : ''
+            copy_barcode: row => row.copy_barcode,
+            call_number: row => row.call_number_label
         };
 
-        // The grid never fetches data directly, it only serves what
-        // we have manually retrieved.
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
-            if (!this.entries) { return empty(); }
 
-            const page =
-                this.entries.slice(pager.offset, pager.offset + pager.limit)
-                .filter(entry => entry !== undefined);
+            const query: any = {
+               usr: this.patronId,
+               xact_finish: null,
+               'summary.balance_owed' : {'<>' : 0}
+            };
 
-            return from(page);
+            return this.flatData.getRows(
+                this.billGrid.context, query, pager, sort)
+            .pipe(tap(row => {
+                row.paymentPending = 0;
+            }));
         };
 
-        this.loadSettings().then(_ => this.load());
+        this.pcrud.retrieve('mowbus', this.patronId).toPromise()
+        // Summary will be null for users with no billing history.
+        .then(summary => this.summary = summary || this.idl.create('mowbus'))
+        .then(_ => this.loadSettings());
     }
 
     loadSettings(): Promise<any> {
@@ -151,89 +158,6 @@ export class BillsComponent implements OnInit, AfterViewInit {
         });
     }
 
-    // In refresh mode, only fetch the requested xacts, with updated user
-    // summary, and slot them back into the entries array.
-    load(refreshXacts?: number[]): Promise<any> {
-
-        const entriesFetched: number[] = [];
-        this.gridDataSource.requestingData = true;
-
-        if (!refreshXacts) { this.entries = []; }
-
-        // Could nullify summary, but that causes a minor screen
-        // flicker as the new data loads.
-        let first = true;
-
-        return this.net.request(
-            'open-ils.actor',
-            'open-ils.actor.user.transactions.for_billing',
-            this.auth.token(), this.patronId,
-            {have_balance: true, xact_ids: refreshXacts}
-
-        ).pipe(tap(resp => {
-
-            if (first) { // 1st response is summary
-                this.summary = resp;
-                first = false;
-                return;
-            }
-
-            if (!refreshXacts) {
-                this.entries.push(this.context.formatXactForDisplay(resp));
-                return;
-            }
-
-            entriesFetched.push(resp.id());
-
-            let idx;
-            for (idx = 0; idx < this.entries.length; idx++) {
-                const entry = this.entries[idx];
-                if (entry.xact.id() === resp.id()) { break; }
-            }
-
-            if (idx < this.entries.length) {
-                // Update the existing entry
-                this.entries[idx] = this.context.formatXactForDisplay(resp);
-            } else {
-                // Adding a new transaction (e.g. from new billing)
-                this.entries.push(this.context.formatXactForDisplay(resp));
-            }
-
-        })).toPromise()
-
-        .then(_ => {
-
-            if (!this.summary) {
-                // If the patron has no billing history, there will be
-                // no money summary.
-                this.summary = this.idl.create('mus');
-            }
-
-            if (!refreshXacts) { return; }
-
-            // Refreshing means some transactions may be removed from the list
-            // Remove them from the local entries array.
-            refreshXacts.forEach(xactId => {
-                if (entriesFetched.includes(xactId)) { return; }
-
-                let idx;
-                for (idx = 0; idx < this.entries.length; idx++) {
-                    const entry = this.entries[idx];
-                    if (entry.xact.id() === xactId) { break; }
-                }
-
-                this.billGrid.context.rowSelector.deselect(xactId + '');
-                this.entries.splice(idx, 1);
-            });
-        })
-
-        .then(_ => {
-            this.gridDataSource.requestingData = false;
-            if (refreshXacts) { this.context.refreshPatron(); }
-            this.billGrid.reload();
-        });
-    }
-
     patron(): IdlObject {
         return this.context.summary ? this.context.summary.patron : null;
     }
@@ -241,13 +165,16 @@ export class BillsComponent implements OnInit, AfterViewInit {
     selectedPaymentInfo(): {owed: number, billed: number, paid: number} {
         const info = {owed : 0, billed : 0, paid : 0};
 
+        if (!this.billGrid) { return info; } // page loading
+
         this.billGrid.context.rowSelector.selected().forEach(id => {
             const row = this.billGrid.context.getRowByIndex(id);
-            const sum = row.xact.summary();
 
-            info.owed   += Number(sum.balance_owed()) * 100;
-            info.billed += Number(sum.total_owed()) * 100;
-            info.paid   += Number(sum.total_paid()) * 100;
+            if (!row) { return; } // Called mid-reload
+
+            info.owed   += Number(row['summary.balance_owed']) * 100;
+            info.billed += Number(row['summary.total_owed']) * 100;
+            info.paid   += Number(row['summary.total_paid']) * 100;
         });
 
         info.owed /= 100;
@@ -256,6 +183,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
         return info;
     }
+
 
     pendingPaymentInfo(): {payment: number, change: number} {
 
@@ -287,7 +215,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     refundsAvailable(): number {
         let amount = 0;
         this.gridDataSource.data.forEach(row => {
-            const balance = row.xact.summary().balance_owed();
+            const balance = row['summary.balance_owed'];
             if (balance < 0) { amount += balance * 100; }
 
         });
@@ -341,7 +269,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
         .then(paymentIds => this.handlePayReceipt(payments, paymentIds))
 
         // refresh affected xact IDs
-        .then(_ => this.load(payments.map(p => p[0])))
+        .then(_ => this.billGrid.reload())
 
         .then(_ => {
             this.paymentAmount = null;
@@ -357,9 +285,9 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
     compilePayments(): Array<Array<number>> { // [ [xactId, payAmount], ... ]
         const payments = [];
-        this.entries.forEach(row => {
+        this.gridDataSource.data.forEach(row => {
             if (row.paymentPending) {
-                payments.push([row.xact.id(), row.paymentPending]);
+                payments.push([row.id, row.paymentPending]);
             }
         });
         return payments;
@@ -418,7 +346,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     updatePendingColumn() {
 
         // Reset...
-        this.entries.forEach(row => row.paymentPending = 0);
+        this.gridDataSource.data.forEach(row => row.paymentPending = 0);
 
         let amount = this.pendingPayment();
         let done = false;
@@ -427,7 +355,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
             if (done) { return; }
 
             const row = this.billGrid.context.getRowByIndex(index);
-            const owed = Number(row.xact.summary().balance_owed());
+            const owed = Number(row['summary.balance_owed']);
 
             if (amount > owed) {
                 // Pending payment amount exceeds balance of this
@@ -448,12 +376,12 @@ export class BillsComponent implements OnInit, AfterViewInit {
         });
     }
 
-    printBills(rows: BillGridEntry[]) {
+    printBills(rows: any[]) {
         if (rows.length === 0) { return; }
 
         this.printer.print({
             templateName: 'bills_current',
-            contextData: {xacts: rows.map(r => r.xact)},
+            contextData: {xacts: rows},
             printContext: 'default'
         });
     }
@@ -481,14 +409,15 @@ export class BillsComponent implements OnInit, AfterViewInit {
         };
 
         payments.forEach(payment => {
+
             const entry =
-                this.entries.filter(e => e.xact.id() === payment[0])[0];
+                this.gridDataSource.data.filter(e => e.xact.id() === payment[0])[0];
 
             context.payments.push({
                 amount: payment[1],
-                xact: entry.xact,
+                xact: entry,
                 title: entry.title,
-                copy_barcode: entry.copy ? entry.copy.barcode() : ''
+                copy_barcode: entry.copy_barcode
             });
         });
 
@@ -505,9 +434,9 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
     selectRefunds() {
         this.billGrid.context.rowSelector.clear();
-        this.entries.forEach(entry => {
-            if (entry.xact.summary().balance_owed() < 0) {
-                this.billGrid.context.toggleSelectOneRow(entry.xact.id());
+        this.gridDataSource.data.forEach(row => {
+            if (row['summary.balance_owed'] < 0) {
+                this.billGrid.context.toggleSelectOneRow(row.id);
             }
         });
     }
@@ -516,14 +445,14 @@ export class BillsComponent implements OnInit, AfterViewInit {
         this.billingDialog.newXact = true;
         this.billingDialog.open().subscribe(data => {
             if (data) {
-                this.load([data.xactId]);
+                this.billGrid.reload();
             }
         });
     }
 
-    addBillingForXact(rows: BillGridEntry[]) {
+    addBillingForXact(rows: any[]) {
         if (rows.length === 0) { return; }
-        const xactIds = rows.map(r => r.xact.id());
+        const xactIds = rows.map(r => r.id);
 
         this.billingDialog.newXact = false;
         const xactsChanged = [];
@@ -540,15 +469,15 @@ export class BillsComponent implements OnInit, AfterViewInit {
         }))
         .subscribe(null, null, () => {
             if (xactsChanged.length > 0) {
-                this.load(xactsChanged);
+                this.billGrid.reload();
             }
         });
     }
 
-    voidBillings(rows: BillGridEntry[]) {
+    voidBillings(rows: any[]) {
         if (rows.length === 0) { return; }
 
-        const xactIds = rows.map(r => r.xact.id());
+        const xactIds = rows.map(r => r.id);
         const billIds = [];
         let cents = 0;
 
@@ -584,13 +513,13 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
             this.sessionVoided = (this.sessionVoided * 100 + cents) / 100;
             this.voidAmount = 0;
-            this.load(xactIds);
+            this.billGrid.reload();
         });
     }
 
-    adjustToZero(rows: BillGridEntry[]) {
+    adjustToZero(rows: any[]) {
         if (rows.length === 0) { return; }
-        const xactIds = rows.map(r => r.xact.id());
+        const xactIds = rows.map(r => r.id);
 
         this.audio.play('warning.circ.adjust_to_zero_confirmation');
 
@@ -602,7 +531,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 'open-ils.circ.money.billable_xact.adjust_to_zero',
                 this.auth.token(), xactIds
             ).subscribe(resp => {
-                if (!this.reportError(resp)) { this.load(xactIds); }
+                if (!this.reportError(resp)) { this.billGrid.reload(); }
             });
         });
     }
@@ -622,9 +551,9 @@ export class BillsComponent implements OnInit, AfterViewInit {
     // This is functionally equivalent to selecting a neg. transaction
     // then clicking Apply Payment -- this just adds a speed bump (ditto
     // the XUL client).
-    refund(rows: BillGridEntry[]) {
+    refund(rows: any[]) {
         if (rows.length === 0) { return; }
-        const xactIds = rows.map(r => r.xact.id());
+        const xactIds = rows.map(r => r.id);
 
         this.refundDialog.open().subscribe(confirmed => {
             if (!confirmed) { return; }
@@ -633,9 +562,9 @@ export class BillsComponent implements OnInit, AfterViewInit {
         });
     }
 
-    showStatement(row: BillGridEntry) {
+    showStatement(row: any) {
         this.router.navigate(['/staff/circ/patron',
-            this.patronId, 'bills', row.xact.id(), 'statement']);
+            this.patronId, 'bills', row.id, 'statement']);
     }
 }
 

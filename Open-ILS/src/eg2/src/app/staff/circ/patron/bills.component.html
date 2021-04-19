@@ -154,28 +154,23 @@
 <!-- BILLS GRID -->
 
 <ng-template #titleTemplate let-r="row">
-  <ng-container *ngIf="r.record">
-    <a routerLink="/staff/catalog/record/{{r.record.id()}}">{{r.title}}</a>
+  <ng-container *ngIf="r.record_id">
+    <a routerLink="/staff/catalog/record/{{r.record_id}}">{{r.title}}</a>
   </ng-container>
   <ng-container *ngIf="!r.record">{{r.title}}</ng-container>
 </ng-template>
 
 <ng-template #barcodeTemplate let-r="row">
-  <ng-container *ngIf="r.copy">
-    <a href="/eg/staff/cat/item/{{r.copy.id()}}">{{r.copy.barcode()}}</a>
+  <ng-container *ngIf="r.copy_id">
+    <a href="/eg/staff/cat/item/{{r.copy_id}}">{{r.copy_barcode}}</a>
   </ng-container>
 </ng-template>
 
-<ng-template #callNumberTemplate let-r="row">
-  <ng-container *ngIf="r.volume">
-    {{r.volume.prefix().label()}} {{r.volume.label()}} {{r.volume.suffix().label()}}
-  </ng-container>
-  <ng-container *ngIf="!r.volume" i18n>UNCATALOGED</ng-container>
-</ng-template>
-
-<eg-grid #billGrid [dataSource]="gridDataSource"
+<eg-grid #billGrid idlClass="mbt" [dataSource]="gridDataSource"
   persistKey="circ.patron.bills" [sortable]="true" 
-  [useLocalSort]="true" (onRowActivate)="showStatement($event)"
+  (onRowActivate)="showStatement($event)"
+  [reloadOnColumnChange]="true"
+  [showDeclaredFieldsOnly]="true"
   [cellTextGenerator]="cellTextGenerator">
 
   <eg-grid-toolbar-button i18n-label label="Add Billing"
@@ -211,47 +206,65 @@
 
   <!-- COLUMNS -->
 
-  <eg-grid-column path="xact.id" [index]="true" label="Bill #" i18n-label>
-  </eg-grid-column>
+  <eg-grid-column path="id" [index]="true" [required]="true" 
+    label="Bill #" i18n-label> </eg-grid-column>
 
-  <eg-grid-column path="xact.xact_start" datatype="timestamp" [datePlusTime]="true"
+  <eg-grid-column path="xact_start" datatype="timestamp" [datePlusTime]="true"
     label="Start" i18n-label></eg-grid-column>
 
-  <eg-grid-column path="xact.summary.xact_type"
+  <eg-grid-column path="summary.xact_type"
     label="Type" i18n-label></eg-grid-column>
 
-  <eg-grid-column path="xact.summary.last_billing_type"
+  <eg-grid-column path="summary.last_billing_type"
     label="Last Billing Type" i18n-label></eg-grid-column>
 
-  <eg-grid-column path="billingLocation"
+  <eg-grid-column name="billingLocation"
     label="Billing Location" i18n-label></eg-grid-column>
 
-  <eg-grid-column path="call_number" label="Call Number" i18n-label
-    [cellTemplate]="callNumberTemplate"></eg-grid-column>
+  <eg-grid-column name="call_number_label"
+    path="circulation.target_copy.call_number.label" 
+    i18n-label label="Call Number" [hidden]="true"></eg-grid-column>
+
+  <eg-grid-column path="circulation.target_copy.call_number.prefix.label" 
+    i18n-label label="CN Prefix" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="circulation.target_copy.call_number.suffix.label" 
+    i18n-label label="CN Suffix" [hidden]="true"></eg-grid-column>
 
   <eg-grid-column name="copy_barcode" label="Item Barcode" i18n-label
-    [cellTemplate]="barcodeTemplate"></eg-grid-column>
+    path="circulation.target_copy.barcode" [cellTemplate]="barcodeTemplate">
+  </eg-grid-column>
 
-  <eg-grid-column path="copy.location.name" label="Shelving Location"
-    i18n-label></eg-grid-column>
+  <eg-grid-column name="copy_id" path="circulation.target_copy.id" 
+    [required]="true" [hidden]="true"></eg-grid-column>
 
-  <eg-grid-column name="title" label="Title" i18n-label
-    [cellTemplate]="titleTemplate"></eg-grid-column>
+  <eg-grid-column path="circulation.target_copy.location.name" 
+    label="Shelving Location" i18n-label></eg-grid-column>
 
-  <eg-grid-column path="xact.summary.balance_owed" datatype="money"
-    label="Balance Owed" i18n-label></eg-grid-column>
+  <eg-grid-column i18n-label label="Title" name="title" 
+    [cellTemplate]="titleTemplate"
+    path="circulation.target_copy.call_number.record.simple_record.title">
+  </eg-grid-column>
 
-  <eg-grid-column path="xact.summary.total_owed" datatype="money"
+  <eg-grid-column name="record_id" 
+    path="circulation.target_copy.call_number.record.id" 
+    [required]="true" [hidden]="true"></eg-grid-column>
+
+  <eg-grid-column path="summary.balance_owed" datatype="money"
+    [required]="true" label="Balance Owed" i18n-label></eg-grid-column>
+
+  <eg-grid-column path="summary.total_owed" datatype="money"
     label="Total Billed" i18n-label></eg-grid-column>
 
-  <eg-grid-column path="xact.summary.total_paid" datatype="money"
+  <eg-grid-column path="summary.total_paid" datatype="money"
     label="Total Paid" i18n-label></eg-grid-column>
 
   <eg-grid-column name="paymentPending" datatype="money"
     label="Payment Pending" i18n-label></eg-grid-column>
 
-  <eg-grid-column name="author" [hidden]="true"
-    label="Author" i18n-label></eg-grid-column>
+  <eg-grid-column [hidden]="true" label="Author" i18n-label
+    path="circulation.target_copy.call_number.record.simple_record.author">
+  </eg-grid-column>
+
   <eg-grid-column path="usr" [hidden]="true"></eg-grid-column>
   <eg-grid-column path="unrecovered" [hidden]="true"></eg-grid-column>
 

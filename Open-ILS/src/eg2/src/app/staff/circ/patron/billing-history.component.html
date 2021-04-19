@@ -16,13 +16,6 @@
   </ng-container>
 </ng-template>
 
-<ng-template #callNumberTemplate let-r="row">
-  <ng-container *ngIf="r.volume">
-    {{r.volume.prefix().label()}} {{r.volume.label()}} {{r.volume.suffix().label()}}
-  </ng-container>
-  <ng-container *ngIf="!r.volume" i18n>UNCATALOGED</ng-container>
-</ng-template>
-
 
 <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="tab">
   <li ngbNavItem="transactions">
@@ -55,6 +48,7 @@
       <eg-grid idlClass="mbt" #xactsGrid
         persistKey="circ.patron.billhistory_xacts"
         (onRowActivate)="showStatement($event)"
+        [showDeclaredFieldsOnly]="true"
         [reloadOnColumnChange]="true"
         [dataSource]="xactsDataSource" [sortable]="true">
 
@@ -141,6 +135,7 @@
       <eg-grid idlClass="mp" #paymentsGrid
         persistKey="circ.patron.billhistory_payments"
         (onRowActivate)="showStatement($event)"
+        [showDeclaredFieldsOnly]="true"
         [reloadOnColumnChange]="true"
         [dataSource]="paymentsDataSource" [sortable]="true">
 
