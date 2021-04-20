@@ -7,6 +7,7 @@
 <eg-string #itemNeverCircedStr i18n-text 
   text="Item CONC40000598 has never circulated."></eg-string>
 <eg-backdate-dialog #backdateDialog></eg-backdate-dialog>
+<eg-cancel-transit-dialog #cancelTransitDialog></eg-cancel-transit-dialog>
 
 <div class="row" *ngIf="hasAlerts()">
   <div class="col-lg-12 alert alert-danger p-1">
@@ -83,6 +84,12 @@
   <ng-container *ngIf="!r.record">{{r.title}}</ng-container>
 </ng-template>
 
+<ng-template #barcodeTemplate let-r="row">
+  <ng-container *ngIf="r.copy">
+    <a href="/eg/staff/cat/item/{{r.copy.id()}}">{{r.copy.barcode()}}</a>
+  </ng-container>
+</ng-template>
+
 <div class="row">
   <div class="col-lg-12">
     <eg-grid #grid [dataSource]="gridDataSource" [sortable]="true"
@@ -94,7 +101,11 @@
         (onClick)="markDamaged($event)"></eg-grid-toolbar-action>
 
       <eg-grid-toolbar-action
-        i18n-group group="Edit" i18n-label label="Manage Item Alerts"
+        group="Mark" i18n-group i18n-label label="Mark Missing Pieces"
+        (onClick)="markMissingPieces($event)"></eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Manage" i18n-label label="Manage Item Alerts"
         [disabled]="grid.context.rowSelector.selected().length !== 1"
         (onClick)="manageItemAlerts($event)">
       </eg-grid-toolbar-action>
@@ -110,8 +121,13 @@
       </eg-grid-toolbar-action>
 
       <eg-grid-toolbar-action
-        i18n-group group="Edit" i18n-label label="Backdate Post-Checkin"
+        i18n-group group="Circulation" i18n-label label="Backdate Post-Checkin"
         (onClick)="backdatePostCheckin($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Circulation" i18n-label label="Cancel Transits"
+        (onClick)="cancelTransits($event)">
       </eg-grid-toolbar-action>
 
       <eg-grid-toolbar-action
@@ -129,8 +145,8 @@
       <eg-grid-column path="mbts.balance_owed" label="Balance Owed" 
         datatype="money" i18n-label></eg-grid-column>
 
-      <eg-grid-column path="copy.barcode" label="Barcode" i18n-label>
-      </eg-grid-column>
+      <eg-grid-column path="copy.barcode" label="Barcode" 
+        i18n-label [cellTemplate]="barcodeTemplate"></eg-grid-column>
 
       <eg-grid-column path="circ.id" label="Bill #" i18n-label>
       </eg-grid-column>

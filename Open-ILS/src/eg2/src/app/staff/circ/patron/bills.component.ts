@@ -110,7 +110,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 row.paymentPending = 0;
                 row.billingLocation =
                     row['grocery.billing_location.shortname'] ||
-                    row['circulation.circ_lib.shortname']
+                    row['circulation.circ_lib.shortname'];
             }));
         };
 

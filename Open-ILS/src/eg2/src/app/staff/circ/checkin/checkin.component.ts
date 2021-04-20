@@ -1,4 +1,5 @@
 import {Component, ViewChild, OnInit, AfterViewInit, HostListener} from '@angular/core';
+import {Location} from '@angular/common';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {from} from 'rxjs';
 import {concatMap} from 'rxjs/operators';
@@ -25,6 +26,9 @@ import {BucketDialogComponent
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {BackdateDialogComponent} from '@eg/staff/share/circ/backdate-dialog.component';
+import {CancelTransitDialogComponent
+    } from '@eg/staff/share/circ/cancel-transit-dialog.component';
+
 
 interface CheckinGridEntry extends CheckinResult {
     // May need to extend...
@@ -78,10 +82,12 @@ export class CheckinComponent implements OnInit, AfterViewInit {
     @ViewChild('bucketDialog') private bucketDialog: BucketDialogComponent;
     @ViewChild('itemNeverCircedStr') private itemNeverCircedStr: StringComponent;
     @ViewChild('backdateDialog') private backdateDialog: BackdateDialogComponent;
+    @ViewChild('cancelTransitDialog') private cancelTransitDialog: CancelTransitDialogComponent;
 
     constructor(
         private router: Router,
         private route: ActivatedRoute,
+        private ngLocation: Location,
         private net: NetService,
         private org: OrgService,
         private auth: AuthService,
@@ -317,6 +323,27 @@ export class CheckinComponent implements OnInit, AfterViewInit {
                 circs.forEach(circ => circ.checkin_time(backdate));
             }
         });
+    }
+
+    markMissingPieces(rows: CheckinGridEntry[]) {
+        const copyId = this.getCopyIds(rows)[0];
+        if (copyId) {
+            const url = this.ngLocation.prepareExternalUrl(
+                `/staff/cat/item/missing_pieces/${copyId}`);
+            window.open(url);
+        }
+    }
+
+
+    cancelTransits(rows: CheckinGridEntry[]) {
+        const ids = rows
+            .filter(row => Boolean(row.transit))
+            .map(row => row.transit.id());
+
+        if (ids.length > 0) {
+            this.cancelTransitDialog.transitIds = ids;
+            this.cancelTransitDialog.open().subscribe();
+        }
     }
 }
 

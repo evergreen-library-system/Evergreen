@@ -12,6 +12,7 @@ import {CircEventsComponent} from './events-dialog.component';
 import {OpenCircDialogComponent} from './open-circ-dialog.component';
 import {RouteDialogComponent} from './route-dialog.component';
 import {CopyInTransitDialogComponent} from './in-transit-dialog.component';
+import {CancelTransitDialogComponent} from './cancel-transit-dialog.component';
 import {BackdateDialogComponent} from './backdate-dialog.component';
 
 @NgModule({
@@ -25,6 +26,7 @@ import {BackdateDialogComponent} from './backdate-dialog.component';
         RouteDialogComponent,
         BackdateDialogComponent,
         CopyInTransitDialogComponent,
+        CancelTransitDialogComponent,
         OpenCircDialogComponent
     ],
     imports: [
@@ -35,6 +37,7 @@ import {BackdateDialogComponent} from './backdate-dialog.component';
     exports: [
         CircGridComponent,
         BackdateDialogComponent,
+        CancelTransitDialogComponent,
         CircComponentsComponent
     ],
     providers: [
