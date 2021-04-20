@@ -56,6 +56,10 @@ export interface FmFieldOptions {
     // so the user can click or type to find values.
     preloadLinkedValues?: boolean;
 
+    // Additional search conditions to include when constructing
+    // the query for a linked field's combobox
+    linkedSearchConditions?: {[field: string]: string};
+
     // Directly override the required state of the field.
     // This only has an affect if the value is true.
     isRequired?: boolean;
@@ -584,7 +588,35 @@ export class FmRecordEditorComponent
         }
 
         if (fieldOptions.preloadLinkedValues || !selector) {
-            return this.pcrud.retrieveAll(field.class, {}, {atomic : true})
+            const search = {};
+            const orderBy = {order_by: {}};
+            if (selector) {
+                orderBy.order_by[field.class] = selector;
+            }
+            const idField = this.idl.classes[field.class].pkey || 'id';
+            search[idField] = {'!=' : null};
+            if (fieldOptions.linkedSearchConditions) {
+                const conditions = {};
+                Object.keys(fieldOptions.linkedSearchConditions).forEach(key => {
+                    conditions[key] = fieldOptions.linkedSearchConditions[key];
+                });
+                // ensure that the current value, if present, is included
+                // in case it doesn't otherwise meet the conditions
+                const linkedValue = this.record[field.name]();
+                if (linkedValue !== null && linkedValue !== undefined) {
+                    search['-or'] = [];
+                    const retrieveRec = {};
+                    retrieveRec[idField] = linkedValue;
+                    search['-or'].push(retrieveRec);
+                    search['-or'].push(conditions);
+                } else {
+                    // just tack on the conditions
+                    Object.keys(conditions).forEach(key => {
+                        search[key] = conditions[key];
+                    });
+                }
+            }
+            return this.pcrud.search(field.class, search, orderBy, {atomic : true})
             .toPromise().then(list => {
                 field.linkedValues =
                     this.flattenLinkedValues(field, list);
@@ -600,6 +632,11 @@ export class FmRecordEditorComponent
             const idField = this.idl.classes[field.class].pkey || 'id';
 
             search[selector] = {'ilike': `%${term}%`};
+            if (fieldOptions.linkedSearchConditions) {
+                Object.keys(fieldOptions.linkedSearchConditions).forEach(key => {
+                    search[key] = fieldOptions.linkedSearchConditions[key];
+                });
+            }
             orderBy.order_by[field.class] = selector;
 
             return this.pcrud.search(field.class, search, orderBy)
