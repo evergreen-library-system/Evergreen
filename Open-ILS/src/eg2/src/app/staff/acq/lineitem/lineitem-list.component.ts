@@ -136,6 +136,7 @@ export class LineitemListComponent implements OnInit {
         let options: any = {flesh_lineitem_ids: true, li_limit: 10000};
         let method = 'open-ils.acq.purchase_order.retrieve';
         let handler = (po) => po.lineitems();
+        let sort = true;
 
         if (this.picklistId) {
 
@@ -150,6 +151,9 @@ export class LineitemListComponent implements OnInit {
             method = 'open-ils.acq.lineitems_for_bib.by_bib_id.atomic';
             options = {idlist: true, limit: 1000};
             handler = (ids) => ids;
+            // The API sorts the newest to oldest, which is what
+            // we want here.
+            sort = false;
         }
 
         return this.net.request(
@@ -157,9 +161,13 @@ export class LineitemListComponent implements OnInit {
         ).toPromise().then(resp => {
             const ids = handler(resp);
 
-            this.lineitemIds = ids
-                .map(i => Number(i))
-                .sort((id1, id2) => id1 < id2 ? -1 : 1);
+            if (sort) {
+                this.lineitemIds = ids
+                    .map(i => Number(i))
+                    .sort((id1, id2) => id1 < id2 ? -1 : 1);
+            } else {
+                this.lineitemIds = ids.map(i => Number(i));
+            }
 
             this.pager.resultCount = ids.length;
         });
