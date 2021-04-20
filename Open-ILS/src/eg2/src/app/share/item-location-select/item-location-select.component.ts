@@ -157,7 +157,14 @@ export class ItemLocationSelectComponent
     setFilterOrgs(): Promise<number[]> {
         if (this.permFilter) {
             return this.perm.hasWorkPermAt([this.permFilter], true)
-                .then(values => this.filterOrgs = values[this.permFilter]);
+                .then(values => {
+                    this.filterOrgs = values[this.permFilter];
+                    // then include ancestors
+                    this.filterOrgs.forEach(ou => {
+                        this.org.ancestors(ou, true).forEach(anc => this.filterOrgs.push(anc));
+                    });
+                    return this.filterOrgs;
+                });
         }
 
         const org = this.contextOrgId || this.auth.user().ws_ou();
