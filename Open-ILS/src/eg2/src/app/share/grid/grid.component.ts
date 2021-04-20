@@ -187,7 +187,22 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.rowClassCallback =
             this.rowClassCallback || function () { return ''; };
         this.context.cellClassCallback =
-            this.cellClassCallback || function() { return ''; };
+            this.cellClassCallback ||
+            function (row: any, col: GridColumn) {
+                if (col.datatype === 'money') {
+                    // get raw value
+                    let val;
+                    if (col.path) {
+                        val = this.nestedItemFieldValue(row, col);
+                    } else if (col.name in row) {
+                        val = this.getObjectFieldValue(row, col.name);
+                    }
+                    if (Number(val) < 0) {
+                        return 'negative-money-amount';
+                    }
+                }
+                return '';
+            };
 
         if (this.showLinkSelectors) {
             console.debug(

@@ -256,3 +256,8 @@ body>.dropdown-menu {z-index: 2100;}
 #acq-search-page ngb-tabset .nav.nav-tabs {
   background-color: rgb(247, 247, 247);
 }
+
+/* style for negative monetary values */
+.negative-money-amount {
+    color: red;
+}
