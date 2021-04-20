@@ -105,9 +105,19 @@
         (onClick)="markMissingPieces($event)"></eg-grid-toolbar-action>
 
       <eg-grid-toolbar-action
-        i18n-group group="Manage" i18n-label label="Manage Item Alerts"
+        i18n-group group="Edit" i18n-label label="Manage Item Alerts"
         [disabled]="grid.context.rowSelector.selected().length !== 1"
         (onClick)="manageItemAlerts($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Edit" i18n-label label="Edit Holdings"
+        (onClick)="editHoldings($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Print" i18n-label label="Print Labels"
+        (onClick)="openItemPrintLabels($event)">
       </eg-grid-toolbar-action>
 
       <eg-grid-toolbar-action
@@ -131,10 +141,24 @@
       </eg-grid-toolbar-action>
 
       <eg-grid-toolbar-action
-        i18n-group group="Retrieve" i18n-label 
+        i18n-group group="Show" i18n-label 
         label="Retrieve Last Patron Who Circulated Item"
         [disabled]="grid.context.rowSelector.selected().length !== 1"
         (onClick)="retrieveLastPatron($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Show" i18n-label 
+        label="Show Record Holds"
+        [disabled]="grid.context.rowSelector.selected().length !== 1"
+        (onClick)="showRecordHolds($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Show" i18n-label 
+        label="Show Last Few Circs"
+        [disabled]="grid.context.rowSelector.selected().length !== 1"
+        (onClick)="showRecentCircs($event)">
       </eg-grid-toolbar-action>
 
       <!-- COLUMNS -->

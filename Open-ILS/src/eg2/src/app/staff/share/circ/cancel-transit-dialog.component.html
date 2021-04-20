@@ -1,0 +1,27 @@
+<eg-string #success i18n-text text="Transit(s) Successfully Canceled">
+</eg-string>
+<eg-string #failure i18n-text text="Some Transits Failed to Cancel">
+</eg-string>
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 i18n>Cancel Transits</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <strong i18n>Cancel {{numTransits}} transits?</strong>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="proceed()" i18n>
+      Cancel Transits
+    </button>
+    <button type="button" class="btn btn-warning" (click)="close()" i18n>
+      Close Dialog
+    </button>
+  </div>
+</ng-template>
+
+

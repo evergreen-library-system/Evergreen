@@ -28,6 +28,8 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {BackdateDialogComponent} from '@eg/staff/share/circ/backdate-dialog.component';
 import {CancelTransitDialogComponent
     } from '@eg/staff/share/circ/cancel-transit-dialog.component';
+import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
+import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 
 
 interface CheckinGridEntry extends CheckinResult {
@@ -95,6 +97,8 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         private circ: CircService,
         private toast: ToastService,
         private printer: PrintService,
+        private holdings: HoldingsService,
+        private anonCache: AnonCacheService,
         public patronService: PatronService
     ) {}
 
@@ -344,6 +348,45 @@ export class CheckinComponent implements OnInit, AfterViewInit {
             this.cancelTransitDialog.transitIds = ids;
             this.cancelTransitDialog.open().subscribe();
         }
+    }
+
+    showRecordHolds(rows: CheckinGridEntry[]) {
+
+        const row = rows[0];
+        if (row.record) {
+            const id = row.record.doc_id()
+
+            const url = this.ngLocation.prepareExternalUrl(
+                `/staff/catalog/record/${id}/holds`);
+
+            window.open(url);
+        }
+    }
+
+    showRecentCircs(rows: CheckinGridEntry[]) {
+        const copyId = this.getCopyIds(rows)[0];
+        if (copyId) {
+            const url = `/eg/staff/cat/item/${copyId}/circs`;
+            window.open(url);
+        }
+    }
+
+    editHoldings(rows: CheckinGridEntry[]) {
+        const ids = this.getCopyIds(rows);
+        if (ids.length === 0) { return; }
+
+        this.holdings.spawnAddHoldingsUi(null, null, null, ids);
+    }
+
+    openItemPrintLabels(rows: CheckinGridEntry[]) {
+        const ids = this.getCopyIds(rows);
+        if (ids.length === 0) { return; }
+
+        this.anonCache.setItem(null, 'print-labels-these-copies', {copies: ids})
+        .then(key => {
+            const url = `/eg/staff/cat/printlabels/${key}`;
+            window.open(url);
+        });
     }
 }
 
