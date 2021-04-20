@@ -121,8 +121,7 @@ export class CheckinComponent implements OnInit, AfterViewInit {
                 this.modifiers.noop = false;
                 this.modifiers.auto_print_holds_transits = true;
             }
-
-        });
+        }).then(_ => this.circ.applySettings());
     }
 
     ngAfterViewInit() {

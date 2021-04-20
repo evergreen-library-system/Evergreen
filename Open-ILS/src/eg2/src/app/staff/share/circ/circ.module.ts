@@ -14,6 +14,7 @@ import {RouteDialogComponent} from './route-dialog.component';
 import {CopyInTransitDialogComponent} from './in-transit-dialog.component';
 import {CancelTransitDialogComponent} from './cancel-transit-dialog.component';
 import {BackdateDialogComponent} from './backdate-dialog.component';
+import {WorkLogService} from './work-log.service';
 
 @NgModule({
     declarations: [
@@ -41,7 +42,8 @@ import {BackdateDialogComponent} from './backdate-dialog.component';
         CircComponentsComponent
     ],
     providers: [
-        CircService
+        CircService,
+        WorkLogService
     ]
 })
 

@@ -14,6 +14,7 @@ import {CircComponentsComponent} from './components.component';
 import {StringService} from '@eg/share/string/string.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
+import {WorkLogService, WorkLogEntry} from './work-log.service';
 
 export interface CircDisplayInfo {
     title?: string;
@@ -208,6 +209,7 @@ export class CircService {
         private strings: StringService,
         private auth: AuthService,
         private holdings: HoldingsService,
+        private worklog: WorkLogService,
         private bib: BibRecordService
     ) {}
 
@@ -216,6 +218,7 @@ export class CircService {
             'circ.clear_hold_on_checkout',
         ]).then(sets => {
             this.clearHoldsOnCheckout = sets['circ.clear_hold_on_checkout'];
+            return this.worklog.loadSettings();
         });
     }
 
@@ -425,7 +428,10 @@ export class CircService {
         result.record = payload.record;
         result.nonCatCirc = payload.noncat_circ;
 
-        return this.fleshCommonData(result);
+        return this.fleshCommonData(result).then(_ => {
+            this.addWorkLog(params._renewal ? 'renewal' : 'checkout', result);
+            return result;
+        });
     }
 
     processCheckoutResult(result: CheckoutResult): Promise<CheckoutResult> {
@@ -780,7 +786,10 @@ export class CircService {
             result.mbts = parent_circ.billable_transaction().summary();
         }
 
-        return this.fleshCommonData(result).then(_ => result);
+        return this.fleshCommonData(result).then(_ => {
+            this.addWorkLog('checkin', result);
+            return result;
+        });
     }
 
     processCheckinResult(result: CheckinResult): Promise<CheckinResult> {
@@ -831,6 +840,35 @@ export class CircService {
         }
 
         return Promise.resolve(result);
+    }
+
+    addWorkLog(action: string, result: CircResultCommon) {
+        const entry: WorkLogEntry = {action: action};
+
+        const params = result.params;
+        const copy = result.copy;
+        const patron = result.patron;
+
+        if (copy) {
+            entry.item = copy.barcode();
+            entry.item_id = copy.id();
+        } else {
+            entry.item = params.copy_barcode;
+            entry.item_id = params.copy_id;
+        }
+
+        if (patron) {
+            entry.patron_id = patron.id();
+            entry.user = patron.family_name();
+        } else {
+            entry.patron_id = (params as CheckoutParams).patron_id;
+        }
+
+        if (result.hold) {
+            entry.hold_id = result.hold.id();
+        }
+
+        this.worklog.record(entry);
     }
 
     showPrecatAlert(): Promise<any> {
