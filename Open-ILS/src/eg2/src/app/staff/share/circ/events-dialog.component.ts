@@ -18,6 +18,9 @@ export class CircEventsComponent extends DialogComponent implements OnInit {
     @Input() events: EgEvent[] = [];
     @Input() mode: 'checkout' | 'renew' | 'checkin';
     modeLabel: string;
+    clearHolds = false;
+    patronId: number = null;
+    patronName: string;
 
     constructor(
         private modal: NgbModal,

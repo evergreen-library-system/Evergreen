@@ -10,6 +10,7 @@ import {BookingModule} from '@eg/staff/share/booking/booking.module';
 import {PatronModule} from '@eg/staff/share/patron/patron.module';
 import {BarcodesModule} from '@eg/staff/share/barcodes/barcodes.module';
 import {CheckinComponent} from './checkin.component';
+import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {CheckinComponent} from './checkin.component';
     HoldingsModule,
     BookingModule,
     PatronModule,
-    BarcodesModule
+    BarcodesModule,
+    WorkLogModule
   ],
   providers: [
   ]

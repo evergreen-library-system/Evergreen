@@ -618,12 +618,23 @@ export class CircService {
         const params = result.params;
         const mode = checkin ? 'checkin' : (params._renewal ? 'renew' : 'checkout');
 
+        const holdShelfEvent = events.filter(e => e.textcode === 'ITEM_ON_HOLDS_SHELF')[0];
+
+        if (holdShelfEvent) {
+            this.components.circEventsDialog.clearHolds = this.clearHoldsOnCheckout;
+            this.components.circEventsDialog.patronId = holdShelfEvent.payload.patron_id;
+            this.components.circEventsDialog.patronName = holdShelfEvent.payload.patron_name;
+        }
+
         this.components.circEventsDialog.events = events;
         this.components.circEventsDialog.mode = mode;
 
         return this.components.circEventsDialog.open().toPromise()
-        .then(confirmed => {
+        .then(resp => {
+            const confirmed = resp.override;
             if (!confirmed) { return null; }
+
+            let promise = Promise.resolve(null);
 
             if (!checkin) {
                 // Indicate these events have been seen and overridden.
@@ -632,11 +643,30 @@ export class CircService {
                         this.autoOverrideCheckoutEvents[evt.textcode] = true;
                     }
                 });
+
+                if (holdShelfEvent && resp.clearHold) {
+                    const holdId = holdShelfEvent.payload.hold_id;
+
+                    // Cancel the hold that put our checkout item
+                    // on the holds shelf.
+
+                    promise = promise.then(_ => {
+                        return this.net.request(
+                            'open-ils.circ',
+                            'open-ils.circ.hold.cancel',
+                            this.auth.token(),
+                            holdId,
+                            5, // staff forced
+                            'Item checked out by other patron' // FIXME I18n
+                        ).toPromise();
+                    });
+                }
             }
 
-            params._override = true;
-
-            return this[mode](params); // checkout/renew/checkin
+            return promise.then(_ => {
+                params._override = true;
+                return this[mode](params); // checkout/renew/checkin
+            });
         });
     }
 

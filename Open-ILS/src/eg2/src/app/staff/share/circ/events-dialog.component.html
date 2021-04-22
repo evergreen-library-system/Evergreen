@@ -26,13 +26,29 @@
               <div class="mt-2 font-weight-bold">{{evt.payload}}</div>
             </ng-container>
           </ng-container>
+          <ng-container *ngIf="evt.textcode == 'ITEM_ON_HOLDS_SHELF'">
+            <a target="_blank" class="mt-3"
+              routerLink="/staff/circ/patron/{{patronId}}/checkout">{{patronName}}</a>.
+
+            <div class="mt-3 mb-3">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" 
+                  id="clear-hold-cbox" [(ngModel)]="clearHold"/>
+                <label class="form-check-label" for="clear-hold-cbox" i18n>
+                  Cancel this hold upon checkout?
+                </label>
+              </div>
+            </div>
+
+          </ng-container>
         </div>
       </div>
     </ng-container>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-info"
-      (click)="close(true)" i18n>Force Action?</button>
+      (click)="close({override: true, clearHold: clearHold})" i18n>
+      Force Action?</button>
     <button type="button" class="btn btn-warning"
       (click)="close(false)" i18n>Cancel</button>
   </div>
