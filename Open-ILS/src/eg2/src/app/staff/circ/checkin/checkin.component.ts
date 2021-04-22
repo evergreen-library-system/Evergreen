@@ -353,7 +353,7 @@ export class CheckinComponent implements OnInit, AfterViewInit {
 
         const row = rows[0];
         if (row.record) {
-            const id = row.record.doc_id()
+            const id = row.record.doc_id();
 
             const url = this.ngLocation.prepareExternalUrl(
                 `/staff/catalog/record/${id}/holds`);

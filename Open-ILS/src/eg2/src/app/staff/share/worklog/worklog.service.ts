@@ -9,7 +9,7 @@ export interface WorkLogEntry {
     when?: Date;
     msg?: string;
     action?: string;
-    actor?: string // staff username
+    actor?: string; // staff username
     item?: string; // barcode
     item_id?: number;
     user?: string; // patron family name
