@@ -2145,6 +2145,67 @@ sub get_copy_due_date {
 }
 
 
+__PACKAGE__->register_method(
+    method  => 'get_offline_data',
+    api_name    => 'open-ils.circ.offline.data.retrieve',
+    signature => {
+        desc => q/Returns a stream of data needed by clients to 
+            support an offline interface. /,
+        params => [
+            {desc => 'Authentication token', type => 'string'}
+        ],
+        return => {desc => q/
+        /}
+    }
+);
+
+sub get_offline_data {
+    my ($self, $client, $auth) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('STAFF_LOGIN');
+
+    my $org_ids = $U->get_org_ancestors($e->requestor->ws_ou);
+
+    $client->respond({
+        idlClass => 'cnct',
+        data => $e->search_config_non_cataloged_type({owning_lib => $org_ids})
+    });
+
+    my $surveys = $e->search_action_survey([{
+            owner => $org_ids,
+            start_date => {'<=' => 'now'},
+            end_date => {'>=' => 'now'}
+        }, {
+            flesh => 2,
+            flesh_fields => {
+                asv => ['questions'],
+                asvq => ['answers']
+            }
+        }
+    ]);
+
+    $client->respond({idlClass => 'asv', data => $surveys});
+
+    $client->respond({idlClass => 'cit', 
+        data => $e->retrieve_all_config_identification_type});
+
+    $client->respond({idlClass => 'cnal', 
+        data => $e->retrieve_all_config_net_access_level});
+
+    $client->respond({idlClass => 'fdoc', 
+        data => $e->retrieve_all_config_idl_field_doc});
+
+    my $perm_groups = $e->search_permission_grp_tree([
+        {parent => undef},
+        {flesh => 99, flesh_fields => {pgt => ['children']}}
+    ]);
+
+    $client->respond({idlClass => 'pgt', data => $perm_groups});
+
+    return undef;
+}
 
 
 
