@@ -99,6 +99,12 @@
               [% l('Check In') %]
             </a>
           </li>
+          <li ng-if="username">
+            <a href="/eg2/staff/circ/checkin">
+              <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
+              [% l('Check In (Experimental)') %]
+            </a>
+          </li>
           <li ng-if="!username">
             <a href="" ng-click="rs.active_tab('checkin')" target="_self"
               eg-accesskey="[% l('f2') %]" 
