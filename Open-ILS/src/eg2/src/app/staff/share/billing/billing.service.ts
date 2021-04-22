@@ -101,7 +101,6 @@ export class BillingService {
                 return Promise.reject(evt);
             }
 
-            // TODO work log
             return response;
         });
     }

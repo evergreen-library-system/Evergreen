@@ -14,7 +14,7 @@ import {RouteDialogComponent} from './route-dialog.component';
 import {CopyInTransitDialogComponent} from './in-transit-dialog.component';
 import {CancelTransitDialogComponent} from './cancel-transit-dialog.component';
 import {BackdateDialogComponent} from './backdate-dialog.component';
-import {WorkLogService} from './work-log.service';
+import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 
 @NgModule({
     declarations: [
@@ -33,7 +33,8 @@ import {WorkLogService} from './work-log.service';
     imports: [
         StaffCommonModule,
         HoldingsModule,
-        BillingModule
+        BillingModule,
+        WorkLogModule
     ],
     exports: [
         CircGridComponent,
@@ -42,8 +43,7 @@ import {WorkLogService} from './work-log.service';
         CircComponentsComponent
     ],
     providers: [
-        CircService,
-        WorkLogService
+        CircService
     ]
 })
 

@@ -91,7 +91,11 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     collectParams(): Promise<CheckoutParams> {
 
         const params: CheckoutParams = {
-            patron_id: this.context.summary.id
+            patron_id: this.context.summary.id,
+            _worklog: {
+                user: this.context.summary.patron.family_name(),
+                patron_id: this.context.summary.id
+            }
         };
 
         if (this.checkoutNoncat) {

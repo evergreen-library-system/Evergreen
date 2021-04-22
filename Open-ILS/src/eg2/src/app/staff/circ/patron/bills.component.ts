@@ -27,6 +27,7 @@ import {AddBillingDialogComponent} from '@eg/staff/share/billing/billing-dialog.
 import {AudioService} from '@eg/share/util/audio.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {GridFlatDataService} from '@eg/share/grid/grid-flat-data.service';
+import {WorkLogService} from '@eg/staff/share/worklog/worklog.service';
 
 @Component({
   templateUrl: 'bills.component.html',
@@ -84,6 +85,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
         private circ: CircService,
         private billing: BillingService,
         private flatData: GridFlatDataService,
+        private worklog: WorkLogService,
         public patronService: PatronService,
         public context: PatronContextService
     ) {}
@@ -270,6 +272,12 @@ export class BillsComponent implements OnInit, AfterViewInit {
             );
         })
         .then(resp => {
+            this.worklog.record({
+                user: this.patron().family_name(),
+                patron_id: this.patron().id(),
+                amount: this.pendingPayment(),
+                action: 'paid_bill'
+            });
             this.patron().last_xact_id(resp.last_xact_id);
             return this.handlePayReceipt(payments, resp.payments);
         })

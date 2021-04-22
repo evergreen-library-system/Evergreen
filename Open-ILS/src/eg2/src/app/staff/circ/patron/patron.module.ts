@@ -32,6 +32,7 @@ import {HoldNotifyUpdateDialogComponent} from './hold-notify-update.component';
 import {PatronMessagesComponent} from './messages.component';
 import {PatronPermsComponent} from './perms.component';
 import {BillingHistoryComponent} from './billing-history.component';
+import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import {BillingHistoryComponent} from './billing-history.component';
     BookingModule,
     PatronModule,
     PatronRoutingModule,
-    BarcodesModule
+    BarcodesModule,
+    WorkLogModule
   ],
   providers: [
     PatronResolver,

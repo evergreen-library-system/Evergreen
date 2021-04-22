@@ -25,6 +25,7 @@ import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {HoldNotifyUpdateDialogComponent} from './hold-notify-update.component';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {PrintService} from '@eg/share/print/print.service';
+import {WorkLogService} from '@eg/staff/share/worklog/worklog.service';
 
 const PATRON_FLESH_FIELDS = [
     'cards',
@@ -224,6 +225,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         private broadcaster: BroadcastService,
         private patronService: PatronService,
         private printer: PrintService,
+        private worklog: WorkLogService,
         public context: PatronContextService
     ) {}
 
@@ -908,7 +910,7 @@ export class EditComponent implements OnInit, AfterViewInit {
             case 'city':
                 // dupe search on address wants the address object as the value.
                 this.dupeValueChange('address', obj);
-                this.toolbar.checkAddressAlerts(obj);
+                this.toolbar.checkAddressAlerts(this.patron, obj);
                 break;
 
             case 'post_code':
@@ -1350,6 +1352,12 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
 
     postSaveRedirect(clone: boolean) {
+
+        this.worklog.record({
+            user: this.modifiedPatron.family_name(),
+            patron_id: this.modifiedPatron.id(),
+            action: this.patron.isnew() ? 'registered_patron' : 'edited_patron'
+        });
 
         if (this.stageUser) {
             this.broadcaster.broadcast('eg.pending_usr.update',

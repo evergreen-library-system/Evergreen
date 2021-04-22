@@ -6,7 +6,6 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
-import {PatronContextService} from './patron.service';
 import {PatronSearchFieldSet} from '@eg/staff/share/patron/search.component';
 
 export enum VisibilityLevel {
@@ -49,8 +48,7 @@ export class EditToolbarComponent implements OnInit {
         private idl: IdlService,
         private net: NetService,
         private auth: AuthService,
-        private patronService: PatronService,
-        public context: PatronContextService
+        private patronService: PatronService
     ) {}
 
     ngOnInit() {
@@ -87,9 +85,9 @@ export class EditToolbarComponent implements OnInit {
         });
     }
 
-    checkAddressAlerts(addr: IdlObject) {
+    checkAddressAlerts(patron: IdlObject, addr: IdlObject) {
         const addrHash = this.idl.toHash(addr);
-        const patron = this.context.summary.patron;
+        console.log('CHECKING ADDR', addrHash);
         addrHash.mailing_address = addr.id() === patron.mailing_address().id();
         addrHash.billing_address = addr.id() === patron.billing_address().id();
         this.net.request(

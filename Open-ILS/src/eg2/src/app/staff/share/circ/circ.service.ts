@@ -14,7 +14,7 @@ import {CircComponentsComponent} from './components.component';
 import {StringService} from '@eg/share/string/string.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
-import {WorkLogService, WorkLogEntry} from './work-log.service';
+import {WorkLogService, WorkLogEntry} from '@eg/staff/share/worklog/worklog.service';
 
 export interface CircDisplayInfo {
     title?: string;
@@ -130,6 +130,7 @@ export interface CheckoutParams {
     // internal tracking
     _override?: boolean;
     _renewal?: boolean;
+    _worklog?: WorkLogEntry;
 }
 
 export interface CircResultCommon {
@@ -175,6 +176,7 @@ export interface CheckinParams {
 
     // internal / local values that are moved from the API request.
     _override?: boolean;
+    _worklog?: WorkLogEntry;
 }
 
 export interface CheckinResult extends CircResultCommon {
@@ -429,7 +431,9 @@ export class CircService {
         result.nonCatCirc = payload.noncat_circ;
 
         return this.fleshCommonData(result).then(_ => {
-            this.addWorkLog(params._renewal ? 'renewal' : 'checkout', result);
+            const action = params._renewal ? 'renewal' :
+                (params.noncat ? 'noncat_checkout' : 'checkout');
+            this.addWorkLog(action, result);
             return result;
         });
     }
@@ -843,11 +847,13 @@ export class CircService {
     }
 
     addWorkLog(action: string, result: CircResultCommon) {
-        const entry: WorkLogEntry = {action: action};
-
         const params = result.params;
         const copy = result.copy;
         const patron = result.patron;
+
+        // Some worklog data may be provided by the caller in the params.
+        const entry: WorkLogEntry =
+            Object.assign(params._worklog || {}, {action: action});
 
         if (copy) {
             entry.item = copy.barcode();
@@ -860,8 +866,6 @@ export class CircService {
         if (patron) {
             entry.patron_id = patron.id();
             entry.user = patron.family_name();
-        } else {
-            entry.patron_id = (params as CheckoutParams).patron_id;
         }
 
         if (result.hold) {

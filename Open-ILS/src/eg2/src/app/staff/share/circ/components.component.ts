@@ -9,7 +9,6 @@ import {RouteDialogComponent} from './route-dialog.component';
 import {CopyInTransitDialogComponent} from './in-transit-dialog.component';
 import {CopyAlertManagerDialogComponent
     } from '@eg/staff/share/holdings/copy-alert-manager.component';
-import {WorkLogService, WorkLogEntry} from './work-log.service';
 
 /* Container component for sub-components used by circulation actions.
  *
@@ -38,21 +37,8 @@ export class CircComponentsComponent {
     @ViewChild('holdShelfStr') holdShelfStr: StringComponent;
     @ViewChild('catalogingStr') catalogingStr: StringComponent;
 
-    // Worklog string variable names have to match "worklog_{{action}}"
-    @ViewChild('worklog_checkout') worklog_checkout: StringComponent;
-    @ViewChild('worklog_checkin') worklog_checkin: StringComponent;
-    @ViewChild('worklog_noncat_checkout') worklog_noncat_checkout: StringComponent;
-    @ViewChild('worklog_renew') worklog_renew: StringComponent;
-    @ViewChild('worklog_requested_hold') worklog_requested_hold: StringComponent;
-    @ViewChild('worklog_edited_patron') worklog_edited_patron: StringComponent;
-    @ViewChild('worklog_registered_patron') worklog_registered_patron: StringComponent;
-    @ViewChild('worklog_paid_bill') worklog_paid_bill: StringComponent;
-
-    constructor(
-        private worklog: WorkLogService,
-        private circ: CircService) {
+    constructor(private circ: CircService) {
         this.circ.components = this;
-        this.worklog.components = this;
     }
 }
 
