@@ -125,7 +125,7 @@ export class GridColumnSet {
     insertColumn(col: GridColumn): boolean {
 
         if (col.isAuto) {
-            if (this.getColByName(col.name)) {
+            if (this.getColByName(col.name) || this.getColByPath(col.path)) {
                 // New auto-generated column conflicts with existing
                 // column.  Skip it.
                 return false;
@@ -174,6 +174,12 @@ export class GridColumnSet {
 
     getColByName(name: string): GridColumn {
         return this.columns.filter(c => c.name === name)[0];
+    }
+
+    getColByPath(path: string): GridColumn {
+        if (path) {
+            return this.columns.filter(c => c.path === path)[0];
+        }
     }
 
     idlInfoFromDotpath(dotpath: string): any {

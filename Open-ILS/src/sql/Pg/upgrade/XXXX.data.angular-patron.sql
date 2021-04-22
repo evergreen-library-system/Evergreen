@@ -3,8 +3,6 @@ BEGIN;
 
 -- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version); 
 
-/*
-
 -- insert then update for easier iterative development tweaks
 INSERT INTO config.print_template 
     (name, label, owner, active, locale, content_type, template)
@@ -632,8 +630,6 @@ UPDATE config.print_template SET template = $TEMPLATE$
   <br/>
 </div>
 $TEMPLATE$ WHERE name = 'bills_historical';
-
-*/
 
 COMMIT;
 

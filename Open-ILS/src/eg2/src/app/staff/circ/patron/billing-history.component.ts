@@ -71,6 +71,11 @@ export class BillingHistoryComponent implements OnInit {
 
     ngOnInit() {
 
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            this.tab = params.get('billingHistoryTab') || 'transactions';
+        });
+
+
         const start = new Date();
         const end = new Date();
         start.setFullYear(start.getFullYear() - 1);
@@ -115,6 +120,14 @@ export class BillingHistoryComponent implements OnInit {
             this.paymentsGrid.reload();
         }
     }
+
+    beforeTabChange(evt: NgbNavChangeEvent) {
+        // tab will change with route navigation.
+        evt.preventDefault();
+        this.router.navigate([
+            `/staff/circ/patron/${this.patronId}/bills/history/${evt.nextId}`]);
+    }
+
 
     showStatement(row: any | any[], forPayment?: boolean) {
         row = [].concat(row)[0];

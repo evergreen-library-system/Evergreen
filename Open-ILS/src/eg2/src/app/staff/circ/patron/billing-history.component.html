@@ -17,7 +17,8 @@
 </ng-template>
 
 
-<ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="tab">
+<ul ngbNav #nav="ngbNav" class="nav-tabs" 
+  [activeId]="tab" (navChange)="beforeTabChange($event)">
   <li ngbNavItem="transactions">
     <a ngbNavLink i18n>Transactions</a>
     <ng-template ngbNavContent>
