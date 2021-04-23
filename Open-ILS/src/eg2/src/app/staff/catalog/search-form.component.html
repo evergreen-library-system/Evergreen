@@ -222,7 +222,7 @@
             <div class="col-lg-3">
               <select class="form-control" 
                 [(ngModel)]="context.termSearch.copyLocations" multiple="true">
-                <option value='' i18n>All Copy Locations</option>
+                <option value='' i18n>All Shelving Locations</option>
                 <option *ngFor="let loc of copyLocations" value="{{loc.id()}}" i18n>
                   {{loc.name()}} ({{orgName(loc.owning_lib())}})
                 </option>
