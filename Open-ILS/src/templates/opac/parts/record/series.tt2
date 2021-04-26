@@ -7,12 +7,12 @@ BLOCK render_series;
     IF attrs.hl_display_fields.series_title.size;
         hl_field = attrs.hl_field;
         FOREACH s IN attrs.hl_display_fields.series_title;
-            search_term = s.value.replace('[#"^$\+\-,\.:;&|\[\]()]', ' ').replace('\s+$', '') | html;
+            search_term = s.value.replace('[#"^$\+\-,\.:;&|\[\]()]', ' ').replace('\s+$', '');
     
             url = mkurl(ctx.opac_root _ '/results',
                 { qtype=>'series', query=>search_term }, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms)
             );
-            filtered_hl_field = s.$hl_field | html;
+            filtered_hl_field = s.$hl_field;
             series = '<a href="' _ url _ '">' _ filtered_hl_field _ '</a> ';
             results.push(series);
         END;
