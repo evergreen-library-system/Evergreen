@@ -95,8 +95,8 @@ export class OfflineService {
             return Promise.resolve();
         }
 
-        var rows = statcats.map(cat => {
-            return {id: cat.id(), value: this.idl.toHash(cat)}});
+        const rows = statcats.map(
+            cat => ({id: cat.id(), value: this.idl.toHash(cat)}));
 
         return this.db.request({
             schema: 'cache',
