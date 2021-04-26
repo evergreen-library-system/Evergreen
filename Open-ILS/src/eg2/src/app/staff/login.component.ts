@@ -4,6 +4,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService, AuthWsState} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
 import {OrgService} from '@eg/core/org.service';
+import {OfflineService} from '@eg/staff/share/offline.service';
 
 // Direct users to the AngJS splash page when no routeTo is provided.
 const SPLASH_PAGE_PATH = '/eg/staff/splash';
@@ -31,7 +32,8 @@ export class StaffLoginComponent implements OnInit {
       private renderer: Renderer2,
       private auth: AuthService,
       private org: OrgService,
-      private store: StoreService
+      private store: StoreService,
+      private offline: OfflineService
     ) {}
 
     ngOnInit() {
@@ -98,9 +100,10 @@ export class StaffLoginComponent implements OnInit {
 
                 } else {
 
-                    // Initial login clears cached org unit setting values
-                    // and user/workstation setting values
-                    this.org.clearCachedSettings().then(_ => {
+                    this.offline.fetchOfflineData()
+                    // Initial login clears cached org unit settings.
+                    .then(_ => this.org.clearCachedSettings())
+                    .then(_ => {
 
                         // Force reload of the app after a successful login.
                         // This allows the route resolver to re-run with a

@@ -21,6 +21,7 @@ import {PatronBarcodeValidatorDirective} from '@eg/share/validators/patron_barco
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {CourseService} from './share/course.service';
 import {FileExportService} from '@eg/share/util/file-export.service';
+import {OfflineService} from '@eg/staff/share/offline.service';
 
 /**
  * Imports the EG common modules and adds modules common to all staff UI's.
@@ -78,7 +79,8 @@ export class StaffCommonModule {
                 AudioService,
                 BroadcastService,
                 CourseService,
-                FileExportService
+                FileExportService,
+                OfflineService
             ]
         };
     }

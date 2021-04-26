@@ -983,8 +983,8 @@ function($routeProvider , $locationProvider , $compileProvider) {
                     service.opt_in_setting_types[stype.name()] = stype;
                 }
                 if (stype.reg_default() != undefined) {
-                    service.user_settings[setting.name()] = 
-                        setting.reg_default();
+                    service.user_settings[stype.name()] = 
+                        stype.reg_default();
                 }
             });
             return $q.when();

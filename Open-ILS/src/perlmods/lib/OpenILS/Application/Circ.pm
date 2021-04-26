@@ -2198,12 +2198,8 @@ sub get_offline_data {
     $client->respond({idl_class => 'fdoc', 
         data => $e->retrieve_all_config_idl_field_doc});
 
-    my $perm_groups = $e->search_permission_grp_tree([
-        {parent => undef},
-        {flesh => 99, flesh_fields => {pgt => ['children']}}
-    ]);
-
-    $client->respond({idl_class => 'pgt', data => $perm_groups});
+    $client->respond({idl_class => 'pgt', 
+        data => $e->retrieve_all_permission_grp_tree});
     
     my $stat_cats = $U->simplereq(
         'open-ils.circ', 
@@ -2233,7 +2229,7 @@ sub get_offline_data {
         }]
     });
 
-    $client->respond($settings);
+    $client->respond({idl_class => 'cust', data => $settings});
 
     return undef;
 }
