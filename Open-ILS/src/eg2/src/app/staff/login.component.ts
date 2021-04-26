@@ -100,7 +100,7 @@ export class StaffLoginComponent implements OnInit {
 
                 } else {
 
-                    this.offline.fetchOfflineData()
+                    this.offline.refreshOfflineData()
                     // Initial login clears cached org unit settings.
                     .then(_ => this.org.clearCachedSettings())
                     .then(_ => {
