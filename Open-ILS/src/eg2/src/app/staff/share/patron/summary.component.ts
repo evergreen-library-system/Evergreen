@@ -62,6 +62,7 @@ export class PatronSummaryComponent implements OnInit {
         // Using node.style instead of *ngIf in hopes it
         // will be quicker, so the user never sees the textarea.
         node.style.visibility = 'visible';
+        node.style.display = 'block';
         node.focus();
         node.select();
 
@@ -70,6 +71,7 @@ export class PatronSummaryComponent implements OnInit {
         }
 
         node.style.visibility = 'hidden';
+        node.style.display = 'none';
     }
 
     orgSn(orgId: number): string {
