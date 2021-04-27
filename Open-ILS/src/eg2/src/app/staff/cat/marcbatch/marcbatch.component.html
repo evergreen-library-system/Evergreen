@@ -125,7 +125,8 @@
       <ng-container *ngIf="source == 'b'">
         <div class="col-lg-3" i18n>Bucket named: </div>
         <div class="col-lg-6">
-          <eg-combobox [entries]="buckets" (onChange)="bucketChanged($event)">
+          <eg-combobox [selectedId]="bucket" 
+            [entries]="buckets" (onChange)="bucketChanged($event)">
           </eg-combobox>
         </div>
       </ng-container>
