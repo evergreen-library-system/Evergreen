@@ -41,7 +41,7 @@
     <li><div class="dropdown-divider"></div></li>
      	<!--User-->
       	<li class="nav-item">
-        	<a class="nav-link disabled active mx-2" href="#">Hello, [%  l('[_1] [_2]', ctx.user.first_given_name, ctx.user.family_name) | html %]</a>
+        	<a class="nav-link disabled active mx-2" href="#">Hello, [%  l('[_1] [_2]', ctx.user.pref_first_given_name || ctx.user.first_given_name, ctx.user.pref_family_name || ctx.user.family_name) | html %]</a>
       	</li>
     	<!--Messages with sup tag for # of messages-->
       	<li class="nav-item">
