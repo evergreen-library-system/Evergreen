@@ -763,8 +763,7 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
     }
 
     $scope.batchEdit = function() {
-        var url = egCore.env.basePath +
-                  'cat/catalog/batchEdit/bucket/' + $scope.bucketId;
+        var url = '/eg2/staff/cat/marcbatch/bucket/' + $scope.bucketId;
         $timeout(function() { $window.open(url, '_blank') });
     }
 
