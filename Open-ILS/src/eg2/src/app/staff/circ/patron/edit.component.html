@@ -574,6 +574,12 @@
     </div>
   </ng-container>
 
+  <ng-container *ngFor="let set of optInSettingTypes | keyvalue">
+    <ng-container *ngTemplateOutlet="userSettingsCheckboxRow;
+      context: {args: {settingName: set.key}}">
+    </ng-container>
+  </ng-container>
+
   <ng-container *ngIf="context.settingsCache['circ.privacy_waiver']">
     <div class="row pt-1 pb-1 mt-1" 
       *ngFor="let waiver of patron.waiver_entries(); let index = index">
