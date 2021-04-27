@@ -7,21 +7,7 @@
 <div id="acct_info_main">
     <table title="[% l('Account preference') %]" class='light_border table table-hover'>
         <tbody id='myopac_summary_tbody'>
-            <tr>
-                <td class='color_4 light_border'>[% l("Name") %]</td>
-
-                <td class='light_border'>[% l(
-                    HUMAN_NAME_FORMAT,
-                    ctx.user.prefix,
-                    ctx.user.first_given_name,
-                    ctx.user.second_given_name,
-                    ctx.user.family_name,
-                    ctx.user.suffix
-                ) | html %]</td>
-
-                <td></td>
-            </tr>
-             [% IF ctx.user.pref_first_given_name || ctx.user.pref_second_given_name || ctx.user.pref_family_name %]
+            [% IF ctx.user.pref_first_given_name || ctx.user.pref_second_given_name || ctx.user.pref_family_name %]
             <tr>
                 <td class='color_4 light_border'>[% l("Preferred Name") %]</td>
 
@@ -37,6 +23,20 @@
                 <td></td>
             </tr>
             [%  END %]
+            <tr>
+                <td class='color_4 light_border'>[% l("Legal Name") %]</td>
+
+                <td class='light_border'>[% l(
+                    HUMAN_NAME_FORMAT,
+                    ctx.user.prefix,
+                    ctx.user.first_given_name,
+                    ctx.user.second_given_name,
+                    ctx.user.family_name,
+                    ctx.user.suffix
+                ) | html %]</td>
+
+                <td></td>
+            </tr>
 
             <tr>
                 <td class='color_4 light_border'>[% l("Day Phone") %]</td>
