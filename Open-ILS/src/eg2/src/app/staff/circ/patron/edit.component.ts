@@ -234,7 +234,6 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        // Do this after view init so we can leverage
     }
 
     load(): Promise<any> {
@@ -253,7 +252,16 @@ export class EditComponent implements OnInit, AfterViewInit {
         .then(_ => this.setOptInSettings())
         .then(_ => this.setSmsCarriers())
         .then(_ => this.setFieldPatterns())
-        .then(_ => this.loading = false);
+        .then(_ => this.loading = false)
+        // Not my preferred way to handle this, but some values are
+        // applied to widgets slightly after the load() is done and the
+        // widgets are rendered.  If a widget is required and has no
+        // value yet, then a premature save state check will see the
+        // form as invalid and nonsaveable. In order the check for a
+        // non-saveable state on page load without forcing the page into
+        // an nonsaveable state on every page load, check the save state
+        // after a 1 second delay.
+        .then(_ => setTimeout(() => this.emitSaveState(), 1000));
     }
 
     setEditProfiles(): Promise<any> {
@@ -782,14 +790,9 @@ export class EditComponent implements OnInit, AfterViewInit {
         return this.objectFromPath(path, index)[field]();
     }
 
-    adjustSaveSate() {
-        // Avoid responding to any value changes while we are loading
-        if (this.loading) { return; }
-
+    emitSaveState() {
         // Timeout gives the form a chance to mark fields as (in)valid
         setTimeout(() => {
-
-            this.changesPending = true;
 
             const invalidInput = document.querySelector('.ng-invalid');
 
@@ -803,6 +806,13 @@ export class EditComponent implements OnInit, AfterViewInit {
 
             this.toolbar.disableSaveStateChanged.emit(!canSave);
         });
+    }
+
+    adjustSaveState() {
+        // Avoid responding to any value changes while we are loading
+        if (this.loading) { return; }
+        this.changesPending = true;
+        this.emitSaveState();
     }
 
     userStatCatChange(cat: IdlObject, entry: ComboboxEntry) {
@@ -826,12 +836,12 @@ export class EditComponent implements OnInit, AfterViewInit {
             this.patron.stat_cat_entries().push(map);
         }
 
-        this.adjustSaveSate();
+        this.adjustSaveState();
     }
 
     userSettingChange(name: string, value: any) {
         this.userSettings[name] = value;
-        this.adjustSaveSate();
+        this.adjustSaveState();
     }
 
     applySurveyResponse(question: IdlObject, answer: ComboboxEntry) {
@@ -926,7 +936,7 @@ export class EditComponent implements OnInit, AfterViewInit {
                 break;
         }
 
-        this.adjustSaveSate();
+        this.adjustSaveState();
     }
 
     maintainJuvFlag() {
