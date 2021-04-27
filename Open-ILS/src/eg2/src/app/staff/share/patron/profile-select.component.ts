@@ -57,6 +57,7 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
 
     constructor(
         private org: OrgService,
+        private idl: IdlService,
         private auth: AuthService,
         private pcrud: PcrudService) {
         this.profileChange = new EventEmitter<IdlObject>();
@@ -64,7 +65,26 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
 
     ngOnInit() {
         this.collectGroups().then(grps => this.sortGroups(grps))
+        .then(_ => this.fetchInitialGroup())
         .then(_ => this.cbox.selectedId = this.initialGroupId);
+    }
+
+    // If the initial group is not included in our set of groups because
+    // we are using a custom display tree, fetch the group so we can
+    // add it to our tree.
+    fetchInitialGroup(): Promise<any> {
+        if (!this.initialGroupId || this.profiles[this.initialGroupId]) {
+            return Promise.resolve();
+        }
+
+        return this.pcrud.retrieve('pgt', this.initialGroupId).toPromise()
+        .then(grp => {
+            this.profiles[grp.id()] = grp;
+            grp.parent(null);
+            this.cboxEntries.push(
+                {id: grp.id(), label: this.grpLabel([], grp)});
+        });
+
     }
 
     collectGroups(): Promise<IdlObject[]> {
@@ -93,17 +113,21 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
                     closestOrg = org;
                 }
             });
+
             groups = groups.filter(g => g.org() === closestOrg.id());
 
-            // Link the display entry to its pgt.
-            const pgtList = [];
+            // Translate the display entries into a 'pgt' tree
+
+            const tree: IdlObject[] = [];
+
             groups.forEach(display => {
-                const pgt = display.grp();
-                pgt._display = display;
-                pgtList.push(pgt);
+                const grp = display.grp();
+                const displayParent = groups.filter(g => g.id() === display.parent())[0];
+                grp.parent(displayParent ? displayParent.grp().id() : null);
+                tree.push(grp);
             });
 
-            return pgtList;
+            return tree;
         });
     }
 
@@ -116,7 +140,7 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
         let depth = 0;
 
         do {
-            const pid = tmp._display ? tmp._display.parent() : tmp.parent();
+            const pid = tmp.parent();
             if (!pid) { break; } // top of the tree
 
             // Should always produce a value unless a perm group
