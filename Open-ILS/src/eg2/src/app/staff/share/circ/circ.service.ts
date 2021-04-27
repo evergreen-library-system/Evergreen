@@ -859,6 +859,8 @@ export class CircService {
                 return this.showPrecatAlert().then(_ => result);
 
             case 'ROUTE_ITEM':
+                this.audio.play(result.hold ?
+                    'info.checkin.transit.hold' : 'info.checkin.transit');
                 this.components.routeDialog.checkin = result;
                 return this.components.routeDialog.open().toPromise()
                 .then(_ => result);

@@ -11,7 +11,6 @@ import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {CheckinResult} from './circ.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {AudioService} from '@eg/share/util/audio.service';
 import {PrintService} from '@eg/share/print/print.service';
 
 /** Route Item Dialog */
@@ -32,7 +31,6 @@ export class RouteDialogComponent extends DialogComponent {
         private pcrud: PcrudService,
         private org: OrgService,
         private circ: CircService,
-        private audio: AudioService,
         private printer: PrintService,
         private serverStore: ServerStoreService) {
         super(modal);
@@ -93,9 +91,6 @@ export class RouteDialogComponent extends DialogComponent {
                 .then(patron => this.checkin.patron = patron);
             });
         }
-
-        this.audio.play(hold ?
-            'info.checkin.transit.hold' : 'info.checkin.transit');
 
         if (this.checkin.params.auto_print_hold_transits
             || this.circ.suppressCheckinPopups) {
