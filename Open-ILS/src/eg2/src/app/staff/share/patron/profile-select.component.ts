@@ -154,7 +154,20 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
         return PAD_SPACE.repeat(depth) + grp.name();
     }
 
-    sortGroups(groups: IdlObject[], grp?: IdlObject) {
+    sortGroups(groups: IdlObject[]) {
+
+        // When using display entries, there can be multiple groups
+        // with no parent.
+
+        groups.forEach(grp => {
+            if (grp.parent() === null) {
+                this.sortOneGroup(groups, grp);
+            }
+        });
+    }
+
+    sortOneGroup(groups: IdlObject[], grp: IdlObject) {
+
         if (!grp) {
             grp = groups.filter(g => g.parent() === null)[0];
         }
@@ -172,7 +185,7 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
                     return a.name() < b.name() ? -1 : 1;
                 }
             })
-            .forEach(child => this.sortGroups(groups, child));
+            .forEach(child => this.sortOneGroup(groups, child));
     }
 
     writeValue(pgt: IdlObject) {
