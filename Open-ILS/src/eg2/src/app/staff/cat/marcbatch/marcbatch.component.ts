@@ -56,6 +56,18 @@ export class MarcBatchComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+
+        this.route.paramMap.subscribe((params: ParamMap) => {
+            this.bucket = +params.get('bucketId');
+            this.recordId = +params.get('recordId');
+
+            if (this.bucket) {
+                this.source = 'b';
+            } else if (this.recordId) {
+                this.source = 'r';
+            }
+        });
+
         this.load();
     }
 
