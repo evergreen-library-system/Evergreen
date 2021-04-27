@@ -10,22 +10,6 @@
     <table width='70%' title="[% l('Account preference') %]"
         class='light_border data_grid'>
         <tbody id='myopac_summary_tbody'>
-            <tr>
-                <td width='30%'
-                    class='color_4 light_border'>[% l("Name") %]</td>
-
-                <td class='light_border'>[% l(
-                    HUMAN_NAME_FORMAT,
-                    ctx.user.prefix, 
-                    ctx.user.first_given_name,
-                    ctx.user.second_given_name, 
-                    ctx.user.family_name,
-                    ctx.user.suffix
-                ) | html %]</td>
-
-                <td></td>
-                <td></td>
-            </tr>
             [% IF ctx.user.pref_first_given_name || ctx.user.pref_second_given_name || ctx.user.pref_family_name %]
             <tr>
                 <td width='30%'
@@ -33,9 +17,9 @@
 
                 <td class='light_border'>[% l(
                     HUMAN_NAME_FORMAT,
-                    ctx.user.pref_prefix, 
+                    ctx.user.pref_prefix,
                     (ctx.user.pref_first_given_name || ctx.user.first_given_name),
-                    ctx.user.pref_second_given_name, 
+                    ctx.user.pref_second_given_name,
                     (ctx.user.pref_family_name || ctx.user.family_name),
                     ctx.user.pref_suffix
                 ) | html %]</td>
@@ -44,6 +28,23 @@
                 <td></td>
             </tr>
             [%  END %]
+
+            <tr>
+                <td width='30%'
+                    class='color_4 light_border'>[% l("Legal Name") %]</td>
+
+                <td class='light_border'>[% l(
+                    HUMAN_NAME_FORMAT,
+                    ctx.user.prefix,
+                    ctx.user.first_given_name,
+                    ctx.user.second_given_name,
+                    ctx.user.family_name,
+                    ctx.user.suffix
+                ) | html %]</td>
+
+                <td></td>
+                <td></td>
+            </tr>
 
             <tr>
                 <td class='color_4 light_border'>[% l("Day Phone") %]</td>
