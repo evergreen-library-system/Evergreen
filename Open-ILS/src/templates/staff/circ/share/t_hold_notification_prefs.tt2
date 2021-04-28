@@ -64,7 +64,7 @@
         <select id='sms-carrier'
           ng-model="args.sms_carrier" 
           ng-disabled="!args.update_sms_carrier"
-          ng-options="carrier.name() for carrier in sms_carriers">
+          ng-options="carrier.name() + ' (' + carrier.region() + ')' for carrier in sms_carriers | orderBy:'name()' ">
         </select>
       </div>
     </div>
