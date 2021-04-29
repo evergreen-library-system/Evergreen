@@ -5,6 +5,7 @@ import {BcSearchComponent} from './bcsearch.component';
 import {PatronResolver} from './resolver.service';
 import {TestPatronPasswordComponent} from './test-password.component';
 import {RegisterPatronComponent} from './register.component';
+import {LastPatronComponent} from './last.component';
 import {CanDeactivateGuard} from '@eg/share/util/can-deactivate.guard';
 
 const routes: Routes = [{
@@ -18,6 +19,10 @@ const routes: Routes = [{
   }, {
     path: 'register',
     component: RegisterPatronComponent,
+    resolve: {resolver : PatronResolver}
+  }, {
+    path: 'last',
+    component: LastPatronComponent,
     resolve: {resolver : PatronResolver}
   }, {
     path: 'register/clone/:cloneId',

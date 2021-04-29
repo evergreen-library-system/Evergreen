@@ -33,6 +33,7 @@ import {PatronMessagesComponent} from './messages.component';
 import {PatronPermsComponent} from './perms.component';
 import {BillingHistoryComponent} from './billing-history.component';
 import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
+import {LastPatronComponent} from './last.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
     RegisterPatronComponent,
     PatronStatCatsComponent,
     PatronPermsComponent,
+    LastPatronComponent,
     PatronBarcodesDialogComponent,
     SecondaryGroupsDialogComponent,
     HoldNotifyUpdateDialogComponent

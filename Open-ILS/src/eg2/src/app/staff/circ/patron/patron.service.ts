@@ -7,6 +7,7 @@ import {PatronService, PatronSummary, PatronStats, PatronAlerts
     } from '@eg/staff/share/patron/patron.service';
 import {PatronSearch} from '@eg/staff/share/patron/search.component';
 import {StoreService} from '@eg/core/store.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
 
 export interface BillGridEntry extends CircDisplayInfo {
@@ -55,10 +56,13 @@ export class PatronContextService {
     // These should persist tab changes
     checkouts: CircGridEntry[] = [];
 
+    maxRecentPatrons = 1;
+
     settingsCache: {[key: string]: any} = {};
 
     constructor(
         private store: StoreService,
+        private serverStore: ServerStoreService,
         private org: OrgService,
         private circ: CircService,
         public patrons: PatronService
@@ -84,7 +88,30 @@ export class PatronContextService {
         return this.patrons.getFleshedById(id, PATRON_FLESH_FIELDS)
         .then(p => this.summary = new PatronSummary(p))
         .then(_ => this.getPatronStats(id))
-        .then(_ => this.compileAlerts());
+        .then(_ => this.compileAlerts())
+        .then(_ => this.addRecentPatron())
+    }
+
+    addRecentPatron(): Promise<any> {
+
+        return this.serverStore.getItem('ui.staff.max_recent_patrons')
+        .then(sets => {
+            const num = sets['ui.staff.max_recent_patrons'];
+            if (num) { this.maxRecentPatrons = num; }
+
+            const patrons: number[] =
+                this.store.getLoginSessionItem('eg.circ.recent_patrons') || [];
+
+            patrons.splice(0, 0, this.summary.id);  // put this user at front
+            patrons.splice(this.maxRecentPatrons, 1); // remove excess
+
+            // remove any other occurrences of this user, which may have been
+            // added before the most recent user.
+            const idx = patrons.indexOf(this.summary.id, 1);
+            if (idx > 0) { patrons.splice(idx, 1); }
+
+            this.store.setLoginSessionItem('eg.circ.recent_patrons', patrons);
+        });
     }
 
     getPatronStats(id: number): Promise<any> {

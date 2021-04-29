@@ -33,6 +33,7 @@ export class PatronResolver implements Resolve<Promise<any[]>> {
           'eg.circ.patron.summary.collapse',
           'circ.do_not_tally_claims_returned',
           'circ.tally_lost',
+          'ui.staff.max_recent_patrons',
           'ui.staff.require_initials.patron_standing_penalty',
           'ui.admin.work_log.max_entries',
           'ui.admin.patron_log.max_entries',
