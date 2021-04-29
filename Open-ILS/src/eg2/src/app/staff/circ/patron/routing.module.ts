@@ -40,6 +40,11 @@ const routes: Routes = [{
     component: PatronComponent,
     resolve: {resolver : PatronResolver}
   }, {
+    path: 'search/recents',
+    component: PatronComponent,
+    resolve: {resolver : PatronResolver},
+    data: {showRecentPatrons: true}
+  }, {
     path: 'bcsearch',
     component: BcSearchComponent
   }, {

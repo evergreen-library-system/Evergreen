@@ -1,8 +1,8 @@
 import {Component, Input, Output, OnInit, AfterViewInit,
     EventEmitter, ViewChild} from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
-import {Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Observable, of, from} from 'rxjs';
+import {map, concatMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -57,6 +57,9 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
 
     startWithFired = false;
     @Input() startWithSearch: PatronSearch;
+
+    // If set, load a batch of patrons by ID.
+    @Input() patronIds: number[];
 
     // Fires on dbl-click or Enter while one or more search result
     // rows are selected.
@@ -162,8 +165,11 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
 
         let observable: Observable<IdlObject>;
 
-        if (this.search.id) {
-            observable = this.searchById();
+        if (this.patronIds) {
+            observable = this.searchById(this.patronIds);
+            this.patronIds = null;
+        } else if (this.search.id) {
+            observable = this.searchById([this.search.id]);
         } else {
             observable = this.searchByForm(pager, sort);
         }
@@ -223,12 +229,14 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         );
     }
 
-    searchById(): Observable<IdlObject> {
-        return this.net.request(
-            'open-ils.actor',
-            'open-ils.actor.user.fleshed.retrieve',
-            this.auth.token(), this.search.id, DEFAULT_FLESH
-        );
+    searchById(patronIds: number[]): Observable<IdlObject> {
+        return from(patronIds).pipe(concatMap(id => {
+            return this.net.request(
+                'open-ils.actor',
+                'open-ils.actor.user.fleshed.retrieve',
+                this.auth.token(), id, DEFAULT_FLESH
+            );
+        }));
     }
 
     compileSort(sort: any[]): string[] {

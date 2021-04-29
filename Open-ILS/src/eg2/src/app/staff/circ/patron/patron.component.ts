@@ -7,6 +7,7 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {EventService} from '@eg/core/event.service';
+import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService, BillGridEntry} from './patron.service';
@@ -34,6 +35,7 @@ export class PatronComponent implements OnInit, AfterViewInit {
     billingHistoryTab: string;
     showSummary = true;
     loading = true;
+    showRecentPatrons = false;
 
     /* eg-patron-edit is unable to find #editorToolbar directly
      * within the template.  Adding a ref here allows it to
@@ -58,7 +60,8 @@ export class PatronComponent implements OnInit, AfterViewInit {
         private auth: AuthService,
         private pcrud: PcrudService,
         private evt: EventService,
-        private store: ServerStoreService,
+        private store: StoreService,
+        private serverStore: ServerStoreService,
         public patronService: PatronService,
         public context: PatronContextService
     ) {}
@@ -99,14 +102,26 @@ export class PatronComponent implements OnInit, AfterViewInit {
 
     fetchSettings(): Promise<any> {
 
-        return this.store.getItemBatch([
+        return this.serverStore.getItemBatch([
             'eg.circ.patron.summary.collapse'
         ]).then(prefs => {
             this.showSummary = !prefs['eg.circ.patron.summary.collapse'];
         });
     }
 
+    recentPatronIds(): number[] {
+        if (this.patronTab === 'search' && this.showRecentPatrons) {
+            return this.store.getLoginSessionItem('eg.circ.recent_patrons') || [];
+        } else {
+            return null;
+        }
+    }
+
     watchForTabChange() {
+
+        this.route.data.subscribe(data => {
+            this.showRecentPatrons = (data && data.showRecentPatrons);
+        });
 
         this.route.paramMap.subscribe((params: ParamMap) => {
             this.patronTab = params.get('tab') || 'search';
@@ -188,7 +203,7 @@ export class PatronComponent implements OnInit, AfterViewInit {
     }
 
     toggleSummaryPane() {
-        this.store.setItem( // collapse is the opposite of show
+        this.serverStore.setItem( // collapse is the opposite of show
             'eg.circ.patron.summary.collapse', this.showSummary);
         this.showSummary = !this.showSummary;
     }

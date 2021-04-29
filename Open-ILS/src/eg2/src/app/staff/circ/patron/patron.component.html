@@ -226,6 +226,7 @@
           <ng-template ngbNavContent>
             <div class="">
               <eg-patron-search
+                [patronIds]="recentPatronIds()"
                 [startWithSearch]="context.lastPatronSearch"
                 (searchFired)="patronSearchFired($event)"
                 (selectionChange)="patronSelectionChange($event)"

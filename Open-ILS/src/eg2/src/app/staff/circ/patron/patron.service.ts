@@ -89,7 +89,7 @@ export class PatronContextService {
         .then(p => this.summary = new PatronSummary(p))
         .then(_ => this.getPatronStats(id))
         .then(_ => this.compileAlerts())
-        .then(_ => this.addRecentPatron())
+        .then(_ => this.addRecentPatron());
     }
 
     addRecentPatron(): Promise<any> {
