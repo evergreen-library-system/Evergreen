@@ -122,6 +122,12 @@
             </a>
           </li>
           <li>
+            <a href="/eg2/staff/circ/checkin/capture">
+              <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
+              [% l('Capture Holds (Experimental)') %]
+            </a>
+          </li>
+          <li>
             <a href="/eg2/staff/circ/holds/pull-list">
               <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
               [% l('Pull List for Hold Requests') %]

@@ -69,6 +69,7 @@ export class CheckinComponent implements OnInit, AfterViewInit {
     strictBarcode = false;
     trimList = false;
     itemNeverCirced: string;
+    persistKey: string;
 
     gridDataSource: GridDataSource = new GridDataSource();
     cellTextGenerator: GridCellTextGenerator;
@@ -103,6 +104,17 @@ export class CheckinComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit() {
+
+        this.route.data.subscribe(data => {
+            if (data && data.capture) {
+                this.isHoldCapture = true;
+                this.persistKey = 'circ.checkin.capture';
+            } else {
+                this.isHoldCapture = false;
+                this.persistKey = 'circ.checkin.checkin';
+            }
+        });
+
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
             return from(this.checkins);
         };
@@ -118,6 +130,8 @@ export class CheckinComponent implements OnInit, AfterViewInit {
             this.strictBarcode = sets['circ.checkin.strict_barcode'];
 
             if (this.isHoldCapture) {
+                // In hold capture mode, some modifiers are forced
+                // regardless of preferences.
                 this.modifiers.noop = false;
                 this.modifiers.auto_print_holds_transits = true;
             }
