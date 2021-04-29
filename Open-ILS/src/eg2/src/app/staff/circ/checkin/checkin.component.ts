@@ -169,6 +169,12 @@ export class CheckinComponent implements OnInit, AfterViewInit {
             backdate: this.backdate
         };
 
+        Object.keys(this.modifiers).forEach(mod => {
+            if (this.modifiers[mod]) {
+                params[mod] = true;
+            }
+        });
+
         return this.barcodeSelect.getBarcode('asset', this.barcode)
         .then(selection => {
             if (selection) {
@@ -238,16 +244,8 @@ export class CheckinComponent implements OnInit, AfterViewInit {
 
     hasAlerts(): boolean {
         return (
-            Boolean(this.backdate)              ||
-            this.modifiers.noop                 ||
-            this.modifiers.manual_float         ||
-            this.modifiers.void_overdues        ||
-            this.modifiers.clear_expired        ||
-            this.modifiers.retarget_holds       ||
-            this.modifiers.hold_as_transit      ||
-            this.modifiers.no_precat_alert      ||
-            this.modifiers.do_inventory_update  ||
-            this.modifiers.auto_print_holds_transits
+            Boolean(this.backdate) ||
+            Object.keys(this.modifiers).filter(mod => this.modifiers[mod]).length > 0
         );
     }
 

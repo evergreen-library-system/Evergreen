@@ -173,6 +173,12 @@ export interface CheckinParams {
     capture?: string;
     next_copy_status?: number[];
     new_copy_alerts?: boolean;
+    clear_expired?: boolean;
+    hold_as_transit?: boolean;
+    manual_float?: boolean;
+    no_precat_alert?: boolean;
+    retarget_holds?: boolean;
+    retarget_holds_all?: boolean;
 
     // internal / local values that are moved from the API request.
     _override?: boolean;
@@ -772,11 +778,6 @@ export class CircService {
         const firstEvent = allEvents[0];
         const payload = firstEvent.payload;
 
-        if (!payload) {
-            this.audio.play('error.unknown.no_payload');
-            return Promise.reject();
-        }
-
         const success =
             firstEvent.textcode.match(/SUCCESS|NO_CHANGE|ROUTE_ITEM/) !== null;
 
@@ -786,14 +787,20 @@ export class CircService {
             allEvents: allEvents,
             params: params,
             success: success,
-            circ: payload.circ,
-            parent_circ: payload.parent_circ,
-            copy: payload.copy,
-            volume: payload.volume,
-            record: payload.record,
-            transit: payload.transit,
-            hold: payload.hold
         };
+
+        if (!payload) {
+            // e.g. ASSET_COPY_NOT_FOUND
+            return Promise.resolve(result);
+        }
+
+        result.circ = payload.circ;
+        result.parent_circ = payload.parent_circ;
+        result.copy = payload.copy;
+        result.volume = payload.volume;
+        result.record = payload.record;
+        result.transit = payload.transit;
+        result.hold = payload.hold;
 
         const copy = result.copy;
         const volume = result.volume;
@@ -992,15 +999,15 @@ export class CircService {
     }
 
     handleCheckinUncatAlert(result: CheckinResult): Promise<CheckinResult> {
-        const copy = result.copy;
+        const barcode = result.copy ?
+            result.copy.barcode() : result.params.copy_barcode;
 
         if (this.suppressCheckinPopups) {
             return Promise.resolve(result);
         }
 
         return this.strings.interpolate(
-            'staff.circ.checkin.uncat.alert',
-            {barcode: copy.barcode()}
+            'staff.circ.checkin.uncat.alert', {barcode: barcode}
         ).then(str => {
             this.components.uncatAlertDialog.dialogBody = str;
             return this.components.uncatAlertDialog.open().toPromise()
