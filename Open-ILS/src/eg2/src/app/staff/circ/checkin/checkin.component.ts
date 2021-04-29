@@ -1,7 +1,7 @@
 import {Component, ViewChild, OnInit, AfterViewInit, HostListener} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {from} from 'rxjs';
+import {empty, from} from 'rxjs';
 import {concatMap} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -337,14 +337,30 @@ export class CheckinComponent implements OnInit, AfterViewInit {
 
 
     cancelTransits(rows: CheckinGridEntry[]) {
-        const ids = rows
-            .filter(row => Boolean(row.transit))
-            .map(row => row.transit.id());
 
-        if (ids.length > 0) {
-            this.cancelTransitDialog.transitIds = ids;
-            this.cancelTransitDialog.open().subscribe();
-        }
+        rows = rows.filter(row => row.copy && row.copy.status().id() === 6);
+
+        // Copies in transit are not always accompanied by their transit.
+        from(rows).pipe(concatMap(row => {
+            return from(
+                this.circ.findCopyTransit(row)
+                .then(transit => row.transit = transit)
+            );
+        }))
+        .pipe(concatMap(_ => {
+
+            const ids = rows
+                .filter(row => Boolean(row.transit))
+                .map(row => row.transit.id());
+
+            if (ids.length > 0) {
+                this.cancelTransitDialog.transitIds = ids;
+                return this.cancelTransitDialog.open();
+            } else {
+                return empty();
+            }
+
+        })).subscribe();
     }
 
     showRecordHolds(rows: CheckinGridEntry[]) {
