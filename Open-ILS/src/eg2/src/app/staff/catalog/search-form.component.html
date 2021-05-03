@@ -1,8 +1,16 @@
 <ng-template #ccvmOption let-list="list">
-  <option *ngFor="let ccv of list" value="{{ccv.code()}}">
+  <ng-container *ngFor="let ccv of list">
+  <option *ngIf="ccv.is_simple() === 't'" value="{{ccv.code()}}">
     {{ccv.search_label() || ccv.value()}}
     <ng-container *ngIf="ccv.opac_visible() === 'f'" i18n>(Hidden)</ng-container>
   </option>
+  </ng-container>
+  <ng-container *ngFor="let ccv of list">
+  <option *ngIf="ccv.is_simple() === 'f'" value="{{ccv.code()}}">
+    {{ccv.search_label() || ccv.value()}}
+    <ng-container *ngIf="ccv.opac_visible() === 'f'" i18n>(Hidden)</ng-container>
+  </option>
+  </ng-container>
 </ng-template>
 
 <div id='staffcat-search-form'>
