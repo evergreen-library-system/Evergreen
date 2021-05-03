@@ -129,7 +129,7 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
         egCore.print.print({
             context : 'receipt', 
             template : 'holds_for_patron', 
-            scope : {holds : holds}
+            scope : {patron : egCore.idl.toHash(patronSvc.current), holds : holds}
         });
     }
 
