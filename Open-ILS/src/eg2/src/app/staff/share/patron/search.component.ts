@@ -165,9 +165,9 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
 
         let observable: Observable<IdlObject>;
 
-        if (this.patronIds) {
+        if (this.patronIds && !this.startWithFired) {
             observable = this.searchById(this.patronIds);
-            this.patronIds = null;
+            this.startWithFired = true;
         } else if (this.search.id) {
             observable = this.searchById([this.search.id]);
         } else {

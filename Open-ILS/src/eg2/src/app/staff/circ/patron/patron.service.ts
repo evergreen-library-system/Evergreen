@@ -95,8 +95,7 @@ export class PatronContextService {
     addRecentPatron(): Promise<any> {
 
         return this.serverStore.getItem('ui.staff.max_recent_patrons')
-        .then(sets => {
-            const num = sets['ui.staff.max_recent_patrons'];
+        .then(num => {
             if (num) { this.maxRecentPatrons = num; }
 
             const patrons: number[] =
