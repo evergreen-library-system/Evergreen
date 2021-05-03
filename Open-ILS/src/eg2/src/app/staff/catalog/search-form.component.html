@@ -167,7 +167,7 @@
               </div>
           </div>
           <div class="row mt-3" *ngIf="showFilters()">
-            <div class="col-lg-3">
+            <div class="col-lg-3" *ngIf="searchFilters().includes('item_type')">
               <select class="form-control"  multiple="true"
                 [(ngModel)]="context.termSearch.ccvmFilters.item_type">
                 <option value='' i18n>All Item Types</option>
@@ -176,7 +176,7 @@
                 </ng-container> 
               </select>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3" *ngIf="searchFilters().includes('item_form')">
               <select class="form-control" multiple="true"
                 [(ngModel)]="context.termSearch.ccvmFilters.item_form">
                 <option value='' i18n>All Item Forms</option>
@@ -185,7 +185,7 @@
                 </ng-container> 
               </select>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3" *ngIf="searchFilters().includes('item_lang')">
               <select class="form-control" 
                 [(ngModel)]="context.termSearch.ccvmFilters.item_lang" multiple="true">
                 <option value='' i18n>All Languages</option>
@@ -194,7 +194,7 @@
                 </ng-container> 
               </select>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3" *ngIf="searchFilters().includes('audience')">
               <select class="form-control" 
                 [(ngModel)]="context.termSearch.ccvmFilters.audience" multiple="true">
                 <option value='' i18n>All Audiences</option>
@@ -205,7 +205,7 @@
             </div>
           </div>
           <div class="row mt-3" *ngIf="showFilters()">
-            <div class="col-lg-3">
+            <div class="col-lg-3" *ngIf="searchFilters().includes('vr_format')">
               <select class="form-control" 
                 [(ngModel)]="context.termSearch.ccvmFilters.vr_format" multiple="true">
                 <option value='' i18n>All Video Formats</option>
@@ -214,7 +214,7 @@
                 </ng-container> 
               </select>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3" *ngIf="searchFilters().includes('bib_level')">
               <select class="form-control" 
                 [(ngModel)]="context.termSearch.ccvmFilters.bib_level" multiple="true">
                 <option value='' i18n>All Bib Levels</option>
@@ -223,7 +223,7 @@
                 </ng-container> 
               </select>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3" *ngIf="searchFilters().includes('lit_form')">
               <select class="form-control" 
                 [(ngModel)]="context.termSearch.ccvmFilters.lit_form" multiple="true">
                 <option value='' i18n>All Literary Forms</option>

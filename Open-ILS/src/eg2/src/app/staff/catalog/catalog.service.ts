@@ -25,6 +25,10 @@ export class StaffCatalogService {
     // Display the Exclude Electronic checkbox
     showExcludeElectronic = false;
 
+    // Advanced search filters to display
+    searchFilters: string[];
+
+    // TODO: does unapi support pref-lib for result-page copy counts?
     prefOrg: IdlObject;
 
     // Default search tab

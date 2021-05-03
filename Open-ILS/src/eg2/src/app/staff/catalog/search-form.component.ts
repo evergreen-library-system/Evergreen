@@ -309,6 +309,9 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     showExcludeElectronic(): boolean {
         return this.staffCat.showExcludeElectronic;
     }
+    searchFilters(): string[] {
+        return this.staffCat.searchFilters;
+    }
 }
 
 
