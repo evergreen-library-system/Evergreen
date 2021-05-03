@@ -50,7 +50,9 @@ export class PrintTemplateComponent implements OnInit {
     sampleData: any = {
         patron_address: {},
         holds_for_bib: {},
-        bills_current: {}
+        bills_current: {},
+        bills_payment: {},
+        hold_shelf_slip: {}
     };
 
     constructor(
@@ -153,6 +155,19 @@ export class PrintTemplateComponent implements OnInit {
                 copy_barcode: '3423482302394'
             }]
         };
+
+        this.sampleData.hold_shelf_slip = {
+            checkin: {
+                copy: samples.acp[0],
+                patron: samples.au[0],
+                hold: samples.ahr[0]
+            }
+        };
+
+        this.sampleData.hold_transit_slip =
+            Object.assign({}, this.sampleData.hold_shelf_slip);
+        this.sampleData.hold_transit_slip.checkin.destOrg =
+            this.org.list()[0];
     }
 
     onTabChange(evt: NgbTabChangeEvent) {
