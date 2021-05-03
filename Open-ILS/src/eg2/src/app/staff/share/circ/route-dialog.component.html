@@ -18,9 +18,9 @@
       || checkin.patron.pref_first_given_name() 
       || checkin.patron.pref_second_given_name()">
       Preferred name: 
-        {{checkin.patron.pref_family_name || checkin.patron.family_name}},
-        {{checkin.patron.pref_first_given_name || checkin.patron.first_given_name}}
-        {{checkin.patron.pref_second_given_name}}
+        {{checkin.patron.pref_family_name() || checkin.patron.family_name()}},
+        {{checkin.patron.pref_first_given_name() || checkin.patron.first_given_name()}}
+        {{checkin.patron.pref_second_given_name()}}
     </div>
   </div>
   <div>

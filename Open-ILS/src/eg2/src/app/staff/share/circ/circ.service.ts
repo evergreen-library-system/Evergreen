@@ -713,9 +713,29 @@ export class CircService {
         const copy = result.copy;
         const volume = result.volume;
         const circ = result.circ;
-        const parent_circ = result.parent_circ;
+        const hold = result.hold;
+        const nonCatCirc = (result as CheckoutResult).nonCatCirc;
 
         let promise = Promise.resolve();
+
+        if (!result.patron) {
+            let patronId;
+            if (hold) {
+                patronId = hold.usr();
+            } else if (circ) {
+                patronId = circ.usr();
+            } else if (nonCatCirc) {
+                patronId = nonCatCirc.patron();
+            }
+
+            if (patronId) {
+                promise = promise.then(_ => {
+                    return this.pcrud.retrieve('au', patronId)
+                    .toPromise().then(p => result.patron = p);
+                });
+            }
+        }
+
 
         if (result.record) {
             result.title = result.record.title();

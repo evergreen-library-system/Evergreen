@@ -1,6 +1,6 @@
 import {Component, OnInit, Output, Input, ViewChild, EventEmitter} from '@angular/core';
 import {empty, of, from, Observable} from 'rxjs';
-import {concatMap} from 'rxjs/operators';
+import {tap, concatMap} from 'rxjs/operators';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
