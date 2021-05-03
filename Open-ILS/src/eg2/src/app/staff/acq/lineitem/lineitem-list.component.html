@@ -9,10 +9,10 @@
       <div ngbDropdownMenu>
         <a ngbDropdownItem routerLink="../brief-record"
           queryParamsHandling="merge" i18n>Add Brief Record</a>
+        <button ngbDropdownItem (click)="deleteLineitems()" 
+          [disabled]="!canDeleteLis()" i18n>Delete Selected Lineitems</button>
         <div class="dropdown-divider"></div>
         <h6 class="dropdown-header" i18n>Selection List Actions</h6>
-        <button ngbDropdownItem (click)="deleteLineitems()" 
-          [disabled]="!picklistId" i18n>Delete Selected Lineitems</button>
         <button ngbDropdownItem (click)="createPo()" 
           [disabled]="!picklistId" i18n>Create Purchase Order from Selected Lineitems</button>
         <button ngbDropdownItem (click)="createPo(true)"

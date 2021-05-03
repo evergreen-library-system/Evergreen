@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, Output, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
+import {Observable, from} from 'rxjs';
+import {tap, concatMap} from 'rxjs/operators';
 import {Pager} from '@eg/share/util/pager';
 import {EgEvent, EventService} from '@eg/core/event.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -12,6 +12,10 @@ import {LineitemService} from './lineitem.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {CancelDialogComponent} from './cancel-dialog.component';
+
+const DELETABLE_STATES = [
+    'new', 'selector-ready', 'order-ready', 'approved', 'pending-order'
+]
 
 @Component({
   templateUrl: 'lineitem-list.component.html',
@@ -422,18 +426,12 @@ export class LineitemListComponent implements OnInit {
             'open-ils.acq.purchase_order.lineitem.delete' :
             'open-ils.acq.picklist.lineitem.delete';
 
-        let promise = Promise.resolve();
-
-        this.loading = true;
-
-        ids.forEach(id => {
-            promise = promise
-            .then(_ => this.net.request(
-                'open-ils.acq', method, this.auth.token(), id).toPromise()
-            );
-        });
-
-        promise.then(_ => this.load());
+        from(ids)
+        .pipe(concatMap(id =>
+            this.net.request('open-ils.acq', method, this.auth.token(), id)
+        ))
+        .pipe(concatMap(_ => from(this.load())))
+        .subscribe();
     }
 
     liHasRealCopies(li: IdlObject): boolean {
@@ -524,6 +522,16 @@ export class LineitemListComponent implements OnInit {
         this.router.navigate(['/staff/acq/po/create'], {
             queryParams: {li: fromAll ? this.lineitemIds : this.selectedIds()}
         });
+    }
+
+    // For PO's, lineitems can only be deleted if they are pending order.
+    canDeleteLis(): boolean {
+        const li = this.pageOfLineitems[0];
+        return Boolean(this.picklistId) || (
+            Boolean(li) &&
+            DELETABLE_STATES.includes(li.state()) &&
+            Boolean(this.poId)
+        );
     }
 }
 
