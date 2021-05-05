@@ -1,0 +1,118 @@
+= Surveys =
+:toc:
+indexterm:[Surveys]
+
+Surveys can be created that appear on the patron registration/edit page for a branch or system. Surveys questions can be optional or required. Some examples of survey questions might include: Would you use the library if it were open on a Sunday? Would you like to be contacted by the library to learn about new services? Do you attend library programs? Are you registered to vote?
+
+Surveys come up when a patron is first registered. If you would like staff to ask the survey questions when the patron’s library card is renewed, you’ll need to make that part of local procedure.
+
+It is possible to run reports on Surveys, this will allow you to obtain statisical information from the surveys or listing of responses. For example, you could find out how many people say they would use the library if it were open on a Sunday, or you could get a list of patrons who say they would like to receive marketing material from the library. You can also visit individvual patron records to see their survey answers.
+
+== To create a new survey ==
+
+. Go to *Administration* -> *Local Administration* -> *Surveys*.
++
+image::media/survey-2.png[Surveys]
++
+. Click the Add New Survey button.
+. A popup will appear:
++
+image::media/survey-3.png[New Survey]
++
+. Fill in the form.
+  * _Name_ is the Name of the survey, this shows up in the patron record.
+  * _Description_ is a description of the survey, include anything you want about the survery.
+  * _Owning Library_ sets who gets the survey question. Set at consortitial level for all patrons, set at system level for just a system, set at branch level for just a branch. 
+  * _Start Date_ use the date picker to choose the date the survey is to start.
+  * _End Date_ use the date picker to choose the date you want to end the survey. If you do not want the survey to expire, then set the date way off in the future example 12/31/35.
+  * _OPAC Survey?_ This is to be future development, do not set.
+  * _Poll Style?_ This is to be future development, do not set.
+  * _Is Required?_ This sets the Survey as required for patron registration. 
+  * _Display in User Summery?_ This allows the survey questions and answers to show up in the User Summery on the right hand side.
+. Click *Save*.
+
+Now to add questions
+
+. Click on the Survey you want to add a question to. 
+  * You can either right click on the survey or select the survey and go to *Actions* and choose *Edit Selected*.
+. Choose the _*Questions and Answers*_ tab to add your questions.
+. In the _New Question_ box type in your question. 
+. Click *Save Question & Add Answer*
+. Enter your answers in the _Add Answer_.  Then click *Add Answer* for each answer. 
+
+. The screen will refresh so that you may add a question: 
++
+image::media/survey-3a.png[Add Questions]
++
+. Enter the survey question and click the *Save Question & Add Answer* button.
++
+image::media/survey-4.png[Add Answers]
++
+. Enter each option answer and click the *Add Answer* button after each one. Then click the *Save Changes* button. If you do not save your changes, then the answer will not be saved.
++
+image::media/survey-5.png[Saving Answers]
++
+. Repeat the steps above to add as many questions and answers as you wish. 
+. Click the Save button when complete. Make sure you use your browsers Back Button to go to the list of surveys.
+
+== To Edit a Survey ==
+
+To edit a survey the survey must be in the future, you cannot edit active surveys. 
+
+. Open the survey to edit by clicking on it's _Name_.
++
+image::media/survey-7.png[Edit Survey]
++
+. If the survey is an active survey, change the _Survey Start Date/Time_ to a future date.
+. Click *Save*.
+. Use the browser Back Button to go back to your list of surveys, and select your survey again.
+. Now edit the Survey questions, 
+  * Edit the text of any question or answer, making sure your click *Save Changes* after each edit.
+  * Delete a question completely by clicking on *Delete Question & Answers*.
+  * Delete just an answer by clicking on *Delete Answer* for that answer only.
+. Add any additional questions and/or answers at this time.  Remembering to always *Save Changes*.
+. Click *Save* once all your changes are made.
++
+image::media/survey-1.png[Edit Survey]
++
+. Use the browser Back Button to go back to the list of surveys.
+
+TIP: If the survey needs to be active immediately, you can set the _Survey Start Date/Time_ in the past. This is really usefully when editing an existing survey.
+
+== To End a Survey ==
+
+If you need to end a survey before the Survey End Date, you can edit the survey and then click on *End Survey Now*. This will set the Survey End Date to today's date.
+
+== Normal Staff view of Surveys ==
+
+This is what the survey looks like in the Patron Registration, the answers appear as a drop down list.
+
+image::media/survey-6.png[Patron Registration]
+
+To access a patrons answers to a survy, you can view those through the staff client. Once in the patron record go to *Other -> Surveys*.
+
+image::media/survey-9.png[Access Survey Answers]
+
+This will show the answers to the surveys for that patron.
+
+image::media/survey-8.png[Patron Survey Answers]
+
+== Reporting on Surveys ==
+
+There are three Non-core Sources for reporting.
+
+* *Survey*
+** This reports informaton about surveys starting with the Survey.
+** This source is great to see the surveys with questions and answers(Responses). 
+** Also, use this source to find out the Survey Answers and Questions ID's.
+* *Survey Answer*
+** This source starts with the answers then goes to the questions.
+* *Survey Response*
+** This sources ties into the Responding Users.  
+** Use this source to report user information and counts.
+** This is the source you will use for most of the reporting on the Surveys.
+
+In the Core Sources you can use _ILS User_. In the ILS User, there is the source for _Survey Responses_.
+
+NOTE: In the _Survey Response_ Source there is a _Response Group ID_. This links all the answers to a specific set of Survey questions, answers, and patron information.
+
