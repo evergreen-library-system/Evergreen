@@ -90,7 +90,6 @@ sub perform_openathens_sso_if_required {
         $self->_get_openathens_config_for_org($ctx->{user}->home_ou);
 
     if ($openathens_config
-        && $U->is_true($openathens_config->{active})
         && $U->is_true($openathens_config->{auto_signon_enabled})
     ) {
         # Remove scheme and hostname from redirect_to (this may have been set
@@ -325,7 +324,7 @@ sub _get_openathens_config_for_org {
             }
         },
         where => {
-            '+coai' => { org_unit => $org_id }
+            '+coai' => { org_unit => $org_id, active => 't' }
         },
         order_by => { 'coai' => ['id'] }
     });

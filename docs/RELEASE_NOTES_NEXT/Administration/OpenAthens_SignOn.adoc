@@ -54,7 +54,10 @@ for all libraries below it in your organisational hierarchy. A single
 OpenAthens sign-on configuration normally equates to a single *domain* in the 
 OpenAthens service. If in doubt refer to your OpenAthens account manager or 
 implementation partner.
-* *Active* - Enable this connection (enabled by default).
+* *Active* - Enable this connection (enabled by default). N.B. Evergreen
+  does not support more than one active connection to OpenAthens at a time. If
+  more than one connection is added here, Evergreen will use only the _first_
+  connection that has *Active* enabled.
 * *API key* - the 36-character OpenAthens *API key* that was generated in step 
   2 above.
 * *Connection ID* - the numerical *Connection ID* that was generated for the 
