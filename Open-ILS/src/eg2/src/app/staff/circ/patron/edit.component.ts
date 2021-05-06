@@ -761,6 +761,9 @@ export class EditComponent implements OnInit, AfterViewInit {
         patron.mailing_address(addr);
         patron.addresses([addr]);
 
+        this.strings.interpolate('circ.patron.edit.default_addr_type')
+        .then(msg => addr.address_type(msg));
+
         this.patron = patron;
         this.addWaiver();
     }
