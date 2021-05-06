@@ -3,4 +3,22 @@
   background-color: rgb(248, 248, 248);
 }
 
+.patron-status-color { border: 2px solid transparent; padding: 3px; padding-left: 5px;}
+.patron-status-color.NO_PENALTIES  { border-color: lime; }
+.patron-status-color.ONE_PENALTY  { border-color: #66FFFF; }
+.patron-status-color.MULTIPLE_PENALTIES  { border-color: #FF6633; }
+.patron-status-color.PATRON_HAS_STAFF_ALERT  { border-color: blue; }
+.patron-status-color.PATRON_HAS_BILLS  { border-color: #FFC266; }
+.patron-status-color.PATRON_HAS_OVERDUES  { border-color: #FFC266; }
+.patron-status-color.PATRON_HAS_LOST  { border-color: #FFC266; }
+.patron-status-color.PATRON_EXCEEDS_CHECKOUT_COUNT  { border-color: #C99DFF; }
+.patron-status-color.PATRON_EXCEEDS_OVERDUE_COUNT  { border-color: #C99DFF; }
+.patron-status-color.PATRON_EXCEEDS_FINES  { border-color: #C99DFF; }
+.patron-status-color.PATRON_HAS_ALERT  { border-color: yellow; }
+.patron-status-color.PATRON_INACTIVE  { border-color: #333333; }
+.patron-status-color.PATRON_EXPIRED  { border-color: #666666; }
+.patron-status-color.PATRON_BARRED  { border-color: #CC3300; }
+.patron-status-color.PATRON_JUVENILE  { border-color: lightblue; }
+
+
 

@@ -78,5 +78,75 @@ export class PatronSummaryComponent implements OnInit {
         const org = this.org.get(orgId);
         return org ? org.shortname() : '';
     }
+
+    patronStatusColor(): string {
+
+        const patron = this.p();
+
+        if (patron.barred() === 't') {
+            return 'PATRON_BARRED';
+        }
+
+        if (patron.active() === 'f') {
+            return 'PATRON_INACTIVE';
+        }
+
+        if (this.summary.stats.fines.balance_owed > 0) {
+           return 'PATRON_HAS_BILLS';
+        }
+
+        if (this.summary.stats.checkouts.overdue > 0) {
+            return 'PATRON_HAS_OVERDUES';
+        }
+
+        if (patron.notes().length > 0) {
+            return 'PATRON_HAS_NOTES';
+        }
+
+        if (this.summary.stats.checkouts.lost > 0) {
+            return 'PATRON_HAS_LOST';
+        }
+
+        let penalty: string;
+        let penaltyCount = 0;
+
+        patron.standing_penalties().some(p => {
+            penaltyCount++;
+
+            if (p.standing_penalty().staff_alert() === 't' ||
+                p.standing_penalty().block_list()) {
+                penalty = 'PATRON_HAS_STAFF_ALERT';
+                return true;
+            }
+
+            const name = p.standing_penalty();
+
+            switch (name) {
+                case 'PATRON_EXCEEDS_CHECKOUT_COUNT':
+                case 'PATRON_EXCEEDS_OVERDUE_COUNT':
+                case 'PATRON_EXCEEDS_FINES':
+                    penalty = name;
+                    return true;
+            }
+        });
+
+        if (penalty) { return penalty; }
+
+        if (penaltyCount === 1) {
+            return 'ONE_PENALTY';
+        } else if (penaltyCount > 1) {
+            return 'MULTIPLE_PENALTIES';
+        }
+
+        if (patron.alert_message()) {
+            return 'PATRON_HAS_ALERT';
+        }
+
+        if (patron.juvenile() === 't') {
+            return 'PATRON_JUVENILE';
+        }
+
+        return 'NO_PENALTIES';
+    }
 }
 

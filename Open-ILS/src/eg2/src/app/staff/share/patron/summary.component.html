@@ -1,8 +1,8 @@
 
 <div class="patron-summary-container">
 
-  <div class="row d-flex">
-    <div class="flex-1 pt-1">
+  <div class="row d-flex patron-status-color rounded {{patronStatusColor()}}">
+    <div class="flex-1 pt-1 {{patronStatusColor()}}">
       <h4 class="font-weight-bold" i18n>
         {{p().family_name()}}, 
         {{p().first_given_name()}} 
@@ -29,6 +29,12 @@
     *ngIf="summary.alerts.accountExpiresSoon">
     <div class="col-lg-12" i18n>
       Patron account will expire soon.  Please renew.
+    </div>
+  </div>
+
+  <div class="row mb-1 alert alert-warning p-0" *ngIf="p().juvenile() == 't'">
+    <div class="col-lg-12" i18n>
+      Juvenile Account
     </div>
   </div>
 
