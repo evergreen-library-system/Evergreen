@@ -385,37 +385,37 @@ sub _get_openathens_session_initiator_url {
 
     # Optional attributes
     if ($U->is_true($openathens_config->{release_prefix})) {
-        $request_obj->{attributes}->{OA_ATTR_PREFIX} = $user->prefix;
+        $request_obj->{attributes}->{&OA_ATTR_PREFIX} = $user->prefix;
     }
 
     if ($U->is_true($openathens_config->{release_first_given_name})) {
-        $request_obj->{attributes}->{OA_ATTR_FIRST_GIVEN_NAME} =
+        $request_obj->{attributes}->{&OA_ATTR_FIRST_GIVEN_NAME} =
             $user->pref_first_given_name || $user->first_given_name;
     }
 
     if ($U->is_true($openathens_config->{release_second_given_name})) {
-        $request_obj->{attributes}->{OA_ATTR_SECOND_GIVEN_NAME} =
+        $request_obj->{attributes}->{&OA_ATTR_SECOND_GIVEN_NAME} =
             $user->pref_second_given_name || $user->second_given_name;
     }
 
     if ($U->is_true($openathens_config->{release_family_name})) {
-        $request_obj->{attributes}->{OA_ATTR_FAMILY_NAME} =
+        $request_obj->{attributes}->{&OA_ATTR_FAMILY_NAME} =
             $user->pref_family_name || $user->family_name;
     }
 
     if ($U->is_true($openathens_config->{release_suffix})) {
-        $request_obj->{attributes}->{OA_ATTR_SUFFIX} = $user->suffix;
+        $request_obj->{attributes}->{&OA_ATTR_SUFFIX} = $user->suffix;
     }
 
     if ($U->is_true($openathens_config->{release_email})) {
-        $request_obj->{attributes}->{OA_ATTR_EMAIL} = $user->email;
+        $request_obj->{attributes}->{&OA_ATTR_EMAIL} = $user->email;
     }
 
     my $ou_id = $user->home_ou;
     if ($ou_id && $U->is_true($openathens_config->{release_home_ou})) {
         my $ou = $ctx->{get_aou}->($ou_id);
         if ($ou) {
-            $request_obj->{attributes}->{OA_ATTR_HOME_OU} = $ou->shortname;
+            $request_obj->{attributes}->{&OA_ATTR_HOME_OU} = $ou->shortname;
         }
     }
 
