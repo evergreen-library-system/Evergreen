@@ -12,6 +12,7 @@ IF serial_holdings;
         copies = copies.merge(units);
     END;
 END;
+available=ctx.available;
 
 FOREACH copy_info IN copies;
     IF copy_info.call_number_label != '##URI##';
@@ -67,6 +68,19 @@ IF has_copies or ctx.foreign_copies;
 </form>
 [% END %]
 [% END %]
+
+<div class="mt-3">
+[% IF available == 'true'; %]
+  <a href="[% mkurl('', {available => 'false' }) %]">
+      [% l('Show All Copies') %]
+  </a>
+[% END %]
+[% IF available == 'false'; %]
+  <a href="[% mkurl('', {available => 'true' }) %]">
+      [% l('Show Only Available Copies') %]
+  </a>
+[% END %]
+
 <table class="container-fluid table table-hover mt-4 miniTable copyTable w-100" >
     <thead>
         <tr>
