@@ -1,2 +1,3 @@
 * xref:shared:about_this_documentation.adoc[Introduction]
 ** xref:shared:about_evergreen.adoc[About Evergreen]
+** xref:shared:how_to_contribute_docs.adoc[How to Contribute Documentation]
