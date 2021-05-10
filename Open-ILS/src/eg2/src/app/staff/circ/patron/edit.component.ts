@@ -1316,11 +1316,13 @@ export class EditComponent implements OnInit, AfterViewInit {
 
             // Roll the mailing/billing designation to another
             // address when needed.
-            if (this.patron.mailing_address().id() === addr.id()) {
+            if (this.patron.mailing_address() &&
+                this.patron.mailing_address().id() === addr.id()) {
                 this.setAddrType('mailing', addr, false);
             }
 
-            if (this.patron.billing_address().id() === addr.id()) {
+            if (this.patron.billing_address() &&
+                this.patron.billing_address().id() === addr.id()) {
                 this.setAddrType('billing', addr, false);
             }
 

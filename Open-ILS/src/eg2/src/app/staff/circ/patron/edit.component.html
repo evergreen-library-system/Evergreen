@@ -665,7 +665,7 @@
           <div class="form-check form-check-inline mr-2">
             <input class="form-check-input" type="checkbox" 
               name="addr-{{addr.id()}}-mailing" id="addr-{{addr.id()}}-mailing" 
-              [ngModel]="addr.id() == patron.mailing_address().id()"
+              [ngModel]="patron.mailing_address() && addr.id() == patron.mailing_address().id()"
               (ngModelChange)="setAddrType('mailing', addr, $event)"/>
             <label class="form-check-label" 
               for="addr-{{addr.id()}}-mailing" i18n>Mailing</label>
@@ -673,7 +673,7 @@
           <div class="form-check form-check-inline mr-2">
             <input class="form-check-input" type="checkbox" 
               name="addr-{{addr.id()}}-billing" id="addr-{{addr.id()}}-billing" 
-              [ngModel]="addr.id() == patron.billing_address().id()"
+              [ngModel]="patron.billing_address() && addr.id() == patron.billing_address().id()"
               (ngModelChange)="setAddrType('billing', addr, $event)"/>
             <label class="form-check-label" 
               for="addr-{{addr.id()}}-billing" i18n>Physical</label>

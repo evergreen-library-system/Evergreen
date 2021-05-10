@@ -87,9 +87,12 @@ export class EditToolbarComponent implements OnInit {
 
     checkAddressAlerts(patron: IdlObject, addr: IdlObject) {
         const addrHash = this.idl.toHash(addr);
-        console.log('CHECKING ADDR', addrHash);
-        addrHash.mailing_address = addr.id() === patron.mailing_address().id();
-        addrHash.billing_address = addr.id() === patron.billing_address().id();
+        if (patron.mailing_address()) {
+            addrHash.mailing_address = addr.id() === patron.mailing_address().id();
+        }
+        if (patron.billing_address()) {
+            addrHash.billing_address = addr.id() === patron.billing_address().id();
+        }
         this.net.request(
             'open-ils.actor',
             'open-ils.actor.address_alert.test',
