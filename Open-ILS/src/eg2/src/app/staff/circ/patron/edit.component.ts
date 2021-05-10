@@ -735,6 +735,10 @@ export class EditComponent implements OnInit, AfterViewInit {
         if (this.patron.waiver_entries().length === 0) {
             this.addWaiver();
         }
+
+        if (!this.patron.card()) {
+            this.replaceBarcode();
+        }
     }
 
     createNewPatron() {
@@ -1564,8 +1568,10 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     replaceBarcode() {
         // Disable current card
-        this.patron.card().active('f');
-        this.patron.card().ischanged(true);
+        if (this.patron.card()) {
+            this.patron.card().active('f');
+            this.patron.card().ischanged(true);
+        }
 
         const card = this.idl.create('ac');
         card.isnew(true);
