@@ -1,0 +1,217 @@
+= How to Contribute Documentation =
+:toc:
+
+We want everyone to be able to contribute documentation to the Evergreen project. We've made it as easy as possible. Please follow these simple steps to get your computer ready for contributions!
+
+== Create a GitHub account ==
+
+NOTE: Screenshots of the Github website might be out of date. Their website might look different today.
+
+. Open a web browser and go to: https://github.com/[https://github.com/]
+. Create an account by clicking "Sign Up"
++
+image::how_to_contribute_docs/github_signup.png[Github Signup Screenshot]
++
+. Fill in your information
++
+image::how_to_contribute_docs/github_create_account.png[Github Create Account Screenshot]
+
+== Fork the Community Evergreen code repository ==
+
+We will need to make a copy of the Evergreen documentation. This will allow you to make edits to your copy.
+
+. Find the Evergreen repository (evergreen-library-system/Evergreen) https://github.com/evergreen-library-system/Evergreen[https://github.com/evergreen-library-system/Evergreen]
+
+. Click on "Fork"
++
+image::how_to_contribute_docs/github_click_fork.png[Github Click Fork Screenshot]
++
+. This process will make a copy of the repositoy into your personal GitHub account.
+
+== Install the GitHub Desktop Software ==
+
+We will need to download and install the GitHub Desktop software onto your computer. This software will act as liaison between your computer and GitHub.
+
+. Open the web page where you can download the free installer https://desktop.github.com/[https://desktop.github.com/]
++
+image::how_to_contribute_docs/github_desktop_download_site.png[Github Destop Download Screenshot]
++
+. Save the file to your computer.
+. Execute the installer file.
+
+== Clone your Evergreen repository ==
+
+Once the Github Desktop software is installed, it should automatically launch itself. If not, you will find the software on your desktop or Start Menu.
+
+. Sign the Github Desktop software into your GitHub Account
+.. Click "File" -> "Options"
++
+image::how_to_contribute_docs/github_desktop_click_option.png[Github Destop Click Options Screenshot]
++
+.. Click on "Accounts" -> "Sign In"
++
+image::how_to_contribute_docs/github_desktop_click_signin.png[Github Destop Click Sign in Screenshot]
++
+.. Click on "Continue in Browser"
++
+image::how_to_contribute_docs/github_desktop_singin_with_browser.png[Github Destop Sign in with Browser Screenshot]
++
+.. Sign into your account (if you were already signed in, then you can ignore this instruction)
+.. Once signed in, you will be prompted by your browser to launch the GitHub Desktop Application again
++
+image::how_to_contribute_docs/github_desktop_singin_with_browser_launch_app.png[Github Destop Browser launch App Screenshot]
++
+. Now that the GitHub Desktop software has been authenticated with your account, you should notice that you have your Forked Evergreen repository listed as an option. 
++
+image::how_to_contribute_docs/github_desktop_clone_from_internet.png[Github Destop Clone Evergreen Screenshot]
++
+. Click on the Evergreen repository and then click the button at the bottom "Clone XXXX/Evergreen"
++
+image::how_to_contribute_docs/github_desktop_clone_evergreen.png[Github Destop Clone Evergreen Screenshot]
++
+. Once Cloned, you will be asked this question (pictured below). Choose "To contribute to the parent project" and click "Continue"
++
+image::how_to_contribute_docs/github_desktop_planning_on_fork.png[Github Destop Planning Fork Screenshot]
+
+NOTE: From now on, you won't need to perform the previous steps. You can skip to "Make a Branch" to make new changes in the future.
+
+== Make a Branch ==
+
+A Git repository has a concept of a "branch". Which means you are making changes that do not affect the rest of the community. You are making changes to the documentation in your own private branch. You can invite others to work on your branch as well.
+
+. From the GitHub Desktop Software, click on "Branch" -> "New branch"
++
+image::how_to_contribute_docs/github_desktop_click_new_branch.png[Github Destop Click New Branch Screenshot]
++
+. Supply a name for your branch. It's a good idea to name it with a good summary of what your changes will contain.
++
+image::how_to_contribute_docs/github_desktop_make_branch.png[Github Destop Make Branch Dialog Screenshot]
++
+. Confirm that you are working in your branch
++
+image::how_to_contribute_docs/github_desktop_quick_tour.png[Github Destop Quick Tour Screenshot]
+
+== Make your edits ==
+
+The Evergreen documentation is written in AsciiDoc. AsciiDoc is plain old text with some basic formatting stuff around it. AsciiDoc is great because it takes away so much of the pain of formatting the words and allows you to focus more on the content rather than the formatting. Looking at AsciiDoc text can be a bit confusing at first but please stick with it. It will make more sense in no time!
+
+There are many tools that help you edit/write AsciiDoc. Here are a few:
+
+[cols="4"]
+|===
+|*Name*
+|*Link*
+|*Supports live preview*
+|*Supports live preview with Evergreen images*
+
+|AsciiDocFX
+|https://asciidocfx.com/[https://asciidocfx.com/]
+|Yes
+|Yes
+
+|VSCode
+|https://code.visualstudio.com/download[https://code.visualstudio.com/download]
+|Yes - Needs fiddling to get it to work
+|No
+
+|AsciiDoctor Chrome Plugin
+|https://chrome.google.com/webstore/detail/asciidoctorjs-live-previe/iaalpfgpbocpdfblpnhhgllgbdbchmia?hl=en[https://chrome.google.com/webstore/detail/asciidoctorjs-live-previe/iaalpfgpbocpdfblpnhhgllgbdbchmia?hl=en]
+|No
+|No
+
+|===
+
+I'm using AsciiDocFX to edit this document!
+
+image::how_to_contribute_docs/asciidocfx_sample.png[Using AsciiDoc for this document Screenshot]
+
+The document test is on the left and the instant preview of the rendered version of our document is displayed on the right.
+
+NOTE: The https://docs.evergreen-ils.org/eg/docs/latest/shared/about_this_documentation.html[Evergreen documentation website] renders the pages with our own Evergreen style and flair. These other tools will give you a basic idea of what your document will look like but it will never be exactly like the end-result on the final Evergreen Documentation website.
+
+=== A quick word on images ===
+
+Each section of the Evergreen documentation is divided into "modules". Each module has a special place where we save our image files. Images are then referred to in the documentation.
+
+For example:
+
+This document is here:
+
+[source,bash]
+----
+Evergreen/docs/modules/shared/pages/how_to_contribute_docs.adoc
+----
+
+And the images are here:
+
+[source,bash]
+----
+Evergreen/docs/modules/shared/assets/images/how_to_contribute_docs/
+----
+
+When you are editing your document, you will refer to your image like this:
+
+[source]
+----
+image::how_to_contribute_docs/filename.png
+----
+
+== Commit your changes ==
+
+Now that you've completed your changes on your computer, you need to commit them to the repository and push those changes to the cloud. This is done using the GitHub Desktop software.
+
+. Open the GitHub Desktop Software
++
+image::how_to_contribute_docs/github_desktop_commit_changes.png[Github Destop Commit Changes Screenshot]
++
+.. Be sure and double check that you are on your branch
+.. GitHub Desktop will display a summary of your changes on the left pane
+.. If you click on one of the files that you've edited, GitHub Desktop will display the specific changes to that file in the right pane
+
+=== Supply a commit message ===
+
+Your commit message needs to be supplied in the highlighted box (bottom left)
+
+When you are satisfied with your commit message (and description), click on "Commit to <branch name>"
+
+=== Commit to the GitHub Cloud ===
+
+Now that you have committed a change to your copy of the repository, you will no longer see any changes in the "Changes" section. You can see your commit in the "History" tab. In order for everyone in the Evergreen community to see your changes, will need to publish it to  the internet.
+
+Click on "Publish branch"
+
+image::how_to_contribute_docs/github_desktop_publish.png[Github Destop Publish Branch Screenshot]
+
+=== Make a "Pull Request" ===
+
+This is a way to flag down the Evergreen community core committers and let them know that this change is pending approval.
+
+. From the GitHub Desktop software, you should be prompted to "Create a Pull Request"
++
+image::how_to_contribute_docs/github_desktop_create_pull_request.png[Github Destop Create a Pull Request Screenshot]
++
+. This will open your default web browser and prompt you to confirm some of the details
++
+image::how_to_contribute_docs/github_web_create_pull_request.png[Github Web Create a Pull Request Screenshot]
++
+. It's nice to see "Able to merge"
+. Confirm that this pull request is compared with *master* on the left and with *your branch* on the right
+. Click on "Create pull request"
+
+== Follow up on Launchpad ==
+
+The Evergreen Community bug tracking platform is called Launchpad. You can see the main page here: https://launchpad.net/evergreen[https://launchpad.net/evergreen]. It's common Evergreen workflow to track and discuss any needed Evergreen changes on Launchpad. If your documentation change has an associated Launchpad bug, be sure and update the bug with details about your contribution on GitHub! This gives more ways for the community to find your contribution.
+
+== Helpful links ==
+
+There are many places to find helpful tips on Evergreen documentation and AsciiDoc in general.
+
+=== Evergreen documentation ===
+
+. https://wiki.evergreen-ils.org/doku.php?id=evergreen-docs:dig[Documentation Interest Group main page]
+. https://wiki.evergreen-ils.org/doku.php?id=evergreen-docs:documentation_needs[Documentation Needs]
+
+=== AsciiDoc Resources ===
+
+. https://docs.asciidoctor.org/asciidoc/latest/syntax-quick-reference/[Quick Syntax Reference]
+. https://wiki.evergreen-ils.org/doku.php?id=evergreen-docs:dig_style_guide[DIG Style Guide]
