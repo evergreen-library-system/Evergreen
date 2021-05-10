@@ -1,0 +1,174 @@
+<eg-staff-banner i18n-bannerText bannerText="Renew Items">
+</eg-staff-banner>
+
+<eg-circ-components></eg-circ-components>
+<eg-progress-dialog #progressDialog></eg-progress-dialog>
+<eg-barcode-select #barcodeSelect></eg-barcode-select>
+<eg-copy-alerts-dialog #copyAlertsDialog></eg-copy-alerts-dialog>
+<eg-cancel-transit-dialog #cancelTransitDialog></eg-cancel-transit-dialog>
+<eg-worklog-strings-components></eg-worklog-strings-components>
+<eg-string #itemNeverCircedStr i18n-text 
+  text="Item '{{itemNeverCirced}}' has never circulated."></eg-string>
+
+<div class="row mb-3 pb-3 border-bottom">
+  <div class="col-lg-12 d-flex">
+    <div class="form-inline">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text" i18n>Barcode</span>
+        </div>
+        <input type="text" class="form-control" id="barcode-input"
+          placeholder="Barcode..." i18n-placeholder [(ngModel)]="barcode"
+          i18n-aria-label aria-label="Barcode Input" (keydown.enter)="renew()" />
+        <div class="input-group-append">
+          <button class="btn btn-outline-dark" (keydown.enter)="renew()" 
+            (click)="renew()" i18n>Submit</button>
+        </div>
+      </div>
+    </div>
+    <div class="flex-1"></div>
+    <div class="mr-2">
+      <div class="form-inline">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="use-date-cbox" 
+            [(ngModel)]="useDueDate"/>
+          <label class="form-check-label" 
+            for="use-date-cbox" i18n>Specific Due Date</label>
+        </div>
+        <eg-date-select [initialIso]="dueDate" 
+          (onChangeAsIso)="dueDate = $event"></eg-date-select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- doc_id below because checkin returns an MVR -->
+<ng-template #titleTemplate let-r="row">
+  <ng-container *ngIf="r.record">
+    <a routerLink="/staff/catalog/record/{{r.record.doc_id()}}">{{r.title}}</a>
+  </ng-container>
+  <ng-container *ngIf="!r.record">{{r.title}}</ng-container>
+</ng-template>
+
+<ng-template #barcodeTemplate let-r="row">
+  <ng-container *ngIf="r.copy">
+    <a href="/eg/staff/cat/item/{{r.copy.id()}}">{{r.copy.barcode()}}</a>
+  </ng-container>
+</ng-template>
+
+<div class="row">
+  <div class="col-lg-12">
+    <eg-grid #grid [dataSource]="gridDataSource" [sortable]="true"
+      [useLocalSort]="true" [cellTextGenerator]="cellTextGenerator"
+      [disablePaging]="true" persistKey="circ.renew">
+
+      <eg-grid-toolbar-action
+        group="Mark" i18n-group i18n-label label="Mark Item Damaged"
+        (onClick)="markDamaged($event)"></eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Edit" i18n-label label="Manage Item Alerts"
+        [disabled]="grid.context.rowSelector.selected().length !== 1"
+        (onClick)="manageItemAlerts($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Add" i18n-label label="Add Item Alerts"
+        (onClick)="addItemAlerts($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Circulation" i18n-label label="Cancel Transits"
+        (onClick)="cancelTransits($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Show" i18n-label 
+        label="Retrieve Last Patron Who Circulated Item"
+        [disabled]="grid.context.rowSelector.selected().length !== 1"
+        (onClick)="retrieveLastPatron($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Show" i18n-label 
+        label="Show Last Few Circs"
+        [disabled]="grid.context.rowSelector.selected().length !== 1"
+        (onClick)="showRecentCircs($event)">
+      </eg-grid-toolbar-action>
+
+      <!-- COLUMNS -->
+
+      <eg-grid-column path="index" [index]="true" 
+        label="Row Index" i18n-label [hidden]="true"></eg-grid-column>
+
+      <eg-grid-column path="mbts.balance_owed" label="Balance Owed" 
+        datatype="money" i18n-label></eg-grid-column>
+
+      <eg-grid-column path="copy.barcode" label="Barcode" 
+        i18n-label [cellTemplate]="barcodeTemplate"></eg-grid-column>
+
+      <eg-grid-column path="circ.id" label="Bill #" i18n-label>
+      </eg-grid-column>
+
+      <eg-grid-column path="circ.checkin_time" label="Checkin Date" i18n-label
+        datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+
+      <eg-grid-column path="patron.family_name" label="Family Name" i18n-label>
+      </eg-grid-column>
+
+      <eg-grid-column path="circ.xact_finish" label="Finish" i18n-label
+        datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+
+      <eg-grid-column path="copy.location.name" label="Location" i18n-label>
+      </eg-grid-column>
+
+      <eg-grid-column name="routeTo" label="Route To" i18n-label>
+      </eg-grid-column>
+
+      <eg-grid-column path="circ.xact_start" label="Start" i18n-label
+        datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+
+      <eg-grid-column path="title" label="Title" i18n-label 
+        [cellTemplate]="titleTemplate"></eg-grid-column>
+
+      <eg-grid-column path="copy.circ_modifier" 
+        label="Circulation Modifier" i18n-label></eg-grid-column>
+
+      <eg-grid-column path="copy.circ_lib.shortname"
+        label="Circulation Library" i18n-label></eg-grid-column>
+
+      <eg-grid-column path="copy.status.name"
+        label="Item Status" i18n-label></eg-grid-column>
+
+    </eg-grid>
+  </div>
+</div>
+
+<div class="row mt-3 pt-3">
+  <div class="col-lg-12 d-flex">
+    <div class="flex-1"></div>
+    <div class="mr-3">
+      <button class="btn btn-outline-dark" 
+        (click)="printReceipt()" i18n>Print Receipt</button>
+    </div>
+    <div class="mr-3">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" 
+          id="trim-list-cbox" [(ngModel)]="trimList"/>
+        <label class="form-check-label" 
+          for="trim-list-cbox" i18n>Trim List (20)</label>
+      </div>
+    </div>
+    <div class="mr-3">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" 
+          (ngModelChange)="toggleStrictBarcode($event)"
+          id="strict-barcode-cbox" [(ngModel)]="strictBarcode"/>
+        <label class="form-check-label" 
+          for="strict-barcode-cbox" i18n>Strict Barcode</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -17,6 +17,10 @@ const routes: Routes = [{
   path: 'checkin',
   loadChildren: () =>
     import('./checkin/checkin.module').then(m => m.CheckinModule)
+}, {
+  path: 'renew',
+  loadChildren: () =>
+    import('./renew/renew.module').then(m => m.RenewModule)
 }];
 
 @NgModule({

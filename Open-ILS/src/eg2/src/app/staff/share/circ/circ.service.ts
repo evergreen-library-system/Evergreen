@@ -148,6 +148,7 @@ export interface CircResultCommon {
     patron?: IdlObject;
     transit?: IdlObject;
     copyAlerts?: IdlObject[];
+    mbts?: IdlObject;
 
     // Calculated values
     title?: string;
@@ -187,7 +188,6 @@ export interface CheckinParams {
 
 export interface CheckinResult extends CircResultCommon {
     params: CheckinParams;
-    mbts?: IdlObject;
     routeTo?: string; // org name or in-branch destination
     destOrg?: IdlObject;
     destAddress?: IdlObject;
@@ -437,7 +437,7 @@ export class CircService {
         result.nonCatCirc = payload.noncat_circ;
 
         return this.fleshCommonData(result).then(_ => {
-            const action = params._renewal ? 'renewal' :
+            const action = params._renewal ? 'renew' :
                 (params.noncat ? 'noncat_checkout' : 'checkout');
             this.addWorkLog(action, result);
             return result;
@@ -477,6 +477,13 @@ export class CircService {
             case 'PATRON_ACCOUNT_EXPIRED':
             case 'CIRC_CLAIMS_RETURNED':
                 this.audio.play(`warning.${key}`);
+                return this.exitAlert({
+                    textcode: result.firstEvent.textcode,
+                    barcode: result.params.copy_barcode
+                });
+
+            case 'ASSET_COPY_NOT_FOUND':
+                this.audio.play(`error.${key}.not_found`);
                 return this.exitAlert({
                     textcode: result.firstEvent.textcode,
                     barcode: result.params.copy_barcode

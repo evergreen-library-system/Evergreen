@@ -141,6 +141,13 @@
               [% l('Renew Items') %]
             </a>
           </li>
+          <li ng-if="username">
+            <a href="/eg2/staff/circ/renew">
+              <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+              [% l('Renew Items (Experimental)') %]
+            </a>
+          </li>
+
           <li ng-if="!username">
             <a href="" ng-click="rs.active_tab('renew')" target="_self"
               eg-accesskey="[% l('ctrl+f2') %]" 
