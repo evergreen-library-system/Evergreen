@@ -1,0 +1,14 @@
+Fix for Staff Splash Page Multi-Word Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The addition of the Angular Staff Catalog surfaced a double-encoding issue
+with redirects in certain Apache versions. This caused searches for multiple
+words to have %20 in place of spaces, almost certainly resulting in 0 results.
+
+In order to apply this fix, change the Angular redirects in eg_vhost.conf from
+
+ RewriteRule ^/eg2/(.*) https://%{HTTP_HOST}/eg2/en-US/$1 [R=307,L]
+
+to
+
+ RewriteRule ^/eg2/(.*) https://%{HTTP_HOST}/eg2/en-US/$1 [NE,R=307,L]
+
