@@ -201,14 +201,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     refreshCopyLocations() {
         if (!this.showFilters()) { return; }
 
-        // TODO: is this how we avoid displaying too many locations?
-        const org = this.context.searchOrg;
-        if (org.id() === this.org.root().id()) {
-            this.copyLocations = [];
-            return;
-        }
-
-        this.cat.fetchCopyLocations(org).then(() =>
+        this.cat.fetchCopyLocations(this.context.searchOrg).then(() =>
             this.copyLocations = this.cat.copyLocations
         );
     }
