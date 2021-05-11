@@ -414,7 +414,12 @@ export class CatalogService {
     }
 
     fetchCopyLocations(contextOrg: number | IdlObject): Promise<any> {
-        const orgIds = this.org.fullPath(contextOrg, true);
+        const contextOrgId: any = this.org.get(contextOrg).id();
+
+        const orgIds: any[] = contextOrgId === this.org.root().id()
+            ? [contextOrgId]
+            : this.org.fullPath(contextOrg, true);
+
         this.copyLocations = [];
 
         return this.pcrud.search('acpl',
