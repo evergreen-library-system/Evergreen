@@ -129,7 +129,7 @@
 
     [% IF ctx.fines.grocery.size > 0 %]
     <!-- Table for all non-circulation transactions -->
-    <div id='myopac_trans_div'>
+    <div id='myopac_trans_div' class="mt-3">
         <h3>
                 [% l("Charges On Your Account") %]
         </h3>
@@ -143,7 +143,8 @@
         </div>             
         [% END %]
         
-         <table id="acct_fees_main_header" class="table table-hover table-bordered miniTable chargesTable my-3" title="[% l('Other Fines and Fees') %]">
+        <div class="table-responsive">
+         <table id="acct_fees_main_header" class="table table-hover table-bordered  my-3" title="[% l('Other Fines and Fees') %]">
             <thead>
                 <tr>
                 
@@ -203,6 +204,7 @@
                 [% END %]
             </tbody>
         </table>
+    </div>
    
     </div>
     [% END %]
