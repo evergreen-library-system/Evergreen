@@ -43,6 +43,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     dueDate: string;
     dueDateOptions: 0 | 1 | 2 = 0; // auto date; specific date; session date
     printOnComplete = true;
+    strictBarcode = false;
 
     private copiesInFlight: {[barcode: string]: boolean} = {};
 
@@ -96,6 +97,9 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
                 noPrint.includes('Checkout')
             );
         });
+
+        this.serverStore.getItem('circ.checkout.strict_barcode')
+        .then(strict => this.strictBarcode = strict);
     }
 
     ngAfterViewInit() {
