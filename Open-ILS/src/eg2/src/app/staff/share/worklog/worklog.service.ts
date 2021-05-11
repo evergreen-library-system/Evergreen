@@ -44,7 +44,6 @@ export class WorkLogService {
 
     record(entry: WorkLogEntry) {
 
-console.log('1');
         if (this.maxEntries === null) {
             throw new Error('WorkLogService.loadSettings() required');
             return;
@@ -55,35 +54,27 @@ console.log('1');
                 'Add <eg-worklog-strings-components/> to your component for worklog support');
             return;
         }
-console.log('1');
 
         entry.when = new Date();
         entry.actor = this.auth.user().usrname();
-        console.log(`worklog_${entry.action}`);
-        console.log(this.workLogStrings[`worklog_${entry.action}`]);
         entry.msg = this.workLogStrings[`worklog_${entry.action}`].text;
-console.log('1');
 
         const workLog: WorkLogEntry[] =
             this.store.getLocalItem('eg.work_log') || [];
 
         let patronLog: WorkLogEntry[] =
             this.store.getLocalItem('eg.patron_log') || [];
-console.log('1');
 
         workLog.push(entry);
         if (workLog.length > this.maxEntries) {
             workLog.shift();
         }
-console.log('1');
 
         this.store.setLocalItem('eg.work_log', workLog);
-console.log('1');
 
         if (entry.patron_id) {
             // Remove existing entries that match this patron
             patronLog = patronLog.filter(e => e.patron_id !== entry.patron_id);
-console.log('1');
 
             patronLog.push(entry);
             if (patronLog.length > this.maxPatrons) {

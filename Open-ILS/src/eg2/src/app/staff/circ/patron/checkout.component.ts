@@ -1,6 +1,6 @@
 import {Component, OnInit, AfterViewInit, Input, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Observable, empty, of, from} from 'rxjs';
+import {Subscription, Observable, empty, of, from} from 'rxjs';
 import {tap, switchMap} from 'rxjs/operators';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {IdlObject} from '@eg/core/idl.service';
@@ -22,6 +22,10 @@ import {CopyAlertsDialogComponent
     } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 import {BarcodeSelectComponent
     } from '@eg/staff/share/barcodes/barcode-select.component';
+import {ToastService} from '@eg/share/toast/toast.service';
+import {StringComponent} from '@eg/share/string/string.component';
+import {AuthService} from '@eg/core/auth.service';
+import {PrintService} from '@eg/share/print/print.service';
 
 const SESSION_DUE_DATE = 'eg.circ.checkout.is_until_logout';
 
@@ -38,6 +42,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     cellTextGenerator: GridCellTextGenerator;
     dueDate: string;
     dueDateOptions: 0 | 1 | 2 = 0; // auto date; specific date; session date
+    printOnComplete = true;
 
     private copiesInFlight: {[barcode: string]: boolean} = {};
 
@@ -49,8 +54,11 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         private copyAlertsDialog: CopyAlertsDialogComponent;
     @ViewChild('barcodeSelect')
         private barcodeSelect: BarcodeSelectComponent;
+    @ViewChild('receiptEmailed')
+        private receiptEmailed: StringComponent;
 
     constructor(
+        private router: Router,
         private store: StoreService,
         private serverStore: ServerStoreService,
         private org: OrgService,
@@ -59,6 +67,9 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         public circ: CircService,
         public patronService: PatronService,
         public context: PatronContextService,
+        private toast: ToastService,
+        private auth: AuthService,
+        private printer: PrintService,
         private audio: AudioService
     ) {}
 
@@ -77,6 +88,14 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
             this.dueDate = this.store.getSessionItem('eg.circ.checkout.due_date');
             this.toggleDateOptions(2);
         }
+
+        this.serverStore.getItem('circ.staff_client.do_not_auto_attempt_print')
+        .then(noPrint => {
+            this.printOnComplete = !(
+                noPrint &&
+                noPrint.includes('Checkout')
+            );
+        });
     }
 
     ngAfterViewInit() {
@@ -290,5 +309,90 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
             }
         );
     }
+
+    toggleStrictBarcode(active: boolean) {
+        if (active) {
+            this.serverStore.setItem('circ.checkout.strict_barcode', true);
+        } else {
+            this.serverStore.removeItem('circ.checkout.strict_barcode');
+        }
+    }
+
+    patronHasEmail(): boolean {
+        if (!this.context.summary) { return false; }
+        const patron = this.context.summary.patron;
+        return (
+            patron.email() &&
+            patron.email().match(/.*@.*/) !== null
+        );
+    }
+
+    mayEmailReceipt(): boolean {
+        if (!this.context.summary) { return false; }
+        const patron = this.context.summary.patron;
+        const setting = patron.settings()
+            .filter(s => s.name() === 'circ.send_email_checkout_receipts')[0];
+
+        return (
+            this.patronHasEmail() &&
+            setting &&
+            setting.value() === 'true' // JSON encoded
+        );
+    }
+
+    quickReceipt() {
+        if (this.mayEmailReceipt()) {
+            this.emailReceipt();
+        } else {
+            this.printReceipt();
+        }
+    }
+
+    doneAutoReceipt() {
+        if (this.mayEmailReceipt()) {
+            this.emailReceipt(true);
+        } else if (this.printOnComplete) {
+            this.printReceipt(true);
+        }
+    }
+
+    emailReceipt(redirect?: boolean) {
+        if (this.patronHasEmail() && this.context.checkouts.length > 0) {
+            return this.net.request(
+                'open-ils.circ',
+                'open-ils.circ.checkout.batch_notify.session.atomic',
+                this.auth.token(),
+                this.context.summary.id,
+                this.context.checkouts.map(c => c.circ.id())
+            ).subscribe(_ => {
+                this.toast.success(this.receiptEmailed.text);
+                if (redirect) { this.doneRedirect(); }
+            });
+        }
+    }
+
+    printReceipt(redirect?: boolean) {
+        if (this.context.checkouts.length === 0) { return; }
+
+        if (redirect) {
+            // Wait for the print job to be queued before redirecting
+            const sub: Subscription =
+                this.printer.printJobQueued$.subscribe(_ => {
+                sub.unsubscribe();
+                this.doneRedirect();
+            });
+        }
+
+        this.printer.print({
+            printContext: 'default',
+            templateName: 'checkout',
+            contextData: {checkouts: this.context.checkouts}
+        });
+    }
+
+    doneRedirect() {
+        this.router.navigate(['/staff/circ/patron/bcsearch']);
+    }
+
 }
 

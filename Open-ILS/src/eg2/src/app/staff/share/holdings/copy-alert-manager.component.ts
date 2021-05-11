@@ -79,11 +79,13 @@ export class CopyAlertManagerDialogComponent
 
         if (copyAlert.temp() === 'f') { return promise; }
 
-        copyAlert.alert_type().next_status().forEach(statId => {
-            if (!nextStatuses.includes(statId)) {
-                nextStatuses.push(statId);
-            }
-        });
+        if (copyAlert.alert_type().next_status()) {
+            copyAlert.alert_type().next_status().forEach(statId => {
+                if (!nextStatuses.includes(statId)) {
+                    nextStatuses.push(statId);
+                }
+            });
+        }
 
         if (this.mode === 'checkin' && nextStatuses.length > 0) {
 

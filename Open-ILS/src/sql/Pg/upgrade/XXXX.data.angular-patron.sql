@@ -1,6 +1,8 @@
 
 BEGIN;
 
+/*
+
 -- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version); 
 
 -- insert then update for easier iterative development tweaks
@@ -562,6 +564,86 @@ UPDATE config.print_template SET template = $TEMPLATE$
   <br/>
 </div>
 $TEMPLATE$ WHERE name = 'bills_historical';
+
+*/
+
+INSERT INTO config.print_template 
+    (name, label, owner, active, locale, content_type, template)
+VALUES ('checkout', 'Checkout', 1, TRUE, 'en-US', 'text/html', '');
+
+UPDATE config.print_template SET template = $TEMPLATE$
+[% 
+  USE date;
+  USE money = format('$%.2f');
+  SET checkouts = template_data.checkouts;
+%] 
+
+<div>
+  <div>Welcome to [% staff_org.name %]</div>
+  <div>You checked out the following items:</div>
+  <hr/>
+  <ol>
+	[% FOR checkout IN checkouts %]
+    <li>
+      <div>[% checkout.title %]</div>
+      <span>Barcode: </span>
+      <span>[% checkout.copy.barcode %]</span>
+      <span>Call Number: </span>
+      <span>
+      [% IF checkout.volume %]
+	    [% volume.prefix.label %] [% volume.label %] [% volume.suffix.label %]
+      [% ELSE %]
+        Not Cataloged
+      [% END %]
+      </span>
+    </li>
+  [% END %]
+  </ol>
+  <hr/>
+  <div>Slip Date: [% date.format(date.now, '%x %r') %]</div>
+  <div>Printed by [% staff.first_given_name %] at [% staff_org.shortname %]</div>
+</div>
+
+$TEMPLATE$ WHERE name = 'checkout';
+
+INSERT INTO config.print_template 
+    (name, label, owner, active, locale, content_type, template)
+VALUES ('renew', 'renew', 1, TRUE, 'en-US', 'text/html', '');
+
+UPDATE config.print_template SET template = $TEMPLATE$
+[% 
+  USE date;
+  USE money = format('$%.2f');
+  SET renewals = template_data.renewals;
+%] 
+
+<div>
+  <div>Welcome to [% staff_org.name %]</div>
+  <div>You renewed the following items:</div>
+  <hr/>
+  <ol>
+	[% FOR renewal IN renewals %]
+    <li>
+      <div>[% renewal.title %]</div>
+      <span>Barcode: </span>
+      <span>[% renewal.copy.barcode %]</span>
+      <span>Call Number: </span>
+      <span>
+      [% IF renewal.volume %]
+	    [% volume.prefix.label %] [% volume.label %] [% volume.suffix.label %]
+      [% ELSE %]
+        Not Cataloged
+      [% END %]
+      </span>
+    </li>
+  [% END %]
+  </ol>
+  <hr/>
+  <div>Slip Date: [% date.format(date.now, '%x %r') %]</div>
+  <div>Printed by [% staff.first_given_name %] at [% staff_org.shortname %]</div>
+</div>
+
+$TEMPLATE$ WHERE name = 'renew';
 
 COMMIT;
 

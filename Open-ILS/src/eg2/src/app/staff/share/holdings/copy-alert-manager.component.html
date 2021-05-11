@@ -1,37 +1,55 @@
 
 
-<eg-string key="staff.holdings.copyalert.CHECKOUT.NORMAL" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.NORMAL"
   text="Normal checkin" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.LOST" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.LOST"
   text="Item was marked lost" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.LOST_AND_PAID" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.LOST_AND_PAID"
   text="Item was marked lost and paid for" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.MISSING" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.MISSING"
   text="Item was marked missing" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.DAMAGED" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.DAMAGED"
   text="Item was marked damaged" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.CLAIMSRETURNED" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.CLAIMSRETURNED"
   text="Item was marked claims returned" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.LONGOVERDUE" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.LONGOVERDUE"
   text="Item was marked long overdue" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.CLAIMSNEVERCHECKEDOUT" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.CLAIMSNEVERCHECKEDOUT"
   text="Item was marked claims never checked out" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.NORMAL" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.NORMAL"
   text="Normal checkout" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.LOST" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.LOST"
   text="Item was marked lost" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.LOST_AND_PAID" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.LOST_AND_PAID"
   text="Item was marked lost and paid for" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.MISSING" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.MISSING"
   text="Item was marked missing" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.DAMAGED" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.DAMAGED"
   text="Item was marked damaged" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.CLAIMSRETURNED" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.CLAIMSRETURNED"
   text="Item was marked claims returned" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.LONGOVERDUE" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.LONGOVERDUE"
   text="Item was marked long overdue" i18n-text></eg-string>
-<eg-string key="staff.holdings.copyalert.CHECKOUT.CLAIMSNEVERCHECKEDOUT" 
+<eg-string key="staff.holdings.copyalert.CHECKOUT.CLAIMSNEVERCHECKEDOUT"
   text="Item was marked claims never checked out" i18n-text></eg-string>
+
+
+<eg-string key="staff.holdings.copyalert.CHECKIN.NORMAL"
+  i18n-text text="Normal checkout"></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKIN.LOST"
+  i18n-text text="Item was marked lost"></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKIN.LOST_AND_PAID"
+  i18n-text text="Item was marked lost and paid for"></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKIN.MISSING"
+  i18n-text text="Item was marked missing"></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKIN.DAMAGED"
+  i18n-text text="Item was marked damaged"></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKIN.CLAIMSRETURNED"
+  i18n-text text="Item was marked claims returned"></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKIN.LONGOVERDUE"
+  i18n-text text="Item was marked long overdue"></eg-string>
+<eg-string key="staff.holdings.copyalert.CHECKIN.CLAIMSNEVERCHECKEDOUT"
+  i18n-text text="Item was marked claims never checked out"></eg-string>
 
 
 <ng-template #dialogContent>
@@ -50,12 +68,12 @@
         {{alert._message}}
       </div>
       <div class="col-lg-2">
-        <button class="btn btn-sm btn-outline-dark mr-2" *ngIf="canBeAcked(alert)" 
+        <button class="btn btn-sm btn-outline-dark mr-2" *ngIf="canBeAcked(alert)"
           (click)="alert._acked = !alert._acked" i18n>Clear</button>
       </div>
     </div>
 
-    <div class="row border-top mt-3 pt-3" 
+    <div class="row border-top mt-3 pt-3"
       *ngIf="mode == 'checkin' && nextStatuses.length > 0; let index = index">
       <div class="col-lg-4" i18n>Next item status:</div>
       <div class="col-lg-5">

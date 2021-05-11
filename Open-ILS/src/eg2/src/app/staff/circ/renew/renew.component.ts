@@ -181,9 +181,9 @@ export class RenewComponent implements OnInit, AfterViewInit {
 
     toggleStrictBarcode(active: boolean) {
         if (active) {
-            this.store.setItem('circ.checkin.strict_barcode', true);
+            this.store.setItem('circ.renew.strict_barcode', true);
         } else {
-            this.store.removeItem('circ.checkin.strict_barcode');
+            this.store.removeItem('circ.renew.strict_barcode');
         }
     }
 
