@@ -1,0 +1,9 @@
+MARC Batch Import/Export Separate Edit Date/Editor Toggle
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Adds a new field "Update Bib Edit Date" to Vandelay merge profiles which
+allows users to update the edit date and editor information on a
+merged/overlaid bib record without also having to modify the bib source.
+
+For backwards compatibility, any existing merge profiles that have 
+"Update Bib Source" applied will also get "Update Bib Edit Date" applied.
