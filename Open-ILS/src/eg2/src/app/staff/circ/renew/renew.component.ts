@@ -137,7 +137,7 @@ export class RenewComponent implements OnInit, AfterViewInit {
         const params: CheckoutParams = {
             copy_barcode: this.barcode,
             due_date: this.useDueDate ? this.dueDate : null,
-            _renewal: true
+            _checkbarcode: this.strictBarcode
         };
 
         return this.barcodeSelect.getBarcode('asset', this.barcode)

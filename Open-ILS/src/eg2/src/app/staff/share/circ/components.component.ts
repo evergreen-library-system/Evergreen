@@ -9,6 +9,7 @@ import {RouteDialogComponent} from './route-dialog.component';
 import {CopyInTransitDialogComponent} from './in-transit-dialog.component';
 import {CopyAlertManagerDialogComponent
     } from '@eg/staff/share/holdings/copy-alert-manager.component';
+import {BadBarcodeDialogComponent} from './bad-barcode-dialog.component';
 
 /* Container component for sub-components used by circulation actions.
  *
@@ -36,6 +37,7 @@ export class CircComponentsComponent {
 
     @ViewChild('holdShelfStr') holdShelfStr: StringComponent;
     @ViewChild('catalogingStr') catalogingStr: StringComponent;
+    @ViewChild('badBarcodeDialog') badBarcodeDialog: BadBarcodeDialogComponent;
 
     constructor(private circ: CircService) {
         this.circ.components = this;

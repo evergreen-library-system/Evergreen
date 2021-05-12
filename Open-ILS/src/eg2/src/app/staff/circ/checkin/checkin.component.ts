@@ -180,7 +180,8 @@ export class CheckinComponent implements OnInit, AfterViewInit {
 
         const params: CheckinParams = {
             copy_barcode: this.barcode,
-            backdate: this.backdate
+            backdate: this.backdate,
+            _checkbarcode: this.strictBarcode
         };
 
         Object.keys(this.modifiers).forEach(mod => {

@@ -130,6 +130,7 @@ export interface CheckoutParams {
     // internal tracking
     _override?: boolean;
     _renewal?: boolean;
+    _checkbarcode?: boolean;
     _worklog?: WorkLogEntry;
 }
 
@@ -184,6 +185,7 @@ export interface CheckinParams {
     // internal / local values that are moved from the API request.
     _override?: boolean;
     _worklog?: WorkLogEntry;
+    _checkbarcode?: boolean;
 }
 
 export interface CheckinResult extends CircResultCommon {
@@ -383,11 +385,15 @@ export class CircService {
         let method = 'open-ils.circ.checkout.full';
         if (params._override) { method += '.override'; }
 
-        return this.net.request(
-            'open-ils.circ', method,
-            this.auth.token(), this.apiParams(params)).toPromise()
-        .then(result => this.unpackCheckoutData(params, result))
-        .then(result => this.processCheckoutResult(result));
+        return this.inspectBarcode(params).then(barcodeOk => {
+            if (!barcodeOk) { return null; }
+
+            return this.net.request(
+                'open-ils.circ', method,
+                this.auth.token(), this.apiParams(params)).toPromise()
+            .then(result => this.unpackCheckoutData(params, result))
+            .then(result => this.processCheckoutResult(result));
+        });
     }
 
     renew(params: CheckoutParams): Promise<CheckoutResult> {
@@ -399,11 +405,15 @@ export class CircService {
         let method = 'open-ils.circ.renew';
         if (params._override) { method += '.override'; }
 
-        return this.net.request(
-            'open-ils.circ', method,
-            this.auth.token(), this.apiParams(params)).toPromise()
-        .then(result => this.unpackCheckoutData(params, result))
-        .then(result => this.processCheckoutResult(result));
+        return this.inspectBarcode(params).then(barcodeOk => {
+            if (!barcodeOk) { return null; }
+
+            return this.net.request(
+                'open-ils.circ', method,
+                this.auth.token(), this.apiParams(params)).toPromise()
+            .then(result => this.unpackCheckoutData(params, result))
+            .then(result => this.processCheckoutResult(result));
+        });
     }
 
 
@@ -708,11 +718,15 @@ export class CircService {
         let method = 'open-ils.circ.checkin';
         if (params._override) { method += '.override'; }
 
-        return this.net.request(
-            'open-ils.circ', method,
-            this.auth.token(), this.apiParams(params)).toPromise()
-        .then(result => this.unpackCheckinData(params, result))
-        .then(result => this.processCheckinResult(result));
+        return this.inspectBarcode(params).then(barcodeOk => {
+            if (!barcodeOk) { return null; }
+
+            return this.net.request(
+                'open-ils.circ', method,
+                this.auth.token(), this.apiParams(params)).toPromise()
+            .then(result => this.unpackCheckinData(params, result))
+            .then(result => this.processCheckinResult(result));
+        });
     }
 
     fleshCommonData(result: CircResultCommon): Promise<CircResultCommon> {
@@ -1152,6 +1166,60 @@ export class CircService {
             {target_copy : copyId},
             {order_by : {circ : 'xact_start desc' }, limit : 1}
         ).toPromise();
+    }
+
+    // Resolves to true if the barcode is OK or the user confirmed it or
+    // the user doesn't care to begin with
+    inspectBarcode(params: CheckoutParams | CheckinParams): Promise<boolean> {
+        if (!params._checkbarcode || !params.copy_barcode) {
+            return Promise.resolve(true);
+        }
+
+        if (this.checkBarcode(params.copy_barcode)) {
+            // Avoid prompting again on an override
+            params._checkbarcode = false;
+            return Promise.resolve(true);
+        }
+
+        this.components.badBarcodeDialog.barcode = params.copy_barcode;
+        return this.components.badBarcodeDialog.open().toPromise();
+    }
+
+    checkBarcode(barcode: string): boolean {
+        if (barcode !== Number(barcode).toString()) { return false; }
+
+        const bc = barcode.toString();
+
+        // "16.00" == Number("16.00"), but the . is bad.
+        // Throw out any barcode that isn't just digits
+        if (bc.search(/\D/) !== -1) { return false; }
+
+        const lastDigit = bc.substr(bc.length - 1);
+        const strippedBarcode = bc.substr(0, bc.length - 1);
+        return this.barcodeCheckdigit(strippedBarcode).toString() === lastDigit;
+    }
+
+    barcodeCheckdigit(bc: string): number {
+        let checkSum = 0;
+        let multiplier = 2;
+        const reverseBarcode = bc.toString().split('').reverse();
+
+        reverseBarcode.forEach(ch => {
+            let tempSum = 0;
+            const product = (Number(ch) * multiplier) + '';
+            product.split('').forEach(num => tempSum += Number(num));
+            checkSum += Number(tempSum);
+            multiplier = multiplier === 2 ? 1 : 2;
+        });
+
+        const cSumStr = checkSum.toString();
+        const nextMultipleOf10 =
+            (Number(cSumStr.match(/(\d*)\d$/)[1]) * 10) + 10;
+
+        let checkDigit = nextMultipleOf10 - Number(cSumStr);
+        if (checkDigit === 10) { checkDigit = 0; }
+
+        return checkDigit;
     }
 }
 

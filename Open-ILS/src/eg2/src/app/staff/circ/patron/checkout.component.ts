@@ -115,6 +115,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
         const params: CheckoutParams = {
             patron_id: this.context.summary.id,
+            _checkbarcode: this.strictBarcode,
             _worklog: {
                 user: this.context.summary.patron.family_name(),
                 patron_id: this.context.summary.id

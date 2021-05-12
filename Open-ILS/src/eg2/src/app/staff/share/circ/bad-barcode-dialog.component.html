@@ -1,0 +1,27 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 i18n>Bad Barcode</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <img src="/images/bad_barcode.png"/>
+    <p class="mt-2">Invalid barcode: <b>{{barcode}}</b></p>
+    <p class="mt-2">
+      Your entry has a bad check digit, possibly due to a bad scan.
+      Choose Cancel to try again, or Accept to use barcode "{{barcode}}" anyway.
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info" (click)="close(true)" i18n>
+      Accept Barcode
+    </button>
+    <button type="button" class="btn btn-warning" (click)="close()" i18n>
+      Cancel
+    </button>
+  </div>
+</ng-template>
+
+

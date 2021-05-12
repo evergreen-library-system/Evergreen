@@ -15,6 +15,7 @@ import {CopyInTransitDialogComponent} from './in-transit-dialog.component';
 import {CancelTransitDialogComponent} from './cancel-transit-dialog.component';
 import {BackdateDialogComponent} from './backdate-dialog.component';
 import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
+import {BadBarcodeDialogComponent} from './bad-barcode-dialog.component';
 
 @NgModule({
     declarations: [
@@ -28,6 +29,7 @@ import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
         BackdateDialogComponent,
         CopyInTransitDialogComponent,
         CancelTransitDialogComponent,
+        BadBarcodeDialogComponent,
         OpenCircDialogComponent
     ],
     imports: [
