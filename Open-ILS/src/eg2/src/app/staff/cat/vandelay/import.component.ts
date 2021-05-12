@@ -133,6 +133,8 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         private mergeProfileSelector: ComboboxComponent;
     @ViewChild('fallThruMergeProfileSelector', { static: true })
         private fallThruMergeProfileSelector: ComboboxComponent;
+    @ViewChild('queueSelector') private queueSelector: ComboboxComponent;
+    @ViewChild('bucketSelector') private bucketSelector: ComboboxComponent;
 
     @ViewChild('dupeQueueAlert', { static: true })
         private dupeQueueAlert: AlertDialogComponent;
@@ -147,7 +149,6 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         private store: ServerStoreService,
         private vandelay: VandelayService
     ) {
-        this.applyDefaults();
     }
 
     applyDefaults() {
@@ -158,20 +159,19 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         this.formTemplates = {};
 
         if (this.vandelay.importSelection) {
+            // Apply start-id values to our comboboxes based on our
+            // import selection values.
+            const queue = this.vandelay.importSelection.queue;
 
-            if (!this.vandelay.importSelection.queue) {
+            if (!queue) {
                 // Incomplete import selection, clear it.
                 this.vandelay.importSelection = null;
                 return;
             }
 
-            const queue = this.vandelay.importSelection.queue;
             this.recordType = queue.queue_type();
-            this.selectedMatchSet = queue.match_set();
-
-            // This will be propagated to selectedQueue as a combobox
-            // entry via the combobox
             this.startQueueId = queue.id();
+            this.selectedMatchSet = queue.match_set();
 
             if (this.recordType === 'bib') {
                 this.selectedBucket = queue.match_bucket();
@@ -180,9 +180,49 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    ngOnInit() {}
+    applyImportSelection() {
+
+        // Depending on when the comboboxes are rendered, the start-id values
+        // applied in applyDefaults() may not have any affect.  Ensure we
+        // get the initial values we want by manually setting selectedIds
+        // to the rendered combobox as well.
+
+        const queue = this.vandelay.importSelection.queue;
+        if (!queue) {
+            // Incomplete import selection, clear it.
+            this.vandelay.importSelection = null;
+            return;
+        }
+
+        if (this.queueSelector) {
+            this.queueSelector.selectedId = this.startQueueId;
+            this.selectedQueue = {id: queue.id(), label: queue.name()};
+        }
+
+        if (this.matchSetSelector) {
+            this.matchSetSelector.selectedId = this.selectedMatchSet;
+        }
+
+        if (this.recordType === 'bib') {
+            if (this.holdingsProfileSelector) {
+                this.holdingsProfileSelector.selectedId = this.selectedHoldingsProfile;
+            }
+            if (this.bucketSelector) {
+                this.bucketSelector.selectedId = this.selectedBucket;
+            }
+        }
+    }
+
+    ngOnInit() {
+        this.applyDefaults();
+    }
 
     ngAfterViewInit() {
+        if (this.vandelay.importSelection) {
+            // setTimeout() is not required here, but it helps to
+            // avoid expression-changed-after-checking console messages.
+            setTimeout(() => this.applyImportSelection());
+        }
         this.loadStartupData();
     }
 
