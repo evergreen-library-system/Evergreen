@@ -26,7 +26,7 @@ We will need to make a copy of the Evergreen documentation. This will allow you 
 +
 image::how_to_contribute_docs/github_click_fork.png[Github Click Fork Screenshot]
 +
-. This process will make a copy of the repositoy into your personal GitHub account.
+. This process will make a copy of the repository into your personal GitHub account.
 
 == Install the GitHub Desktop Software ==
 
