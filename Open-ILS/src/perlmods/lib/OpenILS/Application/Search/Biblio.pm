@@ -2871,7 +2871,17 @@ sub bib_copies {
 
     my $resp;
     while ($resp = $req->recv) {
-        $client->respond($resp->content); 
+        my $copy = $resp->content;
+
+        if ($is_staff) {
+            # last_circ is an IDL query so it cannot be queried directly
+            # via JSON query.
+            $copy->{last_circ} = 
+                new_editor()->retrieve_reporter_last_circ_date($copy->{id})
+                ->last_circ;
+        }
+
+        $client->respond($copy);
     }
 
     return undef;

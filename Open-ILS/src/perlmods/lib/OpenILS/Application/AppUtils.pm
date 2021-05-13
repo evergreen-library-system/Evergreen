@@ -2122,6 +2122,7 @@ sub basic_opac_copy_query {
             bmp => [
                 {column => 'label', alias => 'part_label'},
             ],
+            ($staff ? (erfcc => ['circ_count']) : ()),
             ($iss_id ? (sitem => ["issuance"]) : ())
         },
 
@@ -2166,7 +2167,13 @@ sub basic_opac_copy_query {
                             sstr => { }
                         }
                     }
-                } : ())
+                } : ()),
+                ($staff ? {
+                    erfcc => {
+                        fkey => 'id',
+                        field => 'id'
+                    }
+                }: ()),
             ]
         },
 
