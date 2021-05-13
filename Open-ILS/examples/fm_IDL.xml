@@ -10878,7 +10878,7 @@ SELECT  usr,
 			<link field="id" reltype="has_a" key="id" map="" class="bre"/>
 		</links>
 	</class>
-	<class id="erfcc" controller="open-ils.reporter-store" oils_obj:fieldmapper="extend_reporter::full_circ_count" oils_persist:tablename="extend_reporter.full_circ_count" reporter:label="Total Circulation Count, Including Legacy">
+	<class id="erfcc" controller="open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="extend_reporter::full_circ_count" oils_persist:tablename="extend_reporter.full_circ_count" reporter:label="Total Circulation Count, Including Legacy">
 		<fields oils_persist:primary="id">
 			<field reporter:label="Copy ID" name="id" reporter:datatype="int" />
 			<field reporter:label="Total Circulation Count" name="circ_count" reporter:datatype="int" />
@@ -10886,6 +10886,11 @@ SELECT  usr,
 		<links>
 			<link field="id" reltype="has_a" key="id" map="" class="acp"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="STAFF_LOGIN" context_field="circ_lib"/>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="erccpo" controller="open-ils.reporter-store" oils_obj:fieldmapper="extend_reporter::copy_count_per_org" oils_persist:tablename="extend_reporter.copy_count_per_org" reporter:label="Library Holdings Count with Deleted">
 		<fields oils_persist:primary="bibid">

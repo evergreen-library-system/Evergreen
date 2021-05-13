@@ -531,7 +531,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
                     flesh: 3,
                     flesh_fields: {
                         acp: ['status', 'location', 'circ_lib', 'parts', 'notes',
-                            'tags', 'age_protect', 'copy_alerts', 'latest_inventory'],
+                            'tags', 'age_protect', 'copy_alerts', 'latest_inventory',
+                            'total_circ_count', 'last_circ'],
                         acn: ['prefix', 'suffix', 'copies'],
                         acli: ['inventory_workstation']
                     }
