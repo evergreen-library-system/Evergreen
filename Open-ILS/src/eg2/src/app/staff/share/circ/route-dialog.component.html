@@ -25,7 +25,9 @@
   </div>
   <div>
     <span class="mr-2" i18n>Patron Barcode:</span>
-    <span>{{checkin.patron.card().barcode()}}</span>
+    <ng-container *ngIf="checkin.patron.card()">
+      <span>{{checkin.patron.card().barcode()}}</span>
+    </ng-container>
   </div>
 </ng-template>
 
