@@ -394,6 +394,10 @@ export class CatalogService {
     fetchCopyLocations(contextOrg: number | IdlObject): Promise<any> {
         const contextOrgId: any = this.org.get(contextOrg).id();
 
+        // we ordinarily want the shelving locations associated with
+        // all ancestors and descendants of the context OU, but
+        // if the context OU is the root, we intentionally want
+        // only the ones owned by the root OU
         const orgIds: any[] = contextOrgId === this.org.root().id()
             ? [contextOrgId]
             : this.org.fullPath(contextOrg, true);
