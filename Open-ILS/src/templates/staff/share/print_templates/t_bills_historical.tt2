@@ -42,12 +42,12 @@ to this template includes:
       xact.call_number.owning_lib.shortname - The owning library's shortname
 
 -->
-Welcome to {{current_location.name}}!<br/>
-You had the following bills:
+[% l('Welcome to [_1]', '{{current_location.name}}') %]!<br/>
+[% l('You had the following bills:') %]
 <hr/>
 <dl>
   <div ng-repeat="xact in transactions">
-    <dt><b>Bill #{{xact.id}}</b></dt>
+    <dt><b>[% l('Bill #') %]{{xact.id}}</b></dt>
     <dd>
     <table> 
       <tr valign="top">
