@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1261', :eg_version);
 
 CREATE OR REPLACE FUNCTION evergreen.located_uris_as_uris 
     (bibid BIGINT, ouid INT, pref_lib INT DEFAULT NULL)
