@@ -164,7 +164,6 @@ export class GridColumnSet {
 
         const pathParts = dotpath.split(/\./);
         let oldField;
-        let oldFieldLabel = '';
 
         // find the IDL class definition for the last element in the
         // path before the .*
@@ -177,10 +176,6 @@ export class GridColumnSet {
             // link to another class.
             if (idlField && idlField['class'] && (
                 idlField.datatype === 'link' || idlField.datatype === 'org_unit')) {
-
-                if (oldFieldLabel) { oldFieldLabel += ' : '; }
-
-                oldFieldLabel += idlField.label;
                 classObj = this.idl.classes[idlField['class']];
 
             } else {
