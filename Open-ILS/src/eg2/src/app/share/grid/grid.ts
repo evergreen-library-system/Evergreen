@@ -76,6 +76,34 @@ export class GridColumn {
         this.filterIncludeOrgAncestors = false;
         this.filterIncludeOrgDescendants = false;
     }
+
+    clone(): GridColumn {
+        const col = new GridColumn();
+
+        col.name = this.name;
+        col.path = this.path;
+        col.label = this.label;
+        col.flex = this.flex;
+        col.required = this.required;
+        col.hidden = this.hidden;
+        col.asyncSupportsEmptyTermClick = this.asyncSupportsEmptyTermClick;
+        col.isIndex = this.isIndex;
+        col.cellTemplate = this.cellTemplate;
+        col.cellContext = this.cellContext;
+        col.disableTooltip = this.disableTooltip;
+        col.isSortable = this.isSortable;
+        col.isFilterable = this.isFilterable;
+        col.isMultiSortable = this.isMultiSortable;
+        col.datatype = this.datatype;
+        col.datePlusTime = this.datePlusTime;
+        col.ternaryBool = this.ternaryBool;
+        col.timezoneContextOrg = this.timezoneContextOrg;
+        col.idlClass = this.idlClass;
+        col.isAuto = this.isAuto;
+
+        return col;
+    }
+
 }
 
 export class GridColumnSet {
@@ -99,6 +127,10 @@ export class GridColumnSet {
 
     add(col: GridColumn) {
 
+        if (col.path && col.path.match(/\*$/)) {
+            return this.generateWildcardColumns(col);
+        }
+
         this.applyColumnDefaults(col);
 
         if (!this.insertColumn(col)) {
@@ -117,6 +149,72 @@ export class GridColumnSet {
         this.applyColumnFilterability(col);
     }
 
+    generateWildcardColumns(col: GridColumn) {
+
+        const dotpath = col.path.replace(/\.?\*$/, '');
+        let classObj, idlField;
+
+        if (col.idlClass) {
+            classObj = this.idl.classes[col.idlClass];
+        } else {
+            classObj = this.idl.classes[this.idlClass];
+        }
+
+        if (!classObj) { return; }
+
+        const pathParts = dotpath.split(/\./);
+        let oldField;
+        let oldFieldLabel = '';
+
+        // find the IDL class definition for the last element in the
+        // path before the .*
+        // An empty pathParts means expand the root class
+        pathParts.forEach((part, pathIdx) => {
+            oldField = idlField;
+            idlField = classObj.field_map[part];
+
+            // unless we're at the end of the list, this field should
+            // link to another class.
+            if (idlField && idlField['class'] && (
+                idlField.datatype === 'link' || idlField.datatype === 'org_unit')) {
+
+                if (oldFieldLabel) { oldFieldLabel += ' : '; }
+
+                oldFieldLabel += idlField.label;
+                classObj = this.idl.classes[idlField['class']];
+
+            } else {
+                if (pathIdx < (pathParts.length - 1)) {
+                    // we ran out of classes to hop through before
+                    // we ran out of path components
+                    console.warn('Grid: invalid IDL path: ' + dotpath);
+                }
+            }
+        });
+
+        if (!classObj) {
+            console.warn(
+                'Grid: wildcard path does not resolve to an object:' + dotpath);
+            return;
+        }
+
+        classObj.fields.forEach(field => {
+
+            // Only show wildcard fields where we have data to show
+            // Virtual and un-fleshed links will not have any data.
+            if (field.virtual ||
+                field.datatype === 'link' || field.datatype === 'org_unit') {
+                return;
+            }
+
+            const newCol = col.clone();
+            newCol.isAuto = true;
+            newCol.path = dotpath ? dotpath + '.' + field.name : field.name;
+            newCol.label = dotpath ? classObj.label + ': ' + field.label : field.label;
+
+            this.add(newCol);
+        });
+    }
 
     // Returns true if the new column was inserted, false otherwise.
     // Declared columns take precedence over auto-generated columns

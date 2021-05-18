@@ -53,6 +53,9 @@ export class GridColumnComponent implements OnInit {
     // queries regardless of whether they are visible in the display.
     @Input() required = false;
 
+    // IDL class of the object which contains this field.
+    @Input() idlClass: string;
+
     // get a reference to our container grid.
     constructor(@Host() private grid: GridComponent) {}
 
@@ -85,6 +88,7 @@ export class GridColumnComponent implements OnInit {
         col.ternaryBool = this.ternaryBool;
         col.timezoneContextOrg = this.timezoneContextOrg;
         col.dateOnlyIntervalField = this.dateOnlyIntervalField;
+        col.idlClass = this.idlClass;
         col.isAuto = false;
         this.grid.context.columnSet.add(col);
 
