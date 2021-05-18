@@ -214,6 +214,14 @@
       <eg-grid-column path="copy.status.name"
         label="Item Status" i18n-label></eg-grid-column>
 
+      <eg-grid-column path="copy.*" idlClass="acp" [hidden]="true"></eg-grid-column>
+      <eg-grid-column path="circ.*" idlClass="circ" [hidden]="true"></eg-grid-column>
+      <eg-grid-column path="mbts.*" idlClass="mbts" [hidden]="true"></eg-grid-column>
+      <eg-grid-column path="patron.*" idlClass="au" [hidden]="true"></eg-grid-column>
+      <eg-grid-column path="record.*" idlClass="mvr" [hidden]="true"></eg-grid-column>
+      <eg-grid-column path="hold.*" idlClass="ahr" [hidden]="true"></eg-grid-column>
+      <eg-grid-column path="transit.*" idlClass="atc" [hidden]="true"></eg-grid-column>
+
     </eg-grid>
   </div>
 </div>
