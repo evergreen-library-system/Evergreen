@@ -6,6 +6,7 @@
 ** xref:admin:emergency_closing_handler.adoc[Emergency Closing Handler]
 ** xref:admin:actiontriggers.adoc[Notifications / Action Triggers]
 *** xref:admin:actiontriggers_process.adoc[Processing Action Triggers]
+** xref:local_admin:negative_balances.adoc[Patron with Negative Balances]
 ** xref:admin:staff_client-recent_searches.adoc[Recent Staff Searches]
 ** xref:admin:lsa-standing_penalties.adoc[Standing Penalties]
 ** xref:admin:lsa-statcat.adoc[Statistical Categories Editor]
