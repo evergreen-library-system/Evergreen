@@ -73,7 +73,8 @@ Electronic data interchange (EDI)::
   Transmission of data between organizations using electronic means. This is used for Acquisitions. 
 Evergreen::
   Evergreen is an open source ILS designed to handle the processing of a geographical dispersed, resource sharing library network. 
-[[F]]FIFO (First In First Out):: 
+[[F]]Fieldmapper IDL:: See <<IDL, IDL>>
+FIFO (First In First Out):: 
   In a FIFO environment, holds are filled in the order that they are placed.
 FUD (Fear, Uncertainty, Doubt)::
   FUD is a marketing stratagy to try to install Fear, Uncertainty, and/or Doubt about a competitors product.   
@@ -103,6 +104,7 @@ Holding subfield::
   Used in the acquisitions module to map subfields to the appropriate item data. 
 [[I]]ICL (Inter-Consortium Loans)::
   Inter-Consortium Loans are like ILL's, but different in the fact that the loan happens just with in the Consortium. 
+[[IDL]]IDL (Interface Definition Language):: A model that Evergreen's software components use to understand how Evergreen's data are structured. IDL is sometime refered to as the Fieldmapper IDL.
 [[ILS]]ILS (Integrated Library System)::
   The Integrated Library System is a set of applications which perform the business and technical aspects of library management, including but not exclusive to acquistions, cataloging, circulation, and booking. 
 ILL (Inter-Library Loan)::
