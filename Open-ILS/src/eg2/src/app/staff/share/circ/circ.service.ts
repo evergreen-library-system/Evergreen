@@ -1182,7 +1182,12 @@ export class CircService {
         }
 
         this.components.badBarcodeDialog.barcode = params.copy_barcode;
-        return this.components.badBarcodeDialog.open().toPromise();
+        return this.components.badBarcodeDialog.open().toPromise()
+        // Avoid prompting again on an override
+        .then(response => {
+            params._checkbarcode = false
+            return response;
+        });
     }
 
     checkBarcode(barcode: string): boolean {
