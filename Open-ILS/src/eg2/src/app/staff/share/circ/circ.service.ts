@@ -424,7 +424,8 @@ export class CircService {
             response.map(r => this.evt.parse(r)) :
             [this.evt.parse(response)];
 
-        console.debug('checkout returned', allEvents.map(e => e.textcode));
+        console.debug('checkout events', allEvents.map(e => e.textcode));
+        console.debug('checkout returned', allEvents);
 
         const firstEvent = allEvents[0];
         const payload = firstEvent.payload;
@@ -649,6 +650,7 @@ export class CircService {
             this.components.circEventsDialog.patronName = holdShelfEvent.payload.patron_name;
         }
 
+        this.components.circEventsDialog.copyBarcode = result.params.copy_barcode;
         this.components.circEventsDialog.events = events;
         this.components.circEventsDialog.mode = mode;
 

@@ -21,6 +21,7 @@ export class CircEventsComponent extends DialogComponent implements OnInit {
     clearHolds = false;
     patronId: number = null;
     patronName: string;
+    copyBarcode: string;
 
     constructor(
         private modal: NgbModal,

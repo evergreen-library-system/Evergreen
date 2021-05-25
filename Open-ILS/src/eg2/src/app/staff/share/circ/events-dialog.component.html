@@ -19,6 +19,7 @@
       <div class="card mb-2">
         <div class="card-header text-danger">{{evt.textcode}}</div>
         <div class="card-body">
+          <div class="font-weight-bold">{{copyBarcode}}</div>
           <div>{{evt.desc}}</div>
           <ng-container *ngIf="evt.textcode == 'COPY_ALERT_MESSAGE'">
             <ng-container *ngIf="!isArray(evt.payload)">
