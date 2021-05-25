@@ -356,11 +356,8 @@ if(!dojo._hasResource["openils.Util"]) {
      */
     openils.Util.playAudioUrl = function(urlString) {
         if(!urlString) return;
-        var audio = document.createElement('audio');
-        audio.setAttribute('src', urlString);
-        audio.setAttribute('autoplay', 'true');
-        document.body.appendChild(audio);
-        document.body.removeChild(audio);
+        var audio = new Audio(urlString);
+        audio.play();
     }
 
     /**
