@@ -312,7 +312,7 @@
         domId="au-dob-input"
         fieldName="au-dob-input"
         [noMaxWidth]="true"
-        [initialIso]="patron.dob()"
+        [initialYmd]="patron.dob()"
         (onChangeAsIso)="
           fieldValueChange(null, null, 'dob', $event); 
           afterFieldChange(null, null, 'dob')"
