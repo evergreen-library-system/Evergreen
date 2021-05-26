@@ -4,11 +4,11 @@
   </div>
 </div>
 
-<div class="pad-vert"></div>
-
 <div ng-if="!detail_hold_id">
 [% INCLUDE 'staff/circ/holds/t_pull_list.tt2' %]
 </div>
+
+<div class="pad-vert"></div>
 
 <!-- hold details -->
 <div ng-if="detail_hold_id">
