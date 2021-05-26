@@ -12,10 +12,10 @@
       <div class="flex-1"></div><!-- push right -->
       <a (click)="toggleFormDisplay()" class="label-with-material-icon no-href">
         <ng-container *ngIf="hideForm()" i18n>
-          Show Search Form <span class="material-icons">unfold_more</span>
+          Show Search Form <span class="material-icons" aria-hidden="true">unfold_more</span>
         </ng-container>
         <ng-container *ngIf="!hideForm()" i18n>
-          Hide Search Form <span class="material-icons">unfold_less</span>
+          Hide Search Form <span class="material-icons" aria-hidden="true">unfold_less</span>
         </ng-container>
       </a>
     </div>
