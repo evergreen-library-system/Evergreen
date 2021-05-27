@@ -324,21 +324,21 @@ element (corresponding to the XPath `/opensrf/default/apps/`):
 [source,xml]
 --------------------------------------------------------------------------------
 <apps>
-  <opensrf.simple-text>                                                      <!-- <1> -->
-    <keepalive>3</keepalive>                                                 <!-- <2> -->
-    <stateless>1</stateless>                                                 <!-- <3> -->        
-    <language>perl</language>                                                <!-- <4> -->
-    <implementation>OpenSRF::Application::Demo::SimpleText</implementation>  <!-- <5> -->
-    <max_requests>100</max_requests>                                         <!-- <6> -->
+  <opensrf.simple-text>                                                      <!--1-->
+    <keepalive>3</keepalive>                                                 <!--2-->
+    <stateless>1</stateless>                                                 <!--3-->
+    <language>perl</language>                                                <!--4-->
+    <implementation>OpenSRF::Application::Demo::SimpleText</implementation>  <!--5-->
+    <max_requests>100</max_requests>                                         <!--6-->
     <unix_config>
-      <max_requests>1000</max_requests>                                      <!-- <7> -->
-      <unix_log>opensrf.simple-text_unix.log</unix_log>                      <!-- <8> -->
-      <unix_sock>opensrf.simple-text_unix.sock</unix_sock>                   <!-- <9> -->
-      <unix_pid>opensrf.simple-text_unix.pid</unix_pid>                     <!-- <10> -->
-      <min_children>5</min_children>                                        <!-- <11> -->
-      <max_children>15</max_children>                                       <!-- <12> -->
-      <min_spare_children>2</min_spare_children>                            <!-- <13> -->
-      <max_spare_children>5</max_spare_children>                            <!-- <14> -->
+      <max_requests>1000</max_requests>                                      <!--7-->
+      <unix_log>opensrf.simple-text_unix.log</unix_log>                      <!--8-->
+      <unix_sock>opensrf.simple-text_unix.sock</unix_sock>                   <!--9-->
+      <unix_pid>opensrf.simple-text_unix.pid</unix_pid>                     <!--10-->
+      <min_children>5</min_children>                                        <!--11-->
+      <max_children>15</max_children>                                       <!--12-->
+      <min_spare_children>2</min_spare_children>                            <!--13-->
+      <max_spare_children>5</max_spare_children>                            <!--14-->
     </unix_config>
   </opensrf.simple-text>
 
@@ -396,14 +396,14 @@ of publicly accessible services:
 .Making a service publicly accessible in `opensrf_core.xml`
 [source,xml]
 --------------------------------------------------------------------------------
-<router>                                                                     <!-- <1> --> 
+<router>                                                                     <!--1-->
     <!-- This is the public router. On this router, we only register applications
      which should be accessible to everyone on the opensrf network -->
     <name>router</name>
-    <domain>public.localhost</domain>                                        <!-- <2> -->
+    <domain>public.localhost</domain>                                        <!--2-->
     <services>
         <service>opensrf.math</service> 
-        <service>opensrf.simple-text</service>                               <!-- <3> -->
+        <service>opensrf.simple-text</service>                               <!--3-->
     </services>
 </router>
 --------------------------------------------------------------------------------
@@ -684,20 +684,20 @@ reading, updating, and deleting all of the defined classes.
 <class id="mous" controller="open-ils.cstore open-ils.pcrud"
  oils_obj:fieldmapper="money::open_user_summary"
  oils_persist:tablename="money.open_usr_summary"
- reporter:label="Open User Summary">                                       <!-- <1> -->
-    <fields oils_persist:primary="usr" oils_persist:sequence="">           <!-- <2> -->
-        <field name="balance_owed" reporter:datatype="money" />            <!-- <3> -->
+ reporter:label="Open User Summary">                                       <!--1-->
+    <fields oils_persist:primary="usr" oils_persist:sequence="">           <!--2-->
+        <field name="balance_owed" reporter:datatype="money" />            <!--3-->
         <field name="total_owed" reporter:datatype="money" />
         <field name="total_paid" reporter:datatype="money" />
         <field name="usr" reporter:datatype="link"/>
     </fields>
     <links>
-        <link field="usr" reltype="has_a" key="id" map="" class="au"/>     <!-- <4> -->
+        <link field="usr" reltype="has_a" key="id" map="" class="au"/>     <!--4-->
     </links>
-    <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">  <!-- <5> -->
+    <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">  <!--5-->
         <actions>
-            <retrieve permission="VIEW_USER">                              <!-- <6> -->
-                <context link="usr" field="home_ou"/>                      <!-- <7> -->
+            <retrieve permission="VIEW_USER">                              <!--6-->
+                <context link="usr" field="home_ou"/>                      <!--7-->
             </retrieve>
         </actions>
     </permacrud>
