@@ -4,3 +4,32 @@
 Evergreen can interface with services like Authorize.net, Stripe, PayPal, or Payflow to allow users to pay fines and other charges in the Public Catalog.  Credit card settings can be configured in the xref:admin:librarysettings.adoc[Library Settings Editor]. 
 
 As of 3.6 Stripe in Evergreen is using version 3 of the Stripe client library and the Elements API.
+
+== Setting up credit card payments ==
+
+Credit card payments are controlled in the library settings.  These settings are protected by two permissions.  In order to view the
+current settings, you need the VIEW_CREDIT_CARD_PROCESSING permission.  To add, update, or remove these settings, you will need the
+ADMIN_CREDIT_CARD_PROCESSING permission.
+
+To enable credit card payments, you will need to set the following settings:
+
+* Settings related to your credit card processor: AuthorizeNet, PayPal, PayflowPro, or Stripe.  The correct values for these settings will come from the processor.  The library settings editor includes many settings for each processor; you may not need to fill in every one.
+* The "Name of the default credit processor" setting.  This should be the processor you set up in the previous step.
+* The "Allow credit card payments" setting.  This should be True.
+
+[NOTE]
+Be sure you are applying these settings at the correct organizational unit context.  For many libraries, these settings should be applied at the System level.
+
+== Running in Test Mode ==
+
+This test mode is designed to be used on your library's Evergreen test server.  To avoid confusing your patrons and changing
+billing totals, do not use this mode on a production Evergreen server.
+
+You can enable test mode using the library settings editor by setting your credit card provider's test mode setting to True.
+For example, if you use Authorize.Net, you can enable test mode by setting "AuthorizeNet test mode" to True.
+
+In this test mode, Evergreen will display information from your processor about whether or not the payment information was
+successful.  The payments will not actually be charged to the relevant credit card, but the Evergreen patron's balance will
+be adjusted according to the test payment.
+
+Your credit card provider should be able to provide test credit card numbers for your testing purposes.
