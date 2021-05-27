@@ -14,7 +14,7 @@ To access the *Patron with Negative Balances* go to *Administration* -> *Local A
 To access a branches list of patrons with negative balances, choose the branch in the upper left hand corner. +
 To clear the negative balance *Click* on the _patron barcode_ to access the patrons account.
 
-[Note]
+[NOTE]
 ======
 Only branches can be selected.  Systems and Consortium cannot be selected. 
 ======
