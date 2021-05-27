@@ -75,7 +75,7 @@ image::media/receipt2.png[receipt screen]
 Print templates use variables for various pieces of information coming from the
 Evergreen database.  These variables deal with everything from the library name
 to the due date of an item. Information from the database is entered in the
-templates with curly brackets `{{term}}`.
+templates with curly brackets `+{{term}}+`.
 
 Example: `{{checkout.title}}`
 
@@ -111,10 +111,10 @@ If you do not format dates, they will appear in a system format which isn't
 easily readable.
 
 |===================================================
-| Code                         | Result
-|{{today}}                     | 2017-08-01T14:18:51.445Z
-|{{today \| date:'short'}}     | 8/1/17 10:18 AM
-|{{today \| date:'M/d/yyyy'}}  | 8/1/2017
+| Code                           | Result
+|+{{today}}+                     | 2017-08-01T14:18:51.445Z
+|+{{today \| date:'short'}}+     | 8/1/17 10:18 AM
+|+{{today \| date:'M/d/yyyy'}}+  | 8/1/2017
 |===================================================
 
 === Currency Formatting ===
@@ -189,10 +189,10 @@ and then displaying the final amount at the end.
 ------
 <div>You checked out the following items:</div>
 <br/>
-<div ng-init="transactions.subtotal=0">                <!-- <1> -->
+<div ng-init="transactions.subtotal=0">                <!--1-->
 <ol>
 <div ng-repeat="checkout in circulations">
-  <li ng-init="transactions.subtotal=transactions.subtotal -- checkout.copy.price"> <!-- <2> -->
+  <li ng-init="transactions.subtotal=transactions.subtotal -- checkout.copy.price"> <!--2-->
      <b>{{checkout.title}}</b><br/>
      Barcode: {{checkout.copy.barcode}}<br/>
      Due: {{checkout.circ.due_date | date:"M/d/yyyy"}}
@@ -202,7 +202,7 @@ and then displaying the final amount at the end.
 <div style="font-weight:bold;">Total Amount Owed: {{patron_money.balance_owed | currency}}</div>
 <div style="font-weight:bold;border:1px dotted black; padding:5px;text-align:center;">
 You Saved<br/>
-{{transactions.subtotal | currency}}<br/>              <!-- <3> -->
+{{transactions.subtotal | currency}}<br/>              <!--3-->
 by borrowing from the library!</div>
 ------
 <1> This line sets the variable.
