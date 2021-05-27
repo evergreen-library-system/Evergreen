@@ -4,7 +4,7 @@
     <div class="modal-header">
       <button type="button" class="close" 
         ng-click="cancel()" aria-hidden="true">&times;</button>
-      <h4 class="modal-title">[% l('Load Shared Bucket Bucket by ID') %]</h4>
+      <h4 class="modal-title">[% l('Load Shared Bucket by ID') %]</h4>
     </div>
     <div class="modal-body">
       <div class="form-group">
