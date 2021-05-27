@@ -12,12 +12,12 @@ site:
 
 [source,html]
 ------------------------------------------------------------------------------
-<form action="http://example.com/eg/opac/results" method="get" accept-charset="UTF-8">    <!-- <1> -->
+<form action="http://example.com/eg/opac/results" method="get" accept-charset="UTF-8">    <!--1-->
     <input type="search" alt="Catalog Search" maxlength="200"
             size="20" name="query"
             placeholder="Search catalog for..." />
-    <input type="hidden" name="qtype" value="keyword" />           <!-- <2> -->
-    <input type="hidden" name="locg" value="4" />                  <!-- <3> -->
+    <input type="hidden" name="qtype" value="keyword" />           <!--2-->
+    <input type="hidden" name="locg" value="4" />                  <!--3-->
     <input type="submit" value="Search" />
 </form>
 ------------------------------------------------------------------------------
