@@ -1,4 +1,5 @@
-== Ebook API integration ==
+= Ebook API integration ==
+:toc:
 
 Evergreen supports integration with third-party APIs provided by OverDrive and
 OneClickdigital.
@@ -30,13 +31,24 @@ merely augments records that are already in Evergreen.
 A future Evergreen release will add the ability for users to check out
 titles, place holds, etc., directly via the public catalog.
 
-=== Ebook API service configuration ===
+== Ebook API service configuration ==
+
 This feature uses the new `open-ils.ebook_api` OpenSRF service.  This
 service must be configured in your `opensrf.xml` and `opensrf_core.xml`
 config files for ebook API integration to work.  See
 `opensrf.xml.example` and `opensrf_core.xml.example` for guidance.
 
-=== OverDrive API integration ===
+The `open-ils.ebook_api` service looks up title and
+patron information from specified ebook vendor APIs.
+
+The Evergreen catalog accesses data from this service
+through OpenSRF JS bindings.
+
+The `OpenILS::Utils::HTTPClient` module is required
+for this service.
+
+
+== OverDrive API integration ==
 Before enabling OverDrive API integration, you will need to request API
 access from OverDrive.  OverDrive will provide the values to be used for
 the following new org unit settings:
@@ -90,7 +102,7 @@ in `config.tt2`:
     older-style OverDrive records with the record identifier embedded in
     the 856 URL, you need to specify URL patterns with this setting.
 
-=== OneClickdigital API integration ===
+== OneClickdigital API integration ==
 Before enabling OneClickdigital API integration, you will need to
 request API access from OneClickdigital.  OneClickdigital will provide
 the values to be used for the following new org unit settings:
@@ -113,7 +125,7 @@ settings in `config.tt2`:
     records.  Evergreen uses the patterns specified here to extract
     record identifiers for OneClickdigital titles.
 
-=== Additional configuration ===
+== Additional configuration ==
 Evergreen communicates with third-party vendor APIs using the new
 `OpenILS::Utils::HTTPClient` module.  This module is configured using
 settings in `opensrf.xml`.  The default settings should work for most
