@@ -20,7 +20,9 @@ Authority Record::
 Barcode::
   The code/number attached to the item.  This is not the database ID. Barcodes are added to items to facilitate the checking in and out of an item. Barcodes can be changed as needed. Physical barcodes that can be placed on items can follow several different barcode symboligies.
 Bibliographic record::
-  The record that contains data about a work, such as title, author and copyright date.
+  The record that contains data about a work, such as title, author and copyright date. A bibliographic record may have zero or more items attached, which are the things that (may) circulate. A bibliographic record is analogous to "Work" and "Instance" in BIBFRAME.
+BIBFRAME::
+  A conceptual model of the library world that defines Works, Instance, and Items among other concepts. Available at https://www.loc.gov/bibframe/docs/bibframe2-model.html
 Booking::
   Processes relating to reserving cataloged and non- bibliographic items.
 Brick::
@@ -122,7 +124,7 @@ ISBN (International Standard Book Number)::
 ISSN (International Standard Serial Number)::
   International Standard Serial Number is a unigue 8 digit number assigned by the Internation Serials Data System to identify a specfic Serial Title. 
 [[item]]Item:: 
-  The actual item.
+  Item records contain information about an object such as a book, DVD, or kit, that may be available to circulate to patrons (based on circulation policies). Items belong to bibliographic records. The Evergreen Item is analogous to "Item" in BIBFRAME.
 Item barcode::
   Item barcodes uniquely identify each specific item entered into the Catalog.
 Item Buckets::
