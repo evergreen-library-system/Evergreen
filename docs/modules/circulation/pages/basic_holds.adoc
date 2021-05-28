@@ -438,7 +438,7 @@ Unfulfillable holds are colloquially known as “hopeless holds.”  In previous
 
 A hold is considered hopeless when there are no copies in `hold_copy_map` or when all copies in `hold_copy_map` are in a item status with the new `hopeless_prone` property set to “True.”  
 
-[[hopeless_prone_item_status_property]
+[[hopeless_prone_item_status_property]]
 === Hopeless Prone Item Status Property ===
 
 Item statuses have an additional property available called “hopeless prone,” indicating that items within that status may become unfulfillable.  This new item status property can be applied to any status that may result in unfulfillable holds, such as “Missing” or “Lost.” The hopeless prone property is set to “false” by default.  It can be modified in the Item Statuses interface.  Like all item statuses, this is globally applied without regard to Organizational Unit.  
