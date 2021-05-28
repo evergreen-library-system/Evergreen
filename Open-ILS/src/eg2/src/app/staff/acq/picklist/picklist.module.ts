@@ -6,18 +6,22 @@ import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
 import {PicklistRoutingModule} from './routing.module';
 import {PicklistComponent} from './picklist.component';
 import {PicklistSummaryComponent} from './summary.component';
+import {HttpClientModule} from '@angular/common/http';
+import {UploadComponent} from './upload.component';
 
 @NgModule({
   declarations: [
     PicklistComponent,
-    PicklistSummaryComponent
+    PicklistSummaryComponent,
+    UploadComponent
   ],
   imports: [
     StaffCommonModule,
     CatalogCommonModule,
     LineitemModule,
     HoldingsModule,
-    PicklistRoutingModule
+    PicklistRoutingModule,
+    HttpClientModule
   ],
   providers: []
 })
