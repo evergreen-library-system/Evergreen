@@ -11,3 +11,8 @@ a work in progress, continually revised to meet the needs of its users, so if
 you find errors or omissions, please let us know, by contacting the DIG
 facilitators at docs@evergreen-ils.org.
 
+== Documentation Versions ==
+
+This site includes documentation for Evergreen version 3.6 and above. To change the version, select one from the dropdown list at the top-right of the menu bar, or at the bottom of the left-hand sidebar.
+
+For versions 3.5 and previous, visit the https://docs.evergreen-ils.org/[Evergreen Documentation Version Index].
