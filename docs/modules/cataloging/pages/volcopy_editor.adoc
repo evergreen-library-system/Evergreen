@@ -47,6 +47,32 @@ Clicking on the *edit* link opens the *Holdings Editor* screen for that specific
 
 The *edit* link will only be exposed next to copies when the user has the *UPDATE_COPY* permission at the copy owning or circulating library. 
 
+== Holdings Details Defaults ==
+
+Select the checkboxes or use the drop down menus to set the settings you'd like.
+
+image::media/holdings-editor-defaults-2.png[]
+
+The following settings can be set for the Holdings Details:
+
+
+[options="header"]
+|===
+| Setting | Description
+| Always display Holdings Details pane | When selected the Holdings Detail section will show 
+when *Add/Edit Items* is selected from the *Actions* menu.
+| Allow Call Number Attribues in Item Templates | When selected Classification scheme, Prefix, and Suffix
+are available options that can be included in Item Templates.
+| Classification Scheme | By default Evergreen will use the classification scheme specified by the library settings
+_Default Classification Scheme_.  Using this setting you can specify Generic, Dewey, Library of Congress.
+| Default Prefix | If your library uses Prefixes select the one you'd like used as a default.
+| Default Suffix | If your library uses Suffixes select the one you'd like used as a default.
+| Auto-generate Barcodes | 
+| Use checkdigit | When checked if a non-codabar barcode is entered the outline of the Barcode field turns red.
+| Print Item Labels on Save & Exit | When checked the Print Items Labels interface will open when you 
+click Save & Close.  This setting is not recommend for libraries printing label sheets.
+|===
+
 == Hiding Fields in the Holdings Editor ==
 
 
