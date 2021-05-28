@@ -132,7 +132,7 @@ or refund the balance amount.
 . Click *OK/Continue*. 
 . Enter 1 in the *Payment Received* box.  (There is currently a bug preventing the "Apply Payment" button 
 from being used without a positive number in this box.  The $1.00 payment won't actually be applied.)
-. Click Apply Payment.
+. Click *Apply Payment*.
 . The payment has been refunded.
 . If you go into *History* and look at the full details for the bill you will see it shows the payment 
 has been refunded.
