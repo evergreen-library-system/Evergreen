@@ -1,17 +1,20 @@
 
-<eg-string key="catalog.record.toast.conjoined" 
+<eg-string key="catalog.record.toast.conjoined"
   i18n-text text="Conjoined Record Target Set"></eg-string>
-<eg-string key="catalog.record.toast.overlay" 
+<eg-string key="catalog.record.toast.overlay"
   i18n-text text="Record Overlay Target Set"></eg-string>
-<eg-string key="catalog.record.toast.holdTransfer" 
+<eg-string key="catalog.record.toast.holdTransfer"
   i18n-text text="Hold Transfer Target Set"></eg-string>
-<eg-string key="catalog.record.toast.holdingTransfer" 
+<eg-string key="catalog.record.toast.holdingTransfer"
   i18n-text text="Holding Transfer Target Set"></eg-string>
-<eg-string key="catalog.record.toast.cleared" 
+<eg-string key="catalog.record.toast.cleared"
   text="Record Marks Cleared"></eg-string>
 
 <eg-bucket-dialog #recordBucketDialog bucketClass="biblio" [itemIds]="[recId]">
 </eg-bucket-dialog>
+
+<eg-add-to-carousel-dialog #recordCarouselDialog [recordIds]="[recId]">
+</eg-add-to-carousel-dialog>
 
 <div class="row ml-0 mr-0">
 
@@ -42,19 +45,19 @@
     <div ngbDropdownMenu aria-labelledby="actionsForDd">
       <button class="dropdown-item" (click)="mark('conjoined')">
         <span i18n>
-          Conjoined Items<ng-container *ngIf="targets.conjoined.current"> 
+          Conjoined Items<ng-container *ngIf="targets.conjoined.current">
             (Currently {{targets.conjoined.current}})</ng-container>
         </span>
       </button>
       <button class="dropdown-item" (click)="mark('overlay')">
         <span i18n>
-          Overlay Target<ng-container *ngIf="targets.overlay.current"> 
+          Overlay Target<ng-container *ngIf="targets.overlay.current">
             (Currently {{targets.overlay.current}})</ng-container>
         </span>
       </button>
       <button class="dropdown-item" (click)="mark('holdTransfer')">
         <span i18n>
-          Title Hold Transfer<ng-container *ngIf="targets.holdTransfer.current"> 
+          Title Hold Transfer<ng-container *ngIf="targets.holdTransfer.current">
             (Currently {{targets.holdTransfer.current}})</ng-container>
         </span>
       </button>
@@ -77,7 +80,10 @@
       <button class="dropdown-item" (click)="recordBucketDialog.open({size: 'lg'})">
         <span i18n>Add To Bucket</span>
       </button>
-      <a class="dropdown-item" 
+      <button class="dropdown-item" (click)="recordCarouselDialog.open({size: 'lg'})">
+        <span i18n>Add To Carousel</span>
+      </button>
+      <a class="dropdown-item"
         href="/eg/staff/acq/legacy/lineitem/related/{{recId}}?target=bib">
         <span i18n>View/Place Orders</span>
       </a>
