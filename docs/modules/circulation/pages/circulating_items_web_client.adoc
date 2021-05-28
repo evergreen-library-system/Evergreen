@@ -156,6 +156,7 @@ image::media/backdate_post_checkin_web_client.png[]
 
 image::media/backdate_post_date_web_client.png[]
 
+[#checkin_modifiers]
 .Checkin Modifiers
 [TIP]
 ===================================================
