@@ -7,7 +7,7 @@ Surveys can be created that appear on the patron registration/edit page for a br
 
 Surveys come up when a patron is first registered. If you would like staff to ask the survey questions when the patron’s library card is renewed, you’ll need to make that part of local procedure.
 
-It is possible to run reports on Surveys, this will allow you to obtain statisical information from the surveys or listing of responses. For example, you could find out how many people say they would use the library if it were open on a Sunday, or you could get a list of patrons who say they would like to receive marketing material from the library. You can also visit individvual patron records to see their survey answers.
+It is possible to run reports on Surveys, this will allow you to obtain statistical information from the surveys or listing of responses. For example, you could find out how many people say they would use the library if it were open on a Sunday, or you could get a list of patrons who say they would like to receive marketing material from the library. You can also visit individual patron records to see their survey answers.
 
 == To create a new survey ==
 
@@ -22,7 +22,7 @@ image::surveys/survey-new.png[New Survey]
 +
 . Fill in the form.
   * _Name_ is the Name of the survey, this shows up in the patron record.
-  * _Description_ is a description of the survey, include anything you want about the survery.
+  * _Description_ is a description of the survey, include anything you want about the survey.
   * _Owning Library_ sets who gets the survey question. Set at consortitial level for all patrons, set at system level for just a system, set at branch level for just a branch. 
   * _Start Date_ use the date picker to choose the date the survey is to start.
   * _End Date_ use the date picker to choose the date you want to end the survey. If you do not want the survey to expire, then set the date way off in the future example 12/31/35.
@@ -51,7 +51,7 @@ image::surveys/survey-newanswer.png[Add Answers]
 +
 . Enter each option answer and click the *Add Answer* button after each one. Then click the *Save Changes* button. If you do not save your changes, then the answer will not be saved.
 +
-image::surveys/survey-qa.png[Saving Answers]
+image::surveys/survey_qa.png[Saving Answers]
 +
 . Repeat the steps above to add as many questions and answers as you wish. 
 . Click the Save button when complete. Make sure you use your browsers Back Button to go to the list of surveys.
@@ -90,7 +90,7 @@ This is what the survey looks like in the Patron Registration, the answers appea
 
 image::surveys/survey_staffview.png[Patron Registration]
 
-To access a patrons answers to a survy, you can view those through the staff client. Once in the patron record go to *Other -> Surveys*.
+To access a patrons answers to a survey, you can view those through the staff client. Once in the patron record go to *Other -> Surveys*.
 
 image::surveys/survey_patronrecord.png[Access Survey Answers]
 
@@ -101,7 +101,7 @@ This will show the answers to the surveys for that patron.
 There are three Non-core Sources for reporting.
 
 * *Survey*
-** This reports informaton about surveys starting with the Survey.
+** This reports information about surveys starting with the Survey.
 ** This source is great to see the surveys with questions and answers(Responses). 
 ** Also, use this source to find out the Survey Answers and Questions ID's.
 * *Survey Answer*
