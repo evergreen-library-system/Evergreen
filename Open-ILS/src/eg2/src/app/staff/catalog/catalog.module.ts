@@ -21,6 +21,7 @@ import {RecordActionsComponent} from './record/actions.component';
 import {BasketActionsComponent} from './basket-actions.component';
 import {HoldComponent} from './hold/hold.component';
 import {PartsComponent} from './record/parts.component';
+import {AddToCarouselDialogComponent} from './record/add-to-carousel-dialog.component';
 import {PartMergeDialogComponent} from './record/part-merge-dialog.component';
 import {BrowseComponent} from './browse.component';
 import {BrowseResultsComponent} from './browse/results.component';
@@ -47,6 +48,7 @@ import {PreferencesComponent} from './prefs.component';
     BasketActionsComponent,
     HoldComponent,
     PartsComponent,
+    AddToCarouselDialogComponent,
     PartMergeDialogComponent,
     BrowseComponent,
     BrowseResultsComponent,

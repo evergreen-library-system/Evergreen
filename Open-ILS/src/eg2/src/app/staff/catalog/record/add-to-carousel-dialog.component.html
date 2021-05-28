@@ -1,0 +1,31 @@
+<eg-string #successMsg text="Successfully added to carousel" i18n-text></eg-string>
+<eg-string #errorMsg text="Failed to add to carousel" i18n-text></eg-string>
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title">
+      <span i18n>Add to Carousel</span>
+    </h4>
+    <button type="button" class="close"
+    i18n-aria-label aria-label="Close" (click)="close(false)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div *ngIf="!carousels.length">
+    <p i18n>There are no eligible carousels.</p>
+    <p> <a routerLink="/staff/admin/local/container/carousel" i18n>Would you like to add one?</a></p>
+  </div>
+  <div class="row" *ngIf="carousels.length">
+    <div class="col-lg-3 font-weight-bold" i18n>Carousel</div>
+    <div class="col-lg-5">
+      <eg-combobox [entries]="formatCarouselEntries()" [formControl]="selectedCarousel">
+      </eg-combobox>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-success"
+  (click)="addToCarousel()" i18n>Add to carousel</button>
+</div>
+</ng-template>
