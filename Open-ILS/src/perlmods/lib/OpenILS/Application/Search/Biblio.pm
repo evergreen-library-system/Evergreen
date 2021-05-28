@@ -3035,7 +3035,7 @@ sub get_one_metarecord_summary {
 
     my $bre_id = $meta->master_record; 
 
-    my $response = get_one_record_summary($e, $org_id, $bre_id);
+    my $response = get_one_record_summary($self, $e, $org_id, $bre_id);
     $response->{urls} = get_one_rec_urls($self, $e, $org_id, $bre_id);
 
     $response->{metabib_id} = $rec_id;
