@@ -1680,10 +1680,22 @@ sub get_copy_price {
     my $min_price = $self->ou_ancestor_setting_value($owner, OILS_SETTING_MIN_ITEM_PRICE);
     my $max_price = $self->ou_ancestor_setting_value($owner, OILS_SETTING_MAX_ITEM_PRICE);
     my $charge_on_0 = $self->ou_ancestor_setting_value($owner, OILS_SETTING_CHARGE_LOST_ON_ZERO, $e);
+    my $primary_field = $self->ou_ancestor_setting_value($owner, OILS_SETTING_PRIMARY_ITEM_VALUE_FIELD, $e);
+    my $backup_field = $self->ou_ancestor_setting_value($owner, OILS_SETTING_SECONDARY_ITEM_VALUE_FIELD, $e);
 
-    my $price = $copy->price;
+    my $price = defined $primary_field && $primary_field eq 'cost'
+        ? $copy->cost
+        : $copy->price;
 
     # set the default price if needed
+    if (!defined $price or ($price == 0 and $charge_on_0)) {
+        if (defined $backup_field && $backup_field eq 'cost') {
+            $price = $copy->cost;
+        } elsif (defined $backup_field && $backup_field eq 'price') {
+            $price = $copy->price;
+        }
+    }
+    # possible fallthrough to original default item price behavior
     if (!defined $price or ($price == 0 and $charge_on_0)) {
         # set to default price
         $price = $self->ou_ancestor_setting_value(
