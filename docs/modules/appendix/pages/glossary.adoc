@@ -98,10 +98,14 @@ Hold::
   The exclusive right for a patron to checkout a specific item. 
 Hold boundaries::
   Define which organizational units are available to fill specific holds.
+Hold Groups::
+  A special use of Patron Buckets where lists of patrons that can then be used to place multiple title-level holds on the same bibliographic record.
 Holdings import profile::
   Identifies the <<IIA, Import Item Attributes>> definition.
 Holding subfield::
   Used in the acquisitions module to map subfields to the appropriate item data. 
+Hopeless Holds::
+  Holds which have become unfillable due to there being no copies in hold_copy_map and/or all copies in hold_copy_map are in a item status with the hopeless_prone property set to “True.”
 [[I]]ICL (Inter-Consortium Loans)::
   Inter-Consortium Loans are like ILL's, but different in the fact that the loan happens just with in the Consortium. 
 [[IDL]]IDL (Interface Definition Language):: A model that Evergreen's software components use to understand how Evergreen's data are structured. IDL is sometime refered to as the Fieldmapper IDL.
@@ -247,7 +251,7 @@ Workstation::
 xpath::
   The XML Path Language, a query language based on a tree representation of an XML document. It is used to programmatically select nodes from an XML document and to do minor computation involving strings, numbers and Boolean values. It allows you to identify parts of the XML document tree, to navigate around the tree, and to uniquely select nodes. The currently version is "XPath 2.0". It was originally defined by the World Wide Web Consortium (W3C). 
 [[Y]]YAOUS:: 
-  Yet Another Organization Unit Setting
+  Yet Another Organization Unit Setting; slang for Library Settings
 [[Z]]Z39.50 ::
   An international standard client/server protocol for communication between computer systems, primarily library and information related systems.
   See Also: <<SRU>>
