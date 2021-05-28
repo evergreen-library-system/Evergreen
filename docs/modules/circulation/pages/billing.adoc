@@ -1,0 +1,139 @@
+= Bills and Payments =
+:toc:
+
+== Circulation vs. Grocery Bills ==
+
+There are two types of bills in Evergreen: *Circulation* bills and *Grocery* bills.
+
+* Circulation bills are system-generated charges such as overdue fines, lost item costs, and 
+processing fees. The fine rates, replacement costs, and processing fees can be customized per organizational unit.
+
+* Grocery bills are manually created by staff. Grocery bill types can be shared by 
+all libraries or created by an individual library. Default 
+price can be attached to each bill type.
+
+== Making Payments ==
+
+Bills can be paid by cash, check, or credit, or be resolved by forgiveness, work, or goods.
+
+. Click on *Bills* tab.
+. Select or de-select bills to pay. Oldest bills are paid first by default.
+. Select *Receipt On Payment* and enter *#Copies* as required.
+. Select the payment type from the drop down menu.
+. Enter the payment in the *Payment Received* field and click *Apply Payment*.
+. Details of the transaction are displayed.
+
+[TIP]
+===================================================================================
+Click *Annotate* to add a note to the payment.
+===================================================================================
+
+== Patron Credit ==
+
+
+A credit can be kept in a patron account and used later to pay bills.
+
+. To create or add a credit, select the payment method and enter the amount in *Payment Received*
+. Select *Convert Change to Patron Credit* on bottom right.
+. Click *Apply Payment.*
+
+To use patron credit to pay bills, select *Patron Credit* as the payment type.
+
+If your library does not use patron credit, you can turn it off through a library setting.
+
+[[adjust_to_zero]]
+== Adjust Bill Balance to Zero ==
+
+This function sets any balance to zero, and is the easiest way to clear a negative 
+balance from patron account.
+
+. Click *Bills* in patron account.
+. Select the bill line item and click *Actions -> Adjust to Zero*.
+. Click *OK/Continue*.
+
+
+== Voiding Bills ==
+
+Staff with appropriate permissions can void bills, either entirely or in part.  In many cases it's better
+to use the xref:adjust_to_zero[] function.
+
+=== Voiding a Bill ===
+
+. Click on the *Bills* tab in the patron's account.
+. Select the bill line you wish to void and click *Actions -> Void All Billings*.
+. Click *OK/Continue*.  The bill will no longer display on the patron's bill tab.
+
+=== Voiding Part of a Bill ===
+
+Sometimes you may wish to void part of a bill, such as overdue fines for a specific day 
+or a processing charge for a lost item.
+
+. Click on the *Bills* tab in the patron's account.
+. Select the bill line you wish to partially void and click *Actions -> Full Details*.
+. The bill will open on the Statement tab.  Click the *Details* tab.
+. Select the specific bill line you would like to void and click *Actions -> Void Billings*.
+. Click *OK/Continue*.  The amount owing for the bill will be updated.
+
+=== Voiding a Paid Bill ===
+
+Sometimes you may need to void a bill a patron has already paid in order to process a refund.
+
+. Click on the *Bills* tab in the patron's account.
+. Click *History*
+. Select the relevant transaction and go to *Actions -> Full Details*.
+. The bill will open on the Statement tab.  Click the *Details* tab.
+. Select the bill(s) you wish to void and go to *Actions -> Void Billings*
+. Click *OK/Continue*.  The patron will now have a credit of the amount voided on their account.
+
+== Adding New "Grocery" Bills ==
+
+=== Create New Bill ===
+
+
+. Click *Bills* in patron account.
+. Click *Bill Patron*
+. Click on drop down arrow and select *Billing Type*, enter bill amount, and any required note.
+. Click *Submit Bill*.
+
+[[add_charges_existing_bill]]
+=== Add Charge to Existing Bill ===
+
+. Select the required bill from patron's *Bills* screen and click *Actions -> Add Billing*.
+. Click on drop down arrow and select *Billing Type*, enter bill amount, and any required note. 
+. Click *Submit Bill*. The bill's balance is updated.
+
+== Bill History ==
+
+=== Bill History ===
+
+. Click *History* in patron's bills screen.
+. View all bills, or bills from a specified time frame. Use the calendar widgets 
+to choose the *Start Date* and *End Date*, and click *Apply*.
+. For more information about a particular bill, select the line item and click *Actions -> Full Details*.
+. All transaction details are listed, such as time stamps, circulation dates, billing dates, amounts, staff identification, and item information
+
+
+=== Payment History ===
+
+. Click *Payments* on *Bill History* screen.
+. View all payments, or payments from a specified time frame. Use the calendar widgets to choose the *Start Date* and *End Date*, and click *Apply*.
+. For more information about a particular payment, select the line item and click *Actions -> Full Details*.
+
+== Refund ==
+
+Sometimes paid bills need to be voided, such as when lost and paid items are returned. A negative balance 
+may be created once such bills are voided. To close negative bills, you can 
+xref:adjust_to_zero[adjust the balance to 
+zero], xref:add_charges_existing_bill[add a bill entry to the negative line item], 
+or refund the balance amount.
+
+. Click on the *Bills* tab in the patron's account.
+. Select the line for the refund and go to *Actions → Refund*.
+. Click *OK/Continue*. 
+. Enter 1 in the *Payment Received* box.  (There is currently a bug preventing the "Apply Payment" button 
+from being used without a positive number in this box.  The $1.00 payment won't actually be applied.)
+. Click *Apply Payment*.
+. The payment has been refunded.
+. If you go into *History* and look at the full details for the bill you will see it shows the payment 
+has been refunded.
+
