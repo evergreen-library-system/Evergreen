@@ -11,5 +11,6 @@
 ** xref:admin:staff_client-recent_searches.adoc[Recent Staff Searches]
 ** xref:admin:lsa-standing_penalties.adoc[Standing Penalties]
 ** xref:admin:lsa-statcat.adoc[Statistical Categories Editor]
+** xref:admin:surveys.adoc[Surveys]
 ** xref:admin:popularity_badges_web_client.adoc[Statistical Popularity Badges]
 ** xref:admin:lsa-work_log.adoc[Work Log]

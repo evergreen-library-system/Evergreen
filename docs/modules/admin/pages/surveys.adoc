@@ -1,5 +1,6 @@
 = Surveys =
 :toc:
+
 indexterm:[Surveys]
 
 Surveys can be created that appear on the patron registration/edit page for a branch or system. Surveys questions can be optional or required. Some examples of survey questions might include: Would you use the library if it were open on a Sunday? Would you like to be contacted by the library to learn about new services? Do you attend library programs? Are you registered to vote?
@@ -12,12 +13,12 @@ It is possible to run reports on Surveys, this will allow you to obtain statisic
 
 . Go to *Administration* -> *Local Administration* -> *Surveys*.
 +
-image::media/survey-2.png[Surveys]
+image::surveys/survey.png[Surveys]
 +
 . Click the Add New Survey button.
 . A popup will appear:
 +
-image::media/survey-3.png[New Survey]
+image::surveys/survey-new.png[New Survey]
 +
 . Fill in the form.
   * _Name_ is the Name of the survey, this shows up in the patron record.
@@ -42,15 +43,15 @@ Now to add questions
 
 . The screen will refresh so that you may add a question: 
 +
-image::media/survey-3a.png[Add Questions]
+image::surveys/survey-newquestion.png[Add Questions]
 +
 . Enter the survey question and click the *Save Question & Add Answer* button.
 +
-image::media/survey-4.png[Add Answers]
+image::surveys/survey-newanswer.png[Add Answers]
 +
 . Enter each option answer and click the *Add Answer* button after each one. Then click the *Save Changes* button. If you do not save your changes, then the answer will not be saved.
 +
-image::media/survey-5.png[Saving Answers]
+image::surveys/survey-qa.png[Saving Answers]
 +
 . Repeat the steps above to add as many questions and answers as you wish. 
 . Click the Save button when complete. Make sure you use your browsers Back Button to go to the list of surveys.
@@ -61,7 +62,7 @@ To edit a survey the survey must be in the future, you cannot edit active survey
 
 . Open the survey to edit by clicking on it's _Name_.
 +
-image::media/survey-7.png[Edit Survey]
+image::surveys/survey.png[Edit Survey]
 +
 . If the survey is an active survey, change the _Survey Start Date/Time_ to a future date.
 . Click *Save*.
@@ -73,7 +74,7 @@ image::media/survey-7.png[Edit Survey]
 . Add any additional questions and/or answers at this time.  Remembering to always *Save Changes*.
 . Click *Save* once all your changes are made.
 +
-image::media/survey-1.png[Edit Survey]
+image::surveys/survey_edit2.png[Edit Survey]
 +
 . Use the browser Back Button to go back to the list of surveys.
 
@@ -87,15 +88,13 @@ If you need to end a survey before the Survey End Date, you can edit the survey 
 
 This is what the survey looks like in the Patron Registration, the answers appear as a drop down list.
 
-image::media/survey-6.png[Patron Registration]
+image::surveys/survey_staffview.png[Patron Registration]
 
 To access a patrons answers to a survy, you can view those through the staff client. Once in the patron record go to *Other -> Surveys*.
 
-image::media/survey-9.png[Access Survey Answers]
+image::surveys/survey_patronrecord.png[Access Survey Answers]
 
 This will show the answers to the surveys for that patron.
-
-image::media/survey-8.png[Patron Survey Answers]
 
 == Reporting on Surveys ==
 
