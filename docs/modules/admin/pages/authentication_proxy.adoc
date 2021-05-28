@@ -25,15 +25,18 @@ In order to activate Authentication Proxy, the Evergreen system administrator wi
 	<basedn>ou=people,dc=domain,dc=com</basedn>
 	<authid>cn=username,ou=specials,dc=domain,dc=com</authid>
 	<id_attr>uid</id_attr>
+	<bind_attr>uid</bind_attr>
 	<password>my_ldap_password_for_authid_user</password>
 	<login_types>
 		<type>staff</type>
 		<type>opac</type>
+		<type>persist</type>
 	</login_types>
 	<org_units>
 		<unit>103</unit>
 		<unit>104</unit>
 	</org_units>
+	<restrict_by_home_ou>false</restrict_by_home_ou>
 </authenticator>
 ----
 +
