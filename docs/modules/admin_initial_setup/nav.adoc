@@ -21,7 +21,7 @@
 *** xref:admin_initial_setup:hard_due_dates.adoc[Hard due dates]
 ** xref:admin:apache_rewrite_tricks.adoc[Apache Rewrite Tricks]
 ** xref:admin:apache_access_handler.adoc[Apache Access Handler Perl Module]
-** xref:admin:authentication_proxy.adoc[Authentication Proxy]
+** xref:admin_initial_setup:authentication_proxy.adoc[Authentication Proxy]
 *** xref:admin_initial_setup:single_sign_on.adoc[Single Sign On]
 ** xref:admin:backups.adoc[Backing up your Evergreen System]
 ** xref:admin:ebook_api_service.adoc[ebook_api service]
