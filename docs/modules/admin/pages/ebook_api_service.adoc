@@ -9,3 +9,5 @@ through OpenSRF JS bindings.
 The `OpenILS::Utils::HTTPClient` module is required
 for this service.
 
+See the xref:admin:ebook_api.adoc[ebook API Integration] documentation for more information.
+
