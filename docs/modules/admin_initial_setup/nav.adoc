@@ -12,6 +12,7 @@
 *** xref:admin:template_toolkit.adoc[TPac Configuration and Customization]
 *** xref:opac:new_skin_customizations.adoc[Creating a New Skin: the Bare Minimum]
 *** xref:admin_initial_setup:carousels.adoc[OPAC Carousels]
+*** xref:admin_initial_setup:managing_holds_ui_in_tpac.adoc[Managing how holds options display in the catalog]
 ** xref:admin_initial_setup:KidsOPAC.adoc[Kid's OPAC Configuration]
 ** xref:admin_initial_setup:bootstrap_opac.adoc[Enabling the Experimental Bootstrap OPAC]
 ** xref:admin:search_interface.adoc[Designing the patron search experience]
