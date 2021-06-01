@@ -10,34 +10,47 @@ image::shelving_location/shelving_location_config.png[Shelving Location Configur
 
 To add a shelving location
 
-. Click _New Shelving Location_.
+. Click *New Shelving Location*.
 +
 image::shelving_location/shelving_location_new.png[New shelving location]
 +
-. Choose the owning Org Unit of the shelving location. 
-. Type the name of the shelving location in the name field.
-. _Is OPAC Visible?_, choose whether you would like items in this shelving location to appear in the catalog.
-. _Can Circulate?_ can items in this location circulate?
-. _Is Holdable?_ are items in this location holdable?
-. _Hold Capture Requires Verification_, choose whether or not you want hold capture to be verified. At the time of capture you will be asked to fulfill the hold. 
+. Select your parameters for  your shelving locations.
+.. Choose the owning Org Unit of the shelving location. 
+.. Type the name of the shelving location in the name field.
+.. _Is OPAC Visible?_, choose whether you would like items in this shelving location to appear in the catalog.
+.. _Can Circulate?_ can items in this location circulate?
+.. _Is Holdable?_ are items in this location holdable?
+.. _Hold Capture Requires Verification_, choose whether or not you want hold capture to be verified. At the time of capture you will be asked to fulfill the hold. 
 +
 image::shelving_location/shelving_location_holdverify.png[Hold Capture Verification]
 +
-. _Checkin Alert_, choose whether you would like a routing alert to appear when an item in this location is checked in. This is intended for special locations, such as 'Display', that may require special handling, or that temporarily contain items that are not normally in that location.
+.. _Checkin Alert_, choose whether you would like a routing alert to appear when an item in this location is checked in. This is intended for special locations, such as 'Display', that may require special handling, or that temporarily contain items that are not normally in that location.
 +
 image::shelving_location/shelving_location_alert.png[Check in Alert message]
 +
-NOTE: By default, these alerts will only display when an item is checked in, _not_ when it is used to record an in-house use.
-+
+NOTE: By default, these alerts will only display when an item is checked in, _not_ when it is used to record an in-house use.+
 To also display these alerts when an item in your location is scanned for in-house use, go to Administration > Local Administration > Library Settings Editor and set _Display shelving location check in alert for in-house-use_ to True.
 +
-. _Is Deleted?_, this sets the deletion flag for a shelving location to yes. 
-. If you would like a prefix or suffix to be added to the call numbers of every volume in this location, enter it.
-. If you would like, add a URL to the _URL_ field.  When a URL is entered in this field, the associated shelving location will display as a link in the Public Catalog summary display. This link can be useful for retrieving maps or other directions to the shelving location to aid users in finding material.
+.. _Is Deleted?_, this sets the deletion flag for a shelving location to yes. 
+.. If you would like a prefix or suffix to be added to the call numbers of every volume in this location, enter it.
+.. If you would like, add a URL to the _URL_ field.  When a URL is entered in this field, the associated shelving location will display as a link in the Public Catalog summary display. This link can be useful for retrieving maps or other directions to the shelving location to aid users in finding material.
+. Select *Save*.
+
+TIP: Whether an item can be circulated, is holdable, or visible in the catalog, is 
+controlled by three factors: item status, shelving location, and item attributes (the 
+options in the Copy Editor). Evergreen follows the aforementioned sequence to check the 
+value of each factor until it encounters a NO. An item can be circulated, holdable or 
+visible on OPAC when all three factors are set to YES.
 
 == Editing shelving locations ==
 
-To edit a shelving location, double click on the shelving location. Then make any adjustments as needed. 
+. Select *Administration -> Local Administration -> Shelving Locations Editor*.
+. Select the shelving location you would like to edit.
+. Select the actions button and select _Edit Selected_. Or double click on the shelving location.
++
+image::shelving_location/shelving_location_edit.png[Edit Shelving Location]
++
+. Make your changes and click *Save*.
 
 == Deleting shelving locations ==
 
@@ -46,7 +59,9 @@ You may only delete a shelving location if:
 . it doesn't contain any items, or
 . it only contains deleted items.
 
-To delete a shelving location, double click on the location, and select _Is Deleted?_. 
+. Select *Administration -> Local Administration -> Shelving Locations Editor*.
+. Select the shelving location you would like to delete.
+. Select the actions button and select _Delete Selected_.
 
 Evergreen preserves shelving locations in the database, so no statistical information is lost when a shelving location is deleted.
 
