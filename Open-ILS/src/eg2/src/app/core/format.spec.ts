@@ -1,4 +1,4 @@
-import {DatePipe, CurrencyPipe, registerLocaleData} from '@angular/common';
+import {DatePipe, DecimalPipe, registerLocaleData} from '@angular/common';
 import {IdlService} from './idl.service';
 import {EventService} from './event.service';
 import {DbStoreService} from './db-store.service';
@@ -18,7 +18,7 @@ import localeFrCA from '@angular/common/locales/fr-CA';
 
 describe('FormatService', () => {
 
-    let currencyPipe: CurrencyPipe;
+    let decimalPipe: DecimalPipe;
     let datePipe: DatePipe;
     let idlService: IdlService;
     let netService: NetService;
@@ -35,7 +35,7 @@ describe('FormatService', () => {
     let service: FormatService;
 
     beforeEach(() => {
-        currencyPipe = new CurrencyPipe('en');
+        decimalPipe = new DecimalPipe('en');
         datePipe = new DatePipe('en');
         idlService = new IdlService();
         evtService = new EventService();
@@ -99,7 +99,7 @@ describe('FormatService', () => {
             value: '12.1',
             datatype: 'money'
         });
-        expect(str).toBe('$12.10');
+        expect(str).toBe('12.10');
     });
 
     it('should transform M/d/yy, h:mm a Angular format string to a valid MomentJS one', () => {

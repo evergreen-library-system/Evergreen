@@ -1,5 +1,5 @@
 import {Injectable, Pipe, PipeTransform} from '@angular/core';
-import {DatePipe, CurrencyPipe, getLocaleDateFormat, getLocaleTimeFormat, getLocaleDateTimeFormat, FormatWidth} from '@angular/common';
+import {DatePipe, DecimalPipe, getLocaleDateFormat, getLocaleTimeFormat, getLocaleDateTimeFormat, FormatWidth} from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {LocaleService} from '@eg/core/locale.service';
@@ -30,7 +30,7 @@ export class FormatService {
 
     constructor(
         private datePipe: DatePipe,
-        private currencyPipe: CurrencyPipe,
+        private decimalPipe: DecimalPipe,
         private idl: IdlService,
         private org: OrgService,
         private locale: LocaleService
@@ -133,7 +133,12 @@ export class FormatService {
                 return this.datePipe.transform(date.toISOString(true), fmt, date.format('ZZ'));
 
             case 'money':
-                return this.currencyPipe.transform(value);
+                // TODO: this used to use CurrencyPipe, but that injected
+                // an assumption that the default currency is always going to be
+                // USD. Since CurrencyPipe doesn't have an apparent way to specify
+                // that that currency symbol shouldn't be displayed at all, it
+                // was switched to DecimalPipe
+                return this.decimalPipe.transform(value, '1.2-2');
 
             case 'bool':
                 // Slightly better than a bare 't' or 'f'.
