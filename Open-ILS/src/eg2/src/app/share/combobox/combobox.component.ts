@@ -74,6 +74,14 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
     @Input() set required(r: boolean) {
         this.isRequired = r;
     }
+    // and a 'mandatory' synonym, as an issue
+    // has been observed in at least Firefox 88.0.1
+    // where the left border indicating whether a required
+    // value has been set or not is displayed in the
+    // container of the combobox, not just the dropdown
+    @Input() set mandatory(r: boolean) {
+        this.isRequired = r;
+    }
 
     // Disable the input
     isDisabled: boolean;
