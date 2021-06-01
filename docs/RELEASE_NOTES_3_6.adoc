@@ -587,7 +587,7 @@ the web staff client template `circ/patron/t_edit.tt2`.
 ===== New Action/Trigger reactor for 3rd party signaling =====
 
 This new Action/Trigger reactor module allows an Evergreen administrator to
-create event defintions that use HTTP (or HTTPS) to contact external services
+create event definitions that use HTTP (or HTTPS) to contact external services
 and let them know that something has happened in Evergreen.
 
 For instance, a discovery layer can be informed when a bib record is updated
