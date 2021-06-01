@@ -1,6 +1,13 @@
 = Administering shelving locations =
 :toc:
 
+(((Copy Locations)))
+(((Checkin Alert)))
+(((Shelving Locations Editor)))
+((("Label Prefix","Shelving Location")))
+((("Label Suffix","Shelving Location")))
+(((Hold Verify)))
+
 Shelving locations represent where in the library an item can be found. They can be administered at *Administration -> Local Administration -> Shelving Locations Editor*. 
 
 image::shelving_location/shelving_location_config.png[Shelving Location Configurations]
