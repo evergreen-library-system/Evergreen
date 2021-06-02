@@ -1,0 +1,61 @@
+[%-
+summary_contents =  [
+    {
+        display_field => 'abstract',
+        label => l('Summary: '),
+        xpath => '//*[@tag="520"]'
+    }
+];
+
+BLOCK render_summary_contents;
+    xpath = xpath || '//*[starts-with(@tag,"520")]';
+    FOR node IN ctx.marc_xml.findnodes(xpath);
+        all_content = [];
+        graphics = [];
+        FOR subfield IN node.childNodes;
+            NEXT UNLESS subfield.nodeName == "subfield";
+            code = subfield.getAttribute('code');
+            IF code == '6';
+               linked_fields = [subfield.textContent()];
+               target_field = node.getAttribute('tag');
+               get_linked_880s;
+            END;
+            NEXT UNLESS code.match('[a-z]');
+            all_content.push(subfield.textContent);
+        END;
+        total_contents = all_content.join(" ").replace('\s+$', '');
+        %] [% "<div class='content_field'>"; total_contents | html ; "</div>";
+        FOREACH link880 IN graphics;
+            '<div class="graphic880"' _ link880.dir _ '>';
+            link880.value | html;
+            '</div>';
+        END;
+    END;
+END;
+
+BLOCK render_all_summary_contents;
+    FOREACH cont IN summary_contents;
+        content = '';
+        df = cont.display_field;
+        IF df AND attrs.hl.$df.size;
+            content = '<!-- highlighted -->' _ attrs.hl.$df.join('<br/>');
+        ELSE;
+            content = PROCESS render_summary_contents(xpath=cont.xpath);
+        END;
+        IF content.match('\S');
+-%]
+<tr>
+    <td class='rdetail_content_type'>[% cont.label %]</td>
+    <td class='rdetail_content_value' property='keywords'>[% content %]</td>
+</tr>
+        [%- END; %]
+    [%- END; %]
+[%- END %]
+
+[%-  content_html = PROCESS render_all_summary_contents;
+    IF content_html.length > 0;
+%]
+
+<p>[%- content_html %]</p>
+
+[%- END %]

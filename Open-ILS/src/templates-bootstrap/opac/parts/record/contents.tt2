@@ -51,10 +51,6 @@ contents =  [
         label => l('Date/Time and Place of an Event Note: '),
         xpath => '//*[@tag="518"]'
     }, {
-        display_field => 'abstract',
-        label => l('Summary, etc.: '),
-        xpath => '//*[@tag="520"]'
-    }, {
         label => l('Target Audience Note: '),
         xpath => '//*[@tag="521"]'
     }, {
