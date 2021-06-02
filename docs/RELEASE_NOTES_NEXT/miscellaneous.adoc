@@ -1,0 +1,2 @@
+* In the Angular staff catalog, rename 'Catalog Preferences' to
+  'Search Preferences' and add a return button.
