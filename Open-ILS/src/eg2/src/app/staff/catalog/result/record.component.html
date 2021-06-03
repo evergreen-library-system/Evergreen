@@ -203,15 +203,14 @@
               <ng-container *ngIf="summary.record.deleted() == 't'">
                 <span class="text-danger" i18n>(Deleted)</span>
               </ng-container>
-              <ng-container *ngIf="summary.record.deleted() == 'f'">
-                <span>
-                  <button (click)="placeHold()"
-                    class="btn btn-sm btn-success label-with-material-icon small-text-1">
-                    <span class="material-icons">check</span>
-                    <span i18n>Place Hold</span>
-                  </button>
-                </span>
-              </ng-container>
+              <span>
+                <button (click)="placeHold()" [disabled]="!summary.isHoldable"
+                  [ngClass]="summary.isHoldable ? 'btn-success' : 'btn-secondary'"
+                  class="btn btn-sm label-with-material-icon small-text-1">
+                  <span class="material-icons">check</span>
+                  <span i18n>Place Hold</span>
+                </button>
+              </span>
             </div>
           </div>
         </div>

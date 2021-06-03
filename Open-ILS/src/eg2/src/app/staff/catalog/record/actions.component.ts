@@ -52,6 +52,8 @@ export class RecordActionsComponent implements OnInit {
         }
     }
 
+    @Input() isHoldable: boolean;
+
     constructor(
         private router: Router,
         private store: StoreService,

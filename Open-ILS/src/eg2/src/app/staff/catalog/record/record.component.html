@@ -23,6 +23,7 @@
     <div class="flex-1"></div>
     <div id='staff-catalog-bib-navigation'>
       <eg-catalog-record-actions [recordId]="recordId"
+        [isHoldable]="summary && summary.isHoldable"
         (addHoldingsRequested)="addHoldingsRequested()">
       </eg-catalog-record-actions>
     </div>

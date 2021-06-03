@@ -3088,6 +3088,12 @@ sub catalog_record_summary {
 
     $copy_method = $self->method_lookup($copy_method); # local method
 
+    my $holdable_method = $is_meta ?
+        'open-ils.search.biblio.metarecord.has_holdable_copy':
+        'open-ils.search.biblio.record.has_holdable_copy';
+
+    $holdable_method = $self->method_lookup($holdable_method); # local method
+
     for my $rec_id (@$record_ids) {
 
         my $response = $is_meta ? 
@@ -3120,6 +3126,8 @@ sub catalog_record_summary {
             $response->{copies} = get_representative_copies(
                 $e, $rec_id, $org_id, $is_staff, $is_meta, $options);
         }
+
+        ($response->{has_holdable_copy}) = $holdable_method->run($rec_id);
 
         $client->respond($response);
     }
