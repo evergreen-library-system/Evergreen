@@ -9561,11 +9561,17 @@ SELECT  usr,
 			<field reporter:label="Debit Type" name="debit_type" reporter:datatype="text" />
 			<field reporter:label="Debit Time" name="create_time" reporter:datatype="timestamp" />
 			<field reporter:label="Invoice Entry" name="invoice_entry" reporter:datatype="link" />
+			<field reporter:label="Invoice Items" name="invoice_items" reporter:datatype="link" oils_persist:virtual="true"/>
+			<field reporter:label="PO Items" name="po_items" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Line Item Details" name="lineitem_details" oils_persist:virtual="true" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="fund" reltype="has_a" key="id" map="" class="acqf"/>
 			<link field="origin_currency_type" reltype="has_a" key="code" map="" class="acqct"/>
 			<link field="invoice_entry" reltype="has_a" key="id" map="" class="acqie"/>
+			<link field="invoice_items" reltype="has_many" key="fund_debit" map="" class="acqii"/>
+			<link field="po_items" reltype="has_many" key="fund_debit" map="" class="acqpoi"/>
+			<link field="lineitem_details" reltype="has_many" key="fund_debit" map="" class="acqlid"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -10277,7 +10283,7 @@ SELECT  usr,
 		</links>
 	</class>
 
-	<class id="acqlid" controller="open-ils.cstore open-ils.reporter-store" oils_obj:fieldmapper="acq::lineitem_detail" oils_persist:tablename="acq.lineitem_detail" reporter:label="Line Item Detail">
+	<class id="acqlid" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::lineitem_detail" oils_persist:tablename="acq.lineitem_detail" reporter:label="Line Item Detail">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_detail_id_seq">
 			<field reporter:label="Item Detail ID" name="id" reporter:datatype="id" />
 			<field reporter:label="PO Line Item" name="lineitem" reporter:datatype="link" />
@@ -10308,6 +10314,14 @@ SELECT  usr,
 			<link field="claims" reltype="has_many" key="lineitem_detail" map="" class="acqcl"/>
 			<link field="receiver" reltype="has_a" key="id" map="" class="au"/>
 		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="CREATE_PURCHASE_ORDER VIEW_PURCHASE_ORDER CREATE_PICKLIST VIEW_PICKLIST">
+                    <context link="lineitem" jump="purchase_order" field="ordering_agency"/>
+                    <context link="lineitem" jump="picklist" field="org_unit"/>
+                </retrieve>
+            </actions>
+        </permacrud>
 	</class>
 
 	<class id="acqliad" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::lineitem_attr_definition" oils_persist:tablename="acq.lineitem_attr_definition" reporter:label="Line Item Attribute Definition">
