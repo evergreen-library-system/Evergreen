@@ -9441,6 +9441,7 @@ SELECT  usr,
 			<field reporter:label="Holdings Subfields" name="holdings_subfields" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="Attribute Definitions" name="attributes" oils_persist:virtual="true" reporter:datatype="link" />
 			<field reporter:label="EDI Accounts" name="edi_accounts" oils_persist:virtual="true" reporter:datatype="link" />
+			<field reporter:label="Buyer SAN" name="buyer_san" reporter:datatype="text" />
 		</fields>
 		<links>
 			<link field="currency_type" reltype="has_a" key="code" map="" class="acqct"/>
