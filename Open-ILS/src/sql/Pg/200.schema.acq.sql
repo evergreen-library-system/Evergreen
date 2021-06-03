@@ -916,6 +916,7 @@ CREATE TABLE acq.po_item (
 );
 
 CREATE INDEX poi_po_idx ON acq.po_item (purchase_order);
+CREATE INDEX poi_fund_debit_idx ON acq.po_item (fund_debit);
 
 CREATE TABLE acq.invoice_item ( -- for invoice-only debits: taxes/fees/non-bib items/etc
     id              SERIAL      PRIMARY KEY,
@@ -939,6 +940,7 @@ CREATE TABLE acq.invoice_item ( -- for invoice-only debits: taxes/fees/non-bib i
 CREATE INDEX ii_inv_idx on acq.invoice_item (invoice);
 CREATE INDEX ii_po_idx on acq.invoice_item (purchase_order);
 CREATE INDEX ii_poi_idx on acq.invoice_item (po_item);
+CREATE INDEX ii_fund_debit_idx ON acq.invoice_item (fund_debit);
 
 -- Patron requests
 CREATE TABLE acq.user_request_type (
