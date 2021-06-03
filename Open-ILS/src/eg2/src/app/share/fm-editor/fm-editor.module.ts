@@ -4,14 +4,16 @@ import {StaffCommonModule} from '@eg/staff/common.module';
 import {CommonWidgetsModule} from '@eg/share/common-widgets.module';
 import {StringModule} from '@eg/share/string/string.module';
 import {TranslateModule} from '@eg/share/translate/translate.module';
-import {FmRecordEditorComponent} from './fm-editor.component';
+import {FmRecordEditorComponent, MinValidatorDirective, MaxValidatorDirective} from './fm-editor.component';
 import {FmRecordEditorActionComponent} from './fm-editor-action.component';
 
 
 @NgModule({
     declarations: [
         FmRecordEditorComponent,
-        FmRecordEditorActionComponent
+        FmRecordEditorActionComponent,
+        MinValidatorDirective,
+        MaxValidatorDirective
     ],
     imports: [
         EgCommonModule,

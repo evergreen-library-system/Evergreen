@@ -113,6 +113,8 @@
                 placeholder="{{field.label}}..."
                 i18n-placeholder
                 [required]="field.isRequired()"
+                egMin="{{field.min}}"
+                egMax="{{field.max}}"
                 [ngModel]="record[field.name]()"
                 (ngModelChange)="record[field.name]($event)"/>
             </ng-container>

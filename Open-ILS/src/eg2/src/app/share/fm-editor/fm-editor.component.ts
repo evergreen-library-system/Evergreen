@@ -16,6 +16,8 @@ import {FormatService} from '@eg/core/format.service';
 import {TranslateComponent} from '@eg/share/translate/translate.component';
 import {FmRecordEditorActionComponent} from './fm-editor-action.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import {Directive, HostBinding} from '@angular/core';
+import {AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, Validators} from '@angular/forms';
 
 interface CustomFieldTemplate {
     template: TemplateRef<any>;
@@ -84,6 +86,10 @@ export interface FmFieldOptions {
 
     // help text to display via a popover
     helpText?: StringComponent;
+
+    // minimum and maximum permitted values for int fields
+    min?: number;
+    max?: number;
 }
 
 @Component({
@@ -563,6 +569,13 @@ export class FmRecordEditorComponent
             field.helpText.current().then(help => field.helpTextValue = help);
         }
 
+        if (fieldOptions.min) {
+            field.min = Number(fieldOptions.min);
+        }
+        if (fieldOptions.max) {
+            field.max = Number(fieldOptions.max);
+        }
+
         return promise || Promise.resolve();
     }
 
@@ -795,3 +808,32 @@ export class FmRecordEditorComponent
     }
 }
 
+// https://stackoverflow.com/a/57812865
+@Directive({
+    selector: 'input[type=number][egMin][formControlName],input[type=number][egMin][formControl],input[type=number][egMin][ngModel]',
+    providers: [{ provide: NG_VALIDATORS, useExisting: MinValidatorDirective, multi: true }]
+})
+export class MinValidatorDirective implements Validator {
+    @HostBinding('attr.egMin') @Input() egMin: number;
+
+    constructor() { }
+
+    validate(control: AbstractControl): ValidationErrors | null {
+        const validator = Validators.min(this.egMin);
+        return validator(control);
+    }
+}
+@Directive({
+    selector: 'input[type=number][egMax][formControlName],input[type=number][egMax][formControl],input[type=number][egMax][ngModel]',
+    providers: [{ provide: NG_VALIDATORS, useExisting: MaxValidatorDirective, multi: true }]
+})
+export class MaxValidatorDirective implements Validator {
+    @HostBinding('attr.egMax') @Input() egMax: number;
+
+    constructor() { }
+
+    validate(control: AbstractControl): ValidationErrors | null {
+        const validator = Validators.max(this.egMax);
+        return validator(control);
+    }
+}
