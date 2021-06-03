@@ -40,18 +40,24 @@ const TEMPLATE_ATTRS = [
     'minQualityRatio'
 ];
 
+const ORG_SETTINGS = [
+    'acq.upload.default.activate_po',
+    'acq.upload.default.create_po',
+    'acq.upload.default.provider',
+    'acq.upload.default.vandelay.import_non_matching',
+    'acq.upload.default.vandelay.load_item_for_imported',
+    'acq.upload.default.vandelay.low_quality_fall_thru_profile',
+    'acq.upload.default.vandelay.match_set',
+    'acq.upload.default.vandelay.merge_on_best',
+    'acq.upload.default.vandelay.merge_on_exact',
+    'acq.upload.default.vandelay.merge_on_single',
+    'acq.upload.default.vandelay.merge_profile',
+    'acq.upload.default.vandelay.quality_ratio'
+];
+
 interface ImportOptions {
     session_key: string;
     overlay_map?: {[qrId: number]: /* breId */ number};
- //  import_no_match?: boolean;
-  //  auto_overlay_exact?: boolean;
-   // auto_overlay_best_match?: boolean;
- //   auto_overlay_1match?: boolean;
- //   merge_profile?: any;
- //   fall_through_merge_profile?: any;
-//    match_quality_ratio: number;
- //   match_set: number;
- //   bib_source: number;
     exit_early: boolean;
 }
 
@@ -60,6 +66,7 @@ interface ImportOptions {
 })
 export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
+    settings: Object = {};
     recordType: string;
     selectedQueue: ComboboxEntry; // freetext enabled
 
@@ -144,11 +151,28 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         private vlagent: PicklistUploadService
     ) {
         this.applyDefaults();
+        this.applySettings();
     }
 
+    applySettings(): Promise<any> {
+        return this.store.getItemBatch(ORG_SETTINGS)
+        .then(settings => {
+            this.createPurchaseOrder = settings['acq.upload.default.create_po'];
+            this.activatePurchaseOrder = settings['acq.upload.default.activate_po'];
+            this.selectedProvider = Number(settings['acq.upload.default.provider']);
+            this.importNonMatching = settings['acq.upload.default.vandelay.import_non_matching'];
+            this.loadItems = settings['acq.upload.default.vandelay.load_item_for_imported'];
+            this.selectedFallThruMergeProfile = Number(settings['acq.upload.default.vandelay.low_quality_fall_thru_profile']);
+            this.selectedMatchSet = Number(settings['acq.upload.default.vandelay.match_set']);
+            this.mergeOnBestMatch = settings['acq.upload.default.vandelay.merge_on_best'];
+            this.mergeOnExact = settings['acq.upload.default.vandelay.merge_on_exact'];
+            this.mergeOnSingleMatch = settings['acq.upload.default.vandelay.merge_on_single'];
+            this.selectedMergeProfile = Number(settings['acq.upload.default.vandelay.merge_profile']);
+            this.minQualityRatio = Number(settings['acq.upload.default.vandelay.quality_ratio']);
+        });
+    }
     applyDefaults() {
         this.minQualityRatio = 0;
-        this.selectedBibSource = 1; // default to system local
         this.recordType = 'bib';
         this.formTemplates = {};
 //To-do add default for fiscal year
@@ -168,7 +192,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
             // entry via the combobox
             this.startQueueId = queue.id();
 
-        
+
         }
     }
 
@@ -207,6 +231,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
         return Promise.all(promises);
     }
+
 
     orgOnChange(org: IdlObject) {
         this.orderingAgency = org.id()
