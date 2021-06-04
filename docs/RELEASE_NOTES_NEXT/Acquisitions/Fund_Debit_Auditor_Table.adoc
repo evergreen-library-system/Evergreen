@@ -1,0 +1,5 @@
+== Fund Debit Auditor Table ==
+
+A new auditor table now exists for the `acq.fund_debit` table. This
+allows detailed reporting on changes to encumbrances and expenditures
+over time.
