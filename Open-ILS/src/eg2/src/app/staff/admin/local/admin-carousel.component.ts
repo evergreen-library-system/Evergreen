@@ -10,6 +10,7 @@ import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
+import {GridCellTextGenerator} from '@eg/share/grid/grid';
 import {StringComponent} from '@eg/share/string/string.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 
@@ -25,6 +26,7 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
     refreshSelected: (idlThings: IdlObject[]) => void;
     createNew: () => void;
     deleteSelected: (idlThings: IdlObject[]) => void;
+    cellTextGenerator: GridCellTextGenerator;
 
     @ViewChild('refreshString', { static: true }) refreshString: StringComponent;
     @ViewChild('refreshErrString', { static: true }) refreshErrString: StringComponent;
@@ -49,7 +51,9 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
 
         this.classLabel = this.idlClassDef.label;
         this.includeOrgDescendants = true;
-
+        this.cellTextGenerator = {
+            bucket: row => row.bucket().name()
+        };
 
         this.createNew = () => {
             super.createNew();
