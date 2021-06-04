@@ -14,4 +14,5 @@
 ** xref:admin:lsa-statcat.adoc[Statistical Categories Editor]
 ** xref:admin:surveys.adoc[Surveys]
 ** xref:admin:popularity_badges_web_client.adoc[Statistical Popularity Badges]
+** xref:local_admin:transit_list.adoc[Transit List]
 ** xref:admin:lsa-work_log.adoc[Work Log]
