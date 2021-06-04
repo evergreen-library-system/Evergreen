@@ -524,7 +524,7 @@ function(egCore , $q) {
                 '<div class="col-xs-5" ng-class="{'+"'has-error'"+':barcode_has_error}">'+
                     '<input id="{{callNumber.id()}}_{{copy.id()}}"'+
                     ' eg-enter="nextBarcode(copy.id())" class="form-control"'+
-                    ' type="text" ng-model="barcode" ng-model-options="{ debounce: 1000 }" ng-change="updateBarcode()"'+
+                    ' type="text" ng-model="barcode" ng-model-options="{ debounce: 500 }" ng-change="updateBarcode()"'+
                     ' ng-focus="selectOnFocus($event)" autofocus/>'+
                     '<div class="label label-danger" ng-if="duplicate_barcode">{{duplicate_barcode_string}}</div>'+
                     '<div class="label label-danger" ng-if="empty_barcode">{{empty_barcode_string}}</div>'+
