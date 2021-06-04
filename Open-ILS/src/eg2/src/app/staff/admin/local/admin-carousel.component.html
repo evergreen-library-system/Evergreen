@@ -42,6 +42,7 @@
 
 <eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" 
     [sortable]="true" persistKey="{{persistKey}}"
+    [cellTextGenerator]="cellTextGenerator"
     [stickyHeader]="true">
   <eg-grid-toolbar-button [disabled]="!canCreate" 
     label="New {{idlClassDef.label}}" i18n-label [action]="createNew">
