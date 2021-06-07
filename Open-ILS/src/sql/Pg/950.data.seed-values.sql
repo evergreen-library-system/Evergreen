@@ -21594,6 +21594,20 @@ INSERT INTO config.internal_flag (name, value, enabled) VALUES ('symspell.max_ed
 INSERT into config.org_unit_setting_type
 ( name, grp, label, description, datatype )
 VALUES
+( 'opac.did_you_mean.max_suggestions', 'opac',
+   oils_i18n_gettext(
+     'opac.did_you_mean.max_suggestions',
+     'Maximum number of spelling suggestions that may be offered',
+     'coust', 'label'),
+   oils_i18n_gettext(
+     'opac.did_you_mean.max_suggestions',
+     'If set to -1, provide "best" suggestion if mispelled; if set higher than 0, the maximum suggestions that can be provided; if set to 0, disable suggestions.',
+     'coust', 'description'),
+   'integer' );
+
+INSERT into config.org_unit_setting_type
+( name, grp, label, description, datatype )
+VALUES
 ( 'opac.did_you_mean.low_result_threshold', 'opac',
    oils_i18n_gettext(
      'opac.did_you_mean.low_result_threshold',
