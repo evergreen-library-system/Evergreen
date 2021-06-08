@@ -37,12 +37,20 @@ export class SipAccountListComponent implements OnInit {
 
     fetchAccounts(pager: Pager, sort: any[]): Observable<any> {
 
-        const orderBy: any = {sisacc: 'sip_username'};
+        const orderBy: any = {sipacc: 'sip_username'};
         if (sort.length) {
-            orderBy.sisacc = sort[0].name + ' ' + sort[0].dir;
+            orderBy.sipacc = sort[0].name + ' ' + sort[0].dir;
         }
 
-        return this.pcrud.retrieveAll('sipacc', {
+        const query = [{id: {'!=': null}}];
+
+        Object.keys(this.gridSource.filters).forEach(key => {
+            Object.keys(this.gridSource.filters[key]).forEach(key2 => {
+                query.push(this.gridSource.filters[key][key2]);
+            });
+        });
+
+        return this.pcrud.search('sipacc', query, {
             offset: pager.offset,
             limit: pager.limit,
             order_by: orderBy,
