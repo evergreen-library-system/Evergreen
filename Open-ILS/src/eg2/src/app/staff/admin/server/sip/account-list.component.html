@@ -7,7 +7,7 @@
 </eg-confirm-dialog>
 
 <eg-grid #grid idlClass="sipacc" [dataSource]="gridSource" 
-  persistKey="admin.server.sip.account-list"
+  persistKey="admin.server.sip.account-list" [filterable]="true"
   [stickyHeader]="true" [sortable]="true" (onRowActivate)="openAccount($event)">
   <eg-grid-toolbar-button label="New Account" i18n-label
     (onClick)="newAccount()"></eg-grid-toolbar-button>
