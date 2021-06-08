@@ -26,10 +26,10 @@
         </div>
         <ng-container *ngIf="args.where_process == 1">
           <div class="row mt-2">
-            <div class="col-lg-4"><label i18n>Approval Code</label></div>
+            <div class="col-lg-4"><label i18n>Credit Card Number</label></div>
             <div class="col-lg-8">
               <input type="text" class="form-control" 
-                required [(ngModel)]="args.approval_code"/>
+                required [(ngModel)]="args.number"/>
             </div>
           </div>
         </ng-container>
@@ -46,6 +46,13 @@
             <div class="col-lg-8">
               <input type="number" class="form-control" [min]="thisYear"
                 required [(ngModel)]="args.expire_year"/>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-lg-4"><label i18n>Approval Code</label></div>
+            <div class="col-lg-8">
+              <input type="text" class="form-control" 
+                required [(ngModel)]="args.approval_code"/>
             </div>
           </div>
         </ng-container>
@@ -108,7 +115,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-success" [disabled]="!saveable()"
-      (click)="submit(args)" i18n>Submit</button>
+      (click)="close(args)" i18n>Submit</button>
     <button type="button" class="btn btn-warning"
       (click)="close()" i18n>Cancel</button>
   </div>

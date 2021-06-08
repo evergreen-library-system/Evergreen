@@ -70,6 +70,8 @@ export class CreditCardDialogComponent
                 if (processor && processor !== 'Stripe') {
                     this.supportsExternal = true;
                     this.args.where_process = 1;
+                } else {
+                    this.args.where_process = 0;
                 }
             });
         });
@@ -83,10 +85,6 @@ export class CreditCardDialogComponent
         }
 
         return Boolean(this.args.expire_month) && Boolean(this.args.expire_year);
-    }
-
-
-    submit() {
     }
 }
 
