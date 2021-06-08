@@ -48,6 +48,7 @@ export class FundRolloverDialogComponent
 
     count: number;
     amount_rolled: number;
+    encumb_rolled: number;
 
     constructor(
         private idl: IdlService,
@@ -114,6 +115,7 @@ export class FundRolloverDialogComponent
 
         this.count = 0;
         this.amount_rolled = 0;
+        this.encumb_rolled = 0;
 
         this.net.request(
             'open-ils.acq',
@@ -128,6 +130,7 @@ export class FundRolloverDialogComponent
                 rolloverResponses.push(r.fund);
                 this.count++;
                 this.amount_rolled += Number(r.rollover_amount);
+                this.encumb_rolled += Number(r.encumb_amount);
             },
             err => {},
             () => {
