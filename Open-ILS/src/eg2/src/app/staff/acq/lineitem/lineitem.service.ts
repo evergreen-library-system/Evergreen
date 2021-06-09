@@ -235,7 +235,7 @@ export class LineitemService {
             'open-ils.acq',
             'open-ils.acq.lineitem.order_identifier.set',
             this.auth.token(), args
-        ).pipe(switchMap(_ => this.getFleshedLineitems([li.id()]))
+        ).pipe(switchMap(_ => this.getFleshedLineitems([li.id()], {toCache: true}))
         ).pipe(map(struct => struct.lineitem));
     }
 
