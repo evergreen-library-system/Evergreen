@@ -340,8 +340,9 @@ int oilsAuthInternalCreateSession(osrfMethodContext* ctx) {
     // determine the auth/cache timeout
     long timeout = oilsAuthGetTimeout(userObj, login_type, org_unit);
 
-    char* string = va_list_to_string("%d.%ld.%ld", 
-        (long) getpid(), time(NULL), oilsFMGetObjectId(userObj));
+    char* string = va_list_to_string("%ld.%d.%ld.%ld", 
+        random(), (long) getpid(), time(NULL), oilsFMGetObjectId(userObj));
+
     char* authToken = md5sum(string);
     char* authKey = va_list_to_string(
         "%s%s", OILS_AUTH_CACHE_PRFX, authToken);
