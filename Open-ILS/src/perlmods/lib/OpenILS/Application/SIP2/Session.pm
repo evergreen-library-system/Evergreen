@@ -130,8 +130,7 @@ sub set_ils_account {
         login_type => 'staff'
     };
 
-    $args->{workstation} = $account->workstation->name
-        if $account->workstation;
+    $args->{workstation} = $account->workstation->name if $account->workstation;
 
     my $auth = $U->simplereq(
         'open-ils.auth_internal',
@@ -160,12 +159,18 @@ sub set_ils_account {
 
     $e->xact_begin;
 
+    # Always confirm a matching session does not exist before attempting
+    # to create one.
+    $ses = $e->retrieve_sip_session([
+        $seskey, {flesh => 1, flesh_fields => {sipses => ['account']}}])
+        unless $ses;
+
     if ($ses) {
         # ILS token expired on an existing SIP session.
         # Update the session to use the new token.
 
         $ses->ils_token($ils_token);
-        unless ($e->udpate_sip_session($ses)) {
+        unless ($e->update_sip_session($ses)) {
             $e->rollback;
             return 0;
         }
