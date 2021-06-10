@@ -49,7 +49,6 @@ __PACKAGE__->register_method(
 
 sub dispatch_sip2_request {
     my ($self, $client, $seskey, $message) = @_;
-
     OpenSRF::AppSession->ingress('sip2');
 
     return OpenILS::Event->new('SIP2_SESSION_REQUIRED') unless $seskey;
@@ -64,7 +63,7 @@ sub dispatch_sip2_request {
     my $session = OpenILS::Application::SIPSession->find($seskey);
 
     if (!$session) {
-        return undef if $msg_code eq 'XS'; # end session signal
+        return {code => 'XT'} if $msg_code eq 'XS'; # end session signal
         return OpenILS::Event->new('SIP2_SESSION_REQUIRED');
     }
 
@@ -91,13 +90,14 @@ sub handle_end_session {
     my ($session, $message) = @_;
     my $e = $session->editor;
     my $seskey = $session->seskey;
+    my $resp = {code => 'XT'};
 
     $SC->cache->delete_cache("sip2_$seskey");
 
     $U->simplereq('open-ils.auth', 
         'open-ils.auth.session.delete', $e->authtoken);
 
-    return undef if $U->is_true($session->sip_account->transient);
+    return $resp if $U->is_true($session->sip_account->transient);
 
     $e->xact_begin;
     my $ses = $e->retrieve_sip_session($seskey);
@@ -108,7 +108,7 @@ sub handle_end_session {
         $e->rollback;
     }
 
-    return undef;
+    return $resp;
 }
 
 # Login to Evergreen and cache the login data.
