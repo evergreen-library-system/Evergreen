@@ -2076,11 +2076,11 @@ sub lineitem_detail_CUD_batch {
                 create_lineitem_detail_debit($mgr, $li, $lid, 0, 1) or return $e->die_event;
             }
 
-        } elsif($lid->ischanged) {
-            return $evt if $evt = handle_changed_lid($e, $lid, $dry_run, $fund_cache);
-
         } elsif($lid->isdeleted) {
             delete_lineitem_detail($mgr, $lid) or return $e->die_event;
+
+        } elsif($lid->ischanged) {
+            return $evt if $evt = handle_changed_lid($e, $lid, $dry_run, $fund_cache);
         }
 
         $mgr->respond(li => $li);
