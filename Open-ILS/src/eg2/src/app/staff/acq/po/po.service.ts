@@ -6,6 +6,7 @@ import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
+import {LineitemService, FleshCacheParams} from '@eg/staff/acq/lineitem/lineitem.service';
 
 @Injectable()
 export class PoService {
@@ -20,9 +21,9 @@ export class PoService {
         private auth: AuthService
     ) {}
 
-    getFleshedPo(id: number, fleshMore?: any, noCache?: boolean): Promise<IdlObject> {
+    getFleshedPo(id: number, params: FleshCacheParams = {}): Promise<IdlObject> {
 
-        if (!noCache) {
+        if (params.fromCache) {
             if (this.currentPo && id === this.currentPo.id()) {
                 // Set poService.currentPo = null to bypass the cache
                 return Promise.resolve(this.currentPo);
@@ -35,7 +36,7 @@ export class PoService {
             flesh_po_items: true,
             flesh_price_summary: true,
             flesh_lineitem_count: true
-        }, fleshMore || {});
+        }, params.fleshMore || {});
 
         return this.net.request(
             'open-ils.acq',
@@ -46,7 +47,7 @@ export class PoService {
             const evt = this.evt.parse(po);
             if (evt) { return Promise.reject(evt + ''); }
 
-            if (!noCache) { this.currentPo = po; }
+            if (params.toCache) { this.currentPo = po; }
 
             this.poRetrieved.emit(po);
             return po;

@@ -80,15 +80,10 @@
     <div class="flex-2 p-1 pr-2 pl-2">
       <ng-container *ngIf="!batchMode">
         <ng-container *ngIf="disposition() == 'pre-order'">
-          <button *ngIf="!copy.isdeleted()"
+          <button
             class="btn btn-outline-danger material-icon-button"
             (click)="deleteRequested.emit(copy)" title="Delete Item" i18n-title>
             <span class="material-icons">delete</span>
-          </button>
-          <button  *ngIf="copy.isdeleted()"
-            class="btn btn-outline-info material-icon-button"
-            (click)="copy.isdeleted(false)" title="Un-Delete Item" i18n-title>
-            <span class="material-icons">restore_page</span>
           </button>
         </ng-container>
         <ng-container *ngIf="disposition() == 'on-order'">

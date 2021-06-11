@@ -45,7 +45,7 @@
 
 <div class="mt-1 pt-1 border-top">
   <div class="batch-copy-row" 
-    *ngFor="let copy of lineitem.lineitem_details(); let idx = index">
+    *ngFor="let copy of copies(); let idx = index">
     <eg-lineitem-copy-attrs 
       (receiveRequested)="receiveCopy($event)"
       (unReceiveRequested)="unReceiveCopy($event)"

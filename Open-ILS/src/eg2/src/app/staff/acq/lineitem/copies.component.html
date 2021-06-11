@@ -15,6 +15,7 @@
     <label class="ml-3" for='distrib-formula-cbox' i18n>Distribution Formulas</label>
     <span class="ml-3">
       <eg-combobox idlClass="acqdf" [idlQueryAnd]="formulaFilter" 
+        [asyncSupportsEmptyTermClick]="true"
         #distribFormCbox domId="distrib-formula-cbox">
       </eg-combobox>
     </span>

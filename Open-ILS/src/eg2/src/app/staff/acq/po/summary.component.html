@@ -60,8 +60,14 @@
               </ng-template>
               <ng-template #noCopies>
                 <ng-container 
-                  *ngIf="evt.textcode == 'ACQ_LINEITEM_NO_COPIES'; else otherBlock">
+                  *ngIf="evt.textcode == 'ACQ_LINEITEM_NO_COPIES'; else noOwner">
                   <span i18n>One or more lineitems have no items attached.</span>
+                </ng-container>
+              </ng-template>
+              <ng-template #noOwner>
+                <ng-container 
+                  *ngIf="evt.textcode == 'ACQ_COPY_NO_OWNING_LIB'; else otherBlock">
+                  <span i18n>One or more items have no owning lib.</span>
                 </ng-container>
               </ng-template>
               <ng-template #otherBlock>

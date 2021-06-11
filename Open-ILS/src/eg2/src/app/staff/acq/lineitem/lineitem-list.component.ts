@@ -15,7 +15,7 @@ import {CancelDialogComponent} from './cancel-dialog.component';
 
 const DELETABLE_STATES = [
     'new', 'selector-ready', 'order-ready', 'approved', 'pending-order'
-]
+];
 
 @Component({
   templateUrl: 'lineitem-list.component.html',
@@ -263,6 +263,10 @@ export class LineitemListComponent implements OnInit {
         } else {
             this.pageOfLineitems.push(li);
         }
+
+        // Remove any 'new' lineitem details which may have been added
+        // and left unsaved on the copies page
+        li.lineitem_details(li.lineitem_details().filter(d => !d.isnew()));
     }
 
     // First matching attr

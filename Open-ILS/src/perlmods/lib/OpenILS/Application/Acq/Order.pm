@@ -911,6 +911,14 @@ sub create_lineitem_debits {
             }
         ]);
 
+        if (!$lid->owning_lib) {
+            # It's OK to create copies with no owning lib, but activating
+            # an order with such copies creates problems.
+            $mgr->editor->event(OpenILS::Event->new('ACQ_COPY_NO_OWNING_LIB', payload => $li->id));
+            $mgr->editor->rollback;
+            return 0;
+        }
+
         create_lineitem_detail_debit($mgr, $li, $lid, $dry_run) or return 0;
     }
 

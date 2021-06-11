@@ -8,7 +8,7 @@ import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
-import {LineitemService} from './lineitem.service';
+import {LineitemService, FleshCacheParams} from './lineitem.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {ItemLocationService} from '@eg/share/item-location-select/item-location-select.service';
 
@@ -74,11 +74,15 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
         this.liService.getLiAttrDefs();
     }
 
-    load(): Promise<any> {
+    load(params?: FleshCacheParams): Promise<any> {
         this.lineitem = null;
         this.copyCount = 1;
-        return this.liService.getFleshedLineitems(
-            [this.lineitemId], {toCache: true, fromCache: true})
+
+        if (!params) {
+            params = {toCache: true, fromCache: true};
+        }
+
+        return this.liService.getFleshedLineitems([this.lineitemId], params)
         .pipe(tap(liStruct => this.lineitem = liStruct.lineitem)).toPromise()
         .then(_ => {
             this.liLocked =
@@ -241,7 +245,7 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
                 this.progressValue++;
             },
             err => {},
-            () => this.load().then(_ => {
+            () => this.load({toCache: true}).then(_ => {
                 this.liService.activateStateChange.emit(this.lineitem.id());
                 this.saving = false;
             })

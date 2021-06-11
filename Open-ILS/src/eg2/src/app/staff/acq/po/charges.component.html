@@ -17,6 +17,7 @@
     *ngFor="let charge of po().po_items()">
     <div class="flex-2 p-2">
       <eg-combobox idlClass="aiit" [selectedId]="charge.inv_item_type()"
+        [asyncSupportsEmptyTermClick]="true"
         (onChange)="charge.inv_item_type($event ? $event.id : null)"
         i18n-placeholder placeholder="Charge Type..."
         [required]="true" [readOnly]="!charge.isnew()"></eg-combobox>

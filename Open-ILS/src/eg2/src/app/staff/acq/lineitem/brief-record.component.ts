@@ -4,6 +4,7 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
+import {LineitemService} from './lineitem.service';
 
 const MARC_NS = 'http://www.loc.gov/MARC21/slim';
 
@@ -34,7 +35,8 @@ export class BriefRecordComponent implements OnInit {
         private idl: IdlService,
         private auth: AuthService,
         private net: NetService,
-        private pcrud: PcrudService
+        private pcrud: PcrudService,
+        private liService: LineitemService
     ) { }
 
     ngOnInit() {
@@ -103,6 +105,7 @@ export class BriefRecordComponent implements OnInit {
         this.net.request('open-ils.acq',
             'open-ils.acq.lineitem.create', this.auth.token(), li
         ).toPromise().then(_ => {
+            this.liService.activateStateChange.emit();
             this.router.navigate(['../'], {
                 relativeTo: this.route,
                 queryParamsHandling: 'merge'

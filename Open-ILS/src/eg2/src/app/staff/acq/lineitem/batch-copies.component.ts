@@ -148,6 +148,10 @@ export class LineitemBatchCopiesComponent implements OnInit {
         }
         return false;
     }
+
+    copies(): IdlObject[] {
+        return this.lineitem.lineitem_details().filter(c => !c.isdeleted());
+    }
 }
 
 

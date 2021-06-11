@@ -31,7 +31,7 @@ export interface BatchLineitemUpdateStruct {
     [key: string]: any; // Perl Acq::BatchManager
 }
 
-interface FleshedLineitemParams {
+export interface FleshCacheParams {
 
     // Flesh data beyond the default.
     fleshMore?: any;
@@ -79,7 +79,7 @@ export class LineitemService {
     ) {}
 
     getFleshedLineitems(ids: number[],
-        params: FleshedLineitemParams = {}): Observable<BatchLineitemStruct> {
+        params: FleshCacheParams = {}): Observable<BatchLineitemStruct> {
 
         if (params.fromCache) {
             const fromCache = this.getLineitemsFromCache(ids);

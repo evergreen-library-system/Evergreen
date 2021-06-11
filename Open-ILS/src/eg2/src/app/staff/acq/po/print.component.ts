@@ -57,14 +57,16 @@ export class PrintComponent implements OnInit, AfterViewInit {
 
         this.po = null;
         this.poService.getFleshedPo(this.poId, {
-            flesh_provider_addresses: true,
-            flesh_lineitems: true,
-            flesh_lineitem_attrs: true,
-            flesh_lineitem_notes: true,
-            flesh_lineitem_details: true,
-            clear_marc: true,
-            flesh_notes: true
-        }, true)
+            fleshMore: {
+                flesh_provider_addresses: true,
+                flesh_lineitems: true,
+                flesh_lineitem_attrs: true,
+                flesh_lineitem_notes: true,
+                flesh_lineitem_details: true,
+                clear_marc: true,
+                flesh_notes: true
+            }
+        })
         .then(po => this.po = po)
         .then(_ => this.populatePreview())
         .then(_ => this.initDone = true);

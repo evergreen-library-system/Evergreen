@@ -66,6 +66,7 @@ export class PoSummaryComponent implements OnInit {
         // Re-check for activation blocks if the LI service tells us
         // something significant happened.
         this.liService.activateStateChange
+        .pipe(tap(_ => this.poService.getFleshedPo(this.poId, {toCache: true})))
         .subscribe(_ => this.setCanActivate());
     }
 
@@ -76,7 +77,7 @@ export class PoSummaryComponent implements OnInit {
     load(): Promise<any> {
         if (!this.poId) { return Promise.resolve(); }
 
-        return this.poService.getFleshedPo(this.poId)
+        return this.poService.getFleshedPo(this.poId, {fromCache: true, toCache: true})
         .then(po => {
 
             // EDI message count

@@ -211,19 +211,6 @@
               <span *ngIf="liHasAlerts(li)" class="text-danger material-icons"
                 title="Has Alerts" i18n-title>flag</span>
             </a>
-            <span class="ml-1 mr-1" i18n> | </span>
-            <a class="label-with-material-icon"
-              routerLink="lineitem/{{li.id()}}/worksheet/">
-              <span class="material-icons small mr-1">create</span>
-              <span i18n>Worksheet</span>
-            </a>
-            <span class="ml-1 mr-1" i18n> | </span>
-            <a class="label-with-material-icon"
-              [queryParams]="{f: 'jub:id', val1: li.id()}"
-              routerLink="/staff/acq/search/invoices">
-              <span class="material-icons small mr-1">list</span>
-              <span i18n>Invoice(s)</span>
-            </a>
             <ng-container *ngIf="li.eg_bib_id()">
               <span class="ml-1 mr-1" i18n> | </span>
               <a class="label-with-material-icon mr-2"
@@ -233,15 +220,14 @@
               </a>
             </ng-container>
 
-            <ng-container *ngIf="!poId && li.purchase_order()">
-              <span class="ml-1 mr-1" i18n> | </span>
-              <a class="label-with-material-icon"
-                title="Purchase Order" i18n-title
-                routerLink="/staff/acq/po/{{li.purchase_order().id()}}">
-                <span class="material-icons small mr-1">center_focus_weak</span>
-                <span i18n>{{li.purchase_order().id()}}</span>
-              </a>
-            </ng-container>
+            <!-- TODO link to catalog -->
+
+            <span class="ml-1 mr-1" i18n> | </span>
+            <a class="label-with-material-icon"
+              routerLink="lineitem/{{li.id()}}/worksheet/">
+              <span class="material-icons small mr-1">create</span>
+              <span i18n>Worksheet</span>
+            </a>
             <ng-container *ngIf="!picklistId && li.picklist() && li.picklist().name()">
               <span class="ml-1 mr-1" i18n> | </span>
               <a class="label-with-material-icon"
@@ -251,6 +237,28 @@
                 <span i18n>{{li.picklist().name()}}</span>
               </a>
             </ng-container>
+            <ng-container *ngIf="!poId && li.purchase_order()">
+              <span class="ml-1 mr-1" i18n> | </span>
+              <a class="label-with-material-icon"
+                title="Purchase Order" i18n-title
+                routerLink="/staff/acq/po/{{li.purchase_order().id()}}">
+                <span class="material-icons small mr-1">center_focus_weak</span>
+                <span i18n>{{li.purchase_order().id()}}</span>
+              </a>
+            </ng-container>
+
+            <!-- TODO patron requests -->
+
+            <span class="ml-1 mr-1" i18n> | </span>
+            <a class="label-with-material-icon"
+              [queryParams]="{f: 'jub:id', val1: li.id()}"
+              routerLink="/staff/acq/search/invoices">
+              <span class="material-icons small mr-1">list</span>
+              <span i18n>Invoice(s)</span>
+            </a>
+
+            <!-- TODO: claim policy -->
+
             <ng-container *ngIf="li.provider()">
               <span class="ml-1 mr-1" i18n> | </span>
               <a class="label-with-material-icon"
@@ -260,6 +268,9 @@
                 <span i18n>{{li.provider().name()}}</span>
               </a>
             </ng-container>
+
+            <!-- TODO import queue -->
+
           </div>
         </div>
       </div>
