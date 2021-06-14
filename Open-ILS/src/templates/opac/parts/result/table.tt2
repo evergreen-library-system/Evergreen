@@ -132,7 +132,7 @@
                                                     [% END %]
                                                     <a class='record_title search_link' name='record_[% rec.id %]'
                                                         href="[% mkurl(record_url_path, add_parms, del_parms); %]"
-                                                        [% html_text_attr('title', l('Display record details for "[_1]"', attrs.title)) | html%]>
+                                                        [% html_text_attr('title', l('Display record details for "[_1]"', attrs.title)) %]>
                                                         [% IF attrs.hl.title; attrs.hl.title; ELSE; attrs.title | html; END %]
                                                      </a>
                                                      [% IF rec.mr_constituent_count.defined && rec.mr_constituent_count > 1 %]
@@ -459,7 +459,7 @@ END;
                                                         <div class="results_aux_utils place_hold"><a
                                                                 href="[% mkurl(ctx.opac_root _ '/place_hold',
                                                                     add_parms, del_parms) %]"
-                                                                [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) | html %]
+                                                                [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
                                                                     class="no-dec" rel="nofollow" vocab=""><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]"
                                                                 alt=""/><span class="result_place_hold">[% l('Place Hold') %]</span></a>
@@ -471,7 +471,7 @@ END;
                                                             <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
                                                                 {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'},
                                                                 ['query','tag','subfield','term','_special','sort','page']) %]"
-                                                                [% html_text_attr('title', l('Check Out [_1]', attrs.title)) | html %]
+                                                                [% html_text_attr('title', l('Check Out [_1]', attrs.title)) %]
                                                                     class="no-dec" rel="nofollow" vocab=""><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]"
                                                                 alt=""/><span class="result_place_hold">[% l('Check Out E-Item') %]</span></a>
@@ -480,7 +480,7 @@ END;
                                                             <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
                                                                 {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'},
                                                                 ['query','tag','subfield','term','_special','sort','page']) %]"
-                                                                [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) | html %]
+                                                                [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
                                                                     class="no-dec" rel="nofollow" vocab=""><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]"
                                                                 alt=""/><span class="result_place_hold">[% l('Place Hold on E-Item') %]</span></a>
@@ -521,7 +521,7 @@ END;
                                                         [% ident = attrs.isbn_clean || attrs.upc %]
                                                         <div class="results_aux_utils result_util">
                                                             <a target='_blank' 
-                                                               [% html_text_attr('title', l('Reviews and More for [_1]', attrs.title)) | html %]
+                                                               [% html_text_attr('title', l('Reviews and More for [_1]', attrs.title)) %]
                                                                 href="[% ctx.ext_proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 
                                                                     ENV.OILS_CONTENT_CAFE_USER %]&amp;Password=[%-
                                                                     ENV.OILS_CONTENT_CAFE_PASS %]&amp;ItemKey=[% ident | uri %]&amp;Options=Y" rel="noopener nofollow" vocab="">
