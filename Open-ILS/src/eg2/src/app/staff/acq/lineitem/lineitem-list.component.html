@@ -284,6 +284,10 @@
                  as the status label grows -->
             <div class="input-group w-auto">
               <div class="input-group-prepend">
+                <span *ngIf="identOptions(li).length > 1" class="text-danger mr-1"
+                  i18n-title title="Multiple Order Identifier Options" i18n>
+                  ({{identOptions(li).length}})
+                </span>
                 <div ngbDropdown>
                   <button class="btn btn-outline-dark btn-sm" ngbDropdownToggle 
                     title="Order Identifier Type" i18n-title
