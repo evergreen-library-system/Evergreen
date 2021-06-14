@@ -265,9 +265,13 @@ sub retrieve_lineitem_batch {
     return $e->die_event unless $e->checkauth;
 
     for my $li_id (@$li_ids) {
+        my $li = retrieve_lineitem_impl($e, $li_id, $options);
+
+        set_default_order_ident($self, $e, $options, $li);
+
         $client->respond({
             id => $li_id,
-            lineitem => retrieve_lineitem_impl($e, $li_id, $options),
+            lineitem => $li,
             existing_copies => $AC->li_existing_copies($e, $li_id)
         });
     }
@@ -275,6 +279,26 @@ sub retrieve_lineitem_batch {
     $e->rollback;
 
     return undef;
+}
+
+sub set_default_order_ident {
+	my ($self, $e, $options, $li) = @_;
+
+    if (!$$options{flesh_attrs}) { return; }
+    if (!$$options{apply_order_identifiers}) { return; }
+    if (grep {$_->order_ident eq 't'} @{$li->attributes}) { return ; }
+
+    # Caller wants us to apply a default order identifier
+    # Use the first ISBN as the default.
+
+    my ($attr) = grep {$_->attr_name eq 'isbn'} @{$li->attributes};
+
+    if (!$attr) { return; }
+
+    my $method = $self->method_lookup('open-ils.acq.lineitem.order_identifier.set');
+    my ($ident_attr) = $method->run($e->authtoken, {source_attr_id => $attr->id});
+
+    push(@{$li->attributes}, $ident_attr);
 }
 
 

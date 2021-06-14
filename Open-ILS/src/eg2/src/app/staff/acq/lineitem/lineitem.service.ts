@@ -101,7 +101,8 @@ export class LineitemService {
             flesh_pl: true,
             flesh_formulas: true,
             flesh_copies: true,
-            clear_marc: false
+            clear_marc: false,
+            apply_order_identifiers: true
         }, params.fleshMore || {});
 
         return this.net.request(
