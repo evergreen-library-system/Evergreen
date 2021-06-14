@@ -573,7 +573,9 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                 // Filter entrylist whose labels substring-match the
                 // text entered.
                 return this.entrylist.filter(entry => {
-                    const label = entry.label || entry.id;
+                    const label = String(entry.label) || String(entry.id);
+                    if (!label) { return false; }
+
                     if (this.startsWith) {
                         return label.toLowerCase().startsWith(term.toLowerCase());
                     } else {
