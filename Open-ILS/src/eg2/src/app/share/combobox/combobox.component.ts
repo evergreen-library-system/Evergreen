@@ -94,6 +94,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
     // unless startIdFiresOnChange is set to true.
     @Input() startId: any = null;
     @Input() idlClass: string;
+    @Input() idlBaseQuery: any = null;
     @Input() startIdFiresOnChange: boolean;
 
     // Allow the selected entry ID to be passed via the template
@@ -245,7 +246,10 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
 
             this.asyncDataSource = term => {
                 const field = this.idlField;
-                const args = {};
+                let args = {};
+                if (this.idlBaseQuery) {
+                    args = this.idlBaseQuery;
+                }
                 const extra_args = { order_by : {} };
                 args[field] = {'ilike': `%${term}%`}; // could -or search on label
                 extra_args['order_by'][this.idlClass] = field;
