@@ -262,18 +262,19 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.addToBucket = function(recs) {
         if (recs.length == 0) return;
         bucketSvc.bucketNeedsRefresh = true;
-
+        var promise = $q.when();
         angular.forEach(recs,
             function(rec) {
                 var item = new egCore.idl.ccbi();
                 item.bucket(bucketSvc.currentBucket.id());
                 item.target_copy(rec.id);
-                egCore.net.request(
-                    'open-ils.actor',
-                    'open-ils.actor.container.item.create', 
-                    egCore.auth.token(), 'copy', item
-                ).then(function(resp) {
-
+                promise = promise.then(function() {
+                    return egCore.net.request(
+                        'open-ils.actor',
+                        'open-ils.actor.container.item.create', 
+                        egCore.auth.token(), 'copy', item
+                    );
+                }).then(function(resp) {
                     // HACK: add the IDs of the added items so that the size
                     // of the view list will grow (and update any UI looking at
                     // the list size).  The data stored is inconsistent, but since
