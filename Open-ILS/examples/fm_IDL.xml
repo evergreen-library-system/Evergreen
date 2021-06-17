@@ -10888,7 +10888,9 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<retrieve permission="STAFF_LOGIN" context_field="circ_lib"/>
+				<retrieve permission="STAFF_LOGIN">
+					<context link="id" field="circ_lib"/>
+				</retrieve>
 			</actions>
 		</permacrud>
 	</class>
