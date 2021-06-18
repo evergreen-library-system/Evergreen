@@ -87,16 +87,11 @@
 
   <eg-grid-field label="[% l('Location') %]"       path="location.name" visible></eg-grid-field>
   <eg-grid-field label="[% l('Item Status') %]"    path="status.name" visible></eg-grid-field>
+
   <eg-grid-field label="[% l('Title') %]"       
     path="call_number.record.simple_record.title" visible>
-    <span ng-show="item['dummy_title']">
-        {{item['dummy_title']}}
-    </span>
-    <span ng-hide="item['call_number.record.id'] == -1">
-        <a target="_blank" href="/eg2/staff/catalog/record/{{item['call_number.record.id']}}">
-          {{item['call_number.record.simple_record.title']}} <span ng-show="item['call_number.record.id']" class="glyphicon glyphicon-new-window"></span>
-        </a>
-    </span>
+    {{item['call_number.record.simple_record.title'] ?
+        '<a target="_blank" href="/eg2/staff/catalog/record/' + item['call_number.record.id'] + '">' + item['call_number.record.simple_record.title'] + '</a>' : item['dummy_title'] }}
   </eg-grid-field>
 
   <eg-grid-field label="[% l('Acquisition Cost') %]"     path="cost" hidden></eg-grid-field>
