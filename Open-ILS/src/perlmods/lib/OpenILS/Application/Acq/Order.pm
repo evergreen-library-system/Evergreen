@@ -3176,7 +3176,7 @@ sub cancel_lineitem {
         # gathering any real copies for deletion
         # if there is a copy ID and the cancel reason keeps debits,
         # do not delete. 
-        if ($lid->eg_copy_id && ! $U->is_true($cancel_reason->keep_debits)) {
+        if ($lid->eg_copy_id && ! $U->is_true($cancel_reason->keep_debits) && $lid->eg_copy_id->status == OILS_COPY_STATUS_ON_ORDER) {
             $lid->eg_copy_id->isdeleted('t');
             push @$copies, $lid->eg_copy_id;
         }
