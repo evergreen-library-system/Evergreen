@@ -4,7 +4,7 @@
     [% l('This item has been marked as Deleted.') %]
   </div>
 
-  <div class="flex-row" ng-if="copy.dummy_title() || copy.dummy_author()">
+  <div class="flex-row" ng-if="recordId == -1">
     <div class="flex-cell" ng-if="copy.dummy_title()">[% l('Precat Title') %]</div>
     <div class="flex-cell well" ng-if="copy.dummy_title()">{{copy.dummy_title()}}</div>
     
