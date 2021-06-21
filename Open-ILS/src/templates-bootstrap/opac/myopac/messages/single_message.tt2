@@ -37,7 +37,7 @@
         </div>
         <div class="my-2 col-12">
             <b>[% l("Message") %]</b>
-            <span class="mx-2">[% ctx.patron_messages.0.message | html %]</span>
+            <pre>[% ctx.patron_messages.0.message | html %]</pre>
         </div>
         </div>
     </div>
