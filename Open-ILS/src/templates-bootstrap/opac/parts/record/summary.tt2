@@ -469,28 +469,6 @@ ctx.metalinks.push('
 <div class="row">
 <div class="col-12">
 
-<div class="float-right">
-
-                            <h2 class="text-right">[% l('Holds') %]</h2>
-                            <p class="text-right">
-                                [%
-                                # If org hiding is enabled/relevant, only show
-                                # counts for copies within the hiding scope.
-                                count_entry = 0;
-                                FOR count_chunk IN ctx.copy_summary;
-                                IF ctx.org_within_hiding_scope(count_chunk.org_unit);
-                                # always true when hiding is disabled
-                                LAST;
-                                END;
-                                count_entry = count_entry + 1;
-                                END;
-                                l("[quant,_1,current hold,current holds] with [quant,_2,total copy,total copies].",
-                                ctx.record_hold_count, ctx.copy_summary.$count_entry.count)
-                                %]
-                            </p>
-
-                    </div>
-
         [%-
         IF ctx.copy_summary.0.count;
         INCLUDE "opac/parts/record/copy_table.tt2" copies=ctx.copies;
