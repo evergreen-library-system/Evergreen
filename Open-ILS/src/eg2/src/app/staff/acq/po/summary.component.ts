@@ -1,6 +1,6 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
-import {of, Observable} from 'rxjs';
+import {of, Observable, Subscription} from 'rxjs';
 import {tap, take, map} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -21,7 +21,7 @@ import {CancelDialogComponent} from '../lineitem/cancel-dialog.component';
   templateUrl: 'summary.component.html',
   selector: 'eg-acq-po-summary'
 })
-export class PoSummaryComponent implements OnInit {
+export class PoSummaryComponent implements OnInit, OnDestroy {
 
     private _poId: number;
     @Input() set poId(id: number) {
@@ -44,6 +44,7 @@ export class PoSummaryComponent implements OnInit {
     activationBlocks: EgEvent[] = [];
     activationEvent: EgEvent;
     nameEditEnterToggled = false;
+    stateChangeSub: Subscription;
 
     @ViewChild('cancelDialog') cancelDialog: CancelDialogComponent;
     @ViewChild('progressDialog') progressDialog: ProgressDialogComponent;
@@ -67,9 +68,15 @@ export class PoSummaryComponent implements OnInit {
 
         // Re-check for activation blocks if the LI service tells us
         // something significant happened.
-        this.liService.activateStateChange
+        this.stateChangeSub = this.liService.activateStateChange
         .pipe(tap(_ => this.poService.getFleshedPo(this.poId, {toCache: true})))
         .subscribe(_ => this.setCanActivate());
+    }
+
+    ngOnDestroy() {
+        if (this.stateChangeSub) {
+            this.stateChangeSub.unsubscribe();
+        }
     }
 
     po(): IdlObject {
