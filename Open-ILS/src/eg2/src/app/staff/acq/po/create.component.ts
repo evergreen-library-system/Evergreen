@@ -46,6 +46,8 @@ export class PoCreateComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+        this.poService.currentPo = null;
+
         this.route.queryParamMap.subscribe((params: ParamMap) => {
             this.lineitems = params.getAll('li').map(id => Number(id));
         });
