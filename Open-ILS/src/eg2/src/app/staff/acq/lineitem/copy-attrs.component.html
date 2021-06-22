@@ -37,6 +37,7 @@
       [readOnly]="fieldIsDisabled('fund')"
       #fundSelector [entries]="fundEntries"
       [selectedId]="copy.fund()" (onChange)="valueChange('fund', $event)"
+      [idlQuerySort]="{acqf: 'year DESC, code'}"
       [idlQueryAnd]="{active: 't'}">
     </eg-combobox>
   </div>

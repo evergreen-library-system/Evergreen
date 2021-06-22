@@ -115,6 +115,8 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
     // when fetching objects by idlClass.
     @Input() idlQueryAnd: {[field: string]: any};
 
+    @Input() idlQuerySort: {[cls: string]: string};
+
     // Display the selected value as text instead of within
     // the typeahead
     @Input() readOnly = false;
@@ -281,7 +283,11 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                 if (this.idlQueryAnd) {
                     Object.assign(args, this.idlQueryAnd);
                 }
-                extra_args['order_by'][this.idlClass] = field;
+                if (this.idlQuerySort) {
+                    extra_args['order_by'] = this.idlQuerySort;
+                } else {
+                    extra_args['order_by'][this.idlClass] = field;
+                }
                 extra_args['limit'] = 100;
                 if (this.idlIncludeLibraryInLabel) {
                     extra_args['flesh'] = 1;
