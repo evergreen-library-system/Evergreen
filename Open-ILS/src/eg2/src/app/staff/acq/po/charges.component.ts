@@ -1,4 +1,5 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import {Subscription} from 'rxjs';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -9,10 +10,11 @@ import {PoService} from './po.service';
   templateUrl: 'charges.component.html',
   selector: 'eg-acq-po-charges'
 })
-export class PoChargesComponent implements OnInit {
+export class PoChargesComponent implements OnInit, OnDestroy {
 
     showBody = false;
     autoId = -1;
+    poSubscription: Subscription;
 
     constructor(
         private idl: IdlService,
@@ -23,17 +25,19 @@ export class PoChargesComponent implements OnInit {
     ngOnInit() {
         if (this.po()) {
             // Sometimes our PO is already available at render time.
-             if (this.po().po_items().length > 0) {
-                this.showBody = true;
-            }
+            this.showBody = this.po().po_items().length > 0;
         }
 
         // Other times we have to wait for it.
-        this.poService.poRetrieved.subscribe(() => {
-            if (this.po().po_items().length > 0) {
-                this.showBody = true;
-            }
+        this.poSubscription = this.poService.poRetrieved.subscribe(() => {
+            this.showBody = this.po().po_items().length > 0;
         });
+    }
+
+    ngOnDestroy() {
+        if (this.poSubscription) {
+            this.poSubscription.unsubscribe();
+        }
     }
 
     po(): IdlObject {
