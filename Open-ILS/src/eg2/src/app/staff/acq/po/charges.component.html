@@ -28,7 +28,10 @@
       <eg-combobox idlClass="acqf" [selectedId]="charge.fund()"
         (onChange)="charge.fund($event ? $event.id : null)"
         i18n-placeholder placeholder="Fund..."
-        [required]="true" [readOnly]="!charge.isnew()"></eg-combobox>
+        [required]="true" [readOnly]="!charge.isnew()"
+        [idlQuerySort]="{acqf: 'year DESC, code'}"
+        [idlQueryAnd]="{active: 't'}">
+      </eg-combobox>
     </div>
     <div class="flex-2 p-2">
       <span *ngIf="!charge.isnew()">{{charge.title()}}</span>
