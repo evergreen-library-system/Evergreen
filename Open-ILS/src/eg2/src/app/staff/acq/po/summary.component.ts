@@ -236,7 +236,7 @@ export class PoSummaryComponent implements OnInit {
 
         if (this.po().state() === 'received') { return; }
 
-        var invTypes = [];
+        const invTypes = [];
 
         // get the unique set of invoice item type IDs
         this.po().po_items().forEach(item => {
@@ -245,7 +245,7 @@ export class PoSummaryComponent implements OnInit {
             }
         });
 
-        if (invTypes.length == 0) { return; }
+        if (invTypes.length === 0) { return; }
 
         this.pcrud.search('aiit',
             {code: invTypes, blanket: 't'}, {limit: 1})
