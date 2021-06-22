@@ -156,32 +156,50 @@
   <hr class="p-0 m-0 mt-1"/>
   <div class="row mt-1">
     <div class="col-lg-12">
-      <a class="" href="javascript:;" (click)="showNotes=!showNotes" 
-        i18n>Notes ({{po().notes().length}})</a>
+      <a class="" href="javascript:;" class="label-with-material-icon"
+        (click)="showNotes=!showNotes">
+        <span class="material-icons small mr-1">event_note</span>
+        <span>Notes ({{po().notes().length}})</span>
+      </a>
       <span class="pl-2 pr-2" i18n> | </span>
-      <a [queryParams]="{f: 'acqpo:id', val1: poId}"
-        routerLink="/staff/acq/search/invoices" i18n>Invoices ({{invoiceCount}})</a>
+      <a [queryParams]="{f: 'acqpo:id', val1: poId}" class="label-with-material-icon"
+        routerLink="/staff/acq/search/invoices">
+          <span class="material-icons small mr-1">list</span>
+          <span i18n>Invoices ({{invoiceCount}})</span>
+      </a>
       <span class="pl-2 pr-2" i18n> | </span>
       <a href="/eg/staff/acq/legacy/invoice/view?create=1&attach_po={{poId}}"
-        i18n>Create Invoice</a>
+        class="label-with-material-icon">
+        <span class="material-icons small mr-1">receipt</span>
+        <span i18n>Create Invoice</span>
+      </a>
       <span class="pl-2 pr-2" i18n> | </span>
       <a routerLink="./edi" i18n>EDI Messages ({{ediMessageCount}})</a>
       <span class="pl-2 pr-2" i18n> | </span>
       <a routerLink="./history" i18n>History</a>
       <span class="pl-2 pr-2" i18n> | </span>
-      <a routerLink="./printer" i18n>Print</a>
+      <a routerLink="./printer" class="label-with-material-icon">
+        <span class="material-icons small mr-1">print</span>
+        <span i18n>Print</span>
+      </a>
       <ng-container *ngIf="po().state() == 'on-order' || po().state() == 'pending'">
         <span class="pl-2 pr-2" i18n> | </span>
-        <a (click)="cancelPo()" href="javascript:;" i18n>Cancel Order</a>
-      </ng-container>
-      <ng-container *ngIf="canActivate === true">
-        <span class="pl-2 pr-2" i18n> | </span>
-        <a (click)="activatePo()" href="javascript:;" i18n>Activate Order</a>
+        <a (click)="cancelPo()" href="javascript:;" class="label-with-material-icon">
+          <span class="material-icons small mr-1">cancel</span>
+          <span i18n>Cancel Order</span>
+        </a>
       </ng-container>
       <ng-container *ngIf="canActivate === true">
         <span class="pl-2 pr-2" i18n> | </span>
         <a (click)="activatePo(true)" href="javascript:;" i18n>
           Activate Without Loading Items
+        </a>
+      </ng-container>
+      <ng-container *ngIf="canActivate === true">
+        <span class="pl-2 pr-2" i18n> | </span>
+        <a (click)="activatePo()" href="javascript:;" class="label-with-material-icon">
+          <span class="material-icons small mr-1">launch</span>
+          <span i18n>Activate Order</span>
         </a>
       </ng-container>
     </div>

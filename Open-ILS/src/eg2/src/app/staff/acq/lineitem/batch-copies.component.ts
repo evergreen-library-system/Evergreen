@@ -49,7 +49,7 @@ export class LineitemBatchCopiesComponent implements OnInit {
     batchApplyAttrs(copyTemplate: IdlObject) {
         BATCH_FIELDS.forEach(field => {
             const val = copyTemplate[field]();
-            if (val === undefined) { return; }
+            if (val === undefined || val === null) { return; }
             this.lineitem.lineitem_details().forEach(copy => {
                 copy[field](val);
                 copy.ischanged(true); // isnew() takes precedence

@@ -322,6 +322,10 @@ export class LineitemListComponent implements OnInit {
         ).subscribe(freshLi => this.ingestOneLi(freshLi, true));
     }
 
+    canEditIdent(li: IdlObject): boolean {
+        return DELETABLE_STATES.includes(li.state());
+    }
+
     addBriefRecord() {
     }
 

@@ -290,7 +290,7 @@
                 </span>
                 <div ngbDropdown>
                   <button class="btn btn-outline-dark btn-sm" ngbDropdownToggle 
-                    title="Order Identifier Type" i18n-title
+                    title="Order Identifier Type" i18n-title [disabled]="!canEditIdent(li)"
                     [ngClass]="{'btn-warning': !selectedIdent(li)}">
                     <ng-container *ngIf="orderIdentTypes[li.id()]=='isbn'" i18n>ISBN</ng-container>
                     <ng-container *ngIf="orderIdentTypes[li.id()]=='upc'" i18n>UPC</ng-container>
@@ -308,6 +308,7 @@
               </div>
               <eg-combobox [entries]="identOptions(li)" [smallFormControl]="true"
                 placeholder="Order Identifer..." i18n-placeholder
+                [disabled]="!canEditIdent(li)"
                 [allowFreeText]="true" [selectedId]="selectedIdent(li)"
                 (onChange)="orderIdentChanged(li, $event)">
               </eg-combobox>
