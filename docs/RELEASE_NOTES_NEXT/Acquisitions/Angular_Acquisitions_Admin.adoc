@@ -1,0 +1,134 @@
+== Angular Rewrite of Acquisitions Administration Interfaces ==
+
+Several administrative interfaces for acquisitions have been rewritten
+to use the Angular framework:
+
+  * Claiming
+  * Currencies and Exchange Rates
+  * Distribution Formulas
+  * EDI Attribute Sets
+  * Fund Administration
+
+=== Claiming ===
+
+The interface for managing claim policies is now a single multi-tabbed
+page that combines the previous interfaces for:
+
+  * Claim Policies
+  * Claim Policy Actions
+  * Claim Types
+  * Claim Event Types
+
+The new interface can be found in Administration > Acquisitions
+Administration > Claiming.
+
+=== Currencies and Exchange Rates ===
+
+The previous two interfaces for managing currencies and exchange
+rates have been consolidated into one. The new interface allows
+users to create, modify, and delete currency types. In addition,
+the list of currencies now has 'Manage Exchange Rates' buttons
+to allow specifying the exchange rate from the selected currency
+to another one.
+
+If an exchange is set in one direction, e.g., from USD to EUR,
+opening the 'Manage Exchange Rates' for EUR will show the inverse
+of the exchange rate for USD as a read-only field.
+
+The new interface can be found in Administration > Acquisitions
+Administration > Currencies and Exchange Rates.
+
+=== Distribution Formulas ===
+
+The Angular interface for managing distribution formulas displays
+a grid of existing formulas and allows authorized users to create,
+modify, and delete formulas. The dialog for editing a formula
+allows the user to define one or more entries containing
+owning library, number of items, and optionally shelving location, fund,
+circulation modifier, and collection code.
+
+The new interface can be found in Administration > Acquisitions
+Administration > Distribution Formulas.
+
+=== EDI Attribute Sets ===
+
+The Angular EDI attribute sets interface is similar to the previous
+one. However, it includes enhancements to display the number of
+providers using an attribute set as well as a 'View Providers' button
+to navigate to those providers.
+
+The new interface can be found in Administration > Acquisitions
+Administration > EDI Attribute Sets.
+
+=== Fund Administration ===
+
+The new fund administration interface unifies configuration of funding
+sources, purchasing funds, and fund tags. The interface has three tabs:
+
+  * Funds
+  * Funding Sources
+  * Fund Tags
+
+The Funds tab displays a filterable list of funds that allows the
+user to create, modify, and remove funds. The fund name is hyperlinked;
+clicking that hyperlink opens a dialog that has the following tabs:
+
+  * Summary: this contains summary information about the fund,
+    including various balances.
+  * Allocations: this lists allocations to and from the fund.
+  * Transfers: this lists fund transfers to and from the fund.
+  * Debits: this lists debits against the fund. As an enhancement
+    from the previous version of the funds interface, the grid
+    of debits now has links to the line item, purchase order,
+    and/or invoice associated with the debit.
+  * Tags: this lists the tags associated with the funds and allows
+    the user to add or remove tag associations.
+
+The fund management dialog also allows the user to create allocations
+into the fund and transfer money away from the fund.
+
+The funds tab also has a 'Fiscal Propagation and Rollover' button.
+The library from the selector on the funds tab is used to set the
+context org unit for the propagation and rollover. Upon clicking the
+button, a dialog box appears that allows the user to select the fiscal
+year to propagate or rollover, checkboxes to specify whether to also
+perform a fiscal year close-out and whether to limit a close-out to
+encumbrances, and a checkbox to specify whether or not to do a dry run.
+Upon completion of the propagation, the dialog will display summary
+results.
+
+
+The Funding Sources tab displays a filterable list of funding
+sources and allows the user to create funding sources, apply and view
+credits, allocate money to funds, and view allocations.
+
+The Fund Tags tab presents a grid that allows users view view,
+create, modify, and delete fund tags. Assigning a tag to a fund is
+done using the fund management dialog.
+
+The new interface can be found in Administration > Acquisitions
+Administration > Fund Administration.
+
+=== Other Changes ===
+
+The following miscellaneous changes are included in this work:
+
+* Funds are now displayed in Angular selectors with the pattern
+  "CODE (YEAR) (OWNING_LIBRARY)"
+* The automatically generated fund allocation note associated with
+  fund transfers now reads "Transfer to/form fund CODE (YEAR) (OWNER)".
+  Previously, the fund was identified only by its numeric fund ID.
+* A new style was added for display of negative money amounts. By
+  default, these amounts display with red text.
+* The fund propagation and rollover report now includes the total
+  amount of encumbrances that were rolled over.
+* Various dynamic Angular comboboxes will now display up to 100
+  entries upon a click without requiring that the user submit a
+  search term.
+* Various Angular record editing forms will now complain if
+  the user tries to save a field value that contains only whitespace.
+* Currency amounts in Angular are no longer displayed with a currency
+  symbol. Prior to this change, monetary amounts were displayed with
+  a dollar sign regardless of the intended currency.
+* Various changes were made in the IDL to adjust field labels and
+  to mark certain fields as required.
