@@ -279,7 +279,11 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                     args = this.idlBaseQuery;
                 }
                 const extra_args = { order_by : {} };
-                args[field] = {'ilike': `%${term}%`}; // could -or search on label
+                if (this.startsWith) {
+                    args[field] = {'ilike': `${term}%`};
+                } else {
+                    args[field] = {'ilike': `%${term}%`}; // could -or search on label
+                }
                 if (this.idlQueryAnd) {
                     Object.assign(args, this.idlQueryAnd);
                 }
