@@ -1,6 +1,11 @@
 
 <eg-acq-cancel-dialog #cancelDialog></eg-acq-cancel-dialog>
 <eg-progress-dialog #progressDialog></eg-progress-dialog>
+<eg-confirm-dialog #confirmFinalize
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Finalize Blanket Order?"
+  dialogBody="This will disencumber all blanket charges and mark the PO as received.">
+</eg-confirm-dialog>
 
 <div *ngIf="po()" class="p-1 border border-secondary rounded">
 
@@ -200,6 +205,13 @@
         <a (click)="activatePo()" href="javascript:;" class="label-with-material-icon">
           <span class="material-icons small mr-1">launch</span>
           <span i18n>Activate Order</span>
+        </a>
+      </ng-container>
+      <ng-container *ngIf="canFinalize">
+        <span class="pl-2 pr-2" i18n> | </span>
+        <a (click)="finalizePo()" href="javascript:;" class="label-with-material-icon">
+          <span class="material-icons small mr-1">check_circle</span>
+          <span i18n>Finalize Blanket Order</span>
         </a>
       </ng-container>
     </div>

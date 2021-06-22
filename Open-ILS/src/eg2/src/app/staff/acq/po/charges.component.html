@@ -51,7 +51,7 @@
     <div class="flex-2 p-2">
       <span *ngIf="!charge.isnew()">{{charge.estimated_cost() | currency}}</span>
       <input *ngIf="charge.isnew()" type="number" min="0" class="form-control" 
-        i18n-placeholder placeholder="Esimated Cost..."
+        i18n-placeholder placeholder="Esimated Cost..." [required]="true"
         [ngModel]="charge.estimated_cost()" (ngModelChange)="charge.estimated_cost($event)"/>
     </div>
     <div class="flex-1 p-1">

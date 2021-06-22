@@ -39,6 +39,7 @@ export class PoSummaryComponent implements OnInit {
     showNotes = false;
     zeroCopyActivate = false;
     canActivate: boolean = null;
+    canFinalize = false;
 
     activationBlocks: EgEvent[] = [];
     activationEvent: EgEvent;
@@ -46,6 +47,7 @@ export class PoSummaryComponent implements OnInit {
 
     @ViewChild('cancelDialog') cancelDialog: CancelDialogComponent;
     @ViewChild('progressDialog') progressDialog: ProgressDialogComponent;
+    @ViewChild('confirmFinalize') confirmFinalize: ConfirmDialogComponent;
 
     constructor(
         private router: Router,
@@ -85,7 +87,8 @@ export class PoSummaryComponent implements OnInit {
                 {purchase_order: this.poId}, {}, {idlist: true, atomic: true}
             ).toPromise().then(ids => this.ediMessageCount = ids.length);
 
-        }).then(_ => {
+        })
+        .then(_ => {
 
             // Invoice count
             return this.net.request('open-ils.acq',
@@ -94,7 +97,9 @@ export class PoSummaryComponent implements OnInit {
                 null, null, {id_list: true}
             ).toPromise().then(ids => this.invoiceCount = ids.length);
 
-        }).then(_ => this.setCanActivate());
+        })
+        .then(_ => this.setCanActivate())
+        .then(_ => this.setCanFinalize());
     }
 
     // Can run via Enter or blur.  If it just ran via Enter, avoid
@@ -224,6 +229,42 @@ export class PoSummaryComponent implements OnInit {
                 this.progressDialog.update(
                     {value: resp.bibs + resp.li + resp.vqbr});
             }
+        });
+    }
+
+    setCanFinalize() {
+
+        if (this.po().state() === 'received') { return; }
+
+        var invTypes = [];
+
+        // get the unique set of invoice item type IDs
+        this.po().po_items().forEach(item => {
+            if (!invTypes.includes(item.inv_item_type())) {
+                invTypes.push(item.inv_item_type());
+            }
+        });
+
+        if (invTypes.length == 0) { return; }
+
+        this.pcrud.search('aiit',
+            {code: invTypes, blanket: 't'}, {limit: 1})
+        .subscribe(_ => this.canFinalize = true);
+    }
+
+    finalizePo() {
+
+        this.confirmFinalize.open().subscribe(confirmed => {
+            if (!confirmed) { return; }
+
+            this.net.request('open-ils.acq',
+                'open-ils.acq.purchase_order.blanket.finalize',
+                this.auth.token(), this.poId
+            ).subscribe(resp => {
+                if (Number(resp) === 1) {
+                    location.href = location.href;
+                }
+            });
         });
     }
 }

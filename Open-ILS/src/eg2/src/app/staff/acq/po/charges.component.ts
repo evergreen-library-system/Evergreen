@@ -50,7 +50,8 @@ export class PoChargesComponent implements OnInit {
     }
 
     saveCharge(charge: IdlObject) {
-        if (!charge.inv_item_type()) { return; }
+        if (!charge.inv_item_type() || !charge.fund()) { return; }
+        if (typeof charge.estimated_cost() !== 'number') { return; }
 
         charge.id(undefined);
         this.pcrud.create(charge).toPromise()
