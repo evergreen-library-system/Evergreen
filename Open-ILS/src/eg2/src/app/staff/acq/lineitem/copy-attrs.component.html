@@ -15,10 +15,10 @@
     </eg-org-select>
   </div>  
   <div class="flex-1 p-1">
-    <eg-item-location-select  [readOnly]="fieldIsDisabled('location')"
-      #locationSelector [ngModel]="copy.location()"
+    <eg-item-location-select [readOnly]="fieldIsDisabled('location')"
+      #locationSelector [ngModel]="copy.location()" [startsWith]="true"
       (valueChange)="valueChange('location', $event)"
-      permFilter="CREATE_PICKLIST">                         
+      permFilter="CREATE_PICKLIST" [showUnsetString]="false">
     </eg-item-location-select>
   </div>
   <div class="flex-1 p-1">

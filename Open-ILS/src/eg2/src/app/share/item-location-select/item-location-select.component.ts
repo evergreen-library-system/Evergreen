@@ -77,6 +77,14 @@ export class ItemLocationSelectComponent
     // the typeahead
     @Input() readOnly = false;
 
+    // See combobox
+    @Input() startsWith = false;
+
+    // Show <Unset> when no value is applied.
+    // This only applies to non-required fields, since <Unset> would
+    // trick the combobox into thinking a valid value had been applied
+    @Input() showUnsetString = true;
+
     @ViewChild('comboBox', {static: false}) comboBox: ComboboxComponent;
     @ViewChild('unsetString', {static: false}) unsetString: StringComponent;
 
@@ -147,7 +155,7 @@ export class ItemLocationSelectComponent
 
         const entries: ComboboxEntry[] = [];
 
-        if (!this.required) {
+        if (!this.required && this.showUnsetString) {
             entries.push({id: null, label: this.unsetString.text});
         }
 
@@ -161,8 +169,9 @@ export class ItemLocationSelectComponent
     }
 
     getLocationsAsync(term: string): Observable<ComboboxEntry> {
+        // "1" is ignored, but a value is needed for pipe() below
+        let obs = of([1]);
 
-        let obs = of();
         if (!this.filterOrgsApplied) {
             // Apply filter orgs the first time they are needed.
             obs = from(this.setFilterOrgs());
@@ -177,9 +186,11 @@ export class ItemLocationSelectComponent
             return of();
         }
 
+        const ilike = this.startsWith ? `${term}%` : `%${term}%`;
+
         const search: any = {
             deleted: 'f',
-            name: {'ilike': `%${term}%`}
+            name: {'ilike': ilike}
         };
 
         if (this.startId) {
@@ -195,7 +206,7 @@ export class ItemLocationSelectComponent
         }
 
         return new Observable<ComboboxEntry>(observer => {
-            if (!this.required) {
+            if (!this.required && this.showUnsetString) {
                 observer.next({id: null, label: this.unsetString.text});
             }
 
