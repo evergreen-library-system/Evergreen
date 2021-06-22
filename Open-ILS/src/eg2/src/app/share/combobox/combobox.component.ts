@@ -76,6 +76,10 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
     // If true, applies form-control-sm CSS
     @Input() smallFormControl = false;
 
+    // If true, the typeahead only matches values that start with
+    // the value typed as opposed to a 'contains' match.
+    @Input() startsWith = false;
+
     // Add a 'required' attribute to the input
     isRequired: boolean;
     @Input() set required(r: boolean) {
@@ -560,7 +564,11 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                 // text entered.
                 return this.entrylist.filter(entry => {
                     const label = entry.label || entry.id;
-                    return label.toLowerCase().indexOf(term.toLowerCase()) > -1;
+                    if (this.startsWith) {
+                        return label.toLowerCase().startsWith(term.toLowerCase());
+                    } else {
+                        return label.toLowerCase().indexOf(term.toLowerCase()) > -1;
+                    }
                 });
             })
         );
