@@ -1,3 +1,287 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 609d8e36738088b6859f31e92ff8ac736fa257e2
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Jun 23 14:56:55 2021 -0400
+
+    Bumping Perl version string for 3.5.5
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit d25ccd738ff0ea9c0f9234b1b467014b45a3ef76
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Jun 23 14:55:27 2021 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+7	5	build/i18n/po/cat.properties/en-CA.po
+31	22	build/i18n/po/circ.properties/en-CA.po
+3253	3025	build/i18n/po/db.seed/ar-JO.po
+3270	3031	build/i18n/po/db.seed/cs-CZ.po
+3228	3008	build/i18n/po/db.seed/de-DE.po
+3257	3028	build/i18n/po/db.seed/en-CA.po
+3229	3009	build/i18n/po/db.seed/en-GB.po
+3257	3029	build/i18n/po/db.seed/es-ES.po
+3230	3010	build/i18n/po/db.seed/fi-FI.po
+3228	3008	build/i18n/po/db.seed/fr-CA.po
+3228	3008	build/i18n/po/db.seed/he-IL.po
+3228	3008	build/i18n/po/db.seed/hu-HU.po
+3256	3028	build/i18n/po/db.seed/hy-AM.po
+3228	3008	build/i18n/po/db.seed/oc-FR.po
+3229	3009	build/i18n/po/db.seed/pt-BR.po
+3228	3008	build/i18n/po/db.seed/ru-RU.po
+3228	3008	build/i18n/po/db.seed/sv-SE.po
+3228	3008	build/i18n/po/db.seed/tr-TR.po
+2509	2448	build/i18n/po/fm_IDL.dtd/ar-JO.po
+2517	2453	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2495	2443	build/i18n/po/fm_IDL.dtd/de-DE.po
+2509	2448	build/i18n/po/fm_IDL.dtd/en-CA.po
+2509	2448	build/i18n/po/fm_IDL.dtd/en-GB.po
+2509	2448	build/i18n/po/fm_IDL.dtd/es-ES.po
+2509	2448	build/i18n/po/fm_IDL.dtd/fi-FI.po
+2495	2443	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2495	2443	build/i18n/po/fm_IDL.dtd/he-IL.po
+2495	2443	build/i18n/po/fm_IDL.dtd/hu-HU.po
+2510	2449	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2495	2443	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2509	2448	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2509	2448	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2495	2443	build/i18n/po/fm_IDL.dtd/sv-SE.po
+2495	2443	build/i18n/po/fm_IDL.dtd/tr-TR.po
+56	38	build/i18n/po/ils_events.xml/ar-JO.po
+59	39	build/i18n/po/ils_events.xml/cs-CZ.po
+56	38	build/i18n/po/ils_events.xml/de-DE.po
+56	38	build/i18n/po/ils_events.xml/en-CA.po
+56	38	build/i18n/po/ils_events.xml/en-GB.po
+56	38	build/i18n/po/ils_events.xml/es-ES.po
+56	38	build/i18n/po/ils_events.xml/fi-FI.po
+56	38	build/i18n/po/ils_events.xml/fr-CA.po
+56	38	build/i18n/po/ils_events.xml/he-IL.po
+56	38	build/i18n/po/ils_events.xml/hu-HU.po
+56	38	build/i18n/po/ils_events.xml/hy-AM.po
+56	38	build/i18n/po/ils_events.xml/oc-FR.po
+56	38	build/i18n/po/ils_events.xml/pt-BR.po
+56	38	build/i18n/po/ils_events.xml/ru-RU.po
+56	38	build/i18n/po/ils_events.xml/sv-SE.po
+56	38	build/i18n/po/ils_events.xml/tr-TR.po
+11	3	build/i18n/po/kpac/ar-JO.po
+12	4	build/i18n/po/kpac/cs-CZ.po
+11	3	build/i18n/po/kpac/de-DE.po
+11	3	build/i18n/po/kpac/en-GB.po
+11	3	build/i18n/po/kpac/es-ES.po
+11	3	build/i18n/po/kpac/hy-AM.po
+5	5	build/i18n/po/lang.dtd/en-CA.po
+23	19	build/i18n/po/patron.properties/en-CA.po
+5	5	build/i18n/po/register.js/en-CA.po
+13	13	build/i18n/po/selfcheck.js/en-CA.po
+349	207	build/i18n/po/tpac/ar-JO.po
+352	210	build/i18n/po/tpac/cs-CZ.po
+349	207	build/i18n/po/tpac/de-DE.po
+349	207	build/i18n/po/tpac/en-CA.po
+349	207	build/i18n/po/tpac/en-GB.po
+349	207	build/i18n/po/tpac/es-ES.po
+349	207	build/i18n/po/tpac/fi-FI.po
+436	287	build/i18n/po/tpac/fr-CA.po
+349	207	build/i18n/po/tpac/he-IL.po
+349	207	build/i18n/po/tpac/hu-HU.po
+349	207	build/i18n/po/tpac/hy-AM.po
+349	207	build/i18n/po/tpac/oc-FR.po
+349	207	build/i18n/po/tpac/pt-BR.po
+349	207	build/i18n/po/tpac/ru-RU.po
+349	207	build/i18n/po/tpac/sv-SE.po
+349	207	build/i18n/po/tpac/tr-TR.po
+634	0	build/i18n/po/vandelay/en-CA.po
+350	180	build/i18n/po/webstaff/ar-JO.po
+353	183	build/i18n/po/webstaff/cs-CZ.po
+350	180	build/i18n/po/webstaff/de-DE.po
+356	184	build/i18n/po/webstaff/en-CA.po
+350	180	build/i18n/po/webstaff/en-GB.po
+350	180	build/i18n/po/webstaff/es-ES.po
+350	180	build/i18n/po/webstaff/hy-AM.po
+350	180	build/i18n/po/webstaff/ru-RU.po
+ create mode 100644 build/i18n/po/vandelay/en-CA.po
+
+commit 3e686c3a8c1b916c11ee174c7d97ca8c930a1c3d
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Jun 23 14:51:40 2021 -0400
+
+    Translation updates - newpot
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+17	17	build/i18n/po/tpac/tpac.pot
+66	66	build/i18n/po/webstaff/webstaff.pot
+
+commit 7470b17e564372db6563b917f1af7f01317152e6
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Jun 23 14:49:59 2021 -0400
+
+    Docs: Release Notes cleanup for 3.5.5
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+0	11	docs/RELEASE_NOTES_NEXT/Administration/autorenewal_action_trigger_result_code.adoc
+0	43	docs/RELEASE_NOTES_NEXT/Architecture/GIST_to_GIN_indexes_FTS.adoc
+0	15	docs/RELEASE_NOTES_NEXT/Cataloging/blank_tcn_source.adoc
+0	24	docs/RELEASE_NOTES_NEXT/Cataloging/publisher-display-264.adoc
+0	30	docs/RELEASE_NOTES_NEXT/Circulation/purge_usr_pref_names.adoc
+0	13	docs/RELEASE_NOTES_NEXT/Client/ang-catalog-more-hold-types.adoc
+0	10	docs/RELEASE_NOTES_NEXT/OPAC/carousel_ordering.adoc
+0	13	docs/RELEASE_NOTES_NEXT/Reports/change_aacs_label.adoc
+0	5	docs/RELEASE_NOTES_NEXT/Reports/deduplicated_reports_schedule.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Administration/autorenewal_action_trigger_result_code.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Architecture/GIST_to_GIN_indexes_FTS.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/blank_tcn_source.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/publisher-display-264.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/purge_usr_pref_names.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Client/ang-catalog-more-hold-types.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/carousel_ordering.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Reports/change_aacs_label.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Reports/deduplicated_reports_schedule.adoc
+
+commit 42f51ae040e33c2ba73fb23edd971209dd5103a4
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Jun 23 07:31:08 2021 -0700
+
+    Docs: Release notes for 3.5.5
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+28	0	docs/RELEASE_NOTES_3_5.adoc
+
+commit 18afce58fcb7c20324a8b3c725ccab35aa35aab8
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Mon Jun 14 11:34:51 2021 -0400
+
+    LP#1930933: fix issue with over-escaping in search results title attributes
+    
+    This patch fixes an issue where a record with a title containing the
+    word "hidden" can have its title, ironically enough, not show up
+    on public catalog search results.
+    
+    To test
+    -------
+    [1] Create an OPAC-visible record whose 245 is something like:
+    
+        =245 04$aThe hidden one <script>alert('title!')</script>
+    
+    [2] Search for the record in both the TPAC and Bootstrap skin. Note
+        that the title isn't displayed.
+    [3] Apply the patch and repeat step 2. This time, the full title
+        should be displayed.
+    [4] Verify that the OPAC does not display an alert box.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    
+    Conflicts:
+            Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2
+
+5	5	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 5e71d9d94e3873e0b7b06d8073f1ae224c5d98a2
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue May 25 10:33:28 2021 -0400
+
+    LP#1923225: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.search_highlight_escape_html.sql => 1262.schema.search_highlight_escape_html.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.search_highlight_escape_html.sql => 1262.schema.search_highlight_escape_html.sql} (98%)
+
+commit 852efc30cb0dec42aa5d2d25564b4282664b6219
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Apr 26 14:33:51 2021 -0700
+
+    LP#1923225: clean up some double-escaping of HTML in record display
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+2	2	Open-ILS/src/templates/opac/parts/record/series.tt2
+
+commit 87f38862f212312b274da2c445ee0d8b4c8e5f30
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Apr 14 14:30:39 2021 -0400
+
+    LP#1923225: have search highlighting stored procedure do HTML-escaping
+    
+    This patch builds on the previous work to have the stored procedures
+    that produced highlighted and unhighlighted versions of display
+    attributes HTML-escape the source values, then adjusts the TPAC
+    and Bootstrap templates to avoid double-escaping.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+3	3	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+118	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.search_highlight_escape_html.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.search_highlight_escape_html.sql
+
+commit 373478e2a9a783f803db17af909941d654134ebd
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Apr 13 15:56:34 2021 -0700
+
+    LP#1923225: avoid over-escaping ISBNs and ISSNs
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+2	2	Open-ILS/src/templates/opac/parts/record/summary.tt2
+
+commit f583ed3503c2af1eaa11396f194701c6de9569e1
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Fri Apr 9 18:19:02 2021 -0400
+
+    LP#1918362 Unchanged workstation settings applied on every checkin
+    
+    * Stop attempting to save the Update Inventory setting on every
+    checkin - incorrect prefix & redundant (it's a modifier now)
+    * Stop saving the Strict Barcode setting on every checkin,
+    renewal, and checkout
+    * Save Strict Barcode on user interaction with its checkbox
+    
+    To test:
+    1. confirm Strict Barcode and Do Inventory Update settings still
+    apply and are "sticky" on the Circulation->Checkin interface
+    2. confirm Strict Barcode still applies and is "sticky" on the
+    Circulation->Renew Items and Circulation->Checkout interfaces
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    
+    Conflicts:
+            Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2
+2	1	Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2
+2	1	Open-ILS/src/templates/staff/circ/renew/t_renew.tt2
+6	2	Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+7	1	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+7	1	Open-ILS/web/js/ui/default/staff/circ/renew/app.js
+
+commit 9044effe7827606707425626ab50040524304380
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Apr 27 10:35:18 2021 -0700
+
+    LP#1924185: use preferred name in patron summary
+    
+    When available, the preferred name is used as the main name in the
+    patron summary (rather than as a less-prominent field beneath the main
+    name).  The legal name is displayed further down in the summary, just
+    after the ID fields.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	5	Open-ILS/src/templates/staff/circ/patron/index.tt2
+14	15	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
