@@ -2,6 +2,125 @@
 :toc:
 :numbered:
 
+== Evergreen  3.6.4 ==
+
+This release contains bug fixes improving on Evergreen 3.6.3.
+
+=== Upgrade notes ===
+
+The addition of the Angular Staff Catalog surfaced a double-encoding issue
+with redirects in certain Apache versions. This caused searches for multiple
+words to have %20 in place of spaces, almost certainly resulting in 0 results.
+
+In order to apply this fix, change the Angular redirects in eg_vhost.conf from
+
+ RewriteRule ^/eg2/(.*) https://%{HTTP_HOST}/eg2/en-US/$1 [R=307,L]
+
+to
+
+ RewriteRule ^/eg2/(.*) https://%{HTTP_HOST}/eg2/en-US/$1 [NE,R=307,L]
+
+
+=== Bug Fixes ===
+
+==== Acquisitions ====
+
+* Acq PO Search cancel reason column shows description (https://bugs.launchpad.net/bugs/1906825[Bug 1906825])
+* Date columns in Acq Search now also show time (https://bugs.launchpad.net/bugs/1912097[Bug 1912097])
+
+==== Administration ====
+
+* Fixes an issue with editing carousels (https://bugs.launchpad.net/bugs/1879769[Bug 1879769])
+* Carousel admin grid now has a link to edit the relevant bucket (https://bugs.launchpad.net/bugs/1901893[Bug 1901893])
+* The Active Column in SMS Carrier administration now displays properly (https://bugs.launchpad.net/bugs/1873539[Bug 1873539])
+* Fixes upgrade script for Enhanced Print/Email (https://bugs.launchpad.net/bugs/1905091[Bug 1905091])
+* Cleans up numerous Perl warnings in logs (https://bugs.launchpad.net/bugs/1895660[Bug 1895660])
+
+
+==== Catalog ====
+
+* Fixes an issue displaying highlighting in traditional and bootstrap catalogue (https://bugs.launchpad.net/bugs/1923225[Bug 1923225])
+* Fixes an issue displaying works with the word "hidden" in the title (https://bugs.launchpad.net/bugs/1930933[Bug 1930933])
+* Bootstrap OPAC: Simple Selector for Lang now works in Advanced Search (https://bugs.launchpad.net/bugs/1920042[Bug 1920042])
+* Bootstrap OPAC: My account summary now displays ebook references according to config file (https://bugs.launchpad.net/bugs/1910288[Bug 1910288])
+* Bootstrap OPAC: Item tags no longer display as separate copies on an x-small screen (https://bugs.launchpad.net/bugs/1916936[Bug 1916936])
+* Fixes nesting issues on the Bootstrap OPAC Record Detail Page (https://bugs.launchpad.net/bugs/1901710[Bug 1901710])
+* Opac SMS and Carrier Fields display according to OU Setting when Editing a Hold (https://bugs.launchpad.net/bugs/1902302[Bug 1902302])
+* Better controls for collapsing and expanding the staff catalog search form (https://bugs.launchpad.net/bugs/1913338[Bug 1913338])
+
+==== Cataloging ====
+
+* Angular Catalog: "Edit" link no longer ignores UPDATE_COPY perm (https://bugs.launchpad.net/bugs/1920815[Bug 1920815])
+* Angular catalog: fixes an issue with metarecord search (https://bugs.launchpad.net/bugs/1930088[Bug 1930088])
+* Angular staff catalog now displays e-resource links (https://bugs.launchpad.net/bugs/1881607[Bug 1881607])
+* Record bucket Batch Edit now navigates to the Angular batch editor (https://bugs.launchpad.net/bugs/1926310[Bug 1926310])
+* Angular Catalog: Shelving locations assigned to the top level OU now display in list (https://bugs.launchpad.net/bugs/1927527[Bug 1927527])
+* Add to Carousel added back to the Other Actions menu in the Bib Record (https://bugs.launchpad.net/bugs/1922120[Bug 1922120])
+* Makes terminology more consistent in Angular Catalog (https://bugs.launchpad.net/bugs/1925725[Bug 1925725])
+
+
+==== Circulation ====
+
+* Preferred Name is now the prominent display name (https://bugs.launchpad.net/bugs/1924185[Bug 1924185])
+* Unchanged workstation settings are no longer re-applied on every checkin (https://bugs.launchpad.net/bugs/1918362[Bug 1918362])
+* Adds accessible field labels in patron search and edit (https://bugs.launchpad.net/bugs/1615800[Bug 1615800])
+* Fixes an issue with the embedded "Place a hold" catalog in the checkout interface (https://bugs.launchpad.net/bugs/1887876[Bug 1887876])
+* Angular Catalog: Hold status in View Holds is now saved (https://bugs.launchpad.net/bugs/1917495[Bug 1917495])
+* Angular Staff Catalog: Hold Pickup Library no longer sometimes empty (https://bugs.launchpad.net/bugs/1917944[Bug 1917944])
+* Fixes an issue with the Angular catalog view holds sort by patron barcode (https://bugs.launchpad.net/bugs/1928684[Bug 1928684])
+* Staff catalog hold detail page now supports hold notes/notifications (https://bugs.launchpad.net/bugs/1910145[Bug 1910145])
+
+==== Client ====
+
+* Angular grid column field picker has a better sort order (https://bugs.launchpad.net/bugs/1891699[Bug 1891699])
+* Angular grids now support shift-click multi-row selection (https://bugs.launchpad.net/bugs/1911238[Bug 1911238])
+* Fixes an issue with multi-word queries in the splash page catalog search (https://bugs.launchpad.net/bugs/1892435[Bug 1892435])
+
+==== Database ====
+
+* Evergreen now uses the builtin array_remove() function rather than its own custom version (https://bugs.launchpad.net/bugs/1778955[Bug 1778955])
+* Adds seed data for the eg.orgselect.hopeless.wide_holds setting (https://bugs.launchpad.net/bugs/1895738[Bug 1895738])
+
+
+==== Documentation ====
+
+* Adds documentation on how to contribute Documentation (https://bugs.launchpad.net/bugs/1927534[Bug 1927534])
+* Adds IDL acronym to the glossary (https://bugs.launchpad.net/bugs/1857917[Bug 1857917])
+* Adds documentation on how to use the browser client efficiently (https://bugs.launchpad.net/bugs/1250528[Bug 1250528] and https://bugs.launchpad.net/bugs/1751146[Bug 1751146])
+
+
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.6.4 point release of Evergreen:
+
+* Jason Boyer
+* Dan Briem
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Blake Graham Henderson
+* Rogan Hamby
+* Elaine Hardy
+* Kyle Huckins
+* Tiffany Little
+* Mary Llewellyn
+* Terran McCanna
+* Gina Monti
+* Michele Morgan
+* Andrea Buntz Neiman
+* Mike Risher
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Chrisy Schroth
+* Jason Stephenson
+* Stephen Wills
+
 == Evergreen  3.6.3 ==
 
 This release contains bug fixes improving on Evergreen 3.6.2,
