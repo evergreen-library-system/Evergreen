@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2021-03-31 14:39:20-0400\n"
+"POT-Creation-Date: 2021-06-23 11:39:23-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -167,7 +167,7 @@ msgid "Renew Circulations"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.edi_accounts
-#: 950.data.seed-values.sql:21039
+#: 950.data.seed-values.sql:21046
 msgid "Grid Config: acq.provider.edi_accounts"
 msgstr ""
 
@@ -272,7 +272,7 @@ msgid "Nahuatl"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.default.invoices
-#: 950.data.seed-values.sql:20939
+#: 950.data.seed-values.sql:20946
 msgid "Acquisitions Default Search: Invoices"
 msgstr ""
 
@@ -405,7 +405,7 @@ msgid "Enable Shibboleth SSO for the OPAC"
 msgstr ""
 
 # id::coust.label__circ.curbside.disable_patron_input
-#: 950.data.seed-values.sql:21140
+#: 950.data.seed-values.sql:21147
 msgid "Disable patron modification of curbside appointments in public catalog"
 msgstr ""
 
@@ -522,7 +522,7 @@ msgid "Jump to details on 1 hit (public)"
 msgstr ""
 
 # id::coust.label__search.symspell.keyboard_distance.weight
-#: 950.data.seed-values.sql:21583
+#: 950.data.seed-values.sql:21600
 msgid "Keyboard distance score weighting in OPAC spelling suggestions."
 msgstr ""
 
@@ -841,7 +841,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.acq.search.purchaseorders.run_immediately
-#: 950.data.seed-values.sql:20961
+#: 950.data.seed-values.sql:20968
 msgid "Acquisitions Search: Immediately Search Purchase Orders"
 msgstr ""
 
@@ -1005,7 +1005,7 @@ msgid "Biography or performer or history of ensemble"
 msgstr ""
 
 # id::coust.label__search.symspell.min_suggestion_use_threshold
-#: 950.data.seed-values.sql:21541
+#: 950.data.seed-values.sql:21558
 msgid "Minimum required uses of a spelling suggestions that may be offered"
 msgstr ""
 
@@ -1203,7 +1203,7 @@ msgid "Newari"
 msgstr ""
 
 # id::coust.description__circ.curbside.disable_patron_input
-#: 950.data.seed-values.sql:21144
+#: 950.data.seed-values.sql:21151
 msgid ""
 "When set to TRUE, patrons cannot use the My Account interface to select "
 "curbside pickup times"
@@ -1240,7 +1240,7 @@ msgid "Print output has been requested for records in an Importer Bib Queue."
 msgstr ""
 
 # id::cwst.label__eg.acq.search.lineitems.run_immediately
-#: 950.data.seed-values.sql:20955
+#: 950.data.seed-values.sql:20962
 msgid "Acquisitions Search: Immediately Search Lineitems"
 msgstr ""
 
@@ -1659,7 +1659,7 @@ msgid "Grid Config: cat.holdings"
 msgstr ""
 
 # id::coust.description__search.symspell.soundex.weight
-#: 950.data.seed-values.sql:21559
+#: 950.data.seed-values.sql:21576
 msgid ""
 "Soundex, trgm, and keyboard distance similarity measures can be combined to "
 "form a secondary ordering parameter for spelling suggestions. This controls "
@@ -1668,7 +1668,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.acq.search.invoices.run_immediately
-#: 950.data.seed-values.sql:20967
+#: 950.data.seed-values.sql:20974
 msgid "Acquisitions Search: Immediately Search Invoices"
 msgstr ""
 
@@ -1730,7 +1730,7 @@ msgid "Spine label left margin"
 msgstr ""
 
 # id::coust.label__opac.analytics.matomo_url
-#: 950.data.seed-values.sql:21089
+#: 950.data.seed-values.sql:21096
 msgid "Matomo URL"
 msgstr ""
 
@@ -2000,7 +2000,7 @@ msgid "Can do anything at the Branch level"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.addresses
-#: 950.data.seed-values.sql:21015
+#: 950.data.seed-values.sql:21022
 msgid "Grid Config: acq.provider.addresses"
 msgstr ""
 
@@ -2020,7 +2020,7 @@ msgid "Print Template Context: hold_shelf_slip"
 msgstr ""
 
 # id::coust.label__circ.curbside
-#: 950.data.seed-values.sql:21101
+#: 950.data.seed-values.sql:21108
 msgid "Enable curbside pickup functionality at library."
 msgstr ""
 
@@ -3110,7 +3110,7 @@ msgid ""
 msgstr ""
 
 # id::coust.description__search.symspell.keyboard_distance.weight
-#: 950.data.seed-values.sql:21587
+#: 950.data.seed-values.sql:21604
 msgid ""
 "Soundex, trgm, and keyboard distance similarity measures can be combined to "
 "form a secondary ordering parameter for spelling suggestions. This controls "
@@ -3289,7 +3289,7 @@ msgid "Allow a user to bar a patron"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.attributes
-#: 950.data.seed-values.sql:21021
+#: 950.data.seed-values.sql:21028
 msgid "Grid Config: acq.provider.attributes"
 msgstr ""
 
@@ -3490,7 +3490,7 @@ msgid "Library time zone"
 msgstr ""
 
 # id::coust.label__search.symspell.pg_trgm.weight
-#: 950.data.seed-values.sql:21569
+#: 950.data.seed-values.sql:21586
 msgid "Pg_trgm score weighting in OPAC spelling suggestions."
 msgstr ""
 
@@ -3590,6 +3590,11 @@ msgstr ""
 msgid "Trinidad and Tobago "
 msgstr ""
 
+# id::cwst.label__eg.orgselect.hopeless.wide_holds
+#: 950.data.seed-values.sql:20911
+msgid "Default org unit for hopeless holds interface"
+msgstr ""
+
 # id::ccvm.value__1269
 #: 950.data.seed-values.sql:8753
 msgid "Thailand "
@@ -3646,7 +3651,7 @@ msgid "Greek, Modern (1453- )"
 msgstr ""
 
 # id::coust.label__search.symspell.soundex.weight
-#: 950.data.seed-values.sql:21555
+#: 950.data.seed-values.sql:21572
 msgid "Soundex score weighting in OPAC spelling suggestions."
 msgstr ""
 
@@ -3992,7 +3997,7 @@ msgid "Niger "
 msgstr ""
 
 # id::coust.label__opac.geographic_proximity_in_miles
-#: 950.data.seed-values.sql:21222
+#: 950.data.seed-values.sql:21229
 msgid "Show Geographic Proximity in Miles"
 msgstr ""
 
@@ -4436,7 +4441,7 @@ msgid "Update org unit settings related to credit card processing"
 msgstr ""
 
 # id::cwst.label__eg.staffcat.exclude_electronic
-#: 950.data.seed-values.sql:21491
+#: 950.data.seed-values.sql:21498
 msgid "Staff Catalog \"Exclude Electronic Resources\" Option"
 msgstr ""
 
@@ -5353,7 +5358,7 @@ msgid "8 mm."
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.search.selectionlists
-#: 950.data.seed-values.sql:20995
+#: 950.data.seed-values.sql:21002
 msgid "Grid Config: acq.search.selectionlists"
 msgstr ""
 
@@ -5598,7 +5603,7 @@ msgid "DELETE_MERGE_PROFILE"
 msgstr ""
 
 # id::coust.description__opac.analytics.matomo_url
-#: 950.data.seed-values.sql:21092
+#: 950.data.seed-values.sql:21099
 msgid ""
 "The URL for your the Matomo software. Be sure to include the trailing slash,"
 " e.g. https://my-evergreen.matomo.cloud/"
@@ -5717,7 +5722,7 @@ msgid "Holds: Allow holds on empty issuances"
 msgstr ""
 
 # id::coust.description__circ.curbside
-#: 950.data.seed-values.sql:21105
+#: 950.data.seed-values.sql:21112
 msgid ""
 "When set to TRUE, enable staff and public interfaces to schedule curbside "
 "pickup of holds that become available for pickup."
@@ -5793,7 +5798,7 @@ msgid "Patrons"
 msgstr ""
 
 # id::coust.label__opac.did_you_mean.low_result_threshold
-#: 950.data.seed-values.sql:21527
+#: 950.data.seed-values.sql:21544
 msgid ""
 "Maximum search result count at which spelling suggestions may be offered"
 msgstr ""
@@ -6067,7 +6072,7 @@ msgid "Allows a user to manually adjust a patron's active cards"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.contacts
-#: 950.data.seed-values.sql:21033
+#: 950.data.seed-values.sql:21040
 msgid "Grid Config: acq.provider.contacts"
 msgstr ""
 
@@ -6228,7 +6233,7 @@ msgid ""
 msgstr ""
 
 # id::cwst.label__eg.acq.search.default.selectionlists
-#: 950.data.seed-values.sql:20945
+#: 950.data.seed-values.sql:20952
 msgid "Acquisitions Default Search: Selection Lists"
 msgstr ""
 
@@ -6348,7 +6353,7 @@ msgid "Malawi "
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.contact.addresses
-#: 950.data.seed-values.sql:21027
+#: 950.data.seed-values.sql:21034
 msgid "Grid Config: acq.provider.contact.addresses"
 msgstr ""
 
@@ -7497,7 +7502,7 @@ msgid "aperture card"
 msgstr ""
 
 # id::coust.description__opac.geographic_proximity_in_miles
-#: 950.data.seed-values.sql:21226
+#: 950.data.seed-values.sql:21233
 msgid ""
 "When set to TRUE, will cause the record details page to show distances for "
 "geographic proximity in miles instead of kilometers."
@@ -7898,7 +7903,7 @@ msgid "Grid Config: admin.workstation.patron_log"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.search.lineitems
-#: 950.data.seed-values.sql:20983
+#: 950.data.seed-values.sql:20990
 msgid "Grid Config: acq.search.lineitems"
 msgstr ""
 
@@ -8070,7 +8075,7 @@ msgid ""
 msgstr ""
 
 # id::coust.label__opac.holdings_sort_by_geographic_proximity
-#: 950.data.seed-values.sql:21209
+#: 950.data.seed-values.sql:21216
 msgid "Enable Holdings Sort by Geographic Proximity"
 msgstr ""
 
@@ -8444,7 +8449,7 @@ msgid "Dyula"
 msgstr ""
 
 # id::ath.description__hold.confirm_curbside
-#: 950.data.seed-values.sql:21175
+#: 950.data.seed-values.sql:21182
 msgid ""
 "Hook used to trigger the notification of the creation or update of a "
 "curbside pickup appointment with an arrival URL"
@@ -9747,7 +9752,7 @@ msgstr ""
 
 # id::coust.label__circ.curbside.max_concurrent
 # id::coust.description__circ.curbside.max_concurrent
-#: 950.data.seed-values.sql:21127 950.data.seed-values.sql:21131
+#: 950.data.seed-values.sql:21134 950.data.seed-values.sql:21138
 msgid ""
 "Maximum number of patrons that may select a particular curbside pickup time"
 msgstr ""
@@ -9947,7 +9952,7 @@ msgid "DELETE_ORG_ADDRESS"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.authority.browse
-#: 950.data.seed-values.sql:20911
+#: 950.data.seed-values.sql:20918
 msgid "Grid Config: eg.grid.cat.authority.browse"
 msgstr ""
 
@@ -10662,7 +10667,7 @@ msgid "Creoles and Pidgins, French-based (Other)"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.search.purchaseorders
-#: 950.data.seed-values.sql:20989
+#: 950.data.seed-values.sql:20996
 msgid "Grid Config: acq.search.purchaseorders"
 msgstr ""
 
@@ -10687,7 +10692,7 @@ msgid "Single known date/probable date"
 msgstr ""
 
 # id::coust.description__opac.geographic_location_service_for_address
-#: 950.data.seed-values.sql:21239
+#: 950.data.seed-values.sql:21246
 msgid ""
 "Specifies which geographic location service to use for converting address "
 "input to geographic coordinates."
@@ -10868,7 +10873,7 @@ msgid "Allow Email Notify"
 msgstr ""
 
 # id::cwst.label__eg.grid.cat.authority.manage.bibs
-#: 950.data.seed-values.sql:20917
+#: 950.data.seed-values.sql:20924
 msgid "Grid Config: eg.grid.cat.authority.manage.bibs"
 msgstr ""
 
@@ -10889,7 +10894,7 @@ msgid "ADMIN_SERIAL_STREAM"
 msgstr ""
 
 # id::cgf.label__opac.use_geolocation
-#: 950.data.seed-values.sql:21199
+#: 950.data.seed-values.sql:21206
 msgid "Offer use of geographic location services in the public catalog"
 msgstr ""
 
@@ -11425,7 +11430,7 @@ msgid "Language"
 msgstr ""
 
 # id::cgf.label__auth.block_expired_staff_login
-#: 950.data.seed-values.sql:21513
+#: 950.data.seed-values.sql:21530
 msgid ""
 "Block the ability of expired user with the STAFF_LOGIN permission to log "
 "into Evergreen."
@@ -12156,6 +12161,11 @@ msgstr ""
 msgid ""
 "OPAC: Number of staff client saved searches to display on left side of "
 "results and record details pages"
+msgstr ""
+
+# id::cwst.label__eg.catalog.search.form.open
+#: 950.data.seed-values.sql:21518
+msgid "Catalog Search Form Visibility Sticky Setting"
 msgstr ""
 
 # id::ppl.description__84
@@ -13299,7 +13309,7 @@ msgid "Canons and rounds"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.edi_messages
-#: 950.data.seed-values.sql:21045
+#: 950.data.seed-values.sql:21052
 msgid "Grid Config: acq.provider.edi_messages"
 msgstr ""
 
@@ -13353,7 +13363,7 @@ msgid "Kongo"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.search.invoices
-#: 950.data.seed-values.sql:21001
+#: 950.data.seed-values.sql:21008
 msgid "Grid Config: acq.search.invoices"
 msgstr ""
 
@@ -13481,7 +13491,7 @@ msgid "Butterfly"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.default.lineitems
-#: 950.data.seed-values.sql:20927
+#: 950.data.seed-values.sql:20934
 msgid "Acquisitions Default Search: Lineitems"
 msgstr ""
 
@@ -13795,7 +13805,7 @@ msgid "Nyanja"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.search.results
-#: 950.data.seed-values.sql:21069
+#: 950.data.seed-values.sql:21076
 msgid "Grid Config: acq.provider.search.results"
 msgstr ""
 
@@ -14805,7 +14815,7 @@ msgid "Pali"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.selectionlists.run_immediately
-#: 950.data.seed-values.sql:20973
+#: 950.data.seed-values.sql:20980
 msgid "Acquisitions Search: Immediately Search Selection Lists"
 msgstr ""
 
@@ -14954,7 +14964,7 @@ msgid "Bosnian"
 msgstr ""
 
 # id::coust.description__opac.holdings_sort_by_geographic_proximity
-#: 950.data.seed-values.sql:21213
+#: 950.data.seed-values.sql:21220
 msgid ""
 "When set to TRUE, will cause the record details page to display the controls"
 " for sorting holdings by geographic proximity. This also depends on the "
@@ -15226,7 +15236,7 @@ msgid "BellSouth"
 msgstr ""
 
 # id::cwst.label__eg.acq.search.default.purchaseorders
-#: 950.data.seed-values.sql:20933
+#: 950.data.seed-values.sql:20940
 msgid "Acquisitions Default Search: Purchase Orders"
 msgstr ""
 
@@ -15502,7 +15512,7 @@ msgid "Show barred field on patron registration"
 msgstr ""
 
 # id::coust.description__search.symspell.pg_trgm.weight
-#: 950.data.seed-values.sql:21573
+#: 950.data.seed-values.sql:21590
 msgid ""
 "Soundex, pg_trgm, and keyboard distance similarity measures can be combined "
 "to form a secondary ordering parameter for spelling suggestions. This "
@@ -15754,7 +15764,7 @@ msgid "Allow a user to create a volume"
 msgstr ""
 
 # id::coust.description__opac.analytics.matomo_id
-#: 950.data.seed-values.sql:21083
+#: 950.data.seed-values.sql:21090
 msgid ""
 "The Site ID for your Evergreen catalog. You can find the Site ID in the "
 "tracking code you got from Matomo."
@@ -16034,7 +16044,7 @@ msgid "TracFone"
 msgstr ""
 
 # id::coust.description__search.symspell.min_suggestion_use_threshold
-#: 950.data.seed-values.sql:21545
+#: 950.data.seed-values.sql:21562
 msgid ""
 "The number of bibliographic records (more or less) that a spelling "
 "suggestion must appear in to be considered before offering it to a user. "
@@ -16094,7 +16104,7 @@ msgid "Bathymetry, isolines"
 msgstr ""
 
 # id::coust.label__opac.analytics.matomo_id
-#: 950.data.seed-values.sql:21079
+#: 950.data.seed-values.sql:21086
 msgid "Matomo Site ID"
 msgstr ""
 
@@ -16961,7 +16971,7 @@ msgid "Manobo languages"
 msgstr ""
 
 # id::cwst.label__eg.orgselect.catalog.holdings
-#: 950.data.seed-values.sql:21501
+#: 950.data.seed-values.sql:21508
 msgid "Default org unit for catalog holdings tab"
 msgstr ""
 
@@ -17635,7 +17645,7 @@ msgid ""
 msgstr ""
 
 # id::coust.description__opac.did_you_mean.low_result_threshold
-#: 950.data.seed-values.sql:21531
+#: 950.data.seed-values.sql:21548
 msgid ""
 "If a search results in this number or fewer results, and there are "
 "correctable spelling mistakes, a suggested search may be provided."
@@ -17672,7 +17682,7 @@ msgid "Sinhalese"
 msgstr ""
 
 # id::coust.label__opac.geographic_location_service_for_address
-#: 950.data.seed-values.sql:21235
+#: 950.data.seed-values.sql:21242
 msgid "Geographic Location Service to use for Addresses"
 msgstr ""
 
@@ -18329,7 +18339,7 @@ msgid "Checkin: Amnesty Mode"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.purchaseorders
-#: 950.data.seed-values.sql:21063
+#: 950.data.seed-values.sql:21070
 msgid "Grid Config: acq.provider.purchaseorders"
 msgstr ""
 
@@ -18417,7 +18427,7 @@ msgstr ""
 
 # id::coust.label__circ.curbside.granularity
 # id::coust.description__circ.curbside.granularity
-#: 950.data.seed-values.sql:21114 950.data.seed-values.sql:21118
+#: 950.data.seed-values.sql:21121 950.data.seed-values.sql:21125
 msgid "Time interval between curbside appointments"
 msgstr ""
 
@@ -18540,7 +18550,7 @@ msgid "Allow a user to create a metarecord holds"
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.holdings
-#: 950.data.seed-values.sql:21051
+#: 950.data.seed-values.sql:21058
 msgid "Grid Config: acq.provider.holdings"
 msgstr ""
 
@@ -18575,7 +18585,7 @@ msgid "Occitan (post-1500)"
 msgstr ""
 
 # id::ath.description__hold.offer_curbside
-#: 950.data.seed-values.sql:21162
+#: 950.data.seed-values.sql:21169
 msgid "Hook used to trigger the notification of an offer of curbside pickup"
 msgstr ""
 
@@ -18741,7 +18751,7 @@ msgid "Russia (Federation) "
 msgstr ""
 
 # id::cwst.label__eg.grid.acq.provider.invoices
-#: 950.data.seed-values.sql:21057
+#: 950.data.seed-values.sql:21064
 msgid "Grid Config: acq.provider.invoices"
 msgstr ""
 
