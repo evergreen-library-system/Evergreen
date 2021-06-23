@@ -116,7 +116,7 @@ msgid "%m/%d/%Y"
 msgstr ""
 
 #. (ctx.record_hold_count, ctx.copy_summary.$count_entry.count)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:252
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:257
 msgid "%quant(%1,current hold,current holds) with %quant(%2,total copy,total copies)."
 msgstr ""
 
@@ -695,7 +695,7 @@ msgstr ""
 msgid "Back to results"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:486
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:498
 msgid "Badges:"
 msgstr ""
 
@@ -1215,7 +1215,7 @@ msgstr ""
 msgid "Contains phrase"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/contents.tt2:211
+#: ../../Open-ILS/src/templates/opac/parts/record/contents.tt2:215
 msgid "Content descriptions"
 msgstr ""
 
@@ -1284,7 +1284,7 @@ msgstr ""
 msgid "Copyright holder"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:475
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:487
 msgid "Copyright:"
 msgstr ""
 
@@ -1372,7 +1372,7 @@ msgstr ""
 msgid "Current Username"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:249
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:254
 msgid "Current holds"
 msgstr ""
 
@@ -1563,7 +1563,7 @@ msgstr ""
 msgid "Distributor"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:447 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:261
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:459 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:261
 msgid "Distributor:"
 msgstr ""
 
@@ -1684,7 +1684,7 @@ msgstr ""
 msgid "Editing Hold"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:372 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:376 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:315
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:384 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:388 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:315
 msgid "Edition:"
 msgstr ""
 
@@ -2196,7 +2196,7 @@ msgstr ""
 msgid "ISBN"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:332 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:343 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:276
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:337 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:348 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:276
 msgid "ISBN:"
 msgstr ""
 
@@ -2204,7 +2204,7 @@ msgstr ""
 msgid "ISSN"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:350 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:354 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:284
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:355 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:359 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:284
 msgid "ISSN:"
 msgstr ""
 
@@ -2680,7 +2680,7 @@ msgstr ""
 msgid "Manufacturer"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:461 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:268
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:473 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:268
 msgid "Manufacturer:"
 msgstr ""
 
@@ -3303,7 +3303,7 @@ msgstr ""
 msgid "Phys. Desc.:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:361 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:366
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:373 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:378
 msgid "Physical Description:"
 msgstr ""
 
@@ -3582,7 +3582,7 @@ msgstr ""
 msgid "Producer"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:433 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:254
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:445 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:254
 msgid "Producer:"
 msgstr ""
 
@@ -3642,7 +3642,7 @@ msgstr ""
 msgid "Publisher"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:397 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:402 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:231
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:409 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:414 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:231
 msgid "Publisher:"
 msgstr ""
 
@@ -3715,7 +3715,7 @@ msgstr ""
 msgid "Record Holdings Summary"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:328
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:333
 msgid "Record details"
 msgstr ""
 
@@ -4068,7 +4068,7 @@ msgstr ""
 msgid "Search date"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/series.tt2:60
+#: ../../Open-ILS/src/templates/opac/parts/record/series.tt2:61
 msgid "Search for related items by series"
 msgstr ""
 
@@ -5010,11 +5010,11 @@ msgstr ""
 msgid "View My Holds Ready for Pickup"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:315
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:320
 msgid "View all formats and editions "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:277
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:282
 msgid "View other formats and editions"
 msgstr ""
 
