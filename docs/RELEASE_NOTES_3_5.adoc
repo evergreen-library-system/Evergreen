@@ -3,6 +3,34 @@ Evergreen 3.5 Release Notes
 :toc:
 :numbered:
 
+== Evergreen  3.5.5 ==
+
+This release contains bug fixes improving on Evergreen 3.5.4.
+
+=== Bug Fixes ===
+
+==== Catalog ====
+
+* Fixes an issue displaying highlighting in traditional and bootstrap catalogue (https://bugs.launchpad.net/bugs/1923225[Bug 1923225])
+* Fixes an issue displaying works with the word "hidden" in the title (https://bugs.launchpad.net/bugs/1930933[Bug 1930933])
+
+
+==== Circulation ====
+
+* Preferred Name is now the prominent display name (https://bugs.launchpad.net/bugs/1924185[Bug 1924185])
+* Unchanged workstation settings are no longer re-applied on every checkin (https://bugs.launchpad.net/bugs/1918362[Bug 1918362])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.5.5 point release of Evergreen:
+
+
+* Galen Charlton
+* Jeff Davis
+* Michele Morgan
+* Jane Sandberg
+* Jason Stephenson
 
 == Evergreen  3.5.4 ==
 
