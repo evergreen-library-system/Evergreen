@@ -1,13 +1,122 @@
-Evergreen 3.7.0 Release Notes
-==============================
+= Evergreen 3.7 Release Notes =
 :toc:
 :numbered:
 
-Upgrade notes
--------------
 
-Database Upgrade Procedure
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Evergreen  3.7.1 ==
+
+This release contains bug fixes improving on Evergreen 3.7.0.
+
+
+=== Bug Fixes ===
+
+==== Acquisitions ====
+
+* Acq PO Search cancel reason column shows description (https://bugs.launchpad.net/bugs/1906825[Bug 1906825])
+* Date columns in Acq Search now also show time (https://bugs.launchpad.net/bugs/1912097[Bug 1912097])
+
+==== Administration ====
+
+* Fixes an issue with editing carousels (https://bugs.launchpad.net/bugs/1879769[Bug 1879769])
+* Carousel admin grid now has a link to edit the relevant bucket (https://bugs.launchpad.net/bugs/1901893[Bug 1901893])
+* The Active Column in SMS Carrier administration now displays properly (https://bugs.launchpad.net/bugs/1873539[Bug 1873539])
+* Fixes upgrade script for Enhanced Print/Email (https://bugs.launchpad.net/bugs/1905091[Bug 1905091])
+* Cleans up numerous Perl warnings in logs (https://bugs.launchpad.net/bugs/1895660[Bug 1895660])
+
+
+==== Catalog ====
+
+* Fixes an issue displaying highlighting in traditional and bootstrap catalogue (https://bugs.launchpad.net/bugs/1923225[Bug 1923225])
+* Fixes an issue displaying works with the word "hidden" in the title (https://bugs.launchpad.net/bugs/1930933[Bug 1930933])
+* Bootstrap OPAC: Simple Selector for Lang now works in Advanced Search (https://bugs.launchpad.net/bugs/1920042[Bug 1920042])
+* Bootstrap OPAC: My account summary now displays ebook references according to config file (https://bugs.launchpad.net/bugs/1910288[Bug 1910288])
+* Bootstrap OPAC: Item tags no longer display as separate copies on an x-small screen (https://bugs.launchpad.net/bugs/1916936[Bug 1916936])
+* Fixes nesting issues on the Bootstrap OPAC Record Detail Page (https://bugs.launchpad.net/bugs/1901710[Bug 1901710])
+* Opac SMS and Carrier Fields display according to OU Setting when Editing a Hold (https://bugs.launchpad.net/bugs/1902302[Bug 1902302])
+* Better controls for collapsing and expanding the staff catalog search form (https://bugs.launchpad.net/bugs/1913338[Bug 1913338])
+
+==== Cataloging ====
+
+* Angular Catalog: "Edit" link no longer ignores UPDATE_COPY perm (https://bugs.launchpad.net/bugs/1920815[Bug 1920815])
+* Angular catalog: fixes an issue with metarecord search (https://bugs.launchpad.net/bugs/1930088[Bug 1930088])
+* Angular staff catalog now displays e-resource links (https://bugs.launchpad.net/bugs/1881607[Bug 1881607])
+* Record bucket Batch Edit now navigates to the Angular batch editor (https://bugs.launchpad.net/bugs/1926310[Bug 1926310])
+* Angular Catalog: Shelving locations assigned to the top level OU now display in list (https://bugs.launchpad.net/bugs/1927527[Bug 1927527])
+* Add to Carousel added back to the Other Actions menu in the Bib Record (https://bugs.launchpad.net/bugs/1922120[Bug 1922120])
+* Makes terminology more consistent in Angular Catalog (https://bugs.launchpad.net/bugs/1925725[Bug 1925725])
+
+
+==== Circulation ====
+
+* Preferred Name is now the prominent display name (https://bugs.launchpad.net/bugs/1924185[Bug 1924185])
+* Unchanged workstation settings are no longer re-applied on every checkin (https://bugs.launchpad.net/bugs/1918362[Bug 1918362])
+* Adds accessible field labels in patron search and edit (https://bugs.launchpad.net/bugs/1615800[Bug 1615800])
+* Fixes an issue with the embedded "Place a hold" catalog in the checkout interface (https://bugs.launchpad.net/bugs/1887876[Bug 1887876])
+* Angular Catalog: Hold status in View Holds is now saved (https://bugs.launchpad.net/bugs/1917495[Bug 1917495])
+* Angular Staff Catalog: Hold Pickup Library no longer sometimes empty (https://bugs.launchpad.net/bugs/1917944[Bug 1917944])
+* Fixes an issue with the Angular catalog view holds sort by patron barcode (https://bugs.launchpad.net/bugs/1928684[Bug 1928684])
+* Staff catalog hold detail page now supports hold notes/notifications (https://bugs.launchpad.net/bugs/1910145[Bug 1910145])
+
+==== Client ====
+
+* Angular grid column field picker has a better sort order (https://bugs.launchpad.net/bugs/1891699[Bug 1891699])
+* Angular grids now support shift-click multi-row selection (https://bugs.launchpad.net/bugs/1911238[Bug 1911238])
+* Fixes an issue with multi-word queries in the splash page catalog search (https://bugs.launchpad.net/bugs/1892435[Bug 1892435])
+
+==== Database ====
+
+* Evergreen now uses the builtin array_remove() function rather than its own custom version (https://bugs.launchpad.net/bugs/1778955[Bug 1778955])
+* Adds seed data for the eg.orgselect.hopeless.wide_holds setting (https://bugs.launchpad.net/bugs/1895738[Bug 1895738])
+
+
+==== Documentation ====
+
+* Adds documentation on how to contribute Documentation (https://bugs.launchpad.net/bugs/1927534[Bug 1927534])
+* Adds IDL acronym to the glossary (https://bugs.launchpad.net/bugs/1857917[Bug 1857917])
+* Adds documentation on how to use the browser client efficiently (https://bugs.launchpad.net/bugs/1250528[Bug 1250528] and https://bugs.launchpad.net/bugs/1751146[Bug 1751146])
+* Improves example for LDAP authentication (https://bugs.launchpad.net/bugs/1901940[Bug 1901940])
+* Adds documentation about patron with negative balances (https://bugs.launchpad.net/bugs/1929467[Bug 1929467])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.7.1 point release of Evergreen:
+
+
+* Jason Boyer
+* Dan Briem
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Lynn Floyd
+* Blake Graham Henderson
+* Rogan Hamby
+* Elaine Hardy
+* Kyle Huckins
+* Rosie Le Faive
+* Tiffany Little
+* Mary Llewellyn
+* Katie G. Martin
+* Terran McCanna
+* Gina Monti
+* Michele Morgan
+* Andrea Buntz Neiman
+* Mike Risher
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Chrisy Schroth
+* Jason Stephenson
+* Stephen Wills
+
+== Evergreen  3.7.0 ==
+
+=== Upgrade notes ===
+
+==== Database Upgrade Procedure ====
+
 The database schema upgrade for Evergreen 3.7 has more steps than normal. The general
 procedure, assuming Evergreen 3.6.2 as the starting point, is:
 
@@ -141,11 +250,10 @@ VACUUM ANALYZE metabib.combined_series_field_entry;
 VACUUM ANALYZE metabib.real_full_rec;
 ----
 
-New Seed Data
-~~~~~~~~~~~~~
+==== New Seed Data ====
 
-New Permissions
-^^^^^^^^^^^^^^^
+
+===== New Permissions =====
 
 * Administer geographic location services (`ADMIN_GEOLOCATION_SERVICES`)
 * Administer library groups (`ADMIN_LIBRARY_GROUPS`)
@@ -153,19 +261,16 @@ New Permissions
 * Modify patron SSO settings (`SSO_ADMIN`)
 * View geographic location services (`VIEW_GEOLOCATION_SERVICES`)
 
-New Global Flags
-^^^^^^^^^^^^^^^^
+===== New Global Flags =====
 
 * Block the ability of expired user with the STAFF_LOGIN permission to log into Evergreen (`auth.block_expired_staff_login`)
 * Offer use of geographic location services in the public catalog (`opac.use_geolocation`)
 
-New Internal Flags
-^^^^^^^^^^^^^^^^^^
+===== New Internal Flags =====
 
 * Maximum search result count at which spelling suggestions may be offered (`opac.did_you_mean.low_result_threshold`)
 
-New Library Settings
-^^^^^^^^^^^^^^^^^^^^
+===== New Library Settings =====
 
 * Allow both Shibboleth and native OPAC authentication (`opac.login.shib_sso.allow_native`)
 * Allow renewal request if renewal recipient privileges have expired (`circ.renew.expired_patron_allow`)
@@ -183,23 +288,18 @@ New Library Settings
 * Show Geographic Proximity in Miles (`opac.geographic_proximity_in_miles`)
 * Soundex score weighting in OPAC spelling suggestions (`search.symspell.soundex.weight`)
 
-New Stock Action/Trigger Event Definitions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===== New Stock Action/Trigger Event Definitions =====
 
 * Hold Group Hold Placed for Patron Email Notification
 
-New Features
-------------
+=== New Features ===
+
+
+==== Administration ====
 
 
 
-Administration
-~~~~~~~~~~~~~~
-
-
-
-Single Sign On (Shibboleth) Public Catalog integration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===== Single Sign On (Shibboleth) Public Catalog integration =====
 
 The Evergreen OPAC can now be used as a Service Provider (SP) in a
 Single Sign On infrastructure.  This allows system administrators to
@@ -228,8 +328,7 @@ Also note that this development does not include automatic provisioning of
 accounts.  At this time, matching accounts must already exist in Evergreen
 for a patron to successfully authenticate into the OPAC via Single Sign On.
 
-Installation
-++++++++++++
+====== Installation ======
 
 Installing and configuring Shibboleth support is a complex project.  In
 broad strokes, the process includes:
@@ -272,15 +371,11 @@ be very helpful for introducing the basic concepts used in the installation and
 configuration processes.
 
 
+==== Architecture ====
 
 
-Architecture
-~~~~~~~~~~~~
+===== Block Login of Expired Staff Accounts =====
 
-
-
-Block Login of Expired Staff Accounts
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Evergreen now has the ability to prevent staff users whose
 accounts have expired from logging in. This is controlled
 by the new global flag "auth.block_expired_staff_login", which
@@ -322,8 +417,7 @@ be much faster.
 
 
 
-Migration From GIST to GIN Indexes for Full Text Search
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===== Migration From GIST to GIN Indexes for Full Text Search =====
 
 Evergreen now uses GIN indexes for full text search in PostgreSQL.
 GIN indexes offer better performance than GIST.  For more information
@@ -339,8 +433,7 @@ tables that had the indexes changed.  The migration process does not
 do this for you, so you should do it as soon as is convenient after
 the upgrade.
 
-Updating Your Own Indexes
-+++++++++++++++++++++++++
+====== Updating Your Own Indexes ======
 
 If you have added your own full text indexes of type GIST, and you
 wish to migrate them to GIN, you may do so.  The following query, when
@@ -369,8 +462,7 @@ WHERE indexdef ~* 'gist';
 
 
 
-Removal of Custom Dojo Build
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===== Removal of Custom Dojo Build =====
 
 Evergreen had a
 https://wiki.evergreen-ils.org/doku.php?id=scratchpad:random_magic_spells#custom_dojo_build[method
@@ -396,13 +488,11 @@ build has also been removed.
 
 
 
-Cataloging
-~~~~~~~~~~
+====== Cataloging ======
 
 
 
-Czech language records in sample data
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===== Czech language records in sample data =====
 
 This release adds 7 Czech-language MARC records to the
 sample data set (also known as Concerto data set).
@@ -411,13 +501,11 @@ sample data set (also known as Concerto data set).
 
 
 
-Publisher Catalog Display Includes 264 Tag
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===== Publisher Catalog Display Includes 264 Tag =====
 
 Publisher values are now extracted for display from tags 260 OR 264.
 
-Upgrade Notes
-+++++++++++++
+====== Upgrade Notes ======
 
 A partial reingest is required to extract the new publisher data for display.
 This query may be long-running.
@@ -439,13 +527,11 @@ FROM affected_bibs;
 
 
 
-Circulation
-~~~~~~~~~~~
+==== Circulation ====
 
 
 
-Hold Groups
-^^^^^^^^^^^
+===== Hold Groups =====
 
 This feature allows staff to add multiple users to a named hold group
 bucket and place title-level holds for a record for that entire set of users.
@@ -473,9 +559,8 @@ events in the dedicated hold group interface.
 
 
 
+===== Scan Item as Missing Pieces Angular Port =====
 
-Scan Item as Missing Pieces Angular Port
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The 'Scan Item As Missing Pieces' interface is now an Angular interface.
 The functionality is the same, but the interface displays more details
 on the item in question (title/author/callnum) before proceeding with the 
@@ -484,8 +569,8 @@ missing pieces process.
 
 
 
-Opt-In Setting for Overdue and Predue Emails
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===== Opt-In Setting for Overdue and Predue Emails =====
+
 The "Receive Overdue and Courtesy Emails" user setting permits users to
 control whether they receive email notifications about overdue items.
 
@@ -524,8 +609,8 @@ FROM actor.usr;
 
 
 
-Allow Circulation Renewal for Expired Patrons
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===== Allow Circulation Renewal for Expired Patrons =====
+
 The "Allow renewal request if renewal recipient privileges have
 expired" organizational unit setting can be set to true to permit
 expired patrons to renew circulations.  Allowing renewals for expired
@@ -543,13 +628,12 @@ opac renewal instead of user home library."
 
 
 
-OPAC
-~~~~
+==== OPAC ====
 
 
 
-Consistent Ordering for Carousels
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===== Consistent Ordering for Carousels =====
+
 Carousel ordering is now stable and predictable:
 
  * Newly Cataloged Item and Newest Items by Shelving Location carousels are ordered from most recently cataloged to least recently cataloged.
@@ -561,9 +645,8 @@ Carousel ordering is now stable and predictable:
 
 
 
+===== Default Public Catalog to the Bootstrap Skin =====
 
-Default Public Catalog to the Bootstrap Skin
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The public catalog now defaults to the Bootstrap skin rather than the
 legacy TPAC skin.
 
@@ -585,16 +668,15 @@ PerlAddVar OILSWebTemplatePath "@localstatedir@/templates-bootstrap" # Comment t
 
 
 
+===== Did You Mean? Single word search suggestions =====
 
-Did You Mean? Single word search suggestions
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This feature is the first in the series to add native search suggestions
 to the Evergreen search logic.  A significant portion of the code is
 dedicated to infrastructure that will be used in later enhancements to
 the functionality.
 
-Overview
-++++++++
+====== Overview ======
+
 When searching the public or staff catalog in a single search class (title,
 author, subject, series, identifier, or keyword) with a single search term
 users can be presented with alternate search terms.  Depending on how the
@@ -603,8 +685,7 @@ misspelled words (as defined by existence in the bibliographic corpus),
 terms that are spelled properly but occur very few times, or on every
 single-term search.
 
-Settings
-++++++++
+====== Settings ======
 
 The following new library settings control the behavior of the suggestions:
 
@@ -620,8 +701,8 @@ There are also two new internal flags:
 * symspell.prefix_length
 * symspell.max_edit_distance
 
-Upgrading
-+++++++++
+====== Upgrading ======
+
 This feature requires the addition of new Perl module dependencies.  Please
 run the app server and database server dependency Makefiles before applying
 the database and code updates.
@@ -648,9 +729,7 @@ necessary in the future.
 
 
 
-
-Sort Holdings by Geographical Proximity
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===== Sort Holdings by Geographical Proximity =====
 
 This functionality integrates 3rd party geographic lookup services to allow patrons
 to enter an address on the record details page in the OPAC and sort the holdings
@@ -674,10 +753,10 @@ Configuration instructions:
 Two new permissions, VIEW_GEOLOCATION_SERVICES and ADMIN_GEOLOCATION_SERVICES, control viewing and editing values in the Geolocation Location Services interface. They are added to the System Administrator and Global Administrator permissions groups by default.
 
 
-Library Groups
-^^^^^^^^^^^^^^
+===== Library Groups =====
+
 The Library Groups search feature revives a longstanding internal
-concept in Evergreen called “Lassos,” which allows an administrator
+concept in Evergreen called "Lassos," which allows an administrator
 to define a group of organizational units for searching outside of
 the standard organizational unit hierarchy.
 
@@ -703,8 +782,7 @@ Groups and Library Group Maps pages. An autogen and a reload of
 Apache should be performed after making changes to Library Groups.
 
 
-Easier Styling of Public Catalog Logo and Cart Images
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+===== Easier Styling of Public Catalog Logo and Cart Images =====
 
 Evergreen now has IDs associated with logos and cart images in the TPAC and Bootstrap OPACs to aid in customization.  Images are as follows:
 
@@ -718,9 +796,8 @@ The Bootstrap OPAC does not have a homesearch logo icon as it is added in the ba
 
 
 
+===== Easier TPAC Customization via colors.tt2 =====
 
-Easier TPAC Customization via colors.tt2
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Twelve new colors for TPAC have been added to the colors.tt2 file as well as 
 having corresponding changes to the style.css.tt2 file. These use 
 descriptive rather than abstract names. These changes help avoid 
@@ -755,19 +832,17 @@ users are advised to use the now-default Bootstrap skin.
 
 
 
+===== Configurable Read More Accordion for OPAC Search and Record View (TPAC) =====
 
-Configurable Read More Accordion for OPAC Search and Record View (TPAC)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+====== Read More Button ======
 
-Read More Button
-++++++++++++++++
 Public catalog record fields (in the TPAC skin only) now truncate
 themselves based on a configurable amount of characters.  The full
 field may be displayed upon hitting a (Read More) link, which will
 then toggle into a (Read Less) link to re-truncate the field.
 
-Configuration
-+++++++++++++
+====== Configuration ======
+
 `Open-ILS/src/templates/opac/parts/config.tt2` contains two new
 configuration variables:
 
@@ -787,8 +862,8 @@ override `contents_truncate_length` for that specific
 type of note.
 
 
-Adding Read More Functionality to further fields
-++++++++++++++++++++++++++++++++++++++++++++++++
+====== Adding Read More Functionality to further fields ======
+
 To add Read More functionality to any additional fields, you may use
 the macro `accordion()`, defined in `misc_util.tt2`. It can take three
 variables: `str`, `trunc_length`, and `element`. `str` corresponds to
@@ -802,22 +877,18 @@ treated as a single field).
 
 
 
-Reports
-~~~~~~~
+==== Reports ====
 
 
+===== Reports Scheduler Improvements =====
 
-Reports Scheduler Improvements
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Previously, the reports scheduler allowed duplicated reports
 under certain circumstances.  A uniqueness constraint now
 disallows this without adversely affecting the reports process.
 
 
 
-Miscellaneous
--------------
-
+==== Miscellaneous ====
 
 * The 'Create Reservation' form in the Booking module now includes
   an option to search for the patron by attributes other than just
@@ -843,8 +914,8 @@ Miscellaneous
 * Library scope on (Angular) Administration pages now defaults to workstation location rather than consortium (https://bugs.launchpad.net/evergreen/+bug/1873322[Bug 173322])
 * Pending users now set last four digits of phone number as password when library setting is enabled (https://bugs.launchpad.net/evergreen/+bug/1887852[Bug 1887852])
 
-Acknowledgments
----------------
+=== Acknowledgments ===
+
 The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
