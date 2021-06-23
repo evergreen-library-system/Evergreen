@@ -1017,6 +1017,8 @@ angular.module('egCoreMod')
                 new_addr.usr = user.id;
                 new_addr.isnew = true;
                 new_addr.valid = true;
+                new_addr.pending = new_addr.pending === 't';
+                new_addr.within_city_limits = new_addr.within_city_limits == 't';
                 user.addresses.push(new_addr);
                 return new_addr;
             }
