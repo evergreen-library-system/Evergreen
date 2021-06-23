@@ -3598,7 +3598,16 @@ INSERT into config.org_unit_setting_type
         'Soft stalling interval',
         'coust', 'label'),
     oils_i18n_gettext('circ.hold_stalling.soft',
-        'How long to wait before allowing remote items to be opportunistically captured for a hold.  Example "5 days"',
+        $$How long to wait before allowing opportunistic capture of holds with a pickup library other than the context item's circulating library$$, -- ' vim
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.pickup_hold_stalling.soft', 'holds',
+    oils_i18n_gettext('circ.pickup_hold_stalling.soft',
+        'Pickup Library Soft stalling interval',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.pickup_hold_stalling.soft',
+        'When set for the pickup library, this specifies that only items scanned at the pickup library can be opportunistically captured for this time period.  Example "5 days".  This setting takes precedence over "Soft stalling interval" (circ.hold_stalling.soft).',
         'coust', 'description'),
     'interval', null)
 
