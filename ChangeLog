@@ -1,3 +1,1672 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 3ad6b5892293808625d0790611f451501641b2fb
+Author: checkoutuser <just_need_to_satisfy_git@yoyo.com>
+Date:   Thu Jun 24 15:50:03 2021 -0500
+
+    fixed upgrade script naming convention
+    
+    Signed-off-by: checkoutuser <just_need_to_satisfy_git@yoyo.com>
+
+16	16	docs/modules/installation/pages/server_upgrade.adoc
+
+commit cbba58fef521771e7349753043441bca977f7058
+Author: checkoutuser <just_need_to_satisfy_git@yoyo.com>
+Date:   Thu Jun 24 15:47:20 2021 -0500
+
+    bumping Perl version string for 3.6.4
+    
+    Signed-off-by: checkoutuser <just_need_to_satisfy_git@yoyo.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 33fc07519eb9d9203d40a844dbe5f38c2ee4f3e4
+Author: checkoutuser <just_need_to_satisfy_git@yoyo.com>
+Date:   Thu Jun 24 15:46:38 2021 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: checkoutuser <just_need_to_satisfy_git@yoyo.com>
+
+1	1	Open-ILS/src/eg2/karma.conf.js
+464	246	build/i18n/po/bootstrap-opac/cs-CZ.po
+5441	0	build/i18n/po/bootstrap-opac/en-CA.po
+5451	0	build/i18n/po/bootstrap-opac/es-ES.po
+5538	0	build/i18n/po/bootstrap-opac/fr-CA.po
+7	5	build/i18n/po/cat.properties/en-CA.po
+31	22	build/i18n/po/circ.properties/en-CA.po
+3253	3025	build/i18n/po/db.seed/ar-JO.po
+3270	3031	build/i18n/po/db.seed/cs-CZ.po
+3228	3008	build/i18n/po/db.seed/de-DE.po
+3257	3028	build/i18n/po/db.seed/en-CA.po
+3229	3009	build/i18n/po/db.seed/en-GB.po
+3257	3029	build/i18n/po/db.seed/es-ES.po
+3230	3010	build/i18n/po/db.seed/fi-FI.po
+3228	3008	build/i18n/po/db.seed/fr-CA.po
+3228	3008	build/i18n/po/db.seed/he-IL.po
+3228	3008	build/i18n/po/db.seed/hu-HU.po
+3256	3028	build/i18n/po/db.seed/hy-AM.po
+3228	3008	build/i18n/po/db.seed/oc-FR.po
+3229	3009	build/i18n/po/db.seed/pt-BR.po
+3228	3008	build/i18n/po/db.seed/ru-RU.po
+3228	3008	build/i18n/po/db.seed/sv-SE.po
+3228	3008	build/i18n/po/db.seed/tr-TR.po
+2509	2448	build/i18n/po/fm_IDL.dtd/ar-JO.po
+2517	2453	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2495	2443	build/i18n/po/fm_IDL.dtd/de-DE.po
+2509	2448	build/i18n/po/fm_IDL.dtd/en-CA.po
+2509	2448	build/i18n/po/fm_IDL.dtd/en-GB.po
+2509	2448	build/i18n/po/fm_IDL.dtd/es-ES.po
+2509	2448	build/i18n/po/fm_IDL.dtd/fi-FI.po
+2495	2443	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2495	2443	build/i18n/po/fm_IDL.dtd/he-IL.po
+2495	2443	build/i18n/po/fm_IDL.dtd/hu-HU.po
+2510	2449	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2495	2443	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2509	2448	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2509	2448	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2495	2443	build/i18n/po/fm_IDL.dtd/sv-SE.po
+2495	2443	build/i18n/po/fm_IDL.dtd/tr-TR.po
+56	38	build/i18n/po/ils_events.xml/ar-JO.po
+59	39	build/i18n/po/ils_events.xml/cs-CZ.po
+56	38	build/i18n/po/ils_events.xml/de-DE.po
+56	38	build/i18n/po/ils_events.xml/en-CA.po
+56	38	build/i18n/po/ils_events.xml/en-GB.po
+56	38	build/i18n/po/ils_events.xml/es-ES.po
+56	38	build/i18n/po/ils_events.xml/fi-FI.po
+56	38	build/i18n/po/ils_events.xml/fr-CA.po
+56	38	build/i18n/po/ils_events.xml/he-IL.po
+56	38	build/i18n/po/ils_events.xml/hu-HU.po
+56	38	build/i18n/po/ils_events.xml/hy-AM.po
+56	38	build/i18n/po/ils_events.xml/oc-FR.po
+56	38	build/i18n/po/ils_events.xml/pt-BR.po
+56	38	build/i18n/po/ils_events.xml/ru-RU.po
+56	38	build/i18n/po/ils_events.xml/sv-SE.po
+56	38	build/i18n/po/ils_events.xml/tr-TR.po
+11	3	build/i18n/po/kpac/ar-JO.po
+12	4	build/i18n/po/kpac/cs-CZ.po
+11	3	build/i18n/po/kpac/de-DE.po
+11	3	build/i18n/po/kpac/en-GB.po
+11	3	build/i18n/po/kpac/es-ES.po
+11	3	build/i18n/po/kpac/hy-AM.po
+5	5	build/i18n/po/lang.dtd/en-CA.po
+23	19	build/i18n/po/patron.properties/en-CA.po
+5	5	build/i18n/po/register.js/en-CA.po
+13	13	build/i18n/po/selfcheck.js/en-CA.po
+349	207	build/i18n/po/tpac/ar-JO.po
+352	210	build/i18n/po/tpac/cs-CZ.po
+349	207	build/i18n/po/tpac/de-DE.po
+349	207	build/i18n/po/tpac/en-CA.po
+349	207	build/i18n/po/tpac/en-GB.po
+349	207	build/i18n/po/tpac/es-ES.po
+349	207	build/i18n/po/tpac/fi-FI.po
+447	298	build/i18n/po/tpac/fr-CA.po
+349	207	build/i18n/po/tpac/he-IL.po
+349	207	build/i18n/po/tpac/hu-HU.po
+349	207	build/i18n/po/tpac/hy-AM.po
+349	207	build/i18n/po/tpac/oc-FR.po
+349	207	build/i18n/po/tpac/pt-BR.po
+349	207	build/i18n/po/tpac/ru-RU.po
+349	207	build/i18n/po/tpac/sv-SE.po
+349	207	build/i18n/po/tpac/tr-TR.po
+634	0	build/i18n/po/vandelay/en-CA.po
+350	180	build/i18n/po/webstaff/ar-JO.po
+353	183	build/i18n/po/webstaff/cs-CZ.po
+350	180	build/i18n/po/webstaff/de-DE.po
+356	184	build/i18n/po/webstaff/en-CA.po
+350	180	build/i18n/po/webstaff/en-GB.po
+350	180	build/i18n/po/webstaff/es-ES.po
+350	180	build/i18n/po/webstaff/hy-AM.po
+350	180	build/i18n/po/webstaff/ru-RU.po
+ create mode 100644 build/i18n/po/bootstrap-opac/en-CA.po
+ create mode 100644 build/i18n/po/bootstrap-opac/es-ES.po
+ create mode 100644 build/i18n/po/bootstrap-opac/fr-CA.po
+ create mode 100644 build/i18n/po/vandelay/en-CA.po
+
+commit 2a19e10ee294d1992842706e814f71cf1f88b4b6
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Jun 23 08:02:43 2021 -0700
+
+    Docs: 3.6 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+119	0	docs/RELEASE_NOTES_3_6.adoc
+
+commit f303e1aa892f320681141ff1b0d011aaa4a035ba
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Jun 23 07:31:08 2021 -0700
+
+    Docs: Release notes for 3.5.5
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+28	0	docs/RELEASE_NOTES_3_5.adoc
+
+commit ea026579d9e5ed1837c408e5597bcb39ae49e15c
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Mon Jun 14 11:34:51 2021 -0400
+
+    LP#1930933: fix issue with over-escaping in search results title attributes
+    
+    This patch fixes an issue where a record with a title containing the
+    word "hidden" can have its title, ironically enough, not show up
+    on public catalog search results.
+    
+    To test
+    -------
+    [1] Create an OPAC-visible record whose 245 is something like:
+    
+        =245 04$aThe hidden one <script>alert('title!')</script>
+    
+    [2] Search for the record in both the TPAC and Bootstrap skin. Note
+        that the title isn't displayed.
+    [3] Apply the patch and repeat step 2. This time, the full title
+        should be displayed.
+    [4] Verify that the OPAC does not display an alert box.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+
+5	5	Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2
+5	5	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 2ab3366a400514d7184174110a87f9da467d6e05
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jan 4 16:12:50 2021 -0500
+
+    LP1910145 Angular Hold Detail Notes & Notifications
+    
+    The hold detail view now displays hold notes and hold notification
+    records.  Notes and Notifications may be created by staff.  Notes may be
+    deleted by staff.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+65	4	Open-ILS/src/eg2/src/app/staff/share/holds/detail.component.html
+69	11	Open-ILS/src/eg2/src/app/staff/share/holds/detail.component.ts
+5	1	Open-ILS/src/eg2/src/app/staff/share/holds/holds.module.ts
+37	0	Open-ILS/src/eg2/src/app/staff/share/holds/note-dialog.component.html
+48	0	Open-ILS/src/eg2/src/app/staff/share/holds/note-dialog.component.ts
+25	0	Open-ILS/src/eg2/src/app/staff/share/holds/notify-dialog.component.html
+45	0	Open-ILS/src/eg2/src/app/staff/share/holds/notify-dialog.component.ts
+8	0	Open-ILS/src/eg2/src/styles.css
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/note-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/note-dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/notify-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/notify-dialog.component.ts
+
+commit 15639ab9c1f57d9eaa58fc27545a85b8a21e263c
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Thu Jul 16 23:39:09 2020 -0400
+
+    LP#1887876 Checkout catalog doesn't load workstation prefs
+    
+    The catalog under the Holds tab in the Checkout interface
+    doesn't load the default search or preferred library if
+    you haven't visited the main catalog page earlier in the
+    session.
+    
+    This branch sets these settings as cookies in the
+    AngularJS wrapper for the catalog embedded in the Checkout
+    interface under the Holds tab.
+    
+    Test:
+    1. Close browser, open browser, log into Evergreen
+    2. Admin->Workstation set search & preferred library
+    3. Open a patron record -> Holds tab -> Place Holds
+    4. Search for an item owned by your preferred library
+    5. Note the library's copies aren't separately indicated
+    6. Apply patch and repeat steps 1-5
+    7. Note the library's copies are separately indicated
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+10	2	Open-ILS/web/js/ui/default/staff/circ/patron/holds.js
+
+commit e587430a282c26e6e9d17f21c390359bc85927e6
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Fri May 28 12:58:27 2021 -0400
+
+    LP#1930088 Angular catalog: metarecord search returns no results
+    
+    This adds a missing param to a call to get_one_record_summary
+    that's necessary after commit c07ce8.
+    
+    To test, perform a search using the Group Formats/Editions checkbox
+    and you should see results.
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit dddded51165e85a82aa5ca87311b85b9f809ab0e
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Fri Jun 4 10:41:30 2021 -0400
+
+    LP#1895738: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	3	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.patron-search-org-select.sql => 1265.data.patron-search-org-select.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.patron-search-org-select.sql => 1265.data.patron-search-org-select.sql} (82%)
+
+commit 1bc8551d47f931e864b9681094c3c5a52e2457f7
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Thu Oct 1 11:45:44 2020 -0400
+
+    lp1895738 need eg.orgselect.hopeless.wide_holds
+    
+    This fixes the following:
+    
+    ERROR Error: Uncaught (in promise): No user or workstation setting type exists for: "eg.orgselect.hopeless.wide_holds".
+    Create a ws/user setting type or use setLocalItem() to store the value locally.
+    
+    However, it exposes a different (harmless?) error within the /eg2 holds grid:
+    
+    ERROR Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value for 'ng-untouched': 'true'. Current value: 'false'.
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+7	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+17	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.patron-search-org-select.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.patron-search-org-select.sql
+
+commit 4b0acaab5f03867c45da94346691501fa2eb5048
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Fri Jun 4 10:07:40 2021 -0400
+
+    LP#1901893: (follow-up) add cellTextGenerator
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	0	Open-ILS/src/eg2/src/app/staff/admin/local/admin-carousel.component.html
+5	1	Open-ILS/src/eg2/src/app/staff/admin/local/admin-carousel.component.ts
+
+commit bbd0618a4f27176ab9c5c098543677e66af03da0
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Fri Mar 19 17:31:06 2021 +0000
+
+    LP1901893 Bucket column link tweak
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/admin/local/admin-carousel.component.html
+
+commit 3f5e9473a9c6462b27d637601eb592b95627838f
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Wed Oct 28 18:41:27 2020 -0400
+
+    LP1901893 Carousel bucket should be linked from grid
+    
+    Re-formats the bucket column content as a link that opens the
+    carousel's associated bucket in a new tab.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+6	1	Open-ILS/src/eg2/src/app/staff/admin/local/admin-carousel.component.html
+
+commit e817dea2e0f5f0e04ee40b17450df909cb322f6c
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Jun 2 11:24:00 2021 -0400
+
+    LP#1778955: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.function.builtin_array_remove.sql => 1264.function.builtin_array_remove.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.function.builtin_array_remove.sql => 1264.function.builtin_array_remove.sql} (99%)
+
+commit 389f66121314b3bb79519f70f29fb9cc4cab04bf
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Aug 6 08:08:50 2020 -0700
+
+    LP#1778955: fixing upgrade script, removing duplicate function definition
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+0	5	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+2	7	Open-ILS/src/sql/Pg/upgrade/XXXX.function.builtin_array_remove.sql
+
+commit 201e9d991700066d3d0cb8eeff8173eb8f19e436
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Jun 22 14:29:26 2018 -0400
+
+    LP#1778955: Remove our custom version of array_remove(anyarray,anyelement)
+    
+    As of Postgres 9.3 there is a built in array_remove() function that is faster
+    than our custom version that uses unnest().  We should use that instead.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+0	2	Open-ILS/src/sql/Pg/000.functions.general.sql
+1	1	Open-ILS/src/sql/Pg/011.schema.authority.sql
+1	1	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+59	59	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+1355	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.builtin_array_remove.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.builtin_array_remove.sql
+
+commit b674615264836dfb3bc4991343f24d4505bfb9f5
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu May 27 19:32:27 2021 -0700
+
+    LP1922120: Add to carousel action in angular catalog
+    
+    To test:
+    
+    1) Create several manual carousels, and make sure they are
+    set to active.
+    2) Open a bib record in the Angular staff catalog.
+    3) Under Other Actions, choose the "Add to Carousel" action
+    4) Choose your preferred carousel.
+    5) Click Add to carousel.
+    6) Go back to carousel administration (or look at the carousel
+    itself), and confirm that the record has been added to the
+    carousel in question.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+2	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.module.ts
+15	9	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.html
+31	0	Open-ILS/src/eg2/src/app/staff/catalog/record/add-to-carousel-dialog.component.html
+86	0	Open-ILS/src/eg2/src/app/staff/catalog/record/add-to-carousel-dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/add-to-carousel-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/add-to-carousel-dialog.component.ts
+
+commit 643e678c9b649fd4b640dc4fe4cdd6258e3b1330
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Jun 1 10:27:35 2021 -0400
+
+    docs: fix typo in 3.6 release notes
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	docs/RELEASE_NOTES_3_6.adoc
+
+commit fa693d4954c55d29b13d408e5eadaff9636d6151
+Author: Stephen Wills <swills@beyond-print.com>
+Date:   Fri May 28 17:30:07 2021 -0700
+
+    Docs: Update migrating_your_data.adoc
+    
+    Signed-off-by: Stephen Wills <swills@beyond-print.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+13	0	docs/modules/admin_initial_setup/pages/migrating_your_data.adoc
+
+commit ffa4e941f55dbe30d3597e52d1ec3727b160fd68
+Author: Stephen Wills <swills@beyond-print.com>
+Date:   Fri May 28 17:13:14 2021 -0700
+
+    Update librarysettings.doc
+    
+    Signed-off-by: Stephen Wills <swills@beyond-print.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	docs/modules/admin/pages/librarysettings.adoc
+
+commit 39cd5a7ed4a12ab9833d7628a7952d187e078558
+Author: katiegmartin <38866437+katiegmartin@users.noreply.github.com>
+Date:   Mon Oct 26 12:07:15 2020 -0400
+
+    Docs: LP 1751146 browser bookmarks toolbar
+    
+    Add tips for using the browser bookmarks toolbar in place of the XUL button bar
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+8	0	docs/modules/admin/pages/web-client-browser-best-practices.adoc
+11	0	docs/modules/admin/partials/toolbars-with-bookmarks-chrome.adoc
+10	0	docs/modules/admin/partials/toolbars-with-bookmarks-firefox.adoc
+ create mode 100644 docs/modules/admin/partials/toolbars-with-bookmarks-chrome.adoc
+ create mode 100644 docs/modules/admin/partials/toolbars-with-bookmarks-firefox.adoc
+
+commit 59aff43520cc26027f583ed7451f4b1f2df37c42
+Author: katiegmartin <38866437+katiegmartin@users.noreply.github.com>
+Date:   Mon Oct 26 11:21:52 2020 -0400
+
+    Docs: LP 1250528 change font size in browser
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	0	docs/modules/admin/pages/web-client-browser-best-practices.adoc
+
+commit f1e5eab0bf2a5b59faf3dfae4403af5bae932a5f
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri May 28 15:51:09 2021 -0700
+
+    Docs: small follow-up tweaks to survey documentation
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	5	docs/modules/admin/pages/surveys.adoc
+
+commit 0b52f9761d2dfd0b92638278b1e323ee3fd74386
+Author: Lynn Floyd <alynn2671@gmail.com>
+Date:   Fri May 28 11:21:18 2021 -0400
+
+    Updated Surveys Pictures
+    
+    Updated images for Surveys.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+-	-	docs/modules/admin/assets/images/media/survey_qa.png
+-	-	docs/modules/admin/assets/images/{media => surveys}/survey-datepicker.png
+-	-	docs/modules/admin/assets/images/{media => surveys}/survey-new.png
+-	-	docs/modules/admin/assets/images/surveys/survey-newanswer.png
+-	-	docs/modules/admin/assets/images/surveys/survey-newquestion.png
+-	-	docs/modules/admin/assets/images/{media => surveys}/survey.png
+-	-	docs/modules/admin/assets/images/{media => surveys}/survey_edit.png
+-	-	docs/modules/admin/assets/images/surveys/survey_edit2.png
+-	-	docs/modules/admin/assets/images/surveys/survey_patronrecord.png
+-	-	docs/modules/admin/assets/images/surveys/survey_qa.png
+-	-	docs/modules/admin/assets/images/surveys/survey_staffview.png
+10	11	docs/modules/admin/pages/surveys.adoc
+1	0	docs/modules/local_admin/nav.adoc
+ delete mode 100644 docs/modules/admin/assets/images/media/survey_qa.png
+ rename docs/modules/admin/assets/images/{media => surveys}/survey-datepicker.png (100%)
+ rename docs/modules/admin/assets/images/{media => surveys}/survey-new.png (100%)
+ create mode 100644 docs/modules/admin/assets/images/surveys/survey-newanswer.png
+ create mode 100644 docs/modules/admin/assets/images/surveys/survey-newquestion.png
+ rename docs/modules/admin/assets/images/{media => surveys}/survey.png (100%)
+ rename docs/modules/admin/assets/images/{media => surveys}/survey_edit.png (100%)
+ create mode 100644 docs/modules/admin/assets/images/surveys/survey_edit2.png
+ create mode 100644 docs/modules/admin/assets/images/surveys/survey_patronrecord.png
+ create mode 100644 docs/modules/admin/assets/images/surveys/survey_qa.png
+ create mode 100644 docs/modules/admin/assets/images/surveys/survey_staffview.png
+
+commit 649b8e53b81ae52508649a8ee0229cfc4e3b5ebb
+Author: Lynn Floyd <alynn2671@gmail.com>
+Date:   Wed May 5 16:42:44 2021 -0400
+
+    DOC Addding Survey Administration
+    
+    Adding Survey Adminstration to Documentation
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+-	-	docs/modules/admin/assets/images/media/survey-datepicker.png
+-	-	docs/modules/admin/assets/images/media/survey-new.png
+-	-	docs/modules/admin/assets/images/media/survey.png
+-	-	docs/modules/admin/assets/images/media/survey_edit.png
+-	-	docs/modules/admin/assets/images/media/survey_qa.png
+118	0	docs/modules/admin/pages/surveys.adoc
+ create mode 100644 docs/modules/admin/assets/images/media/survey-datepicker.png
+ create mode 100644 docs/modules/admin/assets/images/media/survey-new.png
+ create mode 100644 docs/modules/admin/assets/images/media/survey.png
+ create mode 100644 docs/modules/admin/assets/images/media/survey_edit.png
+ create mode 100644 docs/modules/admin/assets/images/media/survey_qa.png
+ create mode 100644 docs/modules/admin/pages/surveys.adoc
+
+commit 04d703f8dc391805cd3b2e7be91f39c5e812474e
+Author: Rosie Le Faive <lefaive@gmail.com>
+Date:   Fri May 28 15:05:57 2021 -0300
+
+    DOC Add message about version switching.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	0	docs/modules/shared/pages/about_this_documentation.adoc
+
+commit bac234f41ceaa7dc7b99e1b012851470ab976709
+Author: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+Date:   Fri May 28 12:32:26 2021 -0700
+
+    New billing section added and the circulation nav menu updated.
+    
+    Billing docs come from Sitka's Evergreen manual.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	docs/modules/circulation/nav.adoc
+139	0	docs/modules/circulation/pages/billing.adoc
+ create mode 100644 docs/modules/circulation/pages/billing.adoc
+
+commit 5f2333a4f9aac51317e65ea829cb4e4696dd5bbe
+Author: Rosie Le Faive <lefaive@gmail.com>
+Date:   Fri May 28 16:39:35 2021 -0300
+
+    DOC Elaborate on what Items and bib records are.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+4	2	docs/modules/appendix/pages/glossary.adoc
+
+commit 8058c523db1f338aedce24287443224a717d07b8
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri May 28 13:19:02 2021 -0500
+
+    Docs: Fixed antora landing page
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	docs/site.yml
+
+commit 717a84822f21295026574d98113532425185a412
+Author: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+Date:   Fri May 28 08:46:20 2021 -0700
+
+    Added Holdings Details Defaults to Holdings Editor section.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+-	-	docs/modules/cataloging/assets/images/media/holdings-editor-defaults-2.png
+26	0	docs/modules/cataloging/pages/volcopy_editor.adoc
+ create mode 100644 docs/modules/cataloging/assets/images/media/holdings-editor-defaults-2.png
+
+commit e05bfe1d7885e13fefa06e4aa94ab2a5a8c9c6a8
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu May 27 10:23:01 2021 -0700
+
+    Docs: small asciidoc syntax fix
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	docs/modules/local_admin/pages/negative_balances.adoc
+
+commit 3e92025ed35cbad2465c1c18e2ad27503a344e9c
+Author: Lynn Floyd <alynn2671@gmail.com>
+Date:   Mon May 24 16:26:25 2021 -0400
+
+    Docs: Update Navigation for Negative Balances
+    
+    Adding Navigations
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	docs/modules/local_admin/nav.adoc
+
+commit d31bfe691aa7502ece777479d1428532d750033c
+Author: Lynn Floyd <alynn2671@gmail.com>
+Date:   Mon May 24 16:23:54 2021 -0400
+
+    Docs: Adding Negative Balances
+    
+    Adding documentations for Patron with Negative Balances Screen.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+-	-	docs/modules/local_admin/assets/images/negative_balances.jpg
+22	0	docs/modules/local_admin/pages/negative_balances.adoc
+ create mode 100644 docs/modules/local_admin/assets/images/negative_balances.jpg
+ create mode 100644 docs/modules/local_admin/pages/negative_balances.adoc
+
+commit e44adaeca458ab6c3b29423d59c6c3518c6ad887
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu May 27 09:20:19 2021 -0700
+
+    Docs: fix antora build asciidoc warnings
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	docs/modules/admin/pages/librarysettings.adoc
+8	8	docs/modules/admin/pages/receipt_template_editor.adoc
+41	41	docs/modules/cataloging/pages/record_buckets.adoc
+24	24	docs/modules/development/pages/intro_opensrf.adoc
+3	3	docs/modules/opac/pages/search_form.adoc
+
+commit 4b1b314435c8b7268c3091134f82185b5aba1ca7
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu May 27 08:45:11 2021 -0700
+
+    Docs: Adding more info about credit card payments
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+30	1	docs/modules/admin/pages/accepting_credit_card_payments.adoc
+
+commit 6e3563e05aaa525177739d68712ee7aac36ee8e2
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed May 26 16:23:23 2021 -0400
+
+    LP#1913338: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.staffcat-sticky-search-form.sql => 1263.data.staffcat-sticky-search-form.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.staffcat-sticky-search-form.sql => 1263.data.staffcat-sticky-search-form.sql} (81%)
+
+commit 720220dda8b90b712fdadf73214e76a62d0c3ec7
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed May 26 16:20:05 2021 -0400
+
+    LP#1913338: (follow-up) aria-hide the icon names
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+2	2	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.html
+
+commit b1660425ec7f76e28f1134517ea1220cb5caf0cc
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Feb 17 10:26:47 2021 -0500
+
+    LP#1913338: Typo correction
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit c6084a80739c901d58ead05c0b84f209a26c5a9e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 28 10:32:11 2021 -0500
+
+    LP1913338 Catalog search form visibility stickiness
+    
+    On pages in the Angular staff catalog where the search form is collapsed
+    by default, users may now also manually expand and re-collapse the form.
+    The last used choice will be sticky via new workstation setting.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	0	Open-ILS/src/eg2/src/app/staff/catalog/resolver.service.ts
+9	4	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.html
+36	20	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.ts
+9	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.staffcat-sticky-search-form.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.staffcat-sticky-search-form.sql
+
+commit ba719715c577ce04ef3057268d02695efb29a692
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Fri Oct 30 15:55:35 2020 -0400
+
+    lp1902302 Opac. SMS and Carriers appear in Edit Holds Regardless of OU Setting.
+    
+    The SMS Number field and Default Carrier field display when editing an
+    individual hold in the opac, regardless of the 'Enable features that send SMS text messages' setting.
+    This patch rectifies that behavior.
+    
+    To test.
+    Set the 'Enable features that send SMS text messages' to False.
+    Place a hold for a patron.
+    Login to the opac as that patron and view the holds.
+    Edit the hold, and notice that the SMS and Carrier fields are displayed.
+    
+    Apply the patch.
+    Refresh the edit form.  The fields no longer display.
+    
+    Set the 'Enable features that send SMS text messages' to True.
+    Refresh the edit form.  The fields now display.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+2	0	Open-ILS/src/templates/opac/myopac/holds/edit.tt2
+
+commit babd3305fa2cec7e1d2ff6e6b90d29244f896629
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Fri Oct 30 16:06:17 2020 -0400
+
+    LP1901710: Properly nest HTML tags and TT2 directives
+    
+    This is a first pass at cleaning these up and the W3C's
+    HTML validator is a lot happier about some of the pages,
+    but the advanced search page at least needs some TLC.
+    
+    I'm having trouble getting the shelving location selector
+    to appear at all and the aria complaints will require more
+    fixing.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+3	1	Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2
+1	1	Open-ILS/src/templates-bootstrap/opac/parts/advanced/global_row.tt2
+12	12	Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2
+5	6	Open-ILS/src/templates-bootstrap/opac/parts/record/extras.tt2
+7	5	Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2
+1	1	Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2
+0	1	Open-ILS/src/templates-bootstrap/opac/results.tt2
+
+commit 699b3599872761a96d535abaaf57801bd4fd4fd4
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Thu Feb 25 16:02:50 2021 -0500
+
+    LP1916936-Bootstrap opac: item tags display as separate copies on small screen.
+    
+    This fixes the display of item tags and item notes in the bootstrap opac.
+    It also cleans up some <a> tags that had class defined twice.
+    
+    To test.
+    1. Add an item tag and an item note to an item.
+    2. In the bootstrap opac make the screen as small as possible.
+       Notice that the display shows the tags and items as copies.
+    3. Apply the patch and repeat.  The tags and notes should be displayed with the item that they are associated with.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Mary Llewellyn <mllewell@biblio.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+8	0	Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2
+25	28	Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2
+7	8	Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2
+
+commit f1660fdd20da283a44fe4e2f94c8e7a372bc5c64
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Tue Jan 5 16:26:55 2021 -0500
+
+    LP1910288 Bootstrap opac: E-items lines always display in account summary.
+    
+    The E-item summary of ckos and holds always display in the My Account Summary of the Bootstrap Opac
+    regardless of the ebook_api.enabled flag in config.tt2.  This fixes that issue.
+    
+    It also sets both the ebook_api.enabled and ebok_api.ebook_test.enabled flags to default to false.
+    
+    To test:
+    1. Set ebook_api.enabled in config.tt2 to false.
+    2. Look at a patron's account summary and notice that it displays the e-item lines.
+    3. Apply the patch.
+    4. The E-item lines are now suppressed.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+2	0	Open-ILS/src/templates-bootstrap/opac/myopac/main.tt2
+2	2	Open-ILS/src/templates-bootstrap/opac/parts/config.tt2
+
+commit 9f704ab2c2ca770c214b2d570ada80b71f61a364
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Thu Mar 18 13:49:32 2021 -0400
+
+    LP1920042 Bootstrap Opac: Simple Selector in Advanced Search
+    
+    Fixes the simple selector in advanced search.
+    
+    To Test:
+    1. Go to Administration - Server Administration - MARC Coded Value Maps
+    2. Assign the 'Is Simple Selector' option to some record attributes.
+      In concerto:
+         Lang - French, German
+         Type - Musical Sound Recording
+      Are good choices to test searching.
+    3. Notice in advanced search that these options no longer appear in the
+       Language or Item Type search filters.
+    4. Apply the patch.
+    5. The simple selector options should now appear at the top of each search
+       filter category.
+    6. Perform some searches using the simple selector options.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+19	2	Open-ILS/src/templates-bootstrap/opac/parts/check_value_selector.tt2
+
+commit b77fbfda691f594bcb42bd82e9419949973b6162
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue May 25 10:33:28 2021 -0400
+
+    LP#1923225: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.search_highlight_escape_html.sql => 1262.schema.search_highlight_escape_html.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.search_highlight_escape_html.sql => 1262.schema.search_highlight_escape_html.sql} (98%)
+
+commit 5e364759f5da08a2eb3e109b8e8ffc5232054eb0
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Apr 26 14:33:51 2021 -0700
+
+    LP#1923225: clean up some double-escaping of HTML in record display
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+0	1	Open-ILS/src/templates-bootstrap/opac/parts/record/contents.tt2
+2	2	Open-ILS/src/templates-bootstrap/opac/parts/record/series.tt2
+2	2	Open-ILS/src/templates/opac/parts/record/series.tt2
+
+commit 724534f76bcbdee62c06e2c1b161d96cfa5488c8
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Apr 14 14:30:39 2021 -0400
+
+    LP#1923225: have search highlighting stored procedure do HTML-escaping
+    
+    This patch builds on the previous work to have the stored procedures
+    that produced highlighted and unhighlighted versions of display
+    attributes HTML-escape the source values, then adjusts the TPAC
+    and Bootstrap templates to avoid double-escaping.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+3	3	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+118	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.search_highlight_escape_html.sql
+1	1	Open-ILS/src/templates-bootstrap/opac/parts/record/subjects.tt2
+3	3	Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.search_highlight_escape_html.sql
+
+commit bebd7609410c7f49818d92c3a4d09dedc6a91454
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Apr 13 15:56:34 2021 -0700
+
+    LP#1923225: avoid over-escaping ISBNs and ISSNs
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+2	2	Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2
+2	2	Open-ILS/src/templates/opac/parts/record/summary.tt2
+
+commit 6f93227ef9b814b64463534c73297f209aa72bcd
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Thu May 20 13:05:21 2021 -0400
+
+    LP#1928684 Catalog view holds tab sort by patron barcode error
+    
+    This changes the Patron Barcode column name to ucard_barcode to
+    match the field name in the database.
+    
+    Note: due to the name change, users who saved the column on the
+    grid will have to add it again.
+    
+    To test:
+    1. Go to the View Holds tab on a record that has hold requests
+    2. Add the Patron Barcode column to the grid
+    3. Sort by the barcode column and note that it works
+    4. It's a good idea to test that the grid settings save properly
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+1	1	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+
+commit 4a31f6740250a2513f5c5ac163da712b108e998b
+Author: katiegmartin <38866437+katiegmartin@users.noreply.github.com>
+Date:   Mon May 24 15:52:32 2021 -0400
+
+    DOCS LP 1857917 Update glossary.adoc to include IDL
+    
+    LP bug https://bugs.launchpad.net/evergreen/+bug/1857917
+    Add IDL definition to glossary, with synonym link to Fieldmapper IDL & change anchor point for F heading
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	1	docs/modules/appendix/pages/glossary.adoc
+
+commit 81a42d15dff8d2725972ab60e33c8dfe8699ae47
+Author: Tiffany Little <tlittle@georgialibraries.org>
+Date:   Sun Jan 17 14:49:13 2021 -0500
+
+    LP1912097 Add timestamps
+    
+    Adds timestamps to the date columns in Acquisitions Search.
+    
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	Open-ILS/src/eg2/src/app/staff/acq/search/invoice-results.component.html
+2	0	Open-ILS/src/eg2/src/app/staff/acq/search/lineitem-results.component.html
+2	0	Open-ILS/src/eg2/src/app/staff/acq/search/picklist-results.component.html
+3	3	Open-ILS/src/eg2/src/app/staff/acq/search/purchase-order-results.component.html
+
+commit a7883bdf7f925abdf3f89e088f908f210722a1ab
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Fri Apr 9 18:19:02 2021 -0400
+
+    LP#1918362 Unchanged workstation settings applied on every checkin
+    
+    * Stop attempting to save the Update Inventory setting on every
+    checkin - incorrect prefix & redundant (it's a modifier now)
+    * Stop saving the Strict Barcode setting on every checkin,
+    renewal, and checkout
+    * Save Strict Barcode on user interaction with its checkbox
+    
+    To test:
+    1. confirm Strict Barcode and Do Inventory Update settings still
+    apply and are "sticky" on the Circulation->Checkin interface
+    2. confirm Strict Barcode still applies and is "sticky" on the
+    Circulation->Renew Items and Circulation->Checkout interfaces
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2
+2	1	Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2
+2	1	Open-ILS/src/templates/staff/circ/renew/t_renew.tt2
+7	2	Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+7	1	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+7	1	Open-ILS/web/js/ui/default/staff/circ/renew/app.js
+
+commit 8b19477dfde038b8e1eea264cdd221b6128c7a78
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jan 12 15:43:23 2021 -0500
+
+    LP1911238 Angular grid shift-click support
+    
+    Clicking on a row, then shift+clicking on another row now selects both
+    the second row and all rows between the first and second in Angular
+    grids.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/eg2/src/app/share/grid/grid-body.component.ts
+25	0	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+
+commit 2c067a9ca11ae039c5ce41cd1490671aab729ceb
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Apr 27 11:25:50 2021 -0700
+
+    LP#1924185: use preferred name before legal name in My Account
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+14	14	Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2
+1	1	Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2
+15	14	Open-ILS/src/templates/opac/myopac/prefs.tt2
+
+commit 2e553177adb30934210a25f1fda1feda48cff474
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Apr 27 10:35:18 2021 -0700
+
+    LP#1924185: use preferred name in patron summary
+    
+    When available, the preferred name is used as the main name in the
+    patron summary (rather than as a less-prominent field beneath the main
+    name).  The legal name is displayed further down in the summary, just
+    after the ID fields.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	5	Open-ILS/src/templates/staff/circ/patron/index.tt2
+14	15	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+
+commit af26f3d39f70d7b695c9ba9a08143cdbc5fedb88
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sat May 15 20:38:08 2021 -0700
+
+    LP1881607 stamp upgrade script
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.located-uris-shortcut.sql => 1261.schema.located-uris-shortcut.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.located-uris-shortcut.sql => 1261.schema.located-uris-shortcut.sql} (87%)
+
+commit 919df23eb829ba7485a96deb00c59376579f1def
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jan 25 15:03:11 2021 -0500
+
+    LP1881607 E-resource relationship labels
+    
+    Display the relationship designation for 856 URL's in the staff catalog.
+    
+    See Second Indicator:
+    
+    https://www.loc.gov/marc/bibliographic/bd856.html
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+9	4	Open-ILS/src/eg2/src/app/staff/share/bib-summary/bib-summary.component.html
+3	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit d0bf710d2866ca43d93c7c59134a20ca913e3f2e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 23 11:15:22 2020 -0400
+
+    LP1881607 Angular catalog located URIs
+    
+    Display in-range located URIs in the staff catalog record summary pane.
+    
+    Also applies a fix to the staff catalog to clear cached record detail
+    summaries on new searches to ensure the correct org-scoped version of
+    the record summary is retrieved on each new navigation to the detail
+    page.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+27	13	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+15	0	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+17	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.located-uris-shortcut.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.located-uris-shortcut.sql
+
+commit bda1a660715bfce218b03dec241db88c8b79710f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jun 1 12:32:21 2020 -0400
+
+    LP1881607 Angular catalog e-resource links display
+    
+    Display electronic resource links (MARC 856's) in the Angular staff
+    catalog.  The extraction logic, which matches the TPAC, has been put
+    into its own API.
+    
+    To test in concerto, navigate to:
+    
+    /eg2/staff/catalog/record/208
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+7	0	Open-ILS/src/eg2/src/app/share/catalog/bib-record.service.ts
+13	0	Open-ILS/src/eg2/src/app/staff/share/bib-summary/bib-summary.component.html
+14	1	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+1	7	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/Authority.pm
+84	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit 4cc8689568c0e7514be1a824c6bab99edd918cfa
+Author: Tiffany Little <tlittle@georgialibraries.org>
+Date:   Fri Mar 12 10:52:19 2021 -0500
+
+    LP1906825 Flesh acqcr on PO search
+    
+    Fleshes the cancel reason column on PO searches.
+    
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Chrisy Schroth <chrisy.schroth@kentonlibrary.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/eg2/src/app/staff/acq/search/acq-search.service.ts
+
+commit d4fd2f49291c5f871f664f8e65f0b89bf8a8de8d
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Fri Jan 15 17:38:35 2021 -0500
+
+    LP1873539 Active column in SMS carrier configuration
+    
+    This fixes the lack of values displaying in the Active column of the
+    SMS Carrier configuration screen.  (Administration->Server Administration->SMS Carriers)
+    
+    To test apply the patch.
+    Go to the Carrier Configuration screen and note that the 'Yes' and 'No'
+    boolean values now display for the Active column.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit 79ae2501ba2985a12e6a3434c48f428d38d8cefb
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Mon Jul 20 22:10:55 2020 +0000
+
+    lp1615800 Accessibility on Patron Pages
+    
+    Modify patron search, patron search results, and patron edit pages so
+    that they are compatible with screen readers. aria-labelledby can be
+    used to associate input fields with their labels.
+    
+    (Rebased to master)
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    
+     Changes to be committed:
+            modified:   Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+            modified:   Open-ILS/src/templates/staff/share/t_patron_search_form.tt2
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+133	59	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+31	19	Open-ILS/src/templates/staff/share/t_patron_search_form.tt2
+
+commit e85026bf6c6f2d62e5a5cec247de466519abb6f8
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Aug 14 14:49:24 2020 -0400
+
+    LP1891699 Ang grid column picker sorting
+    
+    Angular grid column picker displays colums in the following order:
+    
+    1. Visible colums first, sorted alphabetically.
+    2. Non-visible columns second, sorted alphabetically.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.html
+13	0	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+
+commit bcad415532edc943634a1fb7e5a72b675b80f29b
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Wed Oct 21 16:29:25 2020 -0400
+
+    LP1895660: Booking.pm, Search/Biblio.pm
+    
+    Argument "whatev_strings" isn't numeric in numeric eq (==) at ...
+    
+    A couple places that use == to compare strings. Numbers are == to
+    each other, but strings are eq to each other.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Booking.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit f97feebbdb441a43a535845e468e4aa2b8ae270e
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Tue Sep 15 16:14:38 2020 -0400
+
+    LP1895660: Proxy.pm Proxy/Authen.pm
+    
+    Checking perms LOUD_NOISES for user 123 at location 321
+    
+    So? I have changed these to use $logger->debug though they can
+    maybe just be removed entirely?
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/Proxy.pm
+2	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/Proxy/Authen.pm
+
+commit 976ff32f7759921d6b05edc3c6359ae385309ca7
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Tue Sep 15 15:37:09 2020 -0400
+
+    LP1895660: Search/Authority.pm
+    
+    Argument "" isn't numeric in numeric ne (!=)
+    
+    One of the "fun" things about perl and its type system is that
+    it uses different operators to compare strings vs comparing numbers...
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Authority.pm
+
+commit 2dd3dfdf46874041b5939a027ad2c87dfbd37b19
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Tue Sep 15 15:12:57 2020 -0400
+
+    LP1895660: AppUtil.pm
+    
+    substr outside of string
+    
+    unique_unnested_numbers expects a list of pg arrays, but if its given
+    an empty results list it tries to remove { and } from an undefined value.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+2	0	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+
+commit 964ddf6f46c23e6594613d2b008e967a0574281d
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Tue Sep 15 14:00:54 2020 -0400
+
+    LP1895660: HoldTarger.pm
+    
+    "order_by" object in a query is not a JSON_HASH or JSON_ARRAY;no ORDER BY generated
+    
+    json_query and CStoreEditor search_* functions don't want a string field name,
+    they work with hashes or arrays thereof.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Utils/HoldTargeter.pm
+
+commit 08a15a73408fb63181fea57d2a4d303779746b0a
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Tue Sep 15 09:41:30 2020 -0400
+
+    LP1895660: EGCatLoader/Search.pm
+    
+    CGI::param called in list context from ...
+    this can lead to vulnerabilities
+    
+    For any call to $cgi->param that happens in a list context we need
+    to verify 2 things: 1, that it is intentional (otherwise use scalar())
+    and 2, that we don't use the results in an unsafe manner.
+    For those situations where it's safe and a list is expected (join,
+    foreach, etc.) there is a $cgi->multi_param() that behaves the same way
+    but does not issue a warning on use in a list context.
+    
+    An assumption was made that there will only be a single 'query'
+    parameter (see _prepare_biblio_search_basics) but if that should
+    instead be run through a join() that function will need to be updated.
+    
+    For more details about the potential issues read
+    https://metacpan.org/pod/distribution/CGI/lib/CGI.pod#Fetching-the-value-or-values-of-a-single-named-parameter
+    
+    Note that this change will likely require additional testing to
+    be sure there are no surprises.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+11	11	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+
+commit e6821d5739cb55b7aed3c381bd2ccb3997d9ca94
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Tue Sep 15 09:28:57 2020 -0400
+
+    LP1895660: Course.pm
+    
+    "my" variable $results masks earlier declaration in same scope
+    
+    my $var should only be used once within a block.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Course.pm
+
+commit 2cfb137efcb6da535a686fd37f82f983723986da
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Tue Sep 15 09:08:28 2020 -0400
+
+    LP1895660: Biblio.pm
+    
+    Odd number of elements in anonymous hash
+    
+    The type key is missing from some param descriptions,
+    leaving things uneven.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+12	12	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit 3e8a3534bbae7347abac97741e77b73f555d8426
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Tue Sep 15 09:00:15 2020 -0400
+
+    LP1895660: SuperCat.pm
+    
+    "my" variable $U masks earlier declaration in same scope
+    
+    AppUtils is 'use'-ed and assigned to $U at the top of the file
+    and shared among the rest of the modules already.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+0	3	Open-ILS/src/perlmods/lib/OpenILS/Application/SuperCat.pm
+
+commit beeca95266f4ee435f8d45abe2fdfe99f624fbc7
+Author: Jason Boyer <JBoyer@equinoxinitiative.org>
+Date:   Tue Sep 15 08:50:26 2020 -0400
+
+    LP1895660: Silence Perl Warnings
+    
+    There are many perl warnings in make check and the day-to-day
+    logs when using Evergreen. This branch aims to address the
+    warnings and to make reviewing easier each file will be
+    individually committed with a small rationale for the changes
+    though it is assumed that this branch will be largely squashed
+    away if / when committed.
+    
+    Booking.pm: Possible precedence issue with control flow operator
+    The precedence of 'or' is significantly lower than '||', so much so
+    that it can be less than the precedence for assignments.
+    Replace 'or' with '||' since they're equivalent in this case anyway,
+    and also add parens for flavor.
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+6	6	Open-ILS/src/perlmods/lib/OpenILS/Application/Booking.pm
+
+commit 6fb442acb392ca0c11cd69c5a5589a24ef5d3060
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Fri May 14 17:26:43 2021 -0400
+
+    LP#1917944k: (follow-up) fix ng lint issue
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+3	2	Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.ts
+
+commit 83d45a575b2e46bb456ffdaba7f5d9b4b87c6d57
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Thu Mar 18 15:56:04 2021 -0400
+
+    LP1917944-Hold Pickup Library sometimes Empty
+    
+    Checks to make sure that the opac.default_pickup_location in usr_setting
+    has a value.
+    
+    To test.
+    1. The patron must have a opac.default_pickup_location set to ""
+    2. Place a hold for this patron.
+    3. Notice that the pickup location is blank.
+    4. Apply the patch.
+    5. The hold pickup location should now be filled with the patron's home library.
+    
+    To re-create this in concerto you may have to tweak the usr_setting table.
+    1. Assign a default pickup location to a patron.
+    2. Find the id field for the above in the usr_setting table.
+       select * from actor.usr_setting;
+    3. Update the setting.
+       update actor.usr_setting set value = '""' where id = <the id number>;
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+2	1	Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.ts
+
+commit 96a2a7c41928219c5e6fef50a2501bb1b9444166
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Fri Apr 23 14:31:20 2021 -0400
+
+    LP1925725 Relabel copy location filter to shelving location
+    
+    Changes the labeling of the all copy locations filter to say "All Shelving Locations" instead, reflecting current practice.
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.html
+
+commit 0b3c73f30532c0db88ce3e84929a645f49c3ddb0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Apr 27 11:23:02 2021 -0400
+
+    LP1926310 Record bucket batch edit destination
+    
+    Record Bucket => Batch Edit now opens the new Angular MARC Batch Edit
+    interface.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+2	1	Open-ILS/src/eg2/src/app/staff/cat/marcbatch/marcbatch.component.html
+12	0	Open-ILS/src/eg2/src/app/staff/cat/marcbatch/marcbatch.component.ts
+6	0	Open-ILS/src/eg2/src/app/staff/cat/marcbatch/routing.module.ts
+1	2	Open-ILS/web/js/ui/default/staff/cat/bucket/record/app.js
+
+commit f4b58764ae3f6b3c6bbedeee624de95bbc5b397f
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Fri May 14 17:05:51 2021 -0400
+
+    LP#1927527: (follow-up) add comment
+    
+    Just in case there's a question in the future, make it clear
+    that the case where the context OU is the root OU is special.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+4	0	Open-ILS/src/eg2/src/app/share/catalog/catalog.service.ts
+
+commit 615605fae6abecb64cb008c1493bbfb63eb47f13
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Mon May 10 20:08:42 2021 -0400
+
+    LP#1927527 Catalog: Root OU shelving locations do not display
+    
+    When the top level org unit is selected in the staff catalog you
+    only have the option to search all shelving locations.
+    
+    This allows you to filter on the root org unit's shelving
+    locations, which is the same behavior as the OPAC.
+    
+    To test:
+    1. Make sure the top level org unit has shelving locations
+       (Local Administration->Shelving Locations Editor)
+    2. In the staff catalog, select the top level org unit
+    3. Click the three dot icon next to the query text input
+    4. The root org unit's shelving location options display
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+6	1	Open-ILS/src/eg2/src/app/share/catalog/catalog.service.ts
+1	8	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.ts
+
+commit 12807e96bedfd1a0b35af58eacf88aeb66adc756
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu May 13 07:44:35 2021 -0700
+
+    Docs: fixing a typo
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	docs/modules/shared/pages/how_to_contribute_docs.adoc
+
+commit 67a6efcf95b041d4e65ebcd0c8855aadeca33502
+Author: blake <blake@mobiusconsortium.org>
+Date:   Mon May 10 08:20:41 2021 -0500
+
+    Introduce documentation on how to contribute docs
+    
+    This commit adds several screenshots and the basic outline on contributing
+    to the Evergreen documentation
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	docs/modules/ROOT/nav.adoc
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/asciidocfx_sample.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_click_fork.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_create_account.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_click_new_branch.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_click_option.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_click_signin.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_clone_evergreen.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_clone_from_internet.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_commit_changes.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_create_pull_request.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_download_site.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_make_branch.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_planning_on_fork.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_publish.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_quick_tour.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_singin_with_browser.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_singin_with_browser_launch_app.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_signup.png
+-	-	docs/modules/shared/assets/images/how_to_contribute_docs/github_web_create_pull_request.png
+217	0	docs/modules/shared/pages/how_to_contribute_docs.adoc
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/asciidocfx_sample.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_click_fork.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_create_account.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_click_new_branch.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_click_option.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_click_signin.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_clone_evergreen.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_clone_from_internet.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_commit_changes.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_create_pull_request.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_download_site.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_make_branch.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_planning_on_fork.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_publish.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_quick_tour.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_singin_with_browser.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_desktop_singin_with_browser_launch_app.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_signup.png
+ create mode 100644 docs/modules/shared/assets/images/how_to_contribute_docs/github_web_create_pull_request.png
+ create mode 100644 docs/modules/shared/pages/how_to_contribute_docs.adoc
+
+commit 188425944d59b6920f25950e647757925d4338ef
+Author: Jason Boyer <JBoyer@EquinoxInitiative.org>
+Date:   Tue May 11 10:00:15 2021 -0400
+
+    LP#1892435 - Add Release Note
+    
+    Signed-off-by: Jason Boyer <JBoyer@EquinoxInitiative.org>
+
+14	0	docs/RELEASE_NOTES_NEXT/Client/splash_search_fix.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Client/splash_search_fix.adoc
+
+commit b2222bbe844ae3c268367b337c0356fd223c1e21
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Sun May 9 22:27:38 2021 -0400
+
+    LP#1892435 Splash page catalog searches don't work with spaces
+    
+    On older versions of Apache's mod_rewrite, splash page catalog
+    searches are escaped in JavaScript and escaped again during the
+    redirect to the Angular locale path, so searches with special
+    characters result in a search that's still encoded.
+    
+    Test on Ubuntu 16.04.7, Apache 2.4.18, EG 3.6+. A splash page
+    catalog search for Harry Potter results in a search for
+    Harry%20Potter.
+    
+    Add the NE (noescape) flag to the Angular locale path redirect
+    in /etc/apache2/eg_vhost.conf as indicated in this example file.
+    A splash page search for Harry Potter then works as expected.
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Jason Boyer <JBoyer@EquinoxInitiative.org>
+
+2	2	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit 90bae1b11bb955317108ce67ed8f4a2bb687938f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Apr 2 17:55:09 2021 -0400
+
+    LP#1905091: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.lp1905091.missing_print_email_trigger_environment.sql => 1259.data.lp1905091.missing_print_email_trigger_environment.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.lp1905091.missing_print_email_trigger_environment.sql => 1259.data.lp1905091.missing_print_email_trigger_environment.sql} (94%)
+
+commit e123ae6c537c7acd2f178b85d0a4a90741160257
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Mon Nov 30 16:19:49 2020 -0500
+
+    LP1905091 Supply environment for added print/email triggers
+    
+    Ensures that OPAC print and email triggers added by upgrade script 1231
+    (lp 1749475) have appropriate environment.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+23	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1905091.missing_print_email_trigger_environment.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1905091.missing_print_email_trigger_environment.sql
+
+commit b1356754f8a5732aae7f2e04a18675eac7ac478b
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Tue Oct 27 18:39:09 2020 -0400
+
+    LP1879769 Cannot Edit Carousels from Action Menu
+    
+    The Edit Carousels action was appearing in the action menu and
+    right-click menu, but wasn't wired up. This adds in the missing
+    piece.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Gina Monti <gmonti@biblio.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+13	0	Open-ILS/src/eg2/src/app/staff/admin/local/admin-carousel.component.ts
+
+commit 2d691e9241b624fab07ec779b6b56b79974254d3
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Wed Mar 3 13:21:22 2021 -0500
+
+    LP#1917495 Angular Catalog: Hold status in View Holds is not saved
+    
+    To test:
+    1. Go to a record in the Angular catalog
+    2. Click the View Holds tab
+    3. If status col is visible, remove status col, and save grid
+    4. Add status col and save grid.
+    5. Refresh page and note status field didn't stay visible
+    6. Apply patch, repeat steps 1-5, note Status stays visible
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+
+commit dafb32630f8ab93f18c843dfeec5a0932956df1b
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Thu Apr 1 09:38:41 2021 -0400
+
+    LP#1920815 Item edit link displayed for all users
+    
+    The Angular catalog item table doesn't check UPDATE_COPY perm
+    before displaying an edit link. The back-end checks, so this is
+    a display issue only. This commit grabs a list of org Ids where
+    the user has UPDATE_COPY perm and checks the copy circ lib or
+    cn owning lib is in the list before displaying the edit link.
+    
+    To test:
+    1. Search for a record with items you don't have perm to edit
+    2. Note the edit link shows on every item
+    3. Apply patch
+    4. Repeat steps 1-2
+    5. Note edit link displays if you have perm to edit
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+9	7	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.html
+15	1	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.ts
+
+commit c0e03b73bd38c9fa14446ef2244bba853f490c36
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Fri Apr 2 11:37:21 2021 -0400
+
+    Docs: added script info to Carousels docs
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+1	1	docs/modules/admin_initial_setup/pages/carousels.adoc
