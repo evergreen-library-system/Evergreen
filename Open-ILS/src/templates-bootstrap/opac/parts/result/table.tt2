@@ -9,6 +9,16 @@
     result_count = ctx.result_start;
 
 %]
+
+[% IF ctx.bookbag %]
+<div class="row">
+    <div class="col-12">
+        <h2 class="result-bookbag-name">[% ctx.bookbag.name | html %]</h2>
+        <div class="result-bookbag-description">[% ctx.bookbag.description | html %]</div>
+    </div>
+</div>
+[% END %]
+
 <div class="row">
     <div class="col-12">
     [% PROCESS "opac/parts/result/paginate.tt2" %]
