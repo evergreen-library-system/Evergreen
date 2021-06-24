@@ -7,6 +7,14 @@
     </button>
   </div>
   <div class="modal-body">
+
+    <!-- let the user know why the change operator dialog suddenly
+        appeared when a permission failure occurs. -->
+    <div *ngIf="requestToEscalate" class="alert alert-warning mt-2 mb-4" i18n>
+      Permission denied.  Please enter credentials for an account that has
+      the {{requestToEscalate.evt.ilsperm}} permission.
+    </div>
+
     <form class="form-validated">
       <div class="form-group row">
         <label class="col-lg-4 text-right font-weight-bold" for="username" i18n>Username</label>
