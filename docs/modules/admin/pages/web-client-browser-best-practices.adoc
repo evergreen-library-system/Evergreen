@@ -69,9 +69,25 @@ to open to the web client portal page.
 == Create a Toolbar Using Bookmarks ==
 Your broswer's bookmarks toolbar can act as a replacement for the toolbars available in the XUL client. 
 
-include::partial$toolbars-with-bookmarks-chrome.adoc[]
+Adding Bookmark In Chrome:
 
-include::partial$toolbars-with-bookmarks-firefox.adoc[]
+. Press Ctrl + Shift + B to have the toolbar come up.  
+. Go to a page you would like to bookmark in Evergreen.
+. Option 1: Highlight the URL then click and drag it to the bar
+. Option 2: Click on the star icon on the right side of the address bar and select _Add Bookmark_.  
 
+Adding Bookmark In Firefox:
 
+. Right click near address bar and select _Bookmarks Toolbar_.  Select _Always Show_.
+. Option 1: Highlight the URL then click and drag it to the bar
+. Option 2: Click on the star icon on the right side of the address bar.  Make sure to select “Bookmarks Toolbar” under “Location” before saving.
 
+Deleting Bookmark in Chrome:
+
+. Option 1: Right click over the bookmark in the toolbar.  Click _Delete_ or _Edit_. 
+. Option 2: Navigate to the page, click on the star to the right of the address bar, and choose _Edit Bookmark_.  You can also remove bookmarks in this option.
+
+Deleting Bookmark in Firefox:
+
+. Option 1: Right click over the bookmark in the toolbar.  _Edit Bookmark_ and _Remove Bookmark_ are options here.
+. Option 2: Navigate to the page and click on the star to the right of the address bar..  You can also remove bookmarks in this option.
