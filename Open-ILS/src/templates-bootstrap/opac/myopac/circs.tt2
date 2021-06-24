@@ -44,6 +44,7 @@
                         onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"
                     />
                 </td>
+                <th>[% l("Cover") %]</th>
                 <th>[% sort_head("sort_title", l("Title")) %]</th>
                 <th>[% sort_head("author", l("Author")) %]</th>
                 <th>[% sort_head("renews", l("Renewals Left")) %]</th>
@@ -123,6 +124,17 @@
                                 [% IF circ.circ.renewal_remaining < 1 %] disabled="disabled" [% END %]
                                 value="[% circ.circ.id %]" />
                         </td>
+                        [%  IF circ.ATTRS.issns.0;
+                                row_isbnissn = circ.ATTRS.issns.0;
+                            ELSIF circ.ATTRS.isbns.0;
+                                row_isbnissn = circ.ATTRS.isbns.0;
+                            ELSE;
+                                row_isbnissn = '';
+                            END;
+                            row_rec_id = circ.circ.target_copy.call_number.record.id;
+                            row_title = circ.ATTRS.title;
+                            PROCESS show_cover;
+                        %]
                         <td>
                             <span class="sr-only">Title</span>
                             [% IF circ.circ.target_copy.call_number.id == -1 %]

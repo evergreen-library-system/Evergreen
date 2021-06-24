@@ -100,19 +100,21 @@ only screen and (max-width: 650px)  {
     .chargesMainTable td:nth-of-type(7):before { content: "Returned/Renewed"; display: flex;}
 
     .activeHoldstable td:nth-of-type(1):before { content: "Select"; display: flex; }
-    .activeHoldstable td:nth-of-type(2):before { content: "Title"; display: flex; }
-    .activeHoldstable td:nth-of-type(3):before { content: "Author"; display: flex;}
-    .activeHoldstable td:nth-of-type(4):before { content: "Format"; display: flex;}
-    .activeHoldstable td:nth-of-type(5):before { content: "Pickup Location"; display: flex;}
-    .activeHoldstable td:nth-of-type(6):before { content: "Cancel If Not Filled By"; display: flex;}
-    .activeHoldstable td:nth-of-type(7):before { content: "Status"; display: flex;}
-    .activeHoldstable td:nth-of-type(8):before { content: "Notes"; display: flex;}
+    .activeHoldstable td:nth-of-type(2):before { content: "Cover"; display: flex; }
+    .activeHoldstable td:nth-of-type(3):before { content: "Title"; display: flex; }
+    .activeHoldstable td:nth-of-type(4):before { content: "Author"; display: flex;}
+    .activeHoldstable td:nth-of-type(5):before { content: "Format"; display: flex;}
+    .activeHoldstable td:nth-of-type(6):before { content: "Pickup Location"; display: flex;}
+    .activeHoldstable td:nth-of-type(7):before { content: "Cancel If Not Filled By"; display: flex;}
+    .activeHoldstable td:nth-of-type(8):before { content: "Status"; display: flex;}
+    .activeHoldstable td:nth-of-type(9):before { content: "Notes"; display: flex;}
 
-    .holdHistoryTable td:nth-of-type(1):before { content: "Title"; display: flex; }
-    .holdHistoryTable td:nth-of-type(2):before { content: "Author"; display: flex; }
-    .holdHistoryTable td:nth-of-type(3):before { content: "Format"; display: flex; }
-    .holdHistoryTable td:nth-of-type(4):before { content: "Pickup Location"; display: flex; }
-    .holdHistoryTable td:nth-of-type(5):before { content: "Status"; display: flex; }
+    .holdHistoryTable td:nth-of-type(1):before { content: "Cover"; display: flex; }
+    .holdHistoryTable td:nth-of-type(2):before { content: "Title"; display: flex; }
+    .holdHistoryTable td:nth-of-type(3):before { content: "Author"; display: flex; }
+    .holdHistoryTable td:nth-of-type(4):before { content: "Format"; display: flex; }
+    .holdHistoryTable td:nth-of-type(5):before { content: "Pickup Location"; display: flex; }
+    .holdHistoryTable td:nth-of-type(6):before { content: "Status"; display: flex; }
 
     .paymentTable td:nth-of-type(1):before { content: "Payment Date"; display: flex; }
     .paymentTable td:nth-of-type(2):before { content: "Payment For"; display: flex; }
@@ -126,29 +128,32 @@ only screen and (max-width: 650px)  {
     .messagesTable td:nth-of-type(5):before { content: ""; display: flex; }
 
     .circTable td:nth-of-type(1):before { content: "Select"; display: flex; }
-    .circTable td:nth-of-type(2):before { content: "Title"; display: flex; }
-    .circTable td:nth-of-type(3):before { content: "Author"; display: flex; }
-    .circTable td:nth-of-type(4):before { content: "Renewals Left"; display: flex; }
-    .circTable td:nth-of-type(5):before { content: "Due Date"; display: flex; }
-    .circTable td:nth-of-type(6):before { content: "Barcode"; display: flex; }
-    .circTable td:nth-of-type(7):before { content: "Call Number"; display: flex; }
+    .circTable td:nth-of-type(2):before { content: "Cover"; display: flex; }
+    .circTable td:nth-of-type(3):before { content: "Title"; display: flex; }
+    .circTable td:nth-of-type(4):before { content: "Author"; display: flex; }
+    .circTable td:nth-of-type(5):before { content: "Renewals Left"; display: flex; }
+    .circTable td:nth-of-type(6):before { content: "Due Date"; display: flex; }
+    .circTable td:nth-of-type(7):before { content: "Barcode"; display: flex; }
+    .circTable td:nth-of-type(8):before { content: "Call Number"; display: flex; }
 
     .circHistTable td:nth-of-type(1):before { content: "Select"; display: flex; }
-    .circHistTable td:nth-of-type(2):before { content: "Title"; display: flex; }
-    .circHistTable td:nth-of-type(3):before { content: "Author"; display: flex; }
-    .circHistTable td:nth-of-type(4):before { content: "Checkout Date"; display: flex; }
-    .circHistTable td:nth-of-type(5):before { content: "Due Date"; display: flex; }
-    .circHistTable td:nth-of-type(6):before { content: "Date Returned"; display: flex; }
-    .circHistTable td:nth-of-type(7):before { content: "Barcode"; display: flex; }
-    .circHistTable td:nth-of-type(8):before { content: "Call Number"; display: flex; }
+    .circHistTable td:nth-of-type(2):before { content: "Cover"; display: flex; }
+    .circHistTable td:nth-of-type(3):before { content: "Title"; display: flex; }
+    .circHistTable td:nth-of-type(4):before { content: "Author"; display: flex; }
+    .circHistTable td:nth-of-type(5):before { content: "Checkout Date"; display: flex; }
+    .circHistTable td:nth-of-type(6):before { content: "Due Date"; display: flex; }
+    .circHistTable td:nth-of-type(7):before { content: "Date Returned"; display: flex; }
+    .circHistTable td:nth-of-type(8):before { content: "Barcode"; display: flex; }
+    .circHistTable td:nth-of-type(9):before { content: "Call Number"; display: flex; }
 
-    .bookbagTable td:nth-of-type(1):before { content: ""; display: flex; }
-    .bookbagTable td:nth-of-type(2):before { content: "Title"; display: flex; }
-    .bookbagTable td:nth-of-type(3):before { content: "Author(s)"; display: flex; }
-    .bookbagTable td:nth-of-type(4):before { content: "Local Call number"; display: flex; }
-    .bookbagTable td:nth-of-type(5):before { content: "Publication Date"; display: flex; }
-    .bookbagTable td:nth-of-type(6):before { content: "Format"; display: flex; }
-    .bookbagTable td:nth-of-type(7):before { content: "Notes"; display: flex; }
+    .bookbagTable td:nth-of-type(1):before { content: "Select"; display: flex; }
+    .bookbagTable td:nth-of-type(2):before { content: "Cover"; display: flex; }
+    .bookbagTable td:nth-of-type(3):before { content: "Title"; display: flex; }
+    .bookbagTable td:nth-of-type(4):before { content: "Author(s)"; display: flex; }
+    .bookbagTable td:nth-of-type(5):before { content: "Local Call number"; display: flex; }
+    .bookbagTable td:nth-of-type(6):before { content: "Publication Date"; display: flex; }
+    .bookbagTable td:nth-of-type(7):before { content: "Format"; display: flex; }
+    .bookbagTable td:nth-of-type(8):before { content: "Notes"; display: flex; }
 
     .eholdsTable td:nth-of-type(1):before { content: "Title"; display: flex; }
     .eholdsTable td:nth-of-type(2):before { content: "Author"; display: flex; }

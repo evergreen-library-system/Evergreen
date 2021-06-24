@@ -81,6 +81,7 @@
                     <input type="checkbox" aria-label="[% l('Select All Holds') %]"
                       onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'hold_id' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
                 </td>
+                <th>[% l("Cover") %]</th>
                 <th>[% sort_head("sort_title", l('Title')) %]</th>
                 <th>[% sort_head("author", l('Author')) %]</th>
                 <th>[% sort_head("format", l('Format')) %]</th>
@@ -156,6 +157,17 @@
                         <input type="checkbox" name="hold_id" value="[% ahr.id %]"
                             [% html_text_attr('title', l('Select hold [_1]', attrs.title)) %]/>
                     </td>
+                    [%  IF hold.ATTRS.issns.0;
+                            row_isbnissn = hold.ATTRS.issns.0;
+                        ELSIF hold.ATTRS.isbns.0;
+                            row_isbnissn = hold.ATTRS.isbns.0;
+                        ELSE;
+                            row_isbnissn = '';
+                        END;
+                        row_rec_id = hold.hold.bre_id;
+                        row_title = hold.ATTRS.title;
+                        PROCESS show_cover;
+                    %]
                     <td>
                     <span class="sr-only">Title</span>
                         <div>
