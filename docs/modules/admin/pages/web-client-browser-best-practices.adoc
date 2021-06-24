@@ -75,12 +75,15 @@ Adding Bookmark In Chrome:
 . Go to a page you would like to bookmark in Evergreen.
 . Option 1: Highlight the URL then click and drag it to the bar
 . Option 2: Click on the star icon on the right side of the address bar and select _Add Bookmark_.  
+image::media/chrome_bookmark_star.jpg[Chrome - Option 1]
+image::media/chrome_bookmark_add.jpg[Chrome - Option 2]
 
 Adding Bookmark In Firefox:
 
 . Right click near address bar and select _Bookmarks Toolbar_.  Select _Always Show_.
 . Option 1: Highlight the URL then click and drag it to the bar
 . Option 2: Click on the star icon on the right side of the address bar.  Make sure to select “Bookmarks Toolbar” under “Location” before saving.
+image::media/firefox_bookmark.jpg[Firefox Bookmark]
 
 Deleting Bookmark in Chrome:
 
