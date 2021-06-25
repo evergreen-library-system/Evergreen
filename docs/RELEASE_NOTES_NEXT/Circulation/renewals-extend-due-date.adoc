@@ -16,12 +16,15 @@ Circulation Policies.
 
 Enables this new feature for a circulation policy.
 
-*Early Renewal Minimum Duration Percent*
+*Early Renewal Minimum Duration Interval*
 
-Specifies how early in a checkout a renewal will result in an extended
-due date.  E.g. A value of 50 (percent) means no due date extension
-would occur if an attempt to renew occurred after 5 days of a 14 day
-circulation duration.  In this case, the renewal would still be allowed,
-it just wouldn't get the extended due date.
+Specifies the amount of time a circulation has to be checked out before a 
+renewal will result in an extended due date.
 
+For example, if you wanted to support due date extensions on 14-day checkout
+renewals, but only if the item has been checked out at least 8 days, you 
+would enter "8 days" for the value of this field.
+
+If no value is set for a given matchpoint that supports renewal extension, 
+all renewals using that matchpoint will be eligible.
 

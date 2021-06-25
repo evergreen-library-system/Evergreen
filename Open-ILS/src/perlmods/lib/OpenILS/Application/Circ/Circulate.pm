@@ -2392,19 +2392,16 @@ sub extend_renewal_due_date {
 
     my $now_time = DateTime->now->epoch;
 
-    if (my $percent = $matchpoint->renew_extend_percent) {
-        # If the percent is zero, all renewals are extended.
+    if (my $interval = $matchpoint->renew_extend_min_interval) {
 
-        my $total_duration = $end_time - $start_time;
+        my $min_duration = OpenILS::Utils::DateTime->interval_to_seconds($interval);
         my $checkout_duration = $now_time - $start_time;
-        my $duration_percent = ($checkout_duration / $total_duration) * 100;
 
-        return if $duration_percent < $percent;
+        return if $checkout_duration < $min_duration;
     }
 
     my $remaining_duration = $end_time - $now_time;
 
-    # $circ->due_date is already in the correct timezone.
     my $due_date = DateTime::Format::ISO8601->new
         ->parse_datetime(clean_ISO8601($circ->due_date));
 
@@ -2412,6 +2409,7 @@ sub extend_renewal_due_date {
 
     $logger->info("circulator: extended renewal due date to $due_date");
 
+    # $circ->due_date is already in the needed timezone.
     $circ->due_date($due_date->strftime('%FT%T%z'));
 }
 
