@@ -2387,10 +2387,12 @@ sub extend_renewal_due_date {
     my $start_time = DateTime::Format::ISO8601->new
         ->parse_datetime(clean_ISO8601($prev_circ->xact_start))->epoch;
 
-    my $end_time = DateTime::Format::ISO8601->new
+    my $due_time = DateTime::Format::ISO8601->new
         ->parse_datetime(clean_ISO8601($prev_circ->due_date))->epoch;
 
     my $now_time = DateTime->now->epoch;
+
+    return if $due_time < $now_time; # Renewed circ was overdue.
 
     if (my $interval = $matchpoint->renew_extend_min_interval) {
 
@@ -2400,7 +2402,7 @@ sub extend_renewal_due_date {
         return if $checkout_duration < $min_duration;
     }
 
-    my $remaining_duration = $end_time - $now_time;
+    my $remaining_duration = $due_time - $now_time;
 
     my $due_date = DateTime::Format::ISO8601->new
         ->parse_datetime(clean_ISO8601($circ->due_date));
