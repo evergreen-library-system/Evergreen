@@ -83,6 +83,8 @@ CREATE TABLE config.circ_matrix_matchpoint (
     script_test          TEXT,                           -- javascript source 
     total_copy_hold_ratio     FLOAT,
     available_copy_hold_ratio FLOAT,
+    renew_extends_due_date    BOOLEAN NOT NULL DEFAULT FALSE,
+    renew_extend_percent      FLOAT NOT NULL DEFAULT 0,
     description          TEXT
 );
 

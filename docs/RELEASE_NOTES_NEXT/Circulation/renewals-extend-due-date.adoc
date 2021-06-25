@@ -1,0 +1,27 @@
+== Renewal Due Date Extended to Cover Lost Time ==
+
+When an item is renewed before it's due date, libraries now have the option
+to extend the renewal's due date to include any time lost from the early 
+renewal.
+
+For example, a 14 day checkout renewed after 12 days will result in a due date
+on the renewal of 14 days plus 2 days to cover the lost time.
+
+=== Settings ===
+
+Two new fields are available under Admin => Local Administration => 
+Circulation Policies.
+
+*Early Renewal Extends Due Date*
+
+Enables this new feature for a circulation policy.
+
+*Early Renewal Minimum Duration Percent*
+
+Specifies how early in a checkout a renewal will result in an extended
+due date.  E.g. A value of 50 (percent) means no due date extension
+would occur if an attempt to renew occurred after 5 days of a 14 day
+circulation duration.  In this case, the renewal would still be allowed,
+it just wouldn't get the extended due date.
+
+

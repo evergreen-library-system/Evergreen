@@ -2345,6 +2345,8 @@ sub apply_modified_due_date {
       # if the due_date lands on a day when the location is closed
       return unless $copy and $circ->due_date;
 
+        $self->extend_renewal_due_date if $self->is_renewal;
+
         #my $org = (ref $copy->circ_lib) ? $copy->circ_lib->id : $copy->circ_lib;
 
         # due-date overlap should be determined by the location the item
@@ -2373,6 +2375,45 @@ sub apply_modified_due_date {
    }
 }
 
+sub extend_renewal_due_date {
+    my $self = shift;
+    my $circ = $self->circ;
+    my $matchpoint = $self->circ_matrix_matchpoint;
+
+    return unless $U->is_true($matchpoint->renew_extends_due_date);
+
+    my $prev_circ = $self->editor->retrieve_action_circulation($self->parent_circ);
+
+    my $start_time = DateTime::Format::ISO8601->new
+        ->parse_datetime(clean_ISO8601($prev_circ->xact_start))->epoch;
+
+    my $end_time = DateTime::Format::ISO8601->new
+        ->parse_datetime(clean_ISO8601($prev_circ->due_date))->epoch;
+
+    my $now_time = DateTime->now->epoch;
+
+    if (my $percent = $matchpoint->renew_extend_percent) {
+        # If the percent is zero, all renewals are extended.
+
+        my $total_duration = $end_time - $start_time;
+        my $checkout_duration = $now_time - $start_time;
+        my $duration_percent = ($checkout_duration / $total_duration) * 100;
+
+        return if $duration_percent < $percent;
+    }
+
+    my $remaining_duration = $end_time - $now_time;
+
+    # $circ->due_date is already in the correct timezone.
+    my $due_date = DateTime::Format::ISO8601->new
+        ->parse_datetime(clean_ISO8601($circ->due_date));
+
+    $due_date->add(seconds => $remaining_duration);
+
+    $logger->info("circulator: extended renewal due date to $due_date");
+
+    $circ->due_date($due_date->strftime('%FT%T%z'));
+}
 
 
 sub create_due_date {

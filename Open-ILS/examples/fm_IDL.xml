@@ -2195,6 +2195,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="total_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Total Copy/Hold Ratio"/>
 			<field name="available_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Available Copy/Hold Ratio"/>
 			<field name="description" reporter:datatype="text" reporter:label="Description"/>
+			<field name="renew_extends_due_date" reporter:datatype="bool" reporter:label="Early Renewal Extends Due Date"/>
+			<field name="renew_extend_percent" reporter:datatype="float" reporter:label="Early Renewal Minimum Duration Percent"/>
 		</fields>
 		<links>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
