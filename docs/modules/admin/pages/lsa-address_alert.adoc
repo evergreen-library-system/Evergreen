@@ -42,20 +42,20 @@ How to add an address to the alert list:
 .New Address Alert Fields 
 |===
 |*Field*               |*Description*
-| Owner                |Which Org Unit owns this alert.  Set this to your system or branch.
 | Active               |Check-box that controls if the alert is active or not.  Inactive alerts are not processed.
-| Match All Fields     |Check-box that controls if all the fields need to match to trigger the alert(checked), or only at least one field needs to match(unchecked). 
+| Address Alert ID     |Displays the internal database id for alert after the alert has been saved.  This auto-populates.
 | Alert Message        |Message that will be displayed to staff when this alert is triggered.
+| Billing Address      |Check-box that specifies that the alert will only match a billing address if checked.
+| City                 |City regular expression.
+| Country              |Country regular expression.
+| County               |County regular expression.
+| Mailing Address      |Check-box that specifies that the alert will only match a mailing address if checked. 
+| Match All Fields     |Check-box that controls if all the fields need to match to trigger the alert(checked), or only at least one field needs to match(unchecked). 
+| Owner                |Which Org Unit owns this alert.  Set this to your system or branch.
+| Postal Code          |Postal Code regular expression.
+| State                |State regular expression.
 | Street (1)           |Street 1 field regular expression.
 | Street (2)           |Street 2 field regular expression.
-| City                 |City regular expression.
-| County               |County regular expression.
-| State                |State regular expression.
-| Country              |County regular expression.
-| Postal Code          |Postal Code regular expression.
-| Address Alert ID     |Displays the internal database id for alert after the alert has been saved.
-| Billing Address      |Check-box that specifies that the alert will only match a billing address if checked.
-| Mailing Address      |Check-box that specifies that the alert will only match a mailing address if checked. 
 |===
 +
 . Click save once you have finished.
@@ -66,9 +66,13 @@ To make changes to an existing alert, double click on the alert in the list.  Th
 
 If you don't see your alerts, make sure the *"Context Org Unit"* selection box has the correct Org Unit selected.
 
+image::media/edit_address_alert.jpg[Editing an Address Alert]
+
 == Deleting an Address Alert ==
 
 To delete an alert or many alerts, click the selection check-box for all alerts you would like to delete.  Then click the "Delete Selected" button at the top of the screen.
+
+image::media/delete_address_alert.jpg
 
 == Staff View of Address Alerts ==
 
@@ -76,7 +80,7 @@ When an Address Alert is triggered by a matching address the staff will see the 
 
 Here is an example of what staff would see.
 
-image::media/lsa-address_alert_staff_view.png[Address Alert Staff View] 
+image::media/address_alert.jpg[Address Alert Staff View]
 
 == Regular Expressions / Wildcards ==
 
