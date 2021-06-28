@@ -298,6 +298,34 @@ sub hold {
     return $self->{hold};
 }
 
+sub inside_hard_stall_interval {
+    my ($self) = @_;
+    if (defined $self->{inside_hard_stall_interval}) {
+        $self->log_hold('already looked up hard stalling state: '.$self->{inside_hard_stall_interval});
+        return $self->{inside_hard_stall_interval};
+    }
+
+    my $hard_stall_interval =
+        $self->parent->get_ou_setting(
+            $self->hold->pickup_lib, 'circ.pickup_hold_stalling.hard', $self->editor) || '0 seconds';
+
+    $self->log_hold('hard stalling interval '.$hard_stall_interval);
+
+    my $hold_request_time = $dt_parser->parse_datetime(clean_ISO8601($self->hold->request_time));
+    my $hard_stall_time = $hold_request_time->clone->add(
+        seconds => OpenILS::Utils::DateTime->interval_to_seconds($hard_stall_interval)
+    );
+
+    if (DateTime->compare($hard_stall_time, DateTime->now(time_zone => 'local')) > 0) {
+        $self->{inside_hard_stall_interval} = 1
+    } else {
+        $self->{inside_hard_stall_interval} = 0
+    }
+
+    $self->log_hold('hard stalling state: '.$self->{inside_hard_stall_interval});
+    return $self->{inside_hard_stall_interval};
+}
+
 # Debug message
 sub message {
     my ($self, $message) = @_;
@@ -353,6 +381,12 @@ sub recall_copies {
     my ($self, $recall_copies) = @_;
     $self->{recall_copies} = $recall_copies if $recall_copies;
     return $self->{recall_copies};
+}
+
+sub in_use_copies {
+    my ($self, $in_use_copies) = @_;
+    $self->{in_use_copies} = $in_use_copies if $in_use_copies;
+    return $self->{in_use_copies};
 }
 
 # Maps copy ID's to their hold proximity
@@ -720,6 +754,7 @@ sub compile_weighted_proximity_map {
     my %prox_map;
     for my $copy_hash (@{$self->copies}) {
         my $prox = $copy_prox_map{$copy_hash->{id}};
+        $copy_hash->{proximity} = $prox;
         $prox_map{$prox} ||= [];
 
         my $weight = $self->parent->get_ou_setting(
@@ -728,6 +763,20 @@ sub compile_weighted_proximity_map {
 
         # Each copy is added to the list once per target weight.
         push(@{$prox_map{$prox}}, $copy_hash) foreach (1 .. $weight);
+    }
+
+    # We need to grab the proximity for copies targeted by other holds
+    # that belong to this pickup lib for hard-stalling tests later. We'll
+    # just grab them all in case it's useful later.
+    for my $copy_hash (@{$self->in_use_copies}) {
+        my $prox = $copy_prox_map{$copy_hash->{id}};
+        $copy_hash->{proximity} = $prox;
+    }
+
+    # We also need the proximity for the previous target.
+    if ($self->{valid_previous_copy}) {
+        my $prox = $copy_prox_map{$self->{valid_previous_copy}->{id}};
+        $self->{valid_previous_copy}->{proximity} = $prox;
     }
 
     return $self->{weighted_prox_map} = \%prox_map;
@@ -805,6 +854,10 @@ sub filter_copies_by_status {
 # Returns true if filtering completes without error, false otherwise.
 sub filter_copies_in_use {
     my $self = shift;
+
+    # Copies that are targeted, but could contribute to pickup lib
+    # hard (foreign) stalling.  These are Available-status copies.
+    $self->in_use_copies([grep {$_->{current_copy}} @{$self->copies}]);
 
     # A copy with a 'current_copy' value means it's in use by another hold.
     $self->copies([
@@ -920,7 +973,7 @@ sub attempt_force_recall_target {
 sub attempt_to_find_copy {
     my $self = shift;
 
-    return undef unless @{$self->copies};
+    $self->log_hold("attempting to find a copy normally");
 
     my $max_loops = $self->parent->get_ou_setting(
         $self->hold->pickup_lib,
@@ -1102,12 +1155,39 @@ sub find_nearest_copy {
     my $hold = $self->hold;
     my %seen;
 
+    # See if there are in-use (targeted) copies "here".
+    my $have_local_copies = 0;
+    if ($self->inside_hard_stall_interval) { # But only if we're inside the hard age.
+        if (grep { $_->{proximity} <= 0 } @{$self->in_use_copies}) {
+            $have_local_copies = 1;
+        }
+        $self->log_hold("inside hard stall interval and does ".
+            ($have_local_copies ? "" : "not "). "have in-use local copies");
+    }
+
     # Pick a copy at random from each tier of the proximity map,
     # starting at the lowest proximity and working up, until a
     # copy is found that is suitable for targeting.
+    my $no_copies = 1;
     for my $prox (sort {$a <=> $b} keys %prox_map) {
         my @copies = @{$prox_map{$prox}};
         next unless @copies;
+
+        $no_copies = 0;
+        $have_local_copies = 1 if ($prox <= 0);
+
+        $self->log_hold("inside hard stall interval and does ".
+            ($have_local_copies ? "" : "not "). "have testable local copies")
+                if ($self->inside_hard_stall_interval && $prox > 0);
+
+        if ($have_local_copies and $self->inside_hard_stall_interval) {
+            # Unset valid_previous_copy if it's not local and we have local copies now
+            $self->{valid_previous_copy} = undef if (
+                $self->{valid_previous_copy}
+                and $self->{valid_previous_copy}->{proximity} > 0
+            );
+            last if ($prox > 0); # No point in looking further "out".
+        }
 
         my $rand = int(rand(scalar(@copies)));
 
@@ -1120,6 +1200,14 @@ sub find_nearest_copy {
 
             last unless(@copies);
         }
+    }
+
+    if ($no_copies and $have_local_copies and $self->inside_hard_stall_interval) {
+        # Unset valid_previous_copy if it's not local and we have local copies now
+        $self->{valid_previous_copy} = undef if (
+            $self->{valid_previous_copy}
+            and $self->{valid_previous_copy}->{proximity} > 0
+        );
     }
 
     return undef;
