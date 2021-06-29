@@ -40,6 +40,8 @@ export class GridColumnComponent implements OnInit {
     // Display using a specific OU's timestamp when datatype = timestamp
     @Input() timezoneContextOrg: number;
 
+    @Input() dateOnlyIntervalField: string;
+
     // Used in conjunction with cellTemplate
     @Input() cellContext: any;
     @Input() cellTemplate: TemplateRef<any>;
@@ -77,6 +79,7 @@ export class GridColumnComponent implements OnInit {
         col.datePlusTime = this.datePlusTime;
         col.ternaryBool = this.ternaryBool;
         col.timezoneContextOrg = this.timezoneContextOrg;
+        col.dateOnlyIntervalField = this.dateOnlyIntervalField;
         col.isAuto = false;
         this.grid.context.columnSet.add(col);
 

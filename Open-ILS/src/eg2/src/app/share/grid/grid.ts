@@ -30,6 +30,7 @@ export class GridColumn {
     ternaryBool: boolean;
     timezoneContextOrg: number;
     cellTemplate: TemplateRef<any>;
+    dateOnlyIntervalField: string;
 
     cellContext: any;
     isIndex: boolean;
@@ -795,13 +796,29 @@ export class GridContext {
             return val;
         }
 
+        // Get the value of
+        let interval;
+        const intField = col.dateOnlyIntervalField;
+        if (intField) {
+            if (intField in row) {
+                interval = this.getObjectFieldValue(row, intField);
+            } else  {
+                // find the referenced column
+                const intCol = this.columnSet.columns.filter(c => c.path === intField)[0];
+                if (intCol) {
+                    interval = this.nestedItemFieldValue(row, intCol);
+                }
+            }
+        }
+
         return this.format.transform({
             value: val,
             idlClass: col.idlClass,
             idlField: col.idlFieldDef ? col.idlFieldDef.name : col.name,
             datatype: col.datatype,
             datePlusTime: Boolean(col.datePlusTime),
-            timezoneContextOrg: Number(col.timezoneContextOrg)
+            timezoneContextOrg: Number(col.timezoneContextOrg),
+            dateOnlyInterval: interval
         });
     }
 

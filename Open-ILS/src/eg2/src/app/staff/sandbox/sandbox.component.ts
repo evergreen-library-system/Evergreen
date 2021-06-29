@@ -117,6 +117,9 @@ export class SandboxComponent implements OnInit {
     aLocation: IdlObject; // acpl
     orgClassCallback: (orgId: number) => string;
 
+    circDaily: IdlObject;
+    circHourly: IdlObject;
+
     constructor(
         private idl: IdlService,
         private org: OrgService,
@@ -328,6 +331,18 @@ export class SandboxComponent implements OnInit {
 
         const str = 'C&#xe9;sar&nbsp;&amp;&nbsp;Me';
         console.log(this.h2txt.htmlToTxt(str));
+
+        const org =
+            this.org.list().filter(o => o.ou_type().can_have_vols() === 't')[0];
+        this.circDaily = this.idl.create('circ');
+        this.circDaily.duration('1 day');
+        this.circDaily.due_date(new Date().toISOString());
+        this.circDaily.circ_lib(org.id());
+
+        this.circHourly = this.idl.create('circ');
+        this.circHourly.duration('1 hour');
+        this.circHourly.due_date(new Date().toISOString());
+        this.circHourly.circ_lib(org.id());
     }
 
     sbChannelHandler = msg => {
