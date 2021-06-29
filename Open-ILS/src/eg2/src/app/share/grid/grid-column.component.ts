@@ -90,6 +90,7 @@ export class GridColumnComponent implements OnInit {
         col.dateOnlyIntervalField = this.dateOnlyIntervalField;
         col.idlClass = this.idlClass;
         col.isAuto = false;
+
         this.grid.context.columnSet.add(col);
 
         if (this.cellTemplate &&

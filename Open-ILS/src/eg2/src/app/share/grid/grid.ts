@@ -16,6 +16,7 @@ export class GridColumn {
     name: string;
     path: string;
     label: string;
+    headerLabel: string;
     flex: number;
     align: string;
     hidden: boolean;
@@ -206,6 +207,11 @@ export class GridColumnSet {
             newCol.isAuto = true;
             newCol.path = dotpath ? dotpath + '.' + field.name : field.name;
             newCol.label = dotpath ? classObj.label + ': ' + field.label : field.label;
+            newCol.datatype = field.datatype;
+
+            // Avoid including the class label prefix in the main grid
+            // header display so it doesn't take up so much horizontal space.
+            newCol.headerLabel = field.label;
 
             this.add(newCol);
         });
@@ -347,6 +353,7 @@ export class GridColumnSet {
         if (!col.align) { col.align = 'left'; }
         if (!col.label) { col.label = col.name; }
         if (!col.datatype) { col.datatype = 'text'; }
+        if (!col.isAuto) { col.headerLabel = col.label; }
 
         col.visible = !col.hidden;
     }

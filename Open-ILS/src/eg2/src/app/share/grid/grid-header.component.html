@@ -28,13 +28,13 @@
     class="eg-grid-cell eg-grid-header-cell" [ngStyle]="{flex:col.flex}">
     <a class="sortable label-with-material-icon" *ngIf="col.isSortable"
       (click)="sortOneColumn(col)">
-      <span class="eg-grid-header-cell-sort-label">{{col.label}}</span>
+      <span class="eg-grid-header-cell-sort-label">{{col.headerLabel}}</span>
       <span class="material-icons eg-grid-header-cell-sort-arrow"
         *ngIf="isColumnSorting(col, 'ASC')">arrow_upwards</span>
       <span class="material-icons eg-grid-header-cell-sort-arrow"
         *ngIf="isColumnSorting(col, 'DESC')">arrow_downwards</span>
     </a>
-    <span *ngIf="!col.isSortable">{{col.label}}</span>
+    <span *ngIf="!col.isSortable">{{col.headerLabel}}</span>
   </div>
 </div>
 <div *ngIf="context.isFilterable"
