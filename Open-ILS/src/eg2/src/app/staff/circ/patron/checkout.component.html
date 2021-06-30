@@ -108,10 +108,8 @@
         label="Row Index" i18n-label [hidden]="true"></eg-grid-column>
       <eg-grid-column path="circ.id" label="Circ ID" i18n-label></eg-grid-column>
 
-      <!-- TODO 
-        [datePlusTime]="true" when non-full-day circ 
-      -->
       <eg-grid-column path="dueDate" label="Due Date" i18n-label
+        timezoneContextOrg="circ.circ_lib" dateOnlyIntervalField="circ.duration"
         datatype="timestamp"></eg-grid-column>
 
       <eg-grid-column path="copy.barcode" label="Barcode" i18n-label></eg-grid-column>
