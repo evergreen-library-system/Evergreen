@@ -588,7 +588,8 @@ function($scope , $q , egCore , ngToast) {
                 },
                 copy : seed_copy,
                 title : seed_record.title,
-                author : seed_record.author
+                author : seed_record.author,
+                call_number : seed_copy.call_number
             }
         ],
 
