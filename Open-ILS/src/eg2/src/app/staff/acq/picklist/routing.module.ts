@@ -10,6 +10,9 @@ import {BriefRecordComponent} from '../lineitem/brief-record.component';
 import {LineitemHistoryComponent} from '../lineitem/history.component';
 
 const routes: Routes = [{
+    path: 'brief-record',
+    component: BriefRecordComponent
+}, {
   path: ':picklistId',
   component: PicklistComponent,
   children : [{

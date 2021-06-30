@@ -1,10 +1,26 @@
 
-<h3 class="m-2" i18n>Add A Brief Record</h3>
+<ng-container *ngIf="targetPicklist || targetPo">
+  <h3 class="m-2" i18n>Add A Brief Record</h3>
+</ng-container>
+<ng-container *ngIf="!targetPicklist &&! targetPo">
+  <eg-staff-banner i18n-bannerText bannerText="New Brief Record">
+  </eg-staff-banner>
+</ng-container>
 
-<div class="d-flex w-50 m-2" *ngFor="let attr of attrs">
-  <div class="flex-1">{{attr.description()}}</div>
-  <div class="flex-3">
-    <input class="form-control" type="text" [(ngModel)]="values[attr.id()]"/>
+<div class="w-50 m-2">
+  <div class="d-flex mt-2" *ngIf="!targetPicklist && !targetPo">
+    <div class="flex-1" i18n>Add To Selection List</div>
+    <div class="flex-3">
+      <eg-combobox [(ngModel)]="selectedPl" idlClass="acqpl"
+        [allowFreeText]="true" placeholder="Select List..." i18n-placeHolder>
+      </eg-combobox>
+    </div>
+  </div>
+  <div class="d-flex mt-2" *ngFor="let attr of attrs">
+    <div class="flex-1">{{attr.description()}}</div>
+    <div class="flex-3">
+      <input class="form-control" type="text" [(ngModel)]="values[attr.id()]"/>
+    </div>
   </div>
 </div>
 

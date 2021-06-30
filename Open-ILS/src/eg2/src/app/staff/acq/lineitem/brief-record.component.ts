@@ -2,9 +2,11 @@ import {Component, OnInit, Input, Output} from '@angular/core';
 import {ActivatedRoute, Router, ParamMap} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
+import {EventService} from '@eg/core/event.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {LineitemService} from './lineitem.service';
+import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 const MARC_NS = 'http://www.loc.gov/MARC21/slim';
 
@@ -29,12 +31,16 @@ export class BriefRecordComponent implements OnInit {
     attrs: IdlObject[] = [];
     values: {[attr: string]: string} = {};
 
+    // From the inline PL selector
+    selectedPl: ComboboxEntry;
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,
         private idl: IdlService,
         private auth: AuthService,
         private net: NetService,
+        private evt: EventService,
         private pcrud: PcrudService,
         private liService: LineitemService
     ) { }
@@ -87,6 +93,37 @@ export class BriefRecordComponent implements OnInit {
     }
 
     save() {
+        this.saveManualPicklist()
+        .then(ok => { if (ok) { this.createLineitem(); } });
+    }
+
+    saveManualPicklist(): Promise<boolean> {
+        if (!this.selectedPl) { return Promise.resolve(false); }
+
+        if (!this.selectedPl.freetext) {
+            // An existing PL was selected
+            this.targetPicklist = this.selectedPl.id;
+            return Promise.resolve(true);
+        }
+
+        const pl = this.idl.create('acqpl');
+        pl.name(this.selectedPl.label);
+        pl.owner(this.auth.user().id());
+
+        return this.net.request(
+            'open-ils.acq',
+            'open-ils.acq.picklist.create', this.auth.token(), pl).toPromise()
+
+        .then(plId => {
+            const evt = this.evt.parse(plId);
+            if (evt) { alert(evt); return false; }
+            this.targetPicklist = plId;
+            return true;
+        });
+    }
+
+    createLineitem() {
+
         const xml = this.compile();
 
         const li = this.idl.create('jub');
@@ -104,12 +141,25 @@ export class BriefRecordComponent implements OnInit {
 
         this.net.request('open-ils.acq',
             'open-ils.acq.lineitem.create', this.auth.token(), li
-        ).toPromise().then(_ => {
+        ).toPromise().then(liId => {
+
+            const evt = this.evt.parse(liId);
+            if (evt) { alert(evt); return; }
+
             this.liService.activateStateChange.emit();
-            this.router.navigate(['../'], {
-                relativeTo: this.route,
-                queryParamsHandling: 'merge'
-            });
+
+            if (this.selectedPl) {
+                // Brief record was added to a picklist that is not
+                // currently focused in the UI.  Jump to it.
+                const url = `/staff/acq/picklist/${this.targetPicklist}`;
+                this.router.navigate([url], {fragment: liId});
+            } else {
+
+                this.router.navigate(['../'], {
+                    relativeTo: this.route,
+                    queryParamsHandling: 'merge'
+                });
+            }
         });
     }
 }
