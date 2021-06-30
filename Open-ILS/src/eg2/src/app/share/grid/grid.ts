@@ -781,14 +781,16 @@ export class GridContext {
         ).length > 0;
     }
 
-    getRowColumnValue(row: any, col: GridColumn): string {
-        let val;
-
-        if (col.path) {
-            val = this.nestedItemFieldValue(row, col);
-        } else if (col.name in row) {
-            val = this.getObjectFieldValue(row, col.name);
+    getRowColumnBareValue(row: any, col: GridColumn): any {
+        if (col.name in row) {
+            return this.getObjectFieldValue(row, col.name);
+        } else if (col.path) {
+            return this.nestedItemFieldValue(row, col);
         }
+    }
+
+    getRowColumnValue(row: any, col: GridColumn): any {
+        const val = this.getRowColumnBareValue(row, col);
 
         if (col.datatype === 'bool') {
             // Avoid string-ifying bools so we can use an <eg-bool/>
@@ -796,18 +798,13 @@ export class GridContext {
             return val;
         }
 
-        // Get the value of
         let interval;
         const intField = col.dateOnlyIntervalField;
         if (intField) {
-            if (intField in row) {
-                interval = this.getObjectFieldValue(row, intField);
-            } else  {
-                // find the referenced column
-                const intCol = this.columnSet.columns.filter(c => c.path === intField)[0];
-                if (intCol) {
-                    interval = this.nestedItemFieldValue(row, intCol);
-                }
+            const intCol =
+                this.columnSet.columns.filter(c => c.path === intField)[0];
+            if (intCol) {
+                interval = this.getRowColumnBareValue(row, intCol);
             }
         }
 
