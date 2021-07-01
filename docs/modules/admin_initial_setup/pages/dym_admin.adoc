@@ -44,7 +44,7 @@ For examples of where suggestions display in various public catalog interfaces, 
 
 Search suggestions in the Staff Catalog appear at the bottom of the search area.
 
-image::media/staffcat.png[Search suggestions in the Staff Catalog]
+image::media/dym_staffcat.png[Search suggestions in the Staff Catalog]
 
 == Administration
 
@@ -95,8 +95,7 @@ suggestions for most catalogs.
 ** Input can be any positive or negative whole number, but testing
 demonstrates that setting this to 1 can improve suggestions for catalogs
 that are primarily English.
-* *QWERTY Keyboard similarity score weighting in OPAC spelling
-suggestions*
+* *Keyboard distance score weighting in OPAC spelling suggestions*
 ** Defaults to 0 for "off".
 ** Controls the relative weight of the scaled keyboard distance component.
 ** While this option is available, it can have a negative impact on
