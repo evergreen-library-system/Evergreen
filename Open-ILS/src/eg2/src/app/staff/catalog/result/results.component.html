@@ -43,7 +43,7 @@
     <div class="col-lg-2" *ngIf="searchContext.basket">
       <h3 i18n>Basket View</h3>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-3">
       <label class="checkbox" *ngIf="!searchContext.basket">
         <input type='checkbox' [(ngModel)]="allRecsSelected" 
             (change)="toggleAllRecsSelected()"/>
@@ -51,8 +51,12 @@
           {{searchContext.pager.rowNumber(searchContext.currentResultIds().length - 1)}}
         </span>
       </label>
+      <button class="btn btn-outline-dark ml-2" (click)="toggleShowMore()">
+        <ng-container *ngIf="showMoreDetails" i18n>Show Fewer Details</ng-container>
+        <ng-container *ngIf="!showMoreDetails" i18n>Show More Details</ng-container>
+      </button>
     </div>
-    <div class="col-lg-8">
+    <div class="col-lg-7">
       <div class="float-right">
         <eg-catalog-result-pagination></eg-catalog-result-pagination>
       </div>

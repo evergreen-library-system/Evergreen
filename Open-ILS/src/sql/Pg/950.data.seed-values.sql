@@ -21617,3 +21617,14 @@ VALUES
      'coust', 'description'),
    'integer' );
 
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.staff.catalog.results.show_more', 'gui', 'bool',
+    oils_i18n_gettext(
+        'eg.staff.catalog.results.show_more',
+        'Show more details in Angular staff catalog',
+        'cwst', 'label'
+    )
+);
+

@@ -38,6 +38,7 @@ export class BibRecordSummary {
     net: NetService;
     displayHighlights: {[name: string]: string | string[]} = {};
     eResourceUrls: EResourceUrl[] = [];
+    copies: any[];
 
     constructor(record: IdlObject, orgId: number, orgDepth?: number) {
         this.id = Number(record.id());
@@ -95,8 +96,8 @@ export class BibRecordService {
         return this.getBibSummaries([id], orgId, isStaff);
     }
 
-    getBibSummaries(bibIds: number[],
-        orgId?: number, isStaff?: boolean): Observable<BibRecordSummary> {
+    getBibSummaries(bibIds: number[], orgId?: number,
+        isStaff?: boolean, options?: any): Observable<BibRecordSummary> {
 
         if (bibIds.length === 0) { return from([]); }
         if (!orgId) { orgId = this.org.root().id(); }
@@ -104,7 +105,7 @@ export class BibRecordService {
         let method = 'open-ils.search.biblio.record.catalog_summary';
         if (isStaff) { method += '.staff'; }
 
-        return this.net.request('open-ils.search', method, orgId, bibIds)
+        return this.net.request('open-ils.search', method, orgId, bibIds, options)
         .pipe(map(bibSummary => {
             const summary = new BibRecordSummary(bibSummary.record, orgId);
             summary.net = this.net; // inject
@@ -113,12 +114,14 @@ export class BibRecordService {
             summary.holdCount = bibSummary.hold_count;
             summary.holdingsSummary = bibSummary.copy_counts;
             summary.eResourceUrls = bibSummary.urls;
+            summary.copies = bibSummary.copies;
+
             return summary;
         }));
     }
 
     getMetabibSummaries(metabibIds: number[],
-        orgId?: number, isStaff?: boolean): Observable<BibRecordSummary> {
+        orgId?: number, isStaff?: boolean, options?: any): Observable<BibRecordSummary> {
 
         if (metabibIds.length === 0) { return from([]); }
         if (!orgId) { orgId = this.org.root().id(); }
@@ -126,7 +129,7 @@ export class BibRecordService {
         let method = 'open-ils.search.biblio.metabib.catalog_summary';
         if (isStaff) { method += '.staff'; }
 
-        return this.net.request('open-ils.search', method, orgId, metabibIds)
+        return this.net.request('open-ils.search', method, orgId, metabibIds, options)
         .pipe(map(metabibSummary => {
             const summary = new BibRecordSummary(metabibSummary.record, orgId);
             summary.net = this.net; // inject
@@ -136,6 +139,8 @@ export class BibRecordService {
             summary.attributes = metabibSummary.attributes;
             summary.holdCount = metabibSummary.hold_count;
             summary.holdingsSummary = metabibSummary.copy_counts;
+            summary.copies = metabibSummary.copies;
+
             return summary;
         }));
     }
