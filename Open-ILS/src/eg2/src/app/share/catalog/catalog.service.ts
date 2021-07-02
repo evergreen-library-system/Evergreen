@@ -183,20 +183,27 @@ export class CatalogService {
     // Returns a void promise once all records have been retrieved
     fetchBibSummaries(ctx: CatalogSearchContext): Promise<void> {
 
-        const depth = ctx.global ?
-            ctx.org.root().ou_type().depth() :
-            ctx.searchOrg.ou_type().depth();
+        const org = ctx.global ? ctx.org.root() : ctx.searchOrg;
+        const depth = org.ou_type().depth();
 
         const isMeta = ctx.termSearch.isMetarecordSearch();
 
         let observable: Observable<BibRecordSummary>;
 
+        const options: any = {};
+        if (ctx.showResultExtras) {
+            options.flesh_copies = true;
+            options.copy_depth = depth;
+            options.copy_limit = 5;
+            options.pref_ou = ctx.prefOu;
+        }
+
         if (isMeta) {
             observable = this.bibService.getMetabibSummaries(
-                ctx.currentResultIds(), ctx.searchOrg.id(), ctx.isStaff);
+                ctx.currentResultIds(), ctx.searchOrg.id(), ctx.isStaff, options);
         } else {
             observable = this.bibService.getBibSummaries(
-                ctx.currentResultIds(), ctx.searchOrg.id(), ctx.isStaff);
+                ctx.currentResultIds(), ctx.searchOrg.id(), ctx.isStaff, options);
         }
 
         return observable.pipe(map(summary => {

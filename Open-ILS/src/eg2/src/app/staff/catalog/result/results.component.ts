@@ -10,6 +10,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {StaffCatalogService} from '../catalog.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {BasketService} from '@eg/share/catalog/basket.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 
 @Component({
   selector: 'eg-catalog-results',
@@ -28,6 +29,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
     searchSub: Subscription;
     routeSub: Subscription;
     basketSub: Subscription;
+    showMoreDetails = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -36,6 +38,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
         private bib: BibRecordService,
         private catUrl: CatalogUrlService,
         private staffCat: StaffCatalogService,
+        private serverStore: ServerStoreService,
         private basket: BasketService
     ) {}
 
@@ -95,14 +98,42 @@ export class ResultsComponent implements OnInit, OnDestroy {
     searchByUrl(params: ParamMap): void {
         this.catUrl.applyUrlParams(this.searchContext, params);
 
+
         if (this.searchContext.isSearchable()) {
 
-            this.cat.search(this.searchContext)
-            .then(ok => {
-                this.cat.fetchFacets(this.searchContext);
-                this.cat.fetchBibSummaries(this.searchContext);
+            this.serverStore.getItem('eg.staff.catalog.results.show_more')
+            .then(showMore => {
+
+                this.showMoreDetails =
+                    this.searchContext.showResultExtras = showMore;
+
+                if (this.staffCat.prefOrg) {
+                    this.searchContext.prefOu = this.staffCat.prefOrg.id();
+                }
+
+                this.cat.search(this.searchContext)
+                .then(ok => {
+                    this.cat.fetchFacets(this.searchContext);
+                    this.cat.fetchBibSummaries(this.searchContext);
+                });
             });
         }
+    }
+
+    toggleShowMore() {
+        this.showMoreDetails = !this.showMoreDetails;
+
+        this.serverStore.setItem(
+            'eg.staff.catalog.results.show_more', this.showMoreDetails)
+        .then(_ => {
+
+            if (this.showMoreDetails) {
+                this.staffCat.search();
+            } else {
+                // Clear the collected copies.  No need for another search.
+                this.searchContext.result.records.forEach(rec => rec.copies = undefined);
+            }
+        });
     }
 
     searchIsDone(): boolean {

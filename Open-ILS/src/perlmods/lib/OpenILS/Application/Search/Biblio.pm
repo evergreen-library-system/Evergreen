@@ -2810,8 +2810,9 @@ sub mk_copy_query {
     my $copy_offset = shift;
     my $pref_ou = shift;
     my $is_staff = shift;
+    my $base_query = shift;
 
-    my $query = $U->basic_opac_copy_query(
+    my $query = $base_query || $U->basic_opac_copy_query(
         $rec_id, undef, undef, $copy_limit, $copy_offset, $is_staff
     );
 
@@ -2835,6 +2836,16 @@ sub mk_copy_query {
                 }
             }
         }};
+
+        if ($pref_ou) {
+            # Make sure the pref OU is included in the results
+            my $in = $query->{from}->{acp}->[1]->{aou}->{filter}->{id}->{in};
+            delete $query->{from}->{acp}->[1]->{aou}->{filter}->{id};
+            $query->{from}->{acp}->[1]->{aou}->{filter}->{'-or'} = [
+                {id => {in => $in}},
+                {id => $pref_ou}
+            ];
+        }
     };
 
     # Unsure if we want these in the shared function, leaving here for now
@@ -2980,8 +2991,9 @@ __PACKAGE__->register_method(
 
 
 sub catalog_record_summary {
-    my ($self, $client, $org_id, $record_ids) = @_;
+    my ($self, $client, $org_id, $record_ids, $options) = @_;
     my $e = new_editor();
+    $options ||= {};
 
     my $is_meta = ($self->api_name =~ /metabib/);
     my $is_staff = ($self->api_name =~ /staff/);
@@ -3009,10 +3021,81 @@ sub catalog_record_summary {
         $response->{hold_count} = 
             $U->simplereq('open-ils.circ', $holds_method, $rec_id);
 
+        if ($options->{flesh_copies}) {
+            $response->{copies} = get_representative_copies(
+                $e, $rec_id, $org_id, $is_staff, $is_meta, $options);
+        }
+
         $client->respond($response);
     }
 
     return undef;
+}
+
+# Returns a snapshot of copy information for a given record or metarecord,
+# sorted by pref org and search org.
+sub get_representative_copies {
+    my ($e, $rec_id, $org_id, $is_staff, $is_meta, $options) = @_;
+
+    my @rec_ids;
+    my $limit = $options->{copy_limit};
+    my $copy_depth = $options->{copy_depth};
+    my $copy_offset = $options->{copy_offset};
+    my $pref_ou = $options->{pref_ou};
+
+    my $org_tree = $U->get_org_tree;
+    if (!$org_id) { $org_id = $org_tree->id; }
+    my $org = $U->find_org($org_tree, $org_id);
+
+    return [] unless $org;
+
+    my $func = 'unapi.biblio_record_entry_feed';
+    my $includes = '{holdings_xml,acp,acnp,acns}';
+    my $limits = "acn=>$limit,acp=>$limit";
+
+    if ($is_meta) {
+        $func = 'unapi.metabib_virtual_record_feed';
+        $includes = '{holdings_xml,acp,acnp,acns,mmr.unapi}';
+        $limits .= ",bre=>$limit";
+    }
+
+    my $xml_query = $e->json_query({from => [
+        $func, '{'.$rec_id.'}', 'marcxml', 
+        $includes, $org->shortname, $copy_depth, $limits,
+        undef, undef,undef, undef, undef, 
+        undef, undef, undef, $pref_ou
+    ]})->[0];
+
+    my $xml = $xml_query->{$func};
+
+    my $doc = XML::LibXML->new->parse_string($xml);
+
+    my $copies = [];
+    for my $volume ($doc->documentElement->findnodes('//*[local-name()="volume"]')) {
+        my $label = $volume->getAttribute('label');
+        my $prefix = $volume->getElementsByTagName('call_number_prefix')->[0]->getAttribute('label');
+        my $suffix = $volume->getElementsByTagName('call_number_suffix')->[0]->getAttribute('label');
+
+        my $copies_node = $volume->findnodes('./*[local-name()="copies"]')->[0];
+
+        for my $copy ($copies_node->findnodes('./*[local-name()="copy"]')) {
+
+            my $status = $copy->getElementsByTagName('status')->[0]->textContent;
+            my $location = $copy->getElementsByTagName('location')->[0]->textContent;
+            my $circ_lib_sn = $copy->getElementsByTagName('circ_lib')->[0]->getAttribute('shortname');
+
+            push(@$copies, {
+                call_number_label => $label,
+                call_number_prefix_label => $prefix,
+                call_number_suffix_label => $suffix,
+                circ_lib_sn => $circ_lib_sn,
+                copy_status => $status,
+                copy_location => $location
+            });
+        }
+    }
+
+    return $copies;
 }
 
 sub get_one_rec_urls {

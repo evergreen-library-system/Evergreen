@@ -57,6 +57,7 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
             'opac.search.enable_bookplate_search',
             'eg.staffcat.exclude_electronic',
             'eg.catalog.search.form.open',
+            'eg.staff.catalog.results.show_more',
             'circ.staff_placed_holds_fallback_to_ws_ou'
         ]).then(settings => {
             this.staffCat.defaultSearchOrg =
