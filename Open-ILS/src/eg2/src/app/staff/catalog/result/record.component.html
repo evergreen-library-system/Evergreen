@@ -210,6 +210,33 @@
         </div>
       </div><!-- col -->
     </div><!-- row -->
+    <div class="row" *ngIf="summary.copies">
+      <div class="col-lg-12 mt-2">
+        <div class="w-auto ml-2 mr-2">
+          <ng-container *ngIf="summary.copies.length">
+            <div class="row p-1 font-weight-bold border-top">
+              <div class="col-lg-2" i18n>Library</div>
+              <div class="col-lg-3" i18n>Shelving location</div>
+              <div class="col-lg-4" i18n>Call number</div>
+              <div class="col-lg-3" i18n>Status</div>
+            </div>
+            <div class="row p-1 mt-1 mb-1 border-top" *ngFor="let copy of summary.copies">
+              <div class="col-lg-2" i18n>{{copy.circ_lib_sn}}</div>
+              <div class="col-lg-3" i18n>{{copy.copy_location}}</div>
+              <div class="col-lg-4" i18n>
+                {{copy.call_number_prefix_label}} 
+                {{copy.call_number_label}}
+                {{copy.call_number_suffix_label}}
+              </div>
+              <div class="col-lg-3" i18n>{{copy.copy_status}}</div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="!summary.copies.length">
+            <span class="font-italic" i18n>No Items To Display</span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
   </div><!-- card-body -->
 </div><!-- card -->
 

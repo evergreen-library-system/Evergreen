@@ -341,6 +341,7 @@ export class CatalogSearchContext {
     showBasket: boolean;
     searchOrg: IdlObject;
     global: boolean;
+    prefOu: number;
 
     termSearch: CatalogTermContext;
     marcSearch: CatalogMarcContext;
@@ -351,6 +352,9 @@ export class CatalogSearchContext {
     // Result from most recent search.
     result: CatalogSearchResults;
     searchState: CatalogSearchState = CatalogSearchState.PENDING;
+
+    // fetch and show extra holdings data, etc.
+    showResultExtras = false;
 
     // List of IDs in page/offset context.
     resultIds: number[];
