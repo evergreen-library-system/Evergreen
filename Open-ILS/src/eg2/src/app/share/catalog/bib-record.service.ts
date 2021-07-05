@@ -35,6 +35,7 @@ export class BibRecordSummary {
     holdingsSummary: any;
     holdCount: number;
     bibCallNumber: string;
+    firstCallNumber: string;
     net: NetService;
     displayHighlights: {[name: string]: string | string[]} = {};
     eResourceUrls: EResourceUrl[] = [];
@@ -115,6 +116,7 @@ export class BibRecordService {
             summary.holdingsSummary = bibSummary.copy_counts;
             summary.eResourceUrls = bibSummary.urls;
             summary.copies = bibSummary.copies;
+            summary.firstCallNumber = bibSummary.first_call_number;
 
             return summary;
         }));
@@ -140,6 +142,7 @@ export class BibRecordService {
             summary.holdCount = metabibSummary.hold_count;
             summary.holdingsSummary = metabibSummary.copy_counts;
             summary.copies = metabibSummary.copies;
+            summary.firstCallNumber = metabibSummary.first_call_number;
 
             return summary;
         }));
