@@ -79,6 +79,13 @@
           </div>
           <div class="row pt-2">
             <div class="col-lg-12">
+              <ng-container *ngIf="summary.firstCallNumber">
+                <div class="pb-1" i18n>Call Number:
+                  {{summary.firstCallNumber.call_number_prefix_label}}
+                  {{summary.firstCallNumber.call_number_label}}
+                  {{summary.firstCallNumber.call_number_suffix_label}}
+                </div>
+              </ng-container>
               <ng-container *ngIf="summary.display.physical_description">
                 <!-- [].concat() to avoid modifying the summary arrays -->
                 <div class="pb-1" i18n>Phys. Desc.:

@@ -3095,6 +3095,9 @@ sub catalog_record_summary {
 
         ($response->{copy_counts}) = $copy_method->run($org_id, $rec_id);
 
+        $response->{first_call_number} = get_first_call_number(
+            $e, $rec_id, $org_id, $is_staff, $is_meta, $options);
+
         $response->{hold_count} = 
             $U->simplereq('open-ils.circ', $holds_method, $rec_id);
 
@@ -3173,6 +3176,20 @@ sub get_representative_copies {
     }
 
     return $copies;
+}
+
+sub get_first_call_number {
+    my ($e, $rec_id, $org_id, $is_staff, $is_meta, $options) = @_;
+
+    my $limit = $options->{copy_limit};
+    $options->{copy_limit} = 1;
+
+    my $copies = get_representative_copies(
+        $e, $rec_id, $org_id, $is_staff, $is_meta, $options);
+
+    $options->{copy_limit} = $limit;
+
+    return $copies->[0];
 }
 
 sub get_one_rec_urls {
