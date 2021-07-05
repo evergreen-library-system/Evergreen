@@ -190,7 +190,8 @@ export class CatalogService {
 
         let observable: Observable<BibRecordSummary>;
 
-        const options: any = {};
+        const options: any = {pref_ou: ctx.prefOu};
+
         if (ctx.showResultExtras) {
             options.flesh_copies = true;
             options.copy_depth = depth;
