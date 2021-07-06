@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
-import {BibRecordSummary} from '@eg/share/catalog/bib-record.service';
+import {BibRecordSummary, HoldingsSummary} from '@eg/share/catalog/bib-record.service';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {StaffCatalogService} from '../catalog.service';
@@ -131,6 +131,28 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
         } else {
             return this.basket.removeRecordIds([this.summary.id]);
         }
+    }
+
+    getHoldingsSummaries(): HoldingsSummary[] {
+        if (!this.summary.prefOuHoldingsSummary) {
+            return this.summary.holdingsSummary;
+        }
+
+        let match = false;
+        this.summary.holdingsSummary.some(sum => {
+            if (Number(sum.org_unit) === Number(this.staffCat.prefOrg.id())) {
+                return match = true;
+            }
+        });
+
+        if (match) {
+            // Holdings summary for the pref ou is included in the
+            // record-level holdings summaries.
+            return this.summary.holdingsSummary;
+        }
+
+        return this.summary.holdingsSummary
+            .concat(this.summary.prefOuHoldingsSummary);
     }
 }
 
