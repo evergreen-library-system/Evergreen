@@ -3071,6 +3071,7 @@ sub catalog_record_summary {
     my ($self, $client, $org_id, $record_ids, $options) = @_;
     my $e = new_editor();
     $options ||= {};
+    my $pref_ou = $options->{pref_ou};
 
     my $is_meta = ($self->api_name =~ /metabib/);
     my $is_staff = ($self->api_name =~ /staff/);
@@ -3097,6 +3098,20 @@ sub catalog_record_summary {
 
         $response->{first_call_number} = get_first_call_number(
             $e, $rec_id, $org_id, $is_staff, $is_meta, $options);
+
+        if ($pref_ou) {
+
+            # If we already have the pref ou copy counts, avoid the extra fetch.
+            my ($match) = 
+                grep {$_->{org_unit} eq $pref_ou} @{$response->{copy_counts}};
+
+            if (!$match) {
+                my ($counts) = $copy_method->run($pref_ou, $rec_id);
+                ($match) = grep {$_->{org_unit} eq $pref_ou} @$counts;
+            }
+
+            $response->{pref_ou_copy_counts} = $match;
+        }
 
         $response->{hold_count} = 
             $U->simplereq('open-ils.circ', $holds_method, $rec_id);
