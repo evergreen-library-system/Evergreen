@@ -23,6 +23,15 @@ interface EResourceUrl {
     label: string;
 }
 
+export interface HoldingsSummary {
+    org_unit: number;
+    depth: number;
+    unshadow: number;
+    count: number;
+    available: number;
+    transcendant: number;
+}
+
 export class BibRecordSummary {
     id: number; // == record.id() for convenience
     metabibId: number; // If present, this is a metabib summary
@@ -32,7 +41,8 @@ export class BibRecordSummary {
     record: IdlObject;
     display: any;
     attributes: any;
-    holdingsSummary: any;
+    holdingsSummary: HoldingsSummary[];
+    prefOuHoldingsSummary: HoldingsSummary[];
     holdCount: number;
     bibCallNumber: string;
     firstCallNumber: string;
@@ -117,6 +127,7 @@ export class BibRecordService {
             summary.eResourceUrls = bibSummary.urls;
             summary.copies = bibSummary.copies;
             summary.firstCallNumber = bibSummary.first_call_number;
+            summary.prefOuHoldingsSummary = bibSummary.pref_ou_copy_counts;
 
             return summary;
         }));
@@ -143,6 +154,7 @@ export class BibRecordService {
             summary.holdingsSummary = metabibSummary.copy_counts;
             summary.copies = metabibSummary.copies;
             summary.firstCallNumber = metabibSummary.first_call_number;
+            summary.prefOuHoldingsSummary = metabibSummary.pref_ou_copy_counts;
 
             return summary;
         }));
