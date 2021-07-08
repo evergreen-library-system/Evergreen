@@ -2,7 +2,7 @@ import {Component, OnInit, Input, ViewChild, ViewEncapsulation
     } from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, Observer, of, empty} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, tap, concatMap} from 'rxjs/operators';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {StaffCatalogService} from '../catalog.service';
@@ -157,6 +157,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
     cellTextGenerator: GridCellTextGenerator;
     orgClassCallback: (orgId: number) => string;
     marked_orgs: number[] = [];
+
+    copyCounts: {[orgId: number]: {}} = {};
 
     private _recId: number;
     @Input() set recordId(id: number) {
@@ -419,8 +421,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
     setTreeCounts(node: HoldingsTreeNode) {
 
         if (node.nodeType === 'org') {
-            node.copyCount = 0;
-            node.callNumCount = 0;
+            node.copyCount = this.copyCounts[node.target.id() + ''].copies;
+            node.callNumCount = this.copyCounts[node.target.id() + ''].call_numbers;
         } else if (node.nodeType === 'callNum') {
             node.copyCount = 0;
         }
@@ -430,13 +432,9 @@ export class HoldingsMaintenanceComponent implements OnInit {
         node.children.forEach(child => {
             this.setTreeCounts(child);
             if (node.nodeType === 'org') {
-                node.copyCount += child.copyCount;
-                if (child.nodeType === 'callNum') {
-                    node.callNumCount++;
-                } else {
+                if (child.nodeType !== 'callNum') {
                     hasChildOrgWithData = child.callNumCount > 0;
                     hasChildOrgSansData = child.callNumCount === 0;
-                    node.callNumCount += child.callNumCount;
                 }
             } else if (node.nodeType === 'callNum') {
                 node.copyCount = node.children.length;
@@ -543,22 +541,32 @@ export class HoldingsMaintenanceComponent implements OnInit {
             // any that were deleted in an out-of-band update.
             const volsFetched: number[] = [];
 
-            this.pcrud.search('acn',
-                {   record: this.recordId,
-                    owning_lib: this.org.fullPath(this.contextOrg, true),
-                    deleted: 'f',
-                    label: {'!=' : '##URI##'}
-                }, {
-                    flesh: 3,
-                    flesh_fields: {
-                        acp: ['status', 'location', 'circ_lib', 'parts', 'notes',
-                            'tags', 'age_protect', 'copy_alerts', 'latest_inventory',
-                            'total_circ_count', 'last_circ'],
-                        acn: ['prefix', 'suffix', 'copies'],
-                        acli: ['inventory_workstation']
-                    }
-                },
-                {authoritative: true}
+            return this.net.request(
+                'open-ils.search',
+                'open-ils.search.biblio.record.copy_counts.global.staff',
+                this.recordId
+            ).pipe(
+                tap(counts => this.copyCounts = counts),
+                concatMap(_ => {
+
+                    return this.pcrud.search('acn',
+                        {   record: this.recordId,
+                            owning_lib: this.org.fullPath(this.contextOrg, true),
+                            deleted: 'f',
+                            label: {'!=' : '##URI##'}
+                        }, {
+                            flesh: 3,
+                            flesh_fields: {
+                                acp: ['status', 'location', 'circ_lib', 'parts', 'notes',
+                                     'tags', 'age_protect', 'copy_alerts', 'latest_inventory',
+                                     'total_circ_count', 'last_circ'],
+                                acn: ['prefix', 'suffix', 'copies'],
+                                acli: ['inventory_workstation']
+                            }
+                        },
+                        {authoritative: true}
+                    );
+                })
             ).subscribe(
                 callNum => {
                     this.appendCallNum(callNum);
@@ -572,7 +580,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
                         ok => this.flattenHoldingsTree(observer)
                     );
                 }
-            );
+             );
         });
     }
 
