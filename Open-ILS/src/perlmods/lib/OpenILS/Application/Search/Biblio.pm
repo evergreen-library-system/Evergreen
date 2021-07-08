@@ -3290,6 +3290,78 @@ sub get_one_record_summary {
     };
 }
 
+__PACKAGE__->register_method(
+    method    => 'record_copy_counts_global',
+    api_name  => 'open-ils.search.biblio.record.copy_counts.global.staff',
+    signature => {
+        desc   => q/Returns a count of copies and call numbers for each org
+                    unit, including items attached to each org unit plus
+                    a sum of counts for all descendants./,
+        params => [
+            {desc => 'Record ID', type => 'number'}
+        ],
+        return => {
+            desc => 'Hash of org unit ID  => {copy: $count, call_number: $id}'
+        }
+    }
+);
+
+sub record_copy_counts_global {
+    my ($self, $client, $rec_id) = @_;
+
+    my $copies = new_editor()->json_query({
+        select => {
+            acp => [{column => 'id', alias => 'copy_id'}, 'circ_lib'],
+            acn => [{column => 'id', alias => 'cn_id'}, 'owning_lib']
+        },
+        from => {acn => {acp => {type => 'left'}}},
+        where => {
+            '+acp' => {
+                '-or' => [
+                    {deleted => 'f'},
+                    {id => undef} # left join
+                ]
+            },
+            '+acn' => {deleted => 'f', record => $rec_id}
+        }
+    });
+
+    my $hash = {};
+    my %seen_cn;
+
+    for my $copy (@$copies) {
+        my $org = $copy->{circ_lib} || $copy->{owning_lib};
+        $hash->{$org} = {copies => 0, call_numbers => 0} unless $hash->{$org};
+        $hash->{$org}->{copies}++ if $copy->{circ_lib};
+
+        if (!$seen_cn{$copy->{cn_id}}) {
+            $seen_cn{$copy->{cn_id}} = 1;
+            $hash->{$org}->{call_numbers}++;
+        }
+    }
+
+    my $sum;
+    $sum = sub {
+        my $node = shift;
+        my $h = $hash->{$node->id} || {copies => 0, call_numbers => 0};
+        delete $h->{cn_id};
+
+        for my $child (@{$node->children}) {
+            my $vals = $sum->($child);
+            $h->{copies} += $vals->{copies};
+            $h->{call_numbers} += $vals->{call_numbers};
+        }
+
+        $hash->{$node->id} = $h;
+
+        return $h;
+    };
+
+    $sum->($U->get_org_tree);
+
+    return $hash;
+}
+
 
 1;
 
