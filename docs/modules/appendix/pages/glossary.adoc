@@ -223,6 +223,8 @@ Statistical categories::
   Allow libraries to associate locally interesting data with patrons and holdings. Also known as stat cats.
 [[T]]Template Toolkit (TT)::
   A template processing system written in Perl.
+TLD::
+  Top-level domain.  The last part of a full domain name.  Ex: www.website.com.  The top-level domain is ".com".
 TPAC:: 
   Evergreen's Template Toolkit based OPAC. The web based public interface in Evergreen written using functionality from the Template Toolkit.
 [[U]]URI::
