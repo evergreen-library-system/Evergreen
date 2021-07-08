@@ -70,10 +70,10 @@ RewriteRule . - [E=eglibid:${eglibid:${lowercase:%{HTTP_HOST}}|CONS}]
 [source,txt]
 ----
 # Comments can be included
-# Multiple TLDs for Branch 1
+# Multiple hostnames for Branch 1
 branch1.example.com BRANCH1
 branch1.example.net BRANCH1
-# Branches 2 and 3 don't have alternate TLDs
+# Branches 2 and 3 don't have alternate hostnames
 branch2.example.com BRANCH2
 branch3.example.com BRANCH3
 ----
