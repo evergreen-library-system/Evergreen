@@ -127,6 +127,8 @@ export class ResultsComponent implements OnInit, OnDestroy {
             'eg.staff.catalog.results.show_more', this.showMoreDetails)
         .then(_ => {
 
+            this.searchContext.showResultExtras = this.showMoreDetails;
+
             if (this.showMoreDetails) {
                 this.staffCat.search();
             } else {
