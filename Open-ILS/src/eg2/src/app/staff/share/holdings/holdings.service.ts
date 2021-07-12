@@ -7,9 +7,7 @@ import {NetService} from '@eg/core/net.service';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
-import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 
 export interface CallNumData {
     owner?: number;
