@@ -87,7 +87,7 @@ export class VolCopyService {
 
         // These will come up later -- prefetch.
         .then(_ => this.serverStore.getItemBatch([
-            'webstaff.cat.copy.templates',
+            'cat.copy.templates',
             'eg.cat.volcopy.defaults',
             'eg.cat.record.summary.collapse'
         ]))
