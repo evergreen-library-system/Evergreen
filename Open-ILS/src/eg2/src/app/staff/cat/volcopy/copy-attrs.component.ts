@@ -651,6 +651,13 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
     hasActiveInput(): boolean {
         return this.batchAttrs.filter(attr => attr.editing).length > 0;
     }
+
+    applyPendingChanges() {
+        // If a user has left any changes in the 'editing' state, this
+        // will go through and apply the values so they do not have to
+        // click Apply for every one.
+        this.batchAttrs.filter(attr => attr.editing).forEach(attr => attr.save());
+    }
 }
 
 

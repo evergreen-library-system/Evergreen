@@ -94,12 +94,12 @@
         </ng-container>
 
         <div class="flex-1"> </div>
-        <button class="btn btn-outline-dark" (click)="save()" 
+        <button class="btn btn-outline-dark" (click)="save(false, true)" 
           [ngClass]="{'border-danger': isNotSaveable()}"
-          [disabled]="isNotSaveable()" i18n>Save</button>
-        <button class="btn btn-outline-dark ml-2" (click)="save(true)"
+          [disabled]="isNotSaveable()" i18n>Apply All &amp; Save</button>
+        <button class="btn btn-outline-dark ml-2" (click)="save(true, true)"
           [ngClass]="{'border-danger': isNotSaveable()}"
-          [disabled]="isNotSaveable()" i18n>Save &amp; Exit</button>
+          [disabled]="isNotSaveable()" i18n>Apply All, Save &amp; Exit</button>
       </div>
     </div>
   </ng-container>
