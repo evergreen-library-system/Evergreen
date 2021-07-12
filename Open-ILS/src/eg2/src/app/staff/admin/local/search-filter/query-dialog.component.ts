@@ -52,7 +52,7 @@ export class QueryDialogComponent extends DialogComponent implements OnInit {
     }
 
     save() {
-        if (!this.newQueryLabel || (!this.newQueryPosition && (this.newQueryPosition != '0')) || !this.newQueryText) {
+        if (!this.newQueryLabel || (!this.newQueryPosition && (this.newQueryPosition !== '0')) || !this.newQueryText) {
             this.closeAndReset({notFilledOut: true});
         }
         const recToSave = this.prepareRecord();
