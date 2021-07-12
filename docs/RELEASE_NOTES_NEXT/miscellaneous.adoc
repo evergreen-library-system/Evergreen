@@ -1,2 +1,4 @@
 * In the Angular staff catalog, rename 'Catalog Preferences' to
   'Search Preferences' and add a return button.
+* The 'Search Filter Groups' administration interface is now ported
+  to Angular.
