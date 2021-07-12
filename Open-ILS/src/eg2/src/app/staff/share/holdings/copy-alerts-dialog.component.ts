@@ -26,15 +26,14 @@ export class CopyAlertsDialogComponent
     extends DialogComponent implements OnInit {
 
     // If there are multiple copyIds, only new alerts may be applied.
-    // If there is only one copyId, then tags may be applied or removed.
+    // If there is only one copyId, then alerts may be applied or removed.
     @Input() copyIds: number[] = [];
 
     mode: string; // create | manage
 
-    // If true, no attempt is made to save the new alerts to the
+    // If true, no attempt is made to save new alerts to the
     // database.  It's assumed this takes place in the calling code.
-    // This is useful for creating alerts for new copies.
-    @Input() inPlaceMode = false;
+    @Input() inPlaceCreateMode = false;
 
     // In 'create' mode, we may be adding notes to multiple copies.
     copies: IdlObject[];
@@ -74,13 +73,13 @@ export class CopyAlertsDialogComponent
         this.newAlert = this.idl.create('aca');
         this.newAlert.create_staff(this.auth.user().id());
 
-        if (this.copyIds.length === 0 && !this.inPlaceMode) {
+        if (this.copyIds.length === 0 && !this.inPlaceCreateMode) {
             return throwError('copy ID required');
         }
 
         // In manage mode, we can only manage a single copy.
-        // But in create mode, we can add tags to multiple copies.
-        if (this.copyIds.length === 1 && !this.inPlaceMode) {
+        // But in create mode, we can add alerts to multiple copies.
+        if (this.copyIds.length === 1) {
             this.mode = 'manage';
         } else {
             this.mode = 'create';
@@ -110,8 +109,6 @@ export class CopyAlertsDialogComponent
     }
 
     getCopies(): Promise<any> {
-        if (this.inPlaceMode) { return Promise.resolve(); }
-
         return this.pcrud.search('acp', {id: this.copyIds}, {}, {atomic: true})
         .toPromise().then(copies => {
             this.copies = copies;
@@ -126,11 +123,10 @@ export class CopyAlertsDialogComponent
     // acknowledged by staff and are within org unit range of
     // the alert type.
     getCopyAlerts(): Promise<any> {
-        const copyIds = this.copies.map(c => c.id());
         const typeIds = this.alertTypes.map(a => a.id);
 
         return this.pcrud.search('aca',
-            {copy: copyIds, ack_time: null, alert_type: typeIds},
+            {copy: this.copyIds, ack_time: null, alert_type: typeIds},
             {}, {atomic: true})
         .toPromise().then(alerts => {
             alerts.forEach(a => {
@@ -144,7 +140,7 @@ export class CopyAlertsDialogComponent
     addNew() {
         if (!this.newAlert.alert_type()) { return; }
 
-        if (this.inPlaceMode) {
+        if (this.inPlaceCreateMode) {
             this.close(this.newAlert);
             return;
         }

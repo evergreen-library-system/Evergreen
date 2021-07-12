@@ -32,8 +32,7 @@ export class CopyNotesDialogComponent
 
     // If true, no attempt is made to save the new notes to the
     // database.  It's assumed this takes place in the calling code.
-    // This is useful for creating notes for new copies.
-    @Input() inPlaceMode = false;
+    @Input() inPlaceCreateMode = false;
 
     // In 'create' mode, we may be adding notes to multiple copies.
     copies: IdlObject[] = [];
@@ -73,14 +72,14 @@ export class CopyNotesDialogComponent
         this.copies = [];
         this.newNotes = [];
 
-        if (this.copyIds.length === 0 && !this.inPlaceMode) {
+        if (this.copyIds.length === 0 && !this.inPlaceCreateMode) {
             return throwError('copy ID required');
         }
 
         // In manage mode, we can only manage a single copy.
         // But in create mode, we can add notes to multiple copies.
 
-        if (this.copyIds.length === 1 && !this.inPlaceMode) {
+        if (this.copyIds.length === 1) {
             this.mode = 'manage';
         } else {
             this.mode = 'create';
@@ -94,8 +93,6 @@ export class CopyNotesDialogComponent
     }
 
     getCopies(): Promise<any> {
-        if (this.inPlaceMode) { return Promise.resolve(); }
-
         return this.pcrud.search('acp', {id: this.copyIds},
             {flesh: 1, flesh_fields: {acp: ['notes']}},
             {atomic: true}
@@ -143,7 +140,7 @@ export class CopyNotesDialogComponent
 
     applyChanges() {
 
-        if (this.inPlaceMode) {
+        if (this.inPlaceCreateMode) {
             this.close(this.newNotes);
             return;
         }

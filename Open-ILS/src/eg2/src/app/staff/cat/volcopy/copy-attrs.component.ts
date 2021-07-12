@@ -417,7 +417,7 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
     }
 
     openCopyAlerts() {
-        this.copyAlertsDialog.inPlaceMode = true;
+        this.copyAlertsDialog.inPlaceCreateMode = true;
         this.copyAlertsDialog.copyIds = this.context.copyList().map(c => c.id());
 
         this.copyAlertsDialog.open({size: 'lg'}).subscribe(
@@ -437,7 +437,7 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
     }
 
     openCopyTags() {
-        this.copyTagsDialog.inPlaceMode = true;
+        this.copyTagsDialog.inPlaceCreateMode = true;
         this.copyTagsDialog.copyIds = this.context.copyList().map(c => c.id());
 
         this.copyTagsDialog.open({size: 'lg'}).subscribe(newTags => {
@@ -464,7 +464,7 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
     }
 
     openCopyNotes() {
-        this.copyNotesDialog.inPlaceMode = true;
+        this.copyNotesDialog.inPlaceCreateMode = true;
         this.copyNotesDialog.copyIds = this.context.copyList().map(c => c.id());
 
         this.copyNotesDialog.open({size: 'lg'}).subscribe(newNotes => {
