@@ -1395,8 +1395,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             }
         ).then(function(key) {
             if (key) {
-                //var url = egCore.env.basePath + 'cat/volcopy/' + key;
-                var url = '/eg2/staff/cat/volcopy/session/' + key;
+                var url = egCore.env.basePath + 'cat/volcopy/' + key;
                 $timeout(function() { $window.open(url, '_blank') });
             } else {
                 alert('Could not create anonymous cache key!');
