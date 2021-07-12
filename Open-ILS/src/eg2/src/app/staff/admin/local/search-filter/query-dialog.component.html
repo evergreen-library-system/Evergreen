@@ -1,4 +1,5 @@
 <ng-template #dialogContent>
+  <form #queryEditForm="ngForm" role="form" class="form-validated common-form striped-odd">
     <div class="modal-header bg-info">
         <h4 class="modal-title" i18n>New Query</h4>
         <button type="button" class="close"
@@ -11,7 +12,7 @@
         <div class="row">
             <div class="col-lg-3 font-weight-bold" i18n>Query Label</div>
             <div class="col-lg-9">
-                <input type="text" class="form-control" 
+                <input type="text" class="form-control"  name="query_label"
                 placeholder="Query Label"
                 i18n-placeholder required
                 [(ngModel)]="newQueryLabel"/>
@@ -20,7 +21,7 @@
         <div class="row mt-3">
             <div class="col-lg-3 font-weight-bold" i18n>Query Text</div>
             <div class="col-lg-9">
-                <input type="text" class="form-control" 
+                <input type="text" class="form-control"  name="query_text"
                 placeholder="Query Text"
                 i18n-placeholder required
                 [(ngModel)]="newQueryText"/>
@@ -29,7 +30,7 @@
         <div class="row mt-3">
             <div class="col-lg-3 font-weight-bold" i18n>Position</div>
             <div class="col-lg-9">
-                <input type="number" class="form-control" 
+                <input type="number" class="form-control" name="pos"
                 placeholder="Position"
                 i18n-placeholder required
                 [(ngModel)]="newQueryPosition"/>
@@ -40,6 +41,8 @@
         <button type="button" class="btn btn-warning"
             (click)="closeAndReset()" i18n>Cancel</button>
         <button type="button" class="btn btn-success"
+            [disabled]="queryEditForm.invalid"
             (click)="save()" i18n >Save</button>
     </div>
+  </form>
 </ng-template>

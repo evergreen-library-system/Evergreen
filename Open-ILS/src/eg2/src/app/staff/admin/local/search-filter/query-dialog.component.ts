@@ -5,6 +5,7 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'eg-query-dialog',
