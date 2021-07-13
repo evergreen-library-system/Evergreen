@@ -48,6 +48,10 @@ export class StaffCatalogService {
     // Add digital bookplate to search options.
     enableBookplates = false;
 
+    // whether to redirect to record page upon a single search
+    // result
+    jumpOnSingleHit = false;
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,
