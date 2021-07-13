@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {map, switchMap, distinctUntilChanged} from 'rxjs/operators';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {BibRecordService} from '@eg/share/catalog/bib-record.service';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
@@ -39,7 +39,8 @@ export class ResultsComponent implements OnInit, OnDestroy {
         private catUrl: CatalogUrlService,
         private staffCat: StaffCatalogService,
         private serverStore: ServerStoreService,
-        private basket: BasketService
+        private basket: BasketService,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -66,7 +67,11 @@ export class ResultsComponent implements OnInit, OnDestroy {
 
         // After each completed search, update the record selector.
         this.searchSub = this.cat.onSearchComplete.subscribe(
-            ctx => this.applyRecordSelection());
+            ctx => {
+                this.jumpIfNecessary();
+                this.applyRecordSelection();
+            }
+        );
 
         // Watch for basket changes applied by other components.
         this.basketSub = this.basket.onChange.subscribe(
@@ -78,6 +83,16 @@ export class ResultsComponent implements OnInit, OnDestroy {
             this.routeSub.unsubscribe();
             this.searchSub.unsubscribe();
             this.basketSub.unsubscribe();
+        }
+    }
+
+    // Jump to record page if only a single hit is returned
+    // and the jump is enabled by library setting
+    jumpIfNecessary() {
+        const ids = this.searchContext.currentResultIds();
+        if (this.staffCat.jumpOnSingleHit && ids.length === 1) {
+           // this.router.navigate(['/staff/catalog/record/' + ids[0], { queryParams: this.catUrl.toUrlParams(this.searchContext) }]);
+            this.router.navigate(['/staff/catalog/record/' + ids[0]], {queryParamsHandling: 'merge'});
         }
     }
 
