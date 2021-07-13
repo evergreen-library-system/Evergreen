@@ -1,6 +1,6 @@
 BEGIN;
 
---- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1269', :eg_version);
 
 WITH perms_to_add AS
     (SELECT id FROM
