@@ -131,7 +131,7 @@ sub fetch_course_materials {
             'flesh' => 2, 'flesh_fields' => {
                 'acmcm' => ['item', 'record', 'original_circ_modifier',
                     'original_location', 'original_status'],
-                'acp' => ['call_number', 'circ_lib', 'location', 'status'],
+                'acp' => ['call_number', 'circ_lib', 'circ_modifier', 'location', 'status'],
                 'bre' => ['wide_display_entry'],
             }
         };
