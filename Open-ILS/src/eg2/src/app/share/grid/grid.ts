@@ -402,19 +402,6 @@ export class GridColumnSet {
             this.columns.filter(c => c.required && !c.visible));
     }
 
-    // Sorted visible columns followed by sorted non-visible columns.
-    // Note we don't sort this.columns directly as it would impact
-    // grid column display ordering.
-    sortForColPicker(): GridColumn[] {
-        const visible = this.columns.filter(c => c.visible);
-        const invisible = this.columns.filter(c => !c.visible);
-
-        visible.sort((a, b) => a.label < b.label ? -1 : 1);
-        invisible.sort((a, b) => a.label < b.label ? -1 : 1);
-
-        return visible.concat(invisible);
-    }
-
     insertBefore(source: GridColumn, target: GridColumn) {
         let targetIdx = -1;
         let sourceIdx = -1;
