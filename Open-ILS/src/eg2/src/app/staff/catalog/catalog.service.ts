@@ -52,6 +52,10 @@ export class StaffCatalogService {
     // re-run the browse search on each navigation.
     browsePagerData: any[];
 
+    // whether to redirect to record page upon a single search
+    // result
+    jumpOnSingleHit = false;
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,

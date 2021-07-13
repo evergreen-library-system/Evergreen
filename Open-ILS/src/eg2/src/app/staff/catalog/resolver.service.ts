@@ -58,7 +58,8 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
             'eg.staffcat.exclude_electronic',
             'eg.catalog.search.form.open',
             'eg.staff.catalog.results.show_more',
-            'circ.staff_placed_holds_fallback_to_ws_ou'
+            'circ.staff_placed_holds_fallback_to_ws_ou',
+            'opac.staff.jump_to_details_on_single_hit',
         ]).then(settings => {
             this.staffCat.defaultSearchOrg =
                 this.org.get(settings['eg.search.search_lib']);
@@ -73,6 +74,8 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
                 settings['opac.search.enable_bookplate_search'];
             this.staffCat.showExcludeElectronic =
                 settings['eg.staffcat.exclude_electronic'] === true;
+            this.staffCat.jumpOnSingleHit =
+                settings['opac.staff.jump_to_details_on_single_hit'] === true;
         });
     }
 }
