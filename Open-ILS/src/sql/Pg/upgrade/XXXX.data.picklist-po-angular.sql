@@ -31,7 +31,25 @@ VALUES (
         'ACQ Lineitem List Page Size',
         'cwst', 'label'
     )
+), (
+    'ui.staff.angular_acq_search.enabled', 'gui', 'bool',
+    oils_i18n_gettext(
+        'ui.staff.angular_acq_search.enabled',
+        'Enable Experimental ACQ Selection/Purchase Search Interface Links',
+        'cwst', 'label'
+    )
 );
+
+INSERT INTO config.org_unit_setting_type (name, grp, datatype, label)
+VALUES (
+    'ui.staff.angular_acq_selection.enabled', 'gui', 'bool',
+    oils_i18n_gettext(
+        'ui.staff.angular_acq_selection.enabled',
+        'Enable Experimental ACQ Selection/Purchase Interfaces',
+        'cwst', 'label'
+    )
+);
+
 
 INSERT INTO config.print_template
     (id, name, label, owner, active, locale, template)

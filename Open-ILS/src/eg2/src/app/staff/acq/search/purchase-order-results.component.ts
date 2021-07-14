@@ -14,7 +14,6 @@ import {AcqSearchFormComponent} from './acq-search-form.component';
 @Component({
   selector: 'eg-purchase-order-results',
   templateUrl: 'purchase-order-results.component.html',
-  providers: [AcqSearchService]
 })
 export class PurchaseOrderResultsComponent implements OnInit {
 
@@ -65,4 +64,9 @@ export class PurchaseOrderResultsComponent implements OnInit {
             this.purchaseOrderResultsGrid.reload();
         });
     }
+
+    showExpAngLinks(): boolean {
+        return this.acqSearch.angSearchLinksEnabled;
+    }
+
 }

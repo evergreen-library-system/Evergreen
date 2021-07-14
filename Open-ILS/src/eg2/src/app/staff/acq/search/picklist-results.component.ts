@@ -20,8 +20,7 @@ import {AcqSearchFormComponent} from './acq-search-form.component';
 
 @Component({
   selector: 'eg-picklist-results',
-  templateUrl: 'picklist-results.component.html',
-  providers: [AcqSearchService]
+  templateUrl: 'picklist-results.component.html'
 })
 export class PicklistResultsComponent implements OnInit {
 
@@ -84,6 +83,14 @@ export class PicklistResultsComponent implements OnInit {
         this.cellTextGenerator = {
             name: row => row.name(),
         };
+    }
+
+    showExpAngOptions(): boolean {
+        return this.acqSearch.angSelectionEnabled;
+    }
+
+    showExpAngLinks(): boolean {
+        return this.acqSearch.angSearchLinksEnabled;
     }
 
     openCreateDialog() {

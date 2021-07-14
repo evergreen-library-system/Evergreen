@@ -16,8 +16,7 @@ import {AcqSearchFormComponent} from './acq-search-form.component';
 
 @Component({
   selector: 'eg-invoice-results',
-  templateUrl: 'invoice-results.component.html',
-  providers: [AcqSearchService]
+  templateUrl: 'invoice-results.component.html'
 })
 export class InvoiceResultsComponent implements OnInit {
 

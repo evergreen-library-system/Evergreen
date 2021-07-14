@@ -13,8 +13,7 @@ import {AcqSearchFormComponent} from './acq-search-form.component';
 
 @Component({
   selector: 'eg-lineitem-results',
-  templateUrl: 'lineitem-results.component.html',
-  providers: [AcqSearchService]
+  templateUrl: 'lineitem-results.component.html'
 })
 export class LineitemResultsComponent implements OnInit {
 
@@ -70,5 +69,9 @@ export class LineitemResultsComponent implements OnInit {
 
     showRow(row: any) {
         window.open('/eg/staff/acq/legacy/lineitem/worksheet/' + row.id(), '_blank');
+    }
+
+    showExpAngLinks(): boolean {
+        return this.acqSearch.angSearchLinksEnabled;
     }
 }

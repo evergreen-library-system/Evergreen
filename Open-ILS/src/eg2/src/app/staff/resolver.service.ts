@@ -141,6 +141,8 @@ export class StaffResolver implements Resolve<Observable<any>> {
             'webstaff.format.dates',
             'webstaff.format.date_and_time',
             'ui.staff.max_recent_patrons',
+            'circ.curbside', // navbar
+            'ui.staff.angular_acq_selection.enabled', // navbar
             'ui.staff.angular_catalog.enabled' // navbar
         ]).then(settings => {
             // Avoid clobbering defaults

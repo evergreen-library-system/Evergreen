@@ -9,6 +9,7 @@ import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {AttrDefsService} from './attr-defs.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 
 const baseIdlClass = {
     lineitem: 'jub',
@@ -108,11 +109,15 @@ export class AcqSearchService {
     _conjunction = 'all';
     firstRun = true;
 
+    angSelectionEnabled = false;
+    angSearchLinksEnabled = false;
+
     constructor(
         private net: NetService,
         private evt: EventService,
         private auth: AuthService,
         private pcrud: PcrudService,
+        private serverStore: ServerStoreService,
         private attrDefs: AttrDefsService
     ) {
         this.firstRun = true;
@@ -280,5 +285,16 @@ export class AcqSearchService {
             );
         };
         return gridSource;
+    }
+
+    loadUiPrefs(): Promise<any> {
+        return this.serverStore.getItemBatch([
+            'ui.staff.angular_acq_selection.enabled',
+            'ui.staff.angular_acq_search.enabled'
+        ]).then(sets => {
+            this.angSelectionEnabled = sets['ui.staff.angular_acq_selection.enabled'];
+            this.angSearchLinksEnabled =
+              sets['ui.staff.angular_acq_search.enabled'] && this.angSelectionEnabled;
+        });
     }
 }

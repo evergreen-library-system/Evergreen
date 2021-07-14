@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Router, Resolve, RouterStateSnapshot,
         ActivatedRouteSnapshot} from '@angular/router';
 import {AttrDefsService} from './attr-defs.service';
+import {AcqSearchService} from './acq-search.service';
 
 @Injectable()
 export class AttrDefsResolver implements Resolve<Promise<any[]>> {
@@ -11,15 +12,15 @@ export class AttrDefsResolver implements Resolve<Promise<any[]>> {
     constructor(
         private router: Router,
         private attrDefs: AttrDefsService,
+        private acqSearch: AcqSearchService
     ) {}
 
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Promise<any[]> {
 
-        return Promise.all([
-            this.attrDefs.fetchAttrDefs()
-        ]);
+        return this.attrDefs.fetchAttrDefs()
+        .then(_ => this.acqSearch.loadUiPrefs());
     }
 
 }
