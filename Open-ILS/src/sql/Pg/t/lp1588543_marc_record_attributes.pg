@@ -186,6 +186,7 @@ SELECT cmp_ok(
         "fest"=>"0",
         "ills"=>" ",
         "indx"=>"1",
+        "srce"=>" ",
         "cont1"=>"b",
         "date1"=>"2011",
         "date2"=>"9999",
