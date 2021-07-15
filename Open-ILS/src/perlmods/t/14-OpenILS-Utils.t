@@ -24,7 +24,6 @@ use_ok( 'OpenILS::Utils::Configure' );
 use_ok( 'OpenILS::Utils::Cronscript' );
 use_ok( 'OpenILS::Utils::CStoreEditor' );
 use_ok( 'OpenILS::Utils::Fieldmapper' );
-use_ok( 'OpenILS::Utils::ISBN' );
 use_ok( 'OpenILS::Utils::Lockfile' );
 use_ok( 'OpenILS::Utils::MFHDParser' );
 use_ok( 'OpenILS::Utils::MFHD' );
