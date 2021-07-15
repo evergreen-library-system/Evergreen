@@ -292,11 +292,18 @@ export class CircService {
         // NOTE: result.transit may exist, but it's not necessarily
         // the transit we want, since a transit close + open in the API
         // returns the closed transit.
+        return this.findCopyTransitById(result.copy.id())
+        .then(transit => {
+            result.transit = transit;
+            return transit;
+         });
+    }
 
-         return this.pcrud.search('atc', {
+    findCopyTransitById(copyId: number): Promise<IdlObject> {
+        return this.pcrud.search('atc', {
                 dest_recv_time : null,
                 cancel_time : null,
-                target_copy: result.copy.id()
+                target_copy: copyId
             }, {
                 limit : 1,
                 order_by : {atc : 'source_send_time desc'},
@@ -305,7 +312,6 @@ export class CircService {
             if (transit) {
                 transit.source(this.org.get(transit.source()));
                 transit.dest(this.org.get(transit.dest()));
-                result.transit = transit;
                 return transit;
             }
 
@@ -487,6 +493,7 @@ export class CircService {
             case 'PATRON_INACTIVE':
             case 'PATRON_ACCOUNT_EXPIRED':
             case 'CIRC_CLAIMS_RETURNED':
+            case 'ACTOR_USER_NOT_FOUND':
                 this.audio.play(`warning.${key}`);
                 return this.exitAlert({
                     textcode: result.firstEvent.textcode,
