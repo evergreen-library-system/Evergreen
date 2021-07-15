@@ -197,6 +197,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     };
 
     $scope.local_overlay_target = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record') || 0;
+    $scope.local_overlay_target_tcn = egCore.hatch.getLocalItem('eg.cat.marked_overlay_tcn') || 0;
     if($scope.local_overlay_target) {
         var currTarget = $scope.local_overlay_target;
         get_tcn(currTarget);
@@ -212,6 +213,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
             get_tcn(currTarget);
         }
         egCore.hatch.setLocalItem('eg.cat.marked_overlay_record',$scope.local_overlay_target);
+        egCore.hatch.setLocalItem('eg.cat.marked_overlay_tcn',$scope.local_overlay_target_tcn);
     }
 
     function get_tcn(currTarget) {
@@ -366,7 +368,9 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     $scope.overlay_record = function() {
         var items = $scope.gridControls.selectedItems();
         var overlay_target = $scope.local_overlay_target;
+        var overlay_target_tcn = $scope.local_overlay_target_tcn;
         var live_overlay_target = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record') || 0;
+        var live_overlay_target_tcn = egCore.hatch.getLocalItem('eg.cat.marked_overlay_tcn') || 0;
         var args = {
             'marc_xml' : items[0]['marcxml'],
             'bib_source' : null
@@ -385,6 +389,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                     .then(function(rec) {
                         $scope.overlay_target.orig_marc_xml = rec.marc();
                         $scope.merge_marc(); // in case a sticky value was already set
+                        $scope.overlay_target_tcn = overlay_target_tcn;
                     });
                 }
 
@@ -455,7 +460,8 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                     egConfirmDialog.open(
                         confirm_title,
                         confirm_msg,
-                        { id : overlay_target, live_id : live_overlay_target }
+                        { id : overlay_target, live_id : live_overlay_target,
+                            tcn : overlay_target_tcn, live_tcn: live_overlay_target_tcn}
                     ).result.then(
                         function () { // proceed -- but check live overlay for unset-ness
                             if (live_overlay_target != 0) {
@@ -487,7 +493,9 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
             ).then(
                 function(result) {
                     $scope.local_overlay_target = 0;
+                    $scope.local_overlay_target_tcn = 0;
                     egCore.hatch.removeLocalItem('eg.cat.marked_overlay_record');
+                    egCore.hatch.removeLocalItem('eg.cat.marked_overlay_tcn');
                     console.debug('overlay complete, target removed');
                     $window.open('/eg2/staff/catalog/record/' + overlay_target);
                 }
