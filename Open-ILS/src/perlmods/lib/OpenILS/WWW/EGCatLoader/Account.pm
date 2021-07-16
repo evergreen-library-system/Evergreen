@@ -2050,8 +2050,8 @@ sub fetch_user_circs {
         flesh => 3,
         flesh_fields => {
             circ => ['target_copy'],
-            acp => ['call_number'],
-            acn => ['record','owning_lib']
+            acp => ['call_number','parts'],
+            acn => ['record','owning_lib','prefix','suffix']
         }
     };
 
