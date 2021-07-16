@@ -104,7 +104,9 @@ export CPAN_MODULES_FORCE = \
 	Class::DBI::Frozen::301
 
 export CPAN_MODULES_PGSQL = \
-	MARC::File::XML
+	MARC::File::XML \
+	String::KeyboardDistance \
+	Text::Levenshtein::Damerau::XS
 
 PGSQL_APT_REPO_DEBS = \
         wget \
