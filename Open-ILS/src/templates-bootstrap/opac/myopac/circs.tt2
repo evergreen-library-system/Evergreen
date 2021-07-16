@@ -91,8 +91,19 @@
                           circ.SORTING = circ.circ.target_copy.barcode;
 
                        CASE "callnum";
-                          circ.SORTING = circ.circ.target_copy.call_number.label;
-                        CASE "lib";
+                          sortlist = [];
+
+                          FOREACH element IN [circ.circ.target_copy.call_number.prefix.label_sortkey
+                                              circ.circ.target_copy.call_number.label_sortkey
+                                              circ.circ.target_copy.call_number.suffix.label_sortkey
+                                              circ.circ.target_copy.parts.0.label_sortkey];
+                              IF (element);
+                                  sortlist.push(element);
+                              END;
+                          END;
+                          circ.SORTING = sortlist.join("");
+
+                       CASE "lib";
                           circ.SORTING = circ.circ.target_copy.call_number.owning_lib.name;
 
                        CASE;
@@ -178,7 +189,21 @@
                         </td>
                         <td>
                             <span class="sr-only">Call Number</span>
-                            [% circ.circ.target_copy.call_number.label | html %]
+                            [%-
+                                 cnlist = [];
+                                 FOREACH element IN [circ.circ.target_copy.call_number.prefix.label
+                                                     circ.circ.target_copy.call_number.label
+                                                     circ.circ.target_copy.call_number.suffix.label];
+                                     IF (element);
+                                       cnlist.push(element);
+                                     END;
+                                 END;
+                                 cn = cnlist.join(' ');
+                            %]
+                            [% cn | html %]
+                            [%- IF circ.circ.target_copy.parts.0.label %]
+                                  </BR>[% circ.circ.target_copy.parts.0.label | html -%]
+                            [%- END %]
                         </td>
                          [% IF ctx.get_org_setting(ctx.user.home_ou, 'opac.show_owning_lib_column'); %]
                           <td>
