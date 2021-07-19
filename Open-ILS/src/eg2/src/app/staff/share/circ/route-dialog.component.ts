@@ -104,7 +104,12 @@ export class RouteDialogComponent extends DialogComponent {
     applySettings(): Promise<boolean> {
 
         if (this.checkin.transit) {
-            if (this.checkin.patron) {
+            if (this.checkin.patron && this.checkin.hold &&
+                // It's possible to recieve a fulfilled hold in the
+                // checkin response when a checkin results in canceling
+                // a hold transit for a hold that was fulfilled while
+                // the item was in transit.
+                !this.checkin.hold.fulfillment_time()) {
                 this.slip = 'hold_transit_slip';
             } else {
                 this.slip = 'transit_slip';

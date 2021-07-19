@@ -912,7 +912,8 @@ export class CircService {
                 this.audio.play(result.hold ?
                     'info.checkin.transit.hold' : 'info.checkin.transit');
                 this.components.routeDialog.checkin = result;
-                return this.components.routeDialog.open().toPromise()
+                return this.findCopyTransit(result)
+                .then(_ => this.components.routeDialog.open().toPromise())
                 .then(_ => result);
 
             case 'ASSET_COPY_NOT_FOUND':
