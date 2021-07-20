@@ -86,6 +86,10 @@ export class BillingHistoryComponent implements OnInit {
 
         this.xactsDataSource.getRows = (pager: Pager, sort: any[]) => {
 
+            if (sort.length === 0) {
+                sort = [{name: 'xact_start', dir: 'DESC'}];
+            }
+
             const query: any = {
                usr: this.patronId,
                xact_start: {between: [this.xactsStart, this.xactsEnd]},
@@ -104,6 +108,10 @@ export class BillingHistoryComponent implements OnInit {
                'xact.usr': this.patronId,
                payment_ts: {between: [this.paymentsStart, this.paymentsEnd]},
             };
+
+            if (sort.length === 0) {
+                sort = [{name: 'payment_ts', dir: 'DESC'}];
+            }
 
             return this.flatData.getRows(
                 this.paymentsGrid.context, query, pager, sort);
