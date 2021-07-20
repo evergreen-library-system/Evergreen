@@ -197,10 +197,15 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     };
 
     $scope.local_overlay_target = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record') || 0;
-    $scope.local_overlay_target_tcn = egCore.hatch.getLocalItem('eg.cat.marked_overlay_tcn') || 0;
+
+    // Value is immediately replaced below
+    // $scope.local_overlay_target_tcn = egCore.hatch.getLocalItem('eg.cat.marked_overlay_tcn') || 0;
+
     if($scope.local_overlay_target) {
         var currTarget = $scope.local_overlay_target;
-        get_tcn(currTarget);
+
+        get_tcn(currTarget).then(
+            function(tcn) { $scope.local_overlay_target_tcn = tcn; });
     }
     $scope.mark_as_overlay_target = function() {
         var items = $scope.gridControls.selectedItems();
@@ -210,19 +215,24 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         } else {
             $scope.local_overlay_target = items[0]['bibid'];
             var currTarget = items[0] ['bibid'];
-            get_tcn(currTarget);
+            get_tcn(currTarget).then(
+                function(tcn) { $scope.local_overlay_target_tcn = tcn; });
+
         }
         egCore.hatch.setLocalItem('eg.cat.marked_overlay_record',$scope.local_overlay_target);
-        egCore.hatch.setLocalItem('eg.cat.marked_overlay_tcn',$scope.local_overlay_target_tcn);
+
+        // Here we are applying the previous value as the TCN
+        // since get_tcn() runs asynchronously.
+        // egCore.hatch.setLocalItem('eg.cat.marked_overlay_tcn',$scope.local_overlay_target_tcn);
     }
 
+    // Returns promise of TCN value
     function get_tcn(currTarget) {
-        egCore.pcrud.retrieve('bre', currTarget, {
+        return egCore.pcrud.retrieve('bre', currTarget, {
             select: {bre: ['tcn_value']}
         }).then(function(rec) {
-            $scope.local_overlay_target_tcn = rec.tcn_value();
+            return rec.tcn_value();
         });
-        return;
     };
 
     $scope.cant_overlay = function() {
@@ -366,11 +376,31 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     }
 
     $scope.overlay_record = function() {
-        var items = $scope.gridControls.selectedItems();
+
+        var live_overlay_target = 
+            egCore.hatch.getLocalItem('eg.cat.marked_overlay_record') || 0;
+
+        if ($scope.local_overlay_target == live_overlay_target) {
+            // Avoid the extra network call when the target is unchanged.
+            overlay_record_modal(
+                $scope.local_overlay_target, $scope.local_overlay_target_tcn);
+            return;
+        }
+
+        // Target changed.  Fetch the new TCN.
+        get_tcn(live_overlay_target).then(
+            function(tcn) { 
+                overlay_record_modal(live_overlay_target, tcn)
+            }
+        );
+    }
+
+    function overlay_record_modal(live_overlay_target, live_overlay_target_tcn) {
+
         var overlay_target = $scope.local_overlay_target;
         var overlay_target_tcn = $scope.local_overlay_target_tcn;
-        var live_overlay_target = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record') || 0;
-        var live_overlay_target_tcn = egCore.hatch.getLocalItem('eg.cat.marked_overlay_tcn') || 0;
+
+        var items = $scope.gridControls.selectedItems();
         var args = {
             'marc_xml' : items[0]['marcxml'],
             'bib_source' : null
@@ -495,7 +525,10 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                     $scope.local_overlay_target = 0;
                     $scope.local_overlay_target_tcn = 0;
                     egCore.hatch.removeLocalItem('eg.cat.marked_overlay_record');
-                    egCore.hatch.removeLocalItem('eg.cat.marked_overlay_tcn');
+
+                    // No longer using.
+                    // egCore.hatch.removeLocalItem('eg.cat.marked_overlay_tcn');
+
                     console.debug('overlay complete, target removed');
                     $window.open('/eg2/staff/catalog/record/' + overlay_target);
                 }
