@@ -198,9 +198,6 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
 
     $scope.local_overlay_target = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record') || 0;
 
-    // Value is immediately replaced below
-    // $scope.local_overlay_target_tcn = egCore.hatch.getLocalItem('eg.cat.marked_overlay_tcn') || 0;
-
     if($scope.local_overlay_target) {
         var currTarget = $scope.local_overlay_target;
 
@@ -220,10 +217,6 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
 
         }
         egCore.hatch.setLocalItem('eg.cat.marked_overlay_record',$scope.local_overlay_target);
-
-        // Here we are applying the previous value as the TCN
-        // since get_tcn() runs asynchronously.
-        // egCore.hatch.setLocalItem('eg.cat.marked_overlay_tcn',$scope.local_overlay_target_tcn);
     }
 
     // Returns promise of TCN value
@@ -497,6 +490,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                             if (live_overlay_target != 0) {
                                 $scope.overlay_target.id = $scope.overlay_target.live_id;
                                 overlay_target = live_overlay_target;
+                                overlay_target_tcn = live_overlay_target_tcn;
                             }
                             $scope.immediate_merge();
                         },
@@ -525,10 +519,6 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                     $scope.local_overlay_target = 0;
                     $scope.local_overlay_target_tcn = 0;
                     egCore.hatch.removeLocalItem('eg.cat.marked_overlay_record');
-
-                    // No longer using.
-                    // egCore.hatch.removeLocalItem('eg.cat.marked_overlay_tcn');
-
                     console.debug('overlay complete, target removed');
                     $window.open('/eg2/staff/catalog/record/' + overlay_target);
                 }
