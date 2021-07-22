@@ -3026,6 +3026,32 @@ INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatyp
         'string'
     );
 
+INSERT INTO config.usr_setting_type (
+    name,
+    opac_visible,
+    label,
+    description,
+    datatype,
+    reg_default
+) VALUES (
+    'circ.collections.exempt',
+    FALSE,
+    oils_i18n_gettext(
+        'circ.collections.exempt',
+        'Collections: Exempt',
+        'cust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'circ.collections.exempt',
+        'User is exempt from collections tracking/processing',
+        'cust',
+        'description'
+    ),
+    'bool',
+    'false'
+);
+
 -- Add groups for org_unit settings
 INSERT INTO config.settings_group (name, label) VALUES
 ('acq', oils_i18n_gettext('acq', 'Acquisitions', 'csg', 'label')),

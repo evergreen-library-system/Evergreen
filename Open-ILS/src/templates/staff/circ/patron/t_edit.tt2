@@ -759,12 +759,11 @@ within the "form" by name for validation.
   </div>
 </div>
 
-<!-- TODO: Add circ.collections.exempt to master SQL seed data -->
 <div class="row reg-field-row" 
   ng-if="user_setting_types['circ.collections.exempt']">
   <div class="col-md-3 reg-field-label">
     <label id="exempt">
-      {{user_setting_types['circ.collections.exempt']}}
+      {{user_setting_types['circ.collections.exempt'].label()}}
     </label>
   </div>
   <div class="col-md-3 reg-field-input">
