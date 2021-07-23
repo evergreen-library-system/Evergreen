@@ -35,7 +35,7 @@
     "angular-file-saver": "^1.1.3",
     "angular-hotkeys": "^1.7.0",
     "angular-location-update": "0.0.2",
-    "angular-order-object-by": "github:rxfork/ngOrderObjectBy#npm",
+    "angular-order-object-by": "1.3.0",
     "angular-route": "~1.6.7",
     "angular-tablesort": "^1.6.0",
     "angular-tree-control": "^0.2.28",
