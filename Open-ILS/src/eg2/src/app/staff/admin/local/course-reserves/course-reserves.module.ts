@@ -10,6 +10,7 @@ import {CourseReservesRoutingModule} from './routing.module';
 import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
 import {MarcSimplifiedEditorModule} from '@eg/staff/share/marc-edit/simplified-editor/simplified-editor.module';
 import {CourseTermMapComponent} from './course-term-map.component';
+import {CourseTermMapGridComponent} from './course-term-map-grid.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {CourseTermMapComponent} from './course-term-map.component';
     CoursePageComponent,
     CourseAssociateMaterialComponent,
     CourseAssociateUsersComponent,
-    CourseTermMapComponent
+    CourseTermMapComponent,
+    CourseTermMapGridComponent
   ],
   imports: [
     StaffCommonModule,

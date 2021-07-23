@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 /**
  * Very basic page for editing course/term map
@@ -18,11 +19,17 @@ import {Component} from '@angular/core';
                 </a>
             </div>
         </div>
-        <eg-admin-page persistKeyPfx="local" idlClass="acmtcm"
-            [disableOrgFilter]="true"></eg-admin-page>
+        <eg-course-term-map-grid [courseId]="courseId"></eg-course-term-map-grid>
     `
 })
 
 export class CourseTermMapComponent {
+    public courseId: number;
+
+    constructor(private route: ActivatedRoute) {
+        const filters = this.route.snapshot.queryParamMap.get('gridFilters');
+        this.courseId = JSON.parse(filters)['course'] || 1;
+    }
+
 
 }

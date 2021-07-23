@@ -66,10 +66,7 @@
   <li [ngbNavItem]="'courseTerms'">
     <a ngbNavLink i18n>Course terms</a>
     <ng-template ngbNavContent>
-      <eg-admin-page idlClass="acmtcm" readonlyFields="id"
-        [defaultNewRecord]="defaultNewAcmtcm"
-        hideGridFields="id" [dataSource]="termsDataSource">
-      </eg-admin-page>
+      <eg-course-term-map-grid [courseId]="courseId"></eg-course-term-map-grid>
     </ng-template>
   </li>
 </ul>
