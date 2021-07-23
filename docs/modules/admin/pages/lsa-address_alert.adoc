@@ -42,20 +42,20 @@ How to add an address to the alert list:
 .New Address Alert Fields 
 |===
 |*Field*               |*Description*
-| Active               |Check-box that controls if the alert is active or not.  Inactive alerts are not processed.
-| Address Alert ID     |Displays the internal database id for alert after the alert has been saved.  This auto-populates.
-| Alert Message        |Message that will be displayed to staff when this alert is triggered.
-| Billing Address      |Check-box that specifies that the alert will only match a billing address if checked.
-| City                 |City regular expression.
-| Country              |Country regular expression.
-| County               |County regular expression.
-| Mailing Address      |Check-box that specifies that the alert will only match a mailing address if checked. 
-| Match All Fields     |Check-box that controls if all the fields need to match to trigger the alert(checked), or only at least one field needs to match(unchecked). 
 | Owner                |Which Org Unit owns this alert.  Set this to your system or branch.
-| Postal Code          |Postal Code regular expression.
-| State                |State regular expression.
+| Alert Message        |Message that will be displayed to staff when this alert is triggered.
 | Street (1)           |Street 1 field regular expression.
 | Street (2)           |Street 2 field regular expression.
+| City                 |City regular expression.
+| County               |County regular expression.
+| State                |State regular expression.
+| Postal Code          |Postal Code regular expression.
+| Country              |Country regular expression.
+| Billing Address      |Check-box that specifies that the alert will only match a billing address if checked.
+| Mailing Address      |Check-box that specifies that the alert will only match a mailing address if checked. 
+| Match All Fields     |Check-box that controls if all the fields need to match to trigger the alert(checked), or only at least one field needs to match(unchecked). 
+| Active               |Check-box that controls if the alert is active or not.  Inactive alerts are not processed.
+| Address Alert ID     |Displays the internal database id for alert after the alert has been saved.  This auto-populates.
 |===
 +
 . Click save once you have finished.
