@@ -1,0 +1,24 @@
+<eg-grid #grid idlClass="acmtcm" [dataSource]="gridDataSource" [filterable]="true">
+  <eg-grid-toolbar-button
+    label="Attach course to a term"
+    i18n-label (onClick)="createNew()"></eg-grid-toolbar-button>
+  <eg-grid-toolbar-action label="Detach course(s) from term(s)" i18n-label
+    [action]="deleteSelected"></eg-grid-toolbar-action>
+</eg-grid>
+
+<eg-fm-record-editor #editDialog idlClass="acmtcm"
+  [fieldOptions]="{term:{customTemplate:{template:termTemplate}}}"
+  fieldOrder="course,term"
+  hiddenFieldsList="id"
+  [defaultNewRecord]="defaultNewAcmtcm"
+  [readonlyFieldsList]="readonlyFields">
+</eg-fm-record-editor>
+
+<ng-template #termTemplate let-field="field" let-record="record">
+  <eg-combobox [required]="true"
+    [asyncSupportsEmptyTermClick]="true"
+    [asyncDataSource]="termEntryGenerator(record['course']())"
+    [selectedId]="record['term']()"
+    (onChange)="($event) ? record['term']($event.id) : ''">
+  </eg-combobox>
+</ng-template>

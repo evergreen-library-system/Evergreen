@@ -11,6 +11,7 @@ import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-loca
 import {MarcSimplifiedEditorModule} from '@eg/staff/share/marc-edit/simplified-editor/simplified-editor.module';
 import {PatronModule} from '@eg/staff/share/patron/patron.module';
 import {CourseTermMapComponent} from './course-term-map.component';
+import {CourseTermMapGridComponent} from './course-term-map-grid.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {CourseTermMapComponent} from './course-term-map.component';
     CoursePageComponent,
     CourseAssociateMaterialComponent,
     CourseAssociateUsersComponent,
-    CourseTermMapComponent
+    CourseTermMapComponent,
+    CourseTermMapGridComponent
   ],
   imports: [
     StaffCommonModule,
