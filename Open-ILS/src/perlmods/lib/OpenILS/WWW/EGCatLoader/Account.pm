@@ -2198,8 +2198,8 @@ sub fetch_user_circ_history {
         flesh => 3,
         flesh_fields => {
             auch => ['target_copy','source_circ'],
-            acp => ['call_number'],
-            acn => ['record']
+            acp => ['call_number','parts'],
+            acn => ['record','prefix','suffix']
         },
     );
 
