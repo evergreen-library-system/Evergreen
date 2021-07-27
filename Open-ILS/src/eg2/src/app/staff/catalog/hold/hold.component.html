@@ -62,8 +62,9 @@
             <input type='text' class="form-control" name="userBarcode"
               [disabled]="holdFor!='patron'" id='patron-barcode'
               aria-label="Patron barcode" i18n-aria-label
-              (keyup.enter)="userBarcodeChanged()"
-              [(ngModel)]="userBarcode" (change)="userBarcodeChanged()"/>
+              (ngModelChange)="debounceUserBarcodeLookup($event)"
+              (paste)="debounceUserBarcodeLookup($event)"
+              [(ngModel)]="userBarcode"/>
             <div class="input-group-append">
               <button class="btn btn-outline-dark" (click)="userBarcodeChanged()">Submit</button>
             </div>
