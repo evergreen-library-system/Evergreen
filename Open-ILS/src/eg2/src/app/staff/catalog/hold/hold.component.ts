@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {tap} from 'rxjs/operators';
 import {EventService} from '@eg/core/event.service';
@@ -18,6 +18,7 @@ import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.comp
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronSearchDialogComponent
   } from '@eg/staff/share/patron/search-dialog.component';
+import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 
 class HoldContext {
     holdMeta: HoldRequestTarget;
@@ -64,7 +65,9 @@ export class HoldComponent implements OnInit {
     smsValue: string;
     suspend: boolean;
     activeDateStr: string;
+    activeDateYmd: string;
     activeDate: Date;
+    activeDateInvalid = false;
 
     holdContexts: HoldContext[];
     recordSummaries: BibRecordSummary[];
@@ -93,6 +96,8 @@ export class HoldComponent implements OnInit {
       patronSearch: PatronSearchDialogComponent;
 
     @ViewChild('smsCbox', {static: false}) smsCbox: ComboboxComponent;
+
+    @ViewChild('activeDateAlert') private activeDateAlert: AlertDialogComponent;
 
     constructor(
         private router: Router,
@@ -328,6 +333,16 @@ export class HoldComponent implements OnInit {
         this.activeDateStr = dateStr;
     }
 
+    setActiveDate(date: Date) {
+        this.activeDate = date;
+        if (date && date < new Date()) {
+            this.activeDateInvalid = true;
+            this.activeDateAlert.open();
+        } else {
+            this.activeDateInvalid = false;
+        }
+    }
+
     userBarcodeChanged() {
         const newBc = this.userBarcode;
 
@@ -476,7 +491,7 @@ export class HoldComponent implements OnInit {
     }
 
     readyToPlaceHolds(): boolean {
-        if (!this.user || this.placeHoldsClicked) {
+        if (!this.user || this.placeHoldsClicked || this.activeDateInvalid) {
             return false;
         }
         if (this.notifySms) {
