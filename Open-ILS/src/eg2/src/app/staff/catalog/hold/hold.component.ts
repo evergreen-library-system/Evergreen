@@ -74,6 +74,7 @@ export class HoldComponent implements OnInit {
 
     currentUserBarcode: string;
     smsCarriers: ComboboxEntry[];
+    userBarcodeTimeout: number;
 
     smsEnabled: boolean;
 
@@ -341,6 +342,22 @@ export class HoldComponent implements OnInit {
         } else {
             this.activeDateInvalid = false;
         }
+    }
+
+    // Note this is called before this.userBarcode has its latest value.
+    debounceUserBarcodeLookup(barcode: string | ClipboardEvent) {
+        clearTimeout(this.userBarcodeTimeout);
+
+        if (!barcode) {
+            this.badBarcode = null;
+            return;
+        }
+
+        const timeout =
+            (barcode && (barcode as ClipboardEvent).target) ? 0 : 500;
+
+        this.userBarcodeTimeout =
+            setTimeout(() => this.userBarcodeChanged(), timeout);
     }
 
     userBarcodeChanged() {
