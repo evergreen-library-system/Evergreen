@@ -2,6 +2,13 @@
 <eg-patron-search-dialog #patronSearch>
 </eg-patron-search-dialog>
 
+<eg-alert-dialog #activeDateAlert
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Invalid Hold Activation Date"
+  dialogBody="Hold activation date {{activeDateYmd}} is not valid.
+    Please chose a date in the future">
+</eg-alert-dialog>
+
 <div class="row">
   <div class="col-lg-1">
     <button class="btn btn-info label-with-material-icon"
@@ -94,9 +101,13 @@
           </div>
         </div>
         <div class="col-lg-6">
-          <eg-date-select [(ngModel)]="activeDate" name='active-date'
-            (onChangeAsIso)="activeDateSelected($event)" [disabled]="!suspend">
-          </eg-date-select>
+          <div [ngClass]="{'border border-danger rounded': activeDateInvalid}">
+            <eg-date-select [(ngModel)]="activeDate" name='active-date'
+              (onChangeAsYmd)="activeDateYmd = $event"
+              (onChangeAsDate)="setActiveDate($event)"
+              (onChangeAsIso)="activeDateSelected($event)" [disabled]="!suspend">
+            </eg-date-select>
+          </div>
         </div>
       </div>
       <div class="row mt-2" *ngIf="multiHoldsActive">
@@ -192,7 +203,6 @@
           <li class="list-group-item">
             <button class="btn btn-success" (click)="placeHolds()"
               [disabled]="!readyToPlaceHolds()" i18n>Place Hold(s)</button>
-
             <button class="btn btn-outline-dark ml-2" (click)="resetForm()" i18n>Reset</button>
           </li>
         </ul><!-- col -->
