@@ -96,7 +96,17 @@
                         circ.SORTING = circ.circ.target_copy.barcode;
 
                     CASE "callnum";
-                        circ.SORTING = circ.circ.target_copy.call_number.label;
+                        sortlist = [];
+
+                        FOREACH element IN [circ.circ.target_copy.call_number.prefix.label_sortkey
+                                            circ.circ.target_copy.call_number.label_sortkey
+                                            circ.circ.target_copy.call_number.suffix.label_sortkey
+                                            circ.circ.target_copy.parts.0.label_sortkey];
+                            IF (element);
+                                sortlist.push(element);
+                            END;
+                        END;
+                        circ.SORTING = sortlist.join("");
 
                     CASE;
                         sort_field = "";
@@ -162,7 +172,23 @@
                                 ) %]">[% circ.ATTRS.author | html %]</a>
                             [% END; %]
                         </td>
-                        <td>[% circ.circ.target_copy.call_number.label | html %]</td>
+                        <td>
+                              [%-
+                                   cnlist = [];
+                                   FOREACH element IN [circ.circ.target_copy.call_number.prefix.label
+                                                circ.circ.target_copy.call_number.label
+                                                circ.circ.target_copy.call_number.suffix.label];
+                                       IF (element);
+                                         cnlist.push(element);
+                                       END;
+                                   END;
+                                   cn = cnlist.join(' ');
+                              %]
+                              [% cn | html %]
+                              [%- IF circ.circ.target_copy.parts.0.label %]
+                                    </BR>[% circ.circ.target_copy.parts.0.label | html -%]
+                              [%- END %]
+                        </td>
                         <td>
                             [% date.format(ctx.parse_datetime(circ.circ.xact_start),DATE_FORMAT); %]
                         </td>
