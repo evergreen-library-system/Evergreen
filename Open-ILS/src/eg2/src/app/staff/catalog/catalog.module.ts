@@ -11,7 +11,6 @@ import {SearchFormComponent} from './search-form.component';
 import {ResultsComponent} from './result/results.component';
 import {RecordComponent} from './record/record.component';
 import {CopiesComponent} from './record/copies.component';
-import {OpacViewComponent} from './record/opac.component';
 import {ResultPaginationComponent} from './result/pagination.component';
 import {ResultFacetsComponent} from './result/facets.component';
 import {ResultRecordComponent} from './result/record.component';
@@ -56,7 +55,6 @@ import {PreferencesComponent} from './prefs.component';
     HoldingsMaintenanceComponent,
     SearchTemplatesComponent,
     CnBrowseComponent,
-    OpacViewComponent,
     PreferencesComponent,
     CnBrowseResultsComponent
   ],
