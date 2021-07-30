@@ -243,9 +243,9 @@ image::media/holds-managing-15.JPG[holds-managing-15]
 
 === Displaying Queue Position ===
 
-Using the Column Picker, you can display _Queue Position_ and _Total number of Holds_.
+Using the Column Picker, you can display _Queue Position_.
 
-image::media/holds-managing-16.png[holds-managing-16]
+image::media/queue_positions.jpg[holds-managing-16]
 
 
 === Managing Holds in Title Records ===
