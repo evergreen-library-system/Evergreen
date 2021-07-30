@@ -319,8 +319,6 @@ Column adjustments will only affect the screen display and the CSV download for 
 
 * _Print Full Pull List_ prints _Title_, _Author_, _Shelving Location_, _Call Number_ and _Item Barcode_. This method uses less paper than the alternate strategy.
 
-* _Print Full Pull List (Alternate Strategy)_ prints the same fields as the above option but also includes a patron barcode. This list will also first sort by copy location, as ordered under _Admin_ -> _Local Administration_ -> _Copy Location Order_.
-
 * _Download CSV_ – This option is available from the _List Actions_ button (adjacent to the _Page "#"_ button) and saves all fields in the screen display to a CSV file. This file can then be opened in Excel or another spreadsheet program. This option provides more flexibility in identifying fields that should be printed.
 +
 image::media/holds-pull-4.png[holds-pull-4]
