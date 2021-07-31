@@ -172,7 +172,8 @@
                   <label for="smsValue" class="input-group-text" i18n>SMS Number</label>
                 </div>
                 <input type="text" class="form-control" [disabled]="!notifySms"
-                  id="smsValue" name="smsValue" [(ngModel)]="smsValue"/>
+                  id="smsValue" name="smsValue" [(ngModel)]="smsValue"
+                  [required]="notifySms"/>
               </div>
             </div>
           </li>
@@ -182,7 +183,7 @@
             </div>
             <div class="flex-1">
               <eg-combobox [disabled]="!notifySms" #smsCbox
-                domId="smsCarriers"
+                domId="smsCarriers" [required]="notifySms"
                 placeholder="SMS Carriers" i18n-placeholder
                 [entries]="smsCarriers">
               </eg-combobox>
@@ -190,7 +191,7 @@
           </li>
           <li class="list-group-item">
             <button class="btn btn-success" (click)="placeHolds()"
-              [disabled]="!user || placeHoldsClicked" i18n>Place Hold(s)</button>
+              [disabled]="!readyToPlaceHolds()" i18n>Place Hold(s)</button>
 
             <button class="btn btn-outline-dark ml-2" (click)="resetForm()" i18n>Reset</button>
           </li>

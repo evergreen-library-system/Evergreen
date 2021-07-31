@@ -475,6 +475,18 @@ export class HoldComponent implements OnInit {
         }
     }
 
+    readyToPlaceHolds(): boolean {
+        if (!this.user || this.placeHoldsClicked) {
+            return false;
+        }
+        if (this.notifySms) {
+            if (!this.smsValue.length || !this.smsCbox?.selectedId) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // Attempt hold placement on all targets
     placeHolds(idx?: number) {
         if (!idx) {
