@@ -13901,6 +13901,44 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
+    <class id="cusppet" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::ui_staff_portal_page_entry_type" oils_persist:tablename="config.ui_staff_portal_page_entry_type" reporter:label="Portal Page Entry Type">
+        <fields oils_persist:primary="code">
+            <field name="code" reporter:label="Entry Type Code" reporter:datatype="text" reporter:selector="label" oils_obj:required="true"/>
+            <field name="label" reporter:label="Entry Type Label" reporter:datatype="text" oils_obj:required="true"/>
+        </fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
+    <class id="cusppe" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::ui_staff_portal_page_entry" oils_persist:tablename="config.ui_staff_portal_page_entry" reporter:label="Portal Page Entry">
+        <fields oils_persist:primary="id" oils_persist:sequence="config.ui_staff_portal_page_entry_id_seq">
+            <field name="id" reporter:label="ID" reporter:datatype="id" reporter:selector="label"/>
+            <field name="page_col" reporter:label="Page Column" reporter:datatype="int" oils_obj:required="true"/>
+            <field name="col_pos" reporter:label="Column Position" reporter:datatype="int" oils_obj:required="true"/>
+            <field name="entry_type" reporter:label="Entry Type" reporter:datatype="link" oils_obj:required="true"/>
+            <field name="label" reporter:label="Entry Label" reporter:datatype="text"/>
+            <field name="image_url" reporter:label="Entry Image URL" reporter:datatype="text"/>
+            <field name="target_url" reporter:label="Entry Target URL" reporter:datatype="text"/>
+            <field name="entry_text" reporter:label="Entry Text" reporter:datatype="text"/>
+			<field name="owner" reporter:label="Owner" reporter:datatype="link" oils_obj:required="true"/>
+        </fields>
+		<links>
+			<link field="entry_type" reltype="has_a" key="code" map="" class="cusppet"/>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="ADMIN_STAFF_PORTAL_PAGE" context_field="owner"/>
+                <retrieve permission="STAFF_LOGIN" context_field="owner"/>
+                <update permission="ADMIN_STAFF_PORTAL_PAGE" context_field="owner"/>
+                <delete permission="ADMIN_STAFF_PORTAL_PAGE" context_field="owner"/>
+            </actions>
+        </permacrud>
+    </class>
+
 	<!-- ********************************************************************************************************************* -->
 </IDL>
 

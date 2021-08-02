@@ -1383,4 +1383,21 @@ CREATE TABLE config.geolocation_service (
     api_key      TEXT
 );
 
+CREATE TABLE config.ui_staff_portal_page_entry_type (
+    code        TEXT PRIMARY KEY,
+    label       TEXT NOT NULL
+);
+
+CREATE TABLE config.ui_staff_portal_page_entry (
+    id          SERIAL PRIMARY KEY,
+    page_col    INTEGER NOT NULL,
+    col_pos     INTEGER NOT NULL,
+    entry_type  TEXT NOT NULL, -- REFERENCES config.ui_staff_portal_page_entry_type(code)
+    label       TEXT,
+    image_url   TEXT,
+    target_url  TEXT,
+    entry_text  TEXT,
+    owner       INT NOT NULL -- REFERENCES actor.org_unit (id)
+);
+
 COMMIT;
