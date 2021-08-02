@@ -88,7 +88,8 @@ export class StaffLoginComponent implements OnInit {
 
                 } else {
 
-                    // Initial login clears cached org unit settings.
+                    // Initial login clears cached org unit setting values
+                    // and user/workstation setting values
                     this.org.clearCachedSettings().then(_ => {
 
                         // Force reload of the app after a successful login.
