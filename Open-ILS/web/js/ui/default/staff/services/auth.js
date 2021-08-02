@@ -147,7 +147,7 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch , $i
 
             // NOTE: egEnv also defines basePath, but we cannot import
             // egEnv here becuase it creates a circular reference.
-            $window.location.href = '/eg/staff' + ws_path;
+            $window.location.href = '/eg2/staff' + ws_path;
             deferred.resolve();
         });
     }

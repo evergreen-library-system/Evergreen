@@ -95,11 +95,8 @@ export class StaffLoginComponent implements OnInit {
                         // Force reload of the app after a successful login.
                         // This allows the route resolver to re-run with a
                         // valid auth token and workstation.
-
-                        // Temporarily redirect to AngularJS splash page
-                        // (LP#1848550/LP#1835128)
-                        window.location.href = '/eg/staff/splash';
-                            // this.ngLocation.prepareExternalUrl(url);
+                        window.location.href =
+                            this.ngLocation.prepareExternalUrl(url);
 
                     });
                 }

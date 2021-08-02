@@ -155,20 +155,8 @@ function($routeProvider , $locationProvider) {
  */
 .controller('SplashCtrl', ['$scope', '$window','egCore', 
     function($scope, $window,egCore) {
-		
-    $scope.focus_search = true;
-	
-	egCore.strings.setPageTitle(
-        egCore.strings['PAGE_TITLE_SPLASH']);
 
-    $scope.catalog_search = function($event) {
-        $scope.focus_search = true;
-        if (!$scope.cat_query) return;
-        if ($event && $event.keyCode != 13) return; // input ng-keypress
-        $window.location.href = 
-            '/eg2/staff/catalog/search?query=' +
-            encodeURIComponent($scope.cat_query);
-    }
+    $window.location.href = '/eg2/staff/';
 }])
 
 .controller('AboutCtrl', [
