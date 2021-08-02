@@ -975,7 +975,7 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
             if (payload.slip) {
                 // wait for completion, since it may spawn a confirm dialog
                 promise = egCore.print.print({
-                    context : 'default',
+                    context : 'receipt',
                     content_type : 'text/html',
                     content : payload.slip.template_output().data()
                 });
