@@ -30,114 +30,58 @@
   </div>
 
   <div class="row" id="splash-nav">
-    <div class="col-lg-4">
+    <div class="col-lg-4" *ngFor="let header of portalHeaders; index as i">
       <div class="card">
-        <div class="card-header">
-          <h2 class="panel-title text-center" i18n>Circulation and Patrons</h2>
+        <div class="card-header" *ngIf="header">
+          <h2 class="panel-title text-center" i18n>{{header.label()}}</h2>
         </div>
         <div class="card-body">
           <div class="list-group">
-            <div class="list-group-item border-0 p-2">
-              <a href="/eg/staff/circ/patron/bcsearch" i18n>
-                <img src="/images/portal/forward.png" alt="" role="presentation"/>
-                Check Out Items
-              </a>
-            </div>
-            <div class="list-group-item border-0 p-2">
-              <a href="/eg/staff/circ/checkin/index" i18n>
-                <img src="/images/portal/back.png" alt="" role="presentation"/>
-                Check In Items
-              </a>
-            </div>
-            <div class="list-group-item border-0 p-2">
-              <a href="/eg/staff/circ/patron/search" i18n>
-                <img src="/images/portal/retreivepatron.png" alt="" role="presentation"/>
-                Search For Patron By Name
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-4">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="panel-title text-center" i18n>Item Search and Cataloging</h2>
-        </div>
-        <div class="card-body">
-          <div class="list-group">
-            <div class="list-group-item border-0 p-2">
-              <div class="input-group">
-                <input type="text" class="form-control" 
-                  [(ngModel)]="catSearchQuery"
-                  id='catalog-search-input'
-                  (keyup.enter)="searchCatalog()"
-                  i18n-placeholder placeholder="Search for..."
-                  i18n-aria-label aria-label="Search for...">
-                <span class="input-group-btn">
-                  <button class="btn btn-outline-secondary" 
-                    (click)="searchCatalog()" type="button" i18n>
-                    Search Catalog
-                  </button>
-                </span>
-                  <!--
-                  <input focus-me="focus_search" 
-                      class="form-control" ng-model="cat_query" type="text" 
-                      ng-keypress="catalog_search($event)"
-                      placeholder="Search catalog for..."/>
-                  <button class='btn btn-light' ng-click="catalog_search()">
-                      Search
-                  </button>
-                  -->
+            <ng-container *ngFor="let entry of portalEntries[i]">
+              <div class="list-group-item border-0 p-2" *ngIf="entry.entry_type() === 'menuitem'">
+                <a href="{{entry.target_url()}}" i18n>
+                  <img src="{{entry.image_url()}}" alt="" role="presentation"/>
+                  {{entry.label()}}
+                </a>
               </div>
-            </div>
-            <div class="list-group-item border-0 p-2">
-              <a href="/eg/staff/cat/bucket/record/" i18n>
-                <img src="/images/portal/bucket.png" alt="" role="presentation"/>
-                Record Buckets
-              </a>
-            </div>
-            <div class="list-group-item border-0 p-2">
-              <a href="/eg/staff/cat/bucket/copy/" i18n>
-                <img src="/images/portal/bucket.png" alt="" role="presentation"/>
-                Item Buckets
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-lg-4">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="panel-title text-center" i18n>Administration</h2>
-        </div>
-        <div class="card-body">
-          <div class="list-group">
-            <div class="list-group-item border-0 p-2">
-              <a target="_top" href="http://docs.evergreen-ils.org/" i18n>
-                <img src="/images/portal/helpdesk.png" alt="" role="presentation"/>
-                Evergreen Documentation
-              </a>
-            </div>
-            <div class="list-group-item border-0 p-2">
-              <a target="_top" href="/eg/staff/admin/workstation/index" i18n>
-                <img src="/images/portal/helpdesk.png" alt="" role="presentation"/>
-                Workstation Administration
-              </a>
-            </div>
-            <div class="list-group-item border-0 p-2">
-              <a target="_top" href="/eg/staff/reporter/legacy/main" i18n>
-                <img src="/images/portal/reports.png" alt="" role="presentation"/>
-                Reports
-              </a>
-            </div>
+              <div class="list-group-item border-0 p-2" *ngIf="entry.entry_type() === 'catalogsearch'">
+                <div class="input-group">
+                  <input type="text" class="form-control" 
+                    [(ngModel)]="catSearchQuery"
+                    id='catalog-search-input'
+                    egAutofocus
+                    (keyup.enter)="searchCatalog()"
+                    i18n-placeholder placeholder="Search for..."
+                    i18n-aria-label aria-label="Search for...">
+                  <span class="input-group-btn">
+                    <button class="btn btn-outline-secondary" 
+                      (click)="searchCatalog()" type="button" i18n>
+                      {{entry.label()}}
+                    </button>
+                  </span>
+                </div>
+              </div>
+              <div class="list-group-item border-0 p-2" *ngIf="entry.entry_type() === 'link'">
+                <a target="_top" href="{{entry.target_url()}}" i18n>
+                  <img src="{{entry.image_url()}}" alt="" role="presentation"/>
+                  {{entry.label()}}
+                </a>
+              </div>
+              <div class="list-group-item border-0 p-2" *ngIf="entry.entry_type() === 'text'">
+                <h3 class="text-center" *ngIf="entry.label()" i18n>{{entry.label()}}</h3>
+                <div class="row">
+                  <div class="col-2" *ngIf="entry.image_url()">
+                    <img src="{{entry.image_url()}}" alt="" role="presentation"/>
+                  </div>
+                  <div class="col" [innerHtml]="entry.entry_text()"></div>
+                </div>
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>
     </div>
   </div>
+
 </div>
 
