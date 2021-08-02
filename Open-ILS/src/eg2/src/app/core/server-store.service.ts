@@ -2,8 +2,10 @@
  * Set and get server-stored settings.
  */
 import {Injectable} from '@angular/core';
+import {tap} from 'rxjs/operators';
 import {AuthService} from './auth.service';
 import {NetService} from './net.service';
+import {DbStoreService} from './db-store.service';
 
 // Settings summary objects returned by the API
 interface ServerSettingSummary {
@@ -17,9 +19,10 @@ interface ServerSettingSummary {
 @Injectable({providedIn: 'root'})
 export class ServerStoreService {
 
-    cache: {[key: string]: ServerSettingSummary};
+    cache: {[key: string]: any};
 
     constructor(
+        private db: DbStoreService,
         private net: NetService,
         private auth: AuthService) {
         this.cache = {};
@@ -41,15 +44,15 @@ export class ServerStoreService {
 
         .toPromise().then(appliedCount => {
 
-            if (Number(appliedCount) > 0) { // value applied
-                return this.cache[key] = value;
+            if (Number(appliedCount) <= 0) { // no value applied
+                return Promise.reject(
+                    `No user or workstation setting type exists for: "${key}".\n` +
+                    'Create a ws/user setting type or use setLocalItem() to ' +
+                    'store the value locally.'
+                );
             }
 
-            return Promise.reject(
-                `No user or workstation setting type exists for: "${key}".\n` +
-                'Create a ws/user setting type or use setLocalItem() to ' +
-                'store the value locally.'
-            );
+            return this.addSettingsToDb(setting);
         });
     }
 
@@ -77,9 +80,9 @@ export class ServerStoreService {
     }
 
     // Returns a set of key/value pairs for the requested settings
-    getItemBatch(keys: string[]): Promise<any> {
+    getItemBatch(keys: string[]): Promise<{[key: string]: any}> {
 
-        const values: any = {};
+        let values: any = {};
         keys.forEach(key => {
             if (key in this.cache) {
                 values[key] = this.cache[key];
@@ -98,33 +101,93 @@ export class ServerStoreService {
             return Promise.resolve({});
         }
 
-        // Server call required.  Limit the settings to lookup to those
-        // we don't already have cached.
-        const serverKeys = [];
+        // IndexedDB call required.
+        const dbKeys = [];
+
         keys.forEach(key => {
             if (!Object.keys(values).includes(key)) {
-                serverKeys.push(key);
+                dbKeys.push(key);
             }
         });
 
-        return new Promise((resolve, reject) => {
-            this.net.request(
+        return this.getSettingsFromDb(dbKeys) // Also appends to local cache.
+        .then(dbValues => values = Object.assign(values, dbValues))
+        .then(_ => {
+
+            const serverKeys = [];
+            keys.forEach(key => {
+                if (!Object.keys(values).includes(key)) {
+                    serverKeys.push(key);
+                }
+            });
+
+            if (serverKeys.length === 0) { return values; }
+
+            return this.net.request(
                 'open-ils.actor',
                 'open-ils.actor.settings.retrieve',
                 serverKeys, this.auth.token()
-            ).subscribe(
-                summary => {
-                    this.cache[summary.name] =
-                        values[summary.name] = summary.value;
-                },
-                err => reject,
-                () => resolve(values)
-            );
+
+            ).pipe(tap((summary: ServerSettingSummary) => {
+                this.cache[summary.name] =
+                    values[summary.name] = summary.value;
+
+            })).toPromise().then(__ => {
+
+                const dbSets: any = {};
+                serverKeys.forEach(sKey => dbSets[sKey] = values[sKey]);
+
+                return this.addSettingsToDb(dbSets);
+
+            });
         });
     }
 
     removeItem(key: string): Promise<any> {
         return this.setItem(key, null);
+    }
+
+    private addSettingsToDb(values: {[key: string]: any}): Promise<{[key: string]: any}> {
+
+        const rows = [];
+        Object.keys(values).forEach(name => {
+            // Anything added to the db should also be cached locally.
+            this.cache[name] = values[name];
+            rows.push({name: name, value: JSON.stringify(values[name])});
+        });
+
+        if (rows.length === 0) { return Promise.resolve(values); }
+
+        return this.db.request({
+            schema: 'cache',
+            table: 'Setting',
+            action: 'insertOrReplace',
+            rows: rows
+        }).then(_ => values).catch(_ => values);
+    }
+
+    getSettingsFromDb(names: string[]): Promise<{[key: string]: any}> {
+        if (names.length === 0) { return Promise.resolve({}); }
+
+        const values: any = {};
+
+        return this.db.request({
+            schema: 'cache',
+            table: 'Setting',
+            action: 'selectWhereIn',
+            field: 'name',
+            value: names
+        }).then(settings => {
+
+            // array of key => JSON-string objects
+            settings.forEach(setting => {
+                const value = JSON.parse(setting.value);
+                // propagate to local cache as well
+                values[setting.name] = this.cache[setting.name] = value;
+            });
+
+            return values;
+        }).catch(_ => values);
     }
 }
 
