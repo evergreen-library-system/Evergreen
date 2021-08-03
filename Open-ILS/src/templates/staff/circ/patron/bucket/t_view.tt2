@@ -1,3 +1,17 @@
+<!-- edit bucket dialog -->
+<style>
+progress {
+  text-align: center;
+  height: 25px;
+  width: 500px;
+  margin-bottom: 10px;
+}
+</style>
+
+<div ng-show='running'>
+  <progress max="{{progress.max}}" value="{{progress.count}}"></progress>
+</div>
+
 <eg-grid
   ng-hide="forbidden"
   features="allowAll,-display"

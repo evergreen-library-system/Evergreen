@@ -789,19 +789,32 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
     }
 
     $scope.detachUsers = function(users) {
-        var promises = [];
+        var promise = $q.when();
+
+        $scope.running = true;
+        $scope.progress = {
+            count: 0,
+            max: users.length
+        };
+
         angular.forEach(users, function(rec) {
             var item = bucketSvc.currentBucket.items().filter(
                 function(i) {
                     return (i.target_user() == rec.id)
                 }
             );
-            if (item.length)
-                promises.push(bucketSvc.detachUser(item[0].id()));
+            if (item.length) {
+                promise = promise.then(function() {
+                    return bucketSvc.detachUser(item[0].id())
+                    .then(function() { $scope.progress.count++; });
+                });
+            }
         });
 
         bucketSvc.bucketNeedsRefresh = true;
-        return $q.all(promises).then(drawBucket);
+        return promise
+            .then(function() { $scope.running = false; })
+            .then(drawBucket);
     }
 
     $scope.spawnUserEdit = function (users) {
