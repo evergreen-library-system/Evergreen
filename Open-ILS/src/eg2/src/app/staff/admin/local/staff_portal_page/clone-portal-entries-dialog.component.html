@@ -1,0 +1,50 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h3 class="modal-title" i18n>Clone a Library's Portal Page Entries</h3>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #cloneForm="ngForm" role="form" class="form-validated common-form striped-odd">
+      <div class="form-group row mt-2">
+        <label for="source_library" class="col-sm-6 col-form-label" i18n>Source Library</label>
+        <div class="col-sm-6">
+          <eg-org-select
+            placeholder="Source Library..."
+            domId="source_library"
+            i18n-placeholder
+            [limitPerms]="['STAFF_LOGIN']"
+            (onChange)="result.source_library = $event.id(); cloneForm.form.markAsDirty()">
+          </eg-org-select>
+        </div>
+      </div>
+      <div class="form-group row mt-2">
+        <label for="target_library" class="col-sm-6 col-form-label" i18n>Target Library</label>
+        <div class="col-sm-6">
+          <eg-org-select
+            placeholder="Target Library..."
+            domId="target_library"
+            i18n-placeholder
+            [limitPerms]="['ADMIN_STAFF_PORTAL_PAGE']"
+            (onChange)="result.target_library = $event.id(); cloneForm.form.markAsDirty();">
+          </eg-org-select>
+        </div>
+      </div>
+      <div class="form-group row mt-2">
+        <label for="overwrite_target" class="col-sm-6 col-form-label" i18n>Clear Entries at Target Library?</label>
+        <div class="col-sm-6">
+          <input type="checkbox" id="overwrite_target" name="overwrite_target" [(ngModel)]="result.overwrite_target" />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info"
+      [disabled]="!result.source_library || !result.target_library || (result.target_library === result.source_library)"
+      (click)="close(result)" i18n>Clone</button>
+    <button type="button" class="btn btn-warning"
+      (click)="close()" i18n>Close</button>
+  </div>
+</ng-template>
