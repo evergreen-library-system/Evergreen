@@ -1,0 +1,44 @@
+= Hatch =
+:toc: 
+
+Hatch is an optional program that works with your browser to manage complex printing needs (such as printing to different printers under different circumstances).
+
+The Evergreen downloads page has the most recent version of Hatch and Installation instructions https://evergreen-ils.org/documentation/install/INSTALL_Hatch.html
+
+== Enable Hatch in Evergreen ==
+
+. Select *Administration → Workstation*.
+. Select *Print Service (Hatch)*
+. Make sure that you see that Hatch is available. Select *Use Hatch For Printing.*
+image::workstation/enable_hatch.png[]
+
+== Troubleshooting Hatch ==
+
+* Verify that you are running the correct version of Hatch (0.3.2). You can see this from your computer's list of programs *Control Panel > Programs and Features*.
+
+* Confirm a "lib" directory exists in the Hatch install directory and that it includes a hatch.jar file. C:\Program Files (x86)\Hatch\lib\hatch.jar
+
+=== Test Hatch ===
+. Open up a command window.
+. Enter command C:\>cd %ProgramFiles(x86)%\Hatch
+. Enter command C:\Program Files (x86)\Hatch>hatch.bat test
+
+=== Hatch Extension in Chrome ===
+
+Verify that you are running the correct version of the Hatch Chrome Extension (0.2.2).
+
+. In Chrome, select *Menu- > More Tools -> Extensions*.
+. Scroll down to _Hatch Native Messenger_.
+. Verify that it is version 0.2.2 and Enabled.
+. When the Hatch Extension is installed and enabled, the hatch icon should appear in the top-right corner of the browser:
+
+
+=== Hatch Extension in Firefox ===
+
+Verify that you are running the correct version of the Hatch Chrome Extension (0.3.2).
+
+. In Firefox, select *Menu -> Add-ons*.
+. Scroll down to Hatch Native Messenger.
+. Select the _Hatch Native Messenger_
+. Verify that it is version 0.3.2 and Enabled.
+. When the Hatch Extension is installed and enabled, the hatch icon should appear in the top-right corner of the browser:

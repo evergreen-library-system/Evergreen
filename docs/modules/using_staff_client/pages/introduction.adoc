@@ -3,6 +3,21 @@
 This part of the documentation deals with general Browser Client usage including
 logging in, navigation and shortcuts.
 
+* xref:admin:web_client-login.adoc[Logging into Evergreen]
+* xref:admin:web-client-browser-best-practices.adoc[Best Practices for Using the browser]
+* xref:admin:staff_client-column_picker.adoc[Column Picker]
+* xref:admin:staff_client-angular_grid_tools.adoc[Angular Grid Tools]
+* xref:admin:staff_client-column_filters.adoc[Angular Column Filters]
+* xref:admin:staff_client-recent_searches.adoc[Recent Staff Searches]
+* xref:admin:workstation_admin.adoc#search_prefs[Search Preferences]
+* xref:admin:web_client-login.adoc#register_workstation[Workstation Registration]
+* xref:admin:workstation_admin.adoc#printer[Printer Settings]
+* xref:admin:receipt_template_editor[Print Templates]
+* xref:admin:workstation_admin.adoc#stored_prefs[Stored Preferences]
+* xref:hatch.adoc[Print Service (Hatch)]
+* xref:admin:workstation_admin.adoc#lat_test[Latency Test]
+* xref:admin:workstation_admin.adoc#sounds[Disable Sounds]
+
 For information about the XUL client, consult the
 http://docs.evergreen-ils.org/2.11/[Evergreen 2.11 documentation].
 

@@ -6,4 +6,13 @@
 ** xref:admin:staff_client-column_filters.adoc[Angular Column Filters]
 ** xref:admin:staff_client-recent_searches.adoc[Recent Staff Searches]
 ** xref:admin:workstation_admin.adoc[Workstation Administration]
-*** xref:admin:receipt_template_editor.adoc[Receipt Template Editor]
+*** xref:admin:workstation_admin.adoc#search_prefs[Search Preferences]
+*** xref:admin:web_client-login.adoc#register_workstation[Workstation Registration]
+*** xref:admin:workstation_admin.adoc#printer[Printer Settings]
+*** xref:admin:receipt_template_editor[Print Templates (Receipt Template Editor)]
+*** xref:admin:workstation_admin.adoc#stored_prefs[Stored Preferences]
+*** xref:hatch.adoc[Print Service ("Hatch")]
+*** xref:admin:workstation_admin.adoc#lat_test[Latency Test]
+*** xref:admin:workstation_admin.adoc#sounds[Disable Sounds]
+
+
