@@ -46,7 +46,8 @@ const CHECKIN_MODIFIERS = [
     'manual_float',
     'no_precat_alert',
     'retarget_holds',
-    'retarget_holds_all'
+    'retarget_holds_all',
+    'noop'
 ];
 
 const SETTINGS = [
