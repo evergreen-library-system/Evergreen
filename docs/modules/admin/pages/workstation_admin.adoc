@@ -5,78 +5,28 @@ indexterm:[staff client, configuration]
 indexterm:[workstation, configuration]
 indexterm:[configuration]
 
-== Copy Editor: Copy Location Name First ==
+[#search_prefs]
+== Search Preferences ==
 
-indexterm:[copy editor, shelving location]
-
-By default, when editing item records, library code is displayed in front of
-shelving location in _Shelving Location_ field. You may reverse the order by going
-to *Administration -> Workstation Administration ->  Copy Editor: Copy Location Name
-First*.
-Simply click it to make copy location name displayed first. The setting is saved
-on the workstation. 
-
-== Font and Sound Settings ==
-
-indexterm:[staff client, fonts, zooming]
-indexterm:[staff client, sounds]
-
-=== In the Staff Client ===
-
-You may change the size of displayed text or turn staff client sounds on
-and off. These settings are specific to each workstation and stored on
-local hard disk. They do not affect OPAC font sizes.
-
-. Select *Administration -> Workstation Administration ->   Global Font and Sound
-Settings*.
-. To turn off the system sounds, like the noise that happens when a patron
-with a block is retrieved, check the _disable sound_ box and click _Save
-to Disk_.
+. Go to *Administration -> Workstation*.
+. Use the dropdown menu to select an appropriate *Default Search Library*.
+.. The default search library setting determines what library is searched from the advanced search screen and portal page by default. You can override this setting when you are actually searching by selecting a different library. One recommendation is to set the search library to the highest point you would normally want to search.
+. Use the dropdown menu to select an appropriate *Preferred Library*.
+.. The preferred library is used to show copies and electronic resource URIs regardless of the library searched. One recommendation is to set this to your home library so that local copies show up first in search results.
+. Use the dropdown menu to select an appropriate *Advanced Search Default Pane*.
+.. Advanced search has secondary panes for Numeric and MARC Expert searching. You can change which one is loaded by default when opening a new catalog window here.
 +
-image::media/workstation_admin-1.jpg[disable sound]
-+
-. To change the size of the font, pick the desired option and click _Save
-to Disk_.
- 
-image::media/workstation_admin-2.jpg[font size]
+image::workstation/searchpref.png[]
 
-=== In the OPAC ===
-
-It is also possible to zoom in and zoom out when viewing the OPAC in the
-staff client, making the font appear larger or smaller. (This will not
-affect other screens.) Use *CTRL + +* (plus sign, to zoom in), *CTRL + -*
-(minus sign, to zoom out), and *CTRL + 0* (to restore default). The
-workstation will remember the setting.
-
-== Select Hotkeys ==
-
-indexterm:[staff client, hotkeys]
-
-All or partial hotkeys can be turned on or off. It can be done for a particular 
-workstation: 
-
-. Navigate to *Administration -> Workstation Administration ->   Hotkeys -> Current*. 
-. Select _Default_, _Minimal_, and _None_.
-+
-image::media/workstation_admin-3.png[select hotkeys]
-+  
-* *Default*: including all hotkeys
-* *Minimal*: including those hotkeys using CTRL key
-* *None*: excluding all hotkeys
-+
-. Go back to the above menu. 
-. Click *Set Workstation Default to Current*. 
-
-To clear the existing default click *Clear Workstation Default*.
-
-You can use the *Toggle Hotkeys* button, included in some toolbars, on top right
-corner, to switch your selected Hotkeys  _on_ or
-_off_ for the current login session.
-It has the same effect as when you click *Disable Hotkeys* on the _Hotkeys_ menu.
-
-== Configure Printers ==
+Additional settings are available through Catalog Preferences in the staff catalog.  
+[#printer]
+== Printer Settings ==
 
 indexterm:[staff client, printers]
+
+
+If you do not have Hatch installed on your computer you will see this message "Hatch is not installed in this browser. Printing must be configured via the native browser print configuration."
+
 
 Use the Printer Settings Editor to configure printer output for each
 workstation. If left unconfigured Evergreen will use the default printer set in
@@ -85,13 +35,11 @@ the workstation's operating system (Windows, OSX, Ubuntu, etc).
 Evergreen printing works best if you are using recent, hardware-specific printer
 drivers.
 
-. Select *Administration -> Workstation Administration ->  Printer Settings Editor*.
+. Select *Administration -> Workstation -> Printer Settings*.
 . Select the _Printer Context_. At a minimum set the _Default_ context on each
 Evergreen workstation. Repeat the procedure for other contexts if they differ
 from the default (e.g. if spine labels should output to a different printer.
-+ 
-image::media/workstation_admin-4.png[printer context]
-+
+ 
 * *Default*: Default settings for staff client print functions (set for each
 workstation). 
 * *Receipt*: Settings for printing receipts.
@@ -99,30 +47,64 @@ workstation).
 * *Mail*: Settings for printing mailed notices (not yet active).
 * *Offline*: Applies to all printing from the Offline Interface.
 +
-. After choosing _Printer Context_ click *Set Default Printer* and *Print Test
+. After choosing _Printer Context_ Select *Set Default Printer* and *Print Test
 Page* and follow the prompts. If successful, test output will print to your chosen
 printer. 
-+
-image::media/workstation_admin-5.png[set default printer]
-+
-. (optional) To further format or customize printed output click *Page Settings* and
-adjust settings. When finished click *OK* and print another test page to view
+
+. (optional) To further format or customize printed output Select *Page Settings* and adjust settings. When finished Select *OK* and print another test page to view
 changes.
 
-image::media/workstation_admin-6.jpg[page setup]
+[#stored_prefs]
+== Stored Preferences ==
 
-=== Advanced Settings ===
+Select *Administration -> Workstation -> Stored Preferences*
 
-If you followed the steps above and still cannot print there are two alternate
-print strategies: 
+Here you can view stored user preferences. User settings are added to the list whenever you choose to *Save Columns*, *Set default view* or pick a value from a sticky drop down menu.
 
-* DOS LPTI Print (sends unformatted text directly to the parallel port)
-* Custom/External Print (configuration required)
+* Select a preference to view the stored value.
+* Select the delete (X) button to remove a preference's value
 
-[NOTE]
-====================================
-Evergreen cannot print using the Windows Generic/Text Only driver. If this
-driver is the only one available try one of the alternate print strategies
-instead.
-====================================
+=== In-Browser Prefs ===
 
+* Saved settings for this workstation only
+
+=== Hatch Prefs ===
+
+* Saved settings via Hatch
+
+=== Server Workstation Prefs ===
+
+* Saved settings for any workstation registered to your library
+
+[#lat_test]
+== Tests ==
+
+Select *Administration -> Workstation -> Tests*
+
+=== Latency Test ===
+
+This will measure the websocket latency between your workstation client and the Evergreen server.
+
+. Select *Start Test* to run the test
+. Select *Copy to Clipboard* to copy the results
+. Select *Clear* to clear the results
+
+image::workstation/workstation_latency_test.png[]
+
+*Average Latency* - Indicates how long it takes for your workstation to communicate with the Evergreen server.
+
+[#sounds]
+== Disable Sounds ==
+
+Select *Administration* -> *Workstation*
+
+.Disable Sounds
+. Check the box for *Disable Sounds* to turn off the staff client Sounds.
+
+.Test Sounds
+. Select the buttons to test the staff client sounds.
+. Distinct sounds will be played for each event.
+.. *Success*
+.. *Info*
+.. *Warning*
+.. *Error*
