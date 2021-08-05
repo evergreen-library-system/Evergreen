@@ -20,6 +20,7 @@ import {RecordActionsComponent} from './record/actions.component';
 import {BasketActionsComponent} from './basket-actions.component';
 import {HoldComponent} from './hold/hold.component';
 import {PartsComponent} from './record/parts.component';
+import {NotesComponent} from './record/notes.component';
 import {AddToCarouselDialogComponent} from './record/add-to-carousel-dialog.component';
 import {PartMergeDialogComponent} from './record/part-merge-dialog.component';
 import {BrowseComponent} from './browse.component';
@@ -48,6 +49,7 @@ import {BrowsePagerComponent} from './result/browse-pager.component';
     BasketActionsComponent,
     HoldComponent,
     PartsComponent,
+    NotesComponent,
     AddToCarouselDialogComponent,
     PartMergeDialogComponent,
     BrowseComponent,

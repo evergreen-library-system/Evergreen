@@ -57,6 +57,12 @@
           <eg-marc-html [recordId]="recordId" recordType="bib"></eg-marc-html>
         </ng-template>
       </ngb-tab>
+      <ngb-tab title="Record Notes" i18n-title id="bibnotes">
+        <ng-template ngbTabContent>
+          <eg-catalog-record-notes [recordId]="recordId">
+          </eg-catalog-record-notes>
+        </ng-template>
+      </ngb-tab>
       <ngb-tab title="View Holds" i18n-title id="holds">
         <ng-template ngbTabContent>
           <eg-holds-grid [recordId]="recordId"

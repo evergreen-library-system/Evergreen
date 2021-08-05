@@ -1959,6 +1959,12 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'Administer geographic location services', 'ppl', 'description')),
  ( 632, 'UPDATE_USER_PHOTO_URL', oils_i18n_gettext(632,
     'Update the user photo url field in patron registration and editor', 'ppl', 'description'))
+ ( 633, 'CREATE_RECORD_NOTE', oils_i18n_gettext(633,
+    'Allow the user to create a record note', 'ppl', 'description')),
+ ( 634, 'UPDATE_RECORD_NOTE', oils_i18n_gettext(634,
+    'Allow the user to update a record note', 'ppl', 'description')),
+ ( 635, 'DELETE_RECORD_NOTE', oils_i18n_gettext(635,
+    'Allow the user to delete a record note', 'ppl', 'description'))
 ;
 
 
@@ -2216,7 +2222,10 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_AUTHORITY_RECORD_NOTES',
 			'CREATE_AUTHORITY_RECORD',
 			'DELETE_AUTHORITY_RECORD',
-			'UPDATE_AUTHORITY_RECORD');
+			'UPDATE_AUTHORITY_RECORD',
+		        'CREATE_RECORD_NOTE',
+		        'UPDATE_RECORD_NOTE',
+		        'DELETE_RECORD_NOTE');
 
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 	SELECT

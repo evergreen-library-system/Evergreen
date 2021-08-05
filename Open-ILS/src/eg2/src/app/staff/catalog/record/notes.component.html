@@ -1,0 +1,18 @@
+<div class="mt-3">
+
+  <eg-grid #notesGrid idlClass="bren" [dataSource]="gridDataSource"
+      [sortable]="true" persistKey="catalog.record.notes"
+      showFields="value,create_date" class="mt-3">
+    <eg-grid-toolbar-button [disabled]="!permissions.CREATE_RECORD_NOTE"
+      label="New Record Note" i18n-label [action]="createNew">
+    </eg-grid-toolbar-button>
+    <eg-grid-toolbar-action label="Delete Selected" i18n-label [action]="deleteSelected">
+    </eg-grid-toolbar-action>
+  </eg-grid>
+  
+  <eg-fm-record-editor #editDialog idlClass="bren"
+    readonlyFields="id,create_date,edit_date,creator,editor"
+    hiddenFields="record,deleted">
+  </eg-fm-record-editor>
+
+</div>

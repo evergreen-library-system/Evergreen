@@ -7454,22 +7454,31 @@ SELECT  usr,
             </actions>
         </permacrud>
 	</class>
-	<class id="bren" controller="open-ils.cstore" oils_obj:fieldmapper="biblio::record_note" oils_persist:tablename="biblio.record_note" reporter:label="Bib Record Note">
+	<class id="bren" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="biblio::record_note" oils_persist:tablename="biblio.record_note" reporter:label="Bib Record Note" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_note_id_seq">
-			<field name="create_date" reporter:datatype="timestamp"/>
-			<field name="creator" reporter:datatype="link"/>
-			<field name="edit_date" reporter:datatype="timestamp"/>
-			<field name="editor" reporter:datatype="link"/>
-			<field name="id" reporter:datatype="id" />
-			<field name="pub" reporter:datatype="bool"/>
-			<field name="record" reporter:datatype="link"/>
-			<field name="value"  reporter:datatype="text"/>
+			<field reporter:label="Creation Date" name="create_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
+			<field reporter:label="Last Edit Date" name="edit_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Editor" name="editor" reporter:datatype="link"/>
+			<field reporter:label="Note ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Public" name="pub" reporter:datatype="bool"/>
+			<field reporter:label="Bib Record" name="record" reporter:datatype="link"/>
+			<field reporter:label="Note" name="value" reporter:datatype="text"/>
+			<field reporter:label="Deleted" name="deleted" reporter:datatype="bool"/> 
 		</fields>
 		<links>
 			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
 			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
 		</links>
+	        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+                <actions>
+                    <create permission="CREATE_RECORD_NOTE" global_required="true"/>
+                    <retrieve/>
+                    <update permission="UPDATE_RECORD_NOTE" global_required="true"/>
+                    <delete permission="DELETE_RECORD_NOTE" global_required="true"/>
+                </actions>
+             </permacrud>
 	</class>
 	<class id="mucs" controller="open-ils.cstore" oils_obj:fieldmapper="money::user_circulation_summary" oils_persist:tablename="money.usr_circulation_summary" reporter:label="User Circulation Summary">
 		<fields oils_persist:primary="usr" oils_persist:sequence="">
