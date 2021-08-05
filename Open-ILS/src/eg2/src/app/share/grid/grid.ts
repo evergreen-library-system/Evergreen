@@ -1313,6 +1313,7 @@ export class GridContext {
                 col.datatype = field.datatype;
                 col.isIndex = (field.name === pkeyField);
                 col.isAuto = true;
+                col.headerLabel = col.label;
 
                 if (this.showDeclaredFieldsOnly) {
                     col.hidden = true;
