@@ -769,6 +769,21 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
         ctx, "open-ils.cstore.direct.actor.user.retrieve", param);
     jsonObjectFree(param);
 
+    // determine if authenticate.init had found the user by barcode,
+    // regardless of whether authenticate.complete is being passed
+    // a username or identifier key.
+    bool initFoundUserByBarcode = false;
+    jsonObject* value = NULL;
+    jsonIterator* cacheIter = jsonNewIterator(cacheObj);
+    while (value = jsonIteratorNext(cacheIter)) {
+        const char *key_name = cacheIter->key;
+        if (!strcmp(key_name, "barcode")) {
+            initFoundUserByBarcode = true;
+            break;
+        }
+    }
+    jsonIteratorFree(cacheIter);
+
     char* freeable_uname = NULL;
     if (!uname) {
         uname = freeable_uname = oilsFMGetString(userObj, "usrname");
@@ -781,7 +796,11 @@ int oilsAuthComplete( osrfMethodContext* ctx ) {
         jsonNewNumberObject(oilsFMGetObjectId(userObj)));
     jsonObjectSetKey(params,"org_unit", jsonNewNumberObject(orgloc));
     jsonObjectSetKey(params, "login_type", jsonNewObject(type));
-    if (barcode) jsonObjectSetKey(params, "barcode", jsonNewObject(barcode));
+    if (initFoundUserByBarcode) {
+         jsonObjectSetKey(params, "barcode", jsonNewObject(identifier));
+    } else if (barcode) {
+         jsonObjectSetKey(params, "barcode", jsonNewObject(barcode));
+    }
 
     jsonObject* authEvt = oilsUtilsQuickReqCtx( // freed after password test
         ctx,
