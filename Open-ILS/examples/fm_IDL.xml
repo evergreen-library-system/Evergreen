@@ -13117,7 +13117,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="coustl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::org_unit_setting_type_log" oils_persist:tablename="config.org_unit_setting_type_log" reporter:label="Organizational Unit Setting Type Log">
+	<class id="coustl" controller="open-ils.cstore" oils_obj:fieldmapper="config::org_unit_setting_type_log" oils_persist:tablename="config.org_unit_setting_type_log" reporter:label="Organizational Unit Setting Type Log">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.org_unit_setting_type_log_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field name="date_applied" reporter:datatype="timestamp"/>
@@ -13130,14 +13130,6 @@ SELECT  usr,
 			<link field="field_name" reltype="has_a" key="name" map="" class="coust"/>
 			<link field="org" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-			<actions>
-				<create permission="ADMIN_ORG_UNIT_SETTING_TYPE" context_field="org"/>
-				<retrieve permission="STAFF_LOGIN" context_field="org"/>
-				<update permission="ADMIN_ORG_UNIT_SETTING_TYPE_LOG" context_field="org"/>
-				<delete permission="ADMIN_ORG_UNIT_SETTING_TYPE_LOG" context_field="org"/>
-			</actions>
-		</permacrud>
 	</class>
 	<class id="aaactsc" controller="open-ils.reporter-store" oils_obj:fieldmapper="action::archive_actor_stat_cat" oils_persist:tablename="action.archive_actor_stat_cat" reporter:label="Circ-Archived Patron Statistical Category Entries">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.archive_actor_stat_cat_id_seq">

@@ -248,6 +248,50 @@ sub set_ou_settings {
 }
 
 __PACKAGE__->register_method(
+    method    => "fetch_visible_ou_settings_log",
+    api_name  => "open-ils.actor.org_unit.settings.history.visible.retrieve",
+    signature => {
+        desc => "Retrieves the log entries for the specified OU setting. " .
+                "If the setting has a view permission, the results are limited " .
+                "to entries at the OUs that the user has the view permission. ",
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Setting name',         type => 'string'}
+        ],
+        return => {desc => 'List of fieldmapper objects of the log entries, Event on error'}
+    }
+);
+
+sub fetch_visible_ou_settings_log {
+    my( $self, $client, $auth, $setting ) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    return $e->die_event unless $e->allowed("STAFF_LOGIN");
+    return OpenILS::Event->new('BAD_PARAMS') unless defined($setting);
+
+    my $type = $e->retrieve_config_org_unit_setting_type([
+        $setting,
+        {flesh => 1, flesh_fields => {coust => ['view_perm']}}
+    ]);
+    return OpenILS::Event->new('BAD_PARAMS', note => 'setting type not found')
+        unless $type;
+
+    my $query = { field_name => $setting };
+    if ($type->view_perm) {
+        $query->{org} = $U->user_has_work_perm_at($e, $type->view_perm->code, {descendants => 1});
+        if (scalar @{ $query->{org} } == 0) {
+            # user doesn't have the view permission anywhere, so return nothing
+            return [];
+        }
+    }
+
+    my $results = $e->search_config_org_unit_setting_type_log([$query, {'order_by' => 'date_applied ASC'}])
+        or return $e->die_event;
+    return $results;
+}
+
+__PACKAGE__->register_method(
     method   => "user_settings",
     authoritative => 1,
     api_name => "open-ils.actor.patron.settings.retrieve",
