@@ -536,25 +536,36 @@ function osLaunchHistory(name) {
     dojo.byId('osHistName').innerHTML = osSettings[name].label;
     
     var data = dojo.byId('histTitle').innerHTML;
-    var thisHist = pcrud.search('coustl', {'field_name':name});
-    for(var i in thisHist.reverse()) {
-        d = thisHist[i].date_applied();
-        a = ouNames[thisHist[i].org()];
-        o = thisHist[i].original_value();
-        if(o) o=o.replace(/\&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-        n = thisHist[i].new_value();
-        if(n) n=n.replace(/\&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-        r = thisHist[i].org();
-        // Table is: Date | Org Name | Orig Value | New Value | Revert
-        data += "<tr><td>" + d + "</td><td>" + a + "</td><td>" + o +
-        "</td><td>" + n + "</td><td>" +
-        "<a href='javascript:void(0);' onclick='osRevertSetting(" + r + ", &quot;" + name +"&quot;,"+o+");'>"+dojo.byId('os-revert').innerHTML+"</a></td></tr>";
-    }
+    fieldmapper.standardRequest(
+        [   'open-ils.actor',
+            'open-ils.actor.org_unit.settings.history.visible.retrieve' ],
+        {   async: true,
+            params: [authtoken, name],
+            oncomplete: function(r) {
+                var thisHist = r.recv().content();
+                if(e = openils.Event.parse(thisHist))
+                    return alert(e);
+                for(var i in thisHist.reverse()) {
+                    d = thisHist[i].date_applied();
+                    a = ouNames[thisHist[i].org()];
+                    o = thisHist[i].original_value();
+                    if(o) o=o.replace(/\&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                    n = thisHist[i].new_value();
+                    if(n) n=n.replace(/\&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                    r = thisHist[i].org();
+                    // Table is: Date | Org Name | Orig Value | New Value | Revert
+                    data += "<tr><td>" + d + "</td><td>" + a + "</td><td>" + o +
+                    "</td><td>" + n + "</td><td>" +
+                    "<a href='javascript:void(0);' onclick='osRevertSetting(" + r + ", &quot;" + name +"&quot;,"+o+");'>"+dojo.byId('os-revert').innerHTML+"</a></td></tr>";
+                }
         
-    dojo.byId('historyData').innerHTML = data;
+                dojo.byId('historyData').innerHTML = data;
     
-    showProcessingDialog(false);
-    osHistDialog.show();
+                showProcessingDialog(false);
+                osHistDialog.show();
+           }
+        }
+    );
 }
 
 function showAlert(message, timeout) {
