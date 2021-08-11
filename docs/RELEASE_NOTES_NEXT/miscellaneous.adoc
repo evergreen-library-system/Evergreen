@@ -2,3 +2,5 @@
   'Search Preferences' and add a return button.
 * The 'Search Filter Groups' administration interface is now ported
   to Angular.
+* The patron record editor now has a button to send a password
+  reset email to the patron's email address.
