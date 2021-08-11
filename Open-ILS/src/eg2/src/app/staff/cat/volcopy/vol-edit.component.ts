@@ -95,7 +95,7 @@ export class VolEditComponent implements OnInit {
         .then(_ => this.addStubCopies())
         // It's possible the loaded data is not strictly allowed,
         // e.g. empty string call number labels
-        .then(_ => this.emitSaveChange());
+        .then(_ => this.emitSaveChange(true));
     }
 
     copyStatLabel(copy: IdlObject): string {
@@ -544,9 +544,15 @@ export class VolEditComponent implements OnInit {
 
     // Called any time a change occurs that could affect the
     // save-ability of the form.
-    emitSaveChange() {
+    emitSaveChange(initialLoad?: boolean) {
+        const saveable = this.canSave();
+
+        // Avoid emitting a save change event when this was called
+        // during page load and the resulting data is saveable.
+        if (initialLoad && saveable) { return; }
+
         setTimeout(() => {
-            this.canSaveChange.emit(this.canSave());
+            this.canSaveChange.emit(saveable);
         });
     }
 

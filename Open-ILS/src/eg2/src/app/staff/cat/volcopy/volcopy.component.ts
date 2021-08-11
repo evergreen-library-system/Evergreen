@@ -336,7 +336,10 @@ export class VolCopyComponent implements OnInit {
     save(close?: boolean): Promise<any> {
         this.loading = true;
 
-        this.copyAttrs.applyPendingChanges();
+        if (this.copyAttrs) {
+            // Won't exist on any non-attrs page.
+            this.copyAttrs.applyPendingChanges();
+        }
 
         // Volume update API wants volumes fleshed with copies, instead
         // of the other way around, which is what we have here.
