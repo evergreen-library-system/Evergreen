@@ -1958,7 +1958,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 631, 'ADMIN_GEOLOCATION_SERVICES', oils_i18n_gettext(631,
     'Administer geographic location services', 'ppl', 'description')),
  ( 632, 'UPDATE_USER_PHOTO_URL', oils_i18n_gettext(632,
-    'Update the user photo url field in patron registration and editor', 'ppl', 'description'))
+    'Update the user photo url field in patron registration and editor', 'ppl', 'description')),
  ( 633, 'CREATE_RECORD_NOTE', oils_i18n_gettext(633,
     'Allow the user to create a record note', 'ppl', 'description')),
  ( 634, 'UPDATE_RECORD_NOTE', oils_i18n_gettext(634,
