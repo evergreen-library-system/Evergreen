@@ -4,3 +4,6 @@
   to Angular.
 * The patron record editor now has a button to send a password
   reset email to the patron's email address.
+* Angular grids now have a have a 'Manage Actions Menu' configuration
+  action to allow users to control which actions are displayed
+  on the context menu for the grid.
