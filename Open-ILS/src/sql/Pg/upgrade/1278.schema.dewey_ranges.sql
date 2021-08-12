@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1278', :eg_version);
 
 CREATE OR REPLACE VIEW reporter.asset_call_number_dewey AS
   SELECT id AS call_number,
