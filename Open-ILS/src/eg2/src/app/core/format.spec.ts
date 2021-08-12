@@ -49,7 +49,7 @@ describe('FormatService', () => {
         localeService = new LocaleService(location, null, pcrudService);
         service = new FormatService(
             datePipe,
-            currencyPipe,
+            decimalPipe,
             idlService,
             orgService,
             localeService
