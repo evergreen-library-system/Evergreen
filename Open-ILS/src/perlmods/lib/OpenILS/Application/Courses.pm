@@ -276,7 +276,7 @@ sub _resetItemFields {
         # and other appropriate specifications
         my $dest_acn = $cat_sess->request('open-ils.cat.call_number.find_or_create',
             $authtoken, $orig_acn->label,
-            $existing_acn->record, $course_lib,
+            $existing_acn->record, $orig_acn->owning_lib,
             $existing_acn->prefix, $existing_acn->suffix,
             $existing_acn->label_class)->gather(1);
         my $acn_id = $dest_acn->{acn_id};
