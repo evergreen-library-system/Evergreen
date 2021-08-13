@@ -68,7 +68,7 @@
             <tr>
               <th scope="col">[% l('Location') %]</th>
               <th scope="col">[% l('Call Number') %]</th>
-              <th scope="col">[% l('Title') %]</th>
+              <th class="course-material-title-column" scope="col">[% l('Title') %]</th>
               <th scope="col">[% l('Barcode') %]</th>
               <th scope="col">[% l('Relationship') %]</th>
               <th scope="col">[% l('Status') %]</th>

@@ -4033,3 +4033,11 @@ label[for*=expert_]
     float: right;
 padding: 15px;
 }
+
+.course-material-title-column {
+    width: 30%;
+}
+
+#course_material_table td, #course_material_table th {
+    padding: 4px;
+}
