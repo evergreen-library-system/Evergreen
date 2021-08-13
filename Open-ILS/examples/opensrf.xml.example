@@ -1226,6 +1226,8 @@ vim:et:ts=4:sw=4:
                             *note:  in a multi-brick environment, this will need to
                             be on a write-able NFS share.  -->
                         <importer>/tmp</importer>
+                        <!-- permanent location for locally added content -->
+                        <jackets>/openils/var/web/opac/extras/ac</jackets>
                     </databases>
                 </app_settings>
             </open-ils.vandelay>

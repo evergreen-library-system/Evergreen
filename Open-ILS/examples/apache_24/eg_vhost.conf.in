@@ -618,6 +618,12 @@ RewriteRule ^/conify/([a-z]{2}-[A-Z]{2})/global/(.*)$ /conify/global/$2 [E=local
     Options +ExecCGI
     Require all granted 
 </Location>
+<Location /jacket-upload>
+    SetHandler perl-script
+    PerlHandler OpenILS::WWW::Vandelay::spool_jacket
+    Options +ExecCGI
+    Require all granted 
+</Location>
 
 # OpenURL 0.1 searching based on OpenSearch
 RewriteMap openurl prg:@bindir@/openurl_map.pl
