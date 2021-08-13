@@ -854,7 +854,7 @@ within the "form" by name for validation.
         name="default_sms_text_carrier"
         ng-model="user_settings['opac.default_sms_carrier']"
         ng-required="user_settings['opac.default_sms_notify']"
-        ng-options="c.id() as c.name() for c in sms_carriers"
+        ng-options="c.id() as c.name() + ' (' + c.region() + ')' for c in sms_carriers | orderBy:'name()'"
         ng-blur="handle_field_changed(user_settings, 'opac.default_sms_carrier')">
         <option value="">Select a Carrier</option>
       </select>
