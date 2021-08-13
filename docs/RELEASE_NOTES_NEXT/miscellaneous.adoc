@@ -7,3 +7,14 @@
 * Angular grids now have a have a 'Manage Actions Menu' configuration
   action to allow users to control which actions are displayed
   on the context menu for the grid.
+* Add a new pair of library settings to support pickup library-based
+  hold stalling. 'Pickup Library Soft stalling interval', when set for,
+  the pickup library, specifies that for holds with a request time age
+  smaller than the specified interval only items scanned at the pickup
+  library can be opportunistically captured. Example "5 days". This setting
+  takes precedence over "Soft stalling interval" (circ.hold_stalling.soft)
+  when the interval is in force. 'Pickup Library Hard stalling interval',
+  when set for the pickup library, specifies that no items with a
+  calculated proximity greater than 0 from the pickup library can be
+  directly targeted for this time period if there are local available
+  copies.
