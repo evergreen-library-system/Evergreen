@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1280', :eg_version);
 
 UPDATE config.org_unit_setting_type
   SET description = $$How long to wait before allowing opportunistic capture of holds with a pickup library other than the context item's circulating library$$ -- ' vim
