@@ -167,7 +167,17 @@ export class HoldsGridComponent implements OnInit {
         }
 
         if (!this.defaultSort) {
-            this.defaultSort = [{name: 'request_time', dir: 'asc'}];
+            if (this.pullListOrg) {
+
+                this.defaultSort = [
+                    {name: 'copy_location_order_position', dir: 'asc'},
+                    {name: 'acpl_name', dir: 'asc'},
+                    {name: 'cn_label_sortkey', dir: 'asc'}
+                ];
+
+            } else {
+                this.defaultSort = [{name: 'request_time', dir: 'asc'}];
+            }
         }
 
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
@@ -303,12 +313,6 @@ export class HoldsGridComponent implements OnInit {
                 subObj[obj.name] = {dir: obj.dir, nulls: 'last'};
                 orderBy.push(subObj);
             });
-        } else if (this.pullListOrg) {
-            orderBy.push(
-                {copy_location_order_position: {dir: 'asc', nulls: 'last'}},
-                {acpl_name: {dir: 'asc', nulls: 'last'}},
-                {cn_label_sortkey: {dir: 'asc'}}
-            );
         }
 
         const limit = this.enablePreFetch ? null : pager.limit;
