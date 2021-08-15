@@ -37,7 +37,11 @@ export class ItemLocationSelectComponent
     @Input() permFilter: string;
 
     // Limit copy locations to those owned at or above this org unit.
-    @Input() contextOrgId: number;
+    private _contextOrgId: number;
+    @Input() set contextOrgId(value: number) {
+        this._contextOrgId = value;
+        this.ngOnInit();
+    }
 
     @Input() orgUnitLabelField = 'shortname';
 
@@ -159,7 +163,7 @@ export class ItemLocationSelectComponent
     }
 
     setFilterOrgs(): Promise<number[]> {
-        const org = this.contextOrgId || this.auth.user().ws_ou();
+        const org = this._contextOrgId || this.auth.user().ws_ou();
         const contextOrgIds = this.org.ancestors(org, true);
 
         if (!this.permFilter) {

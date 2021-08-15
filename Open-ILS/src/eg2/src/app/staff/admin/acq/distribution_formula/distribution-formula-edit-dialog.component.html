@@ -62,7 +62,7 @@
         </div>
         <div class="col-sm-2">
           <eg-item-location-select
-            permFilter="ADMIN_ACQ_DISTRIB_FORMULA"
+            permFilter="ADMIN_ACQ_DISTRIB_FORMULA" [contextOrgId]="entry.owning_lib()"
             [ngModel]="entry.location()" name="location-{{idx}}"
             (ngModelChange)="entry.location($event)"
             (valueChange)="myForm.form.markAsDirty()">
