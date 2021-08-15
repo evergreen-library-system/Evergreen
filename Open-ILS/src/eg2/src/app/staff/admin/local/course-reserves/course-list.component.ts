@@ -48,7 +48,7 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     grid_source: GridDataSource = new GridDataSource();
     currentMaterials: any[] = [];
     search_value = '';
-    defaultOuId = 1;
+    defaultOuId: number;
     searchOrgs: OrgFamily;
     defaultTerm: IdlObject;
 
