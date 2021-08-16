@@ -82,13 +82,14 @@ make -f Open-ILS/src/extras/Makefile.install <osname>
 3. OPTIONAL: Developer additions
 +
 To perform certain developer tasks from a Git source code checkout, 
-including the testing of the Angular web client components,
-additional packages may be required.  As the *root* Linux account:
+additional packages are required.  As the *root* Linux account:
 +
  * To install packages needed for retrieving and managing web dependencies,
    use the <osname>-developer Makefile.install target.  Currently, 
    this is only needed for building and installing the web
    staff client.
+ * To optionally run Angular and AngularJS tests you will need to manually
+   install Firefox and your choice of Chromium or Chrome.
 +
 [source, bash]
 ------------------------------------------------------------------------------
@@ -141,11 +142,11 @@ npm install   # fetch JS dependencies
 +
 [source,sh]
 ------------------------------------------------------------------------------
-# build, concat+minify
 npm run build-prod
 ------------------------------------------------------------------------------
 +
-4. OPTIONAL: Test web client code if the <osname>-developer packages were installed.
+4. OPTIONAL: Test web client code if the <osname>-developer packages and
+   the necessary browsers are installed.
    CHROME_BIN should be set to the path to chrome or chromimum, e.g.,
    `/usr/bin/chromium`:
 +
@@ -177,11 +178,11 @@ npm install   # fetch JS dependencies
 +
 [source,sh]
 ------------------------------------------------------------------------------
-# build and run tests
 ng build --prod
 ------------------------------------------------------------------------------
 +
-4. OPTIONAL: Test eg2 web client code if the <osname>-developer packages were installed:
+4. OPTIONAL: Test eg2 web client code if the <osname>-developer packages and
+   the necessary browsers are installed:
    CHROME_BIN should be set to the path to chrome or chromimum, e.g.,
    `/usr/bin/chromium`:
 +
