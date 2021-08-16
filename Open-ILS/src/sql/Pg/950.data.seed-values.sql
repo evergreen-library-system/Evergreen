@@ -21799,6 +21799,7 @@ VALUES (
     oils_i18n_gettext(
         'eg.grid.acq.funding_source.credit',
         'Grid Config: eg.grid.acq.funding_source.credit',
+        'cwst', 'label'
     )
 );
 
