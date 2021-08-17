@@ -4,25 +4,11 @@
   <div class="row d-flex patron-status-color rounded {{patronStatusColor()}}">
     <div class="flex-1 pt-1 {{patronStatusColor()}}">
       <h4 class="font-weight-bold" i18n>
-        {{p().family_name()}}, 
-        {{p().first_given_name()}} 
-        {{p().second_given_name()}}
-      </h4>
-    </div>
-    <ng-container *ngIf="hasPrefName()">
-      <div class="mr-2 ml-2 text-info font-italic" i18n>account</div>
-    </ng-container>
-  </div>
-
-  <div class="row d-flex border-top" *ngIf="hasPrefName()">
-    <div class="flex-1 pt-1">
-      <h4 class="font-weight-bold" i18n>
         {{patronService.namePart(p(), 'family_name')}}, 
         {{patronService.namePart(p(), 'first_given_name')}} 
         {{patronService.namePart(p(), 'second_given_name')}}
       </h4>
     </div>
-    <div class="mr-2 ml-2 text-info font-italic" i18n>preferred</div>
   </div>
 
   <div class="row mb-1 alert alert-danger p-0" 

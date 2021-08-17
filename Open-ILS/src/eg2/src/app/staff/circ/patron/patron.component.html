@@ -43,9 +43,9 @@
 
 <ng-container *ngIf="context.summary">
   <eg-staff-banner i18n-bannerText bannerText="Patron: 
-    {{context.summary.patron.family_name()}}, 
-    {{context.summary.patron.first_given_name()}} 
-    {{context.summary.patron.second_given_name()}}">
+    {{patronService.namePart(context.summary.patron, 'family_name')}}, 
+    {{patronService.namePart(context.summary.patron, 'first_given_name')}} 
+    {{patronService.namePart(context.summary.patron, 'second_given_name')}}">
   </eg-staff-banner>
 </ng-container>
 

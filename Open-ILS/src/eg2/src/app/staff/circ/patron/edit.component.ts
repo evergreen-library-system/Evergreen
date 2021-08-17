@@ -813,7 +813,9 @@ export class EditComponent implements OnInit, AfterViewInit {
                 && !this.groupEditForbidden()
             );
 
-            this.toolbar.disableSaveStateChanged.emit(!canSave);
+            if (this.toolbar) {
+                this.toolbar.disableSaveStateChanged.emit(!canSave);
+            }
         });
     }
 
