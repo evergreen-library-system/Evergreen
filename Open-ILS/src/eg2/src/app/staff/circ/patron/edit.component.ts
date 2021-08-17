@@ -746,6 +746,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         patron.isnew(true);
         patron.id(-1);
         patron.home_ou(this.auth.user().ws_ou());
+        patron.active('t');
         patron.settings([]);
         patron.waiver_entries([]);
         patron.stat_cat_entries([]);
@@ -753,6 +754,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         const card = this.idl.create('ac');
         card.isnew(true);
         card.usr(-1);
+        card.id(this.autoId--);
         patron.card(card);
         patron.cards([card]);
 

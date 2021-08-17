@@ -222,7 +222,7 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
             pSearch.search,
             pager.limit,
             sorter,
-            null, // ?
+            this.search.inactive,
             pSearch.orgId,
             DEFAULT_FLESH,
             pager.offset
@@ -250,10 +250,10 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         const search: PatronSearchFieldSet = {};
 
         Object.keys(this.search).forEach(field => {
+            if (field === 'inactive') { return; }
             search[field] = this.mapSearchField(field);
-            if (search[field]) {
-                // one filter is not enough
-                if (field !== 'inactive') { hasSearch = true; }
+            if (search[field] !== null) {
+                hasSearch = true;
             } else {
                 delete search[field];
             }
@@ -276,7 +276,6 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
         switch (field) {
 
             case 'name': // name keywords
-            case 'inactive':
                 delete chunk.group;
                 break;
 
