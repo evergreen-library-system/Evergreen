@@ -72,9 +72,15 @@
   </div>
 </div>
 
+<ng-template #copyBarcodeTemplate let-r="row">
+  <ng-container *ngIf="r.copy">
+    <a href="/eg/staff/cat/item/{{r.copy.id()}}">{{r.copy.barcode()}}</a>
+  </ng-container>
+</ng-template>
+
 <ng-template #titleTemplate let-r="row">
   <ng-container *ngIf="r.record">
-    <a routerLink="/staff/catalog/record/{{r.record.id()}}">{{r.title}}</a>
+    <a routerLink="/staff/catalog/record/{{r.record.doc_id()}}">{{r.title}}</a>
   </ng-container>
   <ng-container *ngIf="!r.record">{{r.title}}</ng-container>
 </ng-template>
@@ -112,7 +118,8 @@
         timezoneContextOrg="circ.circ_lib" dateOnlyIntervalField="circ.duration"
         datatype="timestamp"></eg-grid-column>
 
-      <eg-grid-column path="copy.barcode" label="Barcode" i18n-label></eg-grid-column>
+      <eg-grid-column name="copy_barcode" label="Barcode" i18n-label
+        [cellTemplate]="copyBarcodeTemplate"></eg-grid-column>
 
       <eg-grid-column path="copy.alert_message" label="Alert Message" 
         i18n-label></eg-grid-column>

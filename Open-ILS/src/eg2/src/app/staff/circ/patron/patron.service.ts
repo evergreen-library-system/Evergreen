@@ -22,6 +22,8 @@ export interface CircGridEntry {
     isbn?: string;
     copy?: IdlObject;
     circ?: IdlObject;
+    volume?: IdlObject;
+    record?: IdlObject;
     dueDate?: string;
     copyAlertCount: number;
     nonCatCount: number;
