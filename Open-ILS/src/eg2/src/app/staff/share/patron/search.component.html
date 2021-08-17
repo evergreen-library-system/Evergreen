@@ -197,7 +197,7 @@
       [disabled]="getSelected().length !== 2"
       (onClick)="mergePatrons($event)"></eg-grid-toolbar-button>
 
-    <eg-grid-column path='id' 
+    <eg-grid-column path='id' [hidden]="true"
       i18n-label label="ID"></eg-grid-column>      
     <eg-grid-column path='card.barcode' 
       i18n-label label="Card"></eg-grid-column>
@@ -207,39 +207,39 @@
       [sortable]="true" [multiSortable]="true"></eg-grid-column>
     <eg-grid-column path='first_given_name' 
       [sortable]="true" [multiSortable]="true"></eg-grid-column>
-    <eg-grid-column path='second_given_name' 
+    <eg-grid-column path='second_given_name' [hidden]="true"
       [sortable]="true" [multiSortable]="true"></eg-grid-column>
-    <eg-grid-column path='dob' 
+    <eg-grid-column path='dob' [hidden]="true"
       [sortable]="true" [multiSortable]="true"></eg-grid-column>
     <eg-grid-column path='home_ou.shortname' 
       i18n-label label="Home Library"></eg-grid-column>
-    <eg-grid-column path='create_date' i18n-label label="Created On" 
-      [sortable]="true" [multiSortable]="true"></eg-grid-column>
+    <eg-grid-column path='create_date' i18n-label label="Created On"
+      [hidden]="true" [sortable]="true" [multiSortable]="true"></eg-grid-column>
 
-    <eg-grid-column i18n-label label="Mailing:Street 1"
+    <eg-grid-column i18n-label label="Mailing:Street 1" [hidden]="true"
       path='mailing_address.street1' visible></eg-grid-column>
-    <eg-grid-column i18n-label label="Mailing:Street 2"
+    <eg-grid-column i18n-label label="Mailing:Street 2" [hidden]="true"
       path='mailing_address.street2'></eg-grid-column>
-    <eg-grid-column i18n-label label="Mailing:City"
+    <eg-grid-column i18n-label label="Mailing:City" [hidden]="true"
       path='mailing_address.city'></eg-grid-column>
-    <eg-grid-column i18n-label label="Mailing:County"
+    <eg-grid-column i18n-label label="Mailing:County" [hidden]="true"
       path='mailing_address.county'></eg-grid-column>
-    <eg-grid-column i18n-label label="Mailing:State"
+    <eg-grid-column i18n-label label="Mailing:State" [hidden]="true"
       path='mailing_address.state'></eg-grid-column>
-    <eg-grid-column i18n-label label="Mailing:Zip"
+    <eg-grid-column i18n-label label="Mailing:Zip" [hidden]="true"
       path='mailing_address.post_code'></eg-grid-column>
                                                                                  
     <eg-grid-column i18n-label label="Billing:Street 1"
       path='billing_address.street1'></eg-grid-column>
-    <eg-grid-column i18n-label label="Billing:Street 2"
+    <eg-grid-column i18n-label label="Billing:Street 2" [hidden]="true"
       path='billing_address.street2'></eg-grid-column>
     <eg-grid-column i18n-label label="Billing:City"
       path='billing_address.city'></eg-grid-column>
-    <eg-grid-column i18n-label label="Billing:County"
+    <eg-grid-column i18n-label label="Billing:County" [hidden]="true"
       path='billing_address.county'></eg-grid-column>
-    <eg-grid-column i18n-label label="Billing:State"
+    <eg-grid-column i18n-label label="Billing:State" [hidden]="true"
       path='billing_address.state'></eg-grid-column>
-    <eg-grid-column i18n-label label="Billing:Zip"
+    <eg-grid-column i18n-label label="Billing:Zip" [hidden]="true"
       path='billing_address.post_code'></eg-grid-column>
   </eg-grid>
 
