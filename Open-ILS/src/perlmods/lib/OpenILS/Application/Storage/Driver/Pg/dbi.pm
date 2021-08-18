@@ -737,6 +737,20 @@
 
     #-------------------------------------------------------------------------------
 
+    package action::hold_request_reset_reason_entry;
+
+    action::hold_request_reset_reason_entry->sequence( 'action.hold_request_reset_reason_entry_id_seq' );
+    action::hold_request_reset_reason_entry->table('action.hold_request_reset_reason_entry');
+
+    #-------------------------------------------------------------------------------
+
+    package action::hold_request_reset_reason;
+
+    action::hold_request_reset_reason->sequence( 'action.hold_request_reset_reason_id_seq' );
+    action::hold_request_reset_reason->table('action.hold_request_reset_reason');
+
+    #-------------------------------------------------------------------------------
+
     package action::hold_notification;
 
     action::hold_notification->sequence( 'action.hold_notification_id_seq' );

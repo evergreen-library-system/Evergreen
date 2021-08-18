@@ -100,5 +100,8 @@ EG_BIN_DIR = /openils/bin
 #XML_FILE_PREFIX = /openils/var/data/overdue/overdue
 #0 3 * * * . ~/.bashrc && cd $EG_BIN_DIR && ./generate_circ_notices.pl --osrf_config $SRF_CORE --notice-types overdue,predue --generate-global-templates --send-email > $XML_FILE_PREFIX.$(date +"\%F").xml
 
+# Clean out action.hold_request_reset_reason_entry table
+0 1 * * * . ~/.bashrc && $EG_BIN_DIR/purge_hold_reset_reason_entries.srfsh
+
 # TODO: add other entries
 

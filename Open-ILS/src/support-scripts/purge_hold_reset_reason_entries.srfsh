@@ -1,0 +1,2 @@
+#!BINDIR/srfsh
+request open-ils.storage open-ils.storage.action.hold_request.purge_hold_reset_entries "1 year"

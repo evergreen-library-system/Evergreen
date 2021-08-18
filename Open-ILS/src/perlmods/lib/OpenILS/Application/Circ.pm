@@ -1434,7 +1434,7 @@ sub mark_item {
     }
 
     $logger->debug("resetting holds that target the marked copy");
-    OpenILS::Application::Circ::Holds->_reset_hold($e->requestor, $_) for @$holds;
+    OpenILS::Application::Circ::Holds->_reset_hold($e->requestor, $_,OILS_HOLD_UPDATED) for @$holds;
 
     return 1;
 }
@@ -1626,7 +1626,7 @@ sub mark_item_missing_pieces {
     );
 
     $logger->debug("resetting holds that target the marked copy");
-    OpenILS::Application::Circ::Holds->_reset_hold($e2->requestor, $_) for @$holds;
+    OpenILS::Application::Circ::Holds->_reset_hold($e2->requestor, $_, OILS_HOLD_UPDATED) for @$holds;
 
     
     if (! $e2->commit) {

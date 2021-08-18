@@ -382,6 +382,7 @@ Jump to a specific table:
 |Hard stalling interval||Duration|
 |Has local copy alert|If there is an available item at the requesting library that could fulfill a hold during hold placement time, alert the patron.|True/False|
 |Has local copy block|If there is an available item at the requesting library that could fulfill a hold during hold placement time, do not allow the hold to be placed.|True/False|
+|Hold reset reason entry deletion interval|Hold reset reason entries will be removed if older than this interval. Default 1 year if no value provided.|Duration|
 |Max foreign-circulation time|Time a item can spend circulating away from its circ lib before returning there to fill a hold|Duration|For multi-branch libraries.
 |Maximum library target attempts|When this value is set and greater than 0, the system will only attempt to find a item at each possible branch the configured number of times|Number|For multi-branch libraries.
 |Minimum estimated wait|When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the minimum estimated length of time to assume an item will be checked out.|Duration |
@@ -389,6 +390,7 @@ Jump to a specific table:
 |Pickup library hard stalling interval|When set for the pickup library, this specifies an interval during which items with a calculated proximity greater than 0 from the pickup library cannot be directly targeted if there are locally available copies. This setting is meant to be used in conjunction with the setting "Pickup library soft stalling interval" and its value should be equal or less than the value in Pickup library soft stalling interval.|Duration|
 |Pickup library soft stalling interval|When set for the pickup library, this specifies an interval during which opportunistic hold capture will only occur for items where both these factors are true: 1) the request time age is smaller than the interval (i.e. the request was placed within the interval); and 2) the scan library is equivalent to the pickup library. This setting takes precedence over "Soft stalling interval".|Duration|
 |Reset request time on un-cancel|When a hold is uncancelled, reset the request time to push it to the end of the queue|True/False|
+|Retarget previous targets interval|Hold targeter will create proximity adjustments for previously targeted copies within this time interval (in days).|Number|
 |Skip for hold targeting|When true, don't target any items at this org unit for holds|True/False|
 |Soft boundary|Holds will not be filled by items outside this boundary if there are holdable items within it.|Number |
 |Soft stalling interval|For this amount of time, holds will not be opportunistically captured at non-pickup branches.|Duration|

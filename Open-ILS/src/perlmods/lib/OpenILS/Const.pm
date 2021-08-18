@@ -133,6 +133,19 @@ econst OILS_PENALTY_INVALID_PATRON_ADDRESS => 29;
 
 econst OILS_BILLING_TYPE_NOTIFICATION_FEE => 9;
 
+# ---------------------------------------------------------------------
+# Hold reset reasons
+# ---------------------------------------------------------------------
+econst OILS_HOLD_TIMED_OUT => 1;
+econst OILS_HOLD_MANUAL_RESET => 2;
+econst OILS_HOLD_BETTER_HOLD => 3;
+econst OILS_HOLD_FROZEN => 4;
+econst OILS_HOLD_UNFROZEN => 5;
+econst OILS_HOLD_CANCELED => 6;
+econst OILS_HOLD_UNCANCELED => 7;
+econst OILS_HOLD_UPDATED => 8;
+econst OILS_HOLD_CHECK_OUT => 9;
+econst OILS_HOLD_CHECK_IN => 10;
 
 # ---------------------------------------------------------------------
 # Non Evergreen-specific constants

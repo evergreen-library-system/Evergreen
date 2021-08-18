@@ -86,7 +86,8 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/background_import_mgr.pl \
 		 $(supportscr)/edi_fetcher.pl \
 		 $(supportscr)/edi_order_pusher.pl \
-		 $(supportscr)/edi_pusher.pl
+		 $(supportscr)/edi_pusher.pl \
+		 $(supportscr)/purge_hold_reset_reason_entries.srfsh
 
 installautojs = $(autojsbinscripts)
 
@@ -284,6 +285,7 @@ ilscore-install:
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/update_hard_due_dates.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/refresh_carousels.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/juv_to_adult.srfsh'
+	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/purge_hold_reset_reason_entries.srfsh'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/long-overdue-status-update.pl'
 	sed -i 's|SYSCONFDIR|@sysconfdir@|g' '$(DESTDIR)@bindir@/long-overdue-status-update.pl'
 	sed -i 's|BINDIR|@bindir@|g' '$(DESTDIR)@bindir@/thaw_expired_frozen_holds.srfsh'

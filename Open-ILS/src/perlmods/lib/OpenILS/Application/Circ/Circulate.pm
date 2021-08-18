@@ -1887,6 +1887,13 @@ sub handle_checkout_holds {
         $logger->info("circulator: un-targeting hold ".$hold->id.
             " because copy ".$copy->id." is getting checked out");
 
+        $U->simplereq('open-ils.circ',
+            'open-ils.circ.hold_reset_reason_entry.create',
+            $e->authtoken,
+            $hold->id,
+            OILS_HOLD_CHECK_OUT,
+            "Checked out to patron #".$patron->id
+        );
         $hold->clear_prev_check_time; 
         $hold->clear_current_copy;
         $hold->clear_capture_time;
@@ -2731,6 +2738,8 @@ sub checkin_retarget {
                 next if ($_->{hold_type} eq 'P');
             }
             # So much for easy stuff, attempt a retarget!
+            $U->simplereq('open-ils.circ',
+            'open-ils.circ.hold_reset_reason_entry.create', $self->editor->authtoken, $_->{id},OILS_HOLD_BETTER_HOLD);
             my $tresult = $U->simplereq(
                 'open-ils.hold-targeter',
                 'open-ils.hold-targeter.target', 
@@ -3388,6 +3397,8 @@ sub attempt_checkin_hold_capture {
     $hold->clear_cancel_time;
     $hold->clear_prev_check_time unless $hold->prev_check_time;
 
+    $U->simplereq('open-ils.circ',
+    'open-ils.circ.hold_reset_reason_entry.create', $self->editor->authtoken, $hold->id, OILS_HOLD_CHECK_IN);
     $self->bail_on_events($self->editor->event)
         unless $self->editor->update_action_hold_request($hold);
     $self->hold($hold);
@@ -3532,6 +3543,10 @@ sub retarget_holds {
     $logger->info("circulator: retargeting holds @{$self->retarget} after opportunistic capture");
     my $ses = OpenSRF::AppSession->create('open-ils.hold-targeter');
     $ses->request('open-ils.hold-targeter.target', {hold => $self->retarget});
+
+    my $cses = OpenSRF::AppSession->create('open-ils.circ');
+    $cses->request('open-ils.circ.hold_reset_reason_entry.create', $self->editor->authtoken, $self->retarget,OILS_HOLD_BETTER_HOLD);
+
     # no reason to wait for the return value
     return;
 }

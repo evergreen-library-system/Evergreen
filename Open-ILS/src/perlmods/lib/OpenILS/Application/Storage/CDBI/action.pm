@@ -102,6 +102,23 @@ __PACKAGE__->columns(Essential => qw/request_time capture_time fulfillment_time
 
 #-------------------------------------------------------------------------------
 
+package action::hold_request_reset_reason_entry;
+use base qw/action/;
+__PACKAGE__->table('action_hold_request_reset_reason_entry');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/hold reset_reason note reset_time
+                     previous_copy requestor requestor_workstation/);
+
+#-------------------------------------------------------------------------------
+
+package action::hold_request_reset_reason;
+use base qw/action/;
+__PACKAGE__->table('action_hold_request_reset_reason');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/manual name/);
+
+#-------------------------------------------------------------------------------
+
 package action::hold_notification;
 use base qw/action/;
 __PACKAGE__->table('action_hold_notification');

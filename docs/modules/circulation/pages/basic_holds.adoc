@@ -814,3 +814,34 @@ image::hold_management/hold_groups_menu_opac.jpg[Hold Group Option in OPAC]
 If the patron is not part of a hold group that is patron visible,
 the *Hold Groups* option won't appear in their OPAC account menu.
 ====================
+
+[[hold_reset_reasons]]
+== Hold Reset Reasons
+
+indexterm:[Reset, Retarget, Reset Reason]
+
+Hold reset reasons allow staff to see when and why a hold request has been reset. Reset reasons are generated any time a hold has been reset, whether that's a manual reset from a staff member or automatically because a hold has reached the hold retarget interval. This can be very useful for debugging the hold targeter or identifying bad actors in the system.
+
+=== Types of Reset Reasons
+There are ten different types of reset reasons that can be identified.
+
+. HOLD_TIMED_OUT
+. HOLD_MANUAL_RESET
+. HOLD_BETTER_HOLD
+. HOLD_FROZEN
+. HOLD_UNFROZEN
+. HOLD_CANCELED
+. HOLD_UNCANCELED
+. HOLD_UPDATED
+. HOLD_CHECKED_OUT
+. HOLD_CHECKED_IN
+
+=== Viewing Reset Reasons
+Staff can view reset reasons for a hold via a patron's *holds* tab.
+
+. Open patron's page.
+. Click *holds* tab.
+. Select a hold to investigate.
+. Click *detail view*.
+. Click *Reset Entries*
+. Order can be reversed to show most recent resets first.

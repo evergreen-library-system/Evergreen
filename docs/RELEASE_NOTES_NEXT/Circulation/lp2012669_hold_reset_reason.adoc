@@ -1,0 +1,47 @@
+== Hold Reset Reasons ==
+
+=== New database tables ===
+
+. action.hold_request_reset_reason
+. action.hold_request_reset_reason_entry
+
+Hold reset reasons allow staff to see when and why a hold request has been reset. Reset reasons are generated any time a hold has been reset, whether that's a manual reset from a staff member or automatically because a hold has reached the hold retarget interval. This can be very useful for debugging the hold targeter or identifying bad actors in the system.
+
+=== Types of Reset Reasons ===
+
+There are ten different types of reset reasons that can be identified.
+
+. HOLD_TIMED_OUT
+. HOLD_MANUAL_RESET
+. HOLD_BETTER_HOLD
+. HOLD_FROZEN
+. HOLD_UNFROZEN
+. HOLD_CANCELED
+. HOLD_UNCANCELED
+. HOLD_UPDATED
+. HOLD_CHECKED_OUT
+. HOLD_CHECKED_IN
+
+=== Viewing Reset Reasons ===
+
+Staff can view reset reasons for a hold via a patron's *holds* tab.
+
+. Open patron's page.
+. Click *holds* tab.
+. Select a hold to investigate.
+. Click *detail view*.
+. Click *Reset Entries*
+. Order can be reversed to show most recent resets first.
+
+=== New srfsh script ===
+
+This feature includes a script that you can setup as a cron job to maintain the action.hold_request_reset_entry table:
+
+NOTE: purge_hold_reset_reason_entries.srfsh
+
+This script defaults to "1 year" but can be overridden on a library by library basis via YAOUS.
+
+=== New library settings ===
+
+. circ.hold_reset_reason_entry_age_threshold
+. circ.hold_retarget_previous_targets_interval

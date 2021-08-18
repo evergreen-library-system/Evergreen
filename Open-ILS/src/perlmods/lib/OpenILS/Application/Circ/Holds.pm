@@ -1039,6 +1039,7 @@ sub uncancel_hold {
     $hold->clear_shelf_expire_time;
     $hold->clear_current_shelf_lib;
 
+    _create_reset_reason_entry($e, $hold, OILS_HOLD_UNCANCELED);
     $e->update_action_hold_request($hold) or return $e->die_event;
     $e->commit;
 
@@ -1122,6 +1123,19 @@ sub cancel_hold {
     $hold->cancel_note($note);
     $hold->canceled_by($e->requestor->id);
     $hold->canceling_ws($e->requestor->wsid);
+    my $note_body = "";
+    if($cause) {
+        my $cancel_reason = "ID $cause";
+        my $cancel_cause = $e->retrieve_action_hold_request_cancel_cause($cause);
+        $cancel_reason = $cancel_cause->label if $cancel_cause;
+        $note_body .= "Cancel Cause: $cancel_reason";
+    }
+    else {
+        $note_body .= "Cancel reason unknown";
+    }
+    $note_body .= "," unless $note_body eq "" || $note eq "";
+    $note_body .= " Cancel Note: \"$note\"" unless $note eq "";
+    _create_reset_reason_entry($e, $hold, OILS_HOLD_CANCELED, $note_body);
     $e->update_action_hold_request($hold)
         or return $e->die_event;
 
@@ -1222,6 +1236,8 @@ sub update_hold_impl {
     my($self, $e, $hold, $values) = @_;
     my $hold_status;
     my $need_retarget = 0;
+    my $reset_reason = OILS_HOLD_UPDATED;
+    my $note_body = "";
 
     unless($hold) {
         $hold = $e->retrieve_action_hold_request($values->{id})
@@ -1233,9 +1249,13 @@ sub update_hold_impl {
                 if (defined $values->{$k} && defined $hold->$k() && $values->{$k} ne $hold->$k()) {
                     # Value changed? RETARGET!
                     $need_retarget = 1;
+                    $reset_reason = OILS_HOLD_UPDATED;
+                    $note_body .= "$k value changed.";
                 } elsif (defined $hold->$k() != defined $values->{$k}) {
                     # Value being set or cleared? RETARGET!
                     $need_retarget = 1;
+                    $reset_reason = OILS_HOLD_UPDATED;
+                    $note_body .= "$k value cleared.";
                 }
             }
             if (defined $values->{$k}) {
@@ -1344,6 +1364,7 @@ sub update_hold_impl {
 
     if($U->is_true($hold->frozen)) {
         $logger->info("clearing current_copy and check_time for frozen hold ".$hold->id);
+        _create_reset_reason_entry($e, $hold, OILS_HOLD_FROZEN, $note_body) unless $U->is_true($orig_hold->frozen);
         $hold->clear_current_copy;
         $hold->clear_prev_check_time;
         # Clear expire_time to prevent frozen holds from expiring.
@@ -1365,17 +1386,20 @@ sub update_hold_impl {
     }
 
     $e->update_action_hold_request($hold) or return $e->die_event;
+    _create_reset_reason_entry($e,$hold, $reset_reason, $note_body) if $need_retarget;
     $e->commit;
 
     if(!$U->is_true($hold->frozen) && $U->is_true($orig_hold->frozen)) {
         $logger->info("Running targeter on activated hold ".$hold->id);
+        $U->simplereq('open-ils.circ',
+            'open-ils.circ.hold_reset_reason_entry.create', $e->authtoken,$hold->id, OILS_HOLD_UNFROZEN);
         $U->simplereq('open-ils.hold-targeter', 
             'open-ils.hold-targeter.target', {hold => $hold->id});
     }
 
     # a change to mint-condition changes the set of potential copies, so retarget the hold;
     if($U->is_true($hold->mint_condition) and !$U->is_true($orig_hold->mint_condition)) {
-        _reset_hold($self, $e->requestor, $hold)
+        _reset_hold($self, $e->requestor, $hold, OILS_HOLD_UPDATED, "Item quality was changed.");
     } elsif($need_retarget && !defined $hold->capture_time()) { # If needed, retarget the hold due to changes
         $U->simplereq('open-ils.hold-targeter', 
             'open-ils.hold-targeter.target', {hold => $hold->id});
@@ -1466,6 +1490,7 @@ sub update_hold_if_frozen {
     } else {
         if($U->is_true($orig_hold->frozen)) {
             $logger->info("Running targeter on activated hold ".$hold->id);
+            _create_reset_reason_entry($e, $hold,OILS_HOLD_UNFROZEN, "Running targeter on activated hold");
             $U->simplereq('open-ils.hold-targeter', 
                 'open-ils.hold-targeter.target', {hold => $hold->id});
         }
@@ -2228,8 +2253,64 @@ sub reset_hold {
     return $evt if $evt;
     ($reqr, $evt) = $U->checksesperm($auth, 'UPDATE_HOLD');
     return $evt if $evt;
-    $evt = _reset_hold($self, $reqr, $hold);
+    $evt = _reset_hold($self, $reqr, $hold, OILS_HOLD_MANUAL_RESET);
     return $evt if $evt;
+    return 1;
+}
+
+__PACKAGE__->register_method(
+    method   => 'create_reset_reason_entry',
+    api_name => 'open-ils.circ.hold_reset_reason_entry.create'
+);
+
+sub create_reset_reason_entry {
+    my($self, $conn, $auth, $hold, $reset_reason, $note, $previous_copy) = @_;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    #checkauth to set the requestor (if available)
+    $e->checkauth;
+    my @holds;
+    if(ref $hold eq 'ARRAY') {
+        @holds = @{$hold};
+    }
+    else {
+        @holds = ($hold);
+    }
+    for my $holdid (@holds){
+        my ($hold, $evt) = $U->fetch_hold($holdid);
+        _create_reset_reason_entry(
+            $e,
+            $hold,
+            $reset_reason,
+            $note,
+            $previous_copy)
+        unless $evt;
+    }
+    $e->commit;
+    return 1;
+}
+
+sub _create_reset_reason_entry {
+    my($e, $hold, $reset_reason, $note, $previous_copy) = @_;
+    eval {
+        my $ts = DateTime->now;
+        my $entry = Fieldmapper::action::hold_request_reset_reason_entry->new;
+        $logger->info("Creating reset reason entry for hold #" . $hold->id);
+        my $last_copy = defined $previous_copy ? $previous_copy : $hold->current_copy;
+        $entry->hold($hold->id);
+        $entry->reset_reason($reset_reason);
+        $entry->reset_time('now');
+        $entry->previous_copy($last_copy);
+        $entry->note($note) if defined $note;
+        $entry->requestor($e->requestor->id) if defined $e->requestor;
+        $entry->requestor_workstation($e->requestor->wsid)  if defined $e->requestor;
+        $e->create_action_hold_request_reset_reason_entry($entry) or return $e->die_event;
+        1;
+    }
+    or do {
+        my $tmp_error = $@ || 'Unknown failure';
+        $logger->error("circulate: create reset reason failed with $tmp_error");
+        undef $tmp_error;
+    };
     return 1;
 }
 
@@ -2260,46 +2341,57 @@ sub reset_hold_batch {
 
 
 sub _reset_hold {
-    my ($self, $reqr, $hold) = @_;
+    my ($self, $reqr, $hold, $reset_reason, $reset_note) = @_;
 
     my $e = new_editor(xact =>1, requestor => $reqr);
-
-    $logger->info("reseting hold ".$hold->id);
-
     my $hid = $hold->id;
-
-    if( $hold->capture_time and $hold->current_copy ) {
-
+    $logger->info("reseting hold ".$hid." requestor was ".$reqr->usrname." (ID ".$reqr->id.")");
+    $reset_reason = (defined $reset_reason) ? $reset_reason : OILS_HOLD_MANUAL_RESET;
+    $reset_note = (defined $reset_note) ? $reset_note : "";
+    if( $hold->current_copy ) {
         my $copy = $e->retrieve_asset_copy($hold->current_copy)
             or return $e->die_event;
+        if( $hold->capture_time ) {
+            if( $copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
+                $logger->info("setting copy to status 'reshelving' on hold retarget");
+                $reset_note.=" set copy to status 'reshelving'.";
+                $copy->status(OILS_COPY_STATUS_RESHELVING);
+                $copy->editor($e->requestor->id);
+                $copy->edit_date('now');
+                $e->update_asset_copy($copy) or return $e->die_event;
 
-        if( $copy->status == OILS_COPY_STATUS_ON_HOLDS_SHELF ) {
-            $logger->info("setting copy to status 'reshelving' on hold retarget");
-            $copy->status(OILS_COPY_STATUS_RESHELVING);
-            $copy->editor($e->requestor->id);
-            $copy->edit_date('now');
-            $e->update_asset_copy($copy) or return $e->die_event;
+            } elsif( $copy->status == OILS_COPY_STATUS_IN_TRANSIT ) {
 
-        } elsif( $copy->status == OILS_COPY_STATUS_IN_TRANSIT ) {
+                $logger->warn("! reseting hold [$hid] that is in transit");
+                my $transid = $e->search_action_hold_transit_copy({hold=>$hold->id,cancel_time=>undef},{idlist=>1})->[0];
 
-            $logger->warn("! reseting hold [$hid] that is in transit");
-            my $transid = $e->search_action_hold_transit_copy({hold=>$hold->id,cancel_time=>undef},{idlist=>1})->[0];
-
-            if( $transid ) {
-                my $trans = $e->retrieve_action_transit_copy($transid);
-                if( $trans ) {
-                    $logger->info("Aborting transit [$transid] on hold [$hid] reset...");
-                    my $evt = OpenILS::Application::Circ::Transit::__abort_transit($e, $trans, $copy, 1, 1);
-                    $logger->info("Transit abort completed with result $evt");
-                    unless ("$evt" eq 1) {
-                        $e->rollback;
-                        return $evt;
+                if( $transid ) {
+                    my $trans = $e->retrieve_action_transit_copy($transid);
+                    if( $trans ) {
+                        $logger->info("Aborting transit [$transid] on hold [$hid] reset...");
+                        my $evt = OpenILS::Application::Circ::Transit::__abort_transit($e, $trans, $copy, 1, 1);
+                        $logger->info("Transit abort completed with result $evt");
+                        $reset_note.=" Transit abort completed with result $evt.";
+                        unless ("$evt" eq 1) {
+                            $e->rollback;
+                            return $evt;
+                        }
                     }
                 }
             }
         }
+        if( $copy->status == OILS_COPY_STATUS_MISSING ) {
+            $reset_note.=" Copy marked missing.";
+
+        } elsif( $copy->status == OILS_COPY_STATUS_DAMAGED ) {
+            $reset_note.=" Copy marked damaged.";
+
+        } elsif( $copy->status == OILS_COPY_STATUS_DISCARD ) {
+            $reset_note.=" Copy marked discarded.";
+        }
     }
 
+    _create_reset_reason_entry($e, $hold, $reset_reason, $reset_note) if $reset_reason;
     $hold->clear_capture_time;
     $hold->clear_current_copy;
     $hold->clear_shelf_time;
@@ -3560,6 +3652,12 @@ sub find_nearest_permitted_hold {
         next if $old_hold->id eq $best_hold->id; # don't re-target the hold we want
         $logger->info("circulator: clearing current_copy and prev_check_time on hold ".
             $old_hold->id." after a better hold [".$best_hold->id."] was found");
+        _create_reset_reason_entry(
+            $editor,
+            $old_hold,
+            OILS_HOLD_BETTER_HOLD,
+            "Old hold was reset. Last check time was " . $old_hold->prev_check_time.". a better hold [" . $best_hold->id . "] was found"
+        );
         $old_hold->clear_current_copy;
         $old_hold->clear_prev_check_time;
         $editor->update_action_hold_request($old_hold)
@@ -4474,7 +4572,7 @@ sub change_hold_title {
 
     $e->commit;
 
-    _reset_hold($self, $e->requestor, $_) for @$holds;
+    _reset_hold($self, $e->requestor, $_, OILS_HOLD_UPDATED, "title hold target change") for @$holds;
 
     return 1;
 }
@@ -4511,7 +4609,7 @@ sub change_hold_title_for_specific_holds {
 
     $e->commit;
 
-    _reset_hold($self, $e->requestor, $_) for @$holds;
+    _reset_hold($self, $e->requestor, $_, OILS_HOLD_UPDATED, "title hold target change") for @$holds;
 
     return 1;
 }

@@ -892,6 +892,84 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
                     });
                 }
 
+                $scope.resetPage = 1;
+                $scope.resetsPerPage = 10;
+                $scope.maximumPages = 25;
+                $scope.resetsLoaded = false;
+                $scope.reverseResetOrder = false;
+
+                $scope.show_resets_tab = function() {
+                    $scope.detail_tab = 'resets';
+                    egCore.pcrud.search('ahrrre',
+                        {hold : $scope.hold.id()},
+                        {
+                            flesh : 1,
+                            flesh_fields : {ahrrre : ['reset_reason','requestor','requestor_workstation','previous_copy']},
+                            limit : $scope.resetsPerPage * $scope.maximumPages
+                        },
+                        {atomic : true}
+                    ).then(function(ents) {
+                        // sort the reset notes by date
+                        ents.sort(
+                            function(a,b){
+                                return Date.parse(a.reset_time()) - Date.parse(b.reset_time());
+                            }
+                        );
+                        $scope.hold.reset_entries(ents);
+                        $scope.filter_resets();
+                        $scope.resetsLoaded = true;
+                    });
+                }
+
+                $scope.filter_resets = function() {
+                    if(
+                        typeof($scope.hold) === 'undefined' ||
+                        typeof($scope.hold.reset_entries) === 'undefined' ||
+                        $scope.hold.reset_entries() === null
+                    )
+                        return;
+                    var begin = (($scope.resetPage - 1) * $scope.resetsPerPage),
+                        end = begin + $scope.resetsPerPage;
+                    $scope.filteredResets = $scope.hold
+                                                .reset_entries()
+                                                .slice(begin,end);
+                }
+
+                $scope.reverse_reset_order = function() {
+                    $scope.hold.reset_entries().reverse()
+                    $scope.reverseResetOrder = !$scope.reverseResetOrder;
+                    $scope.first_rs_page();
+                }
+
+                $scope.on_first_rs_page = function() {
+                    return $scope.resetPage == 1;
+                }
+
+                $scope.has_next_rs_page = function() {
+                    return $scope.resetPage < $scope.max_rs_pages();
+                }
+
+                $scope.max_rs_pages = function() {
+                    if(typeof($scope.hold.reset_entries) === 'undefined' || $scope.hold.reset_entries() === null)
+                        return 0;
+                    return $scope.hold.reset_entries().length/$scope.resetsPerPage;
+                }
+
+                $scope.first_rs_page = function() {
+                    $scope.resetPage = 1;
+                }
+
+                $scope.increment_rs_page = function() {
+                    $scope.resetPage++;
+                }
+
+                $scope.decrement_rs_page = function() {
+                    $scope.resetPage--;
+                }
+
+                $scope.$watch('resetPage',$scope.filter_resets);
+                $scope.$watch('reverseResetOrder',$scope.filter_resets);
+
                 $scope.show_notify_tab = function() {
                     $scope.detail_tab = 'notify';
                     egCore.pcrud.search('ahn',

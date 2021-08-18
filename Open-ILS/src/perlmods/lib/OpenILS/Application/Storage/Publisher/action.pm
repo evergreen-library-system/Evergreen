@@ -2518,5 +2518,37 @@ __PACKAGE__->register_method(
 );
 
 
+sub purge_hold_reset_entries {
+    my $self = shift;
+    my $client = shift;
+    my $age = shift;
+
+    local $OpenILS::Application::Storage::WRITE = 1;
+
+    my $sql = <<"    SQL";
+        DELETE FROM action.hold_request_reset_reason_entry r
+            USING action.hold_request h, actor.usr u
+            WHERE
+                h.id = r.hold AND
+                u.id = h.usr AND
+                AGE(reset_time) > COALESCE( BTRIM( (
+                    SELECT value FROM actor.org_unit_ancestor_setting(
+                    'circ.hold_reset_reason_entry_age_threshold', u.home_ou)),'"' ), '$age')::INTERVAL
+    SQL
+
+    my $sth = action::hold_request->db_Main->prepare($sql);
+    $sth->execute();
+
+    return 1;
+
+}
+__PACKAGE__->register_method(
+    api_name        => 'open-ils.storage.action.hold_request.purge_hold_reset_entries',
+    api_level       => 1,
+    stream      => 0,
+    argc        => 0,
+    method          => 'purge_hold_reset_entries',
+);
+
 1;
 

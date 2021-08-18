@@ -6782,10 +6782,12 @@ SELECT  usr,
 			<field reporter:label="Requesting Library" name="request_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Request Date/Time" name="request_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Requesting User" name="requestor" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Reset Entries" name="reset_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Item Selection Depth" name="selection_depth"/>
 			<field reporter:label="Selection Locus" name="selection_ou" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Target Object ID" name="target" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Hold User" name="usr" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Reset Entries" name="reset_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Hold Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Hold Canceling Staff" name="canceled_by" reporter:datatype="link"/>
 			<field reporter:label="Hold Canceling Workstation" name="canceling_ws" reporter:datatype="link"/>
@@ -6819,6 +6821,7 @@ SELECT  usr,
 			<link field="request_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="transit" reltype="might_have" key="hold" map="" class="ahtc"/>
 			<link field="notifications" reltype="has_many" key="hold" map="" class="ahn"/>
+			<link field="reset_entries" reltype="has_many" key="hold" map="" class="ahrrre"/>
 			<link field="eligible_copies" reltype="has_many" key="hold" map="target_copy" class="ahcm"/>
 			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
 			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
@@ -15638,6 +15641,47 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+
+	<class id="ahrrr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::hold_request_reset_reason" oils_persist:tablename="action.hold_request_reset_reason" reporter:label="Hold Request Reset Reason" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_reset_reason_id_seq">
+			<field name="id" reporter:selector="name" reporter:datatype="id" reporter:label="ID"/>
+			<field name="name"  reporter:datatype="text" oils_persist:i18n="true" reporter:label="Name"/>
+			<field name="manual" reporter:datatype="bool" reporter:label="Manual"/>
+		</fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="ahrrre" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::hold_request_reset_reason_entry" oils_persist:tablename="action.hold_request_reset_reason_entry" reporter:label="Hold Request Reset Reason Entry" oils_persist:field_safe="true">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_reset_reason_entry_id_seq">
+			<field name="id" reporter:datatype="id" reporter:label="ID"/>
+			<field name="hold" reporter:label="ID" reporter:datatype="link"/>
+			<field name="reset_reason" reporter:label="ID" reporter:datatype="link"/>
+			<field name="reset_time" reporter:datatype="timestamp" reporter:label="Reset Date/Time"/>
+			<field name="note" reporter:datatype="text" oils_persist:i18n="true" reporter:label="Note"/>
+			<field name="requestor" reporter:label="Resetting User" reporter:datatype="link"/>
+			<field name="requestor_workstation" reporter:label="Resetting User Workstation" reporter:datatype="link"/>
+			<field name="previous_copy" reporter:label="Previous Copy" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
+			<link field="reset_reason" reltype="has_a" key="id" map="" class="ahrrr"/>
+			<link field="requestor" reltype="has_a" key="id" map="" class="au"/>
+			<link field="requestor_workstation" reltype="has_a" key="id" map="" class="aws"/>
+			<link field="previous_copy" reltype="has_a" key="id" map="" class="acp"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_HOLD">
+					<context link="hold" field="pickup_lib"/>
+				</retrieve>
+			</actions>
+		</permacrud>
+	</class>
+
 
 	<class id="coauf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::openathens_uid_field" oils_persist:tablename="config.openathens_uid_field" reporter:label="OpenAthens unique identifiers">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.openathens_uid_field_id_seq">

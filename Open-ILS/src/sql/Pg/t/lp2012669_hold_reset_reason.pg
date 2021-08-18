@@ -1,0 +1,28 @@
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(5);
+
+-- Run the tests.
+
+SELECT isnt_empty(
+    'SELECT * FROM config.org_unit_setting_type WHERE name = $$circ.hold_retarget_previous_targets_interval$$',
+    'circ.hold_retarget_previous_targets_interval exists'
+);
+
+SELECT isnt_empty(
+    'SELECT * FROM config.org_unit_setting_type WHERE name = $$circ.hold_reset_reason_entry_age_threshold$$',
+    'circ.hold_reset_reason_entry_age_threshold exists'
+);
+
+SELECT has_table('action'::name, 'hold_request_reset_reason'::name);
+
+SELECT has_table('action'::name, 'hold_request_reset_reason_entry'::name);
+
+SELECT has_index('action'::name, 'hold_request_reset_reason_entry'::name, 'ahrrre_hold_idx'::name, 'hold'::name);
+
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;

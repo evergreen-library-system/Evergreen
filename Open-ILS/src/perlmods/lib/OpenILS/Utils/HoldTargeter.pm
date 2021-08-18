@@ -281,6 +281,7 @@ use DateTime;
 use OpenSRF::AppSession;
 use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::Logger qw(:logger);
+use OpenILS::Const qw/:const/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 
@@ -751,6 +752,48 @@ sub get_copy_circ_libs {
 sub compile_weighted_proximity_map {
     my $self = shift;
 
+    my %copy_reset_map = ();
+    my %copy_timeout_map = ();
+    eval {
+        my $pt_interval =
+        $self->parent->get_ou_setting(
+            $self->hold->pickup_lib,
+            'circ.hold_retarget_previous_targets_interval',
+            $self->editor
+        ) || 0;
+        if(int($pt_interval)) {
+            my $reset_cutoff_time = DateTime->now(time_zone => 'local')
+                ->subtract(days => $pt_interval);
+
+            # Collect reset reason info and previous copies.
+            # for this hold within the last time interval
+            my $reset_entries = $self->editor->json_query({
+                select => {ahrrre => ['reset_reason','reset_time','previous_copy']},
+                from => 'ahrrre',
+                where => {
+                    hold => $self->hold_id,
+                    previous_copy => {'!=' => undef},
+                    reset_time => {'>=' => $reset_cutoff_time->strftime('%F %T%z')},
+                    reset_reason => [OILS_HOLD_TIMED_OUT, OILS_HOLD_MANUAL_RESET]
+                }
+            });
+
+            # count how many times each copy
+            # was reset or timed out
+            for(@$reset_entries) {
+                my $pc = $_->{previous_copy};
+                my $rr = $_->{reset_reason};
+                if($rr == OILS_HOLD_MANUAL_RESET) {
+                    $copy_reset_map{$pc} = 0 if !$copy_reset_map{$pc};
+                    $copy_reset_map{$pc} += 1;
+                }
+                elsif($rr == OILS_HOLD_TIMED_OUT) {
+                    $copy_timeout_map{$pc} += 1;
+                }
+            }
+        }
+    };
+
     # Collect copy proximity info (generated via DB trigger)
     # from our newly create copy maps.
     my $hold_copy_maps = $self->editor->json_query({
@@ -762,6 +805,12 @@ sub compile_weighted_proximity_map {
     my %copy_prox_map =
         map {$_->{target_copy} => $_->{proximity}} @$hold_copy_maps;
 
+    # calculate the maximum proximity to make adjustments
+    my $max_prox = 0;
+    foreach(@$hold_copy_maps) {
+        $max_prox = $_->{proximity} > $max_prox ? $_->{proximity} : $max_prox;
+    }
+
     # Pre-fetch the org setting value for all circ libs so that
     # later calls can reference the cached value.
     $self->parent->precache_batch_ou_settings($self->get_copy_circ_libs, 
@@ -769,7 +818,19 @@ sub compile_weighted_proximity_map {
 
     my %prox_map;
     for my $copy_hash (@{$self->copies}) {
-        my $prox = $copy_prox_map{$copy_hash->{id}};
+        my $copy_id = $copy_hash->{id};
+        my $prox = $copy_prox_map{$copy_id};
+        my $reset_count = $copy_reset_map{$copy_id} || 0;
+        my $timeout_count = $copy_timeout_map{$copy_id} || 0;
+        undef $copy_id;
+
+        # make adjustments to proximity based on reset reason.
+        # manual resets get +max_prox each time
+        # this moves them to the end of the hold copy map.
+        # timeout resets only add one level of proximity
+        # so that copies can be inspected again later.
+        $prox += ($reset_count * $max_prox) + $timeout_count;
+
         $copy_hash->{proximity} = $prox;
         $prox_map{$prox} ||= [];
 

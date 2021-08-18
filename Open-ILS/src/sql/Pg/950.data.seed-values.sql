@@ -5925,6 +5925,22 @@ INSERT into config.org_unit_setting_type
         'When no value is present in the 856$z this string will be used instead',
         'coust', 'description'),
     'string', null)
+,( 'circ.hold_retarget_previous_targets_interval', 'holds',
+    oils_i18n_gettext('circ.hold_retarget_previous_targets_interval',
+        'Retarget previous targets interval',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.hold_retarget_previous_targets_interval',
+        'Hold targeter will create proximity adjustments for previously targeted copies within this time interval (in days).',
+        'coust', 'description'),
+    'integer', null)
+,( 'circ.hold_reset_reason_entry_age_threshold', 'holds',
+    oils_i18n_gettext('circ.hold_reset_reason_entry_age_threshold',
+        'Hold reset reason entry deletion interval',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.hold_reset_reason_entry_age_threshold',
+        'Hold reset reason entries will be removed if older than this interval. Default 1 year if no value provided.',
+        'coust', 'description'),
+    'interval', null)
 ;
 
 UPDATE config.org_unit_setting_type
@@ -24239,3 +24255,15 @@ VALUES (
         'coust', 'description'),
     'integer'
 );
+
+INSERT INTO action.hold_request_reset_reason (id, name, manual) VALUES
+(1,'HOLD_TIMED_OUT',false),
+(2,'HOLD_MANUAL_RESET',true),
+(3,'HOLD_BETTER_HOLD',false),
+(4,'HOLD_FROZEN',true),
+(5,'HOLD_UNFROZEN',true),
+(6,'HOLD_CANCELED',true),
+(7,'HOLD_UNCANCELED',true),
+(8,'HOLD_UPDATED',true),
+(9,'HOLD_CHECKED_OUT',true),
+(10,'HOLD_CHECKED_IN',true);

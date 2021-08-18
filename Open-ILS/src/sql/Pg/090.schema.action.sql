@@ -584,6 +584,43 @@ CREATE OR REPLACE FUNCTION
     INSERT INTO action.hold_copy_map (hold, target_copy) SELECT DISTINCT $1, UNNEST($2);
 $$ LANGUAGE SQL;
 
+CREATE TABLE action.hold_request_reset_reason (
+    id serial NOT NULL,
+    manual BOOLEAN,
+    name TEXT,
+    CONSTRAINT hold_request_reset_reason_pkey PRIMARY KEY (id),
+    CONSTRAINT hold_request_reset_reason_name_key UNIQUE (name)
+);
+
+CREATE TABLE action.hold_request_reset_reason_entry (
+    id serial NOT NULL,
+    hold int,
+    reset_reason int,
+    note text,
+    reset_time timestamp with time zone,
+    previous_copy bigint,
+    requestor int,
+    requestor_workstation int,
+    CONSTRAINT hold_request_reset_reason_entry_pkey PRIMARY KEY (id),
+    CONSTRAINT action_hold_request_reset_reason_entry_reason_fkey FOREIGN KEY (reset_reason)
+        REFERENCES action.hold_request_reset_reason (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT action_hold_request_reset_reason_entry_previous_copy_fkey FOREIGN KEY (previous_copy)
+        REFERENCES asset.copy (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT action_hold_request_reset_reason_entry_requestor_fkey FOREIGN KEY (requestor)
+        REFERENCES actor.usr (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT action_hold_request_reset_reason_entry_req_workstation_fkey FOREIGN KEY (requestor_workstation)
+        REFERENCES actor.workstation (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT action_hold_request_reset_reason_entry_hold_fkey FOREIGN KEY (hold)
+        REFERENCES action.hold_request (id) MATCH SIMPLE
+        ON UPDATE NO ACTION ON DELETE NO ACTION DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE INDEX ahrrre_hold_idx ON action.hold_request_reset_reason_entry (hold);
+
 CREATE TABLE action.transit_copy (
 	id			SERIAL				PRIMARY KEY,
 	source_send_time	TIMESTAMP WITH TIME ZONE,
@@ -1805,6 +1842,7 @@ CREATE TABLE action.batch_hold_event_map (
     batch_hold_event    INT     NOT NULL REFERENCES action.batch_hold_event (id) ON UPDATE CASCADE ON DELETE CASCADE,
     hold                INT     NOT NULL REFERENCES action.hold_request (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
 
 CREATE TABLE action.ingest_queue (
     id          SERIAL      PRIMARY KEY,

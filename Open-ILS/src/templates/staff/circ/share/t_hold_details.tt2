@@ -70,6 +70,11 @@
       [% l('Staff Notifications') %]
     </a>
   </li>
+  <li ng-class="{active : detail_tab == 'resets'}">
+    <a href ng-click="show_resets_tab()">
+      [% l('Reset Entries') %]
+    </a>
+  </li>
 </ul>
 <div class="tab-content">
   <div class="tab-pane active">
@@ -151,6 +156,76 @@
         </div>
       </div>
     </div><!-- notes tab content -->
+
+    <div ng-if="detail_tab == 'resets'">
+        <div class="btn-group column-picker">
+            <!-- change order -->
+            <button type="button" class="btn btn-default"
+              ng-click="reverse_reset_order()"
+              title="[% l('Reverse Order') %]">
+                <span class="glyphicon {{reverseResetOrder ? 'glyphicon-chevron-up' : 'glyphicon-chevron-down' }}"></span>
+            </button>
+
+            <!-- first page -->
+            <button type="button" class="btn btn-default"
+              ng-class="{disabled : on_first_rs_page()}"
+              ng-disabled="on_first_rs_page()"
+              ng-click="first_rs_page()"
+              title="[% l('Start') %]">
+                <span class="glyphicon glyphicon-fast-backward"></span>
+            </button>
+
+            <!-- previous page -->
+            <button type="button" class="btn btn-default"
+              ng-class="{disabled : on_first_rs_page()}"
+              ng-disabled="on_first_rs_page()"
+              ng-click="decrement_rs_page()"
+              title="[% l('Previous Page') %]">
+                <span class="glyphicon glyphicon-backward"></span>
+            </button>
+
+            <!-- next page -->
+            <!-- todo: paging needs a total count value to be fully functional -->
+            <button type="button" class="btn btn-default"
+
+              ng-class="{disabled : !has_next_rs_page()}"
+              ng-disabled="!has_next_rs_page()"
+              ng-click="increment_rs_page()"
+              title="[% l('Next Page') %]">
+                <span class="glyphicon glyphicon-forward"></span>
+            </button>
+        </div>
+      <div ng-show="!resetsLoaded" style="text-align:center;">
+        <img src='[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]' style='height:32px;width:32px;' alt='[% l("Search In Progress") %]'/>
+      </div>
+      <div class="flex-container-striped flex-container-bordered" ng-show="resetsLoaded && filteredResets.length">
+        <div class="flex-row">
+            <div class="flex-cell strong-text">Time</div>
+            <div class="flex-cell strong-text">Reason</div>
+            <div class="flex-cell strong-text">Requestor</div>
+            <div class="flex-cell strong-text">Requestor Workstation</div>
+            <div class="flex-cell strong-text">Note</div>
+            <div class="flex-cell strong-text">Previous Copy</div>
+        </div>
+        <div class="flex-row" ng-repeat="reset in filteredResets">
+            <div class="flex-cell">{{reset.reset_time() | date:$root.egDateAndTimeFormat}}</div>
+            <div class="flex-cell">{{reset.reset_reason().name()}}</div>
+            <div class="flex-cell">{{reset.requestor().usrname()}}</div>
+            <div class="flex-cell">{{reset.requestor_workstation().name()}}</div>
+            <div class="flex-cell">{{reset.note()}}</div>
+            <div class="flex-cell">
+                <a href="./cat/item/{{reset.previous_copy().id()}}" target="_self">
+                        {{reset.previous_copy().barcode()}}
+                </a>
+            </div>
+        </div>
+      </div>
+      <div class="flex-container-striped flex-container-bordered" ng-show="resetsLoaded && !filteredResets.length">
+        <div class="flex-row">
+        [%- l('No reset entries found for this hold.') -%]
+        </div>
+      </div>
+    </div><!-- resets tab content -->
 
   </div><!-- tab pane -->
 </div><!-- tab-content -->
