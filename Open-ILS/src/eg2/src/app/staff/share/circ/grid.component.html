@@ -2,7 +2,7 @@
 <eg-progress-dialog #progressDialog></eg-progress-dialog>
 <eg-copy-alerts-dialog #copyAlertsDialog></eg-copy-alerts-dialog>
 <eg-string #overdueString i18n-text text="Overdue"></eg-string>
-<eg-due-date-dialog #dueDateDialog></eg-due-date-dialog>
+<eg-due-date-dialog [allowPastDate]="true" #dueDateDialog></eg-due-date-dialog>
 <eg-mark-damaged-dialog #markDamagedDialog [handleCheckin]="true">
 </eg-mark-damaged-dialog>
 <eg-mark-missing-dialog #markMissingDialog></eg-mark-missing-dialog>
@@ -50,6 +50,11 @@
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
+      i18n-group group="Add" i18n-label label="Manage Item Alerts"
+      (onClick)="openItemAlerts($event, 'manage')">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
       i18n-group group="Add" i18n-label label="Add Billing"
       (onClick)="openBillingDialog($event)">
     </eg-grid-toolbar-action>
@@ -81,7 +86,7 @@
 
     <!-- .subscribe() nudges the observable to run -->
     <eg-grid-toolbar-action 
-      group="Circulation" i18n-group i18n-label label="Checkin" 
+      group="Circulation" i18n-group i18n-label label="Check In" 
       (onClick)="checkin($event).subscribe()">
     </eg-grid-toolbar-action>
 

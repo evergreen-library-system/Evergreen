@@ -268,7 +268,7 @@ export class CircGridComponent implements OnInit {
         this.copyAlertsDialog.open({size: 'lg'}).subscribe(
             modified => {
                 if (modified) {
-                    // TODO: verify the modiifed alerts are present
+                    // TODO: verify the modified alerts are present
                     // or go fetch them.
                     this.circGrid.reload();
                 }

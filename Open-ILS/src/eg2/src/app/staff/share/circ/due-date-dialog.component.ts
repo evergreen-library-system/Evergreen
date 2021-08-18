@@ -22,6 +22,8 @@ export class DueDateDialogComponent
     extends DialogComponent implements OnInit {
 
     @Input() circs: IdlObject[] = [];
+    @Input() allowPastDate = false;
+
     @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
     @ViewChild('errorMsg', { static: true }) private errorMsg: StringComponent;
 
@@ -47,7 +49,7 @@ export class DueDateDialogComponent
     }
 
     dueDateChange(iso: string) {
-        if (iso && Date.parse(iso) > this.nowTime) {
+        if (iso && (this.allowPastDate || Date.parse(iso) > this.nowTime)) {
             this.dueDateIso = iso;
         } else {
             this.dueDateIso = null;
