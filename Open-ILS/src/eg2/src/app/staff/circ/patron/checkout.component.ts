@@ -188,13 +188,6 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     }
 
     resetForm() {
-
-        if (this.dueDateOptions < 2) {
-            // Due date is not configured to persist.
-            this.dueDateOptions = 0;
-            this.dueDate = null;
-        }
-
         this.checkoutBarcode = '';
         this.checkoutNoncat = null;
         this.focusInput();
