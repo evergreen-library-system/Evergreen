@@ -147,7 +147,7 @@
   <div class="col-lg-12 d-flex">
     <div class="flex-1"></div>
     <div class="mr-3">
-      <div class="form-check form-check-inline">
+      <div class="form-check form-check-inline pt-1">
         <input class="form-check-input" type="checkbox" 
           (ngModelChange)="toggleStrictBarcode($event)"
           id="strict-barcode-cbox" [(ngModel)]="strictBarcode"/>
@@ -157,6 +157,10 @@
     </div>
     <div class="mr-3">
       <div class="input-group">
+        <span class="material-icons pt-2 pr-2">
+          <ng-container *ngIf="!mayEmailReceipt()">print</ng-container>
+          <ng-container *ngIf="mayEmailReceipt()">email</ng-container>
+        </span>
         <button class="btn btn-outline-dark" (click)="quickReceipt()" i18n>
           Quick Receipt
         </button>
