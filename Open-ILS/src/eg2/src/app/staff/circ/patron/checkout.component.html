@@ -68,7 +68,8 @@
       </div>
     </div>
     <eg-datetime-select [initialIso]="dueDate" 
-      (onChangeAsIso)="setDueDate($event)"></eg-datetime-select>
+      [readOnly]="dueDateOptions == 0" (onChangeAsIso)="setDueDate($event)">
+    </eg-datetime-select>
   </div>
 </div>
 
