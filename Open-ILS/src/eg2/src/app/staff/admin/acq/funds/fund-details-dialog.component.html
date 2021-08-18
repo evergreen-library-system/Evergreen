@@ -203,7 +203,7 @@
 </eg-fm-record-editor>
 
 <eg-fm-record-editor #allocateToFundDialog idlClass="acqfa"
-    [preloadLinkedValues]="true">
+[fieldOptions]="{funding_source:{linkedSearchConditions:{'active':'t'},preloadLinkedValues:true}}">
 </eg-fm-record-editor>
 
 <eg-fund-transfer-dialog #transferDialog></eg-fund-transfer-dialog>

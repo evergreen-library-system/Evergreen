@@ -156,6 +156,7 @@ CREATE TABLE acq.funding_source (
 	owner		INT	NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
 	code		TEXT	NOT NULL,
+	active		BOOL	NOT NULL DEFAULT TRUE,
 	CONSTRAINT funding_source_code_once_per_owner UNIQUE (code,owner),
 	CONSTRAINT funding_source_name_once_per_owner UNIQUE (name,owner)
 );
