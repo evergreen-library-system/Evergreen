@@ -34,6 +34,7 @@ const SESSION_DUE_DATE = 'eg.circ.checkout.is_until_logout';
   selector: 'eg-patron-checkout'
 })
 export class CheckoutComponent implements OnInit, AfterViewInit {
+    static autoId = 0;
 
     maxNoncats = 99; // Matches AngJS version
     checkoutNoncat: IdlObject = null;
@@ -195,6 +196,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
     gridifyResult(result: CheckoutResult) {
         const entry: CircGridEntry = {
+            index: CheckoutComponent.autoId++,
             copy: result.copy,
             circ: result.circ,
             dueDate: null,

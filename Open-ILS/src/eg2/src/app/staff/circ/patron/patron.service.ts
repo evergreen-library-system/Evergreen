@@ -17,6 +17,7 @@ export interface BillGridEntry extends CircDisplayInfo {
 }
 
 export interface CircGridEntry {
+    index: number;
     title?: string;
     author?: string;
     isbn?: string;
