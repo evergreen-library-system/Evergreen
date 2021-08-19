@@ -53,7 +53,6 @@ autoreconf -i
   * **Linux**: Evergreen has been tested on 
     Debian Buster (10), 
     Debian Stretch (9), 
-    Debian Jessie (8),
     Ubuntu Focal Fossa (20.04),
     and Ubuntu Bionic Beaver (18.04).
     If you are running an older version of these distributions, you may want 
@@ -70,7 +69,7 @@ before you can successfully configure, compile, and install Evergreen.
 +
 2. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-buster`,`debian-stretch`,`debian-jessie`,`ubuntu-focal`,
+   substituting `debian-buster`,`debian-stretch`,`ubuntu-focal`,
    or `ubuntu-bionic` for <osname> below:
 +
 [source, bash]
@@ -437,7 +436,6 @@ the minimum supported version.
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-jessie
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal
 ------------------------------------------------------------------------------
@@ -449,7 +447,6 @@ system:
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch-10
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-jessie-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-10
 ------------------------------------------------------------------------------

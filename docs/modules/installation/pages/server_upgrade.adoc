@@ -8,7 +8,7 @@ All of the steps in this chapter are to be completed from the command line.
 
   * **PostgreSQL**: The minimum supported version is 9.6.
   * **Linux**: Evergreen 3.X.X has been tested on Debian Stretch
-    (9.0), Debian Jessie (8.0), Ubuntu Bionic Beaver (18.04), and
+    (9.0), Debian Buster (10.0), Ubuntu Bionic Beaver (18.04), and
     Ubuntu Focal Fossa (20.04).  If you are running an older version
     of these distributions, you may want to upgrade before upgrading
     Evergreen. For instructions on upgrading these distributions,
@@ -68,7 +68,7 @@ indexterm:[Linux, Debian]
 indexterm:[Linux, Ubuntu]
 +
   * `debian-stretch` for Debian Stretch (9.0) (EDI compatibility in progress)
-  * `debian-jessie` for Debian Jessie (8.0) (See https://bugs.launchpad.net/evergreen/+bug/1342227[Bug 134222] if you want to use EDI)
+  * `debian-buster` for Debian Buster (10.0)
   * `ubuntu-bionic` for Ubuntu Bionic Beaver (18.04) (EDI compatibility in progress)
   * `ubuntu-focal` for Ubuntu Focal Fossa (20.04) (EDI compatibility in progress)
 
