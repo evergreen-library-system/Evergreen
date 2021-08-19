@@ -2670,6 +2670,9 @@ sub do_checkin {
         OpenILS::Event->new('ASSET_COPY_NOT_FOUND')) 
         unless $self->copy;
 
+    # Never capture a deleted copy for a hold.
+    $self->capture('nocapture') if $U->is_true($self->copy->deleted);
+
     $self->fix_broken_transit_status; # if applicable
     $self->check_transit_checkin_interval;
     $self->checkin_retarget;
