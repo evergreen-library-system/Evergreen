@@ -46,7 +46,10 @@ export class ClaimsReturnedDialogComponent
                 {barcode: barcode, backdate: this.returnDate}
             ).pipe(mergeMap(response => {
 
-                if (Number(response) === 1) { return of(true); }
+                if (Number(response) === 1) {
+                    this.completed[barcode] = true;
+                    return of(true);
+                }
 
                 console.warn(response);
 
