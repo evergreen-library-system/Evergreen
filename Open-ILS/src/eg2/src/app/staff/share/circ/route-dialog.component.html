@@ -94,7 +94,7 @@
 
 <ng-template #transitTmpl>
   <div>
-    <span class="mr-2" i18n>checkin.destination</span>
+    <span class="mr-2" i18n>Destination</span>
     <strong>{{checkin.destOrg.shortname()}}</strong>
   </div>
   <div *ngIf="checkin.destCourierCode">{{checkin.destCourierCode}} </div>
@@ -115,7 +115,7 @@
   </div>
   <ng-container *ngTemplateOutlet="itemSummary"></ng-container>
   <br/>
-  <div *ngIf="checkin.patron">
+  <div *ngIf="checkin.hold">
     <ng-container *ngTemplateOutlet="patronSummary"></ng-container>
     <br/>
     <ng-container *ngTemplateOutlet="holdSummary"></ng-container>

@@ -760,7 +760,8 @@ export class CircService {
 
             if (patronId) {
                 promise = promise.then(_ => {
-                    return this.pcrud.retrieve('au', patronId)
+                    return this.pcrud.retrieve('au', patronId,
+                      {flesh: 1, flesh_fields : {'au' : ['card']}})
                     .toPromise().then(p => result.patron = p);
                 });
             }
