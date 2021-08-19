@@ -178,9 +178,6 @@
       <eg-grid-column path="copy.barcode" label="Barcode" 
         i18n-label [cellTemplate]="barcodeTemplate"></eg-grid-column>
 
-      <eg-grid-column path="copy.alert_message" label="Alert Message" 
-        i18n-label></eg-grid-column>
-
       <eg-grid-column path="circ.id" label="Bill #" i18n-label>
       </eg-grid-column>
 
@@ -328,7 +325,7 @@
             <span *ngIf="modifiers.do_inventory_update"
               class="badge badge-success mr-2">&#x2713;</span>
             <span *ngIf="!modifiers.do_inventory_update"
-              class="badge badge-warning">&#x2717;</span>
+              class="badge badge-warning mr-2">&#x2717;</span>
             <span i18n>Update Inventory</span>
           </a>
         </div>
