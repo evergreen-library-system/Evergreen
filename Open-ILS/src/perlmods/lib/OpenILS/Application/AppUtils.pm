@@ -2095,6 +2095,9 @@ sub basic_opac_copy_query {
             bmp => [
                 {column => 'label', alias => 'part_label'},
             ],
+            crahp => [
+                {column => 'name', alias => 'age_protect_label'}
+            ],
             ($iss_id ? (sitem => ["issuance"]) : ())
         },
 
@@ -2130,7 +2133,10 @@ sub basic_opac_copy_query {
                         bmp => { type => 'left', filter => { deleted => 'f' } }
                     }
                 }},
-                ($iss_id ? { # 6 
+                {'crahp' => { # 6
+                    type => 'left'
+                }},
+                ($iss_id ? { # 7
                     sitem => {
                         fkey => 'id',
                         field => 'unit',
