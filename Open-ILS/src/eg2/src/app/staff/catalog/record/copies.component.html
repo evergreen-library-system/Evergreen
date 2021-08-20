@@ -45,6 +45,10 @@
   </div>
 </ng-template>
 
+<ng-template #ageTemplate let-copy="row">
+  {{copy.age_protect_label}}
+</ng-template>
+
 <div class='eg-copies w-100 mt-3'>
   <eg-grid #copyGrid [dataSource]="gridDataSource" 
     [disableSelect]="true" [cellTextGenerator]="cellTextGenerator"
@@ -66,7 +70,8 @@
     </eg-grid-column>
     <eg-grid-column i18n-label label="Circulation Modifier" path="circ_modifier">
     </eg-grid-column>
-    <eg-grid-column i18n-label label="Age Hold Protection" path="age_protect">
+    <eg-grid-column i18n-label label="Age Hold Protection" path="age_protect"
+      [cellTemplate]="ageTemplate">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Active/Create Date" 
       path="active_date" datatype="timestamp">
