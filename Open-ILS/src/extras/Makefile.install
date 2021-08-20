@@ -4,12 +4,14 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (buster, stretch),
+# Currently supports Debian (bullseye, buster, stretch),
 # Ubuntu (16.04), Ubuntu (18.04).
 #
 # Installs Perl prereqs, libdbi, libdbi-drivers, and libyaz
 #
 # usage:
+# 	make -f Makefile.install debian-bullseye
+# 	- or -
 # 	make -f Makefile.install debian-buster
 # 	- or -
 # 	make -f Makefile.install debian-stretch
@@ -62,6 +64,8 @@ DIR = $(dir $(lastword $(MAKEFILE_LIST)))/install
 
 all:
 	@echo "please specify an OS" && exit 0
+debian-bullseye:
+	@make -f $(DIR)/Makefile.debian-bullseye
 debian-buster:
 	@make -f $(DIR)/Makefile.debian-buster
 debian-stretch:
@@ -73,6 +77,10 @@ ubuntu-focal:
 fedora:
 	@make -f $(DIR)/Makefile.fedora
 
+postgres-server-debian-bullseye:
+	@make -f $(DIR)/Makefile.debian-bullseye install_postgres_server
+postgres-server-debian-bullseye-10:
+	@make -f $(DIR)/Makefile.debian-bullseye install_postgres_server_10
 postgres-server-debian-buster:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server
 postgres-server-debian-buster-10:
@@ -96,6 +104,8 @@ ubuntu-bionic-developer:
 	@make -f $(DIR)/Makefile.ubuntu-bionic install_developer
 ubuntu-focal-developer:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_developer
+debian-bullseye-developer:
+	@make -f $(DIR)/Makefile.debian-bullseye install_developer
 debian-buster-developer:
 	@make -f $(DIR)/Makefile.debian-buster install_developer
 debian-stretch-developer:
@@ -105,6 +115,8 @@ ubuntu-bionic-translator:
 	@make -f $(DIR)/Makefile.ubuntu-bionic install_translator
 ubuntu-focal-translator:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_translator
+debian-bullseye-translator:
+	@make -f $(DIR)/Makefile.debian-bullseye install_translator
 debian-buster-translator:
 	@make -f $(DIR)/Makefile.debian-buster install_translator
 debian-stretch-translator:
@@ -114,6 +126,8 @@ ubuntu-bionic-packager:
 	@make -f $(DIR)/Makefile.ubuntu-bionic install_packager
 ubuntu-focal-packager:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_packager
+debian-bullseye-packager:
+	@make -f $(DIR)/Makefile.debian-bullseye install_packager
 debian-buster-packager:
 	@make -f $(DIR)/Makefile.debian-buster install_packager
 debian-stretch-packager:

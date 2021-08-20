@@ -50,7 +50,8 @@ autoreconf -i
 == Installing prerequisites ==
 
   * **PostgreSQL**: The minimum supported version is 9.6.
-  * **Linux**: Evergreen has been tested on 
+  * **Linux**: Evergreen has been tested on
+    Debian Bullseye (11),
     Debian Buster (10), 
     Debian Stretch (9), 
     Ubuntu Focal Fossa (20.04),
@@ -69,7 +70,7 @@ before you can successfully configure, compile, and install Evergreen.
 +
 2. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-buster`,`debian-stretch`,`ubuntu-focal`,
+   substituting `debian-bullseye`,`debian-buster`,`debian-stretch`,`ubuntu-focal`,
    or `ubuntu-bionic` for <osname> below:
 +
 [source, bash]
@@ -250,7 +251,8 @@ chown -R opensrf:opensrf /openils
 
 == Run ldconfig ==
 
-On Ubuntu 18.04 / 20.04 or Debian Stretch / Buster, run the following command as the root user:
+On Ubuntu 18.04 / 20.04 or Debian Stretch / Buster / Bullseye, run the
+following command as the root user:
 
 [source, bash]
 ------------------------------------------------------------------------------
@@ -434,6 +436,7 @@ the minimum supported version.
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic
@@ -445,6 +448,7 @@ system:
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-10
