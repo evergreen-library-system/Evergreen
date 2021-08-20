@@ -2123,6 +2123,9 @@ sub basic_opac_copy_query {
                 {column => 'label', alias => 'part_label'},
             ],
             ($staff ? (erfcc => ['circ_count']) : ()),
+            crahp => [
+                {column => 'name', alias => 'age_protect_label'}
+            ],
             ($iss_id ? (sitem => ["issuance"]) : ())
         },
 
@@ -2158,7 +2161,10 @@ sub basic_opac_copy_query {
                         bmp => { type => 'left', filter => { deleted => 'f' } }
                     }
                 }},
-                ($iss_id ? { # 6 
+                {'crahp' => { # 6
+                    type => 'left'
+                }},
+                ($iss_id ? { # 7
                     sitem => {
                         fkey => 'id',
                         field => 'unit',
