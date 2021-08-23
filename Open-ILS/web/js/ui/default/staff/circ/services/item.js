@@ -249,23 +249,22 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
                 ).then(function(buckets) { $scope.allBuckets = buckets; });
 
                 $scope.add_to_bucket = function() {
-                    var promises = [];
+                    var promise = $q.when();
                     angular.forEach(list, function (entry) {
                         var item = bucket_type == 'copy' ? new egCore.idl.ccbi() : new egCore.idl.cbrebi();
                         item.bucket($scope.bucket_id);
                         if (bucket_type == 'copy') item.target_copy(entry);
                         if (bucket_type == 'biblio') item.target_biblio_record_entry(entry);
-                        promises.push(
-                            egCore.net.request(
+                        promise = promise.then(function() {
+                            return egCore.net.request(
                                 'open-ils.actor',
                                 'open-ils.actor.container.item.create',
                                 egCore.auth.token(), bucket_type, item
-                            )
-                        );
-
-                        return $q.all(promises).then(function() {
-                            $uibModalInstance.close();
+                            );
                         });
+                    });
+                    promise.then(function() {
+                        $uibModalInstance.close();
                     });
                 }
 
