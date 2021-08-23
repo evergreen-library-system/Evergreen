@@ -1,6 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {Location} from '@angular/common';
-import {Observable, Observer, of} from 'rxjs';
+import {Observable, Observer, of, from} from 'rxjs';
+import {concatMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
@@ -10,6 +11,7 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {MarkDamagedDialogComponent
     } from '@eg/staff/share/holdings/mark-damaged-dialog.component';
 import {MarkMissingDialogComponent
@@ -74,6 +76,10 @@ export class HoldsGridComponent implements OnInit {
     // has it's own generic embedded 'loading' progress indicator.
     @Input() noLoadProgress = false;
 
+    // Some default columns and actions do or don't make sense when
+    // displaying holds for a specific patron vs. e.g. a specific title.
+    @Input() patronFocused = false;
+
     mode: 'list' | 'detail' | 'manage' = 'list';
     initDone = false;
     holdsCount: number;
@@ -83,6 +89,7 @@ export class HoldsGridComponent implements OnInit {
     detailHold: any;
     editHolds: number[];
     transferTarget: number;
+    uncancelHoldCount: number;
 
     @ViewChild('holdsGrid', { static: false }) private holdsGrid: GridComponent;
     @ViewChild('progressDialog', { static: true })
@@ -101,6 +108,7 @@ export class HoldsGridComponent implements OnInit {
         private cancelDialog: HoldCancelDialogComponent;
     @ViewChild('manageDialog', { static: true })
         private manageDialog: HoldManageDialogComponent;
+    @ViewChild('uncancelDialog') private uncancelDialog: ConfirmDialogComponent;
 
     // Bib record ID.
     _recordId: number;
@@ -617,6 +625,36 @@ export class HoldsGridComponent implements OnInit {
                 }
             );
         }
+    }
+
+    showUncancelDialog(rows: any[]) {
+        const holdIds = rows.map(r => r.id).filter(id => Boolean(id));
+        if (holdIds.length === 0) { return; }
+        this.uncancelHoldCount = holdIds.length;
+
+        this.uncancelDialog.open().subscribe(confirmed => {
+            if (!confirmed) { return; }
+            this.progressDialog.open();
+
+            from(holdIds).pipe(concatMap(holdId => {
+                return this.net.request(
+                    'open-ils.circ',
+                    'open-ils.circ.hold.uncancel',
+                    this.auth.token(), holdId
+                )
+            })).subscribe(
+                resp => {
+                    if (Number(resp) !== 1) {
+                        console.error('Failed uncanceling hold', resp);
+                    }
+                },
+                null,
+                () => {
+                    this.progressDialog.close();
+                    this.holdsGrid.reload();
+                }
+            );
+        });
     }
 
     printHolds() {

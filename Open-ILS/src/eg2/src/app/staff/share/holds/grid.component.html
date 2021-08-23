@@ -9,6 +9,11 @@
 <eg-hold-retarget-dialog #retargetDialog></eg-hold-retarget-dialog>
 <eg-hold-cancel-dialog #cancelDialog></eg-hold-cancel-dialog>
 <eg-hold-manage-dialog #manageDialog></eg-hold-manage-dialog>
+<eg-confirm-dialog #uncancelDialog
+  i18n-dialogTitle i18n-dialogBody
+  i18n-dialogTitle="Un-Cancel Holds"
+  dialogBody="Un-Cancel {{uncancelHoldCount}} hold(s)?"
+></eg-confirm-dialog>
 
 <ng-template #statusTemplate let-hold="row">
   <ng-container [ngSwitch]="hold.hold_status">
@@ -102,7 +107,7 @@
         i18n-label label="Show Last Few Circulations" group="Item" i18n-group
         (onClick)="showRecentCircs($event)"></eg-grid-toolbar-action>
 
-      <eg-grid-toolbar-action
+      <eg-grid-toolbar-action *ngIf="!patronFocused"
         i18n-label label="Retrieve Patron" group="Patron" i18n-group
         (onClick)="showPatron($event)">
       </eg-grid-toolbar-action>
@@ -131,9 +136,14 @@
         i18n-group group="Hold" i18n-label label="Find Another Target"
         (onClick)="showRetargetDialog($event)"></eg-grid-toolbar-action>
 
-      <eg-grid-toolbar-action
+      <eg-grid-toolbar-action *ngIf="!showRecentlyCanceled"
         i18-group group="Hold" i18n-label label="Cancel Hold"
-        (onClick)="showCancelDialog($event)"></eg-grid-toolbar-action>
+        (onClick)="showUncancelDialog($event)"></eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action *ngIf="showRecentlyCanceled"
+        i18n-label label="Un-Cancel Hold(s)" group="Hold" i18n-group
+        (onClick)="showUncancelDialog($event)">
+      </eg-grid-toolbar-action>
 
       <eg-grid-toolbar-action
         i18-group group="Hold" i18n-label label="Print Holds"
