@@ -171,6 +171,9 @@
   (onRowActivate)="showStatement($event)"
   [reloadOnColumnChange]="true"
   [showDeclaredFieldsOnly]="true"
+  [rowClassCallback]="rowClassCallback"
+  [rowFlairIsEnabled]="true"
+  [rowFlairCallback]="rowFlairCallback"
   [cellTextGenerator]="cellTextGenerator">
 
   <eg-grid-toolbar-button i18n-label label="Add Billing"
@@ -211,6 +214,13 @@
 
   <eg-grid-column path="xact_start" datatype="timestamp" [datePlusTime]="true"
     label="Start" i18n-label></eg-grid-column>
+
+  <eg-grid-column path="circulation.due_date" label="Due Date" i18n-label                   
+    timezoneContextOrg="circulation.circ_lib" dateOnlyIntervalField="circulation.duration"   
+    datatype="timestamp" [required]="true"></eg-grid-column>  
+
+  <eg-grid-column path="circulation.stop_fines" [required]="true"
+    label="Stop Fines" i18n-label></eg-grid-column>
 
   <eg-grid-column path="summary.xact_type"
     label="Type" i18n-label></eg-grid-column>

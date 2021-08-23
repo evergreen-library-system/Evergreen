@@ -12,7 +12,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
-import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {GridDataSource, GridColumn, GridCellTextGenerator, GridRowFlairEntry} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
 import {CircService, CircDisplayInfo} from '@eg/staff/share/circ/circ.service';
@@ -58,6 +58,10 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
     gridDataSource: GridDataSource = new GridDataSource();
     cellTextGenerator: GridCellTextGenerator;
+    rowClassCallback: (row: any) => string;
+    rowFlairCallback: (row: any) => GridRowFlairEntry;
+
+    nowTime: number = new Date().getTime();
 
     @ViewChild('billGrid') private billGrid: GridComponent;
     @ViewChild('annotateDialog') private annotateDialog: PromptDialogComponent;
@@ -98,6 +102,27 @@ export class BillsComponent implements OnInit, AfterViewInit {
             call_number: row => row.call_number_label
         };
 
+        this.rowClassCallback = (row: any): string => {
+            if (row['circulation.stop_fines'] === 'LOST') {
+                return 'lost-row';
+            } else if (row['circulation.stop_fines'] === 'LONGOVERDUE') {
+                return 'longoverdue-row';
+            } else if (this.circIsOverdue(row)) {
+                return 'less-intense-alert';
+            }
+            return '';
+        };
+
+        this.rowFlairCallback = (row: any): GridRowFlairEntry => {
+            if (row['circulation.stop_fines'] === 'LOST') {
+                return {icon: 'help'};
+            } else if (row['circulation.stop_fines'] === 'LONGOVERDUE') {
+                return {icon: 'priority-high'};
+            } else if (this.circIsOverdue(row)) {
+                return {icon: 'schedule'};
+            }
+        };
+
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
 
             const query: any = {
@@ -120,6 +145,18 @@ export class BillsComponent implements OnInit, AfterViewInit {
         // Summary will be null for users with no billing history.
         .then(summary => this.summary = summary || this.idl.create('mowbus'))
         .then(_ => this.loadSettings());
+    }
+
+    circIsOverdue(row: any): boolean {
+        const due = row['circulation.due_date'];
+        if (due && !row['circulation.checkin_time']) {
+            const stopFines = row['circulation.stop_fines'] || '';
+            if (stopFines.match(/LOST|CLAIMSRETURNED|CLAIMSNEVERCHECKEDOUT/)) {
+                return false;
+            }
+
+            return (Date.parse(due) < this.nowTime);
+        }
     }
 
     loadSettings(): Promise<any> {

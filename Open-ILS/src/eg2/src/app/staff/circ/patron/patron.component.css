@@ -3,3 +3,13 @@
   font-size: 1rem; /* defaults to 1.5 */
 }
 
+::ng-deep .lost-row {
+  color: #FFF;
+  background-color: #800000 !important;
+}
+
+::ng-deep .longoverdue-row {
+  color: #000;
+  background-color: #FFE1A8 !important;
+}
+

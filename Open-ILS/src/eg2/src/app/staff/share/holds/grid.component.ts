@@ -641,7 +641,7 @@ export class HoldsGridComponent implements OnInit {
                     'open-ils.circ',
                     'open-ils.circ.hold.uncancel',
                     this.auth.token(), holdId
-                )
+                );
             })).subscribe(
                 resp => {
                     if (Number(resp) !== 1) {
