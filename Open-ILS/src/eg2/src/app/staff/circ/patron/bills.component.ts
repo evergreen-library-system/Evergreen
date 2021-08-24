@@ -498,7 +498,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
         this.billingDialog.newXact = true;
         this.billingDialog.open().subscribe(data => {
             if (data) {
-                this.billGrid.reload();
+                this.context.refreshPatron().then(_ => this.billGrid.reload());
             }
         });
     }
@@ -566,7 +566,9 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
             this.sessionVoided = (this.sessionVoided * 100 + cents) / 100;
             this.voidAmount = 0;
-            this.billGrid.reload();
+
+            this.context.refreshPatron()
+            .then(_ => this.billGrid.reload());
         });
     }
 
@@ -584,7 +586,10 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 'open-ils.circ.money.billable_xact.adjust_to_zero',
                 this.auth.token(), xactIds
             ).subscribe(resp => {
-                if (!this.reportError(resp)) { this.billGrid.reload(); }
+                if (!this.reportError(resp)) {
+                    this.context.refreshPatron()
+                    .then(_ => this.billGrid.reload());
+                }
             });
         });
     }

@@ -12,11 +12,23 @@
 <div *ngIf="statement" class="striped-rows-odd">
   <div class="row p-1">
     <div class="col-lg-2" i18n>Billing Location</div>
-    <div class="col-lg-2">{{context.orgSn(statement.billing_location)}}</div>
+    <div class="col-lg-2">
+      <a target="_blank" 
+        href="/eg/opac/library/{{context.orgSn(statement.billing_location)}}">
+        {{context.orgSn(statement.billing_location)}}
+      </a>
+    </div>
     <div class="col-lg-2" i18n>Total Billed</div>
     <div class="col-lg-1">{{statement.summary.billing_total | currency}}</div>
     <div class="col-lg-2" i18n>Title</div>
-    <div class="col-lg-3">{{statement.title}}</div>
+    <div class="col-lg-3">
+      <ng-container *ngIf="statement.title_id">
+        <a target="_blank" routerLink="/staff/catalog/record/{{statement.title_id}}">
+          {{statement.title}}
+        </a>
+      </ng-container>
+      <ng-container *ngIf="!statement.title_id">{{statement.title}}</ng-container>
+    </div>
   </div>
   <div class="row mt-1 p-1">
     <div class="col-lg-2" i18n>Type</div>

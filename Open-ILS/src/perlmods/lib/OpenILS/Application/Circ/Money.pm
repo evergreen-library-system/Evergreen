@@ -1378,12 +1378,14 @@ sub retrieve_statement {
 
     my $title;
     my $billing_location;
+    my $title_id;
     if ($xact->circulation) {
         $billing_location = $xact->circulation->circ_lib;
         my $copy = $xact->circulation->target_copy;
         if ($copy->call_number->id == -1) {
             $title = $copy->dummy_title;
         } else {
+            $title_id = $copy->call_number->record->id;
             $title = OpenSRF::Utils::JSON->JSON2perl(
                 $copy->call_number->record->wide_display_entry->title);
         }
@@ -1396,6 +1398,7 @@ sub retrieve_statement {
         xact_id => $xact_id,
         xact => $xact,
         title => $title,
+        title_id => $title_id,
         billing_location => $billing_location,
         summary => {
             balance_due => $totals{billing} - ($totals{payment} + $totals{account_adjustment} + $totals{void}),

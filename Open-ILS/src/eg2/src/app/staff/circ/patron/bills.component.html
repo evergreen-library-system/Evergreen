@@ -232,7 +232,8 @@
     [required]="true" label="Last Payment Type" i18n-label></eg-grid-column>
 
   <eg-grid-column name="last_payment_ts" path="summary.last_payment_ts" 
-    [required]="true" label="Last Payment Time" i18n-label></eg-grid-column>
+    [required]="true" [datePlusTime]="true" label="Last Payment Time" i18n-label>
+  </eg-grid-column>
 
   <eg-grid-column name="billingLocation"
     label="Billing Location" i18n-label></eg-grid-column>
@@ -245,6 +246,14 @@
     i18n-label label="CN Prefix" [hidden]="true"></eg-grid-column>
   <eg-grid-column path="circulation.target_copy.call_number.suffix.label" 
     i18n-label label="CN Suffix" [hidden]="true"></eg-grid-column>
+
+  <eg-grid-column i18n-label label="Owning Library" [hidden]="true"
+    path="circulation.target_copy.call_number.owning_lib.shortname">
+  </eg-grid-column>
+
+  <eg-grid-column i18n-label label="Checkout/Renewal Library" [hidden]="true"
+    path="circulation.circ_lib.shortname">
+  </eg-grid-column>
 
   <eg-grid-column name="copy_barcode" label="Item Barcode" i18n-label
     path="circulation.target_copy.barcode" [cellTemplate]="barcodeTemplate">
