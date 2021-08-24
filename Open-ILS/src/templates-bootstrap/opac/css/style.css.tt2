@@ -3836,7 +3836,7 @@ label[for*=expert_]
 */
 
 .carousel {
-    width: 40%;
+    width: 80%;
     margin: 0 auto;
 }
 .carousel-title {
@@ -3868,10 +3868,10 @@ label[for*=expert_]
     display: inline-block;
 }
 .carousel .glide__arrow--right {
-    right: -8em;
+    right: -6em;
 }
 .carousel .glide__arrow--left {
-    left: -8em;
+    left: -6em;
 }
 
 .search-filter{
