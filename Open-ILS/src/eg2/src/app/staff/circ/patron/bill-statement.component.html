@@ -76,6 +76,59 @@
   </div>
 </div>
 
+<h3 class="mt-4 mb-4" i18n>Item Summary</h3>
+
+<div *ngIf="copy()" class="striped-rows-odd">
+  <div class="row p-1">
+    <div class="col-lg-2" i18n>Barcode</div>
+    <div class="col-lg-2">
+      <a target="_blank" href="/eg/staff/cat/item/{{copy().id()}}">
+        {{copy().barcode()}}
+      </a>
+    </div>
+    <div class="col-lg-2" i18n>Location</div>
+    <div class="col-lg-2">{{copy().location().name()}}</div>
+    <div class="col-lg-2" i18n>Call Number</div>
+    <div class="col-lg-2">
+      {{copy().call_number().prefix().label()}}
+      {{copy().call_number().label()}}
+      {{copy().call_number().suffix().label()}}
+    </div>
+  </div>
+  <div class="row p-1">
+    <div class="col-lg-2" i18n>Status</div>
+    <div class="col-lg-2">{{copy().status().name()}}</div>
+    <div class="col-lg-2" i18n>Circulate</div>
+    <div class="col-lg-2"><eg-bool [value]="copy().circulate()"></eg-bool></div>
+    <div class="col-lg-2" i18n>Reference</div>
+    <div class="col-lg-2"><eg-bool [value]="copy().ref()"></eg-bool></div>
+  </div>
+  <div class="row p-1">
+    <div class="col-lg-2" i18n>Holdable</div>
+    <div class="col-lg-2"><eg-bool [value]="copy().holdable()"></eg-bool></div>
+    <div class="col-lg-2" i18n>OPAC Visible</div>
+    <div class="col-lg-2"><eg-bool [value]="copy().opac_visible()"></eg-bool></div>
+    <div class="col-lg-2" i18n>Created</div>
+    <div class="col-lg-2">{{copy().create_date() | date:'short'}}</div>
+  </div>
+  <div class="row p-1">
+    <div class="col-lg-2" i18n>Edited</div>
+    <div class="col-lg-2">{{copy().edit_date() | date:'short'}}</div>
+    <div class="col-lg-2" i18n>Age Protect</div>
+    <div class="col-lg-2">
+      <ng-container *ngIf="copy().age_protect()">
+        {{copy().age_protect().name()}}
+      </ng-container>
+    </div>
+    <div class="col-lg-2" i18n>Total Circulations</div>
+    <div class="col-lg-2">{{copy().total_circ_count().circ_count()}}</div>
+  </div>
+  <div class="row p-1">
+    <div class="col-lg-2" i18n>Owning Library</div>
+    <div class="col-lg-2">{{context.orgSn(copy().call_number().owning_lib())}}</div>
+  </div>
+</div>
+
 <hr class="p-2 m-2"/>
 
 <ul ngbNav #statementNav="ngbNav" class="nav-tabs" [activeId]="statementTab">

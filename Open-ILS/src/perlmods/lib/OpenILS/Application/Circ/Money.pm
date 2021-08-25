@@ -1366,10 +1366,10 @@ sub retrieve_statement {
         $xact_id, {
             flesh => 5,
             flesh_fields => {
-                mbt => [qw/circulation grocery/],
+                mbt =>  [qw/circulation grocery/],
                 circ => [qw/target_copy/],
-                acp =>  [qw/call_number/],
-                acn =>  [qw/record/],
+                acp =>  [qw/call_number location status age_protect total_circ_count/],
+                acn =>  [qw/record prefix suffix/],
                 bre =>  [qw/wide_display_entry/]
             },
             select => {bre => ['id']} 

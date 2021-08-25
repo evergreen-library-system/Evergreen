@@ -154,5 +154,11 @@ export class BillStatementComponent implements OnInit {
             });
         });
     }
+
+    copy(): IdlObject {
+        if (this.statement && this.statement.xact.circulation()) {
+            return this.statement.xact.circulation().target_copy();
+        }
+    }
 }
 
