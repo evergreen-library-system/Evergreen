@@ -64,6 +64,7 @@ export class CheckinComponent implements OnInit, AfterViewInit {
 
     barcode: string;
     backdate: string;
+    backdateDate: any;
     backdateUntilLogout = false;
     fineTally = 0;
     isHoldCapture = false;

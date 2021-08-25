@@ -72,8 +72,10 @@
       </div>
     </div>
     <div class="mr-2" i18n>Effective Date:</div>
-    <eg-date-select [initialIso]="backdate" 
+    <eg-date-select [initialIso]="backdate" [(ngModel)]="backdateDate"
       (onChangeAsIso)="backdate = $event"></eg-date-select>
+    <button class="btn btn-sm btn-outline-dark ml-1" 
+      (click)="backdateDate=null; backdate=null" i18n>Clear</button>
   </div>
 </div>
 
