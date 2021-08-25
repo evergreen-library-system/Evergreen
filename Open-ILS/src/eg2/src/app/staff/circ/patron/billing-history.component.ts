@@ -118,9 +118,15 @@ export class BillingHistoryComponent implements OnInit {
         };
     }
 
-    dateChange(which: string, iso: string) {
+    dateChange(which: string, d: Date) {
 
-        this[which] = iso;
+        if (which.match(/End/)) {
+            // Add a day to the end date so the DB query includes all of
+            // the selected date.
+            d.setDate(d.getDate() + 1);
+        }
+
+        this[which] = DateUtil.localYmdFromDate(d);
 
         if (which.match(/xacts/)) {
             this.xactsGrid.reload();
