@@ -231,7 +231,7 @@ sub identify {
 sub listMetadataFormats {
 
     my $response = HTTP::OAI::ListMetadataFormats->new();
-    foreach my $metadataPrefix (keys $oai_metadataformats) {
+    foreach my $metadataPrefix (keys %$oai_metadataformats) {
         my $metadata_format = $oai_metadataformats->{$metadataPrefix} ;
         $response->metadataFormat( HTTP::OAI::MetadataFormat->new(
            metadataPrefix    => $metadataPrefix,
@@ -250,7 +250,7 @@ sub listSets {
 
     if ($oai_sets) {
         my $response = HTTP::OAI::ListSets->new( );
-        foreach my $key (keys $oai_sets) {
+        foreach my $key (keys %$oai_sets) {
             my $set = $oai_sets->{$key} ;
             if ( $set && $set->{setSpec} && $set->{record_class} eq $record_class ) {
                 $response->set(

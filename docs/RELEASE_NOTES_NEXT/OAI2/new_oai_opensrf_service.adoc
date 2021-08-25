@@ -101,7 +101,7 @@ Add the service to the public router in your opensrf_core.xml
                 <name>router</name>
                 <domain>public.realm</domain>
                 <services>
-                    <service>openils.oai</service>
+                    <service>open-ils.oai</service>
                     ...
 ```
 

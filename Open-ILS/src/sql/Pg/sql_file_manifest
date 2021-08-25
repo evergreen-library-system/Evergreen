@@ -48,6 +48,7 @@ FTS_CONFIG_FILE
 400.schema.action_trigger.sql
 
 500.view.cross-schema.sql
+600.schema.oai.sql
 
 800.fkeys.sql
 
