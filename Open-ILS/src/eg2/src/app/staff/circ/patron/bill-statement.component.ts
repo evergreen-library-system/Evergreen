@@ -76,19 +76,24 @@ export class BillStatementComponent implements OnInit {
             if (sort.length) {
                 orderBy.mb = sort[0].name + ' ' + sort[0].dir;
             }
-            return this.pcrud.search(
-                'mb', {xact: this.xactId}, {order_by: orderBy});
+            return this.pcrud.search('mb', {xact: this.xactId}, {
+                flesh: 1,
+                flesh_fields: {mb: ['voider']},
+                order_by: orderBy
+            });
         };
 
         this.paymentDataSource.getRows = (pager: Pager, sort: any[]) => {
             const orderBy: any = {};
             if (sort.length) {
-                orderBy.mp = sort[0].name + ' ' + sort[0].dir;
+                orderBy.mbp = sort[0].name + ' ' + sort[0].dir;
             }
-            return this.pcrud.search(
-                'mp', {xact: this.xactId}, {order_by: orderBy});
+            return this.pcrud.search('mbp', {xact: this.xactId}, {
+                flesh: 1,
+                flesh_fields: {mbp: ['accepting_usr']},
+                order_by: orderBy
+            });
         };
-
 
         this.net.request(
             'open-ils.circ',
