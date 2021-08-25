@@ -88,6 +88,7 @@ export class HoldComponent implements OnInit {
     badBarcode: string = null;
 
     puLibWsFallback = false;
+    puLibWsDefault = false;
 
     // Orgs which are not valid pickup locations
     disableOrgs: number[] = [];
@@ -137,8 +138,15 @@ export class HoldComponent implements OnInit {
             this.userBarcode = this.staffCat.holdForBarcode;
         }
 
-        this.store.getItem('circ.staff_placed_holds_fallback_to_ws_ou')
-        .then(setting => this.puLibWsFallback = setting === true);
+        this.store.getItemBatch([
+            'circ.staff_placed_holds_fallback_to_ws_ou',
+            'circ.staff_placed_holds_default_to_ws_ou'
+        ]).then(settings => {
+            this.puLibWsFallback =
+                settings['circ.staff_placed_holds_fallback_to_ws_ou'] === true;
+            this.puLibWsDefault =
+                settings['circ.staff_placed_holds_default_to_ws_ou'] === true;
+        });
 
         this.org.list().forEach(org => {
             if (org.ou_type().can_have_vols() === 'f') {
@@ -429,9 +437,13 @@ export class HoldComponent implements OnInit {
         this.phoneValue = this.user.day_phone() || this.user.evening_phone();
 
         // Default to work org if placing holds for staff.
-        if (this.user.id() !== this.requestor.id() && !this.puLibWsFallback) {
-            // This value may be superseded below by user settings.
-            this.pickupLib = this.user.home_ou();
+        // Default to home org if placing holds for patrons unless
+        // settings default or fallback to the workstation.
+        if (this.user.id() !== this.requestor.id()) {
+            if (!this.puLibWsFallback && !this.puLibWsDefault) {
+                // This value may be superseded below by user settings.
+                this.pickupLib = this.user.home_ou();
+            }
         }
 
         if (!this.user.settings()) { return; }
@@ -454,7 +466,7 @@ export class HoldComponent implements OnInit {
                     break;
 
                 case 'opac.default_pickup_location':
-                    if (value) {
+                    if (!this.puLibWsDefault && value) {
                         this.pickupLib = Number(value);
                     }
                     break;

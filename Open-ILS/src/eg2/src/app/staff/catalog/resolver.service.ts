@@ -60,6 +60,7 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
             'eg.catalog.search.form.open',
             'eg.staff.catalog.results.show_more',
             'circ.staff_placed_holds_fallback_to_ws_ou',
+            'circ.staff_placed_holds_default_to_ws_ou',
             'opac.staff.jump_to_details_on_single_hit',
             'eg.staffcat.search_filters'
         ]).then(settings => {

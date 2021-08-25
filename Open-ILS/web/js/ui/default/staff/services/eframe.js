@@ -259,7 +259,10 @@ angular.module('egCoreMod')
                                 return null;
                             }
 
-                            egCore.org.settings(['circ.staff_placed_holds_fallback_to_ws_ou'])
+                            var wsFallback = 'circ.staff_placed_holds_fallback_to_ws_ou';
+                            var wsDefault = 'circ.staff_placed_holds_default_to_ws_ou';
+
+                            egCore.org.settings([wsFallback, wsDefault])
                                 .then(function(auth_usr_aous){
 
                                     // copied more or less directly from XUL menu.js
@@ -268,13 +271,14 @@ angular.module('egCoreMod')
                                         settings[user.settings()[i].name()] = 
                                             JSON2js(user.settings()[i].value());
                                     }
+                                    settings[wsDefault] = auth_usr_aous[wsDefault];
 
                                     // find applicable YAOUSes for staff-placed holds
                                     var requestor = egCore.auth.user();
                                     var pickup_lib = user.home_ou(); // default to home ou
                                     if (requestor.id() !== user.id()){
                                         // this is a staff-placed hold, optionally default to ws ou
-                                        if (auth_usr_aous['circ.staff_placed_holds_fallback_to_ws_ou']){
+                                        if (auth_usr_aous[wsFallback] || auth_usr_aous[wsDefault]) {
                                             pickup_lib = requestor.ws_ou();
                                         }
                                     }

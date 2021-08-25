@@ -177,8 +177,10 @@ function staff_hold_usr_barcode_changed2(
         // Safe at this point as we already set cur_hold_barcode
         document.getElementById('hold_usr_input').value = load_info.barcode;
 
-        // Patron preferred pickup loc always overrides the default pickup lib
+        // Patron preferred pickup loc overrides the default pickup lib 
+        // unless the default to workstation setting is enabled
         document.getElementById('pickup_lib').value = 
+            !load_info.settings['circ.staff_placed_holds_default_to_ws_ou'] &&
             load_info.settings['opac.default_pickup_location'] ?
             load_info.settings['opac.default_pickup_location'] : load_info.pickup_lib;
     }
