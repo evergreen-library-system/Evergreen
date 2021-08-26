@@ -182,6 +182,13 @@
   </ng-container><!-- expand form -->
 </div>
 
+<ng-template #barcodeTemplate let-r="row">
+  <a routerLink="/staff/circ/patron/{{r.id()}}/checkout">{{r.card().barcode()}}</a>
+</ng-template>
+<ng-template #familyNameTemplate let-r="row">
+  <a routerLink="/staff/circ/patron/{{r.id()}}/checkout">{{r.family_name()}}</a>
+</ng-template>
+
 <div class="patron-search-grid mt-4">
   <eg-grid #searchGrid idlClass="au" 
     persistKey="circ.patron.search"
@@ -199,11 +206,11 @@
 
     <eg-grid-column path='id' [hidden]="true"
       i18n-label label="ID"></eg-grid-column>      
-    <eg-grid-column path='card.barcode' 
+    <eg-grid-column name='card.barcode' [cellTemplate]="barcodeTemplate"
       i18n-label label="Card"></eg-grid-column>
     <eg-grid-column path='profile.name' 
       i18n-label label="Profile"></eg-grid-column>
-    <eg-grid-column path='family_name' 
+    <eg-grid-column name='family_name' [cellTemplate]="familyNameTemplate"
       [sortable]="true" [multiSortable]="true"></eg-grid-column>
     <eg-grid-column path='first_given_name' 
       [sortable]="true" [multiSortable]="true"></eg-grid-column>
