@@ -176,8 +176,13 @@ export class PatronComponent implements OnInit, AfterViewInit {
     // The bills tab has various sub-interfaces.  If the user is already
     // on the Bills tab and clicks the tab, return them to the main bills
     // screen.
+    // Avoid the navigate call when not on the bills tab because it
+    // interferes with the pre-tab-change "changes pending" confirm dialog
+    // used by the editor and possibily others.
     billsTabClicked() {
-        this.router.navigate(['/staff/circ/patron', this.patronId, 'bills']);
+        if (this.patronTab === 'bills') {
+            this.router.navigate(['/staff/circ/patron', this.patronId, 'bills']);
+        }
     }
 
     routeToTab() {
