@@ -309,7 +309,7 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
 
                 if (!field.match(/year/)) {
                     // force day/month to be 2 digits
-                    chunk[field].value = ('0' + value).slice(-2);
+                    chunk.value = ('0' + value).slice(-2);
                 }
                 break;
         }
