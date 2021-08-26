@@ -203,7 +203,10 @@ table.list tr.selected td { /* deprecated? */
 .acknowledged { text-decoration: line-through; }
 
 /* eg-help-popover directive doesn't need a border around its <button> */
-.no-border.glyphicon-question-sign { border-color: #fff; }
+.no-border.glyphicon-question-sign,
+.no-border.glyphicon-info-sign {
+  border-color: #fff;
+}
 
 /* bootstrap alerts are heavily padded.  use this to reduce */
 .alert-less-pad {padding: 5px;}

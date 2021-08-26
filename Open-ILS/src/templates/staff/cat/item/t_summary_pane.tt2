@@ -99,7 +99,23 @@
       <div ng-if="copy.fine_level() == 3">[% l('High') %]</div>
     </div>
 
-    <div class="flex-cell">[% l('Total Circs') %]</div>
+    <div class="flex-cell">
+      [% l('Total Circs') %]
+      <script type="text/ng-template" id="circ-popover.html">
+        <div ng-repeat="circ_count in circ_counts | orderBy:'year'">
+          {{circ_count.year}}: {{circ_count.count}}
+        </div>
+      </script>
+      <button type="button"
+        class="no-border glyphicon glyphicon-info-sign"
+        uib-popover-template="'circ-popover.html'"
+        popover-title="[% l('Annual Circ History') %]"
+        popover-trigger="'outsideClick'"
+        popover-placement="{{circ_popover_placement}}"
+        aria-label="[% l('Annual Circ History') %]"
+        ng-if="circ_counts && circ_counts.length">
+      </button>
+    </div>
     <div class="flex-cell well">{{total_circs}}</div>
 
     <div class="flex-cell">[% l('Duration Rule') %]</div>
