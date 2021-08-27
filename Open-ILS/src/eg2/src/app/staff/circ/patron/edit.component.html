@@ -521,18 +521,21 @@
     <div class="col-lg-3">
       <div class="form-check form-check-inline mr-2">
         <input class="form-check-input" type="checkbox" name="hold-notify-phone" 
-          id="hold-notify-phone" [(ngModel)]="holdNotifyTypes.phone"/>
+          id="hold-notify-phone" [(ngModel)]="holdNotifyTypes.phone"
+          (ngModelChange)="emitSaveState()"/>
         <label class="form-check-label" for="hold-notify-phone" i18n>Phone</label>
       </div>
       <div class="form-check form-check-inline mr-2">
         <input class="form-check-input" type="checkbox" name="hold-notify-email" 
-          id="hold-notify-email" [(ngModel)]="holdNotifyTypes.email"/>
+          id="hold-notify-email" [(ngModel)]="holdNotifyTypes.email"
+          (ngModelChange)="emitSaveState()"/>
         <label class="form-check-label" for="hold-notify-email" i18n>Email</label>
       </div>
       <div class="form-check form-check-inline mr-2" 
         *ngIf="context.settingsCache['sms.enable']">
         <input class="form-check-input" type="checkbox" name="hold-notify-sms" 
-          id="hold-notify-sms" [(ngModel)]="holdNotifyTypes.sms"/>
+          id="hold-notify-sms" [(ngModel)]="holdNotifyTypes.sms"
+          (ngModelChange)="emitSaveState()"/>
         <label class="form-check-label" for="hold-notify-sms" i18n>SMS</label>
       </div>
     </div>
