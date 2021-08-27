@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1283', :eg_version); -- rhamby/ehardy/jboyer
 
 UPDATE asset.call_number SET record = -1 WHERE id = -1 AND record != -1;
 
