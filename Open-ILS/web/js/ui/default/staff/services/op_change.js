@@ -97,24 +97,8 @@ function($uibModal, $interpolate, $rootScope, $q, egAuth, egStrings, egNet, ngTo
 
             )['finally'](function() {
                 // always undo the operator change after a perm override.
-                // well, unless inside a UI "batch" like Renew All
-                if (!window.oils_inside_batch) {
-                    console.debug("clearing op-change after perm override redo");
-                    window.oils_op_change_within_batch = false;
-                    service.changeOperatorUndo(true);
-                } else {
-                    // up to the batch caller to call changeOperatorUndo
-                    console.debug("persisting op-change after perm override redo");
-                    window.oils_op_change_within_batch = true;
-                    // this is an even kludgier use of window-scoped variables
-                    window.oils_op_change_undo_func = function() {
-                        console.debug("clearing op-change after perm override redo");
-                        service.changeOperatorUndo(true);
-                    }
-                    window.oils_op_change_toast_func = function() {
-                        ngToast.create(egStrings.PERM_OP_CHANGE_PERSIST);
-                    }
-                }
+                console.debug("clearing op-change after perm override redo");
+                service.changeOperatorUndo(true);
             });
         });
     }

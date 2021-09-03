@@ -225,8 +225,8 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 'egUserBucketMod',
  *
  * */
 .controller('PatronCtrl',
-       ['$scope','$q','$location','$filter','egCore','egNet','egUser','egAlertDialog','egConfirmDialog','egPromptDialog','patronSvc','egCirc',
-function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDialog , egConfirmDialog , egPromptDialog , patronSvc , egCirc) {
+       ['$scope','$q','$location','$filter','egCore','egNet','egUser','egAlertDialog','egConfirmDialog','egPromptDialog','patronSvc',
+function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDialog , egConfirmDialog , egPromptDialog , patronSvc) {
 
     $scope.is_patron_edit = function() {
         return Boolean($location.path().match(/patron\/\d+\/edit$/));
@@ -282,10 +282,6 @@ function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDi
         $scope.tab = tab;
         $scope.aous = egCore.env.aous;
         $scope.auth_user_id = egCore.auth.user().id();
-
-        if (tab == 'search') {
-            egCirc.reset(); // clear out auto-override and auto-skip selections when switching patrons
-        }
 
         if (patron_id) {
             $scope.patron_id = patron_id;
