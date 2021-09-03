@@ -22,6 +22,7 @@ import {HoldComponent} from './hold/hold.component';
 import {PartsComponent} from './record/parts.component';
 import {NotesComponent} from './record/notes.component';
 import {AddToCarouselDialogComponent} from './record/add-to-carousel-dialog.component';
+import {UploadJacketImageDialogComponent} from './record/upload-jacket-image-dialog.component';
 import {PartMergeDialogComponent} from './record/part-merge-dialog.component';
 import {BrowseComponent} from './browse.component';
 import {BrowseResultsComponent} from './browse/results.component';
@@ -33,6 +34,7 @@ import {SearchTemplatesComponent} from './search-templates.component';
 import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
 import {PreferencesComponent} from './prefs.component';
 import {BrowsePagerComponent} from './result/browse-pager.component';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,7 @@ import {BrowsePagerComponent} from './result/browse-pager.component';
     PartsComponent,
     NotesComponent,
     AddToCarouselDialogComponent,
+    UploadJacketImageDialogComponent,
     PartMergeDialogComponent,
     BrowseComponent,
     BrowseResultsComponent,
@@ -70,7 +73,8 @@ import {BrowsePagerComponent} from './result/browse-pager.component';
     HoldingsModule,
     BookingModule,
     PatronModule,
-    MarcEditModule
+    MarcEditModule,
+    HttpClientModule
   ],
   providers: [
     StaffCatalogService

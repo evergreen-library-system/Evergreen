@@ -1,0 +1,43 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title">
+      <span i18n>Upload Cover Image</span>
+    </h4>
+    <button type="button" class="close"
+    i18n-aria-label aria-label="Close" (click)="clearErrors(); close(false)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+    <!--<form method="POST" enctype="multipart/form-data" action="/jacket-upload">
+        <input type="file" name="jacket_upload">
+        <input type="text" name="ses">
+        <input type="text" name="bib_record">
+        <input type="submit">
+    </form>-->
+    <input type="file" class="file-input" (change)="onFileSelected($event)" #fileUpload>
+    <div class="progress" *ngIf="uploading">
+      <div class="progress-bar progress-bar-striped active w-100"
+        role="progressbar" aria-valuenow="100"
+        aria-valuemin="0" aria-valuemax="100">
+        <span i18n>Uploading..</span>
+      </div>
+    </div>
+    <div style="margin-top: 20px" *ngIf="errorUploading">
+        <span *ngIf="errorAuthentication" class="alert alert-danger" i18n>Not authenticated. Expired login?</span>
+        <span *ngIf="errorAuthorization" class="alert alert-danger" i18n>Not authorized. Check your permissions.</span>
+        <span *ngIf="errorNotFound" class="alert alert-danger" i18n>Not found. Bib record deleted?</span>
+        <span *ngIf="errorCompressionConfig" class="alert alert-danger" i18n>Invalid global compression value. Talk to your system administrator.</span>
+        <span *ngIf="errorLocationConfig" class="alert alert-danger" i18n>Do not know where to upload files. Talk to your system administrator.</span>
+        <span *ngIf="errorWritingFile" class="alert alert-danger" i18n>Can not save uploaded file. Talk to your system administrator.</span>
+        <span *ngIf="errorSize" class="alert alert-danger" i18n>File size larger than configured limit. Check your library setting or try a smaller file.</span>
+        <span *ngIf="errorParsing" class="alert alert-danger" i18n>Error parsing the image. Is it a common image filetype?</span>
+        <span *ngIf="errorGeneric" class="alert alert-danger" i18n>Error uploading or processing file.</span>
+    </div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-success" [disabled]="uploading || noFile"
+  (click)="uploadJacketImage()" i18n>Upload Cover Image</button>
+</div>
+</ng-template>

@@ -16,6 +16,9 @@
 <eg-add-to-carousel-dialog #recordCarouselDialog [recordIds]="[recId]">
 </eg-add-to-carousel-dialog>
 
+<upload-jacket-image-dialog #jacketImageDialog [recordId]="recId">
+</upload-jacket-image-dialog>
+
 <div class="row ml-0 mr-0">
 
   <a target="_blank" href="/eg/opac/record/{{recId}}">
@@ -90,6 +93,9 @@
       </button>
       <button class="dropdown-item" (click)="recordCarouselDialog.open({size: 'lg'})">
         <span i18n>Add To Carousel</span>
+      </button>
+      <button class="dropdown-item" (click)="jacketImageDialog.open({size: 'lg'})">
+        <span i18n>Upload Cover Image</span>
       </button>
       <a class="dropdown-item"
         href="/eg/staff/acq/legacy/lineitem/related/{{recId}}?target=bib">
