@@ -3,6 +3,8 @@
 
 We want everyone to be able to contribute documentation to the Evergreen project. We've made it as easy as possible. Please follow these simple steps to get your computer ready for contributions!
 
+Here is a video going over this process. https://youtu.be/0KcfFiqCtP4[AsciiDoc and Antora] : Presented by Lynn Floyd, Evergreen Indiana and Blake Henderson, MOBIUS at the Evergreen International Online Pre-Conference 2021. 
+
 == Create a GitHub account ==
 
 NOTE: Screenshots of the Github website might be out of date. Their website might look different today.
