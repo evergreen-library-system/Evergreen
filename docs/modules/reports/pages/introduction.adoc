@@ -2,3 +2,11 @@
 :toc:
 
 Learn how to create and use reports in Evergreen.
+
+Here are a few videos on running Reports in Evergreen. 
+
+https://youtu.be/Ej9C-erZWmg[Making the most of Evergreen Reports] : by Chris Sharp, GA Pines, at Evergreen International Online Pre-Conference 2021.
+https://youtu.be/cNoxPPgGoR4[Understanding Evergreen Reports] : by Chris Sharp, GA Pines at Evergreen International Online Conference 2020
+
+If you want to know more about reporting using the Reporter, join the https://wiki.evergreen-ils.org/doku.php?id=evergreen-reports:rig[Reports Interest Group]
+
