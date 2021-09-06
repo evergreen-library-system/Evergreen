@@ -1,4 +1,6 @@
 = Holds Management =
+For an understanding of holds and how they work within Evergreen, please visit this presentation by Equinox at the 2021 Evergreen International Online Pre-Conference : https://youtu.be/MS0ceUm7New[Hungry Hungry Space Hippos: A Journey Further Into How Holds Work in Evergreen]
+
 :toc:
 
 == Placing Holds ==
@@ -321,7 +323,7 @@ Column adjustments will only affect the screen display and the CSV download for 
 
 * _Print Full Pull List (Alternate Strategy)_ prints the same fields as the above option but also includes a patron barcode. This list will also first sort by copy location, as ordered under _Admin_ -> _Local Administration_ -> _Copy Location Order_.
 
-* _Download CSV_ – This option is available from the _List Actions_ button (adjacent to the _Page "#"_ button) and saves all fields in the screen display to a CSV file. This file can then be opened in Excel or another spreadsheet program. This option provides more flexibility in identifying fields that should be printed.
+* _Download CSV_ – This option is available from the _List Actions_ button (adjacent to the _Page#_ button) and saves all fields in the screen display to a CSV file. This file can then be opened in Excel or another spreadsheet program. This option provides more flexibility in identifying fields that should be printed.
 +
 image::media/holds-pull-4.png[holds-pull-4]
 +
