@@ -48,7 +48,8 @@ CREATE TABLE config.openathens_identity (
     release_family_name         BOOL    NOT NULL DEFAULT false,
     release_suffix              BOOL    NOT NULL DEFAULT false,
     release_email               BOOL    NOT NULL DEFAULT false,
-    release_home_ou             BOOL    NOT NULL DEFAULT false
+    release_home_ou             BOOL    NOT NULL DEFAULT false,
+    release_barcode             BOOL    NOT NULL DEFAULT false
 );
 
 

@@ -13951,6 +13951,7 @@ SELECT  usr,
 			<field reporter:label="Release suffix" name="release_suffix" reporter:datatype="bool"/>
 			<field reporter:label="Release email" name="release_email" reporter:datatype="bool"/>
 			<field reporter:label="Release home library" name="release_home_ou" reporter:datatype="bool"/>
+			<field reporter:label="Release barcode" name="release_barcode" reporter:datatype="bool"/>
 		</fields>
 		<links>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>

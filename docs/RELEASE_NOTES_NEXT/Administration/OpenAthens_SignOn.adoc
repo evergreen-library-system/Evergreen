@@ -140,6 +140,10 @@ implementation partner.
 |home_ou
 |the _shortcode_ of the patron's home library (e.g. 'BR1' in the Concerto 
 sample data set)
+
+|Release barcode
+|barcode
+|the patron's barcode
 |===
 
 == Network access - server ==

@@ -21,6 +21,7 @@ use constant OA_ATTR_FAMILY_NAME => 'family_name';
 use constant OA_ATTR_SUFFIX => 'suffix';
 use constant OA_ATTR_EMAIL => 'email';
 use constant OA_ATTR_HOME_OU => 'home_ou';
+use constant OA_ATTR_BARCODE => 'barcode';
 use constant OA_SIGNOUT_URL => 'https://login.openathens.net/signout';
 use constant OA_SESSION_REQUEST_TYPE =>
     'application/vnd.eduserv.iam.auth.localAccountSessionRequest+json';
@@ -28,7 +29,7 @@ use constant OA_SESSION_REQUEST_TYPE =>
 my @oa_config_fields = qw/active api_key connection_id connection_uri
     auto_signon_enabled auto_signout_enabled release_prefix
     release_first_given_name release_second_given_name release_family_name
-    release_suffix release_email release_home_ou/;
+    release_suffix release_email release_home_ou release_barcode/;
 
 # -----------------------------------------------------------------------------
 # sub perform_openathens_sso_if_required
@@ -417,6 +418,10 @@ sub _get_openathens_session_initiator_url {
         if ($ou) {
             $request_obj->{attributes}->{&OA_ATTR_HOME_OU} = $ou->shortname;
         }
+    }
+
+    if ($U->is_true($openathens_config->{release_barcode})) {
+        $request_obj->{attributes}->{&OA_ATTR_BARCODE} = $ctx->{active_card};
     }
 
     if ($return_url) {
