@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version); -- blake / jboyer
+SELECT evergreen.upgrade_deps_block_check('1284', :eg_version); -- blake / terranm / jboyer
 
 INSERT INTO config.org_unit_setting_type
 ( name, grp, label, description, datatype, fm_class ) VALUES
