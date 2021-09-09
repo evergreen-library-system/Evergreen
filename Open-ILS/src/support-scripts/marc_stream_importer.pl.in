@@ -75,10 +75,12 @@ my $bib_import_no_match;
 my $bib_auto_overlay_exact;
 my $bib_auto_overlay_1match;
 my $bib_auto_overlay_best_match;
+my $bib_match_quality_ratio;
 my $auth_import_no_match;
 my $auth_auto_overlay_exact;
 my $auth_auto_overlay_1match;
 my $auth_auto_overlay_best_match;
+my $auth_match_quality_ratio;
 
 # deprecated options;  these map to their bib_* equivalents
 my $import_no_match;
@@ -118,10 +120,12 @@ GetOptions(
     'bib-auto-overlay-exact'       => \$bib_auto_overlay_exact,
     'bib-auto-overlay-1match'      => \$bib_auto_overlay_1match,
     'bib-auto-overlay-best-match'  => \$bib_auto_overlay_best_match,
+    'bib-match-quality-ratio=f' => \$bib_match_quality_ratio,
     'auth-import-no-match'         => \$auth_import_no_match,
     'auth-auto-overlay-exact'      => \$auth_auto_overlay_exact,
     'auth-auto-overlay-1match'     => \$auth_auto_overlay_1match,
     'auth-auto-overlay-best-match' => \$auth_auto_overlay_best_match,
+    'auth-match-quality-ratio=f' => \$auth_match_quality_ratio,
     'help'                  => \$help,
     'net-server-config=s'   => \$net_server_conf,
     'port=i'                => \$port
@@ -189,10 +193,12 @@ sub usage {
     --bib-auto-overlay-exact
     --bib-auto-overlay-1match
     --bib-auto-overlay-best-match
+    --bib-match-quality-ratio
     --auth-import-no-match
     --auth-auto-overlay-exact
     --auth-auto-overlay-1match
     --auth-auto-overlay-best-match
+    --auth-match-quality-ratio
 
         Bib and auth import options which map directly to Vandelay import 
         options.  
@@ -289,11 +295,13 @@ sub compile_vandelay_ops {
         $vl_ops->{auto_overlay_exact} = $auth_auto_overlay_exact;
         $vl_ops->{auto_overlay_1match} = $auth_auto_overlay_1match;
         $vl_ops->{auto_overlay_best_match} = $auth_auto_overlay_best_match;
+        $vl_ops->{match_quality_ratio} = $auth_match_quality_ratio;
     } else {
         $vl_ops->{import_no_match} = $bib_import_no_match;
         $vl_ops->{auto_overlay_exact} = $bib_auto_overlay_exact;
         $vl_ops->{auto_overlay_1match} = $bib_auto_overlay_1match;
         $vl_ops->{auto_overlay_best_match} = $bib_auto_overlay_best_match;
+        $vl_ops->{match_quality_ratio} = $bib_match_quality_ratio;
     }
 
     # Default to exact match only if not other strategy is selected.
