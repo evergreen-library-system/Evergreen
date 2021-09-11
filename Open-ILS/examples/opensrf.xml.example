@@ -1483,6 +1483,7 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.reporter-store</appname>  
                 <!-- <appname>open-ils.resolver</appname> -->
                 <appname>open-ils.permacrud</appname>  
+                <appname>open-ils.oai</appname>  
                 <appname>open-ils.pcrud</appname>  
                 <appname>open-ils.trigger</appname>  
                 <appname>open-ils.url_verify</appname>
