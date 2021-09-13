@@ -18,6 +18,10 @@ const routes: Routes = [{
     path: 'actor/address_alert',
     component: AddressAlertComponent
 }, {
+    path: 'asset/copy_location_order',
+    loadChildren: () =>
+      import('./copy-loc-order/copy-loc-order.module').then(m => m.CopyLocOrderModule)
+}, {
     path: 'asset/copy_location',
     component: BasicAdminPageComponent,
     data: [{

@@ -299,7 +299,7 @@ export class PcrudContext {
 
             if (action === 'auto') {
                 // object does not need updating; move along
-                this.nextCudRequest();
+                return this.nextCudRequest();
             }
         }
 
