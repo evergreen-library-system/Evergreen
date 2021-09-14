@@ -43,6 +43,9 @@ export class HoldDetailComponent implements OnInit {
         return this.hold;
     }
 
+    // Display bib record summary along the top of the detail page.
+    @Input() showRecordSummary = false;
+
     initDone: boolean;
     @Output() onShowList: EventEmitter<any>;
 

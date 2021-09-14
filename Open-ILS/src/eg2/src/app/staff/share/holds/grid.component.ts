@@ -60,6 +60,9 @@ export class HoldsGridComponent implements OnInit {
     // To pass through to the underlying eg-grid
     @Input() showFields: string;
 
+    // Display bib record summary along the top of the detail page.
+    @Input() showRecordSummary = false;
+
     mode: 'list' | 'detail' | 'manage' = 'list';
     initDone = false;
     holdsCount: number;

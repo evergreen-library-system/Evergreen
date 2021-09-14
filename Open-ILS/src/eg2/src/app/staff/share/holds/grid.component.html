@@ -27,8 +27,8 @@
 <div class='eg-holds w-100 mt-3'>
 
   <ng-container *ngIf="mode == 'detail'">
-    <eg-hold-detail [wideHold]="detailHold" (onShowList)="mode='list'">
-    </eg-hold-detail>
+    <eg-hold-detail [wideHold]="detailHold" (onShowList)="mode='list'" 
+      [showRecordSummary]="showRecordSummary"></eg-hold-detail>
   </ng-container>
 
   <ng-container *ngIf="mode == 'list' && initComplete()">
