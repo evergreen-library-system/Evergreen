@@ -451,7 +451,8 @@ sub process_request {
     set_tempdir();
 
     # copy data to a temporary file so vandelay can scoop it up
-    my ($handle, $tempfile) = tempfile("$0_XXXX", DIR => $tempdir) 
+    my $base = fileparse($0, qw(.pl));
+    my ($handle, $tempfile) = tempfile("${base}_XXXX", DIR => $tempdir)
         or die "Cannot create tempfile in $tempdir : $!";
 
     print $handle $data or die "Error writing to tempfile $tempfile : $!\n";
