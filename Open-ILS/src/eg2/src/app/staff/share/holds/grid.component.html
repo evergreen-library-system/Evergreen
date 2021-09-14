@@ -138,6 +138,18 @@
       <eg-grid-column i18n-label label="Hold ID" path='id' [index]="true" datatype="id">
       </eg-grid-column>
 
+      <eg-grid-column i18n-label label="Item Location" path='acpl_name' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="CN Full label" path='cn_full_label' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Part label" path='p_label' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Author" path='author' [hidden]="true"></eg-grid-column>
+      <ng-template #titleTmpl let-hold="row">
+        <a class="no-href" routerLink="/staff/catalog/record/{{hold.record_id}}">
+          {{hold.title}}
+        </a>
+      </ng-template>
+      <eg-grid-column i18n-label label="Title" [hidden]="true" name='title'
+        [cellTemplate]="titleTmpl"></eg-grid-column>
+
       <ng-template #barcodeTmpl let-hold="row">
         <a href="/eg/staff/cat/item/{{hold.cp_id}}/summary">
           {{hold.cp_barcode}}
@@ -146,6 +158,12 @@
       <eg-grid-column i18n-label label="Current Item" name='cp_barcode'
         [cellTemplate]="barcodeTmpl">
       </eg-grid-column>
+      <eg-grid-column i18n-label label="Pickup Library" path='pl_shortname'></eg-grid-column>
+      <eg-grid-column i18n-label label="Hold Type" path='hold_type'></eg-grid-column>
+      <eg-grid-column i18n-label label="Potential Items" path='potentials' datatype="int">
+      </eg-grid-column>
+      <eg-grid-column i18n-label label="Request Date" path='request_time' 
+        datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
 
       <ng-template #userBarcodeTmpl let-hold="row">
         <a href="/eg/staff/circ/patron/{{hold.usr_id}}/checkout">
@@ -156,26 +174,11 @@
         [cellTemplate]="userBarcodeTmpl" [hidden]="true"></eg-grid-column>
 
       <eg-grid-column i18n-label label="Patron alias" path="usr_alias"></eg-grid-column>
-      <eg-grid-column i18n-label label="Request Date"
-          path='request_time' datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Capture Date" path='capture_time'
           datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Available Date" path='shelf_time'
           datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
-      <eg-grid-column i18n-label label="Hold Type" path='hold_type'></eg-grid-column>
-      <eg-grid-column i18n-label label="Pickup Library" path='pl_shortname'></eg-grid-column>
 
-      <ng-template #titleTmpl let-hold="row">
-        <a class="no-href" routerLink="/staff/catalog/record/{{hold.record_id}}">
-          {{hold.title}}
-        </a>
-      </ng-template>
-      <eg-grid-column i18n-label label="Title" [hidden]="true" name='title'
-        [cellTemplate]="titleTmpl"></eg-grid-column>
-      <eg-grid-column i18n-label label="Author" path='author'
-          [hidden]="true"></eg-grid-column>
-      <eg-grid-column i18n-label label="Potential Items" path='potentials' datatype="int">
-      </eg-grid-column>
       <eg-grid-column i18n-label label="Status" [cellTemplate]="statusTemplate" name="status_string">
       </eg-grid-column>
       <eg-grid-column i18n-label label="Queue Position"
@@ -190,8 +193,8 @@
 
      <eg-grid-column i18n-label label="Item Status" path="cs_name" [hidden]="true"></eg-grid-column>
 
-      <eg-grid-column path='acnp_label' i18n-label label="CN Prefix" [hidden]="true"></eg-grid-column>
-      <eg-grid-column path='acns_label' i18n-label label="CN Suffix" [hidden]="true"></eg-grid-column>
+      <eg-grid-column path='ancp_label' i18n-label label="CN Prefix" [hidden]="true"></eg-grid-column>
+      <eg-grid-column path='ancs_label' i18n-label label="CN Suffix" [hidden]="true"></eg-grid-column>
 
       <eg-grid-column i18n-label label="Fulfillment Date/Time" path='fulfillment_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Checkin Time" path='checkin_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
@@ -201,7 +204,6 @@
       <eg-grid-column i18n-label label="Hold Cancel Date/Time" path='cancel_time' datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Cancelation note" path='cancel_note' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Hold Target" path='target' [hidden]="true"></eg-grid-column>
-      <eg-grid-column i18n-label label="Current Item" path='current_copy' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Fulfilling Staff" path='fulfillment_staff' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Fulfilling Library" path='fulfillment_lib' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Requesting Library" path='request_lib' [hidden]="true"></eg-grid-column>
@@ -277,13 +279,10 @@
       <eg-grid-column i18n-label label="CN label Class" path='cn_label_class' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="CN Sort Key" path='cn_label_sortkey' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Part ID" path='p_id' [hidden]="true"></eg-grid-column>
-      <eg-grid-column i18n-label label="Part label" path='p_label' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Part Sort Key" path='p_label_sortkey' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Part Is Deleted" path='p_deleted' datatype="bool" [hidden]="true"></eg-grid-column>
-      <eg-grid-column i18n-label label="CN Full label" path='cn_full_label' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Record ID" path='record_id' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Item Location ID" path='acpl_id' [hidden]="true"></eg-grid-column>
-      <eg-grid-column i18n-label label="Item Location" path='acpl_name' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Item Location Holdable" path='acpl_holdable' datatype="bool" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Item Location Hold-Verify" path='acpl_hold_verify' datatype="bool" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Item Location OPAC Visible" path='acpl_opac_visible' datatype="bool" [hidden]="true"></eg-grid-column>

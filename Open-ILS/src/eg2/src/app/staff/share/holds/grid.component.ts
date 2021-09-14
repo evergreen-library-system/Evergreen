@@ -172,7 +172,9 @@ export class HoldsGridComponent implements OnInit {
                 this.defaultSort = [
                     {name: 'copy_location_order_position', dir: 'asc'},
                     {name: 'acpl_name', dir: 'asc'},
-                    {name: 'cn_label_sortkey', dir: 'asc'}
+                    {name: 'ancp_label', dir: 'asc'}, // NOTE: API typo "ancp"
+                    {name: 'cn_label_sortkey', dir: 'asc'},
+                    {name: 'ancs_label', dir: 'asc'} // NOTE: API typo "ancs"
                 ];
 
             } else {
