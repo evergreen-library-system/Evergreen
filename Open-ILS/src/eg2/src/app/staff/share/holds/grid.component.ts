@@ -13,6 +13,8 @@ import {MarkDamagedDialogComponent
     } from '@eg/staff/share/holdings/mark-damaged-dialog.component';
 import {MarkMissingDialogComponent
     } from '@eg/staff/share/holdings/mark-missing-dialog.component';
+import {MarkDiscardDialogComponent
+    } from '@eg/staff/share/holdings/mark-discard-dialog.component';
 import {HoldRetargetDialogComponent
     } from '@eg/staff/share/holds/retarget-dialog.component';
 import {HoldTransferDialogComponent} from './transfer-dialog.component';
@@ -82,6 +84,8 @@ export class HoldsGridComponent implements OnInit {
         private markDamagedDialog: MarkDamagedDialogComponent;
     @ViewChild('markMissingDialog', { static: true })
         private markMissingDialog: MarkMissingDialogComponent;
+    @ViewChild('markDiscardDialog')
+        private markDiscardDialog: MarkDiscardDialogComponent;
     @ViewChild('retargetDialog', { static: true })
         private retargetDialog: HoldRetargetDialogComponent;
     @ViewChild('cancelDialog', { static: true })
@@ -526,6 +530,21 @@ export class HoldsGridComponent implements OnInit {
             );
         }
     }
+
+    showMarkDiscardDialog(rows: any[]) {
+        const copyIds = rows.map(r => r.cp_id).filter(id => Boolean(id));
+        if (copyIds.length > 0) {
+            this.markDiscardDialog.copyIds = copyIds;
+            this.markDiscardDialog.open({}).subscribe(
+                rowsModified => {
+                    if (rowsModified) {
+                        this.holdsGrid.reload();
+                    }
+                }
+            );
+        }
+    }
+
 
     showRetargetDialog(rows: any[]) {
         const holdIds = rows.map(r => r.id).filter(id => Boolean(id));

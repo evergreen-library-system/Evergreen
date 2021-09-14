@@ -3,6 +3,7 @@ import {StaffCommonModule} from '@eg/staff/common.module';
 import {HoldingsService} from './holdings.service';
 import {MarkDamagedDialogComponent} from './mark-damaged-dialog.component';
 import {MarkMissingDialogComponent} from './mark-missing-dialog.component';
+import {MarkDiscardDialogComponent} from './mark-discard-dialog.component';
 import {CopyAlertsDialogComponent} from './copy-alerts-dialog.component';
 import {CopyTagsDialogComponent} from './copy-tags-dialog.component';
 import {CopyNotesDialogComponent} from './copy-notes-dialog.component';
@@ -17,6 +18,7 @@ import {BatchItemAttrComponent} from './batch-item-attr.component';
     declarations: [
       MarkDamagedDialogComponent,
       MarkMissingDialogComponent,
+      MarkDiscardDialogComponent,
       CopyAlertsDialogComponent,
       CopyTagsDialogComponent,
       CopyNotesDialogComponent,
@@ -33,6 +35,7 @@ import {BatchItemAttrComponent} from './batch-item-attr.component';
     exports: [
       MarkDamagedDialogComponent,
       MarkMissingDialogComponent,
+      MarkDiscardDialogComponent,
       CopyAlertsDialogComponent,
       CopyTagsDialogComponent,
       CopyNotesDialogComponent,

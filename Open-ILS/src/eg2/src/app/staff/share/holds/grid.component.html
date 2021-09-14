@@ -5,6 +5,7 @@
 <eg-hold-transfer-dialog #transferDialog></eg-hold-transfer-dialog>
 <eg-mark-damaged-dialog #markDamagedDialog></eg-mark-damaged-dialog>
 <eg-mark-missing-dialog #markMissingDialog></eg-mark-missing-dialog>
+<eg-mark-discard-dialog #markDiscardDialog></eg-mark-discard-dialog>
 <eg-hold-retarget-dialog #retargetDialog></eg-hold-retarget-dialog>
 <eg-hold-cancel-dialog #cancelDialog></eg-hold-cancel-dialog>
 <eg-hold-manage-dialog #manageDialog></eg-hold-manage-dialog>
@@ -107,6 +108,11 @@
       <eg-grid-toolbar-action
         i18n-group group="Item" i18n-label label="Mark Item Missing"
         (onClick)="showMarkMissingDialog($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Item" i18n-label label="Mark Item Discard/Weed"
+        (onClick)="showMarkDiscardDialog($event)">
       </eg-grid-toolbar-action>
 
       <eg-grid-toolbar-action
