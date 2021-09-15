@@ -27,7 +27,7 @@
         class="mr-2 btn btn-sm btn-outline-dark .mat-icon-shrunk-in-button">
         <span class="material-icons">vertical_align_bottom</span>
       </button>
-      <span class="ml-2 font-italic" *ngIf="selectedEntry">
+      <span class="ml-2 font-italic" *ngIf="selected()">
         Selected: {{selected().location().name()}} 
           ({{orgSn(selected().location().owning_lib())}})
       </span>
@@ -52,6 +52,7 @@
           [ngClass]="{'border border-primary rounded': selectedEntry == entry.id()}">
           {{entry.location().name()}} ({{orgSn(entry.location().owning_lib())}})
         </span>
+        <span *ngIf="entry.isnew()" class="ml-2 font-italic text-info">(unsaved)</span>
       </div>
     </div>
   </li>

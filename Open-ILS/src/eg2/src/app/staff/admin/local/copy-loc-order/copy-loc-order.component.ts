@@ -70,21 +70,27 @@ export class CopyLocOrderComponent implements OnInit {
 
         .then(_ => {
 
-            if (this.entries.length > 0) { return; }
-
-            // If we have no position entries, create some now so they
-            // can become the basis of our new list.
+            // Ensure we have an entry for every in-range copy location.
 
             const locs = Object.values(this.locations)
                 .sort((o1, o2) => o1.name() < o2.name() ? -1 : 1);
 
-            let pos = 1;
+            let pos = this.entries.length;
+
             locs.forEach(loc => {
-                const entry = this.idl.create('acplo');
+                pos++;
+
+                let entry = this.entries.filter(e => e.location().id() === loc.id())[0];
+                if (entry) { return; }
+
+                // Either we have no entries or we encountered a new copy
+                // location added since the last time entries were saved.
+
+                entry = this.idl.create('acplo');
                 entry.isnew(true);
-                entry.id(-pos); // avoid using '0' as an ID
+                entry.id(-pos); // local temp ID
                 entry.location(loc);
-                entry.position(pos++);
+                entry.position(pos);
                 entry.org(this.contextOrg);
                 this.entries.push(entry);
             });
