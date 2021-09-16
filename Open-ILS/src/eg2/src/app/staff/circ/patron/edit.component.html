@@ -147,6 +147,7 @@
       id="cust-{{args.settingName}}-input"
       [ngModel]="userSettings[args.settingName]"
       (ngModelChange)="userSettingChange(args.settingName, $event)"
+      [required]="settingFieldRequired(args.settingName)"
       [disabled]="args.disabled"
     />
   </div>
@@ -570,6 +571,7 @@
           name="cust-opac.default_sms_carrier-input"
           domId="cust-opac.default_sms_carrier-input"
           [selectedId]="userSettings['opac.default_sms_carrier']"
+          [required]="settingFieldRequired('opac.default_sms_carrier')"
           (onChange)="userSettingChange(
             'opac.default_sms_carrier', $event ? $event.id : null)">
         </eg-combobox>

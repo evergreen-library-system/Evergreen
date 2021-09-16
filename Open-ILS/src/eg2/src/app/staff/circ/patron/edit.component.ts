@@ -1145,6 +1145,16 @@ export class EditComponent implements OnInit, AfterViewInit {
         return this.fieldVisibility[field] === 3;
     }
 
+    settingFieldRequired(name: string): boolean {
+
+        switch (name) {
+            case 'opac.default_sms_notify':
+            case 'opac.default_sms_carrier':
+                return this.holdNotifyTypes.sms;
+        }
+
+        return false;
+    }
 
     fieldPattern(idlClass: string, field: string): RegExp {
         if (!this.fieldPatterns[idlClass][field]) {
