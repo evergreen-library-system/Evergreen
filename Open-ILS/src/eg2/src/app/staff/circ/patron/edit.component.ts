@@ -169,7 +169,7 @@ export class EditComponent implements OnInit, AfterViewInit {
     userSettings: {[name: string]: any} = {};
     userSettingTypes: {[name: string]: IdlObject} = {};
     optInSettingTypes: {[name: string]: IdlObject} = {};
-    secondaryGroups: IdlObject[];
+    secondaryGroups: IdlObject[] = [];
     expireDate: Date;
     changesPending = false;
     dupeBarcode = false;
