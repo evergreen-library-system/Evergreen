@@ -26,6 +26,13 @@
               <!-- Traditional copy.alert_message value in payload -->
               <div class="mt-2 font-weight-bold">{{evt.payload}}</div>
             </ng-container>
+            <ng-container *ngIf="isArray(evt.payload)">
+              <!-- Array of new-style copy alerts in payload -->
+              <div class="mt-2 font-weight-bold" *ngFor="let alert of evt.payload">
+                <div>{{alert.alert_type().name()}}</div>
+                <div>{{alert.note()}}</div>
+              </div>
+            </ng-container>
           </ng-container>
           <ng-container *ngIf="evt.textcode == 'ITEM_ON_HOLDS_SHELF'">
             <a target="_blank" class="mt-3"
