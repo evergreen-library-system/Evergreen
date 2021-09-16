@@ -178,6 +178,7 @@ export interface CheckinParams {
     clear_expired?: boolean;
     hold_as_transit?: boolean;
     manual_float?: boolean;
+    do_inventory_update?: boolean;
     no_precat_alert?: boolean;
     retarget_holds?: boolean;
     retarget_holds_all?: boolean;
