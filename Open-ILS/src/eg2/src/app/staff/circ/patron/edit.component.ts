@@ -1369,6 +1369,7 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
 
     nonDeletedAddresses(): IdlObject[] {
+        console.log('nonDeletedAddresses() are ', this.patron.addresses().filter(a => !a.isdeleted()).map(a => a.id()));
         return this.patron.addresses().filter(a => !a.isdeleted());
     }
 

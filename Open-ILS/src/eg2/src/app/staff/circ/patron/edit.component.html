@@ -661,63 +661,65 @@
     <div class="m-auto font-weight-bold" i18n>Addresses</div>
   </div>
 
-  <div class="mb-2" *ngFor="let addr of nonDeletedAddresses(); let index = index">
+  <ng-container *ngFor="let addr of patron.addresses(); let index = index">
+    <div class="mb-2" *ngIf="!addr.isdeleted()">
 
-    <div class="alert alert-info p-1">
-      <div class="row">
-        <div class="col-lg-3" i18n>Address #{{index + 1}}</div>
-        <div class="col-lg-9">
-          <div class="form-check form-check-inline mr-2">
-            <input class="form-check-input" type="checkbox" 
-              name="addr-{{addr.id()}}-mailing" id="addr-{{addr.id()}}-mailing" 
-              [ngModel]="patron.mailing_address() && addr.id() == patron.mailing_address().id()"
-              (ngModelChange)="setAddrType('mailing', addr, $event)"/>
-            <label class="form-check-label" 
-              for="addr-{{addr.id()}}-mailing" i18n>Mailing</label>
+      <div class="alert alert-info p-1">
+        <div class="row">
+          <div class="col-lg-3" i18n>Address #{{index + 1}}</div>
+          <div class="col-lg-9">
+            <div class="form-check form-check-inline mr-2">
+              <input class="form-check-input" type="checkbox" 
+                name="addr-{{addr.id()}}-mailing" id="addr-{{addr.id()}}-mailing" 
+                [ngModel]="patron.mailing_address() && addr.id() == patron.mailing_address().id()"
+                (ngModelChange)="setAddrType('mailing', addr, $event)"/>
+              <label class="form-check-label" 
+                for="addr-{{addr.id()}}-mailing" i18n>Mailing</label>
+            </div>
+            <div class="form-check form-check-inline mr-2">
+              <input class="form-check-input" type="checkbox" 
+                name="addr-{{addr.id()}}-billing" id="addr-{{addr.id()}}-billing" 
+                [ngModel]="patron.billing_address() && addr.id() == patron.billing_address().id()"
+                (ngModelChange)="setAddrType('billing', addr, $event)"/>
+              <label class="form-check-label" 
+                for="addr-{{addr.id()}}-billing" i18n>Physical</label>
+            </div>
+            <button class="btn btn-danger" (click)="deleteAddr(addr)" i18n>Delete</button>
           </div>
-          <div class="form-check form-check-inline mr-2">
-            <input class="form-check-input" type="checkbox" 
-              name="addr-{{addr.id()}}-billing" id="addr-{{addr.id()}}-billing" 
-              [ngModel]="patron.billing_address() && addr.id() == patron.billing_address().id()"
-              (ngModelChange)="setAddrType('billing', addr, $event)"/>
-            <label class="form-check-label" 
-              for="addr-{{addr.id()}}-billing" i18n>Physical</label>
-          </div>
-          <button class="btn btn-danger" (click)="deleteAddr(addr)" i18n>Delete</button>
         </div>
       </div>
+      <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+        fieldInput, field: 'address_type', cls: 'aua', path: 'addresses', index: index}}">
+      </ng-container>
+      <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+        fieldInput, field: 'post_code', cls: 'aua', path: 'addresses', index: index}}">
+      </ng-container>
+      <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+        fieldInput, field: 'street1', cls: 'aua', path: 'addresses', index: index}}">
+      </ng-container>
+      <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+        fieldInput, field: 'street2', cls: 'aua', path: 'addresses', index: index}}">
+      </ng-container>
+      <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+        fieldInput, field: 'city', cls: 'aua', path: 'addresses', index: index}}">
+      </ng-container>
+      <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+        fieldInput, field: 'county', cls: 'aua', path: 'addresses', index: index}}">
+      </ng-container>
+      <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+        fieldInput, field: 'state', cls: 'aua', path: 'addresses', index: index}}">
+      </ng-container>
+      <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+        fieldInput, field: 'country', cls: 'aua', path: 'addresses', index: index}}">
+      </ng-container>
+      <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+        fieldCheckbox, field: 'valid', cls: 'aua', path: 'addresses', index: index}}">
+      </ng-container>
+      <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
+        fieldCheckbox, field: 'within_city_limits', cls: 'aua', path: 'addresses', index: index}}">
+      </ng-container>
     </div>
-    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
-      fieldInput, field: 'address_type', cls: 'aua', path: 'addresses', index: index}}">
-    </ng-container>
-    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
-      fieldInput, field: 'post_code', cls: 'aua', path: 'addresses', index: index}}">
-    </ng-container>
-    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
-      fieldInput, field: 'street1', cls: 'aua', path: 'addresses', index: index}}">
-    </ng-container>
-    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
-      fieldInput, field: 'street2', cls: 'aua', path: 'addresses', index: index}}">
-    </ng-container>
-    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
-      fieldInput, field: 'city', cls: 'aua', path: 'addresses', index: index}}">
-    </ng-container>
-    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
-      fieldInput, field: 'county', cls: 'aua', path: 'addresses', index: index}}">
-    </ng-container>
-    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
-      fieldInput, field: 'state', cls: 'aua', path: 'addresses', index: index}}">
-    </ng-container>
-    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
-      fieldInput, field: 'country', cls: 'aua', path: 'addresses', index: index}}">
-    </ng-container>
-    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
-      fieldCheckbox, field: 'valid', cls: 'aua', path: 'addresses', index: index}}">
-    </ng-container>
-    <ng-container *ngTemplateOutlet="fieldRow; context: {args: {template: 
-      fieldCheckbox, field: 'within_city_limits', cls: 'aua', path: 'addresses', index: index}}">
-    </ng-container>
-  </div>
+  </ng-container>
 
   <button class="btn btn-success" (click)="newAddr()" i18n>New Address</button>
 
