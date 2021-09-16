@@ -24,6 +24,10 @@
     </div>
   </div>
 
+  <div class="row mb-1 alert alert-danger p-0" *ngIf="p().alert_message()">
+    <div class="col-lg-12" i18n>{{p().alert_message()}}</div>
+  </div>
+
   <div class="row mb-1 alert alert-danger p-0" 
     *ngFor="let pen of summary.alerts.alertPenalties">
     <div class="col-lg-9"
