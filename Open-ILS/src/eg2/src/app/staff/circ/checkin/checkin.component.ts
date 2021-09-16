@@ -47,7 +47,9 @@ const CHECKIN_MODIFIERS = [
     'no_precat_alert',
     'retarget_holds',
     'retarget_holds_all',
-    'noop'
+    'noop',
+    'auto_print_holds_transits',
+    'do_inventory_update'
 ];
 
 const SETTINGS = [
