@@ -323,7 +323,12 @@ export class CheckinComponent implements OnInit, AfterViewInit {
 
         this.circ.lastCopyCirc(copy.id()).then(circ => {
             if (circ) {
-                this.router.navigate(['/staff/circ/patron', circ.usr(), 'checkout']);
+
+                const url = this.ngLocation.prepareExternalUrl(
+                    `/staff/circ/patron/${circ.usr()}/checkout`);
+
+                window.open(url);
+
             } else {
                 this.itemNeverCirced = copy.barcode();
                 setTimeout(() => this.toast.danger(this.itemNeverCircedStr.text));
