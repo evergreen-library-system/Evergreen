@@ -187,6 +187,7 @@
             <button ngbDropdownToggle class="btn btn-outline-dark">
             </button>
             <div ngbDropdownMenu>
+              <button ngbDropdownItem (click)="doneRedirect()" i18n>No Receipt</button>
               <button ngbDropdownItem (click)="emailReceipt(true)" 
                 [disabled]="!mayEmailReceipt()" i18n>Email Receipt</button>
               <button ngbDropdownItem 
