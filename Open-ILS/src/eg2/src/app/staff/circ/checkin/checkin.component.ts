@@ -289,7 +289,7 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         from(copyIds).pipe(concatMap(id => {
             this.markDamagedDialog.copyId = id;
             return this.markDamagedDialog.open({size: 'lg'});
-        }));
+        })).subscribe();
     }
 
     addItemAlerts(rows: CheckinGridEntry[]) {
