@@ -1582,9 +1582,16 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     replaceBarcode() {
         // Disable current card
+
         if (this.patron.card()) {
-            this.patron.card().active('f');
-            this.patron.card().ischanged(true);
+            // patron.card() is not the same in-memory object as its
+            // analog in patron.cards().  Since we're about to replace
+            // patron.card() anyway, just update the patron.cards() version.
+            const card = this.patron.cards()
+                .filter(c => c.id() === this.patron.card().id())[0];
+
+            card.active('f');
+            card.ischanged(true);
         }
 
         const card = this.idl.create('ac');
