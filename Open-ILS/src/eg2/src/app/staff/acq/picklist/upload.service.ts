@@ -11,7 +11,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {PermService} from '@eg/core/perm.service';
 import {EventService} from '@eg/core/event.service';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
-import {VandelayImportSelection, VANDELAY_EXPORT_PATH} from '@eg/staff/cat/vandelay/vandelay.service'
+import {VandelayImportSelection} from '@eg/staff/cat/vandelay/vandelay.service'
 
 
 @Injectable()
@@ -26,15 +26,11 @@ export class PicklistUploadService {
     providersList: IdlObject[];
     fiscalYears: IdlObject[];
     selectionLists: IdlObject[];
+    queueType: string;
+    recordType: string;
 
-    // Used for tracking records between the queue page and
-    // the import page.  Fields managed externally.
+
     importSelection: VandelayImportSelection;
-
-    // Track the last grid offset in the queue page so we
-    // can return the user to the same page of data after
-    // going to the matches page.
-    queuePageOffset: number;
 
     constructor(
         private http: HttpClient,
@@ -50,7 +46,8 @@ export class PicklistUploadService {
         this.allQueues = {};
         this.matchSets = {};
         this.importSelection = null;
-        this.queuePageOffset = 0;
+        this.queueType = 'acq';
+        this.recordType = 'bib';
     }
 
     getAttrDefs(dtype: string): Promise<IdlObject[]> {
@@ -109,7 +106,7 @@ export class PicklistUploadService {
             return lists;
         });
     }
-    // Returns a promise resolved with the list of queues.
+
     getAllQueues(qtype: string): Promise<IdlObject[]> {
         if (this.allQueues[qtype]) {
             return Promise.resolve(this.allQueues[qtype]);
@@ -117,10 +114,9 @@ export class PicklistUploadService {
             this.allQueues[qtype] = [];
         }
 
-        // could be a big list, invoke in streaming mode
         return this.net.request(
             'open-ils.vandelay',
-            `open-ils.vandelay.${qtype}_queue.owner.retrieve`,
+            `open-ils.vandelay.bib_queue.owner.retrieve`,
             this.auth.token()
         ).pipe(tap(
             queue => this.allQueues[qtype].push(queue)
@@ -168,10 +164,9 @@ export class PicklistUploadService {
         });
     }
 
-    // todo: differentiate between biblio and authority a la queue api
     getMatchSets(mtype: string): Promise<IdlObject[]> {
 
-        const mstype = mtype.match(/bib/) ? 'biblio' : 'authority';
+        const mstype = 'biblio'
 
         if (this.matchSets[mtype]) {
             return Promise.resolve(this.matchSets[mtype]);
@@ -190,88 +185,57 @@ export class PicklistUploadService {
     }
 
 
-
-
-
-
-    // Create a queue and return the ID of the new queue via promise.
     createQueue(
         queueName: string,
-        recordType: string,
+        queueType: string,
         importDefId: number,
         matchSet: number): Promise<number> {
 
-        const method = `open-ils.vandelay.${recordType}_queue.create`;
+        const method = `open-ils.vandelay.bib_queue.create`;
+        queueType = 'acq';
 
-        let qType = recordType;
-        if (recordType.match(/acq/)) {
-            qType = 'bib';
-        }
 
         return new Promise((resolve, reject) => {
             this.net.request(
                 'open-ils.vandelay', method,
-                this.auth.token(), queueName, null, qType,
+                this.auth.token(), queueName, null, queueType,
                 matchSet, importDefId
             ).subscribe(queue => {
                 const e = this.evt.parse(queue);
                 if (e) {
                     reject(e);
                 } else {
-                    // createQueue is always called after queues have
-                    // been fetched and cached.
-                    this.allQueues[qType].push(queue);
+                    this.allQueues['bib'].push(queue);
                     resolve(queue.id());
                 }
             });
         });
     }
 
-    getQueuedRecords(queueId: number, queueType: string,
-      options?: any, limitToMatches?: boolean): Observable<any> {
+    createSelectionList(
+        picklistName: string,
+        picklistOrg: number
+    ): Promise<number> {
 
-        const qtype = queueType.match(/bib/) ? 'bib' : 'auth';
-
-        let method =
-          `open-ils.vandelay.${qtype}_queue.records.retrieve`;
-
-        if (limitToMatches) {
-            method =
-              `open-ils.vandelay.${qtype}_queue.records.matches.retrieve`;
-        }
-
-        return this.net.request('open-ils.vandelay',
-            method, this.auth.token(), queueId, options);
+        const newpicklist = this.idl.create('acqpl');
+        newpicklist.owner(this.auth.user().id());
+        newpicklist.name(picklistName);
+        newpicklist.org_unit(picklistOrg)
+        
+        return new Promise((resolve, reject) => {
+            this.net.request(
+                'open-ils.acq', 'open-ils.acq.picklist.create',
+                this.auth.token(), newpicklist
+            ).subscribe((picklist) => {
+                if (this.evt.parse(picklist)) {
+                    console.error(picklist);
+                } else {
+                    console.log(picklist);
+                    resolve(picklist);
+                }
+            });
+        });
     }
-
-    // Download a queue as a MARC file.
-    exportQueue(queue: IdlObject, nonImported?: boolean) {
-
-        const etype = queue.queue_type().match(/auth/) ? 'auth' : 'bib';
-
-        let url =
-          `${VANDELAY_EXPORT_PATH}?type=bib&queueid=${queue.id()}`;
-
-        let saveName = queue.name();
-
-        if (nonImported) {
-            url += '&nonimported=1';
-            saveName += '_nonimported';
-        }
-
-        saveName += '.mrc';
-
-        this.http.get(url, {responseType: 'text'}).subscribe(
-            data => {
-                saveAs(
-                    new Blob([data], {type: 'application/octet-stream'}),
-                    saveName
-                );
-            },
-            err  => {
-                console.error(err);
-            }
-        );
-    }
+    
 }
 

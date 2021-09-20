@@ -5,15 +5,6 @@
   <div class="ml-auto mr-3"><a i18n href="/eg/staff/acq/legacy/picklist/upload">Legacy Upload Interface</a></div>
 </div>
 
-<div class="row mb-3" *ngIf="importSelection()">
-  <div class="col-lg-2" *ngIf="selectedQueue">
-    <button class="btn btn-info label-with-material-icon"
-      routerLink="/staff/cat/vandelay/queue/{{recordType}}/{{selectedQueue.id}}">
-      <span class="material-icons">arrow_back</span>
-      <span i18n>Return to Queue</span>
-    </button>
-  </div>
-</div>
 
 <eg-alert-dialog #dupeQueueAlert i18n-dialogBody 
   dialogBody="A queue with the requested name already exists.">
@@ -78,7 +69,6 @@
     </div>
       <div class="col-lg-3">
         <eg-org-select
-        [initialOrgId]="1"
         [applyOrgId]="orderingAgency"
         (onChange)="orgOnChange($event)">
         </eg-org-select>
@@ -104,6 +94,7 @@
         id="year-select"
         [startId]="selectedFiscalYear"
         [entries]="formatEntries('fiscalYears')"
+        [required]="true"
         (onChange)="selectEntry($event, 'fiscalYears')">
       </eg-combobox>
     </div>
@@ -118,7 +109,8 @@
         id="sl-select"
         [startId]="selectedSelectionList"
         [entries]="formatEntries('selectionLists')"
-        (onChange)="selectEntry($event, 'selectionLists')">
+        (onChange)="selectedSelectionList=$event" i18n-placeholder
+        [allowFreeText]="true">
       </eg-combobox>
     </div>
   </div>
@@ -128,14 +120,13 @@
 
   <div class="row">
     <div class="col-lg-3">
-      <label for="source-select" i18n>Select a Record Source</label>
+      <label for="source-select" i18n>Record Source</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox #bibSourceSelector
         id="source-select"
         [entries]="formatEntries('bibSources')" 
         (onChange)="selectEntry($event, 'bibSources')"
-        [required]="true"
         [startId]="selectedBibSource">
       </eg-combobox>
     </div>
@@ -144,7 +135,6 @@
   </div>
   <div class="col-lg-3">
     <input class="form-check-input" type="checkbox" 
-    [required]="true"
       id="import-non-matching"
       [(ngModel)]="importNonMatching">
   </div>
@@ -159,7 +149,6 @@
         id="match-set-select"
         [entries]="formatEntries('matchSets')" 
         [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"
-        [required]="true"
         [startId]="selectedMatchSet || defaultMatchSet"
         (onChange)="selectEntry($event, 'matchSets')">
       </eg-combobox>
@@ -180,7 +169,6 @@
     <div class="col-lg-3">
       <eg-combobox #mergeProfileSelector
         id="merge-profiles"
-        [required]="true"
         [entries]="formatEntries('mergeProfiles')"
         (onChange)="selectEntry($event, 'mergeProfiles')"
         [startId]="selectedMergeProfile">
@@ -244,9 +232,7 @@
     <div class="col-lg-3">
       <eg-combobox [entries]="formatEntries('activeQueues')"
         id="queue-select"
-        [startId]="startQueueId"
         [startIdFiresOnChange]="true"
-        [disabled]="startQueueId"
         (onChange)="selectedQueue=$event" i18n-placeholder
         [required]="true"
         [allowFreeText]="true">
@@ -285,21 +271,30 @@
         (click)="upload()" i18n>Upload</button>
     </div>
   </div>
-  <div class="row" [hidden]="!showProgress || importSelection()">
+  <div class="row" [hidden]="!showProgress || uploadComplete">
     <div class="col-lg-3">
-      <label i18n>Upload to Server</label>
+      <label i18n>Upload File to Server</label>
     </div>
     <div class="col-lg-6">
       <eg-progress-inline #uploadProgress></eg-progress-inline>
     </div>
   </div>
  
-  <div class="col-lg-6" [hidden]="!isUploading">
-    <label i18n>Go To:</label>
+
+  <div class="col-lg-6 offset-lg-3" [hidden]="!uploadProcessing || uploadComplete">
+    <h2><label i18n><i>Processing...</i></label></h2>
   </div>
-  <div class="row" [hidden]="!isUploading">
-    <div class="col-lg-6 offset-lg-3">
-      <a routerLink="/staff/cat/vandelay/queue/{{recordType}}/{{activeQueueId}}" target="_blank" i18n>Queue</a>
+
+  <div class="row" [hidden]="!uploadComplete">
+    <div class="col-lg-3 offset-lg-3">
+      <h2><label i18n>Upload Complete!</label></h2>
     </div>
-  </div>
-</div>
+    </div>
+    <div class="row" [hidden]="!uploadComplete">
+      <div class="col-sm-1 offset-lg-3">
+        <label i18n>Go to:</label>
+    </div>
+    <div><a routerLink="/staff/cat/vandelay/queue/{{recordType}}/{{activeQueueId}}" target="_blank" i18n>Queue</a></div>
+    <div class="col-sm-1" [hidden]="!selectedSelectionList"><a href="/eg/staff/acq/legacy/picklist/view/{{activeSelectionListId}}" target="_blank">Selection List</a></div>
+    <div class="col-sm-2" [hidden]="!createPurchaseOrder"><a href="/eg/staff/acq/legacy/po/view/{{newPO}}" target="_blank">Purchase Order</a></div>
+    </div>
