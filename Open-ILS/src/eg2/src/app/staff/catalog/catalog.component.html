@@ -7,7 +7,8 @@
       <span class="mt-2" i18n>
         Placing hold for patron 
         <a href="/eg/staff/circ/patron/{{holdForUser().id()}}/holds">
-          {{holdForUser().family_name()}}, {{holdForUser().first_given_name()}}
+          {{holdForUser().pref_family_name() || holdForUser().family_name()}}, 
+          {{holdForUser().pref_first_given_name() || holdForUser().first_given_name()}}
         </a>.
       </span>
     </div>
