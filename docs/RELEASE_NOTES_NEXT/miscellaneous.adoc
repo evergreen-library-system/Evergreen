@@ -21,3 +21,10 @@
 * New database rules now protect bre.id -1, acn.id -1 and acl.id 1 from editing.
 * The item table in the Angular staff catalog record details page now
   includes 'Total Circ Count' and 'Last Circ Date' columns.
+* There is a new library setting, 'Staff Catalog Search Filters', that can be
+  used to customize the list of search filters that are available on the
+  Angular staff catalog advanced search form. This setting takes an array
+  of desired filters, e.g., `["item_lang","audience","lit_form"]`. The complete
+  list of available filters is item_type, item_form, item_lang, audience,
+  vr_format, bib_level, and lit_form. If the library setting is not set,
+  all of the filters are displayed.
