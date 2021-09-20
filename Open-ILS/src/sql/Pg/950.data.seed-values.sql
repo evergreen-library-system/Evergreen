@@ -21614,6 +21614,15 @@ VALUES (
         'cwst', 'label'
     )
 );
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.catalog.record.notes', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.catalog.record.notes',
+        'Grid Config: eg.grid.catalog.record.notes',
+        'cwst', 'label'
+    )
+);
 
 INSERT INTO config.global_flag (name, value, enabled, label)
 VALUES (

@@ -13,4 +13,14 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
 ( 635, 'DELETE_RECORD_NOTE', oils_i18n_gettext(635,
    'Allow the user to delete a record note', 'ppl', 'description'));
 
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.catalog.record.notes', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.catalog.record.notes',
+        'Grid Config: eg.grid.catalog.record.notes',
+        'cwst', 'label'
+    )
+);
+
 COMMIT;
