@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1288', :eg_version);
 
 -- stage a copy of notes, temporarily setting
 -- the id to the negative value for later ausp
