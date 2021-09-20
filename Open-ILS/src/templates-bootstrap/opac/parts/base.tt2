@@ -53,6 +53,13 @@
         [% PROCESS 'opac/parts/stripe.tt2' %]
 <script  src="[% ctx.media_prefix %]/opac/deps/node_modules/jquery/dist/jquery.min.js"></script>
 
+		<script>
+			$(document).ready(function(){
+				$("#loginModal").on('shown.bs.modal', function(){
+					$(this).find('#username_field').focus();
+				});
+			});
+		</script>
 
     </head>
     <body[% IF want_dojo; ' class="tundra d-flex flex-column min-vh-100"'; ELSE; ' class="tundra d-flex flex-column min-vh-100"';  END %]>
