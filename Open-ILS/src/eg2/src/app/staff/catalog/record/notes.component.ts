@@ -71,7 +71,9 @@ export class NotesComponent implements OnInit {
             const searchOps = {
                 offset: pager.offset,
                 limit: pager.limit,
-                order_by: orderBy
+                order_by: orderBy,
+                flesh: 2,
+                flesh_fields: {bren: ['creator', 'editor']}
             };
 
             return this.pcrud.search('bren',
@@ -100,7 +102,7 @@ export class NotesComponent implements OnInit {
         this.deleteSelected = (notes: IdlObject[]) => {
             notes.forEach(note => note.isdeleted(true));
             this.pcrud.autoApply(notes).subscribe(
-                val => console.debug('deleted: ' + val),
+                val => {},
                 err => {},
                 ()  => this.notesGrid.reload()
             );

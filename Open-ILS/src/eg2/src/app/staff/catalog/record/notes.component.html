@@ -2,6 +2,7 @@
 
   <eg-grid #notesGrid idlClass="bren" [dataSource]="gridDataSource"
       [sortable]="true" persistKey="catalog.record.notes"
+      [filterable]="true"
       showFields="value,create_date" class="mt-3">
     <eg-grid-toolbar-button [disabled]="!permissions.CREATE_RECORD_NOTE"
       label="New Record Note" i18n-label [action]="createNew">
