@@ -14,6 +14,7 @@
 ** xref:cataloging:volcopy_editor.adoc[Using the Holdings Editor]
 ** xref:cataloging:MARC_batch_edit.adoc[MARC Batch Edit]
 ** xref:cataloging:authorities.adoc[Managing Authorities]
+*** xref:cataloging:authorities_advanced.adoc[Advanced Authorities]
 ** xref:cataloging:link_checker.adoc[Link Checker]
 ** xref:admin:schema_bibliographic.adoc[Notes about the Bibliographic Schema in the Database]
 ** xref:admin:marc_templates.adoc[MARC Templates]
