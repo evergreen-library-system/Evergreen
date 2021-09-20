@@ -1,0 +1,397 @@
+= Advanced Authority =
+:toc:
+
+== General knowledge ==
+
+Evergreen respects the full LoC standards when it comes to the Authority MARC. Authority headings are found in an authority record denoted by the 1XX field. Of which, there should only be one. The "related" bib record depends on the last two characters in the 1XX field.
+
+All of the core definitions are here:
+
+[source,sql]
+----
+
+select
+*
+from 
+authority.control_set_authority_field acsaf
+join authority.heading_field ahf on (ahf.id=acsaf.heading_field)
+order by tag,name;
+
+-- And showing all* authority fields (some that do not connect to heading_field)
+
+select 
+*
+from 
+authority.control_set_authority_field 
+order by tag,name
+
+----
+
+
+
+[cols=3*]
+|===
+
+| *Tag*
+| *Heading Name*
+| *Purpose*
+
+| 100
+| Heading -- Personal Name
+| main
+
+| 110
+| Heading -- Corporate Name
+| main
+
+| 111
+| Heading -- Meeting Name
+| main
+
+| 130
+| Heading -- Uniform Title
+| main
+
+| 150
+| Heading -- Topical Term
+| main
+
+| 151
+| Heading -- Geographic Name
+| main
+
+| 155
+| Heading -- Genre/Form Term
+| main
+
+| 400
+| See From Tracing -- Personal Name
+| variant
+
+| 410
+| See From Tracing -- Corporate Name
+| variant
+
+| 411
+| See From Tracing -- Meeting Name
+| variant
+
+| 430
+| See From Tracing -- Uniform Title
+| variant
+
+| 450
+| See From Tracing -- Topical Term
+| variant
+
+| 451
+| See From Tracing -- Geographic Name
+| variant
+
+| 455
+| See From Tracing -- Genre/Form Term
+| variant
+
+| 500
+| See Also From Tracing -- Personal Name
+| related
+
+| 510
+| See Also From Tracing -- Corporate Name
+| related
+
+| 511
+| See Also From Tracing -- Meeting Name
+| related
+
+| 530
+| See Also From Tracing -- Uniform Title
+| related
+
+| 550
+| See Also From Tracing -- Topical Term
+| related
+
+| 551
+| See Also From Tracing -- Geographic Name
+| related
+
+| 555
+| See Also From Tracing -- Genre/Form Term
+| related
+
+|===
+
+
+
+== Connection to bibs ==
+
+Evergreen requires manual linking from bibs to authorities. This can be done from the Bib MARC edit interface. But there is a script that attempts to make some connections automatically (*authority_control_fields.pl*). This script is generally setup to run nightly, linking all of the bibs that were updated for the previous 24 hours.
+
+Table *authority.bib_linking* table also retains the connection map.
+
+When a connection is made, Evergreen will update the appropriate field in the MARC record (650, 100, etc) to match the Authority record (1XX) field. It will also append the magic *$0* field onto the bib record denoting which authority control record ID is controling that field. This makes it possible for Evergreen to update the controlled field when the authority record gets updated.
+
+== Database functions ==
+
+=== authority.reingest_authority_full_rec ===
+
+This function parses *authority.record_entry* and populates *authority.full_rec*.
+
+=== authority.propagate_changes ===
+
+This gets called when an already-existing authority record gets updated. This will speed through all of the linked bibs (*authority.bib_linking* table contains the links) and make sure that the controlled field(s) within the bib record get the field language updated to match the heading from the authority record (1XX field in authority record).
+
+=== metabib.browse ===
+
+Function responsible for returning related authority search results. It's possible for authority records to turn up in search results even without a linked bib.
+
+=== metabib.staged_browse ===
+
+A secondary function that metabib.browse calls. This includes a section for authority record:
+
+Excerpt from *metabib.staged_browse* function
+
+[source,sql]
+----
+
+....
+...
+..
+
+    --Is unauthorized?
+    SELECT INTO unauthorized_entry *
+    FROM metabib.browse_entry_simple_heading_map mbeshm
+    INNER JOIN authority.simple_heading ash ON ( mbeshm.simple_heading = ash.id )
+    INNER JOIN authority.control_set_authority_field acsaf ON ( acsaf.id = ash.atag )
+    JOIN authority.heading_field ahf ON (ahf.id = acsaf.heading_field)
+    WHERE mbeshm.entry = rec.id
+    AND   ahf.heading_purpose = 'variant';
+..
+...
+....
+
+----
+
+== Authority integration in search ==
+
+As mentioned above, Evergreen will integrate browse search results from Authority control records. Standard search does not include Authority records. The Authority heading 1XX fields are the "main" search results from Authority records. However, the 4XX fields are "variant" fields and are also included as the "See" search result.
+
+Search  references table: *metabib.browse_entry_simple_heading_map*. This table links to *authority.simple_heading*. *authority.simple_heading* links to *authority.control_set_authority_field* which defines the different authority control fields and their "purpose". Only fields that are defined as "variant" will be included in the "See" results.
+
+
+=== Making more authority fields "See" ===
+
+As mentioned above, Evergreen has a feature that will cause some search results to give the user a *"See"* result. Giving the user a clue that their search term is "related" or is a *"variant"* of the search results. By default, only the 4XX fields are included for the "See" results. If you would like to add more defined authority record fields in the *"See"* results, you will need to update the definition of the defined field. The database functions: *metabib.browse* and *metabib.staged_browse* have a hard-coded definition of *"variant"*. Your desired fields need to be defined as *"variant"*.
+
+Example of adding the "5XX" fields to the "See" search results
+
+[source,sql]
+----
+
+begin;
+
+    update authority.heading_field
+    set
+    heading_purpose='variant'
+    where
+    id in
+    (
+        select ahf.id
+        from
+        authority.control_set_authority_field acsaf
+        join authority.heading_field ahf on (ahf.id=acsaf.heading_field)
+        where
+        acsaf.tag ~'^5..' and
+        acsaf.tag !='555' and
+        heading_purpose='related'
+    );
+
+commit;
+
+----
+
+== Subject vs. Author vs. Title vs. Series ==
+
+You might notice that when you import/create new authority records, you are not prompted to choose an index. Evergreen "figures out" the search index to which the authority record belongs. It does this based up on the heading field. You'll notice that some authority records have a 1XX field like "150" or "100". The second and third digit "means" which index it's for.
+
+Though, I don't think that Evergreen pays much respect to the 008, I think it's worth mentioning.
+
+There are some indicators in the 008 field defined by LoC:
+
+link:https://www.loc.gov/marc/authority/ad008.html[Library of Congress Auth 008 def]
+
+=== 008 characters "14", "15", "16" definitions: ===
+
+[cols=2*]
+|===
+
+| *008 Position*
+| *Definition*
+
+| 14
+| Heading use-main or added entry
+
+| 15
+| Heading use-subject added entry
+
+| 16
+| Heading use-series added entry
+
+|===
+
+
+=== Value definition ===
+
+[cols=2*]
+|===
+
+| *Value*
+| *Definition*
+
+| a
+| Appropriate
+
+| b
+| Not Appropriate
+
+| \|
+| No attempt to code
+
+|===
+
+
+NOTE: Evergreen will choose the destinition index for the authority record index based upon the 1XX heading definition.
+
+=== Putting Authority records into different indexes ===
+
+You might find yourself wanting the Browse Subject index to also include some of the search terms that are found only in the Author index. Or visa versa. The "glue" that puts makes the connection between an index and an Authority heading can be queried like this:
+
+[source,sql]
+----
+
+select
+acsaf.tag "Authority Tag",acsaf.name,cmf.field_class
+from
+authority.control_set_bib_field acsbf
+join authority.control_set_authority_field acsaf on (acsbf.authority_field=acsaf.id)
+join authority.control_set_bib_field_metabib_field_map acsbfmfm on(acsbfmfm.bib_field=acsbf.id)
+join config.metabib_field cmf on (cmf.id=acsbfmfm.metabib_field)
+order by 3,1
+
+
+-- Another angle
+
+select b.*,a.id,a.tag,a.name,m.field_class,m.label,m.name,m.id from 
+ authority.control_set_bib_field b
+JOIN authority.control_set_authority_field a ON (b.authority_field = a.id),
+ config.metabib_field m,
+authority.control_set_bib_field_metabib_field_map map
+where
+map.bib_field=b.id and
+map.metabib_field=m.id
+order by field_class
+
+
+----
+
+NOTE: The main connection (glue) table is *authority.control_set_bib_field_metabib_field_map*
+
+==== And now the insert ====
+
+[source,sql]
+----
+
+
+-- Make new glue
+begin;
+
+
+-- Traditional AUTHOR getting applied to SUBJECT
+INSERT INTO authority.control_set_bib_field_metabib_field_map (bib_field, metabib_field)
+    SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '110' AND m.name = 'topic_browse'
+
+      union
+
+SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '100' AND m.name = 'topic_browse'
+      
+      union
+
+SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '111' AND m.name = 'topic_browse'
+      
+      union
+
+SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '130' AND m.name = 'topic_browse'
+      
+      union
+  
+SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '151' AND m.name = 'topic_browse'
+      
+      union
+
+-- Traditional SUBJECT getting applied to AUTHOR
+    SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '150' AND m.name = 'corporate'
+      
+      union
+
+SELECT  DISTINCT b.id AS bib_field, m.id AS metabib_field
+      FROM  authority.control_set_bib_field b JOIN authority.control_set_authority_field a ON (b.authority_field = a.id), config.metabib_field m
+      WHERE a.tag = '130' AND m.name = 'corporate'
+
+;
+
+commit;
+
+----
+
+=== Auxillary "axis" table ===
+
+Evergreen has another table that makes refernces to "axis" (subject, author, title, topic) but it's not directly for the purpose of browse search results.
+
+[source,sql]
+----
+
+-- Show axis mappings
+select abaafm.*,acsaf.tag from 
+authority.browse_axis_authority_field_map abaafm,
+authority.control_set_authority_field acsaf
+where
+acsaf.id=abaafm.field
+order by 4;
+
+----
+
+It can't hurt to also make the same connections in this table to mirror what you did above.
+
+[source,sql]
+----
+
+-- Edit axis mappings
+begin;
+
+-- Author headings (110) mapped to "subject"
+insert into authority.browse_axis_authority_field_map(axis,field)
+values('subject',2);
+
+-- Subject headings (150) mapped to "Author"
+insert into authority.browse_axis_authority_field_map(axis,field)
+values('author',5);
+
+commit;
+
+
+----
+
+
