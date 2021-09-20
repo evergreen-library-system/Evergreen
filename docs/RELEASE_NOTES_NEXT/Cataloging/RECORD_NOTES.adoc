@@ -1,3 +1,9 @@
-== Record Notes ==
+== Bibliographic Record Notes ==
 
-Bibliographic record notes can now be edited from the Record Notes tab.  Three new permissions manage this and should be added to cataloging accounts and permission groups as appropriate - CREATE_RECORD_NOTE, UPDATE_RECORD_NOTE and DELETE_RECORD_NOTE. There is an optional public display flag that is not yet supported in the OPAC but included to support future functionality.  
+Bibliographic record notes (i.e., administrative notes stored in the
+`biblio.record_note` table, not 5XX fields in the MARC record) can now
+be edited from the Record Notes tab.  Three new permissions manage this
+and should be added to cataloging accounts and permission groups as
+appropriate:  `CREATE_RECORD_NOTE`, `UPDATE_RECORD_NOTE`, and
+`DELETE_RECORD_NOTE`. There is an optional public display flag that is
+not yet supported in the OPAC but included to support future functionality.
