@@ -19,8 +19,8 @@
   directly targeted for this time period if there are local available
   copies.
 * New database rules now protect bre.id -1, acn.id -1 and acl.id 1 from editing.
-* The item table in the Angular staff catalog record details page now
-  includes 'Total Circ Count' and 'Last Circ Date' columns.
+* The item table and holdings view in the Angular staff catalog record
+  details page now include 'Total Circ Count' and 'Last Circ Date' columns.
 * There is a new library setting, 'Staff Catalog Search Filters', that can be
   used to customize the list of search filters that are available on the
   Angular staff catalog advanced search form. This setting takes an array
