@@ -28,3 +28,5 @@
   list of available filters is item_type, item_form, item_lang, audience,
   vr_format, bib_level, and lit_form. If the library setting is not set,
   all of the filters are displayed.
+* The Bootstrap public catalog now displays cover images on the My Account
+  items checked out, check out history, holds, and holds history pages.
