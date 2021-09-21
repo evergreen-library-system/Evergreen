@@ -416,7 +416,8 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
             expire_date : cusr.expire_date(),
             alias : cusr.alias(),
             has_email : Boolean(patronSvc.current.email() && patronSvc.current.email().match(/.*@.*/)),
-            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone()),
+			juvenile : cusr.juvenile()
         };
 
         return egCore.print.print({

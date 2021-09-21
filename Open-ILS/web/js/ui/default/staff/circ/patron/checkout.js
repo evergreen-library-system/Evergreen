@@ -348,7 +348,8 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
             expire_date : cusr.expire_date(),
             alias : cusr.alias(),
             has_email : Boolean($scope.has_email_address()),
-            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone()),
+			juvenile : cusr.juvenile()
         };
 
         return egCore.print.print({

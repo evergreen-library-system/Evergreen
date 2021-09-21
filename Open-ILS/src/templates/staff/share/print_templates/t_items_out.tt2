@@ -17,6 +17,7 @@ Fields include:
   * alias - aka Holds Alias
   * has_email - boolean value to show/hide elements on the receipt
   * has_phone - same as has_email
+  * juvenile - boolean value (t/f) to show/hide elements on the receipt
 
 * circulations - list of current loans, including for each checkout
 

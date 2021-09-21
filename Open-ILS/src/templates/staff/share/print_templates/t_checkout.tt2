@@ -21,6 +21,7 @@ Template for printing checkout receipts; fields available include:
   * alias - aka Holds Alias
   * has_email - boolean value to show/hide elements on the receipt
   * has_phone - same as has_email
+  * juvenile - boolean value (t/f) to show/hide elements on the receipt
 
 * circulations - list of loans made during this session. Each
   checkout includes:
