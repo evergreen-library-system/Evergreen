@@ -19,7 +19,6 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
             'lib.my_account_url'
         ]
     };
-    color.log("service",service);
 
     service.template_base_path = 'share/print_templates/t_';
 
