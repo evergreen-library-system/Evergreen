@@ -59,10 +59,10 @@
     group="Selected" i18n-group [disableOnRows]="notOneSelectedRow">
   </eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="Apply Credit" i18n-label (onClick)="createCredit($event)"
-    group="Credits" i18n-group [disableOnRows]="notOneSelectedRow">
+    group="Credits" i18n-group [disableOnRows]="notOneSelectedActiveRow">
   </eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="Allocate to Fund" i18n-label (onClick)="allocateToFund($event)"
-    group="Allocations" i18n-group [disableOnRows]="notOneSelectedRow">
+    group="Allocations" i18n-group [disableOnRows]="notOneSelectedActiveRow">
   </eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="View Credits" i18n-label (onClick)="openTransactionsDialog($event, 'credits')"
     group="Credits" i18n-groups [disableOnRows]="notOneSelectedRow">

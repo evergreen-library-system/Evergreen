@@ -29,7 +29,8 @@
                 [sortable]="true" persistKey="acq.funding_source.credit"
                 [filterable]="true" [stickyHeader]="true">
 
-              <eg-grid-toolbar-button label="Apply Credits" i18n-label (onClick)="createCredit(creditsGrid)">
+              <eg-grid-toolbar-button label="Apply Credits" i18n-label
+                [disabled]="fundingSource?.active() !== 't'" (onClick)="createCredit(creditsGrid)">
               </eg-grid-toolbar-button>
               <eg-grid-column path="amount"></eg-grid-column>
               <eg-grid-column path="effective_date" [datePlusTime]="true"></eg-grid-column>
@@ -49,7 +50,8 @@
                 [sortable]="true" persistKey="acq.funding_source.fund_allocation"
                 [filterable]="true" [stickyHeader]="true" [cellTextGenerator]="cellTextGenerator">
 
-              <eg-grid-toolbar-button label="Allocate to Fund" i18n-label (onClick)="allocateToFund(allocationsGrid)">
+              <eg-grid-toolbar-button label="Allocate to Fund" i18n-label
+                [disabled]="fundingSource?.active() !== 't'" (onClick)="allocateToFund(allocationsGrid)">
               </eg-grid-toolbar-button>
               <ng-template #fundTmpl let-row="row">
                 <a href="/eg2/staff/admin/acq/funds/fund/{{row.fund().id()}}" target="_blank">

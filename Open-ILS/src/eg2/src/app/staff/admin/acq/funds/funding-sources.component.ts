@@ -42,6 +42,7 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
 
     cellTextGenerator: GridCellTextGenerator;
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
+    notOneSelectedActiveRow: (rows: IdlObject[]) => boolean;
 
     constructor(
         route: ActivatedRoute,
@@ -64,8 +65,10 @@ export class FundingSourcesComponent extends AdminPageComponent implements OnIni
             name: row => row.name()
         };
         this.notOneSelectedRow = (rows: IdlObject[]) => (rows.length !== 1);
+        this.notOneSelectedActiveRow = (rows: IdlObject[]) => (rows.length !== 1 || rows[0].active() !== 't');
         this.fieldOrder = 'name,code,year,org,active,currency_type,balance_stop_percentage,balance_warning_percentage,propagate,rollover';
         this.defaultNewRecord = this.idl.create('acqfs');
+        this.defaultNewRecord.active(true);
         this.defaultNewRecord.owner(this.auth.user().ws_ou());
 
         this.dataSource.getRows = (pager: Pager, sort: any[]) => {
