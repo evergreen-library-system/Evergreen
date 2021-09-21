@@ -3,24 +3,24 @@ Template for printing checkout receipts; fields available include:
 
 * patron - has several fields from the patron object, including a financial summary
 
-  * prefix
-  * first_given_name
-  * second_given_name
-  * family_name
-  * suffix
-  * pref_prefix
-  * pref_first_given_name
-  * pref_second_given_name
-  * pref_family_name
-  * pref_suffix
-  * card.barcode
-  * money_summary.balance_owed - current balance
-  * money_summary.total_paid - payments made on outstanding fines/fees
-  * money_summary.total_owed - total of outstanding fines/fees
-  * expire_date
-  * alias - aka Holds Alias
-  * has_email - boolean value to show/hide elements on the receipt
-  * has_phone - same as has_email
+  * patron.prefix
+  * patron.first_given_name
+  * patron.second_given_name
+  * patron.family_name
+  * patron.suffix
+  * patron.pref_prefix
+  * patron.pref_first_given_name
+  * patron.pref_second_given_name
+  * patron.pref_family_name
+  * patron.pref_suffix
+  * patron.card.barcode
+  * patron.money_summary.balance_owed - current balance
+  * patron.money_summary.total_paid - payments made on outstanding fines/fees
+  * patron.money_summary.total_owed - total of outstanding fines/fees
+  * patron.expire_date
+  * patron.alias - aka Holds Alias
+  * patron.has_email - boolean value to show/hide elements on the receipt
+  * patron.has_phone - same as has_email
 
 * circulations - list of loans made during this session. Each
   checkout includes:
