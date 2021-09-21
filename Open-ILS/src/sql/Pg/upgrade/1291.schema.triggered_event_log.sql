@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1291', :eg_version);
 
 --    context_usr_path        TEXT, -- for optimizing action_trigger.event
 --    context_library_path    TEXT, -- '''

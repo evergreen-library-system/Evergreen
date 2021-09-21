@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('ZZZZ', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1293', :eg_version);
 
 INSERT INTO config.workstation_setting_type
     (name, grp, datatype, label)
@@ -71,7 +71,7 @@ WHERE
 -- \pset format unaligned
 -- \t
 -- \o update_action_trigger_events_for_circs.sql
--- SELECT 'UPDATE action_trigger.event e SET context_item = c.target_copy FROM action.circulation cWHERE c.id = e.target AND e.id = ' || e.id || ' RETURNING ' || e.id || ';' FROM action_trigger.event e, action.circulation c WHERE e.target = c.id AND e.event_def IN (SELECT id FROM action_trigger.event_definition WHERE hook in (SELECT key FROM action_trigger.hook WHERE core_type = 'circ')) ORDER BY e.id DESC;
+-- SELECT 'UPDATE action_trigger.event e SET context_item = c.target_copy FROM action.circulation c WHERE c.id = e.target AND e.id = ' || e.id || ' RETURNING ' || e.id || ';' FROM action_trigger.event e, action.circulation c WHERE e.target = c.id AND e.event_def IN (SELECT id FROM action_trigger.event_definition WHERE hook in (SELECT key FROM action_trigger.hook WHERE core_type = 'circ')) ORDER BY e.id DESC;
 -- \o
 -- \o update_action_trigger_events_for_holds.sql
 -- SELECT 'UPDATE action_trigger.event e SET context_item = h.current_copy FROM action.hold_request h WHERE h.id = e.target AND e.id = ' || e.id || ' RETURNING ' || e.id || ';' FROM action_trigger.event e, action.hold_request h WHERE e.target = h.id AND e.event_def IN (SELECT id FROM action_trigger.event_definition WHERE hook in (SELECT key FROM action_trigger.hook WHERE core_type = 'ahr')) ORDER BY e.id DESC;
