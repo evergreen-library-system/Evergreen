@@ -12,6 +12,7 @@ Template for printing hold request slips. Fields include:
 * patron.first_given_name
 * patron.second_given_name
 * patron.card.barcode
+* patron.profile.name
 * hold.request_time
 * hold.phone_notify
 * hold.sms_notify

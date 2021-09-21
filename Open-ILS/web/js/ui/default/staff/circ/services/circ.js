@@ -1786,7 +1786,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 egCore.pcrud.retrieve('au', 
                     evt.payload.hold.usr(), {
                         flesh : 1,
-                        flesh_fields : {'au' : ['card']}
+                        flesh_fields : {'au' : ['card', 'profile']}
                     }
                 ).then(function(patron) {data.patron = patron})
             );
