@@ -30,3 +30,7 @@
   all of the filters are displayed.
 * The Bootstrap public catalog now displays cover images on the My Account
   items checked out, check out history, holds, and holds history pages.
+* Funding sources now have an active flag. If a funding source is marked
+  as inactive, adding credits to it or allocating from it is disabled, and
+  it will not show up in the list of possible funding sources when allocating
+  to a fund.
