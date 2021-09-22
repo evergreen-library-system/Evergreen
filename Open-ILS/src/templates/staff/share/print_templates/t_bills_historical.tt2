@@ -47,7 +47,7 @@ to this template includes:
 <hr/>
 <dl>
   <div ng-repeat="xact in transactions">
-    <dt><b>[% l('Bill #') %]{{xact.id}}</b></dt>
+    <dt><b>[% l('Bill') %] #{{xact.id}}</b></dt>
     <dd>
     <table> 
       <tr valign="top">

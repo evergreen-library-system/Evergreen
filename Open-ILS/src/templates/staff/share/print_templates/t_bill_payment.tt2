@@ -26,8 +26,8 @@ Individual payments within payments contain:
 * payment.xact.copy_barcode - Item barcode
 * payment.xact.title - Item title
 -->
-Welcome to {{current_location.name}}!<br/>
-A receipt of your  transaction:<hr/>
+[% l('Welcome to [_1]', '{{current_location.name}}') %]<br/>
+[% l('A receipt of your  transaction:') %]<hr/>
 
 <table style="width:100%"> 
   <tr> 
