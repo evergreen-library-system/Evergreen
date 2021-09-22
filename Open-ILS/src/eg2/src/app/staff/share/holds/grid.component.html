@@ -156,12 +156,20 @@
       <eg-grid-column i18n-label label="Title" [hidden]="true" name='title'
         [cellTemplate]="titleTmpl"></eg-grid-column>
 
-      <ng-template #barcodeTmpl let-hold="row">
+      <ng-template #barcodeTmpl let-hold="row" let-col="col">
         <a href="/eg/staff/cat/item/{{hold.cp_id}}/summary">
-          {{hold.cp_barcode}}
+          <ng-container *ngIf="col.name == 'current_item' && hold.current_copy">
+            {{hold.cp_barcode}}
+          </ng-container>
+          <ng-container *ngIf="col.name == 'requested_item' && isCopyHold(hold)">
+            {{hold.cp_barcode}}
+          </ng-container>
         </a>
       </ng-template>
-      <eg-grid-column i18n-label label="Current Item" name='cp_barcode'
+      <eg-grid-column i18n-label label="Current Item" name='current_item'
+        [cellTemplate]="barcodeTmpl">
+      </eg-grid-column>
+      <eg-grid-column i18n-label label="Requested Item" name='requested_item'
         [cellTemplate]="barcodeTmpl">
       </eg-grid-column>
       <eg-grid-column i18n-label label="Pickup Library" path='pl_shortname'></eg-grid-column>
@@ -260,7 +268,6 @@
       <eg-grid-column i18n-label label="Is Reference" path='cp_ref' datatype="bool" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Is Holdable" path='cp_holdable' datatype="bool" [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Price" path='cp_price' [hidden]="true"></eg-grid-column>
-      <eg-grid-column i18n-label label="Item Barcode" path='cp_barcode' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Circulation Modifier" path='cp_circ_modifier' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Circulate as MARC Type" path='cp_circ_as_type' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Precat Dummy Title" path='cp_dummy_title' [hidden]="true"></eg-grid-column>

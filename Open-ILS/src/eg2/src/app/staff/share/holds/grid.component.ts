@@ -597,6 +597,10 @@ export class HoldsGridComponent implements OnInit {
             }
         });
     }
+
+    isCopyHold(holdData: any): boolean {
+        return holdData.hold_type.match(/C|R|F/) !== null;
+    }
 }
 
 
