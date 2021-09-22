@@ -249,6 +249,10 @@ export class HoldsGridComponent implements OnInit {
             filters.capture_time = null;
             filters.frozen = 'f';
 
+            // cp.* fields are set for copy-level holds even if they
+            // have no current_copy.  Make sure current_copy is set.
+            filters.current_copy = {'is not': null};
+
             // There are aliases for these (cp_status, cp_circ_lib),
             // but the API complains when I use them.
             filters['cp.status'] = [0, 7];
