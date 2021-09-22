@@ -21756,6 +21756,7 @@ VALUES (
         'eg.staff.catalog.results.show_more',
         'Show more details in Angular staff catalog',
         'cwst', 'label'
+    )
 );
 
 INSERT INTO config.workstation_setting_type
