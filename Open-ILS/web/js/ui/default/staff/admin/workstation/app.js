@@ -614,6 +614,7 @@ function($scope , $q , egCore , ngToast) {
         change_given : 0,
         payment_type : 'cash_payment',
         payment_note : 'Here is a payment note',
+        approval_code : 'CH1234567',
         note : {
             create_date : new Date().toISOString(), 
             title : 'Test Note Title',

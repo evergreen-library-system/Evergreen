@@ -20,6 +20,7 @@ includes:
 * payment_total - total paid
 * new_balance - balance after the payments were applied
 * payments - list of specific payments
+* approval_code - credit card approval code
 
 Individual payments within payments contain:
 * payment.xact.copy_barcode - Item barcode

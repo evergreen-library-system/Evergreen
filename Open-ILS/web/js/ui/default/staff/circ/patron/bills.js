@@ -395,10 +395,10 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             make_payments, note, $scope.check_number, cc_args, patron_credit)
         .then(
             function(payment_ids) {
-
+                var approval_code = cc_args ? cc_args.approval_code : '';
                 if (!$scope.disable_auto_print && $scope.receipt_on_pay.isChecked) {
                     printReceipt(
-                        $scope.payment_type, payment_ids, make_payments, note);
+                        $scope.payment_type, payment_ids, make_payments, note, approval_code);
                 }
 
                 refreshDisplay();
@@ -418,7 +418,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
         egCore.hatch.setItem('eg.circ.bills.annotatepayment', $scope.annotate_payment);
     }
 
-    function printReceipt(type, payment_ids, payments_made, note) {
+    function printReceipt(type, payment_ids, payments_made, note, approval_code) {
         var payment_blobs = [];
         var cusr = patronSvc.current;
 
@@ -441,6 +441,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
         var print_data = {
             payment_type : type,
             payment_note : note,
+            approval_code : approval_code,
             previous_balance : Number($scope.summary.balance_owed()),
             payment_total : Number($scope.payment_amount),
             payment_applied : $scope.pending_payment(),
