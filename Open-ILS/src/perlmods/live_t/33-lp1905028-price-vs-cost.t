@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 55;
+use Test::More tests => 54;
 
 diag('Item price vs cost settings');
 
@@ -406,9 +406,7 @@ sub setupLogin {
             username => 'admin',
             password => 'demo123',
             type => 'staff'});
-        ok( $script->authtoken, 'Have an authtoken');
         my $ws = $script->register_workstation(WORKSTATION_NAME,WORKSTATION_LIB);
-        ok( ! ref $ws, 'Registered a new workstation');
         $script->logout();
     }
 
@@ -417,5 +415,4 @@ sub setupLogin {
         password => 'demo123',
         type => 'staff',
         workstation => WORKSTATION_NAME});
-    ok( $script->authtoken, 'Have an authtoken associated with the workstation');
 }
