@@ -7,7 +7,7 @@ based on the entered date of birth.  Divisions include:
  * Child 6-12 Years Old
  * Teen 13-17 Years Old
  * Adult 18-25 Years Old
- * Adult 50-59 Years Old
+ * Adult 26-49 Years Old
  * Adult 50-59 Years Old
  * Adult 60-69 Years Old
  * Adult 70+
