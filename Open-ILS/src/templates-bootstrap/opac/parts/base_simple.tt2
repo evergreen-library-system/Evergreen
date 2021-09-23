@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang='[% ctx.eg_locale %]'>
+    <head prefix="og: http://ogp.me/ns#">
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        [% IF ctx.refresh %]
+        <meta http-equiv="refresh" content="[% ctx.refresh %]" />
+        [% ELSIF ctx.authtime AND !ctx.is_staff %]
+        <meta http-equiv="refresh" content="[% ctx.authtime %]; url=[% ctx.home_page %]" />
+        [% END %]
+        <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
+        <!--Added bootstrap dependancies-->
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap/dist/css/bootstrap.min.css[% ctx.cache_key %]">
+        <link rel="stylesheet"  href="[% ctx.media_prefix %]/opac/deps/node_modules/@fortawesome/fontawesome-free/css/all.css[% ctx.cache_key %]" />
+        <link rel="stylesheet"  href="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap-datepicker/dist/css/bootstrap-datepicker.css[% ctx.cache_key %]" />
+        <link rel="stylesheet"  href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto.css[% ctx.cache_key %]" />
+        <link rel="stylesheet" href="[% ctx.opac_root %]/css/style.css[% ctx.cache_key %]&amp;dir=[%
+          IF ctx.get_i18n_l(ctx.eg_locale).rtl == 't' %]rtl[%
+          ELSE %]ltr[% END %]" />
+          <link rel="stylesheet" href="[% ctx.opac_root %]/css/mediaQuery.css[% ctx.cache_key %]" />
+        [% IF ctx.get_i18n_l(ctx.eg_locale).rtl == 't' %]
+        <link rel="stylesheet" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto-rtl.css[% ctx.cache_key %]" />
+        [% END %]
+
+           [% IF ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_css') %]
+            [% custom_css = ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_css') %]
+        [% '<style>'; custom_css ; '</style>' %]
+        [% END %]
+
+        [%- libname = ctx.get_aou(ctx.search_ou).name;
+            libname = libname | html;
+            libsname = ctx.get_aou(ctx.search_ou).shortname; %]
+        <title>[%- IF ctx.user_stats.messages.unread;
+                      l('([_1])', ctx.user_stats.messages.unread);
+                   END;
+               -%]
+               [% l('[_1] - [_2]', ctx.page_title, libname) %]</title>
+        <link rel="unapi-server" type="application/xml" title="unAPI" href="/opac/extras/unapi" />
+        <link type="application/opensearchdescription+xml" rel='search' title="[% l('[_1] OpenSearch', libname) %]" href="/opac/extras/opensearch/1.1/[% libsname | uri %]/-/osd.xml" />
+        [%-# Hook for page-specific metadata such as <meta name="robots" content="noindex"> %]
+        [%- ctx.metalinks.push('<meta property="og:title" content="' _ ctx.page_title _ '" />'); %]
+        [%- ctx.metalinks.push('<meta property="og:site_name" content="' _ libname _ '" />'); %]
+        [% FOREACH meta IN ctx.metalinks; meta _ "\n"; END; -%]
+        [% IF want_dojo %]
+        <style>
+            @import "[% ctx.media_prefix %]/js/dojo/dijit/themes/tundra/tundra.css[% ctx.cache_key %]";
+        </style>
+        [% END %]
+
+        [% IF !ctx.is_staff %]
+            [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
+        [% END %]
+        [% PROCESS 'opac/parts/stripe.tt2' %]
+<script  src="[% ctx.media_prefix %]/opac/deps/node_modules/jquery/dist/jquery.min.js"></script>
+
+		<script>
+			$(document).ready(function(){
+				$("#loginModal").on('shown.bs.modal', function(){
+					$(this).find('#username_field').focus();
+				});
+			});
+		</script>
+
+    </head>
+    <body[% IF want_dojo; ' class="tundra d-flex flex-column min-vh-100"'; ELSE; ' class="tundra d-flex flex-column min-vh-100"';  END %]>
+        <h1 class="sr-only">[% l('Catalog') %]</h1>
+        [%#Each content page needs (at minimum) an <h2> describing the content%]
+       <div class="mb-3">
+        [% content %]
+        </div>
+        [% INCLUDE 'opac/parts/js.tt2' %]
+        <script>
+    $(document).ready(function(){
+    $('.tooltip').tooltip();
+    });
+</script>
+        [%- IF ENV.OILS_CHILIFRESH_ACCOUNT %]
+            [%- INCLUDE 'opac/parts/chilifresh.tt2' %]
+        [%- END %]
+
+
+
+    </body>
+</html>

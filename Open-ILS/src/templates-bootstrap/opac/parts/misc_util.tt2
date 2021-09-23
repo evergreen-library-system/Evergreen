@@ -842,7 +842,7 @@
     <li class="glide__slide">
         <div class="carousel-entry">
             <div class="coverImage">
-            <a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]">
+            <a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]" target="_top">
                 <img alt="[% bib.title | html %] [% l('Book cover') %]" class="carousel-entry-image img-fluid" src="[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/r/[% bib.id | uri %]" />
                 </a>
             </div>

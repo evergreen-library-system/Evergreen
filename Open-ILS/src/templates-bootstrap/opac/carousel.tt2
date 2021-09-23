@@ -1,0 +1,8 @@
+[%- PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/base_simple.tt2";
+	PROCESS "opac/parts/org_selector.tt2";
+    ctx.metalinks.push('<link rel="canonical" href="' _ mkurl('', {}, 1) _ '" />');
+    ctx.page_title = l("Carousel");
+	PROCESS carousels;
+	END
+-%]
