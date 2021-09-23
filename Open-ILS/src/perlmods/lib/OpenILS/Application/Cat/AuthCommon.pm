@@ -8,7 +8,6 @@ use OpenILS::Const qw/:const/;
 use OpenSRF::AppSession;
 use OpenILS::Event;
 my $U = 'OpenILS::Application::AppUtils';
-my $MARC_NAMESPACE = 'http://www.loc.gov/MARC21/slim';
 
 
 # ---------------------------------------------------------------------------
@@ -19,8 +18,8 @@ my $MARC_NAMESPACE = 'http://www.loc.gov/MARC21/slim';
 sub marc_xml_to_doc {
     my $xml = shift;
     my $marc_doc = XML::LibXML->new->parse_string($xml);
-    $marc_doc->documentElement->setNamespace($MARC_NAMESPACE, 'marc', 1);
-    $marc_doc->documentElement->setNamespace($MARC_NAMESPACE);
+    $marc_doc->documentElement->setNamespace(MARC_NAMESPACE, 'marc', 1);
+    $marc_doc->documentElement->setNamespace(MARC_NAMESPACE);
     return $marc_doc;
 }
 
