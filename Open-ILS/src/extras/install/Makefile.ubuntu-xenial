@@ -79,6 +79,7 @@ export DEBS = \
 
 export DEB_APACHE_MODS = \
     expires\
+    headers\
     include\
     proxy\
     proxy_http\
