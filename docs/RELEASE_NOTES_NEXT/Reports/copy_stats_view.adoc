@@ -1,0 +1,11 @@
+== Reporter Item Statistics View ==
+
+A new reports source, Item Statistics View is available.
+Certain third-party products such as collection development
+management providers require copy statistics that are not
+readily available in a single report.  This view adds those,
+which will also benefit library staff reports generally.
+
+To add the view, a system administrator will need to (re-)run
+the example.reporter-extension.sql script, which will create 
+the new view in the database.
