@@ -36,3 +36,14 @@
   to a fund.
 * Carousels on the public catalog home page now take up 80% of the page width
   by default rather than just 40%
+* Add a new library setting, 'Workstation OU is the default for staff-placed holds',
+  to indicate that the workstation OU should be set as the default pickup
+  location for hold requests that are placed via the staff interface. The
+  process for setting the default pickup location is now:
+  . Workstation if the 'Workstation OU is the default for staff-placed holds' setting
+    is turned on
+  . The user's preferred pickup location, if set
+  . if the user's preferred pickup location is not set, the
+    Workstation if the 'Workstation OU fallback for staff-placed holds'
+    setting is turned on
+  . Otherwise, it defaults to the user's home library.
