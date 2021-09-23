@@ -34,3 +34,5 @@
   as inactive, adding credits to it or allocating from it is disabled, and
   it will not show up in the list of possible funding sources when allocating
   to a fund.
+* Carousels on the public catalog home page now take up 80% of the page width
+  by default rather than just 40%
