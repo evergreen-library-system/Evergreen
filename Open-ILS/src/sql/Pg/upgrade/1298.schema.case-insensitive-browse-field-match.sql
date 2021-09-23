@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1298', :eg_version);
+
 ALTER TYPE metabib.field_entry_template ADD ATTRIBUTE browse_nocase BOOL CASCADE;
 
 ALTER TABLE config.metabib_field ADD COLUMN browse_nocase BOOL NOT NULL DEFAULT FALSE;
