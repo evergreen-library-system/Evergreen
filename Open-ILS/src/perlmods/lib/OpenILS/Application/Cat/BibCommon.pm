@@ -8,7 +8,6 @@ use OpenILS::Const qw/:const/;
 use OpenSRF::AppSession;
 use OpenILS::Event;
 my $U = 'OpenILS::Application::AppUtils';
-my $MARC_NAMESPACE = 'http://www.loc.gov/MARC21/slim';
 
 
 # ---------------------------------------------------------------------------
@@ -143,8 +142,8 @@ sub biblio_record_xml_import {
 sub __make_marc_doc {
     my $xml = shift;
     my $marcxml = XML::LibXML->new->parse_string($xml);
-    $marcxml->documentElement->setNamespace($MARC_NAMESPACE, "marc", 1 );
-    $marcxml->documentElement->setNamespace($MARC_NAMESPACE);
+    $marcxml->documentElement->setNamespace(MARC_NAMESPACE, "marc", 1 );
+    $marcxml->documentElement->setNamespace(MARC_NAMESPACE);
     __remove_empty_marc_nodes($marcxml);
     return $marcxml;
 }
@@ -155,9 +154,9 @@ sub __make_marc_doc {
 sub __remove_empty_marc_nodes {
     my $marcxml = shift;
 
-    __remove_if_childless($_) foreach $marcxml->documentElement->getElementsByTagNameNS($MARC_NAMESPACE, 'controlfield');
-    __remove_if_childless($_) foreach $marcxml->documentElement->getElementsByTagNameNS($MARC_NAMESPACE, 'subfield');
-    __remove_if_childless($_) foreach $marcxml->documentElement->getElementsByTagNameNS($MARC_NAMESPACE, 'datafield');
+    __remove_if_childless($_) foreach $marcxml->documentElement->getElementsByTagNameNS(MARC_NAMESPACE, 'controlfield');
+    __remove_if_childless($_) foreach $marcxml->documentElement->getElementsByTagNameNS(MARC_NAMESPACE, 'subfield');
+    __remove_if_childless($_) foreach $marcxml->documentElement->getElementsByTagNameNS(MARC_NAMESPACE, 'datafield');
 }
 
 sub __remove_if_childless {
