@@ -48,7 +48,7 @@
         accent_mediumdark = "#888", # gun metal grey (medium dark)
         accent_dark = "#666", # gun metal grey (dark)
         accent_darker = "#333", # gun metal grey (darker)
-        border_standard = "#e9ebf3", # light grey-blue
+        border_standard = "#888", # gun metal grey (medium dark)
         border_dark = "black", # black
         border_alert = "red", # red
         button_text = "#fbf9f9", # off-white
