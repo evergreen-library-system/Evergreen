@@ -65,13 +65,13 @@ export class ItemEventGridComponent implements OnChanges, OnInit {
             // base query to grab everything
             const base: Object = {};
             base[this.idl.classes['atoul'].pkey] = {'!=' : null};
-            base['context_item'] = (this.item ? this.item : {'>' : 0})
+            base['context_item'] = (this.item ? this.item : {'>' : 0});
 
             // circs or holds?
-            if (this.event_type == 'circ') {
-                base['target_circ'] = { '>' : 0 }
+            if (this.event_type === 'circ') {
+                base['target_circ'] = { '>' : 0 };
             } else {
-                base['target_hold'] = { '>' : 0 }
+                base['target_hold'] = { '>' : 0 };
             }
 
             const query: any = new Array();
@@ -88,7 +88,7 @@ export class ItemEventGridComponent implements OnChanges, OnInit {
                 query, {
                 flesh: 3,
                 flesh_fields: {
-                    atoul: ['context_user','context_item'],
+                    atoul: ['context_user', 'context_item'],
                     au: ['card']
                 },
                 offset: pager.offset,
@@ -105,22 +105,22 @@ export class ItemEventGridComponent implements OnChanges, OnInit {
             ).subscribe(
                 (res) => {
                     if (this.evt.parse(res)) {
-                        console.error('parsed error response',res);
+                        console.error('parsed error response', res);
                     } else {
-                        console.log('success',res);
+                        console.log('success', res);
                     }
                 },
                 (err) => {
-                    console.error('error',err);
+                    console.error('error', err);
                 },
                 () => {
                     console.log('finis');
                     this.grid.reload();
                 }
             );
-        }
+        };
 
-        this.noRowSelected = (rows: IdlObject[]) => (rows.length == 0);
+        this.noRowSelected = (rows: IdlObject[]) => (rows.length === 0);
     }
 
     ngOnChanges() { this.reloadGrid(); }
