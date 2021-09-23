@@ -134,6 +134,11 @@ econst OILS_PENALTY_INVALID_PATRON_ADDRESS => 29;
 econst OILS_BILLING_TYPE_NOTIFICATION_FEE => 9;
 
 
+# ---------------------------------------------------------------------
+# Non Evergreen-specific constants
+# ---------------------------------------------------------------------
+econst MARC_NAMESPACE => 'http://www.loc.gov/MARC21/slim';
+
 
 # ---------------------------------------------------------------------
 # finally, export all the constants

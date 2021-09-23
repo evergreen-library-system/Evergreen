@@ -25,7 +25,6 @@ use Digest::MD5 qw(md5_hex);
 # Pile of utilty methods used accross applications.
 # ---------------------------------------------------------------------------
 my $cache_client = "OpenSRF::Utils::Cache";
-my $MARC_NAMESPACE = 'http://www.loc.gov/MARC21/slim';
 
 # ---------------------------------------------------------------------------
 # on sucess, returns the created session, on failure throws ERROR exception
@@ -2462,8 +2461,8 @@ sub verify_migrated_user_password {
 sub marc_xml_to_doc {
     my ($class, $xml) = @_;
     my $marc_doc = XML::LibXML->new->parse_string($xml);
-    $marc_doc->documentElement->setNamespace($MARC_NAMESPACE, 'marc', 1);
-    $marc_doc->documentElement->setNamespace($MARC_NAMESPACE);
+    $marc_doc->documentElement->setNamespace(MARC_NAMESPACE, 'marc', 1);
+    $marc_doc->documentElement->setNamespace(MARC_NAMESPACE);
     return $marc_doc;
 }
 
