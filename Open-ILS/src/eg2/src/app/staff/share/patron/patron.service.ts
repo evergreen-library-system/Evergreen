@@ -40,7 +40,6 @@ export class PatronAlerts {
     patronInactive = false;
     retrievedWithInactive = false;
     invalidAddress = false;
-    alertMessage: string = null;
     alertPenalties: IdlObject[] = [];
 
     hasAlerts(): boolean {
@@ -52,7 +51,6 @@ export class PatronAlerts {
             this.patronInactive ||
             this.retrievedWithInactive ||
             this.invalidAddress ||
-            this.alertMessage !== null ||
             this.alertPenalties.length > 0
         );
     }
@@ -339,7 +337,6 @@ export class PatronService {
         alerts.patronInactive = patron.active() === 'f';
         alerts.invalidAddress = patron.addresses()
             .filter(a => a.valid() === 'f').length > 0;
-        alerts.alertMessage = patron.alert_message();
         alerts.alertPenalties = patron.standing_penalties()
             .filter(p => p.standing_penalty().staff_alert() === 't');
 

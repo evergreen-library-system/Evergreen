@@ -183,7 +183,8 @@
 </div>
 
 <ng-template #barcodeTemplate let-r="row">
-  <a routerLink="/staff/circ/patron/{{r.id()}}/checkout">{{r.card().barcode()}}</a>
+  <a *ngIf="r.card()"
+    routerLink="/staff/circ/patron/{{r.id()}}/checkout">{{r.card().barcode()}}</a>
 </ng-template>
 <ng-template #familyNameTemplate let-r="row">
   <a routerLink="/staff/circ/patron/{{r.id()}}/checkout">{{r.family_name()}}</a>

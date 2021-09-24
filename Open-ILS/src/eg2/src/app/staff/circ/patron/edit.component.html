@@ -473,24 +473,6 @@
     {args: {template: fieldInput, field: 'claims_never_checked_out_count', type: 'number'}}">
   </ng-container>
 
-  <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.alert_message')">
-    <ng-container 
-      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'alert_message'}}">
-    </ng-container>
-    <div class="col-lg-3">
-      <textarea
-        class="form-control" 
-        name="au-alert_message-input"
-        id="au-alert_message-input"
-        [ngModel]="objectFromPath(null, null)['alert_message']()"
-        (ngModelChange)="fieldValueChange(null, null, 'alert_message', $event)"
-        (change)="afterFieldChange(null, null, 'alert_message')"
-        [required]="fieldRequired('au.alert_message')"
-        [pattern]="fieldPattern('au', 'alert_message')">
-      </textarea>
-    </div>
-  </div>
-
   <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
     <div class="m-auto font-weight-bold" i18n>User Settings</div>
   </div>

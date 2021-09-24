@@ -138,10 +138,6 @@ export class PatronSummaryComponent implements OnInit {
             return 'MULTIPLE_PENALTIES';
         }
 
-        if (patron.alert_message()) {
-            return 'PATRON_HAS_ALERT';
-        }
-
         if (patron.juvenile() === 't') {
             return 'PATRON_JUVENILE';
         }

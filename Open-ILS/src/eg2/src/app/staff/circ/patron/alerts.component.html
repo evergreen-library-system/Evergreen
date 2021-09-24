@@ -31,16 +31,6 @@
     Patron account has invalid addresses.
   </div>
 
-  <!-- alert message -->
-  <div class="row" *ngIf="alerts().alertMessage">
-    <div class="col-lg-6 offset-lg-3">
-      <div class="card">
-        <div class="card-header" i18n>Alert Message</div>
-        <div class="card-body">{{alerts().alertMessage}}</div>
-      </div>
-    </div>
-  </div>
-
   <!-- penalties -->
   <div class="row" *ngIf="alerts().alertPenalties.length">
     <div class="col-lg-12">
