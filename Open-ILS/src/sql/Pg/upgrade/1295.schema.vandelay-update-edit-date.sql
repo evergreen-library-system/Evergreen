@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1295', :eg_version);
 
 ALTER TABLE vandelay.merge_profile
     ADD COLUMN update_bib_editor BOOLEAN NOT NULL DEFAULT FALSE;
