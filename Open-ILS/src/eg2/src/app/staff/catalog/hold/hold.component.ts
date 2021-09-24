@@ -19,7 +19,6 @@ import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronSearchDialogComponent
   } from '@eg/staff/share/patron/search-dialog.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
-    } from '@eg/staff/share/patron/search-dialog.component';
 import {BarcodeSelectComponent
     } from '@eg/staff/share/barcodes/barcode-select.component';
 import {WorkLogService} from '@eg/staff/share/worklog/worklog.service';
