@@ -1,5 +1,8 @@
 <eg-staff-banner bannerText="{{this.evtDefName}}" i18n-bannerText>
 </eg-staff-banner>
+<div class="text-center">
+    <button class="btn btn-outline-dark" (click)="back()">&#8592; Back to Notifications/Action Triggers</button>
+</div>
 <ul ngbNav #editNav="ngbNav" class="nav-tabs mb-3"
     [activeId]="editTab" (navChange)="onTabChange($event)">
     <li [ngbNavItem]="'def'">
@@ -17,7 +20,10 @@
                 [fieldOptions]="{message_template:{customTemplate:{template:textAreaTemplate}},template:{customTemplate:{template:textAreaTemplate}}}"
                 fieldOrder="owner,name,hook,active,delay,delay_field,group_field,reactor,validator,repeat_delay,id,cleanup_failure,granularity,max_delay,message_library_path,message_template,message_title,message_usr_path,opt_in_setting,usr_field,retention_interval,cleanup_success,template">
             </eg-fm-record-editor>
-        </ng-template>
+            <div class="text-right">
+                <button class="btn btn-outline-dark mr-3" (click)="back()">&#8592; Back to Notifications/Action Triggers</button>
+            </div>
+	</ng-template>
     </li>
     <li ngbNavItem="'env'">
         <a ngbNavLink i18n>Edit Environment</a>

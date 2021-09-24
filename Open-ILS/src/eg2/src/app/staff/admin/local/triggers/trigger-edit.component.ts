@@ -11,6 +11,7 @@ import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {Router} from '@angular/router';
 
 @Component({
     templateUrl: './trigger-edit.component.html'
@@ -47,7 +48,8 @@ export class EditEventDefinitionComponent implements OnInit {
     @ViewChild('createErrString') createErrString: StringComponent;
 
     constructor(
-        private idl: IdlService,
+        private router: Router,
+ 	private idl: IdlService,
         private pcrud: PcrudService,
         private toast: ToastService,
         private route: ActivatedRoute,
@@ -195,5 +197,8 @@ export class EditEventDefinitionComponent implements OnInit {
         this.testErr1 = '';
         this.testErr2 = '';
         this.testResult = '';
+    }
+    back = () => {
+        this.router.navigate(['/staff/admin/local/action_trigger/event_definition/']);
     }
 }
