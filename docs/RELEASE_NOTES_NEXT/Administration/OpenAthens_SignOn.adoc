@@ -3,11 +3,12 @@
 
 == Purpose ==
 
-If your institution uses OpenAthens single sign-on, you can configure Evergreen 
-to link with OpenAthens. This will let patrons connect to OpenAthens resources 
-seamlessly once they have logged in to Evergreen. Patrons are automatically 
-assigned an OpenAthens identity dynamically based on their Evergreen login, 
-and do not need accounts created manually in OpenAthens.
+If your institution uses OpenAthens, you can configure Evergreen to sign 
+patrons in to OpenAthens using their Evergreen account. This will let them 
+connect to OpenAthens resources seamlessly once they have logged in to 
+Evergreen. Patrons are assigned an OpenAthens identity dynamically based 
+on their Evergreen login, and do not need accounts created manually in 
+OpenAthens.
 
 == Registering your Evergreen installation with the OpenAthens service ==
 
@@ -16,7 +17,7 @@ complete the following steps:
 
 . Register a local authentication connection for Evergreen:
   .. Go to *Management* -> *Connections*.
-  .. Under *Local authentication* click *Add*.
+  .. Under *Local authentication* click *Create*.
   .. In the wizard that appears, select *Evergreen* as the local authentication 
   system type (or *API* if Evergreen is not listed) and click *Configure*.
   .. For *Display name*, enter the name of your Evergreen portal that your 
@@ -30,7 +31,7 @@ complete the following steps:
   *Connection URI* that have been generated. You will need these when 
   configuring Evergreen.
 . Generate an API key:
-  .. Go to *Management* -> *API keys* and click *Add*.
+  .. Go to *Management* -> *API keys* and click *Create*.
   .. For *Name*, enter 'Evergreen' or whatever name you use for your Evergreen 
   portal internally, and click *Save*.
   .. Take a copy of the 36-character key that has been generated. You will need 
@@ -55,9 +56,9 @@ OpenAthens sign-on configuration normally equates to a single *domain* in the
 OpenAthens service. If in doubt refer to your OpenAthens account manager or 
 implementation partner.
 * *Active* - Enable this connection (enabled by default). N.B. Evergreen
-  does not support more than one active connection to OpenAthens at a time. If
-  more than one connection is added here, Evergreen will use only the _first_
-  connection that has *Active* enabled.
+  does not support more than one active connection to OpenAthens at a time per 
+  organisation. If more than one connection is added per organisation, 
+  Evergreen will use only the _first_ connection that has *Active* enabled.
 * *API key* - the 36-character OpenAthens *API key* that was generated in step 
   2 above.
 * *Connection ID* - the numerical *Connection ID* that was generated for the 
@@ -145,6 +146,10 @@ sample data set)
 |barcode
 |the patron's barcode
 |===
+
+Click 'Save' to finish creating the connection. (If you can't see the 
+connection you just created for a branch library, enable the "+ Descendants" 
+option.)
 
 == Network access - server ==
 
