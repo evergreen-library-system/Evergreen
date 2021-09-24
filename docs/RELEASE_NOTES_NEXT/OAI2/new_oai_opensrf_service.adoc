@@ -80,6 +80,20 @@ for default configuration and customization instructions.
 
 Upgrade Instructions
 ++++++++++++++++++++
+OAI support is not turned on by default. To enable it, edit the Apache
+configuration file `eg_vhost.conf` to uncomment the following
+section and restart Apache:
+
+[source,conf]
+----
+#<Location /opac/extras/oai>
+#    SetHandler perl-script
+#    PerlHandler OpenILS::WWW::SuperCat::OAI
+#    Options +ExecCGI
+#    PerlSendHeader On
+#    Require all granted
+#</Location>
+----
 
 Optional: Setting the datestamp
 +++++++++++++++++++++++++++++++
