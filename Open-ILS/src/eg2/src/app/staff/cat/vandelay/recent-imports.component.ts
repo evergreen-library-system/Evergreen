@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {Observable} from 'rxjs';
+import {tap, concatMap} from 'rxjs/operators';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -69,72 +71,63 @@ export class RecentImportsComponent implements OnInit {
         };
 
         this.pcrud.search('vst', query, {order_by: {vst: 'create_time'}})
-        .subscribe(
-            tracker => {
-                // The screen flickers less if the tracker array is
-                // updated inline instead of rebuilt every time.
+        .pipe(tap(tracker => this.trackTheTracker(tracker)))
+        .pipe(concatMap(tracker => this.fleshTrackerQueue(tracker)))
+        .toPromise().then(_ => {
+            const active =
+                this.trackers.filter(t => t.state() === 'active');
 
-                const existing =
-                    this.trackers.filter(t => t.id() === tracker.id())[0];
+            // Continue updating the display with updated tracker
+            // data as long as we have any active trackers.
+            if (active.length > 0) {
+                this.pollTimeout = setTimeout(
+                    () => this.pollTrackers(), this.refreshInterval);
+            } else {
+                this.pollTimeout = null;
+            }
+        });
+    }
 
-                if (existing) {
-                    existing.update_time(tracker.update_time());
-                    existing.state(tracker.state());
-                    existing.total_actions(tracker.total_actions());
-                    existing.actions_performed(tracker.actions_performed());
-                } else {
+    trackTheTracker(tracker: IdlObject) {
+        const existing =
+            this.trackers.filter(t => t.id() === tracker.id())[0];
 
-                    // Only show the import tracker when both an enqueue
-                    // and import tracker exist for a given session.
-                    const sameSes = this.trackers.filter(
-                        t => t.session_key() === tracker.session_key())[0];
+        if (existing) {
+            existing.update_time(tracker.update_time());
+            existing.state(tracker.state());
+            existing.total_actions(tracker.total_actions());
+            existing.actions_performed(tracker.actions_performed());
+        } else {
 
-                    if (sameSes) {
-                        if (sameSes.action_type() === 'enqueue') {
-                            // Remove the enqueueu tracker
+            // Only show the import tracker when both an enqueue
+            // and import tracker exist for a given session.
+            const sameSes = this.trackers.filter(
+                t => t.session_key() === tracker.session_key())[0];
 
-                            for (let idx = 0; idx < this.trackers.length; idx++) {
-                                const trkr = this.trackers[idx];
-                                if (trkr.id() === sameSes.id()) {
-                                    console.debug(
-                                        `removing tracker ${trkr.id()} from the list`);
-                                    this.trackers.splice(idx, 1);
-                                    break;
-                                }
-                            }
-                       } else if (sameSes.action_type() === 'import') {
-                            // Avoid adding the new enqueue tracker
-                            return;
+            if (sameSes) {
+                if (sameSes.action_type() === 'enqueue') {
+                    // Remove the enqueueu tracker
+
+                    for (let idx = 0; idx < this.trackers.length; idx++) {
+                        const trkr = this.trackers[idx];
+                        if (trkr.id() === sameSes.id()) {
+                            this.trackers.splice(idx, 1);
+                            break;
                         }
                     }
-
-                    console.debug(`adding tracker ${tracker.id()} to list`);
-
-                    this.trackers.unshift(tracker);
-                    this.fleshTrackerQueue(tracker);
-                }
-            },
-            err => {},
-            ()  => {
-                const active =
-                    this.trackers.filter(t => t.state() === 'active');
-
-                // Continue updating the display with updated tracker
-                // data as long as we have any active trackers.
-                if (active.length > 0) {
-                    this.pollTimeout = setTimeout(
-                        () => this.pollTrackers(), this.refreshInterval);
-                } else {
-                    this.pollTimeout = null;
+               } else if (sameSes.action_type() === 'import') {
+                    // Avoid adding the new enqueue tracker
+                    return;
                 }
             }
-        );
+
+            this.trackers.unshift(tracker);
+        }
     }
 
-    fleshTrackerQueue(tracker: IdlObject) {
+    fleshTrackerQueue(tracker: IdlObject): Observable<any> {
         const qClass = tracker.record_type() === 'bib' ? 'vbq' : 'vaq';
-        this.pcrud.retrieve(qClass, tracker.queue())
-        .subscribe(queue => tracker.queue(queue));
+        return this.pcrud.retrieve(qClass, tracker.queue())
+        .pipe(tap(queue => tracker.queue(queue)));
     }
-
 }
