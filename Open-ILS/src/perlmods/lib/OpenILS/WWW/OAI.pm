@@ -71,11 +71,11 @@ sub child_init {
     my $idl = OpenSRF::Utils::SettingsClient->new->config_value('IDL');
     Fieldmapper->import(IDL => $idl);
 
-    $oai = OpenSRF::AppSession->create('open-ils.oai');
+    $oai = OpenSRF::AppSession->create('open-ils.supercat');
     $parser = new XML::LibXML;
     $xslt = new XML::LibXSLT;
 
-    my $app_settings = OpenSRF::Utils::SettingsClient->new->config_value(apps => 'open-ils.oai')->{'app_settings'};
+    my $app_settings = OpenSRF::Utils::SettingsClient->new->config_value(apps => 'open-ils.supercat')->{'app_settings'}->{'oai'};
     $base_url = $app_settings->{'base_url'} || 'localhost';
     $base_url =~/(.*)\/$/ ; # Keep all minus the trailing forward slash.
     $repository_identifier = $app_settings->{'repository_identifier'} || 'localhost';
@@ -284,7 +284,7 @@ sub getRecord {
         my $rec_id = $1 ;
 
         # Do we have a record ?
-        my $record = $oai->request('open-ils.oai.list.retrieve', $record_class, $rec_id, undef, undef, undef, 1, $deleted_record)->gather(1) ;
+        my $record = $oai->request('open-ils.supercat.oai.list.retrieve', $record_class, $rec_id, undef, undef, undef, 1, $deleted_record)->gather(1) ;
         if (@$record) {
             $response = HTTP::OAI::GetRecord->new();
             my $o = "Fieldmapper::oai::$record_class"->new(@$record[0]);
@@ -311,7 +311,7 @@ sub listIdentifiers {
     my ($record_class, $requestURL, $from, $until, $set, $metadataPrefix, $offset ) = @_;
     my $response;
 
-    my $r = $oai->request('open-ils.oai.list.retrieve', $record_class, $offset, $from, $until, $set, $max_count, $deleted_record)->gather(1) ;
+    my $r = $oai->request('open-ils.supercat.oai.list.retrieve', $record_class, $offset, $from, $until, $set, $max_count, $deleted_record)->gather(1) ;
     if (@$r) {
         my $cursor = 0 ;
         $response = HTTP::OAI::ListIdentifiers->new();
@@ -340,7 +340,7 @@ sub listRecords {
     my ($record_class, $requestURL, $from, $until, $set, $metadataPrefix, $offset ) = @_;
     my $response;
 
-    my $r = $oai->request('open-ils.oai.list.retrieve', $record_class, $offset, $from, $until, $set, $max_count, $deleted_record)->gather(1) ;
+    my $r = $oai->request('open-ils.supercat.oai.list.retrieve', $record_class, $offset, $from, $until, $set, $max_count, $deleted_record)->gather(1) ;
     if (@$r) {
         my $cursor = 0 ;
         $response = HTTP::OAI::ListRecords->new();
@@ -395,7 +395,7 @@ sub _record {
 
     if ( $o->deleted eq 'f' ) {
         my $md = new HTTP::OAI::Metadata() ;
-        my $xml = $oai->request('open-ils.oai.' . $record_class . '.retrieve', $o->rec_id, $metadataPrefix)->gather(1) ;
+        my $xml = $oai->request('open-ils.supercat.oai.' . $record_class . '.retrieve', $o->rec_id, $metadataPrefix)->gather(1) ;
         $md->dom( $parser->parse_string('<metadata>' . $xml . '</metadata>') ); # Not sure why I need to add the metadata element,
         $record->metadata( $md );                                               # because I expect ->metadata() would provide the wrapper for it.
     }
@@ -464,7 +464,7 @@ sub _load_oaisets_biblio {
 # oai_metadataformats = { metadataPrefix => { schema, metadataNamespace } }
 sub _load_oai_metadataformats {
 
-    my $list = $oai->request('open-ils.oai.record.formats')->gather(1);
+    my $list = $oai->request('open-ils.supercat.oai.record.formats')->gather(1);
     for my $record_browse_format ( @$list ) {
         my %h = %$record_browse_format ;
         my $metadataPrefix = (keys %h)[0] ;

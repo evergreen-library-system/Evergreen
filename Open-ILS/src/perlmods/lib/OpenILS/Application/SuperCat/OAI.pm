@@ -1,4 +1,4 @@
-# OpenILS::WWW::OAI manages OAI2 requests and responses.
+# OpenILS::Application::SuperCat::OAI manages OAI2 requests and responses.
 #
 # Copyright (c) 2014-2017 International Institute of Social History
 #
@@ -19,7 +19,7 @@
 # Author: Lucien van Wouw <lwo@iisg.nl>
 
 
-package OpenILS::Application::OAI;
+package OpenILS::Application::SuperCat::OAI;
 use strict; use warnings;
 
 use base qw/OpenILS::Application/;
@@ -54,7 +54,7 @@ sub child_init {
     $_xslt = new XML::LibXSLT;
 
     # Load the metadataformats that are configured.
-    my $metadata_format = OpenSRF::Utils::SettingsClient->new->config_value(apps => 'open-ils.oai')->{'app_settings'}->{'metadataformat'};
+    my $metadata_format = OpenSRF::Utils::SettingsClient->new->config_value(apps => 'open-ils.supercat')->{'app_settings'}->{'oai'}->{'metadataformat'};
     if ( $metadata_format ) {
         for my $schema ( keys %$metadata_format ) {
             $logger->info('Loading schema ' . $schema) ;
@@ -98,7 +98,7 @@ sub child_init {
     }
 
     # Load the mapping of 852 holdings.
-    my $copies = OpenSRF::Utils::SettingsClient->new->config_value(apps => 'open-ils.oai')->{'app_settings'}->{'copies'} ;
+    my $copies = OpenSRF::Utils::SettingsClient->new->config_value(apps => 'open-ils.supercat')->{'app_settings'}->{'oai'}->{'copies'} ;
     if ( $copies ) {
         foreach my $subfield_code (keys %$copies) {
             my $value = $copies->{$subfield_code};
@@ -117,8 +117,8 @@ sub child_init {
     }
 
     # Set the barcode filter and status filter
-    $barcode_filter = OpenSRF::Utils::SettingsClient->new->config_value(apps => 'open-ils.oai')->{'app_settings'}->{'barcode_filter'};
-    $status_filter = OpenSRF::Utils::SettingsClient->new->config_value(apps => 'open-ils.oai')->{'app_settings'}->{'status_filter'};
+    $barcode_filter = OpenSRF::Utils::SettingsClient->new->config_value(apps => 'open-ils.supercat')->{'app_settings'}->{'oai'}->{'barcode_filter'};
+    $status_filter = OpenSRF::Utils::SettingsClient->new->config_value(apps => 'open-ils.supercat')->{'app_settings'}->{'oai'}->{'status_filter'};
 
     return 1;
 }
@@ -142,7 +142,7 @@ sub list_record_formats {
 
 __PACKAGE__->register_method(
     method    => 'list_record_formats',
-    api_name  => 'open-ils.oai.record.formats',
+    api_name  => 'open-ils.supercat.oai.record.formats',
     api_level => 1,
     argc      => 0,
     signature =>
@@ -304,7 +304,7 @@ sub oai_biblio_retrieve {
 
 __PACKAGE__->register_method(
     method    => 'oai_biblio_retrieve',
-    api_name  => 'open-ils.oai.biblio.retrieve',
+    api_name  => 'open-ils.supercat.oai.biblio.retrieve',
     api_level => 1,
     argc      => 1,
     signature =>
@@ -401,7 +401,7 @@ sub oai_authority_retrieve {
 
 __PACKAGE__->register_method(
     method    => 'oai_authority_retrieve',
-    api_name  => 'open-ils.oai.authority.retrieve',
+    api_name  => 'open-ils.supercat.oai.authority.retrieve',
     api_level => 1,
     argc      => 1,
     signature =>
@@ -460,7 +460,7 @@ sub oai_list_retrieve {
 
 __PACKAGE__->register_method(
     method    => 'oai_list_retrieve',
-    api_name  => 'open-ils.oai.list.retrieve',
+    api_name  => 'open-ils.supercat.oai.list.retrieve',
     api_level => 1,
     argc      => 1,
     signature =>

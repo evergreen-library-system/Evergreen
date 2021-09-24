@@ -6,6 +6,8 @@ use Unicode::Normalize;
 # ... and this has some handy common methods
 use OpenILS::Application::AppUtils;
 
+use OpenILS::Application::SuperCat::OAI;
+
 my $parser = new XML::LibXML;
 my $U = 'OpenILS::Application::AppUtils';
 
@@ -181,6 +183,8 @@ sub child_init {
     register_record_transforms();
 
     register_new_authorities_methods();
+
+    OpenILS::Application::SuperCat::OAI->child_init();
 
     return 1;
 }

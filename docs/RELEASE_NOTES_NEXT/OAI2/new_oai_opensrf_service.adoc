@@ -1,7 +1,8 @@
-New OAI Service
-^^^^^^^^^^^^^^^
+OAI-PMH Data Provider Support
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This module is an optional service that exposes your catalog through the [OAI2 protocol](http://www.openarchives.org/OAI/openarchivesprotocol.html).
+Evergreen can now act as an OAI-PMH data provider, exposing the catalog to
+harvesting through the [OAI2 protocol](http://www.openarchives.org/OAI/openarchivesprotocol.html).
 
 
 Entry points
@@ -74,36 +75,11 @@ This mapping can be customized and extended with static subfields:
 Default configuration
 +++++++++++++++++++++
 
-See comments in opensrf.xml (in the open-ils.oai app_settings element)
-for default configuration and customization instructions. is commented
-in the open-ils.oai app_settings element.
+See comments in opensrf.xml (in the open-ils.supercat app_settings/oai element)
+for default configuration and customization instructions.
 
 Upgrade Instructions
 ++++++++++++++++++++
-
-**Activate the service**
-
-Refer to the service in the opensrf.xml activeapps element:
-```xml
-....
-<activeapps>
-    <appname>open-ils.oai</appname>
-```
-
-**Register the service with the router**
-
-Add the service to the public router in your opensrf_core.xml
-```xml
-<config>
-    <opensrf>
-        <routers>
-            <router>
-                <name>router</name>
-                <domain>public.realm</domain>
-                <services>
-                    <service>open-ils.oai</service>
-                    ...
-```
 
 Optional: Setting the datestamp
 +++++++++++++++++++++++++++++++
