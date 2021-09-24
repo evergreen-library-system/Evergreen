@@ -61,10 +61,6 @@ CREATE TABLE search.relevance_adjustment (
 );
 CREATE UNIQUE INDEX bump_once_per_field_idx ON search.relevance_adjustment ( field, bump_type );
 
--- XXX not required in 3.0+ ?
-CREATE TYPE search.search_result AS ( id BIGINT, rel NUMERIC, record INT, total INT, checked INT, visible INT, deleted INT, excluded INT, badges TEXT, popularity NUMERIC );
-CREATE TYPE search.search_args AS ( id INT, field_class TEXT, field_name TEXT, table_alias TEXT, term TEXT, term_type TEXT );
-
 CREATE OR REPLACE FUNCTION search.facets_for_record_set(ignore_facet_classes text[], hits bigint[]) RETURNS TABLE(id integer, value text, count bigint)
 AS $f$
     SELECT id, value, count
