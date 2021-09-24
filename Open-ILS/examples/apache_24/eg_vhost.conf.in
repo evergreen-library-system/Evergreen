@@ -91,7 +91,7 @@ OSRFTranslatorConfig @sysconfdir@/opensrf_core.xml
 # Uncomment this section to enable the OAI2 provider service.
 #<Location /opac/extras/oai>
 #    SetHandler perl-script
-#    PerlHandler OpenILS::WWW::OAI
+#    PerlHandler OpenILS::WWW::SuperCat::OAI
 #    Options +ExecCGI
 #    PerlSendHeader On
 #    Require all granted

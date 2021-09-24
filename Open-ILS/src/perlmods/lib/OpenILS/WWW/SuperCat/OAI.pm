@@ -1,4 +1,4 @@
-# OpenILS::WWW::OAI manages OAI2 requests and responses.
+# OpenILS::WWW::SuperCat::OAI manages OAI2 requests and responses.
 #
 # Copyright (c) 2014-2017  International Institute of Social History
 #
@@ -19,7 +19,7 @@
 # Author: Lucien van Wouw <lwo@iisg.nl>
 
 
-package OpenILS::WWW::OAI;
+package OpenILS::WWW::SuperCat::OAI;
 use strict; use warnings;
 use Apache2::Const -compile => qw(OK REDIRECT DECLINED NOT_FOUND :log);
 use CGI;
@@ -106,7 +106,7 @@ sub handler {
     return Apache2::Const::DECLINED if (-e $apache->filename);
 
     unless (defined $oai) {
-        $logger->error('Application session variables not defined. Add \'PerlChildInitHandler OpenILS::WWW::OAI::child_init\' to the Apache virtual host configuration file.');
+        $logger->error('Application session variables not defined. Add \'PerlChildInitHandler OpenILS::WWW::SuperCat::OAI::child_init\' to the Apache virtual host configuration file.');
         child_init();
     }
 

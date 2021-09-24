@@ -24,6 +24,7 @@ use Encode;
 use Unicode::Normalize;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::WWW::SuperCat::Feed;
+use OpenILS::WWW::SuperCat::OAI;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::TagURI;
@@ -279,6 +280,9 @@ sub child_init {
             }
         }
     }
+
+    OpenILS::WWW::SuperCat::OAI::child_init();
+
     return Apache2::Const::OK;
 }
 
