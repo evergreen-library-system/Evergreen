@@ -1,7 +1,7 @@
 
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1300', :eg_version);
 
 -- NOTE: If the template ID requires changing, beware it appears in
 -- 3 places below.
