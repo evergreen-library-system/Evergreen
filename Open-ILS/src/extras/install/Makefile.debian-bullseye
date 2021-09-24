@@ -42,6 +42,7 @@ export DEBS = \
 	libexcel-writer-xlsx-perl\
 	libgd-graph3d-perl\
 	libgeo-coder-osm-perl\
+	libhttp-oai-perl\
 	liblocale-maketext-lexicon-perl\
 	liblog-log4perl-perl\
 	libmarc-charset-perl \
