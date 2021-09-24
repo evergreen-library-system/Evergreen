@@ -105,11 +105,6 @@ sub handler {
     my $apache = shift;
     return Apache2::Const::DECLINED if (-e $apache->filename);
 
-    unless (defined $oai) {
-        $logger->error('Application session variables not defined. Add \'PerlChildInitHandler OpenILS::WWW::SuperCat::OAI::child_init\' to the Apache virtual host configuration file.');
-        child_init();
-    }
-
     my $cgi = new CGI;
     my $record_class;
     if ( $cgi->path_info =~ /\/(authority|biblio)/ ) {
