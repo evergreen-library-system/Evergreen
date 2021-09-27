@@ -1,15 +1,7 @@
 BEGIN;
 
-UPDATE config.org_unit_setting_type
-    SET description = oils_i18n_gettext('ui.circ.show_billing_tab_on_bills',
-        'If enabled and a patron has outstanding bills and the alert page is not required, show the billing tab by default, instead of the checkout tab, when a patron is loaded',
-        'coust', 'description')
-    WHERE name = 'ui.circ.show_billing_tab_on_bills';
-UPDATE config.org_unit_setting_type    
-    SET description = oils_i18n_gettext('ui.circ.show_billing_tab_on_bills',
-        'If enabled and a patron has outstanding bills and the alert page is not required, show the billing tab by default, instead of the checkout tab, when a patron is loaded',
-        'coust', 'description')
-    WHERE name = 'ui.circ.show_billing_tab_on_bills';
+-- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+
 UPDATE config.org_unit_setting_type
     SET description = oils_i18n_gettext(
         'ui.circ.items_out.longoverdue',
@@ -24,6 +16,7 @@ UPDATE config.org_unit_setting_type
         'description'
     )
     WHERE name = 'ui.circ.items_out.longoverdue';
+
 UPDATE config.org_unit_setting_type
     set description = oils_i18n_gettext(
         'ui.circ.items_out.lost',
@@ -38,6 +31,7 @@ UPDATE config.org_unit_setting_type
         'description'
     )
     WHERE name = 'ui.circ.items_out.lost';
+
 UPDATE config.org_unit_setting_type
     set description = oils_i18n_gettext(
         'ui.circ.items_out.claimsreturned',
