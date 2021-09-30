@@ -138,7 +138,7 @@
 
       <eg-grid-toolbar-action *ngIf="!showRecentlyCanceled"
         i18-group group="Hold" i18n-label label="Cancel Hold"
-        (onClick)="showUncancelDialog($event)"></eg-grid-toolbar-action>
+        (onClick)="showCancelDialog($event)"></eg-grid-toolbar-action>
 
       <eg-grid-toolbar-action *ngIf="showRecentlyCanceled"
         i18n-label label="Un-Cancel Hold(s)" group="Hold" i18n-group
