@@ -770,6 +770,11 @@ export class EditComponent implements OnInit, AfterViewInit {
         this.strings.interpolate('circ.patron.edit.default_addr_type')
         .then(msg => addr.address_type(msg));
 
+        this.serverStore.getItem('ui.patron.default_ident_type')
+        .then(identType => {
+            if (identType) { patron.ident_type(Number(identType)); }
+        })
+
         this.patron = patron;
         this.addWaiver();
     }
