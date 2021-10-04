@@ -47,4 +47,4 @@ UPDATE config.org_unit_setting_type
     )
     WHERE name = 'ui.circ.items_out.claimsreturned';
 
-END;
+COMMIT;
