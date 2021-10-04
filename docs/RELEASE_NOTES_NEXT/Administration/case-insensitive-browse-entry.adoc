@@ -1,8 +1,0 @@
-== Case Insensitve Browse Entries ==
-
-It is now possible for a system administrator to select whether
-a particular browse entry field's case should be considered when
-determining uniqueness.  A new "Browse Folding is Case-Insensitive"
-column has been added to the Administration -> Server Administration
--> MARC Search/Facet Fields interface.  Note that a bib record reingest
-will be required for changes to take effect.

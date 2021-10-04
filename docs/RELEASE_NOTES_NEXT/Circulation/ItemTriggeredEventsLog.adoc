@@ -1,5 +1,0 @@
-New Item Triggered Events Log
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-A reimplementation of the Item Triggered Events Log interface, building
-on the Patron Triggered Events Log Angular reimplemenation.

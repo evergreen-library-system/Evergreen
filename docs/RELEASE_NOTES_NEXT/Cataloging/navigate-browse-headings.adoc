@@ -1,7 +1,0 @@
-Browse Heading Navigation
-^^^^^^^^^^^^^^^^^^^^^^^^^
-In the Angular staff catalog, when viewing the list of bib records linked
-to a heading, it's now possible to navigate to the previous or next heading
-directly on the bib list page without having to return to the original
-browse search.
-

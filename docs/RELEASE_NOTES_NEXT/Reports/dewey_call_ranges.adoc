@@ -1,7 +1,0 @@
-Add Dewey Call Number Blocks and Ranges to Reports
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-A new view is added to the reporter with links from Call Number that
-will allow users to display or filter on the Dewey 10's or 100's block
-or range that a call number falls within. They can be accessed by
-following the "Dewey Classification" link from Call Number.
-
