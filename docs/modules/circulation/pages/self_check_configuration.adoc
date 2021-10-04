@@ -45,6 +45,13 @@ Several library settings control the behavior of the self check:
   registered Evergreen workstation, or the staff member must register a new
   workstation when they login. The workstation parameter ensures that check outs
   are recorded as occurring at the correct library.
+* *Auto-Login with URL*: You can add the username and password of the account created
+  in the URL so it auto-logs in.  Format should be: domain.biblio.org/eg/circ/selfcheck/main?ws=[workstation]&username=[username]$password=[password] 
+  (fill in [...] with information).
+* *Editing Receipts*: These can be found in Administration > Local Administration > Notifications /
+   Action Triggers.
+* *Customizing Interface*: The files are found in Open-ILS\js\ui\default\circ\selfcheck\selfcheck.js and 
+   Open-ILS\web\css\skin\default\selfcheck.css.
 
 == Using the self check ==
 
