@@ -67,6 +67,7 @@ function render_adv_copy_locations_new(locations) {
     var sel = dojo.byId('adv_copy_location_selector_new');
     if(sel)
     {
+    dojo.empty(sel);
     var cgi = new openils.CGI();
 
     // collect any location values from the URL to re-populate the list
