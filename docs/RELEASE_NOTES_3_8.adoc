@@ -659,6 +659,7 @@ Evergreen:
 * Stephen Wills
 * Terran McCanna
 * Tiffany Little
+* Verbio Group
 
 We also thank the following organizations whose employees contributed
 patches:
