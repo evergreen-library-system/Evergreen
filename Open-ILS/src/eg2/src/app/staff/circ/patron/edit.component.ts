@@ -341,7 +341,8 @@ export class EditComponent implements OnInit, AfterViewInit {
 
         })
         .then(reqr => this.stageUserRequestor = reqr)
-        .then(_ => this.copyStageData());
+        .then(_ => this.copyStageData())
+        .then(_ => this.maintainJuvFlag());
     }
 
     copyStageData() {
