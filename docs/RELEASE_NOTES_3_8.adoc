@@ -55,7 +55,7 @@ CREATE TABLE auditor.backup_usr_alert_msg AS
 
 ==== Updating Reports on Patron Notes ====
 
-The underlying data structure for patron notes has  changed with all notes
+The underlying data structure for patron notes has changed with all notes
 living in the `actor.usr_message` table, so report writers will need to change
 the following paths in existing reports:
 
