@@ -467,10 +467,12 @@
     {args: {template: fieldCheckbox, field: 'master_account'}}">
   </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
-    {args: {template: fieldInput, field: 'claims_returned_count', type: 'number'}}">
+    {args: {template: fieldInput, field: 'claims_returned_count', 
+      type: 'number', disabled: !hasPerm.UPDATE_PATRON_CLAIM_RETURN_COUNT}}">
   </ng-container>
   <ng-container *ngTemplateOutlet="fieldRow; context: 
-    {args: {template: fieldInput, field: 'claims_never_checked_out_count', type: 'number'}}">
+    {args: {template: fieldInput, field: 'claims_never_checked_out_count', 
+      type: 'number', disabled: !hasPerm.UPDATE_PATRON_CLAIM_NEVER_CHECKED_OUT_COUNT}}">
   </ng-container>
 
   <div class="alert alert-success pt-2 pb-2 mt-3 mb-3 d-flex">
