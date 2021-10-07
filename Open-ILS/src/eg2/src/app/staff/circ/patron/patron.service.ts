@@ -95,7 +95,9 @@ export class PatronContextService {
         .then(_ => this.addRecentPatron());
     }
 
-    addRecentPatron(): Promise<any> {
+    addRecentPatron(patronId?: number): Promise<any> {
+
+        if (!patronId) { patronId = this.summary.id; }
 
         return this.serverStore.getItem('ui.staff.max_recent_patrons')
         .then(num => {
@@ -104,12 +106,12 @@ export class PatronContextService {
             const patrons: number[] =
                 this.store.getLoginSessionItem('eg.circ.recent_patrons') || [];
 
-            patrons.splice(0, 0, this.summary.id);  // put this user at front
+            patrons.splice(0, 0, patronId);  // put this user at front
             patrons.splice(this.maxRecentPatrons, 1); // remove excess
 
             // remove any other occurrences of this user, which may have been
             // added before the most recent user.
-            const idx = patrons.indexOf(this.summary.id, 1);
+            const idx = patrons.indexOf(patronId, 1);
             if (idx > 0) { patrons.splice(idx, 1); }
 
             this.store.setLoginSessionItem('eg.circ.recent_patrons', patrons);

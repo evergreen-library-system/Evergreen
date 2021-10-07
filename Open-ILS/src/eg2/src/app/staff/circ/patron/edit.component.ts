@@ -1436,6 +1436,8 @@ export class EditComponent implements OnInit, AfterViewInit {
         ).toPromise().then(result => {
 
             if (result && result.classname) {
+                this.context.addRecentPatron(result.id());
+
                 // Successful result returns the patron IdlObject.
                 return this.modifiedPatron = result;
             }
