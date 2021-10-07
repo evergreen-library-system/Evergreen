@@ -126,3 +126,4 @@ driver is the only one available try one of the alternate print strategies
 instead.
 ====================================
 
+include::latency.adoc[]
