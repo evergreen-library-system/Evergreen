@@ -92,7 +92,7 @@ export class RouteDialogComponent extends DialogComponent {
             });
         }
 
-        if (this.checkin.params.auto_print_hold_transits
+        if (this.checkin.params.auto_print_holds_transits
             || this.circ.suppressCheckinPopups) {
             // Print and exit.
             return this.print().then(_ => true); // exit

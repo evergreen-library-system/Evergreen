@@ -170,7 +170,7 @@ export interface CheckinParams {
     copy_barcode?: string;
     claims_never_checked_out?: boolean;
     void_overdues?: boolean;
-    auto_print_hold_transits?: boolean;
+    auto_print_holds_transits?: boolean;
     backdate?: string;
     capture?: string;
     next_copy_status?: number[];
@@ -379,6 +379,11 @@ export class CircService {
         const apiParams = Object.assign({}, params); // clone
         const remove = Object.keys(apiParams).filter(k => k.match(/^_/));
         remove.forEach(p => delete apiParams[p]);
+
+        // This modifier is not sent to the server.
+        // Should be _-prefixed, but we already have a workstation setting,
+        // etc. for this one.  Just manually remove it from the API params.
+        delete apiParams['auto_print_holds_transits'];
 
         return apiParams;
     }
