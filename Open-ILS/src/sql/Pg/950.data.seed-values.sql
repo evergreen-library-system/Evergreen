@@ -3603,7 +3603,7 @@ INSERT into config.org_unit_setting_type
         'Soft stalling interval',
         'coust', 'label'),
     oils_i18n_gettext('circ.hold_stalling.soft',
-        $$How long to wait before allowing opportunistic capture of holds with a pickup library other than the context item's circulating library$$, -- ' vim
+        'How long to wait before allowing opportunistic capture of holds with a pickup library other than the context item''s circulating library',
         'coust', 'description'),
     'interval', null)
 
