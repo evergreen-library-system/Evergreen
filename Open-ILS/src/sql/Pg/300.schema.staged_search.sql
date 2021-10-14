@@ -1472,13 +1472,14 @@ $f$ LANGUAGE PLPGSQL ROWS 10;
 
 -- SymSpell implementation follows
 
+-- We don't pass this function arrays with nulls, so we save 5% not testing for that
 CREATE OR REPLACE FUNCTION evergreen.text_array_merge_unique (
     TEXT[], TEXT[]
 ) RETURNS TEXT[] AS $F$
     SELECT NULLIF(ARRAY(
-        SELECT * FROM UNNEST($1) x WHERE x IS NOT NULL
+        SELECT * FROM UNNEST($1) x
             UNION
-        SELECT * FROM UNNEST($2) y WHERE y IS NOT NULL
+        SELECT * FROM UNNEST($2) y
     ),'{}');
 $F$ LANGUAGE SQL;
 
@@ -1871,6 +1872,9 @@ BEGIN
     END IF;
 
     FOREACH del_key IN ARRAY key_list LOOP
+        -- skip empty keys
+        CONTINUE WHEN del_key IS NULL OR CHARACTER_LENGTH(del_key) = 0;
+
         entry.prefix_key := del_key;
 
         entry.keyword_count := 0;
@@ -1908,6 +1912,11 @@ BEGIN
     END LOOP;
 
     FOR del_key IN SELECT x FROM UNNEST(search.symspell_generate_edits(key, 1, maxED)) x LOOP
+
+        -- skip empty keys
+        CONTINUE WHEN del_key IS NULL OR CHARACTER_LENGTH(del_key) = 0;
+        -- skip suggestions that are already too long for the prefix key
+        CONTINUE WHEN CHARACTER_LENGTH(del_key) <= (prefix_length - maxED) AND CHARACTER_LENGTH(raw_input) > prefix_length;
 
         entry.keyword_suggestions := '{}';
         entry.title_suggestions := '{}';
@@ -1968,6 +1977,8 @@ BEGIN
         END IF;
 
         FOREACH word IN ARRAY word_list LOOP
+            -- Skip words that have runs of 5 or more digits (I'm looking at you, ISxNs)
+            CONTINUE WHEN CHARACTER_LENGTH(word) > 4 AND word ~ '\d{5,}';
             RETURN QUERY SELECT * FROM search.symspell_build_raw_entry(word, source_class, FALSE, prefix_length, maxED);
         END LOOP;
     END IF;
@@ -1976,6 +1987,9 @@ BEGIN
         input := evergreen.lowercase(old_input);
 
         FOR word IN SELECT x FROM search.symspell_parse_words_distinct(input) x LOOP
+            -- similarly skip words that have 5 or more digits here to
+            -- avoid adding erroneous prefix deletion entries to the dictionary
+            CONTINUE WHEN CHARACTER_LENGTH(word) > 4 AND word ~ '\d{5,}';
             entry.prefix_key := word;
 
             entry.keyword_count := 0;
@@ -2023,9 +2037,9 @@ BEGIN
     FOR new_entry IN EXECUTE $q$
         SELECT  count,
                 prefix_key,
-                evergreen.text_array_merge_unique(s,'{}') suggestions
+                s AS suggestions
           FROM  (SELECT prefix_key,
-                        ARRAY_AGG($q$ || source_class || $q$_suggestions[1]) s,
+                        ARRAY_AGG(DISTINCT $q$ || source_class || $q$_suggestions[1]) s,
                         SUM($q$ || source_class || $q$_count) count
                   FROM  search.symspell_build_entries($1, $2, $3, $4)
                   GROUP BY 1) x
