@@ -27,19 +27,24 @@ while (my $data = <>) {
 
     for my $raw (uniq @words) {
         my $key = $raw;
+        my $rlen = length($raw);
+        next if ($raw =~ /\d{5,}/ and $rlen > 4);
+
         $dict{$key} //= [0,[]];
         $dict{$key}[0]++;
 
         if ($dict{$key}[0] == 1) { # first time we've seen it, need to generate prefix keys
             push @{$dict{$key}[1]}, $raw;
 
-            if (length($raw) > $plen) {
+            if ($rlen > $plen) {
                 $key = substr($raw,0,$plen);
                 $dict{$key} //= [0,[]];
                 push @{$dict{$key}[1]}, $raw;
             }
 
             for my $edit (symspell_generate_edits($key, 1)) {
+                next unless length($edit);
+                next if (length($edit) <= ($plen - $maxed) and $rlen > $plen);
                 $dict{$edit} //= [0,[]];
                 push @{$dict{$edit}[1]}, $raw;
             }
