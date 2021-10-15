@@ -29,7 +29,6 @@
 * My Account URL
 * Maximum number of spelling suggestions that may be offered
 * Stripe ISO 4217 currency code
-* Use an all lowercase version of a Stripe-supported ISO 4217 currency code.  Defaults to "usd"
 * Use Item Price or Cost as Primary Item Value
 * Use Item Price or Cost as Backup Item Value
 * Staff Catalog Search Filters
@@ -368,6 +367,10 @@ This allows staff to view the pull list of any library where they have
 VIEW_HOLDS permissions, rather than having to log in to a workstation
 at that library.
 
+===== Angular Holds Pull List =====
+
+The holds pull list now uses Angular and has an address of `/eg2/en-US/staff/circ/holds/pull-list`.
+
 ===== New Item Triggered Events Log =====
 
 A reimplementation of the Item Triggered Events Log interface, building
@@ -572,6 +575,15 @@ which will also benefit library staff reports generally.
 To add the view, a system administrator will need to (re-)run
 the example.reporter-extension.sql script, which will create 
 the new view in the database.
+
+===== Hold/Copy Ratio Report Source Changes =====
+
+This standardizes how the existing Hold/Copy Ratio reports sources count holdable copies; notably, metarecord copies are no longer counted in these report sources and all sources now use action.hold_copy_map. 
+
+Any reports using these sources will need to be rewritten.
+
+A new source that breaks out counts by patron home library was also added, named Hold/Copy Ratio per Bib and Home Library.
+
 
 ===== Add Dewey Call Number Blocks and Ranges to Reports =====
 
