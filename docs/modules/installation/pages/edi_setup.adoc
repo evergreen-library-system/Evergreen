@@ -108,54 +108,11 @@ necessary response times from your vendors.
 
 === Configuring Providers ===
 
-Look in Administration -> Acquisitions Administration ->  Providers
+Please see the xref:admin:acquisitions_admin.adoc#acq_providers[Providers] documentation for information about setting up Providers.
 
-[options="header"]
-|======================================================================================
-|Column              |Description/Notes
-|Provider Name       |A unique name to identify the provider
-|Code	             |A unique code to identify the provider
-|Owner	             |The org unit who will "own" the provider.
-|Currency	     |The currency format the provider accepts
-|Active	             |Whether or not the Provider is "active" for use
-|Default Claim Policy|??
-|EDI Default	     |The default "EDI Account" to use (see EDI Accounts Configuration)
-|Email	             |The email address for the provider
-|Fax Phone	     |A fax number for the provider
-|Holdings Tag	     |The holdings tag to be utilized (usually 852, for Evergreen)
-|Phone	             |A phone number for the provider
-|Prepayment Required |Whether or not prepayment is required
-|SAN	             |The vendor provided, org unit specific SAN code
-|URL	             |The vendor website
-|======================================================================================
+=== Configuring EDI Accounts and SAN codes ===
 
-=== Configuring EDI Accounts ===
-
-Look in Administration -> Acquisitions Administration ->  EDI Accounts
-
-[options="header"]
-|===============================================================================================================
-|Column	              |Description/Notes
-|Label	              |A unique name to identify the provider
-|Host	              |FTP/SFTP/SSH hostname - vendor assigned
-|Username	      |FTP/SFTP/SSH username - vendor assigned
-|Password	      |FTP/SFTP/SSH password - vendor assigned
-|Account	      |Vendor assigned account number associated with your organization
-|Owner	              |The organizational unit who owns the EDI account
-|Last Activity	      |The date of last activity for the account
-|Provider	      |This is a link to one of the "codes" in the "Providers" interface
-|Path                 |The path on the vendor's server where Evergreen will send it's outgoing .epo files
-|Incoming Directory   |The path on the vendor's server where "incoming" .epo files are stored
-|Vendor Account Number|Vendor assigned account number.
-|Vendor Assigned Code |Usually a sub-account designation. Can be used with or without the Vendor Account Number.
-|===============================================================================================================
-
-=== Configuring Organizational Unit SAN code ===
-
-Look in Administration -> Server Administration -> Organizational Units
-
-This interface allows a library to configure their SAN, alongside 
-their address, phone, etc.
+Please see the xref:admin:acquisitions_admin.adoc#acq_edi[EDI] documentation for information about setting up EDI Accounts and SAN codes.
 
 == Troubleshooting ==
 
