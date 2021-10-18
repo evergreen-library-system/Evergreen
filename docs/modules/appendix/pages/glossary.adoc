@@ -110,8 +110,8 @@ ILL (Inter-Library Loan)::
 [[IIA]]Import item attributes::
   Used to map the data in your holdings tag to fields in the item record during a MARC import.
 [[index]]Index::
-  noun. A list of data, such as group of files or database entries. It is typically saved in a plain text format that can be quickly scanned by a search algorithm. This significantly speeds up searching and sorting operations on data referenced by the index. Indexes often include information about each item in the list, such as metadata or keywords, that allows the data to be searched via the index instead of reading through each file individually. Definition from https://techterms.com/definition/index[The Tech Terms Dictionary]
-  verb. to create an index.
+  verb. to create an index.  
+  noun. A list of data, such as group of files or database entries. It is typically saved in a plain text format that can be quickly scanned by a search algorithm. This significantly speeds up searching and sorting operations on data referenced by the index. Indexes often include information about each item in the list, such as metadata or keywords, that allows the data to be searched via the index instead of reading through each file individually. Definition from https://techterms.com/definition/index[The Tech Terms Dictionary]  
 Ingest::
   to create an index
 Insufficient quality fall-through profile::
