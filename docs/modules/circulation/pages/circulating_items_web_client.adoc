@@ -230,6 +230,47 @@ image::media/edit_due_date_action_web_client.png[]
 [NOTE]
 Editing a due date is not included in the renewal count.
 
+[[override_actions_items_out]]
+=== Overriding Errors in Items Out ===
+
+As of 3.6, there is new work which streamlines handling of overridable events encountered in the Patron Items Out interface of the staff client. The main user-visible part of this work is a new Action Override modal which is presented to the staff user when an overridable action is encountered.
+
+The primary target of the work is for actions from the Items Out part of the Patron interface, but due to code sharing the Checkout interface benefits as well.
+
+There are two kinds of overrides addressed in this work, both in the Patron interface:
+
+* **Action Override** - this is when a staff user attempts to make an action (i.e. Renew) succeed after the system had alerted the user to exceptions (i.e. Patron Max Fines).  
+* **Permission Override** - this is when a staff user attempts an action but encounters a permission-denied alert, and thus needs temporary credentials (i.e. a supervisor’s login) to re-attempt the action.
+
+In the case of both overrides, this work attempts to minimize the number of times a staff user has to click through an error. Specifically, if a staff member overrides an exception, they will in most cases be able to instruct Evergreen to “remember” this override for as long as the staff member is working on a specific patron record. 
+
+Similarly, if a supervisor enters a permissions override for a specific permission-denied alert, Evergreen will “remember” this override for as long as the staff member is working on a specific patron record. 
+
+Both action overrides and permission overrides will be “forgotten” once the patron record is closed and/or the staff user navigates away from that patron record.
+
+The Override modal has been changed to include new actions as well as a new checkbox for “Automatically override for subsequent items?” 
+
+There are three possible actions in the new Override modal:
+
+* **Force Action** - this will attempt to override the exception(s). If the box next to “Automatically override for subsequent items?” is checked, Evergreen will remember this and auto-override those specific exception(s) for the rest of the time the staff user is working in this patron record. 
+* **Skip** - this button tells Evergreen to ignore the current item (i.e., skip the renewal action), but if the box next to “Automatically override for subsequent items?” is checked, Evergreen will still remember future overrides on this exception.
+* **Cancel** - this will close the modal and abort the action. It will not roll back any actions (i.e., if two items are renewed and the modal shows on the third item, clicking cancel will not roll back the renewals that have already completed).
+
+An example of the new Override modal is shown below. In this example, the `PATRON_EXCEEDS_FINES` exception has been set to automatically override for subsequent items. This means that the next time Evergreen encounters this exception in this specific patron session, Evergreen will automatically attempt to override it. The `MAX_RENEWALS_REACHED` exception has NOT been set to automatically override for subsequent items. This means that the next time Evergreen encounters this exception in this specific patron session, it will ask again about an override.
+
+image::media/new_override_modal.png[New Override Modal]
+
+In stock Evergreen, the following states will present an exception (i.e. ask for an override) on checkout and/or renew:
+
+* Shelving Locations with _Can Circulate?_ set to false
+* Item Statuses of Bindery, Claimed Returned, Long Overdue, Lost, Lost and Paid, Missing, On Holds Shelf [for another patron]
+* Item-level data: Certain statuses (above), certain shelving locations (above), deposit = true, reference = true
+
+Certain events are not able to be batch-overridden, such as when an item with an existing open circulation is presented at checkout. Other events are not able to be overridden at all, including `ACTOR_USER_NOT_FOUND` and `ASSET_COPY_NOT_FOUND`.
+
+Stock penalty codes (`STAFF_C`, `STAFF_CH`, `STAFF_CHR`, `STAFF_H`, `STAFF_HR`, `STAFF_R`) that can be encountered as events are auto-overrideable by default, and may present an Action Override modal.
+
+
 == Marking Items Lost and Claimed Returned ==
 
 === Lost Items ===
