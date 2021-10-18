@@ -129,6 +129,18 @@ that is not in the default patron record.
 Date_ button will work, since the permission group determines the expiration date.
 ============================================================================
 
+=== Photo URL field ===
+
+As of 3.8, a staff user with the `UPDATE_USER_PHOTO_URL` permission can add or edit a URL that will pull in a patron photo image from an external server. Only https links are supported in this field.
+
+Location of Photo URL field in the Patron Editor:
+
+image::media/patron_photo_url.png[Patron URL field]
+
+Enter the URL in that field and click **Save** at the top of the Patron Editor. The image indicated by the URL will display in the Patron Sidebar:
+
+image::media/patron_photo_sidebar.png[Patron Photo in Sidebar]
+
 === Email field ===
 
 indexterm:[patrons,email addresses]
@@ -299,10 +311,10 @@ display the current and past barcodes associated with this account.
 
 image::media/circulation_patron_records_14.JPG[circulation_patron_records 14]
 
-Check the box(es) for all barcodes that should be ``active'' for the patron.  An
-``active'' barcode may be used for circulation transactions.  A patron may have
-more than one ``active'' barcode.  Only one barcode may be designated
-``primary.'' The ``primary'' barcode displays in the patron’s summary
+Check the box(es) for all barcodes that should be active for the patron.  An
+active barcode may be used for circulation transactions.  A patron may have
+more than one active barcode.  Only one barcode may be designated
+primary. The primary barcode displays in the patron’s summary
 information in the _Library Card_ field. 
 
 Once you have modified the patron barcode(s), _Save_ the patron record.  If you
@@ -360,7 +372,7 @@ To unbar a patron, uncheck the Barred checkbox.
 indexterm:[patrons, barring]
 
 *Barred*: Stops patrons from using their library cards; alerts the staff that
-the patron is banned/barred from the library. The ``check-out'' functionality is
+the patron is banned/barred from the library. The check-out functionality is
 disabled for barred patrons (NO option to override – the checkout window is
 unusable and the bar must be removed from the account before the patron is able
 to checkout items).  These patrons may still log in to the OPAC to view their
@@ -379,172 +391,177 @@ A notice appears when a staff person tries to checkout an item to blocked
 patrons, but staff may be given permissions to override blocks.
 
 
-== Staff-Generated Messages ==
-
+== Consolidated Patron Notes, Alerts, Blocks, and Messages ==
 [[staff_generated_messages]]
-indexterm:[patrons, messages]
+indexterm:[patrons, messages, notes, blocks, alerts]
 
-There are several types of messages available for staff to leave notes on patron records.
+Evergreen provides a variety of options for adding notifications to patron accounts. Notes, Alerts, Blocks, and Messages can all be applied to a patron account and managed in the Notes tab that is present in every account. It is also possible to add a custom Standing Penalty to a patron's account in the Notes tab.
 
-*Patron Notes*: These notes are added via _Other_ -> _Notes_ in the patron record. These notes can be viewable by staff only or shared with the patron. Staff initials can be required. (See the section <<circulation_patron_notes,Patron Notes>> for more.)
+The visibility and functionality of each option varies and can depend on the configuration of the Standing Penalty type.
 
-*Patron Alerts*: This type of alert is added via _Edit_ button in the patron record. There is currently no way to require staff initials for this type of alert. (See the section <<circulation_patron_alerts,Patron Alerts>> for more.)
+=== Managing Notes, Alerts, and Blocks ===
+[[managing_patron_notes]]
 
-*Staff-Generated Penalties/Messages*: These messages are added via the _Messages_ button in the patron record. They can be a note, alert or block. Staff initials can be required. (See the section <<staff_generated_penalties_web_client,Staff-Generated Penalties/Messages>> for more.)
+As with other patron functions, Notes, Alerts, and Blocks are controlled by the existing `UPDATE_USER` and `VIEW_USER` permissions. A staff member who has permissions to view or edit a user will be able to view and edit
+notes for that user.
 
-== Patron Alerts ==
+In the _Notes_ tab of a patron account, the top portion of the screen displays active notes, alerts, and blocks while the bottom portion of the screen will display those that have been archived. The archived notes, alerts, and blocks from the last year display by default. The calendar pickers can be used to view older archived notes, alerts, or blocks.
 
-[[circulation_patron_alerts]]
-indexterm:[patrons, Alerts]
-    
-When an account has an alert on it, a Stop sign is displayed when the record is
-retrieved.
+image::media/notes_tab_full.png[Notes Tab]
 
-image::media/circulation_patron_records-18_web_client.png[circulation_patron_records 18]
+New notes, alerts, and blocks can be added by clicking the *Create Note* button. This process and the functionality of each type of notification are further detailed in this documentation. Library staff can Edit, Remove, and Archive notes, alerts, and blocks by selecting them from the list and then going to the Actions menu (you can also right-click on a selection to view the Actions menu).
 
-Navigating to an area of the patron record using the navigation buttons at the
-top of the record (for example, Edit or Bills) will clear the message from view.
+* _Edit Note_ - allows staff to modify the original note, alert, or block
+** Patron visible notes, alerts, and blocks that have been read by the patron cannot be edited by staff.
+** When a note, alert, or block is edited, the note will retain the original context org unit instead of the current workstation library.
+* _Remove Note_ - will permanently delete the note, alert, or block. There will not be a record of it on the patron account once it has been removed.
+** Patron visible notes, alerts, and blocks that have been read by the patron cannot be deleted by staff.
+* _Archive Note_ - will move the note, alert, or block to the Archived Notes section of the screen.
+** Archiving a block will remove the block from the patron account.
+** Once archived, notes, alerts, and blocks cannot be deleted from the _Notes_ tab. Archived patron visible notes will continue to display in the patron's OPAC account unless they are deleted from the _Other -> Message Center_ interface.
 
-If you wish to view these alerts after they are cleared from view, they may be
-retrieved.  Use the Other menu to select _Display Alert_ and _Messages_.
+image::media/actions_menu.png[Notes Actions Menu]
 
-image::media/circulation_patron_records-19_web_client.png[circulation_patron_records 19]
+=== Notes ===
+[[patron_notes]]
 
-There are two types of Patron Alerts:
+Notes can be added to patron accounts. Notes can be visible in the patron OPAC account or they can be visible only to library staff.
 
-*System-generated alerts*: Once the cause is resolved (e.g. patron's account has
-been renewed), the message will disappear automatically.
+==== Note Display ====
 
-*Staff-generated alerts*: Must be added and removed manually. 
+When a note is present on a patron account, staff will see a counter on the tab ribbon that indicates how many un-archived notes, alerts, and blocks are on the account that are visible at the workstation at which the staff member is logged in. To view the note, click on the _Notes_ tab.
 
-To add an alert to a patron account, retrieve the patron record as described 
-in the section <<searching_patrons,Searching Patrons>>. 
+image::media/notes_counter.png[Notes Counter]
 
-Open the patron record in edit mode as described in the section 
-<<updating_patron_information,Updating Patron Information>>.
+The Notes tab contains a list of all of the notes, alerts, and blocks present on a patron’s account. The top portion of the screen displays active notes, alerts, and blocks, while the bottom portion of the screen will display those that have been archived within the past year (by default). Notes only appear in the _Notes_ tab, whereas Alerts and Messages can appear elsewhere.
 
-Enter the alert text in the Alert Message field.
+==== Create a Note ====
 
-image::media/circulation_patron_records-20.png[circulation_patron_records 20]
+To create a new Note:
 
-_Save_ the record. The screen will refresh and the alert will display.
+. Go to the _Notes_ tab in the patron account and click *Create Note*.
+. A modal will appear where you can create a new Note. Required fields are highlighted in yellow.
+. Select _Note_ at the top of the screen.
+. Check the box next to _Patron Visible_ for a note that will display in the patron’s OPAC account. Leave it unchecked to create a note that is staff visible only.
+. The _Depth_ drop down menu controls the visibility of the note. Values correspond to OPAC labels, and by default they are This Branch, Local Library System, and Everywhere.
+.. By default, the Location will be set to the library the staff member’s workstation is registered to. The note will be visible to the workstation library, as well as all Org Units that are ancestors and descendants in the Org Unit hierarchy.
+. Enter a title or subject for the note in the _Title…_ field. The title field is required.
+. Enter the main content of the note in the _Note Text…_ field.
+. Enter your initials if your library requires initials when creating notes on patron accounts.
+. Click *OK* to create the note.
 
-To remove the alert, retrieve the patron record as described in the section
-<<searching_patrons,Searching Patrons>>. 
+image::media/note_modal.png[Note Modal]
 
-Open the patron record in edit mode as described in the section 
-<<updating_patron_information,Updating Patron Information>>.
+==== Messages and Message Center ====
+[[patron_messages]]
 
-Delete the alert text in the _Alert Message_ field. 
+When a patron visible Note is created on an account, Evergreen automatically creates a Message that then displays in the patron’s OPAC account. The original Note can be viewed in the Notes tab. The Message can be viewed in the staff interface under _Other -> Message Center_.
 
-_Save_ the record.  
+The Message Center provides an interface for staff to view all patron visible notes that have been added to a patron account. Staff can double click on a message to view the full title and content of the message, as well as the date and time the message was created and the date and time that the message was read. Staff can also see if a patron has deleted the message from their OPAC account in the _Deleted?_ column.
 
-The screen will refresh and the indicators for the alert will be removed from 
-the account. 
+NOTE: Deleting a message from this interface will remove it from the patron's view. If the message is linked to a note in the Notes tab, the note will continue to appear in the Notes tab.
 
-== Patron Notes ==
+NOTE: Deleting a patron visible note from the Notes tab will also remove the message from the patron's OPAC account. If the message is linked to a note in the Notes tab, the note will continue to appear in the Notes tab.
 
-[[circulation_patron_notes]]
-indexterm:[patrons, Notes]
+==== Viewing Messages in the OPAC ====
 
-Notes are strictly communicative and may be made visible to the patron via their
-account on the OPAC.  In the OPAC, these notes display on the account summary
-screen in the OPAC.
+Patrons will see a tab for Messages in their OPAC account, as well as a notification of Unread Messages in the account summary.
 
-image::media/circulation_patron_records-23_web_client.png[circulation_patron_records 23]
+Unread messages display in bold font. Click on the subject of the message to view the full message.
 
-To insert or remove a note, retrieve the patron record as described in the
-section  <<searching_patrons,Searching Patrons>>. 
+image::media/myaccount_boopac.png[Messages in My Account]
 
-Open the patron record in edit mode as described in the section
-<<updating_patron_information,Updating Patron Information>>.
+=== Alerts ===
+[[patron_alerts]]
 
-Use the Other menu to navigate to _Notes_.
+Alerts can be applied to patron accounts to notify library staff when the patron account is retrieved. Alerts can be visible in the patron OPAC account or they can be visible only to library staff. For versions 3.7 and prior, Alert Messages are only visible to staff and are created and edited from the Patron Edit interface.
 
-image::media/circulation_patron_records-24_web_client.png[circulation_patron_records 24]
+==== Alerts Display ====
 
-Select the _Add New Note_ button. A _Create a new note_ window displays.  
+When an alert is present on a patron account, a Stop sign and the alert text is displayed when the patron account is viewed. The alert title also displays in the patron account summary on the left hand side of the screen and there is an indicator in the patron summary that indicates how many un-archived notes, alerts, and blocks are on the account that are visible at the workstation at which the staff member is logged in. Alerts can also be displayed by going to _Other -> Display Alerts_.
 
-[TIP] 
-================================================ 
-Your system administrator can add a box in the _Add Note_ window for staff initials and
-require those initials to be entered.  They can do so using the "Require staff initials..."
-settings in the Library Settings Editor.
-================================================ 
+image::media/stopsign_alert.png[Alert Display]
 
-Enter note information. 
+==== Create an Alert ====
 
-Select the check box for _Patron Visible_ to display the note in the OPAC. 
+To create a new Alert:
 
-image::media/circulation_patron_records-25_web_client.png[circulation_patron_records 25]
+. Go to the _Notes_ tab in the patron account and click *Create Note*.
+. A modal will appear where you can create a new Alert. Required fields are highlighted in yellow.
+. Select _Alert_ at the top of the screen.
+. The _Depth_ drop down menu controls the visibility of the note. Values correspond to OPAC labels, and by default they are This Branch, Local Library System, and Everywhere.
+.. By default, the Location will be set to the library the staff member’s workstation is registered to. The note will be visible to the workstation library, as well as all Org Units that are ancestors and descendants in the Org Unit hierarchy.
+. Enter a title or subject for the alert in the _Title…_ field. The Title field is required.
+. Enter the main content of the alert te in the _Note Text…_ field.
+. Enter your initials if your library requires initials when creating alerts on patron accounts.
+. Click *OK* to create the alert.
 
-Select _OK_ to save the note to the patron account.  
+image::media/alert_note.png[Alert Modal]
 
-To delete a note, go to _Other -> Notes_ and use the _Delete_ button
-on the right of each note.
+=== Blocks ===
+[[patron_blocks]]
 
-image::media/circulation_patron_records-26_web_client.png[circulation_patron_records 26]
+Blocks can be manually added to a patron account to take away certain library privileges from the patron for as long as the block remains on the account. The following privileges can be blocked on patron accounts as determined by configuration in the _Standing Penalties_ interface in the _Local Administration_ menu.
 
-== Staff-Generated Penalties/Messages ==
+* CIRC - Users cannot check out items
+* HOLD - Users cannot place holds on items
+* RENEW - Users cannot renew items
+* CAPTURE - This penalty prevents a user’s holds from being captured. If the HOLD penalty has not been applied to a user’s account, then the patron can place a hold, but the targeted item will not appear on a pull list and will not be captured for a hold if it is checked in.
+*  FULFILL - This penalty prevents a user from checking out an item that is on hold. If the HOLD and CAPTURE penalties have not been applied to a user’s account, then the user can place a hold on an item, and the itemcan be captured for a hold. However, when he tries to check out the item, the circulator will see a pop up box with the name of the penalty type, FULFILL. The circulator must correct the problem with the account or must override the penalty to check out the item.
 
-[[staff_generated_penalties_web_client]]
-To access this feature, use the _Messages_ button in the patron record.
+==== Block Display ====
 
-image::media/staff-penalties-1_web_client.png[Messages screen]
+When a block is present on a patron account, a Stop sign and the block text is displayed when the patron account is viewed. The block title also displays in the patron account summary on the left hand side of the screen and there is an indicator in the patron summary that indicates how many un-archived notes, alerts, and blocks are on the account that are visible at the workstation at which the staff member is logged in. Blocks can also be displayed by going to _Other -> Display Alerts_.
 
-=== Add a Message ===
+image::media/stopsign_block.png[Block Display]
 
-Click *Apply Penalty/Message* to begin the process of adding a message to the patron.
+==== Create a Block ====
 
-image::media/staff-penalties-2_web_client.png[Apply Penalty Dialog Box]
+To create a new Block:
 
-There are three options: Notes, Alerts, Blocks
+. Go to the _Notes_ tab in the patron account and click *Create Note*.
+. A modal will appear where you can create a new Block. Required fields are highlighted in yellow.
+. Select _Block_ at the top of the screen.
+..  The default Block is a block on CIRC, HOLD, RENEW
+..  Other Penalty Types can be selected from the drop down menu. These Penalty Types are configured in _Local Administration -> Standing Penalties_.
+. The _Depth_ drop down menu controls the visibility of the note. Values correspond to OPAC labels, and by default they are This Branch, Local Library System, and Everywhere.
+.. By default, the Location will be set to the library the staff member’s workstation is registered to. The note will be visible to the workstation library, as well as all Org Units that are ancestors and descendants in the Org Unit hierarchy.
+. Enter a title or subject for the alert in the _Title…_ field. The Title field is required.
+. Enter the main content of the block in the _Note…_ field.
+. Enter your initials if your library requires initials when creating blocks on patron accounts.
+.  Click *OK* to create the block.
 
-* *Note*: This will create a non-blocking, non-alerting note visible to staff. Staff can view the message by clicking the _Messages_ button on the patron record.  (Notes created in this fashion will not display via _Other_ -> _Notes_, and cannot be shared with the patron. See the <<circulation_patron_notes,Patron Notes>> section for notes which can be shared with the patron.)
+image::media/block.png[Block Modal]
 
-* *Alert*: This will create a non-blocking alert which appears when the patron record is first retrieved.  The alert will cause the patron name to display in red, rather than black, text. Alerts may be viewed by clicking the _Messages_ button on the patron record or by selecting _Other_ -> _Display Alerts and Messages_.
+=== Administration for Patron Notes, Alerts, Blocks, and Messages ===
+[[patron_notes_admin]]
 
-* *Block*: This will create a blocking alert which appears when the patron record is first retrieved, and which behaves much as the non-blocking alert described previously. The patron will be also blocked from circulation, holds and renewals until the block is cleared by staff.
+==== Library Settings ====
 
-After selecting the type of message to create, enter the message body into the box. If Staff Initials are required, they must be entered into the _Initials_ box before the message can be added.  Otherwise, fill in the optional _Initials_ box and click *OK*
+Library Settings are found under _Administration -> Local Administration -> Library Settings Editor_. There is one new Library Setting related to patron notes in Evergreen:
 
-The message should now be visible in the _Staff-Generated Penalties/Messages_ list. If a blocking or non-blocking alert, the message will also display immediately when the patron record is retrieved.
+* GUI: Require staff initials for entry/edit of patron standing penalties and notes
 
-image::media/staff-penalties-3_web_client.png[[Messages on a record]
+[NOTE]
+==========
+This Library Setting replaces two previous settings:
 
-=== Modify a Message ===
+* Require staff initials for entry/edit of standing penalties and messages
+* Require staff initials for entry/edit of patron notes
+========== 
 
-Messages can be edited by staff after they are created. 
+Values from these deprecated settings will be migrated to the new setting via the upgrade script.
 
-image::media/staff-penalties-4_web_client.png[[Actions menu]
+If a value was set for “Require staff initials for entry/edit of standing penalties and messages”, that value will be the new value for the new Library Setting.
 
-Click to select the message to be modified, then click _Actions_ -> _Modify Penalty/Message_. This menu can also be accessed by right-clicking in the message area.
+If there was no value set for “Require staff initials for entry/edit of standing penalties and messages”, but there was a value for “Require staff initials for entry/edit of patron notes”, then the value from the
+legacy “patron notes” setting will be the value for the new Library
+Setting.
 
-image::media/staff-penalties-5_web_client.png[Modify penalty dialog box]
-
-To change the type of message, click on *Note*, *Alert*, *Block* to select the new type. Edit or add new text in the message body.  Enter Staff Initials into the _Initials_ box (may be required.) and click *OK* to submit the alterations.
-
-image::media/staff-penalties-6_web_client.png[Modified message in the list]
-
-=== Archive a Message ===
-
-Messages which are no longer current can be archived by staff. This action will remove any alerts or blocks associated with the message, but retains the information contained there for future reference.
-
-image::media/staff-penalties-4_web_client.png[[Actions menu]
-
-Click to select the message to be archived, then click _Actions_ -> _Archive Penalty/Message_. This menu can also be accessed by right-clicking in the message area.
-
-image::media/staff-penalties-7_web_client.png[Archived messages]
-
-Archived messages will be shown in the section labelled _Archived Penalties/Messages_. To view messages, click *Retrieve Archived Penalties*. By default, messages archived within the past year will be retrieved. To retrieve messages from earlier dates, change the start date to the desired date before clicking *Retrieve Archived Penalties*.
-
-=== Remove a Message ===
-
-Messages which are no longer current can be removed by staff.  This action removes any alerts or blocks associated with the message and deletes the information from the system.
-
-image::media/staff-penalties-4_web_client.png[[Actions menu]
-
-Click to select the message to be removed, then click _Actions_ -> _Remove Penalty/Message_. This menu can also be accessed by right-clicking in the message area.
+If two different values are set for the legacy settings, the value from
+the legacy “standing penalties and messages” setting will become the
+value for the new Library Setting and the “patron notes” value will be
+recorded in a text file as part of the upgrade script.
 
 
 == User Buckets ==
