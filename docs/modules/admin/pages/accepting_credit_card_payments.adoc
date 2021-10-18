@@ -3,8 +3,6 @@
 
 Evergreen can interface with services like Authorize.net, Stripe, PayPal, or Payflow to allow users to pay fines and other charges in the Public Catalog.  Credit card settings can be configured in the xref:admin:librarysettings.adoc[Library Settings Editor]. 
 
-As of 3.6 Stripe in Evergreen is using version 3 of the Stripe client library and the Elements API.
-
 == Setting up credit card payments ==
 
 Credit card payments are controlled in the library settings.  These settings are protected by two permissions.  In order to view the
@@ -33,3 +31,28 @@ successful.  The payments will not actually be charged to the relevant credit ca
 be adjusted according to the test payment.
 
 Your credit card provider should be able to provide test credit card numbers for your testing purposes.
+
+[[stripe_settings]]
+== Stripe Settings ==
+
+As of 3.6 Stripe in Evergreen is using version 3 of the Stripe client library and the Elements API. As of 3.8, Stripe in Evergreen is using the Payment Intents API.
+
+There are several Library Settings related to Stripe. As with other payment processor settings, setting or changing these requires the `ADMIN_CREDIT_CARD_PROCESSING` permission and viewing these settings requires the `VIEW_CREDIT_CARD_PROCESSING` permission.
+
+Settings are checked relative to the patron’s home library.
+
+* **Allow credit card payments** - this must be set to TRUE in order for any payment processors to be used
+* **Name default credit processor** - this setting designates which payment processor to use, and should be entered as Stripe
+* **Enable Stripe payments** - set to TRUE in order to allow Stripe to process payments
+* **Stripe ISO 4217 currency code** - this must be entered in lower case and will default to **usd** if unset. Stripe supports a subset of ISO 4217: https://stripe.com/docs/currencies. This setting is new in 3.8.
+* **Stripe publishable key** - this value is provided by Stripe when you set up an account with them. It must be entered precisely as given or payment processing will not work.
+* **Stripe secret key** - this value is provided by Stripe when you set up an account with them. It must be entered precisely as given or payment processing will not work.
+
+If you wish to test your Stripe setup, there are test cards and responses available from Stripe:
+
+* https://stripe.com/docs/testing 
+
+Additional documentation from Stripe related to the Payment Intents API can be seen on these pages:
+
+* https://stripe.com/docs/api/payment_intents 
+* https://stripe.com/docs/payments/payment-intents 
