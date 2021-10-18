@@ -117,6 +117,11 @@ ILL (Inter-Library Loan)::
   Inter-Library Loan is the process of one libray borrows materials for a patron from another library. 
 [[IIA]]Import item attributes::
   Used to map the data in your holdings tag to fields in the item record during a MARC import.
+[[index]]Index::
+  n. A list of data, such as group of files or database entries. It is typically saved in a plain text format that can be quickly scanned by a search algorithm. This significantly speeds up searching and sorting operations on data referenced by the index. Indexes often include information about each item in the list, such as metadata or keywords, that allows the data to be searched via the index instead of reading through each file individually. Definition from https://techterms.com/definition/index[The Tech Terms Dictionary]
+  v. to create an index.
+Ingest::
+  to create an index
 Insufficient quality fall-through profile::
   A back-up merge profile to be used for importing if an incoming record does not meet the standards of the minimum quality ratio.
 ISBN (International Standard Book Number)::
@@ -209,6 +214,10 @@ Recurring fine::
   Recurring Fine is the official term for daily or other regularly accruing overdue fines. 
 Register Patron::
   The process of adding a Patron account with in Evergreen.
+Reindex::
+  To recreate or update the index.  See <<Index>>.
+Reingest::
+  To update indexes following change to the indexing definitions .  This is a commonly called ror action as part of upgrades. 
 Rollover::
   Used to roll over remaining encumbrances and funds into the same fund the following year. 
 [[S]]SAN (Standard Address Number)::
