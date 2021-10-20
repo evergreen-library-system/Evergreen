@@ -135,6 +135,9 @@ BEGIN
 
         input := evergreen.lowercase(full_input);
         word_list := ARRAY_AGG(x) FROM search.symspell_parse_words_distinct(input) x;
+        IF word_list IS NULL THEN
+            RETURN;
+        END IF;
     
         IF CARDINALITY(word_list) > 1 AND include_phrases THEN
             RETURN QUERY SELECT * FROM search.symspell_build_raw_entry(input, source_class, TRUE, prefix_length, maxED);
