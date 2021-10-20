@@ -307,7 +307,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         if (!this.cloneId) { return Promise.resolve(); }
 
         return this.patronService.getById(this.cloneId,
-            {flesh: 1, flesh_fields: {au: ['billing_address', 'mailing_address']}})
+            {flesh: 1, flesh_fields: {au: ['addresses']}})
         .then(cloneUser => {
             const evt = this.evt.parse(cloneUser);
             if (evt) { return alert(evt); }
@@ -436,74 +436,52 @@ export class EditComponent implements OnInit, AfterViewInit {
         // flesh the home org locally
         patron.home_ou(clone.home_ou());
 
-        if (!clone.billing_address() &&
-            !clone.mailing_address()) {
-            return; // no addresses to copy or link
-        }
-
         ['day_phone', 'evening_phone', 'other_phone', 'usrgroup']
             .forEach(field => patron[field](clone[field]()));
 
-        // if the cloned patron has any addresses, we don't need
-        // the stub address created in init_new_patron.
-        patron.addresses([]);
+        // Create a new address from an existing address
+        const cloneAddr = (addr: IdlObject) => {
+            const newAddr = this.idl.clone(addr);
+            newAddr.id(this.autoId--);
+            newAddr.usr(patron.id());
+            newAddr.isnew(true);
+            newAddr.valid('t');
+            return newAddr;
+        };
 
         const copyAddrs =
             this.context.settingsCache['circ.patron_edit.clone.copy_address'];
 
-        if (copyAddrs) {
-            let billAddr, mailAddr;
+        // No addresses to copy/link.  Stick with the defaults.
+        if (clone.addresses().length === 0) { return; }
 
-            // copy the billing and mailing addresses into new addresses
-            const cloneAddr = (addr: IdlObject) => {
-                const newAddr = this.idl.clone(addr);
-                newAddr.id(this.autoId--);
-                newAddr.usr(patron.id());
-                newAddr.isnew(true);
-                newAddr.valid('t');
-                patron.addresses().push(newAddr);
-                return newAddr;
-            };
+        patron.addresses([]);
 
-            if (billAddr = clone.billing_address()) {
-                patron.billing_address(cloneAddr(billAddr));
+        clone.addresses().forEach(sourceAddr => {
+
+            const myAddr = copyAddrs ? cloneAddr(sourceAddr) : sourceAddr;
+            if (copyAddrs) { myAddr._linked_owner = clone; }
+
+            if (clone.billing_address() === sourceAddr.id()) {
+                this.patron.billing_address(myAddr);
             }
 
-            if (mailAddr = clone.mailing_address()) {
-
-                if (billAddr && billAddr.id() === mailAddr.id()) {
-                    patron.mailing_address(patron.billing_address());
-                } else {
-                    patron.mailing_address(cloneAddr(mailAddr));
-                }
-
-                if (!billAddr) {
-                    // if there is no billing addr, use the mailing addr
-                    patron.billing_address(patron.mailing_address());
-                }
+            if (clone.mailing_address() === sourceAddr.id()) {
+                this.patron.mailing_address(myAddr);
             }
 
-        } else {
+            this.patron.addresses().push(myAddr);
+        });
 
-            // link the billing and mailing addresses
-            let addr;
-            if (addr = clone.billing_address()) {
-                patron.billing_address(addr);
-                patron.addresses().push(addr);
-                patron.billing_address()._linked_owner = clone;
-            }
+        // If we have one type of address but not the other, use the one
+        // we have for both address purposes.
 
-            if (addr = clone.mailing_address()) {
-                if (patron.billing_address() &&
-                    addr.id() === patron.billing_address().id()) {
-                    // mailing matches billing
-                    patron.mailing_address(patron.billing_address());
-                } else {
-                    patron.mailing_address(addr);
-                    patron.addresses().push(patron.mailing_address());
-                    patron.mailing_address()._linked_owner = clone;
-                }
-            }
+        if (!this.patron.billing_address() && this.patron.mailing_address()) {
+            this.patron.billing_address(this.patron.mailing_address());
+        }
+
+        if (this.patron.billing_address() && !this.patron.mailing_address()) {
+            this.patron.mailing_address(this.patron.billing_address());
         }
     }
 
@@ -774,7 +752,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         this.serverStore.getItem('ui.patron.default_ident_type')
         .then(identType => {
             if (identType) { patron.ident_type(Number(identType)); }
-        })
+        });
 
         this.patron = patron;
         this.addWaiver();
