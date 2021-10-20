@@ -351,7 +351,7 @@ sub resource_list_by_attrs {
             if (!ref($filters->{attribute_values}));
 
         $query->{having}->{'+bram'}->{value}->{'@>'} = {
-            transform => 'array_accum',
+            transform => 'array_agg',
             value => '$_' . $$ . '${' .
                 join(',', @{$filters->{attribute_values}}) .
                 '}$_' . $$ . '$'
@@ -554,7 +554,7 @@ sub reservation_list_by_filters {
             if (!ref($filters->{attribute_values}));
 
         $query->{having}->{'+bravm'}->{attr_value}->{'@>'} = {
-            transform => 'array_accum',
+            transform => 'array_agg',
             value => '$_' . $$ . '${' .
                 join(',', @{$filters->{attribute_values}}) .
                 '}$_' . $$ . '$'

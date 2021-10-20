@@ -64,7 +64,7 @@ SELECT is(
 SELECT is(
     (
         SELECT COUNT(*) FROM (
-            SELECT search.facets_for_metarecord_set('{}', array_accum(metarecord))
+            SELECT search.facets_for_metarecord_set('{}', array_agg(metarecord))
             FROM metabib.metarecord_source_map
             WHERE source = 999999998
         ) x

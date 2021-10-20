@@ -17,17 +17,9 @@
 
 BEGIN;
 
-DROP AGGREGATE IF EXISTS array_accum(anyelement) CASCADE;
 DROP AGGREGATE IF EXISTS public.first(anyelement) CASCADE;
 DROP AGGREGATE IF EXISTS public.last(anyelement) CASCADE;
 DROP AGGREGATE IF EXISTS public.agg_text(text) CASCADE;
-
-CREATE AGGREGATE array_accum (
-	sfunc = array_append,
-	basetype = anyelement,
-	stype = anyarray,
-	initcond = '{}'
-);
 
 CREATE OR REPLACE FUNCTION public.first_agg ( anyelement, anyelement ) RETURNS anyelement AS $$
 	SELECT CASE WHEN $1 IS NULL THEN $2 ELSE $1 END;
