@@ -4374,7 +4374,7 @@ INSERT into config.org_unit_setting_type
         'Name default credit processor',
         'coust', 'label'),
     oils_i18n_gettext('credit.processor.default',
-        'This might be "AuthorizeNet", "PayPal", "PayflowPro", or "Stripe".',
+        'This might be "AuthorizeNet", "PayPal", "PayflowPro", "SmartPAY", or "Stripe".',
         'coust', 'description'),
     'string', null)
 
@@ -4476,6 +4476,78 @@ INSERT into config.org_unit_setting_type
         'PayPal test mode',
         'coust', 'description'),
     'bool', null)
+
+,( 'credit.processor.smartpay.enabled', 'credit',
+    oils_i18n_gettext('credit.processor.smartpay.enabled',
+        'Enable SmartPAY payments',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.smartpay.enabled',
+        'Enable SmartPAY payments',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'credit.processor.smartpay.location_id', 'credit',
+    oils_i18n_gettext('credit.processor.smartpay.location_id',
+        'SmartPAY location ID',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.smartpay.location_id',
+        'SmartPAY location ID',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.smartpay.customer_id', 'credit',
+    oils_i18n_gettext('credit.processor.smartpay.customer_id',
+        'SmartPAY customer ID',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.smartpay.customer_id',
+        'SmartPAY customer ID',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.smartpay.login', 'credit',
+    oils_i18n_gettext('credit.processor.smartpay.login',
+        'SmartPAY login name',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.smartpay.login',
+        'SmartPAY login name',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.smartpay.password', 'credit',
+    oils_i18n_gettext('credit.processor.smartpay.password',
+        'SmartPAY password',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.smartpay.password',
+        'SmartPAY password',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.smartpay.api_key', 'credit',
+    oils_i18n_gettext('credit.processor.smartpay.api_key',
+        'SmartPAY API key',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.smartpay.api_key',
+        'SmartPAY API key',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.smartpay.server', 'credit',
+    oils_i18n_gettext('credit.processor.smartpay.server',
+        'SmartPAY server name',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.smartpay.server',
+        'SmartPAY server name',
+        'coust', 'description'),
+    'string', null)
+
+,( 'credit.processor.smartpay.port', 'credit',
+    oils_i18n_gettext('credit.processor.smartpay.port',
+        'SmartPAY server port',
+        'coust', 'label'),
+    oils_i18n_gettext('credit.processor.smartpay.port',
+        'SmartPAY server port',
+        'coust', 'description'),
+    'string', null)
 
 ,( 'credit.processor.stripe.enabled', 'credit',
     oils_i18n_gettext('credit.processor.stripe.enabled',
