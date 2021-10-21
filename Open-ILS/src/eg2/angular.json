@@ -32,14 +32,20 @@
               "file-saver",
               "moment",
               "moment-timezone"
-            ]
+            ],
+            "aot": false,
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -56,24 +62,24 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "i18nFile": "src/locale/messages.cs-CZ.xtb",
-              "i18nFormat": "xtb",
-              "i18nLocale": "cs-CZ",
               "i18nMissingTranslation": "ignore",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
+              ],
+              "localize": [
+                "cs-CZ"
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -119,6 +125,14 @@
             "exclude": [
               "**/node_modules/**"
             ]
+          }
+        }
+      },
+      "i18n": {
+        "locales": {
+          "cs-CZ": {
+            "translation": "src/locale/messages.cs-CZ.xtb",
+            "baseHref": ""
           }
         }
       }

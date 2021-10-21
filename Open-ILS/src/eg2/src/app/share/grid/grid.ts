@@ -1296,7 +1296,7 @@ export class GridDataSource {
                     this.checkAllRetrieved(pager, idx);
                     this.requestingData = false;
                     this.retrievalError = false;
-                    resolve();
+                    resolve(null);
                 }
             );
         });

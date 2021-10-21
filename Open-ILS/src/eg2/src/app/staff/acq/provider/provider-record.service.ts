@@ -164,7 +164,7 @@ export class ProviderRecordService {
         return this.currentProvider ? this.currentProvider : null;
     }
 
-    fetch(id: number): Promise<any> {
+    fetch(id: number): Promise<void> {
         return new Promise((resolve, reject) => {
             this.getProviderRecord(id).subscribe(
                 result => {

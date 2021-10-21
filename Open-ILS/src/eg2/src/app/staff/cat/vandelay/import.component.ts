@@ -532,7 +532,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
                         err => { console.log(err); reject(); },
                         () => {
                             this.enqueueProgress.update({max: 1, value: 1});
-                            resolve();
+                            resolve(null);
                         }
                     );
                 }
@@ -587,7 +587,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
                         err => { console.log(err); reject(); },
                         () => {
                             this.importProgress.update({max: 1, value: 1});
-                            resolve();
+                            resolve(null);
                         }
                     );
                 }

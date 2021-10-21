@@ -250,7 +250,7 @@ export class HoldComponent implements OnInit {
                     });
                 },
                 err => {},
-                () => resolve()
+                () => resolve(null)
             );
         });
     }

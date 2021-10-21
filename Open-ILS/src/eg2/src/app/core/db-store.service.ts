@@ -180,7 +180,7 @@ export class DbStoreService {
                 _ => {
                     this.schemasConnected[schema] = true;
                     delete this.schemasInProgress[schema];
-                    resolve();
+                    resolve(null);
                 },
                 err => reject(err)
             );

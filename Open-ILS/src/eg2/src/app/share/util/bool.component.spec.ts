@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BoolDisplayComponent } from './bool.component';
 import { Component } from '@angular/core';
 import { ViewChild } from '@angular/core';
@@ -16,7 +16,7 @@ describe('BoolDisplayComponent', () => {
     let hostComponent: TestHostComponent;
     let fixture: ComponentFixture<TestHostComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
         declarations: [ BoolDisplayComponent, TestHostComponent ],
         })

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { EgHelpPopoverComponent } from './eg-help-popover.component';
 
@@ -6,7 +6,7 @@ describe('EgHelpPopoverComponent', () => {
   let component: EgHelpPopoverComponent;
   let fixture: ComponentFixture<EgHelpPopoverComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ EgHelpPopoverComponent ],
       imports: [NgbPopoverModule]
