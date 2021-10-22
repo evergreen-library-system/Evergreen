@@ -34,8 +34,6 @@ In reference for the fix to bug (https://bugs.launchpad.net/evergreen/+bug/19447
 * Enables Apache module mod_headers by default (https://bugs.launchpad.net/evergreen/+bug/1944765[LP1944765])
 * Fixes typo in three Library Settings descriptions https://bugs.launchpad.net/evergreen/+bug/1826759[LP1826759])
 
-==== API ====
-
 ==== Architecture ====
 
 * Fixes datatype issues that can cause unexpected behavior (https://bugs.launchpad.net/evergreen/+bug/1923076[LP1923076])
@@ -124,9 +122,6 @@ In reference for the fix to bug (https://bugs.launchpad.net/evergreen/+bug/19447
 (https://bugs.launchpad.net/evergreen/+bug/1909144[LP1909144])
 * Replaces javascript onfocus/onblur with HTML5 placeholder in KPAC (https://bugs.launchpad.net/evergreen/+bug/1834258[LP1834258])
 
-==== Reports ====
-
-==== Serials ====
 
 ==== SIP ====
 
