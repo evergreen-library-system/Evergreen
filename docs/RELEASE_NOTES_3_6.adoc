@@ -2,6 +2,163 @@
 :toc:
 :numbered:
 
+== Evergreen 3.6.5 ==
+
+This release contains bug fixes improving on Evergreen 3.6.4.
+
+=== Upgrade notes ===
+
+In reference for the fix to bug (https://bugs.launchpad.net/evergreen/+bug/1944765[LP1944765]), existing Evergreen systems on Debian and Ubuntu should do the following to ensure that mod_headers is active:
+
+`sudo a2enmod headers`
+`sudo systemctl restart apache2`
+
+
+=== Bug Fixes ===
+
+==== Acquisitions ====
+
+* Fixes column header in Line Item Search (https://bugs.launchpad.net/evergreen/+bug/1906826[LP1906826])
+
+==== Administration ====
+
+* Adds automated tests for ISBN-13 starting with 979 (https://bugs.launchpad.net/evergreen/+bug/1857060[LP1857060])
+* Adds circ.collections.exempt user setting to seed data (https://bugs.launchpad.net/evergreen/+bug/1937299[LP1937299])
+* Restricts access to library setting history for unauthorized users (https://bugs.launchpad.net/evergreen/+bug/1450519[LP1450519])
+* Fixes filter errors on secondary admin pages (https://bugs.launchpad.net/evergreen/+bug/1919483[LP1919483])
+* Fixes an issue with the Default Net Access Level Library Setting (https://bugs.launchpad.net/evergreen/+bug/1802682[LP1802682])
+* Fixes an issue with Action Triggers that have a repeat delay (https://bugs.launchpad.net/evergreen/+bug/1823983[LP1823983])
+* Fixes an issue with the Action Trigger ApplyPatronPenalty reactor (https://bugs.launchpad.net/evergreen/+bug/1859502[LP1859502])
+* Enables Apache module mod_headers by default (https://bugs.launchpad.net/evergreen/+bug/1944765[LP1944765])
+* Fixes typo in three Library Settings descriptions https://bugs.launchpad.net/evergreen/+bug/1826759[LP1826759])
+
+
+==== Architecture ====
+
+* Fixes datatype issues that can cause unexpected behavior (https://bugs.launchpad.net/evergreen/+bug/1923076[LP1923076])
+* Fixes an issue running "npm install" for the Angular JS web client (https://bugs.launchpad.net/evergreen/+bug/1937875[LP1937875])
+* Fixes typo in pingest.pl help command (https://bugs.launchpad.net/evergreen/+bug/1924562[LP1924562])
+
+==== Booking ====
+
+* Adds new Booking permissions to appropriate Permission Groups (https://bugs.launchpad.net/evergreen/+bug/1910891[LP1910891])
+* Fixes an issue where Booking Resource Type box was not populating (https://bugs.launchpad.net/evergreen/+bug/1916949[LP1916949])
+
+==== Catalog ==== 
+
+* Adds "Show more details" button & workstation setting for the Staff Catalog (https://bugs.launchpad.net/evergreen/+bug/1908722[LP1908722])
+* Adds call number display Staff Catalog search results (https://bugs.launchpad.net/evergreen/+bug/1910808[LP1910808])
+* Restores preferred library holdings count in search results (https://bugs.launchpad.net/evergreen/+bug/1913807[LP1913807])
+* Adds jump to details on one hit support to the Staff Catalog (https://bugs.launchpad.net/evergreen/+bug/1912852[LP1912852])
+* Adds a Patron View button to the Staff Catalog (https://bugs.launchpad.net/evergreen/+bug/1910452[LP1910452])
+* Fixes display of Age Hold Protection in the Staff Catalog (https://bugs.launchpad.net/evergreen/+bug/1908614[LP1908614])
+* Adds OPAC visible to Holdings View in the Staff Catalog (https://bugs.launchpad.net/evergreen/+bug/1917338[LP1917338])
+* Fixes 'copy queue to bucket' function in Staff Catalog (https://bugs.launchpad.net/evergreen/+bug/1928275[LP1929275])
+* Fixes an issue where the holds page would refresh before a batch holds cancel was complete (https://bugs.launchpad.net/evergreen/+bug/1911023[LP1911023])
+* Fixes an issue where 'submit' or 'enter' was required for a patron barcode on the Staff Catalog holds form (https://bugs.launchpad.net/evergreen/+bug/1903358[LP1903358])
+
+==== Cataloging ====
+
+* Adds a workstation setting to allow users to save grid preferences for the angular catalog item table (https://bugs.launchpad.net/evergreen/+bug/1907296[LP1907296])
+* Adds SRCE fixed field to Angular MARC Editor (https://bugs.launchpad.net/evergreen/+bug/1718782[LP1718782])
+* Fixes the Delete Queue link on the Queue Details Page in MARC Batch Import/Export (https://bugs.launchpad.net/evergreen/+bug/1934184[LP1934184])
+* Fixes a text error in the Load Shared Bucket modals (https://bugs.launchpad.net/evergreen/+bug/1929839[LP1929839])
+* Fixes an issue that allows precat merges (https://bugs.launchpad.net/evergreen/+bug/827356[LP827356])
+* Fixes an issue where adding items to bucket causes too many simultaneous requests (https://bugs.launchpad.net/evergreen/+bug/1932051[LP1932051])
+* Fixes a TCN/ID mismatch in the z39.50 interface (https://bugs.launchpad.net/evergreen/+bug/1786971[LP1786971])
+* Fixes an issue where import operations could fail (https://bugs.launchpad.net/evergreen/+bug/1941764[LP1941764])
+* Fixes an issue where authority records with long subfields would not load (https://bugs.launchpad.net/evergreen/+bug/1922567[LP1922567])
+
+
+==== Circulation ====
+
+* Fixes excess pcrud calls in barcode lookup (https://bugs.launchpad.net/evergreen/+bug/1929136[LP1929136])
+* Fixes an issue where batch checkin from Item Status caused rapid-fire popups (https://bugs.launchpad.net/evergreen/+bug/1742553[LP1742553])
+* Fixes an issue where self-check audio alerts were failing (https://bugs.launchpad.net/evergreen/+bug/1815968[LP1815968])
+* Fixes an issue where removing patrons from buckets caused too many simultaneous requests (https://bugs.launchpad.net/evergreen/+bug/1932358[LP1932358])
+* Adds missing patron data to Holds for Patron print template (https://bugs.launchpad.net/evergreen/+bug/1926971[LP1926971])
+* Fixes incorrect hints for fields in the Checkout print template (https://bugs.launchpad.net/evergreen/+bug/1901028[LP1901028])
+* Fixes hold failures due to SMS notification selection errors (https://bugs.launchpad.net/evergreen/+bug/1933381[LP1933381])
+* Fixes a timezone issue with staff scheduled Curbside appointments (https://bugs.launchpad.net/evergreen/+bug/1917396[LP1917396])
+* Fixes an issue where the Missing Pieces slip was sent to the Default printer instead of the Receipt printer (https://bugs.launchpad.net/evergreen/+bug/1938450[LP1938450])
+* Fixes sorting of SMS Carriers when editing an existing hold (https://bugs.launchpad.net/evergreen/+bug/1809157[LP1809157])
+* Fixes messages in the patron Offline Block List (https://bugs.launchpad.net/evergreen/+bug/1752356[LP1752356])
+* Fixes an issue where cloned patron addresses were set to Pending (https://bugs.launchpad.net/evergreen/+bug/1821804[LP1821804])
+* Fixes an issue with retargeting when a hold's pickup library is changed (https://bugs.launchpad.net/evergreen/+bug/1866667[LP1866667])
+* Fixes an issue that allowed Hold Activation Dates in the past in the Staff Catalog (https://bugs.launchpad.net/evergreen/+bug/1903357[LP1903357])
+* Fixes patron name display to use preferred name in the Staff Catalog Place Hold screen (https://bugs.launchpad.net/evergreen/+bug/1924621[LP1924621])
+* Fixes display of legacy circulations in circ summary (https://bugs.launchpad.net/evergreen/+bug/1942920[LP1942920])
+
+==== Client ====
+
+* Restores the Circulation History by Year information in Item Status (https://bugs.launchpad.net/evergreen/+bug/1743611[LP1743611]) 
+* Fixes a display issue with formerly precataloged items (https://bugs.launchpad.net/evergreen/+bug/1904754[LP1904754])
+* Fixes an issue that allowed logins by expired accounts (https://bugs.launchpad.net/evergreen/+bug/1844121[LP1844121])
+* Adds missing workstation types for Carousels (https://bugs.launchpad.net/evergreen/+bug/1920253[LP1920253])
+* Adds caching for workstation & user settings values (https://bugs.launchpad.net/evergreen/+bug/1938729[LP1939729])
+
+==== Course Materials ====
+
+* Fixes an issue where a blank course section number impacted OPAC display (https://bugs.launchpad.net/evergreen/+bug/1913221[LP1913221])
+* Adds an Org Unit selector to the Course List (https://bugs.launchpad.net/evergreen/+bug/1905068[LP1905068])
+* Adds circulation modifier to OPAC Course Details page (https://bugs.launchpad.net/evergreen/+bug/1935693[LP1935693])
+* Fixes the owning library default when adding a new course (https://bugs.launchpad.net/evergreen/+bug/1917809[LP1917809])
+* Fixes an issue that allowed unreasonable Course-Term mappings (https://bugs.launchpad.net/evergreen/+bug/1906058[LP1906058])
+
+==== OPAC ====
+
+* Fixes alignment issue on mobile devices (https://bugs.launchpad.net/evergreen/+bug/1928005[LP1928005])
+* Adds Curbside Appointments to Bootstrap OPAC (https://bugs.launchpad.net/evergreen/+bug/1895737[LP1895737])
+* Fixes alignment issue with available and holds copy counts in the Bootstrap OPAC (https://bugs.launchpad.net/evergreen/+bug/1933125[LP1933125])
+* Makes the Bootstrap OPAC self registration form more responsive (https://bugs.launchpad.net/evergreen/+bug/1920273[LP1920273])
+* Adds missing title and descripton for Shared Lists in the Bootstrap OPAC (https://bugs.launchpad.net/evergreen/+bug/1909584[LP1909584])
+* Fixes tabbing & focus in Bootstrap OPAC login form (https://bugs.launchpad.net/evergreen/+bug/1909144[LP1909144])
+* Replaces javascript onfocus/onblur with HTML5 placeholder in KPAC (https://bugs.launchpad.net/evergreen/+bug/1834258[LP1834258])
+* Fixes an issue where the Login box was not translateable (https://bugs.launchpad.net/evergreen/+bug/1919497[LP1919497])
+
+==== SIP ====
+
+* Exports PERL5LIB in oils_ctl.sh to account for a change in Perl 5.26.0. This change affects Ubuntu 18.04 (Bionic Beaver) and Debian 10 (Buster) and any future releases. (https://bugs.launchpad.net/evergreen/+bug/1899974[LP1899974])
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.6.5 point release of Evergreen:
+
+* Adam Bowling
+* Jason Boyer
+* Dan Briem
+* Christine Burns
+* Eva Cerninakova
+* Galen Charlton
+* Garry Collum
+* Dawn Dale
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Ruth Frasur
+* Rogan Hamby
+* Elaine Hardy
+* Shula Link
+* Tiffany Little
+* Mary Llewellyn
+* Terran McCanna
+* Gina Monti
+* Christine Morgan
+* Michele Morgan
+* Andrea Buntz Neiman
+* Jennifer Pringle
+* Mike Risher
+* Erica Rohlfs
+* Mike Rylander
+* Chris Sharp
+* Jane Sandberg
+* Jason Stephenson
+* Josh Stompro
+* Jennifer Weston
+* Beth Willis
+* Jessica Woolford
+
 == Evergreen  3.6.4 ==
 
 This release contains bug fixes improving on Evergreen 3.6.3.
