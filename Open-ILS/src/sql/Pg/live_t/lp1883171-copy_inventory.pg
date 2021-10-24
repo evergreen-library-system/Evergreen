@@ -1,0 +1,98 @@
+BEGIN;
+
+SELECT plan(9);
+
+-- Workstations to use for tests:
+\set BR1_ws_name 'BR1-lp1883171-pgtap-live_t'
+\set BR4_ws_name 'BR4-lp1883171-pgtap-live_t'
+
+-- Fixed timestamp to check for duplicates:
+\set fixed_ts '2021-10-24 11:52:33.604067-04'
+
+-- Copy from BR1:
+\set BR1_copy_id 1
+-- Copy from BR4
+\set BR4_copy_id 801
+-- Copy from BR3 to test floating.
+\set BR3_copy_id 701
+
+-- A name for a floating group to test floating.
+\set SYS2_floating_group_name 'SYS2 Float Group'
+
+-- Create workstations:
+INSERT INTO actor.workstation
+(name, owning_lib)
+VALUES
+(:'BR1_ws_name', 4),
+(:'BR4_ws_name', 7);
+
+-- Create the floating group and define its members
+INSERT INTO config.floating_group
+(name)
+VALUES (:'SYS2_floating_group_name');
+
+INSERT INTO config.floating_group_member
+(floating_group, org_unit, stop_depth)
+SELECT id, 3, 1
+FROM config.floating_group
+WHERE name = :'SYS2_floating_group_name';
+
+-- Let the copy at BR3 float to SYS2
+UPDATE asset.copy
+SET floating = floating_group.id
+FROM config.floating_group
+WHERE copy.id = :BR3_copy_id
+AND floating_group.name = :'SYS2_floating_group_name';
+
+PREPARE insert_null_all AS INSERT INTO asset.copy_inventory (inventory_workstation, inventory_date, copy)
+VALUES (NULL, :'fixed_ts', :BR1_copy_id),
+(NULL, :'fixed_ts', :BR3_copy_id),
+(NULL, :'fixed_ts', :BR4_copy_id);
+SELECT lives_ok('insert_null_all', 'NULL workstation should succeed');
+
+PREPARE insert_br1_br1 AS INSERT INTO asset.copy_inventory(inventory_workstation, copy)
+SELECT id, :BR1_copy_id
+FROM actor.workstation
+WHERE name = :'BR1_ws_name';
+SELECT lives_ok('insert_br1_br1', 'BR1 at BR1 should succeed');
+
+PREPARE insert_br1_br4 AS INSERT INTO asset.copy_inventory (inventory_workstation, copy)
+SELECT id, :BR1_copy_id
+FROM actor.workstation
+WHERE name = :'BR4_ws_name';
+SELECT throws_ok('insert_br1_br4');
+
+PREPARE insert_br4_br1 AS INSERT INTO asset.copy_inventory (inventory_workstation, copy)
+SELECT id, :BR4_copy_id
+FROM actor.workstation
+WHERE name = :'BR1_ws_name';
+SELECT throws_ok('insert_br4_br1');
+
+PREPARE insert_br3_br1 AS INSERT INTO asset.copy_inventory (inventory_workstation, copy)
+SELECT id, :BR3_copy_id
+FROM actor.workstation
+WHERE name = :'BR1_ws_name';
+SELECT throws_ok('insert_br3_br1');
+
+PREPARE insert_br4_br4 AS INSERT INTO asset.copy_inventory(inventory_workstation, copy)
+SELECT id, :BR4_copy_id
+FROM actor.workstation
+WHERE name = :'BR4_ws_name';
+SELECT lives_ok('insert_br4_br4', 'BR4 at BR4 should succeed');
+
+PREPARE insert_br3_br4 AS INSERT INTO asset.copy_inventory(inventory_workstation, copy)
+SELECT id, :BR3_copy_id
+FROM actor.workstation
+WHERE name = :'BR4_ws_name';
+SELECT lives_ok('insert_br3_br4', 'BR3 at BR4 should succeed');
+
+PREPARE dup_insert_br3_br4 AS INSERT INTO asset.copy_inventory (inventory_workstation, inventory_date, copy)
+SELECT id, :'fixed_ts', :BR3_copy_id
+FROM actor.workstation
+WHERE name = :'BR4_ws_name';
+SELECT throws_ok('dup_insert_br3_br4', 23505);
+
+SELECT throws_ok('insert_null_all', 23505);
+
+SELECT * FROM finish();
+ROLLBACK;

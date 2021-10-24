@@ -1,0 +1,30 @@
+BEGIN;
+
+SELECT plan(11);
+
+SELECT has_table('asset'::name, 'copy_inventory'::name);
+
+SELECT has_index('asset'::name, 'copy_inventory'::name, 'copy_inventory_copy_idx'::name, 'copy'::name);
+
+SELECT has_index('asset'::name, 'copy_inventory'::name, 'asset_copy_inventory_date_once_per_copy'::name,
+                 ARRAY[ 'inventory_date', 'copy' ]);
+
+SELECT has_function('evergreen'::name, 'asset_copy_inventory_copy_inh_fkey'::name);
+
+SELECT has_trigger('asset'::name, 'copy_inventory'::name, 'inherit_asset_copy_inventory_copy_fkey'::name);
+
+SELECT has_function('asset'::name, 'copy_may_float_to_inventory_workstation'::name);
+
+SELECT has_trigger('asset'::name, 'copy_inventory'::name, 'asset_copy_inventory_allowed_trig'::name);
+
+SELECT hasnt_function('evergreen'::name, 'asset_latest_inventory_copy_inh_fkey'::name);
+
+SELECT hasnt_trigger('asset'::name, 'latest_inventory'::name, 'inherit_asset_latest_inventory_copy_fkey'::name);
+
+SELECT hasnt_table('asset'::name, 'latest_inventory'::name);
+
+SELECT has_view('asset'::name, 'latest_inventory'::name, 'View latest_inventory should exist');
+
+SELECT * from finish();
+
+ROLLBACK;
