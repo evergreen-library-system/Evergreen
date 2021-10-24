@@ -53,7 +53,6 @@ INSERT INTO asset.copy(id, circ_lib, creator, call_number, editor, copy_number, 
     (907777, 6, 1, 1000001, 1, 1, 1, 1, '3copycopycopy'),
     (908888, 4, 1, 1000002, 1, 1, 1, 1, '4copycopycopy');
 
-COMMIT;
 
 -----------------------------------
 -- Test asset.merge_record_assets() 
@@ -91,4 +90,4 @@ SELECT is(
 );
 
 SELECT * FROM finish();
-
+ROLLBACK;
