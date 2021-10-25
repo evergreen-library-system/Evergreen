@@ -68,4 +68,4 @@ Descendant Organizational Units are NOT automatically included
 and each must be specifically added to the Library Group.
 ====
 
-After all Library Groups are created and assigned, you must run autogen and restart Apache in order for the changes to be reflected.
+After all Library Groups are created and assigned, it is recommended (but not required) that you run autogen and restart Apache.
