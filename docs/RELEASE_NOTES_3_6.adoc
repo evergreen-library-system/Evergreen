@@ -105,6 +105,12 @@ In reference for the fix to bug (https://bugs.launchpad.net/evergreen/+bug/19447
 * Fixes the owning library default when adding a new course (https://bugs.launchpad.net/evergreen/+bug/1917809[LP1917809])
 * Fixes an issue that allowed unreasonable Course-Term mappings (https://bugs.launchpad.net/evergreen/+bug/1906058[LP1906058])
 
+==== Documentation ====
+
+* Updates the Glossary & Apache Rewrite Tricks docs to define 'TLD' (https://bugs.launchpad.net/evergreen/+bug/1837753[LP1837753])
+* Updates Address Alert docs for web client (https://bugs.launchpad.net/evergreen/+bug/1776977[LP1776977])
+
+
 ==== OPAC ====
 
 * Fixes alignment issue on mobile devices (https://bugs.launchpad.net/evergreen/+bug/1928005[LP1928005])
