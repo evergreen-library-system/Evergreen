@@ -108,6 +108,14 @@ In reference for the fix to bug (https://bugs.launchpad.net/evergreen/+bug/19447
 * Fixes the owning library default when adding a new course (https://bugs.launchpad.net/evergreen/+bug/1917809[LP1917809])
 * Fixes an issue that allowed unreasonable Course-Term mappings (https://bugs.launchpad.net/evergreen/+bug/1906058[LP1906058])
 
+==== Documentation ====
+
+* Updates the Glossary & Apache Rewrite Tricks docs to define 'TLD' (https://bugs.launchpad.net/evergreen/+bug/1837753[LP1837753])
+* Updates Address Alert docs for web client (https://bugs.launchpad.net/evergreen/+bug/1776977[LP1776977])
+* Updates to library settings docs & filename corrections (https://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=c6e50ae7aca514a3b3db441df29162680279e0fb[commit])
+* Updated Shelving Locations docs for Angular (https://bugs.launchpad.net/evergreen/+bug/1901758[LP1901758])
+* Fixes to 3.7 Report Sources doc (https://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=efe8d20613f65c8a568f66f3cd2e334fe12e4341[commit])
+
 ==== OPAC ====
 
 * Fixes alignment issue on mobile devices (https://bugs.launchpad.net/evergreen/+bug/1928005[LP1928005])
@@ -144,6 +152,7 @@ testing and documentation patches to the 3.7.2 point release of Evergreen:
 * Jeff Davis
 * Bill Erickson
 * Jason Etheridge
+* Lynn Floyd
 * Ruth Frasur
 * Rogan Hamby
 * Elaine Hardy
