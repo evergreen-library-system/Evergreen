@@ -8,6 +8,8 @@ This release contains bug fixes improving on Evergreen 3.7.1.
 
 === Upgrade notes ===
 
+The fix for (https://bugs.launchpad.net/evergreen/_bug/1450519[Launchpad bug 1450519]) removes an entry from the `fm_IDL.xml` file.  To ensure that everything is up-to-date, existing Evergreen sites should run `autogen.sh` after restarting OpenSRF services and before restarting Apache after this upgrade.
+
 In reference for the fix to bug (https://bugs.launchpad.net/evergreen/+bug/1944765[LP1944765]), existing Evergreen systems on Debian and Ubuntu should do the following to ensure that mod_headers is active:
 
 `sudo a2enmod headers`
