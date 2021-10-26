@@ -18,6 +18,9 @@ use DateTime;
 use DateTime::Format::ISO8601;
 my $U = 'OpenILS::Application::AppUtils';
 use List::MoreUtils qw/uniq/;
+use LWP::UserAgent;
+use HTTP::Request::Common qw(POST GET);
+use CGI;
 
 sub prepare_extended_user_info {
     my $self = shift;
@@ -2323,22 +2326,98 @@ sub load_myopac_payment_form {
 
     $r = $self->prepare_fines(undef, undef, [$self->cgi->param('xact'), $self->cgi->param('xact_misc')]);
 
-    if ( ! $self->cgi->param('last_chance') # only do this once
-        && $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.enabled')
-        && $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.default') eq 'Stripe') {
-        my $skey = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.secretkey');
-        my $currency = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.currency');
-        my $stripe = Business::Stripe->new(-api_key => $skey);
-        my $intent = $stripe->api('post', 'payment_intents',
-            amount                => $self->ctx->{fines}->{balance_owed} * 100,
-            currency              => $currency || 'usd',
-            description           => 'User Database ID: ' . $self->ctx->{user}->id
-        );
-        if ($stripe->success) {
-            $self->ctx->{stripe_client_secret} = $stripe->success()->{client_secret};
-        } else {
-            $logger->error('Error initializing Stripe: ' . Dumper($stripe->error));
-            $self->ctx->{cc_configuration_error} = 1;
+    if ( ! $self->cgi->param('last_chance')) { # only do this once
+        if ($self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.default') eq 'Stripe') {
+            if ($self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.enabled')) {
+                my $skey = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.secretkey');
+                my $currency = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.currency');
+                my $stripe = Business::Stripe->new(-api_key => $skey);
+                my $intent = $stripe->api('post', 'payment_intents',
+                    amount                => $self->ctx->{fines}->{balance_owed} * 100,
+                    currency              => $currency || 'usd',
+                    description           => 'User Database ID: ' . $self->ctx->{user}->id
+                );
+                if ($stripe->success) {
+                    $self->ctx->{stripe_client_secret} = $stripe->success()->{client_secret};
+                } else {
+                    $logger->error('Error initializing Stripe: ' . Dumper($stripe->error));
+                    $self->ctx->{cc_configuration_error} = 1;
+                }
+            }
+        } elsif ($self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.default') eq 'SmartPAY') {
+            if ($self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.smartpay.enabled')) {
+                my $location_id =  CGI::escapeHTML($self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.smartpay.location_id'));
+                $self->ctx->{smartpay_locationid} = $location_id;
+                my $customer_id =  CGI::escapeHTML($self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.smartpay.customer_id'));
+                $self->ctx->{smartpay_customerid} = $customer_id;
+                my $login = CGI::escapeHTML($self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.smartpay.login'));
+                my $password = CGI::escapeHTML($self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.smartpay.password'));
+                my $api_key = CGI::escapeHTML($self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.smartpay.api_key'));
+                my $server = CGI::escapeHTML($self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.smartpay.server'));
+                my $port = CGI::escapeHTML($self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.smartpay.port'));
+                my $base_target = "https://$server";
+                $base_target .= ":$port" if $port;
+                $base_target .= "/SMARTPAYAPI/WEBSMARTPAY.dll";
+                
+                # first api call
+                my $target = $base_target . "?RequestSessionKey";
+                $target .= "&CustomerID=$customer_id";
+                $target .= "&LocationID=$location_id";
+                $target .= "&UserName=$login";
+                $target .= "&Password=$password";
+                $target .= "&APIKey=$api_key";
+
+                my @payment_xacts = ($self->cgi->param('xact'), $self->cgi->param('xact_misc'));
+                #$logger->error('SmartPAY debug, cache_args = ' . Dumper($cache_args) );
+
+                # generate a temporary cache token for our secret
+                my $token = 'smartpay_' . md5_hex($$ . time() . rand());
+                $target .= "&Secret=$token";
+
+                #$logger->error('SmartPAY debug, target= $target ' . Dumper($target) );
+
+                my $ua = new LWP::UserAgent;
+
+                # there has been API flux with whether to send API-Key and Secret as HTTP headers or URL params
+                #my $req = GET($target, 'API-Key' => "$api_key", 'Secret' => "$token");
+                my $req = GET($target);
+                my $response = $ua->request($req);
+
+                if ($response->is_success() && $response->content() !~ /HTML/) {
+                    $logger->info('SmartPAY initialized for ' . $self->editor->authtoken);
+
+                    my $session_key = $response->content();
+
+                    # we'll test this secret key again in the create payment method
+                    my $cache_args = {
+                        user => $self->ctx->{user}->id,
+                        session_key => $session_key
+                    };
+                    my $cache = OpenSRF::Utils::Cache->new('global');
+                    $cache->put_cache($token, $cache_args, 300);
+
+                    # this will be for our follow-up call client-side
+
+                    $self->ctx->{smartpay_target} = $base_target . '?GetCreditForm';
+                    $self->ctx->{smartpay_target} .= '&SessionKey=' . $session_key;
+                    $self->ctx->{smartpay_target} .= "&CustomerID=$customer_id";
+                    $self->ctx->{smartpay_target} .= "&LocationID=$location_id";
+                    $self->ctx->{smartpay_target} .= '&PatronID=' . $self->ctx->{user}->id; # $e->requestor->id;
+                    $self->ctx->{smartpay_target} .= '&InvNum=1234';
+                    $self->ctx->{smartpay_target} .= '&Amount=' . $self->ctx->{fines}->{balance_owed};
+                    $self->ctx->{smartpay_target} .= '&URLPostBack=' . CGI::escapeHTML( $self->ctx->{hostname} );
+                    #$self->ctx->{smartpay_target} .= '&ScriptPostBack=' .  CGI::escapeHTML('/cgi-bin/offline/echo1.pl');
+                    $self->ctx->{smartpay_target} .= '&URLReturn=' .  CGI::escapeHTML( $self->ctx->{opac_root} . '/myopac/main_pay_init' );
+                    $self->ctx->{smartpay_target} .= '&URLCancel=' .  CGI::escapeHTML( 'https://' . $self->ctx->{hostname} . $self->ctx->{opac_root} . '/myopac/charges');
+                    $self->ctx->{smartpay_target} .= '&UserName=&Password=&Field1=smartpay&Field2=&Field3=&ItemsData=';
+
+                } else {
+                    my $error = $response->content();
+                    $error =~ s/[\r\n]//g;
+                    $logger->error("Error initializing SmartPAY: $error");
+                    $self->ctx->{cc_configuration_error} = 1;
+                }
+            }
         }
     }
 
@@ -2411,6 +2490,17 @@ sub load_myopac_pay_init {
         billing_last billing_address billing_city billing_state
         billing_zip stripe_payment_intent stripe_client_secret
     /);
+
+    # mapping SmartPAY CGI parameters
+    if ($self->cgi->param('Result')) {
+        $cc_args->{smartpay_result} = $self->cgi->param('Result');
+    }
+    if ($self->cgi->param('Secret')) {
+        $cc_args->{smartpay_secret} = $self->cgi->param('Secret');
+    }
+    if ($self->cgi->param('CCNumber')) {
+        $cc_args->{number} = $self->cgi->param('CCNumber');
+    }
 
     my $cache_args = {
         cc_args => $cc_args,

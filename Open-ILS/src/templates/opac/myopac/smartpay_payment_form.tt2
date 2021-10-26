@@ -1,0 +1,39 @@
+<p><big>[% l("Click Submit to temporarily leave this website for the payment processor. After payment, you will be returned to these pages.") %]</big></p>
+<a href="[% ctx.smartpay_target %]" class="opac-button">[% l('Submit') %]</a>
+<a href="[% mkurl(ctx.opac_root _ '/myopac/main#selected_fines', {}, 1) %]" class="opac-button">[% l('Cancel') %]</a>
+
+ <table title="[% l('List of Transactions') %]" id="acct_fines_confirm_header"
+    class="table_no_border_space table_no_cell_pad" style="padding-top:1em;">
+<thead>
+  <tr>
+    <th>[% l('Charge/Fee') %]</th>
+    <th>[% l('Amount') %]</th>
+ </tr>
+</thead>
+<tbody>
+  [%
+   FOR f IN ctx.fines.circulation;
+     NEXT IF CGI.param('xact').size &&
+        !CGI.param('xact').grep(f.xact.id).size;
+     attrs = {marc_xml => f.marc_xml};
+     IF f.marc_xml;
+         PROCESS get_marc_attrs args=attrs;
+     ELSIF f.xact.reservation;
+          attrs.title = f.xact.reservation.target_resource_type.name;
+     END %]
+     <tr>
+        <td>[% attrs.title | html %]</td>
+        <td class="text-right">[% money(f.xact.balance_owed) %]</td>
+     </tr>
+      [%
+      END;
+      FOR f IN ctx.fines.grocery;
+          NEXT IF CGI.param('xact_misc').size &&
+              !CGI.param('xact_misc').grep(f.xact.id).size %]
+          <tr>
+             <td>[% f.xact.last_billing_type | html %]</td>
+             <td class="text-right">[% money(f.xact.balance_owed) %]</td>
+        </tr>
+    [% END %]
+ </tbody>
+</table> 

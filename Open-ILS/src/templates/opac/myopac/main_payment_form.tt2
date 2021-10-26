@@ -6,16 +6,19 @@
 
     last_chance = CGI.param("last_chance");
 
-    IF myopac_main_page == "payment_form" AND
-        ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.stripe.enabled') AND ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.default') == 'Stripe';
-        ctx.use_stripe = 1;
+    IF myopac_main_page == "payment_form";
+        IF ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.stripe.enabled') AND ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.default') == 'Stripe';
+            ctx.use_stripe = 1;
+        ELSIF ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.smartpay.enabled') AND ctx.get_org_setting(ctx.user.home_ou.id, 'credit.processor.default') == 'SmartPAY';
+            ctx.use_smartpay = 1;
+        END;
     END %]
 
 <a name="payment"> </a>    
 <h3 class="sr-only">[% l('Pay Charges') %]</h3>
-[% IF ctx.fines.balance_owed <= 0 %]
+[% IF ctx.fines.balance_owed <= 0.49 %]
 <div>
-    [% l("The minimum amount you can pay is \$0.01.") %]
+    [% l("The minimum amount you can pay is \$0.50.") %]
 </div>
 [% ELSE %]
 <div id="pay_fines_now">
@@ -27,11 +30,13 @@
         [% ELSE %]
             [% IF ctx.use_stripe %]
                 [% PROCESS "opac/myopac/stripe_payment_form.tt2"; %]
+            [% ELSIF ctx.use_smartpay %]
+                [% PROCESS "opac/myopac/smartpay_payment_form.tt2"; %]
             [% ELSE %]
                 [% PROCESS "opac/myopac/generic_payment_form.tt2"; %]
             [% END %]
         [% END %]
     [% END %]
 </div>
-[% END %] <!-- of IF ctx.fines.balance_owed <= 0 -->
+[% END %] <!-- of IF ctx.fines.balance_owed <= 0.49 -->
 [% END %] <!-- of.. something in one of the PROCESS or WRAPPER blocks? -->
