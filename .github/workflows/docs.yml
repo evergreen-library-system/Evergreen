@@ -1,0 +1,18 @@
+name: docs
+on: [push, pull_request]
+jobs:
+  Build-And-Publish-Docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: '5.34'
+      - run: |
+          cd docs
+          sed -i 's/branches.*/branches: [HEAD]/' site.yml
+          perl generate_docs.pl --base-url http://example.com
+      - uses: actions/upload-artifact@v2
+        with:
+          name: built-docs
+          path: docs/output
