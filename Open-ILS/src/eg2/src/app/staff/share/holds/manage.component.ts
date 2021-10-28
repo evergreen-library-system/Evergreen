@@ -66,6 +66,12 @@ export class HoldManageComponent implements OnInit {
             // Use a dummy hold to store form values.
             this.hold = this.idl.create('ahr');
 
+            // Set all boolean fields to false on startup so they are
+            // not sent to the server as null when saving.
+            this.idl.classes.ahr.fields
+                .filter(f => f.datatype === 'bool')
+                .forEach(f => this.hold[f.name]('f'));
+
         } else {
             // Form values are stored in the one hold we're editing.
             this.pcrud.retrieve('ahr', this.holdIds[0])
