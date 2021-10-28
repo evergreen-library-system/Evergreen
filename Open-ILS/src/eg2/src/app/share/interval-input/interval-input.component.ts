@@ -19,6 +19,9 @@ import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, m
 })
 export class IntervalInputComponent implements ControlValueAccessor, OnInit {
 
+    @Input() initialValue: string;
+    @Output() onChange = new EventEmitter<string>();
+
     period: string;
     unit = 'days';
 
@@ -27,10 +30,14 @@ export class IntervalInputComponent implements ControlValueAccessor, OnInit {
     propagateTouch = () => {};
 
     ngOnInit() {
+        if (this.initialValue) {
+            this.writeValue(this.initialValue);
+        }
     }
 
     changeListener(): void {
         this.propagateChange(this.period + ' ' + this.unit);
+        this.onChange.emit(this.period + ' ' + this.unit);
     }
 
     writeValue(value: string) {

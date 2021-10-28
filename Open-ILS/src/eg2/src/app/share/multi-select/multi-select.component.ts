@@ -1,5 +1,5 @@
 /**
- * <eg-multi-select idlClass="acpl" linkedLibraryLabel="owning_lib">
+ * <eg-multi-select idlClass="acpl" linkedLibraryLabel="owning_lib" idlKey="id">
  * </eg-multi-select>
  */
 import {Component, OnInit, Input, Output, ViewChild, EventEmitter, ElementRef} from '@angular/core';
@@ -23,6 +23,8 @@ export class MultiSelectComponent implements OnInit {
     entrylist: ComboboxEntry[];
 
     @Input() idlClass: string;
+    @Input() idlBaseQuery: any = null;
+    @Input() idlKey: string;
     @Input() linkedLibraryLabel: string;
     @Input() startValue: string;
 
@@ -58,25 +60,31 @@ export class MultiSelectComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (!this.idlKey) {
+            this.idlKey = 'id';
+        }
+
         if (this.startValue && this.startValue !== '{}') {
             let valstr = this.startValue;
             valstr = valstr.replace(/^{/, '');
             valstr = valstr.replace(/}$/, '');
             const ids = valstr.split(',');
+            const searchHash = {};
+            searchHash[this.idlKey] = ids;
             const extra_args = {};
             if (this.linkedLibraryLabel) {
                 const flesh_fields: Object = {};
                 flesh_fields[this.idlClass] = [ this.linkedLibraryLabel ];
                 extra_args['flesh'] = 1;
                 extra_args['flesh_fields'] = flesh_fields;
-                this.pcrud.search(this.idlClass, { 'id' : ids }, extra_args).pipe(map(data => {
+                this.pcrud.search(this.idlClass, searchHash, extra_args).pipe(map(data => {
                     this.entrylist.push({
                         'id' : data.id(),
                         'label' : data.name() + ' (' + data[this.linkedLibraryLabel]().shortname() + ')'
                     });
                 })).toPromise();
             } else {
-                this.pcrud.search(this.idlClass, { 'id' : ids }, extra_args).pipe(map(data => {
+                this.pcrud.search(this.idlClass, searchHash, extra_args).pipe(map(data => {
                     this.entrylist.push({ 'id' : data.id(), 'label' : data.name() });
                 })).toPromise();
             }

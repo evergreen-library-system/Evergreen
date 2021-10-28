@@ -52,6 +52,8 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
 
     @Input() domId: string;
 
+    @Output() onChange = new EventEmitter<any>();
+
     @ViewChildren(OrgSelectComponent)  orgSelects: QueryList<OrgSelectComponent>;
 
     // this is the most up-to-date value used for ngModel and reactive form
@@ -105,9 +107,11 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
 
         this.emitArray = () => {
             // Prepare and emit an array containing the primary org id and
-            // optionally ancestor and descendant org units.
+            // optionally ancestor and descendant org units, and flags that select those.
 
             this.options.orgIds = [this.options.primaryOrgId];
+            this.options.includeAncestors = this.includeAncestors.value;
+            this.options.includeDescendants = this.includeDescendants.value;
 
             if (this.includeAncestors.value) {
                 this.options.orgIds = this.org.ancestors(this.options.primaryOrgId, true);
@@ -125,6 +129,7 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
             this.options.orgIds = Object.keys(hash).map(id => Number(id));
 
             this.propagateChange(this.options);
+            this.onChange.emit(this.options);
         };
     }
 
