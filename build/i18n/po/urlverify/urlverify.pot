@@ -63,7 +63,7 @@ msgstr ""
 msgid "Optionally select one or more to combine with 'Search' field above."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:30
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:31
 msgid "Print URLs"
 msgstr ""
 
@@ -115,7 +115,7 @@ msgstr ""
 msgid "Verification Attempts"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:37
+#: ../../Open-ILS/src/templates/url_verify/select_urls.tt2:38
 msgid "Verify Selected URLs"
 msgstr ""
 
