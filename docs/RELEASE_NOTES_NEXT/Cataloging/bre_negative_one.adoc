@@ -1,6 +1,0 @@
-Bib Record -1 Can No Longer Be Edited
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Now when retrieving the bibliographic record with the id of -1 the delete button will be missing and save button is disabled.
-
-

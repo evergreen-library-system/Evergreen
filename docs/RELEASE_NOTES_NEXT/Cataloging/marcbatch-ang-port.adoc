@@ -1,3 +1,0 @@
-MARC Batch Edit UI Angular Port
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The MARC Batch Edit interface has been ported to Angular.
