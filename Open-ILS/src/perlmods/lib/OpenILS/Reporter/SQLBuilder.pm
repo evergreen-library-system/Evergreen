@@ -435,7 +435,7 @@ sub toSQL {
     my $val = $self->{params};
     $val = $$val[0] if (ref($val));
 
-    return "EXTRACT(WEEK FROM \$_$$\$rtime\$_$$\$::TIMESTAMPTZ + \$_$$\$val weeks\$_$$\$)";
+    return "EXTRACT(WEEK FROM \$_$$\$rtime\$_$$\$::TIMESTAMPTZ + \$_$$\$$val weeks\$_$$\$)";
 }
 
 
@@ -947,7 +947,7 @@ sub toSQL {
         } else {
             $sql = '';
         }
-        $sql .= "$val = ANY (".$self->SUPER::toSQL.")";
+        $sql .= "(".$self->SUPER::toSQL.") = ANY ($val)";
 
     } elsif (lc($op) eq '<> any') {
         $val = $$val[0] if (ref($val) eq 'ARRAY');
@@ -957,7 +957,7 @@ sub toSQL {
         } else {
             $sql = '';
         }
-        $sql .= "$val <> ANY (".$self->SUPER::toSQL.")";
+        $sql .= "(".$self->SUPER::toSQL.") <> ANY ($val)";
 
     } elsif (lc($op) eq 'is blank') {
         if ($rel && $rel->is_nullable) { # need to redo this
