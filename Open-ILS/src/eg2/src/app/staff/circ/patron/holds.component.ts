@@ -5,6 +5,7 @@ import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
+import {StoreService} from '@eg/core/store.service';
 
 @Component({
   templateUrl: 'holds.component.html',
@@ -16,6 +17,7 @@ export class HoldsComponent implements OnInit {
         private router: Router,
         private org: OrgService,
         private net: NetService,
+        private store: StoreService,
         public patronService: PatronService,
         public context: PatronContextService
     ) {}
@@ -24,8 +26,12 @@ export class HoldsComponent implements OnInit {
     }
 
     newHold() {
-        this.router.navigate(['/staff/catalog/search'],
-          {queryParams: {holdForBarcode: this.context.summary.patron.card().barcode()}});
+
+        this.store.setLocalItem(
+            'eg.circ.patron_hold_target',
+            this.context.summary.patron.card().barcode());
+
+        this.router.navigate(['/staff/catalog/search']);
     }
 }
 
