@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2021-03-31 14:38:47-0400\n"
+"POT-Creation-Date: 2021-10-29 09:10:42-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -139,7 +139,7 @@ msgstr ""
 msgid "Total Credit to Funding Source"
 msgstr ""
 
-#: field.cc.copy_location_filter.label:13419
+#: field.cc.copy_location_filter.label:13411
 msgid "Shelving Locations"
 msgstr ""
 
@@ -164,7 +164,7 @@ msgstr ""
 msgid "Reference"
 msgstr ""
 
-#: field.acpt.tag_type.label:13228
+#: field.acpt.tag_type.label:13220
 msgid "Copy Tag Type"
 msgstr ""
 
@@ -180,7 +180,7 @@ msgstr ""
 msgid "Fund Transfer ID"
 msgstr ""
 
-#: field.cct.automatic.label:13387
+#: field.cct.automatic.label:13379
 msgid "Automatically Managed?"
 msgstr ""
 
@@ -272,7 +272,7 @@ msgstr ""
 msgid "Deleted"
 msgstr ""
 
-#: field.cfg.members.label:13171
+#: field.cfg.members.label:13163
 msgid "Group Members"
 msgstr ""
 
@@ -282,7 +282,7 @@ msgstr ""
 msgid "Payment Timestamp"
 msgstr ""
 
-#: field.cct.id.label:13385
+#: field.cct.id.label:13377
 msgid "Carousel Type ID"
 msgstr ""
 
@@ -354,9 +354,9 @@ msgstr ""
 #: field.acqfs.owner.label:9467 field.acqpl.owner.label:9906
 #: field.acqpo.owner.label:9954 field.acqpoh.owner.label:10003
 #: field.acqedi.owner.label:10433 field.afs.owner.label:11227
-#: field.cbc.org_unit.label:13098 field.cctt.owner.label:13211
-#: field.acpt.owner.label:13233 field.cpt.owner.label:13359
-#: field.cc.owner.label:13410 field.cgs.owner.label:13506
+#: field.cbc.org_unit.label:13098 field.cctt.owner.label:13203
+#: field.acpt.owner.label:13225 field.cpt.owner.label:13351
+#: field.cc.owner.label:13402 field.cgs.owner.label:13498
 msgid "Owner"
 msgstr ""
 
@@ -561,7 +561,7 @@ msgstr ""
 msgid "Format"
 msgstr ""
 
-#: field.cra.context_org.label:13479
+#: field.cra.context_org.label:13471
 msgid "Context Org"
 msgstr ""
 
@@ -620,7 +620,7 @@ msgstr ""
 msgid "Max Fine Rule"
 msgstr ""
 
-#: field.cfgm.max_depth.label:13191
+#: field.cfgm.max_depth.label:13183
 msgid "Max Depth"
 msgstr ""
 
@@ -980,7 +980,7 @@ msgstr ""
 msgid "Permission Context"
 msgstr ""
 
-#: class.cfgm.label:13185
+#: class.cfgm.label:13177
 msgid "Floating Group Members"
 msgstr ""
 
@@ -1027,7 +1027,7 @@ msgstr ""
 #: field.acqfa.create_time.label:9852 field.acqfap.create_time.label:9886
 #: field.acqpoh.create_time.label:10007 field.acqlih.create_time.label:10173
 #: field.acqdfa.create_time.label:10917 field.uvs.create_time.label:11887
-#: field.cfdfs.create_time.label:12147 field.cc.create_time.label:13415
+#: field.cfdfs.create_time.label:12147 field.cc.create_time.label:13407
 msgid "Create Time"
 msgstr ""
 
@@ -1085,7 +1085,7 @@ msgstr ""
 #: field.acqligad.code.label:10334 field.acqliuad.code.label:10344
 #: field.acqlipad.code.label:10357 field.acqlilad.code.label:10417
 #: field.acqclt.code.label:10962 field.acqclet.code.label:10982
-#: field.cmrtm.code.label:12168 field.cctt.code.label:13209
+#: field.cmrtm.code.label:12168 field.cctt.code.label:13201
 msgid "Code"
 msgstr ""
 
@@ -1258,7 +1258,7 @@ msgstr ""
 msgid "Note Creator"
 msgstr ""
 
-#: field.cct.filter_by_age.label:13388
+#: field.cct.filter_by_age.label:13380
 msgid "Filter By Age?"
 msgstr ""
 
@@ -1271,7 +1271,7 @@ msgstr ""
 msgid "Passive"
 msgstr ""
 
-#: class.cctt.label:13207
+#: class.cctt.label:13199
 msgid "Copy Tag Types"
 msgstr ""
 
@@ -1504,7 +1504,7 @@ msgstr ""
 #: field.acqfsum.org.label:9816 field.acqfap.org.label:9881
 #: field.acqpl.org_unit.label:9907 field.acqclt.org_unit.label:10961
 #: field.acqclet.org_unit.label:10981 field.acqclp.org_unit.label:11058
-#: field.cfgm.org_unit.label:13189
+#: field.cfgm.org_unit.label:13181
 msgid "Org Unit"
 msgstr ""
 
@@ -1798,7 +1798,7 @@ msgstr ""
 msgid "URIs"
 msgstr ""
 
-#: class.acpt.label:13225
+#: class.acpt.label:13217
 msgid "Item Tags"
 msgstr ""
 
@@ -1951,7 +1951,7 @@ msgstr ""
 msgid "User Message (Limited Access)"
 msgstr ""
 
-#: field.cct.filter_by_copy_location.label:13390
+#: field.cct.filter_by_copy_location.label:13382
 msgid "Filter By Item Location?"
 msgstr ""
 
@@ -2095,7 +2095,7 @@ msgstr ""
 msgid "Survey"
 msgstr ""
 
-#: field.aus.id.label:2426 field.awss.id.label:13332
+#: field.aus.id.label:2426 field.awss.id.label:13324
 msgid "Setting ID"
 msgstr ""
 
@@ -2214,7 +2214,7 @@ msgstr ""
 #: field.acqlilad.description.label:10418 field.acqclt.description.label:10963
 #: field.acqclet.description.label:10983 field.acqclp.description.label:11060
 #: field.qbv.description.label:11436 field.cfdi.description.label:12123
-#: field.cra.description.label:13478
+#: field.cra.description.label:13470
 msgid "Description"
 msgstr ""
 
@@ -2295,7 +2295,7 @@ msgstr ""
 msgid "Circulation Limit Set Group Map"
 msgstr ""
 
-#: field.sre.active.label:5719 field.cc.active.label:13421
+#: field.sre.active.label:5719 field.cc.active.label:13413
 msgid "Is Active"
 msgstr ""
 
@@ -2336,7 +2336,7 @@ msgstr ""
 #: field.acqpo.edit_time.label:9956 field.acqpoh.edit_time.label:10008
 #: field.acqpon.edit_time.label:10038 field.jub.edit_time.label:10111
 #: field.acqlih.edit_time.label:10174 field.acqlin.edit_time.label:10233
-#: field.cc.edit_time.label:13416
+#: field.cc.edit_time.label:13408
 msgid "Edit Time"
 msgstr ""
 
@@ -2459,7 +2459,7 @@ msgstr ""
 #: field.viiad.tag.label:425 field.vmsp.tag.label:748 field.vmsq.tag.label:784
 #: field.acsaf.tag.label:2625 field.acsbf.tag.label:2662
 #: field.mfr.tag.label:4175 field.cmfpm.tag.label:11811
-#: field.uvu.tag.label:11991 field.acptcm.tag.label:13253
+#: field.uvu.tag.label:11991 field.acptcm.tag.label:13245
 msgid "Tag"
 msgstr ""
 
@@ -2510,8 +2510,8 @@ msgstr ""
 #: field.acqedi.label.label:10427 field.aea.label.label:10470
 #: field.aeas.label.label:10486 field.qbv.label.label:11434
 #: field.cmpctm.label.label:11828 field.cmpcsm.label.label:11845
-#: field.cmpcvm.label.label:11862 field.cctt.label.label:13210
-#: field.acpt.label.label:13229
+#: field.cmpcvm.label.label:11862 field.cctt.label.label:13202
+#: field.acpt.label.label:13221
 msgid "Label"
 msgstr ""
 
@@ -2649,8 +2649,8 @@ msgstr ""
 msgid "Juvenile?"
 msgstr ""
 
-#: field.actscecm.stat_cat.label:8290 field.aaactsc.stat_cat.label:13146
-#: field.aaasc.stat_cat.label:13158
+#: field.actscecm.stat_cat.label:8290 field.aaactsc.stat_cat.label:13138
+#: field.aaasc.stat_cat.label:13150
 msgid "Statistical Category"
 msgstr ""
 
@@ -2781,7 +2781,7 @@ msgstr ""
 msgid "Score"
 msgstr ""
 
-#: field.ccou.carousel.label:13448
+#: field.ccou.carousel.label:13440
 msgid "Carousel"
 msgstr ""
 
@@ -2865,7 +2865,7 @@ msgstr ""
 msgid "All Fund Combined Total"
 msgstr ""
 
-#: class.i18n_l.label:8872 field.cpt.locale.label:13361
+#: class.i18n_l.label:8872 field.cpt.locale.label:13353
 msgid "Locale"
 msgstr ""
 
@@ -3115,11 +3115,11 @@ msgstr ""
 #: class.aws.label:1666 field.aihu.workstation.label:2461
 #: field.ancihu.workstation.label:2482 field.circ.workstation.label:4922
 #: field.aacs.workstation.label:5023 field.combcirc.workstation.label:5100
-#: field.acirc.workstation.label:5184 field.awss.workstation.label:13335
+#: field.acirc.workstation.label:5184 field.awss.workstation.label:13327
 msgid "Workstation"
 msgstr ""
 
-#: field.cra.allow_expired.label:13484
+#: field.cra.allow_expired.label:13476
 msgid "Allow Expired Users"
 msgstr ""
 
@@ -3261,13 +3261,13 @@ msgstr ""
 msgid "Circulation"
 msgstr ""
 
-#: field.cc.editor.label:13414
+#: field.cc.editor.label:13406
 msgid "Editing User"
 msgstr ""
 
 #: field.cgf.enabled.label:876 field.atevdef.active.label:1433
 #: field.atevdefg.active.label:1482 field.cuat.enabled.label:3994
-#: field.cra.enabled.label:13480
+#: field.cra.enabled.label:13472
 msgid "Enabled"
 msgstr ""
 
@@ -3448,14 +3448,14 @@ msgstr ""
 #: field.acqpo.name.label:9963 field.acqpoh.name.label:10012
 #: field.acqlia.attr_name.label:10252 field.acqphsm.name.label:10390
 #: field.qbv.name.label:11433 field.uvs.name.label:11883
-#: field.cfdfs.name.label:12143 field.cfg.name.label:13169
-#: field.awss.name.label:13333 field.cct.name.label:13386
-#: field.cc.name.label:13411 field.cra.name.label:13477
-#: field.cgs.name.label:13507
+#: field.cfdfs.name.label:12143 field.cfg.name.label:13161
+#: field.awss.name.label:13325 field.cct.name.label:13378
+#: field.cc.name.label:13403 field.cra.name.label:13469
+#: field.cgs.name.label:13499
 msgid "Name"
 msgstr ""
 
-#: class.aaasc.label:13154
+#: class.aaasc.label:13146
 msgid "Circ-Archived Copy Statistical Category Entries"
 msgstr ""
 
@@ -3491,7 +3491,7 @@ msgstr ""
 #: field.xisnull.seq_no.label:11696 field.xnull.seq_no.label:11711
 #: field.xnum.seq_no.label:11724 field.xop.seq_no.label:11737
 #: field.xser.seq_no.label:11755 field.xstr.seq_no.label:11769
-#: field.xsubq.seq_no.label:11782 field.ccou.seq.label:13451
+#: field.xsubq.seq_no.label:11782 field.ccou.seq.label:13443
 msgid "Sequence Number"
 msgstr ""
 
@@ -3696,7 +3696,7 @@ msgid "Subfield"
 msgstr ""
 
 #: field.acn.creator.label:3325 field.sunit.creator.label:6042
-#: field.acp.creator.label:7832 field.cc.creator.label:13413
+#: field.acp.creator.label:7832 field.cc.creator.label:13405
 msgid "Creating User"
 msgstr ""
 
@@ -3727,7 +3727,7 @@ msgstr ""
 msgid "Max Fine Amount"
 msgstr ""
 
-#: class.ccou.label:13441
+#: class.ccou.label:13433
 msgid "Carousels Visible at Library"
 msgstr ""
 
@@ -3759,7 +3759,7 @@ msgstr ""
 
 #: field.ahr.hold_type.label:6597 field.ahopl.hold_type.label:6749
 #: field.alhr.hold_type.label:6837 field.combahr.hold_type.label:6922
-#: field.aahr.hold_type.label:6981 class.cht.label:13343
+#: field.aahr.hold_type.label:6981 class.cht.label:13335
 msgid "Hold Type"
 msgstr ""
 
@@ -4016,7 +4016,7 @@ msgstr ""
 msgid "Attribute Set"
 msgstr ""
 
-#: field.hasholdscount.count.label:13289
+#: field.hasholdscount.count.label:13281
 msgid "Holds Count"
 msgstr ""
 
@@ -4032,7 +4032,7 @@ msgstr ""
 msgid "MARC Fields"
 msgstr ""
 
-#: class.hasholdscount.label:13274
+#: class.hasholdscount.label:13266
 msgid "Copy Has Holds Count"
 msgstr ""
 
@@ -4125,7 +4125,7 @@ msgstr ""
 msgid "Open Circulation Count"
 msgstr ""
 
-#: field.csp.block_list.label:4578 field.cra.block_list.label:13485
+#: field.csp.block_list.label:4578 field.cra.block_list.label:13477
 msgid "Block List"
 msgstr ""
 
@@ -4201,7 +4201,7 @@ msgstr ""
 msgid "Serial Record Entry"
 msgstr ""
 
-#: class.cpt.label:13351
+#: class.cpt.label:13343
 msgid "Print Templates"
 msgstr ""
 
@@ -4374,7 +4374,7 @@ msgstr ""
 msgid "Legacy Stat Cat 2"
 msgstr ""
 
-#: field.cc.type.label:13409
+#: field.cc.type.label:13401
 msgid "Carousel Type"
 msgstr ""
 
@@ -4411,7 +4411,7 @@ msgstr ""
 msgid "Invoice Payment Method"
 msgstr ""
 
-#: class.cct.label:13379
+#: class.cct.label:13371
 msgid "Carousel Types"
 msgstr ""
 
@@ -4489,7 +4489,7 @@ msgstr ""
 msgid "All Circulations"
 msgstr ""
 
-#: field.cc.age_filter.label:13417
+#: field.cc.age_filter.label:13409
 msgid "Age Limit"
 msgstr ""
 
@@ -4720,7 +4720,7 @@ msgstr ""
 msgid "Filters"
 msgstr ""
 
-#: class.cc.label:13402
+#: class.cc.label:13394
 msgid "Carousels"
 msgstr ""
 
@@ -4857,7 +4857,7 @@ msgstr ""
 msgid "Custom Toolbar"
 msgstr ""
 
-#: field.ccou.override_name.label:13449
+#: field.ccou.override_name.label:13441
 msgid "Override Name"
 msgstr ""
 
@@ -4867,7 +4867,7 @@ msgstr ""
 msgid "Last Payment Note"
 msgstr ""
 
-#: field.cra.restrict_to_org.label:13482
+#: field.cra.restrict_to_org.label:13474
 msgid "Restrict by Home Library"
 msgstr ""
 
@@ -4884,7 +4884,7 @@ msgstr ""
 msgid "User ID"
 msgstr ""
 
-#: class.awss.label:13326
+#: class.awss.label:13318
 msgid "Workstation Setting"
 msgstr ""
 
@@ -5121,7 +5121,7 @@ msgstr ""
 msgid "Penalty"
 msgstr ""
 
-#: field.aaactsc.xact.label:13145 field.aaasc.xact.label:13157
+#: field.aaactsc.xact.label:13137 field.aaasc.xact.label:13149
 msgid "Circ"
 msgstr ""
 
@@ -5139,7 +5139,7 @@ msgstr ""
 
 #: field.aun.pub.label:2355 field.acpn.pub.label:4143
 #: field.acpl.opac_visible.label:5605 field.acplg.opac_visible.label:5634
-#: field.acpt.pub.label:13232
+#: field.acpt.pub.label:13224
 msgid "Is OPAC Visible?"
 msgstr ""
 
@@ -5287,8 +5287,8 @@ msgid "Total Spent"
 msgstr ""
 
 #: field.sunit.floating.label:6061 field.acp.floating.label:7852
-#: field.act.floating.label:8082 class.cfg.label:13166
-#: field.cfgm.floating_group.label:13188
+#: field.act.floating.label:8082 class.cfg.label:13158
+#: field.cfgm.floating_group.label:13180
 msgid "Floating Group"
 msgstr ""
 
@@ -5346,7 +5346,7 @@ msgstr ""
 msgid "Receive Count"
 msgstr ""
 
-#: class.cra.label:13475
+#: class.cra.label:13467
 msgid "Remote Patron Authentication Configuration Profile"
 msgstr ""
 
@@ -5358,7 +5358,7 @@ msgstr ""
 msgid "Billing Address Stage"
 msgstr ""
 
-#: class.cuat.label:3986 field.cra.usr_activity_type.label:13486
+#: class.cuat.label:3986 field.cra.usr_activity_type.label:13478
 msgid "User Activity Type"
 msgstr ""
 
@@ -5473,7 +5473,7 @@ msgstr ""
 
 #: field.acpl.url.label:5613 field.acqpro.url.label:9114
 #: field.uvu.full_url.label:11994 field.uvuv.url.label:12081
-#: field.acpt.url.label:13234
+#: field.acpt.url.label:13226
 msgid "URL"
 msgstr ""
 
@@ -5590,7 +5590,7 @@ msgstr ""
 msgid "Class"
 msgstr ""
 
-#: field.rb.last_calc.label:316 field.cc.last_refresh_time.label:13420
+#: field.rb.last_calc.label:316 field.cc.last_refresh_time.label:13412
 msgid "Last Refresh Time"
 msgstr ""
 
@@ -5671,7 +5671,7 @@ msgstr ""
 msgid "Notifications Phone Number"
 msgstr ""
 
-#: field.cc.id.label:13408
+#: field.cc.id.label:13400
 msgid "Carousel ID"
 msgstr ""
 
@@ -5724,7 +5724,7 @@ msgstr ""
 msgid "Last Transaction ID"
 msgstr ""
 
-#: field.acpt.staff_note.label:13231
+#: field.acpt.staff_note.label:13223
 msgid "Staff Note"
 msgstr ""
 
@@ -5740,7 +5740,7 @@ msgstr ""
 msgid "Padding"
 msgstr ""
 
-#: field.cgs.api_key.label:13509
+#: field.cgs.api_key.label:13501
 msgid "API Key"
 msgstr ""
 
@@ -5797,11 +5797,11 @@ msgstr ""
 #: field.acqclpa.id.label:11077 field.cmfpm.id.label:11809
 #: field.cmpcsm.id.label:11840 field.cmpcvm.id.label:11859
 #: field.cfdfs.id.label:12142 field.cbc.id.label:13096
-#: field.coustl.id.label:13122 field.aaactsc.id.label:13144
-#: field.aaasc.id.label:13156 field.cfg.id.label:13168
-#: field.cfgm.id.label:13187 field.acpt.id.label:13227
-#: field.acptcm.id.label:13251 field.ccou.id.label:13447
-#: field.cgs.id.label:13504
+#: field.coustl.id.label:13122 field.aaactsc.id.label:13136
+#: field.aaasc.id.label:13148 field.cfg.id.label:13160
+#: field.cfgm.id.label:13179 field.acpt.id.label:13219
+#: field.acptcm.id.label:13243 field.ccou.id.label:13439
+#: field.cgs.id.label:13496
 msgid "ID"
 msgstr ""
 
@@ -6111,7 +6111,7 @@ msgstr ""
 msgid "Notify by SMS?"
 msgstr ""
 
-#: field.cc.max_items.label:13422
+#: field.cc.max_items.label:13414
 msgid "Maximum Items"
 msgstr ""
 
@@ -6176,8 +6176,8 @@ msgstr ""
 #: field.sdistn.value.label:5905 field.sin.value.label:6153
 #: field.smhc.value.label:6196 field.asce.value.label:8616
 #: field.acqlia.attr_value.label:10253 field.bmpc.value.label:11796
-#: field.cmpcvm.value.label:11860 field.acpt.value.label:13230
-#: field.awss.value.label:13334
+#: field.cmpcvm.value.label:11860 field.acpt.value.label:13222
+#: field.awss.value.label:13326
 msgid "Value"
 msgstr ""
 
@@ -6292,7 +6292,7 @@ msgstr ""
 msgid "Claim ID"
 msgstr ""
 
-#: field.cfg.manual.label:13170
+#: field.cfg.manual.label:13162
 msgid "Manual"
 msgstr ""
 
@@ -6526,11 +6526,11 @@ msgstr ""
 msgid "Use ID"
 msgstr ""
 
-#: class.cgs.label:13502
+#: class.cgs.label:13494
 msgid "Geographic Location Service"
 msgstr ""
 
-#: field.cfgm.stop_depth.label:13190
+#: field.cfgm.stop_depth.label:13182
 msgid "Stop Depth"
 msgstr ""
 
@@ -6562,7 +6562,7 @@ msgstr ""
 
 #: field.acpn.owning_copy.label:4142 field.alci.copy.label:7922
 #: field.aca.copy.label:7989 field.aaca.copy.label:8025
-#: field.acptcm.copy.label:13252
+#: field.acptcm.copy.label:13244
 msgid "Copy"
 msgstr ""
 
@@ -6783,7 +6783,7 @@ msgstr ""
 msgid "Funding Source Credit ID"
 msgstr ""
 
-#: field.cc.owning_lib_filter.label:13418
+#: field.cc.owning_lib_filter.label:13410
 msgid "Item Libraries"
 msgstr ""
 
@@ -6894,7 +6894,7 @@ msgstr ""
 msgid "User Bucket Note"
 msgstr ""
 
-#: field.cct.filter_by_copy_owning_lib.label:13389
+#: field.cct.filter_by_copy_owning_lib.label:13381
 msgid "Filter By Item Owning Library?"
 msgstr ""
 
@@ -7082,7 +7082,7 @@ msgstr ""
 msgid "Mailing Address"
 msgstr ""
 
-#: class.cwst.label:13298
+#: class.cwst.label:13290
 msgid "Workstation Setting Type"
 msgstr ""
 
@@ -7095,7 +7095,7 @@ msgstr ""
 msgid "URL Selector"
 msgstr ""
 
-#: field.cgs.service_code.label:13508
+#: field.cgs.service_code.label:13500
 msgid "Service Code"
 msgstr ""
 
@@ -7621,7 +7621,7 @@ msgstr ""
 msgid "Total Owed"
 msgstr ""
 
-#: field.cra.perm.label:13481
+#: field.cra.perm.label:13473
 msgid "Permission Required by User"
 msgstr ""
 
@@ -7740,7 +7740,7 @@ msgstr ""
 msgid "Definition ID"
 msgstr ""
 
-#: class.aaactsc.label:13142
+#: class.aaactsc.label:13134
 msgid "Circ-Archived Patron Statistical Category Entries"
 msgstr ""
 
@@ -7779,7 +7779,7 @@ msgstr ""
 msgid "In House Use"
 msgstr ""
 
-#: field.ccou.org_unit.label:13450
+#: field.ccou.org_unit.label:13442
 msgid "Library"
 msgstr ""
 
@@ -8045,7 +8045,7 @@ msgstr ""
 msgid "Complete Time"
 msgstr ""
 
-#: class.acptcm.label:13249
+#: class.acptcm.label:13241
 msgid "Copy Tag Copy Map"
 msgstr ""
 
@@ -8555,7 +8555,7 @@ msgstr ""
 msgid "Parent Group"
 msgstr ""
 
-#: field.cra.allow_inactive.label:13483
+#: field.cra.allow_inactive.label:13475
 msgid "Allow Inactive Users"
 msgstr ""
 
@@ -8605,8 +8605,8 @@ msgid "Closed Dates"
 msgstr ""
 
 #: field.actsce.value.label:7522 field.rsce1.value.label:12557
-#: field.rsce2.value.label:12568 field.aaactsc.value.label:13147
-#: field.aaasc.value.label:13159
+#: field.rsce2.value.label:12568 field.aaactsc.value.label:13139
+#: field.aaasc.value.label:13151
 msgid "Entry Value"
 msgstr ""
 
@@ -8637,7 +8637,7 @@ msgstr ""
 
 #: field.acp.id.label:7843 field.erfcc.id.label:10830 field.rlc.id.label:12427
 #: field.circbyyr.copy.label:12787 field.rocit.id.label:12861
-#: field.hasholdscount.id.label:13288
+#: field.hasholdscount.id.label:13280
 msgid "Copy ID"
 msgstr ""
 
@@ -8921,7 +8921,7 @@ msgstr ""
 #: field.aouct.active.label:7103 field.ccat.active.label:7942
 #: field.acqpro.active.label:9112 field.acqf.active.label:9581
 #: field.acqfsum.active.label:9823 field.cbc.active.label:13097
-#: field.cpt.active.label:13360 field.cgs.active.label:13505
+#: field.cpt.active.label:13352 field.cgs.active.label:13497
 msgid "Active"
 msgstr ""
 
@@ -9108,7 +9108,7 @@ msgstr ""
 msgid "Hold Pickup Lib"
 msgstr ""
 
-#: field.cc.bucket.label:13412
+#: field.cc.bucket.label:13404
 msgid "Bucket"
 msgstr ""
 
@@ -9557,7 +9557,7 @@ msgstr ""
 msgid "Can Have Users?"
 msgstr ""
 
-#: field.cfgm.exclude.label:13192
+#: field.cfgm.exclude.label:13184
 msgid "Exclude"
 msgstr ""
 
