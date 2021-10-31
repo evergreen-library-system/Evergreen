@@ -407,7 +407,6 @@ my @AUTOLOAD_FIELDS = qw/
     backdate
     reservation
     do_inventory_update
-    latest_inventory
     copy
     copy_id
     copy_barcode
@@ -2716,19 +2715,32 @@ sub do_checkin {
         $self->dont_change_lost_zero($dont_change_lost_zero);
     }
 
-    my $latest_inventory = Fieldmapper::asset::latest_inventory->new;
-
-    if ($self->do_inventory_update) {
-        $latest_inventory->inventory_date('now');
-        $latest_inventory->inventory_workstation($self->editor->requestor->wsid);
-        $latest_inventory->copy($self->copy->id());
-    } else {
-        my $alci = $self->editor->search_asset_latest_inventory(
-            {copy => $self->copy->id}
+    # Check if the copy can float to here. We need this for inventory
+    # and to see if the copy needs to transit or stay here later.
+    my $can_float = 0;
+    if ($self->copy->floating) {
+        my $res = $self->editor->json_query(
+            {   from =>
+                [
+                    'evergreen.can_float',
+                    $self->copy->floating->id,
+                    $self->copy->circ_lib,
+                    $self->circ_lib
+                ]
+            }
         );
-        $latest_inventory = $alci->[0]
+        $can_float = $U->is_true($res->[0]->{'evergreen.can_float'}) if $res;
     }
-    $self->latest_inventory($latest_inventory);
+
+    # Do copy inventory if necessary.
+    if ($self->do_inventory_update && ($self->circ_lib == $self->copy->circ_lib || $can_float)) {
+        my $aci = Fieldmapper::asset::copy_inventory->new();
+        $aci->inventory_date('now');
+        $aci->inventory_workstation($self->editor->requestor->wsid);
+        $aci->copy($self->copy->id());
+        $self->editor->create_asset_copy_inventory($aci);
+        $self->checkin_changed(1);
+    }
 
     if( $self->checkin_check_holds_shelf() ) {
         $self->bail_on_events(OpenILS::Event->new('NO_CHANGE'));
@@ -2940,20 +2952,7 @@ sub do_checkin {
     
             } else {
                 # copy needs to transit "home", or stick here if it's a floating copy
-                my $can_float = 0;
-                if ($self->copy->floating && ($self->manual_float || !$U->is_true($self->copy->floating->manual)) && !$self->remote_hold) { # copy is potentially floating?
-                    my $res = $self->editor->json_query(
-                        {   from => [
-                                'evergreen.can_float',
-                                $self->copy->floating->id,
-                                $self->copy->circ_lib,
-                                $self->circ_lib
-                            ]
-                        }
-                    );
-                    $can_float = $U->is_true($res->[0]->{'evergreen.can_float'}) if $res; 
-                }
-                if ($can_float) { # Yep, floating, stick here
+                if ($can_float && ($self->manual_float || !$U->is_true($self->copy->floating->manual)) && !$self->remote_hold) { # Yep, floating, stick here
                     $self->checkin_changed(1);
                     $self->copy->circ_lib( $self->circ_lib );
                     $self->update_copy;
@@ -2967,22 +2966,11 @@ sub do_checkin {
             }
         }
     } else { # no-op checkin
-        if ($self->copy->floating) { # XXX floating items still stick where they are even with no-op checkin?
-            my $res = $self->editor->json_query(
-                {
-                    from => [
-                        'evergreen.can_float',
-                        $self->copy->floating->id,
-                        $self->copy->circ_lib,
-                        $self->circ_lib
-                    ]
-                }
-            );
-            if ($res && @$res && $U->is_true($res->[0]->{'evergreen.can_float'})) {
-                $self->checkin_changed(1);
-                $self->copy->circ_lib( $self->circ_lib );
-                $self->update_copy;
-            }
+        # XXX floating items still stick where they are even with no-op checkin?
+        if ($self->copy->floating && $can_float) {
+            $self->checkin_changed(1);
+            $self->copy->circ_lib( $self->circ_lib );
+            $self->update_copy;
         }
     }
 
@@ -4019,22 +4007,17 @@ sub checkin_flesh_events {
         );
     }
 
-    if ($self->latest_inventory) {
-        # flesh some workstation fields before returning
-        $self->latest_inventory->inventory_workstation(
-            $self->editor->retrieve_actor_workstation([$self->latest_inventory->inventory_workstation])
-        );
+    # Flesh the latest inventory.
+    # NB: This survives the unflesh_copy below. Let's keep it that way.
+    my $alci = $self->editor->search_asset_latest_inventory([
+        {copy=>$self->copy->id},
+        {flesh => 1,
+         flesh_fields => {
+             alci => ['inventory_workstation']
+         }}]);
+    if ($alci && $alci->[0]) {
+        $self->copy->latest_inventory($alci->[0]);
     }
-
-    if($self->latest_inventory && !$self->latest_inventory->id) {
-        my $alci = $self->editor->search_asset_latest_inventory(
-            {copy => $self->latest_inventory->copy}
-        );
-        if($alci->[0]) {
-            $self->latest_inventory->id($alci->[0]->id);
-        }
-    }
-    $self->copy->latest_inventory($self->latest_inventory);
 
     for my $evt (@{$self->events}) {
 
@@ -4049,8 +4032,6 @@ sub checkin_flesh_events {
         $payload->{patron}  = $self->patron;
         $payload->{reservation} = $self->reservation
             unless (not $self->reservation or $self->reservation->cancel_time);
-        $payload->{latest_inventory} = $self->latest_inventory;
-        if ($self->do_inventory_update) { $payload->{do_inventory_update} = 1; }
 
         $evt->{payload}     = $payload;
     }
