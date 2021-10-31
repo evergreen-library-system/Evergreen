@@ -371,35 +371,39 @@ sub new_set_circ_lost {
 }
 
 __PACKAGE__->register_method(
-    method    => "update_latest_inventory",
-    api_name  => "open-ils.circ.circulation.update_latest_inventory");
+    method    => "update_copy_inventory",
+    api_name  => "open-ils.circ.circulation.update_copy_inventory");
 
-sub update_latest_inventory {
+sub update_copy_inventory {
     my( $self, $conn, $auth, $args ) = @_;
-    my $e = new_editor(authtoken=>$auth, xact=>1);
-    return $e->die_event unless $e->checkauth;
+    my $e = new_editor(authtoken=>$auth);
+    return [0, 0, $e->die_event] unless $e->checkauth;
 
+    my ($success,$failure) = (0,0);
+    my $spname = "aci_update_savepoint";
+    $e->xact_begin();
     my $copies = $$args{copy_list};
     foreach my $copyid (@$copies) {
-        my $copy = $e->retrieve_asset_copy($copyid);
-        my $alci = $e->search_asset_latest_inventory({copy => $copyid})->[0];
-
-        if($alci) {
-            $alci->inventory_date('now');
-            $alci->inventory_workstation($e->requestor->wsid);
-            $e->update_asset_latest_inventory($alci) or return $e->die_event;
+        my $aci = Fieldmapper::asset::copy_inventory->new;
+        $aci->inventory_date('now');
+        $aci->inventory_workstation($e->requestor->wsid);
+        $aci->copy($copyid);
+        $e->set_savepoint($spname);
+        if ($e->create_asset_copy_inventory($aci)) {
+            $success++;
         } else {
-            my $alci = Fieldmapper::asset::latest_inventory->new;
-            $alci->inventory_date('now');
-            $alci->inventory_workstation($e->requestor->wsid);
-            $alci->copy($copy->id);
-            $e->create_asset_latest_inventory($alci) or return $e->die_event;
+            $failure++;
+            $e->rollback_savepoint($spname);
         }
-
-        $copy->latest_inventory($alci);
+        $e->release_savepoint($spname);
     }
-    $e->commit;
-    return 1;
+    if ($success) {
+        $e->commit();
+    } else {
+        $e->rollback();
+    }
+
+    return [ $success, $failure ];
 }
 
 __PACKAGE__->register_method(
