@@ -703,11 +703,41 @@ function(egCore , orderByFilter , $q , $filter , $uibModal , ngToast , egConfirm
         });
     }
 
-    service.fetch_templates = function(org) {
-        return egCore.pcrud.search('act',
-            {owning_lib : egCore.org.fullPath(org, true)},
+    // return a hash keyed by the supplied OU IDs of
+    // of the list of copy templates owned by the full OU path
+    // of each one
+    service.fetch_templates = function(orgs) {
+        var deferred = $q.defer();
+        var _x = angular.isArray(orgs) ? orgs : [ orgs ];
+        var _orgs = _x.map(function(o) {
+            return egCore.org.get(o);
+        });
+        var _fps = {};
+        var _relevant_orgs = [];
+        angular.forEach(_orgs, function(o) {
+            var _fp = egCore.org.fullPath(o, true);
+            _fps[o.id()] = _fp;
+            angular.forEach(_fp, function (o2) {
+                if (_relevant_orgs.indexOf(o2) === -1) {
+                     _relevant_orgs.push(o2);
+                }
+            });
+        });
+        egCore.pcrud.search('act',
+            {owning_lib : _relevant_orgs},
             {order_by : { act : 'name' }}, {atomic : true}
-        );
+        ).then(function(list) {
+            var _tmpls = {};
+            angular.forEach(_orgs, function(o) {
+                _tmpls[o.id()] = list.filter(function(x) {
+                    return _fps[o.id()].indexOf(x.owning_lib()) > -1;
+                }).map(function(x) {
+                    return egCore.idl.toTypedHash(x);
+                });
+            });
+            deferred.resolve(_tmpls);
+        });
+        return deferred.promise;
     };
 
     service.print_routing_lists = function (bibId, items, check, force, print_rl) {
