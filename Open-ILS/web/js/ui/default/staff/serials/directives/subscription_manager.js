@@ -59,10 +59,8 @@ function($scope , $q , egSerialsCoreSvc , egCore , egGridDataProvider ,
     };
 
     $scope.receiving_templates = {};
-    angular.forEach(egCore.org.list(), function(org) {
-        egSerialsCoreSvc.fetch_templates(org.id()).then(function(list){
-            $scope.receiving_templates[org.id()] = egCore.idl.toTypedHash(list);
-        });
+    egSerialsCoreSvc.fetch_templates(egCore.org.list()).then(function(templates){
+        $scope.receiving_templates = templates;
     });
 
     $scope.add_subscription = function() {
@@ -641,10 +639,11 @@ function($scope , $q , $uibModalInstance , egCore , egSerialsCoreSvc ,
     $scope.rows = rows;
     $scope.args = { bind_unit_template : {} };
     $scope.templates = {};
-    angular.forEach(libs, function(org) {
-        egSerialsCoreSvc.fetch_templates(org.id).then(function(list){
-            $scope.templates[org.id] = egCore.idl.toTypedHash(list);
-        });
+    var _libs = libs.map(function(x) {
+        return x.id;
+    });
+    egSerialsCoreSvc.fetch_templates(_libs).then(function(templates){
+        $scope.templates = templates;
     });
 }])
 
