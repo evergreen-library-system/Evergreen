@@ -3,7 +3,7 @@
 :numbered:
 :toclevels: 3
 
-== Evergreen 3.8-beta ==
+== Evergreen 3.8.0 ==
 
 === Upgrade notes ===
 
@@ -50,6 +50,77 @@ CREATE TABLE auditor.backup_usr_alert_msg AS
           alert_message
    FROM auditor.actor_usr_history
    WHERE alert_message IS NOT NULL;
+----
+
+==== Reindexing for Search Suggestions ====
+
+The upgrade includes a partial reindexing to update search suggestions. After
+running the schema upgrade script, e.g., `version-upgrade/3.7.1-3.8.0-upgrade-db.sql`,
+the reindexing can be done as follows.
+
+First, in a `psql` session connected to your Evergreen database, run:
+
+[source,sql]
+----
+\a
+\t
+
+\o title
+select value from metabib.title_field_entry where source in (select id from biblio.record_entry where not deleted);
+\o author
+select value from metabib.author_field_entry where source in (select id from biblio.record_entry where not deleted);
+\o subject
+select value from metabib.subject_field_entry where source in (select id from biblio.record_entry where not deleted);
+\o series
+select value from metabib.series_field_entry where source in (select id from biblio.record_entry where not deleted);
+\o identifier
+select value from metabib.identifier_field_entry where source in (select id from biblio.record_entry where not deleted);
+\o keyword
+select value from metabib.keyword_field_entry where source in (select id from biblio.record_entry where not deleted);
+
+\o
+\a
+\t
+\q
+----
+
+Then, from the command line:
+
+[source,sh]
+----
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl title > title.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl author > author.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl subject > subject.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl series > series.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl identifier > identifier.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl keyword > keyword.sql
+----
+
+Then finally, back in `psql`:
+
+[source,sql]
+----
+ALTER TABLE search.symspell_dictionary SET UNLOGGED;
+TRUNCATE search.symspell_dictionary;
+
+\i identifier.sql
+\i author.sql
+\i title.sql
+\i subject.sql
+\i series.sql
+\i keyword.sql
+
+CLUSTER search.symspell_dictionary USING symspell_dictionary_pkey;
+REINDEX TABLE search.symspell_dictionary;
+ALTER TABLE search.symspell_dictionary SET LOGGED;
+VACUUM ANALYZE search.symspell_dictionary;
+
+DROP TABLE search.symspell_dictionary_partial_title;
+DROP TABLE search.symspell_dictionary_partial_author;
+DROP TABLE search.symspell_dictionary_partial_subject;
+DROP TABLE search.symspell_dictionary_partial_series;
+DROP TABLE search.symspell_dictionary_partial_identifier;
+DROP TABLE search.symspell_dictionary_partial_keyword;
 ----
 
 ==== Updating Reports on Patron Notes ====
