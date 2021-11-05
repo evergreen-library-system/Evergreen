@@ -430,7 +430,6 @@ sub load_common {
     $self->load_org_util_funcs;
     $self->load_perm_funcs;
 
-    # FIXME - move carousel helpers to a separate file
     $ctx->{get_visible_carousels} = sub {
         my $org_unit = $self->ctx->{carousel_loc} || $self->ctx->{physical_loc} || $self->cgi->param('loc') || $self->ctx->{aou_tree}->()->id;
         return $U->simplereq(
@@ -441,36 +440,11 @@ sub load_common {
     };
     $ctx->{get_carousel} = sub {
         my $id = shift;
-
-        my $carousel = $e->retrieve_container_carousel($id);
-        my $ret = {
-            id   => $id,
-            name => $carousel->name
-        };
-        my $q = {
-            select => { bre => ['id'], mfde => [{ column => 'value', alias => 'title' }] },
-            from   => {
-                bre => {
-                    cbrebi => {
-                        join => {
-                            cbreb => {
-                                join => { cc => {} }
-                            }
-                        }
-                    },
-                    mfde => {}
-                }
-            },
-            where  => {
-                '+cc' => { id => $id },
-                '+bre' => { deleted => 'f' },
-                '+mfde' => { name => 'title' }
-            },
-            order_by => {cbrebi => ['pos','create_time']}
-        };
-        my $r = $e->json_query($q);
-        $ret->{bibs} = $r;
-        return $ret;
+        return $U->simplereq(
+            'open-ils.actor',
+            'open-ils.actor.carousel.get_contents',
+            $id
+        );
     };
 
     $ctx->{fetch_display_fields} = sub {

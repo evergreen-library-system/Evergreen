@@ -19,6 +19,50 @@ my $logger = "OpenSRF::Utils::Logger";
 sub initialize { return 1; }
 
 __PACKAGE__->register_method(
+    method  => "get_carousel_contents",
+    api_name    => "open-ils.actor.carousel.get_contents",
+    authoritative => 1,
+    notes        => <<"    NOTES");
+        Given a carousel ID, returns the carousel name and any publicly-visible
+        bibs from the associated bucket
+        PARAMS(carousel_id)
+    NOTES
+
+sub get_carousel_contents {
+    my($self, $client, $id) = @_;
+    my $e = new_editor();
+    my $carousel = $e->retrieve_container_carousel($id);
+    my $ret = {
+        id   => $id,
+        name => $carousel->name
+    };
+    my $q = {
+        select => { bre => ['id'], mfde => [{ column => 'value', alias => 'title' }] },
+        from   => {
+            bre => {
+                cbrebi => {
+                    join => {
+                        cbreb => {
+                            join => { cc => {} }
+                        }
+                    }
+                },
+                mfde => {}
+            }
+        },
+        where  => {
+            '+cc' => { id => $id },
+            '+bre' => { deleted => 'f' },
+            '+mfde' => { name => 'title' }
+        },
+        order_by => {cbrebi => ['pos','create_time']}
+    };
+    my $r = $e->json_query($q);
+    $ret->{bibs} = $r;
+    return $ret;
+}
+
+__PACKAGE__->register_method(
     method  => "retrieve_carousels_at_org",
     api_name    => "open-ils.actor.carousel.retrieve_by_org",
     authoritative => 1,
