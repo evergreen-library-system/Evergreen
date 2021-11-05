@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1306', :eg_version);
 
 -- We don't pass this function arrays with nulls, so we save 5% not testing for that
 CREATE OR REPLACE FUNCTION evergreen.text_array_merge_unique (
