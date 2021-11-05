@@ -21,4 +21,7 @@ DROP TABLE asset.opac_visible_copies;
 
 DROP FUNCTION IF EXISTS asset.refresh_opac_visible_copies_mat_view();
 
+DROP TYPE search.search_result;
+DROP TYPE search.search_args;
+
 COMMIT;
