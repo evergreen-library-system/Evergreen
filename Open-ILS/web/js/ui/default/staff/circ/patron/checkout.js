@@ -349,7 +349,7 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
             alias : cusr.alias(),
             has_email : Boolean($scope.has_email_address()),
             has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone()),
-			juvenile : cusr.juvenile()
+            juvenile : cusr.juvenile()
         };
 
         return egCore.print.print({
