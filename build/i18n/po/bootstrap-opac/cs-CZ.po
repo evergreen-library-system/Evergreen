@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-10-07 17:12+0000\n"
-"PO-Revision-Date: 2020-09-18 20:01+0000\n"
+"POT-Creation-Date: 2021-10-12 19:02+0000\n"
+"PO-Revision-Date: 2021-04-09 18:54+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-10-08 05:46+0000\n"
-"X-Generator: Launchpad (build d50d1e75c500726862802414f880ee3e3bb759bf)\n"
+"X-Launchpad-Export-Date: 2021-10-13 04:53+0000\n"
+"X-Generator: Launchpad (build 8a94da2fac127f5e46a49fd1140e43759d578803)\n"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:62
 msgid ""
@@ -35,16 +35,16 @@ msgstr ""
 
 #. (pubdate_clean)
 #. (copyright_clean)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:119
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:129
 msgid " (%1)"
 msgstr " (%1)"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:166
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:256
 msgid " / "
 msgstr " / "
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:388
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:394
 msgid " Add %1 to basket"
 msgstr " Přidat %1 do košíku"
 
@@ -53,7 +53,7 @@ msgid " Due "
 msgstr " K vrácení "
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:395
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:401
 msgid " Remove %1 from basket"
 msgstr " Odebrat %1 z košíku"
 
@@ -65,15 +65,15 @@ msgstr " Vráceno&#42;"
 msgid " Returned/Renewed"
 msgstr " Vráceno/Prodlouženo"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:403
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:409
 msgid " View Basket"
 msgstr " Zobrazit košík"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:405
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:411
 msgid " View My Basket"
 msgstr " Zobrazit můj košík"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:132
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:218
 msgid " edit"
 msgstr " upravit"
 
@@ -98,11 +98,11 @@ msgid "%1"
 msgstr "%1"
 
 #. (money(ctx.fines.balance_owed))
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:44
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/last_chance_form.tt2:13
 msgid "%1 "
 msgstr "%1 "
 
-#. (ctx.user.first_given_name, ctx.user.family_name)
+#. (ctx.user.pref_first_given_name || ctx.user.first_given_name, ctx.user.pref_family_name || ctx.user.family_name)
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:44
 msgid "%1 %2"
 msgstr "%1 %2"
@@ -110,12 +110,12 @@ msgstr "%1 %2"
 #. (copy.label, copy_org.name)
 #. (title, hold.hold.part.label)
 #. (title, part.label)
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:160 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:346 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:92 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:57
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:174 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:360 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:93 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:57
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
 
 #. (bib_lib_name)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:63
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:122
 msgid "%1 (foreign item)"
 msgstr "%1 (cizí exemplář)"
 
@@ -129,6 +129,16 @@ msgstr "%1 - %2"
 msgid "%1 OpenSearch"
 msgstr "%1 OpenSearch"
 
+#. (POSIX.sprintf("%.01f", km))
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:29
+msgid "%1 km"
+msgstr "%1 km"
+
+#. (POSIX.sprintf("%.01f", km / 1.609))
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:29
+msgid "%1 mi"
+msgstr "%1 mi"
+
 #. (ou_avail, ou_count, ou_name)
 #. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
 #. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
@@ -141,7 +151,7 @@ msgid "%m/%d/%Y"
 msgstr "%d.%m.%Y"
 
 #. (ctx.record_hold_count, ctx.copy_summary.$count_entry.count)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:471
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_counts.tt2:57
 msgid ""
 "%quant(%1,current hold,current holds) with %quant(%2,total copy,total "
 "copies)."
@@ -171,7 +181,7 @@ msgid "(%1)"
 msgstr "(%1)"
 
 #. (example)
-#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:177 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:198
+#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:179 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:199
 msgid "(Example: %1)"
 msgstr "(Příklad: %1)"
 
@@ -185,12 +195,12 @@ msgstr "(Zobrazit)"
 
 #. ("<strong>&quot;' _ i18n_searchphrase _ '&quot;</strong>")
 #. ("<strong>' _ i18n_searchtrunc _ '</strong>")
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:44 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:51
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:54 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:61
 msgid "(example: %1)"
 msgstr "(příklad: %1)"
 
 #. ("<strong>&quot;^' _ i18n_searchbegins _ '&quot;</strong>", "<em>' _ i18n_searchbegins _ '</em>", "<strong>&quot;' _ i18n_searchends _ '$&quot;</strong>", "<em>' _ i18n_searchends _ '</em>")
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:59
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:69
 msgid ""
 "(examples: %1 for phrases that begin with the term %2. %3 for phrases that "
 "end in %4.)"
@@ -210,9 +220,13 @@ msgstr "(nezobrazeno)"
 msgid "(page %1 of %2)"
 msgstr "(strana %1 z  %2)"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:173
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:195
 msgid "- All Parts -"
 msgstr "- Všecny části -"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:143
+msgid "- Hold Groups -"
+msgstr "- Rezervační skupiny -"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/check_value_selector.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/parts/coded_value_selector.tt2:24 ../../Open-ILS/src/templates-bootstrap/opac/parts/filter_group_selector.tt2:21
 msgid "-- Any --"
@@ -226,7 +240,7 @@ msgstr "-- Akce pro košík --"
 msgid "... from basket"
 msgstr "... z košiku"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:223
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:95 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:245
 msgid ""
 "<br>No configured Email address. See \"My Account\" for setting your Email "
 "address."
@@ -352,6 +366,14 @@ msgstr ""
 "class='sumNum'>%1</span>Poplatky"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3
+msgid "<i class='fas fa-redo' aria-hidden='true'></i> Hold Groups"
+msgstr "<i class='fas fa-redo' aria-hidden='true'></i> Hold Groups"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3
+msgid "<i class='fas fa-road' aria-hidden='true'></i> Curbside Pickup"
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3
 msgid "<i class='fas fa-search' aria-hidden='true'></i> Search & History"
 msgstr ""
 "<i class='fas fa-search' aria-hidden='true'></i> Vyhledávání a historie"
@@ -377,7 +399,7 @@ msgstr "Je nutné zadat jméno seznamu"
 msgid "A registration error has occurred"
 msgstr "Při registraci nastala chyba"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:266
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:288
 msgid ""
 "A suspended hold will retain its place in the queue, but will not be "
 "fulfilled until it has been activated."
@@ -385,7 +407,7 @@ msgstr ""
 "Pozastavená rezervace zůstane na svém místě ve frontě, ale nebude vyřízena, "
 "dokud nebude aktivována."
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:106
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:107
 msgid "AND"
 msgstr "A zároveň"
 
@@ -441,15 +463,19 @@ msgstr "Nastavení účtu"
 msgid "Accumulation and Frequency of Use Note: "
 msgstr "Poznámka k akumulaci nebo četnosti užití: "
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:79
+msgid "Action"
+msgstr ""
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/contents.tt2:2
 msgid "Action Note: "
 msgstr "Poznámka o akci "
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:702 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:707 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3596 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3601 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_checkout.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_circs.tt2:21 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds.tt2:28 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds_ready.tt2:25 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_place_hold.tt2:25
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:711 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:716 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3621 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3626 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_checkout.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_circs.tt2:21 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds.tt2:28 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds_ready.tt2:25 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_place_hold.tt2:25 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_subscriptions.tt2:30
 msgid "Actions"
 msgstr "Akce"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:26
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:27
 msgid "Activate"
 msgstr "Aktivovat"
 
@@ -457,7 +483,7 @@ msgstr "Aktivovat"
 msgid "Activate On"
 msgstr "Aktivovat k datu"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:279
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:301
 msgid "Activate on"
 msgstr "Aktivovat k datu"
 
@@ -469,11 +495,11 @@ msgstr "Aktivní adresy"
 msgid "Active Barcode"
 msgstr "Čárový kód aktivního průkazu"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:50
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:103
 msgid "Active/Create Date"
 msgstr "Datum aktivace/vytvoření"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:70
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:72
 msgid "Active?"
 msgstr "Aktivní?"
 
@@ -485,8 +511,8 @@ msgstr "Účinkující"
 msgid "Adapter"
 msgstr "Autor adaptace"
 
-#. (attrs.title)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:406
+#. (esc_title)
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:432
 msgid "Add %1 to basket"
 msgstr "Přidat %1 do košíku"
 
@@ -498,15 +524,15 @@ msgstr "Přidat košík do seznamu"
 msgid "Add Basket to Saved List"
 msgstr "Přidat košík do uloženého seznamu"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/expert.tt2:43 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:17
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:54 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/expert.tt2:43 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:17
 msgid "Add Search Row"
 msgstr "Přidat vyhledávací řádek"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:380 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:84 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:85
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:386 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:94 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:95
 msgid "Add to Basket"
 msgstr "Přidat do košíku"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:390 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:408
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:396 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:434
 msgid "Add to basket"
 msgstr "Přidat do košíku"
 
@@ -538,7 +564,7 @@ msgstr "Další informace o rejstříku"
 msgid "Additional Physical Form available Note: "
 msgstr "Poznámka o doplňkovém fyzickém nosiči "
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/base.tt2:67
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/base.tt2:74
 msgid "Additional Resources"
 msgstr "Doplňkové zdroje"
 
@@ -571,19 +597,19 @@ msgstr "Adresát"
 msgid "Addresses"
 msgstr "Adresy"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:40
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:50
 msgid "Adjacency"
 msgstr "Blízkost"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:303
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:325
 msgid "Advanced Hold Options"
 msgstr "Pokročilé možnosti rezervace"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/advanced.tt2:1 ../../Open-ILS/src/templates-bootstrap/opac/advanced.tt2:10 ../../Open-ILS/src/templates-bootstrap/opac/advanced.tt2:18 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:36 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_subnav.tt2:18 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_subnav.tt2:20
+#: ../../Open-ILS/src/templates-bootstrap/opac/advanced.tt2:1 ../../Open-ILS/src/templates-bootstrap/opac/advanced.tt2:10 ../../Open-ILS/src/templates-bootstrap/opac/advanced.tt2:18 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_subnav.tt2:18 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_subnav.tt2:20
 msgid "Advanced Search"
 msgstr "Pokročilé vyhledávání"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:92
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:93
 msgid "After"
 msgstr "Po"
 
@@ -592,9 +618,13 @@ msgstr "Po"
 msgid "After %1"
 msgstr "Po  %1"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:49
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:102
 msgid "Age Hold Protection"
 msgstr "Dočasné omezení rezervací"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:145 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:162
+msgid "Alert staff of your arrival"
+msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/config-fresh.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/config.tt2:3
 msgid "All Formats"
@@ -604,7 +634,7 @@ msgstr "Všechny formáty"
 msgid "All Libraries"
 msgstr "Ve všech knihovnách"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:160
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:182
 msgid "All Parts"
 msgstr "Všechny části"
 
@@ -621,11 +651,11 @@ msgstr ""
 msgid "Allow others to use my account"
 msgstr "Povolit ostatním použít můj účet"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:51 ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payments.tt2:39
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/last_chance_form.tt2:20 ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payments.tt2:39
 msgid "Amount"
 msgstr "Částka"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:95
+#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:95 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:96
 msgid ""
 "An error occurred browsing records. Please try again in a moment or report "
 "the issue to library staff."
@@ -637,7 +667,7 @@ msgstr ""
 msgid "Analyst"
 msgstr "Komentátor"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:55
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:65
 msgid "Anchored Searching"
 msgstr "Připojené vyhledávání"
 
@@ -669,7 +699,7 @@ msgstr "Odpůrce stěžovatele"
 msgid "Applicant"
 msgstr "Uchazeč"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:196
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:94
 msgid "April (4)"
 msgstr "Duben (4)"
 
@@ -677,11 +707,11 @@ msgstr "Duben (4)"
 msgid "Architect"
 msgstr "Architekt"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:43
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/last_chance_form.tt2:12
 msgid "Are you sure you are ready to charge "
 msgstr "Opravdu chcete zaplatit "
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:27
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:28
 msgid "Are you sure you wish to cancel the selected hold(s)?"
 msgstr "Opravdu chcete zrušit vybranou rezervaci (rezervace)?"
 
@@ -709,6 +739,10 @@ msgstr "Opravdu chcet prodloužit výpůjční lhůtu vybraných jednotek?"
 msgid "Arranger"
 msgstr "Autor aranžmá"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:74
+msgid "Arrival Notes"
+msgstr ""
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Art copyist"
 msgstr "Kopírovatel umění"
@@ -725,15 +759,23 @@ msgstr "Umělec"
 msgid "Artistic director"
 msgstr "Umělecký vedoucí"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:51 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:39
+msgid "Ascending"
+msgstr "Vzestupně"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Assignee"
 msgstr "Nabyvatel autorského práva"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:350
+msgid "Associated Courses: "
+msgstr "Připojené kurzy: "
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Associated name"
 msgstr "Přidružené jméno"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:123
+#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:123 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:125
 msgid "At least"
 msgstr "Minimálně"
 
@@ -749,11 +791,11 @@ msgstr "Licitátor"
 msgid "Audience"
 msgstr "Čtenářské určení"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:200
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:98
 msgid "August (8)"
 msgstr "Srpen (8)"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:669 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:677 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:686 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:694 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:700 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:705 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3563 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3571 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3580 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3588 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3594 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3599 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:57 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:6 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:48 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_checkout.tt2:20 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_circs.tt2:19 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds.tt2:25 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds_ready.tt2:23 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_place_hold.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:54 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:84 ../../Open-ILS/src/templates-bootstrap/opac/parts/qtype_selector.tt2:1 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/authors.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:676 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:685 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:694 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:703 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:709 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:714 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3588 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3596 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3605 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3613 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3619 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3624 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:58 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:6 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:49 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_checkout.tt2:20 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_circs.tt2:19 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds.tt2:25 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds_ready.tt2:23 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_place_hold.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:55 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:86 ../../Open-ILS/src/templates-bootstrap/opac/parts/qtype_selector.tt2:1 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/authors.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2 ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:34
 msgid "Author"
 msgstr "Autor"
 
@@ -781,7 +823,7 @@ msgstr "Autor dialogů"
 msgid "Author of introduction, etc."
 msgstr "Autor předmluvy, atd."
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:302 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:338 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:69 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:82
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:305 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:352 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:70 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:83
 msgid "Author(s)"
 msgstr "Autor (autoři)"
 
@@ -821,7 +863,7 @@ msgstr "Poznámky k oceněním: "
 msgid "Awards, Reviews, & Suggested Reads"
 msgstr "Ocenění, recenze a další doporučené čtení"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:65
+#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:65 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:76
 msgid "Back"
 msgstr "Zpět"
 
@@ -841,7 +883,7 @@ msgstr "Zpět do Mého účtu"
 msgid "Back to Payments History"
 msgstr "Zpět na historii plateb"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/record/email.tt2:28 ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:28
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/email.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:13 ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:31
 msgid "Back to Record"
 msgstr "Zpět na záznam"
 
@@ -849,11 +891,11 @@ msgstr "Zpět na záznam"
 msgid "Back to results"
 msgstr "Zpět k výsledkům"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:236
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:243
 msgid "Badges:"
 msgstr "Známky:"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:672 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:681 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3566 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3575 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:62 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:10 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:51 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:110 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:45
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:679 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:689 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3591 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3600 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:63 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:10 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:52 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:110 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:96
 msgid "Barcode"
 msgstr "Čárový kód"
 
@@ -861,7 +903,7 @@ msgstr "Čárový kód"
 msgid "Barcode:"
 msgstr "Čárový kód:"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:309
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:331
 msgid "Basic Hold Options"
 msgstr "Základní možnosti rezervace"
 
@@ -877,7 +919,7 @@ msgstr "Košík"
 msgid "Basket Warning"
 msgstr "Upozornění ke košíku"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:92
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:93
 msgid "Before"
 msgstr "Před"
 
@@ -886,7 +928,7 @@ msgstr "Před"
 msgid "Before %1"
 msgstr "Před %1"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:92
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:93
 msgid "Between"
 msgstr "Mezi"
 
@@ -895,7 +937,7 @@ msgstr "Mezi"
 msgid "Between %1 and %2"
 msgstr "Mezi %1 a %2"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/config-fresh.tt2:3
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/config-fresh.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/config.tt2:3
 msgid "Bib Level"
 msgstr "Bibliografická úroveň"
 
@@ -907,11 +949,11 @@ msgstr "Bibliografický předchůdce"
 msgid "Bibliography, etc. Note: "
 msgstr "Poznámka o bibliografii apod.: "
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:102
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:12
 msgid "Billing Information"
 msgstr "Informace o účetních transakcích"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:158 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:45
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:159 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:45
 msgid "Billing Type"
 msgstr "Typ poplatku"
 
@@ -939,7 +981,7 @@ msgstr "Bibliografické nebo historické údaje "
 msgid "Blurb writer"
 msgstr "Autor záložky"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/misc_util.tt2:844
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/misc_util.tt2:846
 msgid "Book cover"
 msgstr "Obálka knihy"
 
@@ -983,16 +1025,20 @@ msgstr "Hlasatel"
 msgid "Broader term"
 msgstr "Širší termín"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:53
+#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:53 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:43
 msgid "Browse"
 msgstr "Prohlížet"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_subnav.tt2:29 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_subnav.tt2:31
+msgid "Browse Courses"
+msgstr "Procházet kurzy"
+
 #. (control_qtype, control_bterm, control_locg)
-#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:51
+#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:51 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:40
 msgid "Browse for %1 starting with %2 in %3"
 msgstr "Prohlížet  %1   začít s %2 v %3"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:46
+#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:33
 msgid "Browse term"
 msgstr "Procházet jednotky"
 
@@ -1000,7 +1046,7 @@ msgstr "Procházet jednotky"
 msgid "Browse the Catalog"
 msgstr "Procházet katalog"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:58 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:11 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:52
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:59 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:11 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:53
 msgid "Call Number"
 msgstr "Signatura"
 
@@ -1008,7 +1054,7 @@ msgstr "Signatura"
 msgid "Call Number (Shelf Browse)"
 msgstr "Signatura (prohlížení regálu)"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:41
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:92
 msgid "Call Number / Copy Notes"
 msgstr "Signatura / Poznámky k exemplářům"
 
@@ -1016,11 +1062,11 @@ msgstr "Signatura / Poznámky k exemplářům"
 msgid "Call Number Browse"
 msgstr "Prohlížet signatury"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:673 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:682 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3567 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3576 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:295
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:680 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:690 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3592 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3601 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:309
 msgid "Call number"
 msgstr "Signatura"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:183
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:181 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:197
 msgid "Call number:"
 msgstr "Signatura:"
 
@@ -1028,7 +1074,7 @@ msgstr "Signatura:"
 msgid "Calligrapher"
 msgstr "Kaligraf"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/mylist/clear.tt2:16 ../../Open-ILS/src/templates-bootstrap/opac/mylist/email.tt2:23 ../../Open-ILS/src/templates-bootstrap/opac/mylist/print.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:79 ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:233 ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:42 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:23 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:319 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:155
+#: ../../Open-ILS/src/templates-bootstrap/opac/mylist/clear.tt2:16 ../../Open-ILS/src/templates-bootstrap/opac/mylist/email.tt2:23 ../../Open-ILS/src/templates-bootstrap/opac/mylist/print.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:125 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:28 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:148 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:158 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:168 ../../Open-ILS/src/templates-bootstrap/opac/myopac/last_chance_form.tt2:11 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:79 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:23 ../../Open-ILS/src/templates-bootstrap/opac/myopac/stripe_payment_form.tt2:99 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:341 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:155
 msgid "Cancel"
 msgstr "Zrušit"
 
@@ -1036,15 +1082,15 @@ msgstr "Zrušit"
 msgid "Cancel Hold"
 msgstr "Zrušit rezervaci"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:87
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:89
 msgid "Cancel if not filled by"
 msgstr "O rezervaci mám zájem do"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:689 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3583
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:697 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3608
 msgid "Cancel on"
 msgstr "Zrušení"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:60
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:62
 msgid "Cancel unless filled by"
 msgstr "Zrušit, pokud nebude splněno do"
 
@@ -1068,7 +1114,7 @@ msgstr "Obsazení"
 msgid "Caster"
 msgstr "litec"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/base.tt2:59
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/base.tt2:66
 msgid "Catalog"
 msgstr "Katalog"
 
@@ -1076,7 +1122,7 @@ msgstr "Katalog"
 msgid "Catalog Browse"
 msgstr "Prohlížení katalogu"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/home.tt2:6 ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:213
+#: ../../Open-ILS/src/templates-bootstrap/opac/home.tt2:6 ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:222
 msgid "Catalog Home"
 msgstr "Domovská stránka katalogu"
 
@@ -1108,7 +1154,7 @@ msgstr "Změnit preferovanou knihovnu"
 msgid "Character Attributes: "
 msgstr "Atributy charakteru: "
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:50
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/last_chance_form.tt2:19
 msgid "Charge/Fee"
 msgstr "Cena/poplatek"
 
@@ -1121,11 +1167,11 @@ msgid "Charges On Your Account"
 msgstr "Naúčtované poplatky"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:381
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:406
 msgid "Check Out %1"
 msgstr "Půjčit %1"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_checkout.tt2:15 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_checkout.tt2:8 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:365 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:382
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_checkout.tt2:15 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_checkout.tt2:8 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:371 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:407
 msgid "Check Out E-Item"
 msgstr "Půjčit elektronický exemplář"
 
@@ -1137,7 +1183,11 @@ msgstr "Historie výpůjček"
 msgid "Check Out Items"
 msgstr "Půjčit jednotky"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:141 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:142 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:154 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:48 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:73 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:285 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:77 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:78 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:55 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:56
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:179
+msgid "Check times"
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:141 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:142 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:155 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:48 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:74 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:285 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:77 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:78 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:56 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:57
 msgid "Check/Uncheck All"
 msgstr "Označit/odznačit vše"
 
@@ -1153,7 +1203,7 @@ msgstr "Ověřuji dostupnost pro tuto položku..."
 msgid "Checkout"
 msgstr "Výpůjčky"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:678 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3572 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:59 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:7
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:686 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3597 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:60 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:7
 msgid "Checkout Date"
 msgstr "Datum výpůjčky"
 
@@ -1169,7 +1219,7 @@ msgstr "Kameraman"
 msgid "Circulation Charges"
 msgstr "Výpůjční poplatky"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:48
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:99
 msgid "Circulation Modifier"
 msgstr "Modifikátor výpůjčky"
 
@@ -1185,11 +1235,11 @@ msgstr "Výpůjčky"
 msgid "Citation/References Note: "
 msgstr "Poznámka k citaci/referenci: "
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:134 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:207 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:250 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:1
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:44 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:207 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:250 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:1
 msgid "City"
 msgstr "Město / obec"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:452
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:458
 msgid "Clear Added Content Cache"
 msgstr "Vyčistit mezipaměť přidaného obsahu"
 
@@ -1197,15 +1247,15 @@ msgstr "Vyčistit mezipaměť přidaného obsahu"
 msgid "Clear Basket"
 msgstr "Vysypat košík"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:168 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:36
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:73 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:169 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:36
 msgid "Clear Form"
 msgstr "Vymazat formulář"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:37
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:47
 msgid "Clear basket"
 msgstr "Vysypat košík"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:293
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:315
 msgid "Clear basket after holds are requested?"
 msgstr "Vysypat košík po zadání rezervací?"
 
@@ -1217,7 +1267,7 @@ msgstr "Po odeslání e-mailu vysypat košík."
 msgid "Clear entire basket after printing."
 msgstr "Po vytištění vysypat košík."
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:35
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:36
 msgid "Clear entire basket when the above action is complete."
 msgstr "Po dokončení výše uvedené akce vysypat košík"
 
@@ -1240,7 +1290,7 @@ msgstr "Klikněte pro označení/odznačení všech položek"
 msgid "Client"
 msgstr "Klient"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_modal.tt2:85
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_modal.tt2:94
 msgid "Close"
 msgstr "Zavřít"
 
@@ -1308,7 +1358,7 @@ msgstr "Autor koncepce"
 msgid "Conductor"
 msgstr "Dirigent"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/mylist/clear.tt2:15 ../../Open-ILS/src/templates-bootstrap/opac/mylist/email.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:41 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:25
+#: ../../Open-ILS/src/templates-bootstrap/opac/mylist/clear.tt2:15 ../../Open-ILS/src/templates-bootstrap/opac/mylist/email.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/myopac/last_chance_form.tt2:10 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:25
 msgid "Confirm"
 msgstr "Potvrdit"
 
@@ -1324,9 +1374,13 @@ msgstr "Potvrdit tisk košíku"
 msgid "Confirm Clearing of Basket"
 msgstr "Potvrdit vysypání košíku"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:32
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/last_chance_form.tt2:1
 msgid "Confirm Payment"
 msgstr "Potvrdit platbu"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:154
+msgid "Confirm delivery of items"
+msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Conservator"
@@ -1352,7 +1406,7 @@ msgstr "Obsahuje"
 msgid "Contains phrase"
 msgstr "Obsahuje frázi"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/contents.tt2:211
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/contents.tt2:214
 msgid "Content descriptions"
 msgstr "Údaje o obsahu"
 
@@ -1392,7 +1446,7 @@ msgstr "Přispěvatel"
 msgid "Copy and Version Identification Note: "
 msgstr "Identifikační poznámka k exempláři a verzi: "
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:166
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:256
 msgid "Copy hold"
 msgstr "Rezervace exempláře"
 
@@ -1409,7 +1463,7 @@ msgstr "Nárokovatel copyrightu"
 msgid "Copyright holder"
 msgstr "Nositel autorského práva"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:225
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:232
 msgid "Copyright:"
 msgstr "Copyright:"
 
@@ -1433,6 +1487,22 @@ msgstr "Země"
 msgid "County"
 msgstr "Kraj"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:19
+msgid "Course Browse"
+msgstr "Procházení kurzu"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:1 ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:11
+msgid "Course Search"
+msgstr "Hledání kurzu"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:19
+msgid "Course Search Input"
+msgstr "Zadání vyhledávání v kurzech"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:111
+msgid "Courses"
+msgstr "Kurzy"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Court governed"
 msgstr "Soud podléhající nařízení"
@@ -1440,6 +1510,14 @@ msgstr "Soud podléhající nařízení"
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Court reporter"
 msgstr "Soudní zapisovatel"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:674 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:683 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:701 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:56 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:47 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:53 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:84 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:299
+msgid "Cover"
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/misc_util.tt2:894
+msgid "Cover Image"
+msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Cover designer"
@@ -1461,11 +1539,11 @@ msgstr "Poznámka ke kreditům tvorby / produkce: "
 msgid "Creator"
 msgstr "Vytvořil(a)"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:159
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:69
 msgid "Credit Card #"
 msgstr "Kreditní karta č."
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:154
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:64 ../../Open-ILS/src/templates-bootstrap/opac/myopac/stripe_payment_form.tt2:88
 msgid "Credit Card Information"
 msgstr "Informace o kreditní kartě"
 
@@ -1478,6 +1556,14 @@ msgid "Curator"
 msgstr "Kurátor"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3
+msgid "Curbside Pickup"
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:14
+msgid "Curbside Pickup Appointments"
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3
 msgid "Current Charges"
 msgstr "Aktuální poplatky"
 
@@ -1485,11 +1571,15 @@ msgstr "Aktuální poplatky"
 msgid "Current Email"
 msgstr "Aktuální e-mail"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_subscriptions.tt2:12
+msgid "Current Hold Groups"
+msgstr "Aktuální rezervační skupina"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:8
 msgid "Current Items Checked Out"
 msgstr "Aktuální výpůjčky"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:12
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:13
 msgid "Current Items on Hold"
 msgstr "Aktuální rezervace"
 
@@ -1500,6 +1590,10 @@ msgstr "Současné heslo"
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_username.tt2:32
 msgid "Current Username"
 msgstr "Současné uživatelské jméno"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:26
+msgid "Custom Email Subject: "
+msgstr "Vlastní předmět e-mailu: "
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Dancer"
@@ -1517,11 +1611,11 @@ msgstr "Přispěvatel k údajům"
 msgid "Data manager"
 msgstr "Správce dat"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:160 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:88 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/single_message.tt2:27
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:161 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:72 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:88 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/single_message.tt2:27
 msgid "Date"
 msgstr "Datum"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:680 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3574 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:61 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:9
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:688 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3599 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:62 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:9
 msgid "Date Returned"
 msgstr "Vráceno dne"
 
@@ -1545,7 +1639,7 @@ msgstr "Datum: od nejstaršího po nejnovější"
 msgid "Day Phone"
 msgstr "Telefonní číslo přes den"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:204
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:102
 msgid "December (12)"
 msgstr "Prosinec (12)"
 
@@ -1622,14 +1716,26 @@ msgstr "Vyobrazený"
 msgid "Depositor"
 msgstr "Skladník"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:52 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:40
+msgid "Descending"
+msgstr "Sestupně"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_subscriptions.tt2:29
+msgid "Description"
+msgstr "Popis"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Designer"
 msgstr "Výtvarník"
 
 #. (alternative_link)
-#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:107
+#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:107 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:107
 msgid "Did you mean %1?"
 msgstr "Měli jste na mysli %1?"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:33 ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:191
+msgid "Did you mean: "
+msgstr "Měli jste na myslí: "
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/qtype_selector.tt2:1
 msgid "Digital Bookplate"
@@ -1643,7 +1749,7 @@ msgstr "Digitální šítky"
 msgid "Director"
 msgstr "Režisér"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:443 ../../Open-ILS/src/templates-bootstrap/opac/results.tt2:98
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:449 ../../Open-ILS/src/templates-bootstrap/opac/results.tt2:98
 msgid "Disable Highlighting"
 msgstr "Vypnout zvýraznění"
 
@@ -1660,7 +1766,7 @@ msgid "Discard Pending Address"
 msgstr "Zrušit nevyřízenou adresu"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:107
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:117
 msgid "Display record details for \"%1\""
 msgstr "Zobrazit detaily záznamu  \"%1\""
 
@@ -1672,6 +1778,10 @@ msgstr "Autor diplomové práce nebo disertace"
 msgid "Dissertation Note: "
 msgstr "Poznámka ke kvalifikační práci: "
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:69 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:90 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:114
+msgid "Distance"
+msgstr "Vzdálenost"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Distribution place"
 msgstr "Místo distribuce"
@@ -1680,7 +1790,7 @@ msgstr "Místo distribuce"
 msgid "Distributor"
 msgstr "Distributor"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:197 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:212
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:204 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:226
 msgid "Distributor:"
 msgstr "Distributor:"
 
@@ -1704,7 +1814,7 @@ msgstr "Dárce"
 msgid "Download"
 msgstr "Stáhnout"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:179 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:197
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:223 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:197
 msgid "Download CSV"
 msgstr "Stáhnout CSV"
 
@@ -1716,7 +1826,7 @@ msgstr "Autor návrhu"
 msgid "Dubious author"
 msgstr "Domnělý autora"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:671 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:679 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:701 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:706 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3565 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3573 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3595 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3600 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:60 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:8 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:50 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_checkout.tt2:21 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_circs.tt2:20 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:56
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:678 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:687 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:710 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:715 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3590 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3598 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3620 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3625 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:61 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:8 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:51 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_checkout.tt2:21 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_circs.tt2:20 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:109
 msgid "Due Date"
 msgstr "K vrácení dne"
 
@@ -1724,11 +1834,11 @@ msgstr "K vrácení dne"
 msgid "E-Items Currently Checked Out"
 msgstr "Aktuálně vypůjčné e-knihy"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main.tt2:56
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main.tt2:57
 msgid "E-Items Currently Checked out"
 msgstr "Aktuálně vypůjčené E-knihy"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main.tt2:63
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main.tt2:64
 msgid "E-Items Currently on Hold"
 msgstr "Aktuálně rezervované E-knihy"
 
@@ -1740,7 +1850,7 @@ msgstr "E-knihy připravené k vypůjčení"
 msgid "E-Items on Hold"
 msgstr "Rezervované E-knihy"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main.tt2:70
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main.tt2:71
 msgid "E-Items ready for pickup"
 msgstr "E-knihy připravené pro vyzvednutí."
 
@@ -1764,7 +1874,7 @@ msgstr "Dříve"
 msgid "Earlier issues"
 msgstr "Drívější vydání"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:236 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:90 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:316
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:256 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:93 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:319
 msgid "Edit"
 msgstr "Upravit"
 
@@ -1781,11 +1891,11 @@ msgid "Edit Hold"
 msgstr "Upravit rezervaci"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:234
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:254
 msgid "Edit hold for item %1"
 msgstr "Upravit rezervaci exempláře %1"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:122 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:126 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:253
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:129 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:133 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:267
 msgid "Edition:"
 msgstr "Vydání:"
 
@@ -1805,11 +1915,11 @@ msgstr "Editor pohyblivého obrazu"
 msgid "Electrician"
 msgstr "Elektrikář"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:275
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:289
 msgid "Electronic resource"
 msgstr "Elektronický zdroj"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:504 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:532
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:488 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:516
 msgid "Electronic resources"
 msgstr "Dostupné elektronické zdroje"
 
@@ -1817,13 +1927,25 @@ msgstr "Dostupné elektronické zdroje"
 msgid "Electrotyper"
 msgstr "Galvanotypér"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/mylist/email.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payments.tt2:63 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:421
+#: ../../Open-ILS/src/templates-bootstrap/opac/mylist/email.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payments.tt2:63 ../../Open-ILS/src/templates-bootstrap/opac/parts/hold_notify.tt2:14 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:427
 msgid "Email"
 msgstr "E-mail"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:118 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:85 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:1
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:28 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:85 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:1
 msgid "Email Address"
 msgstr "E-mailová adresa"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:20
+msgid "Email Address: "
+msgstr "E-mailové adresy: "
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:93
+msgid "Email Now"
+msgstr "Poslat e-mail nyní"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:1 ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:7
+msgid "Email Record Preview"
+msgstr "Poslat e-mail s náhledem záznamu"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/cart.tt2:8 ../../Open-ILS/src/templates-bootstrap/opac/parts/cart_nav.tt2:15
 msgid "Email Title Details"
@@ -1837,11 +1959,15 @@ msgstr "E-mailová adresa ve čtenářském kontě:"
 msgid "Email address: "
 msgstr "E-mailová adresa: "
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:94
+msgid "Email notification"
+msgstr "Upozornění e-mailem"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:271
 msgid "Email title details"
 msgstr "Poslat e-mailem detaily o titulu"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:443
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:449
 msgid "Enable Highlighting"
 msgstr "Zapnout zvýraznění"
 
@@ -1870,6 +1996,14 @@ msgstr ""
 "mohli posílat oznámení o dostupných rezervacích, výpůjčkách u kterých se "
 "blíží konec vypůjční lhůty nebo výpůjčkách s uplynulou lhůtou."
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:55
+msgid "Enter address or postal code"
+msgstr "Zadejte adresu nebo PSČ"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:55
+msgid "Enter address/postal code"
+msgstr "Zadejte adresu/PSČ"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:51
 msgid "Enter search query:"
 msgstr "Zadejte dotaz pro vyhledávání"
@@ -1896,8 +2030,13 @@ msgstr "Během vytváření potvrzení došlo k chybě:"
 msgid "Error preparing receipt: %1"
 msgstr "Během přípravy potvrzení %1 došlo k chybě."
 
-#. ((ctx.printable_record.textcode ? ctx.printable_record.textcode _ ' / ' _ ctx.printable_record.desc : 0) || ctx.printable_record.error_output.data || l("No record data returned from server"))
-#: ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:15
+#. ((ctx.preview_record.textcode ? ctx.preview_record.textcode _ ' / ' _ ctx.preview_record.desc : 0) || ctx.preview_record.error_output.data || l("No record data returned from server"))
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:101 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:70
+msgid "Error previewing record: %1"
+msgstr "Při náhledu záznamu došlo k chybě: %1"
+
+#. (l("No record data returned from server"))
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:23
 msgid "Error printing record: %1"
 msgstr "Během tisku záznamu %1 došlo k chybě."
 
@@ -1949,7 +2088,7 @@ msgstr "Příklad: 12340001234567"
 msgid "Excerpt"
 msgstr "Výtah"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:128 ../../Open-ILS/src/templates-bootstrap/opac/results.tt2:141
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:129 ../../Open-ILS/src/templates-bootstrap/opac/results.tt2:141
 msgid "Exclude Electronic Resources"
 msgstr "Vynechat elektronické zdroje"
 
@@ -1974,11 +2113,11 @@ msgstr "Odborník"
 msgid "Expert Search"
 msgstr "Expertní vyhledávání"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:183
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:81
 msgid "Expiration Month"
 msgstr "Měsíc expirace"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:209
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:107
 msgid "Expiration Year"
 msgstr "Vyprší v roce"
 
@@ -1990,7 +2129,7 @@ msgstr "Platnost registrace do"
 msgid "Expires"
 msgstr "Platnost do"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:40
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:40 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_subscriptions.tt2:14
 msgid "Export List"
 msgstr "Exportovat seznam"
 
@@ -2026,7 +2165,7 @@ msgstr "Došlo k chybě při označení %1 zpráv(y) jako přečtené."
 msgid "Failed to renew %1 item(s)"
 msgstr "Počet neprodloužených výpůjček:  %1"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:194
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:92
 msgid "February (2)"
 msgstr "Únor (2)"
 
@@ -2071,7 +2210,7 @@ msgstr "Použité filtry:"
 msgid "Find a copy in the shelving location, \"%1.\""
 msgstr "Najít exemplář v umístění \" %1\"."
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:107 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:1
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:17 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:1
 msgid "First Name"
 msgstr "Křestní jméno"
 
@@ -2092,11 +2231,11 @@ msgstr ""
 msgid "Forger"
 msgstr "Padělatel"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/form.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_modal.tt2:51
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/form.tt2:50 ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_modal.tt2:57
 msgid "Forgot Your Password?"
 msgstr "Zapomněli jste heslo?"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:687 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:695 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3581 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3589 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:12 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:55 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:85 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:311 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:364
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:695 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:704 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3606 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3614 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:12 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:56 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:87 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:314 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:378
 msgid "Format"
 msgstr "Formát"
 
@@ -2104,7 +2243,7 @@ msgstr "Formát"
 msgid "Format:"
 msgstr "Formát:"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:84
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:84 ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:32 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:20
 msgid "Format: "
 msgstr "Formát: "
 
@@ -2161,11 +2300,11 @@ msgstr "Geografické nastavení: "
 msgid "Geographic information specialist"
 msgstr "Specialista na zeměpisné informace"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/cart.tt2:17
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/cart.tt2:17 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:56
 msgid "Go"
 msgstr "Vyhledat"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:102 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:224
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:130 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:229
 msgid "Go Back"
 msgstr "Zpět"
 
@@ -2186,7 +2325,7 @@ msgstr "Grafický technik"
 msgid "Group By Formats and Editions"
 msgstr "Seskupit stejné tituly"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:139
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:140
 msgid "Group Formats and Editions"
 msgstr "Seskupit stejné tituly"
 
@@ -2220,6 +2359,10 @@ msgstr "Historie vypůjčených jednotek"
 msgid "History of items on hold"
 msgstr "Historie rezervovaných exemplářů"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_subscriptions.tt2:25 ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3
+msgid "Hold Groups"
+msgstr "Rezervační skupiny"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/place_hold.tt2:8
 msgid "Hold Placement"
 msgstr "Zadání rezervace"
@@ -2236,7 +2379,7 @@ msgstr "Rezervaci nelze zadat"
 msgid "Hold is suspended"
 msgstr "Rezervace je pozastavena"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:107
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:135
 msgid "Hold not found"
 msgstr "Rezervace nenalezena"
 
@@ -2252,16 +2395,20 @@ msgstr "Rezervace nebyla odeslána"
 msgid "Hold was successfully placed for: "
 msgstr "Byla úspěšně zadána rezervace: "
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:53
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:106
 msgid "Holdable?"
 msgstr "Lze rezervovat?"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:60 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:48
+msgid "Holdings Library: "
+msgstr "Vlastnická knihovna: "
 
 #. (serial.location)
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/issues-mfhd.tt2:23
 msgid "Holdings summary (%1)"
 msgstr "Souhrn dostupných čísel (%1)"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:468
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_counts.tt2:54
 msgid "Holds"
 msgstr "Rezervace"
 
@@ -2273,7 +2420,7 @@ msgstr "Historie rezervací"
 msgid "Home"
 msgstr "Domů"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:119 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:102
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:119 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:100
 msgid "Home Library"
 msgstr "Domovská knihovna"
 
@@ -2289,7 +2436,7 @@ msgstr "Hostitel"
 msgid "Host institution"
 msgstr "Hostící instituce"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:332
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:357
 msgid "I have checked this item out before"
 msgstr "Tento titul jsem již  měl(a) vypůjčený"
 
@@ -2297,7 +2444,7 @@ msgstr "Tento titul jsem již  měl(a) vypůjčený"
 msgid "ISBN"
 msgstr "ISBN"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:80 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:91 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:223
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:80 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:91 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:237
 msgid "ISBN:"
 msgstr "ISBN:"
 
@@ -2305,7 +2452,7 @@ msgstr "ISBN:"
 msgid "ISSN"
 msgstr "ISSN"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:103 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:99 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:230
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:103 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:99 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:244
 msgid "ISSN:"
 msgstr "ISSN:"
 
@@ -2325,7 +2472,7 @@ msgstr "Pokud není vybráno nic, může být použit jakýkoliv dostupný form�
 msgid "If none are selected, any available languages may be used."
 msgstr "Pokud není vybráno nic, může být použit jakýkoliv dostupný jazyk"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:81
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:83
 msgid "If suspended, activate on"
 msgstr "Při pozastavení aktivovat dne"
 
@@ -2350,18 +2497,13 @@ msgstr "Ilustrátor"
 msgid "Immediate Source of Acquisition Note: "
 msgstr "Poznámka k přímému zdroji akvizice: "
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/main_refund_policy.tt2:4
-msgid ""
-"Important! You must have a printed receipt to be eligible for a refund on "
-"lost items (regulations allow for no exceptions)."
-msgstr ""
-"Důležité upozornění! Abyste mohli nárokovat vrácení peněz za ztracený "
-"exemplář, je nutné předložit vytištěné potvrzení (toto ustanovení neumožňuje "
-"výjimky)."
-
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/hold_status.tt2:46
 msgid "In Transit"
 msgstr "V přepravě"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:35
+msgid "Include Archived Courses?"
+msgstr "Zahrnout archivované kurzy?"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/issues-mfhd.tt2:5
 msgid "Incomplete"
@@ -2399,15 +2541,15 @@ msgstr "Tazatel"
 msgid "Inventor"
 msgstr "Vynálezce"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:92
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:93
 msgid "Is"
 msgstr "Je"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:37
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:88
 msgid "Issue Label"
 msgstr "Označení čísla"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:166
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:256
 msgid "Issue hold"
 msgstr "Rezervace čísla časopisu"
 
@@ -2431,11 +2573,11 @@ msgstr "Čárový kód jednotky"
 msgid "Item Form"
 msgstr "Forma jednotky"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/config-fresh.tt2:3
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/config-fresh.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/config.tt2:3
 msgid "Item Type"
 msgstr "Typ jednotky"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:185
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:222
 msgid "Item is needed for a hold"
 msgstr "Exemplář je potřebný  pro rezervaci"
 
@@ -2453,7 +2595,7 @@ msgstr "Vypůjčené jednotky (%1)"
 msgid "Items Currently on Hold (%1)"
 msgstr "Aktuálně rezervované jednotky (%1)"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:12
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:13
 msgid "Items Ready for Pickup"
 msgstr "Jednotky připravené k vyzvednutí"
 
@@ -2461,7 +2603,7 @@ msgstr "Jednotky připravené k vyzvednutí"
 msgid "Items from this shelving location do not circulate"
 msgstr "Jednotky  z tohoto umístění  nejsou určeny k absenční výpůjčce."
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:75
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:76
 msgid "Items on Hold"
 msgstr "Rezervace"
 
@@ -2470,7 +2612,7 @@ msgstr "Rezervace"
 msgid "Items ready for pickup (%1)"
 msgstr "Rezervace připravené k vyzvednutí (%1)"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:193
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:91
 msgid "January (1)"
 msgstr "Leden (1)"
 
@@ -2482,11 +2624,11 @@ msgstr "Název časopisu"
 msgid "Judge"
 msgstr "Soudce"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:199
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:97
 msgid "July (7)"
 msgstr "Červenec (7)"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:198
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:96
 msgid "June (6)"
 msgstr "Červen (6)"
 
@@ -2506,7 +2648,7 @@ msgstr "Ukládat historii rezervací?"
 msgid "Keyword"
 msgstr "Klíčové slovo"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:35
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:45
 msgid "Keyword Search Tips"
 msgstr "Tipy pro hledání podle klíčových slov"
 
@@ -2542,7 +2684,7 @@ msgstr "Jazyk:"
 msgid "Large Font"
 msgstr "Velké písmo"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:112 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:1
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:1
 msgid "Last Name"
 msgstr "Příjmení"
 
@@ -2561,6 +2703,10 @@ msgstr "Herec hrající hlavní roli"
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/filtersort.tt2:25
 msgid "Least Popular"
 msgstr "Nejméně populární"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:27
+msgid "Legal Name"
+msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Lender"
@@ -2591,13 +2737,21 @@ msgstr ""
 msgid "Libelee-appellee"
 msgstr "Obžalovaný (v církevním nebo námořním právu) jako odpůrce odvolatele"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:89 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/single_message.tt2:31 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:293
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/org_selector.tt2:52
+msgid "Libraries"
+msgstr "Knihovny"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:89 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/single_message.tt2:31 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:307
 msgid "Library"
 msgstr "Knihovna"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/form.tt2:26 ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_modal.tt2:31
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/form.tt2:26 ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_modal.tt2:32
 msgid "Library Card Number"
 msgstr "Čtenářský průkaz"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/org_selector.tt2:196 ../../Open-ILS/src/templates-bootstrap/opac/parts/org_selector.tt2:39
+msgid "Library Groups"
+msgstr "Skupiny knihoven"
 
 #. (ctx.library.name)
 #: ../../Open-ILS/src/templates-bootstrap/opac/library.tt2:1
@@ -2632,7 +2786,7 @@ msgstr "Poskytovatel licence"
 msgid "Lighting designer"
 msgstr "Výtvarník osvětlení"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:147
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:148
 msgid "Limit to Available"
 msgstr "Jen dostupné"
 
@@ -2664,7 +2818,7 @@ msgstr "Popis seznamu (volitelné):"
 msgid "List items per page"
 msgstr "Počet položek seznamu na stránku"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:46
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/last_chance_form.tt2:15
 msgid "List of Transactions"
 msgstr "Seznam platebních transakcí"
 
@@ -2692,7 +2846,7 @@ msgstr "Načítají se doporučení..."
 msgid "Loading..."
 msgstr "Načítá se…"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:305 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:344 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:70 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:90
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:308 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:358 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:71 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:91
 msgid "Local Call Number"
 msgstr "Lokální signatura"
 
@@ -2700,9 +2854,13 @@ msgstr "Lokální signatura"
 msgid "Locate Z39.50 Matches"
 msgstr "Vyhledat shody Z39.50"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:39
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:90
 msgid "Location"
 msgstr "Umístění"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/org_selector.tt2:209
+msgid "Location Groups"
+msgstr "Skupiny umístění"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/contents.tt2:2
 msgid "Location of Originals/Duplicates Note: "
@@ -2712,7 +2870,7 @@ msgstr "Poznámka o umístění originálů / důplikátů: "
 msgid "Location of Other Archival Materials Note: "
 msgstr "Poznámka o umístění ostatních archivních materiálů: "
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/form.tt2:59 ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_modal.tt2:86
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/form.tt2:62 ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_modal.tt2:95
 msgid "Log in"
 msgstr "Přihlásit se"
 
@@ -2772,7 +2930,7 @@ msgstr "Místo výroby"
 msgid "Manufacturer"
 msgstr "Výrobce"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:211 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:217
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:218 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:231
 msgid "Manufacturer:"
 msgstr "Výrobce:"
 
@@ -2780,7 +2938,7 @@ msgstr "Výrobce:"
 msgid "Marbler"
 msgstr "Kameník"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:195
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:93
 msgid "March (3)"
 msgstr "Březen (3)"
 
@@ -2806,7 +2964,7 @@ msgstr "Editor programovacích jazyků"
 msgid "Matches exactly"
 msgstr "Přesně odpovídá"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:197
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:95
 msgid "May (5)"
 msgstr "Květen (5)"
 
@@ -2846,7 +3004,7 @@ msgstr "Zapisovatel"
 msgid "Missing"
 msgstr "Postrádané"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/sms_carrier_selector.tt2:21
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:114 ../../Open-ILS/src/templates-bootstrap/opac/parts/sms_carrier_selector.tt2:21
 msgid "Mobile carrier"
 msgstr "Mobilní operátor"
 
@@ -2883,7 +3041,7 @@ msgstr "Kontrolor"
 msgid "More"
 msgstr "Další"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:259
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:266
 msgid "More Options"
 msgstr "Další možnosti"
 
@@ -2895,11 +3053,11 @@ msgstr "Nejpopulárnější"
 msgid "Move contents of basket to this list?"
 msgstr "Přesunout obsah košíku do tohoto seznamu?"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:21
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:22
 msgid "Move selected items to list:"
 msgstr "Přesunout vybrané exempláře do seznamu:"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:41
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:51
 msgid ""
 "Multiple words are not searched together as a phrase. They will be found in "
 "various parts of the record. To search for a phrase, enclose your search "
@@ -2921,13 +3079,13 @@ msgstr "Hudební režisér"
 msgid "Musician"
 msgstr "Hudebník"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:38 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:37 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:60
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:47 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:37 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_links.tt2:60
 msgid "My Account"
 msgstr "Můj účet"
 
 #. (page.name)
 #. (child.name)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:50 ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:66
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:59 ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:75
 msgid "My Account - %1"
 msgstr "Můj účet - %1"
 
@@ -2951,7 +3109,7 @@ msgstr "Moje seznamy knih"
 msgid "My Messages"
 msgstr "Moje zprávy"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:11
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_subscriptions.tt2:28
 msgid "Name"
 msgstr "Jméno"
 
@@ -2967,7 +3125,7 @@ msgstr "Vypravěč"
 msgid "Narrower term"
 msgstr "Užší termín"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:402
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:416
 msgid "Navigate Selected List "
 msgstr "Procházet zvolený seznam "
 
@@ -3000,12 +3158,12 @@ msgstr "Nové heslo není platné. Zkuste prosím jiné heslo."
 msgid "New password:"
 msgstr "Nové heslo:"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:82 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:40 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:59 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:136 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:445 ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:232 ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payments.tt2:26 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/issues-db.tt2:197 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/navigation.tt2:50 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/paginate.tt2:46
+#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:82 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:81 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:40 ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:124 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:60 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:33 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:136 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:459 ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payments.tt2:26 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/issues-db.tt2:197 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/navigation.tt2:50 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/paginate.tt2:46
 msgid "Next"
 msgstr "Další"
 
 #. (ctx.copy_limit)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:293
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:361
 msgid "Next %1"
 msgstr "Další %1"
 
@@ -3033,11 +3191,15 @@ msgstr "Ne"
 msgid "No Content Available"
 msgstr "K dispozici není žádný obsah"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:47 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:68
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/org_selector.tt2:180
+msgid "No Restrictions"
+msgstr "Bez omezení"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:47 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:69 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:38
 msgid "No holds found."
 msgstr "Nebyly nalezeny žádné rezervace"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:44
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:45
 msgid "No items were selected"
 msgstr "Nebyly vybrány žádné položky"
 
@@ -3049,15 +3211,23 @@ msgstr "Nebyly nalezeny žádné zprávy"
 msgid "No receipt data returned from server"
 msgstr "Ze serveru nebyla vrácena data pro vystavení potvrzení"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:15
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:101 ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:23 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:70
 msgid "No record data returned from server"
 msgstr "Ze serveru nebyla vrácena data záznamu"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:77
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_subscriptions.tt2:22
+msgid "No subscriptions found."
+msgstr "Nebylo nalezeno žádné předplatné"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:120
+msgid "No times available for selected date"
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:78
 msgid "No, this hold is suspended"
 msgstr "Ne, tato rezervace je pozastavena"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:145
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/hold_notify.tt2:25 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:235
 msgid "None"
 msgstr "Žádný"
 
@@ -3065,11 +3235,11 @@ msgstr "Žádný"
 msgid "Not"
 msgstr "Ne"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:166
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:256
 msgid "Not holdable"
 msgstr "Nelze rezervovat"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:159
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:160
 msgid "Note"
 msgstr "Poznámka"
 
@@ -3098,7 +3268,7 @@ msgstr ""
 msgid "Note: carrier charges may apply"
 msgstr "Poznámka: může být zpoplatněno dle tarifu operátora"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:691 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3585 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:89 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:314 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:368 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:375
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:699 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3610 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:92 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:317 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:382 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:389
 msgid "Notes"
 msgstr "Poznámky"
 
@@ -3109,6 +3279,10 @@ msgstr "Nastavení upozornění"
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3
 msgid "Notifications"
 msgstr "Upozornění"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:91
+msgid "Notify Method"
+msgstr "Způsob upozornění"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_notify.tt2:32
 msgid "Notify by Email by default when a hold is ready for pickup?"
@@ -3122,11 +3296,11 @@ msgstr "Na rezervace k vyzvednutí standardně upozorňovat telefonem?"
 msgid "Notify by Text by default when a hold is ready for pickup?"
 msgstr "Na rezervace k vyzvednutí standardně upozorňovat SMS zprávou?"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:216
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:238
 msgid "Notify when hold is ready for pickup?"
 msgstr "Upozornit, když je rezervace připravena k vyzvednutí?"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:203
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:101
 msgid "November (11)"
 msgstr "Listopad (11)"
 
@@ -3150,11 +3324,11 @@ msgstr "OK"
 msgid "OR"
 msgstr "Nebo"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:202
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:100
 msgid "October (10)"
 msgstr "Říjen (10)"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:37 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:54
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:37 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:55 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:29
 msgid ""
 "One or more holds could not be suspended because the item is at (or en route "
 "to) the pickup library."
@@ -3198,7 +3372,7 @@ msgstr "Původce"
 msgid "Other"
 msgstr "Ostatiní"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:146
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:147
 msgid "Other Fines and Fees"
 msgstr "Ostatní poplatky a pokuty"
 
@@ -3206,7 +3380,11 @@ msgstr "Ostatní poplatky a pokuty"
 msgid "Other Phone"
 msgstr "Další telefonní číslo"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:157 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:44
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:152
+msgid "Override all hold-blocking conditions possible?"
+msgstr "Je možné obejít všechny podmínky pro blokování rezervací?"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:158 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:44
 msgid "Owed"
 msgstr "Aktuální dluh"
 
@@ -3218,11 +3396,11 @@ msgstr "Vlastník"
 msgid "Ownership and Custodial History: "
 msgstr "Historie vlastnictví a svěřenectví: "
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:54
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:55
 msgid "Owning Library"
 msgstr "Vlastnická knihovna"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/form.tt2:37 ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_modal.tt2:42
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/form.tt2:31 ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_modal.tt2:37
 msgid "PIN"
 msgstr "PIN"
 
@@ -3238,7 +3416,7 @@ msgstr "Výrobce papíru"
 msgid "Parent library: "
 msgstr "Nadřazená knihovna: "
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:43 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:297
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:94 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:311
 msgid "Part"
 msgstr "Část"
 
@@ -3290,7 +3468,7 @@ msgstr "Čárový kód čtenáře nebyl nalezen"
 msgid "Patron has reached the maximum fine amount"
 msgstr "Čtenář dosáhl maximální povolené výše pokut"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:216
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:218
 msgid "Pay All Charges"
 msgstr "Zaplatit všechny poplatky"
 
@@ -3298,7 +3476,7 @@ msgstr "Zaplatit všechny poplatky"
 msgid "Pay Charges"
 msgstr "Zaplatit poplatky"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:215
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:217
 msgid "Pay Selected Charges"
 msgstr "Zaplatit vybrané poplatky"
 
@@ -3306,7 +3484,7 @@ msgstr "Zaplatit vybrané poplatky"
 msgid "Pay Selected Circulation Charges"
 msgstr "Zaplatit vybrané výpůjční poplatky"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:214
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:216
 msgid "Pay selected charges"
 msgstr "Zaplatit poplatky"
 
@@ -3334,7 +3512,7 @@ msgstr "Platby"
 msgid "Pending Addresses"
 msgstr "Nevyřízené adresy"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:146
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:156
 msgid "Perform an Author Search"
 msgstr "Vyhledávat podle autora"
 
@@ -3342,7 +3520,7 @@ msgstr "Vyhledávat podle autora"
 msgid "Performer"
 msgstr "Výkonný umělec"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:431
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:437
 msgid "Permalink"
 msgstr "Krátký odkaz"
 
@@ -3355,23 +3533,35 @@ msgstr "Oprávnění: \"%1\""
 msgid "Permitting agency"
 msgstr "Schvalující agentura"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/hold_notify.tt2:18
+msgid "Phone"
+msgstr "Telefon"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:1
 msgid "Phone Number"
 msgstr "Telefonní číslo"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:240
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:262
 msgid "Phone Number:"
 msgstr "Telefoní číslo:"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:102
+msgid "Phone notification - Enter phone number"
+msgstr "Telefonické upozornění - zadejte telefonní číslo"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:89
+msgid "Phone:"
+msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Photographer"
 msgstr "Fotograf"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:269
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:283
 msgid "Phys. Desc.:"
 msgstr "Fyzický popis:"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:116
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:117 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:123
 msgid "Physical Description:"
 msgstr "Fyzický popis:"
 
@@ -3379,7 +3569,7 @@ msgstr "Fyzický popis:"
 msgid "Pick Up Holds"
 msgstr "Vyzvednout rezervace"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:688 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:696 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3582 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3590 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:56 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:86
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:696 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:705 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3607 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3615 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:57 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:88 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:71
 msgid "Pickup Location"
 msgstr "Knihovna pro vyzvednutí rezervace"
 
@@ -3387,7 +3577,7 @@ msgstr "Knihovna pro vyzvednutí rezervace"
 msgid "Pickup holds from behind the desk when possible?"
 msgstr "Vyzvednout rezervace u výpůjčního pultu (pokud je to možné)?"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:49
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:50
 msgid "Pickup library"
 msgstr "Knihovna pro vyzvednutí rezervace"
 
@@ -3395,20 +3585,20 @@ msgstr "Knihovna pro vyzvednutí rezervace"
 msgid "Pickup location"
 msgstr "Knihovna pro vyzvednutí rezervace"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:209
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:231
 msgid "Pickup location:"
 msgstr "Knihovna pro vyzvednutí rezervace:"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:52 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:19 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:355 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:370 ../../Open-ILS/src/templates-bootstrap/opac/place_hold.tt2:1
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:52 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:19 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:361 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:395 ../../Open-ILS/src/templates-bootstrap/opac/place_hold.tt2:1
 msgid "Place Hold"
 msgstr "Rezervovat"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:367 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:388
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:392 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:413
 msgid "Place Hold on %1"
 msgstr "Rezervovat %1"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_place_hold.tt2:10 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_place_hold.tt2:17 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:373 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:389
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_place_hold.tt2:10 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_place_hold.tt2:17 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:379 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:414
 msgid "Place Hold on E-Item"
 msgstr "Rezervovat e-knihu"
 
@@ -3423,6 +3613,10 @@ msgstr "Zadat další rezervaci na tuto jednotku. "
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:269
 msgid "Place hold"
 msgstr "Rezervovat"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:140
+msgid "Place hold for patron Hold Group:"
+msgstr "Zadat rezervaci pro skupinu čtenářů:"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:107
 msgid "Place hold for patron by barcode:"
@@ -3465,6 +3659,11 @@ msgstr "Potvrďte prosím vytištění titulů v košíku. Celkem k  vytištěn�
 msgid "Please confirm that you want to remove all %1 titles from the basket."
 msgstr "Potvrďte prosím odebrání titulů z košíku. Celkem k odebrání:  %1."
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:142
+msgid ""
+"Please contact the library to schedule, change, or cancel your appointment."
+msgstr ""
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_pay_init.tt2:11
 msgid ""
 "Please do not Refresh or use your browser's Back button or your credit card "
@@ -3493,11 +3692,23 @@ msgstr ""
 "Prosím zadejte BUĎ uživatelské jméno NEBO čárový kód  vašeho čtenářského "
 "konta a potvrďte žádost o přenastavení hesla"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/main_refund_policy.tt2:4
+msgid ""
+"Please print or save the receipt for your records before closing the payment "
+"screen."
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:87
+msgid ""
+"Please prove you are not a robot by answering the following addition problem:"
+msgstr ""
+"Prokažte prosím, že nejste robot vyřešením následující početní úlohy."
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:58 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:78
 msgid "Please see library staff to complete your registration."
 msgstr "Pro dokončení registrace je nutná návštěva knihovny"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:114
+#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:112
 msgid "Please select a valid library"
 msgstr "Zvolte prosím platnou knihovnu."
 
@@ -3509,11 +3720,11 @@ msgstr "Zvolte prosím mobilního operátora"
 msgid "Popularity Adjusted Relevance"
 msgstr "Relevance s přihlédnutím k popularitě"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:172
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:186
 msgid "Popularity:"
 msgstr "Popularita:"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:144
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:54
 msgid "Postal Code"
 msgstr "PSČ"
 
@@ -3545,7 +3756,7 @@ msgstr "Preferované příjmení"
 msgid "Preferred Middle Name"
 msgstr "Preferované prostřední jméno"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:26
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:12
 msgid "Preferred Name"
 msgstr "Preferované jméno"
 
@@ -3570,12 +3781,12 @@ msgstr "Konferenciér"
 msgid "Preview"
 msgstr "Náhled"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:34 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:19 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:45 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:100 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:407 ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payments.tt2:16 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:11 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/issues-db.tt2:194 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/navigation.tt2:16 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/paginate.tt2:14
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:34 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:19 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:20 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:100 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:421 ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payments.tt2:16 ../../Open-ILS/src/templates-bootstrap/opac/myopac/messages/list.tt2:11 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/issues-db.tt2:194 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/navigation.tt2:16 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/paginate.tt2:14
 msgid "Previous"
 msgstr "Předchozí"
 
 #. (ctx.copy_offset - new_offset)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:287
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:355
 msgid "Previous %1"
 msgstr "Předchozí %1"
 
@@ -3595,13 +3806,21 @@ msgstr "Předchozí strana"
 msgid "Primary Identification"
 msgstr "Číslo primárního dokladu"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/mylist/print.tt2:21 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:419
+#: ../../Open-ILS/src/templates-bootstrap/opac/mylist/print.tt2:21 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:425
 msgid "Print"
 msgstr "Tisk"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:63
+msgid "Print Now"
+msgstr "Vytisknout"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:5
 msgid "Print Record"
 msgstr "Tisk záznamu"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:1 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:7
+msgid "Print Record Preview"
+msgstr "Vytisknout náhled záznamu"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/cart.tt2:7 ../../Open-ILS/src/templates-bootstrap/opac/parts/cart_nav.tt2:14
 msgid "Print Title Details"
@@ -3651,7 +3870,7 @@ msgstr "Probíhá zpracování..."
 msgid "Producer"
 msgstr "Producent"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:183 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:207
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:190 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:221
 msgid "Producer:"
 msgstr "Producent:"
 
@@ -3691,7 +3910,7 @@ msgstr "Korektor tištěných materiálů"
 msgid "Provider"
 msgstr "Dodavatel"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:308 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:361
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:311 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:375 ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:48 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:36
 msgid "Publication Date"
 msgstr "Datum vydání"
 
@@ -3711,7 +3930,7 @@ msgstr "Poznámky o publikacích vztahujících se k  popisovanému materiálu: 
 msgid "Publisher"
 msgstr "Vydavatel"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:147 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:152 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:192
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:154 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:159 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:206
 msgid "Publisher:"
 msgstr "Vydavatel:"
 
@@ -3768,11 +3987,11 @@ msgstr "Detailní záznam"
 msgid "Record Details"
 msgstr "Detaily záznamu"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:290
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:304
 msgid "Record Holdings Details"
 msgstr "Detaily jednotek připojených k záznamu"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:176
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:190
 msgid "Record Holdings Summary"
 msgstr "Přehled  jednotek připojených k záznamu"
 
@@ -3821,8 +4040,8 @@ msgstr "Související termín"
 msgid "Remove %1 filter"
 msgstr "Odstranit  filtr  %1"
 
-#. (attrs.title)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:414
+#. (esc_title)
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:440
 msgid "Remove %1 from basket"
 msgstr "Odebrat %1 z košíku"
 
@@ -3834,11 +4053,11 @@ msgstr "Zrušit volbu výchozího seznamu"
 msgid "Remove all records from basket?"
 msgstr "Odebrat z košíku všechny záznamy?"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:380
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:386
 msgid "Remove from Basket"
 msgstr "Odebrat z košíku"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:397 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:416
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:403 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:442
 msgid "Remove from basket"
 msgstr "Odebrat z košíku"
 
@@ -3849,6 +4068,10 @@ msgstr "Odstranit ze seznamu"
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/adv_filter.tt2:58
 msgid "Remove location filter"
 msgstr "Odstranit filtrování podle umístění"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_subscriptions.tt2:41
+msgid "Remove me"
+msgstr "Odebrat mne"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/adv_filter.tt2:79
 msgid "Remove publication date filter"
@@ -3862,7 +4085,7 @@ msgstr "Odstranit řádek"
 msgid "Renderer"
 msgstr "Projektant architektonických zobrazení"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:670 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3564 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:49
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:677 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3589 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:50
 msgid "Renewals Left"
 msgstr "Zbývající prodloužení"
 
@@ -3878,7 +4101,7 @@ msgstr "Repozitář"
 msgid "Reproduction Note: "
 msgstr "Poznámka k reprodukci: "
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/form.tt2:32 ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_modal.tt2:37
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/form.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_modal.tt2:53
 msgid "Request A Card"
 msgstr "Registrovat"
 
@@ -3889,6 +4112,10 @@ msgstr "Registrace nového čtenáře"
 #: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:52
 msgid "Request a Library Card"
 msgstr "Registrace nového čtenáře"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:172
+msgid "Request appointment"
+msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:1
 msgid "Requested Username"
@@ -3955,7 +4182,7 @@ msgstr "Poznámka k omezení přístupu: "
 msgid "Results %1 - %2 of %3"
 msgstr "Výsledky  %1 - %2 z %3"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/mylist.tt2:17 ../../Open-ILS/src/templates-bootstrap/opac/mylist/email.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/mylist/print.tt2:26 ../../Open-ILS/src/templates-bootstrap/opac/myopac/list/update.tt2:33 ../../Open-ILS/src/templates-bootstrap/opac/record/email.tt2:26 ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:26
+#: ../../Open-ILS/src/templates-bootstrap/opac/mylist.tt2:17 ../../Open-ILS/src/templates-bootstrap/opac/mylist/email.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/mylist/print.tt2:26 ../../Open-ILS/src/templates-bootstrap/opac/myopac/list/update.tt2:33 ../../Open-ILS/src/templates-bootstrap/opac/record/email.tt2:25 ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:110 ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:94 ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:11 ../../Open-ILS/src/templates-bootstrap/opac/record/print.tt2:29 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:64 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:79
 msgid "Return"
 msgstr "Zpět"
 
@@ -3979,12 +4206,12 @@ msgstr "Posuzovatel"
 msgid "Reviews"
 msgstr "Recenze"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:436
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:462
 msgid "Reviews &amp; More"
 msgstr "Recenze aj."
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:431
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:457
 msgid "Reviews and More for %1"
 msgstr "Recenze a další pro %1"
 
@@ -3992,9 +4219,17 @@ msgstr "Recenze a další pro %1"
 msgid "Rubricator"
 msgstr "Rubrikátor"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/hold_notify.tt2:22
+msgid "SMS"
+msgstr "SMS"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:45
 msgid "SMS not enabled for this site."
 msgstr "Pro tuto stránku není SMS povolena"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:109
+msgid "SMS notification - Enter mobile phone number"
+msgstr "SMS upozornění - zadejte telefonní číslo"
 
 #. ("<time property=\"opens\" content=\"' _ date.format(open, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(open) _ '</time>", "<time property=\"closes\" content=\"' _ date.format(close, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(close) _ '</time>")
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:88
@@ -4009,11 +4244,11 @@ msgstr "Sobota: zavřeno"
 msgid "Save"
 msgstr "Uložit"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:103 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:229 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_email.tt2:34 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_password.tt2:37 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_username.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/parts/locale_picker.tt2:28
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:131 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:229 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_email.tt2:34 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_password.tt2:37 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_username.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/parts/locale_picker.tt2:28
 msgid "Save Changes"
 msgstr "Uložit změny"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:389
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:403
 msgid "Save Notes"
 msgstr "Uložit poznámky"
 
@@ -4021,7 +4256,7 @@ msgstr "Uložit poznámky"
 msgid "Saved Lists"
 msgstr "Uložené seznamy"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:461
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:487
 msgid "Saved Searches"
 msgstr "Uložená hledání"
 
@@ -4049,13 +4284,17 @@ msgstr "Opisovač"
 msgid "Sculptor"
 msgstr "Sochař"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/expert.tt2:57 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/numeric.tt2:38 ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:119
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:67 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/expert.tt2:57 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/numeric.tt2:38 ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:119
 msgid "Search"
 msgstr "Hledat"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/base.tt2:3
 msgid "Search & History"
 msgstr "Hledání a historie"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_subnav.tt2:24 ../../Open-ILS/src/templates-bootstrap/opac/parts/topnav_subnav.tt2:26
+msgid "Search Courses"
+msgstr "Hledat kurzy"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/filter_group_selector.tt2:17
 msgid "Search Filter"
@@ -4065,7 +4304,7 @@ msgstr "Vyhledávací filtr"
 msgid "Search In Progress"
 msgstr "Probíhá vyhledávání"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/config-fresh.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/config.tt2:3
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:25 ../../Open-ILS/src/templates-bootstrap/opac/parts/config-fresh.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/config.tt2:3
 msgid "Search Library"
 msgstr "Vyhledávat v knihovně"
 
@@ -4077,11 +4316,11 @@ msgstr "Prohledat knihovnu:"
 msgid "Search Results"
 msgstr "Výsledky hledání"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:465
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:491
 msgid "Search Results List"
 msgstr "Seznam výsledků vyhledávání"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:464
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:490
 msgid "Search Results facets"
 msgstr "Fasety výsledků vyhledávání"
 
@@ -4093,15 +4332,19 @@ msgstr "Filtry výsledků vyhledávání"
 msgid "Search Results: "
 msgstr "Výsledky vyhledávání: "
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/org_selector.tt2:182
+msgid "Search Scope"
+msgstr "Rozsah vyhledávání"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:13 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs_settings.tt2:8
 msgid "Search and History Preferences"
 msgstr "Hledání, historie a další"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:103
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:104
 msgid "Search date"
 msgstr "Datum vyhledávání"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/series.tt2:60
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/series.tt2:61
 msgid "Search for related items by series"
 msgstr "Hledat podobné tituly  podle edice"
 
@@ -4113,7 +4356,7 @@ msgstr "Hledat podobné tituly  podle tématu"
 msgid "Search hits per page"
 msgstr "Počet výsledků na stránku"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:57 ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:79 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:164 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:32
+#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:57 ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:79 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:86 ../../Open-ILS/src/templates-bootstrap/opac/course_search.tt2:70 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:165 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:32
 msgid "Search in progress icon"
 msgstr "Ikona Probíhá vyhledávání"
 
@@ -4141,7 +4384,7 @@ msgstr "Hledat: "
 msgid "Second party"
 msgstr "Druhá strana"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:107
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:108
 msgid "Secondary search date"
 msgstr "Sekundární datum vyhledávání"
 
@@ -4149,7 +4392,7 @@ msgstr "Sekundární datum vyhledávání"
 msgid "Secretary"
 msgstr "Tajemník"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:171
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:75
 msgid "Security Code"
 msgstr "Bezpečnostní kód"
 
@@ -4166,15 +4409,15 @@ msgid "See all of my lists"
 msgstr "Zobrazit všechny mé seznamy"
 
 #. (ctx.result_start, ctx.result_stop)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:28
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:38
 msgid "Select %1 - %2"
 msgstr "Vybrat %1 - %2"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:80
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:81
 msgid "Select All Holds"
 msgstr "Vybrat všechny rezervace"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:33 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:43 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:71
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:33 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:43 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:72
 msgid "Select All Items"
 msgstr "Vybrat všechny položky"
 
@@ -4182,32 +4425,40 @@ msgstr "Vybrat všechny položky"
 msgid "Select All Messages"
 msgstr "Vybrat všechny zprávy"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:122
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:134
 msgid "Select Item"
 msgstr "Vybrat položku"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/org_selector.tt2:31
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/org_selector.tt2:35
 msgid "Select Library"
 msgstr "Zvolit knihovnu"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:169
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:191
 msgid "Select a Part (optional):"
 msgstr "Vyberte část (volitelné):"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:155 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:169
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:177 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:191
 msgid "Select a Part:"
 msgstr "Vyberte část:"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:63
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:123
+msgid "Select a date"
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:64
 msgid "Select all records"
 msgstr "Vybrat všechny záznamy"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:175
+msgid "Select another date"
+msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/cart.tt2:3
 msgid "Select basket action"
 msgstr "VYbrat akci  pro košík"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:155
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:158
 msgid "Select hold %1"
 msgstr "Vybrat rezervaci %1"
 
@@ -4224,13 +4475,21 @@ msgstr "Vyberte typ dokumentu"
 msgid "Select message %1"
 msgstr "Vybrat zprávu  %1"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:37
+msgid "Select owning Library"
+msgstr "Zvolte vlastnickou knihovnu"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/qtype_selector.tt2:17
 msgid "Select query type:"
 msgstr "Vyberte typ dotazu:"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:79
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:80
 msgid "Select record"
 msgstr "Vybrat záznam"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/org_selector.tt2:178
+msgid "Select scoping restrictions"
+msgstr "Vybrat omezení rozsahu"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:105
 msgid "Select search library"
@@ -4268,7 +4527,7 @@ msgstr "Prodávající"
 msgid "Send Call Number via Text/SMS"
 msgstr "Poslat Signaturu prostřednictvím SMS"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:201
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:99
 msgid "September (9)"
 msgstr "Září (9)"
 
@@ -4276,7 +4535,7 @@ msgstr "Září (9)"
 msgid "Series"
 msgstr "Edice"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:14 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:276
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:14 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:298
 msgid "Set activation date"
 msgstr "Nastavit datum aktivace"
 
@@ -4318,13 +4577,17 @@ msgstr ""
 msgid "Shelf Browser"
 msgstr "Prohlížení regálu"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/config-fresh.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/config.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:46
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/config-fresh.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/config.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:97
 msgid "Shelving Location"
 msgstr "Umístění"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:294
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:308
 msgid "Shelving location"
 msgstr "Umístění"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:75
+msgid "Show All Copies"
+msgstr ""
 
 #. (facet.cmf.label)
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/facets-hz.tt2:75 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/facets.tt2:138
@@ -4344,11 +4607,15 @@ msgstr "Zobrazit více údajů %1"
 msgid "Show More Details"
 msgstr "Další podrobnosti"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:80
+msgid "Show Only Available Copies"
+msgstr ""
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/config-fresh.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/config.tt2:3
 msgid "Show Results from All Libraries"
 msgstr "Ve všech knihovnách"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:33
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:31 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:34
 msgid "Show all holds"
 msgstr "Zobrazit všechny rezervace"
 
@@ -4361,7 +4628,7 @@ msgstr "Zobrazit všechny výsledky, nejen ty, které odpovídají tomuto termí
 msgid "Show copies at %1"
 msgstr "Zobrazit exempláře v knihovně  %1"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:309
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:381
 msgid "Show fewer copies"
 msgstr "Zobrazit méně exemplářů"
 
@@ -4369,11 +4636,11 @@ msgstr "Zobrazit méně exemplářů"
 msgid "Show items in list"
 msgstr "Zobrazit exempláře v seznamu"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:305
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:373
 msgid "Show more copies"
 msgstr "Zobrazit více exemplářů"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:31 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:34
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:32 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:35
 msgid "Show only available holds"
 msgstr "Zobrazit pouze dostupné rezervace"
 
@@ -4419,6 +4686,10 @@ msgstr ""
 msgid "Sorry, no entries were found for your search."
 msgstr "Vašemu hledání bohužel neodpovídají žádné záznamy."
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:59
+msgid "Sorry, your address is not recognized"
+msgstr "Vaše adresa bohužel nebyla rozpoznána"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/config-fresh.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/parts/config.tt2:3 ../../Open-ILS/src/templates-bootstrap/opac/results.tt2:61
 msgid "Sort Results"
 msgstr "Seřadit výsledky"
@@ -4443,6 +4714,14 @@ msgstr "Podle relevance"
 msgid "Sort by Title"
 msgstr "Podle názvu"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:54
+msgid "Sort by distance from:"
+msgstr "Řadit podle vzzdálenosti od:"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:44 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:32
+msgid "Sort by: "
+msgstr "Seřadit podle: "
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Sound designer"
 msgstr "Autor zvukového návrhu."
@@ -4458,6 +4737,10 @@ msgstr "Spíkr"
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Sponsor"
 msgstr "sponzor"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:151
+msgid "Staff have been notified of your arrival."
+msgstr ""
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/relators.tt2:2
 msgid "Stage director"
@@ -4483,15 +4766,15 @@ msgstr "Začíná"
 msgid "State"
 msgstr "Stát"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:139
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:49
 msgid "State or Province"
 msgstr "Stát"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:690 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:697 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3584 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3591 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_place_hold.tt2:24 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:57 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:88 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:43 ../../Open-ILS/src/templates-bootstrap/opac/myopac/reservations.tt2:14 ../../Open-ILS/src/templates-bootstrap/opac/parts/ebook_api/avail.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:55 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:299
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:698 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:706 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3609 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3616 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_place_hold.tt2:24 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:58 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:90 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:43 ../../Open-ILS/src/templates-bootstrap/opac/myopac/reservations.tt2:14 ../../Open-ILS/src/templates-bootstrap/opac/parts/ebook_api/avail.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:108 ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:313
 msgid "Status"
 msgstr "Status"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/form.tt2:56 ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_modal.tt2:82
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/login/form.tt2:58 ../../Open-ILS/src/templates-bootstrap/opac/parts/login/login_modal.tt2:91
 msgid "Stay logged in?"
 msgstr "Neodhlašovat?"
 
@@ -4507,7 +4790,7 @@ msgstr "Vypravěč pohádek / anekdot"
 msgid "Street"
 msgstr "Ulice"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:129 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:1
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:39 ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:1
 msgid "Street Address"
 msgstr "Adresa ulice"
 
@@ -4535,11 +4818,15 @@ msgstr "Téma: "
 msgid "Subjects"
 msgstr "Témata"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:162 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:317 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:149 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:45 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:69 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:37 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:38 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:39
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:163 ../../Open-ILS/src/templates-bootstrap/opac/parts/advanced/search.tt2:30 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:339 ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold_result.tt2:149 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:45 ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:69 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:37 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:38 ../../Open-ILS/src/templates-bootstrap/opac/sms_cn.tt2:39
 msgid "Submit"
 msgstr "Potvrdit"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:226
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/stripe_payment_form.tt2:98
+msgid "Submit Payment"
+msgstr ""
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:231
 msgid "Submit Registration"
 msgstr "Potvrdit registraci"
 
@@ -4589,15 +4876,15 @@ msgstr "Podpůrný hostitel"
 msgid "Surveyor"
 msgstr "Výzkumník"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:25
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:26
 msgid "Suspend"
 msgstr "Pozastavit"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:261
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:283
 msgid "Suspend these holds?"
 msgstr "Pozastavit tyto rezervace?"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:261
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:283
 msgid "Suspend this hold?"
 msgstr "Pozastavit tuto rezervaci"
 
@@ -4767,7 +5054,7 @@ msgstr ""
 "Uživatelské jméno \"%1\" se již používá. Prosím zkuste jiné uživatelské "
 "jméno."
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:193
+#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:194
 msgid "The value entered does not have the correct format"
 msgstr "Zadaná hodnota není ve správném formátu."
 
@@ -4797,12 +5084,12 @@ msgstr "Toto konto bylo deaktivováno. Kontaktujte prosím svou knihovnu."
 msgid "This address has a pending change."
 msgstr "Tato adresa obsahuje nevyřízenou změnu."
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:189
+#: ../../Open-ILS/src/templates-bootstrap/opac/register.tt2:190
 msgid "This field is required"
 msgstr "Toto pole je povinné"
 
 #. (rec.mr_constituent_count)
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:130
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:140
 msgid "This group contains %1 records"
 msgstr "Počet záznamů v této skupině: %1"
 
@@ -4822,11 +5109,11 @@ msgstr ""
 "Po odhlášení dojde ke ztrátě informace, jestliže tuto položku neuložíte do "
 "trvalého seznamu."
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:193
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:215
 msgid "This item does not have any formats available for holds placement"
 msgstr "Tato jednotka nemá žádné vhodné formáty pro zadání rezervace"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:324
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:327
 msgid "This list contains no items."
 msgstr "Tento seznam neobsahuje žádné položky."
 
@@ -4853,6 +5140,10 @@ msgstr "Čtvrtek: %1 - %2"
 msgid "Thursday: closed"
 msgstr "Čtvrtek: zavřeno"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:73
+msgid "Time"
+msgstr ""
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/subjects.tt2:2
 msgid "Time Period: "
 msgstr "časový interval: "
@@ -4861,7 +5152,7 @@ msgstr "časový interval: "
 msgid "Tip:"
 msgstr "Tip:"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:668 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:676 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:685 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:693 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:699 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:704 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3562 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3570 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3579 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3587 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3593 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3598 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:56 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:5 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:47 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_circs.tt2:18 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds.tt2:24 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds_ready.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_place_hold.tt2:21 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:53 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:83 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:299 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:335 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:68 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:81 ../../Open-ILS/src/templates-bootstrap/opac/parts/qtype_selector.tt2:1
+#: ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:675 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:684 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:693 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:702 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:708 ../../Open-ILS/src/templates-bootstrap/opac/css/mediaQuery.css.tt2:713 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3587 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3595 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3604 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3612 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3618 ../../Open-ILS/src/templates-bootstrap/opac/css/style.css.tt2:3623 ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:46 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:57 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history/export.tt2:5 ../../Open-ILS/src/templates-bootstrap/opac/myopac/circs.tt2:48 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_circs.tt2:18 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds.tt2:24 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_holds_ready.tt2:22 ../../Open-ILS/src/templates-bootstrap/opac/myopac/ebook_place_hold.tt2:21 ../../Open-ILS/src/templates-bootstrap/opac/myopac/hold_history.tt2:54 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds.tt2:85 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:302 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:349 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:69 ../../Open-ILS/src/templates-bootstrap/opac/parts/anon_list.tt2:82 ../../Open-ILS/src/templates-bootstrap/opac/parts/qtype_selector.tt2:1 ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:47 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:35
 msgid "Title"
 msgstr "Název"
 
@@ -4877,21 +5168,11 @@ msgstr "Název: Z až A"
 msgid "Titles"
 msgstr "Názvy"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/myopac/main_refund_policy.tt2:10
-msgid ""
-"To ensure your necessary receipt information is not lost, enter your email "
-"address above and a receipt will be emailed to you. Otherwise, make certain "
-"you have a printed receipt in hand before closing the payment receipt screen."
-msgstr ""
-"Aby nedošlo ke ztrátě informací na potvrzení, zadejte výše svou e-mailovou "
-"adresu a potvrzení vám bude zasláno e-mailem. Případně se před uzavření okna "
-"s potvrzením platby, ujistěte se , že jste potvrzení vytiskli."
-
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/subjects.tt2:2
 msgid "Topic Heading: "
 msgstr "Tematické záhlaví: "
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:229
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:121
 msgid "Total amount:"
 msgstr "Celková částka"
 
@@ -4903,7 +5184,7 @@ msgstr "Přepisovač"
 msgid "Translator"
 msgstr "Překladatel"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:48
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:58
 msgid "Truncation"
 msgstr "Zkrácení"
 
@@ -4912,7 +5193,7 @@ msgid "Try Payment Again"
 msgstr "Znovu zkusit platbu"
 
 #. ("<strong>' _ i18n_advsearch _ '</strong>")
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:36
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:46
 msgid "Try changing to %1."
 msgstr "Zkuste změnit na  %1."
 
@@ -4957,7 +5238,7 @@ msgstr "Místo univerzity"
 msgid "Unknown problem"
 msgstr "Neznámý problém"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:125
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds_curbside.tt2:165 ../../Open-ILS/src/templates-bootstrap/opac/record/email_preview.tt2:68 ../../Open-ILS/src/templates-bootstrap/opac/record/print_preview.tt2:56
 msgid "Update"
 msgstr "Aktualizovat"
 
@@ -4965,7 +5246,7 @@ msgstr "Aktualizovat"
 msgid "Update Email"
 msgstr "Upravit  e-mail"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:124 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:92
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/generic_payment_form.tt2:34 ../../Open-ILS/src/templates-bootstrap/opac/myopac/prefs.tt2:92
 msgid "Update Email Address"
 msgstr "Aktualizovat e-mailovou adresu:"
 
@@ -4976,6 +5257,10 @@ msgstr "Aktualizovat heslo"
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_username.tt2:5 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_username.tt2:9
 msgid "Update Username"
 msgstr "Upravit uživatelské jméno"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:67
+msgid "Use default item sort"
+msgstr "Použít výchozí řazení jednotek"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/password_reset.tt2:58
 msgid "User name:"
@@ -5005,7 +5290,7 @@ msgstr "Zobrazit košík"
 msgid "View Borrowing History"
 msgstr "Zobrazit historii výpůjček"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main.tt2:55
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main.tt2:56
 msgid "View My Checked Out E-Items"
 msgstr "Zobrazit vypůjčené E-knihy"
 
@@ -5013,11 +5298,11 @@ msgstr "Zobrazit vypůjčené E-knihy"
 msgid "View My Checked Out Items"
 msgstr "Zobrazit vypůjčené jednotky"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main.tt2:62
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main.tt2:63
 msgid "View My E-Items On Hold"
 msgstr "Zobrazit rezervace E-knih"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main.tt2:69
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main.tt2:70
 msgid "View My E-Items Ready for Pickup"
 msgstr "Zobrazit rezervace E-knih k vyzvednutí"
 
@@ -5029,7 +5314,7 @@ msgstr "Zobrazit moje rezervace"
 msgid "View My Holds Ready for Pickup"
 msgstr "Zobrazit moje rezervace připravené k vyzvednutí"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:309
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/summary.tt2:316
 msgid "View all formats and editions "
 msgstr "Zobrazit všechny formáty a vydání "
 
@@ -5058,7 +5343,7 @@ msgstr "Pěvec"
 msgid "Voice actor"
 msgstr "Hlasový herec"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:166
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:256
 msgid "Volume hold"
 msgstr "Rezervace signatury"
 
@@ -5070,6 +5355,12 @@ msgstr "Signatury"
 msgid "Waiting for copy"
 msgstr "Čekání na exemplář"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/payment_form_error.tt2:2
+msgid ""
+"We are unable to process credit card payments at this time. We apologize for "
+"the inconvenience. Please contact the library for further assistance."
+msgstr ""
+
 #. ("<time property=\"opens\" content=\"' _ date.format(open, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(open) _ '</time>", "<time property=\"closes\" content=\"' _ date.format(close, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(close) _ '</time>")
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:49
 msgid "Wednesday: %1 - %2"
@@ -5078,6 +5369,10 @@ msgstr "Středa: %1 - %2"
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/library/hours.tt2:46
 msgid "Wednesday: closed"
 msgstr "Středa: zavřeno"
+
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/config.tt2:3
+msgid "Where"
+msgstr "Kde"
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/contents.tt2:2
 msgid "With Note: "
@@ -5095,7 +5390,7 @@ msgstr "Dřevorytec"
 msgid "Woodcutter"
 msgstr "Dřevořezbář"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:49
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:59
 msgid ""
 "Words may be right-hand truncated using an asterisk. Use a single asterisk * "
 "to truncate any number of characters."
@@ -5131,23 +5426,23 @@ msgstr "Autor předmluvy"
 msgid "Writer of supplementary textual content"
 msgstr "Autor doplňkového textového obsahu"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:54 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:69
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:54 ../../Open-ILS/src/templates-bootstrap/opac/myopac/lists.tt2:69 ../../Open-ILS/src/templates-bootstrap/opac/parts/hold_notify.tt2:14
 msgid "Yes"
 msgstr "Ano"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:221
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:243
 msgid "Yes, by Email"
 msgstr "Ano. e-mailem"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:235
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:257
 msgid "Yes, by Phone"
 msgstr "Ano, telefonicky"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:248
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/place_hold.tt2:270
 msgid "Yes, by Text Messaging"
 msgstr "Ano, prostřednictvím SMS"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:74
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/holds/edit.tt2:75
 msgid "Yes, this hold is active now"
 msgstr "Ano, tato rezervace je nyní aktivní"
 
@@ -5173,7 +5468,7 @@ msgstr ""
 "Zadali jste špatné datum nebo nesprávný formát data. Prosím zadejte datum "
 "narození ve formátu RRRR-MM_DD nebo YYYY/MM/DD a zkuste to znovu."
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:210
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/charges.tt2:212
 msgid "You have no current fines."
 msgstr "Nyní nemáte žádné pokuty."
 
@@ -5209,7 +5504,7 @@ msgstr ""
 "Máte oprávnění  obejít nastavené omezení některých rezervací. Pro překonání "
 "omezení a zadání rezervace na vybrané položky klikněte na tlačítko Potvrdit."
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:56
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:66
 msgid ""
 "You may use ^ and $ to indicate \"phrase begins with\" and \"phrase ends "
 "with,\" respectively, within a search phrase enclosed in quotation marks."
@@ -5222,7 +5517,7 @@ msgstr ""
 msgid "Your account does not currently have an email address set. %1"
 msgstr "Ve vašem účtu aktuálně není nastavena žádná e-mailová adresa. %1"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:102
+#: ../../Open-ILS/src/templates-bootstrap/opac/browse.tt2:102 ../../Open-ILS/src/templates-bootstrap/opac/course_browse.tt2:103
 msgid ""
 "Your browse term seems to begin with an article (a, an, the). You might get "
 "better results by omitting the article."
@@ -5230,20 +5525,21 @@ msgstr ""
 "Zdá se, že hledaný termín začína členem (a, an, the). Možná docílíte lepších "
 "výsledků,  když člen vynecháte."
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:23
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/stripe_payment_form.tt2:2
 msgid ""
 "Your browser does not have Javascript enabled, and we cannot process credit "
-"card payments without it.  Please change your browser settings and try again."
+"card payments without it.  Please adjust your browser settings and try again."
 msgstr ""
-"Váš prohlížeč nemá povolen Javascript a bez toho není možné zpracovat platbu "
-"kartou. Prosím, změňte nastavení prohlížeče a zkuste to znovu."
+"Ve vašem prohlížeči není povolen Javascript, bez něj však není možné "
+"zpracovat platbu kartou. Upravte prosím nastavení svého prohlížeče a zkuste "
+"to znovu."
 
 #: ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_email.tt2:20 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_password.tt2:27 ../../Open-ILS/src/templates-bootstrap/opac/myopac/update_username.tt2:25
 msgid "Your current password was not correct."
 msgstr "Vaše heslo nebylo správné"
 
-#. (ctx.user.email)
-#: ../../Open-ILS/src/templates-bootstrap/opac/record/email.tt2:12
+#. (ctx.email)
+#: ../../Open-ILS/src/templates-bootstrap/opac/record/email.tt2:11
 msgid "Your email has been queued for delivery to %1"
 msgstr "Váš e-mail byl zařazen do fronty a bude brzy odeslán na adresu   %1"
 
@@ -5287,7 +5583,7 @@ msgstr "PSČ"
 msgid "Zip Code"
 msgstr "PSČ"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:178
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/circ_history.tt2:222
 msgid "circ_history.csv"
 msgstr "circ_history.csv"
 
@@ -5295,19 +5591,19 @@ msgstr "circ_history.csv"
 msgid "copy"
 msgstr "kopírovat"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:121
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:207
 msgid "edit"
 msgstr "upravit"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:51
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:61
 msgid "environment* agency"
 msgstr "sociologick* výzkum*"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:44
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:54
 msgid "garcia marquez"
 msgstr "sociální práce"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:59
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:69
 msgid "harry"
 msgstr "harry"
 
@@ -5315,15 +5611,19 @@ msgstr "harry"
 msgid "info"
 msgstr "info"
 
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:35 ../../Open-ILS/src/templates-bootstrap/opac/parts/searchbar.tt2:193
+msgid "or"
+msgstr "nebo"
+
 #: ../../Open-ILS/src/templates-bootstrap/opac/parts/cart.tt2:26
 msgid "records in basket"
 msgstr "záznamy v košíku"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:34
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/table.tt2:44
 msgid "selected"
 msgstr "vybráno"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:59
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/result/lowhits.tt2:69
 msgid "stone"
 msgstr "kámen"
 
@@ -5331,7 +5631,7 @@ msgstr "kámen"
 msgid "title"
 msgstr "název"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/main_payment_form.tt2:45
+#: ../../Open-ILS/src/templates-bootstrap/opac/myopac/last_chance_form.tt2:14
 msgid "to your credit card?"
 msgstr "na vaši kreditní kartu?"
 
@@ -5339,7 +5639,7 @@ msgstr "na vaši kreditní kartu?"
 msgid "unread"
 msgstr "nepřečtená"
 
-#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:117 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:125
+#: ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:203 ../../Open-ILS/src/templates-bootstrap/opac/parts/record/copy_table.tt2:211
 msgid "view"
 msgstr "zobrazit"
 

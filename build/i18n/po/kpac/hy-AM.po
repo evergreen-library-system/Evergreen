@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-09-15 19:05+0000\n"
+"POT-Creation-Date: 2021-10-12 19:02+0000\n"
 "PO-Revision-Date: 2017-07-27 07:57+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:06+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+"X-Launchpad-Export-Date: 2021-10-13 04:53+0000\n"
+"X-Generator: Launchpad (build 8a94da2fac127f5e46a49fd1140e43759d578803)\n"
 
 #: ../../Open-ILS/src/templates/kpac/getit.tt2:40
 msgid " Enter Numbers... "
@@ -40,7 +40,7 @@ msgstr "%1, %2"
 msgid "%1..."
 msgstr "%1..."
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:146
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:144
 msgid "-- Temporary List --"
 msgstr "-- Ժամանակավոր ցուցակ --"
 
@@ -48,11 +48,11 @@ msgstr "-- Ժամանակավոր ցուցակ --"
 msgid "About this item:"
 msgstr "Այս նյութի մասին"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:144
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:142
 msgid "Add to one of your lists?"
 msgstr "Ավելացնե՞լ քո ցանկերից որևէ մեկին։"
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:36 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:14
+#: ../../Open-ILS/src/templates/kpac/home.tt2:36 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:12
 msgid "Author"
 msgstr "Հեղինակ"
 
@@ -73,13 +73,17 @@ msgstr "Հետ դեպի հիմնական քարտարան"
 msgid "Call Number"
 msgstr "Դասիչ"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:72
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:70
 msgid "Choose a Pickup Library:"
 msgstr "Ընտրիր վերցնելու գրադարանը"
 
 #: ../../Open-ILS/src/templates/kpac/parts/footer.tt2:2
 msgid "Contact Us"
 msgstr "Կապվիր մեզ հետ"
+
+#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:53
+msgid "Did you mean: "
+msgstr ""
 
 #: ../../Open-ILS/src/templates/kpac/getit.tt2:24
 msgid "Enter your password"
@@ -89,7 +93,7 @@ msgstr "Մուտք արա քո գաղտնաբառը"
 msgid "Excerpt"
 msgstr "Մեջբերում"
 
-#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:38
+#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:36
 msgid "Full Collection"
 msgstr "Լրիվ հավաքածու"
 
@@ -125,7 +129,7 @@ msgstr ""
 "Եթե այս նյութի համար ցանկանում ես դնել պահում, մուտք արա հետևյալ "
 "տեղեկատվությունը և սեղմիր Հաստատել։"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:130
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:128
 msgid ""
 "If you would like to save this item to a list to be requested later, click "
 "Submit below."
@@ -202,7 +206,7 @@ msgstr "Կամ սեղմիր պատկերի վրա որ սկսես։"
 msgid "Page %1 of %2"
 msgstr "Էջ %1 of %2"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:54
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:52
 msgid "Password"
 msgstr "Գաղտնաբառ"
 
@@ -259,7 +263,7 @@ msgstr "կայքի քարտեզ"
 msgid "Status"
 msgstr "Կարգավիճակ"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:120 ../../Open-ILS/src/templates/kpac/getit.tt2:155
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:118 ../../Open-ILS/src/templates/kpac/getit.tt2:153
 msgid "Submit"
 msgstr "Հաստատել"
 
@@ -275,7 +279,7 @@ msgstr "Բովանդակություն"
 msgid "Text size"
 msgstr "Տեքստի չափ"
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:32 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:14
+#: ../../Open-ILS/src/templates/kpac/home.tt2:32 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:12
 msgid "Title"
 msgstr "Վերնագիր"
 
@@ -293,7 +297,7 @@ msgstr ""
 msgid "Unable to request %1."
 msgstr "Ի վիճակի չէ պահանջել %1."
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:28 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:14
+#: ../../Open-ILS/src/templates/kpac/home.tt2:28 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:12
 msgid "Word"
 msgstr "Բառ"
 
@@ -305,7 +309,7 @@ msgstr "Դու Հիշել ես այն։"
 msgid "You can find this item at these locations:"
 msgstr "Դու կարող ես գտնել այս նյութը այս վայրերում։"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:134
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:132
 msgid ""
 "You may also save this item to a list you have already created by selecting "
 "one of your lists below."
@@ -362,11 +366,15 @@ msgstr "գրադարանի տոմս"
 msgid "more info"
 msgstr "ավելի տեղեկատվություն"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:63
+#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:55
+msgid "or"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:61
 msgid "password help"
 msgstr "գաղտնաբառի օգնություն"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:49
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:47
 msgid "pin number help"
 msgstr "pin համարի օգնություն"
 
@@ -378,11 +386,11 @@ msgstr "տպել"
 msgid "rating"
 msgstr "գնահատում"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:129
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:127
 msgid "save it!"
 msgstr "հիշիր այն։"
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:40 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:48
+#: ../../Open-ILS/src/templates/kpac/home.tt2:40 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:46
 msgid "search"
 msgstr "որոնում"
 
