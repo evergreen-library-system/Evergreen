@@ -1,0 +1,2 @@
+* The patron record juvenile flag is now available to the checkout and
+  items out print templates.
