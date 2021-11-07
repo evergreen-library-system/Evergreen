@@ -200,7 +200,7 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
         if (copy_list.length == 0) return;
         return egCore.net.request(
             'open-ils.circ',
-            'open-ils.circ.circulation.update_latest_inventory',
+            'open-ils.circ.circulation.update_copy_inventory',
             egCore.auth.token(), {copy_list: copy_list}
         ).then(function(res) {
             if (res) {
@@ -212,14 +212,16 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
                                 {alci: ['inventory_workstation']}
                             }).then(function(alci) {
                                 //update existing grid rows
-                                item["latest_inventory.inventory_date"] = alci.inventory_date();
-                                item["latest_inventory.inventory_workstation.name"] =
-                                    alci.inventory_workstation().name();
+                                if (alci) {
+                                    item["latest_inventory.inventory_date"] = alci.inventory_date();
+                                    item["latest_inventory.inventory_workstation.name"] =
+                                        alci.inventory_workstation().name();
+                                }
                             });
                         }
                     });
                 });
-                return all_items || res;
+                return res;
             }
         });
     }

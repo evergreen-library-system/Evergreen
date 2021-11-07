@@ -52,8 +52,8 @@ angular.module('egItemStatus',
  * Parent scope for list and detail views
  */
 .controller('SearchCtrl', 
-       ['$scope','$q','$window','$location','$timeout','egCore','egNet','egGridDataProvider','egItem', 'egCirc',
-function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc , egCirc) {
+      ['$scope','$q','$window','$location','$timeout','egCore','egNet','egGridDataProvider','egItem', 'egCirc', 'ngToast',
+function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc , egCirc, ngToast) {
     $scope.args = {}; // search args
 
     // sub-scopes (search / detail-view) apply their version 
@@ -156,7 +156,12 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     $scope.update_inventory = function() {
         itemSvc.updateInventory([$scope.args.copyId], null)
         .then(function(res) {
-            $timeout(function() { location.href = location.href; }, 1000);
+            if (res[0]) {
+                ngToast.create(egCore.strings.SUCCESS_UPDATE_INVENTORY_SINGLE);
+            } else {
+                ngToast.warning(egCore.strings.FAIL_UPDATE_INVENTORY_SINGLE);
+            }
+            $timeout(function() { location.href = location.href; }, 1500);
         });
     }
 
@@ -561,8 +566,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     $scope.update_inventory = function() {
         var copy_list = gatherSelectedHoldingsIds();
         itemSvc.updateInventory(copy_list, $scope.gridControls.allItems()).then(function(res) {
-            if (res) {
-                $scope.gridControls.allItems(res);
+            if (res[0]) {
                 ngToast.create(egCore.strings.SUCCESS_UPDATE_INVENTORY);
             } else {
                 ngToast.warning(egCore.strings.FAIL_UPDATE_INVENTORY);
