@@ -49,7 +49,7 @@ export class EditEventDefinitionComponent implements OnInit {
 
     constructor(
         private router: Router,
- 	private idl: IdlService,
+        private idl: IdlService,
         private pcrud: PcrudService,
         private toast: ToastService,
         private route: ActivatedRoute,
