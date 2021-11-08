@@ -120,16 +120,22 @@ export class EditEventDefinitionComponent implements OnInit {
             currentGrid = this.paramGrid;
         }
         idlThings.forEach(idlThing => idlThing.isdeleted(true));
+        let _deleted = 0;
         this.pcrud.autoApply(idlThings).subscribe(
             val => {
                 console.debug('deleted: ' + val);
                 this.deleteSuccessString.current()
                     .then(str => this.toast.success(str));
-                currentGrid.reload();
+                _deleted++;
             },
             err => {
                 this.deleteFailedString.current()
                     .then(str => this.toast.danger(str));
+            },
+            () => {
+                if (_deleted > 0) {
+                    currentGrid.reload();
+                }
             }
         );
     }
