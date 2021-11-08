@@ -739,8 +739,10 @@ export class EditComponent implements OnInit, AfterViewInit {
 
         const addr = this.idl.create('aua');
         addr.isnew(true);
+        addr.id(-1);
         addr.usr(-1);
         addr.valid('t');
+        addr.within_city_limits('f');
         addr.country(this.context.settingsCache['ui.patron.default_country']);
         patron.billing_address(addr);
         patron.mailing_address(addr);
