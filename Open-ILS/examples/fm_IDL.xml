@@ -1327,7 +1327,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="ath" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::hook" oils_persist:tablename="action_trigger.hook" reporter:label="Trigger Hook Point">
 		<fields oils_persist:primary="key">
 			<field reporter:label="Hook Key" name="key" reporter:datatype="text" reporter:selector="key"/>
-			<field reporter:label="Core Type" name="core_type" reporter:datatype="text"/>
+			<field reporter:label="Core Type" name="core_type" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Passive" name="passive"  reporter:datatype="bool"/>
 		</fields>
@@ -1342,17 +1342,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="atcol" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::collector" oils_persist:tablename="action_trigger.collector" reporter:label="Trigger Environment Collector">
+	<class id="atcol" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::collector" oils_persist:tablename="action_trigger.collector" reporter:label="Trigger Environment Collector">
 		<fields oils_persist:primary="module">
-			<field reporter:label="Module Name" name="module" reporter:datatype="text" reporter:selector="module"/>
+			<field reporter:label="Module Name" name="module" reporter:datatype="text" reporter:selector="module" oils_obj:required="true"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
 	</class>
 
 	<class id="atval" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::validator" oils_persist:tablename="action_trigger.validator" reporter:label="Trigger Condition Validator">
 		<fields oils_persist:primary="module">
-			<field reporter:label="Module Name" name="module" reporter:datatype="text" reporter:selector="module"/>
+			<field reporter:label="Module Name" name="module" reporter:datatype="text" reporter:selector="module" oils_obj:required="true"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
@@ -1368,7 +1373,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<class id="atreact" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::reactor" oils_persist:tablename="action_trigger.reactor" reporter:label="Trigger Event Reactor">
 		<fields oils_persist:primary="module">
-			<field reporter:label="Module Name" name="module" reporter:datatype="text" reporter:selector="module"/>
+			<field reporter:label="Module Name" name="module" reporter:datatype="text" reporter:selector="module" oils_obj:required="true"/>
 			<field reporter:label="Description" name="description" reporter:datatype="text" oils_persist:i18n="true"/>
 		</fields>
 		<links/>
@@ -1432,10 +1437,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_definition_id_seq">
 			<field reporter:label="Definition ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Enabled" name="active" reporter:datatype="bool"/>
-			<field reporter:label="Owning Library" name="owner"  reporter:datatype="org_unit"/>
-			<field reporter:label="Hook" name="hook"  reporter:datatype="link"/>
-			<field reporter:label="Validator" name="validator"  reporter:datatype="link"/>
-			<field reporter:label="Reactor" name="reactor"  reporter:datatype="link"/>
+			<field reporter:label="Owning Library" name="owner"  reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Hook" name="hook"  reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Validator" name="validator"  reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Reactor" name="reactor"  reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Success Cleanup" name="cleanup_success"  reporter:datatype="link"/>
 			<field reporter:label="Failure Cleanup" name="cleanup_failure"  reporter:datatype="link"/>
 			<field reporter:label="Processing Delay" name="delay"  reporter:datatype="interval"/>
@@ -1443,7 +1448,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Processing Delay Context Field" name="delay_field"  reporter:datatype="text"/>
 			<field reporter:label="Processing Group Context Field" name="group_field"  reporter:datatype="text"/>
 			<field reporter:label="Template" name="template"  reporter:datatype="text"/>
-			<field reporter:label="Name" name="name"  reporter:datatype="text"/>
+			<field reporter:label="Name" name="name"  reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Granularity" name="granularity"  reporter:datatype="text"/>
 			<field reporter:label="Opt-In User Field" name="usr_field"  reporter:datatype="text"/>
 			<field reporter:label="Opt-In Setting Type" name="opt_in_setting"  reporter:datatype="link"/>
@@ -1573,9 +1578,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="atevparam" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::event_param" oils_persist:tablename="action_trigger.event_params" reporter:label="Trigger Event Parameter">
 		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_params_id_seq">
 			<field reporter:label="Parameter ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Event Definition" name="event_def" reporter:datatype="link"/>
-			<field reporter:label="Parameter Name" name="param" reporter:datatype="text"/>
-			<field reporter:label="Parameter Value" name="value" reporter:datatype="text"/>
+			<field reporter:label="Event Definition" name="event_def" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Parameter Name" name="param" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Parameter Value" name="value" reporter:datatype="text" oils_obj:required="true"/>
 		</fields>
 		<links>
 			<link field="event_def" reltype="has_a" key="id" map="" class="atevdef"/>
