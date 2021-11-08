@@ -24,7 +24,7 @@
         <h4 class="mb-3 mt-3">Trigger Event Definitions</h4>
         <eg-grid #eventsGrid idlClass="atevdef" [dataSource]="eventsDataSource" 
             showFields="owner,name,hook,active,delay,delay_field,group_field,reactor,validator,repeat_delay,granularity,retention_interval"
-            [showLinkSelectors]="true" [sortable]="true" 
+            [showLinkSelectors]="true" [sortable]="true" [stickyHeader]="true"
             (onRowActivate)="editSelected([$event])" [filterable]="true">
             <eg-grid-toolbar-button label="New Event Definition" i18n-label
                 [action]="createNewEvent"></eg-grid-toolbar-button>

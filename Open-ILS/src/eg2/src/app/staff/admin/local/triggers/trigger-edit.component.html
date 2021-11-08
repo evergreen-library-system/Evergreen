@@ -30,7 +30,7 @@
         <ng-template ngbNavContent>
             <h3 class="mb-3">Trigger Event Environment</h3>
             <eg-grid #envGrid idlClass="atenv" [dataSource]="envDataSource" 
-                showFields="id,path,collector,label"
+                showFields="path,collector,label"
                 (onRowActivate)="editSelected([$event])">
                 <eg-grid-toolbar-button label="New Environment" i18n-label
                     [action]="createNewEnv"></eg-grid-toolbar-button>
@@ -48,7 +48,7 @@
         <ng-template ngbNavContent>
             <h3 class="mb-3">Trigger Event Parameters</h3>
             <eg-grid #paramGrid idlClass="atevparam" [dataSource]="paramDataSource" 
-                showFields="id,param,value" (onRowActivate)="editSelected([$event])">
+                showFields="param,value" (onRowActivate)="editSelected([$event])">
                 <eg-grid-toolbar-button label="New Parameter" i18n-label
                     [action]="createNewParam"></eg-grid-toolbar-button>
                 <eg-grid-toolbar-action label="Edit Parameter" i18n-label 
