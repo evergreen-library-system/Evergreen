@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -27,6 +28,8 @@ export class TriggersComponent implements OnInit {
     @ViewChild('hookDialog', {static: false}) hookDialog: FmRecordEditorComponent;
     @ViewChild('reactorDialog', {static: false}) reactorDialog: FmRecordEditorComponent;
     @ViewChild('validatorDialog', {static: false}) validatorDialog: FmRecordEditorComponent;
+
+    @ViewChild('confirmDialog', {static: false}) private confirmDialog: ConfirmDialogComponent;
 
     @ViewChild('eventsGrid', {static: false}) eventsGrid: GridComponent;
     @ViewChild('hooksGrid', {static: false}) hooksGrid: GridComponent;
@@ -228,17 +231,40 @@ export class TriggersComponent implements OnInit {
         );
     }
 
-    cloneSelected = (idlThings: IdlObject[]) => {
-        const clone = this.idl.clone(idlThings[0]);
-        clone.id(null);
+    cloneSelected = (selectedRecords: IdlObject[]) => {
+        const clone = this.idl.clone(selectedRecords[0]);
+        // look for existing environments
+        this.pcrud.search('atenv', {event_def: selectedRecords[0].id()}, {}, {atomic: true})
+            .toPromise().then(envs => {
+            if (envs) {
+                // if environments found, ask user if they want to clone them
+                this.confirmDialog.open().toPromise().then(ok => {
+                    if (ok) {
+                        this.doClone(clone, envs);
+                    } else {
+                        this.doClone(clone, []);
+                    }
+                });
+            } else {
+                this.doClone(clone, []);
+            }
+        });
+    }
+
+    doClone(eventDef, env_list) {
+        eventDef.id(null);
         this.eventDialog.mode = 'create';
         this.eventDialog.recordId = null;
-        this.eventDialog.record = clone;
+        this.eventDialog.record = eventDef;
         this.eventDialog.open({size: 'lg'}).subscribe(
-            ok => {
+            response => {
                 this.cloneSuccessString.current()
                     .then(str => this.toast.success(str));
                 this.eventsGrid.reload();
+                // clone environments also if user previously confirmed
+                if (env_list.length) {
+                    this.cloneEnvs(response.id(), env_list);
+                }
             },
             rejection => {
                 if (!rejection.dismissed) {
@@ -248,4 +274,20 @@ export class TriggersComponent implements OnInit {
             }
         );
     }
+
+    cloneEnvs(cloneId, env_list) {
+        env_list.forEach(env => {
+            env.event_def(cloneId);
+            env.id(null);
+        });
+        this.pcrud.create(env_list).toPromise().then(
+            ok => {
+                console.debug(ok);
+            },
+            err => {
+                console.debug(err);
+            }
+        );
+    }
+
 }

@@ -107,9 +107,14 @@
         </ng-template>
       </li>
   </ul>
-  
 <div [ngbNavOutlet]="triggerNav" class="mt-2"></div>
-  
+
+<eg-confirm-dialog #confirmDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Alert"
+  dialogBody="Clone event definition environment as well?">
+</eg-confirm-dialog>
+
 <eg-string #createSuccessString i18n-text text="New entry Added"></eg-string>
 <eg-string #createErrString i18n-text text="Failed to create new entry"></eg-string>
 <eg-string #deleteFailedString i18n-text text="Deletion of entry failed or was not allowed">
