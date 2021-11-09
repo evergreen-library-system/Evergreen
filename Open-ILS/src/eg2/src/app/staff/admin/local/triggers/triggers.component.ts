@@ -253,6 +253,7 @@ export class TriggersComponent implements OnInit {
 
     doClone(eventDef, env_list) {
         eventDef.id(null);
+        eventDef.owner(null);
         this.eventDialog.mode = 'create';
         this.eventDialog.recordId = null;
         this.eventDialog.record = eventDef;
@@ -281,11 +282,10 @@ export class TriggersComponent implements OnInit {
             env.id(null);
         });
         this.pcrud.create(env_list).toPromise().then(
-            ok => {
-                console.debug(ok);
-            },
+            ok => { },
             err => {
-                console.debug(err);
+                this.cloneFailedString.current()
+                    .then(str => this.toast.danger(str));
             }
         );
     }
