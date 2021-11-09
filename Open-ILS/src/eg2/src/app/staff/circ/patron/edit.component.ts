@@ -1293,12 +1293,20 @@ export class EditComponent implements OnInit, AfterViewInit {
             // select another address to fill that role.  Select the
             // first address in the list (that does not match the
             // modifed address)
+            let found = false;
             this.patron.addresses().some(a => {
                 if (a.id() !== addr.id()) {
                     this.patron[addrType + '_address'](a);
-                    return true;
+                    return found = true;
                 }
             });
+
+            if (!found) {
+                // No alternate address was found.  Clear the value.
+                this.patron[addrType + '_address'](null);
+            }
+
+            this.patron.ischanged(true);
         }
     }
 
