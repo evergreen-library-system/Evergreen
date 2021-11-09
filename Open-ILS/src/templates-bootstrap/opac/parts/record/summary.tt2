@@ -259,6 +259,9 @@ ctx.metalinks.push('
                             # l( 'mmr id = ' _ ctx.mmr_id );
                             # l( 'mmr data = ' _ ctx.mmr_data );
                             mmr_attrs = {marc_xml => ctx.mmr_data.marc_xml};
+                            save_args = args; # need to stash the original args
+                                              # until we're done processing the
+                                              # metarecord
                             PROCESS get_marc_attrs args=mmr_attrs;
 
                             IF args.mmr_unique_bib.size > 1;
@@ -319,6 +322,7 @@ ctx.metalinks.push('
                             </div>
                             [%- END;
                             END # ending tag for IF args.mmr_unique_bib.size > 1; %]
+                            [% args = save_args; %]
                         </div>
 
                     </div>
