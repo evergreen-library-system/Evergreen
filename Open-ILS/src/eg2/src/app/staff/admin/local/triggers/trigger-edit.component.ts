@@ -46,6 +46,8 @@ export class EditEventDefinitionComponent implements OnInit {
     @ViewChild('deleteSuccessString') deleteSuccessString: StringComponent;
     @ViewChild('createSuccessString') createSuccessString: StringComponent;
     @ViewChild('createErrString') createErrString: StringComponent;
+    @ViewChild('eventDuringTestString') eventDuringTestString: StringComponent;
+    @ViewChild('errorDuringTestString') errorDuringTestString: StringComponent;
 
     constructor(
         private router: Router,
@@ -190,11 +192,16 @@ export class EditEventDefinitionComponent implements OnInit {
         ).subscribe(res => {
             this.testDone = true;
             if (res.ilsevent) {
-                this.testErr1 = 'Event:  ' + res.ilsevent + ':  ' + res.textcode + ' ->';
+                this.eventDuringTestString.current({ ilsevent: res.ilsevent, textcode : res.textcode})
+                    .then(str => this.testErr1 = str);
                 this.testErr2 = res.desc;
             } else {
                 this.testResult = res.template_output().data();
             }
+        }, err => {
+            this.testDone = true;
+            this.errorDuringTestString.current().then(str => this.testErr1 = str);
+            this.testErr2 = err;
         });
     }
 

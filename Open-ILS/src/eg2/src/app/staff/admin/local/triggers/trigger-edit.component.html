@@ -95,3 +95,8 @@
 <eg-string #cloneFailedString i18n-text text="Clone of entry failed or was not allowed">
 </eg-string>
 <eg-string #cloneSuccessString i18n-text text="Clone of entry succeeded"></eg-string>
+<eg-string #errorDuringTestString i18n-text text="Error when testing event definition:"></eg-string>
+<ng-template #errorDuringTestStringTmpl let-ilsevent="ilsevent" let-textcode="textcode" i18n>
+  Error when testing event defintion ({{ilsevent}}: {{textcode}}):
+</ng-template>
+<eg-string #eventDuringTestString [template]="errorDuringTestStringTmpl"></eg-string>
