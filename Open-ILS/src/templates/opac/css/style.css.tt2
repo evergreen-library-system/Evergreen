@@ -1311,7 +1311,7 @@ div.result_table_utils_cont {
     [% END -%]
 }
 
-#acct_checked_main_header, #acct_holds_main_header, #acct_fines_main_header, #acct_fees_main_header, #acct_checked_hist_header, #acct_holds_hist_header, #acct_list_header, #acct_list_header_anon, #temp_list_holds, #acct_messages_main_header, #ebook_circs_main_table, #ebook_holds_main_table {
+#acct_checked_main_header, #acct_holds_main_header, #acct_fines_main_header, #acct_fees_main_header, #acct_checked_hist_header, #acct_holds_groups_header, #acct_holds_hist_header, #acct_list_header, #acct_list_header_anon, #temp_list_holds, #acct_messages_main_header, #ebook_circs_main_table, #ebook_holds_main_table {
     border-collapse: collapse;
 }
 
@@ -1400,13 +1400,13 @@ div.result_table_utils_cont {
 }
 
 .hold_note_title { font-weight: bold; }
-#acct_checked_main_header td, #acct_holds_main_header td, #acct_fines_main_header td, #acct_fines_confirm_header td, #acct_fees_main_header td,#acct_checked_hist_header td, #acct_holds_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td, #acct_messages_main_header td, #ebook_circs_main_table td, #ebook_holds_main_table td, #acct_reservations_main_header td {
+#acct_checked_main_header td, #acct_holds_main_header td, #acct_fines_main_header td, #acct_fines_confirm_header td, #acct_fees_main_header td,#acct_checked_hist_header td, #acct_holds_groups_header td, #acct_holds_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td, #acct_messages_main_header td, #ebook_circs_main_table td, #ebook_holds_main_table td, #acct_reservations_main_header td {
     background-color: [% css_colors.background %]; 
     padding: 10px;
 	 border: 1px solid #d3d3d3; 
 } 
 
-#acct_checked_main_header th, #acct_holds_main_header th, #acct_fines_main_header th, #acct_fines_confirm_header th, #acct_fees_main_header th, #acct_checked_hist_header th, #acct_holds_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th, #acct_messages_main_header th, #ebook_holds_main_table th, #acct_reservations_main_header th {
+#acct_checked_main_header th, #acct_holds_main_header th, #acct_fines_main_header th, #acct_fines_confirm_header th, #acct_fees_main_header th, #acct_checked_hist_header th, #acct_holds_groups_header th, #acct_holds_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th, #acct_messages_main_header th, #ebook_holds_main_table th, #acct_reservations_main_header th {
     [% IF rtl == 't' -%]
     text-align: right;
     [% ELSE -%]
@@ -3151,10 +3151,10 @@ a.preflib_change {
         border-bottom: none;
     }
         /* Force table to not be like tables anymore */
-        table#acct_checked_main_header thead tr th, table#acct_holds_main_header thead tr th, table#acct_checked_hist_header thead tr th, table#acct_holds_hist_header thead tr th, table#ebook_circs_main_table thead tr th, table#ebook_holds_main_table thead tr th, table#acct_reservations_main_header tr th{
+        table#acct_checked_main_header thead tr th, table#acct_holds_main_header thead tr th, table#acct_checked_hist_header thead tr th, table#acct_holds_groups_header thead tr th, table#acct_holds_hist_header thead tr th, table#ebook_circs_main_table thead tr th, table#ebook_holds_main_table thead tr th, table#acct_reservations_main_header tr th{
                 display: block;
         }
-        table#acct_checked_main_header tbody tr td, table#acct_holds_main_header tbody tr td, table#acct_checked_hist_header tbody tr td, table#acct_holds_hist_header tbody tr td, table#ebook_circs_main_table tbody tr td, table#ebook_holds_main_table tbody tr td {
+        table#acct_checked_main_header tbody tr td, table#acct_holds_main_header tbody tr td, table#acct_checked_hist_header tbody tr td, table#acct_holds_groups_header tbody tr td, table#acct_holds_hist_header tbody tr td, table#ebook_circs_main_table tbody tr td, table#ebook_holds_main_table tbody tr td {
                 display: block;
         }
 
@@ -3169,7 +3169,7 @@ a.preflib_change {
                 [% END -%]
         }
 
-        table#acct_checked_main_header, table#acct_holds_main_header, table#acct_checked_hist_header, table#acct_holds_hist_header, table#ebook_circs_main_table, table#ebook_holds_main_table, table#acct_reservations_main_header {
+        table#acct_checked_main_header, table#acct_holds_main_header, table#acct_checked_hist_header, table#acct_holds_groups_header, table#acct_holds_hist_header, table#ebook_circs_main_table, table#ebook_holds_main_table, table#acct_reservations_main_header {
                 width: 90%;
         }
 
@@ -3181,10 +3181,10 @@ a.preflib_change {
            tables. If actions get added, we should move those tables out of
            here. */
 
-        table#acct_holds_hist_header tr, table#ebook_circs_main_table tr, table#ebook_holds_main_table tr { border-top: 25px solid #fff; }
+        table#acct_holds_hist_header tr, table#acct_holds_groups_header tr, table#ebook_circs_main_table tr, table#ebook_holds_main_table tr { border-top: 25px solid #fff; }
 
 
-        table#acct_checked_main_header td, table#acct_holds_main_header td, table#acct_checked_hist_header td, table#acct_holds_hist_header td, table#ebook_circs_main_table td, table#ebook_holds_main_table td, table#acct_reservations_main_header td {
+        table#acct_checked_main_header td, table#acct_holds_main_header td, table#acct_checked_hist_header td, table#acct_holds_groups_header td, table#acct_holds_hist_header td, table#ebook_circs_main_table td, table#ebook_holds_main_table td, table#acct_reservations_main_header td {
                 /* Behave  like a "row" */
                 border: none;
                 border-bottom: 1px solid #eee;
@@ -3196,7 +3196,7 @@ a.preflib_change {
                 [% END -%]
         }
 
-         table#acct_checked_main_header td:before, table#acct_holds_main_header td:before, table#acct_checked_hist_header td:before, table#acct_holds_hist_header td:before, table#ebook_circs_main_table td:before, table#ebook_holds_main_table td:before, table#acct_reservations_main_header td {
+         table#acct_checked_main_header td:before, table#acct_holds_main_header td:before, table#acct_checked_hist_header td:before, table#acct_holds_groups_header td:before, table#acct_holds_hist_header td:before, table#ebook_circs_main_table td:before, table#ebook_holds_main_table td:before, table#acct_reservations_main_header td {
                 /* Now like a table header */
                 position: absolute;
                 /* Top/left values mimic padding */
@@ -3237,6 +3237,10 @@ a.preflib_change {
         table#acct_holds_main_header td:nth-of-type(6):before { content: "[% l('Cancel on') %]"; }
         table#acct_holds_main_header td:nth-of-type(7):before { content: "[% l('Status') %]"; }
         table#acct_holds_main_header td.hold_notes:before { content: "[% l('Notes') %]"; }
+
+        table#acct_holds_groups_header td:nth-of-type(1):before { content: "[% l('Group Name') %]";}
+        table#acct_holds_groups_header td:nth-of-type(2):before { content: "[% l('Description') %]"; }
+        table#acct_holds_groups_header td:nth-of-type(3):before { content: "[% l('Actions') %]"; }
 
         table#acct_holds_hist_header td:nth-of-type(1):before { content: "[% l('Title') %]";}
         table#acct_holds_hist_header td:nth-of-type(2):before { content: "[% l('Author') %]"; }
