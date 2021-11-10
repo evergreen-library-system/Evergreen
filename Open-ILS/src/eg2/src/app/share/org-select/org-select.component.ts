@@ -338,6 +338,13 @@ export class OrgSelectComponent implements OnInit {
         });
     }
 
+    // Free-text values are not allowed.
+    handleBlur() {
+        if (typeof this.selected === 'string') {
+            this.selected = null;
+        }
+    }
+
     filter = (text$: Observable<string>): Observable<OrgDisplay[]> => {
 
         return text$.pipe(

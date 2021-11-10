@@ -21,6 +21,7 @@
     [ngbTypeahead]="filter"
     [resultTemplate]="displayTemplate"
     [inputFormatter]="formatter"
+    (blur)="handleBlur()"
     (click)="click$.next($event.target.value)"
     (selectItem)="orgChanged($event)"
     container="body"
