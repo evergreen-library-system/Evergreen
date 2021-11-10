@@ -47,10 +47,10 @@
             <big><strong>[% l('No subscriptions found.') %]</strong></big>
         </div>
         [% ELSE %]
-        <table id='acct_holds_hist_header' class='table_no_border_space table_no_cell_pad' title="[% l('Hold Groups') %]">
+        <table id='acct_holds_groups_header' class='table_no_border_space table_no_cell_pad' title="[% l('Hold Groups') %]">
             <thead>
                 <tr>
-                    <td><span>[% l('Name') %]</span></td>
+                    <td><span>[% l('Group Name') %]</span></td>
                     <td><span>[% l('Description') %]</span></td>
                     <td><span>[% l('Actions') %]</span></td>
                 </tr>
