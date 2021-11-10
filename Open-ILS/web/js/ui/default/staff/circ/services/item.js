@@ -817,17 +817,27 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
                                     return;
                                 }
 
-                                $scope.copyId = copy.id();
-                                copy.barcode($scope.barcode2);
+                                egCore.pcrud.search('acp',
+                                    {deleted : 'f', barcode : $scope.barcode2})
+                                .then(function(newBarcodeCopy) {
 
-                                egCore.pcrud.update(copy).then(function(stat) {
-                                    $scope.updateOK = stat;
-                                    $scope.focusBarcode = true;
-                                    if (stat) service.add_barcode_to_list(copy.barcode());
+                                    if (newBarcodeCopy) {
+                                        $scope.duplicateBarcode = true;
+                                        return;
+                                    }
+
+                                    $scope.copyId = copy.id();
+                                    copy.barcode($scope.barcode2);
+
+                                    egCore.pcrud.update(copy).then(function(stat) {
+                                        $scope.updateOK = stat;
+                                        $scope.focusBarcode = true;
+                                        if (stat) service.add_barcode_to_list(copy.barcode());
+                                        $uibModalInstance.close();
+                                    });
                                 });
 
                             });
-                            $uibModalInstance.close();
                         }
 
                         $scope.cancel = function($event) {
