@@ -8,8 +8,8 @@
 %]
 <div id='myopac_holds_div'>
 
+    <h3>[% l("Current Hold Groups") %]</h3>
     <div class="header_middle">
-        <span style="float:left;">[% l("Current Hold Groups") %]</span>
         <span style="float:right;">
             <a class="hide_me" href="#">[% l('Export List') %]</a>
         </span>
@@ -22,10 +22,10 @@
             <big><strong>[% l('No subscriptions found.') %]</strong></big>
         </div>
         [% ELSE %]
-        <table id='acct_holds_hist_header' class='table_no_border_space table_no_cell_pad' title="[% l('Hold Groups') %]">
+        <table id='acct_holds_groups_header' class='table table-hover table-bordered miniTable holdgroupsTable' title="[% l('Hold Groups') %]">
             <thead>
                 <tr>
-                    <th><span>[% l('Name') %]</span></th>
+                    <th><span>[% l('Group Name') %]</span></th>
                     <th><span>[% l('Description') %]</span></th>
                     <th><span>[% l('Actions') %]</span></th>
                 </tr>
