@@ -516,9 +516,9 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore) {
 
 .controller('ViewCtrl',
        ['$scope','$q','$routeParams','$timeout','$window','$uibModal','bucketSvc','egCore','egOrg','egUser',
-        'ngToast','egConfirmDialog',
+        'ngToast','egConfirmDialog','egProgressDialog',
 function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc , egCore , egOrg , egUser ,
-         ngToast , egConfirmDialog) {
+         ngToast , egConfirmDialog , egProgressDialog) {
 
     $scope.setTab('view');
     $scope.bucketId = $routeParams.id;
@@ -759,11 +759,13 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
             egCore.strings.CONFIRM_DELETE_COPY_BUCKET_ITEMS_FROM_CATALOG,
             '', {}
         ).result.then(function() {
+            egProgressDialog.open();
             var fleshed_copies = [];
-            var promises = [];
+
+            var chain = $q.when();
             angular.forEach(copies, function(i) {
-                promises.push(
-                    egCore.net.request(
+                chain = chain.then(function() {
+                     return egCore.net.request(
                         'open-ils.search',
                         'open-ils.search.asset.copy.fleshed2.retrieve',
                         i.id
@@ -771,10 +773,11 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
                         copy.ischanged(1);
                         copy.isdeleted(1);
                         fleshed_copies.push(copy);
-                    })
-                );
+                    });
+                });
             });
-            $q.all(promises).then(function() {
+
+            chain.finally(function() {
                 egCore.net.request(
                     'open-ils.cat',
                     'open-ils.cat.asset.copy.fleshed.batch.update',
@@ -800,6 +803,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
                     }
                     bucketSvc.bucketNeedsRefresh = true;
                     drawBucket();
+                    egProgressDialog.close();
                 });
             });
         });
