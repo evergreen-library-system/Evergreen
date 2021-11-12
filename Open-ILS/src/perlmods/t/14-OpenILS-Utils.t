@@ -14,7 +14,7 @@
 # truckload to verify that everything would continue to work if
 # we turn it on across the board.
 
-use Test::More tests => 48;
+use Test::More tests => 47;
 use Test::Warn;
 use DateTime::TimeZone;
 use DateTime::Format::ISO8601;
