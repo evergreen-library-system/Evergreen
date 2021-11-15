@@ -55,7 +55,8 @@ RETURNS void AS $$
         FROM biblio.record_entry
         WHERE id > 0 AND 
             CASE WHEN $3 IS NULL THEN TRUE 
-                ELSE last_xact_id = $3 END;
+                ELSE last_xact_id = $3 END
+        ORDER BY id;
 $$ LANGUAGE SQL;
 
 CREATE FUNCTION evergreen.populate_call_number 
@@ -84,7 +85,8 @@ RETURNS void AS $$
     INSERT INTO asset.copy (call_number, circ_lib, creator, editor, loan_duration, fine_level, price, barcode)
         SELECT id, $1, 1, 1, 1, 1, (SELECT evergreen.generate_price()), $3 || id::text
         FROM asset.call_number
-        WHERE record > 0 AND label LIKE $4 || '%' AND owning_lib = $2;
+        WHERE record > 0 AND label LIKE $4 || '%' AND owning_lib = $2
+        ORDER BY id;
 $$ LANGUAGE SQL;
 
 /** Returns the next (by ID) non-deleted asset.copy */
