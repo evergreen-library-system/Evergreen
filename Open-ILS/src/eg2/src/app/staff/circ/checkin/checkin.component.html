@@ -175,50 +175,57 @@
       <eg-grid-column path="index" [index]="true" 
         label="Row Index" i18n-label [hidden]="true"></eg-grid-column>
 
+      <eg-grid-column path="copy.alert_message" label="Alert Message"
+        i18n-label></eg-grid-column>
+
       <eg-grid-column path="mbts.balance_owed" label="Balance Owed" 
         datatype="money" i18n-label></eg-grid-column>
 
       <eg-grid-column path="copy.barcode" label="Barcode" 
         i18n-label [cellTemplate]="barcodeTemplate"></eg-grid-column>
 
-      <eg-grid-column path="circ.id" label="Bill #" i18n-label>
+      <eg-grid-column i18n-label label="Call Number" path="volume.label">
       </eg-grid-column>
 
-      <eg-grid-column path="circ.checkin_time" label="Checkin Date" i18n-label
-        datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+      <eg-grid-column path="copy.circ_lib.shortname"
+        label="Circulation Library" i18n-label></eg-grid-column>
 
-      <eg-grid-column path="circ.xact_finish" label="Finish" i18n-label
-        datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
-      <eg-grid-column path="circ_patron.family_name" label="Last Name" i18n-label>
+      <eg-grid-column path="title" label="Title" i18n-label 
+        [cellTemplate]="titleTemplate"></eg-grid-column>
+
+      <eg-grid-column path="patron.family_name" label="Last Name" i18n-label>
       </eg-grid-column>
 
-      <eg-grid-column path="circ_patron.first_given_name" label="First Name" i18n-label>
+      <eg-grid-column path="patron.first_given_name" label="First Name" i18n-label>
       </eg-grid-column>
 
       <eg-grid-column path="copy.location.name" label="Location" i18n-label [hidden]="true">
       </eg-grid-column>
 
-      <eg-grid-column name="routeTo" label="Route To" i18n-label>
+      <eg-grid-column path="circ.id" label="Bill #" i18n-label [hidden]="true">
       </eg-grid-column>
 
-      <eg-grid-column path="circ.xact_start" label="Start" i18n-label
+      <eg-grid-column path="circ.checkin_time" label="Checkin Date" i18n-label
+        datatype="timestamp" [datePlusTime]="true" [hidden]="true"></eg-grid-column>
+
+      <eg-grid-column path="circ.xact_finish" label="Finish" i18n-label
+        [hidden]="true" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+
+      <eg-grid-column name="routeTo" label="Route To" i18n-label [hidden]="true">
+      </eg-grid-column>
+
+      <eg-grid-column path="circ.xact_start" label="Start" i18n-label [hidden]="true" 
         datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
 
-      <eg-grid-column path="title" label="Title" i18n-label 
-        [cellTemplate]="titleTemplate"></eg-grid-column>
-
-      <eg-grid-column path="copy.circ_modifier" 
+      <eg-grid-column path="copy.circ_modifier" [hidden]="true" 
         label="Circulation Modifier" i18n-label></eg-grid-column>
 
-      <eg-grid-column path="copy.circ_lib.shortname"
-        label="Circulation Library" i18n-label></eg-grid-column>
-
-      <eg-grid-column path="copy.status.name"
+      <eg-grid-column path="copy.status.name" [hidden]="true"
         label="Item Status" i18n-label></eg-grid-column>
 
       <eg-grid-column path="circ.due_date" label="Due Date" i18n-label
         timezoneContextOrg="circ.circ_lib" dateOnlyIntervalField="circ.duration"
-        datatype="timestamp"></eg-grid-column>
+        [hidden]="true" datatype="timestamp"></eg-grid-column>
 
       <eg-grid-column path="copy.*" idlClass="acp" [hidden]="true"></eg-grid-column>
       <eg-grid-column path="volume.*" idlClass="acn" [hidden]="true"></eg-grid-column>
