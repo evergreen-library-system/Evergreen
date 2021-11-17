@@ -10,13 +10,13 @@
         <ng-template ngbNavContent>
             <ng-template #textAreaTemplate let-field="field" let-record="record">
                 <textarea class="form-control" name="{{field.name}}"
-                    [readonly]="field.readOnly" [required]="field.isRequired()" 
-                    [ngModel]="record[field.name]()" 
+                    [readonly]="field.readOnly" [required]="field.isRequired()"
+                    [ngModel]="record[field.name]()"
                     (ngModelChange)="record[field.name]($event)" style="height: 600px;">
                 </textarea>
             </ng-template>
-            <eg-fm-record-editor #eventDialog idlClass="atevdef" displayMode="inline" 
-                recordId="{{this.evtDefId}}" mode="update" 
+            <eg-fm-record-editor #eventDialog idlClass="atevdef" displayMode="inline"
+                recordId="{{this.evtDefId}}" mode="update"
                 [fieldOptions]="{message_template:{customTemplate:{template:textAreaTemplate}},template:{customTemplate:{template:textAreaTemplate}}}"
                 fieldOrder="owner,name,hook,active,delay,delay_field,group_field,reactor,validator,repeat_delay,id,cleanup_failure,granularity,max_delay,message_library_path,message_template,message_title,message_usr_path,opt_in_setting,usr_field,retention_interval,cleanup_success,template">
             </eg-fm-record-editor>
@@ -29,14 +29,14 @@
         <a ngbNavLink i18n>Edit Environment</a>
         <ng-template ngbNavContent>
             <h3 class="mb-3">Trigger Event Environment</h3>
-            <eg-grid #envGrid idlClass="atenv" [dataSource]="envDataSource" 
+            <eg-grid #envGrid idlClass="atenv" [dataSource]="envDataSource"
                 showFields="path,collector,label" persistKey="admin.local.triggers.atenv"
                 (onRowActivate)="editSelected([$event])">
                 <eg-grid-toolbar-button label="New Environment" i18n-label
                     [action]="createNewEnv"></eg-grid-toolbar-button>
-                <eg-grid-toolbar-action label="Edit Environment" i18n-label 
+                <eg-grid-toolbar-action label="Edit Environment" i18n-label
                     [action]="editSelected"></eg-grid-toolbar-action>
-                <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+                <eg-grid-toolbar-action label="Delete Selected" i18n-label
                     (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
             </eg-grid>
             <eg-fm-record-editor #envDialog idlClass="atenv"
@@ -47,14 +47,14 @@
         <a ngbNavLink i18n>Edit Parameters</a>
         <ng-template ngbNavContent>
             <h3 class="mb-3">Trigger Event Parameters</h3>
-            <eg-grid #paramGrid idlClass="atevparam" [dataSource]="paramDataSource" 
+            <eg-grid #paramGrid idlClass="atevparam" [dataSource]="paramDataSource"
                 persistKey="admin.local.triggers.atevparam"
                 showFields="param,value" (onRowActivate)="editSelected([$event])">
                 <eg-grid-toolbar-button label="New Parameter" i18n-label
                     [action]="createNewParam"></eg-grid-toolbar-button>
-                <eg-grid-toolbar-action label="Edit Parameter" i18n-label 
+                <eg-grid-toolbar-action label="Edit Parameter" i18n-label
                     [action]="editSelected"></eg-grid-toolbar-action>
-                <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+                <eg-grid-toolbar-action label="Delete Selected" i18n-label
                     (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
             </eg-grid>
             <eg-fm-record-editor #paramDialog idlClass="atevparam"
@@ -66,7 +66,7 @@
         <ng-template ngbNavContent>
             <h3 class="mb-3">Run Tests</h3>
             <label id="barcode">Barcode of Circulating Copy </label>
-            <input aria-labelledby="barcode" type="text" [(ngModel)]="barcode" 
+            <input aria-labelledby="barcode" type="text" [(ngModel)]="barcode"
                 (keyup.enter)="runTest(barcode)" class="ml-2" />
             <div></div>
             <button class="btn btn-info" (click)="runTest(barcode)" i18n>Go</button>

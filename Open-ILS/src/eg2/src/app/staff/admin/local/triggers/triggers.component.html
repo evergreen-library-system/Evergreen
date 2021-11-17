@@ -3,7 +3,7 @@
 
 <ng-template #textAreaTemplate let-field="field" let-record="record">
     <textarea class="form-control" name="{{field.name}}" [readonly]="field.readOnly"
-        [required]="field.isRequired()" [ngModel]="record[field.name]()" 
+        [required]="field.isRequired()" [ngModel]="record[field.name]()"
         (ngModelChange)="record[field.name]($event)" style="height: 600px;">
     </textarea>
 </ng-template>
@@ -13,9 +13,9 @@
     [remainOpenOnError]="true"
     hiddenFields="id">
 </eg-fm-record-editor>
-<eg-fm-record-editor #hookDialog idlClass="ath"></eg-fm-record-editor>        
-<eg-fm-record-editor #reactorDialog idlClass="atreact"></eg-fm-record-editor>        
-<eg-fm-record-editor #validatorDialog idlClass="atval"></eg-fm-record-editor>        
+<eg-fm-record-editor #hookDialog idlClass="ath"></eg-fm-record-editor>
+<eg-fm-record-editor #reactorDialog idlClass="atreact"></eg-fm-record-editor>
+<eg-fm-record-editor #validatorDialog idlClass="atval"></eg-fm-record-editor>
 
 <ul ngbNav #triggerNav="ngbNav" [activeId]="triggerTab" class="nav-tabs"
     (navChange)="onTabChange($event)">
@@ -23,17 +23,17 @@
       <a ngbNavLink i18n>Event Definitions</a>
       <ng-template ngbNavContent>
         <h4 class="mb-3 mt-3">Trigger Event Definitions</h4>
-        <eg-grid #eventsGrid idlClass="atevdef" [dataSource]="eventsDataSource" 
+        <eg-grid #eventsGrid idlClass="atevdef" [dataSource]="eventsDataSource"
             showFields="owner,name,hook,active,delay,delay_field,group_field,reactor,validator,repeat_delay,granularity,retention_interval"
             [showLinkSelectors]="true" [sortable]="true" [stickyHeader]="true" persistKey="admin.local.triggers.atevdef"
             (onRowActivate)="editSelected([$event])" [filterable]="true">
             <eg-grid-toolbar-button label="New Event Definition" i18n-label
                 [action]="createNewEvent"></eg-grid-toolbar-button>
-            <eg-grid-toolbar-action label="Edit Event Definition" i18n-label 
+            <eg-grid-toolbar-action label="Edit Event Definition" i18n-label
                 [action]="editEventDefinition"></eg-grid-toolbar-action>
-            <eg-grid-toolbar-action label="Clone Selected" i18n-label 
+            <eg-grid-toolbar-action label="Clone Selected" i18n-label
                 [action]="cloneSelected"></eg-grid-toolbar-action>
-            <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+            <eg-grid-toolbar-action label="Delete Selected" i18n-label
                 (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
             <eg-grid-column i18n-label label="Owning Library" path="owner">
             </eg-grid-column>
@@ -70,9 +70,9 @@
                 (onRowActivate)="editSelected([$event])" [sortable]="true" [filterable]="true">
                 <eg-grid-toolbar-button label="New Hook" i18n-label [action]="createNewHook">
                 </eg-grid-toolbar-button>
-                <eg-grid-toolbar-action label="Edit Selected" i18n-label 
+                <eg-grid-toolbar-action label="Edit Selected" i18n-label
                     [action]="editSelected"></eg-grid-toolbar-action>
-                <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+                <eg-grid-toolbar-action label="Delete Selected" i18n-label
                     (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
             </eg-grid>
       </ng-template>
@@ -83,11 +83,11 @@
         <h4 class="mb-3 mt-3">Trigger Reactors</h4>
             <eg-grid #reactorsGrid idlClass="atreact" [dataSource]="reactorsDataSource"
               (onRowActivate)="editSelected([$event])" [sortable]="true" [filterable]="true">
-                <eg-grid-toolbar-button label="New Reactor" i18n-label 
+                <eg-grid-toolbar-button label="New Reactor" i18n-label
                     [action]="createNewReactor"></eg-grid-toolbar-button>
-                <eg-grid-toolbar-action label="Edit Selected" i18n-label 
+                <eg-grid-toolbar-action label="Edit Selected" i18n-label
                     [action]="editSelected"></eg-grid-toolbar-action>
-                <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+                <eg-grid-toolbar-action label="Delete Selected" i18n-label
                     (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
             </eg-grid>
       </ng-template>
@@ -98,11 +98,11 @@
             <h4 class="mb-3 mt-3">Trigger Validators</h4>
             <eg-grid #validatorsGrid idlClass="atval" [dataSource]="validatorsDataSource"
                 (onRowActivate)="editSelected([$event])" [sortable]="true" [filterable]="true">
-                <eg-grid-toolbar-button label="New Validator" i18n-label 
+                <eg-grid-toolbar-button label="New Validator" i18n-label
                     [action]="createNewValidator"></eg-grid-toolbar-button>
-                <eg-grid-toolbar-action label="Edit Selected" i18n-label 
+                <eg-grid-toolbar-action label="Edit Selected" i18n-label
                     [action]="editSelected"></eg-grid-toolbar-action>
-                <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+                <eg-grid-toolbar-action label="Delete Selected" i18n-label
                     (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
             </eg-grid>
         </ng-template>
