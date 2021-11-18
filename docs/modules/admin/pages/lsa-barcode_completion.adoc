@@ -107,11 +107,11 @@ ignored.
 .Applies to Items/Users
 One or both of these options must be checked for the rule to have any effect.
 
-image::media/lsa-barcode_completion_fields.png[Barcode Completion Data Fields]
+image::barcode_completion/barcode_record_editor.jpg[Barcode Completion Data Fields]
 
 == Create, Update, Filter, Delete/Disable Rules ==
 
-image::media/lsa-barcode_completion_admin.png[Barcode Completion Admin]
+image::barcode_completion/barcode_completion_grid.jpg[Barcode Completion Admin]
 
 In the Barcode Completion admin interface at *Administration* -> *Local Administration* 
 -> *Barcode Completion* you can create, update and disable rules.
