@@ -1250,7 +1250,7 @@ BEGIN
     END IF;
 
     -- First, the count of tags
-    qual := ARRAY_UPPER(oils_xpath('*[local-name()="datafield"]', marc), 1);
+    qual := ARRAY_UPPER(oils_xpath('//*[local-name()="datafield"]', marc), 1);
 
     -- now go through a bunch of pain to get the record type
     IF best_type IS NOT NULL THEN
