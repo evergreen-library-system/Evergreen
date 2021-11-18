@@ -888,7 +888,7 @@ vim:et:ts=4:sw=4:
                         <!--
                         <status_filter></status_filter>
                         -->
-                    <oai>
+                    </oai>
                 </app_settings>
 
             </open-ils.supercat>
