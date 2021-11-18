@@ -57,7 +57,7 @@ set for authority records or bibliographic records.
 
 . Click *Save*.
 +
-image::batch_importing_MARC/new_record_match.jpg
+image::batch_importing_MARC/new_record_match.jpg[New Record Match]
 
 . The screen will refresh to list the record match set that you created. Click
 the link to the record match set.
@@ -81,7 +81,7 @@ points in increasing importance.
 this box would be the equivalent of applying a Boolean operator of NOT to the
 match point.
 +
-image::batch_importing_MARC/record_attribute.jpg
+image::batch_importing_MARC/record_attribute.jpg[Record Attribute]
 
 . Select an operator from the expression tree to the right.
 
@@ -95,7 +95,7 @@ image::batch_importing_MARC/record_attribute.jpg
 
 . Click *Add to Selected Node*.  The operator will appear on the tree.
 +
-image::batch_importing_MARC/operator.jpg
+image::batch_importing_MARC/operator.jpg[Operators]
 
 . Click *MARC Tag and Subfield*.
 
@@ -117,7 +117,7 @@ match point.
 
 . Click *Add to Selected Node*.  Once this is selected, the tree will refresh and update with the new expression.
 +
-image::batch_importing_MARC/marc_tag_and_subfield.jpg
+image::batch_importing_MARC/marc_tag_and_subfield.jpg[MARC Tag and Subfield]
 
 === Replace Mode ===
 
@@ -133,7 +133,7 @@ the top of the tree is AND, in Replace Mode, you could change that to an OR.
 
 . Click *Replace Selected Node*.
 +
-image::batch_importing_MARC/replace_node.jpg
+image::batch_importing_MARC/replace_node.jpg[Replacing Nodes]
 
 . The updated change will display in the tree.
 
@@ -166,7 +166,7 @@ quality points by increasing subsequent records by a power of 2 (two).
 
 . Click *Add*.
 +
-image::batch_importing_MARC/match_set_quality.jpg
+image::batch_importing_MARC/match_set_quality.jpg[Match Set Quality]
 
 == Merge/Overlay Profiles ==
 
@@ -327,7 +327,7 @@ Match* options.
 . *Browse* to find the appropriate file, and click *Upload*.  The file will
 be uploaded to a queue. The file can be in either MARC or MARCXML format.
 +
-image::batch_importing_MARC/import_record.jpg
+image::batch_importing_MARC/import_record.jpg[Importing Records]
 
 . The screen will display records that have been uploaded to your queue. Above
 the table there are three sections:
