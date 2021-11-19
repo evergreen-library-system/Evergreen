@@ -71,6 +71,10 @@ export class PatronPenaltyDialogComponent
     init(): Observable<any> {
         this.dataLoaded = false;
 
+        this.patronMessage = 0;
+        this.initials = '';
+        this.noteText = '';
+
         if (this.penalty) { // Modifying an existing penalty
             const pen = this.penalty;
             const sp = pen.standing_penalty().id();
