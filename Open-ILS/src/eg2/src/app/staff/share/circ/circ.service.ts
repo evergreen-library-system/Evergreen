@@ -925,6 +925,12 @@ export class CircService {
             case 'ROUTE_ITEM':
                 this.audio.play(result.hold ?
                     'info.checkin.transit.hold' : 'info.checkin.transit');
+
+                if (params.noop) {
+                    console.debug("Skipping route dialog on 'noop' checkin");
+                    return Promise.resolve(result);
+                }
+
                 this.components.routeDialog.checkin = result;
                 return this.findCopyTransit(result)
                 .then(_ => this.components.routeDialog.open().toPromise())
