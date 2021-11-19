@@ -9,7 +9,7 @@
 </div>
 
 <eg-grid #mainGrid idlClass="ausp" [dataSource]="mainDataSource"
-  hideFields="id,usr,stop_date" persistKey="circ.patron.staff_messages">
+  [showDeclaredFieldsOnly]="true" persistKey="circ.patron.staff_messages">
   <eg-grid-toolbar-button i18n-label label="Apply Penalty / Message"
     (onClick)="applyPenalty()">
   <eg-grid-toolbar-action (onClick)="archive($event)"
@@ -19,9 +19,12 @@
   <eg-grid-toolbar-action (onClick)="modify($event)"
     label="Modify Selected" i18n-label></eg-grid-toolbar-action>
   </eg-grid-toolbar-button>
-  <eg-grid-column path="standing_penalty.label">
+
+  <eg-grid-column path="set_date" [datatype]="timestamp" 
+    i18n-label label="Applied On" [datePlusTime]="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="Label" path="standing_penalty.label">
   </eg-grid-column>
-  <eg-grid-column path="standing_penalty.staff_alert">
+  <eg-grid-column i18n-label label="Note" path="note">
   </eg-grid-column>
 </eg-grid>
 
@@ -42,10 +45,12 @@
 </div>
 
 <eg-grid #archiveGrid idlClass="ausp" [dataSource]="archiveDataSource"
-  hideFields="id,usr,stop_date" persistKey="circ.patron.archived_messages">
-  <eg-grid-column path="standing_penalty.label">
+  [showDeclaredFieldsOnly]="true" persistKey="circ.patron.archived_messages">
+  <eg-grid-column path="set_date" [datatype]="timestamp" 
+    i18n-label label="Applied On" [datePlusTime]="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="Label" path="standing_penalty.label">
   </eg-grid-column>
-  <eg-grid-column path="standing_penalty.staff_alert">
+  <eg-grid-column i18n-label label="Note" path="note">
   </eg-grid-column>
 </eg-grid>
 
