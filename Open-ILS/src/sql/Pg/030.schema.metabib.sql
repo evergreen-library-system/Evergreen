@@ -1574,7 +1574,7 @@ BEGIN
             ELSE -- indeed there are. Update it with a null cache and recalcualated master record
                 UPDATE  metabib.metarecord
                   SET   mods = NULL,
-                        master_record = ( SELECT id FROM biblio.record_entry WHERE fingerprint = fp AND NOT deleted ORDER BY quality DESC LIMIT 1)
+                        master_record = (SELECT id FROM biblio.record_entry WHERE fingerprint = fp AND NOT deleted ORDER BY quality DESC, id ASC LIMIT 1)
                   WHERE id = old_mr;
             END IF;
         END LOOP;
@@ -1610,14 +1610,14 @@ BEGIN
             ELSE -- indeed there is. update it with a null cache and recalcualated master record
                 UPDATE  metabib.metarecord
                   SET   mods = NULL,
-                        master_record = ( SELECT id FROM biblio.record_entry WHERE fingerprint = fp AND NOT deleted ORDER BY quality DESC LIMIT 1)
+                        master_record = (SELECT id FROM biblio.record_entry WHERE fingerprint = fp AND NOT deleted ORDER BY quality DESC, id ASC LIMIT 1)
                   WHERE id = old_mr;
             END IF;
 
         ELSE -- there was one we already attached to, update its mods cache and master_record
             UPDATE  metabib.metarecord
               SET   mods = NULL,
-                    master_record = ( SELECT id FROM biblio.record_entry WHERE fingerprint = fp AND NOT deleted ORDER BY quality DESC LIMIT 1)
+                    master_record = (SELECT id FROM biblio.record_entry WHERE fingerprint = fp AND NOT deleted ORDER BY quality DESC, id ASC LIMIT 1)
               WHERE id = old_mr;
         END IF;
 

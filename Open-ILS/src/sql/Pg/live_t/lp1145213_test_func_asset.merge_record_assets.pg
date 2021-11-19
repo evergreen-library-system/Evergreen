@@ -59,7 +59,7 @@ INSERT INTO asset.copy(id, circ_lib, creator, call_number, editor, copy_number, 
 -----------------------------------
 
 -- do merge
-SELECT is(asset.merge_record_assets(60000, 60001), 4, 'Record assets merged!');
+SELECT is(asset.merge_record_assets(60000, 60001), 3, 'Record assets merged!');
 
 -- check if copy 4's acn was updated
 SELECT is(
