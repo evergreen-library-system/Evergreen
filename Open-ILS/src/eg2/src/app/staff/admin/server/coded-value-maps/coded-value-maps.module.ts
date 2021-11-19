@@ -6,6 +6,7 @@ import {CodedValueMapsComponent} from './coded-value-maps.component';
 import {CompositeDefComponent} from './composite-def.component';
 import {CompositeNewPointComponent} from './composite-new.component';
 import {CodedValueMapsRoutingModule} from './coded-value-maps-routing.module';
+import {AdminPageModule} from '@eg/staff/share/admin-page/admin-page.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import {CodedValueMapsRoutingModule} from './coded-value-maps-routing.module';
     StaffCommonModule,
     FmRecordEditorModule,
     TreeModule,
+    AdminPageModule,
     CodedValueMapsRoutingModule
   ],
   exports: [
