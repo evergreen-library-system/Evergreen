@@ -93,6 +93,11 @@ export class AdminPageComponent implements OnInit {
     // links to related tables via configField's.
     @Input() configLinkBasePath: string;
 
+    // Bonus fields to add to the grid by passing arbitrary templates,
+    // for example, a column created by callbacks based on data from
+    // other columns
+    @Input() templateFields: TemplateField[];
+
     @ViewChild('grid', { static: true }) grid: GridComponent;
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
     @ViewChild('successString', { static: true }) successString: StringComponent;
@@ -497,4 +502,8 @@ export class AdminPageComponent implements OnInit {
     }
 }
 
+export interface TemplateField {
+    cellTemplate: TemplateRef<any>;
+    name: string;
+}
 

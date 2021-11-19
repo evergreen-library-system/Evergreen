@@ -70,6 +70,10 @@
     <eg-grid-column name="{{cf.name}}" [cellTemplate]="configFieldLink">
     </eg-grid-column>
   </ng-container>
+  <ng-container *ngFor="let tf of templateFields">
+    <eg-grid-column name="{{tf.name}}" [cellTemplate]="tf.template">
+    </eg-grid-column>
+  </ng-container>
 </eg-grid>
 
 <eg-fm-record-editor #editDialog idlClass="{{idlClass}}" 
