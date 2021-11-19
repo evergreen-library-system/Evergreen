@@ -33,9 +33,7 @@
   <eg-grid idlClass="au" #groupGrid 
     persistKey="circ.patron.group_members" [cellTextGenerator]="cellTextGenerator"
     [dataSource]="dataSource" [sortable]="true" [useLocalSort]="true"
-    (onRowActivate)="onRowActivate($event)" 
-    showFields="active,barred,dob,family_name,first_given_name,barcode,
-      master_account,second_given_name,balance_owed,total_out,overdue">
+    [showDeclaredFieldsOnly]="true" (onRowActivate)="onRowActivate($event)">
 
     <eg-grid-toolbar-button label="Move Another Patron To This Group" 
       i18n-label (onClick)="movePatronToGroup()">
@@ -54,6 +52,9 @@
       i18n-label (onClick)="movePatronToGroup($event)">
     </eg-grid-toolbar-action>
 
+    <eg-grid-column name="family_name"></eg-grid-column>
+    <eg-grid-column name="first_given_name"></eg-grid-column>
+
     <eg-grid-column name="balance_owed" path="_stats.fines.balance_owed" 
       datatype="money" label="Balance Owed" i18n-label>
     </eg-grid-column>
@@ -69,6 +70,11 @@
     <eg-grid-column name="barcode" [cellTemplate]="barcodeTemplate"
       label="Barcode" i18n-label>
     </eg-grid-column>
+
+    <eg-grid-column name="active"></eg-grid-column>
+    <eg-grid-column name="barred"></eg-grid-column>
+    <eg-grid-column name="dob"></eg-grid-column>
+    <eg-grid-column name="master_account"></eg-grid-column>
 
   </eg-grid>
 
