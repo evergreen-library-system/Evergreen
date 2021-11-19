@@ -30,7 +30,8 @@ SELECT is(evergreen.unaccent_and_squash('0123456789!@#$%^&*()-+'),
           '0123456789', 'Numbers and Symbols');
 
 SELECT is(evergreen.unaccent_and_squash('ÁÉÍÑÓÚÜáéíñóúü¿¡'),
-          'aeinouuaeinouu¿¡', 'Spanish');
+          CASE WHEN substring(version() from '^PostgreSQL ([0-9]+)\.')::INTEGER < 14 THEN 'aeinouuaeinouu¿¡'
+          ELSE 'aeinouuaeinouu?!' END, 'Spanish');
 
 SELECT is(evergreen.unaccent_and_squash('ÖÜÇĞŞöüçğşİI'),
           'oucgsoucgsii', 'Turkish');
@@ -45,7 +46,8 @@ SELECT is(evergreen.unaccent_and_squash('ÁĄÄÉĘĚÍÓÔÚŮÝČĹŇŔŘŠŽ'
           'aaaeeeioouuyclnrrsz', 'Czeck, Slovack & Slovenian');
 
 SELECT is(evergreen.unaccent_and_squash('Άά Έέ Ήή Ίί Όό Ύύ Ώώ'),
-          'άάέέήήίίόόύύώώ', 'Greek');
+          CASE WHEN substring(version() from '^PostgreSQL ([0-9]+)\.')::INTEGER < 12 THEN 'άάέέήήίίόόύύώώ'
+          ELSE 'ααεεηηιιοουυωω' END, 'Greek');
 
 SELECT is(evergreen.unaccent_and_squash('Jacques Bélanger'),
           'jacquesbelanger', 'French nom and prénom');
