@@ -242,7 +242,7 @@ function maybeToggleNumCopies(obj) {
                 <label class="form-check-label" for="email_notify">
                    [% l('Yes, by Email') %]
 
-                     [% IF !ctx.user.email and !ctx.is_staff; l('<br>No configured Email address. See "My Account" for setting your Email address.'); ELSE; %] : <span id="email_address"><b>[% ctx.user.email %]</b></span>[% END %]
+                     [% IF !ctx.user.email and !ctx.is_staff; l('<br>No configured Email address. See "My Account" for setting your Email address.'); ELSE; %] : <span id="email_address"><b name="email_address">[% ctx.user.email %]</b></span>[% END %]
                 </label>
             </div>
 
