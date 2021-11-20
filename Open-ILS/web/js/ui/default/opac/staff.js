@@ -57,10 +57,12 @@ function no_hold_submit(event) {
 function toggleMROptions(on) {
     var anchor = document.getElementById("advanced_hold_link");
     // Check for not equal to block so it works on first click.
-    if (on) {
-        anchor.style.display = "inline";
-    } else {
-        anchor.style.display = "none";
+    if (anchor) {
+        if (on) {
+            anchor.style.display = "inline";
+        } else {
+            anchor.style.display = "none";
+        }
     }
 }
 
@@ -91,13 +93,14 @@ function staff_hold_usr_barcode_changed(isload) {
 
     if (!window.xulG) return;
  
+    var sub_el = document.getElementById('hold_usr_is_subscription');
     var adv_link = document.getElementById('advanced_hold_link');
     if (adv_link) {
         adv_link.setAttribute('href', adv_link.getAttribute('href').replace(/&?is_requestor=[012]/,''));
         var is_requestor = 0;
         if (document.getElementById('hold_usr_is_requestor').checked) {
             is_requestor = 1;
-        } else if (document.getElementById('hold_usr_is_subscription').checked) {
+        } else if (sub_el && sub_el.checked) {
             is_requestor = 2;
         }
         adv_link.setAttribute('href', adv_link.getAttribute('href') + '&is_requestor=' + is_requestor.toString());
@@ -107,7 +110,6 @@ function staff_hold_usr_barcode_changed(isload) {
     var barcode = isload;
     if(!barcode || barcode === true) barcode = document.getElementById('staff_barcode').value;
     var only_settings = true;
-    var sub_el = document.getElementById('hold_usr_is_subscription');
 
     toggleOnSubscription(false);
     if(sub_el && sub_el.checked) {
@@ -250,7 +252,10 @@ window.onload = function() {
             var is_req = is_req_match.exec(loc).toString();
             is_req = is_req.replace(/is_requestor=/, '');
             if (is_req == "2") {
-                document.getElementById('hold_usr_is_subscription').checked = 'checked';
+                var sub_el = document.getElementById('hold_usr_is_subscription');
+                if (sub_el) {
+                    sub_el.checked = 'checked';
+                }
                 document.getElementById('hold_usr_input').disabled = true;
             } else if (is_req == "1") {
                 document.getElementById('hold_usr_is_requestor').checked = 'checked';
