@@ -4,8 +4,8 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (bullseye, buster, stretch),
-# Ubuntu (18.04), Ubuntu (20.04).
+# Currently supports Debian (bullseye, buster),
+# Ubuntu (16.04), Ubuntu (18.04).
 #
 # Installs Perl prereqs, libdbi, libdbi-drivers, and libyaz
 #
@@ -13,8 +13,6 @@
 # 	make -f Makefile.install debian-bullseye
 # 	- or -
 # 	make -f Makefile.install debian-buster
-# 	- or -
-# 	make -f Makefile.install debian-stretch
 # 	- or -
 # 	make -f Makefile.install ubuntu-bionic
 # 	- or -
@@ -78,8 +76,6 @@ debian-bullseye:
 	@make -f $(DIR)/Makefile.debian-bullseye
 debian-buster:
 	@make -f $(DIR)/Makefile.debian-buster
-debian-stretch:
-	@make -f $(DIR)/Makefile.debian-stretch
 ubuntu-bionic:
 	@make -f $(DIR)/Makefile.ubuntu-bionic
 ubuntu-focal:
@@ -109,16 +105,6 @@ postgres-server-debian-buster-13:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_13
 postgres-server-debian-buster-14:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_14
-postgres-server-debian-stretch-10:
-	@make -f $(DIR)/Makefile.debian-stretch install_postgres_server_10
-postgres-server-debian-stretch-11:
-	@make -f $(DIR)/Makefile.debian-stretch install_postgres_server_11
-postgres-server-debian-stretch-12:
-	@make -f $(DIR)/Makefile.debian-stretch install_postgres_server_12
-postgres-server-debian-stretch-13:
-	@make -f $(DIR)/Makefile.debian-stretch install_postgres_server_13
-postgres-server-debian-stretch-14:
-	@make -f $(DIR)/Makefile.debian-stretch install_postgres_server_14
 postgres-server-ubuntu-bionic-10:
 	@make -f $(DIR)/Makefile.ubuntu-bionic install_postgres_server_10
 postgres-server-ubuntu-bionic-11:
@@ -162,8 +148,6 @@ debian-bullseye-developer:
 	@make -f $(DIR)/Makefile.debian-bullseye install_developer
 debian-buster-developer:
 	@make -f $(DIR)/Makefile.debian-buster install_developer
-debian-stretch-developer:
-	@make -f $(DIR)/Makefile.debian-stretch install_developer
 
 ubuntu-bionic-translator:
 	@make -f $(DIR)/Makefile.ubuntu-bionic install_translator
@@ -175,8 +159,6 @@ debian-bullseye-translator:
 	@make -f $(DIR)/Makefile.debian-bullseye install_translator
 debian-buster-translator:
 	@make -f $(DIR)/Makefile.debian-buster install_translator
-debian-stretch-translator:
-	@make -f $(DIR)/Makefile.debian-stretch install_translator
 
 ubuntu-bionic-packager:
 	@make -f $(DIR)/Makefile.ubuntu-bionic install_packager
@@ -188,7 +170,5 @@ debian-bullseye-packager:
 	@make -f $(DIR)/Makefile.debian-bullseye install_packager
 debian-buster-packager:
 	@make -f $(DIR)/Makefile.debian-buster install_packager
-debian-stretch-packager:
-	@make -f $(DIR)/Makefile.debian-stretch install_packager
 
 # vim:noet:sw=4:ts=4:

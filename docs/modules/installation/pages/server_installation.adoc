@@ -53,7 +53,6 @@ autoreconf -i
   * **Linux**: Evergreen has been tested on
     Debian Bullseye (11),
     Debian Buster (10), 
-    Debian Stretch (9),
     Ubuntu Jammy Jellyfish (22.04),
     Ubuntu Focal Fossa (20.04),
     and Ubuntu Bionic Beaver (18.04).
@@ -71,8 +70,9 @@ before you can successfully configure, compile, and install Evergreen.
 +
 2. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-bullseye`,`debian-buster`,`debian-stretch`,`ubuntu-jammy`,
+   substituting `debian-bullseye`,`debian-buster`,`ubuntu-jammy`,
    `ubuntu-focal`, or `ubuntu-bionic` for <osname> below:
+
 +
 [source, bash]
 ------------------------------------------------------------------------------
@@ -252,7 +252,7 @@ chown -R opensrf:opensrf /openils
 
 == Run ldconfig ==
 
-On Ubuntu 18.04 / 20.04 / 22.04 or Debian Stretch / Buster / Bullseye, run the
+On Ubuntu 18.04 / 20.04 / 22.04 or Debian Buster / Bullseye, run the
 following command as the root user:
 
 [source, bash]
@@ -443,7 +443,6 @@ version and the version recommended for production use of Evergreen:
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-10
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-10
@@ -465,7 +464,6 @@ system:
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-11
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-11
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch-11
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-11
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-11
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-11
@@ -478,7 +476,6 @@ system:
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-12
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-12
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch-12
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-12
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-12
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-12
@@ -491,7 +488,6 @@ system:
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-13
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-13
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch-13
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-13
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-13
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-13
@@ -504,7 +500,6 @@ system:
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-14
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-14
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch-14
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-14
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-14
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-jammy-14
