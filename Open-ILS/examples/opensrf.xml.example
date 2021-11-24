@@ -816,7 +816,6 @@ vim:et:ts=4:sw=4:
                         <!-- <repository_identifier>mydomain.org</repository_identifier> -->
                         <!-- <delimiter>:</delimiter> -->
                         <!-- <sample_identifier>oai:mydomain.org:12345</sample_identifier> -->
-                        <!-- <list_sets>false</list_sets> -->
 
                         <!--
                         The metadataformat element contains the schema for the oai_dc and marcxml metadata formats.

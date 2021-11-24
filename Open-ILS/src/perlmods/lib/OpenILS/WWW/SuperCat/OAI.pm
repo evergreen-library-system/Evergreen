@@ -48,7 +48,6 @@ my (
     $scheme,
     $delimiter,
     $sample_identifier,
-    $list_sets,
     $oai_metadataformats,
     $oai_sets,
     $oai,
@@ -88,12 +87,9 @@ sub child_init {
     $scheme = $app_settings->{'scheme'} || 'oai';
     $delimiter = $app_settings->{'delimiter'} || ':';
     $sample_identifier = $app_settings->{'sample_identifier'} || $scheme . $delimiter . $repository_identifier . $delimiter . '12345' ;
-    $list_sets = $app_settings->{'list_sets'} || 0;
 
-    if ( $list_sets ) {
-        _load_oaisets_authority();
-        _load_oaisets_biblio();
-    }
+    _load_oaisets_authority();
+    _load_oaisets_biblio();
     _load_oai_metadataformats();
 
     return Apache2::Const::OK;
@@ -445,12 +441,13 @@ sub _load_oaisets_biblio {
 
     return unless ($node->opac_visible =~ /^[y1t]+/i);
 
-    my $spec = ($parent) ? $parent . ':' . $node->shortname : $node->shortname ;
+    my $ou_hierarchy_string = ($parent) ? $parent . ':' . $node->shortname : $node->shortname ;
+    my $spec = 'ORG_UNIT:'.$ou_hierarchy_string;
     $oai_sets->{$spec} = {id => $node->id, record_class => 'biblio' };
     $oai_sets->{$node->id} = {setSpec => $spec, setName => $node->name, record_class => 'biblio' };
 
     my $kids = $node->children;
-    _load_oaisets_biblio($_, $types, $spec) for (@$kids);
+    _load_oaisets_biblio($_, $types, $ou_hierarchy_string) for (@$kids);
 }
 
 

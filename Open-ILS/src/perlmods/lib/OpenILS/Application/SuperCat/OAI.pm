@@ -31,6 +31,7 @@ use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw($logger);
 use XML::LibXML;
 use XML::LibXSLT;
+my $U = 'OpenILS::Application::AppUtils';
 
 my (
   $_parser,
@@ -441,9 +442,8 @@ sub oai_list_retrieve {
     my $max_count       = shift;
     my $deleted_record  = shift || 'yes';
 
-    my $query = {};
+    my $query = $set ? _set_spec_to_query($set) : {};
     $query->{'rec_id'}    = ($max_count eq 1) ? $rec_id : {'>=' => $rec_id} ;
-    $query->{'set_spec'}  = $set                     if ( $set ); # unsupported
     $query->{'deleted'}   = 'f'                      unless ( $deleted_record eq 'yes' );
     $query->{'datestamp'} = {'>=', $from}            if ( $from && !$until ) ;
     $query->{'datestamp'} = {'<=', $until}           if ( !$from && $until ) ;
@@ -510,6 +510,25 @@ __PACKAGE__->register_method(
         }
     }
 );
+
+sub _set_spec_to_query {
+    my $self            = shift;
+    my $set_spec        = shift;
+
+    if (index($set_spec, 'ORG_UNIT:') == 0) {
+        my $shortname = (split ':', $set_spec)[-1];
+        my $org_unit = OpenSRF::AppSession
+            ->create('open-ils.actor')
+            ->request('open-ils.actor.org_unit.retrieve_by_shortname', $shortname)
+            ->gather(1);
+        if ($org_unit && ref($org_unit) ne 'HASH') {
+            return {
+                'id' => {'=' => ['oai.bib_is_visible_at_org', 'id', $org_unit->id]}
+            };
+        }
+    }
+    return {};
+}
 
 
 1;
