@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # fieldmapper.py
 """
 This class enables translation of Evergreen's fieldmapper IDL XML.

@@ -10,6 +10,18 @@ You must install all of the Python prerequisites required for building
 translations, per
 http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-admin:customizations:i18n
 
+If you are using a supported operating system, you can use this simple command to 
+install the necessary dependencies:
+
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install <osname>-translator
+------------------------------------------------------------------------------
+
+Otherwise, install the following dependencies using the method that works
+best for your system.  For python packages, you will want to use the python 3
+version:
+
 * https://bitbucket.org/izi/polib/wiki/Home[polib]
 * http://translate.sourceforge.net[translate-toolkit]
 * http://pypi.python.org/pypi/python-Levenshtein/[levenshtein]

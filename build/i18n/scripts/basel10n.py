@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # basel10n.py
 """
 This class enables translation of Evergreen's seed database strings

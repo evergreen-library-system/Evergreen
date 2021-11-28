@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Perform the following tests:
 #  1. Generate a POT file from a set of marked SQL statements

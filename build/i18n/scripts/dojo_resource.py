@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # dojo_resource.py
 """
 This class enables translation of Dojo resource bundles using gettext format.

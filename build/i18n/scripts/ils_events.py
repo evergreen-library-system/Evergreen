@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # ils_events.py
 """
 This class enables translation of Evergreen's ils_events XML file.

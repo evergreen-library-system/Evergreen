@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # vim:et:ts=4:sw=4:
 """
 This class enables translation of Evergreen's seed database strings.
