@@ -14,7 +14,8 @@ import {PoEdiMessagesComponent} from './edi.component';
 import {PoNotesComponent} from './notes.component';
 import {PoCreateComponent} from './create.component';
 import {PoChargesComponent} from './charges.component';
-
+import {PicklistUploadService} from '../picklist/upload.service';
+import {DisencumberChargeDialogComponent} from './disencumber-charge-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {PoChargesComponent} from './charges.component';
     PoNotesComponent,
     PoCreateComponent,
     PoChargesComponent,
-    PrintComponent
+    PrintComponent,
+    DisencumberChargeDialogComponent
   ],
   imports: [
     StaffCommonModule,
@@ -35,7 +37,8 @@ import {PoChargesComponent} from './charges.component';
     PoRoutingModule
   ],
   providers: [
-    PoService
+    PoService,
+    PicklistUploadService
   ]
 })
 

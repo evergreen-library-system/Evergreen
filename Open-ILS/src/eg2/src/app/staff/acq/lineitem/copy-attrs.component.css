@@ -1,0 +1,7 @@
+.fund-balance-state-stop {
+    color: #c00;
+    font-weight: bold;
+}
+.fund-balance-state-warning {
+    color: #c93;
+}

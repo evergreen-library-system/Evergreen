@@ -7,13 +7,12 @@ import {PicklistRoutingModule} from './routing.module';
 import {PicklistComponent} from './picklist.component';
 import {PicklistSummaryComponent} from './summary.component';
 import {HttpClientModule} from '@angular/common/http';
-import {UploadComponent} from './upload.component';
+import {AcqCommonModule} from '../acq-common.module';
 
 @NgModule({
   declarations: [
     PicklistComponent,
-    PicklistSummaryComponent,
-    UploadComponent
+    PicklistSummaryComponent
   ],
   imports: [
     StaffCommonModule,
@@ -21,7 +20,8 @@ import {UploadComponent} from './upload.component';
     LineitemModule,
     HoldingsModule,
     PicklistRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    AcqCommonModule
   ],
   providers: []
 })

@@ -292,6 +292,16 @@ body>.dropdown-menu {z-index: 2100;}
   background-color: rgb(247, 247, 247);
 }
 
+/**
+ * Similar to the CSS above for the search form, set some
+ * CSS for the line item worksheet. Ordinarily would be
+ * preferable to just add the CSS to the worksheet component,
+ * but untl a well-supported alternative to ng-deep comes along...
+ */
+#worksheet-outlet thead th { font-weight: bold; background-color: #ccc; text-align: center; border-bottom: 1px #000 solid; border-right: 1px #000 solid; padding: 0 
+6px; }
+#worksheet-outlet tbody td { text-align: left; vertical-align: top; border: 1px #999 inset; padding: 0 2px; }
+
 /* style for negative monetary values */
 .negative-money-amount {
     color: red;

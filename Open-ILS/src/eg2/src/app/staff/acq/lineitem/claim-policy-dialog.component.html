@@ -1,0 +1,29 @@
+<ng-template #dialogContent>
+  <form class="form-validated">
+    <div class="modal-header bg-info">
+      <h3 class="modal-title" i18n>Apply Claim Policy</h3>
+      <button type="button" class="close"
+        i18n-aria-label aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h4 i18n>Line Item(s) selected:
+        <span *ngFor="let id of ids; last as isLast">
+          {{id}}<span *ngIf="!isLast">,</span>
+        </span>
+      </h4>
+      <h4 i18n>Select a claim policy:</h4>
+      <eg-combobox domId="acq-claim-policy-dialog" name="acq-claim-policy-dialog" 
+        [asyncSupportsEmptyTermClick]="true"
+        idlClass="acqclp" [(ngModel)]="claimPolicy"></eg-combobox>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" [disabled]="!claimPolicy" 
+        (click)="close(claimPolicy.id)" i18n>Apply</button>
+      <button type="button" class="btn btn-warning"
+        (click)="close()" i18n>Exit Dialog</button>
+    </div>
+  </form>
+</ng-template>
+

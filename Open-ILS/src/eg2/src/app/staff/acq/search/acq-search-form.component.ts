@@ -4,7 +4,7 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {AcqSearchService, AcqSearchTerm, AcqSearch} from './acq-search.service';
+import {AcqSearchTerm, AcqSearch} from './acq-search.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 
 @Component({
@@ -46,8 +46,7 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
         private pcrud: PcrudService,
         private store: ServerStoreService,
         private idl: IdlService,
-        private toast: ToastService,
-        private acqSearch: AcqSearchService
+        private toast: ToastService
     ) {}
 
     ngOnInit() {
@@ -239,19 +238,5 @@ export class AcqSearchFormComponent implements OnInit, OnChanges {
     }
     saveRunImmediately() {
         return this.store.setItem(this.runImmediatelySetting, this.runImmediately);
-    }
-
-    showExpAngOptions(): boolean {
-        return this.acqSearch.angSelectionEnabled;
-    }
-
-    showExpAngLinks(): boolean {
-        return this.acqSearch.angSearchLinksEnabled;
-    }
-
-    toggleExpSearchLinks() {
-        this.acqSearch.angSearchLinksEnabled = !this.acqSearch.angSearchLinksEnabled;
-        this.store.setItem('ui.staff.angular_acq_search.enabled',
-            this.acqSearch.angSearchLinksEnabled);
     }
 }

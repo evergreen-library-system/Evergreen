@@ -1,9 +1,10 @@
-
-<!-- TODO: workstation setting -->
-
 <div class="mt-3">
   <eg-grid idlClass="acqlih" [dataSource]="dataSource" [sortable]="true"
     persistKey="acq.lineitem.history"
     hideFields="id,audit_id,marc,audit_time,audit_action,queued_record">
+    <eg-grid-column name="audit_time" [datePlusTime]="true"></eg-grid-column>
+    <eg-grid-column name="create_time" [datePlusTime]="true"></eg-grid-column>
+    <eg-grid-column name="edit_time" [datePlusTime]="true"></eg-grid-column>
+    <eg-grid-column name="expected_recv_time" [datePlusTime]="true"></eg-grid-column>
   </eg-grid>
 </div>

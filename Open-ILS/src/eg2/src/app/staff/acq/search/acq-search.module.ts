@@ -12,6 +12,7 @@ import {PicklistCloneDialogComponent} from './picklist-clone-dialog.component';
 import {PicklistDeleteDialogComponent} from './picklist-delete-dialog.component';
 import {PicklistMergeDialogComponent} from './picklist-merge-dialog.component';
 import {AcqSearchService} from './acq-search.service';
+import {LineitemModule} from '@eg/staff/acq/lineitem/lineitem.module';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {AcqSearchService} from './acq-search.service';
   ],
   imports: [
     StaffCommonModule,
-    AcqSearchRoutingModule
+    AcqSearchRoutingModule,
+    LineitemModule
   ],
   providers: [AcqSearchService]
 })

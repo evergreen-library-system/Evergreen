@@ -16,6 +16,12 @@ import {PoService} from './po.service';
 import {LineitemService} from '../lineitem/lineitem.service';
 import {CancelDialogComponent} from '../lineitem/cancel-dialog.component';
 
+const VALID_PRE_PO_LI_STATES = [
+    'new',
+    'selector-ready',
+    'order-ready',
+    'approved'
+];
 
 @Component({
   templateUrl: 'create.component.html',
@@ -25,11 +31,16 @@ export class PoCreateComponent implements OnInit {
 
     initDone = false;
     lineitems: number[] = [];
+    origLiCount = 0;
     poName: string;
     orderAgency: number;
     provider: ComboboxEntry;
     prepaymentRequired = false;
     createAssets = false;
+    dupeResults = {
+        dupeFound: false,
+        dupePoId: -1
+    };
 
     constructor(
         private router: Router,
@@ -50,21 +61,45 @@ export class PoCreateComponent implements OnInit {
 
         this.route.queryParamMap.subscribe((params: ParamMap) => {
             this.lineitems = params.getAll('li').map(id => Number(id));
+            this.origLiCount = this.lineitems.length;
         });
 
-        this.load().then(_ => this.initDone = true);
+        this.load();
     }
 
-    load(): Promise<any> {
-        return Promise.resolve();
+    load() {
+        this.dupeResults.dupeFound = false;
+        this.dupeResults.dupePoId = -1;
+        if (this.origLiCount > 0) {
+            const fleshed_lis: IdlObject[] = [];
+            this.liService.getFleshedLineitems(this.lineitems, { fromCache: false }).subscribe(
+                liStruct => {
+                    fleshed_lis.push(liStruct.lineitem);
+                },
+                err => { },
+                () => {
+                    this.lineitems = fleshed_lis.filter(li => VALID_PRE_PO_LI_STATES.includes(li.state()))
+                                                .map(li => li.id());
+                    this.initDone = true;
+                }
+            );
+        } else {
+            this.initDone = true;
+        }
     }
 
     orgChange(org: IdlObject) {
         this.orderAgency = org ? org.id() : null;
+        this.checkDuplicatePoName();
     }
 
     canCreate(): boolean {
-        return (Boolean(this.orderAgency) && Boolean(this.provider));
+        return (Boolean(this.orderAgency) && Boolean(this.provider) &&
+                !this.dupeResults.dupeFound);
+    }
+
+    checkDuplicatePoName() {
+        this.poService.checkDuplicatePoName(this.orderAgency, this.poName, this.dupeResults);
     }
 
     create() {
@@ -80,22 +115,18 @@ export class PoCreateComponent implements OnInit {
             args.lineitems = this.lineitems;
         }
 
-        if (this.createAssets) {
-            // This version simply creates all records sans Vandelay merging, etc.
-            // TODO: go to asset creator.
-            args.vandelay = {
-                import_no_match: true,
-                queue_name: `ACQ ${new Date().toISOString()}`
-            };
-        }
-
         this.net.request('open-ils.acq',
             'open-ils.acq.purchase_order.create',
             this.auth.token(), po, args
         ).toPromise().then(resp => {
             if (resp && resp.purchase_order) {
-                this.router.navigate(
-                    ['/staff/acq/po/' + resp.purchase_order.id()]);
+                if (this.createAssets) {
+                    this.router.navigate(
+                        ['/staff/acq/po/' + resp.purchase_order.id() + '/create-assets']);
+                } else {
+                    this.router.navigate(
+                        ['/staff/acq/po/' + resp.purchase_order.id()]);
+                }
             }
         });
     }

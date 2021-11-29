@@ -14,6 +14,7 @@ export class LineitemNotesComponent implements OnInit, AfterViewInit {
 
     @Input() lineitem: IdlObject;
     noteText: string;
+    alertComments: string;
     vendorPublic = false;
     alertEntry: ComboboxEntry;
 
@@ -46,10 +47,11 @@ export class LineitemNotesComponent implements OnInit, AfterViewInit {
         const note = this.idl.create('acqlin');
         note.isnew(true);
         note.lineitem(this.lineitem.id());
-        note.value(this.noteText || '');
         if (isAlert) {
+            note.value(this.alertComments || '');
             note.alert_text(this.alertEntry.id);
         } else {
+            note.value(this.noteText || '');
             note.vendor_public(this.vendorPublic ? 't' : 'f');
         }
 

@@ -12,14 +12,17 @@
       </label>
     </div>
     <button class="btn btn-sm btn-success ml-2" [disabled]="!noteText" 
-      (click)="newNote()" i18n>New Note</button>
+      (click)="newNote()" i18n>Create Note</button>
+    <div class="ml-3 mr-3">|</div>
+    <input type="text" class="form-control form-control-sm" id="note-text-input"
+      [(ngModel)]="alertComments" placeholder="Alert Comments" i18n-placeholder/>
     <span class="ml-2">
       <eg-combobox idlClass="acqliat" [(ngModel)]="alertEntry" 
         [asyncSupportsEmptyTermClick]="true">
       </eg-combobox>
     </span>
-    <button class="btn btn-sm btn-info ml-2" [disabled]="!alertEntry"
-      (click)="newNote(true)" i18n>New Alert</button>
+    <button class="btn btn-sm btn-success ml-2" [disabled]="!alertEntry" 
+      (click)="newNote(true)" i18n>Create Alert</button>
     <a class="ml-auto" href="javascript:;" (click)="close()" title="Close" i18n-title>
       <span class="material-icons text-danger">close</span>
     </a>

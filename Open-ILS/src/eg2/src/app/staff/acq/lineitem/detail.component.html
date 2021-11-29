@@ -31,7 +31,7 @@
       <ng-container *ngIf="lineitem">
         <div class="mt-3">
           <div *ngIf="lineitem.eg_bib_id()" class="alert alert-warning" i18n>
-            Changes to lineitems that are linked to catalog records will
+            Changes to line items that are linked to catalog records will
             not result in changes to the cataloged record.
           </div>
           <eg-marc-editor [recordXml]="lineitem.marc()" [inPlaceMode]="true"

@@ -1,0 +1,17 @@
+<eg-confirm-dialog #confirmAlertsDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Alert" [dialogBodyTemplate]="confirmAlertsMsg">
+</eg-confirm-dialog>
+<ng-template #confirmAlertsMsg>
+  <div *ngIf="numAlerts > 0" class="alert alert-warning" i18n>
+    Alert {{alertIndex}} out of {{numAlerts}}
+  </div>
+  <div i18n>An alert has been placed on line item {{liId}} ({{title}})</div>
+  <div class="mt-2">{{alertText.code()}}</div>
+  <div>{{alertText.description()}}</div>
+  <div>{{alertComment}}</div>
+  <div class="mt-2" i18n>Choose "Confirm" to acknowledge this alert and continue with receiving.
+    Otherwise, choose "Cancel" to not receive the line item(s). If there is more than one alert,
+    all of them must be confirmed in order to complete the receiving.
+  </div>
+</ng-template>

@@ -11,12 +11,14 @@
     <eg-org-select #owningLibSelect placeholder="Owning Branch..." 
       i18n-placeholder [readOnly]="fieldIsDisabled('owning_lib')"
       [applyOrgId]="copy.owning_lib()"
+      [limitPerms]="['CREATE_PICKLIST','CREATE_PURCHASE_ORDER']"
       (onChange)="valueChange('owning_lib', $event)">
     </eg-org-select>
   </div>  
   <div class="flex-1 p-1">
     <eg-item-location-select [readOnly]="fieldIsDisabled('location')"
       #locationSelector [ngModel]="copy.location()" [startsWith]="true"
+      [contextOrgId]="copy.owning_lib()" [loadAsync]="false"
       (valueChange)="valueChange('location', $event)"
       permFilter="CREATE_PICKLIST" [showUnsetString]="false">
     </eg-item-location-select>
@@ -35,7 +37,9 @@
   <div class="flex-1 p-1">
     <eg-combobox idlClass="acqf" placeholder="Fund..." i18n-placeholder
       [readOnly]="fieldIsDisabled('fund')"
+      [asyncSupportsEmptyTermClick]="true"
       #fundSelector [entries]="fundEntries"
+      [displayTemplate]="fundTmpl"
       [selectedId]="copy.fund()" (onChange)="valueChange('fund', $event)"
       [idlQuerySort]="{acqf: 'year DESC, code'}"
       [idlQueryAnd]="{active: 't'}">
@@ -45,11 +49,12 @@
     <eg-combobox idlClass="ccm" placeholder="Circ Modifier..." i18n-placeholder
       [readOnly]="fieldIsDisabled('circ_modifier')"
       #circModSelector [entries]="circModEntries"
+      [asyncSupportsEmptyTermClick]="true"
       [selectedId]="copy.circ_modifier()"
       (onChange)="valueChange('circ_modifier', $event)">
     </eg-combobox>
   </div>
-  <div class="flex-1 p-1">
+  <div class="flex-1 p-1" *ngIf="!batchAdd && !gatherParamsOnly">
     <ng-container *ngIf="fieldIsDisabled('cn_label')">
       <span>{{copy.cn_label()}}</span>
     </ng-container>
@@ -65,7 +70,7 @@
       <button class="btn btn-outline-dark" 
         (click)="batchApplyRequested.emit(copy)" i18n>Batch Update</button>
     </ng-container>
-    <ng-container *ngIf="!batchMode">
+    <ng-container *ngIf="!batchMode && !batchAdd && !gatherParamsOnly">
       <ng-container *ngIf="fieldIsDisabled('barcode')">
         <span>{{copy.barcode()}}</span>
       </ng-container>
@@ -77,7 +82,10 @@
       </ng-container>
     </ng-container>
   </div>
-  <ng-container *ngIf="!embedded">
+  <div class="flex-1 p-1" *ngIf="showReceiver">
+    {{copy.receiver()?.usrname()}}
+  </div>
+  <ng-container *ngIf="!embedded && !gatherParamsOnly">
     <div class="flex-2 p-1 pr-2 pl-2">
       <ng-container *ngIf="!batchMode">
         <ng-container *ngIf="disposition() == 'pre-order'">
@@ -87,7 +95,7 @@
             <span class="material-icons">delete</span>
           </button>
         </ng-container>
-        <ng-container *ngIf="disposition() == 'on-order'">
+        <ng-container *ngIf="disposition() == 'on-order' || disposition() == 'delayed'">
           <a href="javascript:;" (click)="receiveRequested.emit(copy)" i18n>Mark Received</a>
         </ng-container>
         <ng-container *ngIf="disposition() == 'received'">
@@ -97,7 +105,7 @@
           <a href="javascript:;" class="ml-2" (click)="cancelRequested.emit(copy)" i18n>Cancel</a>
         </ng-container>
         <ng-container *ngIf="disposition() == 'delayed'">
-          <a href="javascript:;" (click)="cancelRequested.emit(copy)" i18n>Cancel</a>
+          &nbsp;<a href="javascript:;" (click)="cancelRequested.emit(copy)" i18n>Cancel</a>
         </ng-container>
         <ng-container *ngIf="disposition() == 'delayed'">
           <span class="font-italic ml-2" title="{{copy.cancel_reason().description()}}">
@@ -115,3 +123,7 @@
   </ng-container>
 </div>
 
+<ng-template #fundTmpl let-r="result" i18n>
+  <span [ngClass]="{'fund-balance-state-stop': checkFundBalance(r.fm.id()) === 'stop',
+                    'fund-balance-state-warning': checkFundBalance(r.fm.id()) === 'warning'}">{{r.label}}</span>
+</ng-template>

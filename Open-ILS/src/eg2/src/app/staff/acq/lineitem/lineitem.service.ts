@@ -7,10 +7,21 @@ import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {ItemLocationService} from '@eg/share/item-location-select/item-location-select.service';
+import {saveAs} from 'file-saver';
+import {LineitemAlertDialogComponent} from './lineitem-alert-dialog.component';
+
+const LINEITEM_DISPOSITIONS:
+    'new' | 'selector-ready' | 'order-ready' | 'pending-order' | 'on-order' | 'received' | 'delayed' = null;
+export type LINEITEM_DISPOSITION = typeof LINEITEM_DISPOSITIONS;
 
 const COPY_ORDER_DISPOSITIONS:
     'canceled' | 'delayed' | 'received' | 'on-order' | 'pre-order' = null;
 export type COPY_ORDER_DISPOSITION = typeof COPY_ORDER_DISPOSITIONS;
+const ORDER_IDENT_ATTRS = [
+    'isbn',
+    'issn',
+    'upc'
+];
 
 export interface BatchLineitemStruct {
     id: number;
@@ -45,6 +56,13 @@ export interface FleshCacheParams {
     toCache?: boolean;
 }
 
+interface LineitemAlertData {
+    liId: number;
+    title: string;
+    alertText: IdlObject;
+    alertComment: string;
+}
+
 @Injectable()
 export class LineitemService {
 
@@ -70,6 +88,9 @@ export class LineitemService {
     // Alerts the user has already confirmed are OK.
     alertAcks: {[id: number]: boolean} = {};
 
+    naturalCollator = new Intl.Collator(undefined,
+        {numeric: true, sensitivity: 'base', ignorePunctuation: true});
+
     constructor(
         private idl: IdlService,
         private net: NetService,
@@ -77,6 +98,10 @@ export class LineitemService {
         private pcrud: PcrudService,
         private loc: ItemLocationService
     ) {}
+
+    clearLiCache() {
+        this.liCache = [];
+    }
 
     getFleshedLineitems(ids: number[],
         params: FleshCacheParams = {}): Observable<BatchLineitemStruct> {
@@ -92,6 +117,7 @@ export class LineitemService {
             flesh_order_summary: true,
             flesh_cancel_reason: true,
             flesh_li_details: true,
+            flesh_li_details_receiver: true,
             flesh_notes: true,
             flesh_fund: true,
             flesh_circ_modifier: true,
@@ -101,8 +127,10 @@ export class LineitemService {
             flesh_pl: true,
             flesh_formulas: true,
             flesh_copies: true,
+            flesh_claim_policy: true,
             clear_marc: false,
-            apply_order_identifiers: true
+            apply_order_identifiers: true,
+            flesh_queued_record: true
         }, params.fleshMore || {});
 
         return this.net.request(
@@ -296,6 +324,27 @@ export class LineitemService {
         ));
     }
 
+    updateLiDetailsMulti(inLids: IdlObject[]): Observable<BatchLineitemUpdateStruct> {
+        const lids = inLids.filter(copy =>
+            (copy.isnew() || copy.ischanged() || copy.isdeleted()));
+
+        return from(
+
+            // Ensure we have the updated fund/loc/mod values before
+            // sending the copies off to be updated and then re-drawn.
+            this.fetchFunds(lids.map(lid => lid.fund()))
+            .then(_ => this.fetchLocations(lids.map(lid => lid.location())))
+            .then(_ => this.fetchCircMods(lids.map(lid => lid.circ_modifier())))
+
+        ).pipe(switchMap(_ =>
+            this.net.request(
+                'open-ils.acq',
+                'open-ils.acq.lineitem_detail.cud.batch',
+                this.auth.token(), lids
+            )
+        ));
+    }
+
     updateLineitems(lis: IdlObject[]): Observable<BatchLineitemUpdateStruct> {
 
         // Fire updates one LI at a time.  Note the API allows passing
@@ -370,6 +419,110 @@ export class LineitemService {
         } else if (lineitem.state() === 'on-order') {
             return 'on-order';
         } else { return 'pre-order'; }
+    }
+
+    // state/disposition of a single lineitem
+    lineitemDisposition(lineitem: IdlObject): LINEITEM_DISPOSITION {
+        if (lineitem.cancel_reason() && lineitem.cancel_reason().keep_debits() === 't') {
+            return 'delayed';
+        } else {
+            return lineitem.state();
+        }
+    }
+
+    // convenience function for sorting values
+    nullableCompare(a_val: any, b_val: any): number {
+        return   a_val === b_val ?  0 :
+                 a_val === null  ?  1 :
+                 b_val === null  ? -1 :
+                 this.naturalCollator.compare(a_val, b_val);
+    }
+
+    // Given a line item, get its sort key
+    getLISortKey(li: IdlObject, field: string): any {
+        let vals = [];
+        switch (field) {
+            case 'li_id':
+                return li.id();
+                break;
+            case 'title':
+                vals = li.attributes().filter(x => x.attr_name() === 'title');
+                return vals.length ? vals[0].attr_value().replace(/^(a|an|the|el|la) /i, '') : null;
+                break;
+            case 'author':
+                vals = li.attributes().filter(x => x.attr_name() === 'author');
+                return vals.length ? vals[0].attr_value() : null;
+                break;
+            case 'publisher':
+                vals = li.attributes().filter(x => x.attr_name() === 'publisher');
+                return vals.length ? vals[0].attr_value() : null;
+                break;
+            case 'order_ident':
+                vals = li.attributes().filter(x => ORDER_IDENT_ATTRS.includes(x.attr_name()));
+                return vals.length ? vals[0].attr_value() : null;
+                break;
+            default:
+                return li.id();
+        }
+    }
+
+    doExportSingleAttributeList(ids: number[], attr: string) {
+        if (!attr) { return; }
+        const values: string[] = [];
+        this.getFleshedLineitems(ids, { fromCache: true }).subscribe(
+            li => values.push(this.getFirstAttributeValue(li.lineitem, attr, 'lineitem_marc_attr_definition')),
+            err => {},
+            () => {
+                const filtered = values.filter(x => x !== '');
+                saveAs(
+                    new Blob(
+                        [ filtered.join('\n') + '\n' ],
+                        { type: 'text/plain;charset=utf-8' }
+                    ),
+                    'export_attr_list.txt'
+                );
+            }
+        );
+    }
+
+    checkLiAlerts(lis: IdlObject[], dialog: LineitemAlertDialogComponent): Promise<boolean> {
+
+        let promise = Promise.resolve(true);
+
+        const alerts: LineitemAlertData[] = [];
+        lis.forEach(li => {
+            li.lineitem_notes().filter(
+                note => note.alert_text() && !this.alertAcks[note.id()]
+            ).forEach(alert =>
+                alerts.push({
+                    liId: li.id(),
+                    title: this.getFirstAttributeValue(li, 'title'),
+                    alertText: alert.alert_text(),
+                    alertComment: alert.value()
+                })
+            );
+        });
+
+        if (alerts.length === 0) { return promise; }
+
+        dialog.numAlerts = alerts.length;
+
+        alerts.forEach((alert, i) => {
+            promise = promise.then(_ => {
+                dialog.liId = alert.liId;
+                dialog.title = alert.title;
+                dialog.alertText = alert.alertText;
+                dialog.alertComment = alert.alertComment;
+                dialog.alertIndex = i + 1;
+                return dialog.open().toPromise().then(ok => {
+                    if (!ok) { return Promise.reject(); }
+                    this.alertAcks[alert.alertText.id()] = true;
+                    return true;
+                });
+            });
+        });
+
+        return promise;
     }
 }
 

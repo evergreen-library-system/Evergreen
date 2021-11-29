@@ -1,15 +1,23 @@
 <ng-template #dialogContent>
   <form class="form-validated">
     <div class="modal-header bg-info">
-      <h3 class="modal-title" i18n>Cancel</h3>
+      <h3 class="modal-title" *ngIf="recordType === 'po'" i18n>Confirm Order Cancellation</h3>
+      <h3 class="modal-title" *ngIf="recordType === 'li'" i18n>Confirm Line Item Cancellation</h3>
+      <h3 class="modal-title" *ngIf="recordType === 'lid'" i18n>Confirm Item Cancellation</h3>
       <button type="button" class="close"
         i18n-aria-label aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
     <div class="modal-body">
-      <h4 i18n>Select a cancel reason:</h4>
+      <h4 *ngIf="recordType === 'po'" i18n>Please select a cancel reason and click "Apply" to cancel the order,
+        or "Exit Dialog" to exit without cancelling the order.</h4>
+      <h4 *ngIf="recordType === 'li'" i18n>Please select a cancel reason and click "Apply" to cancel the line item,
+        or "Exit Dialog" to exit without cancelling the line item.</h4>
+      <h4 *ngIf="recordType === 'lid'" i18n>Please select a cancel reason and click "Apply" to cancel the item,
+        or "Exit Dialog" to exit without cancelling the item.</h4>
       <eg-combobox domId="acq-cancel-dialog" name="acq-cancel-dialog" 
+        [asyncSupportsEmptyTermClick]="true"
         idlClass="acqcr" [(ngModel)]="cancelReason"></eg-combobox>
     </div>
     <div class="modal-footer">

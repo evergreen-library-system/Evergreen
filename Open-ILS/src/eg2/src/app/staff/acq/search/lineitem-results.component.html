@@ -2,9 +2,40 @@
   i18n-searchTypeLabel searchTypeLabel="Line Item" runImmediatelySetting="eg.acq.search.lineitems.run_immediately"
   defaultSearchSetting="eg.acq.search.default.lineitems"></eg-acq-search-form>
 
+<eg-acq-export-attributes-dialog #exportAttributesDialog></eg-acq-export-attributes-dialog>
+<eg-acq-claim-policy-dialog #claimPolicyDialog></eg-acq-claim-policy-dialog>
+<eg-acq-cancel-dialog #cancelDialog></eg-acq-cancel-dialog>
+<eg-acq-add-to-po-dialog #addToPoDialog></eg-acq-add-to-po-dialog>
+<eg-acq-delete-lineitems-dialog #deleteLineitemsDialog></eg-acq-delete-lineitems-dialog>
+<eg-acq-link-invoice-dialog #linkInvoiceDialog></eg-acq-link-invoice-dialog>
+<eg-lineitem-alert-dialog #confirmAlertsDialog></eg-lineitem-alert-dialog>
+
+<eg-string #claimPolicyAppliedString i18n-text text="Claim Policy Applied to Selected Line Item(s)"></eg-string>
+<eg-string #lineItemsReceivedString i18n-text text="Line Item(s) Received"></eg-string>
+<eg-string #lineItemsUnReceivedString i18n-text text="Line Item(s) Un-Received"></eg-string>
+<eg-string #lineItemsCancelledString i18n-text text="Line Item(s) Canceled"></eg-string>
+<eg-string #lineItemsDeletedString i18n-text text="Line Item(s) Deleted"></eg-string>
+<eg-string #lineItemsUpdatedString i18n-text text="Line Item(s) Updated"></eg-string>
+<eg-string #lineItemsAddedToPoString i18n-text text="Line Item(s) Added to Purchase Order"></eg-string>
+
+<eg-alert-dialog #noActionableLIs i18n-dialogBody
+  dialogBody="None of the selected line items are suitable for the action.">
+</eg-alert-dialog>
+
+<eg-confirm-dialog #selectorReadyConfirmDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Line Item Change"
+  dialogBody="Mark selected line item(s) as ready for selector?">
+</eg-confirm-dialog>
+<eg-confirm-dialog #orderReadyConfirmDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Line Item Change"
+  dialogBody="Mark selected line item(s) as ready for order?">
+</eg-confirm-dialog>
+
 <ng-template #idTmpl let-lineitem="row">
 
-  <ng-container *ngIf="showExpAngLinks(); else legacyId">
+  <ng-container>
     <a *ngIf="lineitem.purchase_order()" 
       routerLink="/staff/acq/po/{{lineitem.purchase_order().id()}}"
       fragment="{{lineitem.id()}}" target="_blank">
@@ -17,53 +48,26 @@
    </a>
   </ng-container>
 
-  <ng-template #legacyId>
-    <a *ngIf="lineitem.purchase_order()" 
-      href="/eg/staff/acq/legacy/po/view/{{lineitem.purchase_order().id()}}?focus_li={{lineitem.id()}}"
-      target="_blank">
-      {{lineitem.id()}}
-    </a>
-    <a *ngIf="lineitem.picklist() && !lineitem.purchase_order()" 
-      href="/eg/staff/acq/legacy/picklist/view/{{lineitem.picklist().id()}}?focus_li={{lineitem.id()}}"
-      target="_blank">
-      {{lineitem.id()}}
-    </a>
-  </ng-template>
 </ng-template>
 
 <ng-template #poTmpl let-lineitem="row">
-  <ng-container *ngIf="showExpAngLinks(); else legacyPo">
+  <ng-container>
     <a *ngIf="lineitem.purchase_order()" 
       routerLink="/staff/acq/po/{{lineitem.purchase_order().id()}}"
       fragment="{{lineitem.id()}}" target="_blank">
       {{lineitem.purchase_order().name()}}
     </a>
   </ng-container>
-  <ng-template #legacyPo>
-    <a *ngIf="lineitem.purchase_order()" 
-      href="/eg/staff/acq/legacy/po/view/{{lineitem.purchase_order().id()}}?focus_li={{lineitem.id()}}"
-      target="_blank">
-      {{lineitem.purchase_order().name()}}
-    </a>
-  </ng-template>
 </ng-template>
 
 <ng-template #plTmpl let-lineitem="row">
-  <ng-container *ngIf="showExpAngLinks(); else legacyPl">
+  <ng-container>
     <a *ngIf="lineitem.picklist()"
       routerLink="/staff/acq/picklist/{{lineitem.picklist().id()}}"
       fragment="{{lineitem.id()}}" target="_blank">
       {{lineitem.picklist().name()}}
    </a>
   </ng-container>
-
-  <ng-template #legacyPl>
-    <a *ngIf="lineitem.picklist()" 
-      href="/eg/staff/acq/legacy/picklist/view/{{lineitem.picklist().id()}}?focus_li={{lineitem.id()}}"
-      target="_blank">
-      {{lineitem.picklist().name()}}
-    </a>
-  </ng-template>
 </ng-template>
 
 <ng-template #liAttrTmpl let-lineitem="row" let-col="col">
@@ -87,25 +91,17 @@
       <a routerLink="/staff/catalog/record/{{lineitem.eg_bib_id()}}"
          target="_blank" i18n>Catalog</a></li>
     <li>
-      <ng-container *ngIf="showExpAngLinks(); else legacyWs">
-        <a routerLink="/staff/acq/lineitem/{{lineitem.id()}}/worksheet"
+      <ng-container *ngIf="lineitem.purchase_order()">
+        <a routerLink="/staff/acq/po/{{lineitem.purchase_order().id()}}/lineitem/{{lineitem.id()}}/worksheet"
           target="_blank" i18n>Worksheet</a>
       </ng-container>
-      <ng-template #legacyWs>
-        <a href="/eg/staff/acq/legacy/lineitem/worksheet/{{lineitem.id()}}"
-           target="_blank" i18n>Worksheet</a>
-      </ng-template>
     </li>
 
     <li *ngIf="lineitem.purchase_order()">
-      <ng-container *ngIf="showExpAngLinks(); else legacyPo2">
+      <ng-container>
         <a routerLink="/staff/acq/po/{{lineitem.purchase_order().id()}}"
           target="_blank" i18n>Purchase Order</a>
       </ng-container>
-      <ng-template #legacyPo2>
-        <a href="/eg/staff/acq/legacy/po/view/{{lineitem.purchase_order().id()}}"
-          target="_blank" i18n>Purchase Order</a>
-      </ng-template>
     </li>
     <li><a href="/eg/staff/acq/requests/lineitem/{{lineitem.id()}}"
            target="_blank" i18n>Requests</a></li>
@@ -116,14 +112,10 @@
       <a routerLink="/staff/cat/vandelay/queue/bib/{{lineitem.queued_record().queue()}}"
         target="_blank" i18n>Queue</a></li>
     <li *ngIf="lineitem.picklist()">
-      <ng-container *ngIf="showExpAngLinks(); else legacyPl2">
+      <ng-container>
         <a routerLink="/staff/acq/picklist/{{lineitem.picklist().id()}}"
           target="_blank" i18n>Selection List</a>
       </ng-container>
-      <ng-template #legacyPl2>
-        <a href="/eg/staff/acq/legacy/picklist/view/{{lineitem.picklist().id()}}"
-          target="_blank" i18n>Selection List</a>
-      </ng-template>
     </li>
   </ul>
 </ng-template>
@@ -138,6 +130,48 @@
   [cellTextGenerator]="cellTextGenerator"
   (onRowActivate)="showRow($event)"
   [showDeclaredFieldsOnly]="true">
+
+  <eg-grid-toolbar-action label="Mark Ready for Selector" i18n-label
+    (onClick)="markSelectorReady($event)" [disableOnRows]="noSelectedRows">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Mark Ready for Order" i18n-label
+    (onClick)="markOrderReady($event)" [disableOnRows]="noSelectedRows">
+  </eg-grid-toolbar-action>
+<!-- TODO implement this when the SL interface is more fleshed out
+  <eg-grid-toolbar-action label="Move to Selection List" i18n-label
+    (onClick)="moveToSelectionList($event)" [disableOnRows]="noSelectedRows">
+  </eg-grid-toolbar-action>
+-->
+  <eg-grid-toolbar-action label="Create Purchase Order from Selected Line Items" i18n-label
+    (onClick)="createPurchaseOrder($event)" [disableOnRows]="noSelectedRows">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Add Selected to Purchase Order" i18n-label
+    (onClick)="addSelectedToPurchaseOrder($event)" [disableOnRows]="noSelectedRows">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Apply Claim Policy" i18n-label
+    (onClick)="applyClaimPolicy($event)" [disableOnRows]="noSelectedRows">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Mark Selected Line Items as Received" i18n-label
+    (onClick)="markReceived($event)" [disableOnRows]="noSelectedRows">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Un-receive Selected Line Items" i18n-label
+    (onClick)="markUnReceived($event)" [disableOnRows]="noSelectedRows">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Create Invoice from Selected Line Items" i18n-label
+    (onClick)="createInvoiceFromSelected($event)" [disableOnRows]="noSelectedRows">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Link Selected Line Items to Invoice" i18n-label
+    (onClick)="linkInvoiceFromSelected($event)" [disableOnRows]="noSelectedRows">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Cancel Selected" i18n-label
+    (onClick)="cancelLineitems($event)" [disableOnRows]="noSelectedRows">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label
+    (onClick)="deleteLineitems($event)" [disableOnRows]="noSelectedRows">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Export Single Attribute List" i18n-label
+    (onClick)="exportSingleAttributeList($event)" [disableOnRows]="noSelectedRows">
+  </eg-grid-toolbar-action>
 
   <eg-grid-column path="id" [cellTemplate]="idTmpl" [disableTooltip]="true"></eg-grid-column>
   <eg-grid-column i18n-label label="Title" path="title" [cellTemplate]="liAttrTmpl"></eg-grid-column>

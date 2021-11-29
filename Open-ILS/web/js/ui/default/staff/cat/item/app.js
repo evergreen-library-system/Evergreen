@@ -131,7 +131,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
                     if (acqData) {
                         if (acqData.a) {
                             acqData = egCore.idl.toHash(acqData);
-                            var url = '/eg/acq/po/view/' + acqData.purchase_order + '/' + acqData.id;
+                            var url = '/eg2/staff/acq/po/' + acqData.purchase_order + '#' + acqData.id;
                             $timeout(function () { $window.open(url, '_blank') });
                             hasResults = true;
                         }

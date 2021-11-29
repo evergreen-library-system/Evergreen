@@ -1,17 +1,31 @@
 import {Component, OnInit, Input, Output, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Observable, from} from 'rxjs';
+import {Observable, from, of, Subscription} from 'rxjs';
 import {tap, concatMap} from 'rxjs/operators';
 import {Pager} from '@eg/share/util/pager';
 import {EgEvent, EventService} from '@eg/core/event.service';
-import {IdlObject} from '@eg/core/idl.service';
+import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
+import {ToastService} from '@eg/share/toast/toast.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {LineitemService} from './lineitem.service';
+import {LineitemService, LINEITEM_DISPOSITION} from './lineitem.service';
+import {PoService} from '../po/po.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
+import {StringComponent} from '@eg/share/string/string.component';
+import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {CancelDialogComponent} from './cancel-dialog.component';
+import {DeleteLineitemsDialogComponent} from './delete-lineitems-dialog.component';
+import {AddCopiesDialogComponent} from './add-copies-dialog.component';
+import {BibFinderDialogComponent} from './bib-finder-dialog.component';
+import {BatchUpdateCopiesDialogComponent} from './batch-update-copies-dialog.component';
+import {LinkInvoiceDialogComponent} from './link-invoice-dialog.component';
+import {ExportAttributesDialogComponent} from './export-attributes-dialog.component';
+import {ClaimPolicyDialogComponent} from './claim-policy-dialog.component';
+import {ManageClaimsDialogComponent} from './manage-claims-dialog.component';
+import {LineitemAlertDialogComponent} from './lineitem-alert-dialog.component';
 
 const DELETABLE_STATES = [
     'new', 'selector-ready', 'order-ready', 'approved', 'pending-order'
@@ -42,12 +56,18 @@ export class LineitemListComponent implements OnInit {
 
     picklistId: number = null;
     poId: number = null;
+    poWasActivated = false;
+    poSubscription: Subscription;
     recordId: number = null; // lineitems related to a bib.
 
     loading = false;
     pager: Pager = new Pager();
     pageOfLineitems: IdlObject[] = [];
     lineitemIds: number[] = [];
+
+    saving = false;
+    progressMax = 0;
+    progressValue = 0;
 
     // Selected lineitems
     selected: {[id: number]: boolean} = {};
@@ -65,13 +85,35 @@ export class LineitemListComponent implements OnInit {
     // sorting and filtering
     sortOrder = DEFAULT_SORT_ORDER;
     showFilterSort = false;
+    filterField = '';
+    filterOperator = '';
+    filterValue = '';
+    filterApplied = false;
+
+    searchTermDatatypes = {
+        'id': 'id',
+        'state': 'state',
+        'acqlia:title': 'text',
+        'acqlia:author': 'text',
+        'acqlia:publisher': 'text',
+        'acqlia:pubdate': 'text',
+        'acqlia:isbn': 'text',
+        'acqlia:issn': 'text',
+        'acqlia:upc': 'text',
+        'claim_count': 'number',
+        'item_count': 'number',
+        'estimated_unit_price': 'money',
+    };
+    dateLikeSearchFields = {
+        'acqlia:pubdate': true,
+    };
 
     batchNote: string;
     noteIsPublic = false;
     batchSelectPage = false;
     batchSelectAll = false;
     showNotesFor: number;
-    showExpandFor: number; // 'Expand'
+    expandLineitem: {[id: number]: boolean} = {};
     expandAll = false;
     action = '';
     batchFailure: EgEvent;
@@ -81,6 +123,19 @@ export class LineitemListComponent implements OnInit {
                       // TODO: route guard might be better
 
     @ViewChild('cancelDialog') cancelDialog: CancelDialogComponent;
+    @ViewChild('deleteLineitemsDialog') deleteLineitemsDialog: DeleteLineitemsDialogComponent;
+    @ViewChild('addCopiesDialog') addCopiesDialog: AddCopiesDialogComponent;
+    @ViewChild('bibFinderDialog') bibFinderDialog: BibFinderDialogComponent;
+    @ViewChild('batchUpdateCopiesDialog') batchUpdateCopiesDialog: BatchUpdateCopiesDialogComponent;
+    @ViewChild('linkInvoiceDialog') linkInvoiceDialog: LinkInvoiceDialogComponent;
+    @ViewChild('exportAttributesDialog') exportAttributesDialog: ExportAttributesDialogComponent;
+    @ViewChild('claimPolicyDialog') claimPolicyDialog: ClaimPolicyDialogComponent;
+    @ViewChild('manageClaimsDialog') manageClaimsDialog: ManageClaimsDialogComponent;
+    @ViewChild('lineItemsUpdatedString', { static: false }) lineItemsUpdatedString: StringComponent;
+    @ViewChild('noActionableLIs', { static: true }) private noActionableLIs: AlertDialogComponent;
+    @ViewChild('selectorReadyConfirmDialog', { static: true }) selectorReadyConfirmDialog: ConfirmDialogComponent;
+    @ViewChild('orderReadyConfirmDialog', { static: true }) orderReadyConfirmDialog: ConfirmDialogComponent;
+    @ViewChild('confirmAlertsDialog') confirmAlertsDialog: LineitemAlertDialogComponent;
 
     constructor(
         private router: Router,
@@ -89,11 +144,16 @@ export class LineitemListComponent implements OnInit {
         private net: NetService,
         private auth: AuthService,
         private store: ServerStoreService,
+        private idl: IdlService,
+        private toast: ToastService,
         private holdings: HoldingsService,
-        private liService: LineitemService
+        private liService: LineitemService,
+        private poService: PoService
     ) {}
 
     ngOnInit() {
+
+        this.liService.getLiAttrDefs();
 
         this.route.queryParamMap.subscribe((params: ParamMap) => {
             this.pager.offset = +params.get('offset');
@@ -130,6 +190,13 @@ export class LineitemListComponent implements OnInit {
             });
         });
 
+        this.poSubscription = this.poService.poRetrieved.subscribe(() => {
+            this.poWasActivated = this.po().order_date() ? true : false;
+        });
+    }
+
+    po(): IdlObject {
+        return this.poService.currentPo;
     }
 
     pageSizeChange(count: number) {
@@ -150,6 +217,52 @@ export class LineitemListComponent implements OnInit {
                 this.goToPage();
             }
         });
+    }
+
+    filterFieldChange(event) {
+        this.filterOperator = '';
+        if (this.filterField === 'state') {
+            this.filterValue = '';
+        }
+        this.filterField = event;
+    }
+
+    filterOperatorChange() {
+        // empty for now
+    }
+
+    canApplyFilter(): boolean {
+        if (this.filterField !== '' &&
+            this.filterValue !== '') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    applyFilter() {
+        this.filterApplied = true;
+        if (this.pager.isFirstPage()) {
+            this.load();
+        } else {
+            this.pager.toFirst();
+            this.goToPage();
+        }
+    }
+
+    resetFilter() {
+        this.filterField = '';
+        this.filterOperator = '';
+        this.filterValue = '';
+        if (this.filterApplied) {
+            this.filterApplied = false;
+            if (this.pager.isFirstPage()) {
+                this.load();
+            } else {
+                this.pager.toFirst();
+                this.goToPage();
+            }
+        }
     }
 
     // Focus the selected lineitem, which may not yet exist in the
@@ -185,7 +298,7 @@ export class LineitemListComponent implements OnInit {
         this.lineitemIds = [];
 
         const searchTerms = {};
-        const opts = { id_list: true, limit: 1000 };
+        const opts = { limit: 10000 };
 
         if (this.picklistId) {
             Object.assign(searchTerms, { jub: [ { picklist: this.picklistId } ] });
@@ -195,10 +308,37 @@ export class LineitemListComponent implements OnInit {
             Object.assign(searchTerms, { jub: [ { purchase_order: this.poId } ] });
         }
 
+        if (this.filterApplied) {
+            this._handleFiltering(searchTerms);
+        }
+
         if (!(this.sortOrder in SORT_ORDER_MAP)) {
             this.sortOrder = DEFAULT_SORT_ORDER;
         }
         Object.assign(opts, SORT_ORDER_MAP[this.sortOrder]);
+
+        let _doingClientSort = false;
+        if (this.filterField === 'item_count' ||
+            this.filterField === 'claim_count') {
+            opts['flesh_li_details'] = true;
+        }
+        if (this.sortOrder === 'title_asc'      ||
+            this.sortOrder === 'title_desc'     ||
+            this.sortOrder === 'author_asc'     ||
+            this.sortOrder === 'author_desc'    ||
+            this.sortOrder === 'publisher_asc'  ||
+            this.sortOrder === 'publisher_desc') {
+            // if we're going to sort by an attribute, we'll need
+            // to actually fetch LI attributes so that we can
+            // do a client-side sorting pass that ignores
+            // articles and attempts international collation
+            _doingClientSort = true;
+            opts['flesh_attrs'] = true;
+        } else {
+            if (!opts['flesh_li_details']) {
+                opts['id_list'] = true;
+            }
+        }
 
         return this.net.request(
             'open-ils.acq',
@@ -209,9 +349,117 @@ export class LineitemListComponent implements OnInit {
             null,
             opts
         ).toPromise().then(resp => {
-            this.lineitemIds = resp.map(i => Number(i));
+            let _mustDeflesh = false;
+            if (this.filterField === 'item_count') {
+                _mustDeflesh = true;
+                if (!isNaN(Number(this.filterValue))) {
+                    const num = Number(this.filterValue);
+                    resp = resp.filter(l => {
+                        if (this.filterOperator === '' && l.item_count() === num) {
+                            return true;
+                        } else if (this.filterOperator === '__not' && l.item_count() !== num) {
+                            return true;
+                        } else if (this.filterOperator === '__gte' && l.item_count() >= num) {
+                            return true;
+                        } else if (this.filterOperator === '__lte' && l.item_count() <= num) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                }
+            } else if (this.filterField === 'claim_count') {
+                _mustDeflesh = true;
+                if (!isNaN(Number(this.filterValue))) {
+                    const num = Number(this.filterValue);
+                    resp.forEach(
+                        l => l['_claim_count'] = l.lineitem_details().reduce(
+                            (a, b) => (a ? a.claims().length : 0) + b.claims().length, 0
+                        )
+                    );
+                    resp = resp.filter(l => {
+                        if (this.filterOperator === '' && l['_claim_count'] === num) {
+                            return true;
+                        } else if (this.filterOperator === '__not' && l['_claim_count'] !== num) {
+                            return true;
+                        } else if (this.filterOperator === '__gte' && l['_claim_count'] >= num) {
+                            return true;
+                        } else if (this.filterOperator === '__lte' && l['_claim_count'] <= num) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                    resp.forEach(l => delete l['_claim_count']);
+                }
+            }
+            if (_doingClientSort) {
+                const sortOrder = this.sortOrder;
+                const liService = this.liService;
+                function _compareLIs(a, b) {
+                    const direction = sortOrder.match(/_asc$/) ? 'asc' : 'desc';
+                    const field = sortOrder.replace(/_asc|_desc$/, '');
+
+                    const a_val = liService.getLISortKey(a, field);
+                    const b_val = liService.getLISortKey(b, field);
+
+                    if (direction === 'asc') {
+                        return  liService.nullableCompare(a_val, b_val);
+                    } else {
+                        return -liService.nullableCompare(a_val, b_val);
+                    }
+                }
+                this.lineitemIds = resp.sort(_compareLIs).map(l => Number(l.id()));
+            } else {
+                if (_mustDeflesh) {
+                    this.lineitemIds = resp.map(l => Number(l.id()));
+                } else {
+                    this.lineitemIds = resp.map(i => Number(i));
+                }
+            }
             this.pager.resultCount = resp.length;
         });
+    }
+
+    _handleFiltering(searchTerms: any) {
+        const searchTerm: Object = {};
+        const filterField = this.filterField;
+        let filterOp = this.filterOperator;
+        let filterVal = this.filterValue;
+
+        if (filterField === 'item_count' ||
+            filterField === 'claim_count') {
+            return;
+        }
+
+        if (filterOp === 'like' && filterVal.length > 1) {
+            if (filterVal[0] === '%' && filterVal[filterVal.length - 1] === '%') {
+                filterVal = filterVal.slice(1, filterVal.length - 1);
+            } else if (filterVal[filterVal.length - 1] === '%') {
+                filterVal = filterVal.slice(0, filterVal.length - 1);
+                filterOp = 'startswith';
+            } else if (filterVal[0] === '%') {
+                filterVal = filterVal.slice(1);
+                filterOp = 'endswith';
+            }
+        }
+
+        if (filterOp !== '') {
+            searchTerm[filterOp] = true;
+        }
+
+        if (filterField.match(/^acqlia:/)) {
+            const attrName = (filterField.split(':'))[1];
+            const def = this.liService.liAttrDefs.filter(
+                d => d.code() === attrName)[0];
+            if (def) {
+                searchTerm[def.id()] = filterVal;
+                searchTerms['acqlia'] = [ searchTerm ];
+            }
+        } else {
+            searchTerm[filterField] = filterVal;
+            searchTerms['jub'].push(searchTerm);
+        }
     }
 
     goToPage() {
@@ -275,6 +523,12 @@ export class LineitemListComponent implements OnInit {
 
     ingestOneLi(li: IdlObject, replace?: boolean) {
         this.liMarcAttrs[li.id()] = {};
+
+        if (this.expandAll) {
+            this.expandLineitem[li.id()] = true;
+        } else {
+            this.expandLineitem[li.id()] = false;
+        }
 
         li.attributes().forEach(attr => {
             const name = attr.attr_name();
@@ -431,33 +685,38 @@ export class LineitemListComponent implements OnInit {
     }
 
     liPriceChange(li: IdlObject) {
-        const price = li.estimated_unit_price();
         if (this.liPriceIsValid(li)) {
-            li.estimated_unit_price(Number(price).toFixed(2));
-
+            const price = Number(li.estimated_unit_price()).toFixed(2);
             this.net.request(
                 'open-ils.acq',
-                'open-ils.acq.lineitem.update',
-                this.auth.token(), li
-            ).subscribe(resp =>
-                this.liService.activateStateChange.emit(li.id()));
+                'open-ils.acq.lineitem.price.set',
+                this.auth.token(), li.id(), price
+            ).subscribe(resp => {
+                // update local copy
+                li.estimated_unit_price(price);
+                this.liService.activateStateChange.emit(li.id());
+            });
         }
     }
 
     toggleShowNotes(liId: number) {
-        this.showExpandFor = null;
         this.showNotesFor = this.showNotesFor === liId ? null : liId;
+        this.expandLineitem[liId] = false;
     }
 
     toggleShowExpand(liId: number) {
         this.showNotesFor = null;
-        this.showExpandFor = this.showExpandFor === liId ? null : liId;
+        this.expandLineitem[liId] = !this.expandLineitem[liId];
     }
 
     toggleExpandAll() {
         this.showNotesFor = null;
-        this.showExpandFor = null;
         this.expandAll = !this.expandAll;
+        if (this.expandAll) {
+            this.pageOfLineitems.forEach(li => this.expandLineitem[li.id()] = true);
+        } else {
+            this.pageOfLineitems.forEach(li => this.expandLineitem[li.id()] = false);
+        }
     }
 
     toggleFilterSort() {
@@ -471,16 +730,205 @@ export class LineitemListComponent implements OnInit {
     deleteLineitems() {
         const ids = Object.keys(this.selected).filter(id => this.selected[id]);
 
-        const method = this.poId ?
-            'open-ils.acq.purchase_order.lineitem.delete' :
-            'open-ils.acq.picklist.lineitem.delete';
+        this.deleteLineitemsDialog.ids = ids.map(i => Number(i));
+        this.deleteLineitemsDialog.open().subscribe(doIt => {
+            if (!doIt) { return; }
 
-        from(ids)
-        .pipe(concatMap(id =>
-            this.net.request('open-ils.acq', method, this.auth.token(), id)
-        ))
-        .pipe(concatMap(_ => from(this.load())))
-        .subscribe();
+            const method = this.poId ?
+                'open-ils.acq.purchase_order.lineitem.delete' :
+                'open-ils.acq.picklist.lineitem.delete';
+
+            from(ids)
+            .pipe(concatMap(id =>
+                this.net.request('open-ils.acq', method, this.auth.token(), id)
+                // TODO: cap parallelism
+            ))
+            .pipe(concatMap(_ => of(true) ))
+            .subscribe(r => {}, err => {}, () => {
+                ids.forEach(id => {
+                    delete this.liService.liCache[id];
+                    delete this.selected[id];
+                });
+                this.batchSelectAll = false;
+                this.load();
+            });
+        });
+    }
+
+    addCopiesToLineitems() {
+        const ids = Object.keys(this.selected).filter(id => this.selected[id]);
+
+        this.addCopiesDialog.ids = ids.map(i => Number(i));
+        this.addCopiesDialog.open({size: 'xl'}).subscribe(templateLineitem => {
+            if (!templateLineitem) { return; }
+
+            const lids = [];
+            ids.forEach(li_id => {
+                templateLineitem.lineitem_details().forEach(lid => {
+                    const c = this.idl.clone(lid);
+                    c.isnew(true);
+                    c.lineitem(li_id);
+                    lids.push(c);
+                });
+            });
+
+            this.saving = true;
+            this.progressMax = null;
+            this.progressValue = 0;
+
+            this.liService.updateLiDetailsMulti(lids).subscribe(
+                struct => {
+                    this.progressMax = struct.total;
+                    this.progressValue++;
+                },
+                err => {},
+                () => {
+                    // Remove the modified LI's from the cache so we are
+                    // forced to re-fetch them.
+                    ids.forEach(id => delete this.liService.liCache[id]);
+                    this.saving = false;
+                    this.loadPageOfLis();
+                    this.liService.activateStateChange.emit(Number(ids[0]));
+                }
+            );
+
+        });
+    }
+
+    openBibFinder(liId: number) {
+        this.bibFinderDialog.liId = liId;
+        this.bibFinderDialog.open({size: 'xl'}).subscribe(bibId => {
+            if (!bibId) { return; }
+
+            const lis: IdlObject[] = [];
+            this.liService.getFleshedLineitems([liId], { fromCache: true }).subscribe(
+                liStruct => {
+                    liStruct.lineitem.eg_bib_id(bibId);
+                    liStruct.lineitem.attributes([]);
+                    lis.push(liStruct.lineitem);
+                },
+                err => { },
+                () => {
+                    this.net.request(
+                        'open-ils.acq',
+                        'open-ils.acq.lineitem.update',
+                        this.auth.token(), lis
+                    ).toPromise().then(resp => this.postBatchAction(resp, [liId]));
+                }
+            );
+        });
+    }
+
+    batchUpdateCopiesOnLineitems() {
+        const ids = Object.keys(this.selected).filter(id => this.selected[id]);
+
+        this.batchUpdateCopiesDialog.ids = ids.map(i => Number(i));
+        this.batchUpdateCopiesDialog.open({size: 'xl'}).subscribe(batchChanges => {
+            if (!batchChanges) { return; }
+
+            this.saving = true;
+            this.progressMax = ids.length;
+            this.progressValue = 0;
+
+            this.net.request(
+                'open-ils.acq',
+                'open-ils.acq.lineitem.batch_update',
+                this.auth.token(), { lineitems: ids },
+                batchChanges, batchChanges._dist_formula
+            ).subscribe(
+                response => {
+                    const evt = this.evt.parse(response);
+                    if (!evt) {
+                        delete this.liService.liCache[response];
+                        this.progressValue++;
+                    }
+                },
+                err => {},
+                () => {
+                    this.saving = false;
+                    this.loadPageOfLis();
+                    this.liService.activateStateChange.emit(Number(ids[0]));
+                }
+            );
+        });
+    }
+
+    exportSingleAttributeList() {
+        const ids = Object.keys(this.selected).filter(id => this.selected[id]).map(i => Number(i));
+        this.exportAttributesDialog.ids = ids;
+        this.exportAttributesDialog.open().subscribe(attr => {
+            if (!attr) { return; }
+
+            this.liService.doExportSingleAttributeList(ids, attr);
+        });
+    }
+
+    markSelectorReady(rows: IdlObject[]) {
+        const ids = this.selectedIds().map(i => Number(i));
+        if (ids.length === 0) { return; }
+
+        const lis: IdlObject[] = [];
+        this.liService.getFleshedLineitems(ids, { fromCache: true }).subscribe(
+            liStruct => {
+                if (liStruct.lineitem.state() === 'new') {
+                    lis.push(liStruct.lineitem);
+                }
+            },
+            err => {},
+            () => {
+                if (lis.length === 0) {
+                    this.noActionableLIs.open();
+                    return;
+                }
+                this.selectorReadyConfirmDialog.open().subscribe(doIt => {
+                    if (!doIt) { return; }
+                    lis.forEach(li => li.state('selector-ready'));
+                    this.net.request(
+                        'open-ils.acq',
+                        'open-ils.acq.lineitem.update',
+                        this.auth.token(), lis
+                    ).toPromise().then(resp => {
+                        this.lineItemsUpdatedString.current()
+                        .then(str => this.toast.success(str));
+                        this.postBatchAction(resp, ids);
+                    });
+                });
+            }
+        );
+    }
+
+    markOrderReady(rows: IdlObject[]) {
+        const ids = this.selectedIds().map(i => Number(i));
+        if (ids.length === 0) { return; }
+
+        const lis: IdlObject[] = [];
+        this.liService.getFleshedLineitems(ids, { fromCache: true }).subscribe(
+            liStruct => {
+                if (liStruct.lineitem.state() === 'new' || liStruct.lineitem.state() === 'selector-ready') {
+                    lis.push(liStruct.lineitem);
+                }
+            },
+            err => {},
+            () => {
+                if (lis.length === 0) {
+                    this.noActionableLIs.open();
+                    return;
+                }
+                this.orderReadyConfirmDialog.open().subscribe(doIt => {
+                    if (!doIt) { return; }
+                    lis.forEach(li => li.state('order-ready'));
+                    this.net.request(
+                        'open-ils.acq',
+                        'open-ils.acq.lineitem.update',
+                        this.auth.token(), lis
+                    ).toPromise().then(resp => {
+                        this.lineItemsUpdatedString.current()
+                        .then(str => this.toast.success(str));
+                        this.postBatchAction(resp, ids);
+                    });
+                });
+            }
+        );
     }
 
     liHasRealCopies(li: IdlObject): boolean {
@@ -507,6 +955,26 @@ export class LineitemListComponent implements OnInit {
         );
     }
 
+    jumpToHoldings(li: IdlObject) {
+        window.open('/eg2/staff/catalog/record/' + li.eg_bib_id() + '/holdings', '_blank');
+    }
+
+    manageClaims(li: IdlObject) {
+        this.manageClaimsDialog.li = li;
+        this.manageClaimsDialog.open().subscribe(result => {
+            if (result) {
+                delete this.liService.liCache[li.id()];
+                this.loadPageOfLis();
+            }
+        });
+    }
+
+    countClaims(li: IdlObject): number {
+        let total = 0;
+        li.lineitem_details().forEach(lid => total += lid.claims().length);
+        return total;
+    }
+
     receiveSelected() {
         this.markReceived(this.selectedIds());
     }
@@ -529,14 +997,74 @@ export class LineitemListComponent implements OnInit {
         });
     }
 
+    applyClaimPolicyToSelected() {
+        const liIds = this.selectedIds();
+
+        if (liIds.length === 0) { return; }
+
+        this.claimPolicyDialog.ids = liIds.map(i => Number(i));
+        this.claimPolicyDialog.open().subscribe(claimPolicy => {
+            if (!claimPolicy) { return; }
+
+            const lis: IdlObject[] = [];
+            this.liService.getFleshedLineitems(liIds, { fromCache: true }).subscribe(
+                liStruct => {
+                    liStruct.lineitem.claim_policy(claimPolicy);
+                    lis.push(liStruct.lineitem);
+                },
+                err => { },
+                () => {
+                    this.net.request(
+                        'open-ils.acq',
+                        'open-ils.acq.lineitem.update',
+                        this.auth.token(), lis
+                    ).toPromise().then(resp => this.postBatchAction(resp, liIds));
+                }
+            );
+        });
+    }
+
+    createInvoiceFromSelected() {
+        const liIds = this.selectedIds();
+        if (liIds.length === 0) { return; }
+
+        const path = '/eg/staff/acq/legacy/invoice/view?create=1&' +
+                     liIds.map(x => 'attach_li=' + x.toString()).join('&');
+        window.location.href = path;
+    }
+
+    linkInvoiceFromSelected() {
+        const liIds = this.selectedIds();
+        if (liIds.length === 0) { return; }
+
+        this.linkInvoiceDialog.liIds = liIds.map(i => Number(i));
+        this.linkInvoiceDialog.open().subscribe(invId => {
+            if (!invId) { return; }
+
+            const path = '/eg/staff/acq/legacy/invoice/view/' + invId + '?' +
+                     liIds.map(x => 'attach_li=' + x.toString()).join('&');
+            window.location.href = path;
+        });
+
+    }
+
     markReceived(liIds: number[]) {
         if (liIds.length === 0) { return; }
 
-        this.net.request(
-            'open-ils.acq',
-            'open-ils.acq.lineitem.receive.batch',
-            this.auth.token(), liIds
-        ).toPromise().then(resp => this.postBatchAction(resp, liIds));
+        const lis: IdlObject[] = [];
+        this.liService.getFleshedLineitems(liIds, { fromCache: true }).subscribe(
+            liStruct => lis.push(liStruct.lineitem),
+            err => {},
+            () => {
+                this.liService.checkLiAlerts(lis, this.confirmAlertsDialog).then(ok => {
+                    this.net.request(
+                        'open-ils.acq',
+                        'open-ils.acq.lineitem.receive.batch',
+                        this.auth.token(), liIds
+                    ).toPromise().then(resp => this.postBatchAction(resp, liIds));
+                }, err => {}); // avoid console errors
+            }
+        );
     }
 
     markUnReceived(liIds: number[]) {
@@ -573,6 +1101,26 @@ export class LineitemListComponent implements OnInit {
         });
     }
 
+    // order was activated as some point in past
+    isActivatedPo(): boolean {
+        if (this.picklistId) {
+            return false; // not an order
+        } else {
+            if (this.po()) {
+                this.poWasActivated = this.po().order_date() ? true : false;
+            }
+            return this.poWasActivated;
+        }
+    }
+
+    isPendingPo(): boolean {
+        if (this.picklistId || !this.po()) {
+            return false;
+        } else {
+            return this.po().order_date() ? false : true;
+        }
+    }
+
     // For PO's, lineitems can only be deleted if they are pending order.
     canDeleteLis(): boolean {
         const li = this.pageOfLineitems[0];
@@ -581,6 +1129,10 @@ export class LineitemListComponent implements OnInit {
             DELETABLE_STATES.includes(li.state()) &&
             Boolean(this.poId)
         );
+    }
+
+    lineitemDisposition(li: IdlObject): LINEITEM_DISPOSITION {
+        return this.liService.lineitemDisposition(li);
     }
 }
 

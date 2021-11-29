@@ -1,7 +1,8 @@
 import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter,
   ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {tap} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
+import {tap, map} from 'rxjs/operators';
 import {Pager} from '@eg/share/util/pager';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -11,6 +12,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {LineitemService, FleshCacheParams} from './lineitem.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {ItemLocationService} from '@eg/share/item-location-select/item-location-select.service';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
 const FORMULA_FIELDS = [
     'owning_lib',
@@ -26,10 +28,22 @@ interface FormulaApplication {
 }
 
 @Component({
+  selector: 'eg-lineitem-copies',
   templateUrl: 'copies.component.html'
 })
 export class LineitemCopiesComponent implements OnInit, AfterViewInit {
+
     static newCopyId = -1;
+
+    // modes are 'normal' and 'multiAdd'
+    //   normal   = manage copies for a single line item whose
+    //              ID is taken from the route
+    //   multiAdd = embedded in a modal and applying the results
+    //              to selected LIs
+    @Input() mode = 'normal';
+
+    // emited only in multiAdd mode
+    @Output() lineitemWithCopies = new EventEmitter<IdlObject>();
 
     lineitemId: number;
     lineitem: IdlObject;
@@ -37,6 +51,7 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
     batchOwningLib: IdlObject;
     batchFund: ComboboxEntry;
     batchCopyLocId: number;
+    dirty = false;
     saving = false;
     progressMax = 0;
     progressValue = 0;
@@ -46,6 +61,8 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
 
     // Can any changes be applied?
     liLocked = false;
+
+    @ViewChild('leaveConfirm', { static: true }) leaveConfirm: ConfirmDialogComponent;
 
     constructor(
         private route: ActivatedRoute,
@@ -63,13 +80,19 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
         this.formulaFilter.owner =
             this.org.fullPath(this.auth.user().ws_ou(), true);
 
-        this.route.paramMap.subscribe((params: ParamMap) => {
-            const id = +params.get('lineitemId');
-            if (id !== this.lineitemId) {
-                this.lineitemId = id;
-                if (id) { this.load(); }
-            }
-        });
+        if (this.mode === 'multiAdd') {
+            this.load();
+        } else {
+            // normal mode, we're checking the route to initalize
+            // ourselves
+            this.route.paramMap.subscribe((params: ParamMap) => {
+                const id = +params.get('lineitemId');
+                if (id !== this.lineitemId) {
+                    this.lineitemId = id;
+                    if (id) { this.load(); }
+                }
+            });
+        }
 
         this.liService.getLiAttrDefs();
     }
@@ -82,13 +105,23 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
             params = {toCache: true, fromCache: true};
         }
 
-        return this.liService.getFleshedLineitems([this.lineitemId], params)
-        .pipe(tap(liStruct => this.lineitem = liStruct.lineitem)).toPromise()
-        .then(_ => {
-            this.liLocked =
-              this.lineitem.state().match(/on-order|received|cancelled/);
-        })
-        .then(_ => this.applyCount());
+        if (this.mode === 'multiAdd') {
+            this.lineitem = this.idl.create('jub');
+            this.lineitem.lineitem_details([]);
+            this.lineitem.distribution_formulas([]);
+            this.liLocked = false; // trusting our invoker in multiAdd mode
+            this.applyCount();
+            this.lineitemWithCopies.emit(this.lineitem);
+            return Promise.resolve(true);
+        } else {
+            return this.liService.getFleshedLineitems([this.lineitemId], params)
+            .pipe(tap(liStruct => this.lineitem = liStruct.lineitem)).toPromise()
+            .then(_ => {
+                this.liLocked =
+                this.lineitem.state().match(/on-order|received|cancelled/);
+            })
+            .then(_ => this.applyCount());
+        }
     }
 
     ngAfterViewInit() {
@@ -103,9 +136,11 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
         while (copies.length < this.copyCount) {
             const copy = this.idl.create('acqlid');
             copy.id(LineitemCopiesComponent.newCopyId--);
+            copy.owning_lib(this.auth.user().ws_ou());
             copy.isnew(true);
             copy.lineitem(this.lineitem.id());
             copies.push(copy);
+            this.dirty = true;
         }
 
         if (copies.length > this.copyCount) {
@@ -163,11 +198,17 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
         app.creator(this.auth.user().id());
         app.formula(formula.id());
 
-        this.pcrud.create(app).toPromise().then(a => {
-            a.creator(this.auth.user());
-            a.formula(formula);
-            this.lineitem.distribution_formulas().push(a);
-        });
+        if (this.mode === 'multiAdd') {
+            app.isnew(true);
+            this.lineitem.distribution_formulas().push(app);
+            this.dirty = true;
+        } else {
+            this.pcrud.create(app).toPromise().then(a => {
+                a.creator(this.auth.user());
+                a.formula(formula);
+                this.lineitem.distribution_formulas().push(a);
+            });
+        }
     }
 
     // Grab values applied by distribution formulas and cache them before
@@ -228,6 +269,7 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
 
             } else {
                 copy[field](val);
+                this.dirty = true;
             }
         });
 
@@ -248,6 +290,7 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
             () => this.load({toCache: true}).then(_ => {
                 this.liService.activateStateChange.emit(this.lineitem.id());
                 this.saving = false;
+                this.dirty = false;
             })
         );
     }
@@ -259,6 +302,26 @@ export class LineitemCopiesComponent implements OnInit, AfterViewInit {
                 .filter(f => f.id() !== formula.id())
             );
         });
+    }
+
+    getTitle(li: IdlObject): string {
+        if (!li) { return ''; }
+        return this.liService.getFirstAttributeValue(li, 'title');
+    }
+
+    canDeactivate(): Observable<boolean> {
+        if (this.dirty) {
+            return this.leaveConfirm.open().pipe(map(confirmed => {
+                if (confirmed) {
+                    // fire-and-forget fetching the line item to restore it
+                    // to its previous state
+                    this.liService.getFleshedLineitems([ this.lineitemId ], {toCache: true}).toPromise();
+                }
+                return confirmed;
+            }));
+        } else {
+            return of(true);
+        }
     }
 }
 

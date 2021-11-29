@@ -5,12 +5,33 @@ import {ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {PrintService} from '@eg/share/print/print.service';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {PoService} from './po.service';
+import {LineitemService} from '../lineitem/lineitem.service';
+
+const DEFAULT_SORT_ORDER = 'li_id_asc';
+const SORT_ORDERS = [
+    'li_id_asc',
+    'li_id_desc',
+    'title_asc',
+    'title_desc',
+    'author_asc',
+    'author_desc',
+    'publisher_asc',
+    'publisher_desc',
+    'order_ident_asc',
+    'order_ident_desc'
+];
+const ORDER_IDENT_ATTRS = [
+    'isbn',
+    'issn',
+    'upc'
+];
 
 @Component({
   templateUrl: 'print.component.html'
@@ -30,8 +51,10 @@ export class PrintComponent implements OnInit, AfterViewInit {
         private org: OrgService,
         private net: NetService,
         private auth: AuthService,
+        private store: ServerStoreService,
         private pcrud: PcrudService,
         private poService: PoService,
+        private liService: LineitemService,
         private broadcaster: BroadcastService,
         private printer: PrintService) {
     }
@@ -68,8 +91,31 @@ export class PrintComponent implements OnInit, AfterViewInit {
             }
         })
         .then(po => this.po = po)
+        .then(_ => this.sortLineItems())
         .then(_ => this.populatePreview())
         .then(_ => this.initDone = true);
+    }
+
+    sortLineItems(): Promise<any> {
+        return this.store.getItem('acq.lineitem.sort_order').then(sortOrder => {
+            if (!sortOrder || !SORT_ORDERS.includes(sortOrder)) {
+                sortOrder = DEFAULT_SORT_ORDER;
+            }
+            const liService = this.liService;
+            function _compareLIs(a, b) {
+                const direction = sortOrder.match(/_asc$/) ? 'asc' : 'desc';
+                const field = sortOrder.replace(/_asc|_desc$/, '');
+                const a_val = liService.getLISortKey(a, field);
+                const b_val = liService.getLISortKey(b, field);
+
+                if (direction === 'asc') {
+                    return  liService.nullableCompare(a_val, b_val);
+                } else {
+                    return -liService.nullableCompare(a_val, b_val);
+                }
+            }
+            this.po.lineitems().sort(_compareLIs);
+        });
     }
 
     populatePreview(): Promise<any> {

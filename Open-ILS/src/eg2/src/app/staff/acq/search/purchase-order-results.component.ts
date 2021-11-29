@@ -55,7 +55,7 @@ export class PurchaseOrderResultsComponent implements OnInit {
     }
 
     showRow(row: any) {
-        window.open('/eg/staff/acq/legacy/po/view/' + row.id(), '_blank');
+        window.open('/eg2/staff/acq/po/' + row.id(), '_blank');
     }
 
     doSearch(search: AcqSearch) {
@@ -64,9 +64,4 @@ export class PurchaseOrderResultsComponent implements OnInit {
             this.purchaseOrderResultsGrid.reload();
         });
     }
-
-    showExpAngLinks(): boolean {
-        return this.acqSearch.angSearchLinksEnabled;
-    }
-
 }

@@ -13,17 +13,11 @@
 </eg-string>
 
 <ng-template #nameTmpl let-selectionlist="row">
-  <ng-container *ngIf="showExpAngLinks(); else legacyLinks">
+  <ng-container>
     <a routerLink="/staff/acq/picklist/{{selectionlist.id()}}" target="_blank">
       {{selectionlist.name()}}
     </a>
   </ng-container>
-  <ng-template #legacyLinks>
-    <a href="/eg/staff/acq/legacy/picklist/view/{{selectionlist.id()}}"
-      target="_blank">
-      {{selectionlist.name()}}
-    </a>
-  </ng-template>
 </ng-template>
 
 <eg-picklist-create-dialog #picklistCreateDialog>

@@ -30,4 +30,4 @@ input[type="text"].form-control-sm { border-width: 1px; }
 .li-state-pending-order { background-color: #EEEEDD; }
 .li-state-on-order { background-color: #EEDDDD; }
 .li-state-received { background-color: #DDDDDD; }
-.li-state-delayed { background-color: #99CCFF; }
+.li-state-delayed { background-color: #B3D9FF; }

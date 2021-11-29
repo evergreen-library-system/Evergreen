@@ -65,10 +65,6 @@ export class StaffNavComponent implements OnInit, OnDestroy {
             .then(settings => this.showTraditionalCatalog =
                 Boolean(settings['ui.staff.traditional_catalog.enabled']));
 
-            this.org.settings('ui.staff.angular_acq_selection.enabled')
-            .then(settings => this.showAngularAcq =
-                Boolean(settings['ui.staff.angular_acq_selection.enabled']));
-
             this.org.settings('circ.curbside')
             .then(settings => this.curbsideEnabled =
                 Boolean(settings['circ.curbside']));

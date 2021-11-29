@@ -10,6 +10,7 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 })
 
 export class CancelDialogComponent extends DialogComponent {
+    @Input() recordType = 'po';
     cancelReason: number;
     constructor(private modal: NgbModal) { super(modal); }
 }

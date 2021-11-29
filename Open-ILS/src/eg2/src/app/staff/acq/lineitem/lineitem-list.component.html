@@ -1,6 +1,36 @@
 
 <!-- BATCH ACTIONS -->
-<eg-acq-cancel-dialog #cancelDialog></eg-acq-cancel-dialog>
+<eg-acq-cancel-dialog recordType="li" #cancelDialog></eg-acq-cancel-dialog>
+<eg-acq-delete-lineitems-dialog #deleteLineitemsDialog></eg-acq-delete-lineitems-dialog>
+<eg-acq-add-copies-dialog #addCopiesDialog></eg-acq-add-copies-dialog>
+<eg-acq-bib-finder-dialog #bibFinderDialog></eg-acq-bib-finder-dialog>
+<eg-acq-batch-update-copies-dialog #batchUpdateCopiesDialog></eg-acq-batch-update-copies-dialog>
+<eg-acq-link-invoice-dialog #linkInvoiceDialog></eg-acq-link-invoice-dialog>
+<eg-acq-claim-policy-dialog #claimPolicyDialog></eg-acq-claim-policy-dialog>
+<eg-acq-manage-claims-dialog #manageClaimsDialog></eg-acq-manage-claims-dialog>
+<eg-acq-export-attributes-dialog #exportAttributesDialog></eg-acq-export-attributes-dialog>
+<eg-lineitem-alert-dialog #confirmAlertsDialog></eg-lineitem-alert-dialog>
+
+<eg-string #lineItemsUpdatedString i18n-text text="Line Item(s) Updated"></eg-string>
+
+<eg-alert-dialog #noActionableLIs i18n-dialogBody
+  dialogBody="None of the selected line items are suitable for the action.">
+</eg-alert-dialog>
+<eg-confirm-dialog #selectorReadyConfirmDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Line Item Change"
+  dialogBody="Mark selected line item(s) as ready for selector?">
+</eg-confirm-dialog>
+<eg-confirm-dialog #orderReadyConfirmDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Line Item Change"
+  dialogBody="Mark selected line item(s) as ready for order?">
+</eg-confirm-dialog>
+
+<div class="col-lg-6 offset-lg-3" *ngIf="saving">
+  <eg-progress-inline [max]="progressMax" [value]="progressValue">
+  </eg-progress-inline>
+</div>
 
 <div class="row mt-3" *ngIf="poId || picklistId">
   <div class="col-lg-1">
@@ -8,23 +38,43 @@
       <button class="btn btn-info btn-sm" ngbDropdownToggle i18n>Actions</button>
       <div ngbDropdownMenu>
         <a ngbDropdownItem routerLink="../brief-record"
+          [disabled]="isActivatedPo()"
           queryParamsHandling="merge" i18n>Add Brief Record</a>
         <button ngbDropdownItem (click)="deleteLineitems()" 
-          [disabled]="!canDeleteLis()" i18n>Delete Selected Lineitems</button>
+          [disabled]="!canDeleteLis() || !selectedIds().length" i18n>Delete Selected Line Items</button>
+        <button ngbDropdownItem (click)="addCopiesToLineitems()" 
+          [disabled]="isActivatedPo() || !selectedIds().length" i18n>Add Items to Selected Line Items</button>
+        <button ngbDropdownItem (click)="batchUpdateCopiesOnLineitems()" 
+          [disabled]="isActivatedPo() || !selectedIds().length" i18n>Batch Update Items on Selected Line Items</button>
+        <button ngbDropdownItem (click)="exportSingleAttributeList()" 
+          [disabled]="!selectedIds().length" i18n>Export Single Attribute List for Selected Line Items</button>
         <div class="dropdown-divider"></div>
         <h6 class="dropdown-header" i18n>Selection List Actions</h6>
+        <button ngbDropdownItem (click)="markSelectorReady()" 
+          [disabled]="!picklistId" i18n>Mark Selected Line Items as Ready for Selector</button>
+        <button ngbDropdownItem (click)="markOrderReady()" 
+          [disabled]="!picklistId" i18n>Mark Selected Line Items as Ready for Order</button>
         <button ngbDropdownItem (click)="createPo()" 
-          [disabled]="!picklistId" i18n>Create Purchase Order from Selected Lineitems</button>
+          [disabled]="!picklistId" i18n>Create Purchase Order from Selected Line Items</button>
         <button ngbDropdownItem (click)="createPo(true)"
-          [disabled]="!picklistId" i18n>Create Purchase Order from All Lineitems</button>
+          [disabled]="!picklistId" i18n>Create Purchase Order from All Line Items</button>
         <div class="dropdown-divider"></div>
         <h6 class="dropdown-header" i18n>Purchase Order Actions</h6>
+        <a ngbDropdownItem routerLink="../create-assets"
+          [disabled]="!isPendingPo()"
+          queryParamsHandling="merge" i18n>Load Bibs and Items</a>
         <button ngbDropdownItem (click)="receiveSelected()" 
-          [disabled]="!poId" i18n>Mark Selected Lineitems as Received</button>
+          [disabled]="!isActivatedPo() || !selectedIds().length" i18n>Mark Selected Line Items as Received</button>
         <button ngbDropdownItem (click)="unReceiveSelected()" 
-          [disabled]="!poId" i18n>Un-Receive Selected Lineitems</button>
+          [disabled]="!isActivatedPo() || !selectedIds().length" i18n>Un-Receive Selected Line Items</button>
         <button ngbDropdownItem (click)="cancelSelected()" 
-          [disabled]="!poId" i18n>Cancel Selected Lineitems</button>
+          [disabled]="!isActivatedPo() || !selectedIds().length" i18n>Cancel Selected Line Items</button>
+        <button ngbDropdownItem (click)="applyClaimPolicyToSelected()" 
+          [disabled]="!poId || !selectedIds().length" i18n>Apply Claim Policy to Selected Line Items</button>
+        <button ngbDropdownItem (click)="createInvoiceFromSelected()" 
+          [disabled]="!isActivatedPo() || !selectedIds().length" i18n>Create Invoice from Selected Line Items</button>
+        <button ngbDropdownItem (click)="linkInvoiceFromSelected()" 
+          [disabled]="!isActivatedPo() || !selectedIds().length" i18n>Link Selected Line Items to Invoice</button>
       </div>
     </div>
   </div>
@@ -69,7 +119,7 @@
       <div class="form-check">
         <input class="form-check-input" id='toggle-page-cbox'
           [(ngModel)]="batchSelectPage" (change)="toggleSelectAll(false)" type="checkbox"/>
-        <label class="form-check-label" for='toggle-page-cbox' i18n>Items In Page</label>
+        <label class="form-check-label" for='toggle-page-cbox' i18n>Line Items In Page</label>
       </div>
     </div>
 
@@ -77,7 +127,7 @@
       <div class="form-check">
         <input class="form-check-input" id='toggle-all-cbox'
           [(ngModel)]="batchSelectAll" (change)="toggleSelectAll(true)" type="checkbox"/>
-        <label class="form-check-label" for='toggle-all-cbox' i18n>All Items</label>
+        <label class="form-check-label" for='toggle-all-cbox' i18n>All Line Items</label>
       </div>
     </div>
 
@@ -137,14 +187,72 @@
   </div>
   <div [hidden]="!showFilterSort">
     <div class="col-lg-12 d-flex">
+     <form>
+      <div class="d-flex justify-content-center flex-column h-100">
+        <div class="form-group form-inline">
+          <label for="filter-field-select" class="form-check-label mr-1">Filter by:</label>
+          <select name="filter-field-select" id="filter-field-select"
+            [ngModel]="filterField" (ngModelChange)="filterFieldChange($event)"
+            class="form-control">
+            <option value="" i18n></option>
+            <option value="id" i18n>Line Item ID</option>
+            <option value="state" i18n>Status</option>
+            <option value="acqlia:title" i18n>Title</option>
+            <option value="acqlia:author" i18n>Author</option>
+            <option value="acqlia:publisher" i18n>Publisher</option>
+            <option value="acqlia:pubdate" i18n>Publication date</option>
+            <option value="acqlia:isbn" i18n>ISBN</option>
+            <option value="acqlia:issn" i18n>ISSN</option>
+            <option value="acqlia:upc" i18n>UPC</option>
+            <option value="claim_count" i18n>Claim count</option>
+            <option value="item_count" i18n>Item count</option>
+            <option value="estimated_unit_price" i18n>Estimated unit price</option>
+          </select> 
+          <select name="filter-operator-select" id="filter-operator-select"
+            [(ngModel)]="filterOperator" (ngModelChange)="filterOperatorChange($event)"
+            class="form-control">
+            <option i18n value="">is</option>
+            <option i18n value="__not">is NOT</option>
+            <option i18n value="__fuzzy" [hidden]="searchTermDatatypes[filterField] != 'text'">contains</option>
+            <option i18n value="__not,__fuzzy" [hidden]="searchTermDatatypes[filterField]">does NOT contain</option>
+            <option i18n value="__starts" [hidden]="searchTermDatatypes[filterField] != 'text'">STARTS with</option>
+            <option i18n value="__ends" [hidden]="searchTermDatatypes[filterField] != 'text'">ENDS with</option>
+            <option i18n value="__lte" [hidden]="searchTermDatatypes[filterField] != 'timestamp' && !dateLikeSearchFields[filterField]">is on or BEFORE</option>
+            <option i18n value="__gte" [hidden]="searchTermDatatypes[filterField] != 'timestamp' && !dateLikeSearchFields[filterField]">is on or AFTER</option>
+            <option i18n value="__between" [hidden]="searchTermDatatypes[filterField] != 'timestamp'">is BETWEEN</option>
+            <option i18n value="__age" [hidden]="searchTermDatatypes[filterField] != 'timestamp'">age (relative date)</option>
+            <option i18n value="__gte" [hidden]="searchTermDatatypes[filterField] != 'number'">is greater than or equal</option>
+            <option i18n value="__lte" [hidden]="searchTermDatatypes[filterField] != 'number'">is less than or equal</option>
+<!-- TODO
+            <option i18n value="__isnotnull" [hidden]="searchTermDatatypes[filterField] == 'id'">exists</option>
+            <option i18n value="__isnull" [hidden]="searchTermDatatypes[filterField] == 'id'">does NOT exist</option>
+            <option i18n value="__in">matches a term from a file</option>
+-->
+          </select> 
+          <input *ngIf="searchTermDatatypes[filterField] != 'state'" type="text" class="form-control" name="filter-value-input" id="filter-value-input" [(ngModel)]="filterValue">
+          <eg-combobox *ngIf="searchTermDatatypes[filterField] == 'state'"
+            [asyncSupportsEmptyTermClick]="true"
+            idlClass="jubstlbl"
+            [selectedId]="filterValue"
+            (onChange)="filterValue = $event ? $event.id : ''">
+          </eg-combobox>
+          <button type="submit" (click)="applyFilter()"
+            class="btn btn-sm btn-outline-dark mr-1 ml-1" [disabled]="!canApplyFilter()" i18n>Apply Filter</button>
+          <button type="button" (click)="resetFilter()"
+            class="btn btn-sm btn-outline-dark mr-1" i18n>Reset Filter</button>
+          </div>
+      </div>
+     </form>
+    </div>
+    <div class="col-lg-12 d-flex">
       <div class="d-flex justify-content-center flex-column h-100">
         <div class="form-group form-inline">
           <label for="sort-order-select" class="form-check-label mr-1">Sort by:</label>
           <select name="sort-order-select" id="sort-order-select"
             [ngModel]="sortOrder" (ngModelChange)="sortOrderChange($event)"
             class="form-control">
-            <option value="li_id_asc" i18n>Lineitem ID Ascending</option>
-            <option value="li_id_desc" i18n>Lineitem ID Descending</option>
+            <option value="li_id_asc" i18n>Line Item ID Ascending</option>
+            <option value="li_id_desc" i18n>Line Item ID Descending</option>
             <option value="title_asc" i18n>Title Ascending</option>
             <option value="title_desc" i18n>Title Descending</option>
             <option value="author_asc" i18n>Author Ascending</option>
@@ -171,7 +279,7 @@
 </ng-container>
 
 <ng-container *ngFor="let li of pageOfLineitems">
-  <div class="row mt-2 border-bottom pt-2 pb-2 li-state-{{li.state()}}">
+  <div class="row mt-2 border-bottom pt-2 pb-2 li-state-{{lineitemDisposition(li)}}">
     <div class="col-lg-12 d-flex">
       <div class="jacket-wrapper">
         <ng-container *ngIf="jacketIdent(li)">
@@ -204,6 +312,97 @@
             <span class="pr-1">{{li.source_label()}}</span>
           </div>
         </div>
+        <div class="row">
+          <div class="col-lg-12 d-flex">
+            <div class="mr-2">
+              <ng-container [ngSwitch]="li.state()">	
+                <div i18n 
+                  class="p-1 text-dark border border-dark bg-light rounded-pill"
+                  *ngSwitchCase="'new'">New</div>
+                <div i18n 
+                  class="p-1 text-dark border border-dark bg-light rounded-pill" 
+                  *ngSwitchCase="'selector-ready'">Selector-Ready</div>
+                <div i18n 
+                  class="p-1 text-dark border border-dark bg-light rounded-pill" 
+                  *ngSwitchCase="'order-ready'">Order-Ready</div>
+                <div i18n 
+                  class="p-1 text-dark border border-dark bg-light rounded-pill" 
+                  *ngSwitchCase="'approved'">Approved</div>
+                <div i18n 
+                  class="p-1 text-dark border border-dark bg-light rounded-pill" 
+                  *ngSwitchCase="'pending-order'">Pending-Order</div>
+                <div i18n 
+                  class="p-1 text-primary border border-primary bg-light rounded-pill" 
+                  *ngSwitchCase="'on-order'">On-Order</div>
+                <div i18n 
+                  class="p-1 text-success border border-success bg-light rounded-pill" 
+                  *ngSwitchCase="'received'">Received</div>
+                <div i18n 
+                  class="p-1 text-danger border border-danger bg-light rounded-pill" 
+                  *ngSwitchCase="'cancelled'">{{li.cancel_reason().label()}}</div>
+              </ng-container>
+            </div>
+            <!-- w-auto allows the input group to stick to the right 
+                 as the status label grows -->
+            <div class="input-group w-auto mr-2">
+              <div class="input-group-prepend">
+                <span *ngIf="identOptions(li).length > 1" class="text-danger mr-1"
+                  i18n-title title="Multiple Order Identifier Options" i18n>
+                  ({{identOptions(li).length}})
+                </span>
+                <div ngbDropdown>
+                  <button class="btn btn-outline-dark btn-sm" ngbDropdownToggle 
+                    title="Order Identifier Type" i18n-title [disabled]="!canEditIdent(li)"
+                    [ngClass]="{'btn-warning': !selectedIdent(li)}">
+                    <ng-container *ngIf="orderIdentTypes[li.id()]=='isbn'" i18n>ISBN</ng-container>
+                    <ng-container *ngIf="orderIdentTypes[li.id()]=='issn'" i18n>ISSN</ng-container>
+                    <ng-container *ngIf="orderIdentTypes[li.id()]=='upc'" i18n>UPC</ng-container>
+                  </button>
+                  <div ngbDropdownMenu>
+                    <button class="btn-sm" ngbDropdownItem
+                      (click)="orderIdentTypes[li.id()]='isbn'" i18n>ISBN</button>
+                    <button class="btn-sm" ngbDropdownItem
+                      (click)="orderIdentTypes[li.id()]='issn'" i18n>ISSN</button>
+                    <button class="btn-sm" ngbDropdownItem
+                      (click)="orderIdentTypes[li.id()]='upc'" i18n>UPC</button>
+                  </div>
+                </div>
+              </div>
+              <eg-combobox [entries]="identOptions(li)" [smallFormControl]="true"
+                placeholder="Order Identifer..." i18n-placeholder
+                [disabled]="!canEditIdent(li)"
+                [allowFreeText]="true" [selectedId]="selectedIdent(li)"
+                (onChange)="orderIdentChanged(li, $event)">
+              </eg-combobox>
+            </div>
+            <div class="mr-2">
+              <input type="text" class="form-control-sm medium"
+                [ngClass]="{'border border-danger text-danger': !liPriceIsValid(li)}"
+                placeholder='Price...' i18n-placeholder
+                (change)="liPriceChange(li)" [ngModel]="li.estimated_unit_price()"
+                (ngModelChange)="li.estimated_unit_price($event)"/>
+            </div>
+            <div>
+              <div ngbDropdown>
+                <button class="btn btn-info btn-sm" ngbDropdownToggle i18n>Actions</button>
+                <div ngbDropdownMenu>
+                  <button ngbDropdownItem [disabled]="li.state() != 'on-order' && lineitemDisposition(li) != 'delayed'"
+                    (click)="markReceived([li.id()])" i18n>Mark Received</button>
+                  <button ngbDropdownItem [disabled]="li.state() != 'received'"
+                    (click)="markUnReceived([li.id()])" i18n>Mark Un-Received</button>
+                  <button ngbDropdownItem [disabled]="!liHasRealCopies(li)"
+                    (click)="editHoldings(li)" i18n>Update Barcodes</button>
+                  <button ngbDropdownItem [disabled]="!liHasRealCopies(li)"
+                    (click)="jumpToHoldings(li)" i18n>Open Holdings View</button>
+                  <button ngbDropdownItem [disabled]="!liHasRealCopies(li)"
+                    (click)="manageClaims(li)" i18n>Claims ({{countClaims(li)}} existing)</button>
+                  <a ngbDropdownItem routerLink="lineitem/{{li.id()}}/history"
+                    queryParamsHandling="merge" i18n>View History</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="row" *ngIf="li.purchase_order()">
           <div class="col-lg-12">
             <eg-lineitem-order-summary [li]="li"></eg-lineitem-order-summary>
@@ -211,7 +410,7 @@
         </div>
         <div class="row">
           <div class="col-lg-12">
-            <span title="Lineitem ID" i18n-title i18n># {{li.id()}}</span>
+            <span title="Line Item ID" i18n-title i18n># {{li.id()}}</span>
             <span class="ml-1 mr-1" i18n> | </span>
             <span title="Existing Item Count" i18n-title i18n
               [ngClass]="{'text-danger font-weight-bold': existingCopyCounts[li.id()] > 0}">
@@ -225,33 +424,42 @@
             <span class="ml-1 mr-1" i18n> | </span>
             <a class="label-with-material-icon" title="Expand" i18n-title
               href="javascript:;" (click)="toggleShowExpand(li.id())">
-              <ng-container *ngIf="showExpandFor != li.id()">
+              <ng-container *ngIf="!expandLineitem[li.id()]">
                 <span class="material-icons small mr-1">unfold_more</span>
                 <span i18n>Expand</span>
               </ng-container>
-              <ng-container *ngIf="showExpandFor == li.id()">
+              <ng-container *ngIf="expandLineitem[li.id()]">
                 <span class="material-icons small mr-1">unfold_less</span>
                 <span i18n>Collapse</span>
               </ng-container>
             </a>
             <span class="ml-1 mr-1" i18n> | </span>
-            <a class="label-with-material-icon" title="Notes" i18n-title
+            <a class="label-with-material-icon" title="Notes and Alerts" i18n-title
               href="javascript:;" (click)="toggleShowNotes(li.id())">
               <span class="material-icons small mr-1">event_note</span>
-              <span i18n>Notes ({{li.lineitem_notes().length}})</span>
+              <span i18n>Notes and Alerts ({{li.lineitem_notes().length}})</span>
               <span *ngIf="liHasAlerts(li)" class="text-danger material-icons"
                 title="Has Alerts" i18n-title>flag</span>
             </a>
             <ng-container *ngIf="li.eg_bib_id()">
               <span class="ml-1 mr-1" i18n> | </span>
               <a class="label-with-material-icon mr-2"
-                routerLink="/staff/catalog/record/{{li.eg_bib_id()}}">
+                routerLink="/staff/catalog/record/{{li.eg_bib_id()}}"
+                target="_blank">
                 <span class="material-icons small mr-1">library_books</span>
                 <span i18n>Catalog</span>
               </a>
             </ng-container>
 
-            <!-- TODO link to catalog -->
+            <ng-container *ngIf="!li.eg_bib_id()">
+              <span class="ml-1 mr-1" i18n> | </span>
+              <a class="label-with-material-icon mr-2"
+                href="javascript:;" (click)="openBibFinder(li.id())"
+                title="Link to Catalog" i18n-title>
+                <span class="material-icons small mr-1">library_books</span>
+                <span i18n>Link to Catalog</span>
+              </a>
+            </ng-container>
 
             <span class="ml-1 mr-1" i18n> | </span>
             <a class="label-with-material-icon"
@@ -274,131 +482,53 @@
                 title="Purchase Order" i18n-title
                 routerLink="/staff/acq/po/{{li.purchase_order().id()}}">
                 <span class="material-icons small mr-1">center_focus_weak</span>
-                <span i18n>{{li.purchase_order().id()}}</span>
+                <span i18n>{{li.purchase_order().name()}}</span>
               </a>
             </ng-container>
 
-            <!-- TODO patron requests -->
+            <span class="ml-1 mr-1" i18n> | </span>
+            <a class="label-with-material-icon"
+              title="Request(s)" i18n-title
+              href="/eg/staff/acq/requests/lineitem/{{li.id()}}"
+              target="_blank">
+              <span class="material-icons small mr-1">help</span>
+              <span i18n>Request(s)</span>
+            </a>
 
             <span class="ml-1 mr-1" i18n> | </span>
             <a class="label-with-material-icon"
               [queryParams]="{f: 'jub:id', val1: li.id()}"
-              routerLink="/staff/acq/search/invoices">
+              routerLink="/staff/acq/search/invoices" target="_blank">
               <span class="material-icons small mr-1">list</span>
               <span i18n>Invoice(s)</span>
             </a>
 
-            <!-- TODO: claim policy -->
+            <ng-container *ngIf="li.claim_policy()">
+              <span class="ml-1 mr-1" i18n> | </span>
+              <span i18n>Claim policy: {{li.claim_policy().name()}}</span>
+            </ng-container>
 
             <ng-container *ngIf="li.provider()">
               <span class="ml-1 mr-1" i18n> | </span>
               <a class="label-with-material-icon"
-                title="Selection List" i18n-title 
+                title="Provider" i18n-title target="_blank" 
                 routerLink="/staff/acq/provider/{{li.provider().id()}}/details">
                 <span class="material-icons small mr-1">store</span>
                 <span i18n>{{li.provider().name()}}</span>
               </a>
             </ng-container>
 
-            <!-- TODO import queue -->
+            <ng-container *ngIf="li.queued_record()">
+              <span class="ml-1 mr-1" i18n> | </span>
+              <a class="label-with-material-icon"
+                title="Import Queue" i18n-title
+                routerLink="/staff/cat/vandelay/queue/bib/{{li.queued_record().queue()}}"
+                target="_blank">
+                <span class="material-icons small mr-1">queue</span>
+                <span i18n>Import Queue</span>
+              </a>
+            </ng-container>
 
-          </div>
-        </div>
-      </div>
-
-      <!-- actions along the right -->
-      <div class="d-flex flex-column justify-content-end">
-        <div class="row">
-          <div class="col-lg-12 d-flex">
-          <div class="flex-1"> </div>
-            <!-- w-auto allows the input group to stick to the right 
-                 as the status label grows -->
-            <div class="input-group w-auto">
-              <div class="input-group-prepend">
-                <span *ngIf="identOptions(li).length > 1" class="text-danger mr-1"
-                  i18n-title title="Multiple Order Identifier Options" i18n>
-                  ({{identOptions(li).length}})
-                </span>
-                <div ngbDropdown>
-                  <button class="btn btn-outline-dark btn-sm" ngbDropdownToggle 
-                    title="Order Identifier Type" i18n-title [disabled]="!canEditIdent(li)"
-                    [ngClass]="{'btn-warning': !selectedIdent(li)}">
-                    <ng-container *ngIf="orderIdentTypes[li.id()]=='isbn'" i18n>ISBN</ng-container>
-                    <ng-container *ngIf="orderIdentTypes[li.id()]=='upc'" i18n>UPC</ng-container>
-                    <ng-container *ngIf="orderIdentTypes[li.id()]=='issn'" i18n>ISSN</ng-container>
-                  </button>
-                  <div ngbDropdownMenu>
-                    <button class="btn-sm" ngbDropdownItem
-                      (click)="orderIdentTypes[li.id()]='isbn'" i18n>ISBN</button>
-                    <button class="btn-sm" ngbDropdownItem
-                      (click)="orderIdentTypes[li.id()]='upc'" i18n>UPC</button>
-                    <button class="btn-sm" ngbDropdownItem
-                      (click)="orderIdentTypes[li.id()]='issn'" i18n>ISSN</button>
-                  </div>
-                </div>
-              </div>
-              <eg-combobox [entries]="identOptions(li)" [smallFormControl]="true"
-                placeholder="Order Identifer..." i18n-placeholder
-                [disabled]="!canEditIdent(li)"
-                [allowFreeText]="true" [selectedId]="selectedIdent(li)"
-                (onChange)="orderIdentChanged(li, $event)">
-              </eg-combobox>
-            </div>
-          </div>
-        </div>
-        <div class="row mt-2">
-          <div class="col-lg-12 d-flex">
-            <div class="flex-1"></div>
-            <div class="mr-2">
-              <ng-container [ngSwitch]="li.state()">	
-                <div i18n 
-                  class="p-1 text-dark border border-dark bg-light rounded-lg" 
-                  *ngSwitchCase="'new'">New</div>
-                <div i18n 
-                  class="p-1 text-dark border border-dark bg-light rounded-lg" 
-                  *ngSwitchCase="'selector-ready'">Selector-Ready</div>
-                <div i18n 
-                  class="p-1 text-dark border border-dark bg-light rounded-lg" 
-                  *ngSwitchCase="'order-ready'">Order-Ready</div>
-                <div i18n 
-                  class="p-1 text-dark border border-dark bg-light rounded-lg" 
-                  *ngSwitchCase="'approved'">Approved</div>
-                <div i18n 
-                  class="p-1 text-dark border border-dark bg-light rounded-lg" 
-                  *ngSwitchCase="'pending-order'">Pending-Order</div>
-                <div i18n 
-                  class="p-1 text-primary border border-primary bg-light rounded-lg" 
-                  *ngSwitchCase="'on-order'">On-Order</div>
-                <div i18n 
-                  class="p-1 text-success border border-success bg-light rounded-lg" 
-                  *ngSwitchCase="'received'">Received</div>
-                <div i18n 
-                  class="p-1 text-danger border border-danger bg-light rounded-lg" 
-                  *ngSwitchCase="'cancelled'">Canceled</div>
-              </ng-container>
-            </div>
-            <div class="mr-2">
-              <div ngbDropdown>
-                <button class="btn btn-info btn-sm" ngbDropdownToggle i18n>Actions</button>
-                <div ngbDropdownMenu>
-                  <button ngbDropdownItem [disabled]="li.state() != 'on-order'"
-                    (click)="markReceived([li.id()])" i18n>Mark Received</button>
-                  <button ngbDropdownItem [disabled]="li.state() != 'received'"
-                    (click)="markUnReceived([li.id()])" i18n>Mark Un-Received</button>
-                  <button ngbDropdownItem [disabled]="!liHasRealCopies(li)"
-                    (click)="editHoldings(li)" i18n>Holdings Maintenance</button>
-                  <a ngbDropdownItem routerLink="lineitem/{{li.id()}}/history"
-                    queryParamsHandling="merge" i18n>View History</a>
-                </div>
-              </div>
-            </div>
-            <div>
-              <input type="text" class="form-control-sm medium"
-                [ngClass]="{'border border-danger text-danger': !liPriceIsValid(li)}"
-                placeholder='Price...' i18n-placeholder
-                (change)="liPriceChange(li)" [ngModel]="li.estimated_unit_price()"
-                (ngModelChange)="li.estimated_unit_price($event)"/>
-            </div>
           </div>
         </div>
       </div>
@@ -411,22 +541,23 @@
       </eg-lineitem-notes>
     </div>
   </div>
-  <div class="row" *ngIf="showExpandFor == li.id() || expandAll">
+  <div class="row" *ngIf="expandLineitem[li.id()]">
     <div class="col-lg-10 offset-lg-1 p-2 mt-2 shadow">
 
       <!-- Note the flex values are set so they also match the layout
            of the list of copies in the copies component. -->
       <div class="div d-flex font-weight-bold">
         <div class="flex-1 p-1" i18n>Owning Branch</div>  
-        <div class="flex-1 p-1" i18n>Copy Location</div>
+        <div class="flex-1 p-1" i18n>Shelving Location</div>
         <div class="flex-1 p-1" i18n>Collection Code</div>
         <div class="flex-1 p-1" i18n>Fund</div>
         <div class="flex-1 p-1" i18n>Circ Modifier</div>
         <div class="flex-1 p-1" i18n>Callnumber</div>
         <div class="flex-1 p-1" i18n>Barcode</div>
+        <div class="flex-1 p-1" i18n>Receiver</div>
       </div>
       <div class="batch-copy-row" *ngFor="let copy of li.lineitem_details()">
-        <eg-lineitem-copy-attrs [embedded]="true" [copy]="copy">
+        <eg-lineitem-copy-attrs [embedded]="true" [showReceiver]="true" [copy]="copy">
         </eg-lineitem-copy-attrs>
       </div>
     </div>

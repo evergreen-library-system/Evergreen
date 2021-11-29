@@ -1,3 +1,10 @@
+<h3 *ngIf="mode !== 'multiAdd'" class="mt-3" i18n>Items for Line Item {{lineitem?.id()}} ({{getTitle(lineitem)}})</h3>
+
+<eg-confirm-dialog #leaveConfirm
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Unsaved Changes Warning"
+  dialogBody="There are unsaved changes. Are you sure you want to leave?">
+</eg-confirm-dialog>
 
 <div class="row mt-3 mb-1">
   <div class="col-lg-12 form-inline">
@@ -16,6 +23,7 @@
     <span class="ml-3">
       <eg-combobox idlClass="acqdf" [idlQueryAnd]="formulaFilter" 
         [asyncSupportsEmptyTermClick]="true" [startsWith]="true"
+        [idlQuerySort]="{acqdf: 'name'}"
         #distribFormCbox domId="distrib-formula-cbox">
       </eg-combobox>
     </span>
@@ -23,7 +31,7 @@
       [disabled]="!distribFormCbox.selectedId || liLocked"
       (click)="applyFormula(distribFormCbox.selectedId)" i18n>Apply</button>
 
-    <button class="btn btn-sm btn-success ml-auto" [disabled]="liLocked"
+    <button class="btn btn-sm btn-success ml-auto" [disabled]="liLocked" *ngIf="mode !== 'multiAdd'"
       (click)="save()" i18n>Save Changes</button>
 
   </div>
@@ -38,7 +46,7 @@
 
 <ng-container *ngIf="lineitem && !saving">
 
-  <div class="card tight-card" *ngIf="lineitem.distribution_formulas().length">
+  <div class="card tight-card" *ngIf="lineitem.distribution_formulas().length && mode !== 'multiAdd'">
     <div class="card-header" i18n>Distribution formulas applied to this lineitem</div>
     <div class="card-body">
       <ul class="p-0 m-0">
@@ -58,7 +66,10 @@
     </div>
   </div>
 
-  <eg-lineitem-batch-copies [lineitem]="lineitem"></eg-lineitem-batch-copies>
+  <eg-lineitem-batch-copies
+    [lineitem]="lineitem" [batchAdd]="mode === 'multiAdd'"
+    (becameDirty)="dirty = true"
+  ></eg-lineitem-batch-copies>
 </ng-container>
 
 

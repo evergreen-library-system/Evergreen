@@ -1,0 +1,70 @@
+<ng-template #dialogContent>
+  <form class="form-validated">
+    <div class="modal-header bg-info">
+      <h3 class="modal-title" i18n>Manage Claims</h3>
+      <button type="button" class="close"
+        i18n-aria-label aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <h4 i18n>Claims</h4>
+      <span i18n>Against line item {{liService.getFirstAttributeValue(li, 'title')}} ({{li.id()}})</span>
+      <ul>
+        <li *ngFor="let lid of lidsWithClaims" i18n>
+          {{lid.barcode()}} /
+          <ng-container *ngIf="lid.cancel_reason()">Cancelled ({{lid.cancel_reason().label()}})</ng-container>
+          <ng-container *ngIf="lid.recv_time() && !lid.cancel_reason()">Received {{lid.recv_time() | formatValue:'timestamp'}}</ng-container>
+          <ng-container *ngIf="!lid.recv_time() && !lid.cancel_reason()">Not received</ng-container>
+          <ul>
+            <li *ngFor="let claim of lid.claims()">
+               {{claim.type().code()}} <a href="javascript:;" (click)="printVoucher(lid.id())">Print Voucher</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <hr>
+      <h4 i18n>Initiate New Claims</h4>
+      <div *ngFor="let lid of li.lineitem_details()" i18n>
+        <input type="checkbox" name="lidsToClaim" [(ngModel)]="lid._selected_for_claim">
+        {{lid.barcode()}} /
+        <ng-container *ngIf="lid.cancel_reason()">Cancelled ({{lid.cancel_reason().label()}})</ng-container>
+        <ng-container *ngIf="lid.recv_time() && !lid.cancel_reason()">Received {{lid.recv_time() | formatValue:'timestamp'}}</ng-container>
+        <ng-container *ngIf="!lid.recv_time() && !lid.cancel_reason()">Not received</ng-container>
+      </div>
+      <ng-container *ngIf="claimEventTypes.length > 0">
+        <label for="selectClaimEventTypes" i18n>Select Claim Action(s)</label>
+        <select class="form-control"  multiple="true" [size]="claimEventTypes.length"
+          [(ngModel)]="selectedClaimEventTypes" [ngModelOptions]="{standalone: true}" id="selectClaimEventTypes">
+          <option *ngFor="let clet of claimEventTypes" [value]="clet.id()" i18n>
+           {{clet.code()}} ({{clet.org_unit().shortname()}}) <i>{{clet.description()}}</i>
+           <ng-container *ngIf="clet.library_initiated()"> [Library initiated]</ng-container>
+          </option>
+        </select>
+      </ng-container>
+      <label for="claimType" i18n>Claim Type</label>
+      <eg-combobox domId="claimType" name="claimType" 
+        [asyncSupportsEmptyTermClick]="true"
+        idlClass="acqclt" [(ngModel)]="claimType" [ngModelOptions]="{standalone: true}"></eg-combobox>
+      <label for="note" i18n>Claim Note</label>
+      <input class="form-control" type="text" i18n-placeholder placeholder="Note" [(ngModel)]="note"
+        [ngModelOptions]="{standalone: true}" id="note">
+    </div>
+    
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success"
+        [disabled]="!canPerformClaim()"
+        (click)="claimItems()" i18n>Claim Selected</button>
+      <button type="button" class="btn btn-warning"
+        (click)="close()" i18n>Exit Dialog</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #printTemplate let-context>
+  <div>
+    <h1>Claim Voucher</h1>
+    <hr>
+    <span [innerHtml]="context.voucher"></span>
+  </div>
+</ng-template>

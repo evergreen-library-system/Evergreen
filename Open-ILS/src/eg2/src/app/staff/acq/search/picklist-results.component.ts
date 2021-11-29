@@ -85,14 +85,6 @@ export class PicklistResultsComponent implements OnInit {
         };
     }
 
-    showExpAngOptions(): boolean {
-        return this.acqSearch.angSelectionEnabled;
-    }
-
-    showExpAngLinks(): boolean {
-        return this.acqSearch.angSearchLinksEnabled;
-    }
-
     openCreateDialog() {
         this.picklistCreateDialog.open().subscribe(
             modified => {
@@ -138,7 +130,7 @@ export class PicklistResultsComponent implements OnInit {
     }
 
     showRow(row: any) {
-        window.open('/eg/staff/acq/legacy/picklist/view/' + row.id(), '_blank');
+        window.open('/eg2/staff/acq/picklist/' + row.id(), '_blank');
     }
 
     doSearch(search: AcqSearch) {

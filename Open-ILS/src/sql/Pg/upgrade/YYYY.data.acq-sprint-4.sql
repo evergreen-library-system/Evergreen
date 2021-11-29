@@ -12,4 +12,14 @@ VALUES (
     )
 );
 
+INSERT INTO config.org_unit_setting_type (name, grp, datatype, label)
+VALUES (
+    'ui.staff.acq.show_deprecated_links', 'gui', 'bool',
+    oils_i18n_gettext(
+        'ui.staff.acq.show_deprecated_links',
+        'Display Links to Deprecated Acquisitions Interfaces',
+        'cwst', 'label'
+    )
+);
+
 COMMIT;

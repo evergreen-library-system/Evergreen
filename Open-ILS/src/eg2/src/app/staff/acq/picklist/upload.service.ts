@@ -25,6 +25,7 @@ export class PicklistUploadService {
     mergeProfiles: IdlObject[];
     providersList: IdlObject[];
     fiscalYears: IdlObject[];
+    defaultFiscalYear: IdlObject;
     selectionLists: IdlObject[];
     queueType: string;
     recordType: string;
@@ -79,20 +80,6 @@ export class PicklistUploadService {
         });
     }
 
-    getProvidersList(): Promise<IdlObject[]> {
-        if (this.providersList) {
-            return Promise.resolve(this.providersList);
-        }
-
-        const owners = this.org.ancestors(this.auth.user().ws_ou(), true);
-        return this.pcrud.search('acqpro',
-            {owner: owners}, {order_by: {acqpro: ['code']}}, {atomic: true})
-        .toPromise().then(providers => {
-            this.providersList = providers;
-            return providers;
-        });
-    }
-
     getSelectionLists(): Promise<IdlObject[]> {
         if (this.selectionLists) {
             return Promise.resolve(this.selectionLists);
@@ -137,17 +124,34 @@ export class PicklistUploadService {
         });
     }
 
-    getFiscalYears(): Promise<IdlObject[]> {
-        if (this.fiscalYears) {
-            return Promise.resolve(this.fiscalYears);
-        }
+    getDefaultFiscalYear(org: number): Promise<IdlObject> {
+        return this.net.request(
+            'open-ils.acq',
+            'open-ils.acq.org_unit.current_fiscal_year',
+            this.auth.token(), org
+        ).pipe(tap(afy => {
+            this.defaultFiscalYear = this.fiscalYears.filter(fy => Number(fy.year()) === Number(afy))[0];
+        })).toPromise().then(() => {
+            return this.defaultFiscalYear;
+        });
+    }
 
+    getFiscalYears(org: number): Promise<IdlObject[]> {
         return this.pcrud.retrieveAll('acqfy',
           {order_by: {acqfy: 'year'}},
           {atomic: true}
         ).toPromise().then(years => {
-            this.fiscalYears = years;
-            return years;
+            this.fiscalYears = years.filter( y => y.calendar() === this.org.get(org).fiscal_calendar());
+            // if there are no entries, inject a special entry for the current year
+            if (!this.fiscalYears.length) {
+                const afy = this.idl.create('acqfy');
+                afy.id(-1);
+                afy.calendar(-1);
+                const now = new Date();
+                afy.year(now.getFullYear());
+                this.fiscalYears = [ afy ];
+            }
+            return this.fiscalYears;
         });
     }
 

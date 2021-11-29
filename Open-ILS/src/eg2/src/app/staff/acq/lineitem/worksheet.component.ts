@@ -57,10 +57,12 @@ export class LineitemWorksheetComponent implements OnInit, AfterViewInit {
                 flesh_cancel_reason: true,
                 flesh_li_details: true,
                 flesh_fund: true,
-                flesh_li_details_copy: true,
-                flesh_li_details_location: true,
+                flesh_copies: true,
+                flesh_location: true,
+                flesh_copy_location: true,
+                flesh_call_number: true,
                 flesh_li_details_receiver: true,
-                distribution_formulas: true
+                flesh_formulas: true
             }
         ).toPromise()
         .then(li => this.lineitem = li)

@@ -1,23 +1,36 @@
 <eg-staff-banner bannerText="Create Purchase Order" i18n-bannerText>
 </eg-staff-banner>
 
-<div class="col-lg-4 offset-lg-4">
-  <div *ngIf="lineitems.length">
-    <span i18n>Creating for {{lineitems.length}} lineitems.</span>
+<div class="col-lg-4 offset-lg-4" [hidden]="!initDone">
+  <div *ngIf="lineitems.length || origLiCount">
+    <span i18n>Creating for {{lineitems.length}} line items.</span>
+    <span i18n *ngIf="lineitems.length !== origLiCount" class="alert-warning">
+      (There were {{origLiCount}} selected, but not all were in a valid state
+       to be added to a purchase order.)
+    </span>
     <hr class="p-1" />
   </div>
   <div class="form-group">
     <label for="order-agency-input" i18n>Ordering Agency</label>
-    <eg-org-select (onChange)="orgChange($event)" domId="order-agency-input">
+    <eg-org-select (onChange)="orgChange($event)" domId="order-agency-input"
+      [limitPerms]="['CREATE_PURCHASE_ORDER']">
     </eg-org-select>
   </div>
   <div class="form-group">
     <label for="name-input" i18n>Name (optional)</label>
-    <input id="name-input" class="form-control" type="text" [(ngModel)]="poName"/>
+    <input id="name-input" class="form-control" type="text" [ngModel]="poName"
+      (ngModelChange)="poName = $event; checkDuplicatePoName()"
+    />
+  </div>
+  <div *ngIf="dupeResults.dupeFound" class="alert alert-warning" i18n>
+    This name is already in used by another PO: 
+    <a target="_blank" routerLink="/staff/acq/po/{{dupeResults.dupePoId}}">View PO</a>
   </div>
   <div class="form-group">
     <label for="name-input" i18n>Provider</label>
-    <eg-combobox domId="provider-input" [(ngModel)]="provider" 
+    <eg-combobox domId="provider-input" [(ngModel)]="provider"
+      [asyncSupportsEmptyTermClick]="true"
+      idlIncludeLibraryInLabel="owner"
       [idlQueryAnd]="{active: 't'}" idlClass="acqpro">
     </eg-combobox>
   </div>
@@ -28,7 +41,7 @@
       Prepayment Required
     </label>
   </div>
-  <div class="form-group form-check">
+  <div class="form-group form-check" *ngIf="lineitems.length">
     <input type="checkbox" class="form-check-input" 
       [(ngModel)]="createAssets" id="create-assets">
     <label class="form-check-label" for="create-assets" i18n>

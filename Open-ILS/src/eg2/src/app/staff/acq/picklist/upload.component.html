@@ -1,10 +1,13 @@
-<eg-staff-banner bannerText="Load MARC Order Records" i18n-bannerText>
+<eg-staff-banner bannerText="Load MARC Order Records" i18n-bannerText *ngIf="mode !== 'getImportParams'">
 </eg-staff-banner>
 
-<div class="row">
+<div class="row" *ngIf="mode !== 'getImportParams'">
   <div class="ml-auto mr-3"><a i18n href="/eg/staff/acq/legacy/picklist/upload">Legacy Upload Interface</a></div>
 </div>
 
+<eg-string #loadMarcOrderTemplateSavedString i18n-text text="Load MARC Order Record Template Saved"></eg-string>
+<eg-string #loadMarcOrderTemplateDeletedString i18n-text text="Load MARC Order Record Template Deleted"></eg-string>
+<eg-string #loadMarcOrderTemplateSetAsDefaultString i18n-text text="Load MARC Order Record Template Set As Default"></eg-string>
 
 <eg-alert-dialog #dupeQueueAlert i18n-dialogBody 
   dialogBody="A queue with the requested name already exists.">
@@ -13,7 +16,8 @@
 <div class="common-form striped-odd form-validated ml-3 mr-3">
   <div class="row">
     <div class="col-lg-3">
-      <label for="template-select" i18n>Apply/Create Form Template</label>
+      <label for="template-select" i18n *ngIf="mode !== 'getImportParams'">Apply/Create Form Template</label>
+      <label for="template-select" i18n *ngIf="mode === 'getImportParams'">Apply Form Template</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox #formTemplateSelector
@@ -25,10 +29,10 @@
         [entries]="formatTemplateEntries()">
       </eg-combobox>
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-6" *ngIf="mode !== 'getImportParams'">
       <button class="btn btn-success"
         [disabled]="!selectedTemplate"
-        (click)="saveTemplate()" i18n>Save As New Template</button>
+        (click)="saveTemplate()" i18n>Save Template</button>
       <button class="btn btn-outline-primary ml-3"
         [disabled]="!selectedTemplate"
         (click)="markTemplateDefault()" i18n>Mark Template as Default</button>
@@ -38,6 +42,7 @@
     </div>
   </div>
 
+  <ng-container *ngIf="mode !== 'getImportParams'">
   <h2>Purchase Order</h2>
   <div class="row">
     <div class="col-lg-3">
@@ -46,11 +51,13 @@
   
     <div class="col-lg-3">
       <eg-combobox #providerSelector
-        id="provider-select"
-        [entries]="formatEntries('providersList')"
-        (onChange)="selectEntry($event, 'providersList')"
+        domId="provider-select"
+        [selectedId]="selectedProvider" (onChange)="selectedProvider = $event.id"
+        style="border-left-width: 0px"
         [required]="true"
-        [startId]="selectedProvider">
+        [asyncSupportsEmptyTermClick]="true"
+        idlIncludeLibraryInLabel="owner"
+        [idlQueryAnd]="{active: 't'}" idlClass="acqpro">
       </eg-combobox>
     </div>
 
@@ -69,8 +76,9 @@
     </div>
       <div class="col-lg-3">
         <eg-org-select
-        [applyOrgId]="orderingAgency"
-        (onChange)="orgOnChange($event)">
+          [applyOrgId]="orderingAgency"
+          (onChange)="orgOnChange($event)"
+          [limitPerms]="['CREATE_PICKLIST','CREATE_PURCHASE_ORDER']">
         </eg-org-select>
       </div>
 
@@ -114,9 +122,9 @@
       </eg-combobox>
     </div>
   </div>
+  </ng-container> <!-- purchase order section -->
 
-
-  <h2>Upload Settings</h2>
+  <h2 *ngIf="mode !== 'getImportParams'">Upload Settings</h2>
 
   <div class="row">
     <div class="col-lg-3">
@@ -214,6 +222,7 @@
       <input type="number" step="0.1" id="min-quality-ratio" 
         class="form-control" [(ngModel)]="minQualityRatio">
     </div>
+    <ng-container *ngIf="mode !== 'getImportParams'">
     <div class="col-lg-3">
       <label for="load-items" i18n>Load Items for Imported Records</label>
     </div>
@@ -222,9 +231,10 @@
         id="load-items"
         [(ngModel)]="loadItems">
     </div>
+    </ng-container>
   </div>
 
-  <h2>This Upload</h2>
+  <h2 *ngIf="mode !== 'getImportParams'">This Upload</h2>
   <div class="row">
     <div class="col-lg-3">
       <label for="queue-select" i18n>Select or Create a Queue</label>
@@ -239,7 +249,7 @@
       </eg-combobox>
     </div>
   </div>
-  <div class="row" *ngIf="!importSelection()">
+  <div class="row" *ngIf="!importSelection() && mode !== 'getImportParams'">
     <div class="col-lg-3">
       <label for="upload-file" i18n>File to Upload:</label>
     </div>
@@ -264,14 +274,21 @@
       </button>
     </div>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="mode !== 'getImportParams'">
     <div class="col-lg-6 offset-lg-3">
       <button class="btn btn-success btn-lg btn-block font-weight-bold"
         [disabled]="isUploading || !hasNeededData()" 
         (click)="upload()" i18n>Upload</button>
     </div>
   </div>
-  <div class="row" [hidden]="!showProgress || uploadComplete">
+  <div class="row" *ngIf="mode === 'getImportParams'">
+    <div class="col-lg-6 offset-lg-3">
+      <button class="btn btn-success btn-lg btn-block font-weight-bold"
+        [disabled]="customActionProcessing || !hasNeededData()" 
+        (click)="performCustomAction()" i18n>Submit</button>
+    </div>
+  </div>
+  <div class="row" [hidden]="!isUploading || uploadComplete">
     <div class="col-lg-3">
       <label i18n>Upload File to Server</label>
     </div>
@@ -286,15 +303,25 @@
   </div>
 
   <div class="row" [hidden]="!uploadComplete">
-    <div class="col-lg-3 offset-lg-3">
-      <h2><label i18n>Upload Complete!</label></h2>
-    </div>
-    </div>
-    <div class="row" [hidden]="!uploadComplete">
-      <div class="col-sm-1 offset-lg-3">
-        <label i18n>Go to:</label>
-    </div>
-    <div><a routerLink="/staff/cat/vandelay/queue/{{recordType}}/{{activeQueueId}}" target="_blank" i18n>Queue</a></div>
-    <div class="col-sm-1" [hidden]="!selectedSelectionList"><a href="/eg/staff/acq/legacy/picklist/view/{{activeSelectionListId}}" target="_blank">Selection List</a></div>
-    <div class="col-sm-2" [hidden]="!createPurchaseOrder"><a routerLink="/eg/staff/acq/po/{{newPO}}" target="_blank">Purchase Order</a></div>
-    </div>
+    <ng-container *ngIf="uploadError">
+      <div class="col-lg-6 offset-lg-3">
+        <h2><label i18n>Upload Error!</label></h2>
+        <div class="row">
+          <div class="col alert-danger" i18n>Error {{uploadErrorCode}} ({{uploadErrorText}})</div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="!uploadError">
+      <div class="col-lg-6 offset-lg-3">
+        <h2><label i18n>Upload Complete!</label></h2>
+        <div class="row" [hidden]="!uploadComplete">
+          <div class="col-2">
+            <label i18n>Go to:</label>
+          </div>
+          <div class="col-2"><a routerLink="/staff/cat/vandelay/queue/{{recordType}}/{{activeQueueId}}" target="_blank" i18n>Queue</a></div>
+          <div class="col-2" [hidden]="!selectedSelectionList"><a routerLink="/staff/acq/picklist/{{activeSelectionListId}}" target="_blank">Selection List</a></div>
+          <div class="col-2" [hidden]="!createPurchaseOrder"><a routerLink="/staff/acq/po/{{newPO}}" target="_blank">Purchase Order</a></div>
+        </div>
+      </div>
+    </ng-container>
+  </div>

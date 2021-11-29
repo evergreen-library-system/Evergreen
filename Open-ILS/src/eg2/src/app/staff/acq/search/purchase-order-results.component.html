@@ -4,17 +4,11 @@
   defaultSearchSetting="eg.acq.search.default.purchaseorders"></eg-acq-search-form>
 
 <ng-template #nameTmpl let-purchaseorder="row">
-  <ng-container *ngIf="showExpAngLinks(); else legacyPo">
+  <ng-container>
     <a routerLink="/staff/acq/po/{{purchaseorder.id()}}" target="_blank">
       {{purchaseorder.name()}}
     </a>
   </ng-container>
-  <ng-template #legacyPo>
-    <a href="/eg/staff/acq/legacy/po/view/{{purchaseorder.id()}}"
-      target="_blank">
-      {{purchaseorder.name()}}
-    </a>
-  </ng-template>
 </ng-template>
 
 <ng-template #providerTmpl let-purchaseorder="row">

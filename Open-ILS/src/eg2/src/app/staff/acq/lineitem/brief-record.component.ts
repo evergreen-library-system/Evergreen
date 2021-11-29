@@ -79,7 +79,11 @@ export class BriefRecordComponent implements OnInit {
 
             // Append fields to the document
             dfNode.setAttribute('tag', '' + tags[0]);
-            dfNode.setAttribute('ind1', ' ');
+            if (attr.code() === 'upc') {
+                dfNode.setAttribute('ind1', '1');
+            } else {
+                dfNode.setAttribute('ind1', ' ');
+            }
             dfNode.setAttribute('ind2', ' ');
             sfNode.setAttribute('code', '' + subfields[0]);
             const tNode = doc.createTextNode(value);

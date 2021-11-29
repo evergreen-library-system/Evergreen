@@ -1,0 +1,43 @@
+
+<h3 *ngIf="!activatePo" class="m-2" i18n>Load Bibs and Items</h3>
+<h3 *ngIf="activatePo" class="m-2" i18n>Load Bibs and Items, then Activate Order</h3>
+
+<div class="w-100 m-2">
+  <eg-acq-upload mode="getImportParams" [customAction]="createAssets"></eg-acq-upload>
+</div>
+
+<eg-progress-inline *ngIf="creatingAssets"></eg-progress-inline>
+
+<div class="w-100 m-2" *ngIf="creationRequested">
+  <h4 i18n>Bib and Item Creation Status</h4>
+  <div class="row">
+    <div class="col-2" i18n>Line Items Processed</div>
+    <div class="col-1">{{creationStatus.liProcessed}}</div>
+  </div>  
+  <div class="row">
+    <div class="col-2" i18n>Vandelay Records Processed</div>
+    <div class="col-1">{{creationStatus.vqbrProcessed}}</div>
+  </div>  
+  <div class="row">
+    <div class="col-2" i18n>Bib Records Merged/Imported</div>
+    <div class="col-1">{{creationStatus.bibsProcessed}}</div>
+  </div>  
+  <div class="row">
+    <div class="col-2" i18n>Acquisitions Items Processed</div>
+    <div class="col-1">{{creationStatus.lidProcessed}}</div>
+  </div>  
+  <div class="row">
+    <div class="col-2" i18n>Debits Encumbered</div>
+    <div class="col-1">{{creationStatus.debitsProcessed}}</div>
+  </div>  
+  <div class="row">
+    <div class="col-2" i18n>Real Items Processed</div>
+    <div class="col-1">{{creationStatus.copiesProcessed}}</div>
+  </div>  
+
+  <h4 i18n class="mt-2" *ngIf="creationErrors.length">Errors encountered</h4>
+  <div class="row" *ngFor="let evt of creationErrors">
+    <div class="col-2 alert alert-warning">{{evt.textcode}}</div>
+    <div class="col-5 alert alert-warning">{{evt.desc}}</div>
+  </div>
+</div>
