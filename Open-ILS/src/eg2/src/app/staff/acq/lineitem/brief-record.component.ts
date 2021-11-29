@@ -99,6 +99,7 @@ export class BriefRecordComponent implements OnInit {
 
     saveManualPicklist(): Promise<boolean> {
         if (this.targetPo) { return Promise.resolve(true); }
+        if (this.targetPicklist) { return Promise.resolve(true); }
         if (!this.selectedPl) { return Promise.resolve(false); }
 
         if (!this.selectedPl.freetext) {
