@@ -22277,7 +22277,7 @@ VALUES (
 INSERT INTO config.print_template
     (id, name, label, owner, active, locale, template)
 VALUES (
-    4, 'lineitem_worksheet', 'Lineitem Worksheet', 1, TRUE, 'en-US',
+    5, 'lineitem_worksheet', 'Lineitem Worksheet', 1, TRUE, 'en-US',
 $TEMPLATE$
 [%- 
   USE money=format('%.2f');
@@ -22307,7 +22307,7 @@ $TEMPLATE$
 
 INSERT INTO config.print_template
     (id, name, label, owner, active, locale, template)
-VALUES (5, 'purchase_order', 'Purchase Order', 1, TRUE, 'en-US', 
+VALUES (6, 'purchase_order', 'Purchase Order', 1, TRUE, 'en-US', 
 $TEMPLATE$
 
 [%- 
