@@ -87,6 +87,14 @@
       </span>
     </div>
 
+    <div class="d-flex ml-3 justify-content-center flex-column h-100">
+      <button type="button" (click)="toggleFilterSort()"
+        class="btn btn-sm btn-outline-dark mr-1">
+        <span *ngIf="showFilterSort"  i18n>Hide Filter &amp; Sort Options</span>
+        <span *ngIf="!showFilterSort" i18n>Show Filter &amp; Sort Options</span>
+      </button>
+    </div>
+
     <div class="flex-1"></div>
 
     <div class="btn-toolbar">
@@ -126,6 +134,29 @@
         </div>
       </div>
     </div><!-- buttons -->
+  </div>
+  <div [hidden]="!showFilterSort">
+    <div class="col-lg-12 d-flex">
+      <div class="d-flex justify-content-center flex-column h-100">
+        <div class="form-group form-inline">
+          <label for="sort-order-select" class="form-check-label mr-1">Sort by:</label>
+          <select name="sort-order-select" id="sort-order-select"
+            [ngModel]="sortOrder" (ngModelChange)="sortOrderChange($event)"
+            class="form-control">
+            <option value="li_id_asc" i18n>Lineitem ID Ascending</option>
+            <option value="li_id_desc" i18n>Lineitem ID Descending</option>
+            <option value="title_asc" i18n>Title Ascending</option>
+            <option value="title_desc" i18n>Title Descending</option>
+            <option value="author_asc" i18n>Author Ascending</option>
+            <option value="author_desc" i18n>Author Descending</option>
+            <option value="publisher_asc" i18n>Publisher Ascending</option>
+            <option value="publisher_desc" i18n>Publisher Descending</option>
+            <option value="order_ident_asc" i18n>Order Identifier Ascending</option>
+            <option value="order_ident_desc" i18n>Order Identifier Descending</option>
+          </select>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 

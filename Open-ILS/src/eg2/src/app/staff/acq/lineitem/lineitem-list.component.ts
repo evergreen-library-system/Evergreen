@@ -17,6 +17,22 @@ const DELETABLE_STATES = [
     'new', 'selector-ready', 'order-ready', 'approved', 'pending-order'
 ];
 
+const DEFAULT_SORT_ORDER = 'li_id_asc';
+const SORT_ORDER_MAP = {
+    li_id_asc:  { 'order_by': [{'class': 'jub', 'field': 'id', 'direction': 'ASC'}] },
+    li_id_desc: { 'order_by': [{'class': 'jub', 'field': 'id', 'direction': 'DESC'}] },
+    title_asc:  { 'order_by': [{'class': 'acqlia', 'field': 'attr_value', 'direction': 'ASC'}], 'order_by_attr': 'title' },
+    title_desc: { 'order_by': [{'class': 'acqlia', 'field': 'attr_value', 'direction': 'DESC'}], 'order_by_attr': 'title' },
+    author_asc:  { 'order_by': [{'class': 'acqlia', 'field': 'attr_value', 'direction': 'ASC'}], 'order_by_attr': 'author' },
+    author_desc: { 'order_by': [{'class': 'acqlia', 'field': 'attr_value', 'direction': 'DESC'}], 'order_by_attr': 'author' },
+    publisher_asc:  { 'order_by': [{'class': 'acqlia', 'field': 'attr_value', 'direction': 'ASC'}], 'order_by_attr': 'publisher' },
+    publisher_desc: { 'order_by': [{'class': 'acqlia', 'field': 'attr_value', 'direction': 'DESC'}], 'order_by_attr': 'publisher' },
+    order_ident_asc:  { 'order_by': [{'class': 'acqlia', 'field': 'attr_value', 'direction': 'ASC'}],
+                        'order_by_attr': ['isbn', 'issn', 'upc'] },
+    order_ident_desc: { 'order_by': [{'class': 'acqlia', 'field': 'attr_value', 'direction': 'DESC'}],
+                        'order_by_attr': ['isbn', 'issn', 'upc'] },
+};
+
 @Component({
   templateUrl: 'lineitem-list.component.html',
   selector: 'eg-lineitem-list',
@@ -46,6 +62,10 @@ export class LineitemListComponent implements OnInit {
     // a lot of repetitive looping.
     liMarcAttrs: {[id: number]: {[name: string]: IdlObject[]}} = {};
 
+    // sorting and filtering
+    sortOrder = DEFAULT_SORT_ORDER;
+    showFilterSort = false;
+
     batchNote: string;
     noteIsPublic = false;
     batchSelectPage = false;
@@ -56,6 +76,9 @@ export class LineitemListComponent implements OnInit {
     action = '';
     batchFailure: EgEvent;
     focusLi: number;
+    firstLoad = true; // using this to ensure that we avoid loading the LI table
+                      // until the page size and sort order WS settings have been fetched
+                      // TODO: route guard might be better
 
     @ViewChild('cancelDialog') cancelDialog: CancelDialogComponent;
 
@@ -75,7 +98,9 @@ export class LineitemListComponent implements OnInit {
         this.route.queryParamMap.subscribe((params: ParamMap) => {
             this.pager.offset = +params.get('offset');
             this.pager.limit = +params.get('limit');
-            this.load();
+            if (!this.firstLoad) {
+                this.load();
+            }
         });
 
         this.route.fragment.subscribe((fragment: string) => {
@@ -87,13 +112,24 @@ export class LineitemListComponent implements OnInit {
             this.picklistId = +params.get('picklistId');
             this.poId = +params.get('poId');
             this.recordId = +params.get('recordId');
-            this.load();
+            if (!this.firstLoad) {
+                this.load();
+            }
         });
 
         this.store.getItem('acq.lineitem.page_size').then(count => {
             this.pager.setLimit(count || 20);
-            this.load();
+            this.store.getItem('acq.lineitem.sort_order').then(sortOrder => {
+                if (sortOrder && (sortOrder in SORT_ORDER_MAP)) {
+                    this.sortOrder = sortOrder;
+                } else {
+                    this.sortOrder = DEFAULT_SORT_ORDER;
+                }
+                this.load();
+                this.firstLoad = false;
+            });
         });
+
     }
 
     pageSizeChange(count: number) {
@@ -101,6 +137,18 @@ export class LineitemListComponent implements OnInit {
             this.pager.setLimit(count);
             this.pager.toFirst();
             this.goToPage();
+        });
+    }
+
+    sortOrderChange(sortOrder: string) {
+        this.store.setItem('acq.lineitem.sort_order', sortOrder).then(_ => {
+            this.sortOrder = sortOrder;
+            if (this.pager.isFirstPage()) {
+                this.load();
+            } else {
+                this.pager.toFirst();
+                this.goToPage();
+            }
         });
     }
 
@@ -136,44 +184,33 @@ export class LineitemListComponent implements OnInit {
     loadIds(): Promise<any> {
         this.lineitemIds = [];
 
-        let id = this.poId;
-        let options: any = {flesh_lineitem_ids: true, li_limit: 10000};
-        let method = 'open-ils.acq.purchase_order.retrieve';
-        let handler = (po) => po.lineitems();
-        let sort = true;
+        const searchTerms = {};
+        const opts = { id_list: true, limit: 1000 };
 
         if (this.picklistId) {
-
-            id = this.picklistId;
-            options = {idlist: true, limit: 1000};
-            method = 'open-ils.acq.lineitem.picklist.retrieve.atomic';
-            handler = (ids) => ids;
-
+            Object.assign(searchTerms, { jub: [ { picklist: this.picklistId } ] });
         } else if (this.recordId) {
-
-            id = this.recordId;
-            method = 'open-ils.acq.lineitems_for_bib.by_bib_id.atomic';
-            options = {idlist: true, limit: 1000};
-            handler = (ids) => ids;
-            // The API sorts the newest to oldest, which is what
-            // we want here.
-            sort = false;
+            Object.assign(searchTerms, { jub: [ { eg_bib_id: this.recordId } ] });
+        } else {
+            Object.assign(searchTerms, { jub: [ { purchase_order: this.poId } ] });
         }
 
+        if (!(this.sortOrder in SORT_ORDER_MAP)) {
+            this.sortOrder = DEFAULT_SORT_ORDER;
+        }
+        Object.assign(opts, SORT_ORDER_MAP[this.sortOrder]);
+
         return this.net.request(
-            'open-ils.acq', method, this.auth.token(), id, options
+            'open-ils.acq',
+            'open-ils.acq.lineitem.unified_search.atomic',
+            this.auth.token(),
+            searchTerms, // "and" terms
+            {},          // "or" terms
+            null,
+            opts
         ).toPromise().then(resp => {
-            const ids = handler(resp);
-
-            if (sort) {
-                this.lineitemIds = ids
-                    .map(i => Number(i))
-                    .sort((id1, id2) => id1 < id2 ? -1 : 1);
-            } else {
-                this.lineitemIds = ids.map(i => Number(i));
-            }
-
-            this.pager.resultCount = ids.length;
+            this.lineitemIds = resp.map(i => Number(i));
+            this.pager.resultCount = resp.length;
         });
     }
 
@@ -421,6 +458,10 @@ export class LineitemListComponent implements OnInit {
         this.showNotesFor = null;
         this.showExpandFor = null;
         this.expandAll = !this.expandAll;
+    }
+
+    toggleFilterSort() {
+        this.showFilterSort = !this.showFilterSort;
     }
 
     liHasAlerts(li: IdlObject): boolean {
