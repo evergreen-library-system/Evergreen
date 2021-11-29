@@ -421,6 +421,14 @@ export class CheckinComponent implements OnInit, AfterViewInit {
         this.holdings.spawnAddHoldingsUi(null, null, null, ids);
     }
 
+    editItems(rows: CheckinGridEntry[]) {
+        const ids = this.getCopyIds(rows);
+        if (ids.length === 0) { return; }
+
+        this.holdings.spawnAddHoldingsUi(null, null, null, ids, false, true);
+    }
+
+
     openItemPrintLabels(rows: CheckinGridEntry[]) {
         const ids = this.getCopyIds(rows);
         if (ids.length === 0) { return; }
