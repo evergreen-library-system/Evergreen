@@ -296,5 +296,5 @@
     </div>
     <div><a routerLink="/staff/cat/vandelay/queue/{{recordType}}/{{activeQueueId}}" target="_blank" i18n>Queue</a></div>
     <div class="col-sm-1" [hidden]="!selectedSelectionList"><a href="/eg/staff/acq/legacy/picklist/view/{{activeSelectionListId}}" target="_blank">Selection List</a></div>
-    <div class="col-sm-2" [hidden]="!createPurchaseOrder"><a href="/eg/staff/acq/legacy/po/view/{{newPO}}" target="_blank">Purchase Order</a></div>
+    <div class="col-sm-2" [hidden]="!createPurchaseOrder"><a routerLink="/eg/staff/acq/po/{{newPO}}" target="_blank">Purchase Order</a></div>
     </div>
