@@ -233,7 +233,7 @@ Editing a due date is not included in the renewal count.
 [[override_actions_items_out]]
 === Overriding Errors in Items Out ===
 
-As of 3.6, there is new work which streamlines handling of overridable events encountered in the Patron Items Out interface of the staff client. The main user-visible part of this work is a new Action Override modal which is presented to the staff user when an overridable action is encountered.
+As of 3.8, there is new work which streamlines handling of overridable events encountered in the Patron Items Out interface of the staff client. The main user-visible part of this work is a new Action Override modal which is presented to the staff user when an overridable action is encountered.
 
 The primary target of the work is for actions from the Items Out part of the Patron interface, but due to code sharing the Checkout interface benefits as well.
 
