@@ -11,7 +11,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {PermService} from '@eg/core/perm.service';
 import {EventService} from '@eg/core/event.service';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
-import {VandelayImportSelection} from '@eg/staff/cat/vandelay/vandelay.service'
+import {VandelayImportSelection} from '@eg/staff/cat/vandelay/vandelay.service';
 
 
 @Injectable()
@@ -166,7 +166,7 @@ export class PicklistUploadService {
 
     getMatchSets(mtype: string): Promise<IdlObject[]> {
 
-        const mstype = 'biblio'
+        const mstype = 'biblio';
 
         if (this.matchSets[mtype]) {
             return Promise.resolve(this.matchSets[mtype]);
@@ -220,8 +220,8 @@ export class PicklistUploadService {
         const newpicklist = this.idl.create('acqpl');
         newpicklist.owner(this.auth.user().id());
         newpicklist.name(picklistName);
-        newpicklist.org_unit(picklistOrg)
-        
+        newpicklist.org_unit(picklistOrg);
+
         return new Promise((resolve, reject) => {
             this.net.request(
                 'open-ils.acq', 'open-ils.acq.picklist.create',
@@ -236,6 +236,6 @@ export class PicklistUploadService {
             });
         });
     }
-    
+
 }
 

@@ -18,7 +18,7 @@ import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.componen
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PicklistUploadService} from './upload.service';
-import {OrgSelectComponent} from '@eg/share/org-select/org-select.component'
+import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
 
 
 const TEMPLATE_SETTING_NAME = 'eg.acq.picklist.upload.templates';
@@ -64,7 +64,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
     settings: Object = {};
     recordType: string;
-    selectedQueue: ComboboxEntry; 
+    selectedQueue: ComboboxEntry;
 
 
     activeSelectionListId: number;
@@ -117,7 +117,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('fiscalYearSelector', { static: true })
         private fiscalYearSelector: ComboboxComponent;
     @ViewChild('selectionListSelector', { static: true })
-        private selectionListSelector: ComboboxComponent;    
+        private selectionListSelector: ComboboxComponent;
     @ViewChild('matchSetSelector', { static: true })
         private matchSetSelector: ComboboxComponent;
     @ViewChild('mergeProfileSelector', { static: true })
@@ -212,7 +212,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
     orgOnChange(org: IdlObject) {
-        this.orderingAgency = org.id()
+        this.orderingAgency = org.id();
     }
 
     loadTemplates() {
@@ -248,13 +248,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                     s => {
                         return {id: s.id(), label: s.source()};
                     });
-            
+
             case 'providersList':
                 return (this.vlagent.providersList || []).map(
                     p => {
                         return {id: p.id(), label: p.code()};
                     });
-                    
+
             case 'fiscalYears':
                 return (this.vlagent.fiscalYears || []).map(
                     fy => {
@@ -273,7 +273,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
             case 'matchSets':
                 list = this.vlagent.matchSets['bib'];
                 break;
-            
+
 
             case 'importItemDefs':
                 list = this.vlagent.importItemAttrDefs;
@@ -327,7 +327,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                 break;
         }
     }
-            
+
     fileSelected($event) {
        this.selectedFile = $event.target.files[0];
     }
@@ -339,8 +339,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         Boolean(this.selectedProvider) &&
         Boolean(this.orderingAgency);
     }
- 
-    
+
     upload() {
         this.sessionKey = null;
         this.isUploading = true;
@@ -406,10 +405,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
     resolveSelectionList(): Promise<any> {
         if (!this.selectedSelectionList) {
-            return Promise.resolve()
+            return Promise.resolve();
         }
         if (this.selectedSelectionList.id) {
-            this.activeSelectionListId = this.selectedSelectionList.id
+            this.activeSelectionListId = this.selectedSelectionList.id;
         }
         if (this.selectedSelectionList.freetext) {
 
@@ -420,7 +419,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                 value => this.activeSelectionListId = value
             );
         }
-        return Promise.resolve(this.activeSelectionListId); 
+        return Promise.resolve(this.activeSelectionListId);
     }
 
     uploadFile(): Promise<any> {
@@ -469,8 +468,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.vlagent.importSelection) {
             return Promise.resolve();
         }
-        
-        let spoolType = this.recordType;
+
+        const spoolType = this.recordType;
 
         const vandelayOptions = {
             import_no_match: this.importNonMatching,
@@ -483,10 +482,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
             bib_source: this.selectedBibSource,
             create_assets: this.loadItems,
             queue_name: this.selectedQueue.label
-        }
+        };
 
         const args = {
-            
             provider: this.selectedProvider,
             ordering_agency: this.orderingAgency,
             create_po: this.createPurchaseOrder,
@@ -494,8 +492,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
             fiscal_year: this.selectedFiscalYear,
             picklist: this.activeSelectionListId,
             vandelay: vandelayOptions
-        }
-
+        };
 
         const method = `open-ils.acq.process_upload_records`;
 
@@ -507,12 +504,12 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                 progress => {
                     const resp = this.evt.parse(progress);
                     console.log(progress);
-                    if (resp) { console.error(resp); return reject();}
+                    if (resp) { console.error(resp); return reject(); }
                     if (progress.complete) {
                         this.uploadProcessing = false;
                         this.uploadComplete = true;
                     }
-                    if (progress.purchase_order) {this.newPO = progress.purchase_order.id();}
+                    if (progress.purchase_order) {this.newPO = progress.purchase_order.id(); }
                 }
             );
         });
