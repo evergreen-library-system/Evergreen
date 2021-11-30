@@ -74,6 +74,7 @@ sudo systemctl restart apache2
 * Fixes a TCN/ID mismatch in the z39.50 interface (https://bugs.launchpad.net/evergreen/+bug/1786971[LP1786971])
 * Fixes an issue where import operations could fail (https://bugs.launchpad.net/evergreen/+bug/1941764[LP1941764])
 * Fixes an issue where authority records with long subfields would not load (https://bugs.launchpad.net/evergreen/+bug/1922567[LP1922567])
+* Fixes excess openils.actor calls in Add to Item Bucket (https://bugs.launchpad.net/evergreen/+bug/1932051[LP1932051])
 
 ==== Circulation ====
 
@@ -85,7 +86,6 @@ sudo systemctl restart apache2
 * Fixes incorrect hints for fields in the Checkout print template (https://bugs.launchpad.net/evergreen/+bug/1901028[LP1901028])
 * Fixes a timezone issue with staff scheduled Curbside appointments (https://bugs.launchpad.net/evergreen/+bug/1917396[LP1917396])
 * Fixes an issue where the Missing Pieces slip was sent to the Default printer instead of the Receipt printer (https://bugs.launchpad.net/evergreen/+bug/1938450[LP1938450])
-* Fixes excess openils.actor calls in Add to Item Bucket (https://bugs.launchpad.net/evergreen/+bug/1932051[LP1932051])
 * Fixes sorting of SMS Carriers when editing an existing hold (https://bugs.launchpad.net/evergreen/+bug/1809157[LP1809157])
 * Fixes messages in the patron Offline Block List (https://bugs.launchpad.net/evergreen/+bug/1752356[LP1752356])
 * Fixes an issue where cloned patron addresses were set to Pending (https://bugs.launchpad.net/evergreen/+bug/1821804[LP1821804])
