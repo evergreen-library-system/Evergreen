@@ -805,7 +805,8 @@ CREATE TABLE acq.edi_message (
 									     'ORDRSP',
 									     'INVOIC',
 									     'OSTENQ',
-									     'OSTRPT'
+									     'OSTRPT',
+                                         'DESADV'
 									 ))
 );
 CREATE INDEX edi_message_account_status_idx ON acq.edi_message (account,status);
@@ -2628,5 +2629,32 @@ CREATE VIEW acq.po_state_label AS
           ('received', oils_i18n_gettext('received', 'Received', 'acqpostlbl', 'label')),
           ('cancelled', oils_i18n_gettext('cancelled', 'Cancelled', 'acqpostlbl', 'label'))
        ) AS t (id,label);
+
+CREATE TABLE acq.shipment_notification (
+    id              SERIAL      PRIMARY KEY,
+    receiver        INT         NOT NULL REFERENCES actor.org_unit (id),
+    provider        INT         NOT NULL REFERENCES acq.provider (id),
+    shipper         INT         NOT NULL REFERENCES acq.provider (id),
+    recv_date       TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    recv_method     TEXT        NOT NULL REFERENCES acq.invoice_method (code) DEFAULT 'EDI',
+    process_date    TIMESTAMPTZ,
+    processed_by    INT         REFERENCES actor.usr(id) ON DELETE SET NULL,
+    container_code  TEXT        NOT NULL, -- vendor-supplied super-barcode
+    lading_number   TEXT,       -- informational
+    note            TEXT,
+    CONSTRAINT      container_code_once_per_provider UNIQUE(provider, container_code)
+);
+
+CREATE INDEX acq_asn_container_code_idx ON acq.shipment_notification (container_code);
+
+CREATE TABLE acq.shipment_notification_entry (
+    id                      SERIAL  PRIMARY KEY,
+    shipment_notification   INT NOT NULL REFERENCES acq.shipment_notification (id)
+                            ON DELETE CASCADE,
+    lineitem                INT REFERENCES acq.lineitem (id)
+                            ON UPDATE CASCADE ON DELETE SET NULL,
+    item_count              INT NOT NULL -- How many items the provider shipped
+);
+
 
 COMMIT;

@@ -439,6 +439,13 @@
             </a>
           </li>
           <li>
+          <li>
+            <a href="/eg2/staff/acq/asn/receive">
+              <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
+              [% l('Receive Shipment') %]
+            </a>
+          </li>
+          <li>
             <a href="/eg2/staff/acq/search/invoices" target="_self">
               <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
               [% l('Invoices') %]

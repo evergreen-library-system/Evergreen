@@ -23,13 +23,19 @@ my %edi_fields = (
     message_type    => qr/^UNH\+[A-z0-9]+\+(\S{6})/,
     buyer_san       => qr/^NAD\+BY\+([^:]+)::31B/,
     buyer_acct      => qr/^NAD\+BY\+([^:]+)::91/,
+    buyer_ident     => qr/^NAD\+BY\+([^:]+)::9$/, # alternate SAN
     buyer_code      => qr/^RFF\+API:(\S+)/,
     vendor_san      => qr/^NAD\+SU\+([^:]+)::31B/,
     vendor_acct     => qr/^NAD\+SU\+([^:]+)::91/,
+    vendor_ident    => qr/^NAD\+SU\+([^:]+)::9$/, # alternate SAN
     purchase_order  => qr/^RFF\+ON:(\S+)/,
     invoice_ident   => qr/^BGM\+380\+([^\+]+)/,
     total_billed    => qr/^MOA\+86:([^:]+)/,
-    invoice_date    => qr/^DTM\+137:([^:]+)/
+    invoice_date    => qr/^DTM\+137:([^:]+)/, # This is really "messge date"
+    # We don't retain a top-level container code -- they can repeat.
+    _container_code => qr/^GIN\+BJ\+([^:]+)/,
+    _container_code_alt => qr/^PCI\+33E\+([^:]+)/,
+    lading_number   => qr/^RFF\+BM:([^:]+)/
 );
 
 my %edi_li_fields = (
@@ -42,7 +48,9 @@ my %edi_li_fields = (
     avail_status    => qr/^FTX\+LIN\++([^:]+):8B:28/,
     # "1B" codes are deprecated, but still in use.  
     # Pretend it's "12B" and it should just work
-    order_status    => qr/^FTX\+LIN\++([^:]+):12?B:28/
+    order_status    => qr/^FTX\+LIN\++([^:]+):12?B:28/,
+    # DESADV messages have multiple PO ID's, one RFF+ON per LIN.
+    purchase_order  => qr/^RFF\+ON:(\S+)/
 );
 
 my %edi_li_ident_fields = (
@@ -118,6 +126,15 @@ sub read {
 
         if (/$NEW_LIN_RE/) {
             $msg->{_current_li} = {};
+
+            # In DESADV messages there may be multiple container codes
+            # per message.  They precede the lineitems contained within
+            # each container.  Instead of restructuring the messages to
+            # be containers of lineitems, just tag each lineitem with
+            # its container if one is specified.
+            my $ccode = $msg->{_container_code} || $msg->{_container_code_alt};
+            $msg->{_current_li}->{container_code} = $ccode if $ccode;
+
             push(@{$msg->{lineitems}}, $msg->{_current_li});
         }
 

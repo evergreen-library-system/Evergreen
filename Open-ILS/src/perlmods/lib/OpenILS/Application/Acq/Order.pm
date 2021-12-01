@@ -4388,5 +4388,134 @@ sub li_existing_copies {
 }
 
 
+__PACKAGE__->register_method(
+    method => 'asn_receive_items',
+    api_name => 'open-ils.acq.shipment_notification.receive_items',
+    max_bundle_count => 1,
+    signature => {
+        desc => q/
+            Mark items from a shipment notification as received.
+        /,
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'Shipment Notification ID', type => 'number'}
+        ],
+        return => {desc => q/Stream of status updates, event on error/}
+    }
+);
+
+__PACKAGE__->register_method(
+    method => 'asn_receive_items',
+    api_name => 'open-ils.acq.shipment_notification.receive_items.dry_run',
+    max_bundle_count => 1,
+    signature => q/dry_run variant of open-ils.acq.shipment_notification.receive_items/
+);
+
+sub asn_receive_items {
+    my ($self, $client, $auth, $asn_id) = @_;
+
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $mgr = OpenILS::Application::Acq::BatchManager->new(
+        editor => $e, conn => $client, throttle => 1);
+
+    my $asn = $e->retrieve_acq_shipment_notification([$asn_id, 
+        {flesh => 1, flesh_fields => {acqsn => ['provider', 'entries']}}
+    ]) || return $e->die_event;
+
+    return $e->die_event unless 
+        $e->allowed('MANAGE_SHIPMENT_NOTIFICATION', $asn->provider->owner);
+
+    my $resp = {
+        lineitems => [],
+        progress => 0,
+    };
+
+    my @entries = sort {$a->lineitem cmp $b->lineitem} @{$asn->entries};
+
+    for my $entry (@entries) {
+
+        my $li = $e->retrieve_acq_lineitem($entry->lineitem)
+            or return $e->die_event;
+
+        my $li_resp = {
+            id => $entry->lineitem, 
+            po => $li->purchase_order, 
+            lids => []
+        };
+
+        push(@{$resp->{lineitems}}, $li_resp);
+            
+        # Include canceled items.
+        my $lids = $e->search_acq_lineitem_detail([{  
+            lineitem => $entry->lineitem, 
+            recv_time => undef
+        }, {   
+            flesh => 1,
+            flesh_fields => {acqlid => ['cancel_reason']}
+        }]);
+            
+        # Start by receiving un-canceled items.  
+        # Then try "delayed" items if it comes to that.
+        # Apply sorting for consistency with dry-run.
+
+        my @active_lids = sort {$a->id cmp $b->id} 
+            grep {!$_->cancel_reason} @$lids;
+
+        my @canceled_lids = sort {$a->id cmp $b->id} 
+            grep { $_->cancel_reason && $U->is_true($_->cancel_reason->keep_debits)
+        } @$lids;
+
+        my @potential_lids = (@active_lids, @canceled_lids);
+
+        if (scalar(@potential_lids) < $entry->item_count) {
+            $logger->warn(sprintf(
+                "ASN $asn_id entry %d found %d receivable items for lineitem %d, but wanted %d",
+                $entry->id, scalar(@potential_lids), $entry->lineitem, $entry->item_count
+            ));
+        }
+
+        my $recv_count = 0;
+
+        for my $lid (@potential_lids) {
+
+            return $e->die_event unless receive_lineitem_detail($mgr, $lid->id);
+
+            # Get an updated copy to pick up the recv_time
+            $lid = $e->retrieve_acq_lineitem_detail($lid->id);
+
+            my $note = $lid->note ? $lid->note . "\n" : '';
+            $note .= "Received via shipment notification #$asn_id";
+            $lid->note($note);
+
+            $e->update_acq_lineitem_detail($lid) or return $e->die_event;
+
+            push(@{$li_resp->{lids}}, $lid->id);
+            $resp->{progress}++;
+            $client->respond($resp);
+
+            last if ++$recv_count >= $entry->item_count;
+        }
+    }
+
+    $asn->process_date('now');
+    $asn->processed_by($e->requestor->id);
+
+    return $e->die_event unless $e->update_acq_shipment_notification($asn);
+
+    if ($self->api_name =~ /dry_run/) {
+        $e->rollback;
+    } else {
+        $e->commit;
+    }
+
+    $resp->{complete} = 1;
+    $client->respond_complete($resp);
+
+    undef;
+}
+
+
 1;
 

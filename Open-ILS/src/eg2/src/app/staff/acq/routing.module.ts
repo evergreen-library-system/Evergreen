@@ -13,6 +13,9 @@ const routes: Routes = [{
   path: 'po',
   loadChildren: () => import('./po/po.module').then(m => m.PoModule)
 }, {
+  path: 'asn',
+  loadChildren: () => import('./asn/asn.module').then(m => m.AsnModule)
+}, {
   path: 'picklist',
   loadChildren: () =>
     import('./picklist/picklist.module').then(m => m.PicklistModule)

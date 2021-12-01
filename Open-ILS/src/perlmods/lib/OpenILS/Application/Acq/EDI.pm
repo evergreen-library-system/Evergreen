@@ -22,6 +22,7 @@ my $U = 'OpenILS::Application::AppUtils';
 use OpenILS::Utils::EDIReader;
 
 use Data::Dumper;
+$Data::Dumper::Indent = 0;
 our $verbose = 0;
 
 sub new {
@@ -526,7 +527,9 @@ sub process_message_buyer {
     # some vendors encode the account number as the SAN.
     # starting with the san value, then the account value, 
     # treat each as a san, then an acct number until the first success
-    for my $buyer ( ($msg_hash->{buyer_san}, $msg_hash->{buyer_acct}) ) {
+    for my $buyer ( ($msg_hash->{buyer_san}, 
+        $msg_hash->{buyer_acct}, $msg_hash->{buyer_ident}) ) {
+
         next unless $buyer;
 
         # some vendors encode the SAN as "$SAN $vendcode"
@@ -635,6 +638,10 @@ sub process_parsed_msg {
     # INVOIC
     if ($incoming->message_type eq 'INVOIC') {
         return $class->create_acq_invoice_from_edi(
+            $msg_hash, $account->provider, $incoming);
+
+    } elsif ($incoming->message_type eq 'DESADV') {
+        return $class->create_shipment_notification_from_edi(
             $msg_hash, $account->provider, $incoming);
     }
 
@@ -1070,6 +1077,7 @@ sub create_acq_invoice_from_edi {
     # those.
     my ($eg_inv_entries, $unknowns) = process_invoice_lineitems(
         $e, \%msg_kludges, $log_prefix, $message, $msg_data->{lineitems}
+
     );
 
     if (@$unknowns) {
@@ -1138,6 +1146,143 @@ sub create_acq_invoice_from_edi {
 
     $e->xact_commit;
     return 1;
+}
+
+sub create_shipment_notification_from_edi {
+    my ($class, $msg_data, $provider_id, $edi_message) = @_;
+    # $msg_data is O::U::EDIReader hash
+
+    $logger->info("ASN: " . Dumper($msg_data));
+
+    my $e = new_editor();
+
+    # Uniqify the container codes
+    my %containers = map {$_->{container_code} => 1} @{$msg_data->{lineitems}};
+
+    for my $container_code (keys %containers) {
+
+        next unless $container_code;
+
+        $logger->info("ACQ processing container: $container_code");
+
+        my $eg_asn = Fieldmapper::acq::shipment_notification->new;
+        $eg_asn->isnew(1);
+
+        # Some troubleshooting aids.  Yeah we should have made appropriate links
+        # for this in the schema, but this is better than nothing.  Probably
+        # *don't* try to i18n this.
+        $eg_asn->note("Generated from acq.edi_message #" . $edi_message->id . ".");
+
+        $eg_asn->provider($provider_id);
+        $eg_asn->shipper($provider_id);
+        $eg_asn->recv_method('EDI');
+
+        $eg_asn->recv_date( # invoice_date is a misnomer; should be message date.
+            $class->edi_date_to_iso($msg_data->{invoice_date}));
+
+        $class->process_message_buyer($e, $msg_data, $edi_message, "ASN" , $eg_asn);
+
+        if (!$eg_asn->receiver) {
+            die(sprintf(
+                "Unable to determine buyer (org unit) in shipment notification; ".
+                "buyer_san=%s; buyer_acct=%s",
+                ($msg_data->{buyer_san} || ''), 
+                ($msg_data->{buyer_acct} || '')
+            ));
+        }
+
+        $eg_asn->container_code($container_code);
+
+        die("No container code in DESADV message") unless $eg_asn->container_code;
+
+        my $entries = extract_shipment_notification_entries([
+            grep {$_->{container_code} eq $container_code} @{$msg_data->{lineitems}}]);
+
+        $e->xact_begin;
+
+        die "Error updating EDI message: " . $e->die_event
+            unless $e->update_acq_edi_message($edi_message);
+
+        die "Error creating shipment notification: " . $e->die_event
+            unless $e->create_acq_shipment_notification($eg_asn);
+
+        for my $entry (@$entries) {
+            $entry->shipment_notification($eg_asn->id);
+            die "Error creating shipment notification entry: " . $e->die_event
+                unless $e->create_acq_shipment_notification_entry($entry);
+        }
+
+        $e->xact_commit;
+    }
+
+    return 1;
+}
+
+sub extract_shipment_notification_entries {
+    my ($lineitem_hashes) = @_;
+
+    my $e = new_editor();
+    my @entries;
+    for my $li_hash (@$lineitem_hashes) {
+
+        # A shipment notification may cover multiple PO's. 
+        # Each LI will include its own PO ID.
+        my $po_id = $li_hash->{purchase_order};
+
+        unless ($po_id) {
+            $logger->warn("Skipping ASN lineitem which has no PO ID");
+            next;
+        }
+
+        my ($quant) = grep {$_->{code} eq '12'} @{$li_hash->{quantities}};
+        my $quantity = ($quant) ? $quant->{quantity} : 0;
+
+        # LI identifiers map to order identifiers, not lineitem IDs, 
+        # at least not in the data seen so far.
+        my $li_id;
+        for my $ident_spec (@{$li_hash->{identifiers}}) {
+
+            my $ident = $ident_spec->{value};
+            next unless $ident;
+
+            my $li_id_hash = $e->json_query({
+                select => {jub => ['id']},
+                from => {
+                    jub => {
+                        acqlia => {
+                            filter => {
+                                order_ident => 't', 
+                                attr_value => $ident
+                            }
+                        }
+                    }
+                },
+                where => {'+jub' => {purchase_order => $po_id}}
+            })->[0];
+
+            if ($li_id_hash) {
+                $li_id = $li_id_hash->{id};
+                last;
+            } else {
+                $logger->warn("Cannot find lineitem with order ".
+                    "identifier=$ident and purchase_order=$po_id");
+            }
+        }
+
+        unless ($li_id) {
+            $logger->warn("Cannot find lineitem for ASN entry; skippping");
+            next;
+        }
+        
+        my $entry = Fieldmapper::acq::shipment_notification_entry->new;
+
+        $entry->lineitem($li_id);
+        $entry->item_count($quantity);
+
+        push(@entries, $entry);
+    }
+
+    return \@entries;
 }
 
 1;

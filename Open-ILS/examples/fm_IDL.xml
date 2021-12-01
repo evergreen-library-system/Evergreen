@@ -9546,6 +9546,73 @@ SELECT  usr,
         </permacrud>
 	</class>
 
+	<class id="acqsn" 
+		controller="open-ils.cstore open-ils.pcrud" 
+		oils_obj:fieldmapper="acq::shipment_notification" 
+		oils_persist:tablename="acq.shipment_notification" reporter:label="Shipment Notification">
+		<fields oils_persist:primary="id" oils_persist:sequence="acq.shipment_notification_id_seq">
+			<field reporter:label="Shipment Notification ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Receiver" name="receiver" reporter:datatype="org_unit" />
+			<field reporter:label="Provider" name="provider" reporter:datatype="link"/>
+			<field reporter:label="Shipper" name="shipper" reporter:datatype="link"/>
+			<field reporter:label="Receive Date" name="recv_date" reporter:datatype="timestamp" />
+			<field reporter:label="Receive Method" name="recv_method" reporter:datatype="link" />
+			<field reporter:label="Process Date" name="process_date" reporter:datatype="timestamp" />
+			<field reporter:label="Processed By" name="processed_by" reporter:datatype="link" />
+			<field reporter:label="Container Barcode" name="container_code" reporter:datatype="text" />
+			<field reporter:label="Lading Number" name="lading_number" reporter:datatype="text" />
+			<field reporter:label="Note" name="note" reporter:datatype="text" />
+			<field reporter:label="Shipment Notification Entries" name="entries" 
+				reporter:datatype="link" oils_persist:virtual="true"/>
+		</fields>
+		<links>
+			<link field="processed_by" reltype="has_a" key="id" map="" class="au"/>
+			<link field="receiver" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>
+			<link field="shipper" reltype="has_a" key="id" map="" class="acqpro"/>
+			<link field="recv_method" reltype="has_a" key="code" map="" class="acqim"/>
+			<link field="entries" reltype="has_many" key="shipment_notification" map="" class="acqsne"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="MANAGE_SHIPMENT_NOTIFICATION VIEW_SHIPMENT_NOTIFICATION" context_field="receiver"/>
+				<update   permission="MANAGE_SHIPMENT_NOTIFICATION" context_field="receiver"/>
+				<delete   permission="MANAGE_SHIPMENT_NOTIFICATION" context_field="receiver"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="acqsne" 
+		controller="open-ils.cstore open-ils.pcrud" 
+		oils_obj:fieldmapper="acq::shipment_notification_entry" 
+		oils_persist:tablename="acq.shipment_notification_entry" 
+		reporter:label="Shipment Notification Entry">
+		<fields oils_persist:primary="id" 
+			oils_persist:sequence="acq.shipment_notification_entry_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Shipment Notification" name="shipment_notification" reporter:datatype="link" />
+			<field reporter:label="Line Item" name="lineitem" reporter:datatype="link"/>
+			<field reporter:label="Item Count" name="item_count" reporter:datatype="int" />
+		</fields>
+		<links>
+			<link field="shipment_notification" reltype="has_a" key="id" map="" class="acqsn"/>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
+		</links>
+			<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+				<actions>
+					<retrieve permission="MANAGE_SHIPMENT_NOTIFICATION VIEW_SHIPMENT_NOTIFICATION">
+						<context link="shipment_notification" field="receiver"/>
+					</retrieve>
+					<update permission="MANAGE_SHIPMENT_NOTIFICATION">
+						<context link="shipment_notification" field="receiver"/>
+					</update>
+					<delete permission="MANAGE_SHIPMENT_NOTIFICATION">
+						<context link="shipment_notification" field="receiver"/>
+					</delete>
+				</actions>
+			</permacrud>
+	</class>
+
 	<class id="acqpa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::provider_address" oils_persist:tablename="acq.provider_address" reporter:label="Provider Address">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.provider_address_id_seq">
 			<field reporter:label="Address Type" name="address_type"  reporter:datatype="text"/>

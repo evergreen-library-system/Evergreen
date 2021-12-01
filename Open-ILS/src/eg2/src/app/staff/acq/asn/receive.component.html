@@ -1,0 +1,210 @@
+<eg-staff-banner bannerText="Receive Shipment" i18n-bannerText>
+</eg-staff-banner>
+
+<div class="row">
+  <div class="col-lg-6">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text" i18n>Container Barcode:</span>
+      </div>
+      <input type='text' id='barcode-search-input' class="form-control" 
+        (keyup.enter)="findContainer()" placeholder="Barcode..." 
+        i18n-placeholder [(ngModel)]="barcode"/>
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" 
+          (click)="findContainer()" i18n>Submit</button>
+      </div>
+      <div class="form-check form-check-inline ml-2">
+        <input class="form-check-input" type="checkbox" 
+          id="receive-on-scan" [(ngModel)]="receiveOnScan"/>
+        <label class="form-check-label" for="receive-on-scan">Receive on Scan</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+<hr class="mt-2 mb-2"/>
+-->
+
+<!-- TODO Unlikely, but technically possible for multiple containers
+across different vendors to match a container code. 
+<div *ngFor="let container of containers">
+...
+</div>
+-->
+
+<div *ngIf="notFound" class="row m-2 mt-5">
+  <div class="col-lg-6 offset-lg-3">
+    <div class="alert alert-warning" i18n>
+      No container found with barcode {{barcode}}.
+    </div>
+  </div>
+</div>
+
+<div *ngIf="container" class="mt-3 mb-3 p-1 shadow-sm common-form striped-odd">
+  <div class="row">
+    <div class="col-lg-2">
+      <label for="container-code" i18n>Container Code: </label>
+    </div>
+    <div class="col-lg-2">
+      <div id="container-code">{{container.container_code()}}</div>
+    </div>
+    <div class="col-lg-2">
+      <label for="container-provider" i18n>Provider: </label>
+    </div>
+    <div class="col-lg-2">
+      <div>
+        <a target="_blank"
+          id="container-provider"
+          routerLink="/staff/acq/provider/{{container.provider().id()}}/details">
+          {{container.provider().name()}} ({{container.provider().code()}})
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <label for="entry-count" i18n>Affected Lineitems: </label>
+    </div>
+    <div class="col-lg-2">
+      <div id="entry-count">{{entries.length}}</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2">
+      <label for="container-lading-number" i18n>Lading #: </label>
+    </div>
+    <div class="col-lg-2">
+      <div id="container-lading-number">{{container.lading_number()}}</div>
+    </div>
+    <div class="col-lg-2">
+      <label for="container-recv-date" i18n>Receive Date: </label>
+    </div>
+    <div class="col-lg-2">
+      <div id="container-recv-date">{{container.recv_date() | date:'short'}}</div>
+    </div>
+    <div class="col-lg-2">
+      <label for="entry-count" i18n>Affected Items: </label>
+    </div>
+    <div class="col-lg-2">
+      <div id="entry-count">{{affectedItemsCount()}}</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2">
+      <label for="container-note" i18n>Notes: </label>
+    </div>
+    <div class="col-lg-4">
+      <div class="ml-1">{{container.note()}}</div>
+    </div>
+  </div>
+</div>
+
+<!--
+<hr class="mt-2 mb-2"/>
+-->
+
+<ng-template #titleTmpl let-row="row">
+  <a target="_blank" 
+    fragment="{{row.lineitem.id()}}"
+    routerLink="/staff/acq/po/{{row.lineitem.purchase_order().id()}}">
+    {{row.title}}
+  </a>
+</ng-template>
+<ng-template #liIdTmpl let-row="row">
+  <a target="_blank" 
+    fragment="{{row.lineitem.id()}}"
+    routerLink="/staff/acq/po/{{row.lineitem.purchase_order().id()}}/lineitem/{{row.lineitem.id()}}/items">
+    {{row.lineitem.id()}}
+  </a>
+</ng-template>
+<ng-template #poNameTmpl let-row="row">
+  <a target="_blank" 
+    routerLink="/staff/acq/po/{{row.lineitem.purchase_order().id()}}">
+    {{row.lineitem.purchase_order().name()}}
+  </a>
+</ng-template>
+
+<div class="row" *ngIf="receiving">
+  <div class="col-lg-10 offset-lg-1">
+    <div class="card">
+      <div class="card-header" i18n>Receiving Items <span *ngIf="dryRun"> (Dry Run)</span></div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <eg-progress-inline min="0" max="0" #progress></eg-progress-inline>
+          </li>
+
+          <li class="list-group-item d-flex font-weight-bold">
+            <div class="flex-3" i18n>Title</div>
+            <div class="flex-1" i18n>Lineitem</div>
+            <div class="flex-1" i18n>Notified</div>
+            <div class="flex-1" i18n>Received</div>
+          </li>
+
+          <li class="list-group-item d-flex" *ngFor="let li of receiveResponse.lineitems">
+            <div class="flex-3">
+              <a routerLink="/staff/catalog/record/{{liCache[li.id].lineitem.eg_bib_id()}}"
+                target="_blank">{{liCache[li.id].title}}</a>
+            </div>
+            <div class="flex-1">
+              <a routerLink="/staff/acq/po/{{li.po}}/lineitem/{{li.id}}/items"
+                target="_blank">#{{li.id}}</a>
+            </div>
+            <div class="flex-1">{{liWantedCount(li.id)}}</div>
+            <div class="flex-1" 
+              [ngClass]="{
+                'text-success': liWantedCount(li.id) === li.lids.length,
+                'text-danger': liWantedCount(li.id) > li.lids.length
+              }">
+              {{li.lids.length}}</div>
+          </li>
+        </ul>
+      </div>
+      <div class="card-footer d-flex">
+        <div class="flex-1"></div>
+        <button (click)="clearReceiving()" class="btn btn-outline-dark" i18n>
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="loadingContainer" class="row">
+  <div class="col-lg-6 offset-lg-3">
+    <eg-progress-inline></eg-progress-inline>
+  </div>
+</div>
+
+<eg-grid *ngIf="container && !receiving" #grid [dataSource]="gridDataSource" 
+  [disablePaging]="true" (onRowActivate)="openLi($event)">
+
+  <eg-grid-toolbar-button i18n-label label="Receive All Items"
+    [disabled]="loadingContainer" (onClick)="receiveAllItems()">
+  </eg-grid-toolbar-button> 
+    
+  <eg-grid-toolbar-checkbox i18n-label label="Dry Run"
+    [initialValue]="dryRun"
+    (onChange)="dryRun = !dryRun"></eg-grid-toolbar-checkbox> 
+
+  <eg-grid-column i18n-label label="Entry ID" path="entry.id" 
+    [index]="true" [hidden]="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="Lineitem ID" name="lineitem_id" 
+    [cellTemplate]="liIdTmpl"></eg-grid-column>
+  <eg-grid-column i18n-label label="Purchase Order" name="po_name" 
+    [cellTemplate]="poNameTmpl"></eg-grid-column>
+  <eg-grid-column i18n-label label="Title" name="title" flex="4" 
+    [cellTemplate]="titleTmpl"></eg-grid-column>
+  <eg-grid-column i18n-label label="ISBN" path="isbn"></eg-grid-column>
+  <eg-grid-column i18n-label label="ISSN" path="issn" [hidden]="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="UPC" path="upc" [hidden]="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="In Shipment" path="entry.item_count"></eg-grid-column>
+  <eg-grid-column i18n-label label="Ordered" path="lineitem.order_summary.item_count"></eg-grid-column>
+  <eg-grid-column i18n-label label="Pending Receive" path="recievable_count"></eg-grid-column>
+  <eg-grid-column i18n-label label="Received" path="lineitem.order_summary.recv_count"></eg-grid-column>
+  <eg-grid-column i18n-label label="Invoiced" path="lineitem.order_summary.invoice_count"></eg-grid-column>
+  <eg-grid-column i18n-label label="Canceled" path="lineitem.order_summary.cancel_count"></eg-grid-column>
+  <eg-grid-column i18n-label label="Delayed" path="lineitem.order_summary.delay_count"></eg-grid-column>
+</eg-grid>
+
+
