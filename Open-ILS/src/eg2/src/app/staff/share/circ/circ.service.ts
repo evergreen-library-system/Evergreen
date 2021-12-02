@@ -500,6 +500,7 @@ export class CircService {
             case 'PATRON_ACCOUNT_EXPIRED':
             case 'CIRC_CLAIMS_RETURNED':
             case 'ACTOR_USER_NOT_FOUND':
+            case 'AVAIL_HOLD_COPY_RATIO_EXCEEDED':
                 this.audio.play(`warning.${key}`);
                 return this.exitAlert({
                     textcode: result.firstEvent.textcode,
