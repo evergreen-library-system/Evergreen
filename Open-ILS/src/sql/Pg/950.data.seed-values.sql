@@ -2993,9 +2993,9 @@ INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatyp
     'object');
 
 INSERT INTO config.usr_setting_type (name, label, description, datatype)
-    VALUES ('webstaff.cat.copy.templates',
-    oils_i18n_gettext('webstaff.cat.copy.templates', 'Web Client Copy Editor Templates', 'cust', 'label'),
-    oils_i18n_gettext('webstaff.cat.copy.templates', 'Web Client Copy Editor Templates', 'cust', 'description'),
+    VALUES ('cat.copy.templates',
+    oils_i18n_gettext('cat.copy.templates', 'Web Client Copy Editor Templates', 'cust', 'label'),
+    oils_i18n_gettext('cat.copy.templates', 'Web Client Copy Editor Templates', 'cust', 'description'),
     'object');
 
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)

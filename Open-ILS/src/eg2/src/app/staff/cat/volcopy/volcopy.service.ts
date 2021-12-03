@@ -132,16 +132,7 @@ export class VolCopyService {
 
     fetchTemplates(): Promise<any> {
 
-        // First check for local copy templates, since server-side
-        // templates are new w/ this code.  Move them to the server.
-        const tmpls = this.store.getLocalItem('cat.copy.templates');
-
-        const promise = tmpls ?
-            this.serverStore.setItem('cat.copy.templates', tmpls) :
-            Promise.resolve();
-
-        return promise
-        .then(_ => this.serverStore.getItem('cat.copy.templates'))
+        return this.serverStore.getItem('cat.copy.templates')
         .then(templates => {
 
             if (!templates) { return null; }
