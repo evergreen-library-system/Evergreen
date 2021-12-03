@@ -80,7 +80,7 @@
   <eg-grid-column path="owner"></eg-grid-column>
   <eg-grid-column path="code"></eg-grid-column>
   <eg-grid-column path="currency_type"></eg-grid-column>
-  <eg-grid-column path="active"></eg-grid-column>
+  <eg-grid-column path="active" [initialFilterValue]="'t'"></eg-grid-column>
   <eg-grid-column path="balance" datatype="money" [filterable]="false" [sortable]="false"
     i18n-label label="Balance"></eg-grid-column>
   <eg-grid-column path="total_credits" datatype="money" [filterable]="false" [sortable]="false"
