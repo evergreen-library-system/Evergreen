@@ -299,8 +299,8 @@ function(egCore , $q) {
     service.save_acp_templates = function(t) {
         egCore.hatch.setItem('cat.copy.templates', t);
         egCore.net.request('open-ils.actor', 'open-ils.actor.patron.settings.update',
-            egCore.auth.token(), egCore.auth.user().id(), { "webstaff.cat.copy.templates": t });
-        // console.warn('Saved ' + JSON.stringify({"webstaff.cat.copy.templates": t}));
+            egCore.auth.token(), egCore.auth.user().id(), { "cat.copy.templates": t });
+        // console.warn('Saved ' + JSON.stringify({"cat.copy.templates": t}));
     };
 
     service.load_remote_acp_templates = function() {
@@ -309,17 +309,17 @@ function(egCore , $q) {
         // can be thrown away.
         return egCore.net.request('open-ils.actor', 'open-ils.actor.patron.settings.retrieve.authoritative',
             egCore.auth.token(), egCore.auth.user().id(),
-            ['webstaff.cat.copy.templates','staff_client.copy_editor.templates']).then(function(settings) {
-                if (settings['webstaff.cat.copy.templates']) {
-                    egCore.hatch.setItem('cat.copy.templates', settings['webstaff.cat.copy.templates']);
-                    return settings['webstaff.cat.copy.templates'];
+            ['cat.copy.templates','staff_client.copy_editor.templates']).then(function(settings) {
+                if (settings['cat.copy.templates']) {
+                    egCore.hatch.setItem('cat.copy.templates', settings['cat.copy.templates']);
+                    return settings['cat.copy.templates'];
                 } else {
                     if (settings['staff_client.copy_editor.templates']) {
                         var new_templ = service.convert_xul_templates(settings['staff_client.copy_editor.templates']);
                         egCore.hatch.setItem('cat.copy.templates', new_templ);
-                        // console.warn('Saving: ' + JSON.stringify({'webstaff.cat.copy.templates' : new_templ}));
+                        // console.warn('Saving: ' + JSON.stringify({'cat.copy.templates' : new_templ}));
                         egCore.net.request('open-ils.actor', 'open-ils.actor.patron.settings.update',
-                            egCore.auth.token(), egCore.auth.user().id(), {'webstaff.cat.copy.templates' : new_templ});
+                            egCore.auth.token(), egCore.auth.user().id(), {'cat.copy.templates' : new_templ});
                         return new_templ;
                     }
                 }
