@@ -623,6 +623,7 @@ sub check_lineitem_received {
 
     my $li = $mgr->editor->retrieve_acq_lineitem($li_id);
     $li->state('received');
+    $li->clear_cancel_reason; # un-cancel on receive
     return update_lineitem($mgr, $li);
 }
 
@@ -3483,6 +3484,47 @@ sub delete_po_item_api {
     return 1;
 }
 
+__PACKAGE__->register_method(
+    method => "disencumber_po_item_api",
+    api_name    => "open-ils.acq.po_item.disencumber",
+    signature => {
+        desc => q/Zeroes out a po_item's encumbrance/,
+        params => [
+            {desc => "Authentication token", type => "string"},
+            {desc => "po_item ID disencumber", type => "number"},
+        ],
+        return => {desc => q/1 on success, Event on error/}
+    }
+);
+
+sub disencumber_po_item_api {
+    my($self, $client, $auth, $po_item_id) = @_;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    my $po_item = $e->retrieve_acq_po_item([
+        $po_item_id, {
+            flesh => 1,
+            flesh_fields => {acqpoi => ['purchase_order', 'fund_debit']}
+        }
+    ]) or return $e->die_event;
+
+    return $e->die_event unless 
+        $e->allowed('CREATE_PURCHASE_ORDER', 
+            $po_item->purchase_order->ordering_agency);
+
+    # reduce encumbered amount to zero
+    my $result = disencumber_po_item($e, $po_item);
+
+    if ($result) {
+        $e->rollback;
+        return $result;
+    }
+
+    $e->commit;
+    return 1;
+}
+
 
 # 1. Removes linked fund debit from a PO item if present and still encumbered.
 # 2. Optionally also deletes the po_item object
@@ -3514,6 +3556,29 @@ sub clear_po_item {
     return undef;
 }
 
+# Zeroes the amount of a fund debit for a PO item if present and still
+# encumbered. Note that we're intentionally still keeping the fund_debit
+# around to signify that the encumbrance was manually zeroed.
+# po_item is fleshed with purchase_order and fund_debit
+sub disencumber_po_item {
+    my ($e, $po_item, $delete_item) = @_;
+
+    if ($po_item->fund_debit) {
+
+        if (!$U->is_true($po_item->fund_debit->encumbrance)) {
+            # debit has been paid.  We cannot delete it.
+            return OpenILS::Event->new('ACQ_NOT_CANCELABLE', 
+               note => "Debit is marked as paid: ".$po_item->fund_debit->id);
+        }
+
+        # fund_debit is OK to zero out.
+        $po_item->fund_debit->amount(0);
+        $e->update_acq_fund_debit($po_item->fund_debit)
+            or return $e->die_event;
+    }
+
+    return undef;
+}
 
 __PACKAGE__->register_method(
     method    => 'user_requests',
@@ -4248,8 +4313,9 @@ sub apply_new_li_ident_attr {
         upc  => '024'
     );
 
+    my $ind1 = $attr_name eq 'upc' ? '1' : ' ';
     my $marc_field = MARC::Field->new(
-        $tags{$attr_name}, '', '','a' => $attr_value);
+        $tags{$attr_name}, $ind1, '','a' => $attr_value);
 
     my $li_rec = MARC::Record->new_from_xml($li->marc, 'UTF-8', 'USMARC');
     $li_rec->insert_fields_ordered($marc_field);

@@ -188,7 +188,12 @@ sub retrieve_lineitem_impl {
         push(@{$fields->{acqlid}}, 'cancel_reason') if $$options{flesh_cancel_reason};
         push(@{$fields->{acqlid}}, 'circ_modifier') if $$options{flesh_circ_modifier};
         push(@{$fields->{acqlid}}, 'location')      if $$options{flesh_location};
-        push(@{$fields->{acqlid}}, 'eg_copy_id')    if $$options{flesh_copies};
+        if ($$options{flesh_copies}) {
+            push(@{$fields->{acqlid}}, 'eg_copy_id');
+            push(@{$fields->{acp}},    'call_number') if $$options{flesh_call_number};
+            push(@{$fields->{acp}},    'location')    if $$options{flesh_copy_location};
+        }
+        push(@{$fields->{acqlid}}, 'receiver')      if $$options{flesh_li_details_receiver};
     }
 
     if($$options{clear_marc}) { # avoid fetching marc blob

@@ -1026,6 +1026,11 @@ sub retrieve_purchase_order_impl {
     }
 
     push (@{$flesh->{flesh_fields}->{acqpo}}, 'po_items') if $options->{flesh_po_items};
+    if ($options->{flesh_po_items_further}) {
+        push (@{$flesh->{flesh_fields}->{acqpoi}}, 'fund_debit');
+        push (@{$flesh->{flesh_fields}->{acqfdeb}}, 'invoice_items');
+        $flesh->{'flesh'} = 3;
+    }
 
     my $args = (@{$flesh->{"flesh_fields"}->{"acqpo"}}) ?
         [$po_id, $flesh] : $po_id;
