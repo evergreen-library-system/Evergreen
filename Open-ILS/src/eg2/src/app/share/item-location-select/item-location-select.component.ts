@@ -285,7 +285,9 @@ export class ItemLocationSelectComponent
         }
 
         const orgsFromCache = this.loc.filterOrgsCache[this.permFilter];
-        if (orgsFromCache) {
+        if (orgsFromCache && !this._contextOrgId) {
+            // if we're using contextOrgId, it may well change, so
+            // don't use the cache
             return Promise.resolve(this.filterOrgs = orgsFromCache);
         }
 
