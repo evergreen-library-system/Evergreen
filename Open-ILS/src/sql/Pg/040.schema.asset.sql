@@ -1147,10 +1147,11 @@ CREATE TABLE asset.course_module_course_materials (
 
 CREATE TABLE asset.course_module_term (
     id              SERIAL  PRIMARY KEY,
-    name            TEXT    UNIQUE NOT NULL,
+    name            TEXT NOT NULL,
     owning_lib      INT REFERENCES actor.org_unit (id),
 	start_date      TIMESTAMP WITH TIME ZONE,
-	end_date        TIMESTAMP WITH TIME ZONE
+	end_date        TIMESTAMP WITH TIME ZONE,
+    CONSTRAINT cmt_once_per_owning_lib UNIQUE (owning_lib, name)
 );
 
 CREATE TABLE asset.course_module_term_course_map (
