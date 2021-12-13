@@ -95,7 +95,7 @@ export class RouteDialogComponent extends DialogComponent {
         if (this.checkin.params.auto_print_holds_transits
             || this.circ.suppressCheckinPopups) {
             // Print and exit.
-            return this.print().then(_ => true); // exit
+            return promise.then(_ => this.print()).then(_ => true); // exit
         }
 
         return promise.then(_ => false); // keep going
