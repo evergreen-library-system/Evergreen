@@ -468,7 +468,8 @@ SelfCheckManager.prototype.fetchPatron = function(barcode, usrname) {
 
         this.handleAlert('', false, 'login-success');
         dojo.byId('oils-selfck-user-banner').innerHTML = 
-            dojo.string.substitute(localeStrings.WELCOME_BANNER, [this.patron.first_given_name()]);
+            dojo.string.substitute(localeStrings.WELCOME_BANNER, [
+              ( this.patron.pref_first_given_name() ? this.patron.pref_first_given_name() : this.patron.first_given_name() ) ]);
 
         if (this.patron.email() && // they have an email address set and ...
             this.patron.email().match(/.*@.*/).length > 0 // it sorta looks like an email address
