@@ -354,6 +354,12 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                 this.selected = null;
                 this.ngOnInit();
             }
+            if ('idlQueryAnd' in changes) {
+                this.asyncIds = {};
+                this.entrylist.length = 0;
+                this.selected = null;
+                this.ngOnInit();
+            }
         }
     }
 
