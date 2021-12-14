@@ -1,0 +1,59 @@
+<div class="order-row">
+
+<ngb-accordion #displayList="ngbAccordion" activeIds="display-field-list" class="col-md-6">
+
+  <ngb-panel id="display-field-list">
+    <ng-template ngbPanelHeader let-opened=true>
+      <h5 class="m-0" i18n>Field Display Order</h5>
+    </ng-template>
+    <ng-template ngbPanelContent>
+
+      <ng-container *ngFor="let f of fields; index as idx">
+        <eg-sr-field
+          [field]=f
+          [withAlias]=true
+          [withTransforms]=true
+          [withUpDown]=true
+          [disableUp]="idx === 0"
+          [disableDown]="idx === (fields.length - 1)"
+          (fieldChange)="updateField($event)"
+          (upEvent)="moveDisplayUp(idx)"
+          (downEvent)="moveDisplayDown(idx)"
+        >
+        </eg-sr-field>
+      </ng-container>
+
+    </ng-template>
+  </ngb-panel>
+
+</ngb-accordion>
+
+<ngb-accordion #orderList="ngbAccordion" activeIds="order-field-list" class="col-md-6">
+  <ngb-panel id="order-field-list">
+    <ng-template ngbPanelHeader let-opened=true>
+      <h5 class="m-0" i18n>Field Sort Order</h5>
+    </ng-template>
+    <ng-template ngbPanelContent>
+
+      <ng-container *ngFor="let f of fieldsInOrderByOrder(); index as idx">
+        <eg-sr-field
+          [field]=f
+          [withAlias]=true
+          [editAlias]=false
+          [withUpDown]=true
+          [withSortDirection]=true
+          [disableUp]="idx === 0"
+          [disableDown]="idx === (fields.length - 1)"
+          (fieldChange)="updateField($event)"
+          (upEvent)="moveOrderUp(idx)"
+          (downEvent)="moveOrderDown(idx)"
+        >
+        </eg-sr-field>
+      </ng-container>
+
+    </ng-template>
+  </ngb-panel>
+
+</ngb-accordion>
+
+</div>

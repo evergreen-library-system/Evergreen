@@ -1,0 +1,29 @@
+.sr-field-container {
+  border-bottom: 1px solid lightgray;
+  padding-bottom: .75em;
+  margin-bottom: .75em;
+}
+
+.sr-field-select {
+  display: flex;
+}
+
+.sr-checkbox {
+  margin-top: .3em;
+}
+
+.sr-field {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.sr-field-explainer {
+  font-size: 80%;
+}
+
+.sr-field-disp-ind {
+  padding-left: .3em;
+  padding-bottom: .3em;
+}
+

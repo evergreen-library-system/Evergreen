@@ -1,0 +1,108 @@
+<div class="chooser-row">
+
+<ngb-accordion #fieldChooser="ngbAccordion" [closeOthers]="true" class="col-md-4">
+  <ngb-panel *ngIf="fieldType === 'filter'" id="suggested_filters" title="Suggested Filters" i18n-title>
+    <ng-template ngbPanelContent>
+      <ng-container *ngFor="let f of allFields">
+        <eg-sr-field
+          *ngIf="f.suggest_filter"
+          [field]=f
+          [withSelect]=true
+          [selected]="fieldIsSelected(f)"
+          (selectEvent)="toggleSelect(f)"
+        >
+        </eg-sr-field>
+      </ng-container>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel *ngFor="let g of fieldGroups" id="{{g.name}}" title="{{g.label}}">
+    <ng-template ngbPanelContent>
+      <ng-container *ngFor="let f of g.members">
+        <eg-sr-field
+          *ngIf="!hideField(f)"
+          [field]=f
+          [withSelect]=true
+          [selected]="fieldIsSelected(f)"
+          (selectEvent)="toggleSelect(f)"
+        >
+        </eg-sr-field>
+      </ng-container>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel *ngIf="allFields.length > 0" id="all" title="All Fields" i18n-title>
+    <ng-template ngbPanelContent>
+      <ng-container *ngFor="let f of allFields">
+        <eg-sr-field
+          *ngIf="!hideField(f) && !f.virtual"
+          [field]=f
+          [withSelect]=true
+          [selected]="fieldIsSelected(f)"
+          (selectEvent)="toggleSelect(f)"
+        >
+        </eg-sr-field>
+      </ng-container>
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>
+
+<ngb-accordion #selectedList="ngbAccordion" activeIds="display-field-list,sort-field-list" class="col-md-8">
+  <ngb-panel id="display-field-list" *ngIf="fieldType === 'filter' && listFields.length > 0">
+    <ng-template ngbPanelHeader let-opened=true>
+      <div class="d-flex align-items-center justify-content-between">
+        <h5 class="m-0" i18n>Fields Selected for Display</h5>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <span *ngFor="let f of listFields; index as idx" class="sr-chooser-display-list">{{f.alias}}{{idx === (listFields.length - 1) ? '' : ', '}}</span>
+    </ng-template>
+  </ngb-panel>
+  <ngb-panel id="sort-field-list">
+    <ng-template ngbPanelHeader let-opened=true>
+      <div class="d-flex align-items-center justify-content-between">
+        <h5 *ngIf="fieldType === 'display'" class="m-0" i18n>Field Display Order</h5>
+        <h5 *ngIf="fieldType === 'filter'" class="m-0" i18n>Filter Fields and Values</h5>
+      </div>
+    </ng-template>
+    <ng-template ngbPanelContent>
+
+      <ng-container *ngIf="fieldType === 'display'">
+        <ng-container *ngFor="let f of selectedFields; index as idx">
+          <eg-sr-field
+            *ngIf="!hideField(f)"
+            [field]=f
+            [withDeselect]=true
+            [withAlias]=true
+            [withTransforms]=true
+            [withUpDown]=true
+            [disableUp]="idx === 0"
+            [disableDown]="idx === (selectedFields.length - 1)"
+            (fieldChange)="updateField($event)"
+            (deselectEvent)="toggleSelect(f)"
+            (upEvent)="moveUp(idx)"
+            (downEvent)="moveDown(idx)"
+          >
+          </eg-sr-field>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="fieldType === 'filter'">
+        <ng-container *ngFor="let f of selectedFields; index as idx">
+          <eg-sr-field
+            *ngIf="!hideField(f)"
+            [field]=f
+            [withDeselect]=true
+            [withTransforms]=true
+            [withOperators]=true
+            [withValueInput]=true
+            (fieldChange)="updateField($event)"
+            (deselectEvent)="toggleSelect(f)"
+          >
+          </eg-sr-field>
+        </ng-container>
+      </ng-container>
+
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>
+
+</div>

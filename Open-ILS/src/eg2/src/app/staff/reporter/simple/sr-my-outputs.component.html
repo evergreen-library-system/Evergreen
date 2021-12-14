@@ -1,0 +1,72 @@
+<ng-template #deletedOutputStringTmpl let-num="num" i18n>{num, plural, =1 {Output Deleted} other {{{num}} Outputs Deleted}}</ng-template>
+<eg-string #deleted [template]="deletedOutputStringTmpl"></eg-string>
+
+<ng-template #confirmDeleteOutputStringTmpl let-num="num" i18n>{num, plural, =1 {Are you sure you want to delete this output?} other {Are you sure you want to delete these {{num}} outputs?}}</ng-template>
+<eg-string #delete [template]="confirmDeleteOutputStringTmpl"></eg-string>
+
+<eg-confirm-dialog
+  #confirmDelete
+  i18n-dialogTitle
+  dialogTitle="Confirm Deletion"
+></eg-confirm-dialog>
+
+<ng-template #outputTmpl let-rpt="row">
+  <ul *ngIf="!rpt.error_code" class="list-group list-group-horizontal">
+    <li *ngIf="rpt._rs.html_format() === 't'" class="list-group-item">
+      <a href="{{outputPath(rpt, 'report-data.html.raw.html')}}" target="_blank" i18n>
+        HTML
+      </a>
+    </li>
+    <li *ngIf="rpt._rs.csv_format() === 't'" class="list-group-item">
+      <a href="{{outputPath(rpt, 'report-data.csv')}}" i18n>
+        CSV
+      </a>
+    </li>
+    <li *ngIf="rpt._rs.excel_format() === 't'" class="list-group-item">
+      <a href="{{outputPath(rpt, 'report-data.xlsx')}}" i18n>
+        Excel
+      </a>
+    </li>
+    <li *ngIf="rpt._rs.chart_line() === 't'" class="list-group-item">
+      <a href="{{outputPath(rpt, 'report-data.html.line.gif')}}" target="_blank" i18n>
+        Line Chart
+      </a>
+    </li>
+    <li *ngIf="rpt._rs.chart_bar() === 't'" class="list-group-item">
+      <a href="{{outputPath(rpt, 'report-data.html.bar.gif')}}" target="_blank" i18n>
+        Bar Chart
+      </a>
+    </li>
+  </ul>
+  <span *ngIf="rpt.error_code" i18n>
+    Error running report
+  </span>
+</ng-template>
+
+<div class="mt-2">
+  <eg-grid #srOutputsGrid
+    persistKey="reporter.simple.outputs"
+    [dataSource]="gridSource"
+    [stickyHeader]="true"
+    [filterable]="true"
+    [sortable]="true"
+    [cellTextGenerator]="cellTextGenerator"
+    [showDeclaredFieldsOnly]="true">
+
+    <eg-grid-toolbar-button label="Refresh" i18n-label
+      (onClick)="refreshGrid($event)">
+    </eg-grid-toolbar-button>
+
+    <eg-grid-toolbar-action label="Delete Output" i18n-label
+      (onClick)="deleteOutputs($event)"
+      [disableOnRows]="zeroSelectedRows">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-column path="id" [hidden]=true [index]="true" i18n-label label="Run ID" [filterable]="false" [sortable]="false"></eg-grid-column>
+    <eg-grid-column path="template_name" i18n-label label="Report"></eg-grid-column>
+    <eg-grid-column path="complete_time" i18n-label label="Finish Time" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+    <eg-grid-column path="_output"  [cellTemplate]="outputTmpl" i18n-label label="Output" [sortable]="false" [filterable]="false" [disableTooltip]="true"></eg-grid-column>
+    <eg-grid-column path="error_text"[hidden]=true i18n-label label="Error Text"></eg-grid-column>
+
+  </eg-grid>
+</div>

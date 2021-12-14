@@ -1,0 +1,66 @@
+<ng-template #deleteSuccesstringTmpl let-ct="ct" i18n>{ct, plural, =1 {Deleted 1 Report} other {Deleted {{ct}} Reports}}</ng-template>
+<eg-string #deleteSuccess i18n-text [template]="deleteSuccesstringTmpl"></eg-string>
+<ng-template #deleteFailureStringTmpl let-ct="ct" i18n>{ct, plural, =1 {Failed to Delete 1 Report} other {Failed to Delete {{ct}} Reports}}</ng-template>
+<eg-string #deleteFailure i18n-text [template]="deleteFailureStringTmpl"></eg-string>
+<ng-template #mixedResultsStringTmpl let-fail="fail" let-success="success" i18n>{fail, plural, =1 {Failed to Delete 1 Report But Succeeded In Deleting {{success}}} other {Failed to Delete {{fail}} Reports But Succeeded in Deleting {{success}}}}</ng-template>
+<eg-string #mixedResults i18n-text [template]="mixedResultsStringTmpl"></eg-string>
+<ng-template #deleteStringTmpl let-ct="ct" i18n>{ct, plural, =1 {Are you sure you want to delete this report and its output?} other {Are you sure you want to delete these {{ct}} reports and their output?}}</ng-template>
+<eg-string #delete [template]="deleteStringTmpl"></eg-string>
+<ng-template #promptCloneOutputStringTmpl let-old="old" i18n>Enter a new name for the clone of: {{old}}</ng-template>
+<eg-string #clone [template]="promptCloneOutputStringTmpl"></eg-string>
+
+<eg-string #templateSaved i18n-text text="Report Saved Successfully"></eg-string>
+<eg-string #templateSaveError i18n-text text="Error Saving Report"></eg-string>
+
+<eg-confirm-dialog
+  #confirmDelete
+  i18n-dialogTitle
+  dialogTitle="Confirm Deletion"
+></eg-confirm-dialog>
+
+<eg-prompt-dialog
+  #promptClone
+  i18n-dialogTitle
+  dialogTitle="Clone Report"
+></eg-prompt-dialog>
+
+<div class="mt-2">
+  <eg-grid #srReportsGrid
+    persistKey="reporter.simple.reports"
+    [dataSource]="gridSource"
+    [stickyHeader]="true"
+    [filterable]="true"
+    [sortable]="true"
+    [cellTextGenerator]="cellTextGenerator"
+    [showDeclaredFieldsOnly]="true"
+    (onRowActivate)="editSelected([$event])">
+  
+    <eg-grid-toolbar-button label="New" i18n-label
+      (onClick)="newReport($event)">
+    </eg-grid-toolbar-button>
+  
+    <eg-grid-toolbar-action label="Edit" i18n-label
+      (onClick)="editSelected($event)"
+      [disableOnRows]="notOneSelectedRow">
+    </eg-grid-toolbar-action>
+  
+    <eg-grid-toolbar-action label="Delete" i18n-label
+      (onClick)="deleteSelected($event)"
+      [disableOnRows]="zeroSelectedRows">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action label="Clone" i18n-label
+      (onClick)="cloneSelected($event)"
+      [disableOnRows]="notOneSelectedRow">
+    </eg-grid-toolbar-action>
+  
+    <eg-grid-column path="rt_id" i18n-label label="Simple Report Template ID" [hidden]="true" [index]="true" [filterable]="false" [sortable]="false"></eg-grid-column>
+    <eg-grid-column path="name" i18n-label label="Report Name"></eg-grid-column>
+    <eg-grid-column path="create_time" i18n-label label="Date Created" datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+    <eg-grid-column path="edit_time" i18n-label label="Last Edited" datatype="timestamp" [datePlusTime]="true" [filterable]="false" [sortable]="false"></eg-grid-column>
+    <eg-grid-column path="last_run" i18n-label label="Last Run" datatype="timestamp" [datePlusTime]="true" [filterable]="false" [sortable]="false"></eg-grid-column>
+    <eg-grid-column path="next_run" i18n-label label="Next Run" datatype="timestamp" [datePlusTime]="true" [filterable]="false" [sortable]="false"></eg-grid-column>
+    <eg-grid-column path="recurring" i18n-label label="Recurring?" datatype="bool" [filterable]="false" [sortable]="false"></eg-grid-column>
+  
+  </eg-grid>
+<div>

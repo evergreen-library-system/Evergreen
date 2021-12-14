@@ -1,0 +1,9 @@
+.chooser-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sr-chooser-display-list {
+  font-size: 80%;
+}
+
