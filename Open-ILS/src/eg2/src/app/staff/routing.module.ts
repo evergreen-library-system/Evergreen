@@ -33,6 +33,9 @@ const routes: Routes = [{
     path: 'login',
     component: StaffLoginComponent
   }, {
+    path: 'no_permission',
+    component: StaffSplashComponent
+  }, {
     path: 'splash',
     component: StaffSplashComponent
   }, {
@@ -47,6 +50,10 @@ const routes: Routes = [{
     path: 'catalog',
     loadChildren: () =>
       import('./catalog/catalog.module').then(m => m.CatalogModule)
+  }, {
+    path: 'reporter',
+    loadChildren: () =>
+      import('@eg/staff/reporter/routing.module').then(m => m.ReporterRoutingModule)
   }, {
     path: 'sandbox',
     loadChildren: () =>

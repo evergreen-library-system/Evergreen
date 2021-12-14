@@ -2,6 +2,8 @@ import {Component, OnInit, AfterViewInit, Directive, ElementRef, Renderer2} from
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
+import {ToastService} from '@eg/share/toast/toast.service';
+import {StringComponent} from '@eg/share/string/string.component';
 import {Router} from '@angular/router';
 
 @Component({
@@ -10,6 +12,7 @@ import {Router} from '@angular/router';
 
 export class StaffSplashComponent implements OnInit {
 
+    @ViewChild('noPermissionString', { static: true }) noPermissionString: StringComponent;
     catSearchQuery: string;
     portalEntries: any[][] = [];
     portalHeaders: any[] = [];
@@ -19,7 +22,8 @@ export class StaffSplashComponent implements OnInit {
         private pcrud: PcrudService,
         private auth: AuthService,
         private org: OrgService,
-        private router: Router
+        private router: Router,
+        private toast: ToastService
     ) {}
 
     ngOnInit() {
@@ -87,6 +91,14 @@ export class StaffSplashComponent implements OnInit {
                 });
             }
         );
+
+        if (this.router.url === '/staff/no_permission') {
+            this.noPermissionString.current()
+                .then(str => {
+                    this.toast.danger(str);
+                    this.router.navigate(['/staff']);
+                });
+        }
     }
 
     searchCatalog(): void {
