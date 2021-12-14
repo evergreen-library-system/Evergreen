@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  xmlns:oils_persist="http://open-ils.org/spec/opensrf/IDL/persistence/v1"
  xmlns:oils_obj="http://open-ils.org/spec/opensrf/IDL/objects/v1"
  xmlns:reporter="http://open-ils.org/spec/opensrf/IDL/reporter/v1"
+ xmlns:sr="http://open-ils.org/spec/opensrf/IDL/simple-reporter/v1"
  xmlns:crud="http://open-ils.org/spec/opensrf/IDL/permacrud/v1"
  targetNamespace="http://opensrf.org/spec/IDL/base/v1"
  elementFormDefault="qualified"
@@ -40,6 +41,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 <xs:import namespace="http://open-ils.org/spec/opensrf/IDL/reporter/v1"
  schemaLocation="reporter.xsd"/>
+
+<xs:import namespace="http://open-ils.org/spec/opensrf/IDL/simple-reporter/v1"
+ schemaLocation="simple-reporter.xsd"/>
 
 <xs:import namespace="http://open-ils.org/spec/opensrf/IDL/permacrud/v1"
  schemaLocation="permacrud.xsd"/>
@@ -61,7 +65,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   <xs:attribute ref="reporter:label"/>
   <xs:attribute ref="reporter:datatype"/>
   <xs:attribute ref="reporter:selector"/>
-  <xs:attribute ref="config_field"/>
+  <xs:attribute ref="sr:hide_from"/>
+  <xs:attribute ref="sr:suggest_transform"/>
+  <xs:attribute ref="sr:force_transform"/>
+  <xs:attribute ref="sr:suggest_operator"/>
+  <xs:attribute ref="sr:suggest_filter"/>
+  <xs:attribute ref="sr:force_filter"/>
+  <xs:attribute ref="sr:force_filtervalues"/>
+  <xs:attribute ref="sr:org_filter_field"/>
+  <xs:attribute name="field_groups"/>
+  <xs:attribute name="config_field"/>
  </xs:complexType>
 </xs:element>
 
@@ -75,6 +88,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
   <xs:attribute name="map" type="xs:string" use="required"/>
   <xs:attribute name="class" type="xs:string" use="required"/>
   <xs:attribute ref="reporter:label"/>
+  <xs:attribute ref="sr:org_filter_field"/>
  </xs:complexType>
 </xs:element>
 
@@ -96,11 +110,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
  </xs:complexType>
 </xs:element>
 
+<xs:element name="group" nillable="true">
+ <xs:complexType>
+  <xs:attribute name="name" type="xs:string" use="required"/>
+  <xs:attribute ref="reporter:label"/>
+ </xs:complexType>
+</xs:element>
+
+<xs:element name="field_groups">
+ <xs:complexType>
+  <xs:sequence>
+   <xs:element ref="idl:group" minOccurs="0" maxOccurs="unbounded"/>
+  </xs:sequence>
+ </xs:complexType>
+</xs:element>
+
 <xs:element name="class">
  <xs:complexType>
   <xs:sequence>
    <xs:element ref="idl:description" minOccurs="0" maxOccurs="1"/>
    <xs:element ref="oils_persist:source_definition" minOccurs="0" maxOccurs="unbounded"/>
+   <xs:element ref="idl:field_groups" minOccurs="0" maxOccurs="1"/>
    <xs:element ref="idl:fields"/>
    <xs:element ref="idl:links" minOccurs="0"/>
    <xs:element ref="crud:permacrud" minOccurs="0"/>
