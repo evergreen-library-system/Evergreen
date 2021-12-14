@@ -824,8 +824,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 					 parent table.
 			-->
 			<field reporter:label="Source Queue" name="queue" reporter:datatype="int"/>
-			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestsamp"/>
-			<field reporter:label="Update Time" name="update_time" reporter:datatype="timestsamp"/>
+			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Update Time" name="update_time" reporter:datatype="timestamp"/>
 			<field reporter:label="State" name="state" reporter:datatype="text"/>
 			<field reporter:label="Action Type" name="action_type" reporter:datatype="text"/>
 			<field reporter:label="Total Actions" name="total_actions" reporter:datatype="int"/>
@@ -970,7 +970,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 
-	<class id="cmrcsubfld" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc_subfield" oils_persist:tablename="config.marc_subfield" reporter:label="MARC Subfields" oils_persist:subfield_safe="true">
+	<class id="cmrcsubfld" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::marc_subfield" oils_persist:tablename="config.marc_subfield" reporter:label="MARC Subfields" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.marc_subfield_id_seq">
 			<field reporter:label="ID"   name="id" reporter:datatype="id"/>
 			<field reporter:label="MARC Format" name="marc_format" reporter:datatype="link" oils_obj:required="true"/>
@@ -2698,7 +2698,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="ccbi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::copy_bucket_item" oils_persist:tablename="container.copy_bucket_item" reporter:label="Copy Bucket Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.copy_bucket_item_id_seq">
-			<field name="bucket" />
+			<field name="bucket" reporter:datatype="link"/>
 			<field name="id" reporter:datatype="id" />
 			<field name="target_copy" reporter:datatype="link"/>
 			<field name="create_time" reporter:datatype="timestamp" />
@@ -2713,7 +2713,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<retrieve permission="ADMIN_COPY_BUCKET">
-                    <context link="bucket" owning_lib="owning_lib"/>
+                    <context link="bucket" field="owning_lib"/>
                 </retrieve>
             </actions>
         </permacrud>
@@ -4192,22 +4192,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
+				<create permission="ADMIN_TOOLBAR" context_field="org" />
 				<retrieve permission="ADMIN_TOOLBAR STAFF_LOGIN" context_field="org">
 					<context link="usr" field="home_ou" />
 					<context link="ws" field="owning_lib" />
 				</retrieve>
-				<create permission="ADMIN_TOOLBAR" context_field="org">
-					<context link="usr" field="home_ou" />
-					<context link="ws" field="owning_lib" />
-				</create>
-				<update permission="ADMIN_TOOLBAR" context_field="org">
-					<context link="usr" field="home_ou" />
-					<context link="ws" field="owning_lib" />
-				</update>
-				<delete permission="ADMIN_TOOLBAR" context_field="org">
-					<context link="usr" field="home_ou" />
-					<context link="ws" field="owning_lib" />
-				</delete>
+				<update permission="ADMIN_TOOLBAR" context_field="org"/>
+				<delete permission="ADMIN_TOOLBAR" context_field="org"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -4345,7 +4336,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="master_record" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="source_records" reltype="has_many" key="metarecord" map="source" class="mmrsm"/>
-			<link field="source_maps" reltype="has_many" key="metarecord" class="mmrsm"/>
+			<link field="source_maps" reltype="has_many" key="metarecord" map="" class="mmrsm"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -4525,8 +4516,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<retrieve/>
 				<create permission="CREATE_METABIB_FIELD" global_required="true"/>
+				<retrieve/>
 				<update permission="UPDATE_METABIB_FIELD" global_required="true"/>
 				<delete permission="DELETE_METABIB_FIELD" global_required="true"/>
 			</actions>
@@ -4690,7 +4681,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
-			<link field="billing" reltype="might_have" key="id" class="mb"/>
+			<link field="billing" reltype="might_have" key="id" map="" class="mb"/>
 		</links>
 	</class>
 	<class id="mrd" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::record_descriptor" oils_persist:tablename="metabib.rec_descriptor" reporter:label="Basic Record Descriptor">
@@ -5657,7 +5648,7 @@ SELECT  usr,
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<retrieve permission="ADMIN_CALLNUMBER_BUCKET">
-                    <context link="bucket" owning_lib="owning_lib"/>
+                    <context link="bucket" field="owning_lib"/>
                 </retrieve>
             </actions>
         </permacrud>
@@ -5691,10 +5682,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context="owning_lib" owning_user="owner"/>
-				<retrieve permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context="owning_lib" owning_user="owner"/>
-				<update permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context="owning_lib" owning_user="owner"/>
-				<delete permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context="owning_lib" owning_user="owner"/>
+				<create permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<retrieve permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<update permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<delete permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -7310,10 +7301,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context="owning_lib" owning_user="owner"/>
-				<retrieve permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context="owning_lib" owning_user="owner"/>
-				<update permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context="owning_lib" owning_user="owner"/>
-				<delete permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context="owning_lib" owning_user="owner"/>
+				<create permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<retrieve permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<update permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<delete permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context_field="owning_lib" owning_user="owner"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -7445,10 +7436,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context="owning_lib" owning_user="owner"/>
-				<retrieve permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context="owning_lib" owning_user="owner"/>
-				<update permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context="owning_lib" owning_user="owner"/>
-				<delete permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context="owning_lib" owning_user="owner"/>
+				<create permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<retrieve permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<update permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<delete permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context_field="owning_lib" owning_user="owner"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -7722,7 +7713,7 @@ SELECT  usr,
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<retrieve permission="ADMIN_USER_BUCKET">
-                    <context link="bucket" owning_lib="owning_lib"/>
+                    <context link="bucket" field="owning_lib"/>
                 </retrieve>
             </actions>
         </permacrud>
@@ -8091,10 +8082,10 @@ SELECT  usr,
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-				<create/>
+				<create permission="STAFF_LOGIN"/>
 				<retrieve/>
-				<update/>
-				<delete/>
+				<update permission="STAFF_LOGIN"/>
+				<delete permission="STAFF_LOGIN"/>
             </actions>
         </permacrud>
 	</class>
@@ -8500,10 +8491,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context="owning_lib" owning_user="owner"/>
-				<retrieve permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context="owning_lib" owning_user="owner"/>
-				<update permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context="owning_lib" owning_user="owner"/>
-				<delete permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context="owning_lib" owning_user="owner"/>
+				<create permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<retrieve permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<update permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<delete permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context_field="owning_lib" owning_user="owner"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -8614,7 +8605,7 @@ SELECT  usr,
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="cash_drawer" reltype="has_a" key="id" map="" class="aws"/>
-			<link field="billing" reltype="has_a" key="id" class="mab"/>
+			<link field="billing" reltype="has_a" key="id" map="" class="mab"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -8627,7 +8618,7 @@ SELECT  usr,
 	<class id="mallp" controller="open-ils.cstore" 
 		oils_obj:fieldmapper="money::all_payments" 
 		oils_persist:tablename="money.all_payments" 
-		oils_persist="readonly" reporter:core="true"
+		oils_persist:readonly="true" reporter:core="true"
 		reporter:label="Payments: All">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
@@ -8645,7 +8636,7 @@ SELECT  usr,
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="cash_drawer" reltype="has_a" key="id" map="" class="aws"/>
-			<link field="billing" reltype="has_a" key="id" class="mallb"/>
+			<link field="billing" reltype="has_a" key="id" map="" class="mallb"/>
 		</links>
 	</class>
 
@@ -8757,7 +8748,7 @@ SELECT  usr,
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
 				<retrieve permission="ADMIN_COPY_BUCKET">
-                    <context link="bucket" owning_lib="owning_lib"/>
+                    <context link="bucket" field="owning_lib"/>
                 </retrieve>
             </actions>
         </permacrud>
@@ -8960,7 +8951,7 @@ SELECT  usr,
 	<class id="mallb" controller="open-ils.cstore" 
 		oils_obj:fieldmapper="money::all_billings" 
 		oils_persist:tablename="money.all_billings" 
-		oils_persist="readonly" reporter:label="All Billing Line Items">
+		oils_persist:readonly="true" reporter:label="All Billing Line Items">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
 			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
@@ -9143,7 +9134,7 @@ SELECT  usr,
         </permacrud>
 	</class>
 
-	<class id="aurs" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::user_request_status" reporter:label="User Purchase Request with Status" oils_persist="readonly">
+	<class id="aurs" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::user_request_status" reporter:label="User Purchase Request with Status" oils_persist:readonly="true">
         <oils_persist:source_definition><![CDATA[
             SELECT r.*, CASE
                         WHEN r.cancel_reason IS NOT NULL THEN 7 -- Canceled
@@ -13682,7 +13673,7 @@ SELECT  usr,
 			<field reporter:label="Group Members" name="members" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
-			<link field="members" reltype="has_many" key="floating_group" class="cfgm"/>
+			<link field="members" reltype="has_many" key="floating_group" map="" class="cfgm"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -13703,8 +13694,8 @@ SELECT  usr,
 			<field reporter:label="Exclude" name="exclude" reporter:datatype="bool" oils_obj:required="true"/>
 		</fields>
 		<links>
-			<link field="floating_group" reltype="has_a" key="id" class="cfg"/>
-			<link field="org_unit" reltype="has_a" key="id" class="aou"/>
+			<link field="floating_group" reltype="has_a" key="id" map="" class="cfg"/>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -13894,7 +13885,7 @@ SELECT  usr,
 		reporter:label="Carousel Types">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.carousel_type_id_seq">
 			<field reporter:label="Carousel Type ID" reporter:selector="name" name="id" reporter:datatype="id" />
-			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true" oils_obj:i18n="true"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true" oils_persist:i18n="true"/>
 			<field reporter:label="Automatically Managed?" name="automatic" reporter:datatype="bool"/>
 			<field reporter:label="Filter By Age?" name="filter_by_age" reporter:datatype="bool"/>
 			<field reporter:label="Filter By Item Owning Library?" name="filter_by_copy_owning_lib" reporter:datatype="bool"/>
@@ -13919,7 +13910,7 @@ SELECT  usr,
 			<field reporter:label="Carousel ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Carousel Type" name="type" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Owner" name="owner" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true" oils_obj:i18n="true"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true" oils_persist:i18n="true"/>
 			<field reporter:label="Bucket" name="bucket" reporter:datatype="link"/>
 			<field reporter:label="Creating User" name="creator" reporter:datatype="link"/>
 			<field reporter:label="Editing User" name="editor" reporter:datatype="link"/>
@@ -14020,7 +14011,7 @@ SELECT  usr,
 			<field reporter:label="API Key" name="api_key" reporter:datatype="text"/>
 		</fields>
 		<links>
-			<link field="owner" reltype="has_a" key="id" class="aou"/>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
