@@ -1966,9 +1966,11 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 635, 'DELETE_RECORD_NOTE', oils_i18n_gettext(635,
     'Allow the user to delete a record note', 'ppl', 'description')),
  ( 636, 'ADMIN_STAFF_PORTAL_PAGE', oils_i18n_gettext( 636,
-    'Update the staff client portal page', 'ppl', 'description' ))
+    'Update the staff client portal page', 'ppl', 'description' )),
  ( 637, 'UPLOAD_COVER_IMAGE', oils_i18n_gettext(637,
-    'Upload local cover images for added content.', 'ppl', 'description'))
+    'Upload local cover images for added content.', 'ppl', 'description')),
+ ( 638, 'RUN_SIMPLE_REPORTS', oils_i18n_gettext(638,
+    'Build and run simple reports', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -2344,6 +2346,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'CREATE_COPY_STAT_CAT_ENTRY',
 			'CREATE_COPY_STAT_CAT_ENTRY_MAP',
 			'RUN_REPORTS',
+			'RUN_SIMPLE_REPORTS',
 			'CREATE_REPORT_TEMPLATE',
 			'SHARE_REPORT_FOLDER',
 			'UPDATE_COPY_LOCATION',
@@ -2784,6 +2787,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'DELETE_INVOICE_METHOD',
 			'DELETE_PROVIDER',
 			'RUN_REPORTS',
+			'RUN_SIMPLE_REPORTS',
 			'CREATE_REPORT_TEMPLATE',
 			'SHARE_REPORT_FOLDER',
 			'UPDATE_ACQ_FUNDING_SOURCE',
@@ -19920,6 +19924,20 @@ VALUES (
   oils_i18n_gettext(
     'eg.grid.circ.patron.billhistory_xacts',
     'Grid Config: circ.patron.billhistory_xacts',
+    'cwst', 'label'
+  )
+),  (
+  'eg.grid.reporter.simple.reports', 'gui', 'object',
+  oils_i18n_gettext(
+    'eg.grid.reporter.simple.reports',
+    'Grid Config: eg.grid.reporter.simple.reports',
+    'cwst', 'label'
+  )
+), (
+  'eg.grid.reporter.simple.outputs', 'gui', 'object',
+  oils_i18n_gettext(
+    'eg.grid.reporter.simple.outputs',
+    'Grid Config: eg.grid.reporter.simple.outputs',
     'cwst', 'label'
   )
 );
