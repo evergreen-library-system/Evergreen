@@ -80,7 +80,7 @@ sub retrieve_visible_folders {
     };
 
     my $meth = "search_reporter_${type}_folder";
-    my $fs = $e->$meth( [{ owner => $e->requestor->id }, $flesh] );
+    my $fs = $e->$meth( [{ owner => $e->requestor->id, simple_reporter => 'f' }, $flesh] );
 
     my @orgs;
     my $o = $U->storagereq(
