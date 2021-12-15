@@ -14,8 +14,8 @@
       </eg-org-family-select>
     </div>
     <div class="col-lg-2 text-right">
-      <button class="btn btn-primary mr-1" (click)="submitSearch()" type="submit" i18n>Search</button>
-      <button class="btn btn-secondary" (click)="clearSearch()" type="button" i18n>Reset Form</button>
+      <button class="btn btn-primary mr-1" (click)="submitSearch()" type="submit" [hidden]="!collapsed" i18n>Search</button>
+      <button class="btn btn-secondary" (click)="clearSearch()" type="button" [hidden]="!collapsed" i18n>Reset Form</button>
       <button class="btn" [hidden]="collapsed" (click)="toggleCollapse()" type="submit" i18n><span class="material-icons">expand_less</span></button>
       <button class="btn" [hidden]="!collapsed" (click)="toggleCollapse()" type="submit" i18n><span class="material-icons">expand_more</span></button>
     </div>
@@ -58,6 +58,12 @@
         <option i18n value="inactive">No</option>
         <option i18n value="any">Any</option>
       </select>
+    </div>
+  </div>
+  <div class="row mb-1" [hidden]="collapsed">
+    <div class="col-lg-2 offset-lg-10 text-right">
+      <button class="btn btn-primary mr-1" (click)="submitSearch()" type="submit" i18n>Search</button>
+      <button class="btn btn-secondary" (click)="clearSearch()" type="button" i18n>Reset Form</button>
     </div>
   </div>
 </form>
