@@ -70,7 +70,7 @@ export DEBS = \
 	libuniversal-require-perl\
 	libunix-syslog-perl\
 	libyaz-dev\
-	postgresql-client-9.6\
+	postgresql-client-14\
 	libsoap-lite-perl\
 	libbz2-dev\
 	libparse-recdescent-perl\
@@ -110,19 +110,35 @@ export CPAN_MODULES_PGSQL = \
 	String::KeyboardDistance \
 	Text::Levenshtein::Damerau::XS
 
-PGSQL_SERVER_DEBS_96 = \
-	$(DEB_PGSQL_COMMON_MODS) \
-	postgresql-9.6 \
-	postgresql-contrib-9.6 \
-	postgresql-plperl-9.6 \
-	postgresql-server-dev-9.6
-
 PGSQL_SERVER_DEBS_10 = \
 	$(DEB_PGSQL_COMMON_MODS) \
 	postgresql-10 \
-	postgresql-contrib-10 \
 	postgresql-plperl-10 \
 	postgresql-server-dev-10
+
+PGSQL_SERVER_DEBS_11 = \
+	$(DEB_PGSQL_COMMON_MODS) \
+	postgresql-11 \
+	postgresql-plperl-11 \
+	postgresql-server-dev-11
+
+PGSQL_SERVER_DEBS_12 = \
+	$(DEB_PGSQL_COMMON_MODS) \
+	postgresql-12 \
+	postgresql-plperl-12 \
+	postgresql-server-dev-12
+
+PGSQL_SERVER_DEBS_13 = \
+	$(DEB_PGSQL_COMMON_MODS) \
+	postgresql-13 \
+	postgresql-plperl-13 \
+	postgresql-server-dev-13
+
+PGSQL_SERVER_DEBS_14 = \
+	$(DEB_PGSQL_COMMON_MODS) \
+	postgresql-14 \
+	postgresql-plperl-14 \
+	postgresql-server-dev-14
 
 # note: some prereqs are repeated in the developer/packager 
 # sections to support building Evergreen packages on servers
@@ -160,16 +176,34 @@ all:
 	make -f $(DIR)/Makefile.common install_cpan_force
 	make -f $(DIR)/Makefile.debian debian_sys_config
 
-install_postgres_server:
-	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
-	make -f $(DIR)/Makefile.debian debian_postgresql_repo
-	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_96)"
-	make -f $(DIR)/Makefile.common install_cpan_pgsql
-
 install_postgres_server_10:
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
 	make -f $(DIR)/Makefile.debian debian_postgresql_repo
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_10)"
+	make -f $(DIR)/Makefile.common install_cpan_pgsql
+
+install_postgres_server_11:
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
+	make -f $(DIR)/Makefile.debian debian_postgresql_repo
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_11)"
+	make -f $(DIR)/Makefile.common install_cpan_pgsql
+
+install_postgres_server_12:
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
+	make -f $(DIR)/Makefile.debian debian_postgresql_repo
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_12)"
+	make -f $(DIR)/Makefile.common install_cpan_pgsql
+
+install_postgres_server_13:
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
+	make -f $(DIR)/Makefile.debian debian_postgresql_repo
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_13)"
+	make -f $(DIR)/Makefile.common install_cpan_pgsql
+
+install_postgres_server_14:
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
+	make -f $(DIR)/Makefile.debian debian_postgresql_repo
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_14)"
 	make -f $(DIR)/Makefile.common install_cpan_pgsql
 
 # note: if/when grunt-cli is available as a
