@@ -49,7 +49,7 @@ autoreconf -i
 
 == Installing prerequisites ==
 
-  * **PostgreSQL**: The minimum supported version is 9.6.
+  * **PostgreSQL**: The minimum supported version is 10.
   * **Linux**: Evergreen has been tested on
     Debian Bullseye (11),
     Debian Buster (10), 
@@ -421,30 +421,22 @@ xref:admin:actiontriggers_process.adoc#processing_action_triggers[Notifications 
 
 For production use, most libraries install the PostgreSQL database server on a
 dedicated machine. Therefore, by default, the `Makefile.install` prerequisite
-installer does *not* install the PostgreSQL 9 database server that is required
+installer does *not* install the PostgreSQL database server that is required
 by every Evergreen system. You can install the packages required by Debian or
 Ubuntu on the machine of your choice using the following commands as the
 *root* Linux account:
 
 . Installing PostgreSQL server packages
 
-Each OS build target provides the postgres server installation packages
-required for each operating system.  To install Postgres server packages, 
-use the make target 'postgres-server-<OSTYPE>'.  Choose the most appropriate 
-command below based on your operating system. This will install PostgreSQL 9.6,
-the minimum supported version.
+Each OS build target provides the postgres server installation
+packages required for each operating system.  To install Postgres
+server packages, use the make target
+'postgres-server-<OSTYPE>-<POSTGRESVERSION>'.  Choose the most
+appropriate command below based on your operating system and desired
+PostgreSQL Version.
 
-[source, bash]
-------------------------------------------------------------------------------
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal
-------------------------------------------------------------------------------
-
-To install PostgreSQL version 10, use the following command for your operating
-system:
+The first below will install PostgreSQL 10, the minimum supported
+version and the version recommended for production use of Evergreen:
 
 [source, bash]
 ------------------------------------------------------------------------------
@@ -453,6 +445,63 @@ make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-10
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-10
+------------------------------------------------------------------------------
+
+[WARNING]
+=========
+Evergreen support for PostgreSQL server versions greater than 10 is
+still exprimental.  The use of the following is discouraged in
+production environments.  The following are only recommended if you
+are willing to test newer PostgreSQL versions for performance and
+possible bugs.
+=========
+
+To install PostgreSQL version 11, use the following command for your operating
+system:
+
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-11
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-11
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch-11
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-11
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-11
+------------------------------------------------------------------------------
+
+To install PostgreSQL version 12, use the following command for your operating
+system:
+
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-12
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-12
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch-12
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-12
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-12
+------------------------------------------------------------------------------
+
+To install PostgreSQL version 13, use the following command for your operating
+system:
+
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-13
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-13
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch-13
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-13
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-13
+------------------------------------------------------------------------------
+
+To install PostgreSQL version 14, use the following command for your operating
+system:
+
+[source, bash]
+------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-bullseye-14
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster-14
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch-14
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic-14
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-focal-14
 ------------------------------------------------------------------------------
 
 For a standalone PostgreSQL server, install the following Perl modules for your
@@ -536,10 +585,8 @@ own copy of the _concerto_ sample data.
 In a production instance of Evergreen, your PostgreSQL server should be
 installed on a dedicated server.
 
-==== PostgreSQL 9.6 and later ====
-
-To create the database instance on a remote database server running PostgreSQL
-9.6 or later, simply use the `--create-database` flag on `eg_db_config`.
+To create the database instance on a remote database server, simply
+use the `--create-database` flag on `eg_db_config`.
 
 == Starting Evergreen ==
 
