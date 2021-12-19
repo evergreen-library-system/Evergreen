@@ -335,7 +335,8 @@ END;
 <ul>
     [%- IF attrs.hl.isbn.size; FOR isbn IN attrs.hl.isbn %]
     <li class='rdetail_isbns'>
-        <strong class='rdetail_label'>[% l('ISBN:'); %]</strong> [% isbn %]
+        <strong class='rdetail_label'>[% l('ISBN:'); %]</strong> 
+        <span class='rdetail_value' property='isbn'>[% isbn | html  %]</span>
     </li>
     [%- END; ELSIF attrs.isbns.0;
           FOR isbn IN attrs.isbns;
