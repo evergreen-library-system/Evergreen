@@ -56,7 +56,8 @@ ctx.metalinks.push('
     <div class="col-lg-9">
         <div class="row h-100">
             <div class="col-lg-8">
-                <h1 class='h1' property="name">[% IF attrs.hl.title; attrs.hl.title; ELSE; attrs.title_extended | html; END %]</h1>
+                <div id="rdetail_title_div">
+                <h1 id="rdetail_title" class='h1' property="name">[% IF attrs.hl.title; attrs.hl.title; ELSE; attrs.title_extended | html; END %]</h1>
                 [%-
                 FOR link880 IN attrs.graphic_titles;
                 FOR alt IN link880.graphic;
@@ -70,6 +71,7 @@ ctx.metalinks.push('
                 -%]
                 [%- INCLUDE "opac/parts/record/authors.tt2" %]
                 [%- INCLUDE "opac/parts/record/contents-summaryonly.tt2" %]
+                </div>
                 <div>
                     <button id="btnMore" data-toggle="collapse" data-target="#demo"
                         class="btn btn-action btn-sm my-3"><i class="fas fa-info-circle" aria-hidden="true"></i> [%l ("More Details") %]</button>
@@ -78,7 +80,8 @@ ctx.metalinks.push('
                         <ul class="list-unstyled">
                             [%- IF attrs.hl.isbn.size; FOR isbn IN attrs.hl.isbn %]
                             <li class='rdetail_isbns'>
-                                <strong class='rdetail_label'>[% l('ISBN:'); %]</strong> [% isbn %]
+                                <strong class='rdetail_label'>[% l('ISBN:'); %]</strong> 
+                                <span class='rdetail_value' property='isbn'>[% isbn | html %]</span>
                             </li>
                             [%- END; ELSIF attrs.isbns.0;
                             FOR isbn IN attrs.isbns;
