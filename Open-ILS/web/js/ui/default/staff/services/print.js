@@ -101,6 +101,15 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
         return service.fleshPrintScope(args.scope)
         .then(function() { return egHatch.usePrinting(); })
         .then(function(useHatch) {
+            if (!useHatch) { return false; }
+            return egHatch.getPrintConfig(args.context || 'default') 
+            .then(function(config) {
+                // Avoid using Hatch if the print context calls
+                // for native browser printing.
+                return config.printer != 'hatch_browser_printing';
+            });
+        })
+        .then(function(useHatch) {
             var promise = useHatch ?
                 service.print_via_hatch(args) :
                 service.print_via_browser(args);

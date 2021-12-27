@@ -279,7 +279,7 @@ function($scope , egCore) {
     }
 
     function loadPrinterOptions(name) {
-        if (name == 'hatch_file_writer') {
+        if (name == 'hatch_file_writer' || name == 'hatch_browser_printing') {
             $scope.printerOptions = {};
         } else {
             egCore.hatch.getPrinterOptions(name).then(
@@ -322,6 +322,14 @@ function($scope , egCore) {
         );
     }
 
+    $scope.useBrowserPrinting = function() {
+        return (
+            $scope.printConfig[$scope.context] &&
+            $scope.printConfig[$scope.context].printer == 'hatch_browser_printing'
+        );
+    }
+
+
     // Load startup data....
     // Don't bother talking to Hatch if it's not there.
     if (!egCore.hatch.hatchAvailable) return;
@@ -336,6 +344,8 @@ function($scope , egCore) {
             // Human-friendly label is set in the template.
             name: 'hatch_file_writer' 
         });
+
+        printers.push({name: 'hatch_browser_printing'});
 
         var def = $scope.getPrinterByAttr('is-default', true);
         if (!def && printers.length) def = printers[0];

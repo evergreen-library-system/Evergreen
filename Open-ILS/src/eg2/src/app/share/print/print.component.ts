@@ -6,7 +6,9 @@ import {HatchService, HatchMessage} from '@eg/core/hatch.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringService} from '@eg/share/string/string.service';
 import {HtmlToTxtService} from '@eg/share/util/htmltotxt.service';
+
 const HATCH_FILE_WRITER_PRINTER = 'hatch_file_writer';
+const HATCH_BROWSER_PRINTING_PRINTER = 'hatch_browser_printing';
 
 @Component({
     selector: 'eg-print',
@@ -64,6 +66,22 @@ export class PrintComponent implements OnInit {
 
         return this.serverStore.getItem('eg.hatch.enable.printing')
             .then(use => this.useHatchPrinting = (use && this.hatch.connect()));
+    }
+
+    // Resolves to true if a) Hatch is usable and b) the requested print
+    // context is not using the 'native brower printing' printer.
+    checkHatchEnabledForRequest(printReq: PrintRequest): Promise<boolean> {
+        return this.checkHatchEnabled().then(enabled => {
+            if (!enabled) { return false; }
+
+            return this.serverStore.getItem(`eg.print.config.${printReq.printContext}`)
+            .then(config => {
+                return (
+                    !config ||
+                    config.printer !== HATCH_BROWSER_PRINTING_PRINTER
+                );
+            });
+        });
     }
 
     handlePrintRequest(printReq: PrintRequest) {
@@ -158,7 +176,7 @@ export class PrintComponent implements OnInit {
 
         return promise.then(() => {
 
-            return this.checkHatchEnabled().then(enabled => {
+            return this.checkHatchEnabledForRequest(printReq).then(enabled => {
 
                 // Insert HTML into the browser DOM for in-browser printing.
                 if (printReq.text && !enabled) {
@@ -209,7 +227,7 @@ export class PrintComponent implements OnInit {
             show_dialog: printReq.showDialog
         });
 
-        return this.checkHatchEnabled().then(enabled => {
+        return this.checkHatchEnabledForRequest(printReq).then(enabled => {
             if (enabled) {
                 this.printViaHatch(printReq);
             } else {
