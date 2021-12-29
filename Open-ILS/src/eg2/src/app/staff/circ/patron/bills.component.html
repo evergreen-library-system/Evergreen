@@ -209,11 +209,29 @@
 
   <!-- COLUMNS -->
 
-  <eg-grid-column path="id" [index]="true" [required]="true" 
-    label="Bill #" i18n-label> </eg-grid-column>
+  <eg-grid-column name="balance_owed" path="summary.balance_owed" datatype="money"
+    [required]="true" label="Balance Owed" i18n-label></eg-grid-column>
 
-  <eg-grid-column path="xact_start" datatype="timestamp" [datePlusTime]="true"
-    label="Start" i18n-label></eg-grid-column>
+  <eg-grid-column name="total_owed" path="summary.total_owed" 
+    datatype="money" [required]="true" label="Total Billed" i18n-label></eg-grid-column>
+
+  <eg-grid-column name="total_paid" path="summary.total_paid" datatype="money" 
+    [required]="true" label="Total Paid" i18n-label></eg-grid-column>
+
+  <eg-grid-column path="summary.xact_type"
+    label="Type" i18n-label></eg-grid-column>
+
+  <eg-grid-column name="last_billing_ts" path="summary.last_billing_ts" 
+    [required]="true" label="Last Billed" i18n-label>
+  </eg-grid-column>
+
+  <eg-grid-column name="copy_barcode" label="Item Barcode" i18n-label
+    path="circulation.target_copy.barcode" [cellTemplate]="barcodeTemplate">
+  </eg-grid-column>
+
+  <eg-grid-column name="call_number_label"
+    path="circulation.target_copy.call_number.label" 
+    i18n-label label="Call Number" [hidden]="true"></eg-grid-column>
 
   <eg-grid-column path="circulation.due_date" label="Due Date" i18n-label                   
     timezoneContextOrg="circulation.circ_lib" dateOnlyIntervalField="circulation.duration"   
@@ -222,25 +240,37 @@
   <eg-grid-column path="circulation.stop_fines" [required]="true"
     label="Stop Fines" i18n-label></eg-grid-column>
 
-  <eg-grid-column path="summary.xact_type"
-    label="Type" i18n-label></eg-grid-column>
+  <eg-grid-column i18n-label label="Title" name="title" 
+    [cellTemplate]="titleTemplate"
+    path="circulation.target_copy.call_number.record.simple_record.title">
+  </eg-grid-column>
+
+  <eg-grid-column name="last_billing_note" path="summary.last_billing_note" 
+    [required]="true" label="Last Billing Note" i18n-label></eg-grid-column>
+
+  <eg-grid-column name="paymentPending" datatype="money"
+    label="Payment Pending" i18n-label></eg-grid-column>
+
+  <!-- -->
+
+  <eg-grid-column path="id" [index]="true" [required]="true" 
+    [hidden]="true" label="Bill #" i18n-label> </eg-grid-column>
+
+  <eg-grid-column path="xact_start" datatype="timestamp" [datePlusTime]="true"
+    [hidden]="true" label="Start" i18n-label></eg-grid-column>
 
   <eg-grid-column name="last_billing_type" path="summary.last_billing_type" 
-    [required]="true" label="Last Billing Type" i18n-label></eg-grid-column>
+    [hidden]="true" [required]="true" label="Last Billing Type" i18n-label></eg-grid-column>
 
   <eg-grid-column name="last_payment_type" path="summary.last_payment_type" 
-    [required]="true" label="Last Payment Type" i18n-label></eg-grid-column>
+    [hidden]="true" [required]="true" label="Last Payment Type" i18n-label></eg-grid-column>
 
   <eg-grid-column name="last_payment_ts" path="summary.last_payment_ts" 
-    [required]="true" [datePlusTime]="true" label="Last Payment Time" i18n-label>
+    [hidden]="true" [required]="true" [datePlusTime]="true" label="Last Payment Time" i18n-label>
   </eg-grid-column>
 
   <eg-grid-column name="billingLocation"
-    label="Billing Location" i18n-label></eg-grid-column>
-
-  <eg-grid-column name="call_number_label"
-    path="circulation.target_copy.call_number.label" 
-    i18n-label label="Call Number" [hidden]="true"></eg-grid-column>
+    [hidden]="true" label="Billing Location" i18n-label></eg-grid-column>
 
   <eg-grid-column path="circulation.target_copy.call_number.prefix.label" 
     i18n-label label="CN Prefix" [hidden]="true"></eg-grid-column>
@@ -255,36 +285,17 @@
     path="circulation.circ_lib.shortname">
   </eg-grid-column>
 
-  <eg-grid-column name="copy_barcode" label="Item Barcode" i18n-label
-    path="circulation.target_copy.barcode" [cellTemplate]="barcodeTemplate">
-  </eg-grid-column>
-
   <eg-grid-column name="copy_id" path="circulation.target_copy.id" 
     [required]="true" [hidden]="true"></eg-grid-column>
 
   <eg-grid-column path="circulation.target_copy.location.name" 
-    label="Shelving Location" i18n-label></eg-grid-column>
+    [hidden]="true" label="Shelving Location" i18n-label></eg-grid-column>
 
-  <eg-grid-column i18n-label label="Title" name="title" 
-    [cellTemplate]="titleTemplate"
-    path="circulation.target_copy.call_number.record.simple_record.title">
-  </eg-grid-column>
 
   <eg-grid-column name="record_id" 
     path="circulation.target_copy.call_number.record.id" 
     [required]="true" [hidden]="true"></eg-grid-column>
 
-  <eg-grid-column name="balance_owed" path="summary.balance_owed" datatype="money"
-    [required]="true" label="Balance Owed" i18n-label></eg-grid-column>
-
-  <eg-grid-column name="total_owed" path="summary.total_owed" 
-    datatype="money" [required]="true" label="Total Billed" i18n-label></eg-grid-column>
-
-  <eg-grid-column name="total_paid" path="summary.total_paid" datatype="money" 
-    [required]="true" label="Total Paid" i18n-label></eg-grid-column>
-
-  <eg-grid-column name="paymentPending" datatype="money"
-    label="Payment Pending" i18n-label></eg-grid-column>
 
   <eg-grid-column [hidden]="true" label="Author" i18n-label
     path="circulation.target_copy.call_number.record.simple_record.author">
