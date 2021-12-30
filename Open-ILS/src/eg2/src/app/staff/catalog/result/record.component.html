@@ -242,18 +242,22 @@
             <div class="row p-1 font-weight-bold border-top">
               <div class="col-lg-2" i18n>Library</div>
               <div class="col-lg-3" i18n>Shelving location</div>
-              <div class="col-lg-4" i18n>Call number</div>
-              <div class="col-lg-3" i18n>Status</div>
+              <div class="col-lg-3" i18n>Call number</div>
+              <div class="col-lg-2" i18n>Status</div>
+              <div class="col-lg-2" i18n>Due date</div>
             </div>
             <div class="row p-1 mt-1 mb-1 border-top" *ngFor="let copy of summary.copies">
               <div class="col-lg-2" i18n>{{copy.circ_lib_sn}}</div>
               <div class="col-lg-3" i18n>{{copy.copy_location}}</div>
-              <div class="col-lg-4" i18n>
+              <div class="col-lg-3" i18n>
                 {{copy.call_number_prefix_label}} 
                 {{copy.call_number_label}}
                 {{copy.call_number_suffix_label}}
               </div>
-              <div class="col-lg-3" i18n>{{copy.copy_status}}</div>
+              <div class="col-lg-2" i18n>{{copy.copy_status}}</div>
+              <div class="col-lg-2" *ngIf="copy.due_date">
+                {{copy.due_date | date:'shortDate'}}
+              </div>
             </div>
           </ng-container>
           <ng-container *ngIf="!summary.copies.length && !summary.eResourceUrls.length">

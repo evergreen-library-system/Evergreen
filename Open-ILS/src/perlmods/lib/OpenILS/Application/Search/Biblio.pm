@@ -3163,12 +3163,12 @@ sub get_representative_copies {
     return [] unless $org;
 
     my $func = 'unapi.biblio_record_entry_feed';
-    my $includes = '{holdings_xml,acp,acnp,acns}';
+    my $includes = '{holdings_xml,acp,acnp,acns,circ}';
     my $limits = "acn=>$limit,acp=>$limit";
 
     if ($is_meta) {
         $func = 'unapi.metabib_virtual_record_feed';
-        $includes = '{holdings_xml,acp,acnp,acns,mmr.unapi}';
+        $includes = '{holdings_xml,acp,acnp,acns,circ,mmr.unapi}';
         $limits .= ",bre=>$limit";
     }
 
@@ -3196,6 +3196,12 @@ sub get_representative_copies {
             my $status = $copy->getElementsByTagName('status')->[0]->textContent;
             my $location = $copy->getElementsByTagName('location')->[0]->textContent;
             my $circ_lib_sn = $copy->getElementsByTagName('circ_lib')->[0]->getAttribute('shortname');
+            my $due_date = '';
+
+            my $current_circ = $copy->findnodes('./*[local-name()="current_circulation"]')->[0];
+            if (my $circ = $current_circ->findnodes('./*[local-name()="circ"]')) {
+                $due_date = $circ->[0]->getAttribute('due_date');
+            }
 
             push(@$copies, {
                 call_number_label => $label,
@@ -3203,7 +3209,8 @@ sub get_representative_copies {
                 call_number_suffix_label => $suffix,
                 circ_lib_sn => $circ_lib_sn,
                 copy_status => $status,
-                copy_location => $location
+                copy_location => $location,
+                due_date => $due_date
             });
         }
     }
