@@ -44,6 +44,8 @@
   <eg-grid-field label="[% l('CN Suffix') %]" path="call_number.suffix.label"></eg-grid-field>
   <eg-grid-field label="[% l('Location') %]"    path="location.name" visible></eg-grid-field>
 
+  <eg-grid-field label="[% l('Author') %]"
+    path="call_number.record.simple_record.author" visible></eg-grid-field>
   <eg-grid-field label="[% l('Title') %]"
     path="call_number.record.simple_record.title" visible>
     <a href="/eg2/staff/catalog/record/{{item['call_number.record.id']}}">
