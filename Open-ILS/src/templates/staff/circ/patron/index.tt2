@@ -51,6 +51,12 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.CHECK_IN_CONFIRM = "[% l('Check In Items?') %]";
   s.REG_INVALID_FIELDS = 
     "[% l('Please enter valid values for all required fields.') %]"
+  s.REG_PASSWORD_RESET_REQUEST_NO_EMAIL =
+    "[% l('An email address is required for a password reset link to be sent.') %]";
+  s.REG_PASSWORD_RESET_REQUEST_DIFFERENT_EMAIL =
+    "[% l('Patron email address appears to have been changed but not yet saved. Please save user before attempting to send password reset link.') %]";
+  s.REG_PASSWORD_RESET_REQUEST_SUCCESSFUL =
+    "[% l('Submitted request for password reset link to be sent via email.') %]";
   s.PAYMENT_WARN_AMOUNT = "[% l('Are you sure you want to apply a payment of $[_1]?', '{{payment_amount}}') %]";
   s.PAYMENT_WARN_AMOUNT_TITLE = "[% l('Verify Payment Amount') %]";
   s.PAYMENT_OVER_MAX = "[% l('Payments over $[_1] are denied by policy.', '{{max_amount}}') %]";
@@ -70,7 +76,7 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.PAGE_TITLE_PATRON_SEARCH = "[% l('Patron Search') %]";
   s.PAGE_TITLE_PATRON_NAME = "[% l('[_1], [_2] [_3]', '{{lname}}','{{fname}}','{{mname}}') %]";
   s.PAGE_TITLE_PATRON_CHECKOUT = "[% l('Checkout') %]";
-  s.PAGE_TITLE_PATRON_MESSAGES = "[% l('Messages') %]";
+  s.PAGE_TITLE_PATRON_MESSAGES = "[% l('Notes') %]";
   /* TODO: The "Other" page title could be smarter.. */
   s.PAGE_TITLE_PATRON_OTHER = "[% l('Other') %]";
   s.PAGE_TITLE_PATRON_BILLS = "[% l('Bills') %]";
@@ -110,7 +116,6 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
                <span ng-if="patron().name_keywords()"> <a title="[% l('Name keywords: ') %]{{patron().name_keywords()}}" class="glyphicon glyphicon-tags"></a>
           </div>
 
-          <p ng-show="patron().notes().length > 0"><a class='patron-summary-has-notes' href="./circ/patron/{{patron().id()}}/notes"><span class="label label-warning">Notes &nbsp;{{patron().notes().length}}</span></a></p>
           <div ng-show="tab != 'search'">
             <a href ng-click="toggle_expand_summary()"
               title="[% l('Collapse Patron Summary Display') %]"
@@ -158,7 +163,11 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
         </a>
       </li>
       <li ng-class="{active : tab == 'messages', disabled : !patron()}">
-        <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/messages">[% l('Messages') %]</a>
+        <a a-disabled="!patron()" href="./circ/patron/{{patron().id()}}/messages">[% l('Notes') %]
+            <span ng-if="visible_notes().length > 0">
+                ({{visible_notes().length}})
+            </span>
+        </a>
       </li>
       <li ng-class="{active : tab == 'edit', disabled : !patron()}">
         <a href="./circ/patron/{{patron().id()}}/edit">[% l('Edit') %]</a>
@@ -171,16 +180,11 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
         <ul uib-dropdown-menu>
           <li>
             <a href="./circ/patron/{{patron().id()}}/alerts">
-              [% l('Display Alert and Messages') %]
+              [% l('Display Alerts') %]
             </a>
           </li>
           <li>
-            <a href="./circ/patron/{{patron().id()}}/notes">
-              [% l('Notes') %]
-            </a>
-          </li>
-          <li>
-            <a href="./circ/patron/{{patron().id()}}/triggered_events">
+            <a href="/eg2/staff/circ/patron/event-log/{{patron().id()}}" target="_blank">
               [% l('Triggered Events / Notifications') %]
             </a>
           </li>

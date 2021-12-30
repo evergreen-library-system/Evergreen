@@ -1,0 +1,116 @@
+<eg-staff-banner bannerText="Holdings Editor" i18n-bannerText></eg-staff-banner>
+
+<eg-confirm-dialog #pendingChangesDialog
+  i18n-dialogTitle dialogTitle="Unsaved Changes Confirmation" 
+  i18n-dialogBoby  dialogBody="Unsaved changes will be lost.  Continue navigation?">
+</eg-confirm-dialog>
+
+<div class="row" *ngIf="sessionExpired">
+  <div class="col-lg-6 mt-4 offset-lg-3 alert alert-danger d-flex justify-content-center" i18n>
+    Holdings Editor Session Expired
+  </div>
+</div>
+
+<ng-container *ngIf="!sessionExpired && !loading">
+
+  <eg-bib-summary *ngIf="context.recordId" [recordId]="context.recordId"></eg-bib-summary>
+
+  <div class="mt-3"> </div>
+
+  <ul ngbNav #holdingsNav="ngbNav" class="nav-tabs"
+    [activeId]="tab" (navChange)="beforeTabChange($event)">
+    <li ngbNavItem="holdings">
+      <a ngbNavLink i18n>Holdings</a>
+      <ng-template ngbNavContent>
+        <div class="mt-2">
+          <eg-vol-edit [context]="context"
+            (canSaveChange)="volsCanSaveChange($event)"></eg-vol-edit>
+        </div>
+        <ng-container *ngIf="volcopy.defaults.values.unified_display">
+          <div class="mt-2">
+            <eg-copy-attrs [context]="context" #copyAttrs
+              (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
+          </div>
+        </ng-container>
+      </ng-template>
+    </li>
+    <ng-container *ngIf="!volcopy.defaults.values.unified_display">
+      <li ngbNavItem="attrs">
+        <a ngbNavLink i18n>Item Attributes</a>
+        <ng-template ngbNavContent>
+          <div class="mt-2">
+            <eg-copy-attrs [context]="context" #copyAttrs
+              (canSaveChange)="attrsCanSaveChange($event)"></eg-copy-attrs>
+          </div>
+        </ng-template>
+      </li>
+    </ng-container>
+    <li ngbNavItem="config">
+      <a ngbNavLink i18n>Preferences</a>
+      <ng-template ngbNavContent>
+        <div class="mt-2">
+          <eg-volcopy-config [context]="context"></eg-volcopy-config>
+        </div>
+      </ng-template>
+    </li>
+  </ul>
+  <div [ngbNavOutlet]="holdingsNav"></div>
+
+  <ng-container *ngIf="tab === 'holdings' || tab === 'attrs'">
+    <hr class="m-2"/>                                                          
+    <div class="row m-2 p-2 border border-dark rounded bg-faint">
+      <div class="col-lg-12 d-flex">
+
+        <div class="form-check form-check-inline ml-2">                            
+          <input class="form-check-input" id='use-labels-cbox' type="checkbox"     
+            [ngModel]="volcopy.defaults.values.print_labels"
+            (change)="toggleCheckbox('print_labels')">
+          <label class="form-check-label" for='use-labels-cbox'                    
+            i18n>Print Labels?</label>                                             
+        </div>
+
+        <ng-container *ngIf="tab === 'holdings'">
+          <!-- 
+            These actions could cause confusion or unintended
+            consequences if visible on any other tabs
+          -->
+          <ng-container *ngIf="volcopy.defaults.hidden.use_checkdigit !== true">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="use-checkdigit" 
+                (change)="toggleCheckbox('use_checkdigit')"
+                [ngModel]="volcopy.defaults.values.use_checkdigit"/>
+              <label class="form-check-label" for="use-checkdigit" i18n>
+                Use Checkdigit
+              </label>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="volcopy.defaults.hidden.generate_barcodes !== true">
+            <button class="btn btn-sm btn-outline-dark label-with-material-icon"
+              (click)="volcopy.genBarcodesRequested.emit()">
+              <span i18n>Generate Barcodes</span>
+              <span class="material-icons">refresh</span>
+            </button>
+          </ng-container>
+        </ng-container>
+
+        <div class="flex-1"> </div>
+        <button class="btn btn-outline-dark" (click)="save(false, true)" 
+          [ngClass]="{'border-danger': isNotSaveable()}"
+          [disabled]="isNotSaveable()" i18n>Apply All &amp; Save</button>
+        <button class="btn btn-outline-dark ml-2" (click)="save(true, true)"
+          [ngClass]="{'border-danger': isNotSaveable()}"
+          [disabled]="isNotSaveable()" i18n>Apply All, Save &amp; Exit</button>
+      </div>
+    </div>
+  </ng-container>
+
+</ng-container>
+
+<ng-container *ngIf="loading">
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <eg-progress-inline></eg-progress-inline>
+    </div>
+  </div>
+</ng-container>
+

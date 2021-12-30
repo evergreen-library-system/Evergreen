@@ -162,6 +162,10 @@ h5 {font-size: .95rem}
   border-left: 5px solid #FA787E;
 }
 
+.invalid {
+  border-left: 5px solid #FA787E;
+}
+
 /* Typical form CSS.
  * Brings font size down 5% to squeeze a bit more in.
  * Bold labels
@@ -233,6 +237,18 @@ body>.dropdown-menu {z-index: 2100;}
   color: black;
 }
 
+/* Washed out version of the Bootstrap 'info' background.
+ * Useful for blocking out sections of a page/form without it 
+ * being so intensely colorful */
+.bg-faint {
+  /*background-color: rgb(204, 229, 255, 0.3);*/
+
+  /* d9edf7 */
+  /*background-color: rgb(217, 237, 247, 0.5);*/
+
+  background-color: rgba(0,0,0,.03);
+}
+
 /* Allow for larger XL dialogs */
 @media (min-width: 1300px) { .modal-xl { max-width: 1200px; } }
 @media (min-width: 1600px) { .modal-xl { max-width: 1500px; } }
@@ -255,4 +271,9 @@ body>.dropdown-menu {z-index: 2100;}
  */
 #acq-search-page ngb-tabset .nav.nav-tabs {
   background-color: rgb(247, 247, 247);
+}
+
+/* style for negative monetary values */
+.negative-money-amount {
+    color: red;
 }

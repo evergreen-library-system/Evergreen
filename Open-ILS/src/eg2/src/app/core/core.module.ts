@@ -5,7 +5,7 @@
  * and do not require entry in our 'providers' array.
  */
 import {NgModule} from '@angular/core';
-import {CommonModule, DatePipe, CurrencyPipe} from '@angular/common';
+import {CommonModule, DatePipe, DecimalPipe} from '@angular/common';
 import {FormatService, FormatValuePipe} from './format.service';
 
 @NgModule({
@@ -21,7 +21,7 @@ import {FormatService, FormatValuePipe} from './format.service';
   ],
   providers: [
     DatePipe,
-    CurrencyPipe
+    DecimalPipe
   ]
 })
 

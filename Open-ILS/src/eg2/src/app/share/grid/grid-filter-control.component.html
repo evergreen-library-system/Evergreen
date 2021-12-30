@@ -74,8 +74,8 @@
                   (change)="applyFilterCommon(col)"
                   [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
                   <option value="" i18n>Any</option>
-                  <option value="t" i18n>True</option>
-                  <option value="f" i18n>False</option>
+                  <option value="t" i18n>Yes</option>
+                  <option value="f" i18n>No</option>
                 </select>
               </div>
               <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>

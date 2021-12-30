@@ -30,26 +30,12 @@
     [% l('Patron account has invalid addresses.') %]
   </div>
 
-  <!-- alert message -->
-  <div class="row" ng-if="patron().alert_message()">
-    <div class="col-md-12">
-      <div class="panel panel-warning">
-        <div class="panel-heading">
-          <div class="panel-title text-center">[% l('Alert Message') %]</div>
-        </div>
-        <div class="panel-body">
-          {{patron().alert_message()}}
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- penalties -->
   <div class="row" ng-if="alert_penalties().length">
     <div class="col-md-12">
       <div class="panel panel-warning">
         <div class="panel-heading">
-          <div class="panel-title text-center">[% l('Penalties') %]</div>
+          <div class="panel-title text-center">[% l('Alerts') %]</div>
         </div>
         <div class="panel-body">
           <div class="row" 
@@ -58,9 +44,10 @@
               {{penalty.org_unit().shortname()}}
             </div>
             <div class="col-md-8"
-              title="{{penalty.standing_penalty().name()}}">
-              {{penalty.standing_penalty().label()}}
-              <div>{{penalty.note()}}</div><!-- force newline -->
+              title="{{penalty.standing_penalty().name()}} (id {{penalty.id()}})">
+              {{penalty.usr_message().title() || penalty.standing_penalty().label()}}
+              <div>{{penalty.usr_message().message()}}</div><!-- force newline -->
+              <div>&nbsp;</div><!-- should use CSS for this, but spacing out the notes -->
             </div>
             <div class="col-md-2">
               {{penalty.set_date() | date:$root.egDateFormat}}

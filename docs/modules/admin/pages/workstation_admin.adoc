@@ -121,3 +121,6 @@ image::workstation/workstation_sounds.png[]
 .. *Info*
 .. *Warning*
 .. *Error*
+=======
+include::latency.adoc[]
+

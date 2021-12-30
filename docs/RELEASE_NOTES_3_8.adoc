@@ -1,0 +1,771 @@
+= Evergreen 3.8 Release Notes =
+:toc:
+:numbered:
+:toclevels: 3
+
+== Evergreen 3.8.0 ==
+
+=== Upgrade notes ===
+
+==== New Permissions ====
+
+* UPDATE_USER_PHOTO_URL
+* CREATE_RECORD_NOTE
+* UPDATE_RECORD_NOTE
+* DELETE_RECORD_NOTE
+
+==== Removed Permissions ====
+
+* VIEW_STANDING_PENALTY
+
+==== New Library Settings ====
+
+* Pickup Library Soft stalling interval
+* Pickup Library Hard stalling interval
+* Void item deposit fee on checkin
+* Require Photo URL field on patron registration
+* Show Photo URL field on patron registration
+* Suggest Photo URL field on patron registration
+* My Account URL
+* Maximum number of spelling suggestions that may be offered
+* Stripe ISO 4217 currency code
+* Use Item Price or Cost as Primary Item Value
+* Use Item Price or Cost as Backup Item Value
+* Staff Catalog Search Filters
+* Workstation OU is the default for staff-placed holds
+
+==== Backing Up Auditor `alert_message` Column ====
+
+WARNING: The upgrade script will remove the alert_message field from the
+auditor table, so if you care about preserving those you should run a query to
+create a backup.
+
+For example:
+
+[source,sql]
+----
+CREATE TABLE auditor.backup_usr_alert_msg AS
+   CREATE audit_id, audit_time, audit_action, audit_user,
+          audit_ws, id as "usr_id", last_update_time,
+          alert_message
+   FROM auditor.actor_usr_history
+   WHERE alert_message IS NOT NULL;
+----
+
+==== Reindexing for Search Suggestions ====
+
+The upgrade includes a partial reindexing to update search suggestions. After
+running the schema upgrade script, e.g., `version-upgrade/3.7.1-3.8.0-upgrade-db.sql`,
+the reindexing can be done as follows.
+
+First, in a `psql` session connected to your Evergreen database, run:
+
+[source,sql]
+----
+\a
+\t
+
+\o title
+select value from metabib.title_field_entry where source in (select id from biblio.record_entry where not deleted);
+\o author
+select value from metabib.author_field_entry where source in (select id from biblio.record_entry where not deleted);
+\o subject
+select value from metabib.subject_field_entry where source in (select id from biblio.record_entry where not deleted);
+\o series
+select value from metabib.series_field_entry where source in (select id from biblio.record_entry where not deleted);
+\o identifier
+select value from metabib.identifier_field_entry where source in (select id from biblio.record_entry where not deleted);
+\o keyword
+select value from metabib.keyword_field_entry where source in (select id from biblio.record_entry where not deleted);
+
+\o
+\a
+\t
+\q
+----
+
+Then, from the command line:
+
+[source,sh]
+----
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl title > title.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl author > author.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl subject > subject.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl series > series.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl identifier > identifier.sql
+$ ~/EG-src-path/Open-ILS/src/support-scripts/symspell-sideload.pl keyword > keyword.sql
+----
+
+Then finally, back in `psql`:
+
+[source,sql]
+----
+ALTER TABLE search.symspell_dictionary SET UNLOGGED;
+TRUNCATE search.symspell_dictionary;
+
+\i identifier.sql
+\i author.sql
+\i title.sql
+\i subject.sql
+\i series.sql
+\i keyword.sql
+
+CLUSTER search.symspell_dictionary USING symspell_dictionary_pkey;
+REINDEX TABLE search.symspell_dictionary;
+ALTER TABLE search.symspell_dictionary SET LOGGED;
+VACUUM ANALYZE search.symspell_dictionary;
+
+DROP TABLE search.symspell_dictionary_partial_title;
+DROP TABLE search.symspell_dictionary_partial_author;
+DROP TABLE search.symspell_dictionary_partial_subject;
+DROP TABLE search.symspell_dictionary_partial_series;
+DROP TABLE search.symspell_dictionary_partial_identifier;
+DROP TABLE search.symspell_dictionary_partial_keyword;
+----
+
+==== Updating Reports on Patron Notes ====
+
+The underlying data structure for patron notes has changed with all notes
+living in the `actor.usr_message` table, so report writers will need to change
+the following paths in existing reports:
+
+ * `actor.usr_note` -> all columns
+ * `actor.usr` -> `alert_message`
+ * `actor.usr_standing_penalty` -> note
+
+And for `actor.usr_message`, there is now both a `pub` column and a `deleted` column.
+
+==== Holdings Editor Preferences ====
+
+Given the number of changes between the AngJS holdings editor and the
+new Angular interfaces, preferences stored for the AngJS interface will
+not be honored by the new interface.  New preferences will have to be
+applied by staff as needed.
+
+=== New Features ===
+
+==== Acquisitions ====
+
+===== Angular Rewrite of Acquisitions Administration Interfaces =====
+
+Several administrative interfaces for acquisitions have been rewritten
+to use the Angular framework:
+
+  * Claiming
+  * Currencies and Exchange Rates
+  * Distribution Formulas
+  * EDI Attribute Sets
+  * Fund Administration
+
+====== Claiming ======
+
+The interface for managing claim policies is now a single multi-tabbed
+page that combines the previous interfaces for:
+
+  * Claim Policies
+  * Claim Policy Actions
+  * Claim Types
+  * Claim Event Types
+
+The new interface can be found in Administration > Acquisitions
+Administration > Claiming.
+
+====== Currencies and Exchange Rates ======
+
+The previous two interfaces for managing currencies and exchange
+rates have been consolidated into one. The new interface allows
+users to create, modify, and delete currency types. In addition,
+the list of currencies now has 'Manage Exchange Rates' buttons
+to allow specifying the exchange rate from the selected currency
+to another one.
+
+If an exchange is set in one direction, e.g., from USD to EUR,
+opening the 'Manage Exchange Rates' for EUR will show the inverse
+of the exchange rate for USD as a read-only field.
+
+The new interface can be found in Administration > Acquisitions
+Administration > Currencies and Exchange Rates.
+
+====== Distribution Formulas ======
+
+The Angular interface for managing distribution formulas displays
+a grid of existing formulas and allows authorized users to create,
+modify, and delete formulas. The dialog for editing a formula
+allows the user to define one or more entries containing
+owning library, number of items, and optionally shelving location, fund,
+circulation modifier, and collection code.
+
+The new interface can be found in Administration > Acquisitions
+Administration > Distribution Formulas.
+
+====== EDI Attribute Sets ======
+
+The Angular EDI attribute sets interface is similar to the previous
+one. However, it includes enhancements to display the number of
+providers using an attribute set as well as a 'View Providers' button
+to navigate to those providers.
+
+The new interface can be found in Administration > Acquisitions
+Administration > EDI Attribute Sets.
+
+====== Fund Administration ======
+
+The new fund administration interface unifies configuration of funding
+sources, purchasing funds, and fund tags. The interface has three tabs:
+
+  * Funds
+  * Funding Sources
+  * Fund Tags
+
+The Funds tab displays a filterable list of funds that allows the
+user to create, modify, and remove funds. The fund name is hyperlinked;
+clicking that hyperlink opens a dialog that has the following tabs:
+
+  * Summary: this contains summary information about the fund,
+    including various balances.
+  * Allocations: this lists allocations to and from the fund.
+  * Transfers: this lists fund transfers to and from the fund.
+  * Debits: this lists debits against the fund. As an enhancement
+    from the previous version of the funds interface, the grid
+    of debits now has links to the line item, purchase order,
+    and/or invoice associated with the debit.
+  * Tags: this lists the tags associated with the funds and allows
+    the user to add or remove tag associations.
+
+The fund management dialog also allows the user to create allocations
+into the fund and transfer money away from the fund.
+
+The funds tab also has a 'Fiscal Propagation and Rollover' button.
+The library from the selector on the funds tab is used to set the
+context org unit for the propagation and rollover. Upon clicking the
+button, a dialog box appears that allows the user to select the fiscal
+year to propagate or rollover, checkboxes to specify whether to also
+perform a fiscal year close-out and whether to limit a close-out to
+encumbrances, and a checkbox to specify whether or not to do a dry run.
+Upon completion of the propagation, the dialog will display summary
+results.
+
+
+The Funding Sources tab displays a filterable list of funding
+sources and allows the user to create funding sources, apply and view
+credits, allocate money to funds, and view allocations.
+
+The Fund Tags tab presents a grid that allows users view view,
+create, modify, and delete fund tags. Assigning a tag to a fund is
+done using the fund management dialog.
+
+The new interface can be found in Administration > Acquisitions
+Administration > Fund Administration.
+
+====== Other Changes ======
+
+The following miscellaneous changes are included in this work:
+
+* Funds are now displayed in Angular selectors with the pattern
+  "CODE (YEAR) (OWNING_LIBRARY)"
+* The automatically generated fund allocation note associated with
+  fund transfers now reads "Transfer to/form fund CODE (YEAR) (OWNER)".
+  Previously, the fund was identified only by its numeric fund ID.
+* A new style was added for display of negative money amounts. By
+  default, these amounts display with red text.
+* The fund propagation and rollover report now includes the total
+  amount of encumbrances that were rolled over.
+* Various dynamic Angular comboboxes will now display up to 100
+  entries upon a click without requiring that the user submit a
+  search term.
+* Various Angular record editing forms will now complain if
+  the user tries to save a field value that contains only whitespace.
+* Currency amounts in Angular are no longer displayed with a currency
+  symbol. Prior to this change, monetary amounts were displayed with
+  a dollar sign regardless of the intended currency.
+* Various changes were made in the IDL to adjust field labels and
+  to mark certain fields as required.
+
+===== Fund Debit Auditor Table =====
+
+A new auditor table now exists for the `acq.fund_debit` table. This
+allows detailed reporting on changes to encumbrances and expenditures
+over time.
+
+
+===== Miscellaneous =====
+
+* Funding sources now have an active flag. If a funding source is marked
+  as inactive, adding credits to it or allocating from it is disabled, and
+  it will not show up in the list of possible funding sources when allocating
+  to a fund.
+
+==== Administration ====
+
+===== Case Insensitive Browse Entries =====
+
+It is now possible for a system administrator to select whether
+a particular browse entry field's case should be considered when
+determining uniqueness.  A new "Browse Folding is Case-Insensitive"
+column has been added to the Administration -> Server Administration
+-> MARC Search/Facet Fields interface.  Note that a bib record reingest
+will be required for changes to take effect.
+
+===== Miscellaneous =====
+
+* The 'Search Filter Groups' administration interface is now ported
+  to Angular.
+
+==== Cataloging ====
+
+===== Holdings Maintenance & Item Attributes Editor Angular Port =====
+
+Key differences from the AngularJS Holdings and Item Attr. editor 
+interfaces include the following:
+
+* Tabbed Holdings vs. Item Attr. interfaces.
+** With option to display as a unified interface without tabs.
+* Item Attr. fields retain position when showing/hiding
+* Improve keyboard navigation of Item Attr. editor.
+* Templates are once again managed directly in the Item Attr. editor.
+* Item Attr. displays values as counts summaries with option to edit by
+  clicking on a field (or tabbing + Enter) a la XUL.
+* Item Attr batch values support changing only items with selected values.
+* Batch value display limit vertical expansion of long lists with option for 
+  manual expansion.
+* All fields are visible by default; hidden by modifying preferences. 
+* Owning Library is managed in the Item Attr editor a la XUL.
+* New feature called "Change Circ Lib When Owning Lib Changes"
+* Generate Barcodes and Use Checkdigit are visible in the main holdings
+  form with option to hide.
+* Print Labels checkbox moved from Preferences to the save actions toolbar.
+* Option to hide various Holdings interface columns for extra horizontal space.
+* Option to temporarily expand columns in the Holdings interface for reviewing
+  wide columns of text.
+
+===== Fix for Authority Records with Long Subfields =====
+
+Importing or updating authority records with long subfields, i.e. in
+the vicinity of 5,000 characters or more in length, can cause database
+errors that will prevent the update or import from happening.  The
+error occurs because non-full text indexes in PostgreSQL have a
+limited length, and long fields sometimes lead to index entries that
+exceed this maximum value.
+
+In order to rectify this issue, two database indexes on the
+`authority.full_rec` table's `value` column have been redefined to
+match their counterparts in the `metabib.real_full_rec` table.  After
+this update, only the first 1024 characters of an authority field or
+subfield will be considered by these indexes.
+
+NOTE: These indexes are not used for authority record search, though
+they are used for sorting and paging.
+
+===== Bib Record -1 Can No Longer Be Edited =====
+
+Now when retrieving the bibliographic record with the id of -1 the
+delete button will be missing and the save button is disabled.
+
+In addition, new database rules now protect bib record ID -1,
+call number ID -1 and copy location ID 1 from editing.
+
+===== MARC Batch Import/Export Separate Edit Date/Editor Toggle =====
+
+Adds a new field "Update Bib Edit Date" to Vandelay merge profiles which
+allows users to update the edit date and editor information on a
+merged/overlaid bib record without also having to modify the bib source.
+
+For backwards compatibility, any existing merge profiles that have 
+"Update Bib Source" applied will also get "Update Bib Edit Date" applied.
+
+===== Browse Heading Navigation =====
+
+In the Angular staff catalog, when viewing the list of bib records linked
+to a heading, it's now possible to navigate to the previous or next heading
+directly on the bib list page without having to return to the original
+browse search.
+
+===== Bibliographic Record Notes =====
+
+Bibliographic record notes (i.e., administrative notes stored in the
+`biblio.record_note` table, not 5XX fields in the MARC record) can now
+be edited from the Record Notes tab.  Three new permissions manage this
+and should be added to cataloging accounts and permission groups as
+appropriate:  `CREATE_RECORD_NOTE`, `UPDATE_RECORD_NOTE`, and
+`DELETE_RECORD_NOTE`. There is an optional public display flag that is
+not yet supported in the public catalog but included to support future functionality.
+
+==== Circulation ====
+
+===== Granular control over how to use price and acquisition cost to determine item value  =====
+
+This feature adds two new library settings:
+
+ * Use Item Price or Cost as Primary Item Value
+ * Use Item Price or Cost as Backup Item Value
+
+Which intersect the behavior of these existing settings:
+
+ * Charge lost on zero
+ * Default Item Price
+ * Minimum Item Price
+ * Maximum Item Price
+
+Each of these settings affect how item price is used in
+various contexts and is not limited to "lost" items, but
+can affect notices, fine rules, and billings for long
+overdue and damaged items (as well as lost items).
+
+By default, the price field on items is the only field
+considered by these various uses, but if we set, for
+example, "Use Item Price or Cost as Primary Item Value" to
+"cost", then we'll use the cost field instead of the price
+field.
+
+Alternately, if we set the "Backup Item Value" to "cost"
+and either leave the "Primary Item Value" setting unset or
+set to "price", then we'll consider the price field first,
+and if it is either unset/null or equal to 0 (and
+"Charge lost on zero" is true), then it'll fall-through to
+the cost field.  We can also flip the behavior with these
+settings and consider cost first and then price second.
+
+The primary intended use case for this feature is:
+
+ - If there's an acquisition cost, charge this as the lost value.
+ - If there's not an acquisition cost, but there's a price, charge the price.
+ - If neither, charge the default value.
+
+===== Library selector on the holds pull list =====
+
+The holds pull list screen now includes a library/org unit selector.
+This allows staff to view the pull list of any library where they have
+VIEW_HOLDS permissions, rather than having to log in to a workstation
+at that library.
+
+===== Angular Holds Pull List =====
+
+The holds pull list now uses Angular and has an address of `/eg2/en-US/staff/circ/holds/pull-list`.
+
+===== New Item Triggered Events Log =====
+
+A reimplementation of the Item Triggered Events Log interface, building
+on the Patron Triggered Events Log Angular reimplementation.
+
+===== Template Support for Information and My Account URLs =====
+
+A new setting has been added named `lib.my_account_url` to provide a
+path usable in templates to a patron's account login. Both this and
+the existing `lib.info_url` settings are now available in the
+server-side processed templates, action triggers and traditional print
+receipts.
+
+Web side processed templates can be found in 
+Administration -> Server Administration -> Print Templates.
+
+You can add settings using the following syntax:
+
+[source,html]
+----
+<div>[% helpers.get_org_setting(staff_org.id, 'lib.info_url'); %]</div>
+<div>[% helpers.get_org_setting(staff_org.id, 'lib.my_account_url'); %]</div>
+----
+
+Print Receipts found in Administration -> Workstation -> Print Templates
+can be added with these includes:
+
+[source,conf]
+----
+{{includes.info_url}}
+{{includes.my_account_url}}
+----
+
+Action triggers can use both values with the `helpers.get_org_setting`
+include.  Example:
+
+[source,conf]
+----
+[% helpers.get_org_setting(circ_lib.id, 'lib.my_account_url') %]
+----
+
+
+===== Override Dialogs  =====
+
+This reworks the override action dialogs in the patron display for Check Out
+and Items Out, and in the Circulation -> Renew Items interface.  It exposes the
+auto-override behavior as checkboxes giving staff more fine-grained control
+over which events are auto-forced or skipped upon subsequent encounters.  It
+also changes the Cancel action for batch renewals to abort the remaining
+renewals in the batch, and makes it so that new authorization credentials
+provided during such a batch will be treated as an operator change for the
+entire batch.  We also fix an existing bug where events marked as already
+encountered for auto-override could leak into other patron contexts via Patron
+Search.
+
+===== New Patron Triggered Events Log =====
+
+A reimplementation of the Patron Triggered Events Log interface along with
+supporting infrastructure for speedier results with large datasets.
+
+===== Photo URL  =====
+
+Editing of the patron's photo URL can now be done in the staff client's patron
+registration and edit screen. A new permission UPDATE_USER_PHOTO_URL controls
+the ability to actually edit the field.
+
+===== `open-ils.circ.renew.auto` Removed =====
+
+The deprecated `open-ils.circ.renew.auto` API was removed.  You will
+want to use `open-ils.circ.renew` with the `auto_renewal` option set
+to 1.  This mainly affects those who have written custom code using
+the open-ils.circ backend.
+
+===== Void Deposit Billing at Checkin =====
+
+There is a new setting called "Void item deposit fee on checkin"
+that, when enabled, will cause items that have deposit billings
+to be automatically voided.
+
+===== Miscellaneous =====
+
+* The patron record editor now has a button to send a password
+  reset email to the patron's email address.
+* Add a new pair of library settings to support pickup library-based
+  hold stalling. 'Pickup Library Soft stalling interval', when set for,
+  the pickup library, specifies that for holds with a request time age
+  smaller than the specified interval only items scanned at the pickup
+  library can be opportunistically captured. Example "5 days". This setting
+  takes precedence over "Soft stalling interval" (circ.hold_stalling.soft)
+  when the interval is in force. 'Pickup Library Hard stalling interval',
+  when set for the pickup library, specifies that no items with a
+  calculated proximity greater than 0 from the pickup library can be
+  directly targeted for this time period if there are local available
+  copies.
+* Add a new library setting, 'Workstation OU is the default for staff-placed holds',
+  to indicate that the workstation OU should be set as the default pickup
+  location for hold requests that are placed via the staff interface. The
+  process for setting the default pickup location is now:
+  . Workstation if the 'Workstation OU is the default for staff-placed holds' setting
+    is turned on
+  . The user's preferred pickup location, if set
+  . if the user's preferred pickup location is not set, the
+    Workstation if the 'Workstation OU fallback for staff-placed holds'
+    setting is turned on
+  . Otherwise, it defaults to the user's home library.
+
+==== Client ====
+
+===== Consolidate Patron Notes, Alerts, and Messages =====
+
+Patron notes, messages, alert messages, and standing penalties have been folded
+into one Notes interface.  Notes designated as public will show in the My
+Account -> Message Center in the public catalog for patrons.
+
+The underlying data structure has also changed with all notes living in the
+`actor.usr_message` table, so report writers will need to change the following
+paths in existing reports:
+
+ * `actor.usr_note` -> all columns
+ * `actor.usr` -> `alert_message`
+ * `actor.usr_standing_penalty` -> note
+
+And for `actor.usr_message`, there is now both a `pub` column and a `deleted` column.
+
+Depending on privacy policies, system administrators may wish to set up a
+recurring process to truly delete older entries in `actor.usr_message` that have
+been flagged as deleted.
+
+WARNING: The upgrade script will remove the alert_message field from the
+auditor table, so if you care about preserving those you should run a query to
+create a backup.
+
+For example:
+
+[source,sql]
+----
+CREATE TABLE auditor.backup_usr_alert_msg AS
+   CREATE audit_id, audit_time, audit_action, audit_user,
+          audit_ws, id as "usr_id", last_update_time,
+          alert_message
+   FROM auditor.actor_usr_history
+   WHERE alert_message IS NOT NULL;
+----
+
+===== Fix for Staff Splash Page Multi-Word Search =====
+
+The addition of the Angular Staff Catalog surfaced a double-encoding issue
+with redirects in certain Apache versions. This caused searches for multiple
+words to have %20 in place of spaces, almost certainly resulting in 0 results.
+
+In order to apply this fix, change the Angular redirects in eg_vhost.conf from
+
+ RewriteRule ^/eg2/(.*) https://%{HTTP_HOST}/eg2/en-US/$1 [R=307,L]
+
+to
+
+ RewriteRule ^/eg2/(.*) https://%{HTTP_HOST}/eg2/en-US/$1 [NE,R=307,L]
+
+===== Miscellaneous =====
+
+* In the Angular staff catalog, rename 'Catalog Preferences' to
+  'Search Preferences' and add a return button.
+* Angular grids now have a have a 'Manage Actions Menu' configuration
+  action to allow users to control which actions are displayed
+  on the context menu for the grid.
+* The item table and holdings view in the Angular staff catalog record
+  details page now include 'Total Circ Count' and 'Last Circ Date' columns.
+* There is a new library setting, 'Staff Catalog Search Filters', that can be
+  used to customize the list of search filters that are available on the
+  Angular staff catalog advanced search form. This setting takes an array
+  of desired filters, e.g., `["item_lang","audience","lit_form"]`. The complete
+  list of available filters is item_type, item_form, item_lang, audience,
+  vr_format, bib_level, and lit_form. If the library setting is not set,
+  all of the filters are displayed.
+
+==== Public Catalog ====
+
+===== Credit card payments using Stripe now implemented with PaymentIntents instead of Charges =====
+
+This changes the Stripe code in the public catalog to use their PaymentIntents and confirmCreditCard API,
+which is recommended over their Charges API.  Credit card charges are no longer finalized
+(captured/confirmed) on Evergreen's backend, though the backend does check whether a payment was
+made successfully before recording it.
+
+===== Miscellaneous =====
+
+* The Bootstrap public catalog now displays cover images on the My Account
+  items checked out, check out history, holds, and holds history pages.
+* Carousels on the public catalog home page now take up 80% of the page width
+  by default rather than just 40%.
+
+==== Reports ====
+
+===== Reporter Item Statistics View =====
+
+A new reports source, Item Statistics View is available.
+Certain third-party products such as collection development
+management providers require copy statistics that are not
+readily available in a single report.  This view adds those,
+which will also benefit library staff reports generally.
+
+To add the view, a system administrator will need to (re-)run
+the example.reporter-extension.sql script, which will create 
+the new view in the database.
+
+===== Hold/Copy Ratio Report Source Changes =====
+
+This standardizes how the existing Hold/Copy Ratio reports sources count holdable copies; notably, metarecord copies are no longer counted in these report sources and all sources now use action.hold_copy_map. 
+
+Any reports using these sources will need to be rewritten.
+
+A new source that breaks out counts by patron home library was also added, named Hold/Copy Ratio per Bib and Home Library.
+
+
+===== Add Dewey Call Number Blocks and Ranges to Reports =====
+
+A new view is added to the reporter with links from Call Number that
+will allow users to display or filter on the Dewey 10's or 100's block
+or range that a call number falls within. They can be accessed by
+following the "Dewey Classification" link from Call Number.
+
+===== More Granular Age Divisions for Reports =====
+
+Reports now include an option for more detailed age divisions for users
+based on the entered date of birth.  Divisions include:
+
+ * Child 0-5 Years Old
+ * Child 6-12 Years Old
+ * Teen 13-17 Years Old
+ * Adult 18-25 Years Old
+ * Adult 26-49 Years Old
+ * Adult 50-59 Years Old
+ * Adult 60-69 Years Old
+ * Adult 70+
+
+This new column is accessible from ILS User -> Demographic Info and the new
+field is named "Detailed Age Division".
+
+=== Acknowledgments ===
+
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+* CW MARS
+* Evergreen Community Development Initiative
+* NOBLE
+* PaILS
+* Westchester Library System
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations, patches, and tests to this release of
+Evergreen:
+
+* Adam Bowling
+* Andrea Buntz Neiman
+* Angela Kilsdonk
+* Beth Willis
+* Bill Erickson
+* Blake Graham-Henderson
+* Chris Sharp
+* Christine Burns
+* Christine Morgan
+* Chrisy Schroth
+* Dan Briem
+* Dawn Dale
+* Elaine Hardy
+* Erica Rohlfs
+* Galen Charlton
+* Garry Collum
+* Gina Monti
+* Jane Sandberg
+* Jason Boyer
+* Jason Etheridge
+* Jason Stephenson
+* Jeff Davis
+* Jeff Godin
+* Jennifer Bruch
+* Jennifer Pringle
+* Jennifer Weston
+* Jessica Woolford
+* John Amundson
+* Josh Stompro
+* Katie G. Martin
+* Kyle Huckins
+* Lindsay Stratton
+* Lisa Carlucci
+* Lynn Floyd
+* Mary Llewellyn
+* Michele Morgan
+* Mike Risher
+* Mike Rylander
+* Rogan Hamby
+* Rosie Le Faive
+* Ruth Frasur
+* Seth Erickson
+* Shula Link
+* Stephen Wills
+* Terran McCanna
+* Tiffany Little
+* Verbio Group
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* BC Libraries Coop
+* Bibliomation
+* Catalyte
+* CW MARS
+* Emerald Data
+* Equinox Open Library Initiative
+* Georgia Public Library Service
+* Greater Clarks Hill Regional Library
+* Indiana State Library
+* Kenton County Library
+* King County Library System
+* Linn Benton Community College
+* MOBIUS
+* NOBLE
+* PaILS
+* Sigio
+* University of Prince Edward Island
+* Westchester Library System
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.

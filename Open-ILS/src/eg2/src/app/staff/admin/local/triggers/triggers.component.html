@@ -1,0 +1,130 @@
+<eg-staff-banner bannerText="Local Admin Notifications/Action Triggers" i18n-bannerText>
+</eg-staff-banner>
+
+<ng-template #textAreaTemplate let-field="field" let-record="record">
+    <textarea class="form-control" name="{{field.name}}" [readonly]="field.readOnly"
+        [required]="field.isRequired()" [ngModel]="record[field.name]()"
+        (ngModelChange)="record[field.name]($event)" style="height: 600px;">
+    </textarea>
+</ng-template>
+<eg-fm-record-editor #eventDialog idlClass="atevdef"
+    [fieldOptions]="{message_template:{customTemplate:{template:textAreaTemplate}},template:{customTemplate:{template:textAreaTemplate}}}"
+    fieldOrder="owner,name,hook,active,delay,delay_field,group_field,reactor,validator,repeat_delay,id,cleanup_failure,granularity,max_delay,message_library_path,message_template,message_title,message_usr_path,opt_in_setting,usr_field,retention_interval,cleanup_success,template"
+    [remainOpenOnError]="true"
+    [preloadLinkedValues]="true"
+    hiddenFields="id">
+</eg-fm-record-editor>
+<eg-fm-record-editor #hookDialog idlClass="ath"></eg-fm-record-editor>
+<eg-fm-record-editor #reactorDialog idlClass="atreact"></eg-fm-record-editor>
+<eg-fm-record-editor #validatorDialog idlClass="atval"></eg-fm-record-editor>
+
+<ul ngbNav #triggerNav="ngbNav" [activeId]="triggerTab" class="nav-tabs"
+    (navChange)="onTabChange($event)">
+    <li [ngbNavItem]="'eventDefinitions'">
+      <a ngbNavLink i18n>Event Definitions</a>
+      <ng-template ngbNavContent>
+        <h4 class="mb-3 mt-3">Trigger Event Definitions</h4>
+        <eg-grid #eventsGrid idlClass="atevdef" [dataSource]="eventsDataSource"
+            showFields="owner,name,hook,active,delay,delay_field,group_field,reactor,validator,repeat_delay,granularity,retention_interval"
+            [showLinkSelectors]="true" [sortable]="true" [stickyHeader]="true" persistKey="admin.local.triggers.atevdef"
+            (onRowActivate)="editSelected([$event])" [filterable]="true">
+            <eg-grid-toolbar-button label="New Event Definition" i18n-label
+                [action]="createNewEvent"></eg-grid-toolbar-button>
+            <eg-grid-toolbar-action label="Edit Event Definition" i18n-label
+                [action]="editEventDefinition"></eg-grid-toolbar-action>
+            <eg-grid-toolbar-action label="Clone Selected" i18n-label
+                [action]="cloneSelected"></eg-grid-toolbar-action>
+            <eg-grid-toolbar-action label="Delete Selected" i18n-label
+                (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
+            <eg-grid-column i18n-label label="Owning Library" path="owner">
+            </eg-grid-column>
+            <eg-grid-column i18n-label label="Name" path="name">
+            </eg-grid-column>
+            <eg-grid-column i18n-label label="Hook" path="hook">
+            </eg-grid-column>
+            <eg-grid-column i18n-label label="Enabled" path="active">
+            </eg-grid-column>
+            <eg-grid-column i18n-label label="Processing Delay" path="delay" [filterable]="false">
+            </eg-grid-column>
+            <eg-grid-column i18n-label label="Processing Delay Context Field" path="delay_field">
+            </eg-grid-column>
+            <eg-grid-column i18n-label label="Processing Group Context Field" path="group_field">
+            </eg-grid-column>
+            <eg-grid-column i18n-label label="Reactor" path="reactor">
+            </eg-grid-column>
+            <eg-grid-column i18n-label label="Validator" path="validator">
+            </eg-grid-column>
+            <eg-grid-column i18n-label label="Event Repeatability Delay" path="repeat_delay" [filterable]="false">
+            </eg-grid-column>
+            <eg-grid-column i18n-label label="Granularity" path="granularity">
+            </eg-grid-column>
+            <eg-grid-column i18n-label label="Retention Interval" path="retention_interval" [filterable]="false">
+            </eg-grid-column>
+        </eg-grid>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="'hooks'">
+      <a ngbNavLink i18n>Hooks</a>
+      <ng-template ngbNavContent>
+        <h4 class="mb-3 mt-3">Trigger Hooks</h4>
+            <eg-grid #hooksGrid idlClass="ath" [dataSource]="hooksDataSource"
+                (onRowActivate)="editSelected([$event])" [sortable]="true" [filterable]="true">
+                <eg-grid-toolbar-button label="New Hook" i18n-label [action]="createNewHook">
+                </eg-grid-toolbar-button>
+                <eg-grid-toolbar-action label="Edit Selected" i18n-label
+                    [action]="editSelected"></eg-grid-toolbar-action>
+                <eg-grid-toolbar-action label="Delete Selected" i18n-label
+                    (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
+            </eg-grid>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="'reactors'">
+      <a ngbNavLink i18n>Reactors</a>
+      <ng-template ngbNavContent>
+        <h4 class="mb-3 mt-3">Trigger Reactors</h4>
+            <eg-grid #reactorsGrid idlClass="atreact" [dataSource]="reactorsDataSource"
+              (onRowActivate)="editSelected([$event])" [sortable]="true" [filterable]="true">
+                <eg-grid-toolbar-button label="New Reactor" i18n-label
+                    [action]="createNewReactor"></eg-grid-toolbar-button>
+                <eg-grid-toolbar-action label="Edit Selected" i18n-label
+                    [action]="editSelected"></eg-grid-toolbar-action>
+                <eg-grid-toolbar-action label="Delete Selected" i18n-label
+                    (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
+            </eg-grid>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="'validators'">
+        <a ngbNavLink i18n>Validators</a>
+        <ng-template ngbNavContent>
+            <h4 class="mb-3 mt-3">Trigger Validators</h4>
+            <eg-grid #validatorsGrid idlClass="atval" [dataSource]="validatorsDataSource"
+                (onRowActivate)="editSelected([$event])" [sortable]="true" [filterable]="true">
+                <eg-grid-toolbar-button label="New Validator" i18n-label
+                    [action]="createNewValidator"></eg-grid-toolbar-button>
+                <eg-grid-toolbar-action label="Edit Selected" i18n-label
+                    [action]="editSelected"></eg-grid-toolbar-action>
+                <eg-grid-toolbar-action label="Delete Selected" i18n-label
+                    (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
+            </eg-grid>
+        </ng-template>
+      </li>
+  </ul>
+<div [ngbNavOutlet]="triggerNav" class="mt-2"></div>
+
+<eg-confirm-dialog #confirmDialog
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Alert"
+  dialogBody="Clone event definition environment as well?">
+</eg-confirm-dialog>
+
+<eg-string #createSuccessString i18n-text text="New entry Added"></eg-string>
+<eg-string #createErrString i18n-text text="Failed to create new entry"></eg-string>
+<eg-string #deleteFailedString i18n-text text="Deletion of entry failed or was not allowed">
+</eg-string>
+<eg-string #deleteSuccessString i18n-text text="Delete of entry succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text text="Update of entry failed or was not allowed">
+</eg-string>
+<eg-string #updateSuccessString i18n-text text="Update of entry succeeded"></eg-string>
+<eg-string #cloneFailedString i18n-text text="Clone of entry failed or was not allowed">
+</eg-string>
+<eg-string #cloneSuccessString i18n-text text="Clone of entry succeeded"></eg-string>

@@ -254,9 +254,6 @@
 	<event code='1532' textcode='MONEY_BILLABLE_TRANSACTION_SUMMARY_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested money_billable_transaction_summary was not found</desc>
 	</event>
-	<event code='1533' textcode='ACTOR_USR_NOTE_NOT_FOUND'>
-		<desc xml:lang='en-US'>The requested actor_usr_note was not found</desc>
-	</event>
 	<event code='1534' textcode='ACTOR_USER_SETTING_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested actor_user_setting was not found</desc>
 	</event>

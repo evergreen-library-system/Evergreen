@@ -1,0 +1,49 @@
+<eg-string #successString i18n-text text="Exchange Rates Update Succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text text="Exchange Rates Update Failed"></eg-string>
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info" *ngIf="doneLoading">
+    <h3 *ngIf="canUpdate" class="modal-title" i18n>Manage Exchange Rates for {{currency.code()}}: {{currency.label()}}</h3>
+    <h3 *ngIf="!canUpdate" class="modal-title" i18n>View Exchange Rates for {{currency.code()}}: {{currency.label()}}</h3>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" [hidden]="!doneLoading">
+    <h4 i18n>Exchange rates to other currencies: 1 {{currency?.label()}} is equal to:</h4>
+    <div *ngIf="otherCurrencies?.length < 1" class="alert alert-warning" i18n>
+      No other currencies are currently defined, so cannot set any exchange rates.
+    </div>
+    <form #exrForm="ngForm" role="form" [hidden]="otherCurrencies?.length < 1" class="form-validated">
+      <div class="form-group row mt-2" *ngFor="let ratio of ratios">
+        <label for="exr-{{ratio.to_currency().code()}}" class="col-sm-4 col-form-label">
+          {{ratio.to_currency().code()}} ({{ratio.to_currency().label()}})
+        </label>
+        <div class="col-sm-3">
+          <input *ngIf="canUpdate" class="form-control" type="number" id="exr-{{ratio.to_currency().code()}}"
+            [disabled]="ratio.id() === -1"
+            [ngModel]="ratio.ratio()" name="ratio_{{ratio.to_currency().code()}}"
+            (ngModelChange)="ratio.ratio($event)">
+          <span class="form-control-plaintext" *ngIf="!canUpdate">
+            <ng-container *ngIf="ratio.ratio() !== undefined">{{ratio.ratio()}}</ng-container>
+            <ng-container *ngIf="ratio.ratio() === undefined" i18n>not set</ng-container>
+          </span>
+        </div>
+        <div class="col-sm-3">
+          <span *ngIf="ratio.id() === -1" class="alert-warning" i18n>(inverse; go to other currency to change)</span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <ng-container *ngIf="canUpdate">
+      <button type="button" class="btn btn-info" [disabled]="!(exrForm?.dirty)"
+        (click)="save()" i18n>Save</button>
+      </ng-container>
+    <button type="button" class="btn btn-warning" *ngIf="canUpdate"
+      (click)="close()" i18n>Cancel</button>
+    <button type="button" class="btn btn-warning" *ngIf="!canUpdate"
+      (click)="close()" i18n>Close</button>
+  </div>
+</ng-template>

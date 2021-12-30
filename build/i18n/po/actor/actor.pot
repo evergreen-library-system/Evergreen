@@ -115,7 +115,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/actor/user/register_table.tt2:47
+#: ../../Open-ILS/src/templates/actor/user/register_table.tt2:48
 msgid "Secondary Groups"
 msgstr ""
 

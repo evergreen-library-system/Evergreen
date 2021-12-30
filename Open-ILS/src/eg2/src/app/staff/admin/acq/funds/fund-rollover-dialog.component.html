@@ -1,0 +1,88 @@
+<eg-string #successString i18n-text text="Rollover Succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text text="Rollover Failed"></eg-string>
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info" *ngIf="doneLoading">
+    <h3 class="modal-title" i18n>Fund Propagation and Rollover</h3>
+    <button type="button" class="close"
+      [disabled]="isProcessing"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" [hidden]="!doneLoading">
+    <form #rolloverForm="ngForm" role="form" class="form-validated">
+      <div class="row col">
+        <label for="year" class="my-1 mr-1" i18n>Year</label>
+        <eg-combobox [entries]="years" *ngIf="years"
+          [required]="true" [selectedId]="year"
+          (onChange)="year = $event ? $event.id : null">
+        </eg-combobox> 
+      </div>    
+      <div class="row col mt-3" i18n>Context Org Unit: {{contextOrg?.shortname()}}</div>
+      <div class="form-check offset-sm-1 mt-1">
+        <input type="checkbox" name="includeDescendants" id="includeDescendants"
+          class="form-check-input"
+          [(ngModel)]="includeDescendants">
+        <label for="includeDescendants" class="form-check-label" i18n>Include funds from descendant Org Units</label>
+      </div>
+      <hr>
+      <h4 i18n>Fund Propagation</h4>
+      <p i18n>
+        Propagation creates new funds for the next fiscal year. Propagating funds will not affect the money or
+        encumbrances in the funds unless Fiscal Year Close-Out is also done. Only funds that have the Propagate
+        setting enabled will be affected.
+      </p>
+      <p i18n>
+        Funds set to propagate will do so automatically when you click <b>Process</b>.
+      </p>
+      <hr>
+      <h4 i81n>Rollover and Close-Out</h4>
+      <div class="form-check">
+        <input type="checkbox" name="doCloseout" id="doCloseout"
+          class="form-check-input"
+          [(ngModel)]="doCloseout">
+        <label for="doCloseout" class="form-check-label" i18n>Perform Fiscal Year Close-Out</label>
+        <eg-help-popover helpText="Perform Fiscal Year Close-Out deactivates funds for the selected fiscal year. It will also move unspent and encumbered funds to the corresponding fund for the next fiscal year if that fund is configured to Propagate and Rollover." i18n-helpText></eg-help-popover>
+        <span class="alert-warning" *ngIf="doCloseout && !dryRun">Will do a Close-Out for real. If you need to double-check first, check the "Dry Run" checkbox.</span>
+      </div>
+      <div class="offset-sm-1 form-check" *ngIf="showEncumbOnly">
+        <input type="checkbox" name="limitToEncumbrances" id="limitToEncumbrances"
+          class="form-check-input"
+          [(ngModel)]="limitToEncumbrances">
+        <label for="limitToEncumbrances" class="form-check-label" i18n>Limit Fiscal Year Close-Out to Encumbrances</label>
+        <eg-help-popover helpText="This option will limit the Perform Fiscal Year Close-Out procedure to only move encumbrances to the corresponding fund for the next fiscal year. Any unspent money in the funds will not roll over." i18n-helpText></eg-help-popover>
+      </div>
+      <hr>
+      <div class="form-check">
+        <input type="checkbox" name="dryRun" id="dryRun"
+          class="form-check-input"
+          [(ngModel)]="dryRun">
+        <label for="dryRun" class="form-check-label" i18n>Dry Run &mdash; no data will be changed</label>
+        <eg-help-popover helpText="Select Dry Run to see a preview of the changes that would occur based on the selected actions. Data will not be changed when Dry Run is selected." i18n-helpText></eg-help-popover>
+      </div>
+    </form>
+    <div class="row" [hidden]="!isProcessing">
+      <div class="col-lg-10 offset-lg-1">
+        <eg-progress-inline #rolloverProgress></eg-progress-inline>
+      </div>
+    </div>
+    <div [hidden]="!showResults" class="row col mt-2">
+        <h4 i18n>Fund Propagation &amp; Rollover Summary for Fiscal Year {{year + 1}}</h4>
+        <ul>
+          <li *ngIf="dryRun" i18n>DRY RUN: these changes have not been committed yet.</li>
+          <li i18n>{{count}} funds propagated for fiscal year {{year + 1}} for the selected locations</li>
+          <li i18n>{{amount_rolled}} unspent money rolled over to fiscal year {{year + 1}} for the selected locations</li>
+          <li i18n>{{encumb_rolled}} in encumbrances rolled over to fiscal year {{year + 1}} for the selected locations</li>
+        </ul>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-info"
+      [disabled]="isProcessing"
+      (click)="rollover()" i18n>Process</button>
+    <button type="button" class="btn btn-warning"
+      [disabled]="isProcessing"
+      (click)="close()" i18n>Close</button>
+  </div>
+</ng-template>

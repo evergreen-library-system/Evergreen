@@ -808,7 +808,7 @@
     config = {
         animated => 0,
         animation_interval => 5,
-        width => 4,
+        width => 5,
         sm_width => 3,
         xs_width => 2,
     };

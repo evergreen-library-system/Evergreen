@@ -77,6 +77,7 @@ export DEBS = \
 
 export DEB_APACHE_MODS = \
     expires\
+    headers\
     include\
     proxy\
     proxy_http\
@@ -104,7 +105,9 @@ export CPAN_MODULES_FORCE = \
 	Class::DBI::Frozen::301
 
 export CPAN_MODULES_PGSQL = \
-	MARC::File::XML
+	MARC::File::XML \
+	String::KeyboardDistance \
+	Text::Levenshtein::Damerau::XS
 
 PGSQL_APT_REPO_DEBS = \
         wget \
@@ -131,9 +134,7 @@ PGSQL_SERVER_DEBS_10 = \
 DEVELOPER_DEBS = \
 	automake \
 	autoconf \
-	libtool \
-	chromium-browser \
-	firefox
+	libtool
 
 PACKAGER_DEBS = \
 	asciidoc \

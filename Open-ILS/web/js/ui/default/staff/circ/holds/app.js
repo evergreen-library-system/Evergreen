@@ -62,7 +62,7 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
 
         // if in clear mode...
         if (clear_mode && holds.length) {
-            if (!all_holds.legnth) all_holds = holds;
+            if (!all_holds.length) all_holds = holds;
             holds = holds.filter(function(h) { return h.hold.clear_me });
             hold_count = holds.length;
             return provider.arrayNotifier(holds, offset, count);

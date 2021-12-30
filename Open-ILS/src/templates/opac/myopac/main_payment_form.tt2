@@ -20,13 +20,17 @@
 [% ELSE %]
 <div id="pay_fines_now">
     [% IF last_chance %]
-        [% PROCESS "opac/myopac/last_chance_form.tt2"; %]
+      [% PROCESS "opac/myopac/last_chance_form.tt2"; %]
     [% ELSE %]
-        [% IF ctx.use_stripe %]
-            [% PROCESS "opac/myopac/stripe_payment_form.tt2"; %]
+        [% IF ctx.cc_configuration_error %]
+            [% PROCESS "opac/myopac/payment_form_error.tt2"; %]
         [% ELSE %]
-            [% PROCESS "opac/myopac/generic_payment_form.tt2"; %]
-        [% END %] <!-- of IF ctx.use_stripe -->
+            [% IF ctx.use_stripe %]
+                [% PROCESS "opac/myopac/stripe_payment_form.tt2"; %]
+            [% ELSE %]
+                [% PROCESS "opac/myopac/generic_payment_form.tt2"; %]
+            [% END %]
+        [% END %]
     [% END %]
 </div>
 [% END %] <!-- of IF ctx.fines.balance_owed <= 0 -->

@@ -1656,8 +1656,6 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'VIEW_MERGE_PROFILE', 'ppl', 'description' )),
  ( 479, 'VIEW_SERIAL_SUBSCRIPTION', oils_i18n_gettext( 479, 
     'VIEW_SERIAL_SUBSCRIPTION', 'ppl', 'description' )),
- ( 480, 'VIEW_STANDING_PENALTY', oils_i18n_gettext( 480, 
-    'VIEW_STANDING_PENALTY', 'ppl', 'description' )),
  ( 481, 'ADMIN_SERIAL_CAPTION_PATTERN', oils_i18n_gettext( 481, 
     'ADMIN_SERIAL_CAPTION_PATTERN', 'ppl', 'description' )),
  ( 482, 'ADMIN_SERIAL_DISTRIBUTION', oils_i18n_gettext( 482, 
@@ -1960,7 +1958,13 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 631, 'ADMIN_GEOLOCATION_SERVICES', oils_i18n_gettext(631,
     'Administer geographic location services', 'ppl', 'description')),
  ( 632, 'UPDATE_USER_PHOTO_URL', oils_i18n_gettext(632,
-    'Update the user photo url field in patron registration and editor', 'ppl', 'description'))
+    'Update the user photo url field in patron registration and editor', 'ppl', 'description')),
+ ( 633, 'CREATE_RECORD_NOTE', oils_i18n_gettext(633,
+    'Allow the user to create a record note', 'ppl', 'description')),
+ ( 634, 'UPDATE_RECORD_NOTE', oils_i18n_gettext(634,
+    'Allow the user to update a record note', 'ppl', 'description')),
+ ( 635, 'DELETE_RECORD_NOTE', oils_i18n_gettext(635,
+    'Allow the user to delete a record note', 'ppl', 'description'))
 ;
 
 
@@ -2218,7 +2222,10 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_AUTHORITY_RECORD_NOTES',
 			'CREATE_AUTHORITY_RECORD',
 			'DELETE_AUTHORITY_RECORD',
-			'UPDATE_AUTHORITY_RECORD');
+			'UPDATE_AUTHORITY_RECORD',
+		        'CREATE_RECORD_NOTE',
+		        'UPDATE_RECORD_NOTE',
+		        'DELETE_RECORD_NOTE');
 
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 	SELECT
@@ -2399,7 +2406,6 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_BOOKING_RESERVATION',
 			'VIEW_BOOKING_RESERVATION_ATTR_MAP',
 			'VIEW_GROUP_PENALTY_THRESHOLD',
-			'VIEW_STANDING_PENALTY',
 			'VOID_BILLING',
 			'VOLUME_HOLDS');
 
@@ -2565,7 +2571,6 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_BOOKING_RESERVATION',
 			'VIEW_BOOKING_RESERVATION_ATTR_MAP',
 			'VIEW_REPORT_OUTPUT',
-			'VIEW_STANDING_PENALTY',
 			'VOID_BILLING',
             'TRANSIT_CHECKIN_INTERVAL_BLOCK.override',
 			'VOLUME_HOLDS',
@@ -3064,6 +3069,32 @@ INSERT INTO config.usr_setting_type (
     ),
     'bool',
     'true'
+);
+
+INSERT INTO config.usr_setting_type (
+    name,
+    opac_visible,
+    label,
+    description,
+    datatype,
+    reg_default
+) VALUES (
+    'circ.collections.exempt',
+    FALSE,
+    oils_i18n_gettext(
+        'circ.collections.exempt',
+        'Collections: Exempt',
+        'cust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'circ.collections.exempt',
+        'User is exempt from collections tracking/processing',
+        'cust',
+        'description'
+    ),
+    'bool',
+    'false'
 );
 
 -- Add groups for org_unit settings
@@ -3572,9 +3603,27 @@ INSERT into config.org_unit_setting_type
         'Soft stalling interval',
         'coust', 'label'),
     oils_i18n_gettext('circ.hold_stalling.soft',
-        'How long to wait before allowing remote items to be opportunistically captured for a hold.  Example "5 days"',
+        'How long to wait before allowing opportunistic capture of holds with a pickup library other than the context item''s circulating library',
         'coust', 'description'),
     'interval', null)
+
+,( 'circ.pickup_hold_stalling.soft', 'holds',
+    oils_i18n_gettext('circ.pickup_hold_stalling.soft',
+        'Pickup Library Soft stalling interval',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.pickup_hold_stalling.soft',
+        'When set for the pickup library, this specifies that for holds with a request time age smaller than this interval only items scanned at the pickup library can be opportunistically captured. Example "5 days". This setting takes precedence over "Soft stalling interval" (circ.hold_stalling.soft) when the interval is in force.',
+        'coust', 'description'),
+    'interval', null)
+
+,( 'circ.pickup_hold_stalling.hard', 'holds',
+  oils_i18n_gettext('circ.pickup_hold_stalling.hard',
+        'Pickup Library Hard stalling interval',
+        'coust','label'),
+  oils_i18n_gettext('circ.pickup_hold_stalling.hard',
+        'When set for the pickup library, this specifies that no items with a calculated proximity greater than 0 from the pickup library can be directly targeted for this time period if there are local available copies.  Example "3 days".',
+        'coust','description'),
+  'interval', null)
 
 ,( 'circ.hold_stalling_hard', 'holds',
     oils_i18n_gettext('circ.hold_stalling_hard',
@@ -4195,6 +4244,15 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
+,( 'circ.void_item_deposit', 'circ',
+    oils_i18n_gettext('circ.void_item_deposit',
+        'Void item deposit fee on checkin',
+        'coust', 'label'),
+    oils_i18n_gettext('circ.void_item_deposit',
+        'If a deposit was charged when checking out an item, void it when the item is returned',
+        'coust', 'description'),
+    'bool', null)
+
 ,( 'circ.void_lost_proc_fee_on_checkin', 'circ',
     oils_i18n_gettext('circ.void_lost_proc_fee_on_checkin',
         'Void processing fee on lost item return',
@@ -4775,7 +4833,7 @@ INSERT into config.org_unit_setting_type
     oils_i18n_gettext('ui.patron.default_inet_access_level',
         'Default level of patrons'' internet access',
         'coust', 'description'),
-    'integer', null)
+    'link', 'cnal')
 
 ,( 'ui.patron.edit.au.active.show', 'gui',
     oils_i18n_gettext('ui.patron.edit.au.active.show',
@@ -4792,24 +4850,6 @@ INSERT into config.org_unit_setting_type
         'coust', 'label'),
     oils_i18n_gettext('ui.patron.edit.au.active.suggest',
         'The active field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
-        'coust', 'description'),
-    'bool', null)
-
-,( 'ui.patron.edit.au.alert_message.show', 'gui',
-    oils_i18n_gettext('ui.patron.edit.au.alert_message.show',
-        'Show alert_message field on patron registration',
-        'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.alert_message.show',
-        'The alert_message field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.',
-        'coust', 'description'),
-    'bool', null)
-
-,( 'ui.patron.edit.au.alert_message.suggest', 'gui',
-    oils_i18n_gettext('ui.patron.edit.au.alert_message.suggest',
-        'Suggest alert_message field on patron registration',
-        'coust', 'label'),
-    oils_i18n_gettext('ui.patron.edit.au.alert_message.suggest',
-        'The alert_message field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
         'coust', 'description'),
     'bool', null)
 
@@ -5364,22 +5404,12 @@ INSERT into config.org_unit_setting_type
 
 ,( 'ui.staff.require_initials.patron_standing_penalty', 'gui',
     oils_i18n_gettext('ui.staff.require_initials.patron_standing_penalty',
-        'Require staff initials for entry/edit of patron standing penalties and messages.',
+        'Require staff initials for entry/edit of patron standing penalties and notes.',
         'coust', 'label'),
     oils_i18n_gettext('ui.staff.require_initials.patron_standing_penalty',
-        'Appends staff initials and edit date into patron standing penalties and messages.',
+        'Require staff initials for entry/edit of patron standing penalties and notes.',
         'coust', 'description'),
     'bool', null)
-
-,( 'ui.staff.require_initials.patron_info_notes', 'gui',
-    oils_i18n_gettext('ui.staff.require_initials.patron_info_notes',
-        'Require staff initials for entry/edit of patron notes.',
-        'coust', 'label'),
-    oils_i18n_gettext('ui.staff.require_initials.patron_info_notes',
-        'Appends staff initials and edit date into patron note content.',
-        'coust', 'description'),
-    'bool', null)
-
 ,( 'ui.staff.require_initials.copy_notes', 'gui',
     oils_i18n_gettext('ui.staff.require_initials.copy_notes',
         'Require staff initials for entry/edit of copy notes.',
@@ -5719,6 +5749,14 @@ INSERT into config.org_unit_setting_type
         'The Photo URL field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.',
         'coust', 'description'),
     'bool', null)
+,( 'lib.my_account_url', 'lib',
+    oils_i18n_gettext('lib.my_account_url',
+        'My Account URL (such as "https://example.com/eg/opac/login")',
+        'coust', 'label'),
+    oils_i18n_gettext('lib.my_account_url',
+        'URL for a My Account link. Use a complete URL, such as "https://example.com/eg/opac/login".',
+        'coust', 'description'),
+    'string', null)
 ;
 
 UPDATE config.org_unit_setting_type
@@ -15387,8 +15425,8 @@ INSERT INTO action_trigger.environment (
 INSERT INTO vandelay.merge_profile (id, owner, name, replace_spec, update_bib_source) 
     VALUES (1, 1, oils_i18n_gettext(1, 'Match-Only Merge', 'vmp', 'name'), '901c', false);
 
-INSERT INTO vandelay.merge_profile (id, owner, name, preserve_spec, update_bib_source)
-    VALUES (2, 1, oils_i18n_gettext(2, 'Full Overlay', 'vmp', 'name'), '901c', true);
+INSERT INTO vandelay.merge_profile (id, owner, name, preserve_spec, update_bib_source, update_bib_editor)
+    VALUES (2, 1, oils_i18n_gettext(2, 'Full Overlay', 'vmp', 'name'), '901c', true, true);
 
 SELECT SETVAL('vandelay.merge_profile_id_seq'::TEXT, 100);
 
@@ -17056,7 +17094,7 @@ VALUES (
 'or "Other/Special Circulations") the circulation '||
 'should appear while checked out, and B. Whether the circulation should '||
 'continue to appear in the "Other" tab when checked in with '||
-'oustanding fines.  '||
+'outstanding fines.  '||
 '1 = (A) "Items", (B) "Other".  2 = (A) "Other", (B) "Other".  ' ||
 '5 = (A) "Items", (B) do not display.  6 = (A) "Other", (B) do not display.',
         'coust',
@@ -17076,7 +17114,7 @@ VALUES (
 'or "Other/Special Circulations") the circulation '||
 'should appear while checked out, and B. Whether the circulation should '||
 'continue to appear in the "Other" tab when checked in with '||
-'oustanding fines.  '||
+'outstanding fines.  '||
 '1 = (A) "Items", (B) "Other".  2 = (A) "Other", (B) "Other".  ' ||
 '5 = (A) "Items", (B) do not display.  6 = (A) "Other", (B) do not display.',
         'coust',
@@ -17096,7 +17134,7 @@ VALUES (
 'or "Other/Special Circulations") the circulation '||
 'should appear while checked out, and B. Whether the circulation should '||
 'continue to appear in the "Other" tab when checked in with '||
-'oustanding fines.  '||
+'outstanding fines.  '||
 '1 = (A) "Items", (B) "Other".  2 = (A) "Other", (B) "Other".  ' ||
 '5 = (A) "Items", (B) do not display.  6 = (A) "Other", (B) do not display.',
         'coust',
@@ -17514,6 +17552,32 @@ INSERT INTO action_trigger.environment (
 
 INSERT INTO action_trigger.event_params (event_def, param, value)
     VALUES (currval('action_trigger.event_definition_id_seq'), 'check_sms_notify', 1);
+
+UPDATE
+    action_trigger.event_definition
+SET
+    context_usr_path = 'usr',
+    context_library_path = 'circ_lib',
+    context_bib_path = 'target_copy.call_number.record',
+    context_item_path = 'target_copy'
+WHERE
+    hook IN (
+        SELECT key FROM action_trigger.hook WHERE core_type = 'circ'
+    )
+;
+
+UPDATE
+    action_trigger.event_definition
+SET
+    context_usr_path = 'usr',
+    context_library_path = 'pickup_lib',
+    context_bib_path = 'bib_rec',
+    context_item_path = 'current_copy'
+WHERE
+    hook IN (
+        SELECT key FROM action_trigger.hook WHERE core_type = 'ahr'
+    )
+;
 
 INSERT INTO config.org_unit_setting_type
 (name, grp, label, description, datatype)
@@ -21576,6 +21640,15 @@ VALUES (
         'cwst', 'label'
     )
 );
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.catalog.record.notes', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.catalog.record.notes',
+        'Grid Config: eg.grid.catalog.record.notes',
+        'cwst', 'label'
+    )
+);
 
 INSERT INTO config.global_flag (name, value, enabled, label)
 VALUES (
@@ -21591,6 +21664,20 @@ VALUES (
 
 INSERT INTO config.internal_flag (name, value, enabled) VALUES ('symspell.prefix_length', '6', TRUE);
 INSERT INTO config.internal_flag (name, value, enabled) VALUES ('symspell.max_edit_distance', '3', TRUE);
+
+INSERT into config.org_unit_setting_type
+( name, grp, label, description, datatype )
+VALUES
+( 'opac.did_you_mean.max_suggestions', 'opac',
+   oils_i18n_gettext(
+     'opac.did_you_mean.max_suggestions',
+     'Maximum number of spelling suggestions that may be offered',
+     'coust', 'label'),
+   oils_i18n_gettext(
+     'opac.did_you_mean.max_suggestions',
+     'If set to -1, provide "best" suggestion if mispelled; if set higher than 0, the maximum suggestions that can be provided; if set to 0, disable suggestions.',
+     'coust', 'description'),
+   'integer' );
 
 INSERT into config.org_unit_setting_type
 ( name, grp, label, description, datatype )
@@ -21662,7 +21749,6 @@ VALUES
      'coust', 'description'),
    'integer' );
 
-
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
 VALUES (
     'eg.staff.catalog.results.show_more', 'gui', 'bool',
@@ -21673,3 +21759,293 @@ VALUES (
     )
 );
 
+INSERT INTO config.workstation_setting_type
+    (name, grp, datatype, label)
+VALUES (
+    'eg.grid.item.event_grid', 'gui', 'object',
+    oils_i18n_gettext(
+    'eg.grid.item.event_grid',
+    'Grid Config: item.event_grid',
+    'cwst', 'label')
+), (
+    'eg.grid.patron.event_grid', 'gui', 'object',
+    oils_i18n_gettext(
+    'eg.grid.patron.event_grid',
+    'Grid Config: patron.event_grid',
+    'cwst', 'label')
+);
+
+INSERT INTO config.org_unit_setting_type
+    (grp, name, datatype, label, description, update_perm, view_perm)
+VALUES (
+    'credit',
+    'credit.processor.stripe.currency', 'string',
+    oils_i18n_gettext(
+        'credit.processor.stripe.currency',
+        'Stripe ISO 4217 currency code',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'credit.processor.stripe.currency',
+        'Use an all lowercase version of a Stripe-supported ISO 4217 currency code.  Defaults to "usd"',
+        'coust',
+        'description'
+    ),
+    (SELECT id FROM permission.perm_list WHERE code = 'ADMIN_CREDIT_CARD_PROCESSING'),
+    (SELECT id FROM permission.perm_list WHERE code = 'VIEW_CREDIT_CARD_PROCESSING')
+);
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.acq.fund.fund_debit', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.acq.fund.fund_debit',
+        'Grid Config: eg.grid.acq.fund.fund_debit',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.acq.fund.fund_transfer', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.acq.fund.fund_transfer',
+        'Grid Config: eg.grid.acq.fund.fund_transfer',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.acq.fund.fund_allocation', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.acq.fund.fund_allocation',
+        'Grid Config: eg.grid.acq.fund.fund_allocation',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.fund', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.acq.fund',
+        'Grid Config: eg.grid.admin.acq.fund',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.funding_source', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.acq.funding_source',
+        'Grid Config: eg.grid.admin.acq.funding_source',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.acq.funding_source.fund_allocation', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.acq.funding_source.fund_allocation',
+        'Grid Config: eg.grid.acq.funding_source.fund_allocation',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.acq.funding_source.credit', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.acq.funding_source.credit',
+        'Grid Config: eg.grid.acq.funding_source.credit',
+        'cwst', 'label'
+    )
+);
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.cat.volcopy.defaults', 'cat', 'object',
+    oils_i18n_gettext(
+        'eg.cat.volcopy.defaults',
+        'Holdings Editor Default Values and Visibility',
+        'cwst', 'label'
+    )
+);
+
+INSERT into config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+    VALUES (
+        'circ.primary_item_value_field',
+        'circ',
+        oils_i18n_gettext(
+            'circ.primary_item_value_field',
+            'Use Item Price or Cost as Primary Item Value',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'circ.primary_item_value_field',
+            'Expects "price" or "cost" and defaults to price.  This refers to the corresponding field on the item record and gets used in such contexts as notices, max fine values when using item price caps (setting or fine rules), and long overdue, damaged, and lost billings.',
+            'coust',
+            'description'
+        ),
+        'string'
+    );
+
+INSERT into config.org_unit_setting_type
+    (name, grp, label, description, datatype)
+    VALUES (
+        'circ.secondary_item_value_field',
+        'circ',
+        oils_i18n_gettext(
+            'circ.secondary_item_value_field',
+            'Use Item Price or Cost as Backup Item Value',
+            'coust',
+            'label'
+        ),
+        oils_i18n_gettext(
+            'circ.secondary_item_value_field',
+            'Expects "price" or "cost", but defaults to neither.  This refers to the corresponding field on the item record and is used as a second-pass fall-through value when determining an item value.  If needed, Evergreen will still look at the "Default Item Price" setting as a final fallback.',
+            'coust',
+            'description'
+        ),
+        'string'
+    );
+
+INSERT INTO config.org_unit_setting_type
+( name, grp, label, description, datatype )
+VALUES
+( 'eg.staffcat.search_filters', 'gui',
+  oils_i18n_gettext(
+    'eg.staffcat.search_filters',
+    'Staff Catalog Search Filters',
+    'coust', 'label'),
+  oils_i18n_gettext(
+    'eg.staffcat.search_filters',
+    'Array of advanced search filters to display, e.g. ["item_lang","audience","lit_form"]',
+    'coust', 'description'),
+  'array' );
+
+-- NOTE: If the template ID requires changing, beware it appears in
+-- 3 places below.
+
+INSERT INTO config.print_template 
+    (id, name, locale, active, owner, label, template) 
+VALUES (
+    4, 'hold_pull_list', 'en-US', TRUE,
+    (SELECT id FROM actor.org_unit WHERE parent_ou IS NULL),
+    oils_i18n_gettext(4, 'Hold Pull List ', 'cpt', 'label'),
+    ''
+);
+
+UPDATE config.print_template SET template = 
+$TEMPLATE$
+[%-
+    USE date;
+    SET holds = template_data;
+    # template_data is an arry of wide_hold hashes.
+-%]
+<div>
+  <style>
+    #holds-pull-list-table td { 
+      padding: 5px; 
+      border: 1px solid rgba(0,0,0,.05);
+    }
+  </style>
+  <table id="holds-pull-list-table">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Shelf Location</th>
+        <th>Call Number</th>
+        <th>Barcode/Part</th>
+      </tr>
+    </thead>
+    <tbody>
+      [% FOR hold IN holds %]
+      <tr>
+        <td>[% hold.hold_type %]</td>
+        <td style="width: 30%">[% hold.title %]</td>
+        <td style="width: 25%">[% hold.author %]</td>
+        <td>[% hold.acpl_name %]</td>
+        <td>[% hold.cn_full_label %]</td>
+        <td>[% hold.cp_barcode %][% IF hold.p_label %]/[% hold.p_label %][% END %]</td>
+      </tr>
+      [% END %]
+    </tbody>
+  </table>
+</div>
+$TEMPLATE$ WHERE id = 4;
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.circ.holds.pull_list', 'gui', 'object', 
+    oils_i18n_gettext(
+        'circ.holds.pull_list',
+        'Hold Pull List Grid Settings',
+        'cwst', 'label'
+    )
+), (
+    'circ.holds.pull_list.prefetch', 'gui', 'bool', 
+    oils_i18n_gettext(
+        'circ.holds.pull_list.prefetch',
+        'Hold Pull List Prefetch Preference',
+        'cwst', 'label'
+    )
+);
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.admin.local.container.carousel_org_unit', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.local.container.carousel_org_unit',
+        'Grid Config: eg.grid.admin.local.container.carousel_org_unit',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.container.carousel', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.container.carousel',
+        'Grid Config: eg.grid.admin.container.carousel',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.carousel_type', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.carousel_type',
+        'Grid Config: eg.grid.admin.server.config.carousel_type',
+        'cwst', 'label'
+    )
+);
+
+INSERT INTO config.org_unit_setting_type (
+    name, grp, label, description, datatype
+) VALUES (
+    'circ.staff_placed_holds_default_to_ws_ou',
+    'circ',
+    oils_i18n_gettext(
+        'circ.staff_placed_holds_default_to_ws_ou',
+        'Workstation OU is the default for staff-placed holds',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'circ.staff_placed_holds_default_to_ws_ou',
+        'For staff-placed holds, regardless of the patron preferred pickup location, the staff workstation OU is the default pickup location',
+        'coust',
+        'description'
+    ),
+    'bool'
+);
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.admin.local.triggers.atevdef', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.local.triggers.atevdef',
+        'Grid Config: eg.grid.admin.local.triggers.atevdef',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.local.triggers.atenv', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.local.triggers.atenv',
+        'Grid Config: eg.grid.admin.local.triggers.atenv',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.local.triggers.atevparam', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.local.triggers.atevparam',
+        'Grid Config: eg.grid.admin.local.triggers.atevparam',
+        'cwst', 'label'
+    )
+);

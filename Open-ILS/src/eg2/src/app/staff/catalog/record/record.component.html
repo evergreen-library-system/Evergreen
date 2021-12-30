@@ -23,6 +23,7 @@
     <div class="flex-1"></div>
     <div id='staff-catalog-bib-navigation'>
       <eg-catalog-record-actions [recordId]="recordId"
+        [isHoldable]="summary && summary.isHoldable"
         (addHoldingsRequested)="addHoldingsRequested()">
       </eg-catalog-record-actions>
     </div>
@@ -54,6 +55,12 @@
       <ngb-tab title="MARC View" i18n-title id="marc_html">
         <ng-template ngbTabContent>
           <eg-marc-html [recordId]="recordId" recordType="bib"></eg-marc-html>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Record Notes" i18n-title id="bibnotes">
+        <ng-template ngbTabContent>
+          <eg-catalog-record-notes [recordId]="recordId">
+          </eg-catalog-record-notes>
         </ng-template>
       </ngb-tab>
       <ngb-tab title="View Holds" i18n-title id="holds">
@@ -92,12 +99,6 @@
               </eg-catalog-cn-browse-results>
             </div>
           </ng-container>
-        </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Patron View" i18n-title id="catalog">
-        <ng-template ngbTabContent>
-          <eg-opac-record-detail [recordId]="recordId">
-          </eg-opac-record-detail>
         </ng-template>
       </ngb-tab>
     </ngb-tabset>

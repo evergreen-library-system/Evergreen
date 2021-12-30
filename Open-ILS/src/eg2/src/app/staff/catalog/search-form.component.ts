@@ -116,7 +116,13 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
                     this.searchTab = 'marc';
                 } else if (this.context.identSearch.isSearchable()) {
                     this.searchTab = 'ident';
-                } else if (this.context.browseSearch.isSearchable()) {
+
+                // Browse search may remain 'searchable' even though we
+                // are displaying bibs linked to a browse entry.
+                // This is so browse search paging can be added to
+                // the record list page.
+                } else if (this.context.browseSearch.isSearchable()
+                    && !this.context.termSearch.hasBrowseEntry) {
                     this.searchTab = 'browse';
                 } else if (this.context.termSearch.isSearchable()) {
                     this.searchTab = 'term';
@@ -302,6 +308,9 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     }
     showExcludeElectronic(): boolean {
         return this.staffCat.showExcludeElectronic;
+    }
+    searchFilters(): string[] {
+        return this.staffCat.searchFilters;
     }
 }
 

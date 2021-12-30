@@ -79,6 +79,7 @@
     </div>
     <div class="col-lg-3">
       <eg-combobox [entries]="formatEntries('activeQueues')"
+        #queueSelector
         id="queue-select"
         [startId]="startQueueId"
         [startIdFiresOnChange]="true"
@@ -93,6 +94,7 @@
     </div>
     <div class="col-lg-3">
       <eg-combobox [entries]="formatEntries('bibBuckets')" 
+        #bucketSelector
         id="bucket-select"
         [startId]="selectedBucket"
         [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"

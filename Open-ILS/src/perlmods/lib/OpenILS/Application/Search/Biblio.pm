@@ -1147,7 +1147,7 @@ sub staged_search {
         return {count => 0} unless (
             $search_hash and 
             $search_hash->{searches} and 
-            scalar( keys %{$search_hash->{searches}} ));
+            int(scalar( keys %{$search_hash->{searches}} )));
     }
 
     my $search_duration;
@@ -2410,7 +2410,7 @@ sub biblio_search_isbn_batch {
             }
         }
     }
-    return { ids => \@recs, count => scalar(@recs) };
+    return { ids => \@recs, count => int(scalar(@recs)) };
 }
 
 foreach my $issn_method (qw/
@@ -2871,7 +2871,17 @@ sub bib_copies {
 
     my $resp;
     while ($resp = $req->recv) {
-        $client->respond($resp->content); 
+        my $copy = $resp->content;
+
+        if ($is_staff) {
+            # last_circ is an IDL query so it cannot be queried directly
+            # via JSON query.
+            $copy->{last_circ} = 
+                new_editor()->retrieve_reporter_last_circ_date($copy->{id})
+                ->last_circ;
+        }
+
+        $client->respond($copy);
     }
 
     return undef;
@@ -3088,6 +3098,12 @@ sub catalog_record_summary {
 
     $copy_method = $self->method_lookup($copy_method); # local method
 
+    my $holdable_method = $is_meta ?
+        'open-ils.search.biblio.metarecord.has_holdable_copy':
+        'open-ils.search.biblio.record.has_holdable_copy';
+
+    $holdable_method = $self->method_lookup($holdable_method); # local method
+
     for my $rec_id (@$record_ids) {
 
         my $response = $is_meta ? 
@@ -3120,6 +3136,8 @@ sub catalog_record_summary {
             $response->{copies} = get_representative_copies(
                 $e, $rec_id, $org_id, $is_staff, $is_meta, $options);
         }
+
+        ($response->{has_holdable_copy}) = $holdable_method->run($rec_id);
 
         $client->respond($response);
     }
@@ -3288,6 +3306,78 @@ sub get_one_record_summary {
         attributes => $attributes,
         urls => get_one_rec_urls($self, $e, $org_id, $rec_id)
     };
+}
+
+__PACKAGE__->register_method(
+    method    => 'record_copy_counts_global',
+    api_name  => 'open-ils.search.biblio.record.copy_counts.global.staff',
+    signature => {
+        desc   => q/Returns a count of copies and call numbers for each org
+                    unit, including items attached to each org unit plus
+                    a sum of counts for all descendants./,
+        params => [
+            {desc => 'Record ID', type => 'number'}
+        ],
+        return => {
+            desc => 'Hash of org unit ID  => {copy: $count, call_number: $id}'
+        }
+    }
+);
+
+sub record_copy_counts_global {
+    my ($self, $client, $rec_id) = @_;
+
+    my $copies = new_editor()->json_query({
+        select => {
+            acp => [{column => 'id', alias => 'copy_id'}, 'circ_lib'],
+            acn => [{column => 'id', alias => 'cn_id'}, 'owning_lib']
+        },
+        from => {acn => {acp => {type => 'left'}}},
+        where => {
+            '+acp' => {
+                '-or' => [
+                    {deleted => 'f'},
+                    {id => undef} # left join
+                ]
+            },
+            '+acn' => {deleted => 'f', record => $rec_id}
+        }
+    });
+
+    my $hash = {};
+    my %seen_cn;
+
+    for my $copy (@$copies) {
+        my $org = $copy->{circ_lib} || $copy->{owning_lib};
+        $hash->{$org} = {copies => 0, call_numbers => 0} unless $hash->{$org};
+        $hash->{$org}->{copies}++ if $copy->{circ_lib};
+
+        if (!$seen_cn{$copy->{cn_id}}) {
+            $seen_cn{$copy->{cn_id}} = 1;
+            $hash->{$org}->{call_numbers}++;
+        }
+    }
+
+    my $sum;
+    $sum = sub {
+        my $node = shift;
+        my $h = $hash->{$node->id} || {copies => 0, call_numbers => 0};
+        delete $h->{cn_id};
+
+        for my $child (@{$node->children}) {
+            my $vals = $sum->($child);
+            $h->{copies} += $vals->{copies};
+            $h->{call_numbers} += $vals->{call_numbers};
+        }
+
+        $hash->{$node->id} = $h;
+
+        return $h;
+    };
+
+    $sum->($U->get_org_tree);
+
+    return $hash;
 }
 
 

@@ -30,6 +30,10 @@ export class GridColumnComponent implements OnInit {
     // result filtering
     @Input() filterable: boolean;
 
+    // optional initial filter values
+    @Input() initialFilterOperator: string;
+    @Input() initialFilterValue: string;
+
     // Display date and time when datatype = timestamp
     @Input() datePlusTime: boolean;
 
@@ -66,6 +70,8 @@ export class GridColumnComponent implements OnInit {
         col.disableTooltip = this.disableTooltip;
         col.isSortable = this.sortable;
         col.isFilterable = this.filterable;
+        col.filterOperator = this.initialFilterOperator;
+        col.filterValue = this.initialFilterValue;
         col.isMultiSortable = this.multiSortable;
         col.datatype = this.datatype;
         col.datePlusTime = this.datePlusTime;

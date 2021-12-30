@@ -25,6 +25,10 @@ export class StaffCatalogService {
     // Display the Exclude Electronic checkbox
     showExcludeElectronic = false;
 
+    // Advanced search filters to display
+    searchFilters: string[];
+
+    // TODO: does unapi support pref-lib for result-page copy counts?
     prefOrg: IdlObject;
 
     // Default search tab
@@ -47,6 +51,14 @@ export class StaffCatalogService {
 
     // Add digital bookplate to search options.
     enableBookplates = false;
+
+    // Cache of browse results so the browse pager is not forced to
+    // re-run the browse search on each navigation.
+    browsePagerData: any[];
+
+    // whether to redirect to record page upon a single search
+    // result
+    jumpOnSingleHit = false;
 
     constructor(
         private router: Router,

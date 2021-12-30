@@ -393,7 +393,7 @@ export class CatalogService {
     }
 
     iconFormatLabel(code: string): string {
-        if (this.ccvmMap) {
+        if (this.ccvmMap && this.ccvmMap.icon_format) {
             const ccvm = this.ccvmMap.icon_format.filter(
                 format => format.code() === code)[0];
             if (ccvm) {

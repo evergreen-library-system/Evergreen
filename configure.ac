@@ -249,7 +249,7 @@ if test "x$openils_core" = "xtrue"; then
         AC_MSG_ERROR([*** cpan not found, aborting])
     fi
 
-    AC_CHECK_PROG([YAZ],yaz-config,yes,no)
+    PKG_CHECK_MODULES([YAZ],[yaz],[YAZ=yes],[YAZ=no])
     if test $YAZ = "no"; then
         AC_MSG_ERROR([*** yaz not found, aborting])
     fi

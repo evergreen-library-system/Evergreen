@@ -18,9 +18,17 @@
 
 <div class="row ml-0 mr-0">
 
-  <a routerLink="/staff/catalog/hold/T" [queryParams]="{target: recId}">
+  <a target="_blank" href="/eg/opac/record/{{recId}}">
+    <button class="btn btn-outline-primary ml-1" i18n>Patron View</button>
+  </a>
+
+  <a routerLink="/staff/catalog/hold/T" [queryParams]="{target: recId}"
+    *ngIf="isHoldable">
     <button class="btn btn-outline-primary ml-1" i18n>Place Hold</button>
   </a>
+  <button class="btn btn-outline-secondary ml-1" *ngIf="!isHoldable" disabled i18n>
+    Place Hold
+  </button>
 
   <button class="btn btn-outline-primary ml-1" (click)="addHoldings()" i18n>
     Add Holdings

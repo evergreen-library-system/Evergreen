@@ -416,7 +416,8 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
             expire_date : cusr.expire_date(),
             alias : cusr.alias(),
             has_email : Boolean(patronSvc.current.email() && patronSvc.current.email().match(/.*@.*/)),
-            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone()),
+            juvenile : cusr.juvenile()
         };
 
         return egCore.print.print({
@@ -476,11 +477,10 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
     $scope.show_triggered_events = function(items) {
         var focus = items.length == 1;
         angular.forEach(items, function(item) {
-            var url = egCore.env.basePath +
-                      '/cat/item/' +
-                      item.target_copy().id() +
-                      '/triggered_events';
+            var url = '/eg2/staff/circ/item/event-log/' +
+                      item.target_copy().id();
             $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
+
         });
     }
 
@@ -493,11 +493,35 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
 
         return egConfirmDialog.open(msg, barcodes.join(' '), {}).result
         .then(function() {
+            window.oils_cancel_batch = false;
+            window.oils_inside_batch = true;
+            function batch_cleanup() {
+                if (window.oils_inside_batch && window.oils_op_change_within_batch) {
+                    window.oils_op_change_undo_func();
+                }
+                window.oils_inside_batch = false;
+                window.oils_op_change_within_batch = false;
+                reset_page();
+            }
             function do_one() {
                 var bc = barcodes.pop();
-                if (!bc) { reset_page(); return }
+                if (!bc) {
+                    batch_cleanup();
+                    return;
+                }
+                if (window.oils_op_change_within_batch) {
+                    window.oils_op_change_toast_func();
+                }
                 // finally -> continue even when one fails
-                egCirc.renew({copy_barcode : bc}).finally(do_one);
+                egCirc.renew({copy_barcode : bc}).finally(function() {
+                    if (!window.oils_cancel_batch) {
+                        do_one();
+                    } else {
+                        console.log('batch cancelled');
+                        batch_cleanup();
+                        return;
+                    }
+                });
             }
             do_one();
         });

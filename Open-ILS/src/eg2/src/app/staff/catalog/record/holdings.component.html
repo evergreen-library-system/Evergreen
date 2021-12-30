@@ -7,8 +7,10 @@
       <div class="input-group-prepend">
         <div class="input-group-text" i18n>Holdings Maintenance</div>
       </div>
-      <eg-org-select [initialOrg]="contextOrg" 
-        persistKey="catalog.holdings" (onChange)="contextOrgChanged($event)">
+      <eg-org-select [initialOrg]="contextOrg"
+        persistKey="catalog.holdings"
+        (onChange)="contextOrgChanged($event)"
+        [orgClassCallback]="orgClassCallback">
       </eg-org-select>
     </div>
   </div>
@@ -47,6 +49,8 @@
 <eg-mark-damaged-dialog #markDamagedDialog></eg-mark-damaged-dialog>
 <eg-mark-missing-dialog #markMissingDialog></eg-mark-missing-dialog>
 <eg-copy-alerts-dialog #copyAlertsDialog></eg-copy-alerts-dialog>
+<eg-copy-tags-dialog #copyTagsDialog></eg-copy-tags-dialog>
+<eg-copy-notes-dialog #copyNotesDialog></eg-copy-notes-dialog>
 <eg-replace-barcode-dialog #replaceBarcode></eg-replace-barcode-dialog>
 <eg-delete-holding-dialog #deleteHolding></eg-delete-holding-dialog>
 <eg-bucket-dialog #bucketDialog></eg-bucket-dialog>
@@ -117,7 +121,17 @@
 
     <eg-grid-toolbar-action
       i18n-group group="Add" i18n-label label="Add Item Alerts"
-      (onClick)="openItemNotes($event, 'create')">
+      (onClick)="openItemAlerts($event, 'create')">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Add" i18n-label label="Add/Manage Item Tags"
+      (onClick)="openItemTags($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-group group="Add" i18n-label label="Add/Manage Item Notes"
+      (onClick)="openItemNotes($event)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
@@ -161,7 +175,7 @@
     
     <eg-grid-toolbar-action
       i18n-group group="Edit" i18n-label label="Edit Item Alerts"
-      (onClick)="openItemNotes($event, 'manage')">
+      (onClick)="openItemAlerts($event, 'manage')">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
@@ -299,6 +313,12 @@
     <eg-grid-column i18n-label label="Active/Create Date" 
       path="copy.active_date" datatype="timestamp">
     </eg-grid-column>
+    <eg-grid-column i18n-label label="Total Circ Count"
+      path="copy.total_circ_count.circ_count">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Last Circ Date"
+      path="copy.last_circ.last_circ" datatype="timestamp">
+    </eg-grid-column>
     <eg-grid-column i18n-label label="Age Hold Protection" 
       path="copy.age_protect.name" name="age_protect.name"></eg-grid-column>
     <eg-grid-column i18n-label label="Item Price" 
@@ -322,6 +342,9 @@
     <eg-grid-column i18n-label label="Last Inventory Workstation" 
       path="copy.latest_inventory.inventory_workstation.name" 
       name="latest_inventory.inventory_workstation.name" [hidden]="true">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="OPAC Visible?" path="copy.opac_visible" 
+      name="opac_visible" datatype="bool" [hidden]="true">
     </eg-grid-column>
   </eg-grid>
 </div>

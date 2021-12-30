@@ -6,6 +6,7 @@ import {UnapiService} from '@eg/share/catalog/unapi.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
+import {PermService} from '@eg/core/perm.service';
 
 export const NAMESPACE_MAPS = {
     'mods':     'http://www.loc.gov/mods/v3',
@@ -50,6 +51,7 @@ export class BibRecordSummary {
     displayHighlights: {[name: string]: string | string[]} = {};
     eResourceUrls: EResourceUrl[] = [];
     copies: any[];
+    isHoldable: boolean;
 
     constructor(record: IdlObject, orgId: number, orgDepth?: number) {
         this.id = Number(record.id());
@@ -91,15 +93,21 @@ export class BibRecordService {
     // Cache of bib editor / creator objects
     // Assumption is this list will be limited in size.
     userCache: {[id: number]: IdlObject};
+    allowUnfillableHolds: boolean;
 
     constructor(
         private idl: IdlService,
         private net: NetService,
         private org: OrgService,
         private unapi: UnapiService,
-        private pcrud: PcrudService
+        private pcrud: PcrudService,
+        private perm: PermService
     ) {
         this.userCache = {};
+        this.perm.hasWorkPermHere(['PLACE_UNFILLABLE_HOLD'])
+            .then(perms => {
+                this.allowUnfillableHolds = perms.PLACE_UNFILLABLE_HOLD;
+            });
     }
 
     getBibSummary(id: number,
@@ -129,6 +137,10 @@ export class BibRecordService {
             summary.firstCallNumber = bibSummary.first_call_number;
             summary.prefOuHoldingsSummary = bibSummary.pref_ou_copy_counts;
 
+            summary.isHoldable = bibSummary.record.deleted() === 'f'
+                && bibSummary.has_holdable_copy
+                || this.allowUnfillableHolds;
+
             return summary;
         }));
     }
@@ -155,6 +167,10 @@ export class BibRecordService {
             summary.copies = metabibSummary.copies;
             summary.firstCallNumber = metabibSummary.first_call_number;
             summary.prefOuHoldingsSummary = metabibSummary.pref_ou_copy_counts;
+
+            summary.isHoldable = metabibSummary.record.deleted() === 'f'
+                && metabibSummary.has_holdable_copy
+                || this.allowUnfillableHolds;
 
             return summary;
         }));

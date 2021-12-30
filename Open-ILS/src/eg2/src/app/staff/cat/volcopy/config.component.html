@@ -1,0 +1,581 @@
+<div class="d-flex">
+  <h3 class="mt-3" i18n>Holdings Preferences</h3>
+  <div class="flex-1"></div>
+  <div i18n class="font-italic">Changes are saved automatically.</div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header" i18n>Holdings Display Preferences</div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" 
+                  id="hide-classification-column" 
+                  [(ngModel)]="volcopy.defaults.hidden.classification">
+                <label class="form-check-label" for="hide-classification-column" i18n>
+                  Hide Call Number Classification Column
+                </label>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" 
+                  id="hide-prefix-column" 
+                  [(ngModel)]="volcopy.defaults.hidden.prefix">
+                <label class="form-check-label" for="hide-prefix-column" i18n>
+                  Hide Call Number Prefix Column
+                </label>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" 
+                  id="hide-suffix-column" 
+                  [(ngModel)]="volcopy.defaults.hidden.suffix">
+                <label class="form-check-label" for="hide-suffix-column" i18n>
+                  Hide Call Number Suffix Column
+                </label>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" 
+                  id="hide-generate_barcodes-column" 
+                  [(ngModel)]="volcopy.defaults.hidden.generate_barcodes">
+                <label class="form-check-label" for="hide-generate_barcodes-column" i18n>
+                  Hide Generate Barcodes
+                </label>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" 
+                  id="hide-use_checkdigit-column" 
+                  [(ngModel)]="volcopy.defaults.hidden.use_checkdigit">
+                <label class="form-check-label" for="hide-use_checkdigit-column" i18n>
+                  Hide Use Checkdigit
+                </label>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <!--
+                Copy_number_vc distinguishes from copy_number so the field
+                can appear in the volcopy UI and/or attr editor independently.
+              -->
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" 
+                  id="hide-copy_number_vc-column" 
+                  [(ngModel)]="volcopy.defaults.hidden.copy_number_vc">
+                <label class="form-check-label" for="hide-copy_number_vc-column" i18n>
+                  Hide Item Number
+                </label>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="hide-copy_part-column" 
+                  [(ngModel)]="volcopy.defaults.hidden.copy_part">
+                <label class="form-check-label" for="hide-copy_part-column" i18n>
+                  Hide Item Part
+                </label>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" 
+                  id="volcopy-unified-interface" 
+                  [(ngModel)]="volcopy.defaults.values.unified_display">
+                <label class="form-check-label" for="volcopy-unified-interface" i18n>
+                  Unified Holdings and Item Attributes Display
+                </label>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header" i18n>Holdings Creation Defaults</div>
+          <ul class="list-group list-group-flush p-2">
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-lg-4">
+                  <label for="default-classification" i18n>Default Classification</label>
+                </div>
+                <div class="col-lg-8">
+                  <eg-combobox
+                    domId="default-classification"
+                    [selectedId]="volcopy.defaults.values.classification || 1"
+                    [smallFormControl]="true"
+                    (onChange)="volcopy.defaults.values.classification = $event ? $event.id : null">
+                    <eg-combobox-entry *ngFor="let cls of volcopy.commonData.acn_class"
+                      [entryId]="cls.id()" [entryLabel]="cls.name()">
+                    </eg-combobox-entry>
+                  </eg-combobox>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-lg-4">
+                  <label for="default-prefix" i18n>Default Prefix</label>
+                </div>
+                <div class="col-lg-8">
+                  <eg-combobox
+                    domId="default-prefix"
+                    [smallFormControl]="true"
+                    [startId]="volcopy.defaults.values.prefix || -1"
+                    (onChange)="volcopy.defaults.values.prefix = $event ? $event.id : null">
+                    <eg-combobox-entry 
+                      entryLabel="<None>" i18n-entryLabel [entryId]="-1">
+                    </eg-combobox-entry>
+                    <eg-combobox-entry *ngFor="let pfx of volcopy.commonData.acn_prefix"
+                      [entryId]="pfx.id()" [entryLabel]="pfx.label()">
+                    </eg-combobox-entry>
+                  </eg-combobox>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-lg-4">
+                  <label for="default-suffix" i18n>Default Suffix</label>
+                </div>
+                <div class="col-lg-8">
+                  <eg-combobox
+                    domId="default-suffix"
+                    [selectedId]="volcopy.defaults.values.suffix || -1"
+                    [smallFormControl]="true"
+                    (onChange)="volcopy.defaults.values.suffix = $event ? $event.id : null">
+                    <eg-combobox-entry 
+                      entryLabel="<None>" i18n-entryLabel [entryId]="-1">
+                    </eg-combobox-entry>
+                    <eg-combobox-entry *ngFor="let sfx of volcopy.commonData.acn_suffix"
+                      [entryId]="sfx.id()" [entryLabel]="sfx.label()">
+                    </eg-combobox-entry>
+                  </eg-combobox>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="p-2"/>
+<h3 i18n>Item Attribute Settings</h3>
+
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header" i18n>Item Attributes Behavior</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="circ_lib_mod_with_owning_lib-column" 
+              [(ngModel)]="volcopy.defaults.values.circ_lib_mod_with_owning_lib">
+            <label class="form-check-label" 
+              for="circ_lib_mod_with_owning_lib-column" i18n>
+              Change Circ Lib When Owning Lib Changes
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <eg-org-select
+              domId="statcat_filter"
+              placeholder="Stat Cat Filter..." i18n-placeholder
+              [initialOrgId]="volcopy.defaults.values.statcat_filter"
+              (onChange)="volcopy.defaults.values.statcat_filter = $event ? $event.id() : null">
+            </eg-org-select>
+            <label class="ml-2" for="statcat_filter" i18n>
+              Default Stat Cat Library Filter
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<hr class="p-2"/>
+
+<h3 i18n>Hide Item Attributes</h3>
+<span class="font-italic" i18n>
+  Selected Fields Will be <span class="font-weight-bold">Hidden</span>
+  from the Item Attributes Form.
+</span>
+
+<div class="row d-flex pb-5">
+
+  <!-- COLUMN 1 -->
+  <div class="flex-1 p-1">
+    <div class="card">
+      <div class="card-header" i18n>Identification</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-status-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.status">
+            <label class="form-check-label" for="show-status-attr" i18n>
+              Status
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-barcode-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.barcode">
+            <label class="form-check-label" for="show-barcode-attr" i18n>
+              Barcode
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-create_date-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.create_date">
+            <label class="form-check-label" for="show-create_date-attr" i18n>
+              Creation Date
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-active_date-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.active_date">
+            <label class="form-check-label" for="show-active_date-attr" i18n>
+              Activation Date
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-creator-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.creator">
+            <label class="form-check-label" for="show-creator-attr" i18n>
+              Creator
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-edit_date-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.edit_date">
+            <label class="form-check-label" for="show-edit_date-attr" i18n>
+              Last Edit Date
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-editor-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.editor">
+            <label class="form-check-label" for="show-editor-attr" i18n>
+              Last Editor
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- COLUMN 2 -->
+  <div class="flex-1 p-1">
+    <div class="card">
+      <div class="card-header" i18n>Location</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-location-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.location">
+            <label class="form-check-label" for="show-location-attr" i18n>
+              Location
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-circ_lib-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.circ_lib">
+            <label class="form-check-label" for="show-circ_lib-attr" i18n>
+              Circulating Library
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-owning_lib-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.owning_lib">
+            <label class="form-check-label" for="show-owning_lib-attr" i18n>
+              Owning Library
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-copy_number-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.copy_number">
+            <label class="form-check-label" for="show-copy_number-attr" i18n>
+              Copy Number 
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- COLUMN 3 -->
+
+  <div class="flex-1 p-1">
+    <div class="card">
+      <div class="card-header" i18n>Circulation</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-circulate-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.circulate">
+            <label class="form-check-label" for="show-circulate-attr" i18n>
+              Circulate
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-holdable-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.holdable">
+            <label class="form-check-label" for="show-holdable-attr" i18n>
+              Holdable
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-age_protect-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.age_protect">
+            <label class="form-check-label" for="show-age_protect-attr" i18n>
+              Aged-Based Hold Protection
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-floating-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.floating">
+            <label class="form-check-label" for="show-floating-attr" i18n>
+              Floating
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-loan_duration-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.loan_duration">
+            <label class="form-check-label" for="show-loan_duration-attr" i18n>
+              Loan Duration
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-fine_level-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.fine_level">
+            <label class="form-check-label" for="show-fine_level-attr" i18n>
+              Fine Level
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-circ_as_type-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.circ_as_type">
+            <label class="form-check-label" for="show-circ_as_type-attr" i18n>
+              Circulate As Type
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-circ_modifier-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.circ_modifier">
+            <label class="form-check-label" for="show-circ_modifier-attr" i18n>
+              Circulation Modifier
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- COLUMN 4 -->
+
+  <div class="flex-1 p-1">
+    <div class="card">
+      <div class="card-header" i18n>Miscellaneous</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-copy_alerts-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.copy_alerts">
+            <label class="form-check-label" for="show-copy_alerts-attr" i18n>
+              Item Alerts
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-deposit-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.deposit">
+            <label class="form-check-label" for="show-deposit-attr" i18n>
+              Deposit
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-deposit_amount-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.deposit_amount">
+            <label class="form-check-label" for="show-deposit_amount-attr" i18n>
+              Deposit Amount
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-price-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.price">
+            <label class="form-check-label" for="show-price-attr" i18n>
+              Price
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-opac_visible-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.opac_visible">
+            <label class="form-check-label" for="show-opac_visible-attr" i18n>
+              OPAC Visible
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-ref-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.ref">
+            <label class="form-check-label" for="show-ref-attr" i18n>
+              Reference
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-cost-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.cost">
+            <label class="form-check-label" for="show-cost-attr" i18n>
+              Cost 
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-mint_condition-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.mint_condition">
+            <label class="form-check-label" for="show-mint_condition-attr" i18n>
+              Quality
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- COLUMN 5 -->
+
+  <div class="flex-1 p-1">
+    <div class="card">
+      <div class="card-header" i18n>Statistics</div>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-copy_tags-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.copy_tags">
+            <label class="form-check-label" for="show-copy_tags-attr" i18n>
+              Add Item Tags
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-copy_notes-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.copy_notes">
+            <label class="form-check-label" for="show-copy_notes-attr" i18n>
+              Add Item Notes
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-statcat_filter-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.statcat_filter">
+            <label class="form-check-label" for="show-statcat_filter-attr" i18n>
+              Stat Cat Filter
+            </label>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" 
+              id="show-statcats-attr" 
+              [(ngModel)]="volcopy.defaults.hidden.statcats">
+            <label class="form-check-label" for="show-statcats-attr" i18n>
+              Statistical Categories
+            </label>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+

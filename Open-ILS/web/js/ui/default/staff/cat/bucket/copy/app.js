@@ -262,18 +262,19 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.addToBucket = function(recs) {
         if (recs.length == 0) return;
         bucketSvc.bucketNeedsRefresh = true;
-
+        var promise = $q.when();
         angular.forEach(recs,
             function(rec) {
                 var item = new egCore.idl.ccbi();
                 item.bucket(bucketSvc.currentBucket.id());
                 item.target_copy(rec.id);
-                egCore.net.request(
-                    'open-ils.actor',
-                    'open-ils.actor.container.item.create', 
-                    egCore.auth.token(), 'copy', item
-                ).then(function(resp) {
-
+                promise = promise.then(function() {
+                    return egCore.net.request(
+                        'open-ils.actor',
+                        'open-ils.actor.container.item.create', 
+                        egCore.auth.token(), 'copy', item
+                    );
+                }).then(function(resp) {
                     // HACK: add the IDs of the added items so that the size
                     // of the view list will grow (and update any UI looking at
                     // the list size).  The data stored is inconsistent, but since
@@ -515,9 +516,9 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore) {
 
 .controller('ViewCtrl',
        ['$scope','$q','$routeParams','$timeout','$window','$uibModal','bucketSvc','egCore','egOrg','egUser',
-        'ngToast','egConfirmDialog',
+        'ngToast','egConfirmDialog','egProgressDialog',
 function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc , egCore , egOrg , egUser ,
-         ngToast , egConfirmDialog) {
+         ngToast , egConfirmDialog , egProgressDialog) {
 
     $scope.setTab('view');
     $scope.bucketId = $routeParams.id;
@@ -758,11 +759,13 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
             egCore.strings.CONFIRM_DELETE_COPY_BUCKET_ITEMS_FROM_CATALOG,
             '', {}
         ).result.then(function() {
+            egProgressDialog.open();
             var fleshed_copies = [];
-            var promises = [];
+
+            var chain = $q.when();
             angular.forEach(copies, function(i) {
-                promises.push(
-                    egCore.net.request(
+                chain = chain.then(function() {
+                     return egCore.net.request(
                         'open-ils.search',
                         'open-ils.search.asset.copy.fleshed2.retrieve',
                         i.id
@@ -770,10 +773,11 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
                         copy.ischanged(1);
                         copy.isdeleted(1);
                         fleshed_copies.push(copy);
-                    })
-                );
+                    });
+                });
             });
-            $q.all(promises).then(function() {
+
+            chain.finally(function() {
                 egCore.net.request(
                     'open-ils.cat',
                     'open-ils.cat.asset.copy.fleshed.batch.update',
@@ -799,6 +803,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
                     }
                     bucketSvc.bucketNeedsRefresh = true;
                     drawBucket();
+                    egProgressDialog.close();
                 });
             });
         });

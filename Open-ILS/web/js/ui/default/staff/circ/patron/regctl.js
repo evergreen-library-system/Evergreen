@@ -164,6 +164,15 @@ angular.module('egCoreMod')
             egCore.auth.token(), usrname);
     }
 
+    // compare string with email address of loaded user, return true if different
+    service.check_email_different = function(email) {
+        if (service.existing_patron) {
+            if (email != service.existing_patron.email()) {
+                return true;
+            }
+        }
+    }
+
     //service.check_grp_app_perm = function(grp_id) {
 
     // determine which user groups our user is not allowed to modify
@@ -393,8 +402,6 @@ angular.module('egCoreMod')
             'ui.patron.edit.au.claims_returned_count.suggest',
             'ui.patron.edit.au.claims_never_checked_out_count.show',
             'ui.patron.edit.au.claims_never_checked_out_count.suggest',
-            'ui.patron.edit.au.alert_message.show',
-            'ui.patron.edit.au.alert_message.suggest',
             'ui.patron.edit.aua.post_code.regex',
             'ui.patron.edit.aua.post_code.example',
             'ui.patron.edit.aua.county.require',
@@ -852,6 +859,7 @@ angular.module('egCoreMod')
             card : card,
             cards : [card],
             home_ou : egCore.org.get(egCore.auth.user().ws_ou()),
+            net_access_level : service.org_settings['ui.patron.default_inet_access_level'],
             stat_cat_entries : [],
             waiver_entries : [],
             groups : [],
@@ -1007,6 +1015,8 @@ angular.module('egCoreMod')
                 new_addr.usr = user.id;
                 new_addr.isnew = true;
                 new_addr.valid = true;
+                new_addr.pending = new_addr.pending === 't';
+                new_addr.within_city_limits = new_addr.within_city_limits == 't';
                 user.addresses.push(new_addr);
                 return new_addr;
             }
@@ -1266,7 +1276,7 @@ angular.module('egCoreMod')
 .controller('PatronRegCtrl',
        ['$scope','$routeParams','$q','$uibModal','$window','egCore',
         'patronSvc','patronRegSvc','egUnloadPrompt','egAlertDialog',
-        'egWorkLog', '$timeout','ngToast',
+        'egWorkLog', '$timeout', 'ngToast',
 function($scope , $routeParams , $q , $uibModal , $window , egCore ,
          patronSvc , patronRegSvc , egUnloadPrompt, egAlertDialog ,
          egWorkLog, $timeout, ngToast) {
@@ -1606,6 +1616,29 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     // generates a random 4-digit password
     $scope.generate_password = function() {
         $scope.patron.passwd = Math.floor(Math.random()*9000) + 1000;
+    }
+
+    $scope.send_password_reset_link = function() {
+       if (!$scope.patron.email || $scope.patron.email == '') {
+            egAlertDialog.open(egCore.strings.REG_PASSWORD_RESET_REQUEST_NO_EMAIL);
+            return;
+        } else if (patronRegSvc.check_email_different($scope.patron.email)) {
+            egAlertDialog.open(egCore.strings.REG_PASSWORD_RESET_REQUEST_DIFFERENT_EMAIL);
+            return;
+        }
+        // we have an email address, fire the reset request
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.patron.password_reset.request',
+            'barcode', $scope.patron.card.barcode, $scope.patron.email
+        ).then(function(resp) {
+            if (resp == '1') { // request okay
+                ngToast.success(egCore.strings.REG_PASSWORD_RESET_REQUEST_SUCCESSFUL);
+            } else {
+                var evt = egCore.evt.parse(resp);
+                egAlertDialog.open(evt.desc);
+            }
+        });
     }
 
     $scope.set_expire_date = function() {

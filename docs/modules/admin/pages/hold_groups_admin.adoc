@@ -8,7 +8,7 @@ There are several administrative elements described below which relate to the xr
 A new Library Setting allows for hold placement times to be randomized
 among list members for fair distribution. It can be found at *Administration -> Local
 Administration -> Library Settings Editor -> Randomize group hold
-order*.
+order*. If unset this will default to TRUE.
 
 New Action Triggers allow for Evergreen to generate email or SMS
 notifications to patrons when a new hold is placed through Hold Groups.

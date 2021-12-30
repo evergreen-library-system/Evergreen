@@ -226,11 +226,6 @@ export class AdminPageComponent implements OnInit {
         if (!this.dataSource) {
             this.initDataSource();
         }
-
-        // TODO: pass the row activate handler via the grid markup
-        this.grid.onRowActivate.subscribe(
-            (idlThing: IdlObject) => this.showEditDialog(idlThing)
-        );
     }
 
     checkCreatePerms() {
@@ -275,7 +270,7 @@ export class AdminPageComponent implements OnInit {
                     this.idlClass, searchOps, {fleshSelectors: true});
             }
 
-            const search: any = new Array();
+            const search: any[] = new Array();
             const orgFilter: any = {};
 
             if (this.orgField && (this.searchOrgs || this.contextOrg)) {
@@ -290,13 +285,15 @@ export class AdminPageComponent implements OnInit {
                 });
             });
 
-            // FIXME - do we want to remove this, whose only present user
-            // is the booking grid, in favor of switching it to the built-in
+            // FIXME - do we want to remove this, which is used in several
+            // secondary admin pages, in favor of switching it to the built-in
             // grid filtering?
             if (this.gridFilters) {
                 // Lay the URL grid filters over our search object.
                 Object.keys(this.gridFilters).forEach(key => {
-                    search[key] = this.gridFilters[key];
+                    const urlProvidedFilters = {};
+                    urlProvidedFilters[key] = this.gridFilters[key];
+                    search.push(urlProvidedFilters);
                 });
             }
 

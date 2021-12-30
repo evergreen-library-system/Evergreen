@@ -1,0 +1,16 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h3 class="modal-title" i18n>Attribute Set {{attrSet?.label()}}: Providers</h3>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <eg-edi-attr-set-providers [attrSetId]="attrSetId"></eg-edi-attr-set-providers>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warning" *ngIf="!canUpdate"
+      (click)="close()" i18n>Close</button>
+  </div>
+</ng-template>

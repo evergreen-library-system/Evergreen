@@ -161,7 +161,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     }
 
     $scope.show_triggered_events = function() {
-        $location.path('/cat/item/' + $scope.args.copyId + '/triggered_events');
+        window.open('/eg2/staff/circ/item/event-log/' + $scope.args.copyId, '_blank');
     }
 
     $scope.show_item_holds = function() {
@@ -469,7 +469,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     $scope.context.show_triggered_events = function() {
         var item = copyGrid.selectedItems()[0];
         if (item) 
-            $location.path('/cat/item/' + item.id + '/triggered_events');
+            window.open('/eg2/staff/circ/item/event-log/' + item.id, '_blank');
     }
 
     function gatherSelectedRecordIds () {
@@ -613,7 +613,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     $scope.selectedHoldingsItemStatusTgrEvt= function() {
         var item = copyGrid.selectedItems()[0];
         if (item)
-            $location.path('/cat/item/' + item.id + '/triggered_events');
+            window.open('/eg2/staff/circ/item/event-log/' + item.id, '_blank');
     }
 
     $scope.selectedHoldingsItemStatusHolds= function() {
@@ -1112,46 +1112,44 @@ console.debug($scope.copy_alert_count);
         $scope.total_circs = 0;
         $scope.total_circs_this_year = 0;
         $scope.total_circs_prev_year = 0;
+        $scope.circ_popover_placement = 'top';
         if (!copyId) return;
 
         egCore.pcrud.search('circbyyr', 
             {copy : copyId}, null, {atomic : true})
 
         .then(function(counts) {
-            $scope.circ_counts = counts;
+            var this_year = new Date().getFullYear();
+            var prev_year = this_year - 1;
 
-            angular.forEach(counts, function(count) {
-                $scope.total_circs += Number(count.count());
-            });
+            $scope.circ_counts = counts.reduce(function(circ_counts, circbyyr) {
+                var count = Number(circbyyr.count());
+                var year = circbyyr.year();
 
-            var this_year = counts.filter(function(c) {
-                return c.year() == new Date().getFullYear();
-            });
+                var index = circ_counts.findIndex(function(existing_count) {
+                    return existing_count.year === year;
+                });
 
-            $scope.total_circs_this_year = (function() {
-                total = 0;
-                if (this_year.length == 2) {
-                    total = (Number(this_year[0].count()) + Number(this_year[1].count()));
-                } else if (this_year.length == 1) {
-                    total = Number(this_year[0].count());
+                if (index === -1) {
+                    circ_counts.push({count: count, year: year});
+                } else {
+                    circ_counts[index].count += count;
                 }
-                return total;
-            })();
 
-            var prev_year = counts.filter(function(c) {
-                return c.year() == new Date().getFullYear() - 1;
-            });
-
-            $scope.total_circs_prev_year = (function() {
-                total = 0;
-                if (prev_year.length == 2) {
-                    total = (Number(prev_year[0].count()) + Number(prev_year[1].count()));
-                } else if (prev_year.length == 1) {
-                    total = Number(prev_year[0].count());
+                $scope.total_circs += count;
+                if (this_year === year) {
+                    $scope.total_circs_this_year += count;
                 }
-                return total;
-            })();
+                if (prev_year === year) {
+                    $scope.total_circs_prev_year += count;
+                }
 
+                return circ_counts;
+            }, []);
+
+            if ($scope.circ_counts.length > 15) {
+                $scope.circ_popover_placement = 'right';
+            }
         });
     }
 
@@ -1322,7 +1320,7 @@ console.debug($scope.copy_alert_count);
     }
 
     $scope.context.show_triggered_events = function() {
-        $location.path('/cat/item/' + copyId + '/triggered_events');
+        window.open('/eg2/staff/circ/item/event-log/' + copyId, '_blank');
     }
 
     loadCopy().then(loadTabData);

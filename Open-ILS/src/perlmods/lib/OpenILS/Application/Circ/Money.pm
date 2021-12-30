@@ -103,23 +103,32 @@ sub process_stripe_or_bop_payment {
 
     if ($cc_args->{processor} eq 'Stripe') { # Stripe
         my $stripe = Business::Stripe->new(-api_key => $psettings->{secretkey});
-        $stripe->charges_create(
-            amount => ($total_paid * 100), # Stripe takes amount in pennies
-            card => $cc_args->{stripe_token},
-            description => $cc_args->{note}
-        );
-
+        $stripe->api('post','payment_intents/' . $cc_args->{stripe_payment_intent});
         if ($stripe->success) {
-            $logger->info("Stripe payment succeeded");
-            return OpenILS::Event->new(
-                "SUCCESS", payload => {
-                    map { $_ => $stripe->success->{$_} } qw(
-                        invoice customer balance_transaction id created card
-                    )
-                }
-            );
+            $logger->debug('Stripe payment intent retrieved');
+            my $intent = $stripe->success;
+            if ($intent->{status} eq 'succeeded') {
+                $logger->info('Stripe payment succeeded');
+                return OpenILS::Event->new(
+                    'SUCCESS', payload => {
+                        invoice => $intent->{invoice},
+                        customer => $intent->{customer},
+                        balance_transaction => 'N/A',
+                        id => $intent->{id},
+                        created => $intent->{created},
+                        card => 'N/A'
+                    }
+                );
+            } else {
+                $logger->info('Stripe payment failed');
+                return OpenILS::Event->new(
+                    'CREDIT_PROCESSOR_DECLINED_TRANSACTION',
+                    payload => $intent->{last_payment_error}
+                );
+            }
         } else {
-            $logger->info("Stripe payment failed");
+            $logger->debug('Stripe payment intent not retrieved');
+            $logger->info('Stripe payment failed');
             return OpenILS::Event->new(
                 "CREDIT_PROCESSOR_DECLINED_TRANSACTION",
                 payload => $stripe->error  # XXX what happens if this contains
@@ -472,61 +481,20 @@ sub make_payments {
             # credit
             $cred = -$cred;
             $credit += $cred;
-            my $circ = $e->retrieve_action_circulation(
-                [
-                    $transid,
-                    {
-                        flesh => 1,
-                        flesh_fields => {circ => ['target_copy','billings']}
-                    }
-                ]
-            ); # Flesh the copy, so we can monkey with the status if
-               # necessary.
 
-            # Whether or not we close the transaction. We definitely
-            # close if no circulation transaction is present,
-            # otherwise we check if the circulation is in a state that
-            # allows itself to be closed.
-            if (!$circ || $CC->can_close_circ($e, $circ)) {
-                $trans = $e->retrieve_money_billable_transaction($transid);
-                $trans->xact_finish("now");
-                if (!$e->update_money_billable_transaction($trans)) {
-                    return _recording_failure(
-                        $e, "update_money_billable_transaction() failed",
-                        $payment, $cc_payload
-                    )
-                }
-
-                # If we have a circ, we need to check if the copy
-                # status is lost or long overdue.  If it is then we
-                # check org_unit_settings for the copy owning library
-                # and adjust and possibly adjust copy status to lost
-                # and paid.
-                if ($circ && ($circ->stop_fines eq 'LOST' || $circ->stop_fines eq 'LONGOVERDUE')) {
-                    # We need the copy to check settings and to possibly
-                    # change its status.
-                    my $copy = $circ->target_copy();
-                    # Library where we'll check settings.
-                    my $check_lib = $copy->circ_lib();
-
-                    # check the copy status
-                    if (($copy->status() == OILS_COPY_STATUS_LOST || $copy->status() == OILS_COPY_STATUS_LONG_OVERDUE)
-                            && $U->is_true($U->ou_ancestor_setting_value($check_lib, 'circ.use_lost_paid_copy_status', $e))) {
-                        $copy->status(OILS_COPY_STATUS_LOST_AND_PAID);
-                        if (!$e->update_asset_copy($copy)) {
-                            return _recording_failure(
-                                $e, "update_asset_copy_failed()",
-                                $payment, $cc_payload
-                            )
-                        }
-                    }
-                }
+            # Attempt to close the transaction.
+            my $close_xact_fail = $CC->maybe_close_xact($e, $transid);
+            if ($close_xact_fail) {
+                return _recording_failure(
+                    $e, $close_xact_fail->{message},
+                    $payment, $cc_payload
+                );
             }
         }
 
         # Urgh, clean up this mega-function one day.
         if ($cc_processor eq 'Stripe' and $approval_code and $cc_payload) {
-            $payment->cc_number($cc_payload->{card}{last4});
+            $payment->cc_number($cc_payload->{card}); # not actually available :)
         }
 
         $payment->approval_code($approval_code) if $approval_code;
@@ -1057,14 +1025,9 @@ sub adjust_bills_to_zero_manual {
 
         # now we see if we can close the transaction
         # same logic as make_payments();
-        my $circ = $e->retrieve_action_circulation($xact_id);
-        if (!$circ or $CC->can_close_circ($e, $circ)) {
-            # we don't check to see if the xact is already closed.  since the
-            # xact had a negative balance, it should not have been closed, so
-            # assume 'now' is the correct close time regardless.
-            my $trans = $e->retrieve_money_billable_transaction($xact_id);
-            $trans->xact_finish("now");
-            $e->update_money_billable_transaction($trans) or return $e->die_event;
+        my $close_xact_fail = $CC->maybe_close_xact($e, $xact_id);
+        if ($close_xact_fail) {
+            return $close_xact_fail->{evt};
         }
     }
 

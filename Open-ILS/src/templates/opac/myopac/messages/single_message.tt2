@@ -30,6 +30,13 @@
                     class='color_4 light_border'>[% l("Date") %]</td>
                 <td class='myopac_message_date'>[% date.format(ctx.parse_datetime(ctx.patron_messages.0.create_date), DATE_FORMAT); %]</td>
             </tr>
+            [% IF ctx.patron_messages.0.edit_date %]
+            <tr>
+                <td width='30%'
+                    class='color_4 light_border'>[% l("Edit Date") %]</td>
+                <td class='myopac_message_date'>[% date.format(ctx.parse_datetime(ctx.patron_messages.0.edit_date), DATE_FORMAT); %]</td>
+            </tr>
+            [% END %]
             <tr>
                 <td width='30%'
                     class='color_4 light_border'>[% l("Library") %]</td>

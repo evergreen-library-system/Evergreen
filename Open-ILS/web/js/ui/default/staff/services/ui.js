@@ -937,7 +937,7 @@ function($uibModal , $interpolate , egCore) {
         },
         template:
             '<div class="input-group">'+
-                '<input placeholder="{{placeholder}}" type="text" ng-disabled="egDisabled" class="form-control" ng-model="selected" ng-change="makeOpen()" focus-me="focusMe">'+
+                '<input placeholder="{{placeholder}}" type="text" ng-disabled="egDisabled" class="form-control" ng-model="selected" ng-change="makeOpen()" focus-me="focusMe" ng-click="inputClick()">'+
                 '<div class="input-group-btn" uib-dropdown ng-class="{open:isopen}">'+
                     '<button type="button" ng-click="showAll()" ng-disabled="egDisabled" class="btn btn-default" uib-dropdown-toggle><span class="caret"></span></button>'+
                     '<ul uib-dropdown-menu class="dropdown-menu-right">'+
@@ -957,8 +957,11 @@ function($uibModal , $interpolate , egCore) {
 
                 $scope.compare = function (ex, act) {
                     if (act === null || act === undefined) return true;
-                    if (act.toString) act = act.toString();
-                    return new RegExp(act.toLowerCase()).test(ex)
+                    if (act.toString) {
+                        act = act.toString();
+                        act = act.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&'); // modify string to make sure characters like [ are accepted in the regex
+                    }
+                    return new RegExp(act.toLowerCase()).test(ex.toLowerCase());
                 }
 
                 $scope.showAll = function () {
@@ -976,6 +979,13 @@ function($uibModal , $interpolate , egCore) {
                     if ($scope.selected && $scope.selected.length > 0) $scope.complete_list = true;
                     if (!$scope.selected || $scope.selected.length == 0) $scope.complete_list = false;
                     $scope.makeOpen();
+                }
+
+                $scope.inputClick = function() {
+                    if ($scope.isopen) {
+                        $scope.isopen = false;
+                        $scope.clickedclosed = null;
+                    }
                 }
 
                 $scope.makeOpen = function () {
@@ -1484,6 +1494,8 @@ https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-inpu
         transclude : true,
         scope : {
             ngModel : '=',
+            useOpacLabel : '@',
+            maxDepth : '@',
         },
         require: 'ngModel',
         templateUrl : './share/t_share_depth_selector',
@@ -1497,17 +1509,26 @@ https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-inpu
                 var scratch = [];
                 angular.forEach(list, function(aout) {
                     var depth = parseInt(aout.depth());
-                    if (depth in scratch) {
-                        scratch[depth].push(aout.name());
-                    } else {
-                        scratch[depth] = [ aout.name() ]
+                    if (typeof $scope.maxDepth == 'undefined' || depth <= $scope.maxDepth) {
+                        var text = $scope.useOpacLabel ? aout.opac_label() : aout.name();
+                        if (depth in scratch) {
+                            scratch[depth].push(text);
+                        } else {
+                            scratch[depth] = [ text ]
+                        }
                     }
                 });
                 scratch.forEach(function(val, idx) {
                     $scope.values.push({ id : idx,  name : scratch[idx].join(' / ') });
                 });
             });
-        }]
+        }],
+        link : function(scope, elm, attrs) {
+            if ('useOpacLabel' in attrs)
+                scope.useOpacLabel = true;
+            if ('maxDepth' in attrs) // I feel like I'm doing this wrong :)
+                scope.maxDepth = parseInt(attrs.maxdepth);
+        }
     }
 })
 

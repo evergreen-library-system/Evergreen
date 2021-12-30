@@ -36,8 +36,6 @@ export class CopiesComponent implements OnInit {
 
     cellTextGenerator: GridCellTextGenerator;
 
-    openHoldingsEditor: (item: number) => void;
-
     constructor(
         private course: CourseService,
         private net: NetService,
@@ -91,11 +89,6 @@ export class CopiesComponent implements OnInit {
                 this.copyGrid.reload();
             }
         });
-
-        this.openHoldingsEditor = (item: number) => {
-            window.open('/eg/staff/cat/item/' + item + '/edit', '_blank');
-        };
-
     }
 
     orgName(orgId: number): string {

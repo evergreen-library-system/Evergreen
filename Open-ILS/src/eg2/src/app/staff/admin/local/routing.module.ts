@@ -54,6 +54,10 @@ const routes: Routes = [{
     loadChildren: () =>
       import('./survey/survey.module').then(m => m.SurveyModule)
 }, {
+    path: 'action_trigger/event_definition',
+    loadChildren: () =>
+      import('./triggers/triggers.module').then(m => m.TriggersModule)
+}, {
     path: ':schema/:table',
     component: BasicAdminPageComponent
 }];

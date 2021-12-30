@@ -2,6 +2,13 @@
 <eg-patron-search-dialog #patronSearch>
 </eg-patron-search-dialog>
 
+<eg-alert-dialog #activeDateAlert
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Invalid Hold Activation Date"
+  dialogBody="Hold activation date {{activeDateYmd}} is not valid.
+    Please chose a date in the future">
+</eg-alert-dialog>
+
 <div class="row">
   <div class="col-lg-1">
     <button class="btn btn-info label-with-material-icon"
@@ -19,7 +26,8 @@
     <ng-container *ngIf="!badBarcode">
       <h3 i18n>Place Hold
         <small *ngIf="user">
-        ({{user.family_name()}}, {{user.first_given_name()}})
+        ({{user.pref_family_name() ? user.pref_family_name() : user.family_name()}}, 
+        {{user.pref_first_given_name() ? user.pref_first_given_name() :user.first_given_name()}})
         </small>
       </h3>
     </ng-container>
@@ -54,8 +62,9 @@
             <input type='text' class="form-control" name="userBarcode"
               [disabled]="holdFor!='patron'" id='patron-barcode'
               aria-label="Patron barcode" i18n-aria-label
-              (keyup.enter)="userBarcodeChanged()"
-              [(ngModel)]="userBarcode" (change)="userBarcodeChanged()"/>
+              (ngModelChange)="debounceUserBarcodeLookup($event)"
+              (paste)="debounceUserBarcodeLookup($event)"
+              [(ngModel)]="userBarcode"/>
             <div class="input-group-append">
               <button class="btn btn-outline-dark" (click)="userBarcodeChanged()">Submit</button>
             </div>
@@ -94,9 +103,13 @@
           </div>
         </div>
         <div class="col-lg-6">
-          <eg-date-select [(ngModel)]="activeDate" name='active-date'
-            (onChangeAsIso)="activeDateSelected($event)" [disabled]="!suspend">
-          </eg-date-select>
+          <div [ngClass]="{'border border-danger rounded': activeDateInvalid}">
+            <eg-date-select [(ngModel)]="activeDate" name='active-date'
+              (onChangeAsYmd)="activeDateYmd = $event"
+              (onChangeAsDate)="setActiveDate($event)"
+              (onChangeAsIso)="activeDateSelected($event)" [disabled]="!suspend">
+            </eg-date-select>
+          </div>
         </div>
       </div>
       <div class="row mt-2" *ngIf="multiHoldsActive">
@@ -172,7 +185,8 @@
                   <label for="smsValue" class="input-group-text" i18n>SMS Number</label>
                 </div>
                 <input type="text" class="form-control" [disabled]="!notifySms"
-                  id="smsValue" name="smsValue" [(ngModel)]="smsValue"/>
+                  id="smsValue" name="smsValue" [(ngModel)]="smsValue"
+                  [required]="notifySms"/>
               </div>
             </div>
           </li>
@@ -182,7 +196,7 @@
             </div>
             <div class="flex-1">
               <eg-combobox [disabled]="!notifySms" #smsCbox
-                domId="smsCarriers"
+                domId="smsCarriers" [required]="notifySms"
                 placeholder="SMS Carriers" i18n-placeholder
                 [entries]="smsCarriers">
               </eg-combobox>
@@ -190,8 +204,7 @@
           </li>
           <li class="list-group-item">
             <button class="btn btn-success" (click)="placeHolds()"
-              [disabled]="!user || placeHoldsClicked" i18n>Place Hold(s)</button>
-
+              [disabled]="!readyToPlaceHolds()" i18n>Place Hold(s)</button>
             <button class="btn btn-outline-dark ml-2" (click)="resetForm()" i18n>Reset</button>
           </li>
         </ul><!-- col -->

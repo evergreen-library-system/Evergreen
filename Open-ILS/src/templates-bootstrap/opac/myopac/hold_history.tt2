@@ -50,6 +50,7 @@
         <table id='acct_holds_hist_header' class='table table-hover table-bordered miniTable holdHistoryTable' title="[% l('History of items on hold') %]">
             <thead>
                 <tr>
+                    <th>[% l("Cover") %]</th>
                     <th><span>[% l('Title') %]</span></th>
                     <th><span>[% l('Author') %]</span></th>
                     <th> <span>[% l('Format') %]</span></th>
@@ -64,7 +65,17 @@
                     ahr = hold.hold.hold %]
 
                 <tr>
-
+                    [%  IF hold.ATTRS.issns.0;
+                            row_isbnissn = hold.ATTRS.issns.0;
+                        ELSIF hold.ATTRS.isbns.0;
+                            row_isbnissn = hold.ATTRS.isbns.0;
+                        ELSE;
+                            row_isbnissn = '';
+                        END;
+                        row_rec_id = hold.hold.bre_id;
+                        row_title = hold.ATTRS.title;
+                        PROCESS show_cover;
+                    %]
                     <td>
                     <span class="sr-only">Title</span>
                         <div>

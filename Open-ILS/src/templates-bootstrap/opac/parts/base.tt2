@@ -8,7 +8,7 @@
         [% ELSIF ctx.authtime AND !ctx.is_staff %]
         <meta http-equiv="refresh" content="[% ctx.authtime %]; url=[% ctx.home_page %]" />
         [% END %]
-        <meta name = "viewport" content = "initial-scale = 1.0">
+        <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
         <!--Added bootstrap dependancies-->
         <link rel="stylesheet" href="[% ctx.media_prefix %]/opac/deps/node_modules/bootstrap/dist/css/bootstrap.min.css[% ctx.cache_key %]">
         <link rel="stylesheet"  href="[% ctx.media_prefix %]/opac/deps/node_modules/@fortawesome/fontawesome-free/css/all.css[% ctx.cache_key %]" />
@@ -53,6 +53,13 @@
         [% PROCESS 'opac/parts/stripe.tt2' %]
 <script  src="[% ctx.media_prefix %]/opac/deps/node_modules/jquery/dist/jquery.min.js"></script>
 
+		<script>
+			$(document).ready(function(){
+				$("#loginModal").on('shown.bs.modal', function(){
+					$(this).find('#username_field').focus();
+				});
+			});
+		</script>
 
     </head>
     <body[% IF want_dojo; ' class="tundra d-flex flex-column min-vh-100"'; ELSE; ' class="tundra d-flex flex-column min-vh-100"';  END %]>

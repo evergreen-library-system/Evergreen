@@ -1,0 +1,35 @@
+= Transit List =
+:toc:
+
+indexterm:[Transit List]
+
+The *Transit List* allows you list items in transit to and from a given location. 
+
+To access the *Transit List* go to *Administration* -> *Local Administration* ->  *Transit List*. 
+
+The following options are available to work with the transits.
+
+* _Add Items to Bucket_, add the items to a bucket.
+* _Edit Item Attributes_, edit any items attribute. 
+* _Cancel Transit_, cancel the transit of the item. 
+* _Print Transit_, prints a list of transits. This uses the "Transit List" in the print templates. 
+
+== Transits to a location ==
+
+image::transit_list/transit_list_to.png[Transit List of item in transit to]
+
+To show a list of items in transit to a library:
+
+. Choose the *Transit To* option
+. Select the library in the *Library* drop down. 
+. Choose the sending date range of the items in transit to the selected library. 
+
+== Transits from a location ==
+
+image::transit_list/transit_list_from.png[Transit List of item in transit from]
+
+To show a list of items in transit from a library:
+
+. Choose the *Transit From* option
+. Select the library in the *Library* drop down. 
+. Choose the sending date range of the items in transit from the selected library. 

@@ -100,7 +100,11 @@
                         <input type="checkbox" name="message_id" value="[% message.id %]"
                             [% html_text_attr('title', l('Select message [_1]', message.title)) %]/>
                         </td>
+                        [% IF message.edit_date %]
+                        <td>[% date.format(ctx.parse_datetime(message.edit_date), DATE_FORMAT); %]</td>
+                        [% ELSE %]
                         <td>[% date.format(ctx.parse_datetime(message.create_date), DATE_FORMAT); %]</td>
+                        [% END %]
                         <td>[% message.library | html %]</td>
                         <td><a href="[% mkurl('messages', { single => 1, message_id => message.id } ) %]">[% message.title | html %]</a></td>
                     </tr>

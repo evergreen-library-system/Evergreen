@@ -43,7 +43,7 @@ sub apply_penalty_to_patron {
     $penalty->set_date('now');
     $penalty->staff($staff->id());
     $penalty->org_unit(1); # Consortium-wide.
-    $penalty->note('LP 1592891 SIP standing penalties test');
+    #$penalty->note('LP 1592891 SIP standing penalties test');
     my $r = $apputils->simplereq(
         'open-ils.actor',
         'open-ils.actor.user.penalty.apply',

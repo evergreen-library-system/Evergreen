@@ -14,7 +14,7 @@
 # truckload to verify that everything would continue to work if
 # we turn it on across the board.
 
-use Test::More tests => 48;
+use Test::More tests => 47;
 use Test::Warn;
 use DateTime::TimeZone;
 use DateTime::Format::ISO8601;
@@ -24,7 +24,6 @@ use_ok( 'OpenILS::Utils::Configure' );
 use_ok( 'OpenILS::Utils::Cronscript' );
 use_ok( 'OpenILS::Utils::CStoreEditor' );
 use_ok( 'OpenILS::Utils::Fieldmapper' );
-use_ok( 'OpenILS::Utils::ISBN' );
 use_ok( 'OpenILS::Utils::Lockfile' );
 use_ok( 'OpenILS::Utils::MFHDParser' );
 use_ok( 'OpenILS::Utils::MFHD' );

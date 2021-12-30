@@ -169,7 +169,7 @@ sub refresh_container_from_carousel_definition {
     foreach my $bib (@bibs) {
         container::biblio_record_entry_bucket_item->create({ bucket => $bucket, target_biblio_record_entry => $bib, pos => $i++ });
     }
-    return scalar(@bibs);
+    return int(scalar(@bibs));
 }
 
 __PACKAGE__->register_method(

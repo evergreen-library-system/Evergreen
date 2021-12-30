@@ -23,6 +23,7 @@ export interface ComboboxEntry {
   freetext?: boolean;
   userdata?: any; // opaque external value; ignored by this component.
   fm?: IdlObject;
+  disabled?: boolean;
 }
 
 @Directive({
@@ -47,6 +48,7 @@ export class IdlClassTemplateDirective {
   }]
 })
 export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterViewInit, OnChanges {
+    static domIdAuto = 0;
 
     selected: ComboboxEntry;
     click$: Subject<string>;
@@ -55,6 +57,8 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
     @ViewChild('instance', { static: true }) instance: NgbTypeahead;
     @ViewChild('defaultDisplayTemplate', { static: true}) defaultDisplayTemplate: TemplateRef<any>;
     @ViewChildren(IdlClassTemplateDirective) idlClassTemplates: QueryList<IdlClassTemplateDirective>;
+
+    @Input() domId = 'eg-combobox-' + ComboboxComponent.domIdAuto++;
 
     // Applies a name attribute to the input.
     // Useful in forms.
@@ -69,11 +73,25 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
 
     @Input() inputSize: number = null;
 
+    // If true, applies form-control-sm CSS
+    @Input() smallFormControl = false;
+
     // Add a 'required' attribute to the input
     isRequired: boolean;
     @Input() set required(r: boolean) {
         this.isRequired = r;
     }
+    // and a 'mandatory' synonym, as an issue
+    // has been observed in at least Firefox 88.0.1
+    // where the left border indicating whether a required
+    // value has been set or not is displayed in the
+    // container of the combobox, not just the dropdown
+    @Input() set mandatory(r: boolean) {
+        this.isRequired = r;
+    }
+
+    // Array of entry identifiers to disable in the selector
+    @Input() disableEntries: any[] = [];
 
     // Disable the input
     isDisabled: boolean;
@@ -86,6 +104,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
     // unless startIdFiresOnChange is set to true.
     @Input() startId: any = null;
     @Input() idlClass: string;
+    @Input() idlBaseQuery: any = null;
     @Input() startIdFiresOnChange: boolean;
 
     // Allow the selected entry ID to be passed via the template
@@ -110,7 +129,8 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                     this.entrylist = [{
                         id: id,
                         label: this.getFmRecordLabel(rec),
-                        fm: rec
+                        fm: rec,
+                        disabled : this.disableEntries.includes(id)
                     }];
                     this.selected = this.entrylist.filter(e => e.id === id)[0];
                 });
@@ -205,7 +225,8 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                     return fm.course_number() + ': ' + fm.name();
                     break;
                 case 'acqf':
-                    return fm.code() + ' (' + fm.year() + ')';
+                    return fm.code() + ' (' + fm.year() + ')' +
+                           ' (' + this.getOrgShortname(fm.org()) + ')';
                     break;
                 case 'acpl':
                     return fm.name() + ' (' + this.getOrgShortname(fm.owning_lib()) + ')';
@@ -236,7 +257,10 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
 
             this.asyncDataSource = term => {
                 const field = this.idlField;
-                const args = {};
+                let args = {};
+                if (this.idlBaseQuery) {
+                    args = this.idlBaseQuery;
+                }
                 const extra_args = { order_by : {} };
                 args[field] = {'ilike': `%${term}%`}; // could -or search on label
                 extra_args['order_by'][this.idlClass] = field;
@@ -279,7 +303,16 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
         if (!firstTime) {
             if ('selectedId' in changes) {
                 if (!changes.selectedId.currentValue) {
-                    this.selected = null;
+
+                    // In allowFreeText mode, selectedId will be null even
+                    // though a freetext value may be present in the combobox.
+                    if (this.allowFreeText) {
+                        if (this.selected && !this.selected.freetext) {
+                            this.selected = null;
+                        }
+                    } else {
+                        this.selected = null;
+                    }
                 }
             }
             if ('idlClass' in changes) {
@@ -457,10 +490,22 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                 (entry: ComboboxEntry) => this.addAsyncEntry(entry),
                 err => {},
                 ()  => {
-                    observer.next(searchTerm);
+                    observer.next(term);
                     observer.complete();
                 }
             );
+        });
+    }
+
+    // NgbTypeahead doesn't offer a way to style the dropdown
+    // button directly, so we have to reach up and style it ourselves.
+    applyDisableStyle() {
+        this.disableEntries.forEach(id => {
+            const node = document.getElementById(`${this.domId}-${id}`);
+            if (node) {
+                const button = node.parentNode as HTMLElement;
+                button.classList.add('disabled');
+            }
         });
     }
 
@@ -487,10 +532,21 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                 // click action occurred.
                 if (term === '') { return []; }
 
-                // In sync-data mode, a click displays the full list.
-                if (term === '_CLICK_' && !this.asyncDataSource) {
-                    return this.entrylist;
+                // Clicking always displays the full list.
+                if (term === '_CLICK_') {
+                    if (this.asyncDataSource) {
+                        term = '';
+                    } else {
+                        // Give the typeahead a chance to open before applying
+                        // the disabled entry styling.
+                        setTimeout(() => this.applyDisableStyle());
+                        return this.entrylist;
+                    }
                 }
+
+                // Give the typeahead a chance to open before applying
+                // the disabled entry styling.
+                setTimeout(() => this.applyDisableStyle());
 
                 // Filter entrylist whose labels substring-match the
                 // text entered.

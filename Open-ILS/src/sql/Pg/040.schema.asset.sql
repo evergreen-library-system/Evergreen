@@ -128,21 +128,6 @@ CREATE TABLE asset.latest_inventory (
 );
 CREATE INDEX latest_inventory_copy_idx ON asset.latest_inventory (copy);
 
-CREATE TABLE asset.opac_visible_copies (
-  id        BIGSERIAL primary key,
-  copy_id   BIGINT, -- copy id
-  record    BIGINT,
-  circ_lib  INTEGER
-);
-COMMENT ON TABLE asset.opac_visible_copies IS $$
-Materialized view of copies that are visible in the OPAC, used by
-search.query_parser_fts() to speed up OPAC visibility checks on large
-databases.  Contents are maintained by a set of triggers.
-$$;
-CREATE INDEX opac_visible_copies_idx1 on asset.opac_visible_copies (record, circ_lib);
-CREATE INDEX opac_visible_copies_copy_id_idx on asset.opac_visible_copies (copy_id);
-CREATE UNIQUE INDEX opac_visible_copies_once_per_record_idx on asset.opac_visible_copies (copy_id, record);
-
 CREATE OR REPLACE FUNCTION asset.acp_status_changed()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -480,6 +465,8 @@ CREATE INDEX asset_call_number_label_sortkey ON asset.call_number(oils_text_as_b
 CREATE UNIQUE INDEX asset_call_number_label_once_per_lib ON asset.call_number (record, owning_lib, label, prefix, suffix) WHERE deleted = FALSE OR deleted IS FALSE;
 CREATE INDEX asset_call_number_label_sortkey_browse ON asset.call_number(oils_text_as_bytea(label_sortkey), oils_text_as_bytea(label), id, owning_lib) WHERE deleted IS FALSE OR deleted = FALSE;
 CREATE RULE protect_cn_delete AS ON DELETE TO asset.call_number DO INSTEAD UPDATE asset.call_number SET deleted = TRUE WHERE OLD.id = asset.call_number.id;
+CREATE RULE protect_acn_id_neg1 AS ON UPDATE TO asset.call_number WHERE OLD.id = -1 DO INSTEAD NOTHING;
+
 CREATE TRIGGER asset_label_sortkey_trigger
     BEFORE UPDATE OR INSERT ON asset.call_number
     FOR EACH ROW EXECUTE PROCEDURE asset.label_normalizer();
@@ -950,9 +937,11 @@ DECLARE
     copy_id BIGINT;
 BEGIN
     EXECUTE 'SELECT ($1).' || quote_ident(TG_ARGV[0]) INTO copy_id USING NEW;
-    PERFORM * FROM asset.copy WHERE id = copy_id;
-    IF NOT FOUND THEN
-        RAISE EXCEPTION 'Key (%.%=%) does not exist in asset.copy', TG_TABLE_SCHEMA, TG_TABLE_NAME, copy_id;
+    IF copy_id IS NOT NULL THEN
+        PERFORM * FROM asset.copy WHERE id = copy_id;
+        IF NOT FOUND THEN
+            RAISE EXCEPTION 'Key (%.%=%) does not exist in asset.copy', TG_TABLE_SCHEMA, TG_TABLE_NAME, copy_id;
+        END IF;
     END IF;
     RETURN NULL;
 END;
@@ -1143,10 +1132,11 @@ CREATE TABLE asset.course_module_course_materials (
 
 CREATE TABLE asset.course_module_term (
     id              SERIAL  PRIMARY KEY,
-    name            TEXT    UNIQUE NOT NULL,
+    name            TEXT NOT NULL,
     owning_lib      INT REFERENCES actor.org_unit (id),
 	start_date      TIMESTAMP WITH TIME ZONE,
-	end_date        TIMESTAMP WITH TIME ZONE
+	end_date        TIMESTAMP WITH TIME ZONE,
+    CONSTRAINT cmt_once_per_owning_lib UNIQUE (owning_lib, name)
 );
 
 CREATE TABLE asset.course_module_term_course_map (

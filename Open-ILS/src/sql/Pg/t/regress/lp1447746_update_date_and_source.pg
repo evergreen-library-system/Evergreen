@@ -23,8 +23,8 @@ UPDATE actor.usr
     SET card = CURRVAL('actor.card_id_seq')
     WHERE id = CURRVAL('actor.usr_id_seq');
 
-INSERT INTO vandelay.merge_profile (owner, name, preserve_spec, update_bib_source)
-    VALUES (1, 'TEST', '901c', TRUE);
+INSERT INTO vandelay.merge_profile (owner, name, preserve_spec, update_bib_source, update_bib_editor)
+    VALUES (1, 'TEST', '901c', TRUE, TRUE);
 
 --XXX: Do we need to create a custom item_attr_def?
 --     If def 1 was deleted from an install, this will break
@@ -85,7 +85,8 @@ SELECT is(
 --------------------------------
 
 UPDATE vandelay.merge_profile
-   SET update_bib_source = FALSE
+   SET update_bib_source = FALSE,
+       update_bib_editor = FALSE
    WHERE name = 'TEST';
 
 INSERT INTO biblio.record_entry (id, source, edit_date, last_xact_id, marc)

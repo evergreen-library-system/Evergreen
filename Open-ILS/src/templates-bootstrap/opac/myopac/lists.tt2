@@ -296,6 +296,9 @@
 
                     </th>
                     <th class="list_entry">
+                        [% l("Cover") %]
+                    </th>
+                    <th class="list_entry">
                         <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {sort=> (CGI.param('sort') == 'titlesort' ? 'titlesort.descending' : 'titlesort')}) %]">[% l('Title') %]</a>
                     </th>
                     <th class="list_entry">
@@ -332,6 +335,17 @@
                     <td class="list_checkbox">
                         <input type="checkbox" name="selected_item" value="[% item.id %]" bbag='[% bbag.id %]'/>
                     </td>
+                    [%  IF attrs.issns.0; 
+                            row_isbnissn = attrs.issns.0;
+                        ELSIF attrs.0;
+                            row_isbnissn = attrs.isbns.0;
+                        ELSE;
+                            row_isbnissn = '';
+                        END;
+                        row_rec_id = rec_id;
+                        row_title = attrs.title;
+                        PROCESS show_cover;
+                    %]
                     <td class="list_entry" data-label="[% l('Title') %]">
                         <a href="[% mkurl(ctx.opac_root _ '/record/' _ rec_id, {}, ['edit_notes', 'bbid']) %]">[% attrs.title | html %]</a>
                     </td>

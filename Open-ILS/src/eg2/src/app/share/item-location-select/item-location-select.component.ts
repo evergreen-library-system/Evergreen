@@ -30,13 +30,18 @@ import {StringComponent} from '@eg/share/string/string.component';
 })
 export class ItemLocationSelectComponent
     implements OnInit, AfterViewInit, ControlValueAccessor {
+    static domIdAuto = 0;
 
     // Limit copy locations to those owned at or above org units where
     // the user has work permissions for the provided permission code.
     @Input() permFilter: string;
 
     // Limit copy locations to those owned at or above this org unit.
-    @Input() contextOrgId: number;
+    private _contextOrgId: number;
+    @Input() set contextOrgId(value: number) {
+        this._contextOrgId = value;
+        this.ngOnInit();
+    }
 
     @Input() orgUnitLabelField = 'shortname';
 
@@ -44,6 +49,9 @@ export class ItemLocationSelectComponent
     @Output() valueChange: EventEmitter<IdlObject>;
 
     @Input() required: boolean;
+
+    @Input() domId = 'eg-item-location-select-' +
+        ItemLocationSelectComponent.domIdAuto++;
 
     @ViewChild('comboBox', {static: false}) comboBox: ComboboxComponent;
     @ViewChild('unsetString', {static: false}) unsetString: StringComponent;
@@ -149,21 +157,34 @@ export class ItemLocationSelectComponent
         return this.pcrud.retrieve('acpl', id).toPromise()
         .then(loc => {
             this.cache[loc.id()] = loc;
-            this.comboBox.entries.push(
+            this.comboBox.addAsyncEntry(
                 {id: loc.id(), label: loc.name(), userdata: loc});
         });
     }
 
     setFilterOrgs(): Promise<number[]> {
-        if (this.permFilter) {
-            return this.perm.hasWorkPermAt([this.permFilter], true)
-                .then(values => this.filterOrgs = values[this.permFilter]);
+        const org = this._contextOrgId || this.auth.user().ws_ou();
+        const contextOrgIds = this.org.ancestors(org, true);
+
+        if (!this.permFilter) {
+            return Promise.resolve(this.filterOrgs = contextOrgIds);
         }
 
-        const org = this.contextOrgId || this.auth.user().ws_ou();
-        this.filterOrgs = this.org.ancestors(this.contextOrgId, true);
+        return this.perm.hasWorkPermAt([this.permFilter], true)
+        .then(values => {
+            // Always limit the org units to /at most/ those within
+            // scope of the context org ID.
 
-        return Promise.resolve(this.filterOrgs);
+            const permOrgIds = values[this.permFilter];
+            const trimmedOrgIds = [];
+            permOrgIds.forEach(orgId => {
+                if (contextOrgIds.includes(orgId)) {
+                    trimmedOrgIds.push(orgId);
+                }
+            });
+
+            return this.filterOrgs = trimmedOrgIds;
+        });
     }
 
     orgName(orgId: number): string {

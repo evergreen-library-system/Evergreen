@@ -26,33 +26,42 @@
     [% END %]
 
 <div class='container'>
+	<div class="table table-borderless table-sm">
+		<div class="row">
+			<div class="col-sm w-50">
+				<label for='username_field' class="lbl1" >[% l('Library Card Number') %]
+				<a href="#" title="[% INCLUDE "opac/parts/login/username_hint.tt2" %]" data-html="true" data-toggle="tooltip">
+				<i class="fas fa-question-circle"></i></a></label>
+			</div>
+			<div class="col-sm w-50">
+				<label for="password_field" class="lbl1" >[% l('PIN') %]
+				<a href="#" title="[% INCLUDE "opac/parts/login/password_hint.tt2" %]" data-html="true" data-toggle="tooltip">
+                <i class="fas fa-question-circle"></i>
+                </a></label>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm w-50">
+				<input class="form-control" type='text' id="username_field" name="username"/>
+			</div>
+			<div class="col-sm w-50">
+				<input class="form-control" id="password_field" name="password" type="password"/>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm w-50">
+				<a href='[% mkurl(ctx.opac_root _ '/register', {}, 1) %]'>[% l('Request A Card') %]</a>
+			</div>
+			<div class="col-sm w-50">
+				[% IF reset_password == 'true' %]
+				<a href='[% mkurl(ctx.opac_root _ '/password_reset', {}, 1) %]'>[% l('Forgot Your Password?') %]  </a>
+				[% END %]
+			</div>
+		</div>
+	</div>
+
     <div class="mx-auto row py-4">
-        <div class='col-md-6'>
-            <label for='username_field' class="lbl1" >[% l('Library Card Number') %]
-            <a href="#" title="[% INCLUDE "opac/parts/login/username_hint.tt2" %]" data-html="true" data-toggle="tooltip">
-            <i class="fas fa-question-circle"></i></a></label> <br>
-            <div class="input_bg mb-2">
-                <input class="form-control" type='text' id="username_field" name="username"/>
-            </div>
-               <a href='[% mkurl(ctx.opac_root _ '/register', {}, 1) %]'>[% l('Request A Card') %]</a>
-            <br>
 
-        </div>
-        <div class='col-md-6'>
-            <label for="password_field" class="lbl1" >[% l('PIN') %]
-            <a href="#" title="[% INCLUDE "opac/parts/login/password_hint.tt2" %]" data-html="true" data-toggle="tooltip">
-                        <i class="fas fa-question-circle"></i>
-                    </a></label><br>
-
-            <div class="input_bg mb-2">
-                <input class="form-control" id="password_field" name="password" type="password"/>
-            </div>
-           [% IF reset_password == 'true' %]
-            <a href='[% mkurl(ctx.opac_root _ '/password_reset', {}, 1) %]'>[% l('Forgot Your Password?') %]  </a>
-            [% END %]
-            <br>
-
-        </div>
         <div style="clear: both; padding-top: 15px;" class="col-12">
         [%
             redirect = CGI.param('redirect_to');

@@ -11,6 +11,7 @@ use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::Cache;
 use OpenILS::Utils::DateTime qw/:datetime/;
 use Digest::MD5 qw(md5_hex);
+use Business::Stripe;
 use Data::Dumper;
 $Data::Dumper::Indent = 0;
 use DateTime;
@@ -583,6 +584,7 @@ sub load_myopac_messages {
             title       => $aum->title,
             message     => $aum->message,
             create_date => $aum->create_date,
+            edit_date   => $aum->edit_date,
             is_read     => defined($aum->read_date) ? 1 : 0,
             library     => $aum->sending_lib->name,
         };
@@ -2048,8 +2050,8 @@ sub fetch_user_circs {
         flesh => 3,
         flesh_fields => {
             circ => ['target_copy'],
-            acp => ['call_number'],
-            acn => ['record','owning_lib']
+            acp => ['call_number','parts'],
+            acn => ['record','owning_lib','prefix','suffix']
         }
     };
 
@@ -2196,8 +2198,8 @@ sub fetch_user_circ_history {
         flesh => 3,
         flesh_fields => {
             auch => ['target_copy','source_circ'],
-            acp => ['call_number'],
-            acn => ['record']
+            acp => ['call_number','parts'],
+            acn => ['record','prefix','suffix']
         },
     );
 
@@ -2316,8 +2318,29 @@ sub load_myopac_hold_history {
 sub load_myopac_payment_form {
     my $self = shift;
     my $r;
+    my $e = $self->editor;
 
-    $r = $self->prepare_fines(undef, undef, [$self->cgi->param('xact'), $self->cgi->param('xact_misc')]) and return $r;
+    $r = $self->prepare_fines(undef, undef, [$self->cgi->param('xact'), $self->cgi->param('xact_misc')]);
+
+    if ( ! $self->cgi->param('last_chance') # only do this once
+        && $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.enabled')
+        && $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.default') eq 'Stripe') {
+        my $skey = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.secretkey');
+        my $currency = $self->ctx->{get_org_setting}->($e->requestor->home_ou, 'credit.processor.stripe.currency');
+        my $stripe = Business::Stripe->new(-api_key => $skey);
+        my $intent = $stripe->api('post', 'payment_intents',
+            amount                => $self->ctx->{fines}->{balance_owed} * 100,
+            currency              => $currency || 'usd'
+        );
+        if ($stripe->success) {
+            $self->ctx->{stripe_client_secret} = $stripe->success()->{client_secret};
+        } else {
+            $logger->error('Error initializing Stripe: ' . Dumper($stripe->error));
+            $self->ctx->{cc_configuration_error} = 1;
+        }
+    }
+
+    if ($r) { return $r; }
     $r = $self->prepare_extended_user_info and return $r;
 
     return Apache2::Const::OK;
@@ -2384,7 +2407,7 @@ sub load_myopac_pay_init {
     $cc_args->{$_} = $self->cgi->param($_) for (qw/
         number cvv2 expire_year expire_month billing_first
         billing_last billing_address billing_city billing_state
-        billing_zip stripe_token
+        billing_zip stripe_payment_intent stripe_client_secret
     /);
 
     my $cache_args = {
@@ -2615,7 +2638,7 @@ sub load_myopac_main {
     my $offset = $self->cgi->param('offset') || 0;
     $self->ctx->{search_ou} = $self->_get_search_lib();
     $self->ctx->{user}->notes(
-        $self->editor->search_actor_usr_note({
+        $self->editor->search_actor_usr_message({
             usr => $self->ctx->{user}->id,
             pub => 't'
         })

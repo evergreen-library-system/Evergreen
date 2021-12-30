@@ -1,0 +1,3 @@
+<div class="warning_box">
+    <big><strong>[% l('We are unable to process credit card payments at this time. We apologize for the inconvenience. Please contact the library for further assistance.') %]</strong></big>
+</div>

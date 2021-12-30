@@ -387,7 +387,6 @@ var CHECK_USERNAME				= 'open-ils.actor:open-ils.actor.username.exists';
 var FETCH_CIRC_BY_ID				= 'open-ils.circ:open-ils.circ.retrieve';
 var FETCH_MR_DESCRIPTORS		= 'open-ils.search:open-ils.search.metabib.record_to_descriptors';
 var FETCH_HIGHEST_PERM_ORG		= 'open-ils.actor:open-ils.actor.user.perm.highest_org.batch';
-var FETCH_USER_NOTES				= 'open-ils.actor:open-ils.actor.note.retrieve.all';
 var FETCH_ORG_BY_SHORTNAME		= 'open-ils.actor:open-ils.actor.org_unit.retrieve_by_shortname';
 var FETCH_BIB_IDS_BY_BARCODE = 'open-ils.search:open-ils.search.multi_home.bib_ids.by_barcode';
 var FETCH_ORG_SETTING = 'open-ils.actor:open-ils.actor.ou_setting.ancestor_default';

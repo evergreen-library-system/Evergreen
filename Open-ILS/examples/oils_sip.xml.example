@@ -85,6 +85,14 @@
 			<!-- UTF-8 is the recommended encoding if your SIP client supports it -->
 			<encoding>ascii</encoding>
 
+			<!--
+				When set to true, return the hold notification phone number in the patron home phone (BF) field for each Checkin Response (10).
+				This is an unsupported extention to SIP2 and potentially exposes additional user infomation, do not enable it unless required locally.
+			-->
+			<!--
+			<phone_ext_to_msg10 enabled="false" />
+			-->
+
 			<!-- implementation specific config options go here -->
 			<implementation_config>
 				<bootstrap>SYSCONFDIR/opensrf_core.xml</bootstrap>

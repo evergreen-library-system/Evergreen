@@ -19,6 +19,7 @@ import {NotBeforeMomentValidatorDirective} from '@eg/share/validators/not_before
 import {PatronBarcodeValidatorDirective} from '@eg/share/validators/patron_barcode_validator.directive';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {CourseService} from './share/course.service';
+import {FileExportService} from '@eg/share/util/file-export.service';
 
 /**
  * Imports the EG common modules and adds modules common to all staff UI's.
@@ -73,7 +74,8 @@ export class StaffCommonModule {
                 AccessKeyService,
                 AudioService,
                 BroadcastService,
-                CourseService
+                CourseService,
+                FileExportService
             ]
         };
     }

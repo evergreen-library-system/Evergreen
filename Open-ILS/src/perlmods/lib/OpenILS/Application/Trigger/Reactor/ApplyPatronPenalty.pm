@@ -33,8 +33,8 @@ sub handler {
     my $env = shift;
 
     my $pname = $$env{params}{standing_penalty};
-    my $user = $$env{environment}{user};
-    my $context_org = $$env{environment}{context_org};
+    my $user = $$env{user};
+    my $context_org = $$env{context_org};
 
     unless($pname and ref $user and ref $context_org) {
         $logger->error("ApplyPatronPenalty: missing parameters");
@@ -56,11 +56,26 @@ sub handler {
         $context_org->id;
 
     # apply the penalty
-    my $penalty = Fieldmapper::actor::usr_standing_penalty->new;
+    my $penalty = Fieldmapper::actor::user_standing_penalty->new;
     $penalty->usr($user->id);
     $penalty->org_unit($context_org);
     $penalty->standing_penalty($ptype->id);
-    $penalty->note($self->run_TT($env));
+
+    my $aum = Fieldmapper::actor::usr_message->new;
+    $aum->create_date('now');
+    $aum->sending_lib($context_org);
+    $aum->title('');
+    $aum->usr($penalty->usr);
+    $aum->message($self->run_TT($env));
+    $aum->pub(0);
+
+    $aum = $e->create_actor_usr_message($aum);
+    unless($aum) {
+        $e->rollback;
+        return 0;
+    }
+
+    $penalty->usr_message($aum->id);
 
     unless($e->create_actor_user_standing_penalty($penalty)) {
         $e->rollback;

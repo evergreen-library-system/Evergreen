@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {tap} from 'rxjs/operators';
 import {EventService} from '@eg/core/event.service';
@@ -18,6 +18,7 @@ import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.comp
 import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronSearchDialogComponent
   } from '@eg/staff/share/patron/search-dialog.component';
+import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 
 class HoldContext {
     holdMeta: HoldRequestTarget;
@@ -64,13 +65,16 @@ export class HoldComponent implements OnInit {
     smsValue: string;
     suspend: boolean;
     activeDateStr: string;
+    activeDateYmd: string;
     activeDate: Date;
+    activeDateInvalid = false;
 
     holdContexts: HoldContext[];
     recordSummaries: BibRecordSummary[];
 
     currentUserBarcode: string;
     smsCarriers: ComboboxEntry[];
+    userBarcodeTimeout: number;
 
     smsEnabled: boolean;
 
@@ -85,6 +89,7 @@ export class HoldComponent implements OnInit {
     badBarcode: string = null;
 
     puLibWsFallback = false;
+    puLibWsDefault = false;
 
     // Orgs which are not valid pickup locations
     disableOrgs: number[] = [];
@@ -93,6 +98,8 @@ export class HoldComponent implements OnInit {
       patronSearch: PatronSearchDialogComponent;
 
     @ViewChild('smsCbox', {static: false}) smsCbox: ComboboxComponent;
+
+    @ViewChild('activeDateAlert') private activeDateAlert: AlertDialogComponent;
 
     constructor(
         private router: Router,
@@ -132,8 +139,15 @@ export class HoldComponent implements OnInit {
             this.userBarcode = this.staffCat.holdForBarcode;
         }
 
-        this.store.getItem('circ.staff_placed_holds_fallback_to_ws_ou')
-        .then(setting => this.puLibWsFallback = setting === true);
+        this.store.getItemBatch([
+            'circ.staff_placed_holds_fallback_to_ws_ou',
+            'circ.staff_placed_holds_default_to_ws_ou'
+        ]).then(settings => {
+            this.puLibWsFallback =
+                settings['circ.staff_placed_holds_fallback_to_ws_ou'] === true;
+            this.puLibWsDefault =
+                settings['circ.staff_placed_holds_default_to_ws_ou'] === true;
+        });
 
         this.org.list().forEach(org => {
             if (org.ou_type().can_have_vols() === 'f') {
@@ -328,6 +342,32 @@ export class HoldComponent implements OnInit {
         this.activeDateStr = dateStr;
     }
 
+    setActiveDate(date: Date) {
+        this.activeDate = date;
+        if (date && date < new Date()) {
+            this.activeDateInvalid = true;
+            this.activeDateAlert.open();
+        } else {
+            this.activeDateInvalid = false;
+        }
+    }
+
+    // Note this is called before this.userBarcode has its latest value.
+    debounceUserBarcodeLookup(barcode: string | ClipboardEvent) {
+        clearTimeout(this.userBarcodeTimeout);
+
+        if (!barcode) {
+            this.badBarcode = null;
+            return;
+        }
+
+        const timeout =
+            (barcode && (barcode as ClipboardEvent).target) ? 0 : 500;
+
+        this.userBarcodeTimeout =
+            setTimeout(() => this.userBarcodeChanged(), timeout);
+    }
+
     userBarcodeChanged() {
         const newBc = this.userBarcode;
 
@@ -414,9 +454,13 @@ export class HoldComponent implements OnInit {
         this.phoneValue = this.user.day_phone() || this.user.evening_phone();
 
         // Default to work org if placing holds for staff.
-        if (this.user.id() !== this.requestor.id() && !this.puLibWsFallback) {
-            // This value may be superseded below by user settings.
-            this.pickupLib = this.user.home_ou();
+        // Default to home org if placing holds for patrons unless
+        // settings default or fallback to the workstation.
+        if (this.user.id() !== this.requestor.id()) {
+            if (!this.puLibWsFallback && !this.puLibWsDefault) {
+                // This value may be superseded below by user settings.
+                this.pickupLib = this.user.home_ou();
+            }
         }
 
         if (!this.user.settings()) { return; }
@@ -439,7 +483,7 @@ export class HoldComponent implements OnInit {
                     break;
 
                 case 'opac.default_pickup_location':
-                    if (value) {
+                    if (!this.puLibWsDefault && value) {
                         this.pickupLib = Number(value);
                     }
                     break;
@@ -473,6 +517,18 @@ export class HoldComponent implements OnInit {
         if (!this.phoneValue) {
             this.notifyPhone = false;
         }
+    }
+
+    readyToPlaceHolds(): boolean {
+        if (!this.user || this.placeHoldsClicked || this.activeDateInvalid) {
+            return false;
+        }
+        if (this.notifySms) {
+            if (!this.smsValue.length || !this.smsCbox?.selectedId) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // Attempt hold placement on all targets

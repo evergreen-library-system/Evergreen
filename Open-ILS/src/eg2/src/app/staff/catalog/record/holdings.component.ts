@@ -2,11 +2,12 @@ import {Component, OnInit, Input, ViewChild, ViewEncapsulation
     } from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, Observer, of, empty} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, tap, concatMap} from 'rxjs/operators';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {StaffCatalogService} from '../catalog.service';
 import {OrgService} from '@eg/core/org.service';
+import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -23,6 +24,10 @@ import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {CopyAlertsDialogComponent
     } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
+import {CopyTagsDialogComponent
+    } from '@eg/staff/share/holdings/copy-tags-dialog.component';
+import {CopyNotesDialogComponent
+    } from '@eg/staff/share/holdings/copy-notes-dialog.component';
 import {ReplaceBarcodeDialogComponent
     } from '@eg/staff/share/holdings/replace-barcode-dialog.component';
 import {DeleteHoldingDialogComponent
@@ -106,6 +111,10 @@ export class HoldingsMaintenanceComponent implements OnInit {
         private markMissingDialog: MarkMissingDialogComponent;
     @ViewChild('copyAlertsDialog', { static: true })
         private copyAlertsDialog: CopyAlertsDialogComponent;
+    @ViewChild('copyTagsDialog', {static: false})
+        private copyTagsDialog: CopyTagsDialogComponent;
+    @ViewChild('copyNotesDialog', {static: false})
+        private copyNotesDialog: CopyNotesDialogComponent;
     @ViewChild('replaceBarcode', { static: true })
         private replaceBarcode: ReplaceBarcodeDialogComponent;
     @ViewChild('deleteHolding', { static: true })
@@ -144,7 +153,12 @@ export class HoldingsMaintenanceComponent implements OnInit {
     renderFromPrefs: boolean;
 
     rowClassCallback: (row: any) => string;
+
     cellTextGenerator: GridCellTextGenerator;
+    orgClassCallback: (orgId: number) => string;
+    marked_orgs: number[] = [];
+
+    copyCounts: {[orgId: number]: {}} = {};
 
     private _recId: number;
     @Input() set recordId(id: number) {
@@ -171,6 +185,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         private org: OrgService,
         private idl: IdlService,
         private pcrud: PcrudService,
+        private net: NetService,
         private auth: AuthService,
         private staffCat: StaffCatalogService,
         private store: ServerStoreService,
@@ -202,11 +217,17 @@ export class HoldingsMaintenanceComponent implements OnInit {
             }
         };
 
+
         // Text-ify function for cells that use display templates.
         this.cellTextGenerator = {
             owner_label: row => row.locationLabel,
             holdable: row => row.copy ?
                 this.gridTemplateContext.copyIsHoldable(row.copy) : ''
+        };
+
+        this.orgClassCallback = (orgId: number): string => {
+            if (this.marked_orgs.includes(orgId)) { return 'font-weight-bold'; }
+            return '';
         };
 
         this.gridTemplateContext = {
@@ -239,8 +260,14 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
         this.broadcaster.listen('eg.holdings.update').subscribe(data => {
             if (data && data.records && data.records.includes(this.recordId)) {
-                this.refreshHoldings = true;
-                this.holdingsGrid.reload();
+                this.hardRefresh();
+                // A hard refresh is needed to accommodate cases where
+                // a new call number is created for a subset of copies.
+                // We may revisit this later and use soft refresh
+                // (below) vs. hard refresh (above) depending on what
+                // specifically is changed.
+                // this.refreshHoldings = true;
+                // this.holdingsGrid.reload();
             }
         });
 
@@ -265,6 +292,16 @@ export class HoldingsMaintenanceComponent implements OnInit {
             if (!this.contextOrgLoaded) { return empty(); }
             return this.fetchHoldings(pager);
         };
+
+        this.net.request(
+            'open-ils.search',
+            'open-ils.search.biblio.copy_counts.retrieve.staff',
+            this.recordId
+        ).toPromise().then(result => {
+            result.forEach(copy_count => {
+                this.marked_orgs.push(copy_count[0]);
+            });
+        });
     }
 
     // No data is loaded until the first occurrence of the org change handler
@@ -384,8 +421,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
     setTreeCounts(node: HoldingsTreeNode) {
 
         if (node.nodeType === 'org') {
-            node.copyCount = 0;
-            node.callNumCount = 0;
+            node.copyCount = this.copyCounts[node.target.id() + ''].copies;
+            node.callNumCount = this.copyCounts[node.target.id() + ''].call_numbers;
         } else if (node.nodeType === 'callNum') {
             node.copyCount = 0;
         }
@@ -395,13 +432,9 @@ export class HoldingsMaintenanceComponent implements OnInit {
         node.children.forEach(child => {
             this.setTreeCounts(child);
             if (node.nodeType === 'org') {
-                node.copyCount += child.copyCount;
-                if (child.nodeType === 'callNum') {
-                    node.callNumCount++;
-                } else {
+                if (child.nodeType !== 'callNum') {
                     hasChildOrgWithData = child.callNumCount > 0;
                     hasChildOrgSansData = child.callNumCount === 0;
-                    node.callNumCount += child.callNumCount;
                 }
             } else if (node.nodeType === 'callNum') {
                 node.copyCount = node.children.length;
@@ -504,33 +537,90 @@ export class HoldingsMaintenanceComponent implements OnInit {
             }
 
             this.itemCircsNeeded = [];
+            // Track vol IDs for the current fetch so we can prune
+            // any that were deleted in an out-of-band update.
+            const volsFetched: number[] = [];
 
-            this.pcrud.search('acn',
-                {   record: this.recordId,
-                    owning_lib: this.org.fullPath(this.contextOrg, true),
-                    deleted: 'f',
-                    label: {'!=' : '##URI##'}
-                }, {
-                    flesh: 3,
-                    flesh_fields: {
-                        acp: ['status', 'location', 'circ_lib', 'parts', 'notes',
-                            'tags', 'age_protect', 'copy_alerts', 'latest_inventory'],
-                        acn: ['prefix', 'suffix', 'copies'],
-                        acli: ['inventory_workstation']
-                    }
-                },
-                {authoritative: true}
+            return this.net.request(
+                'open-ils.search',
+                'open-ils.search.biblio.record.copy_counts.global.staff',
+                this.recordId
+            ).pipe(
+                tap(counts => this.copyCounts = counts),
+                concatMap(_ => {
+
+                    return this.pcrud.search('acn',
+                        {   record: this.recordId,
+                            owning_lib: this.org.fullPath(this.contextOrg, true),
+                            deleted: 'f',
+                            label: {'!=' : '##URI##'}
+                        }, {
+                            flesh: 3,
+                            flesh_fields: {
+                                acp: ['status', 'location', 'circ_lib', 'parts', 'notes',
+                                     'tags', 'age_protect', 'copy_alerts', 'latest_inventory',
+                                     'total_circ_count', 'last_circ'],
+                                acn: ['prefix', 'suffix', 'copies'],
+                                acli: ['inventory_workstation']
+                            }
+                        },
+                        {authoritative: true}
+                    );
+                })
             ).subscribe(
-                callNum => this.appendCallNum(callNum),
+                callNum => {
+                    this.appendCallNum(callNum);
+                    volsFetched.push(callNum.id());
+                },
                 err => {},
                 ()  => {
                     this.refreshHoldings = false;
+                    this.pruneVols(volsFetched);
                     this.fetchCircs().then(
                         ok => this.flattenHoldingsTree(observer)
                     );
                 }
-            );
+             );
         });
+    }
+
+    // Remove vols that were deleted out-of-band, via edit, merge, etc.
+    pruneVols(volsFetched: number[]) {
+
+        const toRemove: number[] = []; // avoid modifying mid-loop
+        Object.keys(this.treeNodeCache.callNum).forEach(volId => {
+            const id = Number(volId);
+            if (!volsFetched.includes(id)) {
+                toRemove.push(id);
+            }
+        });
+
+        if (toRemove.length === 0) { return; }
+
+        const pruneNodes = (node: HoldingsTreeNode) => {
+            if (node.nodeType === 'callNum' &&
+                toRemove.includes(node.target.id())) {
+
+                console.debug('pruning deleted vol:', node.target.id());
+
+                // Remove this node from the parents list of children
+                node.parentNode.children =
+                    node.parentNode.children.filter(
+                        c => c.target.id() !== node.target.id());
+
+            } else {
+                node.children.forEach(c => pruneNodes(c));
+            }
+        };
+
+        // remove from cache
+        toRemove.forEach(volId => delete this.treeNodeCache.callNum[volId]);
+
+        // remove from tree
+        pruneNodes(this.holdingsTree.root);
+
+        // refresh tree / grid
+        this.holdingsGrid.reload();
     }
 
     // Retrieve circulation objects for checked out items.
@@ -566,9 +656,6 @@ export class HoldingsMaintenanceComponent implements OnInit {
         if (callNumNode) {
             const pNode = this.treeNodeCache.org[callNum.owning_lib()];
             if (callNumNode.parentNode.target.id() !== pNode.target.id()) {
-                // Call number owning library changed.  Un-link it from the
-                // previous org unit collection before adding to the new one.
-                // XXX TODO: ^--
                 callNumNode.parentNode = pNode;
                 callNumNode.parentNode.children.push(callNumNode);
             }
@@ -848,13 +935,41 @@ export class HoldingsMaintenanceComponent implements OnInit {
         }
     }
 
-    openItemNotes(rows: HoldingsEntry[], mode: string) {
+    openItemAlerts(rows: HoldingsEntry[], mode: string) {
         const copyIds = this.selectedCopyIds(rows);
         if (copyIds.length === 0) { return; }
 
         this.copyAlertsDialog.copyIds = copyIds;
         this.copyAlertsDialog.mode = mode;
         this.copyAlertsDialog.open({size: 'lg'}).subscribe(
+            modified => {
+                if (modified) {
+                    this.hardRefresh();
+                }
+            }
+        );
+    }
+
+    openItemTags(rows: HoldingsEntry[]) {
+        const copyIds = this.selectedCopyIds(rows);
+        if (copyIds.length === 0) { return; }
+
+        this.copyTagsDialog.copyIds = copyIds;
+        this.copyTagsDialog.open({size: 'lg'}).subscribe(
+            modified => {
+                if (modified) {
+                    this.hardRefresh();
+                }
+            }
+        );
+    }
+
+    openItemNotes(rows: HoldingsEntry[]) {
+        const copyIds = this.selectedCopyIds(rows);
+        if (copyIds.length === 0) { return; }
+
+        this.copyNotesDialog.copyIds = copyIds;
+        this.copyNotesDialog.open({size: 'lg'}).subscribe(
             modified => {
                 if (modified) {
                     this.hardRefresh();

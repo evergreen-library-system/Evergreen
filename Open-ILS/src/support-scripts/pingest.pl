@@ -75,7 +75,7 @@ sub help {
     print <<HELP;
 
     $0 --batch-size $batch_size --max-child $max_child \
-        --start-id 1 --end-id 500000 --duration 14400
+        --start-id 1 --end-id 500000 --max-duration 14400
 
     --batch-size
         Number of records to process per batch
@@ -316,7 +316,7 @@ sub reingest_attributes {
     my $dbh = shift;
     my $list = shift;
     my $sth = $dbh->prepare(<<END_OF_INGEST
-SELECT metabib.reingest_record_attributes(rid := id, prmarc := marc, pattr_list := ?)
+SELECT metabib.reingest_record_attributes(rid := id, prmarc := marc, pattr_list := ?, rdeleted := deleted)
 FROM biblio.record_entry
 WHERE id = ?
 END_OF_INGEST

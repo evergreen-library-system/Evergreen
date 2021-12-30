@@ -1426,7 +1426,8 @@ sub process_fiscal_rollover {
         my $fund = $e->retrieve_acq_fund($_) or return $e->die_event;
         $fund->summary(retrieve_fund_summary_impl($e, $fund));
 
-        my $amount = 0;
+        my $rollover_amount = 0;
+        my $encumb_amount = 0;
         if($combined and $U->is_true($fund->rollover)) {
             # see how much money was rolled over
 
@@ -1436,10 +1437,18 @@ sub process_fiscal_rollover {
                 where => {dest_fund => $fund->id, note => { like => 'Rollover%' } }
             })->[0];
 
-            $amount = $sum->{dest_amount} if $sum;
+            $rollover_amount = $sum->{dest_amount} if $sum;
+
+            $sum = $e->json_query({
+                select => {acqfdeb => [{column => 'amount', transform => 'sum'}]}, 
+                from => 'acqfdeb', 
+                where => {fund => $fund->id, encumbrance => 't' }
+            })->[0];
+
+            $encumb_amount = $sum->{amount} if $sum;
         }
 
-        $conn->respond({fund => $fund, rollover_amount => $amount});
+        $conn->respond({fund => $fund, rollover_amount => $rollover_amount, encumb_amount => $encumb_amount});
     }
 
     $self->api_name =~ /dry_run/ and $e->rollback or $e->commit;

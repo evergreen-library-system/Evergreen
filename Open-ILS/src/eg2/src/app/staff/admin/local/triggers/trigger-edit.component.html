@@ -1,0 +1,103 @@
+<eg-staff-banner bannerText="{{this.evtDefName}}" i18n-bannerText>
+</eg-staff-banner>
+<div class="text-center">
+    <button class="btn btn-outline-dark" (click)="back()">&#8592; Back to Notifications/Action Triggers</button>
+</div>
+<ul ngbNav #editNav="ngbNav" class="nav-tabs mb-3"
+    [activeId]="editTab" (navChange)="onTabChange($event)">
+    <li [ngbNavItem]="'def'">
+        <a ngbNavLink i18n>Edit Definition</a>
+        <ng-template ngbNavContent>
+            <ng-template #textAreaTemplate let-field="field" let-record="record">
+                <textarea class="form-control" name="{{field.name}}"
+                    [readonly]="field.readOnly" [required]="field.isRequired()"
+                    [ngModel]="record[field.name]()"
+                    (ngModelChange)="record[field.name]($event)" style="height: 600px;">
+                </textarea>
+            </ng-template>
+            <eg-fm-record-editor #eventDialog idlClass="atevdef" displayMode="inline"
+                recordId="{{this.evtDefId}}" mode="update"
+                [fieldOptions]="{message_template:{customTemplate:{template:textAreaTemplate}},template:{customTemplate:{template:textAreaTemplate}}}"
+                fieldOrder="owner,name,hook,active,delay,delay_field,group_field,reactor,validator,repeat_delay,id,cleanup_failure,granularity,max_delay,message_library_path,message_template,message_title,message_usr_path,opt_in_setting,usr_field,retention_interval,cleanup_success,template">
+            </eg-fm-record-editor>
+            <div class="text-right">
+                <button class="btn btn-outline-dark mr-3" (click)="back()">&#8592; Back to Notifications/Action Triggers</button>
+            </div>
+	</ng-template>
+    </li>
+    <li ngbNavItem="'env'">
+        <a ngbNavLink i18n>Edit Environment</a>
+        <ng-template ngbNavContent>
+            <h3 class="mb-3">Trigger Event Environment</h3>
+            <eg-grid #envGrid idlClass="atenv" [dataSource]="envDataSource"
+                showFields="path,collector,label" persistKey="admin.local.triggers.atenv"
+                (onRowActivate)="editSelected([$event])">
+                <eg-grid-toolbar-button label="New Environment" i18n-label
+                    [action]="createNewEnv"></eg-grid-toolbar-button>
+                <eg-grid-toolbar-action label="Edit Environment" i18n-label
+                    [action]="editSelected"></eg-grid-toolbar-action>
+                <eg-grid-toolbar-action label="Delete Selected" i18n-label
+                    (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
+            </eg-grid>
+            <eg-fm-record-editor #envDialog idlClass="atenv"
+                hiddenFields="event_def,id"></eg-fm-record-editor>
+        </ng-template>
+    </li>
+    <li ngbNavItem="'param'">
+        <a ngbNavLink i18n>Edit Parameters</a>
+        <ng-template ngbNavContent>
+            <h3 class="mb-3">Trigger Event Parameters</h3>
+            <eg-grid #paramGrid idlClass="atevparam" [dataSource]="paramDataSource"
+                persistKey="admin.local.triggers.atevparam"
+                showFields="param,value" (onRowActivate)="editSelected([$event])">
+                <eg-grid-toolbar-button label="New Parameter" i18n-label
+                    [action]="createNewParam"></eg-grid-toolbar-button>
+                <eg-grid-toolbar-action label="Edit Parameter" i18n-label
+                    [action]="editSelected"></eg-grid-toolbar-action>
+                <eg-grid-toolbar-action label="Delete Selected" i18n-label
+                    (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
+            </eg-grid>
+            <eg-fm-record-editor #paramDialog idlClass="atevparam"
+                hiddenFields="event_def,id"></eg-fm-record-editor>
+        </ng-template>
+    </li>
+    <li ngbNavItem="'test'">
+        <a ngbNavLink i18n>Run Tests</a>
+        <ng-template ngbNavContent>
+            <h3 class="mb-3">Run Tests</h3>
+            <label id="barcode">Barcode of Circulating Copy </label>
+            <input aria-labelledby="barcode" type="text" [(ngModel)]="barcode"
+                (keyup.enter)="runTest(barcode)" class="ml-2" />
+            <div></div>
+            <button class="btn btn-info" (click)="runTest(barcode)" i18n>Go</button>
+            <div [hidden]="!testDone">
+                <div class="mt-3 border rounded p-2 bg-light">
+                    <div>{{testErr1}}</div>
+                    <div>{{testErr2}}</div>
+                    <pre [hidden]="!testResult">{{testResult}}</pre>
+                </div>
+                <button class="btn btn-outline-dark mt-3" (click)="clearTestResults()" i18n>
+                    Clear Test Results
+                </button>
+            </div>
+        </ng-template>
+    </li>
+</ul>
+<div [ngbNavOutlet]="editNav"></div>
+
+<eg-string #createSuccessString i18n-text text="New entry Added"></eg-string>
+<eg-string #createErrString i18n-text text="Failed to create new entry"></eg-string>
+<eg-string #deleteFailedString i18n-text text="Delete of entry failed or was not allowed">
+</eg-string>
+<eg-string #deleteSuccessString i18n-text text="Delete of entry succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text text="Update of entry failed or was not allowed">
+</eg-string>
+<eg-string #updateSuccessString i18n-text text="Update of entry succeeded"></eg-string>
+<eg-string #cloneFailedString i18n-text text="Clone of entry failed or was not allowed">
+</eg-string>
+<eg-string #cloneSuccessString i18n-text text="Clone of entry succeeded"></eg-string>
+<eg-string #errorDuringTestString i18n-text text="Error when testing event definition:"></eg-string>
+<ng-template #errorDuringTestStringTmpl let-ilsevent="ilsevent" let-textcode="textcode" i18n>
+  Error when testing event defintion ({{ilsevent}}: {{textcode}}):
+</ng-template>
+<eg-string #eventDuringTestString [template]="errorDuringTestStringTmpl"></eg-string>

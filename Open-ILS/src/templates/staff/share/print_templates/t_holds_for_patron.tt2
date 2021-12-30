@@ -1,8 +1,12 @@
 <!--
 Template for printing a list of hold requests for a patron. Fields include:
 
+* patron - has several fields from the patron object, but does not include the financial summary
 * holds - a list of hold request, each of which includes
- 
+  * hold - details about the hold
+  * copy - data for an item
+  * volume - data for a call number
+  * author
   * title
 
 -->

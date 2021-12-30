@@ -1,0 +1,209 @@
+<eg-string #successString i18n-text text="Fund Update Succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text text="Fund Update Failed"></eg-string>
+
+<ng-template #summaryField let-field="field" let-value="value" let-rawValue="rawValue">
+  <div class="col-2">
+    <label style="font-weight: bold" for="fund-{{field}}">{{idlDef.field_map[field].label}}</label>
+  </div>
+  <div class="col-2">
+    <span id="fund-{{field}}" [ngClass]="{'negative-money-amount': checkNegativeAmount(rawValue)}">
+      {{value}}
+    </span>
+  </div>
+</ng-template>
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h3 class="modal-title" i18n>Fund Details - {{fund?.name()}} ({{fund?.code()}} ({{fund?.year()}}) ({{fund?.org().shortname()}}))</h3>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row mt-3">
+      <div class="col-lg-3">
+        <button class="btn btn-primary"
+          (click)="allocateToFund()" i18n>Create Allocation</button>
+        <button class="btn btn-primary ml-1"
+          (click)="doTransfer()" i18n>Transfer Money</button>
+      </div>
+      <div class="col-lg-9 text-right pb-1">
+        <button class="btn btn-secondary btn-xs" [disabled]="activeTab == defaultTabType"
+          (click)="setDefaultTab()" i18n>Set Default View</button>
+      </div>
+    </div>
+    <ul ngbNav #fundDetailsNav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
+      <li [ngbNavItem]="'summary'" *ngIf="fund">
+        <a ngbNavLink i18n>Summary</a>
+        <ng-template ngbNavContent>
+          <div class="mt-2">
+            <div class="row">
+              <button class="btn btn-info ml-3" (click)="openEditDialog()" i18n>Edit Fund</button>
+            </div>
+            <div class="row">
+              <ng-container *ngTemplateOutlet="summaryField;context:{value:fund.code(),field:'code'}"></ng-container>
+              <ng-container *ngTemplateOutlet="summaryField;context:{value:fund.name(),field:'name'}"></ng-container>
+            </div>
+            <div class="row">
+              <ng-container *ngTemplateOutlet="summaryField;context:{value:fund.id(),field:'id'}"></ng-container>
+              <ng-container *ngTemplateOutlet="summaryField;context:{value:fund.year(),field:'year'}"></ng-container>
+            </div>
+            <div class="row">
+              <ng-container *ngTemplateOutlet="summaryField;context:{value:fund.org().shortname(),field:'org'}"></ng-container>
+              <ng-container *ngTemplateOutlet="summaryField;context:{value:fund.currency_type().code(),field:'currency_type'}"></ng-container>
+            </div>
+            <div class="row">
+              <ng-container *ngTemplateOutlet="summaryField;context:{value:formatCurrency(fund.combined_balance()?.amount()),field:'combined_balance',rawValue:fund.combined_balance()?.amount()}"></ng-container>
+              <ng-container *ngTemplateOutlet="summaryField;context:{value:formatCurrency(fund.allocation_total()?.amount()),field:'allocation_total',rawValue:fund.allocation_total()?.amount()}"></ng-container>
+            </div>
+            <div class="row">
+              <ng-container *ngTemplateOutlet="summaryField;context:{value:formatCurrency(fund.spent_balance()?.amount()),field:'spent_balance',rawValue:fund.spent_balance()?.amount()}"></ng-container>
+              <ng-container *ngTemplateOutlet="summaryField;context:{value:formatCurrency(fund.debit_total()?.amount()),field:'debit_total',rawValue:fund.debit_total()?.amount()}"></ng-container>
+            </div>
+            <div class="row">
+              <ng-container *ngTemplateOutlet="summaryField;context:{value:formatCurrency(fund.spent_total()?.amount()),field:'spent_total',rawValue:fund.spent_total()?.amount()}"></ng-container>
+              <ng-container *ngTemplateOutlet="summaryField;context:{value:formatCurrency(fund.encumbrance_total()?.amount()),field:'encumbrance_total',rawValue:fund.encumbrance_total()?.amount()}"></ng-container>
+            </div>
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'allocations'" *ngIf="fund">
+        <a ngbNavLink i18n>Allocations</a>
+        <ng-template ngbNavContent>
+          <div class="mt-2">
+            <eg-grid #fundDetailsAllocationsGrid idlClass="acqfa" [dataSource]="acqfaDataSource"
+                [sortable]="true" persistKey="acq.fund.fund_allocation"
+                [cellTextGenerator]="cellTextGenerator"
+                [filterable]="true" [stickyHeader]="true">
+
+              <ng-template #sourceTmpl let-row="row">
+                <a href="/eg2/staff/admin/acq/funds/funding_source/{{row.funding_source().id()}}" target="_blank">
+                  {{row.funding_source().code()}} ({{getOrgShortname(row.funding_source().owner())}})
+                </a>  
+              </ng-template>
+              <eg-grid-column path="funding_source" [cellTemplate]="sourceTmpl"></eg-grid-column>
+              <eg-grid-column path="amount"></eg-grid-column>
+              <eg-grid-column path="create_time" [datePlusTime]="true"></eg-grid-column>
+              <eg-grid-column path="allocator"></eg-grid-column>
+              <eg-grid-column path="note"></eg-grid-column>
+              <eg-grid-column path="id" [hidden]="true"></eg-grid-column>
+              <eg-grid-column path="fund" [hidden]="true" [filterable]="false"></eg-grid-column>
+            </eg-grid>
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'transfers'" *ngIf="fund">
+        <a ngbNavLink i18n>Transfers</a>
+        <ng-template ngbNavContent>
+          <div class="mt-2">
+            <eg-grid #fundDetailsTransfersGrid idlClass="acqftr" [dataSource]="acqftrDataSource"
+                [sortable]="true" persistKey="acq.fund.fund_transfer"
+                [cellTextGenerator]="cellTextGenerator"
+                [filterable]="true" [stickyHeader]="true">
+
+              <ng-template #sourcefundTmpl let-row="row">
+                <ng-container *ngIf="row.src_fund().id() === fundId">
+                  {{row.src_fund().code()}} ({{row.src_fund().year()}}) ({{getOrgShortname(row.src_fund().org())}})
+                </ng-container>
+                <ng-container *ngIf="row.src_fund().id() !== fundId">
+                  <a href="/eg2/staff/admin/acq/funds/fund/{{row.src_fund().id()}}" target="_blank">
+                    {{row.src_fund().code()}} ({{row.src_fund().year()}}) ({{getOrgShortname(row.src_fund().org())}})
+                  </a>
+                </ng-container>
+              </ng-template>
+              <eg-grid-column path="src_fund" [cellTemplate]="sourcefundTmpl"></eg-grid-column>
+              <eg-grid-column path="src_amount"></eg-grid-column>
+              <ng-template #destfundTmpl let-row="row">
+                <ng-container *ngIf="row.dest_fund().id() === fundId">
+                  {{row.dest_fund().code()}}  ({{row.dest_fund().year()}}) ({{getOrgShortname(row.dest_fund().org())}})
+                </ng-container>
+                <ng-container *ngIf="row.dest_fund().id() !== fundId">
+                  <a href="/eg2/staff/admin/acq/funds/fund/{{row.dest_fund().id()}}" target="_blank">
+                    {{row.dest_fund().code()}} ({{row.dest_fund().year()}}) ({{getOrgShortname(row.dest_fund().org())}})
+                  </a>
+                </ng-container>
+              </ng-template>
+              <eg-grid-column path="dest_fund" [cellTemplate]="destfundTmpl"></eg-grid-column>
+              <eg-grid-column path="dest_amount"></eg-grid-column>
+              <eg-grid-column path="transfer_time" [datePlusTime]="true"></eg-grid-column>
+              <eg-grid-column path="transfer_user"></eg-grid-column>
+              <eg-grid-column path="note"></eg-grid-column>
+              <ng-template #fsCredTmpl let-row="row">
+                <a href="/eg2/staff/admin/acq/funds/funding_source/{{row.funding_source_credit().funding_source().id()}}" target="_blank">
+                  {{row.funding_source_credit().funding_source().code()}} ({{getOrgShortname(row.funding_source_credit().funding_source().owner())}})
+                </a>
+              </ng-template>
+              <eg-grid-column path="funding_source_credit" [cellTemplate]="fsCredTmpl" i18n-label label="Funding Source"></eg-grid-column>
+              <eg-grid-column path="id" [hidden]="true"></eg-grid-column>
+            </eg-grid>
+           </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'debits'" *ngIf="fund">
+        <a ngbNavLink i18n>Debits</a>
+        <ng-template ngbNavContent>
+          <div class="mt-2">
+            <eg-grid #fundDetailsDebitsGrid idlClass="acqfdeb" [dataSource]="acqfdebDataSource"
+                [cellTextGenerator]="cellTextGenerator"
+                [sortable]="true" persistKey="acq.fund.fund_debit"
+                ignoreFields="invoice_entry"
+                [filterable]="true" [stickyHeader]="true">
+
+              <eg-grid-column path="amount"></eg-grid-column>
+              <eg-grid-column path="encumbrance"></eg-grid-column>
+              <eg-grid-column path="debit_type"></eg-grid-column>
+              <eg-grid-column path="origin_amount"></eg-grid-column>
+              <eg-grid-column path="origin_currency_type"></eg-grid-column>
+              <eg-grid-column path="create_time" [datePlusTime]="true"></eg-grid-column>
+              <ng-template #liTmpl let-row="row">
+                <a href="/eg/staff/acq/legacy/po/view/{{row.po_id}}?focus_li={{row.li_id}}" target="_blank">
+                  {{row.li_id}}
+                </a>
+              </ng-template>
+              <eg-grid-column path="li" i18n-label label="Line Item" [cellTemplate]="liTmpl" [filterable]="false" [sortable]="false"></eg-grid-column>
+              <ng-template #poTmpl let-row="row">
+                <a href="/eg/staff/acq/legacy/po/view/{{row.po_id}}" target="_blank">
+                  {{row.po_name}}
+                </a>
+              </ng-template>
+              <eg-grid-column path="po" i18n-label label="Purchase Order" [cellTemplate]="poTmpl" [filterable]="false" [sortable]="false"></eg-grid-column>
+              <ng-template #invTmpl let-row="row">
+                <a href="/eg/staff/acq/legacy/invoice/view/{{row.invoice_id}}" target="_blank">
+                  {{row.vendor_invoice_id}}
+                </a>
+              </ng-template>
+              <eg-grid-column path="invoice" i18n-label label="Invoice" [cellTemplate]="invTmpl" [filterable]="false" [sortable]="false"></eg-grid-column>
+              <eg-grid-column path="po_id" i18n-label label="PO ID" [hidden]="true" [filterable]="false" [sortable]="false"></eg-grid-column>
+              <eg-grid-column path="invoice_id" i18n-label label="Internal Invoice ID" [hidden]="true" [filterable]="false" [sortable]="false"></eg-grid-column>
+              <eg-grid-column path="id" [hidden]="true"></eg-grid-column>
+              <eg-grid-column path="fund" [hidden]="true" [filterable]="false"></eg-grid-column>
+            </eg-grid>
+           </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'tags'" *ngIf="fund">
+        <a ngbNavLink i18n>Tags</a>
+        <ng-template ngbNavContent>
+          <div class="mt-2">
+            <eg-fund-tags [fundId]="fundId" [fundOwner]="fund.org()"></eg-fund-tags>
+           </div>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="fundDetailsNav"></div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warning"
+      (click)="close()" i18n>Close</button>
+  </div>
+</ng-template>
+
+<eg-fm-record-editor #editDialog idlClass="acqf" 
+    [preloadLinkedValues]="true">
+</eg-fm-record-editor>
+
+<eg-fm-record-editor #allocateToFundDialog idlClass="acqfa"
+[fieldOptions]="{funding_source:{linkedSearchConditions:{'active':'t'},preloadLinkedValues:true}}">
+</eg-fm-record-editor>
+
+<eg-fund-transfer-dialog #transferDialog></eg-fund-transfer-dialog>

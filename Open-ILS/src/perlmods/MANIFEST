@@ -139,7 +139,6 @@ lib/OpenILS/Utils/CStoreEditor.pm
 lib/OpenILS/Utils/DateTime.pm
 lib/OpenILS/Utils/Fieldmapper.pm
 lib/OpenILS/Utils/HTTPClient.pm
-lib/OpenILS/Utils/ISBN.pm
 lib/OpenILS/Utils/Lockfile.pm
 lib/OpenILS/Utils/MFHD.pm
 lib/OpenILS/Utils/MFHD/Caption.pm

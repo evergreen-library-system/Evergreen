@@ -77,6 +77,7 @@ export DEBS = \
 
 export DEB_APACHE_MODS = \
     expires\
+    headers\
     include\
     proxy\
     proxy_http\
@@ -134,9 +135,7 @@ PGSQL_SERVER_DEBS_10 = \
 DEVELOPER_DEBS = \
 	automake \
 	autoconf \
-	libtool \
-	chromium-browser \
-	firefox
+	libtool
 
 PACKAGER_DEBS = \
 	asciidoc \

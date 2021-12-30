@@ -617,28 +617,57 @@ sub autogen_barcodes {
     if ($barcode =~ /(\d+)$/) { $barcode_number = $1; }
 
     my @res;
+    my $iter = 0;
     for (my $i = 1; $i <= $num_of_barcodes; $i++) {
-        my $calculated_barcode;
 
-        # default is to use checkdigits, so looking for an explicit false here
-        if (defined $$options{'checkdigit'} && ! $$options{'checkdigit'}) { 
-            $calculated_barcode = $barcode_number + $i;
-        } else {
-            if ($barcode_number =~ /^\d{8}$/) {
-                $calculated_barcode = add_codabar_checkdigit($barcode_number + $i, 0);
-            } elsif ($barcode_number =~ /^\d{9}$/) {
-                $calculated_barcode = add_codabar_checkdigit($barcode_number + $i*10, 1); # strip last digit
-            } elsif ($barcode_number =~ /^\d{13}$/) {
-                $calculated_barcode = add_codabar_checkdigit($barcode_number + $i, 0);
-            } elsif ($barcode_number =~ /^\d{14}$/) {
-                $calculated_barcode = add_codabar_checkdigit($barcode_number + $i*10, 1); # strip last digit
-            } else {
-                $calculated_barcode = $barcode_number + $i;
-            }
+        my $full_barcode;
+        while (1) {
+            $iter++;
+
+            my $calculated_barcode = next_auto_barcode($barcode_number, $iter, $options);
+            $full_barcode = $barcode_text . $calculated_barcode;
+
+            # If we're not checking dupes, assume the barcode we have is fine.
+            last unless $options->{skip_dupes};
+
+            my $dupe = $e->search_asset_copy(
+                {barcode => $full_barcode, deleted => 'f'},
+                {idlist => 1}
+            )->[0];
+
+            # If we find a duplicate, circle around again for another try.
+            last unless $dupe;
         }
-        push @res, $barcode_text . $calculated_barcode;
+
+        push @res, $full_barcode;
     }
+
     return \@res
+}
+
+sub next_auto_barcode {
+    my ($barcode_number, $iter, $options) = @_;
+
+    my $calculated_barcode;
+
+    # default is to use checkdigits, so looking for an explicit false here
+    if (defined $$options{'checkdigit'} && ! $$options{'checkdigit'}) { 
+        $calculated_barcode = $barcode_number + $iter;
+    } else {
+        if ($barcode_number =~ /^\d{8}$/) {
+            $calculated_barcode = add_codabar_checkdigit($barcode_number + $iter, 0);
+        } elsif ($barcode_number =~ /^\d{9}$/) {
+            $calculated_barcode = add_codabar_checkdigit($barcode_number + $iter*10, 1); # strip last digit
+        } elsif ($barcode_number =~ /^\d{13}$/) {
+            $calculated_barcode = add_codabar_checkdigit($barcode_number + $iter, 0);
+        } elsif ($barcode_number =~ /^\d{14}$/) {
+            $calculated_barcode = add_codabar_checkdigit($barcode_number + $iter*10, 1); # strip last digit
+        } else {
+            $calculated_barcode = $barcode_number + $iter;
+        }
+    }
+
+    return $calculated_barcode;
 }
 
 # Codabar doesn't define a checkdigit algorithm, but this one is typically used by libraries.  gmcharlt++
@@ -1928,6 +1957,135 @@ sub retrieve_tag_table {
         $conn->respond($field);
     }
 }
+
+__PACKAGE__->register_method(
+    method    => "volcopy_data",
+    api_name  => "open-ils.cat.volcopy.data",
+    stream    => 1,
+    argc      => 3,
+    signature => {
+        desc   => q|Returns a batch of org-scoped data types needed by the 
+            volume/copy editor|,
+        params => [
+            {desc => 'Authtoken', type => 'string'}
+        ]
+    },
+    return => {desc => 'Stream of various object type lists', type => 'array'}
+);
+
+sub volcopy_data {
+    my ($self, $client, $auth) = @_;
+    my $e = new_editor(authtoken => $auth);
+
+    $e->checkauth or return $e->event;
+    my $org_ids = $U->get_org_ancestors($e->requestor->ws_ou);
+
+    $client->respond({
+        acp_location => $e->search_asset_copy_location([
+            {deleted => 'f', owning_lib => $org_ids},
+            {order_by => {acpl => 'name'}}
+        ])
+    });
+
+    # Provide a reasonable default copy location.  Typically "Stacks"
+    $client->respond({
+        acp_default_location => $e->search_asset_copy_location([
+            {deleted => 'f', owning_lib => $org_ids},
+            {order_by => {acpl => 'id'}, limit => 1}
+        ])->[0]
+    });
+
+    $client->respond({
+        acp_status => $e->search_config_copy_status([
+            {id => {'!=' => undef}},
+            {order_by => {ccs => 'name'}}
+        ])
+    });
+
+    $client->respond({
+        acp_age_protect => $e->search_config_rules_age_hold_protect([
+            {id => {'!=' => undef}},
+            {order_by => {crahp => 'name'}}
+        ])
+    });
+
+    $client->respond({
+        acp_floating_group => $e->search_config_floating_group([
+            {id => {'!=' => undef}},
+            {order_by => {cfg => 'name'}}
+        ])
+    });
+
+    $client->respond({
+        acp_circ_modifier => $e->search_config_circ_modifier([
+            {code => {'!=' => undef}},
+            {order_by => {ccm => 'name'}}
+        ])
+    });
+
+    $client->respond({
+        acp_item_type_map => $e->search_config_item_type_map([
+            {code => {'!=' => undef}},
+            {order_by => {ccm => 'value'}}
+        ])
+    });
+
+    $client->respond({
+        acn_class => $e->search_asset_call_number_class([
+            {id => {'!=' => undef}},
+            {order_by => {acnc => 'name'}}
+        ])
+    });
+    
+    $client->respond({
+        acn_prefix => $e->search_asset_call_number_prefix([
+            {owning_lib => $org_ids},
+            {order_by => {acnp => 'label_sortkey'}}
+        ])
+    });
+
+    $client->respond({
+        acn_suffix => $e->search_asset_call_number_suffix([
+            {owning_lib => $org_ids},
+            {order_by => {acns => 'label_sortkey'}}
+        ])
+    });
+
+    # Some object types require more complex sorting, etc.
+
+    my $cats = $e->search_asset_stat_cat([
+        {owner => $org_ids},
+        {   flesh => 2, 
+            flesh_fields => {asc => ['owner', 'entries'], aou => ['ou_type']}
+        }
+    ]);
+
+    # Sort stat cats by depth then by name within each depth group.
+    $cats = [
+        sort {
+            my $d1 = $a->owner->ou_type->depth;
+            my $d2 = $b->owner->ou_type->depth;
+            return $a->name cmp $b->name if $d1 == $d2;
+
+            # Sort cats closer to the workstation org unit to the front.
+            return $d1 > $d2 ? -1 : 1;
+        }
+        @$cats
+    ];
+
+    for my $cat (@$cats) {
+        # de-flesh org data
+        $cat->owner($cat->owner->id);
+
+        # sort entries
+        $cat->entries([sort {$a->value cmp $b->value} @{$cat->entries}]);
+    }
+
+    $client->respond({acp_stat_cat => $cats});
+
+    return undef;
+}
+
 
 1;
 

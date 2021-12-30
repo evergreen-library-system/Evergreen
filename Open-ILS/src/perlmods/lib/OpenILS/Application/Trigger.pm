@@ -479,9 +479,9 @@ sub create_batch_events {
             }
         }};
         if ($def->repeat_delay) {
-            $join->{'join'}{atev}{filter} = { start_time => {
-                '>' => DateTime->now->subtract( seconds => interval_to_seconds($def->repeat_delay) )->strftime( '%F %T%z' )
-            } };
+            $join->{'join'}{atev}{filter}{start_time} = {
+                '>' => DateTime->now->subtract( seconds => interval_to_seconds($def->repeat_delay, DateTime->now) )->strftime( '%F %T%z' )
+            };
         }
 
         push @{ $filter->{'-and'} }, { '+atev' => { id => undef } };

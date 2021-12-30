@@ -51,7 +51,8 @@
             <div class="d-flex">
               <div class="flex-1 font-weight-bold" i18n>Title:</div>
               <div class="flex-3">
-                <eg-bib-display-field [summary]="summary" field="title">
+                <eg-bib-display-field [summary]="summary" field="title"
+                  routerLink="/staff/catalog/record/{{summary.id}}">
                 </eg-bib-display-field>
               </div>
               <div class="flex-1 font-weight-bold pl-1" i18n>Edition:</div>

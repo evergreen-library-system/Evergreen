@@ -18,6 +18,10 @@ const routes: Routes = [
     path: 'item',
     loadChildren: () => import('./item/item.module').then(m => m.ItemModule)
   }, {
+    path: 'volcopy',
+    loadChildren: () =>
+      import('./volcopy/volcopy.module').then(m => m.VolCopyModule)
+  }, {
     path: 'bib-from/:identType',
     component: BibByIdentComponent
   }

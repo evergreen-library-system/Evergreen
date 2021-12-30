@@ -3097,7 +3097,6 @@ sub query_parser_fts {
 
     my $param_search_ou = $ou;
     my $param_depth = $depth; $param_depth = 'NULL' unless (defined($depth) and length($depth) > 0 );
-#    my $param_core_query = "\$core_query_$$\$" . $query->parse_tree->toSQL . "\$core_query_$$\$";
     my $param_core_query = $query->parse_tree->toSQL;
     my $param_statuses = '$${' . join(',', map { s/\$//go; "\"$_\""} @statuses) . '}$$';
     my $param_locations = '$${' . join(',', map { s/\$//go; "\"$_\""} @location) . '}$$';
@@ -3105,24 +3104,6 @@ sub query_parser_fts {
     my $deleted_search = ($query->parse_tree->find_modifier('deleted')) ? "'t'" : "'f'";
     my $metarecord = ($self->api_name =~ /metabib/ or $query->parse_tree->find_modifier('metabib') or $query->parse_tree->find_modifier('metarecord')) ? "'t'" : "'f'";
     my $param_pref_ou = $pref_ou || 'NULL';
-
-#    my $sth = metabib::metarecord_source_map->db_Main->prepare(<<"    SQL");
-#        SELECT  * -- bib search: $args{query}
-#          FROM  search.query_parser_fts(
-#                    $param_search_ou\:\:INT,
-#                    $param_depth\:\:INT,
-#                    $param_core_query\:\:TEXT,
-#                    $param_statuses\:\:INT[],
-#                    $param_locations\:\:INT[],
-#                    $param_offset\:\:INT,
-#                    $param_check\:\:INT,
-#                    $param_limit\:\:INT,
-#                    $metarecord\:\:BOOL,
-#                    $staff\:\:BOOL,
-#                    $deleted_search\:\:BOOL,
-#                    $param_pref_ou\:\:INT
-#                );
-#    SQL
 
     my $sth = metabib::metarecord_source_map->db_Main->prepare(<<"    SQL");
         -- bib search: $args{query}

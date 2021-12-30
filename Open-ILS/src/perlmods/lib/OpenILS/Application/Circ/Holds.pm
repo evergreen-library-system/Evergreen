@@ -105,7 +105,7 @@ sub test_and_create_hold_batch {
         my $res;
         ($res) = $self->method_lookup(
             'open-ils.circ.title_hold.is_possible')->run($auth, $params, $override ? $oargs : {});
-        if ($res->{'success'} == 1) {
+        if ($res->{'success'} == 1 || ($override && $res->{place_unfillable})) {
 
             $params->{'depth'} = $res->{'depth'} if $res->{'depth'};
 
@@ -1317,6 +1317,12 @@ sub update_hold_impl {
                 # clear to prevent premature shelf expiration
                 $hold->clear_shelf_expire_time;
             }
+          # If a copy is targeted and pickup lib changes,
+          # clear the current_copy so a retarget will re-evaluate
+          # the hold from scratch.
+        } elsif ($hold_status == 2) {
+              $logger->info("Pickup location changed and waiting for capture, clear current_copy for hold ".$hold->id);
+              $hold->clear_current_copy;
         }
     }
 
@@ -3994,7 +4000,7 @@ sub clear_shelf_process {
         }
 
         push(@holds, $hold);
-        $client->respond({maximum => scalar(@holds), progress => $counter}) if ( (++$counter % $chunk_size) == 0);
+        $client->respond({maximum => int(scalar(@holds)), progress => $counter}) if ( (++$counter % $chunk_size) == 0);
     }
 
     if ($e->commit) {

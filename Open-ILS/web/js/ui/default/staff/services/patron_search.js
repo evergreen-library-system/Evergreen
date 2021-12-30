@@ -331,7 +331,6 @@ function($q , $timeout , $location , egCore,  egUser , egConfirmDialog , $locale
         var p = service.current;
 
         if (service.alert_penalties.length ||
-            p.alert_message() ||
             p.active() == 'f' ||
             p.barred() == 't' ||
             service.patron_stats.holds.ready) {

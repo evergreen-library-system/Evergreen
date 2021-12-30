@@ -232,17 +232,62 @@ CREATE OR REPLACE FUNCTION reporter.refresh_materialized_simple_record () RETURN
     SELECT reporter.enable_materialized_simple_record_trigger();
 $$ LANGUAGE SQL;
 
+CREATE OR REPLACE VIEW reporter.asset_call_number_dewey AS
+  SELECT id AS call_number,
+    call_number_dewey(label) AS dewey,
+    CASE WHEN call_number_dewey(label) ~ '^[0-9]+\.?[0-9]*$'::text
+      THEN btrim(to_char(10::double precision * floor(call_number_dewey(label)::double precision / 10::double precision), '000'::text))
+      ELSE NULL::text
+    END AS dewey_block_tens,
+    CASE WHEN call_number_dewey(label) ~ '^[0-9]+\.?[0-9]*$'::text
+      THEN btrim(to_char(100::double precision * floor(call_number_dewey(label)::double precision / 100::double precision), '000'::text))
+      ELSE NULL::text
+    END AS dewey_block_hundreds,
+    CASE WHEN call_number_dewey(label) ~ '^[0-9]+\.?[0-9]*$'::text
+      THEN (btrim(to_char(10::double precision * floor(call_number_dewey(label)::double precision / 10::double precision), '000'::text)) || '-'::text)
+      || btrim(to_char(10::double precision * floor(call_number_dewey(label)::double precision / 10::double precision) + 9::double precision, '000'::text))
+      ELSE NULL::text
+    END AS dewey_range_tens,
+    CASE WHEN call_number_dewey(label) ~ '^[0-9]+\.?[0-9]*$'::text
+      THEN (btrim(to_char(100::double precision * floor(call_number_dewey(label)::double precision / 100::double precision), '000'::text)) || '-'::text)
+      || btrim(to_char(100::double precision * floor(call_number_dewey(label)::double precision / 100::double precision) + 99::double precision, '000'::text))
+      ELSE NULL::text
+    END AS dewey_range_hundreds
+  FROM asset.call_number
+  WHERE call_number_dewey(label) ~ '^[0-9]'::text;
+
 CREATE OR REPLACE VIEW reporter.demographic AS
-SELECT	u.id,
-	u.dob,
-	CASE
-		WHEN u.dob IS NULL
-			THEN 'Adult'
-		WHEN AGE(u.dob) > '18 years'::INTERVAL
-			THEN 'Adult'
-		ELSE 'Juvenile'
-	END AS general_division
-  FROM	actor.usr u;
+SELECT  u.id,
+    u.dob,
+    CASE
+        WHEN u.dob IS NULL
+            THEN 'Adult'
+        WHEN AGE(u.dob) > '18 years'::INTERVAL
+            THEN 'Adult'
+        ELSE 'Juvenile'
+    END AS general_division,
+    CASE
+        WHEN u.dob IS NULL
+            THEN 'No Date of Birth Entered'::text
+        WHEN age(u.dob::timestamp with time zone) >= '0 years'::interval and age(u.dob::timestamp with time zone) < '6 years'::interval
+            THEN 'Child 0-5 Years Old'::text
+        WHEN age(u.dob::timestamp with time zone) >= '6 years'::interval and age(u.dob::timestamp with time zone) < '13 years'::interval
+            THEN 'Child 6-12 Years Old'::text
+        WHEN age(u.dob::timestamp with time zone) >= '13 years'::interval and age(u.dob::timestamp with time zone) < '18 years'::interval
+            THEN 'Teen 13-17 Years Old'::text
+        WHEN age(u.dob::timestamp with time zone) >= '18 years'::interval and age(u.dob::timestamp with time zone) < '26 years'::interval
+            THEN 'Adult 18-25 Years Old'::text
+        WHEN age(u.dob::timestamp with time zone) >= '26 years'::interval and age(u.dob::timestamp with time zone) < '50 years'::interval
+            THEN 'Adult 26-49 Years Old'::text
+        WHEN age(u.dob::timestamp with time zone) >= '50 years'::interval and age(u.dob::timestamp with time zone) < '60 years'::interval
+            THEN 'Adult 50-59 Years Old'::text
+        WHEN age(u.dob::timestamp with time zone) >= '60 years'::interval and age(u.dob::timestamp with time zone) < '70  years'::interval
+            THEN 'Adult 60-69 Years Old'::text
+        WHEN age(u.dob::timestamp with time zone) >= '70 years'::interval
+            THEN 'Adult 70+'::text
+        ELSE NULL::text
+    END AS age_division
+    FROM actor.usr u;
 
 CREATE OR REPLACE VIEW reporter.circ_type AS
 SELECT	id,

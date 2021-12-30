@@ -116,6 +116,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                 // case, result.count is not supplied.
                 $scope.total_hits += (result.count || 0);
                 for (var i in result.records) {
+                    result.records[i].mvr['bibid'] = result.records[i].bibid;
                     result.records[i].mvr['service'] = result.service;
                     result.records[i].mvr['index'] = resultIndex++;
                     result.records[i].mvr['marcxml'] = result.records[i].marcxml;
@@ -185,7 +186,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     $scope.showInCatalog = function() {
         var items = $scope.gridControls.selectedItems();
         // relying on cant_showInCatalog to protect us
-        var url = '/eg2/staff/catalog/record/' + items[0].tcn();
+        var url = '/eg2/staff/catalog/record/' + items[0]['bibid'];
         $timeout(function() { $window.open(url, '_blank') });        
     };
     $scope.cant_showInCatalog = function() {
@@ -196,22 +197,44 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     };
 
     $scope.local_overlay_target = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record') || 0;
+
+    if($scope.local_overlay_target) {
+        var currTarget = $scope.local_overlay_target;
+
+        get_tcn(currTarget).then(
+            function(tcn) { $scope.local_overlay_target_tcn = tcn; });
+    }
     $scope.mark_as_overlay_target = function() {
         var items = $scope.gridControls.selectedItems();
-        if ($scope.local_overlay_target == items[0].tcn()) {
+        if ($scope.local_overlay_target == items[0]['bibid']) {
             $scope.local_overlay_target = 0;
+            $scope.local_overlay_target_tcn = 0;
         } else {
-            $scope.local_overlay_target = items[0].tcn();
+            $scope.local_overlay_target = items[0]['bibid'];
+            var currTarget = items[0] ['bibid'];
+            get_tcn(currTarget).then(
+                function(tcn) { $scope.local_overlay_target_tcn = tcn; });
+
         }
         egCore.hatch.setLocalItem('eg.cat.marked_overlay_record',$scope.local_overlay_target);
     }
+
+    // Returns promise of TCN value
+    function get_tcn(currTarget) {
+        return egCore.pcrud.retrieve('bre', currTarget, {
+            select: {bre: ['tcn_value']}
+        }).then(function(rec) {
+            return rec.tcn_value();
+        });
+    };
+
     $scope.cant_overlay = function() {
         if (!$scope.local_overlay_target) return true;
         var items = $scope.gridControls.selectedItems();
         if (items.length != 1) return true;
         if (
                 items[0]['service'] == 'native-evergreen-catalog' &&
-                items[0].tcn() == $scope.local_overlay_target
+                items[0]['bibid'] == $scope.local_overlay_target
            ) return true;
         return false;
     }
@@ -346,9 +369,31 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     }
 
     $scope.overlay_record = function() {
-        var items = $scope.gridControls.selectedItems();
+
+        var live_overlay_target = 
+            egCore.hatch.getLocalItem('eg.cat.marked_overlay_record') || 0;
+
+        if ($scope.local_overlay_target == live_overlay_target) {
+            // Avoid the extra network call when the target is unchanged.
+            overlay_record_modal(
+                $scope.local_overlay_target, $scope.local_overlay_target_tcn);
+            return;
+        }
+
+        // Target changed.  Fetch the new TCN.
+        get_tcn(live_overlay_target).then(
+            function(tcn) { 
+                overlay_record_modal(live_overlay_target, tcn)
+            }
+        );
+    }
+
+    function overlay_record_modal(live_overlay_target, live_overlay_target_tcn) {
+
         var overlay_target = $scope.local_overlay_target;
-        var live_overlay_target = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record') || 0;
+        var overlay_target_tcn = $scope.local_overlay_target_tcn;
+
+        var items = $scope.gridControls.selectedItems();
         var args = {
             'marc_xml' : items[0]['marcxml'],
             'bib_source' : null
@@ -367,6 +412,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                     .then(function(rec) {
                         $scope.overlay_target.orig_marc_xml = rec.marc();
                         $scope.merge_marc(); // in case a sticky value was already set
+                        $scope.overlay_target_tcn = overlay_target_tcn;
                     });
                 }
 
@@ -437,12 +483,14 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                     egConfirmDialog.open(
                         confirm_title,
                         confirm_msg,
-                        { id : overlay_target, live_id : live_overlay_target }
+                        { id : overlay_target, live_id : live_overlay_target,
+                            tcn : overlay_target_tcn, live_tcn: live_overlay_target_tcn}
                     ).result.then(
                         function () { // proceed -- but check live overlay for unset-ness
                             if (live_overlay_target != 0) {
                                 $scope.overlay_target.id = $scope.overlay_target.live_id;
                                 overlay_target = live_overlay_target;
+                                overlay_target_tcn = live_overlay_target_tcn;
                             }
                             $scope.immediate_merge();
                         },
@@ -469,6 +517,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
             ).then(
                 function(result) {
                     $scope.local_overlay_target = 0;
+                    $scope.local_overlay_target_tcn = 0;
                     egCore.hatch.removeLocalItem('eg.cat.marked_overlay_record');
                     console.debug('overlay complete, target removed');
                     $window.open('/eg2/staff/catalog/record/' + overlay_target);

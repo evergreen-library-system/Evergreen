@@ -3,10 +3,12 @@ import {StaffCommonModule} from '@eg/staff/common.module';
 import {AdminAcqRoutingModule} from './routing.module';
 import {AdminCommonModule} from '@eg/staff/admin/common.module';
 import {AdminAcqSplashComponent} from './admin-acq-splash.component';
+import {ClaimingAdminComponent} from './claiming-admin.component';
 
 @NgModule({
   declarations: [
-      AdminAcqSplashComponent
+      AdminAcqSplashComponent,
+      ClaimingAdminComponent
   ],
   imports: [
     AdminCommonModule,

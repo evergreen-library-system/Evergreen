@@ -412,7 +412,6 @@ function($scope , $q , egCore , ngToast) {
         master_account : 'f',
         claims_returned_count : '0',
         claims_never_checked_out_count : '0',
-        alert_message : 'Coat is in the lost-and-found behind the circ desk',
         ident_type: {name: function() {return 'Drivers License'}},
         ident_value: '11332445',
         ident_type2: {name: function() {return 'Other'}},
@@ -588,7 +587,8 @@ function($scope , $q , egCore , ngToast) {
                 },
                 copy : seed_copy,
                 title : seed_record.title,
-                author : seed_record.author
+                author : seed_record.author,
+                call_number : seed_copy.call_number
             }
         ],
 

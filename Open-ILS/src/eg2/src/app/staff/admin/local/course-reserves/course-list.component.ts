@@ -11,6 +11,8 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {LocaleService} from '@eg/core/locale.service';
 import {AuthService} from '@eg/core/auth.service';
+import {OrgService} from '@eg/core/org.service';
+import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
 
 import {CourseAssociateMaterialComponent
     } from './course-associate-material.component';
@@ -46,6 +48,8 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     grid_source: GridDataSource = new GridDataSource();
     currentMaterials: any[] = [];
     search_value = '';
+    defaultOuId: number;
+    searchOrgs: OrgFamily;
     defaultTerm: IdlObject;
 
 
@@ -54,6 +58,7 @@ export class CourseListComponent implements OnInit, AfterViewInit {
         private locale: LocaleService,
         private auth: AuthService,
         private idl: IdlService,
+        private org: OrgService,
         private pcrud: PcrudService,
         private router: Router,
         private toast: ToastService
@@ -62,7 +67,9 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         this.getSource();
         this.defaultTerm = this.idl.create('acmt');
-        this.defaultTerm.owning_lib(this.auth.user().ws_ou());
+        this.defaultOuId = this.auth.user().ws_ou() || this.org.root().id();
+        this.defaultTerm.owning_lib(this.defaultOuId);
+        this.searchOrgs = {primaryOrgId: this.defaultOuId};
     }
 
     ngAfterViewInit() {
@@ -91,12 +98,17 @@ export class CourseListComponent implements OnInit, AfterViewInit {
                 // Default sort field
                 orderBy[this.idlClass] = this.sortField;
             }
+            const search: any = new Array();
+            const orgFilter: any = {};
+            orgFilter['owning_lib'] =
+                this.searchOrgs.orgIds || [this.defaultOuId];
+            search.push(orgFilter);
             const searchOps = {
                 offset: pager.offset,
                 limit: pager.limit,
                 order_by: orderBy
             };
-            return this.pcrud.retrieveAll(this.idlClass, searchOps, {fleshSelectors: true});
+            return this.pcrud.search(this.idlClass, search, searchOps, {fleshSelectors: true});
         };
     }
 
@@ -117,8 +129,10 @@ export class CourseListComponent implements OnInit, AfterViewInit {
 
     createNew() {
         this.editDialog.mode = 'create';
+        const course_module_course = this.idl.create('acmc');
+        course_module_course.owning_lib(this.auth.user().ws_ou());
         this.editDialog.recordId = null;
-        this.editDialog.record = null;
+        this.editDialog.record = course_module_course;
         this.editDialog.open({size: this.dialog_size}).subscribe(
             ok => {
                 this.createString.current()

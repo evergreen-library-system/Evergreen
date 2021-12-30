@@ -110,7 +110,7 @@
             </a>
           </li>
           <li>
-            <a href="./circ/holds/pull" target="_self">
+            <a href="/eg2/staff/circ/holds/pull-list">
               <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
               [% l('Pull List for Hold Requests') %]
             </a>

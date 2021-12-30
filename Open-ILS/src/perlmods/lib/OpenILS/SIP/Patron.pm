@@ -20,6 +20,7 @@ use OpenILS::Application::Actor;
 use OpenILS::Const qw/:const/;
 use OpenILS::Utils::DateTime qw/:datetime/;
 use DateTime::Format::ISO8601;
+use OpenILS::Utils::Fieldmapper;
 my $U = 'OpenILS::Application::AppUtils';
 
 our (@ISA, @EXPORT_OK);
@@ -50,6 +51,9 @@ sub new {
     my $self = bless({}, $type);
 
     syslog("LOG_DEBUG", "OILS: new OpenILS Patron(%s => %s): searching...", $key, $patron_id);
+
+    my $idl = OpenSRF::Utils::SettingsClient->new->config_value("IDL");
+    Fieldmapper->import(IDL => $idl);
 
     my $e = OpenILS::SIP->editor();
     # Pass the authtoken, if any, to the editor so that we can use it
@@ -1011,7 +1015,7 @@ sub block {
 
     syslog('LOG_INFO', "OILS: Blocking user %s", $u->card->barcode );
 
-    return $self if $u->card->active eq 'f';
+    return $self if $u->card->active eq 'f'; # TODO: don't think this will ever be true
 
     $e->xact_begin;    # connect and start a new transaction
 
@@ -1022,28 +1026,46 @@ sub block {
         return $self;
     }
 
-    # retrieve the un-fleshed user object for update
-    $u = $e->retrieve_actor_user($u->id);
-    my $note = $u->alert_message || "";
-    $note = "<sip> CARD BLOCKED BY SELF-CHECK MACHINE. $blocked_card_msg</sip>\n$note"; # XXX Config option
-    $note =~ s/\s*$//;  # kill trailng whitespace
-    $u->alert_message($note);
+    # Use the ws_ou or home_ou of the authsession user, if any, as a
+    # context org_unit for the created penalty
+    my $here;
+    if ($e->authtoken()) {
+        my $auth_usr = $e->checkauth();
+        if ($auth_usr) {
+            $here = $auth_usr->ws_ou() || $auth_usr->home_ou();
+        }
+    }
 
-    if( ! $e->update_actor_user($u) ) {
-        syslog('LOG_ERR', "OILS: Block: patron alert update failed: %s", $e->event->{textcode});
+    my $penalty = Fieldmapper::actor::user_standing_penalty->new;
+    $penalty->usr( $u->id );
+    $penalty->org_unit( $here );
+    $penalty->set_date('now');
+    $penalty->staff( $e->checkauth()->id() );
+    $penalty->standing_penalty(20); # ALERT_NOTE
+
+    my $note = "<sip> CARD BLOCKED BY SELF-CHECK MACHINE. $blocked_card_msg</sip>\n"; # XXX Config option
+    my $msg = {
+      title => 'SIP',
+      message => $note
+    };
+    my $penalty_result = $U->simplereq(
+      'open-ils.actor',
+      'open-ils.actor.user.penalty.apply', $e->authtoken, $penalty, $msg);
+    if( my $result_code = $U->event_code($penalty_result) ) {
+        my $textcode = $penalty_result->{textcode};
+        syslog('LOG_ERR', "OILS: Block: patron penalty failed: %s", $textcode);
         $e->rollback; # rollback + disconnect
         return $self;
     }
 
-    # stay in synch
-    $self->{user}->alert_message( $note );
-
-    $e->commit; # commits and disconnects
+    $e->commit;
     return $self;
 }
 
 # Testing purposes only
 sub enable {
+    # TODO: we never actually enter this sub if the patron's card is not active
+    # For now, to test the removal of the SIP penalties, manually activate the card first
     my ($self, $card_retained) = @_;
     $self->{screen_msg} = "All privileges restored.";
 
@@ -1053,33 +1075,33 @@ sub enable {
 
     syslog('LOG_INFO', "OILS: Unblocking user %s", $u->card->barcode );
 
-    return $self if $u->card->active eq 't';
-
     $e->xact_begin;    # connect and start a new transaction
 
-    $u->card->active('t');
-    if( ! $e->update_actor_card($u->card) ) {
-        syslog('LOG_ERR', "OILS: Unblock card update failed: %s", $e->event->{textcode});
-        $e->rollback; # rollback + disconnect
-        return $self;
+    if ($u->card->active eq 'f') {
+        $u->card->active('t');
+        if( ! $e->update_actor_card($u->card) ) {
+            syslog('LOG_ERR', "OILS: Unblock card update failed: %s", $e->event->{textcode});
+            $e->rollback; # rollback + disconnect
+            return $self;
+        }
     }
 
-    # retrieve the un-fleshed user object for update
-    $u = $e->retrieve_actor_user($u->id);
-    my $note = $u->alert_message || "";
-    $note =~ s#<sip>.*</sip>##;
-    $note =~ s/^\s*//;  # kill leading whitespace
-    $note =~ s/\s*$//;  # kill trailng whitespace
-    $u->alert_message($note);
+    # look for sip related penalties
+    my $sip_penalties = $e->search_actor_usr_message_penalty({ usr => $u->id, title => 'SIP', stop_date => undef });
 
-    if( ! $e->update_actor_user($u) ) {
-        syslog('LOG_ERR', "OILS: Unblock: patron alert update failed: %s", $e->event->{textcode});
-        $e->rollback; # rollback + disconnect
-        return $self;
+    if (scalar(@{ $sip_penalties }) == 0) {
+        syslog('LOG_INFO', 'OILS: Unblock: no SIP penalties to archive');
     }
 
-    # stay in synch
-    $self->{user}->alert_message( $note );
+    foreach my $aump (@{ $sip_penalties }) {
+        my $penalty = $e->retrieve_actor_user_standing_penalty( $aump->ausp_id() );
+        $penalty->stop_date('now');
+        if ( ! $e->update_actor_user_standing_penalty($penalty) ) {
+            syslog('LOG_ERR', "OILS: Unblock: patron alert update failed: %s", $e->event->{textcode});
+            $e->rollback; # rollback + disconnect
+            return $self;
+        }
+    }
 
     $e->commit; # commits and disconnects
     return $self;

@@ -1,0 +1,482 @@
+<eg-string #loanDurationShort i18n-text text="Short"></eg-string>
+<eg-string #loanDurationNormal i18n-text text="Normal"></eg-string>
+<eg-string #loanDurationLong i18n-text text="Long"></eg-string>
+
+<eg-string #fineLevelLow i18n-text text="Low"></eg-string>
+<eg-string #fineLevelNormal i18n-text text="Normal"></eg-string>
+<eg-string #fineLevelHigh i18n-text text="High"></eg-string>
+
+<eg-string #olLabel text="Owning Library" i18n-text></eg-string>
+
+<eg-string #mintConditionYes i18n-text text="Good"></eg-string>
+<eg-string #mintConditionNo i18n-text text="Damaged"></eg-string>
+
+<!-- We ask this question a lot.  Here's a handy template -->
+<ng-template #yesNoSelect let-field="field">
+  <eg-combobox domId="{{field}}-input" 
+    [required]="true" [ngModel]="values['field']" 
+    (ngModelChange)="values[field] = $event ? $event.id : null">
+    <eg-combobox-entry entryId="t" entryLabel="Yes" i18n-entryLabel>
+    </eg-combobox-entry>
+    <eg-combobox-entry entryId="f" entryLabel="No" i18n-entryLabel>
+    </eg-combobox-entry>
+  </eg-combobox>
+</ng-template>
+
+<!-- this one is also repeated a lot -->
+<ng-template #batchAttr let-field="field" let-required="required"
+  let-label="label" let-template="template" let-displayAs="displayAs">
+  <eg-batch-item-attr 
+    [name]="field" 
+    [label]="label || copyFieldLabel(field)"
+    [valueRequired]="required"
+    [displayAs]="displayAs"
+    [editInputDomId]="field + '-input'"
+    [editTemplate]="template"
+    [labelCounts]="itemAttrCounts(field)"
+    (valueCleared)="applyCopyValue(field, null)"
+    (changesSaved)="applyCopyValue(field, undefined, $event)">
+  </eg-batch-item-attr>
+</ng-template>
+
+<!-- Copy Templates -->
+<div class="row border rounded border-dark pt-2 pb-2 bg-faint">
+  <div class="col-lg-1 font-weight-bold" i18n>Templates:</div>
+  <div class="col-lg-4">
+    <eg-combobox #copyTemplateCbox domId="template-select" 
+      [allowFreeText]="true" [entries]="volcopy.templateNames">
+    </eg-combobox>
+  </div>
+  <div class="col-lg-7 d-flex">
+    <button class="btn btn-outline-dark mr-2" (click)="applyTemplate()" i18n>Apply</button>
+    <button class="btn btn-outline-dark mr-2" (click)="saveTemplate()" i18n>Save</button>
+
+    <!-- 
+      The typical approach of wrapping a file input in a <label> results
+      in button-ish things that have slightly different dimensions.
+      Instead have a button activate a hidden file input.
+    -->
+    <button class="btn btn-outline-dark mr-2" (click)="templateFile.click()">
+      <input type="file" class="d-none" #templateFile
+        (change)="importTemplate($event)" id="template-file-upload"/>
+      <span i18n>Import</span>
+    </button>
+
+    <a (click)="exportTemplate($event)"
+      download="export_copy_template.json" [href]="exportTemplateUrl()">
+      <button class="btn btn-outline-dark mr-2" i18n>Export</button>
+    </a>
+    
+    <div class="flex-1"> </div>
+    <button class="btn btn-outline-danger mr-2" 
+      (click)="deleteTemplate()" i18n>Delete Template</button>
+  </div>
+</div>
+
+
+<div class="row d-flex">
+
+  <!-- COLUMN 1 -->
+  <div class="flex-1 p-1">
+    <div class="p-1"><h4 class="font-weight-bold" i18n>Identification</h4></div>
+
+
+    <div class="mb-1" *ngIf="displayAttr('status')">
+
+      <ng-container *ngIf="statusEditable(); else noEditStat">
+        <ng-template #statusTemplate>
+          <eg-combobox domId="status-input"
+            (ngModelChange)="values['status'] = $event ? $event.id : null"
+            [ngModel]="values['status']" [disableEntries]="volcopy.magicCopyStats">
+            <eg-combobox-entry 
+              *ngFor="let stat of volcopy.commonData.acp_status"
+              [entryId]="stat.id()" [entryLabel]="stat.name()">
+            </eg-combobox-entry>
+          </eg-combobox>
+        </ng-template>
+        <ng-container *ngTemplateOutlet="batchAttr;
+          context:{field:'status',template:statusTemplate}">
+        </ng-container>
+      </ng-container>
+
+      <ng-template #noEditStat>
+        <eg-batch-item-attr label="Status" i18n-label [readOnly]="true"
+          [labelCounts]="itemAttrCounts('status')">
+        </eg-batch-item-attr>
+      </ng-template>
+    </div>
+
+    <div class="mb-1" *ngIf="displayAttr('barcode')">
+      <eg-batch-item-attr label="Barcode" i18n-label
+        [readOnly]="true" [labelCounts]="itemAttrCounts('barcode')">
+      </eg-batch-item-attr>
+    </div>
+
+    <div class="mb-1" *ngIf="displayAttr('create_date')">
+      <eg-batch-item-attr label="Creation Date" i18n-label [readOnly]="true"
+        [labelCounts]="itemAttrCounts('create_date')">
+      </eg-batch-item-attr>
+    </div>
+
+    <div class="mb-1" *ngIf="displayAttr('active_date')">
+      <eg-batch-item-attr label="Active Date" i18n-label [readOnly]="true"
+        [labelCounts]="itemAttrCounts('active_date')">
+      </eg-batch-item-attr>
+    </div>
+
+    <div class="mb-1" *ngIf="displayAttr('creator')">
+      <eg-batch-item-attr label="Creator" i18n-label [readOnly]="true"
+        [labelCounts]="itemAttrCounts('creator')">
+      </eg-batch-item-attr>
+    </div>
+
+    <div class="mb-1" *ngIf="displayAttr('edit_date')">
+      <eg-batch-item-attr label="Last Edit Date" i18n-label [readOnly]="true"
+        [labelCounts]="itemAttrCounts('edit_date')">
+      </eg-batch-item-attr>
+    </div>
+
+    <div class="mb-1" *ngIf="displayAttr('editor')">
+      <eg-batch-item-attr label="Last Editor" i18n-label [readOnly]="true"
+        [labelCounts]="itemAttrCounts('editor')">
+      </eg-batch-item-attr>
+    </div>
+
+  </div>
+
+  <!-- COLUMN 2 -->
+  <div class="flex-1 p-1">
+    <div class="p-1"><h4 class="font-weight-bold" i18n>Location</h4></div>
+
+    <div *ngIf="displayAttr('location')">
+      <ng-template #locationTemplate>
+        <eg-item-location-select (valueChange)="values['location'] = $event"
+          domId='location-input' [required]="true" permFilter="UPDATE_COPY">
+        </eg-item-location-select>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'location',required:true,template:locationTemplate}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('circ_lib')">
+      <ng-template #circLibTemplate>
+        <eg-org-select 
+          domId="circ_lib-input"
+          (onChange)="values['circ_lib'] = $event ? $event.id() : null"
+          [hideOrgs]="volcopy.hideVolOrgs"
+          [limitPerms]="['UPDATE_COPY']">
+        </eg-org-select>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'circ_lib',required:true,template:circLibTemplate}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('owning_lib')">
+      <ng-template #owningLibTemplate>
+        <eg-org-select 
+          domId="owning_lib-input"
+          (onChange)="values['owning_lib'] = $event ? $event.id() : null"
+          [hideOrgs]="volcopy.hideVolOrgs"
+          [limitPerms]="['UPDATE_COPY']">
+        </eg-org-select>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'owning_lib',required:true,template:owningLibTemplate,label:olLabel.text}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('copy_number')">
+      <ng-template #copyNumberTemplate>
+        <input type="number" class="form-control"
+          id="copy_number-input" [(ngModel)]="values['copy_number']"/>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'copy_number',template:copyNumberTemplate}">
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- COLUMN 3 -->
+
+  <div class="flex-1 p-1">
+    <div class="p-1"><h4 class="font-weight-bold" i18n>Circulation</h4></div>
+
+    <div *ngIf="displayAttr('circulate')">
+      <ng-template #circulateTemplate>
+        <ng-container *ngTemplateOutlet="yesNoSelect;context:{field:'circulate'}">
+        </ng-container>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'circulate',required:true,template:circulateTemplate,displayAs:'bool'}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('holdable')">
+      <ng-template #holdableTemplate>
+        <ng-container *ngTemplateOutlet="yesNoSelect;context:{field:'holdable'}">
+        </ng-container>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'holdable',required:true,template:holdableTemplate,displayAs:'bool'}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('age_protect')">
+      <ng-template #ageProtectTemplate>
+        <eg-combobox domId="age_protect-input"
+          (ngModelChange)="values['age_protect'] = $event ? $event.id : null"
+          [ngModel]="values['age_protect']">
+          <eg-combobox-entry 
+            *ngFor="let rule of volcopy.commonData.acp_age_protect"
+            [entryId]="rule.id()" [entryLabel]="rule.name()">
+          </eg-combobox-entry>
+        </eg-combobox>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'age_protect',template:ageProtectTemplate}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('floating')">
+      <ng-template #floatingTemplate>
+        <eg-combobox domId="floating-input"
+          (ngModelChange)="values['floating'] = $event ? $event.id : null"
+          [ngModel]="values['floating']">
+          <eg-combobox-entry 
+            *ngFor="let grp of volcopy.commonData.acp_floating_group"
+            [entryId]="grp.id()" [entryLabel]="grp.name()">
+          </eg-combobox-entry>
+        </eg-combobox>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'floating',template:floatingTemplate}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('loan_duration')">
+      <ng-template #loanDurationTemplate>
+        <select class="form-control" 
+          id="loan_duration-input" [(ngModel)]="values['loan_duration']">
+          <option value="1" i18n>{{loanDurationShort.text}}</option>
+          <option value="2" i18n>{{loanDurationNormal.text}}</option>
+          <option value="3" i18n>{{loanDurationLong.text}}</option>
+        </select>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'loan_duration',required:true,template:loanDurationTemplate}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('fine_level')">
+      <ng-template #fineLevelTemplate>
+        <select class="form-control" 
+          id="fine_level-input" [(ngModel)]="values['fine_level']">
+          <option value="1" i18n>{{fineLevelLow.text}}</option>
+          <option value="2" i18n>{{fineLevelNormal.text}}</option>
+          <option value="3" i18n>{{fineLevelHigh.text}}</option>
+        </select>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'fine_level',required:true,template:fineLevelTemplate}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('circ_as_type')">
+      <ng-template #circAsTypeTemplate>
+        <eg-combobox domId="circ_as_type-input"
+          (ngModelChange)="values['circ_as_type'] = $event ? $event.id : null"
+          [ngModel]="values['circ_as_type']">
+          <eg-combobox-entry *ngFor="let map of volcopy.commonData.acp_item_type_map"
+            [entryId]="map.code()" [entryLabel]="map.value()">
+          </eg-combobox-entry>
+        </eg-combobox>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'circ_as_type',template:circAsTypeTemplate}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('circ_modifier')">
+      <ng-template #circModifierTemplate>
+        <select class="form-control" id='circ_modifier-input' 
+          [(ngModel)]="values['circ_modifier']">
+          <option [value]="null" i18n>&lt;Unset&gt;</option>
+          <option *ngFor="let mod of volcopy.commonData.acp_circ_modifier"
+            value="{{mod.code()}}">{{mod.name()}}</option>
+        </select>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'circ_modifier',template:circModifierTemplate}">
+      </ng-container>
+    </div>
+
+  </div>
+
+  <!-- COLUMN 4 -->
+
+  <div class="flex-1 p-1">
+    <div class="p-1"><h4 class="font-weight-bold" i18n>Miscellaneous</h4></div>
+
+    <!-- Adding this for sites that still use alert messages (we do)
+    <div>
+      <ng-template #alertMessageTemplate>
+        <textarea rows="3" class="form-control" id="alert-message-input"
+          [(ngModel)]="values['alert_message']">
+        </textarea>
+      </ng-template>
+      <eg-batch-item-attr label="Alert Message" i18n-label
+        editInputDomId="alert-message-input"
+        [editTemplate]="alertMessageTemplate"
+        [labelCounts]="itemAttrCounts('alert_message')"
+        (changesSaved)="applyCopyValue('alert_message')">
+      </eg-batch-item-attr>
+    </div>
+    -->
+
+    <div class="border rounded m-1" *ngIf="displayAttr('copy_alerts')">
+      <eg-copy-alerts-dialog #copyAlertsDialog></eg-copy-alerts-dialog>
+      <div class="batch-header font-weight-bold p-2" i18n>Add Item Alerts</div>
+      <div class="p-1">
+        <button class="btn btn-outline-dark" (click)="openCopyAlerts()" i18n>
+          Item Alerts
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="displayAttr('deposit')">
+      <ng-template #depositTemplate>
+        <ng-container *ngTemplateOutlet="yesNoSelect;context:{field:'deposit'}">
+        </ng-container>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'deposit',required:true,template:depositTemplate,displayAs:'bool'}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('deposit_amount')">
+      <ng-template #depositAmountTemplate>
+        <input type="number" class="form-control" 
+          id="deposit_amount-input" [(ngModel)]="values['deposit_amount']"/>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'deposit_amount',required:true,template:depositAmountTemplate,displayAs:'currency'}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('price')">
+      <ng-template #priceTemplate>
+        <input type="number" class="form-control" 
+          id="price-input" [(ngModel)]="values['price']"/>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'price',template:priceTemplate,displayAs:'currency'}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('opac_visible')">
+      <ng-template #opacVisibleTemplate>
+        <ng-container *ngTemplateOutlet="yesNoSelect;context:{field:'opac_visible'}">
+        </ng-container>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'opac_visible',required:true,template:opacVisibleTemplate,displayAs:'bool'}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('ref')">
+      <ng-template #refTemplate>
+        <ng-container *ngTemplateOutlet="yesNoSelect;context:{field:'ref'}">
+        </ng-container>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'ref',required:true,template:refTemplate,displayAs:'bool'}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('cost')">
+      <ng-template #costTemplate>
+        <input type="number" class="form-control" 
+          id="cost-input" [(ngModel)]="values['cost']"/>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'cost',template:costTemplate,displayAs:'currency'}">
+      </ng-container>
+    </div>
+
+    <div *ngIf="displayAttr('mint_condition')">
+      <ng-template #mintConditionTemplate>
+        <select class="form-control" 
+          id="mint_condition-input" [(ngModel)]="values['mint_condition']">
+          <option value="t" i18n>{{mintConditionYes.text}}</option>
+          <option value="f" i18n>{{mintConditionNo.text}}</option>
+        </select>
+      </ng-template>
+      <ng-container *ngTemplateOutlet="batchAttr;
+        context:{field:'mint_condition',template:mintConditionTemplate}">
+      </ng-container>
+    </div>
+
+  </div>
+
+  <!-- COLUMN 5 -->
+  <div class="flex-1 p-1">
+    <div class="p-1"><h4 class="font-weight-bold" i18n>Statistics</h4></div>
+
+    <div class="border rounded m-1" *ngIf="displayAttr('copy_tags')">
+      <eg-copy-tags-dialog #copyTagsDialog></eg-copy-tags-dialog>
+      <div class="batch-header font-weight-bold p-2" i18n>Add Item Tags</div>
+      <div class="p-1">
+        <button class="btn btn-outline-dark" (click)="openCopyTags()" i18n>
+          Item Tags
+        </button>
+      </div>
+    </div>
+
+    <div class="border rounded m-1" *ngIf="displayAttr('copy_notes')">
+      <eg-copy-notes-dialog #copyNotesDialog></eg-copy-notes-dialog>
+      <div class="batch-header font-weight-bold p-2" i18n>Add Item Notes</div>
+      <div class="p-1">
+        <button class="btn btn-outline-dark" (click)="openCopyNotes()" i18n>
+          Item Notes
+        </button>
+      </div>
+    </div>
+
+    <div class="border rounded m-1" *ngIf="displayAttr('statcat_filter')">
+      <div class="batch-header font-weight-bold p-2" i18n>Stat Cat Filter</div>
+      <div class="p-1">
+        <eg-org-select
+          domId="statcat_filter-select"
+          placeholder="Stat Cat Filter..." i18n-placeholder
+          [initialOrgId]="statCatFilter"
+          (onChange)="statCatFilter = $event ? $event.id() : null">
+        </eg-org-select>
+      </div>
+    </div>
+
+    <ng-container *ngIf="displayAttr('statcats')">
+      <div *ngFor="let cat of statCats()">
+        <ng-template #statCatTemplate>
+          <eg-combobox domId="stat-cat-input-{{cat.id()}}"
+            (ngModelChange)="statCatValues[cat.id()] = $event ? $event.id : null"
+            [ngModel]="statCatValues[cat.id()]">
+            <eg-combobox-entry *ngFor="let entry of cat.entries()"
+              [entryId]="entry.id()" [entryLabel]="entry.value()">
+            </eg-combobox-entry>
+          </eg-combobox>
+        </ng-template>
+        <eg-batch-item-attr label="{{cat.name()}} ({{orgSn(cat.owner())}})" i18n-label
+          name="stat_cat_{{cat.id()}}" editInputDomId="stat-cat-input-{{cat.id()}}"
+          [editTemplate]="statCatTemplate"
+          [labelCounts]="statCatCounts(cat.id())"
+          (valueCleared)="statCatChanged(cat.id(), true)"
+          (changesSaved)="statCatChanged(cat.id())">
+        </eg-batch-item-attr>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+

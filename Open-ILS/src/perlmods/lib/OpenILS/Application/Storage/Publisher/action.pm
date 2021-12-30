@@ -577,11 +577,34 @@ sub nearest_hold {
                 ON ( au.id = ausp.usr AND ( ausp.stop_date IS NULL OR ausp.stop_date > NOW() ) )
             LEFT JOIN config.standing_penalty csp
                 ON ( csp.id = ausp.standing_penalty AND csp.block_list LIKE '%CAPTURE%' )
+            LEFT JOIN LATERAL (
+                SELECT OILS_JSON_TO_TEXT(value) AS age
+                  FROM actor.org_unit_ancestor_setting('circ.pickup_hold_stalling.soft', h.pickup_lib)
+            ) AS pickup_stall ON TRUE
             $addl_join
           WHERE hm.target_copy = ?
-            /* not protected, or protection is expired or we're in range */
+
+                /* not protected, or protection is expired or we're in range */
             AND (cahp.id IS NULL OR (AGE(NOW(),acp.active_date) >= cahp.age OR cahp.prox >= hm.proximity))
-            AND (AGE(NOW(),h.request_time) >= CAST(? AS INTERVAL) OR hm.proximity = 0 OR p.prox = 0)
+
+                /* the complicated hold stalling logic */
+            AND CASE WHEN pickup_stall.age IS NOT NULL AND h.request_time + pickup_stall.age::INTERVAL > NOW()
+                        THEN -- pickup lib oriented stalling is configured for this hold's pickup lib, and it's "too young"
+                            CASE WHEN p.prox = 0
+                                THEN TRUE -- Cheap test: allow it when scanning at pickup lib
+                                ELSE action.hold_copy_calculated_proximity( -- have to call this because we don't know if pprox will be included
+                                        h.id,
+                                        acp.id,
+                                        p.from_org -- equals scan lib, see first JOIN above
+                                     ) <= 0 -- else more expensive test for scan-lib calc prox
+                            END
+                    ELSE ( h.request_time + CAST(? AS INTERVAL) < NOW()
+                           OR hm.proximity <= 0
+                           OR p.prox = 0
+                         ) -- not "too young" OR copy-owner/pickup prox OR scan-lib/pickup prox
+                END
+
+                /* simple, quick tests */
             AND h.capture_time IS NULL
             AND h.cancel_time IS NULL
             AND (h.expire_time IS NULL OR h.expire_time > NOW())
@@ -2228,7 +2251,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         u.barred AS usr_barred, u.deleted AS usr_deleted, u.juvenile AS usr_juvenile,
         u.usrgroup AS usr_usrgroup, u.claims_returned_count AS usr_claims_returned_count,
         u.credit_forward_balance AS usr_credit_forward_balance, u.last_xact_id AS usr_last_xact_id,
-        u.alert_message AS usr_alert_message, u.create_date AS usr_create_date,
+        u.create_date AS usr_create_date,
         u.expire_date AS usr_expire_date, u.claims_never_checked_out_count AS usr_claims_never_checked_out_count,
         u.last_update_time AS usr_last_update_time,
 
@@ -2276,7 +2299,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         ru.barred AS rusr_barred, ru.deleted AS rusr_deleted, ru.juvenile AS rusr_juvenile,
         ru.usrgroup AS rusr_usrgroup, ru.claims_returned_count AS rusr_claims_returned_count,
         ru.credit_forward_balance AS rusr_credit_forward_balance, ru.last_xact_id AS rusr_last_xact_id,
-        ru.alert_message AS rusr_alert_message, ru.create_date AS rusr_create_date,
+        ru.create_date AS rusr_create_date,
         ru.expire_date AS rusr_expire_date, ru.claims_never_checked_out_count AS rusr_claims_never_checked_out_count,
         ru.last_update_time AS rusr_last_update_time,
 
@@ -2450,7 +2473,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
     $sth->execute();
 
     my @list = $sth->fetchall_hash;
-    $client->respond(scalar(@list)); # send the row count first, for progress tracking
+    $client->respond(int(scalar(@list))); # send the row count first, for progress tracking
     $client->respond( $_ ) for (@list);
 
     $client->respond_complete;

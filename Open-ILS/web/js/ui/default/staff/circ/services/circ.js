@@ -13,7 +13,9 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
 
     var service = {
         // auto-override these events after the first override
-        auto_override_checkout_events : {},
+        auto_override_circ_events : {},
+        // auto-skip these events after the first skip
+        auto_skip_circ_events : {},
         require_initials : false,
         never_auto_print : {
             hold_shelf_slip : false,
@@ -46,37 +48,23 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
     });
 
     service.reset = function() {
-        service.auto_override_checkout_events = {};
+        service.auto_override_circ_events = {};
+        service.auto_skip_circ_events = {};
     }
 
-    // these events can be overridden by staff during checkout
-    service.checkout_overridable_events = [
-        'PATRON_EXCEEDS_OVERDUE_COUNT',
-        'PATRON_EXCEEDS_CHECKOUT_COUNT',
-        'PATRON_EXCEEDS_FINES',
-        'PATRON_EXCEEDS_LONGOVERDUE_COUNT',
-        'PATRON_BARRED',
-        'CIRC_EXCEEDS_COPY_RANGE',
-        'ITEM_DEPOSIT_REQUIRED',
-        'ITEM_RENTAL_FEE_REQUIRED',
-        'PATRON_EXCEEDS_LOST_COUNT',
-        'COPY_CIRC_NOT_ALLOWED',
-        'COPY_NOT_AVAILABLE',
-        'COPY_IS_REFERENCE',
-        'COPY_ALERT_MESSAGE',
-        'ITEM_ON_HOLDS_SHELF',
-        'STAFF_C',
-        'STAFF_CH',
-        'STAFF_CHR',
-        'STAFF_CR',
-        'STAFF_H',
-        'STAFF_HR',
-        'STAFF_R'
+    // these events cannot be overriden
+    service.nonoverridable_events = [
+        'ACTION_CIRCULATION_NOT_FOUND',
+        'ACTOR_USER_NOT_FOUND',
+        'ASSET_COPY_NOT_FOUND',
+        'PATRON_INACTIVE',
+        'PATRON_CARD_INACTIVE',
+        'PATRON_ACCOUNT_EXPIRED',
+        'PERM_FAILURE' // should be handled elsewhere
     ]
 
-    // after the first override of any of these events, 
-    // auto-override them in subsequent calls.
-    service.checkout_auto_override_after_first = [
+    // Default to checked for "Automatically override for subsequent items?"
+    service.default_auto_override = [
         'PATRON_EXCEEDS_OVERDUE_COUNT',
         'PATRON_BARRED',
         'PATRON_EXCEEDS_LOST_COUNT',
@@ -84,34 +72,6 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         'PATRON_EXCEEDS_FINES',
         'PATRON_EXCEEDS_LONGOVERDUE_COUNT'
     ]
-
-
-    // overridable during renewal
-    service.renew_overridable_events = [
-        'PATRON_EXCEEDS_OVERDUE_COUNT',
-        'PATRON_EXCEEDS_LOST_COUNT',
-        'PATRON_EXCEEDS_CHECKOUT_COUNT',
-        'PATRON_EXCEEDS_FINES',
-        'PATRON_EXCEEDS_LONGOVERDUE_COUNT',
-        'CIRC_EXCEEDS_COPY_RANGE',
-        'ITEM_DEPOSIT_REQUIRED',
-        'ITEM_RENTAL_FEE_REQUIRED',
-        'ITEM_DEPOSIT_PAID',
-        'COPY_CIRC_NOT_ALLOWED',
-        'COPY_NOT_AVAILABLE',
-        'COPY_IS_REFERENCE',
-        'COPY_ALERT_MESSAGE',
-        'COPY_NEEDED_FOR_HOLD',
-        'MAX_RENEWALS_REACHED',
-        'CIRC_CLAIMS_RETURNED',
-        'STAFF_C',
-        'STAFF_CH',
-        'STAFF_CHR',
-        'STAFF_CR',
-        'STAFF_H',
-        'STAFF_HR',
-        'STAFF_R'
-    ];
 
     // these checkin events do not produce alerts when 
     // options.suppress_alerts is in effect.
@@ -399,7 +359,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
 
         } 
 
-        if (evt.filter(function(e){return !service.auto_override_checkout_events[e.textcode];}).length == 0) {
+        if (evt.filter(function(e){return !service.auto_override_circ_events[e.textcode];}).length == 0) {
             // user has already opted to override these type
             // of events.  Re-run the checkout w/ override.
             options.override = true;
@@ -432,7 +392,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         } 
 
         // renewal auto-overrides are the same as checkout
-        if (evt.filter(function(e){return !service.auto_override_checkout_events[e.textcode];}).length == 0) {
+        if (evt.filter(function(e){return !service.auto_override_circ_events[e.textcode];}).length == 0) {
             // user has already opted to override these type
             // of events.  Re-run the renew w/ override.
             options.override = true;
@@ -492,26 +452,30 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         // track the barcode regardless of whether it refers to a copy
         angular.forEach(evt, function(e){ e.copy_barcode = params.copy_barcode; });
 
-        // Overridable Events
-        if (evt.filter(function(e){return service.renew_overridable_events.indexOf(e.textcode) > -1;}).length > 0)
+        // test for success first to simplify things
+        if (evt[0].textcode == 'SUCCESS') {
+            egCore.audio.play('info.renew');
+            return $q.when(final_resp);
+        }
+
+        // handle Overridable and Non-Overridable Events, but only if no skipped non-overridable events
+        if (evt.filter(function(e){return service.auto_skip_circ_events[e.textcode];}).length == 0) {
             return service.handle_overridable_renew_event(evt, params, options);
+        }
 
         // Other events
         switch (evt[0].textcode) {
-            case 'SUCCESS':
-                egCore.audio.play('info.renew');
-                return $q.when(final_resp);
-
             case 'COPY_IN_TRANSIT':
             case 'PATRON_CARD_INACTIVE':
             case 'PATRON_INACTIVE':
             case 'PATRON_ACCOUNT_EXPIRED':
             case 'CIRC_CLAIMS_RETURNED':
+            case 'ITEM_NOT_CATALOGED':
+            case 'ASSET_COPY_NOT_FOUND':
+                // since handle_overridable_renew_event essentially advertises these events at some point,
+                // we no longer need the original alerts; however, the sound effects are still nice.
                 egCore.audio.play('warning.renew');
-                return service.exit_alert(
-                    egCore.strings[evt[0].textcode],
-                    {barcode : params.copy_barcode}
-                );
+                return $q.reject();
 
             default:
                 egCore.audio.play('warning.renew.unknown');
@@ -533,16 +497,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         // track the barcode regardless of whether it refers to a copy
         angular.forEach(evt, function(e){ e.copy_barcode = params.copy_barcode; });
 
-        // Overridable Events
-        if (evt.filter(function(e){return service.checkout_overridable_events.indexOf(e.textcode) > -1;}).length > 0)
-            return service.handle_overridable_checkout_event(evt, params, options);
+        // test for success first to simplify things
+        if (evt[0].textcode == 'SUCCESS') {
+            egCore.audio.play('success.checkout');
+            return $q.when(final_resp);
+        }
 
-        // Other events
+        // other events that should precede generic overridable/non-overridable handling
         switch (evt[0].textcode) {
-            case 'SUCCESS':
-                egCore.audio.play('success.checkout');
-                return $q.when(final_resp);
-
             case 'ITEM_NOT_CATALOGED':
                 egCore.audio.play('error.checkout.no_cataloged');
                 return service.precat_dialog(params, options);
@@ -555,16 +517,25 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
             case 'COPY_IN_TRANSIT':
                 egCore.audio.play('warning.checkout.in_transit');
                 return service.copy_in_transit_dialog(evt, params, options);
+        }
 
+        // handle Overridable and Non-Overridable Events, but only if no skipped non-overridable events
+        if (evt.filter(function(e){return service.auto_skip_circ_events[e.textcode];}).length == 0) {
+            return service.handle_overridable_checkout_event(evt, params, options);
+        }
+
+        // Other events
+        switch (evt[0].textcode) {
             case 'PATRON_CARD_INACTIVE':
             case 'PATRON_INACTIVE':
             case 'PATRON_ACCOUNT_EXPIRED':
             case 'CIRC_CLAIMS_RETURNED':
+            case 'ITEM_NOT_CATALOGED':
+            case 'ASSET_COPY_NOT_FOUND':
+                // since handle_overridable_checkout_event essentially advertises these events at some point,
+                // we no longer need the original alerts; however, the sound effects are still nice.
                 egCore.audio.play('warning.checkout');
-                return service.exit_alert(
-                    egCore.strings[evt[0].textcode],
-                    {barcode : params.copy_barcode}
-                );
+                return $q.reject();
 
             default:
                 egCore.audio.play('error.checkout.unknown');
@@ -605,15 +576,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         });
     }
 
-    service.get_staff_penalty_types = function() {
+    service.get_all_penalty_types = function() {
         if (egCore.env.csp) 
             return $q.when(egCore.env.csp.list);
-        return egCore.pcrud.search(
-            // id <= 100 are reserved for system use
-            'csp', {id : {'>': 100}}, {}, {atomic : true})
-        .then(function(penalties) {
-            return egCore.env.absorbList(penalties, 'csp').list;
-        });
+        return egCore.pcrud.retrieveAll('csp', {}, {atomic : true}).then(
+            function(penalties) {
+                return egCore.env.absorbList(penalties, 'csp').list;
+            }
+        );
     }
 
     // ideally all of these data should be returned with the response,
@@ -779,6 +749,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 ['$scope', '$uibModalInstance', 
                 function($scope, $uibModalInstance) {
                 $scope.events = evt;
+                $scope.action = action;
 
                 // Find the event, if any, that is for ITEM_ON_HOLDS_SHELF
                 //  and grab the patron name of the owner. 
@@ -797,18 +768,77 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                     $scope.patronID = $scope.holdEvent.payload.patron_id;
                 }
 
-                $scope.auto_override =
-                    evt.filter(function(e){
-                        return service.checkout_auto_override_after_first.indexOf(evt.textcode) > -1;
-                    }).length > 0;
                 $scope.copy_barcode = params.copy_barcode; // may be null
 
                 // Implementation note: Why not use a primitive here? It
                 // doesn't work.  See: 
                 // http://stackoverflow.com/questions/18642371/checkbox-not-binding-to-scope-in-angularjs
-                $scope.formdata = {clearHold : service.clearHold};
+                $scope.formdata = {
+                    clearHold : service.clearHold,
+                    nonoverridable: evt.filter(function(e){
+                        return service.nonoverridable_events.indexOf(e.textcode) > -1;}).length > 0,
+                    event_ui_data : Object.fromEntries(
+                        evt.map( e => [ e.ilsevent, {
+                            // non-overridable events will be rare, but they are skippable.  We use
+                            // the same checkbox variable to track desired skip and auto-override
+                            // selections.
+                            overridable: service.nonoverridable_events.indexOf(e.textcode) == -1,
+                            // for non-overridable events, we'll default the checkbox to any previous
+                            // choice made for the current patron, though normally the UI will be
+                            // suppressed unless some previously unencountered events are in the set
+                            checkbox: service.nonoverridable_events.indexOf(e.textcode) > -1
+                            ? (service.auto_skip_circ_events[e.textcode] == undefined
+                                ? false
+                                : service.auto_skip_circ_events[e.textcode]
+                            )
+                            // if a given event is overridable, said checkbox will default to any previous
+                            // choice made for the current patron, as long as there are no non-overridable
+                            // events in the set (because we'll disable the checkbox in that case and don't
+                            // want to imply that we're going to set an auto-override)
+                            : (service.auto_override_circ_events[e.textcode] == undefined
+                                ? (
+                                    service.nonoverridable_events.indexOf(e.textcode) > -1
+                                    ? false
+                                    : service.default_auto_override.indexOf(e.textcode) > -1
+                                )
+                                : service.auto_override_circ_events[e.textcode]
+                            )
+                        }])
+                    ) 
+                };
+
+                function update_auto_override_and_skip_lists() {
+                    angular.forEach(evt, function(e){
+                        if ($scope.formdata.nonoverridable) {
+                            // the action had at least one non-overridable event, so let's only
+                            // record skip choices for those
+                            if (!$scope.formdata.event_ui_data[e.ilsevent].overridable) {
+                                if ($scope.formdata.event_ui_data[e.ilsevent].checkbox) {
+                                    // grow the skip list
+                                    service.auto_skip_circ_events[e.textcode] = true;
+                                } else {
+                                    // shrink the skip list
+                                    service.auto_skip_circ_events[e.textcode] = false;
+                                }
+                            }
+                        } else {
+                            // record all auto-override choices
+                            if ($scope.formdata.event_ui_data[e.ilsevent].checkbox) {
+                                // grow the auto-override list
+                                service.auto_override_circ_events[e.textcode] = true;
+                            } else {
+                                // shrink the auto-override list
+                                service.auto_override_circ_events[e.textcode] = false;
+                            }
+                        }
+                    });
+                    // for debugging
+                    window.oils_auto_skip_circ_events = service.auto_skip_circ_events;
+                    window.oils_auto_override_circ_events = service.auto_override_circ_events;
+                }
 
                 $scope.ok = function() { 
+                    update_auto_override_and_skip_lists();
                     // Handle the cancellation of the assciated hold here
                     if ($scope.formdata.clearHold && $scope.holdID) {
                         egCore.net.request(
@@ -822,7 +852,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                     $uibModalInstance.close();
                 }
 
+                $scope.skip = function($event) {
+                    update_auto_override_and_skip_lists();
+                    $uibModalInstance.dismiss();
+                    $event.preventDefault();
+                }
+
                 $scope.cancel = function ($event) { 
+                    window.oils_cancel_batch = true;
                     $uibModalInstance.dismiss();
                     $event.preventDefault();
                 }
@@ -838,12 +875,6 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 if (action == 'checkin') {
                     return service.checkin(params, options);
                 }
-
-                // checkout/renew support override-after-first
-                angular.forEach(evt, function(e){
-                    if (service.checkout_auto_override_after_first.indexOf(e.textcode) > -1)
-                        service.auto_override_checkout_events[e.textcode] = true;
-                });
 
                 return service[action](params, options);
             }
@@ -2074,34 +2105,96 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         });
     }
 
+    function generate_penalty_dialog_watch_callback($scope,egCore,allPenalties) {
+        return function(newval) {
+            if (newval) {
+                var selected_penalty = allPenalties.filter(function(p) {
+                        return p.id() == newval; })[0];
+                var penalty_id = selected_penalty.id();
+                if (penalty_id == 20 || penalty_id == 21 || penalty_id == 25) {
+                    $scope.args.custom_penalty = penalty_id;
+                    $scope.args.penalty = penalty_id;
+                }
+                if (penalty_id > 100) {
+                    $scope.args.custom_penalty = penalty_id;
+                    $scope.args.penalty = null;
+                }
+                // there's a $watch on custom_depth
+                if (selected_penalty.org_depth() || selected_penalty.org_depth() == 0) {
+                    $scope.args.custom_depth = selected_penalty.org_depth();
+                } else {
+                    $scope.args.custom_depth = $scope.args.org.ou_type().depth();
+                }
+            }
+        };
+    }
+
     service.create_penalty = function(user_id) {
         return $uibModal.open({
             templateUrl: './circ/share/t_new_message_dialog',
             backdrop: 'static',
             controller: 
-                   ['$scope','$uibModalInstance','staffPenalties',
-            function($scope , $uibModalInstance , staffPenalties) {
+                   ['$scope','$uibModalInstance','allPenalties','goodOrgs',
+            function($scope , $uibModalInstance , allPenalties , goodOrgs) {
                 $scope.focusNote = true;
-                $scope.penalties = staffPenalties;
-                $scope.require_initials = service.require_initials;
-                $scope.args = {penalty : 21}; // default to Note
-                $scope.setPenalty = function(id) {
-                    args.penalty = id;
+                $scope.penalties = allPenalties.filter(
+                    function(p) { return p.id() > 100 || p.id() == 20 || p.id() == 21 || p.id() == 25; });
+                $scope.set_penalty = function(id) {
+                    if (!($scope.args.pub && $scope.args.read_date) && !$scope.args.deleted) {
+                        $scope.args.penalty = id;
+                    }
                 }
+                $scope.require_initials = service.require_initials;
+                $scope.update_org = function(org) {
+                    if (!($scope.args.pub && $scope.args.read_date) && !$scope.args.deleted) {
+                        $scope.args.org = org;
+                    }
+                }
+                $scope.cant_use_org = function(org_id) {
+                    return ($scope.args.pub && $scope.args.read_date) || $scope.args.deleted || goodOrgs.indexOf(org_id) == -1;
+                }
+                $scope.args = {
+                    pub : false,
+                    penalty : 21, // default to Note
+                    org : egCore.org.get(egCore.auth.user().ws_ou())
+                };
+                $scope.args.max_depth = $scope.args.org.ou_type().depth();
                 $scope.ok = function(count) { $uibModalInstance.close($scope.args) }
                 $scope.cancel = function($event) { 
                     $uibModalInstance.dismiss();
                     $event.preventDefault();
                 }
+                $scope.$watch('args.penalty', generate_penalty_dialog_watch_callback($scope,egCore,allPenalties));
+                $scope.$watch('args.custom_penalty', generate_penalty_dialog_watch_callback($scope,egCore,allPenalties));
+                $scope.$watch('args.custom_depth', function(org_depth) {
+                    if (org_depth || org_depth == 0) {
+                        egCore.net.request(
+                            'open-ils.actor',
+                            'open-ils.actor.org_unit.ancestor_at_depth.retrieve',
+                            egCore.auth.token(), egCore.auth.user().ws_ou(), org_depth
+                        ).then(function(ctx_org) {
+                            if (ctx_org) {
+                                $scope.args.org = egCore.org.get(ctx_org);
+                            }
+                        });
+                    }
+                });
             }],
-            resolve : { staffPenalties : service.get_staff_penalty_types }
+            resolve : {
+                allPenalties : service.get_all_penalty_types,
+                goodOrgs : egCore.perm.hasPermAt('UPDATE_USER', true)
+            }
         }).result.then(
             function(args) {
                 var pen = new egCore.idl.ausp();
+                var msg = {
+                    pub : args.pub,
+                    title : args.title,
+                    message : args.note ? args.note : ''
+                };
                 pen.usr(user_id);
-                pen.org_unit(egCore.auth.user().ws_ou());
-                pen.note(args.note);
-                if (args.initials) pen.note(args.note + ' [' + args.initials + ']');
+                pen.org_unit(args.org.id());
+                if (args.initials) msg.message = (args.note ? args.note : '') + ' [' + args.initials + ']';
                 if (args.custom_penalty) {
                     pen.standing_penalty(args.custom_penalty);
                 } else {
@@ -2113,41 +2206,133 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 return egCore.net.request(
                     'open-ils.actor',
                     'open-ils.actor.user.penalty.apply',
-                    egCore.auth.token(), pen
+                    egCore.auth.token(), pen, msg
                 );
             }
         );
     }
 
     // assumes, for now anyway,  penalty type is fleshed onto usr_penalty.
-    service.edit_penalty = function(usr_penalty) {
+    service.edit_penalty = function(pen,aum) {
         return $uibModal.open({
             templateUrl: './circ/share/t_new_message_dialog',
             backdrop: 'static',
             controller: 
-                   ['$scope','$uibModalInstance','staffPenalties',
-            function($scope , $uibModalInstance , staffPenalties) {
-                $scope.focusNote = true;
-                $scope.penalties = staffPenalties;
-                $scope.require_initials = service.require_initials;
-                $scope.args = {
-                    penalty : usr_penalty.standing_penalty().id(),
-                    note : usr_penalty.note()
+                   ['$scope','$uibModalInstance','allPenalties','goodOrgs',
+            function($scope , $uibModalInstance , allPenalties , goodOrgs) {
+                // We may need to vivicate usr_penalty (pen) or usr_message (aum)
+                if (!pen) {
+                    pen = new egCore.idl.ausp();
+                    pen.usr(aum.usr());
+                    pen.org_unit(aum.sending_lib()); // FIXME: preserve sending_lib or use ws_ou?
+                    pen.staff(egCore.auth.user().id());
+                    pen.set_date('now');
+                    pen.usr_message(aum.id());
+                    pen.isnew(true);
+                    aum.ischanged(true);
                 }
-                $scope.setPenalty = function(id) { args.penalty = id; }
+                if (!aum) {
+                    aum = new egCore.idl.aum();
+                    aum.create_date('now');
+                    aum.sending_lib(pen.org_unit());
+                    aum.pub(false);
+                    aum.usr(pen.usr());
+                    aum.isnew(true);
+                    pen.ischanged(true);
+                }
+
+                $scope.focusNote = true;
+                $scope.penalties = allPenalties.filter(
+                    function(p) { return p.id() > 100 || p.id() == 20 || p.id() == 21 || p.id() == 25; });
+                $scope.set_penalty = function(id) {
+                    if (!($scope.args.pub && $scope.args.read_date) && !$scope.args.deleted) {
+                        $scope.args.penalty = id;
+                    }
+                }
+                $scope.require_initials = service.require_initials;
+                $scope.update_org = function(org) {
+                    if (!($scope.args.pub && $scope.args.read_date) && !$scope.args.deleted) {
+                        $scope.args.org = org;
+                    }
+                }
+                $scope.cant_use_org = function(org_id) {
+                    return ($scope.args.pub && $scope.args.read_date) || $scope.args.deleted || goodOrgs.indexOf(org_id) == -1;
+                }
+                var penalty_id = pen.standing_penalty();
+                $scope.args = {
+                    penalty : pen.isnew()
+                        ? 21 // default to Note
+                        : penalty_id,
+                    pub : typeof aum.pub() == 'boolean'
+                        ? aum.pub()
+                        : aum.pub() == 't',
+                    title : aum.title(),
+                    note : aum.message() ? aum.message() : '',
+                    org : egCore.org.get(pen.org_unit()),
+                    deleted : typeof aum.deleted() == 'boolean'
+                        ? aum.deleted()
+                        : aum.deleted() == 't',
+                    read_date : aum.read_date(),
+                    edit_date : aum.edit_date(),
+                    editor : aum.editor()
+                }
+                $scope.args.max_depth = $scope.args.org.ou_type().depth();
+                $scope.original_org = $scope.args.org;
+                $scope.workstation_depth = egCore.org.get(egCore.auth.user().ws_ou()).ou_type().depth();
+                if (penalty_id == 20 || penalty_id == 21 || penalty_id == 25) {
+                    $scope.args.custom_penalty = penalty_id;
+                }
+                if (penalty_id > 100) {
+                    $scope.args.custom_penalty = penalty_id;
+                    $scope.args.penalty = null;
+                }
                 $scope.ok = function(count) { $uibModalInstance.close($scope.args) }
                 $scope.cancel = function($event) { 
                     $uibModalInstance.dismiss();
                     $event.preventDefault();
                 }
+                $scope.$watch('args.penalty', generate_penalty_dialog_watch_callback($scope,egCore,allPenalties));
+                $scope.$watch('args.custom_penalty', generate_penalty_dialog_watch_callback($scope,egCore,allPenalties));
+                $scope.$watch('args.custom_depth', function(org_depth) {
+                    if (org_depth || org_depth == 0) {
+                        if (org_depth > $scope.workstation_depth) {
+                            $scope.args.org = $scope.original_org;
+                        } else {
+                            egCore.net.request(
+                                'open-ils.actor',
+                                'open-ils.actor.org_unit.ancestor_at_depth.retrieve',
+                                egCore.auth.token(), egCore.auth.user().ws_ou(), org_depth
+                            ).then(function(ctx_org) {
+                                if (ctx_org) {
+                                    $scope.args.org = egCore.org.get(ctx_org);
+                                }
+                            });
+                        }
+                    }
+                });
             }],
-            resolve : { staffPenalties : service.get_staff_penalty_types }
+            resolve : {
+                allPenalties : service.get_all_penalty_types,
+                goodOrgs : egCore.perm.hasPermAt('UPDATE_USER', true)
+            }
         }).result.then(
             function(args) {
-                usr_penalty.note(args.note);
-                if (args.initials) usr_penalty.note(args.note + ' [' + args.initials + ']');
-                usr_penalty.standing_penalty(args.penalty);
-                return egCore.pcrud.update(usr_penalty);
+                aum.pub(args.pub);
+                aum.title(args.title);
+                aum.message(args.note);
+                aum.sending_lib(egCore.org.get(egCore.auth.user().ws_ou()).id());
+                pen.org_unit(egCore.org.get(args.org).id());
+                if (args.initials) aum.message((args.note ? args.note : '') + ' [' + args.initials + ']');
+                if (args.custom_penalty) {
+                    pen.standing_penalty(args.custom_penalty);
+                } else {
+                    pen.standing_penalty(args.penalty);
+                }
+                return egCore.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.user.penalty.modify',
+                    egCore.auth.token(), pen, aum
+                );
             }
         );
     }

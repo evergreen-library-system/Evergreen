@@ -32,7 +32,6 @@ Template for printing a patron's data, including addresses and statistical categ
   <div>Is Group Lead Account: {{patron.master_account}}</div>
   <div>Claims-Returned Count: {{patron.claims_returned_count}}</div>
   <div>Claims-Never-Checked-Out Count: {{patron.claims_never_checked_out_count}}</div>
-  <div>Alert Message: {{patron.alert_message}}</div>
 
   <div>
     <div ng-repeat="address in patron.addresses">

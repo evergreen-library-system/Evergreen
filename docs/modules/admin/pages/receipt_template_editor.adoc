@@ -219,7 +219,9 @@ once you import the receipts on the new machine.
 As you can only save a template on to the computer you are working on you will
 need to export the template if you have more than one computer that prints out
 receipts (i.e., more than one computer on the circulation desk, or another
-computer in the workroom that you use to checkin items or capture holds with)
+computer in the workroom that you use to checkin items or capture holds with).  
+
+Please be aware that when you export, you are exporting all templates to one file.
 
 . Export.  
 . Select the location to save the template to, name the template, and click

@@ -16,7 +16,10 @@
       </div>
       <div class="row">
           <div class="col-xs-6">
-              <div>[% l('Replace TCN [_1] ...', '{{overlay_target.id}}') %]</div>
+              <div>
+                [% l('Replace record [_1]', '{{overlay_target.id}}') %]<span ng-if="overlay_target.id != overlay_target_tcn">
+                    ([% l('TCN [_1]', '{{overlay_target_tcn}}') %])
+                </span>...</div>
               <eg-record-breaker marc-xml="overlay_target.orig_marc_xml"></eg-record-breaker>
           </div>
           <div class="col-xs-6">

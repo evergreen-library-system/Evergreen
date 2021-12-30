@@ -1,0 +1,13 @@
+
+<eg-staff-banner i18n-bannerText bannerText="Holds Pull List"></eg-staff-banner>
+
+<eg-holds-grid
+  persistKey="circ.holds.pull_list"
+  printTemplate="hold_pull_list"
+  showFields="acpl_name,cn_full_label,p_label,author,title,current_item,pl_shortname,hold_type,potentials,request_time"
+  [showRecordSummary]="true"
+  [enablePreFetch]="true"
+  [hidePickupLibFilter]="true"
+  [pullListOrg]="targetOrg()">
+</eg-holds-grid>
+

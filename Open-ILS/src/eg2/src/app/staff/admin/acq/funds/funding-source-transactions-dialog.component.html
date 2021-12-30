@@ -1,0 +1,85 @@
+<eg-string #successString i18n-text text="Funding Source Update Succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text text="Funding Source Update Failed"></eg-string>
+
+<ng-template #summaryField let-field="field" let-value="value">
+  <div class="col-2">
+    <label style="font-weight: bold" for="fund-{{field}}">{{idlDef.field_map[field].label}}</label>
+  </div>
+  <div class="col-2">
+    <span id="fund-{{field}}">
+      {{value}}
+    </span>
+  </div>
+</ng-template>
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h3 class="modal-title" i18n>Funding Source: {{fundingSource?.name()}}</h3>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngIf="fundingSource">
+    <ul ngbNav #fundingSourceTransactionsNav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
+      <li [ngbNavItem]="'credits'">
+        <a ngbNavLink i18n>Credits</a>
+        <ng-template ngbNavContent>
+           <div class="mt-2">
+            <eg-grid #creditsGrid idlClass="acqfscred" [dataSource]="acqfscredDataSource"
+                [sortable]="true" persistKey="acq.funding_source.credit"
+                [filterable]="true" [stickyHeader]="true">
+
+              <eg-grid-toolbar-button label="Apply Credits" i18n-label
+                [disabled]="fundingSource?.active() !== 't'" (onClick)="createCredit(creditsGrid)">
+              </eg-grid-toolbar-button>
+              <eg-grid-column path="amount"></eg-grid-column>
+              <eg-grid-column path="effective_date" [datePlusTime]="true"></eg-grid-column>
+              <eg-grid-column path="deadline_date" [datePlusTime]="true"></eg-grid-column>
+              <eg-grid-column path="note"></eg-grid-column>
+              <eg-grid-column path="id" [hidden]="true"></eg-grid-column>
+              <eg-grid-column path="funding_source" [hidden]="true" [filterable]="false"></eg-grid-column>
+            </eg-grid>
+          </div>
+        </ng-template>
+      </li>
+      <li [ngbNavItem]="'allocations'">
+        <a ngbNavLink i18n>Allocations</a>
+        <ng-template ngbNavContent>
+          <div class="mt-2">
+            <eg-grid #allocationsGrid idlClass="acqfa" [dataSource]="acqfaDataSource"
+                [sortable]="true" persistKey="acq.funding_source.fund_allocation"
+                [filterable]="true" [stickyHeader]="true" [cellTextGenerator]="cellTextGenerator">
+
+              <eg-grid-toolbar-button label="Allocate to Fund" i18n-label
+                [disabled]="fundingSource?.active() !== 't'" (onClick)="allocateToFund(allocationsGrid)">
+              </eg-grid-toolbar-button>
+              <ng-template #fundTmpl let-row="row">
+                <a href="/eg2/staff/admin/acq/funds/fund/{{row.fund().id()}}" target="_blank">
+                  {{row.fund().code()}} ({{row.fund().year()}}) ({{getOrgShortname(row.fund().org())}})
+                </a>
+              </ng-template>
+              <eg-grid-column path="fund" [cellTemplate]="fundTmpl"></eg-grid-column>
+              <eg-grid-column path="amount"></eg-grid-column>
+              <eg-grid-column path="create_time" [datePlusTime]="true"></eg-grid-column>
+              <eg-grid-column path="allocator"></eg-grid-column>
+              <eg-grid-column path="note"></eg-grid-column>
+              <eg-grid-column path="id" [hidden]="true"></eg-grid-column>
+              <eg-grid-column path="funding_source" [hidden]="true" [filterable]="false"></eg-grid-column>
+            </eg-grid>
+          </div>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="fundingSourceTransactionsNav"></div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-warning"
+      (click)="close()" i18n>Close</button>
+  </div>
+</ng-template>
+
+<eg-fm-record-editor #applyCreditDialog idlClass="acqfscred">
+</eg-fm-record-editor>
+<eg-fm-record-editor #allocateToFundDialog idlClass="acqfa"
+  [fieldOptions]="{fund:{linkedSearchConditions:{'active':'t'},preloadLinkedValues:true}}">
+</eg-fm-record-editor>

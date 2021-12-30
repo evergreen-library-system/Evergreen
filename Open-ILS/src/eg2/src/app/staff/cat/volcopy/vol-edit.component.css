@@ -1,0 +1,29 @@
+
+input[type="number"] {
+  /* visually accomodates numbers in the hundreds */
+  width: 4.5em;
+}
+
+.vol-row {
+  background-color: rgba(0,0,0,.03);
+  border-top: 1px solid #d9edf7;
+  border-bottom: 1px solid #d9edf7;
+}
+
+.clear-button {
+  border: none;
+  background-color: rgba(0, 0, 0, 0.0);
+  padding-left: .25rem;
+  padding-right: .25rem;
+  line-height: inherit;
+}
+
+.clear-button .material-icons {
+  font-size: 15px;
+  color: grey;
+}
+
+
+.material-icons {
+  font-size: 20px; 
+}

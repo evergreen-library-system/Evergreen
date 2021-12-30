@@ -113,6 +113,8 @@
                 placeholder="{{field.label}}..."
                 i18n-placeholder
                 [required]="field.isRequired()"
+                egMin="{{field.min}}"
+                egMax="{{field.max}}"
                 [ngModel]="record[field.name]()"
                 (ngModelChange)="record[field.name]($event)"/>
             </ng-container>
@@ -134,7 +136,7 @@
               <input
                 class="form-control"
                 id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
-                type="text"
+                type="text" pattern="[\s\S]*\S[\s\S]*"
                 placeholder="{{field.label}}..." i18n-placeholder
                 [required]="field.isRequired()"
                 [ngModel]="record[field.name]()"

@@ -4,9 +4,7 @@
         <input type="text" name='query' 
             value="[% CGI.param('nosprop') ? '' : CGI.param('query') | html %]"
             [% seed = l(' Enter Text... ') | html %]
-            class="sub_sidebar_search_box" style="color:#aaa;" value="[% seed %]"
-            onfocus="if(this.value=='[% seed %]'){this.value='';this.style.color='#424242';}" 
-            onblur="if(this.value==''){this.value='[% seed %]'; this.style.color='#aaa';}" />
+            class="sub_sidebar_search_box" style="color:#aaa;" placeholder="[% seed %]" />
     </div>
     <table cellpadding="0" cellspacing="0" border="0" class="sub_sidebar_search_st">
         <tr>

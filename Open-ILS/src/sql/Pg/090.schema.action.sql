@@ -364,6 +364,24 @@ BEGIN
         PERFORM money.age_billings_and_payments_for_xact(OLD.id);
     END IF;
 
+    -- Break the link with the user in action_trigger.event (warning: event_output may essentially have this information)
+    UPDATE
+        action_trigger.event e
+    SET
+        context_user = NULL
+    FROM
+        action.all_circulation c
+    WHERE
+            c.id = OLD.id
+        AND e.context_user = c.usr
+        AND e.target = c.id
+        AND e.event_def IN (
+            SELECT id
+            FROM action_trigger.event_definition
+            WHERE hook in (SELECT key FROM action_trigger.hook WHERE core_type = 'circ')
+        )
+    ;
+
     RETURN OLD;
 END;
 $$ LANGUAGE 'plpgsql';

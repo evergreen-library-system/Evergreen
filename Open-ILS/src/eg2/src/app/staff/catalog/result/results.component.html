@@ -31,11 +31,12 @@
 
 <!-- header, pager, and list of records -->
 <div id="staff-catalog-results-container" *ngIf="searchHasResults()">
+
+  <eg-catalog-browse-pager *ngIf="searchContext.termSearch.browseEntry">
+  </eg-catalog-browse-pager>
+
   <div class="row">
     <div class="col-lg-2" *ngIf="!searchContext.basket">
-      <ng-container *ngIf="searchContext.termSearch.browseEntry">
-        <h3 i18n>Results for browse "{{searchContext.termSearch.browseEntry.value()}}"</h3>
-      </ng-container>
       <ng-container *ngIf="!searchContext.termSearch.browseEntry">
         <h3 i18n>Search Results ({{searchContext.result.count}})</h3>
       </ng-container>

@@ -1,3 +1,0 @@
-== Photo URL  ==
-
-Editing of the patron's photo URL can now be done in the staff client's patron registration and edit screen. A new permission UPDATE_USER_PHOTO_URL controls the ability to actually edit the field.

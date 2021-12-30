@@ -80,6 +80,7 @@ export DEBS = \
 
 export DEB_APACHE_MODS = \
     expires\
+    headers\
     include\
     proxy\
     proxy_http\
@@ -105,6 +106,10 @@ export CPAN_MODULES_FORCE = \
 	Business::Stripe \
 	Class::DBI::Frozen::301
 
+export CPAN_MODULES_PGSQL = \
+	String::KeyboardDistance \
+	Text::Levenshtein::Damerau::XS
+
 PGSQL_SERVER_DEBS_96 = \
 	$(DEB_PGSQL_COMMON_MODS) \
 	postgresql-9.6 \
@@ -126,9 +131,7 @@ PGSQL_SERVER_DEBS_10 = \
 DEVELOPER_DEBS = \
 	automake \
 	autoconf \
-	libtool \
-	chromium \
-	firefox-esr
+	libtool
 
 PACKAGER_DEBS = \
 	asciidoc \
@@ -161,11 +164,13 @@ install_postgres_server:
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
 	make -f $(DIR)/Makefile.debian debian_postgresql_repo
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_96)"
+	make -f $(DIR)/Makefile.common install_cpan_pgsql
 
 install_postgres_server_10:
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
 	make -f $(DIR)/Makefile.debian debian_postgresql_repo
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_10)"
+	make -f $(DIR)/Makefile.common install_cpan_pgsql
 
 # note: if/when grunt-cli is available as a
 # package, use the packaged version instead.

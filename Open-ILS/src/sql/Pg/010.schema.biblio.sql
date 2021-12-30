@@ -75,6 +75,7 @@ CREATE TABLE biblio.record_note (
 	creator		INT		NOT NULL DEFAULT 1,
 	editor		INT		NOT NULL DEFAULT 1,
 	pub		BOOL		NOT NULL DEFAULT FALSE,
+	deleted         BOOL            NOT NULL DEFAULT FALSE,
 	create_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
 	edit_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now()
 );

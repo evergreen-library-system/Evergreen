@@ -66,13 +66,14 @@
         <table class="table_no_border_space table_no_cell_pad table_no_border" width="100%" id="course_material_table">
           <thead>
             <tr>
-              <th scope="col">Location</th>
-              <th scope="col">Call Number</th>
-              <th scope="col">Title</th>
-              <th scope="col">Barcode</th>
-              <th scope="col">Relationship</th>
-              <th scope="col">Status</th>
-              <th scope="col">Shelving Location</th>
+              <th scope="col">[% l('Location') %]</th>
+              <th scope="col">[% l('Call Number') %]</th>
+              <th class="course-material-title-column" scope="col">[% l('Title') %]</th>
+              <th scope="col">[% l('Barcode') %]</th>
+              <th scope="col">[% l('Relationship') %]</th>
+              <th scope="col">[% l('Status') %]</th>
+              <th scope="col">[% l('Shelving Location') %]</th>
+              <th scope="col">[% l('Circulation Modifier') %]</th>
             </tr>
           </thead>
           <tbody>
@@ -112,6 +113,11 @@
                 <td>
                   [% IF material.item %]
                     [% material.item.location.name %]
+                  [% END %]
+                </td>
+                <td>
+                  [% IF material.item %]
+                    [% material.item.circ_modifier.name %]
                   [% END %]
                 </td>
               </tr>

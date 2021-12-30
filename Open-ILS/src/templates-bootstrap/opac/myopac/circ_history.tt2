@@ -53,6 +53,7 @@
                     <td class="checkCell">
                         <input type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ_id' && !inputs[i].disabled) inputs[i].checked = this.checked;}" aria-label="[% l('Click to (un)select all items') %]"/>
                     </td>
+                    <th>[% l("Cover") %]</th>
                     <th>[% sort_head("sort_title", l("Title")) %]</th>
                     <th>[% sort_head("author", l("Author")) %]</th>
                     <th>[% sort_head("callnum", l("Call Number")) %]</th>
@@ -95,7 +96,17 @@
                         circ.SORTING = circ.circ.target_copy.barcode;
 
                     CASE "callnum";
-                        circ.SORTING = circ.circ.target_copy.call_number.label;
+                        sortlist = [];
+
+                        FOREACH element IN [circ.circ.target_copy.call_number.prefix.label_sortkey
+                                            circ.circ.target_copy.call_number.label_sortkey
+                                            circ.circ.target_copy.call_number.suffix.label_sortkey
+                                            circ.circ.target_copy.parts.0.label_sortkey];
+                            IF (element);
+                                sortlist.push(element);
+                            END;
+                        END;
+                        circ.SORTING = sortlist.join("");
 
                     CASE;
                         sort_field = "";
@@ -129,6 +140,17 @@
             <td class="checkbox_column">
                 <input type="checkbox" name="circ_id" value="[% circ.circ.id %]" aria-label="Select Item"/>
             </td>
+                        [%  IF circ.ATTRS.issns.0;
+                                row_isbnissn = circ.ATTRS.issns.0;
+                            ELSIF circ.ATTRS.isbns.0;
+                                row_isbnissn = circ.ATTRS.isbns.0;
+                            ELSE;
+                                row_isbnissn = '';
+                            END;
+                            row_rec_id = circ.circ.target_copy.call_number.record.id;
+                            row_title = circ.ATTRS.title;
+                            PROCESS show_cover;
+                        %]
                         <td>
                           [% IF circ.circ.target_copy.call_number.id == -1 %]
                                 [% circ.circ.target_copy.dummy_title | html %]
@@ -150,7 +172,23 @@
                                 ) %]">[% circ.ATTRS.author | html %]</a>
                             [% END; %]
                         </td>
-                        <td>[% circ.circ.target_copy.call_number.label | html %]</td>
+                        <td>
+                              [%-
+                                   cnlist = [];
+                                   FOREACH element IN [circ.circ.target_copy.call_number.prefix.label
+                                                circ.circ.target_copy.call_number.label
+                                                circ.circ.target_copy.call_number.suffix.label];
+                                       IF (element);
+                                         cnlist.push(element);
+                                       END;
+                                   END;
+                                   cn = cnlist.join(' ');
+                              %]
+                              [% cn | html %]
+                              [%- IF circ.circ.target_copy.parts.0.label %]
+                                    </BR>[% circ.circ.target_copy.parts.0.label | html -%]
+                              [%- END %]
+                        </td>
                         <td>
                             [% date.format(ctx.parse_datetime(circ.circ.xact_start),DATE_FORMAT); %]
                         </td>

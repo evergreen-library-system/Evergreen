@@ -38,7 +38,7 @@ msgstr ""
 msgid "%1..."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:146
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:144
 msgid "-- Temporary List --"
 msgstr ""
 
@@ -46,11 +46,11 @@ msgstr ""
 msgid "About this item:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:144
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:142
 msgid "Add to one of your lists?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:36 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:14
+#: ../../Open-ILS/src/templates/kpac/home.tt2:36 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:12
 msgid "Author"
 msgstr ""
 
@@ -71,7 +71,7 @@ msgstr ""
 msgid "Call Number"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:72
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:70
 msgid "Choose a Pickup Library:"
 msgstr ""
 
@@ -79,7 +79,7 @@ msgstr ""
 msgid "Contact Us"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:55
+#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:53
 msgid "Did you mean: "
 msgstr ""
 
@@ -91,7 +91,7 @@ msgstr ""
 msgid "Excerpt"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:38
+#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:36
 msgid "Full Collection"
 msgstr ""
 
@@ -123,7 +123,7 @@ msgstr ""
 msgid "If you would like to place a hold on this item, please enter the following information and click Submit below:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:130
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:128
 msgid "If you would like to save this item to a list to be requested later, click Submit below."
 msgstr ""
 
@@ -196,7 +196,7 @@ msgstr ""
 msgid "Page %1 of %2"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:54
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:52
 msgid "Password"
 msgstr ""
 
@@ -253,7 +253,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:120 ../../Open-ILS/src/templates/kpac/getit.tt2:155
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:118 ../../Open-ILS/src/templates/kpac/getit.tt2:153
 msgid "Submit"
 msgstr ""
 
@@ -269,7 +269,7 @@ msgstr ""
 msgid "Text size"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:32 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:14
+#: ../../Open-ILS/src/templates/kpac/home.tt2:32 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:12
 msgid "Title"
 msgstr ""
 
@@ -287,7 +287,7 @@ msgstr ""
 msgid "Unable to request %1."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:28 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:14
+#: ../../Open-ILS/src/templates/kpac/home.tt2:28 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:12
 msgid "Word"
 msgstr ""
 
@@ -299,7 +299,7 @@ msgstr ""
 msgid "You can find this item at these locations:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:134
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:132
 msgid "You may also save this item to a list you have already created by selecting one of your lists below."
 msgstr ""
 
@@ -348,15 +348,15 @@ msgstr ""
 msgid "more info"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:57
+#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:55
 msgid "or"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:63
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:61
 msgid "password help"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:49
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:47
 msgid "pin number help"
 msgstr ""
 
@@ -368,11 +368,11 @@ msgstr ""
 msgid "rating"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:129
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:127
 msgid "save it!"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:40 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:48
+#: ../../Open-ILS/src/templates/kpac/home.tt2:40 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:46
 msgid "search"
 msgstr ""
 

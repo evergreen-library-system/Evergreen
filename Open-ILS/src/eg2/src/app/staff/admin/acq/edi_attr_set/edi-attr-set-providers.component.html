@@ -1,0 +1,11 @@
+<eg-grid #grid [dataSource]="dataSource"
+  [sortable]="true" persistKey="disabled"
+  [filterable]="true" [stickyHeader]="true"
+  [disableSelect]="true" [cellTextGenerator]="cellTextGenerator">
+  <ng-template #nameTmpl let-row="row">
+    <a href="/eg2/staff/acq/provider/{{row.id()}}/edi_accounts" target="_blank">{{row.name()}}</a>
+  </ng-template>
+  <eg-grid-column path="name" i18n-label label="Provider Name" [cellTemplate]="nameTmpl"></eg-grid-column>
+  <eg-grid-column path="owner" i18n-label label="Owning Library" datatype="org_unit"></eg-grid-column>
+  <eg-grid-column path="id" i18n-label label="ID" [hidden]="true" [index]="true"></eg-grid-column>
+</eg-grid>

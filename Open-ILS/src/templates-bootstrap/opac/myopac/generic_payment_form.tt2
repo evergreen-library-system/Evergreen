@@ -6,9 +6,6 @@
         [% FOR xact IN CGI.param('xact_misc') %]
         <input type="hidden" name="xact_misc" value="[% xact | html %]" />
         [% END %]
-        [% IF ctx.use_stripe %]
-        <input type="hidden" name="stripe_token" id="stripe_token" />
-        [% END %]
 
          <table id="billing_info_table" class="table table-hover">
          <thead>

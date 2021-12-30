@@ -119,9 +119,7 @@ export class BrowseResultsComponent implements OnInit, OnDestroy {
 
     searchByBrowseEntryParams(result) {
         const ctx = this.searchContext.clone();
-        ctx.browseSearch.reset(); // we're done browsing
-        ctx.termSearch.hasBrowseEntry =
-            result.browse_entry + ',' + result.fields;
+        ctx.termSearch.hasBrowseEntry = result.browse_entry + ',' + result.fields;
         return this.catUrl.toUrlParams(ctx);
     }
 

@@ -1,6 +1,10 @@
 <eg-hold-note-dialog #noteDialog [holdId]="holdId"></eg-hold-note-dialog>
 <eg-hold-notify-dialog #notifyDialog [holdId]="holdId"></eg-hold-notify-dialog>
 
+<div class="mb-3" *ngIf="showRecordSummary">
+  <eg-bib-summary [recordId]="hold.record_id"></eg-bib-summary>
+</div>
+
 <div class="row">
   <div class="col-lg-2">
     <button (click)="showListView()" class="btn btn-info" i18n>List View</button>
