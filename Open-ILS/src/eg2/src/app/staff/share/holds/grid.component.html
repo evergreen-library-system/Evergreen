@@ -149,7 +149,7 @@
       <eg-grid-column i18n-label label="Part label" path='p_label' [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Author" path='author' [hidden]="true"></eg-grid-column>
       <ng-template #titleTmpl let-hold="row">
-        <a class="no-href" routerLink="/staff/catalog/record/{{hold.record_id}}">
+        <a class="no-href" routerLink="/staff/catalog/record/{{hold.record_id}}" target="_blank">
           {{hold.title}}
         </a>
       </ng-template>
@@ -157,7 +157,7 @@
         [cellTemplate]="titleTmpl"></eg-grid-column>
 
       <ng-template #barcodeTmpl let-hold="row" let-col="col">
-        <a href="/eg/staff/cat/item/{{hold.cp_id}}/summary">
+        <a href="/eg/staff/cat/item/{{hold.cp_id}}/summary" target="_blank">
           <ng-container *ngIf="col.name == 'current_item' && hold.current_copy">
             {{hold.cp_barcode}}
           </ng-container>
@@ -180,7 +180,7 @@
         datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
 
       <ng-template #userBarcodeTmpl let-hold="row">
-        <a href="/eg/staff/circ/patron/{{hold.usr_id}}/checkout">
+        <a href="/eg/staff/circ/patron/{{hold.usr_id}}/checkout" target="_blank">
           {{hold.ucard_barcode}}
         </a>
       </ng-template>
