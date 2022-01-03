@@ -182,6 +182,10 @@ function($scope , $window , $location , egCore , egConfirmDialog) {
         $scope.disable_sound = val;
     });
 
+    egCore.hatch.getItem('eg.orgselect.show_combined_names').then(function(val) {
+        $scope.orgselect_combo_names = val;
+    });
+
     egCore.hatch.getItem('eg.search.search_lib').then(function(val) {
         $scope.search_lib = egCore.org.get(val);
     });
@@ -211,6 +215,14 @@ function($scope , $window , $location , egCore , egConfirmDialog) {
             egCore.hatch.setItem('eg.audio.disable', true);
         } else {
             egCore.hatch.removeItem('eg.audio.disable');
+        }
+    }
+
+    $scope.apply_orgselect_combob_names = function() {
+        if ($scope.orgselect_combo_names) {
+            egCore.hatch.setItem('eg.orgselect.show_combined_names', true);
+        } else {
+            egCore.hatch.removeItem('eg.orgselect.show_combined_names');
         }
     }
 

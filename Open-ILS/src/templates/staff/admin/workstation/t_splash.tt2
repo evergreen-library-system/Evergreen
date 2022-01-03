@@ -82,6 +82,18 @@
         </div>
       </div>
 
+      <div class="row new-entry">
+        <div class="col-md-12">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="orgselect_combo_names"
+                  ng-change="apply_orgselect_combob_names()">
+                [% l('Include Full Library Names in Library Selector?') %]
+            </label>
+          </div>
+        </div>
+      </div>
+
     </div><!-- left column -->
     <div class="col-md-6"><!-- right column -->
 
