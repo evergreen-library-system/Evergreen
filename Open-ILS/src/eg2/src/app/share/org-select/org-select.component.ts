@@ -41,6 +41,8 @@ interface OrgDisplay {
 export class OrgSelectComponent implements OnInit {
     static domId = 0;
 
+    showCombinedNames = false; // Managed via user/workstation setting
+
     selected: OrgDisplay;
     click$ = new Subject<string>();
     valueFromSetting: number = null;
@@ -156,16 +158,28 @@ export class OrgSelectComponent implements OnInit {
 
     ngOnInit() {
 
-        // Sort the tree and reabsorb to propagate the sorted nodes to
-        // the org.list() used by this component.  Maintain our own
-        // copy of the org list in case the org service is sorted in a
-        // different manner by other parts of the code.
-        this.org.sortTree(this.displayField);
-        this.org.absorbTree();
-        this.sortedOrgs = this.org.list();
 
-        const promise = this.persistKey ?
+        let promise = this.persistKey ?
             this.getFromSetting() : Promise.resolve(null);
+
+        promise = promise.then(startupOrg => {
+            return this.serverStore.getItem('eg.orgselect.show_combined_names')
+            .then(show => {
+                const sortField = show ? 'name' : this.displayField;
+
+                // Sort the tree and reabsorb to propagate the sorted
+                // nodes to the org.list() used by this component.
+                // Maintain our own copy of the org list in case the
+                // org service is sorted in a different manner by other
+                // parts of the code.
+                this.org.sortTree(sortField);
+                this.org.absorbTree();
+                this.sortedOrgs = this.org.list();
+
+                this.showCombinedNames = show;
+            })
+            .then(_ => startupOrg);
+        });
 
         promise.then((startupOrgId: number) => {
 
@@ -201,6 +215,14 @@ export class OrgSelectComponent implements OnInit {
 
             this.markAsLoaded(startupOrg);
         });
+    }
+
+    getDisplayLabel(org: IdlObject): string {
+        if (this.showCombinedNames) {
+            return `${org.name()} (${org.shortname()})`;
+        } else {
+            return org[this.displayField]();
+        }
     }
 
     getFromSetting(): Promise<number> {
@@ -246,7 +268,7 @@ export class OrgSelectComponent implements OnInit {
 
     // Format for display in the selector drop-down and input.
     formatForDisplay(org: IdlObject): OrgDisplay {
-        let label = org[this.displayField]();
+        let label = this.getDisplayLabel(org);
         if (!this.readOnly) {
             label = PAD_SPACE.repeat(org.ou_type().depth()) + label;
         }
@@ -322,7 +344,7 @@ export class OrgSelectComponent implements OnInit {
                     // org units.
                     orgs = orgs.filter(org => {
                         return term === '' || // show all
-                            org[this.displayField]()
+                            this.getDisplayLabel(org)
                                 .toLowerCase().indexOf(term.toLowerCase()) > -1;
 
                     });
