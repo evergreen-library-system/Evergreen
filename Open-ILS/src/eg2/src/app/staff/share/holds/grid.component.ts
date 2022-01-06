@@ -34,6 +34,9 @@ import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 })
 export class HoldsGridComponent implements OnInit {
 
+    // Hide the "Holds Count" header
+    @Input() hideHoldsCount = false;
+
     // If either are set/true, the pickup lib selector will display
     @Input() initialPickupLib: number | IdlObject;
     @Input() hidePickupLibFilter: boolean;

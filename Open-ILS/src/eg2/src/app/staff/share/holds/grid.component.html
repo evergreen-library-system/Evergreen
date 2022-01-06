@@ -39,7 +39,7 @@
 
   <ng-container *ngIf="mode === 'list' && initComplete()">
 
-    <h3 i18n>Holds Count: {{holdsCount}}</h3>
+    <h3 *ngIf="!hideHoldsCount" i18n>Holds Count: {{holdsCount}}</h3>
 
     <div class="row" *ngIf="!hidePickupLibFilter">
       <div class="col-lg-5">
