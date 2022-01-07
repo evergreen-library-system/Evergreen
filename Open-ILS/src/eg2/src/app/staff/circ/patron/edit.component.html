@@ -35,7 +35,7 @@
 <eg-hold-notify-update-dialog #holdNotifyUpdateDialog>
 </eg-hold-notify-update-dialog>
 
-<div class="row" *ngIf="loading">
+<div class="row" *ngIf="!showForm">
   <div class="col-lg-6 offset-lg-3">
     <eg-progress-inline></eg-progress-inline>
   </div>
@@ -180,7 +180,7 @@
 
 <!-- The List O' Fields -->
 
-<div class="mt-3 striped-rows-even patron-edit-container form-validated" *ngIf="patron && !loading">
+<div class="mt-3 striped-rows-even patron-edit-container form-validated" *ngIf="patron && showForm">
 
   <div class="row pt-1 pb-1 mt-1" *ngIf="showField('ac.barcode')">
     <ng-container *ngTemplateOutlet="fieldLabel; 

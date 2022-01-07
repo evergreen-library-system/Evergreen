@@ -156,7 +156,15 @@ export class EditComponent implements OnInit, AfterViewInit {
     modifiedPatron: IdlObject;
     changeHandlerNeeded = false;
     nameTab = 'primary';
+
+    // Are we still fetching data and applying values?
     loading = false;
+    // Should the user be able to see the form?
+    // On page load, we want to show the form just before we are
+    // done loading, so values can be applied to inputs after they
+    // are rendered but before those changes would result in setting
+    // changesPending = true
+    showForm = false;
 
     surveys: IdlObject[];
     smsCarriers: ComboboxEntry[];
@@ -238,6 +246,7 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     load(): Promise<any> {
         this.loading = true;
+        this.showForm = false;
         return this.setStatCats()
         .then(_ => this.getFieldDocs())
         .then(_ => this.setSurveys())
@@ -252,7 +261,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         .then(_ => this.setOptInSettings())
         .then(_ => this.setSmsCarriers())
         .then(_ => this.setFieldPatterns())
-        .then(_ => this.loading = false)
+        .then(_ => this.showForm = true)
         // Not my preferred way to handle this, but some values are
         // applied to widgets slightly after the load() is done and the
         // widgets are rendered.  If a widget is required and has no
@@ -261,7 +270,10 @@ export class EditComponent implements OnInit, AfterViewInit {
         // non-saveable state on page load without forcing the page into
         // an nonsaveable state on every page load, check the save state
         // after a 1 second delay.
-        .then(_ => setTimeout(() => this.emitSaveState(), 1000));
+        .then(_ => setTimeout(() => {
+            this.emitSaveState();
+            this.loading = false;
+        }, 1000));
     }
 
     setEditProfiles(): Promise<any> {
@@ -1363,7 +1375,6 @@ export class EditComponent implements OnInit, AfterViewInit {
     }
 
     nonDeletedAddresses(): IdlObject[] {
-        console.log('nonDeletedAddresses() are ', this.patron.addresses().filter(a => !a.isdeleted()).map(a => a.id()));
         return this.patron.addresses().filter(a => !a.isdeleted());
     }
 
@@ -1371,6 +1382,7 @@ export class EditComponent implements OnInit, AfterViewInit {
 
         this.changesPending = false;
         this.loading = true;
+        this.showForm = false;
 
         return this.saveUser()
         .then(_ => this.saveUserSettings())
