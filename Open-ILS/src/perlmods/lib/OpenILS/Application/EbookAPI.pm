@@ -326,6 +326,7 @@ sub request {
     my $self = shift;
     my $req = shift;
     my $session_id = shift;
+    my $do_not_redirect = shift;
 
     my $uri;
     if (!defined ($req->{uri})) {
@@ -365,7 +366,9 @@ sub request {
         $uri,
         $headers,
         $content,
-        $request_timeout
+        $request_timeout,
+        undef,
+        $do_not_redirect
     );
     if (!defined ($res)) {
         $logger->error('EbookAPI: no HTTP response received');
@@ -375,7 +378,8 @@ sub request {
         return {
             is_success => $res->is_success,
             status     => $res->status_line,
-            content    => OpenSRF::Utils::JSON->JSON2perl($res->decoded_content)
+            content    => OpenSRF::Utils::JSON->JSON2perl($res->decoded_content),
+            location   => $res->header('Location')
         };
     }
 }

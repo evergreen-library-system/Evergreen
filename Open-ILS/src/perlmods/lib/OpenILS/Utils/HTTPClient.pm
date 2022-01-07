@@ -67,7 +67,7 @@ sub _initialize {
 # Use $res->content to get response content.
 #
 sub request {
-    my ($self, $method, $uri, $headers, $content, $request_timeout, $useragent) = @_;
+    my ($self, $method, $uri, $headers, $content, $request_timeout, $useragent, $do_not_redirect) = @_;
     my $ua = new LWP::UserAgent;
 
     $request_timeout = $request_timeout || $self->{default_timeout} || 60;
@@ -75,6 +75,9 @@ sub request {
 
     $useragent = $useragent || $self->{useragent} || 'SameOrigin/1.0';
     $ua->agent($useragent);
+    if ($do_not_redirect) {
+        $ua->requests_redirectable([]);
+    }
 
     my $h = HTTP::Headers->new();
     foreach my $k (keys %$headers) {
