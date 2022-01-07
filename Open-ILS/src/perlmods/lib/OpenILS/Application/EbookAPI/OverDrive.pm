@@ -156,13 +156,15 @@ sub initialize {
 sub handle_http_request {
     my $self = shift;
     my $req = shift;
+    my $session_id = shift;
+    my $do_not_redirect = shift;
 
     # Prep our request using defaults.
     $req->{method} = 'GET' if (!$req->{method});
     $req = $self->set_http_headers($req);
 
     # Send the request.
-    my $res = $self->request($req, $self->{session_id});
+    my $res = $self->request($req, $self->{session_id}, $do_not_redirect);
 
     $logger->info("EbookAPI: raw OverDrive HTTP response: " . Dumper $res);
 
@@ -182,7 +184,7 @@ sub handle_http_request {
         # Now we can update our headers with our fresh client/patron tokens
         # and re-send our request.
         $req = $self->set_http_headers($req);
-        return $self->request($req, $self->{session_id});
+        return $self->request($req, $self->{session_id}, $do_not_redirect);
     }
 
     # For any non-401 response (including no response at all),
@@ -555,6 +557,18 @@ sub checkout {
                 }
                 $checkout->{formats} = $formats;
             }
+            if ($res->{content}->{links}->{downloadRedirect}->{href}) {
+                my $redir = $res->{content}->{links}->{downloadRedirect}->{href};
+                my $req2 = {
+                    method => 'GET',
+                    uri    => $redir
+                };
+                if (my $res2 = $self->handle_http_request($req2, $self->{session_id}, 1)) {
+                    if ($res2->{location}) {
+                        $checkout->{download_redirect} = $res2->{location};
+                    }
+                }
+            }
             return $checkout;
         }
         $logger->error("EbookAPI: checkout failed for OverDrive title $title_id");
@@ -680,12 +694,26 @@ sub get_patron_checkouts {
                 my $ftype = $f->{formatType};
                 $formats->{$ftype} = $f->{linkTemplates}->{downloadLink}->{href};
             };
+            my $download_redirect = '';
+            my $redirect = $checkout->{links}->{downloadRedirect}->{href};
+            if ($redirect) {
+                my $req2 = {
+                    method => 'GET',
+                    uri    => $redirect
+                };
+                if (my $res2 = $self->handle_http_request($req2, $self->{session_id}, 1)) {
+                    if ($res2->{location}) {
+                        $download_redirect = $res2->{location};
+                    }
+                }
+            }
             push @$checkouts, {
                 title_id => $title_id,
                 due_date => $checkout->{expires},
                 title => $title_info->{title},
                 author => $title_info->{author},
-                formats => $formats
+                formats => $formats,
+                download_redirect => $download_redirect
             }
         };
         $self->{checkouts} = $checkouts;
