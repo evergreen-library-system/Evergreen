@@ -200,7 +200,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         other_phone: null,
         evening_phone: null,
         default_phone: null,
-        default_sms: null,
+        default_sms_notify: null,
         default_sms_carrier: null,
         phone_notify: false,
         email_notify: false,
@@ -689,7 +689,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         }
 
         if (setting = usets['opac.default_sms_notify']) {
-            this.holdNotifyValues.default_sms = setting;
+            this.holdNotifyValues.default_sms_notify = setting;
         }
 
         if (setting = usets['opac.default_pickup_location']) {
