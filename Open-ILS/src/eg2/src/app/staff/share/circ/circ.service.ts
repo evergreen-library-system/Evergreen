@@ -456,6 +456,7 @@ export class CircService {
         result.circ = payload.circ;
         result.copy = payload.copy;
         result.volume = payload.volume;
+        result.patron = payload.patron;
         result.record = payload.record;
         result.nonCatCirc = payload.noncat_circ;
 

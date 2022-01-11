@@ -204,6 +204,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
             nonCatCount: 0,
             record: result.record,
             volume: result.volume,
+            patron: result.patron,
             title: result.title,
             author: result.author,
             isbn: result.isbn
