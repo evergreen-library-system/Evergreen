@@ -46,8 +46,13 @@
     <div class="col-lg-7">{{p().net_access_level().name()}}</div>
   </div>
   <div class="row mb-1">
-    <div class="col-lg-5" i18n>Date of Birth</div>
-    <div class="col-lg-7">{{p().dob() | date}}</div>
+    <div class="col-lg-5" i18n>
+      <a href="javascript:;" (click)="showDob = !showDob">Date of Birth</a>
+    </div>
+    <div class="col-lg-7">
+      <ng-container *ngIf="showDob">{{p().dob() | date}}</ng-container>
+      <ng-container *ngIf="!showDob" i18n>&lt;Hidden&gt;</ng-container>
+    </div>
   </div>
   <div class="row mb-1">
     <div class="col-lg-5" i18n>Parent/Guardian</div>

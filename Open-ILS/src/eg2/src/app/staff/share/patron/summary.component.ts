@@ -6,6 +6,7 @@ import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {PrintService} from '@eg/share/print/print.service';
 import {PatronService, PatronSummary} from './patron.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 
 @Component({
   templateUrl: 'summary.component.html',
@@ -14,16 +15,33 @@ import {PatronService, PatronSummary} from './patron.service';
 })
 export class PatronSummaryComponent implements OnInit {
 
-    @Input() summary: PatronSummary;
+    private _summary: PatronSummary;
+    @Input() set summary(s: PatronSummary) {
+        if (s && this._summary && s.id !== this._summary.id) {
+            this.showDob = this.showDobDefault;
+        }
+        this._summary = s;
+    }
+
+    get summary(): PatronSummary {
+        return this._summary;
+    }
+
+    showDobDefault = false;
+    showDob = false;
 
     constructor(
         private org: OrgService,
         private net: NetService,
         private printer: PrintService,
+        private serverStore: ServerStoreService,
         public patronService: PatronService
     ) {}
 
     ngOnInit() {
+        this.serverStore.getItem('circ.obscure_dob').then(hide => {
+            this.showDobDefault = this.showDob = !hide;
+        });
     }
 
     p(): IdlObject { // patron shorthand

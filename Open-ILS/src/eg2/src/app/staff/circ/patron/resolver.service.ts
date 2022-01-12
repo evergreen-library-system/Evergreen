@@ -125,6 +125,7 @@ export class PatronResolver implements Resolve<Promise<any[]>> {
           'opac.barcode_regex',
           'opac.username_regex',
           'sms.enable',
+          'circ.obscure_dob',
           'ui.patron.edit.aua.state.require',
           'ui.patron.edit.aua.state.suggest',
           'ui.patron.edit.aua.state.show',
