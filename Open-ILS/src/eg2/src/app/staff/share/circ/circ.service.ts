@@ -146,10 +146,21 @@ export interface CircResultCommon {
     circ?: IdlObject;
     parent_circ?: IdlObject;
     hold?: IdlObject;
+
+    // Set to one of circ_patron or hold_patron depending on the context.
     patron?: IdlObject;
+
+    // Set to the patron linked to the relevant circulation.
+    circ_patron?: IdlObject;
+
+    // Set to the patron linked to the relevant hold.
+    hold_patron?: IdlObject;
+
     transit?: IdlObject;
     copyAlerts?: IdlObject[];
     mbts?: IdlObject;
+
+    routeTo?: string; // org name or in-branch destination
 
     // Calculated values
     title?: string;
@@ -190,7 +201,6 @@ export interface CheckinParams {
 
 export interface CheckinResult extends CircResultCommon {
     params: CheckinParams;
-    routeTo?: string; // org name or in-branch destination
     destOrg?: IdlObject;
     destAddress?: IdlObject;
     destCourierCode?: string;
@@ -746,7 +756,17 @@ export class CircService {
         });
     }
 
+    fetchPatron(userId: number): Promise<IdlObject> {
+        return this.pcrud.retrieve('au', userId, {
+            flesh: 1,
+            flesh_fields : {'au' : ['card', 'stat_cat_entries']}
+        })
+        .toPromise();
+    }
+
     fleshCommonData(result: CircResultCommon): Promise<CircResultCommon> {
+
+        console.warn('fleshCommonData()');
 
         const copy = result.copy;
         const volume = result.volume;
@@ -754,27 +774,37 @@ export class CircService {
         const hold = result.hold;
         const nonCatCirc = (result as CheckoutResult).nonCatCirc;
 
-        let promise = Promise.resolve();
+        let promise: Promise<any> = Promise.resolve();
 
-        if (!result.patron) {
-            let patronId;
-            if (hold) {
-                patronId = hold.usr();
-            } else if (circ) {
-                patronId = circ.usr();
-            } else if (nonCatCirc) {
-                patronId = nonCatCirc.patron();
-            }
-
-            if (patronId) {
-                promise = promise.then(_ => {
-                    return this.pcrud.retrieve('au', patronId,
-                      {flesh: 1, flesh_fields : {'au' : ['card']}})
-                    .toPromise().then(p => result.patron = p);
+        if (hold) {
+            console.debug('fleshCommonData() hold ', hold.usr());
+            promise = promise.then(_ => {
+                return this.fetchPatron(hold.usr())
+                .then(usr => {
+                    result.hold_patron = usr;
+                    console.debug('Setting hold patron to ' + usr.id());
                 });
-            }
+            });
         }
 
+        const circPatronId = circ ? circ.usr() :
+            (nonCatCirc ? nonCatCirc.patron() : null);
+
+        if (circPatronId) {
+            console.debug('fleshCommonData() circ ', circPatronId);
+            promise = promise.then(_ => {
+                return this.fetchPatron(circPatronId)
+                .then(usr => {
+                    result.circ_patron = usr;
+                    console.debug('Setting circ patron to ' + usr.id());
+                });
+            });
+        }
+
+        // Set a default patron value which is used in most cases.
+        promise = promise.then(_ => {
+            result.patron = result.hold_patron || result.circ_patron;
+        });
 
         if (result.record) {
             result.title = result.record.title();
@@ -807,6 +837,14 @@ export class CircService {
                 });
             }
         }
+
+        promise = promise.then(_ => {
+            // By default, all items route-to their location.
+            // Value replaced later on as needed.
+            if (copy && typeof copy.location() === 'object') {
+                result.routeTo = copy.location().name();
+            }
+        });
 
         if (volume) {
             // Flesh volume prefixes and suffixes

@@ -44,11 +44,13 @@ export class RouteDialogComponent extends DialogComponent {
         return from(this.applySettings())
 
         .pipe(concatMap(exit => {
-            if (exit) {
-                return of(exit);
-            } else {
-                return from(this.collectData());
-            }
+            return from(
+                this.collectData().then(exit2 => {
+                    // If either applySettings or collectData() tell us
+                    // to exit, make it so.
+                    return exit || exit2;
+                })
+            );
         }))
 
         .pipe(concatMap(exit => {
@@ -63,6 +65,8 @@ export class RouteDialogComponent extends DialogComponent {
     collectData(): Promise<boolean> {
         let promise = Promise.resolve(null);
         const hold = this.checkin.hold;
+
+        console.debug('Route Dialog collecting data');
 
         if (this.slip !== 'hold_shelf_slip') {
 
@@ -102,6 +106,7 @@ export class RouteDialogComponent extends DialogComponent {
     }
 
     applySettings(): Promise<boolean> {
+        console.debug('Route Dialog applying print settings');
 
         if (this.checkin.transit) {
             if (this.checkin.patron && this.checkin.hold &&
