@@ -1,14 +1,19 @@
-name: docs
-on: [push, pull_request]
+name: Build Docs
+on:
+  push:
+    paths:
+      - 'docs/**'
+  pull_request:
+    paths:
+      - 'docs/**'
 jobs:
-  Build-And-Publish-Docs:
+  build_docs:
+    name: Build Docs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: shogo82148/actions-setup-perl@v1
-        with:
-          perl-version: '5.34'
-      - run: |
+      - name: Generate Docs Package
+        run: |
           cd docs
           sed -i 's/branches.*/branches: [HEAD]/' site.yml
           perl generate_docs.pl --base-url http://example.com
