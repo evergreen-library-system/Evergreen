@@ -2030,7 +2030,9 @@ sub format_biblio_record_entry {
     my ($auth, $captcha_pass, $email, $subject);
     if ($for_email) {
         $auth = shift @_;
-        ($captcha_pass, $email, $subject) = splice @_, -3, 3;
+        if (@_ > 5) { # the stuff below is included in the params, safe to splice
+            ($captcha_pass, $email, $subject) = splice @_, -3, 3;
+        }
     }
     my ($bib_id, $holdings_context_org, $bib_sort, $sort_dir, $group_member) = @_;
     $holdings_context_org ||= $U->get_org_tree->id;
