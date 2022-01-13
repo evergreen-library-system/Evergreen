@@ -328,12 +328,15 @@ ctx.metalinks.push('
                     </div>
 
                 </div>
-                <script>jQuery('#demo').on('hidden.bs.collapse', function () {
-                        jQuery('#btnMore').html("<i class='fas fa-info-circle' aria-hidden='true'></i> [%l ('More Details') %]");
-                    })
-                    jQuery('#demo').on('shown.bs.collapse', function () {
-                        jQuery('#btnMore').html("<i class='fas fa-info-circle' aria-hidden='true'></i> [%l ('Fewer Details') %]");
-                    })
+                <script>
+                    $(document).ready(function() {
+                        $('#demo').on('hidden.bs.collapse', function () {
+                            $('#btnMore').html("<i class='fas fa-info-circle' aria-hidden='true'></i> [%l ('More Details') %]");
+                        })
+                        $('#demo').on('shown.bs.collapse', function () {
+                            $('#btnMore').html("<i class='fas fa-info-circle' aria-hidden='true'></i> [%l ('Fewer Details') %]");
+                        })
+                    });
                     </script>
 
                <div id="copy_hold_counts">
