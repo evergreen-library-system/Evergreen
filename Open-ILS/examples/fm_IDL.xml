@@ -7467,7 +7467,7 @@ SELECT  usr,
 			<field reporter:label="Accepting Staff Member" name="accepting_usr" reporter:datatype="link"/>
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
 			<field reporter:label="Amount Collected" name="amount_collected" reporter:datatype="money" />
-			<field reporter:label="Pyament ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Payment ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Payment Note" name="note"  reporter:datatype="text"/>
 			<field reporter:label="Payment Timestamp" name="payment_ts" reporter:datatype="timestamp"/>
 			<field reporter:label="Transaction" name="xact" reporter:datatype="link"/>
