@@ -251,7 +251,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit, AfterVie
                 default:
                     const field = this.idlField;
                     if (this.idlIncludeLibraryInLabel) {
-                        return fm[field]() + ' (' + fm[this.idlIncludeLibraryInLabel]().shortname() + ')';
+                        return fm[field]() + ' (' + this.getOrgShortname(fm[this.idlIncludeLibraryInLabel]()) + ')';
                     } else {
                         return fm[field]();
                     }
