@@ -1,0 +1,66 @@
+= Adding materials to courses =
+:toc:
+
+== Introduction ==
+
+You may attach several different types of materials to a course.
+
+== Attaching an item to a course ==
+
+These procedures are intended if you already have an item with a barcode
+in your catalog, and you wish to attach it to a course.
+
+- Navigate to Administration -> Local Administration -> Course Reserves List
+- Select an existing course.
+- Choose Edit Selected from the Actions menu.
+- Open the Course materials tab.
+- Enter the barcode of an item you wish to attach to the course.
+- You may optionally describe the relationship of the item to the course.  For
+example, the item may be "required reading" or "optional listening".
+- If necessary, you may temporarily change various characteristics of the item
+while attaching it.  For example, if you are bringing a book from your typical
+stacks to the reserves room, you may wish to change the book's shelving location,
+circulation modifier, and call number.  The characteristics will remain in effect
+until the item is detached from the course or the course is archived.
+- Press the "Add material" button.
+
+
+== Attaching a brief record to a course ==
+
+These procedures are intended if you wish to attach a resource to a course,
+and the resource is not in your catalog.
+
+- Navigate to Administration -> Local Administration -> Course Reserves List
+- Select an existing course.
+- Choose Edit Selected from the Actions menu.
+- Open the Course materials tab.
+- Open the "Associate brief record" tab.
+- Fill out the metadata for the resource.
+- You may optionally describe the relationship of the resource to the course.
+- Press the "Add material" button.
+
+After creating a brief record, it is represented as a bibliographic record in
+your catalog, which catalogers may edit and enhance at any time.  When the resource
+is detached from the course or the course is archived, the bibliographic record
+will be automatically deleted.
+
+== Attaching a cataloged electronic resource to a course ==
+
+These procedures are intended if you wish to attach a resource to a course,
+and the resource is an electronic resource in your catalog.  An example of
+this type of resource is a library-licensed ebook that is used as a course
+textbook.
+
+- In the staff catalog, find the electronic resource that you would like to
+add. In the record summary, note the Database ID.
+- Navigate to Administration -> Local Administration -> Course Reserves List
+- Select an existing course.
+- Choose Edit Selected from the Actions menu.
+- Open the Course materials tab.
+- Open the "Associate electronic resource from catalog" tab.
+- Enter the resource's bibliographic ID.
+- You may optionally describe the relationship of the resource to the course.
+- Press the "Add material" button.
+
+Unlike brief records, detaching this resource from the course or archiving the
+course will not delete the bibliographic record.
