@@ -155,6 +155,13 @@ export class PatronComponent implements OnInit, AfterViewInit {
                 this.patronTab = 'other';
             }
 
+            // Clear all previous patron data when returning to the
+            // search from after other patron-level navigation.
+            if (this.patronTab === 'search') {
+                this.context.summary = null;
+                this.patronId = null;
+            }
+
             const prevId =
                 this.context.summary ? this.context.summary.id : null;
 
