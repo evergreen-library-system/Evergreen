@@ -1,0 +1,4 @@
+= Introduction =
+:toc:
+
+Evergreen includes an optional course materials module. Like course reserves modules in other library software, this module makes reserves collections more discoverable and easier to manage. The module also provides similar functionality for library electronic resources and open educational resources, whether they have been cataloged or not.
