@@ -500,6 +500,12 @@ export class CircService {
                 return this.handlePrecat(result);
 
             case 'OPEN_CIRCULATION_EXISTS':
+
+                if (result.firstEvent.payload.auto_renew) {
+                    const coParams = Object.assign({}, result.params); // clone
+                    return this.renew(coParams);
+                }
+
                 return this.handleOpenCirc(result);
 
             case 'COPY_IN_TRANSIT':
@@ -590,7 +596,7 @@ export class CircService {
             this.components.openCircDialog.sameUser = sameUser;
             this.components.openCircDialog.circDate = circ.xact_start();
 
-            return this.components.openCircDialog.open().toPromise();
+            return this.components.openCircDialog.open({size: 'lg'}).toPromise();
         })
 
         .then(fromDialog => {
@@ -600,7 +606,7 @@ export class CircService {
 
             const coParams = Object.assign({}, result.params); // clone
 
-            if (sameUser) {
+            if (fromDialog.renew) {
                 coParams.void_overdues = fromDialog.forgiveFines;
                 return this.renew(coParams);
             }

@@ -31,12 +31,12 @@
     <div class="flex-1"></div>
 
     <div>
-      <button type="button" class="btn btn-success" *ngIf="!sameUser"
-        (click)="close({forgiveFines: forgiveFines})" i18n>
+      <button type="button" class="btn btn-success"
+        (click)="close({checkout: true, forgiveFines: forgiveFines})" i18n>
         Normal Checkin Then Checkout</button>
 
-      <button type="button" class="btn btn-success" *ngIf="sameUser"
-        (click)="close({forgiveFines: forgiveFines})" i18n>Renew</button>
+      <button type="button" class="btn btn-info ml-2" *ngIf="sameUser"
+        (click)="close({renew: true, forgiveFines: forgiveFines})" i18n>Renew</button>
 
       <button type="button" class="btn btn-warning ml-2"
         (click)="close()" i18n>Cancel</button>
