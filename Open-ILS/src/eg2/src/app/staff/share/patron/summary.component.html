@@ -28,7 +28,7 @@
     *ngFor="let pen of summary.alerts.alertPenalties">
     <div class="col-lg-9"
       title="{{pen.standing_penalty().name()}}">
-      {{pen.note() || pen.standing_penalty().label()}}
+      {{pen.usr_message() || pen.standing_penalty().label()}}
     </div>
     <div class="col-lg-3">{{pen.set_date() | date:'shortDate'}}</div>
   </div>

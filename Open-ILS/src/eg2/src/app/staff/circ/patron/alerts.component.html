@@ -47,7 +47,7 @@
                 <div class="col-lg-8"
                   title="{{penalty.standing_penalty().name()}}">
                   {{penalty.standing_penalty().label()}}
-                  <div>{{penalty.note()}}</div><!-- force newline -->
+                  <div>{{penalty.usr_message()}}</div><!-- force newline -->
                 </div>
                 <div class="col-lg-2">
                   {{penalty.set_date() | date:'short'}}
