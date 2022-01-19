@@ -296,11 +296,6 @@ export class HoldsGridComponent implements OnInit {
             filters.fulfillment_time = null;
         }
 
-        if (this._showCanceledSince) {
-            filters.cancel_time = this._showCanceledSince.toISOString();
-        } else {
-            filters.cancel_time = null;
-        }
 
         if (this.hopeless) {
           filters['hopeless_holds'] = {

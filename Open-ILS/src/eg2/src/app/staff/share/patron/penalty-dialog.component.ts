@@ -71,7 +71,6 @@ export class PatronPenaltyDialogComponent
     init(): Observable<any> {
         this.dataLoaded = false;
 
-        this.patronMessage = 0;
         this.initials = '';
         this.noteText = '';
 

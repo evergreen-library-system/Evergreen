@@ -928,7 +928,7 @@ export class CircService {
                     'info.checkin.transit.hold' : 'info.checkin.transit');
 
                 if (params.noop) {
-                    console.debug("Skipping route dialog on 'noop' checkin");
+                    console.debug('Skipping route dialog on "noop" checkin');
                     return Promise.resolve(result);
                 }
 
