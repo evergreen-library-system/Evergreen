@@ -124,4 +124,15 @@ export class OfflineService {
             rows: rows
         });
     }
+
+    // Return promise of cache date when pending transactions exit.
+    pendingXactsDate(): Promise<Date> {
+        return this.db.request({
+            schema: 'cache',
+            table: 'CacheDate',
+            action: 'selectWhereEqual',
+            field: 'type',
+            value: '_offlineXact'
+        }).then(results => results[0] ? results[0].cachedate : null);
+    }
 }
