@@ -14,6 +14,7 @@ export class StaffLoginComponent implements OnInit {
     workstations: any[];
     loginFailed: boolean;
     routeTo: string;
+    pendingXactsDate: Date;
 
     args = {
       username : '',
@@ -58,6 +59,8 @@ export class StaffLoginComponent implements OnInit {
             this.args.workstation = def;
             this.applyWorkstation();
         });
+
+        this.offline.pendingXactsDate().then(d => this.pendingXactsDate = d);
     }
 
     applyWorkstation() {
