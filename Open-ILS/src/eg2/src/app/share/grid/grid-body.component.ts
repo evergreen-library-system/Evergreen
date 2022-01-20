@@ -115,11 +115,6 @@ export class GridBodyComponent implements OnInit {
     onRowContextClick($event, row: any, contextMenu: NgbPopover) {
         $event.preventDefault(); // prevent browser context menu
 
-        if (this.context.toolbarActions.length === 0) {
-            // No actions to render.
-            return;
-        }
-
         if (!this.context.rowIsSelected(row)) {
             // If the focused row is not selected, select it.
             // Otherwise, avoid modifying the row selection.
