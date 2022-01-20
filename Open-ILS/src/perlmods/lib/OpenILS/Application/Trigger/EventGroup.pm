@@ -83,6 +83,7 @@ sub react {
                     $usr_message->message( $message_template_output );
                     $usr_message->usr( $env->{usr_message}{usr}->id );
                     $usr_message->sending_lib( $env->{usr_message}{sending_lib}->id );
+                    $usr_message->pub('t');
 
                     if ($self->editor->xact_begin) {
                         if ($self->editor->create_actor_usr_message( $usr_message )) {
