@@ -17,6 +17,7 @@ import {DateTimeSelectComponent} from '@eg/share/datetime-select/datetime-select
 import {ContextMenuModule} from '@eg/share/context-menu/context-menu.module';
 import {FileReaderComponent} from '@eg/share/file-reader/file-reader.component';
 import {IntervalInputComponent} from '@eg/share/interval-input/interval-input.component';
+import {ClipboardDialogComponent} from '@eg/share/clipboard/clipboard-dialog.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import {IntervalInputComponent} from '@eg/share/interval-input/interval-input.co
     DateRangeSelectComponent,
     DateTimeSelectComponent,
     FileReaderComponent,
+    ClipboardDialogComponent,
     IdlClassTemplateDirective,
     IntervalInputComponent,
   ],
@@ -50,6 +52,7 @@ import {IntervalInputComponent} from '@eg/share/interval-input/interval-input.co
     OrgSelectComponent,
     DateRangeSelectComponent,
     DateTimeSelectComponent,
+    ClipboardDialogComponent,
     ContextMenuModule,
     FileReaderComponent,
     IntervalInputComponent,

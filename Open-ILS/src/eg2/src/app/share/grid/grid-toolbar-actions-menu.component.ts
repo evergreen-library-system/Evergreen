@@ -1,5 +1,6 @@
-import {Component, Input, OnInit, Host} from '@angular/core';
+import {Component, Input, OnInit, Host, ViewChild} from '@angular/core';
 import {GridToolbarAction, GridContext} from '@eg/share/grid/grid';
+import {ClipboardDialogComponent} from '@eg/share/clipboard/clipboard-dialog.component';
 
 /** Models a list of toolbar action menu entries */
 
@@ -11,6 +12,10 @@ import {GridToolbarAction, GridContext} from '@eg/share/grid/grid';
 export class GridToolbarActionsMenuComponent {
 
     @Input() gridContext: GridContext;
+
+    @Input() viaContextMenu = false;
+
+    @ViewChild('clipboardDialog') clipboardDialog: ClipboardDialogComponent;
 
     performAction(action: GridToolbarAction) {
         if (action.isGroup || action.isSeparator) {
@@ -26,6 +31,22 @@ export class GridToolbarActionsMenuComponent {
             return action.disableOnRows(this.gridContext.getSelectedRows());
         }
         return false;
+    }
+
+    openCopyToClipboard() {
+        const row = this.gridContext.getSelectedRows()[0];
+        if (!row) { return; }
+        const values = [];
+        this.gridContext.columnSet.displayColumns().forEach(col => {
+            values.push({
+                label: col.label,
+                value: this.gridContext.getRowColumnValue(row, col)
+            });
+        });
+
+
+        this.clipboardDialog.values = values;
+        this.clipboardDialog.open({size: 'lg'}).toPromise();
     }
 }
 
