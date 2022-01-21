@@ -751,7 +751,8 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
                 }
             ).then(function(key) {
                 if (key) {
-                    var url = egCore.env.basePath + 'cat/volcopy/' + key;
+                    var tab = (hide_vols === true) ? 'attrs' : 'holdings';
+                    var url = '/eg2/staff/cat/volcopy/' + tab + '/session/ ' + key;
                     $timeout(function() { $window.open(url, '_blank') });
                 } else {
                     alert('Could not create anonymous cache key!');
@@ -783,7 +784,8 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
                 hide_copies : hide_copies
             }).then(function(key) {
 		if (key) {
-		    var url = egCore.env.basePath + 'cat/volcopy/' + key;
+		    var tab = (hide_vols === true) ? 'attrs' : 'holdings';
+		    var url = '/eg2/staff/cat/volcopy/' + tab + '/session/ ' + key;
 		    $timeout(function() { $window.open(url, '_blank') });
 		} else {
 		    alert('Could not create anonymous cache key!');
