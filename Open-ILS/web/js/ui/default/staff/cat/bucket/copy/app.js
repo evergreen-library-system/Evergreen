@@ -607,7 +607,8 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
             }
         ).then(function(key) {
             if (key) {
-                var url = egCore.env.basePath + 'cat/volcopy/' + key;
+                var tab = (hide_vols === true) ? 'attrs' : 'holdings';
+                var url = '/eg2/staff/cat/volcopy/' + tab + '/session/ ' + key;
                 $timeout(function() { $window.open(url, '_blank') });
             } else {
                 alert('Could not create anonymous cache key!');
