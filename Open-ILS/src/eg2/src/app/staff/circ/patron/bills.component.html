@@ -157,7 +157,7 @@
   <ng-container *ngIf="r.record_id">
     <a routerLink="/staff/catalog/record/{{r.record_id}}">{{r.title}}</a>
   </ng-container>
-  <ng-container *ngIf="!r.record">{{r.title}}</ng-container>
+  <ng-container *ngIf="!r.record_id">{{r.title}}</ng-container>
 </ng-template>
 
 <ng-template #barcodeTemplate let-r="row">
