@@ -797,7 +797,7 @@ export class CircService {
             (nonCatCirc ? nonCatCirc.patron() : null);
 
         if (circPatronId) {
-            console.debug('fleshCommonData() circ ', circPatronId);
+            console.debug('fleshCommonData() circ patron id', circPatronId);
             promise = promise.then(_ => {
                 return this.fetchPatron(circPatronId)
                 .then(usr => {
@@ -827,10 +827,12 @@ export class CircService {
             if (this.copyLocationCache[copy.location()]) {
                 copy.location(this.copyLocationCache[copy.location()]);
             } else {
-                promise = this.pcrud.retrieve('acpl', copy.location()).toPromise()
-                .then(loc => {
-                    copy.location(loc);
-                    this.copyLocationCache[loc.id()] = loc;
+                promise = promise.then(_ => {
+                    return this.pcrud.retrieve('acpl', copy.location())
+                    .toPromise().then(loc => {
+                        copy.location(loc);
+                        this.copyLocationCache[loc.id()] = loc;
+                    });
                 });
             }
 
