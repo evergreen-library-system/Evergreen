@@ -71,7 +71,7 @@ ctx.metalinks.push('
                 [%- INCLUDE "opac/parts/record/authors.tt2" %]
                 <div>
                     <button id="btnMore" data-toggle="collapse" data-target="#demo"
-                        class="btn btn-action btn-sm my-3"><i class="fas fa-info-circle" aria-hidden="true"></i> More Details</button>
+                        class="btn btn-action btn-sm my-3"><i class="fas fa-info-circle" aria-hidden="true"></i> [%l ("More Details") %]</button>
                     <div id="demo" class="collapse">
                         <h2 id='rdetail_record_details'>[% l("Record details") %]</h2>
                         <ul class="list-unstyled">
@@ -329,10 +329,10 @@ ctx.metalinks.push('
 
                 </div>
                 <script>jQuery('#demo').on('hidden.bs.collapse', function () {
-                        jQuery('#btnMore').html("<i class='fas fa-info-circle' aria-hidden='true'></i> More Details");
+                        jQuery('#btnMore').html("<i class='fas fa-info-circle' aria-hidden='true'></i> [%l ('More Details') %]");
                     })
                     jQuery('#demo').on('shown.bs.collapse', function () {
-                        jQuery('#btnMore').html("<i class='fas fa-info-circle' aria-hidden='true'></i> Less Details");
+                        jQuery('#btnMore').html("<i class='fas fa-info-circle' aria-hidden='true'></i> [%l ('Fewer Details') %]");
                     })
                     </script>
 
