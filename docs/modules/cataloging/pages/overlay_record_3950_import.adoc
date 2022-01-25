@@ -5,46 +5,31 @@ This feature enables you to replace a catalog record with a record obtained thro
 
 *To Overlay an Existing Record via Z39.50 Import:*
 
-1) Click *Cataloging -> Import Record from Z39.50*
-
-2) Select at least one of the *Service and Credentials* to have the search fields appear.  You can also click on *Save as Default* if you want the same *Service and Credentials* saved for the future.
-
-3) Enter search terms in the *Query* window in the top left panel.
-
-4) Click *Search*. 
-
+. Click *Cataloging -> Import Record from Z39.50*
+. Select at least one of the *Service and Credentials* to have the search fields appear.  You can also click on *Save as Default* if you want the same *Service and Credentials* saved for the future.
+. Enter search terms in the *Query* window in the top left panel.
+. Click *Search*. 
++
 image::overlay/search.png[]
-
-5) The results will appear in the lower window.
-
-6) Select the record in the local catalog that you wish to overlay.
-
-7) Click *Mark Local Result as Overlay Target*.  A confirmation will show as a message above the results table in the top right hand corner.
-
-
++
+. The results will appear in the lower window.
+. Select the record in the local catalog that you wish to overlay.
+. Click *Mark Local Result as Overlay Target*.  A confirmation will show as a message above the results table in the top right hand corner.
++
 image::overlay/mark_local_overlay.jpg[]
-
-
-8) Select the record that you want to replace the existing catalog record.
-
-9) Click on *View Marc* to check on that record.
-
-
++
+. Select the record that you want to replace the existing catalog record.
+. Click on *View Marc* to check on that record.
++
 image::overlay/view_marc.jpg[]
-
-
-10) If the record is correct, click *Overlay*.  This option will only be executable if you are highlighting the potential incoming record.
-
-
++
+. If the record is correct, click *Overlay*.  This option will only be executable if you are highlighting the potential incoming record.
++
 image::overlay/overlay.jpg[]
-
-
-11) The records that you selected will open in a prompt.  Make any desired changes to the record in a separate window with Marc Editor and come back to this screen when ready to overlay.  Select a profile and click *Overlay*.
-
-
++
+.The records that you selected will open in a prompt.  Make any desired changes to the record in a separate window with Marc Editor and come back to this screen when ready to overlay.  Select a profile and click *Overlay*.
++
 image::overlay/overlay_confirmation.jpg[]
-
-
-12) The record will appear in a new tab in OPAC view.
-
-13) When overlayed, a message over the result table will display "No record marked for overlay."
++
+. The record will appear in a new tab in OPAC view.
+. When overlayed, a message over the result table will display "No record marked for overlay."
