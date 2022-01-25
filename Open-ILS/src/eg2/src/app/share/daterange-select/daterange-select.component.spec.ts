@@ -6,7 +6,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    // tslint:disable-next-line:component-selector
+    // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'ngb-datepicker',
     template: ''
 })
