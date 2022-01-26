@@ -54,7 +54,9 @@ export class StoreService {
      * Add a an app-local login session key
      */
     addLoginSessionKey(key: string): void {
-        this.loginSessionKeys.push(key);
+        if (!this.loginSessionKeys.includes(key)) {
+            this.loginSessionKeys.push(key);
+        }
     }
 
     setLocalItem(key: string, val: any, isJson?: boolean): void {

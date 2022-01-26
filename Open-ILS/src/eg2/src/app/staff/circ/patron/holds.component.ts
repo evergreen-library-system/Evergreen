@@ -7,6 +7,8 @@ import {PatronService} from '@eg/staff/share/patron/patron.service';
 import {PatronContextService} from './patron.service';
 import {StoreService} from '@eg/core/store.service';
 
+const HOLD_FOR_PATRON_KEY = 'eg.circ.patron_hold_target';
+
 @Component({
   templateUrl: 'holds.component.html',
   selector: 'eg-patron-holds'
@@ -27,8 +29,7 @@ export class HoldsComponent implements OnInit {
 
     newHold() {
 
-        this.store.setLocalItem(
-            'eg.circ.patron_hold_target',
+        this.store.setLoginSessionItem(HOLD_FOR_PATRON_KEY,
             this.context.summary.patron.card().barcode());
 
         this.router.navigate(['/staff/catalog/search']);

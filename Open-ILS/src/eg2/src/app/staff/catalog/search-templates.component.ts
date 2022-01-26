@@ -56,8 +56,6 @@ export class SearchTemplatesComponent extends DialogComponent implements OnInit 
         private staffCat: StaffCatalogService,
         private modal: NgbModal) {
         super(modal);
-
-        this.store.addLoginSessionKey(RECENT_SEARCHES_KEY);
     }
 
     ngOnInit() {
