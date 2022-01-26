@@ -834,12 +834,11 @@ vim:et:ts=4:sw=4:
                             <oai_dc>
                                 <namespace_uri>http://www.openarchives.org/OAI/2.0/oai_dc/</namespace_uri>
                                 <schema_location>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema_location>
-                                <xslt>OAI2_OAIDC.xsl</xslt>
+                                <xslt>MARC21slim2OAIDC.xsl</xslt>
                             </oai_dc>
                             <marcxml>
                                 <namespace_uri>http://www.loc.gov/MARC21/slim</namespace_uri>
                                 <schema_location>http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd</schema_location>
-                                <xslt>OAI2_MARC21slim.xsl</xslt>
                             </marcxml>
                         </metadataformat> -->
 

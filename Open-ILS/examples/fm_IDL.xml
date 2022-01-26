@@ -75,21 +75,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<!-- Virtual classes -->
 
-	<class id="oai_biblio" controller="open-ils.cstore" oils_obj:fieldmapper="oai::biblio"
+	<class id="oaib" controller="open-ils.cstore" oils_obj:fieldmapper="oai::biblio"
 		   oils_persist:readonly="true" reporter:core="false" reporter:label="OAI2 record list"
 		   oils_persist:tablename="oai.biblio">
-		<fields>
-			<field reporter:label="Record ID\OAI identifier postfix" name="rec_id" reporter:datatype="number"/>
+		<fields oils_persist:primary="rec_id">
+			<field reporter:label="Record ID\OAI identifier postfix" name="rec_id" reporter:datatype="id"/>
 			<field reporter:label="Last edit date\OAI datestamp" name="datestamp" reporter:datatype="timestamp"/>
 			<field reporter:label="Is Deleted?" name="deleted" reporter:datatype="bool"/>
 			<field reporter:label="Setspec" name="set_spec" oils_persist:virtual="true"/>
 		</fields>
 	</class>
-	<class id="oai_authority" controller="open-ils.cstore" oils_obj:fieldmapper="oai::authority"
+	<class id="oaia" controller="open-ils.cstore" oils_obj:fieldmapper="oai::authority"
 		   oils_persist:readonly="true" reporter:core="false" reporter:label="OAI2 record list"
 		   oils_persist:tablename="oai.authority">
-		<fields>
-			<field reporter:label="Record ID\OAI identifier postfix" name="rec_id" reporter:datatype="number"/>
+		<fields oils_persist:primary="rec_id">
+			<field reporter:label="Record ID\OAI identifier postfix" name="rec_id" reporter:datatype="id"/>
 			<field reporter:label="Last edit date\OAI datestamp" name="datestamp" reporter:datatype="timestamp"/>
 			<field reporter:label="Is Deleted?" name="deleted" reporter:datatype="bool"/>
 			<field reporter:label="Setspec" name="set_spec" oils_persist:virtual="true"/>

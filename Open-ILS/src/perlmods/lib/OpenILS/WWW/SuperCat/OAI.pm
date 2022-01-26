@@ -32,8 +32,13 @@ use MARC::Record;
 use MIME::Base64;
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Logger qw/$logger/;
+use OpenILS::Utils::Fieldmapper;
+use OpenILS::Utils::CStoreEditor;
+use OpenILS::Application::AppUtils;
 use XML::LibXML;
 use XML::LibXSLT;
+
+my $U = 'OpenILS::Application::AppUtils';
 
 my (
     $bootstrap,
@@ -50,7 +55,6 @@ my (
     $sample_identifier,
     $oai_metadataformats,
     $oai_sets,
-    $oai,
     $parser,
     $xslt
 );
@@ -69,8 +73,8 @@ sub child_init {
 
     my $idl = OpenSRF::Utils::SettingsClient->new->config_value('IDL');
     Fieldmapper->import(IDL => $idl);
+    OpenILS::Utils::CStoreEditor->init; # just in case
 
-    $oai = OpenSRF::AppSession->create('open-ils.supercat');
     $parser = new XML::LibXML;
     $xslt = new XML::LibXSLT;
 
@@ -88,9 +92,13 @@ sub child_init {
     $delimiter = $app_settings->{'delimiter'} || ':';
     $sample_identifier = $app_settings->{'sample_identifier'} || $scheme . $delimiter . $repository_identifier . $delimiter . '12345' ;
 
-    _load_oaisets_authority();
+    $logger->info('Default OAI repo settings in place, loading sets...');
+
     _load_oaisets_biblio();
+    _load_oaisets_authority();
     _load_oai_metadataformats();
+
+    $logger->info('... sets loaded.');
 
     return Apache2::Const::OK;
 }
@@ -168,7 +176,7 @@ sub handler {
                 $response = listSets( $record_class, $requestURL );
             }
             elsif ( $verb eq 'GetRecord' ) {
-                $response = getRecord( $record_class, $requestURL, $identifier, $metadataPrefix);
+                $response = getRecord( $record_class, $requestURL, $identifier, $metadataPrefix, $set);
             }
             elsif ( $verb eq 'ListIdentifiers' ) {
                 $response = listIdentifiers( $record_class, $requestURL, $from, $until, $set, $metadataPrefix, $offset);
@@ -264,7 +272,7 @@ sub listSets {
 
 sub getRecord {
 
-    my ($record_class, $requestURL, $identifier, $metadataPrefix ) = @_;
+    my ($record_class, $requestURL, $identifier, $metadataPrefix, $set ) = @_;
 
     my $response ;
     my @errors;
@@ -275,11 +283,10 @@ sub getRecord {
         my $rec_id = $1 ;
 
         # Do we have a record ?
-        my $record = $oai->request('open-ils.supercat.oai.list.retrieve', $record_class, $rec_id, undef, undef, undef, 1, $deleted_record)->gather(1) ;
+        my $record = $U->simplereq('open-ils.supercat','open-ils.supercat.oai.list.retrieve', $record_class, $rec_id, undef, undef, undef, 1, $deleted_record);
         if (@$record) {
             $response = HTTP::OAI::GetRecord->new();
-            my $o = "Fieldmapper::oai::$record_class"->new(@$record[0]);
-            $response->record(_record($record_class, $o, $metadataPrefix));
+            $response->record(_record($record_class, $$record[0], $metadataPrefix, $set));
         } else {
             push @errors, new HTTP::OAI::Error(code=>'idDoesNotExist', message=>'The value of the identifier argument is unknown or illegal in this repository.') ;
         }
@@ -302,18 +309,17 @@ sub listIdentifiers {
     my ($record_class, $requestURL, $from, $until, $set, $metadataPrefix, $offset ) = @_;
     my $response;
 
-    my $r = $oai->request('open-ils.supercat.oai.list.retrieve', $record_class, $offset, $from, $until, $set, $max_count, $deleted_record)->gather(1) ;
+    my $r = $U->simplereq('open-ils.supercat','open-ils.supercat.oai.list.retrieve', $record_class, $offset, $from, $until, $oai_sets->{$set}->{setSpec}, $max_count, $deleted_record);
     if (@$r) {
         my $cursor = 0 ;
         $response = HTTP::OAI::ListIdentifiers->new();
         for my $record (@$r) {
-            my $o = "Fieldmapper::oai::$record_class"->new($record) ;
             if ( $cursor++ == $max_count ) {
-                my $token = new HTTP::OAI::ResumptionToken( resumptionToken => encode_base64(join( '$', $metadataPrefix, $from, $until, $oai_sets->{$set}->{setSpec}, $o->rec_id ), '' ) ) ;
+                my $token = new HTTP::OAI::ResumptionToken( resumptionToken => encode_base64(join( '$', $metadataPrefix, $from, $until, $oai_sets->{$set}->{setSpec}, $record->rec_id ), '' ) ) ;
                 $token->cursor($offset);
                 $response->resumptionToken($token) ;
             } else {
-                $response->identifier( _header($record_class, $o)) ;
+                $response->identifier( _header($record_class, $record)) ;
             }
         }
     } else {
@@ -331,18 +337,17 @@ sub listRecords {
     my ($record_class, $requestURL, $from, $until, $set, $metadataPrefix, $offset ) = @_;
     my $response;
 
-    my $r = $oai->request('open-ils.supercat.oai.list.retrieve', $record_class, $offset, $from, $until, $set, $max_count, $deleted_record)->gather(1) ;
+    my $r = $U->simplereq('open-ils.supercat','open-ils.supercat.oai.list.retrieve', $record_class, $offset, $from, $until, $oai_sets->{$set}->{setSpec}, $max_count, $deleted_record);
     if (@$r) {
         my $cursor = 0 ;
         $response = HTTP::OAI::ListRecords->new();
         for my $record (@$r) {
-            my $o = "Fieldmapper::oai::$record_class"->new($record) ;
             if ( $cursor++ == $max_count ) {
-                my $token = new HTTP::OAI::ResumptionToken( resumptionToken => encode_base64(join( '$', $metadataPrefix, $from, $until, $oai_sets->{$set}->{setSpec}, $o->rec_id ), '' ) ) ;
+                my $token = new HTTP::OAI::ResumptionToken( resumptionToken => encode_base64(join( '$', $metadataPrefix, $from, $until, $oai_sets->{$set}->{setSpec}, $record->rec_id ), '' ) ) ;
                 $token->cursor($offset);
                 $response->resumptionToken($token) ;
             } else {
-                $response->record(_record($record_class, $o, $metadataPrefix));
+                $response->record(_record($record_class, $record, $metadataPrefix, $set));
             }
         }
     } else {
@@ -379,14 +384,15 @@ sub _header {
 
 sub _record {
 
-    my ($record_class, $o, $metadataPrefix ) = @_;
+    my ($record_class, $o, $metadataPrefix, $set ) = @_;
 
     my $record = HTTP::OAI::Record->new();
     $record->header( _header($record_class, $o) );
 
     if ( $o->deleted eq 'f' ) {
         my $md = new HTTP::OAI::Metadata() ;
-        my $xml = $oai->request('open-ils.supercat.oai.' . $record_class . '.retrieve', $o->rec_id, $metadataPrefix)->gather(1) ;
+        my $xml = $U->simplereq('open-ils.supercat','open-ils.supercat.oai.' . $record_class . '.retrieve', $o->rec_id, $metadataPrefix, $oai_sets->{$set}->{setSpec});
+        $xml =~ s/^<\?xml[^?]+?\?>//;
         $md->dom( $parser->parse_string('<metadata>' . $xml . '</metadata>') ); # Not sure why I need to add the metadata element,
         $record->metadata( $md );                                               # because I expect ->metadata() would provide the wrapper for it.
     }
@@ -400,12 +406,9 @@ sub _record {
 # oai_sets = {id\setSpec => {id, setSpec, setName, record_class = 'authority' }}
 sub _load_oaisets_authority {
 
-    my $ses = OpenSRF::AppSession->create('open-ils.cstore');
-    my $r = $ses->request('open-ils.cstore.direct.authority.browse_axis.search.atomic',
-        {code => {'!=' => undef } } )->gather(1);
+    my $axes = $U->simplereq('open-ils.cstore','open-ils.cstore.direct.authority.browse_axis.search.atomic', {code => {'!=' => undef } } );
 
-    for my $record (@$r) {
-        my $o = Fieldmapper::authority::browse_axis->new($record) ;
+    for my $o (@$axes) {
         $oai_sets->{$o->code} = {
            id => $o->code,
            setSpec => $o->code,
@@ -419,35 +422,62 @@ sub _load_oaisets_authority {
 # _load_oaisets_biblio
 # Populate the $oai_sets hash with the sets for bibliographic records. Those are org_type records
 # oai_sets = {id\setSpec => {id, setSpec, setName, record_class = 'biblio' }}
+my $org_tree;
+my $bib_sources;
 sub _load_oaisets_biblio {
 
     my $node = shift;
-    my $types = shift;
     my $parent = shift;
 
-    unless ( $node ) {
-        my $ses = OpenSRF::AppSession->create('open-ils.actor');
-        $node = $ses->request('open-ils.actor.org_tree.retrieve')->gather(1);
-        my $aout = $ses->request('open-ils.actor.org_types.retrieve')->gather(1);
-        $ses->disconnect;
-        return unless ($node) ;
-
-        my @_types;
-        foreach my $type (@$aout) {
-            $_types[int($type->id)] = $type;
-        }
-        $types = \@_types;
+    if (!$node) {
+        $org_tree ||= $U->get_org_tree;
+        $bib_sources ||= $U->simplereq('open-ils.cat','open-ils.cat.bib_sources.retrieve.all');
+        
+        $node = $org_tree;
     }
 
     return unless ($node->opac_visible =~ /^[y1t]+/i);
 
+
     my $ou_hierarchy_string = ($parent) ? $parent . ':' . $node->shortname : $node->shortname ;
-    my $spec = 'ORG_UNIT:'.$ou_hierarchy_string;
-    $oai_sets->{$spec} = {id => $node->id, record_class => 'biblio' };
-    $oai_sets->{$node->id} = {setSpec => $spec, setName => $node->name, record_class => 'biblio' };
+    $logger->info('Registering setSpec list for ' . $ou_hierarchy_string);
+
+    my $cspec = 'COPIES:'.$ou_hierarchy_string;
+    $oai_sets->{$cspec} = {id => 'C'.$node->id, record_class => 'biblio' };
+    $oai_sets->{'C'.$node->id} = {setSpec => $cspec, setName => $node->name . ' / by copies', record_class => 'biblio' };
+
+    my $lspec = 'LURIS:'.$ou_hierarchy_string;
+    $oai_sets->{$lspec} = {id => 'L'.$node->id, record_class => 'biblio' };
+    $oai_sets->{'L'.$node->id} = {setSpec => $lspec, setName => $node->name . ' / by LURIs', record_class => 'biblio' };
+
+    my $clspec = $cspec . '!' . $lspec;
+    $oai_sets->{$clspec} = {id => 'CL'.$node->id, record_class => 'biblio' };
+    $oai_sets->{'CL'.$node->id} = {setSpec => $clspec, setName => $node->name . ' / by copies and LURIs', record_class => 'biblio' };
+
+
+    my $source_string;
+    for my $s (@$bib_sources) {
+
+        my $sspec = 'SOURCES:'.$s->source;
+        $oai_sets->{$sspec} = {id => 'S'.$s->id, record_class => 'biblio' };
+        $oai_sets->{'S'.$s->id} = {setSpec => $sspec, setName => $s->source . ' / by source', record_class => 'biblio' };
+
+        my $csspec = $cspec . '!' . $sspec;
+        $oai_sets->{$csspec} = {id => $s->id.'CS'.$node->id, record_class => 'biblio' };
+        $oai_sets->{$s->id.'CS'.$node->id} = {setSpec => $csspec, setName => $node->name . ' / by copies and source', record_class => 'biblio' };
+
+        my $lsspec = $lspec . '!' . $sspec;
+        $oai_sets->{$lsspec} = {id => $s->id.'LS'.$node->id, record_class => 'biblio' };
+        $oai_sets->{$s->id.'LS'.$node->id} = {setSpec => $lsspec, setName => $node->name . ' / by LURIs and source', record_class => 'biblio' };
+
+        my $clsspec = $clspec . '!' . $sspec;
+        $oai_sets->{$clsspec} = {id => $s->id.'CLS'.$node->id, record_class => 'biblio' };
+        $oai_sets->{$s->id.'CLS'.$node->id} = {setSpec => $clsspec, setName => $node->name . ' / by copies, LURIs, and source', record_class => 'biblio' };
+
+    }
 
     my $kids = $node->children;
-    _load_oaisets_biblio($_, $types, $ou_hierarchy_string) for (@$kids);
+    _load_oaisets_biblio($_, $ou_hierarchy_string) for (@$kids);
 }
 
 
@@ -456,7 +486,7 @@ sub _load_oaisets_biblio {
 # oai_metadataformats = { metadataPrefix => { schema, metadataNamespace } }
 sub _load_oai_metadataformats {
 
-    my $list = $oai->request('open-ils.supercat.oai.record.formats')->gather(1);
+    my $list = $U->simplereq('open-ils.supercat','open-ils.supercat.oai.record.formats');
     for my $record_browse_format ( @$list ) {
         my %h = %$record_browse_format ;
         my $metadataPrefix = (keys %h)[0] ;

@@ -74,7 +74,7 @@ sub child_init {
             OpenSRF::Utils::SettingsClient
                 ->new
                 ->config_value( dirs => 'xsl' ).
-            "/OAI2_OAIDC.xsl"
+            "/MARC21slim2OAIDC.xsl"
         );
         # and stash a transformer
         $record_xslt{oai_dc}{xslt} = $_xslt->parse_stylesheet( $xslt );
@@ -82,28 +82,18 @@ sub child_init {
         $record_xslt{oai_dc}{schema_location} = 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd';
     }
 
-    # If not defined, use the natural marcxml metadata setting
-    unless ( exists $record_xslt{marcxml}) {
-        $logger->info('Loading default marcxml schema') ;
-        my $xslt = $_parser->parse_file(
-            OpenSRF::Utils::SettingsClient
-                ->new
-                ->config_value( dirs => 'xsl' ).
-            "/OAI2_MARC21slim.xsl"
-        );
-        # and stash a transformer
-        $record_xslt{marcxml}{xslt} = $_xslt->parse_stylesheet( $xslt );
-        $record_xslt{marcxml}{namespace_uri} = 'http://www.loc.gov/MARC21/slim';
-        $record_xslt{marcxml}{docs} = 'http://www.loc.gov/MARC21/slim';
-        $record_xslt{marcxml}{schema_location} = 'http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd';
-    }
+    # Store info about the natural marcxml metadata setting. We don't actually use this to drive XSLT, but we can report support.
+    $logger->info('Loading default marcxml schema') ;
+    $record_xslt{marcxml}{namespace_uri} = 'http://www.loc.gov/MARC21/slim';
+    $record_xslt{marcxml}{docs} = 'http://www.loc.gov/MARC21/slim';
+    $record_xslt{marcxml}{schema_location} = 'http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd';
 
     # Load the mapping of 852 holdings.
     my $copies = OpenSRF::Utils::SettingsClient->new->config_value(apps => 'open-ils.supercat')->{'app_settings'}->{'oai'}->{'copies'} ;
     if ( $copies ) {
         foreach my $subfield_code (keys %$copies) {
             my $value = $copies->{$subfield_code};
-            $logger->info('Set 852 map ' . $subfield_code . '=' . $value );
+            $logger->debug('Set 852 map ' . $subfield_code . '=' . $value );
             $copies{$subfield_code} = $value;
         }
     } else { # if not defined, fall back on these defaults.
@@ -164,6 +154,19 @@ sub oai_biblio_retrieve {
     my $client = shift;
     my $rec_id = shift;
     my $metadataPrefix = shift;
+    my $set = shift;
+    my $copy_org;
+    my %copy_org_filter;
+
+    (undef, $copy_org) = _set_spec_to_query('biblio',$set) if ($set);
+
+    my $flesh = {};
+    if ($copy_org) {
+        $U->walk_org_tree($copy_org, sub {
+            my $c = shift;
+            $copy_org_filter{$c->id} = 1;
+        });
+    }
 
     #  holdings hold an array of call numbers, which hold an array of copies
     #  holdings => [ label: { library, [ copies: { barcode, location, status, circ_lib } ] } ]
@@ -177,12 +180,14 @@ sub oai_biblio_retrieve {
         $rec_id,
         { flesh     => 5,
           flesh_fields  => {
-                    bre => [qw/marc edit_date call_numbers/],
-                    acn => [qw/edit_date copies owning_lib prefix suffix/],
-                    acp => [qw/edit_date location status circ_lib parts/],
+                    bre => [qw/call_numbers/],
+                    acn => [qw/copies owning_lib prefix suffix uris/],
+                    acp => [qw/location status circ_lib parts/],
                 }
         }
     )->gather(1);
+
+    $tree->call_numbers([]) if (!$tree->call_numbers);
 
     # Create a MARC::Record object with the marc.
     my $marc = MARC::Record->new_from_xml( $tree->marc, 'UTF8', 'XML');
@@ -211,21 +216,21 @@ sub oai_biblio_retrieve {
     for my $cn (@{$tree->call_numbers}) {
 
         next unless ( $cn->deleted eq 'f' || !$cn->deleted );
-        my $_visible = 0;
-        for my $c (@{$cn->copies}) {
-            $_visible = _cp_is_visible($cn, $c);
-            last if ( $_visible );
+
+        my @visible_copies = @{$cn->copies};
+        if ($copy_org) {
+            @visible_copies = grep { $copy_org_filter{$_->circ_lib->id} } @visible_copies;
         }
-        next unless $_visible;
+        @visible_copies = grep { _cp_is_visible($cn, $_) } @visible_copies;
+        next unless @visible_copies;
 
         my $cn_label = $cn->label;
         $holdings{$cn_label}{'owning_lib'} = $cn->owning_lib->shortname;
 
         $edit_date =  most_recent_date( $cn->edit_date, $edit_date );
 
-        for my $cp (@{$cn->copies}) {
+        for my $cp (@visible_copies) {
 
-            next unless _cp_is_visible($cn, $cp);
             $edit_date = most_recent_date( $cp->edit_date, $edit_date );
 
             # find the corresponding serial.
@@ -250,7 +255,7 @@ sub oai_biblio_retrieve {
                 barcode    => $cp->barcode,
                 status     => $cp->status->name,
                 location   => $cp->location->name,
-                circlib    => $circlib,
+                circlib    => $cp->circ_lib->shortname,
                 ser        => $ser
             };
         }
@@ -296,6 +301,9 @@ sub oai_biblio_retrieve {
         }
 
     }
+
+    $XML::LibXML::skipXMLDeclaration = 1;
+    return $marc->as_xml_record() if ($metadataPrefix eq 'marcxml');
 
     my $xslt = $record_xslt{$metadataPrefix}{xslt} ;
     my $xml = $xslt->transform( $_parser->parse_string( $marc->as_xml_record()) );
@@ -392,6 +400,9 @@ sub oai_authority_retrieve {
         );
     }
 
+    local $XML::LibXML::skipXMLDeclaration = 1;
+    return $marc->as_xml_record() if ($metadataPrefix eq 'marcxml');
+
     my $xslt = $record_xslt{$metadataPrefix}{xslt} ;
     my $xml = $record_xslt{$metadataPrefix}{xslt}->transform(
        $_parser->parse_string( $marc->as_xml_record())
@@ -442,7 +453,8 @@ sub oai_list_retrieve {
     my $max_count       = shift;
     my $deleted_record  = shift || 'yes';
 
-    my $query = $set ? _set_spec_to_query($set) : {};
+    my ($query) = _set_spec_to_query($record_class,$set) if ($set);
+
     $query->{'rec_id'}    = ($max_count eq 1) ? $rec_id : {'>=' => $rec_id} ;
     $query->{'deleted'}   = 'f'                      unless ( $deleted_record eq 'yes' );
     $query->{'datestamp'} = {'>=', $from}            if ( $from && !$until ) ;
@@ -512,22 +524,67 @@ __PACKAGE__->register_method(
 );
 
 sub _set_spec_to_query {
-    my $self            = shift;
-    my $set_spec        = shift;
+    my $type = shift;
+    my $set_spec = shift;
+    my $query_part = {};
+    my $copy_org;
 
-    if (index($set_spec, 'ORG_UNIT:') == 0) {
-        my $shortname = (split ':', $set_spec)[-1];
-        my $org_unit = OpenSRF::AppSession
-            ->create('open-ils.actor')
-            ->request('open-ils.actor.org_unit.retrieve_by_shortname', $shortname)
-            ->gather(1);
-        if ($org_unit && ref($org_unit) ne 'HASH') {
-            return {
-                'id' => {'=' => ['oai.bib_is_visible_at_org', 'id', $org_unit->id]}
-            };
+    if ($type eq 'biblio') {
+        if ($set_spec =~ /COPIES:([^!]+)/) {
+            my $org_list = $1;
+            my $shortname = (split ':', $org_list)[-1];
+            my $org_unit = $U->find_org_by_shortname($U->get_org_tree, $shortname);
+            if ($org_unit) {
+                $copy_org = $org_unit;
+                $$query_part{'-or'} //= [];
+                push @{$$query_part{'-or'}}, {rec_id => {'=' => {
+                    transform => 'oai.bib_is_visible_at_org_by_copy',
+                    params    => [$org_unit->id],
+                    value     => ['bool','1']
+                }}};
+            }
+        }
+
+        if ($set_spec =~ /LURIS:([^!]+)/) {
+            my $org_list = $1;
+            my $shortname = (split ':', $org_list)[-1];
+            my $org_unit = $U->find_org_by_shortname($U->get_org_tree, $shortname);
+            if ($org_unit) {
+                $copy_org = $org_unit;
+                $$query_part{'-or'} //= [];
+                push @{$$query_part{'-or'}}, {rec_id => {'=' => {
+                    transform => 'oai.bib_is_visible_at_org_by_luri',
+                    params    => [$org_unit->id],
+                    value     => ['bool','1']
+                }}};
+            }
+        }
+
+        if ($set_spec =~ /SOURCES:([^!]+)/) {
+            my $list = $1;
+            my @sources = split ':', $list;
+            for my $source (@sources) {
+                $$query_part{'-or'} //= [];
+                push @{$$query_part{'-or'}}, {rec_id => {'=' => {
+                    transform => 'oai.bib_is_visible_by_source',
+                    params    => [$source],
+                    value     => ['bool','1']
+                }}};
+            }
+        }
+    } elsif ($type eq 'authority') {
+        my @axes = split ':', $set_spec;
+        for my $axis (@axes) {
+            $$query_part{'-or'} //= [];
+            push @{$$query_part{'-or'}}, {rec_id => {'=' => {
+                transform => 'oai.auth_is_visible_by_axis',
+                params    => [$axis],
+                value     => ['bool','1']
+            }}};
         }
     }
-    return {};
+
+    return ($query_part, $copy_org);
 }
 
 
