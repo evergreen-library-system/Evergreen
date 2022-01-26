@@ -15,7 +15,7 @@ search by fields to search, material type or library location.
 indexterm:[search box]
 
 The _Homepage_ contains a single search box for you to enter search terms. You 
-can get to the _Homepage_ at any time by clicking the _Another Search_ link from
+can get to the _Homepage_ at any time by clicking the _Basic Search_ link from
 the leftmost link on the bar above your search results in the catalog, or you 
 can enter a search anywhere you see a search box.
 
@@ -173,13 +173,13 @@ the search will return results as though all options are selected.
 
 Enhancements to the Search Filters now makes it easier to view, remove, and modify search filters while viewing search results in the Evergreen OPAC.  Filters that are selected while conducting an advanced search in the Evergreen OPAC now appear below the search box in the search results interface.
 
-For example, the screenshot below shows a Keyword search for "violin concerto" while filtering on Item Type: Musical sound recording and Shelving Location: Music.
+For example, the screenshot below shows a Keyword search for "violin concerto" while filtering on Item Type: Musical sound recording.
 
-image::media/searchfilters1.PNG[search using search filters]
+image::opac/advanced_search_ex.jpg[search using search filters]
 
-In the search results, the Item Type and Shelving Location filters appear directly below the search box.
+In the search results, the Item Type, Item Form, Language, Audience, Video Format, Bib Level, Literary Form, and Shelving Location filters appear directly below the search box.  Click on these to expand and see facets.
 
-image::media/searchfilters2.PNG[search results with search filter enhancements]
+image::opac/advanced_search_filters.jpg[search results with search filter enhancements]
 
 Each filter can be removed by clicking the X next to the filter name to modify the search within the search results screen.  Below the search box on the search results screen, there is also a link to _Refine My Original Search_, which will bring the user back to the advanced search screen where the original search parameters selected can be viewed and modified.
 
@@ -415,7 +415,7 @@ number links allow you to skip to that results page, if your search results
 needed multiple pages to display. Here is an example: 
 
 
-image::media/catalogue-3.png[catalogue-3]
+image::opac/search_results.jpg[Search results]
 
 Brief information about the title, such as author, edition, publication date, 
 etc. is displayed under each title. The icons beside the brief information 
@@ -441,17 +441,17 @@ the _Show More Details_ link. Clicking an entry on the list will re-sort your
 search results accordingly.
 
 
-=== Facets: Subjects, Authors, and Series ===
+=== Facets: Authors, Subjects, and Series ===
 
-indexterm:[search results, facets: subjects, authors, and series]
+indexterm:[search results, facets: authors, subjects, and series]
 
-At the left, you may see a list of _Facets of Subjects_, _Authors_, and 
-_Series_. Selecting any one of these links filters your current search results 
+At the left, you may see a list of _Personal Author_, _Topic Subject_, 
+_Series Title_, and _Name Subject_. Selecting any one of these links filters your current search results 
 using that subject, author, or series to narrow down your current results. The 
 facet filters can be undone by clicking the link a second time, thus returning 
 your original results before the facet was activated. 
 
-image::media/catalogue-5.png[catalogue-5]
+image::opac/search_facets.jpg[search facets]
 
 
 === Availability ===
@@ -466,9 +466,9 @@ multi-branch library system you will see an extra row under each title showing
 how many copies are available in all branches.
 
 
-image::media/catalogue-6.png[catalogue-6]
+image::opac/branch_search.jpg[branch search]
 
-image::media/catalogue-7.png[catalogue-7]
+image::media/search_result_quantity.jpg[search result quantity]
 
 You may also click the _Show More Details_ link at the top of the results page, 
 next to the _Limit to available items_ check box, to view each search result's 
@@ -526,6 +526,8 @@ image::media/dym_tpac_nohits.png[TPAC Search Suggestions when there are no hits]
 Search suggestions display in the same locations in the new Bootstrap
 public catalog as they do in the TPAC.
 
+image::opac/did_you_mean_no_results.jpg[Suggestions for Bootstrap]
+
 ==== Public Catalog (KPAC)
 
 Search suggestions display in the right-hand sidebar next to Search
@@ -544,10 +546,10 @@ indexterm:[search results, viewing a record]
 
 Click on a search result's title to view a detailed record of the title, 
 including descriptive information, location and availability, current holds, and
-options for placing holds, add to my list, and print/email. 
+options for placing holds, add to my list, and print/email. Click on _More Details_ for more information and record details.
 
-image::media/catalogue-8.png[catalogue-8]
-image::media/catalogue-8a.png[catalogue-8a]
+image::opac/viewing_record.jpg[Viewing Record]
+image::opac/more_details_record.jpg[More Details Button in Record]
 
 [[geosort]]
 ==== Sort by Geographic Proximity
@@ -608,7 +610,7 @@ database, links to those alternate formats will display. The formats used
 in this section are based on the configurable catalog icon formats.
 
 
-image::media/other-formats-and-editions.png[other-formats-and-editions]
+image::opac/record_details.jpg[Record Details]
 
 The Record Details view shows how many copies are at the library or libraries
 you have selected, and whether they are available or checked out. It also
@@ -646,23 +648,19 @@ On title details page, you can select the _Place Hold_ link in the upper right
 corner of the record to reserve the item. You will need your library account 
 user name and password. You may choose to be notified by phone or email.
 
-In the example below, the phone number in your account will automatically show 
-up. Once you select the Enable phone notifications for this hold checkbox, you 
-can supply a different phone number for this hold only. The notification method 
-will be selected automatically if you have set it up in your account references.
-But you still have a chance to re-select on this screen. You may also suspend
-the hold temporarily by checking the Suspend box. Click the _Help_ beside it for
-details. 
+If you have a phone number and/or email set up for your notifications, they will show up in
+the checkboxes.  Make sure the checked boxes corespond to the notification method you want.  Boxes
+will be grayed out if you don't have anything for the field.  In this example, _Email_ is grayed
+out because the account doesn't have an email.  You can always edit the phone number for notification.  
+To adjust your notification settings, go to your account in the OPAC and _Preferences_ and _Notifications_.
 
 You can view and cancel a hold at anytime. Before your hold is captured, which 
-means an item has been held waiting for you to pick up, you can edit, suspend or
- activate it. You need log into your patron account to do it. 
-From your account you can also set up a _Cancel if not filled by_ date for your 
-hold. _Cancel if not filled by_ date means after this date, even though your 
-hold has not been fulfilled you do not need the item anymore.
+means an item has been held waiting for you to pick up, you can edit, suspend or activate it.
 
+If you want to suspend the hold to be filled at a specific date, check off _Suspend this Hold?_ and _Set activiation date_
+to bring up the calendar tool.  From your account you can also suspend and activate holds that are already placed.
 
-image::media/catalogue-9.png[catalogue-9]
+image::opac/placing_holds.jpg[Placing Holds]
 
 === Printing and Emailing Records ===
 
@@ -670,24 +668,31 @@ indexterm:[opac printing, opac emailing]
 
 Evergreen now provides additional functionality for printing and emailing bibliographic record and holdings information from the catalog. Users can print or email bibliographic information from an individual bibliographic record or from a basket.
   
-image::media/ope_record_view.png[Location of Print and Email function]
+image::opac/print_email_records.jpg[Location of Print and Email function]
 
 After selecting Print or Email, the user will be presented with a preview of the printout or email, respectively. From the preview users can choose to view Brief or Full record information (Full includes holdings information) and how records should be sorted (Author, Title, Publication Date). Holdings information can also be limited to a certain library. Users can be required to log in to their OPAC account to send an email or this feature can be configured to allow sending an email without signing in to the OPAC.
 
 *Print Preview*
 
-image::media/ope_print.png[Record Print Preview]
+image::opac/print_records_screen.jpg[Record Print Preview]
 
-*Email Preview (logged in to OPAC account)*
+*Email Preview*
 
-image::media/ope_email_logged_in.png[Email Preview, logged in to OPAC]
+image::opac/email_records_screen.jpg[Email Preview, not logged in to OPAC]
 
-*Email Preview (not logged in to OPAC account)*
+If you're logged into the OPAC, your email saved in your account settings will appear.  If you're not logged in, fill out the email field.
 
-image::media/ope_email_captcha.png[Email Preview, not logged in to OPAC]
+There are two views for the record: Brief and Full.
 
 Printing from the OPAC while not logged in is controlled by a Library Setting called “Allow record emailing without login”. If set to True, users are not required to log in to an OPAC account  to use this feature. Instead they can provide their email address and answer a CAPTCHA test.  If set to False, users will be required to log in to their OPAC account and Evergreen will email the records to the address set in their account or they may provide a different email address.  
 
+=== Disabling/Enabling Highlighting ===
+
+Search results default to highlighting keywords found.  In this example, "concerto" was searched 
+and the title in the search results matched.  You can _Disable Highlighting_ if you dislike the feature 
+and _Enable Highlighting_ whenever you wish.
+
+image::opac/highlighting.jpg[Highlighting toggle]
 
 === Permalink ===
 
@@ -698,34 +703,18 @@ The record summary page offers a link to a shorter permalink that
  the holdings from one library/system or displays holdings from all libraries
  with a specific library's holdings floating to the top.
 
-image::media/using-opac-view-permalink.png[Permalink]
-
-
-=== SMS Call Number ===
-
-If configured by the library system administrator, you may send yourself the 
-call number via SMS message by clicking on the *Text* link, which appears beside
-the call number.
-
-image::media/textcn1.png[]
-
-[WARNING]
-==========
-Carrier charges may apply when using the SMS call number feature.
-==========
-
+image::opac/permalink.jpg[Permalink]
 
 === Going back ===
 
 indexterm:[search results, going back]
 
 When you are viewing a specific record, you can always go back to your title 
-list by clicking the link _Search Results_ on the top right or left bottom of 
+list by clicking the link _Back to Results_ on the top right or left bottom of 
 the page. 
 
-image::media/catalogue-10.png[catalogue-10]
+image::opac/back_to_results.jpg[Back to Results]
 
 You can start a new search at any time by entering new search terms in the 
-search box at the top of the page, or by selecting the _Another Search_ or
-_Advanced Search_ links in the left-hand sidebar.
+search box at the top of the page.
 
