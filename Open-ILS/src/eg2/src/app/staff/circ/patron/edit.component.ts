@@ -1611,6 +1611,13 @@ export class EditComponent implements OnInit, AfterViewInit {
 
         this.patron.card(card);
         this.patron.cards().push(card);
+
+        // Focus the barcode input
+        setTimeout(() => {
+            this.emitSaveState();
+            const node = document.getElementById('ac-barcode-input');
+            node.focus();
+        });
     }
 
     showBarcodes() {
