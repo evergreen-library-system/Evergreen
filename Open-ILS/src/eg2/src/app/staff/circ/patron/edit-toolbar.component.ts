@@ -25,7 +25,10 @@ interface DupeSearch {
 
 @Component({
   templateUrl: 'edit-toolbar.component.html',
-  selector: 'eg-patron-edit-toolbar'
+  selector: 'eg-patron-edit-toolbar',
+  styles: [
+    `.pointer-not-allowed:hover { cursor: not-allowed }`
+  ]
 })
 export class EditToolbarComponent implements OnInit {
 

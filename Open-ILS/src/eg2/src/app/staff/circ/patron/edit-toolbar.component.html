@@ -18,8 +18,10 @@
       <button class="btn btn-outline-dark"
         (click)="printClicked.emit()" i18n>Print</button>
       <button class="btn btn-outline-dark ml-2" [disabled]="disableSave"
+        [ngClass]="{'border border-danger pointer-not-allowed': disableSave}" 
         (click)="saveClicked.emit()" i18n>Save</button>
       <button class="btn btn-outline-dark ml-2" [disabled]="disableSave"
+        [ngClass]="{'border border-danger pointer-not-allowed': disableSave}" 
         (click)="saveCloneClicked.emit()" i18n>Save &amp; Clone</button>
     </div>
   </div>
