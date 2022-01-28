@@ -15,7 +15,7 @@
         <ng-container *ngIf="loading">
           <ng-container *ngTemplateOutlet="progress"></ng-container>
         </ng-container>
-        <eg-circ-grid #checkoutsGrid 
+        <eg-circ-grid #checkoutsGrid [pageSize]="25" sortField="due_date"
           persistKey="circ.patron.items_out" (reloadRequested)="load()">
         </eg-circ-grid>
       </ng-template>
@@ -28,7 +28,7 @@
             <ng-container *ngIf="loading">
               <ng-container *ngTemplateOutlet="progress"></ng-container>
             </ng-container>
-            <eg-circ-grid #otherGrid 
+            <eg-circ-grid #otherGrid [pageSize]="25" sortField="due_date"
               persistKey="circ.patron.items_out.other" (reloadRequested)="load()">
             </eg-circ-grid>
           </ng-container>
@@ -48,7 +48,8 @@
               <ng-container *ngTemplateOutlet="progress"></ng-container>
             </ng-container>
             <eg-circ-grid #nonCatGrid persistKey="circ.patron.items_out.noncat"
-              menuStyle="none" (reloadRequested)="load()">
+              sortField="due_date" menuStyle="none" (reloadRequested)="load()" 
+              [pageSize]="25">
             </eg-circ-grid>
           </ng-container>
         </ng-container>

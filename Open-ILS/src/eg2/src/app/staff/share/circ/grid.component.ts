@@ -75,6 +75,11 @@ export class CircGridComponent implements OnInit {
     @Input() printTemplate: string; // defaults to items_out
     @Input() menuStyle: 'full' | 'slim' | 'none' = 'full';
 
+    @Input() sortField: string; // e.g. "due_date", "due_date DESC"
+
+    // Override default grid page size
+    @Input() pageSize: number = null;
+
     // Emitted when a grid action modified data in a way that could
     // affect which cirulcations should appear in the grid.  Caller
     // should then refresh their data and call the load() or
@@ -194,7 +199,7 @@ export class CircGridComponent implements OnInit {
         return this.pcrud.search('circ', {id: circIds}, {
             flesh: CIRC_FLESH_DEPTH,
             flesh_fields: CIRC_FLESH_FIELDS,
-            order_by : {circ : ['xact_start']},
+            order_by : {circ: this.sortField ? this.sortField : 'xact_start'},
 
             // Avoid fetching the MARC blob by specifying which
             // fields on the bre to select.  More may be needed.
