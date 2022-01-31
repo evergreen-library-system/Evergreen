@@ -788,7 +788,7 @@ function($scope , $q , $routeParams,  egCore , $uibModal , patronSvc , egCirc , 
    
     var activeGrid = $scope.activeGridControls = {
         setSort : function() {
-            return ['create_date'];
+            return [{'create_date' : 'DESC'}];
         },
         setQuery : function() {
             return {
@@ -804,7 +804,7 @@ function($scope , $q , $routeParams,  egCore , $uibModal , patronSvc , egCirc , 
 
     var archiveGrid = $scope.archiveGridControls = {
         setSort : function() {
-            return ['create_date'];
+            return [{'create_date' : 'DESC'}];
         },
         watchQuery : function() {
             return {
