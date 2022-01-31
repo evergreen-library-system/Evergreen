@@ -387,7 +387,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
         }
 
         this.printer.print({
-            printContext: 'default',
+            printContext: 'receipt',
             templateName: 'checkout',
             contextData: {checkouts: this.context.checkouts}
         });
