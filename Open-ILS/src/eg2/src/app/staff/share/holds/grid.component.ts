@@ -207,6 +207,8 @@ export class HoldsGridComponent implements OnInit {
         this.cellTextGenerator = {
             title: row => row.title,
             cp_barcode: row => (row.cp_barcode == null) ? '' : row.cp_barcode,
+            current_item: row => (row.cp_barcode == null) ? '' : row.cp_barcode,
+            requested_item: row => (row.cp_barcode == null) ? '' : row.cp_barcode,
             ucard_barcode: row => row.ucard_barcode
         };
     }
