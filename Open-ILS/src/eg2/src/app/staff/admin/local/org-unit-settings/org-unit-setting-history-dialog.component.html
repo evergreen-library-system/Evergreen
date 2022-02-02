@@ -17,13 +17,13 @@
             [disableSelect]="true" [disableMultiSelect]="true"
             [sortable]="false">
 
-            <eg-grid-column path="id" [index]=true label="ID" i18n-label hidden></eg-grid-column>
+            <eg-grid-column path="id" [index]=true label="ID" i18n-label [hidden]="true"></eg-grid-column>
             <eg-grid-column path="date_applied" label="Date Changed" datatype="timestamp" i18n-label></eg-grid-column>
             <eg-grid-column path="org.shortname" label="Location" i18n-label></eg-grid-column>
             <eg-grid-column path="original_value_str" label="Original Value" i18n-label></eg-grid-column>
             <eg-grid-column path="new_value_str" label="New Value" i18n-label></eg-grid-column>
             <eg-grid-column i18n-label label="Revert?" name="revert" 
-                [cellTemplate]="revertTemplate"></eg-grid-column>
+                [disableTooltip]="true" [cellTemplate]="revertTemplate"></eg-grid-column>
         </eg-grid>
       </div>
   </div>

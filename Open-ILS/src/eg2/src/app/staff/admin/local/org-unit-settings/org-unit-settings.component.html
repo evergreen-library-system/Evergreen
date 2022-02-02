@@ -55,9 +55,9 @@
     persistKey="admin.actor.org_unit_settings">
 
     <eg-grid-column i18n-label label="Edit" name="edit" [flex]="1"
-      [cellTemplate]="editCellTemplate"></eg-grid-column>
+      [disableTooltip]="true" [cellTemplate]="editCellTemplate"></eg-grid-column>
     <eg-grid-column i18n-label label="History" name="history" [flex]="1"
-      [cellTemplate]="historyCellTemplate"></eg-grid-column>
+      [disableTooltip]="true" [cellTemplate]="historyCellTemplate"></eg-grid-column>
     <eg-grid-column path="name" label="Name" i18n-label [hidden]="true" [flex]="3"></eg-grid-column>
     <eg-grid-column path="grp" label="Group" i18n-label [flex]="1"></eg-grid-column>
     <eg-grid-column path="label" label="Setting" [index]="true" i18n-label [flex]="4"></eg-grid-column>
