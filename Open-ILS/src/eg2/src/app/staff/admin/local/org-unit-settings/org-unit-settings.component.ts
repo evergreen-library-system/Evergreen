@@ -72,6 +72,7 @@ export class OrgUnitSettingsComponent implements OnInit {
         private toast: ToastService,
         private locale: LocaleService,
         private net: NetService,
+        private idl: IdlService
     ) {
         this.gridDataSource = new GridDataSource();
         this.refreshSettings = true;
@@ -155,7 +156,8 @@ export class OrgUnitSettingsComponent implements OnInit {
     fetchLinkedField(fmClass, id, val) {
         return new Promise((resolve, reject) => {
             return this.pcrud.retrieve(fmClass, id).subscribe(linkedField => {
-                val = linkedField.name();
+                const fname = this.idl.getClassSelector(fmClass) || this.idl.classes[fmClass].pkey || 'id';
+                val = this.idl.toHash(linkedField)[val];
                 resolve(val);
             });
         });
@@ -365,6 +367,7 @@ export class OrgUnitSettingsComponent implements OnInit {
             this.mergeSettingValues().then(
                 res => this.filterCoust()
             );
+            this.refreshSettings = true;
         }
 
         if (this.refreshSettings) {
