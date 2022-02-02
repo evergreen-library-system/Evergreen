@@ -23,7 +23,7 @@ image::lists_opac/search_results_list_button.jpg[Add to My List from Search Resu
 
 image::lists_opac/list_options.jpg[List Dropdown]
 
-== Create New Lists from Basket ==
+== Create Lists from Basket ==
 
 1) Search for titles.
 
