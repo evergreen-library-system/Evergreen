@@ -7,9 +7,9 @@ There is now a direct link to *My Lists* from the *My Account* area in the top r
 
 As of version 3.2, xref:opac:batch_actions_from_search.adoc#batch_actions_from_search[Batch Actions from Search Results] has replaced the old Temporary Lists feature, as well as enabled multiple selections from a search results list.
 
-image::media/My_Lists.png[My Lists]
+image::lists_opac/home_list_link.jpg[My Lists from Homepage]
 
-== Create New Lists ==
+== Create New Lists From Search Results ==
 
 1) Log in to your account in the OPAC.
 
@@ -17,38 +17,56 @@ image::media/My_Lists.png[My Lists]
 
 3) Choose a title to add to your list.  Click *Add to My List*.
 
-image::media/My_Lists1.jpg[Add to My List]
+image::lists_opac/search_results_list_button.jpg[Add to My List from Search Results]
 
 4) Select an existing list, or create the a new list.
 
-image::media/My_Lists_dd.png[List Dropdown]
+image::lists_opac/list_options.jpg[List Dropdown]
 
-5) Scroll up to the top of the screen and click *My Lists*.  Click on the name of your list to see any titles added to it.
+== Create Lists from Basket ==
 
-6) The *Actions for these items* menu on the left side of the screen demonstrates the actions that you can apply to this list.  You can place holds on titles in your list, print or email title details of titles in your list, and remove titles from your list.  
+1) Search for titles.
+
+2) Check off results desired for a new list or click *Add to Basket*.
+
+image::lists_opac/basket_checkbox.jpg[Checking Off Items for Basket]
+
+image::lists_opac/add_to_basket.jpg[Add to Basket Option]
+
+3) Go to your basket icon and choose *Add Basket to Saved List*.
+
+image::lists_opac/add_to_list_basket.jpg[Add Basket to Saved List]
+
+4) You can either create a new list or scroll down, click *Move selected items to list*, and choose from the dropdown menu.
+
+image::lists_opac/move_selected_to_list.jpg[Move selected items to list]
+
+== Managing/Viewing Lists from My Lists ==
+
+1) Scroll up to the top of the screen and click *My Lists*.  Click on the name of your list to see any titles added to it.
+
+2) The *Actions for these items* menu on the left side of the screen demonstrates the actions that you can apply to this list.  You can place holds on titles in your list, print or email title details of titles in your list, and remove titles from your list.  
 
 To perform actions on multiple list rows, check the box adjacent to the title of the item, and select the desired function.
 
-image::media/My_Lists3.jpg[List Actions]
+image::lists_opac/my_account_list_options.jpg[List Actions from My Lists]
 
-7) Click *Edit* to add or edit a note.
+3) Click *Edit* to add or edit a note.
 
-8) Enter desired notes, and click *Save Notes*.
+4) Enter desired notes, and click *Save Notes*.
 
-image::media/My_Lists6.jpg[List Notes]
+image::lists_opac/list_notes.jpg[List Notes]
 
-9) You can keep your list private, or you can share it.  To share your list, click *Share*, and click the orange RSS icon to share through an RSS reader.  You can also click *HTML View* to share your list as an HTML link.  
+5) You can keep your list private, or you can share it.  To share your list, click *Share*, and click the green RSS icon to share through an RSS reader.
 
 You can also download your list into a CSV file by clicking *Download CSV*.
 
-image::media/My_Lists7.jpg[Share, Delete, Download List]
-
-16) When you no longer need a list, click *Delete List*. 
+6) When you no longer need a list, click *Delete List*. 
 
 
 == Local Call Number in My Lists ==
 
-When a title is added to a list in the TPAC, a local call number will be displayed in the list to assist patrons in locating the physical item.  Evergreen will look at the following locations to identify the most relevant call number to display in the list:  
+When a title is added to a list in the OPAC, a local call number will be displayed in the list to assist patrons in locating the physical item.  Evergreen will look at the following locations to identify the most relevant call number to display in the list:  
 
 1)	Physical location - the physical library location where the search takes place
 
@@ -60,9 +78,11 @@ The call number that is displayed will be the most relevant call number to the s
 
 The local call number and associated library location will appear in the list:
 
-image::media/my_list_call_numbers.png[Local Call Number in List]
+image::lists_opac/call_number.jpg[Local Call Number in List]
 
 == My Lists Preferences ==
 
-Patrons can adjust the number of lists or list items displayed in a page.  This setting can be found under the *Account Preferences* tab, in the *My Lists Preferences* section.
+Patrons can adjust the number of lists or list items displayed in a page.  This setting can be found under the *Preferences* tab, in the *Lists* section.
+
+image::lists_opac/list_preferences.jpg[List Preferences]
 
