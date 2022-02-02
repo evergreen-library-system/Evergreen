@@ -710,12 +710,11 @@ image::media/using-opac-view-permalink.png[Permalink]
 indexterm:[search results, going back]
 
 When you are viewing a specific record, you can always go back to your title 
-list by clicking the link _Search Results_ on the top right or left bottom of 
+list by clicking the link _Back to Results_ on the top right or left bottom of 
 the page. 
 
 image::opac/back_to_results.jpg[Back to Results]
 
 You can start a new search at any time by entering new search terms in the 
-search box at the top of the page, or by selecting the _Another Search_ or
-_Advanced Search_ links in the left-hand sidebar.
+search box at the top of the page.
 
