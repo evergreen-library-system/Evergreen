@@ -45,13 +45,13 @@
      [% ELSIF hold.hold.status == 3 OR hold.hold.status == 8 %]
             <span class="myopac-transit"> [% l("In Transit") %] </span>
 
-     [% ELSIF hold.hold.status < 3 %]
+     [% ELSIF hold.hold.status < 3 OR hold.hold.status == 5 %]
             <span class="myopac-uncaptured-hold"> [% l("Waiting for copy") %] </span>
      [% END %]
     </div>
     <div>
         [% # Only show the count for holds that have not been captured
-           IF hold.hold.status < 3 OR hold.hold.status == 7 %]
+           IF hold.hold.status < 3 OR hold.hold.status == 5 OR hold.hold.status == 7 %]
              <span class="myopac-hold-count">
                 [% l('Hold #[_1] on [quant,_2, copy, copies]',
                    hold.hold.queue_position, hold.hold.potential_copies) | html %]
