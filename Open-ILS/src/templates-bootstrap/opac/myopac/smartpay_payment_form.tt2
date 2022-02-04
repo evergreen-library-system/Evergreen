@@ -1,4 +1,4 @@
-<p><big>[% l("Click Submit to temporarily leave this website for the payment processor. After payment, you will be returned to these pages.") %]</big></p>
+<p><big>[% l("Click Submit to temporarily leave this website for the payment processor. After payment, you will be returned to these pages. The total to be paid is [_1]", money(ctx.fines.balance_owed)) %]</big></p>
 <a href="[% ctx.smartpay_target %]" class="opac-button">[% l('Submit') %]</a>
 <a href="[% mkurl(ctx.opac_root _ '/myopac/main#selected_fines', {}, 1) %]" class="opac-button">[% l('Cancel') %]</a>
 

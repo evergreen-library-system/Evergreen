@@ -2368,13 +2368,10 @@ sub load_myopac_payment_form {
                 $target .= "&APIKey=$api_key";
 
                 my @payment_xacts = ($self->cgi->param('xact'), $self->cgi->param('xact_misc'));
-                #$logger->error('SmartPAY debug, cache_args = ' . Dumper($cache_args) );
 
                 # generate a temporary cache token for our secret
                 my $token = 'smartpay_' . md5_hex($$ . time() . rand());
                 $target .= "&Secret=$token";
-
-                #$logger->error('SmartPAY debug, target= $target ' . Dumper($target) );
 
                 my $ua = new LWP::UserAgent;
 
@@ -2384,17 +2381,18 @@ sub load_myopac_payment_form {
                 my $response = $ua->request($req);
 
                 if ($response->is_success() && $response->content() !~ /HTML/) {
-                    $logger->info('SmartPAY initialized for ' . $self->editor->authtoken);
+                    $logger->info('SmartPAY initialized for ' . $self->editor->authtoken . ' with ' . $token);
 
                     my $session_key = $response->content();
 
-                    # we'll test this secret key again in the create payment method
+                    # we'll test this secret key again in the create payment method and grab the payment_xacts in main_pay_init
                     my $cache_args = {
                         user => $self->ctx->{user}->id,
-                        session_key => $session_key
+                        session_key => $session_key,
+                        xacts => \@payment_xacts
                     };
                     my $cache = OpenSRF::Utils::Cache->new('global');
-                    $cache->put_cache($token, $cache_args, 300);
+                    $cache->put_cache($token, $cache_args, 3600); # 1 hour
 
                     # this will be for our follow-up call client-side
 
@@ -2403,12 +2401,14 @@ sub load_myopac_payment_form {
                     $self->ctx->{smartpay_target} .= "&CustomerID=$customer_id";
                     $self->ctx->{smartpay_target} .= "&LocationID=$location_id";
                     $self->ctx->{smartpay_target} .= '&PatronID=' . $self->ctx->{user}->id; # $e->requestor->id;
-                    $self->ctx->{smartpay_target} .= '&InvNum=1234';
-                    $self->ctx->{smartpay_target} .= '&Amount=' . $self->ctx->{fines}->{balance_owed};
+                    my $psuedo_invoice_number = $self->cgi->param('xact') . ',' . $self->cgi->param('xact_misc');
+                    $psuedo_invoice_number =~ s/^,//;
+                    $self->ctx->{smartpay_target} .= "&InvNum=$psuedo_invoice_number";
+                    $self->ctx->{smartpay_target} .= '&Amount=' . sprintf("%.2f",$self->ctx->{fines}->{balance_owed});
                     $self->ctx->{smartpay_target} .= '&URLPostBack=' . CGI::escapeHTML( $self->ctx->{hostname} );
                     #$self->ctx->{smartpay_target} .= '&ScriptPostBack=' .  CGI::escapeHTML('/cgi-bin/offline/echo1.pl');
                     $self->ctx->{smartpay_target} .= '&URLReturn=' .  CGI::escapeHTML( $self->ctx->{opac_root} . '/myopac/main_pay_init' );
-                    $self->ctx->{smartpay_target} .= '&URLCancel=' .  CGI::escapeHTML( 'https://' . $self->ctx->{hostname} . $self->ctx->{opac_root} . '/myopac/charges');
+                    $self->ctx->{smartpay_target} .= '&URLCancel=' .  CGI::escapeHTML( 'https://' . $self->ctx->{hostname} . $self->ctx->{opac_root} . '/myopac/main');
                     $self->ctx->{smartpay_target} .= '&UserName=&Password=&Field1=smartpay&Field2=&Field3=&ItemsData=';
 
                 } else {
@@ -2469,16 +2469,21 @@ sub load_myopac_pay_init {
     my @payment_xacts = ($self->cgi->param('xact'), $self->cgi->param('xact_misc'));
 
     if (!@payment_xacts) {
-        # for consistency with load_myopac_payment_form() and
-        # to preserve backwards compatibility, if no xacts are
-        # selected, assume all (applicable) transactions are wanted.
-        my $stat = $self->prepare_fines(undef, undef, [$self->cgi->param('xact'), $self->cgi->param('xact_misc')]);
-        return $stat if $stat;
-        @payment_xacts =
-            map { $_->{xact}->id } (
-                @{$self->ctx->{fines}->{circulation}},
-                @{$self->ctx->{fines}->{grocery}}
-        );
+        if ($self->cgi->param('Secret')) { # we stashed the xacts in the cache for SmartPAY
+            my $smartpay_cache = $cache->get_cache($self->cgi->param('Secret'));
+            @payment_xacts = @{$smartpay_cache->{xacts}};
+        } else {
+            # for consistency with load_myopac_payment_form() and
+            # to preserve backwards compatibility, if no xacts are
+            # selected, assume all (applicable) transactions are wanted.
+            my $stat = $self->prepare_fines(undef, undef, [$self->cgi->param('xact'), $self->cgi->param('xact_misc')]);
+            return $stat if $stat;
+            @payment_xacts =
+                map { $_->{xact}->id } (
+                    @{$self->ctx->{fines}->{circulation}},
+                    @{$self->ctx->{fines}->{grocery}}
+            );
+        }
     }
 
     return $self->generic_redirect unless @payment_xacts;
@@ -2497,6 +2502,9 @@ sub load_myopac_pay_init {
     }
     if ($self->cgi->param('Secret')) {
         $cc_args->{smartpay_secret} = $self->cgi->param('Secret');
+    }
+    if ($self->cgi->param('SessionKey')) {
+        $cc_args->{smartpay_session} = $self->cgi->param('SessionKey');
     }
     if ($self->cgi->param('CCNumber')) {
         $cc_args->{number} = $self->cgi->param('CCNumber');

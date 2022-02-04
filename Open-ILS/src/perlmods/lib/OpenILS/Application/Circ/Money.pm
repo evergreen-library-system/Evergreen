@@ -37,6 +37,9 @@ use OpenILS::Utils::DateTime qw/:datetime/;
 use DateTime::Format::ISO8601;
 my $parser = DateTime::Format::ISO8601->new;
 
+my $cache;
+my $cache_timeout;
+
 sub get_processor_settings {
     my $e = shift;
     my $org_unit = shift;
@@ -101,6 +104,7 @@ sub process_stripe_or_bop_payment {
         unless $psettings->{enabled};
 
     # Now we branch. Stripe is one thing, and everything else is another.
+    # TODO: rename/refactor these methods, we're layering in Smartpay as well
 
     if ($cc_args->{processor} eq 'Stripe') { # Stripe
         my $stripe = Business::Stripe->new(-api_key => $psettings->{secretkey});
@@ -137,6 +141,54 @@ sub process_stripe_or_bop_payment {
             );
         }
 
+    } elsif ($cc_args->{processor} eq 'SmartPAY') { # SmartPAY
+        my $smartpay_secret = $cc_args->{smartpay_secret};
+        my $smartpay_session = $cc_args->{smartpay_session};
+        if ($smartpay_secret =~ /^smartpay/) {
+            my $cache = OpenSRF::Utils::Cache->new('global');
+            my $secret_data = $cache->get_cache( $smartpay_secret );
+            $logger->debug("SmartPAY secret_data: " . Dumper($secret_data));
+            my $sessionA = $secret_data->{session_key};
+            my $sessionB = $smartpay_session;
+            if ($sessionA =~ /([A-Za-z0-9]+)/) {
+                $sessionA = $1;
+            }
+            if ($sessionB =~ /([A-Za-z0-9]+)/) {
+                $sessionB = $1;
+            }
+            if ($sessionA ne $sessionB) {
+                $logger->info("SmartPAY payment failed: session_key mismatch: <$sessionA> vs <$sessionB>");
+                return OpenILS::Event->new(
+                    'CREDIT_PROCESSOR_DECLINED_TRANSACTION',
+                    payload => { 'result' => 'session_key mismatch' }
+                );
+            }
+            if ($cc_args->{smartpay_result} == 1) {
+                $logger->info('SmartPAY payment succeeded');
+                return OpenILS::Event->new(
+                    'SUCCESS', payload => {
+                        invoice => 'N/A',
+                        customer => 'N/A',
+                        balance_transaction => 'N/A',
+                        id => 'N/A',
+                        created => 'N/A',
+                        card => 'N/A'
+                    }
+                );
+            } else {
+                $logger->info('SmartPAY payment failed: ' . $cc_args->{smartpay_result});
+                return OpenILS::Event->new(
+                    'CREDIT_PROCESSOR_DECLINED_TRANSACTION',
+                    payload => { 'result' => $cc_args->{Result} }
+                );
+            }
+        } else {
+            $logger->info('SmartPAY payment failed: secret key malformed');
+            return OpenILS::Event->new(
+                'CREDIT_PROCESSOR_DECLINED_TRANSACTION',
+                payload => { 'result' => 'secret key malformed' }
+            );
+        }
     } else { # B::OP style (Paypal/PayflowPro/AuthorizeNet)
         return OpenILS::Event->new('BAD_PARAMS', note => 'Need CC number')
             unless $cc_args->{number};
