@@ -22281,6 +22281,7 @@ VALUES (
 $TEMPLATE$
 [%- 
   USE money=format('%.2f');
+  USE date;
   SET li = template_data.lineitem;
   SET title = '';
   SET author = '';
@@ -22295,13 +22296,88 @@ $TEMPLATE$
   END;
 -%]
 
-<div>Title: [% title.substr(0, 80) %][% IF title.length > 80 %]...[% END %]</div>
-<div>Author: [% author %]</div>
-<div>Item Count: [% li.lineitem_details.size %]</div>
-<div>Lineitem ID: [% li.id %]</div>
-<div>PO # : [% li.purchase_order%]</div>
-<div>Est. Price: [% money(li.estimated_unit_price) %]</div>
+<div class="wrapper">
+    <div class="summary" style='font-size:110%; font-weight:bold;'>
+        <div>Title: [% title.substr(0, 80) %][% IF title.length > 80 %]...[% END %]</div>
+        <div>Author: [% author %]</div>
+        <div>Item Count: [% li.lineitem_details.size %]</div>
+        <div>Lineitem ID: [% li.id %]</div>
+        <div>PO # : [% li.purchase_order %]</div>
+        <div>Est. Price: [% money(li.estimated_unit_price) %]</div>
+        <div>Open Holds: [% template_data.hold_count %]</div>
+        [% IF li.cancel_reason.label %]
+        <div>[% li.cancel_reason.label %]</div>
+        [% END %]
 
+        [% IF li.distribution_formulas.size > 0 %]
+            [% SET forms = [] %]
+            [% FOREACH form IN li.distribution_formulas; forms.push(form.formula.name); END %]
+            <div>Distribution Formulas: [% forms.join(',') %]</div>
+        [% END %]
+
+        [% IF li.lineitem_notes.size > 0 %]
+            Lineitem Notes:
+            <ul>
+                [%- FOR note IN li.lineitem_notes -%]
+                    <li>
+                    [% IF note.alert_text %]
+                        [% note.alert_text.code -%] 
+                        [% IF note.value -%]
+                            : [% note.value %]
+                        [% END %]
+                    [% ELSE %]
+                        [% note.value -%] 
+                    [% END %]
+                    </li>
+                [% END %]
+            </ul>
+        [% END %]
+    </div>
+    <br/>
+    <table>
+        <thead>
+            <tr>
+                <th>Branch</th>
+                <th>Barcode</th>
+                <th>Call Number</th>
+                <th>Fund</th>
+                <th>Shelving Location</th>
+                <th>Recd.</th>
+                <th>Notes</th>
+                <th>Delayed / Canceled</th>
+            </tr>
+        </thead>
+        <tbody>
+        <!-- set detail.owning_lib from fm object to org name -->
+        [% FOREACH detail IN li.lineitem_details %]
+            [% detail.owning_lib = detail.owning_lib.shortname %]
+        [% END %]
+
+        [% FOREACH detail IN li.lineitem_details.sort('owning_lib') %]
+            [% 
+                IF detail.eg_copy_id;
+                    SET copy = detail.eg_copy_id;
+                    SET cn_label = copy.call_number.label;
+                ELSE; 
+                    SET copy = detail; 
+                    SET cn_label = detail.cn_label;
+                END 
+            %]
+            <tr>
+                <!-- acq.lineitem_detail.id = [%- detail.id -%] -->
+                <td style='padding:5px;'>[% detail.owning_lib %]</td>
+                <td style='padding:5px;'>[% IF copy.barcode   %]<span class="barcode"  >[% detail.barcode   %]</span>[% END %]</td>
+                <td style='padding:5px;'>[% IF cn_label %]<span class="cn_label" >[% cn_label  %]</span>[% END %]</td>
+                <td style='padding:5px;'>[% IF detail.fund %]<span class="fund">[% detail.fund.code %] ([% detail.fund.year %])</span>[% END %]</td>
+                <td style='padding:5px;'>[% copy.location.name %]</td>
+                <td style='padding:5px;'>[% IF detail.recv_time %]<span class="recv_time">[% date.format(helpers.format_date(detail.recv_time, staff_org_timezone), '%x %r', locale) %]</span>[% END %]</td>
+                <td style='padding:5px;'>[% detail.note %]</td>
+                <td style='padding:5px;'>[% detail.cancel_reason.label %]</td>
+            </tr>
+        [% END %]
+        </tbody>
+    </table>
+</div>
 $TEMPLATE$
 );
 
