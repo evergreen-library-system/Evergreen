@@ -121,8 +121,12 @@ export class PatronMessagesComponent implements OnInit {
     }
 
     applyPenalty() {
-        this.penaltyDialog.open().subscribe(changes => {
-            if (changes) { this.mainGrid.reload(); }
+        this.penaltyDialog.penalty = null;
+        this.penaltyDialog.open({size: 'lg'}).subscribe(changes => {
+            if (changes) {
+                this.context.refreshPatron()
+                .then(_ => this.mainGrid.reload());
+            }
         });
     }
 
@@ -147,7 +151,7 @@ export class PatronMessagesComponent implements OnInit {
         let modified = false;
         from(penalties).pipe(concatMap(penalty => {
             this.penaltyDialog.penalty = penalty;
-            return this.penaltyDialog.open().pipe(tap(changed => {
+            return this.penaltyDialog.open({size: 'lg'}).pipe(tap(changed => {
                 if (changed) { modified = true; }
             }));
         })).toPromise().then(_ => {

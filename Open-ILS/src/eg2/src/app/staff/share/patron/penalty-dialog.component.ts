@@ -71,6 +71,8 @@ export class PatronPenaltyDialogComponent
     init(): Observable<any> {
         this.dataLoaded = false;
 
+        this.penaltyTypeFromButton = 0;
+        this.penaltyTypeFromSelect = '';
         this.initials = '';
         this.noteText = '';
 
