@@ -207,24 +207,28 @@ Hold Groups, the Hold Group menu item is not displayed at all.
 Holds placed through a Hold Group can be modified by patrons in the same
 way as other holds (e.g., suspended, cancelled, etc.).
 
-== Account Preferences ==
+== Preferences ==
 
 indexterm:[my account, account preferences]
 
-From here you can manage display preferences including your *Personal 
-Information*, *Notification Preferences*, and *Search and History Preferences*. 
+From here you can manage display preferences including your *Personal Information*, 
+*Notification*, *Search and History*, and *Lists*. 
 Additional static information, such as your _Account Expiration Date_, can be 
-found under Personal Information.
+found under *Personal Information*.
 
 For example: 
 
 * Personal Information
 
-** Change password - allows patrons to change their password
+** _Change password_ - allows patrons to change their password.
 
-** Change email address	- allows patrons to change their email address.
+** _Change email address_	- allows patrons to change their email address.
 
-** Preferred Language field - As of 3.9 this field contains a dropdown listing available locales for your Evergreen instance. Locales are configured in the `config.i18n_locales` table and you can use this feature to send action trigger messages in different languages. For more information please see xref:admin:actiontriggers.adoc#creating_alternate_message_templates[Creating Alternate Message Templates].
+** _Change username_ - allows patrons to change their username.
+
+** _Preferred Language field_ - As of 3.9 this field contains a dropdown listing available locales for your Evergreen instance. Locales are configured in the `config.i18n_locales` table and you can use this feature to send action trigger messages in different languages. For more information please see xref:admin:actiontriggers.adoc#creating_alternate_message_templates[Creating Alternate Message Templates].
+
+** Contains other information such as home library, address, phone, etc.
 
 
 
@@ -236,16 +240,22 @@ For example:
 
 ** _Default Phone Number_
 
+** _Email checkout receipts by default?_
+
 
 * Search and History Preferences
 
-** Search hits per page
+** _Search hits per page_
 
-** Preferred pickup location
+** _Preferred search location_
 
-** Keep history of checked out items?
+** _Preferred pickup location_
 
-** Keep history of holds?
+** _Keep history of checked out items?_
+
+** _Keep history of holds?_
+
+** _Skip warning when adding to temporary book list?_
 
 [WARNING]
 ========
@@ -266,9 +276,9 @@ indexterm:[privacy waiver]
 
 
 If your library has enabled it, you can authorize other people to use
-your account. In the Search and History Preferences tab
-under Account Preferences, find the section labeled "Allow others to use
-my account". Enter the name and indicate that the
+your account. In the _Search and History_ tab
+under _Preferences_, find the section labeled _"Allow others to use
+my account"_. Enter the name and indicate that the
 specified person is allowed to place holds, pickup holds, view
 borrowing history, and check out items on their account.  This
 information will also be visible to circulation staff at your library.
@@ -289,21 +299,21 @@ information on adding messages to patron accounts.
 
 *Viewing Patron Messages in the OPAC*
 
-Patrons will see a new tab for *Messages* in their OPAC account, as well as a 
-notification of *Unread Messages* in the account summary.
+Patrons will see an option for *Messages* in their OPAC *Account Summary* page, as well as a 
+notification of *Unread Messages* in the banner towards the top right.
 
-image::media/message_center11.PNG[Message Center 11]
+image::my_account/messages_buttons.jpg[How to Get to Messages]
 
 Patrons will see a list of the messages from the library by clicking on the 
 *Messages* tab.
 
-image::media/message_center10.PNG[Message Center 10]
+image::my_account/messages_inbox.jpg[Messages Inbox]
 
-Patrons can click on a message *Subject* to view the message.  After viewing the
+Patrons can click on the *Read* button to see the message.  After viewing the
 message, it will automatically be marked as read.  Patrons have the options to 
 mark the message as unread and to delete the message.
 
-image::media/message_center12.PNG[Message Center 12]
+image::my_account/message_read.jpg[Message Contents]
 
 NOTE: Patron deleted messages will still appear in the patron's account in the 
 staff client under Other -> Message Center.
