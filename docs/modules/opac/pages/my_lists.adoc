@@ -66,7 +66,7 @@ You can also download your list into a CSV file by clicking *Download CSV*.
 
 == Local Call Number in My Lists ==
 
-When a title is added to a list in the TPAC, a local call number will be displayed in the list to assist patrons in locating the physical item.  Evergreen will look at the following locations to identify the most relevant call number to display in the list:  
+When a title is added to a list in the OPAC, a local call number will be displayed in the list to assist patrons in locating the physical item.  Evergreen will look at the following locations to identify the most relevant call number to display in the list:  
 
 1)	Physical location - the physical library location where the search takes place
 
@@ -78,7 +78,7 @@ The call number that is displayed will be the most relevant call number to the s
 
 The local call number and associated library location will appear in the list:
 
-image::media/my_list_call_numbers.png[Local Call Number in List]
+image::lists_opac/call_number.jpg[Local Call Number in List]
 
 == My Lists Preferences ==
 
