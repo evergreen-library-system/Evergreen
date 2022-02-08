@@ -703,7 +703,7 @@ The record summary page offers a link to a shorter permalink that
  the holdings from one library/system or displays holdings from all libraries
  with a specific library's holdings floating to the top.
 
-image::media/using-opac-view-permalink.png[Permalink]
+image::opac/permalink.jpg[Permalink]
 
 === Going back ===
 
