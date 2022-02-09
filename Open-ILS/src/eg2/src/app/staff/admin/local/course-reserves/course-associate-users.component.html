@@ -31,7 +31,7 @@
             <input type="text" class="flex-grow-1" id="associate-user-barcode"
               [(ngModel)]="userBarcode" (click)="$event.target.select()"
               [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) == 't'"
-              (keyup.enter)="associateUser(userBarcode)" />
+              />
             <button class="btn btn-outline-dark btn-sm" (click)="searchPatrons()">
               <span class="material-icons mat-icon-in-button align-middle"
               i18n-title title="Search for Patron">search</span>
