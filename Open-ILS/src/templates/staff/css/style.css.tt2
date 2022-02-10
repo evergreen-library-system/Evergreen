@@ -102,7 +102,7 @@ body {
 /* change default link color to provide adequate contrast */
 
 a {
-   color: #286090;
+   color: #255a88;
 }
 
 

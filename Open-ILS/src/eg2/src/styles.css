@@ -28,6 +28,12 @@ h5 {font-size: .95rem}
 
 .small-text-1 {font-size: 85%}
 
+/** Use a default link color that achieves WCAG AAA
+ *  color contrast against a white background
+ */
+a {
+  color: #255a88;
+}
 
 /** Ang5 routes on clicks to href's with no values, so we can't have
  * bare href's to force anchor styling.  Use this for anchors w/ no href.
