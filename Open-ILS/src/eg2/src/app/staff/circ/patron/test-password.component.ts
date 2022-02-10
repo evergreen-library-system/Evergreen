@@ -81,6 +81,8 @@ export class TestPatronPasswordComponent implements OnInit, AfterViewInit {
         .subscribe(resp => {
             const evt = this.evt.parse(resp);
 
+            this.password = null;
+
             if (evt) {
                 console.error(evt);
                 alert(evt);
