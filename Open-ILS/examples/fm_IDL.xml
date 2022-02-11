@@ -5686,10 +5686,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context="owning_lib" owning_user="owner"/>
-				<retrieve permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context="owning_lib" owning_user="owner"/>
-				<update permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context="owning_lib" owning_user="owner"/>
-				<delete permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context="owning_lib" owning_user="owner"/>
+				<create permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<retrieve permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<update permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<delete permission="CREATE_BIB_BUCKET ADMIN_BIB_BUCKET" context_field="owning_lib" owning_user="owner"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -7305,10 +7305,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context="owning_lib" owning_user="owner"/>
-				<retrieve permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context="owning_lib" owning_user="owner"/>
-				<update permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context="owning_lib" owning_user="owner"/>
-				<delete permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context="owning_lib" owning_user="owner"/>
+				<create permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<retrieve permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<update permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<delete permission="CREATE_CALLNUMBER_BUCKET ADMIN_CALLNUMBER_BUCKET" context_field="owning_lib" owning_user="owner"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -7440,10 +7440,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context="owning_lib" owning_user="owner"/>
-				<retrieve permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context="owning_lib" owning_user="owner"/>
-				<update permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context="owning_lib" owning_user="owner"/>
-				<delete permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context="owning_lib" owning_user="owner"/>
+				<create permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<retrieve permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<update permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<delete permission="CREATE_USER_BUCKET ADMIN_USER_BUCKET" context_field="owning_lib" owning_user="owner"/>
 			</actions>
 		</permacrud>
 	</class>
@@ -8495,10 +8495,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context="owning_lib" owning_user="owner"/>
-				<retrieve permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context="owning_lib" owning_user="owner"/>
-				<update permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context="owning_lib" owning_user="owner"/>
-				<delete permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context="owning_lib" owning_user="owner"/>
+				<create permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<retrieve permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<update permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context_field="owning_lib" owning_user="owner"/>
+				<delete permission="CREATE_COPY_BUCKET ADMIN_COPY_BUCKET" context_field="owning_lib" owning_user="owner"/>
 			</actions>
 		</permacrud>
 	</class>
