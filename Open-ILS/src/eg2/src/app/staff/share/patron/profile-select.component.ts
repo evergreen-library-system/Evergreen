@@ -116,7 +116,7 @@ export class ProfileSelectComponent implements ControlValueAccessor, OnInit {
 
             // Should always produce a value unless a perm group
             // display tree is poorly structured.
-            tmp = groups.filter(g => g.id() === pid)[0];
+            tmp = groups.filter(g => ((g._display) ? g._display.id() : g.id()) === pid)[0];
 
             depth++;
 
