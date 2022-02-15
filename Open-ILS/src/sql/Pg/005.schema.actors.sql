@@ -797,6 +797,7 @@ CREATE TABLE actor.usr_message (
 	edit_date		TIMESTAMP WITH TIME ZONE
 );
 CREATE INDEX aum_usr ON actor.usr_message (usr);
+CREATE INDEX aum_editor ON actor.usr_message (editor);
 ALTER TABLE actor.usr_standing_penalty ALTER COLUMN id SET DEFAULT nextval('actor.usr_message_id_seq'::regclass);
 ALTER TABLE actor.usr_standing_penalty ADD COLUMN usr_message BIGINT REFERENCES actor.usr_message(id);
 CREATE INDEX usr_standing_penalty_usr_message_idx ON actor.usr_standing_penalty (usr_message);
