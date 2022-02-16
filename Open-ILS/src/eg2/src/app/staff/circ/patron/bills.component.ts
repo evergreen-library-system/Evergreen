@@ -621,6 +621,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     }
 
     showStatement(row: any) {
+        if (!row) { return; }
         this.router.navigate(['/staff/circ/patron',
             this.patronId, 'bills', row.id, 'statement']);
     }
