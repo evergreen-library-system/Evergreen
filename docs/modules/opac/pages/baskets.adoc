@@ -6,7 +6,6 @@
 
 The public catalog and staff interface display checkboxes on the search results pages, both for bibliographic records and metarecord constituents.  Selecting one or more titles with these checkboxes adds the titles to a basket, which is viewable on the search bar as an icon.  Users can then take a variety of actions on titles within the basket:  place holds, print or email title details, add the items to a permanent list (from the public catalog) or add the titles to a bucket (from the staff interface).
 
-
 == Using Baskets in the OPAC ==
 
 . Perform a search in the public catalog and retrieve a list of results.  
@@ -36,7 +35,8 @@ image::opac_basket/basket_icon.jpg[Basket Icon]
 image::opac_basket/drop_down_actions.jpg[Action List]
 
 
-=== Actions Initiated with the Basket Actions Drop-down ===
+=== Basket Actions ===
+
 * *View Basket* - This opens the basket in a new screen.  Checkboxes allow for the selection of one or more titles within the basket.  A list of actions are in buttons at the top of the table to execute actions for the checked off titles.  You place holds, print title details, email title details, or remove titles from the basket.  An option to clear the basket when you've completed an action is in a checkbox above.
 
 image::opac_basket/view_basket.jpg[View Basket]
