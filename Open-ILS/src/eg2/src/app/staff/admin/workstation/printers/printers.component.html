@@ -1,0 +1,306 @@
+<eg-staff-banner bannerText="Printer Settings" i18n-bannerText></eg-staff-banner>
+
+<eg-string #fileWriter i18n-text text="Hatch File Writer"></eg-string>
+<eg-string #browserPrinting i18n-text text="Browser Printing"></eg-string>
+
+
+<ng-template #attrSelect let-attr="attr" let-defAttr="defAttr" let-options="options">
+  <div class="col-lg-4">
+    <select class="form-control"
+      [(ngModel)]="printConfigs[context][attr]">
+      <option *ngFor="let value of printerOptions[attr]" 
+        [value]="value">{{value}}</option>
+    </select>
+  </div>
+  <div class="col-lg-3" i18n>Default: {{printerOptions[defAttr]}}</div>
+</ng-template>
+
+<div class="col-lg-10 offset-lg-1">
+
+  <div class="alert alert-warning m-3" *ngIf="!useHatchPrinting" i18n>
+    Hatch printing is not enabled on this browser.  The settings below will 
+    have no effect until Hatch printing is enabled.
+  </div>
+
+  <ul ngbNav #contextTabs="ngbNav" class="nav-tabs"
+    [activeId]="context" (navChange)="beforeTabChange($event)">
+    <li ngbNavItem="default"><a ngbNavLink i18n>Default</a></li>
+    <li ngbNavItem="receipt"><a ngbNavLink i18n>Receipt</a></li>
+    <li ngbNavItem="label"><a ngbNavLink i18n>Label</a></li>
+    <li ngbNavItem="mail"><a ngbNavLink i18n>Mail</a></li>
+    <li ngbNavItem="offline"><a ngbNavLink i18n>Offline</a></li>
+    <li ngbNavItem="test" class="ml-auto"><a ngbNavLink i18n>Test Printing</a></li>
+  </ul>
+
+  <div [ngbNavOutlet]="contextTabs"></div>
+
+  <ng-container *ngIf="!showTestView">
+
+    <div class="row mt-4">
+      <div class="col-lg-8">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div ngbDropdown>
+              <button class="btn btn-outline-dark"
+                ngbDropdownToggle i18n>Select Printer</button>
+              <div ngbDropdownMenu>
+                <button class="dropdown-item" 
+                  *ngFor="let printer of printers" (click)="setPrinter(printer.name, true)">
+                  {{getPrinterLabel(printer.name)}}
+                </button>
+              </div>
+            </div>
+          </div>
+          <input type="text" [disabled]="true" class="form-control" 
+            [value]="getPrinterLabel(printerName)"/>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <button class="btn btn-warning" 
+          (click)="resetConfig(context)" i18n>Reset Form</button>
+
+        <button class="btn btn-success ml-2" 
+          (click)="saveConfig(context)" i18n>Apply Changes</button>
+      </div>
+    </div>
+
+    <hr class="mt-2 mb-2"/>
+
+    <div class="row" *ngIf="virtualPrinter()">
+      <div class="col-lg-12">
+        <div class="alert alert-info" 
+          *ngIf="printConfigs[context].printer == 'hatch_file_writer'" i18n>
+          Hatch File Writer translates print output to plain text
+          and writes the content to a text file in the Hatch profile directory.
+          No additional settings are required.
+        </div>
+        <div class="alert alert-info" 
+          *ngIf="printConfigs[context].printer == 'hatch_browser_printing'" i18n>
+          Hatch Browser Printing sends print requests directly
+          to the browser, bypassing the external Hatch print mechanism. No 
+          additional settings are required.
+        </div>
+      </div>
+    </div>
+
+    <div class="row border" *ngIf="printConfigs[context] && !virtualPrinter()">
+      <div class="col-lg-12 common-form striped-even">
+
+        <div class="row mt-2 pt-2">
+          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Print Color</div>
+          <ng-container *ngTemplateOutlet="attrSelect; 
+            context: {attr: 'printColor', defAttr: 'defaultPrintColor' }">
+          </ng-container>
+        </div>
+
+        <div class="row mt-2 pt-2">
+          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Paper Source</div>
+          <ng-container *ngTemplateOutlet="attrSelect; 
+            context: {attr: 'paperSource', defAttr: 'defaultPaperSource' }">
+          </ng-container>
+        </div>
+
+        <div class="row mt-2 pt-2">
+          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Paper</div>
+          <ng-container *ngTemplateOutlet="attrSelect; 
+            context: {attr: 'paper', defAttr: 'defaultPaper' }">
+          </ng-container>
+        </div>
+
+        <div class="row mt-2 pt-2">
+          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Page Orientation</div>
+          <ng-container *ngTemplateOutlet="attrSelect; 
+            context: {attr: 'pageOrientation', defAttr: 'defaultPageOrientation' }">
+          </ng-container>
+        </div>
+
+        <div class="row mt-2 pt-2">
+          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Collation</div>
+          <ng-container *ngTemplateOutlet="attrSelect; 
+            context: {attr: 'collation', defAttr: 'defaultCollation' }">
+          </ng-container>
+        </div>
+
+        <div class="row mt-2 pt-2">
+          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Print Quality</div>
+          <ng-container *ngTemplateOutlet="attrSelect; 
+            context: {attr: 'printQuality', defAttr: 'defaultPrintQuality' }">
+          </ng-container>
+        </div>
+
+        <div class="row mt-2 pt-2">
+          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Print Sides</div>
+          <ng-container *ngTemplateOutlet="attrSelect; 
+            context: {attr: 'printSides', defAttr: 'defaultPrintSides' }">
+          </ng-container>
+        </div>
+
+        <div class="row mt-2 pt-2">
+          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Number of Items</div>
+          <div class="col-lg-4">
+            <input type="number" min="1" class="form-control" 
+              [(ngModel)]="printConfigs[context].copies"/>
+          </div>
+          <div class="col-lg-3" i18n>Default: {{printerOptions.defaultCopies}}</div>
+        </div>
+
+        <div class="row mt-2 pt-2">
+          <div class="col-lg-1 form-check">
+            <input type="radio" class="form-check-input position-static"
+              [(ngModel)]="printConfigs[context].autoMargins" name="margins" [value]="true"/>
+          </div>
+          <div class="col-lg-3 font-weight-bold" i18n>Automatic Margins</div>
+          <div class="col-lg-4">
+            <select class="form-control" [disabled]="!printConfigs[context].autoMargins"
+              [(ngModel)]="printConfigs[context].marginType">
+              <option *ngFor="let value of printerOptions.marginType" 
+                [value]="value">{{value}}</option>
+            </select>
+          </div>
+          <div class="col-lg-3" i18n>Default: {{printerOptions.defaultMarginType}}</div>
+        </div>
+
+        <div class="row mt-2 pt-2">
+          <div class="col-lg-1 form-check">
+            <input type="radio" class="form-check-input position-static"
+              [(ngModel)]="printConfigs[context].autoMargins" name="margins" [value]="false"/>
+          </div>
+          <div class="col-lg-3 font-weight-bold" i18n>Manual Margins</div>
+          <div class="col-lg-4">
+            <div class="d-flex">
+              <div class="flex-1 mr-1">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" i18n>Left</span>
+                  </div>
+                  <input type="text" class="form-control" 
+                    [disabled]="printConfigs[context].autoMargins" 
+                    [(ngModel)]="printConfigs[context].leftMargin"/>
+                </div>
+              </div>
+              <div class="flex-1 ml-1">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" i18n>Top</span>
+                  </div>
+                  <input type="text" class="form-control" 
+                    [disabled]="printConfigs[context].autoMargins" 
+                    [(ngModel)]="printConfigs[context].topMargin"/>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex mt-2">
+              <div class="flex-1 mr-1">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" i18n>Right</span>
+                  </div>
+                  <input type="text" class="form-control" 
+                    [disabled]="printConfigs[context].autoMargins" 
+                    [(ngModel)]="printConfigs[context].rightMargin"/>
+                </div>
+              </div>
+              <div class="flex-1 ml-1">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" i18n>Bottom</span>
+                  </div>
+                  <input type="text" class="form-control" 
+                    [disabled]="printConfigs[context].autoMargins" 
+                    [(ngModel)]="printConfigs[context].bottomMargin"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-2 pt-2">
+          <div class="col-lg-3 offset-lg-1 font-weight-bold" i18n>Page Ranges</div>
+          <div class="col-lg-4">
+            <div class="d-flex">
+              <div class="flex-1 mr-1 form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="all-pages"
+                  [(ngModel)]="printConfigs[context].allPages" name="page-ranges" [value]="true"/>
+                <label class="form-check-intput" for="all-pages" i18n>All Pages</label>
+              </div>
+              <div class="flex-1 ml-1">
+                <input type="radio" class="form-check-input" id="page-range"
+                  [(ngModel)]="printConfigs[context].allPages" name="page-ranges" [value]="false"/>
+                <label class="form-check-intput" for="page-range" i18n>Page Range</label>
+              </div>
+            </div>
+            <div class="d-flex mt-2">
+              <div class="flex-1">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" i18n>Start</span>
+                  </div>
+                  <input type="text" class="form-control" 
+                    [disabled]="printConfigs[context].allPages" 
+                    [(ngModel)]="printConfigs[context].pageRanges[0]"/>
+                </div>
+              </div>
+              <div class="flex-1 ml-1">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" i18n>End</span>
+                  </div>
+                  <input type="text" class="form-control" 
+                    [disabled]="printConfigs[context].allPages" 
+                    [(ngModel)]="printConfigs[context].pageRanges[1]"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-lg-12">
+        <h3 i18n>Compiled Printer Settings</h3>
+        <pre class="bg-light border rounded">{{printConfigs[context] | json}}</pre>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="showTestView">
+
+    <div class="row mt-3">
+      <div class="col-lg-12 d-flex">
+        <div class="flex-1"></div>
+        <div>
+          <button class="btn btn-success ml-auto" (click)="testPrint(false)"
+            i18n>Print</button>
+        </div>
+        <div class="ml-2">
+          <button class="btn btn-primary ml-auto" (click)="testPrint(true)" 
+            i18n>Print with Dialog</button>
+        </div>
+      </div>
+    </div>
+
+    <ul ngbNav #testTabs="ngbNav" class="nav-tabs mt-2" 
+      (navChange)="beforeTestTabChange($event)" [activeId]="testTab">
+      <li ngbNavItem="text">
+        <a ngbNavLink i18n>Plain Text</a>
+        <ng-template ngbNavContent>
+          <pre><textarea class="w-100" [(ngModel)]="testText" rows="16"></textarea></pre>
+        </ng-template>
+      </li>
+      <li ngbNavItem="html">
+        <a ngbNavLink i18n>HTML</a>
+        <ng-template ngbNavContent>
+          <pre><textarea class="w-100" [(ngModel)]="testHtml" rows="16"></textarea></pre>
+        </ng-template>
+      </li>
+    </ul>
+
+    <div [ngbNavOutlet]="testTabs"></div>
+
+  </ng-container>
+
+</div>
+
+

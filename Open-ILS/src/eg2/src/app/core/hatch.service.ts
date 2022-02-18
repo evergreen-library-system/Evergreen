@@ -1,5 +1,23 @@
 import {Injectable, EventEmitter} from '@angular/core';
 
+export type PrintContext = 'default' | 'receipt' | 'label' | 'mail' | 'offline';
+
+export const PRINT_CONTEXTS: PrintContext[] = [
+    'default',
+    'receipt',
+    'label',
+    'mail',
+    'offline'
+];
+
+export interface PrintConfig {
+    context: PrintContext;
+    printer: string;
+    autoMargins: boolean;
+    allPages: boolean;
+    pageRanges: number[];
+}
+
 export class HatchMessage {
     msgid: number;
     resolver: (HatchMessage) => void; // promise resolver
@@ -28,6 +46,7 @@ export class HatchService {
     isAvailable: boolean;
     msgId: number;
     messages: {[msgid: number]: HatchMessage};
+    printers: any[];
 
     constructor() {
         this.isAvailable = null;
@@ -128,6 +147,38 @@ export class HatchService {
     removeItem(key: string): Promise<any> {
         const msg = new HatchMessage({action: 'remove', key: key});
         return this.sendRequest(msg).then((m: HatchMessage) => m.response);
+    }
+
+    getPrinterOptions(name: string): Promise<any> {
+        if (name === 'hatch_file_writer' || name === 'hatch_browser_printing') {
+            return Promise.resolve({});
+        }
+        const msg = new HatchMessage({action: 'printer-options', printer: name});
+        return this.sendRequest(msg).then((m: HatchMessage) => m.response);
+    }
+
+    getPrinters(): Promise<any[]> {
+        if (this.printers) { return Promise.resolve(this.printers); }
+
+        this.printers = [
+            {name: 'hatch_file_writer'},
+            {name: 'hatch_browser_printing'}
+        ];
+
+        const msg = new HatchMessage({action: 'printers'});
+        return this.sendRequest(msg).then((m: HatchMessage) => m.response)
+        .then(
+            printers => {
+                this.printers =
+                    printers.sort((p1, p2) => p1.name < p2.name ? -1 : 1)
+                    .concat(this.printers);
+
+                return this.printers;
+            },
+            err => {
+                return this.printers;
+            }
+        );
     }
 }
 
