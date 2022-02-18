@@ -130,7 +130,8 @@ export class PatronResolver implements Resolve<Promise<any[]>> {
           'ui.patron.edit.aua.state.suggest',
           'ui.patron.edit.aua.state.show',
           'ui.admin.work_log.max_entries',
-          'ui.admin.patron_log.max_entries'
+          'ui.admin.patron_log.max_entries',
+          'circ.patron_expires_soon_warning'
         ]).then(settings => {
             this.context.settingsCache = settings;
             return this.circ.applySettings();
