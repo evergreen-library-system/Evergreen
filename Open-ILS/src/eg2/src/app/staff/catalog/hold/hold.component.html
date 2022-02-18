@@ -282,6 +282,18 @@
     <div class="col-lg-2" i18n>Holds Status</div>
     <div class="col-lg-1" i18n>Override</div>
   </div>
+  <div class="row mt-1 ml-1 mr-1" *ngIf="showOverrideAll()">
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-lg-1 ml-auto">
+          <button class="btn btn-info" i18n
+            (click)="overrideAll()">
+            Override All
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="row mt-1 ml-1 mr-1" *ngFor="let ctx of holdContexts">
     <div class="col-lg-12" *ngIf="ctx.holdMeta">
       <div class="row">

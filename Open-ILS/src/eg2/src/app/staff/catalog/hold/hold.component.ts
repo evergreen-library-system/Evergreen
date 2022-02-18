@@ -546,10 +546,10 @@ export class HoldComponent implements OnInit {
     }
 
     // Attempt hold placement on all targets
-    placeHolds(idx?: number) {
+    placeHolds(idx?: number, override?: boolean) {
         if (!idx) {
             idx = 0;
-            if (this.multiHoldCount > 1) {
+            if (this.multiHoldCount > 1 && !override) {
                 this.addMultHoldContexts();
             }
         }
@@ -561,7 +561,9 @@ export class HoldComponent implements OnInit {
         this.placeHoldsClicked = true;
 
         const ctx = this.holdContexts[idx];
-        this.placeOneHold(ctx).then(() => this.placeHolds(idx + 1));
+        this.placeOneHold(ctx, override).then(() =>
+            this.placeHolds(idx + 1, override)
+        );
     }
 
     afterPlaceHolds(somePlaced: boolean) {
@@ -600,6 +602,10 @@ export class HoldComponent implements OnInit {
     }
 
     placeOneHold(ctx: HoldContext, override?: boolean): Promise<any> {
+
+        if (override && !this.canOverride(ctx)) {
+            return Promise.resolve();
+        }
 
         ctx.processing = true;
         const selectedFormats = this.mrSelectorsToFilters(ctx);
@@ -646,14 +652,6 @@ export class HoldComponent implements OnInit {
                         user: this.user.family_name()
                     });
 
-                    // Overrides are processed one hold at a time, so
-                    // we have to invoke the post-holds logic here
-                    // instead of the batch placeHolds() method.  If
-                    // there is ever a batch override option, this
-                    // logic will have to be adjusted avoid callling
-                    // afterPlaceHolds in batch mode.
-                    if (override) { this.afterPlaceHolds(true); }
-
                 } else {
                     console.debug('hold failed with: ', request);
 
@@ -677,12 +675,24 @@ export class HoldComponent implements OnInit {
     }
 
     override(ctx: HoldContext) {
-        this.placeOneHold(ctx, true);
+        this.placeOneHold(ctx, true).then(() => {
+            this.afterPlaceHolds(ctx.success);
+        });
     }
 
     canOverride(ctx: HoldContext): boolean {
         return ctx.lastRequest &&
                 !ctx.lastRequest.result.success && ctx.canOverride;
+    }
+
+    showOverrideAll(): boolean {
+        return this.holdContexts.filter(ctx =>
+            this.canOverride(ctx)
+        ).length > 1;
+    }
+
+    overrideAll(): void {
+        this.placeHolds(0, true);
     }
 
     iconFormatLabel(code: string): string {
