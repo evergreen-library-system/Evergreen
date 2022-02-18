@@ -2,7 +2,7 @@
 ** xref:opac:using_the_public_access_catalog.adoc[Using the Public Access Catalog]
 ** xref:opac:my_lists.adoc[My Lists]
 ** xref:opac:my_account.adoc[My Account]
-** xref:opac:batch_actions_from_search.adoc[Batch Actions from Search]
+** xref:opac:baskets.adoc[Using Baskets]
 ** xref:opac:kids_opac.adoc[Kids OPAC]
 ** xref:opac:catalog_browse.adoc[Catalog Browse]
 ** xref:opac:advanced_features.adoc[Bibliographic Search Enhancements]
