@@ -17,7 +17,8 @@
     hidden="active_mode" disabled="is_clearing"
     label="[% l('Show All Holds') %]"></eg-grid-menu-item>
 
-  <eg-grid-menu-item handler="clear_holds" disabled="disable_clear"
+  <eg-grid-menu-item handler="clear_holds"
+    hidden="hide_clear_holds" disabled="disable_clear"
     label="[% l('Clear These Holds') %]"></eg-grid-menu-item>
 
   <eg-grid-menu-item handler="print_shelf_list"

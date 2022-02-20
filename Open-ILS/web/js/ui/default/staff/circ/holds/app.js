@@ -209,6 +209,12 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
     $scope.show_clearable = function() { clear_mode = true; provider.refresh() }
     $scope.show_active = function() { clear_mode = false; provider.refresh() }
     $scope.disable_clear = function() { return clearing || !clear_mode }
+    egCore.org.settings(
+        'ui.hide_clear_these_holds_button'
+    ).then(function(settings) {
+        if (settings['ui.hide_clear_these_holds_button'])
+            $scope.hide_clear_holds = true;
+    });
 
     // udpate the in-grid hold with the clear-shelf cached response info.
     function handle_clear_cache_resp(resp) {
