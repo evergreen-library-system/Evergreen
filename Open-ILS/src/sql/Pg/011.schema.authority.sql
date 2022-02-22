@@ -613,7 +613,7 @@ BEGIN
     FOR main_entry IN SELECT * FROM authority.control_set_authority_field acsaf WHERE acsaf.control_set = cset AND acsaf.main_entry IS NULL LOOP
         auth_field := XPATH('//*[local-name()="datafield" and @tag="'||main_entry.tag||'"][1]',source_xml::XML);
         auth_i1 := (XPATH('//*[local-name()="datafield"]/@ind1',auth_field[1]))[1];
-        auth_i2 := (XPATH('//([local-name()="datafield"]/@ind2',auth_field[1]))[1];
+        auth_i2 := (XPATH('//*[local-name()="datafield"]/@ind2',auth_field[1]))[1];
         IF ARRAY_LENGTH(auth_field,1) > 0 THEN
             FOR bib_field IN SELECT * FROM authority.control_set_bib_field WHERE authority_field = main_entry.id LOOP
                 SELECT XMLELEMENT( -- XMLAGG avoids magical <element> creation, but requires unnest subquery
