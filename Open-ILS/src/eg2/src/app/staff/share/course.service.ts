@@ -224,6 +224,32 @@ export class CourseService {
             });
         });
     }
+    
+    removeNonPublicUsers(courseID: Number) {
+        return new Promise((resolve, reject) => {
+            const acmcu_ids = [];
+            
+            this.getUsers([courseID]).subscribe(nonPublicUser => {
+                if(nonPublicUser.usr_role().is_public() !== 't') acmcu_ids.push(nonPublicUser.id());
+            }, err => {
+                reject(err);
+            }, () => {
+                resolve(acmcu_ids);
+                this.pcrud.search('acmcu', {course: courseID, id: acmcu_ids}).subscribe(userToDelete => {
+                    userToDelete.isdeleted(true);
+                    this.pcrud.autoApply(userToDelete).subscribe(val => {
+                        console.debug('deleted: ' + val);
+                    }, err => {
+                        console.log("Error: " + err);
+                        reject(err);
+                    }, () => {
+                        console.log("Resolving");
+                        resolve(userToDelete);
+                    });
+                });
+            });
+        });
+    }
 
 
     updateItem(item: IdlObject, courseLib: IdlObject, callNumber: string, updatingVolume: boolean) {

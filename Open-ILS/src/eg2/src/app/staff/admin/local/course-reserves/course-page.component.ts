@@ -30,6 +30,10 @@ export class CoursePageComponent implements OnInit {
         archiveFailedString: StringComponent;
     @ViewChild('archiveSuccessString', { static: true })
         archiveSuccessString: StringComponent;
+    @ViewChild('unarchiveFailedString', { static: true })
+        unarchiveFailedString: StringComponent;
+    @ViewChild('unarchiveSuccessString', { static: true })
+        unarchiveSuccessString: StringComponent;
 
     constructor(
         private course: CourseService,
@@ -59,6 +63,21 @@ export class CoursePageComponent implements OnInit {
                     .then(str => this.toast.success(str));
             }, err => {
                 this.archiveFailedString.current()
+                    .then(str => this.toast.danger(str));
+            });
+        });
+    }
+    
+    unarchiveCourse() {
+        this.course.disassociateMaterials([this.currentCourse]).then(res => {
+            this.currentCourse.is_archived('f');
+            this.pcrud.update(this.currentCourse).subscribe(val => {
+                this.course.removeNonPublicUsers(this.currentCourse.id());
+                console.debug('unarchived: ' + val);
+                this.unarchiveSuccessString.current()
+                    .then(str => this.toast.success(str));
+            }, err => {
+                this.unarchiveFailedString.current()
                     .then(str => this.toast.danger(str));
             });
         });

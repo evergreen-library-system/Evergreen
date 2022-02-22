@@ -36,6 +36,8 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     @ViewChild('deleteSuccessString', { static: true }) deleteSuccessString: StringComponent;
     @ViewChild('archiveFailedString', { static: true }) archiveFailedString: StringComponent;
     @ViewChild('archiveSuccessString', { static: true }) archiveSuccessString: StringComponent;
+    @ViewChild('unarchiveFailedString', { static: true }) unarchiveFailedString: StringComponent;
+    @ViewChild('unarchiveSuccessString', { static: true }) unarchiveSuccessString: StringComponent;
     @ViewChild('courseMaterialDialog', {static: true})
         private courseMaterialDialog: CourseAssociateMaterialComponent;
     @ViewChild('courseUserDialog', {static: true})
@@ -179,6 +181,34 @@ export class CourseListComponent implements OnInit, AfterViewInit {
                 }
             );
         });
+    }
+    
+    courseArchiveableOrNot(course: IdlObject[], archiveBool) {
+        course.forEach(courseToMod => {
+            if (archiveBool == false) return courseToMod.is_archived() == 't';
+            return courseToMod.is_archived() == 'f';
+        });
+    }
+
+    unarchiveSelected(course: IdlObject[]) {
+        course.forEach(courseToUnarchive => {
+            courseToUnarchive.is_archived(false);
+        });
+        this.pcrud.update(course).subscribe(
+            val => {
+                course.forEach(courseEntry => {
+                    this.courseSvc.removeNonPublicUsers(courseEntry.id());
+                });
+                console.debug('archived: ' + val);
+                this.unarchiveSuccessString.current()
+                    .then(str => this.toast.success(str));
+            }, err => {
+                this.unarchiveFailedString.current()
+                    .then(str => this.toast.danger(str));
+            }, () => {
+                this.grid.reload();
+            }
+        );
     }
 
     deleteSelected(idlObject: IdlObject[]) {
