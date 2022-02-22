@@ -585,7 +585,7 @@ BEGIN
         SELECT  control_set INTO cset
           FROM  authority.control_set_authority_field
           WHERE tag IN (
-                    SELECT  UNNEST(XPATH('//[local-name()="datafield" and starts-with(@tag,"1")]/@tag',marc::XML)::TEXT[])
+                    SELECT  UNNEST(XPATH('//*[local-name()="datafield" and starts-with(@tag,"1")]/@tag',marc::XML)::TEXT[])
                       FROM  authority.record_entry
                       WHERE id = auth_id
                 )
