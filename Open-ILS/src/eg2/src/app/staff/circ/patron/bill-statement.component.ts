@@ -165,5 +165,14 @@ export class BillStatementComponent implements OnInit {
             return this.statement.xact.circulation().target_copy();
         }
     }
+
+    totalBilled(): number {
+        if (!this.statement) { return 0; }
+
+        const billed = (this.statement.summary.billing_total || 0) * 100;
+        const voided = (this.statement.summary.void_total || 0) * 100;
+
+        return (billed - voided) / 100;
+    }
 }
 

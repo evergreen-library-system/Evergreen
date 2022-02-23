@@ -19,7 +19,7 @@
       </a>
     </div>
     <div class="col-lg-2" i18n>Total Billed</div>
-    <div class="col-lg-1">{{statement.summary.billing_total | currency}}</div>
+    <div class="col-lg-1">{{totalBilled() | currency}}</div>
     <div class="col-lg-2" i18n>Title</div>
     <div class="col-lg-3">
       <ng-container *ngIf="statement.title_id">
@@ -37,7 +37,7 @@
       <span *ngIf="!statement.xact.circulation()" i18n>Grocery</span>
     </div>
     <div class="col-lg-2" i18n>Total Paid / Credited</div>
-    <div class="col-lg-1">{{statement.payment_total | currency}}</div>
+    <div class="col-lg-1">{{statement.summary.payment_total | currency}}</div>
     <div class="col-lg-2" i18n>Checked Out</div>
     <div class="col-lg-3">
       <ng-container *ngIf="statement.xact.circulation()">
@@ -49,7 +49,7 @@
     <div class="col-lg-2" i18n>Started</div>
     <div class="col-lg-2">{{statement.xact.xact_start() | date:'short'}}</div>
     <div class="col-lg-2" i18n>Balance Due</div>
-    <div class="col-lg-1">{{statement.balance_due | currency}}</div>
+    <div class="col-lg-1">{{statement.summary.balance_due | currency}}</div>
     <div class="col-lg-2" i18n>Due Date</div>
     <div class="col-lg-3">
       <ng-container *ngIf="statement.xact.circulation()">
