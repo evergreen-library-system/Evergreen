@@ -37,7 +37,7 @@ sub prepare_extended_user_info {
         {
             flesh => 2,
             flesh_fields => {
-                au => [qw/card home_ou addresses ident_type billing_address waiver_entries/, @extra_flesh],
+                au => [qw/card home_ou addresses ident_type locale billing_address waiver_entries/, @extra_flesh],
                 "aou" => ["billing_address"]
             }
         }
@@ -2762,6 +2762,46 @@ sub load_myopac_update_username {
 
     my $url = $self->apache->unparsed_uri;
     $url =~ s/update_username/prefs/;
+
+    return $self->generic_redirect($url);
+}
+
+sub load_myopac_update_locale {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+    my $lang = $self->cgi->param('pref_lang') || '';
+    my $current_pw = $self->cgi->param('current_pw') || '';
+
+    $self->prepare_extended_user_info;
+
+    my $locs = $U->simplereq(
+        'open-ils.cstore',
+        "open-ils.cstore.direct.config.i18n_locale.search.atomic", 
+	{ "code" => { "!=" => undef } }
+    );
+
+    my %user_locales;
+    foreach my $l (@$locs) { $user_locales{$l->code} = $l->name; }
+    $self->ctx->{i18n_locales} = \%user_locales; 
+
+    return Apache2::Const::OK
+        unless $self->cgi->request_method eq 'POST';
+
+    if($lang ne $e->requestor->locale) {
+        my $evt = $U->simplereq(
+            'open-ils.actor',
+            'open-ils.actor.user.locale.update',
+            $e->authtoken, $lang, $current_pw);
+
+        if($U->event_equals($evt, 'INCORRECT_PASSWORD')) {
+            $ctx->{password_incorrect} = 1;
+            return Apache2::Const::OK;
+        }
+    }
+
+    my $url = $self->apache->unparsed_uri;
+    $url =~ s/update_locale/prefs/;
 
     return $self->generic_redirect($url);
 }

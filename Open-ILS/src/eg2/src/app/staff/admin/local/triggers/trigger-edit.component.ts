@@ -21,22 +21,27 @@ export class EditEventDefinitionComponent implements OnInit {
 
     evtDefId: number;
     evtDefName: String;
+    evtReactor: string;
+    evtAltEligible: Boolean = false;
 
     testErr1: String = '';
     testErr2: String = '';
     testResult: String = '';
     testDone: Boolean = false;
 
+    altTemplateDataSource: GridDataSource = new GridDataSource();
     envDataSource: GridDataSource = new GridDataSource();
     paramDataSource: GridDataSource = new GridDataSource();
 
-    editTab: 'def' | 'env' | 'param' | 'test' = 'def';
+    editTab: 'def' | 'alt' | 'env' | 'param' | 'test' = 'def';
 
     @ViewChild('paramDialog') paramDialog: FmRecordEditorComponent;
     @ViewChild('envDialog') envDialog: FmRecordEditorComponent;
+    @ViewChild('altTemplateDialog') altTemplateDialog: FmRecordEditorComponent;
 
     @ViewChild('envGrid') envGrid: GridComponent;
     @ViewChild('paramGrid') paramGrid: GridComponent;
+    @ViewChild('altTemplateGrid') altTemplateGrid: GridComponent;
 
     @ViewChild('updateSuccessString') updateSuccessString: StringComponent;
     @ViewChild('updateFailedString') updateFailedString: StringComponent;
@@ -69,8 +74,21 @@ export class EditEventDefinitionComponent implements OnInit {
             this.evtDefName = rec.name();
         });
 
+        // get current event def reactor to decide if the alt template tab should show
+        this.pcrud.search('atevdef',
+            {id: this.evtDefId}, {}).toPromise().then(rec => {
+            this.evtReactor = rec.reactor();
+            if ('ProcessTemplate SendEmail SendSMS'.indexOf(this.evtReactor) > -1)
+                { this.evtAltEligible = true; }
+        });
+
         this.envDataSource.getRows = (pager: Pager, sort: any[]) => {
             return this.pcrud.search('atenv',
+                {event_def: this.evtDefId}, {});
+        };
+
+        this.altTemplateDataSource.getRows = (pager: Pager, sort: any[]) => {
+            return this.pcrud.search('atevalt',
                 {event_def: this.evtDefId}, {});
         };
 
@@ -86,6 +104,10 @@ export class EditEventDefinitionComponent implements OnInit {
 
     createNewEnv = () => {
         this.createNewThing(this.envDialog, this.envGrid, 'atenv');
+    }
+
+    createNewAltTemplate = () => {
+        this.createNewThing(this.altTemplateDialog, this.altTemplateGrid, 'atevalt');
     }
 
     createNewParam = () => {
@@ -118,6 +140,8 @@ export class EditEventDefinitionComponent implements OnInit {
         let currentGrid;
         if (idlThings[0].classname === 'atenv') {
             currentGrid = this.envGrid;
+        } else if (idlThings[0].classname === 'atevalt') {
+            currentGrid = this.altTemplateGrid;
         } else {
             currentGrid = this.paramGrid;
         }
@@ -157,6 +181,9 @@ export class EditEventDefinitionComponent implements OnInit {
         if (selectedRecord.classname === 'atenv') {
             currentDialog = this.envDialog;
             currentGrid = this.envGrid;
+        } else if (selectedRecord.classname === 'atevalt') {
+            currentDialog = this.altTemplateDialog;
+            currentGrid = this.altTemplateGrid;
         } else {
             currentDialog = this.paramDialog;
             currentGrid = this.paramGrid;

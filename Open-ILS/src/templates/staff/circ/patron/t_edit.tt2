@@ -479,6 +479,20 @@ within the "form" by name for validation.
   </div>
 </div>
 
+<!-- LOCALE -->
+<div class="row reg-field-row" ng-show="show_field('au.locale')">
+  [% draw_field_label('au', 'locale') %]
+  <div class="col-md-3 reg-field-input">
+    <select
+      class="form-control"
+      aria-labelledby="{{idl_fields.au.locale.name}}"
+      ng-model="patron.locale"
+      ng-blur="handle_field_changed(patron, 'locale')"
+      ng-options="loc.name() for loc in locales track by loc.code()">
+    </select>
+  </div>
+</div>
+
 <!-- EMAIL -->
 <div class="row reg-field-row" ng-show="show_field('au.email')">
   [% draw_field_label('au', 'email') %]

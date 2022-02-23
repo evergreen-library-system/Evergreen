@@ -60,6 +60,7 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 'egUserBucketMod',
                 'net_access_level',
                 'ident_type',
                 'ident_type2',
+                'locale',
                 'cards',
                 'groups'
             ]);
@@ -311,9 +312,15 @@ function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDi
             .then(function() {return patronSvc.checkAlerts()})
             .then(redirectToAlertPanel)
             .then(function(){
-                $scope.ident_type_name = $scope.patron().ident_type().name()
+                if ($scope.patron().locale() !== null) { 
+                    $scope.locale_name = $scope.patron().locale().name();
+                    $scope.hasLocaleName = $scope.locale_name.length > 0;
+                }
+            })
+            .then(function(){
+                $scope.ident_type_name = $scope.patron().ident_type().name();
                 $scope.hasIdentTypeName = $scope.ident_type_name.length > 0;
-            });
+    });
         } else {
             // No patron, use the tab name as the page title.
             egCore.strings.setPageTitle(

@@ -71,7 +71,8 @@ CREATE TABLE actor.usr (
 	create_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT now(),
 	expire_date		TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT (now() + '3 years'::INTERVAL),
 	claims_never_checked_out_count  INT         NOT NULL DEFAULT 0,
-    last_update_time    TIMESTAMP WITH TIME ZONE
+    last_update_time    TIMESTAMP WITH TIME ZONE,
+    locale                  TEXT REFERENCES config.i18n_locale(code) INITIALLY DEFERRED
 );
 COMMENT ON TABLE actor.usr IS $$
 User objects

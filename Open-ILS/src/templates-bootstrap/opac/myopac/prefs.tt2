@@ -116,6 +116,15 @@
             </tr>
 
             <tr>
+                <td class='color_4 light_border'>[% l("Preferred Language") %]</td>
+                <td class='light_border'>[% ctx.user.locale.name | html %]</td>
+                <td>
+                <span class='light_border'><a class="btn btn-sm btn-action" href='update_locale'
+                    title="[% l('Update Preferred Language') %]"><i class="fas fa-user-cog"></i> [% l('Change') %]</a></span>
+                </td>
+            </tr>
+
+            <tr>
                 <td class='color_4 light_border'>[% l("Home Library") %]</td>
  <td class='light_border'>
                     [% ctx.get_aou(ctx.user.home_ou.parent_ou).name %]<br/>

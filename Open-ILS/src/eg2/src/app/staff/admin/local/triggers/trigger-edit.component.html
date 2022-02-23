@@ -23,7 +23,35 @@
             <div class="text-right">
                 <button class="btn btn-outline-dark mr-3" (click)="back()">&#8592; Back to Notifications/Action Triggers</button>
             </div>
-	</ng-template>
+    </ng-template>
+    </li>
+    <li ngbNavItem="'alt'" *ngIf=this.evtAltEligible>
+        <a ngbNavLink i18n>Edit Alternate Template</a>
+        <ng-template ngbNavContent>
+            <ng-template #textAreaTemplate let-field="field" let-record="record">
+                <textarea class="form-control" name="{{field.name}}"
+                    [readonly]="field.readOnly" [required]="field.isRequired()"
+                    [ngModel]="record[field.name]()"
+                    (ngModelChange)="record[field.name]($event)" style="height: 600px;">
+                </textarea>
+            </ng-template>
+            <h3 class="mb-3">Alternate Templates</h3>
+            <eg-grid #altTemplateGrid idlClass="atevalt" [dataSource]="altTemplateDataSource"
+                showFields="active,locale" persistKey="admin.local.triggers.atevalt"
+                (onRowActivate)="editSelected([$event])">
+                <eg-grid-toolbar-button label="New Template" i18n-label
+                    [action]="createNewAltTemplate"></eg-grid-toolbar-button>
+                <eg-grid-toolbar-action label="Edit Template" i18n-label
+                    [action]="editSelected"></eg-grid-toolbar-action>
+                <eg-grid-toolbar-action label="Delete Selected" i18n-label
+                    (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
+            </eg-grid>
+            <eg-fm-record-editor #altTemplateDialog idlClass="atevalt"
+                 [fieldOptions]="{template:{customTemplate:{template:textAreaTemplate}},message_template:{customTemplate:{template:textAreaTemplate}}}"
+                 fieldOrder="active,locale,template,message_title,message_template"
+                 [preloadLinkedValues]="true"
+                 hiddenFields="event_def,id"></eg-fm-record-editor>
+        </ng-template>
     </li>
     <li ngbNavItem="'env'">
         <a ngbNavLink i18n>Edit Environment</a>

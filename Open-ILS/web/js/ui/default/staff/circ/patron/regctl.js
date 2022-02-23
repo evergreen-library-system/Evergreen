@@ -21,6 +21,7 @@ angular.module('egCoreMod')
         stat_cats : [],
         stat_cat_entry_maps : {},   // cat.id to selected value
         virt_id : -1,               // virtual ID for new objects
+        locales : [],
         init_done : false           // have we loaded our initialization data?
     };
 
@@ -42,6 +43,7 @@ angular.module('egCoreMod')
                 service.get_perm_groups(),
                 service.get_perm_group_entries(),
                 service.get_ident_types(),
+                service.get_locales(),
                 service.get_org_settings(),
                 service.get_stat_cats(),
                 service.get_surveys(),
@@ -49,7 +51,6 @@ angular.module('egCoreMod')
             ];
             service.init_done = true;
         }
-
         return $q.all(common_data.concat(page_data));
     };
 
@@ -470,6 +471,19 @@ angular.module('egCoreMod')
         }
     };
 
+    service.get_locales = function() {
+        if (egCore.env.i18n_l) {
+            service.locales = egCore.env.i18n_l.list;
+            return $q.when();
+        } else {
+            return egCore.pcrud.retrieveAll('i18n_l', {}, {atomic : true})
+            .then(function(locales) {
+                egCore.env.absorbList(locales, 'i18n_l')
+                service.locales = locales
+	    });
+        }
+    };
+
     service.get_net_access_levels = function() {
         if (egCore.env.cnal) {
             service.net_access_levels = egCore.env.cnal.list;
@@ -771,7 +785,6 @@ angular.module('egCoreMod')
         service.existing_patron = current;
 
         var patron = egCore.idl.toHash(current);
-
         patron.home_ou = egCore.org.get(patron.home_ou.id);
         patron.expire_date = new Date(Date.parse(patron.expire_date));
         patron.dob = service.parse_dob(patron.dob);
@@ -779,6 +792,7 @@ angular.module('egCoreMod')
         patron.net_access_level = current.net_access_level();
         patron.ident_type = current.ident_type();
         patron.ident_type2 = current.ident_type2();
+        patron.locale = current.locale();
         patron.groups = current.groups(); // pre-hash
 
         angular.forEach(
@@ -907,6 +921,8 @@ angular.module('egCoreMod')
             user.ident_type = egCore.env.cit.map[user.ident_type];
         if (user.ident_type2)
             user.ident_type2 = egCore.env.cit.map[user.ident_type2];
+	if (user.locale) 
+	    user.locale = egCore.env.i18n_l.map[user.locale];
         user.dob = service.parse_dob(user.dob);
 
         // Clear the usrname if it looks like a UUID
@@ -1095,6 +1111,8 @@ angular.module('egCoreMod')
             patron.dob(patron.dob().toISOString().replace(/T.*/,''));
         if (patron.ident_type()) 
             patron.ident_type(patron.ident_type().id());
+        if (patron.locale())
+            patron.locale(patron.locale().code());
         if (patron.net_access_level())
             patron.net_access_level(patron.net_access_level().id());
 
@@ -1393,6 +1411,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         $scope.edit_profiles = prs.edit_profiles;
         $scope.edit_profile_entries = prs.edit_profile_entries;
         $scope.ident_types = prs.ident_types;
+        $scope.locales = prs.locales;
         $scope.net_access_levels = prs.net_access_levels;
         $scope.user_setting_types = prs.user_setting_types;
         $scope.opt_in_setting_types = prs.opt_in_setting_types;
@@ -1531,6 +1550,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         'au.ident_type' : 3,
         'au.ident_type2' : 2,
         'au.photo_url' : 2,
+        'au.locale' : 2,
         'au.home_ou' : 3,
         'au.profile' : 3,
         'au.expire_date' : 3,

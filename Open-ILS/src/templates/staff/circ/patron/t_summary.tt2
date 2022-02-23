@@ -150,6 +150,10 @@
       <div class="col-md-7">{{patron().ident_value2()}}</div>
     </div>
     <div class="row">
+      <div class="col-md-5">[% l('Pref Language') %]&nbsp;<span ng-if="hasLocaleName" class="locale"></span></div>
+      <div class="col-md-7">{{patron().locale().name()}}</div>
+    </div>
+    <div class="row">
       <div class="col-md-5">[% l('Legal Name') %]</div>
       <div class="col-md-7">
         [% l('[_1] [_2], [_3] [_4] [_5]',

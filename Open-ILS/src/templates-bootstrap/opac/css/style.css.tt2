@@ -373,6 +373,10 @@ Novelist Styling
     max-width: 100px !important;
 }
 
+.mod-control{
+    max-width: 150px !important;
+}
+
 .card-body:empty{
     display:none;
 }

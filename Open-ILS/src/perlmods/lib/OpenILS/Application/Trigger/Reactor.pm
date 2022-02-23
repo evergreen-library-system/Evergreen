@@ -553,6 +553,7 @@ sub run_TT {
         my $t_o = Fieldmapper::action_trigger::event_output->new;
         $t_o->data( ($error) ? $error : $output );
         $t_o->is_error( ($error) ? 't' : 'f' );
+        $t_o->locale($env->{tt_locale}); 
         $logger->info("trigger: writing " . length($t_o->data) . " bytes to template output");
 
         $env->{EventProcessor}->editor->xact_begin;

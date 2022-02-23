@@ -1,0 +1,38 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "prefs"  %]
+<h3 class="sr-only">[% l('Update Preferred Language') %]</h3>
+<div id='myopac_summary_div' style="padding:0px;">
+
+    <div class="header_middle">
+        <span class="float-left">[% l('Update Preferred Language') %]</span>
+    </div>
+	
+[% IF ctx.password_incorrect %]
+    <div id='account-update-email-error'>
+        [% |l %]Your current password was not correct.[% END %]
+    </div>
+[% END %]
+
+<form method='post' id='account-update-email' autocomplete='off'> 
+    [% IF CGI.param("return_to_referer") %]
+    <input type="hidden" name="redirect_to" value="[% ctx.referer | html %]" />
+    [% END %]
+    <table> 
+        <tr><td>[% l('Current Preferred Language') %]</td><td>[% ctx.user.locale.name | html %]</td></tr>
+        <tr><td>[% l('Current Password') %]</td><td><input type='password' name='current_pw'/></td></tr>
+        <tr><td>[% l('New Preferred Language') %]</td>
+            <td class="px-3">
+                <select class="d-inline-block form-control mod-control" name="pref_lang" id="pref_lang">
+                    [% FOREACH i18n IN ctx.i18n_locales %]
+                        <option value='[% i18n.key | html %]'>[% l(i18n.value) %]
+                    [% END %]
+                </select>
+            </td>
+        </tr>
+    </table>
+    <button class="btn btn-confirm m-2" type='submit'><i class="fas fa-save"></i>Save Changes</button>
+</form>
+
+[% END %]

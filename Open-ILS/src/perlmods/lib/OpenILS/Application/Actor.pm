@@ -1654,6 +1654,20 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+    method    => "update_passwd",
+    api_name  => "open-ils.actor.user.locale.update",
+    signature => {
+        desc   => "Update the operator's i18n locale",
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'New locale',           type => 'string' },
+            { desc => 'Current password',     type => 'string' }
+        ],
+        return => {desc => '1 on success, Event on error or incorrect current password'}
+    }
+);
+
 sub update_passwd {
     my( $self, $conn, $auth, $new_val, $orig_pw ) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
@@ -1695,6 +1709,10 @@ sub update_passwd {
 
         } elsif( $api =~ /email/o ) {
             $db_user->email($new_val);
+            $at_event++;
+
+        } elsif( $api =~ /locale/o ) {
+            $db_user->locale($new_val);
             $at_event++;
         }
     }

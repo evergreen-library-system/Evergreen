@@ -212,6 +212,17 @@ CREATE TABLE action_trigger.event_definition (
     CONSTRAINT ev_def_name_owner_once UNIQUE (owner, name)
 );
 
+CREATE TABLE action_trigger.alternate_template (
+    id               SERIAL,
+    event_def        INTEGER REFERENCES action_trigger.event_definition(id) INITIALLY DEFERRED,
+    template         TEXT,
+    active           BOOLEAN DEFAULT TRUE,
+    locale           TEXT REFERENCES config.i18n_locale(code) INITIALLY DEFERRED,
+    message_title    TEXT,
+    message_template TEXT,
+    UNIQUE (event_def,locale)
+);
+
 CREATE OR REPLACE FUNCTION action_trigger.check_valid_retention_interval() 
     RETURNS TRIGGER AS $_$
 BEGIN
@@ -263,7 +274,8 @@ CREATE TABLE action_trigger.event_output (
     id              BIGSERIAL   PRIMARY KEY,
     create_time     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     is_error        BOOLEAN     NOT NULL DEFAULT FALSE,
-    data            TEXT        NOT NULL
+    data            TEXT        NOT NULL,
+    locale          TEXT
 );
 
 CREATE TABLE action_trigger.event (
