@@ -60,6 +60,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     cellTextGenerator: GridCellTextGenerator;
     rowClassCallback: (row: any) => string;
     rowFlairCallback: (row: any) => GridRowFlairEntry;
+    cellClassCallback: (row: any, col: GridColumn) => string;
 
     nowTime: number = new Date().getTime();
 
@@ -95,6 +96,16 @@ export class BillsComponent implements OnInit, AfterViewInit {
     ) {}
 
     ngOnInit() {
+
+        this.cellClassCallback = (row: any, col: GridColumn): string => {
+            if (col.name === 'paymentPending') {
+                const val = this.billGrid.context.getRowColumnBareValue(row, col);
+                if (val < 0) {
+                    return 'bg-warning p-1';
+                }
+            }
+            return '';
+        }
 
         this.cellTextGenerator = {
             title: row => row.title,
@@ -188,7 +199,10 @@ export class BillsComponent implements OnInit, AfterViewInit {
         // Recaclulate the amount owed per selected transaction as the
         // grid rows selections change.
         this.billGrid.context.rowSelector.selectionChange
-        .subscribe(_ => this.updatePendingColumn());
+        .subscribe(_ => {
+            this.refunding = false;
+            this.updatePendingColumn();
+        });
 
         this.focusPayAmount();
     }
@@ -400,6 +414,9 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
         // Reset...
         this.gridDataSource.data.forEach(row => row.paymentPending = 0);
+
+        // No actions pending.  Reset and exit.
+        if (!this.paymentAmount && !this.refunding) { return; }
 
         let amount = this.pendingPayment();
         let done = false;
@@ -617,6 +634,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
             if (!confirmed) { return; }
             this.refunding = true; // clearen in applyPayment()
             this.paymentAmount = null;
+            this.updatePendingColumn();
         });
     }
 

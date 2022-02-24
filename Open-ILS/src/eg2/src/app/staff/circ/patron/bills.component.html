@@ -169,6 +169,7 @@
 <eg-grid #billGrid idlClass="mbt" [dataSource]="gridDataSource"
   persistKey="circ.patron.bills" [sortable]="true" 
   (onRowActivate)="showStatement($event)"
+  [cellClassCallback]="cellClassCallback"
   [reloadOnColumnChange]="true"
   [showDeclaredFieldsOnly]="true"
   [rowClassCallback]="rowClassCallback"
