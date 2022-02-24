@@ -354,7 +354,10 @@ export class BillsComponent implements OnInit, AfterViewInit {
         const payments = [];
         this.gridDataSource.data.forEach(row => {
             if (row.paymentPending) {
-                payments.push([row.id, row.paymentPending]);
+                // NOTE passing the pending payment amount as a string
+                // instead of a number bypasses some funky rounding
+                // errors on the server side.
+                payments.push([row.id, row.paymentPending.toFixed(2)]);
             }
         });
         return payments;
@@ -551,9 +554,10 @@ export class BillsComponent implements OnInit, AfterViewInit {
         const billIds = [];
         let cents = 0;
 
-        from(xactIds)
+        console.debug('Voiding transactions', xactIds);
+
         // Grab the billings
-        .pipe(concatMap(xactId => {
+        from(xactIds).pipe(concatMap(xactId => {
             return this.pcrud.search('mb', {xact: xactId}, {}, {authoritative: true})
             .pipe(tap(billing => {
                 if (billing.voided() === 'f') {
@@ -561,24 +565,27 @@ export class BillsComponent implements OnInit, AfterViewInit {
                     billIds.push(billing.id());
                 }
             }));
-        }))
+        })).toPromise()
+
         // Confirm the void action
-        .pipe(concatMap(_ => {
+        .then(_ => {
             this.voidAmount = cents / 100;
-            return this.voidBillsDialog.open();
-        }))
+            return this.voidBillsDialog.open().toPromise();
+        })
+
         // Do the void
-        .pipe(concatMap(confirmed => {
+        .then(confirmed => {
             if (!confirmed) { return empty(); }
 
             return this.net.requestWithParamList(
                 'open-ils.circ',
                 'open-ils.circ.money.billing.void',
                 [this.auth.token()].concat(billIds) // positional params
-            );
-        }))
+            ).toPromise();
+        })
+
         // Clean up and refresh data
-        .subscribe(resp => {
+        .then(resp => {
             if (!resp || this.reportError(resp)) { return; }
 
             this.sessionVoided = (this.sessionVoided * 100 + cents) / 100;
