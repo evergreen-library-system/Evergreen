@@ -36,7 +36,6 @@ export class PatronComponent implements OnInit, AfterViewInit {
     showSummary = true;
     loading = true;
     showRecentPatrons = false;
-    refreshing = false;
 
     /* eg-patron-edit is unable to find #editorToolbar directly
      * within the template.  Adding a ref here allows it to
@@ -120,21 +119,14 @@ export class PatronComponent implements OnInit, AfterViewInit {
 
     watchForTabChange() {
 
-        // When routing to a patron UI from a non-patron UI, refresh the
-        // patron's data so we pick up an external changes (e.g. holds
-        // placement).  This is needed because the last active patron,
-        // if one exists, will still be cached in the patron service,
-        // which survives route changes.  Route events occur in series
-        // and often repeat, though, so avoid refreshing the patron if
-        // we are already mid-refresh.
+        // When routing to a patron UI from a non-patron UI, clear all
+        // patron info that may have persisted via the context service.
         this.router.events
             .pipe(filter((evt: any) => evt instanceof RoutesRecognized), pairwise())
             .subscribe((events: RoutesRecognized[]) => {
-                const prevUrl = events[0].urlAfterRedirects;
-
-                if (!prevUrl.startsWith('/staff/circ/patron') && !this.refreshing) {
-                    this.refreshing = true;
-                    this.context.refreshPatron().then(_ => this.refreshing = false);
+                const prevUrl = events[0].urlAfterRedirects || '';
+                if (!prevUrl.startsWith('/staff/circ/patron')) {
+                    this.context.reset();
                 }
             });
 

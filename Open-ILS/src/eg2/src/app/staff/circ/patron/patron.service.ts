@@ -72,6 +72,14 @@ export class PatronContextService {
         public patrons: PatronService
     ) {}
 
+    reset() {
+        this.summary = null;
+        this.loaded = false;
+        this.lastPatronSearch = null;
+        this.searchBarcode = null;
+        this.checkouts = [];
+    }
+
     loadPatron(id: number): Promise<any> {
         this.loaded = false;
         this.checkouts = [];
@@ -83,7 +91,7 @@ export class PatronContextService {
 
         if (!id) {
             if (!this.summary) {
-                return Promise.reject('no can do');
+                return Promise.resolve();
             } else {
                 id = this.summary.id;
             }
