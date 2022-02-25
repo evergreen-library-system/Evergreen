@@ -262,7 +262,7 @@
     [hidden]="true" label="Bill #" i18n-label> </eg-grid-column>
 
   <eg-grid-column path="xact_start" datatype="timestamp" [datePlusTime]="true"
-    [hidden]="true" label="Start" i18n-label></eg-grid-column>
+    [required]="true" [hidden]="true" label="Start" i18n-label></eg-grid-column>
 
   <eg-grid-column name="last_billing_type" path="summary.last_billing_type" 
     [hidden]="true" [required]="true" label="Last Billing Type" i18n-label></eg-grid-column>
