@@ -204,12 +204,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     }
 
     deleteSelectedMaterials(items) {
-        const deleteRequest$ = [];
-        items.forEach(item => {
-            deleteRequest$.push(this.net.request(
-                'open-ils.courses', 'open-ils.courses.detach_material',
-                this.auth.token(), item.id()));
-        });
+        let deleteRequest$ = this.course.detachMaterials(items);
         merge(...deleteRequest$).subscribe(
             val => {
                 this.materialDeleteSuccessString.current().then(str => this.toast.success(str));
