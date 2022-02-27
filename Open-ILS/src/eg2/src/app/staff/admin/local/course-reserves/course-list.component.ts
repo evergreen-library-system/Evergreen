@@ -39,6 +39,8 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     @ViewChild('archiveSuccessString', { static: true }) archiveSuccessString: StringComponent;
     @ViewChild('unarchiveFailedString', { static: true }) unarchiveFailedString: StringComponent;
     @ViewChild('unarchiveSuccessString', { static: true }) unarchiveSuccessString: StringComponent;
+    @ViewChild('duplicateFailedString', { static: true }) duplicateFailedString: StringComponent;
+    @ViewChild('duplicateSuccessString', { static: true }) duplicateSuccessString: StringComponent;
     @ViewChild('courseMaterialDialog', {static: true})
         private courseMaterialDialog: CourseAssociateMaterialComponent;
     @ViewChild('courseUserDialog', {static: true})
@@ -210,6 +212,26 @@ export class CourseListComponent implements OnInit, AfterViewInit {
                 this.grid.reload();
             }
         );
+    }
+
+    duplicateSelected(course: IdlObject[]) {
+        let new_course = this.idl.create('acmc');;
+        course.forEach(courseToCopy => {
+            new_course.name(courseToCopy.name());
+            new_course.course_number(courseToCopy.course_number());
+            new_course.section_number(courseToCopy.section_number());
+            new_course.owning_lib(courseToCopy.owning_lib());
+            new_course.is_archived(courseToCopy.is_archived());
+            this.pcrud.create(new_course).subscribe(val => {
+                console.debug('duplicated: ' + val);
+                this.duplicateSuccessString.current()
+                    .then(str => this.toast.success(str));
+            }, err => {
+                this.duplicateFailedString.current()
+                    .then(str => this.toast.danger(str));
+            }, () => this.grid.reload()
+            );
+        });
     }
 
     deleteSelected(idlObject: IdlObject[]) {

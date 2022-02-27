@@ -9,6 +9,8 @@
 <eg-string #archiveSuccessString i18n-text text="Archiving of {{tableName}} succeeded"></eg-string>
 <eg-string #unarchiveFailedString i18n-text text="Unarchiving of {{tableName}} failed or was not allowed"></eg-string>
 <eg-string #unarchiveSuccessString i18n-text text="Unarchiving of {{tableName}} succeeded"></eg-string>
+<eg-string #duplicateFailedString i18n-text text="Duplication of {{tableName}} failed or was not allowed"></eg-string>
+<eg-string #duplicateSuccessString i18n-text text="Duplication of {{tableName}} succeeded"></eg-string>
 <eg-string #flairTooltip i18n-text text="Limited Editing"></eg-string>
 
 <ul ngbNav #courseListNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
@@ -41,6 +43,8 @@
           <eg-grid-toolbar-action label="Archive Selected" i18n-label (onClick)="archiveSelected($event)" [disabled]="is_archived">
           </eg-grid-toolbar-action>
           <eg-grid-toolbar-action label="Reopen Selected" i18n-label (onClick)="unarchiveSelected($event)" [disabled]="!is_archived">
+          </eg-grid-toolbar-action>
+          <eg-grid-toolbar-action label="Duplicate Selected" i18n-label (onClick)="duplicateSelected($event)">
           </eg-grid-toolbar-action>
           <eg-grid-column label="ID" path="id" [index]=true [hidden]="true" i18n-label></eg-grid-column>
           <eg-grid-column label="Terms taught" name="terms_map" i18n-label [cellTemplate]="termMapLink"></eg-grid-column>
