@@ -157,6 +157,8 @@ export class CourseService {
     }
 
     disassociateMaterials(courses) {
+        const deleteRequest$ = [];
+
         return new Promise((resolve, reject) => {
             const course_ids = [];
             const course_library_hash = {};
@@ -164,21 +166,34 @@ export class CourseService {
                 course_ids.push(course.id());
                 course_library_hash[course.id()] = course.owning_lib();
             });
-            this.pcrud.search('acmcm', {course: course_ids}).subscribe(material => {
-                material.isdeleted(true);
-                this.resetItemFields(material, course_library_hash[material.course()]);
-                this.pcrud.autoApply(material).subscribe(() => {
-                }, err => {
-                    reject(err);
-                }, () => {
-                    resolve(material);
-                });
+
+            this.pcrud.retrieveAll('acmcm', {course: course_ids}).subscribe(material => {
+                deleteRequest$.push(this.net.request(
+                  'open-ils.courses', 'open-ils.courses.detach_material',
+                  this.auth.token(), material.id()));
             }, err => {
                 reject(err);
             }, () => {
-                resolve(courses);
+                merge(...deleteRequest$).subscribe(val => {
+                    console.log(val);
+                }, err => {
+                    reject(err);
+                }, () => {
+                    resolve(courses);
+                });
             });
         });
+    }
+
+    detachMaterials(materials) {
+        const deleteRequest$ = [];
+        materials.forEach(material => {
+            deleteRequest$.push(this.net.request(
+                'open-ils.courses', 'open-ils.courses.detach_material',
+                this.auth.token(), material.id()));
+        });
+
+        return deleteRequest$;
     }
 
     disassociateUsers(user) {
@@ -203,28 +218,6 @@ export class CourseService {
             }, () => {
                 resolve(user_ids);
             });
-        });
-    }
-
-    resetItemFields(material, course_lib) {
-        this.pcrud.retrieve('acp', material.item(),
-            {flesh: 3, flesh_fields: {acp: ['call_number']}}).subscribe(copy => {
-            if (material.original_status()) {
-                copy.status(material.original_status());
-            }
-            if (copy.circ_modifier() !== material.original_circ_modifier()) {
-                copy.circ_modifier(material.original_circ_modifier());
-            }
-            if (material.original_location()) {
-                copy.location(material.original_location());
-            }
-            if (material.original_callnumber()) {
-                this.pcrud.retrieve('acn', material.original_callnumber()).subscribe(cn => {
-                    this.updateItem(copy, course_lib, cn.label(), true);
-                });
-            } else {
-                this.updateItem(copy, course_lib, copy.call_number().label(), false);
-            }
         });
     }
 
