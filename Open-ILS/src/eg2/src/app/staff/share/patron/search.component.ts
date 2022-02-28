@@ -73,6 +73,9 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
     // any searches run as a result of @Input() startWithSearch.
     @Output() searchFired: EventEmitter<PatronSearch>;
 
+    // Fired when the search form is cleared via the Clear Form button.
+    @Output() formCleared: EventEmitter<void> = new EventEmitter<void>();
+
     search: any = {};
     searchOrg: IdlObject;
     expandForm: boolean;
@@ -159,6 +162,8 @@ export class PatronSearchComponent implements OnInit, AfterViewInit {
 
     clear() {
         this.search = {profile: null};
+        this.searchGrid.reload();
+        this.formCleared.emit();
     }
 
     getRows(pager: Pager, sort: any[]): Observable<any> {

@@ -229,6 +229,7 @@
                 [patronIds]="recentPatronIds()"
                 [startWithSearch]="context.lastPatronSearch"
                 (searchFired)="patronSearchFired($event)"
+                (formCleared)="patronSearchCleared()"
                 (selectionChange)="patronSelectionChange($event)"
                 (patronsActivated)="patronsActivated($event)">
               </eg-patron-search> 

@@ -358,5 +358,10 @@ export class PatronComponent implements OnInit, AfterViewInit {
             return 0;
         }
     }
+
+    patronSearchCleared() {
+        this.context.summary = null;
+        this.patronId = null;
+    }
 }
 
