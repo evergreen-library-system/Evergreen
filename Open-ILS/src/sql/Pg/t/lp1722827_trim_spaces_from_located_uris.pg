@@ -21,13 +21,13 @@ UPDATE biblio.record_entry SET marc = REPLACE(marc,'<subfield code="9">CONS</sub
 SELECT is (
 	(SELECT COUNT(id) FROM asset.call_number WHERE record = 248 AND deleted = FALSE AND label = '##URI##')::INTEGER,
 	1::INTEGER,
-	'part 1/2 test for URI creation with spaces, new one should exist despite spaces being added'
+	'part 1/2 test for URI creation with spaces, one should still exist despite spaces being added'
 );
 
 SELECT is (
 	(SELECT COUNT(id) FROM asset.call_number WHERE record = 248 AND deleted = TRUE AND label = '##URI##')::INTEGER,
-	1::INTEGER,
-	'part 2/2 test for URI creation with spaces, old URI tag should be deleted now'
+	0::INTEGER,
+	'part 2/2 test for URI creation with spaces, old URI tag should not be deleted as the OU mapping did not change'
 );
 
 SELECT * FROM finish();
