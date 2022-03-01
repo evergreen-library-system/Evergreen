@@ -559,7 +559,7 @@
 
     <!-- entries along the right side of the navbar -->
     <ul class="nav navbar-nav navbar-right" style='margin-right: 6px;'>
-      <li>
+      <li class="hidden-sm">
         <a ng-cloak ng-show="username" title="{{currentToken()}}"
           ng-init="workstation = '[% l('<no workstation>') %]'">
             {{username}} @ {{workstation}}
