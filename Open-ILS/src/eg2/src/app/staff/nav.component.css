@@ -69,3 +69,10 @@
     align-items: center;
 }
 
+/* Hide the username@workstation if the screen is too narrow.
+Based on the hidden-sm class selector in Bootstrap. */
+@media (max-width: 991px) {
+    .navbar-user {
+        display: none !important
+    }
+}

@@ -405,7 +405,7 @@
 
 
     <div class="navbar-nav mr-auto"></div>
-    <div class="navbar-nav" *ngIf="user()">
+    <div class="navbar-nav navbar-user" *ngIf="user()">
       <span i18n>{{user()}} @ {{workstation()}}</span>
     </div>
     <div class="navbar-nav" *ngIf="locales.length > 1 && currentLocale">
