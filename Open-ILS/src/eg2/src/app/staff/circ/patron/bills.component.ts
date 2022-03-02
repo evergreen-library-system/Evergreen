@@ -67,6 +67,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
     @ViewChild('billGrid') private billGrid: GridComponent;
     @ViewChild('annotateDialog') private annotateDialog: PromptDialogComponent;
     @ViewChild('maxPayDialog') private maxPayDialog: AlertDialogComponent;
+    @ViewChild('errorDialog') private errorDialog: AlertDialogComponent;
     @ViewChild('warnPayDialog') private warnPayDialog: ConfirmDialogComponent;
     @ViewChild('voidBillsDialog') private voidBillsDialog: ConfirmDialogComponent;
     @ViewChild('refundDialog') private refundDialog: ConfirmDialogComponent;
@@ -628,6 +629,8 @@ export class BillsComponent implements OnInit, AfterViewInit {
             console.error(evt + '');
             console.error(evt);
             this.toast.danger(evt + '');
+            this.errorDialog.dialogBody = evt.toString();
+            this.errorDialog.open().toPromise();
             return true;
         }
         return false;
