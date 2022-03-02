@@ -343,7 +343,10 @@ export class BillsComponent implements OnInit, AfterViewInit {
             this.focusPayAmount();
         })
 
-        .catch(msg => console.debug('Payment Canceled:', msg))
+        .catch(msg => {
+            this.reportError(msg);
+            console.debug('Payment Canceled or Failed:', msg)
+        })
         .finally(() => {
             this.applyingPayment = false;
             this.refunding = false;
