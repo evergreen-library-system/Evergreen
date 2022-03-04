@@ -1038,11 +1038,11 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( 
+CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries(
     bib_id BIGINT,
-    skip_facet BOOL DEFAULT FALSE, 
+    skip_facet BOOL DEFAULT FALSE,
     skip_display BOOL DEFAULT FALSE,
-    skip_browse BOOL DEFAULT FALSE, 
+    skip_browse BOOL DEFAULT FALSE,
     skip_search BOOL DEFAULT FALSE,
     only_fields INT[] DEFAULT '{}'::INT[]
 ) RETURNS VOID AS $func$
@@ -1078,24 +1078,23 @@ BEGIN
     IF NOT FOUND THEN
         IF NOT b_skip_search THEN
             FOR fclass IN SELECT * FROM config.metabib_class LOOP
-                -- RAISE NOTICE 'Emptying out %', fclass.name;
-                EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || bib_id;
+                EXECUTE $$DELETE FROM metabib.$$ || fclass.name || $$_field_entry WHERE source = $$ || bib_id || $$ AND field = ANY($1)$$ USING field_list;
             END LOOP;
         END IF;
         IF NOT b_skip_facet THEN
-            DELETE FROM metabib.facet_entry WHERE source = bib_id;
+            DELETE FROM metabib.facet_entry WHERE source = bib_id AND field = ANY(field_list);
         END IF;
         IF NOT b_skip_display THEN
-            DELETE FROM metabib.display_entry WHERE source = bib_id;
+            DELETE FROM metabib.display_entry WHERE source = bib_id AND field = ANY(field_list);
         END IF;
         IF NOT b_skip_browse THEN
-            DELETE FROM metabib.browse_entry_def_map WHERE source = bib_id;
+            DELETE FROM metabib.browse_entry_def_map WHERE source = bib_id AND def = ANY(field_list);
         END IF;
     END IF;
 
     FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id, ' ', field_types, field_list ) LOOP
 
-	-- don't store what has been normalized away
+        -- don't store what has been normalized away
         CONTINUE WHEN ind_data.value IS NULL;
 
         IF ind_data.field < 0 THEN
@@ -1124,23 +1123,20 @@ BEGIN
             CONTINUE WHEN ind_data.sort_value IS NULL;
 
             value_prepped := metabib.browse_normalize(ind_data.value, ind_data.field);
-            IF ind_data.browse_nocase THEN
+            IF ind_data.browse_nocase THEN -- for "nocase" browse definions, look for a preexisting row that matches case-insensitively on value and use that
                 SELECT INTO mbe_row * FROM metabib.browse_entry
                     WHERE evergreen.lowercase(value) = evergreen.lowercase(value_prepped) AND sort_value = ind_data.sort_value
                     ORDER BY sort_value, value LIMIT 1; -- gotta pick something, I guess
-            ELSE
-                SELECT INTO mbe_row * FROM metabib.browse_entry
-                    WHERE value = value_prepped AND sort_value = ind_data.sort_value;
             END IF;
 
-            IF FOUND THEN
+            IF mbe_row.id IS NOT NULL THEN -- asked to check for, and found, a "nocase" version to use
                 mbe_id := mbe_row.id;
-            ELSE
+            ELSE -- otherwise, an UPSERT-protected variant
                 INSERT INTO metabib.browse_entry
                     ( value, sort_value ) VALUES
-                    ( value_prepped, ind_data.sort_value );
-
-                mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
+                    ( value_prepped, ind_data.sort_value )
+                  ON CONFLICT (sort_value, value) DO UPDATE SET sort_value = EXCLUDED.sort_value -- must update a row to return an existing id
+                  RETURNING id INTO mbe_id;
             END IF;
 
             INSERT INTO metabib.browse_entry_def_map (entry, def, source, authority)
@@ -1697,7 +1693,7 @@ BEGIN
         norm_attr_value := '{}'::TEXT[];
         attr_vector_tmp := '{}'::INT[];
 
-        SELECT * INTO ccvm_row FROM config.coded_value_map c WHERE c.ctype = attr_def.name LIMIT 1; 
+        SELECT * INTO ccvm_row FROM config.coded_value_map c WHERE c.ctype = attr_def.name LIMIT 1;
 
         IF attr_def.tag IS NOT NULL THEN -- tag (and optional subfield list) selection
             SELECT  ARRAY_AGG(value) INTO attr_value
@@ -1705,7 +1701,7 @@ BEGIN
               WHERE record = rid
                     AND tag LIKE attr_def.tag
                     AND CASE
-                        WHEN attr_def.sf_list IS NOT NULL 
+                        WHEN attr_def.sf_list IS NOT NULL
                             THEN POSITION(subfield IN attr_def.sf_list) > 0
                         ELSE TRUE
                     END
@@ -1730,7 +1726,7 @@ BEGIN
         IF NOT jump_past AND attr_def.xpath IS NOT NULL THEN -- and xpath expression
 
             SELECT INTO xfrm * FROM config.xml_transform WHERE name = attr_def.format;
-        
+
             -- See if we can skip the XSLT ... it's expensive
             IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
                 -- Can't skip the transform
@@ -1739,7 +1735,7 @@ BEGIN
                 ELSE
                     transformed_xml := rmarc;
                 END IF;
-    
+
                 prev_xfrm := xfrm.name;
             END IF;
 
@@ -1804,7 +1800,7 @@ BEGIN
                 norm_attr_value := norm_attr_value || tmp_val;
             END IF;
         END LOOP;
-        
+
         IF attr_def.filter THEN
             -- Create unknown uncontrolled values and find the IDs of the values
             IF ccvm_row.id IS NULL THEN
@@ -1842,7 +1838,7 @@ BEGIN
    requested attrs, and then add back the new
    set of attr values. */
 
-    IF ARRAY_LENGTH(pattr_list, 1) > 0 THEN 
+    IF ARRAY_LENGTH(pattr_list, 1) > 0 THEN
         SELECT vlist INTO attr_vector_tmp FROM metabib.record_attr_vector_list WHERE source = rid;
         SELECT attr_vector_tmp - ARRAY_AGG(id::INT) INTO attr_vector_tmp FROM metabib.full_attr_id_map WHERE attr = ANY (pattr_list);
         attr_vector := attr_vector || attr_vector_tmp;
@@ -1877,94 +1873,225 @@ BEGIN
     END LOOP;
 
     IF ARRAY_LENGTH(attr_vector, 1) > 0 THEN
-        IF rdeleted THEN -- initial insert OR revivication
-            DELETE FROM metabib.record_attr_vector_list WHERE source = rid;
-            INSERT INTO metabib.record_attr_vector_list (source, vlist) VALUES (rid, attr_vector);
-        ELSE
-            UPDATE metabib.record_attr_vector_list SET vlist = attr_vector WHERE source = rid;
-        END IF;
+        INSERT INTO metabib.record_attr_vector_list (source, vlist) VALUES (rid, attr_vector)
+            ON CONFLICT (source) DO UPDATE SET vlist = EXCLUDED.vlist;
     END IF;
 
 END;
 
 $func$ LANGUAGE PLPGSQL;
 
-
--- AFTER UPDATE OR INSERT trigger for biblio.record_entry
-CREATE OR REPLACE FUNCTION biblio.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
+CREATE OR REPLACE FUNCTION metabib.indexing_delete (bib biblio.record_entry, extra TEXT DEFAULT NULL) RETURNS BOOL AS $func$
 DECLARE
     tmp_bool BOOL;
+    diag_detail     TEXT;
+    diag_context    TEXT;
+BEGIN
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.metarecord_mapping.preserve_on_delete' AND enabled;
+    tmp_bool := FOUND;
+
+    PERFORM metabib.remap_metarecord_for_bib(bib.id, bib.fingerprint, TRUE, tmp_bool);
+
+    IF NOT tmp_bool THEN
+        -- One needs to keep these around to support searches
+        -- with the #deleted modifier, so one should turn on the named
+        -- internal flag for that functionality.
+        DELETE FROM metabib.record_attr_vector_list WHERE source = bib.id;
+    END IF;
+
+    DELETE FROM authority.bib_linking WHERE bib = bib.id; -- Avoid updating fields in bibs that are no longer visible
+    DELETE FROM biblio.peer_bib_copy_map WHERE peer_record = bib.id; -- Separate any multi-homed items
+    DELETE FROM metabib.browse_entry_def_map WHERE source = bib.id; -- Don't auto-suggest deleted bibs
+
+    RETURN TRUE;
+EXCEPTION WHEN OTHERS THEN
+    GET STACKED DIAGNOSTICS diag_detail  = PG_EXCEPTION_DETAIL,
+                            diag_context = PG_EXCEPTION_CONTEXT;
+    RAISE WARNING '%\n%', diag_detail, diag_context;
+    RETURN FALSE;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION metabib.indexing_update (bib biblio.record_entry, insert_only BOOL DEFAULT FALSE, extra TEXT DEFAULT NULL) RETURNS BOOL AS $func$
+DECLARE
+    skip_facet   BOOL   := FALSE;
+    skip_display BOOL   := FALSE;
+    skip_browse  BOOL   := FALSE;
+    skip_search  BOOL   := FALSE;
+    skip_auth    BOOL   := FALSE;
+    skip_full    BOOL   := FALSE;
+    skip_attrs   BOOL   := FALSE;
+    skip_luri    BOOL   := FALSE;
+    skip_mrmap   BOOL   := FALSE;
+    only_attrs   TEXT[] := NULL;
+    only_fields  INT[]  := '{}'::INT[];
+    diag_detail     TEXT;
+    diag_context    TEXT;
 BEGIN
 
-    IF NEW.deleted THEN -- If this bib is deleted
-
-        PERFORM * FROM config.internal_flag WHERE
-            name = 'ingest.metarecord_mapping.preserve_on_delete' AND enabled;
-
-        tmp_bool := FOUND; -- Just in case this is changed by some other statement
-
-        PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint, TRUE, tmp_bool );
-
-        IF NOT tmp_bool THEN
-            -- One needs to keep these around to support searches
-            -- with the #deleted modifier, so one should turn on the named
-            -- internal flag for that functionality.
-            DELETE FROM metabib.record_attr_vector_list WHERE source = NEW.id;
-        END IF;
-
-        DELETE FROM authority.bib_linking WHERE bib = NEW.id; -- Avoid updating fields in bibs that are no longer visible
-        DELETE FROM biblio.peer_bib_copy_map WHERE peer_record = NEW.id; -- Separate any multi-homed items
-        DELETE FROM metabib.browse_entry_def_map WHERE source = NEW.id; -- Don't auto-suggest deleted bibs
-        RETURN NEW; -- and we're done
-    END IF;
-
-    IF TG_OP = 'UPDATE' AND OLD.deleted IS FALSE THEN -- re-ingest?
-        PERFORM * FROM config.internal_flag WHERE name = 'ingest.reingest.force_on_same_marc' AND enabled;
-
-        IF NOT FOUND AND OLD.marc = NEW.marc THEN -- don't do anything if the MARC didn't change
-            RETURN NEW;
-        END IF;
-    END IF;
-
     -- Record authority linking
+    SELECT extra LIKE '%skip_authority%' INTO skip_auth;
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_linking' AND enabled;
-    IF NOT FOUND THEN
-        PERFORM biblio.map_authority_linking( NEW.id, NEW.marc );
+    IF NOT FOUND AND NOT skip_auth THEN
+        PERFORM biblio.map_authority_linking( bib.id, bib.marc );
     END IF;
 
     -- Flatten and insert the mfr data
+    SELECT extra LIKE '%skip_full_rec%' INTO skip_full;
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_metabib_full_rec' AND enabled;
-    IF NOT FOUND THEN
-        PERFORM metabib.reingest_metabib_full_rec(NEW.id);
+    IF NOT FOUND AND NOT skip_full THEN
+        PERFORM metabib.reingest_metabib_full_rec(bib.id);
+    END IF;
 
-        -- Now we pull out attribute data, which is dependent on the mfr for all but XPath-based fields
-        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_metabib_rec_descriptor' AND enabled;
-        IF NOT FOUND THEN
-            PERFORM metabib.reingest_record_attributes(NEW.id, NULL, NEW.marc, TG_OP = 'INSERT' OR OLD.deleted);
+    -- Now we pull out attribute data, which is dependent on the mfr for all but XPath-based fields
+    SELECT extra LIKE '%skip_attrs%' INTO skip_attrs;
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_metabib_rec_descriptor' AND enabled;
+    IF NOT FOUND AND NOT skip_attrs THEN
+        IF extra ~ 'attr\(\s*(\w[ ,\w]*?)\s*\)' THEN
+            SELECT REGEXP_SPLIT_TO_ARRAY(
+                (REGEXP_MATCHES(extra, 'attr\(\s*(\w[ ,\w]*?)\s*\)'))[1],
+                '\s*,\s*'
+            ) INTO only_attrs;
         END IF;
+
+        PERFORM metabib.reingest_record_attributes(bib.id, only_attrs, bib.marc, insert_only);
     END IF;
 
     -- Gather and insert the field entry data
-    PERFORM metabib.reingest_metabib_field_entries(NEW.id);
+    SELECT extra LIKE '%skip_facet%' INTO skip_facet;
+    SELECT extra LIKE '%skip_display%' INTO skip_display;
+    SELECT extra LIKE '%skip_browse%' INTO skip_browse;
+    SELECT extra LIKE '%skip_search%' INTO skip_search;
+
+    IF extra ~ 'field_list\(\s*(\d[ ,\d]+)\s*\)' THEN
+        SELECT REGEXP_SPLIT_TO_ARRAY(
+            (REGEXP_MATCHES(extra, 'field_list\(\s*(\d[ ,\d]+)\s*\)'))[1],
+            '\s*,\s*'
+        )::INT[] INTO only_fields;
+    END IF;
+
+    IF NOT skip_facet OR NOT skip_display OR NOT skip_browse OR NOT skip_search THEN
+        PERFORM metabib.reingest_metabib_field_entries(bib.id, skip_facet, skip_display, skip_browse, skip_search, only_fields);
+    END IF;
 
     -- Located URI magic
+    SELECT extra LIKE '%skip_luri%' INTO skip_luri;
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_located_uri' AND enabled;
-    IF NOT FOUND THEN PERFORM biblio.extract_located_uris( NEW.id, NEW.marc, NEW.editor ); END IF;
+    IF NOT FOUND AND NOT skip_luri THEN PERFORM biblio.extract_located_uris( bib.id, bib.marc, bib.editor ); END IF;
 
     -- (re)map metarecord-bib linking
-    IF TG_OP = 'INSERT' THEN -- if not deleted and performing an insert, check for the flag
+    SELECT extra LIKE '%skip_mrmap%' INTO skip_mrmap;
+    IF insert_only THEN -- if not deleted and performing an insert, check for the flag
         PERFORM * FROM config.internal_flag WHERE name = 'ingest.metarecord_mapping.skip_on_insert' AND enabled;
-        IF NOT FOUND THEN
-            PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint );
+        IF NOT FOUND AND NOT skip_mrmap THEN
+            PERFORM metabib.remap_metarecord_for_bib( bib.id, bib.fingerprint );
         END IF;
     ELSE -- we're doing an update, and we're not deleted, remap
         PERFORM * FROM config.internal_flag WHERE name = 'ingest.metarecord_mapping.skip_on_update' AND enabled;
-        IF NOT FOUND THEN
-            PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint );
+        IF NOT FOUND AND NOT skip_mrmap THEN
+            PERFORM metabib.remap_metarecord_for_bib( bib.id, bib.fingerprint );
         END IF;
     END IF;
 
-    RETURN NEW;
+    RETURN TRUE;
+EXCEPTION WHEN OTHERS THEN
+    GET STACKED DIAGNOSTICS diag_detail  = PG_EXCEPTION_DETAIL,
+                            diag_context = PG_EXCEPTION_CONTEXT;
+    RAISE WARNING '%\n%', diag_detail, diag_context;
+    RETURN FALSE;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION authority.indexing_delete (auth authority.record_entry, extra TEXT DEFAULT NULL) RETURNS BOOL AS $func$
+DECLARE
+    tmp_bool BOOL;
+    diag_detail     TEXT;
+    diag_context    TEXT;
+BEGIN
+    DELETE FROM authority.bib_linking WHERE authority = NEW.id; -- Avoid updating fields in bibs that are no longer visible
+    DELETE FROM authority.full_rec WHERE record = NEW.id; -- Avoid validating fields against deleted authority records
+    DELETE FROM authority.simple_heading WHERE record = NEW.id;
+      -- Should remove matching $0 from controlled fields at the same time?
+
+    -- XXX What do we about the actual linking subfields present in
+    -- authority records that target this one when this happens?
+    DELETE FROM authority.authority_linking WHERE source = NEW.id OR target = NEW.id;
+
+    RETURN TRUE;
+EXCEPTION WHEN OTHERS THEN
+    GET STACKED DIAGNOSTICS diag_detail  = PG_EXCEPTION_DETAIL,
+                            diag_context = PG_EXCEPTION_CONTEXT;
+    RAISE WARNING '%\n%', diag_detail, diag_context;
+    RETURN FALSE;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION authority.indexing_update (auth authority.record_entry, insert_only BOOL DEFAULT FALSE, old_heading TEXT DEFAULT NULL) RETURNS BOOL AS $func$
+DECLARE
+    ashs    authority.simple_heading%ROWTYPE;
+    mbe_row metabib.browse_entry%ROWTYPE;
+    mbe_id  BIGINT;
+    ash_id  BIGINT;
+    diag_detail     TEXT;
+    diag_context    TEXT;
+BEGIN
+
+    -- Unless there's a setting stopping us, propagate these updates to any linked bib records when the heading changes
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_auto_update' AND enabled;
+
+    IF NOT FOUND AND auth.heading <> old_heading THEN
+        PERFORM authority.propagate_changes(auth.id);
+    END IF;
+
+    IF NOT insert_only THEN
+        DELETE FROM authority.authority_linking WHERE source = auth.id;
+        DELETE FROM authority.simple_heading WHERE record = auth.id;
+    END IF;
+
+    INSERT INTO authority.authority_linking (source, target, field)
+        SELECT source, target, field FROM authority.calculate_authority_linking(
+            auth.id, auth.control_set, auth.marc::XML
+        );
+
+    FOR ashs IN SELECT * FROM authority.simple_heading_set(auth.marc) LOOP
+
+        INSERT INTO authority.simple_heading (record,atag,value,sort_value,thesaurus)
+            VALUES (ashs.record, ashs.atag, ashs.value, ashs.sort_value, ashs.thesaurus);
+            ash_id := CURRVAL('authority.simple_heading_id_seq'::REGCLASS);
+
+        SELECT INTO mbe_row * FROM metabib.browse_entry
+            WHERE value = ashs.value AND sort_value = ashs.sort_value;
+
+        IF FOUND THEN
+            mbe_id := mbe_row.id;
+        ELSE
+            INSERT INTO metabib.browse_entry
+                ( value, sort_value ) VALUES
+                ( ashs.value, ashs.sort_value );
+
+            mbe_id := CURRVAL('metabib.browse_entry_id_seq'::REGCLASS);
+        END IF;
+
+        INSERT INTO metabib.browse_entry_simple_heading_map (entry,simple_heading) VALUES (mbe_id,ash_id);
+
+    END LOOP;
+
+    -- Flatten and insert the afr data
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_full_rec' AND enabled;
+    IF NOT FOUND THEN
+        PERFORM authority.reingest_authority_full_rec(auth.id);
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_rec_descriptor' AND enabled;
+        IF NOT FOUND THEN
+            PERFORM authority.reingest_authority_rec_descriptor(auth.id);
+        END IF;
+    END IF;
+
+    RETURN TRUE;
+EXCEPTION WHEN OTHERS THEN
+    GET STACKED DIAGNOSTICS diag_detail  = PG_EXCEPTION_DETAIL,
+                            diag_context = PG_EXCEPTION_CONTEXT;
+    RAISE WARNING '%\n%', diag_detail, diag_context;
+    RETURN FALSE;
 END;
 $func$ LANGUAGE PLPGSQL;
 

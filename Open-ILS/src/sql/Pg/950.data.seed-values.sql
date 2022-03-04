@@ -23170,3 +23170,105 @@ VALUES (
     )
 );
 
+INSERT INTO config.global_flag (name, enabled, label) VALUES (
+    'ingest.queued.max_threads',  TRUE,
+    oils_i18n_gettext(
+        'ingest.queued.max_threads',
+        'Queued Ingest: Maximum number of database workers allowed for queued ingest processes',
+        'cgf',
+        'label'
+    )),(
+    'ingest.queued.abort_on_error',  FALSE,
+    oils_i18n_gettext(
+        'ingest.queued.abort_on_error',
+        'Queued Ingest: Abort transaction on ingest error rather than simply logging an error',
+        'cgf',
+        'label'
+    )),(
+    'ingest.queued.authority.propagate',  FALSE,
+    oils_i18n_gettext(
+        'ingest.queued.authority.propagate',
+        'Queued Ingest: Queue all bib record updates on authority change propagation, even if bib queuing is not generally enabled',
+        'cgf',
+        'label'
+    )),(
+    'ingest.queued.all',  FALSE,
+    oils_i18n_gettext(
+        'ingest.queued.all',
+        'Queued Ingest: Use Queued Ingest for all bib and authority record ingest',
+        'cgf',
+        'label'
+    )),(
+    'ingest.queued.biblio.all',  FALSE,
+    oils_i18n_gettext(
+        'ingest.queued.biblio.all',
+        'Queued Ingest: Use Queued Ingest for all bib record ingest',
+        'cgf',
+        'label'
+    )),(
+    'ingest.queued.authority.all',  FALSE,
+    oils_i18n_gettext(
+        'ingest.queued.authority.all',
+        'Queued Ingest: Use Queued Ingest for all authority record ingest',
+        'cgf',
+        'label'
+    )),(
+    'ingest.queued.biblio.insert.marc_edit_inline',  TRUE,
+    oils_i18n_gettext(
+        'ingest.queued.biblio.insert.marc_edit_inline',
+        'Queued Ingest: Do NOT use Queued Ingest when creating a new bib, or undeleting a bib, via the MARC editor',
+        'cgf',
+        'label'
+    )),(
+    'ingest.queued.biblio.insert',  FALSE,
+    oils_i18n_gettext(
+        'ingest.queued.biblio.insert',
+        'Queued Ingest: Use Queued Ingest for bib record ingest on insert and undelete',
+        'cgf',
+        'label'
+    )),(
+    'ingest.queued.authority.insert',  FALSE,
+    oils_i18n_gettext(
+        'ingest.queued.authority.insert',
+        'Queued Ingest: Use Queued Ingest for authority record ingest on insert and undelete',
+        'cgf',
+        'label'
+    )),(
+    'ingest.queued.biblio.update.marc_edit_inline',  TRUE,
+    oils_i18n_gettext(
+        'ingest.queued.biblio.update.marc_edit_inline',
+        'Queued Ingest: Do NOT Use Queued Ingest when editing bib records via the MARC Editor',
+        'cgf',
+        'label'
+    )),(
+    'ingest.queued.biblio.update',  FALSE,
+    oils_i18n_gettext(
+        'ingest.queued.biblio.update',
+        'Queued Ingest: Use Queued Ingest for bib record ingest on update',
+        'cgf',
+        'label'
+    )),(
+    'ingest.queued.authority.update',  FALSE,
+    oils_i18n_gettext(
+        'ingest.queued.authority.update',
+        'Queued Ingest: Use Queued Ingest for authority record ingest on update',
+        'cgf',
+        'label'
+    )),(
+    'ingest.queued.biblio.delete',  FALSE,
+    oils_i18n_gettext(
+        'ingest.queued.biblio.delete',
+        'Queued Ingest: Use Queued Ingest for bib record ingest on delete',
+        'cgf',
+        'label'
+    )),(
+    'ingest.queued.authority.delete',  FALSE,
+    oils_i18n_gettext(
+        'ingest.queued.authority.delete',
+        'Queued Ingest: Use Queued Ingest for authority record ingest on delete',
+        'cgf',
+        'label'
+    )
+);
+
+UPDATE config.global_flag SET value = '20' WHERE name = 'ingest.queued.max_threads';

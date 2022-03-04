@@ -1797,5 +1797,394 @@ CREATE TABLE action.batch_hold_event_map (
     hold                INT     NOT NULL REFERENCES action.hold_request (id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE action.ingest_queue (
+    id          SERIAL      PRIMARY KEY,
+    created     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    run_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    who         INT         REFERENCES actor.usr (id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+    start_time  TIMESTAMPTZ,
+    end_time    TIMESTAMPTZ,
+    threads     INT,
+    why         TEXT
+);
+
+CREATE TABLE action.ingest_queue_entry (
+    id          BIGSERIAL   PRIMARY KEY,
+    record      BIGINT      NOT NULL, -- points to a record id of the appropriate record_type
+    record_type TEXT        NOT NULL,
+    action      TEXT        NOT NULL,
+    run_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    state_data  TEXT        NOT NULL DEFAULT '',
+    queue       INT         REFERENCES action.ingest_queue (id) ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    override_by BIGINT      REFERENCES action.ingest_queue_entry (id) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
+    ingest_time TIMESTAMPTZ,
+    fail_time   TIMESTAMPTZ
+);
+CREATE UNIQUE INDEX record_pending_once ON action.ingest_queue_entry (record_type,record,state_data) WHERE ingest_time IS NULL AND override_by IS NULL;
+CREATE INDEX entry_override_by_idx ON action.ingest_queue_entry (override_by) WHERE override_by IS NOT NULL;
+
+CREATE OR REPLACE FUNCTION action.enqueue_ingest_entry (
+    record_id       BIGINT,
+    rtype           TEXT DEFAULT 'biblio',
+    when_to_run     TIMESTAMPTZ DEFAULT NOW(),
+    queue_id        INT  DEFAULT NULL,
+    ingest_action   TEXT DEFAULT 'update', -- will be the most common?
+    old_state_data  TEXT DEFAULT ''
+) RETURNS BOOL AS $F$
+DECLARE
+    new_entry       action.ingest_queue_entry%ROWTYPE;
+    prev_del_entry  action.ingest_queue_entry%ROWTYPE;
+    diag_detail     TEXT;
+    diag_context    TEXT;
+BEGIN
+
+    IF ingest_action = 'delete' THEN
+        -- first see if there is an outstanding entry
+        SELECT  * INTO prev_del_entry
+          FROM  action.ingest_queue_entry
+          WHERE qe.record = record_id
+                AND qe.state_date = old_state_data
+                AND qe.record_type = rtype
+                AND qe.ingest_time IS NULL
+                AND qe.override_by IS NULL;
+    END IF;
+
+    WITH existing_queue_entry_cte AS (
+        SELECT  queue_id AS queue,
+                rtype AS record_type,
+                record_id AS record,
+                qe.id AS override_by,
+                ingest_action AS action,
+                q.run_at AS run_at,
+                old_state_data AS state_data
+          FROM  action.ingest_queue_entry qe
+                JOIN action.ingest_queue q ON (qe.queue = q.id)
+          WHERE qe.record = record_id
+                AND q.end_time IS NULL
+                AND qe.record_type = rtype
+                AND qe.state_data = old_state_data
+                AND qe.ingest_time IS NULL
+                AND qe.fail_time IS NULL
+                AND qe.override_by IS NULL
+    ), existing_nonqueue_entry_cte AS (
+        SELECT  queue_id AS queue,
+                rtype AS record_type,
+                record_id AS record,
+                qe.id AS override_by,
+                ingest_action AS action,
+                qe.run_at AS run_at,
+                old_state_data AS state_data
+          FROM  action.ingest_queue_entry qe
+          WHERE qe.record = record_id
+                AND qe.queue IS NULL
+                AND qe.record_type = rtype
+                AND qe.state_data = old_state_data
+                AND qe.ingest_time IS NULL
+                AND qe.fail_time IS NULL
+                AND qe.override_by IS NULL
+    ), new_entry_cte AS (
+        SELECT * FROM existing_queue_entry_cte
+          UNION ALL
+        SELECT * FROM existing_nonqueue_entry_cte
+          UNION ALL
+        SELECT queue_id, rtype, record_id, NULL, ingest_action, COALESCE(when_to_run,NOW()), old_state_data
+    ), insert_entry_cte AS (
+        INSERT INTO action.ingest_queue_entry
+            (queue, record_type, record, override_by, action, run_at, state_data)
+          SELECT queue, record_type, record, override_by, action, run_at, state_data FROM new_entry_cte
+            ORDER BY 4 NULLS LAST, 6
+            LIMIT 1
+        RETURNING *
+    ) SELECT * INTO new_entry FROM insert_entry_cte;
+
+    IF prev_del_entry.id IS NOT NULL THEN -- later delete overrides earlier unapplied entry
+        UPDATE  action.ingest_queue_entry
+          SET   override_by = new_entry.id
+          WHERE id = prev_del_entry.id;
+
+        UPDATE  action.ingest_queue_entry
+          SET   override_by = NULL
+          WHERE id = new_entry.id;
+
+    ELSIF new_entry.override_by IS NOT NULL THEN
+        RETURN TRUE; -- already handled, don't notify
+    END IF;
+
+    NOTIFY queued_ingest;
+
+    RETURN TRUE;
+EXCEPTION WHEN OTHERS THEN
+    GET STACKED DIAGNOSTICS diag_detail  = PG_EXCEPTION_DETAIL,
+                            diag_context = PG_EXCEPTION_CONTEXT;
+    RAISE WARNING '%\n%', diag_detail, diag_context;
+    RETURN FALSE;
+END;
+$F$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION action.process_ingest_queue_entry (qeid BIGINT) RETURNS BOOL AS $func$
+DECLARE
+    ingest_success  BOOL := NULL;
+    qe              action.ingest_queue_entry%ROWTYPE;
+BEGIN
+
+    SELECT * INTO qe FROM action.ingest_queue_entry WHERE id = qeid;
+    IF qe.ingest_time IS NOT NULL OR qe.override_by IS NOT NULL THEN
+        RETURN TRUE; -- Already done
+    END IF;
+
+    IF qe.action = 'delete' THEN
+        IF qe.record_type = 'biblio' THEN
+            SELECT metabib.indexing_delete(r.*, qe.state_data) INTO ingest_success FROM biblio.record_entry r WHERE r.id = qe.record;
+        ELSIF qe.record_type = 'authority' THEN
+            SELECT authority.indexing_delete(r.*, qe.state_data) INTO ingest_success FROM authority.record_entry r WHERE r.id = qe.record;
+        END IF;
+    ELSE
+        IF qe.record_type = 'biblio' THEN
+            IF qe.action = 'propagate' THEN
+                SELECT authority.apply_propagate_changes(qe.state_data::BIGINT, qe.record) INTO ingest_success;
+            ELSE
+                SELECT metabib.indexing_update(r.*, qe.action = 'insert', qe.state_data) INTO ingest_success FROM biblio.record_entry r WHERE r.id = qe.record;
+            END IF;
+        ELSIF qe.record_type = 'authority' THEN
+            SELECT authority.indexing_update(r.*, qe.action = 'insert', qe.state_data) INTO ingest_success FROM authority.record_entry r WHERE r.id = qe.record;
+        END IF;
+    END IF;
+
+    IF NOT ingest_success THEN
+        UPDATE action.ingest_queue_entry SET fail_time = NOW() WHERE id = qe.id;
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.queued.abort_on_error' AND enabled;
+        IF FOUND THEN
+            RAISE EXCEPTION 'Ingest action of % on %.record_entry % for queue entry % failed', qe.action, qe.record_type, qe.record, qe.id;
+        ELSE
+            RAISE WARNING 'Ingest action of % on %.record_entry % for queue entry % failed', qe.action, qe.record_type, qe.record, qe.id;
+        END IF;
+    ELSE
+        UPDATE action.ingest_queue_entry SET ingest_time = NOW() WHERE id = qe.id;
+    END IF;
+
+    RETURN ingest_success;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+
+CREATE OR REPLACE FUNCTION action.complete_duplicated_entries () RETURNS TRIGGER AS $F$
+BEGIN
+    IF NEW.ingest_time IS NOT NULL THEN
+        UPDATE action.ingest_queue_entry SET ingest_time = NEW.ingest_time WHERE override_by = NEW.id;
+    END IF;
+
+    RETURN NULL;
+END;
+$F$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER complete_duplicated_entries_trigger
+    AFTER UPDATE ON action.ingest_queue_entry
+    FOR EACH ROW WHEN (NEW.override_by IS NULL)
+    EXECUTE PROCEDURE action.complete_duplicated_entries();
+
+CREATE OR REPLACE FUNCTION action.set_ingest_queue(INT) RETURNS VOID AS $$
+    $_SHARED{"ingest_queue_id"} = $_[0];
+$$ LANGUAGE plperlu;
+
+CREATE OR REPLACE FUNCTION action.get_ingest_queue() RETURNS INT AS $$
+    return $_SHARED{"ingest_queue_id"};
+$$ LANGUAGE plperlu;
+
+CREATE OR REPLACE FUNCTION action.clear_ingest_queue() RETURNS VOID AS $$
+    delete($_SHARED{"ingest_queue_id"});
+$$ LANGUAGE plperlu;
+
+CREATE OR REPLACE FUNCTION action.set_queued_ingest_force(TEXT) RETURNS VOID AS $$
+    $_SHARED{"ingest_queue_force"} = $_[0];
+$$ LANGUAGE plperlu;
+
+CREATE OR REPLACE FUNCTION action.get_queued_ingest_force() RETURNS TEXT AS $$
+    return $_SHARED{"ingest_queue_force"};
+$$ LANGUAGE plperlu;
+
+CREATE OR REPLACE FUNCTION action.clear_queued_ingest_force() RETURNS VOID AS $$
+    delete($_SHARED{"ingest_queue_force"});
+$$ LANGUAGE plperlu;
+
+CREATE OR REPLACE FUNCTION authority.propagate_changes
+    (aid BIGINT, bid BIGINT) RETURNS BIGINT AS $func$
+DECLARE
+    queuing_success BOOL := FALSE;
+BEGIN
+
+    PERFORM 1 FROM config.global_flag
+        WHERE name IN ('ingest.queued.all','ingest.queued.authority.propagate')
+            AND enabled;
+
+    IF FOUND THEN
+        -- XXX enqueue special 'propagate' bib action
+        SELECT action.enqueue_ingest_entry( bid, 'biblio', NOW(), 'propagate', aid::TEXT) INTO queuing_success;
+
+        IF queuing_success THEN
+            RETURN aid;
+        END IF;
+    END IF;
+
+    PERFORM authority.apply_propagate_changes(aid, bid);
+    RETURN aid;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION authority.apply_propagate_changes
+    (aid BIGINT, bid BIGINT) RETURNS BIGINT AS $func$
+DECLARE
+    bib_forced  BOOL := FALSE;
+    bib_rec     biblio.record_entry%ROWTYPE;
+    new_marc    TEXT;
+BEGIN
+
+    SELECT INTO bib_rec * FROM biblio.record_entry WHERE id = bid;
+
+    new_marc := vandelay.merge_record_xml(
+        bib_rec.marc, authority.generate_overlay_template(aid));
+
+    IF new_marc = bib_rec.marc THEN
+        -- Authority record change had no impact on this bib record.
+        -- Nothing left to do.
+        RETURN aid;
+    END IF;
+
+    PERFORM 1 FROM config.global_flag
+        WHERE name = 'ingest.disable_authority_auto_update_bib_meta'
+            AND enabled;
+
+    IF NOT FOUND THEN
+        -- update the bib record editor and edit_date
+        bib_rec.editor := (
+            SELECT editor FROM authority.record_entry WHERE id = aid);
+        bib_rec.edit_date = NOW();
+    END IF;
+
+    PERFORM action.set_queued_ingest_force('ingest.queued.biblio.update.disabled');
+
+    UPDATE biblio.record_entry SET
+        marc = new_marc,
+        editor = bib_rec.editor,
+        edit_date = bib_rec.edit_date
+    WHERE id = bid;
+
+    PERFORM action.clear_queued_ingest_force();
+
+    RETURN aid;
+
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION evergreen.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
+DECLARE
+    old_state_data      TEXT := '';
+    new_action          TEXT;
+    queuing_force       TEXT;
+    queuing_flag_name   TEXT;
+    queuing_flag        BOOL := FALSE;
+    queuing_success     BOOL := FALSE;
+    ingest_success      BOOL := FALSE;
+    ingest_queue        INT;
+BEGIN
+
+    -- Identify the ingest action type
+    IF TG_OP = 'UPDATE' THEN
+
+        -- Gather type-specific data for later use
+        IF TG_TABLE_SCHEMA = 'authority' THEN
+            old_state_data = OLD.heading;
+        END IF;
+
+        IF NOT OLD.deleted THEN -- maybe reingest?
+            IF NEW.deleted THEN
+                new_action = 'delete'; -- nope, delete
+            ELSE
+                new_action = 'update'; -- yes, update
+            END IF;
+        ELSIF NOT NEW.deleted THEN
+            new_action = 'insert'; -- revivify, AKA insert
+        ELSE
+            RETURN NEW; -- was and is still deleted, don't ingest
+        END IF;
+    ELSIF TG_OP = 'INSERT' THEN
+        new_action = 'insert'; -- brand new
+    ELSE
+        RETURN OLD; -- really deleting the record
+    END IF;
+
+    queuing_flag_name := 'ingest.queued.'||TG_TABLE_SCHEMA||'.'||new_action;
+    -- See if we should be queuing anything
+    SELECT  enabled INTO queuing_flag
+      FROM  config.internal_flag
+      WHERE name IN ('ingest.queued.all','ingest.queued.'||TG_TABLE_SCHEMA||'.all', queuing_flag_name)
+            AND enabled
+      LIMIT 1;
+
+    SELECT action.get_queued_ingest_force() INTO queuing_force;
+    IF queuing_flag IS NULL AND queuing_force = queuing_flag_name THEN
+        queuing_flag := TRUE;
+    END IF;
+
+    -- you (or part of authority propagation) can forcibly disable specific queuing actions
+    IF queuing_force = queuing_flag_name||'.disabled' THEN
+        queuing_flag := FALSE;
+    END IF;
+
+    -- And if we should be queuing ...
+    IF queuing_flag THEN
+        ingest_queue := action.get_ingest_queue();
+
+        -- ... but this is NOT a named or forced queue request (marc editor update, say, or vandelay overlay)...
+        IF queuing_force IS NULL AND ingest_queue IS NULL AND new_action = 'update' THEN -- re-ingest?
+
+            PERFORM * FROM config.internal_flag WHERE name = 'ingest.reingest.force_on_same_marc' AND enabled;
+
+            --  ... then don't do anything if ingest.reingest.force_on_same_marc is not enabled and the MARC hasn't changed
+            IF NOT FOUND AND OLD.marc = NEW.marc THEN
+                RETURN NEW;
+            END IF;
+        END IF;
+
+        -- Otherwise, attempt to enqueue
+        SELECT action.enqueue_ingest_entry( NEW.id, TG_TABLE_SCHEMA, NOW(), ingest_queue, new_action, old_state_data) INTO queuing_success;
+    END IF;
+
+    -- If queuing was not requested, or failed for some reason, do it live.
+    IF NOT queuing_success THEN
+        IF queuing_flag THEN
+            RAISE WARNING 'Enqueuing of %.record_entry % for ingest failed, attempting direct ingest', TG_TABLE_SCHEMA, NEW.id;
+        END IF;
+
+        IF new_action = 'delete' THEN
+            IF TG_TABLE_SCHEMA = 'biblio' THEN
+                SELECT metabib.indexing_delete(NEW.*, old_state_data) INTO ingest_success;
+            ELSIF TG_TABLE_SCHEMA = 'authority' THEN
+                SELECT authority.indexing_delete(NEW.*, old_state_data) INTO ingest_success;
+            END IF;
+        ELSE
+            IF TG_TABLE_SCHEMA = 'biblio' THEN
+                SELECT metabib.indexing_update(NEW.*, new_action = 'insert', old_state_data) INTO ingest_success;
+            ELSIF TG_TABLE_SCHEMA = 'authority' THEN
+                SELECT authority.indexing_update(NEW.*, new_action = 'insert', old_state_data) INTO ingest_success;
+            END IF;
+        END IF;
+
+        IF NOT ingest_success THEN
+            PERFORM * FROM config.internal_flag WHERE name = 'ingest.queued.abort_on_error' AND enabled;
+            IF FOUND THEN
+                RAISE EXCEPTION 'Ingest of %.record_entry % failed', TG_TABLE_SCHEMA, NEW.id;
+            ELSE
+                RAISE WARNING 'Ingest of %.record_entry % failed', TG_TABLE_SCHEMA, NEW.id;
+            END IF;
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER aaa_indexing_ingest_or_delete AFTER INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE evergreen.indexing_ingest_or_delete ();
+CREATE TRIGGER aaa_auth_ingest_or_delete AFTER INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE evergreen.indexing_ingest_or_delete ();
+
 COMMIT;
 
