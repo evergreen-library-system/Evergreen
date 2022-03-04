@@ -1168,6 +1168,7 @@ BEGIN
 
     IF NOT b_skip_search THEN
         PERFORM metabib.update_combined_index_vectors(bib_id);
+        PERFORM search.symspell_dictionary_reify(); -- NOTE: we only use search data for symspell today
     END IF;
 
     RETURN;
