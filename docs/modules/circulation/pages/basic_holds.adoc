@@ -32,7 +32,7 @@ If you select the _Suspend this Hold_ checkbox, the hold will be suspended and n
 
 . To place a title level hold, retrieve the title record on the catalog and click the _Place Hold_ link beside the title on the search results list, or click the _Place Hold_ link on the title summary screen.
 +
-image::media/holds_title_searchresults.png[Search Results with Place Hold link]
+image::hold_management/holds_search_results.jpg[Search Results with Place Hold link]
 +
 . Scan or type patron's barcode into the _Place hold for patron by
 barcode_ box, or choose _Place this hold for me_.
@@ -44,11 +44,11 @@ Those copies are usually the complete set, containing all the parts.
 Be sure to choose a valid _Pickup location_.
 . Click _Submit_.
 +
-image::media/holds_title_options.png[Place Holds screen with Basic Options]
+image::hold_management/place_hold.jpg[Place Holds screen with Basic Options]
 +
 . A confirmation screen appears with the message "Hold was successfully placed".
 +
-image::media/holds_title_success.png[Place Holds confirmation screen]
+image::hold_management/hold_confirmation.jpg[Place Holds confirmation screen]
 
 *Advanced Hold Options*
 
@@ -62,7 +62,7 @@ format or the book format is the acceptable format to fill the hold. If
 no format is selected, then any of the available formats may be used to
 fill the hold. The same holds true for selecting multiple languages.
 
-image::media/holds_title_options_adv.png[Place Hold screen with Advanced Options]
+image::hold_management/advanced_hold.jpg[Place Hold screen with Advanced Options]
 
 
 == Patron Search from Place Hold ==
@@ -73,11 +73,11 @@ Patron Search from Place Hold allows staff members, when placing a hold on behal
 1. After performing a search in the catalog, staff will retrieve a bibliographic record.
 2. Click *Place Hold* either in the search results or within the detailed bibliographic record. The Place Hold Screen will appear. Note: this feature also appears when placing volume level holds and copy level holds.
 +
-image::media/PlaceHold-0.JPG[]
+image::hold_management/hold_details.jpg[Placing hold from the details page]
 +
 3. Next to _Place Hold for patron by barcode_, click on *Patron Search*. Please note that Patron Search will only appear in this interface when using the web-based staff client.  It will not appear in the patron-facing OPAC.
 +
-image::media/PlaceHold-1.JPG[]
+image::hold_management/patron_search_button.jpg[Patron Search]
 +
 4. A dialog box will appear with the patron search interface used elsewhere in the staff client. By default, the search scopes to your workstation org unit, and you can search by patron last name, first name, and middle name.
 +
@@ -97,7 +97,6 @@ image::media/PlaceHold-5.JPG[]
 +
 7. The dialog box will close and the selected patron's barcode will appear next to _Place Hold for patron by barcode_. This will cause the patron's hold notification preferences to appear in the relevant fields in the bottom half of the screen. Changes to the Hold Notification preferences can be made before clicking *Submit* to finish placing a hold for the patron.
 +
-image::media/PlaceHold-6.JPG[]
 
 == Parts Level Hold ==
 
@@ -109,7 +108,7 @@ barcode, notification details, and a valid pickup location.
 . Select the applicable part from the _Select a Part_ dropdown menu.
 . Click _Submit_.
 +
-image::media/holds_title_options.png[Place Holds screen with Basic Options]
+image::hold_management/holds_parts.jpg[Place Holds screen with Basic Options]
 +
 [TIP]
 ===============
@@ -132,7 +131,7 @@ Requested formats are listed in the _Holdable Part_ column in hold records. Use 
 
 After a successful hold placement, staff have the option to place another hold on the same title by clicking the link _Place another hold for this title_.  This returns to the hold screen, where a different patron's information can be entered.
 
-image::media/place-another-hold-1.png[place-another-hold-1]
+image::hold_management/holds_confirmation.jpg[Place another hold link]
 
 This feature can be useful for book groups or new items where a list of waiting patrons needs to be transferred into the system.
 
@@ -373,13 +372,15 @@ image::media/holds-pull-9.png[holds-pull-9]
 
 === Holds Notification Methods ===
 
-. In Evergreen, patrons can set up their default holds notification method in the _Account Preferences_ area of _My Account_. Staff cannot set these preferences for patrons; the patrons must do it when they are logged into the public catalog.
+. In Evergreen, patrons can set up their default holds notification method in _Preferences_ section of the account.  Go to _Preferences_ and click _Notifications_.
 +
-image::media/holds-notifications-1.png[holds-notifications-1]
+image::hold_management/holds_preferences_nav.jpg[Hold Notification Navigation]
++
+image::hold_management/holds_preferences_menu.jpg[Hold Notification Navigation]
 +
 . Patrons with a default notification preference for phone will see their phone number at the time they place a hold. The checkboxes for email and phone notification will also automatically be checked (if an email or phone number has been assigned to the account).
 +
-image::media/holds-notifications-2.png[holds-notifications-2]
+image::hold_management/placing_hold_notifications.jpg[Placing Hold]
 +
 . The patron can remove these checkmarks at the time they place the hold or they can enter a different phone number if they prefer to be contacted at a different number. The patron cannot change their e-mail address at this time.
 
@@ -659,6 +660,12 @@ to Hold Groups owned by Branch A. If they needed to add patrons to
 Branch B or Branch C too, they would need system or consortial-level
 permissions.
 
+[NOTE]
+=============
+Remember to select the proper hold group under *Hold Groups* by double-clicking
+the group selection before adding or editing users.  
+=============
+
 ===== Add Users By Barcode
 
 . Go to *Circulation -> Hold Groups*.
@@ -789,3 +796,19 @@ This will open the Hold Group in the Current Users tab.
 . Click the *Hold Groups* dropdown and choose *Delete Hold Group*.
 +
 image::media/delete_hold_group.png[Delete Hold Group]
+
+=== From the My Account Interface in the OPAC
+
+If a hold group is patron visible, then the information
+will be available for viewing under *Holds/Ready* 
+and *Hold Groups*.  Here a table will display hold group
+information and patrons can remove themselves from a group
+if desired.
+
+image::hold_management/hold_groups_menu_opac.jpg[Hold Group Option in OPAC]
+
+[NOTE]
+====================
+If the patron is not part of a hold group that is patron visible,
+the *Hold Groups* option won't appear in their OPAC account menu.
+====================
