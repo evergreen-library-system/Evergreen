@@ -428,6 +428,7 @@ DECLARE
     penalty_type            TEXT;
     items_out               INT;
     context_org_list        INT[];
+    permit_renew            TEXT;
     done                    BOOL := FALSE;
     item_prox               INT;
     home_prox               INT;
@@ -550,6 +551,13 @@ BEGIN
                      OR csp.ignore_proximity < home_prox
                      OR csp.ignore_proximity < item_prox)
                 AND csp.block_list LIKE penalty_type LOOP
+        -- override PATRON_EXCEEDS_FINES penalty for renewals based on org setting
+        IF renewal AND standing_penalty.name = 'PATRON_EXCEEDS_FINES' THEN
+            SELECT INTO permit_renew value FROM actor.org_unit_ancestor_setting('circ.permit_renew_when_exceeds_fines', circ_ou);
+            IF permit_renew IS NOT NULL AND permit_renew ILIKE 'true' THEN
+                CONTINUE;
+            END IF;
+        END IF;
 
         result.fail_part := standing_penalty.name;
         result.success := FALSE;

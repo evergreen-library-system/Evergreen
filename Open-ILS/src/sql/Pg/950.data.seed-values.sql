@@ -17248,6 +17248,28 @@ INSERT INTO config.global_flag (name, value, label, enabled)
     );
 
 INSERT INTO config.org_unit_setting_type
+    (name, label, datatype, description, grp, update_perm, view_perm)
+VALUES (
+    'circ.permit_renew_when_exceeds_fines',
+    oils_i18n_gettext(
+        'circ.permit_renew_when_exceeds_fines',
+        'Permit renewals when patron exceeds max fine threshold',
+        'coust',
+        'label'
+    ),
+    'bool',
+    oils_i18n_gettext(
+        'circ.permit_renew_when_exceeds_fines',
+        'Permit renewals even when the patron exceeds the maximum fine threshold',
+        'coust',
+        'description'
+    ),
+    'opac',
+    93,
+    NULL
+);
+
+INSERT INTO config.org_unit_setting_type
     (name, grp, label, description, datatype)
     VALUES
         ('circ.void_lost_on_claimsreturned',
