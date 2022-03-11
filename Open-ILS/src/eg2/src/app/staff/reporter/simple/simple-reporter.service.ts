@@ -359,7 +359,7 @@ export class SimpleReporterService {
         }
 
         return Promise.all([
-            new Promise((resolve, reject) => {
+            new Promise<void>((resolve, reject) => {
                 // Verify folders exist, create if not
                 this.getDefaultFolder('rtf')
                 .then(f => {
@@ -375,7 +375,7 @@ export class SimpleReporterService {
                     }
                 });
             }),
-            new Promise((resolve, reject) => {
+            new Promise<void>((resolve, reject) => {
                 this.getDefaultFolder('rrf')
                 .then(f => {
                     if (f) {
@@ -390,7 +390,7 @@ export class SimpleReporterService {
                     }
                 });
             }),
-            new Promise((resolve, reject) => {
+            new Promise<void>((resolve, reject) => {
                 this.getDefaultFolder('rof')
                 .then(f => {
                     if (f) {
