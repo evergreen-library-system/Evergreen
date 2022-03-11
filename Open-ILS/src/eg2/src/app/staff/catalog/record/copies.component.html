@@ -18,7 +18,7 @@
 </ng-template>
 
 <ng-template #holdableTemplate let-copy="row" let-context="userContext">
-  <span *ngIf="context.holdable(copy)">
+  <div *ngIf="context.holdable(copy)">
     <div class="border-bottom">
       <a routerLink="/staff/catalog/hold/C"
         [queryParams]="{target: copy.id}"
@@ -33,8 +33,8 @@
         Call Number Hold
       </a>
     </div>
-  </span>
-  <span *ngIf="!context.holdable(copy)" i18n>No</span>
+  </div>
+  <div *ngIf="!context.holdable(copy)" i18n>No</div>
 </ng-template>
 
 <ng-template #courseTemplate let-copy="row">
