@@ -9,7 +9,6 @@
     ctx.page_title = l("Browse Courses");
     blimit = CGI.param('blimit') || ctx.opac_hits_per_page || 10;
     display_idx = CGI.param('didx') || ctx.match_idx || 0;
-
     upper_limit = 0;
     lower_limit = 0;
     depart_list = ['blimit', 'bterm', 'bpivot'];
@@ -67,12 +66,12 @@
 
       [% BLOCK browse_pager %]
         [%
-            pivot_lower = CGI.param('didx') - blimit;
-            pivot_higher = CGI.param('didx') + blimit;
+            pivot_lower = display_idx - blimit;
+            pivot_higher = display_idx + blimit;
             IF pivot_lower < 0;
                 pivot_lower = 0;
             END;
-            IF CGI.param('didx') <= 0;
+            IF display_idx <= 0;
                 lower_limit = 1;
             ELSE;
                 lower_limit = 0;
@@ -130,8 +129,8 @@
 
           <ul class="browse-result-list">
           [% FOR result IN ctx.browse_results %]
-            [% IF result.browse_index >= CGI.param('didx') &&
-              result.browse_index <= (CGI.param('didx') + blimit - 1) %]
+            [% IF result.browse_index >= display_idx &&
+              result.browse_index <= (display_idx + blimit - 1) %]
             <li class="browse-result">
               <span class="browse-result-value[% result.match == 1 ? ' browse-result-best-match' : '' %]">
                 [% IF result.results_count > 0 %]
