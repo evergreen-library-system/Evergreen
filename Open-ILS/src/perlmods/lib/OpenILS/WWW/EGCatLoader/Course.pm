@@ -233,7 +233,7 @@ sub load_cresults {
 
     my ($user_query, $query, @queries, $modifiers) = _prepare_course_search($cgi, $ctx);
 
-    return Apache2::Const::OK unless $query;
+    #return Apache2::Const::OK unless $query;
 
     $ctx->{user_query} = $user_query;
     $ctx->{processed_search_query} = $query;
@@ -253,6 +253,7 @@ sub load_cresults {
     for my $query_obj (@queries) {
         my $type = $query_obj->{'qtype'};
         my $query = $query_obj->{'value'};
+        $query =~ s/\*//g;
         my $bool = $query_obj->{'bool'};
         my $contains = $query_obj->{'contains'};
         my $operator = ($contains eq 'nocontains') ? '!~*' : '~*';
@@ -356,7 +357,7 @@ sub _prepare_course_search {
         $query .= " $1($term)" if length $term;
     }
 
-    return () unless $query;
+    #return () unless $query;
 
     return ($user_query, $query, @queries);
 }
