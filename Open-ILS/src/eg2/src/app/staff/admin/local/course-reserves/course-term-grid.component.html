@@ -1,0 +1,44 @@
+<eg-string #successString i18n-text text="{{tableName}} Update Succeeded"></eg-string>
+<eg-string #createString i18n-text text="{{tableName}} Was Created Successfully"></eg-string>
+<eg-string #deleteFailedString i18n-text text="Deletion of {{tableName}} failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text text="Deletion of {{tableName}} was successful"></eg-string>
+<eg-string #deleteLinkedTermWarningString i18n-text text="Warning: One or more courses are linked to this Term. Are you sure you want to delete {{termToDelete}}?"></eg-string>
+
+<ng-container>
+<div class="row">
+    <div class="col-lg-6">
+      <eg-org-family-select
+        [limitPerms]="['MANAGE_RESERVES']"
+        [selectedOrgId]="defaultOuId"
+        [(ngModel)]="searchOrgs"
+        (ngModelChange)="grid.reload()">
+      </eg-org-family-select>
+    </div>
+</div>
+<hr/>
+
+<div class="w-100 mt-2 mb-2">
+    <eg-grid #grid idlClass={{idlClass}}
+      [dataSource]="grid_source"
+      [sortable]="true">
+      <eg-grid-toolbar-button
+        label="Create {{tableName}}" (onClick)="createNew()" i18n-label>
+      </eg-grid-toolbar-button>
+      <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
+      </eg-grid-toolbar-action>
+      <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)">
+      </eg-grid-toolbar-action>
+      <eg-grid-column label="ID" path="id" [index]=true [hidden]="true" i18n-label></eg-grid-column>
+      <eg-grid-column label="Name" name="name" i18n-label></eg-grid-column> 
+    </eg-grid>
+</div>
+</ng-container>
+
+<eg-fm-record-editor #editDialog
+  idlClass="acmt"
+  fieldOrder="name,owning_lib,start_date,end_date"
+  [preloadLinkedValues]="true"
+  hiddenFields="id,is_archived">
+</eg-fm-record-editor>
+
+<eg-confirm-dialog dialogBody="{{deleteLinkedTermWarningString.text}}" #deleteLinkedTermWarning></eg-confirm-dialog>
