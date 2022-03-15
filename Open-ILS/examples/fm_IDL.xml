@@ -6863,7 +6863,7 @@ SELECT  usr,
 	</class>
 	<class id="ahopl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::hold_on_pull_list" reporter:label="Hold On Pull List" oils_persist:readonly="true">
 		<oils_persist:source_definition><![CDATA[
-		SELECT
+		SELECT DISTINCT
 			ahr.*,
 			COALESCE(acplo.position, acpl_ordered.fallback_position) AS
 				copy_location_order_position,
