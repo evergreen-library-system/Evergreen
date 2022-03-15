@@ -86,6 +86,19 @@ export class CourseService {
         });
     }
 
+    getTermMaps(term_ids) {
+        const flesher = {flesh: 2, flesh_fields: {
+            'acmtcm': ['course']}};
+
+        if (!term_ids) {
+            return this.pcrud.retrieveAll('acmtcm',
+                flesher);
+        } else {
+            return this.pcrud.search('acmtcm', {term: term_ids},
+                flesher);
+        }
+    }
+
     fetchCoursesForRecord(recordId) {
         const courseIds = new Set<number>();
         return this.pcrud.search(
