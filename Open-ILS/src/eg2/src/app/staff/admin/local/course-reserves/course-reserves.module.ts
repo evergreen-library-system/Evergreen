@@ -12,6 +12,7 @@ import {MarcSimplifiedEditorModule} from '@eg/staff/share/marc-edit/simplified-e
 import {PatronModule} from '@eg/staff/share/patron/patron.module';
 import {CourseTermMapComponent} from './course-term-map.component';
 import {CourseTermMapGridComponent} from './course-term-map-grid.component';
+import {TermListComponent} from './course-term-grid.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {CourseTermMapGridComponent} from './course-term-map-grid.component';
     CourseAssociateMaterialComponent,
     CourseAssociateUsersComponent,
     CourseTermMapComponent,
-    CourseTermMapGridComponent
+    CourseTermMapGridComponent,
+    TermListComponent
   ],
   imports: [
     StaffCommonModule,
