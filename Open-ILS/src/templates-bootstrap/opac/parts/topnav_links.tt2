@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark ">
 <!--Home-->
-  <a class="navbar-brand" href="/eg/opac/">[% INCLUDE "opac/parts/topnav_logo.tt2" %]</a>
+  [% INCLUDE "opac/parts/topnav_logo.tt2" %]
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
