@@ -25,6 +25,7 @@ import {CourseService} from '@eg/staff/share/course.service';
 export class CourseAssociateMaterialComponent extends DialogComponent implements OnInit {
     @Input() currentCourse: IdlObject;
     @Input() courseId: any;
+    @Input() courseIsArchived: String;
     @Input() displayMode: String;
     materials: any[] = [];
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;

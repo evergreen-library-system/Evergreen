@@ -17,6 +17,7 @@ export class CoursePageComponent implements OnInit {
 
     currentCourse: IdlObject;
     courseId: any;
+    courseIsArchived: String;
 
     // Materials Tab
     @ViewChild('courseMaterialDialog', {static: true})
@@ -42,6 +43,8 @@ export class CoursePageComponent implements OnInit {
         this.courseId = +this.route.snapshot.paramMap.get('id');
         this.course.getCourses([this.courseId]).then(course => {
             this.currentCourse = course[0];
+            this.courseIsArchived = course[0].is_archived();
+            console.log(this.courseIsArchived);
         });
     }
 
@@ -50,6 +53,7 @@ export class CoursePageComponent implements OnInit {
         this.course.disassociateMaterials([this.currentCourse]).then(res => {
             this.currentCourse.is_archived('t');
             this.pcrud.update(this.currentCourse).subscribe(val => {
+                this.courseIsArchived = 't';
                 console.debug('archived: ' + val);
                 this.archiveSuccessString.current()
                     .then(str => this.toast.success(str));

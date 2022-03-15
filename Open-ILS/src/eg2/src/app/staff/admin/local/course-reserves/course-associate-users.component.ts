@@ -23,6 +23,7 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 export class CourseAssociateUsersComponent extends DialogComponent implements OnInit {
     @Input() currentCourse: IdlObject;
     @Input() courseId: number;
+    @Input() courseIsArchived: String;
     @Input() displayMode: String;
     users: any[] = [];
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
