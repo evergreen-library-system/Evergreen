@@ -1057,7 +1057,7 @@ sub toSQL {
         $final_c_attr_test = 'EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache WHERE record = m.source AND vis_attr_vector @@ c_attr.vis_test)';
     }
  
-    if ($self->find_modifier('staff')) { # staff search
+    if ($self->find_modifier('staff') && !$self->find_modifier('available') && !$self->find_filter('locations') && !$self->find_filter('location_groups')) {
         $final_c_attr_test ||= 'FALSE';
         $final_c_attr_test = '(' . $final_c_attr_test . " OR (" .
                 "NOT EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache WHERE record = m.source) " .
