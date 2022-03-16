@@ -106,7 +106,10 @@ sub mark_users_contact_invalid {
         );
 
         # FIXME: this perpetuates a bug; the patron editor UI doesn't handle these error states well
-        return $editor->die_event if $result && ref $result eq 'HASH';
+        if ($result && ref $result eq 'HASH') {
+            $editor->rollback;
+            return $result;
+        }
 
         $_->$clear_meth;
         $editor->update_actor_user($_) or return $editor->die_event;
