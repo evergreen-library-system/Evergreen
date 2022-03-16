@@ -5145,7 +5145,11 @@ sub hold_metadata {
 
             # Also fetch the available parts for bib-level holds.
             $meta->{parts} = $e->search_biblio_monograph_part(
-                {record => $bre->id, deleted => 'f'});
+                [
+                    {record => $bre->id, deleted => 'f'},
+                    {order_by => {bmp => 'label_sortkey'}}
+                ]
+            );
         }
 
         if ($meta->{metarecord}) {
