@@ -175,7 +175,7 @@ function staff_hold_usr_barcode_changed2(
         return;
     }
     cur_hold_barcode = load_info.barcode;
-    if ((!only_settings || (isload && isload !== true)) && (sub_el && !sub_el.checked)) {
+    if ((!only_settings || (isload && isload !== true)) && (!sub_el || !sub_el.checked)) {
         // Safe at this point as we already set cur_hold_barcode
         document.getElementById('hold_usr_input').value = load_info.barcode;
 
