@@ -17,33 +17,67 @@
 <eg-worklog-strings-components></eg-worklog-strings-components>
 
 <div class="row" *ngIf="hasAlerts()">
-  <div class="col-lg-12 alert alert-danger p-1">
-    <span class="mr-2 pr-2 border-right border-dark" 
-      *ngIf="backdate" i18n>Backdated Check In {{backdate | date:'shortDate'}}</span>
-    <span class="mr-2 pr-2 border-right border-dark" 
-      *ngIf="backdate && backdateUntilLogout" i18n>Use Effective Date Until Logout</span>
-    <span class="mr-2 pr-2 border-right border-dark" 
-      *ngIf="modifiers.no_precat_alert" i18n>Ignore Pre-Cataloged Items</span>
-    <span class="mr-2 pr-2 border-right border-dark" 
-      *ngIf="modifiers.noop" i18n>Suppress Holds and Transits</span>
-    <span class="mr-2 pr-2 border-right border-dark" 
-      *ngIf="modifiers.void_overdues" i18n>Amnesty Mode</span>
-    <span class="mr-2 pr-2 border-right border-dark" 
-      *ngIf="modifiers.auto_print_holds_transits" i18n>Auto-Print Hold and Transit Slips</span>
-    <span class="mr-2 pr-2 border-right border-dark" 
-      *ngIf="modifiers.clear_expired" i18n>Clear Holds Shelf</span>
-    <ng-container *ngIf="modifiers.retarget_holds">
-      <span class="mr-2 pr-2 border-right border-dark" 
-        *ngIf="modifiers.retarget_holds_all" i18n>Always Retarget Local Holds</span>
-      <span class="mr-2 pr-2 border-right border-dark" 
-        *ngIf="!modifiers.retarget_holds_all" i18n>Retarget Local Holds</span>
-    </ng-container>
-    <span class="mr-2 pr-2 border-right border-dark" 
-      *ngIf="modifiers.hold_as_transit" i18n>Capture Local Holds As Transits</span>
-    <span class="mr-2 pr-2 border-right border-dark" 
-      *ngIf="modifiers.manual_float" i18n>Manual Floating Active</span>
-    <span class="mr-2 pr-2 border-right border-dark" 
-      *ngIf="modifiers.do_inventory_update" i18n>Update Inventory</span>
+  <div class="col-lg-12">
+    <div class="alert alert-danger p-1 text-dark">
+
+      <span *ngIf="backdate" 
+        class="mr-3 pr-3 border-right border-info label-with-material-icon">
+        <span class="material-icons">history</span>
+        <span class="pl-2" i18n>Backdated Check In {{backdate | date:'shortDate'}}</span>
+      </span>
+
+      <span *ngIf="backdate && backdateUntilLogout"
+        class="mr-3 pr-3 border-right border-info label-with-material-icon">
+        <span class="material-icons">timeline</span>
+        <span class="pl-2" i18n>Use Effective Date Until Logout</span>
+      </span>
+
+      <span *ngIf="modifiers.no_precat_alert"
+        class="mr-3 pr-3 border-right border-info label-with-material-icon">
+        <span class="material-icons">edit</span>
+        <span class="pl-2" i18n>Ignore Pre-Cataloged Items</span>
+      </span>
+
+      <span *ngIf="modifiers.noop"
+        class="mr-3 pr-3 border-right border-info label-with-material-icon"> 
+        <span class="material-icons">block</span>
+        <span class="pl-2" i18n>Suppress Holds and Transits</span>
+      </span>
+
+      <span *ngIf="modifiers.void_overdues"
+        class="mr-3 pr-3 border-right border-info label-with-material-icon">
+        <span class="material-icons">monetization_on</span>
+        <span class="pl-2" i18n>Amnesty Mode</span>
+      </span>
+
+      <span *ngIf="modifiers.auto_print_holds_transits"
+        class="mr-3 pr-3 border-right border-info label-with-material-icon">
+        <span class="material-icons">print</span>
+        <span class="pl-2" i18n>Auto-Print Hold and Transit Slips</span>
+      </span>
+
+      <span class="mr-3 pr-3 border-right border-info" 
+        *ngIf="modifiers.clear_expired" i18n>Clear Holds Shelf</span>
+
+      <ng-container *ngIf="modifiers.retarget_holds">
+        <span class="mr-3 pr-3 border-right border-info" 
+          *ngIf="modifiers.retarget_holds_all" i18n>Always Retarget Local Holds</span>
+        <span class="mr-3 pr-3 border-right border-info" 
+          *ngIf="!modifiers.retarget_holds_all" i18n>Retarget Local Holds</span>
+      </ng-container>
+
+      <span *ngIf="modifiers.hold_as_transit"
+        class="mr-3 pr-3 border-right border-info label-with-material-icon">
+        <span class="material-icons">directions_transit</span>
+        <span class="pl-2" i18n>Capture Local Holds As Transits</span>
+      </span>
+
+      <span class="mr-3 pr-3 border-right border-info" 
+        *ngIf="modifiers.manual_float" i18n>Manual Floating Active</span>
+
+      <span class="mr-3 pr-3 border-right border-info" 
+        *ngIf="modifiers.do_inventory_update" i18n>Update Inventory</span>
+    </div>
   </div>
 </div>
 
@@ -281,7 +315,7 @@
               class="badge badge-warning mr-2">&#x2717;</span>
             <span i18n>Ignore Pre-cataloged Items</span>
           </a>
-          <a ngbDropdownItem *ngIf="!isHoldCapture" (click)="toggleMod('noop')">
+          <a ngbDropdownItem (click)="toggleMod('noop')">
             <span *ngIf="modifiers.noop" 
               class="badge badge-success mr-2">&#x2713;</span>
             <span *ngIf="!modifiers.noop" 
@@ -295,8 +329,7 @@
               class="badge badge-warning mr-2">&#x2717;</span>
             <span i18n>Amnesty Mode</span>
           </a>
-          <a ngbDropdownItem *ngIf="!isHoldCapture"
-            (click)="toggleMod('auto_print_holds_transits')">
+          <a ngbDropdownItem (click)="toggleMod('auto_print_holds_transits')">
             <span *ngIf="modifiers.auto_print_holds_transits" 
               class="badge badge-success mr-2">&#x2713;</span>
             <span *ngIf="!modifiers.auto_print_holds_transits"
@@ -338,8 +371,7 @@
               class="badge badge-warning mr-2">&#x2717;</span>
             <span i18n>Manual Floating Active</span>
           </a>
-          <a ngbDropdownItem *ngIf="!isHoldCapture"
-            (click)="toggleMod('do_inventory_update')">
+          <a ngbDropdownItem (click)="toggleMod('do_inventory_update')">
             <span *ngIf="modifiers.do_inventory_update"
               class="badge badge-success mr-2">&#x2713;</span>
             <span *ngIf="!modifiers.do_inventory_update"
