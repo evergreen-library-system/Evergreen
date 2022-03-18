@@ -774,7 +774,7 @@ export class CircService {
 
     fleshCommonData(result: CircResultCommon): Promise<CircResultCommon> {
 
-        console.warn('fleshCommonData()');
+        console.debug('fleshCommonData()');
 
         const copy = result.copy;
         const volume = result.volume;
@@ -934,10 +934,27 @@ export class CircService {
             result.mbts = parent_circ.billable_transaction().summary();
         }
 
-        return this.fleshCommonData(result).then(_ => {
+        return this.fleshCommonData(result)
+        .then(_ => this.updateInventory(result))
+        .then(_ => {
             this.addWorkLog('checkin', result);
             return result;
         });
+    }
+
+    updateInventory(result: CheckinResult): Promise<any> {
+
+        if (result?.firstEvent?.payload?.do_inventory_update) {
+            const inv = result?.firstEvent?.payload?.latest_inventory;
+
+            if (inv.id()) {
+                return this.pcrud.update(inv).toPromise();
+            } else {
+                return this.pcrud.create(inv).toPromise();
+            }
+        }
+
+        return Promise.resolve();
     }
 
     processCheckinResult(result: CheckinResult): Promise<CheckinResult> {
