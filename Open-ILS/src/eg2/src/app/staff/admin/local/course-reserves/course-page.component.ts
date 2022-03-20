@@ -72,8 +72,9 @@ export class CoursePageComponent implements OnInit {
         this.course.disassociateMaterials([this.currentCourse]).then(res => {
             this.currentCourse.is_archived('f');
             this.pcrud.update(this.currentCourse).subscribe(val => {
+                this.courseIsArchived = 'f';
+                console.debug('archived: ' + val);
                 this.course.removeNonPublicUsers(this.currentCourse.id());
-                console.debug('unarchived: ' + val);
                 this.unarchiveSuccessString.current()
                     .then(str => this.toast.success(str));
             }, err => {

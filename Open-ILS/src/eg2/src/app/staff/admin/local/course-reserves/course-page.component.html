@@ -7,14 +7,12 @@
 
 <div class="row">
   <div class="col text-right">
-    <button class="btn btn-danger"
-      (click)="archiveCourse()" [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't' ">
-      <i class="material-icons align-middle"
-        *ngIf="currentCourse && (currentCourse.is_archived() == 't' || currentCourse.is_archived() == true)">block</i>
+    <button class="btn btn-danger" *ngIf="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 'f' "
+      (click)="archiveCourse()">
       <span class="align-middle">Archive Course</span>
     </button>
     <button class="btn btn-primary"
-      (click)="unarchiveCourse()" *ngIf="currentCourse && currentCourse.is_archived() == 't'">
+      (click)="unarchiveCourse()" *ngIf="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't' ">
       <span class="align-middle">Unarchive Course</span>
     </button>
     <a class="btn btn-warning ml-3" routerLink="/staff/admin/local/asset/course_list" i18n>
@@ -81,3 +79,4 @@
 
 <eg-string #archiveFailedString i18n-text text="Archiving of Course failed or was not allowed"></eg-string>
 <eg-string #archiveSuccessString i18n-text text="Archiving of Course succeeded"></eg-string>
+<eg-string #unarchiveSuccessString i18n-text text="Unarchiving of Course succeeded"></eg-string>
