@@ -1,5 +1,6 @@
 import {Component, ViewChild, OnInit, AfterViewInit, HostListener} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap, RoutesRecognized} from '@angular/router';
+import {Location} from '@angular/common';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, throwError, empty} from 'rxjs';
 import {filter, pairwise, concatMap, tap} from 'rxjs/operators';
@@ -56,6 +57,7 @@ export class PatronComponent implements OnInit, AfterViewInit {
     constructor(
         private router: Router,
         private route: ActivatedRoute,
+        private ngLocation: Location,
         private net: NetService,
         private auth: AuthService,
         private pcrud: PcrudService,
@@ -178,47 +180,48 @@ export class PatronComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
     }
 
-    beforeTabChange(evt: NgbNavChangeEvent) {
-        // tab will change with route navigation.
+    // Navigate, opening new tabs when requested via control-click.
+    // NOTE: The nav items have routerLinks, but for some reason,
+    // control-click on the links does not open them in a new tab.
+    // Mouse middle-click does, though.  *shrug*
+    navItemClick(tab: string, evt: PointerEvent) {
         evt.preventDefault();
-
-        // Protect against tab changes with dirty data.
         this.canDeactivate().then(ok => {
             if (ok) {
-                this.patronTab = evt.nextId;
-                this.routeToTab();
+                this.routeToTab(tab, evt.ctrlKey);
             }
         });
     }
 
-    // The bills tab has various sub-interfaces.  If the user is already
-    // on the Bills tab and clicks the tab, return them to the main bills
-    // screen.
-    // Avoid the navigate call when not on the bills tab because it
-    // interferes with the pre-tab-change "changes pending" confirm dialog
-    // used by the editor and possibily others.
-    billsTabClicked() {
-        if (this.patronTab === 'bills') {
-            this.router.navigate(['/staff/circ/patron', this.patronId, 'bills']);
-        }
+    beforeTabChange(evt: NgbNavChangeEvent) {
+        // Prevent the nav component from changing tabs so we can
+        // control the behaviour.
+        evt.preventDefault();
     }
 
-    routeToTab() {
+    routeToTab(tab?: string, newWindow?: boolean) {
         let url = '/staff/circ/patron/';
 
-        switch (this.patronTab) {
+        tab = tab || this.patronTab;
+
+        switch (tab) {
             case 'search':
             case 'bcsearch':
-                url += this.patronTab;
+                url += tab;
                 break;
             case 'other':
                 url += `${this.patronId}/${this.altTab}`;
                 break;
             default:
-                url += `${this.patronId}/${this.patronTab}`;
+                url += `${this.patronId}/${tab}`;
         }
 
-        this.router.navigate([url]);
+        if (newWindow) {
+            url = this.ngLocation.prepareExternalUrl(url);
+            window.open(url);
+        } else {
+            this.router.navigate([url]);
+        }
     }
 
     showSummaryPane(): boolean {

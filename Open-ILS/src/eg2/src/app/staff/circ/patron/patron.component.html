@@ -67,7 +67,7 @@
   <div [ngClass]="{'col-lg-9': showSummaryPane(), 'col-lg-12': !showSummaryPane()}">
 
     <div class="sticky-top-with-nav bg-white">
-      <ul ngbNav #patronNav="ngbNav" class="nav-tabs"
+      <ul ngbNav #patronNav="ngbNav" class="nav-tabs" [keyboard]="false"
         [activeId]="patronTab" (navChange)="beforeTabChange($event)">
 
         <ng-container *ngIf="patronTab !== 'search'">
@@ -85,7 +85,8 @@
         </ng-container>
 
         <li ngbNavItem="checkout" [disabled]="!context.summary">
-          <a ngbNavLink i18n>Check Out</a>
+          <a ngbNavLink (click)="navItemClick('checkout', $event)"
+            routerLink="/staff/circ/patron/{{patronId}}/checkout" i18n>Check Out</a>
           <ng-template ngbNavContent>
             <div class="">
               <eg-patron-checkout></eg-patron-checkout> 
@@ -94,7 +95,8 @@
         </li>
 
         <li ngbNavItem="items_out" [disabled]="!context.summary">
-          <a ngbNavLink i18n>
+          <a ngbNavLink (click)="navItemClick('items_out', $event)"
+            routerLink="/staff/circ/patron/{{patronId}}/items_out" i18n>
             Items Out ({{counts('checkouts', 'total_out')}})
           </a>
           <ng-template ngbNavContent>
@@ -105,7 +107,8 @@
         </li>
 
         <li ngbNavItem="holds" [disabled]="!context.summary">
-          <a ngbNavLink i18n>
+          <a ngbNavLink (click)="navItemClick('holds', $event)"
+            routerLink="/staff/circ/patron/{{patronId}}/holds" i18n>
             Holds ({{counts('holds', 'ready')}} / {{counts('holds', 'total')}})
           </a>
           <ng-template ngbNavContent>
@@ -114,7 +117,8 @@
         </li>
 
         <li ngbNavItem="bills" [disabled]="!context.summary">
-          <a ngbNavLink (click)="billsTabClicked()" i18n>
+          <a ngbNavLink (click)="navItemClick('bills', $event)"
+            routerLink="/staff/circ/patron/{{patronId}}/bills" i18n>
             Bills 
             <span [ngClass]="{'text-danger': counts('fines', 'balance_owed') > 0}">
               ({{counts('fines', 'balance_owed') | currency}})
@@ -136,7 +140,8 @@
         </li>
 
         <li ngbNavItem="messages" [disabled]="!context.summary">
-          <a ngbNavLink i18n>Messages</a>
+          <a ngbNavLink (click)="navItemClick('messages', $event)"
+            routerLink="/staff/circ/patron/{{patronId}}/messages" i18n>Messages</a>
           <ng-template ngbNavContent>
             <div class="">
               <eg-patron-messages [patronId]="patronId"></eg-patron-messages>
@@ -145,7 +150,8 @@
         </li>
 
         <li ngbNavItem="edit" [disabled]="!context.summary">
-          <a ngbNavLink i18n>Edit</a>
+          <a ngbNavLink (click)="navItemClick('edit', $event)"
+            routerLink="/staff/circ/patron/{{patronId}}/edit" i18n>Edit</a>
           <ng-template ngbNavContent>
             <eg-patron-edit #patronEditor [patronId]="patronId" [toolbar]="editorToolbar">
             </eg-patron-edit> 

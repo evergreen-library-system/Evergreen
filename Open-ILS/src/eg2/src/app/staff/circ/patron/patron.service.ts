@@ -140,9 +140,10 @@ export class PatronContextService {
 
     patronAlertsShown(): boolean {
         if (!this.summary) { return false; }
-        const shown = this.store.getSessionItem('eg.circ.last_alerted_patron');
+        this.store.addLoginSessionKey('eg.circ.last_alerted_patron');
+        const shown = this.store.getLoginSessionItem('eg.circ.last_alerted_patron');
         if (shown === this.summary.patron.id()) { return true; }
-        this.store.setSessionItem('eg.circ.last_alerted_patron', this.summary.patron.id());
+        this.store.setLoginSessionItem('eg.circ.last_alerted_patron', this.summary.patron.id());
         return false;
     }
 
