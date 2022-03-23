@@ -372,13 +372,15 @@ image::media/holds-pull-9.png[holds-pull-9]
 
 === Holds Notification Methods ===
 
-. In Evergreen, patrons can set up their default holds notification method in the _Account Preferences_ area of _My Account_. Staff cannot set these preferences for patrons; the patrons must do it when they are logged into the public catalog.
+. In Evergreen, patrons can set up their default holds notification method in _Preferences_ section of the account.  Go to _Preferences_ and click _Notifications_.
 +
-image::media/holds-notifications-1.png[holds-notifications-1]
+image::hold_management/holds_preferences_nav.jpg[Hold Notification Navigation]
++
+image::hold_management/holds_preferences_menu.jpg[Hold Notification Navigation]
 +
 . Patrons with a default notification preference for phone will see their phone number at the time they place a hold. The checkboxes for email and phone notification will also automatically be checked (if an email or phone number has been assigned to the account).
 +
-image::media/holds-notifications-2.png[holds-notifications-2]
+image::hold_management/placing_hold_notifications.jpg[Placing Hold]
 +
 . The patron can remove these checkmarks at the time they place the hold or they can enter a different phone number if they prefer to be contacted at a different number. The patron cannot change their e-mail address at this time.
 
