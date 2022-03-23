@@ -28,12 +28,12 @@ CREATE VIEW oai.authority AS
     are.id;
 
 CREATE OR REPLACE function oai.bib_is_visible_at_org_by_copy(bib BIGINT, org INT) RETURNS BOOL AS $F$
-WITH corgs AS (SELECT array_accum(id) AS list FROM actor.org_unit_descendants(org))
+WITH corgs AS (SELECT array_agg(id) AS list FROM actor.org_unit_descendants(org))
   SELECT EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache, corgs WHERE vis_attr_vector @@ search.calculate_visibility_attribute_test('circ_lib', corgs.list)::query_int AND bib=record)
 $F$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE function oai.bib_is_visible_at_org_by_luri(bib BIGINT, org INT) RETURNS BOOL AS $F$
-WITH lorgs AS(SELECT array_accum(id) AS list FROM actor.org_unit_ancestors(org))
+WITH lorgs AS(SELECT array_agg(id) AS list FROM actor.org_unit_ancestors(org))
   SELECT EXISTS (SELECT 1 FROM biblio.record_entry, lorgs WHERE vis_attr_vector @@ search.calculate_visibility_attribute_test('luri_org', lorgs.list)::query_int AND bib=id)
 $F$ LANGUAGE SQL STABLE;
 
