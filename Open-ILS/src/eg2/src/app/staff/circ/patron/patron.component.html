@@ -228,7 +228,8 @@
         </li>
 
         <li ngbNavItem="search" class="ml-auto">
-          <a ngbNavLink i18n>Patron Search</a>
+          <a ngbNavLink (click)="navItemClick('search', $event)"
+            routerLink="/staff/circ/patron/search" i18n>Patron Search</a>
           <ng-template ngbNavContent>
             <div class="">
               <eg-patron-search
