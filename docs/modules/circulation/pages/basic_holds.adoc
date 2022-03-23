@@ -797,7 +797,7 @@ This will open the Hold Group in the Current Users tab.
 +
 image::media/delete_hold_group.png[Delete Hold Group]
 
-==== From the My Account Interface in the OPAC
+=== From the My Account Interface in the OPAC
 
 If a hold group is patron visible, then the information
 will be available for viewing under *Holds/Ready* 
