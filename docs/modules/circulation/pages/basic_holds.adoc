@@ -660,6 +660,12 @@ to Hold Groups owned by Branch A. If they needed to add patrons to
 Branch B or Branch C too, they would need system or consortial-level
 permissions.
 
+[NOTE]
+=============
+Remember to select the proper hold group under *Hold Groups* by double-clicking
+the group selection before adding or editing users.  
+=============
+
 ===== Add Users By Barcode
 
 . Go to *Circulation -> Hold Groups*.
@@ -790,3 +796,19 @@ This will open the Hold Group in the Current Users tab.
 . Click the *Hold Groups* dropdown and choose *Delete Hold Group*.
 +
 image::media/delete_hold_group.png[Delete Hold Group]
+
+==== From the My Account Interface in the OPAC
+
+If a hold group is patron visible, then the information
+will be available for viewing under *Holds/Ready* 
+and *Hold Groups*.  Here a table will display hold group
+information and patrons can remove themselves from a group
+if desired.
+
+image::hold_management/hold_groups_menu_opac.jpg[Hold Group Option in OPAC]
+
+[NOTE]
+====================
+If the patron is not part of a hold group that is patron visible,
+the *Hold Groups* option won't appear in their OPAC account menu.
+====================
