@@ -39,7 +39,14 @@ A credit can be kept in a patron account and used later to pay bills.
 
 To use patron credit to pay bills, select *Patron Credit* as the payment type.
 
-If your library does not use patron credit, you can turn it off through a library setting.
+If your library does not use patron credit, you can turn it off through a library setting: "Disable Patron
+Credit".
+
+[TIP]
+===========================================================================
+Check out xref:negative_balances.adoc[] for information on finding
+a directory of patrons with negative balances.
+===========================================================================
 
 [[adjust_to_zero]]
 == Adjust Bill Balance to Zero ==
