@@ -440,6 +440,70 @@ export class EditComponent implements OnInit, AfterViewInit {
         stageData.settings.forEach(setting => {
             this.userSettings[setting.setting()] = Boolean(setting.value());
         });
+
+        stageData.statcats.forEach(entry => {
+
+            entry.statcat(Number(entry.statcat()));
+
+            const stat: StatCat =
+                this.statCats.filter(s => s.cat.id() === entry.statcat())[0];
+
+            let cboxEntry: ComboboxEntry =
+                stat.entries.filter(e => e.label === entry.value())[0];
+
+            if (!cboxEntry) {
+                // If the applied value is not in the list of entries,
+                // create a freetext combobox entry for it.
+                cboxEntry = {
+                    id: null,
+                    freetext: true,
+                    label: entry.value()
+                };
+
+                stat.entries.unshift(cboxEntry);
+            }
+
+            this.userStatCats[entry.statcat()] = cboxEntry;
+
+            // This forces the creation of the stat cat entry IDL objects.
+            this.userStatCatChange(stat.cat, cboxEntry);
+        });
+
+        if (patron.billing_address()) {
+            this.handlePostCodeChange(
+                patron.billing_address(), patron.billing_address().post_code());
+        }
+    }
+
+    checkStageUserDupes(): Promise<any> {
+        // Fire duplicate patron checks,once for each category
+
+        const patron = this.patron;
+
+        // Fire-and-forget the email search because it can take several seconds
+        if (patron.email()) {
+            this.dupeValueChange('email', patron.email());
+        }
+
+        return this.dupeValueChange('name', patron.family_name())
+
+        .then(_ => {
+            if (patron.ident_value()) {
+                return this.dupeValueChange('ident', patron.ident_value());
+            }
+        })
+        .then(_ => {
+            if (patron.day_phone()) {
+                return this.dupeValueChange('phone', patron.day_phone());
+            }
+        })
+        .then(_ => {
+            let promise = Promise.resolve();
+            this.patron.addresses().forEach(addr => {
+                promise =
+                    promise.then(__ => this.dupeValueChange('address', addr));
+            });
+        });
     }
 
     copyCloneData(clone: IdlObject) {
