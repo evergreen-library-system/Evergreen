@@ -119,7 +119,7 @@
       </eg-grid-column>
 
       <ng-template #barcodeTmpl let-hold="row">
-        <a href="/eg/staff/cat/item/{{hold.cp_id}}/summary">
+        <a href="/eg/staff/cat/item/{{hold.cp_id}}/summary" target="_blank">
           {{hold.cp_barcode}}
         </a>
       </ng-template>
@@ -128,7 +128,7 @@
       </eg-grid-column>
 
       <ng-template #userBarcodeTmpl let-hold="row">
-        <a href="/eg/staff/circ/patron/{{hold.usr_id}}/checkout">
+        <a href="/eg/staff/circ/patron/{{hold.usr_id}}/checkout" target="_blank">
           {{hold.ucard_barcode}}
         </a>
       </ng-template>
