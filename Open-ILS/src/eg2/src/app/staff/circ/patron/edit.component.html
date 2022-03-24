@@ -340,7 +340,6 @@
     {args: {template: fieldInput, field: 'ident_value2'}}">
   </ng-container>
 
-
   <div class="row pt-1 pb-1 mt-1">
     <ng-container 
       *ngTemplateOutlet="fieldLabel; context: {args: {field: 'email'}}">
@@ -386,12 +385,39 @@
     </div>
   </div>
 
-  <ng-container *ngTemplateOutlet="fieldRow; context: 
-    {args: {template: fieldInput, field: 'evening_phone'}}">
-  </ng-container>
-  <ng-container *ngTemplateOutlet="fieldRow; context: 
-    {args: {template: fieldInput, field: 'other_phone'}}">
-  </ng-container>
+  <div class="row pt-1 pb-1 mt-1">
+    <ng-container 
+      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'evening_phone'}}">
+    </ng-container>
+    <ng-container 
+      *ngTemplateOutlet="fieldInput; context: {args: {field: 'evening_phone'}}">
+    </ng-container>
+    <div class="col-lg-6">
+      <ng-container *ngIf="patron.evening_phone() && !patron.isnew()">
+        <button class="btn btn-outline-dark" 
+          (click)="invalidateField('evening_phone')" i18n>Invalidate</button>
+      </ng-container>
+      <ng-container *ngTemplateOutlet="fieldExample; context: {args: {field: 'evening_phone'}}">
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="row pt-1 pb-1 mt-1">
+    <ng-container 
+      *ngTemplateOutlet="fieldLabel; context: {args: {field: 'other_phone'}}">
+    </ng-container>
+    <ng-container 
+      *ngTemplateOutlet="fieldInput; context: {args: {field: 'other_phone'}}">
+    </ng-container>
+    <div class="col-lg-6">
+      <ng-container *ngIf="patron.other_phone() && !patron.isnew()">
+        <button class="btn btn-outline-dark" 
+          (click)="invalidateField('other_phone')" i18n>Invalidate</button>
+      </ng-container>
+      <ng-container *ngTemplateOutlet="fieldExample; context: {args: {field: 'other_phone'}}">
+      </ng-container>
+    </div>
+  </div>
 
   <div class="row pt-1 pb-1 mt-1" *ngIf="showField('au.home_ou')">
     <ng-container 
