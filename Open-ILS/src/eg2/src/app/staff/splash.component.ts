@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Directive, ElementRef, Renderer2} from '@angular/core';
+import {Component, OnInit, AfterViewInit, Directive, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
