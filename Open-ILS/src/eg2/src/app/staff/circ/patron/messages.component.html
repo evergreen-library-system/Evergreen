@@ -47,6 +47,8 @@
   [showDeclaredFieldsOnly]="true" persistKey="circ.patron.archived_messages">
   <eg-grid-toolbar-action (onClick)="remove($event)"
     label="Delete Selected" i18n-label></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action (onClick)="unArchive($event)"
+    label="Un-Archive Selected" i18n-label></eg-grid-toolbar-action>
   <eg-grid-column path="set_date"
     i18n-label label="Applied On" [datePlusTime]="true"></eg-grid-column>
   <eg-grid-column i18n-label label="Label" path="standing_penalty.label">

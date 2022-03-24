@@ -130,6 +130,16 @@ export class PatronMessagesComponent implements OnInit {
         });
     }
 
+    unArchive(penalties: IdlObject[]) {
+        penalties.forEach(p => p.stop_date(null));
+        this.pcrud.update(penalties).toPromise()
+        .then(_ => this.context.refreshPatron())
+        .then(_ => {
+            this.mainGrid.reload();
+            this.archiveGrid.reload();
+        });
+    }
+
     archive(penalties: IdlObject[]) {
         penalties.forEach(p => p.stop_date('now'));
         this.pcrud.update(penalties).toPromise()
