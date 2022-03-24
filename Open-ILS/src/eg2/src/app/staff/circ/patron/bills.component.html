@@ -293,6 +293,10 @@
     path="circulation.circ_lib.shortname">
   </eg-grid-column>
 
+  <eg-grid-column i18n-label label="Checkin Date" [hidden]="true"
+    path="circulation.checkin_time">
+  </eg-grid-column>
+
   <eg-grid-column name="copy_id" path="circulation.target_copy.id" 
     [required]="true" [hidden]="true"></eg-grid-column>
 
