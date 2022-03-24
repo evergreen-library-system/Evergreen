@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version); -- jboyer /  / 
+SELECT evergreen.upgrade_deps_block_check('1320', :eg_version); -- jboyer /  / 
 
 ALTER TABLE reporter.template_folder ADD COLUMN simple_reporter BOOLEAN DEFAULT FALSE;
 ALTER TABLE reporter.report_folder ADD COLUMN simple_reporter BOOLEAN DEFAULT FALSE;
@@ -22,7 +22,7 @@ $$ LANGUAGE SQL;
 
 -- Hey committer, make sure this id is good to go and also in 950.data.seed-values.sql
 INSERT INTO permission.perm_list (id, code, description) VALUES
- ( 636, 'RUN_SIMPLE_REPORTS', oils_i18n_gettext(636,
+ ( 638, 'RUN_SIMPLE_REPORTS', oils_i18n_gettext(638,
     'Build and run simple reports', 'ppl', 'description'));
 
 
