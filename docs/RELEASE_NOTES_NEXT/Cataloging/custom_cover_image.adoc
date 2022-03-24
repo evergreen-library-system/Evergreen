@@ -30,3 +30,8 @@ opensrf.xml:
 with the path appropriately adjusted for your installation. The Apache process
 will need write permissions for that directory.
 
+Additionally, the following directories need to exist and be writable by the Apache process:
+
+/openils/var/web/opac/extras/ac/jacket/large/r
+/openils/var/web/opac/extras/ac/jacket/medium/r
+/openils/var/web/opac/extras/ac/jacket/small/r
