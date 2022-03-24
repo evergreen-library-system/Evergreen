@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1315', :eg_version);
+
 CREATE TABLE config.ui_staff_portal_page_entry_type (
     code        TEXT PRIMARY KEY,
     label       TEXT NOT NULL

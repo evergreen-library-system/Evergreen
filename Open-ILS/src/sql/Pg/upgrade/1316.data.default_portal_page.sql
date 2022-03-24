@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1316', :eg_version);
+
 INSERT INTO config.ui_staff_portal_page_entry
     (id, page_col, col_pos, entry_type, label, image_url, target_url, owner)
 VALUES
