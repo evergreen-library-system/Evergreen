@@ -50,17 +50,18 @@
 <!-- Org Unit Settings Grid -->
 <div class='w-11 mt-3'>
   <eg-grid #orgUnitSettingsGrid [dataSource]="gridDataSource"
-    [disableSelect]="true"
-    [sortable]="false" [showDeclaredFieldsOnly]="true"
+    [disableSelect]="true" [useLocalSort]="true" [multiSortable]="true"
+    [sortable]="true" [showDeclaredFieldsOnly]="true"
     persistKey="admin.actor.org_unit_settings">
 
-    <eg-grid-column i18n-label label="Edit" name="edit" [flex]="1"
+    <eg-grid-column i18n-label label="Edit" name="edit" [flex]="1" [sortable]="false" [multiSortable]="false"
       [disableTooltip]="true" [cellTemplate]="editCellTemplate"></eg-grid-column>
-    <eg-grid-column i18n-label label="History" name="history" [flex]="1"
+    <eg-grid-column i18n-label label="History" name="history" [flex]="1" [sortable]="false" [multiSortable]="false"
       [disableTooltip]="true" [cellTemplate]="historyCellTemplate"></eg-grid-column>
     <eg-grid-column path="name" label="Name" i18n-label [hidden]="true" [flex]="3"></eg-grid-column>
     <eg-grid-column path="grp" label="Group" i18n-label [flex]="1"></eg-grid-column>
     <eg-grid-column path="label" label="Setting" [index]="true" i18n-label [flex]="4"></eg-grid-column>
+    <eg-grid-column path="description" label="Description" [hidden]="true" i18n-label [flex]="6"></eg-grid-column>
     <eg-grid-column path="context.shortname()" label="Context" i18n-label [flex]="1"></eg-grid-column>
     <eg-grid-column path="value_str" label="Value" i18n-label [flex]="1"></eg-grid-column>
 

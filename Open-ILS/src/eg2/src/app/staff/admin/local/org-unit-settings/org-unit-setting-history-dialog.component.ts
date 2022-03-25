@@ -45,12 +45,21 @@ export class OuSettingHistoryDialogComponent extends DialogComponent implements 
         if (log) {
             const intTypes = ['integer', 'currency', 'link'];
             if (intTypes.includes(this.entry.dataType)) {
-                log.new_value = Number(log.new_value);
+                log.original_value = Number(log.original_value);
             } else {
-                log.new_value = log.new_value.replace(/^"(.*)"$/, '$1');
+                log.original_value = log.original_value.replace(/^"(.*)"$/, '$1');
             }
+
+            if (this.entry.dataType === 'bool') {
+                if (log.original_value.match(/^t/)) {
+                    log.original_value = true;
+                } else {
+                    log.original_value = false;
+                }
+            }
+
             this.close({
-                setting: {[this.entry.name]: log.new_value},
+                setting: {[this.entry.name]: log.original_value},
                 context: this.org.get(log.org),
                 revert: true
             });
