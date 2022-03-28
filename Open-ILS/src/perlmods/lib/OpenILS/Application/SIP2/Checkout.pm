@@ -97,6 +97,7 @@ sub perform_checkout {
         my $textcode = $event->{textcode};
 
         if ($textcode eq 'SUCCESS' && $event->{payload}) {
+            $circ_details->{ok} = 1;
             if (my $circ = $event->{payload}->{circ}) {
                 $circ_details->{circ} = $circ;
 

@@ -366,6 +366,7 @@ sub patron_response_common_data {
             fields => [
                 {AO => $session->config->{institution}},
                 {AA => $barcode},
+                {AE => ''},
                 {BL => $SC->sipbool(0)}, # valid patron
                 {CQ => $SC->sipbool(0)}  # valid patron password
             ]
@@ -395,6 +396,10 @@ sub patron_response_common_data {
         ],
         fields => [
             {AA => $barcode},
+            {AE => sprintf('%s %s %s',
+                   ($patron->first_given_name || ''),
+                   ($patron->second_given_name || ''),
+                   ($patron->family_name || ''))},
             {AO => $session->config->{institution}},
             {BH => $session->config->{settings}->{currency}},
             {BL => $SC->sipbool(1)},          # valid patron
