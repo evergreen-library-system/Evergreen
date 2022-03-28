@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1324', :eg_version);
 
 CREATE TABLE action_trigger.alternate_template (
       id               SERIAL,
