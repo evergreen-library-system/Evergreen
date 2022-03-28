@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1323', :eg_version);
 
 -- VIEWS for the oai service
 CREATE SCHEMA oai;
