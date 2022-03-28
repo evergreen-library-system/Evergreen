@@ -78,8 +78,7 @@ export class EditEventDefinitionComponent implements OnInit {
         this.pcrud.search('atevdef',
             {id: this.evtDefId}, {}).toPromise().then(rec => {
             this.evtReactor = rec.reactor();
-            if ('ProcessTemplate SendEmail SendSMS'.indexOf(this.evtReactor) > -1)
-                { this.evtAltEligible = true; }
+            if ('ProcessTemplate SendEmail SendSMS'.indexOf(this.evtReactor) > -1) { this.evtAltEligible = true; }
         });
 
         this.envDataSource.getRows = (pager: Pager, sort: any[]) => {

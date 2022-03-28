@@ -12,7 +12,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {HttpClient, HttpResponse, HttpErrorResponse, HttpEventType} from '@angular/common/http';
 
 @Component({
-  selector: 'upload-jacket-image-dialog',
+  selector: 'eg-upload-jacket-image-dialog',
   templateUrl: './upload-jacket-image-dialog.component.html'
 })
 
@@ -68,9 +68,9 @@ export class UploadJacketImageDialogComponent extends DialogComponent implements
     }
 
     onFileSelected(event) {
-        console.debug('onFileSelected',event);
+        console.debug('onFileSelected', event);
         this.fileEvent = event;
-        const file:File = this.fileEvent.target.files[0];
+        const file: File = this.fileEvent.target.files[0];
         if (file) {
             this.noFile = false;
         } else {
@@ -79,16 +79,16 @@ export class UploadJacketImageDialogComponent extends DialogComponent implements
     }
 
     uploadJacketImage() {
-        const file:File = this.fileEvent.target.files[0];
+        const file: File = this.fileEvent.target.files[0];
         if (file) {
             this.uploading = true;
             this.clearErrors();
             const formData = new FormData();
-            formData.append("jacket_upload", file);
-            formData.append("ses", this.auth.token());
-            formData.append("bib_record", this.recordId.toString());
+            formData.append('jacket_upload', file);
+            formData.append('ses', this.auth.token());
+            formData.append('bib_record', this.recordId.toString());
 
-            const upload$ = this.http.post("/jacket-upload", formData, {
+            const upload$ = this.http.post('/jacket-upload', formData, {
                 reportProgress: true,
                 observe: 'events'
             });
@@ -97,21 +97,21 @@ export class UploadJacketImageDialogComponent extends DialogComponent implements
               x => {
                 console.debug('Jacket upload: ' , x);
                 if (x instanceof HttpResponse) {
-                    console.debug('yay',x.body);
-                    if (x.body != '1') {
+                    console.debug('yay', x.body);
+                    if (x.body !== '1') {
                         this.uploading = false;
                         this.errorUploading = true;
                     }
-                    switch(x.body) {
-                        case "session not found": this.errorAuthentication = true; break;
-                        case "permission denied": this.errorAuthorization = true; break;
-                        case "invalid compression level": this.errorCompressionConfig = true; break;
-                        case "bib not found": this.errorNotFound = true; break;
-                        case "jacket location not configured": this.errorLocationConfig = true; break;
-                        case "unable to open file for writing": this.errorWritingFile = true; break;
-                        case "file too large": this.errorSize = true; break;
-                        case "parse error": this.errorParsing = true; break;
-                        case "upload error": this.errorGeneric = true; break;
+                    switch (x.body) {
+                        case 'session not found': this.errorAuthentication = true; break;
+                        case 'permission denied': this.errorAuthorization = true; break;
+                        case 'invalid compression level': this.errorCompressionConfig = true; break;
+                        case 'bib not found': this.errorNotFound = true; break;
+                        case 'jacket location not configured': this.errorLocationConfig = true; break;
+                        case 'unable to open file for writing': this.errorWritingFile = true; break;
+                        case 'file too large': this.errorSize = true; break;
+                        case 'parse error': this.errorParsing = true; break;
+                        case 'upload error': this.errorGeneric = true; break;
                         default: this.errorGeneric = true; break;
                     }
                 }
