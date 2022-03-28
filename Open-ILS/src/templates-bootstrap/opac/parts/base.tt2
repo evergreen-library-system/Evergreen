@@ -27,6 +27,12 @@
         [% '<style>'; custom_css ; '</style>' %]
         [% END %]
 
+        [% matomo_id = ctx.get_org_setting(ctx.search_ou, 'opac.analytics.matomo_id'); %]
+        [% matomo_url = ctx.get_org_setting(ctx.search_ou, 'opac.analytics.matomo_url'); %]
+        [% IF matomo_id && matomo_url %]
+           [% matomo_enabled = 1; %]
+        [% END %]
+
         [%- libname = ctx.get_aou(ctx.search_ou).name;
             libname = libname | html;
             libsname = ctx.get_aou(ctx.search_ou).shortname; %]
@@ -49,6 +55,7 @@
 
         [% IF !ctx.is_staff %]
             [% INCLUDE 'opac/parts/goog_analytics.tt2' %]
+            [% INCLUDE 'opac/parts/matomo_analytics.tt2' %]
         [% END %]
         [% PROCESS 'opac/parts/stripe.tt2' %]
 <script  src="[% ctx.media_prefix %]/opac/deps/node_modules/jquery/dist/jquery.min.js"></script>
