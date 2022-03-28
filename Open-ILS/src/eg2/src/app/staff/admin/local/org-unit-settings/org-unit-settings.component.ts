@@ -10,6 +10,7 @@ import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {LocaleService} from '@eg/core/locale.service';
+import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 
 import {EditOuSettingDialogComponent
     } from '@eg/staff/admin/local/org-unit-settings/edit-org-unit-setting-dialog.component';
@@ -57,6 +58,8 @@ export class OrgUnitSettingsComponent implements OnInit {
         private orgUnitSettingHistoryDialog: OuSettingHistoryDialogComponent;
     @ViewChild('ouSettingJsonDialog', { static: true })
         private ouSettingJsonDialog: OuSettingJsonDialogComponent;
+
+    @ViewChild('progress') private progress: ProgressDialogComponent;
 
     refreshSettings: boolean;
     renderFromPrefs: boolean;
@@ -128,7 +131,7 @@ export class OrgUnitSettingsComponent implements OnInit {
                     });
                     settingVals.forEach(key => {
                         if (key.setting) {
-                            if(orgs.indexOf(this.org.get(key.setting.org)) || this.contextOrg.id() == key.setting.org) {
+                            if (orgs.indexOf(this.org.get(key.setting.org)) || this.contextOrg.id() === key.setting.org) {
                                 const settingsObj = this.settingTypeArr.filter(
                                     setting => setting.name === key.name
                                 )[0];
@@ -231,17 +234,20 @@ export class OrgUnitSettingsComponent implements OnInit {
 
     applyFilter(clear?: boolean) {
         if (clear) { this.filterString = ''; }
-        this.orgUnitSettingsGrid.context.pager.toFirst()
+        this.orgUnitSettingsGrid.context.pager.toFirst();
         this.updateGrid(this.contextOrg);
     }
 
-    updateSetting(obj, entry) {
-        this.net.request(
+    updateSetting(obj, entry, noToast?: boolean): Promise<any> {
+        return this.net.request(
             'open-ils.actor',
             'open-ils.actor.org_unit.settings.update',
             this.auth.token(), obj.context.id(), obj.setting
         ).toPromise().then(res => {
-            this.toast.success(entry.label + ' Updated.');
+            if (!noToast) {
+                this.toast.success(entry.label + ' Updated.');
+            }
+
             if (!obj.setting[entry.name]) {
                 const settingsObj = this.settingTypeArr.filter(
                     setting => setting.name === entry.name
@@ -289,41 +295,49 @@ export class OrgUnitSettingsComponent implements OnInit {
     showJsonDialog(isExport: boolean) {
         this.ouSettingJsonDialog.isExport = isExport;
         this.ouSettingJsonDialog.jsonData = '';
+
         if (isExport) {
-            this.ouSettingJsonDialog.jsonData = '{';
+            const jsonObj: any = {};
             this.gridDataSource.data.forEach(entry => {
-                this.ouSettingJsonDialog.jsonData +=
-                    '"' + entry.name + '": {"org": "' +
-                    this.contextOrg.id() + '", "value": ';
-                if (entry.value) {
-                    this.ouSettingJsonDialog.jsonData += '"' + entry.value + '"';
-                } else {
-                    this.ouSettingJsonDialog.jsonData += 'null';
-                }
-                this.ouSettingJsonDialog.jsonData += '}';
-                if (this.gridDataSource.data.indexOf(entry) !== (this.gridDataSource.data.length - 1)) {
-                    this.ouSettingJsonDialog.jsonData += ',';
-                }
+                jsonObj[entry.name] = {
+                    org: this.contextOrg.id(),
+                    value: entry.value === undefined ? null : entry.value
+                };
             });
-            this.ouSettingJsonDialog.jsonData += '}';
+
+            this.ouSettingJsonDialog.jsonData = JSON.stringify(jsonObj);
         }
 
         this.ouSettingJsonDialog.open({size: 'lg'}).subscribe(res => {
             if (res.apply && res.jsonData) {
                 const jsonSettings = JSON.parse(res.jsonData);
+
+                this.progress.update({
+                    max: Object.entries(jsonSettings).length,
+                    value: 1
+                });
+
+                this.progress.open();
+
+                let promise = Promise.resolve();
                 Object.entries(jsonSettings).forEach((fields) => {
                     const entry = this.settingTypeArr.find(x => x.name === fields[0]);
                     const obj = {setting: {}, context: {}};
                     const val = this.parseValType(fields[1]['value'], entry.dataType);
                     obj.setting[fields[0]] = val;
                     obj.context = this.org.get(fields[1]['org']);
-                    this.updateSetting(obj, entry);
+                    promise = promise
+                        .then(_ => this.updateSetting(obj, entry, true))
+                        .then(_ => this.progress.increment());
                 });
+
+                promise.finally(() => this.progress.close());
             }
         });
     }
 
     parseValType(value, dataType) {
+        if (value === null || value === undefined) { return null; }
         if (dataType === 'integer' || 'currency' || 'link') {
             return Number(value);
         } else if (dataType === 'bool') {
