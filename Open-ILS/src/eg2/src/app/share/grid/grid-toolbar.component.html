@@ -37,6 +37,8 @@
   <!-- push everything else to the right -->
   <div class="flex-1"></div>
 
+  <ng-container *ngIf="!gridContext.disableSelect">
+
   <div class="font-sm font-italic d-flex flex-column-reverse mr-2">
     {{gridContext.getSelectedRows().length}} selected
   </div>
@@ -51,6 +53,8 @@
       </eg-grid-toolbar-actions-menu>
     </div>
   </div>
+
+  </ng-container><!-- if disableSelect -->
 
   <ng-container *ngIf="!gridContext.disablePaging">
 
