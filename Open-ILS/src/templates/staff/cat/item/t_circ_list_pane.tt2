@@ -63,7 +63,12 @@
       circ.auto_renewal() == 't'
     }}</div>
     <div class="flex-cell">[% l('Check Out Staff') %]</div>
-    <div class="flex-cell well">{{circ.circ_staff()}}</div>
+    <div class="flex-cell well">
+      <a ng-if="circ.circ_staff()" target="_blank"
+        href="./circ/patron/{{circ.circ_staff().id()}}/checkout">
+          {{circ.circ_staff().usrname()}}
+      </a>
+    </div>
     <div class="flex-cell">[% l('Stop Fines Reason') %]</div>
     <div class="flex-cell well">{{circ.stop_fines()}}</div>
     <div class="flex-cell">[% l('Check In Library') %]</div>
