@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable, Observer} from 'rxjs';
+import {EMPTY, Observable, Observer} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -44,6 +44,7 @@ export class OrgUnitSettingsComponent implements OnInit {
     contextOrg: IdlObject;
 
     initDone = false;
+    midFetch = false;
     gridDataSource: GridDataSource;
     gridTemplateContext: any;
     prevFilter: string;
@@ -96,6 +97,8 @@ export class OrgUnitSettingsComponent implements OnInit {
     }
 
     fetchSettingTypes(pager: Pager): Observable<any> {
+        if (this.midFetch) { return EMPTY; }
+        this.midFetch = true;
         return new Observable<any>(observer => {
             this.pcrud.retrieveAll('coust', {flesh: 3, flesh_fields: {
                 'coust': ['grp', 'view_perm']
@@ -109,6 +112,7 @@ export class OrgUnitSettingsComponent implements OnInit {
                         ok => {
                             this.flattenSettings(observer);
                             this.filterCoust();
+                            this.midFetch = false;
                         }
                     );
                 }
@@ -224,7 +228,28 @@ export class OrgUnitSettingsComponent implements OnInit {
     }
 
     flattenSettings(observer: Observer<any>) {
-        this.gridDataSource.data = this.settingTypeArr;
+        let sorted = this.settingTypeArr.sort((a,b) => {
+            if (a.grp && b.grp) {
+                if (a.grp.toLowerCase() < b.grp.toLowerCase()) {
+                    return -1;
+                } else if (a.grp.toLowerCase() > b.grp.toLowerCase()) {
+                    return 1;
+                }
+            } else if (a.grp) {
+                return -1;
+            } else if (b.grp) {
+                return 1;
+            }
+
+            if (a.label.toLowerCase() < b.label.toLowerCase()) {
+                return -1;
+            } else if (a.label.toLowerCase() > b.label.toLowerCase()) {
+                return 1;
+            }
+
+            return 0;
+        });
+        this.gridDataSource.data = sorted
         observer.complete();
     }
 
@@ -246,6 +271,9 @@ export class OrgUnitSettingsComponent implements OnInit {
         ).toPromise().then(res => {
             if (!noToast) {
                 this.toast.success(entry.label + ' Updated.');
+                if (obj.context.id() !== this.contextOrg.id()) {
+                    this.toast.warning('The setting you edited is not the currently chosen org unit, therefore the changes you made are not visible.');
+                }
             }
 
             if (!obj.setting[entry.name]) {
