@@ -44,7 +44,7 @@ Credit".
 
 [TIP]
 ===========================================================================
-Check out xref:negative_balances.adoc[] for information on finding
+Check out xref:local_admin:negative_balances.adoc[] for information on finding
 a directory of patrons with negative balances.
 ===========================================================================
 
