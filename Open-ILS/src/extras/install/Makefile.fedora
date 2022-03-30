@@ -46,18 +46,22 @@ FEDORA_RPMS = \
 	perl-Email-Simple \
 	perl-Email-MIME \
 	perl-GDGraph3d \
+	perl-HTTP-Async \
 	perl-JSON-XS \
 	perl-LDAP \
 	perl-Locale-Codes \
 	perl-Locale-Maketext-Lexicon \
 	perl-MARC-Charset \
 	perl-Module-Pluggable \
+	perl-Net-HTTPS-NB \
 	perl-Net-IP \
 	perl-Net-SSH2 \
 	perl-OLE-Storage_Lite \
 	perl-Parse-RecDescent \
 	perl-RPC-XML \
 	perl-SOAP-Lite \
+	perl-Test-MockModule \
+	perl-Test-MockObject \
 	perl-Test-Warn \
 	perl-Test-Output \
 	perl-Text-Aspell \

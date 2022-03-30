@@ -4,6 +4,7 @@ import {AdminLocalSplashComponent} from './admin-local-splash.component';
 import {BasicAdminPageComponent} from '@eg/staff/admin/basic-admin-page.component';
 import {AddressAlertComponent} from './address-alert.component';
 import {AdminCarouselComponent} from './admin-carousel.component';
+import {OpenAthensIdentityComponent} from './openathens-identity.component';
 import {AdminStaffPortalPageComponent} from './staff_portal_page/staff-portal-page.component';
 import {StandingPenaltyComponent} from './standing-penalty.component';
 import {CourseTermMapComponent} from './course-reserves/course-term-map.component';
@@ -51,6 +52,9 @@ const routes: Routes = [{
     path: 'config/circ_limit_set',
     loadChildren: () =>
       import('./circ_limit_set/circ_limit_set.module').then(m => m.CircLimitSetModule)
+}, {
+    path: 'config/openathens_identity',
+    component: OpenAthensIdentityComponent
 }, {
     path: 'config/standing_penalty',
     component: StandingPenaltyComponent

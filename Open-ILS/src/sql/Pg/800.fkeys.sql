@@ -278,6 +278,10 @@ ALTER TABLE asset.copy_template ADD CONSTRAINT asset_copy_template_floating_fkey
 ALTER TABLE config.marc_field ADD CONSTRAINT config_marc_field_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit(id) DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE config.marc_subfield ADD CONSTRAINT config_marc_subfield_owner_fkey FOREIGN KEY (owner) REFERENCES actor.org_unit(id) DEFERRABLE INITIALLY DEFERRED;
 
+ALTER TABLE config.openathens_identity ADD CONSTRAINT config_openathens_identity_ou_fkey
+FOREIGN KEY (org_unit) REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
 ALTER TABLE config.copy_tag_type ADD CONSTRAINT copy_tag_type_owner_fkey FOREIGN KEY (owner) REFERENCES  actor.org_unit(id) DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE config.print_template ADD CONSTRAINT cpt_owner_fkey 

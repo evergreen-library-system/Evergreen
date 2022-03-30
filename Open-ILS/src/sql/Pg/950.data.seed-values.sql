@@ -1970,7 +1970,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 637, 'UPLOAD_COVER_IMAGE', oils_i18n_gettext(637,
     'Upload local cover images for added content.', 'ppl', 'description')),
  ( 638, 'RUN_SIMPLE_REPORTS', oils_i18n_gettext(638,
-    'Build and run simple reports', 'ppl', 'description'))
+    'Build and run simple reports', 'ppl', 'description')),
+ ( 639, 'ADMIN_OPENATHENS', oils_i18n_gettext(639,
+    'Allow a user to administer OpenAthens authentication service', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);

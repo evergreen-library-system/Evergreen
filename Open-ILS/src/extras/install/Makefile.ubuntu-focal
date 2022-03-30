@@ -42,9 +42,11 @@ export DEBS = \
 	libgd-graph3d-perl\
 	libhttp-oai-perl\
 	libgeo-coder-osm-perl\
+	libhttp-async-perl\
 	liblocale-maketext-lexicon-perl\
 	liblog-log4perl-perl\
 	libncurses5-dev\
+	libnet-https-nb-perl\
 	libnet-ip-perl\
 	libnet-ldap-perl \
 	libnet-server-perl\
@@ -61,6 +63,8 @@ export DEBS = \
 	libsru-perl\
 	libssh2-1-dev\
 	libtemplate-plugin-posix-perl\
+	libtest-mockmodule-perl\
+	libtest-mockobject-perl\
 	libtest-warn-perl\
 	libtest-output-perl\
 	libtext-aspell-perl\
