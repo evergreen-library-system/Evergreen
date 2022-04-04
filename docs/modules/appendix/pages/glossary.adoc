@@ -110,7 +110,7 @@ Hopeless Holds::
   Holds which have become unfillable due to there being no copies in hold_copy_map and/or all copies in hold_copy_map are in a item status with the hopeless_prone property set to “True.”
 [[I]]ICL (Inter-Consortium Loans)::
   Inter-Consortium Loans are like ILL's, but different in the fact that the loan happens just with in the Consortium. 
-[[IDL]]IDL (Interface Definition Language):: A model that Evergreen's software components use to understand how Evergreen's data are structured. IDL is sometime refered to as the Fieldmapper IDL.
+[[IDL]]IDL (Interface Definition Language):: A model that Evergreen's software components use to understand how Evergreen's data are structured. IDL is sometime refered to as the Fieldmapper IDL. Test text added.
 [[ILS]]ILS (Integrated Library System)::
   The Integrated Library System is a set of applications which perform the business and technical aspects of library management, including but not exclusive to acquistions, cataloging, circulation, and booking. 
 ILL (Inter-Library Loan)::
