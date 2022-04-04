@@ -455,18 +455,25 @@ CREATE TABLE actor.hours_of_operation (
 	id		INT	PRIMARY KEY REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 	dow_0_open	TIME	NOT NULL DEFAULT '09:00',
 	dow_0_close	TIME	NOT NULL DEFAULT '17:00',
+    dow_0_note  TEXT,
 	dow_1_open	TIME	NOT NULL DEFAULT '09:00',
 	dow_1_close	TIME	NOT NULL DEFAULT '17:00',
+    dow_1_note  TEXT,
 	dow_2_open	TIME	NOT NULL DEFAULT '09:00',
 	dow_2_close	TIME	NOT NULL DEFAULT '17:00',
+    dow_2_note  TEXT,
 	dow_3_open	TIME	NOT NULL DEFAULT '09:00',
 	dow_3_close	TIME	NOT NULL DEFAULT '17:00',
+    dow_3_note  TEXT,
 	dow_4_open	TIME	NOT NULL DEFAULT '09:00',
 	dow_4_close	TIME	NOT NULL DEFAULT '17:00',
+    dow_4_note  TEXT,
 	dow_5_open	TIME	NOT NULL DEFAULT '09:00',
 	dow_5_close	TIME	NOT NULL DEFAULT '17:00',
+    dow_5_note  TEXT,
 	dow_6_open	TIME	NOT NULL DEFAULT '09:00',
-	dow_6_close	TIME	NOT NULL DEFAULT '17:00'
+	dow_6_close	TIME	NOT NULL DEFAULT '17:00',
+    dow_6_note  TEXT
 );
 COMMENT ON TABLE actor.hours_of_operation IS $$
 When does this org_unit usually open and close?  (Variations

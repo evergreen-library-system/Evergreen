@@ -138,7 +138,7 @@ export class OrgUnitComponent implements OnInit {
     // if a 'value' is passed, it will be applied to the optional
     // hours-of-operation object, otherwise the hours on the currently
     // selected org unit.
-    hours(dow: number, which: 'open' | 'close', value?: string, hoo?: IdlObject): string {
+    hours(dow: number, which: 'open' | 'close' | 'note', value?: string, hoo?: IdlObject): string {
         if (!hoo && !this.selected) { return null; }
 
         const hours = hoo || this.selected.callerData.orgUnit.hours_of_operation();
@@ -156,6 +156,40 @@ export class OrgUnitComponent implements OnInit {
             this.hours(dow, 'open') === '00:00:00' &&
             this.hours(dow, 'close') === '00:00:00'
         );
+    }
+    
+    getNote(dow: number, hoo?: IdlObject) {
+        if (!hoo && !this.selected) { return null; }
+
+        const hours = hoo || this.selected.callerData.orgUnit.hours_of_operation();
+
+        return hours['dow_' + dow + '_note']();
+    }
+    
+    setNote(dow: number, value?: string, hoo?: IdlObject) {
+        console.log(value);
+        if (!hoo && !this.selected) { return null; }
+
+        const hours = hoo || this.selected.callerData.orgUnit.hours_of_operation();
+
+        hours['dow_' + dow + '_note'](value);
+        hours.ischanged(true);
+
+        return hours['dow_' + dow + '_note']();
+    }
+
+    note(dow: number, which: 'note', value?: string, hoo?: IdlObject) {
+         if (!hoo && !this.selected) { return null; }
+
+        const hours = hoo || this.selected.callerData.orgUnit.hours_of_operation();
+        if (!value) {
+            hours[`dow_${dow}_${which}`]("");
+            hours.ischanged(true);
+        } else if (value != hours[`dow_${dow}_${which}`]()) {
+            hours[`dow_${dow}_${which}`](value);
+            hours.ischanged(true);
+        }
+        return hours[`dow_${dow}_${which}`]();
     }
 
     closedOn(dow: number) {
