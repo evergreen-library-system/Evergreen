@@ -1,6 +1,7 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridColumn, GridRowFlairEntry} from '@eg/share/grid/grid';
+import {FormatService} from '@eg/core/format.service';
 import {IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -11,6 +12,9 @@ class DeskTotals {
     cash_payment = 0;
     check_payment = 0;
     credit_card_payment = 0;
+    formatted_cash_payment = '0.00';
+    formatted_check_payment = '0.00';
+    formatted_credit_card_payment = '0.00';
 };
 
 class UserTotals {
@@ -18,6 +22,10 @@ class UserTotals {
     work_payment = 0;
     credit_payment = 0;
     goods_payment = 0;
+    formatted_forgive_payment = '0.00';
+    formatted_work_payment = '0.00';
+    formatted_credit_payment = '0.00';
+    formatted_goods_payment = '0.00';
 };
 
 @Component({
@@ -49,6 +57,7 @@ export class CashReportsComponent implements OnInit {
         private idl: IdlService,
         private net: NetService,
         private org: OrgService,
+        private format: FormatService,
         private auth: AuthService){}
 
     ngOnInit() {
@@ -97,16 +106,23 @@ export class CashReportsComponent implements OnInit {
             let dataForTotal;
             if(idlClass === this.deskIdlClass) {
                 dataForTotal = this.getDeskTotal(result);
+                this.deskTotals.formatted_cash_payment = this.format.transform({value: this.deskTotals.cash_payment, datatype: 'money'});
+                this.deskTotals.formatted_check_payment = this.format.transform({value: this.deskTotals.check_payment, datatype: 'money'});
+                this.deskTotals.formatted_credit_card_payment = this.format.transform({value: this.deskTotals.credit_card_payment, datatype: 'money'});
             } else if(idlClass === this.userIdlClass) {
                 dataForTotal = this.getUserTotal(result);
+                this.userTotals.formatted_credit_payment = this.format.transform({value: this.userTotals.credit_payment, datatype: 'money'});
+                this.userTotals.formatted_forgive_payment = this.format.transform({value: this.userTotals.forgive_payment, datatype: 'money'});
+                this.userTotals.formatted_work_payment = this.format.transform({value: this.userTotals.work_payment, datatype: 'money'});
+                this.userTotals.formatted_goods_payment = this.format.transform({value: this.userTotals.goods_payment, datatype: 'money'});
                 result.forEach((userObject, index) => {
                     result[index].user = userObject.usr();
                     result[index].usr(userObject.usr().usrname())
                 });
             }
-            if(result.length > 0) {
-                result.push(dataForTotal);
-            }
+            //if(result.length > 0) {
+            //    result.push(dataForTotal);
+            //}
             this[dataSource].data = result;
             this.eraseUserGrid();
         });

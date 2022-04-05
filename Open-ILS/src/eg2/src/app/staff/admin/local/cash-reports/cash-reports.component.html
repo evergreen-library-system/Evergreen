@@ -31,6 +31,18 @@
     <ngb-tab title="Desk Payments">
       <ng-template ngbTabContent>
         <div class="mb-5">
+            <div class="row">
+                <div class="col-sm-2" i18n>Total Cash Payments</div>
+                <div class="col-sm-10">{{deskTotals.formatted_cash_payment}}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2" i18n>Total Check Payments</div>
+                <div class="col-sm-10">{{deskTotals.formatted_check_payment}}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2" i18n>Total Credit Card Payments</div>
+                <div class="col-sm-10">{{deskTotals.formatted_credit_card_payment}}</div>
+            </div>
             <eg-grid #deskPaymentGrid
                 [disableSelect]="true"
                 [disablePaging]="true"
@@ -47,6 +59,22 @@
     <ngb-tab title="User Payments">
         <ng-template ngbTabContent>
             <div class="mb-3">
+                <div class="row">
+                    <div class="col-sm-2" i18n>Total Credit Payments</div>
+                    <div class="col-sm-10">{{userTotals.formatted_credit_payment}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2" i18n>Total Forgive Payments</div>
+                    <div class="col-sm-10">{{userTotals.formatted_forgive_payment}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2" i18n>Total Work Payments</div>
+                    <div class="col-sm-10">{{userTotals.formatted_work_payment}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2" i18n>Total Goods Payments</div>
+                    <div class="col-sm-10">{{userTotals.formatted_goods_payment}}</div>
+                </div>
                 <eg-grid #userPaymentGrid
                     (onRowActivate) = "onRowActivate($event)"
                     [disableSelect]="true"
