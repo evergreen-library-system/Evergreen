@@ -68,6 +68,7 @@ sub dispatch_sip2_request {
     }
 
     my $MESSAGE_MAP = {
+        '01' => \&handle_block,
         '09' => \&handle_checkin,
         '11' => \&handle_checkout,
         '15' => \&handle_hold,
@@ -409,6 +410,81 @@ sub patron_response_common_data {
     };
 }
 
+sub handle_block {
+    my ($session, $message) = @_;
+
+    my $sip_account = $session->sip_account;
+
+    my $barcode = $SC->get_field_value($message, 'AA');
+    my $password = $SC->get_field_value($message, 'AD');
+
+    my $details = OpenILS::Application::SIP2::Patron->get_patron_details(
+        $session,
+        barcode => $barcode,
+        password => $password
+    );
+
+    my $response = patron_response_common_data(
+        $session, $barcode, $password, $details);
+
+    $response->{code} = '24';
+
+    return $response;
+
+    my ($self, $card_retained, $blocked_card_msg); # = @_;
+    $blocked_card_msg ||= '';
+
+    my $e = $self->{editor};
+    my $u = $self->{user};
+
+    syslog('LOG_INFO', "OILS: Blocking user %s", $u->card->barcode );
+
+    return $self if $u->card->active eq 'f'; # TODO: don't think this will ever be true
+
+    $e->xact_begin;    # connect and start a new transaction
+
+    $u->card->active('f');
+    if( ! $e->update_actor_card($u->card) ) {
+        syslog('LOG_ERR', "OILS: Block card update failed: %s", $e->event->{textcode});
+        $e->rollback; # rollback + disconnect
+        return $self;
+    }
+
+    # Use the ws_ou or home_ou of the authsession user, if any, as a
+    # context org_unit for the created penalty
+    my $here;
+    if ($e->authtoken()) {
+        my $auth_usr = $e->checkauth();
+        if ($auth_usr) {
+            $here = $auth_usr->ws_ou() || $auth_usr->home_ou();
+        }
+    }
+
+    my $penalty = Fieldmapper::actor::user_standing_penalty->new;
+    $penalty->usr( $u->id );
+    $penalty->org_unit( $here );
+    $penalty->set_date('now');
+    $penalty->staff( $e->checkauth()->id() );
+    $penalty->standing_penalty(20); # ALERT_NOTE
+
+    my $note = "<sip> CARD BLOCKED BY SELF-CHECK MACHINE. $blocked_card_msg</sip>\n"; # XXX Config option
+    my $msg = {
+      title => 'SIP',
+      message => $note
+    };
+    my $penalty_result = $U->simplereq(
+      'open-ils.actor',
+      'open-ils.actor.user.penalty.apply', $e->authtoken, $penalty, $msg);
+    if( my $result_code = $U->event_code($penalty_result) ) {
+        my $textcode = $penalty_result->{textcode};
+        syslog('LOG_ERR', "OILS: Block: patron penalty failed: %s", $textcode);
+        $e->rollback; # rollback + disconnect
+        return $self;
+    }
+
+    $e->commit;
+    return $self;
+}
 
 sub handle_checkout {
     my ($session, $message) = @_;
