@@ -8,6 +8,7 @@ use OpenILS::Utils::Fieldmapper;
 use LWP::UserAgent;
 use File::Fetch;
 use HTTP::Request::Common qw(POST);
+use FindBin;
 
 diag("test image uploader");
 
@@ -38,7 +39,7 @@ my $req = POST(
     Content_Type => 'multipart/form-data',
     Content => [
         # we're going for an image parse error
-        jacket_upload => [ '34-lp1787968-cover-uploader.t' ],
+        jacket_upload => [ "$FindBin::Bin/34-lp1787968-cover-uploader.t" ],
         bib_record => 1,
         ses => $authtoken
     ]
@@ -53,7 +54,7 @@ $req = POST(
     $target,
     Content_Type => 'multipart/form-data',
     Content => [
-        jacket_upload => [ '../../../web/images/green_check.png' ],
+        jacket_upload => [ "$FindBin::Bin/../../../web/images/green_check.png" ],
         bib_record => 1,
         ses => $authtoken
     ]
