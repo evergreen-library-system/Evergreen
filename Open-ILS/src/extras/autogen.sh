@@ -24,6 +24,7 @@ set -u
 JSDIR="LOCALSTATEDIR/web/opac/common/js"
 FMDOJODIR="LOCALSTATEDIR/web/js/dojo/fieldmapper"
 SLIMPACDIR="LOCALSTATEDIR/web/opac/extras/slimpac"
+COVERDIR="LOCALSTATEDIR/web/opac/extras/ac"
 
 # ---------------------------------------------------------------------------
 # Make sure we're not root and are able to write to the destination directory
@@ -76,9 +77,18 @@ function check_files_writable {
 OHNO=0
 
 # Verify we're able to write everywhere we need
-for DIR in "$JSDIR" "$FMDOJODIR" "$SLIMPACDIR"
+for DIR in "$JSDIR" "$FMDOJODIR" "$SLIMPACDIR" "$COVERDIR"
 do
     check_dir_writable "$DIR"
+done
+
+# Verify we have cover image directories, creating where needed
+for DIR in "small/r" "medium/r" "large/r"
+do
+    if [ ! -d "$COVERDIR/$DIR" ]; then
+        mkdir -p "$COVERDIR/$DIR"
+    fi
+    check_dir_writable "$COVERDIR/$DIR"
 done
 
 for FILE in "$JSDIR/fmall.js" "$JSDIR/fmcore.js" "$JSDIR/*/OrgTree.js" "$SLIMPACDIR/*/lib_list.inc" "$SLIMPACDIR/locales.inc" "LOCALSTATEDIR/web/eg_cache_hash"
