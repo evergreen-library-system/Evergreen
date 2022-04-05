@@ -91,7 +91,8 @@ const routes: Routes = [{
       .then(m => m.FieldDocumentationModule)
 }, {
     path: 'money/cash_reports',
-    loadChildren: '@eg/staff/admin/local/cash-reports/cash-reports.module#CashReportsModule'
+    loadChildren: () =>
+      import('./cash-reports/cash-reports.module').then(m => m.CashReportsModule)
 }, {
     path: 'negative-balances',
     loadChildren: () =>
