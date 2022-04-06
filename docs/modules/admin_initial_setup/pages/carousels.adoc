@@ -20,11 +20,11 @@ The Carousel Types administrative interface is used to create, edit, or delete c
 
 There are five stock Carousel Types:
 
-* *Newly Cataloged Items* - titles appear automatically based on the active date of the title’s copies
-* *Recently Returned Items* - titles appear automatically based on the mostly recently circulated copy’s check-in scan date and time 
-* *Top Circulated Titles* - titles appear automatically based on the most circulated copies in the Item Libraries identified in the carousel definition; titles are chosen based on the number of action.circulation rows created during an interval specified in the carousel definition and includes both circulations and renewals
-* *Newest Items by Shelving Location* - titles appear automatically based on the active date and shelving location of the title’s copies 
-* *Manual* - titles are added and managed manually by library staff
+* *Newly Cataloged Items* - titles appear automatically based on the active date and shelving location of the title’s copies.  Shelving locations are required to create this carousel.
+* *Recently Returned Items* - titles appear automatically based on the mostly recently circulated copy’s check-in scan date and time.  Shelving locations are not required to create this carousel.
+* *Top Circulated Titles* - titles appear automatically based on the most circulated copies in the Item Libraries identified in the carousel definition; titles are chosen based on the number of action.circulation rows created during an interval specified in the carousel definition and includes both circulations and renewals.  Shelving locations are not required to create this carousel.
+* *Newest Items by Shelving Location* - titles appear automatically based on the active date of the title’s copies and organizes the carousel display by shelving location. Shelving locations are not required to create this carousel.
+* *Manual* - titles are added and managed manually by library staff.  Shelving locations are not required to create this carousel.
 
 Additional types can be created in the Carousel Types Interface. Types can also be modified or deleted. Access the interface by going to Administration > Server Administration > Carousel Types. 
 
@@ -88,7 +88,7 @@ Additional columns may be added to the display with the column picker, including
 * *Owner* - identifies the carousel’s owning library organizational unit
 * *Name* - the name or label of the carousel
 * *Bucket* - once the carousel is created, this field displays a link to the carousel’s corresponding record bucket
-* *Age Limit* - defines the age limit for the items (titles) that are displayed in the carousel
+* *Age Limit* - filters items by what date they were adjusted in the system and if it fits within the age limit.  Ex: When creating a carousel by shelving location and with an age limit of 3 months, the carousel will include items assigned to the shelving location within the 3 month age limit.
 * *Item Libraries* - identifies which libraries should be used for locating items/titles to add to the carousel; this attribute does not check organizational unit inheritance, so include all libraries that should be used
 * *Shelving Locations* - sets which shelving locations can/should be used to find titles for the carousel
 * *Last Refresh Time* - identifies the last date when the carousel was refreshed, either automatically or manually. This is currently read-only value.
