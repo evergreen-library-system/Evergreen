@@ -19,7 +19,7 @@
 
 <div class='w-11 mt-3'>
   <eg-grid #fieldDocGrid [dataSource]="gridDataSource"
-    persistKey="admin.config.idl_field_doc" idlClass="fdoc">
+    persistKey="admin.config.idl_field_doc" idlClass="fdoc" [sortable]="true">
     <eg-grid-toolbar-button 
       label="New Field Documentation" i18n-label (onClick)="createNew()">
     </eg-grid-toolbar-button>

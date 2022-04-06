@@ -114,11 +114,22 @@ export class FieldDocumentationComponent implements OnInit {
     setCurrentFieldDoc() {
         if (this.selectedClass) {
             this.fields = this.selectedClass.fields;
-            this.pcrud.search('fdoc',
-                {fm_class: this.selectedClass.id}
-            ).subscribe(fdocs => {
-                this.gridDataSource.data.push(fdocs);
-            });
+            this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
+                const orderBy: any = {};
+                if (sort.length) {
+                    // Sort specified from grid
+                    orderBy['fdoc'] = sort[0].name + ' ' + sort[0].dir;
+                }
+
+                const searchOps = {
+                    fm_class: this.selectedClass.id,
+                    offset: pager.offset,
+                    limit: pager.limit,
+                    order_by: orderBy
+                };
+                return this.pcrud.retrieveAll('fdoc', searchOps, {fleshSelectors: true});
+            };
+            this.fieldDocGrid.reload();
         }
     }
 
