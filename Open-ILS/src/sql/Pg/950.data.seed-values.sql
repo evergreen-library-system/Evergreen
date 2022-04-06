@@ -19949,6 +19949,13 @@ VALUES (
     'Grid Config: eg.grid.reporter.simple.outputs',
     'cwst', 'label'
   )
+), (
+  'eg.grid.admin.config.idl_field_doc', 'gui', 'object',
+  oils_i18n_gettext(
+    'eg.grid.admin.config.idl_field_doc',
+    'Grid Config: admin.config.idl_field_doc',
+    'cwst', 'label'
+  )
 );
 
 
