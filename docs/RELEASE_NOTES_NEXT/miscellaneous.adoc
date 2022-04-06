@@ -28,3 +28,5 @@
   returns it in response to patron lookups. (LP#1984114)
 * The label and description of the acq.fund.allow_rollover_without_money
   library setting are updated for greater clarity (LP#1982031)
+* The Cash Reports interface (under Local Administration) is ported to
+  Angular.
