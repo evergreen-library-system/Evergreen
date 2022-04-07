@@ -8336,7 +8336,7 @@ SELECT  usr,
 			<field reporter:label="Id" name="id" reporter:selector="name" reporter:datatype="id"/>
 			<field reporter:label="Scope Org Unit" name="scope_org" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Active" name="active" reporter:datatype="bool"/>
-			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"  oils_persist:i18n="true"/>
 			<field reporter:label="State" name="state" reporter:datatype="text"/>
 			<field reporter:label="Event" name="event" reporter:datatype="text"/>
 			<field reporter:label="During Renewal" name="in_renew" reporter:datatype="bool"/>

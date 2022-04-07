@@ -26073,6 +26073,7 @@ UPDATE config.org_unit_setting_type
 INSERT INTO config.usr_setting_type (name,label,grp) VALUES ('REST.api.whitelist_properties','Globally whitelisted Fieldmapper properties','openapi');
 INSERT INTO config.usr_setting_type (name,label,grp) VALUES ('REST.api.blacklist_properties','Globally filtered Fieldmapper properties','openapi');
 
+<<<<<<< HEAD
 INSERT INTO config.workstation_setting_type (name, grp, label, description, datatype, fm_class)
 VALUES (
     'eg.circ.patron.search.ou',
@@ -26105,4 +26106,12 @@ VALUES (
         'Grid Config: admin.local.config.survey',
         'cwst', 'label'
     )
+), (
+    'eg.grid.admin.local.config.copy_alert_type', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.local.config.copy_alert_type',
+        'Grid Config: eg.grid.admin.local.config.copy_alert_type',
+        'cwst', 'label'
+    )
 );
+
