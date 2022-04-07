@@ -262,28 +262,27 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.addToBucket = function(recs) {
         if (recs.length == 0) return;
         bucketSvc.bucketNeedsRefresh = true;
-        var promise = $q.when();
-        angular.forEach(recs,
-            function(rec) {
-                var item = new egCore.idl.ccbi();
-                item.bucket(bucketSvc.currentBucket.id());
-                item.target_copy(rec.id);
-                promise = promise.then(function() {
-                    return egCore.net.request(
-                        'open-ils.actor',
-                        'open-ils.actor.container.item.create', 
-                        egCore.auth.token(), 'copy', item
-                    );
-                }).then(function(resp) {
-                    // HACK: add the IDs of the added items so that the size
-                    // of the view list will grow (and update any UI looking at
-                    // the list size).  The data stored is inconsistent, but since
-                    // we are forcing a bucket refresh on the next rendering of 
-                    // the view pane, the list will be repaired.
-                    bucketSvc.currentBucket.items().push(resp);
-                });
-            }
-        );
+
+        var ids = recs.map(function(rec) { return rec.id; });
+        
+                egCore.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.container.item.create.batch',
+                    egCore.auth.token(), 'copy', 
+                    bucketSvc.currentBucket.id(), ids
+        
+                ).then(
+                    null, // complete
+                    null, // error
+                    function(resp) {
+                        // HACK: add the IDs of the added items so that the size
+                        // of the view list will grow (and update any UI looking at
+                        // the list size).  The data stored is inconsistent, but since
+                        // we are forcing a bucket refresh on the next rendering of 
+                        // the view pane, the list will be repaired.
+                        bucketSvc.currentBucket.items().push(resp);
+                        }
+                )
     }
 
     $scope.openCreateBucketDialog = function() {
@@ -547,19 +546,28 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
     }
 
     $scope.detachCopies = function(copies) {
-        var promises = [];
-        angular.forEach(copies, function(rec) {
-            var item = bucketSvc.currentBucket.items().filter(
-                function(i) {
-                    return (i.target_copy() == rec.id)
-                }
-            );
-            if (item.length)
-                promises.push(bucketSvc.detachCopy(item[0].id()));
-        });
-
         bucketSvc.bucketNeedsRefresh = true;
-        return $q.all(promises).then(drawBucket);
+        var ids = copies.map(function(rec) { return rec.id; });
+        
+        return egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.container.item.delete.batch',
+            egCore.auth.token(), 'copy', 
+            bucketSvc.currentBucket.id(), ids
+        
+        ).then(
+            null, // complete
+             null, // error
+             function(resp) {
+                // Remove the items as the API responds so the UI can show
+                // the count of items decreasing.
+                bucketSvc.currentBucket.items(
+                    bucketSvc.currentBucket.items().filter(function(item) {
+                        return item.target_copy() != resp;
+                    })
+                );
+            }
+        ).then(drawBucket);
     }
     
     $scope.moveToPending = function(copies) {
