@@ -344,6 +344,7 @@ Open-ILS/src/c-apps/tests/check_util
 Open-ILS/src/c-apps/tests/check_util.log
 Open-ILS/src/c-apps/tests/check_util.trs
 Open-ILS/src/c-apps/tests/test-suite.log
+Open-ILS/src/edi_translator/data/test_output
 Open-ILS/xul/staff_client/branding/
 Open-ILS/xul/staff_client/evergreen.xpi.md5
 Open-ILS/xul/staff_client/external/libmar/tool/mar
