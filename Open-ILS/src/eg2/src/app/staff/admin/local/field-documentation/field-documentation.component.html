@@ -14,7 +14,13 @@
       </div>
     </div>
   </div>
-  
+  <div class="col-md-3">
+    <eg-org-family-select
+      labelText="Owner"
+      [(ngModel)]="owning_libs"
+      (ngModelChange)="setGrid()" i18n-labelText>
+    </eg-org-family-select>
+  </div>
 </div>
 
 <div class='w-11 mt-3'>

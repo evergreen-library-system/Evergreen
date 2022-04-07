@@ -11,6 +11,7 @@ import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
+import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
 
 @Component({
     templateUrl: './field-documentation.component.html'
@@ -20,6 +21,7 @@ export class FieldDocumentationComponent implements OnInit {
 
     idlEntries: any[] = [];
     fieldOptions: any = {};
+    owning_libs: any[] = [];
     @Input() selectedClass: any;
     @Input() fields: [] = [];
     gridDataSource: GridDataSource;
@@ -120,14 +122,20 @@ export class FieldDocumentationComponent implements OnInit {
                     // Sort specified from grid
                     orderBy['fdoc'] = sort[0].name + ' ' + sort[0].dir;
                 }
+                const search: any = new Array();
+                const orgFilter: any = {};
+                orgFilter['owner'] = this.owning_libs['orgIds'];
+                if (orgFilter['owner'] && orgFilter['owner'][0]) {
+                    search.push(orgFilter);
+                }
+                search.push({fm_class: this.selectedClass.id});
 
                 const searchOps = {
-                    fm_class: this.selectedClass.id,
                     offset: pager.offset,
                     limit: pager.limit,
                     order_by: orderBy
                 };
-                return this.pcrud.retrieveAll('fdoc', searchOps, {fleshSelectors: true});
+                return this.pcrud.search('fdoc', search, searchOps, {fleshSelectors: true});
             };
             this.fieldDocGrid.reload();
         }
