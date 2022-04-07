@@ -217,7 +217,7 @@ export class CourseListComponent implements OnInit, AfterViewInit {
     duplicateSelected(course: IdlObject[]) {
         let new_course = this.idl.create('acmc');;
         course.forEach(courseToCopy => {
-            new_course.name(courseToCopy.name() + " (Copy)");
+            new_course.name(courseToCopy.name() + $localize`:duplicate of an existing course: (Copy)`);
             new_course.course_number(courseToCopy.course_number());
             new_course.section_number(courseToCopy.section_number());
             new_course.owning_lib(courseToCopy.owning_lib());
