@@ -1,0 +1,2 @@
+* The Field Documentation interface (under Local Administration) has
+  been ported to Angular with an org selector as an additional filter.
