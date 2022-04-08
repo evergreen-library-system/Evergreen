@@ -77,7 +77,7 @@ function check_files_writable {
 OHNO=0
 
 # Verify we're able to write everywhere we need
-for DIR in "$JSDIR" "$FMDOJODIR" "$SLIMPACDIR" "$COVERDIR"
+for DIR in "$JSDIR" "$FMDOJODIR" "$SLIMPACDIR"
 do
     check_dir_writable "$DIR"
 done
