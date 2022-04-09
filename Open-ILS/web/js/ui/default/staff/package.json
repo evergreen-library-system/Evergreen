@@ -44,7 +44,7 @@
     "iframe-resizer": "^3.5.15",
     "jquery": "^3.2.1",
     "lovefield": "^2.1.12",
-    "moment": "^2.20.1",
+    "moment": "^2.29.2",
     "moment-timezone": "^0.5.14",
     "ng-toast": "^2.0.0"
   }
