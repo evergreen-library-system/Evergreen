@@ -156,6 +156,7 @@ export class EditComponent implements OnInit, AfterViewInit {
     modifiedPatron: IdlObject;
     changeHandlerNeeded = false;
     nameTab = 'primary';
+    replaceBarcodeUsed = false;
 
     // Are we still fetching data and applying values?
     loading = false;
@@ -1657,6 +1658,8 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     replaceBarcode() {
         // Disable current card
+
+        this.replaceBarcodeUsed = true;
 
         if (this.patron.card()) {
             // patron.card() is not the same in-memory object as its

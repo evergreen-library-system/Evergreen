@@ -191,7 +191,8 @@
     </ng-container>
     <div class="col-lg-6">
       <ng-container *ngIf="!patron.isnew()">
-        <button class="btn btn-outline-dark" (click)="replaceBarcode()" i18n>
+        <button [disabled]="replaceBarcodeUsed" class="btn btn-outline-dark" 
+          (click)="replaceBarcode()" i18n>
           Replace Barcode
         </button>
         <button class="btn btn-outline-dark ml-2" (click)="barcodesDialog.open()" i18n>
