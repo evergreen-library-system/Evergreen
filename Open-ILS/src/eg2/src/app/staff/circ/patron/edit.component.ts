@@ -502,6 +502,8 @@ export class EditComponent implements OnInit, AfterViewInit {
             this.patron.addresses().forEach(addr => {
                 promise =
                     promise.then(__ => this.dupeValueChange('address', addr));
+                promise =
+                    promise.then(__ => this.toolbar.checkAddressAlerts(patron, addr));
             });
         });
     }
