@@ -105,4 +105,9 @@ SELECT acq.create_acq_auditor ( 'acq', 'lineitem' );
 CREATE INDEX acq_lineitem_hist_id_idx            ON acq.acq_lineitem_history( id );
 CREATE INDEX acq_lineitem_history_queued_record_idx  ON acq.acq_lineitem_history (queued_record);
 
+SELECT acq.create_acq_auditor ( 'acq', 'lineitem_detail' );
+CREATE INDEX acq_lineitem_detail_hist_id_idx ON acq.acq_lineitem_detail_history( id );
+CREATE INDEX acq_lineitem_detail_hist_lineitem_idx ON acq.acq_lineitem_detail_history( lineitem );
+CREATE INDEX acq_lineitem_detail_hist_fund_debit_idx ON acq.acq_lineitem_detail_history( fund_debit );
+
 COMMIT;
