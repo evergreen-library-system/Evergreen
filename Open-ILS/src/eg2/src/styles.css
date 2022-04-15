@@ -4,7 +4,7 @@
 @import '~bootstrap-css-only/css/bootstrap.min.css';
 
 /* Locally served material icon fonts  */
-@import '~material-design-icons/iconfont/material-icons.css'; 
+@import '~material-design-icons-iconfont/dist/material-design-icons.css';
 
 /** BS default fonts are huge */
 body, .form-control, .btn, .input-group-text {
