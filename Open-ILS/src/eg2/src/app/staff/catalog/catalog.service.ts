@@ -89,6 +89,9 @@ export class StaffCatalogService {
                 this.holdForUser = user;
                 this.holdForChange.emit();
             });
+        } else {
+            // In case the session item was cleared from another component.
+            this.clearHoldPatron();
         }
 
         this.searchContext.org = this.org; // service, not searchOrg

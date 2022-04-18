@@ -394,8 +394,10 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     }
 
     doneRedirect() {
+        // Clear the assumed hold recipient since we're done with
+        // this patron.
+        this.store.removeLoginSessionItem('eg.circ.patron_hold_target');
         this.router.navigate(['/staff/circ/patron/bcsearch']);
     }
-
 }
 
