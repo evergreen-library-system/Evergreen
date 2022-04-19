@@ -658,6 +658,11 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
         // click Apply for every one.
         this.batchAttrs.filter(attr => attr.editing).forEach(attr => attr.save());
     }
+
+    affectedOrgIds(): number[] {
+        if (!this.context) { return []; }
+        return this.context.orgNodes().map(n => n.target.id());
+    }
 }
 
 
