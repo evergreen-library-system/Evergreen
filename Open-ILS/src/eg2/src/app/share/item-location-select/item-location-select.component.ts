@@ -43,6 +43,20 @@ export class ItemLocationSelectComponent
         this.ngOnInit();
     }
 
+    get contextOrgId(): number {
+        return this._contextOrgId;
+    }
+
+    // Load locations for multiple context org units.
+    private _contextOrgIds = [];
+    @Input() set contextOrgIds(value: number[]) {
+        this._contextOrgIds = value;
+    }
+
+    get contextOrgIds(): number[] {
+        return this._contextOrgIds;
+    }
+
     @Input() orgUnitLabelField = 'shortname';
 
     // Emits an acpl object or null on combobox value change
@@ -163,11 +177,19 @@ export class ItemLocationSelectComponent
     }
 
     setFilterOrgs(): Promise<number[]> {
-        const org = this._contextOrgId || this.auth.user().ws_ou();
-        const contextOrgIds = this.org.ancestors(org, true);
+        let contextOrgIds: number[] = [];
+
+        if (this.contextOrgIds) {
+            contextOrgIds = this.contextOrgIds;
+        } else {
+            contextOrgIds = [this.contextOrgId || this.auth.user().ws_ou()];
+        }
+
+        let orgIds = [];
+        contextOrgIds.forEach(id => orgIds = orgIds.concat(this.org.ancestors(id, true)));
 
         if (!this.permFilter) {
-            return Promise.resolve(this.filterOrgs = contextOrgIds);
+            return Promise.resolve(this.filterOrgs = orgIds);
         }
 
         return this.perm.hasWorkPermAt([this.permFilter], true)
@@ -178,7 +200,7 @@ export class ItemLocationSelectComponent
             const permOrgIds = values[this.permFilter];
             const trimmedOrgIds = [];
             permOrgIds.forEach(orgId => {
-                if (contextOrgIds.includes(orgId)) {
+                if (orgIds.includes(orgId)) {
                     trimmedOrgIds.push(orgId);
                 }
             });
