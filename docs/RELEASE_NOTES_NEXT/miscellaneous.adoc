@@ -2,3 +2,4 @@
   items out print templates.
 * The Notices / Action Triggers administration interface (under Local
   Administration) is ported to Angular.
+* Disallow payments via the OPAC if negative or zero billings are present.
