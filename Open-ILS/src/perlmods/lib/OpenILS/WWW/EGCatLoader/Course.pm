@@ -53,6 +53,7 @@ sub load_course_browse {
     if ($cgi->param('bterm')) {
         my $bterm = $cgi->param('bterm');
         my $qtype = $cgi->param('qtype');
+        my $locg = $cgi->param('locg');
         # Search term is optional. If it's empty, start at the
         # beginning. Otherwise, center results on a match.
         # Regardless, we're listing everything, so retrieve all.
@@ -115,10 +116,13 @@ sub load_course_browse {
                     'owning_lib'
                 ]},
                 "order_by" => {"acmc" => [$qtype]},
-                # TODO: We need to support the chosen library as well...
-                "where" => {'-not' => {'+acmc' => 'is_archived'}}
+                "where" => {
+                    '-not' => {'+acmc' => 'is_archived'},
+                    '+acmc' => { 'owning_lib' => $locg }
+                }
             });
         }
+
         my $bterm_match = 0;
         for my $result(@$results) {
             my $value_exists = 0;
