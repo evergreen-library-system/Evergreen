@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <eg-grid idlClass="mbt" #xactsGrid
+      <eg-grid idlClass="mbt" #xactsGrid [pageSize]="25"
         persistKey="circ.patron.billhistory_xacts"
         (onRowActivate)="showStatement($event)"
         [showDeclaredFieldsOnly]="true"
@@ -139,7 +139,7 @@
         </div>
       </div>
 
-      <eg-grid idlClass="mp" #paymentsGrid
+      <eg-grid idlClass="mp" #paymentsGrid  [pageSize]="25"
         persistKey="circ.patron.billhistory_payments"
         (onRowActivate)="showStatement($event, true)"
         [showDeclaredFieldsOnly]="true"

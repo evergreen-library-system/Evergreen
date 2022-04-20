@@ -170,7 +170,7 @@
 </ng-template>
 
 <eg-grid #billGrid idlClass="mbt" [dataSource]="gridDataSource"
-  persistKey="circ.patron.bills" [sortable]="true" 
+  persistKey="circ.patron.bills" [sortable]="true" [disablePaging]="true"
   (onRowActivate)="showStatement($event)"
   [cellClassCallback]="cellClassCallback"
   [reloadOnColumnChange]="true"
