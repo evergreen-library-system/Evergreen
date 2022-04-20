@@ -7,6 +7,7 @@ import {StaffNavComponent} from './nav.component';
 import {StaffLoginComponent} from './login.component';
 import {StaffSplashComponent, AutofocusDirective} from './splash.component';
 import {AboutComponent} from './about.component';
+import {StaffLoginNotAllowedComponent} from './login-not-allowed.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import {AboutComponent} from './about.component';
     StaffSplashComponent,
     AutofocusDirective,
     StaffLoginComponent,
+    StaffLoginNotAllowedComponent,
     AboutComponent
   ],
   imports: [

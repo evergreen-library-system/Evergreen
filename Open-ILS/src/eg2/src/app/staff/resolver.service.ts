@@ -50,7 +50,7 @@ export class StaffResolver implements Resolve<Observable<any>> {
 
         // Not sure how to get the path without params... using this for now.
         const path = state.url.split('?')[0];
-        if (path === '/staff/login') {
+        if (path === '/staff/login' || path === '/staff/login-not-allowed') {
             return of(true);
         }
 
@@ -74,8 +74,8 @@ export class StaffResolver implements Resolve<Observable<any>> {
                         );
                     },
                     hasNotPerms => {
-                        this.observer.error(
-                            'User does not have staff permissions');
+                        this.router.navigate(['/staff/login-not-allowed']);
+                        this.observer.error('User does not have staff permissions');
                     }
                 );
             },
