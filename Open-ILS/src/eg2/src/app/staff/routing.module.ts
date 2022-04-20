@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {StaffResolver} from './resolver.service';
 import {StaffComponent} from './staff.component';
 import {StaffLoginComponent} from './login.component';
+import {StaffLoginNotAllowedComponent} from './login-not-allowed.component';
 import {StaffSplashComponent} from './splash.component';
 import {AboutComponent} from './about.component';
 
@@ -33,6 +34,13 @@ const routes: Routes = [{
     path: 'login',
     component: StaffLoginComponent
   }, {
+    // Attempt to login to the staff client w/o the needed permissions
+    // or work org unit.
+    path: 'login-not-allowed',
+    component: StaffLoginNotAllowedComponent
+  }, {
+    // Attempt to fetch a specific page the user does not have
+    // access to.
     path: 'no_permission',
     component: StaffSplashComponent
   }, {
