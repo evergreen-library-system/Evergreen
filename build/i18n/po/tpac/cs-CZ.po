@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2021-10-12 19:02+0000\n"
-"PO-Revision-Date: 2021-07-29 09:54+0000\n"
+"PO-Revision-Date: 2021-11-16 14:34+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2021-10-13 04:48+0000\n"
-"X-Generator: Launchpad (build 8a94da2fac127f5e46a49fd1140e43759d578803)\n"
+"X-Launchpad-Export-Date: 2021-11-17 04:37+0000\n"
+"X-Generator: Launchpad (build 57dd9ea1b48fdf744e285d99fb34fa0c21646cd0)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
 msgid ""
@@ -1869,7 +1869,7 @@ msgstr "Upravit adresu"
 
 #: ../../Open-ILS/src/templates/opac/myopac/messages/single_message.tt2:36
 msgid "Edit Date"
-msgstr ""
+msgstr "Datum editace"
 
 #: ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:5
 msgid "Edit Email Address"
@@ -2735,7 +2735,7 @@ msgstr "Nejméně populární"
 
 #: ../../Open-ILS/src/templates/opac/myopac/prefs.tt2:34
 msgid "Legal Name"
-msgstr ""
+msgstr "Úředně platné jméno"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:2
 msgid "Lender"
@@ -3792,6 +3792,8 @@ msgid ""
 "Please print or save the receipt for your records before closing the payment "
 "screen."
 msgstr ""
+"Než zavřete obrazovku s platbou, prosím,  vytiskněte nebo uložte potvrzení o "
+"svých transakcích."
 
 #: ../../Open-ILS/src/templates/opac/record/email_preview.tt2:85
 msgid ""
@@ -4148,7 +4150,7 @@ msgstr "Související termín"
 
 #: ../../Open-ILS/src/templates/opac/parts/course/body.tt2:73
 msgid "Relationship"
-msgstr ""
+msgstr "Vztah"
 
 #. ((crad.description || crad.label))
 #: ../../Open-ILS/src/templates/opac/parts/result/adv_filter.tt2:36 ../../Open-ILS/src/templates/opac/parts/result/adv_filter.tt2:37
@@ -5588,6 +5590,8 @@ msgid ""
 "We are unable to process credit card payments at this time. We apologize for "
 "the inconvenience. Please contact the library for further assistance."
 msgstr ""
+"V tuto chvíli není možné zpracovat platbu kreditní kartou. Omlouváme se za "
+"nepřijemnosti. Pro další pomoc prosím kontaktujte knihovnu."
 
 #. ("<time property=\"opens\" content=\"' _ date.format(open, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(open) _ '</time>", "<time property=\"closes\" content=\"' _ date.format(close, { 'format' => '%H:%M:%S' }) _ '\">' _ date.format(close) _ '</time>")
 #: ../../Open-ILS/src/templates/opac/parts/library/hours.tt2:48
