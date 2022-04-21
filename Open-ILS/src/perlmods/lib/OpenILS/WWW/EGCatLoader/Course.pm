@@ -54,6 +54,11 @@ sub load_course_browse {
         my $bterm = $cgi->param('bterm');
         my $qtype = $cgi->param('qtype');
         my $locg = $cgi->param('locg');
+        my $pivot = scalar($self->cgi->param('bpivot'));
+        my $limit = int(
+            $self->cgi->param('blimit') ||
+            $self->ctx->{opac_hits_per_page} || 10
+        );
         # Search term is optional. If it's empty, start at the
         # beginning. Otherwise, center results on a match.
         # Regardless, we're listing everything, so retrieve all.
@@ -178,7 +183,7 @@ sub load_course_browse {
             if ($value_exists eq 0) {
                 # For Name/Course Number browse queries...
                 if ($bterm_match eq 0) {
-                    if ($result->{$qtype} =~ m/^$bterm./i || $result->{$qtype} eq $bterm) {
+                    if ($bterm =~ qr/$result->{$qtype}/i) {
                         $bterm_match = 1;
                         $entry->{'match'} = 1;
                     }
