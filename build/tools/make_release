@@ -356,6 +356,7 @@ if [ "$BUILD_BROWSER_CLIENT" == "YES" ]; then
     cd src/eg2
     npm install   # fetch build dependencies
     ng build --prod
+    ng run build-cs-CZ
     # npm cache is big and unnecessary in the final build. remove it.
     rm -rf node_modules 
     cd ../../../../ # release dir
