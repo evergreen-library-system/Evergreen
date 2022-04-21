@@ -354,11 +354,12 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
                     $scope.ok = function(args) {
                         var due = $scope.args.due_date.toISOString();
                         console.debug("applying due date of " + due);
+                        egProgressDialog.open();
 
-                        var promises = [];
+                        var promise = $q.when();
                         angular.forEach(items, function(circ) {
-                            promises.push(
-                                egCore.net.request(
+                            promise = promise.then(function() {
+                                return egCore.net.request(
                                     'open-ils.circ',
                                     'open-ils.circ.circulation.due_date.update',
                                     egCore.auth.token(), circ.id(), due
@@ -368,10 +369,11 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
                                     // date from the modified circulation.
                                     circ.due_date(new_circ.due_date());
                                 })
-                            );
+                            });
                         });
 
-                        $q.all(promises).then(function() {
+                        promise.finally(function() {
+                            egProgressDialog.close();
                             $uibModalInstance.close();
                             provider.refresh();
                         });
