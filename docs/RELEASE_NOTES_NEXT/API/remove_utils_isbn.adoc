@@ -1,9 +1,0 @@
-== Removal of OpenILS::Utils::ISBN ==
-
-Evergreen used to include a perl module called OpenILS::Utils::ISBN.
-This module provided a single subroutine, `isbn_upconvert`, which
-wrapped some behavior from the Business::ISBN module.  The module
-is no longer used in Evergreen code.  Any custom code that used it
-should be migrated to use Business::ISBN directly.
-
-

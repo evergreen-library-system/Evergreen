@@ -1,6 +1,0 @@
-== Staged Search Tables and Functions Removed from Database ==
-
-This release removes the asset.opac_visible_copies materialized view and
-search.query_parser_fts function from the Evergreen database.  They have been
-obsolete since staged search was eliminated in Evergreen 3.0.  Any custom code
-that relies on them should be updated accordingly.
