@@ -24,7 +24,7 @@ set -u
 JSDIR="LOCALSTATEDIR/web/opac/common/js"
 FMDOJODIR="LOCALSTATEDIR/web/js/dojo/fieldmapper"
 SLIMPACDIR="LOCALSTATEDIR/web/opac/extras/slimpac"
-COVERDIR="LOCALSTATEDIR/web/opac/extras/ac"
+COVERDIR="LOCALSTATEDIR/web/opac/extras/ac/jacket"
 
 # ---------------------------------------------------------------------------
 # Make sure we're not root and are able to write to the destination directory
