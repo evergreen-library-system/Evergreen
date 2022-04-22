@@ -2330,7 +2330,8 @@ sub load_myopac_payment_form {
         my $stripe = Business::Stripe->new(-api_key => $skey);
         my $intent = $stripe->api('post', 'payment_intents',
             amount                => $self->ctx->{fines}->{balance_owed} * 100,
-            currency              => $currency || 'usd'
+            currency              => $currency || 'usd',
+            description           => 'User Database ID: ' . $self->ctx->{user}->id
         );
         if ($stripe->success) {
             $self->ctx->{stripe_client_secret} = $stripe->success()->{client_secret};
