@@ -2403,6 +2403,7 @@ sub new_record_holdings {
                     sstr    => [qw/items/],
                     sitem   => [qw/notes unit/],
                     sunit   => [qw/notes location status circ_lib stat_cat_entries call_number/],
+                    asce    => [qw/stat_cat/],
                     acn => [qw/owning_lib prefix suffix/],
                 },
           ( $limit > -1 ? ( limit  => $limit  ) : () ),
