@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2020-06-12 11:45:51-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07:21-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,62 +11,50 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: capture.js:AUTO_ATTR_VALUE_capture
-msgid "Capture"
+#: capture.js:FAILURE
+msgid "Capture failed"
 msgstr ""
 
-#: capture.js:SLIP_DATE
-msgid "Slip date"
-msgstr ""
-
-#: capture.js:CAPTURED_NOTHING
-msgid "Didn't capture anything."
-msgstr ""
-
-#: capture.js:AUTHOR
-msgid "Author"
-msgstr ""
-
-#: capture.js:CAPTURE_BRESV_DATES
-msgid "Reservation time:"
-msgstr ""
-
-#: capture.js:CAPTURE_INFO
-msgid "Capture Information"
-msgstr ""
-
-#: capture.js:HERES_WHAT_WE_KNOW
-msgid "The following information is available about the failed capture:"
-msgstr ""
-
-#: capture.js:AT
-msgid "at"
-msgstr ""
-
-#: capture.js:RESERVED
-msgid "Reserved for patron"
-msgstr ""
-
-#: capture.js:CAPTURE_CAUSES_TRANSIT
-msgid "This item is now in transit!"
-msgstr ""
-
-#: capture.js:TITLE
-msgid "Title"
+#: capture.js:SUCCESS
+msgid "Capture succeeded"
 msgstr ""
 
 #: capture.js:UNKNOWN_PROBLEM
 msgid "An unknown problem occurred during capture attempt."
 msgstr ""
 
-#: capture.js:PRINTED_BY
-msgid "Printed by"
+#: capture.js:CAPTURED_NOTHING
+msgid "Didn't capture anything."
 msgstr ""
 
 #: capture.js:NO_PAYLOAD
 msgid ""
 "We did not receive further information from the server about this attempt to"
 " capture."
+msgstr ""
+
+#: capture.js:HERES_WHAT_WE_KNOW
+msgid "The following information is available about the failed capture:"
+msgstr ""
+
+#: capture.js:CAPTURE_INFO
+msgid "Capture Information"
+msgstr ""
+
+#: capture.js:CAPTURE_BRESV_DATES
+msgid "Reservation time:"
+msgstr ""
+
+#: capture.js:CAPTURE_BRESV_BRSRC
+msgid "Resource barcode:"
+msgstr ""
+
+#: capture.js:CAPTURE_BRESV_PICKUP_LIB capture.js:AUTO_pickup_lib_selector
+msgid "Pickup library:"
+msgstr ""
+
+#: capture.js:CAPTURE_CAUSES_TRANSIT
+msgid "This item is now in transit!"
 msgstr ""
 
 #: capture.js:CAPTURE_TRANSIT_SOURCE
@@ -77,58 +65,70 @@ msgstr ""
 msgid "To:"
 msgstr ""
 
-#: capture.js:FAILURE
-msgid "Capture failed"
-msgstr ""
-
-#: capture.js:RESERVATION_SHELF
-msgid "RESERVATION SHELF"
-msgstr ""
-
-#: capture.js:SUCCESS
-msgid "Capture succeeded"
-msgstr ""
-
-#: capture.js:PRINT_ACCESSKEY
-msgid "P"
-msgstr ""
-
-#: capture.js:CAPTURE_BRESV_BRSRC
-msgid "Resource barcode:"
-msgstr ""
-
-#: capture.js:DURATION
-msgid "Reserved from"
-msgstr ""
-
-#: capture.js:PRINT
-msgid "<u>P</u>rint"
-msgstr ""
-
-#: capture.js:CAPTURE_BRESV_PICKUP_LIB capture.js:AUTO_pickup_lib_selector
-msgid "Pickup library:"
-msgstr ""
-
-#: capture.js:NEEDS_ROUTED_TO
-msgid "This item need to be routed to"
-msgstr ""
-
 #: capture.js:BARCODE
 msgid "Barcode"
+msgstr ""
+
+#: capture.js:TITLE
+msgid "Title"
+msgstr ""
+
+#: capture.js:AUTHOR
+msgid "Author"
+msgstr ""
+
+#: capture.js:RESERVED
+msgid "Reserved for patron"
 msgstr ""
 
 #: capture.js:REQUEST
 msgid "Request time"
 msgstr ""
 
+#: capture.js:DURATION
+msgid "Reserved from"
+msgstr ""
+
+#: capture.js:SLIP_DATE
+msgid "Slip date"
+msgstr ""
+
+#: capture.js:PRINTED_BY
+msgid "Printed by"
+msgstr ""
+
+#: capture.js:AT
+msgid "at"
+msgstr ""
+
+#: capture.js:PRINT
+msgid "<u>P</u>rint"
+msgstr ""
+
+#: capture.js:PRINT_ACCESSKEY
+msgid "P"
+msgstr ""
+
 #: capture.js:TRANSIT
 msgid "*** TRANSIT ***"
+msgstr ""
+
+#: capture.js:RESERVATION_SHELF
+msgid "RESERVATION SHELF"
+msgstr ""
+
+#: capture.js:NEEDS_ROUTED_TO
+msgid "This item need to be routed to"
+msgstr ""
+
+#: capture.js:AUTO_capture_heading
+msgid "Capture Reserved Resources"
 msgstr ""
 
 #: capture.js:AUTO_resource_barcode
 msgid "Enter barcode:"
 msgstr ""
 
-#: capture.js:AUTO_capture_heading
-msgid "Capture Reserved Resources"
+#: capture.js:AUTO_ATTR_VALUE_capture
+msgid "Capture"
 msgstr ""

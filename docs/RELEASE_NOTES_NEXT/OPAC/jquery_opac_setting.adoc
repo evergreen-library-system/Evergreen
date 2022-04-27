@@ -1,8 +1,0 @@
-jQuery OPAC Library Setting 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-A new setting entitled opac.patron.custom_jquery has been added to library settings. Using this does require that the ctx.want_jquery be uncommented and set to 1 (true) in the opac/parts/config.tt2 file.  Using this setting will allow OPACs to run jQuery without customizing server side templates.  For example adding the following:
-
-$(document).ready(function(){ $("a:contains(Link 2)").text('Kafka'); });
-
-Will change the text of 'Link 2' in the link bar to say 'Kafka'.  See the Evergreen WIKI (https://wiki.evergreen-ils.org/) for examples.
