@@ -1,4 +1,0 @@
-Org Selector Now Supports Entry Styling
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Org Selector now supports the ability to pass in an object composed of
-an array of Org Unit IDs and a function returning a CSS key value pair.

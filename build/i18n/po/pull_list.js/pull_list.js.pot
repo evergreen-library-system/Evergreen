@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2020-06-12 11:45:51-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07:21-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,56 +15,44 @@ msgstr ""
 msgid "No response from server trying to get pull list!"
 msgstr ""
 
-#: pull_list.js:AUTO_interval_in_days
-msgid "Generate list for this many days hence: "
-msgstr ""
-
-#: pull_list.js:COPY_LOOKUP_ERROR
-msgid "Error looking up copies by barcode: "
+#: pull_list.js:PULL_LIST_ERROR
+msgid "Error trying to fetch pull list: "
 msgstr ""
 
 #: pull_list.js:COPY_LOOKUP_NO_RESPONSE
 msgid "No response looking up copies by barcode"
 msgstr ""
 
-#: pull_list.js:FOR
-msgid "for"
-msgstr ""
-
-#: pull_list.js:AUTO_pull_list_title
-msgid "Booking Pull List"
-msgstr ""
-
-#: pull_list.js:AUTO_no_results
-msgid "No results."
-msgstr ""
-
-#: pull_list.js:AUTO_th_barcode
-msgid "Barcode"
-msgstr ""
-
-#: pull_list.js:PULL_LIST_ERROR
-msgid "Error trying to fetch pull list: "
+#: pull_list.js:COPY_LOOKUP_ERROR
+msgid "Error looking up copies by barcode: "
 msgstr ""
 
 #: pull_list.js:COPY_MISSING
 msgid "Unexpected error: No information for copy: "
 msgstr ""
 
-#: pull_list.js:AUTO_th_call_number
-msgid "Call number"
+#: pull_list.js:AT
+msgid "at"
+msgstr ""
+
+#: pull_list.js:FOR
+msgid "for"
+msgstr ""
+
+#: pull_list.js:AUTO_no_results
+msgid "No results."
 msgstr ""
 
 #: pull_list.js:AUTO_owning_lib_selector
 msgid "See pull list for library:"
 msgstr ""
 
-#: pull_list.js:AUTO_th_resv_details
-msgid "Reservation details"
+#: pull_list.js:AUTO_pull_list_title
+msgid "Booking Pull List"
 msgstr ""
 
-#: pull_list.js:AT
-msgid "at"
+#: pull_list.js:AUTO_interval_in_days
+msgid "Generate list for this many days hence: "
 msgstr ""
 
 #: pull_list.js:AUTO_ATTR_VALUE_fetch
@@ -75,14 +63,26 @@ msgstr ""
 msgid "Title or name"
 msgstr ""
 
-#: pull_list.js:AUTO_ATTR_VALUE_print
-msgid "Print"
+#: pull_list.js:AUTO_th_barcode
+msgid "Barcode"
+msgstr ""
+
+#: pull_list.js:AUTO_th_call_number
+msgid "Call number"
+msgstr ""
+
+#: pull_list.js:AUTO_th_copy_location
+msgid "Copy location"
 msgstr ""
 
 #: pull_list.js:AUTO_th_pickup_lib
 msgid "Pickup library"
 msgstr ""
 
-#: pull_list.js:AUTO_th_copy_location
-msgid "Copy location"
+#: pull_list.js:AUTO_th_resv_details
+msgid "Reservation details"
+msgstr ""
+
+#: pull_list.js:AUTO_ATTR_VALUE_print
+msgid "Print"
 msgstr ""
