@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2020-06-12 11:45:51-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07:21-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,32 +11,28 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: URLVerify.js:XPATH
-msgid "XPath"
-msgstr ""
-
-#: URLVerify.js:NOTHING_SELECTED
-msgid "No rows are selected, so no action will be taken."
-msgstr ""
-
-#: URLVerify.js:REVIEW_ATTEMPT
-msgid "Review this verification attempt"
-msgstr ""
-
 #: URLVerify.js:CREATING
 msgid "Creating session ..."
 msgstr ""
 
-#: URLVerify.js:MARC_EDITOR_TITLE
-msgid "Record ID #${0}"
+#: URLVerify.js:SAVING_TAGS
+msgid "Saving tag/subfield selectors ..."
 msgstr ""
 
-#: URLVerify.js:SESSION_NAME
-msgid "Session '${0}'"
+#: URLVerify.js:PERFORMING_SEARCH
+msgid "Performing search ..."
 msgstr ""
 
-#: URLVerify.js:CLONING
-msgid "Cloning existing session ..."
+#: URLVerify.js:EXTRACTING_URLS
+msgid "Extracting URLs ..."
+msgstr ""
+
+#: URLVerify.js:NEED_UVUS
+msgid "You must add some tag and subfield combinations."
+msgstr ""
+
+#: URLVerify.js:REDIRECTING
+msgid "Loading next interface ..."
 msgstr ""
 
 #: URLVerify.js:INTERFACE_SETUP
@@ -50,24 +46,44 @@ msgid ""
 "only ones you want verified."
 msgstr ""
 
-#: URLVerify.js:VERIFICATION_ATTEMPT_ID
-msgid "Verification attempt ID: ${0}"
-msgstr ""
-
 #: URLVerify.js:VERIFICATION_DIALOG
 msgid "Verifying URLs ..."
 msgstr ""
 
-#: URLVerify.js:NEED_UVUS
-msgid "You must add some tag and subfield combinations."
+#: URLVerify.js:VERIFICATION_ATTEMPT_ID
+msgid "Verification attempt ID: ${0}"
+msgstr ""
+
+#: URLVerify.js:NOTHING_SELECTED
+msgid "No rows are selected, so no action will be taken."
+msgstr ""
+
+#: URLVerify.js:REVIEW_ATTEMPT
+msgid "Review this verification attempt"
 msgstr ""
 
 #: URLVerify.js:CLONE_SESSION
 msgid "Clone"
 msgstr ""
 
-#: URLVerify.js:MARC_EDITOR_LINK
-msgid "Click to open MARC Editor for this record"
+#: URLVerify.js:REREVIEW
+msgid "Open"
+msgstr ""
+
+#: URLVerify.js:CLONING
+msgid "Cloning existing session ..."
+msgstr ""
+
+#: URLVerify.js:CLONE_SESSION_NAME
+msgid "Copy of ${0}"
+msgstr ""
+
+#: URLVerify.js:XPATH
+msgid "XPath"
+msgstr ""
+
+#: URLVerify.js:SESSION_NAME
+msgid "Session '${0}'"
 msgstr ""
 
 #: URLVerify.js:SELECT_MORE
@@ -75,8 +91,12 @@ msgid ""
 "Click here to review all session URLs and/or select other URLs to verify"
 msgstr ""
 
-#: URLVerify.js:PERFORMING_SEARCH
-msgid "Performing search ..."
+#: URLVerify.js:MARC_EDITOR_LINK
+msgid "Click to open MARC Editor for this record"
+msgstr ""
+
+#: URLVerify.js:MARC_EDITOR_TITLE
+msgid "Record ID #${0}"
 msgstr ""
 
 #: URLVerify.js:MARC_EDITOR_SAVE_RECORD
@@ -85,24 +105,4 @@ msgstr ""
 
 #: URLVerify.js:EDIT
 msgid "Edit"
-msgstr ""
-
-#: URLVerify.js:SAVING_TAGS
-msgid "Saving tag/subfield selectors ..."
-msgstr ""
-
-#: URLVerify.js:CLONE_SESSION_NAME
-msgid "Copy of ${0}"
-msgstr ""
-
-#: URLVerify.js:EXTRACTING_URLS
-msgid "Extracting URLs ..."
-msgstr ""
-
-#: URLVerify.js:REDIRECTING
-msgid "Loading next interface ..."
-msgstr ""
-
-#: URLVerify.js:REREVIEW
-msgid "Open"
 msgstr ""

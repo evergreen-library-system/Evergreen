@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2020-06-12 11:45:51-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07:21-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -13,6 +13,14 @@ msgstr ""
 
 #: TranslatorPopup.js:locale
 msgid "Locale"
+msgstr ""
+
+#: TranslatorPopup.js:translation
+msgid "Translation"
+msgstr ""
+
+#: TranslatorPopup.js:translate
+msgid "Translate"
 msgstr ""
 
 #: TranslatorPopup.js:create
@@ -25,12 +33,4 @@ msgstr ""
 
 #: TranslatorPopup.js:remove
 msgid "Remove"
-msgstr ""
-
-#: TranslatorPopup.js:translation
-msgid "Translation"
-msgstr ""
-
-#: TranslatorPopup.js:translate
-msgid "Translate"
 msgstr ""

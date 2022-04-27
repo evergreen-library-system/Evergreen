@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2020-06-12 11:45:51-0400\n"
+"POT-Creation-Date: 2022-04-27 17:07:21-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,24 +11,10 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: match_set.js:WORKING_MP_HERE
-msgid "Choose from among the three buttons above to add a new match point."
-msgstr ""
-
-#: match_set.js:HEADING_MATCH
-msgid "Normalized Heading"
-msgstr ""
-
-#: match_set.js:OK
-msgid "Ok"
-msgstr ""
-
-#: match_set.js:EXIT_REPLACE_MODE
-msgid "Exit Replace Mode"
-msgstr ""
-
-#: match_set.js:ENTER_REPLACE_MODE
-msgid "Enter Replace Mode"
+#: match_set.js:DEFINE_MP
+msgid ""
+"Define this match point using the above fields, then drag me to the tree on "
+"the right."
 msgstr ""
 
 #: match_set.js:LEAVE_ROOT_ALONE
@@ -40,26 +26,24 @@ msgid ""
 "First select exactly one node from the tree on the right side of the screen."
 msgstr ""
 
-#: match_set.js:CANCEL
-msgid "Cancel"
+#: match_set.js:EXIT_REPLACE_MODE
+msgid "Exit Replace Mode"
 msgstr ""
 
-#: match_set.js:WORKING_QM_HERE
-msgid "Use buttons above and to the right to add new quality metrics."
-msgstr ""
-
-#: match_set.js:DEFINE_MP
-msgid ""
-"Define this match point using the above fields, then drag me to the tree on "
-"the right."
+#: match_set.js:ENTER_REPLACE_MODE
+msgid "Enter Replace Mode"
 msgstr ""
 
 #: match_set.js:NO_CAN_DO
 msgid "An error has occurred. Close this interface and try again."
 msgstr ""
 
-#: match_set.js:SVF
-msgid "Record Attribute"
+#: match_set.js:OK
+msgid "Ok"
+msgstr ""
+
+#: match_set.js:CANCEL
+msgid "Cancel"
 msgstr ""
 
 #: match_set.js:POINT_NEEDS_ONE
@@ -72,6 +56,22 @@ msgid ""
 "non-whitespace, non-control character."
 msgstr ""
 
+#: match_set.js:WORKING_MP_HERE
+msgid "Choose from among the three buttons above to add a new match point."
+msgstr ""
+
+#: match_set.js:WORKING_QM_HERE
+msgid "Use buttons above and to the right to add new quality metrics."
+msgstr ""
+
+#: match_set.js:SVF
+msgid "Record Attribute"
+msgstr ""
+
 #: match_set.js:MATCH_SCORE
 msgid "Match score ${0}"
+msgstr ""
+
+#: match_set.js:HEADING_MATCH
+msgid "Normalized Heading"
 msgstr ""
