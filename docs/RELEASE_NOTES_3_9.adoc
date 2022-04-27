@@ -1,0 +1,440 @@
+= Evergreen 3.9 Release Notes =
+:toc:
+:numbered:
+:toclevels: 3
+
+== Evergreen 3.9.0 ==
+
+=== Upgrade notes ===
+
+==== New Permissions ====
+
+* UPLOAD_COVER_IMAGE
+* ADMIN_STAFF_PORTAL_PAGE
+* RUN_SIMPLE_REPORTS
+
+==== New Library Settings ====
+
+* Custom jQuery for the OPAC
+
+=== New Features ===
+
+==== Administration ====
+
+===== Localized Templates Available for Action Triggers =====
+
+This feature supplies the ability to create alternate templates for Action Triggers 
+that will generate locale specific out for Action Triggers.  If you send notices in 
+multiple languages, we recommend putting some words to that effect in your notice 
+templates.  The template, message and message title can all be localized.  To use the 
+feature the following new UI elements have been added:
+
+- When you double-click on an Event Definition under Notifications / Action Triggers 
+  to edit it there will be a tab option for Edit Alternate Template if the reactor is 
+  ProcessTemplate, SendEmail or SendSMS.
+- In the Patron Registration and Patron Editor screens staff members may now select a 
+  locale for a patron and edit it in the Patron Preferred Language field.
+- Patrons may set their own locale in the My Account interface off the OPAC by going to 
+  Preferences -> Personal Information and setting the Preferred Language field.
+
+The templates used on the Edit Definition tab are the defaults that are used if there are 
+no alternate templates available that match the preferred language.  If alternate templates 
+are available the system will use a locale that is an exact match and then if failing that 
+use one where the language code matches and then fall back to the default one.
+
+For example, if a patron has a locale of fr-CA and there are templates for both fr-CA and 
+fr-FR it will use the fr-CA.  If the fr-CA template was deleted it would fall back on using 
+the fr-FR for the patron since it at least shares the same base language.  
+
+Valid locales are the codes defined in the i18n_locale table in the config schema.
+
+===== Staged Search Tables and Functions Removed from Database =====
+
+This release removes the asset.opac_visible_copies materialized view and
+search.query_parser_fts function from the Evergreen database.  They have been
+obsolete since staged search was eliminated in Evergreen 3.0.  Any custom code
+that relies on them should be updated accordingly.
+
+==== API ====
+
+===== array_accum Aggregate Removed =====
+
+The custom `array_accum` aggregate function has been removed from the
+PostgreSQL database because it will need to be dropped and recreated
+with a different definition when upgrading to PostgreSQL version 14 or
+later.  Its functionality is also redundant with PostgreSQL's own
+`array_agg` function.
+
+Sites that have custom code using Evergreen's `array_accum` function
+should alter their code to use `array_agg` instead.
+
+===== Removal of OpenILS::Utils::ISBN =====
+
+Evergreen used to include a perl module called OpenILS::Utils::ISBN.
+This module provided a single subroutine, `isbn_upconvert`, which
+wrapped some behavior from the Business::ISBN module.  The module
+is no longer used in Evergreen code.  Any custom code that used it
+should be migrated to use Business::ISBN directly.
+
+==== Cataloging ====
+
+===== Custom Cover Image Uploader  =====
+
+If configured for a given Evergreen instance, staff with the UPLOAD_COVER_IMAGE
+permission may upload a custom jacket/cover image for a given bibliographic
+record for display in the staff client and OPAC. This is done through the Other
+Actions -> Upload Cover Image command from the record details page in the staff
+interface.
+
+====== Note for system administrators ======
+
+The following stanza needs to be added to eg_vhost.conf:
+
+[source]
+----------------------------------------------------------------
+<Location /jacket-upload>
+    SetHandler perl-script
+    PerlHandler OpenILS::WWW::Vandelay::spool_jacket
+    Options +ExecCGI
+    Require all granted
+</Location>
+----------------------------------------------------------------
+
+and this to the open-ils.vandelay -> app_settings -> databases section of
+opensrf.xml:
+
+[source]
+----------------------------------------------------------------
+<jackets>/openils/var/web/opac/extras/ac</jackets>
+----------------------------------------------------------------
+with the path appropriately adjusted for your installation. The Apache process
+will need write permissions for that directory.
+
+Additionally, the following directories need to exist and be writable by the Apache process:
+
+/openils/var/web/opac/extras/ac/jacket/large/r
+/openils/var/web/opac/extras/ac/jacket/medium/r
+/openils/var/web/opac/extras/ac/jacket/small/r
+
+==== Circulation ====
+
+===== Copy Inventory Date Improvements =====
+
+This release fixes two bugs with copy inventory dates:
+
+ * https://bugs.launchpad.net/evergreen/+bug/1883171[duplicate entries for a copy in asset.latest_inventory table]
+ * https://bugs.launchpad.net/evergreen/+bug/1940663[Staff users can update inventory dates on non-owned items]
+
+In addition to fixing the above bugs, improvements are made to the implementation of the latest copy inventory feature so that it may be further expanded in the future.
+
+====== Technical Details for Developers and System Administrators ======
+
+The following changes are made to the database, back end, and staff client user interface code:
+
+ * The data moves to a new table in the database, `asset.copy_inventory`.
+ * The new data table is accessible via a new Fieldmapper object, `aci`.
+ * The new data table has appropriate foreign keys and triggers to ensure data integrity and prevent duplicate entries.
+ * The old data table, `asset.latest_inventory`, is now a view on the new table.
+ * The Fieldmapper object `alci` is now read-only.
+ * The `open-ils.circ.circulation.update_copy_inventory` method replaces the `open-ils.circ.circulation.update_latest_inventory` method.
+ * The `open-ils.circ.circulation.update_copy_inventory` method inserts into the `asset.copy_inventory` table.
+ * The `open-ils.circ.circulation.update_latest_inventory` method is removed.
+ * The Item Status screen now uses `open-ils.circ.circulation.update_copy_inventory` to update a copy's inventory date.
+ * The staff client Item Status screen now toasts success or failure as appropriate.  It previously only toasted success.
+ * ngToast has also been added for a single record view in the Item Status screen.  This means that toasts can be added for other events.
+ * The circulation back end code inserts into the `asset.copy_inventory` table when the do inventory modifier is used at check in.
+ * An `asset.copy_inventory` entry is only added if the copy is at its "home," or owning, library or if the copy can float to the library where the inventory is being updated.
+ * A Perl live test is added to verify back end functionality.
+ * Pgtap tests are added to verify the schema and to verify database functionality.
+
+The following items remain unchanged:
+
+ * The staff interface to add/update copy inventory dates remains the same:
+   ** the Update Inventory option on the Checkin Modifiers menu
+   ** the Update Inventory command on the Item Status Actions menu.
+ * The staff client's Circulation and Item Status screens display data from the `alci` view object.
+ * The `alci` object looks the same, so reports based on it should still work.
+
+The motivation behind the changes beyond simply fixing the two bugs listed above is to allow for possible future expansion of the copy inventory feature.  The new table makes it easier to add new fields and to track inventory updates of a given copy over time.  While these changes do not constitute an inventory module, they should ease the implementation of such a module and assist in the preservation of the current data.
+
+==== Client ====
+
+===== Customizable Staff Portal =====
+
+The staff portal / staff home page is now customizable. A new Local
+Administration interface, Staff Portal Page, allows staff users who
+have the new `ADMIN_STAFF_PORTAL_PAGE` permission to specify groups
+of Evergreen menu links, external links, catalog search widgets,
+and free text to display on the staff home page.
+
+The portal customization is available only on the Angular version of
+the portal, so access to the AngularJS version is now redirected to
+the Angular one.
+
+Different portal pages may be configured for different Organizational
+Units. The displayed portal page will depend on the staff user's
+workstation. The Organizational Unit tree will be walked up starting
+from the workstation until one or more `config.ui_staff_splash_page_entry`
+rows are found for the Organizational Unit. The set of entries for
+that Organizational Unit will constitute the entire splash page entries
+to display, i.e., it won't try to merge branch, system, and
+consortial-level entries.
+
+The administration interface allows authorized to:
+
+* create, modify, or delete portal page entries
+* clone a library's set of portal page entries to a different library
+
+Portal page entries consist of the following fields:
+
+* Entry Label: free text that displays on the portal page
+* Entry Type: Catalog Search, Header, Link, Menu Item, or Text and/or HTML
+* Entry Target URL: target of Link or Menu Item entries
+* Entry Text: Free text and limited HTML to display for Text/HTML entry types. HTML is sanitized to allow only basic formatting and link elements.
+* Entry Image URL: for specifying an icon to display with the portral entry.
+* Owner: the Organization Unit that owns the entry.
+* Page Column and Column Position: these control the positioning of the entry. The portal is styled so that three columns are displayed by default, as with the legacy hard-coded portal, but if the user chooses to define more than three columns, columns after the third will stack vertically as additional rows.
+
+====== Upgrade notes ======
+
+This patch adds the following:
+
+  * New database table `config.ui_staff_splash_page_entry`. This stories the entries to display on the portal.
+  * New database table `config.ui_staff_portal_page_entry_type`. This is a lookup table for entry types.
+  * New permission `ADMIN_STAFF_PORTAL_PAGE`. This is implicitly available to stock Local and Global Administrator permission groups via the `EVERYTHING` permission.
+  * New grid setting for the administration interface.
+
+
+===== Org Selector Now Supports Entry Styling =====
+
+The Org Selector now supports the ability to pass in an object composed of
+an array of Org Unit IDs and a function returning a CSS key value pair.
+
+==== OAI2 ====
+
+===== OAI-PMH Data Provider Support =====
+
+Evergreen can now act as an OAI-PMH data provider, exposing the catalog to
+harvesting through the (https://www.openarchives.org/OAI/openarchivesprotocol.html[OAI2 protocol]).
+
+
+Entry points
+++++++++++++
+
+There are two: one for bibliographic records and one for authority records:
+
+    http://your-domain/opac/extras/oai/authority
+    http://your-domain/opac/extras/oai/biblio
+
+An example of a working URL on a system with an authority record with ID
+1:
+
+    http://your-domain/opac/extras/oai/authority?verb=GetRecord&identifier=oai:localhost:1&metadataPrefix=oai_dc
+ 
+Setspec are not implemented
++++++++++++++++++++++++++++
+
+This is a work in progress and not enabled. The aim is to have the owning library determine the set hierarchy. The Concerto
+test database for example has a record with record ID #1. This record is so popular it has copies attached to library units
+"Example Branch 1", "Example Branch 2", "Example Branch 3", "Example Bookmobile 1" which is a child of Branch 3 and
+"Example Branch 4". This entire kinship is expressed as sets like so: 
+
+```xml
+<header>
+    ...
+    <setSpec>CONS</setSpec>
+    <setSpec>CONS:SYS1</setSpec>
+    <setSpec>CONS:SYS2</setSpec>
+    <setSpec>CONS:SYS1:BR1</setSpec>
+    <setSpec>CONS:SYS1:BR2</setSpec>
+    <setSpec>CONS:SYS2:BR3</setSpec>
+    <setSpec>CONS:SYS2:BR4</setSpec>
+    <setSpec>CONS:SYS2:BR3:BM1</setSpec>
+</header>
+```
+Likewise the setSpecs of authority records are derived from their browse axis ( Title, Author, Subject and Topic ).
+
+Bibliographic mapping of assets to 852 subfields
+++++++++++++++++++++++++++++++++++++++++++++++++
+
+Certain attributes asset are placed into 852 subfields so:
+
+|===
+| subfield code | asset resource
+
+| a | location
+| b | owning_lib
+| c | callnumber
+| d | circlib
+| g | barcode
+| n | status
+|===
+ 
+Thus the Concerto with record ID #1 will have it's 852 subfields expressed as:
+```xml
+<marc:datafield ind1="4" ind2=" " tag="852">
+    <marc:subfield code="a">Stacks</marc:subfield>
+    <marc:subfield code="b">BR4</marc:subfield>
+    <marc:subfield code="c">ML 60 R100</marc:subfield>
+    <marc:subfield code="d">BR4</marc:subfield>
+    <marc:subfield code="g">CONC70000435</marc:subfield>
+    <marc:subfield code="n">Checked out</marc:subfield>
+</marc:datafield>
+```
+This mapping can be customized and extended with static subfields:
+```xml
+    <marc:subfield code="q">A constant value</marc:subfield>
+```
+
+Default configuration
++++++++++++++++++++++
+
+See comments in opensrf.xml (in the open-ils.supercat app_settings/oai element)
+for default configuration and customization instructions.
+
+Upgrade Instructions
+++++++++++++++++++++
+OAI support is not turned on by default. To enable it, edit the Apache
+configuration file `eg_vhost.conf` to uncomment the following
+section and restart Apache:
+
+[source,conf]
+----
+#<Location /opac/extras/oai>
+#    SetHandler perl-script
+#    PerlHandler OpenILS::WWW::SuperCat::OAI
+#    Options +ExecCGI
+#    PerlSendHeader On
+#    Require all granted
+#</Location>
+----
+
+==== OPAC ====
+
+===== jQuery OPAC Library Setting  =====
+
+A new setting entitled opac.patron.custom_jquery has been added to library settings. Using this does require that the ctx.want_jquery be uncommented and set to 1 (true) in the opac/parts/config.tt2 file.  Using this setting will allow OPACs to run jQuery without customizing server side templates.  For example adding the following:
+
+$(document).ready(function(){ $("a:contains(Link 2)").text('Kafka'); });
+
+Will change the text of 'Link 2' in the link bar to say 'Kafka'.  See the Evergreen WIKI (https://wiki.evergreen-ils.org/) for examples.
+
+==== Reports ====
+
+===== Simple Reports =====
+
+This release includes a new Simple Reports reporting system focused on ease of
+use and simplicity that is available from the Administration menu of the
+staff client. Simple Reports can be restricted by staff permissions and
+access to the overall feature is granted through a new RUN_SIMPLE_REPORTS
+permission.
+
+The Simple Reports interface is intended to provide an alternate access point
+for running reports in Evergreen and is not intended to replace the main
+Reports interface. In particular, users in need of complex reports should
+still make use of the main Reports interface.
+
+To simplify report creation some fields are generated from multiple backend
+fields and other fields such as dates are repeated with multiple transforms
+pre-applied. Reports and schedules can be edited at any time as needed.
+
+==== SIP ====
+
+===== Adding Captured Hold Phone Notification Number to Checkin Repsonse =====
+
+Some third party systems can phone users when a SIP checkin captures
+an item they have on hold. Normally, to do this a patron information
+request is sent (message pair 63/64), but some systems will only look
+for it in the reply to the Checkin pair, 09/10. Because this is not
+a part of the SIP2 standard and exposes patron personal information
+when used indescriminately, it must be enabled by including the key
+`<phone_ext_on_msg10 enabled="true" />` in the "institution"
+section of `oils_sip.xml`.
+
+===== Upgrade Note =====
+
+To use this feature, Evergreen administrators should upgrade to the
+latest version of `SIPServer`.
+
+==== Miscellaneous ====
+
+* The patron record juvenile flag is now available to the checkout and
+  items out print templates.
+* The Notices / Action Triggers administration interface (under Local
+  Administration) is ported to Angular.
+
+Acknowledgments
+---------------
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+* CW MARS
+* Equinox Open Library Initiative
+* Evergreen Indiana
+* Linn-Benton Community College
+* Missouri Evergreen
+* NOBLE
+* Pioneer Library System
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations patches and tests to this release of
+Evergreen:
+
+* MaryAnn Alexander
+* Jason Boyer
+* Dan Briem
+* Steven Callender
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Lynn Floyd
+* Rogan Hamby
+* Blake Graham Henderson
+* Kyle Huckins
+* Angela Kilsdonk
+* Shula Link
+* Tiffany Little
+* Terran McCanna
+* Gina Monti
+* Michele Morgan
+* Andrea Buntz Neiman
+* Jennifer Pringle
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Josh Stompro
+* Mike Risher
+* Mike Rylander
+* Remington Steed
+* Lucien van Wouw
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* BC Libraries Coop
+* Bibliomation
+* Calvin College
+* Catalyte
+* CW MARS
+* Equinox Open Library Initiative
+* Georgia Public Library Service
+* Greater Clarks Hill Regional Library
+* Indiana State Library
+* International Institute of Social History
+* Kenton County Library
+* King County Library System
+* Lake Agassiz Regional Library
+* Linn Benton Communit College
+* MOBIUS
+* NOBLE
+* Sigio
+* Sitka
+* Westchester Library System
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
