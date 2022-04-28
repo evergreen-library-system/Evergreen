@@ -161,7 +161,9 @@ export class IdlService {
     }
 
     // Return the selector field for the class.  If no selector is
-    // defined, use 'name' if it exists as a field on the class.
+    // defined, use 'name' if it exists as a field on the class. As
+    // a last ditch fallback, if there's no selector but the primary
+    // key is a text field, use that.
     getClassSelector(idlClass: string): string {
 
         if (idlClass) {
@@ -173,6 +175,13 @@ export class IdlService {
 
                 // No selector defined in the IDL, try 'name'.
                 if ('name' in classDef.field_map) { return 'name'; }
+
+                // last ditch - if the primary key is a text field,
+                // treat it as the selector
+                if (classDef.field_map[classDef.pkey].datatype === 'text') {
+                    return classDef.pkey;
+                }
+
             }
         }
 

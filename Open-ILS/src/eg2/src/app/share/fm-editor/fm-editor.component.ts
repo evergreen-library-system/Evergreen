@@ -518,7 +518,10 @@ export class FmRecordEditorComponent
             };
         }
 
-        if (fieldOptions.customValues) {
+        if (fieldOptions.customTemplate) {
+            field.template = fieldOptions.customTemplate.template;
+            field.context = fieldOptions.customTemplate.context;
+        } else if (fieldOptions.customValues) {
 
             field.linkedValues = fieldOptions.customValues;
 
@@ -550,18 +553,17 @@ export class FmRecordEditorComponent
 
         } else if (field.datatype === 'link') {
 
-            promise = this.wireUpCombobox(field);
+            if (fieldOptions.linkedSearchConditions) {
+                field.idlBaseQuery = fieldOptions.linkedSearchConditions;
+            }
+            field.selector = fieldOptions.linkedSearchField ||
+                             this.idl.getClassSelector(field.class);
 
         } else if (field.datatype === 'timestamp') {
             field.datetime = this.datetimeFieldsList.includes(field.name);
         } else if (field.datatype === 'org_unit') {
             field.orgDefaultAllowed =
                 this.orgDefaultAllowedList.includes(field.name);
-        }
-
-        if (fieldOptions.customTemplate) {
-            field.template = fieldOptions.customTemplate.template;
-            field.context = fieldOptions.customTemplate.context;
         }
 
         if (fieldOptions.helpText) {
@@ -577,103 +579,6 @@ export class FmRecordEditorComponent
         }
 
         return promise || Promise.resolve();
-    }
-
-    wireUpCombobox(field: any): Promise<any> {
-
-        const fieldOptions = this.fieldOptions[field.name] || {};
-
-        // globally preloading unless a field-specific value is set.
-        if (this.preloadLinkedValues) {
-            if (!('preloadLinkedValues' in fieldOptions)) {
-                fieldOptions.preloadLinkedValues = true;
-            }
-        }
-
-        const selector = fieldOptions.linkedSearchField ||
-            this.idl.getClassSelector(field.class);
-
-        if (!selector && !fieldOptions.preloadLinkedValues) {
-            // User probably expects an async data source, but we can't
-            // provide one without a selector.  Warn the user.
-            console.warn(`Class ${field.class} has no selector.
-                Pre-fetching all rows for combobox`);
-        }
-
-        if (fieldOptions.preloadLinkedValues || !selector) {
-            const search = {};
-            const orderBy = {order_by: {}};
-            if (selector) {
-                orderBy.order_by[field.class] = selector;
-            }
-            const idField = this.idl.classes[field.class].pkey || 'id';
-            search[idField] = {'!=' : null};
-            if (fieldOptions.linkedSearchConditions) {
-                const conditions = {};
-                Object.keys(fieldOptions.linkedSearchConditions).forEach(key => {
-                    conditions[key] = fieldOptions.linkedSearchConditions[key];
-                });
-                // ensure that the current value, if present, is included
-                // in case it doesn't otherwise meet the conditions
-                const linkedValue = this.record[field.name]();
-                if (linkedValue !== null && linkedValue !== undefined) {
-                    search['-or'] = [];
-                    const retrieveRec = {};
-                    retrieveRec[idField] = linkedValue;
-                    search['-or'].push(retrieveRec);
-                    search['-or'].push(conditions);
-                } else {
-                    // just tack on the conditions
-                    Object.keys(conditions).forEach(key => {
-                        search[key] = conditions[key];
-                    });
-                }
-            }
-            return this.pcrud.search(field.class, search, orderBy, {atomic : true})
-            .toPromise().then(list => {
-                field.linkedValues =
-                    this.flattenLinkedValues(field, list);
-            });
-        }
-
-        // If we have a selector, wire up for async data retrieval
-        field.linkedValuesSource =
-            (term: string): Observable<ComboboxEntry> => {
-
-            const search = {};
-            const orderBy = {order_by: {}};
-            const idField = this.idl.classes[field.class].pkey || 'id';
-
-            search[selector] = {'ilike': `%${term}%`};
-            if (fieldOptions.linkedSearchConditions) {
-                Object.keys(fieldOptions.linkedSearchConditions).forEach(key => {
-                    search[key] = fieldOptions.linkedSearchConditions[key];
-                });
-            }
-            orderBy.order_by[field.class] = selector;
-
-            return this.pcrud.search(field.class, search, orderBy)
-            .pipe(map(idlThing =>
-                // Map each object into a ComboboxEntry upon arrival
-                this.flattenLinkedValues(field, [idlThing])[0]
-            ));
-        };
-
-        // Using an async data source, but a value is already set
-        // on the field.  Fetch the linked object and add it to the
-        // combobox entry list so it will be avilable for display
-        // at dialog load time.
-        const linkVal = this.record[field.name]();
-        if (linkVal !== null && linkVal !== undefined) {
-            return this.pcrud.retrieve(field.class, linkVal).toPromise()
-            .then(idlThing => {
-                field.linkedValues =
-                    this.flattenLinkedValues(field, Array(idlThing));
-            });
-        }
-
-        // No linked value applied, nothing to pre-fetch.
-        return Promise.resolve();
     }
 
     // Returns a context object to be inserted into a custom
@@ -786,7 +691,11 @@ export class FmRecordEditorComponent
             return field.datatype;
         }
 
-        if (field.datatype === 'link' || field.linkedValues) {
+        if (field.datatype === 'link') {
+            return 'link';
+        }
+
+        if (field.linkedValues) {
             return 'list';
         }
 
