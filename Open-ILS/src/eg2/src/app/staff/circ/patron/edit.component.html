@@ -589,6 +589,9 @@
     </div>
   </ng-container>
 
+  <ng-container *ngTemplateOutlet="userSettingsCheckboxRow;
+    context: {args: {settingName: 'circ.autorenew.opt_in'}}">
+  </ng-container>
   <ng-container *ngFor="let set of optInSettingTypes | keyvalue">
     <ng-container *ngTemplateOutlet="userSettingsCheckboxRow;
       context: {args: {settingName: set.key}}">

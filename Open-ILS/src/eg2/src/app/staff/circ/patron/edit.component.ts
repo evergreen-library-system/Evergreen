@@ -44,6 +44,7 @@ const PATRON_FLESH_FIELDS = [
 
 const COMMON_USER_SETTING_TYPES = [
   'circ.holds_behind_desk',
+  'circ.autorenew.opt_in',
   'circ.collections.exempt',
   'opac.hold_notify',
   'opac.default_phone',
