@@ -701,6 +701,19 @@ export class EditComponent implements OnInit, AfterViewInit {
                 if (!COMMON_USER_SETTING_TYPES.includes(stype.name())) {
                     this.optInSettingTypes[stype.name()] = stype;
                 }
+
+                if (this.patron.isnew()) {
+                    let val = stype.reg_default();
+                    if (val !== null && val !== undefined) {
+                        if (stype.datatype() === 'bool') {
+                            // A boolean user setting type whose default
+                            // value starts with t/T is considered 'true',
+                            // false otherwise.
+                            val = Boolean((val + '').match(/^t/i));
+                        }
+                        this.userSettings[stype.name()] = val
+                    }
+                }
             });
         });
     }
