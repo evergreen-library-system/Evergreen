@@ -3644,29 +3644,29 @@ sub stream_wide_holds {
 
     my $st = OpenSRF::AppSession->create('open-ils.storage');
     my $req = $st->request(
-        'open-ils.storage.action.live_holds.wide_hash',
+        'open-ils.storage.action.live_holds.wide_hash.atomic',
         $restrictions, $order_by, $limit, $offset
     );
 
-    my $count = $req->recv;
-    if(!$count) {
+    my $results = $req->recv;
+    if(!$results) {
         return 0;
     }
 
-    if(UNIVERSAL::isa($count,"Error")) {
-        throw $count ($count->stringify);
+    if(UNIVERSAL::isa($results,"Error")) {
+        throw OpenSRF::EX::ERROR ("Error fetch hold shelf list");
     }
 
-    $count = $count->content;
+    my @rows = @{ $results->content };
 
     # Force immediate send of count response
     my $mbc = $client->max_bundle_count;
     $client->max_bundle_count(1);
-    $client->respond($count);
+    $client->respond(shift @rows);
     $client->max_bundle_count($mbc);
 
-    while (my $hold = $req->recv) {
-        $client->respond($hold->content) if $hold->content;
+    foreach my $hold (@rows) {
+        $client->respond($hold) if $hold;
     }
 
     $client->respond_complete;
