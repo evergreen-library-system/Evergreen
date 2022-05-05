@@ -11,7 +11,7 @@ use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenSRF::Utils::Cache;
 use Encode;
 use Email::Send;
-use Email::Simple;
+use Email::MIME;
 
 use OpenSRF::Utils::Logger qw/:logger/;
 
@@ -1942,16 +1942,7 @@ sub send_event_email_output {
     my $stat;
     my $err;
 
-    my $email = Email::Simple->new($event->template_output->data);
-
-    for my $hfield (qw/From To Subject Bcc Cc Reply-To Sender/) {
-        my @headers = $email->header($hfield);
-        $email->header_set($hfield => map { encode("MIME-Header", $_) } @headers) if ($headers[0]);
-    }
-
-    $email->header_set('MIME-Version' => '1.0');
-    $email->header_set('Content-Type' => "text/plain; charset=UTF-8");
-    $email->header_set('Content-Transfer-Encoding' => '8bit');
+    my $email = _create_mime_email($event->template_output->data);
 
     try {
         $stat = $sender->send($email);
@@ -1967,6 +1958,23 @@ sub send_event_email_output {
         $logger->warn("send_event_email_output: unable to send email: ".Dumper($stat));
         return 0;
     }
+}
+
+sub _create_mime_email {
+    my $template_output = shift;
+    my $email = Email::MIME->new($template_output);
+    for my $hfield (qw/From To Bcc Cc Reply-To Sender/) {
+        my @headers = $email->header($hfield);
+        $email->header_str_set($hfield => join(',', @headers)) if ($headers[0]);
+    }
+
+    my @headers = $email->header('Subject');
+    $email->header_str_set('Subject' => $headers[0]) if ($headers[0]);
+
+    $email->header_set('MIME-Version' => '1.0');
+    $email->header_set('Content-Type' => "text/plain; charset=UTF-8");
+    $email->header_set('Content-Transfer-Encoding' => '8bit');
+    return $email;
 }
 
 __PACKAGE__->register_method(
