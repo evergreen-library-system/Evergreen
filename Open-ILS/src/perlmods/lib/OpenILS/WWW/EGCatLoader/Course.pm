@@ -123,7 +123,7 @@ sub load_course_browse {
                 "order_by" => {"acmc" => [$qtype]},
                 "where" => {
                     '-not' => {'+acmc' => 'is_archived'},
-                    '+acmc' => { 'owning_lib' => $locg }
+                    '+acmc' => { 'owning_lib' => $U->get_org_descendants($locg) }
                 }
             });
         }
