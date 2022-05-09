@@ -99,6 +99,11 @@ sub set_patron_summary_items {
         $details->{out_count} = scalar(@$out_ids) + scalar(@$overdue_ids);
         $details->{items_overdue_ids} = $overdue_ids;
         $details->{items_out_ids} = $out_ids;
+    } else {
+        $details->{overdue_count} = 0;
+        $details->{out_count} = 0;
+        $details->{items_overdue_ids} = [];
+        $details->{items_out_ids} = [];
     }
 
     my $xacts = $U->simplereq(
