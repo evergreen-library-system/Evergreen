@@ -526,7 +526,7 @@ CREATE INDEX hold_request_copy_capture_time_idx ON action.hold_request (current_
 CREATE INDEX hold_request_open_captured_shelf_lib_idx ON action.hold_request (current_shelf_lib) WHERE capture_time IS NOT NULL AND fulfillment_time IS NULL AND (pickup_lib <> current_shelf_lib);
 CREATE INDEX hold_fulfillment_time_idx ON action.hold_request (fulfillment_time) WHERE fulfillment_time IS NOT NULL;
 CREATE INDEX hold_request_time_idx ON action.hold_request (request_time);
-
+CREATE INDEX hold_request_hopeless_date_idx ON action.hold_request (hopeless_date);
 
 CREATE TABLE action.hold_request_note (
 
