@@ -29,6 +29,7 @@ use Getopt::Long;
 my $batch_size = 10000; # records processed per batch
 my $max_child  = 8;     # max number of parallel worker processes
 
+my $delay_dym;    # Delay DYM symspell dictionary reification.
 my $skip_browse;  # Skip the browse reingest.
 my $skip_attrs;   # Skip the record attributes reingest.
 my $skip_search;  # Skip the search reingest.
@@ -57,6 +58,7 @@ GetOptions(
     'port=i'         => \$db_port,
     'batch-size=i'   => \$batch_size,
     'max-child=i'    => \$max_child,
+    'delay-symspell' => \$delay_dym,
     'skip-browse'    => \$skip_browse,
     'skip-attrs'     => \$skip_attrs,
     'skip-search'    => \$skip_search,
@@ -82,6 +84,15 @@ sub help {
 
     --max-child
         Max number of worker processes
+
+    --delay-symspell
+        Delay reification of symspell dictionary entries
+        This can provide a significant speedup for large ingests.
+        NOTE:  This will cause concurrent, unrelated symspell
+        updates to be delayed as well.  This is usually not a
+        concern in an existing database as the dictionary is
+        generally complete and only the details of use counts
+        will change due to reingests and record inserts/updates.
 
     --skip-browse
     --skip-attrs
@@ -200,6 +211,14 @@ $lol[$lists++] = $records if ($count); # Last batch is likely to be
 # batches processed.
 $count = 0;
 
+# Disable inline reification of symspell data during the main ingest process
+if ($delay_dym) {
+    my $dbh = DBI->connect("DBI:Pg:database=$db_db;host=$db_host;port=$db_port;application_name=pingest",
+                           $db_user, $db_password);
+    $dbh->do('SELECT search.disable_symspell_reification()');
+    $dbh->disconnect();
+}
+
 # @running keeps track of the running child processes.
 my @running = ();
 
@@ -229,13 +248,38 @@ while ($count < $lists) {
     }
 
     if ($duration_expired && scalar(@running) == 0) {
+        symspell_reification() if ($delay_dym);
         warn "Exiting on max_duration ($max_duration)\n";
         exit(0);
     }
 }
 
+# Incorporate symspell updates if they were delayed
+symspell_reification() if ($delay_dym);
+
 # Rebuild reporter.materialized_simple_record after the ingests.
 rmsr_rebuild() if ($rebuild_rmsr);
+
+# This sub should be called at the end of the run if symspell updates
+# were delayed using the --delay-dym command line flag.
+sub symspell_reification {
+    my $dbh = DBI->connect("DBI:Pg:database=$db_db;host=$db_host;port=$db_port;application_name=pingest",
+                           $db_user, $db_password);
+    $dbh->do('SELECT search.enable_symspell_reification()');
+    $dbh->do('SELECT search.symspell_dictionary_full_reify()');
+
+    # There might be a race condition above if non-pingest record updates
+    # were started before the first of the two statements above, but ended
+    # after the second one, so we'll wait a few seconds and then look again.
+    sleep(5);
+
+    # This count will always be 0 when symspell reification is done inline
+    # rather than delayed, because it is handled by a trigger that runs
+    # inside the transaction that causes inline reification.
+    my ($recheck) = $dbh->selectrow_array('SELECT COUNT(*) FROM search.symspell_dictionary_updates');
+    $dbh->do('SELECT search.symspell_dictionary_full_reify()') if ($recheck);
+    $dbh->disconnect();
+}
 
 # This subroutine forks a process to do the browse-only ingest on the
 # @blist above.  It cannot be parallelized, but can run in parrallel
