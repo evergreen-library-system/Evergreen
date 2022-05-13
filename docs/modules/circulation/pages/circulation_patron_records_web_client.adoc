@@ -166,7 +166,9 @@ Patron Self-Registration allows patrons to initiate registration for a library a
 
 . Patrons will see a confirmation message: “Registration successful!  Please see library staff to complete your registration.”
 
-image::media/patron_self_registration2.jpg[Patron Self-Registration form]
+image::patron_record/self_registration_1.jpg[Patron Self-Registration form]
+
+image::patron_record/self_registration_2.jpg[Patron Self-Registration form]
 
 *Managing Pending Patrons*
 
