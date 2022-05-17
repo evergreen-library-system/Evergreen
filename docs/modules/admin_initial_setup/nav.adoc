@@ -34,3 +34,4 @@
 ** xref:admin:phonelist.adoc[Phonelist.pm Module]
 ** xref:admin:sip_server.adoc[SIP Server]
 ** xref:admin:audio_alerts.adoc[Managing Audio Alerts]
+** xref:admin_initial_setup:oaipmh.adoc[OAI-PMH Data Provider Support]

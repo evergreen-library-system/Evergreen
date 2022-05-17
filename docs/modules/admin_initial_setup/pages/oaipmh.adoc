@@ -1,0 +1,97 @@
+= OAI-PMH Data Provider Support =
+:toc:
+
+As of version 3.9 Evergreen can act as an OAI-PMH data provider, exposing the catalog to harvesting through the http://www.openarchives.org/OAI/openarchivesprotocol.html[OAI2 protocol].
+
+== Entry points ==
+
+There are two entry points: one for bibliographic records and one for authority records:
+
+`http://<your-domain>/opac/extras/oai/authority`
+
+`http://<your-domain>/opac/extras/oai/biblio`
+
+
+An example of a working URL on a system with an authority record with ID 1:
+
+`http://<your-domain>/opac/extras/oai/authority?verb=GetRecord&identifier=oai:localhost:1&metadataPrefix=oai_dc`
+
+== Setspec are partially implemented ==
+
+Sets for bib records are currently based on copy visibility, Located URI visibility, or bib source.  Generally useful combinations are generated for item, Located URI, and transcendent bib sources.
+
+Sets for authority records are based on the browse axis of the heading for the record.
+
+All generated Sets for bib records currently test for effective search visibility on the three described components.
+
+In order to retrieve item data from a specific branch of the org tree, a harvester must use a Set that contains `COPIES:`. The hierarchical shortnames of the org units follow the colon, so in a freshly installed system a Set with the setSpec of `COPIES:CONS:SYS2:BR3` will retrieve all bib records that have visible copies at BR3, and include only the item data for that org unit.
+
+To retrieve records with Located URIs, which behave in the hierarchical reverse of copies by limiting display to those org units "inside" the branch of the tree where the licensing "lives", a harvester should supply a setSpec with an org unit shortname that would display the Located URI. For example: `LURIS:CONS:SYS2:BR3`
+
+Note: the `LURI:` org unit is also used to restrict any item data that may be available for LURI-filtered records.
+
+To retrieve records that are in a transcendent bib source, a harvester can used a setSpec starting with `SOURCES:` followed by the source name.
+
+To harvest all records, including deleted records, simply omit the setSpec from the request.  All item data will be included.
+
+To list available Sets, use the ListSets verb, for instance:
+
+`http://your-domain/opac/extras/oai/biblio?verb=ListSets`
+
+`http://your-domain/opac/extras/oai/authority?verb=ListSets`
+
+== Bibliographic mapping of assets to 852 subfields ==
+
+Certain attributes asset are placed into 852 subfields so:
+
+|===
+| subfield code | asset resource
+
+| a | location
+| b | owning_lib
+| c | callnumber
+| d | circlib
+| g | barcode
+| n | status
+|===
+
+Thus the Concerto with record ID 1 will have its 852 subfields expressed as:
+
+[source,xml]
+----
+<marc:datafield ind1="4" ind2=" " tag="852">
+    <marc:subfield code="a">Stacks</marc:subfield>
+    <marc:subfield code="b">BR4</marc:subfield>
+    <marc:subfield code="c">ML 60 R100</marc:subfield>
+    <marc:subfield code="d">BR4</marc:subfield>
+    <marc:subfield code="g">CONC70000435</marc:subfield>
+    <marc:subfield code="n">Checked out</marc:subfield>
+</marc:datafield>
+----
+
+This mapping can be customized and extended with static subfields:
+
+[source,xml]
+----
+<marc:subfield code="q">A constant value</marc:subfield>
+----
+
+== Default configuration ==
+
+See comments in `opensrf.xml` (in the `open-ils.supercat app_settings/oai` element) for default configuration and customization instructions.
+
+== Upgrade instructions ==
+
+OAI support is not turned on by default. To enable it, edit the Apache configuration file `eg_vhost.conf` to uncomment the following section and restart Apache:
+
+[source,conf]
+----
+#<Location /opac/extras/oai>
+#    SetHandler perl-script
+#    PerlHandler OpenILS::WWW::SuperCat::OAI
+#    Options +ExecCGI
+#    PerlSendHeader On
+#    Require all granted
+#</Location>
+----
+
