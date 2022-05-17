@@ -239,7 +239,8 @@ test database for example has a record with record ID #1. This record is so popu
 "Example Branch 1", "Example Branch 2", "Example Branch 3", "Example Bookmobile 1" which is a child of Branch 3 and
 "Example Branch 4". This entire kinship is expressed as sets like so: 
 
-```xml
+[source,xml]
+----
 <header>
     ...
     <setSpec>CONS</setSpec>
@@ -251,7 +252,8 @@ test database for example has a record with record ID #1. This record is so popu
     <setSpec>CONS:SYS2:BR4</setSpec>
     <setSpec>CONS:SYS2:BR3:BM1</setSpec>
 </header>
-```
+----
+
 Likewise the setSpecs of authority records are derived from their browse axis ( Title, Author, Subject and Topic ).
 
 Bibliographic mapping of assets to 852 subfields
@@ -271,7 +273,9 @@ Certain attributes asset are placed into 852 subfields so:
 |===
  
 Thus the Concerto with record ID #1 will have it's 852 subfields expressed as:
-```xml
+
+[source,xml]
+----
 <marc:datafield ind1="4" ind2=" " tag="852">
     <marc:subfield code="a">Stacks</marc:subfield>
     <marc:subfield code="b">BR4</marc:subfield>
@@ -280,11 +284,14 @@ Thus the Concerto with record ID #1 will have it's 852 subfields expressed as:
     <marc:subfield code="g">CONC70000435</marc:subfield>
     <marc:subfield code="n">Checked out</marc:subfield>
 </marc:datafield>
-```
+----
+
 This mapping can be customized and extended with static subfields:
-```xml
+
+[source,xml]
+----
     <marc:subfield code="q">A constant value</marc:subfield>
-```
+----
 
 Default configuration
 +++++++++++++++++++++
@@ -340,7 +347,7 @@ pre-applied. Reports and schedules can be edited at any time as needed.
 
 ==== SIP ====
 
-===== Adding Captured Hold Phone Notification Number to Checkin Repsonse =====
+===== Adding Captured Hold Phone Notification Number to Checkin Response =====
 
 Some third party systems can phone users when a SIP checkin captures
 an item they have on hold. Normally, to do this a patron information
@@ -359,9 +366,21 @@ latest version of `SIPServer`.
 ==== Miscellaneous ====
 
 * The patron record juvenile flag is now available to the checkout and
-  items out print templates.
+  items out print templates. (https://bugs.launchpad.net/evergreen/+bug/1830387[Bug 1830387])
 * The Notices / Action Triggers administration interface (under Local
-  Administration) is ported to Angular.
+  Administration) is ported to Angular. (https://bugs.launchpad.net/evergreen/+bug/1855780[Bug 1855780])
+* The Local Administration interface Shelving Location Order Editor is ported to Angular https://bugs.launchpad.net/evergreen/+bug/1846552[Bug 1846552])
+* Series Title is now a column option in the Holds Pull List (https://bugs.launchpad.net/evergreen/+bug/1863196[Bug 1863196])
+* Credit card payment approval code is now available to the Payment Receipt template (https://bugs.launchpad.net/evergreen/+bug/1865062[Bug 1865062])
+* There is a new widget to share a Carousel on an external site (https://bugs.launchpad.net/evergreen/+bug/1882982[Bug 1882982])
+* Item Status Circ History now includes original checkout workstation and staff (https://bugs.launchpad.net/evergreen/+bug/1919500[Bug 1919500])
+* The 520 Summary field is now more prominently displayed in the Bootstrap OPAC (https://bugs.launchpad.net/evergreen/+bug/1930614[Bug1930614])
+* It is now easier to customize the Boostrap OPAC topnav logo (https://bugs.launchpad.net/evergreen/+bug/1964963[Bug 1964963])
+* Improvements to Angular grid 'copy to clipboard' dialog (https://bugs.launchpad.net/evergreen/+bug/1958581[Bug 1958581])
+* Patron Notes now include Creation Date/Time and default to sorting by most recent created note (https://bugs.launchpad.net/evergreen/+bug/1956970[Bug 1956970])
+* 'Due date' field is now available under Show More Details in staff catalog search results (https://bugs.launchpad.net/evergreen/+bug/1955931[Bug 1955931])
+
+
 
 Acknowledgments
 ---------------
@@ -397,6 +416,7 @@ Evergreen:
 * Angela Kilsdonk
 * Shula Link
 * Tiffany Little
+* Llewellyn Marshall 
 * Terran McCanna
 * Gina Monti
 * Michele Morgan
@@ -410,6 +430,7 @@ Evergreen:
 * Mike Rylander
 * Remington Steed
 * Lucien van Wouw
+* Jennifer Weston
 
 We also thank the following organizations whose employees contributed
 patches:
