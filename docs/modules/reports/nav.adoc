@@ -11,4 +11,5 @@
 ** xref:reports:reporter_template_terminology.adoc[Template Terminology]
 ** xref:reports:reporter_template_enhancements.adoc[Template Enhancements]
 ** xref:reports:reporter_export_usingpgAdmin.adoc[Exporting Report Templates Using phpPgAdmin]
+** xref:reports:simple_reports.adoc[Simple Reports]
 
