@@ -90,7 +90,7 @@ interface.
 
 The following stanza needs to be added to eg_vhost.conf:
 
-[source]
+[source,conf]
 ----------------------------------------------------------------
 <Location /jacket-upload>
     SetHandler perl-script
@@ -103,10 +103,11 @@ The following stanza needs to be added to eg_vhost.conf:
 and this to the open-ils.vandelay -> app_settings -> databases section of
 opensrf.xml:
 
-[source]
+[source,conf]
 ----------------------------------------------------------------
 <jackets>/openils/var/web/opac/extras/ac</jackets>
 ----------------------------------------------------------------
+
 with the path appropriately adjusted for your installation. The Apache process
 will need write permissions for that directory.
 
