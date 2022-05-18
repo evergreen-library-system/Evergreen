@@ -379,6 +379,8 @@ latest version of `SIPServer`.
 * Improvements to Angular grid 'copy to clipboard' dialog (https://bugs.launchpad.net/evergreen/+bug/1958581[Bug 1958581])
 * Patron Notes now include Creation Date/Time and default to sorting by most recent created note (https://bugs.launchpad.net/evergreen/+bug/1956970[Bug 1956970])
 * 'Due date' field is now available under Show More Details in staff catalog search results (https://bugs.launchpad.net/evergreen/+bug/1955931[Bug 1955931])
+* Staff can add jQuery code in to a Library Setting to perform simple OPAC customizations (https://bugs.launchpad.net/evergreen/+bug/1849113[Bug 1849113])
+* Added API call to allow external carousel display (https://bugs.launchpad.net/evergreen/+bug/1951318[Bug 1951318])
 
 
 
