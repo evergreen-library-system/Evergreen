@@ -241,7 +241,7 @@ export class CourseService {
             cn.label_class()
         ).pipe(switchMap(res => {
             const event = this.evt.parse(res);
-            if (event) { return throwError; }
+            if (event) { return throwError(event); }
             return this.net.request(
                 'open-ils.cat', 'open-ils.cat.transfer_copies_to_volume',
                 this.auth.token(), res.acn_id, [item.id()]
