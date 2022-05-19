@@ -234,9 +234,9 @@ angular.module('egCatCopyBuckets',
  */
 .controller('CopyBucketCtrl',
        ['$scope','$location','$q','$timeout','$uibModal',
-        '$window','egCore','bucketSvc',
+        '$window','egCore','bucketSvc','egProgressDialog',
 function($scope,  $location,  $q,  $timeout,  $uibModal,  
-         $window,  egCore,  bucketSvc) {
+         $window,  egCore,  bucketSvc , egProgressDialog) {
 
     $scope.bucketSvc = bucketSvc;
     $scope.bucket = function() { return bucketSvc.currentBucket }
@@ -265,13 +265,17 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
 
         var ids = recs.map(function(rec) { return rec.id; });
 
+        egProgressDialog.open();
+
         egCore.net.request(
             'open-ils.actor',
             'open-ils.actor.container.item.create.batch',
             egCore.auth.token(), 'copy',
             bucketSvc.currentBucket.id(), ids
         ).then(
-            null, // complete
+            function() {
+                egProgressDialog.close();
+            }, // complete
             null, // error
             function(resp) {
                 // HACK: add the IDs of the added items so that the size
@@ -548,13 +552,17 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
         bucketSvc.bucketNeedsRefresh = true;
         var ids = copies.map(function(rec) { return rec.id; });
 
+
+        egProgressDialog.open();
         return egCore.net.request(
             'open-ils.actor',
             'open-ils.actor.container.item.delete.batch',
             egCore.auth.token(), 'copy',
             bucketSvc.currentBucket.id(), ids
         ).then(
-            null, // complete
+            function() {
+                egProgressDialog.close();
+            }, // complete
             null, // error
             function(resp) {
                 // Remove the items as the API responds so the UI can show
