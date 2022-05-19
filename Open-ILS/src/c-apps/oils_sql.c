@@ -6388,8 +6388,6 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 
 					osrfLogDebug( OSRF_LOG_MARK, "Fleshing of %s complete",
 						osrfHashGet( kid_link, "field" ) );
-					osrfLogDebug( OSRF_LOG_MARK, "%s", jsonObjectToJSON( cur ));
-
 				} // end while loop traversing list of fleshable fields
 			}
 
