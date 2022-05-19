@@ -264,25 +264,24 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
         bucketSvc.bucketNeedsRefresh = true;
 
         var ids = recs.map(function(rec) { return rec.id; });
-        
-                egCore.net.request(
-                    'open-ils.actor',
-                    'open-ils.actor.container.item.create.batch',
-                    egCore.auth.token(), 'copy', 
-                    bucketSvc.currentBucket.id(), ids
-        
-                ).then(
-                    null, // complete
-                    null, // error
-                    function(resp) {
-                        // HACK: add the IDs of the added items so that the size
-                        // of the view list will grow (and update any UI looking at
-                        // the list size).  The data stored is inconsistent, but since
-                        // we are forcing a bucket refresh on the next rendering of 
-                        // the view pane, the list will be repaired.
-                        bucketSvc.currentBucket.items().push(resp);
-                        }
-                )
+
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.container.item.create.batch',
+            egCore.auth.token(), 'copy',
+            bucketSvc.currentBucket.id(), ids
+        ).then(
+            null, // complete
+            null, // error
+            function(resp) {
+                // HACK: add the IDs of the added items so that the size
+                // of the view list will grow (and update any UI looking at
+                // the list size).  The data stored is inconsistent, but since
+                // we are forcing a bucket refresh on the next rendering of
+                // the view pane, the list will be repaired.
+                bucketSvc.currentBucket.items().push(resp);
+             }
+        );
     }
 
     $scope.openCreateBucketDialog = function() {
@@ -548,17 +547,16 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
     $scope.detachCopies = function(copies) {
         bucketSvc.bucketNeedsRefresh = true;
         var ids = copies.map(function(rec) { return rec.id; });
-        
+
         return egCore.net.request(
             'open-ils.actor',
             'open-ils.actor.container.item.delete.batch',
-            egCore.auth.token(), 'copy', 
+            egCore.auth.token(), 'copy',
             bucketSvc.currentBucket.id(), ids
-        
         ).then(
             null, // complete
-             null, // error
-             function(resp) {
+            null, // error
+            function(resp) {
                 // Remove the items as the API responds so the UI can show
                 // the count of items decreasing.
                 bucketSvc.currentBucket.items(
