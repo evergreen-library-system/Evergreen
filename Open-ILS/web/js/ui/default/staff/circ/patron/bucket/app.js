@@ -55,9 +55,9 @@ angular.module('egCatUserBuckets',
  */
 .controller('UserBucketCtrl',
        ['$scope','$location','$q','$timeout','$uibModal',
-        '$window','egCore','bucketSvc','ngToast',
+        '$window','egCore','bucketSvc','ngToast','egProgressDialog',
 function($scope,  $location,  $q,  $timeout,  $uibModal,  
-         $window,  egCore,  bucketSvc , ngToast) {
+         $window,  egCore,  bucketSvc , ngToast , egProgressDialog) {
 
     $scope.bucketSvc = bucketSvc;
     $scope.bucket = function() { return bucketSvc.currentBucket }
@@ -84,6 +84,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
         if (recs.length == 0) return;
         bucketSvc.bucketNeedsRefresh = true;
 
+        egProgressDialog.open();
         var ids = recs.map(function(rec) {
             $scope.removeFromPendingList(rec.id);
             return rec.id;
@@ -95,7 +96,9 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
             egCore.auth.token(), 'user',
             bucketSvc.currentBucket.id(), ids
         ).then(
-            null, // complete
+            function() {
+                egProgressDialog.close();
+            }, // complete
             null, // error
             function(resp) {
                 // HACK: add the IDs of the added items so that the size
