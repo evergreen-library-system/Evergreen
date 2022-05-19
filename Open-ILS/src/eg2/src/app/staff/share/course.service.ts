@@ -224,13 +224,12 @@ export class CourseService {
 
     updateItem(item: IdlObject, courseLib: IdlObject, callNumber: string, updatingVolume: boolean) {
         const cn = item.call_number();
-        const callNumberLibrary = this.org.canHaveVolumes(courseLib) ? courseLib.id() : cn.owning_lib();
 
         const itemObservable = this.pcrud.update(item);
         const callNumberObservable = this.net.request(
             'open-ils.cat', 'open-ils.cat.call_number.find_or_create',
             this.auth.token(), callNumber, cn.record(),
-            callNumberLibrary, cn.prefix(), cn.suffix(),
+            cn.owning_lib(), cn.prefix(), cn.suffix(),
             cn.label_class()
         ).pipe(switchMap(res => {
             const event = this.evt.parse(res);
