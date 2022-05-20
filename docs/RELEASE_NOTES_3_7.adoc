@@ -8,7 +8,7 @@ This release contains bug fixes improving on Evergreen 3.7.2.
 
 === Upgrade notes ===
 
-
+The fix for https://bugs.launchpad.net/evergreen/+bug/1939338[Launchpad bug 1939338] modifies the `fm_IDL.xml` file.  To ensure that everything is up-to-date, existing Evergreen sites should run `autogen.sh` after restarting OpenSRF services and before restarting Apache.
 
 === Bug Fixes ===
 
@@ -24,7 +24,7 @@ This release contains bug fixes improving on Evergreen 3.7.2.
 * Adds rdeleted parameter to the pingest.pl script (https://bugs.launchpad.net/evergreen/+bug/1862652[Bug 1862652])
 * Fixes bug where Carousels could only be viewed & edited by their creating user (https://bugs.launchpad.net/evergreen/+bug/1939338[Bug 1939338])
 * Updates Hopeless Holds interface so Title links open in a new tab (https://bugs.launchpad.net/evergreen/+bug/1909681[Bug 1909681])
-* Fixes an issue where specific 'opensrf' user is required in oils_ctl.sh and autogen.sh https://bugs.launchpad.net/evergreen/+bug/1900005[Bug1900005])
+* Fixes an issue where specific 'opensrf' user is required in oils_ctl.sh and autogen.sh (https://bugs.launchpad.net/evergreen/+bug/1900005[Bug 1900005])
 * Adds MARC_NAMESPACE to Const.pm (https://bugs.launchpad.net/evergreen/+bug/1930747[Bug 1930747])
 * Fixes an issue preventng correct MADS processing of field 755 (https://bugs.launchpad.net/evergreen/+bug/1800871[Bug 1800871])
 
@@ -72,7 +72,7 @@ This release contains bug fixes improving on Evergreen 3.7.2.
 ==== Client ====
 
 * Improves filtering on egBasicComboBox typeaheads (https://bugs.launchpad.net/evergreen/+bug/1819233[Bug 1819233])
-* Corrects print template data field names for Items Out template (https://bugs.launchpad.net/evergreen/+bug/1766726[Bug 1766726]
+* Corrects print template data field names for Items Out template (https://bugs.launchpad.net/evergreen/+bug/1766726[Bug 1766726])
 * Implements batch method for adding users to a bucket (https://bugs.launchpad.net/evergreen/+bug/1946531[Bug 1946531])
 
 ==== Course Materials ====
@@ -166,7 +166,7 @@ This release contains bug fixes improving on Evergreen 3.7.1.
 
 === Upgrade notes ===
 
-The fix for https://bugs.launchpad.net/evergreen/_bug/1450519[Launchpad bug 1450519] modifies the `fm_IDL.xml` file.  To ensure that everything is up-to-date, existing Evergreen sites should run `autogen.sh` after restarting OpenSRF services and before restarting Apache.
+The fix for https://bugs.launchpad.net/evergreen/+bug/1450519[Launchpad bug 1450519] modifies the `fm_IDL.xml` file.  To ensure that everything is up-to-date, existing Evergreen sites should run `autogen.sh` after restarting OpenSRF services and before restarting Apache.
 
 In reference to the fix for https://bugs.launchpad.net/evergreen/+bug/1944765[Launchpad bug 1944765], existing Evergreen systems on Debian and Ubuntu should do the following to ensure that mod_headers is active:
 
