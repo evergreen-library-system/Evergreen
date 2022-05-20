@@ -2,6 +2,165 @@
 :toc:
 :numbered:
 
+
+== Evergreen 3.7.3 ==
+
+This release contains bug fixes improving on Evergreen 3.7.2.
+
+=== Upgrade notes ===
+
+
+
+=== Bug Fixes ===
+
+==== Acquisitions ====
+
+* Protects real copies from deletion by an acqusitions line item cancel (https://bugs.launchpad.net/evergreen/+bug/1928003[Bug 1928003])
+* Fixes an issue where EDIWriter.pm was not correctly applying some attribute types (https://bugs.launchpad.net/evergreen/+bug/1930740[Bug 1930740])
+* Fixes the Providers form to be more friendly to screenreaders (https://bugs.launchpad.net/evergreen/+bug/1950507[Bug 1950507])
+
+==== Administration ====
+
+* Speed improvements to 'Did You Mean' symspell ingest (https://bugs.launchpad.net/evergreen/+bug/1947173[Bug 1947173])
+* Adds rdeleted parameter to the pingest.pl script (https://bugs.launchpad.net/evergreen/+bug/1862652[Bug 1862652])
+* Fixes bug where Carousels could only be viewed & edited by their creating user (https://bugs.launchpad.net/evergreen/+bug/1939338[Bug 1939338])
+* Updates Hopeless Holds interface so Title links open in a new tab (https://bugs.launchpad.net/evergreen/+bug/1909681[Bug 1909681])
+* Fixes an issue where specific 'opensrf' user is required in oils_ctl.sh and autogen.sh https://bugs.launchpad.net/evergreen/+bug/1900005[Bug1900005])
+* Adds MARC_NAMESPACE to Const.pm (https://bugs.launchpad.net/evergreen/+bug/1930747[Bug 1930747])
+* Fixes an issue preventng correct MADS processing of field 755 (https://bugs.launchpad.net/evergreen/+bug/1800871[Bug 1800871])
+
+
+==== API ====
+
+* Makes changes to the eBook API to support Overdrive's updated Checkouts API (https://bugs.launchpad.net/evergreen/+bug/1951021[Bug 1951021])
+
+==== Architecture ====
+
+* Fixes typo in fm_idl.xml (https://bugs.launchpad.net/evergreen/+bug/1957840[Bug 1957840])
+* Fixes issue where loading records with located URIs deleted and recreated call_numbers (https://bugs.launchpad.net/evergreen/+bug/1482757[Bug 1482757])
+* Fixes an issue where retrieving a title via SuperCat can crash if the title has a serial unit with statcats (https://bugs.launchpad.net/evergreen/+bug/1970486[Bug 1970486])
+
+
+
+==== Catalog ==== 
+
+* Fixes an issue in the traditional staff catalog where PLACE_UNFILLABLE_HOLD override fails if there are no items available (https://bugs.launchpad.net/evergreen/+bug/1906842[Bug 1906842])
+* Fixes an issue in the Patron Search from Place Holds modal where barcode search was failing (https://bugs.launchpad.net/evergreen/+bug/1955927[Bug 1955927])
+* Restores Hold links in the staff catalog detail page that were broken by a Chrome update (https://bugs.launchpad.net/evergreen/+bug/1964019[Bug 1964019])
+* Fixes an issue in the traditional staff catalog where user settings wouldn't load in the Place Holds interface (https://bugs.launchpad.net/evergreen/+bug/1939426[Bug 1939426])
+* Fixes an issue in the Angular staff catalog where monograph parts were sorting incorrectly in the Place Holds interface (https://bugs.launchpad.net/evergreen/+bug/1965161[Bug 1965161])
+* Adds default columns in the Angular staff catalog View Holds tab (https://bugs.launchpad.net/evergreen/+bug/1907123[Bug 1907123])
+* Excludes empty bibs with transcendent=f from location limited staff searches (https://bugs.launchpad.net/evergreen/+bug/1746800[Bug 1746800])
+* Fixes issue in the traditional staff catalog where Patron Barcode Completion didn't populate correctly in the Place Holds interface (https://bugs.launchpad.net/evergreen/+bug/1965317[Bug 1965317])
+
+
+==== Cataloging ====
+
+* Fixes a regression where owning libraries were not indicated in the Holdings View dropdown (https://bugs.launchpad.net/evergreen/+bug/1739277[Bug 1739277])
+* Fixes an issue where batch deletes from an item bucket exhausted drones (https://bugs.launchpad.net/evergreen/+bug/1949910[Bug 1949910])
+* Fixes an issue where the Holdings View showed incorrect item counts (https://bugs.launchpad.net/evergreen/+bug/1933275[Bug 1933275])
+* Adds Author field to Item Buckets (https://bugs.launchpad.net/evergreen/+bug/1800474[Bug 1800474])
+* Fixes an issue where batch removal of items from an item bucket exhausted drones (https://bugs.launchpad.net/evergreen/+bug/1968082[Bug 1968082])
+
+
+==== Circulation ====
+
+* Adjust to Zero on billings now closes the associated transaction and sets item status as Lost & Paid (https://bugs.launchpad.net/evergreen/+bug/1830089[Bug 1830089])
+* Excludes child organizational units when fleshing standing penalties (https://bugs.launchpad.net/evergreen/+bug/1959461[Bug 1959461])
+* Fixes invalidate email regression (https://bugs.launchpad.net/evergreen/+bug/1950826[Bug 1950826])
+* Fixes a bug where Patron Search could cause the browser to become unresponsive (https://bugs.launchpad.net/evergreen/+bug/1959904[Bug 1959904])
+
+==== Client ====
+
+* Improves filtering on egBasicComboBox typeaheads (https://bugs.launchpad.net/evergreen/+bug/1819233[Bug 1819233])
+* Corrects print template data field names for Items Out template (https://bugs.launchpad.net/evergreen/+bug/1766726[Bug 1766726]
+* Implements batch method for adding users to a bucket (https://bugs.launchpad.net/evergreen/+bug/1946531[Bug 1946531])
+
+==== Course Materials ====
+
+* Adds owning library check to Course Terms uniqueness constraint (https://bugs.launchpad.net/evergreen/+bug/1942645[LP1942645])
+* Fixes course search issue (https://bugs.launchpad.net/evergreen/+bug/1913340[Bug 1913340])
+
+==== Documentation ====
+
+* Updates to Print Template Export documentation (https://bugs.launchpad.net/evergreen/+bug/1929592[Bug 1929592])
+* Updates to Transit List documentation
+* Updates to Workstation Admin documentation
+* Updates to MARC Batch Import documentation
+* Updates to Barcode Completion documentation
+* Added Course Materials documentation
+* Updates to Holds documentation
+* Updates to z39.50 documentation
+* Updates to OPAC Lists documentation
+* Added relevant Conference videos to some documentation pages
+* Updates to Batch Search documentation
+* Updates to Using the Public Access Catalog documentation
+* Added Advanced Authorities documentation (https://bugs.launchpad.net/evergreen/+bug/1944205[Bug 1944205])
+
+==== OPAC ====
+
+* Fixes an issue in the Bootstrap OPAC where changing a branch did not clear the shelving location list (https://bugs.launchpad.net/evergreen/+bug/1946019[Bug 1946019])
+* Restores line breaks in Patron Messages (https://bugs.launchpad.net/evergreen/+bug/1927990[Bug 1927990])
+* Fixes an issue where some electronic resource links would not display in the Bootstrap OPAC (https://bugs.launchpad.net/evergreen/+bug/1950394[Bug 1950394])
+* Fixes an issue in the Bootstrap OPAC where the 'More Details' button was not translatable (https://bugs.launchpad.net/evergreen/+bug/1919494[Bug 1919494])
+* Fixes an issue where a hold in the status "Hold Shelf Delay" displayed blank in the OPAC (https://bugs.launchpad.net/evergreen/+bug/1959405[Bug 1959405])
+* Fixes Bootstrap OPAC 'More Details' button so it toggles to 'Less Details' when clicked (https://bugs.launchpad.net/evergreen/+bug/1920039[Bug 1920039])
+* Fixes circ history CSV export in the Bootstrap OPAC (https://bugs.launchpad.net/evergreen/+bug/1954923[Bug 1954923])
+* Fixes color contrast on Bootstrap OPAC forms (https://bugs.launchpad.net/evergreen/+bug/1942240[Bug 1942240])
+* Fixes formatting in Bootstrap OPAC My Lists (https://bugs.launchpad.net/evergreen/+bug/1907863[Bug 1907863])
+
+
+==== Serials ====
+
+* Fixes an issue where subscription manager fetched too many parallel requests (https://bugs.launchpad.net/evergreen/+bug/1949389[Bug 1949389])
+
+
+=== Acknowledgements ===
+
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.7.3 point release of Evergreen:
+
+* MaryAnn Alexander
+* John Amundson
+* Jason Boyer
+* Dan Briem
+* Jennifer Bruch
+* Christine Burns
+* Steve Callender
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Martha Driscoll
+* Bill Erickson
+* Jason Etheridge
+* Lynn Floyd
+* Ruth Frasur
+* Jeff Godin
+* Blake Graham Henderson
+* Elaine Hardy
+* Kyle Huckins
+* Tiffany Little
+* Mary Llewellyn
+* Terran McCanna
+* Gina Monti 
+* Michele Morgan
+* Andrea Buntz Neiman
+* Jennifer Pringle
+* Mike Risher
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Josh Stompro
+* Jennifer Weston
+* Beth Willis
+* Jessica Woolford
+
+
+
+
+
+
 == Evergreen 3.7.2 ==
 
 This release contains bug fixes improving on Evergreen 3.7.1.
