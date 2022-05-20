@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2020-09-15 19:05+0000\n"
+"POT-Creation-Date: 2021-10-12 19:02+0000\n"
 "PO-Revision-Date: 2017-01-19 17:35+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2020-09-16 06:06+0000\n"
-"X-Generator: Launchpad (build 83bdf6c8a3a5f87722c8927e54838522f3e57504)\n"
+"X-Launchpad-Export-Date: 2021-10-13 04:53+0000\n"
+"X-Generator: Launchpad (build 8a94da2fac127f5e46a49fd1140e43759d578803)\n"
 
 #: ../../Open-ILS/src/templates/kpac/getit.tt2:40
 msgid " Enter Numbers... "
@@ -40,7 +40,7 @@ msgstr "%1، %2"
 msgid "%1..."
 msgstr "%1..."
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:146
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:144
 msgid "-- Temporary List --"
 msgstr "-- القائمة المؤقتة --"
 
@@ -48,11 +48,11 @@ msgstr "-- القائمة المؤقتة --"
 msgid "About this item:"
 msgstr "حول هذه النُسخة:"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:144
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:142
 msgid "Add to one of your lists?"
 msgstr "إضافة إلى واحدة من القوائم الخاصة بك؟"
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:36 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:14
+#: ../../Open-ILS/src/templates/kpac/home.tt2:36 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:12
 msgid "Author"
 msgstr "المؤلف"
 
@@ -73,13 +73,17 @@ msgstr "رجوع إلى الفهرس الرئيسي"
 msgid "Call Number"
 msgstr "رمز الاستدعاء"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:72
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:70
 msgid "Choose a Pickup Library:"
 msgstr "اختيار مكتبة الاستلام:"
 
 #: ../../Open-ILS/src/templates/kpac/parts/footer.tt2:2
 msgid "Contact Us"
 msgstr "اِتصل بنا"
+
+#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:53
+msgid "Did you mean: "
+msgstr ""
 
 #: ../../Open-ILS/src/templates/kpac/getit.tt2:24
 msgid "Enter your password"
@@ -89,7 +93,7 @@ msgstr "إدخال كلمة المرور"
 msgid "Excerpt"
 msgstr "المقتطف"
 
-#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:38
+#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:36
 msgid "Full Collection"
 msgstr "المجموعة الكاملة"
 
@@ -125,7 +129,7 @@ msgstr ""
 "إذا كنت ترغب في حجز هذه النُسخة، ينبغي إدخال المعلومات التالية ثم انقر فوق "
 "إرسال أدناه:"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:130
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:128
 msgid ""
 "If you would like to save this item to a list to be requested later, click "
 "Submit below."
@@ -201,7 +205,7 @@ msgstr "أو أنقر على الصورة لكي تبدأ"
 msgid "Page %1 of %2"
 msgstr "صفحة %1 مِن %2"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:54
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:52
 msgid "Password"
 msgstr "كلمة المرور"
 
@@ -258,7 +262,7 @@ msgstr "خريطة الموقع"
 msgid "Status"
 msgstr "الحالة"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:120 ../../Open-ILS/src/templates/kpac/getit.tt2:155
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:118 ../../Open-ILS/src/templates/kpac/getit.tt2:153
 msgid "Submit"
 msgstr "إرسال"
 
@@ -274,7 +278,7 @@ msgstr "جدول المحتويات"
 msgid "Text size"
 msgstr "حجم النص"
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:32 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:14
+#: ../../Open-ILS/src/templates/kpac/home.tt2:32 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:12
 msgid "Title"
 msgstr "العنوان"
 
@@ -292,7 +296,7 @@ msgstr ""
 msgid "Unable to request %1."
 msgstr "غير قادر على الطلب %1."
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:28 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:14
+#: ../../Open-ILS/src/templates/kpac/home.tt2:28 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:12
 msgid "Word"
 msgstr "كَلمة"
 
@@ -304,7 +308,7 @@ msgstr "حفظتَه!"
 msgid "You can find this item at these locations:"
 msgstr "يمكنك العثور على هذه النُسخة في هذه المواقع:"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:134
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:132
 msgid ""
 "You may also save this item to a list you have already created by selecting "
 "one of your lists below."
@@ -361,11 +365,15 @@ msgstr "بطاقة المكتبة"
 msgid "more info"
 msgstr "مزيد من المعلومات"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:63
+#: ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:55
+msgid "or"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:61
 msgid "password help"
 msgstr "مساعدة كلمة المرور"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:49
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:47
 msgid "pin number help"
 msgstr "مساعدة الرقم السري"
 
@@ -377,11 +385,11 @@ msgstr "الطباعة"
 msgid "rating"
 msgstr "التقييم"
 
-#: ../../Open-ILS/src/templates/kpac/getit.tt2:129
+#: ../../Open-ILS/src/templates/kpac/getit.tt2:127
 msgid "save it!"
 msgstr "احفظها!"
 
-#: ../../Open-ILS/src/templates/kpac/home.tt2:40 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:48
+#: ../../Open-ILS/src/templates/kpac/home.tt2:40 ../../Open-ILS/src/templates/kpac/parts/searchbox.tt2:46
 msgid "search"
 msgstr "البحث"
 
