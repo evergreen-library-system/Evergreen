@@ -307,27 +307,32 @@ sub _create_where_clause {
     for my $query_obj (@{$queries}) {
         my $type = $query_obj->{'qtype'};
         my $query = $query_obj->{'value'};
-        $query =~ s/\*//g;
+
+        # Remove punctuation except for the the * wildcard
+        $query =~ s/\w\s\*//;
+
+        # Do we have a blank query, or just wildcards and/or spaces?
+        next if $query =~ /^[\s\*]*$/;
         my $bool = $query_obj->{'bool'};
         my $contains = $query_obj->{'contains'};
         my $operator = ($contains eq 'nocontains') ? '!~*' : '~*';
         my $search_query;
         if ($type eq 'instructor') {
+            $query =~ s/\*$/:*/; # postgres prefix matching syntax ends with :* (e.g. string:*, not string*)
             my $in = ($contains eq 'nocontains') ? "not in" : "in";
             $search_query = {'id' => {$in => {
-                'from' => 'acmcu',
+                'from' => {'acmcu' => 'acmr'},
                 'select' => {'acmcu' => ['course']},
-                'where' => {'usr' => {'in' => {
-                    'from' => 'au',
-                    'select' => {'au' => ['id']},
-                    'where' => {
-                        'name_kw_tsvector' => {
-                            '@@' => {'value' => [ 'plainto_tsquery', $query ] }
-                        }
-                    }
-                }}}
+                'where' => [
+                    {"+acmr"=>"is_public"},
+                    {"usr"=>{"in"=>
+                        {"select"=>{"au"=>["id"]},
+                        "where"=>{"name_kw_tsvector"=>
+                        {"@@"=>{"value"=>["to_tsquery",$query]}}},
+                    "from"=>"au"}}}]
             }}};
         } else {
+            $query =~ s/\*/.*/;
             $search_query = ($contains eq 'nocontains') ?
               {'+acmc' => { $type => {$operator => $query}}} :
               {$type => {$operator => $query}};
