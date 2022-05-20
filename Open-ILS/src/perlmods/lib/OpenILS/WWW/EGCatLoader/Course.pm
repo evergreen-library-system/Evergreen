@@ -248,18 +248,63 @@ sub load_cresults {
     $ctx->{processed_search_query} = $query;
     my $search_args = {};
     my $course_numbers = ();
+    # Handle is_archived checkbox and Org Selector
+    my $search_orgs = $U->get_org_descendants($ctx->{search_ou});
+
+    my $where_clause = _create_where_clause($ctx, \@queries, $search_orgs);
+
+    my $hits = $e->json_query({
+        "from" => "acmc",
+        "select" => {"acmc" => ['id']},
+        "where" => $where_clause
+    });
+
     
+    $results = $e->json_query({
+        "from" => "acmc",
+        "select" => {"acmc" => [
+            'id',
+            'name',
+            'course_number',
+            'section_number',
+            'is_archived',
+            'owning_lib'
+        ]},
+        "limit" => $limit,
+        "offset" => $offset,
+        "order_by" => {"acmc" => ['id']},
+        "where" => $where_clause
+    });
+    for my $result (@$results) {
+        push @{$ctx->{courses}}, {
+            id => $result->{id},
+            course_number => $result->{course_number},
+            section_number => $result->{section_number},
+            owning_lib => $result->{owning_lib},
+            name => $result->{name},
+            is_archived => $result->{is_archived},
+            instructors => []
+        }
+    }
+
+    #$ctx->{courses} = $@courses;#[{id=>10, name=>"test", course_number=>"LIT"}];
+    $ctx->{hit_count} = @$hits || 0;
+    #$ctx->{hit_count} = 0;
+    return Apache2::Const::OK;
+}
+
+sub _create_where_clause {
+    my ($ctx, $queries, $search_orgs) = @_;
+
     my $where_clause;
     my $and_terms = [];
     my $or_terms = [];
 
-    # Handle is_archived checkbox and Org Selector
-    my $search_orgs = $U->get_org_descendants($ctx->{search_ou});
     push @$and_terms, {'owning_lib' => $search_orgs};
-    push @$and_terms, {'-not' => {'+acmc' => 'is_archived'}} unless $query =~ qr\#include_archived\;
+    push @$and_terms, {'-not' => {'+acmc' => 'is_archived'}} unless $ctx->{processed_search_query} =~ qr\#include_archived\;
 
     # Now let's push the actual queries
-    for my $query_obj (@queries) {
+    for my $query_obj (@{$queries}) {
         my $type = $query_obj->{'qtype'};
         my $query = $query_obj->{'value'};
         $query =~ s/\*//g;
@@ -305,44 +350,7 @@ sub load_cresults {
     } else {
         $where_clause = {'-and' => $and_terms};
     }
-
-    my $hits = $e->json_query({
-        "from" => "acmc",
-        "select" => {"acmc" => ['id']},
-        "where" => $where_clause
-    });
-
-    $results = $e->json_query({
-        "from" => "acmc",
-        "select" => {"acmc" => [
-            'id',
-            'name',
-            'course_number',
-            'section_number',
-            'is_archived',
-            'owning_lib'
-        ]},
-        "limit" => $limit,
-        "offset" => $offset,
-        "order_by" => {"acmc" => ['id']},
-        "where" => $where_clause
-    });
-    for my $result (@$results) {
-        push @{$ctx->{courses}}, {
-            id => $result->{id},
-            course_number => $result->{course_number},
-            section_number => $result->{section_number},
-            owning_lib => $result->{owning_lib},
-            name => $result->{name},
-            is_archived => $result->{is_archived},
-            instructors => []
-        }
-    }
-
-    #$ctx->{courses} = $@courses;#[{id=>10, name=>"test", course_number=>"LIT"}];
-    $ctx->{hit_count} = @$hits || 0;
-    #$ctx->{hit_count} = 0;
-    return Apache2::Const::OK;
+    return $where_clause;
 }
 
 sub _prepare_course_search {
