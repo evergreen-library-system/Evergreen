@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2021-10-12 14:10:54-0400\n"
+"POT-Creation-Date: 2022-05-20 17:42:50-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -672,10 +672,6 @@ msgstr ""
 
 #: field.asvr.response_group_id.label:2667
 msgid "Response Group ID"
-msgstr ""
-
-#: field.mcrp.id.label:7465
-msgid "Pyament ID"
 msgstr ""
 
 #: field.alci.inventory_workstation.label:8080
@@ -2913,10 +2909,10 @@ msgstr ""
 msgid "Issuance Label"
 msgstr ""
 
-#: field.mwp.id.label:7808 field.mgp.id.label:7833 field.mckp.id.label:7930
-#: field.mdcp.id.label:7957 field.mp.id.label:8556 field.map.id.label:8598
-#: field.mallp.id.label:8629 field.mbp.id.label:8650 field.mndp.id.label:8691
-#: field.mdp.id.label:8715
+#: field.mcrp.id.label:7465 field.mwp.id.label:7808 field.mgp.id.label:7833
+#: field.mckp.id.label:7930 field.mdcp.id.label:7957 field.mp.id.label:8556
+#: field.map.id.label:8598 field.mallp.id.label:8629 field.mbp.id.label:8650
+#: field.mndp.id.label:8691 field.mdp.id.label:8715
 msgid "Payment ID"
 msgstr ""
 

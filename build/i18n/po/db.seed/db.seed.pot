@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2021-10-12 14:11:28-0400\n"
+"POT-Creation-Date: 2022-05-20 17:46:08-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -490,6 +490,11 @@ msgstr ""
 # id::ppl.description__416
 #: 950.data.seed-values.sql:1531
 msgid "ADMIN_INVOICE_PAYMENT_METHOD"
+msgstr ""
+
+# id::cwst.label__eg.grid.cat.bucket.batch_hold.pending
+#: 950.data.seed-values.sql:22039
+msgid "Grid Config: eg.grid.cat.bucket.batch_hold.pending"
 msgstr ""
 
 # id::ccvm.value__1154
@@ -1863,8 +1868,7 @@ msgstr ""
 msgid "Facsimiles"
 msgstr ""
 
-# id::cust.label__webstaff.cat.copy.templates
-# id::cust.description__webstaff.cat.copy.templates
+# id::cust.label__cat.copy.templates id::cust.description__cat.copy.templates
 #: 950.data.seed-values.sql:2994 950.data.seed-values.sql:2995
 msgid "Web Client Copy Editor Templates"
 msgstr ""
@@ -5977,6 +5981,11 @@ msgstr ""
 msgid "Print Template: hold_transit_slip"
 msgstr ""
 
+# id::cwst.label__eg.grid.cat.bucket.batch_hold.view
+#: 950.data.seed-values.sql:22032
+msgid "Grid Config: eg.grid.cat.bucket.batch_hold.view"
+msgstr ""
+
 # id::ppl.description__29
 #: 950.data.seed-values.sql:763
 msgid "Allow a user to check in a copy"
@@ -9478,6 +9487,11 @@ msgstr ""
 # id::ccvm.value__1091
 #: 950.data.seed-values.sql:8653
 msgid "Falkland Islands "
+msgstr ""
+
+# id::cwst.label__eg.grid.cat.bucket.batch_hold.list
+#: 950.data.seed-values.sql:22053
+msgid "Grid Config: eg.grid.cat.bucket.batch_hold.list"
 msgstr ""
 
 # id::ppl.description__94
@@ -13045,6 +13059,11 @@ msgstr ""
 # id::ppl.description__210
 #: 950.data.seed-values.sql:1123
 msgid "CREATE_HOURS_OF_OPERATION"
+msgstr ""
+
+# id::cwst.label__eg.grid.cat.bucket.batch_hold.events
+#: 950.data.seed-values.sql:22046
+msgid "Grid Config: eg.grid.cat.bucket.batch_hold.events"
 msgstr ""
 
 # id::cgf.label__opac.show_related_headings_in_browse
