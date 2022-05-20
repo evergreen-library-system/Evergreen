@@ -9084,11 +9084,11 @@ SELECT  usr,
 	</class>
 	<class id="fdoc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::idl_field_doc" oils_persist:tablename="config.idl_field_doc" oils_persist:field_safe="true" reporter:label="IDL Field Doc">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.idl_field_doc_id_seq">
-			<field name="id" reporter:datatype="id" />
-			<field name="fm_class" reporter:datatype="text"/>
-			<field name="field" reporter:datatype="text"/>
-			<field name="owner" reporter:datatype="org_unit"/>
-			<field name="string" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field name="id"       reporter:label="ID" reporter:datatype="id" />
+			<field name="fm_class" reporter:label="Class" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="field"    reporter:label="Field" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="owner"    reporter:label="Field Documentation Owner" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field name="string"   reporter:label="Field Documentation" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
