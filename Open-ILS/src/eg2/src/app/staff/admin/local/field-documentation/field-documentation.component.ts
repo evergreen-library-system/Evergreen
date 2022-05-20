@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild, ViewEncapsulation} from'@angular/core';
+import {Component, OnInit, Input, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, Observer, of} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -44,7 +44,7 @@ export class FieldDocumentationComponent implements OnInit {
     ngOnInit() {
         this.gridDataSource = new GridDataSource();
         Object.values(this.idl.classes).forEach(idlClass => {
-            let fields = [];
+            const fields = [];
             Object.values(idlClass['field_map']).forEach(field => {
                 // We can safely ignore virtual fields...
                 if (!field['virtual']) {
@@ -63,11 +63,11 @@ export class FieldDocumentationComponent implements OnInit {
             }
         });
         this.idlEntries.sort((a, b) => {
-            let textA = a.label.toUpperCase();
-            let textB = b.label.toUpperCase();
+            const textA = a.label.toUpperCase();
+            const textB = b.label.toUpperCase();
             return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
         });
-        if (this.selectedClass) this.setGrid();
+        if (this.selectedClass) { this.setGrid(); }
         this.fieldDocGrid.onRowActivate.subscribe((fieldDoc: IdlObject) => {
             this.showEditDialog(fieldDoc);
         });
@@ -75,7 +75,7 @@ export class FieldDocumentationComponent implements OnInit {
         this.fieldOptions = {
             fm_class: {
                 customTemplate: {
-                    template:this.fieldClassSelector,
+                    template: this.fieldClassSelector,
                     context: {
                         fieldentries: this.idlEntries,
                         selectedEntry: this.selectedClass
@@ -90,21 +90,21 @@ export class FieldDocumentationComponent implements OnInit {
                     }
                 }
             }
-        }
+        };
     }
 
     setClass(idlClass, entry?) {
-        if (this.editDialog.record) this.editDialog.record.fm_class(idlClass.id);
+        if (this.editDialog.record) { this.editDialog.record.fm_class(idlClass.id); }
         this.fieldOptions.fm_class.customTemplate.context.selectedEntry = idlClass;
         this.fields = idlClass.fields;
-        
-        if (entry && entry.field()) this.setField(
-            idlClass.fields.find(o => o.id == entry.field()),
-        );
+
+        if (entry && entry.field()) {
+            this.setField(idlClass.fields.find(o => o.id === entry.field()));
+        }
     }
 
     setField(entry) {
-        if (this.editDialog.record) this.editDialog.record.field(entry.id);
+        if (this.editDialog.record) { this.editDialog.record.field(entry.id); }
         this.fieldOptions.field.customTemplate.context.selectedEntry = entry;
     }
 
@@ -170,12 +170,12 @@ export class FieldDocumentationComponent implements OnInit {
 
     editSelected(fields: IdlObject[]) {
         const editOneFieldDoc = (fieldDoc: IdlObject) => {
-            if (!fieldDoc) return;
-            
+            if (!fieldDoc) { return; }
+
             this.showEditDialog(fieldDoc).then(
                 () => editOneFieldDoc(fields.shift())
             );
-        }
+        };
 
         editOneFieldDoc(fields.shift());
     }
