@@ -138,7 +138,7 @@ The fix for https://bugs.launchpad.net/evergreen/+bug/1939338[Launchpad bug 1939
 === Acknowledgements ===
 
 We would like to thank the following individuals who contributed code,
-testing and documentation patches to the 3.7.3 point release of Evergreen:
+testing and documentation patches to the 3.8.1 point release of Evergreen:
 
 * MaryAnn Alexander
 * John Amundson
