@@ -116,12 +116,34 @@ function(egCore , $q) {
         });
     };
 
+    var _acnp_promises = {};
+    var _acnp_cache = {};
     service.get_prefixes = function(org) {
-        return egCore.pcrud.search('acnp',
-            {owning_lib : egCore.org.fullPath(org, true)},
-            {order_by : { acnp : 'label_sortkey' }}, {atomic : true}
-        );
 
+        var _org_id;
+        if (angular.isObject(org)) {
+            _org_id = org.id();
+        } else {
+            _org_id = org;
+        }
+
+        if (!(_org_id in _acnp_promises)) {
+            _acnp_promises[_org_id] = $q.defer();
+
+            if (_org_id in _acnp_cache) {
+                $_acnp_promises[_org_id].resolve(_acnp_cache[_org_id]);
+            } else {
+                egCore.pcrud.search('acnp',
+                    {owning_lib : egCore.org.fullPath(org, true)},
+                    {order_by : { acnp : 'label_sortkey' }}, {atomic : true}
+                ).then(function(list) {
+                    _acnp_cache[_org_id] = list;
+                    _acnp_promises[_org_id].resolve(list);
+                });
+            }
+        }
+
+        return _acnp_promises[_org_id].promise;
     };
 
     service.get_statcats = function(orgs) {
@@ -141,13 +163,6 @@ function(egCore , $q) {
         return egCore.pcrud.search('ccat',
             { active : 't' },
             {},
-            { atomic : true }
-        );
-    };
-
-    service.get_copy_alerts = function(copy_id) {
-        return egCore.pcrud.search('aca', { copy : copy_id, ack_time : null },
-            { flesh : 1, flesh_fields : { aca : ['alert_type'] } },
             { atomic : true }
         );
     };
@@ -180,12 +195,34 @@ function(egCore , $q) {
         );
     };
 
+    var _acns_promises = {};
+    var _acns_cache = {};
     service.get_suffixes = function(org) {
-        return egCore.pcrud.search('acns',
-            {owning_lib : egCore.org.fullPath(org, true)},
-            {order_by : { acns : 'label_sortkey' }}, {atomic : true}
-        );
 
+        var _org_id;
+        if (angular.isObject(org)) {
+            _org_id = org.id();
+        } else {
+            _org_id = org;
+        }
+
+        if (!(_org_id in _acns_promises)) {
+            _acns_promises[_org_id] = $q.defer();
+
+            if (_org_id in _acns_cache) {
+                $_acns_promises[_org_id].resolve(_acns_cache[_org_id]);
+            } else {
+                egCore.pcrud.search('acns',
+                    {owning_lib : egCore.org.fullPath(org, true)},
+                    {order_by : { acns : 'label_sortkey' }}, {atomic : true}
+                ).then(function(list) {
+                    _acns_cache[_org_id] = list;
+                    _acns_promises[_org_id].resolve(list);
+                });
+            }
+        }
+
+        return _acns_promises[_org_id].promise;
     };
 
     service.get_magic_statuses = function() {
@@ -266,19 +303,24 @@ function(egCore , $q) {
     };
 
     service.bmp_parts = {};
+    var _bmp_chain = $q.when(); // use a promise chain to serialize
+                                // the requests
     service.get_parts = function(rec) {
         if (service.bmp_parts[rec])
             return $q.when(service.bmp_parts[rec]);
 
-        return egCore.pcrud.search('bmp',
-            {record : rec, deleted : 'f'},
-            {order_by: {bmp : 'label_sortkey DESC'}},
-            {atomic : true}
-        ).then(function(list) {
-            service.bmp_parts[rec] = list;
-            return list;
+        var deferred = $q.defer();
+        _bmp_chain = _bmp_chain.then(function() {
+            return egCore.pcrud.search('bmp',
+                {record : rec, deleted : 'f'},
+                {order_by: {bmp : 'label_sortkey DESC'}},
+                {atomic : true}
+            ).then(function(list) {
+                service.bmp_parts[rec] = list;
+                deferred.resolve(list);
+            });
         });
-
+        return deferred.promise;
     };
 
     service.get_acp_templates = function() {
@@ -395,19 +437,16 @@ function(egCore , $q) {
     service.flesh = {   
         flesh : 3, 
         flesh_fields : {
-            acp : ['call_number','parts','stat_cat_entries', 'notes', 'tags', 'creator', 'editor'],
+            acp : ['call_number','parts','stat_cat_entries', 'notes', 'tags', 'creator', 'editor', 'copy_alerts'],
             acn : ['label_class','prefix','suffix'],
-            acptcm : ['tag']
+            acptcm : ['tag'],
+            aca : ['alert_type']
         }
     }
 
     service.addCopy = function (cp) {
 
         if (!cp.parts()) cp.parts([]); // just in case...
-
-        service.get_copy_alerts(cp.id()).then(function(aca) {
-            cp.copy_alerts(aca);
-        });
 
         var lib = cp.call_number().owning_lib();
         var cn = cp.call_number().id();
