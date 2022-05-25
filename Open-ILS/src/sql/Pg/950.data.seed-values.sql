@@ -618,8 +618,6 @@ INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (8, 'loc', 'pubdate', oils_i18n_gettext(8, 'Publication Date', 'cza', 'label'), 31, 1);
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
-	VALUES (9, 'loc', 'item_type', oils_i18n_gettext(9, 'Item Type', 'cza', 'label'), 1001, 1);
-INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (19, 'loc', 'upc', oils_i18n_gettext(19, 'UPC', 'cza', 'label'), 1007, 1);
 
 UPDATE config.z3950_attr SET truncation = 1 WHERE source = 'loc';
