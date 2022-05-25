@@ -274,7 +274,20 @@ sub handle_patron_info {
 
     $response->{code} = '64';
 
-    return $response unless $details;
+    #return $response unless $details;
+    unless ($details) {
+        push(
+            @{$response->{fixed_fields}}, 
+            $SC->count4(0), # holds_count
+            $SC->count4(0), # overdue_count
+            $SC->count4(0), # out_count
+            $SC->count4(0), # fine_count
+            $SC->count4(0), # recall_count
+            $SC->count4(0), # unavail_holds_count
+        );
+        return $response;
+    };
+
     my $patron = $details->{patron};
 
     push(
