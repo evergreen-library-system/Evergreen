@@ -149,9 +149,8 @@ export class VolCopyService {
 
 
     saveTemplates(): Promise<any> {
-        this.store.setLocalItem('cat.copy.templates', this.templates);
-        // Re-sort, etc.
-        return this.fetchTemplates();
+        return this.serverStore.setItem('cat.copy.templates', this.templates)
+            .then(() => this.fetchTemplates());
     }
 
     fetchDefaults(): Promise<any> {
