@@ -359,13 +359,16 @@ sub delete_lineitem {
 
     # XXX check state
 
-    if($li->picklist) {
+    if($li->purchase_order) {
+        my $po = $e->retrieve_acq_purchase_order($li->purchase_order)
+            or return $e->die_event;
+        return OpenILS::Event->new('BAD_PARAMS')
+            unless ($e->allowed('CREATE_PURCHASE_ORDER', $po->ordering_agency, $po));
+    } elsif($li->picklist) {
         my $picklist = $e->retrieve_acq_picklist($li->picklist)
             or return $e->die_event;
-        return OpenILS::Event->new('BAD_PARAMS') 
-            if $picklist->owner != $e->requestor->id;
-    } else {
-        # check PO perms
+        return OpenILS::Event->new('BAD_PARAMS')
+            unless ($e->allowed('CREATE_PICKLIST', $picklist->org_unit, $picklist));
     }
 
     # once a LI is attached to a PO, deleting it
