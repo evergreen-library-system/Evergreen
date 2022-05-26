@@ -25,6 +25,7 @@ import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.comp
 import {BatchItemAttrComponent, BatchChangeSelection
     } from '@eg/staff/share/holdings/batch-item-attr.component';
 import {FileExportService} from '@eg/share/util/file-export.service';
+import {ToastService} from '@eg/share/toast/toast.service';
 
 @Component({
   selector: 'eg-copy-attrs',
@@ -71,6 +72,11 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
     @ViewChild('mintConditionNo', {static: false})
         mintConditionNo: StringComponent;
 
+    @ViewChild('savedHoldingsTemplates', {static: false})
+        savedHoldingsTemplates: StringComponent;
+    @ViewChild('deletedHoldingsTemplate', {static: false})
+        deletedHoldingsTemplate: StringComponent;
+
     @ViewChild('copyAlertsDialog', {static: false})
         private copyAlertsDialog: CopyAlertsDialogComponent;
 
@@ -102,6 +108,7 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
         private format: FormatService,
         private store: StoreService,
         private fileExport: FileExportService,
+        private toast: ToastService,
         public  volcopy: VolCopyService
     ) { }
 
@@ -649,7 +656,15 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
         });
 
         this.volcopy.templates[name] = template;
-        this.volcopy.saveTemplates();
+        this.volcopy.saveTemplates().then(x => {
+            this.savedHoldingsTemplates.current().then(str => this.toast.success(str));
+            if (entry.freetext) {
+                // once a new template has been added, make it
+                // display like any other in the comobox
+                this.copyTemplateCbox.selected =
+                    this.volcopy.templateNames.filter(_ => _.label === name)[0];
+            }
+        });
     }
 
     exportTemplate($event) {
@@ -693,7 +708,9 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
         const entry: ComboboxEntry = this.copyTemplateCbox.selected;
         if (!entry) { return; }
         delete this.volcopy.templates[entry.id];
-        this.volcopy.saveTemplates();
+        this.volcopy.saveTemplates().then(
+            x => this.deletedHoldingsTemplate.current().then(str => this.toast.success(str))
+        );
         this.copyTemplateCbox.selected = null;
     }
 
