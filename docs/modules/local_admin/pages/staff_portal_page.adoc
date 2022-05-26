@@ -1,0 +1,165 @@
+::toc::
+= Staff Portal Page =
+
+Beginning in version 3.9, there is a Local Administration interface allowing a staff user with appropriate permissions to customize the staff portal (AKA homepage; AKA landing page) - hereinafter ‘portal page’ - that displays to staff when they log in to the Evergreen staff client. This work only affects the Angular implementation of the portal page.
+
+image::staff_portal_page/staff_portal_page.png[Staff Portal Page]
+
+Different portal pages may be configured for different Organizational
+Units. The displayed portal page will depend on the staff user's
+workstation. The Organizational Unit tree will be walked up starting
+from the workstation until one or more config.ui_staff_splash_page_entry
+rows are found for the Organizational Unit. The set of entries for that
+Organizational Unit will constitute the entire splash page entries to
+display, i.e., it won't try to merge branch, system, and
+consortial-level entries.
+
+== New Tables ==
+
+Homepage contents are stored in the new table
+`config.ui_staff_splash_page_entry` which contains the following columns:
+
+* id SERIAL
+* column tinyint (numeric column value, e.g., 1, 2, 3)
+* pos (position of entry in each column. pos = 0 will be magic: its label
+will be displayed as the column header)
+* entry_type enum (link, menuitem, context, catalogsearch)
+* label text (label to display for the entry). This will be marked for
+i18n.
+* image text (relative URL of an image to display to the left of the
+column label)
+* link text (URL for link and menuitem type rows; the label will be the
+link text)
+* text text (value of the text type. HTML will be stripped. Text entries
+will display the label (if present) as a title followed by the contents
+of the text box). This will be marked for i18n.
+* org_unit (owner of the entries)
+
+The new table `config.ui_staff_splash_page_entry_type` is a lookup table
+for entry types.
+
+== Permissions ==
+
+A new permission, `ADMIN_STAFF_SPLASH_PAGE`, will be added to control
+access to adding, modifying, and deleting `config.ui_splash_page_entry`
+rows via PCRUD. The new permission will be included in the stock Local
+Administrator profile.
+
+The existing STAFF_LOGIN permission will be used to gate read access to
+`config.ui_splash_page_entry`.
+
+== Staff Portal Customization Interface ==
+
+The interface to customize the portal page can be found at
+*Administration → Local Administration → Staff Portal Page*
+(/eg2/en-US/staff/admin/local/config/ui_staff_portal_page_entry). Access
+to this interface is controlled by a new permission,
+ADMIN_STAFF_PORTAL_PAGE, which by default is assigned to the Local
+Administrator Permission Group via the EVERYTHING permission at System
+depth.
+
+The interface shows a grid of Portal Page Entries and by default will
+scope to show just entries at the workstation organizational unit. You
+can use the library selector at the top left to change which
+organizational units are displayed.
+
+image::staff_portal_page/staff_portal_page_admin.png[Staff Portal Page Admin]
+
+Actions from this interface:
+
+* *New Portal Page Entry* (button) - this will open a modal with a blank
+portal page entry form. The new entry’s owner will default to the
+workstation organizational unit.
+* *Clone a Library’s Portal Page Entries* (button) - this will clone the
+entire set of entries from one library to another library. If you want
+the cloned entries to replace any existing entries at the target
+library, check the checkbox _Clear Entries at Target Library?_ After you
+clone a set of entries, the grid will refresh and automatically change
+the library selector to the target library.
+* *Delete Selected* (right click or action menu) - this will delete all
+selected portal entry items
+* *Edit Selected* (right click, action menu, or double click) - this will
+open an edit modal for the selected line
+
+=== Portal Page Entry Modal ===
+
+This is the modal that will display when you add a new portal page entry
+or edit an existing portal page entry. This modal has the following
+fields:
+
+* _Entry Label_ - this is a free text label which will display differently
+on the portal page depending on what Entry Type is used.
+* _Entry Type_ (required) - this is a dropdown which indicates which type
+of entry is being configured. Each Entry Type has specific display
+styling and function, as well as impacting how the Entry Label will
+display.
+** _Catalog Search Box_: this will create a basic Evergreen search box.
+When Catalog Search is selected, the Entry Label text will display in
+the Search button.
+** _Header_: this will create a column header. It should only be used in
+Column Position 0 (i.e. the top “row” of a column). The Entry Label text
+will display as the Header text.
+** _Link_: this will create a link to an external URL or a mailto URI. The
+Entry Label text will display as hyperlinked text pointing to the URL
+specified in Entry Target URL.
+** _Menu Item_: this will create a link to an internal Evergreen Staff
+Client page. The Entry Label text will display as hyperlinked text
+pointing to the internal Evergreen link specified in Entry Target URL.
+** _Text and/or HTML_: this will create a short piece of either plain text
+or marked up text. See below for a list of acceptable markup. The Entry
+Label text will show as a non-hyperlinked heading above any text or HTML
+entered in Entry Text. Entry Label can be blank for this Entry Type, if
+you choose.
+* _Entry Target URL_ - this is a text field to specify a target URL for
+the Entry Types _Link_ or _Menu Item_. This field is ignored by other
+Entry Types.
+** For Entry Type _Link_, external URLs must include the full path
+** For Entry Type _Menu Item_, use relative URLs. Typically these will
+start with /eg/staff or /eg2/staff. Make sure to omit any localization
+indicators in the path (such as en-US) if you use more than one
+interface language in the staff client.
+* _Entry Text_ - this is a free text field used by the Entry Type _Text
+and/or HTML_. This field is ignored by other Entry Types.
+** Basic HTML is acceptable in this field
+** Unsafe HTML such as script tags will be automatically stripped when the
+portal page is rendered, as will the style attribute.
+** Tags and HTML attributes that can be used include:
+*** strong, em, i, b
+*** a, including the href and target attributes
+*** class (and some of the Bootstrap text color classes like text-primary,
+text-secondary, text-success, text-danger, text-warning, and text-info
+can be useful here)
+*** span, div
+* _Entry Image URL_ - this is a text field to specify an image URL to use
+for the icon that displays next to each portal page entry.
+** It is recommended that images be approximately 48 x 48 pixels.
+** External image links must use an https URL.
+** Stock images on the Evergreen server can use a relative link, i.e.,
+/images/portal/retreivepatron.png
+** Stock images available in /images/portal/ include (image names are case sensitive):
+*** background.png
+*** back.png
+*** batchimport.png
+*** book.png
+*** bucket.png
+*** eg_tiny_logo.jpg
+*** forward.png
+*** helpdesk.png
+*** holds.png
+*** logo.png
+*** map.PNG
+*** newtab2.PNG
+*** receipt_editor.png
+*** registerpatron.png
+*** reports.png
+*** retreivepatron.png
+*** z3950.png
+* _Page Column_ (required) - This accepts an integer value of 1, 2, 3,
+etc. and indicates column position from left to right horizontally. More
+than three columns will start to wrap around to a new line.
+* _Column Position_ (required) - This accepts an integer value of 0, 1, 2,
+etc. and indicates the “row” position from top to bottom vertically.
+* _Owner_ (required) - This defaults to the workstation organizational
+unit when adding a new Portal Page entry.
+* _ID_ (automatically generated) - The internal system ID of the specific
+Portal page element.
