@@ -146,7 +146,7 @@
       <eg-grid-column i18n-label label="Pickup Library" path='pl_shortname'></eg-grid-column>
 
       <ng-template #titleTmpl let-hold="row">
-        <a class="no-href" routerLink="/staff/catalog/record/{{hold.record_id}}">
+        <a class="no-href" routerLink="/staff/catalog/record/{{hold.record_id}}" target="_blank">
           {{hold.title}}
         </a>
       </ng-template>
