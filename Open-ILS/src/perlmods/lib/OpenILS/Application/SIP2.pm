@@ -529,14 +529,17 @@ sub checkout_renew_common {
         ],
         fields => [
             {AA => $patron_barcode},
-            {AB => $item_barcode}
+            {AB => $item_barcode},
+            {AO => $config->{institution}},
+            {AH => ''}
         ]
     };
 
     my $item_details = OpenILS::Application::SIP2::Item->get_item_details(
         $session, barcode => $item_barcode);
+    push @{ $stub->{fields} }, {AJ => ($item_details->{title} || '')};
 
-    return $stub unless $item_details;
+    return $stub unless $item_details && keys %{ $item_details };
 
     my $patron_details = OpenILS::Application::SIP2::Patron->get_patron_details(
         $session, barcode => $patron_barcode);
@@ -567,7 +570,9 @@ sub checkout_renew_common {
         code => $code,
         fixed_fields => [
             $circ ? 1 : 0,              # checkout ok
-            $SC->sipbool($can_renew),   # renewal ok
+            # Per SIP spec, "renewal ok" is a bit dumber than $can_renew, and returns Y if the item was already circulating to the patron, N otherwise)
+            # FIXME: Hardcoded for now, but need to revisit
+            $SC->sipbool(0),            # renewal ok
             $SC->sipbool($magnetic),    # magnetic media
             $SC->sipbool(!$magnetic),   # desensitize
             $SC->sipdate,               # transaction date
@@ -578,7 +583,7 @@ sub checkout_renew_common {
             {AJ => $item_details->{title}},
             {AO => $config->{institution}},
             {BT => $item_details->{fee_type}},
-            {CI => 0}, # security inhibit
+            {CI => 'N'}, # security inhibit
             {CK => $item_details->{media_type}},
             $screen_msg ? {AF => $screen_msg}   : (),
             $due_date   ? {AH => $due_date}     : (),
