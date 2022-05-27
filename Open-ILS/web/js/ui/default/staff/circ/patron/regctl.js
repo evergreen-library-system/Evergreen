@@ -1207,6 +1207,11 @@ angular.module('egCoreMod')
 
         if (!patron.isnew()) patron.ischanged(true);
 
+        // Make sure these are empty, we don't update them this way
+        patron.notes([]);
+        patron.usr_activity([]);
+        patron.standing_penalties([]);
+
         return egCore.net.request(
             'open-ils.actor', 
             'open-ils.actor.patron.update',
