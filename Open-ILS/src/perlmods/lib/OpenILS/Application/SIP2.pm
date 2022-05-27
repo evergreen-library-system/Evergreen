@@ -425,13 +425,14 @@ sub patron_response_common_data {
 
 sub handle_block {
     my ($session, $message) = @_;
+    my @fixed_fields = @{$message->{fixed_fields} || []};
 
     my $sip_account = $session->sip_account;
-    my $card_retained = 0;
-    my $blocked_card_msg = '';
 
     my $barcode = $SC->get_field_value($message, 'AA');
     my $password = $SC->get_field_value($message, 'AD');
+    my $blocked_card_msg = $SC->get_field_value($message, 'AL');
+    my $card_retained = $fixed_fields[0];
 
     my $details = OpenILS::Application::SIP2::Patron->get_patron_details(
         $session,
@@ -489,9 +490,9 @@ sub handle_block {
     $penalty->staff( $e->checkauth()->id() );
     $penalty->standing_penalty(20); # ALERT_NOTE
 
-    my $note = "<sip> CARD BLOCKED BY SELF-CHECK MACHINE. $blocked_card_msg</sip>\n"; # XXX Config option
+    my $note = "<sip> CARD BLOCKED BY SELF-CHECK MACHINE. $blocked_card_msg</sip>\n"; # XXX Config option, and/or I18N
     my $msg = {
-      title => 'SIP',
+      title => 'SIP BLOCK',
       message => $note
     };
     my $penalty_result = $U->simplereq(
