@@ -189,23 +189,22 @@ export class ItemLocationSelectComponent
         contextOrgIds.forEach(id => orgIds = orgIds.concat(this.org.ancestors(id, true)));
 
         if (!this.permFilter) {
-            return Promise.resolve(this.filterOrgs = orgIds);
+            return Promise.resolve(this.filterOrgs = [...new Set(orgIds)]);
         }
 
         return this.perm.hasWorkPermAt([this.permFilter], true)
         .then(values => {
-            // Always limit the org units to /at most/ those within
-            // scope of the context org ID.
+            // Include ancestors of perm-approved org units (shared item locations)
 
             const permOrgIds = values[this.permFilter];
-            const trimmedOrgIds = [];
+            let trimmedOrgIds = [];
             permOrgIds.forEach(orgId => {
                 if (orgIds.includes(orgId)) {
-                    trimmedOrgIds.push(orgId);
+                    trimmedOrgIds = trimmedOrgIds.concat(this.org.ancestors(orgId, true));
                 }
             });
 
-            return this.filterOrgs = trimmedOrgIds;
+            return this.filterOrgs = [...new Set(trimmedOrgIds)];
         });
     }
 
