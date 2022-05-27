@@ -427,6 +427,8 @@ sub handle_block {
     my ($session, $message) = @_;
 
     my $sip_account = $session->sip_account;
+    my $card_retained = 0;
+    my $blocked_card_msg = '';
 
     my $barcode = $SC->get_field_value($message, 'AA');
     my $password = $SC->get_field_value($message, 'AD');
@@ -437,30 +439,37 @@ sub handle_block {
         password => $password
     );
 
-    my $response = patron_response_common_data(
-        $session, $barcode, $password, $details);
+    sub build_response {
+        my ($session, $barcode, $password, $details) = (shift, shift, shift, shift); 
 
-    $response->{code} = '24';
+        # re-fetch the data
+        $details = OpenILS::Application::SIP2::Patron->get_patron_details(
+            $session,
+            barcode => $barcode,
+            password => $password
+        );
 
-    return $response;
+        my $response = patron_response_common_data(
+            $session, $barcode, $password, $details);
+        $response->{code} = '24';
 
-    my ($self, $card_retained, $blocked_card_msg); # = @_;
-    $blocked_card_msg ||= '';
+        return $response;
+    }
 
-    my $e = $self->{editor};
-    my $u = $self->{user};
+    my $e = $session->{editor};
+    my $u = $details->{patron};
 
-    syslog('LOG_INFO', "OILS: Blocking user %s", $u->card->barcode );
+    $logger->info("SIP2: Blocking user " . $u->card->barcode);
 
-    return $self if $u->card->active eq 'f'; # TODO: don't think this will ever be true
+    return build_response($session, $barcode, $password, $details) if $u->card->active eq 'f'; # TODO: don't think this will ever be true
 
     $e->xact_begin;    # connect and start a new transaction
 
     $u->card->active('f');
     if( ! $e->update_actor_card($u->card) ) {
-        syslog('LOG_ERR', "OILS: Block card update failed: %s", $e->event->{textcode});
+        $logger->warn("SIP2: Block card update failed: " . $e->event->{textcode});
         $e->rollback; # rollback + disconnect
-        return $self;
+        return build_response($session, $barcode, $password, $details);
     }
 
     # Use the ws_ou or home_ou of the authsession user, if any, as a
@@ -490,13 +499,14 @@ sub handle_block {
       'open-ils.actor.user.penalty.apply', $e->authtoken, $penalty, $msg);
     if( my $result_code = $U->event_code($penalty_result) ) {
         my $textcode = $penalty_result->{textcode};
-        syslog('LOG_ERR', "OILS: Block: patron penalty failed: %s", $textcode);
+        $logger->warn("SIP2: Block patron penalty failed: $textcode");
         $e->rollback; # rollback + disconnect
-        return $self;
+        return build_response($session, $barcode, $password, $details);
     }
 
     $e->commit;
-    return $self;
+
+    return build_response($session, $barcode, $password, $details);
 }
 
 sub handle_checkout {

@@ -40,6 +40,7 @@ sub get_patron_details {
     return undef unless $card;
 
     my $patron = $details->{patron} = $card->usr;
+    $card->usr($card->usr->id);
     $patron->card($card);
 
     # We only attempt to verify the password if one is provided.
