@@ -32,13 +32,13 @@ Event Definitions is the main tab and contains the key fields when working with 
 |*Field*                         |*Description*
 | Owning Library                 |The shortname of the library for which the action / trigger / hook is defined.
 | Name                           |The name of the trigger event, that links to a trigger event environment containing a set of fields that will be returned to the <<validators, Validators>> and/or <<reactors, Reactors>> for processing.
-| <<hooks, Hook>>                |The name of the trigger for the trigger event. The underlying action_trigger.hook table defines the Fieldmapper class in the core_type column off of which the rest of the field definitions ``hang''.
+| <<hooks, Hook>>                |The name of the trigger for the trigger event. The underlying `action_trigger.hook` table defines the Fieldmapper class in the core_type column off of which the rest of the field definitions "hang".
 | Enabled                        |Sets the given trigger as enabled or disabled. This must be set to enabled for the Action trigger to run.
-| Processing Delay               |Defines how long after a given trigger / hook event has occurred before the associated action (``Reactor'') will be taken.
-| Processing Delay Context Field |Defines the field associated with the event on which the processing delay is calculated. For example, the processing delay context field on the hold.capture hook (which has a core_type of ahr) is _capture_time_.
+| Processing Delay               |Defines how long after a given trigger / hook event has occurred before the associated action ("Reactor") will be taken.
+| Processing Delay Context Field |Defines the field associated with the event on which the processing delay is calculated. For example, the processing delay context field on the `hold.capture` hook (which has a `core_type` of `ahr`) is _capture_time_.
 | Processing Group Context Field |Used to batch actions based on its associated group.
 | <<reactors, Reactor>>          |Links the action trigger to the Reactor.
-| <<validators, Validator>>      |The subroutines receive the trigger environment as an argument (see the linked Name for the environment definition) and returns either _1_ if the validator is _true_ or _0_ if the validator returns _false_.
+| <<validators, Validator>>      |The subroutines receive the trigger environment as an argument and return either _1_ if the validator is _true_ or _0_ if the validator returns _false_.
 | Event Repeatability Delay      |Allows events to be repeated after this delay interval.
 | Failure Cleanup                |After an event is reacted to and if there is a failure a cleanup module can be run to clean up after the event.
 | Granularity                    |Used to group events by how often they should be run. Options are Hourly, Daily, Weekly, Monthly, Yearly, but you may also create new values.
@@ -57,9 +57,9 @@ Event Definitions is the main tab and contains the key fields when working with 
 == Creating Action Triggers ==
 
 . From the top menu, select *Administration* -> *Local Administration* ->  *Notifications / Action triggers*.
-. Click on the _New_ button.
+. Select the _New Event Definition_ button.
 +
-image::media/new_event_def.png[New Event Definition]
+image::actiontriggers/new_event_def.png[New Event Definition]
 +
 . Select an _Owning Library_.
 . Create a unique _Name_ for your new action trigger.
@@ -70,17 +70,14 @@ image::media/new_event_def.png[New Event Definition]
 . Select the _Reactor_ and _Validator_.
 . Set the _Event Repeatability Delay_.
 . Select the _Failure Cleanup_ and _Granularity_.
++
+image::actiontriggers/event_def_details.png[Event Definition Details]
++
 . Set the _Max Event Validity Delay_.
-+
-image::media/event_def_details.png[Event Definition Details]
-+
 . If you wish to send a User Message through the Message Center, set a _Message Library Path_.  Enter text in the _Message Template_.  Enter a title for this message in _Message Title_, and set a value in _Message User Path_.
 . Select the _Opt-In Setting Type_.
 . Set the _Opt-In User Field_.
 . Select the _Success Cleanup_.
-+
-image::media/event_def_details_2.png[Event Definition Details]
-+
 . Enter text in the _Template_ text box if required. These are for email messages. Here is a sample template for sending 90 day overdue notices:
 
 
@@ -120,40 +117,55 @@ image::media/event_def_details_2.png[Event Definition Details]
 A quick and easy way to create new action triggers is to clone an existing action trigger.
 =========
 
+[[creating_alternate_message_templates]]
+==== Creating Alternate Message Templates ====
+indexterm:[Localization, Notices, Localized Notices]
+
+As of version 3.9 there is the ability to create alternate templates for Action Triggers that will generate locale specific out for Action Triggers.  If you send notices in multiple languages, we recommend putting some words to that effect in your notice templates.  The template, message and message title can all be localized.  To use the feature the following UI elements have been added:
+
+* When you double-click on an Event Definition under Notifications / Action Triggers to edit it there will be a tab option for _Edit Alternate Template_ if the reactor is *ProcessTemplate*, *SendEmail*, or *SendSMS*. Note that this feature does not automatically translate existing templates, and an Evergreen administrator must create new alternate templates for each desired locale.
+* In the Patron Registration and Patron Editor screens staff members may select a locale for a patron and edit it in the _Patron Preferred Language_ field.
+* Patrons may set their own locale in the My Account interface off the OPAC by going to _Preferences --> Personal Information_ and setting the _Preferred Language_ field.
+
+The templates used on the Edit Definition tab are the defaults that are used if there are no alternate templates available that match the preferred language.  If alternate templates are available the system will use a locale that is an exact match and then if failing that use one where the language code matches and then fall back to the default one.
+
+For example, if a patron has a locale of fr-CA and there are templates for both fr-CA and fr-FR it will use the fr-CA.  If the fr-CA template was deleted it would fall back on using the fr-FR for the patron since it at least shares the same base language.
+
+Valid locales are the codes defined in the `i18n_locale` table in the config schema.
+
+
+
+
 === Cloning Existing Action Triggers ===
 
-. Check the check box next to the action trigger you wish to clone.
-. Click _Clone Selected_ on the top left of the page.
+. Right click on the line of the action trigger you wish to clone, and choose _Clone Selected_.
+.. You will be asked to confirm whether or not you wish to clone the event definition environment along with the action trigger.
 . An editing window will open. Notice that the fields will be populated with content from the cloned action trigger. Edit as necessary and give the new action trigger a unique Name.
 . Click _Save_.
 
 === Editing Action Triggers ===
 
-. Double-click on the action trigger you wish to edit.
-. The edit screen will appear. When you are finished editing, click _Save_ at the bottom of the form. Or click _Cancel_ to exit the screen without saving.
+. Double-click on the action trigger you wish to edit or right click on the line of the action trigger you wish to edit, and choose _Edit Event Definition_.
+. The Edit Definition screen will appear. When you are finished editing, click _Save_ at the bottom of the form. Or click _Back to Notification/Action Triggers_ to exit without saving.
+
+
+=== Deleting Action Triggers ===
+
+. Right click on the line of the action trigger you wish to delete.
+. Choose _Delete Selected_ ofrom the action menu.
 
 [NOTE]
 ============
 Before deleting an action trigger, you should consider disabling it through the editing form. This way you can keep it for future use or cloning.
 ============
 
-=== Deleting Action Triggers ===
-
-. Check the check box next to the action trigger you wish to delete
-. Click _Delete Selected_ on the top-right of the page.
-
 === Testing Action Triggers ===
 
 . Go to the list of action triggers.
-. Click on the blue link text for the action trigger you'd like to test.
-+
-image::media/test_event_def.png[Blue Link Text]
-+
-. Go to the Test tab.
-. If there is a test available, fill in the required information.
+. . Double-click on the action trigger you wish to edit or right click on the line of the action trigger you wish to edit, and choose _Edit Event Definition_.
+. Go to the _Run Tests_ tab.
+. If there is a test available, fill in the required information and click _Go_.
 . View the output of the test.
-
-image::media/test_event_def_output.png[Test Output]
 
 WARNING: If you are testing an email or SMS notification, use a test account and email as an example. Using the Test feature will actually result in the notification being sent if configured correctly.  Similarly, use a test item or barcode when testing a circulation-based event like Mark Lost since the test will mark the item as lost.
 
@@ -161,7 +173,7 @@ WARNING: If you are testing an email or SMS notification, use a test account and
 
 === Hooks ===
 
-Hooks define the Fieldmapper class in the core_type column off of which the rest of the field definitions ``hang''.
+Hooks define the Fieldmapper class in the core_type column off of which the rest of the field definitions "hang".
 
 
 ==== Table 2. Hooks ====
@@ -170,12 +182,12 @@ Hooks define the Fieldmapper class in the core_type column off of which the rest
 |=======================
 | *Field*        | *Description*
 | Hook Key       | A unique name given to the hook.
-| Core Type      | Used to link the action trigger to the IDL class in fm_IDL.xml
+| Core Type      | Used to link the action trigger to the IDL class in `fm_IDL.xml`
 | Description    | Text to describe the purpose of the hook.
 | Passive        | Indicates whether or not an event is created by direct user action or is circumstantial.
 |=======================
 
-You may also create, edit and delete Hooks but the Core Type must refer to an IDL class in the fm_IDL.xml file.
+You may also create, edit and delete Hooks but the Core Type must refer to an IDL class in the `fm_IDL.xml` file.
 
 
 [#reactors]
@@ -346,7 +358,7 @@ perl action_trigger_runner.pl --run-pending --granularity=Hourly --process-hooks
 [[configure_opac_email_print]]
 == Configure OPAC Record Email and Print ==
 
-The information displayed in the printout and email is defined and generated by two new Notification/Action Triggers named “biblio.record_entry.print” and biblio.record_entry.email”.  Notification/Action Triggers are found under *Admin -> Local Administration.*
+The information displayed in the printout and email is defined and generated by two new Notification/Action Triggers named `biblio.record_entry.print` and `biblio.record_entry.email`.  
 
 The printout and email will include the following bibliographic information by default:
 
@@ -371,16 +383,16 @@ If *Full display* is selected by the OPAC user, the following holdings informati
 
 The bibliographic and item information included in the printout or email can be configured by modifying the respective Action Trigger templates.  
 
-For the Full display, the maximum number of copies to be displayed per record can also be configured in the Action Trigger Event Parameter field.  To set the maximum number of copies for display, go to *Admin -> Local Administration -> Notifications / Action Triggers* and find the print or email notification/action trigger to modify.  
+For the Full display, the maximum number of copies to be displayed per record can also be configured in the Action Trigger Event Parameter field.  To set the maximum number of copies for display, go to *Administration -> Local Administration -> Notifications / Action Triggers* and find the print or email notification/action trigger to modify.  
 
-. Select the hyperlinked name of the Notification/Action Trigger to view the Trigger Event Environment.
+. Double click on the action trigger you wish to modify
 +
-image::media/ope_event_defs.png[Email and Print Event Definitions]
+image::actiontriggers/ope_event_defs.png[Email and Print Event Definitions]
 +
-. Select the *Event Parameters* tab and in the upper right-hand corner, select *New* to create a new Trigger Event Parameter.
+. Select the *Edit Parameters* tab and in the upper left-hand corner, select *New Parameter* to create a new Trigger Event Parameter.
 . In the _Parameter Name_ field enter holdings_limit.  
 . In the _Parameter Value_ field enter the maximum number of copies to be displayed per record.
 . Select *Save* to save your changes.
 +
-image::media/ope_event_params.png[Email and Print Event Parameters]
+image::actiontriggers/ope_event_params.png[Email and Print Event Parameters]
 +
