@@ -1,5 +1,5 @@
-::toc::
 = Staff Portal Page =
+:toc:
 
 Beginning in version 3.9, there is a Local Administration interface allowing a staff user with appropriate permissions to customize the staff portal (AKA homepage; AKA landing page) - hereinafter ‘portal page’ - that displays to staff when they log in to the Evergreen staff client. This work only affects the Angular implementation of the portal page.
 
