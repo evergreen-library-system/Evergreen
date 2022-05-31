@@ -744,8 +744,8 @@ sub handle_hold {
     my $stub = {
         code => '16',
         fixed_fields => [
-            0, # ok
-            0, # available
+             0 , # ok field
+            'N', # available field
             $SC->sipdate
         ],
         fields => [
@@ -785,8 +785,8 @@ sub handle_hold {
     return {
         code => '16',
         fixed_fields => [
-            1, # ok
-            0, # available
+             1 , # ok field
+            'N', # available field
             $SC->sipdate
         ],
         fields => [
