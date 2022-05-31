@@ -75,6 +75,7 @@ sub dispatch_sip2_request {
         '17' => \&handle_item_info,
         '23' => \&handle_patron_status,
         '29' => \&handle_renew,
+        '35' => \&handle_end_patron_session,
         '37' => \&handle_payment,
         '63' => \&handle_patron_info,
         '65' => \&handle_renew_all,
@@ -844,6 +845,24 @@ sub handle_payment {
             {AA => $patron_barcode},
             {AO => $config->{institution}},
             $screen_msg ? {AF => $screen_msg} : (),
+        ]
+    }
+}
+
+sub handle_end_patron_session {
+    my ($session, $message) = @_;
+    my $config = $session->config;
+
+    # we don't actually do anything real with this :-)
+
+    return {
+        code => '36',
+        fixed_fields => [
+            $SC->sipbool(1)
+        ],
+        fields => [
+            {AO => $config->{institution}},
+            {AA => ''} # SIP required field, but do we actually have this--the patron barcode--as state information?
         ]
     }
 }
