@@ -152,6 +152,12 @@ If you'd like to make changes to whether multiple email addresses
 are allowed here or not, ask your system administrator to change the
 `ui.patron.edit.au.email.regex` library setting.
 
+=== Preferred Language field ===
+
+As of 3.9 there is a Patron Preferred Language field in the Patron Registration and Patron Edit interfaces. This field contains a dropdown listing available locales for that Evergreen instance. Locales are configured in the `config.i18n_locales` table and you can use this feature to send action trigger messages in different languages.
+
+For more information please see xref:admin:actiontriggers.adoc#creating_alternate_message_templates[Creating Alternate Message Templates].
+
 
 == Patron Self-Registration ==
 *Abstract*
