@@ -173,7 +173,7 @@ sub handle_sc_status {
 
         $config = {
             settings => {},
-            id => $flag->value,
+            institution => $flag->value,
             supports => OpenILS::Application::SIPSession->supports
         };
     }
