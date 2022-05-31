@@ -612,6 +612,7 @@ sub handle_renew_all {
     my $config = $session->config;
 
     my $patron_barcode = $SC->get_field_value($message, 'AA');
+    my $patron_password = $SC->get_field_value($message, 'AD');
     my $fee_ack = $SC->get_field_value($message, 'BO');
 
     my $stub = {
@@ -629,7 +630,7 @@ sub handle_renew_all {
     };
 
     my $patron_details = OpenILS::Application::SIP2::Patron->get_patron_details(
-        $session, barcode => $patron_barcode);
+        $session, barcode => $patron_barcode, password => $patron_password);
 
     return $stub unless $patron_details;
 
