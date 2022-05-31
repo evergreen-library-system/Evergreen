@@ -718,6 +718,9 @@ The system doesn't need the file extension to know what kind of file it is.
  
 Reload the bib record summary in the web catalog and your new image will display.
 
+[NOTE]
+As of version 3.9, staff with appropriate permissions can directly add images to a bibliographic record. These images are stored locally. For more information, see xref:cataloging:cover_image_upload.adoc[Cover Image Uploader].
+
 == Styling the searchbar on the homepage ==
 
 The `.searchbar-home` class is added to the div that

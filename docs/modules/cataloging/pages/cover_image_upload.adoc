@@ -1,0 +1,94 @@
+= Cover Image Uploader =
+:toc:
+
+As of version 3.9, a staff user with appropriate permissions can upload
+a cover image directly within a specific bibliographic record. Uploaded images will override images provided by a third party service like NoveList or Syndetics. Image uploads are
+controlled by a permission, a library setting, and a global
+flag described at the end of this page.
+
+Acceptable file types are jpg, png, xpm, xbm, gif, and bmp. The formats
+gd and gd2 are also supported, but these are unlikely to come up in
+everyday use since they are internal formats in the libgd library used
+for this feature. All uploaded images are converted to PNG at the time
+of upload and scaled to small, medium, and large for various uses within
+the OPAC and staff client.
+
+The scaling algorithm will size images to fit the dimension of each
+bounding box, while preserving aspect ratio. This means that the largest
+dimension of any image will be scaled to match the bounding box. These
+are hardcoded but can be adjusted by an administrator as a
+customization.
+
+* Small = 55px wide x 91px high
+* Medium = 120 px wide x 200 px high
+* Large = 475px wide x 787 px high
+
+In stock Evergreen, images associated with a bib record will display in
+the following locations:
+
+* In the staff catalog search results list on the left side of the title
+* In the staff catalog bib record details page on the upper left side of
+the page
+* In the OPAC search results list on the left side of the title
+* In the OPAC record details search page to the left of the title.
+
+== Uploading a Cover Image ==
+
+From within the staff client, search for & retrieve a bib record. Under
+*Other Actions* on the right is an action to *Upload Cover Image*.
+
+image::cover_image_upload/upload_cover_image.png[Upload Cover Image action]
+
+Click the *Upload Cover Image* action to open a modal which will direct
+you to select an image and upload it to Evergreen.
+
+image::cover_image_upload/upload_cover_image_modal.png[Upload Cover Image modal]
+
+If there is an error uploading your file, you will be shown error text
+in the modal. Error messages include the following:
+
+* Not authenticated. Expired login?
+* Not authorized. Check your permissions.
+* Not found. Bib record deleted?
+* Invalid global compression value. Talk to your system administrator.
+* Do not know where to upload files. Talk to your system administrator.
+* Can not save uploaded file. Talk to your system administrator.
+* File size larger than configured limit. Check your library setting or
+try a smaller file.
+* Error parsing the image. Is it a common image filetype?
+* Error uploading or processing file.
+
+When the upload is complete the bib record will refresh and you will see
+the small (thumbnail) version of your image in the upper left of the
+record:
+
+image::cover_image_upload/cover_staffcat_view.png[Cover Image in record summary]
+
+To see what the image looks like in the OPAC, you can click the *Patron
+View* button. The Patron View button will open the OPAC in a new tab,
+displaying the record as it appears to a Patron.
+
+image::cover_image_upload/cover_opac_view.png[Cover Image in OPAC bib record]
+
+Once a new image is uploaded, memcache is flushed (analogous to clicking
+“Clear Added Content Cache”). However, modern browsers can be very
+sticky with their cache so if a user needs to see the new cover image
+immediately, we recommend checking in a different browser.
+
+== Administration
+
+This feature uses a new permission, a new library setting, and a new
+global flag.
+
+* *Permission*
+** UPLOAD_COVER_IMAGE - this is not added to any groups by default.
+* *Library Setting*
+** _Maximum file size for uploaded cover image files (at time of upload,
+prior to rescaling)_ - Accepts an integer value in bytes specifying the
+maximum pre-compression file size. If unset, this will default to
+10737418240 (approximately 10GB).
+* *Global Flag*
+** `opac.cover_upload_compression` - accepts a numeric value from 0 (no
+compression) to 9 (most compression). The default is 0. All uploaded
+files are converted to png and use this flag.
+
