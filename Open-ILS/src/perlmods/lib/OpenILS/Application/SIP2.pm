@@ -577,15 +577,18 @@ sub checkout_renew_common {
             && $circ->renewal_remaining > 0;
     }
 
+    my $already_out_to_patron = $item_details->{circ}
+        ? $item_details->{circ}->usr->id == $patron_details->{patron}->id
+        : 0;
+
     return {
         code => $code,
         fixed_fields => [
             $circ ? 1 : 0,              # checkout ok
             # Per SIP spec, "renewal ok" is a bit dumber than $can_renew, and returns Y if the item was already circulating to the patron, N otherwise)
-            # FIXME: Hardcoded for now, but need to revisit
-            $SC->sipbool(0),            # renewal ok
+            $SC->sipbool($already_out_to_patron), # renewal ok
             $SC->sipbool($magnetic),    # magnetic media
-            $SC->sipbool(!$magnetic),   # desensitize
+            $is_renewal ? $SC->sipbool(0) : $SC->sipbool(!$magnetic),   # desensitize
             $SC->sipdate,               # transaction date
         ],
         fields => [
@@ -597,7 +600,7 @@ sub checkout_renew_common {
             {CI => 'N'}, # security inhibit
             {CK => $item_details->{media_type}},
             $screen_msg ? {AF => $screen_msg}   : (),
-            $due_date   ? {AH => $due_date}     : (),
+            $due_date   ? {AH => $due_date}     : {AH => ''}, # a required field in the SIP spec, even for failures :-/
             $circ       ? {BK => $circ->id}     : (),
             $deposit    ? {BV => $deposit}      : (),
         ]
