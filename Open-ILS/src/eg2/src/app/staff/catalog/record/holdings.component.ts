@@ -527,7 +527,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
     // Grab call numbers, copies, and related data.
     fetchHoldings(pager: Pager): Observable<any> {
-        if (!this.recordId) { return of([]); }
+        if (!this.recordId || this.recordId == -1) { return of([]); }
 
         return new Observable<any>(observer => {
 
