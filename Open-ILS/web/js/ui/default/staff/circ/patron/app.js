@@ -952,6 +952,56 @@ function($scope , $q , $routeParams,  egCore , $uibModal , patronSvc , egCirc , 
         });
     }
 
+    $scope.unarchivePenalty = function(selected) {
+        if (selected.length == 0) return;
+
+        // TODO: need confirmation dialog
+
+        var promises = [];
+        // figure out the view components
+        var aum_ids = [];
+        var ausp_ids = [];
+        angular.forEach(selected, function(s) {
+            if (s.aum_id) { aum_ids.push(s.aum_id); }
+            if (s.ausp_id) { ausp_ids.push(s.ausp_id); }
+        });
+
+        // fetch all of them since trying to pull them
+        // off of patronSvc.current isn't reliable
+        if (ausp_ids.length > 0) {
+            promises.push(
+                egCore.pcrud.search('ausp',
+                    {id : ausp_ids}, {},
+                    {atomic : true, authoritative : true}
+                ).then(function(penalties) {
+                    angular.forEach(penalties, function(p) {
+                        p.stop_date(null);
+                    });
+                    return egCore.pcrud.update(penalties);
+                })
+            );
+        }
+        if (aum_ids.length > 0) {
+            promises.push(
+                egCore.pcrud.search('aum',
+                    {id : aum_ids}, {},
+                    {atomic : true, authoritative : true}
+                ).then(function(messages) {
+                    angular.forEach(messages, function(m) {
+                        m.stop_date(null);
+                    });
+                    return egCore.pcrud.update(messages);
+                })
+            );
+        }
+        $q.all(promises).then(function() {
+            activeGrid.refresh();
+            archiveGrid.refresh();
+            // force a refresh of the user
+            patronSvc.setPrimary(patronSvc.current.id(), null, true);
+        });
+    }
+
     // leverage egEnv for caching
     function fetchPenaltyTypes() {
         if (egCore.env.csp) 

@@ -55,8 +55,10 @@
   idl-class="aump"
   grid-controls="archiveGridControls"
   dateformat="{{$root.egDateAndTimeFormat}}"
-  features="-multiselect"
   persist-key="circ.patron.archived_messages">
+
+  <eg-grid-action label="[% l('Unarchive Note') %]"
+    handler="unarchivePenalty"></eg-grid-action>
 
   <eg-grid-field path="read_date"></eg-grid-field>
   <eg-grid-field path="deleted" required hidden></eg-grid-field>
