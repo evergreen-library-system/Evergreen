@@ -49,6 +49,9 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.RENEW_ITEMS = "[% l('Renew Items?') %]";
   s.RENEW_ALL_ITEMS = "[% l('Renew All Items?') %]";
   s.CHECK_IN_CONFIRM = "[% l('Check In Items?') %]";
+  s.CONFIRM_ARCHIVE_NOTE = "[% l('Archive selected notes? Public non-deleted notes will still be visible to patrons.') %]";
+  s.CONFIRM_UNARCHIVE_NOTE = "[% l('Unarchive selected notes? Associated blocks/penalties will be restored.') %]";
+  s.CONFIRM_REMOVE_NOTE = "[% l('Remove selected notes?') %]";
   s.REG_INVALID_FIELDS = 
     "[% l('Please enter valid values for all required fields.') %]"
   s.REG_PASSWORD_RESET_REQUEST_NO_EMAIL =
