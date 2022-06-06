@@ -142,7 +142,7 @@ export class FundsManagerComponent extends AdminPageComponent implements OnInit,
     checkRolloverPerms() {
         this.canRollover = false;
 
-        this.perm2.hasWorkPermAt(['ADMIN_FUND'], true).then(permMap => {
+        this.perm2.hasWorkPermAt(['ADMIN_FUND_ROLLOVER'], true).then(permMap => {
             Object.keys(permMap).forEach(key => {
                 if (permMap[key].length > 0) {
                     this.canRollover = true;
