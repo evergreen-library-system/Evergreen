@@ -901,7 +901,17 @@ export class EditComponent implements OnInit, AfterViewInit {
                 map.ischanged(true);
                 map.isdeleted(false);
             } else {
-                map.isdeleted(true);
+                if (map.isnew()) {
+                    // Deleting a stat cat that was created during this
+                    // edit session just means removing it from the list
+                    // of maps to consider.
+                    this.patron.stat_cat_entries(
+                        this.patron.stat_cat_entries()
+                            .filter(m => m.stat_cat() !== cat.id())
+                    );
+                } else {
+                    map.isdeleted(true);
+                }
             }
         } else {
             map = this.idl.create('actscecm');
