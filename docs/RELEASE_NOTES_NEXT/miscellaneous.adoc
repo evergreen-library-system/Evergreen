@@ -19,3 +19,6 @@
   (LP#1951996)
 * The patron profile name is now available to the Hold Shelf Slip
   print template as `patron.profile.name`. (LP#1724032)
+* Removed the Message Center from the Patron -> Other Menu (deprecated),
+  added action for unarchiving Notes, and added confirmation dialogs
+  for Remove Note, Archive Note, and Unarchive Note. (LP#1977877)
