@@ -1,0 +1,33 @@
+<div class="d-flex">
+  <div class="flex-1"></div>
+  <div>
+    <button class="btn btn-outline-dark" (click)="printList()" i18n>Print List</button>
+  </div>
+</div>
+<div id='oils-selfck-circ-table-div'>
+  <table id='oils-selfck-circ-table' class='oils-selfck-item-table'>
+    <thead>
+      <tr>
+        <td class="rounded-left" id='oils-self-circ-pic-cell'></td>
+        <td i18n>Title</td>
+        <td i18n>Author</td>
+        <td class="rounded-right" i18n>Status</td>
+      </tr>
+    </thead>
+    <tbody class='oils-selfck-item-table'>
+	    <tr *ngFor="let hold of holds">
+        <td><img src="/opac/extras/ac/jacket/small/r/{{hold.record_id}}"/></td>
+        <td>{{hold.title}}</td>
+        <td>{{hold.author}}</td>
+        <td>
+          <ng-container *ngIf="hold.hold_status == 4" i18n>
+            Ready for Pickup
+          </ng-container>
+          <ng-container *ngIf="hold.hold_status != 4" i18n>
+            #{{hold.relative_queue_position}} in line with {{hold.potentials}} copie(s)
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

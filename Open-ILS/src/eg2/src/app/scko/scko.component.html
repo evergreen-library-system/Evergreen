@@ -1,0 +1,108 @@
+
+<eg-scko-banner></eg-scko-banner>
+
+<div class="d-flex scko-status-row mt-2">
+  <div class="flex-1"></div>
+  <div [ngClass]="{
+    'text-success': scko.statusDisplaySuccess, 
+    'text-danger': !scko.statusDisplaySuccess}">{{scko.statusDisplayText}}</div>
+  <div class="flex-1"></div>
+</div>
+
+<div *ngIf="scko.auth.token() && scko.patronSummary" class="row mr-0 mt-5">
+  <div class="col-lg-9">
+    <div class="ml-2 scko-page">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <div class="col-lg-3"><eg-scko-summary></eg-scko-summary></div>
+</div>
+
+<eg-confirm-dialog #logoutDialog 
+  i18n-dialogTitle i18n-dialogBody
+  i18n-confirmButtonText i18n-cancelButtonText
+  dialogTitle="Logout Notice"
+  dialogBody="Your login session will timeout due to inactivity"
+  confirmButtonText="Continue Session"
+  cancelButtonText="Logout">
+</eg-confirm-dialog>
+
+<eg-alert-dialog #alertDialog i18n-dialogTitle="Notice"></eg-alert-dialog>
+
+<!-- global toast alerts -->
+<eg-toast></eg-toast>
+
+<!-- global print handler component -->
+<eg-print></eg-print>
+
+<!-- context menu DOM insertion point -->
+<eg-context-menu-container></eg-context-menu-container>
+
+<eg-string i18n-text key="scko.unknown" text="Unknown Error Occurred"></eg-string>
+<eg-string i18n-text key="scko.checkout.success" text="Checkout Succeeded"></eg-string>
+<eg-string i18n-text key="scko.renew.success" text="Renewal Succeeded"></eg-string>
+<eg-string i18n-text key="scko.item.not_found" 
+  text="Item was not found in the system. Try re-scanning the item."></eg-string>
+<eg-string i18n-text key="scko.checkout.already_out" 
+  text="Item is checked out to another patron"></eg-string>
+
+<ng-template #maxRenew>No more renewals allowed for item {{barcode}}</ng-template>
+<eg-string i18n-text key="scko.error.max_renewals" [template]="maxRenew"></eg-string>
+
+<eg-string key="scko.error.patron_fines"
+  text="This account has too many fines to checkout."></eg-string>
+
+<ng-template #itemNotCataloged>
+  Item {{barcode}} was not found in the system.  Try re-scanning the item.
+</ng-template>
+<eg-string key="scko.error.item_not_cataloged" [template]="itemNotCataloged"> </eg-string>
+
+
+<ng-template #copyCircNotAllowed>
+  Item {{barcode}} is not allowed to circulate</ng-template>
+<eg-string key="scko.error.copy_circ_not_allowed" [template]="copyCircNotAllowed">
+</eg-string>
+
+<eg-string i18n-text key="scko.error.actor_usr_barred" 
+  text="The patron is barred"></eg-string>
+<eg-string i18n-text key="scko.error.asset_copy_circulate" 
+  text="The item does not circulate"></eg-string>
+<eg-string i18n-text key="scko.error.asset_copy_location_circulate" 
+  text="Items from this shelving location do not circulate"></eg-string>
+<eg-string i18n-text key="scko.error.asset_copy_status" 
+  text="The item cannot circulate at this time"></eg-string>
+<eg-string i18n-text key="scko.error.circ_holds_target_skip_me" 
+text="The item's circulation library does not fulfill holds"></eg-string>
+<eg-string i18n-text key="scko.error.config_circ_matrix_circ_mod_test" 
+  text="The patron has too many items of this type checked out"></eg-string>
+<eg-string i18n-text key="scko.error.config_circ_matrix_test_available_copy_hold_ratio" 
+  text="The available item-to-hold ratio is too low"></eg-string>
+<eg-string i18n-text key="scko.error.config_circ_matrix_test_circulate"
+  text="Circulation rules reject this item as non-circulatable"></eg-string>
+<eg-string i18n-text key="scko.error.config_circ_matrix_test_total_copy_hold_ratio"
+  text="The total item-to-hold ratio is too low"></eg-string>
+<eg-string i18n-text key="scko.error.config_hold_matrix_test_holdable"
+  text="Hold rules reject this item as unholdable"></eg-string>
+<eg-string i18n-text key="scko.error.config_hold_matrix_test_max_holds"
+  text="The patron has reached the maximum number of holds"></eg-string>
+<eg-string i18n-text key="scko.error.item.holdable"
+  text="The item is not holdable"></eg-string>
+<eg-string i18n-text key="scko.error.location.holdable"
+  text="The item's location is not holdable"></eg-string>
+<eg-string i18n-text key="scko.error.status.holdable"
+  text="The item is not in a holdable status"></eg-string>
+<eg-string i18n-text key="scko.error.config_rule_age_hold_protect_prox"
+  text="The item is too new to transit this far"></eg-string>
+<eg-string i18n-text key="scko.error.no_item"
+  text="The system could not find this item"></eg-string>
+<eg-string i18n-text key="scko.error.no_ultimate_items"
+  text="The system could not find any items to match this hold request"></eg-string>
+<eg-string i18n-text key="scko.error.no_matchpoint"
+  text="System rules do not define how to handle this item"></eg-string>
+<eg-string i18n-text key="scko.error.no_user"
+  text="The system could not find this patron"></eg-string>
+<eg-string i18n-text key="scko.error.transit_range"
+  text="The item cannot transit this far"></eg-string>
+<eg-string i18n-text key="scko.error.patron_exceeds_checkout_count"
+  text="Maximum checkouts reached on this account"></eg-string>
+

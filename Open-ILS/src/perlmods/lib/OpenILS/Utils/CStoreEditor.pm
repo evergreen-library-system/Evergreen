@@ -57,6 +57,10 @@ sub personality {
         # Instance-specific personality
 
         if ($app) {
+            # Reset everything in case this editor instance was
+            # previously used as a different personality.
+            delete $self->{session};
+            $self->{app} = $app;
             $self->{personality} = $app;
             init();
         }

@@ -1,0 +1,91 @@
+
+<div id="scko-circ-info-div">
+
+  <div class="pl-2">
+    <span>
+      <a routerLink="/scko" class="mr-2">
+        <button type="button" class="scko-button">Home</button>
+      </a>
+    </span>
+    <span>
+      <a (click)="scko.logoutPatron(receiptType)">
+        <button type="button" class="scko-button">Logout</button>
+      </a>
+    </span>
+  </div>
+
+  <div class="pl-2 mt-3">
+    <span class="mr-2" i18n>Receipt: </span>
+
+    <div *ngIf="showEmailOption" class="form-check form-check-inline">
+      <input class="form-check-input" name="receipt-type" type="radio" 
+        [(ngModel)]="receiptType" id="receipt-email" value="email">
+      <label class="form-check-label" for="receipt-email" i18n>Email</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" name="receipt-type" type="radio" 
+        [(ngModel)]="receiptType" id="receipt-print" value="print">
+      <label class="form-check-label" for="receipt-print" i18n>Print</label>
+    </div>
+
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" name="receipt-type" type="radio" 
+        [(ngModel)]="receiptType" id="receipt-none" value="none">
+      <label class="form-check-label" for="receipt-none" i18n>None</label>
+    </div>
+  </div>
+
+  <fieldset>
+    <legend i18n>Items Checked Out</legend>
+    <div>
+      <span i18n>Total items this session: </span>
+      <span class="font-weight-bold">{{scko.sessionTotalCheckouts()}}</span>
+    </div>
+    <div class="mt-2">
+      <span i18n>Total items on account: </span>
+      <span class="font-weight-bold">{{scko.accountTotalCheckouts()}}</span>
+    </div>
+    <div class="mt-2">
+      <a routerLink="/scko/items">
+        <button type="button" class="scko-button" i18n>View Items Out</button>
+      </a>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend i18n>Holds</legend>
+    <div i18n>
+      You have 
+      <span class="font-weight-bold">{{scko.patronSummary.stats.holds.ready}}</span> 
+      item(s) ready for pickup.
+    </div>
+    <div class="mt-2" i18n>
+      You have 
+      <span class="font-weight-bold">{{scko.patronSummary.stats.holds.total}}</span>
+      total holds.
+    </div>
+    <div class="mt-2">
+      <a routerLink="/scko/holds" id="oils-selfck-hold-details-link">
+        <button type="button" class="scko-button" i18n>View Holds</button>
+      </a>
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend i18n>Fines</legend>
+    <div>
+      <span i18n>Total fines on account:</span>
+      <span class="font-weight-bold">
+        {{scko.patronSummary.stats.fines.balance_owed | currency}}
+      </span>
+    </div>
+    <div class="mt-2">
+      <span>
+        <a routerLink="/scko/fines" id="oils-selfck-view-fines-link">
+          <button type="button" class="scko-button" i18n>View Details</button>
+        </a>
+      </span>
+    </div>
+  </fieldset>
+</div>
+
+

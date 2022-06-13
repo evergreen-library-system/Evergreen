@@ -1,0 +1,132 @@
+
+<div id="scko-banner" class="pb-2">
+	<div id="scko-logo-div">
+		<img src="/images/self_eg_logo.png"/>
+	</div>
+  <div class="scko-scan-container mt-3">
+    <ng-container *ngIf="scko.auth.user() && !scko.patronSummary">
+      <div id="scko-scan-input-text" i18n>
+        Please log in with your username or library barcode.
+      </div>
+      <div class="d-flex mt-3 mb-3">
+        <div class="flex-1"></div>
+        <div>
+          <form (ngSubmit)="submitPatronLogin()" #patronLoginForm="ngForm"
+            autocomplete="off" class="form-validated form-inline">
+
+            <label class="sr-only" for="patron-username" i18n>Username</label>
+
+            <input type="text" class="form-control border border-dark shadow-rounded" 
+              autocomplete="off" id="patron-username" required 
+              [(ngModel)]="patronUsername" name="patron-username"
+              placeholder="Username or Barcode" i18n-placeholder>
+
+            <ng-container *ngIf="scko.patronPasswordRequired">
+              <label class="sr-only" for="patron-password" i18n>Password</label>
+
+              <input type="password" class="form-control shadow border border-dark rounded ml-2" 
+                autocomplete="off" id="patron-password" required
+                [(ngModel)]="patronPassword" name="patron-password"
+                placeholder="Password" i18n-placeholder>
+            </ng-container>
+          </form>
+        </div>
+        <div class="flex-1"></div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="scko.patronSummary">
+      <div id="scko-scan-input-text" i18n>Please enter an item barcode</div>
+      <div class="d-flex mt-3 mb-3">
+        <div class="flex-1"></div>
+        <div>
+          <form (ngSubmit)="submitItemBarcode()" #barcodeForm="ngForm"
+            autocomplete="off" class="form-validated form-inline">
+
+            <label class="sr-only" for="item-barcode" i18n>Item Barcode</label>
+
+            <input type="text" class="form-control border border-dark shadow-rounded" 
+              autocomplete="off" id="item-barcode" required 
+              [(ngModel)]="itemBarcode" name="item-barcode"
+              placeholder="Item Barcode..." i18n-placeholder>
+
+          </form>
+        </div>
+        <div class="flex-1 d-flex">
+          <div class="flex-1"></div>
+          <div id="scko-welcome-message" class="mr-2 rounded" i18n>Welcome,
+            {{scko.patronSummary.patron.pref_first_given_name() 
+              || scko.patronSummary.patron.first_given_name()}}
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+  </div>
+</div>
+
+<div *ngIf="!scko.auth.user()" class="container mt-3">
+
+  <div class="col-lg-6 offset-lg-3">
+    <fieldset>
+      <legend class="mb-0" i18n><h1>Staff Account Login</h1></legend>
+      <hr class="mt-1"/>
+      <form (ngSubmit)="submitStaffLogin()" #staffLoginForm="ngForm" class="form-validated">
+
+        <div class="form-group row">
+          <label class="col-lg-4 text-right font-weight-bold" 
+            for="staff-username" i18n>Username</label>
+          <input 
+            type="text" 
+            class="form-control col-lg-8"
+            id="staff-username" 
+            name="staff-username"
+            required
+            autocomplete="username"
+            i18n-placeholder
+            placeholder="Staff Username" 
+            [(ngModel)]="staffUsername"/>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-lg-4 text-right font-weight-bold" 
+            for="staff-password" i18n>Password</label>
+          <input 
+            type="password" 
+            class="form-control col-lg-8"
+            id="staff-password" 
+            name="staff-password"
+            required
+            autocomplete="current-password"
+            i18n-placeholder
+            placeholder="Staff Password" 
+            [(ngModel)]="staffPassword"/>
+        </div>
+
+        <div class="form-group row" *ngIf="workstations && workstations.length">
+          <label class="col-lg-4 text-right font-weight-bold" 
+            for="workstation" i18n>Workstation</label>
+          <select 
+            class="form-control col-lg-8" 
+            id="workstation" 
+            name="workstation"
+            required
+            [(ngModel)]="args.workstation">
+            <option *ngFor="let ws of workstations" [value]="ws.name">
+              {{ws.name}}
+            </option>
+          </select>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-2 offset-lg-4 pl-0">
+            <button type="submit" class="btn btn-outline-dark" i18n>Sign In</button>
+          </div>
+          <div class="col-lg-4" *ngIf="loginFailed">
+            <div class="badge badge-warning p-2" i18n>Login Failed</div>
+          </div>
+        </div>
+      </form>
+    </fieldset>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="d-flex">
+  <div class="flex-1"></div>
+  <div>
+    <button class="btn btn-outline-dark" (click)="printList()" i18n>Print List</button>
+  </div>
+</div>
+<div id='oils-selfck-circ-table-div'>
+  <table id='oils-selfck-circ-table' class='oils-selfck-item-table'>
+    <thead>
+      <tr>
+        <td class="rounded-left" id='oils-self-circ-pic-cell'></td>
+        <td i18n>Barcode</td>
+        <td i18n>Title</td>
+        <td i18n>Author</td>
+        <td i18n>Due Date</td>
+        <td i18n>Renewals Left</td>
+        <td class="rounded-right" i18n>Type</td>
+      </tr>
+    </thead>
+    <tbody id='oils-selfck-circ-out-tbody' class='oils-selfck-item-table'>
+	    <tr *ngFor="let circ of circs">
+        <td>
+          <ng-container *ngIf="circ.target_copy().id() != -1">
+            <img src="/opac/extras/ac/jacket/small/r/{{circ.target_copy().call_number().record().id()}}"/>
+          </ng-container>
+        </td>
+        <td>{{circ.target_copy().barcode()}}</td>
+        <td>{{scko.getCircTitle(circ)}}</td>
+        <td>{{scko.getCircAuthor(circ)}}</td>
+        <td>{{circ | egDueDate}}</td>
+        <td>{{circ.renewal_remaining()}}</td>
+        <td>
+          <span *ngIf="circ.parent_circ()" i18n>Renewal</span>
+          <span *ngIf="!circ.parent_circ()" i18n>Checkout</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

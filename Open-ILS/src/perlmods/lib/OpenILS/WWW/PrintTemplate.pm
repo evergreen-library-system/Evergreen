@@ -52,9 +52,10 @@ sub handler {
 
     # Requires staff login
     return Apache2::Const::FORBIDDEN 
-        unless $e->checkauth && $e->requestor->wsid;
+        unless $e->checkauth && $e->allowed('STAFF_LOGIN');
 
     # Let pcrud handle the authz
+    #$e->{app} = 'open-ils.pcrud';
     $e->personality('open-ils.pcrud');
 
     my $tmpl_owner = $cgi->param('template_owner') || $e->requestor->ws_ou;
@@ -77,7 +78,18 @@ sub handler {
         return Apache2::Const::HTTP_BAD_REQUEST;
     }
 
-    my ($staff_org) = $U->fetch_org_unit($e->requestor->ws_ou);
+    my $staff_org = $e->retrieve_actor_org_unit([
+        $e->requestor->ws_ou, {
+            flesh => 1, 
+            flesh_fields => {
+                aou => [
+                    'billing_address', 
+                    'mailing_address', 
+                    'hours_of_operation'
+                ]
+            }
+        }
+    ]);
 
     my $output = '';
     my $tt = Template->new;

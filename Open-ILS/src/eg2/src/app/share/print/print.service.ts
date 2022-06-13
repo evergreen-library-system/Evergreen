@@ -99,6 +99,9 @@ export class PrintService {
                     } else if (this.status === 404) {
                         console.error('No active template found: ', printReq);
                         reject({notFound: true});
+                    } else {
+                        console.error(
+                            'Print template generator returned status: ' + this.status);
                     }
                     reject({});
                 }

@@ -1,0 +1,35 @@
+<div class="d-flex">
+  <div class="flex-1"></div>
+  <div>
+    <button class="btn btn-outline-dark" (click)="printList()" i18n>Print List</button>
+  </div>
+</div>
+<div id='oils-selfck-circ-table-div'>
+  <table id='oils-selfck-circ-table' class='oils-selfck-item-table'>
+    <thead>
+      <tr>
+        <td i18n>Type</td>
+        <td i18n>Details</td>
+        <td i18n>Total Billed</td>
+        <td i18n>Total Paid</td>
+        <td i18n>Balance Owed</td>
+      </tr>
+    </thead>
+    <tbody class='oils-selfck-item-table'>
+	    <tr *ngFor="let xact of xacts">
+        <td>
+          <ng-container *ngIf="xact.summary().xact_type() == 'circulation'" i18n>
+            Circulation
+          </ng-container>
+          <ng-container *ngIf="xact.summary().xact_type() != 'circulation'" i18n>
+            Miscellaneous
+          </ng-container>
+        </td>
+        <td>{{getDetails(xact)}}</td>
+        <td>{{xact.summary().total_owed() | currency}}</td>
+        <td>{{xact.summary().total_paid() | currency}}</td>
+        <td>{{xact.summary().balance_owed() | currency}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
