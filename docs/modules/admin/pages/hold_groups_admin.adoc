@@ -18,7 +18,7 @@ on a particular Hold Group (action.batch_hold_event) and the
 relationship between the batch hold request and successfully placed
 holds (action.batch_hold_event_map).
 
-A new staff permission for MANAGE_BATCH_HOLDS allows applicable users to
+A new staff permission for MANAGE_HOLD_GROUPS allows applicable users to
 place and cancel batch holds through Hold Groups.
 
 A new user bucket type was created for this feature, adding a row in the
