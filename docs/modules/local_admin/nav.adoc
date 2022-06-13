@@ -3,6 +3,7 @@
 ** xref:admin:lsa-address_alert.adoc[Address Alert]
 ** xref:admin:lsa-barcode_completion.adoc[Barcode Completion]
 ** xref:admin:emergency_closing_handler.adoc[Emergency Closing Handler]
+** xref:local_admin:group_penalty_thresholds.adoc[Group Penalty Thresholds]
 ** xref:admin:hold_driven_recalls.adoc[Hold-driven recalls]
 ** xref:admin:hold_groups_admin.adoc[Hold Groups Administration]
 ** xref:local_admin:multiple_holds_admin.adoc[Placing Multiple Holds]
