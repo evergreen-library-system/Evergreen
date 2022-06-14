@@ -6,9 +6,6 @@ import {StoreService} from '@eg/core/store.service';
 import {OrgService} from '@eg/core/org.service';
 import {OfflineService} from '@eg/staff/share/offline.service';
 
-// Direct users to the AngJS splash page when no routeTo is provided.
-const SPLASH_PAGE_PATH = '/eg/staff/splash';
-
 @Component({
   templateUrl : './login.component.html'
 })
@@ -78,10 +75,10 @@ export class StaffLoginComponent implements OnInit {
     handleSubmit() {
 
         // post-login URL
-        let url: string = this.routeTo || SPLASH_PAGE_PATH;
+        let url: string = this.routeTo || '/staff/splash';
 
         // prevent sending the user back to the login page
-        if (url.match('/staff/login')) { url = SPLASH_PAGE_PATH; }
+        if (url.match('/staff/login')) { url = '/staff/splash'; }
 
         const workstation: string = this.args.workstation;
 

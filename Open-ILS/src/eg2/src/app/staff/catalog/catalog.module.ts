@@ -76,7 +76,7 @@ import {WorkLogModule} from '@eg/staff/share/worklog/worklog.module';
     BookingModule,
     PatronModule,
     MarcEditModule,
-    HttpClientModule
+    HttpClientModule,
     BarcodesModule,
     WorkLogModule
   ],
