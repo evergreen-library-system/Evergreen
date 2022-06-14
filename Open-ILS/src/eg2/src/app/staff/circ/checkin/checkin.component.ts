@@ -190,7 +190,13 @@ export class CheckinComponent implements OnInit, AfterViewInit {
 
         Object.keys(this.modifiers).forEach(mod => {
             if (this.modifiers[mod]) {
-                params[mod] = true;
+                if (mod === 'retarget_holds') {
+                    params.retarget_mode = 'retarget';
+                } else if (mod === 'retarget_holds_all') {
+                    params.retarget_mode = 'retarget.all';
+                } else {
+                    params[mod] = true;
+                }
             }
         });
 

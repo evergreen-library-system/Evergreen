@@ -180,8 +180,7 @@ export interface CheckinParams {
     manual_float?: boolean;
     do_inventory_update?: boolean;
     no_precat_alert?: boolean;
-    retarget_holds?: boolean;
-    retarget_holds_all?: boolean;
+    retarget_mode?: string;
 
     // internal / local values that are moved from the API request.
     _override?: boolean;
