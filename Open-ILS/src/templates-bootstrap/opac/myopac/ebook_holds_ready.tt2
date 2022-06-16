@@ -22,6 +22,7 @@
                 <th>[% l("Title") %]</th>
                 <th>[% l("Author") %]</th>
                 <th>[% l("Expire Date") %]</th>
+                <th>[% l("Status") %]</th>
                 <th>[% l("Actions") %]</th>
             </tr>
             </thead>
