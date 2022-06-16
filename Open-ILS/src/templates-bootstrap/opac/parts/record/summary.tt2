@@ -375,22 +375,16 @@ ctx.metalinks.push('
                 [%- END -%]
 
                 [%- IF ebook_api.enabled == 'true' && args.ebook %]
-              
-                    <div id="[%- ctx.bre_id -%]_ebook_checkout" class="rdetail_aux_utils ebook_action hidden">
-                        <a class="btn btn-action no-dec" role="button" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
-                    {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'}, stop_parms) %]"
-                            rel="nofollow" vocab="">
-                            <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Check Out E-Item') %]</span></a>
-                    </div>
-               
-               
-                    <div id="[%- ctx.bre_id -%]_ebook_place_hold" class="rdetail_aux_utils ebook_action hidden">
-                        <a class="btn btn-action no-dec" role="button" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
-                    {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'}, stop_parms) %]"
-                            rel="nofollow" vocab="">
-                            <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Place Hold on E-Item') %]</span></a>
-                    </div>
-               
+                    <a id="[%- ctx.bre_id -%]_ebook_checkout"
+                        class="btn btn-action no-dec hidden" role="button" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
+                        {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'}, stop_parms) %]"
+                        rel="nofollow" vocab="">
+                        <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Check Out E-Item') %]</span></a>
+                    <a id="[%- ctx.bre_id -%]_ebook_place_hold"
+                        class="btn btn-action no-dec hidden" role="button" href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
+                        {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'}, stop_parms) %]"
+                        rel="nofollow" vocab="">
+                        <span class="place_hold"><i class="fas fa-check" aria-hidden="true"></i> [% l('Place Hold on E-Item') %]</span></a>
                 [%- END -%]
 
 

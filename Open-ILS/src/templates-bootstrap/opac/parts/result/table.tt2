@@ -407,18 +407,20 @@
                                         <!-- eBook Buttons -->
                                         [%- IF ebook_api.enabled == 'true' && args.ebook %]
                                       
-                                            <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
+                                            <a id="[%- rec.id -%]_ebook_checkout"
+                                                href="[% mkurl(ctx.opac_root _ '/myopac/ebook_checkout',
                                                 {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'checkout'},
                                                 ['query','tag','subfield','term','_special','sort','page']) %]"
                                                 [% html_text_attr('title', l('Check Out [_1]', attrs.title)) %]
-                                                    class="btn btn-action" role="button" rel="nofollow" vocab=""><i class="fas fa-atlas" aria-hidden="true"></i> <span class="result_place_hold">[% l('Check Out E-Item') %]</span></a>
+                                                    class="btn btn-action hidden" role="button" rel="nofollow" vocab=""><i class="fas fa-atlas" aria-hidden="true"></i> <span class="result_place_hold">[% l('Check Out E-Item') %]</span></a>
                                        
                                        
-                                            <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
+                                            <a id="[%- rec.id -%]_ebook_place_hold"
+                                                href="[% mkurl(ctx.opac_root _ '/myopac/ebook_place_hold',
                                                 {title => args.ebook.ebook_id, vendor => args.ebook.vendor, action => 'place_hold'},
                                                 ['query','tag','subfield','term','_special','sort','page']) %]"
                                                 [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
-                                                    class="btn btn-action" role="button" rel="nofollow" vocab=""><i class="fas fa-book-reader" aria-hidden="true"></i> <span class="result_place_hold">[% l('Place Hold on E-Item') %]</span></a>
+                                                    class="btn btn-action hidden" role="button" rel="nofollow" vocab=""><i class="fas fa-book-reader" aria-hidden="true"></i> <span class="result_place_hold">[% l('Place Hold on E-Item') %]</span></a>
                                        
                                         [%- END -%]
 
