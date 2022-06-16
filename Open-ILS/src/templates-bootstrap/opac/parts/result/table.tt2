@@ -284,7 +284,7 @@
                                                 </tr>
                                             [% END %]
                                             [% FOR uri IN args.uris %]
-                                                <tr class='result_table_title_cell row'>
+                                                <tr>
                                                     <td valign='top'><strong>[% l('Electronic resource') %]</strong></td>
                                                     <td><a href="[% uri.href | html %]" class="uri_link" target="_blank">[% uri.link | html %]</a>
                                                         [%- IF uri.note -%]
