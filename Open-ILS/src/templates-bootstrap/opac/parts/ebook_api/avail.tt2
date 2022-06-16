@@ -23,7 +23,7 @@ IF args.ebook;
 -%]
 <div id="[% ebook.rec_id %]" class="ebook_avail hidden">
     <div id="[% ebook.ebook_id %]" class="[% ebook.vendor %]_avail">
-        <table id="[% ebook.rec_id %]_ebook_holdings" class="result_holdings_table hidden">
+        <table id="[% ebook.rec_id %]_ebook_holdings" class="result_table_title_cell container-fluid table table-hover mt-4 miniTable holdingsTable hidden">
             <thead>
                 <tr>
                     <th>[% l('Available Formats') %]</th>
