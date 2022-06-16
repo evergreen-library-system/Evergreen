@@ -2,10 +2,10 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.61])
-AC_INIT([libmar], [1.0], [jason@sigio.com])
+AC_INIT([libmar],[1.0],[jason@sigio.com])
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([tool/mar.c])
-AC_CONFIG_HEADER([config.h])
+AC_CONFIG_HEADERS([config.h])
 
 # Check for MAR_CHANNEL_ID:
 AC_ARG_WITH([marchannelid],

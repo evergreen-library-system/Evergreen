@@ -33,7 +33,7 @@ AC_SUBST([abs_top_builddir])
 #-----------------------------------
 
 
-AC_PROG_LIBTOOL
+LT_INIT
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_LN_S
@@ -300,7 +300,6 @@ if test "x$openils_core" = "xtrue"; then
     # Checks for header files.
     #------------------------------------
 
-    AC_HEADER_STDC
     AC_CHECK_HEADERS([fcntl.h langinfo.h locale.h stdlib.h string.h unistd.h])
 
     #-------------------------------------------------------------------
