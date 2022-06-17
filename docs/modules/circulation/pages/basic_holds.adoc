@@ -96,7 +96,7 @@ image::media/PlaceHold-4.JPG[]
 image::media/PlaceHold-5.JPG[]
 +
 7. The dialog box will close and the selected patron's barcode will appear next to _Place Hold for patron by barcode_. This will cause the patron's hold notification preferences to appear in the relevant fields in the bottom half of the screen. Changes to the Hold Notification preferences can be made before clicking *Submit* to finish placing a hold for the patron.
-+
+
 
 == Parts Level Hold ==
 
