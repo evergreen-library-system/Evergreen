@@ -1313,6 +1313,16 @@ BEGIN
         WHERE bucket IN (SELECT id FROM container.biblio_record_entry_bucket WHERE btype = 'bookbag')
         AND target_biblio_record_entry = source_record;
 
+    -- move over record notes 
+    UPDATE biblio.record_note 
+        SET record = target_record, value = CONCAT(value,'; note merged from ',source_record::TEXT) 
+        WHERE record = source_record
+        AND NOT deleted;
+
+    -- add note to record merge 
+    INSERT INTO biblio.record_note (record, value) 
+        VALUES (target_record,CONCAT('record ',source_record::TEXT,' merged on ',NOW()::TEXT));
+
     -- Finally, "delete" the source record
     UPDATE biblio.record_entry SET active = FALSE WHERE id = source_record;
     DELETE FROM biblio.record_entry WHERE id = source_record;
