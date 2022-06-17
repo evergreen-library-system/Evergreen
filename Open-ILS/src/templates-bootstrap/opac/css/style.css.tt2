@@ -3855,6 +3855,15 @@ label[for*=expert_]
 .carousel-entry {
     max-width: 150px;
 }
+
+/* Truncate titles within carousel to 4 lines */
+.carousel-entry div.titleText {
+    display: -webkit-box;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
 .carousel-entry-image {
     width: 100%;
     height: auto;
