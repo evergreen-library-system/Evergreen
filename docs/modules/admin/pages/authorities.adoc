@@ -27,9 +27,9 @@ image::media/Authority_Server_Admin_Menu.png[Server administration authority act
 === Add a Control Set ===
 
 . Click *Administration* -> *Server Administration* ->  *Authority Control Sets*.
-. Click *New Control Set*.  
-. Add a *Name* to the control set. Enter any number of characters.
+. Click *New Authority Control Set*.  
 . Add a *Description* of the control set.  Enter any number of characters.
+. Add a *Name* to the control set. Enter any number of characters.
 . Click *Save*.
 
 image::media/Authority_Control_Sets1.jpg[Authority_Control_Sets1]
@@ -52,13 +52,17 @@ want to access, or click *Administration* -> *Server Administration* ->  *Author
 . Click *Administration* -> *Server Administration* ->  *Authority Control Sets*,
 and choose the hyperlinked thesaurus that you want to access, or click *Admin*
 -> *Server Administration* -> *Authority Thesauri*.
-. Click *New Thesaurus*.  
-. Add a *Thesaurus Code*.  Enter any single, upper case character.
-This character will be entered in the fixed fields of the MARC record.  
-. Add a *Name* to the thesaurus. Enter any number of characters.  
-. Add a *Description* of the thesaurus.  Enter any number of characters. 
+. Click *New Authority Thesaurus*.  
+. Choose a *Control Set* from the dropdown box.
+. Add a *Description* of the thesaurus. Enter any number of characters.
+. Add a *Name* to the thesaurus. Enter any number of characters.
+. Add a *Short Code*. Enter any single, uppercase character. This character will be entered in the fixed fields of the MARC authority record.
+. Add a *Thesaurus Code*. Enter a few characters as an abbreviation of the thesaurus name.  
+. (Optional) If desired, add a *URI* to link to the Thesaurus scheme.
+. Click *Save*.
 
-image::media/Authority_Control_Sets2.jpg[Authority_Control_Sets2]
+
+image::authorities/new_authority_thesaurus.png[Authority Control]
 
 == Authority Fields ==
 
@@ -73,31 +77,25 @@ tag in the bibliographic record that would contain the same data.
 === Create an Authority Field ===
 
 . Click *Administration* -> *Server Administration* ->  *Authority Control Sets*.
-. Click *Authority Fields*.  The number in parentheses indicates the number of
-authority fields that have been created for the control set.
-. Click *New Authority Field*.
-. Add a *Name* to the authority field. Enter any number of characters.
-. Add a *Description* to describe the type of data that should be entered in
-this tag.  Enter any number of characters.
+. Click *Controlling Authority Fields*. 
+. Click *New Authority Control Set Authority Field*.
+. Choose a *Control Set* from the dropdown box.
+. Add a *Description* to describe the type of data that should be entered in this tag. Enter any number of characters.
+. Choose an option from the *Heading Field* dropdown box to indicate the type of heading for the field’s content to specify the form of name, 
+title, or term.  
+. Add a specific *Joiner*, if desired, to indicate the string to be used to combine components of the heading into a single display string. 
+If not set, " --" is used.
+. Add a *Linking Subfield* if needed.
 . Select a *Main Entry* if you are linking the tag(s) to another entry.
-. Add a *Tag* in the authority record.
-. Add a subfield in the authority record.  Multiple subfields should be entered
-without commas or spaces.
-. Add a *Non-filing indicator* (either 1 or 2) to denote which indicator
-contains non-filing information. Leave empty if not applicable.
-
+. Add a *Name* to the authority field. Enter any number of characters.
+. Add a *Non-filing indicator* (either 1 or 2) to denote which indicator contains non-filing information. Leave empty if not applicable.
+. Add subfields to be included in the authority record to the *Subfield List*. Multiple subfields should be entered without commas or spaces.
+. Add *Subfields List for Display*. Multiple subfields should be entered without commas or spaces.
+. Add a *Tag* for the authority field in the authority record.
 . Click *Save*.
 +
-image::media/Authority_Control_Sets_Fields_Edit.png[Authority Fields edit form]
+image::authorities/new_authority_control_set_authority_field.png[Authority Fields edit form]
 +
-. Create the corresponding tag in the bibliographic record that should contain
-this information.  Click the *None* link in the *Controlled Bib Fields* column.
-. Click *New Control Set Bib Field*.
-. Add the corresponding tag in the bibliographic record.
-. Click *Save*.
-
-image::media/Authority_Control_Sets4.jpg[Authority_Control_Sets4]
-
 
 
 == Browse Axes ==
