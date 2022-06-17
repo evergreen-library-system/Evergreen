@@ -7628,7 +7628,6 @@ SELECT  usr,
 			<field reporter:label="Last Edit Date" name="edit_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Editor" name="editor" reporter:datatype="link"/>
 			<field reporter:label="Note ID" name="id" reporter:datatype="id" />
-			<field reporter:label="Public" name="pub" reporter:datatype="bool"/>
 			<field reporter:label="Bib Record" name="record" reporter:datatype="link"/>
 			<field reporter:label="Note" name="value" reporter:datatype="text"/>
 			<field reporter:label="Deleted" name="deleted" reporter:datatype="bool"/> 
