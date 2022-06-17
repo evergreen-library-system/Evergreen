@@ -2230,6 +2230,10 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         pl.shortname AS pl_shortname, pl.name AS pl_name, pl.email AS pl_email,
         pl.phone AS pl_phone, pl.opac_visible AS pl_opac_visible, pl.fiscal_calendar AS pl_fiscal_calendar,
 
+        rl.shortname AS rl_shortname,
+
+        sl.shortname AS sl_shortname,
+
         tr.id AS tr_id, tr.source_send_time AS tr_source_send_time, tr.dest_recv_time AS tr_dest_recv_time,
         tr.target_copy AS tr_target_copy, tr.source AS tr_source, tr.dest AS tr_dest, tr.prev_hop AS tr_prev_hop,
         tr.copy_status AS tr_copy_status, tr.persistant_transfer AS tr_persistant_transfer,
@@ -2374,6 +2378,8 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         JOIN actor.usr ru ON (ru.id = h.requestor)
         JOIN actor.card ruc ON (ruc.id = ru.card)
         JOIN actor.org_unit pl ON (h.pickup_lib = pl.id)
+        JOIN actor.org_unit rl ON (h.request_lib = rl.id)
+        JOIN actor.org_unit sl ON (h.selection_ou = sl.id)
         JOIN t_field ON TRUE
         JOIN a_field ON TRUE
         LEFT JOIN action.hold_request_cancel_cause cc ON (h.cancel_cause = cc.id)
