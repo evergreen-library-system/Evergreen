@@ -168,7 +168,7 @@ Patron Self-Registration allows patrons to initiate registration for a library a
 
 image::patron_record/self_registration_1.jpg[Patron Self-Registration form]
 
-image::patron_record/self_registration_2.jpg[Patron Self-Registration form]
+image::patron_record/self_registration_2.JPG[Patron Self-Registration form]
 
 *Managing Pending Patrons*
 
