@@ -114,12 +114,12 @@ export class BillStatementComponent implements OnInit {
             if (value === notes) { return; }
 
             let method = 'open-ils.circ.money.billing.note.edit';
-            if (rows[0].classname === 'mp') {
+            if (rows[0].classname === 'mbp') {
                 method = 'open-ils.circ.money.payment.note.edit';
             }
 
             this.net.requestWithParamList(
-                'open-ils.circ', method, [this.auth.token()].concat(ids))
+                'open-ils.circ', method, [this.auth.token(), value].concat(ids))
             .toPromise().then(resp => {
                 const evt = this.evt.parse(resp);
                 if (evt) {
