@@ -174,11 +174,6 @@ FOR field_def IN register_fields;
         <div class="invalid-feedback">
           [% l('Please enter a') %] [% field_def.label | html %]
         </div>
-         [% IF example %]
-        <span class='patron-reg-extra'>
-            [% l('(Example: [_1])', example) %]
-        </span>
-    [% END %]
 
         </div>
 
