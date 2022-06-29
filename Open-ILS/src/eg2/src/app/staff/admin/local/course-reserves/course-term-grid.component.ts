@@ -157,7 +157,7 @@ export class TermListComponent implements OnInit, AfterViewInit {
                 if (termHasLinkedCourses) {
                     this.termToDelete = field.name();
                     this.deleteLinkedTermWarning.open().toPromise().then(yes => {
-                        if (!yes) return;
+                        if (!yes) { return; }
                         this.doDelete(field);
                     });
                 } else {
