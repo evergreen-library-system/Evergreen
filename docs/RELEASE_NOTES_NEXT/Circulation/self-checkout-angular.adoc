@@ -1,0 +1,18 @@
+== Self-Checkout Angular Port ==
+
+The patron self-checkout interface is now available as an Angular port of 
+the interface.
+
+https://myhost.mydomain/eg2/scko
+
+=== New Print Templates ===
+
+New self-check print templates are available under 
+Administration => Server Administration => Print Templates
+
+* Self-Checkout Checkouts
+* Self-Checkout Fines
+* Self-Checkout Holds
+* Self-Checkout Items Out
+
+
