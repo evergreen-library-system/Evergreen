@@ -1,7 +1,6 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridColumn, GridRowFlairEntry} from '@eg/share/grid/grid';
-import {FormatService} from '@eg/core/format.service';
 import {IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -12,21 +11,14 @@ class DeskTotals {
     cash_payment = 0;
     check_payment = 0;
     credit_card_payment = 0;
-    formatted_cash_payment = '0.00';
-    formatted_check_payment = '0.00';
-    formatted_credit_card_payment = '0.00';
-};
+}
 
 class UserTotals {
     forgive_payment = 0;
     work_payment = 0;
     credit_payment = 0;
     goods_payment = 0;
-    formatted_forgive_payment = '0.00';
-    formatted_work_payment = '0.00';
-    formatted_credit_payment = '0.00';
-    formatted_goods_payment = '0.00';
-};
+}
 
 @Component({
     templateUrl: './cash-reports.component.html'
@@ -45,20 +37,20 @@ export class CashReportsComponent implements OnInit {
     deskTotals = new DeskTotals();
     userTotals = new UserTotals();
     disabledOrgs = [];
+    activeTab = 'deskPayments';
 
     // Default sort field, used when no grid sorting is applied.
     @Input() sortField: string;
-    @ViewChild('userDialog', { static: true }) userDialog: UserDialogComponent;
-    @ViewChild('deskPaymentGrid', { static: true }) deskPaymentGrid: GridComponent;
-    @ViewChild('userPaymentGrid', { static: true }) userPaymentGrid: GridComponent;
-    @ViewChild('userGrid', { static: true }) userGrid: GridComponent;
+    @ViewChild('userDialog') userDialog: UserDialogComponent;
+    @ViewChild('deskPaymentGrid') deskPaymentGrid: GridComponent;
+    @ViewChild('userPaymentGrid') userPaymentGrid: GridComponent;
+    @ViewChild('userGrid') userGrid: GridComponent;
 
     constructor(
         private idl: IdlService,
         private net: NetService,
         private org: OrgService,
-        private format: FormatService,
-        private auth: AuthService){}
+        private auth: AuthService) {}
 
     ngOnInit() {
         this.disabledOrgs = this.getFilteredOrgList();
@@ -66,7 +58,7 @@ export class CashReportsComponent implements OnInit {
     }
 
     onRowActivate(userObject) {
-        if(userObject.user && this.userDataSource.data.length === 0) {
+        if (userObject.user && this.userDataSource.data.length === 0) {
             this.userDataSource.data = [userObject.user];
             this.showUserInformation();
         } else {
@@ -75,16 +67,7 @@ export class CashReportsComponent implements OnInit {
     }
 
     showUserInformation() {
-        return new Promise((resolve, reject) => {
-            this.userDialog.open({size: 'lg'}).subscribe(
-                result => {
-                    resolve(result);
-                },
-                error => {
-                    reject(error);
-                }
-            );
-        });
+        return this.userDialog.open({size: 'lg'}).toPromise();
     }
 
     searchForData(start, end) {
@@ -94,7 +77,8 @@ export class CashReportsComponent implements OnInit {
                 'open-ils.circ',
                 'open-ils.circ.money.org_unit.desk_payments',
                 this.auth.token(), this.selectedOrg.id(), start, end));
-        this.fillGridData(this.userIdlClass,'userPaymentDataSource',
+
+        this.fillGridData(this.userIdlClass, 'userPaymentDataSource',
             this.net.request(
                 'open-ils.circ',
                 'open-ils.circ.money.org_unit.user_payments',
@@ -103,26 +87,12 @@ export class CashReportsComponent implements OnInit {
 
     fillGridData(idlClass, dataSource, data) {
         data.subscribe((result) => {
-            let dataForTotal;
-            if(idlClass === this.deskIdlClass) {
-                dataForTotal = this.getDeskTotal(result);
-                this.deskTotals.formatted_cash_payment = this.format.transform({value: this.deskTotals.cash_payment, datatype: 'money'});
-                this.deskTotals.formatted_check_payment = this.format.transform({value: this.deskTotals.check_payment, datatype: 'money'});
-                this.deskTotals.formatted_credit_card_payment = this.format.transform({value: this.deskTotals.credit_card_payment, datatype: 'money'});
-            } else if(idlClass === this.userIdlClass) {
-                dataForTotal = this.getUserTotal(result);
-                this.userTotals.formatted_credit_payment = this.format.transform({value: this.userTotals.credit_payment, datatype: 'money'});
-                this.userTotals.formatted_forgive_payment = this.format.transform({value: this.userTotals.forgive_payment, datatype: 'money'});
-                this.userTotals.formatted_work_payment = this.format.transform({value: this.userTotals.work_payment, datatype: 'money'});
-                this.userTotals.formatted_goods_payment = this.format.transform({value: this.userTotals.goods_payment, datatype: 'money'});
+            if (idlClass === this.userIdlClass) {
                 result.forEach((userObject, index) => {
                     result[index].user = userObject.usr();
-                    result[index].usr(userObject.usr().usrname())
+                    result[index].usr(userObject.usr().usrname());
                 });
             }
-            //if(result.length > 0) {
-            //    result.push(dataForTotal);
-            //}
             this[dataSource].data = result;
             this.eraseUserGrid();
         });
@@ -134,8 +104,9 @@ export class CashReportsComponent implements OnInit {
 
     getDeskTotal(idlObjects) {
         this.deskTotals = new DeskTotals();
-        if(idlObjects.length > 0) {
-            let idlObjectFormat = this.idl.create("mwps")
+
+        if (idlObjects.length > 0) {
+            const idlObjectFormat = this.idl.create('mwps');
             idlObjects.forEach((idlObject) => {
                 this.deskTotals['cash_payment'] += parseFloat(idlObject.cash_payment());
                 this.deskTotals['check_payment'] += parseFloat(idlObject.check_payment());
@@ -150,8 +121,8 @@ export class CashReportsComponent implements OnInit {
 
     getUserTotal(idlObjects) {
         this.userTotals = new UserTotals();
-        if(idlObjects.length > 0) {
-            let idlObjectFormat = this.idl.create("mups")
+        if (idlObjects.length > 0) {
+            const idlObjectFormat = this.idl.create('mups');
             idlObjects.forEach((idlObject, index) => {
                 this.userTotals['forgive_payment'] += parseFloat(idlObject.forgive_payment());
                 this.userTotals['work_payment'] += parseFloat(idlObject.work_payment());
@@ -168,16 +139,9 @@ export class CashReportsComponent implements OnInit {
     }
 
     getFilteredOrgList() {
-        let orgFilter = {canHaveUsers:false}
+        const orgFilter = {canHaveUsers: false};
         return this.org.filterList(orgFilter, true);
     }
-
-    // getOrgIds(orgs) {
-    //     orgs.forEach((element) => {
-    //         this.disabledOrgs.push(element.id());
-    //     });
-    //     return orgs;
-    // }
 
     onStartDateChange(date) {
         this.startDate = date;

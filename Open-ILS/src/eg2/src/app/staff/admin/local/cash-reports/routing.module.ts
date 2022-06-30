@@ -13,3 +13,4 @@ const routes: Routes = [{
 })
 
 export class CashReportsRoutingModule {}
+

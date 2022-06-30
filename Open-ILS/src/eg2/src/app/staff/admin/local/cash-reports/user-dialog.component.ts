@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import { DialogComponent } from '@eg/share/dialog/dialog.component';
 
 @Component({
-    selector:'eg-user-dialog',
+    selector: 'eg-user-dialog',
     templateUrl: './user-dialog.component.html'
 })
 export class UserDialogComponent extends DialogComponent implements OnInit {
