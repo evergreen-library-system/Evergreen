@@ -1,0 +1,6 @@
+== New Permission for Viewing Holds Pull List ==
+
+Access to the holds pull list is now restricted to users with the
+VIEW_HOLD_PULL_LIST permission.  By default, this new permission is granted to
+all users with the VIEW_HOLDS permission.
+

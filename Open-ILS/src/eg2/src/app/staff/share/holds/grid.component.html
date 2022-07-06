@@ -56,7 +56,7 @@
       <div class="col-lg-4 mb-2">
         <div class="input-group">
           <div class="input-group-text" i18n>View Pull List For:</div>
-          <eg-org-select [initialOrgId]="pullListOrg"
+          <eg-org-select [initialOrgId]="pullListOrg" [limitPerms]="['VIEW_HOLD_PULL_LIST']"
             (onChange)="pullListOrgChanged($event)">
           </eg-org-select>
         </div>

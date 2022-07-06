@@ -1976,7 +1976,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 641, 'ADMIN_FUND_ROLLOVER', oils_i18n_gettext(641,
     'Allow the user to perform fund propagation and rollover', 'ppl', 'description')),
  ( 642, 'UPDATE_COPY_BARCODE', oils_i18n_gettext(642,
-    'Update the barcode for an item.', 'ppl', 'description'))
+    'Update the barcode for an item.', 'ppl', 'description')),
+ ( 643, 'VIEW_HOLD_PULL_LIST', oils_i18n_gettext(643,
+    'View hold pull list', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -2074,6 +2076,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_CIRCULATIONS',
 			'VIEW_COPY_NOTES',
 			'VIEW_HOLD',
+			'VIEW_HOLD_PULL_LIST',
 			'VIEW_ORG_SETTINGS',
 			'VIEW_TITLE_NOTES',
 			'VIEW_TRANSACTION',
@@ -2140,6 +2143,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_HOLD',
 			'VIEW_HOLD_NOTIFICATION',
 			'VIEW_HOLD_PERMIT',
+			'VIEW_HOLD_PULL_LIST',
 			'VIEW_PERM_GROUPS',
 			'VIEW_PERMISSION',
 			'VIEW_TITLE_NOTES',
@@ -2876,6 +2880,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_CIRCS',
 			'VIEW_COPY_CHECKOUT',
 			'VIEW_HOLD',
+			'VIEW_HOLD_PULL_LIST',
 			'VIEW_TITLE_HOLDS',
 			'VIEW_TRANSACTION',
 			'VIEW_USER',
