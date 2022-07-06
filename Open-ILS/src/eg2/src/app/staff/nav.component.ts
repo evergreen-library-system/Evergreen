@@ -23,8 +23,8 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     locales: any[];
     currentLocale: any;
 
-    // When active, show a link to the experimental Angular staff catalog
-    showAngularCatalog: boolean;
+    // When active, show a link to the traditional staff catalog
+    showTraditionalCatalog: boolean;
     curbsideEnabled: boolean;
 
     @ViewChild('navOpChange', {static: false}) opChange: OpChangeComponent;
@@ -58,9 +58,9 @@ export class StaffNavComponent implements OnInit, OnDestroy {
         // Avoid attempts to fetch org settings if the user has not yet
         // logged in (e.g. this is the login page).
         if (this.user()) {
-            this.org.settings('ui.staff.angular_catalog.enabled')
-            .then(settings => this.showAngularCatalog =
-                Boolean(settings['ui.staff.angular_catalog.enabled']));
+            this.org.settings('ui.staff.traditional_catalog.enabled')
+            .then(settings => this.showTraditionalCatalog =
+                Boolean(settings['ui.staff.traditional_catalog.enabled']));
             this.org.settings('circ.curbside')
             .then(settings => this.curbsideEnabled =
                 Boolean(settings['circ.curbside']));

@@ -266,7 +266,7 @@
               <span>[% l('Search the Catalog') %]</span>
             </a>
           </li>
-          <li>
+          <li ng-if="showTraditionalCatalog">
             <a href="./cat/catalog/index" target="_self">
               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
               [% l('Search the Catalog (Traditional)') %]
