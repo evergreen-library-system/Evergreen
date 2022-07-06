@@ -175,16 +175,9 @@ export class OrgService {
         if (!node) {
             node = this.orgTree;
             this.orgMap = {};
-            this.orgList = [];
-            this.orgTypeMap = {};
         }
         this.orgMap[node.id()] = node;
         this.orgList.push(node);
-
-        this.orgTypeMap[node.ou_type().id()] = node.ou_type();
-        if (!this.orgTypeList.filter(t => t.id() === node.ou_type().id())[0]) {
-            this.orgTypeList.push(node.ou_type());
-        }
 
         node.children().forEach(c => this.absorbTree(c));
     }
@@ -194,10 +187,22 @@ export class OrgService {
      * various shapes, then returns an "all done" promise.
      */
     fetchOrgs(): Promise<void> {
-        return this.pcrud.search('aou', {parent_ou : null},
-            {flesh : -1, flesh_fields : {aou : ['children', 'ou_type']}},
-            {anonymous : true}
-        ).toPromise().then(tree => {
+
+        // Grab org types separately so we are guaranteed to fetch types
+        // that are not yet in use by an org unit.
+        return this.pcrud.retrieveAll(
+            'aout', {}, {anonymous: true, atomic: true}).toPromise()
+        .then(types => {
+            this.orgTypeList = types;
+            types.forEach(t => this.orgTypeMap[Number(t.id())] = t);
+
+            return this.pcrud.search('aou', {parent_ou : null},
+                {flesh : -1, flesh_fields : {aou : ['children', 'ou_type']}},
+                {anonymous : true}
+            ).toPromise()
+        })
+
+        .then(tree => {
             // ingest tree, etc.
             this.orgTree = tree;
             this.absorbTree();
