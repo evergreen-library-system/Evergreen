@@ -1,11 +1,11 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource, GridColumn, GridRowFlairEntry} from '@eg/share/grid/grid';
+import {GridDataSource, GridColumn,
+    GridCellTextGenerator, GridRowFlairEntry} from '@eg/share/grid/grid';
 import {IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
-import {UserDialogComponent} from './user-dialog.component';
 
 class DeskTotals {
     cash_payment = 0;
@@ -38,10 +38,11 @@ export class CashReportsComponent implements OnInit {
     userTotals = new UserTotals();
     disabledOrgs = [];
     activeTab = 'deskPayments';
+    cellTextGenerator: GridCellTextGenerator;
+
 
     // Default sort field, used when no grid sorting is applied.
     @Input() sortField: string;
-    @ViewChild('userDialog') userDialog: UserDialogComponent;
     @ViewChild('deskPaymentGrid') deskPaymentGrid: GridComponent;
     @ViewChild('userPaymentGrid') userPaymentGrid: GridComponent;
     @ViewChild('userGrid') userGrid: GridComponent;
@@ -55,19 +56,10 @@ export class CashReportsComponent implements OnInit {
     ngOnInit() {
         this.disabledOrgs = this.getFilteredOrgList();
         this.searchForData(this.startDate, this.endDate);
-    }
 
-    onRowActivate(userObject) {
-        if (userObject.user && this.userDataSource.data.length === 0) {
-            this.userDataSource.data = [userObject.user];
-            this.showUserInformation();
-        } else {
-            this.eraseUserGrid();
-        }
-    }
-
-    showUserInformation() {
-        return this.userDialog.open({size: 'lg'}).toPromise();
+        this.cellTextGenerator = {
+            card: row => row.user.card()
+        };
     }
 
     searchForData(start, end) {
@@ -91,6 +83,7 @@ export class CashReportsComponent implements OnInit {
                 result.forEach((userObject, index) => {
                     result[index].user = userObject.usr();
                     result[index].usr(userObject.usr().usrname());
+                    console.log('USER IS', userObject);
                 });
             }
             this[dataSource].data = result;

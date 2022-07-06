@@ -48,6 +48,7 @@
           <div class="col-sm-10">{{deskTotals.credit_card_payment | currency}}</div>
         </div>
         <eg-grid #deskPaymentGrid
+          persistKey="admin.local.cash_reports.desk_payments"
           [disableSelect]="true"
           [disablePaging]="true"
           [dataSource]="deskPaymentDataSource"
@@ -80,8 +81,13 @@
           <div class="col-sm-2" i18n>Total Goods Payments</div>
           <div class="col-sm-10">{{userTotals.goods_payment | currency}}</div>
         </div>
+        <ng-template #cardTmpl let-row="row">
+          <a target="_blank" href="/eg/staff/circ/patron/{{row.user.id()}}/checkout">
+            {{row.user.card()}}
+          </a>
+        </ng-template>
         <eg-grid #userPaymentGrid
-          (onRowActivate) = "onRowActivate($event)"
+          persistKey="admin.local.cash_reports.user_payments"
           [disableSelect]="true"
           [disablePaging]="true"
           [dataSource]="userPaymentDataSource"
@@ -91,25 +97,14 @@
           <eg-grid-column label="Forgive Payment" name="forgive_payment" i18n-label datatype="money"></eg-grid-column>
           <eg-grid-column label="Work Payment" name="work_payment" i18n-label datatype="money"></eg-grid-column>
           <eg-grid-column label="Goods Payment" name="goods_payment" i18n-label datatype="money"></eg-grid-column>
+          <eg-grid-column label="Patron Card" name="card" i18n-label [cellTemplate]="cardTmpl"></eg-grid-column>
+          <eg-grid-column label="Patron Email" path="user.email" i18n-label></eg-grid-column>
+          <eg-grid-column label="Patron First Name" path="user.first_given_name" i18n-label></eg-grid-column>
+          <eg-grid-column label="Patron Family Name" path="user.family_name" i18n-label></eg-grid-column>
+          <eg-grid-column label="Patron Home OU" path="user.home_ou" i18n-label></eg-grid-column>
         </eg-grid>
       </div>
     </ng-template>
   </li>
 </ul>
 <div [ngbNavOutlet]="cashReportsNav"></div>
-
-<eg-user-dialog #userDialog>
-  <ng-container *ngIf="userDataSource.data && userDataSource.data.length>0">
-    <eg-grid #userGrid
-      [disableSelect]="true"
-      [disablePaging]="true"
-      [dataSource]="userDataSource"
-      [sortable]="false">
-      <eg-grid-column label="Card" name="card" [index]="true" i18n-label></eg-grid-column>
-      <eg-grid-column label="Email" name="email" i18n-label></eg-grid-column>
-      <eg-grid-column label="First Name" name="first_given_name" i18n-label></eg-grid-column>
-      <eg-grid-column label="Family Name" name="family_name" i18n-label></eg-grid-column>
-      <eg-grid-column label="Home OU" name="home_ou" i18n-label></eg-grid-column>
-    </eg-grid>
-  </ng-container>
-</eg-user-dialog>
