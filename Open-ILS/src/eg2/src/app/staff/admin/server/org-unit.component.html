@@ -22,7 +22,9 @@
 <div class="row">
   <div class="col-lg-4">
     <h3 i18n>Org Units</h3>
-    <eg-tree [tree]="tree" (nodeClicked)="nodeClicked($event)"></eg-tree>
+    <div class="border rounded p-1" style="height:{{winHeight}}px;overflow-y:auto">
+      <eg-tree [tree]="tree" (nodeClicked)="nodeClicked($event)"></eg-tree>
+    </div>
   </div>
   <div class="col-lg-8">
     <div class="alert alert-info">

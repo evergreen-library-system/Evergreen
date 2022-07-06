@@ -19,6 +19,8 @@ export class OrgUnitComponent implements OnInit {
 
     tree: Tree;
     selected: TreeNode;
+    winHeight = 500;
+
     @ViewChild('editString', { static: true }) editString: StringComponent;
     @ViewChild('errorString', { static: true }) errorString: StringComponent;
     @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
@@ -72,13 +74,16 @@ export class OrgUnitComponent implements OnInit {
             const node = this.tree.findNode(selectNodeId);
             this.selected = node;
             this.tree.selectNode(node);
+
+            // Subtract out the menu bar plus a bit more.
+            this.winHeight = window.innerHeight * 0.8;
         });
     }
 
     // Translate the org unt type tree into a structure EgTree can use.
     ingestAouTree(aouTree) {
 
-        const handleNode = (orgNode: IdlObject): TreeNode => {
+        const handleNode = (orgNode: IdlObject, expand?: boolean): TreeNode => {
             if (!orgNode) { return; }
 
             if (!orgNode.hours_of_operation()) {
@@ -88,7 +93,8 @@ export class OrgUnitComponent implements OnInit {
             const treeNode = new TreeNode({
                 id: orgNode.id(),
                 label: orgNode.name(),
-                callerData: {orgUnit: orgNode}
+                callerData: {orgUnit: orgNode},
+                expanded: expand
             });
 
             // Apply the compiled label asynchronously
@@ -108,7 +114,7 @@ export class OrgUnitComponent implements OnInit {
             return treeNode;
         };
 
-        const rootNode = handleNode(aouTree);
+        const rootNode = handleNode(aouTree, true);
         this.tree = new Tree(rootNode);
     }
 
