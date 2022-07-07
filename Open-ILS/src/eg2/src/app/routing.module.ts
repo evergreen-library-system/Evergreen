@@ -18,9 +18,9 @@ const routes: Routes = [{
     resolve : {startup : BaseResolver},
     loadChildren: () => import('./staff/staff.module').then(m => m.StaffModule)
   }, {
-    path: 'scko',
+    path: 'staff/scko',
     resolve : {startup : BaseResolver},
-    loadChildren: () => import('./scko/scko.module').then(m => m.SckoModule)
+    loadChildren: () => import('./staff/scko/scko.module').then(m => m.SckoModule)
 }];
 
 @NgModule({

@@ -7,6 +7,7 @@ import {StoreService} from '@eg/core/store.service';
 import {SckoService} from './scko.service';
 import {OrgService} from '@eg/core/org.service';
 import {EventService, EgEvent} from '@eg/core/event.service';
+import {HatchService} from '@eg/core/hatch.service';
 
 @Component({
   selector: 'eg-scko-banner',
@@ -37,13 +38,14 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
         private evt: EventService,
         private ngLocation: Location,
         private org: OrgService,
+        private hatch: HatchService,
         public scko: SckoService
     ) {}
 
     ngOnInit() {
 
-        // NOTE: Displaying a list of workstations will not work for users
-        // of Hatch until the extension is updated to support /eg2/*/scko
+        this.hatch.connect();
+
         this.store.getWorkstations()
         .then(wsList => {
             this.workstations = wsList;
@@ -112,7 +114,7 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
 
                         // Force reload of the app after a successful login.
                         window.location.href =
-                            this.ngLocation.prepareExternalUrl('/scko');
+                            this.ngLocation.prepareExternalUrl('/staff/scko');
 
                     });
                 }

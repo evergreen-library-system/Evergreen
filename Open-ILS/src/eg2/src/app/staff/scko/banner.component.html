@@ -69,7 +69,7 @@
 
   <div class="col-lg-6 offset-lg-3">
     <fieldset>
-      <legend class="mb-0" i18n><h1>Staff Account Login</h1></legend>
+      <legend class="mb-0" i18n><h1>Self-Checkout Staff Login</h1></legend>
       <hr class="mt-1"/>
       <form (ngSubmit)="submitStaffLogin()" #staffLoginForm="ngForm" class="form-validated">
 
@@ -111,7 +111,7 @@
             id="workstation" 
             name="workstation"
             required
-            [(ngModel)]="args.workstation">
+            [(ngModel)]="staffWorkstation">
             <option *ngFor="let ws of workstations" [value]="ws.name">
               {{ws.name}}
             </option>
@@ -122,8 +122,13 @@
           <div class="col-lg-2 offset-lg-4 pl-0">
             <button type="submit" class="btn btn-outline-dark" i18n>Sign In</button>
           </div>
-          <div class="col-lg-4" *ngIf="loginFailed">
-            <div class="badge badge-warning p-2" i18n>Login Failed</div>
+          <div class="col-lg-3">
+            <a href="/eg/staff/admin/workstation/workstations" i18n>
+              Manage Workstations
+            </a>
+          </div>
+          <div class="col-lg-3">
+            <div *ngIf="loginFailed" class="badge badge-warning p-2" i18n>Login Failed</div>
           </div>
         </div>
       </form>

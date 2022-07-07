@@ -10,12 +10,12 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {PrintService} from '@eg/share/print/print.service';
 
 @Component({
-  templateUrl: 'items.component.html'
+  templateUrl: 'holds.component.html'
 })
 
-export class SckoItemsComponent implements OnInit {
+export class SckoHoldsComponent implements OnInit {
 
-    circs: IdlObject[] = [];
+    holds: IdlObject[] = [];
 
     constructor(
         private router: Router,
@@ -30,46 +30,49 @@ export class SckoItemsComponent implements OnInit {
     ngOnInit() {
 
         if (!this.scko.patronSummary) {
-            this.router.navigate(['/scko']);
+            this.router.navigate(['/staff/scko']);
             return;
         }
 
         this.scko.resetPatronTimeout();
 
-        this.net.request(
-            'open-ils.actor',
-            'open-ils.actor.user.checked_out.authoritative',
-            this.auth.token(), this.scko.patronSummary.id).toPromise()
+        const orderBy = [
+           {shelf_time: {nulls: 'last'}},
+           {capture_time: {nulls: 'last'}},
+           {request_time: {nulls: 'last'}}
+        ];
 
-        .then(data => {
-            const ids = data.out.concat(data.overdue).concat(data.long_overdue);
-            return this.scko.getFleshedCircs(ids).pipe(tap(circ => {
-                this.circs.push(circ);
-            })).toPromise();
+        const filters = {
+            usr_id: this.scko.patronSummary.id,
+            fulfillment_time: null
+        };
+
+        let first = true;
+        this.net.request(
+            'open-ils.circ',
+            'open-ils.circ.hold.wide_hash.stream',
+            this.auth.token(), filters, orderBy, 1000, 0, {}
+        ).subscribe(holdData => {
+
+            if (first) { // First response is the hold count.
+                first = false;
+                return;
+            }
+
+            this.holds.push(holdData);
         });
     }
 
     printList() {
-
-        const data = this.circs.map(c => {
-            return {
-                circ: c,
-                copy: c.target_copy(),
-                title: this.scko.getCircTitle(c),
-                author: this.scko.getCircAuthor(c)
-            };
-        });
-
         this.printer.print({
-            templateName: 'scko_items_out',
+            templateName: 'scko_holds',
             contextData: {
-                checkouts: data,
-                user: this.scko.patronSummary.patron
+              holds: this.holds,
+              user: this.scko.patronSummary.patron
             },
             printContext: 'default'
         });
     }
 }
-
 
 

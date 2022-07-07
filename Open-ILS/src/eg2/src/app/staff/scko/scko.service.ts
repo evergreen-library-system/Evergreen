@@ -89,7 +89,7 @@ export class SckoService {
     logoutStaff() {
         this.resetPatron();
         this.auth.logout();
-        this.router.navigate(['/scko']);
+        this.router.navigate(['/staff/scko']);
     }
 
     resetPatron() {
@@ -152,7 +152,7 @@ export class SckoService {
             if (username && !this.patronPasswordRequired) {
                 return this.loadPatron(username);
             }
-        });
+        }).catch(_ => {}); // console errors
     }
 
     getFleshedCircs(circIds: number[]): Observable<IdlObject> {
@@ -247,7 +247,7 @@ export class SckoService {
                 this.resetPatronTimeout();
             } else {
                 this.resetPatron();
-                this.router.navigate(['/scko']);
+                this.router.navigate(['/staff/scko']);
             }
         });
 
@@ -257,7 +257,7 @@ export class SckoService {
             () => {
                 console.debug('Clearing patron on warning dialog timeout');
                 this.resetPatron();
-                this.router.navigate(['/scko']);
+                this.router.navigate(['/staff/scko']);
             },
             this.logoutWarningTimeout * 1000
         );
@@ -315,7 +315,7 @@ export class SckoService {
         // so we can see our items out in progress.
         })
         .then(ctx => this.notifyPatron(ctx))
-        .finally(() => this.router.navigate(['/scko']));
+        .finally(() => this.router.navigate(['/staff/scko']));
     }
 
     renew(barcode: string, override?: boolean): Promise<any> {
@@ -609,7 +609,7 @@ export class SckoService {
 
         return promise.then(_ => {
             this.resetPatron();
-            this.router.navigate(['/scko']);
+            this.router.navigate(['/staff/scko']);
         });
     }
 
