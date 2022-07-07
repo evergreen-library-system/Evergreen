@@ -83,6 +83,7 @@ export class PermGroupTreeComponent implements OnInit {
         this.orgDepths = depths2.sort();
     }
 
+    // Returns maps for this group and ancestors
     groupPermMaps(): IdlObject[] {
         if (!this.selected) { return []; }
 
@@ -202,6 +203,25 @@ export class PermGroupTreeComponent implements OnInit {
         // We know the provided map came from this.groupPermMaps() which
         // only returns maps for the selected group plus parent groups.
         return m.grp().id() !== this.selected.callerData.id();
+    }
+
+    // True if the provided mapping applies to the selected group
+    // and a mapping for the same permission exists for an ancestor.
+    permOverrides(m: IdlObject): boolean {
+        const grpId = this.selected.callerData.id();
+
+        if (m.grp().id() === grpId) { // Selected group has the perm.
+
+            // See if at least one of our ancestors also has the perm.
+            return this.groupPermMaps().filter(mp => {
+                return (
+                    mp.perm().id() === m.perm().id() &&
+                    mp.grp().id() !== grpId
+                );
+            }).length > 0;
+        }
+
+        return false;
     }
 
     // List of perm maps that owned by perm groups which are ancestors
