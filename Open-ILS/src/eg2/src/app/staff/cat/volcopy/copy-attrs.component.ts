@@ -414,6 +414,8 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
 
             copy.ischanged(true);
         });
+
+        this.emitSaveChange();
     }
 
     openCopyAlerts() {
