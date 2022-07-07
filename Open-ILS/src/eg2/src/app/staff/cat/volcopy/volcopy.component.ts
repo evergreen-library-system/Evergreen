@@ -179,18 +179,13 @@ export class VolCopyComponent implements OnInit {
     beforeTabChange(evt: NgbNavChangeEvent) {
         evt.preventDefault();
 
-        let promise = this.canDeactivate();
-        if (!(promise instanceof Promise)) {
-            promise = Promise.resolve(promise);
-        }
-
-        promise.then(ok => {
-            if (ok) {
-                this.routingAllowed = true;
-                this.tab = evt.nextId;
-                this.routeToTab();
-            }
-        });
+        // Always allow routing between tabs since no changes are lost
+        // in the process.  In some cases, this is necessary to avoid
+        // "pending changes" alerts while you are trying to resolve
+        // other issues (e.g. applying values for required fields).
+        this.routingAllowed = true;
+        this.tab = evt.nextId;
+        this.routeToTab();
     }
 
     routeToTab() {
@@ -527,7 +522,15 @@ export class VolCopyComponent implements OnInit {
     }
 
     isNotSaveable(): boolean {
-        return !(this.volsCanSave && this.attrsCanSave);
+
+        if (!this.volsCanSave) { return true; }
+        if (!this.attrsCanSave) { return true; }
+
+        // This can happen regardless of whether we are modifying
+        // volumes vs. copies.
+        if (this.volcopy.missingRequiredStatCat()) { return true; }
+
+        return false;
     }
 
     volsCanSaveChange(can: boolean) {

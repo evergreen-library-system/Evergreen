@@ -470,6 +470,7 @@
         </ng-template>
         <eg-batch-item-attr label="{{cat.name()}} ({{orgSn(cat.owner())}})" i18n-label
           name="stat_cat_{{cat.id()}}" editInputDomId="stat-cat-input-{{cat.id()}}"
+          [valueRequired]="cat.required() == 't'"
           [editTemplate]="statCatTemplate"
           [labelCounts]="statCatCounts(cat.id())"
           (valueCleared)="statCatChanged(cat.id(), true)"
