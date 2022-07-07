@@ -4,8 +4,9 @@
     myopac_page = "reservations";
 %]
 <h3 class="sr-only">[% l('Reservations') %]</h3>
+<h3>[% l("Reservations") %]</h3>
 [% IF ctx.reservations.size %]
-    <table id="acct_reservations_main_header" class="table_no_border_space table_no_cell_pad item_list_padding">
+    <table id="acct_reservations_main_header" class="table table-hover table-bordered miniTable reservationsTable">
         <tr>
             <th scope="col">[% l('Resource type') %]</th>
             <th scope="col">[% l('Start time') %]</th>

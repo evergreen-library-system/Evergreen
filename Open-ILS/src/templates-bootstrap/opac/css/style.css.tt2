@@ -201,6 +201,11 @@ only screen and (max-width: 650px)  {
     .bucketTable td:nth-of-type(2):before { content: "Title"; display: flex; text-align:left; }
     .bucketTable td:nth-of-type(3):before { content: "Author"; display: flex; text-align:left; }
     .bucketTable td:nth-of-type(4):before { content: "Call Number"; display: flex; text-align:left; }
+    .reservationsTable td:nth-of-type(1):before { content: "Resource type"; display: flex; }
+    .reservationsTable td:nth-of-type(2):before { content: "Start time"; display: flex; }
+    .reservationsTable td:nth-of-type(3):before { content: "End time"; display: flex; }
+    .reservationsTable td:nth-of-type(4):before { content: "Pickup location"; display: flex; }
+    .reservationsTable td:nth-of-type(5):before { content: "Status"; display: flex; }
 
     /*Media Style Additions*/
     .fullRow{
