@@ -136,6 +136,15 @@
                 Clear
               </button>
             </div>
+
+            <div class="row font-italic">
+              <span class="label-with-material-icon" i18n>
+                Permissions marked with a 
+                <span class="pl-1 pr-1 font-weight-bold text-danger 
+                  material-icons mat-icon-shrunk-in-button">new_releases</span>
+                override parent group permissions.
+              </span>
+            </div>
             
             <div class="row font-weight-bold">
               <div class="col-lg-5" i18n>Permissions</div>
@@ -148,9 +157,14 @@
             <div class="row" *ngFor="let map of groupPermMaps()"
                 [ngClass]="{'bg-warning': map.isdeleted()}">
               <div class="col-lg-5">
-                <span i18n-title 
-                  title="{{map.perm().description() || map.perm().code()}}">
-                  {{map.perm().code()}}
+                <span class="label-with-material-icon">
+                  <span i18n-title title="{{map.perm().description() || map.perm().code()}}">
+                    {{map.perm().code()}}
+                  </span>
+                  <span *ngIf="permOverrides(map)" 
+                    i18n-title title="Permission Overrides a Parent Group Permission"
+                    class="pl-1 font-weight-bold text-danger material-icons mat-icon-shrunk-in-button"
+                    i18n>new_releases</span>
                 </span>
               </div>
               <ng-container *ngIf="permIsInherited(map); else nativeMap">
