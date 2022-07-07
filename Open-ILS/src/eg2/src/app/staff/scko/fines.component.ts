@@ -44,7 +44,7 @@ export class SckoFinesComponent implements OnInit {
         ).pipe(switchMap(sums => {
 
             return this.pcrud.search('mbt', {id: sums.map(s => s.id())},
-                {   order_by: 'xact_start',
+                {   order_by: {mbt: 'xact_start'},
                     flesh: 5,
                     flesh_fields: {
                         mbt: ['summary', 'circulation', 'grocery'],

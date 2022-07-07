@@ -19,5 +19,9 @@ export class SckoCheckoutComponent implements OnInit {
 
     ngOnInit() {
     }
+
+    printList() {
+        this.scko.printReceipt();
+    }
 }
 

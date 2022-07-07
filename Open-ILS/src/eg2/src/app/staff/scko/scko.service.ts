@@ -151,6 +151,9 @@ export class SckoService {
 
             if (username && !this.patronPasswordRequired) {
                 return this.loadPatron(username);
+            } else {
+                // Go to the base checkout page by default.
+                this.router.navigate(['/staff/scko']);
             }
         }).catch(_ => {}); // console errors
     }
@@ -351,8 +354,6 @@ export class SckoService {
         this.statusDisplaySuccess = !ctx.shouldPopup;
 
         this.focusBarcode.emit();
-
-        // TODO on success tell the summary to update its numbers.
 
         if (this.alertAudio && ctx.alertSound) {
             this.audio.play(ctx.alertSound);
