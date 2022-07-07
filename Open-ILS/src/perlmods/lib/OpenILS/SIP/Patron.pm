@@ -491,15 +491,18 @@ sub print_line {            # not implemented
     return '';
 }
 
-sub too_many_charged {      # not implemented
+sub too_many_charged {
     my $self = shift;
-    return 0;
+    return scalar(
+        grep { $_->id == OILS_PENALTY_PATRON_EXCEEDS_CHECKOUT_COUNT } @{$self->{user}->standing_penalties}
+    );
 }
 
-sub too_many_overdue { 
+sub too_many_overdue {
     my $self = shift;
-    return scalar( # PATRON_EXCEEDS_OVERDUE_COUNT
-        grep { $_->id == OILS_PENALTY_PATRON_EXCEEDS_OVERDUE_COUNT } @{$self->{user}->standing_penalties}
+    return scalar( # PATRON_EXCEEDS_OVERDUE_COUNT || PATRON_EXCEEDS_LONGOVERDUE_COUNT
+        grep { $_->id == OILS_PENALTY_PATRON_EXCEEDS_OVERDUE_COUNT
+           || $_->id == OILS_PENALTY_PATRON_EXCEEDS_LONGOVERDUE_COUNT } @{$self->{user}->standing_penalties}
     );
 }
 
@@ -515,10 +518,11 @@ sub too_many_claim_return {
     return 0;
 }
 
-# not relevant, handled by fines/fees
 sub too_many_lost {
     my $self = shift;
-    return 0;
+    return scalar(
+        grep { $_->id == OILS_PENALTY_PATRON_EXCEEDS_LOST_COUNT } @{$self->{user}->standing_penalties}
+    );
 }
 
 sub excessive_fines { 
