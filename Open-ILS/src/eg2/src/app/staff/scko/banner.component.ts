@@ -128,6 +128,8 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
     submitPatronLogin() {
         this.patronLoginFailed = false;
         this.scko.loadPatron(this.patronUsername, this.patronPassword).finally(() => {
+            this.patronUsername = '';
+            this.patronPassword = '';
             if (this.scko.patronSummary === null) {
                 this.patronLoginFailed = true;
             } else {
