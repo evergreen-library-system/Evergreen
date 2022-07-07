@@ -283,10 +283,12 @@ export class AuthService {
                 `received eg.auth broadcast ${JSON.stringify(e.data)}`);
 
             if (e.data.action === 'logout') {
-                // Logout will be handled by the originating tab.
-                // We just need to clear tab-local memory.
-                this.cleanup();
-                this.net.authExpired$.emit({viaExternal: true});
+                if (!e.data.domain || e.data.domain === this.authDomain) {
+                    // Logout will be handled by the originating tab.
+                    // We just need to clear tab-local memory.
+                    this.cleanup();
+                    this.net.authExpired$.emit({viaExternal: true});
+                }
             }
         };
     }
@@ -384,7 +386,7 @@ export class AuthService {
     // This should only be invoked by one tab.
     broadcastLogout(): void {
         console.debug('Notifying tabs of imminent auth token removal');
-        this.authChannel.postMessage({action : 'logout'});
+        this.authChannel.postMessage({action : 'logout', domain: this.authDomain});
     }
 
     // Remove/reset session data
