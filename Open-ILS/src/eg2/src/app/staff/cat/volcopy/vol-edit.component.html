@@ -245,27 +245,45 @@
                 <span>{{orgNode.target.shortname()}}</span>
               </ng-container>
             </div>
-            <div class="pr-1">
-              <ng-container *ngIf="copyIdx == 0 && volIdx == 0 && (
-                context.sessionType == 'record' || context.sessionType == 'mixed')">
-                  <ng-template #addOrgTmpl>
-                    <eg-org-select [limitPerms]="['CREATE_VOLUME']" 
-                      placeholder="Select Location..." i18n-placeholder
-                      [hideOrgs]="volcopy.hideVolOrgs"
-                      (onChange)="addVol($event); addOrgPopover.close()">
-                    </eg-org-select>
-                  </ng-template>
+            <ng-container *ngIf="copyIdx == 0 && volIdx == 0 && (
+              context.sessionType == 'record' || context.sessionType == 'mixed')">
+              <div class="pr-1">
+                <ng-template #addOrgTmpl>
+                  <eg-org-select [limitPerms]="['CREATE_VOLUME']" 
+                    placeholder="Select Location..." i18n-placeholder
+                    [hideOrgs]="volcopy.hideVolOrgs"
+                    (onChange)="addVol($event); addOrgPopover.close()">
+                  </eg-org-select>
+                </ng-template>
 
-                  <button class="btn btn-sm material-icon-button p-1"
-                    placement="bottom" [ngbPopover]="addOrgTmpl"
-                    autoClose="outside" #addOrgPopover="ngbPopover"
-                    i18n-popoverTitle="Add Call Number For Location"
-                    i18n-title title="Add Call Number For Location"
-                    (click)="addVolOrg=null">
-                    <span class="material-icons">add_circle_outline</span>
-                  </button>
-              </ng-container>
-            </div>
+                <button class="btn btn-sm material-icon-button p-1"
+                  placement="bottom" [ngbPopover]="addOrgTmpl"
+                  autoClose="outside" #addOrgPopover="ngbPopover"
+                  i18n-popoverTitle="Add Call Number For Location"
+                  i18n-title title="Add Call Number For Location">
+                  <span class="material-icons">add_circle_outline</span>
+                </button>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="copyIdx == 0">
+              <div class="pr-1">
+                <ng-template #editOrgTmpl>
+                  <eg-org-select [limitPerms]="['CREATE_VOLUME']" 
+                    placeholder="Select Location..." i18n-placeholder
+                    [hideOrgs]="volcopy.hideVolOrgs"
+                    (onChange)="editVolOwner(volNode, $event); editOrgPopover.close()">
+                  </eg-org-select>
+                </ng-template>
+
+                <button class="btn btn-sm material-icon-button p-1"
+                  placement="bottom" [ngbPopover]="editOrgTmpl"
+                  autoClose="outside" #editOrgPopover="ngbPopover"
+                  i18n-popoverTitle="Edit Call Number Owning Location"
+                  i18n-title title="Edit Call Number Owning Location">
+                  <span class="material-icons">edit</span>
+                </button>
+              </div>
+            </ng-container>
           </div>
         </div>
         <div class="p-1" [ngStyle]="{flex: flexAt(3)}">

@@ -518,6 +518,54 @@ export class VolEditComponent implements OnInit {
         }
     }
 
+    editVolOwner(volNode: HoldingsTreeNode, org: IdlObject) {
+        if (!org) { return; }
+
+        const orgId = org.id();
+        const vol = volNode.target;
+
+        vol.owning_lib(orgId);
+        vol.ischanged(true);
+
+        // Move the vol node away from its previous org node and append
+        // it to the children list of the target node.
+        let targetOrgNode: HoldingsTreeNode;
+        this.context.orgNodes().forEach(orgNode => {
+
+            if (orgNode.target.id() === orgId) {
+                targetOrgNode = orgNode;
+                return;
+            }
+
+            orgNode.children.forEach((vNode, volIdx) => {
+                if (vol.id() === vNode.target.id()) {
+                    orgNode.children.splice(volIdx, 1);
+                }
+            });
+        });
+
+        if (!targetOrgNode) {
+            targetOrgNode = this.context.findOrCreateOrgNode(orgId);
+        }
+
+        targetOrgNode.children.push(volNode);
+
+        // If configured to do so, also update the circ_lib for any
+        // copies linked to this call number in this edit session.
+        if (this.volcopy.defaults.values.circ_lib_mod_with_owning_lib) {
+            volNode.children.forEach(copyNode => {
+                const copy = copyNode.target;
+                if (copy.circ_lib() !== orgId) {
+                    copy.circ_lib(orgId);
+                    copy.ischanged(true);
+                }
+            });
+        }
+
+        this.emitSaveChange();
+    }
+
+
     displayColumn(field: string): boolean {
         return this.volcopy.defaults.hidden[field] !== true;
     }
