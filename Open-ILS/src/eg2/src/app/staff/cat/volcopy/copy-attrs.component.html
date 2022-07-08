@@ -151,7 +151,7 @@
     <div *ngIf="displayAttr('location')">
       <ng-template #locationTemplate>
         <eg-item-location-select (valueChange)="values['location'] = $event"
-          [contextOrgIds]="affectedOrgIds()"
+          [contextOrgIds]="copyLocationOrgs()"
           domId='location-input' [required]="true" permFilter="UPDATE_COPY">
         </eg-item-location-select>
       </ng-template>
