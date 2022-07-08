@@ -956,8 +956,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
         this.copyTagsDialog.copyIds = copyIds;
         this.copyTagsDialog.open({size: 'lg'}).subscribe(
-            modified => {
-                if (modified) {
+            changes => {
+                if (changes.newTags.length > 0 || changes.deletedMaps.length > 0) {
                     this.hardRefresh();
                 }
             }
