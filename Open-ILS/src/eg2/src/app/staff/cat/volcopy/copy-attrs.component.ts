@@ -470,6 +470,8 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
         this.copyNotesDialog.copyIds = this.context.copyList().map(c => c.id());
 
         this.copyNotesDialog.open({size: 'lg'}).subscribe(changes => {
+            if (!changes) { return; }
+
             if ((!changes.newNotes || changes.newNotes.length === 0) &&
                 (!changes.delNotes || changes.delNotes.length === 0)
                ) {
