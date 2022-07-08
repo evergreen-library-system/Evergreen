@@ -79,7 +79,8 @@ export class CopyAlertsDialogComponent
 
         // In manage mode, we can only manage a single copy.
         // But in create mode, we can add alerts to multiple copies.
-        if (this.copyIds.length === 1 && !this.inPlaceCreateMode) {
+        // We can only manage copies that already exist in the database.
+        if (this.copyIds.length === 1 && this.copyIds[0] > 0) {
             this.mode = 'manage';
         } else {
             this.mode = 'create';
@@ -109,6 +110,11 @@ export class CopyAlertsDialogComponent
     }
 
     getCopies(): Promise<any> {
+
+        // Avoid fetch if we're only adding notes to isnew copies.
+        const ids = this.copyIds.filter(id => id > 0);
+        if (ids.length === 0) { return Promise.resolve(); }
+
         return this.pcrud.search('acp', {id: this.copyIds}, {}, {atomic: true})
         .toPromise().then(copies => {
             this.copies = copies;
