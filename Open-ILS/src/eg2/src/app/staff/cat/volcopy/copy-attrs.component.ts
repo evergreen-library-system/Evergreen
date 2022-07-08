@@ -719,9 +719,16 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
         this.batchAttrs.filter(attr => attr.editing).forEach(attr => attr.save());
     }
 
-    affectedOrgIds(): number[] {
+    copyLocationOrgs(): number[] {
         if (!this.context) { return []; }
-        return this.context.orgNodes().map(n => n.target.id());
+
+        // Make sure every org unit represented by the edit batch
+        // is represented.
+        const ids = this.context.orgNodes().map(n => n.target.id());
+
+        // Make sure all locations within the "full path" of our
+        // workstation org unit are included.
+        return ids.concat(this.org.fullPath(this.auth.user().ws_ou()));
     }
 }
 
