@@ -528,9 +528,38 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
 
             if (field === 'statcats') {
                 Object.keys(value).forEach(catId => {
-                    this.statCatValues[+catId] = value[+catId];
-                    this.statCatChanged(+catId);
+                    if (value[+catId] !== null) {
+                        this.statCatValues[+catId] = value[+catId];
+                        this.statCatChanged(+catId);
+                    }
                 });
+                return;
+            }
+
+            // Copy alerts are stored as hashes of the bits we need.
+            // Templates can be used to create alerts, but not edit them.
+            if (field === 'copy_alerts' && Array.isArray(value)) {
+                value.forEach(a => {
+                    this.context.copyList().forEach(copy => {
+                        const newAlert = this.idl.create('aca');
+                        newAlert.isnew(true);
+                        newAlert.copy(copy.id());
+                        newAlert.alert_type(a.alert_type);
+                        newAlert.temp(a.temp);
+                        newAlert.note(a.note);
+                        newAlert.create_staff(this.auth.user().id());
+                        newAlert.create_time('now');
+
+                        if (Array.isArray(copy.copy_alerts())) {
+                            copy.copy_alerts().push(newAlert);
+                        } else {
+                            copy.copy_alerts([newAlert]);
+                        }
+
+                        copy.ischanged(true);
+                    });
+                });
+
                 return;
             }
 
