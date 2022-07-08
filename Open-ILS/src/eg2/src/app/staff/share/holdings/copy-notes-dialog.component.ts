@@ -168,7 +168,7 @@ export class CopyNotesDialogComponent
             }
         }).then(_ => {
             this.successMsg.current().then(msg => this.toast.success(msg));
-            this.close(this.newNotes.length > 0 || this.delNotes.length > 0);
+            this.close({ newNotes: this.newNotes, delNotes: this.delNotes });
         });
     }
 }

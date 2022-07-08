@@ -971,6 +971,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         this.copyNotesDialog.copyIds = copyIds;
         this.copyNotesDialog.open({size: 'lg'}).subscribe(
             changes => {
+                if (!changes) { return; }
                 if (changes.newNotes.length > 0 || changes.delNotes.length > 0) {
                     this.hardRefresh();
                 }
