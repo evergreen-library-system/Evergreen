@@ -469,11 +469,14 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
         this.copyNotesDialog.inPlaceCreateMode = true;
         this.copyNotesDialog.copyIds = this.context.copyList().map(c => c.id());
 
-        this.copyNotesDialog.open({size: 'lg'}).subscribe(newNotes => {
-            if (!newNotes || newNotes.length === 0) { return; }
+        this.copyNotesDialog.open({size: 'lg'}).subscribe(changes => {
+            if ((!changes.newNotes || changes.newNotes.length === 0) &&
+                (!changes.delNotes || changes.delNotes.length === 0)
+               ) {
+                return;
+            }
 
-            console.log(newNotes);
-            newNotes.forEach(note => {
+            changes.newNotes.forEach(note => {
                 this.context.copyList().forEach(copy => {
                     const n = this.idl.clone(note);
                     n.owning_copy(copy.id());
@@ -481,6 +484,16 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                     copy.ischanged(true);
                 });
             });
+            if (this.context.copyList().length === 1) {
+                const copy = this.context.copyList()[0];
+                changes.delNotes.forEach(note => {
+                    const existing = copy.notes().filter(n => n.id() === note.id())[0];
+                    if (existing) {
+                        existing.isdeleted(true);
+                        copy.ischanged(true);
+                    }
+                });
+            }
         });
     }
 
