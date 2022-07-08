@@ -442,14 +442,17 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
         this.copyTagsDialog.inPlaceCreateMode = true;
         this.copyTagsDialog.copyIds = this.context.copyList().map(c => c.id());
 
-        this.copyTagsDialog.open({size: 'lg'}).subscribe(newTags => {
-            if (!newTags || newTags.length === 0) { return; }
+        this.copyTagsDialog.open({size: 'lg'}).subscribe(changes => {
+            if ((!changes.newTags || changes.newTags.length === 0) &&
+                (!changes.deletedMaps || changes.deletedMaps.length === 0)) {
+                return;
+            }
 
-            newTags.forEach(tag => {
+            changes.newTags.forEach(tag => {
                 this.context.copyList().forEach(copy => {
 
                     if (copy.tags().filter(
-                        m => m.tag().id() === tag.id()).length > 0) {
+                        m => m.tag() === tag.id()).length > 0) {
                         return; // map already exists
                     }
 
@@ -462,6 +465,17 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                     copy.ischanged(true);
                 });
             });
+
+            if (this.context.copyList().length === 1) {
+                const copy = this.context.copyList()[0];
+                changes.deletedMaps.forEach(tag => {
+                    const existing = copy.tags().filter(t => t.id() === tag.id())[0];
+                    if (existing) {
+                        existing.isdeleted(true);
+                        copy.ischanged(true);
+                    }
+                });
+            }
         });
     }
 

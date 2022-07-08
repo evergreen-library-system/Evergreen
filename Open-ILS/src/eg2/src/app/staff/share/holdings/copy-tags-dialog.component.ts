@@ -17,6 +17,11 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
  * Dialog for managing copy tags.
  */
 
+export interface CopyTagChanges {
+    newTags: IdlObject[];
+    deletedMaps: IdlObject[];
+}
+
 @Component({
   selector: 'eg-copy-tags-dialog',
   templateUrl: 'copy-tags-dialog.component.html'
@@ -89,7 +94,7 @@ export class CopyTagsDialogComponent
 
     /**
      */
-    open(args: NgbModalOptions): Observable<IdlObject[]> {
+    open(args: NgbModalOptions): Observable<CopyTagChanges> {
         this.copy = null;
         this.copies = [];
         this.newTags = [];
@@ -101,8 +106,8 @@ export class CopyTagsDialogComponent
 
         // In manage mode, we can only manage a single copy.
         // But in create mode, we can add tags to multiple copies.
-
-        if (this.copyIds.length === 1 && !this.inPlaceCreateMode) {
+        // We can only manage copies that already exist in the database.
+        if (this.copyIds.length === 1 && this.copyIds[0] > 0) {
             this.mode = 'manage';
         } else {
             this.mode = 'create';
@@ -201,7 +206,7 @@ export class CopyTagsDialogComponent
     applyChanges() {
 
         if (this.inPlaceCreateMode) {
-            this.close(this.newTags);
+            this.close({ newTags: this.newTags, deletedMaps: this.deletedMaps });
             return;
         }
 
@@ -227,7 +232,7 @@ export class CopyTagsDialogComponent
 
         promise.then(_ => {
             this.successMsg.current().then(msg => this.toast.success(msg));
-            this.close(this.newTags.length > 0);
+            this.close({ newTags: this.newTags, deletedMaps: this.deletedMaps });
         });
     }
 }
