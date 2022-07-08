@@ -226,6 +226,7 @@ export class VolCopyService {
         copy.parts([]);
         copy.tags([]);
         copy.notes([]);
+        copy.copy_alerts([]);
         copy.stat_cat_entries([]);
 
         return copy;
