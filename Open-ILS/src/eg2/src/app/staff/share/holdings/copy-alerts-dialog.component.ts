@@ -79,7 +79,7 @@ export class CopyAlertsDialogComponent
 
         // In manage mode, we can only manage a single copy.
         // But in create mode, we can add alerts to multiple copies.
-        if (this.copyIds.length === 1) {
+        if (this.copyIds.length === 1 && !this.inPlaceCreateMode) {
             this.mode = 'manage';
         } else {
             this.mode = 'create';
