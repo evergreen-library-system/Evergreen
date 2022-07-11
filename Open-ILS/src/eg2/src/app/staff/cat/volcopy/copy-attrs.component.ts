@@ -223,7 +223,9 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
 
             case 'editor':
             case 'creator':
-                return value.usrname();
+                // VIEW_USER permission may be too narrow.  If so,
+                // just display the user ID instead of the username.
+                return typeof value === 'object' ? value.usrname() : value;
 
             case 'circ_lib':
                 return this.org.get(value).shortname();
