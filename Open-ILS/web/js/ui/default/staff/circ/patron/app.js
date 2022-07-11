@@ -233,8 +233,10 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 'egUserBucketMod',
  *
  * */
 .controller('PatronCtrl',
-       ['$scope','$q','$location','$filter','egCore','egNet','egUser','egAlertDialog','egConfirmDialog','egPromptDialog','patronSvc','egCirc','hasPermAt',
-function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDialog , egConfirmDialog , egPromptDialog , patronSvc , egCirc , hasPermAt) {
+       ['$scope','$q','$location','$filter','egCore','egNet','egUser','egAlertDialog',
+        'egConfirmDialog','egPromptDialog','patronSvc','egCirc','hasPermAt','ngToast',
+function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDialog ,
+         egConfirmDialog , egPromptDialog , patronSvc , egCirc , hasPermAt, ngToast) {
 
     $scope.is_patron_edit = function() {
         return Boolean($location.path().match(/patron\/\d+\/edit$/));
@@ -469,6 +471,28 @@ function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDi
                     }
                 });
             }
+        });
+    }
+
+    $scope.refreshPenalties = function() {
+
+        egNet.request(
+            'open-ils.actor',
+            'open-ils.actor.user.penalties.update',
+            egCore.auth.token(), $scope.patron().id()
+
+        ).then(function(resp) {
+
+            if (evt = egCore.evt.parse(resp)) {
+                ngToast.warning(egCore.strings.PENALTY_REFRESH_FAILED);
+                console.error(evt);
+            }
+
+            ngToast.create(egCore.strings.PENALTY_REFRESH_SUCCESS);
+
+            // Depending on which page we're on (e.g. Note/Messages) we
+            // may need to force a full data refresh.
+            setTimeout(function() { location.href = location.href; });
         });
     }
 
