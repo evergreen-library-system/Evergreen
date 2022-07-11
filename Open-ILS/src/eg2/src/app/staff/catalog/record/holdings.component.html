@@ -120,8 +120,8 @@
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
-      i18n-group group="Add" i18n-label label="Add Item Alerts"
-      (onClick)="openItemAlerts($event, 'create')">
+      i18n-group group="Add" i18n-label label="Add/Manage Item Alerts"
+      (onClick)="openItemAlerts($event)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
@@ -173,11 +173,6 @@
       (onClick)="openHoldingEdit($event, true, false)">
     </eg-grid-toolbar-action>
     
-    <eg-grid-toolbar-action
-      i18n-group group="Edit" i18n-label label="Edit Item Alerts"
-      (onClick)="openItemAlerts($event, 'manage')">
-    </eg-grid-toolbar-action>
-
     <eg-grid-toolbar-action
       i18n-group group="Edit" i18n-label label="Replace Barcodes"
       (onClick)="openReplaceBarcodeDialog($event)">

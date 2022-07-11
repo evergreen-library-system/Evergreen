@@ -422,10 +422,18 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
         this.copyAlertsDialog.inPlaceCreateMode = true;
         this.copyAlertsDialog.copyIds = this.context.copyList().map(c => c.id());
 
-        this.copyAlertsDialog.open({size: 'lg'}).subscribe(
-            newAlert => {
-                if (newAlert) {
-                    this.context.copyList().forEach(copy => {
+        this.copyAlertsDialog.open({size: 'lg'}).subscribe(changes => {
+            if (!changes) { return; }
+
+            if ((!changes.newAlerts || changes.newAlerts.length === 0) &&
+                (!changes.changedAlerts || changes.changedAlerts.length === 0)
+               ) {
+                return;
+            }
+
+            if (changes.newAlerts) {
+                this.context.copyList().forEach(copy => {
+                    changes.newAlerts.forEach(newAlert => {
                         const a = this.idl.clone(newAlert);
                         a.isnew(true);
                         a.copy(copy.id());
@@ -433,9 +441,25 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                         copy.copy_alerts().push(a);
                         copy.ischanged(true);
                     });
-                }
+                });
             }
-        );
+            if (changes.changedAlerts && this.context.copyList().length === 1) {
+                const copy = this.context.copyList()[0];
+                changes.changedAlerts.forEach(alert => {
+                    const existing = copy.copy_alerts().filter(a => a.id() === alert.id())[0];
+                    if (existing) {
+                        existing.ischanged(true);
+                        existing.alert_type(alert.alert_type());
+                        existing.temp(alert.temp());
+                        existing.ack_time(alert.ack_time());
+                        if (alert.ack_time() === 'now') {
+                            existing.ack_staff(this.auth.user().id());
+                        }
+                        copy.ischanged(true);
+                    }
+                });
+            }
+        });
     }
 
     openCopyTags() {

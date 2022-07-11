@@ -935,15 +935,15 @@ export class HoldingsMaintenanceComponent implements OnInit {
         }
     }
 
-    openItemAlerts(rows: HoldingsEntry[], mode: string) {
+    openItemAlerts(rows: HoldingsEntry[]) {
         const copyIds = this.selectedCopyIds(rows);
         if (copyIds.length === 0) { return; }
 
         this.copyAlertsDialog.copyIds = copyIds;
-        this.copyAlertsDialog.mode = mode;
         this.copyAlertsDialog.open({size: 'lg'}).subscribe(
-            modified => {
-                if (modified) {
+            changes => {
+                if (!changes) { return; }
+                if (changes.newAlerts.length > 0 || changes.changedAlerts.length > 0) {
                     this.hardRefresh();
                 }
             }

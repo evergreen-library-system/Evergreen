@@ -21,8 +21,9 @@
     <div class="row mt-2 p-2 rounded border border-success">
       <div class="col-lg-4">
         <eg-combobox [entries]="alertTypes" 
-          i18n-placeholder placeholder="New Alert Type..."
-          [required]="true"
+          i18n-placeholder placeholder="Select Alert Type..."
+          [selectedId]="newAlert.alert_type()"
+          [mandatory]="true"
           (onChange)="newAlert.alert_type($event ? $event.id : null)">
         </eg-combobox>
       </div>
@@ -51,6 +52,17 @@
         </div>  
       </div>
     </div>
+    <h4 class="mt-2" i18n *ngIf="newAlerts.length > 0">Pending New Alerts</h4>
+    <div class="row mt-2" *ngFor="let alert of newAlerts">
+      <div class="col-lg-4">{{getAlertTypeLabel(alert)}}</div>
+      <div class="col-lg-5">{{alert.note()}}</div>
+      <div class="col-lg-3">
+        <button class="btn btn-outline-danger" (click)="removeAlert(alert)" i18n>
+          Remove
+        </button>
+      </div>
+    </div>
+
     <ng-container *ngIf="mode == 'manage'">
       <!-- in manage mode list all of the alerts linked to the copy -->
       <div class="row mt-2" 
@@ -101,9 +113,7 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" 
       (click)="close()" i18n>Close</button>
-    <ng-container *ngIf="mode == 'manage'">
-      <button class="btn btn-success mr-2" 
-        (click)="applyChanges()" i18n>Apply Changes</button>
-    </ng-container>
+    <button class="btn btn-success mr-2" 
+      (click)="applyChanges()" i18n>Apply Changes</button>
   </div>
 </ng-template>
