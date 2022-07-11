@@ -22,7 +22,8 @@ const COPY_FLESH = {
     flesh_fields: {
         acp: [
             'call_number', 'location', 'parts', 'tags',
-            'creator', 'editor', 'stat_cat_entries', 'notes'
+            'creator', 'editor', 'stat_cat_entries', 'notes',
+            'copy_alerts'
         ],
         acptcm: ['tag'],
         acpt: ['tag_type']
