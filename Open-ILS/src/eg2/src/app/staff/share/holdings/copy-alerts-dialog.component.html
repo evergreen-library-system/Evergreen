@@ -57,9 +57,9 @@
         *ngFor="let alert of copy.copy_alerts()">
         <div class="col-lg-12 pb-2"><hr/></div>
         <div class="col-lg-4">
-          <eg-combobox [entries]="alertTypes" [startId]="alert.alert_type()"
+          <eg-combobox [entries]="alertTypes" [selectedId]="alert.alert_type()"
             i18n-placeholder placeholder="Alert Type..."
-            [required]="true"
+            [mandatory]="true"
             (onChange)="alert.alert_type($event ? $event.id : null); alert.ischanged(true)">
           </eg-combobox>
           <div class="pl-2 pt-2" i18n>
