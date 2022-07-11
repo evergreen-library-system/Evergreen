@@ -87,6 +87,8 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.TEST_NOTIFY_SUCCESS = "[% l('Test Notification sent') %]";
   s.TEST_NOTIFY_FAIL = "[% l('Test Notification failed to send') %]";
   s.REMOVE_HOLD_SUBSCRIPTIONS = "[% l('Remove selected Hold Groups for user?') %]";
+  s.PENALTY_REFRESH_FAILED = "[% l('Penalty Refresh Failed') %]";
+  s.PENALTY_REFRESH_SUCCESS = "[% l('Penalty Refresh Succeeded') %]";
 }]);
 </script>
 
@@ -178,6 +180,9 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
             <b class="caret"></b>
         </a>
         <ul uib-dropdown-menu>
+          <li>
+            <a href ng-click="refreshPenalties()">[% l('Refresh Penalties') %]</a>
+          </li>
           <li>
             <a href="./circ/patron/{{patron().id()}}/alerts">
               [% l('Display Alerts') %]
