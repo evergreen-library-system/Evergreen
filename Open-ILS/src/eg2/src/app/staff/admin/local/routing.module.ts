@@ -86,6 +86,10 @@ const routes: Routes = [{
     loadChildren: () => import('./field-documentation/field-documentation.module')
       .then(m => m.FieldDocumentationModule)
 }, {
+    path: 'negative-balances',
+    loadChildren: () =>
+      import('./negative-balances/negative-balances.module').then(m => m.NegativeBalancesModule)
+}, {
     path: ':schema/:table',
     component: BasicAdminPageComponent
 }];

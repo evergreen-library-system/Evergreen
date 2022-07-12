@@ -4182,7 +4182,11 @@ __PACKAGE__->register_method (
 );
 
 sub negative_balance_users {
-    my($self, $conn, $auth, $org_id) = @_;
+    my($self, $conn, $auth, $org_id, $options) = @_;
+
+    $options ||= {};
+    $options->{limit} = 1000 unless $options->{limit};
+    $options->{offset} = 0 unless $options->{offset};
 
     my $e = new_editor(authtoken => $auth);
     return $e->die_event unless $e->checkauth;
@@ -4211,8 +4215,13 @@ sub negative_balance_users {
                 }
             }
         },
-        where => {'+mous' => {balance_owed => {'<' => 0}}}
+        where => {'+mous' => {balance_owed => {'<' => 0}}},
+        offset => $options->{offset},
+        limit => $options->{limit},
+        order_by => [{class => 'mous', field => 'usr'}]
     };
+
+    $org_id = $U->get_org_descendants($org_id) if $options->{org_descendants};
 
     $query->{from}->{mous}->{au}->{filter}->{home_ou} = $org_id if $org_id;
 

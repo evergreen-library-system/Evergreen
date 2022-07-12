@@ -1,0 +1,40 @@
+<eg-staff-banner i18n-bannerText bannerText="Patrons with Negative Balances">
+</eg-staff-banner>
+
+<div class="row mt-2 mb-2">
+  <div class="col-lg-6 form-inline">
+    <span class="pr-2" i18n>Patron Home Library:</span>
+    <eg-org-select
+      persistKey="admin.local.negative_balances"
+      (componentLoaded)="contextOrgLoaded = true"
+      [initialOrg]="contextOrg"
+      (onChange)="orgChnaged($event)">
+    </eg-org-select>
+  </div>
+</div>
+
+<ng-template #barcodeTmpl let-user="row">
+  <a target="_blank" href="/eg/staff/circ/patron/{{user.id()}}/checkout">
+    {{user.card().barcode()}}
+  </a>
+</ng-template>
+
+<eg-grid #grid idlClass="au" [dataSource]="dataSource"
+  persistKey="admin.local.negative_balances"
+  showFields="balance_owed,last_billing_activity,barcode,family_name,first_given_name,dob,barred">
+
+  <eg-grid-column name="barcode" [cellTemplate]="barcodeTmpl"
+    i18n-label label="Barcode"></eg-grid-column>
+
+  <eg-grid-column name="balance_owed" path="_extras.balance_owed"
+    datatype="money" i18n-label label="Balance Owed"></eg-grid-column>
+
+  <eg-grid-column name="last_billing_activity" path="_extras.last_billing_activity"
+    datatype="timestamp" [datePlusTime]="true" i18n-label label="Last Billing Activity">
+  </eg-grid-column>
+</eg-grid>
+
+
+
+
+
