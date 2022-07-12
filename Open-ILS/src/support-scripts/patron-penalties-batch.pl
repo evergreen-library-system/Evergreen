@@ -35,10 +35,13 @@ my $max_id;
 my $has_open_circ = 0;
 my $owes_more_than;
 my $owes_less_than;
+my $has_penalty;
+my $no_has_penalty;
 my $verbose;
 my $help;
 my $batch_size = 100;
 my $authtoken;
+my $e;
 
 my $ops = GetOptions(
     'osrf-config=s'     => \$osrf_config,
@@ -49,6 +52,8 @@ my $ops = GetOptions(
     'has-open-circ'     => \$has_open_circ,
     'owes-more-than=s'  => \$owes_more_than,
     'owes-less-than=s'  => \$owes_less_than,
+    'has-penalty=s'     => \$has_penalty,
+    'no-has-penalty=s'  => \$no_has_penalty,
     'verbose'           => \$verbose,
     'help'              => \$help
 );
@@ -69,6 +74,12 @@ sub help {
         --process-as <eg-account>
             Username of an Evergreen account to use for creating the
             internal auth session.  Defaults to 'admin'.
+
+        --has-penalty <penalty-type-id>
+            Limit to patrons that currently have a specific penalty.
+
+        --no-has-penalty <penalty-type-id>
+            Limit to patrons that do not currently have a specific penalty.
 
         --min-id <id>
             Lowest patron ID to process. 
@@ -116,13 +127,6 @@ sub announce {
     my $date_str = DateTime->now(time_zone => 'local')->strftime('%F %T');
     print "$date_str $msg\n";
 }
-
-# connect to osrf...
-OpenSRF::System->bootstrap_client(config_file => $osrf_config);
-Fieldmapper->import(IDL => 
-    OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
-OpenILS::Utils::CStoreEditor::init();
-my $e = OpenILS::Utils::CStoreEditor->new;
 
 sub get_user_ids {
     my ($limit, $offset) = @_;
@@ -176,6 +180,45 @@ sub get_user_ids {
             '+au' => {
                 # min_id defaults to 0.
                 id => {'>' => $min_id}
+            }
+        });
+    }
+
+    if ($has_penalty) {
+        
+        push(@where, {
+            '-exists' => {
+                select => {ausp => ['id']},
+                from => 'ausp',
+                where => {
+                    usr => {'=' => {'+au' => 'id'}},
+                    standing_penalty => $has_penalty,
+                    '-or' => [
+                        {stop_date => undef},
+                        {stop_date => {'>' => 'now'}}
+                    ]
+                },
+                limit => 1
+            }
+        });
+    }
+
+    if ($no_has_penalty) {
+        push(@where, {
+            '-not' => {
+                '-exists' => {
+                    select => {ausp => ['id']},
+                    from => 'ausp',
+                    where => {
+                        usr => {'=' => {'+au' => 'id'}},
+                        standing_penalty => $no_has_penalty,
+                        '-or' => [
+                            {stop_date => undef},
+                            {stop_date => {'>' => 'now'}}
+                        ]
+                    },
+                    limit => 1
+                }
             }
         });
     }
@@ -270,7 +313,8 @@ sub process_users {
         $batches++;
 
         announce('debug', 
-            "Processing batch $batches with $num patrons and offset $offset.");
+            "Processing batch $batches; count=$num; offset=$offset; ids=" .
+            @$user_ids[0] . '..' . @$user_ids[$#$user_ids]);
 
         for my $user_id (@$user_ids) {
 
@@ -284,7 +328,6 @@ sub process_users {
         }
 
         $offset += $batch_size;
-        announce('debug', "$counter patrons processed.");
     }
 
     announce('debug', "$counter total patrons processed.");
@@ -309,6 +352,13 @@ sub login {
         ($authtoken = $auth_resp->{payload}->{authtoken})
     );
 }
+
+# connect to osrf...
+OpenSRF::System->bootstrap_client(config_file => $osrf_config);
+Fieldmapper->import(IDL => 
+    OpenSRF::Utils::SettingsClient->new->config_value("IDL"));
+OpenILS::Utils::CStoreEditor::init();
+$e = OpenILS::Utils::CStoreEditor->new;
 
 login();
 process_users();
