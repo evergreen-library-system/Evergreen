@@ -57,5 +57,6 @@
   <eg-grid-field label="[% l('Middle Name') %]" path="second_given_name" visible></eg-grid-field>
   <eg-grid-field label="[% l('Last Name') %]" path="family_name" visible></eg-grid-field>
   <eg-grid-field label="[% l('Home Library') %]"    path="home_ou.name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Balance Owed') %]" path="money_summary.balance_owed" visible></eg-grid-field>
 
 </eg-grid>
