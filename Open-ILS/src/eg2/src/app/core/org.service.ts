@@ -175,6 +175,7 @@ export class OrgService {
         if (!node) {
             node = this.orgTree;
             this.orgMap = {};
+            this.orgList = [];
         }
         this.orgMap[node.id()] = node;
         this.orgList.push(node);
