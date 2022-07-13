@@ -58,6 +58,16 @@ export class PatronSummaryComponent implements OnInit {
         }
     }
 
+    penaltyLabel(pen: IdlObject): string {
+        if (pen.usr_message()) {
+            // They don't often have titles, but defaulting to
+            // title, assuming it will be shorter and therefore more
+            // appropriate for summary display.
+            return pen.usr_message().title() || pen.usr_message().message();
+        }
+        return pen.standing_penalty().label();
+    }
+
     printAddress(addr: IdlObject) {
         this.printer.print({
             templateName: 'patron_address',
