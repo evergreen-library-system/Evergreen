@@ -107,6 +107,11 @@ const routes: Routes = [{
     data: [{schema: 'sip',
         table: 'screen_message', readonlyFields: 'key'}]
 }, {
+    path: 'sip/filter',
+    component: BasicAdminPageComponent,
+    data: [{schema: 'sip',
+        table: 'filter', readonlyFields: 'key'}]
+}, {
     path: ':schema/:table',
     component: BasicAdminPageComponent
 }];
