@@ -478,9 +478,11 @@ export class HoldsGridComponent implements OnInit {
     showPatron(rows: any[]) {
         const usrIds = Array.from(new Set( rows.map(r => r.usr_id).filter( usr_id => Boolean(usr_id)) ));
         usrIds.forEach( usrId => {
-            const url =
-                '/eg/staff/circ/patron/' + usrId + '/checkout';
-            window.open(url, '_blank');
+            window.open(
+                this.ngLocation.prepareExternalUrl(
+                   '/staff/circ/patron/' + usrId + '/checkout'
+                )
+            );
         });
     }
 

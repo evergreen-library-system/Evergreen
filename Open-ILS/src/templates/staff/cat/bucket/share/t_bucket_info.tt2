@@ -9,7 +9,7 @@
   <span> / [% l('Created {{bucket().create_time() | date:egDateAndTimeFormat}}') %]</span>
   <span ng-show="bucket()._owner_name"> / 
     {{bucket()._owner_name}} 
-    <a target="_self" href="./circ/patron/{{bucket().owner()}}/checkout">
+    <a href="/eg2/staff/circ/patron/{{bucket().owner()}}/checkout">
       ({{bucket()._owner_ident}})
     </a>
     @ {{bucket()._owner_ou}}

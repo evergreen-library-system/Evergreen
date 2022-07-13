@@ -32,7 +32,7 @@
         <ul class="list-group list-group-flush">
           <li class="list-group-item" i18n>
             Item was last checked out by patron
-            <a href="/eg/staff/circ/patron/{{chargeResponse.circ.usr().id()}}/checkout">
+            <a routerLink="/staff/circ/patron/{{chargeResponse.circ.usr().id()}}/checkout">
               {{chargeResponse.circ.usr().family_name()}},
               {{chargeResponse.circ.usr().first_given_name()}} 
               ({{chargeResponse.circ.usr().usrname()}})

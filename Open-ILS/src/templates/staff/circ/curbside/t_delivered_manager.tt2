@@ -14,7 +14,7 @@
 
     <eg-grid-field label="[% l('Delivery Date/Time') %]" path="slot.delivered" datatype="timestamp"></eg-grid-field>
     <eg-grid-field label="[% l('Patron') %]" path="slot.patron" compiled>
-      <a href="./circ/patron/{{item.slot.patron().id()}}/items_out" target="_blank">
+      <a href="/eg2/staff/circ/patron/{{item.slot.patron().id()}}/items_out" target="_blank">
         {{item.slot.patron().family_name()}} / {{item.slot.patron().card().barcode()}}
         <span class="glyphicon glyphicon-new-window"></span>
       </a>

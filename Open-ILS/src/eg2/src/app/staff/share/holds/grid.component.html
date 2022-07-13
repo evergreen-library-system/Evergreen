@@ -207,7 +207,7 @@
         datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
 
       <ng-template #userBarcodeTmpl let-hold="row">
-        <a href="/eg/staff/circ/patron/{{hold.usr_id}}/checkout" target="_blank">
+        <a routerLink="/staff/circ/patron/{{hold.usr_id}}/checkout" target="_blank">
           {{hold.ucard_barcode}}
         </a>
       </ng-template>

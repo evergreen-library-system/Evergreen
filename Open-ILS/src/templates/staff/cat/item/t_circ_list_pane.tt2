@@ -22,8 +22,8 @@
 <div class="row" ng-show="!isMaxCircHistoryZero" ng-repeat="circ in circ_list">
   <div class="flex-row">
     <div class="flex-cell well">
-      <a ng-if="circ.usr()" target="_self"
-        href="./circ/patron/{{circ.usr().id()}}/checkout">
+      <a ng-if="circ.usr()"
+        href="/eg2/staff/circ/patron/{{circ.usr().id()}}/checkout">
         [% l('[_1], [_2] [_3] : [_4]', 
           '{{circ.usr().family_name()}}'
           '{{circ.usr().first_given_name()}}'
@@ -65,7 +65,7 @@
     <div class="flex-cell">[% l('Check Out Staff') %]</div>
     <div class="flex-cell well">
       <a ng-if="circ.circ_staff()" target="_blank"
-        href="./circ/patron/{{circ.circ_staff().id()}}/checkout">
+        href="/eg2/staff/circ/patron/{{circ.circ_staff().id()}}/checkout">
           {{circ.circ_staff().usrname()}}
       </a>
     </div>

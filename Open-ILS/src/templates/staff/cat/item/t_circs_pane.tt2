@@ -13,8 +13,8 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('Patron') %]</div>
     <div class="flex-cell well">
-      <a href="./circ/patron/{{prev_circ_usr.id()}}/checkout" 
-        ng-if="prev_circ_usr" target="_self">
+      <a href="/eg2/staff/circ/patron/{{prev_circ_usr.id()}}/checkout" 
+        ng-if="prev_circ_usr">
         [% l('[_1], [_2] [_3] : [_4]', 
         '{{prev_circ_usr.family_name()}}'
         '{{prev_circ_usr.first_given_name()}}'
@@ -113,8 +113,8 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('Patron') %]</div>
     <div class="flex-cell well">
-      <a href="./circ/patron/{{circ.usr().id()}}/checkout" 
-        ng-if="circ.usr()" target="_self">
+      <a href="/eg2/staff/circ/patron/{{circ.usr().id()}}/checkout" 
+        ng-if="circ.usr()">
         [% l('[_1], [_2] [_3] : [_4]', 
           '{{circ.usr().family_name()}}'
           '{{circ.usr().first_given_name()}}'

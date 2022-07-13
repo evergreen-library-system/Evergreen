@@ -48,7 +48,7 @@
 
   <eg-grid-field label="[% l('Barcode') %]"
     path="card.barcode" visible>
-    <a target="_self" href="[% ctx.base_path %]/staff/circ/patron/{{item.id}}/edit">
+    <a href="/eg2/staff/circ/patron/{{item.id}}/edit">
       {{item['card.barcode']}}
     </a>
   </eg-grid-field>

@@ -111,7 +111,7 @@
     <span class="pad-horiz alert alert-danger">{{fine_total | currency}}</span>
     <span ng-if="billable_barcode">
       <!-- note: this forces a new tab -->
-      <a href='./circ/patron/{{billable_user_id}}/bills' target='_blank'>
+      <a href='/eg2/staff/circ/patron/{{billable_user_id}}/bills'>
         <span>[% l('Transaction for [_1] billed:', '{{billable_barcode}}') %]</span>
       </a>
       <span class="pad-horiz alert alert-danger">{{billable_amount | currency}}</span>
