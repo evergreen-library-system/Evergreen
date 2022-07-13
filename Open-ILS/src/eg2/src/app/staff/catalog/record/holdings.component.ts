@@ -704,6 +704,11 @@ export class HoldingsMaintenanceComponent implements OnInit {
                 copy.parts().map(p => p.label()).join(',');
         }
 
+        // Ignore alerts that have already been ACK'ed
+        // Over a long enough time, this list could grow large, so
+        // consider fetching non-ack'ed copy alerts separately.
+        copy.copy_alerts(copy.copy_alerts().filter(a => !a.ack_time()));
+
         if (stat === 1 /* checked out */ || stat === 16 /* long overdue */) {
             // Avoid looking up circs on items that are not checked out.
             this.itemCircsNeeded.push(copy);
