@@ -106,7 +106,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
                 }
             }
             return '';
-        }
+        };
 
         this.cellTextGenerator = {
             title: row => row.title,
@@ -346,7 +346,7 @@ export class BillsComponent implements OnInit, AfterViewInit {
 
         .catch(msg => {
             this.reportError(msg);
-            console.debug('Payment Canceled or Failed:', msg)
+            console.debug('Payment Canceled or Failed:', msg);
         })
         .finally(() => {
             this.applyingPayment = false;

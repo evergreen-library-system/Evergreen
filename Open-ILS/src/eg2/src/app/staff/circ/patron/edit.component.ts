@@ -711,7 +711,7 @@ export class EditComponent implements OnInit, AfterViewInit {
                             // false otherwise.
                             val = Boolean((val + '').match(/^t/i));
                         }
-                        this.userSettings[stype.name()] = val
+                        this.userSettings[stype.name()] = val;
                     }
                 }
             });
@@ -1130,7 +1130,7 @@ export class EditComponent implements OnInit, AfterViewInit {
         });
     }
 
-    dupeValueChange(name: string, value: any) {
+    dupeValueChange(name: string, value: any): Promise<any> {
 
         if (name.match(/phone/)) { name = 'phone'; }
         if (name.match(/name/)) { name = 'name'; }
@@ -1171,7 +1171,7 @@ export class EditComponent implements OnInit, AfterViewInit {
                 break;
         }
 
-        this.toolbar.checkDupes(name, search);
+        return this.toolbar.checkDupes(name, search);
     }
 
     showField(field: string): boolean {

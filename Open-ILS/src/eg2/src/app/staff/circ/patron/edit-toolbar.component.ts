@@ -1,6 +1,7 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {tap} from 'rxjs/operators';
 import {OrgService} from '@eg/core/org.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -67,9 +68,9 @@ export class EditToolbarComponent implements OnInit {
         return Object.values(this.searches).filter(dupe => dupe.count > 0);
     }
 
-    checkDupes(category: string, search: PatronSearchFieldSet) {
+    checkDupes(category: string, search: PatronSearchFieldSet): Promise<any> {
 
-        this.net.request(
+        return this.net.request(
             'open-ils.actor',
             'open-ils.actor.patron.search.advanced',
             this.auth.token(),
@@ -77,7 +78,7 @@ export class EditToolbarComponent implements OnInit {
             1000, // limit
             null, // sort
             true  // as id
-        ).subscribe(ids => {
+        ).pipe(tap(ids => {
             ids = ids.filter(id => Number(id) !== this.patronId);
             this.searches[category] = {
                 category: category as SearchCategory,
@@ -85,7 +86,7 @@ export class EditToolbarComponent implements OnInit {
                 search: search,
                 json: JSON.stringify(search)
             };
-        });
+        })).toPromise();
     }
 
     checkAddressAlerts(patron: IdlObject, addr: IdlObject) {

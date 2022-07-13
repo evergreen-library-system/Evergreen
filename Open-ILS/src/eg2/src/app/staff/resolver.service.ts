@@ -20,7 +20,7 @@ const STAFF_LOGIN_SESSION_KEYS = [
     'eg.circ.patron_hold_target',
     'eg.catalog.recent_searches',
     'eg.circ.recent_patrons'
-]
+];
 
 /**
  * Load data used by all staff modules.
