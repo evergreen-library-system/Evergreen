@@ -179,6 +179,13 @@ export class CopyAlertsDialogComponent
         const changedAlerts = this.copy ?
             this.copy.copy_alerts().filter(a => a.ischanged()) :
             [];
+
+        changedAlerts.forEach(alrt => {
+            if (alrt.ack_time() === 'now') {
+                alrt.ack_staff(this.auth.user().id());
+            }
+        });
+
         if (this.inPlaceCreateMode) {
             this.close({ newAlerts: this.newAlerts, changedAlerts: changedAlerts });
             return;
