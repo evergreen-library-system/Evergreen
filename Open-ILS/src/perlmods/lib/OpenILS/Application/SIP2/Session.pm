@@ -62,8 +62,21 @@ sub config {
     $config->{settings} = 
         {map {$_->name => $json->decode($_->value)} @{$group->settings}};
 
-    $logger->info("SIP settings " . $json->encode($config->{settings}));
+    $logger->info("SIP2: settings = " . $json->encode($config->{settings}));
     return $self->{config} = $config;
+}
+
+sub filters {
+    my $self = shift;
+    return $self->{filters} if $self->{filters};
+
+    my $group = $self->editor->retrieve_sip_setting_group([
+        $self->sip_account->setting_group,
+        {flesh => 1, flesh_fields => {sipsetg => ['filters']}}
+    ]);
+
+    $logger->info("SIP2: found " . scalar(@{ $group->filters }) . " filters");
+    return $self->{filters} = $group->filters;
 }
 
 # Retrieve an existing SIP session via SIP session token

@@ -15540,9 +15540,11 @@ SELECT  usr,
 			<field name="label" reporter:datatype="text" reporter:label="Label" oils_obj:required="true"/>
 			<field name="institution" reporter:datatype="text" reporter:label="SIP Institution" oils_obj:required="true"/>
 			<field name="settings" reporter:datatype="link" reporter:label="Settings" oils_persist:virtual="true"/>
+			<field name="filters" reporter:datatype="link" reporter:label="Filters" oils_persist:virtual="true"/>
 		</fields>
 		<links>
 			<link field="settings" reltype="has_many" key="setting_group" map="" class="sipset"/>
+			<link field="filters" reltype="has_many" key="setting_group" map="" class="sipfilter"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -15790,6 +15792,30 @@ SELECT  usr,
 			<link field="invoice" reltype="has_a" key="id" map="" class="acqinv"/>
 			<link field="tag" reltype="has_a" key="id" map="" class="acqft"/>
 		</links>
+	</class>
+	<class id="sipfilter" controller="open-ils.cstore open-ils.pcrud"
+		oils_obj:fieldmapper="sip::filter" 
+		oils_persist:tablename="sip.filter" 
+		reporter:label="SIP Filter">
+		<fields oils_persist:primary="id" oils_persist:sequence="sip.filter_id_seq">
+			<field name="id" reporter:datatype="id" reporter:label="ID" reporter:selector="name"/>
+			<field name="enabled" reporter:datatype="bool" reporter:label="Enabled"/>
+			<field name="setting_group" reporter:datatype="link" reporter:label="Settings Group" oils_obj:required="true" config_field="true"/>
+			<field name="identifier" reporter:datatype="text" reporter:label="Field Identifier" oils_obj:required="true"/>
+			<field name="strip" reporter:datatype="bool" reporter:label="Strip Field" />
+			<field name="replace_with" reporter:datatype="text" reporter:label="Replacement Field Value" />
+		</fields>
+		<links>
+			<link field="setting_group" reltype="has_a" key="id" map="" class="sipsetg"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="SIP_ADMIN" global_required="true"/>
+				<retrieve permission="SIP_ADMIN" global_required="true"/>
+				<update permission="SIP_ADMIN" global_required="true"/>
+				<delete permission="SIP_ADMIN" global_required="true"/>
+			</actions>
+		</permacrud>
 	</class>
 
 	<!-- ********************************************************************************************************************* -->

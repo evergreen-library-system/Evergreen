@@ -26,6 +26,8 @@ use JSON::XS;
 use OpenSRF::System;
 use OpenSRF::Utils::Logger q/$logger/;
 use OpenILS::Application::AppUtils;
+use OpenILS::Application::SIP2::Common;
+use OpenILS::Application::SIP2::Session;
 my $U = 'OpenILS::Application::AppUtils';
 
 my $json = JSON::XS->new;
@@ -57,6 +59,11 @@ sub handler {
     # sip2-mediator generates a unique key for each client session.
     # This key is required even if the client has not yet authenticated.
     return Apache2::Const::FORBIDDEN unless $seskey;
+
+    # so we can grab config and filter data
+    my $session = OpenILS::Application::SIPSession->find($seskey);
+    my $session_config = $session ? $session->config : undef;
+    my $session_filters = $session ? $session->filters : undef;
 
     if ($msg_json) {
         eval { $message = $json->decode($msg_json) };
@@ -90,38 +97,34 @@ sub handler {
 
     $r->content_type('application/json');
     # response = $VAR1 = {'fields' => [{'AO' => 'example'},{'BX' => 'YYYNYNYYNYYNNNYN'}],'fixed_fields' => ['Y','Y','Y','Y','N','N','999','999','20220706    154418','2.00'],'code' => '98'};
-    # filters v1 = $VAR1 = { 'field' => { 'identifier' => 'AE',  'replace_with' => 'John Doe' } };
-    # filters v1 = $VAR1 = { 'field' => { 'identifier' => 'AE',  'remove' => 'true' } };
-    # filters v1 = $VAR1 = { 'field' => [ { 'identifier' => 'AE', 'replace_with' => 'John Doe' }, { 'replace_with' => 'Jane Doe', 'identifier' => 'AE' } ] };
-    my $filters = { 'field' => [ { 'identifier' => 'AE', 'replace_with' => 'John Doe' }, { 'replace_with' => 'Jane Doe', 'identifier' => 'AE' } ] };
+    #my $filters = { 'field' => [ { 'identifier' => 'AE', 'replace_with' => 'John Doe' }, { 'replace_with' => 'Jane Doe', 'identifier' => 'AE' } ] };
 
     sub find_field_config {
+        my $filters = shift;
         my $field_id = shift;
-        my @relavent_field_configs = grep { $_->{identifier} eq $field_id } @{ $filters->{'field'} };
+        my @relavent_field_configs = grep { $_->identifier eq $field_id && $_->enabled eq 't' } @{ $filters };
         # since we can't do anything complicated yet, let's just return the first match
         return @relavent_field_configs ? $relavent_field_configs[0] : undef;
     }
 
-    if (defined $filters && defined $response->{fields} && ref $response->{fields} eq 'ARRAY') {
+    if (defined $session_filters && defined $response->{fields} && ref $response->{fields} eq 'ARRAY') {
         $response->{fields} = [
             grep {
                 my $keep = 1;
                 my @fids = keys(%{$_});
                 my $fid = $fids[0];
-                my $field_config = find_field_config( $fid );
-                if ($field_config && defined $field_config->{remove}) {
-                    if (($field_config->{remove} =~ /true|y|yes/i)) { # test truthiness
-                        $keep = 0; # strip the entire field
-                    }
+                my $field_config = find_field_config( $session_filters, $fid );
+                if ($field_config && $field_config->strip eq 't') {
+                    $keep = 0; # strip the entire field
                 }
                 $keep; # or not
             }
             map {
                 my @fids = keys(%{$_});
                 my $fid = $fids[0];
-                my $field_config = find_field_config( $fid );
-                $field_config && defined $field_config->{replace_with}
-                    ? { $fid => $field_config->{replace_with} }
+                my $field_config = find_field_config( $session_filters, $fid );
+                $field_config && defined $field_config->replace_with
+                    ? { $fid => $field_config->replace_with }
                     : $_;
             }
             @{ $response->{fields} }
