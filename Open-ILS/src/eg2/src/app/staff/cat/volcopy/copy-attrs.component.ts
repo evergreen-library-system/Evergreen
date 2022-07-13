@@ -452,9 +452,7 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                         existing.alert_type(alert.alert_type());
                         existing.temp(alert.temp());
                         existing.ack_time(alert.ack_time());
-                        if (alert.ack_time() === 'now') {
-                            existing.ack_staff(this.auth.user().id());
-                        }
+                        existing.ack_staff(alert.ack_staff());
                         copy.ischanged(true);
                     }
                 });
