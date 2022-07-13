@@ -35,7 +35,7 @@
         </a>
         <ul uib-dropdown-menu>
           <li>
-            <a href="./circ/patron/search" target="_self"
+            <a href="/eg2/staff/circ/patron/search"
               eg-accesskey="[% l('alt+s') %] [% l('f4') %]" 
               eg-accesskey-desc="[% l('Patron search by name, address, etc.') %]">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
@@ -70,7 +70,7 @@
 
         <ul uib-dropdown-menu>
           <li ng-if="username">
-            <a href="./circ/patron/bcsearch" target="_self"
+            <a href="/eg2/staff/circ/patron/bcsearch"
               eg-accesskey="[% l('f1') %]" 
               eg-accesskey-desc="[% l('Check Out') %]">
               <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
@@ -86,7 +86,7 @@
             </a>
           </li>
           <li ng-if="username">
-            <a href="./circ/checkin/checkin" target="_self"
+            <a href="/eg2/staff/circ/checkin"
               eg-accesskey="[% l('f2') %]" 
               eg-accesskey-desc="[% l('Check In') %]">
               <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
@@ -102,7 +102,7 @@
             </a>
           </li>
           <li>
-            <a href="./circ/checkin/capture" target="_self"
+            <a href="/eg2/staff/circ/checkin/capture"
               eg-accesskey="[% l('shift+f2') %]" 
               eg-accesskey-desc="[% l('Capture Holds') %]">
               <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
@@ -116,7 +116,7 @@
             </a>
           </li>
           <li ng-if="username">
-            <a href="./circ/renew/renew" target="_self"
+            <a href="/eg2/staff/circ/renew"
               eg-accesskey="[% l('ctrl+f2') %]" 
               eg-accesskey-desc="[% l('Renew items') %]">
               <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
@@ -133,7 +133,7 @@
             </a>
           </li>
           <li ng-if="username">
-            <a href="./circ/patron/register" target="_self"
+            <a href="/eg2/staff/circ/patron/register"
               eg-accesskey="[% l('shift+f1') %]" 
               eg-accesskey-desc="[% l('Register Patron') %]">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
@@ -149,7 +149,7 @@
             </a>
           </li>
           <li ng-if="showRecentPatron">
-            <a href="./circ/patron/last" target="_self"
+            <a href="/eg2/staff/circ/patron/last"
               eg-accesskey="[% l('f8') %]" 
               eg-accesskey-desc="[% l('Retrieve Last Patron') %]">
               <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
@@ -157,20 +157,20 @@
             </a>
           </li>
           <li ng-if="showRecentPatrons">
-            <a href="./circ/patron/search?show_recent=1" target="_self"
+            <a href="/eg2/staff/circ/patron/search?show_recent=1"
               eg-accesskey-desc="[% l('Retrieve Recent Patrons') %]">
               <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
               [% l('Retrieve Recent Patrons') %]
             </a>
           </li>
           <li>
-            <a href="./circ/patron/pending/list" target="_self">
+            <a href="/eg2/staff/circ/patron/pending/list">
               <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
               [% l('Pending Patrons') %]
             </a>
           </li>
           <li>
-            <a href="./circ/patron/bucket/view" target="_self">
+            <a href="/eg2/staff/circ/patron/bucket/view">
               <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
               [% l('User Buckets') %]
             </a>
@@ -183,7 +183,7 @@
           </li>
           <li class="divider"></li>
           <li>
-            <a href="./circ/patron/credentials" target="_self">
+            <a href="/eg2/staff/circ/patron/credentials">
               <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
               <span>[% l('Verify Credentials') %]</span>
             </a>
