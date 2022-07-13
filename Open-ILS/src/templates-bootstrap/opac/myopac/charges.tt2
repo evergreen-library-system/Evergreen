@@ -54,6 +54,7 @@
                 </tr>
             </thead>
             <tbody id='myopac_circ_trans_tbody'>
+			    [% c = 0; neg_or_zero = 0; %]
                 [% FOR f IN ctx.fines.circulation;
                     attrs = {marc_xml => f.marc_xml};
                     IF f.marc_xml;
@@ -75,6 +76,7 @@
                             [% money(f.xact.balance_owed) %]
                         </strong>
                         <input class="fineAmount" value="[% f.xact.balance_owed %]" hidden />
+						[% IF f.xact.balance_owed <= 0; neg_or_zero = neg_or_zero + 1; END %]
                     </td>
                     
                     <td>
@@ -164,7 +166,6 @@
                 </tr>
             </thead>
             <tbody id='myopac_trans_tbody'>
-                [% c = 0; neg_or_zero = 0; %]
                 [% FOR f IN ctx.fines.grocery %]
                 <tr class ='myopac_trans_row'>
                 [% c = c + 1; %]
