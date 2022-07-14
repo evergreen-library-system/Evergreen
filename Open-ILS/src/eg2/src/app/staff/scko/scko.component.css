@@ -124,3 +124,8 @@ A {
 .scko-status-row {
     font-size: 20px;
 }
+
+input[type="checkbox"] {
+  padding: 10px;
+  transform: scale(1.5);
+}

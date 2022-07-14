@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
-import {tap} from 'rxjs/operators';
+import {of, from} from 'rxjs';
+import {switchMap, tap} from 'rxjs/operators';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
@@ -16,6 +17,7 @@ import {PrintService} from '@eg/share/print/print.service';
 export class SckoItemsComponent implements OnInit {
 
     circs: IdlObject[] = [];
+    selected: {[id: number]: boolean} = {};
 
     constructor(
         private router: Router,
@@ -45,6 +47,7 @@ export class SckoItemsComponent implements OnInit {
             const ids = data.out.concat(data.overdue).concat(data.long_overdue);
             return this.scko.getFleshedCircs(ids).pipe(tap(circ => {
                 this.circs.push(circ);
+                this.selected[circ.id()] = true;
             })).toPromise();
         });
     }
@@ -68,6 +71,38 @@ export class SckoItemsComponent implements OnInit {
             },
             printContext: 'default'
         });
+    }
+
+    toggleSelect() {
+        const selectMe =
+            Object.values(this.selected).filter(v => v).length < this.circs.length;
+        Object.keys(this.selected).forEach(key => this.selected[key] = selectMe);
+    }
+
+    renewSelected() {
+
+        const renewList = this.circs.filter(c => this.selected[c.id()]);
+        if (renewList.length === 0) { return; }
+
+        from(renewList).pipe(switchMap(circ => {
+            return of(
+                this.scko.renew(circ.target_copy().barcode())
+                .then(res => {
+                    if (!res.newCirc) { return; }
+
+                    // Replace the renewed circ with the new circ.
+                    const circs = [];
+                    this.circs.forEach(c => {
+                        if (c.id() === circ.id()) {
+                            circs.push(res.newCirc);
+                        } else {
+                            circs.push(c);
+                        }
+                    });
+                    this.circs = circs;
+                })
+            );
+        })).toPromise(); // run it
     }
 }
 

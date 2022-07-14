@@ -1,6 +1,6 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
-import {Observable} from 'rxjs';
+import {empty, Observable} from 'rxjs';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -28,6 +28,8 @@ interface CheckoutContext {
     shouldPopup: boolean;
     previousCirc?: IdlObject;
     renewalFailure?: boolean;
+    newCirc?: IdlObject;
+    external?: boolean; // not from main checkout input.
 }
 
 interface SessionCheckout {
@@ -159,6 +161,8 @@ export class SckoService {
     }
 
     getFleshedCircs(circIds: number[]): Observable<IdlObject> {
+        if (circIds.length === 0) { return empty(); }
+
         return this.pcrud.search('circ', {id: circIds}, {
             flesh: CIRC_FLESH_DEPTH,
             flesh_fields: CIRC_FLESH_FIELDS,
@@ -272,13 +276,13 @@ export class SckoService {
 
     accountTotalCheckouts(): number {
         // stats.checkouts.total_out includes claims returned
+        // Exclude locally renewed items from the total checkouts
 
-        return this.sessionTotalCheckouts() +
+        return this.sessionCheckouts.filter(co => !co.ctx.external).length +
             this.patronSummary.stats.checkouts.out +
             this.patronSummary.stats.checkouts.overdue +
             this.patronSummary.stats.checkouts.long_overdue;
     }
-
 
     checkout(barcode: string, override?: boolean): Promise<any> {
         this.resetPatronTimeout();
@@ -321,7 +325,8 @@ export class SckoService {
         .finally(() => this.router.navigate(['/staff/scko']));
     }
 
-    renew(barcode: string, override?: boolean): Promise<any> {
+    renew(barcode: string,
+        override?: boolean, external?: boolean): Promise<CheckoutContext> {
 
         let method = 'open-ils.circ.renew';
         if (override) { method += '.override'; }
@@ -335,14 +340,16 @@ export class SckoService {
         .then(result => {
             console.debug('Renew returned', result);
 
-            return this.handleCheckoutResult(result, barcode, 'renew');
+            return this.handleCheckoutResult(result, barcode, 'renew', external);
 
         }).then(ctx => {
             console.debug('handleCheckoutResult returned', ctx);
 
             if (ctx.override) {
-                return this.renew(barcode, true);
+                return this.renew(barcode, true, external);
             }
+
+            return ctx;
         });
     }
 
@@ -372,8 +379,8 @@ export class SckoService {
         });
     }
 
-    handleCheckoutResult(
-        result: any, barcode: string, action: string): Promise<CheckoutContext> {
+    handleCheckoutResult(result: any, barcode: string,
+        action: string, external?: boolean): Promise<CheckoutContext> {
 
         if (Array.isArray(result)) {
             result = result[0];
@@ -397,7 +404,8 @@ export class SckoService {
             shouldPopup: false,
             redo: false,
             override: false,
-            renew: false
+            renew: false,
+            external: external
         };
 
         if (evt.textcode === 'SUCCESS') {
@@ -406,6 +414,7 @@ export class SckoService {
 
             return this.getFleshedCirc(payload.circ.id()).then(
                 circ => {
+                    ctx.newCirc = circ;
                     this.sessionCheckouts.push({circ: circ, ctx: ctx});
                     return ctx;
                 }

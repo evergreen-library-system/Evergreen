@@ -1,14 +1,20 @@
 <div class="d-flex">
   <div class="flex-1"></div>
   <div>
-    <button type="button" class="scko-button" (click)="printList()" i18n>Print List</button>
+    <button type="button" class="scko-button mr-2" 
+      (click)="renewSelected()" i18n>Renew Selected</button>
+    <button type="button" class="scko-button" 
+      (click)="printList()" i18n>Print List</button>
   </div>
 </div>
 <div id='oils-selfck-circ-table-div'>
   <table id='oils-selfck-circ-table' class='oils-selfck-item-table'>
     <thead>
       <tr>
-        <td class="rounded-left" id='oils-self-circ-pic-cell'></td>
+        <td class="rounded-left">
+          <input type="checkbox" checked (click)="toggleSelect()"/>
+        </td>
+        <td><!-- jacket --></td>
         <td i18n>Barcode</td>
         <td i18n>Title</td>
         <td i18n>Author</td>
@@ -19,6 +25,8 @@
     </thead>
     <tbody id='oils-selfck-circ-out-tbody' class='oils-selfck-item-table'>
 	    <tr *ngFor="let circ of circs">
+        <td>
+          <input type="checkbox" [(ngModel)]="selected[circ.id()]"/>
         <td>
           <ng-container *ngIf="circ.target_copy().id() != -1">
             <img src="/opac/extras/ac/jacket/small/r/{{circ.target_copy().call_number().record().id()}}"/>
