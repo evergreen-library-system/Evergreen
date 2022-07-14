@@ -23,6 +23,7 @@ my $have_geocoder_free = eval {
 };
 use Geo::Coder::OSM;
 use Geo::Coder::Google;
+use Geo::Coder::Bing;
 
 use Math::Trig qw(great_circle_distance deg2rad);
 use Digest::SHA qw(sha256_base64);
@@ -178,6 +179,9 @@ sub retrieve_coordinates { # invoke 3rd party API for latitude/longitude lookup
         } elsif ($service->service_code eq 'Google') {
             $logger->debug("Using Geo::Coder::Google (service id $service_id)");
             $geo_coder = Geo::Coder::Google->new(key => $service->api_key);
+        } elsif ($service->service_code eq 'Bing') {
+            $logger->debug("Using Geo::Coder::Bing (service id $service_id)");
+            $geo_coder =  Geo::Coder::Bing->new(key => $service->api_key);
         } else {
             $logger->debug("Using Geo::Coder::OSM (service id $service_id)");
             $geo_coder = Geo::Coder::OSM->new();
@@ -204,6 +208,9 @@ sub retrieve_coordinates { # invoke 3rd party API for latitude/longitude lookup
     } elsif ($service->service_code eq 'Google') {
        $latitude = $location->{'geometry'}->{'location'}->{'lat'};
        $longitude = $location->{'geometry'}->{'location'}->{'lng'};
+    } elsif ($service->service_code eq 'Bing') {
+       $latitude = $location->{point}{coordinates}[0];
+       $longitude = $location->{point}{coordinates}[1];
     } else {
        $latitude = $location->{lat};
        $longitude = $location->{lon};

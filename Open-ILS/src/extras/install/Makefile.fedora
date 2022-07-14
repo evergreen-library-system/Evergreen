@@ -78,6 +78,7 @@ FEDORA_RPMS = \
 export CPAN_MODULES = \
 	Geo::Coder::OSM \
 	Geo::Coder::Google \
+	Geo::Coder::Bing \
 	Excel::Writer::XLSX \
 	String::KeyboardDistance \
 	Text::Levenshtein::Damerau::XS \

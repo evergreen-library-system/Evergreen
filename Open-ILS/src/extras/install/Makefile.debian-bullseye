@@ -102,6 +102,7 @@ export DEB_APACHE_DISCONF = \
 
 export CPAN_MODULES = \
 	Geo::Coder::Google \
+	Geo::Coder::Bing \
 	Business::OnlinePayment::PayPal \
 	String::KeyboardDistance \
 	Text::Levenshtein::Damerau::XS \
