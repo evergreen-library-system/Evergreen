@@ -23,8 +23,10 @@
     <div class="row mt-3">
       <div class="col-lg-3">
         <button class="btn btn-primary"
+        [disabled]="fund?.active() !== 't'"
           (click)="allocateToFund()" i18n>Create Allocation</button>
         <button class="btn btn-primary ml-1"
+        [disabled]="fund?.active() !== 't'"
           (click)="doTransfer()" i18n>Transfer Money</button>
       </div>
       <div class="col-lg-9 text-right pb-1">
