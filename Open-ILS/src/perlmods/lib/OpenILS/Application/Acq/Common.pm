@@ -76,5 +76,26 @@ sub li_existing_copies {
     return $counts->[0]->{id};
 }
 
+# returns the owning library to use when auto-creating
+# line item details in the case where the provider's default
+# copy count is greater than zero
+sub get_default_lid_owning_library {
+    my ($class, $e) = @_;
 
+    my $strategy = $U->ou_ancestor_setting_value($e->requestor->ws_ou, 'acq.default_owning_lib_for_auto_lids_strategy');
+    if (defined $strategy) {
+        if ($strategy eq 'workstation') {
+            return $e->requestor->ws_ou;
+        } elsif ($strategy eq 'blank') {
+            return undef;
+        } elsif ($strategy eq 'use_setting') {
+            return $U->ou_ancestor_setting_value($e->requestor->ws_ou, 'acq.default_owning_lib_for_auto_lids');
+        } else {
+            return $e->requestor->ws_ou;
+        }
+    } else {
+        return $e->requestor->ws_ou;
+    }
+}
 
+1;

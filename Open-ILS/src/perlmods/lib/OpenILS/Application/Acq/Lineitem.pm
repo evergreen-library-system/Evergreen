@@ -75,10 +75,12 @@ sub create_lineitem {
 
     if ($po) {
         # apply the default number of copies for this provider
+        my $owning_lib = $AC->get_default_lid_owning_library($e);
+        $logger->warn("GMC: owning_lib => $owning_lib");
         for (1 .. $po->provider->default_copy_count) {
             my $lid = Fieldmapper::acq::lineitem_detail->new;
             $lid->lineitem($li->id);
-            $lid->owning_lib($e->requestor->ws_ou);
+            $lid->owning_lib($owning_lib);
             $e->create_acq_lineitem_detail($lid) or return $e->die_event;
         }
     }

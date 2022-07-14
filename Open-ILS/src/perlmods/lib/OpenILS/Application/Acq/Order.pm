@@ -1964,7 +1964,8 @@ sub apply_default_copies {
         }, 
         {idlist => 1}
     );
-    
+
+    my $owning_lib = $AC->get_default_lid_owning_library($e);
     for my $li_id (@$li_ids) {
 
         my $lid_ids = $e->search_acq_lineitem_detail(
@@ -1976,7 +1977,7 @@ sub apply_default_copies {
         for (1 .. $copy_count) {
             create_lineitem_detail($mgr, 
                 lineitem => $li_id,
-                owning_lib => $e->requestor->ws_ou
+                owning_lib => $owning_lib
             ) or return 0;
         }
     }
