@@ -1866,54 +1866,17 @@ div.adv_search_available {
 
 /* styling for advanced search filters that display with searchbar */
 
-#adv_filter_results_block h4 { display: inline; }
-
-#adv_filter_results_block {
-    margin-top: 6px;
-    text-align: center;
-}
-
 .adv_filter_results_block_label {
     font-weight:bold;
     [% IF rtl == 't' -%]
-    padding: 4px 12px 4px 0px;
+    padding: 0px 12px 4px 0px;
     [% ELSE -%]
-    padding: 4px 0px 4px 12px;
+    padding: 0px 0px 4px 12px;
     [% END -%]
 }
 
 .adv_filter_results_group {
-    font-size: 12px;
-    display: inline-block;
     background-color:  [% css_colors.accent_lighter2 %];
-    border-style: solid;
-    border-color: [% css_colors.accent_medium %];
-    border-width: 1px;
-    border-radius: 4px;
-    padding: 2px 4px 2px 4px;
-}
-
-.adv_filter_results_group_wrapper {
-    display: inline-block;
-    [% IF rtl == 't' -%]
-    margin-right: 1em;
-    [% ELSE -%]
-    margin-left: 1em;
-    [% END -%]
-    margin-bottom: 8px;
-}
-
-.adv_filter_results_group_header {
-    display: inline-block;
-}
-
-.adv_filter_results_group_values {
-    display: inline;
-}
-
-.adv_search_result_filter {
-    display: inline-block;
-    font-size: 16px;
 }
 
 .remove_filter {

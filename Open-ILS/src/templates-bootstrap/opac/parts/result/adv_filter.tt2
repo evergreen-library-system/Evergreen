@@ -12,9 +12,9 @@ FOR filter IN ctx.query_struct.filters;
         remove_filter = 'fi:' _ fname;
 -%]
          <div class="adv_filter_results_group_wrapper" id="1">
-           <div class="adv_filter_results_group">
-           <div class="adv_filter_results_group_header"> <h5 class="title">[% IF filter.negate; l('Not'); END %] [% (crad.description || crad.label) | html %]</h5></div>
-           <div class="adv_filter_results_group_values d-inline-block align-middle"> [% temp = [];
+           <div class="alert adv_filter_results_group alert-dismissible fade show mx-2">
+           <strong>[% IF filter.negate; l('Not'); END %] [% (crad.description || crad.label) | html %]: </strong>
+               [% temp = [];
                FOR fval IN fvalues;
                 thing = ctx.search_ccvm('ctype',fname,'code',fval).0;
                 display_value = thing.search_label || thing.value;
@@ -31,20 +31,18 @@ FOR filter IN ctx.query_struct.filters;
                   <span class="adv_search_result_filter"> [% l('OR') %] </span>
                  [% END %]
             [% END; # FOR %]
-             </div>
-              <a class="button remove_filter btn btn-deny btn-sm"
+              <a class="button close" 
               title="[% l('Remove [_1] filter', (crad.description || crad.label)) %]"
               aria-label="[% l('Remove [_1] filter', (crad.description || crad.label)) %]"
-              href="[% mkurl('', {}, [remove_filter]) %]" rel="nofollow" vocab=""><span class="text-white">&times;</span> </a>
+              href="[% mkurl('', {}, [remove_filter]) %]" rel="nofollow" vocab=""><span aria-hidden="true">&times;</span> </a>
             </div>
-           </div>
            </div>
     [%- END; # IF crad -%]
 
 [%-  IF filter.name == 'locations'; locs = ctx.search_acpl('id',filter.args) -%]
     <div class="adv_filter_results_group_wrapper" id="2">
-      <div class="adv_filter_results_group">
-            <h4 class="title">[% IF filter.negate; l('Not'); END %] </h4>
+        <div class="alert adv_filter_results_group alert-dismissible fade show mx-2">
+            <strong>[% IF filter.negate; l('Not'); END %] [% l('Locations') %]: </strong>
             [% temp = [];
                FOR loc IN locs;
                 temp.push(loc.name);
@@ -53,10 +51,13 @@ FOR filter IN ctx.query_struct.filters;
                   <span class="adv_search_result_filter">
                     [% display_name | html%]
                   </span>
+                  [% UNLESS loop.last %]
+                  <span class="adv_search_result_filter"> [% l('OR') %] </span>
+                  [% END %]
             [% END; # FOR %]
-            <a class="button remove_filter btn btn-deny btn-sm"
+            <a class="button close"
               title="[% l('Remove location filter') %]"
-              href="[% mkurl('', {}, ['fi:locations']) %]" rel="nofollow" vocab=""> <span class="text-white">×</span></a>
+              href="[% mkurl('', {}, ['fi:locations']) %]" rel="nofollow" vocab=""> <span aria-hidden="true">&times;</span></a>
       </div>
     </div>
 [%- END; # IF locations -%]
@@ -66,8 +67,8 @@ FOR filter IN ctx.query_struct.filters;
     date2 = CGI.param('date2') | html;
 -%]
     <div class="adv_filter_results_group_wrapper" id="3">
-      <div class="adv_filter_results_group">
-            <h5 class="title">[% IF filter.negate; l('Not'); END %] [% l('Publication Year') %]</h5>
+      <div class="alert adv_filter_results_group alert-dismissible fade show mx-2">
+            <strong>[% IF filter.negate; l('Not'); END %] [% l('Publication Year') %]: </strong>
               <span class="adv_search_result_filter">
               [% IF    filter.name == 'date1'      %][% l('[_1]', date1) %]
               [% ELSIF filter.name == 'before'  %][% l('Before [_1]', date1) %]
@@ -75,9 +76,9 @@ FOR filter IN ctx.query_struct.filters;
               [% ELSIF filter.name == 'between' %][% l('Between [_1] and [_2]', date1, date2) %]
               [% END %]
               </span>
-              <a class="button remove_filter btn btn-deny btn-sm"
+              <a class="button close"
               title="[% l('Remove publication date filter') %]"
-              href="[% mkurl('', {}, ['pubdate', 'date1', 'date2']) %]" rel="nofollow" vocab=""><span class="text-white">×</span> </a>
+              href="[% mkurl('', {}, ['pubdate', 'date1', 'date2']) %]" rel="nofollow" vocab=""><span aria-hidden="true">&times;</span> </a>
       </div>
     </div>
 
