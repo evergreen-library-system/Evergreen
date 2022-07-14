@@ -669,6 +669,7 @@ if(!dojo._hasResource['openils.widget.AutoFieldWidget']) {
             } else {
                 this.widget.tree = fieldmapper.aou.globalOrgTree;
                 this.widget.startup();
+                this._widgetLoaded();
             }
 
             return true;
