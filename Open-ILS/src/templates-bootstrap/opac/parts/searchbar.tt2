@@ -180,9 +180,13 @@ END;
         [% stuff = INCLUDE 'opac/parts/result/adv_filter.tt2' %]
         [% IF stuff %]
         <h3 class="sr-only">[% l('Search Results filters') %]</h3>
+        <div class="d-flex justify-content-center">
         <div id="adv_filter_results_block" class="adv_filter_results_hide">
-        <span class="adv_filter_results_block_label">[% l('Filtered by:') %]</span>
+        <div class="adv_filter_results_block_label">[% l('Filtered by:') %]</div>
+            <div class="d-inline-flex p-2">
             [% stuff %]
+            </div>
+        </div>
         </div>
         [% END %]
     [% END %]
