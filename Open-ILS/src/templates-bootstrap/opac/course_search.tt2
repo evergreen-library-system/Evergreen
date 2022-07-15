@@ -64,13 +64,13 @@
         <div id='course_search_submit'>
           <input type="hidden" name="_course" value="1" />
           <span>
-            <input id='search-submit-go' type="submit" value="[% l('Search') %]" title="[% l('Search') %]" class="opac-button"
+            <input id='search-submit-go' type="submit" value="[% l('Search') %]" title="[% l('Search') %]" class="btn btn-opac"
               onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"}, 2000)'/>
             <img id='search-submit-spinner' src='/opac/images/progressbar_green.gif[% ctx.cache_key %]'
               class='hidden' alt="[% l('Search in progress icon') %]"/>
           </span>
           <a href="[% mkurl(ctx.opac_root _ '/course_search', {$loc_name => loc_value}, 1) %]"
-            class="opac-button">[% l('Clear Form') %]</a>
+            class="btn btn-deny">[% l('Clear Form') %]</a>
         </div>
       </div>
     </div>

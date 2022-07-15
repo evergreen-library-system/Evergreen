@@ -37,7 +37,7 @@
                                     value="[% l('Submit') %]"
                                     title="[% l('Submit') %]"
                                     alt="[% l('Submit') %]"
-                                    class="opac-button" />
+                                    class="btn btn-action" />
                                 <br/>[% l('Note: carrier charges may apply'); %]
                         </form>
                     [% END %]

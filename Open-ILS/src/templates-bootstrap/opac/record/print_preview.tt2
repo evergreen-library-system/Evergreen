@@ -76,7 +76,7 @@
             </div>
             <hr />
             <div>
-                <a class="opac-button" href="[% ctx.redirect_to | html %]">[% l("Return") %]</a>
+                <a class="btn btn-opac" href="[% ctx.redirect_to | html %]">[% l("Return") %]</a>
             </div>
         [% END %]
         <br class="clear-both" />
