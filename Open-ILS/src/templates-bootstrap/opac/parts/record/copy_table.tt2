@@ -64,7 +64,7 @@ IF has_copies or ctx.foreign_copies;
 [% FOREACH p IN CGI.params.keys; NEXT IF p == 'geographic-location' %]
   <input type="hidden" name="[% p | html %]" value="[% CGI.params.$p | html %]"/>
 [% END %]
-   <button type="submit" class="opac-button">[% l('Use default item sort') %]</button>
+   <button type="submit" class="btn btn-opac">[% l('Use default item sort') %]</button>
 </form>
 [% END %]
 [% END %]

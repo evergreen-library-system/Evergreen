@@ -14,7 +14,7 @@
       [% END %]
       <option value="[% mkurl(ctx.opac_root _ '/mylist/clear', {}) %]">[% l('Clear Basket') %]</option>
     </select>
-    <input class="opac-button" type="button" id="do_basket_action" value="[% l('Go') %]" />
+    <input class="btn btn-action" type="button" id="do_basket_action" value="[% l('Go') %]" />
   </div>
   <div id="record_basket_icon">
      <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab="">

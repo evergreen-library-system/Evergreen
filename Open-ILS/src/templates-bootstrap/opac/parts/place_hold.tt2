@@ -116,7 +116,7 @@ function maybeToggleNumCopies(obj) {
               [% l('Patron barcode was not found') %]
             </span>
             [% IF ctx.is_browser_staff %]
-            <button id="hold_usr_search" type="button" class="opac-button" style="display: none;">[% l('Patron Search') %]</button>
+            <button id="hold_usr_search" type="button" class="btn btn-action" style="display: none;">[% l('Patron Search') %]</button>
             [% END %]
             <br />
             <input type="hidden" id="staff_barcode"
