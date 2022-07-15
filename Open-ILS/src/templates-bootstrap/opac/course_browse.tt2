@@ -71,12 +71,12 @@
         [% IF ctx.browse_results.size >= blimit %]
         <div class="browse-pager">
             [% IF lower_limit == 0 %]
-            <a class="opac-button" href="[% mkurl('', {didx => pivot_lower}) %]" 
+            <a class="btn btn-opac" href="[% mkurl('', {didx => pivot_lower}) %]"
               onclick="$('browse-pager-spinner-[% id %]').className = '';"
             >&larr; [%l ('Back') %]</a>
             [% END %]
             [% IF upper_limit == 0 %]
-            <a class="opac-button" href="[% mkurl('', {didx => pivot_higher}) %]"
+            <a class="btn btn-opac" href="[% mkurl('', {didx => pivot_higher}) %]"
               onclick="$('browse-pager-spinner-[% id %]').className = '';"
             >[%l ('Next') %] &rarr;</a>
             [% END %]
