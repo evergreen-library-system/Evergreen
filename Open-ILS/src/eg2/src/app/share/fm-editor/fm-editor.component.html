@@ -159,19 +159,6 @@
               </ng-container>
             </ng-container>
 
-            <ng-container *ngSwitchCase="'link'">
-              <eg-combobox
-                id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
-                placeholder="{{field.label}}..." i18n-placeholder 
-                [required]="field.isRequired()"
-                [idlClass]="field.class" [asyncSupportsEmptyTermClick]="true"
-                [idlBaseQuery]="field.idlBaseQuery"
-                [idlField]="field.selector"
-                [selectedId]="record[field.name]()"
-                (onChange)="record[field.name]($event ? $event.id : null)">
-              </eg-combobox>
-            </ng-container>
-
             <ng-container *ngSwitchCase="'list'">
               <eg-combobox
                 id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
