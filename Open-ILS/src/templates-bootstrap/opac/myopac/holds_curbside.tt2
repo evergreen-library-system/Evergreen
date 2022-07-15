@@ -150,7 +150,7 @@
                 [% ELSIF appointment.arrival %]
                     [% l('Staff have been notified of your arrival.') %]<br/>
                     <!--
-                    <button type="submit" name="cs_action" value="deliver" class="btn btn-" style="margin: .25em;">
+                    <button type="submit" name="cs_action" value="deliver" class="btn btn-sm btn-action" style="margin: .25em;">
                         [% l('Confirm delivery of items') %]
                     </button><br/>
                     -->
