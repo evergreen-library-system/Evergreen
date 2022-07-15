@@ -15,26 +15,29 @@ import {AudioService} from '@eg/share/util/audio.service';
 import {StringService} from '@eg/share/string/string.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 
-interface CheckoutContext {
-    barcode: string; // item
-    result: any;
-    firstEvent: EgEvent;
-    payload: any;
-    override: boolean;
-    redo: boolean;
-    renew: boolean;
-    displayText: string; // string key
-    alertSound: string;
-    shouldPopup: boolean;
+export interface ActionContext {
+    barcode?: string; // item
+    username?: string; // patron username or barcode
+    result?: any;
+    firstEvent?: EgEvent;
+    payload?: any;
+    override?: boolean;
+    redo?: boolean;
+    renew?: boolean;
+    displayText?: string; // string key
+    alertSound?: string;
+    shouldPopup?: boolean;
     previousCirc?: IdlObject;
     renewalFailure?: boolean;
     newCirc?: IdlObject;
     external?: boolean; // not from main checkout input.
+    renewSuccessCount?: number;
+    renewFailCount?: number;
 }
 
 interface SessionCheckout {
     circ: IdlObject;
-    ctx: CheckoutContext;
+    ctx: ActionContext;
 }
 
 const CIRC_FLESH_DEPTH = 4;
@@ -326,7 +329,7 @@ export class SckoService {
     }
 
     renew(barcode: string,
-        override?: boolean, external?: boolean): Promise<CheckoutContext> {
+        override?: boolean, external?: boolean): Promise<ActionContext> {
 
         let method = 'open-ils.circ.renew';
         if (override) { method += '.override'; }
@@ -353,7 +356,7 @@ export class SckoService {
         });
     }
 
-    notifyPatron(ctx: CheckoutContext) {
+    notifyPatron(ctx: ActionContext) {
         console.debug('notifyPatron(): ', ctx);
 
         this.statusDisplayText = '';
@@ -368,9 +371,10 @@ export class SckoService {
 
         if (!ctx.displayText) { return; }
 
-        this.strings.interpolate(ctx.displayText, {barcode: ctx.barcode})
+        this.strings.interpolate(ctx.displayText, {ctx: ctx})
         .then(str => {
             this.statusDisplayText = str;
+            console.debug('Displaying text to user:', str);
 
             if (this.alertPopup && ctx.shouldPopup && str) {
                 this.alertDialog.dialogBody = str;
@@ -380,7 +384,7 @@ export class SckoService {
     }
 
     handleCheckoutResult(result: any, barcode: string,
-        action: string, external?: boolean): Promise<CheckoutContext> {
+        action: string, external?: boolean): Promise<ActionContext> {
 
         if (Array.isArray(result)) {
             result = result[0];
@@ -394,7 +398,7 @@ export class SckoService {
             return;
         }
 
-        const ctx: CheckoutContext = {
+        const ctx: ActionContext = {
             result: result,
             firstEvent: evt,
             payload: payload,
@@ -428,7 +432,7 @@ export class SckoService {
         return this.handleEvents(ctx);
     }
 
-    handleOpenCirc(ctx: CheckoutContext): Promise<any> {
+    handleOpenCirc(ctx: ActionContext): Promise<any> {
 
         if (ctx.payload.old_circ) {
             const age = this.orgSettings['circ.checkout_auto_renew_age'];
@@ -472,7 +476,7 @@ export class SckoService {
         return Promise.resolve(ctx);
     }
 
-    handleEvents(ctx: CheckoutContext): Promise<CheckoutContext> {
+    handleEvents(ctx: ActionContext): Promise<ActionContext> {
         let override = true;
         let abortTransit = false;
         let lastErrorText = '';

@@ -6,7 +6,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
-import {SckoService} from './scko.service';
+import {SckoService, ActionContext} from './scko.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PrintService} from '@eg/share/print/print.service';
 
@@ -84,17 +84,21 @@ export class SckoItemsComponent implements OnInit {
         const renewList = this.circs.filter(c => this.selected[c.id()]);
         if (renewList.length === 0) { return; }
 
+        const contexts: ActionContext[] = [];
+
         from(renewList).pipe(switchMap(circ => {
             return of(
                 this.scko.renew(circ.target_copy().barcode())
-                .then(res => {
-                    if (!res.newCirc) { return; }
+                .then(ctx => {
+                    contexts.push(ctx);
+
+                    if (!ctx.newCirc) { return; }
 
                     // Replace the renewed circ with the new circ.
                     const circs = [];
                     this.circs.forEach(c => {
                         if (c.id() === circ.id()) {
-                            circs.push(res.newCirc);
+                            circs.push(ctx.newCirc);
                         } else {
                             circs.push(c);
                         }
@@ -102,7 +106,20 @@ export class SckoItemsComponent implements OnInit {
                     this.circs = circs;
                 })
             );
-        })).toPromise(); // run it
+        })).toPromise().then(_ => {
+
+            // Create one ActionContext to represent the batch for
+            // notification purposes.  Avoid popups and audio on batch
+            // renewals.
+
+            const notifyCtx: ActionContext = {
+                displayText: 'scko.batch_renew.result',
+                renewSuccessCount: contexts.filter(c => c.newCirc).length,
+                renewFailCount: contexts.filter(c => !c.newCirc).length
+            };
+
+            this.scko.notifyPatron(notifyCtx);
+        });
     }
 }
 

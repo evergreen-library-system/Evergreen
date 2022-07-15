@@ -46,21 +46,39 @@
 <eg-string i18n-text key="scko.checkout.already_out" 
   text="Item is checked out to another patron"></eg-string>
 
-<ng-template #maxRenew>No more renewals allowed for item {{barcode}}</ng-template>
+<ng-template i18n let-ctx="ctx" #loginFailed>
+  Login for "{{ctx ? ctx.username : ''}}" failed.
+</ng-template>
+<eg-string i18n-text key="scko.error.login_failed" [template]="loginFailed"></eg-string>
+
+<ng-template i18n let-ctx="ctx" #maxRenew>
+  No more renewals allowed for item {{ctx ? ctx.barcode : ''}}
+</ng-template>
 <eg-string i18n-text key="scko.error.max_renewals" [template]="maxRenew"></eg-string>
 
 <eg-string key="scko.error.patron_fines"
   text="This account has too many fines to checkout."></eg-string>
 
-<ng-template #itemNotCataloged>
-  Item {{barcode}} was not found in the system.  Try re-scanning the item.
+<ng-template i18n let-ctx="ctx" #itemNotCataloged>
+  Item {{ctx ? ctx.barcode : ctx}} was not found in the system.  Try re-scanning the item.
 </ng-template>
 <eg-string key="scko.error.item_not_cataloged" [template]="itemNotCataloged"> </eg-string>
 
 
-<ng-template #copyCircNotAllowed>
-  Item {{barcode}} is not allowed to circulate</ng-template>
+<ng-template i18n let-ctx="ctx" #copyCircNotAllowed>
+  Item {{ctx ? ctx.barcode : ''}} is not allowed to circulate</ng-template>
 <eg-string key="scko.error.copy_circ_not_allowed" [template]="copyCircNotAllowed">
+</eg-string>
+
+<ng-template let-ctx="ctx" #batchRenewResultTmpl>
+  <span class="mr-1" *ngIf="ctx && ctx.renewSuccessCount > 0" i18n>
+    {{ctx.renewSuccessCount}} item(s) successfully renewed.
+  </span>
+  <span class="mr-1" *ngIf="ctx && ctx.renewFailCount > 0" i18n>
+    {{ctx.renewFailCount}} item(s) failed to renew.
+  </span>
+</ng-template>
+<eg-string key="scko.batch_renew.result" [template]="batchRenewResultTmpl">
 </eg-string>
 
 <eg-string i18n-text key="scko.error.actor_usr_barred" 

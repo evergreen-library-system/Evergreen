@@ -56,6 +56,9 @@ export class StringService {
 
     processPending() {
         const pstring = this.pending[0];
+
+        console.debug('STRING', pstring.key, pstring.ctx);
+
         this.strings[pstring.key].resolver(pstring.ctx).then(
             txt => {
                 pstring.resolve(txt);

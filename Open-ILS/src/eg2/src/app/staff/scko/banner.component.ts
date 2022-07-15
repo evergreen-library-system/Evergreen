@@ -4,7 +4,7 @@ import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {AuthService, AuthWsState} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {StoreService} from '@eg/core/store.service';
-import {SckoService} from './scko.service';
+import {SckoService, ActionContext} from './scko.service';
 import {OrgService} from '@eg/core/org.service';
 import {EventService, EgEvent} from '@eg/core/event.service';
 import {HatchService} from '@eg/core/hatch.service';
@@ -21,7 +21,6 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
 
     patronUsername: string;
     patronPassword: string;
-    patronLoginFailed = false;
 
     staffUsername: string;
     staffPassword: string;
@@ -127,15 +126,26 @@ export class SckoBannerComponent implements OnInit, AfterViewInit {
 
     submitPatronLogin() {
         this.patronUsername = (this.patronUsername || '').trim();
-        this.patronLoginFailed = false;
-        this.scko.loadPatron(this.patronUsername, this.patronPassword).finally(() => {
-            this.patronUsername = '';
-            this.patronPassword = '';
+        this.scko.loadPatron(this.patronUsername, this.patronPassword)
+        .finally(() => {
+
             if (this.scko.patronSummary === null) {
-                this.patronLoginFailed = true;
+
+                const ctx: ActionContext = {
+                    username: this.patronUsername,
+                    shouldPopup: true,
+                    alertSound: 'error.scko.login_failed',
+                    displayText: 'scko.error.login_failed'
+                };
+
+                this.scko.notifyPatron(ctx);
+
             } else {
                 this.focusNode('item-barcode');
             }
+
+            this.patronUsername = '';
+            this.patronPassword = '';
         });
     }
 
