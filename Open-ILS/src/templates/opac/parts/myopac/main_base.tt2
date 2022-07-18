@@ -20,7 +20,21 @@
         <span class='[% ctx.user_stats.fines.balance_owed ? "alert" : ""%]'>
             [% money(ctx.user_stats.fines.balance_owed) %]
         </span><br />
-        [% IF (ctx.fines.grocery.size OR ctx.fines.circulation.size) AND ctx.get_org_setting(ctx.user.home_ou, 'credit.payments.allow') == 1 %]
+        [%
+            allow_pay_all_charges = 0;
+            IF (ctx.fines.grocery.size OR ctx.fines.circulation.size) AND ctx.get_org_setting(ctx.user.home_ou, 'credit.payments.allow') == 1;
+                allow_pay_all_charges = 1;
+            END;
+            neg_or_zero = 0;
+            FOR f IN ctx.fines.circulation;
+                IF f.xact.balance_owed <= 0; neg_or_zero = neg_or_zero + 1; END;
+            END;
+            FOR f IN ctx.fines.grocery;
+                IF f.xact.balance_owed <= 0; neg_or_zero = neg_or_zero + 1; END;
+            END;
+            IF neg_or_zero > 0; allow_pay_all_charges = 0; END
+        %]
+        [% IF allow_pay_all_charges %]
        <form action="[% ctx.opac_root %]/myopac/main_payment_form" method="get"><input
             type="submit" title="[% l('Pay All Charges') %]"
             value="[% l('Pay All Charges') %]" class="pos-rel-top-5 opac-button" /></form>
