@@ -7,7 +7,15 @@
     myopac_cc_allowed = 0;
     IF (ctx.fines.grocery.size OR ctx.fines.circulation.size) AND ctx.get_org_setting(ctx.user.home_ou, 'credit.payments.allow') == 1;
         myopac_cc_allowed = 1;
-    END
+    END;
+    neg_or_zero = 0;
+    FOR f IN ctx.fines.circulation;
+        IF f.xact.balance_owed <= 0; neg_or_zero = neg_or_zero + 1; END;
+    END;
+    FOR f IN ctx.fines.grocery;
+        IF f.xact.balance_owed <= 0; neg_or_zero = neg_or_zero + 1; END;
+    END;
+    IF neg_or_zero > 0; myopac_cc_allowed = 0; END;
 %]
 [%  IF myopac_cc_allowed; %]
 <form action="[% ctx.opac_root %]/myopac/main_payment_form#payment" method="get" id="selected_fines">
@@ -54,7 +62,7 @@
                 </tr>
             </thead>
             <tbody id='myopac_circ_trans_tbody'>
-			    [% c = 0; neg_or_zero = 0; %]
+                [% c = 0; %]
                 [% FOR f IN ctx.fines.circulation;
                     attrs = {marc_xml => f.marc_xml};
                     IF f.marc_xml;
@@ -76,7 +84,6 @@
                             [% money(f.xact.balance_owed) %]
                         </strong>
                         <input class="fineAmount" value="[% f.xact.balance_owed %]" hidden />
-						[% IF f.xact.balance_owed <= 0; neg_or_zero = neg_or_zero + 1; END %]
                     </td>
                     
                     <td>
@@ -182,7 +189,6 @@
                             [% money(f.xact.balance_owed) %]
                         </strong>
                          <input type="hidden" class="fineAmount" value="[% f.xact.balance_owed %]" hidden />
-                        [% IF f.xact.balance_owed <= 0; neg_or_zero = neg_or_zero + 1; END %]
                     </td>
                     
                     <td>
@@ -229,9 +235,9 @@
 <script >
 $( document ).ready(function() {
    $("input[type=checkbox]").click(function () {
-	var amount = 0;
+    var amount = 0;
     $("td input:checked").each(function () {
- 		var item = jQuery( this ).parent().parent().children("td").children(".fineAmount").attr("value");
+    var item = jQuery( this ).parent().parent().children("td").children(".fineAmount").attr("value");
         item = parseFloat(item);
         amount += item;
     });
