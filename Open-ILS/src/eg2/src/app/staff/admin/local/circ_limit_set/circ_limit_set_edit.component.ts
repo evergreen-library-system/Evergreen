@@ -25,7 +25,7 @@ export class CircLimitSetEditComponent  implements OnInit {
     selectedLimitGroup: any;
     locId = 0;
 
-    circTab: 'limitSet' | 'linked' = 'linked';
+    circTab: 'limitSet' | 'linked' = 'limitSet';
 
     @ViewChild('addingSuccess', {static: true}) addingSuccess: StringComponent;
     @ViewChild('removingSuccess', {static: true}) removingSuccess: StringComponent;

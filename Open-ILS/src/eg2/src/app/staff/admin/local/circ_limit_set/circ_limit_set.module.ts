@@ -4,7 +4,6 @@ import {CircLimitSetComponent} from './circ_limit_set.component';
 import {CircLimitSetEditComponent} from './circ_limit_set_edit.component';
 import {CircLimitSetRoutingModule} from './circ_limit_set_routing.module';
 import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
-import {AdminPageModule} from '@eg/staff/share/admin-page/admin-page.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +12,6 @@ import {AdminPageModule} from '@eg/staff/share/admin-page/admin-page.module';
   ],
   imports: [
     AdminCommonModule,
-    AdminPageModule,
     CircLimitSetRoutingModule,
     ItemLocationSelectModule,
   ],
