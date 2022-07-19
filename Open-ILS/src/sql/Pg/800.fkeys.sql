@@ -28,8 +28,25 @@ CREATE RULE protect_bib_rec_delete AS
 
 CREATE RULE protect_bre_id_neg1 AS ON UPDATE TO biblio.record_entry WHERE OLD.id = -1 DO INSTEAD NOTHING;
 
+
+-- Kill any transaction that tries to mark a copy location as 
+-- deleted if the location contains any non-deleted copies.
+CREATE OR REPLACE FUNCTION asset.check_delete_copy_location(acpl_id INTEGER) 
+    RETURNS VOID AS $FUNK$
+BEGIN
+    PERFORM TRUE FROM asset.copy WHERE location = acpl_id AND NOT deleted LIMIT 1;
+
+    IF FOUND THEN
+        RAISE EXCEPTION
+            'Copy location % contains active copies and cannot be deleted', acpl_id;
+    END IF;
+END;
+$FUNK$ LANGUAGE plpgsql;
+
+
 CREATE RULE protect_copy_location_delete AS
     ON DELETE TO asset.copy_location DO INSTEAD (
+        SELECT asset.check_delete_copy_location(OLD.id); -- exception on error
         UPDATE asset.copy_location SET deleted = TRUE WHERE OLD.id = asset.copy_location.id;
         UPDATE acq.lineitem_detail SET location = NULL WHERE location = OLD.id;
         DELETE FROM asset.copy_location_order WHERE location = OLD.id;
