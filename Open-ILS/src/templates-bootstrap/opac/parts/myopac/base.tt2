@@ -9,15 +9,15 @@
 
         {children => 0, parent => "parent", url => "messages", text => l("<i class='fas fa-envelope' aria-hidden='true'></i> <span class='sumNum'>[_1]</span>Messages",  ctx.user_stats.messages.unread), name => l("Messages")},
 
-        {children => 3, parent => "parent",url => "circs", text => l("<i class='fas fa-book' aria-hidden='true'></i> <span class='sumNum'>[_1]</span>Items Checked Out", ctx.user_stats.checkouts.total_out), name = l("Circulations")},
-        {children => 0, parent => "circs", url => "circs", text => l("<i class='fas fa-book-reader' aria-hidden='true'></i> Items Checked Out"), name=> l("Circulations")},
-        {children => 0, parent => "circs", url => "ebook_circs", text => l("<i class='fas fa-desktop' aria-hidden='true'></i> E-Items Checked Out"), name => l("E-Items Checked Out")},
+        {children => 3, parent => "parent",url => "circs", text => l("<i class='fas fa-book' aria-hidden='true'></i> <span class='sumNum' id='my_nav_all_checked'>[_1]</span>Items Checked Out", ctx.user_stats.checkouts.total_out), name = l("Circulations")},
+        {children => 0, parent => "circs", url => "circs", text => l("<i class='fas fa-book-reader' aria-hidden='true'></i> <span class='sumNum' id='my_nav_checked'>[_1]</span>Items Checked Out", ctx.user_stats.checkouts.total_out), name=> l("Circulations")},
+        {children => 0, parent => "circs", url => "ebook_circs", text => l("<i class='fas fa-desktop' aria-hidden='true'></i> <span class='sumNum' id='my_nav_e_checked'>0</span>E-Items Checked Out"), name => l("E-Items Checked Out")},
         {children => 0, parent => "circs", url => "circ_history", text => l("<i class='fas fa-history' aria-hidden='true'></i> Check Out History"), name => l("Check Out History")},
 
-        {children => 5, parent => "parent",url => "holds", text => l("<i class='fas fa-clock' aria-hidden='true'></i> <span class='sumNum'>[_1]</span>Holds / <span class='sumNum'>[_2]</span> Ready", ctx.user_stats.holds.total, ctx.user_stats.holds.ready), name => l("Holds")},
-        {children => 0, parent => "holds", url => "holds", text => l("<i class='fas fa-hands' aria-hidden='true'></i> Items on Hold"), name => l("Holds")},
-        {children => 0, parent => "holds", url => "ebook_holds", text => l("<i class='fas fa-desktop' aria-hidden='true'></i> E-Items on Hold"), name => l("E-Items on Hold")},
-        {children => 0, parent => "holds", url => "ebook_holds_ready", text => l("<i class='fas fa-download' aria-hidden='true'></i>  E-Items Ready for Checkout"), name => l("E-Items Ready for Checkout")},
+        {children => 5, parent => "parent",url => "holds", text => l("<i class='fas fa-clock' aria-hidden='true'></i> <span class='sumNum' id='my_nav_all_holds'>[_1]</span>Holds / <span class='sumNum' id='my_nav_all_pickup'>[_2]</span> Ready", ctx.user_stats.holds.total, ctx.user_stats.holds.ready), name => l("Holds")},
+        {children => 0, parent => "holds", url => "holds", text => l("<i class='fas fa-hands' aria-hidden='true'></i> <span class='sumNum' id='my_nav_holds'>[_1]</span>Items on Hold", ctx.user_stats.holds.total), name => l("Holds")},
+        {children => 0, parent => "holds", url => "ebook_holds", text => l("<i class='fas fa-desktop' aria-hidden='true'></i> <span class='sumNum' id='my_nav_e_holds'>0</span>E-Items on Hold"), name => l("E-Items on Hold")},
+        {children => 0, parent => "holds", url => "ebook_holds_ready", text => l("<i class='fas fa-download' aria-hidden='true'></i> <span class='sumNum' id='my_nav_e_ready'>0</span>E-Items Ready for Checkout"), name => l("E-Items Ready for Checkout")},
         {children => 0, parent => "holds", url => "hold_history", text => l("<i class='fas fa-history' aria-hidden='true'></i> Holds History"), name => l("Holds History")},
 
         {children => 4, parent => "parent", url => "prefs", text => l("<i class='fas fa-cog' aria-hidden='true'></i> Preferences"),name => l("Preferences")},

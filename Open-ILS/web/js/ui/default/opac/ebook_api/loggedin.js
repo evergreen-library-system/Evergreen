@@ -58,6 +58,7 @@ dojo.addOnLoad(function() {
 function addTotalsToPage() {
     console.log('updating page with transaction totals');
     updateDashboard();
+    updateMyAccountNav();
     updateMyAccountSummary();
 }
 
@@ -113,6 +114,29 @@ function updateDashboard() {
     }
 }
 
+function updateMyAccountNav() {
+    console.log('updating My Account nav menu');
+    var total_checkouts = (typeof xacts.checkouts === 'undefined') ? 0 : xacts.checkouts.length;
+    var total_holds_pending = (typeof xacts.holds_pending === 'undefined') ? 0 : xacts.holds_pending.length;
+    var total_holds_ready = (typeof xacts.holds_ready === 'undefined') ? 0 : xacts.holds_ready.length;
+
+    // update totals
+    var allCheckout = parseInt( document.getElementById('my_nav_all_checked').innerHTML, 10 );
+    if (!isNaN(allCheckout))
+        document.getElementById('my_nav_all_checked').innerHTML = allCheckout + total_checkouts;
+
+    var allHolds = parseInt( document.getElementById('my_nav_all_holds').innerHTML, 10 );
+    if (!isNaN(allHolds))
+        document.getElementById('my_nav_all_holds').innerHTML = allHolds + total_holds_pending;
+
+    var allPickup = parseInt( document.getElementById('my_nav_all_pickup').innerHTML, 10 );
+    if (!isNaN(allPickup))
+        document.getElementById('my_nav_all_pickup').innerHTML = allPickup + total_holds_ready;
+
+    document.getElementById('my_nav_e_checked').innerHTML = total_checkouts;
+    document.getElementById('my_nav_e_holds').innerHTML = total_holds_pending;
+    document.getElementById('my_nav_e_ready').innerHTML = total_holds_ready;
+}
 
 function updateMyAccountSummary() {
     if (myopac_page === 'main') {
@@ -125,9 +149,11 @@ function updateMyAccountSummary() {
         dojo.byId('acct_sum_ebook_hold_total').innerHTML = total_holds_pending;
         dojo.byId('acct_sum_ebook_hold_ready_total').innerHTML = total_holds_ready;
         // unhide display elements
+        /*
         dojo.removeClass('acct_sum_ebook_circs', "hidden");
         dojo.removeClass('acct_sum_ebook_holds', "hidden");
         dojo.removeClass('acct_sum_ebook_holds_ready', "hidden");
+        */
     }
 }
 
