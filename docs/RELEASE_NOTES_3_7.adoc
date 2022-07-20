@@ -3,6 +3,38 @@
 :numbered:
 
 
+== Evergreen 3.7.4 ==
+
+This release contains bug fixes improving on Evergreen 3.7.3.
+
+=== Bug Fixes ===
+
+==== Architecture ====
+
+* Fixes a memory leak when performing a search of an IDL class that fleshes data from linked classes via open-ils.cstore, open-ils.pcrud, or open-ils.rstore (https://bugs.launchpad.net/evergreen/+bug/1974195[Bug 1974195])
+
+==== Cataloging ====
+
+* Fixes an issue where the Holdings Editor could exhaust drones (https://bugs.launchpad.net/evergreen/+bug/1930617[Bug 1930617])
+
+==== Circulation ====
+
+* Fixes an issue where batch update of due dates in the Items Out tab exhausted drones (https://bugs.launchpad.net/evergreen/+bug/1932203[Bug 1932203])
+
+==== Client ====
+
+* Restores part of the patch to open title links in a new tab on the Hopeless Holds interface from https://bugs.launchpad.net/evergreen/+bug/1909681[Launchpad bug 1909681] that was missed when it was added to release 3.7.3 (https://bugs.launchpad.net/evergreen/+bug/1975861[Bug 1975861])
+
+=== Acknowledgements ===
+
+We would like to thank the following people who contributed code
+patches and testing to the 3.7.4 point release of Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* Jason Stephenson
+
 == Evergreen 3.7.3 ==
 
 This release contains bug fixes improving on Evergreen 3.7.2.
