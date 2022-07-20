@@ -181,6 +181,7 @@
   <eg-grid-column [asyncSupportsEmptyTermClick]="true" path="claim_policy" [sortable]="false"></eg-grid-column>
   <eg-grid-column [asyncSupportsEmptyTermClick]="true" i18n-label label="Status" path="state" [disableTooltip]="true"></eg-grid-column>
   <eg-grid-column path="estimated_unit_price" [disableTooltip]="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="PO ID" path="purchase_order.id" [disableTooltip]="true"></eg-grid-column>
   <eg-grid-column i18n-label label="PO Name" path="purchase_order" [cellTemplate]="poTmpl" [disableTooltip]="true" [hidden]="true"></eg-grid-column>
   <eg-grid-column path="picklist" [cellTemplate]="plTmpl" [disableTooltip]="true" [hidden]="true"></eg-grid-column>
   <eg-grid-column [asyncSupportsEmptyTermClick]="true" path="cancel_reason" [hidden]="true"></eg-grid-column>
