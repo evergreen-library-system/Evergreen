@@ -6,14 +6,15 @@
         <ng-template ngbNavContent>
             <div class="col-lg-6 offset-lg-3 mt-3">
                 <div style="text-align: center;">
-                    <button class="p-2 mb-3 btn btn-danger btn-lg" 
+                    <button class="p-2 mb-3 btn btn-danger btn-lg"
                     (click)="endSurvey()" i18n>
                         End Survey Now
                     </button>
                 </div>
-                <eg-fm-record-editor displayMode="inline" 
+                <eg-fm-record-editor displayMode="inline"
                     hiddenFieldsList="id"
                     datetimeFieldsList="start_date,end_date"
+                    dateFieldOrderList="start_date,end_date"
                     fieldOrder="name,description,owner,start_date,end_date,opac,poll,required,usr_summary"
                     idlClass="asv"
                     mode="update"
@@ -36,7 +37,7 @@
                         <input type="text" [(ngModel)]="question.words" class="form-control"
                             name="question-{{questionIndex}}">
                         <span class="input-group-append">
-                            <button class="ml-2 btn btn-info" 
+                            <button class="ml-2 btn btn-info"
                                 (click)="updateQuestion(question)" i18n>
                                 Save
                             </button>
@@ -46,13 +47,13 @@
                             </button>
                         </span>
                     </div>
-                    <div *ngFor="let answer of question.answers; let answerIndex = index;" 
+                    <div *ngFor="let answer of question.answers; let answerIndex = index;"
                         class="mb-2 input-group">
-                        <input class="form-control" type="text" 
+                        <input class="form-control" type="text"
                             [(ngModel)]="answer.words"
                             name="answer-{{questionIndex}}-{{answerIndex}}">
                         <span class="input-group-append">
-                            <button class="ml-2 btn btn-info" 
+                            <button class="ml-2 btn btn-info"
                                 (click)="updateAnswer(answer, question, questionIndex, answerIndex)"
                                 i18n>
                                 Save
@@ -64,11 +65,11 @@
                         </span>
                     </div>
                     <div class="mb-2 input-group">
-                        <input class="form-control" type="text" 
+                        <input class="form-control" type="text"
                             [(ngModel)]="newAnswerArray[questionIndex].inputText"
                                 value="">
                         <span class="input-group-append">
-                            <button class="ml-2 btn btn-info" 
+                            <button class="ml-2 btn btn-info"
                                 (click)="createAnswer(newAnswerArray[questionIndex].inputText, question)"
                                 i18n>
                                 Add Answer
@@ -80,9 +81,9 @@
                     <label class="input-group-text">
                         <b>New Question</b>
                     </label>
-                    <input #newQuestionInput 
-                        class="form-control" 
-                        type="text" 
+                    <input #newQuestionInput
+                        class="form-control"
+                        type="text"
                         [(ngModel)]="newQuestionText"
                         name="question-new" value="">
                     <span class="input-group-append">
@@ -121,9 +122,9 @@
     </eg-string>
 <eg-string #updateQuestionFailStr i18n-text text="Survey Question update failed">
     </eg-string>
-<eg-string #endSurveyFailedString i18n-text 
+<eg-string #endSurveyFailedString i18n-text
     text="Ending Survey failed or was not allowed"></eg-string>
 <eg-string #endSurveySuccessString i18n-text text="Survey ended"></eg-string>
-<eg-string #questionAlreadyStartedErrString i18n-text 
+<eg-string #questionAlreadyStartedErrString i18n-text
     text="The survey Start Date must be set for the future to add new questions or modify existing questions.">
     </eg-string>

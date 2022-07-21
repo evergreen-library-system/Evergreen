@@ -235,7 +235,7 @@ export class FormatService {
      * Create a Moment from an ISO string
      */
     momentizeIsoString(isoString: string, timezone: string): moment.Moment {
-        return (isoString.length) ? moment(isoString, timezone) : moment();
+        return (isoString?.length) ? moment(isoString).tz(timezone) : moment();
     }
 
     /**

@@ -143,6 +143,11 @@ describe('FormatService', () => {
         const moment = service.momentizeDateTimeString('7/3/12, 6:06 PM', 'Africa/Addis_Ababa', false, 'fr-CA');
         expect(moment.isValid()).toBe(true);
     });
+    it('can momentize ISO strings', () => {
+        const moment = service.momentizeIsoString('2022-07-29T17:56:00.000Z', 'America/New_York');
+        expect(moment.isValid()).toBe(true);
+        expect(moment.format('YYYY')).toBe('2022');
+    });
 
 });
 
