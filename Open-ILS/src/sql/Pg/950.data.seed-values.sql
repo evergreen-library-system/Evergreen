@@ -15818,13 +15818,13 @@ INSERT into config.org_unit_setting_type
         'acq',
         oils_i18n_gettext(
             'acq.fund.allow_rollover_without_money',
-            'Allow funds to be rolled over without bringing the money along',
+            'Rollover encumbrances only',
             'coust',
             'label'
         ),
         oils_i18n_gettext(
             'acq.fund.allow_rollover_without_money',
-            'Allow funds to be rolled over without bringing the money along.  This makes money left in the old fund disappear, modeling its return to some outside entity.',
+            'Rollover encumbrances only when doing fiscal year end.  This makes money left in the old fund disappear, modeling its return to some outside entity.',
             'coust',
             'description'
         ),
