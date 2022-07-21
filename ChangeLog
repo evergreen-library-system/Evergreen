@@ -1,3 +1,258 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit ff22c71b014d66b718f898431629e0ec28a03b32
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Jul 21 10:09:12 2022 -0400
+
+    Revert "Translation updates - po files"
+    
+    This reverts commit b7e11c87cb7a69c647f6ce35c3bc4bdc8488842b.
+    
+    This was the newpot step run by mistake.
+
+442	442	build/i18n/po/bootstrap-opac/bootstrap-opac.pot
+1	1	build/i18n/po/conify/conify.pot
+14	14	build/i18n/po/kpac/kpac.pot
+441	441	build/i18n/po/tpac/tpac.pot
+2	2	build/i18n/po/urlverify/urlverify.pot
+114	114	build/i18n/po/webstaff/webstaff.pot
+
+commit b7e11c87cb7a69c647f6ce35c3bc4bdc8488842b
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Jul 21 09:53:39 2022 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+442	442	build/i18n/po/bootstrap-opac/bootstrap-opac.pot
+1	1	build/i18n/po/conify/conify.pot
+14	14	build/i18n/po/kpac/kpac.pot
+441	441	build/i18n/po/tpac/tpac.pot
+2	2	build/i18n/po/urlverify/urlverify.pot
+114	114	build/i18n/po/webstaff/webstaff.pot
+
+commit f851e5a34670620e2d99c9c43d6d8304fefd0677
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Jul 20 08:57:55 2022 -0400
+
+    Docs: 3.7.4 Release Notes
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+32	0	docs/RELEASE_NOTES_3_7.adoc
+
+commit 484e6a5d65274bb572b28974d436e3c5e3620ebc
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Jul 19 14:18:29 2022 -0400
+
+    Revert "LP#1945385: use eg-admin-page for circ limit sets admin UI"
+    
+    This reverts commit 5380bfb11a3a38bac521ce8ef92216c13d46f3b9.
+    
+    The reverted code raises the following error in 3.7:
+    
+    ERROR in
+    src/app/staff/admin/local/circ_limit_set/circ_limit_set.component.html:4:32
+    - error NG8002: Can't bind to 'templateFields' since it isn't a known
+    property of 'eg-admin-page'.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+20	8	Open-ILS/src/eg2/src/app/staff/admin/local/circ_limit_set/circ_limit_set.component.html
+118	2	Open-ILS/src/eg2/src/app/staff/admin/local/circ_limit_set/circ_limit_set.component.ts
+0	2	Open-ILS/src/eg2/src/app/staff/admin/local/circ_limit_set/circ_limit_set.module.ts
+1	1	Open-ILS/src/eg2/src/app/staff/admin/local/circ_limit_set/circ_limit_set_edit.component.ts
+
+commit f51c09157ff0199a7782c4f4974e2146e5fde77f
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Jul 15 13:34:18 2022 -0400
+
+    Revert "LP#1851884: eg-fm-record-editor: avoid fetching all rows from linked table"
+    
+    This reverts commit f2824b8457fa1e941053cdc7fa715ab21e6f58c9.
+    
+    It causes the following error when building Angular:
+    
+        ERROR in src/app/share/fm-editor/fm-editor.component.ts:517:30 - error TS2339: Property 'linkedSearchConditions' does not exist on type 'FmFieldOptions'.
+    
+        517             if (fieldOptions.linkedSearchConditions) {
+                                         ~~~~~~~~~~~~~~~~~~~~~~
+        src/app/share/fm-editor/fm-editor.component.ts:518:51 - error TS2339: Property 'linkedSearchConditions' does not exist on type 'FmFieldOptions'.
+    
+        518                 field.idlBaseQuery = fieldOptions.linkedSearchConditions;
+    
+    There does not appear to be any way to resolve this as the patch also
+    relies on other changes in rel_3_8 and rel_3_9 that are not present in
+    rel_3_7.  For these reasons, I am reverting the patch from rel_3_7.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	10	Open-ILS/src/eg2/src/app/core/idl.service.ts
+0	13	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.html
+72	14	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+
+commit 4f51006f1b944dd41380efdc158ea171500a9738
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu May 26 13:02:53 2022 -0400
+
+    LP 1975861: Fix the Patch for Lp 1909681 on rel_3_7
+    
+    The change to the Hopeless Holds Interface for opening title links in
+    a new tab was missed in the 3.7 backport of the branch from bug
+    1909681. This commit adds it back.
+    
+    NOTE: This branch is for rel_3_7 and ONLY rel_3_7.  Other Evergreen
+    branches do not need it.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+
+commit f2824b8457fa1e941053cdc7fa715ab21e6f58c9
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Wed Apr 27 20:42:05 2022 -0400
+
+    LP#1851884: eg-fm-record-editor: avoid fetching all rows from linked table
+    
+    This patch ensures that Angular FM record editor dialogs do
+    not attempt to fetch all rows from target table when constructing
+    a combobox for a linked field.
+    
+    In particular, it makes the following changes:
+    
+    * If a custom template for a field is supplied, use that by
+      default rather than _also_ creating a data source for
+      a combobox.
+    * Rather than creating its own data source for a linked field,
+      the FM record editor now uses the IDL mode of eg-combobox. By doing
+      this, we use eg-combobox's default data source, which limits
+      record retrievals to 100 rows max. Also, empty-click is now
+      enabled by default.
+    * When attempting to identify a selector for an IDL class, if
+      the class doesn't define a selector and doesn't have a field named
+      'name', but its primary key is a text field, use the primary
+      key as the selector.
+    
+    To test
+    -------
+    [1] Create a few thousand empty bib record buckets in your test database.
+    [2] Edit a carousel under Local Administration; note that it can
+        take some time for the dialog to load.
+    [3] Apply the patch and repeat step 2. This time, the carousel edit modal
+        should open instantly.
+    [4] Test various Angular record editor modals to confirm that they behave
+        as expected. For example:
+    
+        * The allocate to fund dialog in Fund Administration, in particular
+          to verify that only active funds show up.
+        * The assign user to course modal, to verify that searching is done
+          by course number, not name.
+        * Filter Dialog Set editor under /eg2/en-US/staff/admin/local/config/filter_dialog_filter_set
+          to verify that the drop down for the creator doesn't fetch
+          all patrons. (Note that this is an artificial example).
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+
+10	1	Open-ILS/src/eg2/src/app/core/idl.service.ts
+13	0	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.html
+14	72	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+
+commit 5380bfb11a3a38bac521ce8ef92216c13d46f3b9
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Thu May 19 16:32:38 2022 -0700
+
+    LP#1945385: use eg-admin-page for circ limit sets admin UI
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+8	20	Open-ILS/src/eg2/src/app/staff/admin/local/circ_limit_set/circ_limit_set.component.html
+2	118	Open-ILS/src/eg2/src/app/staff/admin/local/circ_limit_set/circ_limit_set.component.ts
+2	0	Open-ILS/src/eg2/src/app/staff/admin/local/circ_limit_set/circ_limit_set.module.ts
+1	1	Open-ILS/src/eg2/src/app/staff/admin/local/circ_limit_set/circ_limit_set_edit.component.ts
+
+commit 4c18d9ae1fae96eaa057dccbd3da1968277e986a
+Author: Jeff Davis <jeff.davis@bc.libraries.coop>
+Date:   Thu Apr 21 10:48:15 2022 -0700
+
+    LP#1932203: serialize requests on Edit Due Date in Items Out tab
+    
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+7	5	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit bd9fc8a16fa8d84176e2fbc065bd7ea7ea9295aa
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Mon May 23 19:06:48 2022 -0400
+
+    LP#1930617: reduce parallel requests initiated by AngularJS holdings editor
+    
+    This patch decreases the number of parallel requests spawned by the
+    AngularJS holdings editor. This can reduce load on open-ils.pcrud when
+    the editor is used to handle a large number of items in one batch.
+    
+    This patch takes the following approaches:
+    
+    - the fetching of call number affixes now only makes one request
+      per relevant org unit
+    - item alerts are now retrieved via fleshing when the batch of items
+      is requested (as opposed to doing a PCRUD request for each copy)
+    - fetching monograph parts is now done serially
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Create a bucket with a few hundred items and edit all of them
+        in the AngularJS holdings editor (which is what you get when
+        you edit items from the bucket interface).
+    [3] Verify that the editing loads itself without causing errors
+        or PCRUD drone spikes.
+    [4] Verify that item alerts and monograph parts are loaded
+    [5] Verify that the call number prefix and suffix drop-downs
+        are correctly populated.
+    [6] Verify that copy alerts can be attached to newly-created items
+        and saved.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+
+68	29	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 45dd90092449fc2aeb3ed39945706e61f2886ee6
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Thu May 19 10:00:48 2022 -0400
+
+    LP#1974195: fix memory leak when performing fleshed Fieldmapper search
+    
+    This patch fixes a memory leak that occurs when performing
+    a fleshed search of an IDL class via open-ils.cstore, open-ils.pcrud,
+    or open-ils.rstore. It removes a debug-level log entry that didn't
+    free a temporary string.
+    
+    To test
+    -------
+    [1] Perform a PCRUD search that includes fleshing and retrieves
+        a large responses. One example is a search on bre that fleshes
+        call numbers and copies and returns a few hundred bibs.
+    [2] Observe that the PCRUD drone that serviced the request has
+        increased its memory usage significantly.
+    [3] Apply the patch and repeat step 1. This time, the drone's memory
+        usage should not (persistently) increase as much.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+0	2	Open-ILS/src/c-apps/oils_sql.c
+
+commit c915763aeaf24629435ff471ebe19a2b087022a7
+Author: Jason Boyer <JBoyer@equinoxOLI.org>
+Date:   Fri May 20 17:35:53 2022 -0400
+
+    Forward Port 3.7.3 Upgrade Script
+    
+    Signed-off-by: Jason Boyer <JBoyer@equinoxOLI.org>
+
+2231	0	Open-ILS/src/sql/Pg/version-upgrade/3.7.2-3.7.3-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.7.2-3.7.3-upgrade-db.sql
