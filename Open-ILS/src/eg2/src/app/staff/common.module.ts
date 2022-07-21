@@ -17,6 +17,7 @@ import {DatetimeValidatorDirective} from '@eg/share/validators/datetime_validato
 import {MultiSelectComponent} from '@eg/share/multi-select/multi-select.component';
 import {TextMultiSelectComponent} from '@eg/share/text-multi-select/text-multi-select.component';
 import {NotBeforeMomentValidatorDirective} from '@eg/share/validators/not_before_moment_validator.directive';
+import {DatesInOrderValidatorDirective} from '@eg/share/validators/dates_in_order_validator.directive';
 import {PatronBarcodeValidatorDirective} from '@eg/share/validators/patron_barcode_validator.directive';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {CourseService} from './share/course.service';
@@ -41,6 +42,7 @@ import {OfflineService} from '@eg/staff/share/offline.service';
     MultiSelectComponent,
     TextMultiSelectComponent,
     NotBeforeMomentValidatorDirective,
+    DatesInOrderValidatorDirective,
     PatronBarcodeValidatorDirective,
   ],
   imports: [
@@ -66,6 +68,7 @@ import {OfflineService} from '@eg/staff/share/offline.service';
     MultiSelectComponent,
     TextMultiSelectComponent,
     NotBeforeMomentValidatorDirective,
+    DatesInOrderValidatorDirective,
     PatronBarcodeValidatorDirective
   ]
 })

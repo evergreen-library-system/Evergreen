@@ -3,7 +3,7 @@ import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {Router} from '@angular/router';
-import {IdlObject} from '@eg/core/idl.service';
+import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
@@ -17,6 +17,7 @@ import {AuthService} from '@eg/core/auth.service';
 
 export class SurveyComponent implements OnInit {
 
+    defaultNewRecord: IdlObject;
     gridDataSource: GridDataSource;
 
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
@@ -36,6 +37,7 @@ export class SurveyComponent implements OnInit {
 
     constructor(
         private auth: AuthService,
+        private idl: IdlService,
         private net: NetService,
         private pcrud: PcrudService,
         private toast: ToastService,
@@ -69,6 +71,11 @@ export class SurveyComponent implements OnInit {
                 this.navigateToEditPage(idToEdit);
             }
         );
+
+        this.defaultNewRecord = this.idl.create('asv');
+        const nextWeek = new Date();
+        nextWeek.setDate(nextWeek.getDate() + 7);
+        this.defaultNewRecord.end_date(nextWeek.toISOString());
     }
 
     showEditDialog(idlThing: IdlObject): Promise<any> {

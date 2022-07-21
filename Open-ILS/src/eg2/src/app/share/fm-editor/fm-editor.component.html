@@ -13,20 +13,27 @@
   <div class="modal-header bg-info" *ngIf="!hideBanner">
     <h4 class="modal-title" i18n>Record Editor: {{recordLabel}}</h4>
     <ng-container *ngIf="isDialog()">
-      <button type="button" class="close" 
+      <button type="button" class="close"
         i18n-aria-label aria-label="Close" (click)="closeEditor()">
         <span aria-hidden="true">&times;</span>
       </button>
     </ng-container>
   </div>
   <div class="modal-body">
-    <form #fmEditForm="ngForm" role="form" class="form-validated common-form striped-odd">
+    <form #fmEditForm="ngForm" role="form"
+          class="form-validated common-form striped-odd"
+          [egDateFieldOrderList]="dateFieldOrderList">
       <ng-container *ngIf="!record">
-        <!-- display a progress dialog while the editor 
+        <!-- display a progress dialog while the editor
             fetches the needed data -->
-        <eg-progress-inline></eg-progress-inline> 
+        <eg-progress-inline></eg-progress-inline>
       </ng-container>
       <ng-container *ngIf="record">
+      <div role="alert" class="alert alert-danger" *ngIf="fmEditForm.errors?.['datesOutOfOrder'] && (fmEditForm.touched || fmEditForm.dirty)">
+        <span class="material-icons" aria-hidden="true">error</span>
+        <span i18n>Dates must be in the correct order</span>
+      </div>
+
       <div class="form-group row" *ngFor="let field of fields">
         <div class="col-lg-3">
           <label for="{{idPrefix}}-{{field.name}}">{{field.label}}</label>
@@ -39,8 +46,8 @@
             <ng-container *ngSwitchCase="'template'">
               <ng-container
                 *ngTemplateOutlet="field.template; context:customTemplateFieldContext(field)">
-              </ng-container> 
-            </ng-container> 
+              </ng-container>
+            </ng-container>
 
             <ng-container *ngSwitchCase="'readonly'">
               <span>{{record[field.name]()}}</span>
@@ -60,6 +67,8 @@
               <eg-date-select
                 domId="{{idPrefix}}-{{field.name}}"
                 [readOnly]="field.readOnly"
+                [ngModel]="record[field.name]()"
+                name="{{field.name}}"
                 (onChangeAsIso)="record[field.name]($event)"
                 initialIso="{{record[field.name]()}}">
               </eg-date-select>
@@ -73,6 +82,8 @@
                 (onChangeAsIso)="record[field.name]($event)"
                 i18n-validatorError
                 [readOnly]="field.readOnly"
+                [ngModel]="record[field.name]()"
+                name="{{field.name}}"
                 initialIso="{{record[field.name]()}}">
               </eg-datetime-select>
             </ng-container>
@@ -89,7 +100,7 @@
                 (onChange)="record[field.name]($event)">
               </eg-org-select>
             </ng-container>
-          
+
             <ng-container *ngSwitchCase="'money'">
               <input
                 class="form-control"
@@ -153,7 +164,7 @@
                 [ngModel]="record[field.name]()"
                 (ngModelChange)="record[field.name]($event)"/>
             </ng-container>
-  
+
 	    <ng-container *ngSwitchCase="'readonly-au'">
               <ng-container *ngIf="field.linkedValues">
                 <a href="/eg/staff/circ/patron/{{field.linkedValues[0].id}}/checkout" target="_blank">{{field.linkedValues[0].label}}
@@ -164,7 +175,7 @@
             <ng-container *ngSwitchCase="'link'">
               <eg-combobox
                 id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
-                placeholder="{{field.label}}..." i18n-placeholder 
+                placeholder="{{field.label}}..." i18n-placeholder
                 [required]="field.isRequired()"
                 [idlClass]="field.class" [asyncSupportsEmptyTermClick]="true"
                 [idlBaseQuery]="field.idlBaseQuery"
@@ -177,7 +188,7 @@
             <ng-container *ngSwitchCase="'list'">
               <eg-combobox
                 domId="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
-                placeholder="{{field.label}}..." i18n-placeholder 
+                placeholder="{{field.label}}..." i18n-placeholder
                 [required]="field.isRequired()"
                 [entries]="field.linkedValues"
                 [asyncDataSource]="field.linkedValuesSource"
@@ -217,7 +228,7 @@
         [disabled]="record && record.isnew()" i18n>Delete</button>
     </ng-container>
 
-    <button type="button" class="btn btn-info" 
+    <button type="button" class="btn btn-info"
       [disabled]="fmEditForm.invalid" *ngIf="mode !== 'view'"
       (click)="save()" i18n>Save</button>
   </div>

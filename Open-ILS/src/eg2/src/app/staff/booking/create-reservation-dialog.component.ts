@@ -18,15 +18,7 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import * as moment from 'moment-timezone';
-
-const startTimeIsBeforeEndTimeValidator: ValidatorFn = (fg: FormGroup): ValidationErrors | null => {
-    const start = fg.get('startTime').value;
-    const end = fg.get('endTime').value;
-    return start !== null && end !== null &&
-        start.isBefore(end)
-        ? null
-        : { startTimeNotBeforeEndTime: true };
-};
+import { datesInOrderValidator } from '@eg/share/validators/dates_in_order_validator.directive';
 
 @Component({
   selector: 'eg-create-reservation-dialog',
@@ -84,7 +76,7 @@ export class CreateReservationDialogComponent
             'endTime': new FormControl(),
             'resourceList': new FormControl(),
             'note': new FormControl(),
-        }, [startTimeIsBeforeEndTimeValidator]
+        }, [datesInOrderValidator(['startTime', 'endTime'])]
         );
         if (this.patronId) {
             this.pcrud.search('au', {id: this.patronId}, {
