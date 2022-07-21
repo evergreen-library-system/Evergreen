@@ -1,7 +1,6 @@
-import {Component, EventEmitter, Input, Output, forwardRef, ViewChild, OnInit, Optional, Self} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild, OnInit, Optional, Self} from '@angular/core';
 import {FormatService} from '@eg/core/format.service';
 import {AbstractControl, ControlValueAccessor, FormControl, FormGroup, NgControl} from '@angular/forms';
-import {NgbDatepicker, NgbTimeStruct, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {DatetimeValidator} from '@eg/share/validators/datetime_validator.directive';
 import * as moment from 'moment-timezone';
 
@@ -122,7 +121,14 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
     }
 
 
-    writeValue(value: moment.Moment) {
+    writeValue(value: moment.Moment|string) {
+        if (typeof value === 'string') {
+            if (value.length === 0) {
+               return;
+            };
+            value = this.format.momentizeIsoString(value, this.timezone);
+        }
+
         if (value !== undefined && value !== null) {
             this.dateTimeForm.patchValue({
                 stringVersion: this.format.transform({value: value, datatype: 'timestamp', datePlusTime: true})});

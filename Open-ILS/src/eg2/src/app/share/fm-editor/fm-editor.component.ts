@@ -157,6 +157,11 @@ export class FmRecordEditorComponent
     // do not close dialog on error saving record
     @Input() remainOpenOnError: false;
 
+    // if date fields need to be in a specific order (e.g.
+    // start date before end date), specify them in a comma-
+    // separated list here.
+    @Input() dateFieldOrderList: '';
+
     // Emit the modified object when the save action completes.
     @Output() recordSaved = new EventEmitter<IdlObject>();
 
