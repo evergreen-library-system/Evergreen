@@ -59,7 +59,7 @@ END;
 [%- series_anchors = PROCESS render_series;
     IF series_anchors.length > 0; %]
 <h2 class='rdetail_related_series'>[% l('Search for related items by series') %]</h2>
-<ul>
+<ul class="no-bullets">
     [% series_anchors %]
 </ul>
 [%- END %]
