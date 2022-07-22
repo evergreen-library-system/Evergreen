@@ -74,7 +74,7 @@ ctx.metalinks.push('
                     <button id="btnMore" data-toggle="collapse" data-target="#demo"
                         class="btn btn-action btn-sm my-3"><i class="fas fa-info-circle" aria-hidden="true"></i> [%l ("More Details") %]</button>
                     <div id="demo" class="collapse">
-                        <h2 id='rdetail_record_details'>[% l("Record details") %]</h2>
+                        <h2 class='rdetail_record_details'>[% l("Record details") %]</h2>
                         <ul class="list-unstyled">
                             [%- IF attrs.hl.isbn.size; FOR isbn IN attrs.hl.isbn %]
                             <li class='rdetail_isbns'>
@@ -255,6 +255,33 @@ ctx.metalinks.push('
                         [%- INCLUDE "opac/parts/record/contents.tt2" %]
                         [%- INCLUDE "opac/parts/record/subjects.tt2" %]
                         [%- INCLUDE "opac/parts/record/series.tt2" %]
+
+                    </div>
+
+                </div>
+                <script>
+                    $(document).ready(function() {
+                        $('#demo').on('hidden.bs.collapse', function () {
+                            $('#btnMore').html("<i class='fas fa-info-circle' aria-hidden='true'></i> [%l ('More Details') %]");
+                        })
+                        $('#demo').on('shown.bs.collapse', function () {
+                            $('#btnMore').html("<i class='fas fa-info-circle' aria-hidden='true'></i> [%l ('Fewer Details') %]");
+                        })
+                    });
+                    </script>
+
+               <div id="copy_hold_counts">
+
+                [%-
+                # Hold/copy summary
+                IF ctx.copy_summary.0.count;
+                INCLUDE "opac/parts/record/copy_counts.tt2";
+                %]
+
+
+                [%- END %]
+
+                </div> <!-- metarecord_population -->
                         <div>
                             [%-
                             # l( 'mmr id = ' _ ctx.mmr_id );
@@ -267,7 +294,7 @@ ctx.metalinks.push('
 
                             IF args.mmr_unique_bib.size > 1;
                             %]
-                            <h3>[% l("More Options") %]</h3>
+                            <h2 class="rdetail_other_formats">[% l("Other Formats and Editions") %]</h2>
                             <span class="metarecord_population_format">
                                 [%- IF mmr_attrs.format_label;
 
@@ -326,37 +353,11 @@ ctx.metalinks.push('
                             [% args = save_args; %]
                         </div>
 
-                    </div>
-
-                </div>
-                <script>
-                    $(document).ready(function() {
-                        $('#demo').on('hidden.bs.collapse', function () {
-                            $('#btnMore').html("<i class='fas fa-info-circle' aria-hidden='true'></i> [%l ('More Details') %]");
-                        })
-                        $('#demo').on('shown.bs.collapse', function () {
-                            $('#btnMore').html("<i class='fas fa-info-circle' aria-hidden='true'></i> [%l ('Fewer Details') %]");
-                        })
-                    });
-                    </script>
-
-               <div id="copy_hold_counts">
-
-                [%-
-                # Hold/copy summary
-                IF ctx.copy_summary.0.count;
-                INCLUDE "opac/parts/record/copy_counts.tt2";
-                %]
-
-
-                [%- END %]
-
-                </div> <!-- metarecord_population -->
             </div>
             <!--rdetail_title_div-->
 
             <div class="col-lg-4">
-             <div id="actions" class="mx-auto btn-group btn-group-vertical dropright mt-3">
+             <div id="actions" class="mx-auto btn-group-vertical dropright mt-3">
                 [%- search_ou = ctx.search_ou;
                 IF ctx.place_unfillable ||
                 ( attrs.marc_xml.findnodes('//*[local-name()="holdings" and @has_holdable="true"]').size

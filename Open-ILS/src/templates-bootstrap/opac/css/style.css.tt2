@@ -929,6 +929,11 @@ div#rdetail_actions_div {
     [%- END %]
 }
 
+div#rdetail_copy_counts {
+    margin-top; 1em;
+}
+
+/*
 span#rdetail_copy_counts {
     display: inline-block;
     vertical-align: top;
@@ -942,6 +947,7 @@ span#rdetail_copy_counts {
     padding-right: 1em;
     [%- END %]
 }
+*/
 
 span#rdetail_hold_counts {
     display: inline-block;
@@ -2407,12 +2413,19 @@ a.opac-button-header:hover, #dash_wrapper a.opac-button:hover {
     width: 100%;
 }
 
-#rdetail_record_details {
+.rdetail_record_details {
     clear: both;
     margin-top: 1em;
 }
 
-.rdetail_content {
+h2.rdetail_record_details, #rdetail_copy_counts h2, h2.rdetail_contents,
+h2.rdetail_related_subjects, h2.rdetail_related_series,
+h2.rdetail_other_formats, h2.rdetail_uris {
+    font-size: [% css_fonts.size_biggest %];
+    font-weight: bold;
+}
+
+.rdetail_content, .rdetail_subject {
     [% IF rtl == 't' -%]
     margin-right: 1.5em;
     padding-right: 1.5em;

@@ -1,7 +1,7 @@
 <div id="rdetail_copy_counts">
     <h2>[% l('Available copies') %]</h2>
 
-    <ul>
+    <ul class="no-bullets">
     [%- depths = ctx.copy_summary.size;
         depth = 0;
         displayed_ous = {};
@@ -52,7 +52,7 @@
     </ul>
 
     <h2>[% l('Holds') %]</h2>
-    <ul><li>
+    <ul class="no-bullets"><li>
     [%
         # If org hiding is enabled/relevant, only show
         # counts for copies within the hiding scope.
