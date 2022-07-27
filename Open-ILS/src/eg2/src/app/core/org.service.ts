@@ -200,7 +200,7 @@ export class OrgService {
             return this.pcrud.search('aou', {parent_ou : null},
                 {flesh : -1, flesh_fields : {aou : ['children', 'ou_type']}},
                 {anonymous : true}
-            ).toPromise()
+            ).toPromise();
         })
 
         .then(tree => {
