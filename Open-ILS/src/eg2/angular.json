@@ -7,15 +7,24 @@
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "cs-CZ": {
+            "translation": "src/locale/messages.cs-CZ.xtb"
+          }
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "baseHref": "/eg2/en-US",
-            "deployUrl": "/eg2/en-US/",
-            "outputPath": "../../web/eg2/en-US",
+            "baseHref": "/eg2/",
+            "deployUrl": "/eg2/",
+            "outputPath": "../../web/eg2/",
             "index": "src/index.html",
             "main": "src/main.ts",
+            "localize": true,
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "assets": [
@@ -56,26 +65,6 @@
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
                 }
-              ]
-            },
-            "production-cs-CZ": {
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "i18nMissingTranslation": "ignore",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
-              "localize": [
-                "cs-CZ"
               ]
             }
           },
@@ -125,14 +114,6 @@
             "exclude": [
               "**/node_modules/**"
             ]
-          }
-        }
-      },
-      "i18n": {
-        "locales": {
-          "cs-CZ": {
-            "translation": "src/locale/messages.cs-CZ.xtb",
-            "baseHref": ""
           }
         }
       }
