@@ -113,6 +113,9 @@ class IDLHandler(xml.sax.handler.ContentHandler):
             elif name == 'field':
                 entity = "%s.%s.%s.label" % (name, self.classid, \
                     attributes['name'])
+            elif name == 'group':
+                entity = "%s.%s.%s.label" % (name, self.classid, \
+                    attributes['name'])
             elif name == 'link':
                 entity = "%s.%s.%s.label" % (name, self.classid, \
                     attributes['field'])
