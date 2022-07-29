@@ -232,10 +232,14 @@
                         {page => '0', bookbag => bbag.id, depth => 0, locg => ctx.search_ou},
                         1
                     )
-                -%]'><i class="fas fa-glasses" aria-hidden="true"></i> [% l('View in Catalogue') %]</a>
+                -%]'><i class="fas fa-glasses" aria-hidden="true"></i> [% l('View in Catalog') %]</a>
 
             </div>
                [% END %]
+
+            <div class="bookbag-controls">
+                <button class="btn btn-action btn-sm m-1" data-toggle="collapse" data-target="#bbag-edit-div-[% bbag.id %]"><i class="fa fa-edit" aria-hidden="true"></i> [% l('Edit List') %]</button>
+            </div>
 
                     </div>
                 <div class="col-3">
@@ -251,6 +255,29 @@
             </div>
         </div>
 
+        <div id="bbag-edit-div-[% bbag.id %]" class="row collapse">
+            <div class="col-12 mt-3 p-2 bg-light">
+            <h5>[% l('Edit List Description') %]</h5>
+            <form method="post">
+                <div class="form-group">
+                    <label for="bbag-edit-name">[% l('Name:') %]</label>
+                    <input class="form-control" name="name" type="text" value="[% bbag.name | html %]" id="bbag-edit-name" />
+                </div>
+                <div class="form-group">
+                <label for="bbag-edit-description">[% l('Description:') %]</label>
+                <textarea name="description" class="form-control"
+                    id="bbag-edit-description">[% bbag.description | html %]
+                </textarea>
+                </div>
+                <input type="hidden" name="bbid" value="[% bbag.id %]" />
+                <input type="hidden" name="action" value="editmeta" />
+                <input type="hidden" name="limit" value="[% limit %]" />
+                <input type="hidden" name="offset" value="[% offset %]" /> 
+                [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
+                <input type="submit" class="btn btn-action btn-sm" value="[% l('Save') %]" />
+            </form>
+            </div>
+        </div>
         
         [% IF CGI.param("bbid") == bbag.id %]
 

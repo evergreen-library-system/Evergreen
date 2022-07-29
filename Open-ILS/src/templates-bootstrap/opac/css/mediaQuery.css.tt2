@@ -296,6 +296,7 @@ only screen and (max-width: 650px)  {
         margin-bottom:5px;
         padding:5px;
     }
+/*
     #bbag-edit-name {
         [% IF rtl == 't' -%]
         float: right;
@@ -308,6 +309,7 @@ only screen and (max-width: 650px)  {
         width: 220px;
         margin-top:5px;
     }
+*/
     .bbag-content {
         padding:5px;
         border:1px solid [% css_colors.accent_light %];
