@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1327', :eg_version);
 
 INSERT into config.workstation_setting_type (name, grp, datatype, label)
 VALUES (
