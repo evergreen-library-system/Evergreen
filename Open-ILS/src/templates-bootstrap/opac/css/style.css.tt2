@@ -2539,6 +2539,7 @@ h2.bookbag-name { margin-bottom: 0em; padding-bottom: 0em; }
     font-style: italic;
     max-width: 40em;
 }
+/*
 .bbag-edit-desc-label {
     [% IF rtl == 't' -%]
     float:right;
@@ -2567,6 +2568,8 @@ h2.bookbag-name { margin-bottom: 0em; padding-bottom: 0em; }
     float: left;
     [% END -%]
 }
+*/
+
 .bbag-action {
     [% IF rtl == 't' -%]
     margin-right: 15px;
@@ -3226,6 +3229,7 @@ a.preflib_change {
         margin-bottom:5px;
         padding:5px;
     }
+/*
     #bbag-edit-name {
         [% IF rtl == 't' -%]
         float: right;
@@ -3238,6 +3242,7 @@ a.preflib_change {
         width: 220px;
         margin-top:5px;
     }
+*/
     .bbag-content {
         padding:5px;
         border:1px solid [% css_colors.accent_light %];
