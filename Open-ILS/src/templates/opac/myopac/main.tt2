@@ -209,19 +209,18 @@
     [% UNLESS ctx.fines.grocery.size OR ctx.fines.circulation.size %]
     <div>[% l('You have no current fines.') %]</div>
     [% ELSIF myopac_cc_allowed %]
-        [% IF neg_or_zero > 0 %]
-            <div class="text-left pad-top-ten">[% l('There are negative bills on your account that must be resolved before you are able to make a payment. Please contact your library for assistance.') %]
-        [% ELSE %]
-            <div class="text-left pad-top-ten">
-                <input type="submit"
-                    value="[% l('Pay selected charges') %]"
-                    title="[% l('Pay selected charges') %]"
-                    class="opac-button" />
-            </div>
-        [% END %]
+        <div class="text-left pad-top-ten">
+            <input type="submit"
+                value="[% l('Pay selected charges') %]"
+                title="[% l('Pay selected charges') %]"
+                class="opac-button" />
+        </div>
     [% END %]
 [% IF myopac_cc_allowed %]
 </form>
+[% END %]
+[% IF neg_or_zero > 0 %]
+    <div class="text-left pad-top-ten">[% l('There are negative bills on your account that must be resolved before you are able to make a payment. Please contact your library for assistance.') %]
 [% END %]
 
 [% END %]
