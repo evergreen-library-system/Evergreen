@@ -17,6 +17,8 @@
     END;
     IF neg_or_zero > 0; myopac_cc_allowed = 0; END;
 %]
+
+<h3>[% l("Current Charges") %]</h3>
 [%  IF myopac_cc_allowed; %]
 <form action="[% ctx.opac_root %]/myopac/main_payment_form#payment" method="get" id="selected_fines">
 [% END %]
@@ -36,8 +38,8 @@
         </div>
 
      
-    
-        <table id="acct_fines_main_header" class="table table-hover table-responsive table-bordered miniTable chargesMainTable" title="[% l('Items Checked Out') %]">
+        <div class="table-responsive">
+        <table id="acct_fines_main_header" class="table table-hover table-bordered miniTable chargesMainTable" title="[% l('Items Checked Out') %]">
             <thead>
                
                 <tr>
@@ -131,6 +133,7 @@
                 [% END %]
             </tbody>
         </table>
+		</div>
         <!-- Disclaimer for mobile -->
         <span class="mobile_view cc_disclaimer"> <strong>&#42;</strong>Items may have been renewed. </span>
     </div>
@@ -139,9 +142,16 @@
     [% IF ctx.fines.grocery.size > 0 %]
     <!-- Table for all non-circulation transactions -->
     <div id='myopac_trans_div' class="mt-3">
-        <h3>
-                [% l("Charges On Your Account") %]
-        </h3>
+        <div class="header_middle">
+           <span class="acct_fines_header">
+           <!-- Different heading when not able to pay -->
+             [% IF myopac_cc_allowed %]
+                [% l("Pay Selected Other Fines and Fees") %]
+            [% ELSE %]
+                [% l("Other Fines and Fees") %]
+             [% END %]
+           </span>
+        </div>
 
         [% IF myopac_cc_allowed %]
         <div class="d-block d-md-none">
@@ -152,8 +162,8 @@
         </div>             
         [% END %]
         
-        <div class="table-responsive">
-         <table id="acct_fees_main_header" class="table table-hover table-bordered  my-3" title="[% l('Other Fines and Fees') %]">
+		<div class="table-responsive">
+         <table id="acct_fees_main_header" class="table table-hover table-bordered mini-table" title="[% l('Other Fines and Fees') %]">
             <thead>
                 <tr>
                 
@@ -212,22 +222,21 @@
                 [% END %]
             </tbody>
         </table>
-    </div>
-   
+      </div>
     </div>
     [% END %]
     [% UNLESS ctx.fines.grocery.size OR ctx.fines.circulation.size %]
     <div>[% l('You have no current fines.') %]</div>
     [% ELSIF myopac_cc_allowed %]
-        [% IF neg_or_zero > 0 %]
-            <div class="my-3">[% l('There are negative bills on your account that must be resolved before you are able to make a payment. Please contact your library for assistance.') %]
-        [% ELSE %]
-            <div class="my-3">
-                <button type="submit" value="[% l('Pay selected charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]" title="[% l('Pay selected charges') %]" class="btn btn-confirm my-1"
-                    id="selectPay"> <i class='fas fa-money-bill-wave' aria-hidden="true"></i> [% l('Pay Selected Charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]</button>
+        <div class="my-3">
+            <button type="submit" value="[% l('Pay selected charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]" title="[% l('Pay selected charges') %]" class="btn btn-confirm my-1"
+                id="selectPay"> <i class='fas fa-money-bill-wave' aria-hidden="true"></i> [% l('Pay Selected Charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]</button>
             <button type="submit" class="btn btn-confirm my-1"><i class="fas fa-cash-register" aria-hidden="true"></i> [% l('Pay All Charges') %] - [% money(ctx.user_stats.fines.balance_owed) %]</button>
-            </div>
-        [% END %]
+        </div>
+    [% END %]
+	[% IF neg_or_zero > 0 %]
+        <div class="my-3"><span class="alert-warning">[% l('Note: There are negative bills on your account that must be resolved
+            before you are able to make a payment. Please contact your library for assistance.') %]</span>
     [% END %]
 [% IF myopac_cc_allowed %]
 </form>
