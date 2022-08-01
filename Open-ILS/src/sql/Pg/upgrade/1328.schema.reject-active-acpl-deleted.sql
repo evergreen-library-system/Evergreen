@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1328', :eg_version);
 
 CREATE OR REPLACE FUNCTION asset.check_delete_copy_location(acpl_id INTEGER)
     RETURNS VOID AS $FUNK$
