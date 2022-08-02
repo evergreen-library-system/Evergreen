@@ -1,0 +1,29 @@
+[%  PROCESS "opac/parts/header.tt2";
+    WRAPPER "opac/parts/myopac/prefs_base.tt2";
+    myopac_page = "prefs";
+    prefs_page = 'prefs_notify' %]
+
+<h3 class="sr-only">[% l('Affected Holds') %]</h3>
+<div id="update_hold_notify_confirm" >
+    [% IF ctx.updated %]
+        <p>[% l('Hold Notification Information Updated.') %]</p>
+<!--
+        <ul>
+        [% FOREACH c IN ctx.updated %]
+            <li>
+            [% l('Holds updated: ') %]
+                [% FOREACH i IN c %]
+                    [% i %]
+                [% END %]
+            </li>
+        [% END %]
+        </ul>
+-->
+    [% ELSE %]
+    <p>[% l('No changes') %].</p>
+    [% END %]
+    <a href='/eg/opac/myopac/prefs_notify'>[% l('Continue.') %]</a>
+</form>
+[% END %]
+
+
