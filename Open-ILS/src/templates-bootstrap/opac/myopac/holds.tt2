@@ -13,7 +13,7 @@
 <h3> [%  IF CGI.param("available");
                     l("Items Ready for Pickup");
                 ELSE;
-                    l("Current Items on Hold");
+                    l("Items on Hold");
                 END
             %]</h3>
 <div>

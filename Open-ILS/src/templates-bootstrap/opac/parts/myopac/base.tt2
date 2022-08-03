@@ -10,8 +10,8 @@
         {children => 0, parent => "parent", url => "messages", text => l("<i class='fas fa-envelope' aria-hidden='true'></i> <span class='sumNum'>[_1]</span>Messages",  ctx.user_stats.messages.unread), name => l("Messages")},
 
         {children => 3, parent => "parent",url => "circs", text => l("<i class='fas fa-book' aria-hidden='true'></i> <span class='sumNum'>[_1]</span>Items Checked Out", ctx.user_stats.checkouts.total_out), name = l("Circulations")},
-        {children => 0, parent => "circs", url => "circs", text => l("<i class='fas fa-book-reader' aria-hidden='true'></i> Current Items Checked Out"), name=> l("Circulations")},
-        {children => 0, parent => "circs", url => "ebook_circs", text => l("<i class='fas fa-desktop' aria-hidden='true'></i> E-Items Currently Checked Out"), name => l("E-Items Currently Checked Out")},
+        {children => 0, parent => "circs", url => "circs", text => l("<i class='fas fa-book-reader' aria-hidden='true'></i> Items Checked Out"), name=> l("Circulations")},
+        {children => 0, parent => "circs", url => "ebook_circs", text => l("<i class='fas fa-desktop' aria-hidden='true'></i> E-Items Checked Out"), name => l("E-Items Checked Out")},
         {children => 0, parent => "circs", url => "circ_history", text => l("<i class='fas fa-history' aria-hidden='true'></i> Check Out History"), name => l("Check Out History")},
 
         {children => 5, parent => "parent",url => "holds", text => l("<i class='fas fa-clock' aria-hidden='true'></i> <span class='sumNum'>[_1]</span>Holds / <span class='sumNum'>[_2]</span> Ready", ctx.user_stats.holds.total, ctx.user_stats.holds.ready), name => l("Holds")},
