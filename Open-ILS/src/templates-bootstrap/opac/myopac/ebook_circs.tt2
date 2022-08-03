@@ -5,13 +5,13 @@
     myopac_page = "ebook_circs";
     parent="circs";
 %]
-<h3>[% l('E-Items Currently Checked Out') %]</h3>
+<h3>[% l('E-Items Checked Out') %]</h3>
 <div id='myopac_checked_div'>
     <div id="no_ebook_circs" class="warning_box hidden">[% l('You have no e-items checked out.') %]</div>
     <div id="ebook_spinner"><img src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]" alt="[% l("Loading...") %]"/></div>
     <div id='ebook_circs_main' class="hidden">
         <table id="ebook_circs_main_table"
-            title="[% l('E-Items Currently Checked Out') %]"
+            title="[% l('E-Items Checked Out') %]"
             class="table table-hover table-bordered miniTable w-100 ecircsTable">
             <thead>
             <tr>

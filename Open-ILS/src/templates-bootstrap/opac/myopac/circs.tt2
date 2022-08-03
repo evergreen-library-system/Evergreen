@@ -5,7 +5,7 @@
     myopac_page = "circs";
     parent="circs";
 %]
-<h3>[% l('Current Items Checked Out') %]</h3>
+<h3>[% l('Items Checked Out') %]</h3>
 <div id='myopac_checked_div'>
 
     <div>

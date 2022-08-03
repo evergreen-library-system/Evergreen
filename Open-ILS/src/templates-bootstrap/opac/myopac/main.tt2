@@ -33,19 +33,19 @@
                     <div class="col-12">
                      <a href="[% mkurl(ctx.opac_root _ '/myopac/circs') %]"
                             title="[% l('View My Checked Out Items') %]">
-                            [% l("Items Currently Checked out ([_1])", ctx.user_stats.checkouts.total_out) %]
+                            [% l("Items Checked out ([_1])", ctx.user_stats.checkouts.total_out) %]
                         </a>
                     </div>
                      <div class="col-12">
                      <a href="[% mkurl(ctx.opac_root _ '/myopac/holds') %]"
                             title="[% l('View My Holds') %]">
-                            [% l('Items Currently on Hold ([_1])', ctx.user_stats.holds.total) %]
+                            [% l('Items on Hold ([_1])', ctx.user_stats.holds.total) %]
                         </a>
                     </div>
                     <div class="col-12">
                      <a href="[% mkurl(ctx.opac_root _ '/myopac/holds', {available => 1}) %]"
                             title="[% l('View My Holds Ready for Pickup') %]">
-                            [% l('Items ready for pickup ([_1])', ctx.user_stats.holds.ready) %]
+                            [% l('Items Ready for Pickup ([_1])', ctx.user_stats.holds.ready) %]
                         </a>
                     </div>
                     <br><br>
@@ -54,21 +54,21 @@
                     <div class="col-12">
                      <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_circs') %]"
                             title="[% l('View My Checked Out E-Items') %]">
-                            [% l("E-Items Currently Checked out") %] (<span id="acct_sum_ebook_circ_total">-</span>)
+                            [% l("E-Items Checked out") %] (<span id="acct_sum_ebook_circ_total">-</span>)
                         </a>
                     </div>
                    
                     <div class="col-12">
                      <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_holds') %]"
                             title="[% l('View My E-Items On Hold') %]">
-                            [% l("E-Items Currently on Hold") %] (<span id="acct_sum_ebook_hold_total">-</span>)
+                            [% l("E-Items on Hold") %] (<span id="acct_sum_ebook_hold_total">-</span>)
                         </a>
                     </div>
                     
                     <div class="col-12">
                      <a href="[% mkurl(ctx.opac_root _ '/myopac/ebook_holds_ready') %]"
                             title="[% l('View My E-Items Ready for Pickup') %]">
-                            [% l("E-Items ready for pickup") %] (<span id="acct_sum_ebook_hold_ready_total">-</span>)
+                            [% l("E-Items Ready for Pickup") %] (<span id="acct_sum_ebook_hold_ready_total">-</span>)
                         </a>
                     </div>
                     [% END %]
