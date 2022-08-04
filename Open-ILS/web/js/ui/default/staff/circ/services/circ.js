@@ -93,7 +93,6 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
     // these events can be overridden by staff during checkin
     service.checkin_overridable_events = 
         service.checkin_suppress_overrides.concat([
-        'HOLD_CAPTURE_DELAYED', // not technically overridable, but special prompt and param
         'TRANSIT_CHECKIN_INTERVAL_BLOCK'
     ])
 
@@ -437,8 +436,6 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         switch(evt[0].textcode) {
             case 'COPY_ALERT_MESSAGE':
                 return service.copy_alert_dialog(evt[0], params, options, 'checkin');
-            case 'HOLD_CAPTURE_DELAYED':
-                return service.hold_capture_delay_dialog(evt[0], params, options, 'checkin');
             default: 
                 return service.override_dialog(evt, params, options, 'checkin');
         }
@@ -1767,6 +1764,10 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 return egAlertDialog.open(
                     egCore.strings.PRECAT_CHECKIN_MSG, params)
                     .result.then(function() {return final_resp});
+
+            case 'HOLD_CAPTURE_DELAYED':
+                return service.hold_capture_delay_dialog(
+                    evt[0], params, options, 'checkin');
 
             default:
                 egCore.audio.play('error.checkin.unknown');
