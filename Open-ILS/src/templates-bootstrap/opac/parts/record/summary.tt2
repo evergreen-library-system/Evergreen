@@ -548,9 +548,10 @@ ctx.metalinks.push('
                         [%- IF attrs.gtin13; '
                         <meta property="gtin13" content="' _ attrs.gtin13 _ '" />'; END; %]
                         [%- IF num_uris == 1 %]</p>[% ELSE %]</li>[% END %]
-                [%- END; END; %]
+                [%- END; %]
                 [%- IF num_uris > 1 %]</ul>[% END %]
         </div>
+        [%- END; %]
         [%
         IF ebook_api.enabled == 'true';
         INCLUDE "opac/parts/ebook_api/avail.tt2";

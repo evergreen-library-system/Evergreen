@@ -386,4 +386,5 @@ END; # FOREACH bib
         [%- END %]
     </tbody>
 </table>
+</div>
 [% END %]
