@@ -533,6 +533,8 @@ ctx.metalinks.push('
                     filtered_href = uri.href | html;
                     filtered_link = uri.link ? uri.link : '' | html;
                     filtered_note = uri.note ? uri.note : '' | html;
+                    filtered_materials = uri.materials ? uri.materials : '' | html;
+                    filtered_access = uri.access ? uri.access : '' | html;
                 -%]
                 [%- IF num_uris == 1 -%]
                 <p class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
@@ -547,7 +549,9 @@ ctx.metalinks.push('
                             END;
                             -%]
                         </a>
-                        [%-# ' - <span property="description">' _ filtered_note _ '</span>' IF filtered_note %]
+                        [%- '<ul><li property="description">' _ filtered_note _ '</li></ul>' IF filtered_note %]
+                        [%- '<ul><li property="description">' _ filtered_materials _ '</li></ul>' IF filtered_materials %]
+                        [%- '<ul><li property="description">' _ filtered_access _ '</li></ul>' IF filtered_access %]
                         <link property="availability" href="http://schema.org/OnlineOnly" />
                         [%- IF attrs.gtin13; '
                         <meta property="gtin13" content="' _ attrs.gtin13 _ '" />'; END; %]
