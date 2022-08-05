@@ -81,6 +81,9 @@
     -->
 
     <eg-grid-field path="check_payment.check_number" label="[% l('Check Number') %]" hidden></eg-grid-field>
+    <eg-grid-field path="credit_card_payment.approval_code"
+      label="[% l('Approval Code') %]" hidden>
+    </eg-grid-field>
   </eg-grid>
 </div>
 
