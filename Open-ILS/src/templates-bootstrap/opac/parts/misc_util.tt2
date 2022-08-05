@@ -469,9 +469,11 @@
         # Extract the 856 URLs that are not otherwise represented by asset.uri's
         args.online_res = [];
         FOR node IN xml.findnodes('//*[@tag="856" and @ind1="4" and (@ind2="0" or @ind2="1")]');
-            IF node.findnodes('./*[@code="9" or @code="w" or @code="n"]'); NEXT; END; # asset.uri's
+            IF node.findnodes('./*[@code="9" or @code="w"]'); NEXT; END; # asset.uri's
             label = node.findnodes('./*[@code="y"]');
-            notes = node.findnodes('./*[@code="z" or @code="3"]');
+            notes = node.findnodes('./*[@code="z"]');
+            access = node.findnodes('./*[@code="n"]');
+            materials = node.findnodes('./*[@code="3"]');
             FOR href IN node.findnodes('./*[@code="u"]');
                 NEXT UNLESS href;
                 # it's possible for multiple $u's to exist within 1 856 tag.
@@ -482,6 +484,8 @@
                     href => href.textContent,
                     link => (loop.first AND label) ? label.textContent : href.textContent,
                     note => (loop.first) ? notes.textContent : ''
+                    materials => (loop.first) ? materials.textContent : ''
+                    access => (loop.first) ? access.textContent : ''
                 });
             END;
         END;
