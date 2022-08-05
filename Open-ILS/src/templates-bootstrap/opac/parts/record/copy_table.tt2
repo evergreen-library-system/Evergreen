@@ -380,4 +380,5 @@ END; # FOREACH bib
                         </div>
             [%- END %]
         [%- END %]
+</div>
 [% END %]
