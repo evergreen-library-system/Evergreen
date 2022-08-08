@@ -1893,6 +1893,7 @@ sub handle_checkout_holds {
     $logger->debug("circulator: checkout fulfilling hold " . $hold->id);
 
     # if the hold was never officially captured, capture it.
+    $hold->clear_hopeless_date;
     $hold->current_copy($copy->id);
     $hold->capture_time('now') unless $hold->capture_time;
     $hold->fulfillment_time('now');
@@ -3301,6 +3302,7 @@ sub attempt_checkin_hold_capture {
 
     $logger->info("circulator: found permitted hold ".$hold->id." for copy, capturing...");
 
+    $hold->clear_hopeless_date;
     $hold->current_copy($copy->id);
     $hold->capture_time('now');
     $self->put_hold_on_shelf($hold) 
