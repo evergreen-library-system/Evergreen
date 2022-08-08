@@ -653,6 +653,8 @@ function($scope , $q , egCore , ngToast) {
         dest_location : egCore.idl.toHash(egCore.org.get(egCore.auth.user().ws_ou())),
         dest_courier_code : 'ABC 123',
         dest_address : seed_addr,
+        source_address : seed_addr,
+		source_location : egCore.idl.toHash(egCore.org.get(egCore.auth.user().ws_ou())),
         hold : one_hold,
         holds : [
             {

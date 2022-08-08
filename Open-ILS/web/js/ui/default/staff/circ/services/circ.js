@@ -712,6 +712,19 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
             return egCore.env.aoa.map[addr_id]; 
         });
     }
+    
+    //retrieve addresses from multiple org units
+    service.cache_org_addr = function (org_ids, addr_type) {
+        var addr_ids = [];
+        org_ids.forEach(function(org_id){
+            var org = egCore.org.get(org_id);
+            var addr_id = org[addr_type](); 
+            if(addr_id)addr_ids.push(addr_id);
+        });
+        return egCore.pcrud.search('aoa', {id: addr_ids},{},{ atomic: true}).then(function(addrs) {
+            return egCore.env.absorbList(addrs, 'aoa');
+        });
+    }
 
     service.exit_alert = function(msg, scope) {
         return egAlertDialog.open(msg, scope).result.then(
@@ -1767,20 +1780,48 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         }
     }
 
-    // collect transit, address, and hold info that's not already
+    // collect transit, addresses, and hold info that's not already
     // included in responses.
     service.collect_route_data = function(tmpl, evt, params, options) {
         if (angular.isArray(evt)) evt = evt[0];
         var promises = [];
         var data = {};
-
+        var addr_deferred = $q.defer();
+        // associates org units with the address they're needed for
+        var addr_orgs = {};
+        promises.push(addr_deferred.promise);
+        
         if (evt.org && !tmpl.match(/hold_shelf/)) {
-            promises.push(
-                service.get_org_addr(evt.org, 'holds_address')
-                .then(function(addr) { data.address = addr })
-            );
+            addr_orgs['address'] = evt.org; 
         }
+		
+		if(evt.payload.transit){
+            addr_orgs['source_address'] = evt.payload.transit.source().id(); 			
+		}
 
+        if(Object.keys(addr_orgs).length){
+            promises.push(
+                service.cache_org_addr(Object.values(addr_orgs),'holds_address')
+                .then(function(){
+                    // promise to assign all of the addresses we need
+                    var addr_promises = [];
+                    Object.keys(addr_orgs).forEach(function(key){
+                        addr_promises.push(
+                            service.get_org_addr(addr_orgs[key], 'holds_address')
+                            .then(function(addr) { 
+                                // assign address to field in data
+                                data[key] = addr; 
+                            })
+                        )
+                    });
+                    $q.all(addr_promises).then(addr_deferred.resolve());
+            }));
+        }
+        else{
+            // no addresses are needed so continue
+            addr_deferred.resolve();
+        }
+        
         if (evt.payload.hold) {
             promises.push(
                 egCore.pcrud.retrieve('au', 
@@ -1849,8 +1890,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 if (data.address) {
                     print_context.dest_address = egCore.idl.toHash(data.address);
                 }
+                if (data.source_address) {
+                    print_context.source_address = egCore.idl.toHash(data.source_address);
+                }
                 print_context.dest_location =
                     egCore.idl.toHash(egCore.org.get(data.transit.dest()));
+                print_context.source_location =
+                    egCore.idl.toHash(egCore.org.get(data.transit.source()));
                 print_context.copy.status = egCore.idl.toHash(print_context.copy.status);
             }
 

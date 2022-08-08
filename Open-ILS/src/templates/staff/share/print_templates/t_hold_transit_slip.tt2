@@ -9,6 +9,13 @@ Template for printing hold transit slips. Fields include:
 * dest_address.state
 * dest_address.post_code
 * dest_courier_code - from lib.courier_code library setting
+* source_location.name - name of source library
+* source_location.shortname
+* source_address.street1
+* source_address.street2
+* source_address.city
+* source_address.state
+* source_address.post_code
 * hold.behind_desk
 * copy.barcode
 * copy.status.name - Copy status
