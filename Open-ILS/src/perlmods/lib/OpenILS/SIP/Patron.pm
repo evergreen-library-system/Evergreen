@@ -249,9 +249,9 @@ sub name {
 sub format_name {
     my $u = shift;
     return sprintf('%s %s %s',
-                   ($u->first_given_name || ''),
-                   ($u->second_given_name || ''),
-                   ($u->family_name || ''));
+                   ($u->pref_first_given_name || $u->first_given_name || ''),
+                   ($u->pref_second_given_name || $u->second_given_name || ''),
+                   ($u->pref_family_name || $u->family_name || ''));
 }
 
 sub home_library {
