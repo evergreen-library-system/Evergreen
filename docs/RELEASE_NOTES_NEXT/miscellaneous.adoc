@@ -1,5 +1,3 @@
-* The Field Documentation interface (under Local Administration) has
-  been ported to Angular with an org selector as an additional filter.
 * Patron Interface Gets a New Penalty Refresh Action
 * A new workstation setting optionally allows the full library name to be
   added to the Angular Org Unit selector. (LP#1771636)
