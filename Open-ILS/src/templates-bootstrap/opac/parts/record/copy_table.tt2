@@ -345,45 +345,39 @@ END; # FOREACH bib
 
 [%- END; # FOR copy_info
 %]
+
+    </tbody>
+</table>
+
         [% IF ctx.copy_limit < total_copies AND NOT serial_holdings %]
-            <tr class="offset">
+            <div class="row">
             [%- IF ctx.copy_offset > 0;
                 new_offset = ctx.copy_offset - ctx.copy_limit;
                 IF new_offset < 0; new_offset = 0; END %]
-                <td>
+                <div class="col">
                 <a href="[% mkurl('', {copy_offset => new_offset, copy_limit => ctx.copy_limit}) %]">&laquo; [%
                     l('Previous [_1]', ctx.copy_offset - new_offset) %]</a>
-                </td>
+               </div>
             [%- END %]
             [%- IF copies.size >= ctx.copy_limit AND (ctx.copy_offset + ctx.copy_limit < total_copies) %]
-                <td>
+                <div class="col text-right">
                     <a href="[% mkurl('', {copy_offset => ctx.copy_offset + ctx.copy_limit, copy_limit => ctx.copy_limit}) %]">[%
                     l('Next [_1]', ctx.copy_limit) %] &raquo;</a>
-                </td>
+                </div>
             [%- END %]
-            </tr>
+            </div>
         [% END %]
 
         [% IF NOT serial_holdings -%]
             [%- more_copies_limit = 50 %] [%# TODO: config %]
             [%- IF  ctx.copy_limit != more_copies_limit AND copies.size >= ctx.copy_limit AND ctx.copy_limit < total_copies %]
-                <tr class="not_serial">
-                    <td>
                         <div class="rdetail_show_copies">
                             <a href="[% mkurl('', {copy_limit => more_copies_limit, copy_offset => 0}) %]"><i class="fas fa-plus-square"></i> [% l('Show more copies') %]</a>
                         </div>
-                    </td>
-                </tr>
             [%- ELSIF ctx.copy_limit == more_copies_limit %]
-                <tr class="not_serial">
-                    <td>
                         <div  class="rdetail_show_copies">
                             <a href="[% mkurl('', {copy_limit => 0, copy_offset => 0}) %]"><i class="fas fa-minus-square"></i> [% l('Show fewer copies') %]</a>
                         </div>
-                    </td>
-                </tr>
             [%- END %]
         [%- END %]
-    </tbody>
-</table>
 [% END %]
