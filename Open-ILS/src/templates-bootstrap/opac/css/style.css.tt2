@@ -69,42 +69,14 @@ only screen and (max-width: 650px)  {
         padding-right: 10px;
         white-space: nowrap;
         position: absolute;
+        content: attr(mobile-title);
+        font-weight: bold;
+        text-align: left;
     }
-    .copyTable tr:nth-of-type(1):before { content: "Copy #1"; display: block; text-align:center; }
-    .copyTable tr:nth-of-type(2):before { content: "Copy #2"; display: block; text-align:center;}
-    .copyTable tr:nth-of-type(3):before { content: "Copy #3"; display: block; text-align:center;}
-    .copyTable tr:nth-of-type(4):before { content: "Copy #4"; display: block; text-align:center;}
-    .copyTable tr:nth-of-type(5):before { content: "Copy #5"; display: block; text-align:center;}
-    .copyTable tr:nth-of-type(6):before { content: "Copy #6"; display: block; text-align:center;}
-    .copyTable tr:nth-of-type(7):before { content: "Copy #7"; display: block; text-align:center;}
-    .copyTable tr:nth-of-type(8):before { content: "Copy #8"; display: block; text-align:center;}
-    .copyTable tr:nth-of-type(9):before { content: "Copy #9"; display: block; text-align:center;}
-    .copyTable tr:nth-of-type(10):before { content: "Copy #10"; display: block; text-align:center;}
+    
+    .copyTable tr::before { content: attr(mobile-count); display: block; text-align:center; }
+    .holdintsTable tr::before { content: attr(mobile-count); display: block; text-align:center; }
 
-    .copyTable td:nth-of-type(1):before { content: "Library"; display: flex; }
-    .copyTable td:nth-of-type(2):before { content: "Call Number"; display: flex; }
-    .copyTable td:nth-of-type(3):before { content: "Barcode"; display: flex;}
-    .copyTable td:nth-of-type(4):before { content: "Shelving Location"; display: flex;}
-    .copyTable td:nth-of-type(5):before { content: "Status"; display: flex;}
-    .copyTable td:nth-of-type(6):before { content: "Due Date"; display: flex;}
-    .copyTable td:nth-of-type(7):before { content: "[% l('Distance') %]"; display: flex;}
-
-    .holdingsTable tr:nth-of-type(1):before { content: "Copy #1"; display: block; text-align:center; }
-    .holdingsTable tr:nth-of-type(2):before { content: "Copy #2"; display: block; text-align:center;}
-    .holdingsTable tr:nth-of-type(3):before { content: "Copy #3"; display: block; text-align:center;}
-    .holdingsTable tr:nth-of-type(4):before { content: "Copy #4"; display: block; text-align:center;}
-    .holdingsTable tr:nth-of-type(5):before { content: "Copy #5"; display: block; text-align:center;}
-    .holdingsTable tr:nth-of-type(6):before { content: "Copy #6"; display: block; text-align:center;}
-    .holdingsTable tr:nth-of-type(7):before { content: "Copy #7"; display: block; text-align:center;}
-    .holdingsTable tr:nth-of-type(8):before { content: "Copy #8"; display: block; text-align:center;}
-    .holdingsTable tr:nth-of-type(9):before { content: "Copy #9"; display: block; text-align:center;}
-    .holdingsTable tr:nth-of-type(10):before { content: "Copy #10"; display: block; text-align:center;}
-
-
-    .holdingsTable td:nth-of-type(1):before { content: "Library"; display: flex; }
-    .holdingsTable td:nth-of-type(2):before { content: "Shelving location"; display: flex; }
-    .holdingsTable td:nth-of-type(3):before { content: "Call number"; display: flex;}
-    .holdingsTable td:nth-of-type(4):before { content: "Status"; display: flex;}
 
     .chargesTable td:nth-of-type(1):before { content: "Select"; display: flex; }
     .chargesTable td:nth-of-type(2):before { content: "Owed"; display: flex; }

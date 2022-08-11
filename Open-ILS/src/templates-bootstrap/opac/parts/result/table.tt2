@@ -178,7 +178,7 @@
 
                                     [%- IF !show_detail_view AND args.holdings.size > 0 %]
                                         <div class="result_call_number">
-                                            [% l('Call number:') %] [% args.holdings.0.label | html %]
+                                            [% l('Call Number:') %] [% args.holdings.0.label | html %]
                                         </div>
                                     [% END %]
 
@@ -304,9 +304,9 @@
                                                     <table role="presentation" title="[% l('Record Holdings Details') %]" class='container-fluid table table-hover mt-4 miniTable holdingsTable'>
                                                         <thead>
                                                             <tr>
-                                                                <th>[% l('Library') %]</th>
-                                                                <th>[% l('Shelving location') %]</th>
-                                                                <th>[% l('Call number') %]</th>
+                                                                <th>[% l('Location') %]</th>
+                                                                <th>[% l('Shelving Location') %]</th>
+                                                                <th>[% l('Call Number') %]</th>
                                                                 [%- IF has_parts == 'true'; %]
                                                                 <th>[% l('Part') %]</th>
                                                                 [%- END %]
@@ -315,14 +315,14 @@
                                                         </thead>
                                                     <tbody>
                                                     [% FOR copy IN args.holdings %]
-                                                        <tr>
-                                                            <td><span class="sr-only">[% l('Library') %] </span>[%- copy_info = copy; INCLUDE "opac/parts/library_name_link.tt2"; %]</td>
-                                                            <td><span class="sr-only">[% l('Shelving Location') %] </span>[% copy.location | html %]</td>
-                                                            <td><span class="sr-only">[% l('Call Number') %] </span>[% copy.label | html %]</td>
+                                                        <tr mobile-count="#[% loop.count %]">
+                                                            <td mobile-title="[% l('Location') %]"><span class="sr-only">Location </span>[%- copy_info = copy; INCLUDE "opac/parts/library_name_link.tt2"; %]</td>
+                                                            <td mobile-title="[% l('Shelving Location') %]"><span class="sr-only">Shelving Location </span>[% copy.location | html %]</td>
+                                                            <td mobile-title="[% l('Call Number') %]"><span class="sr-only">Call Number </span>[% copy.label | html %]</td>
                                                             [%- IF has_parts == 'true'; %]
-                                                            <td><span class="sr-only">[% l('Part') %] </span>[% copy.part_label %]</td>
+                                                            <td mobile-title="[% l('Part') %]"><span class="sr-only">Part </span>[% copy.part_label %]</td>
                                                             [%- END %]
-                                                            <td><span class="sr-only">[% l('Status') %] </span>[% copy.status | html %]</td>
+                                                            <td mobile-title="[% l('Status') %]"><span class="sr-only">Status </span>[% copy.status | html %]</td>
                                                         </tr>
                                                     [% END %]
                                                     </tbody>
