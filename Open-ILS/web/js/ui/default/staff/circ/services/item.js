@@ -16,7 +16,7 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
         flesh : 4,
         flesh_fields : {
             acp : ['call_number','location','status','floating','circ_modifier',
-                'age_protect','circ_lib','copy_alerts', 'creator', 'editor', 'circ_as_type', 'latest_inventory'],
+                'age_protect','circ_lib','copy_alerts', 'creator', 'editor', 'circ_as_type', 'latest_inventory', 'total_circ_count'],
             acn : ['record','prefix','suffix','label_class'],
             bre : ['simple_record','creator','editor'],
             alci : ['inventory_workstation']

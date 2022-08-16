@@ -162,6 +162,7 @@
   <eg-grid-field label="[% l('Status Changed Time') %]"   path="status_changed_time" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('TCN') %]"                   path="call_number.record.tcn_value" hidden></eg-grid-field>
   <eg-grid-field label="[% l('TCN Source') %]"            path="call_number.record.tcn_source" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Total Circulations') %]"    path="total_circ_count.circ_count" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Transaction Complete') %]"  path="_circ.xact_finish" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Alerts') %]" path="copy_alert_count" handlers="gridCellHandlers" visible compiled>
     {{item['copy_alert_count']}}
