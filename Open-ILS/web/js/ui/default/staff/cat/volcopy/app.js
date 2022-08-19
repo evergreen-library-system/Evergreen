@@ -848,6 +848,11 @@ function(egCore , $q) {
                 $scope.prefix = $scope.callNumber.prefix();
                 $scope.suffix = $scope.callNumber.suffix();
                 $scope.classification = $scope.callNumber.label_class();
+
+		// If no call number label, set to empty string to avoid merging problem
+		if ($scope.callNumber.label() == null) {
+			$scope.callNumber.label('');
+		}
                 $scope.label = $scope.callNumber.label();
 
                 $scope.copy_count = $scope.copies.length;
