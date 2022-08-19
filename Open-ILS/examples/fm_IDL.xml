@@ -4427,7 +4427,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
                 <create permission="CREATE_PERM" global_required="true"/>
-                <retrieve permission="CREATE_PERM UPDATE_PERM DELETE_PERM" global_required="true"/>
+                <retrieve permission="VIEW_PERMISSION CREATE_PERM UPDATE_PERM DELETE_PERM" global_required="true"/>
                 <update permission="UPDATE_PERM" global_required="true"/>
                 <delete permission="DELETE_PERM" global_required="true"/>
             </actions>
