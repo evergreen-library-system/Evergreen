@@ -305,8 +305,8 @@
           <ng-container *ngIf="copyIdx == 0">
             <input class="form-control form-control-sm" type="text"
               spellcheck="false"
-              [required]="true"
-              [ngClass]="{invalid: !volNode.target.label()}"
+              [required]="requireCNL"
+              [ngClass]="{invalid: !volNode.target.label() && requireCNL}"
               [ngModel]="volNode.target.label()"
               (change)="applyVolValue(volNode.target, 'label', $event.target.value)">
           </ng-container>
