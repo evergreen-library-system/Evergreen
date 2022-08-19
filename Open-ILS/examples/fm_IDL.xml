@@ -6752,6 +6752,8 @@ SELECT  usr,
 			<field reporter:label="Target Object ID" name="target" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Hold User" name="usr" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Hold Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Hold Canceling Staff" name="canceled_by" reporter:datatype="link"/>
+			<field reporter:label="Hold Canceling Workstation" name="canceling_ws" reporter:datatype="link"/>
 			<field reporter:label="Notify Time" name="notify_time" oils_persist:virtual="true" reporter:datatype="timestamp"/>
 			<field reporter:label="Notify Count" name="notify_count" oils_persist:virtual="true" reporter:datatype="int"/>
 			<field reporter:label="Notifications" name="notifications" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -6785,6 +6787,8 @@ SELECT  usr,
 			<link field="eligible_copies" reltype="has_many" key="hold" map="target_copy" class="ahcm"/>
 			<link field="bib_rec" reltype="might_have" key="id" map="" class="rhrr"/>
 			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
+			<link field="canceled_by" reltype="might_have" key="id" map="" class="au"/>
+			<link field="canceling_ws" reltype="might_have" key="id" map="" class="aws"/>
 			<link field="notes" reltype="has_many" key="hold" map="" class="ahrn"/>
 			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="sms_carrier" reltype="has_a" key="id" map="" class="csc"/>

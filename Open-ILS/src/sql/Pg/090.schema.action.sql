@@ -472,6 +472,8 @@ CREATE TABLE action.hold_request (
 	cancel_time		TIMESTAMP WITH TIME ZONE,
 	cancel_cause	INT REFERENCES action.hold_request_cancel_cause (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,
 	cancel_note		TEXT,
+	canceled_by		INT REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
+    canceling_ws    INT REFERENCES actor.workstation (id) DEFERRABLE INITIALLY DEFERRED,   
 	target			BIGINT				NOT NULL, -- see hold_type
 	current_copy		BIGINT,				-- REFERENCES asset.copy (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED,  -- XXX could be an serial.unit now...
 	fulfillment_staff	INT				REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,

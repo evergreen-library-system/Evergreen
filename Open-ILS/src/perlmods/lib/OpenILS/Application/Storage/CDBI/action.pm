@@ -94,7 +94,7 @@ __PACKAGE__->table('action_hold_request');
 __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/request_time capture_time fulfillment_time
                      prev_check_time expire_time requestor usr cancel_cause
-                     hold_type holdable_formats target cancel_time shelf_time
+                     hold_type holdable_formats target cancel_time canceled_by canceling_ws shelf_time
                      phone_notify email_notify sms_notify sms_carrier selection_depth cancel_note
                      pickup_lib current_copy request_lib frozen thaw_date mint_condition
                      fulfillment_staff fulfillment_lib selection_ou cut_in_line

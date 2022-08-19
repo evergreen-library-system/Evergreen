@@ -1120,6 +1120,8 @@ sub cancel_hold {
     $hold->cancel_time('now');
     $hold->cancel_cause($cause);
     $hold->cancel_note($note);
+    $hold->canceled_by($e->requestor->id);
+    $hold->canceling_ws($e->requestor->wsid);
     $e->update_action_hold_request($hold)
         or return $e->die_event;
 
