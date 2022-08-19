@@ -100,7 +100,7 @@ export class OrgUnitSettingsComponent implements OnInit {
         if (this.midFetch) { return EMPTY; }
         this.midFetch = true;
         return new Observable<any>(observer => {
-            this.pcrud.retrieveAll('coust', {flesh: 3, flesh_fields: {
+            this.pcrud.retrieveAll('coust', {flesh: 1, flesh_fields: {
                 'coust': ['grp', 'view_perm']
             }},
             { authoritative: true }).subscribe(
@@ -139,15 +139,17 @@ export class OrgUnitSettingsComponent implements OnInit {
                                 const settingsObj = this.settingTypeArr.filter(
                                     setting => setting.name === key.name
                                 )[0];
-                                settingsObj.value = key.setting.value;
-                                settingsObj.value_str = settingsObj.value;
-                                if (settingsObj.dataType === 'link' && (key.setting.value || key.setting.value === 0)) {
-                                    this.fetchLinkedField(settingsObj.fmClass, key.setting.value, settingsObj.value_str).then(res => {
-                                        settingsObj.value_str = res;
-                                    });
+                                if (settingsObj) {
+                                    settingsObj.value_str = key.setting.value;
+                                    settingsObj.value = this.parseValType(key.setting.value, settingsObj.dataType);
+                                    if (settingsObj.dataType === 'link' && (key.setting.value || key.setting.value === 0)) {
+                                        this.fetchLinkedField(settingsObj.fmClass, key.setting.value, settingsObj.value_str).then(res => {
+                                            settingsObj.value_str = res;
+                                        });
+                                    }
+                                    settingsObj._org_unit = this.org.get(key.setting.org);
+                                    settingsObj.context = settingsObj._org_unit.shortname();
                                 }
-                                settingsObj._org_unit = this.org.get(key.setting.org);
-                                settingsObj.context = settingsObj._org_unit.shortname();
                             } else {
                                 key.setting = null;
                             }
@@ -164,7 +166,7 @@ export class OrgUnitSettingsComponent implements OnInit {
         return new Promise((resolve, reject) => {
             return this.pcrud.retrieve(fmClass, id).subscribe(linkedField => {
                 const fname = this.idl.getClassSelector(fmClass) || this.idl.classes[fmClass].pkey || 'id';
-                val = this.idl.toHash(linkedField)[val];
+                val = this.idl.toHash(linkedField)[fname];
                 resolve(val);
             });
         });
@@ -264,6 +266,9 @@ export class OrgUnitSettingsComponent implements OnInit {
     }
 
     updateSetting(obj, entry, noToast?: boolean): Promise<any> {
+        Object.keys(obj.setting).forEach(
+            key => obj.setting[key] = this.parseValType(obj.setting[key], entry.dataType)
+        );
         return this.net.request(
             'open-ils.actor',
             'open-ils.actor.org_unit.settings.update',
@@ -365,14 +370,27 @@ export class OrgUnitSettingsComponent implements OnInit {
     }
 
     parseValType(value, dataType) {
-        if (value === null || value === undefined) { return null; }
-        if (dataType === 'integer' || 'currency' || 'link') {
-            return Number(value);
-        } else if (dataType === 'bool') {
-            return (value === 'true');
-        } else {
-            return value;
+        if (value === null || value === undefined)
+            return null;
+
+        const intTypes = ['integer', 'currency', 'float'];
+        if (intTypes.includes(dataType)) {
+            value = Number(value);
         }
+
+        if (typeof value == 'string') {
+            value = value.replace(/^"(.*)"$/, '$1');
+        }
+
+        if (typeof value == 'string' && dataType === 'bool') {
+            if (value.match(/^t/)) {
+                value = true;
+            } else {
+                value = false;
+            }
+        }
+
+        return value
     }
 
     filterCoust() {
