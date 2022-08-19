@@ -53,6 +53,9 @@ export class VolEditComponent implements OnInit {
     deleteVolCount: number = null;
     deleteCopyCount: number = null;
 
+    // Set default for Call Number Label requirement
+    requireCNL = true;
+
     // When adding multiple vols via add-many popover.
     addVolCount: number = null;
 
@@ -95,6 +98,12 @@ export class VolEditComponent implements OnInit {
         // It's possible the loaded data is not strictly allowed,
         // e.g. empty string call number labels
         .then(_ => this.emitSaveChange(true));
+
+        // Check to see if call number label is required
+        this.org.settings('cat.require_call_number_labels')
+            .then(settings => {this.requireCNL =
+                Boolean(settings['cat.require_call_number_labels']);
+        });
     }
 
     copyStatLabel(copy: IdlObject): string {
@@ -581,9 +590,19 @@ export class VolEditComponent implements OnInit {
 
         const badVols = this.context.volNodes().filter(volNode => {
             const vol = volNode.target;
-            return !(
-                vol.prefix() && vol.label() && vol.suffix && vol.label_class()
-            );
+
+            // If call number label is not required, then require prefix
+            if (!vol.label()) {
+                if (this.requireCNL == true) {
+                    return !(
+                        vol.label()
+                    );
+                } else {
+                    return (
+                        vol.prefix() < 0
+                    );
+                }
+            }
         }).length > 0;
 
         return !badVols;

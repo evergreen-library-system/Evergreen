@@ -618,10 +618,12 @@ sub create_volume {
     );
 
     my $label = undef;
+    my $labelexists = undef;
     if(@$vols) {
       # we've found an exising volume
         if($override->{all} || grep { $_ eq 'VOLUME_LABEL_EXISTS' } @{$override->{events}}) {
             $label = $vol->label;
+            $labelexists = 1;
         } else {
             return (
                 undef, 
@@ -632,7 +634,7 @@ sub create_volume {
 
     # create a temp label so we can create the new volume, 
     # then de-dup it with the existing volume
-    $vol->label( "__SYSTEM_TMP_$$".time) if $label;
+    $vol->label( "__SYSTEM_TMP_$$".time) if $labelexists;
 
     $vol->creator($editor->requestor->id);
     $vol->create_date('now');
@@ -642,7 +644,7 @@ sub create_volume {
 
     $editor->create_asset_call_number($vol) or return (undef, $editor->die_event);
 
-    if($label) {
+    if($labelexists) {
         # now restore the label and merge into the existing record
         $vol->label($label);
         return OpenILS::Application::Cat::Merge::merge_volumes($editor, [$vol], $$vols[0]);
