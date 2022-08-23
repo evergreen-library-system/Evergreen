@@ -200,10 +200,10 @@
 
             <tbody>
             <tr>
-              <td>
                 <!-- pending address form -->
                 [% IF pending_addr OR edit_addr_id == cur_id;
                     update_addr = pending_addr || addr %]
+              <td>
 
                     <form method='post'>
                         [% IF pending_addr %]
@@ -252,15 +252,15 @@
                 <td>
 
                     <!-- read-only address display -->
-                    <table class='table' title="[% l('Active Addresses') %]">
-                        <tr><td>[% l("Address Type") %]</td><td>[% addr.address_type | html %]</td></tr>
-                        <tr><td>[% l("Street") %]</td><td>[% addr.street1 | html %]</td></tr>
-                        <tr><td>[% l("Street") %]</td><td>[% addr.street2 | html %]</td></tr>
-                        <tr><td>[% l("City") %]</td><td>[% addr.city | html %]</td></tr>
-                        <tr><td>[% l("County") %]</td><td>[% addr.county| html  %]</td></tr>
-                        <tr><td>[% l("State") %]</td><td>[% addr.state | html %]</td></tr>
-                        <tr><td>[% l("Country") %]</td><td>[% addr.country | html %]</td></tr>
-                        <tr><td>[% l("Zip") %]</td><td>[% addr.post_code | html %]</td></tr>
+                    <table class='table table-hover light_border' title="[% l('Active Addresses') %]">
+                        <tr><td class='color_4'>[% l("Address Type") %]</td><td>[% addr.address_type | html %]</td></tr>
+                        <tr><td class='color_4'>[% l("Street") %]</td><td>[% addr.street1 | html %]</td></tr>
+                        <tr><td class='color_4'>[% l("Street") %]</td><td>[% addr.street2 | html %]</td></tr>
+                        <tr><td class='color_4'>[% l("City") %]</td><td>[% addr.city | html %]</td></tr>
+                        <tr><td class='color_4'>[% l("County") %]</td><td>[% addr.county| html  %]</td></tr>
+                        <tr><td class='color_4'>[% l("State") %]</td><td>[% addr.state | html %]</td></tr>
+                        <tr><td class='color_4'>[% l("Country") %]</td><td>[% addr.country | html %]</td></tr>
+                        <tr><td class='color_4'>[% l("Zip") %]</td><td>[% addr.post_code | html %]</td></tr>
                         [% IF ctx.get_org_setting(ctx.user.home_ou.id, 'opac.allow_pending_address')
                                 AND !pending_addr AND edit_addr_id != cur_id %]
                         <tr><td colspan='2'><a class="btn btn-action" href='?edit_address=[% addr.id %]'><i class="fas fa-edit"></i> [% l('Edit Address') %]</a></td></tr>
@@ -272,7 +272,7 @@
                 </tr>
             </tbody>
         </table>
-     </div></div>
+     </div>
             [% END %]
 
 </div>
