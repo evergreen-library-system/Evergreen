@@ -70,6 +70,11 @@
             <big><strong>[% l('No holds found.') %]</strong></big>
         </div>
         [% ELSE %]
+        [% hold_items = ctx.holds;
+           hi = offset + limit - 1;
+           hi = hi > hold_items.max ? hold_items.max : hi;
+           hold_items = hold_items.slice(offset, hi);
+        %]
         <table id='acct_holds_hist_header' class='table_no_border_space table_no_cell_pad' title="[% l('History of items on hold') %]">
             <thead>
                 <tr>
@@ -81,7 +86,7 @@
                 </tr>
             </thead>
             <tbody id='holds_temp_parent'>
-                [% FOR hold IN ctx.holds;
+                [% FOR hold IN hold_items;
                     attrs = {marc_xml => hold.marc_xml};
                     PROCESS get_marc_attrs args=attrs;
                     ahr = hold.hold.hold %]
