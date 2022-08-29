@@ -11,6 +11,7 @@ class DeskTotals {
     cash_payment = 0;
     check_payment = 0;
     credit_card_payment = 0;
+    debit_card_payment = 0;
 }
 
 class UserTotals {
@@ -78,13 +79,17 @@ export class CashReportsComponent implements OnInit {
     }
 
     fillGridData(idlClass, dataSource, data) {
+        let dataForTotal;
         data.subscribe((result) => {
             if (idlClass === this.userIdlClass) {
+                dataForTotal = this.getUserTotal(result);
                 result.forEach((userObject, index) => {
                     result[index].user = userObject.usr();
                     result[index].usr(userObject.usr().usrname());
                     console.log('USER IS', userObject);
                 });
+            } else if(idlClass === this.deskIdlClass) {
+                dataForTotal = this.getDeskTotal(result);
             }
             this[dataSource].data = result;
             this.eraseUserGrid();
@@ -104,10 +109,12 @@ export class CashReportsComponent implements OnInit {
                 this.deskTotals['cash_payment'] += parseFloat(idlObject.cash_payment());
                 this.deskTotals['check_payment'] += parseFloat(idlObject.check_payment());
                 this.deskTotals['credit_card_payment'] += parseFloat(idlObject.credit_card_payment());
+                this.deskTotals['debit_card_payment'] += parseFloat(idlObject.debit_card_payment());
             });
             idlObjectFormat.cash_payment(this.deskTotals['cash_payment']);
             idlObjectFormat.check_payment(this.deskTotals['check_payment']);
             idlObjectFormat.credit_card_payment(this.deskTotals['credit_card_payment']);
+            idlObjectFormat.debit_card_payment(this.deskTotals['debit_card_payment']);
             return idlObjectFormat;
         }
     }

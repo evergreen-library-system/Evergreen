@@ -47,6 +47,10 @@
           <div class="col-sm-2" i18n>Total Credit Card Payments</div>
           <div class="col-sm-10">{{deskTotals.credit_card_payment | currency}}</div>
         </div>
+        <div class="row">
+          <div class="col-sm-2" i18n>Total Debit Card Payments</div>
+          <div class="col-sm-10">{{deskTotals.debit_card_payment | currency}}</div>
+        </div>
         <eg-grid #deskPaymentGrid
           persistKey="admin.local.cash_reports.desk_payments"
           [disableSelect]="true"
@@ -57,16 +61,17 @@
           <eg-grid-column label="Cash Payment" name="cash_payment" i18n-label datatype="money"></eg-grid-column>
           <eg-grid-column label="Check Payment" name="check_payment" i18n-label datatype="money"></eg-grid-column>
           <eg-grid-column label="Credit Card Payment" name="credit_card_payment" i18n-label datatype="money"></eg-grid-column>
+          <eg-grid-column label="Debit Card Payment" name="debit_card_payment" i18n-label datatype="money"></eg-grid-column>
         </eg-grid>
       </div>
     </ng-template>
   </li>
   <li ngbNavItem="userPayments">
-    <a ngbNavLink i18n>User Payments</a>
+    <a ngbNavLink i18n>Staff User Payments</a>
     <ng-template ngbNavContent>
       <div class="mt-3">
         <div class="row">
-          <div class="col-sm-2" i18n>Total Credit Payments</div>
+          <div class="col-sm-2" i18n>Total Patron Credit Payments</div>
           <div class="col-sm-10">{{userTotals.credit_payment | currency}}</div>
         </div>
         <div class="row">
@@ -94,14 +99,15 @@
           [sortable]="false">
           <eg-grid-column label="User" name="usr" [index]="true" i18n-label></eg-grid-column>
           <eg-grid-column label="Credit Payment" name="credit_payment" i18n-label datatype="money"></eg-grid-column>
+          <eg-grid-column label="Debit Payment" name="debit_payment" i18n-label datatype="money"></eg-grid-column>
           <eg-grid-column label="Forgive Payment" name="forgive_payment" i18n-label datatype="money"></eg-grid-column>
           <eg-grid-column label="Work Payment" name="work_payment" i18n-label datatype="money"></eg-grid-column>
           <eg-grid-column label="Goods Payment" name="goods_payment" i18n-label datatype="money"></eg-grid-column>
-          <eg-grid-column label="Patron Card" name="card" i18n-label [cellTemplate]="cardTmpl"></eg-grid-column>
-          <eg-grid-column label="Patron Email" path="user.email" i18n-label></eg-grid-column>
-          <eg-grid-column label="Patron First Name" path="user.first_given_name" i18n-label></eg-grid-column>
-          <eg-grid-column label="Patron Family Name" path="user.family_name" i18n-label></eg-grid-column>
-          <eg-grid-column label="Patron Home OU" path="user.home_ou" i18n-label></eg-grid-column>
+          <eg-grid-column label="Staff Card" name="card" i18n-label [cellTemplate]="cardTmpl"></eg-grid-column>
+          <eg-grid-column label="Staff Email" path="user.email" i18n-label></eg-grid-column>
+          <eg-grid-column label="Staff First Name" path="user.first_given_name" i18n-label></eg-grid-column>
+          <eg-grid-column label="Staff Family Name" path="user.family_name" i18n-label></eg-grid-column>
+          <eg-grid-column label="Staff Home OU" path="user.home_ou" i18n-label></eg-grid-column>
         </eg-grid>
       </div>
     </ng-template>
