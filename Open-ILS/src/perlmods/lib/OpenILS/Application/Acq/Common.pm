@@ -69,7 +69,10 @@ sub li_existing_copies {
                 owning_lib => $U->get_org_descendants($org)
             },
             # NOTE: should the excluded copy statuses be an AOUS?
-            '+acp' => {status => {'not in' => [3, 4, 13, 17]}}
+            '+acp' => {
+                status => {'not in' => [3, 4, 13, 17]},
+                deleted => 'f'
+            }
         }
     });
 
