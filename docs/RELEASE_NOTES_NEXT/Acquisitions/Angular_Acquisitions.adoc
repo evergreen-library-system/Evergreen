@@ -1,0 +1,15 @@
+== Further Angularization of Acquisitions Interfaces ==
+
+The following acquisitions interfaces were rewritten in Angular:
+
+ * Purchase Orders and Selection Lists
+ * Line Item management, including
+   ** Receiving and claiming
+   ** Creation of line item items singly and in batch
+ * Load MARC Order Records
+
+Improvements over the previous interfaces include:
+
+ * The line item table can now be sorted and filtered
+ * New settings to control the owning library that is
+   applied to auto-created line item items.
