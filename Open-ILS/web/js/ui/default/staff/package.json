@@ -45,7 +45,7 @@
     "jquery": "^3.2.1",
     "lovefield": "^2.1.12",
     "moment": "^2.20.1",
-    "moment-timezone": "^0.5.14",
+    "moment-timezone": "^0.5.35",
     "ng-toast": "^2.0.0"
   }
 }
