@@ -2204,12 +2204,13 @@ WITH
     y_field AS (SELECT field FROM config.display_field_map WHERE name = 'pubdate')
 SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time,
         h.return_time, h.prev_check_time, h.expire_time, h.cancel_time, h.cancel_cause,
-        h.cancel_note, h.canceled_by, h.canceling_ws, h.target, h.current_copy, h.fulfillment_staff, h.fulfillment_lib,
+        h.cancel_note, h.target, h.current_copy, h.fulfillment_staff, h.fulfillment_lib,
         h.request_lib, h.requestor, h.usr, h.selection_ou, h.selection_depth, h.pickup_lib,
         h.hold_type, h.holdable_formats, h.phone_notify, h.email_notify, h.sms_notify,
         (SELECT name FROM config.sms_carrier WHERE id = h.sms_carrier) AS "sms_carrier",
         h.frozen, h.thaw_date, h.shelf_time, h.cut_in_line, h.mint_condition,
         h.shelf_expire_time, h.current_shelf_lib, h.behind_desk, h.hopeless_date,
+        h.canceled_by, h.canceling_ws,
 
         CASE WHEN h.cancel_time IS NOT NULL THEN 6
              WHEN h.frozen AND h.capture_time IS NULL THEN 7
