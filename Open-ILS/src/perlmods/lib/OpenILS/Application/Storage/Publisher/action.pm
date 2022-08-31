@@ -2210,7 +2210,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         (SELECT name FROM config.sms_carrier WHERE id = h.sms_carrier) AS "sms_carrier",
         h.frozen, h.thaw_date, h.shelf_time, h.cut_in_line, h.mint_condition,
         h.shelf_expire_time, h.current_shelf_lib, h.behind_desk, h.hopeless_date,
-        h.canceled_by, h.canceling_ws,
+        cuc.barcode as canceled_by, caw.name as canceling_ws,
 
         CASE WHEN h.cancel_time IS NOT NULL THEN 6
              WHEN h.frozen AND h.capture_time IS NULL THEN 7
@@ -2395,6 +2395,9 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         JOIN a_field ON TRUE
         JOIN s_field ON TRUE
         JOIN y_field ON TRUE
+        LEFT JOIN actor.usr cu ON (h.canceled_by = cu.id)
+        LEFT JOIN actor.card cuc ON (cu.card = cuc.id)
+        LEFT JOIN actor.workstation caw ON (h.canceling_ws = caw.id)
         LEFT JOIN action.hold_request_cancel_cause cc ON (h.cancel_cause = cc.id)
         LEFT JOIN biblio.monograph_part p ON (h.hold_type = 'P' AND p.id = h.target)
         LEFT JOIN serial.issuance siss ON (h.hold_type = 'I' AND siss.id = h.target)
