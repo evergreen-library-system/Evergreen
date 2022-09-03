@@ -1,7 +1,7 @@
 #!perl
- 
+
 use strict; use warnings;
-use Test::More tests => 5;
+use Test::More tests => 7;
 use OpenILS::Utils::TestUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::AppUtils;
@@ -80,3 +80,58 @@ $results = $e->search_biblio_record_entry({tcn_source=>$temp_tcn_source,deleted=
 is(scalar(@$results), 0, 'Successfully deleted bre');
 
 
+# --------------------------------------------------------------------------
+# 3. Let's attach an existing item record entry to course #1, then detach it
+# --------------------------------------------------------------------------
+
+# Create an item with temporary location, so that we can confirm its fields revert on course material detach
+my $acp = Fieldmapper::asset::copy->new;
+my $item_id = int (rand (1_000_000) );
+my $acmcm_id = int (rand (1_000_000) );
+$acp->deleted(0);
+$acp->call_number(1);
+$acp->creator(1);
+$acp->editor(1);
+$acp->circ_lib(5);
+$acp->age_protect(1);
+$acp->barcode( $bre->id . '-1' );
+$acp->create_date('now');
+$acp->edit_date('now');
+$acp->active_date('now');
+$acp->status_changed_time('now');
+$acp->status(0);
+$acp->location(136);        # temporary value
+$acp->loan_duration(2);
+$acp->fine_level(2);
+$acp->deposit(0);
+$acp->deposit_amount(0.00);
+$acp->ref(0);
+$acp->holdable(1);
+$acp->opac_visible(1);
+$acp->mint_condition(1);
+$acp->id($item_id);
+$e->xact_begin;
+$e->create_asset_copy( $acp );
+$e->commit;
+
+$acmcm = Fieldmapper::asset::course_module_course_materials->new;
+
+$acmcm->course(1);
+$acmcm->id($acmcm_id);
+$acmcm->record(55);
+$acmcm->item($item_id);
+$acmcm->original_status(0);
+$acmcm->original_location(1);
+$acmcm->temporary_record(0);
+$e->xact_begin;
+$e->create_asset_course_module_course_materials( $acmcm ); # associated this bib record with a course
+$e->commit;
+
+$apputils->simplereq('open-ils.courses', 'open-ils.courses.detach_material', $authtoken, $acmcm_id);
+
+$results = $e->search_asset_course_module_course_materials({id => $acmcm_id});
+is(scalar(@$results), 0, 'Successfully deleted acmcm');
+
+# Re-load the acp into memory from the db
+$acp = $e->retrieve_asset_copy($item_id);
+is($acp->location, 1, "Successfully reverted item's shelving location");
