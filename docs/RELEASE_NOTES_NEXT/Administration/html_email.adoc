@@ -1,0 +1,8 @@
+== HTML email ==
+
+Administrators can now configure action triggers to send HTML-formatted
+email.  Evergreen continues to send emails in plain-text by default, but
+you can now configure an email template to send as HTML by adding the appropriate
+header to the email.  For example: Content-Type: text/html;charset=utf-8
+
+
