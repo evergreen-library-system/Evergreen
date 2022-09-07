@@ -17,6 +17,14 @@ const routes: Routes = [{
     loadChildren: () =>
       import('./coded-value-maps/coded-value-maps.module').then(m => m.CodedValueMapsModule)
 }, {
+    path: 'config/record_attr_definition',
+    loadChildren: () =>
+      import('./record-attr-definitions/record-attr-definitions.module').then(m => m.RecordAttrDefinitionsModule)
+}, {
+    path: 'authority/control_set_authority_field',
+    loadChildren: () =>
+      import('./control-set-authority-fields/control-set-authority-fields.module').then(m => m.CSAuthorityFieldsModule)
+}, {
     path: 'config/floating_group',
     loadChildren: () =>
       import('./floating-group/floating-group.module').then(m => m.FloatingGroupModule)

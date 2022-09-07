@@ -1,0 +1,26 @@
+<eg-staff-banner bannerText="Authority Control Set Authority Field Configuration" i18n-bannerText>
+</eg-staff-banner>
+
+<eg-admin-page
+  idlClass="acsaf"
+  configLinkBasePath="/staff/admin/server"
+  hideGridFields="id,linking_subfield"
+  [templateFields]="[{name: 'Bib Fields', template: acsafBibFieldsTmpl}, {name: 'Browse Axes', template: acsafAxesTmpl}]"
+></eg-admin-page>
+
+
+<ng-template #acsafBibFieldsTmpl let-row="row">
+  <div>
+    <a routerLink="/staff/admin/server/authority/control_set_bib_field" [queryParams]='{gridFilters: "{\"authority_field\":" + row.id() + "}" }' i18n>
+      Manage
+    </a>
+  </div>
+</ng-template>
+
+<ng-template #acsafAxesTmpl let-row="row">
+  <div>
+    <a routerLink="/staff/admin/server/authority/browse_axis_authority_field_map" [queryParams]='{gridFilters: "{\"field\":" + row.id() + "}" }' i18n>
+      Manage
+    </a>
+  </div>
+</ng-template>

@@ -1,0 +1,19 @@
+<eg-staff-banner bannerText="SVF Record Attribute Definition Configuration" i18n-bannerText>
+</eg-staff-banner>
+
+<eg-admin-page
+  idlClass="crad"
+  persistKey="admin.server.config.record_attr_definition"
+  configLinkBasePath="/staff/admin/server"
+  hideGridFields="tag,sf_list,joiner,xpath,format,start_pos,string_len,fixed_field,phys_char_sf"
+  [templateFields]="[{name: 'Coded Value Maps', template: ccvmTmpl}]"
+></eg-admin-page>
+
+
+<ng-template #ccvmTmpl let-row="row">
+  <div>
+    <a routerLink="/staff/admin/server/config/coded_value_map" [queryParams]='{gridFilters: "{\"ctype\":\"" + row.name() + "\"}" }' i18n>
+      Manage
+    </a>
+  </div>
+</ng-template>
