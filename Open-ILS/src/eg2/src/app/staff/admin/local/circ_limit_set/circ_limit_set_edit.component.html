@@ -26,7 +26,7 @@
                         <h5 class="col-lg-3 text-center">Remove</h5>
                     </div>
                     <div *ngFor="let mod of circMods">
-                        <div class="row mt-2 mb-2" *ngIf="mod.deleted == false">
+                        <div class="row mt-2 mb-2" *ngIf="mod.deleted === false">
                             <div class="col-lg-9">
                                 {{ mod.code }} : {{ mod.name }}
                             </div>
@@ -57,7 +57,7 @@
                             <h5 class="col-lg-3 text-center">Remove</h5>
                         </div>
                     <div *ngFor="let location of locations">
-                        <div class="row mt-2 mb-2" *ngIf="location.deleted == false">
+                        <div class="row mt-2 mb-2" *ngIf="location.deleted === false">
                             <div class="col-lg-9">
                                     {{ location.shortname }} : {{ location.name }} 
                             </div>
@@ -88,7 +88,7 @@
                         <h5 class="col-lg-3">Remove</h5>
                     </div>
                     <div *ngFor="let group of limitGroups">
-                        <div class="row mt-2 mb-2" *ngIf="group.deleted == false">
+                        <div class="row mt-2 mb-2" *ngIf="group.deleted === false">
                             <div class="col-lg-7">
                                 {{ group.name }}
                             </div>

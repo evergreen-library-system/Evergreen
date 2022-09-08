@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable, throwError} from 'rxjs';
+import {Component, Input, ViewChild} from '@angular/core';
+import {Observable} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -19,7 +19,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 })
 
 export class MarkMissingDialogComponent
-    extends DialogComponent implements OnInit {
+    extends DialogComponent {
 
     @Input() copyIds: number[];
 
@@ -40,8 +40,6 @@ export class MarkMissingDialogComponent
         private auth: AuthService) {
         super(modal); // required for subclassing
     }
-
-    ngOnInit() {}
 
     open(args: NgbModalOptions): Observable<boolean> {
         this.numSucceeded = 0;

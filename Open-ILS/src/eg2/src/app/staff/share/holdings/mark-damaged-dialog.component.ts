@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {Observable, throwError, from} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {NetService} from '@eg/core/net.service';
@@ -24,7 +24,7 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 })
 
 export class MarkDamagedDialogComponent
-    extends DialogComponent implements OnInit {
+    extends DialogComponent {
 
     @Input() copyId: number;
     copy: IdlObject;
@@ -56,8 +56,6 @@ export class MarkDamagedDialogComponent
         super(modal); // required for subclassing
         this.billingTypes = [];
     }
-
-    ngOnInit() {}
 
     /**
      * Fetch the item/record, then open the dialog.

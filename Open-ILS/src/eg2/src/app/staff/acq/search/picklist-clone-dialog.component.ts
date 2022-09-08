@@ -1,5 +1,4 @@
-import {Component, Input, ViewChild, TemplateRef, OnInit, Renderer2} from '@angular/core';
-import {Observable, from, empty, throwError} from 'rxjs';
+import {Component, Input, ViewChild, Renderer2} from '@angular/core';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -7,7 +6,6 @@ import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
   selector: 'eg-picklist-clone-dialog',
@@ -15,7 +13,7 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 })
 
 export class PicklistCloneDialogComponent
-  extends DialogComponent implements OnInit {
+  extends DialogComponent {
 
   @Input() grid: any;
   selectionListName: String;
@@ -33,9 +31,6 @@ export class PicklistCloneDialogComponent
     private modal: NgbModal
   ) {
     super(modal);
-  }
-
-  ngOnInit() {
   }
 
   update() {

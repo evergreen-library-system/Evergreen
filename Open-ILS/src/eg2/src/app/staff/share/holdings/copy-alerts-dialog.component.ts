@@ -1,9 +1,7 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {Observable, throwError, from} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
-import {NetService} from '@eg/core/net.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -28,7 +26,7 @@ export interface CopyAlertsChanges {
 })
 
 export class CopyAlertsDialogComponent
-    extends DialogComponent implements OnInit {
+    extends DialogComponent {
 
     // If there are multiple copyIds, only new alerts may be applied.
     // If there is only one copyId, then alerts may be applied or removed.
@@ -57,7 +55,6 @@ export class CopyAlertsDialogComponent
     constructor(
         private modal: NgbModal, // required for passing to parent
         private toast: ToastService,
-        private net: NetService,
         private idl: IdlService,
         private pcrud: PcrudService,
         private org: OrgService,
@@ -66,8 +63,6 @@ export class CopyAlertsDialogComponent
         this.copyIds = [];
         this.copies = [];
     }
-
-    ngOnInit() {}
 
     /**
      * Fetch the item/record, then open the dialog.

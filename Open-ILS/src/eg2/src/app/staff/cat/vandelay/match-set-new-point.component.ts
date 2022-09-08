@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, Output, Input} from '@angular/core';
+import {Component, OnInit, Input} from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';

@@ -422,7 +422,7 @@
         </a>
         <div class="dropdown-menu" ngbDropdownMenu>
           <a class="dropdown-item" (click)="setLocale(locale)" 
-            [ngClass]="{disabled: currentLocale.code() == locale.code()}"
+            [ngClass]="{disabled: currentLocale.code() === locale.code()}"
             *ngFor="let locale of locales">
             <span class="material-icons" aria-hidden="true">add_location</span>
             <span i18n>{{locale.name()}}</span>

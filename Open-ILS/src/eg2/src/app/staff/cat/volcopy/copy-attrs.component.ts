@@ -1,8 +1,7 @@
 import {Component, Input, OnInit, AfterViewInit, ViewChild,
     EventEmitter, Output, QueryList, ViewChildren} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {SafeUrl} from '@angular/platform-browser';
-import {tap} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';

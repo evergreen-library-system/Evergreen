@@ -1,6 +1,4 @@
-import {Component, OnInit, Input, ViewChild, Renderer2} from '@angular/core';
-import {Observable} from 'rxjs';
-import {switchMap, map, tap} from 'rxjs/operators';
+import {Component, Input, ViewChild} from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -17,7 +15,7 @@ import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
   templateUrl: 'transfer-holdings.component.html'
 })
 
-export class TransferHoldingsComponent implements OnInit {
+export class TransferHoldingsComponent {
 
     // Array of 'acn' objects.
     // Assumes all acn's are children of the same bib record.
@@ -51,8 +49,6 @@ export class TransferHoldingsComponent implements OnInit {
         private net: NetService,
         private auth: AuthService,
         private evt: EventService) {}
-
-    ngOnInit() {}
 
     // Resolves with true if transfer completed, false otherwise.
     // Assumes all volumes are transferred to the same bib record.

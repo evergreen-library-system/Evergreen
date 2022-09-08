@@ -1,7 +1,5 @@
-import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewChild,
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild,
         OnChanges, SimpleChanges} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {StaffCommonModule} from '@eg/staff/common.module';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
@@ -15,7 +13,7 @@ import {ServerStoreService} from '@eg/core/server-store.service';
   templateUrl: './acq-search-form.component.html'
 })
 
-export class AcqSearchFormComponent implements OnInit, AfterViewInit, OnChanges {
+export class AcqSearchFormComponent implements OnInit, OnChanges {
 
     @Input() initialSearchTerms: AcqSearchTerm[] = [];
     @Input() fallbackSearchTerms: AcqSearchTerm[] = [];
@@ -45,8 +43,6 @@ export class AcqSearchFormComponent implements OnInit, AfterViewInit, OnChanges 
     searchTerms: AcqSearchTerm[] = [];
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
         private pcrud: PcrudService,
         private store: ServerStoreService,
         private idl: IdlService,
@@ -129,8 +125,6 @@ export class AcqSearchFormComponent implements OnInit, AfterViewInit, OnChanges 
             }
         });
     }
-
-    ngAfterViewInit() {}
 
     ngOnChanges(changes: SimpleChanges) {
         if ('initialSearchTerms' in changes && !changes.initialSearchTerms.firstChange) {

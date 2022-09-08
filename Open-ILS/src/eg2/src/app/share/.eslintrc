@@ -1,0 +1,8 @@
+{
+    "rules": {
+        // Temporarily turn of this rule for this dir only, per
+        // https://bugs.launchpad.net/evergreen/+bug/1959048/comments/2
+        // TODO: eventually adhere to this rule
+        "@angular-eslint/no-output-on-prefix": "off"
+    }
+}

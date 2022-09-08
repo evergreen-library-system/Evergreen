@@ -1,10 +1,9 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {Component, Input, ViewChild} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
 import {Pager} from '@eg/share/util/pager';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
+import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
@@ -17,7 +16,7 @@ import {VandelayService, VandelayImportSelection} from './vandelay.service';
   selector: 'eg-queued-record-matches',
   templateUrl: 'queued-record-matches.component.html'
 })
-export class QueuedRecordMatchesComponent implements OnInit {
+export class QueuedRecordMatchesComponent {
 
     @Input() queueType: string;
     @Input() recordId: number;
@@ -97,8 +96,6 @@ export class QueuedRecordMatchesComponent implements OnInit {
         }
         return false;
     }
-
-    ngOnInit() {}
 
     // This thing is a nesty beast -- clean it up
     getBibMatchRows(pager: Pager): Observable<any> {

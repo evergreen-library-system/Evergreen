@@ -1,5 +1,4 @@
-import {Component, Input, Output, OnInit, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Component, Input} from '@angular/core';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -19,7 +18,7 @@ import {MarcEditContext} from './editor-context';
 })
 
 export class MarcEditorDialogComponent
-    extends DialogComponent implements OnInit {
+    extends DialogComponent {
 
     @Input() context: MarcEditContext;
     @Input() recordXml: string;
@@ -33,8 +32,6 @@ export class MarcEditorDialogComponent
         private net: NetService) {
         super(modal);
     }
-
-    ngOnInit() {}
 
     handleRecordSaved(saved) {
         this.close(saved);

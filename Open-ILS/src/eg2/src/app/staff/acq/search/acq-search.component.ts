@@ -1,11 +1,8 @@
-import {Component, OnInit, AfterViewInit, ViewChild, ViewChildren, QueryList, OnDestroy} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewChildren, QueryList, OnDestroy} from '@angular/core';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Router, ActivatedRoute, ParamMap, RouterEvent, NavigationEnd} from '@angular/router';
 import {filter, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
-import {StaffCommonModule} from '@eg/staff/common.module';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {AcqSearchTerm} from './acq-search.service';
 import {LineitemResultsComponent} from './lineitem-results.component';
 import {PurchaseOrderResultsComponent} from './purchase-order-results.component';
@@ -16,7 +13,7 @@ import {PicklistResultsComponent} from './picklist-results.component';
   templateUrl: './acq-search.component.html'
 })
 
-export class AcqSearchComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AcqSearchComponent implements OnInit, OnDestroy {
 
     searchType = '';
     validSearchTypes = ['lineitems', 'purchaseorders', 'invoices', 'selectionlists'];
@@ -37,8 +34,6 @@ export class AcqSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(
         private router: Router,
         private route: ActivatedRoute,
-        private pcrud: PcrudService,
-        private idl: IdlService,
     ) {
         this.route.queryParamMap.subscribe((params: ParamMap) => {
             this.urlSearchTerms = [];
@@ -135,8 +130,6 @@ export class AcqSearchComponent implements OnInit, AfterViewInit, OnDestroy {
             }
         };
     }
-
-    ngAfterViewInit() {}
 
     ngOnDestroy(): void {
         this.destroyed.next();

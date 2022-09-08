@@ -42,7 +42,7 @@ export class CreateReservationDialogComponent
     @Input() patronId: number;
     @Input() attributes: number[] = [];
     @Input() resources: IdlObject[] = [];
-    @Output() onComplete: EventEmitter<boolean>;
+    @Output() reservationRequestCompleted: EventEmitter<boolean>;
 
     create: FormGroup;
     patron$: Observable<{first_given_name: string, second_given_name: string, family_name: string}>;
@@ -69,7 +69,7 @@ export class CreateReservationDialogComponent
         private toast: ToastService
     ) {
         super(modal);
-        this.onComplete = new EventEmitter<boolean>();
+        this.reservationRequestCompleted = new EventEmitter<boolean>();
     }
 
     ngOnInit() {
@@ -127,7 +127,7 @@ export class CreateReservationDialogComponent
                 }, (fail) => {
                     console.warn(fail);
                     this.fail.open();
-                }, () => this.onComplete.emit(true)
+                }, () => this.reservationRequestCompleted.emit(true)
             ));
         };
 

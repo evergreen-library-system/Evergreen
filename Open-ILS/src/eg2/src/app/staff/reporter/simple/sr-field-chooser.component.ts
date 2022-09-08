@@ -1,9 +1,7 @@
-import {Component, Input, Output, EventEmitter, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {NgbAccordion} from '@ng-bootstrap/ng-bootstrap';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {SimpleReporterService} from './simple-reporter.service';
-import {SRFieldComponent} from './sr-field.component';
 
 @Component({
     selector: 'eg-sr-field-chooser',
@@ -11,7 +9,7 @@ import {SRFieldComponent} from './sr-field.component';
     templateUrl: './sr-field-chooser.component.html'
 })
 
-export class SRFieldChooserComponent implements OnInit {
+export class SRFieldChooserComponent {
 
     @Input() fieldType = 'display';
     @Input() allFields: IdlObject[] = [];
@@ -29,9 +27,6 @@ export class SRFieldChooserComponent implements OnInit {
         private idl: IdlService,
         private srSvc: SimpleReporterService
     ) {
-    }
-
-    ngOnInit() {
     }
 
     fieldIsSelected(field: IdlObject) {

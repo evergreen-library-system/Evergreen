@@ -1,5 +1,5 @@
-import {Component, OnInit, ViewChild, AfterViewInit, Input} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Component, ViewChild, Input} from '@angular/core';
+import {of} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
@@ -14,7 +14,7 @@ import {MatchSetNewPointComponent} from './match-set-new-point.component';
   selector: 'eg-match-set-quality',
   templateUrl: 'match-set-quality.component.html'
 })
-export class MatchSetQualityComponent implements OnInit {
+export class MatchSetQualityComponent {
 
     // Match set arrives from parent async.
     matchSet_: IdlObject;
@@ -73,8 +73,6 @@ export class MatchSetQualityComponent implements OnInit {
             );
         };
     }
-
-    ngOnInit() {}
 
     addQuality() {
         const quality = this.idl.create('vmsq');

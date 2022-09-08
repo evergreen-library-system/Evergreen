@@ -2,11 +2,8 @@
  * <eg-file-reader [(ngModel)]="fileContents">
  * </eg-file-reader>
  */
-import {Component, OnInit, Input, Output, ViewChild,
-    TemplateRef, EventEmitter, ElementRef, forwardRef} from '@angular/core';
+import {Component, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {Observable, of, Subject} from 'rxjs';
-import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 
 @Component({
   selector: 'eg-file-reader',
@@ -17,14 +14,11 @@ import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, m
     multi: true
   }]
 })
-export class FileReaderComponent implements ControlValueAccessor, OnInit {
+export class FileReaderComponent implements ControlValueAccessor {
 
     // Stub functions required by ControlValueAccessor
     propagateChange = (_: any) => {};
     propagateTouch = () => {};
-
-    ngOnInit() {
-    }
 
     changeListener($event): void {
         const me = this;

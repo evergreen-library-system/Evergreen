@@ -98,7 +98,7 @@
             </div>
             <div class="form-check pt-2">
               <input class="form-check-input" type="checkbox" 
-                [ngModel]="alert.ack_time() != null" 
+                [ngModel]="alert.ack_time() !== null" 
                 (ngModelChange)="alert.ack_time($event ? 'now' : null); alert.ischanged(true)"
                 id="alert-temporary-{{alert.id()}}">
               <label class="form-check-label" for="alert-temporary-{{alert.id()}}" i18n>

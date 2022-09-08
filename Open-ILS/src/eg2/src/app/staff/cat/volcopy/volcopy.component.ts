@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, ViewChild, HostListener} from '@angular/core';
+import {Component, OnInit, ViewChild, HostListener} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {tap} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
@@ -9,11 +9,10 @@ import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {HoldingsService, CallNumData} from '@eg/staff/share/holdings/holdings.service';
 import {VolCopyContext} from './volcopy';
-import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 import {VolCopyService} from './volcopy.service';
-import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {CopyAttrsComponent} from './copy-attrs.component';
 

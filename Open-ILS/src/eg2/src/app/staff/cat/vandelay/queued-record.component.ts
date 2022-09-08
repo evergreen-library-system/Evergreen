@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {PcrudService} from '@eg/core/pcrud.service';

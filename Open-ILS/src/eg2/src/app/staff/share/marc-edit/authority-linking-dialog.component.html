@@ -69,7 +69,7 @@
     </div>
     <div class="row border-bottom border-secondary p-2 d-flex">
       <div class="flex-1">
-        <button class="btn btn-outline-dark" [disabled]="pager.offset == 0"
+        <button class="btn btn-outline-dark" [disabled]="pager.offset === 0"
           (click)="getPage(0)" i18n>Start</button>
         <button class="btn btn-outline-dark ml-2"
           (click)="getPage(-1)" i18n>Previous</button>

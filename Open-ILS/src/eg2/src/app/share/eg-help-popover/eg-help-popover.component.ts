@@ -1,12 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'eg-help-popover',
     templateUrl: './eg-help-popover.component.html',
     styleUrls: ['./eg-help-popover.component.css']
 })
-export class EgHelpPopoverComponent implements OnInit {
+export class EgHelpPopoverComponent {
 
     // The text to display in the popover
     @Input()
@@ -23,10 +22,4 @@ export class EgHelpPopoverComponent implements OnInit {
     // 'top', and so forth.
     @Input()
     placement = '';
-
-    constructor() { }
-
-    ngOnInit() {
-    }
-
 }

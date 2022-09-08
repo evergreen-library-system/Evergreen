@@ -235,7 +235,7 @@
       <label for="marc-remove-groups" i18n>Remove MARC Field Groups</label>
     </div>
     <ng-container *ngIf="recordType !== 'authority'">
-      <div class="col-lg-3" *ngIf="bibTrashGroups.length == 0">
+      <div class="col-lg-3" *ngIf="bibTrashGroups.length === 0">
         <span i18n class="font-italic">No Groups Configured</span>
       </div>
       <div class="col-lg-3" *ngIf="bibTrashGroups.length">

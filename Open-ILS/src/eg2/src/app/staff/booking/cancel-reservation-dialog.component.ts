@@ -36,7 +36,7 @@ export class CancelReservationDialogComponent {
     @ViewChild('confirmCancelReservationDialog', { static: true })
         private cancelReservationDialog: ConfirmDialogComponent;
 
-    @Output() onSuccessfulCancel = new EventEmitter();
+    @Output() reservationCancelled = new EventEmitter();
 
     open(reservations: number[]) {
         this.reservations = reservations;
@@ -53,7 +53,7 @@ export class CancelReservationDialogComponent {
                         this.toast.danger('Could not cancel reservation'); // TODO: needs i18n, pluralization
                     } else {
                         this.toast.success('Reservation successfully canceled'); // TODO: needs i18n, pluralization
-                        this.onSuccessfulCancel.emit();
+                        this.reservationCancelled.emit();
                     }
                 }
             );

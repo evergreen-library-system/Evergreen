@@ -43,5 +43,5 @@
 </eg-grid>
 
 <eg-cancel-reservation-dialog #confirmCancelReservationDialog
-  (onSuccessfulCancel)="pullList.reload()">
+  (reservationCancelled)="pullList.reload()">
 </eg-cancel-reservation-dialog>

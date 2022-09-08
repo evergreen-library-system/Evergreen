@@ -18,7 +18,7 @@
     <input class="form-check-input" type="checkbox" [checked]="onlyShowCaptured" id="only-show-captured" (change)="handleShowCapturedChange()">
     <label class="form-check-label" for="only-show-captured" i18n>Show only captured resources</label>
   </div>
-  <eg-reservations-grid #readyGrid [patron]="patronId" status="pickupReady" [onlyCaptured]="onlyShowCaptured" persistSuffix="pickup.ready" (onPickup)="this.pickedUpGrid.reloadGrid()"></eg-reservations-grid>
+  <eg-reservations-grid #readyGrid [patron]="patronId" status="pickupReady" [onlyCaptured]="onlyShowCaptured" persistSuffix="pickup.ready" (pickedUpResource)="this.pickedUpGrid.reloadGrid()"></eg-reservations-grid>
 
   <h2 class="text-center mt-2" i18n>Already picked up</h2>
   <eg-reservations-grid #pickedUpGrid [patron]="patronId" status="pickedUp" persistSuffix="pickup.picked_up"></eg-reservations-grid>

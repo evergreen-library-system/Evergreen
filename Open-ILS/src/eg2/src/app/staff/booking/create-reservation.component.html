@@ -183,7 +183,7 @@
 </div>
 
 <eg-create-reservation-dialog #createDialog
-  (onComplete)="fetchData()"
+  (reservationRequestCompleted)="fetchData()"
   [patronId]="patronId"
   [targetResourceBarcode]="resourceBarcode"
   [targetResource]="resourceId"

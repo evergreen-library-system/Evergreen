@@ -1,7 +1,5 @@
-import {Component, OnInit, Input, ViewChild, Renderer2} from '@angular/core';
-import {Observable} from 'rxjs';
-import {switchMap, map, tap} from 'rxjs/operators';
-import {IdlObject, IdlService} from '@eg/core/idl.service';
+import {Component, ViewChild} from '@angular/core';
+import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
@@ -17,7 +15,7 @@ import {StringComponent} from '@eg/share/string/string.component';
   templateUrl: 'transfer-items.component.html'
 })
 
-export class TransferItemsComponent implements OnInit {
+export class TransferItemsComponent {
 
     @ViewChild('successMsg', {static: false})
         private successMsg: StringComponent;
@@ -38,12 +36,9 @@ export class TransferItemsComponent implements OnInit {
 
     constructor(
         private toast: ToastService,
-        private idl: IdlService,
         private net: NetService,
         private auth: AuthService,
         private evt: EventService) {}
-
-    ngOnInit() {}
 
     // Transfers a set of items/copies (by ID) to the selected call
     // number (by ID).

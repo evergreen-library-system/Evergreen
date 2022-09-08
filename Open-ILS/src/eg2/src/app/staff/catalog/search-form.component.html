@@ -35,10 +35,10 @@
       <ngb-tab title="Keyword Search" i18n-title id="term">
         <ng-template ngbTabContent>
           <div class="row"
-            [ngClass]="{'mt-4': idx == 0, 'mt-1': idx > 0}"
+            [ngClass]="{'mt-4': idx === 0, 'mt-1': idx > 0}"
             *ngFor="let q of context.termSearch.query; let idx = index; trackBy:trackByIdx">
             <div class="col-lg-2 pr-1">
-              <div *ngIf="idx == 0">
+              <div *ngIf="idx === 0">
                 <select class="form-control" [(ngModel)]="context.termSearch.format">
                   <option i18n value=''>All Formats</option>
                   <ng-container
@@ -82,7 +82,7 @@
             </div>
             <div class="col-lg-4 pl-0 pr-2">
               <div class="form-group">
-                <div *ngIf="idx == 0">
+                <div *ngIf="idx === 0">
                   <input type="text" class="form-control"
                     id='first-query-input'
                     [(ngModel)]="context.termSearch.query[idx]"
@@ -109,7 +109,7 @@
                 i18n-title title="Remove Search Row">
                 <span class="material-icons">remove_circle_outline</span>
               </button>
-              <button *ngIf="idx == 0"
+              <button *ngIf="idx === 0"
                 class="btn btn-sm material-icon-button" 
                 type="button" (click)="toggleFilters()" 
                 title="Toggle Search Filters" i18n-title>
@@ -294,7 +294,7 @@
                 *ngFor="let q of context.marcSearch.values; let idx = index; trackBy:trackByIdx">
                 <label for="marc-tag-{{idx}}" i18n>Tag</label>
                 <input class="form-control ml-2" size="3" type="text" 
-                  name="marc-tag-{{idx}}" id="{{ idx == 0 ? 'first-marc-tag' : '' }}"
+                  name="marc-tag-{{idx}}" id="{{ idx === 0 ? 'first-marc-tag' : '' }}"
                   [(ngModel)]="context.marcSearch.tags[idx]"
                   (keyup.enter)="searchByForm()"/>
                 <label for="marc-subfield-{{idx}}" class="ml-2" i18n>Subfield</label>

@@ -77,7 +77,7 @@
   <eg-grid-toolbar-button [disabled]="!canCreate" 
     label="Clone a Library's Portal Page Entries" i18n-label (onClick)="cloneEntries()">
   </eg-grid-toolbar-button>
-  <eg-grid-toolbar-button [disabled]="translatableFields.length == 0" 
+  <eg-grid-toolbar-button [disabled]="translatableFields.length === 0"
     label="Apply Translations" i18n-label (onClick)="translate()">
   </eg-grid-toolbar-button>
   <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">

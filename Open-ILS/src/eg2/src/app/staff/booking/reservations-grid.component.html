@@ -59,7 +59,7 @@
   [readonlyFields]="listReadOnlyFields()">
 </eg-fm-record-editor>
 <eg-cancel-reservation-dialog #confirmCancelReservationDialog
-  (onSuccessfulCancel)="grid.reload()">
+  (reservationCancelled)="grid.reload()">
 </eg-cancel-reservation-dialog>
 <eg-no-timezone-set-dialog #noTimezoneSetDialog>
 </eg-no-timezone-set-dialog>

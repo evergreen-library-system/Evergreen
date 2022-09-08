@@ -1,17 +1,16 @@
 import {Injectable, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs';
-import {map, tap, mergeMap} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {EventService, EgEvent} from '@eg/core/event.service';
+import {EventService} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
 import {VolCopyContext} from './volcopy';
-import {HoldingsService, CallNumData} from '@eg/staff/share/holdings/holdings.service';
+import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {StoreService} from '@eg/core/store.service';
-import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 /* Managing volcopy data */
 

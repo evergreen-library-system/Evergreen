@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {StoreService} from '@eg/core/store.service';
@@ -20,7 +20,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 })
 
 export class HoldTransferDialogComponent
-    extends DialogComponent implements OnInit {
+    extends DialogComponent {
 
     @Input() holdIds: number | number[];
 
@@ -42,8 +42,6 @@ export class HoldTransferDialogComponent
         private auth: AuthService) {
         super(modal); // required for subclassing
     }
-
-    ngOnInit() {}
 
     open(args: NgbModalOptions): Observable<boolean> {
         this.numSucceeded = 0;

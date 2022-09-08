@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   templateUrl : './welcome.component.html'
 })
 
-export class WelcomeComponent implements OnInit {
-    ngOnInit() {
-    }
+export class WelcomeComponent {
 }
 
 

@@ -1,6 +1,5 @@
-import {Component, OnInit, AfterViewInit, Input,
+import {Component, OnInit, AfterViewInit,
     ViewChild, OnDestroy} from '@angular/core';
-import {Subject} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';

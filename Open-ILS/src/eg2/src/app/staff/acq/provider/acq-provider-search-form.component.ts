@@ -1,11 +1,4 @@
-import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
-import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import {Router, ActivatedRoute} from '@angular/router';
-import {StaffCommonModule} from '@eg/staff/common.module';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {PcrudService} from '@eg/core/pcrud.service';
-import {StringComponent} from '@eg/share/string/string.component';
-import {ToastService} from '@eg/share/toast/toast.service';
+import {Component, OnInit, Output, EventEmitter} from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {AcqProviderSearchTerm, AcqProviderSearch} from './acq-provider-search.service';
 import {StoreService} from '@eg/core/store.service';
@@ -17,7 +10,7 @@ import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component
   templateUrl: './acq-provider-search-form.component.html'
 })
 
-export class AcqProviderSearchFormComponent implements OnInit, AfterViewInit {
+export class AcqProviderSearchFormComponent implements OnInit {
 
     @Output() searchSubmitted = new EventEmitter<AcqProviderSearch>();
 
@@ -36,12 +29,7 @@ export class AcqProviderSearchFormComponent implements OnInit, AfterViewInit {
     providerIsActive = 'active';
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private pcrud: PcrudService,
         private localStore: StoreService,
-        private idl: IdlService,
-        private toast: ToastService,
         private auth: AuthService,
     ) {}
 
@@ -50,8 +38,6 @@ export class AcqProviderSearchFormComponent implements OnInit, AfterViewInit {
         this.providerOwners = {primaryOrgId: this.auth.user().ws_ou(), includeDescendants: true};
         this.collapsed = this.localStore.getLocalItem('eg.acq.provider.search.collapse_form') || false;
     }
-
-    ngAfterViewInit() {}
 
     clearSearch() {
         this.providerName = '';

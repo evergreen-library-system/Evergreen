@@ -26,10 +26,10 @@
         <!--  leave the icons in place for all node types, but make them
               invisible when they are not needed. -->
         <span *ngIf="row.treeNode.expanded"
-          [ngClass]="{invisible: row.copy || row.treeNode.children.length == 0}"
+          [ngClass]="{invisible: row.copy || row.treeNode.children.length === 0}"
           class="material-icons p-0 m-0">keyboard_arrow_down</span>
         <span *ngIf="!row.treeNode.expanded"
-          [ngClass]="{invisible: row.copy || row.treeNode.children.length == 0}"
+          [ngClass]="{invisible: row.copy || row.treeNode.children.length === 0}"
           class="material-icons p-0 m-0">keyboard_arrow_right</span>
         <span>{{row.locationLabel}}</span>
       </a>

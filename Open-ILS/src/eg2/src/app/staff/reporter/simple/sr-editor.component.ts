@@ -3,7 +3,6 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {of} from 'rxjs';
 import {NgbNav} from '@ng-bootstrap/ng-bootstrap';
-import {StaffCommonModule} from '@eg/staff/common.module';
 import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
@@ -11,9 +10,6 @@ import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {SimpleReporterService, SRTemplate} from './simple-reporter.service';
-import {SRFieldChooserComponent} from './sr-field-chooser.component';
-import {SRSortOrderComponent} from './sr-sort-order.component';
-import {SROutputOptionsComponent} from './sr-output-options.component';
 
 @Component({
     templateUrl: './sr-editor.component.html',

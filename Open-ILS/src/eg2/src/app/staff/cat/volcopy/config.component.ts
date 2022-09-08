@@ -1,7 +1,6 @@
-import {Component, Input, OnInit, ViewChild, DoCheck} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {tap} from 'rxjs/operators';
-import {IdlObject, IdlService} from '@eg/core/idl.service';
+import {Component, Input, OnInit, DoCheck} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import {IdlService} from '@eg/core/idl.service';
 import {VolCopyContext} from './volcopy';
 import {VolCopyService} from './volcopy.service';
 

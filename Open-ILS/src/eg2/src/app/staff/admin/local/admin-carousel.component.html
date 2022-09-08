@@ -48,7 +48,7 @@
   <eg-grid-toolbar-button [disabled]="!canCreate" 
     label="New {{idlClassDef.label}}" i18n-label [action]="createNew">
   </eg-grid-toolbar-button>
-  <eg-grid-toolbar-button [disabled]="translatableFields.length == 0" 
+  <eg-grid-toolbar-button [disabled]="translatableFields.length === 0" 
     label="Apply Translations" i18n-label [action]="translate">
   </eg-grid-toolbar-button>
   <eg-grid-toolbar-action label="Edit Selected" i18n-label [action]="editSelected">

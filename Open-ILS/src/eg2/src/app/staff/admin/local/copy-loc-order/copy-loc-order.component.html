@@ -49,7 +49,7 @@
         <input type="radio" name="selected-entry" 
           [value]="entry.id()" [(ngModel)]="selectedEntry"/>
         <span class="flex-1 ml-1 p-1" i18n
-          [ngClass]="{'border border-primary rounded': selectedEntry == entry.id()}">
+          [ngClass]="{'border border-primary rounded': selectedEntry === entry.id()}">
           {{entry.location().name()}} ({{orgSn(entry.location().owning_lib())}})
         </span>
         <span *ngIf="entry.isnew()" class="ml-2 font-italic text-info">(unsaved)</span>

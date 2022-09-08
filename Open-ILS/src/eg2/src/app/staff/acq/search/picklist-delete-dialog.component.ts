@@ -1,13 +1,11 @@
-import {Component, Input, ViewChild, TemplateRef, OnInit} from '@angular/core';
-import {Observable, forkJoin, from, empty, throwError} from 'rxjs';
+import {Component, Input, ViewChild} from '@angular/core';
+import {forkJoin} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
   selector: 'eg-picklist-delete-dialog',
@@ -15,7 +13,7 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 })
 
 export class PicklistDeleteDialogComponent
-  extends DialogComponent implements OnInit {
+  extends DialogComponent {
 
   @Input() grid: any;
   listNames: string[];
@@ -23,16 +21,12 @@ export class PicklistDeleteDialogComponent
   @ViewChild('fail', { static: true }) private fail: AlertDialogComponent;
 
   constructor(
-    private idl: IdlService,
     private evt: EventService,
     private net: NetService,
     private auth: AuthService,
     private modal: NgbModal
   ) {
     super(modal);
-  }
-
-  ngOnInit() {
   }
 
   update() {

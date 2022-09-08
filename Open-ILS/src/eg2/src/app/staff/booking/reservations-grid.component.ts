@@ -35,8 +35,8 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
     @Input() persistSuffix: string;
     @Input() onlyCaptured = false;
 
-    @Output() onPickup = new EventEmitter<IdlObject>();
-    @Output() onReturn = new EventEmitter<IdlObject>();
+    @Output() pickedUpResource = new EventEmitter<IdlObject>();
+    @Output() returnedResource = new EventEmitter<IdlObject>();
 
     gridSource: GridDataSource;
     patronBarcode: string;
@@ -244,7 +244,7 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
                    {'patron_barcode': reservation.usr().card().barcode(), 'reservation': reservation})
                .pipe(tap(
                    () => {
-                       this.onPickup.emit(reservation);
+                       this.pickedUpResource.emit(reservation);
                        this.grid.reload(); },
                ));
         };
@@ -257,7 +257,7 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
                {'patron_barcode': this.patronBarcode, 'reservation': reservation})
                .pipe(tap(
                    () => {
-                       this.onReturn.emit(reservation);
+                       this.returnedResource.emit(reservation);
                        this.grid.reload();
                    },
                ));

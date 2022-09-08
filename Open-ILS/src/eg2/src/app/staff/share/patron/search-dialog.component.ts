@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, Output, ViewChild} from '@angular/core';
-import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {Component, ViewChild} from '@angular/core';
+import {IdlObject} from '@eg/core/idl.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {PatronSearchComponent} from './search.component';
@@ -17,14 +17,12 @@ import {PatronSearchComponent} from './search.component';
 })
 
 export class PatronSearchDialogComponent
-    extends DialogComponent implements OnInit {
+    extends DialogComponent {
 
     @ViewChild('searchForm', {static: false})
         searchForm: PatronSearchComponent;
 
     constructor(private modal: NgbModal) { super(modal); }
-
-    ngOnInit() {}
 
     // Fired when a row in the search grid is dbl-clicked / activated
     patronsSelected(patrons: IdlObject[]) {

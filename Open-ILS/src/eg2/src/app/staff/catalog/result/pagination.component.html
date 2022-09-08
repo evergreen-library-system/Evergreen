@@ -14,7 +14,7 @@ unnecessary given we have to track paging externally anyway.
   </li>
   <li class="page-item" 
     *ngFor="let page of currentPageList()"
-    [ngClass]="{active : searchContext.pager.currentPage() == page}">
+    [ngClass]="{active : searchContext.pager.currentPage() === page}">
     <a class="page-link" (click)="setPage(page)">
       {{page}} <span class="sr-only" i18n>(current)</span></a>
   </li>

@@ -1,5 +1,5 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {from, Observable, throwError} from 'rxjs';
+import {Component, Input, ViewChild} from '@angular/core';
+import {from, Observable} from 'rxjs';
 import {tap, concatMap} from 'rxjs/operators';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -20,7 +20,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 })
 
 export class MarkDiscardDialogComponent
-    extends DialogComponent implements OnInit {
+    extends DialogComponent {
 
     @Input() copyIds: number[];
 
@@ -38,8 +38,6 @@ export class MarkDiscardDialogComponent
         private auth: AuthService) {
         super(modal); // required for subclassing
     }
-
-    ngOnInit() {}
 
     open(args: NgbModalOptions): Observable<boolean> {
         this.numSucceeded = 0;

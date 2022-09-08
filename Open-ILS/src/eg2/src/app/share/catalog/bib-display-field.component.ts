@@ -1,9 +1,5 @@
-import {Component, OnInit, Input, ViewEncapsulation} from '@angular/core';
-import {NetService} from '@eg/core/net.service';
-import {OrgService} from '@eg/core/org.service';
-import {AuthService} from '@eg/core/auth.service';
-import {BibRecordService, BibRecordSummary
-    } from '@eg/share/catalog/bib-record.service';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
+import {BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 
 /* Display content from a bib summary display field.  If highlight
  * data is avaialble, it will be used in lieu of the plan display string.
@@ -21,7 +17,7 @@ const PAD_SPACE = ' '; // U+2007
   styleUrls: ['bib-display-field.component.css'],
   encapsulation: ViewEncapsulation.None // required for search highlighting
 })
-export class BibDisplayFieldComponent implements OnInit {
+export class BibDisplayFieldComponent {
 
     @Input() summary: BibRecordSummary;
     @Input() field: string; // display field name
@@ -34,10 +30,6 @@ export class BibDisplayFieldComponent implements OnInit {
 
     // If provided, turn the display value into a link
     @Input() routerLink: string;
-
-    constructor() {}
-
-    ngOnInit() {}
 
     // Returns an array of display values which may either be
     // plain string values or strings with embedded HTML markup

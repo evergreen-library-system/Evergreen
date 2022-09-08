@@ -310,7 +310,7 @@
                 value="{{part.id()}}">{{part.label()}}</option>
             </select>
           </ng-container>
-          <ng-container *ngIf="ctx.holdMeta.parts.length == 0">
+          <ng-container *ngIf="ctx.holdMeta.parts.length === 0">
             <ng-container *ngIf="ctx.holdMeta.part">
               <span>{{ctx.holdMeta.part.label()}}</span>
             </ng-container>
@@ -364,7 +364,7 @@
             *ngFor="let ccvm of ctx.holdMeta.metarecord_filters.formats">
             <div class="form-check ml-3">
               <input class="form-check-input" type="checkbox"
-                [disabled]="ctx.holdMeta.metarecord_filters.formats.length == 1"
+                [disabled]="ctx.holdMeta.metarecord_filters.formats.length === 1"
                 [(ngModel)]="ctx.selectedFormats.formats[ccvm.code()]"/>
               <img class="ml-1"
                 alt="{{iconFormatLabel(ccvm.code())}}"
@@ -385,7 +385,7 @@
             *ngFor="let ccvm of ctx.holdMeta.metarecord_filters.langs">
             <div class="form-check ml-3">
               <input class="form-check-input" type="checkbox"
-                [disabled]="ctx.holdMeta.metarecord_filters.langs.length == 1"
+                [disabled]="ctx.holdMeta.metarecord_filters.langs.length === 1"
                 [(ngModel)]="ctx.selectedFormats.langs[ccvm.code()]"/>
               <label class="form-check-label ml-1">
                 {{ccvm.search_label() || ccvm.value()}}

@@ -1,5 +1,4 @@
-import {Component, Input, Output, OnInit, AfterViewInit, EventEmitter,
-    OnDestroy} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {MarcRecord} from './marcrecord';
@@ -15,7 +14,7 @@ import {TagTableService} from './tagtable.service';
   templateUrl: './fixed-fields-editor.component.html'
 })
 
-export class FixedFieldsEditorComponent implements OnInit {
+export class FixedFieldsEditorComponent {
 
     @Input() context: MarcEditContext;
     get record(): MarcRecord { return this.context.record; }
@@ -25,7 +24,5 @@ export class FixedFieldsEditorComponent implements OnInit {
         private org: OrgService,
         private tagTable: TagTableService
     ) {}
-
-    ngOnInit() {}
 }
 

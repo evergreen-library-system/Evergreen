@@ -1,11 +1,10 @@
-import {Component, OnInit, ViewChild, AfterViewInit, Input} from '@angular/core';
+import {Component, ViewChild, Input} from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {StringService} from '@eg/share/string/string.service';
 import {MatchSetNewPointComponent} from './match-set-new-point.component';
 
@@ -13,7 +12,7 @@ import {MatchSetNewPointComponent} from './match-set-new-point.component';
   selector: 'eg-match-set-expression',
   templateUrl: 'match-set-expression.component.html'
 })
-export class MatchSetExpressionComponent implements OnInit {
+export class MatchSetExpressionComponent {
 
     // Match set arrives from parent async.
     matchSet_: IdlObject;
@@ -47,8 +46,6 @@ export class MatchSetExpressionComponent implements OnInit {
     ) {
         this.newId = -1;
     }
-
-    ngOnInit() {}
 
     refreshTree(): Promise<any> {
         if (!this.matchSet_) { return Promise.resolve(); }

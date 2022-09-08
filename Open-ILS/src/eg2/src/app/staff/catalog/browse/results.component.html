@@ -44,7 +44,7 @@
                 {{result.value}} ({{result.sources}})
             </a>
           </ng-container>
-          <ng-container *ngIf="result.sources == 0">
+          <ng-container *ngIf="result.sources === 0">
             <span>{{result.value}}</span>
           </ng-container>
           <div class="row" *ngFor="let heading of result.compiledHeadings">

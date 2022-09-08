@@ -19,7 +19,7 @@
   </div>
 </div>
 
-<eg-grid *ngIf="queueType==='bib'" #bibQueueGrid 
+<eg-grid *ngIf="queueType==='bib'" #bibQueueGrid
   persistKey="cat.vandelay.queue.list.bib"
   (onRowActivate)="rowActivated($event)"
   idlClass="vbq" [dataSource]="queueSource">
@@ -27,7 +27,7 @@
     [action]="deleteSelected"></eg-grid-toolbar-action>
 </eg-grid>
 
-<eg-grid *ngIf="queueType==='auth'" #authQueueGrid 
+<eg-grid *ngIf="queueType==='auth'" #authQueueGrid
   persistKey="cat.vandelay.queue.list.auth"
   (onRowActivate)="rowActivated($event)"
   idlClass="vaq" [dataSource]="queueSource">

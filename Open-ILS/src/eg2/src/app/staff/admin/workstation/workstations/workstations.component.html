@@ -16,7 +16,7 @@
     <div class="alert alert-warning" *ngIf="removeWorkstation" i18n>
       Workstation {{removeWorkstation}} is no longer valid.  Removing registration.
     </div>
-    <div class="alert alert-danger" *ngIf="workstations.length == 0">
+    <div class="alert alert-danger" *ngIf="workstations.length === 0">
       <span i18n>Please register a workstation.</span>
     </div>
 
@@ -62,10 +62,10 @@
       <div class="col-lg-8">
         <select class="form-control" [(ngModel)]="selectedName">
           <option *ngFor="let ws of workstations" value="{{ws.name}}">
-            <span *ngIf="ws.name == defaultName" i18n>
+            <span *ngIf="ws.name === defaultName" i18n>
               {{ws.name}} (Default)
             </span>
-            <span *ngIf="ws.name != defaultName">
+            <span *ngIf="ws.name !== defaultName">
               {{ws.name}}
             </span>
           </option>

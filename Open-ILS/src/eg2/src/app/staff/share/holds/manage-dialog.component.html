@@ -1,6 +1,6 @@
 <ng-template #dialogContent>
     <div class="modal-header bg-info">
-      <ng-container *ngIf="holdIds.length == 1">
+      <ng-container *ngIf="holdIds.length === 1">
         <h4 class="modal-title" i18n>Modify Hold (#{{holdIds[0]}})</h4>
       </ng-container>
       <ng-container *ngIf="holdIds.length > 1">

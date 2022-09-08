@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
+import {Component, AfterViewInit, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map, filter} from 'rxjs/operators';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
@@ -17,7 +17,7 @@ import {VandelayService, VandelayImportSelection,
 @Component({
   templateUrl: 'queue.component.html'
 })
-export class QueueComponent implements OnInit, AfterViewInit {
+export class QueueComponent implements AfterViewInit {
 
     queueId: number;
     queueType: string; // bib / authority
@@ -64,9 +64,6 @@ export class QueueComponent implements OnInit, AfterViewInit {
             'import_error': row => (row.import_error == null) ? '' : row.import_error,
             'imported_as': row => row.imported_as + ''
         };
-    }
-
-    ngOnInit() {
     }
 
     limitToMatches(checked: boolean) {

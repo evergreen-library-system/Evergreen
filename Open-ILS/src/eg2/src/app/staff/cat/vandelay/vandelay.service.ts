@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {tap, map} from 'rxjs/operators';
+import {tap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {saveAs} from 'file-saver';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -10,7 +10,6 @@ import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {PermService} from '@eg/core/perm.service';
 import {EventService} from '@eg/core/event.service';
-import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 
 export const VANDELAY_EXPORT_PATH = '/exporter';
 export const VANDELAY_UPLOAD_PATH = '/vandelay-upload';

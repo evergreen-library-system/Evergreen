@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {Tree, TreeNode} from './tree';
 
 /*
@@ -35,7 +35,7 @@ nodeClicked(node: TreeNode) {
     templateUrl: 'tree.component.html',
     styleUrls: ['tree.component.css']
 })
-export class TreeComponent implements OnInit {
+export class TreeComponent {
 
     _tree: Tree;
     @Input() set tree(t: Tree) {
@@ -54,8 +54,6 @@ export class TreeComponent implements OnInit {
     constructor() {
         this.nodeClicked = new EventEmitter<TreeNode>();
     }
-
-    ngOnInit() {}
 
     displayNodes(): TreeNode[] {
         if (!this.tree) { return []; }

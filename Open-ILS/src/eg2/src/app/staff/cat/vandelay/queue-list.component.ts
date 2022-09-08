@@ -1,13 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {map} from 'rxjs/operators';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
+import {GridDataSource} from '@eg/share/grid/grid';
 import {VandelayService} from './vandelay.service';
 
 @Component({

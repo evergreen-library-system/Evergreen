@@ -1,11 +1,10 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {BasketService} from '@eg/share/catalog/basket.service';
 import {Router} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PrintService} from '@eg/share/print/print.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
-import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from './catalog.service';
 import {BucketDialogComponent
     } from '@eg/staff/share/buckets/bucket-dialog.component';
@@ -17,7 +16,7 @@ const MAX_FROM_SEARCH_RESULTS = 1000;
   selector: 'eg-catalog-basket-actions',
   templateUrl: 'basket-actions.component.html'
 })
-export class BasketActionsComponent implements OnInit {
+export class BasketActionsComponent {
 
     basketAction: string;
 
@@ -37,9 +36,6 @@ export class BasketActionsComponent implements OnInit {
         private staffCat: StaffCatalogService
     ) {
         this.basketAction = '';
-    }
-
-    ngOnInit() {
     }
 
     basketCount(): number {

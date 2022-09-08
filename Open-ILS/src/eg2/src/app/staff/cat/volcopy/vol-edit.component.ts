@@ -1,5 +1,4 @@
-import {Component, OnInit, AfterViewInit, ViewChild, Input, Renderer2, Output, EventEmitter} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Component, OnInit, ViewChild, Input, Renderer2, Output, EventEmitter} from '@angular/core';
 import {tap} from 'rxjs/operators';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';

@@ -1,6 +1,5 @@
-import {Component, Input, OnInit, Host} from '@angular/core';
-import {GridContext, GridColumn, GridRowSelector,
-    GridToolbarAction, GridColumnSet, GridDataSource} from './grid';
+import {Component, Input, Host} from '@angular/core';
+import {GridContext} from './grid';
 import {GridComponent} from './grid.component';
 import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
 
@@ -9,7 +8,7 @@ import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './grid-body.component.html'
 })
 
-export class GridBodyComponent implements OnInit {
+export class GridBodyComponent {
 
     @Input() context: GridContext;
 
@@ -20,8 +19,6 @@ export class GridBodyComponent implements OnInit {
     constructor(@Host() private grid: GridComponent) {
         this.contextMenus = [];
     }
-
-    ngOnInit() {}
 
     // Not using @HostListener because it only works globally.
     onGridKeyDown(evt: KeyboardEvent) {

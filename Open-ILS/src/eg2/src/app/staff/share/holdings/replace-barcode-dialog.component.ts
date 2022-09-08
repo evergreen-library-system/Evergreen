@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild, Renderer2} from '@angular/core';
+import {Component, Input, ViewChild, Renderer2} from '@angular/core';
 import {Observable} from 'rxjs';
 import {switchMap, map, tap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
@@ -19,7 +19,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 })
 
 export class ReplaceBarcodeDialogComponent
-    extends DialogComponent implements OnInit {
+    extends DialogComponent {
 
     @Input() copyIds: number[];
     ids: number[]; // copy of list so we can pop()
@@ -44,8 +44,6 @@ export class ReplaceBarcodeDialogComponent
         private renderer: Renderer2) {
         super(modal); // required for subclassing
     }
-
-    ngOnInit() {}
 
     open(args: NgbModalOptions): Observable<boolean> {
         this.ids = [].concat(this.copyIds);

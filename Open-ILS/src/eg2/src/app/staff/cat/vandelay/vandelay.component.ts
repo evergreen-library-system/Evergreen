@@ -1,13 +1,12 @@
-import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
 import {take} from 'rxjs/operators';
 import {VandelayService} from './vandelay.service';
-import {IdlObject} from '@eg/core/idl.service';
 
 @Component({
   templateUrl: 'vandelay.component.html'
 })
-export class VandelayComponent implements OnInit, AfterViewInit {
+export class VandelayComponent {
     tab: string;
 
     constructor(
@@ -26,9 +25,5 @@ export class VandelayComponent implements OnInit, AfterViewInit {
             }
         });
     }
-
-    ngOnInit() {}
-
-    ngAfterViewInit() {}
 }
 

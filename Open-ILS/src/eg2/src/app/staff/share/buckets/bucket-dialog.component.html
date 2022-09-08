@@ -2,7 +2,7 @@
   <div class="modal-header bg-info">
     <h4 class="modal-title">
       <ng-container *ngIf="itemIds.length > 0">
-        <span *ngIf="itemIds.length == 1" i18n>
+        <span *ngIf="itemIds.length === 1" i18n>
           Add Item #{{itemIds[0]}} to Bucket</span>
         <span *ngIf="itemIds.length > 1" i18n>
           Add {{itemIds.length}} Items to Bucket</span>

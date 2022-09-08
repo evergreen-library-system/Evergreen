@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {IdlObject} from '@eg/core/idl.service';

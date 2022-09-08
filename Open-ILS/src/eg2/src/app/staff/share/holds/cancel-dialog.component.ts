@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -20,7 +20,7 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 })
 
 export class HoldCancelDialogComponent
-    extends DialogComponent implements OnInit {
+    extends DialogComponent {
 
     @Input() holdIds: number[];
     @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
@@ -44,13 +44,9 @@ export class HoldCancelDialogComponent
         this.cancelReasons = [];
     }
 
-    ngOnInit() {
-        // Avoid fetching cancel reasons in ngOnInit becaues that causes
-        // them to load regardless of whether the dialog is ever used.
-    }
-
+    // Avoid fetching cancel reasons in ngOnInit becaues that causes
+    // them to load regardless of whether the dialog is ever used.
     open(args: NgbModalOptions): Observable<boolean> {
-
         this.numSucceeded = 0;
         this.numFailed = 0;
 

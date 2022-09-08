@@ -1,9 +1,8 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {Observable, throwError, from, empty} from 'rxjs';
-import {tap, map, switchMap} from 'rxjs/operators';
+import {switchMap} from 'rxjs/operators';
 import {NetService} from '@eg/core/net.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -27,7 +26,7 @@ export interface CopyNotesChanges {
 })
 
 export class CopyNotesDialogComponent
-    extends DialogComponent implements OnInit {
+    extends DialogComponent {
 
     // If there are multiple copyIds, only new notes may be applied.
     // If there is only one copyId, then notes may be applied or removed.
@@ -65,9 +64,6 @@ export class CopyNotesDialogComponent
         private org: OrgService,
         private auth: AuthService) {
         super(modal); // required for subclassing
-    }
-
-    ngOnInit() {
     }
 
     /**
