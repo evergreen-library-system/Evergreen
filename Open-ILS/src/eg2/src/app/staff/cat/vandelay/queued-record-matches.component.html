@@ -12,7 +12,7 @@
   </ng-container>
 </ng-template>
 
-<ng-container *ngIf="queueType == 'bib'">
+<ng-container *ngIf="queueType === 'bib'">
   <eg-grid #bibGrid [dataSource]="bibDataSource" 
     (onRowClick)="matchRowClick($event)"
     [cellTextGenerator]="cellTextGenerator"
@@ -53,7 +53,7 @@
     </eg-grid-column>
   </eg-grid>
 </ng-container>
-<ng-container *ngIf="queueType == 'authority'">
+<ng-container *ngIf="queueType === 'authority'">
   <eg-grid #authGrid [dataSource]="authDataSource">
     <eg-grid-column name="id" [index]="true" [hidden]="true" 
       i18n-label label="Match ID">

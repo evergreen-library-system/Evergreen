@@ -27,12 +27,12 @@
 
 <div class='eg-holds w-100 mt-3'>
 
-  <ng-container *ngIf="mode == 'detail'">
+  <ng-container *ngIf="mode === 'detail'">
     <eg-hold-detail [wideHold]="detailHold" (onShowList)="mode='list'" 
       [showRecordSummary]="showRecordSummary"></eg-hold-detail>
   </ng-container>
 
-  <ng-container *ngIf="mode == 'list' && initComplete()">
+  <ng-container *ngIf="mode === 'list' && initComplete()">
 
     <h3 i18n>Holds Count: {{holdsCount}}</h3>
 
@@ -159,10 +159,10 @@
 
       <ng-template #barcodeTmpl let-hold="row" let-col="col">
         <a href="/eg/staff/cat/item/{{hold.cp_id}}/summary" target="_blank">
-          <ng-container *ngIf="col.name == 'current_item' && hold.current_copy">
+          <ng-container *ngIf="col.name === 'current_item' && hold.current_copy">
             {{hold.cp_barcode}}
           </ng-container>
-          <ng-container *ngIf="col.name == 'requested_item' && isCopyHold(hold)">
+          <ng-container *ngIf="col.name === 'requested_item' && isCopyHold(hold)">
             {{hold.cp_barcode}}
           </ng-container>
         </a>

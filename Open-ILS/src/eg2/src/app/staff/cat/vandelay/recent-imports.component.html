@@ -38,7 +38,7 @@
             <div class="col-lg-6">
               <!-- ensure the progress shows 100% when complete -->
               <eg-progress-inline 
-                [max]="tracker.state() == 'complete' ? tracker.actions_performed() : tracker.total_actions() || null"
+                [max]="tracker.state() === 'complete' ? tracker.actions_performed() : tracker.total_actions() || null"
                 [value]="tracker.actions_performed()">
               </eg-progress-inline>
             </div>
@@ -50,12 +50,12 @@
                   Queue {{tracker.queue().name()}}
                 </a>
               </span>
-              <span class="pl-2" *ngIf="tracker.action_type() == 'enqueue'" i18n>Enqueuing... </span>
-              <span class="pl-2" *ngIf="tracker.action_type() == 'import'" i18n>Importing... </span>
-              <span *ngIf="tracker.state() == 'active'" i18n>Active</span>
-              <span *ngIf="tracker.state() == 'complete'" i18n>Complete</span>
-              <span *ngIf="tracker.state() == 'error'" i18n>Error</span>
-              <span class='pl-3' *ngIf="tracker.state() == 'complete'">
+              <span class="pl-2" *ngIf="tracker.action_type() === 'enqueue'" i18n>Enqueuing... </span>
+              <span class="pl-2" *ngIf="tracker.action_type() === 'import'" i18n>Importing... </span>
+              <span *ngIf="tracker.state() === 'active'" i18n>Active</span>
+              <span *ngIf="tracker.state() === 'complete'" i18n>Complete</span>
+              <span *ngIf="tracker.state() === 'error'" i18n>Error</span>
+              <span class='pl-3' *ngIf="tracker.state() === 'complete'">
                 <span class="material-icons text-success">thumb_up</span>
               </span>
             </div>

@@ -111,7 +111,7 @@
               </div>
               <div class="col-lg-8 font-weight-bold">
                 <!-- TODO: replace with <eg-bool/> when merged -->
-                {{selected.callerData.usergroup() == 't'}}
+                {{selected.callerData.usergroup() === 't'}}
               </div>
             </div>
           </ng-template>
@@ -163,7 +163,7 @@
                 <div class="col-lg-1 text-center">{{map.depth()}}</div>
                 <div class="col-lg-1 d-flex flex-column justify-content-center">
                   <div class="d-flex justify-content-center p-1 rounded">
-                    <eg-bool [value]="map.grantable() == 't'"></eg-bool>
+                    <eg-bool [value]="map.grantable() === 't'"></eg-bool>
                   </div>
                 </div>
                 <div class="col-lg-1 font-italic" i18n>Inherited</div>
@@ -180,7 +180,7 @@
                   <div class="d-flex justify-content-center p-1 rounded border border-info">                
                     <input type="checkbox" class="align-middle"
                       i18n-title title="Grantable?"
-                      [ngModel]="map.grantable() == 't'"
+                      [ngModel]="map.grantable() === 't'"
                       (ngModelChange)="map.grantable($event ? 't' : 'f'); map.ischanged(true)"/>
                   </div>
                 </div>

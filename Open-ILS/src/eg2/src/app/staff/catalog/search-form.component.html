@@ -74,9 +74,9 @@
                 <option i18n value='contains'>Contains</option>
                 <option i18n value='nocontains'>Does not contain</option>
                 <option i18n value='phrase'>Contains phrase</option>
-                <option [disabled]="context.termSearch.fieldClass[idx]=='keyword'"
+                <option [disabled]="context.termSearch.fieldClass[idx]==='keyword'"
                   i18n value='exact'>Matches exactly</option>
-                <option [disabled]="context.termSearch.fieldClass[idx]=='keyword'"
+                <option [disabled]="context.termSearch.fieldClass[idx]==='keyword'"
                   i18n value='starts'>Starts with</option>
               </select>
             </div>
@@ -253,7 +253,7 @@
                 <input class="form-control ml-2" type="number"
                   [(ngModel)]="context.termSearch.date1"/>
                 <input class="form-control ml-2" type="number"
-                  *ngIf="context.termSearch.dateOp == 'between'"
+                  *ngIf="context.termSearch.dateOp === 'between'"
                   [(ngModel)]="context.termSearch.date2"/>
               </div>
             </div>

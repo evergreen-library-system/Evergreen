@@ -37,7 +37,7 @@
         <input class="form-check-input" type="checkbox" id="mint-condition"
           name="mint" value="mint"
           [disabled]="isBatch() && !activeFields.mint_condition"
-          [ngModel]="hold.mint_condition() == 't'"
+          [ngModel]="hold.mint_condition() === 't'"
           (ngModelChange)="hold.mint_condition($event ? 't' : 'f')">
         <label class="form-check-label" for="mint-condition">
           Good Condition Only
@@ -64,7 +64,7 @@
         <input class="form-check-input" type="checkbox"
           id="frozen" name="frozen"
           [disabled]="isBatch() && !activeFields.frozen"
-          [ngModel]="hold.frozen() == 't'"
+          [ngModel]="hold.frozen() === 't'"
           (ngModelChange)="hold.frozen($event ? 't' : 'f')">
       </div>
     </div>
@@ -85,7 +85,7 @@
         <input class="form-check-input" type="checkbox"
           id="cut_in_line" name="cut_in_line"
           [disabled]="isBatch() && !activeFields.cut_in_line"
-          [ngModel]="hold.cut_in_line() == 't'"
+          [ngModel]="hold.cut_in_line() === 't'"
           (ngModelChange)="hold.cut_in_line($event ? 't' : 'f')">
       </div>
     </div>
@@ -187,7 +187,7 @@
     <div class="col-lg-4">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="checkbox" id="email"
-          name="email" [ngModel]="hold.email_notify() == 't'"
+          name="email" [ngModel]="hold.email_notify() === 't'"
           [disabled]="isBatch() && !activeFields.email_notify"
           (ngModelChange)="hold.email_notify($event ? 't' : 'f')"/>
       </div>

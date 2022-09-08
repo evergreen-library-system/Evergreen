@@ -1,16 +1,16 @@
 <eg-staff-banner
   bannerText=" {{currentCourse.course_number()}}: {{currentCourse.name()}}"
   i18n-bannerText class="mb-3" *ngIf="currentCourse"
-  [bannerStyle]="(courseIsArchived || currentCourse.is_archived()) == 't' ? 'alert-secondary' : null"
-  [bannerIcon]="(courseIsArchived || currentCourse.is_archived()) == 't' ? 'lock' : null">
+  [bannerStyle]="(courseIsArchived || currentCourse.is_archived()) === 't' ? 'alert-secondary' : null"
+  [bannerIcon]="(courseIsArchived || currentCourse.is_archived()) === 't' ? 'lock' : null">
 </eg-staff-banner>
 
 <div class="row">
   <div class="col text-right">
     <button class="btn btn-danger"
-      (click)="archiveCourse()" [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) == 't' ">
+      (click)="archiveCourse()" [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't' ">
       <i class="material-icons align-middle"
-        *ngIf="currentCourse && (courseIsArchived || currentCourse.is_archived()) == 't'">block</i>
+        *ngIf="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'">block</i>
       <span class="align-middle">Archive Course</span>
     </button>
     <a class="btn btn-warning ml-3" routerLink="/staff/admin/local/asset/course_list" i18n>

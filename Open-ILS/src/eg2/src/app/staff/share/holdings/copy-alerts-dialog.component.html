@@ -4,10 +4,10 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4 class="modal-title">
-      <ng-container *ngIf="mode == 'create'">
+      <ng-container *ngIf="mode === 'create'">
         <span i18n>Adding alerts for {{copyIds.length}} item(s).</span>
       </ng-container>
-      <ng-container *ngIf="mode == 'manage'">
+      <ng-container *ngIf="mode === 'manage'">
         <span i18n>Managing alerts for item {{copies[0].barcode()}}</span>
       </ng-container>
       <span i18n></span>
@@ -37,7 +37,7 @@
         <div class="d-flex flex-column">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" 
-              [ngModel]="newAlert.temp() == 't'" 
+              [ngModel]="newAlert.temp() === 't'" 
               (ngModelChange)="newAlert.temp($event ? 't' : 'f')"
               id="new-alert-temporary">
             <label class="form-check-label" for="new-alert-temporary" i18n>
@@ -63,7 +63,7 @@
       </div>
     </div>
 
-    <ng-container *ngIf="mode == 'manage'">
+    <ng-container *ngIf="mode === 'manage'">
       <!-- in manage mode list all of the alerts linked to the copy -->
       <div class="row mt-2" 
         *ngFor="let alert of copy.copy_alerts()">
@@ -89,7 +89,7 @@
           <div class="d-flex flex-column">
             <div class="form-check">
               <input class="form-check-input" type="checkbox" 
-                [ngModel]="alert.temp() == 't'" 
+                [ngModel]="alert.temp() === 't'" 
                 (ngModelChange)="alert.temp($event ? 't' : 'f'); alert.ischanged(true)"
                 id="alert-temporary-{{alert.id()}}">
               <label class="form-check-label" for="alert-temporary-{{alert.id()}}" i18n>

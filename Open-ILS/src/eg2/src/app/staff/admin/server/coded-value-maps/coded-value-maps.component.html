@@ -6,7 +6,7 @@
 
 
 <ng-template #compDefTmpl let-row="row">
-  <div *ngIf="row.ctype().composite() == 't'">
+  <div *ngIf="row.ctype().composite() === 't'">
     <a routerLink="/staff/admin/server/config/coded_value_map/composite_def/{{row.id()}}">
       Manage
     </a>

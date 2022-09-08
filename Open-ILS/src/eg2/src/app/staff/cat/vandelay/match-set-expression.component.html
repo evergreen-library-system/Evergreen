@@ -19,11 +19,11 @@
     </div>
     <div class="row ml-2 mt-4">
       <span class="mr-2" i18n>Add New:</span>
-      <button class="btn btn-outline-dark mr-2" *ngIf="matchSetType=='biblio'"
+      <button class="btn btn-outline-dark mr-2" *ngIf="matchSetType==='biblio'"
         (click)="newPointType='attr'" i18n>Record Attribute</button>
       <button class="btn btn-outline-dark mr-2" 
         (click)="newPointType='marc'" i18n>MARC Tag and Subfield</button>
-      <button class="btn btn-outline-dark mr-2" *ngIf="matchSetType=='authority'"
+      <button class="btn btn-outline-dark mr-2" *ngIf="matchSetType==='authority'"
         (click)="newPointType='heading'" i18n>Normalized Authority Heading</button>
       <button class="btn btn-outline-dark mr-2" 
         (click)="newPointType='bool'" i18n>Boolean Operator</button>
@@ -38,7 +38,7 @@
 
       <button class="btn btn-success ml-3" (click)="addChildNode(true)"
         [disabled]="!hasSelectedNode() ||
-          (newPointType != 'bool' && selectedIsBool())" i18n>
+          (newPointType !== 'bool' && selectedIsBool())" i18n>
         Replace Selected Node
       </button>
 

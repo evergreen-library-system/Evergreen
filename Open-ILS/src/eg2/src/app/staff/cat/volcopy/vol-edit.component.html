@@ -246,7 +246,7 @@
               </ng-container>
             </div>
             <ng-container *ngIf="copyIdx == 0 && volIdx == 0 && (
-              context.sessionType == 'record' || context.sessionType == 'mixed')">
+              context.sessionType === 'record' || context.sessionType === 'mixed')">
               <div class="pr-1">
                 <ng-template #addOrgTmpl>
                   <eg-org-select [limitPerms]="['CREATE_VOLUME']" 
@@ -350,7 +350,7 @@
         <div class="p-1" [ngStyle]="{flex: flexAt(7)}">
           <ng-container *ngIf="copyIdx == 0">
             <ng-container 
-              *ngIf="context.sessionType == 'record' || context.sessionType == 'mixed'">
+              *ngIf="context.sessionType === 'record' || context.sessionType === 'mixed'">
               <button class="btn btn-sm material-icon-button p-1"
                 (click)="createVols(orgNode, 1)"
                 i18n-title title="Add Call Number">
@@ -371,7 +371,7 @@
               </ng-template>
 
               <button class="btn btn-sm material-icon-button p-1"
-                [disabled]="context.sessionType == 'copy' || context.sessionType == 'vol'"
+                [disabled]="context.sessionType === 'copy' || context.sessionType === 'vol'"
                 (shown)="focusElement('add-vol-popover')"
                 placement="bottom" [ngbPopover]="addVolCountTmpl"
                 autoClose="outside" #addVolsPopover="ngbPopover"
@@ -439,7 +439,7 @@
           </ng-container>
         </div>
         <div class="p-1" [ngStyle]="{flex: flexAt(11)}">
-          <ng-container *ngIf="context.sessionType != 'copy'">
+          <ng-container *ngIf="context.sessionType !== 'copy'">
 
             <button class="btn btn-sm material-icon-button p-1"
               (click)="createCopies(volNode, 1)" i18n-title title="Add Item">

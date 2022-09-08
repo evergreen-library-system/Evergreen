@@ -255,7 +255,7 @@
                   <eg-date-select [hidden]="col.filterOperator !== 'between'" #dateSelectTwo
                     (onChangeAsYmd)="applyFilterCommon(col)"
                     [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
-                    [required]="col.filterOperator == 'between'"></eg-date-select>
+                    [required]="col.filterOperator === 'between'"></eg-date-select>
                 </div>
               </div>
               <ng-container *ngTemplateOutlet="actionsTemplate"></ng-container>

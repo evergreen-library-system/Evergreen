@@ -206,19 +206,19 @@
       {{action.label}}
     </button>
     <ng-container *ngIf="isDialog()">
-      <button type="button" class="btn btn-success" *ngIf="mode == 'view'"
+      <button type="button" class="btn btn-success" *ngIf="mode === 'view'"
         (click)="closeEditor()" i18n>Close</button>
-      <button type="button" class="btn btn-warning ml-2" *ngIf="mode != 'view'"
+      <button type="button" class="btn btn-warning ml-2" *ngIf="mode !== 'view'"
         (click)="cancel()" i18n>Cancel</button>
     </ng-container>
 
-    <ng-container *ngIf="showDelete && mode != 'view'">
+    <ng-container *ngIf="showDelete && mode !== 'view'">
       <button type="button" class="btn btn-warning" (click)="remove()"
         [disabled]="record && record.isnew()" i18n>Delete</button>
     </ng-container>
 
     <button type="button" class="btn btn-info" 
-      [disabled]="fmEditForm.invalid" *ngIf="mode != 'view'"
+      [disabled]="fmEditForm.invalid" *ngIf="mode !== 'view'"
       (click)="save()" i18n>Save</button>
   </div>
 </ng-template>

@@ -4,12 +4,12 @@
   placement="top-left"
   class="{{context.cellClassCallback(row, column)}}"
   triggers="mouseenter:mouseleave">
-  <ng-container *ngIf="column.datatype == 'bool'">
+  <ng-container *ngIf="column.datatype === 'bool'">
     <eg-bool [value]="context.getRowColumnValue(row, column)"
       [ternary]="column.ternaryBool">
     </eg-bool>
   </ng-container>
-  <ng-container *ngIf="column.datatype != 'bool'">
+  <ng-container *ngIf="column.datatype !== 'bool'">
     {{context.getRowColumnValue(row, column)}}
   </ng-container>
 </span>

@@ -4,10 +4,10 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4 class="modal-title">
-      <ng-container *ngIf="mode == 'create'">
+      <ng-container *ngIf="mode === 'create'">
         <span i18n>Adding tags for {{copyIds.length}} item(s).</span>
       </ng-container>
-      <ng-container *ngIf="mode == 'manage'">
+      <ng-container *ngIf="mode === 'manage'">
         <span i18n>Managing tags for item {{copy.barcode()}}</span>
       </ng-container>
       <span i18n></span>
@@ -19,7 +19,7 @@
   </div>
   <div class="modal-body p-4 form-validated">
 
-    <ng-container *ngIf="mode == 'manage' && copy.tags().length">
+    <ng-container *ngIf="mode === 'manage' && copy.tags().length">
       <h4 i18n>Existing Tags</h4>
       <div class="row mt-2 p-2" *ngFor="let map of copy.tags()">
         <div class="col-lg-4">{{map.tag().tag_type().label()}}</div>

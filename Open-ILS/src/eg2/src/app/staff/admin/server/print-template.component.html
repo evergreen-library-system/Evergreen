@@ -94,7 +94,7 @@
         <div class="col-lg-6">
           <h4 i18n>
             Template for "{{template.label()}} ({{getOwnerName(template.id())}})"
-            <span class="pl-2 text-warning" *ngIf="template.active() == 'f'">
+            <span class="pl-2 text-warning" *ngIf="template.active() === 'f'">
               (Inactive)
             </span>
           </h4>

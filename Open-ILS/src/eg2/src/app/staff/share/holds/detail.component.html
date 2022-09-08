@@ -112,11 +112,11 @@
               <div class="font-weight-bold">{{note.title()}}</div>
               <div class="flex-1"></div>
               <div>
-                <span *ngIf="note.slip() == 't'" 
+                <span *ngIf="note.slip() === 't'" 
                   class="ml-2 badge badge-info p-1">Print on Slip</span>
-                <span *ngIf="note.pub() == 't'" 
+                <span *ngIf="note.pub() === 't'" 
                   class="ml-2 badge badge-warning p-1">Patron Visible</span>
-                <span *ngIf="note.staff() == 't'" 
+                <span *ngIf="note.staff() === 't'" 
                   class="ml-2 badge badge-info p-1">Staff Create</span>
               </div>
             </div>

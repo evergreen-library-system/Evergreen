@@ -28,23 +28,23 @@
           </div>
         </ng-container>
         <div class="flex-1">
-          <ng-container *ngIf="displayAs == 'bool'">
+          <ng-container *ngIf="displayAs === 'bool'">
             <ng-container *ngIf="valueIsUnset(count.key); else defaultBool">
               <span i18n>&lt;Unset&gt;</span>
             </ng-container>
             <ng-template #defaultBool>
-              <span *ngIf="count.key == 't'" i18n>Yes</span>
-              <span *ngIf="count.key == 'f'" i18n>No</span>
+              <span *ngIf="count.key === 't'" i18n>Yes</span>
+              <span *ngIf="count.key === 'f'" i18n>No</span>
             </ng-template>
           </ng-container>
-          <ng-container *ngIf="displayAs == 'currency'">
+          <ng-container *ngIf="displayAs === 'currency'">
             <ng-container 
               *ngIf="valueIsUnset(count.key); else defaultCurrency">
               <span i18n>&lt;Unset&gt;</span>
             </ng-container>
             <ng-template #defaultCurrency>{{count.key | currency}}</ng-template>
           </ng-container>
-          <ng-container *ngIf="displayAs != 'bool' && displayAs != 'currency'">
+          <ng-container *ngIf="displayAs !== 'bool' && displayAs !== 'currency'">
             <ng-container 
               *ngIf="valueIsUnset(count.key); else default">
               <span i18n>&lt;Unset&gt;</span>

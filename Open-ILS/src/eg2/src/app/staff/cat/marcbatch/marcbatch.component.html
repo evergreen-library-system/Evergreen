@@ -122,7 +122,7 @@
       </div>
     </div>
     <div class="row mt-2 pt-2 pb-2 border">
-      <ng-container *ngIf="source == 'b'">
+      <ng-container *ngIf="source === 'b'">
         <div class="col-lg-3" i18n>Bucket named: </div>
         <div class="col-lg-6">
           <eg-combobox [selectedId]="bucket" 
@@ -130,13 +130,13 @@
           </eg-combobox>
         </div>
       </ng-container>
-      <ng-container *ngIf="source == 'r'">
+      <ng-container *ngIf="source === 'r'">
         <div class="col-lg-3" i18n>Record ID: </div>
         <div class="col-lg-3">
           <input type="text" class="form-control" [(ngModel)]="recordId"/>
         </div>
       </ng-container>
-      <ng-container *ngIf="source == 'c'">
+      <ng-container *ngIf="source === 'c'">
         <div class="col-lg-12">
           <div class="row">
             <div class="col-lg-3" i18n>Column: </div>

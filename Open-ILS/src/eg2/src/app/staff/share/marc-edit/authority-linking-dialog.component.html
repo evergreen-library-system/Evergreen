@@ -17,12 +17,12 @@
   <button class="btn btn-sm p-1 mr-1" 
     [ngClass]="{'btn-outline-primary': !(from || also), 'btn-outline-info': (from || also)}"
     (click)="applyHeading(field, authId)" i18n>Apply</button>
-  <ng-container *ngIf="showAs == 'heading'">
+  <ng-container *ngIf="showAs === 'heading'">
     <span *ngIf="from" i18n>See From: {{field.heading}}</span>
     <span *ngIf="also" i18n>See Also: {{field.heading}}</span>
     <span *ngIf="!from && !also" i18n>{{field.heading}}</span>
   </ng-container>
-  <ng-container *ngIf="showAs == 'marc'">
+  <ng-container *ngIf="showAs === 'marc'">
     <ng-container
       *ngTemplateOutlet="fieldAsMarc;context:{field:field}">
     </ng-container>

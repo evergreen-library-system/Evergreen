@@ -50,16 +50,16 @@
           <div class="row" *ngFor="let heading of result.compiledHeadings">
             <div class="col-lg-10 offset-lg-1" i18n>
               <span class="font-italic">
-                <ng-container *ngIf="!heading.type || heading.type == 'variant'">
+                <ng-container *ngIf="!heading.type || heading.type === 'variant'">
                     See
                 </ng-container>
-                <ng-container *ngIf="heading.type == 'broader'">
+                <ng-container *ngIf="heading.type === 'broader'">
                     Broader term
                 </ng-container>
-                <ng-container *ngIf="heading.type == 'narrower'">
+                <ng-container *ngIf="heading.type === 'narrower'">
                     Narrower term
                 </ng-container>
-                <ng-container *ngIf="heading.type == 'other'">
+                <ng-container *ngIf="heading.type === 'other'">
                     Related term
                 </ng-container>
               </span>

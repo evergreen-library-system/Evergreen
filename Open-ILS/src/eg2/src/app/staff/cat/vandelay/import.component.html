@@ -206,7 +206,7 @@
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
         id="auto-overlay-acq-copies"
-        [disabled]="recordType == 'authority'"
+        [disabled]="recordType === 'authority'"
         [(ngModel)]="autoOverlayAcqCopies">
     </div>
   </div>
@@ -226,7 +226,7 @@
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
         id="auto-overlay-on-order-copies"
-        [disabled]="recordType == 'authority'"
+        [disabled]="recordType === 'authority'"
         [(ngModel)]="autoOverlayOnOrderCopies">
     </div>
   </div>
@@ -234,7 +234,7 @@
     <div class="col-lg-3">
       <label for="marc-remove-groups" i18n>Remove MARC Field Groups</label>
     </div>
-    <ng-container *ngIf="recordType != 'authority'">
+    <ng-container *ngIf="recordType !== 'authority'">
       <div class="col-lg-3" *ngIf="bibTrashGroups.length == 0">
         <span i18n class="font-italic">No Groups Configured</span>
       </div>
@@ -254,7 +254,7 @@
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
         id="auto-overlay-org-unit-copies"
-        [disabled]="recordType == 'authority'"
+        [disabled]="recordType === 'authority'"
         [(ngModel)]="autoOverlayOrgUnitCopies">
     </div>
   </div>

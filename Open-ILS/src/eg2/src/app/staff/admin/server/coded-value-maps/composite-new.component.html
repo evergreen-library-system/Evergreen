@@ -1,14 +1,14 @@
 <div class="row ml-2 mt-4 p-2 border border-secondary" *ngIf="values.pointType">
   <div class="col-lg-12">
-    <h3 class="text-center" *ngIf="values.pointType=='attr'">
+    <h3 class="text-center" *ngIf="values.pointType==='attr'">
       Record Attribute
     </h3>
-    <h3 class="text-center" *ngIf="values.pointType=='bool'">
+    <h3 class="text-center" *ngIf="values.pointType==='bool'">
       Boolean Operator
     </h3>
   </div>
   <div class="col-lg-12 common-form striped-odd form-validated">
-    <ng-container *ngIf="values.pointType=='attr'">
+    <ng-container *ngIf="values.pointType==='attr'">
       <div class="row mb-1">
         <div class="col-lg-4">
           <label id="type" class="col-form-label" i18n>Select Attribute Type:</label>
@@ -30,7 +30,7 @@
         </div>
       </div>
     </ng-container>
-    <ng-container *ngIf="values.pointType=='bool'">
+    <ng-container *ngIf="values.pointType==='bool'">
       <div class="row mb-1">
         <div class="col-lg-4 col-form-label">Operator:</div>
         <div class="col-lg-8">
