@@ -110,7 +110,7 @@ ctx.metalinks.push('
                             [%-
                                 filtered_hl_phys_desc = [];
                                 FOR hl_phys_desc IN attrs.hl.physical_description;
-                                    hl_phys_desc = hl_phys_desc | html;
+                                    hl_phys_desc = hl_phys_desc;
                                     filtered_hl_phys_desc.push(hl_phys_desc);
                                 END;
                             -%]
