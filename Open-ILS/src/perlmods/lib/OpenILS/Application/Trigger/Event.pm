@@ -500,55 +500,41 @@ sub build_environment {
 
         # ... so that we can see if the event output should use
         # an alternative template in the patron's preferred locale
-        my ($usr_locale, $alt_templates, $query, $query_result, $new_template_id);
-        my $reactor = $self->environment->{event}->event_def->reactor;
-        $query = {
-            select   => { atevalt => ['id', 'locale'] },
-            from     => 'atevalt',
-            where    => {
-                event_def => $self->environment->{event}->event_def->id,
-                active => 't'
-            }
-        };
-        my $e = new_editor(xact=>1);
-        if ($reactor && $self->environment->{context}->{usr}) {
-            if (     $reactor eq 'SendEmail' 
-                  or $reactor eq 'ProcessTemplate' 
-                  or $reactor eq 'SendSMS') {
-                $query_result = $e->json_query($query);
-                $alt_templates = $query_result;
-                $query = {
-                    select => { au => ['locale'] },
-                    from   => 'au',
-                    where  => { id => $self->environment->{context}->{usr}->id }
-                };
-                $query_result = $e->json_query($query);
-                $usr_locale = @$query_result[0]->{locale};
-                if ($alt_templates and @$alt_templates and $usr_locale) {
-                    foreach (@$alt_templates) {
-                        if ($_->{locale} eq $usr_locale) { 
+        if ($self->environment->{context}->{usr}) {
+            my ($usr_locale, $alt_templates, $query_result, $new_template_id);
+            my $editor = new_editor(xact=>1);
+            $alt_templates = $editor->json_query({
+                select   => { atevalt => ['id', 'locale'] },
+                from     => 'atevalt',
+                where    => {
+                    event_def => $self->environment->{event}->event_def->id,
+                    active => 't'
+                }
+            });
+            $usr_locale = $self->environment->{context}->{usr}->locale;
+            if ($alt_templates and @$alt_templates and $usr_locale) {
+                foreach (@$alt_templates) {
+                    if ($_->{locale} eq $usr_locale) {
+                        $new_template_id = $_->{id};
+                        $self->environment->{tt_locale} = $_->{locale};
+                        last;
+                    } else { #attempt a lanuage if not locale match
+                        if ((split /\p{Dash}/,$_->{locale})[0] eq (split /\p{Dash}/,$usr_locale)[0]) {
                             $new_template_id = $_->{id};
                             $self->environment->{tt_locale} = $_->{locale};
-                            last;
-                        } else { #attempt a lanuage if not locale match
-                            if ((split /\p{Dash}/,$_->{locale})[0] eq (split /\p{Dash}/,$usr_locale)[0]) {
-                                $new_template_id = $_->{id};
-                                $self->environment->{tt_locale} = $_->{locale};
-                            }
                         }
                     }
                 }
-                if ($new_template_id) {
-                    $query = {
-                        select => { atevalt => ['template','message_template','message_title'] }, 
-                        from   => 'atevalt',
-                        where  => { id => $new_template_id }
-                    };
-                    $query_result = $e->json_query($query);
-                    $self->environment->{template} = @$query_result[0]->{template};
-                    $self->environment->{usr_message}{template} = @$query_result[0]->{message_template};
-                    $self->environment->{usr_message}{title} = @$query_result[0]->{message_title};
-                }
+            }
+            if ($new_template_id) {
+                $query_result = $editor->json_query({
+                    select => { atevalt => ['template','message_template','message_title'] },
+                    from   => 'atevalt',
+                    where  => { id => $new_template_id }
+                });
+                $self->environment->{template} = @$query_result[0]->{template};
+                $self->environment->{usr_message}{template} = @$query_result[0]->{message_template};
+                $self->environment->{usr_message}{title} = @$query_result[0]->{message_title};
             }
         }
         $current_environment = $self->environment;
