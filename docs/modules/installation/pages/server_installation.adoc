@@ -199,6 +199,7 @@ NODE_OPTIONS=--max-old-space-size=3072 ng build --configuration=production
 [source,sh]
 ------------------------------------------------------------------------------
 CHROME_BIN=/path/to/chrome npm run test
+MOZ_HEADLESS=1 ng e2e
 ------------------------------------------------------------------------------
 
 [[install_opac_deps]]
