@@ -1,0 +1,48 @@
+import {PageObjectModel} from 'nightwatch';
+import {fmEditorFieldSelector} from '../../../src/utils';
+
+const vandelay: PageObjectModel = {
+    elements: {
+        recordDisplayAttributes: {
+            selector: '//a[text()="Record Display Attributes"]',
+            locateStrategy: 'xpath'
+        },
+        newVqradButton: {
+            selector: '//button[not(@disabled) and contains(text(), "New Queued Authority Record Attribute Definition")]',
+            locateStrategy: 'xpath'
+        },
+        codeInput: {
+            selector: fmEditorFieldSelector('Code')
+        },
+        descriptionInput: {
+            selector: fmEditorFieldSelector('Description')
+        },
+        xpathInput: {
+            selector: fmEditorFieldSelector('XPath')
+        },
+        saveButton: {
+            selector: '//button[text()="Save"]',
+            locateStrategy: 'xpath'
+        },
+        recordTypeCombobox: {
+            selector: fmEditorFieldSelector('Record Type')
+        },
+        queueName: {
+            selector: fmEditorFieldSelector('Select or Create a Queue')
+        },
+        uploadButton: {
+            selector: '//button[text()="Upload"]',
+            locateStrategy: 'xpath'
+        },
+        goToQueueButton: {
+            selector: '//button[text()="Go To Queue"]',
+            locateStrategy: 'xpath'
+        },
+        authorityRecordType: {
+            selector: '//button/span[text()="Authority Records"]',
+            locateStrategy: 'xpath'
+        }
+    }
+};
+
+export default vandelay;

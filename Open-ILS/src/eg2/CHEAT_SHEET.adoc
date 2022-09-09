@@ -8,6 +8,7 @@ npm update
 npm install
 ng lint                              # check code formatting
 npm run test                         # unit tests
+ng e2e              # end-to-end tests, be sure to set MOZ_HEADLESS=1 if you aren't running x11
 ng build --watch                     # compile dev mode
 ng build --configuration=production  # compile production mode
 ---------------------------------------------------------------------
@@ -42,3 +43,31 @@ npm run export-strings
 npm run build-cs-CZ
 ---------------------------------------------------------------------
 
+=== Working with the e2e tests
+
+* e2e tests run on https://nightwatchjs.org/[Nightwatch]
+* New tests go into nightwatch/src and its subdirectories.  Their
+filenames must end in .spec.ts to be picked up by the test runner.
+* To run a single e2e test file, `npx nightwatch nightwatch/src/rest/of/path/my_spec.ts`.
+You can add the `--verbose` flag, which is especially useful if you are
+troubleshooting a selector.
+* Also useful when you are troubleshooting: On a machine with a GUI,
+add `browser.pause()` to your test just before the point where it is
+failing, then run `npx nightwatch`.  This will provide you with
+a breakpoint and a firefox browser you can use to investigate.
+* The e2e tests do not have to be run on an Evergreen server.  You can
+run them locally and point them to any non-production Evergreen
+server you'd like, as long as it has the concerto data set loaded.
+They default to looking for Evergreen URLs on
+localhost, but you can change the domain by modifiying the
+"evergreenRoot" setting in nightwatch.conf.js.
+* These tests make real requests and do real work in the database.
+Probably a good idea to reload the database between runs if
+you have the time to do so: turn off opensrf, rerun the eg_db_config
+support script, and turn opensrf back on.
+* If you have some good hardware, you can run `npx nightwatch --parallel`
+to run the tests in parallel and save some time.
+* If you get the error "Profile not found" while running Firefox
+installed from a snap package, you may be experiencing this known
+issue with geckodriver: https://github.com/mozilla/geckodriver/releases/tag/v0.31.0 --
+`mkdir $HOME/tmp; TMPDIR=$HOME/tmp ng e2e` should work.

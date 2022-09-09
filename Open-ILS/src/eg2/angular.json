@@ -111,28 +111,33 @@
               "src/**/*.html"
             ]
           }
-        }
-      }
-    },
-    "eg-e2e": {
-      "root": "",
-      "sourceRoot": "",
-      "projectType": "application",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+        },
+        "nightwatch-run": {
+          "builder": "@nightwatch/schematics:nightwatch",
           "options": {
-            "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "eg:serve"
+            "devServerTarget": "eg:serve",
+            "tsConfig": "../nightwatch/tsconfig.json",
+            "config": "./nightwatch.conf.js",
+            "env": "firefox"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "eg:serve:production"
+            }
           }
         },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
+        "e2e": {
+          "builder": "@nightwatch/schematics:nightwatch",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "devServerTarget": "eg:serve",
+            "tsConfig": "../nightwatch/tsconfig.json",
+            "config": "./nightwatch.conf.js",
+            "env": "firefox"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "eg:serve:production"
+            }
           }
         }
       }

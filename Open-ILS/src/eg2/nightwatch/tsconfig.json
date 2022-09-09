@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "../out-tsc/nightwatch",
+    "module": "commonjs",
+    "target": "es2015",
+    "types": ["node"],
+    "baseUrl": "src",
+    "paths": {"@e2e/*": ["./*"]},
+    "lib": [
+      "es5", "es6", "dom", "dom.iterable"
+    ],
+    "downlevelIteration": true
+  },
+  "include": ["src/**/*"]
+}
