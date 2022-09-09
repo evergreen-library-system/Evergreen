@@ -1,9 +1,34 @@
 <div>
   <div class="row">
-    <eg-combobox [idlBaseQuery]="idlBaseQuery" [idlClass]="idlClass" 
-      [idlIncludeLibraryInLabel]="linkedLibraryLabel" [asyncSupportsEmptyTermClick]="true"
-      (onChange)="valueSelected($event)">
-    </eg-combobox>
+    <ng-container *ngIf="idlClass === 'acpl'">
+      <div class="col-6">
+        <eg-item-location-select (entryChange)="valueSelected($event)"
+          [contextOrgId]="acplContextOrgId"
+          [includeDescendants]="acplIncludeDescendants"
+          domId='location-input'>
+        </eg-item-location-select>
+      </div>
+      <div class="col-6">
+        <label for="context_library" class="form-label" i18n>Owned by</label>
+        <eg-org-select
+          domId="context_library"
+          [applyDefault]="true"
+          (onChange)="acplContextOrgId = $event.id()">
+        </eg-org-select>
+        <label class="form-check-label" for="acplIncludeDescendants" i18n>Include descendants?</label>
+        <input type="checkbox"
+          domId="acplIncludeDescendants"
+          id="acplIncludeDescendants"
+          [(ngModel)]="acplIncludeDescendants"
+          class="ml-1">
+      </div>
+    </ng-container>
+    <ng-container *ngIf="idlClass !== 'acpl'">
+      <eg-combobox [idlBaseQuery]="idlBaseQuery" [idlClass]="idlClass"
+        [idlIncludeLibraryInLabel]="linkedLibraryLabel" [asyncSupportsEmptyTermClick]="true"
+        (onChange)="valueSelected($event)">
+      </eg-combobox>
+    </ng-container>
     <button class="btn btn-outline-dark" (click)="addSelectedValue()" [disabled]="!this.selected" i18n>Add</button>
   </div>
   <div class="row" *ngFor="let entry of entrylist">

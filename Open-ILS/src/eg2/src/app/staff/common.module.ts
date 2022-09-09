@@ -24,6 +24,7 @@ import {BroadcastService} from '@eg/share/util/broadcast.service';
 import {CourseService} from './share/course.service';
 import {FileExportService} from '@eg/share/util/file-export.service';
 import {OfflineService} from '@eg/staff/share/offline.service';
+import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
 
 /**
  * Imports the EG common modules and adds modules common to all staff UI's.
@@ -51,7 +52,8 @@ import {OfflineService} from '@eg/staff/share/offline.service';
     EgCommonModule,
     CommonWidgetsModule,
     GridModule,
-    CatalogCommonModule
+    CatalogCommonModule,
+    ItemLocationSelectModule
   ],
   exports: [
     EgCommonModule,
