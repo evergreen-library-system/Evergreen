@@ -1,5 +1,4 @@
---strip option for marc_export
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+== --strip option for marc_export ==
 
 The --strip option is used to suppress generation of specified elements
 from the marc_export output. The option, which can be specified more than
