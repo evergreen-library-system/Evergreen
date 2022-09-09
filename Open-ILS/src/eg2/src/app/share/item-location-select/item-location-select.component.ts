@@ -179,7 +179,7 @@ export class ItemLocationSelectComponent
     setFilterOrgs(): Promise<number[]> {
         let contextOrgIds: number[] = [];
 
-        if (this.contextOrgIds) {
+        if (this.contextOrgIds.length) {
             contextOrgIds = this.contextOrgIds;
         } else {
             contextOrgIds = [this.contextOrgId || this.auth.user().ws_ou()];
