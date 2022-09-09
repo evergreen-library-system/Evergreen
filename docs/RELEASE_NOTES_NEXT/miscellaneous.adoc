@@ -2,6 +2,11 @@
   been ported to Angular with an org selector as an additional filter.
 * The Pending Users and Bucket View grids in the User Buckets interface
   now includes a column for the patron's balance owed. (LP#1980257)
-* Patron Interface Gets a New Penalty Refresh Action
+* Patron Interface Gets a New Penalty Refresh Action. (LP#1823225)
 * A new workstation setting optionally allows the full library name to be
-  added to the Angular Org Unit Selector. (lp#1771636)
+  added to the Angular Org Unit Selector. (LP#1771636)
+* The tabs on the Claiming Administration page have been reordered to
+  Claim Policies, Claim Policy Actions, Claim Event Types, and Claim
+  Types. This reflects the fact that Claim Types tend to be configured
+  once and are not typically adjusted when setting up a new claim
+  policy. (LP#1947045)
