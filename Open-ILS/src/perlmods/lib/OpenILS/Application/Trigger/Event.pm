@@ -492,6 +492,14 @@ sub build_environment {
         $self->environment->{usr_message}{title} = $self->event->event_def->message_title;
         $self->environment->{user_data} = $self->user_data;
 
+        # need to get the context user now...
+        if ($self->event->event_def->context_usr_path) {
+            my @usr_path = split(/\./, $self->event->event_def->context_usr_path);
+            $self->_object_by_path( $self->target, undef, [qw/context usr/], \@usr_path );
+        }
+
+        # ... so that we can see if the event output should use
+        # an alternative template in the patron's preferred locale
         my ($usr_locale, $alt_templates, $query, $query_result, $new_template_id);
         my $reactor = $self->environment->{event}->event_def->reactor;
         $query = {
@@ -503,7 +511,7 @@ sub build_environment {
             }
         };
         my $e = new_editor(xact=>1);
-        if ($reactor) {
+        if ($reactor && $self->environment->{context}->{usr}) {
             if (     $reactor eq 'SendEmail' 
                   or $reactor eq 'ProcessTemplate' 
                   or $reactor eq 'SendSMS') {
@@ -512,7 +520,7 @@ sub build_environment {
                 $query = {
                     select => { au => ['locale'] },
                     from   => 'au',
-                    where  => { id => $self->environment->{event}->target }
+                    where  => { id => $self->environment->{context}->{usr}->id }
                 };
                 $query_result = $e->json_query($query);
                 $usr_locale = @$query_result[0]->{locale};
@@ -571,11 +579,6 @@ sub build_environment {
             } else {
                 $self->_object_by_path( $self->event->event_def, undef, [qw/usr_message sending_lib/], ['owner'] );
             }
-        }
-
-        if ($self->event->event_def->context_usr_path) {
-            my @usr_path = split(/\./, $self->event->event_def->context_usr_path);
-            $self->_object_by_path( $self->target, undef, [qw/context usr/], \@usr_path );
         }
 
         if ($self->event->event_def->context_bib_path) {
