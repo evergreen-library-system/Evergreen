@@ -7,7 +7,9 @@ import {map} from 'rxjs/operators';
 import {Observable, of, Subject} from 'rxjs';
 import {StoreService} from '@eg/core/store.service';
 import {PcrudService} from '@eg/core/pcrud.service';
+import {OrgService} from '@eg/core/org.service';
 import {ComboboxComponent, ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ItemLocationSelectComponent} from '@eg/share/item-location-select/item-location-select.component';
 
 @Component({
   selector: 'eg-multi-select',
@@ -30,9 +32,13 @@ export class MultiSelectComponent implements OnInit {
 
     @Output() onChange: EventEmitter<string>;
 
+    acplContextOrgId: number;
+    acplIncludeDescendants: boolean;
+
     constructor(
       private store: StoreService,
       private pcrud: PcrudService,
+      private org: OrgService,
     ) {
         this.entrylist = [];
         this.onChange = new EventEmitter<string>();
@@ -45,7 +51,22 @@ export class MultiSelectComponent implements OnInit {
             this.selected = null;
         }
     }
+
+    getOrgShortname(ou: any) {
+        if (typeof ou === 'object') {
+            return ou.shortname();
+        } else {
+            return this.org.get(ou).shortname();
+        }
+    }
+
     addSelectedValue() {
+        // special case to format the label
+        if (this.idlClass === 'acpl' && this.selected.userdata) {
+            this.selected.label =
+                this.selected.userdata.name() + ' (' +
+                this.getOrgShortname(this.selected.userdata.owning_lib()) + ')';
+        }
         this.entrylist.push(this.selected);
         this.onChange.emit(this.compileCurrentValue());
     }

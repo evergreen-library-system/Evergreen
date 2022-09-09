@@ -44,12 +44,25 @@ export class ItemLocationSelectComponent
         this.ngOnInit();
     }
 
+    // ... though if includeDescendants is true, shelving
+    // locations at the descendants of the context OU are
+    // also included; this is a special case for the
+    // carousels editor
+    @Input() set includeDescendants(value: boolean) {
+        this._includeDescendants = value;
+        this.ngOnInit();
+    }
+    get includeDescendants(): boolean {
+        return this._includeDescendants;
+    }
+
     get contextOrgId(): number {
         return this._contextOrgId;
     }
 
     // Load locations for multiple context org units.
     private _contextOrgIds = [];
+    private _includeDescendants = false;
     @Input() set contextOrgIds(value: number[]) {
         this._contextOrgIds = value;
     }
@@ -62,6 +75,8 @@ export class ItemLocationSelectComponent
 
     // Emits an acpl object or null on combobox value change
     @Output() valueChange: EventEmitter<IdlObject>;
+    // Emits the combobox entry or null on value change
+    @Output() entryChange: EventEmitter<ComboboxEntry>;
 
     @Input() required: boolean;
 
@@ -106,6 +121,7 @@ export class ItemLocationSelectComponent
         private loc: ItemLocationService
     ) {
         this.valueChange = new EventEmitter<IdlObject>();
+        this.entryChange = new EventEmitter<ComboboxEntry>();
     }
 
     ngOnInit() {
@@ -235,6 +251,7 @@ export class ItemLocationSelectComponent
         const id = entry ? entry.id : null;
         this.propagateChange(id);
         this.valueChange.emit(id ? this.loc.locationCache[id] : null);
+        this.entryChange.emit(entry ? entry : null);
     }
 
     writeValue(id: number) {
@@ -277,6 +294,9 @@ export class ItemLocationSelectComponent
 
         let orgIds = [];
         contextOrgIds.forEach(id => orgIds = orgIds.concat(this.org.ancestors(id, true)));
+        if (this.includeDescendants) {
+            contextOrgIds.forEach(id => orgIds = orgIds.concat(this.org.descendants(id, true)));
+        }
 
         this.filterOrgsApplied = true;
 
@@ -300,6 +320,9 @@ export class ItemLocationSelectComponent
             permOrgIds.forEach(orgId => {
                 if (orgIds.includes(orgId)) {
                     trimmedOrgIds = trimmedOrgIds.concat(this.org.ancestors(orgId, true));
+                    if (this.includeDescendants) {
+                        trimmedOrgIds = trimmedOrgIds.concat(this.org.descendants(orgId, true));
+                    }
                 }
             });
 
