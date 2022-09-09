@@ -572,8 +572,9 @@ sub load_login {
     $self->timelog("SSO is enabled") if ($sso_enabled);
     if ($sso_enabled
         and $sso_user_match_value = $ENV{$sso_shib_match}
-        and !$self->cgi->cookie(COOKIE_SHIB_LOGGEDOUT)
+        and (!$self->cgi->cookie(COOKIE_SHIB_LOGGEDOUT) or $self->{_ignore_shib_logged_out_cookie})
     ) { # we have a shib session, and have not cleared a previous shib-login cookie
+        $self->{_ignore_shib_logged_out_cookie} = 0; # only set by an intermediate call that internally redirected here
         $self->timelog("Have an SSO user match value: $sso_user_match_value");
 
         if ($sso_eg_match eq 'barcode') { # barcode is special
@@ -723,7 +724,10 @@ sub load_manual_shib_login {
     my $sso_entity_id = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.entityId');
     my $sso_shib_match = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.shib_matchpoint') || 'uid';
 
-    return $self->load_login if ($ENV{$sso_shib_match});
+    if ($ENV{$sso_shib_match}) {
+        $self->{_ignore_shib_logged_out_cookie} = 1;
+        return $self->load_login;
+    }
 
     my $url = '/Shibboleth.sso/Login?target=' . ($redirect_to || $self->ctx->{home_page});
     if ($sso_entity_id) {
@@ -755,7 +759,10 @@ sub load_logout {
     my $sso_enabled = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.enable');
     my $sso_entity_id = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.entityId');
     my $sso_logout = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.logout');
-    if ($sso_enabled && $sso_logout) {
+
+    # If using SSO, and actively logging out of EG /or/ opac.login.shib_sso.logout is true then
+    # log out of the SP (and, depending on Shib config, maybe the IdP or globally).
+    if ($sso_enabled and ($sso_logout or $active_logout)) {
         $redirect_to = '/Shibboleth.sso/Logout?return=' . ($redirect_to || $self->ctx->{home_page});
         if ($sso_entity_id) {
             $redirect_to .= '&entityID=' . $sso_entity_id;
