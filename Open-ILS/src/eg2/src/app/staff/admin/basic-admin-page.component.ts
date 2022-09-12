@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
-import {IdlService} from '@eg/core/idl.service';
+import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {Observable} from 'rxjs';
 import {tap, switchMap} from 'rxjs/operators';
 
@@ -19,6 +19,7 @@ import {tap, switchMap} from 'rxjs/operators';
         configLinkBasePath="{{configLinkBasePath}}"
         fieldOrder="{{fieldOrder}}"
         readonlyFields="{{readonlyFields}}"
+        [defaultNewRecord]="defaultNewRecordIdl"
         [disableOrgFilter]="disableOrgFilter"></eg-admin-page>
       </ng-container>
     `
@@ -31,6 +32,7 @@ export class BasicAdminPageComponent implements OnInit {
     persistKeyPfx: string;
     fieldOrder = '';
     readonlyFields = '';
+    defaultNewRecordIdl: IdlObject;
     configLinkBasePath = '/staff/admin';
 
     // Tell the admin page to disable and hide the automagic org unit filter
@@ -42,6 +44,7 @@ export class BasicAdminPageComponent implements OnInit {
 
     private schema: string;
     private table: string;
+    private defaultNewRecord: Record<string, any>;
 
     constructor(
         private route: ActivatedRoute,
@@ -69,9 +72,10 @@ export class BasicAdminPageComponent implements OnInit {
                     if (!this.table) {
                         this.table = data['table'];
                     }
-                this.disableOrgFilter = data['disableOrgFilter'];
-                this.fieldOrder = data['fieldOrder'];
-                this.readonlyFields = data['readonlyFields'];
+                    this.disableOrgFilter = data['disableOrgFilter'];
+                    this.fieldOrder = data['fieldOrder'];
+                    this.readonlyFields = data['readonlyFields'];
+                    this.defaultNewRecord = data['defaultNewRecord'];
                 }
 
             }));
@@ -110,6 +114,19 @@ export class BasicAdminPageComponent implements OnInit {
 
             if (!this.idlClass) {
                 throw new Error('Unable to find IDL class for table ' + fullTable);
+            }
+
+            if (this.defaultNewRecord) {
+                const record = this.idl.create(this.idlClass);
+                // Call IDL setter for each field that has a default value
+                Object.keys(this.defaultNewRecord).forEach(key => {
+                    if (typeof (record[key]) === 'function') {
+                        record[key].apply(record, [this.defaultNewRecord[key]]);
+                    } else {
+                        console.warn('Unknown field "' + key + '" in defaultNewRecord for table ' + fullTable);
+                    }
+                });
+                this.defaultNewRecordIdl = record;
             }
         });
     }
