@@ -1,0 +1,214 @@
+= Global Flags =
+:toc:
+
+== Introduction ==
+indexterm:[Global Flags]
+
+Evergreen uses Global Flags to set certain elements that are global across an Evergreen instance. Unlike Library Settings, Global Flags cannot hold different values for different libraries.
+
+The Global Flags interface is found under *Administration -> Server Administration -> Global Flags*.
+
+The table below is sorted in alphabetical order according to the _Name_ column. The _Other Information_ column contains links to a bug, release notes, commit message, or documentation, as applicable for that particular global flag.
+
+== Global Flags Details == 
+
+[cols=",,,,,",options="header",]
+|===
+|*Name* |*Label* |*Enabled (Default)* |*Value (Default)* |*Notes*
+|*Other Information*
+|auth.block_expired_staff_login |Block the ability of expired user with
+the STAFF_LOGIN permission to log into Evergreen. |No | |If this flag is
+enabled, accounts that have the STAFF_LOGIN permission and whose
+expiration date is in the past are prevented from logging into any
+Evergreen interface, including the staff client, the public catalog, and
+SIP2. Regular non-staff patrons are allowed to log into the public
+catalog with expired accounts.
+|https://bugs.launchpad.net/evergreen/+bug/1474029[bug 1474029]
+
+|cat.bib.use_id_for_tcn |Cat: Use Internal ID for TCN Value |Yes |
+|Matches the bibliographic record's TCN to its Evergreen database ID |
+
+|cat.maintain_control_numbers |Cat: Maintain 001/003/035 according to
+the MARC21 specification |Yes | |
+|https://git.evergreen-ils.org/?p=Evergreen.git;a=commit;h=cf3c03004915f7ab8c73c3dff90c8ddc7375186d[Commit message]
+
+|circ.desk_renewal.use_original_circ_lib |Circ: Use original circulation
+library on desk renewal instead of the workstation library |No | |Left
+disabled, the workstation library's circulation/renewal policy will be
+used, rather than the user's home/original library circulation/renewal
+policy during a staff client (desk) renewal. By default, a desk renewal
+looks at the policies of the workstation library performing the renewal.
+|
+
+|circ.holds.empty_issuance_ok |Holds: Allow holds on empty issuances
+|Yes | |holds on predicted but not-yet received items |
+
+|circ.holds.retarget_interval |Holds Retarget Interval |Yes |24h |
+|https://bugs.launchpad.net/evergreen/+bug/1596595[bug 1596595]
+
+|circ.holds.usr_not_requestor |Holds: When testing hold matrix
+matchpoints, use the profile group of the receiving user instead of that
+of the requestor (affects staff-placed holds) |Yes | |
+|https://bugs.launchpad.net/evergreen/+bug/1473576[bug 1473576]
+
+|circ.opac_renewal.use_original_circ_lib |Circ: Use original circulation
+library on opac renewal instead of user home library |No | |Left
+disabled, the user's home library circulation/renewal policy will be
+used, rather than the original circulation library's circulation/renewal
+policy during an OPAC renewal. By default, an OPAC renewal looks at the
+policies of the user's home library. |
+
+|history.circ.retention_age |Historical Circulation Retention Age |Yes |
+|Determines the timeframe for aging circulations based on transaction
+age. If you want your users to be able to retain their circulation
+history and view it in the OPAC, then click True, and set a global
+maximum. The maximum is a length of time entered in double quotes, such
+as "1 year". Beginning the day that you set it and each day for a year
+forward in time, the circs will be saved. This setting is the default
+for your entire network. If you don’t want patrons to be able to retain
+their circulation history, then set this to false. If value is not set,
+it will default to forever - Note: if you scope in the value of aged
+circulations they still exist just anonymized. There isn't a feature to
+delete circs at any point, you'd have to go in and do it with a custom
+script. |xref:admin:aged_circs.adoc#_global_flags[Aging Circulations]
+
+|history.circ.retention_age_is_min |Historical Circulations are kept for
+global retention age at a minimum, regardless of user preferences. |No |
+|This flag is no longer useful, since user circ history no longer needs
+to prevent circs from being aged to be complete. |xref:admin:aged_circs.adoc#_global_flags[Aging Circulations]
+
+|history.circ.retention_count |Historical Circulations per Copy |Yes |
+|This flag is about aging circs to anonymize them. |xref:admin:aged_circs.adoc#_global_flags[Aging Circulations]
+
+|history.circ.retention_uses_last_finished |Historical Circulations use
+most recent xact_finish date instead of last circ's. |No | |This flag is
+about aging circs to anonymize them. |xref:admin:aged_circs.adoc#_global_flags[Aging Circulations]
+
+|history.hold.retention_age |Historical Hold Retention Age |Yes |
+|Determines the timeframe to retain holds information. Purged holds are
+moved to the action.aged_hold_request table with patron identifying
+information scrubbed, much like circulations are moved to
+action.aged_circulation. The settings allow for a default retention age
+as well as distinct retention ages for holds filled, holds canceled, and
+holds canceled by specific cancel causes. The most specific one wins
+unless a patron is retaining their hold history. In the latter case the
+patron’s holds are retained either way. Note that the function still
+needs to be called, which could be set up as a cron job or done more
+manually, say after statistics collection. Script, purge_holds.srfsh,
+can be used to purge holds from cron. |https://docs.evergreen-ils.org/2.5/_administration.html[Release Notes] - located under "Purge Holds"
+
+|history.hold.retention_age_canceled |Historical Hold Retention Age -
+Canceled (Default) |No | | |
+
+|history.hold.retention_age_canceled_1 |Historical Hold Retention Age -
+Canceled (Untarged expiration) |No | | |
+
+|history.hold.retention_age_canceled_2 |Historical Hold Retention Age -
+Canceled (Hold Shelf expiration) |No | | |
+
+|history.hold.retention_age_canceled_3 |Historical Hold Retention Age -
+Canceled (Patron via phone) |Yes | | |
+
+|history.hold.retention_age_canceled_4 |Historical Hold Retention Age -
+Canceled (Patron in person) |Yes | | |
+
+|history.hold.retention_age_canceled_5 |Historical Hold Retention Age -
+Canceled (Staff forced) |Yes | | |
+
+|history.hold.retention_age_canceled_6 |Historical Hold Retention Age -
+Canceled (Patron via OPAC) |No | | |
+
+|history.hold.retention_age_fulfilled |Historical Hold Retention Age -
+Fulfilled |No | | |
+
+|history.money.age_with_circs |Age billings and payments when
+circulations are aged. |No | | |
+
+|history.money.retention_age |Age billings and payments whose
+transactions were completed this long ago. For circulation transactions,
+this setting is superseded by the "history.money.age_with_circs" setting
+|No | | |
+
+|ingest.disable_authority_auto_update |Authority Automation: Disable
+automatic authority updating (requires link tracking) |No | |If enabled,
+Evergreen will link authorities, but will not automatically propagate
+changes |
+
+|ingest.disable_authority_auto_update_bib_meta |Authority Automation:
+Disable automatic authority updates from modifying bib record editor and
+edit_date |No | | |
+
+|ingest.disable_authority_linking |Authority Automation: Disable
+bib-authority link tracking |No | |If enabled, Evergreen won't link
+authorities and won't propagate changes |
+
+|opac.browse.holdings_visibility_test_limit |Don't look for more than
+this number of records with holdings when displaying browse headings
+with visible record counts. |Yes |100 | |
+
+|opac.browse.warnable_regexp_per_class |Map of search classes to regular
+expressions to warn user about leading articles. |No | {"title":
+"^(a\|the\|an)\\s"} |Warns users when they are entering a browse term that
+begins with an article |xref:opac:catalog_browse.adoc[Catalog Browse]
+
+|opac.cover_upload_compression |Cover image uploads are converted to PNG
+files with this compression, on a scale of 0 (no compression) to 9
+(maximum compression), or -1 for the zlib default. |Yes |0 |Accepts a
+numeric value from 0 (no compression) to 9 (most compression). The
+default is 0. All uploaded files are converted to png and use this flag.
+|xref:cataloging:cover_image_upload.adoc[Cover Image Uploader]
+
+|opac.default_sort |OPAC Default Sort (titlesort, authorsort, pubdate,
+popularity, poprel, or empty) |Yes | |This flag tells Evergreen how to
+sort the results of an OPAC search. You can enter one of the sort
+options that you see listed here, or you can leave the field empty, and
+Evergreen will sort on relevance. |xref:admin:popularity_badges_web_client.adoc#_new_global_flags[Statistical Popularity Badges]
+
+|opac.format_selector.attr |OPAC Format Selector Attribute |Yes
+|search_format |Defines which record attribute definition will be used
+to populate the OPAC Format dropdown filter located in both the Basic
+Search and Search Results pages. |
+
+|opac.icon_attr |OPAC Format Icons Attribute |Yes |icon_format |Allows
+administrators to set which record attribute definition will be used as
+the icon format configuration. (Associated with the Record Attribute
+Definition and meta record development) |
+
+|opac.located_uri.act_as_copy |When enabled, Located URIs will provide
+visibility behavior identical to copies. |No | | |xref:cataloging:cataloging_electronic_resources.adoc[Cataloging Electronic Resources]
+
+|opac.metarecord.holds.format_attr |OPAC Metarecord Hold Formats
+Attribute |Yes |mr_hold_format |Allows user to utilize the metarecord
+level hold feature. |xref:opac:tpac_meta_record_holds.adoc[TPAC Metarecord Search and Metarecord Level Holds]
+
+|opac.org_unit.non_inherited_visibility |Org Units Do Not Inherit
+Visibility |No | |
+|https://bugs.launchpad.net/evergreen/+bug/954310[bug 954310]
+
+|opac.show_related_headings_in_browse |Display related headings
+(see-also) in browse |Yes | | |
+
+|opac.use_autosuggest |OPAC: Show auto-completing suggestions dialog
+under basic search box (put 'opac_visible' into the value field to limit
+suggestions to OPAC-visible items, or blank the field for a possible
+performance improvement) |No |opac_visible |If enabled, ten suggestions
+are the default (number of suggestions is configurable at the database
+level) |xref:admin:auto_suggest_search.adoc[Auto Suggest in Catalog Search]
+
+|opac.use_geolocation |Offer use of geographic location services in the
+public catalog |No | |The sort by geographic proximity feature allows
+library patrons to sort holdings within a bibliographic record by
+geographic distance. This feature requires a 3rd party geographic
+location service in order to function. If you are using your own
+geographic location service, then this flag must be enabled in order for
+proximity sort to work. The Value box does not need an entry and in fact
+any entry in that box will be ignored. |xref:admin_initial_setup:geosort_admin.adoc#_global_flag[Sort by Geographic Proximity]
+
+|search.max_facets_per_field |Search: maximum number of facet values to
+retrieve for each facet field |Yes |1000 |
+|https://bugs.launchpad.net/evergreen/+bug/1505286[bug 1505286]
+
+|search.max_popularity_importance_multiplier |Maximum popularity
+importance multiplier for popularity-adjusted relevance searches
+(decimal value between 1.0 and 2.0) |Yes |1.1 | |xref:admin:popularity_badges_web_client.adoc#_new_global_flags[Statistical Popularity Badges]
+|===
