@@ -10,6 +10,7 @@
 ** xref:admin:accepting_credit_card_payments.adoc[Credit Card Payments]
 ** xref:admin:event_definition_groups.adoc[Event Definition Groups]
 ** xref:admin:floating_groups.adoc[Floating Groups]
+** xref:admin:global_flags.adoc[Global Flags]
 ** xref:admin:copy_statuses.adoc[Item Statuses]
 ** xref:admin:copy_tags_admin.adoc[Item Tags (Digital Bookplates)]
 ** xref:admin:library_groups_admin.adoc[Library Groups Administration]
