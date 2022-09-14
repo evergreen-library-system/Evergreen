@@ -31,18 +31,21 @@
         [% IF ctx.metarecord;
           mr_attrs = {marc_xml => ctx.metarecord_master.marc_xml};
           PROCESS get_marc_attrs args=mr_attrs %]
-          <div class="results_header_lbl">
+          <div class="container">
+          <div class="row bg-light">
+          <div class="col-md-4">
             [% l('Viewing Results for Grouped Record: [_1]',
                 mr_attrs.title) | html %]
           </div>
           [% IF CGI.param('query') %]
-          <div>
+          <div class="col-md-4 ml-auto">
             <a href="[% mkurl(ctx.opac_root _ '/results', {}, ['metarecord','page']); %]">
               [% l('&#9668; Return to Grouped Search Results') %]
             </a>
           </div>
-          <br/>
           [% END %]
+          </div>
+          </div>
         [% END %]
         <div [%- IF ctx.metarecord %]class="hidden"[%- ELSE %]class="container-fluid"[%- END %]>
 
