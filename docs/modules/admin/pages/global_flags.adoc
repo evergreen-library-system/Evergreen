@@ -1,5 +1,4 @@
 = Global Flags =
-:toc:
 
 == Introduction ==
 indexterm:[Global Flags]
