@@ -1,5 +1,5 @@
-import {Observable, throwError} from 'rxjs';
-import {switchMap, tap} from 'rxjs/operators';
+import { Observable, merge, throwError } from 'rxjs';
+import { tap, switchMap } from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
@@ -140,6 +140,10 @@ export class CourseService {
         if (args.isModifyingCallNumber) {
             material.original_callnumber(item.call_number());
         }
+        if (args.isModifyingLibrary && args.tempLibrary && this.org.canHaveVolumes(args.tempLibrary)) {
+            material.original_circ_lib(item.circ_lib());
+            item.circ_lib(args.tempLibrary);
+        }
         const response = {
             item: item,
             material: this.pcrud.create(material).toPromise()
@@ -234,10 +238,11 @@ export class CourseService {
         ).pipe(switchMap(res => {
             const event = this.evt.parse(res);
             if (event) { return throwError(event); }
-            return this.net.request(
-                'open-ils.cat', 'open-ils.cat.transfer_copies_to_volume',
-                this.auth.token(), res.acn_id, [item.id()]
-            );
+            // Not using open-ils.cat.transfer_copies_to_volume,
+            // because we don't necessarily want acp.circ_lib and
+            // acn.owning_lib to match in this scenario
+            item.call_number(res.acn_id)
+            return this.pcrud.update(item);
         }));
 
         return updatingVolume ? itemObservable.pipe(switchMap(() => callNumberObservable)).toPromise() :

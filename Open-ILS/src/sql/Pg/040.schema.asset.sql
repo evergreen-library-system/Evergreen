@@ -1163,6 +1163,7 @@ CREATE TABLE asset.course_module_course_materials (
     original_status        INT REFERENCES config.copy_status,
     original_circ_modifier TEXT, --REFERENCES config.circ_modifier
     original_callnumber    INT REFERENCES asset.call_number,
+    original_circ_lib      INT REFERENCES actor.org_unit (id),
     unique (course, item, record)
 );
 

@@ -7,6 +7,12 @@
 <eg-string #materialEditSuccessString i18n-text text="Update of Course Material succeeded"></eg-string>
 <eg-string #materialEditFailedString i18n-text text="Update of Course Material failed or was not allowed"></eg-string>
 
+<eg-alert-dialog #otherLibraryNoPermissionsAlert
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Insufficient permissions"
+  dialogBody="This material has {{itemCircLib}} as its circulation library, where you do not have UPDATE_COPY permissions.  You cannot attach this item without UPDATE_COPY permissions.">
+</eg-alert-dialog>
+
 <eg-confirm-dialog #confirmOtherLibraryDialog
   i18n-dialogTitle i18n-dialogBody
   dialogTitle="Material from a different library"
