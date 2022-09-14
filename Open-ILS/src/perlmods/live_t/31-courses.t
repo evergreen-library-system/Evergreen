@@ -1,7 +1,7 @@
 #!perl
 
 use strict; use warnings;
-use Test::More tests => 7;
+use Test::More tests => 8;
 use OpenILS::Utils::TestUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::AppUtils;
@@ -84,7 +84,7 @@ is(scalar(@$results), 0, 'Successfully deleted bre');
 # 3. Let's attach an existing item record entry to course #1, then detach it
 # --------------------------------------------------------------------------
 
-# Create an item with temporary location, so that we can confirm its fields revert on course material detach
+# Create an item with temporary location and library, so that we can confirm its fields revert on course material detach
 my $acp = Fieldmapper::asset::copy->new;
 my $item_id = int (rand (1_000_000) );
 my $acmcm_id = int (rand (1_000_000) );
@@ -92,7 +92,7 @@ $acp->deleted(0);
 $acp->call_number(1);
 $acp->creator(1);
 $acp->editor(1);
-$acp->circ_lib(5);
+$acp->circ_lib(6);          # temporary value
 $acp->age_protect(1);
 $acp->barcode( $bre->id . '-1' );
 $acp->create_date('now');
@@ -122,6 +122,7 @@ $acmcm->record(55);
 $acmcm->item($item_id);
 $acmcm->original_status(0);
 $acmcm->original_location(1);
+$acmcm->original_circ_lib(5);
 $acmcm->temporary_record(0);
 $e->xact_begin;
 $e->create_asset_course_module_course_materials( $acmcm ); # associated this bib record with a course
@@ -135,3 +136,4 @@ is(scalar(@$results), 0, 'Successfully deleted acmcm');
 # Re-load the acp into memory from the db
 $acp = $e->retrieve_asset_copy($item_id);
 is($acp->location, 1, "Successfully reverted item's shelving location");
+is($acp->circ_lib, 5, "Successfully reverted item's circ_lib");

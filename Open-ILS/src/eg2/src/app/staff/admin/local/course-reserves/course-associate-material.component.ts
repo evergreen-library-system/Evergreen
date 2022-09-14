@@ -1,6 +1,7 @@
+import { PermService } from '@eg/core/perm.service';
 import {Component, Input, ViewChild, OnInit} from '@angular/core';
-import {Observable, merge, of, EMPTY} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import { Observable, merge, of, EMPTY, throwError, from } from 'rxjs';
+import { switchMap, concatMap } from 'rxjs/operators';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
@@ -43,6 +44,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     @ViewChild('materialAddDifferentLibraryString', { static: true })
         materialAddDifferentLibraryString: StringComponent;
     @ViewChild('confirmOtherLibraryDialog') confirmOtherLibraryDialog: DialogComponent;
+    @ViewChild('otherLibraryNoPermissionsAlert') otherLibraryNoPermissionsAlert: DialogComponent;
     materialsDataSource: GridDataSource;
     @Input() barcodeInput: string;
     @Input() relationshipInput: string;
@@ -54,6 +56,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     @Input() isModifyingCircMod: boolean;
     @Input() isModifyingCallNumber: boolean;
     @Input() isModifyingLocation: boolean;
+    isModifyingLibrary: boolean;
     bibId: number;
     itemCircLib: string;
 
@@ -66,6 +69,7 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
         private net: NetService,
         private pcrud: PcrudService,
         private toast: ToastService,
+        private perm: PermService,
         private modal: NgbModal
     ) {
         super(modal);
@@ -156,7 +160,16 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
     }
 
     associateItem(barcode, relationship) {
-        if (barcode) {
+        if (!barcode || barcode.length === 0) { return; }
+        this.barcodeInput = null;
+
+        this.pcrud.search('acp', {barcode: barcode.trim()}, {
+            flesh: 3, flesh_fields: {acp: ['call_number', 'circ_lib']}
+        }).pipe(switchMap(item => {
+            this.isModifyingLibrary = item.circ_lib().id() !== this.currentCourse.owning_lib().id();
+            return this.isModifyingLibrary ? this.handleItemAtDifferentLibrary$(item) : of(item);
+        }))
+        .subscribe((originalItem) => {
             const args = {
                 barcode: barcode.trim(),
                 relationship: relationship,
@@ -164,35 +177,32 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
                 isModifyingCircMod: this.isModifyingCircMod,
                 isModifyingLocation: this.isModifyingLocation,
                 isModifyingStatus: this.isModifyingStatus,
+                isModifyingLibrary: this.isModifyingLibrary,
                 tempCircMod: this.tempCircMod,
                 tempLocation: this.tempLocation,
+                tempLibrary: this.currentCourse.owning_lib().id(),
                 tempStatus: this.tempStatus,
                 currentCourse: this.currentCourse
             };
-            this.barcodeInput = null;
 
-            this.pcrud.search('acp', {barcode: args.barcode}, {
-                flesh: 3, flesh_fields: {acp: ['call_number', 'circ_lib']}
-            }).pipe(switchMap(item => this.handleItemAtDifferentLibrary$(item)))
-            .subscribe((originalItem) => {
-                const associatedMaterial = this.course.associateMaterials(originalItem, args);
-                associatedMaterial.material.then(res => {
-                    const item = associatedMaterial.item;
-                    let new_cn = item.call_number().label();
-                    if (this.tempCallNumber) { new_cn = this.tempCallNumber; }
-                    this.course.updateItem(item, this.currentCourse.owning_lib(),
-                        new_cn, args.isModifyingCallNumber
-                    ).then(resp => {
-                        this.materialsGrid.reload();
-                        this.materialAddSuccessString.current()
-                        .then(str => this.toast.success(str));
-                    });
-                }, err => {
-                    this.materialAddFailedString.current()
-                    .then(str => this.toast.danger(str));
+            const associatedMaterial = this.course.associateMaterials(originalItem, args);
+
+            associatedMaterial.material.then(res => {
+                const item = associatedMaterial.item;
+                let new_cn = item.call_number().label();
+                if (this.tempCallNumber) { new_cn = this.tempCallNumber; }
+                this.course.updateItem(item, this.currentCourse.owning_lib(),
+                    new_cn, args.isModifyingCallNumber
+                ).then(resp => {
+                    this.materialsGrid.reload();
+                    this.materialAddSuccessString.current()
+                    .then(str => this.toast.success(str));
                 });
+            }, err => {
+                this.materialAddFailedString.current()
+                .then(str => this.toast.danger(str));
             });
-        }
+        });
     }
 
     deleteSelectedMaterials(items) {
@@ -210,15 +220,24 @@ export class CourseAssociateMaterialComponent extends DialogComponent implements
         });
     }
 
-    handleItemAtDifferentLibrary$(item: IdlObject): Observable<any> {
+    private handleItemAtDifferentLibrary$(item: IdlObject): Observable<any> {
         this.itemCircLib = item.circ_lib().shortname();
-        if (item.circ_lib().id() !== this.currentCourse.owning_lib().id()) {
-            return this.confirmOtherLibraryDialog.open()
-            .pipe(switchMap(confirmed => {
-                if (!confirmed) { return EMPTY; }
-                return of(item);
-            }));
-        }
-        return of(item);
+        const promise = this.perm.hasWorkPermAt(['UPDATE_COPY'], true).then(result => {
+            return result.UPDATE_COPY as number[];
+        });
+        return from(promise).pipe(concatMap((editableItemLibs) => {
+            if (editableItemLibs.indexOf(item.circ_lib().id()) !== -1) {
+                return this.confirmOtherLibraryDialog.open()
+                .pipe(switchMap(confirmed => {
+                    // If the user clicked "no", return an empty observable,
+                    // so the subsequent code has nothing to do.
+                    if (!confirmed) { return EMPTY; }
+                    return of(item);
+                }));
+            } else {
+                return this.otherLibraryNoPermissionsAlert.open()
+                .pipe(switchMap(() => EMPTY));
+            }
+        }));
     }
 }
