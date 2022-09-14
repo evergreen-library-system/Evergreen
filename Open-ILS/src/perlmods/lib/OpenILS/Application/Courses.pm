@@ -265,6 +265,9 @@ sub _resetItemFields {
     if ($acmcm->original_location) {
         $acp->location($acmcm->original_location);
     }
+    if ($acmcm->original_circ_lib) {
+        $acp->circ_lib($acmcm->original_circ_lib);
+    }
     $e->update_asset_copy($acp);
     if ($acmcm->original_callnumber) {
         my $existing_acn = $e->retrieve_asset_call_number($acp->call_number);
