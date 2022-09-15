@@ -34,7 +34,7 @@
     "core-js": "^3.18.3",
     "file-saver": "^2.0.5",
     "material-design-icons-iconfont": "^6.6.0",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.33",
     "ngx-cookie": "^5.0.2",
     "rxjs": "^6.6.2",
