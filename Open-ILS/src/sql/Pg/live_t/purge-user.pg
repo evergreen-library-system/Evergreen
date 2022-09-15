@@ -1,0 +1,34 @@
+BEGIN;
+
+INSERT INTO acq.invoice (id, receiver, provider, shipper, recv_method, inv_ident, closed_by)
+    VALUES (2222, 1, 1, 1, 'EDI', 'ABC123', 10);
+
+INSERT INTO action.curbside (id, patron, org, notes)
+    VALUES (2222, 10, 1, 'Private info');
+
+INSERT INTO actor.usr_message (usr, message, sending_lib)
+    VALUES (10, 'Private message', 1);
+
+SELECT plan(3);
+
+SELECT * FROM actor.usr_purge_data(10, 20);
+
+SELECT is(
+    (SELECT closed_by FROM acq.invoice WHERE id = 2222)::INTEGER,
+    20::INTEGER,
+    'Acq invoice is now owned by dest_usr'
+);
+
+SELECT is(
+    (SELECT notes FROM action.curbside WHERE id = 2222),
+    NULL,
+    'Curbside notes are redacted'
+);
+
+SELECT is_empty(
+    ('SELECT id FROM actor.usr_message WHERE usr=10 AND NOT deleted'),
+    'User messages are marked as deleted'
+);
+
+SELECT * FROM finish();
+ROLLBACK;

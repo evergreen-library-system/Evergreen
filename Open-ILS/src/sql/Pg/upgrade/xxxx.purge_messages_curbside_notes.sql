@@ -1,6 +1,5 @@
 BEGIN;
   
-SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
 
 CREATE OR REPLACE FUNCTION actor.usr_purge_data(
 	src_usr  IN INTEGER,
@@ -17,6 +16,9 @@ BEGIN
 	ELSE
 		dest_usr := specified_dest_usr;
 	END IF;
+
+    -- action_trigger.event (even doing this, event_output may--and probably does--contain PII and should have a retention/removal policy)
+    UPDATE action_trigger.event SET context_user = dest_usr WHERE context_user = src_usr;
 
 	-- acq.*
 	UPDATE acq.fund_allocation SET allocator = dest_usr WHERE allocator = src_usr;
@@ -86,13 +88,14 @@ BEGIN
 	UPDATE actor.usr_address SET replaces = NULL
 		WHERE usr = src_usr AND replaces IS NOT NULL;
 	DELETE FROM actor.usr_address WHERE usr = src_usr;
-	DELETE FROM actor.usr_note WHERE usr = src_usr;
-	UPDATE actor.usr_note SET creator = dest_usr WHERE creator = src_usr;
 	DELETE FROM actor.usr_org_unit_opt_in WHERE usr = src_usr;
 	UPDATE actor.usr_org_unit_opt_in SET staff = dest_usr WHERE staff = src_usr;
 	DELETE FROM actor.usr_setting WHERE usr = src_usr;
 	DELETE FROM actor.usr_standing_penalty WHERE usr = src_usr;
+	UPDATE actor.usr_message SET title = 'purged', message = 'purged', read_date = NOW() WHERE usr = src_usr;
+	DELETE FROM actor.usr_message WHERE usr = src_usr;
 	UPDATE actor.usr_standing_penalty SET staff = dest_usr WHERE staff = src_usr;
+	UPDATE actor.usr_message SET editor = dest_usr WHERE editor = src_usr;
 
 	-- asset.*
 	UPDATE asset.call_number SET creator = dest_usr WHERE creator = src_usr;
