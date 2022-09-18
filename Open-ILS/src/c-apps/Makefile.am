@@ -7,7 +7,7 @@
 SUBDIRS = . tests
 
 AM_CFLAGS = $(DEF_CFLAGS) -DOSRF_LOG_PARAMS -I@top_srcdir@/include/
-AM_LDFLAGS = $(DEF_LDFLAGS) -L$(DBI_LIBS) -lopensrf
+AM_LDFLAGS = $(DEF_LDFLAGS) $(DBI_LIBS) -lopensrf
 
 bin_PROGRAMS = oils_dataloader dump_idl idlval test_json_query test_qstore
 oils_dataloader_SOURCES = oils_dataloader.c
@@ -42,19 +42,19 @@ liboils_utils_la_SOURCES = oils_utils.c oils_event.c
 liboils_utils_la_LDFLAGS = -loils_idl -version-info 2:0:0
 
 liboils_cstore_la_SOURCES = oils_cstore.c oils_sql.c
-liboils_cstore_la_LDFLAGS = $(AM_LDFLAGS) -ldbi -ldbdpgsql -loils_utils -module -version-info 2:0:0
+liboils_cstore_la_LDFLAGS = $(AM_LDFLAGS) -loils_utils -module -version-info 2:0:0
 liboils_cstore_la_DEPENDENCIES = liboils_utils.la
 
 liboils_qstore_la_SOURCES = oils_qstore.c oils_sql.c oils_storedq.c oils_buildq.c buildSQL.c oils_execsql.c
-liboils_qstore_la_LDFLAGS = $(AM_LDFLAGS) -ldbi -ldbdpgsql -loils_utils -module -version-info 2:0:0
+liboils_qstore_la_LDFLAGS = $(AM_LDFLAGS) -loils_utils -module -version-info 2:0:0
 liboils_qstore_la_DEPENDENCIES = liboils_utils.la
 
 liboils_rstore_la_SOURCES = oils_rstore.c oils_sql.c
-liboils_rstore_la_LDFLAGS = $(AM_LDFLAGS) -ldbi -ldbdpgsql -loils_utils -module -version-info 2:0:0
+liboils_rstore_la_LDFLAGS = $(AM_LDFLAGS) -loils_utils -module -version-info 2:0:0
 liboils_rstore_la_DEPENDENCIES = liboils_utils.la
 
 liboils_pcrud_la_SOURCES = oils_pcrud.c oils_sql.c
-liboils_pcrud_la_LDFLAGS = $(AM_LDFLAGS) -ldbi -ldbdpgsql -loils_utils -module -version-info 2:0:0
+liboils_pcrud_la_LDFLAGS = $(AM_LDFLAGS) -loils_utils -module -version-info 2:0:0
 liboils_pcrud_la_DEPENDENCIES = liboils_utils.la
 
 liboils_auth_la_SOURCES = oils_auth.c

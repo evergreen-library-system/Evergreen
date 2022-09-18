@@ -187,28 +187,13 @@ AC_ARG_WITH([libxml2],
 [LIBXML2_HEADERS=/usr/include/libxml2/])
 AC_SUBST([LIBXML2_HEADERS])
 
-AC_ARG_WITH([dbi],
-[  --with-dbi=path             location of the libdbi driver libraries (default is /usr/lib/x86_64-linux-gnu/dbd/)],
-[DBI_LIBS=${withval}],
-[DBI_LIBS=/usr/lib/x86_64-linux-gnu/dbd/])
+PKG_CHECK_MODULES([DBI], [dbi])
 
 AC_ARG_WITH([perlbase],
 [  --with-perlbase=path        base location to install Perl modules (default based on Config.pm)],
 [PERL_BASE=${withval}],
 [PERL_BASE=x])
 AC_SUBST([PERL_BASE])
-
-# If the passed in value doesn't work, fall back to reasonable defaults
-# Distributions are starting to package a good version of libdbi / libdbd
-if ! test -d "$DBI_LIBS"; then
-    for i in /usr/lib/dbd/ /usr/lib64/dbd /usr/local/lib/dbd/ ; do
-        if test -d "$i"; then
-            DBI_LIBS="$i"
-            break
-        fi
-    done
-fi
-AC_SUBST([DBI_LIBS])
 
 AM_CONDITIONAL(CHECK_TESTS, test x$enable_tests = xyes)
 
