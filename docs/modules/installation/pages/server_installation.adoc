@@ -178,7 +178,18 @@ npm install   # fetch JS dependencies
 +
 [source,sh]
 ------------------------------------------------------------------------------
-ng build --prod
+ng build --configuration=production
+------------------------------------------------------------------------------
++
+This can be a memory-intensive build.  If the process does not finish, and you
+get the message "Killed" in the console, try running it with
+https://nodejs.org/api/cli.html#cli_max_old_space_size_size_in_megabytes[an explicit max-old-space-size option]
+to encourage more garbage collection.  For example, on a machine with 4GB of
+memory, you can limit max-old-space-size to 3GB with:
++
+[source,sh]
+------------------------------------------------------------------------------
+NODE_OPTIONS=--max-old-space-size=3072 ng build --configuration=production
 ------------------------------------------------------------------------------
 +
 4. OPTIONAL: Test eg2 web client code if the <osname>-developer packages and
