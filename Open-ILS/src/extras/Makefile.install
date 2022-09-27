@@ -14,8 +14,6 @@
 # 	- or -
 # 	make -f Makefile.install debian-buster
 # 	- or -
-# 	make -f Makefile.install ubuntu-bionic
-# 	- or -
 # 	make -f Makefile.install ubuntu-focal
 # 	- or -
 # 	make -f Makefile.install ubuntu-jammy
@@ -76,8 +74,6 @@ debian-bullseye:
 	@make -f $(DIR)/Makefile.debian-bullseye
 debian-buster:
 	@make -f $(DIR)/Makefile.debian-buster
-ubuntu-bionic:
-	@make -f $(DIR)/Makefile.ubuntu-bionic
 ubuntu-focal:
 	@make -f $(DIR)/Makefile.ubuntu-focal
 ubuntu-jammy:
@@ -105,16 +101,6 @@ postgres-server-debian-buster-13:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_13
 postgres-server-debian-buster-14:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_14
-postgres-server-ubuntu-bionic-10:
-	@make -f $(DIR)/Makefile.ubuntu-bionic install_postgres_server_10
-postgres-server-ubuntu-bionic-11:
-	@make -f $(DIR)/Makefile.ubuntu-bionic install_postgres_server_11
-postgres-server-ubuntu-bionic-12:
-	@make -f $(DIR)/Makefile.ubuntu-bionic install_postgres_server_12
-postgres-server-ubuntu-bionic-13:
-	@make -f $(DIR)/Makefile.ubuntu-bionic install_postgres_server_13
-postgres-server-ubuntu-bionic-14:
-	@make -f $(DIR)/Makefile.ubuntu-bionic install_postgres_server_14
 postgres-server-ubuntu-focal-10:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_postgres_server_10
 postgres-server-ubuntu-focal-11:
@@ -138,8 +124,6 @@ postgres-server-ubuntu-jammy-14:
 postgres-server-fedora:
 	@make -f $(DIR)/Makefile.fedora install_postgres_server
 
-ubuntu-bionic-developer:
-	@make -f $(DIR)/Makefile.ubuntu-bionic install_developer
 ubuntu-focal-developer:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_developer
 ubuntu-jammy-developer:
@@ -149,8 +133,6 @@ debian-bullseye-developer:
 debian-buster-developer:
 	@make -f $(DIR)/Makefile.debian-buster install_developer
 
-ubuntu-bionic-translator:
-	@make -f $(DIR)/Makefile.ubuntu-bionic install_translator
 ubuntu-focal-translator:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_translator
 ubuntu-jammy-translator:
@@ -160,8 +142,6 @@ debian-bullseye-translator:
 debian-buster-translator:
 	@make -f $(DIR)/Makefile.debian-buster install_translator
 
-ubuntu-bionic-packager:
-	@make -f $(DIR)/Makefile.ubuntu-bionic install_packager
 ubuntu-focal-packager:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_packager
 ubuntu-jammy-packager:
