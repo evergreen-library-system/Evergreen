@@ -83,6 +83,9 @@ h5 {font-size: .95rem}
   min-height: 40px;
 }
 
+.btn.disabled, .btn:disabled {
+  cursor: not-allowed;
+}
 
 /* usefuf for mat-icon buttons without any background or borders */
 .material-icon-button {
