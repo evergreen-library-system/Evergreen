@@ -3,13 +3,13 @@
   <div class="col-lg-6">
     <span class="font-weight-bold" i18n>Show:</span>
     <button class="btn btn-sm btn-outline-dark ml-2" 
-      [disabled]="visibilityLevel == 2"
+      [disabled]="visibilityLevel === 2"
       (click)="changeFields(2)" i18n>Required Fields</button>
     <button class="btn btn-sm btn-outline-dark ml-2" 
-      [disabled]="visibilityLevel == 1"
+      [disabled]="visibilityLevel === 1"
       (click)="changeFields(1)" i18n>Suggested Fields</button>
     <button class="btn btn-sm btn-outline-dark ml-2" 
-      [disabled]="visibilityLevel == 0"
+      [disabled]="visibilityLevel === 0"
       (click)="changeFields(0)" i18n>All Fields</button>
   </div>
 

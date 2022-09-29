@@ -18,8 +18,7 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
   templateUrl: 'open-circ-dialog.component.html'
 })
 
-export class OpenCircDialogComponent
-    extends DialogComponent implements OnInit {
+export class OpenCircDialogComponent extends DialogComponent {
 
     @Input() sameUser: boolean;
     @Input() circDate: string; // iso
@@ -34,6 +33,4 @@ export class OpenCircDialogComponent
         private auth: AuthService) {
         super(modal); // required for subclassing
     }
-
-    ngOnInit() {}
 }

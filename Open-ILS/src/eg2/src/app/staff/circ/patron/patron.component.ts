@@ -1,4 +1,4 @@
-import {Component, ViewChild, OnInit, AfterViewInit, HostListener} from '@angular/core';
+import {Component, ViewChild, OnInit, HostListener} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap, RoutesRecognized} from '@angular/router';
 import {Location} from '@angular/common';
 import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -27,7 +27,7 @@ const MAIN_TABS =
   templateUrl: 'patron.component.html',
   styleUrls: ['patron.component.css']
 })
-export class PatronComponent implements OnInit, AfterViewInit {
+export class PatronComponent implements OnInit {
 
     patronId: number;
     patronTab = 'search';
@@ -175,9 +175,6 @@ export class PatronComponent implements OnInit, AfterViewInit {
                 this.patronId = prevId;
             }
         });
-    }
-
-    ngAfterViewInit() {
     }
 
     // Navigate, opening new tabs when requested via control-click.

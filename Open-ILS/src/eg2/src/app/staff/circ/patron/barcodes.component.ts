@@ -23,8 +23,7 @@ const PERMS = ['UPDATE_PATRON_ACTIVE_CARD', 'UPDATE_PATRON_PRIMARY_CARD'];
   templateUrl: 'barcodes.component.html'
 })
 
-export class PatronBarcodesDialogComponent
-    extends DialogComponent implements OnInit {
+export class PatronBarcodesDialogComponent extends DialogComponent {
 
     @Input() patron: IdlObject;
     primaryCard: number;
@@ -42,9 +41,6 @@ export class PatronBarcodesDialogComponent
         private perms: PermService,
         private context: PatronContextService
     ) { super(modal); }
-
-    ngOnInit() {
-    }
 
     open(ops: NgbModalOptions): Observable<any> {
         this.patron.cards().some(card => {

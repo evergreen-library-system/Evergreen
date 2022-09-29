@@ -199,7 +199,7 @@
     [showDeclaredFieldsOnly]="true"> 
 
     <eg-grid-toolbar-button label="Add to Bucket" i18n-label 
-      [disabled]="getSelected().length == 0"
+      [disabled]="getSelected().length === 0"
       (onClick)="addSelectedToBucket($event)"></eg-grid-toolbar-button>
     <eg-grid-toolbar-button label="Merge Patrons" i18n-label 
       [disabled]="getSelected().length !== 2"

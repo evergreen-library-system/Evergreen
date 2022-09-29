@@ -599,7 +599,7 @@
     <div class="row pt-1 pb-1 mt-1" 
       *ngFor="let waiver of patron.waiver_entries(); let index = index">
       <div class="col-lg-3">
-        <span *ngIf="index == 0" i18n>Allow others to use my account</span>
+        <span *ngIf="index === 0" i18n>Allow others to use my account</span>
       </div>
       <div class="col-lg-3">
         <input type="text" class="form-control" [ngModel]="waiver.name()"
@@ -657,7 +657,7 @@
             <span class="text-danger material-icons">delete</span>
           </button>
         </div>
-        <div class="ml-2" *ngIf="index == patron.waiver_entries().length - 1">
+        <div class="ml-2" *ngIf="index === patron.waiver_entries().length - 1">
           <button class="btn btn-success material-icon-button" 
           (click)="addWaiver()" i18n-title title="Add Privacy Waiver">
             <span class="text-success material-icons">add</span>
@@ -681,7 +681,7 @@
             <div class="form-check form-check-inline mr-2">
               <input class="form-check-input" type="checkbox" 
                 name="addr-{{addr.id()}}-mailing" id="addr-{{addr.id()}}-mailing" 
-                [ngModel]="patron.mailing_address() && addr.id() == patron.mailing_address().id()"
+                [ngModel]="patron.mailing_address() && addr.id() === patron.mailing_address().id()"
                 (ngModelChange)="setAddrType('mailing', addr, $event)"/>
               <label class="form-check-label" 
                 for="addr-{{addr.id()}}-mailing" i18n>Mailing</label>
@@ -689,7 +689,7 @@
             <div class="form-check form-check-inline mr-2">
               <input class="form-check-input" type="checkbox" 
                 name="addr-{{addr.id()}}-billing" id="addr-{{addr.id()}}-billing" 
-                [ngModel]="patron.billing_address() && addr.id() == patron.billing_address().id()"
+                [ngModel]="patron.billing_address() && addr.id() === patron.billing_address().id()"
                 (ngModelChange)="setAddrType('billing', addr, $event)"/>
               <label class="form-check-label" 
                 for="addr-{{addr.id()}}-billing" i18n>Physical</label>
@@ -747,8 +747,8 @@
         domId="asc-{{stat.cat.id()}}-input"
         name="asc-{{stat.cat.id()}}-input"
         [entries]="stat.entries"
-        [required]="stat.cat.required() == 1"
-        [allowFreeText]="stat.cat.allow_freetext() == 1"
+        [required]="stat.cat.required() === 1"
+        [allowFreeText]="stat.cat.allow_freetext() === 1"
         [(ngModel)]="userStatCats[stat.cat.id()]"
         (onChange)="userStatCatChange(stat.cat, $event)">
       </eg-combobox>

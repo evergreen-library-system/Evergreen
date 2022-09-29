@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, AfterViewInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {from, empty, range} from 'rxjs';
 import {concatMap, tap, takeLast} from 'rxjs/operators';
@@ -16,7 +16,7 @@ import {PatronContextService} from './patron.service';
   templateUrl: 'surveys.component.html',
   selector: 'eg-patron-survey-responses'
 })
-export class PatronSurveyResponsesComponent implements OnInit, AfterViewInit {
+export class PatronSurveyResponsesComponent implements OnInit {
 
     @Input() patronId: number;
     surveys: IdlObject[] = [];
@@ -74,8 +74,5 @@ export class PatronSurveyResponsesComponent implements OnInit, AfterViewInit {
                 });
             }
         );
-    }
-
-    ngAfterViewInit() {
     }
 }

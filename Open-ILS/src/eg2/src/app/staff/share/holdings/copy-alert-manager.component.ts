@@ -25,8 +25,7 @@ import {HoldingsService} from './holdings.service';
   styles: ['.acknowledged {text-decoration: line-through }']
 })
 
-export class CopyAlertManagerDialogComponent
-    extends DialogComponent implements OnInit {
+export class CopyAlertManagerDialogComponent extends DialogComponent {
 
     mode: string;
     alerts: IdlObject[];
@@ -44,8 +43,6 @@ export class CopyAlertManagerDialogComponent
         private strings: StringService,
         private holdings: HoldingsService
     ) { super(modal); }
-
-    ngOnInit() {}
 
     open(ops?: NgbModalOptions): Observable<any> {
 

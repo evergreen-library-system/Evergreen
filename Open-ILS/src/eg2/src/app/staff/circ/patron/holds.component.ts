@@ -13,7 +13,7 @@ const HOLD_FOR_PATRON_KEY = 'eg.circ.patron_hold_target';
   templateUrl: 'holds.component.html',
   selector: 'eg-patron-holds'
 })
-export class HoldsComponent implements OnInit {
+export class HoldsComponent {
 
     constructor(
         private router: Router,
@@ -23,9 +23,6 @@ export class HoldsComponent implements OnInit {
         public patronService: PatronService,
         public context: PatronContextService
     ) {}
-
-    ngOnInit() {
-    }
 
     newHold() {
 

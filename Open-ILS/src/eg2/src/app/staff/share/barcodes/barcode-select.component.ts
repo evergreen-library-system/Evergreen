@@ -1,4 +1,4 @@
-import {Component, Input, Output, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, Output, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map, mergeMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
@@ -37,7 +37,7 @@ export interface BarcodeSelectResult {
   templateUrl: './barcode-select.component.html',
 })
 
-export class BarcodeSelectComponent extends DialogComponent implements OnInit {
+export class BarcodeSelectComponent extends DialogComponent {
 
     matches: BarcodeSelectResult[];
     selected: BarcodeSelectResult;
@@ -51,9 +51,6 @@ export class BarcodeSelectComponent extends DialogComponent implements OnInit {
         private pcrud: PcrudService,
         private auth: AuthService
     ) { super(modal); }
-
-    ngOnInit() {
-    }
 
     selectionChanged() {
         const id = Object.keys(this.inputs).map(i => Number(i))

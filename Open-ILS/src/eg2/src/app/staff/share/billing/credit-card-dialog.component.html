@@ -24,7 +24,7 @@
             </select>
           </div>
         </div>
-        <ng-container *ngIf="args.where_process == 1">
+        <ng-container *ngIf="args.where_process === 1">
           <div class="row mt-2">
             <div class="col-lg-4"><label i18n>Credit Card Number</label></div>
             <div class="col-lg-8">
@@ -33,7 +33,7 @@
             </div>
           </div>
         </ng-container>
-        <ng-container *ngIf="args.where_process == 0">
+        <ng-container *ngIf="args.where_process === 0">
           <div class="row mt-2">
             <div class="col-lg-4"><label i18n>Expire Month</label></div>
             <div class="col-lg-8">
@@ -75,7 +75,7 @@
           </div>
         </div>
 
-        <ng-container *ngIf="args.where_process == 0">
+        <ng-container *ngIf="args.where_process === 0">
           <div class="row mt-2">
             <div class="col-lg-4"><label i18n>Address</label></div>
             <div class="col-lg-8">

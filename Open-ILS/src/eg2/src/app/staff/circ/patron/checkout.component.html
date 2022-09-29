@@ -35,7 +35,7 @@
         </div>
         <input type="text" class="form-control" id="barcode-input"
           [placeholder]="checkoutNoncat ? '' : 'Barcode...'" i18n-placeholder
-          [(ngModel)]="checkoutBarcode" [disabled]="checkoutNoncat != null"
+          [(ngModel)]="checkoutBarcode" [disabled]="checkoutNoncat !== null"
           i18n-aria-label aria-label="Barcode Input" (keydown.enter)="checkout()" />
         <div class="input-group-append">
           <button class="btn btn-outline-dark" (keydown.enter)="checkout()" 
@@ -46,7 +46,7 @@
     <div class="flex-1"></div>
     <div ngbDropdown>
       <button ngbDropdownToggle class="btn mr-2" [ngClass]="{
-          'btn-outline-dark': dueDateOptions == 0,
+          'btn-outline-dark': dueDateOptions === 0,
           'btn-outline-success': dueDateOptions > 0
         }"
         i18n>Date Options</button>
@@ -54,12 +54,12 @@
         <button ngbDropdownItem (click)="toggleDateOptions(1)">
           <span *ngIf="dueDateOptions > 0" 
             class="badge badge-success">&#x2713;</span>  
-          <span *ngIf="dueDateOptions == 0" 
+          <span *ngIf="dueDateOptions === 0" 
             class="badge badge-warning">&#x2717;</span> 
           <span class="pl-2" i18n>Specific Due Date</span>
         </button>
         <button ngbDropdownItem (click)="toggleDateOptions(2)">
-          <span *ngIf="dueDateOptions == 2" 
+          <span *ngIf="dueDateOptions === 2" 
             class="badge badge-success">&#x2713;</span>  
           <span *ngIf="dueDateOptions < 2" 
             class="badge badge-warning">&#x2717;</span> 
@@ -68,7 +68,7 @@
       </div>
     </div>
     <eg-datetime-select [initialIso]="dueDate" 
-      [readOnly]="dueDateOptions == 0" (onChangeAsIso)="setDueDate($event)">
+      [readOnly]="dueDateOptions === 0" (onChangeAsIso)="setDueDate($event)">
     </eg-datetime-select>
   </div>
 </div>

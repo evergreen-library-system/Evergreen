@@ -63,7 +63,7 @@
     <div class="col-lg-2" i18n>Renewal?</div>
     <div class="col-lg-1">
       <ng-container *ngIf="statement.xact.circulation()">
-        <eg-bool [value]="statement.xact.circulation().parent_circ() != null">
+        <eg-bool [value]="statement.xact.circulation().parent_circ() !== null">
         </eg-bool>
       </ng-container>
     </div>

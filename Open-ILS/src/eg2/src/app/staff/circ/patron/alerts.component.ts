@@ -10,7 +10,7 @@ import {PatronContextService} from './patron.service';
   templateUrl: 'alerts.component.html',
   selector: 'eg-patron-alerts'
 })
-export class PatronAlertsComponent implements OnInit {
+export class PatronAlertsComponent {
 
     constructor(
         private org: OrgService,
@@ -18,9 +18,6 @@ export class PatronAlertsComponent implements OnInit {
         public patronService: PatronService,
         public context: PatronContextService
     ) {}
-
-    ngOnInit() {
-    }
 
     alerts(): PatronAlerts {
         return this.context.summary ? this.context.summary.alerts : null;

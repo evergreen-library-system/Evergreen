@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Observable, empty, of, from} from 'rxjs';
 import {tap, switchMap} from 'rxjs/operators';
@@ -25,7 +25,7 @@ import {CircGridComponent, CircGridEntry} from '@eg/staff/share/circ/grid.compon
   templateUrl: 'items.component.html',
   selector: 'eg-patron-items'
 })
-export class ItemsComponent implements OnInit, AfterViewInit {
+export class ItemsComponent implements OnInit {
 
     // Note we can get the patron id from this.context.patron.id(), but
     // on a new page load, this requires us to wait for the arrival of
@@ -62,9 +62,6 @@ export class ItemsComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.load(true);
-    }
-
-    ngAfterViewInit() {
     }
 
     load(firstLoad?: boolean): Promise<any> {

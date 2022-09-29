@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {empty, from} from 'rxjs';
 import {concatMap, tap} from 'rxjs/operators';
@@ -113,7 +113,7 @@ interface StatCat {
   selector: 'eg-patron-edit',
   styleUrls: ['edit.component.css']
 })
-export class EditComponent implements OnInit, AfterViewInit {
+export class EditComponent implements OnInit {
 
     @Input() patronId: number = null;
     @Input() cloneId: number = null;
@@ -241,9 +241,6 @@ export class EditComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.load();
-    }
-
-    ngAfterViewInit() {
     }
 
     load(): Promise<any> {
