@@ -17,6 +17,7 @@
             <label class="sr-only" for="patron-username" i18n>Username</label>
 
             <input type="text" class="form-control border border-dark shadow-rounded" 
+              (keyup.enter)="submitPatronLogin()"
               autocomplete="off" id="patron-username" required 
               [(ngModel)]="patronUsername" name="patron-username"
               placeholder="Username or Barcode" i18n-placeholder>
@@ -25,6 +26,7 @@
               <label class="sr-only" for="patron-password" i18n>Password</label>
 
               <input type="password" class="form-control shadow border border-dark rounded ml-2" 
+                (keyup.enter)="submitPatronLogin()"
                 autocomplete="off" id="patron-password" required
                 [(ngModel)]="patronPassword" name="patron-password"
                 placeholder="Password" i18n-placeholder>

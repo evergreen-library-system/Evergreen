@@ -1,5 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
+import {empty} from 'rxjs';
 import {switchMap, tap} from 'rxjs/operators';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -42,6 +43,8 @@ export class SckoFinesComponent implements OnInit {
                 balance_owed: {'<>' : 0}
             }, {}, {atomic: true}
         ).pipe(switchMap(sums => {
+
+            if (sums.length === 0) { return empty(); }
 
             return this.pcrud.search('mbt', {id: sums.map(s => s.id())},
                 {   order_by: {mbt: 'xact_start'},
