@@ -74,7 +74,7 @@
     </div>
 
     <div class="row border-top mt-3 pt-3"
-      *ngIf="mode == 'checkin' && nextStatuses.length > 0; let index = index">
+      *ngIf="mode === 'checkin' && nextStatuses.length > 0; let index = index">
       <div class="col-lg-4" i18n>Next item status:</div>
       <div class="col-lg-5">
         <ng-container *ngIf="nextStatuses.length == 1">

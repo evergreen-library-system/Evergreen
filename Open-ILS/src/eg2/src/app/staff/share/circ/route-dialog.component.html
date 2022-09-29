@@ -61,17 +61,17 @@
     <ul>
       <li *ngFor="let note of checkin.hold.notes()">
         <strong>{{note.title()}}</strong>: {{note.body()}}
-        <span *ngIf="note.slip() =='t' || note.pub() == 't'" i18n>[Patron-visible]</span>
+        <span *ngIf="note.slip() ==='t' || note.pub() === 't'" i18n>[Patron-visible]</span>
       </li>
     </ul>
   </div>
 </ng-template>
 
 <ng-template #holdShelfTmpl>
-  <div *ngIf="checkin.hold.behind_desk() == 't'" i18n>
+  <div *ngIf="checkin.hold.behind_desk() === 't'" i18n>
     This item should be routed to the <strong>Private Holds Shelf</strong>
   </div>
-  <div *ngIf="checkin.hold.behind_desk() == 'f'" i18n>
+  <div *ngIf="checkin.hold.behind_desk() === 'f'" i18n>
     This item should be routed to the <strong>Public Holds Shelf</strong>
   </div>
   <br/>
@@ -82,7 +82,7 @@
   <!-- in hold shelf mode, we need to specify the notification prefs -->
   <div *ngIf="checkin.hold.phone_notify()" i18n>Notify by phone: {{checkin.hold.phone_notify()}}</div>
   <div *ngIf="checkin.hold.sms_notify()" i18n>Notify by text: {{checkin.hold.sms_notify()}}</div>
-  <div *ngIf="checkin.hold.email_notify() == 't'" i18n>Notify by email: {{checkin.patron.email()}}</div>
+  <div *ngIf="checkin.hold.email_notify() === 't'" i18n>Notify by email: {{checkin.patron.email()}}</div>
 
   <ng-container *ngTemplateOutlet="holdSummary"></ng-container>
   <br/>
@@ -130,11 +130,11 @@
 <ng-template #dialogContent>
   <div class="modal-header">
     <h4>
-      <ng-container *ngIf="slip == 'hold_shelf_slip'">
+      <ng-container *ngIf="slip === 'hold_shelf_slip'">
         <strong i18n>Hold Slip</strong><br/>
         <img class="p-2" src="/images/portal/holds.png" i18n-alt alt="holds icon"/>
       </ng-container>
-      <ng-container *ngIf="slip != 'hold_shelf_slip'">
+      <ng-container *ngIf="slip !== 'hold_shelf_slip'">
         <strong i18n>Transit Slip</strong><br/>
         <img class="p-2" src="/images/transit.png" i18n-alt alt="transit van icon"/>
       </ng-container>
@@ -145,10 +145,10 @@
     </button>
   </div>
   <div class="modal-body">
-    <ng-container *ngIf="slip == 'hold_shelf_slip'">
+    <ng-container *ngIf="slip === 'hold_shelf_slip'">
       <ng-container *ngTemplateOutlet="holdShelfTmpl"></ng-container>
     </ng-container>
-    <ng-container *ngIf="slip != 'hold_shelf_slip'">
+    <ng-container *ngIf="slip !== 'hold_shelf_slip'">
       <ng-container *ngTemplateOutlet="transitTmpl"></ng-container>
     </ng-container>
   </div>

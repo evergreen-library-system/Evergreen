@@ -165,8 +165,8 @@
                   <span *ngIf="line.end_date"> - {{line.end_date  | date:'short'}}</span>
                 </div>
               </div>
-              <div class="col-lg-2" [ngClass]="{'text-danger': line.type != 'billing'}">
-                <span *ngIf="line.type != 'billing'">-</span>{{line.amount | currency}}
+              <div class="col-lg-2" [ngClass]="{'text-danger': line.type !== 'billing'}">
+                <span *ngIf="line.type !== 'billing'">-</span>{{line.amount | currency}}
               </div>
               <div class="col-lg-2">{{line.running_balance | currency}}</div>
             </div>

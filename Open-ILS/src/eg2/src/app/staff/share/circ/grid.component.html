@@ -38,7 +38,7 @@
   [rowClassCallback]="rowClass" [persistKey]="persistKey"
   [useLocalSort]="true" [cellTextGenerator]="cellTextGenerator">
 
-  <ng-container *ngIf="menuStyle == 'full'">
+  <ng-container *ngIf="menuStyle === 'full'">
 
     <eg-grid-toolbar-action
       i18n-label label="Print Item Receipt(s)" (onClick)="printReceipts($event)">

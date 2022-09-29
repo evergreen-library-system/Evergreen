@@ -94,7 +94,7 @@
       class="form-check-input ml-0"
       name="{{getClass(args.cls)}}-{{args.field}}-input"
       id="{{getClass(args.cls)}}-{{args.field}}-input"
-      [ngModel]="objectFromPath(args.path, args.index)[args.field]() == 't'"
+      [ngModel]="objectFromPath(args.path, args.index)[args.field]() === 't'"
       (ngModelChange)="fieldValueChange(args.path, args.index, args.field, $event)"
       (change)="afterFieldChange(args.path, args.index, args.field)"
       [pattern]="fieldPattern(getClass(args.cls), args.field)"
@@ -276,8 +276,8 @@
 
   <!-- Container div for name / pref name tabs -->
   <div class="border rounded p-2" [ngClass]="{
-    'border-primary': nameTab == 'primary', 
-    'border-success': nameTab == 'preferred'}">
+    'border-primary': nameTab === 'primary', 
+    'border-success': nameTab === 'preferred'}">
     <div [ngbNavOutlet]="nameNav"></div>
   </div>
 
@@ -613,7 +613,7 @@
           <div class="form-inline">
             <input class="form-check-input" type="checkbox" 
               [disabled]="waiver.isdeleted()"
-              id="waiver-holds-{{waiver.id()}}" [ngModel]="waiver.place_holds() == 't'"
+              id="waiver-holds-{{waiver.id()}}" [ngModel]="waiver.place_holds() === 't'"
               (ngModelChange)="fieldValueChange('waiver_entries', index, 'place_holds', $event)"
               (change)="afterFieldChange('waiver_entries', index, 'place_holds')"/>
             <label class="form-check-label"
@@ -622,7 +622,7 @@
           <div class="form-inline">
             <input class="form-check-input" type="checkbox" 
               [disabled]="waiver.isdeleted()"
-              id="waiver-history-{{waiver.id()}}" [ngModel]="waiver.view_history() == 't'"
+              id="waiver-history-{{waiver.id()}}" [ngModel]="waiver.view_history() === 't'"
               (ngModelChange)="fieldValueChange('waiver_entries', index, 'view_history', $event)"
               (change)="afterFieldChange('waiver_entries', index, 'view_history')"/>
             <label class="form-check-label"
@@ -633,7 +633,7 @@
           <div class="form-inline">
             <input class="form-check-input" type="checkbox" 
               [disabled]="waiver.isdeleted()"
-              id="waiver-pickup-{{waiver.id()}}" [ngModel]="waiver.pickup_holds() == 't'"
+              id="waiver-pickup-{{waiver.id()}}" [ngModel]="waiver.pickup_holds() === 't'"
               (ngModelChange)="fieldValueChange('waiver_entries', index, 'pickup_hold', $event)"
               (change)="afterFieldChange('waiver_entries', index, 'pickup_hold')"/>
             <label class="form-check-label"
@@ -642,7 +642,7 @@
           <div class="form-inline">
             <input class="form-check-input" type="checkbox" 
               [disabled]="waiver.isdeleted()"
-              id="waiver-checkout-{{waiver.id()}}" [ngModel]="waiver.checkout_items() == 't'"
+              id="waiver-checkout-{{waiver.id()}}" [ngModel]="waiver.checkout_items() === 't'"
               (ngModelChange)="fieldValueChange('waiver_entries', index, 'checkout_items', $event)"
               (change)="afterFieldChange('waiver_entries', index, 'checkout_items')"/>
             <label class="form-check-label"
