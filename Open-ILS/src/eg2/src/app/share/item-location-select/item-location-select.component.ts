@@ -279,8 +279,6 @@ export class ItemLocationSelectComponent
         contextOrgIds.forEach(id => orgIds = orgIds.concat(this.org.ancestors(id, true)));
 
         this.filterOrgsApplied = true;
-        let orgIds = [];
-        contextOrgIds.forEach(id => orgIds = orgIds.concat(this.org.ancestors(id, true)));
 
         if (!this.permFilter) {
             return Promise.resolve(this.filterOrgs = [...new Set(orgIds)]);
