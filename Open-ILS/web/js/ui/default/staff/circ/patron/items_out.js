@@ -503,9 +503,11 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
                 }
                 window.oils_inside_batch = false;
                 window.oils_op_change_within_batch = false;
+                egProgressDialog.close();
                 reset_page();
             }
             function do_one() {
+                egProgressDialog.increment();
                 var bc = barcodes.pop();
                 if (!bc) {
                     batch_cleanup();
@@ -525,6 +527,7 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
                     }
                 });
             }
+            egProgressDialog.open({value : 1});
             do_one();
         });
     }
