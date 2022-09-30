@@ -5,8 +5,8 @@
 <form action="[% ctx.opac_root %]/results" method="get">
 <div id='adv_global_search' class='data_grid data_grid_center'>
     <div id='adv_search_rows' class="container">
-        <h1 class="text-center">Advanced Search</h1>
-        <h2 class="text-center">Refine your search by filling out one or more fields to search by below.</h2>
+        <h1 class="text-center">[% l("Advanced Search") %]</h1>
+        <h2 class="text-center">[% l("Refine your search by filling out one or more fields to search by below.") %]</h2>
         <div class='adv_global_input_container row'>
             <table role="presentation" id="adv_global_input_table" class="mx-auto col-12">
                 <tbody id="adv_global_tbody">
@@ -36,7 +36,7 @@
             class="btn btn-deny"><i class="fas fa-ban"></i> [% l('Clear Form') %]</a>
     </div>
     <div class="my-5">
-        <h3>Search Filters</h3>
+        <h3>[% l("Search Filters") %]</h3>
         <div>
             [% FOR adv_chunk IN search.adv_config; NEXT IF adv_chunk.adv_hide || (adv_chunk.adv_special && adv_chunk.adv_special != 'copy_location'); %]
             <div class="pt-3">
