@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Observable, empty, from} from 'rxjs';
+import {Observable, EMPTY, from} from 'rxjs';
 import {map, tap, switchMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {Pager} from '@eg/share/util/pager';
@@ -46,7 +46,7 @@ export class BibListComponent implements OnInit {
                 return this.loadIds(pager, sort);
             }
 
-            return empty();
+            return EMPTY;
         };
 
         this.cellTextGenerator = {
@@ -66,7 +66,7 @@ export class BibListComponent implements OnInit {
               this.bibIds.slice(pager.offset, pager.offset + pager.limit));
 
         } else {
-            return empty();
+            return EMPTY;
         }
 
         // ID is the currently only supported sort column.  If other
@@ -79,7 +79,7 @@ export class BibListComponent implements OnInit {
 
         return from(promise).pipe(switchMap(bibIds => {
 
-            if (bibIds.length === 0) { return empty(); }
+            if (bibIds.length === 0) { return EMPTY; }
 
             return this.pcrud.search('rmsr', {id: bibIds}, {
                 order_by: orderBy,

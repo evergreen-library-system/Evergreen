@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable, throwError, from, empty} from 'rxjs';
+import {Observable, throwError, from, EMPTY} from 'rxjs';
 import {tap, map, switchMap} from 'rxjs/operators';
 import {NetService} from '@eg/core/net.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -74,7 +74,7 @@ export class CopyTagsDialogComponent
     ngOnInit() {
 
        this.tagDataSource = term => {
-            if (!this.curTagType) { return empty(); }
+            if (!this.curTagType) { return EMPTY; }
 
             return this.pcrud.search(
                 'acpt', {

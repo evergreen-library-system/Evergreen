@@ -2,7 +2,6 @@
  * Create and consume BroadcastChannel broadcasts
  */
 import {Injectable, EventEmitter} from '@angular/core';
-import {empty} from 'rxjs';
 
 interface BroadcastSub {
     channel: any; // BroadcastChannel

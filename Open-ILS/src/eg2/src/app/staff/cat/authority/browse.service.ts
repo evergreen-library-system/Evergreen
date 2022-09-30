@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, empty} from 'rxjs';
+import {Observable, EMPTY} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {Pager} from '@eg/share/util/pager';
@@ -46,7 +46,7 @@ export class BrowseService {
     loadAuthorities(): Observable<any> {
 
         if (!this.searchTerm || !this.authorityAxis) {
-            return empty();
+            return EMPTY;
         }
 
         return this.net.request(

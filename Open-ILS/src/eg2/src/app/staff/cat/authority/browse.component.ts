@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Observable, empty} from 'rxjs';
+import {Observable, EMPTY} from 'rxjs';
 import {map, switchMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {Pager} from '@eg/share/util/pager';
@@ -61,7 +61,7 @@ export class BrowseAuthorityComponent implements OnInit {
                     this.axisCbox.selectedId = this.browse.authorityAxis;
                     this.authorityAxis = this.axisCbox.selected;
                 } else {
-                    return empty();
+                    return EMPTY;
                 }
             }
 

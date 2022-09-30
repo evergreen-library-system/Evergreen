@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, ViewChild, ViewEncapsulation
     } from '@angular/core';
 import {Router} from '@angular/router';
-import {Observable, Observer, of, empty} from 'rxjs';
+import {Observable, Observer, of, EMPTY} from 'rxjs';
 import {map, tap, concatMap} from 'rxjs/operators';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
@@ -289,7 +289,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         this.emptyLibsCheckbox.checked(settings['cat.holdings_show_empty_org']);
 
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
-            if (!this.contextOrgLoaded) { return empty(); }
+            if (!this.contextOrgLoaded) { return EMPTY; }
             return this.fetchHoldings(pager);
         };
 

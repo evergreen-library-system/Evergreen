@@ -1,5 +1,5 @@
 import {Component, Input, ViewChild, TemplateRef, OnInit, Renderer2} from '@angular/core';
-import {Observable, from, empty, throwError} from 'rxjs';
+import {Observable, from, throwError} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';

@@ -1,5 +1,5 @@
 import {Component, Input, ViewChild, TemplateRef, OnInit} from '@angular/core';
-import {Observable, from, empty, throwError} from 'rxjs';
+import {Observable, from, EMPTY, throwError} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -56,7 +56,7 @@ export class PermGroupMapDialogComponent
 
 
         this.permEntries = (term: string) => {
-            if (term === null || term === undefined) { return empty(); }
+            if (term === null || term === undefined) { return EMPTY; }
             term = ('' + term).toLowerCase();
 
             // Find entries whose code or description match the search term

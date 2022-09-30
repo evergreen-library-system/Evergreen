@@ -15,7 +15,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ClonePortalEntriesDialogComponent} from './clone-portal-entries-dialog.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
-import {merge, Observable, empty} from 'rxjs';
+import {merge, Observable, EMPTY} from 'rxjs';
 
 @Component({
     templateUrl: './staff-portal-page.component.html'
@@ -80,7 +80,7 @@ export class AdminStaffPortalPageComponent extends AdminPageComponent implements
 
         const delObs = (overwrite) ?
             this.pcrud.search('cusppe', { owner: tgt }, {}, {}) :
-            empty();
+            EMPTY;
         const newObs = this.pcrud.search('cusppe', { owner: src }, {}, {});
         merge(delObs, newObs).subscribe(
             entry => {

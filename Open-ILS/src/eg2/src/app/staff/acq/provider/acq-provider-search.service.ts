@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {empty, throwError} from 'rxjs';
+import {EMPTY, throwError} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {AuthService} from '@eg/core/auth.service';
 import {GridDataSource} from '@eg/share/grid/grid';
@@ -164,7 +164,7 @@ export class AcqProviderSearchService {
             // to submit a search
             if (this.firstRun) {
                 this.firstRun = false;
-                return empty();
+                return EMPTY;
             }
 
             const joins = this.generateSearchJoins();

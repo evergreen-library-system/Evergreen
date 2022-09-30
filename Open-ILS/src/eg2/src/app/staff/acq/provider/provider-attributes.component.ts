@@ -1,5 +1,5 @@
 import {Component, OnInit, AfterViewInit, OnDestroy, Input, ViewChild} from '@angular/core';
-import {empty, throwError, Observable, from, Subscription} from 'rxjs';
+import {EMPTY, throwError, Observable, from, Subscription} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
@@ -106,7 +106,7 @@ export class ProviderAttributesComponent implements OnInit, AfterViewInit, OnDes
         gridSource.getRows = (pager: Pager, sort: any[]) => {
             this.provider = this.providerRecord.current();
             if (!this.provider) {
-                return empty();
+                return EMPTY;
             }
             let attributes = this.provider.attributes();
 

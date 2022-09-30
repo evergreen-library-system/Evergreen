@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {empty, throwError} from 'rxjs';
+import {EMPTY, throwError} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -230,7 +230,7 @@ export class AcqSearchService {
             // to submit a search
             if (this.firstRun) {
                 this.firstRun = false;
-                return empty();
+                return EMPTY;
             }
 
             const currentSearch = this.generateAcqSearch(searchType, gridSource.filters);

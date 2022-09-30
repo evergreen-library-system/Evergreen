@@ -1,5 +1,5 @@
 import {Component, OnInit, AfterViewInit, Input, ViewChild} from '@angular/core';
-import {empty, throwError, Observable, from} from 'rxjs';
+import {EMPTY, throwError, Observable, from} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Pager} from '@eg/share/util/pager';
@@ -108,7 +108,7 @@ export class ProviderContactAddressesComponent implements OnInit, AfterViewInit 
 
         gridSource.getRows = (pager: Pager, sort: any[]) => {
             if (!this.contactId) {
-                return empty();
+                return EMPTY;
             }
             const cid = this.contactId;
             const contact = this.providerRecord.current().contacts().filter( c => c.id() === cid)[0];

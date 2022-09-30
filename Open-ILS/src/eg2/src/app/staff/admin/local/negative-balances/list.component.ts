@@ -1,5 +1,5 @@
 import {Component, Input, ViewChild, OnInit} from '@angular/core';
-import {empty} from 'rxjs';
+import {EMPTY} from 'rxjs';
 import {map, tap, concatMap} from 'rxjs/operators';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -45,7 +45,7 @@ export class NegativeBalancesComponent implements OnInit {
 
             if (!this.contextOrgLoaded) {
                 // Still determining the default context org unit.
-                return empty();
+                return EMPTY;
             }
 
             return this.net.request(
