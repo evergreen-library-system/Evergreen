@@ -37,8 +37,9 @@ sub prepare_extended_user_info {
         {
             flesh => 2,
             flesh_fields => {
-                au => [qw/card home_ou addresses ident_type locale billing_address waiver_entries/, @extra_flesh],
-                "aou" => ["billing_address"]
+                au => [qw/card home_ou addresses ident_type locale billing_address waiver_entries stat_cat_entries/, @extra_flesh],
+                "aou" => ["billing_address"],
+                "actscecm" => ["stat_cat"]
             }
         }
     ]);

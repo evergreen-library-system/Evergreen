@@ -192,6 +192,13 @@ END; # FOREACH bib
                     </div>
             [% END %]
         [% END %]
+        [% IF copy_info.statcats.size; %]
+            [% FOREACH statcat IN copy_info.statcats;
+                IF statcat.stat_cat.opac_visible == 't'; %]
+                    <br/>[% statcat.stat_cat.name %]: [% statcat.value %]
+                [% END;
+            END %]
+        [% END %]
         </td>
             [%- IF has_parts == 'true' %]
             <td>[% copy_info.part_label | html %]</td>

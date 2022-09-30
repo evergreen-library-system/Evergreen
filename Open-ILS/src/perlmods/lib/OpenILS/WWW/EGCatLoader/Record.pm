@@ -150,12 +150,18 @@ sub load_record {
 
     # Add public copy notes to each copy - and while we're in there, grab peer bib records
     # and copy tags. Oh and if we're working with course materials, those too.
+    # And opac-visible item stat cats.
     my %cached_bibs = ();
     foreach my $copy (@{$ctx->{copies}}) {
         $copy->{notes} = $U->simplereq(
             'open-ils.circ',
             'open-ils.circ.copy_note.retrieve.all',
             {itemid => $copy->{id}, pub => 1 }
+        );
+        $copy->{statcats} = $U->simplereq(
+            'open-ils.circ',
+            'open-ils.circ.asset.stat_cat_entries.fleshed.retrieve_by_copy',
+            {copyid => $copy->{id}, public => 1}
         );
         if ($ctx->{course_module_opt_in}) {
             $copy->{course_materials} = $U->simplereq(

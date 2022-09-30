@@ -161,9 +161,16 @@
                 </td>
                 <td></td>
             </tr>
-            
-           
-
+            [% IF ctx.user.stat_cat_entries.size;
+                FOR statcat IN ctx.user.stat_cat_entries;
+                    IF statcat.stat_cat.opac_visible == 't'; %]
+                        <tr>
+                            <td class='color_4 light_border'>[% statcat.stat_cat.name %]</td>
+                            <td class='light_border' colspan='2'>[% statcat.stat_cat_entry %]</td>
+                        </tr>
+                    [% END;
+                END;
+            END %]
         </tbody>
     </table>
 
