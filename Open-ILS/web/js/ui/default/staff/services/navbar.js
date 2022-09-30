@@ -129,8 +129,8 @@ angular.module('egCoreMod')
                                 $scope.showRecentPatron = val > 0;
                                 $scope.showRecentPatrons = val > 1;
 
-                                $scope.showTraditionalCatalog =
-                                    s['ui.staff.traditional_catalog.enabled'];
+                                val = s['ui.staff.traditional_catalog.enabled'];
+                                $scope.showTraditionalCatalog = (val !== false);
                                 $scope.enableCurbside = 
                                     s['circ.curbside'];
                             }).then(function() {

@@ -1,0 +1,10 @@
+== Optionally remove traditional catalog from menu ==
+
+Libraries that have fully migrated to the Angular staff catalog
+may optionally hide the "Staff Catalog (Traditional)" menu
+options.  To do so, in the Library Settings Editor, set the
+"ui.staff.traditional_catalog.enabled" setting to False.
+
+After changing the setting, you will need to log out and log
+back in to see the changes to the menu.
+

@@ -24,7 +24,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     currentLocale: any;
 
     // When active, show a link to the traditional staff catalog
-    showTraditionalCatalog: boolean;
+    showTraditionalCatalog = true;
     curbsideEnabled: boolean;
 
     @ViewChild('navOpChange', {static: false}) opChange: OpChangeComponent;
