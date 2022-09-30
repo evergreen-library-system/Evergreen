@@ -1,6 +1,6 @@
 <form action="[% ctx.opac_root %]/results" method="get">
-    <h1 class="text-center">Numeric Search</h1>
-            <h2 class="text-center">Search by a field and numeric identifier.</h2>
+    <h1 class="text-center">[% l("Numeric Search") %]</h1>
+            <h2 class="text-center">[% l("Search by a field and numeric identifier.") %]</h2>
     <input type="hidden" name="contains" value="contains" />
     <input type="hidden" name="_special" value="1" />
     <input id="detail" type="hidden" name="detail_record_view"

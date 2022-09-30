@@ -1,6 +1,6 @@
 <form action="[% ctx.opac_root %]/results" method="get">
-    <h1 class="text-center">Expert Search</h1>
-            <h2 class="text-center">Search the MARC record.</h2>
+    <h1 class="text-center">[% l("Expert Search") %]</h1>
+            <h2 class="text-center">[% l("Search the MARC record.") %]</h2>
     <input type="hidden" name="_special" value="1" />
     <input id="detail" type="hidden" name="detail_record_view"
            value="[% show_detail_view %]"/>
