@@ -65,7 +65,7 @@
         </li>
         <!--Logout-->
         <li class="nav-item">
-        <a class="nav-link" href="[% mkurl(ctx.opac_root _ '/logout', {}, 1) %]" id="logout_link">[% l('Logout') %]</a>
+        <a class="nav-link" href="[% mkurl(ctx.opac_root _ '/logout', {active_logout => 1}, 1) %]" id="logout_link">[% l('Logout') %]</a>
         </li>
       [% END %]
       <!--must end ul and div no matter the user state-->
