@@ -1,9 +1,35 @@
+[%
 
+    redirect = CGI.param('redirect_to');
+    # Don't use referer unless we got here from elsewhere within the TPAC
+    IF !redirect AND ctx.referer.match('^https?://' _ ctx.hostname _ ctx.opac_root);
+        redirect = ctx.referer;
+    END;
 
+    # If no redirect is offered or it's leading us back to the
+    # login form, redirect the user to My Account
+    IF !redirect OR redirect.match(ctx.path_info _ '$');
+        redirect = CGI.url('-full' => 1) _ '/opac/myopac/main';
+    END;
+    redirect = redirect | replace('^http:', 'https:');
+    sso_enabled = ctx.get_org_setting(ctx.sso_org, 'opac.login.shib_sso.enable');
+    sso_native = ctx.get_org_setting(ctx.sso_org, 'opac.login.shib_sso.allow_native');
+
+%]
 <div class='container'>
 <hr>
-    <h3 class="text-center">[% l('Log in to Your Account') %]</h3>
-    <form id="login_form" method='post'>
+    <h3 class="text-center">[% l('Login to Your Account') %]</h3>
+<div class="table table-borderless table-sm">
+
+    [% IF sso_enabled %]
+    [%      final_redirect = redirect | html %]
+    <div id='sso-login-notice'>
+        <button type="submit" class="btn btn-confirm my-2" onclick="window.location = '[% mkurl(ctx.opac_root _ '/manual_shib_login', { redirect_to => final_redirect }) %]'" ><i class="fas fa-sign-in-alt" aria-hidden="true"></i>[% l('Login with SSO') %]</button>
+    [%-      IF sso_native; l(' or use the form below.'); END -%]
+    </div>
+    <br/>
+    [% END %]
+
    <div class="row text-center">[%# INCLUDE "opac/parts/login/help.tt2" %]</div>
     [% IF ctx.login_failed_event %]
 <div id='login-failed-message'>
@@ -19,79 +45,25 @@
 %]
 </div>
 [% END %]
+    <form id="login_form" method='post'>
 
-<div class="table table-borderless table-sm">
-	<div class="row">
-		<div class="col-sm w-50">
-			<label for='username_field' class="lbl1" >[% l('Library Card Number') %]
-			<a href="#" title="[% INCLUDE "opac/parts/login/username_hint.tt2" %]" data-html="true" data-toggle="tooltip">
-			<i class="fas fa-question-circle"></i></a></label>
-		</div>
-		<div class="col-sm w-50">
-			<label for="password_field" class="lbl1" >[% l('PIN') %]
-			<a href="#" title="[% INCLUDE "opac/parts/login/password_hint.tt2" %]" data-html="true" data-toggle="tooltip">
-            <i class="fas fa-question-circle"></i></a></label>
-		</div>
+[% INCLUDE "opac/parts/login/login_fields.tt2"  %]
+<div class="row">
+	<div class="col-sm w-50">
+		<input type="checkbox" value="" id="rememberMe">
+		<label class="form-check-label" for="rememberMe">
+			[% l('Stay logged in?') %]
+		</label>
 	</div>
-	<div class="row">
-		<div class="col-sm w-50">
-			<input class="form-control" type='text' id="username_field" name="username" autofocus />
-		</div>
-		<div class="col-sm w-50">
-			<div class="input-group">
-				<input class="form-control" id="password_field" name="password" type="password"
-					   spellcheck="false" autocomplete="false" autocapitalize="none" aria-description="[% l('Your password is not visible.') %]"/>
-				<button id="show_password" class="input-group-text pointer" type="button" role="checkbox">
-					<i class="fas fa-eye-slash"></i>
-				</button>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm w-50">
-                    [% IF ctx.get_org_setting (
-                          ctx.physical_org || ctx.aou_tree.id, 'opac.allow_pending_user') %]
-			<a href='[% mkurl(ctx.opac_root _ '/register', {}, 1) %]'>[% l('Request A Card') %]</a>
-                    [% END %]
-		</div>
-		<div class="col-sm w-50">
-			[% IF reset_password == 'true' %]
-				<a href='[% mkurl(ctx.opac_root _ '/password_reset', {}, 1) %]'>[% l('Forgot Your Password?') %]  </a>
-			[% END %]
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-sm w-50">
-			<input type="checkbox" value="" id="rememberMe">
-            <label class="form-check-label" for="rememberMe">
-               [% l('Stay logged in?') %]
-            </label>
-		</div>
-		<div class="col-sm w-50">
-			<button type="submit" class="btn btn-confirm my-2"><i class="fas fa-sign-in-alt" aria-hidden="true"></i> [% l('Log in') %]</button>
-		</div>
+	<div class="col-sm w-50">
+		<button type="submit" class="btn btn-confirm my-2"><i class="fas fa-sign-in-alt" aria-hidden="true"></i> [% l('Log in') %]</button>
 	</div>
 </div>
 
         <div style="clear: both; padding-top: 15px;" class="col-12 text-center">
-        [%
-            redirect = CGI.param('redirect_to');
-            # Don't use referer unless we got here from elsewhere within the TPAC
-            IF !redirect AND ctx.referer.match('^https?://' _ ctx.hostname _ ctx.opac_root);
-                redirect = ctx.referer;
-            END;
-            # If no redirect is offered or it's leading us back to the
-            # login form, redirect the user to My Account
-            IF !redirect OR redirect.match(ctx.path_info _ '$');
-                redirect = CGI.url('-full' => 1) _ '/opac/myopac/main';
-            END;
-                redirect = redirect  | replace('^http:', 'https:');
-            %]
             <input type='hidden' name='redirect_to' value='[% redirect | html %]'/>
-
         </div>
         <input id="client_tz_id" name="client_tz" type="hidden" />
     </form>
 
 </div>
-

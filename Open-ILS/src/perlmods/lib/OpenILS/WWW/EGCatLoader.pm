@@ -305,7 +305,7 @@ sub redirect_ssl {
 sub redirect_auth {
     my $self = shift;
 
-    my $sso_org = $ENV{sso_loc} || $self->get_physical_loc || $self->_get_search_lib();
+    my $sso_org = $self->ctx->{sso_org};
     my $sso_enabled = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.enable');
     my $sso_native = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.allow_native');
 
@@ -322,6 +322,7 @@ sub redirect_auth {
 # -----------------------------------------------------------------------------
 sub load_simple {
     my ($self, $page) = @_;
+
     $self->ctx->{page} = $page;
     $self->ctx->{search_ou} = $self->_get_search_lib();
 
@@ -479,6 +480,8 @@ sub load_common {
     $ctx->{course_ou} = int($self->cgi->param('locg')) || $self->ctx->{physical_loc} || $self->ctx->{aou_tree}->()->id;
     $ctx->{use_courses} = $ctx->{get_org_setting}->($ctx->{course_ou}, 'circ.course_materials_opt_in') ? 1 : 0;
 
+    $ctx->{sso_org} = $ENV{sso_loc} || $ctx->{physical_loc} || $ctx->{search_ou};
+
     return Apache2::Const::OK;
 }
 
@@ -556,8 +559,8 @@ sub load_login {
 
     $self->timelog("Load login begins");
 
-    my $sso_org = $ENV{sso_loc} || $self->get_physical_loc || $self->_get_search_lib();
-    $ctx->{sso_org} = $sso_org;
+    my $sso_org = $ctx->{sso_org};
+
     my $sso_enabled = $ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.enable');
     my $sso_native = $ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.allow_native');
     my $sso_eg_match = $ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.evergreen_matchpoint') || 'usrname';
@@ -572,12 +575,12 @@ sub load_login {
     my $persist = $cgi->param('persist');
     my $client_tz = $cgi->param('client_tz');
 
-    my $sso_user_match_value;
+    my $sso_user_match_value = $ENV{$sso_shib_match};
     my $response;
     my $sso_logged_in;
     $self->timelog("SSO is enabled") if ($sso_enabled);
     if ($sso_enabled
-        and $sso_user_match_value = $ENV{$sso_shib_match}
+        and $sso_user_match_value
         and (!$self->cgi->cookie(COOKIE_SHIB_LOGGEDOUT) or $self->{_ignore_shib_logged_out_cookie})
     ) { # we have a shib session, and have not cleared a previous shib-login cookie
         $self->{_ignore_shib_logged_out_cookie} = 0; # only set by an intermediate call that internally redirected here
@@ -753,9 +756,10 @@ sub load_manual_shib_login {
     my $self = shift;
     my $redirect_to = shift || $self->cgi->param('redirect_to');
 
-    my $sso_org = $ENV{sso_loc} || $self->get_physical_loc || $self->_get_search_lib();
+    my $sso_org = $self->ctx->{sso_org};
     my $sso_entity_id = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.entityId');
     my $sso_shib_match = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.shib_matchpoint') || 'uid';
+
 
     if ($ENV{$sso_shib_match}) {
         $self->{_ignore_shib_logged_out_cookie} = 1;
@@ -788,8 +792,8 @@ sub load_logout {
         || $self->ctx->{home_page};
     my $active_logout = $self->cgi->param('active_logout');
 
-    my $sso_org = $ENV{sso_loc} || $self->get_physical_loc || $self->_get_search_lib();
-    $self->ctx->{sso_org} = $sso_org;
+    my $sso_org = $self->ctx->{sso_org};
+
     my $sso_enabled = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.enable');
     my $sso_entity_id = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.entityId');
     my $sso_logout = $self->ctx->{get_org_setting}->($sso_org, 'opac.login.shib_sso.logout');
