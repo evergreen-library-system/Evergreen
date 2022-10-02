@@ -88,31 +88,31 @@
   <ng-container *ngIf="!embedded && !gatherParamsOnly">
     <div class="flex-2 p-1 pr-2 pl-2">
       <ng-container *ngIf="!batchMode">
-        <ng-container *ngIf="disposition() == 'pre-order'">
+        <ng-container *ngIf="disposition() === 'pre-order'">
           <button
             class="btn btn-outline-danger material-icon-button"
             (click)="deleteRequested.emit(copy)" title="Delete Item" i18n-title>
             <span class="material-icons">delete</span>
           </button>
         </ng-container>
-        <ng-container *ngIf="disposition() == 'on-order' || disposition() == 'delayed'">
+        <ng-container *ngIf="disposition() === 'on-order' || disposition() === 'delayed'">
           <a href="javascript:;" (click)="receiveRequested.emit(copy)" i18n>Mark Received</a>
         </ng-container>
-        <ng-container *ngIf="disposition() == 'received'">
+        <ng-container *ngIf="disposition() === 'received'">
           <a href="javascript:;" (click)="unReceiveRequested.emit(copy)" i18n>Un-Receive</a>
         </ng-container>
-        <ng-container *ngIf="disposition() == 'on-order'">
+        <ng-container *ngIf="disposition() === 'on-order'">
           <a href="javascript:;" class="ml-2" (click)="cancelRequested.emit(copy)" i18n>Cancel</a>
         </ng-container>
-        <ng-container *ngIf="disposition() == 'delayed'">
+        <ng-container *ngIf="disposition() === 'delayed'">
           &nbsp;<a href="javascript:;" (click)="cancelRequested.emit(copy)" i18n>Cancel</a>
         </ng-container>
-        <ng-container *ngIf="disposition() == 'delayed'">
+        <ng-container *ngIf="disposition() === 'delayed'">
           <span class="font-italic ml-2" title="{{copy.cancel_reason().description()}}">
             {{copy.cancel_reason().label()}}
           </span>
         </ng-container>
-        <ng-container *ngIf="disposition() == 'canceled'">
+        <ng-container *ngIf="disposition() === 'canceled'">
           <span class="font-italic" title="{{copy.cancel_reason().description()}}">
             {{copy.cancel_reason().label()}}
           </span>

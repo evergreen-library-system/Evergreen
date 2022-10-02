@@ -1,6 +1,4 @@
-import {Component, Input, OnInit, AfterViewInit, ViewChild} from '@angular/core';
-import {of, Observable} from 'rxjs';
-import {tap, take, map} from 'rxjs/operators';
+import {Component, Input, OnInit} from '@angular/core';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {FormatService} from '@eg/core/format.service';
@@ -9,11 +7,8 @@ import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {ComboboxEntry, ComboboxComponent} from '@eg/share/combobox/combobox.component';
-import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {EventService} from '@eg/core/event.service';
 import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
-import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
 
 
@@ -21,7 +16,7 @@ import {BroadcastService} from '@eg/share/util/broadcast.service';
   templateUrl: 'summary.component.html',
   selector: 'eg-acq-picklist-summary'
 })
-export class PicklistSummaryComponent implements OnInit, AfterViewInit {
+export class PicklistSummaryComponent implements OnInit {
 
     private _picklistId: number;
     @Input() set picklistId(id: number) {
@@ -58,9 +53,6 @@ export class PicklistSummaryComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.load().then(_ => this.initDone = true);
-    }
-
-    ngAfterViewInit() {
     }
 
     load(): Promise<any> {

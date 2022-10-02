@@ -213,24 +213,24 @@
             class="form-control">
             <option i18n value="">is</option>
             <option i18n value="__not">is NOT</option>
-            <option i18n value="__fuzzy" [hidden]="searchTermDatatypes[filterField] != 'text'">contains</option>
+            <option i18n value="__fuzzy" [hidden]="searchTermDatatypes[filterField] !== 'text'">contains</option>
             <option i18n value="__not,__fuzzy" [hidden]="searchTermDatatypes[filterField]">does NOT contain</option>
-            <option i18n value="__starts" [hidden]="searchTermDatatypes[filterField] != 'text'">STARTS with</option>
-            <option i18n value="__ends" [hidden]="searchTermDatatypes[filterField] != 'text'">ENDS with</option>
-            <option i18n value="__lte" [hidden]="searchTermDatatypes[filterField] != 'timestamp' && !dateLikeSearchFields[filterField]">is on or BEFORE</option>
-            <option i18n value="__gte" [hidden]="searchTermDatatypes[filterField] != 'timestamp' && !dateLikeSearchFields[filterField]">is on or AFTER</option>
-            <option i18n value="__between" [hidden]="searchTermDatatypes[filterField] != 'timestamp'">is BETWEEN</option>
-            <option i18n value="__age" [hidden]="searchTermDatatypes[filterField] != 'timestamp'">age (relative date)</option>
-            <option i18n value="__gte" [hidden]="searchTermDatatypes[filterField] != 'number'">is greater than or equal</option>
-            <option i18n value="__lte" [hidden]="searchTermDatatypes[filterField] != 'number'">is less than or equal</option>
+            <option i18n value="__starts" [hidden]="searchTermDatatypes[filterField] !== 'text'">STARTS with</option>
+            <option i18n value="__ends" [hidden]="searchTermDatatypes[filterField] !== 'text'">ENDS with</option>
+            <option i18n value="__lte" [hidden]="searchTermDatatypes[filterField] !== 'timestamp' && !dateLikeSearchFields[filterField]">is on or BEFORE</option>
+            <option i18n value="__gte" [hidden]="searchTermDatatypes[filterField] !== 'timestamp' && !dateLikeSearchFields[filterField]">is on or AFTER</option>
+            <option i18n value="__between" [hidden]="searchTermDatatypes[filterField] !== 'timestamp'">is BETWEEN</option>
+            <option i18n value="__age" [hidden]="searchTermDatatypes[filterField] !== 'timestamp'">age (relative date)</option>
+            <option i18n value="__gte" [hidden]="searchTermDatatypes[filterField] !== 'number'">is greater than or equal</option>
+            <option i18n value="__lte" [hidden]="searchTermDatatypes[filterField] !== 'number'">is less than or equal</option>
 <!-- TODO
             <option i18n value="__isnotnull" [hidden]="searchTermDatatypes[filterField] == 'id'">exists</option>
             <option i18n value="__isnull" [hidden]="searchTermDatatypes[filterField] == 'id'">does NOT exist</option>
             <option i18n value="__in">matches a term from a file</option>
 -->
           </select> 
-          <input *ngIf="searchTermDatatypes[filterField] != 'state'" type="text" class="form-control" name="filter-value-input" id="filter-value-input" [(ngModel)]="filterValue">
-          <eg-combobox *ngIf="searchTermDatatypes[filterField] == 'state'"
+          <input *ngIf="searchTermDatatypes[filterField] !== 'state'" type="text" class="form-control" name="filter-value-input" id="filter-value-input" [(ngModel)]="filterValue">
+          <eg-combobox *ngIf="searchTermDatatypes[filterField] === 'state'"
             [asyncSupportsEmptyTermClick]="true"
             idlClass="jubstlbl"
             [selectedId]="filterValue"
@@ -354,9 +354,9 @@
                   <button class="btn btn-outline-dark btn-sm" ngbDropdownToggle 
                     title="Order Identifier Type" i18n-title [disabled]="!canEditIdent(li)"
                     [ngClass]="{'btn-warning': !selectedIdent(li)}">
-                    <ng-container *ngIf="orderIdentTypes[li.id()]=='isbn'" i18n>ISBN</ng-container>
-                    <ng-container *ngIf="orderIdentTypes[li.id()]=='issn'" i18n>ISSN</ng-container>
-                    <ng-container *ngIf="orderIdentTypes[li.id()]=='upc'" i18n>UPC</ng-container>
+                    <ng-container *ngIf="orderIdentTypes[li.id()]==='isbn'" i18n>ISBN</ng-container>
+                    <ng-container *ngIf="orderIdentTypes[li.id()]==='issn'" i18n>ISSN</ng-container>
+                    <ng-container *ngIf="orderIdentTypes[li.id()]==='upc'" i18n>UPC</ng-container>
                   </button>
                   <div ngbDropdownMenu>
                     <button class="btn-sm" ngbDropdownItem
@@ -386,9 +386,9 @@
               <div ngbDropdown>
                 <button class="btn btn-info btn-sm" ngbDropdownToggle i18n>Actions</button>
                 <div ngbDropdownMenu>
-                  <button ngbDropdownItem [disabled]="li.state() != 'on-order' && lineitemDisposition(li) != 'delayed'"
+                  <button ngbDropdownItem [disabled]="li.state() !== 'on-order' && lineitemDisposition(li) !== 'delayed'"
                     (click)="markReceived([li.id()])" i18n>Mark Received</button>
-                  <button ngbDropdownItem [disabled]="li.state() != 'received'"
+                  <button ngbDropdownItem [disabled]="li.state() !== 'received'"
                     (click)="markUnReceived([li.id()])" i18n>Mark Un-Received</button>
                   <button ngbDropdownItem [disabled]="!liHasRealCopies(li)"
                     (click)="editHoldings(li)" i18n>Update Barcodes</button>
@@ -535,7 +535,7 @@
     </div>
   </div>
 
-  <div class="row" *ngIf="showNotesFor == li.id()">
+  <div class="row" *ngIf="showNotesFor === li.id()">
     <div class="col-lg-10 offset-lg-1 p-2 mt-2">
       <eg-lineitem-notes [lineitem]="li" (closeRequested)="showNotesFor = null">
       </eg-lineitem-notes>

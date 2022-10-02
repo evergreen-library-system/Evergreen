@@ -31,7 +31,7 @@
   <div *ngFor="let note of lineitem.lineitem_notes()">
     <div class="d-flex m-1 p-2 border">
       <div class="flex-1 p-1">
-        <ng-container *ngIf="note.vendor_public() == 't'">
+        <ng-container *ngIf="note.vendor_public() === 't'">
           <div class="text-primary" i18n>VENDOR PUBLIC</div>
         </ng-container>
         <ng-container *ngIf="note.alert_text()">

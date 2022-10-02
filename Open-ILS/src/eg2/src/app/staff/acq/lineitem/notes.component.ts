@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, AfterViewInit, Input, Output, EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -10,7 +10,7 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
   templateUrl: 'notes.component.html',
   selector: 'eg-lineitem-notes'
 })
-export class LineitemNotesComponent implements OnInit, AfterViewInit {
+export class LineitemNotesComponent implements AfterViewInit {
 
     @Input() lineitem: IdlObject;
     noteText: string;
@@ -26,9 +26,6 @@ export class LineitemNotesComponent implements OnInit, AfterViewInit {
         private auth: AuthService,
         private net: NetService
     ) {}
-
-    ngOnInit() {
-    }
 
     ngAfterViewInit() {
         const node = document.getElementById('note-text-input');

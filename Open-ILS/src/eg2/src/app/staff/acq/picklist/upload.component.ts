@@ -1,7 +1,6 @@
-import {Component, OnInit, AfterViewInit, Input,
+import {Component, AfterViewInit, Input,
     ViewChild, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
-import {Subject} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
@@ -20,7 +19,6 @@ import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.componen
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {PicklistUploadService} from './upload.service';
-import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
 
 
 const TEMPLATE_SETTING_NAME = 'eg.acq.picklist.upload.templates';
@@ -63,7 +61,7 @@ const ORG_SETTINGS = [
   selector: 'eg-acq-upload',
   templateUrl: './upload.component.html'
 })
-export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
+export class UploadComponent implements AfterViewInit, OnDestroy {
 
     // mode can be one of
     //  upload:          actually upload and process a MARC order file
@@ -204,8 +202,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
         }
     }
-
-    ngOnInit() {}
 
     ngAfterViewInit() {
         this.loadStartupData();

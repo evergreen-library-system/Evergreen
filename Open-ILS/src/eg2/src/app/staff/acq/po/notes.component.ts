@@ -1,16 +1,15 @@
-import {Component, OnInit, AfterViewInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, AfterViewInit, Input, Output, EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
   templateUrl: 'notes.component.html',
   selector: 'eg-po-notes'
 })
-export class PoNotesComponent implements OnInit, AfterViewInit {
+export class PoNotesComponent implements AfterViewInit {
 
     @Input() po: IdlObject;
     noteText: string;
@@ -24,9 +23,6 @@ export class PoNotesComponent implements OnInit, AfterViewInit {
         private auth: AuthService,
         private net: NetService
     ) {}
-
-    ngOnInit() {
-    }
 
     ngAfterViewInit() {
         const node = document.getElementById('note-text-input');
