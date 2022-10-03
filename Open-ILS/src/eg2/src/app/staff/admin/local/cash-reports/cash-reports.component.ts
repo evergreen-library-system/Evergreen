@@ -1,7 +1,6 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource, GridColumn,
-    GridCellTextGenerator, GridRowFlairEntry} from '@eg/share/grid/grid';
+import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
