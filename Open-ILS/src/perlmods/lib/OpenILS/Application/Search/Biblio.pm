@@ -3079,8 +3079,15 @@ __PACKAGE__->register_method(
             desc => q/
                 Stream of record summary objects including id, record,
                 hold_count, copy_counts, display (metabib display
-                fields), attributes (metabib record attrs), plus
-                metabib_id and metabib_records for the metabib variant.
+                fields), and attributes (metabib record attrs).  The
+                metabib variant of the call gets metabib_id and
+                metabib_records, and the regular record version also
+                gets some metabib information, but returns them as
+                staff_view_metabib_id, staff_view_metabib_records, and
+                staff_view_metabib_attributes.  This is to mitigate the
+                need for code changes elsewhere where assumptions are
+                made when certain fields are returned.
+                
             /
         }
     }
@@ -3141,6 +3148,46 @@ sub catalog_record_summary {
         my $response = $is_meta ? 
             get_one_metarecord_summary($self, $e, $org_id, $rec_id) :
             get_one_record_summary($self, $e, $org_id, $rec_id);
+
+        # Let's get Formats & Editions data FIXME: consider peer bibs?
+        unless ($is_meta) {
+            my $meta_search = $e->search_metabib_metarecord_source_map({source => $rec_id});
+            if ($meta_search) {
+                $response->{staff_view_metabib_id} = $meta_search->[0]->metarecord;
+                my $maps = $e->search_metabib_metarecord_source_map({metarecord => $response->{staff_view_metabib_id}});
+                my @metabib_records = map { $_->source } @$maps;
+                $response->{staff_view_metabib_records} = \@metabib_records;
+
+                my $attributes = $U->get_bre_attrs(\@metabib_records);
+                # we get "243":{
+                #       "srce":{
+                #         "code":" ",
+                #         "label":"National bibliographic agency"
+                #       }, ...}
+                my $metabib_attr = {};
+
+                foreach my $bib_id ( keys %{ $attributes } ) {
+                    foreach my $ctype ( keys %{ $attributes->{$bib_id} } ) {
+                        # we want {
+                        #   "srce":{ " ": { "label": "National bibliographic agency", "count" : 1 } },
+                        #       ...
+                        #   }
+                        my $current_code = $attributes->{$bib_id}->{$ctype}->{code};
+                        my $code_label = $attributes->{$bib_id}->{$ctype}->{label};
+                        $metabib_attr->{$ctype} = {} unless $metabib_attr->{$ctype};
+                        if (! $metabib_attr->{$ctype}->{ $current_code }) {
+                            $metabib_attr->{$ctype}->{ $current_code } = {
+                                "label" => $code_label,
+                                "count" => 1
+                            }
+                        } else {
+                            $metabib_attr->{$ctype}->{ $current_code }->{count}++;
+                        }
+                    }
+                }
+                $response->{staff_view_metabib_attributes} = $metabib_attr;
+            }
+        }
 
         ($response->{copy_counts}) = $copy_method->run($org_id, $rec_id);
 

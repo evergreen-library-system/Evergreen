@@ -12,6 +12,7 @@ import {OpChangeComponent} from '@eg/staff/share/op-change/op-change.component';
 import {TitleComponent} from '@eg/share/title/title.component';
 import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.component';
 import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.component';
+import {BibStaffViewComponent} from '@eg/staff/share/bib-staff-view/bib-staff-view.component';
 import {EgHelpPopoverComponent} from '@eg/share/eg-help-popover/eg-help-popover.component';
 import {DatetimeValidatorDirective} from '@eg/share/validators/datetime_validator.directive';
 import {MultiSelectComponent} from '@eg/share/multi-select/multi-select.component';
@@ -36,6 +37,7 @@ import {OfflineService} from '@eg/staff/share/offline.service';
     OpChangeComponent,
     BucketDialogComponent,
     BibSummaryComponent,
+    BibStaffViewComponent,
     EgHelpPopoverComponent,
     DatetimeValidatorDirective,
     MultiSelectComponent,
@@ -61,6 +63,7 @@ import {OfflineService} from '@eg/staff/share/offline.service';
     OpChangeComponent,
     BucketDialogComponent,
     BibSummaryComponent,
+    BibStaffViewComponent,
     EgHelpPopoverComponent,
     DatetimeValidatorDirective,
     MultiSelectComponent,

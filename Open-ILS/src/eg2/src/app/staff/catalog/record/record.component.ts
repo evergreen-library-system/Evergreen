@@ -9,6 +9,7 @@ import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {StaffCatalogService} from '../catalog.service';
 import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.component';
+import {BibStaffViewComponent} from '@eg/staff/share/bib-staff-view/bib-staff-view.component';
 import {StoreService} from '@eg/core/store.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {MarcEditorComponent} from '@eg/staff/share/marc-edit/editor.component';
@@ -154,7 +155,7 @@ export class RecordComponent implements OnInit {
         this.bib.getBibSummary(
             this.recordId,
             this.searchContext.searchOrg.id(),
-            this.searchContext.searchOrg.ou_type().depth()).toPromise()
+            this.searchContext.isStaff).toPromise()
         .then(summary => {
             this.summary =
                 this.staffCat.currentDetailRecordSummary = summary;

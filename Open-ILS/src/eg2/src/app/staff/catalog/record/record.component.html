@@ -38,6 +38,13 @@
     </div>
     <ul ngbNav #recordTabs="ngbNav" [(activeId)]="recordTab"
       (navChange)="beforeNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
+      <li role="presentation" [ngbNavItem]="'staff_view'">
+        <a i18n ngbNavLink role="tab">Staff View</a>
+        <ng-template ngbNavContent>
+          <eg-bib-staff-view [bibSummary]="summaryForDisplay()">
+          </eg-bib-staff-view>
+        </ng-template>
+      </li>
       <li role="presentation" [ngbNavItem]="'item_table'">
         <a i18n ngbNavLink role="tab">Item Table</a>
         <ng-template ngbNavContent>
@@ -115,5 +122,3 @@
     <div [ngbNavOutlet]="recordTabs" class="mt-2"></div>
   </div>
 </div>
-
-

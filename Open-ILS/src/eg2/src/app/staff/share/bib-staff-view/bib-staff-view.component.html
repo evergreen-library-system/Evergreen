@@ -1,0 +1,348 @@
+<div class='eg-bib-staff-view card tight-card w-100' *ngIf="summary">
+    <div class="row"><!-- "table" -->
+
+        <!-- 1st column -->
+        <div class="col-md-4">
+
+            <!-- Col 1, Title Row -->
+            <div class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Title:</div>
+                <div class="col-sm-6">
+                    <a *ngIf="summary.display.title" href="/eg2/staff/catalog/search?query={{summary.display.title}}&fieldClass=title&joinOp=&matchOp=contains&dateOp=is">
+                        {{summary.display.title}}
+                    </a>
+                </div>
+            </div><!-- end of Col 1, Title Row -->
+
+            <!-- Col 1, Series Title Row -->
+            <div *ngIf="summary.display.series_title" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Series Title:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _series of summary.display.series_title" class="list-group-item">
+                            <a href="/eg2/staff/catalog/search?query={{_series}}&fieldClass=series&joinOp=&matchOp=contains&dateOp=is">
+                                {{_series}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end Col 1, Series Title Row-->
+
+            <!-- Col 1, Author Row -->
+            <div class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Author:</div>
+                <div class="col-sm-6">
+                    <a *ngIf="summary.display.author" href="/eg2/staff/catalog/search?query={{summary.display.author}}&fieldClass=author&joinOp=&matchOp=contains&dateOp=is">
+                        {{summary.display.author}}
+                    </a>
+                </div>
+            </div><!-- end Col 1, Author Row -->
+
+            <!-- Col 1, Creator Row -->
+            <div *ngIf="summary.display.creators" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Creator:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _creator of summary.display.creators" class="list-group-item">
+                            <a href="/eg2/staff/catalog/search?query={{_creator}}&fieldClass=author&joinOp=&matchOp=contains&dateOp=is">
+                                {{_creator}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 1, Creator Row -->
+
+            <!-- Col 1, Performer Row -->
+            <div *ngIf="summary.display.performers" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Performer:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _performer of summary.display.performers" class="list-group-item">
+                            <a href="/eg2/staff/catalog/search?query={{_performer}}&fieldClass=author&joinOp=&matchOp=contains&dateOp=is">
+                                {{_performer}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 1, Performer Row -->
+
+            <!-- Col 1, Edition Row -->
+            <div *ngIf="summary.display.edition" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Edition:</div>
+                <div class="col-sm-6">
+                    {{summary.display.edition}}
+                </div>
+            </div><!-- end of Col 1, Edition Row -->
+
+            <!-- Col 1, Publisher Row -->
+            <div *ngIf="summary.display.publisher" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Publisher:</div>
+                <div class="col-sm-6">
+                    {{summary.display.publisher}}
+                </div>
+            </div><!-- end of Col 1, Publisher Row -->
+
+            <!-- Col 1, Production Credit Row -->
+            <div *ngIf="summary.display.production_credits" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Production Credit:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _credit of summary.display.production_credits" class="list-group-item">
+                            <a href="/eg2/staff/catalog/search?query={{_credit}}&fieldClass=author&joinOp=&matchOp=contains&dateOp=is">
+                                {{_credit}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 1, Production Credit Row -->
+
+            <!-- Col 1, Type of Resource Row -->
+            <div *ngIf="summary.display.type_of_resource" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Type of Resource:</div>
+                <div class="col-sm-6">
+                    {{summary.display.type_of_resource}}
+                </div>
+            </div><!-- end of Col 1, Type of Resource Row -->
+
+            <!-- Col 1, Physical Description Row -->
+            <div *ngIf="summary.display.physical_description" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Physical Description:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _desc of summary.display.physical_description" class="list-group-item">
+                            {{_desc}}
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 1, Physical Description Row -->
+
+            <!-- Col 1, General Note Row -->
+            <div *ngIf="summary.display.general_note" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>General Note:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _note of summary.display.general_note" class="list-group-item">
+                            {{_note}}
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 1, General Note Row -->
+
+            <!-- Col 1, Bibliography Row -->
+            <div *ngIf="summary.display.bibliography" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Bibliography:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _bibliography of summary.display.bibliography" class="list-group-item">
+                            {{_bibliography}}
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 1, Bibliography Row -->
+
+            <!-- Col 1, TOC Row -->
+            <div *ngIf="summary.display.toc" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Table of Contents:</div>
+                <div class="col-sm-6">
+                    {{summary.display.toc}}
+                </div>
+            </div><!-- end of Col 1, TOC Row -->
+
+            <!-- Col 1, Thesis Row -->
+            <div *ngIf="summary.display.thesis" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Thesis:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _thesis of summary.display.thesis" class="list-group-item">
+                            {{_thesis}}
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 1, Thesis Row -->
+
+        </div><!-- 1st column -->
+
+        <div class="col-md-4"><!-- 2nd column -->
+
+            <!-- Col 2, ISBN Row -->
+            <div *ngIf="summary.display.isbn" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>ISBN:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _isbn of summary.display.isbn" class="list-group-item">
+                            <a href="/eg2/staff/catalog/search?identQuery={{_isbn}}&identQueryType=identifier%7Cisbn">
+                                {{_isbn}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 2, ISBN Row -->
+
+            <!-- Col 1, ISSN Row -->
+            <div *ngIf="summary.display.issn" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>ISSN:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _issn of summary.display.issn" class="list-group-item">
+                            <a href="/eg2/staff/catalog/search?identQuery={{_issn}}&identQueryType=identifier%7Cissn">
+                                {{_issn}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 1, ISSN Row -->
+
+            <!-- Col 1, UPC Row -->
+            <div *ngIf="summary.display.upc" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>UPC:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _upc of summary.display.upc" class="list-group-item">
+                            <a href="/eg2/staff/catalog/search?identQuery={{_upc}}&identQueryType=identifier%7Cupc">
+                                {{_upc}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 1, UPC Row -->
+
+            <!-- Col 1, Hold and Copy Counts Row -->
+            <div class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Hold and Copy Counts:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li class="list-group-item"><span i18n>{{summary.holdCount}} hold requests</span></li>
+                        <li class="list-group-item">
+                            <span i18n *ngIf=" summary.isHoldable">Record is holdable.</span>
+                            <span i18n *ngIf="!summary.isHoldable">Record is not holdable.</span>
+                        </li>
+                        <li *ngFor="let _count of summary.holdingsSummary" class="list-group-item">
+                            <span i18n>{{_count.available}} of {{_count.count}} copies available at {{orgName(_count.org_unit)}}.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 1, Hold and Copy Counts Row -->
+
+            <!-- Col 1, Formats and Editions Row -->
+            <div class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Formats and Editions:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <ng-container *ngIf="summary.staffViewMetabibAttributes.icon_format">
+                            <li *ngFor="let _x of summary.staffViewMetabibAttributes.icon_format | keyvalue" class="list-group-item">
+                                <a href="/eg2/staff/catalog/search?query=from_metarecord({{summary.staffViewMetabibId}}) icon_format({{_x.key}})">
+                                    {{_x.value.label}}
+                                </a>
+                                    {{_x.value.count}}
+                            </li>
+                        </ng-container>
+                        <ng-container *ngIf="summary.staffViewMetabibAttributes.item_lang">
+                            <li *ngFor="let _x of summary.staffViewMetabibAttributes.item_lang | keyvalue" class="list-group-item">
+                                <a href="/eg2/staff/catalog/search?query=from_metarecord({{summary.staffViewMetabibId}}) item_lang({{_x.key}})">
+                                    {{_x.value.label}}
+                                </a>
+                                    {{_x.value.count}}
+                            </li>
+                        </ng-container>
+                    </ul>
+                </div>
+            </div><!-- end of Col 1, Formats and Editions Row -->
+
+        </div><!-- 2nd column -->
+
+        <div class="col-md-4"><!-- 3rd column -->
+
+            <!-- Col 3, Abstract Row -->
+            <div *ngIf="summary.display.abstract" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Abstract:</div>
+                <div class="col-sm-6">
+                    {{summary.display.abstract}}
+                </div>
+            </div><!-- end of Col 3, Abstract Row -->
+
+            <!-- Col 3, Subject Row -->
+            <div *ngIf="summary.display.subject" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Subject:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _subj of summary.display.subject" class="list-group-item">
+                            <a href="/eg2/staff/catalog/search?query={{_subj}}&fieldClass=subject&joinOp=&matchOp=contains&dateOp=is">
+                                {{_subj}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 3, Subject Row -->
+
+            <!-- Col 3, Subject Name Row -->
+            <div *ngIf="summary.display.subject_name" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Subject Name:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _subj of summary.display.subject_name" class="list-group-item">
+                            <a href="/eg2/staff/catalog/search?query={{_subj}}&fieldClass=subject&joinOp=&matchOp=contains&dateOp=is">
+                                {{_subj}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 3, Subject Name Row -->
+
+            <!-- Col 3, Subject Topic Row -->
+            <div *ngIf="summary.display.subject_topic" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Subject Topic:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _subj of summary.display.subject_topic" class="list-group-item">
+                            <a href="/eg2/staff/catalog/search?query={{_subj}}&fieldClass=subject&joinOp=&matchOp=contains&dateOp=is">
+                                {{_subj}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 3, Subject Topic Row -->
+
+            <!-- Col 3, Subject Geographic Row -->
+            <div *ngIf="summary.display.subject_geographic" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Subject Geographic:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _subj of summary.display.subject_geographic" class="list-group-item">
+                            <a href="/eg2/staff/catalog/search?query={{_subj}}&fieldClass=subject&joinOp=&matchOp=contains&dateOp=is">
+                                {{_subj}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 3, Subject Geographic Row -->
+
+            <!-- Col 3, Subject Temporal Row -->
+            <div *ngIf="summary.display.subject_temporal" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Subject Temporal:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _subj of summary.display.subject_temporal" class="list-group-item">
+                            <a href="/eg2/staff/catalog/search?query={{_subj}}&fieldClass=subject&joinOp=&matchOp=contains&dateOp=is">
+                                {{_subj}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 3, Subject Temporal Row -->
+
+            <!-- Col 3, Genre Row -->
+            <div *ngIf="summary.display.genre" class="row">
+                <div class="col-sm-6 font-weight-bold" i18n>Genre:</div>
+                <div class="col-sm-6">
+                    <ul>
+                        <li *ngFor="let _genre of summary.display.genre" class="list-group-item">
+                            {{_genre}}
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 3, Genre Row -->
+
+        </div><!-- 3rd column -->
+
+    </div><!-- "table" -->
+</div>

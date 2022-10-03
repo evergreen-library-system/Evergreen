@@ -37,6 +37,9 @@ export class BibRecordSummary {
     id: number; // == record.id() for convenience
     metabibId: number; // If present, this is a metabib summary
     metabibRecords: number[]; // all constituent bib records
+    staffViewMetabibId: number; // to supplement a record summary
+    staffViewMetabibRecords: number[]; // to supplement a record summary
+    staffViewMetabibAttributes: any; // to supplement a record summary
     orgId: number;
     orgDepth: number;
     record: IdlObject;
@@ -128,6 +131,9 @@ export class BibRecordService {
         .pipe(map(bibSummary => {
             const summary = new BibRecordSummary(bibSummary.record, orgId);
             summary.net = this.net; // inject
+            summary.staffViewMetabibId = Number(bibSummary.staff_view_metabib_id);
+            summary.staffViewMetabibRecords = bibSummary.staff_view_metabib_records;
+            summary.staffViewMetabibAttributes = bibSummary.staff_view_metabib_attributes;
             summary.display = bibSummary.display;
             summary.attributes = bibSummary.attributes;
             summary.holdCount = bibSummary.hold_count;
