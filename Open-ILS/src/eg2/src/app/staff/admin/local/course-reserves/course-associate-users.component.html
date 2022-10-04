@@ -45,7 +45,8 @@
               <label for="associate-user-role" class="input-group-text" i18n>Role</label>
             </div>
             <eg-combobox idlClass="acmr" [(ngModel)]="userRoleInput"
-            [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) == 't'">
+            [asyncSupportsEmptyTermClick]="true"
+            [disabled]="currentCourse && (courseIsArchived || currentCourse.is_archived()) === 't'">
             </eg-combobox>
           </div>
         </div>
