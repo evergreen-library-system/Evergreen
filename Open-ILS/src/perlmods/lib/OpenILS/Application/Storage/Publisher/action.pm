@@ -2235,6 +2235,8 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
 
         sl.shortname AS sl_shortname,
 
+        ul.shortname AS ul_shortname,
+
         tr.id AS tr_id, tr.source_send_time AS tr_source_send_time, tr.dest_recv_time AS tr_dest_recv_time,
         tr.target_copy AS tr_target_copy, tr.source AS tr_source, tr.dest AS tr_dest, tr.prev_hop AS tr_prev_hop,
         tr.copy_status AS tr_copy_status, tr.persistant_transfer AS tr_persistant_transfer,
@@ -2382,6 +2384,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         JOIN actor.org_unit pl ON (h.pickup_lib = pl.id)
         JOIN actor.org_unit rl ON (h.request_lib = rl.id)
         JOIN actor.org_unit sl ON (h.selection_ou = sl.id)
+        JOIN actor.org_unit ul ON (u.home_ou = ul.id)
         JOIN t_field ON TRUE
         JOIN a_field ON TRUE
         JOIN s_field ON TRUE
