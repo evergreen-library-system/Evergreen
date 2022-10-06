@@ -21,7 +21,7 @@
   <eg-grid-field label="[% l('First Name') %]" path="first_given_name" visible></eg-grid-field>
   <eg-grid-field label="[% l('Last Name') %]" path="family_name" visible></eg-grid-field>
   <eg-grid-field label="[% l('Barcode') %]"      path='card.barcode' visible>
-    <a href="/eg2/staff/circ/patron/{{item['id']}}/holds">
+    <a target="_self" href="[% ctx.base_path %]/staff/circ/patron/{{item['id']}}/holds">
       {{item['card.barcode']}}
     </a>
   </eg-grid-field>

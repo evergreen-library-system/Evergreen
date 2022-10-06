@@ -41,7 +41,7 @@
     label="[% l('Retrieve Patron') %]"></eg-grid-action>
   <eg-grid-field label="[% l('Barred') %]" path='usr.barred'></eg-grid-field>
   <eg-grid-field label="[% l('Barcode') %]" path="usr.card.barcode">
-    <a href="/eg2/staff/circ/patron/{{item.usr.id()}}/checkout/">
+    <a href="./circ/patron/{{item.usr.id()}}/checkout/" target="_blank">
       {{item.usr.card().barcode()}}
     </a>
   </eg-grid-field>

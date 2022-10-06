@@ -6,7 +6,7 @@
     <div class="col-lg-10 offset-lg-1 d-flex justify-content-center">
       <span class="mt-2" i18n>
         Placing hold for patron 
-        <a routerLink="/staff/circ/patron/{{holdForUser().id()}}/holds">
+        <a href="/eg/staff/circ/patron/{{holdForUser().id()}}/holds">
           {{holdForUser().pref_family_name() || holdForUser().family_name()}}, 
           {{holdForUser().pref_first_given_name() || holdForUser().first_given_name()}}
         </a>.

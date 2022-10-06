@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output, OnChanges, OnInit, ViewChild} from '@angular/core';
-import {Location} from '@angular/common';
 import {Router} from '@angular/router';
 import {Observable, from, of} from 'rxjs';
 import {tap, switchMap, mergeMap} from 'rxjs/operators';
@@ -76,7 +75,6 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
     returnNotAppropriate: (rows: IdlObject[]) => boolean;
 
     constructor(
-        private ngLocation: Location,
         private auth: AuthService,
         private format: FormatService,
         private pcrud: PcrudService,
@@ -173,11 +171,7 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
 
         this.viewPatronRecord = (reservations: IdlObject[]) => {
             const patronIds = reservations.map(reservation => reservation.usr().id());
-            window.open(
-                this.ngLocation.prepareExternalUrl(
-                    '/staff/circ/patron/' + patronIds[0] + '/checkout'
-                )
-            );
+            window.open('/eg/staff/circ/patron/' + patronIds[0] + '/checkout');
         };
 
         this.noSelectedRows = (rows: IdlObject[]) => (rows.length === 0);

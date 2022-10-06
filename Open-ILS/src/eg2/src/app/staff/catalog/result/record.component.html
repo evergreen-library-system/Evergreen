@@ -177,7 +177,7 @@
               Created {{summary.record.create_date() | date:'shortDate'}} by
               <!-- creator if fleshed after the initial data set is loaded -->
               <a *ngIf="summary.record.creator().usrname" target="_self"
-                routerLink="/staff/circ/patron/{{summary.record.creator().id()}}/checkout">
+                href="/eg/staff/circ/patron/{{summary.record.creator().id()}}/checkout">
                   {{summary.record.creator().usrname()}}
               </a>
               <!-- add a spacer pending data to reduce page shuffle -->
@@ -190,7 +190,7 @@
             <div class="float-right small-text-1" i18n>
               Edited {{summary.record.edit_date() | date:'shortDate'}} by
               <a *ngIf="summary.record.editor().usrname" target="_self"
-                routerLink="/staff/circ/patron/{{summary.record.editor().id()}}/checkout">
+                href="/eg/staff/circ/patron/{{summary.record.editor().id()}}/checkout">
                   {{summary.record.editor().usrname()}}
               </a>
               <span *ngIf="!summary.record.editor().usrname"> ... </span>

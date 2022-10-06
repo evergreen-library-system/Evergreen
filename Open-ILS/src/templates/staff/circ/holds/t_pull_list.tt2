@@ -132,7 +132,7 @@
   <eg-grid-field name="patron_id" path="usr.id" hidden required></eg-grid-field>
   <eg-grid-field name="patron_barcode" path="usr.card.barcode" 
     hidden label="[% l('Patron Barcode') %]">
-    <a href="/eg2/staff/circ/patron/{{item.patron_id}}/holds">
+    <a href="./circ/patron/{{item.patron_id}}/holds" target="_self">
       {{item.patron_barcode}}
     </a>
   </eg-grid-field>
