@@ -641,6 +641,22 @@ UPDATE config.print_template SET template = $TEMPLATE$
 
 $TEMPLATE$ WHERE name = 'renew';
 
+INSERT INTO config.org_unit_setting_type (name, grp, datatype, label)
+VALUES (
+    'ui.staff.angular_circ.enabled', 'gui', 'bool',
+    oils_i18n_gettext(
+        'ui.staff.angular_circ.enabled',
+        'Enable Angular Circulation Menu',
+        'cwst', 'label'
+    )
+);
+
+INSERT INTO permission.perm_list ( id, code, description ) VALUES
+ ( 640, 'ACCESS_ANGULAR_CIRC', oils_i18n_gettext(640,
+    'Allow a user to access the experimental Angular circulation interfaces', 'ppl', 'description'))
+;
+
+
 COMMIT;
 
 

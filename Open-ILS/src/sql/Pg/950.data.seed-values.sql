@@ -1971,6 +1971,8 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'Build and run simple reports', 'ppl', 'description')),
  ( 639, 'ADMIN_OPENATHENS', oils_i18n_gettext(639,
     'Allow a user to administer OpenAthens authentication service', 'ppl', 'description'))
+ ( 640, 'ACCESS_ANGULAR_CIRC', oils_i18n_gettext(640,
+    'Allow a user to access the experimental Angular circulation interfaces', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
