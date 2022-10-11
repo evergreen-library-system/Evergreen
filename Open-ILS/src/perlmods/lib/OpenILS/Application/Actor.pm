@@ -482,6 +482,11 @@ __PACKAGE__->register_method(
             attached object, indicate if the object should be created,
             updated, or deleted using the built-in 'isnew', 'ischanged',
             and 'isdeleted' fields on the object.
+            This method intentionally does not handle updates to patron
+            notes, user activity, and standing penalties; if any values
+            are supplied for those fields in the patron data object,
+            they will be ignored. Please refer to bug 1976126 before
+            changing this.
         /,
         params => [
             { desc => 'Authentication token', type => 'string' },
