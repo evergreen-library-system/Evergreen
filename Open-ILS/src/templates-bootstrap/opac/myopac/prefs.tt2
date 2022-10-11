@@ -196,7 +196,7 @@
     <br />
 
 	<div class="header_middle mb-3">
-        <span>Addresses</span>
+        <span>[% l('Addresses') %]</span>
     </div>
 
 <div class="row">

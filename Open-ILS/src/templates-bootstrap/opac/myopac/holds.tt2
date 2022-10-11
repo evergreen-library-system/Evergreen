@@ -153,7 +153,7 @@
                 <tr class="[% ahr.frozen == 't' ? ' inactive-hold' : '' %]">
                     <td class="checkbox_column">
 
-                    <span class="sr-only">Hold Number [%  cnt; %]</span>
+                    <span class="sr-only">[% l('Hold Number') %] [% cnt; %]</span>
                         <input type="checkbox" name="hold_id" value="[% ahr.id %]"
                             [% html_text_attr('title', l('Select hold [_1]', attrs.title)) %]/>
                     </td>
@@ -169,7 +169,7 @@
                         PROCESS show_cover;
                     %]
                     <td>
-                    <span class="sr-only">Title</span>
+                    <span class="sr-only">[% l('Title') %]</span>
                         <div>
                             [% title = hold.ATTRS.title;
                             IF ahr.hold_type == 'P';
@@ -183,7 +183,7 @@
                         </div>
                     </td>
                     <td>
-                    <span class="sr-only">Author</span>
+                    <span class="sr-only">[% l('Author') %]</span>
                         <div>
                             <a href="[% mkurl(ctx.opac_root _ '/results',
                                 {qtype => 'author', query => hold.ATTRS.author.replace('[,\.:;]', '')},
@@ -192,7 +192,7 @@
                         </div>
                     </td>
                     <td>
-                    <span class="sr-only">Format</span>
+                    <span class="sr-only">[% l('Format') %]</span>
                         <div class="format_icon">
                           [%
                             formats = hold.ATTRS.all_formats;
@@ -216,29 +216,29 @@
                         </div>
                     </td>
                     <td>
-                    <span class="sr-only">Pickup Location</span>
+                    <span class="sr-only">[% l('Pickup Location') %]</span>
                         [% ctx.get_aou(ahr.pickup_lib).name | html %]
                     </td>
                     <td>
-                    <span class="sr-only">Cancel if not filled by</span>
+                    <span class="sr-only">[% l('Cancel if not filled by') %]</span>
                         [% IF ahr.expire_time;
                             date.format(ctx.parse_datetime(ahr.expire_time), DATE_FORMAT);
                         END %]
                     </td>
                     <td>
-                    <span class="sr-only">Status</span>
+                    <span class="sr-only">[% l('Status') %]</span>
                         <div>
                             [% PROCESS get_hold_status hold=hold; %]
                         </div>
                     </td>
                     <td>
-                    <span class="sr-only">Notify Method</span>
+                    <span class="sr-only">[% l('Notify Method') %]</span>
                         <div>
                             [% PROCESS get_hold_notify h=ahr; %]
                         </div>
                     </td>
                     <td class="hold_notes">
-                    <span class="sr-only">Notes</span>
+                    <span class="sr-only">[% l('Notes') %]</span>
                     [%- FOREACH pubnote IN ahr.notes;
                         IF pubnote.pub == 't';
                     %]

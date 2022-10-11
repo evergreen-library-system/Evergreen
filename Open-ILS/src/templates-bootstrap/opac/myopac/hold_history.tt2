@@ -82,14 +82,14 @@
                         PROCESS show_cover;
                     %]
                     <td>
-                    <span class="sr-only">Title</span>
+                    <span class="sr-only">[% l('Title') %]</span>
                         <div>
                             <a href="[% mkurl(ctx.opac_root _ '/record/' _ hold.hold.bre_id) %]">[% attrs.title | html %]</a>
                         </div>
                     </td>
                     <td>
                      [% IF attrs.author; %]
-                    <span class="sr-only">Author</span>
+                    <span class="sr-only">[% l('Author') %]</span>
                         <div>
                        
                             <a href="[% mkurl(ctx.opac_root _ '/results',
@@ -106,14 +106,14 @@
                             [% END %]
                              <span>[% attrs.format_label | html %]</span>
                         </div>
-                         <span class="sr-only">Format [% attrs.format_label | html %]</span>
+                         <span class="sr-only">[% l('Format') %] [% attrs.format_label | html %]</span>
                     </td>
                     <td>
-                    <span class="sr-only">Pickup Location</span>
+                    <span class="sr-only">[% l('Pickup Location') %]</span>
                         [% ctx.get_aou(ahr.pickup_lib).name | html %]
                     </td>
                     <td>
-                    <span class="sr-only">Hold Status</span>
+                    <span class="sr-only">[% l('Hold Status') %]</span>
                         <div> [% PROCESS get_hold_status hold=hold; %]
                         </div>
                     </td>
