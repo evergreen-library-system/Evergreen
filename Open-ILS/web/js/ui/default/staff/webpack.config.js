@@ -2,7 +2,7 @@ const path = require('path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const buildPath = 'build';
@@ -122,11 +122,7 @@ let commmonOptions = {
   },
   plugins: [
     new CleanWebpackPlugin([buildPath]),
-    new CopyWebpackPlugin(directCopyFiles, {copyUnmodified: true}),
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['core', 'vendor'], // ORDER MATTERS
-      minChunks: 2 // TODO: huh?
-    })
+    new CopyWebpackPlugin({patterns: directCopyFiles})
   ],
   output: {
     filename: 'js/[name].bundle.js',
@@ -138,28 +134,20 @@ let commmonOptions = {
 // for bundled files.
 let devOptions = {
   devtool: 'inline-source-map',
-  plugins: [
-    // Avoid minifiying the core bundle in development mode.
-    // TODO: Add other bundles as necessary, but leave the 'vendor'
-    // bundle out, since we always want to minify that (it's big).
-    new UglifyJSPlugin({
-      exclude: [/core/]
-    })
-  ],
   watchOptions: {
     aggregateTimeout: 300,
     poll: 1000,
-    ignored : [
-        /node_modules/
-    ]
+    ignored : /node_modules/
   }
 };
 
 // minify for production
 let prodOptions = {
-  plugins: [
-    new UglifyJSPlugin()
-  ],
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
+    splitChunks: true
+  }
 };
 
 module.exports = env => env.prod ? 
