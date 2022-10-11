@@ -6,26 +6,28 @@
   "homepage": "https://evergreen-ils.org/",
   "devDependencies": {
     "angular-mocks": "~1.6.7",
+    "angular-sanitize": "^1.8.3",
     "clean-webpack-plugin": "^0.1.17",
-    "copy-webpack-plugin": "^4.3.0",
+    "copy-webpack-plugin": "^11.0.0",
     "jasmine-core": "^2.99.1",
-    "karma": "^1.7.1",
+    "karma": "^6.4.1",
     "karma-chrome-launcher": "^3.1.0",
     "karma-firefox-launcher": "^1.2.0",
     "karma-jasmine": "^1.1.1",
     "karma-script-launcher": "^1.0.0",
     "karma-spec-reporter": "0.0.32",
     "karma-story-reporter": "^0.3.1",
-    "webpack": "^3.10.0",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
     "webpack-merge": "^4.1.1"
   },
   "scripts": {
     "create-mock-idl": "cd test/data && perl idl2js.pl",
     "remove-mock-idl": "rm test/data/IDL2js.js",
     "test": "npm run create-mock-idl ; karma start test/karma.conf --single-run; npm run remove-mock-idl",
-    "build": "webpack --env.dev",
-    "build-watch": "webpack --env.dev --watch",
-    "build-prod": "webpack --env.prod"
+    "build": "webpack --mode development",
+    "build-watch": "webpack --mode development --watch",
+    "build-prod": "webpack --mode production"
   },
   "dependencies": {
     "@glidejs/glide": "^3.3.0",
