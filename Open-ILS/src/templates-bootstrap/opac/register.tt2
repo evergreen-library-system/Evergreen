@@ -50,7 +50,7 @@ register_fields = [
 <div class="container">
     <div id="main-content-register">
         <h1>[% l('Request a Library Card')%]</h1>
-        <span class="validate">&bigstar; = Required Field</span>
+        <span class="validate">[% l('&bigstar; indicates Required Field') %]</span>
         <hr/>
 
         [% IF ctx.register.success %]
@@ -172,7 +172,7 @@ FOR field_def IN register_fields;
             value='[% value || CGI.param(field_path) | html %]' [% IF require %]required[% END %]/>
      [% END %]
         <div class="invalid-feedback">
-          Please enter a [% field_def.label | html %]
+          [% l('Please enter a') %] [% field_def.label | html %]
         </div>
          [% IF example %]
         <span class='patron-reg-extra'>

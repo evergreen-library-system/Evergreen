@@ -47,7 +47,7 @@
                                         selected='selected'[% END %]>[% val | html %]</option>
                             [% END %]
                         </select>
-                         <a href="#" title="Change the amount of results shown in a search while signed in." data-toggle="tooltip">
+                         <a href="#" title="[% l('Change the amount of results shown in a search while signed in.') %]" data-toggle="tooltip">
                         <i class="fas fa-question-circle"></i>
                     </a>
                     </td>

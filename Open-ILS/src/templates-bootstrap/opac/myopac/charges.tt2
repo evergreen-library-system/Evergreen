@@ -135,7 +135,7 @@
         </table>
 		</div>
         <!-- Disclaimer for mobile -->
-        <span class="mobile_view cc_disclaimer"> <strong>&#42;</strong>Items may have been renewed. </span>
+        <span class="mobile_view cc_disclaimer"> <strong>&#42;</strong>[% l('Items may have been renewed.') %] </span>
     </div>
     [% END %]
 
@@ -188,13 +188,13 @@
                 [% c = c + 1; %]
                     [% IF myopac_cc_allowed %]
                     <td class="checkCell">
-                        <label class="sr-only">Billing Number [% c %]</label>
-                        <input aria-label="Pay This Bill" class="fineCheck" type="checkbox" name="xact_misc" value="[% f.xact.id %]" checked="checked" />
+                        <label class="sr-only">[% l('Billing Number') %] [% c %]</label>
+                        <input aria-label="[% l('Pay This Bill') %]" class="fineCheck" type="checkbox" name="xact_misc" value="[% f.xact.id %]" checked="checked" />
                     </td>
                     [% END %]
                     
                     <td class="danger">
-                        <span class="sr-only">Amount Owed</span>
+                        <span class="sr-only">[% l('Amount Owed') %]</span>
                         <strong>
                             [% money(f.xact.balance_owed) %]
                         </strong>
@@ -202,19 +202,19 @@
                     </td>
                     
                     <td>
-                        <span class="sr-only">Billing For</span>
+                        <span class="sr-only">[% l('Billing For') %]</span>
                         [% f.xact.last_billing_type %]
                     </td>
                     
                     <td>
                         [% IF f.xact.last_billing_note; %]
-                            <span class="sr-only">Note</span>
+                            <span class="sr-only">[% l('Note') %]</span>
                             [% f.xact.last_billing_note %]
                         [% END %]
                     </td>
                     
                     <td>
-                        <span class="sr-only">Date of Billing</span>
+                        <span class="sr-only">[% l('Date of Billing') %]</span>
                         [% date.format(ctx.parse_datetime(f.xact.xact_start),DATE_FORMAT) %]
                     </td>
 
@@ -251,7 +251,7 @@ $( document ).ready(function() {
         amount += item;
     });
     $("#total").val(amount);
-    $("#selectPay").html('<i class="fas fa-money-bill-wave" aria-hidden="true"></i> Pay Selected Charges - $' + amount.toFixed(2));
+    $("#selectPay").html('<i class="fas fa-money-bill-wave" aria-hidden="true"></i> [% l('Pay Selected Charges') %] - $' + amount.toFixed(2));
 });
 });
 
