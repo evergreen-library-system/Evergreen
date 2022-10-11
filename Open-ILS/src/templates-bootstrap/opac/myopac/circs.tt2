@@ -27,7 +27,7 @@
         <form method="post" id="circ-form"
             onsubmit="return confirm('[% l("Are you sure you wish to renew the selected item(s)?") %]');">
          <div class="my-3">
-                <button name="action" class="btn btn-confirm" id="renew" value="renew" type="submit"><i class="fas fa-redo-alt"></i> Renew Selected</button>
+                <button name="action" class="btn btn-confirm" id="renew" value="renew" type="submit"><i class="fas fa-redo-alt"></i> [% l('Renew Selected') %]</button>
         </div>
         <div class="d-block d-md-none">
             <input id="check_all_checked_alt" aria-label="[% l('Select All Items') %]" checked="checked" type="checkbox" onclick="var inputs=document.getElementsByTagName('input'); for (i = 0; i < inputs.length; i++) { if (inputs[i].name == 'circ' &amp;&amp; !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
@@ -147,7 +147,7 @@
                             PROCESS show_cover;
                         %]
                         <td>
-                            <span class="sr-only">Title</span>
+                            <span class="sr-only">[% l('Title') %]</span>
                             [% IF circ.circ.target_copy.call_number.id == -1 %]
                                 [% circ.circ.target_copy.dummy_title | html %]
                             [% ELSIF circ.ATTRS.title %]
@@ -159,10 +159,10 @@
                         </td>
                         <td>
                             [% IF circ.circ.target_copy.call_number.id == -1 %]
-                                <span class="sr-only">Author</span>
+                                <span class="sr-only">[% l('Author') %]</span>
                                 [% circ.circ.target_copy.dummy_author | html %]
                             [% ELSIF circ.ATTRS.author %]
-                                <span class="sr-only">Author</span>
+                                <span class="sr-only">[% l('Author') %]</span>
                                 <a href="[% mkurl(ctx.opac_root _ '/results',
                                     {qtype => 'author', query => circ.ATTRS.author.replace('[,\.:;]', '')},
                                     1
@@ -172,7 +172,7 @@
                             [% END %]
                         </td>
                         <td>
-                            <span class="sr-only">Renewals Remaining</span>
+                            <span class="sr-only">[% l('Renewals Remaining') %]</span>
                             [% circ.circ.renewal_remaining %]
                         </td>
                         [%
@@ -180,15 +180,15 @@
                             due_class = (date.now > date.format(due_date, '%s')) ? 'error' : '';
                         %]
                         <td class='[% due_class %]'>
-                            <span class="sr-only">Due Date</span>
+                            <span class="sr-only">[% l('Due Date') %]</span>
                             [% date.format(due_date, DATE_FORMAT) %]
                         </td>
                         <td>
-                            <span class="sr-only">Barcode</span>
+                            <span class="sr-only">[% l('Barcode') %]</span>
                             <span class="speak:spell-out;">[% circ.circ.target_copy.barcode | html %]</span>
                         </td>
                         <td>
-                            <span class="sr-only">Call Number</span>
+                            <span class="sr-only">[% l('Call Number') %]</span>
                             [%-
                                  cnlist = [];
                                  FOREACH element IN [circ.circ.target_copy.call_number.prefix.label

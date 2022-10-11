@@ -11,19 +11,19 @@
    <ul class="navbar-nav nav-fl px-3">
       <!--Link 1-->
       <li class="nav-item">
-        <a class="nav-link" href="[% ctx.link_one %]">Example Link 1<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="[% ctx.link_one %]">[% l('Example Link 1') %]<span class="sr-only">(current)</span></a>
       </li>
         <!--Link 2-->
       <li class="nav-item">
-        <a class="nav-link" href="[% ctx.link_two %]">Example Link 2</a>
+        <a class="nav-link" href="[% ctx.link_two %]">[% ('Example Link 2') %]</a>
       </li>
         <!--Link 3-->
       <li class="nav-item">
-        <a class="nav-link" href="[% ctx.link_three %]">Example Link 3</a>
+        <a class="nav-link" href="[% ctx.link_three %]">[% l('Example Link 3') %]</a>
       </li>
         <!--Link 4-->
       <li class="nav-item">
-        <a class="nav-link" href="[% ctx.link_four %]">Example Link 4</a>
+        <a class="nav-link" href="[% ctx.link_four %]">[% l('Example Link 4') %]</a>
       </li>
     </ul>
     <!--Right Links-->
@@ -41,7 +41,7 @@
     <li><div class="dropdown-divider"></div></li>
      	<!--User-->
       	<li class="nav-item">
-        	<a class="nav-link disabled active mx-2" href="#">Hello, [%  l('[_1] [_2]', ctx.user.pref_first_given_name || ctx.user.first_given_name, ctx.user.pref_family_name || ctx.user.family_name) | html %]</a>
+        	<a class="nav-link disabled active mx-2" href="#">[% l('Hello, [_1] [_2]', ctx.user.pref_first_given_name || ctx.user.first_given_name, ctx.user.pref_family_name || ctx.user.family_name) | html %]</a>
       	</li>
     	<!--Messages with sup tag for # of messages-->
       	<li class="nav-item">

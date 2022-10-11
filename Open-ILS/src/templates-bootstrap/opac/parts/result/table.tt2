@@ -316,13 +316,13 @@
                                                     <tbody>
                                                     [% FOR copy IN args.holdings %]
                                                         <tr>
-                                                            <td><span class="sr-only">Library </span>[%- copy_info = copy; INCLUDE "opac/parts/library_name_link.tt2"; %]</td>
-                                                            <td><span class="sr-only">Shelving Location </span>[% copy.location | html %]</td>
-                                                            <td><span class="sr-only">Call Number </span>[% copy.label | html %]</td>
+                                                            <td><span class="sr-only">[% l('Library') %] </span>[%- copy_info = copy; INCLUDE "opac/parts/library_name_link.tt2"; %]</td>
+                                                            <td><span class="sr-only">[% l('Shelving Location') %] </span>[% copy.location | html %]</td>
+                                                            <td><span class="sr-only">[% l('Call Number') %] </span>[% copy.label | html %]</td>
                                                             [%- IF has_parts == 'true'; %]
-                                                            <td><span class="sr-only">Part </span>[% copy.part_label %]</td>
+                                                            <td><span class="sr-only">[% l('Part') %] </span>[% copy.part_label %]</td>
                                                             [%- END %]
-                                                            <td><span class="sr-only">Status </span>[% copy.status | html %]</td>
+                                                            <td><span class="sr-only">[% l('Status') %] </span>[% copy.status | html %]</td>
                                                         </tr>
                                                     [% END %]
                                                     </tbody>
@@ -487,7 +487,7 @@
     <h3 class="sr-only">[% l('Saved Searches') %]</h3>
         [% INCLUDE "opac/parts/staff_saved_searches.tt2" %]
     [%-  END %]
-    <h3 class="sr-only">[% l('Search Results facets') %]</h3>
+    <h3 class="sr-only">[% l('Search Results Facets') %]</h3>
     <h3 class="sr-only">[% l('Search Results List') %]</h3>
 </div>
 </div>

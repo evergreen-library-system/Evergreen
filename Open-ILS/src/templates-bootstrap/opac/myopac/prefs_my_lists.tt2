@@ -34,7 +34,7 @@
                                         selected='selected'[% END %]>[% val | html %]</option>
                             [% END %]
                         </select>
-                      <a href="#" title="Change the amount of lists shown in 'My Lists'." data-toggle="tooltip">
+                      <a href="#" title="[% l("Change the amount of lists shown in 'My Lists'.") %]" data-toggle="tooltip">
                         <i class="fas fa-question-circle"></i>
                     </a>
                     </td>
@@ -53,7 +53,7 @@
                                         selected='selected'[% END %]>[% val | html %]</option>
                             [% END %]
                         </select>
-                       <a href="#" title="Change the amount of items shown while viewing a 'My List'." data-toggle="tooltip">
+                       <a href="#" title="[% l("Change the amount of items shown while viewing a 'My List'.") %]" data-toggle="tooltip">
                         <i class="fas fa-question-circle"></i>
                     </a>
                     </td>
