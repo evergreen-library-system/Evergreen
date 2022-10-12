@@ -52,6 +52,7 @@ describe('FormatService', () => {
             decimalPipe,
             idlService,
             orgService,
+            authService,
             localeService
         );
     });
