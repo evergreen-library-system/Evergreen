@@ -696,10 +696,17 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                     $(doc).find('#hold_usr_input').trigger($.Event('keydown', {which: 13}));
                 });
             });
+            // Add Cart to Record Bucket, in two flavors:
+            // First, the traditional TPAC, which uses a <select> menu
             $(doc).find('#select_basket_action').on('change', function() {
                 if (this.options[this.selectedIndex].value && this.options[this.selectedIndex].value == "add_cart_to_bucket") {
                     $scope.add_cart_to_record_bucket();
                 }
+            });
+            // Second, the bootstrap OPAC, which uses a bunch of <a>s styled as a dropdown
+            $(doc).find('a[href="add_cart_to_bucket"]').on('click', function (event) {
+                event.preventDefault();
+                $scope.add_cart_to_record_bucket();
             });
         }
 
