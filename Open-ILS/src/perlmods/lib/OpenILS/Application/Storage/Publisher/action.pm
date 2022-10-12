@@ -2269,12 +2269,12 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
             u.alias
         ELSE
             REGEXP_REPLACE(ARRAY_TO_STRING(ARRAY[
-                COALESCE(u.family_name, ''),
-                COALESCE(u.suffix, ''),
+                COALESCE(u.pref_family_name, u.family_name, ''),
+                COALESCE(u.pref_suffix, u.suffix, ''),
                 ', ',
-                COALESCE(u.prefix, ''),
-                COALESCE(u.first_given_name, ''),
-                COALESCE(u.second_given_name, '')
+                COALESCE(u.pref_prefix, u.prefix, ''),
+                COALESCE(u.pref_first_given_name, u.first_given_name, ''),
+                COALESCE(u.pref_second_given_name, u.second_given_name, '')
             ], ' '), E'\\s+,', ',')
         END AS usr_alias_or_display_name,
 
