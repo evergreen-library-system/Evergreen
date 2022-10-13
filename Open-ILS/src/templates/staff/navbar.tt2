@@ -255,6 +255,77 @@
         </ul>
       </li><!-- circ -->
 
+
+      <!-- circulation experimental -->
+      <li class="dropdown" uib-dropdown ng-if="showAngularCirc">
+        <a href uib-dropdown-toggle>[% l('Circulation (Experimental)') %]
+          <b class="caret" aria-hidden="true"></b>
+        </a>
+
+        <ul uib-dropdown-menu>
+          <li>
+            <a href="/eg2/staff/circ/patron/search">
+              <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+              <span>[% l('Search for Patrons') %]</span>
+            </a>
+          </li>
+          <li>
+            <a href="/eg2/staff/circ/patron/bcsearch">
+              <span class="glyphicon glyphicon-export" aria-hidden="true"></span> 
+              <span>[% l('Check Out') %]</span>                                        
+            </a>                                                                 
+          </li>
+          <li>
+            <a href="/eg2/staff/circ/checkin">
+              <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
+              <span>[% l('Check In') %]</span>                                         
+            </a>                                                                 
+          </li>
+          <li>
+            <a href="/eg2/staff/circ/checkin/capture">
+              <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>    
+              <span>[% l('Capture Holds') %]</span>                                    
+            </a>                                                                 
+          </li>
+          <li>
+            <a href="/eg2/staff/circ/holds/pull-list">   
+              <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>   
+              <span>[% l('Pull List for Hold Requests') %]</span>                      
+            </a>                                                                 
+          </li>
+          <li>
+            <a href="/eg2/staff/circ/renew">
+              <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>   
+              <span>[% l('Renew Items') %]</span>                                      
+            </a>                                                                 
+          </li>
+          <li>
+            <a href="/eg2/staff/circ/patron/register">
+              <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  
+              <span>[% l('Register Patron') %]</span>                                  
+            </a>                                                                 
+          </li>
+          <li>
+            <a href="/eg2/staff/circ/patron/last">
+              <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>        
+              <span>[% l('Retrieve Last Patron') %]</span>                             
+            </a>                                                                 
+          </li>
+          <li>
+            <a href="/eg2/staff/circ/patron/search/recents">
+              <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>        
+              <span>[% l('Retrieve Recent Patrons') %]</span>                          
+            </a>                                                                 
+          </li>
+          <li>
+            <a href="/eg2/staff/circ/patron/credentials" >
+              <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+              <span>[% l('Verify Credentials') %]</span>
+            </a>  
+          </li>
+        </ul>
+      </li>
+
       <!-- cataloging -->
       <li class="dropdown" uib-dropdown>
         <a href uib-dropdown-toggle>[% l('Cataloging') %]<b class="caret" 

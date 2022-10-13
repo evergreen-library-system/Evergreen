@@ -150,6 +150,72 @@
       </div>
     </div>
 
+    <div class="navbar-nav" *ngIf="showAngularCirc">
+      <div ngbDropdown class="nav-item dropdown">
+        <a ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+         Circulation (Experimental)
+        </a>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <a class="dropdown-item" routerLink="/staff/circ/patron/search">
+            <span class="material-icons" aria-hidden="true">person</span>
+            <span i18n>Search for Patrons</span>
+          </a>
+          <a class="dropdown-item" routerLink="/staff/circ/patron/bcsearch"    
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc              
+            keySpec="f1" keyDesc="Checkout">                                   
+            <span class="material-icons" aria-hidden="true">trending_up</span> 
+            <span i18n>Check Out</span>                                        
+          </a>                                                                 
+          <a class="dropdown-item" routerLink="/staff/circ/checkin"            
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc              
+            keySpec="f2" keyDesc="Checkin">                                    
+            <span class="material-icons" aria-hidden="true">trending_down</span>
+            <span i18n>Check In</span>                                         
+          </a>                                                                 
+          <a class="dropdown-item" routerLink="/staff/circ/checkin/capture"    
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc              
+            keySpec="shift+f2" keyDesc="Capture Holds">                        
+            <span class="material-icons" aria-hidden="true">pin_drop</span>    
+            <span i18n>Capture Holds</span>                                    
+          </a>                                                                 
+          <a class="dropdown-item" routerLink="/staff/circ/holds/pull-list">   
+            <span class="material-icons" aria-hidden="true">view_list</span>   
+            <span i18n>Pull List for Hold Requests</span>                      
+          </a>                                                                 
+          <a class="dropdown-item" routerLink="/staff/circ/renew"              
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc              
+            keySpec="ctrl+f2" keyDesc="Renew Items">                           
+            <span class="material-icons" aria-hidden="true">autorenew</span>   
+            <span i18n>Renew Items</span>                                      
+          </a>                                                                 
+          <a class="dropdown-item" routerLink="/staff/circ/patron/register"    
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc              
+            keySpec="shift+f1" keyDesc="Register Patron">                      
+            <span class="material-icons" aria-hidden="true">person_add</span>  
+            <span i18n>Register Patron</span>                                  
+          </a>                                                                 
+          <a class="dropdown-item" routerLink="/staff/circ/patron/last"        
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc              
+            keySpec="f8" keyDesc="Retrieve Last Patron">                       
+            <span class="material-icons" aria-hidden="true">redo</span>        
+            <span i18n>Retrieve Last Patron</span>                             
+          </a>                                                                 
+          <a class="dropdown-item" routerLink="/staff/circ/patron/search/recents"
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc              
+            keySpec="shift+f4" keyDesc="Retrieve Recent Patrons">              
+            <span class="material-icons" aria-hidden="true">redo</span>        
+            <span i18n>Retrieve Recent Patrons</span>                          
+          </a>                                                                 
+          <a class="dropdown-item" routerLink="/staff/circ/patron/credentials" 
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc              
+            keySpec="alt+c" keyDesc="Verify Patron Credentials">               
+            <span class="material-icons" aria-hidden="true">check_circle</span>
+            <span i18n>Verify Credentials</span>                               
+          </a>  
+        </div>
+      </div>
+    </div>
+
     <!-- CATALOGING -->
     
     <div class="navbar-nav">

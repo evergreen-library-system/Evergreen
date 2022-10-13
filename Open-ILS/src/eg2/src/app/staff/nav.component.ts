@@ -10,6 +10,7 @@ import {PrintService} from '@eg/share/print/print.service';
 import {StoreService} from '@eg/core/store.service';
 import {NetRequest, NetService} from '@eg/core/net.service';
 import {OpChangeComponent} from '@eg/staff/share/op-change/op-change.component';
+import {PermService} from '@eg/core/perm.service';
 
 @Component({
     selector: 'eg-staff-nav-bar',
@@ -27,6 +28,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
     showTraditionalCatalog = true;
     showAngularAcq: boolean;
     curbsideEnabled: boolean;
+    showAngularCirc = false;
 
     @ViewChild('navOpChange', {static: false}) opChange: OpChangeComponent;
     permFailedSub: Subscription;
@@ -37,6 +39,7 @@ export class StaffNavComponent implements OnInit, OnDestroy {
         private net: NetService,
         private org: OrgService,
         private auth: AuthService,
+        private perm: PermService,
         private pcrud: PcrudService,
         private locale: LocaleService,
         private printer: PrintService
@@ -68,6 +71,20 @@ export class StaffNavComponent implements OnInit, OnDestroy {
             this.org.settings('circ.curbside')
             .then(settings => this.curbsideEnabled =
                 Boolean(settings['circ.curbside']));
+
+            // Do we show the angular circ menu?
+            // TODO remove these once Angular Circ takes over.
+            const angSet = 'ui.staff.angular_circ.enabled';
+            const angPerm = 'ACCESS_ANGULAR_CIRC';
+
+            this.org.settings(angSet).then(s => {
+                if (s[angSet]) {
+                    return this.perm.hasWorkPermHere([angPerm])
+                    .then(perms => perms[angPerm]);
+                } else {
+                    return false;
+                }
+            }).then(enable => this.showAngularCirc = enable);
         }
 
         // Wire up our op-change component as the general purpose
