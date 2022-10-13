@@ -218,11 +218,15 @@ IF num_uris > 0;
             filtered_href = uri.href | html;
             filtered_link = uri.link ? uri.link : '' | html;
             filtered_note = uri.note ? uri.note : '' | html;
+            filtered_type = uri.type ? uri.type : '' | html;
         -%]
         [%- IF num_uris == 1 -%]
             <p class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
         [%- ELSE -%]
             <li class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
+        [%- END -%]
+        [%- IF filtered_type.length > 0 -%]
+            <strong> [% filtered_type %] </strong>
         [%- END -%]
         <a href="[% filtered_href %]" class="uri_link" property="url" target="_blank" rel="noopener">
         [%- IF filtered_href != filtered_link;

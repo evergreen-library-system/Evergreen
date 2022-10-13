@@ -468,8 +468,13 @@
 
         # Extract the 856 URLs that are not otherwise represented by asset.uri's
         args.online_res = [];
-        FOR node IN xml.findnodes('//*[@tag="856" and @ind1="4" and (@ind2="0" or @ind2="1")]');
+        FOR node IN xml.findnodes('//*[@tag="856" and @ind1="4" and (@ind2="0" or @ind2="1" or @ind2="2")]');
             IF node.findnodes('./*[@code="9" or @code="w" or @code="n"]'); NEXT; END; # asset.uri's
+            lind2 = node.getAttribute('ind2') || '';
+            ltype = '';
+            IF lind2 == '0'; ltype = l('Electronic Resource:'); END;
+            IF lind2 == '1'; ltype = l('Version of Resource:'); END;
+            IF lind2 == '2'; ltype = l('Related Resource:'); END;
             label = node.findnodes('./*[@code="y"]');
             notes = node.findnodes('./*[@code="z" or @code="3"]');
             FOR href IN node.findnodes('./*[@code="u"]');
@@ -481,7 +486,8 @@
                 args.online_res.push({
                     href => href.textContent, 
                     link => (loop.first AND label) ? label.textContent : href.textContent,
-                    note => (loop.first) ? notes.textContent : ''
+                    note => (loop.first) ? notes.textContent : '',
+                    type => ltype
                 });
             END;
         END;

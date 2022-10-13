@@ -535,11 +535,15 @@ ctx.metalinks.push('
                     filtered_note = uri.note ? uri.note : '' | html;
                     filtered_materials = uri.materials ? uri.materials : '' | html;
                     filtered_access = uri.access ? uri.access : '' | html;
+                    filtered_type = uri.type ? uri.type : '' | html;
                 -%]
                 [%- IF num_uris == 1 -%]
                 <p class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
                     [%- ELSE -%]
                     <li class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
+                        [%- END -%]
+                        [%- IF filtered_type.length > 0 -%]
+                            <strong> [% filtered_type %] </strong>
                         [%- END -%]
                         <a href="[% filtered_href %]" class="uri_link" property="url">
                             [%- IF filtered_href != filtered_link;
