@@ -43,18 +43,20 @@ export class OuSettingHistoryDialogComponent extends DialogComponent implements 
 
     revert(log) {
         if (log) {
-            const intTypes = ['integer', 'currency', 'link'];
-            if (intTypes.includes(this.entry.dataType)) {
-                log.original_value = Number(log.original_value);
-            } else {
-                log.original_value = log.original_value.replace(/^"(.*)"$/, '$1');
-            }
-
-            if (this.entry.dataType === 'bool') {
-                if (log.original_value.match(/^t/)) {
-                    log.original_value = true;
+            if (log.original_value) {
+                const intTypes = ['integer', 'currency', 'link'];
+                if (intTypes.includes(this.entry.dataType)) {
+                    log.original_value = Number(log.original_value);
                 } else {
-                    log.original_value = false;
+                    log.original_value = log.original_value.replace(/^"(.*)"$/, '$1');
+                }
+
+                if (this.entry.dataType === 'bool') {
+                    if (log.original_value.match(/^t/)) {
+                        log.original_value = true;
+                    } else {
+                        log.original_value = false;
+                    }
                 }
             }
 
