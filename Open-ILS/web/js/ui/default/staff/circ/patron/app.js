@@ -69,6 +69,7 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 'egUserBucketMod',
             // FIXME: the following is really just for PatronMessagesCtrl
             // and PatronCtrl, so we could refactor to avoid calling it
             // for every controller
+            if (!egCore.auth.token()) return go_promise;
             return egCore.perm.hasPermFullPathAt('VIEW_USER')
             .then(function(orgList) {
                 hasPermAt['VIEW_USER'] = orgList;
