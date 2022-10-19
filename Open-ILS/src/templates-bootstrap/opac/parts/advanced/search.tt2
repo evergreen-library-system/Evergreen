@@ -5,8 +5,8 @@
 <form action="[% ctx.opac_root %]/results" method="get">
 <div id='adv_global_search' class='data_grid data_grid_center'>
     <div id='adv_search_rows' class="container">
-        <h1 class="text-center">[% l("Advanced Search") %]</h1>
-        <h2 class="text-center">[% l("Refine your search by filling out one or more fields to search by below.") %]</h2>
+        <h1 class="text-center">Advanced Search</h1>
+        <h2 class="text-center">Refine your search by filling out one or more fields to search by below.</h2>
         <div class='adv_global_input_container row'>
             <table role="presentation" id="adv_global_input_table" class="mx-auto col-12">
                 <tbody id="adv_global_tbody">
@@ -85,7 +85,7 @@
         <div class='col-12 my-2'>
             <div [% IF adv_chunk.js_only %] id='adv_chunk_[% adv_chunk.adv_special %]' class='hidden' [% END %]>
                 <strong><label for="[% adv_chunk.id %]"> [% adv_chunk.adv_label %] </label></strong>
-                    [% IF adv_chunk.adv_special == "lib_selector"; PROCESS "opac/parts/org_selector.tt2"; INCLUDE build_org_selector show_loc_groups=0 show_lassos=0 id=adv_chunk.id %]
+                    [% IF adv_chunk.adv_special == "lib_selector"; PROCESS "opac/parts/org_selector.tt2"; INCLUDE build_org_selector show_loc_groups=1 show_lassos=1 id=adv_chunk.id %]
                     [% ELSIF adv_chunk.adv_special == "scope_selector"; PROCESS "opac/parts/org_selector.tt2"; INCLUDE build_scope_selector show_loc_groups=1 show_lassos=1 id=adv_chunk.id %]
                     [% ELSIF adv_chunk.adv_special == "pub_year"; %]
                     <div class="adv_special_block text-center form-inline">
