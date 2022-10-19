@@ -641,13 +641,18 @@ UPDATE config.print_template SET template = $TEMPLATE$
 
 $TEMPLATE$ WHERE name = 'renew';
 
-INSERT INTO config.org_unit_setting_type (name, grp, datatype, label)
+INSERT INTO config.org_unit_setting_type (name, grp, datatype, label, description)
 VALUES (
     'ui.staff.angular_circ.enabled', 'gui', 'bool',
     oils_i18n_gettext(
         'ui.staff.angular_circ.enabled',
         'Enable Angular Circulation Menu',
-        'cwst', 'label'
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ui.staff.angular_circ.enabled',
+        'Enable Angular Circulation Menu',
+        'coust', 'description'
     )
 );
 

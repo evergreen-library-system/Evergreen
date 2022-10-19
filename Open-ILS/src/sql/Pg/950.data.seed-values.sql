@@ -1970,7 +1970,7 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 638, 'RUN_SIMPLE_REPORTS', oils_i18n_gettext(638,
     'Build and run simple reports', 'ppl', 'description')),
  ( 639, 'ADMIN_OPENATHENS', oils_i18n_gettext(639,
-    'Allow a user to administer OpenAthens authentication service', 'ppl', 'description'))
+    'Allow a user to administer OpenAthens authentication service', 'ppl', 'description')),
  ( 640, 'ACCESS_ANGULAR_CIRC', oils_i18n_gettext(640,
     'Allow a user to access the experimental Angular circulation interfaces', 'ppl', 'description'))
 ;
@@ -22344,6 +22344,18 @@ VALUES (
         'ui.staff.traditional_catalog.enabled',
         'Display an entry point in the browser client for the ' ||
         'traditional staff catalog.',
+        'coust', 'description'
+    )
+), (
+    'ui.staff.angular_circ.enabled', 'bool', 'gui',
+    oils_i18n_gettext(
+        'ui.staff.angular_circ.enabled',
+        'Enable Angular Circulation Menu',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ui.staff.angular_circ.enabled',
+        'Enable Angular Circulation Menu',
         'coust', 'description'
     )
 );
