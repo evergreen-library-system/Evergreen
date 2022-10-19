@@ -27,13 +27,13 @@
   </div>
   <div class="card col-sm-6">
     <h2 class="card-header" i18n>Reservation details</h2>
-    <ngb-tabset #details="ngbTabset">
-      <ngb-tab id="select-resource-type">
-        <ng-template ngbTabTitle>
+    <ul ngbNav #details="ngbNav" [(activeId)]="detailsTab" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
+      <li role="presentation" [ngbNavItem]="'select-resource-type'">
+        <a ngbNavLink role="tab">
           <span class="material-icons">dns</span>
           <ng-container i18n>Choose resource by type</ng-container>
-        </ng-template>
-        <ng-template ngbTabContent>
+        </a>
+        <ng-template ngbNavContent>
           <div ngbPanelContent class="row">
             <div class="col">
               <div class="input-group">
@@ -54,14 +54,14 @@
             </div>
           </div>
         </ng-template>
-      </ngb-tab>
+      </li>
 
-      <ngb-tab id="select-resource">
-        <ng-template ngbTabTitle>
+      <li role="presentation" [ngbNavItem]="'select-resource'">
+        <a ngbNavLink role="tab">
           <span class="material-icons">assignment</span>
           <ng-container i18n>Choose resource by barcode</ng-container>
-        </ng-template>
-        <ng-template ngbTabContent>
+        </a>
+        <ng-template ngbNavContent>
           <div ngbPanelContent class="row">
             <div class="col">
               <div class="input-group">
@@ -73,14 +73,14 @@
             </div>
           </div>
         </ng-template>
-      </ngb-tab>
+      </li>
 
-      <ngb-tab id="attributes" [disabled]="0 === attributes.length">
-        <ng-template ngbTabTitle>
+      <li role="presentation" [ngbNavItem]="'attributes'" [disabled]="0 === attributes.length">
+        <a ngbNavLink role="tab">
           <span class="material-icons">filter_list</span>
           <ng-container i18n>Limit by attributes</ng-container>
-        </ng-template>
-        <ng-template ngbTabContent>
+        </a>
+        <ng-template ngbNavContent>
           <ul class="list-group list-group-flush" formArrayName="selectedAttributes">
             <li *ngFor="let attribute of attributes; let i = index" class="list-group-item">
               <span class="input-group">
@@ -96,14 +96,14 @@
             </li>
           </ul>
         </ng-template>
-      </ngb-tab>
+      </li>
 
-      <ngb-tab id="display-settings">
-        <ng-template ngbTabTitle>
+      <li role="presentation" [ngbNavItem]="'display-settings'">
+        <a ngbNavLink role="tab">
           <span class="material-icons">settings</span>
           <ng-container i18n>Schedule settings</ng-container>
-        </ng-template>
-        <ng-template ngbTabContent>
+        </a>
+        <ng-template ngbNavContent>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <span class="input-group">
@@ -144,8 +144,10 @@
             </li>
           </ul>
         </ng-template>
-      </ngb-tab>
-    </ngb-tabset>
+      </li>
+    </ul>
+
+    <div [ngbNavOutlet]="details" class="mt-2"></div>
   </div>
 </form>
 

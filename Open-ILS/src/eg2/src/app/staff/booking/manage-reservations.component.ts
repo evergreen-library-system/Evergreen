@@ -3,7 +3,7 @@ import {FormGroup, FormControl} from '@angular/forms';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {Subscription, of} from 'rxjs';
 import {debounceTime, single, tap, switchMap} from 'rxjs/operators';
-import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ReservationsGridComponent} from './reservations-grid.component';
@@ -27,7 +27,7 @@ export class ManageReservationsComponent implements OnInit, OnDestroy {
     startingTab: 'patron' | 'resource' | 'type' = 'patron';
     startingPickupOrgs: OrgFamily = {primaryOrgId: this.auth.user().ws_ou(), includeDescendants: true};
 
-    @ViewChild('filterTabs', { static: true }) filterTabs: NgbTabset;
+    @ViewChild('filterTabs', { static: true }) filterTabs: NgbNav;
     @ViewChild('reservationsGrid', { static: true }) reservationsGrid: ReservationsGridComponent;
 
     removeFilters: () => void;

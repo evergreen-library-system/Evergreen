@@ -1,5 +1,5 @@
 import {Component, OnInit, Input, ViewChild, HostListener} from '@angular/core';
-import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -25,7 +25,7 @@ export class RecordComponent implements OnInit {
     recordTab: string;
     summary: BibRecordSummary;
     searchContext: CatalogSearchContext;
-    @ViewChild('recordTabs', { static: true }) recordTabs: NgbTabset;
+    @ViewChild('recordTabs', { static: true }) recordTabs: NgbNav;
     @ViewChild('marcEditor', {static: false}) marcEditor: MarcEditorComponent;
 
     @ViewChild('holdingsMaint', {static: false})
@@ -83,7 +83,7 @@ export class RecordComponent implements OnInit {
 
     // Changing a tab in the UI means changing the route.
     // Changing the route ultimately results in changing the tab.
-    beforeTabChange(evt: NgbTabChangeEvent) {
+    beforeNavChange(evt: NgbNavChangeEvent) {
 
         // prevent tab changing until after route navigation
         evt.preventDefault();

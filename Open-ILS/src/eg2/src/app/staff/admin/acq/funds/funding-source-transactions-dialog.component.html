@@ -20,9 +20,9 @@
     </button>
   </div>
   <div class="modal-body" *ngIf="fundingSource">
-    <ul ngbNav #fundingSourceTransactionsNav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
-      <li [ngbNavItem]="'credits'">
-        <a ngbNavLink i18n>Credits</a>
+    <ul ngbNav #fundingSourceTransactionsNav="ngbNav" [(activeId)]="activeTab" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
+      <li role="presentation" [ngbNavItem]="'credits'">
+        <a role="tab" ngbNavLink i18n>Credits</a>
         <ng-template ngbNavContent>
            <div class="mt-2">
             <eg-grid #creditsGrid idlClass="acqfscred" [dataSource]="acqfscredDataSource"
@@ -42,8 +42,8 @@
           </div>
         </ng-template>
       </li>
-      <li [ngbNavItem]="'allocations'">
-        <a ngbNavLink i18n>Allocations</a>
+      <li role="presentation" [ngbNavItem]="'allocations'">
+        <a role="tab" ngbNavLink i18n>Allocations</a>
         <ng-template ngbNavContent>
           <div class="mt-2">
             <eg-grid #allocationsGrid idlClass="acqfa" [dataSource]="acqfaDataSource"

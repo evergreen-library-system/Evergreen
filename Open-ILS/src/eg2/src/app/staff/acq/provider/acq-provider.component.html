@@ -45,9 +45,10 @@
 <div class="col">
 <div class="row" id="acq-provider-page" [hidden]="!id">
   <div class="col-lg-12">
-    <ngb-tabset #acqProviderTabs [activeId]="activeTab" (tabChange)="onTabChange($event)">
-      <ngb-tab title="Provider" i18n-title id="details" [disabled]="!id">
-        <ng-template ngbTabContent>
+    <ul ngbNav #acqProviderTabs="ngbNav" [(activeId)]="activeTab" (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
+      <li role="presentation" [ngbNavItem]="'details'" [disabled]="!id">
+        <a i18n ngbNavLink role="tab">Provider</a>
+        <ng-template ngbNavContent>
           <div class="row mt-3">
             <div class="col-lg-12 text-right pb-1">
               <button class="btn btn-secondary btn-sm" [disabled]="activeTab === defaultTabType"
@@ -56,9 +57,10 @@
           </div>
           <eg-provider-details #providerDetails (desireSummarize)="onDesireSummarize($event, true)"></eg-provider-details>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Addresses" i18n-title id="addresses" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
-        <ng-template ngbTabContent>
+      </li>
+      <li role="presentation" [ngbNavItem]="'addresses'" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
+        <a i18n ngbNavLink role="tab">Addresses</a>
+        <ng-template ngbNavContent>
           <div class="row mt-3">
             <div class="col-lg-12 text-right pb-1">
               <button class="btn btn-secondary btn-sm" [disabled]="activeTab === defaultTabType"
@@ -67,9 +69,10 @@
           </div>
           <eg-provider-addresses></eg-provider-addresses>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Contacts" i18n-title id="contacts" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
-        <ng-template ngbTabContent>
+      </li>
+      <li role="presentation" [ngbNavItem]="'contacts'" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
+        <a i18n ngbNavLink role="tab">Contacts</a>
+          <ng-template ngbNavContent>
           <div class="row mt-3">
             <div class="col-lg-12 text-right pb-1">
               <button class="btn btn-secondary btn-sm" [disabled]="activeTab === defaultTabType"
@@ -78,9 +81,10 @@
           </div>
           <eg-provider-contacts (desireSummarize)="onDesireSummarize($event, true)"></eg-provider-contacts>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Attribute Definitions" i18n-title id="attributes" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
-        <ng-template ngbTabContent>
+      </li>
+      <li role="presentation" [ngbNavItem]="'attributes'" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
+        <a i18n ngbNavLink role="tab">Attribute Definitions</a>
+        <ng-template ngbNavContent>
           <div class="row mt-3">
             <div class="col-lg-12 text-right pb-1">
               <button class="btn btn-secondary btn-sm" [disabled]="activeTab === defaultTabType"
@@ -89,9 +93,10 @@
           </div>
           <eg-provider-attributes></eg-provider-attributes>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Holdings Definitions" i18n-title id="holdings" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
-        <ng-template ngbTabContent>
+      </li>
+      <li role="presentation" [ngbNavItem]="'holdings'" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
+        <a i18n ngbNavLink role="tab">Holdings Definitions</a>
+        <ng-template ngbNavContent>
           <div class="row mt-3">
             <div class="col-lg-12 text-right pb-1">
               <button class="btn btn-secondary btn-sm" [disabled]="activeTab === defaultTabType"
@@ -100,9 +105,10 @@
           </div>
           <eg-provider-holdings #providerHoldings></eg-provider-holdings>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab title="EDI" i18n-title id="edi_accounts" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
-        <ng-template ngbTabContent>
+      </li>
+      <li role="presentation" [ngbNavItem]="'edi_accounts'" [disabled]="!id || !this.providerRecord.currentProvider || !this.providerRecord.currentProvider.canAdmin">
+        <a i18n ngbNavLink role="tab">EDI</a>
+        <ng-template ngbNavContent>
           <div class="row mt-3">
             <div class="col-lg-12 text-right pb-1">
               <button class="btn btn-secondary btn-sm" [disabled]="activeTab === defaultTabType"
@@ -111,9 +117,10 @@
           </div>
           <eg-provider-edi-accounts (desireSummarize)="onDesireSummarize($event, true)"></eg-provider-edi-accounts>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Invoices" i18n-title id="invoices" [disabled]="!id">
-        <ng-template ngbTabContent>
+      </li>
+      <li role="presentation" [ngbNavItem]="'invoices'" [disabled]="!id">
+        <a i18n ngbNavLink role="tab">Invoices</a>
+        <ng-template ngbNavContent>
           <div class="row mt-3">
             <div class="col-lg-12 text-right pb-1">
               <button class="btn btn-secondary btn-sm" [disabled]="activeTab === defaultTabType"
@@ -122,9 +129,10 @@
           </div>
           <eg-provider-invoices></eg-provider-invoices>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab title="POs" i18n-title id="purchase_orders" [disabled]="!id">
-        <ng-template ngbTabContent>
+      </li>
+      <li role="presentation" [ngbNavItem]="'purchase_orders'" [disabled]="!id">
+        <a i18n ngbNavLink role="tab">POs</a>
+        <ng-template ngbNavContent>
           <div class="row mt-3">
             <div class="col-lg-12 text-right pb-1">
               <button class="btn btn-secondary btn-sm" [disabled]="activeTab === defaultTabType"
@@ -133,8 +141,10 @@
           </div>
           <eg-provider-purchase-orders></eg-provider-purchase-orders>
         </ng-template>
-      </ngb-tab>
-    </ngb-tabset>
+      </li>
+    </ul>
+
+    <div [ngbNavOutlet]="acqProviderTabs" class="mt-2"></div>
   </div>
 </div>
 </div>

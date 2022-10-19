@@ -231,9 +231,9 @@
   </div>
 
   <!-- Name / Preferred Name Tabs -->
-  <ul ngbNav #nameNav="ngbNav" class="nav-tabs" [(activeId)]="nameTab">
-    <li ngbNavItem="primary">
-      <a ngbNavLink i18n>Primary Name</a>
+  <ul ngbNav #nameNav="ngbNav" class="nav-tabs" [(activeId)]="nameTab" [keyboard]="true" [roles]="false" role="tablist">
+    <li role="presentation" ngbNavItem="primary">
+      <a role="tab" ngbNavLink i18n>Primary Name</a>
       <ng-template ngbNavContent>
         <ng-container *ngTemplateOutlet="fieldRow; context: 
           {args: {template: fieldInput, field: 'prefix'}}">
@@ -252,8 +252,8 @@
         </ng-container>
       </ng-template>
     </li>
-    <li ngbNavItem="preferred">
-      <a ngbNavLink i18n>Preferred Name</a>
+    <li role="presentation" ngbNavItem="preferred">
+      <a role="tab" ngbNavLink i18n>Preferred Name</a>
       <ng-template ngbNavContent>
         <ng-container *ngTemplateOutlet="fieldRow; context: 
           {args: {template: fieldInput, field: 'pref_prefix'}}">

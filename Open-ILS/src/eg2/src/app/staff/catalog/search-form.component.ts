@@ -6,7 +6,7 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from './catalog.service';
-import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 // Maps opac-style default tab names to local tab names.
 const LEGACY_TAB_NAME_MAP = {
@@ -144,7 +144,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         });
     }
 
-    onTabChange(evt: NgbTabChangeEvent) {
+    onNavChange(evt: NgbNavChangeEvent) {
         this.searchTab = evt.nextId;
 
         // Focus after tab-change event has a chance to complete

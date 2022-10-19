@@ -3,10 +3,10 @@
 <div class="text-center">
     <button class="btn btn-outline-dark" (click)="back()">&#8592; Back to Notifications/Action Triggers</button>
 </div>
-<ul ngbNav #editNav="ngbNav" class="nav-tabs mb-3"
+<ul ngbNav #editNav="ngbNav" class="nav-tabs mb-3"  [keyboard]="true" [roles]="false" role="tablist"
     [activeId]="editTab" (navChange)="onTabChange($event)">
-    <li [ngbNavItem]="'def'">
-        <a ngbNavLink i18n>Edit Definition</a>
+    <li role="presentation" [ngbNavItem]="'def'">
+        <a role="tab" ngbNavLink i18n>Edit Definition</a>
         <ng-template ngbNavContent>
             <ng-template #textAreaTemplate let-field="field" let-record="record">
                 <textarea class="form-control" name="{{field.name}}"
@@ -25,8 +25,8 @@
             </div>
     </ng-template>
     </li>
-    <li ngbNavItem="'alt'" *ngIf=this.evtAltEligible>
-        <a ngbNavLink i18n>Edit Alternate Template</a>
+    <li role="presentation" ngbNavItem="'alt'" *ngIf=this.evtAltEligible>
+        <a role="tab" ngbNavLink i18n>Edit Alternate Template</a>
         <ng-template ngbNavContent>
             <ng-template #textAreaTemplate let-field="field" let-record="record">
                 <textarea class="form-control" name="{{field.name}}"
@@ -53,8 +53,8 @@
                  hiddenFields="event_def,id"></eg-fm-record-editor>
         </ng-template>
     </li>
-    <li ngbNavItem="'env'">
-        <a ngbNavLink i18n>Edit Environment</a>
+    <li role="presentation" ngbNavItem="'env'">
+        <a role="tab" ngbNavLink i18n>Edit Environment</a>
         <ng-template ngbNavContent>
             <h3 class="mb-3">Trigger Event Environment</h3>
             <eg-grid #envGrid idlClass="atenv" [dataSource]="envDataSource"
@@ -71,8 +71,8 @@
                 hiddenFields="event_def,id"></eg-fm-record-editor>
         </ng-template>
     </li>
-    <li ngbNavItem="'param'">
-        <a ngbNavLink i18n>Edit Parameters</a>
+    <li role="presentation" ngbNavItem="'param'">
+        <a role="tab" ngbNavLink i18n>Edit Parameters</a>
         <ng-template ngbNavContent>
             <h3 class="mb-3">Trigger Event Parameters</h3>
             <eg-grid #paramGrid idlClass="atevparam" [dataSource]="paramDataSource"
@@ -89,8 +89,8 @@
                 hiddenFields="event_def,id"></eg-fm-record-editor>
         </ng-template>
     </li>
-    <li ngbNavItem="'test'">
-        <a ngbNavLink i18n>Run Tests</a>
+    <li role="presentation" ngbNavItem="'test'">
+        <a role="tab" ngbNavLink i18n>Run Tests</a>
         <ng-template ngbNavContent>
             <h3 class="mb-3">Run Tests</h3>
             <label id="barcode">Barcode of Circulating Copy </label>

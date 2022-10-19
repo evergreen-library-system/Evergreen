@@ -52,9 +52,11 @@
         </ng-container>
     </ng-container>
     <div *ngIf="selected" class="common-form striped-even">
-      <ngb-tabset>
-        <ngb-tab title="Group Details" i18n-title id="detail">
-          <ng-template ngbTabContent>
+      <ul ngbNav #PermTabs="ngbNav" [(activeId)]="permTab" (navChange)="onNavChange($event)" 
+        [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
+        <li role="presentation" [ngbNavItem]="'detail'">
+          <a i18n ngbNavLink role="tab">Group Details</a>
+          <ng-template ngbNavContent>
             <div class="row">
               <div class="col-lg-3">
                 <label i18n>Actions for Selected: </label>
@@ -115,9 +117,10 @@
               </div>
             </div>
           </ng-template>
-        </ngb-tab>
-        <ngb-tab title="Group Permissions" i18n-title id="perm">
-          <ng-template ngbTabContent>
+        </li>
+        <li role="presentation" [ngbNavItem]="'perm'">
+          <a i18n ngbNavLink role="tab">Group Permissions</a>
+          <ng-template ngbNavContent>
 
             <div class="row d-flex m-2 mb-3">
               <button class="btn btn-success" (click)="applyChanges()" i18n
@@ -215,8 +218,10 @@
               </button>
             </div>
           </ng-template>
-        </ngb-tab>
-      </ngb-tabset>
+        </li>
+      </ul>
+
+      <div [ngbNavOutlet]="PermTabs" class="mt-2"></div>
     </div>
   </div>
 </div>

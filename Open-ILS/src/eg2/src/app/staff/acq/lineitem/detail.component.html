@@ -1,8 +1,8 @@
 <hr class="p-1"/>
 
-<ul ngbNav #liDetailNav="ngbNav" class="nav-tabs">
-  <li ngbNavItem="attrs">
-    <a ngbNavLink i18n>Attributes</a>
+<ul ngbNav #liDetailNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
+  <li role="presentation" ngbNavItem="attrs">
+    <a role="tab" ngbNavLink i18n role="tab">Attributes</a>
     <ng-template ngbNavContent>
       <ng-container *ngIf="lineitem">
         <div class="mt-3">
@@ -14,8 +14,8 @@
       </ng-container>
     </ng-template>
   </li>
-  <li ngbNavItem="marc-html">
-    <a ngbNavLink i18n>MARC View</a>
+  <li role="presentation" ngbNavItem="marc-html">
+    <a role="tab" ngbNavLink i18n>MARC View</a>
     <ng-template ngbNavContent>
       <ng-container *ngIf="lineitem">
         <div class="mt-3">
@@ -25,8 +25,8 @@
       </ng-container>
     </ng-template>
   </li>
-  <li ngbNavItem="marc-edit">
-    <a ngbNavLink i18n>MARC Edit</a>
+  <li role="presentation" ngbNavItem="marc-edit">
+    <a role="tab" ngbNavLink i18n>MARC Edit</a>
     <ng-template ngbNavContent>
       <ng-container *ngIf="lineitem">
         <div class="mt-3">

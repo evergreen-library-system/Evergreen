@@ -4,7 +4,7 @@ import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
-import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {ToastService} from '@eg/share/toast/toast.service';
 
 const ADDR_TYPES =
@@ -17,7 +17,7 @@ const ADDR_TYPES =
 export class OrgAddressComponent {
 
     orgUnit: IdlObject = null;
-    private tabName: string;
+    tabName: string;
 
     private _orgId: number;
 
@@ -45,11 +45,12 @@ export class OrgAddressComponent {
         private toast: ToastService
     ) {
         this.addrChange = new EventEmitter<IdlObject>();
-        this.tabName = 'billing_address';
     }
 
     init() {
         if (!this.orgId) { return; }
+
+        this.tabName = 'billing_address';
 
         return this.pcrud.retrieve('aou', this.orgId,
             {flesh : 1, flesh_fields : {aou : ADDR_TYPES}},
@@ -62,10 +63,6 @@ export class OrgAddressComponent {
                 }
             });
         });
-    }
-
-    tabChanged($event: NgbTabChangeEvent) {
-        this.tabName = $event.nextId;
     }
 
     addrTypes(): string[] { // for UI

@@ -1,7 +1,7 @@
 import {Component, OnInit, OnDestroy, QueryList, ViewChildren, ViewChild} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {FormGroup, FormControl, Validators} from '@angular/forms';
-import {NgbTabChangeEvent, NgbTabset} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Observable, from, of, Subscription} from 'rxjs';
 import { single, switchMap, tap, debounceTime } from 'rxjs/operators';
 import {PatronService} from '@eg/staff/share/patron/patron.service';
@@ -21,10 +21,11 @@ export class ReturnComponent implements OnInit, OnDestroy {
     patronId: number;
     findPatron: FormGroup;
     subscriptions: Subscription[] = [];
+    patronTab: any;
 
     noSelectedRows: (rows: IdlObject[]) => boolean;
-    handleTabChange: ($event: NgbTabChangeEvent) => void;
-    @ViewChild('tabs', { static: true }) tabs: NgbTabset;
+    handleNavChange: ($event: NgbNavChangeEvent) => void;
+    @ViewChild('tabs', { static: true }) tabs: NgbNav;
     @ViewChildren(ReservationsGridComponent) grids: QueryList<ReservationsGridComponent>;
 
     constructor(
@@ -43,6 +44,10 @@ export class ReturnComponent implements OnInit, OnDestroy {
         this.route.paramMap.pipe(switchMap((params: ParamMap) => {
             return this.handleParams$(params);
         })).subscribe();
+
+        this.patronTab =
+            this.store.getItem('eg.booking.return.tab')
+            || 'patron_tab';
 
         this.findPatron = new FormGroup({
             'patronBarcode': new FormControl(null,
@@ -95,7 +100,7 @@ export class ReturnComponent implements OnInit, OnDestroy {
         );
         this.noSelectedRows = (rows: IdlObject[]) => (rows.length === 0);
 
-        this.handleTabChange = ($event) => {
+        this.handleNavChange = ($event) => {
             this.store.setItem('eg.booking.return.tab', $event.nextId)
             .then(() => {
                 this.router.navigate(['/staff', 'booking', 'return']);

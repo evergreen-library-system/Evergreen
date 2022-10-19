@@ -12,6 +12,7 @@ import {FmRecordEditorComponent, FmFieldOptions} from '@eg/share/fm-editor/fm-ed
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {PermGroupMapDialogComponent} from './perm-group-map-dialog.component';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
+import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 /** Manage permission groups and group permissions */
 
@@ -32,6 +33,7 @@ export class PermGroupTreeComponent implements OnInit {
 
     // Have to fetch quite a bit of data for this UI.
     loading: boolean;
+    permTab: string;
 
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
     @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
@@ -70,6 +72,10 @@ export class PermGroupTreeComponent implements OnInit {
         this.loadProgress.increment();
         this.loading = false;
         return Promise.resolve();
+    }
+
+    onNavChange(evt: NgbNavChangeEvent) {
+        this.permTab = evt.nextId;
     }
 
     setOrgDepths() {

@@ -1,9 +1,9 @@
 
 
-<ul ngbNav #holdsNav="ngbNav" class="nav-tabs">
+<ul ngbNav #holdsNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
 
-  <li ngbNavItem>
-    <a ngbNavLink i18n>Open Hold Requests</a>
+  <li role="presentation" ngbNavItem>
+    <a role="tab" ngbNavLink i18n>Open Hold Requests</a>
     <ng-template ngbNavContent>
       <eg-holds-grid 
         printTemplate="holds_for_patron"
@@ -19,8 +19,8 @@
     </ng-template>
   </li>
 
-  <li ngbNavItem>
-    <a ngbNavLink i18n>Recently Canceled Holds</a>
+  <li role="presentation" ngbNavItem>
+    <a role="tab" ngbNavLink i18n>Recently Canceled Holds</a>
     <ng-template ngbNavContent>
       <eg-holds-grid 
         printTemplate="holds_for_patron"

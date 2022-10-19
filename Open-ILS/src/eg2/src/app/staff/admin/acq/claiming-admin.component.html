@@ -3,33 +3,33 @@
 
 <eg-title i18n-prefix prefix="Claiming Administration"></eg-title>
 
-<ul ngbNav #claimingAdminNav="ngbNav" class="nav-tabs">
-  <li ngbNavItem>
-    <a ngbNavLink i18n>Claim Policies</a>
+<ul ngbNav #claimingAdminNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
+  <li role="presentation" ngbNavItem>
+    <a role="tab" ngbNavLink i18n>Claim Policies</a>
     <ng-template ngbNavContent>
       <div class="mt-2">
         <eg-admin-page idlClass="acqclp"></eg-admin-page>
        </div>
     </ng-template>
   </li>
-  <li ngbNavItem>
-    <a ngbNavLink i18n>Claim Policy Actions</a>
+  <li role="presentation" ngbNavItem>
+    <a role="tab" ngbNavLink i18n>Claim Policy Actions</a>
     <ng-template ngbNavContent>
       <div class="mt-2">
         <eg-admin-page idlClass="acqclpa"></eg-admin-page>
        </div>
     </ng-template>
   </li>
-  <li ngbNavItem>
-    <a ngbNavLink i18n>Claim Event Types</a>
+  <li role="presentation" ngbNavItem>
+    <a role="tab" ngbNavLink i18n>Claim Event Types</a>
     <ng-template ngbNavContent>
       <div class="mt-2">
         <eg-admin-page idlClass="acqclet"></eg-admin-page>
        </div>
     </ng-template>
   </li>
-  <li ngbNavItem>
-    <a ngbNavLink i18n>Claim Types</a>
+  <li role="presentation" ngbNavItem>
+    <a role="tab" ngbNavLink i18n>Claim Types</a>
     <ng-template ngbNavContent>
       <div class="mt-2">
         <eg-admin-page idlClass="acqclt"></eg-admin-page>

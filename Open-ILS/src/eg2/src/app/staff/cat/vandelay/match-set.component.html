@@ -20,17 +20,22 @@
   </div>
 </div>
 
-<ngb-tabset [activeId]="matchSetTab" (tabChange)="onTabChange($event)">
-	<ngb-tab title="Match Set Editor" i18n-title id="editor">
-		<ng-template ngbTabContent>
+<ul ngbNav #matchSetTabs="ngbNav" [(activeId)]="matchSetTab" 
+      (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
+	<li role="presentation" [ngbNavItem]="'editor'">
+		<a i18n ngbNavLink role="tab">Match Set Editor</a>
+    <ng-template ngbNavContent>
       <eg-match-set-expression [matchSet]="matchSet">
       </eg-match-set-expression>
 		</ng-template>
-	</ngb-tab>
-	<ngb-tab title="Match Set Quality Metrics" i18n-title id="quality">
-		<ng-template ngbTabContent>
+	</li>
+	<li role="presentation" [ngbNavItem]="'quality'">
+		<a i18n ngbNavLink role="tab">Match Set Quality Metrics</a>
+    <ng-template ngbNavContent>
       <eg-match-set-quality [matchSet]="matchSet">
       </eg-match-set-quality>
 		</ng-template>
-	</ngb-tab>
-</ngb-tabset>
+	</li>
+</ul>
+
+<div [ngbNavOutlet]="matchSetTabs" class="mt-2"></div>

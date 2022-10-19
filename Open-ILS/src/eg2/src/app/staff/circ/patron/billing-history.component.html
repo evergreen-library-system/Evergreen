@@ -17,10 +17,10 @@
 </ng-template>
 
 
-<ul ngbNav #nav="ngbNav" class="nav-tabs" 
+<ul ngbNav #nav="ngbNav" class="nav-tabs"  [keyboard]="true" [roles]="false" role="tablist"
   [activeId]="tab" (navChange)="beforeTabChange($event)">
-  <li ngbNavItem="transactions">
-    <a ngbNavLink i18n>Transactions</a>
+  <li role="presentation" ngbNavItem="transactions">
+    <a role="tab" ngbNavLink i18n>Transactions</a>
     <ng-template ngbNavContent>
 
       <div class="row mt-3 mb-3 pt-2 pb-2 border rounded">
@@ -117,8 +117,8 @@
       </eg-grid>
     </ng-template>
   </li>
-  <li ngbNavItem="payments">
-    <a ngbNavLink i18n>Payments</a>
+  <li role="presentation" ngbNavItem="payments">
+    <a role="tab" ngbNavLink i18n>Payments</a>
     <ng-template ngbNavContent>
       <div class="row mt-3 mb-3 pt-2 pb-2 border rounded">
         <div class="col-lg-4">

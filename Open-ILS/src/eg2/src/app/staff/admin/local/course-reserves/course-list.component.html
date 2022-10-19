@@ -11,9 +11,9 @@
 <eg-string #unarchiveSuccessString i18n-text text="Unarchiving of {{tableName}} succeeded"></eg-string>
 <eg-string #flairTooltip i18n-text text="Limited Editing"></eg-string>
 
-<ul ngbNav #courseListNav="ngbNav" class="nav-tabs">
-  <li ngbNavItem>
-    <a ngbNavLink i18n>Course list</a>
+<ul ngbNav #courseListNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
+  <li role="presentation" ngbNavItem>
+    <a role="tab" ngbNavLink i18n>Course list</a>
     <ng-template ngbNavContent>
       <div class="row">
         <div class="col-lg-6">
@@ -52,14 +52,14 @@
       </div>
     </ng-template>
   </li>
-  <li ngbNavItem>
-    <a ngbNavLink i18n>Terms</a>
+  <li role="presentation" ngbNavItem>
+    <a role="tab" ngbNavLink i18n>Terms</a>
     <ng-template ngbNavContent>
       <eg-course-term-grid></eg-course-term-grid>
     </ng-template>
   </li>
-  <li ngbNavItem>
-    <a ngbNavLink i18n>Course roles</a>
+  <li role="presentation" ngbNavItem>
+    <a role="tab" ngbNavLink i18n>Course roles</a>
     <ng-template ngbNavContent>
       <eg-admin-page idlClass="acmr"></eg-admin-page>
     </ng-template>

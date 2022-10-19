@@ -23,6 +23,4 @@ select.form-control:not([size]):not([multiple]) {
 
 .tab-content {
   padding: 5px;
-  margin-top: 25px;
-  font-weight: bold;
 }

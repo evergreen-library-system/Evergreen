@@ -10,7 +10,8 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 
 @Component({
-    templateUrl: './org-unit-type.component.html'
+    templateUrl: './org-unit-type.component.html',
+    styleUrls: [ './org-unit.component.css' ],
 })
 
 export class OrgUnitTypeComponent implements OnInit {

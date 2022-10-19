@@ -48,10 +48,10 @@
 </div>
 <div *ngIf="rptType !== ''" class="row mt-2" id="sr-editor-main">
   <div class="col-lg-12">
-    <ul ngbNav #srEditorTabs="ngbNav" class="nav-tabs">
+    <ul ngbNav #srEditorTabs="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
 
-      <li [ngbNavItem]="'rptFields'">
-        <a ngbNavLink i18n>Display Fields</a>
+      <li role="presentation" [ngbNavItem]="'rptFields'">
+        <a role="tab" ngbNavLink i18n>Display Fields</a>
 	<ng-template ngbNavContent>
           <eg-sr-field-chooser
             [fieldType]="'display'"
@@ -66,13 +66,13 @@
         </ng-template>
       </li>
 
-      <li [ngbNavItem]="'rptSortFields'">
-        <a ngbNavLink i18n>Output Order</a>
+      <li role="presentation" [ngbNavItem]="'rptSortFields'">
+        <a role="tab" ngbNavLink i18n>Output Order</a>
 	<ng-template ngbNavContent><eg-sr-sort-order [(fields)]="templ.displayFields" [(orderByNames)]="templ.orderByNames" (orderByNamesChange)="dirty()"></eg-sr-sort-order></ng-template>
       </li>
 
-      <li [ngbNavItem]="'rptFilterFields'">
-        <a ngbNavLink i18n>Filters</a>
+      <li role="presentation" [ngbNavItem]="'rptFilterFields'">
+        <a role="tab" ngbNavLink i18n>Filters</a>
 	<ng-template ngbNavContent>
           <eg-sr-field-chooser
             [fieldType]="'filter'"
@@ -86,8 +86,8 @@
         </ng-template>
       </li>
 
-      <li [ngbNavItem]="'rptOutputOptions'">
-        <a ngbNavLink i18n>Output Options</a>
+      <li role="presentation" [ngbNavItem]="'rptOutputOptions'">
+        <a role="tab" ngbNavLink i18n>Output Options</a>
         <ng-template ngbNavContent>
           <eg-sr-output-options
             [readyToSchedule]="readyToSchedule"

@@ -11,7 +11,7 @@ import {ComboboxComponent, ComboboxEntry
     } from '@eg/share/combobox/combobox.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {LocaleService} from '@eg/core/locale.service';
-import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {SampleDataService} from '@eg/share/util/sample-data.service';
 import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
@@ -39,7 +39,7 @@ export class PrintTemplateComponent implements OnInit {
     selectedOrgs: number[];
 
     @ViewChild('templateSelector', { static: true }) templateSelector: ComboboxComponent;
-    @ViewChild('tabs', { static: false }) tabs: NgbTabset;
+    @ViewChild('tabs', { static: false }) tabs: NgbNav;
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
     @ViewChild('confirmDelete', { static: true }) confirmDelete: ConfirmDialogComponent;
     @ViewChild('printContextCbox', {static: false}) printContextCbox: ComboboxComponent;
@@ -170,7 +170,7 @@ export class PrintTemplateComponent implements OnInit {
             this.org.list()[0];
     }
 
-    onTabChange(evt: NgbTabChangeEvent) {
+    onTabChange(evt: NgbNavChangeEvent) {
         if (evt.nextId === 'template') {
             this.refreshPreview();
         }

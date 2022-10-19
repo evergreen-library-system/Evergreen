@@ -306,7 +306,7 @@ body>.dropdown-menu {z-index: 2100;}
  * 5. Turning off view encapsulation for the acq search component
  *    breaks a lot of styles.
  */
-#acq-search-page ngb-tabset .nav.nav-tabs {
+#acq-search-page ngbNav .nav.nav-tabs {
   background-color: rgb(247, 247, 247);
 }
 

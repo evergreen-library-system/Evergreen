@@ -50,9 +50,12 @@
   </div>
 </div>
 
-<ngb-tabset *ngIf="template" #tabs (tabChange)="onTabChange($event)">
-  <ngb-tab title="Template" i18n-title id='template'>
-    <ng-template ngbTabContent>
+<ul ngbNav #tabs="ngbNav" *ngIf="template" [(activeId)]="template"
+      (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
+
+  <li role="presentation" [ngbNavItem]="'template'">
+    <a i18n ngbNavLink role="tab">Template</a>
+    <ng-template ngbNavContent>
       <div class="row">
         <div class="col-lg-12 mt-3 d-flex">
           <button class="btn btn-info" (click)="openEditDialog()" i18n>
@@ -115,13 +118,15 @@
         </div>
       </div>
     </ng-template>
-  </ngb-tab>
-  <ngb-tab title="Sample Data" i18n-title id='data'>
-    <ng-template ngbTabContent>
+  </li>
+  <li role="presentation" [ngbNavItem]="'data'">
+    <a i18n ngbNavLink role="tab">Sample Data</a>
+    <ng-template ngbNavContent>
       <textarea rows="20" [(ngModel)]="sampleJson" 
         spellcheck="false" class="form-control">
       </textarea>
     </ng-template>
-  </ngb-tab>
-</ngb-tabset>
+  </li>
+</ul>
 
+<div [ngbNavOutlet]="tabs" class="mt-2"></div>

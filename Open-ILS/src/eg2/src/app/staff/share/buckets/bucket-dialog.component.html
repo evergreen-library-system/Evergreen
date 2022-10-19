@@ -18,9 +18,9 @@
     </button>
   </div>
   <div class="modal-body">
-    <ul ngbNav #bucketDialogTabs="ngbNav" class="nav-tabs">
-      <li [ngbNavItem]="1">
-        <a ngbNavLink i18n>Existing bucket</a>
+    <ul ngbNav #bucketDialogTabs="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
+      <li role="presentation" [ngbNavItem]="1">
+        <a role="tab" ngbNavLink i18n>Existing bucket</a>
         <ng-template ngbNavContent>
           <div class="row mt-3">
             <div class="col-lg-3 font-weight-bold"><label for="existing-bucket-name">Name of existing bucket</label></div>
@@ -40,8 +40,8 @@
           </div>
         </ng-template>
       </li>
-      <li [ngbNavItem]="2">
-        <a ngbNavLink i18n>New bucket</a>
+      <li role="presentation" [ngbNavItem]="2">
+        <a role="tab" ngbNavLink i18n>New bucket</a>
         <ng-template ngbNavContent>
           <div class="row mt-3">
             <div class="col-lg-3 font-weight-bold" i18n>Name of new bucket</div>
@@ -70,8 +70,8 @@
           </div>
         </ng-template>
       </li>
-      <li [ngbNavItem]="3">
-        <a ngbNavLink i18n>Shared bucket</a>
+      <li role="presentation" [ngbNavItem]="3">
+        <a role="tab" ngbNavLink i18n>Shared bucket</a>
         <ng-template ngbNavContent>
           <div class="row mt-3">
             <div class="col-lg-3 font-weight-bold" i18n>ID of shared bucket</div>

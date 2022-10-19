@@ -131,9 +131,9 @@
 
 <hr class="p-2 m-2"/>
 
-<ul ngbNav #statementNav="ngbNav" class="nav-tabs" [activeId]="statementTab">
-  <li ngbNavItem="statement">
-    <a ngbNavLink i18n>Statement</a>
+<ul ngbNav #statementNav="ngbNav" class="nav-tabs" [activeId]="statementTab" [keyboard]="true" [roles]="false" role="tablist">
+  <li role="presentation" ngbNavItem="statement">
+    <a role="tab" ngbNavLink i18n>Statement</a>
     <ng-template ngbNavContent>
       <h4 i18n>Billing Statement</h4>
       <div class="card tight-card">
@@ -202,8 +202,8 @@
       </div>
     </ng-template>
   </li>
-  <li ngbNavItem="details">
-    <a ngbNavLink i18n>Details</a>
+  <li role="presentation" ngbNavItem="details">
+    <a role="tab" ngbNavLink i18n>Details</a>
     <ng-template ngbNavContent>
       <div class="mt-3">
         <eg-grid idlClass="mb" #billingGrid toolbarLabel="Bills" 

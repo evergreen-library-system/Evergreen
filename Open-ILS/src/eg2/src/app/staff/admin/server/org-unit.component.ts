@@ -1,7 +1,7 @@
 import {Component, Input, ViewChild, OnInit} from '@angular/core';
 import {Tree, TreeNode} from '@eg/share/tree/tree';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -13,13 +13,14 @@ import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 @Component({
-    templateUrl: './org-unit.component.html'
+    templateUrl: './org-unit.component.html',
+    styleUrls: [ './org-unit.component.css' ],
 })
 export class OrgUnitComponent implements OnInit {
 
     tree: Tree;
     selected: TreeNode;
-    winHeight = 500;
+    orgUnitTab: string;
 
     @ViewChild('editString', { static: true }) editString: StringComponent;
     @ViewChild('errorString', { static: true }) errorString: StringComponent;
@@ -39,7 +40,7 @@ export class OrgUnitComponent implements OnInit {
         this.loadAouTree(this.org.root().id());
     }
 
-    tabChanged(evt: NgbTabChangeEvent) {
+    navChanged(evt: NgbNavChangeEvent) {
         const tab = evt.nextId;
         // stubbing out in case we need it.
     }
@@ -74,9 +75,6 @@ export class OrgUnitComponent implements OnInit {
             const node = this.tree.findNode(selectNodeId);
             this.selected = node;
             this.tree.selectNode(node);
-
-            // Subtract out the menu bar plus a bit more.
-            this.winHeight = window.innerHeight * 0.8;
         });
     }
 

@@ -5,10 +5,10 @@
   </div>
 </div>
 
-<ul ngbNav #permsNav="ngbNav" class="nav-tabs">
+<ul ngbNav #permsNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
 
-  <li ngbNavItem>
-    <a ngbNavLink i18n>Working Location(s)</a>
+  <li role="presentation" ngbNavItem>
+    <a role="tab" ngbNavLink i18n>Working Location(s)</a>
     <ng-template ngbNavContent>
 
       <div class="striped-rows-odd mt-3 mb-3">
@@ -28,8 +28,8 @@
       </div>
     </ng-template>
   </li>
-  <li ngbNavItem>
-    <a ngbNavLink i18n>User Permissions</a>
+  <li role="presentation" ngbNavItem>
+    <a role="tab" ngbNavLink i18n>User Permissions</a>
     <ng-template ngbNavContent>
 
       <div class="striped-rows-odd mt-3">

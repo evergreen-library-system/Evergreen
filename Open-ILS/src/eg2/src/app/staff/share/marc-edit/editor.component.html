@@ -79,18 +79,18 @@
 
 <div *ngIf="!dataSaving" class="row">
   <div class="col-lg-12">
-    <ul ngbNav #editorNav="ngbNav" class="nav-tabs"
+    <ul ngbNav #editorNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist"
       [activeId]="editorTab" (navChange)="tabChange($event)">
-      <li [ngbNavItem]="'rich'">
-        <a ngbNavLink i18n>Enhanced MARC Editor</a>
+      <li role="presentation" [ngbNavItem]="'rich'">
+        <a role="tab" ngbNavLink i18n>Enhanced MARC Editor</a>
         <ng-template ngbNavContent>
           <ng-container *ngIf="context && context.record">
             <eg-marc-rich-editor [context]="context"></eg-marc-rich-editor>
           </ng-container>
         </ng-template>
       </li>
-      <li ngbNavItem="flat">
-        <a ngbNavLink i18n>Flat Text Editor</a>
+      <li role="presentation" ngbNavItem="flat">
+        <a role="tab" ngbNavLink i18n>Flat Text Editor</a>
         <ng-template ngbNavContent>
           <ng-container *ngIf="context && context.record">
             <eg-marc-flat-editor [context]="context"></eg-marc-flat-editor>

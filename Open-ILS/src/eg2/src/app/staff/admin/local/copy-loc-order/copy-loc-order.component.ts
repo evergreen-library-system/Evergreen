@@ -1,7 +1,7 @@
 import {Component, Input, ViewChild, OnInit} from '@angular/core';
 import {tap, concatMap} from 'rxjs/operators';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
-import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';

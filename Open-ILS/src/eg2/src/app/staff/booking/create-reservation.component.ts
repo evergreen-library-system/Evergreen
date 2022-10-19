@@ -3,7 +3,7 @@ import {FormGroup, FormControl, ValidationErrors, ValidatorFn, FormArray} from '
 import {Router, ActivatedRoute} from '@angular/router';
 import {from, iif, Observable, of, throwError, timer, Subscription} from 'rxjs';
 import {catchError, debounceTime, takeLast, mapTo, single, switchMap, tap} from 'rxjs/operators';
-import {NgbCalendar, NgbTabset} from '@ng-bootstrap/ng-bootstrap';
+import {NgbCalendar, NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {AuthService} from '@eg/core/auth.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {FormatService} from '@eg/core/format.service';
@@ -68,9 +68,10 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
     changeGranularity: ($event: ComboboxEntry) => void;
 
     dateRange: DateRange;
+    detailsTab: string = '';
 
     @ViewChild('createDialog', { static: true }) createDialog: CreateReservationDialogComponent;
-    @ViewChild('details', { static: true }) details: NgbTabset;
+    @ViewChild('details', { static: true }) details: NgbNav;
     @ViewChild('noTimezoneSetDialog', { static: true }) noTimezoneSetDialog: NoTimezoneSetComponent;
     @ViewChild('viewReservation', { static: true }) viewReservation: FmRecordEditorComponent;
     @ViewChildren('scheduleGrid') scheduleGrids: QueryList<GridComponent>;

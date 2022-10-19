@@ -10,12 +10,12 @@
   <div class="col-sm-6 offset-sm-3">
     <div class="card">
       <h2 class="card-header" i18n>Filter reservations</h2>
-      <ngb-tabset #filterTabs [activeId]="startingTab" class="mt-1">
-        <ngb-tab id="patron">
-          <ng-template ngbTabTitle>
+      <ul ngbNav #filterTabs="ngbNav" [(activeId)]="startingTab" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
+        <li role="presentation" [ngbNavItem]="'patron'">
+          <a ngbNavLink role="tab">
             <span class="material-icons" *ngIf="patronId">filter_list</span> <span i18n>Filter by patron</span>
-          </ng-template>
-          <ng-template ngbTabContent>
+          </a>
+          <ng-template ngbNavContent>
             <div class="m-2">
               <div class="input-group m-2">
                 <div class="input-group-prepend">
@@ -28,12 +28,12 @@
               </div>
             </div>
           </ng-template>
-        </ngb-tab>
-        <ngb-tab id="resource">
-          <ng-template ngbTabTitle>
+        </li>
+        <li role="presentation" [ngbNavItem]="'resource'">
+          <a ngbNavLink role="tab">
             <span class="material-icons" *ngIf="resourceBarcode.value">filter_list</span> <span i18n>Filter by resource</span>
-          </ng-template>
-          <ng-template ngbTabContent>
+          </a>
+          <ng-template ngbNavContent>
             <div class="m-2">
               <div class="input-group m-2">
                 <div class="input-group-prepend">
@@ -46,12 +46,12 @@
               </div>
             </div>
           </ng-template>
-        </ngb-tab>
-        <ngb-tab id="type">
-          <ng-template ngbTabTitle>
+        </li>
+        <li role="presentation" [ngbNavItem]="'type'">
+          <a ngbNavLink role="tab">
             <span class="material-icons" *ngIf="resourceTypeForGrid">filter_list</span> <span i18n>Filter by resource type</span>
-          </ng-template>
-          <ng-template ngbTabContent>
+          </a>
+          <ng-template ngbNavContent>
             <div class="m-2">
               <div class="input-group m-2">
                 <div class="input-group-prepend">
@@ -64,8 +64,10 @@
               </div>
             </div>
           </ng-template>
-        </ngb-tab>
-      </ngb-tabset>
+        </li>
+      </ul>
+
+      <div [ngbNavOutlet]="filterTabs" class="mt-2"></div>
     </div>
   </div>
 </form>

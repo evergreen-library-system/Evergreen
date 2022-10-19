@@ -102,9 +102,9 @@
 
 <div class="row mt-2">
   <div class="col-lg-12">
-    <ul ngbNav #detailNav="ngbNav" class="nav-tabs" [activeId]="detailTab">
-      <li ngbNavItem="notes">
-        <a ngbNavLink i18n>Notes</a>
+    <ul ngbNav #detailNav="ngbNav" class="nav-tabs" [activeId]="detailTab" [keyboard]="true" [roles]="false" role="tablist">
+      <li role="presentation" ngbNavItem="notes">
+        <a role="tab" ngbNavLink i18n>Notes</a>
         <ng-template ngbNavContent>
           <button class="btn btn-outline-dark mt-3" (click)="newNote()" i18n>New Note</button>
           <div class="mt-3" *ngFor="let note of notes">
@@ -132,8 +132,8 @@
           </div>
         </ng-template>
       </li>
-      <li ngbNavItem="notifications">
-        <a ngbNavLink i18n>Staff Notifications</a>
+      <li role="presentation" ngbNavItem="notifications">
+        <a role="tab" ngbNavLink i18n>Staff Notifications</a>
         <ng-template ngbNavContent>
           <button class="btn btn-outline-dark mt-3" 
             (click)="newNotify()" i18n>Add Record of Notification</button>

@@ -9,15 +9,18 @@
   </div>
 </div>
 
-<ngb-tabset #recordTabs [activeId]="recordTab" (tabChange)="onTabChange($event)">
-  <ngb-tab title="Queued Record MARC" i18n-title id="marc">
-    <ng-template ngbTabContent>
+<ul ngbNav #recordTabs="ngbNav" [(activeId)]="recordTab" 
+      (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
+  <li role="presentation" [ngbNavItem]="'marc'">
+    <a i18n ngbNavLink role="tab">Queued Record MARC</a>
+    <ng-template ngbNavContent>
       <eg-marc-html [recordId]="recordId" [recordType]="'vandelay-'+queueType">
       </eg-marc-html>
     </ng-template>
-  </ngb-tab>
-  <ngb-tab title="Edit Record" i18n-title id="edit">
-    <ng-template ngbTabContent>
+  </li>
+  <li role="presentation" [ngbNavItem]="'edit'">
+    <a i18n ngbNavLink role="tab">Edit Record</a>
+    <ng-template ngbNavContent>
       <ng-container *ngIf="queuedRecord">
         <eg-marc-editor [inPlaceMode]="true" [recordXml]="queuedRecord.marc()"
           [recordSource]="queuedRecord.bib_source()"
@@ -28,17 +31,21 @@
           *ngIf="queueType !== 'bib'"></eg-marc-editor>
       </ng-container>
     </ng-template>
-  </ngb-tab>
-  <ngb-tab title="Record Matches" i18n-title id="matches">
-    <ng-template ngbTabContent>
+  </li>
+  <li role="presentation" [ngbNavItem]="'matches'">
+    <a i18n ngbNavLink role="tab">Record Matches</a>
+    <ng-template ngbNavContent>
       <eg-queued-record-matches [recordId]="recordId" [queueType]="queueType">
       </eg-queued-record-matches>
     </ng-template>
-  </ngb-tab>
-  <ngb-tab title="Import Items" i18n-title id="items">
-    <ng-template ngbTabContent>
+  </li>
+  <li role="presentation" [ngbNavItem]="'items'">
+    <a i18n ngbNavLink role="tab">Import Items</a>
+    <ng-template ngbNavContent>
       <eg-queued-record-items [recordId]="recordId">
       </eg-queued-record-items>
     </ng-template>
-  </ngb-tab>
-</ngb-tabset>
+  </li>
+</ul>
+
+<div [ngbNavOutlet]="recordTabs" class="mt-2"></div>

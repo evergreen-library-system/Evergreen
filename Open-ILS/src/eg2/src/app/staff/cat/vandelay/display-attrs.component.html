@@ -1,17 +1,21 @@
 
-<ngb-tabset #tabs [activeId]="attrType" (tabChange)="onTabChange($event)">
-	<ngb-tab title="Bibliographic Attributes" i18n-title id="bib">
-		<ng-template ngbTabContent>
+<ul ngbNav #tabs="ngbNav" [(activeId)]="attrType" (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
+	<li role="presentation" [ngbNavItem]="'bib'">
+		<a i18n ngbNavLink role="tab">Bibliographic Attributes</a>
+		<ng-template ngbNavContent>
       <div class="mt-3">
         <eg-admin-page idlClass="vqbrad"></eg-admin-page>
       </div>
 		</ng-template>
-	</ngb-tab>
-	<ngb-tab title="Authority Attributes" i18n-title id="authority">
-		<ng-template ngbTabContent>
+	</li>
+	<li role="presentation" [ngbNavItem]="'authority'">
+		<a i18n ngbNavLink role="tab">Authority Attributes</a>
+		<ng-template ngbNavContent>
       <div class="mt-3">
         <eg-admin-page idlClass="vqarad"></eg-admin-page>
       </div>
 		</ng-template>
-	</ngb-tab>
-</ngb-tabset>
+	</li>
+</ul>
+
+<div [ngbNavOutlet]="tabs" class="mt-2"></div>

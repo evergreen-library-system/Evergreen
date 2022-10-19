@@ -4,25 +4,25 @@
 <eg-title i18n-prefix prefix="Fund Administration"></eg-title>
 
 <ul ngbNav #claimingAdminNav="ngbNav" class="nav-tabs" [(activeId)]="activeTab"
-    (navChange)="onNavChange($event)">
-  <li [ngbNavItem]="'fund'">
-    <a ngbNavLink i18n>Funds</a>
+    (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist">
+  <li role="presentation" [ngbNavItem]="'fund'">
+    <a role="tab" ngbNavLink i18n>Funds</a>
     <ng-template ngbNavContent>
       <div class="mt-2">
         <eg-funds-manager [startId]="fundId"></eg-funds-manager>
        </div>
     </ng-template>
   </li>
-  <li [ngbNavItem]="'funding_source'">
-    <a ngbNavLink i18n>Funding Sources</a>
+  <li role="presentation" [ngbNavItem]="'funding_source'">
+    <a role="tab" ngbNavLink i18n>Funding Sources</a>
     <ng-template ngbNavContent>
       <div class="mt-2">
         <eg-funding-sources [startId]="fundingSourceId"></eg-funding-sources>
        </div>
     </ng-template>
   </li>
-  <li [ngbNavItem]="'fund_tag'">
-    <a ngbNavLink i18n>Fund Tags</a>
+  <li role="presentation" [ngbNavItem]="'fund_tag'">
+    <a role="tab" ngbNavLink i18n>Fund Tags</a>
     <ng-template ngbNavContent>
       <div class="mt-2">
         <eg-admin-page idlClass="acqft"></eg-admin-page>

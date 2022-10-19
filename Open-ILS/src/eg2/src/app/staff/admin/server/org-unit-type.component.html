@@ -21,12 +21,12 @@
 >
 </eg-fm-record-editor>
 
-<div class="row">
-  <div class="col-lg-4">
+<div class="row org-unit-types-row">
+  <div class="col-lg-4 org-unit-types-col-aside">
     <h3 i18n>Org Unit Types</h3>
     <eg-tree [tree]="tree" (nodeClicked)="nodeClicked($event)"></eg-tree>
   </div>
-  <div class="col-lg-8">
+  <div class="col-lg-8 org-unit-types-col-main">
     <h3 i18n class="mb-3">Selected Org Unit Type</h3>
     <ng-container *ngIf="!selected">
       <div class="alert alert-info font-italic" i18n>

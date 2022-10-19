@@ -31,9 +31,9 @@
   <div [ngClass]="isDialog() ? 'modal-body' : ''">
     <div class="row">
       <div [ngClass]="isDialog() ? 'col-md-12' : 'col-md-4'">
-        <ul ngbNav #associateNav="ngbNav" class="nav-tabs">
-          <li ngbNavItem>
-            <a ngbNavLink i18n>Associate item</a>
+        <ul ngbNav #associateNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
+          <li role="presentation" ngbNavItem>
+            <a role="tab" ngbNavLink i18n>Associate item</a>
             <ng-template ngbNavContent>
               <div class="row" [ngClass]="isDialog() ? '' : 'mt-3'">
                 <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12'">
@@ -162,8 +162,8 @@
               </div>
             </ng-template>
           </li>
-          <li ngbNavItem>
-            <a ngbNavLink i18n>Associate brief record</a>
+          <li role="presentation" ngbNavItem>
+            <a role="tab" ngbNavLink i18n>Associate brief record</a>
             <ng-template ngbNavContent>
               <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">
                 <div class="input-group">
@@ -193,8 +193,8 @@
               </eg-marc-simplified-editor>
             </ng-template>
           </li>
-          <li ngbNavItem>
-            <a ngbNavLink>Associate electronic resource from catalog</a>
+          <li role="presentation" ngbNavItem>
+            <a ngbNavLink role="tab">Associate electronic resource from catalog</a>
             <ng-template ngbNavContent>
               <div class="row" [ngClass]="isDialog() ? '' : 'mt-3'">
                 <div class="d-flex" [ngClass]="isDialog() ? 'col-md-6' : 'col-md-12 mt-3'">

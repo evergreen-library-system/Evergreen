@@ -1,7 +1,7 @@
 import {Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import {filter, takeUntil} from 'rxjs/operators';
 import {Subject, Observable, of} from 'rxjs';
-import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {Router, ActivatedRoute, ParamMap, RouterEvent, NavigationEnd} from '@angular/router';
 import {IdlService} from '@eg/core/idl.service';
 import {AcqProviderSummaryPaneComponent} from './summary-pane.component';
@@ -36,7 +36,7 @@ export class AcqProviderComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('createErrString', { static: false }) createErrString: StringComponent;
     @ViewChild('leaveConfirm', { static: true }) leaveConfirm: ConfirmDialogComponent;
 
-    onTabChange: ($event: NgbTabChangeEvent) => void;
+    onNavChange: ($event: NgbNavChangeEvent) => void;
 
     onDesireSummarize: ($event: number, updateSummaryOnly?: boolean, hideSearchForm?: boolean) => void;
     onSummaryToggled: ($event: boolean) => void;
@@ -112,7 +112,7 @@ export class AcqProviderComponent implements OnInit, AfterViewInit, OnDestroy {
             this.showSearchForm = true;
         }
 
-        this.onTabChange = ($event) => {
+        this.onNavChange = ($event) => {
             $event.preventDefault();
             this.canDeactivate().subscribe(canLeave => {
                 if (!canLeave) { return; }

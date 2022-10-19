@@ -67,7 +67,7 @@
   <div [ngClass]="{'col-lg-9': showSummaryPane(), 'col-lg-12': !showSummaryPane()}">
 
     <div class="sticky-top-with-nav bg-white">
-      <ul ngbNav #patronNav="ngbNav" class="nav-tabs" [keyboard]="false"
+      <ul ngbNav #patronNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist"
         [activeId]="patronTab" (navChange)="beforeTabChange($event)">
 
         <ng-container *ngIf="patronTab !== 'search'">
@@ -84,8 +84,8 @@
           </li>
         </ng-container>
 
-        <li ngbNavItem="checkout" [disabled]="!context.summary">
-          <a ngbNavLink (click)="navItemClick('checkout', $event)"
+        <li role="presentation" ngbNavItem="checkout" [disabled]="!context.summary">
+          <a role="tab" ngbNavLink (click)="navItemClick('checkout', $event)"
             routerLink="/staff/circ/patron/{{patronId}}/checkout" i18n>Check Out</a>
           <ng-template ngbNavContent>
             <div class="">
@@ -94,8 +94,8 @@
           </ng-template>
         </li>
 
-        <li ngbNavItem="items_out" [disabled]="!context.summary">
-          <a ngbNavLink (click)="navItemClick('items_out', $event)"
+        <li role="presentation" ngbNavItem="items_out" [disabled]="!context.summary">
+          <a role="tab" ngbNavLink (click)="navItemClick('items_out', $event)"
             routerLink="/staff/circ/patron/{{patronId}}/items_out" i18n>
             Items Out ({{counts('checkouts', 'total_out')}})
           </a>
@@ -106,8 +106,8 @@
           </ng-template>
         </li>
 
-        <li ngbNavItem="holds" [disabled]="!context.summary">
-          <a ngbNavLink (click)="navItemClick('holds', $event)"
+        <li role="presentation" ngbNavItem="holds" [disabled]="!context.summary">
+          <a role="tab" ngbNavLink (click)="navItemClick('holds', $event)"
             routerLink="/staff/circ/patron/{{patronId}}/holds" i18n>
             Holds ({{counts('holds', 'ready')}} / {{counts('holds', 'total')}})
           </a>
@@ -116,8 +116,8 @@
           </ng-template>
         </li>
 
-        <li ngbNavItem="bills" [disabled]="!context.summary">
-          <a ngbNavLink (click)="navItemClick('bills', $event)"
+        <li role="presentation" ngbNavItem="bills" [disabled]="!context.summary">
+          <a role="tab" ngbNavLink (click)="navItemClick('bills', $event)"
             routerLink="/staff/circ/patron/{{patronId}}/bills" i18n>
             Bills 
             <span [ngClass]="{'text-danger': counts('fines', 'balance_owed') > 0}">
@@ -139,8 +139,8 @@
           </ng-template>
         </li>
 
-        <li ngbNavItem="messages" [disabled]="!context.summary">
-          <a ngbNavLink (click)="navItemClick('messages', $event)"
+        <li role="presentation" ngbNavItem="messages" [disabled]="!context.summary">
+          <a role="tab" ngbNavLink (click)="navItemClick('messages', $event)"
             routerLink="/staff/circ/patron/{{patronId}}/messages" i18n>Messages</a>
           <ng-template ngbNavContent>
             <div class="">
@@ -149,8 +149,8 @@
           </ng-template>
         </li>
 
-        <li ngbNavItem="edit" [disabled]="!context.summary">
-          <a ngbNavLink (click)="navItemClick('edit', $event)"
+        <li role="presentation" ngbNavItem="edit" [disabled]="!context.summary">
+          <a role="tab" ngbNavLink (click)="navItemClick('edit', $event)"
             routerLink="/staff/circ/patron/{{patronId}}/edit" i18n>Edit</a>
           <ng-template ngbNavContent>
             <eg-patron-edit #patronEditor [patronId]="patronId" [toolbar]="editorToolbar">
@@ -227,8 +227,8 @@
           </ng-template>
         </li>
 
-        <li ngbNavItem="search" class="ml-auto">
-          <a ngbNavLink (click)="navItemClick('search', $event)"
+        <li role="presentation" ngbNavItem="search" class="ml-auto">
+          <a role="tab" ngbNavLink (click)="navItemClick('search', $event)"
             routerLink="/staff/circ/patron/search" i18n>Patron Search</a>
           <ng-template ngbNavContent>
             <div class="">

@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   templateUrl: 'display-attrs.component.html'
@@ -20,7 +20,7 @@ export class DisplayAttrsComponent {
 
     // Changing a tab in the UI means changing the route.
     // Changing the route ultimately results in changing the tab.
-    onTabChange(evt: NgbTabChangeEvent) {
+    onNavChange(evt: NgbNavChangeEvent) {
         this.attrType = evt.nextId;
 
         // prevent tab changing until after route navigation

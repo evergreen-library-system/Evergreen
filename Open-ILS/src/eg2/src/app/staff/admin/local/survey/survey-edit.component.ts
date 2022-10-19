@@ -6,7 +6,7 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {IdlObject, IdlService } from '@eg/core/idl.service';
-import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {NgbNav, NgbNavChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     templateUrl: './survey-edit.component.html'
@@ -83,7 +83,7 @@ export class SurveyEditComponent implements OnInit {
         });
     }
 
-    onTabChange(event: NgbTabChangeEvent) {
+    onNavChange(event: NgbNavChangeEvent) {
         this.surveyTab = event.nextId;
     }
 

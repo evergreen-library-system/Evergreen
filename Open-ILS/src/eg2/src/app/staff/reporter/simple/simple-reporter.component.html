@@ -3,13 +3,13 @@
 
 <div class="row" id="simple-reporter-main">
   <div class="col-lg-12">
-    <ul ngbNav #simpleRptTabs="ngbNav" class="nav-tabs">
-      <li [ngbNavItem]="'myreports'">
-        <a ngbNavLink i18n>My Reports</a>
+    <ul ngbNav #simpleRptTabs="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
+      <li role="presentation" [ngbNavItem]="'myreports'">
+        <a role="tab" ngbNavLink i18n>My Reports</a>
 	    <ng-template ngbNavContent><eg-sr-reports></eg-sr-reports></ng-template>
       </li>
-      <li [ngbNavItem]="'outputs'">
-        <a ngbNavLink i18n>My Outputs</a>
+      <li role="presentation" [ngbNavItem]="'outputs'">
+        <a role="tab" ngbNavLink i18n>My Outputs</a>
 	    <ng-template ngbNavContent><eg-sr-outputs></eg-sr-outputs></ng-template>
       </li>
     </ul>

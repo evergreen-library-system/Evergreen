@@ -1,8 +1,9 @@
 <eg-staff-banner bannerText="Survey ID # {{surveyId}}" i18n-bannerText
                 class="mb-3"></eg-staff-banner>
-<ngb-tabset #surveyTabs [activeId]="surveyTab" (tabChange)="onTabChange($event)" class="mb-3">
-    <ngb-tab title="Edit Survey" i18n-title id="edit">
-        <ng-template ngbTabContent>
+<ul ngbNav #surveyTabs="ngbNav" [(activeId)]="surveyTab" (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="mb-3 nav-tabs">
+    <li role="presentation" [ngbNavItem]="'edit'">
+        <a i18n ngbNavLink role="tab">Edit Survey</a>
+        <ng-template ngbNavContent>
             <div class="col-lg-6 offset-lg-3 mt-3">
                 <div style="text-align: center;">
                     <button class="p-2 mb-3 btn btn-danger btn-lg" 
@@ -20,9 +21,10 @@
                 </eg-fm-record-editor>
             </div>
         </ng-template>
-    </ngb-tab>
-    <ngb-tab title="Questions and Answers" i18n-title id="qanda">
-        <ng-template ngbTabContent>
+    </li>
+    <li role="presentation" [ngbNavItem]="'qanda'">
+        <a i18n ngbNavLink role="tab">Questions and Answers</a>
+        <ng-template ngbNavContent>
             <div class="col-lg-8 offset-lg-2 mt-3">
                 <eg-staff-banner bannerText="Questions & Answers" i18n-bannerText>
                     </eg-staff-banner>
@@ -92,8 +94,10 @@
                 </div>
             </div>
         </ng-template>
-    </ngb-tab>
-</ngb-tabset>
+    </li>
+</ul>
+
+<div [ngbNavOutlet]="surveyTabs" class="mt-2"></div>
 
 <eg-string #createAnswerString i18n-text text="New Answer Added"></eg-string>
 <eg-string #createAnswerErrString i18n-text text="Failed to Create New Answer">

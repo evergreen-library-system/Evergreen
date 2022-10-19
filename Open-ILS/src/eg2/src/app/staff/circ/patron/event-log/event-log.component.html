@@ -2,15 +2,15 @@
 <eg-staff-banner bannerText="Triggered Event Log (Patron Specific)" i18n-bannerText>
 </eg-staff-banner>
 
-<ul ngbNav #nav="ngbNav" class="nav-tabs">
-  <li [ngbNavItem]="1">
-    <a ngbNavLink i18n>Circulations</a>
+<ul ngbNav #nav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
+  <li role="presentation" [ngbNavItem]="1">
+    <a role="tab" ngbNavLink i18n>Circulations</a>
     <ng-template ngbNavContent>
       <eg-event-grid #eventGrid [patron]="patronId" event_type="circ"></eg-event-grid>
     </ng-template>
   </li>
-  <li [ngbNavItem]="2">
-    <a ngbNavLink i18n>Holds</a>
+  <li role="presentation" [ngbNavItem]="2">
+    <a role="tab" ngbNavLink i18n>Holds</a>
     <ng-template ngbNavContent>
       <eg-event-grid #eventGrid [patron]="patronId" event_type="hold"></eg-event-grid>
     </ng-template>

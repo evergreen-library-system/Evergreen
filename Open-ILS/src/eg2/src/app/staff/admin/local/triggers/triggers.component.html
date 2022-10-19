@@ -18,10 +18,10 @@
 <eg-fm-record-editor #reactorDialog idlClass="atreact"></eg-fm-record-editor>
 <eg-fm-record-editor #validatorDialog idlClass="atval"></eg-fm-record-editor>
 
-<ul ngbNav #triggerNav="ngbNav" [activeId]="triggerTab" class="nav-tabs"
+<ul ngbNav #triggerNav="ngbNav" [activeId]="triggerTab" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist"
     (navChange)="onTabChange($event)">
-    <li [ngbNavItem]="'eventDefinitions'">
-      <a ngbNavLink i18n>Event Definitions</a>
+    <li role="presentation" [ngbNavItem]="'eventDefinitions'">
+      <a role="tab" ngbNavLink i18n>Event Definitions</a>
       <ng-template ngbNavContent>
         <h4 class="mb-3 mt-3">Trigger Event Definitions</h4>
         <eg-grid #eventsGrid idlClass="atevdef" [dataSource]="eventsDataSource"
@@ -63,8 +63,8 @@
         </eg-grid>
       </ng-template>
     </li>
-    <li [ngbNavItem]="'hooks'">
-      <a ngbNavLink i18n>Hooks</a>
+    <li role="presentation" [ngbNavItem]="'hooks'">
+      <a role="tab" ngbNavLink i18n>Hooks</a>
       <ng-template ngbNavContent>
         <h4 class="mb-3 mt-3">Trigger Hooks</h4>
             <eg-grid #hooksGrid idlClass="ath" [dataSource]="hooksDataSource"
@@ -78,8 +78,8 @@
             </eg-grid>
       </ng-template>
     </li>
-    <li [ngbNavItem]="'reactors'">
-      <a ngbNavLink i18n>Reactors</a>
+    <li role="presentation" [ngbNavItem]="'reactors'">
+      <a role="tab" ngbNavLink i18n>Reactors</a>
       <ng-template ngbNavContent>
         <h4 class="mb-3 mt-3">Trigger Reactors</h4>
             <eg-grid #reactorsGrid idlClass="atreact" [dataSource]="reactorsDataSource"
@@ -93,8 +93,8 @@
             </eg-grid>
       </ng-template>
     </li>
-    <li [ngbNavItem]="'validators'">
-        <a ngbNavLink i18n>Validators</a>
+    <li role="presentation" [ngbNavItem]="'validators'">
+        <a role="tab" ngbNavLink i18n>Validators</a>
         <ng-template ngbNavContent>
             <h4 class="mb-3 mt-3">Trigger Validators</h4>
             <eg-grid #validatorsGrid idlClass="atval" [dataSource]="validatorsDataSource"

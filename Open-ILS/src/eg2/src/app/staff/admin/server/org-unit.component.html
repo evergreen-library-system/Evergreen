@@ -19,14 +19,14 @@
 <eg-string #treeNodeLabel key='admin.server.org_unit.treenode' 
   [template]="treeNodeLabelTmpl"></eg-string>
 
-<div class="row">
-  <div class="col-lg-4">
+<div class="row org-unit-types-row">
+  <div class="col-lg-4 org-unit-types-col-aside">
     <h3 i18n>Org Units</h3>
-    <div class="border rounded p-1" style="height:{{winHeight}}px;overflow-y:auto">
+    <div class="border rounded p-1" >
       <eg-tree [tree]="tree" (nodeClicked)="nodeClicked($event)"></eg-tree>
     </div>
   </div>
-  <div class="col-lg-8">
+  <div class="col-lg-8 org-unit-types-col-main">
     <div class="alert alert-info">
       <div *ngIf="currentOrg()">
         <span *ngIf="currentOrg().name()" i18n>
@@ -37,9 +37,12 @@
         </span>
       </div>
     </div>
-    <ngb-tabset #rootTabs (tabChange)="tabChanged($event)" *ngIf="currentOrg()">
-      <ngb-tab title="Main Settings" i18n-title id="main">
-        <ng-template ngbTabContent>
+
+    <div class="ngbNav-wrapper" *ngIf="currentOrg()"> 
+    <ul ngbNav #rootTabs="ngbNav" [(activeId)]="orgUnitTab" (navChange)="navChanged($event)" [disabled]="currentOrg().isnew()" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
+      <li role="presentation" [ngbNavItem]="'main'">
+        <a i18n ngbNavLink role="tab">Main Settings</a>
+        <ng-template ngbNavContent>
           <div class="mt-2">
             <eg-fm-record-editor *ngIf="currentOrg()" #editDialog idlClass="aou" 
               [mode]="currentOrg().isnew() ? 'create': 'update'" [hideBanner]="true" 
@@ -59,10 +62,10 @@
             </eg-fm-record-editor>
           </div>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Hours of Operation" i18n-title id="hours" 
-        [disabled]="currentOrg().isnew()">
-        <ng-template ngbTabContent>
+      </li>
+      <li role="presentation" [ngbNavItem]="'hours'">
+        <a i18n ngbNavLink role="tab">Hours of Operation</a>
+        <ng-template ngbNavContent>
           <div class="mt-2 common-form striped-even">
             <div class="row font-weight-bold mb-2">
               <div class="col-lg-3 offset-lg-2" i18n>Open Time</div>
@@ -131,16 +134,20 @@
             </div>
           </div>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Addresses" i18n-title id="addresses" 
-        [disabled]="currentOrg().isnew()">
-        <ng-template ngbTabContent>
+      </li>
+      <li role="presentation" [ngbNavItem]="'addresses'" [disabled]="currentOrg().isnew()">
+        <a i18n ngbNavLink role="tab">Addresses</a>
+        <ng-template ngbNavContent>
           <div class="mt-2">
             <eg-admin-org-address [orgId]="currentOrg().id()" (addrChange)="addressChanged($event)">
             </eg-admin-org-address>
           </div>
         </ng-template>
-      </ngb-tab>
-    </ngb-tabset>
+      </li>
+    </ul>
+
+    <div [ngbNavOutlet]="rootTabs" class="mt-2"></div>
+    </div>
+
   </div>
 </div>

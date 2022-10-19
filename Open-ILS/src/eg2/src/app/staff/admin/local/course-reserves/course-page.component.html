@@ -21,11 +21,11 @@
     </a>
   </div>
 </div>
-<ul ngbNav #coursePageNav="ngbNav" class="nav-tabs">
+<ul ngbNav #coursePageNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
 
   <!-- Edit Tab -->
-  <li [ngbNavItem]="'edit'">
-    <a ngbNavLink i18n>Edit course</a>
+  <li role="presentation" [ngbNavItem]="'edit'">
+    <a role="tab" ngbNavLink i18n>Edit course</a>
     <ng-template ngbNavContent>
       <div class="row">
         <div class="col-lg-3 mt-3">
@@ -45,8 +45,8 @@
   </li>
 
   <!-- Materials Tab -->
-  <li [ngbNavItem]="'courseMaterials'">
-    <a ngbNavLink i18n>Course materials</a>
+  <li role="presentation" [ngbNavItem]="'courseMaterials'">
+    <a role="tab" ngbNavLink i18n>Course materials</a>
     <ng-template ngbNavContent>
       <eg-course-associate-material-dialog [courseId]="courseId"
         [currentCourse]="currentCourse" displayMode="inline"
@@ -56,8 +56,8 @@
   </li>
 
   <!-- Users Tab -->
-  <li [ngbNavItem]="'courseUsers'">
-    <a ngbNavLink i18n>Course users</a>
+  <li role="presentation" [ngbNavItem]="'courseUsers'">
+    <a role="tab" ngbNavLink i18n>Course users</a>
     <ng-template ngbNavContent>
       <eg-course-associate-users-dialog [courseId]="courseId"
         [currentCourse]="currentCourse" displayMode="inline"
@@ -67,8 +67,8 @@
   </li>
 
   <!-- Terms Tab -->
-  <li [ngbNavItem]="'courseTerms'">
-    <a ngbNavLink i18n>Course terms</a>
+  <li role="presentation" [ngbNavItem]="'courseTerms'">
+    <a role="tab" ngbNavLink i18n>Course terms</a>
     <ng-template ngbNavContent>
       <eg-course-term-map-grid [courseId]="courseId"></eg-course-term-map-grid>
     </ng-template>

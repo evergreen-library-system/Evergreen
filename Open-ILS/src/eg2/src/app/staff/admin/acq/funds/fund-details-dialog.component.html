@@ -34,9 +34,9 @@
           (click)="setDefaultTab()" i18n>Set Default View</button>
       </div>
     </div>
-    <ul ngbNav #fundDetailsNav="ngbNav" [(activeId)]="activeTab" class="nav-tabs">
-      <li [ngbNavItem]="'summary'" *ngIf="fund">
-        <a ngbNavLink i18n>Summary</a>
+    <ul ngbNav #fundDetailsNav="ngbNav" [(activeId)]="activeTab" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">
+      <li role="presentation" [ngbNavItem]="'summary'" *ngIf="fund">
+        <a role="tab" ngbNavLink i18n>Summary</a>
         <ng-template ngbNavContent>
           <div class="mt-2">
             <div class="row">
@@ -69,8 +69,8 @@
           </div>
         </ng-template>
       </li>
-      <li [ngbNavItem]="'allocations'" *ngIf="fund">
-        <a ngbNavLink i18n>Allocations</a>
+      <li role="presentation" [ngbNavItem]="'allocations'" *ngIf="fund">
+        <a role="tab" ngbNavLink i18n>Allocations</a>
         <ng-template ngbNavContent>
           <div class="mt-2">
             <eg-grid #fundDetailsAllocationsGrid idlClass="acqfa" [dataSource]="acqfaDataSource"
@@ -94,8 +94,8 @@
           </div>
         </ng-template>
       </li>
-      <li [ngbNavItem]="'transfers'" *ngIf="fund">
-        <a ngbNavLink i18n>Transfers</a>
+      <li role="presentation" [ngbNavItem]="'transfers'" *ngIf="fund">
+        <a role="tab" ngbNavLink i18n>Transfers</a>
         <ng-template ngbNavContent>
           <div class="mt-2">
             <eg-grid #fundDetailsTransfersGrid idlClass="acqftr" [dataSource]="acqftrDataSource"
@@ -141,8 +141,8 @@
            </div>
         </ng-template>
       </li>
-      <li [ngbNavItem]="'debits'" *ngIf="fund">
-        <a ngbNavLink i18n>Debits</a>
+      <li role="presentation" [ngbNavItem]="'debits'" *ngIf="fund">
+        <a role="tab" ngbNavLink i18n>Debits</a>
         <ng-template ngbNavContent>
           <div class="mt-2">
             <eg-grid #fundDetailsDebitsGrid idlClass="acqfdeb" [dataSource]="acqfdebDataSource"
@@ -183,8 +183,8 @@
            </div>
         </ng-template>
       </li>
-      <li [ngbNavItem]="'tags'" *ngIf="fund">
-        <a ngbNavLink i18n>Tags</a>
+      <li role="presentation" [ngbNavItem]="'tags'" *ngIf="fund">
+        <a role="tab" ngbNavLink i18n>Tags</a>
         <ng-template ngbNavContent>
           <div class="mt-2">
             <eg-fund-tags [fundId]="fundId" [fundOwner]="fund.org()"></eg-fund-tags>

@@ -3,9 +3,11 @@
 <eg-title i18n-prefix i18n-suffix prefix="Booking" suffix="Return"></eg-title>
 
 <form [formGroup]="findPatron">
-  <ngb-tabset (tabChange)="handleTabChange($event)" activeId="patron" #tabs>
-    <ngb-tab title="By patron" i18n-title id="patron">
-      <ng-template ngbTabContent>
+  <ul ngbNav #tabs="ngbNav" [(activeId)]="patronTab"
+      (navChange)="handleNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
+    <li role="presentation" [ngbNavItem]="'patron_tab'">
+      <a i18n ngbNavLink role="tab">By patron</a>
+      <ng-template ngbNavContent>
         <div class="row">
           <div class="col-md-4">
             <div class="input-group flex-nowrap">
@@ -24,9 +26,10 @@
           <eg-reservations-grid #returnedGrid [patron]="patronId" status="returnedToday" persistSuffix="return.patron.returned"></eg-reservations-grid>
         </div>
       </ng-template>
-    </ngb-tab>
-    <ngb-tab title="By resource" i18n-title id="resource">
-      <ng-template ngbTabContent>
+    </li>
+    <li role="presentation" [ngbNavItem]="'resource'">
+      <a i18n ngbNavLink role="tab">By resource</a>
+      <ng-template ngbNavContent>
         <div class="input-group flex-nowrap">
           <div class="input-group-prepend">
             <label class="input-group-text" for="resource-barcode" i18n>Resource barcode</label>
@@ -41,6 +44,8 @@
           <eg-reservations-grid #returnedGrid [patron]="patronId" status="returnedToday" persistSuffix="return.resource.returned"></eg-reservations-grid>
         </div>
       </ng-template>
-    </ngb-tab>
-  </ngb-tabset>
+    </li>
+  </ul>
+
+  <div [ngbNavOutlet]="tabs" class="mt-2"></div>
 </form>

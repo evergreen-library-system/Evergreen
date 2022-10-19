@@ -31,9 +31,10 @@
   
   <div *ngIf="!hideForm()" class="row pt-3 pb-1 mb-1">
   <div class="col-lg-8">
-    <ngb-tabset #searchTabs [activeId]="searchTab" (tabChange)="onTabChange($event)">
-      <ngb-tab title="Keyword Search" i18n-title id="term">
-        <ng-template ngbTabContent>
+    <ul ngbNav #searchTabs="ngbNav" [(activeId)]="searchTab" (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
+      <li role="presentation" [ngbNavItem]="'term'">
+        <a i18n ngbNavLink role="tab">Keyword Search</a>
+        <ng-template ngbNavContent>
           <div class="row"
             [ngClass]="{'mt-4': idx === 0, 'mt-1': idx > 0}"
             *ngFor="let q of context.termSearch.query; let idx = index; trackBy:trackByIdx">
@@ -259,9 +260,10 @@
             </div>
           </div>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Numeric Search" i18n-title id="ident">
-        <ng-template ngbTabContent>
+      </li>
+      <li role="presentation" [ngbNavItem]="'ident'">
+        <a i18n ngbNavLink role="tab">Numeric Search</a>
+        <ng-template ngbNavContent>
           <div class="row mt-4">
             <div class="col-lg-12">
               <div class="form-inline">
@@ -285,9 +287,10 @@
             </div>
           </div>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab title="MARC Search" i18n-title id="marc">
-        <ng-template ngbTabContent>
+      </li>
+      <li role="presentation" [ngbNavItem]="'marc'">
+        <a i18n ngbNavLink role="tab">MARC Search</a>
+        <ng-template ngbNavContent>
           <div class="row mt-4">
             <div class="col-lg-12">
               <div class="form-inline mt-2" 
@@ -327,9 +330,10 @@
             </div>
           </div>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Browse" i18n-title id="browse">
-        <ng-template ngbTabContent>
+      </li>
+      <li role="presentation" [ngbNavItem]="'browse'">
+        <a i18n ngbNavLink role="tab">Browse</a>
+        <ng-template ngbNavContent>
           <div class="row mt-4">
             <div class="col-lg-12 form-inline">
               <label for="field-class" i18n>Browse for</label>
@@ -349,9 +353,10 @@
             </div>
           </div>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Shelf Browse" i18n-title id="cnbrowse">
-        <ng-template ngbTabContent>
+      </li>
+      <li role="presentation" [ngbNavItem]="'cnbrowse'">
+        <a i18n ngbNavLink role="tab">Shelf Browse</a>
+        <ng-template ngbNavContent>
           <div class="row mt-4">
             <div class="col-lg-12 form-inline">
               <label for="cnbrowse-term-input" i18n>
@@ -365,8 +370,11 @@
             </div>
           </div>
         </ng-template>
-      </ngb-tab>      
-    </ngb-tabset>
+      </li>      
+    </ul>
+
+    <div [ngbNavOutlet]="searchTabs" class="mt-2"></div>
+
   </div>
   <div class="col-lg-4">
     <div class="row">

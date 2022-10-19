@@ -7,10 +7,10 @@
 </ng-template>
 
 <div>
-  <ul ngbNav #itemsNav="ngbNav" class="nav-tabs"
+  <ul ngbNav #itemsNav="ngbNav" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist"
     [activeId]="itemsTab" (navChange)="tabChange($event)">
-    <li ngbNavItem="checkouts">
-      <a ngbNavLink i18n>Items Checked Out ({{mainList.length}})</a>
+    <li role="presentation" ngbNavItem="checkouts">
+      <a role="tab" ngbNavLink i18n>Items Checked Out ({{mainList.length}})</a>
       <ng-template ngbNavContent>
         <ng-container *ngIf="loading">
           <ng-container *ngTemplateOutlet="progress"></ng-container>
@@ -21,8 +21,8 @@
       </ng-template>
     </li>
     <ng-container *ngIf="displayAltList">
-      <li ngbNavItem="other">
-        <a ngbNavLink i18n>Other/Special Circulations ({{altList.length}})</a>
+      <li role="presentation" ngbNavItem="other">
+        <a role="tab" ngbNavLink i18n>Other/Special Circulations ({{altList.length}})</a>
         <ng-template ngbNavContent>
           <ng-container>
             <ng-container *ngIf="loading">
@@ -35,8 +35,8 @@
         </ng-template>
       </li>
     </ng-container>
-    <li ngbNavItem="noncat">
-      <a ngbNavLink i18n>
+    <li role="presentation" ngbNavItem="noncat">
+      <a role="tab" ngbNavLink i18n>
         <ng-container *ngIf="context.summary && context.summary.stats">
           Non-Cataloged Circulations ({{context.summary.stats.checkouts.noncat}})
         </ng-container>
