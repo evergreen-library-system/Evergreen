@@ -70,7 +70,7 @@ automatically update to the translated value.
 * _Owner_ - Indicates which branch owns this service. This gives context
 to the two new permissions noted above but does not otherwise affect the
 * _Service Code_ - Determines which perl module to use for geocoding.
-Valid values are Free, Google, or OSM.
+Valid values are Free, Google, Bing, or OSM.
 ** As of 2021, the perl module 'Google' uses the https://metacpan.org/pod/Geo::Coder::Google[GeoCoder v3 API]. Administrators are strongly advised to review the current Google API documentation.
 
 You will assign Service Providers to specific Organizational Units using
