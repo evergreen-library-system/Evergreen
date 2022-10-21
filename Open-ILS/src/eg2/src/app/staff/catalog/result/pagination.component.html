@@ -5,8 +5,8 @@ unnecessary given we have to track paging externally anyway.
 <ul class="pagination">
   <li class="page-item" 
     [ngClass]="{disabled : searchContext.pager.isFirstPage()}">
-    <a (click)="prevPage()"
-      class="page-link" 
+    <a (click)="prevPage()" (keydown.enter)="prevPage()"
+      class="page-link" tabindex="0" 
       i18n-aria-label
       aria-label="Previous">
       <span aria-hidden="true">&laquo;</span>
@@ -14,14 +14,14 @@ unnecessary given we have to track paging externally anyway.
   </li>
   <li class="page-item" 
     *ngFor="let page of currentPageList()"
-    [ngClass]="{active : searchContext.pager.currentPage() == page}">
-    <a class="page-link" (click)="setPage(page)">
+    [ngClass]="{active : searchContext.pager.currentPage() === page}">
+    <a class="page-link" tabindex="0" (click)="setPage(page)" (keydown.enter)="setPage(page)">
       {{page}} <span class="sr-only" i18n>(current)</span></a>
   </li>
   <li class="page-item" 
     [ngClass]="{disabled : searchContext.pager.isLastPage()}">
-    <a (click)="nextPage()"
-      class="page-link" aria-label="Next" i18n-aria-label>
+    <a (click)="nextPage()" (keydown.enter)="nextPage()"
+      class="page-link" tabindex="0" aria-label="Next" i18n-aria-label>
       <span aria-hidden="true">&raquo;</span>
     </a>
   </li>
