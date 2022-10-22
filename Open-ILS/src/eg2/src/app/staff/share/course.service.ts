@@ -171,7 +171,7 @@ export class CourseService {
                 course_library_hash[course.id()] = course.owning_lib();
             });
 
-            this.pcrud.retrieveAll('acmcm', {course: course_ids}).subscribe(material => {
+            this.pcrud.search('acmcm', {course: course_ids}).subscribe(material => {
                 deleteRequest$.push(this.net.request(
                   'open-ils.courses', 'open-ils.courses.detach_material',
                   this.auth.token(), material.id()));
