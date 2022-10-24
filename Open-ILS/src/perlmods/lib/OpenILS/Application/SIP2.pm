@@ -419,7 +419,7 @@ sub patron_response_common_data {
             {BH => $session->config->{settings}->{currency}},
             {BL => $SC->sipbool(1)},          # valid patron
             {BV => $details->{balance_owed}}, # fee amount
-            {CQ => $SC->sipbool($password)}   # password verified if exists
+            {CQ => $SC->sipbool($details->{valid_patron_password})}
         ]
     };
 }

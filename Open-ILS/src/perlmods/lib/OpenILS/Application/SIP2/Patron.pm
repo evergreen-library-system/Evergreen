@@ -19,7 +19,7 @@ sub get_patron_details {
     my $password = $params{password};
 
     my $e = $session->editor;
-    my $details = {};
+    my $details = {valid_patron_password => 0};
 
     my $card = $e->search_actor_card([{
         barcode => $barcode
@@ -43,9 +43,12 @@ sub get_patron_details {
     $card->usr($card->usr->id);
     $patron->card($card);
 
-    # We only attempt to verify the password if one is provided.
-    return undef if defined $password &&
-        !$U->verify_migrated_user_password($e, $patron->id, $password);
+    if (defined $password) {
+        # SIP still replies with the patron data if the password
+        # is not valid.
+        $details->{valid_patron_password} = 
+            $U->verify_migrated_user_password($e, $patron->id, $password);
+    }
 
     set_patron_privileges($session, $details);
 
