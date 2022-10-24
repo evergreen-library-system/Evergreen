@@ -70,7 +70,7 @@
           [disabled]="!account.setting_group()" (click)="openCloneDialog()" 
           i18n>Clone</button>
         <button class="btn btn-outline-danger ml-2" (click)="openDeleteDialog()" 
-          [disabled]="!account.setting_group() || account.setting_group().id() == 1" 
+          [disabled]="!account.setting_group() || account.setting_group().id() === 1" 
           i18n>Delete</button>
       </div>
     </ng-template>
