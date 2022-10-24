@@ -239,7 +239,7 @@ needed.
 
 . Enter a Formula Name. No limits exist on the number of characters that can be entered in this field.
 
-. Choose a Formula Owner from the drop-down menu. The Formula Owner indicates the organizational units whose staff can use this formula. TThe drop-down menu is controlled by permissions and you will see a list of org units that your user account has permission to create distribution formulas for.
+. Choose a Formula Owner from the drop-down menu. The Formula Owner indicates the organizational units whose staff can use this formula. The drop-down menu is controlled by permissions and you will see a list of org units that your user account has permission to create distribution formulas for.
 .
 
 [NOTE] The rule of parental inheritance applies to this list.
