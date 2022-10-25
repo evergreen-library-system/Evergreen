@@ -79,13 +79,24 @@ sub dispatch_sip2_request {
         '37' => \&handle_payment,
         '63' => \&handle_patron_info,
         '65' => \&handle_renew_all,
+        '97' => \&handle_resend,
         'XS' => \&handle_end_session
     };
 
     return OpenILS::Event->new('SIP2_NOT_IMPLEMENTED', {payload => $message})
         unless exists $MESSAGE_MAP->{$msg_code};
 
-    return $MESSAGE_MAP->{$msg_code}->($session, $message);
+    my $msg = $MESSAGE_MAP->{$msg_code}->($session, $message);
+
+    if ($msg_code ne '97' && # Don't cache the resend response
+        $session->config->{settings}->{support_acs_resend_messages}) {
+
+        # If resend is supported, toss the last sent message for this
+        # session into the cache.
+        $SC->cache->put_cache("sip2_lastmsg_$seskey", $msg);
+    }
+
+    return $msg;
 }
 
 sub handle_end_session {
@@ -865,6 +876,16 @@ sub handle_end_patron_session {
             {AA => ''} # SIP required field, but do we actually have this--the patron barcode--as state information?
         ]
     }
+}
+
+sub handle_resend {
+    my ($session, $message) = @_;
+    my $seskey = $session->seskey;
+
+    return OpenILS::Event->new('SIP2_NOT_IMPLEMENTED') unless 
+        $session->config->{settings}->{support_acs_resend_messages};
+
+    return $SC->cache->get_cache("sip2_lastmsg_$seskey");
 }
 
 1;

@@ -24071,6 +24071,12 @@ VALUES (
         (SELECT id FROM sip.setting WHERE name = 'checkin_hold_as_transit'),
         'Checkin local holds as transits',
         'sipset', 'description')
+), (
+    1, 'support_acs_resend_messages', 'false',
+    oils_i18n_gettext(
+        (SELECT id FROM sip.setting WHERE name = 'support_acs_resend_messages'),
+        'Support ACS Resend Messages (code 97)',
+        'sipset', 'description')
 );
 
 INSERT INTO sip.screen_message (key, message) VALUES (
