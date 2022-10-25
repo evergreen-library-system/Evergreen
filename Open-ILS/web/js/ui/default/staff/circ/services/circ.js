@@ -721,6 +721,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
             var addr_id = org[addr_type](); 
             if(addr_id)addr_ids.push(addr_id);
         });
+		if (!addr_ids.length) return $q.when(null);
         return egCore.pcrud.search('aoa', {id: addr_ids},{},{ atomic: true}).then(function(addrs) {
             return egCore.env.absorbList(addrs, 'aoa');
         });
