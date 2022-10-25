@@ -1,18 +1,32 @@
 BEGIN;
 
-CREATE OR REPLACE FUNCTION search.disable_symspell_reification () RETURNS VOID AS $f$
-    INSERT INTO config.internal_flag (name,enabled)
-      VALUES ('ingest.disable_symspell_reification',TRUE)
-    ON CONFLICT (name) DO UPDATE SET enabled = TRUE;
-$f$ LANGUAGE SQL;
+SELECT evergreen.upgrade_deps_block_check('1340', :eg_version);
 
-CREATE OR REPLACE FUNCTION search.enable_symspell_reification () RETURNS VOID AS $f$
-    UPDATE config.internal_flag SET enabled = FALSE WHERE name = 'ingest.disable_symspell_reification';
-$f$ LANGUAGE SQL;
+-- INSERT-only table that catches dictionary updates to be reconciled
+CREATE UNLOGGED TABLE search.symspell_dictionary_updates (
+    transaction_id          BIGINT,
+    keyword_count           INT     NOT NULL DEFAULT 0,
+    title_count             INT     NOT NULL DEFAULT 0,
+    author_count            INT     NOT NULL DEFAULT 0,
+    subject_count           INT     NOT NULL DEFAULT 0,
+    series_count            INT     NOT NULL DEFAULT 0,
+    identifier_count        INT     NOT NULL DEFAULT 0,
 
-CREATE OR REPLACE FUNCTION search.symspell_dictionary_full_reify () RETURNS SETOF search.symspell_dictionary AS $f$
+    prefix_key              TEXT    NOT NULL,
+
+    keyword_suggestions     TEXT[],
+    title_suggestions       TEXT[],
+    author_suggestions      TEXT[],
+    subject_suggestions     TEXT[],
+    series_suggestions      TEXT[],
+    identifier_suggestions  TEXT[]
+);
+CREATE INDEX symspell_dictionary_updates_tid_idx ON search.symspell_dictionary_updates (transaction_id);
+
+-- Function that collects this transactions additions to the unlogged update table
+CREATE OR REPLACE FUNCTION search.symspell_dictionary_reify () RETURNS SETOF search.symspell_dictionary AS $f$
  WITH new_rows AS (
-    DELETE FROM search.symspell_dictionary_updates RETURNING *
+    DELETE FROM search.symspell_dictionary_updates WHERE transaction_id = txid_current() RETURNING *
  ), computed_rows AS ( -- this collapses the rows deleted into the format we need for UPSERT
     SELECT  SUM(keyword_count)    AS keyword_count,
             SUM(title_count)      AS title_count,
@@ -54,7 +68,39 @@ CREATE OR REPLACE FUNCTION search.symspell_dictionary_full_reify () RETURNS SETO
  RETURNING *;
 $f$ LANGUAGE SQL;
 
--- Updated again to check for delayed symspell reification
+-- simplified metabib.*_field_entry trigger that stages updates for reification in one go
+CREATE OR REPLACE FUNCTION search.symspell_maintain_entries () RETURNS TRIGGER AS $f$
+DECLARE
+    search_class    TEXT;
+    new_value       TEXT := NULL;
+    old_value       TEXT := NULL;
+BEGIN
+    search_class := COALESCE(TG_ARGV[0], SPLIT_PART(TG_TABLE_NAME,'_',1));
+
+    IF TG_OP IN ('INSERT', 'UPDATE') THEN
+        new_value := NEW.value;
+    END IF;
+
+    IF TG_OP IN ('DELETE', 'UPDATE') THEN
+        old_value := OLD.value;
+    END IF;
+
+    IF new_value = old_value THEN
+        -- same, move along
+    ELSE
+        INSERT INTO search.symspell_dictionary_updates
+            SELECT  txid_current(), *
+              FROM  search.symspell_build_entries(
+                        new_value,
+                        search_class,
+                        old_value
+                    );
+    END IF;
+
+    RETURN NULL; -- always fired AFTER
+END;
+$f$ LANGUAGE PLPGSQL;
+
 CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries(
     bib_id BIGINT,
     skip_facet BOOL DEFAULT FALSE,
@@ -185,10 +231,7 @@ BEGIN
 
     IF NOT b_skip_search THEN
         PERFORM metabib.update_combined_index_vectors(bib_id);
-        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_symspell_reification' AND enabled;
-        IF NOT FOUND THEN
-            PERFORM search.symspell_dictionary_reify();
-        END IF;
+        PERFORM search.symspell_dictionary_reify();
     END IF;
 
     RETURN;
