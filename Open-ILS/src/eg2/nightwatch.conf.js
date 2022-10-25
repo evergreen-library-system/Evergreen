@@ -74,6 +74,23 @@ module.exports = {
           // '-vv'
         ]
       }
+    },
+    // To test with chrome:
+    // $ npm install --save-dev chromedriver
+    // $ ng e2e --evn chrome
+    chrome: {
+      desiredCapabilities : {
+        browserName : 'chrome',
+        alwaysMatch: {
+          acceptInsecureCerts: true,
+        }
+      },
+      webdriver: {
+        start_process: true,
+        server_path: '',
+        cli_args: [
+        ]
+      }
     }
   }
 };
