@@ -1,0 +1,36 @@
+BEGIN;
+
+SELECT plan(2);
+
+INSERT INTO actor.org_unit_setting (org_unit, name, value) VALUES (1, 'circ.permit_renew_when_exceeds_fines', true);
+
+INSERT INTO actor.usr_standing_penalty(org_unit, usr, standing_penalty, staff)
+SELECT 1, 6, id, 1 FROM config.standing_penalty WHERE name='PATRON_EXCEEDS_FINES';
+UPDATE asset.copy SET status=1 WHERE id=1; -- Checked out, so that we can renew it
+
+SELECT is(
+    permit_test.success,
+    true,
+    'user can renew item on max_fines when org setting is true'
+)
+FROM action.item_user_circ_test( '8', -- org_unit
+                                 '1', -- item
+                                 '6', -- user
+                                 '1' ) -- renewal
+AS permit_test LIMIT 1;
+
+UPDATE actor.org_unit_setting SET value = false WHERE name = 'circ.permit_renew_when_exceeds_fines';
+
+SELECT is(
+    permit_test.success,
+    false,
+    'user cannot renew item on max_fines when org setting is false'
+)
+FROM action.item_user_circ_test( '8', -- org_unit
+                                 '1', -- item
+                                 '6', -- user
+                                 '1' ) -- renewal
+AS permit_test LIMIT 1;
+
+SELECT * FROM finish();
+ROLLBACK;
