@@ -10,3 +10,4 @@
   Types. This reflects the fact that Claim Types tend to be configured
   once and are not typically adjusted when setting up a new claim
   policy. (LP#1947045)
+* Links in the staff catalog summary area now open in a new tab. (LP#1953692)
