@@ -13,3 +13,5 @@
 * Links in the staff catalog summary area now open in a new tab. (LP#1953692)
 * The Item Status list view now includes an optional column for
   Total Circulations. (LP#1964629)
+* The credit card payment approval code is now available as a column in
+  the bill history payments table in the patron record. (LP#1818303)
