@@ -1,0 +1,9 @@
+== Inactive funds can no longer make allocations or transfers ==
+
+In the Funds Administration page, if a fund is not marked as
+active, the "Create allocation" and "Transfer money" options
+will no longer be available.
+
+In the occassional cases where these operations are necessary,
+you can edit the fund to mark it active, perform your financial
+operations, then mark it inactive again.
