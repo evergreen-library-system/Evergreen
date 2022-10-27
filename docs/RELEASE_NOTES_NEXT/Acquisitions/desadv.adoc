@@ -1,0 +1,10 @@
+== Support for Advanced Shipment Notices in Acquisitions ==
+
+This version of Evergreen supports DESADV EDI messages.  These messages are
+created by vendors when they pack and ship items, and contain:
+
+* A list of dispatched POs, lineitems, and the number of items per lineitem.
+* A package-level barcode (e.g. https://en.wikipedia.org/wiki/Serial_shipping_container_code) that represents the package as a whole.
+
+Staff can scan that package-level barcode to retrieve information on every
+item in the package, including an option to auto-receive every item in the box.
