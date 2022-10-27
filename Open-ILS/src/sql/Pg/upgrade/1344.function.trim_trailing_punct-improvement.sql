@@ -59,7 +59,7 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
       FROM  config.metabib_field m,
             config.index_normalizer i
       WHERE i.func = 'metabib.trim_trailing_punctuation'
-            m.field_class='title' AND (m.browse_field OR m.facet_field OR m.display_field)
+            AND m.field_class='title' AND (m.browse_field OR m.facet_field OR m.display_field)
             AND NOT EXISTS (SELECT 1 FROM config.metabib_field_index_norm_map WHERE field = m.id AND norm = i.id);
 
 COMMIT;
