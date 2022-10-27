@@ -15,3 +15,5 @@
   Total Circulations. (LP#1964629)
 * The credit card payment approval code is now available as a column in
   the bill history payments table in the patron record. (LP#1818303)
+* The group member details grid now contains columns for preferred names.
+  (LP#1951996)
