@@ -17,3 +17,5 @@
   the bill history payments table in the patron record. (LP#1818303)
 * The group member details grid now contains columns for preferred names.
   (LP#1951996)
+* The patron profile name is now available to the Hold Shelf Slip
+  print template as `patron.profile.name`. (LP#1724032)
