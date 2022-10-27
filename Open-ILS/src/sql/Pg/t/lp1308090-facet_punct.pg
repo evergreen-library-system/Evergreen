@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT plan(12);
+SELECT plan(18);
 
 SELECT can('metabib', ARRAY['trim_trailing_punctuation'], 'metabib.trim_trailing_punctuation function exists');
 

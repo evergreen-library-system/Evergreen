@@ -1,0 +1,10 @@
+== Additional trailing punctuation removed from certain fields ==
+
+MarcXML facet, display, and browse fields will undergo some extra
+cleanup before displaying to a user.  Of particular note for any
+title fields that match these criteria, ending `/`, `:`, `;`, and
+`=` will be removed.
+
+This change does not affect MODS fields.  You can check if a
+particular field uses MarcXML or MODS in Server Administration
+-> MARC Search/Facet Fields by consulting the Format column.
