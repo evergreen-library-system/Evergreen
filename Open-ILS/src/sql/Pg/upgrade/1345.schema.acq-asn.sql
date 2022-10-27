@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1345', :eg_version);
 
 CREATE TABLE acq.shipment_notification (
     id              SERIAL      PRIMARY KEY,
