@@ -1,0 +1,5 @@
+== Operating System Requirements ==
+
+Evergreen 3.10 now supports installation on Ubuntu 22.04 (Jammy Jellyfish).
+
+This release removes support for Debian Stretch and Ubuntu 18.04 (Bionic Beaver).
