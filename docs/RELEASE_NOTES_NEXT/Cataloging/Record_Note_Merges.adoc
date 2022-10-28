@@ -1,3 +1,5 @@
 == Record Note Merges == 
 
-During a merge of bibliographic records notes will now merge and a notation on each added that they were originally from another record. A note is also added that the merge was performed.
+During a merge of bibliographic records notes will now merge and a
+notation on each added that they were originally from another record.
+A note is also added that the merge was performed.
