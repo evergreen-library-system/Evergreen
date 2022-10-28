@@ -1,0 +1,18 @@
+<div class="p-3 mb-2 bg-success text-white">
+    [% l('Message Sent') %]
+</div>
+<div class="p-3 mb-2 border border-success">
+    [% l('If you do not receive ') %] [% IF message_type == "email" %]
+        [% l('an email') %]
+    [% ELSIF message_type == "sms" %]
+        [% l('a text') %]
+    [% END %] [% l(' message, contact your library for more information.') %]
+    <br/>
+    [% ctx.user.home_ou.name %]<br/>
+    [%- IF ctx.user.home_ou.phone; %]
+        [% ctx.user.home_ou.phone %]<br/>
+    [%- END %]
+    [%- IF ctx.user.home_ou.email %]
+        [% ctx.user.home_ou.email %]<br/>
+    [%- END %]
+</div>

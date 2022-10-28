@@ -155,6 +155,8 @@
     [% INCLUDE "opac/parts/ebook_api/login_js.tt2" IF (ctx.page == 'login') %]
 [% END %]
 
+<script src='[% ctx.media_prefix %]/js/ui/default/opac/test_notification.js'></script>
+
 <!-- provide a JS friendly org unit hash -->
 <script >
 var aou_hash = {

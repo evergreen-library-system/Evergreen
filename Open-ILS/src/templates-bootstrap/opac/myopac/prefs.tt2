@@ -2,8 +2,10 @@
     WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "prefs";
     parent="prefs";
-    prefs_page = 'prefs' %]
- <h3>[% l('Account Information and Preferences') %]</h3>
+    prefs_page = 'prefs';
+    can_call_action_trigger = 'true' %]
+
+<h3>[% l('Account Information and Preferences') %]</h3>
 <div id="acct_info_main">
     <table title="[% l('Account preference') %]" class='light_border table table-hover'>
         <tbody id='myopac_summary_tbody'>
@@ -91,6 +93,21 @@
                 <span class='light_border'><a class="btn btn-sm btn-action" href='update_email'
                     title="[% l('Update Email Address') %]"><i class="fas fa-user-cog"></i> [% l('Change') %]</a></span>
                 [%- END %]
+                [%- IF ctx.user.email %]
+                    <span class='light_border'>
+                    <a href="#" class="btn btn-sm btn-action" onclick="sendTestEmail(
+                        [% ctx.user.id %], '[% ctx.authtoken %]')"
+                        title="[% l('Send Test Email') %]">
+                        <i class="fas fa-envelope"></i> [% l('Send Test Email') %]
+                    </a>
+                    </span>
+                [%- END %]
+                </td>
+            </tr>
+            <tr id="test_notification_banner" style="display:none">
+                <td></td>
+                <td colspan='2'>
+                    [% INCLUDE "opac/myopac/test_notification.tt2" message_type = "email" %]
                 </td>
             </tr>
 

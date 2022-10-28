@@ -2,8 +2,8 @@
     WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "prefs_notify";
     parent="prefs";
-    prefs_page = 'prefs_notify'
-%]
+    prefs_page = 'prefs_notify';
+    can_call_action_trigger = 'true' %]
 
 <h3>[% l('Notification Preferences') %]</h3>
 
@@ -127,26 +127,30 @@
                         <td>[% INCLUDE "opac/parts/sms_carrier_selector.tt2" sms_carrier_hide_label="true" %]</td>
                     </tr>
                     [% setting = 'opac.default_sms_notify' %]
-                    <tr id="test_notification_banner" style="display:none">
-                        <td colspan="4">
-                            [% INCLUDE "opac/myopac/test_notification.tt2" message_type = "sms" %]
-                        </td>
-                    </tr>
                     <tr>
                         <td><label for='[% setting %]'>[% l('Default Mobile Number') %]</label></td>
                         <td>
                             <input onchange="record_change(event)" id='[% setting %]' name='[% setting %]' type="text"
                                 [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
                             [% IF ctx.user_setting_map.$setting; %]
-                            <a href="#" onclick="sendTestSMS(
-                            [% ctx.user.id %], '[% ctx.authtoken %]'
-                            )"
-                            title="[% l('Send Test Text Message') %]">[% l('Send Test Text Message') %]</a><br />
+                                <span class='light_border'>
+                                <a href="#" class="btn btn-sm btn-action" onclick="sendTestSMS(
+                                    [% ctx.user.id %], '[% ctx.authtoken %]'
+                                    )"
+                                    title="[% l('Send Test Text Message') %]">
+                                    <i class="fas fa-mobile"></i> [% l('Send Test Text Message') %]
+                                </a>
+                                </span><br />
                             [% l('Hint: use the full 10 digits of your phone #, no spaces, no dashes'); %]
                             [% END %]
                         </td>
                     </tr>
                     [% END %]
+                    <tr id="test_notification_banner" style="display:none">
+                        <td colspan='3'>
+                            [% INCLUDE "opac/myopac/test_notification.tt2" message_type = "sms" %]
+                        </td>
+                    </tr>
                     [% FOR optin IN ctx.opt_in_settings %]
                     <tr>
                         <td><label for='[% optin.cust.name | uri %]'>[% optin.cust.label | html %]</label></td>
