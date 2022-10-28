@@ -1,0 +1,8 @@
+== Source library addresses now available on transit slips ==
+
+Transit slip templates previously could include the address of
+the library that the item is being transitted _to_.  With this
+release, the address of the library the item is being transitted
+_from_ is also available.
+This change applies to both the Hold Transit Slip and the Transit
+Slip templates.
