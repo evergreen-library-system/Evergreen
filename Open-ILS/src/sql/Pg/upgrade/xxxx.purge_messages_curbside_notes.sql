@@ -27,7 +27,7 @@ BEGIN
 	UPDATE acq.lineitem SET selector = dest_usr WHERE selector = src_usr;
 	UPDATE acq.lineitem_note SET creator = dest_usr WHERE creator = src_usr;
 	UPDATE acq.lineitem_note SET editor = dest_usr WHERE editor = src_usr;
-    UPDATE acq.invoice SET closed_by = dest_usr WHERE closed_by = src_usr;
+	UPDATE acq.invoice SET closed_by = dest_usr WHERE closed_by = src_usr;
 	DELETE FROM acq.lineitem_usr_attr_definition WHERE usr = src_usr;
 
 	-- Update with a rename to avoid collisions
