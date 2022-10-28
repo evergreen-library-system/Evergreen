@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1349', :eg_version);
+
 UPDATE config.org_unit_setting_type
     SET label = 'Rollover encumbrances only',
         description = 'Rollover encumbrances only when doing fiscal year end.  This makes money left in the old fund disappear, modeling its return to some outside entity.'
