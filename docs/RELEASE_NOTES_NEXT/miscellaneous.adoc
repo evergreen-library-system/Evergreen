@@ -26,3 +26,5 @@
   record is deleted. (LP#1934162)
 * If the patron record has a preferred name set, the SIP server now
   returns it in response to patron lookups. (LP#1984114)
+* The label and description of the acq.fund.allow_rollover_without_money
+  library setting are updated for greater clarity (LP#1982031)
