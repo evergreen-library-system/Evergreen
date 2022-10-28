@@ -2769,6 +2769,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'ADMIN_CLAIM_POLICY',
 			'ADMIN_CURRENCY_TYPE',
 			'ADMIN_FUND',
+			'ADMIN_FUND_ROLLOVER',
 			'ADMIN_FUNDING_SOURCE',
 			'ADMIN_INVOICE',
 			'ADMIN_INVOICE_METHOD',
