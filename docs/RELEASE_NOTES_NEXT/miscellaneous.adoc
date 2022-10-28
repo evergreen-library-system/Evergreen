@@ -22,3 +22,5 @@
 * Removed the Message Center from the Patron -> Other Menu (deprecated),
   added action for unarchiving Notes, and added confirmation dialogs
   for Remove Note, Archive Note, and Unarchive Note. (LP#1977877)
+* Curbside request notes and user messages are now purged when a user
+  record is deleted. (LP#1934162)
