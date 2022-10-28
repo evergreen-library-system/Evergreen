@@ -1378,7 +1378,7 @@ sub process_fiscal_rollover {
 
     my $e = new_editor(xact=>1, authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
-    return $e->die_event unless $e->allowed('ADMIN_FUND', $org_id);
+    return $e->die_event unless $e->allowed('ADMIN_FUND_ROLLOVER', $org_id);
     $options ||= {};
 
     my $combined = ($self->api_name =~ /combined/); 
