@@ -1,7 +1,7 @@
 
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version); 
+SELECT evergreen.upgrade_deps_block_check('1346', :eg_version); 
 
 -- insert then update for easier iterative development tweaks
 INSERT INTO config.print_template 
