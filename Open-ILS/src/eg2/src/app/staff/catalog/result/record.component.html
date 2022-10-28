@@ -150,7 +150,7 @@
           *ngFor="let copyCount of getHoldingsSummaries(); let copyIdx = index"
 		  [ngClass]="{
             'text-dark bg-warning' : copyCount.count == 0 && (copyCount.transcendant == 0 || !copyCount.transcendant),
-			'text-light bg-info' : copyCount.count == 0
+			'bg-info' : copyCount.count == 0
             }">
           <div class="float-left text-left w-50">
             <span class="pr-1">
