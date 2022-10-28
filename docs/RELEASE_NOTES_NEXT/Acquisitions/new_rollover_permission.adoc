@@ -1,0 +1,15 @@
+== New Permission for Fund Rollovers ==
+
+A new permission, `ADMIN_FUND_ROLLOVER`, is added to control access
+to the fund rollover function. This allows having some users be able
+to manage funds without being to invoke the rollover action, as
+rollovers can be hard to undo.
+
+During upgrade, any permission group with the `ADMIN_FUND` permission
+will get the new `ADMIN_FUND_ROLLOVER` permission to avoid surprises.
+Consequently, an Evergreen administrator who wishes to lock down
+access to the feature should follow up by removing the new permission
+where necessary.
+
+In new databases, `ADMIN_FUND_ROLLOVER` is granted only to the stock
+Acquisitions Administrators permission group.
