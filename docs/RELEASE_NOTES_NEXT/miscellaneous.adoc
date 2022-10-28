@@ -24,3 +24,5 @@
   for Remove Note, Archive Note, and Unarchive Note. (LP#1977877)
 * Curbside request notes and user messages are now purged when a user
   record is deleted. (LP#1934162)
+* If the patron record has a preferred name set, the SIP server now
+  returns it in response to patron lookups. (LP#1984114)
