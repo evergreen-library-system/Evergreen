@@ -1,0 +1,24 @@
+== OPAC-visible statisitical categories are now visible in the OPAC ==
+
+This release restores a previously available feature: the ability to 
+display statistical categories (stat cats) in the OPAC.  If an
+item stat cat has "OPAC Visibility" set to true, its values will
+display in the record page's item table, underneath the call number.
+If a patron stat cat has "OPAC Visibility" set to true, its values
+will display in the patron's account under Preferences ->
+Personal Information (below the account expiration date).
+
+Since these values have not been visible for some time, Evergreen
+libraries may wish to review them before making them public.  To
+set all stat cats to private, so that OPAC visibility can be
+restored on a case-by-case basis after review, you can use the
+following SQL:
+
+[,sql]
+----
+-- Item stat cats
+UPDATE asset.stat_cat SET opac_visible=false WHERE opac_visible=true;
+
+-- Patron stat cats
+UPDATE actor.stat_cat SET opac_visible=false WHERE opac_visible=true;
+----
