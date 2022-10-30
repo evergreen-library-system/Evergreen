@@ -148,7 +148,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "eg",
-      "styleext": "css"
+      "style": "css"
     },
     "@schematics/angular:directive": {
       "prefix": "eg"
