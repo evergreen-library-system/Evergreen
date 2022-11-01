@@ -6,3 +6,12 @@
   cursor: pointer;
 }
 
+.pagination a, .pagination .page-item.active .page-link { 
+  border-color: #0A58CA;
+  color: #0A58CA; 
+}
+
+.pagination a:hover, .pagination .page-item.active .page-link:hover { 
+  border-color: #0848A5;
+  color: #0848A5; 
+}

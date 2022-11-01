@@ -6,6 +6,16 @@
 /* Locally served material icon fonts  */
 @import '~material-design-icons-iconfont/dist/material-design-icons.css';
 
+/* BS default colors lack sufficient contrast for accessibility */
+:root {
+  --blue: #0A58CA; /* $blue-600 in BS5 */
+  --primary: #0A58CA;
+  --green: #198754; /* $green ($green-500) in BS5 */
+  --success: #198754;
+  --cyan: #087990; /* $cyan-700 in BS5 */
+  --info: #087990;
+}
+
 /** BS default fonts are huge */
 body, .form-control, .btn, .input-group-text {
   /* This more or less matches the font size of the angularjs client.
@@ -24,22 +34,32 @@ h5 {font-size: .95rem}
 
 .small-text-1 {font-size: 85%}
 
-/** Use a default link color that achieves WCAG AAA
+/** Use a default link color that achieves WCAG AA
  *  color contrast against a white background
  */
-a {
-  color: #255a88;
+ a { 
+  border-color: #0A58CA;
+  color: #0A58CA; 
+}
+
+a:hover { 
+  border-color: #0848A5;
+  color: #0848A5; 
 }
 
 /** Ang5 routes on clicks to href's with no values, so we can't have
  * bare href's to force anchor styling.  Use this for anchors w/ no href.
  * TODO: should we style all of them?  a:not([href]) ....
  * */
-.no-href {
+ .no-href {
+  color: #0A58CA;
   cursor: pointer;
-  color: #007bff;
 }
 
+.no-href:hover {
+  border-color: #0848A5;
+  color: #0848A5; 
+}
 
 /** BS has flex utility classes, but none for specifying flex widths.
  *  BS class="col" is roughly equivelent to flex-1, but col-2 is not
@@ -363,6 +383,92 @@ input.small {
 .less-intense-alert {
   background-color: #f9dede;
   color: #212121;
+}
+
+/* Accessible button colors */
+
+.btn-warning,
+.btn-outline-warning {
+  border-color: #BB8402;
+}
+
+/* other colors' focus state shadows do not need to change */
+.btn-warning.focus,
+.btn-warning:focus {
+  border-color: #FFC107;
+  box-shadow: 0 0 0 .2rem rgba(255, 205, 57,.5);
+}
+
+.btn-primary {
+  background-color: #0A58CA;
+  border-color: #0A58CA;
+}
+
+.btn-primary:hover,
+.btn-primary.hover,
+.btn-primary:focus,
+.btn-primary.focus {
+  background-color: #0848A5;
+  border-color: #0848A5;
+}
+
+.btn-outline-primary {
+  border-color: #0A58CA;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary.hover,
+.btn-outline-primary:focus,
+.btn-outline-primary.focus {
+  border-color: #0848A5;
+}
+
+.btn-info {
+  background-color: #087990;
+  border-color: #087990;
+}
+
+.btn-info:hover,
+.btn-info.hover,
+.btn-info:focus,
+.btn-info.focus {
+  background-color: #076376;
+  border-color: #076376;
+}
+
+.btn-outline-info {
+  border-color: #087990;
+}
+
+.btn-outline-info:hover,
+.btn-outline-info.hover,
+.btn-outline-info:focus,
+.btn-outline-info.focus {
+  border-color: #076376;
+}
+
+.btn-success {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.btn-success:hover,
+.btn-success.hover,
+.btn-success:focus,
+.btn-success.focus {
+  background-color: #157146;
+  border-color: #157146;
+}
+
+.btn-outline-success {
+  border-color: #198754;
+}
+
+.btn-outline-success:hover,
+.btn-outline-success.hover,
+.btn-outline-success:focus,
+.btn-outline-success.focus {
+  border-color: #157146;
 }
 
 /* Less intense, WCAG AAA-compliant badges */
