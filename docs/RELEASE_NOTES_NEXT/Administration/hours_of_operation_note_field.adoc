@@ -1,3 +1,0 @@
-= Hours of Operation Note field =
-
-Adds a note field to each day's hours to record split hours or service related notes. The notes appear enclosed in parentheses next to each day's hours when viewing a library's hours in the Bootstrap OPAC and TPAC

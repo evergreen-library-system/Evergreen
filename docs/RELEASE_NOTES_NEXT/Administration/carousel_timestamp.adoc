@@ -1,5 +1,0 @@
-== Refresh Time for Carousel ==
-
-This adds the time (rather than just the date) to the 
-Last Refresh Time column of the Local Administration > 
-Carousels grid. 
