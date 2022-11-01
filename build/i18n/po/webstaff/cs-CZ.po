@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2021-10-12 19:01+0000\n"
-"PO-Revision-Date: 2022-04-13 07:50+0000\n"
+"PO-Revision-Date: 2022-09-30 12:58+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2022-04-14 04:35+0000\n"
-"X-Generator: Launchpad (build 560baff2f814495c0c140fb3d6c66875f2312c96)\n"
+"X-Launchpad-Export-Date: 2022-10-01 06:31+0000\n"
+"X-Generator: Launchpad (build 51d7c86a263563fbd9e884ec9127596444825394)\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
 #: ../../Open-ILS/src/templates/staff/t_login.tt2:56
@@ -7791,11 +7791,11 @@ msgstr "Propojený typ"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:29 ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:71
 msgid "Penalty Name"
-msgstr ""
+msgstr "Název pokuty"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:30
 msgid "Penalty Type:"
-msgstr ""
+msgstr "Typ pokuty"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:33
 msgid "Pending Change:"
@@ -8400,7 +8400,7 @@ msgstr "obecné vyhledávání Z39.50"
 
 #: ../../Open-ILS/src/templates/staff/base_js.tt2:139
 msgid "Re-Using Permission Override Login in Batch"
-msgstr ""
+msgstr "Opětovní použití  přihlášení při dávkovém obejití oprávnění"
 
 #: ../../Open-ILS/src/templates/staff/share/t_eframe.tt2:4
 msgid "Re-embed"
@@ -10336,6 +10336,8 @@ msgid ""
 "The overlay target has changed from %1 (TCN %2) to %3 (TCN %4).  Continue "
 "with overlay of record %3?"
 msgstr ""
+"Cíl pro přepsání se změnil z  %1 (TCN %2) na %3 (TCN %4).  Chcete pokračovat "
+"a záznam %3 přepsat?"
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:105
 msgid ""
@@ -10585,7 +10587,7 @@ msgstr "Dnes + 7 dní"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:25
 msgid "Toggle Holdings Display"
-msgstr "Sbalit zobrazení jednotek"
+msgstr "Rozbalit/sbalit zobrazení jednotek"
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:19
 msgid "Toggle navigation"
@@ -11312,7 +11314,7 @@ msgstr "Zobrazit historii výpůjček"
 
 #: ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:4
 msgid "View pull list for: "
-msgstr ""
+msgstr "Zobrazit seznam pro vyzvednutí pro: "
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:499
 msgid "View/Edit Item Tags"
@@ -11386,22 +11388,30 @@ msgstr "Varování"
 #: ../../Open-ILS/src/templates/staff/offline-interface.tt2:624
 msgid "Warning: Barcode %2 was flagged Barred in block list downloaded %1."
 msgstr ""
+"Varování: Čárový kód %2 byl  ve staženém seznamu blokovaných účtů %1 označen "
+"jako účet s omezenými transakcemi."
 
 #. ("{{formatted_date}}", "{{pbarcode}}")
 #: ../../Open-ILS/src/templates/staff/offline-interface.tt2:623
 msgid "Warning: Barcode %2 was flagged Expired in block list downloaded %1."
 msgstr ""
+"Varování: Čárový kód %2 byl  ve staženém seznamu blokovaných účtů   %1 "
+"označen jako s účet s prošlou registrací"
 
 #. ("{{formatted_date}}", "{{pbarcode}}")
 #: ../../Open-ILS/src/templates/staff/offline-interface.tt2:622
 msgid "Warning: Barcode %2 was flagged Lost in block list downloaded %1."
 msgstr ""
+"Varování: Čárový kód %2 byl ve staženém seznamu blokovaných účtů %1 označen "
+"jako ztracený průkaz."
 
 #. ("{{formatted_date}}", "{{pbarcode}}")
 #: ../../Open-ILS/src/templates/staff/offline-interface.tt2:621
 msgid ""
 "Warning: Barcode %2 was flagged with penalties in block list downloaded %1."
 msgstr ""
+"Varování: Čárový kód %2 byl ve staženém  seznamu blokovaných účtů  %1 "
+"označen jako účet s nevyřízenými pokutami."
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_mark_damaged.tt2:12
 msgid "Was returned "
