@@ -75,6 +75,8 @@ new copies (https://bugs.launchpad.net/evergreen/+bug/1959716[Bug 1959716])
 * Fixes a display issue where the updated call number is not reflected in the grid when adding materials to courses. (https://bugs.launchpad.net/evergreen/+bug/1907974[Bug 1907974])
 * Fixes an issue with archiving Courses (https://bugs.launchpad.net/evergreen/+bug/1939994[Bug 1939994])
 * Items removed from a Course will now revert to their original call number owning library (https://bugs.launchpad.net/evergreen/+bug/1939730[Bug 1939730])
+* Now alerts when attempting to associate materials from a library different from the course's library (https://bugs.launchpad.net/evergreen/+bug/1913604[Bug 1913604])
+* Fix issue where archiving a course removed materials from other courses (https://bugs.launchpad.net/evergreen/+bug/1993922[Bug 1993922])
 
 ==== Documentation ====
 
@@ -106,12 +108,15 @@ new copies (https://bugs.launchpad.net/evergreen/+bug/1959716[Bug 1959716])
 * Other Formats and Editions now displays more prominently in Bootstrap. (https://bugs.launchpad.net/evergreen/+bug/1903767[Bug 1903767])
 * Fixes an issue in Bootstrap where the headers in advanced search couldn’t be translated. (https://bugs.launchpad.net/evergreen/+bug/1991395[Bug 1991395])
 * Fixes formatting in Booking Reservations page in the Bootstrap OPAC (https://bugs.launchpad.net/evergreen/+bug/1980297[Bug 1980297])
+* Fix Add to Bucket (from Basket) action in the Bootstrap OPAC (https://bugs.launchpad.net/evergreen/+bug/1898775[Bug 1898775])
 
 ==== Miscellaneous ====
 
 * Adds ng lint to github actions (https://bugs.launchpad.net/evergreen/+bug/1978049[Bug 1978049])
 * Cleans up 'Build Docs' artifacts in github actions (https://bugs.launchpad.net/evergreen/+bug/1991444[Bug 1991444])
-
+* Fix issue exporting strings from the Angular client for translation (https://bugs.launchpad.net/evergreen/+bug/1993534[Bug 1993534])
+* Fix issue where Did You Mean was breaking parallel reingest and record overlay (https://bugs.launchpad.net/evergreen/+bug/1931737[Bug 1931737])
+* Fix applying Czech translation to the Angular staff client (https://bugs.launchpad.net/evergreen/+bug/1982887[Bug 1982887])
 
 === Acknowledgements ===
 
