@@ -3,17 +3,17 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2021-10-12 14:11-0400\n"
-"PO-Revision-Date: 2021-07-26 12:42+0000\n"
+"PO-Revision-Date: 2022-05-09 13:00+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2021-10-13 04:39+0000\n"
-"X-Generator: Launchpad (build 8a94da2fac127f5e46a49fd1140e43759d578803)\n"
-"X-Poedit-Language: Czech\n"
-"X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Launchpad-Export-Date: 2022-05-10 06:27+0000\n"
+"X-Generator: Launchpad (build a1979342dd08d6250d2d30773ae8aa97bed37b43)\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Country: CZECH REPUBLIC\n"
+"X-Poedit-Language: Czech\n"
 
 #: 950.data.seed-values.sql:8646
 msgid "Estonia "
@@ -14138,7 +14138,7 @@ msgstr "Výtah z partitury nabo klavírní výtah pro dirigenta"
 
 #: 950.data.seed-values.sql:102 950.data.seed-values.sql:13878
 msgid "Subject"
-msgstr "Téma"
+msgstr "Subjekt"
 
 #: 950.data.seed-values.sql:1129
 msgid "CREATE_LANGUAGE"
@@ -14289,7 +14289,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:13879
 msgid "Topic Subject axis"
-msgstr "Osa témat"
+msgstr "Osa věcných témat"
 
 #: 950.data.seed-values.sql:8414
 msgid "Chorus score"
