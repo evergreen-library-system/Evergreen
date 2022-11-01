@@ -1,5 +1,0 @@
-== Override All Option when Placing Multiple Staff Holds ==
-
-When placing multiple holds in the Angular Staff Catalog, staff users with permission to override the failed holds will see an Override All button which will perform all overrides at once.
-
-Overriding each failed hold individually remains an option.
