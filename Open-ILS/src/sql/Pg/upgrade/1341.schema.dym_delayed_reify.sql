@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('1340', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1341', :eg_version);
 
 CREATE OR REPLACE FUNCTION search.disable_symspell_reification () RETURNS VOID AS $f$
     INSERT INTO config.internal_flag (name,enabled)
