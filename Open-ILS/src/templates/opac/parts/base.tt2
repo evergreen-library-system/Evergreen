@@ -59,7 +59,7 @@
 
         <h1 class="sr-only">[% l('Catalog') %]</h1>
         <div id="main-content-landing" tabindex="0"></div>
-        
+
         [%#Each content page needs (at minimum) an <h2> describing the content%]
         [% content %] 
         <h2 class="sr-only">[% l('Additional Resources') %]</h2>

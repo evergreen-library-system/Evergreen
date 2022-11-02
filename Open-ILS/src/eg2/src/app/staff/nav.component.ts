@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Location} from '@angular/common';
+import {Location, ViewportScroller} from '@angular/common';
 import {Subscription} from 'rxjs';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -50,7 +50,8 @@ export class StaffNavComponent implements OnInit, OnDestroy {
         private perm: PermService,
         private pcrud: PcrudService,
         private locale: LocaleService,
-        private printer: PrintService
+        private printer: PrintService,
+        protected vs: ViewportScroller
     ) {
         this.locales = [];
     }
@@ -105,6 +106,10 @@ export class StaffNavComponent implements OnInit, OnDestroy {
         this.permFailedSub =
             this.net.permFailed$.subscribe(
                 (req: NetRequest) => this.opChange.escalateRequest(req));
+
+        // Offset scrolling to anchor by -48px to account for the fixed navbar
+        // eslint-disable-next-line no-magic-numbers
+        this.vs.setOffset([0,-48]);
     }
 
     ngOnDestroy() {

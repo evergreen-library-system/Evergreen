@@ -1,3 +1,22 @@
+.skip-nav {
+    background-color: #fff;
+    border: 1px solid #0D7764;
+    color: #0D7764;
+    margin: 0;
+    padding: 1em;
+    position: absolute;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: auto;
+    transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+}
+
+.skip-nav:not(:focus):not(:hover) {
+    transform: translateY(-4em);
+    opacity: 0;
+}
+
 /* remove dropdown caret for icon-based entries */
 #staff-navbar .no-caret::after {
     display: none;

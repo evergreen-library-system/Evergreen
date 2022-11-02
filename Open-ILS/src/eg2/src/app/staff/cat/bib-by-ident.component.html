@@ -1,3 +1,13 @@
+<ng-container *ngIf="identType === 'id'">
+  <eg-staff-banner bannerText="Search by Record ID" i18n-bannerText>
+  </eg-staff-banner>
+</ng-container>
+
+<ng-container *ngIf="identType === 'tcn'">
+  <eg-staff-banner bannerText="Search by Record TCN" i18n-bannerText>
+  </eg-staff-banner>
+</ng-container>
+
 
 <div class="row form-validated mt-5">
   <div class="col-lg-6 form-inline">
