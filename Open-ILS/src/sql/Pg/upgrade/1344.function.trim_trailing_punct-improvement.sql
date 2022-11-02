@@ -45,13 +45,6 @@ END;
 $$ language 'plpgsql';
 
 
-INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
-	'Trim Trailing Punctuation',
-	'Eliminate extraneous trailing ISBD punctuation in text: slashes, colons, commas, and periods',
-	'metabib.trim_trailing_punctuation',
-	0
-);
-
 INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
     SELECT  m.id,
             i.id,
