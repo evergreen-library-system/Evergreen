@@ -22807,7 +22807,6 @@ UPDATE config.print_template SET template = $TEMPLATE$
   <tr><td>Is Group Lead Account:</td><td>[% patron.master_account %]</td></tr>
   <tr><td>Claims-Returned Count:</td><td>[% patron.claims_returned_count %]</td></tr>
   <tr><td>Claims-Never-Checked-Out Count:</td><td>[% patron.claims_never_checked_out_count %]</td></tr>
-  <tr><td>Alert Message:</td><td>[% patron.alert_message %]</td></tr>
 
   [% FOR addr IN patron.addresses %]
     <tr><td colspan="2">----------</td></tr>
