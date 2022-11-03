@@ -271,7 +271,214 @@ Certain events are not able to be batch-overridden, such as when an item with an
 Stock penalty codes (`STAFF_C`, `STAFF_CH`, `STAFF_CHR`, `STAFF_H`, `STAFF_HR`, `STAFF_R`) that can be encountered as events are auto-overrideable by default, and may present an Action Override modal.
 
 
-== Marking Items Lost and Claimed Returned ==
+== Mark Items ==
+
+Items can have their status changed via the _Mark_ functions on the Actions menus. 
+
+=== Claims Never Checked Out ===
+
+
+If a patron believes an item was erroneously checked out on their account and staff cannot locate it 
+to check it in the item can be marked as claims never checked out.
+
+. Go to the _Items Out_ tab in the patron account.
+. Select the item and click *Actions -> Mark Claims Never Checked Out*.
++
+image::circulating_items_web_client/mark-claims-never-checked-out-1.png[]
++
+. A pop-up appears where staff can confirm that they wish to mark the item by clicking *OK/Continue*.
+. The item is checked in and set to _Missing_. The item is no longer associated with the patron's account.
+
+[Note]
+======
+Libraries may wish to routinely run reports on items with the status of _Missing_ so they can be searched for
+and replaced/deleted as appropriate.
+======
+
+=== Claims Returned ===
+
+
+If a patron believes an item out on their account was returned and staff cannot locate it to check it in
+the item can be marked as claims returned. 
+
+. Go to the _Items Out_ tab in the patron account.
+. Select the item and click *Actions -> Mark Claims Returned*.
++
+image::circulating_items_web_client/mark-claims-returned-1.png[]
++
+. Enter the date on which the patron claims they returned the item and click *Submit*.  If the chosen date is 
+in the past any overdue fines will be adjusted accordingly.
++
+image::circulating_items_web_client/mark-claims-returned-2.png[]
++
+. The item's status is updated to _Claimed Returned_. It remains associated with the patron's account and 
+is now displayed on the _Other/Special Circulations_ tab. The value in the *Claims-returned Count* field 
+in the patron record is automatically increased.
++
+[NOTE]
+======
+Some libraries prefer to use the status _Missing_.  This can be set using the library setting 
+_Claim Return: Mark copy as missing_.
+====== 
++
+image::circulating_items_web_client/mark-claims-returned-3.png[]
++
+. The patron's *Claims-returned Count* is automatically increased. This can be viewed in the patron summary
+and the _Edit_ tab.
++
+[NOTE]
+======
+Libraries can use the library setting _Max Patron Claims Returned Count_ to set a maximum number of items
+a patron can claim as returned before a staff override is required.
+====== 
+
+A claimed returned items is resolved when it is checked in or when the status is updated to _Missing_ or _Lost_
+following local library policy.  An alert displays on check in to let staff know a claimed returned
+item has been found. If there is an outstanding bill associated with it, the item will not disappear 
+from the *Items Out* screen. It will disappear when the outstanding bills are resolved. When an 
+item is located staff may wish to adjust the patron's *Claims-returned Count* accordingly on the _Edit_ tab.
+
+=== Damaged ===
+
+If a patron damages an item it can be marked as damaged at check in, via the Item Status interface, or
+from within a patron's account.
+
+. On the appropriate interface select the item and click *Actions -> Mark Damaged*
++
+image::circulating_items_web_client/mark-damaged-1.png[]
++
+. A pop-up appears indicating that the item will be marked damaged.  Click *Submit*.
+. If your library has the library setting _Charge item price when marked damaged_ set to True a second
+pop-up will appear.
+.. If needed, adjust the amount being billed.  The processing fee from the library setting 
+_Charge processing fee for damaged items_ is included in the total. 
+.. Select the bill type from the drop down menu.
+.. If needed, add a note.
+.. If you are not charging the patron in this particular case, click *No Charge*.
+.. Click *Submit*.
++
+image::circulating_items_web_client/mark-damaged-2.png[]
++
+. The item's status is updated to _Damaged_ and removed from the patron's account. If the patron has 
+been billed for the damage the bill will display in the _Bills_ tab.  The bill displays as a single charge
+which includes the processing fee. 
+
+A damaged item is resolved when it is checked in to return it to circulation, when the status is updated to 
+_Discard/Weed_, or when the item is deleted.  An alert displays on check in to let staff know a damaged
+item has been checked in.
+
+[NOTE]
+======
+Checking in a damaged item does not affect any bills that were generated when the item was set to _Damaged_.
+======
+
+=== Discard/Weed ===
+
+If an item is slated to be removed from the collection it can be marked as discard/weed at check in
+or via the Item Status interface.  Libraries may wish to use the _Discard/Weed_ status when items to be
+discarded need to be reviewed before being deleted.
+
+. On the appropriate interface select the item and click *Actions -> Mark as Discard/Weed*.
++
+image::circulating_items_web_client/mark-discard-1.png[]
++
+. A pop-up appears where staff can confirm that they wish to mark the item by clicking *OK/Continue*.
+. The item is set to _Discard/Weed_.
+
+A discarded item is resolved when it is checked in to return it to circulation or deleted from Evergreen.
+
+[NOTE]
+======
+Staff may wish to put discarded items into item buckets to make it easier for subsequent staff to view
+and work with the items. 
+======
+
+=== Missing ===
+
+
+If an item cannot be located it can be marked as missing via the Item Status interface or from within a 
+patron's account.
+
+. On the appropriate interface select the item and click *Actions -> Mark Missing*
++
+image::circulating_items_web_client/mark-missing-1.png[]
++
+. A pop-up appears where staff can confirm that they wish to mark the item by clicking *OK/Continue*.
+. If the item is currently checked out a second pop-up will ask staff to confirm that they wish to check
+in the item.
+. The item is set to _Missing_ and, if previously checked out, is no longer associated with the patron's
+account.
+
+A missing item is resolved when it is found and checked in or when it is deleted from Evergreen.
+
+=== Missing Pieces ===
+
+
+If an item is returned with pieces missing it can be marked as missing pieces from Check In or
+the Scan Item as Missing Pieces interface. The feature currently functions slightly different depending
+on which interface it is accessed through.
+
+==== Mark Missing Pieces via Check In ====
+
+
+. Go to *Circulation -> Check In*.
+. Check the item in.
+. Select the item and click *Actions -> Mark Missing Pieces*.
++
+image::circulating_items_web_client/mark-missing-pieces-1.png[]
++
+. A pop-up appears where staff can confirm that they wish to mark the item by clicking *OK/Continue*.
++
+. A print dialog will appear.  Staff can print the slip to keep with the item.
+. The _Create Note_ pop-up will appear.  Use the pop-up to create a note, 
+alert, or block on the patron's account.  This note can be set as patron visible so it displays to the 
+patron in My Account.
+. Click *OK*.
+. The note is applied to the last borrower's account and the item is set to _Damaged_ and checked back out
+to the patron's account.
++
+[NOTE]
+======
+This method of setting an item as missing pieces is missing the letter that is generated at the end of the 
+process.  If that letter is important to your workflow you should always mark items missing pieces
+via the Scan Item as Missing Pieces interface.
+======
+
+==== Scan Item as Missing Pieces ====
+
+. Go to *Circulation -> Scan Item as Missing Pieces*.
+. Scan the item's barcode.
+. Click *Mark Item as Missing Pieces?*.
++
+image::circulating_items_web_client/mark-missing-pieces-2.png[]
++
+. A print dialog will appear.  Staff can print the slip to keep with the item.
+. The _Create Note_ pop-up will appear.  Use the pop-up to create a note, 
+alert, or block on the patron's account.  
++
+[NOTE]
+======
+This pop-up is the old Notes pop-up and is missing the functionality that allows staff to select the display
+depth and set a note as patron visible so it displays to the patron in My Account.
+======
++
+. Click *OK*.
++
+image::circulating_items_web_client/mark-missing-pieces-3.png[]
++
+. The note is applied to the last borrower's account and the item is set to _Damaged_ and renewed on the
+patron's account, if there are remaining renewals.
+. A letter is generated that can be edited and then printed and mailed to the patron.
+
+A missing pieces item is resolved when the pieces are returned and the item is checked in or the pieces 
+are never returned and the item is deleted.  Notes related to the item must be manually removed from
+the patron's account.
+
+[NOTE]
+======
+Libraries can choose to use a different item status for missing pieces instead of _Damaged_.  The 
+library setting _Item Status for Missing Pieces_ is used to set this.
+======
 
 === Lost Items ===
 1) To mark items Lost, retrieve patron record and click *Items Out*.
@@ -302,33 +509,6 @@ If an item is returned after a lost bill has been paid and the library's policy 
 
 If you need to balance a bill with a negative amount, you need to add two dummy bills to the existing bills. The first one can be of any amount (e.g. $0.01), while the second should be of the absolute value of the negative amount. Then you need to void the first dummy bill. The reason for using a dummy bill is that Evergreen will check and close the circulation record only when payment is applied or bills are voided.
 
-=== Claimed Returned Items ===
-
-1) To mark an item Claimed Returned, retrieve the patron record and go to the *Items Out* screen.
-
-2) Select the item, then select *Actions* -> *Mark Claimed Returned* from the dropdown menu.
-
-image::media/mark_claims_returned_web_client.png[]
-
-3) Enter date in yyyy-mm-dd format and click *Submit*.
-
-image::media/claimed_date_web_client.png[]
-
-4) The Claimed Returned item now displays in the *Other/Special Circulations* section of the patron record.
-
-image::media/cr_section_web_client.png[]
-
-5) The Claimed Returned item adds to the count of items that are Claimed Returned in the patron summary on the left (or top) of the screen. It also adds to the total *Other/Special Circulations* that is displayed when editing the patron's record. 
-
-image::media/patron_summary_checkouts_web_client.png[]
-
-[NOTE]
-More on Claimed Returned Items
-====================================
-- The date entered for a Claimed Returned item establishes the fine. If the date given has passed, bills will be adjusted accordingly.
-- When a Claimed Returned item is returned, if there is an outstanding bill associated with it, the item will not disappear from the *Items Out* screen. It will disappear when the outstanding bills are resolved.
-- When an item is marked Claimed Returned, the value in *Claims-returned Count* field in the patron record is automatically increased. Staff can manually adjust this count by editing the patron record.
-====================================
 
 == In-house Use (F6) ==
 1) To record in-house use, select *Circulation* -> *Record-In House Use*, click *Check Out* -> *Record In-House Use* on the circulation toolbar , or press *F6*. 
