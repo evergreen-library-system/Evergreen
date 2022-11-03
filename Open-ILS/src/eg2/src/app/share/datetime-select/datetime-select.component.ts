@@ -4,6 +4,7 @@ import {AbstractControl, ControlValueAccessor, FormControl, FormGroup, NgControl
 import {NgbDatepicker, NgbTimeStruct, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {DatetimeValidator} from '@eg/share/validators/datetime_validator.directive';
 import * as moment from 'moment-timezone';
+import {DateUtil} from '@eg/share/util/date';
 
 @Component({
     selector: 'eg-datetime-select',
@@ -18,6 +19,10 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
     @Input() showTZ = true;
     @Input() timezone: string = this.format.wsOrgTimezone;
     @Input() readOnly = false;
+    @Input() noPast = false;
+    @Input() noFuture = false;
+    @Input() minDate: any;
+    @Input() maxDate: any;
     @Output() onChangeAsIso: EventEmitter<string>;
 
     dateTimeForm: FormGroup;
@@ -53,6 +58,12 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
     }
 
     ngOnInit() {
+        if (this.noPast) {
+            this.minDate = DateUtil.localYmdPartsFromDate();
+        }
+        if (this.noFuture) {
+            this.maxDate = DateUtil.localYmdPartsFromDate();
+        }
         if (!this.timezone) {
             this.timezone = this.format.wsOrgTimezone;
         }
