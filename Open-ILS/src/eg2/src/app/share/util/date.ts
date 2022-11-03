@@ -1,6 +1,12 @@
 
 /* Utility code for dates */
 
+export interface YmdParts {
+    year: number;
+    month: number;
+    day: number;
+}
+
 export class DateUtil {
 
     /**
@@ -65,6 +71,16 @@ export class DateUtil {
         return now.getFullYear() + '-' +
             ((now.getMonth() + 1) + '').padStart(2, '0') + '-' +
             (now.getDate() + '').padStart(2, '0');
+    }
+
+    static localYmdPartsFromDate(date?: Date): YmdParts {
+        const ymd = DateUtil.localYmdFromDate(date);
+        const parts = ymd.split(/-/);
+        return {
+            year: Number(parts[0]),
+            month: Number(parts[1]),
+            day: Number(parts[2])
+        };
     }
 }
 

@@ -29,9 +29,11 @@
         role="alert"
         class="alert alert-danger">
         <span class="material-icons">error</span>
-	{{firstError(controlDir.control.errors)}}
+        {{firstError(controlDir.control.errors)}}
       </div>
       <ngb-datepicker #datePicker
+        [minDate]="minDate"
+        [maxDate]="maxDate"
         formControlName="date"
         [footerTemplate]="time"
         (touch)="onTouched()">
