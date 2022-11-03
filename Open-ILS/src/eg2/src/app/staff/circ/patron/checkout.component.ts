@@ -43,6 +43,7 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     cellTextGenerator: GridCellTextGenerator;
     dueDate: string;
     dueDateOptions: 0 | 1 | 2 = 0; // auto date; specific date; session date
+    dueDateInvalid = false;
     printOnComplete = true;
     strictBarcode = false;
 
@@ -155,6 +156,10 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
 
     checkout(params?: CheckoutParams, override?: boolean): Promise<CheckoutResult> {
 
+        if (this.dueDateInvalid) {
+            return Promise.resolve(null);
+        }
+
         let barcode;
         const promise = params ? Promise.resolve(params) : this.collectParams();
 
@@ -256,6 +261,8 @@ export class CheckoutComponent implements OnInit, AfterViewInit {
     }
 
     setDueDate(iso: string) {
+        const date = new Date(Date.parse(iso));
+        this.dueDateInvalid = (date < new Date());
         this.dueDate = iso;
         this.store.setSessionItem('eg.circ.checkout.due_date', this.dueDate);
     }

@@ -67,9 +67,12 @@
         </button>
       </div>
     </div>
-    <eg-datetime-select [initialIso]="dueDate" 
+    <eg-datetime-select [initialIso]="dueDate" [noPast]="true"
       [readOnly]="dueDateOptions === 0" (onChangeAsIso)="setDueDate($event)">
     </eg-datetime-select>
+    <ng-container *ngIf="dueDateInvalid">
+      <span class="text-danger font-weight-bold ml-2" i18n>Due Date is Invalid</span>
+    </ng-container>
   </div>
 </div>
 
