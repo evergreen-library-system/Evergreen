@@ -1,22 +1,16 @@
-Evergreen 3_10 Release Notes
-============================
+= Evergreen 3_10 Release Notes =
 :toc:
 :numbered:
+:toclevels: 3
 
-Upgrade notes
--------------
+== Upgrade notes ==
 
-New Features
-------------
-
+== New Features ==
 
 
-Acquisitions
-~~~~~~~~~~~~
+===  Acquisitions ===
 
-
-
-== Further Angularization of Acquisitions Interfaces ==
+==== Further Angularization of Acquisitions Interfaces ====
 
 The following acquisitions interfaces were rewritten in Angular:
 
@@ -32,10 +26,7 @@ Improvements over the previous interfaces include:
  * New settings to control the owning library that is
    applied to auto-created line item items.
 
-
-
-
-== Support for Advanced Shipment Notices in Acquisitions ==
+==== Support for Advanced Shipment Notices in Acquisitions ====
 
 This version of Evergreen supports DESADV EDI messages.  These messages are
 created by vendors when they pack and ship items, and contain:
@@ -46,19 +37,12 @@ created by vendors when they pack and ship items, and contain:
 Staff can scan that package-level barcode to retrieve information on every
 item in the package, including an option to auto-receive every item in the box.
 
-
-
-
-== New column in General Acquisitions Search ==
+==== New column in General Acquisitions Search ====
 
 The general acquisitions search grid now has a column
 for purchase order ID.
 
-
-
-
-
-== New Permission for Fund Rollovers ==
+==== New Permission for Fund Rollovers ====
 
 A new permission, `ADMIN_FUND_ROLLOVER`, is added to control access
 to the fund rollover function. This allows having some users be able
@@ -74,10 +58,7 @@ where necessary.
 In new databases, `ADMIN_FUND_ROLLOVER` is granted only to the stock
 Acquisitions Administrators permission group.
 
-
-
-
-== Inactive funds can no longer make allocations or transfers ==
+==== Inactive funds can no longer make allocations or transfers ====
 
 In the Funds Administration page, if a fund is not marked as
 active, the "Create allocation" and "Transfer money" options
@@ -87,51 +68,31 @@ In the occassional cases where these operations are necessary,
 you can edit the fund to mark it active, perform your financial
 operations, then mark it inactive again.
 
+=== Administration ===
 
-
-
-Administration
-~~~~~~~~~~~~~~
-
-
-
-== Geosort feature can now use Bing Maps API ==
+==== Geosort feature can now use Bing Maps API ====
 
 The API can be configured at *Server Administration*
 -> *Geographic Location Service*.
 
-
-
-
-
-== Refresh Time for Carousel ==
+==== Refresh Time for Carousel ====
 
 This adds the time (rather than just the date) to the 
 Last Refresh Time column of the Local Administration > 
 Carousels grid. 
 
-
-
-= Hours of Operation Note field =
+==== Hours of Operation Note field ====
 
 Adds a note field to each day's hours to record split hours or service related notes. The notes appear enclosed in parentheses next to each day's hours when viewing a library's hours in the Bootstrap OPAC and TPAC
 
-
-
-
-== HTML email ==
+==== HTML email ====
 
 Administrators can now configure action triggers to send HTML-formatted
 email.  Evergreen continues to send emails in plain-text by default, but
 you can now configure an email template to send as HTML by adding the appropriate
 header to the email.  For example: Content-Type: text/html;charset=utf-8
 
-
-
-
-
-
-== Match Quality Ratio Option Added to marc_stream_importer.pl ==
+==== Match Quality Ratio Option Added to marc_stream_importer.pl ====
 
 Command line options have been added to the marc_stream_importer.pl
 support script to specify the match quality ratio used when matching
@@ -145,13 +106,10 @@ These options specify the match quality ratio, as a decimal number
 options.  They correspond to the similar options in the staff client
 Vandelay import.
 
-
-
-
-= Configuring sign-on to OpenAthens =
+==== Configuring sign-on to OpenAthens ====
 :toc:
 
-== Purpose ==
+===== Purpose =====
 
 If your institution uses OpenAthens, you can configure Evergreen to sign 
 patrons in to OpenAthens using their Evergreen account. This will let them 
@@ -160,7 +118,7 @@ Evergreen. Patrons are assigned an OpenAthens identity dynamically based
 on their Evergreen login, and do not need accounts created manually in 
 OpenAthens.
 
-== Registering your Evergreen installation with the OpenAthens service ==
+===== Registering your Evergreen installation with the OpenAthens service =====
 
 Using your OpenAthens administrator account at https://admin.openathens.net/, 
 complete the following steps:
@@ -190,7 +148,7 @@ complete the following steps:
 Full OpenAthens documentation for local authentication API connections is 
 available at http://docs.openathens.net/display/public/MD/API+connector.
 
-== Configuring Evergreen ==
+===== Configuring Evergreen =====
 
 OpenAthens sign-on is configured in the staff client under *Local 
 Administration* -> *OpenAthens Sign-on*. To make a connection, select *New 
@@ -301,7 +259,7 @@ Click 'Save' to finish creating the connection. (If you can't see the
 connection you just created for a branch library, enable the "+ Descendants" 
 option.)
 
-== Network access - server ==
+===== Network access - server =====
 
 As part of the sign-on process, Evergreen makes a connection to the OpenAthens
 service to transfer details of the user that is signing on. This data does not
@@ -309,7 +267,7 @@ go via the user's browser, to avoid revealing the private API key and to avoid
 the risk of spoofing. You need to open up port 443 outbound in your firewall,
 from your Evergreen server to login.openathens.net.
 
-== Network access - web client ==
+===== Network access - web client =====
 
 If you restrict internet access for your web client machines, you need to open
 up port 443 outbound in your firewall, from your web clients to the following
@@ -319,15 +277,12 @@ three domains:
 * login.openathens.net
 * wayfinder.openathens.net
 
-== Admin permissions ==
+===== Admin permissions =====
 
 To delegate OpenAthens configuration to other staff users, assign the 
 *ADMIN_OPENATHENS* permission.
 
-
-
-
-== Optionally allow patrons to renew after hitting fine maximum ==
+==== Optionally allow patrons to renew after hitting fine maximum ====
 
 When a patron hits the max fine limit, a standing penalty is applied to their account. By default, that penalty (PATRON_EXCEEDS_FINES)
 is configured to block renewals.
@@ -335,11 +290,7 @@ is configured to block renewals.
 This release adds a new org unit setting, _circ.permit_renew_when_exceeds_fines_.  If enabled for a particular org unit, renewals are
 permitted (as long as all other circulation eligibility criteria are met).
 
-
-
-
-
-== Optionally remove traditional catalog from menu ==
+==== Optionally remove traditional catalog from menu ====
 
 Libraries that have fully migrated to the Angular staff catalog
 may optionally hide the "Staff Catalog (Traditional)" menu
@@ -349,16 +300,9 @@ options.  To do so, in the Library Settings Editor, set the
 After changing the setting, you will need to log out and log
 back in to see the changes to the menu.
 
+=== Architecture ===
 
-
-
-
-Architecture
-~~~~~~~~~~~~
-
-
-
-== (Developer-focused) Use ESLint for eg2 ==
+==== (Developer-focused) Use ESLint for eg2 ====
 
 The `eg2` Angular application now uses ESLint rather than TSLint for
 source code linting. This is motivated by the deprecation of TSLint
@@ -380,38 +324,23 @@ mandate for shared components.
 The command to run the lint checks remains the same: from
 `Open-ILS/src/eg2/`, run `ng lint`.
 
-
-
-
-== Operating System Requirements ==
+==== Operating System Requirements ====
 
 Evergreen 3.10 now supports installation on Ubuntu 22.04 (Jammy Jellyfish).
 
 This release removes support for Debian Stretch and Ubuntu 18.04 (Bionic Beaver).
 
+=== Cataloging ===
 
-
-
-Cataloging
-~~~~~~~~~~
-
-
-
-== Record Note Merges == 
+==== Record Note Merges ====
 
 During a merge of bibliographic records notes will now merge and a
 notation on each added that they were originally from another record.
 A note is also added that the merge was performed.
 
+=== Circulation ===
 
-
-
-Circulation
-~~~~~~~~~~~
-
-
-
-== Experimental Angular Circulation Interfaces ==
+==== Experimental Angular Circulation Interfaces ====
 
 This Evergreen release includes new, experimental versions of many
 circulation interfaces.  To enable these interfaces:
@@ -425,19 +354,12 @@ These interfaces are experimental, and should not be used for production
 work.  Please report any issues with the interfaces at
 https://bugs.launchpad.net/evergreen
 
-
-
-
-== New Patrons with Negative Balances interface ==
+==== New Patrons with Negative Balances interface ====
 
 The _Patrons with Negative Balances_ interface has been re-implemented
 in Angular.
 
-
-
-
-
-== OPAC-visible statisitical categories are now visible in the OPAC ==
+==== OPAC-visible statisitical categories are now visible in the OPAC ====
 
 This release restores a previously available feature: the ability to 
 display statistical categories (stat cats) in the OPAC.  If an
@@ -462,9 +384,7 @@ UPDATE asset.stat_cat SET opac_visible=false WHERE opac_visible=true;
 UPDATE actor.stat_cat SET opac_visible=false WHERE opac_visible=true;
 ----
 
-
-
-== Renewal Due Date Extended to Cover Lost Time ==
+==== Renewal Due Date Extended to Cover Lost Time ====
 
 When an item is renewed before it's due date, libraries now have the option
 to extend the renewal's due date to include any time lost from the early 
@@ -473,7 +393,7 @@ renewal.
 For example, a 14 day checkout renewed after 12 days will result in a due date
 on the renewal of 14 days plus 2 days to cover the lost time.
 
-=== Settings ===
+===== Settings =====
 
 Two new fields are available under Admin => Local Administration => 
 Circulation Policies.
@@ -494,20 +414,13 @@ would enter "8 days" for the value of this field.
 If no value is set for a given matchpoint that supports renewal extension, 
 all renewals using that matchpoint will be eligible.
 
-
-
-
-
-== Override All Option when Placing Multiple Staff Holds ==
+==== Override All Option when Placing Multiple Staff Holds ====
 
 When placing multiple holds in the Angular Staff Catalog, staff users with permission to override the failed holds will see an Override All button which will perform all overrides at once.
 
 Overriding each failed hold individually remains an option.
 
-
-
-
-== Source library addresses now available on transit slips ==
+==== Source library addresses now available on transit slips ====
 
 Transit slip templates previously could include the address of
 the library that the item is being transitted _to_.  With this
@@ -516,10 +429,7 @@ _from_ is also available.
 This change applies to both the Hold Transit Slip and the Transit
 Slip templates.
 
-
-
-
-== Courses can be un-archived ==
+==== Courses can be un-archived ====
 
 Course reserves staff can now un-archive a course that was previously archived, either from
 its course page, or from the course list.
@@ -528,15 +438,9 @@ Un-archiving a course makes it active again.  Users with public roles in the cou
 as instructors) remain associated with the course.  Non-public users (such as students)
 are removed.
 
+=== OPAC ===
 
-
-
-OPAC
-~~~~
-
-
-
-== Additional trailing punctuation removed from certain fields ==
+==== Additional trailing punctuation removed from certain fields ====
 
 MarcXML facet, display, and browse fields will undergo some extra
 cleanup before displaying to a user.  Of particular note for any
@@ -548,8 +452,7 @@ particular field uses MarcXML or MODS in Server Administration
 -> MARC Search/Facet Fields by consulting the Format column.
 
 
-Miscellaneous
--------------
+=== Miscellaneous ===
 
 * The Field Documentation interface (under Local Administration) has
   been ported to Angular with an org selector as an additional filter.
@@ -584,8 +487,8 @@ Miscellaneous
 * The Cash Reports interface (under Local Administration) is ported to
   Angular.
 
-Acknowledgments
----------------
+=== Acknowledgments ===
+
 The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
