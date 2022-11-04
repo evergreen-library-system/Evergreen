@@ -64,6 +64,6 @@ COMMIT;
 
 SELECT metabib.reingest_metabib_field_entries(
     id, TRUE, FALSE, FALSE, TRUE, 
-    (SELECT ARRAY_AGG(id) INTO field_list FROM config.metabib_field WHERE field_class='title' AND (browse_field OR facet_field OR display_field))
+    (SELECT ARRAY_AGG(id) FROM config.metabib_field WHERE field_class='title' AND (browse_field OR facet_field OR display_field))
 ) FROM biblio.record_entry;
 

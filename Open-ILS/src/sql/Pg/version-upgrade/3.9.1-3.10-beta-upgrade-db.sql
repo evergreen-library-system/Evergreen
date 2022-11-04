@@ -743,13 +743,6 @@ END;
 $$ language 'plpgsql';
 
 
-INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
-	'Trim Trailing Punctuation',
-	'Eliminate extraneous trailing ISBD punctuation in text: slashes, colons, commas, and periods',
-	'metabib.trim_trailing_punctuation',
-	0
-);
-
 INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
     SELECT  m.id,
             i.id,
@@ -759,17 +752,6 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
       WHERE i.func = 'metabib.trim_trailing_punctuation'
             AND m.field_class='title' AND (m.browse_field OR m.facet_field OR m.display_field)
             AND NOT EXISTS (SELECT 1 FROM config.metabib_field_index_norm_map WHERE field = m.id AND norm = i.id);
-
-
-\qecho A partial reingest is necessary to get the full benefit of this change.
-\qecho The reingest will commence at the end of the version upgrade script.
-\qecho 
-
-SELECT metabib.reingest_metabib_field_entries(
-    id, TRUE, FALSE, FALSE, TRUE, 
-    (SELECT ARRAY_AGG(id) INTO field_list FROM config.metabib_field WHERE field_class='title' AND (browse_field OR facet_field OR display_field))
-) FROM biblio.record_entry;
-
 
 SELECT evergreen.upgrade_deps_block_check('1345', :eg_version);
 
@@ -2210,6 +2192,7 @@ VALUES (
     )
 );
 
+COMMIT;
 
 \qecho A partial reingest is necessary to get the full benefit of the change in
 \qecho upgrade script 1344 (bug 1864507) It will take a while.
@@ -2219,11 +2202,8 @@ VALUES (
 
 SELECT metabib.reingest_metabib_field_entries(
 	    id, TRUE, FALSE, FALSE, TRUE,
-	    (SELECT ARRAY_AGG(id) INTO field_list FROM config.metabib_field WHERE field_class='title' AND (browse_field OR facet_field OR display_field))
+	    (SELECT ARRAY_AGG(id) FROM config.metabib_field WHERE field_class='title' AND (browse_field OR facet_field OR display_field))
 ) FROM biblio.record_entry;
-
-
-COMMIT;
 
 -- Update auditor tables to catch changes to source tables.
 --   Can be removed/skipped if there were no schema changes.
