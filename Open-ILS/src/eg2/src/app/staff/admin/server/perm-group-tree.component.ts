@@ -363,8 +363,12 @@ export class PermGroupTreeComponent implements OnInit {
     openAddDialog() {
         this.addMappingDialog.open().subscribe(
             modified => {
-                this.createMapString.current().then(msg => this.toast.success(msg));
-                this.loadPermMaps();
+                if (modified) {
+                    this.createMapString.current().then(msg => this.toast.success(msg));
+                    this.loadPermMaps();
+                } else {
+                    this.errorMapString.current().then(msg => this.toast.danger(msg));
+                }
             }
         );
     }
