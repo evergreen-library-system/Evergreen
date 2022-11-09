@@ -1,7 +1,22 @@
 .eg-bib-staff-view {
-    padding-top: 1rem;
+    padding-top: 0.5rem;
 }
 
-.eg-bib-staff-view .list-group-item {
-    padding: .25rem .25rem 0;
+.eg-bib-staff-view .row {
+    margin-bottom: 0.5rem;
+}
+
+.eg-bib-staff-view > .row:first-child {
+    margin-left: 0;
+}
+
+.eg-bib-staff-view .bib-details ul {
+    margin-bottom: 0;
+    padding-left: 0;
+}
+
+.eg-bib-staff-view .bib-details li {
+    border: 0;
+    list-style: none;
+    padding: .25rem .25rem 0 0;
 }
