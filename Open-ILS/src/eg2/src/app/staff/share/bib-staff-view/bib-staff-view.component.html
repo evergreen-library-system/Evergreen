@@ -1,4 +1,4 @@
-<div class='eg-bib-staff-view card tight-card w-100' *ngIf="summary">
+<div class='eg-bib-staff-view w-100' *ngIf="summary">
     <div class="row"><!-- "table" -->
 
         <!-- 1st column -->
@@ -38,29 +38,13 @@
                 </div>
             </div><!-- end Col 1, Author Row -->
 
-            <!-- Col 1, Creator Row -->
-            <div *ngIf="summary.display.creators" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Creator:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _creator of summary.display.creators">
-                            <a href="/eg2/staff/catalog/search?query={{_creator}}&fieldClass=author&joinOp=&matchOp=contains&dateOp=is">
-                                {{_creator}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 1, Creator Row -->
-
             <!-- Col 1, Performer Row -->
             <div *ngIf="summary.display.performers" class="row">
                 <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Performer:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li *ngFor="let _performer of summary.display.performers">
-                            <a href="/eg2/staff/catalog/search?query={{_performer}}&fieldClass=author&joinOp=&matchOp=contains&dateOp=is">
-                                {{_performer}}
-                            </a>
+                            {{_performer}}
                         </li>
                     </ul>
                 </div>
@@ -88,9 +72,7 @@
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li *ngFor="let _credit of summary.display.production_credits">
-                            <a href="/eg2/staff/catalog/search?query={{_credit}}&fieldClass=author&joinOp=&matchOp=contains&dateOp=is">
-                                {{_credit}}
-                            </a>
+                            {{_credit}}
                         </li>
                     </ul>
                 </div>
@@ -116,55 +98,7 @@
                 </div>
             </div><!-- end of Col 1, Physical Description Row -->
 
-            <!-- Col 1, General Note Row -->
-            <div *ngIf="summary.display.general_note" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>General Note:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _note of summary.display.general_note">
-                            {{_note}}
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 1, General Note Row -->
-
-            <!-- Col 1, Bibliography Row -->
-            <div *ngIf="summary.display.bibliography" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Bibliography:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _bibliography of summary.display.bibliography">
-                            {{_bibliography}}
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 1, Bibliography Row -->
-
-            <!-- Col 1, TOC Row -->
-            <div *ngIf="summary.display.toc" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Table of Contents:</div>
-                <div class="col-sm-8 bib-details">
-                    {{summary.display.toc}}
-                </div>
-            </div><!-- end of Col 1, TOC Row -->
-
-            <!-- Col 1, Thesis Row -->
-            <div *ngIf="summary.display.thesis" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Thesis:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _thesis of summary.display.thesis">
-                            {{_thesis}}
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 1, Thesis Row -->
-
-        </div><!-- 1st column -->
-
-        <div class="col-md-4"><!-- 2nd column -->
-
-            <!-- Col 2, ISBN Row -->
+            <!-- Col 1, ISBN Row -->
             <div *ngIf="summary.display.isbn" class="row">
                 <div class="col-sm-4 font-weight-bold bib-details-title" i18n>ISBN:</div>
                 <div class="col-sm-8 bib-details">
@@ -176,7 +110,7 @@
                         </li>
                     </ul>
                 </div>
-            </div><!-- end of Col 2, ISBN Row -->
+            </div><!-- end of Col 1, ISBN Row -->
 
             <!-- Col 1, ISSN Row -->
             <div *ngIf="summary.display.issn" class="row">
@@ -206,24 +140,110 @@
                 </div>
             </div><!-- end of Col 1, UPC Row -->
 
-            <!-- Col 1, Hold and Copy Counts Row -->
+        </div><!-- 1st column -->
+
+        <!-- 2nd column -->
+        <div class="col-md-4">
+
+            <!-- Col 2, Abstract Row -->
+            <div *ngIf="summary.display.abstract" class="row">
+                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Summary:</div>
+                <div class="col-sm-8 bib-details">
+                    {{summary.display.abstract}}
+                </div>
+            </div><!-- end of Col 2, Abstract Row -->
+
+            <!-- Col 2, General Note Row -->
+            <div *ngIf="summary.display.general_note" class="row">
+                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>General Note:</div>
+                <div class="col-sm-8 bib-details">
+                    <ul>
+                        <li *ngFor="let _note of summary.display.general_note">
+                            {{_note}}
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 2, General Note Row -->
+
+            <!-- Col 2, Bibliography Row -->
+            <div *ngIf="summary.display.bibliography" class="row">
+                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Bibliography:</div>
+                <div class="col-sm-8 bib-details">
+                    <ul>
+                        <li *ngFor="let _bibliography of summary.display.bibliography">
+                            {{_bibliography}}
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 2, Bibliography Row -->
+
+            <!-- Col 2, TOC Row -->
+            <div *ngIf="summary.display.toc" class="row">
+                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Table of Contents:</div>
+                <div class="col-sm-8 bib-details">
+                    {{summary.display.toc}}
+                </div>
+            </div><!-- end of Col 2, TOC Row -->
+
+            <!-- Col 2, Thesis Row -->
+            <div *ngIf="summary.display.thesis" class="row">
+                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Thesis:</div>
+                <div class="col-sm-8 bib-details">
+                    <ul>
+                        <li *ngFor="let _thesis of summary.display.thesis">
+                            {{_thesis}}
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 2, Thesis Row -->
+
+        </div><!-- 2nd column -->
+
+        <div class="col-md-4"><!-- 3rd column -->
+
+            <!-- Col 3, Hold and Copy Counts Row -->
             <div class="row">
                 <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Hold and Copy Counts:</div>
                 <div class="col-sm-8 bib-details">
                     <ul>
                         <li><span i18n>{{summary.holdCount}} hold requests</span></li>
-                        <li>
-                            <span i18n *ngIf=" summary.isHoldable">Record is holdable.</span>
-                            <span i18n *ngIf="!summary.isHoldable">Record is not holdable.</span>
-                        </li>
                         <li *ngFor="let _count of summary.holdingsSummary">
                             <span i18n>{{_count.available}} of {{_count.count}} copies available at {{orgName(_count.org_unit)}}.</span>
                         </li>
                     </ul>
                 </div>
-            </div><!-- end of Col 1, Hold and Copy Counts Row -->
+            </div><!-- end of Col 3, Hold and Copy Counts Row -->
 
-            <!-- Col 1, Formats and Editions Row -->
+
+            <!-- Col 3, Subject Row -->
+            <div *ngIf="summary.display.subject" class="row">
+                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Subject:</div>
+                <div class="col-sm-8 bib-details">
+                    <ul>
+                        <li *ngFor="let _subj of summary.display.subject">
+                            <a href="/eg2/staff/catalog/search?query={{_subj}}&fieldClass=subject&joinOp=&matchOp=contains&dateOp=is">
+                                {{_subj}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 3, Subject Row -->
+
+            <!-- Col 3, Genre Row -->
+            <div *ngIf="summary.display.genre" class="row">
+                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Genre:</div>
+                <div class="col-sm-8 bib-details">
+                    <ul>
+                        <li *ngFor="let _genre of summary.display.genre">
+                            <a href="/eg2/staff/catalog/search?query={{'subject:identifier|genre[' + _genre + ']'}}">
+                                {{_genre}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- end of Col 3, Genre Row -->
+
+            <!-- Col 3, Formats and Editions Row -->
             <div class="row">
                 <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Formats and Editions:</div>
                 <div class="col-sm-8 bib-details">
@@ -244,103 +264,15 @@
                                     {{_x.value.count}}
                             </li>
                         </ng-container>
-                    </ul>
-                </div>
-            </div><!-- end of Col 1, Formats and Editions Row -->
-
-        </div><!-- 2nd column -->
-
-        <div class="col-md-4"><!-- 3rd column -->
-
-            <!-- Col 3, Abstract Row -->
-            <div *ngIf="summary.display.abstract" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Abstract:</div>
-                <div class="col-sm-8 bib-details">
-                    {{summary.display.abstract}}
-                </div>
-            </div><!-- end of Col 3, Abstract Row -->
-
-            <!-- Col 3, Subject Row -->
-            <div *ngIf="summary.display.subject" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Subject:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _subj of summary.display.subject">
-                            <a href="/eg2/staff/catalog/search?query={{_subj}}&fieldClass=subject&joinOp=&matchOp=contains&dateOp=is">
-                                {{_subj}}
+                        <li>
+                            <a href="/eg2/staff/catalog/search?query=from_metarecord({{summary.staffViewMetabibId}})">
+                                <span i18n>View all Formats and Editions</span>
                             </a>
+                            <span> {{summary.staffViewMetabibRecords.length}}</span>
                         </li>
                     </ul>
                 </div>
-            </div><!-- end of Col 3, Subject Row -->
-
-            <!-- Col 3, Subject Name Row -->
-            <div *ngIf="summary.display.subject_name" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Subject Name:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _subj of summary.display.subject_name">
-                            <a href="/eg2/staff/catalog/search?query={{_subj}}&fieldClass=subject&joinOp=&matchOp=contains&dateOp=is">
-                                {{_subj}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 3, Subject Name Row -->
-
-            <!-- Col 3, Subject Topic Row -->
-            <div *ngIf="summary.display.subject_topic" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Subject Topic:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _subj of summary.display.subject_topic">
-                            <a href="/eg2/staff/catalog/search?query={{_subj}}&fieldClass=subject&joinOp=&matchOp=contains&dateOp=is">
-                                {{_subj}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 3, Subject Topic Row -->
-
-            <!-- Col 3, Subject Geographic Row -->
-            <div *ngIf="summary.display.subject_geographic" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Subject Geographic:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _subj of summary.display.subject_geographic">
-                            <a href="/eg2/staff/catalog/search?query={{_subj}}&fieldClass=subject&joinOp=&matchOp=contains&dateOp=is">
-                                {{_subj}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 3, Subject Geographic Row -->
-
-            <!-- Col 3, Subject Temporal Row -->
-            <div *ngIf="summary.display.subject_temporal" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Subject Temporal:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _subj of summary.display.subject_temporal">
-                            <a href="/eg2/staff/catalog/search?query={{_subj}}&fieldClass=subject&joinOp=&matchOp=contains&dateOp=is">
-                                {{_subj}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 3, Subject Temporal Row -->
-
-            <!-- Col 3, Genre Row -->
-            <div *ngIf="summary.display.genre" class="row">
-                <div class="col-sm-4 font-weight-bold bib-details-title" i18n>Genre:</div>
-                <div class="col-sm-8 bib-details">
-                    <ul>
-                        <li *ngFor="let _genre of summary.display.genre">
-                            {{_genre}}
-                        </li>
-                    </ul>
-                </div>
-            </div><!-- end of Col 3, Genre Row -->
+            </div><!-- end of Col 3, Formats and Editions Row -->
 
         </div><!-- 3rd column -->
 

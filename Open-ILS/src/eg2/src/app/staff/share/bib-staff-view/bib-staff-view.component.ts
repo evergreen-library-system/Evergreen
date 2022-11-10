@@ -12,6 +12,7 @@ import {CatalogService} from '@eg/share/catalog/catalog.service';
 })
 export class BibStaffViewComponent implements OnInit {
 
+    recId: number;
     initDone = false;
 
     // True / false if the display is vertically expanded
@@ -24,8 +25,14 @@ export class BibStaffViewComponent implements OnInit {
     }
     get expand(): boolean { return this._exp; }
 
-    // If provided, the record will be fetched by the component.
-    @Input() recordId: number;
+    @Input() set recordId(id: number) {
+        this.recId = id;
+        // Only force new data collection when recordId()
+        // is invoked after ngInit() has already run.
+        if (this.initDone) {
+            this.loadSummary();
+        }
+    }
 
     // Otherwise, we'll use the provided bib summary object.
     summary: BibRecordSummary;
@@ -49,12 +56,9 @@ export class BibStaffViewComponent implements OnInit {
         .then(value => this.expand = !value)
         .then(_ => this.cat.fetchCcvms())
         .then(_ => {
-            if (this.summary) {
-                return this.summary.getBibCallNumber();
-            } else {
-                if (this.recordId) {
-                    return this.loadSummary();
-                }
+            if (this.recId) {
+                // ignore any existing this.summary, always refetch
+                return this.loadSummary();
             }
         }).then(_ => this.initDone = true);
     }
@@ -65,7 +69,7 @@ export class BibStaffViewComponent implements OnInit {
 
     loadSummary(): Promise<any> {
         return this.bib.getBibSummary(
-            this.recordId,
+            this.recId,
             this.org.root().id(),
             true // isStaff
         ).toPromise()
