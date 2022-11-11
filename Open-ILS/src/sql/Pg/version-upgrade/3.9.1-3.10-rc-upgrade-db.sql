@@ -754,17 +754,6 @@ INSERT INTO config.metabib_field_index_norm_map (field,norm,pos)
             AND NOT EXISTS (SELECT 1 FROM config.metabib_field_index_norm_map WHERE field = m.id AND norm = i.id);
 
 
-\qecho A partial reingest is necessary to get the full benefit of this change.
-\qecho It will take a while. You can cancel now withoug losing the effect of
-\qecho the rest of the upgrade script, and arrange the reingest later.
-\qecho 
-
-SELECT metabib.reingest_metabib_field_entries(
-    id, TRUE, FALSE, FALSE, TRUE, 
-    (SELECT ARRAY_AGG(id) FROM config.metabib_field WHERE field_class='title' AND (browse_field OR facet_field OR display_field))
-) FROM biblio.record_entry;
-
-
 SELECT evergreen.upgrade_deps_block_check('1345', :eg_version);
 
 CREATE TABLE acq.shipment_notification (
