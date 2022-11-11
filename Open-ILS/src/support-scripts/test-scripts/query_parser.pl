@@ -105,11 +105,14 @@ if (!$noconnect) {
 }
 
 $parser->parse;
-my $sql = $parser->toSQL;
-$sql =~ s/^\s*$//gm;
 
 print "Parsed query tree:\n" . Dumper($parser) unless $quiet;
 print "Abstract query:\n" . Dumper($parser->parse_tree->to_abstract_query) unless $quiet;
+print "Canonicalized query: " . $parser->canonicalize ."\n" unless $quiet;
 
-print "SQL:\n$sql\n\n" unless $quiet;
+if (!$noconnect and !$quiet) {
+    my $sql = $parser->toSQL;
+    $sql =~ s/^\s*$//gm;
+    print "SQL:\n$sql\n\n";
+}
 

@@ -2084,9 +2084,9 @@ sub tsquery {
     for my $atom (@{$self->query_atoms}) {
         if (ref($atom)) {
             $self->{tsquery} .= "\n" . ${spc} x 3;
-            $self->{tsquery} .= '(' if $atom->explicit_start;
+            $self->{tsquery} .= '(' x $atom->explicit_start if $atom->explicit_start;
             $self->{tsquery} .= $atom->sql;
-            $self->{tsquery} .= ')' if $atom->explicit_end;
+            $self->{tsquery} .= ')' x $atom->explicit_end if $atom->explicit_end;
         } else {
             $self->{tsquery} .= $atom x 2;
         }
