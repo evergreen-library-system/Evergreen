@@ -986,8 +986,12 @@ sub decompose {
         } elsif (/$$r{group_end_re}/) { # end of an explicit group
             warn '  'x$recursing."Encountered explicit group end, remainder: $'\n" if $self->debug;
 
-            $remainder = $';
-            $_ = '';
+            if ($recursing) {
+                $remainder = $';
+                $_ = '';
+            } else {
+                $_ = $';
+            }
 
             $last_type = '';
         } elsif ($self->filter_count && /$$r{filter_re}/) { # found a filter
@@ -1466,7 +1470,7 @@ sub abstract_query2str_impl {
             my $add_space = $q ? 1 : 0;
             if ($abstract_query->{explicit_start}) {
                 $q .= ' ' if $add_space;
-                $q .= $gs;
+                $q .= $gs x $abstract_query->{explicit_start};
                 $add_space = 0;
             }
             my $prefix = $abstract_query->{prefix} || '';
@@ -1474,7 +1478,7 @@ sub abstract_query2str_impl {
             $q .= ($add_space ? ' ' : '') . $prefix .
                 ($abstract_query->{content} // '') .
                 ($abstract_query->{suffix} || '');
-            $q .= $ge if ($abstract_query->{explicit_end});
+            $q .= $ge x $abstract_query->{explicit_end} if ($abstract_query->{explicit_end});
         } elsif ($abstract_query->{type} eq 'facet') {
             my $prefix = $abstract_query->{negate} ? $qpconfig->{operators}{disallowed} : '';
             $q .= ($q ? ' ' : '') . $prefix . $abstract_query->{name} . "[" .
@@ -1647,11 +1651,15 @@ sub pullup {
             and 1 == grep { # and we have exactly one (possibly merged, above) ::node with at least one ::atom
                 ref($_) and $_->isa('QueryParser::query_plan::node')
             } @{$self->query_nodes}
+            and (my @atoms = @{$self->query_nodes->[0]->query_atoms}) > 0
         ) {
-            warn "setting explicit flags on atoms that may later be pulled up, at depth". $self->plan_level . "\n"
-                if $self->QueryParser->debug;
-            $self->query_nodes->[0]->query_atoms->[0]->explicit_start(1) if @{$self->query_nodes->[0]->query_atoms};
-            $self->query_nodes->[0]->query_atoms->[-1]->explicit_end(1) if @{$self->query_nodes->[0]->query_atoms};
+            
+                warn "setting explicit flags on atoms that may later be pulled up, at depth". $self->plan_level . "\n"
+                    if $self->QueryParser->debug;
+                my $first_atom = $atoms[0];
+                my $last_atom = $atoms[-1];
+                $first_atom->explicit_start(1 + $first_atom->explicit_start );
+                $last_atom->explicit_end(1 + $last_atom->explicit_end);
         } else { # otherwise, the explicit grouping is meaningless, toss it
             $self->explicit(0);
         }
