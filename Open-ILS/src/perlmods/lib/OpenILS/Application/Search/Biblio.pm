@@ -1308,52 +1308,51 @@ sub staged_search {
         $cache->put_cache($key, $cache_data, $cache_timeout);
     }
 
-    my $setting_names = [ qw/
-             opac.did_you_mean.max_suggestions
-             opac.did_you_mean.low_result_threshold
-             search.symspell.min_suggestion_use_threshold
-             search.symspell.soundex.weight
-             search.symspell.pg_trgm.weight
-             search.symspell.keyboard_distance.weight/ ];
-    my %suggest_settings = $U->ou_ancestor_setting_batch_insecure(
-        $phys_loc, $setting_names
-    );
+    my ($class, $term, $field_list) = one_class_multi_term($global_summary->{query_struct});
+    if ($class and $term) { # we meet the current "can suggest" criteria, check for suggestions!
+        my $editor = new_editor();
+        my $class_settings = $editor->retrieve_config_metabib_class($class);
+        $field_list ||= [];
 
-    # Defaults...
-    $suggest_settings{$_} ||= {value=>undef} for @$setting_names;
-
-    # Pull this one off the front, it's not used for the function call
-    my $max_suggestions_setting = shift @$setting_names;
-    my $sugg_low_thresh_setting = shift @$setting_names;
-    $max_suggestions_setting = $suggest_settings{$max_suggestions_setting}{value} // -1;
-    my $suggest_low_threshold = $suggest_settings{$sugg_low_thresh_setting}{value} || 0;
-
-    if ($global_summary->{visible} <= $suggest_low_threshold and $max_suggestions_setting != 0) {
-        # For now, we're doing one-class/one-term suggestions only
-        my ($class, $term) = one_class_one_term($global_summary->{query_struct});
-        if ($class && $term) { # check for suggestions!
-            my $suggestion_verbosity = 4;
-            if ($max_suggestions_setting == -1) { # special value that means "only best suggestion, and not always"
-                $max_suggestions_setting = 1;
+        if ( # search did not provide enough hits and settings
+             # for this class want more than 0 suggestions
+            $global_summary->{visible} <= $class_settings->low_result_threshold
+            and $class_settings->max_suggestions != 0
+        ) {
+            my $suggestion_verbosity = $class_settings->symspell_suggestion_verbosity;
+            if ($class_settings->max_suggestions == -1) { # special value that means "only best suggestion, and not always"
+                $class_settings->max_suggestions(1);
                 $suggestion_verbosity = 0;
             }
 
-            my @settings_params = map { $suggest_settings{$_}{value} } @$setting_names;
-            my $suggs = $e->json_query({
+            my $suggs = $editor->json_query({
                 from  => [
-                    'search.symspell_lookup',
-                        $term, $class,
-                        $suggestion_verbosity,
-                        1, # case transfer
-                        @settings_params
-                ],
-                limit => $max_suggestions_setting
+                    'search.symspell_suggest',
+                        $term, $class, '{'.join($field_list).'}',
+                        undef, # max edit distance per word, just get the database setting
+                        $suggestion_verbosity
+                ]
             });
-            if (@$suggs and $$suggs[0]{suggestion} ne $term) {
-                $global_summary->{suggestions}{'one_class_one_term'} = {
+
+            @$suggs = sort {
+                $$a{lev_distance} <=> $$b{lev_distance}
+                || (
+                    $$b{pg_trgm_sim} * $class_settings->pg_trgm_weight
+                    + $$b{soundex_sim} * $class_settings->soundex_weight
+                    + $$b{qwerty_kb_match} * $class_settings->keyboard_distance_weight
+                        <=>
+                    $$a{pg_trgm_sim} * $class_settings->pg_trgm_weight
+                    + $$a{soundex_sim} * $class_settings->soundex_weight
+                    + $$a{qwerty_kb_match} * $class_settings->keyboard_distance_weight
+                )
+                || abs($$b{suggestion_count}) <=> abs($$a{suggestion_count})
+            } grep  { $$_{lev_distance} != 0 || $$_{suggestion_count} < 0 } @$suggs;
+
+            if (@$suggs) {
+                $global_summary->{suggestions}{'one_class_multi_term'} = {
                     class       => $class,
                     term        => $term,
-                    suggestions  => $suggs
+                    suggestions  => [ splice @$suggs, 0, $class_settings->max_suggestions ]
                 };
             }
         }
@@ -1380,28 +1379,56 @@ sub staged_search {
     return cache_facets($facet_key, $new_ids, $IAmMetabib, $ignore_facet_classes) if $docache;
 }
 
-sub one_class_one_term {
+sub one_class_multi_term {
     my $qstruct = shift;
+    my $fields = shift;
     my $node = $$qstruct{children};
 
     my $class = undef;
-    my $term = undef;
-    while ($node) {
-        last if (
-            $$node{'|'}
-            or @{$$node{'&'}} != 1
-            or ($$node{'&'}[0]{fields} and @{$$node{'&'}[0]{fields}} > 0)
-        );
-
-        $class ||= $$node{'&'}[0]{class};
-        $term ||= $$node{'&'}[0]{content};
-
-        last if ($term);
-
-        $node = $$node{'&'}[0]{children};
+    my $term = '';
+    if ($fields) {
+        if ($$node{fields} and @{$$node{fields}} > 0) {
+            return (undef,undef,undef) if (join(',', @{$$node{fields}}) ne join(',', @$fields));
+        }
+    } elsif ($$node{fields}) {
+        $fields = [ @{$$node{fields}} ];
     }
 
-    return ($class, $term);
+
+    # may relax this...
+    return (undef,undef,undef) if ($$node{'|'}
+        # or ($$node{modifiers} and @{$$node{modifiers}} > 0)
+        # or ($$node{filters} and @{$$node{filters}} > 0)
+    );
+
+    for my $kid (@{$$node{'&'}}) {
+        my ($subclass, $subterm);
+        if ($$kid{type} eq 'query_plan') {
+            ($subclass, $subterm) = one_class_multi_term($kid, $fields);
+            return (undef,undef,undef) if ($class and $subclass and $class ne $subclass);
+            $class = $subclass;
+            $term .= ' ' if $term;
+            $term .= $subterm if $subterm;
+        } elsif ($$kid{type} eq 'node') {
+            $subclass = $$kid{class};
+            return (undef,undef,undef) if ($class and $subclass and $class ne $subclass);
+            $class = $subclass;
+            ($subclass, $subterm) = one_class_multi_term($kid, $fields);
+            return (undef,undef,undef) if ($subclass and $class ne $subclass);
+            $term .= ' ' if $term;
+            $term .= $subterm if $subterm;
+        } elsif ($$kid{type} eq 'atom') {
+            $term .= ' ' if $term;
+            if ($$kid{content} !~ /\s+/ and $$kid{prefix} =~ /^-/) {
+                # only quote negated multi-word phrases, not negated single words
+                $$kid{prefix} = '-';
+                $$kid{suffix} = '';
+            }
+            $term .= $$kid{prefix}.$$kid{content}.$$kid{suffix};
+        }
+    }
+
+    return ($class, $term, $fields);
 }
 
 sub fetch_display_fields {

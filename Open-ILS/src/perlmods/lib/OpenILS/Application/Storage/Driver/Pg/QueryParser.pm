@@ -1357,15 +1357,9 @@ sub flatten {
                 $NOT = 'NOT ' if $node->negate;
 
                 $where .= "$NOT(" . $talias . ".id IS NOT NULL";
-                if (@{$node->phrases}) {
-                    $where .= ' AND ' . join(' AND ', map {
-                        "${talias}.value ~* ".$self->QueryParser->quote_phrase_value($_, 1)
-                    } @{$node->phrases});
-                } else {
-                    for my $atom (@{$node->only_real_atoms}) {
-                        next unless $atom->{content} && $atom->{content} =~ /(^\^|\$$)/;
-                        $where .= " AND ${talias}.value ~* ".$self->QueryParser->quote_phrase_value($atom->{content});
-                    }
+                for my $atom (@{$node->only_real_atoms}) { # left and right anchored substring match (prefix / suffix search)
+                    next unless $atom->{content} && $atom->{content} =~ /(^\^|\$$)/;
+                    $where .= " AND ${talias}.value ~* ".$self->QueryParser->quote_phrase_value($atom->{content});
                 }
                 $where .= ')';
 
@@ -2073,6 +2067,17 @@ sub tsquery {
         } else {
             $self->{tsquery} .= $atom x 2;
         }
+    }
+
+    # any phrases that are more than empty or all-whitespace
+    if (my @phrases = grep { /\S+/ } @{$self->phrases}) {
+        my $neg = $self->negate ? '!!' : '';
+        $self->{tsquery} = '('.$self->{tsquery}.') && ' .
+            join(' && ',
+                map {
+                    "${neg}phraseto_tsquery('simple', \$_$$\$$_\$_$$\$)"
+                } @phrases
+            );
     }
 
     return $self->{tsquery};

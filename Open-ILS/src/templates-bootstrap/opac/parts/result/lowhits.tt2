@@ -28,13 +28,15 @@
                        END;
                    END %]
             </p>
-            [% IF ctx.search_summary.suggestions.one_class_one_term %]
+            [% IF ctx.search_summary.suggestions.one_class_multi_term %]
             <div class="result_block_visible refine_search" id="did_you_mean">
-                <em><strong>[% s_list = ctx.search_summary.suggestions.one_class_one_term; l('Did you mean: ') %]</strong></em>
+                <em><strong>[% s_list = ctx.search_summary.suggestions.one_class_multi_term; l('Did you mean: ') %]</strong></em><ul class="suggestion refine_search">
                 [% FOREACH s IN s_list.suggestions %]
-                    [% IF !loop.first(); l('or'); END %]
-                    <a href="[% mkurl(ctx.opac_root _ '/results', {qtype=>s_list.class, query=>s.suggestion}) %]">[% s.suggestion | html %]</a>
-                [% END %]
+                    [%# IF !loop.first(); l('or'); END %]
+                    <li class="suggestion refine_search">
+                      <a href="[% mkurl(ctx.opac_root _ '/results', {qtype=>s_list.class, query=>s.suggestion}) %]">[% s.prefix_key || s.suggestion | html %]</a>
+                    </li>
+                [% END %]</ul>
             </div>
             <br/>
             [% END %]

@@ -457,15 +457,16 @@
   <div class="row mb-3 pb-3">
     <ng-container *ngIf="context.result.global_summary as gs">
       <ng-container *ngIf="gs.suggestions as sugg">
-        <div *ngIf="sugg.one_class_one_term as ocot" class="col-lg-12 d-flex align-content-center">
+        <div *ngIf="sugg.one_class_multi_term as ocmt" class="col-lg-12 d-flex align-content-center">
           <span class="fw-bold fst-italic me-1" i18n>Did you mean:</span>
-          <span *ngFor="let s of ocot.suggestions; first as isFirst">
-            <span *ngIf="!isFirst" i18n>&nbsp; or &nbsp;</span>
-            <a routerLink="/staff/catalog/search" queryParamsHandling="merge"
-             [queryParams]="{query : s.suggestion, fieldClass : ocot.class}">
-               {{s.suggestion}}
-            </a>
-          </span>
+          <ul class="suggestion refine_search">
+            <li *ngFor="let s of ocmt.suggestions" class="suggestion refine_search">
+              <a routerLink="/staff/catalog/search" queryParamsHandling="merge"
+                [queryParams]="{query : s.suggestion, fieldClass : ocmt.class}">
+              {{s.prefix_key || s.suggestion}}
+              </a>
+            </li>
+          </ul>
         </div>
       </ng-container>
     </ng-container>

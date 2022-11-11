@@ -3152,6 +3152,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="B Weight" name="b_weight" reporter:datatype="float" />
 			<field reporter:label="C Weight" name="c_weight" reporter:datatype="float" />
 			<field reporter:label="D Weight" name="d_weight" reporter:datatype="float" />
+			<field reporter:label="Low Result Threshold for Suggestions" name="low_result_threshold" reporter:datatype="int" />
+			<field reporter:label="Max Suggestions" name="max_suggestions" reporter:datatype="int" />
+			<field reporter:label="Perform Variant Heading Authority Suggestion Cross-reference" name="variant_authority_suggestion" reporter:datatype="bool" />
+			<field reporter:label="Minimum Bib Record Suggestion Threshold" name="min_suggestion_use_threshold" reporter:datatype="int" />
+			<field reporter:label="Suggestion SOUNDEX Weight" name="soundex_weight" reporter:datatype="int" />
+			<field reporter:label="Suggestion PG Trigram Weight" name="pg_trgm_weight" reporter:datatype="int" />
+			<field reporter:label="Suggestion Keyboard Distance Weight" name="keyboard_distance_weight" reporter:datatype="int" />
+			<field reporter:label="Retain Case in Suggestions" name="symspell_transfer_case" reporter:datatype="bool" />
+			<field reporter:label="Avoid alternate suggestions on correctly spelled words" name="symspell_skip_correct" reporter:datatype="bool" />
+			<field reporter:label="Symspell suggestion calculation verbosity" name="symspell_suggestion_verbosity" reporter:datatype="int" />
+			<field reporter:label="Maximum average word Edit Distance" name="max_phrase_edit_distance" reporter:datatype="int" />
+			<field reporter:label="Maximum suggestions per word" name="suggestion_word_option_count" reporter:datatype="int" />
 			<field reporter:label="Fields" name="fields" reporter:datatype="link" oils_persist:virtual="true"/>
 		</fields>
 		<links>
