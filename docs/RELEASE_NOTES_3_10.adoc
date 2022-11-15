@@ -1,9 +1,11 @@
-= Evergreen 3_10 Release Notes =
+= Evergreen 3.10.0 Release Notes =
 :toc:
 :numbered:
 :toclevels: 3
 
 == Upgrade notes ==
+
+The database update includes a partial reingest.
 
 == New Features ==
 
@@ -493,19 +495,78 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-TODO
+* CW MARS
+* Evergreen Community Development Initiative
+* Equinox Open Library Initiative
+* King County Library System
 
 We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
 Evergreen:
 
-TODO
-
+* John Amundson
+* Zavier Banks
+* Jason Boyer
+* Dan Briem
+* Christine Burns
+* Steven Callender
+* Galen Charlton
+* Julian Clementson
+* Garry Collum
+* Dawn Dale
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Ruth Frasur
+* Blake Graham Henderson
+* Rogan Hamby
+* Elaine Hardy
+* Kyle Huckins
+* Linda Jansova
+* Stephanie Leary
+* Shula Link
+* Tiffany Little
+* Mary Llewellyn
+* Llewellyn Marshall
+* Terran McCanna
+* Gina Monti
+* Christine Morgan
+* Michele Morgan
+* Susan Morrison
+* Andrea Buntz Neiman
+* Jennifer Pringle
+* Erica Rohlfs
+* Mike Risher
+* Mike Rylander
+* Jane Sandberg
+* Lindsay Stratton
+* Chris Sharp
+* Jason Stephenson
+* Jennifer Weston
+* Beth Willis
+* Carol Witt
+* Jessica Woolford
 
 We also thank the following organizations whose employees contributed
 patches:
 
-TODO
+* BC Libraries Coop
+* Bibliomation
+* Catalyte
+* CW MARS
+* Equinox Open Library Initiative
+* Georgia Public Library Service
+* Greater Clarks Hill Regional Library
+* Kenton County Library
+* King County Library System
+* Lake Agassiz Regional Library
+* Linn Benton Community College
+* MOBIUS
+* NC Cardinal
+* NOBLE
+* Princeton University
+* Sigio
+* Westchester Library System
 
 We regret any omissions.  If a contributor has been inadvertently
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
