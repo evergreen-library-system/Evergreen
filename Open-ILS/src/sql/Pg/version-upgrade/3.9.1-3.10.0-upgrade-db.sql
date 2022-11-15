@@ -1,7 +1,7 @@
---Upgrade Script for 3.9.1 to 3.10-rc
-\set eg_version '''3.10-rc'''
+--Upgrade Script for 3.9.1 to 3.10.0
+\set eg_version '''3.10.0'''
 BEGIN;
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.10-rc', :eg_version);
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.10.0', :eg_version);
 
 SELECT evergreen.upgrade_deps_block_check('1326', :eg_version);
 
@@ -2208,3 +2208,14 @@ COMMIT;
 -- Update auditor tables to catch changes to source tables.
 --   Can be removed/skipped if there were no schema changes.
 SELECT auditor.update_auditors();
+
+\qecho A partial reingest is necessary to get the full benefit of the change in
+\qecho upgrade script 1344 (bug 1864507) It will take a while.
+\qecho You can cancel now without losing the effect of
+\qecho the rest of the upgrade script, and arrange the reingest later.
+\qecho
+
+SELECT metabib.reingest_metabib_field_entries(
+          id, TRUE, FALSE, FALSE, TRUE,
+          (SELECT ARRAY_AGG(id) FROM config.metabib_field WHERE field_class='title' AND (browse_field OR facet_field OR display_field))
+) FROM biblio.record_entry;
