@@ -1,0 +1,5 @@
+== User Id Added to Stripe Payment Information ==
+
+The user's database id is added to the "description" field to make it easier
+to associate transactions to users if there is a Stripe payment issue that
+requires followup.
