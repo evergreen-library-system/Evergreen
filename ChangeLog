@@ -1,3 +1,47 @@
+commit e35f6692fe6ee5c8743f63b972ae3ee4dd7f8eef
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Nov 15 18:43:52 2022 -0500
+
+    more updates to the server upgrade
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+2	2	docs/modules/installation/pages/server_upgrade.adoc
+
+commit 474314fb80b8fe131b1297a65f77d97132444c5c
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Nov 15 18:42:57 2022 -0500
+
+    update upgrade instructions for 3.10.0
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+14	14	docs/modules/installation/pages/server_upgrade.adoc
+
+commit e92df1ba43275f9a3a82ecdd83e66a67fd3c80d5
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Nov 15 18:41:58 2022 -0500
+
+    update release notes for 3.10.0
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+66	5	docs/RELEASE_NOTES_3_10.adoc
+
+commit ad7743285cbbe4e7adabb994482c3a8d95737cdf
+Author: Galen Charlton <gmc@equinoxOLI.org>
+Date:   Tue Nov 15 18:35:51 2022 -0500
+
+    update schema update script
+    
+    - tag for 3.10.0
+    - add back reingest at the end
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxOLI.org>
+
+14	3	Open-ILS/src/sql/Pg/version-upgrade/{3.9.1-3.10-rc-upgrade-db.sql => 3.9.1-3.10.0-upgrade-db.sql}
+ rename Open-ILS/src/sql/Pg/version-upgrade/{3.9.1-3.10-rc-upgrade-db.sql => 3.9.1-3.10.0-upgrade-db.sql} (99%)
+
 commit a7db4e3b552563fe8300a351eb922f2f835b0e7e
 Author: Jane Sandberg <sandbergja@gmail.com>
 Date:   Thu Nov 10 22:19:36 2022 -0600
