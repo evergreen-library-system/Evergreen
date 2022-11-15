@@ -2262,32 +2262,32 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         u.expire_date AS usr_expire_date, u.claims_never_checked_out_count AS usr_claims_never_checked_out_count,
         u.last_update_time AS usr_last_update_time,
 
-        CASE WHEN u.alias IS NOT NULL THEN
+        CASE WHEN NULLIF(u.alias,'') IS NOT NULL THEN
             u.alias
         ELSE
             u.first_given_name
         END AS usr_alias_or_first_given_name,
 
-        CASE WHEN u.alias IS NOT NULL THEN
+        CASE WHEN NULLIF(u.alias,'') IS NOT NULL THEN
             u.alias
         ELSE
             REGEXP_REPLACE(ARRAY_TO_STRING(ARRAY[
-                COALESCE(u.pref_family_name, u.family_name, ''),
-                COALESCE(u.pref_suffix, u.suffix, ''),
+                COALESCE(NULLIF(u.pref_family_name,''), u.family_name, ''),
+                COALESCE(NULLIF(u.pref_suffix,''), u.suffix, ''),
                 ', ',
-                COALESCE(u.pref_prefix, u.prefix, ''),
-                COALESCE(u.pref_first_given_name, u.first_given_name, ''),
-                COALESCE(u.pref_second_given_name, u.second_given_name, '')
+                COALESCE(NULLIF(u.pref_prefix,''), u.prefix, ''),
+                COALESCE(NULLIF(u.pref_first_given_name,''), u.first_given_name, ''),
+                COALESCE(NULLIF(u.pref_second_given_name,''), u.second_given_name, '')
             ], ' '), E'\\s+,', ',')
         END AS usr_alias_or_display_name,
 
         REGEXP_REPLACE(ARRAY_TO_STRING(ARRAY[
-            COALESCE(u.pref_family_name, u.family_name, ''),
-            COALESCE(u.pref_suffix, u.suffix, ''),
+            COALESCE(NULLIF(u.pref_family_name,''), u.family_name, ''),
+            COALESCE(NULLIF(u.pref_suffix,''), u.suffix, ''),
             ', ',
-            COALESCE(u.pref_prefix, u.prefix, ''),
-            COALESCE(u.pref_first_given_name, u.first_given_name, ''),
-            COALESCE(u.pref_second_given_name, u.second_given_name, '')
+            COALESCE(NULLIF(u.pref_prefix,''), u.prefix, ''),
+            COALESCE(NULLIF(u.pref_first_given_name,''), u.first_given_name, ''),
+            COALESCE(NULLIF(u.pref_second_given_name,''), u.second_given_name, '')
         ], ' '), E'\\s+,', ',') AS usr_display_name,
 
         uc.id AS ucard_id, uc.barcode AS ucard_barcode, uc.usr AS ucard_usr, uc.active AS ucard_active,
