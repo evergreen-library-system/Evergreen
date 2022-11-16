@@ -1,5 +1,0 @@
-== New column in General Acquisitions Search ==
-
-The general acquisitions search grid now has a column
-for purchase order ID.
-

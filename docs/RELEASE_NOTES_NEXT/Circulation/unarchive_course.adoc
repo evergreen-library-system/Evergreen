@@ -1,8 +1,0 @@
-== Courses can be un-archived ==
-
-Course reserves staff can now un-archive a course that was previously archived, either from
-its course page, or from the course list.
-
-Un-archiving a course makes it active again.  Users with public roles in the course (such
-as instructors) remain associated with the course.  Non-public users (such as students)
-are removed.
