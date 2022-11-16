@@ -20,20 +20,13 @@ If you will be configuring Evergreen to sign users on to OpenAthens:
    opened _outbound_ to allow your web clients to connect to https://connect.openathens.net,
    https://login.openathens.net, and https://wayfinder.openathens.net.
 
-== Web Client Requirements ==
+== Web Staff Client Requirements ==
 
-The current stable release of Firefox or Chrome is required to run the web
-client in a browser.
-
-== Staff Client Requirements ==
-
-Staff terminals connect to the central database using the Evergreen staff client, available for download from The Evergreen download page. 
-The staff client must be installed on each staff workstation and requires at minimum:
+The current stable release of Chrome, Edge, or Firefox is required to run the web
+staff client. The following are required for operation:
  
- * Windows, Mac OS X, or Linux operating system
  * a reliable high speed Internet connection
- * 2GB RAM
- * The staff client uses the TCP protocol on ports 80 and 443 to communicate with the Evergreen server.
+ * outgoing connections via the TCP protocol on ports 80 and 443 to communicate with the Evergreen server.
 
 *Barcode Scanners*
 
