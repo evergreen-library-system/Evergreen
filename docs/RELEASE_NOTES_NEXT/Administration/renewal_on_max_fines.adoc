@@ -1,8 +1,0 @@
-== Optionally allow patrons to renew after hitting fine maximum ==
-
-When a patron hits the max fine limit, a standing penalty is applied to their account. By default, that penalty (PATRON_EXCEEDS_FINES)
-is configured to block renewals.
-
-This release adds a new org unit setting, _circ.permit_renew_when_exceeds_fines_.  If enabled for a particular org unit, renewals are
-permitted (as long as all other circulation eligibility criteria are met).
-

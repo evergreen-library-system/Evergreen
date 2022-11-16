@@ -1,5 +1,0 @@
-== Geosort feature can now use Bing Maps API ==
-
-The API can be configured at *Server Administration*
--> *Geographic Location Service*.
-
