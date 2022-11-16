@@ -35,10 +35,12 @@
             <b>[% l("Subject") %]</b>
             <span class="mx-2">[% ctx.patron_messages.0.title | html %]</span>
         </div>
+        [% IF ctx.patron_messages.0.message %]
         <div class="my-2 col-12">
             <b>[% l("Message") %]</b>
-            <pre>[% ctx.patron_messages.0.message | html %]</pre>
+            <p class="myopac_message_message">[% ctx.patron_messages.0.message | html %]</p>
         </div>
+        [% END %]
         </div>
     </div>
 </div>
