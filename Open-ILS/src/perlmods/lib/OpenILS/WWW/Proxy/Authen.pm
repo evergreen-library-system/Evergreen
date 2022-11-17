@@ -40,7 +40,17 @@ sub handler {
     return Apache2::Const::NOT_FOUND unless (@$perms);
 
     my $cgi = new CGI;
-    my $auth_ses = $cgi->param('ses') || $cgi->cookie('ses');
+    my $auth_ses = $cgi->param('ses') || $cgi->cookie('ses') || $cgi->cookie('eg.auth.token');
+    if ($auth_ses =~ /^"(.+)"$/) { # came from eg2 login, is json encoded
+        $auth_ses = $1;
+    }
+
+    # Note that the handler accepts an eg.auth.token from the web staff
+    # client but will not set it if it has to ask the user for
+    # credentials (it will only set 'ses'). As of 2022-11, it works this
+    # way to avoid this authen handler from becoming a way to create
+    # a staff login session that does not have a workstation set.
+
     my $ws_ou = $apache->dir_config('OILSProxyLoginOU') || $cgi->param('ws_ou') || $cgi->cookie('ws_ou');
 
     my $url = $cgi->url;
