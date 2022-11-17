@@ -10,10 +10,22 @@ use Data::Dumper;
 $Data::Dumper::Indent = 0;
 my $U = 'OpenILS::Application::AppUtils';
 
+my @_qtype_list;
+
 sub _prepare_biblio_search_basics {
     my ($cgi) = @_;
 
     return scalar($cgi->param('query')) unless scalar($cgi->param('qtype'));
+
+    # fetch, once per mod_perl backend, the list of valid classes and aliases
+    unless (@_qtype_list) {
+        my $editor = new_editor();
+        my $classes = $editor->retrieve_all_config_metabib_class();
+        my $aliases = $editor->retrieve_all_config_metabib_search_alias();
+
+        push @_qtype_list, map { $_->name } @$classes;
+        push @_qtype_list, map { $_->alias } @$aliases;
+    }
 
     my %parts;
     my @part_names = qw/qtype contains query bool/;
@@ -41,6 +53,9 @@ sub _prepare_biblio_search_basics {
             $qtype = 'title';
             $jtitle = 1;
         }
+
+        # This restricts qtype to classes, aliases, and field lists (approximately)
+        next unless grep { $qtype =~ /^$_(?:\|\w+)*$/ } @_qtype_list;
 
         # This stuff probably will need refined or rethought to better handle
         # the weird things Real Users will surely type in.
