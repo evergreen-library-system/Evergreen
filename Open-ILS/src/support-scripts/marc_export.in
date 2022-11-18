@@ -166,13 +166,13 @@ libraries with the short names "BR1" and "BR2":
   $0 --library BR1 --library BR2 --encoding UTF-8 > sys1_bibs.mrc
 
 The --strip option can be used more than once which imples an "OR" operation.
-If the fie]d argument is omitted (e.g., "/0", it is treated like "..." (all fields).
+If the field argument is omitted (e.g., "/0", it is treated like "..." (all fields).
 If the subfield argument is omitted (e.g. "100/", it is treated like "."
 (all subfields).  Examples:
 
   --strip /0      Remove all 0 subfields
   --strip 1[23].  Remove fields with tags 120 through 139, inclusive.
-  --strip /       Remove all subfields (probably not useful).
+  --strip 856/x   Remove subfield x from 856 tags
 HELP
         exit;
     }
@@ -213,6 +213,10 @@ HELP
 
     foreach my $strip_value (@{$opts{strip}}) {
         my $trec = {};
+        if ($strip_value eq "/") {
+            print STDERR "Ignoring empty --strip parameter; all records would be empty.\n";
+            next;
+        }
         if ($strip_value =~ /\//) {
             $trec->{tag} = $`;
             $trec->{tag} = "..." if ($` eq "");
@@ -596,6 +600,8 @@ sub next {
                 }
 
                 if ($Marque::config->option_value('items')) {
+                    # If --items was passed discard any static 852 fields; they're either dupes, out-of-sync, or junk.
+                    $marc->delete_fields($marc->field('852'));
                     my @acps = $self->acps_for_bre($r);
                     foreach my $acp (@acps) {
                         next unless ($acp);
