@@ -4,7 +4,7 @@ export DEF_LDLIBS = -lopensrf
 
 COMMON = testsuite.c
 AM_CFLAGS = $(DEF_CFLAGS) -DOSRF_LOG_PARAMS
-AM_LDFLAGS = $(DEF_LDFLAGS) $(DEF_LDLIBS) $(DBI_LIBS)
+AM_LDFLAGS = $(DEF_LDFLAGS) $(DEF_LDLIBS) -L$(DBI_LIBS)
 
 TESTS = check_util check_idl
 check_PROGRAMS = check_util check_idl
