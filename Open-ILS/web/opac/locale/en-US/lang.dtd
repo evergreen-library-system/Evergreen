@@ -193,7 +193,7 @@
 <!ENTITY staff.au_super_user_label "Super User">
 <!ENTITY staff.au_survey_responses_label "Survey Responses">
 <!ENTITY staff.au_usrgroup_label "User group">
-<!ENTITY staff.au_usrname_label "User name">
+<!ENTITY staff.au_usrname_label "Username">
 <!ENTITY staff.admin.survey.available.label "Available to:">
 <!ENTITY staff.admin.survey.description.label "Description:">
 <!ENTITY staff.admin.survey.end.label "End:">
@@ -3538,7 +3538,7 @@
 <!ENTITY staff.patron.user_buckets.stub_not_implemented "Just a stub, Not Yet Implemented">
 <!ENTITY staff.patron.user_edit.title "Evergreen User Editor">
 <!ENTITY staff.patron.user_edit.user_info.label "User Information">
-<!ENTITY staff.patron.user_edit.user_name.label "User Name:">
+<!ENTITY staff.patron.user_edit.user_name.label "Username:">
 <!ENTITY staff.patron.user_edit.barcode.label "Barcode:">
 <!ENTITY staff.patron.user_edit.firstname.label "First Name:">
 <!ENTITY staff.patron.user_edit.middlename.label "Middle Name:">

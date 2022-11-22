@@ -211,7 +211,7 @@ sub load_sample_data {
 	chdir($cwd);
 }
 
-=item set_admin_account() - Sets the administrative user's user name and password
+=item set_admin_account() - Sets the administrative user's username and password
 =cut
 sub set_admin_account {
 	my $admin_user = shift;
@@ -399,14 +399,14 @@ DATABASE CONFIGURATION OPTIONS
 
     --port            port number for database access
 
-    --admin-user      administration user's user name
+    --admin-user      administration user's username
 
     --admin-pass      administration user's password
 
 EXAMPLES
    This script is normally used during the initial installation and
    configuration process. This creates the database schema, sets
-   the administration user's user name and password, and modifies your
+   the administration user's username and password, and modifies your
    configuration files to include the correct database connection
    information.
 

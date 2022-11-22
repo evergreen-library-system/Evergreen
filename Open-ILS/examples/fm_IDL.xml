@@ -4138,7 +4138,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Suffix" name="suffix"  reporter:datatype="text"/>
 			<field reporter:label="Is Super User" name="super_user" reporter:datatype="bool"/>
 			<field reporter:label="Family Linkage or other Group" name="usrgroup" reporter:datatype="int"/>
-			<field reporter:label="OPAC/Staff Client User Name" name="usrname"  reporter:datatype="text"/>
+			<field reporter:label="OPAC/Staff Client Username" name="usrname"  reporter:datatype="text"/>
 			<field reporter:label="OPAC/Staff Client Holds Alias" name="alias"  reporter:datatype="text"/>
 			<field reporter:label="Juvenile" name="juvenile"  reporter:datatype="bool"/>
 			<field reporter:label="Record Last Update Time" name="last_update_time" reporter:datatype="timestamp"/>
@@ -11639,7 +11639,7 @@ SELECT  usr,
         <fields oils_persist:primary="row_id" oils_persist:sequence="staging.user_stage_row_id_seq">
             <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
             <field reporter:label="Create Date" name="row_date" reporter:datatype="timestamp"/>
-            <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
+            <field reporter:label="Username" name="usrname" reporter:datatype="text"/>
             <field reporter:label="Main (Profile) Permission Group" name="profile" reporter:datatype="text"/>
             <field reporter:label="Email Address" name="email" reporter:datatype="text"/>
             <field reporter:label="Password" name="passwd" reporter:datatype="text"/>
@@ -11667,7 +11667,7 @@ SELECT  usr,
         <fields oils_persist:primary="row_id" oils_persist:sequence="staging.card_stage_row_id_seq">
             <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
             <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
-            <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
+            <field reporter:label="Username" name="usrname" reporter:datatype="text"/>
             <field reporter:label="Barcode" name="barcode" reporter:datatype="text"/>
             <field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
         </fields>
@@ -11677,7 +11677,7 @@ SELECT  usr,
         <fields oils_persist:primary="row_id" oils_persist:sequence="staging.mailing_address_stage_row_id_seq">
             <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
             <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
-            <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
+            <field reporter:label="Username" name="usrname" reporter:datatype="text"/>
             <field reporter:label="Street (1)" name="street1" reporter:datatype="text"/>
             <field reporter:label="Street (2)" name="street2" reporter:datatype="text"/>
             <field reporter:label="City" name="city" reporter:datatype="text"/>
@@ -11693,7 +11693,7 @@ SELECT  usr,
         <fields oils_persist:primary="row_id" oils_persist:sequence="staging.mailing_address_stage_row_id_seq">
             <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
             <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
-            <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
+            <field reporter:label="Username" name="usrname" reporter:datatype="text"/>
             <field reporter:label="Street (1)" name="street1" reporter:datatype="text"/>
             <field reporter:label="Street (2)" name="street2" reporter:datatype="text"/>
             <field reporter:label="City" name="city" reporter:datatype="text"/>
@@ -11709,7 +11709,7 @@ SELECT  usr,
         <fields oils_persist:primary="row_id" oils_persist:sequence="staging.statcat_stage_row_id_seq">
             <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
             <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
-            <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
+            <field reporter:label="Username" name="usrname" reporter:datatype="text"/>
             <field reporter:label="Stat Cat ID" name="statcat" reporter:datatype="text"/>
             <field reporter:label="Stat Cat Value" name="value" reporter:datatype="text"/>
             <field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
@@ -11720,7 +11720,7 @@ SELECT  usr,
         <fields oils_persist:primary="row_id" oils_persist:sequence="staging.setting_stage_row_id_seq">
             <field reporter:label="Row ID" name="row_id" reporter:datatype="id"/>
             <field reporter:label="Row Date" name="row_date" reporter:datatype="timestamp"/>
-            <field reporter:label="User Name" name="usrname" reporter:datatype="text"/>
+            <field reporter:label="Username" name="usrname" reporter:datatype="text"/>
             <field reporter:label="User Setting Code" name="setting" reporter:datatype="text"/>
             <field reporter:label="User Setting Value" name="value" reporter:datatype="text"/>
             <field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
@@ -14604,7 +14604,7 @@ SELECT  usr,
                 sr:hide_from="display,filter" sr:force_transform="reporter.intersect_user_perm_ou,SR__USER_ID,VIEW_USER" sr:force_filter="true" sr:force_filtervalues="t"/>
             <field reporter:label="User ID" name="user_id" reporter:datatype="int" sr:suggest_transform="count_distinct" field_groups="common"/>
             <field reporter:label="Primary Barcode" name="barcode_primary" reporter:datatype="text" field_groups="common"/>
-            <field reporter:label="OPAC/Staff Client User Name" name="usrname" reporter:datatype="text" field_groups="common"/>
+            <field reporter:label="OPAC/Staff Client Username" name="usrname" reporter:datatype="text" field_groups="common"/>
             <field reporter:label="Email" name="email" reporter:datatype="text" field_groups="contact,common"/>
             <field reporter:label="Full Name" name="full_name" reporter:datatype="text" field_groups="name,common"/>
             <field reporter:label="Prefix" name="prefix" reporter:datatype="text" field_groups="name"/>

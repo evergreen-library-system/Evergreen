@@ -65,7 +65,7 @@ Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("ID
 
 my ($result, $evt) = get_user_id($user);
 if ($evt || !$result->id) {
-    print("Could not retrieve user with user name '$user'\n");
+    print("Could not retrieve user with username '$user'\n");
     exit(0);
 }
 
