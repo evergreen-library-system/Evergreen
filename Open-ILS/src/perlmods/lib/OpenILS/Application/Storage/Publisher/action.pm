@@ -2396,7 +2396,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
             SELECT *, (ROW_NUMBER() OVER (ORDER BY name) + 1000000) AS fallback_position
             FROM asset.copy_location
         ) acpl_ordered ON (acpl_ordered.id = cp.location)
-        LEFT JOIN asset.call_number cn ON (cn.id = cp.call_number OR (h.hold_type = 'V' AND cn.id = h.target))
+        LEFT JOIN asset.call_number cn ON ((cn.id = cp.call_number AND h.hold_type != 'V' ) OR (h.hold_type = 'V' AND cn.id = h.target))
         LEFT JOIN asset.call_number_prefix acnp ON (cn.prefix = acnp.id)
         LEFT JOIN asset.call_number_suffix acns ON (cn.suffix = acns.id)
         LEFT JOIN LATERAL (SELECT * FROM action.hold_transit_copy WHERE h.id = hold ORDER BY id DESC LIMIT 1) tr ON TRUE
