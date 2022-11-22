@@ -37,6 +37,7 @@ my $cache;
 my $cache_timeout;
 my $superpage_size;
 my $max_superpages;
+my $max_concurrent_search;
 
 sub initialize {
     $cache = OpenSRF::Utils::Cache->new('global');
@@ -1132,6 +1133,12 @@ my $estimation_strategy;
 sub staged_search {
     my($self, $conn, $search_hash, $docache, $phys_loc) = @_;
 
+    my $e = new_editor();
+    if (!$max_concurrent_search) {
+        my $mcs = $e->retrieve_config_global_flag('opac.max_concurrent_search.query');
+        $max_concurrent_search = ($mcs and $mcs->enabled eq 't') ? $mcs->value : 20;
+    }
+
     $phys_loc ||= $U->get_org_tree->id;
 
     my $IAmMetabib = ($self->api_name =~ /metabib/) ? 1 : 0;
@@ -1181,6 +1188,19 @@ sub staged_search {
     # pull any existing results from the cache
     my $key = search_cache_key($method, $search_hash);
     my $facet_key = $key.'_facets';
+
+    # Let the world know that there is at least one backend that will be searching
+    my $counter_key = $key.'_counter';
+    $cache->get_cache($counter_key) || $cache->{memcache}->add($counter_key, 0, $cache_timeout);
+    my $search_peers = $cache->{memcache}->incr($counter_key);
+
+    # If the world tells us that there are more than we want to allow, we stop.
+    if ($search_peers > $max_concurrent_search) {
+        $logger->warn("Too many concurrent searches per $counter_key: $search_peers");
+        $cache->{memcache}->decr($counter_key);
+        return OpenILS::Event->new('BAD_PARAMS')
+    }
+
     my $cache_data = $cache->get_cache($key) || {};
 
     # First, we want to make sure that someone else isn't currently trying to perform exactly
@@ -1237,6 +1257,7 @@ sub staged_search {
             unless($summary) {
                 $logger->info("search timed out: duration=$search_duration: params=".
                     OpenSRF::Utils::JSON->perl2JSON($search_hash));
+                $cache->{memcache}->decr($counter_key);
                 return {count => 0};
             }
 
@@ -1280,7 +1301,7 @@ sub staged_search {
         last if($summary->{checked} < $superpage_size);
     }
 
-    # Let other backends grab our data now that we're done.
+    # Let other backends grab our data now that we're done, and flush the key if we're the last one.
     $cache_data = $cache->get_cache($key);
     if ($$cache_data{running} and $$cache_data{running} == $$) {
         delete $$cache_data{running};
@@ -1318,7 +1339,7 @@ sub staged_search {
             }
 
             my @settings_params = map { $suggest_settings{$_}{value} } @$setting_names;
-            my $suggs = new_editor()->json_query({
+            my $suggs = $e->json_query({
                 from  => [
                     'search.symspell_lookup',
                         $term, $class,
@@ -1352,6 +1373,7 @@ sub staged_search {
             ids               => \@results
         }
     );
+    $cache->{memcache}->decr($counter_key);
 
     $logger->info("Completed canonicalized search is: $$global_summary{canonicalized_query}");
 

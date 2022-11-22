@@ -2,6 +2,7 @@ package OpenILS::WWW::EGCatLoader;
 use strict; use warnings;
 use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
 use OpenSRF::Utils::Logger qw/$logger/;
+use OpenSRF::Utils::Cache;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;
@@ -365,6 +366,7 @@ sub recs_from_metarecord {
 #   page_size
 #   hit_count
 #   records : list of bre's and copy-count objects
+my $max_concurrent_search;
 sub load_rresults {
     my $self = shift;
     my %args = @_;
@@ -372,6 +374,13 @@ sub load_rresults {
     my $cgi = $self->cgi;
     my $ctx = $self->ctx;
     my $e = $self->editor;
+
+    my $mc = OpenSRF::Utils::Cache->new('global');
+    my $client_ip = $self->apache->headers_in->get('X-Forwarded-For') ||
+        $self->apache->useragent_ip;
+    ($client_ip) = split(/,\s*/, $client_ip);
+    $logger->activity("Client IP: $client_ip");
+
 
     # 1. param->metarecord : view constituent bib records for a metarecord
     # 2. param->modifier=metabib : perform a metarecord search
@@ -470,9 +479,27 @@ sub load_rresults {
     my $ltag = $is_meta ? '[mmr search]' : '[bre search]';
     $logger->activity("EGWeb: $ltag $query");
 
-    try {
+    # Fetch the global flag, defaults to "never too many".
+    unless (defined $max_concurrent_search) {
+        my $mcs = $e->retrieve_config_global_flag('opac.max_concurrent_search.ip');
+        $max_concurrent_search = ($mcs and $mcs->enabled eq 't') ? $mcs->value : 0;
+    }
 
-        my $method = 'open-ils.search.biblio.multiclass.query';
+    if ($max_concurrent_search > 0) {
+        # Right up front, we will limit concurrent searches coming from the same client IP, if configured to do so.
+        $mc->get_cache('EGWEB-MAX-SEARCH-IP:'.$client_ip) || $mc->{memcache}->add('EGWEB-MAX-SEARCH-IP:'.$client_ip, 0);
+        my $concurrent_searches = $mc->{memcache}->incr('EGWEB-MAX-SEARCH-IP:'.$client_ip);
+        $logger->activity("Concurrent searches from client IP $client_ip: $concurrent_searches");
+
+        if ($concurrent_searches > $max_concurrent_search) {
+            $self->apache->log->warn("Too many concurrent searches from IP $client_ip");
+            $mc->{memcache}->decr('EGWEB-MAX-SEARCH-IP:'.$client_ip);
+            return 429; # Apache2::Const does not have a symbol for 429 too many requests
+        }
+    }
+
+    my $method = 'open-ils.search.biblio.multiclass.query';
+    try {
         $method .= '.staff' if $ctx->{is_staff};
         $method =~ s/biblio/metabib/ if $is_meta;
 
@@ -488,6 +515,15 @@ sub load_rresults {
         $logger->error("multiclass search error: $err");
         $results = {count => 0, ids => []};
     };
+
+    $mc->{memcache}->decr('EGWEB-MAX-SEARCH-IP:'.$client_ip) if ($max_concurrent_search);
+
+    # INFO: an OpenILS::Event only means "go away" for now.
+    if (defined $U->event_code($results)) {
+        $logger->activity("$method returned event: " . $U->event_code($results));
+        $self->apache->log->warn( "$method returned event: " . $U->event_code($results));
+        return 429; # Apache2::Const does not have a symbol for 429 too many requests
+    }
 
     my $rec_ids = [map { $_->[0] } @{$results->{ids}}];
 
