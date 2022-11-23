@@ -91,6 +91,8 @@ postgres-server-debian-bullseye-13:
 	@make -f $(DIR)/Makefile.debian-bullseye install_postgres_server_13
 postgres-server-debian-bullseye-14:
 	@make -f $(DIR)/Makefile.debian-bullseye install_postgres_server_14
+postgres-server-debian-bullseye-15:
+	@make -f $(DIR)/Makefile.debian-bullseye install_postgres_server_15
 postgres-server-debian-buster-10:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_10
 postgres-server-debian-buster-11:
@@ -101,6 +103,8 @@ postgres-server-debian-buster-13:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_13
 postgres-server-debian-buster-14:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_14
+postgres-server-debian-buster-15:
+	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_15
 postgres-server-ubuntu-focal-10:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_postgres_server_10
 postgres-server-ubuntu-focal-11:
@@ -111,6 +115,8 @@ postgres-server-ubuntu-focal-13:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_postgres_server_13
 postgres-server-ubuntu-focal-14:
 	@make -f $(DIR)/Makefile.ubuntu-focal install_postgres_server_14
+postgres-server-ubuntu-focal-15:
+	@make -f $(DIR)/Makefile.ubuntu-focal install_postgres_server_15
 postgres-server-ubuntu-jammy-10:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_10
 postgres-server-ubuntu-jammy-11:
@@ -121,6 +127,8 @@ postgres-server-ubuntu-jammy-13:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_13
 postgres-server-ubuntu-jammy-14:
 	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_14
+postgres-server-ubuntu-jammy-15:
+	@make -f $(DIR)/Makefile.ubuntu-jammy install_postgres_server_15
 postgres-server-fedora:
 	@make -f $(DIR)/Makefile.fedora install_postgres_server
 
