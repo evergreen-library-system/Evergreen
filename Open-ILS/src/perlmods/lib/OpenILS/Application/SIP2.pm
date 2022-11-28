@@ -254,8 +254,11 @@ sub handle_item_info {
             {CF => $details->{hold_queue_length}},
             {CK => $details->{media_type}},
             {CM => $details->{hold_pickup_date}},
+            {CR => $details->{collection_code}},
+            {CS => $details->{call_number}},
             {CT => $details->{destination_loc}},
-            {CY => $details->{hold_patron_barcode}}
+            {CY => $details->{hold_patron_barcode}},
+            $SC->asset_stat_cat_sip_fields($details->{item})
         ]
     };
 }
@@ -286,7 +289,6 @@ sub handle_patron_info {
 
     $response->{code} = '64';
 
-    #return $response unless $details;
     unless ($details) {
         push(
             @{$response->{fixed_fields}}, 
@@ -314,7 +316,7 @@ sub handle_patron_info {
 
     push(
         @{$response->{fields}}, 
-        {BE => $patron->email},
+        {AQ => $patron->home_ou->name},
         {PA => $SC->sipymd($patron->expire_date)},
         {PB => $SC->sipymd($patron->dob, 1)},
         {PC => $patron->profile->name},
@@ -381,11 +383,7 @@ sub patron_response_common_data {
 
         return {
             fixed_fields => [
-                $SC->spacebool(1), # charge denied
-                $SC->spacebool(1), # renew denied
-                $SC->spacebool(1), # recall denied
-                $SC->spacebool(1), # holds denied
-                split('', (' ' x 10)),
+                ' ' x 14,
                 '000', # language
                 $SC->sipdate
             ],
@@ -400,23 +398,30 @@ sub patron_response_common_data {
     }
 
     my $patron = $details->{patron};
- 
-    return {
+
+    # SIP/JSON clients treat the patron status string as a single
+    # fixed field entry.
+    my $status = 
+          $SC->spacebool($details->{charge_denied})
+        . $SC->spacebool($details->{renew_denied})
+        . $SC->spacebool($details->{recall_denied})
+        . $SC->spacebool($details->{holds_denied})
+        . $SC->spacebool($patron->card->active eq 'f')
+        . $SC->spacebool(0) # too many charged
+        . $SC->spacebool($details->{too_may_overdue})
+        . $SC->spacebool(0) # too many renewals
+        . $SC->spacebool(0) # too many claims retruned
+        . $SC->spacebool(0) # too many lost
+        . $SC->spacebool($details->{too_many_fines})
+        . $SC->spacebool($details->{too_many_fines})
+        . $SC->spacebool(0) # recall overdue
+        . $SC->spacebool($details->{too_many_fines})
+        ;
+
+
+    my $response = {
         fixed_fields => [
-            $SC->spacebool($details->{charge_denied}),
-            $SC->spacebool($details->{renew_denied}),
-            $SC->spacebool($details->{recall_denied}),
-            $SC->spacebool($details->{holds_denied}),
-            $SC->spacebool($patron->card->active eq 'f'),
-            $SC->spacebool(0), # too many charged
-            $SC->spacebool($details->{too_may_overdue}),
-            $SC->spacebool(0), # too many renewals
-            $SC->spacebool(0), # too many claims retruned
-            $SC->spacebool(0), # too many lost
-            $SC->spacebool($details->{too_many_fines}),
-            $SC->spacebool($details->{too_many_fines}),
-            $SC->spacebool(0), # recall overdue
-            $SC->spacebool($details->{too_many_fines}),
+            $status,
             '000', # language
             $SC->sipdate
         ],
@@ -430,9 +435,18 @@ sub patron_response_common_data {
             {BH => $session->config->{settings}->{currency}},
             {BL => $SC->sipbool(1)},          # valid patron
             {BV => $details->{balance_owed}}, # fee amount
-            {CQ => $SC->sipbool($details->{valid_patron_password})}
+            {CQ => $SC->sipbool($details->{valid_patron_password})},
+            $SC->actor_stat_cat_sip_fields($patron),
         ]
     };
+
+    $SC->maybe_add_field($response, BD => $details->{patron_address});
+    $SC->maybe_add_field($response, BE => $patron->email);
+    $SC->maybe_add_field($response, BF => $details->{patron_phone});
+    $SC->maybe_add_field($response, 
+        PI => $patron->net_access_level ? $patron->net_access_level->name : '');
+
+    return $response;
 }
 
 sub handle_block {
@@ -712,11 +726,7 @@ sub handle_checkin {
         return_date => $return_date
     );
 
-    my $screen_msg = $checkin_details->{screen_msg};
     my $magnetic = $item_details->{magnetic_media};
-    my $hold_bc = $checkin_details->{hold_patron_barcode};
-    my $hold_name = $checkin_details->{hold_patron_name};
-    my $dest_loc = $checkin_details->{destination_loc};
 
     return {
         code => '10',
@@ -734,15 +744,18 @@ sub handle_checkin {
             {AO => $config->{institution}},
             {AP => $checkin_details->{current_loc}},
             {AQ => $checkin_details->{permanent_loc}},
+            {BF => $checkin_details->{hold_patron_phone}},
             {BG => $item_details->{owning_loc}},
             {BT => $item_details->{fee_type}},
             {CI => 0}, # security inhibit
             {CK => $item_details->{media_type}},
+            {CR => $item_details->{collection_code}},
+            {CS => $item_details->{call_number}},
             {CV => $checkin_details->{alert_type}},
-            $screen_msg ? {AF => $screen_msg}   : (),
-            $dest_loc   ? {CT => $dest_loc}     : (),
-            $hold_bc    ? {CY => $hold_bc}      : (),
-            $hold_name  ? {DA => $hold_name}    : ()
+            {AF => $checkin_details->{screen_msg}},
+            {CT => $checkin_details->{destination_loc}},
+            {CY => $checkin_details->{hold_patron_barcode}},
+            {DA => $checkin_details->{hold_patron_name}},
         ]
     };
 }

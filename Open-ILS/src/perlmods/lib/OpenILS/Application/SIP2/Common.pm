@@ -133,5 +133,75 @@ sub format_user_name {
     );
 }
 
+sub format_stat_cat_sip_field {
+    my ($field, $value, $format) = @_;
+
+    if ($format) {
+
+        if ($format =~ /^\|(.*)\|$/) { # Is format a regex?
+
+            if ($value =~ /($1)/) { 
+                # Regex has matched.
+
+                if (defined $2) { 
+                    # We have an embedded capture group.  Use it.
+                    $value = $2; 
+                } else { 
+                    # No embedded capture group
+                    $value = $1; # Use our outer one
+                }
+            } else { 
+                # No match
+                # Empty string. Will be checked for below.
+                $value = ''; 
+            }
+        } else { # Not a regex
+
+            #  Try sprintf match (looking for a %s, if any)
+            $value = sprintf($format, $value);
+        }
+    }
+
+    return length($value) > 0 ? ({$field => $value}) : ();
+}
+
+# Returns a list of extra fields.
+sub actor_stat_cat_sip_fields {
+    my ($class, $patron) = @_;
+    my @extras;
+
+    for my $entry_map (@{$patron->stat_cat_entries}) {
+        my $stat_cat = $entry_map->stat_cat;
+        next unless $stat_cat->sip_field;
+
+        my $value = $entry_map->stat_cat_entry;
+        my $format = $stat_cat->sip_format;
+
+        push(@extras, 
+            format_stat_cat_sip_field($stat_cat->sip_field, $value, $format));
+    }
+
+    return @extras;
+}
+
+# Returns a list of extra fields.
+sub asset_stat_cat_sip_fields {
+    my ($class, $item) = @_;
+    my @extras;
+
+    for my $entry_map (@{$item->stat_cat_entry_copy_maps}) {
+        my $stat_cat = $entry_map->stat_cat;
+        next unless $stat_cat->sip_field;
+
+        my $value = $entry_map->stat_cat_entry->value;
+        my $format = $stat_cat->sip_format;
+
+        push(@extras, 
+            format_stat_cat_sip_field($stat_cat->sip_field, $value, $format));
+    }
+
+    return @extras;
+}
+
 
 1;

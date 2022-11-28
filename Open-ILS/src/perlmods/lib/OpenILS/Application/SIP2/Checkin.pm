@@ -138,6 +138,9 @@ sub handle_hold {
         $details->{hold_patron_barcode} = $card->barcode;
     }
 
+    $details->{hold_patron_phone} = 
+        $holder->day_phone || $holder->evening_phone || $holder->other_phone;
+
     if (ref $hold->pickup_lib) {
         $pickup_lib_id = $hold->pickup_lib->id;
         $pickup_lib_sn = $hold->pickup_lib->shortname;

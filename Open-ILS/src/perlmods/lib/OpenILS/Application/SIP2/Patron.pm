@@ -31,6 +31,8 @@ sub get_patron_details {
                 billing_address
                 mailing_address
                 profile
+                home_ou
+                net_access_level
                 stat_cat_entries
             /],
             actscecm => [qw/stat_cat/]
@@ -42,6 +44,25 @@ sub get_patron_details {
     my $patron = $details->{patron} = $card->usr;
     $card->usr($card->usr->id);
     $patron->card($card);
+    $details->{patron_phone} = 
+        $patron->day_phone || $patron->evening_phone || $patron->other_phone;
+
+    if (my $addr = $patron->billing_address || $patron->mailing_address) {
+
+        my $addrstr = join(' ', map {$_ || ''} (
+            $addr->street1,
+            $addr->street2,
+            $addr->city . ',',
+            $addr->county,
+            $addr->state,
+            $addr->country,
+            $addr->post_code
+        ));
+
+        $addrstr =~ s/\s+/ /sg; # Compress spaces
+
+        $details->{patron_address} = $addrstr;
+    }
 
     if (defined $password) {
         # SIP still replies with the patron data if the password

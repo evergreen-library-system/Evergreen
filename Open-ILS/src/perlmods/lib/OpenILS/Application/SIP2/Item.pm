@@ -37,12 +37,19 @@ sub get_item_details {
 
     my $details = {
         item => $item,
+        call_number => $item->call_number->label,
         security_marker => '02', # matches SIP/Item.pm
         owning_loc => $item->call_number->owning_lib->shortname,
         current_loc => $item->circ_lib->shortname,
         permanent_loc => $item->circ_lib->shortname,
         destination_loc => $item->circ_lib->shortname # maybe replaced below
     };
+
+    # use the non-translated version of the copy location as the
+    # collection code, since it may be used for additional routing
+    # purposes by the SIP client.  Config option?
+    $details->{collection_code} = $e->retrieve_asset_copy_location(
+		[$item->location, {no_i18n => 1}])->name;
 
     $details->{circ} = $e->search_action_circulation([{
         target_copy => $item->id,
