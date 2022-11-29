@@ -12640,7 +12640,7 @@ VALUES (
     FALSE,
     oils_i18n_gettext(
         'opac.located_uri.act_as_copy',
-        'When enabled, Located URIs will provide visiblity behavior identical to copies.',
+        'When enabled, Located URIs will provide visibility behavior identical to copies.',
         'cgf',
         'label'
     )
