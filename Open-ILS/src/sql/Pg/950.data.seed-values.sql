@@ -21090,7 +21090,7 @@ VALUES (
     FALSE,
     oils_i18n_gettext(
         'history.money.age_with_circs',
-        'Age billings and payments when cirulcations are aged.',
+        'Age billings and payments when circulations are aged.',
         'cgf', 'label'
     )
 ), (
