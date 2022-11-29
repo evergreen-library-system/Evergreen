@@ -146,6 +146,7 @@ sub set_ils_account {
     my $seskey = $self->seskey;
     my $ils_token = $auth->{payload}->{authtoken};
     $e->authtoken($ils_token);
+    return 0 unless $e->checkauth; # force setting the requestor value
 
     my $cache_ses = {
         sip_account => $account,

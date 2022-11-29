@@ -166,8 +166,14 @@ sub handle_sc_status {
 
     my $config;
 
+    my $here_org;
+
     if ($session) {
         $config = $session->config;
+        my $org_id = $session->editor->requestor->ws_ou 
+            || $session->editor->requestor->home_ou;
+
+        $here_org = $session->editor->retrieve_actor_org_unit($org_id);
 
     } else {
 
@@ -189,6 +195,9 @@ sub handle_sc_status {
         };
     }
 
+    my @org_fields = $here_org ? 
+        ({AM => $here_org->name}, {AN => $here_org->shortname}) : ();
+
     my $response = {
         code => '98',
         fixed_fields => [
@@ -205,6 +214,7 @@ sub handle_sc_status {
         ],
         fields => [
             {AO => $config->{institution}},
+            @org_fields,
             {BX => join('', @{$config->{supports}})}
         ]
     }
@@ -316,7 +326,7 @@ sub handle_patron_info {
 
     push(
         @{$response->{fields}}, 
-        {AQ => $patron->home_ou->name},
+        {AQ => $patron->home_ou->shortname},
         {PA => $SC->sipymd($patron->expire_date)},
         {PB => $SC->sipymd($patron->dob, 1)},
         {PC => $patron->profile->name},
@@ -383,7 +393,7 @@ sub patron_response_common_data {
 
         return {
             fixed_fields => [
-                ' ' x 14,
+                'Y' .  (' ' x 13),
                 '000', # language
                 $SC->sipdate
             ],
@@ -418,8 +428,7 @@ sub patron_response_common_data {
         . $SC->spacebool($details->{too_many_fines})
         ;
 
-
-    my $response = {
+    return {
         fixed_fields => [
             $status,
             '000', # language
@@ -436,104 +445,26 @@ sub patron_response_common_data {
             {BL => $SC->sipbool(1)},          # valid patron
             {BV => $details->{balance_owed}}, # fee amount
             {CQ => $SC->sipbool($details->{valid_patron_password})},
+            {BD => $details->{patron_address}},
+            {BE => $patron->email},
+            {BF => $details->{patron_phone}},
+            {PI => $patron->net_access_level ? $patron->net_access_level->name : ''},
             $SC->actor_stat_cat_sip_fields($patron),
         ]
     };
-
-    $SC->maybe_add_field($response, BD => $details->{patron_address});
-    $SC->maybe_add_field($response, BE => $patron->email);
-    $SC->maybe_add_field($response, BF => $details->{patron_phone});
-    $SC->maybe_add_field($response, 
-        PI => $patron->net_access_level ? $patron->net_access_level->name : '');
-
-    return $response;
 }
 
 sub handle_block {
     my ($session, $message) = @_;
-    my @fixed_fields = @{$message->{fixed_fields} || []};
 
-    my $sip_account = $session->sip_account;
-
-    my $barcode = $SC->get_field_value($message, 'AA');
-    my $password = $SC->get_field_value($message, 'AD');
+    my $patron_barcode = $SC->get_field_value($message, 'AA');
     my $blocked_card_msg = $SC->get_field_value($message, 'AL');
-    my $card_retained = $fixed_fields[0];
 
-    my $details = OpenILS::Application::SIP2::Patron->get_patron_details(
-        $session,
-        barcode => $barcode,
-        password => $password
-    );
+    my $blocked = OpenILS::Application::SIP2::Patron->block_patron(
+        $session, $patron_barcode, $blocked_card_msg);
 
-    sub build_response {
-        my ($session, $barcode, $password, $details) = (shift, shift, shift, shift); 
-
-        # re-fetch the data
-        $details = OpenILS::Application::SIP2::Patron->get_patron_details(
-            $session,
-            barcode => $barcode,
-            password => $password
-        );
-
-        my $response = patron_response_common_data(
-            $session, $barcode, $password, $details);
-        $response->{code} = '24';
-
-        return $response;
-    }
-
-    my $e = $session->{editor};
-    my $u = $details->{patron};
-
-    $logger->info("SIP2: Blocking user " . $u->card->barcode);
-
-    return build_response($session, $barcode, $password, $details) if $u->card->active eq 'f'; # TODO: don't think this will ever be true
-
-    $e->xact_begin;    # connect and start a new transaction
-
-    $u->card->active('f');
-    if( ! $e->update_actor_card($u->card) ) {
-        $logger->warn("SIP2: Block card update failed: " . $e->event->{textcode});
-        $e->rollback; # rollback + disconnect
-        return build_response($session, $barcode, $password, $details);
-    }
-
-    # Use the ws_ou or home_ou of the authsession user, if any, as a
-    # context org_unit for the created penalty
-    my $here;
-    if ($e->authtoken()) {
-        my $auth_usr = $e->checkauth();
-        if ($auth_usr) {
-            $here = $auth_usr->ws_ou() || $auth_usr->home_ou();
-        }
-    }
-
-    my $penalty = Fieldmapper::actor::user_standing_penalty->new;
-    $penalty->usr( $u->id );
-    $penalty->org_unit( $here );
-    $penalty->set_date('now');
-    $penalty->staff( $e->checkauth()->id() );
-    $penalty->standing_penalty(20); # ALERT_NOTE
-
-    my $note = "<sip> CARD BLOCKED BY SELF-CHECK MACHINE. $blocked_card_msg</sip>\n"; # XXX Config option, and/or I18N
-    my $msg = {
-      title => 'SIP BLOCK',
-      message => $note
-    };
-    my $penalty_result = $U->simplereq(
-      'open-ils.actor',
-      'open-ils.actor.user.penalty.apply', $e->authtoken, $penalty, $msg);
-    if( my $result_code = $U->event_code($penalty_result) ) {
-        my $textcode = $penalty_result->{textcode};
-        $logger->warn("SIP2: Block patron penalty failed: $textcode");
-        $e->rollback; # rollback + disconnect
-        return build_response($session, $barcode, $password, $details);
-    }
-
-    $e->commit;
-
-    return build_response($session, $barcode, $password, $details);
+    # SIP message 01 wants a message 24 (patron status) response.
+    return handle_patron_status($session, $message);
 }
 
 sub handle_checkout {
@@ -592,9 +523,6 @@ sub checkout_renew_common {
     );
 
     my $magnetic = $item_details->{magnetic_media};
-    my $deposit = $item_details->{item}->deposit_amount;
-    my $screen_msg = $circ_details->{screen_msg};
-    my $due_date = $circ_details->{due_date};
     my $circ = $circ_details->{circ};
 
     my $can_renew = 0;
@@ -610,12 +538,16 @@ sub checkout_renew_common {
     return {
         code => $code,
         fixed_fields => [
-            $circ ? 1 : 0,              # checkout ok
-            # Per SIP spec, "renewal ok" is a bit dumber than $can_renew, and returns Y if the item was already circulating to the patron, N otherwise)
-            $SC->sipbool($already_out_to_patron), # renewal ok
-            $SC->sipbool($magnetic),    # magnetic media
-            $is_renewal ? $SC->sipbool(0) : $SC->sipbool(!$magnetic),   # desensitize
-            $SC->sipdate,               # transaction date
+            $circ ? 1 : 0, # checkout ok
+
+            # Per SIP spec, "renewal ok" is a bit dumber than
+            # $can_renew, and returns Y if the item was already
+            # circulating to the patron, N otherwise)
+            $SC->sipbool($already_out_to_patron),
+
+            $SC->sipbool($magnetic), # magnetic media
+            $SC->sipbool($is_renewal ? 0 : !$magnetic), # desensitize
+            $SC->sipdate,
         ],
         fields => [
             {AA => $patron_barcode},
@@ -625,10 +557,10 @@ sub checkout_renew_common {
             {BT => $item_details->{fee_type}},
             {CI => 'N'}, # security inhibit
             {CK => $item_details->{media_type}},
-            $screen_msg ? {AF => $screen_msg}   : (),
-            $due_date   ? {AH => $due_date}     : {AH => ''}, # a required field in the SIP spec, even for failures :-/
-            $circ       ? {BK => $circ->id}     : (),
-            $deposit    ? {BV => $deposit}      : (),
+            {AF => $circ_details->{screen_msg}},
+            {AH => $circ_details->{due_date}},
+            {BK => $circ ? $circ->id : ''},
+            {BV => $item_details->{item}->deposit_amount}
         ]
     };
 }
@@ -681,7 +613,7 @@ sub handle_renew_all {
             {AO => $config->{institution}},
             @{ [ map { {BM => $_} } @renewed ] },
             @{ [ map { {BN => $_} } @unrenewed ] },
-            $screen_msg ? {AF => $screen_msg} : ()
+            {AF => $screen_msg}
         ]
     };
 }
@@ -857,8 +789,6 @@ sub handle_payment {
         register_login => $register_login
     );
 
-    my $screen_msg = $details->{screen_msg};
-
     return {
         code => '38',
         fixed_fields => [
@@ -868,7 +798,7 @@ sub handle_payment {
         fields => [
             {AA => $patron_barcode},
             {AO => $config->{institution}},
-            $screen_msg ? {AF => $screen_msg} : (),
+            {AF => $details->{screen_msg}}
         ]
     }
 }
@@ -886,7 +816,7 @@ sub handle_end_patron_session {
         ],
         fields => [
             {AO => $config->{institution}},
-            {AA => ''} # SIP required field, but do we actually have this--the patron barcode--as state information?
+            {AA => $SC->get_field_value($message, 'AA')}
         ]
     }
 }

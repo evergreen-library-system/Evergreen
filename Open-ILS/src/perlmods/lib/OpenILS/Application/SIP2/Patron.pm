@@ -4,6 +4,7 @@ use DateTime;
 use DateTime::Format::ISO8601;
 use OpenSRF::System;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
+use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::Logger q/$logger/;
 use OpenILS::Const qw/:const/;
 use OpenILS::Application::AppUtils;
@@ -554,6 +555,65 @@ sub add_fine_items {
     }
 
     $details->{fine_items} = get_data_range(\@fines, $offset, $limit);
+}
+
+sub block_patron {
+    my ($class, $session, $patron_barcode, $block_msg) = @_;
+    my $e = $session->{editor};
+
+    my $details = OpenILS::Application::SIP2::Patron->get_patron_details(
+        $session, barcode => $patron_barcode
+    );
+
+    return 0 unless $details;
+
+    my $patron = $details->{patron};
+
+    # Technically possible for a patron account to have no main card.
+    return 0 if $patron->card && $patron->card->active eq 'f';
+
+    # connect and start a new transaction
+    $e->xact_begin; 
+
+    $patron->card->active('f');
+
+    if (!$e->update_actor_card($patron->card)) {
+        my $evt = $e->die_event;
+        $logger->error("SIP2: Block card update failed: " . $evt->{textcode});
+        return 0;
+    }
+
+    my $penalty = Fieldmapper::actor::user_standing_penalty->new;
+    $penalty->usr($patron->id);
+    $penalty->org_unit($e->requestor->ws_ou || $e->requestor->home_ou);
+    $penalty->set_date('now');
+    $penalty->staff($e->requestor->id);
+    $penalty->standing_penalty(20); # ALERT_NOTE
+
+    my $note_msg = $e->retrieve_sip_screen_message('patron_block.penalty_note');
+    my $note = $note_msg ? $note_msg->message : 'CARD BLOCKED BY SELF-CHECK MACHINE';
+
+    $note .= "\n$block_msg" if $block_msg;
+
+    my $title_msg = $e->retrieve_sip_screen_message('patron_block.title');
+    my $title = $title_msg ? $title_msg->message : 'SIP Block';
+
+    my $msg = {title => $title, message => $note};
+
+    my $penalty_result = $U->simplereq(
+      'open-ils.actor',
+      'open-ils.actor.user.penalty.apply', $e->authtoken, $penalty, $msg);
+
+    if ($U->event_code($penalty_result)) {
+        my $textcode = $penalty_result->{textcode};
+        $logger->error("SIP2: Block patron penalty failed: $textcode");
+        $e->rollback; # rollback + disconnect
+        return 0;
+    }
+
+    $e->commit;
+
+    return 1;
 }
 
 
