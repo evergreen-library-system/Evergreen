@@ -1202,6 +1202,21 @@ CREATE OR REPLACE FUNCTION search.symspell_dictionary_reify () RETURNS SETOF sea
 
     identifier_count = GREATEST(0, d.identifier_count + EXCLUDED.identifier_count),
     identifier_suggestions = evergreen.text_array_merge_unique(EXCLUDED.identifier_suggestions,d.identifier_suggestions)
+
+    WHERE (
+        EXCLUDED.keyword_count <> 0 OR
+        EXCLUDED.title_count <> 0 OR
+        EXCLUDED.author_count <> 0 OR
+        EXCLUDED.subject_count <> 0 OR
+        EXCLUDED.series_count <> 0 OR
+        EXCLUDED.identifier_count <> 0 OR
+        NOT (EXCLUDED.keyword_suggestions <@ d.keyword_suggestions) OR
+        NOT (EXCLUDED.title_suggestions <@ d.title_suggestions) OR
+        NOT (EXCLUDED.author_suggestions <@ d.author_suggestions) OR
+        NOT (EXCLUDED.subject_suggestions <@ d.subject_suggestions) OR
+        NOT (EXCLUDED.series_suggestions <@ d.series_suggestions) OR
+        NOT (EXCLUDED.identifier_suggestions <@ d.identifier_suggestions)
+    )
  RETURNING *;
 $f$ LANGUAGE SQL;
 
