@@ -129,6 +129,7 @@ var FM_TABLE_DISPLAY = {
             'docs',
             'ui',
 			'create_time',
+            'id',
 			'owner',
 		],
         calculate : {
