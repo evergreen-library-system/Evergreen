@@ -35,6 +35,13 @@
 
       </div>
     </form>
+  <div class="checkbox">
+    <label>
+      <input ng-model="strict_barcode" type="checkbox"
+        ng-change="onStrictBarcodeChange()"/>
+      [% l('Strict Barcode') %]
+    </label>
+  </div>
   </div>
   <div class="col-md-4 col-lg-6">
     <div class="flex-row">
@@ -165,13 +172,6 @@
 
 <div class="flex-row pad-vert">
   <div class="flex-cell"></div>
-  <div class="checkbox">
-    <label>
-      <input ng-model="strict_barcode" type="checkbox"
-        ng-change="onStrictBarcodeChange()"/>
-      [% l('Strict Barcode') %]
-    </label>
-  </div>
   <div class="pad-horiz" ng-if="using_hatch_printer"></div>
   <div class="checkbox" ng-if="using_hatch_printer">
     <label>
