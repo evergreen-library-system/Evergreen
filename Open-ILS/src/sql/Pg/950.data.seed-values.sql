@@ -22087,16 +22087,22 @@ VALUES (
         'Limit the number of global concurrent matching search queries',
         'cgf', 'label'
     )
-);
-
-INSERT INTO config.global_flag (name, value, enabled, label)
-VALUES (
+), (
     'opac.max_concurrent_search.ip',
     '0',
     TRUE,
     oils_i18n_gettext(
         'opac.max_concurrent_search.ip',
         'Limit the number of global concurrent searches per client IP address',
+        'cgf', 'label'
+    )
+), (
+    'opac.login_redirect_domains',
+    '',
+    TRUE,
+    oils_i18n_gettext(
+        'opac.login_redirect_domains',
+        'Restrict post-login redirection to local URLs, or those that match the supplied comma-separated list of foreign domains or host names.',
         'cgf', 'label'
     )
 );
