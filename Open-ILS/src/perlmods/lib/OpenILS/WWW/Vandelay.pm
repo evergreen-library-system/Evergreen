@@ -58,7 +58,10 @@ sub spool_marc {
     my $r = shift;
     my $cgi = new CGI;
 
-    my $auth = $cgi->param('ses') || $cgi->cookie('ses');
+    my $auth = $cgi->param('ses') || $cgi->cookie('ses') || $cgi->cookie('eg.auth.token');
+    if ($auth =~ /^"(.+)"$/) {
+        $auth = $1;
+    }
 
     unless(verify_login($auth)) {
         $logger->error("authentication failed on vandelay record import: $auth");
@@ -123,7 +126,10 @@ sub spool_jacket {
     my $r = shift;
     my $cgi = new CGI;
 
-    my $auth = $cgi->param('ses') || $cgi->cookie('ses');
+    my $auth = $cgi->param('ses') || $cgi->cookie('ses') || $cgi->cookie('eg.auth.token');
+    if ($auth =~ /^"(.+)"$/) {
+        $auth = $1;
+    }
     my $user = verify_login($auth);
     my $perm_check = verify_permission($auth, $user, $user->ws_ou, ['UPLOAD_COVER_IMAGE']);
 

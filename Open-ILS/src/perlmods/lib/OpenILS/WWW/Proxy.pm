@@ -72,7 +72,10 @@ sub handler {
     return Apache2::Const::NOT_FOUND unless (@$perms);
 
     my $cgi = new CGI;
-    my $auth_ses = $cgi->cookie('ses') || $cgi->param('ses');
+    my $auth_ses = $cgi->cookie('ses') || $cgi->param('ses') || $cgi->cookie('eg.auth.token');
+    if ($auth_ses =~ /^"(.+)"$/) {
+        $auth_ses = $1;
+    }
     my $ws_ou = $apache->dir_config('OILSProxyLoginOU') || $cgi->cookie('ws_ou') || $cgi->param('ws_ou');
 
     my $url = $cgi->url;

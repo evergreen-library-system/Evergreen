@@ -43,7 +43,10 @@ sub child_init {
 sub handler {
     my $r = shift;
     my $cgi = new CGI;
-    my $auth_ses = $cgi->cookie('ses') || $cgi->param('ses');
+    my $auth_ses = $cgi->cookie('ses') || $cgi->param('ses') || $cgi->cookie('eg.auth.token');
+    if ($auth_ses =~ /^"(.+)"$/) {
+        $auth_ses = $1;
+    }
 
     # find some IDs ...
     my @xacts;
