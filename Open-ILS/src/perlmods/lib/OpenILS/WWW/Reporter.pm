@@ -70,7 +70,12 @@ sub handler {
     my $user;
 
     # if the user is not logged in via cookie, route them to the login page
-    if(! ($user = verify_login($cgi->cookie("ses"))) ) {
+    my $auth_ses = $cgi->param('ses') || $cgi->cookie('ses') || $cgi->cookie('eg.auth.token');
+    if ($auth_ses =~ /^"(.+)"$/) { # came from eg2 login, is json encoded
+        $auth_ses = $1;
+    }
+
+    if(! ($user = verify_login($auth_ses)) ) {
         $ttk = "login";
     }
 

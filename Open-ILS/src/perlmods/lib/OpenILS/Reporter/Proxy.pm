@@ -29,7 +29,10 @@ sub child_init {
 sub handler {
     my $apache = shift;
     my $cgi = new CGI;
-    my $auth_ses = $cgi->cookie('ses');
+    my $auth_ses = $cgi->cookie('ses') || $cgi->cookie('eg.auth.token');
+    if ($auth_ses =~ /^"(.+)"$/) {
+        $auth_ses = $1;
+    }
     my $ws_ou = $cgi->cookie('ws_ou') || 1;
 
     my $url = $cgi->url;

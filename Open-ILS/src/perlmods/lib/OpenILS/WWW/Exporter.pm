@@ -95,7 +95,10 @@ sub handler {
             return Apache2::Const::NOT_FOUND;
         }
         if ($bucket->pub !~ /t|1/oi) {
-            my $authid = $cgi->cookie('ses') || $cgi->param('ses');
+            my $authid = $cgi->cookie('ses') || $cgi->param('ses') || $cgi->cookie('eg.auth.token');
+            if ($authid =~ /^"(.+)"$/) {
+                $authid = $1;
+            }
             my $auth = verify_login($authid);
             if (!$auth) {
                 return 403;
@@ -111,7 +114,10 @@ sub handler {
     my $queue_id = $cgi->param('queueid');
     if ($queue_id) {
         # check that we're logged in -- XXX necessary? conservative for now
-        my $authid = $cgi->cookie('ses') || $cgi->param('ses');
+        my $authid = $cgi->cookie('ses') || $cgi->param('ses') || $cgi->cookie('eg.auth.token');
+        if ($authid =~ /^"(.+)"$/) {
+            $authid = $1;
+        }
         my $auth = verify_login($authid);
         if (!$auth) {
             return 403;
