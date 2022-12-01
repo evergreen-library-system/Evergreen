@@ -60,7 +60,10 @@ sub child_init {
 sub handler {
     my $r = shift;
     my $cgi = new CGI;
-    my $authid = $cgi->cookie('ses') || $cgi->param('ses');
+    my $authid = $cgi->cookie('ses') || $cgi->param('ses') || $cgi->cookie('eg.auth.token');
+    if ($authid =~ /^"(.+)"$/) {
+        $authid = $1;
+    }
     my $user = $U->simplereq('open-ils.auth', 'open-ils.auth.session.retrieve', $authid);
     if (!$user || (ref($user) eq 'HASH' && $user->{ilsevent} == 1001)) {
         return Apache2::Const::FORBIDDEN;
