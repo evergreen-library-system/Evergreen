@@ -362,7 +362,6 @@ sub handle_patron_info {
 
 sub handle_patron_status {
     my ($session, $message) = @_;
-    my $sip_account = $session->sip_account;
 
     my $barcode = $SC->get_field_value($message, 'AA');
     my $password = $SC->get_field_value($message, 'AD');
@@ -812,7 +811,8 @@ sub handle_end_patron_session {
     return {
         code => '36',
         fixed_fields => [
-            $SC->sipbool(1)
+            $SC->sipbool(1),
+            $SC->sipdate
         ],
         fields => [
             {AO => $config->{institution}},

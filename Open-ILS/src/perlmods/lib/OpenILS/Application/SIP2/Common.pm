@@ -66,9 +66,8 @@ sub count4 {
 sub get_field_value {
     my ($class, $message, $code) = @_;
     for my $field (@{$message->{fields}}) {
-        while (my ($c, $v) = each(%$field)) { # one pair per field
-            return $v if $c eq $code;
-        }
+        my ($c) = keys(%$field);
+        return $field->{$c} if $c eq $code;
     }
 
     return undef;
