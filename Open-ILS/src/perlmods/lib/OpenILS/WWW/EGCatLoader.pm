@@ -713,7 +713,30 @@ sub load_login {
         );
     }
 
+    # TODO: maybe move this logic to generic_redirect()?
     my $redirect_to = $cgi->param('redirect_to') || $acct;
+    if (my $login_redirect_gf = $self->editor->retrieve_config_global_flag('opac.login_redirect_domains')) {
+        if ($login_redirect_gf->enabled eq 't') {
+
+            my @redir_hosts = ();
+            if ($login_redirect_gf->value) {
+                @redir_hosts = map { '(?:[^/.]+\.)*' . quotemeta($_) } grep { $_ } split(/,\s*/, $login_redirect_gf->value);
+            }
+            unshift @redir_hosts, quotemeta($ctx->{hostname});
+
+            my $hn = join('|', @redir_hosts);
+            my $relative_redir = qr#^(?:(?:(?:(?:f|ht)tps?:)?(?://(?:$hn))(?:/|$))|/$|/[^/]+)#;
+
+            if ($redirect_to !~ $relative_redir) {
+                $logger->warn(
+                    "Login redirection of [$redirect_to] ".
+                    "disallowed based on Global Flag opac.".
+                    "login_redirect_domains RE [$relative_redir]"
+                );
+                $redirect_to = $acct; # fall back to myopac/main
+            }
+        }
+    }
 
     return
         $self->_perform_any_sso_required($response, $redirect_to, $cookie_list)
