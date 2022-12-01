@@ -26,6 +26,15 @@
         </div>
       </div>
     </div>
+    <div class="col-lg-2">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" 
+          (ngModelChange)="toggleStrictBarcode($event)"
+          id="strict-barcode-cbox" [(ngModel)]="strictBarcode"/>
+        <label class="form-check-label" 
+          for="strict-barcode-cbox" i18n>Strict Barcode</label>
+      </div>
+    </div>
     <div class="flex-1"></div>
     <div class="mr-2">
       <div class="form-inline">
@@ -168,15 +177,6 @@
           id="trim-list-cbox" [(ngModel)]="trimList"/>
         <label class="form-check-label" 
           for="trim-list-cbox" i18n>Trim List (20)</label>
-      </div>
-    </div>
-    <div class="mr-3">
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" 
-          (ngModelChange)="toggleStrictBarcode($event)"
-          id="strict-barcode-cbox" [(ngModel)]="strictBarcode"/>
-        <label class="form-check-label" 
-          for="strict-barcode-cbox" i18n>Strict Barcode</label>
       </div>
     </div>
   </div>
