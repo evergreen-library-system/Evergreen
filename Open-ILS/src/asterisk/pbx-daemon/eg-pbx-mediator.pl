@@ -362,23 +362,23 @@ sub main {
     #  ~ any other datatypes are for INCOMING args
     #
 
-    $server->add_proc({
+    $server->add_procedure({
         name => 'inject',   code => \&inject,   signature => ['struct string', 'struct string string', 'struct string string int']
     });
 
-    $server->add_proc({
+    $server->add_procedure({
         name => 'get_failures',
         code => \&get_failures,
         signature => ['array']
     });
 
-    $server->add_proc({
+    $server->add_procedure({
         name => 'ack_failures',
         code => \&ack_failures,
         signature => ['int array']
     });
 
-    $server->add_proc({
+    $server->add_procedure({
         name => 'set_holidays',
         code => \&set_holidays,
         signature => ['int array']
