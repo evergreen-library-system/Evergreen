@@ -26,7 +26,7 @@ use File::Basename;
 use DBI;
 use Cwd qw/abs_path getcwd/;
 
-my ($dbhost, $dbport, $dbname, $dbuser, $dbpw, $help, $admin_user, $admin_pw, $load_all, $load_concerto);
+my ($dbhost, $dbport, $dbname, $dbuser, $dbpw, $help, $admin_user, $admin_pw, $load_all, $load_concerto, $load_concerto_enhanced);
 my $config_file = '';
 my $build_db_sh = '';
 my $offline_file = '';
@@ -43,9 +43,12 @@ my $cwd = getcwd();
 my $script_dir = abs_path(dirname($0));
 
 # Set the location and base file for sample data
-my $_sample_dir = abs_path(File::Spec->catdir($script_dir, '../../tests/datasets/sql/'));
+my $_sample_dir = abs_path(File::Spec->catdir($script_dir, '../../tests/datasets/sql/concerto/'));
 my $_sample_all = 'load_all.sql';
 my $_sample_concerto = 'load_concerto.sql';
+my $_enhanced_dir = abs_path(File::Spec->catdir($script_dir, '../../tests/datasets/sql/concerto_enhanced/'));
+my $_enhanced_loader = 'load_all.sql';
+
 
 =over
 
@@ -201,6 +204,10 @@ sub load_sample_data {
 	if ($load_concerto) {
 		$load_script = $_sample_concerto;
 	}
+	elsif ($load_concerto_enhanced) {
+		$load_script = $_enhanced_loader;
+		chdir($_enhanced_dir);
+	}
 	$ENV{'PGUSER'} = $settings->{user};
 	$ENV{'PGPASSWORD'} = $settings->{pw};
 	$ENV{'PGPORT'} = $settings->{port};
@@ -264,6 +271,7 @@ GetOptions("create-schema" => \$cschema,
 		"create-database" => \$cdatabase,
 		"load-all-sample" => \$load_all,
 		"load-concerto-sample" => \$load_concerto,
+		"load-concerto-enhanced" => \$load_concerto_enhanced,
 		"create-offline" => \$offline,
 		"update-config" => \$uconfig,
 		"config-file=s" => \$config_file,
@@ -325,7 +333,7 @@ if ($cschema) { create_schema(\%settings); }
 if ($admin_user && $admin_pw) {
 	set_admin_account($admin_user, $admin_pw, \%settings);
 }
-if ($load_all || $load_concerto) {
+if ($load_all || $load_concerto || $load_concerto_enhanced) {
 	load_sample_data(\%settings);
 }
 if ($offline) { create_offline_config($offline_file, \%settings); }
@@ -377,6 +385,12 @@ COMMANDS
     --load-concerto-sample
 		Loads a subset of sample data that includes just 100 bibliographic
 		records, and associated call numbers and copies.
+
+    --load-concerto-enhanced
+		Loads the community enhanced test dataset. Details here:
+		https://bugs.launchpad.net/evergreen/+bug/1901932
+		A new dataset can be generated using the support script "make_concerto_from_evergreen_db.pl"
+
 
 SERVICE OPTIONS
     --service

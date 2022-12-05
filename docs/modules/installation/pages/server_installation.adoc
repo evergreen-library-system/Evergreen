@@ -591,6 +591,23 @@ sample data, and can be useful for testing out Evergreen functionality and
 for creating problem reports that developers can easily recreate with their
 own copy of the _concerto_ sample data.
 
+If you don't mind waiting a little longer, you can install the _enhanced_
+concerto dataset. Use this flag: `--load-concerto-enhanced`. This includes
+all of the data from _concerto_. Notable differences include:
+
+. The organization units have friendly names
+. Acquisitions data
+. More billing scenarios
+. More shelving locations and shelving location settings
+. Authority data
+. Japanese, Spanish, French and Czech bib records
+. Metarecord holds
+. Item Stat Cats
+. Bookings data
+. Pre-created OPAC carousels
+. Serials data
+
+
 === Creating the database on a remote server ===
 
 In a production instance of Evergreen, your PostgreSQL server should be

@@ -43,6 +43,9 @@ to more thorough documentation, if available.
  * xref:#importing_authority_records_from_command_line[marc2are.pl]
    -- Converts authority records from MARC format to Evergreen objects
       suitable for importing via pg_loader.pl (or parallel_pg_loader.pl)
+ * xref:#make_concerto_from_evergreen_db[make_concerto_from_evergreen_db.pl]
+   -- This script is responsible for generating the enhanced concerto
+      dataset from a live Evergreen database.
  * marc2bre.pl
    -- Converts bibliographic records from MARC format to Evergreen objects
       suitable for importing via pg_loader.pl (or parallel_pg_loader.pl)
@@ -94,6 +97,121 @@ Here is how the matching works:
 |800|100|a,b,c,d,e,f,g,j,k,l,n,p,q,t,u,4
 |830|130|a,d,f,g,h,k,l,m,n,o,p,r,s,t
 |=========================================================
+
+[#make_concerto_from_evergreen_db]
+
+== make_concerto_from_evergreen_db.pl: Generating Evergreen enhanced datasets
+
+This script makes it possible to continue to improve/maintain the Evergreen
+enhanced dataset. This script requires two databases. One database that is
+created with only Evergreen's seed data. And another one that contains the
+intended dataset for the enhanced concerto data.
+
+=== Setup your server environment ===
+
+==== Creating the non-seed database ====
+
+[NOTE]
+Follow the standard PostgreSQL user creation steps from Evergreen's installation
+instructions.
+
+[source,bash]
+----
+perl Open-ILS/src/support-scripts/eg_db_config \
+       --service all --create-database --create-schema \
+       --user evergreen --password evergreen --hostname 127.0.0.1 --port 5432 \
+       --database ref_db --admin-user admin --admin-pass demo123
+----
+
+==== Creating the database containing the enhanced dataset ====
+
+This will be the database containing "the" data that will ultimately be
+generated. In this example, we'll use the concerto dataset
+
+[source,bash]
+----
+perl Open-ILS/src/support-scripts/eg_db_config \
+       --service all --create-database --create-schema --load-all-sample \
+       --user evergreen --password evergreen --hostname 127.0.0.1 --port 5432 \
+       --database evergreen --admin-user admin --admin-pass demo123
+----
+
+[NOTE]
+At this point, you can edit the Evergreen database via Staff client or direct DB.
+
+=== Run the script ===
+
+Now that the database is ready to become the enhanced dataset, we need to make
+sure that we have the database connection details setup in two files. By default,
+this script will use /openils/conf/opensrf.xml for connection information to the
+enhanced dataset database. You will also need to provide a link to another
+XML file with the details on how to connect to the seed database.
+
+[NOTE]
+Example of the minimum XML required for connection to the enhanced dataset database:
+
+opensrf.xml
+[source,xml]
+----
+<opensrf version='0.0.3'>
+    <default>
+        <apps>
+			<open-ils.storage>
+				<app_settings>
+					<databases>
+						<database>
+							<user>evergreen</user>
+							<host>127.0.0.1</host>
+							<port>5432</port>
+							<pw>evergreen</pw>
+							<db>evergreen</db>
+						</database>
+					</databases>
+				</app_settings>
+			</open-ils.storage>
+        </apps>
+    </default>
+</opensrf>
+----
+
+
+[NOTE]
+Example of the minimum XML required for connection to the seed-only database:
+
+seedonly.xml
+[source,xml]
+----
+<opensrf version='0.0.3'>
+    <default>
+        <apps>
+			<open-ils.storage>
+				<app_settings>
+					<databases>
+						<database>
+							<user>evergreen</user>
+							<host>127.0.0.1</host>
+							<port>5432</port>
+							<pw>evergreen</pw>
+							<db>ref_db</db>
+						</database>
+					</databases>
+				</app_settings>
+			</open-ils.storage>
+        </apps>
+    </default>
+</opensrf>
+----
+
+And we're all set.
+
+[source,bash]
+----
+mkdir output
+./make_concerto_from_evergreen_db.pl --xmlseed /openils/conf/seedonly.xml --output-folder output
+----
+
+This software needs to know what data is seed data and what data is not. It compares the data for each
+table against the seed-only database and determines what needs to be outputted.
 
 
 [#marc_export]
