@@ -229,6 +229,10 @@ input[formcontrolname].ng-invalid {
   border-bottom: 1px solid rgba(0,0,0,.125);
 }
 
+option[disabled] {
+  color: rgba(0,0,0,.3);
+}
+
 /**
  * Only display the print container when printing
  */
