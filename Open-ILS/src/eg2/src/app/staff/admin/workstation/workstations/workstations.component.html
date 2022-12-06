@@ -21,11 +21,15 @@
     </div>
 
     <div class="row">
-      <div class="col" i18n>Register a New Workstation For This Browser</div>
+      <div class="col">
+        <label for="workstationSelect" i18n>Register a New Workstation For This Browser</label>
+      </div>
     </div>
     <div class="row mt-2">
       <div class="col-lg-2">
         <eg-org-select 
+          domId="workstationSelect"
+          labelClass="visually-hidden"
           [applyDefault]="true"
           (onChange)="orgOnChange($event)"
           [hideOrgs]="hideOrgs"

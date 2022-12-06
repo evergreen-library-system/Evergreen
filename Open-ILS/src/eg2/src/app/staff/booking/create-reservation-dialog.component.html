@@ -47,9 +47,8 @@
       </div>
     </div>
     <div class="form-group row">
-      <label class="form-label col-lg-4 text-end fw-bold"
-        i18n for="create-pickup-library">Reservation location</label>
       <eg-org-select domId="create-pickup-library" [applyDefault]="true"
+        labelText="Reservation location" i18n-labelText labelClass="form-label col-lg-4 text-right font-weight-bold"
         [disableOrgs]="disableOrgs()" [hideOrgs]="disableOrgs()"
         (onChange)="handlePickupLibChange($event)">
       </eg-org-select>

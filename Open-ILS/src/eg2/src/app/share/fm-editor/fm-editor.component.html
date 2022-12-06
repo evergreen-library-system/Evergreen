@@ -92,6 +92,8 @@
               <eg-org-select
                 placeholder="{{field.label}}..."
                 i18n-placeholder
+                labelText = "{{field.label}}"
+                labelClass = "visually-hidden"
                 domId="{{idPrefix}}-{{field.name}}"
                 persistKey="{{field.persistKey}}"
                 [limitPerms]="modePerms[mode]"

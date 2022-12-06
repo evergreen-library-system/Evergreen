@@ -73,6 +73,12 @@ export class OrgSelectComponent implements OnInit {
     // Placeholder text for selector input
     @Input() placeholder = '';
 
+    // <label> contents for selector. Must not be empty.
+    @Input() labelText = $localize `Library`;
+
+    // Class attributes for <label>. Use 'visually-hidden' to hide the label from display.
+    @Input() labelClass = '';
+
     // ID to display in the DOM for this selector
     @Input() domId = 'eg-org-select-' + OrgSelectComponent.domId++;
 

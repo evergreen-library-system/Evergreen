@@ -54,10 +54,15 @@
     <div class="row" *ngIf="!hidePickupLibFilter">
       <div class="col-lg-5">
         <div class="input-group">
-          <label for="pickup-lib-filter-one" class="input-group-text" i18n>Pickup Library</label>
-          <eg-org-select domId="pickup-lib-filter-one"
-            [persistKey]="persistKey" [fallbackOrg]="pickupLib"
-            (componentLoaded)="plCompLoaded = true" (onChange)="pickupLibChanged($event)">
+          <label class="input-group-text form-control" for="pickupLibSelect" i18n>Pickup Library</label>
+          <eg-org-select 
+            domId="pickupLibSelect"
+            labelText="Pickup Library" i18n-labelText
+            labelClass="visually-hidden"
+            [persistKey]="persistKey" 
+            [fallbackOrg]="pickupLib"
+            (componentLoaded)="plCompLoaded = true" 
+            (onChange)="pickupLibChanged($event)">
           </eg-org-select>
         </div>
       </div>
@@ -66,11 +71,12 @@
     <div class="row" *ngIf="pullListOrg">
       <div class="col-lg-3 mb-2">
         <div class="input-group">
-          <label for="pull-list-lib-filter" class="input-group-text"
-            i18n>Pull List For:
-          </label>
-          <eg-org-select domId="pull-list-lib-filter"
-            [initialOrgId]="pullListOrg" [limitPerms]="['VIEW_HOLD_PULL_LIST']"
+          <label class="input-group-text form-label" for="pullListOrgSelect" i18n>View Pull List For:</label>
+          <eg-org-select 
+            domId="pullListOrgSelect"
+            labelText="View Pull List For:" i18n-labelText
+            labelClass="visually-hidden"
+            [initialOrgId]="pullListOrg"
             (onChange)="pullListOrgChanged($event)">
           </eg-org-select>
         </div>
@@ -81,6 +87,8 @@
             i18n>Pickup Library:
           </label>
           <eg-org-select domId="pull-pickup-lib-filter"
+            labelText="Pickup Library:" i18n-labelText
+            labelClass="visually-hidden"
             #pullPickupLibFilter [initialOrg]="pickupLib"
             (componentLoaded)="pullPickupLibLoaded()"
             (onChange)="pullPickupLibChanged($event)">

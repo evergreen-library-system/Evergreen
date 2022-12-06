@@ -196,6 +196,7 @@
             <eg-org-select
               domId="statcat_filter"
               placeholder="Stat Cat Filter..." i18n-placeholder
+              labelClass="visually-hidden"
               [initialOrgId]="volcopy.defaults.values.statcat_filter"
               (onChange)="volcopy.defaults.values.statcat_filter = $event ? $event.id() : null">
             </eg-org-select>

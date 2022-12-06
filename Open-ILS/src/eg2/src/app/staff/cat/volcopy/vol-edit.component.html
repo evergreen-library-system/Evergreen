@@ -265,6 +265,7 @@
                 <ng-template #addOrgTmpl>
                   <eg-org-select [limitPerms]="['CREATE_VOLUME']" 
                     placeholder="Select Location..." i18n-placeholder
+                    labelText="Select Location" i18n-labelText labelClass="visually-hidden"
                     [hideOrgs]="volcopy.hideVolOrgs"
                     (onChange)="addVol($event); addOrgPopover.close()">
                   </eg-org-select>
@@ -285,6 +286,7 @@
                 <ng-template #editOrgTmpl>
                   <eg-org-select [limitPerms]="['CREATE_VOLUME']" 
                     placeholder="Select Location..." i18n-placeholder
+                    labelText="Select Location" labelClass="visually-hidden"
                     [hideOrgs]="volcopy.hideVolOrgs"
                     (onChange)="editVolOwner(volNode, $event); editOrgPopover.close()">
                   </eg-org-select>

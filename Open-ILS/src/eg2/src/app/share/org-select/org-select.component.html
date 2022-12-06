@@ -9,7 +9,7 @@
 </ng-container>
 
 <ng-container *ngIf="!readOnly">
-
+  <label for="{{domId}}" class="org-unit-select-label form-label {{labelClass}}" i18n-labelText>{{labelText}}</label>
   <input type="text" 
     class="form-control"
     id="{{domId}}"

@@ -167,6 +167,7 @@
       <ng-template #circLibTemplate>
         <eg-org-select 
           domId="circ_lib-input"
+          labelClass="visually-hidden"
           (onChange)="values['circ_lib'] = $event ? $event.id() : null"
           [hideOrgs]="volcopy.hideVolOrgs"
           [limitPerms]="['UPDATE_COPY']">
@@ -181,6 +182,7 @@
       <ng-template #owningLibTemplate>
         <eg-org-select 
           domId="owning_lib-input"
+          labelClass="visually-hidden"
           (onChange)="values['owning_lib'] = $event ? $event.id() : null"
           [hideOrgs]="volcopy.hideVolOrgs"
           [limitPerms]="['UPDATE_COPY']">
@@ -449,9 +451,12 @@
     </div>
 
     <div class="border rounded m-1" *ngIf="displayAttr('statcat_filter')">
-      <div class="batch-header fw-bold p-2" i18n>Stat Cat Filter</div>
+      <div class="batch-header font-weight-bold p-2">
+        <label for="statcat_filter-select" i18n>Stat Cat Filter</label>
+      </div>
       <div class="p-1">
         <eg-org-select
+          labelClass="visually-hidden"
           domId="statcat_filter-select"
           placeholder="Stat Cat Filter..." i18n-placeholder
           [initialOrgId]="statCatFilter"

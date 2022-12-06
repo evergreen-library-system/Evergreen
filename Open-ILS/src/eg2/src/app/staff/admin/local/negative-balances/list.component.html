@@ -3,8 +3,7 @@
 
 <div class="row mt-2 mb-2">
   <div class="col-lg-6 form-inline">
-    <span class="pe-2" i18n>Patron Home Library:</span>
-    <eg-org-select
+    <eg-org-select labelText="Patron Home Library:" i18n-labelText labelClass="pr-2"
       persistKey="admin.local.negative_balances"
       (componentLoaded)="contextOrgLoaded = true"
       [initialOrg]="contextOrg"

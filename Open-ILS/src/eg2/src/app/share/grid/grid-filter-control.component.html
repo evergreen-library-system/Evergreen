@@ -296,7 +296,7 @@
                 </div>
               </div>
               <div class="pt-2">
-                <eg-org-select [applyOrgId]="col.filterValue" 
+                <eg-org-select labelClass="visually-hidden" [applyOrgId]="col.filterValue" 
                   (onChange)="col.filterValue = $event; applyFilterCommon(col)"
                   [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
                   i18n-placeholder placeholder="Enter library to filter by" #ousel></eg-org-select>

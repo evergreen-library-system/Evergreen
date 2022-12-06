@@ -27,7 +27,7 @@ export interface OrgFamily {
 export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
 
     // The label for this input
-    @Input() labelText = 'Library';
+    @Input() labelText = $localize `Library`;
 
     // Should the Ancestors checkbox be hidden?
     @Input() hideAncestorSelector = false;

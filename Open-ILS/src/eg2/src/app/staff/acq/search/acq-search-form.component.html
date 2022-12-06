@@ -84,6 +84,7 @@
           <option i18n value="f">No</option>
         </select>
         <eg-org-select *ngIf="searchTermDatatypes[t.field] === 'org_unit'"
+          labelClass = "visually-hidden"
           [initialOrgId]="t.value1"
           (onChange)="setOrgUnitSearchValue($event, t)">
         </eg-org-select>

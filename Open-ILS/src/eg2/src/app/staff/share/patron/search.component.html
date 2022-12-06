@@ -130,7 +130,8 @@
         <eg-org-select (onChange)="searchOrg = $event"
           persistKey="patron.search"
           [fallbackOrg]="org.root()"
-          i18n-placeholder placeholder="Home Library">
+          i18n-placeholder placeholder="Home Library"
+          labelText="Home Library" i18n-labelText labelClass="visually-hidden">
         </eg-org-select>
         <!-- home org -->
       </div>

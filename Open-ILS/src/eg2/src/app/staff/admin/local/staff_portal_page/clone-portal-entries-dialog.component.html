@@ -5,11 +5,12 @@
       i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
-    <form #cloneForm="ngForm" role="form" class="form-validated common-form striped-odd">
+    <form #cloneForm="ngForm" class="form-validated common-form striped-odd">
       <div class="form-group row mt-2">
         <label for="source_library" class="form-label col-sm-6 col-form-label" i18n>Source Library</label>
         <div class="col-sm-6">
           <eg-org-select
+            labelClass="visually-hidden"
             placeholder="Source Library..."
             domId="source_library"
             i18n-placeholder
@@ -19,9 +20,9 @@
         </div>
       </div>
       <div class="form-group row mt-2">
-        <label for="target_library" class="form-label col-sm-6 col-form-label" i18n>Target Library</label>
         <div class="col-sm-6">
           <eg-org-select
+            labelClass="col-sm-6 col-form-label"
             placeholder="Target Library..."
             domId="target_library"
             i18n-placeholder

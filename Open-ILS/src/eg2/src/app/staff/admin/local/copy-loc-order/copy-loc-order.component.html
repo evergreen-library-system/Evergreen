@@ -5,11 +5,11 @@
 
 <div class="row">
   <div class="col-lg-12 d-flex">
-    <div class="me-2" i18n>Context Org Unit</div>
-    <div>
-      <eg-org-select (onChange)="orgChanged($event)" [initialOrgId]="contextOrg">
+    
+      <eg-org-select labelText="Context Org Unit" i18n-labelText labelClass="mr-2"
+        (onChange)="orgChanged($event)" [initialOrgId]="contextOrg">
       </eg-org-select>
-    </div>
+    
     <div class="ms-3">
       <button (click)="up()" i18n-title title="Move Selected Location Up"
         i18n-aria-label aria-label="Move Selected Location Up"

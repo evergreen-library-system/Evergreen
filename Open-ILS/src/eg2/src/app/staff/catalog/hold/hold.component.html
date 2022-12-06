@@ -87,11 +87,11 @@
       </div>
       <div class="row mt-2">
         <div class="col-lg-6">
-          <label class="form-label" i18n>Pickup Location: </label>
+          <label class="form-label" for="pickupLibSelect" i18n>Pickup Location: </label>
         </div>
         <div class="col-lg-6">
-          <eg-org-select (onChange)="pickupLib = $event ? $event.id() : null"
-            [disableOrgs]="disableOrgs" [applyOrgId]="pickupLib"></eg-org-select>
+          <eg-org-select domId="pickupLibSelect" (onChange)="pickupLib = $event ? $event.id() : null"
+            [disableOrgs]="disableOrgs" [applyOrgId]="pickupLib" labelClass="visually-hidden"></eg-org-select>
         </div>
       </div>
       <div class="row mt-2">

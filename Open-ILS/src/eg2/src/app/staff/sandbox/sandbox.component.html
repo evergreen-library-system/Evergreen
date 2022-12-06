@@ -160,10 +160,13 @@
    <button class="btn btn-info" (click)="testToast()">Test Toast Message</button>
   </div>
   <div class="col-lg-2">
-    Org select with limit perms
+    <label for="limitPermsSelect" class="org-unit-select-label" i18n>Org select with limit perms</label>
   </div>
   <div class="col-lg-2">
-    <eg-org-select [limitPerms]="['REGISTER_WORKSTATION']">
+    <eg-org-select 
+      domId="limitPermsSelect"
+      labelClass="visually-hidden"
+      [limitPerms]="['REGISTER_WORKSTATION']">
     </eg-org-select>
   </div>
 </div>
@@ -496,8 +499,10 @@
 
 <div class="m-4">
   <div class="col-lg-4">
-    <h4>Org Unit Selector With Styled Orgs</h4>
-    <eg-org-select [orgClassCallback]="orgClassCallback">
+    <h4>
+      <label for="styledOrgSelect" class="org-unit-select-label" i18n>Org Unit Selector With Styled Orgs</label>
+    </h4>
+    <eg-org-select domId="styledOrgSelect" [orgClassCallback]="orgClassCallback" labelClass="visually-hidden">
     </eg-org-select>
   </div>
 </div>

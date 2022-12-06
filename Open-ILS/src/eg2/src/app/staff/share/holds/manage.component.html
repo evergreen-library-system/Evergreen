@@ -11,11 +11,14 @@
             name="active_pickup_lib" [(ngModel)]="activeFields.pickup_lib"/>
         </div>
       </div>
-      <div class="flex-1"><label class="form-label" i18n>Pickup Library:</label></div>
+      <div class="flex-1"><label for="pickupLibSelect" class="form-label" i18n>Pickup Library:</label></div>
     </div>
     <div class="col-lg-4">
       <!-- TODO: filter orgs as needed -->
-      <eg-org-select [initialOrgId]="hold.pickup_lib()"
+      <eg-org-select 
+        domId="pickupLibSelect"
+        labelClass="visually-hidden"
+        [initialOrgId]="hold.pickup_lib()"
         [disabled]="isBatch() && !activeFields.pickup_lib"
         (onChange)="pickupLibChanged($event)">
       </eg-org-select>
