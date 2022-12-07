@@ -487,6 +487,9 @@ a {
     max-width: 600px;
 }
 
+#adv_selector_pub_year {
+    margin-top: 5px;
+}
 
 h2.graphic880 {
     font-size: [% css_fonts.size_bigger %];
