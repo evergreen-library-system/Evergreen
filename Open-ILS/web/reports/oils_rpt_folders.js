@@ -304,7 +304,11 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 		id = node.treeId;
 		if( folder.parent() ) {
             var pnode = this.findNode(type, folder.parent());
-			pid = pnode.treeId;
+			if(!pnode){
+                console.error("An error occurred retrieving "+type+" folder #"+folder.parent());
+                continue;
+            }
+            pid = pnode.treeId;
             node.depth = pnode.depth + 1;
         } else {
             node.depth = 0;
