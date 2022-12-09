@@ -535,7 +535,7 @@ export class VolEditComponent implements OnInit {
         const copies = this.context.copyList();
 
         const badCopies = copies.filter(copy => {
-            return copy._dupe_barcode || !copy.barcode();
+            return copy._dupe_barcode || (!copy.isnew() && !copy.barcode());
         }).length > 0;
 
         if (badCopies) { return false; }
