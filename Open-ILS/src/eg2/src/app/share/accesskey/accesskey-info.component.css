@@ -1,0 +1,35 @@
+.modal-body .row {
+    margin: 0;
+}
+
+.modal-body .row:nth-of-type(odd) {
+    background: #f4f4f4;
+}
+
+.modal-body .row.shortcut-info {
+    background: #fff;
+    font-style: italic;
+}
+
+.modal-body .row-header {
+    font-weight: bold;
+}
+
+.shortcut-keycombo {
+    text-align: center;
+}
+
+kbd {
+    background-color:#e4e4e7;
+    border-radius:.2rem;
+    border: none;
+    box-shadow: 1px 1px 1px rgba(0,0,10,0.5);
+    color: #000;
+    margin: 0 .2em;
+    /* :first-letter requires a block-level element */
+    display: inline-block;
+}
+
+kbd:first-letter {
+    text-transform: uppercase;
+}
