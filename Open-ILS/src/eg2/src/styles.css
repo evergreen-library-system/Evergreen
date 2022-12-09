@@ -360,3 +360,59 @@ input.small {
   background-color: #f9dede;
   color: #212121;
 }
+
+/* Less intense, WCAG AAA-compliant badges */
+.badge {
+  font-weight: 400;
+  font-size: .9em;
+  line-height: .9em;
+  padding-top: .15em;
+}
+
+.badge-primary,
+.badge.text-bg-primary {
+  background: #cfe2ff;
+  color: #062C65;
+}
+
+.badge-secondary,
+.badge.text-bg-secondary {
+  background: #dee2e6;
+  color: #212529;
+}
+
+.badge-success,
+.badge.text-bg-success {
+  background: #dff0d8;
+  color: #003B35;
+}
+
+.badge-danger,
+.badge.text-bg-danger {
+  background: #f8d7da;
+  color: #58151c;
+}
+
+.badge-warning,
+.badge.text-bg-warning {
+  background: #ffe69c;
+  color: #723809;
+}
+
+.badge-info,
+.badge.text-bg-info {
+  background: #cff4fc;
+  color: #032830;
+}
+
+.badge-light,
+.badge.text-bg-light {
+  background: #e9ecef;
+  color: #212529;
+}
+
+.badge-dark,
+badge.text-bg-dark {
+  color: #000;
+  background: #adb5bd;
+}
