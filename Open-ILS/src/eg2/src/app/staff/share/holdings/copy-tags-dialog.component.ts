@@ -82,7 +82,8 @@ export class CopyTagsDialogComponent
                     '-or': [
                         {value: {'ilike': `%${term}%`}},
                         {label: {'ilike': `%${term}%`}}
-                    ]
+                    ],
+                    owner: this.org.ancestors(this.auth.user().ws_ou(), true)
                 },
                 {order_by: {acpt: 'label'}}
             ).pipe(map(copyTag => {
