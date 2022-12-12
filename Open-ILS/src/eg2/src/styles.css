@@ -243,7 +243,18 @@ a[target="_blank"]:not(:has(img)):after {
 
 .material-icons {
   /** default is 24px which is pretty chunky */
+  font-size: 1rem;
+  opacity: .65;
+  margin-right: .35em;
+  vertical-align: text-bottom;
+}
+
+.label-with-material-icon .material-icons,
+button .material-icons {
   font-size: 22px;
+  opacity: 1;
+  margin-right: 0;
+  vertical-align: baseline;
 }
 
 /* allow spans/labels to vertically orient with material icons */
