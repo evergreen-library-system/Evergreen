@@ -13,7 +13,7 @@
   </ng-container>
 </ng-template>
 
-<div id='staffcat-search-form'>
+<div id='staffcat-search-form' role="form">
 
   <div *ngIf="canBeHidden()" class="row pt-1 pe-2">
     <div class="col-lg-12 d-flex">
@@ -29,7 +29,7 @@
     </div>
   </div>
   
-  <div *ngIf="!hideForm()" class="row pt-3 pb-1 mb-1">
+  <div *ngIf="!hideForm()" class="row pt-3 pb-1 mb-1" role="search">
   <div class="col-lg-8">
     <ul ngbNav #searchTabs="ngbNav" [(activeId)]="searchTab" (navChange)="onNavChange($event)" [keyboard]="true" [roles]="false" role="tablist" class="nav-tabs">
       <li role="presentation" [ngbNavItem]="'term'">
@@ -88,7 +88,7 @@
               <div class="form-group">
                 <div *ngIf="idx === 0">
                   <label i18n class="form-label input-label" for='first-query-input'>Search Terms</label>
-                  <input type="text" class="form-control"
+                  <input type="search" class="form-control"
                     id='first-query-input'
                     [(ngModel)]="context.termSearch.query[idx]"
                     (keyup.enter)="searchByForm()"
@@ -96,7 +96,7 @@
                 </div>
                 <div *ngIf="idx > 0">
                   <label i18n class="form-label input-label" for='context-termSearch-query-{{idx}}'>Search Terms</label>
-                  <input type="text" class="form-control"
+                  <input type="search" class="form-control"
                     [(ngModel)]="context.termSearch.query[idx]"
                     (keyup.enter)="searchByForm()"
                     placeholder="Query..."/>
