@@ -251,6 +251,12 @@ table.list tr.selected td { /* deprecated? */
   border-color: var(--bs-body-bg);
 }
 
+/* less intense glyphicons */
+.glyphicon {
+  opacity: .65;
+  margin-right: .35em;
+}
+
 /* bootstrap alerts are heavily padded.  use this to reduce */
 .alert-less-pad {padding: 5px;}
 

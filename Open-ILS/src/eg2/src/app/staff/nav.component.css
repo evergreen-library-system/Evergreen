@@ -74,6 +74,13 @@
     border-bottom: 2px solid transparent;
 }
 
+/* override less intense icon styles used elsewhere */
+#staff-navbar .nav-item:first-child .material-icons {
+    font-size: 22px;
+    margin-right: 0;
+    opacity: 1;
+}
+
 /* align top of dropdown w/ bottom of nav */
 #staff-navbar .dropdown-menu {
     background-color: var(--nav-dropdown-bg);
