@@ -1,7 +1,7 @@
 
 <div class='eg-bib-summary card tight-card w-100' *ngIf="summary">
   <div class="card-header d-flex">
-    <div class="font-weight-bold">
+    <div id="bib-record-summary" class="font-weight-bold">
       <span i18n>Record Summary</span>
       <ng-container *ngIf="summary.record.deleted() === 't'">
         <span class="text-danger" i18n>(Deleted)</span>
