@@ -376,14 +376,15 @@
           <ng-container
             *ngFor="let ccvm of ctx.holdMeta.metarecord_filters.formats">
             <div class="form-check ml-3">
-              <input class="form-check-input" type="checkbox"
+              <label class="form-check-label ml-1" for="hold-include-format-{{ccvm.code()}}">
+              <input class="form-check-input" type="checkbox" id="hold-include-format-{{ccvm.code()}}"
                 [disabled]="ctx.holdMeta.metarecord_filters.formats.length === 1"
                 [(ngModel)]="ctx.selectedFormats.formats[ccvm.code()]"/>
               <img class="ml-1"
                 alt="{{iconFormatLabel(ccvm.code())}}"
                 title="{{iconFormatLabel(ccvm.code())}}"
                 src="/images/format_icons/icon_format/{{ccvm.code()}}.png"/>
-              <label class="form-check-label ml-1">
+              
                 {{ccvm.search_label() || ccvm.value()}}
               </label>
             </div>
@@ -397,10 +398,11 @@
           <ng-container
             *ngFor="let ccvm of ctx.holdMeta.metarecord_filters.langs">
             <div class="form-check ml-3">
-              <input class="form-check-input" type="checkbox"
+              <label class="form-check-label ml-1" for="hold-include-lang-{{ccvm.value()}}">
+              <input class="form-check-input" type="checkbox" id="hold-include-lang-{{ccvm.value()}}"
                 [disabled]="ctx.holdMeta.metarecord_filters.langs.length === 1"
                 [(ngModel)]="ctx.selectedFormats.langs[ccvm.code()]"/>
-              <label class="form-check-label ml-1">
+              
                 {{ccvm.search_label() || ccvm.value()}}
               </label>
             </div>
