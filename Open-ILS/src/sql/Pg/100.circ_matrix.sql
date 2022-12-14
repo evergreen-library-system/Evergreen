@@ -428,6 +428,7 @@ DECLARE
     circ_limit_set          config.circ_limit_set%ROWTYPE;
     hold_ratio              action.hold_stats%ROWTYPE;
     penalty_type            TEXT;
+    penalty_id              INT;
     items_out               INT;
     context_org_list        INT[];
     permit_renew            TEXT;
@@ -542,6 +543,10 @@ BEGIN
         penalty_type = '%CIRC%';
     END IF;
 
+    -- Look up any custom override for PATRON_EXCEEDS_FINES penalty
+    SELECT BTRIM(value,'"')::INT INTO penalty_id FROM actor.org_unit_ancestor_setting('circ.custom_penalty_override.PATRON_EXCEEDS_FINES', circ_ou);
+    IF NOT FOUND THEN penalty_id := 1; END IF;
+
     FOR standing_penalty IN
         SELECT  DISTINCT csp.*
           FROM  actor.usr_standing_penalty usp
@@ -554,7 +559,7 @@ BEGIN
                      OR csp.ignore_proximity < item_prox)
                 AND csp.block_list LIKE penalty_type LOOP
         -- override PATRON_EXCEEDS_FINES penalty for renewals based on org setting
-        IF renewal AND standing_penalty.name = 'PATRON_EXCEEDS_FINES' THEN
+        IF renewal AND standing_penalty.id = penalty_id THEN
             SELECT INTO permit_renew value FROM actor.org_unit_ancestor_setting('circ.permit_renew_when_exceeds_fines', circ_ou);
             IF permit_renew IS NOT NULL AND permit_renew ILIKE 'true' THEN
                 CONTINUE;
@@ -674,6 +679,7 @@ DECLARE
     max_items_out       permission.grp_penalty_threshold%ROWTYPE;
     max_lost            permission.grp_penalty_threshold%ROWTYPE;
     max_longoverdue     permission.grp_penalty_threshold%ROWTYPE;
+    penalty_id          INT;
     tmp_grp             INT;
     items_overdue       INT;
     items_out           INT;
@@ -692,12 +698,14 @@ BEGIN
 
     -- Max fines
     SELECT INTO tmp_org * FROM actor.org_unit WHERE id = context_org;
+    SELECT BTRIM(value,'"')::INT INTO penalty_id FROM actor.org_unit_ancestor_setting('circ.custom_penalty_override.PATRON_EXCEEDS_FINES', context_org);
+    IF NOT FOUND THEN penalty_id := 1; END IF;
 
     -- Fail if the user has a high fine balance
     LOOP
         tmp_grp := user_object.profile;
         LOOP
-            SELECT * INTO max_fines FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 1 AND org_unit = tmp_org.id;
+            SELECT * INTO max_fines FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = penalty_id AND org_unit = tmp_org.id;
 
             IF max_fines.threshold IS NULL THEN
                 SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
@@ -719,14 +727,16 @@ BEGIN
     END LOOP;
 
     IF max_fines.threshold IS NOT NULL THEN
-
+        -- The IN clause in all of the RETURN QUERY calls is used to surface now-stale non-custom penalties
+        -- so that the calling code can clear them at the boundary where custom penalties are configured.
+        -- Otherwise we would see orphaned "stock" system penalties that would never go away on their own.
         RETURN QUERY
             SELECT  *
               FROM  actor.usr_standing_penalty
               WHERE usr = match_user
                     AND org_unit = max_fines.org_unit
                     AND (stop_date IS NULL or stop_date > NOW())
-                    AND standing_penalty = 1;
+                    AND standing_penalty IN (1, penalty_id);
 
         SELECT INTO context_org_list ARRAY_AGG(id) FROM actor.org_unit_full_path( max_fines.org_unit );
 
@@ -754,20 +764,22 @@ BEGIN
         IF current_fines >= max_fines.threshold THEN
             new_sp_row.usr := match_user;
             new_sp_row.org_unit := max_fines.org_unit;
-            new_sp_row.standing_penalty := 1;
+            new_sp_row.standing_penalty := penalty_id;
             RETURN NEXT new_sp_row;
         END IF;
     END IF;
 
     -- Start over for max overdue
     SELECT INTO tmp_org * FROM actor.org_unit WHERE id = context_org;
+    SELECT BTRIM(value,'"')::INT INTO penalty_id FROM actor.org_unit_ancestor_setting('circ.custom_penalty_override.PATRON_EXCEEDS_OVERDUE_COUNT', context_org);
+    IF NOT FOUND THEN penalty_id := 2; END IF;
 
     -- Fail if the user has too many overdue items
     LOOP
         tmp_grp := user_object.profile;
         LOOP
 
-            SELECT * INTO max_overdue FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 2 AND org_unit = tmp_org.id;
+            SELECT * INTO max_overdue FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = penalty_id AND org_unit = tmp_org.id;
 
             IF max_overdue.threshold IS NULL THEN
                 SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
@@ -796,7 +808,7 @@ BEGIN
               WHERE usr = match_user
                     AND org_unit = max_overdue.org_unit
                     AND (stop_date IS NULL or stop_date > NOW())
-                    AND standing_penalty = 2;
+                    AND standing_penalty IN (2, penalty_id);
 
         SELECT  INTO items_overdue COUNT(*)
           FROM  action.circulation circ
@@ -809,19 +821,21 @@ BEGIN
         IF items_overdue >= max_overdue.threshold::INT THEN
             new_sp_row.usr := match_user;
             new_sp_row.org_unit := max_overdue.org_unit;
-            new_sp_row.standing_penalty := 2;
+            new_sp_row.standing_penalty := penalty_id;
             RETURN NEXT new_sp_row;
         END IF;
     END IF;
 
     -- Start over for max out
     SELECT INTO tmp_org * FROM actor.org_unit WHERE id = context_org;
+    SELECT BTRIM(value,'"')::INT INTO penalty_id FROM actor.org_unit_ancestor_setting('circ.custom_penalty_override.PATRON_EXCEEDS_CHECKOUT_COUNT', context_org);
+    IF NOT FOUND THEN penalty_id := 3; END IF;
 
     -- Fail if the user has too many checked out items
     LOOP
         tmp_grp := user_object.profile;
         LOOP
-            SELECT * INTO max_items_out FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 3 AND org_unit = tmp_org.id;
+            SELECT * INTO max_items_out FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = penalty_id AND org_unit = tmp_org.id;
 
             IF max_items_out.threshold IS NULL THEN
                 SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
@@ -852,7 +866,7 @@ BEGIN
               WHERE usr = match_user
                     AND org_unit = max_items_out.org_unit
                     AND (stop_date IS NULL or stop_date > NOW())
-                    AND standing_penalty = 3;
+                    AND standing_penalty IN (3, penalty_id);
 
         SELECT  INTO items_out COUNT(*)
           FROM  action.circulation circ
@@ -887,20 +901,22 @@ BEGIN
            IF items_out >= max_items_out.threshold::INT THEN
             new_sp_row.usr := match_user;
             new_sp_row.org_unit := max_items_out.org_unit;
-            new_sp_row.standing_penalty := 3;
+            new_sp_row.standing_penalty := penalty_id;
             RETURN NEXT new_sp_row;
            END IF;
     END IF;
 
     -- Start over for max lost
     SELECT INTO tmp_org * FROM actor.org_unit WHERE id = context_org;
+    SELECT BTRIM(value,'"')::INT INTO penalty_id FROM actor.org_unit_ancestor_setting('circ.custom_penalty_override.PATRON_EXCEEDS_LOST_COUNT', context_org);
+    IF NOT FOUND THEN penalty_id := 5; END IF;
 
     -- Fail if the user has too many lost items
     LOOP
         tmp_grp := user_object.profile;
         LOOP
 
-            SELECT * INTO max_lost FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 5 AND org_unit = tmp_org.id;
+            SELECT * INTO max_lost FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = penalty_id AND org_unit = tmp_org.id;
 
             IF max_lost.threshold IS NULL THEN
                 SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
@@ -929,7 +945,7 @@ BEGIN
             WHERE usr = match_user
                 AND org_unit = max_lost.org_unit
                 AND (stop_date IS NULL or stop_date > NOW())
-                AND standing_penalty = 5;
+                AND standing_penalty IN (5, penalty_id);
 
         SELECT  INTO items_lost COUNT(*)
         FROM  action.circulation circ
@@ -942,13 +958,15 @@ BEGIN
         IF items_lost >= max_lost.threshold::INT AND 0 < max_lost.threshold::INT THEN
             new_sp_row.usr := match_user;
             new_sp_row.org_unit := max_lost.org_unit;
-            new_sp_row.standing_penalty := 5;
+            new_sp_row.standing_penalty := penalty_id;
             RETURN NEXT new_sp_row;
         END IF;
     END IF;
 
     -- Start over for max longoverdue
     SELECT INTO tmp_org * FROM actor.org_unit WHERE id = context_org;
+    SELECT BTRIM(value,'"')::INT INTO penalty_id FROM actor.org_unit_ancestor_setting('circ.custom_penalty_override.PATRON_EXCEEDS_LONGOVERDUE_COUNT', context_org);
+    IF NOT FOUND THEN penalty_id := 35; END IF;
 
     -- Fail if the user has too many longoverdue items
     LOOP
@@ -958,7 +976,7 @@ BEGIN
             SELECT * INTO max_longoverdue 
                 FROM permission.grp_penalty_threshold 
                 WHERE grp = tmp_grp AND 
-                    penalty = 35 AND 
+                    penalty = penalty_id AND 
                     org_unit = tmp_org.id;
 
             IF max_longoverdue.threshold IS NULL THEN
@@ -990,7 +1008,7 @@ BEGIN
             WHERE usr = match_user
                 AND org_unit = max_longoverdue.org_unit
                 AND (stop_date IS NULL or stop_date > NOW())
-                AND standing_penalty = 35;
+                AND standing_penalty IN (35, penalty_id);
 
         SELECT INTO items_longoverdue COUNT(*)
         FROM action.circulation circ
@@ -1005,7 +1023,7 @@ BEGIN
                 AND 0 < max_longoverdue.threshold::INT THEN
             new_sp_row.usr := match_user;
             new_sp_row.org_unit := max_longoverdue.org_unit;
-            new_sp_row.standing_penalty := 35;
+            new_sp_row.standing_penalty := penalty_id;
             RETURN NEXT new_sp_row;
         END IF;
     END IF;
@@ -1013,12 +1031,14 @@ BEGIN
 
     -- Start over for collections warning
     SELECT INTO tmp_org * FROM actor.org_unit WHERE id = context_org;
+    SELECT BTRIM(value,'"')::INT INTO penalty_id FROM actor.org_unit_ancestor_setting('circ.custom_penalty_override.PATRON_EXCEEDS_COLLECTIONS_WARNING', context_org);
+    IF NOT FOUND THEN penalty_id := 4; END IF;
 
     -- Fail if the user has a collections-level fine balance
     LOOP
         tmp_grp := user_object.profile;
         LOOP
-            SELECT * INTO max_fines FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 4 AND org_unit = tmp_org.id;
+            SELECT * INTO max_fines FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = penalty_id AND org_unit = tmp_org.id;
 
             IF max_fines.threshold IS NULL THEN
                 SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
@@ -1047,7 +1067,7 @@ BEGIN
               WHERE usr = match_user
                     AND org_unit = max_fines.org_unit
                     AND (stop_date IS NULL or stop_date > NOW())
-                    AND standing_penalty = 4;
+                    AND standing_penalty IN (4, penalty_id);
 
         SELECT INTO context_org_list ARRAY_AGG(id) FROM actor.org_unit_full_path( max_fines.org_unit );
 
@@ -1075,13 +1095,15 @@ BEGIN
         IF current_fines >= max_fines.threshold THEN
             new_sp_row.usr := match_user;
             new_sp_row.org_unit := max_fines.org_unit;
-            new_sp_row.standing_penalty := 4;
+            new_sp_row.standing_penalty := penalty_id;
             RETURN NEXT new_sp_row;
         END IF;
     END IF;
 
     -- Start over for in collections
     SELECT INTO tmp_org * FROM actor.org_unit WHERE id = context_org;
+    SELECT BTRIM(value,'"')::INT INTO penalty_id FROM actor.org_unit_ancestor_setting('circ.custom_penalty_override.PATRON_IN_COLLECTIONS', context_org);
+    IF NOT FOUND THEN penalty_id := 30; END IF;
 
     -- Remove the in-collections penalty if the user has paid down enough
     -- This penalty is different, because this code is not responsible for creating 
@@ -1089,7 +1111,7 @@ BEGIN
     LOOP
         tmp_grp := user_object.profile;
         LOOP
-            SELECT * INTO max_fines FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = 30 AND org_unit = tmp_org.id;
+            SELECT * INTO max_fines FROM permission.grp_penalty_threshold WHERE grp = tmp_grp AND penalty = penalty_id AND org_unit = tmp_org.id;
 
             IF max_fines.threshold IS NULL THEN
                 SELECT parent INTO tmp_grp FROM permission.grp_tree WHERE id = tmp_grp;
@@ -1139,7 +1161,7 @@ BEGIN
         IF current_fines IS NULL OR current_fines <= max_fines.threshold THEN
             -- patron has paid down enough
 
-            SELECT INTO tmp_penalty * FROM config.standing_penalty WHERE id = 30;
+            SELECT INTO tmp_penalty * FROM config.standing_penalty WHERE id = penalty_id;
 
             IF tmp_penalty.org_depth IS NOT NULL THEN
 
@@ -1157,7 +1179,7 @@ BEGIN
                           WHERE usr = match_user
                                 AND org_unit = tmp_org.id
                                 AND (stop_date IS NULL or stop_date > NOW())
-                                AND standing_penalty = 30;
+                                AND standing_penalty IN (30, penalty_id);
 
                     IF tmp_org.parent_ou IS NULL THEN
                         EXIT;
@@ -1177,7 +1199,7 @@ BEGIN
                       WHERE usr = match_user
                             AND org_unit = max_fines.org_unit
                             AND (stop_date IS NULL or stop_date > NOW())
-                            AND standing_penalty = 30;
+                            AND standing_penalty IN (30, penalty_id);
             END IF;
     
         END IF;
@@ -1187,8 +1209,6 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE plpgsql;
-
-
 
 COMMIT;
 
