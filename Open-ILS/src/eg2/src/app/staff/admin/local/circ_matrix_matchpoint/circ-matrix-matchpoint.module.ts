@@ -23,7 +23,7 @@ import {CircMatrixMatchpointDialogComponent} from './circ-matrix-matchpoint-dial
   ]
 })
 
-export class CircMatrixMathpointModule {
+export class CircMatrixMatchpointModule {
 }
 
 

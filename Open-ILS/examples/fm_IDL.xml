@@ -366,12 +366,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Attribute Definition" name="definition" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Import Error" name="import_error" reporter:datatype="link"/>
 			<field reporter:label="Import Error Detail" name="error_detail" reporter:datatype="text"/>
-			<field reporter:label="Final Target Copy" name="imported_as" reporter:datatype="link"/>
+			<field reporter:label="Final Target Item" name="imported_as" reporter:datatype="link"/>
 			<field reporter:label="Import Time" name="import_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="int"/>
 			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="int"/>
 			<field reporter:label="Call Number" name="call_number" reporter:datatype="text"/>
-			<field reporter:label="Copy Number" name="copy_number" reporter:datatype="int"/>
+			<field reporter:label="Item Number" name="copy_number" reporter:datatype="int"/>
 			<field reporter:label="Status" name="status" reporter:datatype="int"/>
 			<field reporter:label="Shelving Location" name="location" reporter:datatype="int"/>
 			<field reporter:label="Circulate" name="circulate" reporter:datatype="bool"/>
@@ -439,7 +439,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Public Note" name="pub_note" reporter:datatype="text"/>
 			<field reporter:label="Private Note" name="priv_note" reporter:datatype="text"/>
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="text"/>
-			<field reporter:label="Copy Number" name="copy_number" reporter:datatype="text"/>
+			<field reporter:label="Item Number" name="copy_number" reporter:datatype="text"/>
 			<field reporter:label="Overlay Match ID" name="internal_id" reporter:datatype="text"/>
 			<field reporter:label="Stat Cat Data" name="stat_cat_data" reporter:datatype="text"/>
 			<field reporter:label="Parts Data" name="parts_data" reporter:datatype="text"/>
@@ -1865,7 +1865,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="ccpbt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::copy_bucket_type" oils_persist:tablename="container.copy_bucket_type" reporter:label="Copy Bucket Type" oils_persist:field_safe="true">
+	<class id="ccpbt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::copy_bucket_type" oils_persist:tablename="container.copy_bucket_type" reporter:label="Item Bucket Type" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field reporter:label="Code" name="code" reporter:selector="name" reporter:datatype="id" oils_obj:required="true"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
@@ -1913,12 +1913,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
-	<class id="bpbcm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="biblio::peer_bib_copy_map" oils_persist:tablename="biblio.peer_bib_copy_map" reporter:label="Bibliographic Record Peer Copy Map">
+	<class id="bpbcm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="biblio::peer_bib_copy_map" oils_persist:tablename="biblio.peer_bib_copy_map" reporter:label="Bibliographic Record Peer Item Map">
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.peer_bib_copy_map_id_seq">
 			<field reporter:label="ID" name="id" reporter:selector="name" reporter:datatype="id"/>
 			<field reporter:label="Peer Type" name="peer_type" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Peer Record" name="peer_record" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Target Copy" name="target_copy" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Target Item" name="target_copy" reporter:datatype="link" oils_obj:required="true"/>
 		</fields>
 		<links>
 			<link field="peer_type" reltype="has_a" key="id" map="" class="bpt"/>
@@ -2026,12 +2026,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Renewal?" name="is_renewal" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="float" oils_obj:required="true"/>
-			<field reporter:label="Copy Circ Lib" name="copy_circ_lib" reporter:datatype="float" oils_obj:required="true"/>
-			<field reporter:label="Copy Owning Lib" name="copy_owning_lib" reporter:datatype="float" oils_obj:required="true"/>
-			<field reporter:label="User Home Lib" name="user_home_ou" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Item Circ Library" name="copy_circ_lib" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Item Owning Library" name="copy_owning_lib" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="User Home Library" name="user_home_ou" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Permission Group" name="grp" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" reporter:datatype="float" oils_obj:required="true"/>
-			<field reporter:label="Copy Location" name="copy_location" reporter:datatype="float" oils_obj:required="true"/>
+			<field reporter:label="Shelving Location" name="copy_location" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="MARC Type" name="marc_type" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="MARC Form" name="marc_form" reporter:datatype="float" oils_obj:required="true"/>
 			<field reporter:label="MARC Bib Level" name="marc_bib_level" reporter:datatype="float" oils_obj:required="true"/>
@@ -2100,7 +2100,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Transit Range" name="transit_range" reporter:datatype="link"/>
 			<field reporter:label="Max Holds" name="max_holds" reporter:datatype="int"/>
 			<field reporter:label="Max includes Frozen" name="include_frozen_holds" reporter:datatype="bool"/>
-			<field reporter:label="Copy Age Hold Protection Rule" name="age_hold_protect_rule" reporter:datatype="link"/>
+			<field reporter:label="Item Age Hold Protection Rule" name="age_hold_protect_rule" reporter:datatype="link"/>
 			<field reporter:label="Stop Blocked User?" name="stop_blocked_user" reporter:datatype="bool"/>
 			<field name="description" reporter:datatype="text" reporter:label="Description"/>
 		</fields>
@@ -2135,13 +2135,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Matchpoint ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Renewal?" name="is_renewal" reporter:datatype="bool"/>
 			<field reporter:label="Active?" name="active" reporter:datatype="bool"/>
-			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="org_unit" oils_obj:required="true"/>
-			<field reporter:label="Copy Circ Lib" name="copy_circ_lib" reporter:datatype="org_unit"/>
-			<field reporter:label="Copy Owning Lib" name="copy_owning_lib" reporter:datatype="org_unit"/>
-			<field reporter:label="User Home Lib" name="user_home_ou" reporter:datatype="org_unit"/>
+			<field reporter:label="Checkout Library" name="org_unit" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Item Circ Library" name="copy_circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Item Owning Library" name="copy_owning_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="User Home Library" name="user_home_ou" reporter:datatype="org_unit"/>
 			<field reporter:label="Permission Group" name="grp" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" oils_persist:primitive="string" reporter:datatype="link"/>
-			<field reporter:label="Copy Location" name="copy_location" reporter:datatype="link"/>
+			<field reporter:label="Shelving Location" name="copy_location" reporter:datatype="link"/>
 			<field reporter:label="MARC Type" name="marc_type" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="MARC Form" name="marc_form" oils_persist:primitive="string" reporter:datatype="link"/>
 			<field reporter:label="MARC Bib Level" name="marc_bib_level" oils_persist:primitive="string" reporter:datatype="link"/>
@@ -2159,8 +2159,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Renewals Override" name="renewals" reporter:datatype="int"/>
 			<field reporter:label="Grace Period Override" name="grace_period" reporter:datatype="interval"/>
 			<field reporter:label="Script Test" name="script_test" reporter:datatype="text"/>
-			<field name="total_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Total Copy/Hold Ratio"/>
-			<field name="available_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Available Copy/Hold Ratio"/>
+			<field name="total_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Total Item/Hold Ratio"/>
+			<field name="available_copy_hold_ratio" reporter:datatype="float" reporter:label="Minimum Available Item/Hold Ratio"/>
 			<field name="description" reporter:datatype="text" reporter:label="Description"/>
 			<field name="renew_extends_due_date" reporter:datatype="bool" reporter:label="Early Renewal Extends Due Date"/>
 			<field name="renew_extend_min_interval" reporter:datatype="interval" reporter:label="Early Renewal Minimum Duration Interval"/>
@@ -2285,11 +2285,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="cclsacpl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_limit_set_copy_loc_map" oils_persist:tablename="config.circ_limit_set_copy_loc_map" reporter:label="Circulation Limit Set Copy Location Map">
+	<class id="cclsacpl" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::circ_limit_set_copy_loc_map" oils_persist:tablename="config.circ_limit_set_copy_loc_map" reporter:label="Circulation Limit Set Shelving Location Map">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.circ_limit_set_copy_loc_map_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Limit Set" name="limit_set" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Copy Location" name="copy_loc" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Shelving Location" name="copy_loc" reporter:datatype="link" oils_obj:required="true"/>
 		</fields>
 		<links>
 			<link field="limit_set" reltype="has_a" key="id" map="" class="ccls"/>
@@ -2653,9 +2653,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="atc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::transit_copy" oils_persist:tablename="action.transit_copy" reporter:core="true" reporter:label="Copy Transit">
+	<class id="atc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::transit_copy" oils_persist:tablename="action.transit_copy" reporter:core="true" reporter:label="Item Transit">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
-			<field reporter:label="Pretransit Copy Status" name="copy_status" reporter:datatype="bool" oils_obj:required="true"/>
+			<field reporter:label="Pretransit Item Status" name="copy_status" reporter:datatype="bool" oils_obj:required="true"/>
 			<field reporter:label="Destination" name="dest" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Receive Date/Time" name="dest_recv_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Transit ID" name="id" reporter:datatype="id"/>
@@ -2664,7 +2664,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Source" name="source" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Prev Destination" name="prev_dest" reporter:datatype="org_unit"/>
 			<field reporter:label="Send Date/Time" name="source_send_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Transited Copy" name="target_copy" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Transited Item" name="target_copy" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Hold Transit" name="hold_transit_copy" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
@@ -2721,7 +2721,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="ccbi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::copy_bucket_item" oils_persist:tablename="container.copy_bucket_item" reporter:label="Copy Bucket Item">
+	<class id="ccbi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::copy_bucket_item" oils_persist:tablename="container.copy_bucket_item" reporter:label="Item Bucket Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.copy_bucket_item_id_seq">
 			<field name="bucket" reporter:datatype="link" oils_obj:required="true"/>
 			<field name="id" reporter:datatype="id"/>
@@ -2743,7 +2743,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="ccbin" controller="open-ils.cstore" oils_obj:fieldmapper="container::copy_bucket_item_note" oils_persist:tablename="container.copy_bucket_item_note" reporter:label="Copy Bucket Item Note">
+	<class id="ccbin" controller="open-ils.cstore" oils_obj:fieldmapper="container::copy_bucket_item_note" oils_persist:tablename="container.copy_bucket_item_note" reporter:label="Item Bucket Item Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.copy_bucket_item_note_id_seq">
 			<field name="id" reporter:datatype="id"/>
 			<field name="item" reporter:datatype="link" oils_obj:required="true"/>
@@ -3219,9 +3219,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Hold Priority" name="priority" reporter:datatype="int"/>
 			<field reporter:label="Hold Cut-in-line State" name="cut" reporter:datatype="int"/>
 			<field reporter:label="Hold Selection Depth" name="depth" reporter:datatype="int"/>
-			<field reporter:label="Copy Has Circulated From Home Lately" name="htime" reporter:datatype="int"/>
+			<field reporter:label="Item Has Circulated From Home Lately" name="htime" reporter:datatype="int"/>
 			<field reporter:label="Hold Request Time" name="rtime" reporter:datatype="int"/>
-			<field reporter:label="Copy Has Been Home At All Lately" name="shtime" reporter:datatype="int"/>
+			<field reporter:label="Item Has Been Home At All Lately" name="shtime" reporter:datatype="int"/>
 		</fields>
 		<links>
 		</links>
@@ -3494,7 +3494,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="acn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::call_number" oils_persist:tablename="asset.call_number" reporter:label="Call Number/Volume">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.call_number_id_seq">
-			<field reporter:label="Copies" name="copies" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Items" name="copies" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Create Date/Time" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Creating User" name="creator" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Is Deleted" name="deleted" reporter:datatype="bool"/>
@@ -3782,7 +3782,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			</actions>
 		</permacrud>
 	</class>
-	<class id="acpm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_part_map" oils_persist:tablename="asset.copy_part_map" reporter:label="Copy Monograph Part Map">
+	<class id="acpm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_part_map" oils_persist:tablename="asset.copy_part_map" reporter:label="Item Monograph Part Map">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_part_map_id_seq">
 			<field name="id" reporter:datatype="id"/>
 			<field name="target_copy" reporter:datatype="link" oils_obj:required="true"/>
@@ -4302,12 +4302,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="name" reltype="has_a" key="name" map="" class="coust"/>
 		</links>
 	</class>
-	<class id="acpn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_note" oils_persist:tablename="asset.copy_note" reporter:label="Copy Note">
+	<class id="acpn" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_note" oils_persist:tablename="asset.copy_note" reporter:label="Item Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_note_id_seq">
 			<field reporter:label="Note Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Note Creator" name="creator" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Note ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Copy" name="owning_copy" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Item" name="owning_copy" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Is OPAC Visible?" name="pub" reporter:datatype="bool"/>
 			<field reporter:label="Note Title" name="title" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Note Content" name="value" reporter:datatype="text" oils_obj:required="true"/>
@@ -5078,7 +5078,7 @@ SELECT  usr,
 			<field reporter:label="Unrecovered Debt" name="unrecovered" reporter:datatype="bool"/>
 			<field reporter:label="Shelving Location" name="copy_location" reporter:datatype="link"/>
 			<field reporter:label="Archived Patron Stat-Cat Entries" name="aaactsc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Archived Copy Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Archived Item Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Auto Renewal" name="auto_renewal" reporter:datatype="bool"/>
 			<field reporter:label="Remaining Auto Renewals" name="auto_renewal_remaining" reporter:datatype="int"/>
 		</fields>
@@ -5171,7 +5171,7 @@ SELECT  usr,
 			<field reporter:label="Billing Totals" name="billing_total" oils_persist:virtual="true" reporter:datatype="money"/>
 			<field reporter:label="Payment Totals" name="payment_total" oils_persist:virtual="true" reporter:datatype="money"/>
 			<field reporter:label="Archived Patron Stat-Cat Entries" name="aaactsc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Archived Copy Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Archived Item Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Linked Active Circulation" name="active_circ" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Linked Aged Circulation" name="aged_circ" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Auto Renewal" name="auto_renewal" reporter:datatype="bool"/>
@@ -5252,11 +5252,11 @@ SELECT  usr,
 			<field reporter:label="Patron Birth Year" name="usr_birth_year" reporter:datatype="int"/>
 			<field reporter:label="Call Number" name="copy_call_number" reporter:datatype="link"/>
 			<field reporter:label="Shelving Location" name="copy_location" reporter:datatype="link"/>
-			<field reporter:label="Copy Owning Library" name="copy_owning_lib" reporter:datatype="link"/>
-			<field reporter:label="Copy Circulating Library" name="copy_circ_lib" reporter:datatype="link"/>
+			<field reporter:label="Item Owning Library" name="copy_owning_lib" reporter:datatype="link"/>
+			<field reporter:label="Item Circulating Library" name="copy_circ_lib" reporter:datatype="link"/>
 			<field reporter:label="Bib Record" name="copy_bib_record" reporter:datatype="link"/>
 			<field reporter:label="Archived Patron Stat-Cat Entries" name="aaactsc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Archived Copy Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Archived Item Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Linked Active Circulation" name="active_circ" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Linked Aged Circulation" name="aged_circ" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Auto Renewal" name="auto_renewal" reporter:datatype="bool"/>
@@ -5342,11 +5342,11 @@ SELECT  usr,
 			<field reporter:label="Patron Birth Year" name="usr_birth_year" reporter:datatype="int"/>
 			<field reporter:label="Call Number" name="copy_call_number" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Shelving Location" name="copy_location" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Copy Owning Library" name="copy_owning_lib" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Copy Circulating Library" name="copy_circ_lib" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Item Owning Library" name="copy_owning_lib" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Item Circulating Library" name="copy_circ_lib" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Bib Record" name="copy_bib_record" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Archived Patron Stat-Cat Entries" name="aaactsc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Archived Copy Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Archived Item Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Auto Renewal" name="auto_renewal" reporter:datatype="bool" oils_obj:required="true"/>
 			<field reporter:label="Remaining Auto Renewals" name="auto_renewal_remaining" reporter:datatype="int"/>
 		</fields>
@@ -5695,7 +5695,7 @@ SELECT  usr,
 			<link field="bucket" reltype="has_a" key="id" map="" class="cbreb"/>
 		</links>
 	</class>
-	<class id="ahcm" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_copy_map" oils_persist:tablename="action.hold_copy_map" reporter:label="Hold Copy Map">
+	<class id="ahcm" controller="open-ils.cstore" oils_obj:fieldmapper="action::hold_copy_map" oils_persist:tablename="action.hold_copy_map" reporter:label="Hold Item Map">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_copy_map_id_seq">
 			<field name="hold" reporter:datatype="link" oils_obj:required="true"/>
 			<field name="id" reporter:datatype="id"/>
@@ -5746,8 +5746,8 @@ SELECT  usr,
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
 			<field reporter:label="Is OPAC Visible?" name="opac_visible" reporter:datatype="bool"/>
 			<field reporter:label="Owning Org Unit" name="owning_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
-			<field reporter:label="Copy Location Orders" name="orders" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Copies" name="copies" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Shelving Location Orders" name="orders" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Items" name="copies" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Label Prefix" name="label_prefix" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Label Suffix" name="label_suffix" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="Checkin Alert" name="checkin_alert" reporter:datatype="bool"/>
@@ -5769,7 +5769,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="acplg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location_group" oils_persist:tablename="asset.copy_location_group" reporter:label="Copy/Shelving Location Group">
+	<class id="acplg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location_group" oils_persist:tablename="asset.copy_location_group" reporter:label="Item/Shelving Location Group">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_location_group_id_seq">
 			<field reporter:label="ID" name="id" reporter:selector="name" reporter:datatype="id"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
@@ -5777,7 +5777,7 @@ SELECT  usr,
 			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Position" name="pos" reporter:datatype="int"/>
 			<field reporter:label="Display Above Orgs" name="top" reporter:datatype="bool"/>
-			<field reporter:label="Copy Location Mappings" name="location_maps" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Shelving Location Mappings" name="location_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -5792,11 +5792,11 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="acplgm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location_group_map" oils_persist:tablename="asset.copy_location_group_map" reporter:label="Copy/Shelving Location Group Map">
+	<class id="acplgm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location_group_map" oils_persist:tablename="asset.copy_location_group_map" reporter:label="Item/Shelving Location Group Map">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_location_group_map_id_seq">
 			<field reporter:label="ID" name="id" reporter:selector="name" reporter:datatype="id"/>
 			<field reporter:label="Group" name="lgroup" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Copy Location" name="location" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Shelving Location" name="location" reporter:datatype="link" oils_obj:required="true"/>
 		</fields>
 		<links>
 			<link field="lgroup" reltype="has_a" key="id" map="" class="acplg"/>
@@ -5818,7 +5818,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="acplo" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location_order" oils_persist:tablename="asset.copy_location_order" reporter:label="Copy/Shelving Location Order">
+	<class id="acplo" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_location_order" oils_persist:tablename="asset.copy_location_order" reporter:label="Item/Shelving Location Order">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_location_order_id_seq">
 			<field reporter:label="Location Order ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Location ID" name="location" reporter:datatype="link" oils_obj:required="true"/>
@@ -5996,7 +5996,7 @@ SELECT  usr,
 			<field reporter:label="Legacy Record Entry" name="record_entry" reporter:datatype="link"/>
 			<field reporter:label="Summary Method" name="summary_method" reporter:datatype="text"/>
 			<field reporter:label="Subscription" name="subscription" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Holding Lib" name="holding_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Holding Library" name="holding_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Receive Call Number" name="receive_call_number" reporter:datatype="link"/>
 			<field reporter:label="Receive Unit Template" name="receive_unit_template" reporter:datatype="link"/>
@@ -6178,7 +6178,7 @@ SELECT  usr,
 			<field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Circulation Modifier" name="circ_modifier" reporter:datatype="link"/>
 			<field reporter:label="Can Circulate" name="circulate" reporter:datatype="bool"/>
-			<field reporter:label="Copy Number on Volume" name="copy_number" reporter:datatype="text"/>
+			<field reporter:label="Item Number on Volume" name="copy_number" reporter:datatype="text"/>
 			<field reporter:label="Creation Date/Time" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Active Date/Time" name="active_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Creating User" name="creator" reporter:datatype="link" oils_obj:required="true"/>
@@ -6197,15 +6197,15 @@ SELECT  usr,
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="bool"/>
 			<field reporter:label="Price" name="price" reporter:datatype="money"/>
 			<field reporter:label="Is Reference" name="ref" reporter:datatype="bool"/>
-			<field reporter:label="Copy Status" name="status" reporter:datatype="link"/>
-			<field reporter:label="Copy Status Changed Time" name="status_changed_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Item Status" name="status" reporter:datatype="link"/>
+			<field reporter:label="Item Status Changed Time" name="status_changed_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool"/>
 			<field reporter:label="Floating Group" name="floating" reporter:datatype="link"/>
 			<field reporter:label="Cost" name="cost" reporter:datatype="money"/>
 			<field reporter:label="Sort Key" name="sort_key" reporter:datatype="text"/>
 			<field reporter:label="Summary Contents" name="summary_contents" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Detailed Contents" name="detailed_contents" reporter:datatype="text" oils_obj:required="true"/>
-			<field reporter:label="Copy Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Item Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Stat-Cat entry maps" name="stat_cat_entry_copy_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations" name="circulations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Total Circulations" name="total_circ_count" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -6443,7 +6443,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="ascecm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::stat_cat_entry_copy_map" oils_persist:tablename="asset.stat_cat_entry_copy_map" reporter:label="Statistical Category Entry Copy Map">
+	<class id="ascecm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::stat_cat_entry_copy_map" oils_persist:tablename="asset.stat_cat_entry_copy_map" reporter:label="Statistical Category Entry Item Map">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.stat_cat_entry_copy_map_id_seq">
 			<field name="id" reporter:datatype="id"/>
 			<field name="owning_copy" reporter:datatype="link" oils_obj:required="true"/>
@@ -6552,11 +6552,11 @@ SELECT  usr,
 	<class id="aoupa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_unit_proximity_adjustment" oils_persist:tablename="actor.org_unit_proximity_adjustment" reporter:label="Org Unit Proximity Adjustment">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_proximity_adjustment_id_seq">
 			<field name="id" reporter:label="ID" reporter:datatype="id"/>
-			<field name="item_circ_lib" reporter:label="Item Circ Lib" reporter:datatype="org_unit"/>
-			<field name="item_owning_lib" reporter:label="Item Owning Lib" reporter:datatype="org_unit"/>
-			<field name="hold_pickup_lib" reporter:label="Hold Pickup Lib" reporter:datatype="org_unit"/>
-			<field name="hold_request_lib" reporter:label="Hold Request Lib" reporter:datatype="org_unit"/>
-			<field name="copy_location" reporter:label="Copy Location" reporter:datatype="link"/>
+			<field name="item_circ_lib" reporter:label="Item Circ Library" reporter:datatype="org_unit"/>
+			<field name="item_owning_lib" reporter:label="Item Owning Library" reporter:datatype="org_unit"/>
+			<field name="hold_pickup_lib" reporter:label="Hold Pickup Library" reporter:datatype="org_unit"/>
+			<field name="hold_request_lib" reporter:label="Hold Request Library" reporter:datatype="org_unit"/>
+			<field name="copy_location" reporter:label="Shelving Location" reporter:datatype="link"/>
 			<field name="circ_mod" reporter:label="Circ Modifier" reporter:datatype="link"/>
 			<field name="pos" reporter:label="Position" reporter:datatype="int" oils_obj:required="true"/>
 			<field name="absolute_adjustment" reporter:label="Absolute adjustment?" reporter:datatype="bool"/>
@@ -6730,7 +6730,7 @@ SELECT  usr,
 			<field reporter:label="Status" name="status" oils_persist:virtual="true"/>
 			<field reporter:label="Transit" name="transit" oils_persist:virtual="true"/>
 			<field reporter:label="Capture Date/Time" name="capture_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Currently Targeted Copy" name="current_copy" reporter:datatype="link"/>
+			<field reporter:label="Currently Targeted Item" name="current_copy" reporter:datatype="link"/>
 			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool"/>
 			<field reporter:label="Hold Expire Date/Time" name="expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Fulfilling Library" name="fulfillment_lib" reporter:datatype="org_unit"/>
@@ -6758,7 +6758,7 @@ SELECT  usr,
 			<field reporter:label="Notify Count" name="notify_count" oils_persist:virtual="true" reporter:datatype="int"/>
 			<field reporter:label="Notifications" name="notifications" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Bib Record link" name="bib_rec" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Eligible Copies" name="eligible_copies" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Eligible Items" name="eligible_copies" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Currently Frozen" name="frozen" reporter:datatype="bool"/>
 			<field reporter:label="Activation Date" name="thaw_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Shelf Time" name="shelf_time" reporter:datatype="timestamp"/>
@@ -6768,7 +6768,7 @@ SELECT  usr,
 			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool"/>
 			<field reporter:label="Shelf Expire Time" name="shelf_expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Notes" name="notes" reporter:datatype="link" oils_persist:virtual="true"/>
-			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Current Shelf Library" name="current_shelf_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Behind Desk" name="behind_desk" reporter:datatype="bool"/>
 			<field reporter:label="Acquisition Request" name="acq_request" reporter:datatype="link"/>
 			<field reporter:label="Hopeless Date" name="hopeless_date" reporter:datatype="timestamp"/>
@@ -6887,7 +6887,7 @@ SELECT  usr,
 			<field reporter:label="Status" name="status" oils_persist:virtual="true"/>
 			<field reporter:label="Transit" name="transit" oils_persist:virtual="true"/>
 			<field reporter:label="Capture Date/Time" name="capture_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Currently Targeted Copy" name="current_copy" reporter:datatype="link"/>
+			<field reporter:label="Currently Targeted Item" name="current_copy" reporter:datatype="link"/>
 			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool"/>
 			<field reporter:label="Hold Expire Date/Time" name="expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Fulfilling Library" name="fulfillment_lib" reporter:datatype="org_unit"/>
@@ -6913,7 +6913,7 @@ SELECT  usr,
 			<field reporter:label="Notify Count" name="notify_count" oils_persist:virtual="true" reporter:datatype="int"/>
 			<field reporter:label="Notifications" name="notifications" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Bib Record link" name="bib_rec" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Eligible Copies" name="eligible_copies" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Eligible Items" name="eligible_copies" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Currently Frozen" name="frozen" reporter:datatype="bool"/>
 			<field reporter:label="Activation Date" name="thaw_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Shelf Time" name="shelf_time" reporter:datatype="timestamp"/>
@@ -6923,9 +6923,9 @@ SELECT  usr,
 			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool"/>
 			<field reporter:label="Shelf Expire Time" name="shelf_expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Notes" name="notes" reporter:datatype="link" oils_persist:virtual="true"/>
-			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Current Shelf Library" name="current_shelf_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Acquisition Request" name="acq_request" reporter:datatype="link"/>
-			<field reporter:label="Copy Location Sort Order" name="copy_location_order_position" reporter:datatype="int"/>
+			<field reporter:label="Shelving Location Sort Order" name="copy_location_order_position" reporter:datatype="int"/>
 			<field reporter:label="User First Given Name" name="usr_first_given_name" reporter:datatype="text"/>
 			<field reporter:label="User Second Given Name" name="usr_second_given_name" reporter:datatype="text"/>
 			<field reporter:label="User Family Name" name="usr_family_name" reporter:datatype="text"/>
@@ -6938,7 +6938,7 @@ SELECT  usr,
 			<field reporter:label="Call Number Label" name="call_number_label" reporter:datatype="text"/>
 			<field reporter:label="Issuance Label" name="issuance_label" reporter:datatype="text"/>
 			<field reporter:label="Is Staff Hold?" name="is_staff_hold" reporter:datatype="bool"/>
-			<field reporter:label="Potential Copies" name="potential_copies" reporter:datatype="int"/>
+			<field reporter:label="Potential Items" name="potential_copies" reporter:datatype="int"/>
 			<field reporter:label="Behind Desk" name="behind_desk" reporter:datatype="bool"/>
 			<field reporter:label="Hopeless Date" name="hopeless_date" reporter:datatype="timestamp"/>
 		</fields>
@@ -6975,7 +6975,7 @@ SELECT  usr,
 			<field reporter:label="Status" name="status" oils_persist:virtual="true"/>
 			<field reporter:label="Transit" name="transit" oils_persist:virtual="true"/>
 			<field reporter:label="Capture Date/Time" name="capture_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Currently Targeted Copy" name="current_copy" reporter:datatype="link"/>
+			<field reporter:label="Currently Targeted Item" name="current_copy" reporter:datatype="link"/>
 			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool"/>
 			<field reporter:label="Hold Expire Date/Time" name="expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Fulfilling Library" name="fulfillment_lib" reporter:datatype="org_unit"/>
@@ -6999,7 +6999,7 @@ SELECT  usr,
 			<field reporter:label="Notify Count" name="notify_count" oils_persist:virtual="true" reporter:datatype="int"/>
 			<field reporter:label="Notifications" name="notifications" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Bib Record link" name="bib_rec" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Eligible Copies" name="eligible_copies" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Eligible Items" name="eligible_copies" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Currently Frozen" name="frozen" reporter:datatype="bool"/>
 			<field reporter:label="Activation Date" name="thaw_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Shelf Time" name="shelf_time" reporter:datatype="timestamp"/>
@@ -7009,7 +7009,7 @@ SELECT  usr,
 			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool"/>
 			<field reporter:label="Shelf Expire Time" name="shelf_expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Notes" name="notes" reporter:datatype="link" oils_persist:virtual="true"/>
-			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Current Shelf Library" name="current_shelf_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Behind Desk" name="behind_desk" reporter:datatype="bool"/>
 			<field reporter:label="Acquisition Request" name="acq_request" reporter:datatype="link"/>
 			<field reporter:label="Hopeless Date" name="hopeless_date" reporter:datatype="timestamp"/>
@@ -7060,7 +7060,7 @@ SELECT  usr,
 		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_id_seq">
 			<field reporter:label="Status" name="status" oils_persist:virtual="true"/>
 			<field reporter:label="Capture Date/Time" name="capture_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Currently Targeted Copy" name="current_copy" reporter:datatype="link"/>
+			<field reporter:label="Currently Targeted Item" name="current_copy" reporter:datatype="link"/>
 			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool"/>
 			<field reporter:label="Hold Expire Date/Time" name="expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Fulfilling Library" name="fulfillment_lib" reporter:datatype="org_unit"/>
@@ -7093,7 +7093,7 @@ SELECT  usr,
 			<field reporter:label="Top of Queue" name="cut_in_line" reporter:datatype="bool"/>
 			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool"/>
 			<field reporter:label="Shelf Expire Time" name="shelf_expire_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Current Shelf Library" name="current_shelf_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Behind Desk" name="behind_desk" reporter:datatype="bool"/>
 		</fields>
 		<links>
@@ -7119,7 +7119,7 @@ SELECT  usr,
 		<fields oils_persist:primary="id" oils_persist:sequence="action.hold_request_id_seq">
 			<field reporter:label="Status" name="status" oils_persist:virtual="true"/>
 			<field reporter:label="Capture Date/Time" name="capture_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Currently Targeted Copy" name="current_copy" reporter:datatype="link"/>
+			<field reporter:label="Currently Targeted Item" name="current_copy" reporter:datatype="link"/>
 			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool" oils_obj:required="true"/>
 			<field reporter:label="Hold Expire Date/Time" name="expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Fulfilling Library" name="fulfillment_lib" reporter:datatype="org_unit"/>
@@ -7152,7 +7152,7 @@ SELECT  usr,
 			<field reporter:label="Top of Queue" name="cut_in_line" reporter:datatype="bool"/>
 			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool" oils_obj:required="true"/>
 			<field reporter:label="Shelf Expire Time" name="shelf_expire_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Current Shelf Library" name="current_shelf_lib" reporter:datatype="org_unit"/>
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
@@ -7201,8 +7201,8 @@ SELECT  usr,
 			<field reporter:label="Checkins" name="checkins" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Workstations" name="workstations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Fund Allocation Percentages" name="fund_alloc_pcts" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Copy Location Orders" name="copy_location_orders" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Transit Copy Prev Destinations" name="atc_prev_dests" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Shelving Location Orders" name="copy_location_orders" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Transit Item Prev Destinations" name="atc_prev_dests" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Reservation Requests" name="resv_requests" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Reservation Pickups" name="resv_pickups" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Resource Types" name="rsrc_types" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -8022,18 +8022,18 @@ SELECT  usr,
 			<field reporter:label="Last Editing User" name="editor" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Fine Level" name="fine_level" reporter:datatype="int" oils_obj:required="true"/>
 			<field reporter:label="Is Holdable" name="holdable" reporter:datatype="bool"/>
-			<field reporter:label="Copy ID" name="id" reporter:selector="barcode" reporter:datatype="id"/>
+			<field reporter:label="Item ID" name="id" reporter:selector="barcode" reporter:datatype="id"/>
 			<field reporter:label="Loan Duration" name="loan_duration" reporter:datatype="int" oils_obj:required="true"/>
 			<field reporter:label="Shelving Location" name="location" reporter:datatype="link"/>
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="bool"/>
 			<field reporter:label="Price" name="price" reporter:datatype="money"/>
 			<field reporter:label="Is Reference" name="ref" reporter:datatype="bool"/>
 			<field reporter:label="Item Status" name="status" reporter:datatype="link"/>
-			<field reporter:label="Copy Status Changed Time" name="status_changed_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Item Status Changed Time" name="status_changed_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Is Mint Condition" name="mint_condition" reporter:datatype="bool"/>
 			<field reporter:label="Floating Group" name="floating" reporter:datatype="link"/>
 			<field reporter:label="Cost" name="cost" reporter:datatype="money"/>
-			<field reporter:label="Copy Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Item Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Stat-Cat entry maps" name="stat_cat_entry_copy_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations" name="circulations" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Aged (patronless) Circulations" name="aged_circulations" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -8047,10 +8047,10 @@ SELECT  usr,
 			<field reporter:label="Peer Records" name="peer_records" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Last Captured Hold" name="last_captured_hold" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Latest Inventory" name="latest_inventory" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Copy Inventory" name="copy_inventory" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Item Inventory" name="copy_inventory" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Has Holds" name="holds_count" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Copy Tags" name="tags" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Copy Alerts" name="copy_alerts" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Item Tags" name="tags" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Item Alerts" name="copy_alerts" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="age_protect" reltype="has_a" key="id" map="" class="crahp"/>
@@ -8098,12 +8098,12 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="aci" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_inventory" oils_persist:tablename="asset.copy_inventory" reporter:core="true" reporter:label="Copy Inventory">
+	<class id="aci" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_inventory" oils_persist:tablename="asset.copy_inventory" reporter:core="true" reporter:label="Item Inventory">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_inventory_id_seq">
-			<field reporter:label="Copy Inventory ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Copy Inventory Date" name="inventory_date" reporter:datatype="timestamp"/>
-			<field reporter:label="Copy Inventory Workstation" name="inventory_workstation" reporter:datatype="link"/>
-			<field reporter:label="Copy" name="copy" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Item Inventory ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Item Inventory Date" name="inventory_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Item Inventory Workstation" name="inventory_workstation" reporter:datatype="link"/>
+			<field reporter:label="Item" name="copy" reporter:datatype="link" oils_obj:required="true"/>
 		</fields>
 		<links>
 			<link field="inventory_workstation" reltype="has_a" key="id" map="" class="aws"/>
@@ -8124,7 +8124,7 @@ SELECT  usr,
 			<field reporter:label="Latest Inventory ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Latest Inventory Date" name="inventory_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Latest Inventory Workstation" name="inventory_workstation" reporter:datatype="link"/>
-			<field reporter:label="Copy" name="copy" reporter:datatype="link"/>
+			<field reporter:label="Item" name="copy" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="inventory_workstation" reltype="has_a" key="id" map="" class="aws"/>
@@ -8137,7 +8137,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="ccat" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_alert_type" oils_persist:tablename="config.copy_alert_type" reporter:label="Copy Alert Type" oils_persist:restrict_primary="100">
+	<class id="ccat" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_alert_type" oils_persist:tablename="config.copy_alert_type" reporter:label="Item Alert Type" oils_persist:restrict_primary="100">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.copy_alert_type_id_seq">
 			<field reporter:label="Id" name="id" reporter:selector="name" reporter:datatype="id"/>
 			<field reporter:label="Scope Org Unit" name="scope_org" reporter:datatype="org_unit" oils_obj:required="true"/>
@@ -8146,8 +8146,8 @@ SELECT  usr,
 			<field reporter:label="State" name="state" reporter:datatype="text"/>
 			<field reporter:label="Event" name="event" reporter:datatype="text"/>
 			<field reporter:label="During Renewal" name="in_renew" reporter:datatype="bool"/>
-			<field reporter:label="Allow At Copy Circ Lib" name="at_circ" reporter:datatype="bool"/>
-			<field reporter:label="Allow At Copy Owning Lib" name="at_owning" reporter:datatype="bool"/>
+			<field reporter:label="Allow At Item Circ Library" name="at_circ" reporter:datatype="bool"/>
+			<field reporter:label="Allow At Item Owning Library" name="at_owning" reporter:datatype="bool"/>
 			<field reporter:label="Invert allowed locations" name="invert_location" reporter:datatype="bool"/>
 			<field reporter:label="Next Statuses" name="next_status" reporter:datatype="text"/>
 		</fields>
@@ -8184,11 +8184,11 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="aca" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_alert" oils_persist:tablename="asset.copy_alert" reporter:label="Copy Alert">
+	<class id="aca" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_alert" oils_persist:tablename="asset.copy_alert" reporter:label="Item Alert">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_alert_id_seq">
 			<field reporter:label="Id" name="id" reporter:datatype="id"/>
 			<field reporter:label="Alert Type" name="alert_type" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Copy" name="copy" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Item" name="copy" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Temporary" name="temp" reporter:datatype="bool"/>
 			<field reporter:label="Create Date/Time" name="create_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Creator" name="create_staff" reporter:datatype="link" oils_obj:required="true"/>
@@ -8220,11 +8220,11 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="aaca" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::active_copy_alert" oils_persist:tablename="asset.active_copy_alert" reporter:label="Active Copy Alert" oils_persist:readonly="true">
+	<class id="aaca" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::active_copy_alert" oils_persist:tablename="asset.active_copy_alert" reporter:label="Active Item Alert" oils_persist:readonly="true">
 		<fields oils_persist:primary="id">
 			<field reporter:label="Id" name="id" reporter:datatype="id"/>
 			<field reporter:label="Alert Type" name="alert_type" reporter:datatype="link"/>
-			<field reporter:label="Copy" name="copy" reporter:datatype="link"/>
+			<field reporter:label="Item" name="copy" reporter:datatype="link"/>
 			<field reporter:label="Temporary" name="temp" reporter:datatype="bool"/>
 			<field reporter:label="Create Date/Time" name="create_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Creator" name="create_staff" reporter:datatype="link"/>
@@ -8256,16 +8256,16 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="act" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_template" oils_persist:tablename="asset.copy_template" reporter:label="Asset Copy Template">
+	<class id="act" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_template" oils_persist:tablename="asset.copy_template" reporter:label="Asset Item Template">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_template_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
-			<field reporter:label="Owning Lib" name="owning_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Creator" name="creator" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Editor" name="editor" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Edit Date" name="edit_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
-			<field reporter:label="Circ Lib" name="circ_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Circ Library" name="circ_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Status" name="status" reporter:datatype="link"/>
 			<field reporter:label="Location" name="location" reporter:datatype="link"/>
 			<field reporter:label="Loan Duration" name="loan_duration" reporter:datatype="int"/>
@@ -8473,7 +8473,7 @@ SELECT  usr,
 	<class id="aufh" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_list" oils_persist:tablename="action.unfulfilled_hold_list" reporter:label="Unfulfilled Hold Targets">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.unfulfilled_hold_list_id_seq">
 			<field reporter:label="Non-fulfilling Library" name="circ_lib" reporter:datatype="org_unit" oils_obj:required="true"/>
-			<field reporter:label="Non-fulfilling Copy" name="current_copy" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Non-fulfilling Item" name="current_copy" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Retargeting Date/Time" name="fail_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Hold" name="hold" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Record ID" name="id" reporter:datatype="id"/>
@@ -8541,7 +8541,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="ccb" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::copy_bucket" oils_persist:tablename="container.copy_bucket" reporter:label="Copy Bucket">
+	<class id="ccb" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::copy_bucket" oils_persist:tablename="container.copy_bucket" reporter:label="Item Bucket">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.copy_bucket_id_seq">
 			<field name="items" oils_persist:virtual="true"/>
 			<field name="btype" reporter:datatype="text"/>
@@ -8567,7 +8567,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="ccbn" controller="open-ils.cstore" oils_obj:fieldmapper="container::copy_bucket_note" oils_persist:tablename="container.copy_bucket_note" reporter:label="Copy Bucket Note">
+	<class id="ccbn" controller="open-ils.cstore" oils_obj:fieldmapper="container::copy_bucket_note" oils_persist:tablename="container.copy_bucket_note" reporter:label="Item Bucket Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.copy_bucket_note_id_seq">
 			<field name="id" reporter:datatype="id"/>
 			<field name="bucket" reporter:datatype="link" oils_obj:required="true"/>
@@ -8887,7 +8887,7 @@ SELECT  usr,
 
 	<class id="artc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::reservation_transit_copy" oils_persist:tablename="action.reservation_transit_copy" reporter:core="true" reporter:label="Reservation Transit">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
-			<field reporter:label="Copy Status at Transit" name="copy_status" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Item Status at Transit" name="copy_status" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Destination Library" name="dest" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Receive Date/Time" name="dest_recv_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Reservation requiring Transit" name="reservation" reporter:datatype="link"/>
@@ -8896,7 +8896,7 @@ SELECT  usr,
 			<field reporter:label="Previous Stop" name="prev_hop" reporter:datatype="link"/>
 			<field reporter:label="Sending Library" name="source" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Send Date/Time" name="source_send_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Transited Copy" name="target_copy" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Transited Item" name="target_copy" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Base Transit" name="transit_copy" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Prev Destination Library" name="prev_dest" reporter:datatype="org_unit"/>
 			<field reporter:label="Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
@@ -8923,7 +8923,7 @@ SELECT  usr,
 	</class>
 	<class id="ahtc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::hold_transit_copy" oils_persist:tablename="action.hold_transit_copy" reporter:core="true" reporter:label="Hold Transit">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
-			<field reporter:label="Copy Status at Transit" name="copy_status" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Item Status at Transit" name="copy_status" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Destination Library" name="dest" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Receive Date/Time" name="dest_recv_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Hold requiring Transit" name="hold" reporter:datatype="link"/>
@@ -8932,7 +8932,7 @@ SELECT  usr,
 			<field reporter:label="Previous Stop" name="prev_hop" reporter:datatype="link"/>
 			<field reporter:label="Sending Library" name="source" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Send Date/Time" name="source_send_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Transited Copy" name="target_copy" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Transited Item" name="target_copy" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Base Transit" name="transit_copy" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Prev Destination Library" name="prev_dest" reporter:datatype="org_unit"/>
 			<field reporter:label="Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
@@ -9337,7 +9337,7 @@ SELECT  usr,
 			<field reporter:label="Phone" name="phone" reporter:datatype="text"/>
 			<field reporter:label="Fax Phone" name="fax_phone" reporter:datatype="text"/>
 			<field reporter:label="Default Claim Policy" name="default_claim_policy" reporter:datatype="link"/>
-			<field reporter:label="Default # Copies" name="default_copy_count" reporter:datatype="int"/>
+			<field reporter:label="Default # Items" name="default_copy_count" reporter:datatype="int"/>
 			<field reporter:label="Primary Contact" name="primary_contact" reporter:datatype="link"/>
 			<field reporter:label="Contacts" name="contacts" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Notes" name="provider_notes" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -10568,7 +10568,7 @@ SELECT  usr,
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.lineitem_detail_id_seq">
 			<field reporter:label="Item Detail ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="PO Line Item" name="lineitem" reporter:datatype="link" oils_obj:required="true"/>
-			<field reporter:label="Evergreen Copy ID" name="eg_copy_id" reporter:datatype="link"/>
+			<field reporter:label="Evergreen Item ID" name="eg_copy_id" reporter:datatype="link"/>
 			<field reporter:label="Barcode" name="barcode" reporter:datatype="text"/>
 			<field reporter:label="Call Number Label" name="cn_label" reporter:datatype="text"/>
 			<field reporter:label="Actual Receive Date" name="recv_time" reporter:datatype="timestamp"/>
@@ -10576,7 +10576,7 @@ SELECT  usr,
 			<field reporter:label="Fund" name="fund" reporter:datatype="link"/>
 			<field reporter:label="Fund Debit" name="fund_debit" reporter:datatype="link"/>
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="org_unit"/>
-			<field reporter:label="Copy Location" name="location" reporter:datatype="link"/>
+			<field reporter:label="Shelving Location" name="location" reporter:datatype="link"/>
 			<field reporter:label="Circ Modifier" name="circ_modifier" reporter:datatype="link"/>
 			<field reporter:label="Note" name="note" reporter:datatype="text"/>
 			<field reporter:label="Collection Code" name="collection_code" reporter:datatype="text"/>
@@ -11272,7 +11272,7 @@ SELECT  usr,
 	</class>
 	<class id="erfcc" controller="open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="extend_reporter::full_circ_count" oils_persist:tablename="extend_reporter.full_circ_count" reporter:label="Total Circulation Count, Including Legacy">
 		<fields oils_persist:primary="id">
-			<field reporter:label="Copy ID" name="id" reporter:datatype="int"/>
+			<field reporter:label="Item ID" name="id" reporter:datatype="int"/>
 			<field reporter:label="Total Circulation Count" name="circ_count" reporter:datatype="int"/>
 		</fields>
 		<links>
@@ -11292,10 +11292,10 @@ SELECT  usr,
 			<field reporter:label="Circulation Library" name="circ_lib" reporter:datatype="link"/>
 			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="link"/>
 			<field reporter:label="Last Edit Date" name="last_edit_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Has Only Deleted Copies 0/1" name="has_only_deleted_copies" reporter:datatype="int"/>
-			<field reporter:label="Total deleted copies" name="deleted_count" reporter:datatype="int"/>
-			<field reporter:label="Total visible copies" name="visible_count" reporter:datatype="int"/>
-			<field reporter:label="Total copies attached" name="total_count" reporter:datatype="int"/>
+			<field reporter:label="Has Only Deleted Items 0/1" name="has_only_deleted_copies" reporter:datatype="int"/>
+			<field reporter:label="Total deleted items" name="deleted_count" reporter:datatype="int"/>
+			<field reporter:label="Total visible items" name="visible_count" reporter:datatype="int"/>
+			<field reporter:label="Total items attached" name="total_count" reporter:datatype="int"/>
 		</fields>
 		<links>
 			<link field="bibid" reltype="has_a" key="id" map="" class="bre"/>
@@ -12692,7 +12692,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="rlcd" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::last_copy_deleted" oils_persist:readonly="true" reporter:core="true" reporter:label="Last Copy Delete Time">
+	<class id="rlcd" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::last_copy_deleted" oils_persist:readonly="true" reporter:core="true" reporter:label="Last Item Delete Time">
 		<oils_persist:source_definition><![CDATA[
 
 			SELECT  b.id,
@@ -12746,7 +12746,7 @@ SELECT  usr,
 	</class>
 
 
-	<class id="rhcrpb" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib" oils_persist:readonly="true" reporter:core="true" reporter:label="Hold/Copy Ratio per Bib">
+	<class id="rhcrpb" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib" oils_persist:readonly="true" reporter:core="true" reporter:label="Hold/Item Ratio per Bib">
 		<oils_persist:source_definition><![CDATA[
 				SELECT
 					x.id,
@@ -12782,9 +12782,9 @@ SELECT  usr,
 		]]></oils_persist:source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry">
 			<field reporter:label="Record ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Holdable Copy Count" name="copy_count" reporter:datatype="int"/>
+			<field reporter:label="Holdable Item Count" name="copy_count" reporter:datatype="int"/>
 			<field reporter:label="Active Holds" name="hold_count" reporter:datatype="int"/>
-			<field reporter:label="Hold/Copy Ratio" name="hold_copy_ratio" reporter:datatype="float"/>
+			<field reporter:label="Hold/Item Ratio" name="hold_copy_ratio" reporter:datatype="float"/>
 		</fields>
 		<links>
 			<link field="id" reltype="has_a" key="id" map="" class="bre"/>
@@ -12796,7 +12796,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="rhcrpbap" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib_and_pickup" oils_persist:readonly="true" reporter:label="Hold/Copy Ratio per Bib and Pickup Library">
+	<class id="rhcrpbap" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib_and_pickup" oils_persist:readonly="true" reporter:label="Hold/Item Ratio per Bib and Pickup Library">
 		<oils_persist:source_definition><![CDATA[
 			SELECT *,
 				CASE WHEN copy_count_at_pickup_library = 0 THEN 'Infinity'::FLOAT ELSE holds_at_pickup_library::FLOAT/copy_count_at_pickup_library END AS pickup_library_ratio,
@@ -12862,11 +12862,11 @@ SELECT  usr,
 			<field reporter:label="Record ID" name="id" reporter:datatype="link"/>
 			<field reporter:label="Pickup Library" name="pickup_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Active Holds at Pickup Library" name="holds_at_pickup_library" reporter:datatype="int"/>
-			<field reporter:label="Holdable Copy Count at Pickup Library" name="copy_count_at_pickup_library" reporter:datatype="int"/>
+			<field reporter:label="Holdable Item Count at Pickup Library" name="copy_count_at_pickup_library" reporter:datatype="int"/>
 			<field reporter:label="Active Holds Everywhere" name="holds_everywhere" reporter:datatype="int"/>
-			<field reporter:label="Holdable Copy Count Everywhere" name="copy_count_everywhere" reporter:datatype="int"/>
-			<field reporter:label="Hold/Copy Ratio at Pickup Library" name="pickup_library_ratio" reporter:datatype="float"/>
-			<field reporter:label="Hold/Copy Ratio Everywhere" name="everywhere_ratio" reporter:datatype="float"/>
+			<field reporter:label="Holdable Item Count Everywhere" name="copy_count_everywhere" reporter:datatype="int"/>
+			<field reporter:label="Hold/Item Ratio at Pickup Library" name="pickup_library_ratio" reporter:datatype="float"/>
+			<field reporter:label="Hold/Item Ratio Everywhere" name="everywhere_ratio" reporter:datatype="float"/>
 		</fields>
 		<links>
 			<link field="id" reltype="has_a" key="id" map="" class="bre"/>
@@ -12879,7 +12879,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
-	<class id="rhcrpbah" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib_and_home" oils_persist:readonly="true" reporter:label="Hold/Copy Ratio per Bib and Home Library">
+	<class id="rhcrpbah" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib_and_home" oils_persist:readonly="true" reporter:label="Hold/Item Ratio per Bib and Home Library">
 		<oils_persist:source_definition><![CDATA[
 			SELECT *,
 				CASE WHEN copy_count_at_home_library = 0 THEN 'Infinity'::FLOAT ELSE holds_at_home_library::FLOAT/copy_count_at_home_library END AS home_library_ratio,
@@ -12947,11 +12947,11 @@ SELECT  usr,
 		<field reporter:label="Record ID" name="id" reporter:datatype="link"/>
 		<field reporter:label="User Home Library" name="home_ou" reporter:datatype="org_unit"/>
 		<field reporter:label="Active Holds at Home Library" name="holds_at_home_library" reporter:datatype="int"/>
-		<field reporter:label="Holdable Copy Count at Home Library" name="copy_count_at_home_library" reporter:datatype="int"/>
+		<field reporter:label="Holdable Item Count at Home Library" name="copy_count_at_home_library" reporter:datatype="int"/>
 		<field reporter:label="Active Holds Everywhere" name="holds_everywhere" reporter:datatype="int"/>
-		<field reporter:label="Holdable Copy Count Everywhere" name="copy_count_everywhere" reporter:datatype="int"/>
-		<field reporter:label="Hold/Copy Ratio at Home Library" name="home_library_ratio" reporter:datatype="float"/>
-		<field reporter:label="Hold/Copy Ratio Everywhere" name="everywhere_ratio" reporter:datatype="float"/>
+		<field reporter:label="Holdable Item Count Everywhere" name="copy_count_everywhere" reporter:datatype="int"/>
+		<field reporter:label="Hold/Item Ratio at Home Library" name="home_library_ratio" reporter:datatype="float"/>
+		<field reporter:label="Hold/Item Ratio Everywhere" name="everywhere_ratio" reporter:datatype="float"/>
 	</fields>
 	<links>
 		<link field="id" reltype="has_a" key="id" map="" class="bre"/>
@@ -12964,7 +12964,7 @@ SELECT  usr,
 	</permacrud>
 </class>
 
-	<class id="rhcrpbapd" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib_and_pickup_desc" oils_persist:readonly="true" reporter:label="Hold/Copy Ratio per Bib and Pickup Library (and Descendants) ">
+	<class id="rhcrpbapd" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib_and_pickup_desc" oils_persist:readonly="true" reporter:label="Hold/Item Ratio per Bib and Pickup Library (and Descendants) ">
 		<oils_persist:source_definition><![CDATA[
 				WITH counts_at_ou AS (
 				SELECT a.id, a.pickup_lib_or_desc, a.holds_at_or_below, b.copy_count_at_or_below
@@ -13039,11 +13039,11 @@ SELECT  usr,
 			<field reporter:label="Record ID" name="id" reporter:datatype="link"/>
 			<field reporter:label="Pickup Library" name="pickup_lib_or_desc" reporter:datatype="org_unit"/>
 			<field reporter:label="Active Holds at Pickup Library and its Descendants" name="holds_at_or_below" reporter:datatype="int"/>
-			<field reporter:label="Holdable Copy Count at Pickup Library and its Descendants" name="copy_count_at_or_below" reporter:datatype="int"/>
+			<field reporter:label="Holdable Item Count at Pickup Library and its Descendants" name="copy_count_at_or_below" reporter:datatype="int"/>
 			<field reporter:label="Active Holds Everywhere" name="holds_everywhere" reporter:datatype="int"/>
-			<field reporter:label="Holdable Copy Count Everywhere" name="copy_count_everywhere" reporter:datatype="int"/>
-			<field reporter:label="Hold/Copy Ratio at Pickup Library and its Descendants" name="hold_copy_ratio_at_or_below_ou" reporter:datatype="float"/>
-			<field reporter:label="Hold/Copy Ratio Everywhere" name="everywhere_ratio" reporter:datatype="float"/>
+			<field reporter:label="Holdable Item Count Everywhere" name="copy_count_everywhere" reporter:datatype="int"/>
+			<field reporter:label="Hold/Item Ratio at Pickup Library and its Descendants" name="hold_copy_ratio_at_or_below_ou" reporter:datatype="float"/>
+			<field reporter:label="Hold/Item Ratio Everywhere" name="everywhere_ratio" reporter:datatype="float"/>
 		</fields>
 		<links>
 			<link field="id" reltype="has_a" key="id" map="" class="bre"/>
@@ -13077,7 +13077,7 @@ SELECT  usr,
 			--GROUP BY ac.id, ac.create_date, erlct.last_cko_ts
 		]]></oils_persist:source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry">
-			<field reporter:label="Copy ID" name="id" reporter:datatype="link"/>
+			<field reporter:label="Item ID" name="id" reporter:datatype="link"/>
 			<field reporter:label="Last Circulation or Creation Date" name="last_circ_or_create" reporter:datatype="timestamp"/>
 			<field reporter:label="Last Circulation Date" name="last_circ" reporter:datatype="timestamp"/>
 		</fields>
@@ -13163,7 +13163,7 @@ SELECT  usr,
 			<field reporter:label="Library Circulation Location Link" name="circ_lib_id" reporter:datatype="org_unit"/>
 			<field reporter:label="Circulation Date/Time" name="xact_start" reporter:datatype="timestamp"/>
 			<field reporter:label="Circulation Type" name="circ_type" reporter:datatype="text"/>
-			<field reporter:label="Copy Link" name="copy_id" reporter:datatype="link"/>
+			<field reporter:label="Item Link" name="copy_id" reporter:datatype="link"/>
 			<field reporter:label="Circ Modifier" name="circ_modifier" reporter:datatype="text"/>
 			<field reporter:label="Owning Library Short (Policy) Name" name="owning_lib_name" reporter:datatype="text"/>
 			<field reporter:label="Item Language" name="language" reporter:datatype="text"/>
@@ -13369,7 +13369,7 @@ SELECT  usr,
 			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
 		</links>
 	</class>
-	<class id="iatc" controller="open-ils.reporter-store" oils_obj:fieldmapper="action::intersystem_transit_copy" oils_persist:readonly="true" reporter:core="true" reporter:label="Inter-system Copy Transit">
+	<class id="iatc" controller="open-ils.reporter-store" oils_obj:fieldmapper="action::intersystem_transit_copy" oils_persist:readonly="true" reporter:core="true" reporter:label="Inter-system Item Transit">
 		<oils_persist:source_definition><![CDATA[
 
 			SELECT	t.*
@@ -13380,7 +13380,7 @@ SELECT  usr,
 
 		]]></oils_persist:source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
-			<field reporter:label="Pretransit Copy Status" name="copy_status" reporter:datatype="link"/>
+			<field reporter:label="Pretransit Item Status" name="copy_status" reporter:datatype="link"/>
 			<field reporter:label="Destination" name="dest" reporter:datatype="link"/>
 			<field reporter:label="Receive Date/Time" name="dest_recv_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Transit ID" name="id" reporter:datatype="id"/>
@@ -13388,7 +13388,7 @@ SELECT  usr,
 			<field reporter:label="Previous Hop (unused)" name="prev_hop" reporter:datatype="link"/>
 			<field reporter:label="Source" name="source" reporter:datatype="link"/>
 			<field reporter:label="Send Date/Time" name="source_send_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Transited Copy" name="target_copy" reporter:datatype="link"/>
+			<field reporter:label="Transited Item" name="target_copy" reporter:datatype="link"/>
 			<field reporter:label="Hold Transit" name="hold_transit_copy" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp"/>
 		</fields>
@@ -13437,7 +13437,7 @@ SELECT  usr,
 
 		]]></oils_persist:source_definition>
 		<fields>
-			<field reporter:label="Copy ID" name="copy" reporter:datatype="link"/>
+			<field reporter:label="Item ID" name="copy" reporter:datatype="link"/>
 			<field reporter:label="Count" name="count" reporter:datatype="int"/>
 			<field reporter:label="Year" name="year" reporter:datatype="int"/>
 			<field reporter:label="Renewal" name="is_renewal" reporter:datatype="bool"/>
@@ -13511,7 +13511,7 @@ SELECT  usr,
 			<field reporter:label="Title" name="title" reporter:datatype="text"/>
 			<field reporter:label="Author" name="author" reporter:datatype="text"/>
 			<field reporter:label="Pubdate" name="pubdate" reporter:datatype="text"/>
-			<field reporter:label="Copy ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Item ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Price" name="price" reporter:datatype="money"/>
 			<field reporter:label="Barcode" name="barcode" reporter:datatype="text"/>
 			<field reporter:label="Callnumber Label" name="call_number_label" reporter:datatype="text"/>
@@ -13528,8 +13528,8 @@ SELECT  usr,
 			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Owning Lib Name" name="owning_lib_name" reporter:datatype="text"/>
 			<field reporter:label="Circ Lib Name" name="circ_lib_name" reporter:datatype="text"/>
-			<field reporter:label="Owning Lib" name="owning_lib" reporter:datatype="link"/>
-			<field reporter:label="Circ Lib" name="circ_lib" reporter:datatype="link"/>
+			<field reporter:label="Owning Library" name="owning_lib" reporter:datatype="link"/>
+			<field reporter:label="Circ Library" name="circ_lib" reporter:datatype="link"/>
 			<field reporter:label="Creator" name="creator" reporter:datatype="link"/>
 			<field reporter:label="Age Protection" name="age_protect" reporter:datatype="link"/>
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="bool"/>
@@ -13796,7 +13796,7 @@ SELECT  usr,
 			<link field="stat_cat" reltype="has_a" key="id" map="" class="actsc"/>
 		</links>
 	</class>
-	<class id="aaasc" controller="open-ils.reporter-store" oils_obj:fieldmapper="action::archive_asset_stat_cat" oils_persist:tablename="action.archive_asset_stat_cat" reporter:label="Circ-Archived Copy Statistical Category Entries">
+	<class id="aaasc" controller="open-ils.reporter-store" oils_obj:fieldmapper="action::archive_asset_stat_cat" oils_persist:tablename="action.archive_asset_stat_cat" reporter:label="Circ-Archived Item Statistical Category Entries">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.archive_actor_stat_cat_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Circ" name="xact" reporter:datatype="link" oils_obj:required="true"/>
@@ -13849,7 +13849,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="cctt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_tag_type" oils_persist:tablename="config.copy_tag_type" reporter:label="Copy Tag Types" oils_persist:field_safe="true">
+	<class id="cctt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::copy_tag_type" oils_persist:tablename="config.copy_tag_type" reporter:label="Item Tag Types" oils_persist:field_safe="true">
 		<fields oils_persist:primary="code">
 			<field reporter:label="Code" name="code" reporter:selector="label" reporter:datatype="id" oils_obj:required="true"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_obj:required="true"/>
@@ -13870,7 +13870,7 @@ SELECT  usr,
 	<class id="acpt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_tag" oils_persist:tablename="asset.copy_tag" reporter:label="Item Tags" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_tag_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Copy Tag Type" name="tag_type" reporter:datatype="link"/>
+			<field reporter:label="Item Tag Type" name="tag_type" reporter:datatype="link"/>
 			<field reporter:label="Label" name="label" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Value" name="value" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Staff Note" name="staff_note" reporter:datatype="text"/>
@@ -13891,10 +13891,10 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="acptcm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_tag_copy_map" oils_persist:tablename="asset.copy_tag_copy_map" reporter:label="Copy Tag Copy Map" oils_persist:field_safe="true">
+	<class id="acptcm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy_tag_copy_map" oils_persist:tablename="asset.copy_tag_copy_map" reporter:label="Item Tag Item Map" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_tag_copy_map_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Copy" name="copy" reporter:datatype="link"/>
+			<field reporter:label="Item" name="copy" reporter:datatype="link"/>
 			<field reporter:label="Tag" name="tag" reporter:datatype="link"/>
 		</fields>
 		<links>
@@ -13916,7 +13916,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="hasholdscount" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::has_holds_count" reporter:label="Copy Has Holds Count" oils_persist:readonly="true">
+	<class id="hasholdscount" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::has_holds_count" reporter:label="Item Has Holds Count" oils_persist:readonly="true">
 		<oils_persist:source_definition><![CDATA[
 	SELECT ahcm.target_copy AS id,count(*) AS count
 	 FROM
@@ -13930,7 +13930,7 @@ SELECT  usr,
 	 GROUP BY ahcm.target_copy
 		]]></oils_persist:source_definition>
 		<fields oils_persist:primary="id">
-			<field reporter:label="Copy ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Item ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Holds Count" name="count" reporter:datatype="text"/>
 		</fields>
 	<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -14018,7 +14018,7 @@ SELECT  usr,
 			<field reporter:label="Automatically Managed?" name="automatic" reporter:datatype="bool"/>
 			<field reporter:label="Filter By Age?" name="filter_by_age" reporter:datatype="bool"/>
 			<field reporter:label="Filter By Item Owning Library?" name="filter_by_copy_owning_lib" reporter:datatype="bool"/>
-			<field reporter:label="Filter By Item Location?" name="filter_by_copy_location" reporter:datatype="bool"/>
+			<field reporter:label="Filter By Shelving Location?" name="filter_by_copy_location" reporter:datatype="bool"/>
 		</fields>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>

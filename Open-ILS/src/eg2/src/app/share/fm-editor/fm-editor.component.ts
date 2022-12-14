@@ -1,8 +1,6 @@
 import {Component, OnInit, Input, ViewChild,
-    Output, EventEmitter, TemplateRef,
-    Directive, HostBinding} from '@angular/core';
-import {NgForm, AbstractControl, NG_VALIDATORS, ValidationErrors,
-    Validator, Validators} from '@angular/forms';
+    Output, EventEmitter, TemplateRef} from '@angular/core';
+import {NgForm} from '@angular/forms';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {Observable} from 'rxjs';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -16,6 +14,9 @@ import {FormatService} from '@eg/core/format.service';
 import {TranslateComponent} from '@eg/share/translate/translate.component';
 import {FmRecordEditorActionComponent} from './fm-editor-action.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import {BooleanSelectComponent} from '@eg/share/boolean-select/boolean-select.component';
+import {Directive, HostBinding} from '@angular/core';
+import {AbstractControl, NG_VALIDATORS, ValidationErrors, Validator, Validators} from '@angular/forms';
 
 interface CustomFieldTemplate {
     template: TemplateRef<any>;
@@ -81,6 +82,9 @@ export interface FmFieldOptions {
     // Render the field using this custom template instead of chosing
     // from the default set of form inputs.
     customTemplate?: CustomFieldTemplate;
+
+    // Follow the normal field rendering with this custom template
+    appendTemplate?: CustomFieldTemplate;
 
     // Use this persistKey if the field is an org field
     persistKey?: StringComponent;
@@ -426,9 +430,10 @@ export class FmRecordEditorComponent
             if (field.datatype === 'bool') {
                 if (rec[field.name]() === true) {
                     rec[field.name]('t');
-                // } else if (rec[field.name]() === false) {
-                } else { // TODO: some bools can be NULL
+                } else if (rec[field.name]() === false) {
                     rec[field.name]('f');
+                } else {
+                    rec[field.name](null);
                 }
             } else if (field.datatype === 'org_unit') {
                 const org = rec[field.name]();
@@ -520,6 +525,11 @@ export class FmRecordEditorComponent
             };
         }
 
+        if (fieldOptions.appendTemplate) {
+            field.append_template = fieldOptions.appendTemplate.template;
+            field.append_context = fieldOptions.appendTemplate.context;
+        }
+
         if (fieldOptions.customTemplate) {
             field.template = fieldOptions.customTemplate.template;
             field.context = fieldOptions.customTemplate.context;
@@ -593,6 +603,13 @@ export class FmRecordEditorComponent
             {   record : this.record,
                 field: fieldDef // from this.fields
             },  fieldDef.context || {}
+        );
+    }
+    appendTemplateFieldContext(fieldDef: any): CustomFieldContext {
+        return Object.assign(
+            {   record : this.record,
+                field: fieldDef // from this.fields
+            },  fieldDef.append_context || {}
         );
     }
 
@@ -723,6 +740,23 @@ export class FmRecordEditorComponent
                 }
             }
         );
+    }
+
+    isSafeToNull(field) {
+        if (field.datatype == 'id') {
+            return false;
+        }
+        if (field.readOnly) {
+            return false;
+        }
+        if (field.isRequired()) {
+            return false;
+        }
+        return true;
+    }
+
+    setToNull(field) {
+        this.record[field.name](null);
     }
 }
 

@@ -34,9 +34,14 @@
         <span i18n>Dates must be in the correct order</span>
       </div>
 
-      <div class="form-group row" *ngFor="let field of fields" [ngClass]="field.name">
+      <ng-container *ngFor="let field of fields">
+      <div class="form-group row" [ngClass]="field.name">
         <div class="col-lg-3">
           <label class="form-label" for="{{idPrefix}}-{{field.name}}">{{field.label}}</label>
+          <eg-help-popover [placement]="'right'" *ngIf="field.helpText" helpText="{{field.helpTextValue}}"></eg-help-popover>
+          <ng-container *ngIf="isSafeToNull(field)">
+            <br />(<a (click)="setToNull(field)" href='javascript:;'><span i18n>Unset</span></a>)
+          </ng-container>
         </div>
         <div class="col-lg-9">
           <div class="fm-form-input-and-help">
@@ -100,6 +105,7 @@
                     persistKey="{{field.persistKey}}"
                     [limitPerms]="modePerms[mode]"
                     [readOnly]="field.readOnly"
+                    [required]="field.isRequired()"
                     [applyDefault]="field.orgDefaultAllowed"
                     [applyOrgId]="record[field.name]()"
                     (onChange)="record[field.name]($event)">
@@ -214,6 +220,12 @@
           </div>
         </div>
       </div>
+        <ng-container *ngIf="field.append_template">
+          <ng-container
+            *ngTemplateOutlet="field.append_template; context:appendTemplateFieldContext(field)">
+          </ng-container> 
+        </ng-container> 
+      </ng-container>
       </ng-container>
     </form>
   </div>

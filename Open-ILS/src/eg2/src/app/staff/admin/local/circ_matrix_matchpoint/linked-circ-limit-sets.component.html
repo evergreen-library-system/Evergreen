@@ -2,7 +2,7 @@
 <eg-string #errorString i18n-text text="The Linked Set Name Already Exists on Another Matchpoint"></eg-string>
 
 <div *ngIf="showLinkLimitSets">
-    <div class="col-lg-15 bg-info d-flex justify-content-center"><h3 class="modal-title mt-3 mb-3" i18n>Linked Limit Sets</h3></div>
+    <div class="modal-header bg-info"><h4 class="modal-title" i18n>Linked Limit Sets</h4></div>
     <ng-container *ngIf="getObjectKeys().length > 0">
         <ng-container *ngFor="let key of getObjectKeys(); let i = index">
             <div *ngIf="!linkedSetList[i].isDeleted" class="col-lg-15 d-flex justify-content-center">
@@ -64,7 +64,7 @@
                 (click)="addLinkedSet()"
                 i18n-title title="Add" i18n>Add
             </button>
-            <eg-help-popover [helpText]="'Go to Local Admin -> Circulation Limit Sets to Create a Link Limit Set'" ></eg-help-popover>
+            <eg-help-popover i18n-helpText helpText="'Go to Local Admin -> Circulation Limit Sets to Create a Link Limit Set'" ></eg-help-popover>
         </div>
     </div>
 </div>

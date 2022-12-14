@@ -3,3 +3,10 @@
  * Log staff user for canceled holds [Lp 1963541](https://bugs.launchpad.net/evergreen/+bug/1963541)
  * Tighten permission checks for CREATE_COPY, UPDATE_COPY, CREATE_VOLUME, and UPDATE_VOLUME [Lp 1763811](https://bugs.launchpad.net/evergreen/+bug/1763811) [Lp 2018491](https://bugs.launchpad.net/evergreen/+bug/2018491)
  * Read-only view for Holdings Editor if lacking an appropriately scoped UPDATE_COPY permission for all items being edited. Mixed Permission dialog if the permission only covers some of the items being edited. Actions from the dialog: Only show permissible items, Read-only view for all items, and Change Operator and try again. [Lp 1932062](https://bugs.launchpad.net/evergreen/+bug/1932062)
+ * Angularized the Local Administration -> Circulation Policies interface.
+ * Added an option to fmEditor for allowing one to unset a field (aka set to null)
+ * Added some misc fmEditor tweaks/additions for developers
+ * Replaced checkboxes for boolean fields in fmEditor with radio buttons
+ * Changed instances of Copy Location to Shelving Location in the IDL, which wil be reflected in many interfaces.
+ * Also, in the IDL, every instance of Copy, Copies, and copies in a label become Item, Items, and items, respectively. Except for Copy Location, which is normalized to Shelving Location. And any instance of "Lib" in label gets expanded to "Library".
+ * Org Unit becomes Checkout Library for the circ matrix. Checkout is more prevalent in the code than Check Out, but we should pick one.

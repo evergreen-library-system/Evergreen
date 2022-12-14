@@ -5,15 +5,44 @@
 <eg-string #successString i18n-text text="Circulation Policy Update Succeeded"></eg-string>
 <eg-string #createString i18n-text text="Circulation Policy Creation Succeeded"></eg-string>
 
+<ng-container *ngIf="orgField || gridFilters">
+  <div class="row">
+    <div class="col-lg-6">
+      <ng-container *ngIf="orgField">
+        <eg-org-family-select
+          [limitPerms]="viewPerms" 
+          [selectedOrgId]="contextOrg.id()"
+          [(ngModel)]="searchOrgs"
+          (ngModelChange)="grid.reload()">
+        </eg-org-family-select>
+      </ng-container>
+    </div>
+    <div class="col-lg-6 d-flex">
+      <div class="flex-1"></div><!-- push right -->
+      <ng-container *ngIf="gridFilters">
+        <span i18n>Filters Applied: {{gridFilters | json}}</span>
+        <a class="pl-2 font-italic" 
+          [attr.href]="clearGridFiltersUrl()" i18n>Clear Filters</a>
+      </ng-container>
+    </div>
+  </div>
+  <hr/>
+</ng-container>
+
 <eg-grid #grid idlClass="ccmm"
   [dataSource]="dataSource"
   [sortable]="true"
+  [filterable]="true"
+  persistKey="admin.config.circ_matrix_matchpoint"
   (onRowActivate)="editSelected([$event])"
   [showFields]='"is_renewal,active,org_unit,copy_circ_lib,copy_owning_lib,user_home_ou"'>
   <eg-grid-toolbar-button 
-    label="New Circ Matrix Matchpoint" i18n-label (onClick)="createNew()">
+    label="New Circulation Policy" i18n-label (onClick)="createNew()">
   </eg-grid-toolbar-button>
-  <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
+  <eg-grid-toolbar-action
+    label="Edit Selected" i18n-label
+    (onClick)="editSelected($event)"
+    [disableOnRows]="notOneSelectedRow">
   </eg-grid-toolbar-action>
 </eg-grid>
 
@@ -30,54 +59,20 @@
   </div>
 
   <ng-template #active let-idPrefix="idPrefix" let-field="field" let-record="record">
-    <div class="col-lg-9">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        name="{{field.name}}"
-        id="{{idPrefix}}-{{field.name}}"
-        [disabled]="field.readOnly"
-        [ngModel]="record[field.name]()"
-        (ngModelChange)="record[field.name]($event)"/>
-    </div>
-    <div class="row" [ngStyle]="{
-      width:'150%',
-      backgroundColor:'black',
-      marginLeft:'-43%',
-      marginTop:'6%',
-      marginBottom:'-1%',
-      opacity:'90%',
-      fontSize:'18px',
-      textAlign:'center'}">
-      <div [ngStyle]="{width:'100%', color:'white'}">Circulation Policies</div>
+    <div class="row">
+      <div class="col-lg-12">
+        <eg-staff-banner bannerText="Circulation Policy Matchpoints" i18n-bannerText>
+        </eg-staff-banner>
+      </div>
     </div>
   </ng-template>
 
   <ng-template #item_age let-idPrefix="idPrefix" let-field="field" let-record="record">
-    <div class="col-lg-9">
-      <input
-        class="form-control"
-        id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
-        type="text"
-        placeholder="{{field.label}}..." i18n-placeholder
-        [required]="field.isRequired()"
-        [ngModel]="record[field.name]()"
-        (ngModelChange)="record[field.name]($event)"/>
-    </div>
-    <div class="row" [ngStyle]="{
-      width:'150%',
-      backgroundColor:'black',
-      marginLeft:'-43%',
-      marginTop:'3%',
-      marginBottom:'-1%',
-      opacity:'90%',
-      fontSize:'18px',
-      textAlign:'center',
-      paddingTop:'3.5%',
-      paddingBottom:'5.5%',
-      paddingLeft:'3.5%',
-      paddingRight:'3.5%'}">
-      <div [ngStyle]="{width:'100%', color:'white'}">Circulation Policy Effects</div>
+    <div class="row">
+      <div class="col-lg-12">
+        <eg-staff-banner bannerText="Circulation Policy Effects" i18n-bannerText>
+        </eg-staff-banner>
+      </div>
     </div>
   </ng-template>
 
@@ -89,6 +84,6 @@
     fieldOrder="id,active,grp,org_unit,copy_circ_lib,copy_owning_lib,user_home_ou,is_renewal,juvenile_flag,circ_modifier,copy_location,marc_type,marc_form,marc_bib_level,marc_vr_format,ref_flag,usr_age_lower_bound,usr_age_upper_bound,item_age,circulate,duration_rule,renewals,hard_due_date,recurring_fine_rule,grace_period,max_fine_rule,available_copy_hold_ratio,total_copy_hold_ratio,script_test,description"
     requiredFields="active,grp,org_unit"
     (recordSaved)="configureLimitSets($event); clearLinkedCircLimitSets(); closeDialog()"
-    [fieldOptions]="{active:{customTemplate:{template:active}}, item_age:{customTemplate:{template:item_age}}}">
+    [fieldOptions]="{active:{appendTemplate:{template:active}}, item_age:{appendTemplate:{template:item_age}}}">
   </eg-fm-record-editor>
 </eg-circ-matrix-matchpoint-dialog>
