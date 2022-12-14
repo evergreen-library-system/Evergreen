@@ -11,14 +11,17 @@ import {tap, switchMap} from 'rxjs/operators';
 @Component({
     template: `
       <ng-container *ngIf="idlClass">
-      <eg-title i18n-prefix prefix="{{classLabel}} Administration">
+      <eg-title i18n-prefix prefix="{{recordLabel || classLabel}} Administration">
       </eg-title>
-      <eg-staff-banner bannerText="{{classLabel}} Configuration" i18n-bannerText>
+      <eg-staff-banner bannerText="{{recordLabel || classLabel}} Configuration" i18n-bannerText>
       </eg-staff-banner>
       <eg-admin-page persistKeyPfx="{{persistKeyPfx}}" idlClass="{{idlClass}}"
         configLinkBasePath="{{configLinkBasePath}}"
         fieldOrder="{{fieldOrder}}"
         readonlyFields="{{readonlyFields}}"
+        recordLabel="{{recordLabel}}"
+        orgDefaultAllowed="{{orgDefaultAllowed}}"
+        [hideClearFilters]="hideClearFilters"
         [defaultNewRecord]="defaultNewRecordIdl"
         [enableUndelete]="enableUndelete"
         [disableOrgFilter]="disableOrgFilter"></eg-admin-page>
@@ -33,6 +36,9 @@ export class BasicAdminPageComponent implements OnInit {
     persistKeyPfx: string;
     fieldOrder = '';
     readonlyFields = '';
+    recordLabel = '';
+    orgDefaultAllowed = '';
+    hideClearFilters: boolean;
     defaultNewRecordIdl: IdlObject;
     configLinkBasePath = '/staff/admin';
 
@@ -79,6 +85,9 @@ export class BasicAdminPageComponent implements OnInit {
                     this.enableUndelete = data['enableUndelete'];
                     this.fieldOrder = data['fieldOrder'];
                     this.readonlyFields = data['readonlyFields'];
+                    this.recordLabel = data['recordLabel'];
+                    this.orgDefaultAllowed = data['orgDefaultAllowed'];
+                    this.hideClearFilters = data['hideClearFilters'];
                     this.defaultNewRecord = data['defaultNewRecord'];
                 }
 

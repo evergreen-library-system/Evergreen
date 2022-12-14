@@ -7401,7 +7401,7 @@ SELECT  usr,
 	</class>
 	<class id="asc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::stat_cat" oils_persist:tablename="asset.stat_cat" reporter:label="Asset Statistical Category">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.stat_cat_id_seq">
-			<field reporter:label="Entries" name="entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Entries" name="entries" oils_persist:virtual="true" reporter:datatype="link" config_field="true"/>
 			<field reporter:label="Stat Cat ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="bool"/>
@@ -7418,8 +7418,12 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
+                <create permission="CREATE_COPY_STAT_CAT" context_field="owner"/>
 				<retrieve permission="STAFF_LOGIN" global_required="true"/>
-			</actions>
+                <retrieve />
+                <update permission="UPDATE_COPY_STAT_CAT" context_field="owner"/>
+                <delete permission="DELETE_COPY_STAT_CAT" context_field="owner"/>
+            </actions>
 		</permacrud>
 	</class>
 	<class id="ac" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::card" oils_persist:tablename="actor.card" reporter:label="Library Card">
@@ -7458,7 +7462,7 @@ SELECT  usr,
     </class>
 	<class id="actsc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::stat_cat" oils_persist:tablename="actor.stat_cat" reporter:label="User Statistical Category">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.stat_cat_id_seq">
-			<field reporter:label="Entries" name="entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Entries" name="entries" oils_persist:virtual="true" reporter:datatype="link" config_field="true"/>
 			<field reporter:label="Default Entries" name="default_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Stat Cat ID" name="id" reporter:datatype="id" reporter:selector="name"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
@@ -7749,7 +7753,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="actsce" controller="open-ils.cstore" oils_obj:fieldmapper="actor::stat_cat_entry" oils_persist:tablename="actor.stat_cat_entry" reporter:label="User Stat Cat Entry">
+	<class id="actsce" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::stat_cat_entry" oils_persist:tablename="actor.stat_cat_entry" reporter:label="User Stat Cat Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.stat_cat_entry_id_seq">
 			<field reporter:label="Entry ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Entry Owner" name="owner" reporter:datatype="link"/>
@@ -7762,6 +7766,20 @@ SELECT  usr,
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="default_entries" reltype="has_many" key="stat_cat_entry" map="" class="actsced"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+                <create permission="CREATE_PATRON_STAT_CAT_ENTRY">
+                    <context link="stat_cat" field="owner"/>
+                </create>
+				<retrieve permission="STAFF_LOGIN" global_required="true"/>
+                <update permission="UPDATE_PATRON_STAT_CAT_ENTRY">
+                    <context link="stat_cat" field="owner"/>
+                </update>
+                <delete permission="DELETE_PATRON_STAT_CAT_ENTRY">
+                    <context link="stat_cat" field="owner"/>
+                </delete>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="actsced" controller="open-ils.cstore" oils_obj:fieldmapper="actor::stat_cat_entry_default" oils_persist:tablename="actor.stat_cat_entry_default" reporter:label="User Stat Cat Default Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.stat_cat_entry_default_id_seq">
@@ -8883,7 +8901,16 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
+                <create permission="CREATE_COPY_STAT_CAT_ENTRY">
+                    <context link="stat_cat" field="owner"/>
+                </create>
 				<retrieve permission="STAFF_LOGIN" global_required="true"/>
+                <update permission="UPDATE_COPY_STAT_CAT_ENTRY">
+                    <context link="stat_cat" field="owner"/>
+                </update>
+                <delete permission="DELETE_COPY_STAT_CAT_ENTRY">
+                    <context link="stat_cat" field="owner"/>
+                </delete>
 			</actions>
 		</permacrud>
 	</class>

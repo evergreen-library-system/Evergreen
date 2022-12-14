@@ -29,3 +29,5 @@
     UPDATE_COPY permission the new UPDATE_COPY_BARCODE permission at the
     same depth, though it's technically not needed.
 * Patron and staff login forms now include a button to reveal the password input. (LP#1977554)
+* Adds new Local Administration entries for Item Statistical Categories Editor and Patron Statistical Categories Editor, which are angularized interfaces.
+* Tweaks eg-grids to underline hyperlinks within cells.  This potentially affects multiple interfaces.

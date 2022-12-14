@@ -100,6 +100,48 @@ const routes: Routes = [{
     loadChildren: () =>
       import('./negative-balances/negative-balances.module').then(m => m.NegativeBalancesModule)
 }, {
+    path: 'asset/stat_cat',
+    component: BasicAdminPageComponent,
+    data: [{
+        schema: 'asset',
+        table: 'stat_cat',
+        readonlyFields: 'id',
+        orgDefaultAllowed: 'owner',
+        recordLabel: $localize `Item Statistical Category`,
+        fieldOrder: 'name,owner,required,opac_visible,checkout_archive,sip_field,sip_format'}]
+}, {
+    path: 'asset/stat_cat_entry',
+    component: BasicAdminPageComponent,
+    data: [{
+        schema: 'asset',
+        table: 'stat_cat_entry',
+        readonlyFields: 'id,stat_cat',
+        orgDefaultAllowed: 'owner',
+        recordLabel: $localize `Item Statistical Category Entry`,
+        hideClearFilters: true,
+        fieldOrder: 'stat_cat,value,owner'}]
+}, {
+    path: 'actor/stat_cat',
+    component: BasicAdminPageComponent,
+    data: [{
+        schema: 'actor',
+        table: 'stat_cat',
+        readonlyFields: 'id',
+        orgDefaultAllowed: 'owner',
+        recordLabel: $localize `Patron Statistical Category`,
+        fieldOrder: 'name,owner,required,opac_visible,usr_summary,allow_freetext,checkout_archive,sip_field,sip_format'}]
+}, {
+    path: 'actor/stat_cat_entry',
+    component: BasicAdminPageComponent,
+    data: [{
+        schema: 'actor',
+        table: 'stat_cat_entry',
+        readonlyFields: 'id,stat_cat',
+        orgDefaultAllowed: 'owner',
+        recordLabel: $localize `Patron Statistical Category Entry`,
+        hideClearFilters: true,
+        fieldOrder: 'stat_cat,value,owner'}]
+}, {
     path: ':schema/:table',
     component: BasicAdminPageComponent
 }

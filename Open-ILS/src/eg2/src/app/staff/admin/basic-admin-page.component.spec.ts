@@ -30,11 +30,14 @@ class MockAdminPageComponent {
     @Input() configLinkBasePath: string;
     @Input() defaultNewRecord: IdlObject;
     @Input() disableOrgFilter: boolean;
+    @Input() hideClearFilters: boolean;
     @Input() fieldOrder: string;
     @Input() idlClass: string;
     @Input() persistKeyPfx: string;
     @Input() readonlyFields: string;
     @Input() enableUndelete: boolean;
+    @Input() recordLabel: string;
+    @Input() orgDefaultAllowed: string;
 }
 
 describe('Component: BasicAdminPage', () => {

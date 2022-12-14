@@ -82,6 +82,15 @@ export class AdminPageComponent implements OnInit {
     // Optional comma-separated list of read-only fields
     @Input() readonlyFields: string;
 
+    // Optional record label to use instead of the IDL label
+    @Input() recordLabel: string;
+
+    // optional flag to hide the Clear Filters action for gridFilters
+    @Input() hideClearFilters: boolean;
+
+    // optional list of org fields which are allowed a default if unset
+    @Input() orgDefaultAllowed: string;
+
     // Optional template containing help/about text which will
     // be added to the page, above the grid.
     @Input() helpTemplate: TemplateRef<any>;
