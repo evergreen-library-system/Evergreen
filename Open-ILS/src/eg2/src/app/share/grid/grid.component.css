@@ -57,6 +57,10 @@
 .eg-grid-body-cell {
 }
 
+.eg-grid-body-cell a[href] {
+    text-decoration: underline !important;
+}
+
 .eg-grid-header-cell {
   font-weight: bold;
   white-space: normal;
