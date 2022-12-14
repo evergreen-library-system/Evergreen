@@ -276,7 +276,7 @@ export class FmRecordEditorComponent
 
         this.listifyInputs();
         this.idlDef = this.idl.classes[this.idlClass];
-        this.recordLabel = this.idlDef.label;
+        this.recordLabel = this.recordLabel || this.idlDef.label;
 
         // Add some randomness to the generated DOM IDs to ensure against clobbering
         this.idPrefix = 'fm-editor-' + Math.floor(Math.random() * 100000);
