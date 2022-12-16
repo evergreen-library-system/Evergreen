@@ -33,7 +33,7 @@
         [asyncSupportsEmptyTermClick]="true"
         [required]="true" [readOnly]="!charge.isnew() && !charge.ischanged()"
         [idlQuerySort]="{acqf: 'year DESC, code'}"
-        [idlQueryAnd]="{active: 't'}">
+        [idlQueryAnd]="{org: owners, active: 't'}">
       </eg-combobox>
       <span *ngIf="charge.fund_debit() && charge.fund_debit().fund() !== charge.fund()">
         <br>
@@ -63,7 +63,7 @@
     <div class="flex-2 p-2">
       <span *ngIf="!charge.isnew() && !charge.ischanged()">{{charge.estimated_cost() | currency}}</span>
       <input *ngIf="charge.isnew() || charge.ischanged()" type="number" min="0" class="form-control" 
-        i18n-placeholder placeholder="Esimated Cost..." [required]="true"
+        i18n-placeholder placeholder="Estimated Cost..." [required]="true"
         [ngModel]="charge.estimated_cost()" (ngModelChange)="charge.estimated_cost($event)"/>
       <span *ngIf="charge.fund_debit()">
         <br>
