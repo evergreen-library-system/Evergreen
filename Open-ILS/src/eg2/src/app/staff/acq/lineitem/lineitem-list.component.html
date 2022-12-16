@@ -32,6 +32,12 @@
   </eg-progress-inline>
 </div>
 
+<div class="row" *ngIf="loading">
+  <div class="offset-lg-3 col-lg-6">
+    <eg-progress-inline *ngIf="loading"></eg-progress-inline>
+  </div>
+</div>
+
 <div class="row mt-3" *ngIf="poId || picklistId">
   <div class="col-lg-1">
     <div ngbDropdown>
@@ -563,10 +569,4 @@
     </div>
   </div>
 </ng-container>
-
-<div class="row" *ngIf="loading">
-  <div class="offset-lg-3 col-lg-6">
-    <eg-progress-inline *ngIf="loading"></eg-progress-inline>
-  </div>
-</div>
 
