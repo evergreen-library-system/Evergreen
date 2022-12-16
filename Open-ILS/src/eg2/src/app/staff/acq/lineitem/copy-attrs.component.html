@@ -42,7 +42,7 @@
       [displayTemplate]="fundTmpl"
       [selectedId]="copy.fund()" (onChange)="valueChange('fund', $event)"
       [idlQuerySort]="{acqf: 'year DESC, code'}"
-      [idlQueryAnd]="{active: 't'}">
+      [idlQueryAnd]="{org: owners, active: 't'}">
     </eg-combobox>
   </div>
   <div class="flex-1 p-1">
