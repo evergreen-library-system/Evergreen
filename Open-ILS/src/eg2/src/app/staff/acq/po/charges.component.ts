@@ -2,6 +2,7 @@ import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -20,6 +21,7 @@ export class PoChargesComponent implements OnInit, OnDestroy {
     canModify = false;
     autoId = -1;
     poSubscription: Subscription;
+    owners: number[];
 
     @ViewChild('disencumberChargeDialog') disencumberChargeDialog: DisencumberChargeDialogComponent;
 
@@ -29,6 +31,7 @@ export class PoChargesComponent implements OnInit, OnDestroy {
         private evt: EventService,
         private auth: AuthService,
         private pcrud: PcrudService,
+        private org: OrgService,
         public  poService: PoService
     ) {}
 
@@ -44,6 +47,8 @@ export class PoChargesComponent implements OnInit, OnDestroy {
             this.showBody = this.po().po_items().length > 0;
             this.canModify = this.po().order_date() ? false : true;
         });
+
+        this.owners = this.org.ancestors(this.auth.user().ws_ou(), true);
     }
 
     ngOnDestroy() {
