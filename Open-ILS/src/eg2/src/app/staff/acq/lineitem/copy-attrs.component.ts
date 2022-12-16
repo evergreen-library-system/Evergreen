@@ -29,6 +29,7 @@ export class LineitemCopyAttrsComponent implements OnInit {
     _fundBalanceCache: string[] = [];
     _inflight: Promise<string>[] = [];
     circModEntries: ComboboxEntry[];
+    owners: number[];
 
     private _copy: IdlObject;
     @Input() set copy(c: IdlObject) { // acqlid
@@ -79,6 +80,8 @@ export class LineitemCopyAttrsComponent implements OnInit {
     ) {}
 
     ngOnInit() {
+
+        this.owners = this.org.ancestors(this.auth.user().ws_ou(), true);
 
         if (this.gatherParamsOnly) {
             this.batchMode = false;
