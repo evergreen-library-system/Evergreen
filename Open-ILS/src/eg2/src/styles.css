@@ -258,6 +258,24 @@ body>.dropdown-menu {z-index: 2100;}
 @media (min-width: 1600px) { .modal-xl { max-width: 1500px; } }
 @media (min-width: 1700px) { .modal-xl { max-width: 1600px; } }
 
+/* Contrast for dialog titles */
+.modal-header .modal-title {
+  color: #fff;
+  font-weight: 600;
+}
+
+.modal-header .close,
+.modal-header .close:hover {
+  color: #fff;
+  opacity: 1;
+  text-shadow: none;
+}
+
+.modal-header .close:not(:disabled):not(.disabled):focus, 
+.modal-header .close:not(:disabled):not(.disabled):hover {
+  opacity: 1;
+}
+
 /**
  * Make the acquisitions search form's navigation tabs match
  * those of the staff interface. This is a global rule because
