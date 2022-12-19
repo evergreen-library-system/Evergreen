@@ -33,14 +33,17 @@ my $process_as = 'admin';
 my $min_id = 0;
 my $max_id;
 my $has_open_circ = 0;
+my @included_penalties;
 my $owes_more_than;
 my $owes_less_than;
 my $has_penalty;
+my $home_ou_context;
 my $no_has_penalty;
 my $verbose;
 my $help;
 my $batch_size = 100;
 my $authtoken;
+my $auth_user_home;
 my $e;
 
 my $ops = GetOptions(
@@ -54,6 +57,8 @@ my $ops = GetOptions(
     'owes-less-than=s'  => \$owes_less_than,
     'has-penalty=s'     => \$has_penalty,
     'no-has-penalty=s'  => \$no_has_penalty,
+    'include-penalty=s' => \@included_penalties,
+    'patron-home-context'   => \$home_ou_context,
     'verbose'           => \$verbose,
     'help'              => \$help
 );
@@ -75,11 +80,29 @@ sub help {
             Username of an Evergreen account to use for creating the
             internal auth session.  Defaults to 'admin'.
 
-        --has-penalty <penalty-type-id>
-            Limit to patrons that currently have a specific penalty.
+        --patron-home-context
+            Use each user's home library as the penalty calculation
+            context. Otherwise the home library of the --process-as user
+            is used to identify the thresholds and custom penalties to
+            process.
 
-        --no-has-penalty <penalty-type-id>
+        --has-penalty <penalty-name-or-id>
+            Limit to patrons that currently have a specific penalty. If
+            an id is specified, only that exact penalty is checked. If
+            a name is supplied, the system will check for a custom penalty
+            configured for use at the selected users' home libraries.
+
+        --no-has-penalty <penalty-name-or-id>
             Limit to patrons that do not currently have a specific penalty.
+            If an id is specified, only that exact penalty is checked. If
+            a name is supplied, the system will check for a custom penalty
+            configured for use at the selected users' home libraries.
+
+        --include-penalty <penalty-name-or-id>
+            Limit to a specific penalty.  Specify multiple times for
+            multiple penalties. If an id is specified, only the exact
+            penalties will be calculated.  Custom penalties will be looked
+            up as needed if a name is supplied.
 
         --min-id <id>
             Lowest patron ID to process. 
@@ -185,7 +208,25 @@ sub get_user_ids {
     }
 
     if ($has_penalty) {
-        
+
+        if ($has_penalty !~ /^\d+$/) { # got a penalty name, look up possible custom ones for the patron or processing user home org
+            $has_penalty = {in => { union => [
+                {select => { csp => ['id'] }, from => csp => where => { name => $has_penalty }},
+                {select =>
+                    { aous => [{column => value => transform => btrim => params => '"'}] },
+                 from => 'aous',
+                 where => {
+                    name => 'circ.custom_penalty_override.'.$has_penalty,
+                    org_unit => { in =>
+                        {select => { aou => [{column => id => transform => 'actor.org_unit_ancestors' => result_field => id => alias => 'id'}]},
+                         from => 'aou',
+                         where => { id => ($home_ou_context ? { '+au' => 'home_ou' } : $auth_user_home) }}
+                    }
+                 }
+                }
+            ]}};
+        }
+
         push(@where, {
             '-exists' => {
                 select => {ausp => ['id']},
@@ -204,6 +245,25 @@ sub get_user_ids {
     }
 
     if ($no_has_penalty) {
+
+        if ($no_has_penalty !~ /^\d+$/) { # got a penalty name, look up possible custom ones for the patron or processing user home org
+            $no_has_penalty = {in => { union => [
+                {select => { csp => ['id'] }, from => csp => where => { name => $no_has_penalty }},
+                {select =>
+                    { aous => [{column => value => transform => btrim => params => '"'}] },
+                 from => 'aous',
+                 where => {
+                    name => 'circ.custom_penalty_override.'.$no_has_penalty,
+                    org_unit => { in =>
+                        {select => { aou => [{column => id => transform => 'actor.org_unit_ancestors' => result_field => id => alias => 'id'}]},
+                         from => 'aou',
+                         where => { id => ($home_ou_context ? { '+au' => 'home_ou' } : $auth_user_home) }}
+                    }
+                 }
+                }
+            ]}};
+        }
+
         push(@where, {
             '-not' => {
                 '-exists' => {
@@ -302,6 +362,8 @@ sub process_users {
     my $offset = 0;
     my $counter = 0;
     my $batches = 0;
+    my $method = 'open-ils.actor.user.penalties.update';
+    $method .= '_at_home' if $home_ou_context;
 
     while (1) {
         my $user_ids = get_user_ids($limit, $offset);
@@ -319,9 +381,8 @@ sub process_users {
         for my $user_id (@$user_ids) {
 
             $U->simplereq(
-                'open-ils.actor',
-                'open-ils.actor.user.penalties.update',
-                $authtoken, $user_id
+                'open-ils.actor', $method,
+                $authtoken, $user_id, @included_penalties
             );
 
             $counter++;
@@ -349,7 +410,8 @@ sub login {
     die "Could not create an internal auth session\n" unless (
         $auth_resp && 
         $auth_resp->{payload} && 
-        ($authtoken = $auth_resp->{payload}->{authtoken})
+        ($authtoken = $auth_resp->{payload}->{authtoken}) &&
+        ($auth_user_home = $auth_user->home_ou)
     );
 }
 
