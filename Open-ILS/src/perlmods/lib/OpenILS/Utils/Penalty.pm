@@ -12,10 +12,9 @@ use OpenILS::Utils::Fieldmapper;
 use OpenILS::Const qw/:const/;
 my $U = "OpenILS::Application::AppUtils";
 
-
-# calculate and update the well-known penalties
+# calculate and update the well-known penalties, limited to the list supplied
 sub calculate_penalties {
-    my($class, $e, $user_id, $context_org) = @_;
+    my($class, $e, $user_id, $context_org, @only_penalties) = @_;
 
     my $commit = 0;
     unless($e) {
@@ -24,6 +23,30 @@ sub calculate_penalties {
     }
 
     my $penalties = $e->json_query({from => ['actor.calculate_system_penalties',$user_id, $context_org]});
+
+    if (@only_penalties) {
+        my $all_penalties = $penalties;
+        $penalties = [];
+
+        my @only_penalties_id_list = grep {/^\d+$/} @only_penalties;
+
+        if (my @name_penalties = grep {/\D/} @only_penalties) { # has at least one non-numeric character
+            my $only_these_penalties = $e->search_config_standing_penalty({name => \@name_penalties});
+            my %penalty_override_map = $U->ou_ancestor_setting_batch_insecure(
+                $context_org,
+                [ map { 'circ.custom_penalty_override.'. $_ } @name_penalties ]
+            );
+
+            push @only_penalties_id_list, map { $_->id } @$only_these_penalties;
+            push @only_penalties_id_list, map { $_->{value} } values %penalty_override_map;
+        }
+
+        for my $p (@$all_penalties) {
+            if (grep {$p->{standing_penalty} eq $_} @only_penalties_id_list) {
+                push @$penalties, $p;
+            }
+        }
+    }
 
     my $user = $e->retrieve_actor_user( $user_id );
     my @existing_penalties = grep { defined $_->{id} } @$penalties;

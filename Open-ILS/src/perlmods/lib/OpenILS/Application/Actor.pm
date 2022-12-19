@@ -3028,13 +3028,19 @@ __PACKAGE__->register_method(
     api_name => "open-ils.actor.user.penalties.update"
 );
 
+__PACKAGE__->register_method(
+    method   => "update_penalties",
+    api_name => "open-ils.actor.user.penalties.update_at_home"
+);
+
 sub update_penalties {
-    my($self, $conn, $auth, $user_id) = @_;
+    my($self, $conn, $auth, $user_id, @penalties) = @_;
     my $e = new_editor(authtoken=>$auth, xact => 1);
     return $e->die_event unless $e->checkauth;
     my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
     return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
-    my $evt = OpenILS::Utils::Penalty->calculate_penalties($e, $user_id, $e->requestor->ws_ou);
+    my $context_org = ($self->api_name =~ /_at_home$/) ? $user->home_ou : $e->requestor->ws_ou;
+    my $evt = OpenILS::Utils::Penalty->calculate_penalties($e, $user_id, $context_org, @penalties);
     return $evt if $evt;
     $e->commit;
     return 1;

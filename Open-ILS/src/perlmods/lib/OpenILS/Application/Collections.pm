@@ -211,6 +211,8 @@ sub users_of_interest_warning_penalty {
     my $min_set_date = DateTime->now->subtract(seconds =>
         interval_to_seconds($min_age))->strftime( '%F %T%z' ) if $min_age;
 
+    my $sp_id = $U->ou_ancestor_setting_value($org->id, 'circ.custom_penalty_override.PATRON_EXCEEDS_COLLECTIONS_WARNING') || 4;
+
     my $start = time;
     my $query = {
         select => {ausp => ['usr']},
@@ -234,7 +236,7 @@ sub users_of_interest_warning_penalty {
         },
         where => {
             '+ausp' => {
-                standing_penalty => 4, # PATRON_EXCEEDS_COLLECTIONS_WARNING
+                standing_penalty => [4,$sp_id], # PATRON_EXCEEDS_COLLECTIONS_WARNING
                 org_unit => [ map {$_->{id}} @$org_ids ],
                 '-or' => [
                     {stop_date => undef},
@@ -482,10 +484,12 @@ sub put_into_collections {
 
     $e->commit;
 
+    my $sp_id = $U->ou_ancestor_setting_value($org->id, 'circ.custom_penalty_override.PATRON_IN_COLLECTIONS') || 30;
+
     my $pen = Fieldmapper::actor::user_standing_penalty->new;
     $pen->org_unit($org->id);
     $pen->usr($user_id);
-    $pen->standing_penalty(30); # PATRON_IN_COLLECTIONS
+    $pen->standing_penalty($sp_id); # PATRON_IN_COLLECTIONS
     $pen->staff($e->requestor->id);
     my $msg = { 'pub' => 0, 'title' => 'PATRON_IN_COLLECTIONS', 'message' => $fee_note };
     $U->simplereq('open-ils.actor', 'open-ils.actor.user.penalty.apply', $auth, $pen, $msg);
