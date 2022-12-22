@@ -11,10 +11,9 @@ The table below is sorted in alphabetical order according to the _Name_ column. 
 
 == Global Flags Details == 
 
-[cols=",,,,,",options="header",]
+[options="header"]
 |===
-|*Name* |*Label* |*Enabled (Default)* |*Value (Default)* |*Notes*
-|*Other Information*
+|Name|Label|Enabled (Default)|Value (Default)|Notes|Other Information
 |auth.block_expired_staff_login |Block the ability of expired user with
 the STAFF_LOGIN permission to log into Evergreen. |No | |If this flag is
 enabled, accounts that have the STAFF_LOGIN permission and whose
