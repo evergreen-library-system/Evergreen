@@ -1,0 +1,29 @@
+/* summary.component.css */
+
+.text-danger {
+    background-color: #f8d7da;
+    color: #842029 !important;
+    font-weight: bold;
+    padding: 0 .25rem;
+}
+
+.text-danger:before {
+    content: "\e160";
+}
+
+.bg-warning {
+    background-color: #ffe69c !important;
+    color: #984C0C;
+    font-weight: bold;
+}
+
+.bg-warning:before {
+    content: "\e002";
+}
+
+.bg-warning:before,
+.text-danger:before {
+    font-family: "Material Icons";
+    font-weight: normal;
+    vertical-align: sub;
+}
