@@ -9,22 +9,24 @@
 <div id="acct_info_main">
     <table title="[% l('Account preference') %]" class='light_border table table-hover'>
         <tbody id='myopac_summary_tbody'>
-            [% IF ctx.user.pref_first_given_name || ctx.user.pref_second_given_name || ctx.user.pref_family_name %]
             <tr>
-                <td class='color_4 light_border'>[% l("Preferred Name") %]</td>
+                <td width='30%'
+                    class='color_4 light_border'>[% l("Preferred Name") %]</td>
 
                 <td class='light_border'>[% l(
-                    HUMAN_NAME_FORMAT,
-                    ctx.user.pref_prefix,
-                    (ctx.user.pref_first_given_name || ctx.user.first_given_name),
-                    ctx.user.pref_second_given_name,
-                    (ctx.user.pref_family_name || ctx.user.family_name),
-                    ctx.user.pref_suffix
-                ) | html %]</td>
+                        HUMAN_NAME_FORMAT,
+                        ctx.user.pref_prefix,
+                        ctx.user.pref_first_given_name,
+                        ctx.user.pref_second_given_name,
+                        ctx.user.pref_family_name,
+                        ctx.user.pref_suffix
+                        ) | html %]</td>
 
-                <td></td>
+                <td class='light_border'><a class="btn btn-sm btn-action" href='update_preferred_name'
+                    title="[% l('Change Preferred Name') %]"><i class="fas fa-user-cog"></i>[% l("Change") %]</a>
+                </td>
+
             </tr>
-            [%  END %]
             <tr>
                 <td class='color_4 light_border'>[% l("Legal Name") %]</td>
 

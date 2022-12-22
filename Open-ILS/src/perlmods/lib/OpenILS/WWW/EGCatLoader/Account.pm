@@ -2994,6 +2994,45 @@ sub load_myopac_update_password {
     return $self->generic_redirect($url);
 }
 
+sub load_myopac_update_preferred_name {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+
+    $self->prepare_extended_user_info;
+
+    return Apache2::Const::OK
+        unless $self->cgi->request_method eq 'POST';
+
+    my $current_pw = $self->cgi->param('current_pw') || '';
+
+    my %opac_vals = ();
+
+    foreach(qw/ pref_prefix pref_first_given_name pref_second_given_name pref_family_name pref_suffix/ ){
+        $opac_vals{$_} = $self->cgi->param($_) if($self->cgi->param($_) && $self->cgi->param($_) ne '');
+    }
+
+    my $evt = $U->simplereq('open-ils.actor', 'open-ils.actor.user.preferred_name.update',
+        $e->authtoken, \%opac_vals, $current_pw);
+
+    if($U->event_equals($evt, 'INCORRECT_PASSWORD')) {
+        $ctx->{password_incorrect} = 1;
+        return Apache2::Const::OK;
+    }
+
+    if($U->event_equals($evt, 'BAD_PARAM')) {
+        $ctx->{bad_param} = 1;
+        return Apache2::Const::OK;
+    }
+
+    foreach(qw/ pref_prefix pref_first_given_name pref_second_given_name pref_family_name pref_suffix/ ){
+        $self->ctx->{user}->$_($opac_vals{$_});
+    }
+
+    return $self->generic_redirect($self->apache->unparsed_uri);
+
+}
+
 sub _update_bookbag_metadata {
     my ($self, $bookbag) = @_;
 

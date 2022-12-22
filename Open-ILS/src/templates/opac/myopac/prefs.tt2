@@ -10,6 +10,23 @@
     <table width='70%' title="[% l('Account preference') %]"
         class='light_border data_grid'>
         <tbody id='myopac_summary_tbody'>
+            <tr>
+                <td width='30%'
+                    class='color_4 light_border'>[% l("Preferred Name") %]</td>
+
+                <td class='light_border'>[% l(
+                        HUMAN_NAME_FORMAT,
+                        ctx.user.pref_prefix,
+                        (ctx.user.pref_first_given_name || ctx.user.first_given_name),
+                        ctx.user.pref_second_given_name,
+                        (ctx.user.pref_family_name || ctx.user.family_name),
+                        ctx.user.pref_suffix
+                        ) | html %]</td>
+
+                <td></td>
+                <td><a href='update_preferred_name'
+                       title="[% l('Change Preferred Name') %]">[% l("Change") %]</a></td>
+            </tr>
             [% IF ctx.user.pref_first_given_name || ctx.user.pref_second_given_name || ctx.user.pref_family_name %]
             <tr>
                 <td width='30%'

@@ -1703,6 +1703,20 @@ __PACKAGE__->register_method(
     }
 );
 
+__PACKAGE__->register_method(
+    method    => "update_passwd",
+    api_name  => "open-ils.actor.user.preferred_name.update",
+    signature => {
+        desc   => "Update the operator's preferred name",
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'User',                 type => 'hash' },
+            { desc => 'Current password',     type => 'string' }
+        ],
+        return => {desc => '1 on success, Event on error or incorrect current password'}
+    }
+);
+
 sub update_passwd {
     my( $self, $conn, $auth, $new_val, $orig_pw ) = @_;
     my $e = new_editor(xact=>1, authtoken=>$auth);
@@ -1749,6 +1763,17 @@ sub update_passwd {
         } elsif( $api =~ /locale/o ) {
             $db_user->locale($new_val);
             $at_event++;
+        } elsif( $api =~ /preferred_name/o ) {
+            if(ref($new_val) eq 'HASH'){
+                foreach(qw/ pref_prefix pref_first_given_name pref_second_given_name pref_family_name pref_suffix/){
+                    $db_user->$_($new_val->{$_});
+                    # Set the value to NULL when no data is submitted.
+                    eval '$db_user->clear_' . $_ . '();' if($new_val->{$_} eq '' );
+                }
+                $at_event++;
+            }else {
+                return new OpenILS::Event('BAD_PARAMS');
+            }
         }
     }
 

@@ -2150,7 +2150,16 @@ div#facet_sidebar {
 .subtle-button:hover { text-decoration: underline; cursor: pointer; }
 .no-dec:hover { text-decoration: none; }
 .pending-addr td { background-color: [% css_colors.background_alert %] !important; border: 0 !important; }
-
+#account-update-preferred-name table { text-align: center; padding: 20px; margin-top: 18px; border-collapse: collapse; }
+#account-update-preferred-name table td {
+    [% IF rtl == 't' -%]
+    text-align: right;
+    [% ELSE -%]
+    text-align: left;
+    [% END -%]
+    padding: 5px 15px 5px 15px;
+    border-bottom: 1px solid [% css_colors.accent_lighter %];
+}
 #account-update-email table { text-align: center; padding: 20px; margin-top: 18px; border-collapse: collapse; }
 #account-update-email table td {
     [% IF rtl == 't' -%]

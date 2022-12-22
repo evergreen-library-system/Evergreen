@@ -271,6 +271,7 @@ sub load {
     return $self->load_myopac_update_password if $path =~ m|opac/myopac/update_password|;
     return $self->load_myopac_update_username if $path =~ m|opac/myopac/update_username|;
     return $self->load_myopac_update_locale if $path =~ m|opac/myopac/update_locale|;
+    return $self->load_myopac_update_preferred_name if $path =~ m|opac/myopac/update_preferred_name|;
     return $self->load_myopac_bookbags if $path =~ m|opac/myopac/lists|;
     return $self->load_myopac_bookbag_print if $path =~ m|opac/myopac/list/print|;
     return $self->load_myopac_bookbag_update if $path =~ m|opac/myopac/list/update|;

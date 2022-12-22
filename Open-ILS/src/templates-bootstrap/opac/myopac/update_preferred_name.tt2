@@ -1,0 +1,31 @@
+[%  PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/myopac/base.tt2";
+    myopac_page = "prefs"  %]
+<h3 class="sr-only">[% l('Update Preferred Name') %]</h3>
+<div id='myopac_summary_div' style="padding:0px;">
+
+    <div class="header_middle">
+        <span class="float-left">[% l('Update Preferred Name') %]</span>
+    </div>
+
+[% IF ctx.password_incorrect %]
+    <div class='account-password-error'>
+        [% |l %]Your current password was not correct.[% END %]
+    </div>
+
+[% END %]
+
+<form method='post' id='account-update-preferred-name' autocomplete='off'>
+    <table>
+        <tr><td><label for="current_pw">[% l('Current Password') %]</label></td><td><input type='password' name='current_pw' id='current_pw' class="form-control" /></td></tr>
+        <tr><td><label for='pref-prefix'>[% l('New Preferred Prefix') %]</label></td><td><input type='text' name='pref_prefix' id='pref_prefix' class="form-control" /></td></tr>
+        <tr><td><label for='pref-first-given-name'>[% l('New Preferred First Name') %]</label></td><td><input type='text' name='pref_first_given_name' id='pref_first_given_name' class="form-control" /></td></tr>
+        <tr><td><label for='pref-second-given-name'>[% l('New Preferred Second Name') %]</label></td><td><input type='text' name='pref_second_given_name' id='pref_second_given_name' class="form-control" /></td></tr>
+        <tr><td><label for='pref-family-name'>[% l('New Preferred Family Name') %]</label></td><td><input type='text' name='pref_family_name' id='pref_family_name' class="form-control" /></td></tr>
+        <tr><td><label for='pref-suffix'>[% l('New Preferred Suffix') %]</label></td><td><input type='text' name='pref_suffix' id='pref_suffix' class="form-control" /></td></tr>
+        <tr><td colspan='2'><button class="btn btn-confirm m-2" type='submit'><i class="fas fa-save"></i> [% l('Save Changes') %]</button></td></tr>
+    </table>
+</form>
+
+[% END %]
