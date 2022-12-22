@@ -66,14 +66,8 @@ SET CONSTRAINTS ALL DEFERRED;
 \echo loading money.grocery
 \i money.grocery.sql
 
-\echo loading money.billable_xact
-\i money.billable_xact.sql
-
 \echo loading money.billing
 \i money.billing.sql
-
-\echo loading money.bnm_desk_payment
-\i money.bnm_desk_payment.sql
 
 \echo loading acq.acq_lineitem_history
 \i acq.acq_lineitem_history.sql
@@ -267,9 +261,6 @@ SET CONSTRAINTS ALL DEFERRED;
 \echo loading config.hold_matrix_matchpoint
 \i config.hold_matrix_matchpoint.sql
 
-\echo loading config.remote_account
-\i config.remote_account.sql
-
 \echo loading config.remoteauth_profile
 \i config.remoteauth_profile.sql
 
@@ -306,9 +297,6 @@ SET CONSTRAINTS ALL DEFERRED;
 \echo loading money.account_adjustment
 \i money.account_adjustment.sql
 
-\echo loading money.bnm_payment
-\i money.bnm_payment.sql
-
 \echo loading money.cash_payment
 \i money.cash_payment.sql
 
@@ -326,9 +314,6 @@ SET CONSTRAINTS ALL DEFERRED;
 
 \echo loading money.goods_payment
 \i money.goods_payment.sql
-
-\echo loading money.payment
-\i money.payment.sql
 
 \echo loading money.work_payment
 \i money.work_payment.sql
@@ -387,9 +372,6 @@ SET CONSTRAINTS ALL DEFERRED;
 \echo loading vandelay.match_set_point
 \i vandelay.match_set_point.sql
 
-\echo loading vandelay.queue
-\i vandelay.queue.sql
-
 \echo loading vandelay.queued_authority_record
 \i vandelay.queued_authority_record.sql
 
@@ -398,9 +380,6 @@ SET CONSTRAINTS ALL DEFERRED;
 
 \echo loading vandelay.queued_bib_record
 \i vandelay.queued_bib_record.sql
-
-\echo loading vandelay.queued_record
-\i vandelay.queued_record.sql
 
 \echo loading vandelay.session_tracker
 \i vandelay.session_tracker.sql

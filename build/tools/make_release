@@ -19,12 +19,16 @@ UPGRADE_PREVIEW=NO # -r
 SKIP_I18N=NO # -i
 BUILD_BROWSER_CLIENT=NO # -c
 SKIP_XUL=NO # -x
+PG_HOST=NONE # -H
+PG_USER=NONE # -U
+PG_PASS=NONE # -P
+PG_PORT=NONE # -O
 
 # path to OpenSRF libraries
 [ "$(which osrf_config)" ] && OSRF_JS_PATH="$(osrf_config --libdir)/javascript";
 
 
-while getopts ":hv:f:F:nptbrij:cx" opt; do
+while getopts ":hv:f:F:nptbrij:cxH:D:U:P:O:" opt; do
     case $opt in
         v)
             VERSION=$OPTARG
@@ -63,6 +67,18 @@ while getopts ":hv:f:F:nptbrij:cx" opt; do
         x)
             SKIP_XUL=YES
         ;;
+        H)
+            PG_HOST="$OPTARG"
+        ;;
+        U)
+            PG_USER="$OPTARG"
+        ;;
+        P)
+            PG_PASS="$OPTARG"
+        ;;
+        O)
+            PG_PORT="$OPTARG"
+        ;;
         \?)
             echo "Invalid Option: -$OPTARG"
             exit 1
@@ -76,6 +92,8 @@ while getopts ":hv:f:F:nptbrij:cx" opt; do
             echo "   VERSION is auto-detected by default and is based on the currently checked out branch."
             echo "   PREV_BRANCH is auto-detected by default but that isn't reliable. Include remote name!"
             echo "   PREV_VERSION Is auto-detected by default and is based on the PREV_BRANCH's name."
+            echo "   Postgres credentials are required if you want to upgrade the enhanced concerto dataset."
+            echo "   The provided PG credentials needs to have permissions to create databases. All PG permissions are required."
             echo "   -n specifies that you don't want an upgrade script to be auto-generated."
             echo "   -p specifies that this is a preview build."
             echo "   -t turns on tag only mode."
@@ -85,6 +103,11 @@ while getopts ":hv:f:F:nptbrij:cx" opt; do
             echo "   -j opensrf javascript library path.  If osrf_config is found, the value derived from osrf_config --libdir."
             echo "   -c build the browser client;  requires nodejs"
             echo "   -x skip building the XUL client"
+            echo "   -H Postgres [H]ostname"
+            echo "   -D Postgres [D]atabase name"
+            echo "   -U Postgres [U]sername"
+            echo "   -P Postgres [P]assword"
+            echo "   -O Postgres p[O]rt"
             echo "   NOTE: -t and -b override PREV_BRANCH/PREV_VERSION, but -b overrides -t."
             exit -1
         ;;
@@ -296,6 +319,25 @@ if [ "$PREV_BRANCH" != "PACKAGE" ]; then
         COMMIT_MESSAGE="Bumping version numbers, adding Upgrade Script and Changelog"
     fi
     git commit -asm "$COMMIT_MESSAGE"
+    if [ "$PG_HOST" != "NONE" ]; then
+        echo "Attempting auto-upgrade for Enhanced Concerto Dataset"
+        $GIT_ABS/Open-ILS/src/support-scripts/make_concerto_from_evergreen_db.pl \
+        --db-host "$PG_HOST" --db-user "$PG_USER" --db-pass "$PG_PASS" --db-port "$PG_PORT" \
+        --output-folder "$GIT_ABS/Open-ILS/tests/datasets/sql/concerto_enhanced" \
+        --evergreen-repo "$GIT_ABS" \
+        --perform-upgrade \
+        --non-interactive
+
+        if [ $? -ne 0 ]; then
+            echo "Failed to auto-upgrade the Enhanced Concerto Dataset"
+            echo "Proceeding without it"
+            read -p "Press [Enter] key to continue"
+        else
+            echo "Committing Enhanced Concerto Dataset to git"
+            COMMIT_MESSAGE="Upgrade Enhanced Concerto Dataset"
+            git commit -asm "$COMMIT_MESSAGE"
+        fi
+    fi
 fi
 
 echo "Building release dump"

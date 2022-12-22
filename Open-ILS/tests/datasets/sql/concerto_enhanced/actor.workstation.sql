@@ -1,28 +1,28 @@
 COPY actor.workstation (id, name, owning_lib) FROM stdin;
-1	BR1-skiddoo	4
-2	BR1-rfrasur_isl	4
-3	CONS-lfloyd	1
-4	BR1-lfloyd	4
-5	CONS-rogan-laptop	1
-6	CONS-roganlaptop	1
-7	BR1-terran	4
-8	HHPL-terran	105
-9	CONS-CS	1
-10	WAKA-MAIN-lfloyd	108
-11	CONS-rfrasur	1
-12	BR1-JP-SITKA	4
-13	BR1-chrisy	4
-14	BR2-CS	5
-15	BR3-CS	6
-16	HHPL-HHPL-sitka	106
-17	RPLS-WEPL-tiffany	4
-18	HHPL-HHPL-rfrasur	106
-19	HHPL-HHPL-skiddoo	106
-20	WAKA-MAIN-cwmars - jamundson	108
-21	SMALL-SMALL-cwmars-jamundson	114
-22	LPLS-terran	101
-23	HHPL-HHPL-terran	106
-24	SMALL-SMALL-terran	114
+1	RPLS-WEPL-1	4
+2	RPLS-WEPL-2	4
+3	CONS-3	1
+4	RPLS-WEPL-4	4
+5	CONS-5	1
+6	CONS-6	1
+7	RPLS-WEPL-7	4
+8	HHPL-8	105
+9	CONS-9	1
+10	WAKA-MAIN-10	108
+11	CONS-11	1
+12	RPLS-WEPL-12	4
+13	RPLS-WEPL-13	4
+14	RPLS-HDPL-14	5
+15	SPLS-HPL-15	6
+16	HHPL-HHPL-16	106
+17	RPLS-WEPL-17	4
+18	HHPL-HHPL-18	106
+19	HHPL-HHPL-19	106
+20	WAKA-MAIN-20	108
+21	SMALL-SMALL-21	114
+22	LPLS-22	101
+23	HHPL-HHPL-23	106
+24	SMALL-SMALL-24	114
 \.
 
 \echo sequence update column: id

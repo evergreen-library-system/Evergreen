@@ -100,119 +100,113 @@ Here is how the matching works:
 
 [#make_concerto_from_evergreen_db]
 
-== make_concerto_from_evergreen_db.pl: Generating Evergreen enhanced datasets
+== make_concerto_from_evergreen_db.pl: Generating Evergreen enhanced datasets ==
 
 This script makes it possible to continue to improve/maintain the Evergreen
-enhanced dataset. This script requires two databases. One database that is
-created with only Evergreen's seed data. And another one that contains the
-intended dataset for the enhanced concerto data.
+enhanced dataset. This script requires access to a Postgres database. It will
+automate the process of making the enhanced dataset match the current branch of
+Evergreen. You need to provide the login credentials to the database as well as
+a path to the Evergreen repository where you're currently on the intended branch.
 
-=== Setup your server environment ===
+=== Generate new dataset from existing DB ===
 
-==== Creating the non-seed database ====
-
-[NOTE]
-Follow the standard PostgreSQL user creation steps from Evergreen's installation
-instructions.
-
-[source,bash]
-----
-perl Open-ILS/src/support-scripts/eg_db_config \
-       --service all --create-database --create-schema \
-       --user evergreen --password evergreen --hostname 127.0.0.1 --port 5432 \
-       --database ref_db --admin-user admin --admin-pass demo123
-----
-
-==== Creating the database containing the enhanced dataset ====
-
-This will be the database containing "the" data that will ultimately be
-generated. In this example, we'll use the concerto dataset
+This command will produce new output sql from an already-existing database.
+It requires that you've also pre-created a PG database representing the "seed"
+database. The seed database is an Evergreen database created without data but
+from the branch of Evergreen that matches the dataset's branch.
 
 [source,bash]
 ----
-perl Open-ILS/src/support-scripts/eg_db_config \
-       --service all --create-database --create-schema --load-all-sample \
-       --user evergreen --password evergreen --hostname 127.0.0.1 --port 5432 \
-       --database evergreen --admin-user admin --admin-pass demo123
+./make_concerto_from_evergreen_db.pl \
+--db-host localhost \
+--db-user evergreen \
+--db-pass evergreen \
+--db-port 5432 \
+--db-name eg_enhanced \
+--output-folder output \
+--seed-db-name seed_from_1326 \
+--evergreen-repo /home/opensrf/repos/Evergreen
 ----
 
-[NOTE]
-At this point, you can edit the Evergreen database via Staff client or direct DB.
-
-=== Run the script ===
-
-Now that the database is ready to become the enhanced dataset, we need to make
-sure that we have the database connection details setup in two files. By default,
-this script will use /openils/conf/opensrf.xml for connection information to the
-enhanced dataset database. You will also need to provide a link to another
-XML file with the details on how to connect to the seed database.
-
-[NOTE]
-Example of the minimum XML required for connection to the enhanced dataset database:
-
-opensrf.xml
-[source,xml]
-----
-<opensrf version='0.0.3'>
-    <default>
-        <apps>
-			<open-ils.storage>
-				<app_settings>
-					<databases>
-						<database>
-							<user>evergreen</user>
-							<host>127.0.0.1</host>
-							<port>5432</port>
-							<pw>evergreen</pw>
-							<db>evergreen</db>
-						</database>
-					</databases>
-				</app_settings>
-			</open-ils.storage>
-        </apps>
-    </default>
-</opensrf>
-----
-
-
-[NOTE]
-Example of the minimum XML required for connection to the seed-only database:
-
-seedonly.xml
-[source,xml]
-----
-<opensrf version='0.0.3'>
-    <default>
-        <apps>
-			<open-ils.storage>
-				<app_settings>
-					<databases>
-						<database>
-							<user>evergreen</user>
-							<host>127.0.0.1</host>
-							<port>5432</port>
-							<pw>evergreen</pw>
-							<db>ref_db</db>
-						</database>
-					</databases>
-				</app_settings>
-			</open-ils.storage>
-        </apps>
-    </default>
-</opensrf>
-----
-
-And we're all set.
+If you don't have a seed database, you can omit it, and the software will make one
+based upon the version we find in the file <output_folder>/config.upgrade_log.sql
 
 [source,bash]
 ----
-mkdir output
-./make_concerto_from_evergreen_db.pl --xmlseed /openils/conf/seedonly.xml --output-folder output
+./make_concerto_from_evergreen_db.pl \
+--db-host localhost \
+--db-user evergreen \
+--db-pass evergreen \
+--db-port 5432 \
+--db-name eg_enhanced \
+--output-folder output \
+--evergreen-repo /home/opensrf/repos/Evergreen
 ----
 
-This software needs to know what data is seed data and what data is not. It compares the data for each
-table against the seed-only database and determines what needs to be outputted.
+Or, you can have this software make a seed DB, and that's all it will do.
+The version of Evergreen it will use will be found in <output_folder>/config.upgrade_log.sql
 
+[source,bash]
+----
+./make_concerto_from_evergreen_db.pl \
+--db-host localhost \
+--db-user evergreen \
+--db-pass evergreen \
+--db-port 5432 \
+--output-folder output \
+--evergreen-repo /home/opensrf/repos/Evergreen \
+--create-seed-db
+----
+
+Or, you can have this software make a seed DB based on your specified version of Evergreen
+
+[source,bash]
+----
+./make_concerto_from_evergreen_db.pl \
+--db-host localhost \
+--db-user evergreen \
+--db-pass evergreen \
+--db-port 5432 \
+--output-folder output \
+--evergreen-repo /home/opensrf/repos/Evergreen \
+--create-seed-db \
+--seed-from-egdbid 1350
+----
+
+=== Upgrade a previously-created dataset ===
+
+Use this when cutting new releases of Evergreen and you want to include
+the enhanced dataset to match. It will use the current git branch found in the provided path to the EG repo.
+
+[source,bash]
+----
+./make_concerto_from_evergreen_db.pl \
+--db-host localhost \
+--db-user evergreen \
+--db-pass evergreen \
+--db-port 5432 \
+--output-folder output \
+--evergreen-repo /home/opensrf/repos/Evergreen \
+--perform-upgrade
+----
+
+=== Test the existing dataset ===
+
+Create a new database and restore the dataset.
+The software will first create a database that matches the version of Evergreen in the
+dataset output folder, then restore the dataset into the newly created database.
+
+[source,bash]
+----
+./make_concerto_from_evergreen_db.pl \
+--db-host localhost \
+--db-user evergreen \
+--db-pass evergreen \
+--db-port 5432 \
+--output-folder output \
+--evergreen-repo /home/opensrf/repos/Evergreen \
+--test-restore
+----
 
 [#marc_export]
 
