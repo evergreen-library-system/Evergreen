@@ -9,10 +9,10 @@
   <div class="col-lg-3">
     <div class="input-group">
       <div class="input-group-prepend">
-        <span class="input-group-text" id="search-term" i18n>Search Term</span>
+        <label class="input-group-text" id="search-term" for="search-term-input" i18n>Search Term</label>
       </div>
       <input type="text" class="form-control" placeholder="Search Term" 
-        i18n-placeholder aria-describedby="search-term" 
+        i18n-placeholder id="search-term-input"
         (change)="search(null, true)"
         (keyup.enter)="search(null, true)" [(ngModel)]="browse.searchTerm">
     </div>
@@ -20,9 +20,9 @@
   <div class="col-lg-5">
     <div class="input-group">
       <div class="input-group-prepend">
-        <span class="input-group-text" id="auth-axis" i18n>Authority Type</span>
+        <label for="axisCbox" class="input-group-text" id="auth-axis" i18n>Authority Type</label>
       </div>
-      <eg-combobox #axisCbox [(ngModel)]="authorityAxis" 
+      <eg-combobox #axisCbox [(ngModel)]="authorityAxis" domId="axisCbox"
         [entries]="browse.authorityAxes" (onChange)="search(null, true)">
       </eg-combobox>
       <!--
