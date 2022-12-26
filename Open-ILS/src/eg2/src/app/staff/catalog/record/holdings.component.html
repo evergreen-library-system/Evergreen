@@ -4,9 +4,7 @@
 <div class="row mt-3">
   <div class="col-lg-4">
     <div class="input-group">
-      <div class="input-group-prepend">
-        <div class="input-group-text" i18n>Holdings Maintenance</div>
-      </div>
+      <div class="input-group-text" i18n>Holdings Maintenance</div>
       <eg-org-select [initialOrg]="contextOrg"
         persistKey="catalog.holdings"
         (onChange)="contextOrgChanged($event)"
@@ -19,9 +17,9 @@
 <!-- Location / Barcode cell template -->
 
 <ng-template #locationTemplate let-row="row" let-userContext="userContext">
-  <!-- pl-* is doubled for added impact -->
-  <div class="pl-{{row.locationDepth}}">
-    <span class="pl-{{row.locationDepth}}">
+  <!-- ps-* is doubled for added impact -->
+  <div class="ps-{{row.locationDepth}}">
+    <span class="ps-{{row.locationDepth}}">
       <a class="label-with-material-icon" (click)="userContext.toggleExpandRow(row)">
         <!--  leave the icons in place for all node types, but make them
               invisible when they are not needed. -->

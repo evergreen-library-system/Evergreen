@@ -4,15 +4,13 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info" *ngIf="doneLoading">
     <h3 class="modal-title" i18n>Transfer from Fund {{sourceFund?.name()}} ({{sourceFund?.code()}} ({{sourceFund?.year()}}) ({{sourceFund?.org().shortname()}}))</h3>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body" [hidden]="!doneLoading">
     <form #xfrForm="ngForm" role="form" class="form-validated common-form striped-odd">
       <div class="form-group row mt-2">
-        <label for="dest-fund" class="col-sm-4 col-form-label" i18n>Destination Fund</label>
+        <label for="dest-fund" class="form-label col-sm-4 col-form-label" i18n>Destination Fund</label>
         <div class="col-sm-8">
           <eg-combobox #fundSelector [asyncSupportsEmptyTermClick]="true"
           name="dest_fund" id="dest-fund" [mandatory]="true"
@@ -21,7 +19,7 @@
         </div>
       </div>
       <div class="form-group row">
-        <label for="source_amount" class="col-sm-4 col-form-label" i18n>Source Amount</label>
+        <label for="source_amount" class="form-label col-sm-4 col-form-label" i18n>Source Amount</label>
         <div class="col-sm-8">
           <input class="form-control" type="number" name="source_amount" id="source_amount" [(ngModel)]="sourceAmount" required>
         </div>
@@ -33,7 +31,7 @@
         </div>
       </div>
       <div class="form-group row">
-        <label for="note" class="col-sm-4 col-form-label" i18n>Note</label>
+        <label for="note" class="form-label col-sm-4 col-form-label" i18n>Note</label>
         <div class="col-sm-8">
           <input class="form-control" type="text" name="note" id="note" [(ngModel)]="note">
         </div>

@@ -2,10 +2,8 @@
   <form class="form-validated">
     <div class="modal-header bg-info">
       <h3 class="modal-title" i18n>Link Invoice</h3>
-      <button type="button" class="close"
-        i18n-aria-label aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <button type="button" class="btn-close btn-close-white"
+        i18n-aria-label aria-label="Close" (click)="close()"></button>
     </div>
     <div class="modal-body">
       <h4 i18n *ngIf="liIds && liIds.length">Line Item(s) selected:
@@ -15,7 +13,7 @@
       </h4>
       <div class="d-flex">
         <div class="flex-1">
-          <label for="provider-input" i18n>Provider</label>
+          <label class="form-label" for="provider-input" i18n>Provider</label>
         </div>
         <div class="flex-3">
           <eg-combobox domId="provider-input" [(ngModel)]="provider" 
@@ -30,7 +28,7 @@
       </div>
       <div class="d-flex mt-2">
         <div class="flex-1">
-          <label for="invoice-input" i18n>Invoice</label>
+          <label class="form-label" for="invoice-input" i18n>Invoice</label>
         </div>
         <div class="flex-3">
           <eg-combobox domId="invoice-input" [(ngModel)]="invoice" 

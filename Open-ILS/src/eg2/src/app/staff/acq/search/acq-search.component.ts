@@ -132,7 +132,7 @@ export class AcqSearchComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.destroyed.next();
+        this.destroyed.next(null);
         this.destroyed.complete();
     }
 

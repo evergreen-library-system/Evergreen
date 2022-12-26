@@ -61,11 +61,11 @@
     <div class="row m-2 p-2 border border-dark rounded bg-faint">
       <div class="col-lg-12 d-flex">
 
-        <div class="form-check form-check-inline ml-2">                            
+        <div class="form-check form-check-inline ms-2">                            
           <input class="form-check-input" id='use-labels-cbox' type="checkbox"     
             [ngModel]="volcopy.defaults.values.print_labels"
             (change)="toggleCheckbox('print_labels')">
-          <label class="form-check-label" for='use-labels-cbox'                    
+          <label class="form-label form-check-label" for='use-labels-cbox'                    
             i18n>Print Labels?</label>                                             
         </div>
 
@@ -79,7 +79,7 @@
               <input class="form-check-input" type="checkbox" id="use-checkdigit" 
                 (change)="toggleCheckbox('use_checkdigit')"
                 [ngModel]="volcopy.defaults.values.use_checkdigit"/>
-              <label class="form-check-label" for="use-checkdigit" i18n>
+              <label class="form-label form-check-label" for="use-checkdigit" i18n>
                 Use Checkdigit
               </label>
             </div>
@@ -97,7 +97,7 @@
         <button class="btn btn-outline-dark" (click)="save(false, true)" 
           [ngClass]="{'border-danger': isNotSaveable()}"
           [disabled]="isNotSaveable()" i18n>Apply All &amp; Save</button>
-        <button class="btn btn-outline-dark ml-2" (click)="save(true, true)"
+        <button class="btn btn-outline-dark ms-2" (click)="save(true, true)"
           [ngClass]="{'border-danger': isNotSaveable()}"
           [disabled]="isNotSaveable()" i18n>Apply All, Save &amp; Exit</button>
       </div>

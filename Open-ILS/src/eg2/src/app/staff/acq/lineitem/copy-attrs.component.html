@@ -2,7 +2,7 @@
     and the batch copy editor component -->
 
 <div class="div d-flex batch-copy-row" *ngIf="copy">
-  <div class="pr-1 pt-2 text-secondary">
+  <div class="pe-1 pt-2 text-secondary">
     <!-- ensure the rowIndex for the first 100 copies vertically
          aligns with an invisible 0 for 1..9 -->
     {{rowIndex}}<span *ngIf="rowIndex < 10" class="invisible">0</span>
@@ -86,7 +86,7 @@
     {{copy.receiver()?.usrname()}}
   </div>
   <ng-container *ngIf="!embedded && !gatherParamsOnly">
-    <div class="flex-2 p-1 pr-2 pl-2">
+    <div class="flex-2 p-1 pe-2 ps-2">
       <ng-container *ngIf="!batchMode">
         <ng-container *ngIf="disposition() === 'pre-order'">
           <button
@@ -102,18 +102,18 @@
           <a href="javascript:;" (click)="unReceiveRequested.emit(copy)" i18n>Un-Receive</a>
         </ng-container>
         <ng-container *ngIf="disposition() === 'on-order'">
-          <a href="javascript:;" class="ml-2" (click)="cancelRequested.emit(copy)" i18n>Cancel</a>
+          <a href="javascript:;" class="ms-2" (click)="cancelRequested.emit(copy)" i18n>Cancel</a>
         </ng-container>
         <ng-container *ngIf="disposition() === 'delayed'">
           &nbsp;<a href="javascript:;" (click)="cancelRequested.emit(copy)" i18n>Cancel</a>
         </ng-container>
         <ng-container *ngIf="disposition() === 'delayed'">
-          <span class="font-italic ml-2" title="{{copy.cancel_reason().description()}}">
+          <span class="fst-italic ms-2" title="{{copy.cancel_reason().description()}}">
             {{copy.cancel_reason().label()}}
           </span>
         </ng-container>
         <ng-container *ngIf="disposition() === 'canceled'">
-          <span class="font-italic" title="{{copy.cancel_reason().description()}}">
+          <span class="fst-italic" title="{{copy.cancel_reason().description()}}">
             {{copy.cancel_reason().label()}}
           </span>
         </ng-container>

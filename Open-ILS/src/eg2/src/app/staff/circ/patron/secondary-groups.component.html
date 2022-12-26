@@ -4,10 +4,8 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Secondary Permission Groups</h4>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <h5 i18n>
@@ -16,8 +14,8 @@
     </h5>
 
     <div class="row mt-2">
-      <div class="col-lg-6 font-weight-bold" i18n>Group</div>
-      <div class="col-lg-6 font-weight-bold" i18n>Action</div>
+      <div class="col-lg-6 fw-bold" i18n>Group</div>
+      <div class="col-lg-6 fw-bold" i18n>Action</div>
     </div>
 
     <div class="row mt-2" *ngFor="let grp of secondaryGroups">

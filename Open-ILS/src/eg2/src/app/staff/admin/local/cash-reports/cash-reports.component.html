@@ -5,21 +5,15 @@
   <div>
     <div class="row">
       <div class="input-group col-lg-3">
-        <div class="input-group-prepend">
           <div class="input-group-text" i18n>Start Date</div> 
           <eg-date-select [initialDate]="today" (onChangeAsYmd)="onStartDateChange($event)"></eg-date-select>
-        </div>
       </div>
       <div class="input-group col-lg-3">
-        <div class="input-group-prepend">
           <div class="input-group-text" i18n>End Date</div> 
           <eg-date-select [initialDate]="today" (onChangeAsYmd)="onEndDateChange($event)"></eg-date-select>
-        </div>
       </div>
       <div class="input-group col-lg-4">
-        <div class="input-group-prepend">
           <div class="input-group-text" i18n>View reports for</div>
-        </div>
         <eg-org-select [applyDefault]="true" [disableOrgs]="disabledOrgs" (onChange)="onOrgChange($event)"></eg-org-select>
       </div>
       <div class="col-lg-2">

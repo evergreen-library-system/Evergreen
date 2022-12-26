@@ -8,9 +8,7 @@
 <div class="row form-inline mb-3">
   <div class="col-lg-3">
     <div class="input-group">
-      <div class="input-group-prepend">
-        <label class="input-group-text" id="search-term" for="search-term-input" i18n>Search Term</label>
-      </div>
+        <label class="input-group-text" for="search-term-input" i18n>Search Term</label>
       <input type="text" class="form-control" placeholder="Search Term" 
         i18n-placeholder id="search-term-input"
         (change)="search(null, true)"
@@ -19,9 +17,7 @@
   </div>
   <div class="col-lg-5">
     <div class="input-group">
-      <div class="input-group-prepend">
-        <label for="axisCbox" class="input-group-text" id="auth-axis" i18n>Authority Type</label>
-      </div>
+      <label class="input-group-text" for="axisCbox" i18n>Authority Type</label>
       <eg-combobox #axisCbox [(ngModel)]="authorityAxis" domId="axisCbox"
         [entries]="browse.authorityAxes" (onChange)="search(null, true)">
       </eg-combobox>
@@ -30,18 +26,18 @@
       can lead to firing duplicate searches if you're quick on the draw.
       If we want it back, uncomment and add a [disabled] attribute to
       prevent dupe searches.
-      <button class="btn btn-outline-dark ml-2" (click)="search()" i18n>Submit</button>
+      <button class="btn btn-outline-dark ms-2" (click)="search()" i18n>Submit</button>
       -->
     </div>
   </div>
   <div class="col-lg-4 d-flex">
     <div class="flex-1"></div><!-- push right -->
-    <div class="form-inline">
-      <button class="btn btn-outline-dark ml-2" (click)="search(-1)" i18n>Previous</button>
-      <label for='offset-input' class="form-control ml-2" i18n>Page</label>
+    <div class="form-inline d-flex align-items-center">
+      <button class="btn btn-outline-dark ms-2" (click)="search(-1)" i18n>Previous</button>
+      <label for='offset-input' class="form-label m-2" i18n>Page</label>
       <input class="form-control" type="number" 
         [(ngModel)]="browse.searchOffset" id="offset-input" (change)="search()"/>
-      <button class="btn btn-outline-dark ml-2" (click)="search(1)" i18n>Next</button>
+      <button class="btn btn-outline-dark ms-2" (click)="search(1)" i18n>Next</button>
     </div>
   </div>
 </div>

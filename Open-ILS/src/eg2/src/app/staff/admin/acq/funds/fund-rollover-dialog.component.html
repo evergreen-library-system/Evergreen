@@ -4,16 +4,14 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info" *ngIf="doneLoading">
     <h3 class="modal-title" i18n>Fund Propagation and Rollover</h3>
-    <button type="button" class="close"
+    <button type="button" class="btn-close btn-close-white"
       [disabled]="isProcessing"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body" [hidden]="!doneLoading">
     <form #rolloverForm="ngForm" role="form" class="form-validated">
       <div class="row col">
-        <label for="year" class="my-1 mr-1" i18n>Year</label>
+        <label for="year" class="form-label my-1 me-1" i18n>Year</label>
         <eg-combobox [entries]="years" *ngIf="years"
           [required]="true" [selectedId]="year"
           (onChange)="year = $event ? $event.id : null">
@@ -24,7 +22,7 @@
         <input type="checkbox" name="includeDescendants" id="includeDescendants"
           class="form-check-input"
           [(ngModel)]="includeDescendants">
-        <label for="includeDescendants" class="form-check-label" i18n>Include funds from descendant Org Units</label>
+        <label for="includeDescendants" class="form-label form-check-label" i18n>Include funds from descendant Org Units</label>
       </div>
       <hr>
       <h4 i18n>Fund Propagation</h4>
@@ -42,7 +40,7 @@
         <input type="checkbox" name="doCloseout" id="doCloseout"
           class="form-check-input"
           [(ngModel)]="doCloseout">
-        <label for="doCloseout" class="form-check-label" i18n>Perform Fiscal Year Close-Out</label>
+        <label for="doCloseout" class="form-label form-check-label" i18n>Perform Fiscal Year Close-Out</label>
         <eg-help-popover helpText="Perform Fiscal Year Close-Out deactivates funds for the selected fiscal year. It will also move unspent and encumbered funds to the corresponding fund for the next fiscal year if that fund is configured to Propagate and Rollover." i18n-helpText></eg-help-popover>
         <span class="alert-warning" *ngIf="doCloseout && !dryRun">Will do a Close-Out for real. If you need to double-check first, check the "Dry Run" checkbox.</span>
       </div>
@@ -50,7 +48,7 @@
         <input type="checkbox" name="limitToEncumbrances" id="limitToEncumbrances"
           class="form-check-input"
           [(ngModel)]="limitToEncumbrances">
-        <label for="limitToEncumbrances" class="form-check-label" i18n>Limit Fiscal Year Close-Out to Encumbrances</label>
+        <label for="limitToEncumbrances" class="form-label form-check-label" i18n>Limit Fiscal Year Close-Out to Encumbrances</label>
         <eg-help-popover helpText="This option will limit the Perform Fiscal Year Close-Out procedure to only move encumbrances to the corresponding fund for the next fiscal year. Any unspent money in the funds will not roll over." i18n-helpText></eg-help-popover>
       </div>
       <hr>
@@ -58,7 +56,7 @@
         <input type="checkbox" name="dryRun" id="dryRun"
           class="form-check-input"
           [(ngModel)]="dryRun">
-        <label for="dryRun" class="form-check-label" i18n>Dry Run &mdash; no data will be changed</label>
+        <label for="dryRun" class="form-label form-check-label" i18n>Dry Run &mdash; no data will be changed</label>
         <eg-help-popover helpText="Select Dry Run to see a preview of the changes that would occur based on the selected actions. Data will not be changed when Dry Run is selected." i18n-helpText></eg-help-popover>
       </div>
     </form>

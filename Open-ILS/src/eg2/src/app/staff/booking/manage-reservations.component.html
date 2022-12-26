@@ -18,9 +18,6 @@
           <ng-template ngbNavContent>
             <div class="m-2">
               <div class="input-group m-2">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="patron-barcode-value" i18n>Patron barcode</label>
-                </div>
                 <input type="text" id="patron-barcode-value" class="form-control" formControlName="patronBarcode">
                 <div class="input-group-button">
                   <button *ngIf="patronBarcode.value" class="btn btn-warning" (click)="removeFilters()" i18n><span class="material-icons">delete</span> Remove filter</button>
@@ -36,9 +33,7 @@
           <ng-template ngbNavContent>
             <div class="m-2">
               <div class="input-group m-2">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="resource-barcode-value" i18n>Resource barcode</label>
-                </div>
+                  <label class="form-label input-group-text" for="resource-barcode-value" i18n>Resource barcode</label>
                 <input type="text" id="resource-barcode-value" class="form-control" formControlName="resourceBarcode">
                 <div class="input-group-button">
                   <button *ngIf="resourceBarcode.value" class="btn btn-warning" (click)="removeFilters()" i18n><span class="material-icons">delete</span> Remove filter</button>
@@ -54,9 +49,7 @@
           <ng-template ngbNavContent>
             <div class="m-2">
               <div class="input-group m-2">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="resource-type-value" i18n>Resource type</label>
-                </div>
+                  <label class="form-label input-group-text" for="resource-type-value" i18n>Resource type</label>
                 <eg-combobox domId="resource-type-value" formControlName="resourceType" idlClass="brt" [asyncSupportsEmptyTermClick]="true"></eg-combobox>
                 <div class="input-group-button">
                   <button class="btn btn-warning" (click)="removeFilters()" i18n><span class="material-icons">delete</span> Remove filter</button>

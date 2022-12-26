@@ -3,15 +3,13 @@
     <h3 *ngIf="mode === 'create'" class="modal-title" i18n>New Distribution Formula</h3>
     <h3 *ngIf="mode === 'update'" class="modal-title" i18n>Modify Distribution Formula</h3>
     <h3 *ngIf="mode === 'clone'" class="modal-title" i18n>Clone Distribution Formula (from {{clonedLabel}})</h3>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <form #myForm="ngForm" role="form" class="form-validated">
       <div class="form-group row mt-2" *ngIf="formula">
-        <label for="formula-name" class="col-sm-1 col-form-label" i18n>Formula Name
+        <label for="formula-name" class="form-label col-sm-1 col-form-label" i18n>Formula Name
         </label>
         <div class="col-sm-2">
           <input class="form-control" type="text" id="formula-name"
@@ -19,7 +17,7 @@
             [ngModel]="formula.name()" name="name"
             (ngModelChange)="formula.name($event)">
         </div>
-        <label for="formula-owner" class="col-sm-1 col-form-owner" i18n>Formula Owner
+        <label for="formula-owner" class="form-label col-sm-1 col-form-owner" i18n>Formula Owner
         </label>
         <div class="col-sm-2">
           <eg-org-select
@@ -46,7 +44,7 @@
         <div class="col-sm-1">
           <button *ngIf="!isLast" class="btn btn-sm material-icon-button" type="button"
             (click)="removeRow(idx)"
-            i18n-title title="Remove Entry"><span class="sr-only">Remove Entry</span>
+            i18n-title title="Remove Entry"><span class="visually-hidden">Remove Entry</span>
             <span class="material-icons" aria-hidden="true">delete</span>
           </button>
         </div>
@@ -102,13 +100,13 @@
           <button *ngIf="!isLast" class="btn btn-sm material-icon-button" type="button"
             [disabled]="isFirst"
             (click)="moveUp(idx)"
-            i18n-title title="Move Up"><span class="sr-only">Move Up</span>
+            i18n-title title="Move Up"><span class="visually-hidden">Move Up</span>
             <span class="material-icons" aria-hidden="true">keyboard_arrow_up</span>
           </button>
           <button *ngIf="!isLast" class="btn btn-sm material-icon-button" type="button"
             (click)="moveDown(idx)"
             [disabled]="count < 3 || idx === count - 2"
-            i18n-title title="Move Down"><span class="sr-only">Move Down</span>
+            i18n-title title="Move Down"><span class="visually-hidden">Move Down</span>
             <span class="material-icons" aria-hidden="true">keyboard_arrow_down</span>
           </button>
           <button *ngIf="isLast" type="button" class="btn btn-info" (click)="addRow()" i18n>Add</button>

@@ -3,13 +3,11 @@
     <h4 class="modal-title">
       <span i18n>Open Circulation</span>
     </h4>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
-    <h5 class="font-weight-bold" i18n>
+    <h5 class="fw-bold" i18n>
       There is an open circulation on the requested item.
     </h5>
 
@@ -25,7 +23,7 @@
     <div class="form-check form-check-inline">
       <input class="form-check-input" type="checkbox" id="forgive-fines-cbox" 
         [(ngModel)]="forgiveFines"/>
-      <label class="form-check-label" for="forgive-fines-cbox" i18n>Forgive Fines?</label>
+      <label class="form-label form-check-label" for="forgive-fines-cbox" i18n>Forgive Fines?</label>
     </div>
 
     <div class="flex-1"></div>
@@ -35,10 +33,10 @@
         (click)="close({checkout: true, forgiveFines: forgiveFines})" i18n>
         Normal Checkin Then Checkout</button>
 
-      <button type="button" class="btn btn-info ml-2" *ngIf="sameUser"
+      <button type="button" class="btn btn-info ms-2" *ngIf="sameUser"
         (click)="close({renew: true, forgiveFines: forgiveFines})" i18n>Renew</button>
 
-      <button type="button" class="btn btn-warning ml-2"
+      <button type="button" class="btn btn-warning ms-2"
         (click)="close()" i18n>Cancel</button>
     </div>
 

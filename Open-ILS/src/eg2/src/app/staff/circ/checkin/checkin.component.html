@@ -21,61 +21,61 @@
     <div class="alert alert-danger p-1 text-dark">
 
       <span *ngIf="backdate" 
-        class="mr-3 pr-3 border-right border-info label-with-material-icon">
+        class="me-3 pe-3 border-end border-info label-with-material-icon">
         <span class="material-icons">history</span>
-        <span class="pl-2" i18n>Backdated Check In {{backdate | date:'shortDate'}}</span>
+        <span class="ps-2" i18n>Backdated Check In {{backdate | date:'shortDate'}}</span>
       </span>
 
       <span *ngIf="backdate && backdateUntilLogout"
-        class="mr-3 pr-3 border-right border-info label-with-material-icon">
+        class="me-3 pe-3 border-end border-info label-with-material-icon">
         <span class="material-icons">timeline</span>
-        <span class="pl-2" i18n>Use Effective Date Until Logout</span>
+        <span class="ps-2" i18n>Use Effective Date Until Logout</span>
       </span>
 
       <span *ngIf="modifiers.no_precat_alert"
-        class="mr-3 pr-3 border-right border-info label-with-material-icon">
+        class="me-3 pe-3 border-end border-info label-with-material-icon">
         <span class="material-icons">edit</span>
-        <span class="pl-2" i18n>Ignore Pre-Cataloged Items</span>
+        <span class="ps-2" i18n>Ignore Pre-Cataloged Items</span>
       </span>
 
       <span *ngIf="modifiers.noop"
-        class="mr-3 pr-3 border-right border-info label-with-material-icon"> 
+        class="me-3 pe-3 border-end border-info label-with-material-icon"> 
         <span class="material-icons">block</span>
-        <span class="pl-2" i18n>Suppress Holds and Transits</span>
+        <span class="ps-2" i18n>Suppress Holds and Transits</span>
       </span>
 
       <span *ngIf="modifiers.void_overdues"
-        class="mr-3 pr-3 border-right border-info label-with-material-icon">
+        class="me-3 pe-3 border-end border-info label-with-material-icon">
         <span class="material-icons">monetization_on</span>
-        <span class="pl-2" i18n>Amnesty Mode</span>
+        <span class="ps-2" i18n>Amnesty Mode</span>
       </span>
 
       <span *ngIf="modifiers.auto_print_holds_transits"
-        class="mr-3 pr-3 border-right border-info label-with-material-icon">
+        class="me-3 pe-3 border-end border-info label-with-material-icon">
         <span class="material-icons">print</span>
-        <span class="pl-2" i18n>Auto-Print Hold and Transit Slips</span>
+        <span class="ps-2" i18n>Auto-Print Hold and Transit Slips</span>
       </span>
 
-      <span class="mr-3 pr-3 border-right border-info" 
+      <span class="me-3 pe-3 border-end border-info" 
         *ngIf="modifiers.clear_expired" i18n>Clear Holds Shelf</span>
 
       <ng-container *ngIf="modifiers.retarget_holds">
-        <span class="mr-3 pr-3 border-right border-info" 
+        <span class="me-3 pe-3 border-end border-info" 
           *ngIf="modifiers.retarget_holds_all" i18n>Always Retarget Local Holds</span>
-        <span class="mr-3 pr-3 border-right border-info" 
+        <span class="me-3 pe-3 border-end border-info" 
           *ngIf="!modifiers.retarget_holds_all" i18n>Retarget Local Holds</span>
       </ng-container>
 
       <span *ngIf="modifiers.hold_as_transit"
-        class="mr-3 pr-3 border-right border-info label-with-material-icon">
+        class="me-3 pe-3 border-end border-info label-with-material-icon">
         <span class="material-icons">directions_transit</span>
-        <span class="pl-2" i18n>Capture Local Holds As Transits</span>
+        <span class="ps-2" i18n>Capture Local Holds As Transits</span>
       </span>
 
-      <span class="mr-3 pr-3 border-right border-info" 
+      <span class="me-3 pe-3 border-end border-info" 
         *ngIf="modifiers.manual_float" i18n>Manual Floating Active</span>
 
-      <span class="mr-3 pr-3 border-right border-info" 
+      <span class="me-3 pe-3 border-end border-info" 
         *ngIf="modifiers.do_inventory_update" i18n>Update Inventory</span>
     </div>
   </div>
@@ -85,13 +85,11 @@
   <div class="col-lg-12 d-flex">
     <div class="form-inline">
       <div class="input-group">
-        <div class="input-group-prepend">
-          <span class="input-group-text" i18n>Barcode</span>
-        </div>
+        <span class="input-group-text" i18n>Barcode</span>
         <input type="text" class="form-control" id="barcode-input"
           placeholder="Barcode..." i18n-placeholder [(ngModel)]="barcode"
           i18n-aria-label aria-label="Barcode Input" (keydown.enter)="checkin()" />
-        <div class="input-group-append">
+        <div class="input-group-text">
           <button class="btn btn-outline-dark" (keydown.enter)="checkin()" 
             (click)="checkin()" i18n>Submit</button>
         </div>
@@ -107,25 +105,25 @@
       </div>
     </div>
     <div class="flex-1"></div>
-    <div class="mr-2">
+    <div class="me-2">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="checkbox" 
           id="use-date-cbox" [(ngModel)]="backdateUntilLogout"/>
-        <label class="form-check-label" 
+        <label class="form-label form-check-label" 
           for="use-date-cbox" i18n>Use effective date until logout</label>
       </div>
     </div>
-    <div class="mr-2" i18n>Effective Date:</div>
+    <div class="me-2" i18n>Effective Date:</div>
     <eg-date-select [initialIso]="backdate" [(ngModel)]="backdateDate"
       (onChangeAsIso)="backdate = $event"></eg-date-select>
-    <button class="btn btn-sm btn-outline-dark ml-1" 
+    <button class="btn btn-sm btn-outline-dark ms-1" 
       (click)="backdateDate=null; backdate=null" i18n>Clear</button>
   </div>
 </div>
 
 <div *ngIf="fineTally > 0">
-  <span class="mr-2" i18n>Fine Tally: </span>
-  <span class="badge badge-danger">{{fineTally | currency}}</span>
+  <span class="me-2" i18n>Fine Tally: </span>
+  <span class="badge rounded-pill bg-danger">{{fineTally | currency}}</span>
 </div>
 
 <!-- doc_id below because checkin returns an MVR -->
@@ -291,16 +289,25 @@
 <div class="row mt-3 pt-3">
   <div class="col-lg-12 d-flex">
     <div class="flex-1"></div>
-    <div class="mr-3">
+    <div class="me-3">
       <button class="btn btn-outline-dark" 
         (click)="printReceipt()" i18n>Print Receipt</button>
     </div>
-    <div class="mr-3">
+    <div class="me-3">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="checkbox" 
           id="trim-list-cbox" [(ngModel)]="trimList"/>
-        <label class="form-check-label" 
+        <label class="form-label form-check-label" 
           for="trim-list-cbox" i18n>Trim List (20)</label>
+      </div>
+    </div>
+    <div class="me-3">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" 
+          (ngModelChange)="toggleStrictBarcode($event)"
+          id="strict-barcode-cbox" [(ngModel)]="strictBarcode"/>
+        <label class="form-label form-check-label" 
+          for="strict-barcode-cbox" i18n>Strict Barcode</label>
       </div>
     </div>
     <div>
@@ -310,72 +317,72 @@
         <div ngbDropdownMenu>
           <a ngbDropdownItem (click)="toggleMod('no_precat_alert')">
             <span *ngIf="modifiers.no_precat_alert" 
-              class="badge badge-success mr-2">&#x2713;</span>
+              class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.no_precat_alert" 
-              class="badge badge-warning mr-2">&#x2717;</span>
+              class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Ignore Pre-cataloged Items</span>
           </a>
           <a ngbDropdownItem (click)="toggleMod('noop')">
             <span *ngIf="modifiers.noop" 
-              class="badge badge-success mr-2">&#x2713;</span>
+              class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.noop" 
-              class="badge badge-warning mr-2">&#x2717;</span>
+              class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Suppress Holds and Transits</span>
           </a>
           <a ngbDropdownItem (click)="toggleMod('void_overdues')">
             <span *ngIf="modifiers.void_overdues" 
-              class="badge badge-success mr-2">&#x2713;</span>
+              class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.void_overdues"
-              class="badge badge-warning mr-2">&#x2717;</span>
+              class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Amnesty Mode</span>
           </a>
           <a ngbDropdownItem (click)="toggleMod('auto_print_holds_transits')">
             <span *ngIf="modifiers.auto_print_holds_transits" 
-              class="badge badge-success mr-2">&#x2713;</span>
+              class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.auto_print_holds_transits"
-              class="badge badge-warning mr-2">&#x2717;</span>
+              class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span>Auto-Print Hold and Transit Slips</span>
           </a>
           <a ngbDropdownItem (click)="toggleMod('clear_expired')">
             <span *ngIf="modifiers.clear_expired" 
-              class="badge badge-success mr-2">&#x2713;</span>
+              class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.clear_expired"
-              class="badge badge-warning mr-2">&#x2717;</span>
+              class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Clear Holds Shelf</span>
           </a>
           <a ngbDropdownItem (click)="toggleMod('retarget_holds')">
             <span *ngIf="modifiers.retarget_holds" 
-              class="badge badge-success mr-2">&#x2713;</span>
+              class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.retarget_holds"
-              class="badge badge-warning mr-2">&#x2717;</span>
+              class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Retarget Local Holds</span>
           </a>
           <a ngbDropdownItem (click)="toggleMod('retarget_holds_all')">
             <span *ngIf="modifiers.retarget_holds_all" 
-              class="badge badge-success mr-2">&#x2713;</span>
+              class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.retarget_holds_all"
-              class="badge badge-warning mr-2">&#x2717;</span>
+              class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Retarget All Statuses</span>
           </a>
           <a ngbDropdownItem (click)="toggleMod('hold_as_transit')">
             <span *ngIf="modifiers.hold_as_transit" 
-              class="badge badge-success mr-2">&#x2713;</span>
+              class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.hold_as_transit"
-              class="badge badge-warning mr-2">&#x2717;</span>
+              class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Capture Local Holds As Transits</span>
           </a>
           <a ngbDropdownItem (click)="toggleMod('manual_float')">
             <span *ngIf="modifiers.manual_float"
-              class="badge badge-success mr-2">&#x2713;</span>
+              class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.manual_float"
-              class="badge badge-warning mr-2">&#x2717;</span>
+              class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Manual Floating Active</span>
           </a>
           <a ngbDropdownItem (click)="toggleMod('do_inventory_update')">
             <span *ngIf="modifiers.do_inventory_update"
-              class="badge badge-success mr-2">&#x2713;</span>
+              class="badge rounded-pill bg-success me-2">&#x2713;</span>
             <span *ngIf="!modifiers.do_inventory_update"
-              class="badge badge-warning mr-2">&#x2717;</span>
+              class="badge rounded-pill bg-warning me-2">&#x2717;</span>
             <span i18n>Update Inventory</span>
           </a>
         </div>

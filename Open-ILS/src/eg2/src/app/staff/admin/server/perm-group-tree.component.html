@@ -40,7 +40,7 @@
   <div class="col-lg-9">
     <h3 i18n class="mb-3">Selected Permission Group</h3>
     <ng-container *ngIf="!selected">
-      <div class="alert alert-info font-italic" i18n>
+      <div class="alert alert-info fst-italic" i18n>
         Select a permission group from the tree on the left.
       </div>
       <ng-container *ngIf="loading">
@@ -59,59 +59,59 @@
           <ng-template ngbNavContent>
             <div class="row">
               <div class="col-lg-3">
-                <label i18n>Actions for Selected: </label>
+                <label class="form-label" i18n>Actions for Selected: </label>
               </div>
               <div class="col-lg-9">
-                <button class="btn btn-info mr-2" (click)="edit()" i18n>Edit</button>
-                <button class="btn btn-info mr-2" (click)="addChild()" i18n>Add Child</button>
-                <button class="btn btn-warning mr-2" (click)="remove()" i18n>Delete</button>
+                <button class="btn btn-info me-2" (click)="edit()" i18n>Edit</button>
+                <button class="btn btn-info me-2" (click)="addChild()" i18n>Add Child</button>
+                <button class="btn btn-warning me-2" (click)="remove()" i18n>Delete</button>
               </div>
             </div>
             <div class="row">
               <div class="col-lg-4">
-                <label i18n>Name: </label>
+                <label class="form-label" i18n>Name: </label>
               </div>
-              <div class="col-lg-8 font-weight-bold">
+              <div class="col-lg-8 fw-bold">
                 {{selected.callerData.name()}}
               </div>
             </div>
             <div class="row">
               <div class="col-lg-4">
-                <label i18n>Description: </label>
+                <label class="form-label" i18n>Description: </label>
               </div>
-              <div class="col-lg-8 font-weight-bold">
+              <div class="col-lg-8 fw-bold">
                 {{selected.callerData.description()}}
               </div>
             </div>
             <div class="row">
               <div class="col-lg-4">
-                <label i18n>User Expiration Interval: </label>
+                <label class="form-label" i18n>User Expiration Interval: </label>
               </div>
-              <div class="col-lg-8 font-weight-bold">
+              <div class="col-lg-8 fw-bold">
                 {{selected.callerData.perm_interval()}}
               </div>
             </div>
             <div class="row">
               <div class="col-lg-4">
-                <label i18n>Application Permission: </label>
+                <label class="form-label" i18n>Application Permission: </label>
               </div>
-              <div class="col-lg-8 font-weight-bold">
+              <div class="col-lg-8 fw-bold">
                 {{selected.callerData.application_perm()}}
               </div>
             </div>
             <div class="row">
               <div class="col-lg-4">
-                <label i18n>Hold Priority: </label>
+                <label class="form-label" i18n>Hold Priority: </label>
               </div>
-              <div class="col-lg-8 font-weight-bold">
+              <div class="col-lg-8 fw-bold">
                 {{selected.callerData.hold_priority()}}
               </div>
             </div>
             <div class="row">
               <div class="col-lg-4">
-                <label i18n>User Group?: </label>
+                <label class="form-label" i18n>User Group?: </label>
               </div>
-              <div class="col-lg-8 font-weight-bold">
+              <div class="col-lg-8 fw-bold">
                 <!-- TODO: replace with <eg-bool/> when merged -->
                 {{selected.callerData.usergroup() === 't'}}
               </div>
@@ -127,29 +127,29 @@
                 [disabled]='!changesPending()'>
                 Apply Changes
               </button>
-              <button class="btn btn-info ml-3" (click)="openAddDialog()" i18n>
+              <button class="btn btn-info ms-3" (click)="openAddDialog()" i18n>
                 Add New Mapping
               </button>
               <div class="col-lg-3">
-                <input class="form-control ml-2" [(ngModel)]="filterText"
+                <input class="form-control ms-2" [(ngModel)]="filterText"
                   i18n-placeholder placeholder="Filter..."/>
               </div>
-              <button class="btn btn-outline-secondary ml-1" 
+              <button class="btn btn-outline-secondary ms-1" 
                 (click)="filterText=''" i18n>
                 Clear
               </button>
             </div>
 
-            <div class="row font-italic">
+            <div class="row fst-italic">
               <span class="label-with-material-icon" i18n>
                 Permissions marked with a 
-                <span class="pl-1 pr-1 font-weight-bold text-danger 
+                <span class="ps-1 pe-1 fw-bold text-danger 
                   material-icons mat-icon-shrunk-in-button">new_releases</span>
                 override parent group permissions.
               </span>
             </div>
             
-            <div class="row font-weight-bold">
+            <div class="row fw-bold">
               <div class="col-lg-5" i18n>Permissions</div>
               <div class="col-lg-4" i18n>Group</div>
               <div class="col-lg-1" i18n>Depth</div>
@@ -166,7 +166,7 @@
                   </span>
                   <span *ngIf="permOverrides(map)" 
                     i18n-title title="Permission Overrides a Parent Group Permission"
-                    class="pl-1 font-weight-bold text-danger material-icons mat-icon-shrunk-in-button"
+                    class="ps-1 fw-bold text-danger material-icons mat-icon-shrunk-in-button"
                     i18n>new_releases</span>
                 </span>
               </div>
@@ -183,7 +183,7 @@
                     <eg-bool [value]="map.grantable() === 't'"></eg-bool>
                   </div>
                 </div>
-                <div class="col-lg-1 font-italic" i18n>Inherited</div>
+                <div class="col-lg-1 fst-italic" i18n>Inherited</div>
               </ng-container>
               <ng-template #nativeMap>
                 <div class="col-lg-4">{{map.grp().name()}}</div>

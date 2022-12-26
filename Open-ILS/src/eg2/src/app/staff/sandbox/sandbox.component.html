@@ -148,16 +148,16 @@
 <h4>PRINTING</h4>
 
 <div class="d-flex">
-  <div class="mr-2">
+  <div class="me-2">
     <button class="btn btn-info" (click)="doPrint()">Test Local Print</button>
     <ng-template #printTemplate let-context>Hello, {{context.world}}!</ng-template>
   </div>
-  <div class="mr-2">
+  <div class="me-2">
     <button class="btn btn-info" (click)="printWithDialog()">
       Print with dialog (Hatch Only)
     </button>
   </div>
-  <div class="mr-2">
+  <div class="me-2">
     <button class="btn btn-info" 
       (click)="testServerPrint()">Test Server-Generated Print</button>
   </div>
@@ -264,7 +264,7 @@
     </form>
   </div>
 </div>
-<label for="date-time-input">
+<label class="form-label" for="date-time-input">
   Set the datetime and timezone library settings, and enter a valid datetime string for an exciting animation surprise:
 </label>
 <input id="date-time-input" type="text" class="date-time-input" ngModel egValidDatetime required>

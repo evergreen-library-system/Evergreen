@@ -1,14 +1,12 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Copy Data to Clipboard</h4>
-    <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white" 
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body common-form striped-odd">
     <div class="row" *ngFor="let value of values">
-      <div class="col-lg-4 font-weight-bold border-right">{{value.label}}</div>
+      <div class="col-lg-4 fw-bold border-end">{{value.label}}</div>
       <div class="col-lg-8">
         <a href="javascript:;" (click)="copyValue(value.value)">{{value.value}}</a>
       </div>

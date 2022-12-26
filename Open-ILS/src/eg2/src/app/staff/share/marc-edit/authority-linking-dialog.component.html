@@ -14,7 +14,7 @@
 <!-- display a single heading as MARC or as the human friendlier string -->
 <ng-template #headingField 
   let-field="field" let-from="from" let-also="also" let-authId="authId">
-  <button class="btn btn-sm p-1 mr-1" 
+  <button class="btn btn-sm p-1 me-1" 
     [ngClass]="{'btn-outline-primary': !(from || also), 'btn-outline-info': (from || also)}"
     (click)="applyHeading(field, authId)" i18n>Apply</button>
   <ng-container *ngIf="showAs === 'heading'">
@@ -32,14 +32,12 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Manage Authority Links</h4>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="row border-bottom border-secondary p-2 d-flex">
-      <div class="flex-1 font-weight-bold p-1 pl-2 pt-2 ml-2">
+      <div class="flex-1 fw-bold p-1 ps-2 pt-2 ms-2">
         <div>{{bibField.tag}} {{bibField.ind1}} {{bibField.ind2}}</div>
 
         <div *ngFor="let sf of bibField.subfields">
@@ -51,18 +49,18 @@
 
             <span class="text-danger" i18n>‡</span>
 
-            <label class="form-check-label" for="search-subfield-{{sf[0]}}" i18n>
+            <label class="form-label form-check-label" for="search-subfield-{{sf[0]}}" i18n>
               {{sf[0]}} {{sf[1]}}
             </label>
           </div>
         </div>
       </div>
-      <div class="ml-2 p-1">
+      <div class="ms-2 p-1">
         <div class="mb-1" i18n>Create new authority from this field</div>
         <div>
           <button class="btn btn-outline-info" 
             (click)="createNewAuthority()">Immediately</button>
-          <button class="btn btn-outline-info ml-2" 
+          <button class="btn btn-outline-info ms-2" 
             (click)="createNewAuthority(true)">Create and Edit</button>
         </div>
       </div>
@@ -71,21 +69,21 @@
       <div class="flex-1">
         <button class="btn btn-outline-dark" [disabled]="pager.offset === 0"
           (click)="getPage(0)" i18n>Start</button>
-        <button class="btn btn-outline-dark ml-2"
+        <button class="btn btn-outline-dark ms-2"
           (click)="getPage(-1)" i18n>Previous</button>
-        <button class="btn btn-outline-dark ml-2"
+        <button class="btn btn-outline-dark ms-2"
           (click)="getPage(1)" i18n>Next</button>
       </div>
       <div class="pt-2 mb-2">
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="radio" value="heading"
             [(ngModel)]="showAs" name='show-as-heading' id="show-as-heading">
-          <label class="form-check-label" for="show-as-heading" i18n>Show As Heading</label>
+          <label class="form-label form-check-label" for="show-as-heading" i18n>Show As Heading</label>
         </div>
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="radio" value="marc"
             [(ngModel)]="showAs" name='show-as-heading' id="show-as-marc">
-          <label class="form-check-label" for="show-as-marc" i18n>Show As MARC</label>
+          <label class="form-label form-check-label" for="show-as-marc" i18n>Show As MARC</label>
         </div>
       </div>
     </div>
@@ -96,7 +94,7 @@
             *ngTemplateOutlet="headingField;context:{field:entry.main_heading, authId: entry.authority_id}">
           </ng-container>
         </div>
-        <div class="font-italic">
+        <div class="fst-italic">
           <a target="_blank" 
             i18n-title title="Authority Record ID {{entry.authority_id}}"
             routerLink="/staff/cat/authority/edit/{{entry.authority_id}}">

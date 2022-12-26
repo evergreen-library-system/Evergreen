@@ -19,7 +19,7 @@
                 [ngModel]="userHasWorkOu(org.id())"
                 (ngModelChange)="userWorkOuChange(org.id(), $event)"
                 [disabled]="!canAssignWorkOrgs[org.id()]"/>
-              <label class="form-check-label" for="work-org-{{org.id()}}" i18n>
+              <label class="form-label form-check-label" for="work-org-{{org.id()}}" i18n>
                 {{org.shortname()}} ({{org.name()}})
               </label>
             </div>
@@ -34,21 +34,21 @@
 
       <div class="striped-rows-odd mt-3">
         <div class="row pt-1 pb-1">
-          <div class="col-lg-5 font-weight-bold" i18n>Permission</div>
-          <div class="col-lg-2 font-weight-bold" i18n>Applied</div>
-          <div class="col-lg-2 font-weight-bold" i18n>Depth</div>
-          <div class="col-lg-2 font-weight-bold" i18n>Grantable</div>
+          <div class="col-lg-5 fw-bold" i18n>Permission</div>
+          <div class="col-lg-2 fw-bold" i18n>Applied</div>
+          <div class="col-lg-2 fw-bold" i18n>Depth</div>
+          <div class="col-lg-2 fw-bold" i18n>Grantable</div>
         </div>
         <div class="row pt-1 pb-1" *ngFor="let perm of allPerms">
           <div class="col-lg-5">{{perm.code()}}</div>
           <div class="col-lg-2">
-            <input class="form-check-input ml-0 pl-0" type="checkbox"
+            <input class="form-check-input ms-0 ps-0" type="checkbox"
               [disabled]="!canGrantPerm(perm)"
               [ngModel]="userHasPerm(perm)"
               (ngModelChange)="permApplyChanged(perm, $event)"/>
           </div>
           <div class="col-lg-2">
-            <select class="form-control" 
+            <select class="form-select" 
               [ngModel]="userHasPermAtDepth(perm)"
               (ngModelChange)="permDepthChanged(perm, $event)">
               <ng-container *ngFor="let depth of orgDepths">
@@ -58,7 +58,7 @@
             </select>
           </div>
           <div class="col-lg-2">
-            <input class="form-check-input ml-0 pl-0" type="checkbox"
+            <input class="form-check-input ms-0 ps-0" type="checkbox"
               [disabled]="!canGrantPerm(perm)"
               [ngModel]="userPermIsGrantable(perm)"
               (ngModelChange)="grantableChanged(perm, $event)"/>
@@ -71,14 +71,14 @@
 
 <ng-container *ngIf="!loading">
   <div class="d-flex w-100 mt-2 mb-2">
-    <div class="ml-auto">
+    <div class="ms-auto">
       <button class="btn btn-success" (click)="save()" 
         [disabled]="cannotSave()" i18n>Apply Changes</button>
     </div>
   </div>
   <div [ngbNavOutlet]="permsNav"></div>
   <div class="d-flex w-100 mb-2 mt-2">
-    <div class="ml-auto">
+    <div class="ms-auto">
       <button class="btn btn-success" (click)="save()" 
         [disabled]="cannotSave()" i18n>Apply Changes</button>
     </div>

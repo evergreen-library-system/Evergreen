@@ -5,10 +5,8 @@
   <div class="modal-header bg-info" *ngIf="doneLoading">
     <h3 *ngIf="canUpdate" class="modal-title" i18n>Manage Exchange Rates for {{currency.code()}}: {{currency.label()}}</h3>
     <h3 *ngIf="!canUpdate" class="modal-title" i18n>View Exchange Rates for {{currency.code()}}: {{currency.label()}}</h3>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body" [hidden]="!doneLoading">
     <h4 i18n>Exchange rates to other currencies: 1 {{currency?.label()}} is equal to:</h4>
@@ -17,7 +15,7 @@
     </div>
     <form #exrForm="ngForm" role="form" [hidden]="otherCurrencies?.length < 1" class="form-validated">
       <div class="form-group row mt-2" *ngFor="let ratio of ratios">
-        <label for="exr-{{ratio.to_currency().code()}}" class="col-sm-4 col-form-label">
+        <label for="exr-{{ratio.to_currency().code()}}" class="form-label col-sm-4 col-form-label">
           {{ratio.to_currency().code()}} ({{ratio.to_currency().label()}})
         </label>
         <div class="col-sm-3">

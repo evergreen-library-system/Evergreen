@@ -1,35 +1,35 @@
 <eg-string #defaultSearchSavedString i18n-text text="Default search saved"></eg-string>
 <eg-string #defaultSearchResetString i18n-text text="Default search reset"></eg-string>
 
-<div id="acq-search-form" class="pl-3 pr-3 pt-3 pb-3 mb-3">
+<div id="acq-search-form" class="ps-3 pe-3 pt-3 pb-3 mb-3">
 <form>
-  <div class="row mb-1">
+  <div class="row row-cols-auto mb-1">
     <div class="col form-group form-inline">
-      <label i18n>Search for records matching
-      <select class="form-inline ml-1 mr-1" id="acq-search-conjunction" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchConjunction">
+      <label class="form-label" i18n>Search for records matching
+      <select class="form-select d-inline w-auto mx-1 py-1" id="acq-search-conjunction" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchConjunction">
         <option value="all">all</option>
         <option value="any">any</option>
       </select>
       of the following terms:</label>
     </div>
-    <div class="col-auto">
+    <div class="col">
       <a class="with-material-icon no-href text-primary"
         title="Show Form" i18n-title
         tabindex="0"
-        *ngIf="!showForm" (click)="showForm=true"><span class="sr-only" i18n>Show Form</span>
+        *ngIf="!showForm" (click)="showForm=true"><span class="visually-hidden" i18n>Show Form</span>
         <span class="material-icons" aria-hidden="true">expand_more</span>
       </a>
       <a class="with-material-icon no-href text-primary"
         title="Hide Form" i18n-title
         tabindex="0"
-        *ngIf="showForm" (click)="showForm=false"><span class="sr-only" i18n>Hide Form</span>
+        *ngIf="showForm" (click)="showForm=false"><span class="visually-hidden" i18n>Hide Form</span>
         <span class="material-icons" aria-hidden="true">expand_less</span>
       </a>
     </div>
   </div>
-  <div class="row mb-1" *ngFor="let t of searchTerms; let idx=index" [hidden]="!showForm">
-    <div class="col-md-5 col-lg-3">
-      <select class="form-control" id="selected-search-term" [ngModelOptions]="{standalone: true}" [ngModel]="t.field"
+  <div class="row row-cols-auto mb-1" *ngFor="let t of searchTerms; let idx=index" [hidden]="!showForm">
+    <div class="col">
+      <select class="form-select" id="selected-search-term" [ngModelOptions]="{standalone: true}" [ngModel]="t.field"
         (ngModelChange)="old = t.field; t.field = $event"
         (change)="clearSearchTerm(t, old)">
         <option disabled="disabled" i18n>Select Search Field</option>
@@ -40,8 +40,8 @@
         </optgroup>
       </select>
     </div>
-    <div class="col-xs-2 pl-3">
-      <select class="form-control" id="selected-search-op" [ngModelOptions]="{standalone: true}" [(ngModel)]="t.op"
+    <div class="col ps-3">
+      <select class="form-select" id="selected-search-op" [ngModelOptions]="{standalone: true}" [(ngModel)]="t.op"
         (ngModelChange)="oldOp = t.op; t.op = $event"
         (change)="clearSearchTermValueAfterOpChange(t, oldOp)">
         <option i18n value="">is</option>
@@ -59,7 +59,7 @@
         <option i18n value="__in">matches a term from a file</option>
       </select>
     </div>
-    <div class="col-sm-3">
+    <div class="col">
       <ng-container *ngIf="t.op === '__in' || t.op === '__isnull' || t.op === '__isnotnull'">
         <ng-container *ngIf="t.op === '__in'">
           <eg-file-reader [(ngModel)]="t.value1" [ngModelOptions]="{standalone: true}"></eg-file-reader>
@@ -79,7 +79,7 @@
         <input [ngModelOptions]="{standalone: true}" [(ngModel)]="t.value1" type="text" *ngIf="searchTermDatatypes[t.field] === 'text'" class="form-control" />
         <input [ngModelOptions]="{standalone: true}" [(ngModel)]="t.value1" type="number" *ngIf="searchTermDatatypes[t.field] === 'int'" class="form-control" />
         <input [ngModelOptions]="{standalone: true}" [(ngModel)]="t.value1" type="number" *ngIf="searchTermDatatypes[t.field] === 'money'" class="form-control" />
-        <select [ngModelOptions]="{standalone: true}" [(ngModel)]="t.value1" *ngIf="searchTermDatatypes[t.field] === 'bool'" class="form-control">
+        <select [ngModelOptions]="{standalone: true}" [(ngModel)]="t.value1" *ngIf="searchTermDatatypes[t.field] === 'bool'" class="form-select">
           <option i18n value="t">Yes</option>
           <option i18n value="f">No</option>
         </select>
@@ -130,35 +130,35 @@
        </ng-template>
       </ng-container>
     </div>
-    <div class="col-xs-2 pl-3 pr-1">
+    <div class="col ps-3 pe-1">
       <button class="btn btn-sm material-icon-button" type="button"
         (click)="addSearchTerm()"
-        i18n-title title="Add Search Row"><span class="sr-only">Add Search Row</span>
+        i18n-title title="Add Search Row"><span class="visually-hidden">Add Search Row</span>
         <span class="material-icons" aria-hidden="true">add_circle_outline</span>
       </button>
       <button class="btn btn-sm material-icon-button" type="button"
         (click)="delSearchTerm(idx)"
-        i18n-title title="Remove Search Row"><span class="sr-only">Remove Search Row</span>
+        i18n-title title="Remove Search Row"><span class="visually-hidden">Remove Search Row</span>
         <span class="material-icons" aria-hidden="true">remove_circle_outline</span>
       </button>
     </div>
   </div>
-  <div class="row" [hidden]="!showForm">
-    <div class="col-sm-2">
+  <div class="row row-cols-auto" [hidden]="!showForm">
+    <div class="col">
       <button class="btn btn-success" (click)="submitSearch()" type="submit" i18n>Search</button>
     </div>
-    <div class="col-xs-3"></div>
-    <div class="col-xs-5 pl-3">
-      <button class="btn btn-primary mr-1" (click)="saveSearchAsDefault()" type="button" i18n>Set As Default {{searchTypeLabel}} Search</button>
+    <div class="col"></div>
+    <div class="col ps-3">
+      <button class="btn btn-primary me-1" (click)="saveSearchAsDefault()" type="button" i18n>Set As Default {{searchTypeLabel}} Search</button>
       <button class="btn btn-secondary" (click)="clearDefaultSearch()" type="button" [disabled]="!hasDefaultSearch" i18n>
         Reset Default Search
       </button>
     </div>
-    <div class="col-xs-3 pl-5">
+    <div class="col ps-5">
       <input class="form-check-input" type="checkbox" id="retrieve-immediately"
              (change)="saveRunImmediately()"
              [ngModelOptions]="{standalone: true}" [(ngModel)]="runImmediately"/>
-      <label for="retrieve-immediately" class="form-check-label" i18n>Retrieve Results Immediately</label>
+      <label for="retrieve-immediately" class="form-label form-check-label" i18n>Retrieve Results Immediately</label>
     </div>
   </div>
 </form>

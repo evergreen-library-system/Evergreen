@@ -1,25 +1,23 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title">Create Record of Hold Notification</h4>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body form-validated">
     <div class="form-group">
-      <label for="method-input" i18n>Notification Method</label>
+      <label class="form-label" for="method-input" i18n>Notification Method</label>
       <input type="text" class="form-control" id="method-input" required [(ngModel)]="method"/>
     </div>
     <div class="form-group">
-      <label for="note-input" i18n>Note</label>
+      <label class="form-label" for="note-input" i18n>Note</label>
       <textarea class="form-control" id="note-input" required [(ngModel)]="note">
       </textarea>
     </div>
     <div class="w-100">
-      <button class="btn btn-success ml-auto" (click)="createNotify()"
+      <button class="btn btn-success ms-auto" (click)="createNotify()"
         [disabled]="!method || !note" i18n>Create</button>
-      <button class="btn btn-warning ml-2" (click)="close()" i18n>Cancel</button>
+      <button class="btn btn-warning ms-2" (click)="close()" i18n>Cancel</button>
     </div>
   </div>
 </ng-template>

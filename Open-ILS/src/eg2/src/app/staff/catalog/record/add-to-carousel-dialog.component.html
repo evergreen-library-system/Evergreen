@@ -6,10 +6,8 @@
     <h4 class="modal-title">
       <span i18n>Add to Carousel</span>
     </h4>
-    <button type="button" class="close"
-    i18n-aria-label aria-label="Close" (click)="close(false)">
-    <span aria-hidden="true">&times;</span>
-  </button>
+    <button type="button" class="btn-close btn-close-white"
+    i18n-aria-label aria-label="Close" (click)="close(false)"></button>
 </div>
 <div class="modal-body">
   <div *ngIf="!carousels.length">
@@ -17,7 +15,7 @@
     <p> <a routerLink="/staff/admin/local/container/carousel" i18n>Would you like to add one?</a></p>
   </div>
   <div class="row" *ngIf="carousels.length">
-    <div class="col-lg-3 font-weight-bold" i18n>Carousel</div>
+    <div class="col-lg-3 fw-bold" i18n>Carousel</div>
     <div class="col-lg-5">
       <eg-combobox [entries]="formatCarouselEntries()" [formControl]="selectedCarousel">
       </eg-combobox>

@@ -16,7 +16,7 @@ unnecessary given we have to track paging externally anyway.
     *ngFor="let page of currentPageList()"
     [ngClass]="{active : searchContext.pager.currentPage() === page}">
     <a class="page-link" tabindex="0" (click)="setPage(page)" (keydown.enter)="setPage(page)">
-      {{page}} <span class="sr-only" i18n>(current)</span></a>
+      {{page}} <span class="visually-hidden" i18n>(current)</span></a>
   </li>
   <li class="page-item" 
     [ngClass]="{disabled : searchContext.pager.isLastPage()}">

@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* bootstrap CSS only -- JS bits come from ng-bootstrap */
-@import '~bootstrap-css-only/css/bootstrap.min.css';
+@import '~bootstrap-5-css-only/css/bootstrap.min.css';
 
 /* Locally served material icon fonts  */
 @import '~material-design-icons-iconfont/dist/material-design-icons.css';
@@ -10,10 +10,16 @@
 :root {
   --blue: #0A58CA; /* $blue-600 in BS5 */
   --primary: #0A58CA;
+  --bs-blue-rgb: 10,88,202;
+  --bs-primary-rgb: 10,88,202;
   --green: #198754; /* $green ($green-500) in BS5 */
   --success: #198754;
+  --bs-green-rgb: 25,135,84;
+  --bs-success-rgb: 25,135,84;
   --cyan: #087990; /* $cyan-700 in BS5 */
   --info: #087990;
+  --bs-cyan-rgb: 8,121,144;
+  --bs-info-rgb: 8,121,144;
 }
 
 /** BS default fonts are huge */
@@ -207,7 +213,7 @@ a:hover {
  * Invalid fields are left-border styled in red-ish.
  */
 .form-validated .ng-valid[required]:not(eg-combobox):not(eg-date-select), 
-.form-validated .ng-valid.required, input[formcontrolname].ng-valid {
+.form-validated .ng-valid.required, input[formcontrolname].ng-valid.required {
   border-left: 5px solid #78FA89;
 }
 .form-validated .ng-invalid:not(form):not(eg-combobox):not(eg-date-select),
@@ -431,6 +437,7 @@ input.small {
 .btn-info {
   background-color: #087990;
   border-color: #087990;
+  color: #fff;
 }
 
 .btn-info:hover,
@@ -530,4 +537,27 @@ input.small {
 .badge.text-bg-dark {
   color: #000;
   background: #adb5bd;
+}
+
+/* 
+ * https://getbootstrap.com/docs/5.0/migration/#content-reboot-etc
+ * Links are underlined by default.
+ */
+a {
+  text-decoration: none;
+}
+
+.input-group-text label,
+.input-group-text button {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.form-label.input-group-text {
+  margin-bottom: inherit;
+}
+
+.popover-body {
+  padding: 0;
 }

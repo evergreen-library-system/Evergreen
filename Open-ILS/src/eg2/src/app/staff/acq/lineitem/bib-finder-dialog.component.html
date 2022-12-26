@@ -2,15 +2,13 @@
   <form class="form-validated">
     <div class="modal-header bg-info">
       <h3 class="modal-title" i18n>Link Line Item to Catalog</h3>
-      <button type="button" class="close"
-        i18n-aria-label aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <button type="button" class="btn-close btn-close-white"
+        i18n-aria-label aria-label="Close" (click)="close()"></button>
     </div>
     <div class="modal-body">
       <h4 i18n>Line Item: {{liId}}</h4>
       <div class="input-group">
-        <label for="searchQuery" class="mr-1" i18n>Search catalog for</label>
+        <label for="searchQuery" class="form-label me-1" i18n>Search catalog for</label>
         <input type="text" [(ngModel)]="queryString" [ngModelOptions]="{standalone: true}"
           class="form-control" id="searchQuery">
         <button type="submit" (click)="submitSearch()" class="btn btn-primary"
@@ -27,17 +25,17 @@
           <div class="mt-1 pt-1 border-top">
             <div *ngFor="let rec of results" class="bib-finder-results-row row mt-1">
               <div class="col-3">
-                <button class="btn btn-success mr-1" (click)="close(rec.id)" i18n>Link</button>
-                <button class="btn btn-outline-dark mr-1" (click)="bibToDisplay = rec.id" i18n>View MARC</button>
+                <button class="btn btn-success me-1" (click)="close(rec.id)" i18n>Link</button>
+                <button class="btn btn-outline-dark me-1" (click)="bibToDisplay = rec.id" i18n>View MARC</button>
               </div>
               <div class="col-9">
-                <span class="pr-1" i18n>Record {{rec.id}}:</span>
-                <span class="pr-1">{{rec.display.title}}</span>
-                <span class="pr-1">{{rec.display.author}}</span>
-                <span class="pr-1">{{rec.display.isbn}}</span>
-                <span class="pr-1">{{rec.display.issn}}</span>
-                <span class="pr-1">{{rec.display.pubdate}}</span>
-                <span class="pr-1">{{rec.display.publisher}}</span>
+                <span class="pe-1" i18n>Record {{rec.id}}:</span>
+                <span class="pe-1">{{rec.display.title}}</span>
+                <span class="pe-1">{{rec.display.author}}</span>
+                <span class="pe-1">{{rec.display.isbn}}</span>
+                <span class="pe-1">{{rec.display.issn}}</span>
+                <span class="pe-1">{{rec.display.pubdate}}</span>
+                <span class="pe-1">{{rec.display.publisher}}</span>
               </div>
             </div>
           </div>

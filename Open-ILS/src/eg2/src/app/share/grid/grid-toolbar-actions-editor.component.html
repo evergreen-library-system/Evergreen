@@ -1,10 +1,8 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Grid Menu Configuration</h4>
-    <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white" 
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="row">
@@ -13,14 +11,14 @@
     </div>
     <div class="row pt-1" *ngFor="let action of gridContext.toolbarActions">
       <ng-container *ngIf="action.isGroup">
-        <div class="col-lg-12 font-weight-bold font-italic">{{action.label}}</div>
+        <div class="col-lg-12 fw-bold fst-italic">{{action.label}}</div>
       </ng-container>
       <ng-container *ngIf="action.isSeparator">
         <div class="col-lg-12 dropdown-divider"></div>
       </ng-container>
       <ng-container *ngIf="!action.isGroup && !action.isSeparator">
         <div class="col-lg-9">
-          <div [ngClass]="{'pl-2': action.group}"
+          <div [ngClass]="{'ps-2': action.group}"
             (click)="showHideClicked(action)">{{action.label}}</div>
         </div>
         <div class="col-lg-3" (click)="showHideClicked(action)">
@@ -31,7 +29,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success ml-2" 
+    <button type="button" class="btn btn-success ms-2" 
       (click)="close('confirmed')" i18n>Close</button>
   </div>
 </ng-template>

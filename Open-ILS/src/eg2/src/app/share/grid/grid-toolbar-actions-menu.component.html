@@ -14,14 +14,14 @@
     [disabled]="shouldDisable(action)"
     (click)="performAction(action)" tabindex="0">
     <ng-container *ngIf="action.isGroup">
-      <span class="font-weight-bold font-italic">{{action.label}}</span>
+      <span class="fw-bold fst-italic">{{action.label}}</span>
     </ng-container>
     <ng-container *ngIf="action.isSeparator">
       <div class="dropdown-divider"></div>
     </ng-container>
     <ng-container *ngIf="!action.isGroup && !action.isSeparator">
       <!-- grouped entries are left paddded for group indentation -->        
-      <span [ngClass]="{'ml-2': action.group}">{{action.label}}</span>
+      <span [ngClass]="{'ms-2': action.group}">{{action.label}}</span>
     </ng-container>
   </button>
 </ng-container>

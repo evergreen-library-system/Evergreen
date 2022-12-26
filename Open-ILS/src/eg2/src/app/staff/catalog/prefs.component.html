@@ -7,7 +7,7 @@
 
 <div class="row border-bottom border-secondary p-2 m-2">
   <div class="col-lg-2 offset-lg-1">
-    <label for="default-lib-selector" class="font-weight-bold" i18n>
+    <label for="default-lib-selector"  class="form-label fw-bold" i18n>
       Default Search Library
     </label>
   </div>
@@ -28,7 +28,7 @@
 
 <div class="row border-bottom border-secondary p-2 m-2">
   <div class="col-lg-2 offset-lg-1">
-    <label for="pref-lib-selector" class="font-weight-bold" i18n>
+    <label for="pref-lib-selector"  class="form-label fw-bold" i18n>
       Preferred Library
     </label>
   </div>
@@ -48,7 +48,7 @@
 
 <div class="row border-bottom border-secondary p-2 m-2">
   <div class="col-lg-2 offset-lg-1">
-    <label for="def-pane-selector" class="font-weight-bold" i18n>
+    <label for="def-pane-selector"  class="form-label fw-bold" i18n>
       Default Search Pane
     </label>
   </div>
@@ -69,7 +69,7 @@
 
 <div class="row border-bottom border-secondary p-2 m-2">
   <div class="col-lg-2 offset-lg-1">
-    <label for="pref-lib-selector" class="font-weight-bold" i18n>
+    <label for="pref-lib-selector" class="form-label fw-bold" i18n>
       Search Results Per Page
     </label>
   </div>
@@ -85,17 +85,17 @@
 
 <div class="row border-bottom border-secondary p-2 m-2">
   <div class="col-lg-2 offset-lg-1">
-    <label for="pref-lib-selector" class="font-weight-bold" i18n>
+    <label for="pref-lib-selector" class="form-label fw-bold" i18n>
       Exclude Electronic Resources
     </label>
   </div>
   <div class="col-lg-2">
-    <div class="checkbox pl-3 pt-2">
+    <div class="checkbox ps-3 pt-2">
       <label>
         <input type="checkbox" 
           (change)="checkboxChanged('eg.staffcat.exclude_electronic')"
           [(ngModel)]="settings['eg.staffcat.exclude_electronic']">
-        <span class="pl-1" i18n></span>
+        <span class="ps-1" i18n></span>
       </label>
     </div>
   </div>

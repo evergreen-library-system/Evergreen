@@ -25,9 +25,7 @@
   </div>
   <div class="col-lg-3">
     <div class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text" i18n>Template</span>
-      </div>
+      <span class="input-group-text" i18n>Template</span>
       <ng-template #entryTemplate let-r="result" let-owner="getOwnerName">
         {{r.label}} ({{getOwnerName(r.id)}})
       </ng-template>
@@ -39,9 +37,7 @@
   </div>
   <div class="col-lg-3" *ngIf="localeEntries.length > 0">
     <div class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text" i18n>Locale</span>
-      </div>
+      <span class="input-group-text" i18n>Locale</span>
       <eg-combobox [entries]="localeEntries"
         [startId]="localeCode"
         (onChange)="localeOnChange($event ? $event.id : null)">
@@ -62,13 +58,13 @@
             <button class="btn btn-info" (click)="openEditDialog()" i18n>
               Edit Template Attributes
             </button>
-            <button class="btn btn-success ml-2" (click)="applyChanges()" i18n>
+            <button class="btn btn-success ms-2" (click)="applyChanges()" i18n>
               Save Template Changes
             </button>
-            <button class="btn btn-info ml-2" (click)="cloneTemplate()" i18n>
+            <button class="btn btn-info ms-2" (click)="cloneTemplate()" i18n>
               Clone Template
             </button>
-            <span class="ml-3 mr-1" i18n>Force Print Context:</span>
+            <span class="ms-3 me-1" i18n>Force Print Context:</span>
             <eg-combobox #printContextCbox (onChange)="forceContextChange($event)">
               <eg-combobox-entry entryId="unset" entryLabel="<Unset>" i18n-entryLabel>
               </eg-combobox-entry>
@@ -86,10 +82,10 @@
               </eg-combobox-entry>
             </eg-combobox>
             <div class="flex-1"> </div>
-            <button class="btn btn-danger ml-2" (click)="deleteTemplate()" i18n>
+            <button class="btn btn-danger ms-2" (click)="deleteTemplate()" i18n>
               Delete Template
             </button>
-            <span *ngIf="invalidJson" class="badge badge-danger ml-2" i18n>
+            <span *ngIf="invalidJson" class="badge badge-danger ms-2" i18n>
               Invalid Sample JSON!
             </span>
           </div>
@@ -98,7 +94,7 @@
           <div class="col-lg-6">
             <h4 i18n>
               Template for "{{template.label()}} ({{getOwnerName(template.id())}})"
-              <span class="pl-2 text-warning" *ngIf="template.active() === 'f'">
+              <span class="ps-2 text-warning" *ngIf="template.active() === 'f'">
                 (Inactive)
               </span>
             </h4>

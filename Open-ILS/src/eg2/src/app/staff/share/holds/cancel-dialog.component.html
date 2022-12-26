@@ -8,10 +8,8 @@
       <h4 class="modal-title">
         <span i18n>Cancel Hold</span>
       </h4>
-      <button type="button" class="close"
-        i18n-aria-label aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <button type="button" class="btn-close btn-close-white"
+        i18n-aria-label aria-label="Close" (click)="close()"></button>
     </div>
     <div class="modal-body">
       <div class="row d-flex justify-content-center">
@@ -19,7 +17,7 @@
       </div>
       <div class="row mt-2">
         <div class="col-lg-4">
-          <label for="cancel-reasons" i18n>Cancel Reason</label>
+          <label class="form-label" for="cancel-reasons" i18n>Cancel Reason</label>
         </div>
         <div class="col-lg-8">
           <eg-combobox domId='cancel-reasons' [entries]="cancelReasons"
@@ -29,7 +27,7 @@
       </div>
       <div class="row mt-2">
         <div class="col-lg-4">
-          <label for="cancel-note" i18n>Cancel Note</label>
+          <label class="form-label" for="cancel-note" i18n>Cancel Note</label>
         </div>
         <div class="col-lg-8">
           <textarea id='cancel-note' class="form-control"

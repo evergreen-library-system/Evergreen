@@ -4,16 +4,14 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Patron Barcodes</h4>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="row">
-      <div class="col-lg-4 font-weight-bold" i18n>Barcode</div>
-      <div class="col-lg-4 font-weight-bold" i18n>Active</div>
-      <div class="col-lg-4 font-weight-bold" i18n>Primary</div>
+      <div class="col-lg-4 fw-bold" i18n>Barcode</div>
+      <div class="col-lg-4 fw-bold" i18n>Active</div>
+      <div class="col-lg-4 fw-bold" i18n>Primary</div>
     </div>
     <div class="row mt-2 pt-2" *ngFor="let card of patron.cards()">
       <div class="col-lg-4" i18n>
@@ -22,12 +20,12 @@
       <div class="col-lg-4" i18n>
         <input type="checkbox" [disabled]="!myPerms.UPDATE_PATRON_ACTIVE_CARD"
           (ngModelChange)="activeChange(card, $event)"
-          class="form-check-input ml-0" [ngModel]="card.active() === 't'">
+          class="form-check-input ms-0" [ngModel]="card.active() === 't'">
       </div>
       <div class="col-lg-4" i18n>
         <input type="radio" name="primary-card" [value]="card.id()"
           [disabled]="!myPerms.UPDATE_PATRON_PRIMARY_CARD"
-          class="form-check-input ml-0" [(ngModel)]="primaryCard">
+          class="form-check-input ms-0" [(ngModel)]="primaryCard">
       </div>
     </div>
   </div>

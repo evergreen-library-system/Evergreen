@@ -1,7 +1,7 @@
 <ng-container *ngIf="editor && subfieldLabels && marcForms && marcTypes">
   <form [formGroup]="editor">
     <div class="row">
-      <div class="col-lg-3"><label i18n for="{{idPrefix}}-form">Form</label></div>
+      <div class="col-lg-3"><label class="form-label" i18n for="{{idPrefix}}-form">Form</label></div>
       <div class="col-lg-9">
         <eg-combobox #formCombobox [entries]="marcForms" formControlName="marcForm"
           [selectedId]="defaultMarcForm" domId="{{idPrefix}}-form">
@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-lg-3"><label for="{{idPrefix}}-type" i18n>Type</label></div>
+      <div class="col-lg-3"><label class="form-label" for="{{idPrefix}}-type" i18n>Type</label></div>
       <div class="col-lg-9">
         <eg-combobox #typeCombobox [entries]="marcTypes" formControlName="marcType"
           selectedId="a" domId="{{idPrefix}}-type">

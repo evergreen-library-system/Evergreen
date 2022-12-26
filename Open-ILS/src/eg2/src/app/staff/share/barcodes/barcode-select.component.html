@@ -4,10 +4,8 @@
     <h4 class="modal-title">
       <span i18n>Select Barcode</span>
     </h4>
-    <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white" 
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="alert alert-primary m-1 mb-3" i18n>Select the desired barcode.</div>
@@ -16,7 +14,7 @@
 			  <input class="form-check-input" type="checkbox" value="" 
           id="barcode-check-{{match.id}}" [(ngModel)]="inputs[match.id]"
           (ngModelChange)="selectionChanged()">
-			  <label class="form-check-label" for="barcode-check-{{match.id}}">
+			  <label class="form-label form-check-label" for="barcode-check-{{match.id}}">
           {{match.barcode}}
 			  </label>
 		  </div>

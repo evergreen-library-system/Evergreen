@@ -5,29 +5,29 @@
 
 <div class="row">
   <div class="col-lg-12 d-flex">
-    <div class="mr-2" i18n>Context Org Unit</div>
+    <div class="me-2" i18n>Context Org Unit</div>
     <div>
       <eg-org-select (onChange)="orgChanged($event)" [initialOrgId]="contextOrg">
       </eg-org-select>
     </div>
-    <div class="ml-3">
+    <div class="ms-3">
       <button (click)="up()" i18n-title title="Move Selected Location Up"
-        class="mr-2 btn btn-sm btn-outline-dark .mat-icon-shrunk-in-button">
+        class="me-2 btn btn-sm btn-outline-dark .mat-icon-shrunk-in-button">
         <span class="material-icons">arrow_upward</span>
       </button>
       <button (click)="down()" i18n-title title="Move Selected Location Down"
-        class="mr-2 btn btn-sm btn-outline-dark .mat-icon-shrunk-in-button">
+        class="me-2 btn btn-sm btn-outline-dark .mat-icon-shrunk-in-button">
         <span class="material-icons">arrow_downward</span>
       </button>
       <button (click)="up(true)" i18n-title title="Move Selected Location To Top"
-        class="mr-2 btn btn-sm btn-outline-dark .mat-icon-shrunk-in-button">
+        class="me-2 btn btn-sm btn-outline-dark .mat-icon-shrunk-in-button">
         <span class="material-icons">vertical_align_top</span>
       </button>
       <button (click)="down(true)" i18n-title title="Move Selected Location To Bottom"
-        class="mr-2 btn btn-sm btn-outline-dark .mat-icon-shrunk-in-button">
+        class="me-2 btn btn-sm btn-outline-dark .mat-icon-shrunk-in-button">
         <span class="material-icons">vertical_align_bottom</span>
       </button>
-      <span class="ml-2 font-italic" *ngIf="selected()">
+      <span class="ms-2 fst-italic" *ngIf="selected()">
         Selected: {{selected().location().name()}} 
           ({{orgSn(selected().location().owning_lib())}})
       </span>
@@ -38,7 +38,7 @@
   </div>
 </div>
 
-<div class="mt-2 mb-2 font-italic" i18n>
+<div class="mt-2 mb-2 fst-italic" i18n>
   Select a shelving location below and use the arrows above to change its position.
 </div>
 
@@ -48,11 +48,11 @@
       <div class="col-lg-12">
         <input type="radio" name="selected-entry" 
           [value]="entry.id()" [(ngModel)]="selectedEntry"/>
-        <span class="flex-1 ml-1 p-1" i18n
+        <span class="flex-1 ms-1 p-1" i18n
           [ngClass]="{'border border-primary rounded': selectedEntry === entry.id()}">
           {{entry.location().name()}} ({{orgSn(entry.location().owning_lib())}})
         </span>
-        <span *ngIf="entry.isnew()" class="ml-2 font-italic text-info">(unsaved)</span>
+        <span *ngIf="entry.isnew()" class="ms-2 fst-italic text-info">(unsaved)</span>
       </div>
     </div>
   </li>

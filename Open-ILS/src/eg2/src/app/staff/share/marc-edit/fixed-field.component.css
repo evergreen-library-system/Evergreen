@@ -8,6 +8,7 @@
   max-height: 400px;
   overflow-y: auto;
   overflow-x: auto;
+  padding: 0;
 }
 
 :host .popover-body .menu-entry {

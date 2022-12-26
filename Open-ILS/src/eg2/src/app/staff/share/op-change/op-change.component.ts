@@ -108,7 +108,7 @@ export class OpChangeComponent
             res => sourceReq.observer.next(res),
             err => sourceReq.observer.error(err),
             ()  => sourceReq.observer.complete()
-        ).add(_ => this.auth.undoOpChange());
+        ).add(() => this.auth.undoOpChange());
     }
 }
 

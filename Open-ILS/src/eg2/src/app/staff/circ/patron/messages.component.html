@@ -32,12 +32,12 @@
     <h3 i18n>Archived Penalties / Messages</h3>
   </div>
   <div class="col-lg-4 form-inline">
-    <label class="mr-2" i18n>Start Date:</label>
+    <label class="form-label me-2" i18n>Start Date:</label>
     <eg-date-select [initialIso]="startDateYmd"
       (onChangeAsIso)="dateChange($event, true)"></eg-date-select>
   </div>
   <div class="col-lg-4 form-inline">
-    <label class="mr-2" i18n>End Date:</label>
+    <label class="form-label me-2" i18n>End Date:</label>
     <eg-date-select [initialIso]="endDateYmd" 
       (onChangeAsIso)="dateChange($event, false)"></eg-date-select>
   </div>

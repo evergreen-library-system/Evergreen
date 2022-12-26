@@ -3,7 +3,7 @@
 
 <ng-template #summaryField let-field="field" let-value="value">
   <div class="col-2">
-    <label style="font-weight: bold" for="fund-{{field}}">{{idlDef.field_map[field].label}}</label>
+    <label class="form-label fw-bold" for="fund-{{field}}">{{idlDef.field_map[field].label}}</label>
   </div>
   <div class="col-2">
     <span id="fund-{{field}}">
@@ -14,10 +14,8 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h3 class="modal-title" i18n>Funding Source: {{fundingSource?.name()}}</h3>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body" *ngIf="fundingSource">
     <ul ngbNav #fundingSourceTransactionsNav="ngbNav" [(activeId)]="activeTab" class="nav-tabs" [keyboard]="true" [roles]="false" role="tablist">

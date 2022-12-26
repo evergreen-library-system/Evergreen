@@ -2,10 +2,8 @@
   <form class="form-validated">
     <div class="modal-header bg-info">
       <h3 class="modal-title" i18n>Export Single Attribute List for Selected Line Items</h3>
-      <button type="button" class="close"
-        i18n-aria-label aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <button type="button" class="btn-close btn-close-white"
+        i18n-aria-label aria-label="Close" (click)="close()"></button>
     </div>
     <div class="modal-body">
       <h4 i18n>Line Item(s) selected:
@@ -17,7 +15,7 @@
         values for selected line item(s).
       </h4>
       <div class="form-group form-inline">
-        <label for="export-attr-select" class="form-check-label mr-1">Filter by:</label>
+        <label for="export-attr-select" class="form-label form-check-label me-1">Filter by:</label>
         <select name="export-attr-select" id="export-attr-select"
           [(ngModel)]="selectedAttr"
           class="form-control">

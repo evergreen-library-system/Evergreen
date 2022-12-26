@@ -1,14 +1,14 @@
 
 <div *ngIf="picklist" class="row pt-1 pb-1 border border-secondary rounded">
   <div class="col-lg-4 form-inline">
-    <span class="mr-2" i18n>Selection List:</span>
+    <span class="me-2" i18n>Selection List:</span>
     <ng-container *ngIf="editPlName">
-      <input id='pl-name-input' type="text" class="form-control" 
+      <input id='ps-name-input' type="text" class="form-control" 
         [(ngModel)]="newPlName" (blur)="toggleNameEdit()"/>
     </ng-container>
     <ng-container *ngIf="!editPlName">
       <a (click)="toggleNameEdit()" href='javascript:;' 
-        class='font-weight-bold' i18n>{{picklist.name()}} (#{{picklist.id()}})</a>
+        class='fw-bold' i18n>{{picklist.name()}} (#{{picklist.id()}})</a>
     </ng-container>
   </div>
   <div class="col-lg-2" i18n>

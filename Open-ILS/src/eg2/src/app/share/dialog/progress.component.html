@@ -1,11 +1,9 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 *ngIf="dialogTitle" class="modal-title">{{dialogTitle}}</h4>
-    <button type="button" class="close" 
+    <button type="button" class="btn-close btn-close-white" 
       i18n-aria-label aria-label="Close" 
-      (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+      (click)="close()"></button>
   </div>
 
   <div class="modal-body eg-progress-dialog">

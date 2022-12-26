@@ -31,17 +31,17 @@
                     </eg-staff-banner>
                 <div *ngFor="let question of localArray; let questionIndex = index;">
                     <div class="mb-3 mt-3 p-2 bg-light input-group">
-                        <label class="input-group-text">
+                        <label class="form-label input-group-text">
                             <b>Question</b>
                         </label>
                         <input type="text" [(ngModel)]="question.words" class="form-control"
                             name="question-{{questionIndex}}">
-                        <span class="input-group-append">
-                            <button class="ml-2 btn btn-info"
+                        <span class="input-group-text">
+                            <button class="ms-2 btn btn-info"
                                 (click)="updateQuestion(question)" i18n>
                                 Save
                             </button>
-                            <button class="ml-1 btn btn-danger"
+                            <button class="ms-1 btn btn-danger"
                                 (click)="deleteQuestion(question)" i18n>
                                 Delete Question & Answers
                             </button>
@@ -52,13 +52,13 @@
                         <input class="form-control" type="text"
                             [(ngModel)]="answer.words"
                             name="answer-{{questionIndex}}-{{answerIndex}}">
-                        <span class="input-group-append">
-                            <button class="ml-2 btn btn-info"
+                        <span class="input-group-text">
+                            <button class="ms-2 btn btn-info"
                                 (click)="updateAnswer(answer, question, questionIndex, answerIndex)"
                                 i18n>
                                 Save
                             </button>
-                            <button class="ml-1 btn btn-danger" (click)="deleteAnswer(answer)"
+                            <button class="ms-1 btn btn-danger" (click)="deleteAnswer(answer)"
                                 i18n>
                                 Delete
                             </button>
@@ -68,8 +68,8 @@
                         <input class="form-control" type="text"
                             [(ngModel)]="newAnswerArray[questionIndex].inputText"
                                 value="">
-                        <span class="input-group-append">
-                            <button class="ml-2 btn btn-info"
+                        <span class="input-group-text">
+                            <button class="ms-2 btn btn-info"
                                 (click)="createAnswer(newAnswerArray[questionIndex].inputText, question)"
                                 i18n>
                                 Add Answer
@@ -78,7 +78,7 @@
                     </div>
                 </div>
                 <div class="mb-3 mt-3 p-2 bg-light input-group">
-                    <label class="input-group-text">
+                    <label class="form-label input-group-text">
                         <b>New Question</b>
                     </label>
                     <input #newQuestionInput
@@ -86,8 +86,8 @@
                         type="text"
                         [(ngModel)]="newQuestionText"
                         name="question-new" value="">
-                    <span class="input-group-append">
-                        <button class="ml-2 btn btn-info"
+                    <span class="input-group-text">
+                        <button class="ms-2 btn btn-info"
                             (click)="createQuestion(newQuestionText)" i18n>
                             Save Question & Add Answer
                         </button>

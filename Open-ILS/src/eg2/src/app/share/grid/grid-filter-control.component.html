@@ -14,9 +14,9 @@
 <ng-template #actionsTemplate>
   <div class="pt-2">
     <button class="btn btn-sm btn-outline-dark" (click)="applyFilterCommon(col)" i18n>Apply filter</button>
-    <span class="pl-2"></span>
+    <span class="ps-2"></span>
     <button class="btn btn-sm btn-outline-dark" (click)="clearFilter(col)" i18n>Clear filter</button>
-    <span class="pl-2"></span>
+    <span class="ps-2"></span>
     <button class="btn btn-sm btn-outline-dark" (click)="closeDropdown()" i18n>Close</button>
   </div>
 </ng-template>
@@ -70,7 +70,7 @@
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <div>
-                <select class="custom-select" [(ngModel)]="col.filterValue"
+                <select class="form-select" [(ngModel)]="col.filterValue"
                   (change)="applyFilterCommon(col)"
                   [disabled]="col.filterInputDisabled || context.dataSource.requestingData">
                   <option value="" i18n>Any</option>
@@ -94,7 +94,7 @@
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <div>
-                <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
                 <select id="eg-filter-op-select-{{col.name}}" class="form-control" 
                   [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
                   <option value="=" i18n>Is exactly</option>
@@ -133,7 +133,7 @@
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <div>
-                <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
                 <ng-container *ngTemplateOutlet="numericOperators"></ng-container>
               </div>
               <div class="pt-2">
@@ -157,7 +157,7 @@
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <div>
-                <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
                 <ng-container *ngTemplateOutlet="numericOperators"></ng-container>
               </div>
               <div class="pt-2">
@@ -181,7 +181,7 @@
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <div>
-                <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
                 <ng-container *ngTemplateOutlet="numericOperators"></ng-container>
               </div>
               <div class="pt-2">
@@ -205,7 +205,7 @@
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <div>
-                <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
                 <ng-container *ngTemplateOutlet="numericOperators"></ng-container>
               </div>
               <div class="pt-2">
@@ -232,7 +232,7 @@
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <div>
-                <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
                 <select id="eg-filter-op-select-{{col.name}}" class="form-control" 
                   [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
                   <option value="=" i18n>Is exactly</option>
@@ -251,7 +251,7 @@
                   (onChangeAsYmd)="applyFilterCommon(col)"
                   [disabled]="col.filterInputDisabled || context.dataSource.requestingData"></eg-date-select>
                 <div [hidden]="col.filterOperator !== 'between'" class="form-inline form-group">
-                  <label for="eg-filter-end-date-select-{{col.name}}" style="width: 3em;" i18n>and</label>
+                  <label class="form-label" for="eg-filter-end-date-select-{{col.name}}" style="width: 3em;" i18n>and</label>
                   <eg-date-select [hidden]="col.filterOperator !== 'between'" #dateSelectTwo
                     (onChangeAsYmd)="applyFilterCommon(col)"
                     [disabled]="col.filterInputDisabled || context.dataSource.requestingData"
@@ -274,7 +274,7 @@
           <div ngbDropdownMenu class="eg-grid-filter-menu">
             <div class="dropdown-item">
               <div>
-                <label for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
+                <label class="form-label" for="eg-filter-op-select-{{col.name}}" i18n>Operator</label>
                 <select id="eg-filter-op-select-{{col.name}}" class="form-control" 
                   [(ngModel)]="col.filterOperator" (change)="operatorChanged(col)">
                   <option value="=" i18n>Is (or includes)</option>
@@ -286,13 +286,13 @@
                   <input type="checkbox"
                     [(ngModel)]="col.filterIncludeOrgAncestors"
                     class="form-check-input" id="include-ancestors">
-                  <label class="form-check-label" for="include-ancestors" i18n>+ Ancestors</label>
+                  <label class="form-label form-check-label" for="include-ancestors" i18n>+ Ancestors</label>
                 </div>
                 <div class="form-check">
                   <input type="checkbox"
                     [(ngModel)]="col.filterIncludeOrgDescendants"
                     class="form-check-input" id="include-descendants">
-                  <label class="form-check-label" for="include-descendants" i18n>+ Descendants</label>
+                  <label class="form-label form-check-label" for="include-descendants" i18n>+ Descendants</label>
                 </div>
               </div>
               <div class="pt-2">

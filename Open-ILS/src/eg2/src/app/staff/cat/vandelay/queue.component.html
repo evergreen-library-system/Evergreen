@@ -94,7 +94,7 @@
 </ng-container>
 
 <ng-template #matchesTmpl let-row="row">
-  <a i18n [ngClass]="{'font-weight-bold': hasOverlayTarget(row.id)}"
+  <a i18n [ngClass]="{'fw-bold': hasOverlayTarget(row.id)}"
     routerLink="/staff/cat/vandelay/queue/{{queueType}}/{{queueId}}/record/{{row.id}}/matches">
       ({{row.matches.length}})
       {{hasOverlayTarget(row.id) ? '*' : ''}}

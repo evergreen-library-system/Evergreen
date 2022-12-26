@@ -19,15 +19,15 @@
     </div>
     <div *ngIf="!withAlias" class="sr-field-name col-md-auto">
       <span *ngIf="withTransforms || withOperators || withValueInput" class="sr-field-explainer"><br /></span>
-      <label *ngIf="withSelect" (click)="selectAction()" class="sr-field-label" for="chk{{field.name}}">{{field.label}}</label>
-      <label *ngIf="!withSelect" class="sr-field-label">{{field.label}}</label>
+      <label *ngIf="withSelect" (click)="selectAction()"  class="form-label sr-field-label" for="chk{{field.name}}">{{field.label}}</label>
+      <label *ngIf="!withSelect"  class="form-label sr-field-label">{{field.label}}</label>
     </div>
 
     <div *ngIf="withTransforms || withOperators" class="sr-field-xform col-md-3">
 
       <div *ngIf="withTransforms">
         <span class="sr-field-explainer" i18n>Transform</span>
-        <select class="form-control" (change)="transformChange($event)" [disabled]="field.force_transform">
+        <select class="form-select" (change)="transformChange($event)" [disabled]="field.force_transform">
           <option *ngFor="let t of transforms" value="{{t.name}}" selected="{{ field.transform.name === t.name ? 'selected' : '' }}">
             <span *ngIf="t.name === 'Bare'" i18n>Raw Data</span>
             <span *ngIf="t.name === 'upper'" i18n>Upper Case</span>
@@ -64,7 +64,7 @@
 
       <div *ngIf="withOperators">
         <span class="sr-field-explainer" i18n>Operator</span>
-        <select class="form-control" (change)="operatorChange($event)" [disabled]="field.force_operator">
+        <select class="form-select" (change)="operatorChange($event)" [disabled]="field.force_operator">
           <option *ngFor="let o of operators" value="{{o.name}}" selected="{{ field.operator.name === o.name ? 'selected' : '' }}">
             <span *ngIf="o.name === '= any'" i18n>Equals</span> {{ '' // this and the next are used for bools only }}
             <span *ngIf="o.name === '<> any'" i18n>Does Not Equal</span>
@@ -166,7 +166,7 @@
             <eg-interval-input [initialValue]="field.filter_value" (onChange)="setSingleValue($event)"></eg-interval-input>
           </div>
           <div *ngSwitchCase="'bool'">
-            <select class="form-control" (change)="setSingleValue($event.target.value)">
+            <select class="form-select" (change)="setSingleValue($event.target.value)">
               <option selected="{{ !field.filter_value ? 'selected' : '' }}" disabled="disabled" i18n>Select one</option>
               <option value="{t}" selected="{{ field.filter_value === '{t}' ? 'selected' : '' }}" i18n>True</option>
               <option value="{f}" selected="{{ field.filter_value === '{f}' ? 'selected' : '' }}" i18n>False</option>
@@ -183,7 +183,7 @@
 
     <div *ngIf="withSortDirection" class="sr-field-sortdir col-md-5">
       <span class="sr-field-explainer" i18n>Direction</span>
-      <select class="form-control" (change)="directionChange($event)">
+      <select class="form-select" (change)="directionChange($event)">
 
         <option *ngIf="field.datatype === 'timestamp'" value="ascending" selected="{{ field.direction === 'ascending' ? 'selected' : '' }}" i18n>Later dates at the bottom</option>
         <option *ngIf="field.datatype === 'number' || field.datatype === 'int' || field.datatype === 'float' || field.datatype === 'money'"

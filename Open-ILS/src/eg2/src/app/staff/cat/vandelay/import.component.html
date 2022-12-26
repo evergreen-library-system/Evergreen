@@ -13,10 +13,10 @@
 </eg-alert-dialog>
 
 <h2 i18n>MARC File Upload</h2>
-<div class="common-form striped-odd form-validated ml-3 mr-3">
+<div class="common-form striped-odd form-validated ms-3 me-3">
   <div class="row">
     <div class="col-lg-3">
-      <label for="template-select" i18n>Apply/Create Form Template</label>
+      <label class="form-label" for="template-select" i18n>Apply/Create Form Template</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox #formTemplateSelector
@@ -33,10 +33,10 @@
       <button class="btn btn-success"
         [disabled]="!selectedTemplate"
         (click)="saveTemplate()" i18n>Save As New Template</button>
-      <button class="btn btn-outline-primary ml-3"
+      <button class="btn btn-outline-primary ms-3"
         [disabled]="!selectedTemplate"
         (click)="markTemplateDefault()" i18n>Mark Template as Default</button>
-      <button class="btn btn-danger ml-3"
+      <button class="btn btn-danger ms-3"
         [disabled]="!selectedTemplate"
         (click)="deleteTemplate()" i18n>Delete Template</button>
     </div>
@@ -44,7 +44,7 @@
 
   <div class="row">
     <div class="col-lg-3">
-      <label for="type-select" i18n>Record Type</label>
+      <label class="form-label" for="type-select" i18n>Record Type</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox #recordTypeSelector
@@ -61,7 +61,7 @@
       </eg-combobox>
     </div>
     <div class="col-lg-3">
-      <label for="source-select" i18n>Select a Record Source</label>
+      <label class="form-label" for="source-select" i18n>Select a Record Source</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox #bibSourceSelector
@@ -75,7 +75,7 @@
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label for="queue-select" i18n>Select or Create a Queue</label>
+      <label class="form-label" for="queue-select" i18n>Select or Create a Queue</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox [entries]="formatEntries('activeQueues')"
@@ -90,7 +90,7 @@
       </eg-combobox>
     </div>
     <div class="col-lg-3">
-      <label for="bucket-select" i18n>Limit Matches to Bucket</label>
+      <label class="form-label" for="bucket-select" i18n>Limit Matches to Bucket</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox [entries]="formatEntries('bibBuckets')" 
@@ -104,7 +104,7 @@
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label for="match-set-select" i18n>Record Match Set</label>
+      <label class="form-label" for="match-set-select" i18n>Record Match Set</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox #matchSetSelector
@@ -116,7 +116,7 @@
         placeholder="Match Set..." i18n-placeholder></eg-combobox>
     </div>
     <div class="col-lg-3">
-        <label for="import-non-matching" i18n>Import Non-Matching Records</label>
+        <label class="form-label" for="import-non-matching" i18n>Import Non-Matching Records</label>
     </div>
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
@@ -126,7 +126,7 @@
  </div>
   <div class="row">
     <div class="col-lg-3">
-      <label for="item-import-def" i18n>Holdings Import Profile</label>
+      <label class="form-label" for="item-import-def" i18n>Holdings Import Profile</label>
     </div>
     <div class="col-lg-3"> <!-- TODO disable for authority -->
       <eg-combobox #holdingsProfileSelector
@@ -139,7 +139,7 @@
       </eg-combobox>
     </div>
     <div class="col-lg-3">
-        <label for="merge-on-exact" i18n>Merge On Exact Match (901c)</label>
+        <label class="form-label" for="merge-on-exact" i18n>Merge On Exact Match (901c)</label>
     </div>
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
@@ -148,7 +148,7 @@
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label for="merge-profiles" i18n>Merge Profile</label>
+      <label class="form-label" for="merge-profiles" i18n>Merge Profile</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox #mergeProfileSelector
@@ -159,7 +159,7 @@
       </eg-combobox>
     </div>
     <div class="col-lg-3">
-        <label for="merge-on-single" i18n>Merge On Single Match</label>
+        <label class="form-label" for="merge-on-single" i18n>Merge On Single Match</label>
     </div>
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
@@ -168,7 +168,7 @@
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label for="insuff-merge-profiles" i18n>
+      <label class="form-label" for="insuff-merge-profiles" i18n>
         Insufficient Quality Fall-Through Profile
     </label>
     </div>
@@ -181,7 +181,7 @@
       </eg-combobox>
     </div>
     <div class="col-lg-3">
-      <label for="merge-on-best" i18n>Merge On Best Match</label>
+      <label class="form-label" for="merge-on-best" i18n>Merge On Best Match</label>
     </div>
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
@@ -190,7 +190,7 @@
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label for="min-quality-ratio" i18n>
+      <label class="form-label" for="min-quality-ratio" i18n>
         Best/Single Match Minimum Quality Ratio
       </label>
     </div>
@@ -199,7 +199,7 @@
         class="form-control" [(ngModel)]="minQualityRatio">
     </div>
     <div class="col-lg-3">
-      <label for="auto-overlay-acq-copies" i18n>
+      <label class="form-label" for="auto-overlay-acq-copies" i18n>
         Auto-overlay In-process Acquisitions Items
       </label>
     </div>
@@ -212,14 +212,14 @@
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label for="session-name" i18n>Optional Session Name:</label>
+      <label class="form-label" for="session-name" i18n>Optional Session Name:</label>
     </div>
     <div class="col-lg-3">
       <input [(ngModel)]="sessionName" class="form-control" type="text"
         name="session-name" i18n-placeholder placeholder="Session Name..."/>
     </div>
     <div class="col-lg-3">
-      <label for="auto-overlay-on-order-copies" i18n>
+      <label class="form-label" for="auto-overlay-on-order-copies" i18n>
         Auto-overlay On-order Cataloging Items
       </label>
     </div>
@@ -232,11 +232,11 @@
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label for="marc-remove-groups" i18n>Remove MARC Field Groups</label>
+      <label class="form-label" for="marc-remove-groups" i18n>Remove MARC Field Groups</label>
     </div>
     <ng-container *ngIf="recordType !== 'authority'">
       <div class="col-lg-3" *ngIf="bibTrashGroups.length === 0">
-        <span i18n class="font-italic">No Groups Configured</span>
+        <span i18n class="fst-italic">No Groups Configured</span>
       </div>
       <div class="col-lg-3" *ngIf="bibTrashGroups.length">
         <select multiple [(ngModel)]="selectedTrashGroups" 
@@ -247,7 +247,7 @@
       </div>
     </ng-container>
     <div class="col-lg-3">
-      <label for="auto-overlay-org-unit-copies" i18n>
+      <label class="form-label" for="auto-overlay-org-unit-copies" i18n>
         Use Org Unit Matching in Copy to Determine Best Match
       </label>
     </div>
@@ -260,7 +260,7 @@
   </div>
   <div class="row" *ngIf="!importSelection()">
     <div class="col-lg-3">
-      <label for="upload-file" i18n>File to Upload:</label>
+      <label class="form-label" for="upload-file" i18n>File to Upload:</label>
     </div>
     <div class="col-lg-3">
       <input #fileSelector (change)="fileSelected($event)" 
@@ -269,7 +269,7 @@
   </div>
   <div class="row" *ngIf="importSelection()">
     <div class="col-lg-3">
-      <label>Import Selected</label>
+      <label class="form-label">Import Selected</label>
     </div>
     <div class="col-lg-3">
       <span *ngIf="!importSelection().importQueue" i18n>
@@ -278,14 +278,14 @@
         Importing Queue {{importSelection().queue.name()}}</span>
     </div>
     <div class="col-lg-3">
-      <button class="btn btn-outline-info ml-2" (click)="clearSelection()" i18n>
+      <button class="btn btn-outline-info ms-2" (click)="clearSelection()" i18n>
         Clear Selection
       </button>
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-6 offset-lg-3">
-      <button class="btn btn-success btn-lg btn-block font-weight-bold"
+    <div class="d-grid gap-2 col-6 mx-auto">
+      <button class="btn btn-success btn-lg fw-bold"
         [disabled]="isUploading || !hasNeededData()" 
         (click)="upload()" i18n>Upload</button>
     </div>
@@ -293,7 +293,7 @@
   <!-- hide instead of *ngIf so ViewChild can find the progress bars -->
   <div class="row" [hidden]="!showProgress || importSelection()">
     <div class="col-lg-3">
-      <label i18n>Upload Progress</label>
+      <label class="form-label" i18n>Upload Progress</label>
     </div>
     <div class="col-lg-6">
       <eg-progress-inline #uploadProgress></eg-progress-inline>
@@ -301,7 +301,7 @@
   </div>
   <div class="row" [hidden]="!showProgress || importSelection()">
     <div class="col-lg-3">
-      <label i18n>Enqueue Progress</label>
+      <label class="form-label" i18n>Enqueue Progress</label>
     </div>
     <div class="col-lg-6">
       <eg-progress-inline #enqueueProgress></eg-progress-inline>
@@ -309,15 +309,15 @@
   </div>
   <div class="row" [hidden]="!showProgress">
     <div class="col-lg-3">
-      <label i18n>Import Progress</label>
+      <label class="form-label" i18n>Import Progress</label>
     </div>
     <div class="col-lg-6">
       <eg-progress-inline #importProgress></eg-progress-inline>
     </div>
   </div>
   <div class="row" [hidden]="!uploadComplete">
-    <div class="col-lg-6 offset-lg-3">
-      <button class="btn btn-info btn-lg btn-block font-weight-bold"
+    <div class="d-grid gap-2 col-6 mx-auto">
+      <button class="btn btn-info btn-lg fw-bold"
         routerLink="/staff/cat/vandelay/queue/{{recordType}}/{{activeQueueId}}"
         i18n>Go To Queue</button>
     </div>

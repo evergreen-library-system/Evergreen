@@ -16,12 +16,10 @@
 <div class="row mt-3">
   <div class="col-md-3">
     <div class="input-group">
-      <div class="input-group-prepend">
         <div class="input-group-text" i18n>Context Location</div>
         <eg-org-select [initialOrg]="contextOrg"
           (onChange)="contextOrgChanged($event)">
         </eg-org-select>
-      </div>
     </div>
   </div>
   <div class="col-md-6">
@@ -34,16 +32,16 @@
             aria-label="Filter Settings"
             i18n-aria-label
         />
-        <button class="btn btn-outline-dark mr-1" i18n>Filter</button>
-        <button class="btn btn-outline-dark mr-1" i18n
+        <button class="btn btn-outline-dark me-1" i18n>Filter</button>
+        <button class="btn btn-outline-dark me-1" i18n
           (click)="applyFilter(true)">Clear Filter</button>
     </div>
   </div>
   <div class="col-md-3">
     <div class="input-group">
-      <button class="btn btn-outline-dark mr-1"
+      <button class="btn btn-outline-dark me-1"
         (click)="showJsonDialog(true)" i18n>Export</button>
-      <button class="btn btn-outline-dark mr-1"
+      <button class="btn btn-outline-dark me-1"
         (click)="showJsonDialog(false)" i18n>Import</button>
     </div>
   </div>
@@ -82,7 +80,7 @@
 <ng-template #historyCellTemplate let-entry="row">
   <span>
     <a
-      (click)="showHistoryDialog(entry)" class="pl-1"
+      (click)="showHistoryDialog(entry)" class="ps-1"
       [routerLink]="" i18n>
       History
     </a>

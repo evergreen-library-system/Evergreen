@@ -4,8 +4,8 @@
 <eg-progress-dialog #addAllProgress></eg-progress-dialog>
 
 <div class="d-flex justify-content-end">
-  <div class="pr-1">
-    <div class="float-right">
+  <div class="pe-1">
+    <div class="float-end">
       <!-- note basket view link does not propagate search params -->
       <a routerLink="/staff/catalog/search" [queryParams]="{showBasket: true}" 
         class="label-with-material-icon">
@@ -14,7 +14,7 @@
       </a>
     </div>
   </div>
-  <div class="pr-1">
+  <div class="pe-1">
     <div ngbDropdown placement="bottom-right">
       <button class="btn btn-light" id="basketActions"
         ngbDropdownToggle i18n>Basket Actions</button>

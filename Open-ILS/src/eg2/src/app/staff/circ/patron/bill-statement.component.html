@@ -155,10 +155,10 @@
                 <span *ngSwitchCase="'void'" i18n>Void</span>
               </div>
               <div class="col-lg-4">
-                <div *ngIf="line.billing_type" class="font-weight-bold">
+                <div *ngIf="line.billing_type" class="fw-bold">
                   {{line.billing_type}}
                 </div>
-                <div [ngClass]="{'font-weight-bold' : !line.billing_type}"
+                <div [ngClass]="{'fw-bold' : !line.billing_type}"
                   *ngIf="line.note.length">{{line.note.join(', ')}}</div>
                 <div>
                   <span>{{line.start_date  | date:'short'}}</span>
@@ -193,7 +193,7 @@
 
           <hr class="m-2 p-2"/>
 
-          <div class="row font-weight-bold">
+          <div class="row fw-bold">
             <div class="col-lg-2 offset-lg-8" i18n>Balance Due</div>
             <div class="col-lg-2">{{statement.summary.balance_due | currency}}</div>
           </div>

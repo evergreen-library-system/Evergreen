@@ -84,16 +84,6 @@
   font-size: 20px;
 }
 
-.eg-grid-toolbar .form-check-label:nth-child(even) {
-  padding-left: 5px;
-  padding-right: 5px;
-  margin-left: 3px;
-  margin-right: 3px;
-  border-radius: 5px;
-  background-color: rgba(0,0,0,.03);
-  border: 1px solid rgba(0,0,0,.125);
-}
-
 /* Kind of hacky -- only way to get a toolbar button with no 
  * mat icon to line up horizontally with mat icon buttons */
 .eg-grid-toolbar .text-button {

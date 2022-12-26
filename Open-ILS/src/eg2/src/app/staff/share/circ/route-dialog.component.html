@@ -24,7 +24,7 @@
     </div>
   </div>
   <div>
-    <span class="mr-2" i18n>Patron Barcode:</span>
+    <span class="me-2" i18n>Patron Barcode:</span>
     <ng-container *ngIf="checkin.patron.card()">
       <span>{{checkin.patron.card().barcode()}}</span>
     </ng-container>
@@ -33,19 +33,19 @@
 
 <ng-template #itemSummary>
   <div>
-    <span class="mr-2" i18n>Item Barcode:</span>
+    <span class="me-2" i18n>Item Barcode:</span>
     <span>{{checkin.copy.barcode()}}</span>
   </div>
   <div>
-    <span class="mr-2" i18n>Title:</span>
+    <span class="me-2" i18n>Title:</span>
     <span>{{checkin.title}}</span>
   </div>
   <div>
-    <span class="mr-2" i18n>Author:</span>
+    <span class="me-2" i18n>Author:</span>
     <span>{{checkin.author}}</span>
   </div>
   <div *ngIf="checkin.volume">
-    <span class="mr-2" i18n>Call Number:</span>
+    <span class="me-2" i18n>Call Number:</span>
     <span>{{checkin.volume.prefix().label()}}&nbsp;{{
 			checkin.volume.label()}}&nbsp;{{checkin.volume.suffix().label()}}</span>
   </div>
@@ -53,11 +53,11 @@
 
 <ng-template #holdSummary>
   <div>
-    <span class="mr-2" i18n>Request Date:</span>
+    <span class="me-2" i18n>Request Date:</span>
     <span>{{checkin.hold.request_time() | date:'short'}}</span>
   </div>
   <div *ngIf="checkin.hold.notes().length > 0">
-    <span class="mr-2" i18n>Request Notes:</span>
+    <span class="me-2" i18n>Request Notes:</span>
     <ul>
       <li *ngFor="let note of checkin.hold.notes()">
         <strong>{{note.title()}}</strong>: {{note.body()}}
@@ -87,14 +87,14 @@
   <ng-container *ngTemplateOutlet="holdSummary"></ng-container>
   <br/>
   <div>
-    <span class="mr-2" i18n>Slip Date:</span>
+    <span class="me-2" i18n>Slip Date:</span>
     <span>{{today | date:'short'}}</span>
   </div>
 </ng-template>
 
 <ng-template #transitTmpl>
   <div>
-    <span class="mr-2" i18n>Destination</span>
+    <span class="me-2" i18n>Destination</span>
     <strong>{{checkin.destOrg.shortname()}}</strong>
   </div>
   <div *ngIf="checkin.destCourierCode">{{checkin.destCourierCode}} </div>
@@ -122,7 +122,7 @@
     <br/>
   </div>
   <div>
-    <span class="mr-2" i18n>Slip Date:</span>
+    <span class="me-2" i18n>Slip Date:</span>
     <span>{{today | date:'short'}}</span>
   </div>
 </ng-template>
@@ -139,10 +139,8 @@
         <img class="p-2" src="/images/transit.png" i18n-alt alt="transit van icon"/>
       </ng-container>
     </h4>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <ng-container *ngIf="slip === 'hold_shelf_slip'">

@@ -1,10 +1,8 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>History</h4>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="row">
@@ -30,7 +28,7 @@
   <ng-template #revertTemplate let-log="row">
       <span>
         <a
-          (click)="revert(log)" class="pl-1"
+          (click)="revert(log)" class="ps-1"
           [routerLink]="" i18n>
           Revert
         </a>

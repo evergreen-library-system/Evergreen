@@ -12,10 +12,8 @@
       </ng-container>
       <span i18n></span>
     </h4>
-    <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white" 
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body p-4 form-validated">
 
@@ -54,7 +52,7 @@
             <div class="form-check">
               <input class="form-check-input" type="checkbox" 
                 [(ngModel)]="curNotePublic" id="pub-check">
-              <label class="form-check-label" for="pub-check">Public Note</label>
+              <label class="form-label form-check-label" for="pub-check">Public Note</label>
             </div>
           </div>
         </div>
@@ -72,6 +70,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="close()" i18n>Cancel</button>
-    <button class="btn btn-success mr-2" (click)="applyChanges()" i18n>Apply Changes</button>
+    <button class="btn btn-success me-2" (click)="applyChanges()" i18n>Apply Changes</button>
   </div>
 </ng-template>

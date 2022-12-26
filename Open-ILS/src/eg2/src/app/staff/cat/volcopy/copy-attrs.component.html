@@ -44,22 +44,22 @@
 
 <!-- Copy Templates -->
 <div class="row border rounded border-dark pt-2 pb-2 bg-faint">
-  <div class="col-lg-1 font-weight-bold" i18n>Templates:</div>
+  <div class="col-lg-1 fw-bold" i18n>Templates:</div>
   <div class="col-lg-4">
     <eg-combobox #copyTemplateCbox domId="template-select" 
       [allowFreeText]="true" [entries]="volcopy.templateNames">
     </eg-combobox>
   </div>
   <div class="col-lg-7 d-flex">
-    <button class="btn btn-outline-dark mr-2" (click)="applyTemplate()" i18n>Apply</button>
-    <button class="btn btn-outline-dark mr-2" (click)="saveTemplate()" i18n>Save</button>
+    <button class="btn btn-outline-dark me-2" (click)="applyTemplate()" i18n>Apply</button>
+    <button class="btn btn-outline-dark me-2" (click)="saveTemplate()" i18n>Save</button>
 
     <!-- 
       The typical approach of wrapping a file input in a <label> results
       in button-ish things that have slightly different dimensions.
       Instead have a button activate a hidden file input.
     -->
-    <button class="btn btn-outline-dark mr-2" (click)="templateFile.click()">
+    <button class="btn btn-outline-dark me-2" (click)="templateFile.click()">
       <input type="file" class="d-none" #templateFile
         (change)="importTemplate($event)" id="template-file-upload"/>
       <span i18n>Import</span>
@@ -67,11 +67,11 @@
 
     <a (click)="exportTemplate($event)"
       download="export_copy_template.json" [href]="exportTemplateUrl()">
-      <button class="btn btn-outline-dark mr-2" i18n>Export</button>
+      <button class="btn btn-outline-dark me-2" i18n>Export</button>
     </a>
     
     <div class="flex-1"> </div>
-    <button class="btn btn-outline-danger mr-2" 
+    <button class="btn btn-outline-danger me-2" 
       (click)="deleteTemplate()" i18n>Delete Template</button>
   </div>
 </div>
@@ -81,7 +81,7 @@
 
   <!-- COLUMN 1 -->
   <div class="flex-1 p-1">
-    <div class="p-1"><h4 class="font-weight-bold" i18n>Identification</h4></div>
+    <div class="p-1"><h4 class="fw-bold" i18n>Identification</h4></div>
 
 
     <div class="mb-1" *ngIf="displayAttr('status')">
@@ -149,7 +149,7 @@
 
   <!-- COLUMN 2 -->
   <div class="flex-1 p-1">
-    <div class="p-1"><h4 class="font-weight-bold" i18n>Location</h4></div>
+    <div class="p-1"><h4 class="fw-bold" i18n>Location</h4></div>
 
     <div *ngIf="displayAttr('location')">
       <ng-template #locationTemplate>
@@ -205,7 +205,7 @@
   <!-- COLUMN 3 -->
 
   <div class="flex-1 p-1">
-    <div class="p-1"><h4 class="font-weight-bold" i18n>Circulation</h4></div>
+    <div class="p-1"><h4 class="fw-bold" i18n>Circulation</h4></div>
 
     <div *ngIf="displayAttr('circulate')">
       <ng-template #circulateTemplate>
@@ -261,7 +261,7 @@
 
     <div *ngIf="displayAttr('loan_duration')">
       <ng-template #loanDurationTemplate>
-        <select class="form-control" 
+        <select class="form-select" 
           id="loan_duration-input" [(ngModel)]="values['loan_duration']">
           <option value="1" i18n>{{loanDurationShort.text}}</option>
           <option value="2" i18n>{{loanDurationNormal.text}}</option>
@@ -275,7 +275,7 @@
 
     <div *ngIf="displayAttr('fine_level')">
       <ng-template #fineLevelTemplate>
-        <select class="form-control" 
+        <select class="form-select" 
           id="fine_level-input" [(ngModel)]="values['fine_level']">
           <option value="1" i18n>{{fineLevelLow.text}}</option>
           <option value="2" i18n>{{fineLevelNormal.text}}</option>
@@ -304,7 +304,7 @@
 
     <div *ngIf="displayAttr('circ_modifier')">
       <ng-template #circModifierTemplate>
-        <select class="form-control" id='circ_modifier-input' 
+        <select class="form-select" id='circ_modifier-input' 
           [(ngModel)]="values['circ_modifier']">
           <option [value]="null" i18n>&lt;Unset&gt;</option>
           <option *ngFor="let mod of volcopy.commonData.acp_circ_modifier"
@@ -321,7 +321,7 @@
   <!-- COLUMN 4 -->
 
   <div class="flex-1 p-1">
-    <div class="p-1"><h4 class="font-weight-bold" i18n>Miscellaneous</h4></div>
+    <div class="p-1"><h4 class="fw-bold" i18n>Miscellaneous</h4></div>
 
     <!-- Adding this for sites that still use alert messages (we do)
     <div>
@@ -341,7 +341,7 @@
 
     <div class="border rounded m-1" *ngIf="displayAttr('copy_alerts')">
       <eg-copy-alerts-dialog #copyAlertsDialog></eg-copy-alerts-dialog>
-      <div class="batch-header font-weight-bold p-2" i18n>Add Item Alerts</div>
+      <div class="batch-header fw-bold p-2" i18n>Add Item Alerts</div>
       <div class="p-1">
         <button class="btn btn-outline-dark" (click)="openCopyAlerts()" i18n>
           Item Alerts
@@ -411,7 +411,7 @@
 
     <div *ngIf="displayAttr('mint_condition')">
       <ng-template #mintConditionTemplate>
-        <select class="form-control" 
+        <select class="form-select" 
           id="mint_condition-input" [(ngModel)]="values['mint_condition']">
           <option value="t" i18n>{{mintConditionYes.text}}</option>
           <option value="f" i18n>{{mintConditionNo.text}}</option>
@@ -426,11 +426,11 @@
 
   <!-- COLUMN 5 -->
   <div class="flex-1 p-1">
-    <div class="p-1"><h4 class="font-weight-bold" i18n>Statistics</h4></div>
+    <div class="p-1"><h4 class="fw-bold" i18n>Statistics</h4></div>
 
     <div class="border rounded m-1" *ngIf="displayAttr('copy_tags')">
       <eg-copy-tags-dialog #copyTagsDialog></eg-copy-tags-dialog>
-      <div class="batch-header font-weight-bold p-2" i18n>Add Item Tags</div>
+      <div class="batch-header fw-bold p-2" i18n>Add Item Tags</div>
       <div class="p-1">
         <button class="btn btn-outline-dark" (click)="openCopyTags()" i18n>
           Item Tags
@@ -440,7 +440,7 @@
 
     <div class="border rounded m-1" *ngIf="displayAttr('copy_notes')">
       <eg-copy-notes-dialog #copyNotesDialog></eg-copy-notes-dialog>
-      <div class="batch-header font-weight-bold p-2" i18n>Add Item Notes</div>
+      <div class="batch-header fw-bold p-2" i18n>Add Item Notes</div>
       <div class="p-1">
         <button class="btn btn-outline-dark" (click)="openCopyNotes()" i18n>
           Item Notes
@@ -449,7 +449,7 @@
     </div>
 
     <div class="border rounded m-1" *ngIf="displayAttr('statcat_filter')">
-      <div class="batch-header font-weight-bold p-2" i18n>Stat Cat Filter</div>
+      <div class="batch-header fw-bold p-2" i18n>Stat Cat Filter</div>
       <div class="p-1">
         <eg-org-select
           domId="statcat_filter-select"

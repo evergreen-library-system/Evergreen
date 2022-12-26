@@ -10,15 +10,13 @@
       <h4 class="modal-title">
         <span i18n>Attach/Modify {{copyIds.length}} Conjoined Item(s)</span>
       </h4>
-      <button type="button" class="close" 
-        i18n-aria-label aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <button type="button" class="btn-close btn-close-white" 
+        i18n-aria-label aria-label="Close" (click)="close()"></button>
     </div>
     <div class="modal-body">
       <div class="row form-validated">
         <div class="col-lg-4" i18n>
-          <label for="cbox-peer-types">Peer Type:</label>
+          <label class="form-label" for="cbox-peer-types">Peer Type:</label>
         </div>
         <div class="col-lg-8">
           <eg-combobox [entries]="peerTypes" [required]="true"

@@ -19,11 +19,11 @@
 <div class="row">
   <div class="col-lg-6">
     <div class="d-flex mb-4" *ngIf="tree">
-      <button class="btn btn-warning mr-2" (click)="deleteNode()"
+      <button class="btn btn-warning me-2" (click)="deleteNode()"
         [disabled]="!hasSelectedNode()" i18n>
         Remove Selected Node
       </button>
-      <button class="btn btn-success mr-1" (click)="saveTree()"
+      <button class="btn btn-success me-1" (click)="saveTree()"
         [disabled]="!changesMade" i18n>
         Save Changes
       </button>
@@ -31,7 +31,7 @@
     <div>
       <eg-tree [tree]="tree" (nodeClicked)="nodeClicked($event)" *ngIf="tree">
       </eg-tree>
-      <p *ngIf="!tree" class="font-italic mt-4 ml-3">No tree</p>
+      <p *ngIf="!tree" class="fst-italic mt-4 ms-3">No tree</p>
     </div>
     <button class="btn btn-danger mt-4" (click)="deleteTree()" i18n *ngIf="tree">
       Delete Tree
@@ -39,7 +39,7 @@
   </div>
   <div class="col-lg-6">
     <div class="d-flex">
-      <button class="btn btn-outline-dark mr-3" 
+      <button class="btn btn-outline-dark me-3" 
         (click)="newPointType='bool'" i18n>Add New Boolean Operator</button>
       <button class="btn btn-outline-dark"
         (click)="newPointType='attr'" i18n>Add New Record Attribute</button>
@@ -47,7 +47,7 @@
     
     <eg-composite-new-point #newPoint [pointType]="newPointType"></eg-composite-new-point>
     
-    <div class="row mt-2 ml-2 font-italic" *ngIf="newPointType && tree">
+    <div class="row mt-2 ms-2 fst-italic" *ngIf="newPointType && tree">
       <ol i18n>
         <li>Define a new node using the above fields.</li>
         <li>Select a boolean node in the tree.</li>
@@ -57,20 +57,20 @@
       <p><b>Note</b> - A NOT boolean node can only have one child: a record attribute, or an 
       AND / OR boolean node with its own children.</p>
     </div>
-    <div *ngIf="!tree" class="row mt-2 ml-2 font-italic">To start a new tree add a boolean operator
+    <div *ngIf="!tree" class="row mt-2 ms-2 fst-italic">To start a new tree add a boolean operator
       or record attribute and click "New Tree".</div>
-    <div class="row ml-2 mt-2" *ngIf="!tree">
+    <div class="row ms-2 mt-2" *ngIf="!tree">
       <button class="btn btn-success" (click)="createNewTree()" i18n
         [disabled]="newTreeButtonDisabled()">
         New tree
       </button>
     </div>
-    <div class="row ml-2" *ngIf="newPointType && tree">
+    <div class="row ms-2" *ngIf="newPointType && tree">
       <button class="btn btn-success" (click)="addChildNode()" 
         [disabled]="addButtonDisabled()" i18n>
         Add To Selected Node
       </button>
-      <button class="btn btn-success ml-3" (click)="addChildNode(true)"
+      <button class="btn btn-success ms-3" (click)="addChildNode(true)"
         [disabled]="replaceButtonDisabled()" i18n>
         Replace Selected Node
       </button>

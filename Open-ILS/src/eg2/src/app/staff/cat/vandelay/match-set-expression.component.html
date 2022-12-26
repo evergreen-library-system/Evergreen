@@ -12,38 +12,38 @@
 
 <div class="row mt-2">
   <div class="col-lg-7">
-    <div class="row ml-2">
+    <div class="row ms-2">
       <span class="text-white bg-dark p-2" i18n>
         Your Expression: {{expressionAsString()}}
       </span>
     </div>
-    <div class="row ml-2 mt-4">
-      <span class="mr-2" i18n>Add New:</span>
-      <button class="btn btn-outline-dark mr-2" *ngIf="matchSetType==='biblio'"
+    <div class="row ms-2 mt-4">
+      <span class="me-2" i18n>Add New:</span>
+      <button class="btn btn-outline-dark me-2" *ngIf="matchSetType==='biblio'"
         (click)="newPointType='attr'" i18n>Record Attribute</button>
-      <button class="btn btn-outline-dark mr-2" 
+      <button class="btn btn-outline-dark me-2" 
         (click)="newPointType='marc'" i18n>MARC Tag and Subfield</button>
-      <button class="btn btn-outline-dark mr-2" *ngIf="matchSetType==='authority'"
+      <button class="btn btn-outline-dark me-2" *ngIf="matchSetType==='authority'"
         (click)="newPointType='heading'" i18n>Normalized Authority Heading</button>
-      <button class="btn btn-outline-dark mr-2" 
+      <button class="btn btn-outline-dark me-2" 
         (click)="newPointType='bool'" i18n>Boolean Operator</button>
     </div>
     <eg-match-set-new-point #newPoint [pointType]="newPointType">
     </eg-match-set-new-point>
-    <div class="row mt-2 ml-2" *ngIf="newPointType">
+    <div class="row mt-2 ms-2" *ngIf="newPointType">
       <button class="btn btn-success" (click)="addChildNode()" 
         [disabled]="!selectedIsBool()" i18n>
         Add To Selected Node
       </button>
 
-      <button class="btn btn-success ml-3" (click)="addChildNode(true)"
+      <button class="btn btn-success ms-3" (click)="addChildNode(true)"
         [disabled]="!hasSelectedNode() ||
           (newPointType !== 'bool' && selectedIsBool())" i18n>
         Replace Selected Node
       </button>
 
     </div>
-    <div class="row mt-2 ml-2 font-italic" *ngIf="newPointType">
+    <div class="row mt-2 ms-2 fst-italic" *ngIf="newPointType">
       <ol i18n>
         <li>Define a new match point using the above fields.</li>
         <li>Select a boolean node in the tree.</li>
@@ -55,11 +55,11 @@
   <div class="col-lg-5">
     <ng-container *ngIf="tree">
       <div class="d-flex">
-        <button class="btn btn-warning mr-1" (click)="deleteNode()" 
+        <button class="btn btn-warning me-1" (click)="deleteNode()" 
           [disabled]="!hasSelectedNode() || isRootNode()" i18n>
           Remove Selected Node
         </button>
-        <button class="btn btn-success mr-1" (click)="saveTree()"
+        <button class="btn btn-success me-1" (click)="saveTree()"
           [disabled]="!changesMade" i18n>
           Save Changes 
         </button>

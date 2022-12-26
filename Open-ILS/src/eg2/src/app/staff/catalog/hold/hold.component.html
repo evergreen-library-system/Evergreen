@@ -53,7 +53,7 @@
               (change)="holdForChanged()"
               id="hold-for-patron"
               name="holdFor" value="patron" [(ngModel)]="holdFor"/>
-            <label class="form-check-label" for="hold-for-patron" i18n>
+            <label class="form-label form-check-label" for="hold-for-patron" i18n>
               Place hold for patron by barcode:
             </label>
           </div>
@@ -66,7 +66,7 @@
               (ngModelChange)="debounceUserBarcodeLookup($event)"
               (paste)="debounceUserBarcodeLookup($event)"
               [(ngModel)]="userBarcode"/>
-            <div class="input-group-append">
+            <div class="input-group-text">
               <button class="btn btn-outline-dark" (click)="userBarcodeChanged()">Submit</button>
             </div>
           </div>
@@ -79,16 +79,16 @@
               (change)="holdForChanged()"
               id="hold-for-staff"
               name="holdFor" value="staff" [(ngModel)]="holdFor"/>
-            <label class="form-check-label" i18n for="hold-for-staff">
+            <label class="form-label form-check-label" i18n for="hold-for-staff">
               Place hold for this staff account:
             </label>
           </div>
         </div>
-        <div class="col-lg-6 font-weight-bold">{{requestor.usrname()}}</div>
+        <div class="col-lg-6 fw-bold">{{requestor.usrname()}}</div>
       </div>
       <div class="row mt-2">
         <div class="col-lg-6">
-          <label i18n>Pickup Location: </label>
+          <label class="form-label" i18n>Pickup Location: </label>
         </div>
         <div class="col-lg-6">
           <eg-org-select (onChange)="pickupLib = $event ? $event.id() : null"
@@ -100,7 +100,7 @@
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="suspend"
               name="suspend" [(ngModel)]="suspend"/>
-            <label class="form-check-label" for="suspend" i18n>Suspend Hold</label>
+            <label class="form-label form-check-label" for="suspend" i18n>Suspend Hold</label>
           </div>
         </div>
         <div class="col-lg-6">
@@ -115,10 +115,10 @@
       </div>
       <div class="row mt-2" *ngIf="multiHoldsActive">
         <div class="col-lg-6">
-          <label for='multi-hold-count' i18n>Number of copies:</label>
+          <label class="form-label" for='multi-hold-count' i18n>Number of copies:</label>
         </div>
         <div class="col-lg-6">
-          <select class="form-control" name="multi-hold-count"
+          <select class="form-select" name="multi-hold-count"
             id="multi-hold-count" [(ngModel)]="multiHoldCount">
             <option [value]="num"
               *ngFor="let num of holdCountRange()">{{num}}</option>
@@ -139,14 +139,12 @@
                 <input class="form-check-input" type="checkbox" name="notifyEmail"
                   id="notifyEmail"
                   [disabled]="!user || !user.email()" [(ngModel)]="notifyEmail"/>
-                <label class="form-check-label" for="notifyEmail" i18n>Notify by Email</label>
+                <label class="form-label form-check-label" for="notifyEmail" i18n>Notify by Email</label>
               </div>
             </div>
             <div class="flex-1">
               <div class="input-group">
-                <div class="input-group-prepend">
-                  <label for="userEmail" class="input-group-text" i18n>Email Address</label>
-                </div>
+                <label for="userEmail" class="form-label input-group-text" i18n>Email Address</label>
                 <input type="text" class="form-control" name="userEmail"
                   id="userEmail"
                   [disabled]="true" value="{{user ? user.email() : ''}}"/>
@@ -159,14 +157,12 @@
                 <input class="form-check-input" type="checkbox"
                   id="notifyPhone"
                   name="notifyPhone" [(ngModel)]="notifyPhone"/>
-                <label class="form-check-label" for="notifyPhone" i18n>Notify by Phone</label>
+                <label class="form-label form-check-label" for="notifyPhone" i18n>Notify by Phone</label>
               </div>
             </div>
             <div class="flex-1">
               <div class="input-group">
-                <div class="input-group-prepend">
-                  <label for="phoneValue" class="input-group-text" i18n>Phone Number</label>
-                </div>
+                <label for="phoneValue"  class="form-label input-group-text" i18n>Phone Number</label>
                 <input type="text" class="form-control" [disabled]="!notifyPhone"
                   name="phoneValue" id="phoneValue" [(ngModel)]="phoneValue"/>
               </div>
@@ -177,14 +173,12 @@
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="notifySms"
                   name="notifySms" [(ngModel)]="notifySms"/>
-                <label class="form-check-label" for="notifySms" i18n>Notify by SMS</label>
+                <label class="form-label form-check-label" for="notifySms" i18n>Notify by SMS</label>
               </div>
             </div>
             <div class="flex-1">
               <div class="input-group">
-                <div class="input-group-prepend">
-                  <label for="smsValue" class="input-group-text" i18n>SMS Number</label>
-                </div>
+                <label for="smsValue"  class="form-label input-group-text" i18n>SMS Number</label>
                 <input type="text" class="form-control" [disabled]="!notifySms"
                   id="smsValue" name="smsValue" [(ngModel)]="smsValue"
                   [required]="notifySms"/>
@@ -193,7 +187,7 @@
           </li>
           <li *ngIf="smsEnabled" class="list-group-item d-flex">
             <div class="flex-1">
-              <label for="smsCarriers" i18n>SMS Carrier</label>
+              <label class="form-label" for="smsCarriers" i18n>SMS Carrier</label>
             </div>
             <div class="flex-1">
               <eg-combobox [disabled]="!notifySms" #smsCbox
@@ -206,7 +200,7 @@
           <li class="list-group-item">
             <button class="btn btn-success" (click)="placeHolds()"
               [disabled]="!readyToPlaceHolds()" i18n>Place Hold(s)</button>
-            <button class="btn btn-outline-dark ml-2" (click)="resetForm()" i18n>Reset</button>
+            <button class="btn btn-outline-dark ms-2" (click)="resetForm()" i18n>Reset</button>
           </li>
         </ul><!-- col -->
       </div><!-- row -->
@@ -216,9 +210,9 @@
 
 <div class="row"><div class="col-lg-12"><hr/></div></div>
 
-<div class="row pt-3 ml-1 mr-1 d-flex">
+<div class="row pt-3 ms-1 me-1 d-flex">
   <div class="">
-    <span class="font-weight-bold" i18n>Placing
+    <span class="fw-bold" i18n>Placing
       <ng-container *ngIf="holdType === 'M'">METARECORD</ng-container>
       <ng-container *ngIf="holdType === 'T'">TITLE</ng-container>
       <ng-container *ngIf="holdType === 'V'">CALL NUMBER</ng-container>
@@ -232,21 +226,21 @@
   </div>
   <div class="flex-1"> </div>
   <div>
-    <span class="pl-3" *ngIf="isItemHold()">
+    <span class="ps-3" *ngIf="isItemHold()">
       <span i18n>Item-Level Hold Options:</span>
-      <span class="pl-2">
+      <span class="ps-2">
         <a routerLink="/staff/catalog/hold/C" queryParamsHandling="merge">
           <button [disabled]="holdType === 'C'" class="btn btn-outline-primary"
             i18n>Item Hold</button>
         </a>
       </span>
-      <span class="pl-2">
+      <span class="ps-2">
         <a routerLink="/staff/catalog/hold/R" queryParamsHandling="merge">
           <button [disabled]="holdType === 'R'" class="btn btn-outline-primary"
             i18n>Recall Hold</button>
         </a>
       </span>
-      <span class="pl-2">
+      <span class="ps-2">
         <a routerLink="/staff/catalog/hold/F" queryParamsHandling="merge">
           <button [disabled]="holdType === 'F'" class="btn btn-outline-primary"
             i18n>Force Item Hold</button>
@@ -257,7 +251,7 @@
 </div>
 
 <ng-template #anyValue>
-  <span class="font-italic" i18n>ANY</span>
+  <span class="fst-italic" i18n>ANY</span>
 </ng-template>
 
 <!--
@@ -272,7 +266,7 @@
 
 <div class="hold-records-list common-form striped-even">
 
-  <div class="row mt-2 ml-1 mr-1 font-weight-bold">
+  <div class="row mt-2 ms-1 me-1 fw-bold">
     <div class="col-lg-1" i18n>Format</div>
     <div class="col-lg-2" i18n>Title</div>
     <div class="col-lg-1" i18n>Author</div>
@@ -282,10 +276,10 @@
     <div class="col-lg-2" i18n>Holds Status</div>
     <div class="col-lg-1" i18n>Override</div>
   </div>
-  <div class="row mt-1 ml-1 mr-1" *ngIf="showOverrideAll()">
+  <div class="row mt-1 ms-1 me-1" *ngIf="showOverrideAll()">
     <div class="col-lg-12">
       <div class="row">
-        <div class="col-lg-1 ml-auto">
+        <div class="col-lg-1 ms-auto">
           <button class="btn btn-info" i18n
             (click)="overrideAll()">
             Override All
@@ -294,13 +288,13 @@
       </div>
     </div>
   </div>
-  <div class="row mt-1 ml-1 mr-1" *ngFor="let ctx of holdContexts">
+  <div class="row mt-1 ms-1 me-1" *ngFor="let ctx of holdContexts">
     <div class="col-lg-12" *ngIf="ctx.holdMeta">
       <div class="row">
         <div class="col-lg-1">
           <ng-container
             *ngFor="let code of ctx.holdMeta.bibSummary.attributes.icon_format">
-            <img class="pr-1"
+            <img class="pe-1"
               alt=""
               src="/images/format_icons/icon_format/{{code}}.png"/>
           </ng-container>
@@ -315,7 +309,7 @@
         <div class="col-lg-1">{{ctx.holdMeta.bibSummary.display.author}}</div>
         <div class="col-lg-2">
           <ng-container *ngIf="ctx.holdMeta.parts.length">
-            <select class="form-control"  (change)="setPart(ctx, $event)"
+            <select class="form-select"  (change)="setPart(ctx, $event)"
               [ngModel]="ctx.holdMeta.part ? ctx.holdMeta.part.id() : ''">
               <option value="" i18n>Any Part</option>
               <option *ngFor="let part of ctx.holdMeta.parts"
@@ -343,17 +337,17 @@
         </div>
         <div class="col-lg-2">
           <ng-container *ngIf="!ctx.lastRequest && !ctx.processing">
-            <div class="alert alert-info p-1 ml-2" i18n>Hold Pending</div>
+            <div class="alert alert-info p-1 ms-2" i18n>Hold Pending</div>
           </ng-container>
           <ng-container *ngIf="ctx.processing">
-            <div class="alert alert-primary p-1 ml-2" i18n>Hold Processing...</div>
+            <div class="alert alert-primary p-1 ms-2" i18n>Hold Processing...</div>
           </ng-container>
           <ng-container *ngIf="ctx.lastRequest">
             <ng-container *ngIf="ctx.lastRequest.result.success">
-              <div class="alert alert-success p-1 ml-2" i18n>Hold Succeeded</div>
+              <div class="alert alert-success p-1 ms-2" i18n>Hold Succeeded</div>
             </ng-container>
             <ng-container *ngIf="!ctx.lastRequest.result.success">
-              <div class="alert alert-danger p-1 ml-2"
+              <div class="alert alert-danger p-1 ms-2"
                 title="{{ctx.lastRequest.result.evt.textcode}}">
                 {{ctx.lastRequest.result.evt.textcode}}
               </div>
@@ -370,16 +364,16 @@
           is superseded by the striped-even styling of the container -->
       <div class="row" *ngIf="hasMetaFilters(ctx)"
         style="background-color:inherit; border:none">
-        <div class="col-lg-1"><label i18n>Formats: </label></div>
+        <div class="col-lg-1"><label class="form-label" i18n>Formats: </label></div>
         <div class="col-lg-11 d-flex">
           <ng-container
             *ngFor="let ccvm of ctx.holdMeta.metarecord_filters.formats">
-            <div class="form-check ml-3">
-              <label class="form-check-label ml-1" for="hold-include-format-{{ccvm.code()}}">
+            <div class="form-check ms-3">
+              <label class="form-label form-check-label ms-1" for="hold-include-format-{{ccvm.code()}}">
               <input class="form-check-input" type="checkbox" id="hold-include-format-{{ccvm.code()}}"
                 [disabled]="ctx.holdMeta.metarecord_filters.formats.length === 1"
                 [(ngModel)]="ctx.selectedFormats.formats[ccvm.code()]"/>
-              <img class="ml-1"
+              <img class="ms-1"
                 alt=""
                 src="/images/format_icons/icon_format/{{ccvm.code()}}.png"/>
 
@@ -391,12 +385,12 @@
       </div>
       <div class="row" *ngIf="hasMetaFilters(ctx)"
         style="background-color:inherit; border:none">
-        <div class="col-lg-1"><label i18n>Languages: </label></div>
+        <div class="col-lg-1"><label class="form-label" i18n>Languages: </label></div>
         <div class="col-lg-11 d-flex">
           <ng-container
             *ngFor="let ccvm of ctx.holdMeta.metarecord_filters.langs">
-            <div class="form-check ml-3">
-              <label class="form-check-label ml-1" for="hold-include-lang-{{ccvm.value()}}">
+            <div class="form-check ms-3">
+              <label class="form-label form-check-label ms-1" for="hold-include-lang-{{ccvm.value()}}">
               <input class="form-check-input" type="checkbox" id="hold-include-lang-{{ccvm.value()}}"
                 [disabled]="ctx.holdMeta.metarecord_filters.langs.length === 1"
                 [(ngModel)]="ctx.selectedFormats.langs[ccvm.code()]"/>

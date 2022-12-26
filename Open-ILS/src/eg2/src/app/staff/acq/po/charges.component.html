@@ -7,12 +7,12 @@
 
 <ng-container *ngIf="showBody">
   <div class="row d-flex">
-    <div class="flex-2 p-2 font-weight-bold">Charge Type</div>
-    <div class="flex-2 p-2 font-weight-bold">Fund</div>
-    <div class="flex-2 p-2 font-weight-bold">Title/Description</div>
-    <div class="flex-2 p-2 font-weight-bold">Author</div>
-    <div class="flex-2 p-2 font-weight-bold">Note</div>
-    <div class="flex-2 p-2 font-weight-bold">Estimated Cost</div>
+    <div class="flex-2 p-2 fw-bold">Charge Type</div>
+    <div class="flex-2 p-2 fw-bold">Fund</div>
+    <div class="flex-2 p-2 fw-bold">Title/Description</div>
+    <div class="flex-2 p-2 fw-bold">Author</div>
+    <div class="flex-2 p-2 fw-bold">Note</div>
+    <div class="flex-2 p-2 fw-bold">Estimated Cost</div>
     <div class="flex-2 p-2"> </div>
   </div>
   <div class="row mt-2 pt-2 d-flex border-top form-validated" 
@@ -78,11 +78,11 @@
     <div class="flex-2 p-1">
       <button *ngIf="canModify" [disabled]="!(charge.isnew() || charge.ischanged())" class="btn btn-success btn-sm" 
         (click)="saveCharge(charge)" i18n>Save</button>
-      <button *ngIf="canModify" [disabled]="charge.isnew()" class="btn btn-outline-dark btn-sm ml-1" 
+      <button *ngIf="canModify" [disabled]="charge.isnew()" class="btn btn-outline-dark btn-sm ms-1" 
         (click)="charge.ischanged(true)" i18n>Edit</button>
-      <button class="btn btn-warning btn-sm ml-1" 
+      <button class="btn btn-warning btn-sm ms-1" 
         (click)="disencumberCharge(charge)" *ngIf="canDisencumber(charge)" i18n>Disencumber</button>
-      <button class="btn btn-danger btn-sm ml-1" 
+      <button class="btn btn-danger btn-sm ms-1" 
         (click)="removeCharge(charge)" *ngIf="canDelete(charge)" i18n>Remove</button>
     </div>
   </div>

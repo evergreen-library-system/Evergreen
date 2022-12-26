@@ -1,26 +1,26 @@
 <div class="row pb-2 pt-2">
 
   <div class="col-lg-6">
-    <span class="font-weight-bold" i18n>Show:</span>
-    <button class="btn btn-sm btn-outline-dark ml-2" 
+    <span class="fw-bold" i18n>Show:</span>
+    <button class="btn btn-sm btn-outline-dark ms-2" 
       [disabled]="visibilityLevel === 2"
       (click)="changeFields(2)" i18n>Required Fields</button>
-    <button class="btn btn-sm btn-outline-dark ml-2" 
+    <button class="btn btn-sm btn-outline-dark ms-2" 
       [disabled]="visibilityLevel === 1"
       (click)="changeFields(1)" i18n>Suggested Fields</button>
-    <button class="btn btn-sm btn-outline-dark ml-2" 
+    <button class="btn btn-sm btn-outline-dark ms-2" 
       [disabled]="visibilityLevel === 0"
       (click)="changeFields(0)" i18n>All Fields</button>
   </div>
 
   <div class="col-lg-6 d-flex">
-    <div class="ml-auto">
+    <div class="ms-auto">
       <button class="btn btn-outline-dark"
         (click)="printClicked.emit()" i18n>Print</button>
-      <button class="btn btn-outline-dark ml-2" [disabled]="disableSave"
+      <button class="btn btn-outline-dark ms-2" [disabled]="disableSave"
         [ngClass]="{'border border-danger pointer-not-allowed': disableSave}" 
         (click)="saveClicked.emit()" i18n>Save</button>
-      <button class="btn btn-outline-dark ml-2" [disabled]="disableSave"
+      <button class="btn btn-outline-dark ms-2" [disabled]="disableSave"
         [ngClass]="{'border border-danger pointer-not-allowed': disableSave}" 
         (click)="saveCloneClicked.emit()" i18n>Save &amp; Clone</button>
     </div>
@@ -29,9 +29,9 @@
 
 <div class="row pb-1 pt-1" *ngIf="addressAlerts.length > 0">
   <div class="col-lg-12 d-flex">
-    <div class="ml-auto mr-2">
+    <div class="ms-auto me-2">
       <div *ngFor="let alert of addressAlerts"
-        class="alert alert-danger ml-auto p-2 mt-2" i18n>
+        class="alert alert-danger ms-auto p-2 mt-2" i18n>
           Address Alert: {{alert.alert_message()}}
       </div>
     </div>
@@ -40,9 +40,9 @@
 
 <div class="row pb-1 pt-1" *ngIf="dupesFound().length > 0">
   <div class="col-lg-12 d-flex">
-    <div class="ml-auto mr-2">
+    <div class="ms-auto me-2">
       <div *ngFor="let dupe of dupesFound()"
-        class="alert alert-danger ml-auto p-2 mt-2">
+        class="alert alert-danger ms-auto p-2 mt-2">
           <a routerLink="/staff/circ/patron/search" 
             target="_blank" [queryParams]="{search: dupe.json}" i18n>
           {{dupe.count}} patron(s) with same

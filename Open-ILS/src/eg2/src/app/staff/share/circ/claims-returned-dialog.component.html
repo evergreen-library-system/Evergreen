@@ -7,10 +7,8 @@
     <h4 class="modal-title">
       <span i18n>Mark Claims Returned</span>
     </h4>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <h5 i18n>Marking Claims Returned for {{barcodes.length}} Item(s)</h5>
@@ -23,11 +21,11 @@
       </div>
     </div>
     <div *ngIf="patronExceeds" class="row mt-3 mb-3 d-flex">
-      <div class="flex-1 p-2 mr-2 alert alert-danger" i18n>
+      <div class="flex-1 p-2 me-2 alert alert-danger" i18n>
         Patron exceeds claims returned count.  Force this action?
       </div>
       <div>
-        <button class="btn btn-warning mr-2" 
+        <button class="btn btn-warning me-2" 
           (click)="confirmExceeds()" i18n>Confirm</button>
       </div>
     </div>

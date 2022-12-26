@@ -3,7 +3,7 @@
 
 <ng-template #summaryField let-field="field" let-value="value" let-rawValue="rawValue">
   <div class="col-2">
-    <label style="font-weight: bold" for="fund-{{field}}">{{idlDef.field_map[field].label}}</label>
+    <label class="form-label fw-bold" for="fund-{{field}}">{{idlDef.field_map[field].label}}</label>
   </div>
   <div class="col-2">
     <span id="fund-{{field}}" [ngClass]="{'negative-money-amount': checkNegativeAmount(rawValue)}">
@@ -14,10 +14,8 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h3 class="modal-title" i18n>Fund Details - {{fund?.name()}} ({{fund?.code()}} ({{fund?.year()}}) ({{fund?.org().shortname()}}))</h3>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="row mt-3">
@@ -25,11 +23,11 @@
         <button class="btn btn-primary"
         [disabled]="fund?.active() !== 't'"
           (click)="allocateToFund()" i18n>Create Allocation</button>
-        <button class="btn btn-primary ml-1"
+        <button class="btn btn-primary ms-1"
         [disabled]="fund?.active() !== 't'"
           (click)="doTransfer()" i18n>Transfer Money</button>
       </div>
-      <div class="col-lg-9 text-right pb-1">
+      <div class="col-lg-9 text-end pb-1">
         <button class="btn btn-secondary btn-xs" [disabled]="activeTab === defaultTabType"
           (click)="setDefaultTab()" i18n>Set Default View</button>
       </div>
@@ -40,7 +38,7 @@
         <ng-template ngbNavContent>
           <div class="mt-2">
             <div class="row">
-              <button class="btn btn-info ml-3" (click)="openEditDialog()" i18n>Edit Fund</button>
+              <button class="btn btn-info ms-3" (click)="openEditDialog()" i18n>Edit Fund</button>
             </div>
             <div class="row">
               <ng-container *ngTemplateOutlet="summaryField;context:{value:fund.code(),field:'code'}"></ng-container>

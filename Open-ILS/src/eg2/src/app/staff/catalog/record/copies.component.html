@@ -11,10 +11,10 @@
 <ng-template #barcodeTemplate let-copy="row" let-context="userContext">
   <div>{{copy.barcode}}</div>
   <div>
-  <a class="pl-1" target="_blank" 
+  <a class="ps-1" target="_blank" 
     href="/eg/staff/cat/item/{{copy.id}}" i18n>View</a>
     <ng-container *ngIf="context.editable(copy)">
-      | <a class="pl-1" target="_blank"
+      | <a class="ps-1" target="_blank"
         routerLink="/staff/cat/volcopy/attrs/item/{{copy.id}}" i18n>Edit</a>
     </ng-container>
   </div>

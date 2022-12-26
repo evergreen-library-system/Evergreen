@@ -3,15 +3,13 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h3 class="modal-title" i18n>Confirm Reservation Details</h3>
-    <button type="button" class="close"
+    <button type="button" class="btn-close btn-close-white"
       i18n-aria-label aria-label="Close"
-      (click)="dismiss('cross_click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
+      (click)="dismiss('cross_click')"></button>
   </div>
   <form class="modal-body form-common" [formGroup]="create">
     <div class="form-group row">
-      <label class="col-lg-4 text-right font-weight-bold"
+      <label class="form-label col-lg-4 text-end fw-bold"
         i18n for="create-patron-barcode">Patron barcode</label>
       <div class="col-lg-7">
         <input type="text" id="create-patron-barcode"
@@ -29,7 +27,7 @@
       </span>
     </div>
     <div class="form-group row">
-      <label class="col-lg-4 text-right font-weight-bold"
+      <label class="form-label col-lg-4 text-end fw-bold"
         i18n for="create-end-time">Start time</label>
       <eg-datetime-select
         formControlName="startTime"
@@ -37,7 +35,7 @@
       </eg-datetime-select>
     </div>
     <div class="form-group row">
-      <label class="col-lg-4 text-right font-weight-bold"
+      <label class="form-label col-lg-4 text-end fw-bold"
         i18n for="create-end-time">End time</label>
       <eg-datetime-select
         formControlName="endTime"
@@ -49,7 +47,7 @@
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-lg-4 text-right font-weight-bold"
+      <label class="form-label col-lg-4 text-end fw-bold"
         i18n for="create-pickup-library">Reservation location</label>
       <eg-org-select domId="create-pickup-library" [applyDefault]="true"
         [disableOrgs]="disableOrgs()" [hideOrgs]="disableOrgs()"
@@ -64,7 +62,7 @@
       <span i18n>Reservation location is in the {{timezone}} timezone</span>
     </div>
     <div class="form-group row">
-      <label class="col-lg-4 text-right font-weight-bold"
+      <label class="form-label col-lg-4 text-end fw-bold"
         i18n for="create-resource">Resource</label>
       <input *ngIf="targetResource && targetResourceBarcode" id="create-resource" value="{{targetResourceBarcode}}" disabled>
       <eg-combobox
@@ -78,12 +76,12 @@
       </eg-combobox>
     </div>
     <div class="form-group row">
-      <label class="col-lg-4 text-right font-weight-bold"
+      <label class="form-label col-lg-4 text-end fw-bold"
         i18n for="create-email-notify">Notify by email?</label>
       <input type="checkbox" formControlName="emailNotify">
     </div>
     <div class="form-group row">
-      <label class="col-lg-4 text-right font-weight-bold"
+      <label class="form-label col-lg-4 text-end fw-bold"
         i18n for="create-note">Note</label>
       <input type="text" id="create-note"
         class="form-control col-lg-7" formControlName="note">
@@ -94,7 +92,7 @@
     <button (click)="addBresvAndOpenPatronReservations()" [disabled]="!create.valid" class="btn btn-info" i18n>
       Confirm and show patron reservations
     </button>
-    <button (click)="close()" class="btn btn-warning ml-2" i18n>Cancel</button>
+    <button (click)="close()" class="btn btn-warning ms-2" i18n>Cancel</button>
   </div>
 </ng-template>
 <eg-alert-dialog #fail i18n-dialogBody

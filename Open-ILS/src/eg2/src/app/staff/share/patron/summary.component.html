@@ -3,7 +3,7 @@
 
   <div class="row d-flex patron-status-color rounded {{patronStatusColor()}}">
     <div class="flex-1 pt-1 {{patronStatusColor()}}">
-      <h4 class="font-weight-bold" i18n>
+      <h4 class="fw-bold" i18n>
         {{patronService.namePart(p(), 'family_name')}}, 
         {{patronService.namePart(p(), 'first_given_name')}} 
         {{patronService.namePart(p(), 'second_given_name')}}
@@ -202,9 +202,9 @@
         <legend class="d-flex" [ngClass]="{'alert alert-danger p-0': addr.valid() === 'f'}">
           <div class="flex-1">{{addr.address_type()}}</div>
           <div>
-            <a class="mr-2" href="javascript:;" 
+            <a class="me-2" href="javascript:;" 
               (click)="copyAddress(addr)" i18n>copy</a>
-            <a class="mr-2" href="javascript:;" 
+            <a class="me-2" href="javascript:;" 
               (click)="printAddress(addr)" i18n>print</a>
           </div>
         </legend>

@@ -6,15 +6,13 @@
     <h4 class="modal-title">
       <span i18n>Mark Item Damaged</span>
     </h4>
-    <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" (click)="close(false)">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white" 
+      i18n-aria-label aria-label="Close" (click)="close(false)"> </button>
   </div>
   <div class="modal-body">
     <div class="row">
         <div class="col-lg-1">Barcode:</div>
-        <div class="col-lg-11 font-weight-bold">{{copy.barcode()}}</div>
+        <div class="col-lg-11 fw-bold">{{copy.barcode()}}</div>
     </div>
     <div class="row">
       <div class="col-lg-1">Title:</div>
@@ -47,7 +45,7 @@
           <li class="list-group-item">
             <span i18n>
               Calucated fine amount is 
-              <span class="font-weight-bold text-danger">
+              <span class="fw-bold text-danger">
                 {{chargeResponse.charge | currency}}
               </span>
             </span>
@@ -97,11 +95,11 @@
     <ng-container *ngIf="chargeResponse">
       <button type="button" class="btn btn-warning" 
         (click)="close(false)" i18n>Cancel</button>
-      <button class="btn btn-info mr-2" 
+      <button class="btn btn-info me-2" 
         (click)="amountChangeRequested = true" i18n>Change Amount</button>
-      <button class="btn btn-secondary mr-2" 
+      <button class="btn btn-secondary me-2" 
         (click)="markDamaged({apply_fines:'noapply'})" i18n>No Charge</button>
-      <button class="btn btn-success mr-2" 
+      <button class="btn btn-success me-2" 
         (click)="markDamaged({apply_fines:'apply'})" i18n>OK</button>
     </ng-container>
   </div>

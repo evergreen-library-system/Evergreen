@@ -1,19 +1,19 @@
 
-<div class="col-lg-12 card tight-card mb-2 bg-light">
+<div class="col-lg-12 card tight-card mb-2 p-2 bg-light">
   <div class="card-body">
     <div class="row">
       <!-- Checkbox, jacket image, and title blob live in a flex row
            because there's no way to give them col-lg-* columns that
            don't waste a lot of space. -->
       <div class="col-lg-7 d-flex">
-        <label class="checkbox">
-          <span class="font-weight-bold font-italic">
+        <label  class="form-label checkbox">
+          <span class="fw-bold fst-italic">
             {{index + 1 + searchContext.pager.offset}}.
           </span>
-          <input class="pl-1" type='checkbox' [(ngModel)]="isRecordSelected"
+          <input class="ps-1" type='checkbox' [(ngModel)]="isRecordSelected"
             (change)="toggleBasketEntry()"/>
         </label>
-        <div class="pl-2 record-jacket-div" >
+        <div class="ps-2 record-jacket-div" >
           <ng-container *ngIf="hasMrConstituentRecords(summary)">
             <a routerLink="/staff/catalog/search"
               [queryParams]="appendFromMrParam(summary)">
@@ -29,16 +29,16 @@
         </div>
         <!-- for call number browse display -->
         <ng-container *ngIf="callNumber">
-          <div class="pl-2 font-weight-bold">
+          <div class="ps-2 fw-bold">
             {{callNumber.prefix().label()}}
             {{callNumber.label()}}
             {{callNumber.suffix().label()}}
             @ {{orgName(callNumber.owning_lib())}}
           </div>
         </ng-container>
-        <div class="flex-1 pl-2">
+        <div class="flex-1 ps-2">
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-12 fw-bold">
               <h3 class="bib-field-title">
               <ng-container *ngIf="hasMrConstituentRecords(summary)">
                   <a routerLink="/staff/catalog/search" class="bib-title-link"
@@ -66,8 +66,8 @@
             <div class="col-lg-12">
               <ng-container *ngIf="summary.attributes.icon_format && summary.attributes.icon_format[0]">
                 <ng-container *ngFor="let icon of summary.attributes.icon_format">
-                <span class="pr-1">
-                  <img class="pr-1"
+                <span class="pe-1">
+                  <img class="pe-1"
                     src="/images/format_icons/icon_format/{{icon}}.png"/>
                   <span>{{iconFormatLabel(icon)}}</span>
                 </span>
@@ -150,12 +150,12 @@
             'text-dark bg-warning' : copyCount.count === 0 && (copyCount.transcendant === 0 || !copyCount.transcendant),
 			'bg-info' : copyCount.count === 0
             }">
-          <div class="float-left text-left w-50">
-            <span class="pr-1">
+          <div class="float-start text-left w-50">
+            <span class="pe-1">
             {{copyCount.available}} / {{copyCount.count}} items
             </span>
           </div>
-          <div class="float-left w-50">
+          <div class="float-start w-50">
             @ {{orgName(copyCount.org_unit)}}
           </div>
         </div>
@@ -175,7 +175,7 @@
       <div class="col-lg-2">
         <div class="row">
           <div class="col-lg-12">
-            <div class="float-right small-text-1">
+            <div class="float-end small-text-1">
               Created {{summary.record.create_date() | date:'shortDate'}} by
               <!-- creator if fleshed after the initial data set is loaded -->
               <a *ngIf="summary.record.creator().usrname" target="_self"
@@ -189,7 +189,7 @@
         </div>
         <div class="row pt-2">
           <div class="col-lg-12">
-            <div class="float-right small-text-1" i18n>
+            <div class="float-end small-text-1" i18n>
               Edited {{summary.record.edit_date() | date:'shortDate'}} by
               <a *ngIf="summary.record.editor().usrname" target="_self"
                 href="/eg/staff/circ/patron/{{summary.record.editor().id()}}/checkout">
@@ -201,7 +201,7 @@
         </div>
         <div class="row pt-2">
           <div class="col-lg-12">
-            <div class="float-right">
+            <div class="float-end">
               <ng-container *ngIf="summary.record.deleted() === 't'">
                 <span class="text-danger" i18n>(Deleted)</span>
               </ng-container>
@@ -220,10 +220,10 @@
     </div><!-- row -->
     <div class="row" *ngIf="searchContext.showResultExtras && summary.eResourceUrls.length">
       <div class="col-lg-12 mt-2">
-        <div class="w-auto ml-2 mr-2">
+        <div class="w-auto ms-2 me-2">
           <div class="row p-1 mt-1 mb-1 border-top" *ngFor="let url of summary.eResourceUrls">
             <div class="col-lg-2">
-              <span class="font-weight-bold">
+              <span class="fw-bold">
                 <ng-container [ngSwitch]="url.ind2">
                   <ng-container *ngSwitchCase="'0'" i18n>Electronic Resource:</ng-container>
                   <ng-container *ngSwitchCase="'1'" i18n>Version of Resource:</ng-container>
@@ -239,9 +239,9 @@
     </div><!-- row -->
     <div class="row" *ngIf="searchContext.showResultExtras && summary.copies">
       <div class="col-lg-12 mt-2">
-        <div class="w-auto ml-2 mr-2">
+        <div class="w-auto ms-2 me-2">
           <ng-container *ngIf="summary.copies.length">
-            <div class="row p-1 font-weight-bold border-top">
+            <div class="row p-1 fw-bold border-top">
               <div class="col-lg-2" i18n>Library</div>
               <div class="col-lg-3" i18n>Shelving location</div>
               <div class="col-lg-3" i18n>Call number</div>
@@ -263,7 +263,7 @@
             </div>
           </ng-container>
           <ng-container *ngIf="!summary.copies.length && !summary.eResourceUrls.length">
-            <span class="font-italic" i18n>No Items To Display</span>
+            <span class="fst-italic" i18n>No Items To Display</span>
           </ng-container>
         </div>
       </div>

@@ -1,10 +1,8 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Change Operator</h4>
-    <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white" 
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
 
@@ -17,7 +15,7 @@
 
     <form class="form-validated">
       <div class="form-group row">
-        <label class="col-lg-4 text-right font-weight-bold" for="username" i18n>Username</label>
+        <label class="form-label col-lg-4 text-end fw-bold" for="username" i18n>Username</label>
         <input 
           type="text" 
           class="form-control col-lg-7"
@@ -32,7 +30,7 @@
       </div>
 
       <div class="form-group row">
-        <label class="col-lg-4 text-right font-weight-bold" 
+        <label class="form-label col-lg-4 text-end fw-bold" 
             for="password" i18n>Password</label>
         <input 
           type="password" 
@@ -48,7 +46,7 @@
       </div>
 
       <div class="form-group row">
-        <label class="col-lg-4 text-right font-weight-bold" 
+        <label class="form-label col-lg-4 text-end fw-bold" 
             for="loginType" i18n>Login Type</label>
         <select 
           class="form-control col-lg-7" 
@@ -67,6 +65,6 @@
   </div>
   <div class="modal-footer">
     <button (click)="login()" class="btn btn-info" i18n>OK/Continue</button>
-    <button (click)="close()" class="btn btn-warning ml-2" i18n>Cancel</button>
+    <button (click)="close()" class="btn btn-warning ms-2" i18n>Cancel</button>
   </div>
 </ng-template>

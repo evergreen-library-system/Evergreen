@@ -10,19 +10,17 @@
       <h4 class="modal-title">
         <span i18n>Replace Item Barcode</span>
       </h4>
-      <button type="button" class="close" 
-        i18n-aria-label aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <button type="button" class="btn-close btn-close-white" 
+        i18n-aria-label aria-label="Close" (click)="close()"></button>
     </div>
     <div class="modal-body">
       <div class="row">
         <div class="col-lg-4" i18n>Replacing barcode</div>
-        <div class="col-lg-8 font-weight-bold">{{copy.barcode()}}</div>
+        <div class="col-lg-8 fw-bold">{{copy.barcode()}}</div>
       </div>
       <div class="row pt-2 form-validated">
         <div class="col-lg-4" i18n>
-          <label for="new-barcode-intput">New Barcode:</label>
+          <label class="form-label" for="new-barcode-intput">New Barcode:</label>
         </div>
         <div class="col-log-8">
           <input type="text" class="form-control" [required]="true"
@@ -32,7 +30,7 @@
       </div>
       <div class="row d-flex pt-2 justify-content-center" *ngIf="barcodeExists">
         <div class="alert alert-danger" i18n>
-          Barcode <span class="font-weight-bold">{{newBarcode}}</span> is already in use.
+          Barcode <span class="fw-bold">{{newBarcode}}</span> is already in use.
         </div>
       </div>
     </div>

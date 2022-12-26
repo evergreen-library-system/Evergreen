@@ -5,13 +5,11 @@
 <div class="row">
   <div class="col-lg-4">
     <div class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text" i18n>Patron Barcode:</span>
-      </div>
+      <span class="input-group-text" i18n>Patron Barcode:</span>
       <input type='text' id='barcode-search-input' class="form-control" 
         placeholder="Barcode" i18n-placeholder [(ngModel)]='barcode'
         (keydown.enter)="findUser()"/>
-      <div class="input-group-append">
+      <div class="input-group-text">
         <button class="btn btn-outline-secondary" 
           (click)="findUser()" i18n>Submit</button>
       </div>

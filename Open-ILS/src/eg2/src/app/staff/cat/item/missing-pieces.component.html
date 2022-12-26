@@ -6,9 +6,7 @@
 <div class="row">
   <div class="col-lg-12 form-inline">
     <div class="input-group">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id='barcode-label' i18n>Barcode</span>
-      </div>
+      <span class="input-group-text" id='barcode-label' i18n>Barcode</span>
       <input type="text" class="form-control" id="item-barcode-input" 
         (keydown)="noSuchItem=false; true;"
         (keyup.enter)="getItemByBarcode()" [(ngModel)]="itemBarcode" 
@@ -37,7 +35,7 @@
       <button class="btn btn-success" (click)="processItem()" i18n>
         Mark Item as Missing Pieces?
       </button>
-      <button class="btn btn-warning ml-2" (click)="reset()">
+      <button class="btn btn-warning ms-2" (click)="reset()">
         <ng-container *ngIf="!itemProcessed" i18n>Cancel</ng-container>
         <ng-container *ngIf="itemProcessed" i18n>Reset Form</ng-container>
       </button>

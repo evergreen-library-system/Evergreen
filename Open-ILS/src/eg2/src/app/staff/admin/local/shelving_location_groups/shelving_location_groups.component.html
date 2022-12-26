@@ -1,5 +1,5 @@
 <div class="row">
-    <div style="font-size: 24px;" class="mr-3">Shelving Location Groups</div>
+    <div style="font-size: 24px;" class="me-3">Shelving Location Groups</div>
     <eg-org-select (onChange)="orgOnChange($event)" [initialOrgId]="1"></eg-org-select>     
 </div>
 <div class="row">
@@ -11,24 +11,24 @@
             <eg-staff-banner bannerText="Location Groups" i18n-bannerText>
             </eg-staff-banner>
             <div class="text-center">          
-                <div class="btn btn-outline-dark mb-3 ml-2" (click)="createLocationGroup()" 
+                <div class="btn btn-outline-dark mb-3 ms-2" (click)="createLocationGroup()" 
                     *ngIf="hasPermission">
                     New Location Group                     
                 </div>
-                <div class="btn btn-outline-dark mb-3 ml-2 disabled"
+                <div class="btn btn-outline-dark mb-3 ms-2 disabled"
                     *ngIf="!hasPermission">
                     New Location Group                     
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-6 h-100 p-2 text-center">
-                    <span class="align-middle font-weight-bold">Name</span>
+                    <span class="align-middle fw-bold">Name</span>
                 </div>
                 <div class="col-lg-1 h-100 p-2 text-center">
-                    <span class="align-middle font-weight-bold">Pos</span>
+                    <span class="align-middle fw-bold">Pos</span>
                 </div>
                 <div class="col-lg-2 h-100 p-2 text-center">
-                    <span class="align-middle font-weight-bold">Visible?</span>
+                    <span class="align-middle fw-bold">Visible?</span>
                 </div>
                 <div class="col-lg-3">    
                 </div>
@@ -63,21 +63,21 @@
                 </div>
                 <div class="col-lg-3 h-100 btn-group p-2">
                     <span *ngIf="hasPermission"
-                        class="btn btn-sm btn-outline-dark mr-1" 
+                        class="btn btn-sm btn-outline-dark me-1" 
                         (click)="editLocationGroup(group)">
                         Edit
                     </span>
                     <span *ngIf="!hasPermission" 
-                        class="btn btn-sm btn-outline-dark mr-1 disabled">
+                        class="btn btn-sm btn-outline-dark me-1 disabled">
                         Edit
                     </span>
                     <span *ngIf="hasPermission"
-                        class="btn btn-sm btn-danger mr-2" 
+                        class="btn btn-sm btn-danger me-2" 
                         (click)="deleteLocationGroup(group)">
                         Delete
                     </span>
                     <span *ngIf="!hasPermission"
-                        class="btn btn-sm btn-danger mr-2 disabled">
+                        class="btn btn-sm btn-danger me-2 disabled">
                         Delete
                     </span>
                     <span class="align-middle">
@@ -112,11 +112,11 @@
                             <td>
                                 <input
                                 type="checkbox" 
-                                class="mr-2"
+                                class="me-2"
                                 [(ngModel)]="group.checked"
                                 [checked]="group.checked"
                                 id="{{group.label}}" /> 
-                                <label for="{{group.label}}">
+                                <label class="form-label" for="{{group.label}}">
                                     {{group.shortname}} &nbsp; {{group.name}}
                                 </label>
                             </td>
@@ -142,11 +142,11 @@
                                 <td>
                                     <input
                                     type="checkbox" 
-                                    class="mr-2"
+                                    class="me-2"
                                     [(ngModel)]="location.checked"
                                     [checked]="location.checked"
                                     id="{{location.label}}" /> 
-                                    <label for="{{location.label}}">
+                                    <label class="form-label" for="{{location.label}}">
                                         {{location.shortname}} &nbsp; {{location.name}}
                                     </label>
                                 </td>

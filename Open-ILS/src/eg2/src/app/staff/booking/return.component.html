@@ -11,10 +11,8 @@
         <div class="row">
           <div class="col-md-4">
             <div class="input-group flex-nowrap">
-              <div class="input-group-prepend">
-                <label class="input-group-text" for="patron-barcode" i18n>Patron barcode</label>
+                <label class="form-label input-group-text" for="patron-barcode" i18n>Patron barcode</label>
                 <input type="text" id="patron-barcode" class="form-control" i18n-placeholder placeholder="Patron barcode" formControlName="patronBarcode">
-              </div>
             </div>
           </div>
         </div>
@@ -31,10 +29,8 @@
       <a i18n ngbNavLink role="tab">By resource</a>
       <ng-template ngbNavContent>
         <div class="input-group flex-nowrap">
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="resource-barcode" i18n>Resource barcode</label>
+            <label class="form-label input-group-text" for="resource-barcode" i18n>Resource barcode</label>
             <input type="text" id="resource-barcode" class="form-control" i18n-placeholder placeholder="Resource barcode" formControlName="resourceBarcode">
-          </div>
         </div>
         <div *ngIf="patronId">
           <h2 class="text-center" i18n>Ready for return</h2>

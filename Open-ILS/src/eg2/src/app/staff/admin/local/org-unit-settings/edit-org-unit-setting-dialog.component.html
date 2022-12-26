@@ -1,10 +1,8 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Edit Setting</h4>
-    <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white" 
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="row justify-content-center">
@@ -20,11 +18,9 @@
     <div class="row mt-3">
         <div class="col-md-6">
             <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text" i18n>Context</div>
-                    <eg-org-select [initialOrg]="entryContext"
-                      (onChange)="entryContext = $event"></eg-org-select>
-                </div>
+              <div class="input-group-text" i18n>Context</div>
+              <eg-org-select [initialOrg]="entryContext"
+                  (onChange)="entryContext = $event"></eg-org-select>
             </div>
         </div>
     </div>
@@ -34,20 +30,17 @@
 
               <ng-container *ngSwitchCase="'integer'">
                 <div class="input-group">
-                  <div class="input-group-prepend">
-                    <div class="input-group-text" i18n>Value</div>
+                    <label class="form-label input-group-text" for="entryValue" i18n>Value</label>
                     <input
                       class="form-control" type="number"
-                      name="entryValue"
+                      name="entryValue" id="entryValue"
                       placeholder="Input a numerical value"
                       i18n-placeholder
                       [(ngModel)]="entryValue"/>
-                  </div>
                 </div>
               </ng-container>
               <ng-container *ngSwitchCase="'currency'">
                 <div class="input-group">
-                  <div class="input-group-prepend">
                     <div class="input-group-text" i18n>Value</div>
                     <div class="input-group-text" i18n>$</div>
                     <input
@@ -57,12 +50,10 @@
                       placeholder="Input a monetary value"
                       i18n-placeholder
                       [(ngModel)]="entryValue"/>
-                  </div>
                 </div>
               </ng-container>
               <ng-container *ngSwitchCase="'string'">
                 <div class="input-group">
-                  <div class="input-group-prepend">
                     <div class="input-group-text" i18n>Value</div>
                     <input
                       class="form-control" type="text"
@@ -70,12 +61,10 @@
                       placeholder="Input a value"
                       i18n-placeholder
                       [(ngModel)]="entryValue"/>
-                  </div>
                 </div>
               </ng-container>
               <ng-container *ngSwitchCase="'interval'">
                 <div class="input-group">
-                  <div class="input-group-prepend">
                     <div class="input-group-text" i18n>Value</div>
                     <input
                       class="form-control" type="text"
@@ -83,26 +72,22 @@
                       placeholder="e.g. 1 day, 4 months"
                       i18n-placeholder
                       [(ngModel)]="entryValue"/>
-                  </div>
                 </div>
               </ng-container>
               <ng-container *ngSwitchCase="'bool'">
                 <div class="input-group">
-                  <div class="input-group-prepend">
                     <div class="input-group-text" i18n>Value</div>
                     <select
-                      class="custom-select" name="entryValue"
+                      class="form-select" name="entryValue"
                       placeholder="True or False" i18n-placeholder
                       [(ngModel)]="entryValue">
                       <option value='true' i18n>True</option>
                       <option value='false' i18n>False</option>
                     </select>
-                  </div>
                 </div>
               </ng-container>
               <ng-container *ngSwitchCase="'array'">
                 <div class="input-group">
-                  <div class="input-group-prepend">
                     <div class="input-group-text" i18n>Value</div>
                     <input
                       class="form-control" type="text"
@@ -110,12 +95,10 @@
                       placeholder="Input a comma-separated list..."
                       i18n-placeholder
                       [(ngModel)]="entryValue"/>
-                  </div>
                 </div>
               </ng-container>
               <ng-container *ngSwitchCase="'link'">
                 <div class="input-group">
-                  <div class="input-group-prepend">
                     <div class="input-group-text" i18n>Value</div>
                       <ng-container [ngSwitch]="entry.fmClass">
                         <ng-container *ngSwitchCase="'acpl'">
@@ -130,7 +113,6 @@
                           </eg-combobox>
                         </ng-container>
                       </ng-container><!-- fmClass ngSwitch -->
-                  </div>
                 </div>
               </ng-container>
 

@@ -4,7 +4,7 @@
 <div class="eg-grid-toolbar mb-2">
 
   <div class="btn-toolbar">
-    <span class="font-weight-bold mr-2" *ngIf="gridContext.toolbarLabel">
+    <span class="fw-bold me-2" *ngIf="gridContext.toolbarLabel">
       {{gridContext.toolbarLabel}}
     </span>
 
@@ -12,29 +12,28 @@
     <div class="btn-grp" *ngIf="gridContext.toolbarButtons.length || gridContext.isFilterable">
       <!-- special case for remove filters button -->
       <button *ngIf="gridContext.isFilterable"
-        class="btn btn-outline-dark mr-1" (click)="gridContext.removeFilters()"
+        class="btn btn-outline-dark me-1" (click)="gridContext.removeFilters()"
         [disabled]="!gridContext.filtersSet() || gridContext.dataSource.requestingData" i18n>
         Remove Filters
       </button>
       <button *ngFor="let btn of gridContext.toolbarButtons"
         [disabled]="btn.disabled"
-        class="btn btn-outline-dark mr-1" (click)="performButtonAction(btn)">
+        class="btn btn-outline-dark me-1" (click)="performButtonAction(btn)">
         {{btn.label}}
       </button>
     </div>
 
     <!-- checkboxes -->
-    <div class="form-check form-check-inline"
-      *ngIf="gridContext.toolbarCheckboxes.length">
-      <ng-container *ngFor="let cb of gridContext.toolbarCheckboxes">
-        <label class="form-check-label">
-          <input class="form-check-input" type="checkbox"
-            [(ngModel)]="cb.isChecked"
-            (click)="cb.onChange.emit($event.target.checked)"/>
-            {{cb.label}}
-        </label>
-      </ng-container>
-    </div>
+    <ng-container *ngFor="let cb of gridContext.toolbarCheckboxes; index as i">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="eg-grid-toolbar-cb{{i}}"
+          [(ngModel)]="cb.isChecked"
+          (click)="cb.onChange.emit($event.target.checked)"/>
+        <label class="form-check-label" for="eg-grid-toolbar-cb{{i}}">{{cb.label}}</label>
+      </div>
+    </ng-container>
+  
+
   </div>
 
   <!-- push everything else to the right -->
@@ -42,10 +41,10 @@
 
   <ng-container *ngIf="!gridContext.disableSelect">
 
-  <div class="font-sm font-italic d-flex flex-column-reverse mr-2">
+  <div class="font-sm fst-italic d-flex flex-column-reverse me-2">
     {{gridContext.getSelectedRows().length}} selected
   </div>
-  <div ngbDropdown class="mr-1" placement="bottom-right">
+  <div ngbDropdown class="me-1" placement="bottom-right">
     <button ngbDropdownToggle [disabled]="!gridContext.toolbarActions.length"
         class="btn btn-outline-dark no-dropdown-caret">
       <span title="Actions For Selected Rows" i18n-title
@@ -62,21 +61,21 @@
   <ng-container *ngIf="!gridContext.disablePaging">
 
   <button [disabled]="gridContext.pager.isFirstPage()" type="button"
-    class="btn btn-outline-dark mr-1" (click)="gridContext.pager.toFirst()">
+    class="btn btn-outline-dark me-1" (click)="gridContext.pager.toFirst()">
     <span title="First Page" i18n-title
         class="material-icons mat-icon-in-button">first_page</span>
   </button>
   <button [disabled]="gridContext.pager.isFirstPage()" type="button"
-    class="btn btn-outline-dark mr-1" (click)="gridContext.pager.decrement()">
+    class="btn btn-outline-dark me-1" (click)="gridContext.pager.decrement()">
     <span title="Previous Page" i18n-title
         class="material-icons mat-icon-in-button">keyboard_arrow_left</span>
   </button>
   <button [disabled]="gridContext.pager.isLastPage()" type="button"
-    class="btn btn-outline-dark mr-1" (click)="gridContext.pager.increment()">
+    class="btn btn-outline-dark me-1" (click)="gridContext.pager.increment()">
     <span title="Next Page" i18n-title
         class="material-icons mat-icon-in-button">keyboard_arrow_right</span>
   </button>
-  <div ngbDropdown class="mr-1" placement="bottom-right">
+  <div ngbDropdown class="me-1" placement="bottom-right">
     <button ngbDropdownToggle class="btn btn-outline-dark text-button">
       <span title="Select Row Count" i18n-title i18n>
         Rows {{gridContext.pager.limit}}
@@ -86,7 +85,7 @@
       <a class="dropdown-item"
         *ngFor="let count of [5, 10, 25, 50, 100]"
         (click)="gridContext.pager.setLimit(count)">
-        <span class="ml-2">{{count}}</span>
+        <span class="ms-2">{{count}}</span>
       </a>
     </div>
   </div>
@@ -95,7 +94,7 @@
 
 
   <button type="button"
-    class="btn btn-outline-dark mr-1"
+    class="btn btn-outline-dark me-1"
     (click)="gridContext.overflowCells=!gridContext.overflowCells">
     <span *ngIf="!gridContext.overflowCells"
       title="Expand Cells Vertically" i18n-title
@@ -116,40 +115,40 @@
       <a class="dropdown-item label-with-material-icon"
         (click)="columnConfDialog.open({size:'lg'})">
         <span class="material-icons">build</span>
-        <span class="ml-2" i18n>Manage Columns</span>
+        <span class="ms-2" i18n>Manage Columns</span>
       </a>
       <a class="dropdown-item label-with-material-icon"
         (click)="colWidthConfig.isVisible = !colWidthConfig.isVisible">
         <span class="material-icons">compare_arrows</span>
-        <span class="ml-2" i18n>Manage Column Widths</span>
+        <span class="ms-2" i18n>Manage Column Widths</span>
       </a>
       <button class="dropdown-item label-with-material-icon"
         [disabled]="gridContext.toolbarActions.length === 0"
         (click)="toolbarActionsEditor.open().subscribe()">
         <span class="material-icons">menu</span>
-        <span class="ml-2" i18n>Manage Actions Menu</span>
+        <span class="ms-2" i18n>Manage Actions Menu</span>
       </button>
       <a class="dropdown-item label-with-material-icon"
         *ngIf="!disableSaveSettings"
         (click)="saveGridConfig()">
         <span class="material-icons">save</span>
-        <span class="ml-2" i18n>Save Grid Settings</span>
+        <span class="ms-2" i18n>Save Grid Settings</span>
       </a>
       <a class="dropdown-item label-with-material-icon"
         (click)="gridContext.columnSet.reset()">
         <span class="material-icons">restore</span>
-        <span class="ml-2" i18n>Reset Columns</span>
+        <span class="ms-2" i18n>Reset Columns</span>
       </a>
       <a class="dropdown-item label-with-material-icon"
         (click)="generateCsvExportUrl($event)"
         [download]="csvExportFileName"
         [href]="csvExportUrl">
         <span class="material-icons">cloud_download</span>
-        <span class="ml-2" i18n>Download Full CSV</span>
+        <span class="ms-2" i18n>Download Full CSV</span>
       </a>
       <a class="dropdown-item label-with-material-icon" (click)="printHtml()">
         <span class="material-icons">print</span>
-        <span class="ml-2" i18n>Print Full Grid</span>
+        <span class="ms-2" i18n>Print Full Grid</span>
       </a>
 
       <div class="dropdown-divider"></div>
@@ -159,7 +158,7 @@
         *ngFor="let col of gridContext.columnSet.sortForColPicker()">
         <span *ngIf="col.visible" class="badge badge-success">&#x2713;</span>
         <span *ngIf="!col.visible" class="badge badge-warning">&#x2717;</span>
-        <span class="ml-2">{{col.label}}</span>
+        <span class="ms-2">{{col.label}}</span>
       </a>
 
     </div>

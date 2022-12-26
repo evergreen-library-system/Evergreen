@@ -1,6 +1,6 @@
 
 <div class="border rounded m-1">
-  <div class="font-weight-bold header p-2 d-flex" i18n>
+  <div class="fw-bold header p-2 d-flex" i18n>
     {{label}} <span *ngIf="hasChanged" class="text-danger">*</span>
     <ng-container *ngIf="bulky()">
       <div class="flex-1"></div>
@@ -22,7 +22,7 @@
       </ng-container>
       <ng-container *ngIf="expanded || editing || idx < defaultDisplayCount">
         <ng-container *ngIf="editing">
-          <div class="ml-4 mr-2">
+          <div class="ms-4 me-2">
             <input type="checkbox" class="form-check-input" 
               [(ngModel)]="editValues[count.key]"/>
           </div>
@@ -52,7 +52,7 @@
             <ng-template #default>{{count.key}}</ng-template>
           </ng-container>
         </div>
-        <div class="pl-1 border-left" i18n>
+        <div class="ps-1 border-start" i18n>
           {count.value, plural, =1 {1 copy} other {{{count.value}} copies}}
         </div>
       </ng-container>
@@ -62,8 +62,8 @@
     <ng-container *ngTemplateOutlet="editTemplate"></ng-container>
     <div class="mt-1">
       <button class="btn btn-outline-dark" (click)="save()" i18n>Apply</button>
-      <button class="btn btn-outline-dark ml-1" (click)="cancel()" i18n>Cancel</button>
-      <button class="btn btn-outline-dark ml-1" (click)="clear()" i18n>Clear</button>
+      <button class="btn btn-outline-dark ms-1" (click)="cancel()" i18n>Cancel</button>
+      <button class="btn btn-outline-dark ms-1" (click)="clear()" i18n>Clear</button>
     </div>
   </ng-container>
 </div>

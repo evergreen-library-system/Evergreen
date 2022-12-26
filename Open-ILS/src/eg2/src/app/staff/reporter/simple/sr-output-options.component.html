@@ -4,34 +4,34 @@
         <div class="col-sm-10">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="srExcelOutput" name="srExcelOutput" [(ngModel)]="templ.excelOutput">
-            <label class="form-check-label" for="srExcelOutput" i18n>Excel Output</label>
+            <label class="form-label form-check-label" for="srExcelOutput" i18n>Excel Output</label>
           </div>
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="srCsvOutput" name="srCsvOutput" [(ngModel)]="templ.csvOutput">
-            <label class="form-check-label" for="srCsvOutput" i18n>CSV Output</label>
+            <label class="form-label form-check-label" for="srCsvOutput" i18n>CSV Output</label>
           </div>
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="srHtmlOutput" name="srHtmlOutput" [(ngModel)]="templ.htmlOutput">
-            <label class="form-check-label" for="srHtmlOutput" i18n>HTML Output</label>
+            <label class="form-label form-check-label" for="srHtmlOutput" i18n>HTML Output</label>
           </div>
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="srBarCharts" name="srBarCharts" [(ngModel)]="templ.barCharts">
-            <label class="form-check-label" for="srBarCharts" i18n>Bar Chart</label>
+            <label class="form-label form-check-label" for="srBarCharts" i18n>Bar Chart</label>
           </div>
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="srLineCharts" name="srLineCharts" [(ngModel)]="templ.lineCharts">
-            <label class="form-check-label" for="srLineCharts" i18n>Line Chart</label>
+            <label class="form-label form-check-label" for="srLineCharts" i18n>Line Chart</label>
           </div>
         </div>
   </div>
   <div class="form-group row">
     <legend class="col-form-label col-sm-1 pt-0" i18n>Recurrence</legend>
     <div class="col-sm-10 form-inline">
-      <div class="form-check mr-sm-2">
+      <div class="form-check me-sm-2">
         <input class="form-check-input" type="checkbox" id="srRecurring" name="srRecurring" [(ngModel)]="templ.recurring">
-        <label class="form-check-label" for="srRecurring" i18n>Recurring Report?</label>
+        <label class="form-label form-check-label" for="srRecurring" i18n>Recurring Report?</label>
       </div>
-      <label *ngIf="templ.recurring" class="mr-sm-2" for="srRecurrenceInterval">Recurrence Interval</label>
+      <label *ngIf="templ.recurring" class="form-label me-sm-2" for="srRecurrenceInterval">Recurrence Interval</label>
       <eg-interval-input *ngIf="templ.recurring" [(ngModel)]="templ.recurrence" id="srRecurrenceInterval" name="srRecurrenceInterval">
       </eg-interval-input>
     </div>
@@ -41,11 +41,11 @@
     <div class="col-sm-10 ">
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" id="srRunNow" name="srRun" value="now" [(ngModel)]="templ.runNow">
-        <label class="form-check-label" for="srRunNow" i18n>Run Report Now</label>
+        <label class="form-label form-check-label" for="srRunNow" i18n>Run Report Now</label>
       </div>
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" id="srScheduleLater" name="srRun" value="later" (change)="defaultTime()" [(ngModel)]="templ.runNow">
-        <label class="form-check-label" for="srScheduleLater" i18n>Schedule Report For Later</label>
+        <label class="form-label form-check-label" for="srScheduleLater" i18n>Schedule Report For Later</label>
       </div>
       <div class="col-sm-3">
         <eg-datetime-select *ngIf="templ.runNow === 'later'" [(ngModel)]="templ.runTime" name="srRunTime"></eg-datetime-select>
@@ -55,7 +55,7 @@
   <div class="form-group row">
     <legend class="col-form-label col-sm-1 pt-0" i18n>Email</legend>
     <div class="col-sm-10 form-inline">
-      <label class="form-control-label mr-sm-2" for="srEmail" i18n>Email Address</label>
+      <label class="form-control-label me-sm-2" for="srEmail" i18n>Email Address</label>
       <input class="form-control" type="text" id="srEmail" name="srEmail" [(ngModel)]="templ.email">
     </div>
   </div>

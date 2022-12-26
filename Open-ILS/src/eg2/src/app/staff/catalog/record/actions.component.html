@@ -19,25 +19,25 @@
 <eg-upload-jacket-image-dialog #jacketImageDialog [recordId]="recId">
 </eg-upload-jacket-image-dialog>
 
-<div class="row ml-0 mr-0">
+<div class="row gx-0 row-cols-auto ms-0 me-0">
 
   <a target="_blank" href="/eg/opac/record/{{recId}}">
-    <button class="btn btn-outline-primary ml-1" i18n>Patron View</button>
+    <button class="btn btn-outline-primary ms-1" i18n>Patron View</button>
   </a>
 
   <a routerLink="/staff/catalog/hold/T" [queryParams]="{target: recId}"
     *ngIf="isHoldable">
-    <button class="btn btn-outline-primary ml-1" i18n>Place Hold</button>
+    <button class="btn btn-outline-primary ms-1" i18n>Place Hold</button>
   </a>
-  <button class="btn btn-outline-secondary ml-1" *ngIf="!isHoldable" disabled i18n>
+  <button class="btn btn-outline-secondary ms-1" *ngIf="!isHoldable" disabled i18n>
     Place Hold
   </button>
 
-  <button class="btn btn-outline-primary ml-1" (click)="addHoldings()" i18n>
+  <button class="btn btn-outline-primary ms-1" (click)="addHoldings()" i18n>
     Add Holdings
   </button>
 
-  <div ngbDropdown placement="bottom-right" class="ml-1">
+  <div ngbDropdown placement="bottom-right" class="ms-1">
     <button class="btn btn-outline-primary" id="actionsForSerials"
       ngbDropdownToggle i18n>Serials</button>
     <div ngbDropdownMenu aria-labelledby="actionsForSerials">
@@ -50,7 +50,7 @@
     </div>
   </div>
 
-  <div ngbDropdown placement="bottom-right" class="ml-1">
+  <div ngbDropdown placement="bottom-right" class="ms-1">
     <button class="btn btn-outline-primary" id="actionsForDd"
       ngbDropdownToggle i18n>Mark For...</button>
     <div ngbDropdownMenu aria-labelledby="actionsForDd">
@@ -84,7 +84,7 @@
     </div>
   </div>
 
-  <div ngbDropdown placement="bottom-right" class="ml-1">
+  <div ngbDropdown placement="bottom-right" class="ms-1">
     <button class="btn btn-outline-primary" id="otherActionsForDd"
       ngbDropdownToggle i18n>Other Actions</button>
     <div ngbDropdownMenu aria-labelledby="otherActionsForDd">

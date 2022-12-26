@@ -44,9 +44,7 @@
     <div class="row" *ngIf="!hidePickupLibFilter">
       <div class="col-lg-5">
         <div class="input-group">
-          <div class="input-group-prepend">
-            <div class="input-group-text" i18n>Pickup Library</div>
-          </div>
+          <div class="input-group-text" i18n>Pickup Library</div>
           <eg-org-select [persistKey]="persistKey" [fallbackOrg]="pickupLib"
             (componentLoaded)="plCompLoaded = true" (onChange)="pickupLibChanged($event)">
           </eg-org-select>
@@ -57,9 +55,7 @@
     <div class="row" *ngIf="pullListOrg">
       <div class="col-lg-4 mb-2">
         <div class="input-group">
-          <div class="input-group-prepend">
-            <div class="input-group-text" i18n>View Pull List For:</div>
-          </div>
+          <div class="input-group-text" i18n>View Pull List For:</div>
           <eg-org-select [initialOrgId]="pullListOrg"
             (onChange)="pullListOrgChanged($event)">
           </eg-org-select>

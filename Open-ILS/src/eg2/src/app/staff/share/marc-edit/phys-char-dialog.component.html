@@ -2,16 +2,14 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Physical Characteristics Wizard</h4>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
 
     <div class="form-group row">
       <label for="007-value" 
-        class="col-lg-4 col-form-label" i18n>007 Value</label>
+        class="form-label col-lg-4 col-form-label" i18n>007 Value</label>
       <div class="col-lg-5 well-table">
         <div class="well-value">
           <!-- avoid newlines and spaces in the <pre> content -->
@@ -26,7 +24,7 @@
     </div>
 
     <div class="form-group row">
-      <label for="value-selector" class="col-lg-4 col-form-label">
+      <label for="value-selector" class="form-label col-lg-4 col-form-label">
         <ng-container *ngIf="!selectorLabel" i18n>Category of Material</ng-container>
         <ng-container *ngIf="selectorLabel">{{selectorLabel}}</ng-container>
       </label>

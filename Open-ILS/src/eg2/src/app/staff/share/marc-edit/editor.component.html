@@ -17,13 +17,13 @@
 <eg-string #successMsg i18n-text text="Record successfully updated"></eg-string>
 <eg-string #failMsg i18n-text text="Record failed to update"></eg-string>
 
-<div class="row d-flex p-2 m-2">
+<div class="row gx-1 row-cols-auto p-2 m-2">
 
   <ng-container *ngIf="recordType === 'biblio'">
     <div class="form-check">
       <input class="form-check-input" type="checkbox"
         [(ngModel)]="showFastAdd" id="fast-add-item"/>
-      <label class="form-check-label" for="fast-add-item">
+      <label class="form-label form-check-label" for="fast-add-item">
         Add Item
       </label>
     </div>
@@ -31,23 +31,23 @@
 
   <ng-container *ngIf="showFastAdd">
     <div class="form-inline">
-      <input type="text" class="form-control ml-2" 
+      <input type="text" class="form-control ms-2" 
         [(ngModel)]="fastItemLabel" placeholder="Call Number" i18n-placeholder/>
-      <input type="text" class="form-control ml-2" 
+      <input type="text" class="form-control ms-2" 
         [(ngModel)]="fastItemBarcode" placeholder="Barcode" i18n-placeholder/>
     </div>
   </ng-container>
 
   <div class="flex-1"></div>
 
-  <h3 class="mr-2">
-    <span class="badge badge-light p-2" i18n>
+  <h3 class="me-2">
+    <span class="col-form-label rounded bg-light p-2" i18n>
       Record Type {{record ? record.recordType() : ''}}
     </span>
   </h3>
     
   <ng-container *ngIf="recordType === 'biblio'">
-    <div class="mr-2">
+    <div class="me-2">
       <eg-combobox #sourceSelector
         [entries]="sources"
         placeholder="Select a Source..."
@@ -56,16 +56,18 @@
     </div>
   </ng-container>
 
-  <div class="pr-3 mr-3 border-right">
+  <div class="pe-3 me-3 border-end">
     <button class="btn btn-success" (click)="saveRecord()"
-      [disabled]="(record && record.deleted) || record.id === -1" i18n>Save Changes</button>
+      [disabled]="record && (record.deleted || record.id === -1)" i18n>Save Changes</button>
   </div>
 
   <ng-container *ngIf="record && record.id">
-    <button *ngIf="!record.deleted && record.id !== -1" class="btn btn-warning"
-      [disabled]="inPlaceMode" (click)="deleteRecord()" i18n>Delete Record</button>
-    <button *ngIf="record.deleted" class="btn btn-info" 
-      [disabled]="inPlaceMode" (click)="undeleteRecord()" i18n>Undelete Record</button>
+    <div>
+      <button *ngIf="!record.deleted && record.id !== -1" class="btn btn-warning"
+        [disabled]="inPlaceMode" (click)="deleteRecord()" i18n>Delete Record</button>
+      <button *ngIf="record.deleted" class="btn btn-info" 
+        [disabled]="inPlaceMode" (click)="undeleteRecord()" i18n>Undelete Record</button>
+    </div>
   </ng-container>
 </div>
 
@@ -102,9 +104,11 @@
   </div>
 </div>
 
-<div class="row d-flex p-2 m-2 flex-row-reverse">
-  <button class="btn btn-success" (click)="saveRecord()"
-    [disabled]="(record && record.deleted) || record.id === -1" i18n>Save Changes</button>
+<div class="row p-2 m-2 text-end">
+  <div>
+    <button class="btn btn-success" (click)="saveRecord()"
+      [disabled]="record && (record.deleted || record.id === -1)" i18n>Save Changes</button>
+  </div>
 </div>
 
 

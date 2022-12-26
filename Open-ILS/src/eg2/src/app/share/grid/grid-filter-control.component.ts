@@ -337,8 +337,12 @@ export class GridFilterControlComponent implements OnInit {
     }
 
     reset() {
-        this.filterComboboxes.forEach(ctl => { ctl.applyEntryId(null); });
-        this.orgSelects.forEach(ctl => { ctl.reset(); });
+        if (this.filterComboboxes) {
+            this.filterComboboxes.forEach(ctl => { ctl.applyEntryId(null); });
+        }
+        if (this.orgSelects) {
+            this.orgSelects.forEach(ctl => { ctl.reset(); });
+        }
         if (this.dateSelectOne) { this.dateSelectOne.reset(); }
         if (this.dateSelectTwo) { this.dateSelectTwo.reset(); }
     }

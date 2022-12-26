@@ -55,10 +55,8 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Item Alerts</h4>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
 
@@ -68,7 +66,7 @@
         {{alert._message}}
       </div>
       <div class="col-lg-2">
-        <button class="btn btn-sm btn-outline-dark mr-2" *ngIf="canBeAcked(alert)"
+        <button class="btn btn-sm btn-outline-dark me-2" *ngIf="canBeAcked(alert)"
           (click)="alert._acked = !alert._acked" i18n>Clear</button>
       </div>
     </div>
@@ -81,7 +79,7 @@
           {{nextStatuses[0].name()}}
         </ng-container>
         <ng-container *ngIf="nextStatuses.length > 1">
-          <select class="form-control" [(ngModel)]="nextStatus">
+          <select class="form-select" [(ngModel)]="nextStatus">
             <option [value]="stat.id()" *ngFor="let stat of nextStatuses">
               {{stat.name()}}
             </option>
@@ -92,7 +90,7 @@
 
   </div>
   <div class="modal-footer">
-    <button class="btn btn-success mr-2" (click)="ok()" i18n>OK/Continue</button>
+    <button class="btn btn-success me-2" (click)="ok()" i18n>OK/Continue</button>
     <button type="button" class="btn btn-secondary" (click)="close()" i18n>Cancel</button>
   </div>
 </ng-template>

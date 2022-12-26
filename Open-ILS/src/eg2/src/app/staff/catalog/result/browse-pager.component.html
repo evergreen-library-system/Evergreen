@@ -11,7 +11,7 @@
     <div class="col-lg-4">
       <div *ngIf="prevEntry" class="d-flex">
         <div class="">
-          <button class="btn btn-sm btn-outline-dark mr-2" 
+          <button class="btn btn-sm btn-outline-dark me-2" 
             (click)="goToBrowsePage(true)" i18n>Previous Heading</button>
         </div>
         <div class="flex-1 pt-1">
@@ -27,19 +27,19 @@
           <span i18n *ngSwitchCase="'subject'">Subject: </span>
           <span i18n *ngSwitchCase="'series'">Series: </span>
         </ng-container>
-        <span class="font-weight-bold">
+        <span class="fw-bold">
           {{searchContext.termSearch.browseEntry.value()}}
         </span>
       </div>
     </div>
     <div class="col-lg-4">
-      <div *ngIf="nextEntry" class="float-right">
+      <div *ngIf="nextEntry" class="float-end">
         <div class="d-flex">
           <div class="flex-1 pt-1">
             <span>{{nextEntry.value}}</span>
           </div>
           <div class="">
-            <button class="btn btn-sm btn-outline-dark ml-2" 
+            <button class="btn btn-sm btn-outline-dark ms-2" 
               (click)="goToBrowsePage(false)" i18n>Next Heading</button>
           </div>
         </div>

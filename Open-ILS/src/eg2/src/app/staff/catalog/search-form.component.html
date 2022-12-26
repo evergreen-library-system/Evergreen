@@ -15,7 +15,7 @@
 
 <div id='staffcat-search-form'>
 
-  <div *ngIf="canBeHidden()" class="row pt-1 pr-2">
+  <div *ngIf="canBeHidden()" class="row pt-1 pe-2">
     <div class="col-lg-12 d-flex">
       <div class="flex-1"></div><!-- push right -->
       <a (click)="toggleFormDisplay()" class="label-with-material-icon no-href">
@@ -35,13 +35,12 @@
       <li role="presentation" [ngbNavItem]="'term'">
         <a i18n ngbNavLink role="tab">Keyword Search</a>
         <ng-template ngbNavContent>
-          <div class="row"
-            [ngClass]="{'mt-4': idx === 0, 'mt-1': idx > 0}"
+          <div class="row row-cols-auto d-flex align-items-end mt-1"
             *ngFor="let q of context.termSearch.query; let idx = index; trackBy:trackByIdx">
-            <div class="col-lg-2 pr-1">
+            <div class="col-lg-2 pe-1">
               <div *ngIf="idx === 0">
-                <label i18n class="select-label" for="context-termSearch-format">Format</label>
-                <select class="form-control" id="context-termSearch-format" [(ngModel)]="context.termSearch.format">
+                <label i18n class="form-label select-label" for="context-termSearch-format">Format</label>
+                <select class="form-select" id="context-termSearch-format" [(ngModel)]="context.termSearch.format">
                   <option i18n value=''>All Formats</option>
                   <ng-container
                     *ngTemplateOutlet="ccvmOption;context:{list:ccvmMap.search_format}">
@@ -49,17 +48,17 @@
                 </select>
               </div>
               <div *ngIf="idx > 0">
-                <label i18n class="select-label" for="context-termSearch-joinOp-{{idx}}">Join with</label>
-                <select class="form-control" id="context-termSearch-joinOp-{{idx}}"
+                <label i18n class="form-label select-label" for="context-termSearch-joinOp-{{idx}}">Join with</label>
+                <select class="form-select" id="context-termSearch-joinOp-{{idx}}"
                   [(ngModel)]="context.termSearch.joinOp[idx]">
                   <option i18n value='&&'>And</option>
                   <option i18n value='||'>Or</option>
                 </select>
               </div>
             </div>
-            <div class="col-lg-2 pl-0 pr-2">
-              <label i18n class="select-label" for="context-termSearch-fieldClass-{{idx}}">Catalog Field</label>
-              <select class="form-control" id="context-termSearch-fieldClass-{{idx}}"
+            <div class="col-lg-2 ps-0 pe-2">
+              <label i18n class="form-label select-label" for="context-termSearch-fieldClass-{{idx}}">Catalog Field</label>
+              <select class="form-select" id="context-termSearch-fieldClass-{{idx}}"
                 (change)="preventBogusCombos(idx)"
                 [(ngModel)]="context.termSearch.fieldClass[idx]">
                 <option i18n value='keyword'>Keyword</option>
@@ -72,9 +71,9 @@
                   *ngIf="showBookplate()">Digital Bookplate</option>
               </select>
             </div>
-            <div class="col-lg-2 pl-0 pr-2">
-              <label i18n class="select-label" for="context-termSearch-matchOp-{{idx}}">Matching</label>
-              <select class="form-control" id="context-termSearch-matchOp-{{idx}}"
+            <div class="col-lg-2 ps-0 pe-2">
+              <label i18n class="form-label select-label" for="context-termSearch-matchOp-{{idx}}">Matching</label>
+              <select class="form-select" id="context-termSearch-matchOp-{{idx}}"
                 [(ngModel)]="context.termSearch.matchOp[idx]">
                 <option i18n value='contains'>Contains</option>
                 <option i18n value='nocontains'>Does not contain</option>
@@ -85,10 +84,10 @@
                   i18n value='starts'>Starts with</option>
               </select>
             </div>
-            <div class="col-lg-4 pl-0 pr-2">
+            <div class="col-lg-4 ps-0 pe-2">
               <div class="form-group">
                 <div *ngIf="idx === 0">
-                  <label i18n class="input-label" for='first-query-input'>Search Terms</label>
+                  <label i18n class="form-label input-label" for='first-query-input'>Search Terms</label>
                   <input type="text" class="form-control"
                     id='first-query-input'
                     [(ngModel)]="context.termSearch.query[idx]"
@@ -96,7 +95,7 @@
                     placeholder="Query..."/>
                 </div>
                 <div *ngIf="idx > 0">
-                  <label i18n class="input-label" for='context-termSearch-query-{{idx}}'>Search Terms</label>
+                  <label i18n class="form-label input-label" for='context-termSearch-query-{{idx}}'>Search Terms</label>
                   <input type="text" class="form-control"
                     [(ngModel)]="context.termSearch.query[idx]"
                     (keyup.enter)="searchByForm()"
@@ -104,7 +103,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-2 pl-0 pr-1">
+            <div class="col-lg-2 ps-0 pe-1">
               <button class="btn btn-sm material-icon-button"
                 (click)="addSearchRow(idx + 1)"
                 i18n-title title="Add Search Row">
@@ -124,11 +123,11 @@
               </button>
             </div>
           </div>
-          <div class="row">
-            <div class="col-lg-12 form-inline">
-              <div class="form-inline-group">
-                <label i18n class="select-label" for="context-sort">Sort Results</label>
-                <select class="form-control mr-2" id="context-sort" [(ngModel)]="context.sort">
+          <div class="mt-3 gx-3 row row-cols-auto">
+            <div class="col row-cols-auto d-flex align-items-end form-inline">
+              <div class="col form-inline-group">
+                <label i18n class="form-label select-label" for="context-sort">Sort Results</label>
+                <select class="form-select me-2" id="context-sort" [(ngModel)]="context.sort">
                   <option value='' i18n>Sort by Relevance</option>
                   <optgroup label="Sort by Title" i18n-label>
                     <option value='titlesort' i18n>Title: A to Z</option>
@@ -148,38 +147,38 @@
                   </optgroup>
                 </select>
               </div>
-                <div class="checkbox pl-2 ml-2 pt-2">
-                  <label for="context-termSearch-available">
+                <div class="col checkbox ps-2 ms-2 pt-2">
+                  <label class="form-label" for="context-termSearch-available">
                     <input type="checkbox" [(ngModel)]="context.termSearch.available" id="context-termSearch-available" />
-                    <span class="pl-1" i18n>Limit to Available</span>
+                    <span class="ps-1" i18n>Limit to Available</span>
                   </label>
                 </div>
-                <div class="checkbox pl-3 pt-2">
-                  <label for="context-termSearch-groupByMetarecord">
+                <div class="col checkbox ps-3 pt-2">
+                  <label class="form-label" for="context-termSearch-groupByMetarecord">
                     <input type="checkbox" id="context-termSearch-groupByMetarecord"
                       [(ngModel)]="context.termSearch.groupByMetarecord"/>
-                    <span class="pl-1" i18n>Group Formats/Editions</span>
+                    <span class="ps-1" i18n>Group Formats/Editions</span>
                   </label>
                 </div>
-                <div class="checkbox pl-3 pt-2">
-                  <label for="context-global">
+                <div class="col checkbox ps-3 pt-2">
+                  <label class="form-label" for="context-global">
                     <input type="checkbox" id="context-global" [(ngModel)]="context.global"/>
-                    <span class="pl-1" i18n>Results from All Libraries</span>
+                    <span class="ps-1" i18n>Results from All Libraries</span>
                   </label>
                 </div>
-                <div class="checkbox pl-3 pt-2" *ngIf="showExcludeElectronic()">
-                  <label for="context-termSearch-excludeElectronic">
+                <div class="col checkbox ps-3 pt-2" *ngIf="showExcludeElectronic()">
+                  <label class="form-label" for="context-termSearch-excludeElectronic">
                     <input type="checkbox" id="context-termSearch-excludeElectronic"
                       [(ngModel)]="context.termSearch.excludeElectronic"/>
-                    <span class="pl-1" i18n>Exclude Electronic Resources</span>
+                    <span class="ps-1" i18n>Exclude Electronic Resources</span>
                   </label>
                 </div>
               </div>
           </div>
           <div class="row" *ngIf="showFilters()">
-            <div class="col-lg-3 mt-3" *ngIf="searchFilters().includes('item_type')">
-              <label i18n class="select-label" for="context-termSearch-ccvmFilters-item_type">Item Type</label>
-              <select class="form-control"  multiple="true" id="context-termSearch-ccvmFilters-item_type"
+            <div class="col mt-3" *ngIf="searchFilters().includes('item_type')">
+              <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_type">Item Type</label>
+              <select class="form-select"  multiple="true" id="context-termSearch-ccvmFilters-item_type"
                 [(ngModel)]="context.termSearch.ccvmFilters.item_type">
                 <option value='' i18n>All Item Types</option>
                 <ng-container
@@ -187,9 +186,9 @@
                 </ng-container> 
               </select>
             </div>
-            <div class="col-lg-3 mt-3" *ngIf="searchFilters().includes('item_form')">
-              <label i18n class="select-label" for="context-termSearch-ccvmFilters-item_form">Form</label>
-              <select class="form-control" multiple="true" id="context-termSearch-ccvmFilters-item_form"
+            <div class="col mt-3" *ngIf="searchFilters().includes('item_form')">
+              <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_form">Form</label>
+              <select class="form-select" multiple="true" id="context-termSearch-ccvmFilters-item_form"
                 [(ngModel)]="context.termSearch.ccvmFilters.item_form">
                 <option value='' i18n>All Item Forms</option>
                 <ng-container
@@ -197,9 +196,9 @@
                 </ng-container> 
               </select>
             </div>
-            <div class="col-lg-3 mt-3" *ngIf="searchFilters().includes('item_lang')">
-              <label i18n class="select-label" for="context-termSearch-ccvmFilters-item_lang">Language</label>
-              <select class="form-control" id="context-termSearch-ccvmFilters-item_lang"
+            <div class="col mt-3" *ngIf="searchFilters().includes('item_lang')">
+              <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-item_lang">Language</label>
+              <select class="form-select" id="context-termSearch-ccvmFilters-item_lang"
                 [(ngModel)]="context.termSearch.ccvmFilters.item_lang" multiple="true">
                 <option value='' i18n>All Languages</option>
                 <ng-container
@@ -207,9 +206,9 @@
                 </ng-container> 
               </select>
             </div>
-            <div class="col-lg-3 mt-3" *ngIf="searchFilters().includes('audience')">
-              <label i18n class="select-label" for="context-termSearch-ccvmFilters-audience">Audience</label>
-              <select class="form-control" id="context-termSearch-ccvmFilters-audience"
+            <div class="col mt-3" *ngIf="searchFilters().includes('audience')">
+              <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-audience">Audience</label>
+              <select class="form-select" id="context-termSearch-ccvmFilters-audience"
                 [(ngModel)]="context.termSearch.ccvmFilters.audience" multiple="true">
                 <option value='' i18n>All Audiences</option>
                 <ng-container
@@ -217,9 +216,9 @@
                 </ng-container> 
               </select>
             </div>
-            <div class="col-lg-3 mt-3" *ngIf="searchFilters().includes('vr_format')">
-              <label i18n class="select-label" for="context-termSearch-ccvmFilters-vr_format">Video Format</label>
-              <select class="form-control" id="context-termSearch-ccvmFilters-vr_format"
+            <div class="col mt-3" *ngIf="searchFilters().includes('vr_format')">
+              <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-vr_format">Video Format</label>
+              <select class="form-select" id="context-termSearch-ccvmFilters-vr_format"
                 [(ngModel)]="context.termSearch.ccvmFilters.vr_format" multiple="true">
                 <option value='' i18n>All Video Formats</option>
                 <ng-container
@@ -227,9 +226,9 @@
                 </ng-container> 
               </select>
             </div>
-            <div class="col-lg-3 mt-3" *ngIf="searchFilters().includes('bib_level')">
-              <label i18n class="select-label" for="context-termSearch-ccvmFilters-bib_level">Bibliographic Level</label>
-              <select class="form-control" id="context-termSearch-ccvmFilters-bib_level"
+            <div class="col mt-3" *ngIf="searchFilters().includes('bib_level')">
+              <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-bib_level">Bibliographic Level</label>
+              <select class="form-select" id="context-termSearch-ccvmFilters-bib_level"
                 [(ngModel)]="context.termSearch.ccvmFilters.bib_level" multiple="true">
                 <option value='' i18n>All Bib Levels</option>
                 <ng-container
@@ -237,9 +236,9 @@
                 </ng-container> 
               </select>
             </div>
-            <div class="col-lg-3 mt-3" *ngIf="searchFilters().includes('lit_form')">
-              <label i18n class="select-label" for="context-termSearch-ccvmFilters-lit_form">Literary Form</label>
-              <select class="form-control" id="context-termSearch-ccvmFilters-lit_form"
+            <div class="col mt-3" *ngIf="searchFilters().includes('lit_form')">
+              <label i18n class="form-label select-label" for="context-termSearch-ccvmFilters-lit_form">Literary Form</label>
+              <select class="form-select" id="context-termSearch-ccvmFilters-lit_form"
                 [(ngModel)]="context.termSearch.ccvmFilters.lit_form" multiple="true">
                 <option value='' i18n>All Literary Forms</option>
                 <ng-container
@@ -247,9 +246,9 @@
                 </ng-container> 
               </select>
             </div>
-            <div class="col-lg-3 mt-3">
-              <label i18n class="select-label" for="context-termSearch-copyLocations">Shelving Location</label>
-              <select class="form-control" id="context-termSearch-copyLocations"
+            <div class="col mt-3">
+              <label i18n class="form-label select-label" for="context-termSearch-copyLocations">Shelving Location</label>
+              <select class="form-select" id="context-termSearch-copyLocations"
                 [(ngModel)]="context.termSearch.copyLocations" multiple="true">
                 <option value='' i18n>All Shelving Locations</option>
                 <option *ngFor="let loc of copyLocations" value="{{loc.id()}}" i18n>
@@ -258,22 +257,22 @@
               </select>
             </div>
           </div>
-          <div class="row mt-3" *ngIf="showFilters()">
-            <div class="col-lg-12">
+          <div class="row row-cols-auto mt-3" *ngIf="showFilters()">
+            <div class="col">
               <div class="form-inline">
-                <label for="pub-date1-input" i18n>Publication Year is</label>
-                <label class="sr-only" for="pub-date-operator-select" i18n>compare publication dates using...</label>
-                <select id="pub-date-operator-select" class="form-control ml-2" [(ngModel)]="context.termSearch.dateOp">
+                <label class="form-label" for="pub-date1-input" i18n>Publication Year is</label>
+                <label class="visually-hidden" for="pub-date-operator-select" i18n>compare publication dates using...</label>
+                <select id="pub-date-operator-select" class="form-select ms-2" [(ngModel)]="context.termSearch.dateOp">
                   <option value='is' i18n>Is</option>
                   <option value='before' i18n>Before</option>
                   <option value='after' i18n>After</option>
                   <option value='between' i18n>Between</option>
                 </select>
-                <label i18n class="sr-only" for="context-termSearch-date1">Year, or beginning of year range</label>
-                <input class="form-control ml-2" type="number" id="context-termSearch-date1"
+                <label i18n class="visually-hidden" for="context-termSearch-date1">Year, or beginning of year range</label>
+                <input class="form-control ms-2" type="number" id="context-termSearch-date1"
                   [(ngModel)]="context.termSearch.date1"/>
-                <label i18n class="sr-only" for="context-termSearch-date2">End of year range</label>
-                  <input class="form-control ml-2" type="number"
+                <label i18n class="visually-hidden" for="context-termSearch-date2">End of year range</label>
+                  <input class="form-control ms-2" type="number"
                   *ngIf="context.termSearch.dateOp === 'between'"
                   [(ngModel)]="context.termSearch.date2"/>
               </div>
@@ -288,7 +287,7 @@
             <div class="col-lg-12">
               <div class="form-inline">
                 <label for="ident-type" i18n>Query Type</label>
-                <select class="form-control ml-2" name="ident-type"
+                <select class="form-select ms-2" name="ident-type"
                   [(ngModel)]="context.identSearch.queryType">
                   <option i18n value="identifier|isbn">ISBN</option>
                   <option i18n value="identifier|upc">UPC</option>
@@ -297,13 +296,37 @@
                   <option i18n value="identifier|tcn">TCN</option>
                   <option i18n value="item_barcode">Item Barcode</option>
                 </select>
-                <label for="ident-value" class="ml-2" i18n>Value</label>
+                <label for="ident-value" class="ms-2" i18n>Value</label>
                 <input name="ident-value" id='ident-query-input' 
-                  type="text" class="form-control ml-2"
+                  type="text" class="form-control ms-2"
                   [(ngModel)]="context.identSearch.value"
                   (keyup.enter)="searchByForm()"
                   placeholder="Numeric Query..."/>
               </div>
+            </div>
+          </div>
+          <div class="row mt-2 gx-3 row-cols-auto justify-content-start align-items-center">
+            <label class="form-label col" for="ident-type" i18n>Query Type</label>
+            <div class="col">
+              <label class="form-label col-form-label" for="ident-type" i18n>Query Type</label>
+              <select class="form-select" name="ident-type"
+                [(ngModel)]="context.identSearch.queryType">
+                <option i18n value="identifier|isbn">ISBN</option>
+                <option i18n value="identifier|upc">UPC</option>
+                <option i18n value="identifier|issn">ISSN</option>
+                <option i18n value="identifier|lccn">LCCN</option>
+                <option i18n value="identifier|tcn">TCN</option>
+                <option i18n value="item_barcode">Item Barcode</option>
+              </select>
+            </div>
+            <div class="col">
+              <label for="ident-value" class="form-label col-form-label" i18n>Value</label>
+            
+              <input name="ident-value" id='ident-query-input' 
+                type="text" class="form-control"
+                [(ngModel)]="context.identSearch.value"
+                (keyup.enter)="searchByForm()"
+                placeholder="Numeric Query..."/>
             </div>
           </div>
         </ng-template>
@@ -311,41 +334,49 @@
       <li role="presentation" [ngbNavItem]="'marc'">
         <a i18n ngbNavLink role="tab">MARC Search</a>
         <ng-template ngbNavContent>
-          <div class="row mt-4">
-            <div class="col-lg-12">
-              <div class="form-inline mt-2" 
+          <div class="mt-1">
+              <div class="row mt-2 gx-3 row-cols-auto" 
                 *ngFor="let q of context.marcSearch.values; let idx = index; trackBy:trackByIdx">
-                <label for="marc-tag-{{idx}}" i18n>Tag</label>
-                <input class="form-control ml-2" size="3" type="text" 
-                  name="marc-tag-{{idx}}" id="{{ idx === 0 ? 'first-marc-tag' : '' }}"
-                  [(ngModel)]="context.marcSearch.tags[idx]"
-                  (keyup.enter)="searchByForm()"/>
-                <label for="marc-subfield-{{idx}}" class="ml-2" i18n>Subfield</label>
-                <input class="form-control ml-2" size="1" type="text" 
-                  name="marc-subfield-{{idx}}"
-                  [(ngModel)]="context.marcSearch.subfields[idx]"
-                  (keyup.enter)="searchByForm()"/>
-                <label for="marc-value-{{idx}}" class="ml-2" i18n>Value</label>
-                <input class="form-control ml-2" type="text" name="marc-value-{{idx}}"
-                  [(ngModel)]="context.marcSearch.values[idx]" 
-                  (keyup.enter)="searchByForm()"/>
-                <button class="btn btn-sm material-icon-button ml-2"
-                  (click)="addMarcSearchRow(idx + 1)">
-                  <span class="material-icons">add_circle_outline</span>
-                </button>
-                <button class="btn btn-sm material-icon-button ml-2"
-                  [disabled]="context.marcSearch.values.length < 2"
-                  (click)="delMarcSearchRow(idx)">
-                  <span class="material-icons">remove_circle_outline</span>
-                </button>
+                <label class="form-label col-form-label" for="marc-tag-{{idx}}" i18n>Tag</label>
+                <div class="col ps-0">
+                  <input class="form-control ms-0" size="3" type="text" 
+                    name="marc-tag-{{idx}}" id="{{ idx === 0 ? 'first-marc-tag' : '' }}"
+                    [(ngModel)]="context.marcSearch.tags[idx]"
+                    (keyup.enter)="searchByForm()"/>
+                </div>
+                <label class="form-label col-form-label" for="marc-subfield-{{idx}}" i18n>Subfield</label>
+                <div class="col ps-0">
+                  <input class="form-control ms-0" size="1" type="text" 
+                    name="marc-subfield-{{idx}}"
+                    [(ngModel)]="context.marcSearch.subfields[idx]"
+                    (keyup.enter)="searchByForm()"/>
+                </div>
+                <label class="form-label col-form-label"  for="marc-value-{{idx}}" i18n>Value</label>
+                <div class="col ps-0">
+                  <input class="form-control ms-0" type="text" name="marc-value-{{idx}}"
+                    [(ngModel)]="context.marcSearch.values[idx]" 
+                    (keyup.enter)="searchByForm()"/>
+                </div>
+                <div class="col">
+                  <button class="btn btn-sm material-icon-button ms-2"
+                    (click)="addMarcSearchRow(idx + 1)">
+                    <span class="material-icons">add_circle_outline</span>
+                  </button>
+                </div>
+                <div class="col">
+                  <button class="btn btn-sm material-icon-button ps-0 ms-0"
+                    [disabled]="context.marcSearch.values.length < 2"
+                    (click)="delMarcSearchRow(idx)">
+                    <span class="material-icons">remove_circle_outline</span>
+                  </button>
+                </div>
               </div>
-            </div>
           </div>
           <div class="row mt-2">
-            <div class="checkbox pl-3">
+            <div class="checkbox ps-3">
               <label>
                 <input type="checkbox" [(ngModel)]="context.global"/>
-                <span class="pl-1" i18n>Results from All Libraries</span>
+                <span class="ps-1" i18n>Results from All Libraries</span>
               </label>
             </div>
           </div>
@@ -354,18 +385,20 @@
       <li role="presentation" [ngbNavItem]="'browse'">
         <a i18n ngbNavLink role="tab">Browse</a>
         <ng-template ngbNavContent>
-          <div class="row mt-4">
-            <div class="col-lg-12 form-inline">
-              <label for="field-class" i18n>Browse for</label>
-              <select class="form-control ml-2" name="field-class"
+          <div class="row gx-3 row-cols-auto">
+            <label class="form-label col-form-label" for="field-class" i18n>Browse for</label>
+            <div class="col ps-0">
+              <select class="form-select ms-0" name="field-class"
                 [(ngModel)]="context.browseSearch.fieldClass">
                 <option i18n value='title'>Title</option>
                 <option i18n value='author'>Author</option>
                 <option i18n value='subject'>Subject</option>
                 <option i18n value='series'>Series</option>
               </select>
-              <label for="query" class="ml-2"> starting with </label>
-              <input type="text" class="form-control ml-2" 
+            </div>
+            <label class="form-label col-form-label" for="query"> starting with </label>
+            <div class="col ps-0">
+              <input type="text" class="form-control" 
                 id='browse-term-input' name="query"
                 [(ngModel)]="context.browseSearch.value"
                 (keyup.enter)="searchByForm()"
@@ -377,12 +410,12 @@
       <li role="presentation" [ngbNavItem]="'cnbrowse'">
         <a i18n ngbNavLink role="tab">Shelf Browse</a>
         <ng-template ngbNavContent>
-          <div class="row mt-4">
-            <div class="col-lg-12 form-inline">
-              <label for="cnbrowse-term-input" i18n>
-                Browse Call Numbers starting with 
-              </label>
-              <input type="text" class="form-control ml-2" 
+          <div class="row gx-3 row-cols-auto">
+            <label class="form-label col-form-label" for="cnbrowse-term-input" i18n>
+              Browse Call Numbers starting with 
+            </label>
+            <div class="col ps-0">
+              <input type="text" class="form-control ms-2" 
                 id='cnbrowse-term-input' name="query"
                 [(ngModel)]="context.cnBrowseSearch.value"
                 (keyup.enter)="searchByForm()"
@@ -401,18 +434,18 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-body">
-            <div class="float-right d-flex">
+            <div class="float-end d-flex">
               <eg-org-select 
                 (onChange)="orgOnChange($event)"
                 [initialOrg]="context.searchOrg"
                 [placeholder]="'Library'" >
               </eg-org-select>
-              <button class="btn btn-success mr-1 ml-1" type="button"
+              <button class="btn btn-success me-1 ms-1" type="button"
                 [disabled]="searchIsActive()"
                 (click)="context.pager.offset=0;searchByForm()" i18n>
                 Search
               </button>
-              <button class="btn btn-warning mr-1" type="button"
+              <button class="btn btn-warning me-1" type="button"
                 [disabled]="searchIsActive()"
                 (click)="context.reset()" i18n>
                 Reset
@@ -439,7 +472,7 @@
     <ng-container *ngIf="context.result.global_summary as gs">
       <ng-container *ngIf="gs.suggestions as sugg">
         <div *ngIf="sugg.one_class_one_term as ocot" class="col-lg-12 d-flex align-content-center">
-          <span class="font-weight-bold font-italic mr-1" i18n>Did you mean:</span>
+          <span class="fw-bold fst-italic me-1" i18n>Did you mean:</span>
           <span *ngFor="let s of ocot.suggestions; first as isFirst">
             <span *ngIf="!isFirst" i18n>&nbsp; or &nbsp;</span>
             <a routerLink="/staff/catalog/search" queryParamsHandling="merge"

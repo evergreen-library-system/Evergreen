@@ -5,7 +5,7 @@
       <div *ngFor="let name of facetConf.facetOrder">
         <div class="row"
           *ngIf="searchContext.result.facetData[facetConf.facetClass][name]">
-          <div class="card mb-2">
+          <div class="card mb-2 p-0">
             <h3 class="card-header">
               {{searchContext.result.facetData[facetConf.facetClass][name].cmfLabel}}
             </h3>

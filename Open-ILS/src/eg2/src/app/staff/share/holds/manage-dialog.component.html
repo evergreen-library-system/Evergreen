@@ -6,10 +6,8 @@
       <ng-container *ngIf="holdIds.length > 1">
         <h4 class="modal-title">Batch Modify {{holdIds.length}} Holds</h4>
       </ng-container>
-      <button type="button" class="close"
-        i18n-aria-label aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <button type="button" class="btn-close btn-close-white"
+        i18n-aria-label aria-label="Close" (click)="close()"> </button>
     </div>
     <div class="modal-body">
       <eg-hold-manage [holdIds]="holdIds" (onComplete)="onComplete($event)">

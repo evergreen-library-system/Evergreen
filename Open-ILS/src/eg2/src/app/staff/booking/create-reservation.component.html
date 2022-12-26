@@ -6,19 +6,15 @@
     <div class="row">
       <div class="col">
         <div class="input-group">
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="ideal-reservation-type" i18n>Reservation type</label>
-          </div>
-          <select class="form-control" id="ideal-reservation-type" formControlName="reservationType">
+          <label class="form-label input-group-text" for="ideal-reservation-type" i18n>Reservation type</label>
+          <select class="form-select" id="ideal-reservation-type" formControlName="reservationType">
             <option *ngFor="let type of reservationTypes" [ngValue]="type" i18n>{{type.name}}</option>
           </select>
         </div>
       </div>
       <div class="col">
         <div class="input-group">
-          <div class="input-group-prepend">
-            <label class="input-group-text" for="ideal-reservation-date" i18n>Reservation date</label>
-          </div>
+          <label class="form-label input-group-text" for="ideal-reservation-date" i18n>Reservation date</label>
           <eg-date-select *ngIf="!multiday" #dateLimiter domId="ideal-reservation-date" formControlName="idealDate"></eg-date-select>
           <eg-daterange-select *ngIf="multiday" formControlName="idealDateRange"></eg-daterange-select>
         </div>
@@ -37,9 +33,7 @@
           <div ngbPanelContent class="row">
             <div class="col">
               <div class="input-group">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="ideal-resource-type" i18n>Search by resource type</label>
-                </div>
+                <label class="form-label input-group-text" for="ideal-resource-type" i18n>Search by resource type</label>
                 <eg-combobox
                   formControlName="resourceType"
                   domId="ideal-resource-type"
@@ -65,9 +59,7 @@
           <div ngbPanelContent class="row">
             <div class="col">
               <div class="input-group">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="ideal-resource-barcode" i18n>Search by resource barcode</label>
-                </div>
+                <label class="form-label input-group-text" for="ideal-resource-barcode" i18n>Search by resource barcode</label>
                 <input type="text" id="ideal-resource-barcode" class="form-control" formControlName="resourceBarcode">
               </div>
             </div>
@@ -84,9 +76,7 @@
           <ul class="list-group list-group-flush" formArrayName="selectedAttributes">
             <li *ngFor="let attribute of attributes; let i = index" class="list-group-item">
               <span class="input-group">
-                <span class="input-group-prepend">
-                  <label class="input-group-text" for="attribute-{{attribute.id()}}" i18n>{{attribute.name()}}</label>
-                </span>
+                <label class="form-label input-group-text" for="attribute-{{attribute.id()}}" i18n>{{attribute.name()}}</label>
                 <eg-combobox [formControlName]="i">
                   <eg-combobox-entry *ngFor="let value of attribute.valid_values()"
                     [entryId]="value.id()" [entryLabel]="value.valid_value()">
@@ -107,17 +97,13 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <span class="input-group">
-                <span class="input-group-prepend">
-                  <label class="input-group-text" for="start-time" i18n>Start time</label>
-                </span>
+                  <label class="form-label input-group-text" for="start-time" i18n>Start time</label>
                 <ngb-timepicker formControlName="startOfDay" [minuteStep]="minuteStep()" [meridian]="true"></ngb-timepicker>
               </span>
             </li>
             <li class="list-group-item">
               <span class="input-group">
-                <span class="input-group-prepend">
-                  <label class="input-group-text" for="end-time" i18n>End time</label>
-                </span>
+                  <label class="form-label input-group-text" for="end-time" i18n>End time</label>
                 <ngb-timepicker formControlName="endOfDay" [minuteStep]="minuteStep()" [meridian]="true"></ngb-timepicker>
               </span>
             </li>
@@ -129,9 +115,7 @@
             </li>
             <li class="list-group-item">
               <span class="input-group">
-                <span class="input-group-prepend">
-                  <label class="input-group-text" for="granularity" i18n>Granularity</label>
-                </span>
+                  <label class="form-label input-group-text" for="granularity" i18n>Granularity</label>
                 <eg-combobox (onChange)="changeGranularity($event)" [startId]="granularity ? granularity : 30">
                   <eg-combobox-entry [entryId]="15" entryLabel="15 minutes"
                     i18n-entryLabel></eg-combobox-entry>

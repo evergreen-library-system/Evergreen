@@ -1,30 +1,26 @@
-<form class="form-inline" [formGroup]="familySelectors">
-  <div class="input-group">
-    <div class="input-group-prepend">
-      <span class="input-group-text">{{labelText}}</span>
-    </div>
-    <eg-org-select [domId]="domId"
-      (onChange)="orgOnChange($event)"
-      [limitPerms]="limitPerms"
-      [applyOrgId]="selectedOrgId">
-    </eg-org-select>
-  </div>
+<form class="d-flex align-items-start" [formGroup]="familySelectors">
+  <span class="input-group-text">{{labelText}}</span>
+  <eg-org-select [domId]="domId"
+    (onChange)="orgOnChange($event)"
+    [limitPerms]="limitPerms"
+    [applyOrgId]="selectedOrgId">
+  </eg-org-select>
 
   <!-- stack the checkboxes -->
-  <div class="ml-2 d-flex flex-column align-items-start">
-    <div class="form-check" *ngIf="!hideAncestorSelector">
+  <div class="ms-2 d-flex flex-column align-items-start">
+    <div class="form-check m-0 pb-0" style="min-height:.8rem" *ngIf="!hideAncestorSelector">
       <input type="checkbox"
         formControlName="includeAncestors"
         (blur)="propagateTouch()"
         class="form-check-input" id="{{domId}}-include-ancestors">
-      <label class="form-check-label" for="{{domId}}-include-ancestors" i18n>+ Ancestors</label>
+      <label class="form-label form-check-label" for="{{domId}}-include-ancestors" i18n>+ Ancestors</label>
     </div>
-    <div class="form-check" *ngIf="!hideDescendantSelector">
+    <div class="form-check m-0 pt-0" style="min-height:.8rem" *ngIf="!hideDescendantSelector">
       <input type="checkbox"
         formControlName="includeDescendants"
         (blur)="propagateTouch()"
         class="form-check-input" id="{{domId}}-include-descendants">
-      <label class="form-check-label" for="{{domId}}-include-descendants" i18n>+ Descendants</label>
+      <label class="form-label form-check-label" for="{{domId}}-include-descendants" i18n>+ Descendants</label>
     </div>
   </div>
 </form>

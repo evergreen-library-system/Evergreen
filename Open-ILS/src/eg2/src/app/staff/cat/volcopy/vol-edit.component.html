@@ -22,7 +22,7 @@
 <div *ngIf="volcopy.defaults.visible.batch_actions" 
   class="row d-flex bg-faint mb-2 pb-1 pt-1 border border-dark rounded">
   <div class="p-1" [ngStyle]="{flex: flexAt(1)}">
-    <div><label class="font-weight-bold" i18n>&nbsp;</label></div>
+    <div><label  class="form-label fw-bold" i18n>&nbsp;</label></div>
     <button class="btn btn-sm btn-outline-dark label-with-material-icon" 
       (click)="toggleBatchVisibility()">
       <span i18n>Batch Actions</span>
@@ -31,7 +31,7 @@
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(3)}">
     <ng-container *ngIf="displayColumn('classification')">
-      <div><label class="font-weight-bold" i18n>Classification</label></div>
+      <div><label  class="form-label fw-bold" i18n>Classification</label></div>
       <div>
         <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolClass">
           <eg-combobox-entry *ngFor="let cls of volcopy.commonData.acn_class"
@@ -43,7 +43,7 @@
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(4)}">
     <ng-container *ngIf="displayColumn('prefix')">
-      <div><label class="font-weight-bold" i18n>Prefix</label></div>
+      <div><label  class="form-label fw-bold" i18n>Prefix</label></div>
       <div>
         <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolPrefix">
           <eg-combobox-entry *ngFor="let pfx of volcopy.commonData.acn_prefix"
@@ -55,7 +55,7 @@
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(5)}">
     <div>
-      <label class="font-weight-bold" i18n>
+      <label class="form-label fw-bold" i18n>
         Call Number Label
       </label>
     </div>
@@ -70,7 +70,7 @@
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(6)}">
     <ng-container *ngIf="displayColumn('suffix')">
-      <div><label class="font-weight-bold" i18n>Suffix</label></div>
+      <div><label class="form-label fw-bold" i18n>Suffix</label></div>
       <div>
         <eg-combobox [smallFormControl]="true" [(ngModel)]="batchVolSuffix">
           <eg-combobox-entry *ngFor="let sfx of volcopy.commonData.acn_suffix"
@@ -81,7 +81,7 @@
     </ng-container>
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(7)}">
-    <div><label class="font-weight-bold" i18n>Batch</label></div>
+    <div><label class="form-label fw-bold" i18n>Batch</label></div>
     <div>
       <button class="btn btn-sm btn-outline-dark label-with-material-icon"
         (click)="batchVolApply()">
@@ -99,7 +99,7 @@
 
 <div class="row d-flex mt-2 mb-2">
   <div class="p-1" [ngStyle]="{flex: flexAt(1)}">
-    <span class="font-weight-bold" i18n>Owning Library
+    <span class="fw-bold" i18n>Owning Library
       <ng-container *ngIf="expand !== 1">
         <button title="Expand Column" i18n-title 
           class="material-icon-button" (click)="expand = 1">
@@ -116,7 +116,7 @@
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(3)}">
     <ng-container *ngIf="displayColumn('classification')">
-      <span class="font-weight-bold" i18n>Classification
+      <span class="fw-bold" i18n>Classification
         <ng-container *ngIf="expand !== 3">
           <button title="Expand Column" i18n-title 
             class="material-icon-button" (click)="expand = 3">
@@ -134,7 +134,7 @@
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(4)}">
     <ng-container *ngIf="displayColumn('prefix')">
-      <span class="font-weight-bold" i18n>Prefix
+      <span class="fw-bold" i18n>Prefix
         <ng-container *ngIf="expand !== 4">
           <button title="Expand Column" i18n-title 
             class="material-icon-button" (click)="expand = 4">
@@ -151,7 +151,7 @@
     </ng-container>
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(5)}">
-    <span class="font-weight-bold" i18n>Call Number Label
+    <span class="fw-bold" i18n>Call Number Label
       <ng-container *ngIf="expand !== 5">
         <button title="Expand Column" i18n-title 
           class="material-icon-button" (click)="expand = 5">
@@ -168,7 +168,7 @@
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(6)}">
     <ng-container *ngIf="displayColumn('suffix')">
-      <span class="font-weight-bold" i18n>Suffix
+      <span class="fw-bold" i18n>Suffix
         <ng-container *ngIf="expand !== 6">
           <button title="Expand Column" i18n-title 
             class="material-icon-button" (click)="expand = 6">
@@ -185,7 +185,7 @@
     </ng-container>
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(7)}">
-    <label class="font-weight-bold" i18n></label>
+    <label class="form-label fw-bold" i18n></label>
   </div>
   <!-- 
     When hiding the copy_number column, absorb its colum width to 
@@ -193,7 +193,7 @@
     line up with the batch updater row sitting above
   -->
   <div class="p-1" [ngStyle]="{flex: flexAt(8)}">
-    <span class="font-weight-bold" i18n>Barcode
+    <span class="fw-bold" i18n>Barcode
       <ng-container *ngIf="expand !== 8">
         <button title="Expand Column" i18n-title 
           class="material-icon-button" (click)="expand = 8">
@@ -210,12 +210,12 @@
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(9)}">
     <ng-container *ngIf="displayColumn('copy_number_vc')">
-      <label class="font-weight-bold" i18n>Item #</label>
+      <label class="form-label fw-bold" i18n>Item #</label>
     </ng-container>
   </div>
   <div class="p-1" [ngStyle]="{flex: flexAt(10)}">
     <ng-container *ngIf="displayColumn('copy_part')">
-      <span class="font-weight-bold" i18n>Part
+      <span class="fw-bold" i18n>Part
         <ng-container *ngIf="expand !== 10">
           <button title="Expand Column" i18n-title 
             class="material-icon-button" (click)="expand = 10">
@@ -240,14 +240,14 @@
       <div class="row d-flex mt-1" [ngClass]="{'vol-row': copyIdx === 0}">
         <div class="p-1" [ngStyle]="{flex: flexAt(1)}">
           <div class="d-flex">
-            <div class="flex-1 pl-1">
+            <div class="flex-1 ps-1">
               <ng-container *ngIf="copyIdx === 0 && volIdx === 0">
                 <span>{{orgNode.target.shortname()}}</span>
               </ng-container>
             </div>
             <ng-container *ngIf="copyIdx === 0 && volIdx === 0 && (
               context.sessionType === 'record' || context.sessionType === 'mixed')">
-              <div class="pr-1">
+              <div class="pe-1">
                 <ng-template #addOrgTmpl>
                   <eg-org-select [limitPerms]="['CREATE_VOLUME']" 
                     placeholder="Select Location..." i18n-placeholder
@@ -266,7 +266,7 @@
               </div>
             </ng-container>
             <ng-container *ngIf="copyIdx === 0">
-              <div class="pr-1">
+              <div class="pe-1">
                 <ng-template #editOrgTmpl>
                   <eg-org-select [limitPerms]="['CREATE_VOLUME']" 
                     placeholder="Select Location..." i18n-placeholder
@@ -364,7 +364,7 @@
                     id='add-vol-popover' 
                     (keyup.enter)="createVolsFromPopover(orgNode, addVolsPopover)"
                     [(ngModel)]="addVolCount" [required]="true" min="1"/>
-                  <button class="btn btn-sm btn-success ml-1" 
+                  <button class="btn btn-sm btn-success ms-1" 
                     (click)="createVolsFromPopover(orgNode, addVolsPopover)"
                     i18n>Add</button>
                 </div>
@@ -414,7 +414,7 @@
               (ngModelChange)="applyCopyValue(copyNode.target, 'barcode', $event)"/>
           </div>
           <div *ngIf="copyNode.target._dupe_barcode"
-            class="alert alert-danger font-italic p-1" i18n>
+            class="alert alert-danger fst-italic p-1" i18n>
             Duplicate Barcode
           </div>
         </div>
@@ -453,7 +453,7 @@
                   id="add-copy-popover"
                   (keyup.enter)="createCopiesFromPopover(volNode, addCopiesPopover)"
                   [(ngModel)]="addCopyCount" [required]="true" min="1"/>
-                <button class="btn btn-sm btn-success ml-1" 
+                <button class="btn btn-sm btn-success ms-1" 
                   (click)="createCopiesFromPopover(volNode, addCopiesPopover)"
                   i18n>Add</button>
               </div>

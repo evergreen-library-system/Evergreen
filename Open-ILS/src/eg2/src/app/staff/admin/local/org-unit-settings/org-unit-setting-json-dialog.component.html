@@ -2,10 +2,8 @@
   <div class="modal-header bg-info">
     <h4 class="modal-title" *ngIf="isExport" i18n>Export</h4>
     <h4 class="modal-title" *ngIf="!isExport" i18n>Import</h4>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="row">

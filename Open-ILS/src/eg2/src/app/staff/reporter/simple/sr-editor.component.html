@@ -22,10 +22,10 @@
 
 <div class="row" id="sr-basic-info">
   <div class="col-sm-2">
-    <label for="report-type" i18n>Report Type:</label>
+    <label class="form-label" for="report-type" i18n>Report Type:</label>
   </div>
   <div class="col-lg-3">
-    <select class="form-control" id="report-type" [ngModelOptions]="{standalone: true}" 
+    <select class="form-select" id="report-type" [ngModelOptions]="{standalone: true}" 
       [(ngModel)]="rptType" (change)="changeReportType()" [disabled]="!isNew">
       <option value="" disabled="disabled">Please Select a Report Type</option>
       <option value="srcirc">Circulation</option>
@@ -36,14 +36,14 @@
     </select>
   </div>
   <div class="col-sm-2">
-    <label for="report-name" i18n>Report Name</label>
+    <label class="form-label" for="report-name" i18n>Report Name</label>
   </div>
   <div class="col-lg-3">
     <input id="report-name" class="form-control sr-name-{{ (name !== '' && name !== null) ? 'not' : '' }}empty" [(ngModel)]="name" (ngModelChange)="dirty()" />
   </div>
   <div class="col-sm-2">
     <button class="btn btn-success" (click)="saveTemplate(false)" [disabled]="!readyToSave()" i18n>Save</button>
-    <button class="btn btn-outline-dark ml-1" (click)="closeForm()" i18n>Close</button>
+    <button class="btn btn-outline-dark ms-1" (click)="closeForm()" i18n>Close</button>
   </div>
 </div>
 <div *ngIf="rptType !== ''" class="row mt-2" id="sr-editor-main">

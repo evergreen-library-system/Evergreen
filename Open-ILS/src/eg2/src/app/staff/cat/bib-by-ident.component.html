@@ -2,12 +2,10 @@
 <div class="row form-validated mt-5">
   <div class="col-lg-6 form-inline">
     <div class="input-group">
-      <div class="input-group-prepend">
         <span class="input-group-text" id="bib-ident-label">
           <ng-container *ngIf="identType === 'id'" i18n>Record ID:</ng-container>
           <ng-container *ngIf="identType === 'tcn'" i18n>Record TCN:</ng-container>
         </span>
-      </div>
       <input id="bib-ident-value" type="text" required 
         (keyup.enter)="search()" [(ngModel)]="identValue"
         class="form-control" aria-describedby="bib-ident-label"/>

@@ -21,7 +21,7 @@
             <ng-template ngbPanelContent>
               <div class="row">
                 <div class="col-lg-6">
-                  <label for="csv-input" i18n>Use Field Number</label>
+                  <label class="form-label" for="csv-input" i18n>Use Field Number</label>
                 </div>
                 <div class="col-lg-6">
                   <input id='csv-input' type="number" class="form-control" 
@@ -31,7 +31,7 @@
               </div>
               <div class="row">
                 <div class="col-lg-6">
-                  <label for="use-csv-file" i18n>From CSV file</label>
+                  <label class="form-label" for="use-csv-file" i18n>From CSV file</label>
                 </div>
                 <div class="col-lg-6">
                   <input #fileSelector (change)="fileSelected($event)" 
@@ -44,7 +44,7 @@
             <ng-template ngbPanelContent>
               <div class="row">
                 <div class="col-lg-6">
-                  <label for="record-id-input" i18n>Record ID</label>
+                  <label class="form-label" for="record-id-input" i18n>Record ID</label>
                 </div>
                 <div class="col-lg-6">
                   <input id='record-id-input' type="number" 
@@ -57,7 +57,7 @@
             <ng-template ngbPanelContent>
               <div class="row">
                 <div class="col-lg-6">
-                  <label for="bucket-id-input" i18n>Bucket ID</label>
+                  <label class="form-label" for="bucket-id-input" i18n>Bucket ID</label>
                 </div>
                 <div class="col-lg-6">
                   <input id='bucket-id-input' type="number" 
@@ -73,10 +73,10 @@
     <div class="col-lg-6">
       <div class="row">
         <div class="col-lg-6">
-          <label for="record-type" i18n>Record Type</label>
+          <label class="form-label" for="record-type" i18n>Record Type</label>
         </div>
         <div class="col-lg-6">
-          <select class="form-control" 
+          <select class="form-select" 
             [disabled]="exportingBasket"
             [(ngModel)]="recordType" id="record-type">
             <option i18n value="biblio">Bibliographic Records</option>
@@ -86,10 +86,10 @@
       </div>
       <div class="row">
         <div class="col-lg-6">
-          <label for="record-format" i18n>Record Format</label>
+          <label class="form-label" for="record-format" i18n>Record Format</label>
         </div>
         <div class="col-lg-6">
-          <select class="form-control" 
+          <select class="form-select" 
             [(ngModel)]="recordFormat" id="record-format">
             <option i18n value="USMARC">MARC21</option>
             <option i18n value="UNIMARC">UNIMARC</option>
@@ -100,10 +100,10 @@
       </div>
       <div class="row">
         <div class="col-lg-6">
-          <label for="record-encoding" i18n>Record Encoding</label>
+          <label class="form-label" for="record-encoding" i18n>Record Encoding</label>
         </div>
         <div class="col-lg-6">
-          <select class="form-control" 
+          <select class="form-select" 
             [(ngModel)]="recordEncoding" id="record-encoding">
             <option i18n value="UTF-8">UTF-8</option>
             <option i18n value="MARC8">MARC8</option>
@@ -112,7 +112,7 @@
       </div>
       <div class="row">
         <div class="col-lg-6">
-          <label for="include-holdings" i18n>
+          <label class="form-label" for="include-holdings" i18n>
             Include holdings in Bibliographic Records
           </label>
         </div>
@@ -122,8 +122,8 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-10 offset-lg-1">
-          <button class="btn btn-success btn-lg btn-block font-weight-bold"
+        <div class="d-grid gap-2 col-10 mx-auto">
+          <button class="btn btn-success btn-lg fw-bold"
             [disabled]="isExporting || !hasNeededData()" 
             (click)="exportRecords()" i18n>Export</button>
         </div>

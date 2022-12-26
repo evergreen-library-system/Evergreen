@@ -158,7 +158,7 @@ export class AcqProviderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.destroyed.next();
+        this.destroyed.next(null);
         this.destroyed.complete();
     }
 

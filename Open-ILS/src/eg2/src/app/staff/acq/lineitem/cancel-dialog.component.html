@@ -4,10 +4,8 @@
       <h3 class="modal-title" *ngIf="recordType === 'po'" i18n>Confirm Order Cancellation</h3>
       <h3 class="modal-title" *ngIf="recordType === 'li'" i18n>Confirm Line Item Cancellation</h3>
       <h3 class="modal-title" *ngIf="recordType === 'lid'" i18n>Confirm Item Cancellation</h3>
-      <button type="button" class="close"
-        i18n-aria-label aria-label="Close" (click)="close()">
-        <span aria-hidden="true">&times;</span>
-      </button>
+      <button type="button" class="btn-close btn-close-white"
+        i18n-aria-label aria-label="Close" (click)="close()"></button>
     </div>
     <div class="modal-body">
       <h4 *ngIf="recordType === 'po'" i18n>Please select a cancel reason and click "Apply" to cancel the order,

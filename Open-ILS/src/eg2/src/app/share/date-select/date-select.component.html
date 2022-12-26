@@ -2,7 +2,7 @@
   {{initialDate | formatValue:'timestamp'}}
 </ng-container>
 <ng-container *ngIf="!readOnly">
-  <div class="input-group eg-date-select form-validated" 
+  <div class="input-group eg-date-select form-validated p-0" 
     [ngClass]="{'date-select-width': !noMaxWidth}">
     <input 
       class="form-control"
@@ -21,8 +21,8 @@
       (ngModelChange)="inputChanged($event)"
       (keyup.enter)="onDateEnter()"
       (dateSelect)="onDateSelect($event)"/>
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary" [disabled]="disabled"
+    <div class="input-group-text p-0">
+      <button class="btn px-2" [disabled]="disabled"
         (click)="datePicker.toggle()" type="button">
         <span title="Select Date" i18n-title class="material-icons">event</span>
       </button>

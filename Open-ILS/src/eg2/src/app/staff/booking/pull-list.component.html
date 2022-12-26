@@ -5,9 +5,7 @@
 <form [formGroup]="pullListCriteria" class="row">
   <div class="col-md-4">
     <div class="input-group">
-      <div class="input-group-prepend">
-        <label for="ou" class="input-group-text" i18n>Library:</label>
-      </div>
+        <label for="ou" class="form-label input-group-text" i18n>Library:</label>
       <eg-org-select domId="ou" [applyDefault]="true"
         (onChange)="handleOrgChange($event)"
         [disableOrgs]="disableOrgs()" [hideOrgs]="disableOrgs()">
@@ -16,9 +14,7 @@
   </div>
   <div class="col-md-4">
     <div class="input-group">
-      <div class="input-group-prepend">
-        <label for="days-hence" class="input-group-text" i18n>Number of days to fetch:</label>
-      </div>
+        <label for="days-hence" class="form-label input-group-text" i18n>Number of days to fetch:</label>
       <input type="number" min="1" class="form-control" formControlName="daysHence">
     </div>
   </div>

@@ -3,14 +3,12 @@
     <h4 class="modal-title" i18n>
       {{idlClassDef.label}}
     </h4>
-    <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white" 
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body form-common form-validated" *ngIf="idlObj">
     <div class="form-group row">
-      <label class="col-lg-4 text-right font-weight-bold" 
+      <label class="form-label col-lg-4 text-end fw-bold" 
         i18n>Field Name</label>
       <input 
         type="text" 
@@ -19,7 +17,7 @@
         value="{{idlClassDef.field_map[field].label}}">
     </div>
     <div class="form-group row">
-      <label class="col-lg-4 text-right font-weight-bold" 
+      <label class="form-label col-lg-4 text-end fw-bold" 
         i18n>Current Value</label>
       <input 
         type="text" 
@@ -28,7 +26,7 @@
         value="{{idlObj[field]()}}">
     </div>
     <div class="form-group row">
-      <label class="col-lg-4 text-right font-weight-bold" 
+      <label class="form-label col-lg-4 text-end fw-bold" 
         i18n>Select Locale</label>
       <select class="form-control col-lg-7" 
         (change)="localeChanged($event)"
@@ -39,7 +37,7 @@
       </select>
     </div>
     <div class="form-group row">
-      <label class="col-lg-4 text-right font-weight-bold" i18n>Translation</label>
+      <label class="form-label col-lg-4 text-end fw-bold" i18n>Translation</label>
       <input 
         id='translation-input'
         type="text" 
@@ -55,8 +53,8 @@
     <button *ngIf="prevString" (click)="prevString()" 
       class="btn btn-info" i18n>Prev String</button>
     <button *ngIf="nextString" (click)="nextString()" 
-      class="btn btn-info mr-3" i18n>Next String</button>
+      class="btn btn-info me-3" i18n>Next String</button>
     <button (click)="translate()" class="btn btn-info" i18n>Apply</button>
-    <button (click)="close()" class="btn btn-warning ml-2" i18n>Cancel</button>
+    <button (click)="close()" class="btn btn-warning ms-2" i18n>Cancel</button>
   </div>
 </ng-template>

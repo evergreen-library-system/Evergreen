@@ -1,10 +1,8 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Update Hold Notification Info?</h4>
-    <button type="button" class="close"
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white"
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="row mt-2" *ngFor="let mod of mods">
@@ -12,15 +10,15 @@
 
         <div [ngSwitch]="mod.field" class="mt-2 mb-2">
           <span *ngSwitchCase="'phone_notify'">
-            <span class="mr-2">You have set Notify by Phone to</span>
+            <span class="me-2">You have set Notify by Phone to</span>
             <eg-bool [value]="mod.newValue"></eg-bool>
           </span>
           <span *ngSwitchCase="'sms_notify'">
-            <span class="mr-2">You have set Notify by SMS to</span>
+            <span class="me-2">You have set Notify by SMS to</span>
             <eg-bool [value]="mod.newValue"></eg-bool>
           </span>
           <span *ngSwitchCase="'email_notify'">
-            <span class="mr-2">You have set Notify by Email to</span>
+            <span class="me-2">You have set Notify by Email to</span>
             <eg-bool [value]="mod.newValue"></eg-bool>
           </span>
           <span *ngSwitchCase="'default_phone'">
@@ -37,7 +35,7 @@
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="checkbox" 
             id="{{mod.field}}-checkbox" [(ngModel)]="selected[mod.field]"/>
-          <label class="form-check-label" for="{{mod.field}}-checkbox">
+          <label class="form-label form-check-label" for="{{mod.field}}-checkbox">
             <ng-container *ngIf="isCarrierChange(mod)" i18n>
               A carrier other than "{{carrierName(mod.oldValue)}}" is
               currently used in {{mod.holds.length}} hold(s).  Update to
@@ -66,7 +64,7 @@
     <div *ngIf="!loading">
       <button type="button" class="btn btn-success" [disabled]="!anySelected()"
         (click)="applyChanges()" i18n>Apply Changes</button>
-      <button type="button" class="btn btn-warning ml-2"
+      <button type="button" class="btn btn-warning ms-2"
         (click)="close()" i18n>Cancel</button>
     </div>
   </div>

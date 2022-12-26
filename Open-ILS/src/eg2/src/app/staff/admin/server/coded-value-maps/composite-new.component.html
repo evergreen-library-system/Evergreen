@@ -1,4 +1,4 @@
-<div class="row ml-2 mt-4 p-2 border border-secondary" *ngIf="values.pointType">
+<div class="row ms-2 mt-4 p-2 border border-secondary" *ngIf="values.pointType">
   <div class="col-lg-12">
     <h3 class="text-center" *ngIf="values.pointType==='attr'">
       Record Attribute
@@ -11,7 +11,7 @@
     <ng-container *ngIf="values.pointType==='attr'">
       <div class="row mb-1">
         <div class="col-lg-4">
-          <label id="type" class="col-form-label" i18n>Select Attribute Type:</label>
+          <label id="type" class="form-label col-form-label" i18n>Select Attribute Type:</label>
         </div>
         <div class="col-lg-8">
           <eg-combobox [entries]="attrTypes" [required]="true" aria-labelledby="type"
@@ -21,7 +21,7 @@
       </div>
       <div class="row mb-1">
         <div class="col-lg-4">
-          <label id="value" class="col-form-label" i18n>Select Value:</label>
+          <label id="value" class="form-label col-form-label" i18n>Select Value:</label>
         </div>
         <div class="col-lg-8">
           <eg-combobox #valComboBox [entries]="attrVals" [required]="true" aria-labelledby="value"
@@ -34,7 +34,7 @@
       <div class="row mb-1">
         <div class="col-lg-4 col-form-label">Operator:</div>
         <div class="col-lg-8">
-          <select class="form-control" [(ngModel)]="values.boolOp">
+          <select class="form-select" [(ngModel)]="values.boolOp">
             <option value='AND' i18n>AND</option>
             <option value='OR' i18n>OR</option>
             <option value='NOT' i18n>NOT</option>

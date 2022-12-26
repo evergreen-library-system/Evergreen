@@ -39,7 +39,7 @@
         [disabled]="searches.length === 0" i18n>Clear Recent Searches</button>
       <div class="dropdown-divider"></div>
       <button [disabled]="true" *ngIf="searches.length === 0" 
-        class="dropdown-item font-italic" i18n>No Recent Searches</button>
+        class="dropdown-item fst-italic" i18n>No Recent Searches</button>
       <button *ngFor="let search of sortSearches()"
         class="dropdown-item" 
         (click)="searchSelected(search)"
@@ -61,11 +61,11 @@
         [disabled]="templates.length === 0" i18n>Delete All Templates</button>
       <div class="dropdown-divider"></div>
       <button [disabled]="true" *ngIf="templates.length === 0" 
-        class="dropdown-item font-italic" i18n>No Saved Templates</button>
+        class="dropdown-item fst-italic" i18n>No Saved Templates</button>
       <button *ngFor="let tmpl of sortTemplates()"
         class="dropdown-item" 
         (click)="templateSelected(tmpl)"
-        [ngClass]="{'font-weight-bold': tmpl.name === selectedTemplate()}"
+        [ngClass]="{'fw-bold': tmpl.name === selectedTemplate()}"
         [routerLink]="getSearchPath(tmpl)"
         [queryParams]="tmpl.params">{{tmpl.name}}</button>
     </div>
@@ -75,10 +75,8 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Save Template</h4>
-    <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <button type="button" class="btn-close btn-close-white" 
+      i18n-aria-label aria-label="Close" (click)="close()"></button>
   </div>
   <div class="modal-body">
     <div class="row">

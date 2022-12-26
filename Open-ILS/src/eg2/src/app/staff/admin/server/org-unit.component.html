@@ -32,7 +32,7 @@
         <span *ngIf="currentOrg().name()" i18n>
           {{currentOrg().name()}} ({{currentOrg().shortname()}})
         </span>
-        <span *ngIf="!currentOrg().name()" class="font-italic" i18n>
+        <span *ngIf="!currentOrg().name()" class="fst-italic" i18n>
           Add Name
         </span>
       </div>
@@ -67,7 +67,7 @@
         <a i18n ngbNavLink role="tab">Hours of Operation</a>
         <ng-template ngbNavContent>
           <div class="mt-2 common-form striped-even">
-            <div class="row font-weight-bold mb-2">
+            <div class="row fw-bold mb-2">
               <div class="col-lg-3 offset-lg-2" i18n>Open Time</div>
               <div class="col-lg-3" i18n>Close Time</div>
               <div class="col-lg-2 offset-lg-2" i18n>Edit Note Field?</div>
@@ -103,9 +103,7 @@
                 <div class="row">
                   <div class="col-lg-12">
                     <div class="input-group">
-                      <div class="input-group-prepend">
-                        <div class="input-group-text" i18n>Note: </div>
-                      </div>
+                      <div class="input-group-text" i18n>Note: </div>
                       <input class="form-control" type='text'
                         [ngModel]="getNote(dow)" 
                         (ngModelChange)="setNote(dow, $event)"
@@ -116,11 +114,11 @@
               </div>
             </div>
             <div class="row d-flex justify-content-end">
-              <div class="alert alert-warning mr-2 p-1" 
+              <div class="alert alert-warning me-2 p-1" 
                 *ngIf="currentOrg().hours_of_operation().isnew()">
                 Hours of Operation Have Not Yet Been Saved.
               </div>
-              <div class="mr-2">
+              <div class="me-2">
                 <button class="btn btn-warning" (click)="deleteHours()" i18n>
                   Clear Hours of Operation
                 </button>

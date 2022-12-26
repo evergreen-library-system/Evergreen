@@ -14,23 +14,27 @@
     <eg-bib-summary [bibSummary]="summaryForDisplay()">
     </eg-bib-summary>
   </div>
-  <div class="row ml-0 mr-0">
-    <div id='staff-catalog-bib-navigation'>
-      <eg-catalog-record-pagination [recordId]="recordId" [recordTab]="recordTab">
-      </eg-catalog-record-pagination>
+  <div class="row ms-0 me-0">
+    <div class="col-5 ps-0">
+      <div id='staff-catalog-bib-navigation'>
+        <eg-catalog-record-pagination [recordId]="recordId" [recordTab]="recordTab">
+        </eg-catalog-record-pagination>
+      </div>
     </div>
     <!-- push the actions component to the right -->
-    <div class="flex-1"></div>
-    <div id='staff-catalog-bib-actions'>
-      <eg-catalog-record-actions [recordId]="recordId"
-        [isHoldable]="summary && summary.isHoldable"
-        (addHoldingsRequested)="addHoldingsRequested()">
-      </eg-catalog-record-actions>
+    <div class="col-7 d-flex pe-0">
+      <div class="flex-1"></div>
+      <div id='staff-catalog-bib-actions'>
+        <eg-catalog-record-actions [recordId]="recordId"
+          [isHoldable]="summary && summary.isHoldable"
+          (addHoldingsRequested)="addHoldingsRequested()">
+        </eg-catalog-record-actions>
+      </div>
     </div>
   </div>
   <div id='staff-catalog-bib-tabs-container' class='mt-3'>
-    <div class="row">
-      <div class="col-lg-12 text-right">
+    <div class="w-100">
+      <div class="text-end">
         <button class="btn btn-secondary btn-sm"
             [disabled]="recordTab === defaultTab"
             (click)="setDefaultTab()" i18n>Set Default View</button>
