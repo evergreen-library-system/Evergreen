@@ -69,7 +69,7 @@ export class ItemLocationSelectComponent
         ItemLocationSelectComponent.domIdAuto++;
 
     // If false, selector will be click-able
-    @Input() loadAsync = true;
+    @Input() loadAsync = false;
 
     @Input() disabled = false;
 
