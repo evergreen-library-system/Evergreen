@@ -13,7 +13,6 @@ Track their labels here.
 <ng-container *ngIf="bigText">
   <div contenteditable
     id='{{randId}}'
-    spellcheck="false"
     class="d-inline-block text-dark text-break {{moreClasses}}"
     [ngClass]="{'auth-invalid': isAuthInvalid()}"
     [attr.tabindex]="fieldText ? -1 : '0'"
@@ -30,7 +29,6 @@ Track their labels here.
 <ng-container *ngIf="!bigText">
   <input
     id='{{randId}}'
-    spellcheck="false"
     class="text-dark rounded-0 form-control {{moreClasses}}"
     [ngClass]="{'auth-invalid': isAuthInvalid()}"
     [size]="inputSize()"
