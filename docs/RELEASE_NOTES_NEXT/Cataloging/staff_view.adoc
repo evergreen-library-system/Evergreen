@@ -1,0 +1,4 @@
+== Catalog Staff View ==
+
+Adds a Staff View tab to the record details page in the staff catalog.  In addition to showing various fields from the bib record, it also shows a count of hold requests and a break-down of available items versus total items, and it shows a breakdown of similar records by formats and language editions, based on the associated metarecord.
+
