@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2021-10-12 14:10-0400\n"
-"PO-Revision-Date: 2021-07-26 09:40+0000\n"
+"PO-Revision-Date: 2022-11-23 09:59+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2021-10-13 04:45+0000\n"
-"X-Generator: Launchpad (build 8a94da2fac127f5e46a49fd1140e43759d578803)\n"
+"X-Launchpad-Export-Date: 2022-11-24 06:42+0000\n"
+"X-Generator: Launchpad (build 58312c50d0ade23d24f71d3daeac191f58b3ed83)\n"
 "X-Accelerator-Marker: &\n"
 
 #: class.stgu.label:11349
@@ -1665,7 +1665,7 @@ msgstr "Čas smazání posleního exempláře"
 #: field.map.accepting_usr.label:8604 field.mallp.accepting_usr.label:8635
 #: field.mbp.accepting_usr.label:8655 field.mdp.accepting_usr.label:8720
 msgid "Accepting User"
-msgstr "Akceptuji uživatele"
+msgstr "Přijímající uživatel"
 
 #: class.qrc.label:11756
 msgid "Record Column"
