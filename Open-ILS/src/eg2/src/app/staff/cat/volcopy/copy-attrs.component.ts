@@ -686,9 +686,12 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
 
             try {
                 const template = JSON.parse(reader.result as string);
-                const name = Object.keys(template)[0];
-                this.volcopy.templates[name] = template[name];
-            } catch (E) {
+                var theKeys = Object.keys(template);
+                for(let i = 0; i < theKeys.length; i++){
+                    var name = theKeys[i];
+                    this.volcopy.templates[name]=template[name];
+                };
+                        } catch (E) {
                 console.error('Invalid Item Attribute template', E);
                 return;
             }
