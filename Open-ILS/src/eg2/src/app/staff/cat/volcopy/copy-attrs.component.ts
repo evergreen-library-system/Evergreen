@@ -646,7 +646,7 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                 const statId = field.match(/stat_cat_(\d+)/)[1];
                 if (!template.statcats) { template.statcats = {}; }
 
-                template.statcats[statId] = value;
+                template.statcats[statId] = this.statCatValues[statId];
 
             } else {
 
