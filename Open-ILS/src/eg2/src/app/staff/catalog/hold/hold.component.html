@@ -1,7 +1,7 @@
 
 <eg-patron-search-dialog #patronSearch></eg-patron-search-dialog>
 <eg-barcode-select #barcodeSelect></eg-barcode-select>
-<eg-worklog-strings-components></eg-worklog-strings-components>                
+<eg-worklog-strings-components></eg-worklog-strings-components>
 
 <eg-alert-dialog #activeDateAlert
   i18n-dialogTitle i18n-dialogBody
@@ -27,7 +27,7 @@
     <ng-container *ngIf="!badBarcode">
       <h3 i18n>Place Hold
         <small *ngIf="user">
-        ({{user.pref_family_name() ? user.pref_family_name() : user.family_name()}}, 
+        ({{user.pref_family_name() ? user.pref_family_name() : user.family_name()}},
         {{user.pref_first_given_name() ? user.pref_first_given_name() :user.first_given_name()}})
         </small>
       </h3>
@@ -301,8 +301,7 @@
           <ng-container
             *ngFor="let code of ctx.holdMeta.bibSummary.attributes.icon_format">
             <img class="pr-1"
-              alt="{{iconFormatLabel(code)}}"
-              title="{{iconFormatLabel(code)}}"
+              alt=""
               src="/images/format_icons/icon_format/{{code}}.png"/>
           </ng-container>
         </div>
@@ -381,10 +380,9 @@
                 [disabled]="ctx.holdMeta.metarecord_filters.formats.length === 1"
                 [(ngModel)]="ctx.selectedFormats.formats[ccvm.code()]"/>
               <img class="ml-1"
-                alt="{{iconFormatLabel(ccvm.code())}}"
-                title="{{iconFormatLabel(ccvm.code())}}"
+                alt=""
                 src="/images/format_icons/icon_format/{{ccvm.code()}}.png"/>
-              
+
                 {{ccvm.search_label() || ccvm.value()}}
               </label>
             </div>
@@ -402,7 +400,7 @@
               <input class="form-check-input" type="checkbox" id="hold-include-lang-{{ccvm.value()}}"
                 [disabled]="ctx.holdMeta.metarecord_filters.langs.length === 1"
                 [(ngModel)]="ctx.selectedFormats.langs[ccvm.code()]"/>
-              
+
                 {{ccvm.search_label() || ccvm.value()}}
               </label>
             </div>
