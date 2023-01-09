@@ -82,12 +82,6 @@
         [initialValue]="enablePreFetch" i18n-label label="Pre-Fetch All Holds">
       </eg-grid-toolbar-checkbox>
 
-      <ng-container *ngIf="preFetchSetting && !hopeless">
-        <eg-grid-toolbar-checkbox (onChange)="preFetchHolds($event)"
-          [initialValue]="enablePreFetch" i18n-label label="Pre-Fetch All Holds">
-        </eg-grid-toolbar-checkbox>
-      </ng-container>
-
       <ng-container *ngIf="showPlaceHoldButton">
         <eg-grid-toolbar-button
           i18n-label label="Place Hold" (onClick)="placeHoldRequested.emit()">
