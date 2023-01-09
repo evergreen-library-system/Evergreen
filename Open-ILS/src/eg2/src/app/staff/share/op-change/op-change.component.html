@@ -24,6 +24,7 @@
           required
           (keyup.enter)="login()"
           autocomplete="username"
+          spellcheck="false"
           i18n-placeholder
           placeholder="Username" 
           [(ngModel)]="username"/>
@@ -40,6 +41,7 @@
           required
           (keyup.enter)="login()"
           autocomplete="current-password"
+          spellcheck="false"
           i18n-placeholder
           placeholder="Password" 
           [(ngModel)]="password"/>
