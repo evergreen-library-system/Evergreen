@@ -89,6 +89,7 @@
       [required]="fieldRequired(getClass(args.cls) + '.' + args.field)"
       [pattern]="fieldPattern(getClass(args.cls), args.field)"
       [disabled]="args.disabled"
+      spellcheck="false"
     />
   </div>
 </ng-template>
@@ -159,6 +160,7 @@
       [pattern]="fieldPattern('aus', args.field)"
       [attr.aria-describedby]="exampleText('aus', args.field)
         ? args.field+'_example' : null"
+      spellcheck="false"
     />
   </div>
 </ng-template>
@@ -300,7 +302,8 @@
         (ngModelChange)="fieldValueChange(null, null, 'name_keywords', $event)"
         (change)="afterFieldChange(null, args.index, 'name_keywords')"
         [required]="fieldRequired('au.name_keywords')"
-        [pattern]="fieldPattern('au', 'name_keywords')">
+        [pattern]="fieldPattern('au', 'name_keywords')"
+        spellcheck="false">
       </textarea>
     </div>
   </div>
@@ -609,7 +612,7 @@
           [disabled]="waiver.isdeleted()"
           (ngModelChange)="fieldValueChange('waiver_entries', index, 'name', $event)"
           (change)="afterFieldChange('waiver_entries', index, 'name')"
-          i18n-placeholder placeholder="Enter Name..."/>
+          i18n-placeholder placeholder="Enter Name..." spellcheck="false"/>
       </div>
       <div class="col-lg-6 d-flex">
         <div>
