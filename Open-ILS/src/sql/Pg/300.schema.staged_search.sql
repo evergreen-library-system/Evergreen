@@ -999,7 +999,7 @@ BEGIN
         v_css_class := 'oils_SH';
     END IF;
 
-    opts := opts || $$, StopSel=</b>, StartSel="<b class='$$ || v_css_class; -- "
+    opts := opts || $$, StopSel=</mark>, StartSel="<mark class='$$ || v_css_class; -- "
 
     IF v_field_list = '{}'::INT[] THEN
         SELECT ARRAY_AGG(id) INTO v_field_list FROM config.metabib_field WHERE display_field;
