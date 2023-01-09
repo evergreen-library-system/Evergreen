@@ -1,11 +1,12 @@
 
 .oils_SH {
   font-weight: bolder;
-  background-color: #99ff99;
+  background: #B4F8D3;
+  border-bottom: 1px solid #20C997;
 }
 
 .oils_SH.identifier {
-  font-weight: bolder;
-  background-color: #42b0f4;
+  background: #C4F0F8;
+  border-bottom: 1px solid #3DD5F3;
 }
 
