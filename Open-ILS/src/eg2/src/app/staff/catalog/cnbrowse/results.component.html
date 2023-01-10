@@ -57,6 +57,12 @@
                   {{callNumber._bibSummary.display.author}}
                 </a>
               </div>
+	      <ng-container *ngIf="callNumber._bibSummary.display.pubdate"> 
+	          <div class="d-flex">
+		      <div class="flex1" i18n>PubDate:</div>
+		      <div class="flex1 px-1">{{callNumber._bibSummary.display.pubdate}}</div>
+		  </div>
+	      </ng-container>
             </div>
             <div class="ml-2">
               <img src="/opac/extras/ac/jacket/small/r/{{callNumber._bibSummary.id}}"/>
