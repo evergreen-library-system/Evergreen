@@ -4,13 +4,9 @@ import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {SafeUrl} from '@angular/platform-browser';
 import {tap} from 'rxjs/operators';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
-import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
 import {StoreService} from '@eg/core/store.service';
-import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
-import {PcrudService} from '@eg/core/pcrud.service';
-import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 import {VolCopyContext} from './volcopy';
 import {VolCopyService} from './volcopy.service';
 import {FormatService} from '@eg/core/format.service';
@@ -96,15 +92,9 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
     @Output() canSaveChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private evt: EventService,
         private idl: IdlService,
         private org: OrgService,
-        private net: NetService,
         private auth: AuthService,
-        private pcrud: PcrudService,
-        private holdings: HoldingsService,
         private format: FormatService,
         private store: StoreService,
         private fileExport: FileExportService,
@@ -556,6 +546,7 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
             const value = template[field];
 
             if (value === null || value === undefined) { return; }
+            if (field === 'status' && this.volcopy.copyStatIsMagic(value)) { return; }
 
             if (field === 'statcats') {
                 Object.keys(value).forEach(catId => {
