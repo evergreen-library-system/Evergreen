@@ -2,4 +2,5 @@
 ** xref:integrations:ezproxy.adoc[EZProxy]
 ** xref:integrations:patron-api.adoc[PatronAPI authentication]
 ** xref:integrations:rfid.adoc[RFID systems]
+** xref:integrations:web_services.adoc[Web Services]
 
