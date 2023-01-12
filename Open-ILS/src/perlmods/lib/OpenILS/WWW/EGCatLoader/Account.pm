@@ -1622,21 +1622,53 @@ sub load_place_hold {
                     {record => $rec->id}
                 );
 
-                # T holds on records that have parts are OK, but if the record has
-                # no non-part copies, the hold will ultimately fail.  When that
-                # happens, require the user to select a part.
+                # T holds on records that have parts are normally OK, but if the record has
+                # no non-part copies, the hold will ultimately fail.  When that happens,
+                # require the user to select a part.
+                #
+                # If the global flag circ.holds.api_require_monographic_part_when_present is
+                # enabled, or the library setting circ.holds.ui_require_monographic_part_when_present
+                # is active for any item owning library associated with the bib, then any configured
+                # parts for the bib is enough to disallow title holds (aka require part selection).
                 my $part_required = 0;
                 if (@$parts) {
-                    my $np_copies = $e->json_query({
-                        select => { acp => [{column => 'id', transform => 'count', alias => 'count'}]},
-                        from => {acp => {acn => {}, acpm => {type => 'left'}}},
-                        where => {
-                            '+acp' => {deleted => 'f'},
-                            '+acn' => {deleted => 'f', record => $rec->id},
-                            '+acpm' => {id => undef}
+                    $part_required = $ctx->{part_required_when_present_global_flag};
+                    if (!$part_required) {
+                        my $resp = $e->json_query({
+                            select => {
+                                acn => ['owning_lib']
+                            },
+                            from => {acn => {acp => {type => 'left'}}},
+                            where => {
+                                '+acp' => {
+                                    '-or' => [
+                                        {deleted => 'f'},
+                                        {id => undef} # left join
+                                    ]
+                                },
+                                '+acn' => {deleted => 'f', record => $rec->id}
+                            },
+                            distinct => 't'
+                        });
+                        my $org_ids = [map {$_->{owning_lib}} @$resp];
+                        foreach my $org (@$org_ids) { # FIXME: worth shortcutting/optimizing?
+                            if ($self->ctx->{get_org_setting}->($org, 'circ.holds.ui_require_monographic_part_when_present')) {
+                                $part_required = 1;
+                            }
                         }
-                    });
-                    $part_required = 1 if $np_copies->[0]->{count} == 0;
+                    }
+                    if (!$part_required) {
+                        my $np_copies = $e->json_query({
+                            select => { acp => [{column => 'id', transform => 'count', alias => 'count'}]},
+                            from => {acp => {acn => {}, acpm => {type => 'left'}}},
+                            where => {
+                                '+acp' => {deleted => 'f'},
+                                '+acn' => {deleted => 'f', record => $rec->id},
+                                '+acpm' => {id => undef}
+                            }
+                        });
+                        $part_required = 1 if $np_copies->[0]->{count} == 0;
+                    }
                 }
 
                 push(@hold_data, $data_filler->({

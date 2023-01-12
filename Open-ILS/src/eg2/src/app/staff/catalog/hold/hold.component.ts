@@ -245,7 +245,7 @@ export class HoldComponent implements OnInit {
     getTargetMeta(): Promise<any> {
 
         return new Promise(resolve => {
-            this.holds.getHoldTargetMeta(this.holdType, this.holdTargets)
+            this.holds.getHoldTargetMeta(this.holdType, this.holdTargets, this.auth.user().ws_ou())
             .subscribe(
                 meta => {
                     this.holdContexts.filter(ctx => ctx.holdTarget === meta.target)
@@ -612,6 +612,11 @@ export class HoldComponent implements OnInit {
 
         let hType = this.holdType;
         let hTarget = ctx.holdTarget;
+
+        if (ctx.holdMeta.parts && !ctx.holdMeta.part) {
+            ctx.holdMeta.part = (ctx.holdMeta.part_required ? ctx.holdMeta.parts[0] : null);
+        }
+
         if (hType === 'T' && ctx.holdMeta.part) {
             // A Title hold morphs into a Part hold at hold placement time
             // if a part is selected.  This can happen on a per-hold basis

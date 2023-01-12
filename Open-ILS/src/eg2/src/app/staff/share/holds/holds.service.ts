@@ -55,6 +55,7 @@ export interface HoldRequestTarget {
     copy?: IdlObject;
     issuance?: IdlObject;
     metarecord_filters?: any;
+    part_required?: boolean;
 }
 
 /** Service for performing various hold-related actions */

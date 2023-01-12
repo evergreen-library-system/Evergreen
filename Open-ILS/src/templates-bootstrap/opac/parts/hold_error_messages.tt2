@@ -23,6 +23,7 @@
         "status.holdable" => l("The item is not in a holdable status"),
         "no_item" => l("The system could not find this item"),
         "no_ultimate_items" => l("The system could not find any items to match this hold request"),
+        "monographic_part_required" => l("Title hold request invalid when monographic part required"),
         "no_matchpoint" => l("System rules do not define how to handle this item"),
         "no_user" => l("The system could not find this patron"),
         "transit_range" => l("The item cannot transit this far")

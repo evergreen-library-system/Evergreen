@@ -41,6 +41,7 @@
     "FAIL_PART_config_rule_age_hold_protect_prox": "The item is too new to transit this far",
     "FAIL_PART_no_item": "The system could not find this item",
     "FAIL_PART_no_ultimate_items": "The system could not find any items to match this hold request",
+    "FAIL_PART_monographic_part_required": "Title hold request invalid when monographic part required",
     "FAIL_PART_no_matchpoint": "System rules do not define how to handle this item",
     "FAIL_PART_no_user": "The system could not find this patron",
     "FAIL_PART_transit_range": "The item cannot transit this far",

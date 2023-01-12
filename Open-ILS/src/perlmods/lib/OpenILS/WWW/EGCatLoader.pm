@@ -374,6 +374,9 @@ sub load_common {
     my $geo_org = $ctx->{physical_loc} || $self->cgi->param('loc') || $ctx->{aou_tree}->()->id;
     my $geo_sort_for_org = $ctx->{get_org_setting}->($geo_org, 'opac.holdings_sort_by_geographic_proximity');
     $ctx->{geo_sort} = $geo_sort && $U->is_true($geo_sort_for_org);
+    my $part_required_flag = $e->retrieve_config_global_flag('circ.holds.api_require_monographic_part_when_present');
+    $part_required_flag = ($part_required_flag and $U->is_true($part_required_flag->enabled));
+    $ctx->{part_required_when_present_global_flag} = $part_required_flag;
 
     # capture some commonly accessed pages
     $ctx->{home_page} = $ctx->{proto} . '://' . $ctx->{hostname} . $self->ctx->{opac_root} . "/home";

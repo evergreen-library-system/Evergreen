@@ -2877,6 +2877,46 @@ sub _check_title_hold_is_possible {
     # $holdable_formats is now unused. We pre-filter the MR's records.
 
     my $e = new_editor();
+
+    # T holds on records that have parts are normally OK, but if the record has
+    # no non-part copies, the hold will ultimately fail, so let's test for that.
+    #
+    # If the global flag circ.holds.api_require_monographic_part_when_present is
+    # enabled, then any configured parts for the bib is enough to disallow title holds.
+    my $part_required = 0;
+    my $parts = $e->search_biblio_monograph_part(
+        {
+            record => $titleid
+        }, {idlist=>1} );
+
+    if (@$parts) {
+        my $part_required_flag = $e->retrieve_config_global_flag('circ.holds.api_require_monographic_part_when_present');
+        $part_required = ($part_required_flag and $U->is_true($part_required_flag->enabled));
+        if (!$part_required) {
+            my $np_copies = $e->json_query({
+                select => { acp => [{column => 'id', transform => 'count', alias => 'count'}]},
+                from => {acp => {acn => {}, acpm => {type => 'left'}}},
+                where => {
+                    '+acp' => {deleted => 'f'},
+                    '+acn' => {deleted => 'f', record => $titleid},
+                    '+acpm' => {id => undef}
+                }
+            });
+            $part_required = 1 if $np_copies->[0]->{count} == 0;
+        }
+    }
+    if ($part_required) {
+        $logger->info("title hold when monographic part required");
+        return (
+            0, 0, [
+                new OpenILS::Event(
+                    "TITLE_HOLD_WHEN_MONOGRAPHIC_PART_REQUIRED",
+                    "payload" => {"fail_part" => "monographic_part_required"}
+                )
+            ]
+        );
+    }
+
     my %org_filter = create_ranged_org_filter($e, $selection_ou, $depth);
 
     # this monster will grab the id and circ_lib of all of the "holdable" copies for the given record
@@ -5153,6 +5193,7 @@ sub hold_metadata {
             issuance => $issuance,
             part => $part,
             parts => [],
+            part_required => 'f',
             bibrecord => $bre,
             metarecord => $metarecord,
             metarecord_filters => {}
@@ -5178,6 +5219,56 @@ sub hold_metadata {
                     {order_by => {bmp => 'label_sortkey'}}
                 ]
             );
+
+            # T holds on records that have parts are normally OK, but if the record has
+            # no non-part copies, the hold will ultimately fail.  When that happens,
+            # require the user to select a part.
+            #
+            # If the global flag circ.holds.api_require_monographic_part_when_present is
+            # enabled, or the library setting circ.holds.ui_require_monographic_part_when_present
+            # is true for any involved owning_library, then also require part selection.
+            my $part_required = 0;
+            if ($meta->{parts}) {
+                my $part_required_flag = $e->retrieve_config_global_flag('circ.holds.api_require_monographic_part_when_present');
+                $part_required = ($part_required_flag and $U->is_true($part_required_flag->enabled));
+                if (!$part_required) {
+                    my $resp = $e->json_query({
+                        select => {
+                            acn => ['owning_lib']
+                        },
+                        from => {acn => {acp => {type => 'left'}}},
+                        where => {
+                            '+acp' => {
+                                '-or' => [
+                                    {deleted => 'f'},
+                                    {id => undef} # left join
+                                ]
+                            },
+                            '+acn' => {deleted => 'f', record => $bre->id}
+                        },
+                        distinct => 't'
+                    });
+                    my $org_ids = [map {$_->{owning_lib}} @$resp];
+                    foreach my $org (@$org_ids) { # FIXME: worth shortcutting/optimizing?
+                        if ($U->ou_ancestor_setting_value($org, 'circ.holds.ui_require_monographic_part_when_present')) {
+                            $part_required = 1;
+                        }
+                    }
+                }
+                if (!$part_required) {
+                    my $np_copies = $e->json_query({
+                        select => { acp => [{column => 'id', transform => 'count', alias => 'count'}]},
+                        from => {acp => {acn => {}, acpm => {type => 'left'}}},
+                        where => {
+                            '+acp' => {deleted => 'f'},
+                            '+acn' => {deleted => 'f', record => $bre->id},
+                            '+acpm' => {id => undef}
+                        }
+                    });
+                    $part_required = 1 if $np_copies->[0]->{count} == 0;
+                }
+            }
+            $meta->{part_required} = $part_required;
         }
 
         if ($meta->{metarecord}) {
