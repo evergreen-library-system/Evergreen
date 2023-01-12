@@ -1,0 +1,92 @@
+::toc::
+= Evergreen Web Services =
+
+== Existing Web Services ==
+
+Evergreen already provides a number of web services that can be used by clients to access and modify information and implement patron and library workflows. These include:
+
+* The OpenSRF gateway
+* The HTTP translator
+* The WebSocket gateway
+* An XML-RPC interface
+* SRU
+* unAPI services
+* Web-based patron authentication and lookup services
+* A mechanism for requesting that certain public catalog requests return their responses as JSON
+* OpenSRF API access via XMPP
+
+Evergreen can also support SIP2 and NCIP via add-ons.
+
+=== OpenSRF gateway ===
+
+The https://wiki.evergreen-ils.org/doku.php?id=osrfhttp:opensrf_gateway[OpenSRF gateway] allows clients to make an Evergreen API request by supplying OpenSRF service, OpenSRF method name, parameters, and desired output format. The gateway can return its output in XML or JSON.
+
+The gateway supports a request → single response mode of operation; it does not support streaming responses or OpenSRF stateful connections. Its semantics are RPC-like.
+
+A significant third-party user of the OpenSRF gateway is the Hemlock mobile app.
+
+=== HTTP translator ===
+
+The https://docs.evergreen-ils.org/2.4/_introducing_opensrf.html#OpenSRFOverHTTP[HTTP translator] implements the https://wiki.evergreen-ils.org/doku.php?id=opensrf_over_http[OpenSRF-over-HTTP] translator and can be viewed as a successor to the OpenSRF gateway.
+
+The HTTP translator is designed to be a thin wrapper over OpenSRF XMPP messages. It supports stateful OpenSRF connections and both collected and streaming OpenSRF responses.
+
+The HTTP translator uses several custom X-OpenSRF-* HTTP headers to specify the OpenSRF service to connect to and to trace messages and connections.
+
+Responses from the HTTP translator are always serialized as JSON.
+
+=== WebSocket gateway ===
+
+The WebSocket gateway can be thought of as a WebSocket implementation of the HTTP translator.
+
+Responses from the WebSocket gateway are always serialized as JSON.
+
+=== XML-RPC gateway ===
+
+The XML-RPC gateway is a thin wrapper over OpenSRF method calls that supports the XML-RPC protocol. This gateway is not part of OpenSRF proper; instead, it is implemented by an Evergreen mod_perl handler.
+
+Requests and responses are serialized as XML. The XML-RPC gateway does not support stateful OpenSRF connections or streaming responses.
+
+XML-RPC is not commonly used nowadays; the primary known external user of the gateway is Unique Management.
+
+=== Search/Retrieval via URL (SRU) ===
+
+Evergreen supports the https://www.loc.gov/standards/sru/[[.underline]#Search/Retrieval via URL (SRU) protocol#]. This protocol allows clients to perform an Evergreen catalog search and return results in XML.
+
+=== unAPI ===
+
+Evergreen's unAPI service allows clients to retrieve bibliographic and item data in a variety of XML formats.
+
+=== Web-based patron authentication and lookup services ===
+
+The "PatronAPI" service is an Evergreen mod_perl handler that permits defining API endpoints for authenticating a patron login session (given username/barcode and password) and optionally retrieving fields from the patron record. PatronAPI is meant to provide an alternative to SIP2 for basic patron authentication.
+
+=== JSON output === 
+
+The Evergreen public catalog mod_perl application normally returns HTML by combining a Perl context object with a Template Toolkit template. However, by providing a special field to the context object, public catalog request handlers can specify that their output should be returned as JSON.
+
+=== XMPP ===
+
+OpenSRF is built on XMPP, and an XMPP client application could make OpenSRF requests directly. However, this is very rarely done outside of Evergreen client code itself.
+
+=== SIP2 ===
+
+SIP2, while not a web protocol per se, is frequently used to perform patron authentication and circulation actions. It has its origins in a serial line protocol and consequently suffers from a significant flaw: it is not encrypted by default.
+
+=== NISO Circulation Interchange Protocol (NCIP) ===
+
+Via add-ons, Evergreen supports NCIP. NCIP can be thought of as an XML-over-HTTP moral equivalent of SIP2.
+
+== Evergreen API ==
+
+=== Evergreen API documentation ===
+
+OpenSRF has a mechanism for encoding documentation on the parameters and usage of an OpenSRF method. OpenSRF clients can retrieve this documentation for display.
+
+While most Evergreen methods have at least some API documentation, overall this documentation is not complete. In addition, the primary mechanism for displaying this documentation in human-readable format, "docgen.xsl", is currently broken.
+
+=== Evergreen API clients ===
+
+OpenSRF ships with Javascript client libraries that can be thought of as the primary means of access for web developers to Evergreen APIs.
+
+OpenSRF also includes C and Perl clients for its services. Client code also exists in Python, PHP, and Java, but without significant documentation or community support.
