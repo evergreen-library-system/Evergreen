@@ -1,0 +1,35 @@
+== Multi-term Did You Mean search suggestions ==
+
+Expanding on the previous single-class, single-term search suggestion
+development, this feature provides suggestions for single-class searches
+with multiple terms.
+
+ * The Library Settings that were previously used to control the global
+behavior of search suggestions have been moved to search class
+configuration fields.  This was done because the data in each search
+class benefits from different setting values.
+
+ * If a patron's search brings back a suggestion that matches an authority
+variant heading, the system will provide the main heading as a suggestion
+as well, along with spelling-corrected suggestions.
+
+ * Quoted phrases in user input require strict term order and adjacency
+for the phrase portion of the suggestion generated for the phrase(s),
+whereas unquoted input (or the portion that is not quoted) does not.
+
+=== MARC Search/Facet Class field additions ===
+
+ * variant_authority_suggestion   Whether this class should attempt variant authority suggestions based on search-class/browse-axis mapping
+ * symspell_transfer_case         Whether suggestions should retain user-supplied letter case
+ * symspell_skip_correct          Only supply suggestions to misspelled words
+ * symspell_suggestion_verbosity  Setting that controls the amount of effort, and therefore time, spent on suggestion generation
+ * max_phrase_edit_distance       Maximum average per-word edit distance when evaluating suggestions
+ * suggestion_word_option_count   Maximum alternate suggestions per word
+ * max_suggestions                Maximum suggstions to present
+ * low_result_threshold           Maximum hit count beyond which suggestions are not provided
+ * min_suggestion_use_threshold   Minimum number of times a suggestion must exist in the corpus
+ * pg_trgm_weight                 Weight of the trigram similarity metric; 0 avoids calculation costs
+ * soundex_weight                 Weight of the soundex similarity metric; 0 avoids calculation costs
+ * keyboard_distance_weight       Weight of the keyboard distance similarity metric; 0 avoids calculation costs
+
+
