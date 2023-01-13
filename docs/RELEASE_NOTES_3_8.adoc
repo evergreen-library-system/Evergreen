@@ -67,6 +67,7 @@ new copies (https://bugs.launchpad.net/evergreen/+bug/1959716[Bug 1959716])
 * Fixes an issue where the carriage return activated the Add Materials and Add User buttons (https://bugs.launchpad.net/evergreen/+bug/1930896[Bug 1930896])
 * Fixes a display issue where the updated call number is not reflected in the grid when adding materials to courses. (https://bugs.launchpad.net/evergreen/+bug/1907974[Bug 1907974])
 * Fixes issues with the Course Details page display of an archived course. (https://bugs.launchpad.net/evergreen/+bug/1939994[Bug 1939994])
+* Items removed from a Course will now revert to their original call number owning library (https://bugs.launchpad.net/evergreen/+bug/1939730[Bug 1939730])
 
 ==== Documentation ====
 
