@@ -105,7 +105,7 @@ sub retrieve_ranged_intersect_stat_cats {
     my %hash = map { ($_ => 1) } @$orglist;
     $orglist = [ keys %hash ];
 
-    warn "range: @$orglist\n";
+    $logger->debug("range: @$orglist");
 
     my  $method = "open-ils.storage.multiranged.intersect.fleshed.asset.stat_cat.all.atomic";
     return $apputils->simple_scalar_request(
@@ -122,7 +122,7 @@ sub retrieve_ranged_union_stat_cats {
 
     my  $method = "open-ils.storage.multiranged.union.fleshed.asset.stat_cat.all.atomic";
     use Data::Dumper;
-    warn "Retrieving stat_cats with method $method and orgs " . Dumper($orglist) . "\n";
+    $logger->debug("Retrieving stat_cats with method $method and orgs " . Dumper($orglist));
 
     my($user_obj, $evt) = $apputils->checkses($user_session); 
     return $evt if $evt;
@@ -133,7 +133,7 @@ sub retrieve_ranged_union_stat_cats {
     my %hash = map { ($_ => 1) } @$orglist;
     $orglist = [ keys %hash ];
 
-    warn "range: @$orglist\n";
+    $logger->debug("range: @$orglist\n");
 
     return $apputils->simple_scalar_request(
                 "open-ils.storage", $method, $orglist );
@@ -250,7 +250,7 @@ sub _flesh_asset_cat {
 
 sub _create_stat_cat {
     my( $session, $stat_cat, $method) = @_;
-    warn "Creating new stat cat with name " . $stat_cat->name . "\n";
+    $logger->debug("Creating new stat cat with name " . $stat_cat->name);;
     $stat_cat->clear_id();
     my $req = $session->request( $method, $stat_cat );
     my $id = $req->gather(1);
@@ -258,7 +258,7 @@ sub _create_stat_cat {
         throw OpenSRF::EX::ERROR 
         ("Error creating new statistical category"); }
 
-    warn "Stat cat create returned id $id\n";
+    $logger->debug("Stat cat create returned id $id");
     return $id;
 }
 
@@ -266,19 +266,19 @@ sub _create_stat_cat {
 sub _create_stat_entry {
     my( $session, $stat_entry, $method) = @_;
 
-    warn "Creating new stat entry with value " . $stat_entry->value . "\n";
+    $logger->debug("Creating new stat entry with value " . $stat_entry->value);
     $stat_entry->clear_id();
 
     my $req = $session->request($method, $stat_entry);
     my $id = $req->gather(1);
 
-    warn "Stat entry " . Dumper($stat_entry) . "\n";    
+    $logger->debug("Stat entry " . Dumper($stat_entry));    
     
     if(!$id) {
         throw OpenSRF::EX::ERROR 
         ("Error creating new stat cat entry"); }
 
-    warn "Stat cat entry create returned id $id\n";
+    $logger->debug("Stat cat entry create returned id $id");
     return $id;
 }
 
@@ -312,27 +312,27 @@ sub update_stat_entry {
     my $req = $session->request($method, $entry); 
     my $status = $req->gather(1);
     $apputils->commit_db_session($session);
-    warn "stat cat entry with value " . $entry->value . " updated with status $status\n";
+    $logger->debug("stat cat entry with value " . $entry->value . " updated with status $status");
     return 1;
 }
 
 sub _update_stat_entry_default {
     my( $session, $default_entry, $method) = @_;
 
-    warn "Updating new default stat entry for stat_cat " . $default_entry->stat_cat . 
+    $logger->debug("Updating new default stat entry for stat_cat " . $default_entry->stat_cat . 
         " for org unit " . $default_entry->owner .
-        " with new entry id " . $default_entry->stat_cat_entry . "\n";
+        " with new entry id " . $default_entry->stat_cat_entry);
 
     my $req = $session->request($method, $default_entry);
     my $status = $req->gather(1);
 
-    warn "Default stat entry " . Dumper($default_entry) . "\n"; 
+    $logger->debug("Default stat entry " . Dumper($default_entry)); 
     
     if(!$status) {
         throw OpenSRF::EX::ERROR 
         ("Error updating default stat cat entry"); }
 
-    warn "Default stat cat entry update returned status $status\n";
+    $logger->debug("Default stat cat entry update returned status $status");
     return $status;
 }
 
@@ -364,7 +364,7 @@ sub update_stat {
     my $req = $session->request($method, $cat); 
     my $status = $req->gather(1);
     $apputils->commit_db_session($session);
-    warn "stat cat with id " . $cat->id . " updated with status $status\n";
+    $logger->info("stat cat with id " . $cat->id . " updated with status $status");
     return 1;
 }
 
@@ -476,19 +476,19 @@ sub create_stat_entry_default {
 sub _create_stat_entry_default {
     my( $session, $stat_entry_default, $method) = @_;
 
-    warn "Creating new default stat entry for stat_cat " . $stat_entry_default->stat_cat . "\n";
+    $logger->debug("Creating new default stat entry for stat_cat " . $stat_entry_default->stat_cat);
     $stat_entry_default->clear_id();
 
     my $req = $session->request($method, $stat_entry_default);
     my $id = $req->gather(1);
 
-    warn "Default stat entry " . Dumper($stat_entry_default) . "\n";    
+    $logger->debug("Default stat entry " . Dumper($stat_entry_default));    
 
     if(!$id) {
         throw OpenSRF::EX::ERROR 
         ("Error creating new default stat cat entry"); }
 
-    warn "Default stat cat entry create returned id $id\n";
+    $logger->debug("Default stat cat entry create returned id $id");
     return $id;
 }
 
@@ -540,7 +540,7 @@ sub create_stat_map {
     $apputils->set_audit_info($session, $user_session, $user_obj->id, $user_obj->wsid);
     my $req = $session->request($method, $map); 
     my $newid = $req->gather(1);
-    warn "Created new stat cat map with id $newid\n";
+    $logger->debug("Created new stat cat map with id $newid");
     $apputils->commit_db_session($session);
 
     return $apputils->simple_scalar_request( "open-ils.storage", $ret, $newid );
@@ -591,7 +591,7 @@ sub update_stat_map {
     $apputils->set_audit_info($session, $user_session, $user_obj->id, $user_obj->wsid);
     my $req = $session->request($method, $map); 
     my $newid = $req->gather(1);
-    warn "Updated new stat cat map with id $newid\n";
+    $logger->debug("Updated new stat cat map with id $newid");
     $apputils->commit_db_session($session);
 
     return $newid;
@@ -766,16 +766,15 @@ sub fetch_stats_by_copy {
             'open-ils.cstore.direct.asset.stat_cat_entry_copy_map.search.atomic', { owning_copy => $$args{copyid} });
 
 
-        warn "here\n";
         for my $map (@$maps) {
 
-            warn "map ".$map->id."\n";
-            warn "map ".$map->stat_cat_entry."\n";
+            $logger->debug("map ".$map->id);
+            $logger->debug("map ".$map->stat_cat_entry);
 
             my $entry = $U->cstorereq(
                 'open-ils.cstore.direct.asset.stat_cat_entry.retrieve', $map->stat_cat_entry);
 
-            warn "Found entry ".$entry->id."\n";
+            $logger->debug("Found entry ".$entry->id);
 
             my $cat = $U->cstorereq(
                 'open-ils.cstore.direct.asset.stat_cat.retrieve', $entry->stat_cat );
