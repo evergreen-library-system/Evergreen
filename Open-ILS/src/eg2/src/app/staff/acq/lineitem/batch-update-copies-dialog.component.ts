@@ -81,7 +81,7 @@ export class BatchUpdateCopiesDialogComponent extends DialogComponent {
             changes['fund'] = this.templateCopy.fund();
         }
         if (this.templateCopy.circ_modifier()) {
-            changes['circ_modifier'] = this.templateCopy.owning_lib();
+            changes['circ_modifier'] = this.templateCopy.circ_modifier();
         }
         return changes;
     }
