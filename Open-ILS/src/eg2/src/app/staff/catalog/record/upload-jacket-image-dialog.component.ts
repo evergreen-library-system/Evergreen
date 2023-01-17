@@ -98,7 +98,7 @@ export class UploadJacketImageDialogComponent extends DialogComponent implements
                 console.debug('Jacket upload: ' , x);
                 if (x instanceof HttpResponse) {
                     console.debug('yay', x.body);
-                    if (x.body !== '1') {
+                    if (x.body.toString() !== '1') {
                         this.uploading = false;
                         this.errorUploading = true;
                     }
