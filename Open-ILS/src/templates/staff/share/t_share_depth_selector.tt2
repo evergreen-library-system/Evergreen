@@ -1,4 +1,4 @@
-<select
+<select class="form-control"
   ng-options="item.id as item.name for item in values"
   ng-model="ngModel"
 </select>
