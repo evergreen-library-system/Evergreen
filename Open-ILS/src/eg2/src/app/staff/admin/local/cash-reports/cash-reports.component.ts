@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, TemplateRef} from '@angular/core';
 import {DateUtil} from '@eg/share/util/date';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -7,6 +7,7 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import { NgForm } from '@angular/forms';
+import {PrintService} from '@eg/share/print/print.service';
 
 class DeskTotals {
     cash_payment = 0;
@@ -40,7 +41,11 @@ export class CashReportsComponent implements OnInit {
     disabledOrgs = [];
     activeTab = 'deskPayments';
     cellTextGenerator: GridCellTextGenerator;
-
+    loadedRange = {
+        org: this.selectedOrg?.shortname(),
+        start: this.startDate,
+        end: this.endDate
+    };
 
     // Default sort field, used when no grid sorting is applied.
     @Input() sortField: string;
@@ -48,12 +53,15 @@ export class CashReportsComponent implements OnInit {
     @ViewChild('userPaymentGrid') userPaymentGrid: GridComponent;
     @ViewChild('userGrid') userGrid: GridComponent;
     @ViewChild('criteria') criteria: NgForm;
+    @ViewChild('deskPrintTmpl') deskPrintTmpl: TemplateRef<any>;
+    @ViewChild('userPrintTmpl') userPrintTmpl: TemplateRef<any>;
 
     constructor(
         private idl: IdlService,
         private net: NetService,
         private org: OrgService,
-        private auth: AuthService) {}
+        private auth: AuthService,
+        private printer: PrintService) {}
 
     ngOnInit() {
         this.disabledOrgs = this.getFilteredOrgList();
@@ -95,6 +103,11 @@ export class CashReportsComponent implements OnInit {
                 dataForTotal = this.getDeskTotal(result);
             }
             this[dataSource].data = result;
+            this.loadedRange = {
+                org: this.selectedOrg?.shortname(),
+                start: this.startDate,
+                end: this.endDate
+            };
             this.eraseUserGrid();
         });
     }
@@ -149,5 +162,17 @@ export class CashReportsComponent implements OnInit {
     onOrgChange(org) {
         this.selectedOrg = org;
         this.searchForData();
+    }
+
+    printPayments(template: TemplateRef<any>): void {
+        this.printer.print({printContext: 'default', template});
+    }
+
+    printDeskPayments(): void {
+        this.printPayments(this.deskPrintTmpl);
+    }
+
+    printUserPayments(): void {
+        this.printPayments(this.userPrintTmpl);
     }
 }
