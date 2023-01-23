@@ -66,6 +66,10 @@
           [disablePaging]="true"
           [dataSource]="deskPaymentDataSource"
           [sortable]="false">
+          <eg-grid-toolbar-button [disabled]="!deskPaymentDataSource.data.length"
+            i18n-label label="Print"
+            (onClick)="printDeskPayments()">
+          </eg-grid-toolbar-button>
           <eg-grid-column label="Workstation" name="workstation" [index]="true" i18n-label></eg-grid-column>
           <eg-grid-column label="Cash Payment" name="cash_payment" i18n-label datatype="money"></eg-grid-column>
           <eg-grid-column label="Check Payment" name="check_payment" i18n-label datatype="money"></eg-grid-column>
@@ -111,6 +115,10 @@
           [disablePaging]="true"
           [dataSource]="userPaymentDataSource"
           [sortable]="false">
+          <eg-grid-toolbar-button [disabled]="!userPaymentDataSource.data.length"
+            i18n-label label="Print"
+            (onClick)="printUserPayments()">
+          </eg-grid-toolbar-button>
           <eg-grid-column label="User" name="usr" [index]="true" i18n-label></eg-grid-column>
           <eg-grid-column label="Credit Payment" name="credit_payment" i18n-label datatype="money"></eg-grid-column>
           <eg-grid-column label="Debit Payment" name="debit_payment" i18n-label datatype="money"></eg-grid-column>
@@ -128,3 +136,146 @@
   </li>
 </ul>
 <div [ngbNavOutlet]="cashReportsNav"></div>
+
+<ng-template #deskPrintTmpl>
+  <style>
+    .print-table {
+      border-collapse: collapse;
+    }
+    .print-totals {
+      margin-bottom: 15px;
+    }
+    .print-table th,
+    .print-table td {
+      border: 1px solid #aaa;
+      padding: 2px 4px;
+    }
+  </style>
+
+  <table class="print-table print-totals">
+    <thead>
+      <tr>
+        <th colspan="2">
+          {{loadedRange.org}} <ng-container i18n>Desk Payments</ng-container>:
+          {{loadedRange.start | date:'shortDate'}} - {{loadedRange.end | date:'shortDate'}}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td i18n>Total Cash Payments</td>
+        <td>{{deskTotals.cash_payment | currency}}</td>
+      </tr>
+      <tr>
+        <td i18n>Total Check Payments</td>
+        <td>{{deskTotals.check_payment | currency}}</td>
+      </tr>
+      <tr>
+        <td i18n>Total Credit Card Payments</td>
+        <td>{{deskTotals.credit_card_payment | currency}}</td>
+      </tr>
+      <tr>
+        <td i18n>Total Debit Card Payments</td>
+        <td>{{deskTotals.debit_card_payment | currency}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="print-table">
+    <thead>
+      <tr>
+        <th i18n>Workstation</th>
+        <th i18n>Cash Payment</th>
+        <th i18n>Check Payment</th>
+        <th i18n>Credit Card Payment</th>
+        <th i18n>Debit Card Payment</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let mwps of deskPaymentDataSource.data">
+        <td>{{mwps.workstation()}}</td>
+        <td>{{mwps.cash_payment() | currency}}</td>
+        <td>{{mwps.check_payment() | currency}}</td>
+        <td>{{mwps.credit_card_payment() | currency}}</td>
+        <td>{{mwps.debit_card_payment() | currency}}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
+
+<ng-template #userPrintTmpl>
+  <style>
+    .print-table {
+      border-collapse: collapse;
+      margin-bottom: 15px;
+    }
+    .print-totals {
+      margin-bottom: 15px;
+    }
+    .print-table th,
+    .print-table td {
+      border: 1px solid #aaa;
+      padding: 2px 4px;
+    }
+  </style>
+
+  <table class="print-table print-totals">
+    <thead>
+      <tr>
+        <th colspan="2">
+          {{loadedRange.org}} <ng-container i18n>Staff User Payments</ng-container>:
+          {{loadedRange.start | date:'shortDate'}} - {{loadedRange.end | date:'shortDate'}}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td i18n>Total Patron Credit</td>
+        <td>{{userTotals.credit_payment | currency}}</td>
+      </tr>
+      <tr>
+        <td i18n>Total Forgive Payments</td>
+        <td>{{userTotals.forgive_payment | currency}}</td>
+      </tr>
+      <tr>
+        <td i18n>Total Work Payments</td>
+        <td>{{userTotals.work_payment | currency}}</td>
+      </tr>
+      <tr>
+        <td i18n>Total Goods Payments</td>
+        <td>{{userTotals.goods_payment | currency}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="print-table">
+    <thead>
+      <tr>
+        <th i18n>User</th>
+        <th i18n>Credit Payment</th>
+        <th i18n>Forgive Payment</th>
+        <th i18n>Work Payment</th>
+        <th i18n>Goods Payment</th>
+        <th i18n>Staff Card</th>
+        <th i18n>Staff Email</th>
+        <th i18n>Staff First Name</th>
+        <th i18n>Staff Family Name</th>
+        <th i18n>Staff Home OU</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let mups of userPaymentDataSource.data">
+        <td>{{mups.usr()}}</td>
+        <td>{{mups.credit_payment() | currency}}</td>
+        <td>{{mups.forgive_payment() | currency}}</td>
+        <td>{{mups.work_payment() | currency}}</td>
+        <td>{{mups.goods_payment() | currency}}</td>
+        <td>{{mups.user.card()}}</td>
+        <td>{{mups.user.email()}}</td>
+        <td>{{mups.user.first_given_name()}}</td>
+        <td>{{mups.user.family_name()}}</td>
+        <td>{{mups.user.home_ou()}}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
