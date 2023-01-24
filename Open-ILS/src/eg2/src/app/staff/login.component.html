@@ -24,16 +24,20 @@
         <div class="row row-cols-auto mt-3">
           <label class="form-label col-form-label fw-bold col-4 text-end" for="password" i18n>Password</label>
           <div class="col-8">
-            <input 
-              type="password" 
-              class="form-control"
-              id="password" 
-              name="password"
-              required
-              autocomplete="current-password"
-              i18n-placeholder
-              placeholder="Password" 
-              [(ngModel)]="args.password"/>
+          <input 
+            [type]="passwordVisible ? 'text' : 'password'"
+            class="form-control"
+            id="password"
+            name="password"
+            required
+            autocomplete="current-password"
+            i18n-placeholder
+            placeholder="Password"
+            spellcheck="false"
+            [(ngModel)]="args.password"/>
+          <span id="show_password" class="input-group-text pointer" (click)="togglePasswordVisibility()">
+            <span class="material-icons">{{ passwordVisible ? 'visibility' : 'visibility_off' }}</span>
+          </span>
           </div>
         </div>
 

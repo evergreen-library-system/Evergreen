@@ -561,3 +561,10 @@ a {
 .popover-body {
   padding: 0;
 }
+
+/*
+   CSS Cursor classes
+*/
+.pointer {
+  cursor: pointer;
+}

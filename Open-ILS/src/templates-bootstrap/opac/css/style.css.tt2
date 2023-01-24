@@ -4019,3 +4019,7 @@ padding: 15px;
 .form-control {
     border: 1px solid [% css_colors.border_standard %];
 }
+
+.pointer {
+    cursor: pointer;
+}

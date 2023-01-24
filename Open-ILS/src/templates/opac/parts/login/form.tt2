@@ -57,7 +57,11 @@
         <div class='float-left'>
             <label for="password_field" class="lbl1" >[% l('PIN Number or Password') %]</label>
             <div class="input_bg">
-                <input id="password_field" name="password" type="password" />
+                <input id="password_field" name="password" type="password" spellcheck="false"/>
+            </div>
+            <div class="input_bg">
+                <input id="password_visibility_checkbox" type="checkbox" />
+                <label for="password_visibility_checkbox">Show Password</label>
             </div>
             [% INCLUDE "opac/parts/login/password_hint.tt2" %]
             [% IF reset_password == 'true' %]

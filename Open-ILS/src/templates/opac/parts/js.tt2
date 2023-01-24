@@ -42,6 +42,17 @@
 }
 </script>
 
+<!-- Password Visibility Checkbox -->
+<script>
+    let checkbox = document.getElementById('password_visibility_checkbox');
+    let input = document.getElementById('password_field');
+    checkbox.addEventListener('change', () => {
+        if(checkbox.checked) input.type = 'text';
+        else input.type = 'password';
+        input.focus();
+    });
+</script>
+
 [%- IF ctx.use_stripe %]
 <script type="text/javascript">unHideMe($("pay_fines_now"));[%# the DOM is loaded now, right? %]</script>
 [% END -%]

@@ -15,6 +15,7 @@ export class StaffLoginComponent implements OnInit {
     loginFailed: boolean;
     routeTo: string;
     pendingXactsDate: Date;
+    passwordVisible: boolean;
 
     args = {
       username : '',
@@ -118,6 +119,11 @@ export class StaffLoginComponent implements OnInit {
             }
         );
     }
+
+    togglePasswordVisibility() {
+        this.passwordVisible = !this.passwordVisible;
+    }
+
 }
 
 

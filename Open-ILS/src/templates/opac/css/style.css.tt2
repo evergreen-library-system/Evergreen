@@ -3501,3 +3501,6 @@ span.egtd { display:table-cell; }
 
 */
 
+.pointer {
+    cursor: pointer;
+}

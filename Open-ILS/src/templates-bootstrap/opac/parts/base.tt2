@@ -65,6 +65,14 @@
 				$("#loginModal").on('shown.bs.modal', function(){
 					$(this).find('#username_field').focus();
 				});
+                // password visibility eye
+                let btn = document.getElementById('show_password');
+                let input = document.getElementById('password_field');
+                let icon = btn.querySelector('i');
+                btn.addEventListener('click', () => {
+                    input.type == 'password' ? [input.type = 'text', icon.setAttribute('class','fas fa-eye')] : [input.type = 'password', icon.setAttribute('class', 'fas fa-eye-slash')];
+                    input.focus();
+                });
 			});
 		</script>
 

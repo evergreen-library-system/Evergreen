@@ -24,8 +24,11 @@
             <div class="form-group">
               <label class="col-md-4 control-label" for="login-password">[% l('Password') %]</label>
               <div class="col-md-8">
-                <input type="password" id="login-password" class="form-control"
-                  placeholder="Password" ng-model="args.password"/>
+                <div class="input-group">
+                  <input type="password" id="login-password" class="form-control"
+                    placeholder="Password" spellcheck="false" ng-model="args.password"/>
+                  <span id="show_password" class="input-group-addon pointer"><i class="glyphicon glyphicon-eye-close"></i></span>
+                </div>
               </div>
             </div>
 
@@ -67,3 +70,13 @@
     <div class="col-md-3"></div><!-- offset? -->
   </div>
 </div>
+<script>
+    // password visibility eye
+    let btn = document.getElementById('show_password');
+    let input = document.getElementById('login-password');
+    let icon = btn.querySelector('i');
+    btn.addEventListener('click', () => {
+      input.type == 'password' ? [input.type = 'text', icon.setAttribute('class', 'glyphicon glyphicon-eye-open')] : [input.type = 'password', icon.setAttribute('class', 'glyphicon glyphicon-eye-close')];
+      input.focus();
+    });
+</script>
