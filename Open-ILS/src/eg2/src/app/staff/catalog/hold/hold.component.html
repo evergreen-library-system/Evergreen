@@ -312,7 +312,7 @@
           <ng-container *ngIf="ctx.holdMeta.parts.length">
             <select class="form-select"  (change)="setPart(ctx, $event)"
               [ngModel]="ctx.holdMeta.part ? ctx.holdMeta.part.id() : (ctx.holdMeta.part_required ? ctx.holdMeta.parts[0].id() : '')">
-              <option *ngIf="!ctx.holdMeta.part_required" value="" i18n>Any Part</option>
+              <option *ngIf="!ctx.holdMeta.part_required" value="">{{anyPartLabel}}</option>
               <option *ngFor="let part of ctx.holdMeta.parts"
                 value="{{part.id()}}">{{part.label()}}</option>
             </select>

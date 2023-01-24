@@ -635,6 +635,13 @@ BEGIN
 END;
 $_$ LANGUAGE PLPGSQL;
 
+-- this may grow to support full GNU gettext functionality
+CREATE TABLE config.i18n_string (
+    id              SERIAL      PRIMARY KEY,
+    context         TEXT        NOT NULL, -- hint for translators to disambiguate
+    string          TEXT        NOT NULL
+);
+
 CREATE TABLE config.billing_type (
     id              SERIAL  PRIMARY KEY,
     name            TEXT    NOT NULL,

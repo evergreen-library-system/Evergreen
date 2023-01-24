@@ -9191,6 +9191,19 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+	<class id="i18ns" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::i18n_string" oils_persist:tablename="config.i18n_string" oils_persist:field_safe="true" reporter:label="i18n String">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.i18n_string_id_seq">
+			<field name="id" reporter:datatype="id" />
+			<field name="context" reporter:datatype="text"/>
+			<field name="string" reporter:datatype="text" oils_persist:i18n="true"/>
+		</fields>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve />
+                <update permission="UPDATE_TRANSLATION" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
 	<class id="fdoc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::idl_field_doc" oils_persist:tablename="config.idl_field_doc" oils_persist:field_safe="true" reporter:label="IDL Field Doc">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.idl_field_doc_id_seq">
 			<field name="id" reporter:label="ID" reporter:datatype="id"/>

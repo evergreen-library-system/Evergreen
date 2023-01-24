@@ -180,7 +180,7 @@ function maybeToggleNumCopies(obj) {
                              <div class='radio-parts-selection'>
                              [% IF !hdata.part_required %]
                                 <span class='parts-radio-option'>
-                                 <input type='radio' name='part' value='' onchange='maybeToggleNumCopies(this);' required>[% l('All Parts') %]</span>
+                                 <input type='radio' name='part' value='' onchange='maybeToggleNumCopies(this);' required>[% ctx.any_part_label %]</span>
                               [% END %]
                                [% FOR part IN hdata.parts %]
                                  <span class='parts-radio-option'><input type='radio' name='part' id=[% part.id %] value=[% part.id %] onchange='maybeToggleNumCopies(this);' required>
@@ -193,7 +193,7 @@ function maybeToggleNumCopies(obj) {
                             %]</label></span>
                             <select id='select_hold_part' name='part' onchange='maybeToggleNumCopies(this);'>
                                 [% IF !hdata.part_required %]
-                                <option selected='selected' value=''>[% l('- All Parts -') %]</option>
+                                <option selected='selected' value=''>[% ctx.any_part_label %]</option>
                                 [% END %]
                                 [% FOR part IN hdata.parts %]
                                 <option value='[% part.id %]'>[% part.label | html %]</option>

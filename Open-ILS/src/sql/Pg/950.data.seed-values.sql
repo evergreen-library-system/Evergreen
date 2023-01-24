@@ -19070,6 +19070,18 @@ INSERT INTO config.i18n_core (fq_field, identity_value, translation, string )
           AND t.xlate IS NOT NULL
           AND t.name <> (xlate->value);
 
+INSERT INTO config.i18n_string (id, context, string) VALUES (1,
+    oils_i18n_gettext(
+        1, 'In the Place Hold interfaces for staff and patrons; when monographic parts are available, this string provides contextual information about whether and how parts are considered for holds that do not request a specific mongraphic part.',
+        'i18ns','context'
+    ),
+    oils_i18n_gettext(
+        1, 'All Parts',
+        'i18ns','string'
+    )
+);
+SELECT SETVAL('config.i18n_string_id_seq', 10000); -- reserve some for stock EG interfaces
+
 INSERT INTO authority.heading_field(heading_type, heading_purpose, label, heading_xpath, component_xpath, type_xpath, thesaurus_xpath, thesaurus_override_xpath) VALUES
  ( 'topical_term', 'main',    'Main Topical Term',    '/mads21:mads/mads21:authority', '//mads21:topic', NULL, '/mads21:mads/mads21:authority/mads21:topic[1]/@authority', NULL )
 ,( 'topical_term', 'variant', 'Variant Topical Term', '/mads21:mads/mads21:variant',   '//mads21:topic', '/mads21:variant/@type', '/mads21:mads/mads21:authority/mads21:topic[1]/@authority', '//mads21:topic[1]/@authority')

@@ -1516,6 +1516,7 @@ sub load_place_hold {
 
     $logger->info("Looking at hold_type: " . $ctx->{hold_type} . " and targets: @targets");
 
+    $ctx->{any_part_label} = $ctx->{get_i18n_string}->(1, 'All Parts');
     $ctx->{staff_recipient} = $self->editor->retrieve_actor_user([
         $e->requestor->id,
         {

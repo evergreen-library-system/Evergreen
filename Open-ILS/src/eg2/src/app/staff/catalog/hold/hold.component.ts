@@ -21,6 +21,7 @@ import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {BarcodeSelectComponent
 } from '@eg/staff/share/barcodes/barcode-select.component';
 import {WorkLogService} from '@eg/staff/share/worklog/worklog.service';
+import {getI18nString} from '@eg/share/util/i18ns';
 
 class HoldContext {
     holdMeta: HoldRequestTarget;
@@ -70,6 +71,7 @@ export class HoldComponent implements OnInit {
     activeDateYmd: string;
     activeDate: Date;
     activeDateInvalid = false;
+    anyPartLabel = $localize`All Parts`;
 
     holdContexts: HoldContext[];
     recordSummaries: BibRecordSummary[];
@@ -166,6 +168,11 @@ export class HoldComponent implements OnInit {
             if (resp.summary.value) {
                 this.disableOrgs.push(Number(resp.org_unit));
             }
+        });
+
+        getI18nString(this.pcrud, 1) // Seed data default is: All Parts
+        .subscribe(actual_string => {
+            this.anyPartLabel = actual_string
         });
 
         if (!Array.isArray(this.holdTargets)) {
