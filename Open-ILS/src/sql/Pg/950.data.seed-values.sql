@@ -1974,7 +1974,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 640, 'ACCESS_ANGULAR_CIRC', oils_i18n_gettext(640,
     'Allow a user to access the experimental Angular circulation interfaces', 'ppl', 'description')),
  ( 641, 'ADMIN_FUND_ROLLOVER', oils_i18n_gettext(641,
-    'Allow the user to perform fund propagation and rollover', 'ppl', 'description'))    
+    'Allow the user to perform fund propagation and rollover', 'ppl', 'description')),
+ ( 642, 'UPDATE_COPY_BARCODE', oils_i18n_gettext(642,
+    'Update the barcode for an item.', 'ppl', 'description'))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
@@ -2189,6 +2191,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'CREATE_PAYMENT',
 			'RENEW_HOLD_OVERRIDE',
 			'UPDATE_COPY',
+			'UPDATE_COPY_BARCODE',
 			'UPDATE_VOLUME',
 			'ADMIN_TOOLBAR',
 			'VOLUME_HOLDS');
@@ -2270,6 +2273,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'MARK_ITEM_ON_ORDER',
 			'MARK_ITEM_RESHELVING',
 			'UPDATE_COPY',
+			'UPDATE_COPY_BARCODE',
 			'UPDATE_COPY_NOTE',
 			'UPDATE_IMPORT_ITEM',
 			'UPDATE_MFHD_RECORD',
@@ -2714,6 +2718,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'UPDATE_BATCH_COPY',
 			'UPDATE_BIB_IMPORT_QUEUE',
 			'UPDATE_COPY',
+			'UPDATE_COPY_BARCODE',
 			'UPDATE_FUND',
 			'UPDATE_FUND_ALLOCATION',
 			'UPDATE_FUNDING_SOURCE',

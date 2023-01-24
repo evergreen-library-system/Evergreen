@@ -37,12 +37,21 @@ function($scope , egCore) {
                 }
 
                 $scope.copyId = copy.id();
-                copy.barcode($scope.barcode2);
 
-                egCore.pcrud.update(copy).then(function(stat) {
-                    $scope.updateOK = stat;
-                    $scope.focusBarcode = true;
+                egCore.net.request(
+                    'open-ils.cat',
+                    'open-ils.cat.update_copy_barcode',
+                    egCore.auth.token(), $scope.copyId, $scope.barcode2
+                ).then(function(resp) {
+                    var evt = egCore.evt.parse(resp);
+                    if (evt) {
+                        console.log('toast 0 here 2', evt);
+                    } else {
+                        $scope.updateOK = true;
+                        $scope.focusBarcode = true;
+                    }
                 });
+
             });
         });
     }

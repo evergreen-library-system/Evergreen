@@ -1076,16 +1076,28 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                                 }
                 
                                 $scope.copyId = copy.id();
-                                copy.barcode($scope.barcode2);
                 
-                                egCore.pcrud.update(copy).then(function(stat) {
-                                    $scope.updateOK = stat;
-                                    $scope.focusBarcode = true;
-                                    holdingsSvc.fetchAgain().then(function (){
-                                        holdingsGridDataProviderRef.refresh();
-                                    });
+                                egCore.net.request(
+                                    'open-ils.cat',
+                                    'open-ils.cat.update_copy_barcode',
+                                    egCore.auth.token(), $scope.copyId, $scope.barcode2
+                                ).then(function(resp) {
+                                    var evt = egCore.evt.parse(resp);
+                                    if (evt) {
+                                        console.log('toast 0 here', evt);
+                                    } else {
+                                        $scope.updateOK = stat;
+                                        $scope.focusBarcode = true;
+                                        holdingsSvc.fetchAgain().then(function (){
+                                            holdingsGridDataProviderRef.refresh();
+                                        });
+                                    }
                                 });
 
+                            },function(E) {
+                                console.log('toast 1 here',E);
+                            },function(E) {
+                                console.log('toast 2 here',E);
                             });
                             $uibModalInstance.close();
                         }

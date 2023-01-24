@@ -11,3 +11,21 @@
 * Prevent templates from applying or changing magical status in angular holdings editor (LP#1999401)
 * Prevent directly editing the shelving location deleted field in the Shelving Locations Editor (LP#2002435)
 * The "Strict Barcode" checkbox is now closer to the barcode input on the Check Out, Check In, and Renew Items pages (LP#1990968)
+* LP1929593 UPDATE_COPY_BARCODE permission
+
+    This adds the permission UPDATE_COPY_BARCODE and a new API call,
+
+      open-ils.cat.update_copy_barcode
+
+    which explicitly tests for both UPDATE_COPY_BARCODE and UPDATE_COPY,
+    with either being sufficient for allowing a barcode change.  Existing
+    Replace Barcode UI's in both Angular and AngularJS have been modified
+    to use this API call instead of the pcrud service.  One side-effect of
+    this has been better surfacing of errors, as errors in pcrud were
+    uncaught and bypassing the normal error handling.  This addresses
+    LP1951469.
+
+    The upgrade script gives any permission groups that already have the
+    UPDATE_COPY permission the new UPDATE_COPY_BARCODE permission at the
+    same depth, though it's technically not needed.
+

@@ -2086,6 +2086,44 @@ sub volcopy_data {
     return undef;
 }
 
+__PACKAGE__->register_method(
+    method    => "update_copy_barcode",
+    api_name  => "open-ils.cat.update_copy_barcode",
+    argc      => 3,
+    signature => {
+        desc   => q|Updates the barcode for a item, checking for either the UPDATE_COPY permission or the UPDATE_COPY_BARCODE permission.|,
+        params => [
+            {desc => 'Authtoken', type => 'string'},
+            {desc => 'Copy ID', type => 'number'},
+            {desc => 'New Barcode', type => 'string'}
+        ]
+    },
+    return => {desc => 'Returns the copy ID if successful, an ILS event otherwise.', type => 'string'}
+);
+
+sub update_copy_barcode {
+    my ($self, $client, $auth, $copy_id, $barcode) = @_;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+
+    $e->checkauth or return $e->event;
+
+    my $copy = $e->retrieve_asset_copy($copy_id)
+        or return $e->event;
+
+    # make sure there is no undeleted copy (including the same one?) with the same barcode
+    my $existing = $e->search_asset_copy({barcode => $barcode, deleted => 'f'}, {idlist=>1});
+    return OpenILS::Event->new('ITEM_BARCODE_EXISTS') if @$existing;
+
+    # if both of these perm checks fail, we'll report it for UPDATE_COPY_BARCODE as it is more specific
+    return $e->event unless $e->allowed('UPDATE_COPY', $copy->circ_lib) || $e->allowed('UPDATE_COPY_BARCODE', $copy->circ_lib);
+
+    $copy->barcode( $barcode );
+
+    $e->update_asset_copy( $copy ) or return $e->event;
+    $e->commit or return $e->event;
+
+    return $copy->id;
+}
 
 1;
 
