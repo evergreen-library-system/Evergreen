@@ -85,7 +85,7 @@ export class CnBrowseResultsComponent implements OnInit, OnDestroy {
         }
 
         return this.pcrud.search('acn',
-            {record: this.bibSummary.id, owning_lib: org},
+            {record: this.bibSummary.id, owning_lib: org, deleted: 'f'},
             {limit: 1}
         ).toPromise().then(cn =>
             this.browseCn = cn ? cn.label() : this.bibSummary.bibCallNumber
