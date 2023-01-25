@@ -562,6 +562,11 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
                     if (value[+catId] !== null) {
                         this.statCatValues[+catId] = value[+catId];
                         this.statCatChanged(+catId);
+                        // Indicate this value changed in the form
+                        const attr = this.batchAttrs.find(attr =>
+                            attr.name?.split('_').pop() === catId
+                        );
+                        if (attr) { attr.hasChanged = true; }
                     }
                 });
                 return;
