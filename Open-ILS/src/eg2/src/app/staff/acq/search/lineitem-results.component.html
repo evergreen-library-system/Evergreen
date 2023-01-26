@@ -37,8 +37,8 @@
 
   <ng-container>
     <a *ngIf="lineitem.purchase_order()" 
-      routerLink="/staff/acq/po/{{lineitem.purchase_order().id()}}"
-      fragment="{{lineitem.id()}}" target="_blank">
+      routerLink="/staff/acq/po/{{lineitem.purchase_order().id()}}/lineitem/{{lineitem.id()}}/items"
+      target="_blank">
       {{lineitem.id()}}
     </a>
     <a *ngIf="lineitem.picklist() && !lineitem.purchase_order()" 
