@@ -1,25 +1,123 @@
 = Standing Penalties =
 :toc:
 
-In versions of Evergreen prior to 2.3, the following penalty types were
-available by default.  When applied to user accounts, these penalties prevented
-users from completing the following actions: 
+Evergreen includes twenty-one stock penalties, and adminstrators can create other penalty types if needed. Each penalty can be configured to block zero, one, or several circulation actions.
 
-* *CIRC* - Users cannot check out items
-* *HOLD* - Users cannot place holds on items
-* *RENEW* - Users cannot renew items
+Penalties can be viewed and edited by navigating to *Administration -> Local Administration -> Standing Penalties.
 
-In version 2.3, two new penalty types are available in Evergreen: 
+[[standing_penalty_types]]
+== Standing Penalty Types ==
 
-* *CAPTURE* - This penalty prevents a user's holds from being captured. If the
-_HOLD_ penalty has not been applied to a user's account, then the patron can place a
-hold, but the targeted item will not appear on a pull list and will not be
+The following standing penalties are available in Evergreen:
+
+* PATRON_EXCEEDS_FINES - Patron exceeds fine threshold
+* PATRON_EXCEEDS_OVERDUE_COUNT - Patron exceeds max overdue item threshold
+* PATRON_EXCEEDS_CHECKOUT_COUNT - Patron exceeds max checked out item threshold
+* PATRON_EXCEEDS_COLLECTIONS_WARNING - Patron exceeds pre-collections warning fine threshold
+* PATRON_EXCEEDS_LOST_COUNT - Patron exceeds max lost item threshold
+* ALERT_NOTE - Alerting note, no blocks
+* SILENT_NOTE - Note, no blocks
+* STAFF_C - Alerting block on Circ
+* STAFF_CH - Alerting block on Circ and Hold
+* STAFF_CR - Alerting block on Circ and Renew
+* STAFF_CHR - Alerting block on Circ, Hold and Renew
+* STAFF_HR - Alerting block on Hold and Renew
+* STAFF_H - Alerting block on Hold
+* STAFF_R - Alerting block on Renew
+* INVALID_PATRON_ADDRESS - Patron has an invalid address
+* PATRON_IN_COLLECTIONS - Patron has been referred to a collections agency
+* INVALID_PATRON_EMAIL_ADDRESS - Patron had an invalid email address
+* INVALID_PATRON_DAY_PHONE - Patron had an invalid daytime phone number
+* INVALID_PATRON_EVENING_PHONE - Patron had an invalid evening phone number
+* INVALID_PATRON_OTHER_PHONE - Patron had an invalid other phone number
+* PATRON_EXCEEDS_LONGOVERDUE_COUNT - Patron exceeds max long-overdue threshold
+
+The following penalties are system applied:
+
+* PATRON_EXCEEDS_FINES
+* PATRON_EXCEEDS_OVERDUE_COUNT
+* PATRON_EXCEEDS_CHECKOUT_COUNT
+* PATRON_EXCEEDS_COLLECTIONS_WARNING
+* PATRON_EXCEEDS_LOST_COUNT
+* PATRON_IN_COLLECTIONS
+* PATRON_EXCEEDS_LONGOVERDUE_COUNT
+
+All other penalties are manually applied by a staff member or via a specific staff action.
+
+For any penalties that use threshold values, you can configure those threshold values in *Administration -> Local Administration-> Group Penalty Thresholds*. Refer to documentation for xref:local_admin:group_penalty_thresholds.adoc[Group Penalty Thresholds].
+
+For information on how to manually apply penalties to a patron account, see the xref:circulation:circulation_patron_records_web_client.html#_alerts[Alerts and Blocks] documentation.
+
+[[blocked_actions]]
+== Blocked Actions ==
+
+The following circulation actions can be blocked by penalties:
+
+* *CIRC* - Users cannot check out items, except items which may fill a hold. Items which can fill a hold are subjec to the FULFILL action, which is listed below and can be blocked separately.
+* *HOLD* - Users cannot place holds on items.
+* *RENEW* - Users cannot renew items.
+* *CAPTURE* - This penalty prevents a user's holds from being captured. If the _HOLD_ penalty has not been applied to a user's account, then the patron can place a hold, but the targeted item will not appear on a pull list and will not be
 captured for a hold if it is checked in.
-* *FULFILL* - This penalty prevents a user from checking out an item that is on
-hold.  If the _HOLD_ and _CAPTURE_ penalties have not been applied to a user's
-account, then the user can place a hold on an item, and the item can be captured
-for a hold.  However, when he tries to check out the item, the circulator will
-see a pop up box with the name of the penalty type, _FULFILL_.  The circulator
-must correct the problem with the account or must override the penalty to check
-out the item.
+* *FULFILL* - This penalty prevents a user from checking out an item that is on hold.  If the _HOLD_ and _CAPTURE_ penalties have not been applied to a user's account, then the user can place a hold on an item, and the item can be captured
+for a hold.  However, when they try to check out the item, the circulator will see a pop up box with the name of the penalty type, _FULFILL_.  The circulator must correct the problem with the account or must override the penalty to check out the item.
 
+[[standing_penalty_grid]]
+== Standing Penalty Types Grid ==
+
+The grid for Standing Penalty Types displays the following columns:
+
+* _Penalty ID_ - the system assigned penalty ID number
+* _Name_ -  the name of the penalty. This cannot be edited for any of the stock penalties since they are referenced by name in legacy code. Do not use spaces in the penalty name.
+* _Label_ - a brief description of the penalty
+* _Block List_ - a list of the actions blocked by the penalty. These actions are listed in the Blocked Actions section above, and can be entered in any order using the pipe character as a delimiter.
+* _Staff Alert_ - this indicates whether a staff member will be alerted about the penalty when viewing a patron's account.
+* _Org Depth_ - the scope of the penalty, in terms of where a block or restriction will apply relative to the organizational unit where the penalty is calculated (e.g., the circulation library).
+** If you are using Group Penalty Thresholds, Org Depth matters if the threshold is not at the top of the organization tree. If you want all penalty blocks to take effect everywhere, you will need to set the penalty Org Depth to 0, otherwise penalty blocks will only apply at the level they are mapped to a threshold.
+** Valid values for Org Depth include:
+*** NULL / no value set
+*** 0 - penalty applies to the Consortium
+*** 1 - penalty applies to the System
+*** 2 - penalty applies to the Branch
+*** 3 - penalty applies to the Sub-library
+* _Ignore Proximity_ - if a numeric value is set here, this instructs the system to ignore a penalty if the proximity between a patron's home library and the item's home (or circulating) library is greater than the Ignore Proximity value. Possible values include:
+** NULL / no value set - penalty is not ignored anywhere
+** 0 - penalty is ignored at the patron's home branch
+** 2 - penalty is ignored at the patron's home system
+
+NOTE: Ignore Proximity will honor proximity adjustments. See the documentation on xref:admin:Org_Unit_Proximity_Adjustments.adoc[Org Unit Proximity Adjustments] for more information about proximity adjustments. Consult your Evergreen administrator if you are not sure whether or not your Evergreen installation uses proximity adjustments.
+
+Actions on the grid include Delete Selected and Edit Selected, as well as a separate button for New Standing Penalty Type. You can also edit a penalty type by double clicking on its grid row.
+
+[[editing_penalty_type]]
+== Editing a Standing Penalty Type ==
+
+To edit a standing penalty, either select the row and then navigate to Edit Selected in the Actions Menu on the upper right of the grid, right click on the row and choose Edit Selected, or double click on the grid row you wish to edit.
+
+This will open the edit modal:
+
+image::lsa-standing_penalties/penalty_edit_modal.png[Standing Penalty Edit Modal]
+
+Make your desired changes, and select *Save* to save your changes, or *Cancel* to exit the modal without saving.
+
+NOTE: The Name field cannot be edited for any of the stock penalties since they are referenced by name in legacy code. 
+
+NOTE: Do not use spaces in the penalty name.
+[[creating_penalty_type]]
+== Creating a Standing Penalty Type ==
+
+To create a new standing penalty type, select the New Standing Penalty Type button in the upper-left of the grid. This will open the create modal.
+
+Enter your penalty values in the appropriat fields, documented above under Standing Penalty Types Grid. The only field that is required is Name. Do not use spaces in the penalty name. All other fields are optional.
+
+Select *Save* to save your changes, or *Cancel* to exit the modal without saving.
+
+Standing penalties can be shared and used by the full Evergreen consortium.
+
+TIP: If you add a penalty, a stock Evergreen system cannot automatically apply the new penalty. Added penalties need to be manually applied by a staff member to a patron account, or custom code needs to be written to automatically apply the new penalty. See the documentation about xref:circulation:circulation_patron_records_web_client.adoc#patron_blocks[circulation blocks] for more information about manually applying a penalty.
+
+[[deleting_penalty_type]]
+== Deleting a Standing Penalty Type ==
+
+To delete a standing penalty type, either select the row and then navigate to Delete Selected in the Actions Menu on the upper right of the grid or right click on the row and choose Delete Selected.
+
+WARNING: The interface does not warn you before deleting a standing penalty type, and deleting stock standing penalty types may cause unintended negative consequences in your Evergreen system. Proceed with extreme caution.
