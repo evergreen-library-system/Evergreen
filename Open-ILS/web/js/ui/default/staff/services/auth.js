@@ -396,6 +396,7 @@ function($q , egNet , egAuth , egOrg) {
      * org list for the requested perm.
      */
     service.hasPermAt = function(permList, asId) {
+        if (!egAuth.token()) { return $q.when([]) };
         var deferred = $q.defer();
         var isArray = true;
         if (!angular.isArray(permList)) {
