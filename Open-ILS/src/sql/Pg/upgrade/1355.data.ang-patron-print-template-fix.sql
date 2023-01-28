@@ -1,7 +1,6 @@
-
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version); 
+SELECT evergreen.upgrade_deps_block_check('1355', :eg_version); 
 
 
 UPDATE config.print_template SET template = $TEMPLATE$
@@ -120,4 +119,3 @@ $TEMPLATE$ WHERE name = 'patron_data' AND template = $TEMPLATE$
 $TEMPLATE$;
 
 COMMIT;
-
