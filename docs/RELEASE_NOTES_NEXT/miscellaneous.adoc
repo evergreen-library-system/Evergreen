@@ -1,1 +1,2 @@
 * Add patron home library code as a column to the View Holds grid in the staff catalog record details page (LP#1991726)
+* Include template ID in the template table in the Reporter (LP#1998386)
