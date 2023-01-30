@@ -50,7 +50,7 @@ export DEBS = \
 	libnet-ip-perl\
 	libnet-ldap-perl \
 	libnet-server-perl\
-	libnet-ssh2-perl\
+	libnet-sftp-foreign-perl\
 	libnet-z3950-simpleserver-perl\
 	libnet-z3950-zoom-perl \
 	libnspr4-dev\
