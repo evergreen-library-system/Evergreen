@@ -57,6 +57,7 @@ const searchOptions = {
         flesh_selector: true,
         flesh_po: true,
         flesh_pl: true,
+        flesh_li_details: true,
     },
     purchase_order: {
         flesh_cancel_reason: true,
