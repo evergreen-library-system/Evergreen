@@ -4,8 +4,10 @@ package OpenILS::Utils::RemoteAccount;
 use OpenSRF::Utils::Logger qw/:logger/;
 
 use Data::Dumper;
+use IO::Pty;
 use Net::FTP;
 use Net::SSH2;
+use Net::SFTP::Foreign;
 use File::Temp;
 use File::Basename;
 use File::Spec;
@@ -52,7 +54,7 @@ OpenILS::Utils::RemoteAccount - Encapsulate FTP, SFTP and SSH file transactions 
 =head1 DESCRIPTION
 
 The Remote Account module attempts to transfer a file to/from a remote server.
-Either Net::FTP or Net::SSH2 is used.
+Net::FTP, Net::SSH2 or Net::SFTP::Foreign is used.
 
 =head1 PARAMETERS
 
@@ -243,6 +245,8 @@ sub get {
 
     if ($self->type eq "FTP") {
         return $self->get_ftp(@{$self->{get_args}});
+    } elsif ($self->type eq "SFTP") {
+        return $self->get_sftp(@{$self->{get_args}});
     } else {
         my %keys = $self->key_check($params);
         return $self->get_ssh2(\%keys, @{$self->{get_args}});
@@ -286,6 +290,8 @@ sub put {
 
     if ($self->type eq "FTP") {
         return $self->put_ftp(@{$self->{put_args}});
+    } elsif ($self->type eq "SFTP") {
+        return $self->put_sftp(@{$self->{put_args}});
     } else {
         my %keys = $self->key_check($params);
         $self->put_ssh2(\%keys, @{$self->{put_args}}) and return $self->remote_file;
@@ -314,6 +320,8 @@ sub ls {
 
     if ($self->type eq "FTP") {
         return $self->ls_ftp(@targets);
+    } elsif ($self->type eq "SFTP") {
+        return $self->ls_sftp(@targets);
     } else {
         my %keys = $self->key_check($params);
         # $logger->info("*** calling ls_ssh2(keys, '" . join("', '", (scalar(@targets) ? map {defined $_ ? $_ : '' } @targets : ())) . "') with ssh keys");
@@ -339,9 +347,11 @@ sub delete {
 
     if ($self->type eq "FTP") {
         return $self->delete_ftp($file);
+    } elsif {
+        return $self->delete_sftp($file);
     } else {
-        my %keys = $self->key_check($params);
-        return $self->delete_ssh2(\%keys, $file);
+	    my %keys = $self->key_check($params);
+	    return $self->delete_ssh2(\%keys, $file);
     }
 }
 
@@ -363,6 +373,118 @@ sub glob_parse {
 
 
 # Internal Mechanics
+
+sub _sftp {
+    my $self = shift;
+    $self->{sftp} and return $self->{sftp};     # caching
+    my $sftp = Net::SFTP::Foreign->new($self->remote_host, user => $self->remote_user, password => $self->remote_password);
+    $sftp->error and $logger->error("SFTP connect FAILED: " . $sftp->error);
+    return $self->{sftp} = $sftp
+}
+
+sub put_sftp {
+    my $self = shift;
+    my $filename = $self->_sftp->put(@{$self->{put_args}}); 
+    if ($self->_sftp->error or not $filename) {
+        $logger->error(
+            $self->_error(
+                "SFTP put to", $self->remote_host, "failed with error: $self->_sftp->error"
+            )
+        );
+        return;
+    }
+    
+    $self->remote_file($filename);
+    $logger->info(
+        _pkg(
+            "successfully sent", $self->remote_host, $self->local_file, "-->",
+            $filename
+        )
+    );
+    return $filename;
+}
+
+sub get_sftp {
+    my $self = shift;
+    my $remote_filename = $self->{get_args}->[0];
+    my $filename = $self->_sftp->get(@{$self->{get_args}});
+    if ($self->_sftp->error or not $filename) {
+        $logger->error(
+            $self->_error(
+                "get from", $self->remote_host, "failed with error: $self->_sftp->error"
+            )
+        );
+        return;
+    }
+    if (!defined(${$filename->sref})) {
+        # the underlying scalar is still undef, so Net::SFTP::Foreign must have
+        # successfully retrieved an empty file... which we should skip
+        $logger->error(
+            $self->_error(
+                "get $remote_filename from", $self->remote_host, ": remote file is zero-length"
+            )
+        );
+        return;
+    }
+
+    $self->local_file($filename);
+    $logger->info(
+        _pkg(
+            "successfully retrieved $filename <--", $self->remote_host . '/' .
+            $self->remote_file
+        )
+    );
+    return $self->local_file;
+
+}
+
+#$sftp->ls($path) or die 'could not ls: ' . $sftp->error;
+sub ls_sftp {   # returns full path like: dir/path/file.ext
+    my $self = shift;
+    my @list;
+
+    foreach (@_) {
+        my @part;
+        my ($dirpath, $regex) = $self->glob_parse($_);
+        my $dirtarget = $dirpath || $_;
+        $dirtarget =~ s/\/+$//;
+        eval { @part = $self->_ftp->ls($dirtarget) };      # this ls returns relative/path/filenames.  defer filename glob filtering for below.
+        if ($@) {
+            $logger->error(
+                $self->_error(
+                    "ls from",  $self->remote_host, "failed with error: $@"
+                )
+            );
+            next;
+        }
+        if ($dirtarget and $dirtarget ne '.' and $dirtarget ne './' and
+            $self->_ftp->dir($dirtarget)) {
+            foreach my $file (@part) {   # we ensure full(er) path
+                $file =~ /^$dirtarget\// and next;
+                $logger->debug("ls_ftp: prepending $dirtarget/ to $file");
+                $file = File::Spec->catdir($dirtarget, $file);
+            }
+        }
+        if ($regex) {
+            my $count = scalar(@part);
+            # @part = grep {my @a = split('/',$_); scalar(@a) ? /$regex/ : ($a[-1] =~ /$regex/)} @part;
+            my @bulk = @part;
+            @part = grep {
+                        my ($vol, $dir, $file) = File::Spec->splitpath($_);
+                        $file =~ /$regex/
+                    } @part;  
+            $logger->info("FTP ls: Glob regex($regex) matches " . scalar(@part) . " of $count files");
+        } #  else {$logger->info("FTP ls: No Glob regex in '$_'.  Just a regular ls");}
+        push @list, @part;
+    }
+    return @list;
+}
+}
+
+sub delete_sftp {
+#$sftp->remove($putfile) or die "could not remove $putfile: " . $sftp->error;
+
+}
 
 sub _ssh2 {
     my $self = shift;
@@ -732,7 +854,7 @@ sub new {
 sub DESTROY { 
     # in order to create, we must first ...
     my $self  = shift;
-    $self->{ssh2} and $self->{ssh2}->disconnect();  # let the other end know we're done.
+    $self->{sftp} and $self->{sftp}->disconnect;  # let the other end know we're done.
     $self->{ftp} and $self->{ftp}->quit();  # let the other end know we're done.
 }
 
