@@ -60,6 +60,9 @@ export class AdminPageComponent implements OnInit {
     // Disable the auto-matic org unit field filter
     @Input() disableOrgFilter: boolean;
 
+    // Give the grid an option to undelete any deleted rows
+    @Input() enableUndelete: boolean;
+
     // Include objects linking to org units which are ancestors
     // of the selected org unit.
     @Input() includeOrgAncestors: boolean;
@@ -106,6 +109,8 @@ export class AdminPageComponent implements OnInit {
     @ViewChild('updateFailedString', { static: true }) updateFailedString: StringComponent;
     @ViewChild('deleteFailedString', { static: true }) deleteFailedString: StringComponent;
     @ViewChild('deleteSuccessString', { static: true }) deleteSuccessString: StringComponent;
+    @ViewChild('undeleteFailedString', { static: true }) undeleteFailedString: StringComponent;
+    @ViewChild('undeleteSuccessString', { static: true }) undeleteSuccessString: StringComponent;
     @ViewChild('translator', { static: true }) translator: TranslateComponent;
 
     idlClassDef: any;
@@ -340,6 +345,21 @@ export class AdminPageComponent implements OnInit {
         editOneThing(idlThings.shift());
     }
 
+    undeleteSelected(idlThings: IdlObject[]) {
+        idlThings.forEach(idlThing => idlThing.deleted(false));
+        this.pcrud.update(idlThings).subscribe(
+            val => {
+                this.undeleteSuccessString.current()
+                    .then(str => this.toast.success(str));
+            },
+            err => {
+                this.undeleteFailedString.current()
+                    .then(str => this.toast.danger(str));
+            },
+            ()  => this.grid.reload()
+        );
+    }
+
     deleteSelected(idlThings: IdlObject[]) {
         idlThings.forEach(idlThing => idlThing.isdeleted(true));
         this.pcrud.autoApply(idlThings).subscribe(
@@ -353,6 +373,36 @@ export class AdminPageComponent implements OnInit {
             },
             ()  => this.grid.reload()
         );
+    }
+
+    shouldDisableDelete(rows: IdlObject[]): boolean {
+        if (rows.length === 0) {
+            return true;
+        } else {
+            const deletedRows = rows.filter((row) => {
+                if (row.deleted && row.deleted() === 't') {
+                    return true;
+                } else if (row.isdeleted) {
+                    return row.isdeleted();
+                }
+            });
+            return deletedRows.length > 0;
+        }
+    }
+
+    shouldDisableUndelete(rows: IdlObject[]): boolean {
+        if (rows.length === 0) {
+            return true;
+        } else {
+            const deletedRows = rows.filter((row) => {
+                if (row.deleted && row.deleted() === 't') {
+                    return true;
+                } else if (row.isdeleted) {
+                    return row.isdeleted();
+                }
+            });
+            return deletedRows.length !== rows.length;
+        }
     }
 
     createNew() {

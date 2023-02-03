@@ -10,6 +10,12 @@
 <ng-template #deleteSuccessStrTmpl i18n>{{idlClassDef.label}} Successfully Deleted</ng-template>
 <eg-string #deleteSuccessString [template]="deleteSuccessStrTmpl"></eg-string>
 
+<ng-template #undeleteFailedStrTmpl i18n>Undelete of {{idlClassDef.label}} failed or was not allowed</ng-template>
+<eg-string #undeleteFailedString [template]="undeleteFailedStrTmpl"></eg-string>
+
+<ng-template #undeleteSuccessStrTmpl i18n>{{idlClassDef.label}} Successfully undeleted</ng-template>
+<eg-string #undeleteSuccessString [template]="undeleteSuccessStrTmpl"></eg-string>
+
 <ng-template #createStrTmpl i18n>{{idlClassDef.label}} Successfully Created</ng-template>
 <eg-string #createString [template]="createStrTmpl"></eg-string>
 
@@ -64,7 +70,11 @@
   </eg-grid-toolbar-button>
   <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
   </eg-grid-toolbar-action>
-  <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)">
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)"
+    [disableOnRows]="shouldDisableDelete">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Undelete Selected" i18n-label (onClick)="undeleteSelected($event)"
+    [disableOnRows]="shouldDisableUndelete" *ngIf="enableUndelete">
   </eg-grid-toolbar-action>
   <ng-container *ngFor="let cf of configFields">
     <eg-grid-column name="{{cf.name}}" [cellTemplate]="configFieldLink">
