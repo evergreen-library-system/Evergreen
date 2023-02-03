@@ -34,6 +34,7 @@ class MockAdminPageComponent {
     @Input() idlClass: string;
     @Input() persistKeyPfx: string;
     @Input() readonlyFields: string;
+    @Input() enableUndelete: boolean;
 }
 
 describe('Component: BasicAdminPage', () => {
@@ -68,7 +69,8 @@ describe('Component: BasicAdminPage', () => {
         const data = [{
             schema: 'schema1',
             table: 'table1',
-            defaultNewRecord: { field1: 'value1' }
+            defaultNewRecord: { field1: 'value1' },
+            enableUndelete: true
         }];
         const parentRoute = { url: of('') };
         const snapshot = { parent: { url: [{ path: '' }] } };
@@ -102,5 +104,10 @@ describe('Component: BasicAdminPage', () => {
         const adminPage: MockAdminPageComponent = fixture.debugElement.query(
             By.directive(MockAdminPageComponent)).componentInstance;
         expect(adminPage.defaultNewRecord.a[0]).toEqual('value1');
+    });
+    it('sets enableUndelete from routing data', () => {
+        const adminPage: MockAdminPageComponent = fixture.debugElement.query(
+            By.directive(MockAdminPageComponent)).componentInstance;
+        expect(adminPage.enableUndelete).toEqual(true);
     });
 });

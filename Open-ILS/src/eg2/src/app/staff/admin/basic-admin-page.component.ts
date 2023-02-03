@@ -20,6 +20,7 @@ import {tap, switchMap} from 'rxjs/operators';
         fieldOrder="{{fieldOrder}}"
         readonlyFields="{{readonlyFields}}"
         [defaultNewRecord]="defaultNewRecordIdl"
+        [enableUndelete]="enableUndelete"
         [disableOrgFilter]="disableOrgFilter"></eg-admin-page>
       </ng-container>
     `
@@ -37,6 +38,8 @@ export class BasicAdminPageComponent implements OnInit {
 
     // Tell the admin page to disable and hide the automagic org unit filter
     disableOrgFilter: boolean;
+
+    enableUndelete: boolean;
 
     private getParams$: Observable<ParamMap>;
     private getRouteData$: Observable<any>;
@@ -73,6 +76,7 @@ export class BasicAdminPageComponent implements OnInit {
                         this.table = data['table'];
                     }
                     this.disableOrgFilter = data['disableOrgFilter'];
+                    this.enableUndelete = data['enableUndelete'];
                     this.fieldOrder = data['fieldOrder'];
                     this.readonlyFields = data['readonlyFields'];
                     this.defaultNewRecord = data['defaultNewRecord'];
