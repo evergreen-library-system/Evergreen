@@ -28,6 +28,7 @@ const routes: Routes = [{
     data: [{
         schema: 'asset',
         table: 'copy_location',
+        enableUndelete: true,
         readonlyFields: 'deleted',
         fieldOrder: 'owning_lib,name,opac_visible,circulate,holdable,hold_verify,checkin_alert,deleted,label_prefix,label_suffix,url,id'}]
 }, {
