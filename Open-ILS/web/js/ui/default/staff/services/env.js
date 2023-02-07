@@ -96,8 +96,6 @@ function($q,  $window , $injector , egAuth,  egPCRUD,  egIDL) {
      *  flattens the tree for absorption.
      */
     service.absorbTree = function(tree, class_, noOffline) {
-        if (service[class_] && service[class_].loaded) return;
-
         var list = [];
         function squash(node) {
             list.push(node);
@@ -112,8 +110,6 @@ function($q,  $window , $injector , egAuth,  egPCRUD,  egIDL) {
 
     /** caches the object list both as the list and an id => object map */
     service.absorbList = function(list, class_, noOffline) {
-        if (service[class_] && service[class_].loaded) return service[class_];
-
         var blob;
         var pkey = egIDL.classes[class_].pkey;
 
