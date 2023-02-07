@@ -1,323 +1,1047 @@
-= Selection Lists and Purchase Orders =
+= Line Items, Selection Lists, and Purchase Orders =
 :toc:
 
+This documentation covers line items, selection lists, purchase orders, brief records, and MARC federated search.
+
+Most of the above were converted to Angular in the 3.10 release of Evergreen. Please refer to earlier versions of the documentation if you use Evergreen 3.9 or prior.
+
+== Dojo vs. Angular interfaces in Acquisitions ==
+
+Since the work to convert Acquisitions to Angular is an ongoing, multi-part project, there may be an occasion where you will still end up in the old Dojo view of a selection list or purchase order. To navigate directly to the Angular view of a selection list or purchase order, use this URL pattern:
+
+* Selection List: `https://<your-evergreen-domain>/eg2/<locale>/staff/acq/picklist/<selection-list-number>`
+* Purchase Order: `https://<your-evergreen-domain>/eg2/<locale>/staff/acq/po/29<purchase-order-number>`
+
+Locale is the localization setting for your staff client. If you are in the United States, this is probably en-US. In Canada this may be en-CA or fr-CA depending on whether your client uses English or French.
+
+If you wish to allow staff to access the old Dojo view of purchase orders, there is a new Library Setting to control this. This setting is _Display Links to Deprecated Acquisitions Interfaces_, and it is disabled by default. If enabled, this will expose a link in the purchase order at the organizational unit(s) specified in the setting. Selecting this link will open a new tab with the purchase order displayed in Dojo.
+
+You may also need to reauthenticate when accessing a Dojo interface, though every effort has been made to find and rectify these cases during development.
+
+[[line_items]]
+== Line Items ==
+
+The Evergreen Acquisitions module uses line items to represent individual bibliographic titles to order on both purchase orders and selection lists. Line items include a large amount of information, including styling to show you where a line item is in the ordering process, and links to other order information.
+
+Line items can be searched from the Acquisitions General Search which is accessed from *Acquisitions -> General Search*.
+
+Line items convey a lot of information, which is described in detail in the following sections. An example of a line item is shown below.
+
+image::selection_lists_po/acq_line_item.png[Acquisitions Line Item]
+
+[[line_item_defaults]]
+=== Line Item Defaults: Owning Library ===
+
+There are two new Library Settings related to ownership of automatically created items. These settings apply to items created as the result of the Provider Default Number of Copies setting.
+
+* How to set default owning library for auto-created line item items
+** Strategy to use to set default owning library to set when line item items are auto-created because the provider's default copy count has been set.
+** Valid values are "workstation" to use the workstation library, "blank" to leave it blank, and "use_setting" to use the "Default owning library for auto-created line item items" setting. If not set, the workstation library will be used.
+* Default owning library for auto-created line item items
+** The default owning library to set when line item items are auto-created because the provider's default copy count has been set. This applies if the "How to set default owning library for auto-created line item items" setting is set to "use_setting".
+** Note that due to a pre-existing bug, this setting will display the organizational unit ID when displayed in the larger Library Settings grid; but the selector itself uses organizational unit Shortname.
+
+[[line_item_colors]]
+=== Line Item Colors and Statuses ===
+
+At various points in the ordering process, selection lists and purchase orders will display line items with a colored background as a visual shorthand indicating the status of the line item. Those colors are as follows:
+
+++++
+<style>
+td.tableblock .FFFFEE p {
+    background-color: rgb(255, 255, 238);
+}
+td.tableblock .FFEEEE p {
+    background-color: rgb(255, 238, 238);
+}
+td.tableblock .EEEEEE p {
+    background-color: rgb(238, 238, 238);
+}
+td.tableblock .EEEEDD p {
+    background-color: rgb(238, 238, 221);
+}
+td.tableblock .EEDDDD p {
+    background-color: rgb(238, 221, 221);
+}
+td.tableblock .DDDDDD p {
+    background-color: rgb(221, 221, 221);
+}
+td.tableblock .B3D9FF p {
+    background-color: rgb(179, 217, 255);
+}
+td.tableblock .FFFFFF p {
+    background-color: rgb(255, 255, 255);
+}
+</style>
+++++
+[options="header"]
+[cols="a,a,a",stripes=none]
+|===
+| *Line Item Status* | *Color Description* | *Code* 
+|[.FFFFEE]
+New
+|[.FFFFEE]
+Light yellow
+|[.FFFFEE]
+FFFFEE 
+
+|[.FFEEEE]
+Selector Ready
+|[.FFEEEE]
+Light pink
+|[.FFEEEE]
+FFEEEE 
+
+|[.EEEEEE]
+Order Ready
+|[.EEEEEE]
+Light gray
+|[.EEEEEE]
+EEEEEE 
+
+|[.EEEEDD]
+Pending Order
+|[.EEEEDD]
+Light olive green
+|[.EEEEDD]
+EEEEDD 
+
+|[.EEDDDD]
+On Order
+|[.EEDDDD]
+Medium pink
+|[.EEDDDD]
+EEDDDD 
+
+|[.DDDDDD]
+Received
+|[.DDDDDD]
+Medium gray
+|[.DDDDDD]
+DDDDDD 
+
+|[.B3D9FF]
+Delayed
+|[.B3D9FF]
+Medium Blue
+|[.B3D9FF]
+B3D9FF 
+
+|[.FFFFFF]
+Canceled
+|[.FFFFFF]
+White / no background
+|[.FFFFFF]
+FFFFFF 
+|===
+
+The line item status is affected by the status(es) of all items attached to the line item. While items do not have a separate status field per se, they can have implicit statuses such as new, pending, received, or canceled.
+
+When an item is canceled, the parent line item is checked to see if all of its items are now canceled. If so, the line item is canceled. Delayed items represent a special case of canceled items. For more information on canceled and delayed line items, see xref:selection_lists_po.adoc#canceling_or_delaying_line_items[Canceling or Delaying Line Items], below.
+
+When all items associated with a line item are received, the parent line item is marked received. While items are in a mixed set of statues (e.g., some delayed and some received), the line item status will remain as on order.
+
+A purchase order is marked received once all of its line items are marked either as received, or as canceled with a non-keep-debits reason.
+
+[[line_item_batch_actions]]
+=== Line Item Batch Actions ===
+
+Line items show a large amount of detail about the titles and items that are in various stages of the Acquisitions process. Line items are filterable and sortable. You can perform actions on a single line item, several line items, or all line items. You can also expand the line item display to show details of a single line item or all line items.
+
+For specific selection list actions, see the documentation covering xref:acquisitions/selection_lists_po.adoc#selection_lists[Selection Lists]. For specific purchase order actions, see xref:acquisitions/selection_lists_po.adoc#purchase_order_actions[Purchase Order Actions]. Below we will describe Line Item Batch Actions that apply to both selection lists and purchase orders.
+
+[[expand_line_item_display]]
+==== Expand Line Item Display ====
+
+You can expand the line item display to show item details including
+Owning Branch, Shelving Location, Collection Code, Fund, Circ Modifier, Call Number, Barcode, and Receiver (if applicable).
+
+To show this expanded information for a single line item or several line items, select the link labeled _Expand_ on the line item(s). The label will flip to _Collapse_, and you can select _Collapse_ to hide the expanded information.
+
+image::selection_lists_po/acq_expand_line_items.png[Expand Line Items]
+
+To show this expanded information for all line items, select the _Expand All_ icon at the top right of the list. To hide this expanded information for all line items, select the _Collapse All_ icon at the top right of the list. The current state of Expand All / Collapse All will be carried over to each page of your purchase order or selection list.
+
+image::selection_lists_po/acq_collapse_line_items.png[Collapse Line Items]
+
+[[line_item_filter_and_sort]]
+==== Line Item Filters and Sort Options ====
+
+To show Filter and Sort Options, select the button _Show Filter & Sort Options_ at the top of your purchase order or selection list. Filter elements are specific to line item details.
+
+image::selection_lists_po/acq_show_filter.png[Show Filter and Sort Options]
+
+This will expand down to show filtering and sorting options.
+
+image::selection_lists_po/acq_filter_options.png[Acquisitions Filter Options]
+
+. Select your filter element in the first dropdown. Filter elements
+include:
+.. Line Item ID
+.. Status
+.. Title
+.. Author
+.. Publisher
+.. Publication date
+.. ISBN
+.. ISSN
+.. UPC
+.. Claim count
+.. Item count
+.. Estimated unit price
+. Select your operator in the second dropdown. Operators will vary depending on your selected filter element, but can include the following:
+.. Is [i.e., equals - this is case sensitive]
+.. Is NOT [i.e., does not equal - this is case sensitive]
+.. Contains [i.e., contains string - this is not case sensitive]
+.. STARTS with [i.e., beginning string - this is not case sensitive]
+.. ENDS with [i.e., ending string - this is not case sensitive]
+.. Claim Count and Item Count filter elements also include numeric operators “greater than or equal to” and “less than or equal to”
+. Enter your filter value in the third dropdown. Some operators expect numeric or case-specific values (see above).
+. Select *Apply Filter* to filter your list, or press the ENTER key on your keyboard. At this time only one filter may be in operation at a time.
+. Select *Reset Filter* to clear the filter.
+
+To set a sort order for your list, choose a sort order from the dropdown labeled _Sort by_. Sort will be instantly applied to all items in the purchase order or selection list. Sorting is currently only available on a single axis. Once you select a sort order, it is sticky across purchase orders and selection lists until you change to a new sort order.
+
+Sort options are:
+
+* Line Item ID Ascending
+* Line Item ID Descending
+* Title Ascending
+** Sorts by the value in the 245$a field in the line item bibliographic detail, ignoring initial articles.
+* Title Descending
+** Sorts by the value in the 245$a field in the line item bibliographic detail, ignoring initial articles.
+* Author Ascending
+** Sorts by the value as entered in the 1xx$a field in the line item bibliographic detail: “Author, Ima” will sort before “Ima Author”.
+* Author Descending
+** Sorts by the value as entered in the 1xx$a field in the line item bibliographic detail: “Author, Ima” will sort after “Ima Author”.
+* Publisher Ascending
+** Sorts by the value as entered in the 260$b field in the line item bibliographic detail, including initial articles.
+* Publisher Descending
+** Sorts by the value as entered in the 260$b field in the line item bibliographic detail, including initial articles.
+* Order Identifier Ascending
+** This is ISBN, ISSN, or UPC as assigned in the line item order identifier field
+* Order Identifier Descending
+** This is ISBN, ISSN, or UPC as assigned in the line item order identifier field
+
+[[delete_selected_line_items]]
+==== Delete Selected Line Items
+
+You can delete one, several, or all line items from a purchase order or selection list, as long as the line items are still in a New, Selector Ready, Order Ready, or Pending Order status. Line items which are On Order or any status after On Order may not be deleted.
+
+. Select individual line item(s) by checking the box next to the line item title.
+.. Alternatively, select all line items in the page by checking the box labeled _Line Items in Page_.
+.. Alternatively, select all line items in the purchase order or selection list by checking the box labeled _All Line Items_.
+. Select the _Action_ menu in the upper left of the list.
+. Select *Delete Selected Line Items*.
++
+image::selection_lists_po/acq_delete_line_items.png[Delete Line Items]
++
+. A dialog will ask to confirm that you wish to delete your selected line item(s). Choose _Apply_ to delete selected line items, or _Exit Dialog_ to close the dialog without deleting line items.
++
+image::selection_lists_po/acq_confirm_line_item_delete.png[Confirm Delete Line Items]
++ 
+The screen will refresh and your deleted line items will be removed fromthe list.
+
+[[add_items_to_selected_line_items]]
+==== Add Items to Selected Line Items ====
+
+Line items must have at least one individual item attached for an order to be activated. You may add items to individual line items or to a group of selected line items. Items may be added up until the point a line item is marked as on order. To add items to a single line item, see below under xref:acquisitions/selection_lists_po.adoc#item_details_interface[Item Details Interface].
+
+To add items in batch to one, several, or all line items, take the
+following steps:
+
+. Select individual line item(s) by checking the box next to the line item title.
+.. Alternatively, select all line items in the page by checking the box labeled _Line Items in Page_.
+.. Alternatively, select all line items in the purchase order or selection
+list by checking the box labeled _All Line Items_.
+. Select the _Actions_ menu in the upper left of the list.
+. Select *Add Items to Selected Line Items*.
++
+image::selection_lists_po/acq_add_items_to_line_items.png[Add Items to Selected Line Items]
++
+. A dialog will open showing the ID(s) for your chosen line item(s).
++
+image::selection_lists_po/acq_add_items_to_line_items_modal.png[AddItems to Selected Line Items Modal]
++
+.. Enter the number of items to add to each line item in the _Item Count_ field and then select _Apply_.
+.. If you wish to apply a distribution formula, select one from the
+dropdown and then select _Apply_.
+... Distribution formulas allow you to specify the number of items that should be distributed to specific branches. They can also serve as templates allowing you to predefine settings for your items.
+... Note that if you make any individual item or batch updates, those values will override values set by the distribution formula.
+... You will only see distribution formulas permitted by your permissions and working location(s).
+... For more information on creating a distribution formula, see the documentation on xref:admin/acquisitions_admin.adoc#acq_distribution_formulas[Distribution Formulas].
+.. All fields in this modal can be edited independently of one another. You may have Library Settings in play to set default values, and therefore may not need to set values here. Fields available in the interface include:
+... Owning Branch
+... Shelving Location
+... Collection Code
+... Fund
+.... All items must be assigned a fund for a purchase order to be activated.
+.... Funds in this interface will be color coded yellow if they have exceeded their warning percent, and red if they are at or above their stop percent. Note that this may cause slowness issues for libraries with a large number of active funds.
+... Circ Modifier
+.. All elements can be applied in batch using the Batch Update line. Select your desired values from the dropdowns and then select *Batch Update* to apply those values to all items.
+.. You can delete individual items by selecting the trash can icon on the right of the line.
+.. Once you have made your selections, select *Apply* in the lower right of the dialog to create the new items according to your selections. Select *Exit Dialog* to close the dialog without saving changes.
+
+[[batch_update_selected_line_items]]
+==== Batch Update Items on Selected Line Items ====
+
+You can batch update line items as well.
+
+WARNING: Batch Updates will overwrite any/all existing item information on your selected line items, including item counts. This cannot be undone. Proceed with caution.
+
+To update items in batch for one, several, or all line items, take the following steps:
+
+. Select individual line item(s) by checking the box next to the line item title.
+.. Alternatively, select all line items in the page by checking the box labeled _Line Items in Page_.
+.. Alternatively, select all line items in the purchase order or selection list by checking the box labeled _All Line Items_.
+. Select the _Actions_ menu in the upper left of the list.
+. Select *Batch Update Items on Selected Line Items*.
++
+image::selection_lists_po/acq_batch_update_items.png[Batch Update Items]
++
+. A dialog will open showing a list of IDs for your chosen line item. For each of the fields below, only enter values in fields that you wish to update. If you do not enter a new value in a field, that field will retain whatever its current value is. Note that this modal will NOT show you current field values, it is only for adding or updating values.
++
+image::selection_lists_po/acq_batch_update_items_modal.png[Batch Update Items Modal]
++
+.. If you wish to change the number of items on your selected line items, enter the number of items to update on each line item in the _Item Count_ field and then select _Apply_.
+... If you do not wish to change the count of items on each line item, leave this field unset.
+.. If you wish to apply a distribution formula, select one from the dropdown and then select _Apply_.
+... Distribution formulas allow you to specify the number of items that should be distributed to specific branches. They can also serve as templates allowing you to predefine settings for your items.
+... Note that if you make any individual item or batch updates, those values will override values set by the distribution formula.
+... You will only see distribution formulas permitted by your permissions and working location(s).
+... For more information on creating a distribution formula, see the documentation on xref:admin/acquisitions_admin.adoc#acq_distribution_formulas[Distribution Formulas].
+.. All fields in this modal can be edited independently of one another. You may have Library Settings in play to set default values, and therefore may not need to set values here. Fields available in the interface include:
+... Owning Branch
+... Shelving Location
+... Collection Code
+... Fund
+.... All items must be assigned a fund for a purchase order to be activated.
+.... Funds in this interface will be color coded yellow if they have exceeded their warning percent, and red if they are at or above their stop percent. Note that this may cause slowness issues for libraries with a large number of active funds.
+... Circ Modifier
+. Once you have made your selections, select *Batch Update* in the lower right of the dialog to overwrite your selected line items with the updates you have set. Select *Exit Dialog* to close the dialog without saving changes.
+
+[[export_single_attribute_list]]
+==== Export Single Attribute List ====
+
+You can export and download ISBNs, ISSNs, or UPCs as a file from all or selected line items in a selection list or purchase order. A list of ISBNs, for example, could be uploaded to vendor websites when placing orders.
+
+To export a single attribute list:
+
+. Open your selection list or purchase order.
+. Choose line items to mark for Single Attribute Export.
+.. Option A: If you only want to export values for some line items, select individual line items using the checkboxes on each line. You can also use the _Line Items in Page_ to select all items in your current page.
+.. Option B: If you want to export values for all line items, use the _All Line Items_ checkbox to select all items in the selection list or purchase order
+. Navigate to the _Actions_ menu in the upper left of your selection list or purchase order.
+. Select the action *Export Single Attribute List for Selected Line
+Items*.
++
+image::selection_lists_po/acq_export_attribute_list.png[Export Attribute List Menu Location]
++
+. You will be presented with a confirmation dialog asking you to choose the attribute to export (ISBN, ISSN, or UPC). Choose an attribute from the dropdown and select *Download*. Select *Cancel* to exit without exporting attributes.
++
+image::selection_lists_po/acq_export_attribute_list_modal.png[Export Attribute List Modal]
++
+. A text file containing a list of your selected attributes will be downloaded.
+
+Note that you can select attributes to export independent of the Line Item Order Identifier, but attributes must be in the xref:acquisitions/selection_lists_po.adoc#line_item_bibliographic_info[Line Item Bibliographic Record] in order to be available for export and download. If a line item is missing an attribute, that line item will be skipped for purposes of the export.
+
+[[line_item_details]]
+=== Line Item Details ===
+
+The screenshot below shows an on-order item in a purchase order.
+
+image::selection_lists_po/acq_line_item.png[Line Item]
+
+This line item shows:
+
+* Title & other bibliographic information associated with the line item
+** This is hyperlinked, and if you open it you can edit bibliographic information associated with the line item (more information below).
+* Source of the bibliographic information. This will be blank if the source is a brief record you created.
+* Line item information
+** Line Item Status - this will display the status of the line item. Statuses are:
+*** New
+*** Selector Ready
+*** Order Ready
+*** Pending Order
+*** On Order
+*** Received
+*** Delayed
+*** Canceled
+** Order identifiers
+*** Order identifiers are one of three types: UPC, ISBN, or ISSN.
+*** You can select your preferred identifier type from the dropdown.
+*** If the record has more than one identifier available for the selected type, you will see a red numeral in parentheses. The numeral tells you how many identifiers are available, and you can select which identifier to use from the dropdown.
+*** If your vendor requires a specific identifier, such as a 13-digit ISBN, you can select that here and it will be sent with EDI order information.
+** Line Item Price - this is the estimated price of a single copy of a line item. The price is used to calculate fund encumbrances.
+** Line Item Actions - Actions for this specific line item (more information below).
+* Item status details & pricing line
+** This shows you how many items are associated with the line item, as well as a count of how many items are received, invoiced, canceled, or delayed.
+** This line also shows the status of any money associated with the line item.
+*** _Estimated_ - this shows the estimated price, which is calculated based on the line item price multiplied by the count of items associated with the line item.
+*** _Encumbered_ - when a line item is on order, its charges are encumbered against the fund assigned to the line item.
+*** _Paid_ - when a line item is invoiced and marked paid, its charges are debited from the fund assigned to the line item. A paid line item will display ‘Paid’ and the amount in red text.
+* Other line item details
+** The Line Item ID - this is a unique identifier for this line item
+** Items in catalog - displayed in bold red font, this shows how many extant items of this title are in the local Evergreen catalog and owned at or below the same location as the purchase order. I.e., if your purchase order is owned at Branch 1, the item count will include items owned at Branch 1. Items which are marked lost or missing are not included in this item count.
+** _Items_ - select this to open to the Item Details interface (more information below).
+** _Expand_ - select this to show a preview version of the Item Details interface.
+*** If the preview is already displayed, this link will display _Collapse_ instead. Select _Collapse_ to hide the preview display.
+*** You can also use the _Expand All_ / _Collapse All_ button at the top of the line item grid which will show (or hide) the preview display for all line items.
+** _Notes_ - this will let you add a note or alert to a line item, as wellas view any extant notes or alerts on the line item. The count of notesand alerts is shown in parentheses.
+** Catalog link
+*** _Catalog_ - if the line item is linked to a catalog record, this link will display and selecting it will open a new tab to show you the record within the catalog interface.
+*** _Link to Catalog_ - if the line item is not linked to a catalog record, this link will display and selecting it will open a dialog. This dialog will populate with bibliographic information from your line item. Select *Submit* to execute the search, and then select *View MARC* to see the MARC record in your catalog. Select *Link* to link this line item to your selected MARC record.
+** _Worksheet_ - select this to open the Worksheet interface (more information below).
+** Link to Purchase Order or Selection List - if your purchase order was generated from a selection list, you will see a link here to open the selection list. Similarly, the selection list will show a link to the purchase order.
+** _Request(s)_ - select this to open a new tab that will show any patron purchase requests associated with this line item.
+** _Invoice(s)_ - select this to open an Acquisitions Search window with a search scoped to display all invoices associated with the line item ID. From the search results you can open and view details of a particular invoice.
+*** For more information see the xref:acquisitions/acquisitions_search.adoc[Acqisitions Search] documentation.
+** _Claim Policy_ - this will show the claim policy associated with the line item. 
+*** For more information see the xref:admin/acquisitions_admin.adoc#acq_claiming[Claim Policy] documentation.
+** Provider - the name of the Provider is displayed. Selecting the Provider name will open the Provider Details interface.
+** _Import Queue_ - if your line item is associated with an import queue, this will open the import queue in a new tab
+
+Line items will also display cover images, if available, to the left of the line item.
+
+[[line_item_worksheet]]
+==== Line Item Worksheet ====
+
+The line item worksheet interface shows details about the specific line item in a printable format.
+
+image::selection_lists_po/acq_worksheet.png[Line Item Worksheet]
+
+Details on the worksheet can include:
+
+* Title of the line item
+* Author of the line item
+* Count of individual items on order
+* Line item ID - this is a unique identifier for the line item
+* Purchase order number, if the line item is associated with a purchase order
+* Open holds, if the associated local catalog record has open holds
+* Distribution formulas, if applicable
+* Line item notes and/or alerts, if applicable
+* A table showing details of each item associated with the line item, including:
+** Assigned branch
+** Item barcode
+** Item call number
+** Fund
+** Item shelving location
+** Receiving information
+*** Timestamps of receiving are locale- and timezone-aware
+** Item notes
+** Delayed / Canceled information
+
+You can print your worksheet by selecting *Print Worksheet*. Select *Return* to return to your purchase order or selection list.
+
+[[line_item_bibliographic_info]]
+==== Line Item Bibliographic Information ====
+
+If you select the hyperlinked title of a line item, you will open an interface that shows you the bibliographic details of the line item. This is presented as a tabbed interface:
+
+image::selection_lists_po/acq_line_item_bib_info.png[Line Item Bibliographic Infomation]
+
+* _Attributes_ shows a read-only summary of the MARC information using labels
+* _MARC View_ shows a read-only summary of the MARC information displaying MARC fields and subfields in a flat text display
+* _MARC Edit_ opens the Angular MARC Editor which allows you to make any changes to the line item MARC Record. Select *Save Changes* to save your changes.
+** If the line item has already been linked to a bibliographic record in the catalog, any changes made in this MARC Edit tab will not be propagated to the live catalog record. You will see a banner reminding you that any changes you make to the line item bibliographic record will not change the linked catalog record.
++
+image::selection_lists_po/acq_marc_edit_warning.png[MARC Edit Warning]
+
+Select *Return* to return to your purchase order or selection list.
+
+[[item_details_interface]]
+==== Item Details Interface ====
+
+The Item Details interface is where you add individual items to a line item.
+
+To access the Item Details interface, open a selection list or purchase order and navigate to the line item you’re interested in. Select the _Items_ link.
+
+image::selection_lists_po/acq_line_item_details.png[Line Item Details]
+
+From within the Item Details interface you can add items to the line item by entering the number of items you wish to add and then selecting *Apply*. This will append items to your line item.
+
+image::selection_lists_po/acq_line_item_details_interface.png[Line Item Details Interface]
+
+Details available in the interface include:
+
+* Owning Branch
+* Shelving Location
+* Collection Code
+* Fund
+** All items must be assigned a fund for a purchase order to be activated.
+** Funds in this interface will be color coded yellow if they have exceeded their warning percent, and red if they are at or above their stop percent. Note that this may cause slowness issues for libraries with a large number of active funds.
+* Circ Modifier
+* Call Number
+* Barcode
+
+All elements except Barcode can be applied in batch using the Batch Update line. Select your desired values from the dropdowns and then select _Batch Update_ to apply those values to all items. If you do not assign call numbers and barcodes to items, they will be assigned placeholder values when you activate a purchase order. For more information see xref:acquisitions/selection_lists_po.adoc#activating_purchase_order[Activating a Purchase Order], below.
+
+You can also choose to use a distribution formula in this interface. Distribution formulas allow you to specify the number of items that should be distributed to specific branches. They can also serve as templates allowing you to predefine settings for your items.
+
+Select a distribution formula from the dropdown and then select _Apply_. Note that if you make any individual item or batch updates, those values will override values set by the distribution formula.
+
+For more information on creating a distribution formula, see the documentation on xref:admin/acquisitions_admin.adoc#acq_distribution_formulas[Distribution Formulas].
+
+Items which are on order may be marked as received from the worksheet using the _Mark Received_ link or canceled using the _Cancel_ link.
+
+Once you have added and updated all of your items, select _Save Changes_ in the upper right corner and then *Return* in the upper left corner. If you select *Return* without selecting _Save Changes_, you will be warned about exiting this interface without saving changes.
+
+[[line_item_notes_alerts]]
+==== Line Item Notes & Alerts ====
+
+To add a note to a line item, navigate to the line item and select the _Notes and Alerts_ link.
+
+image::selection_lists_po/acq_line_item_notes.png[Notes and Alerts Link]
+
+You will see any existing notes or alerts as well as an option to create a new note or alert.
+
+Notes are free text and if you are using EDI they can be sent to the vendor by selecting the Vendor Public checkbox. For non-EDI orders, notes would need to be manually entered on the vendor’s ordering site.
+
+Alerts are chosen from a dropdown. An alert will create a pop up notice when an item with an alert is received. Alert values are set in xref:admin/acquisitions_admin.adoc#create_a_line_item_alert[Acquisitions Administration].
+
+To delete a line item alert, select Delete on the right hand side. You will not get a confirmation dialog, so make sure you really want to delete the note or alert!
+
+Line item alerts are displayed when receiving a line item on a purchase order.
+
+[[line_item_actions]]
+==== Line Item Actions ====
+
+Each line item has an _Actions_ button.
+
+image::selection_lists_po/acq_line_item_actions.png[Line Item Actions Button]
+
+Selecting this button will show the *Line Item Actions Menu*. You will see all actions in both the selection list and purchase order interface, and regardless of the status of your line item. Actions which are unavailable will be disabled.
+
+Line item actions include:
+
+* _Mark Received_ - this marks the line item and all of its individual items as Received
+* _Mark Un-Received_ - this marks the line item and all of its individual items as Un-Received
+* _Update Barcodes -_ this opens the catalog Item Editor for the individual item(s) and lets you update barcodes associated with each of the items.
+** This action is only available after you have records loaded in the local catalog.
+* _Open Holdings View_ - this opens the catalog Holdings View for the linked catalog record.
+** This action is only available after you have records loaded in the local catalog.
+* _Claims_ - this will open a dialog showing existing claims made against the line item and/or allowing you to claim items if they meet the criteria established by the claim policy associated with that line item.
+** For more information see the xref:admin/acquisitions_admin.adoc#acq_claiming[Claim Policy] documentation.
+* _View History_ - this opens a grid displaying the history of the line item, including timestamps and usernames of editors.
+
+[[selection_lists]]
 == Selection Lists ==
 
-Selection lists allow you to create, manage, and save lists of items
-that you may want to purchase. To view your selection list, click
-*Acquisitions* -> *My Selection Lists*. Use the general search to view selection lists created by other users.
+Selection lists allow you to create, manage, and save lists of items that you may want to purchase. To view your selection lists, navigate to *Acquisitions -> Selection Lists*. This will take you to the Acquisitions Search interface with the tab _Selection List Search_ selected, and a search will automatically be executed for all selection lists owned by the logged-in user.
 
-=== Create a selection list ===
+You can change this default search to include other search parameters. For more information please see the documentation on xref:acquisitions/acquisitions_search.adoc#default_acquisitions_search[Creating a New Default Search].
 
-Selection lists can be created in four areas within the module. Selection lists can be created when you xref:#brief_records[Add Brief Records], Upload MARC Order Records, or find records through the xref:#marc_federated_search[MARC Federated Search]. In each of these interfaces, you will find the Add to Selection List field. Enter the name of the selection list that you want to create in that field.
+You can also use the Acquisitions Search interface to search for and retrieve selection lists created by other users. For more information please see the xref:acquisitions/acquisitions_search.adoc[Acqisitions Search] documentation.
 
-Selection lists can also be created through the My Selection Lists interface:
+[[create_selection_list]]
+=== Create a Selection List ===
 
-. Click *Acquisitions* -> *My Selection Lists*.
-. Click the New Selection List drop down arrow.
-. Enter the name of the selection list in the box that appears.
-. Click Create.
+Selection lists can be created in four areas within Acquisitions. Selection lists can be created when you xref:acquisitions/selection_lists_po.adoc#add_brief_records_selection_list[add brief records], use the xref:acquisitions/vandelay_acquisitions_integration.adoc[Load MARC Order Records] interface, or find records through xref:acquisitions/selection_lists_po.adoc#marc_federated_search[MARC Federated Search]. In each of these interfaces, you will be able to add records to a new or existing selection list.
 
-image::media/acq_selection_create.png[create selection list]
+Selection lists can also be created through the selection lists search interface:
 
-=== Add items to a selection list ===
+. Navigate to *Acquisitions -> Selection Lists*. This will open the
+Selection Lists Search interface.
+. Choose the *New Selection List* button at the top of the grid
++
+image::selection_lists_po/acq_new_selection_list.png[New Selection List Button]
++
+. Enter the name of the selection list in the dialog that appears.
++
+image::selection_lists_po/acq_new_selection_list_modal.png[New Selection List Modal]
++
+. Select *Create* to create your new selection list. Select *Cancel* to exit without creating a list.
 
-You can add items to a selection list in one of three ways: xref:#brief_records[add a brief record]; upload MARC order records; add records through a xref:#marc_federated_search[federated search]; or use the View/Place Orders menu item in the catalog.
+Once your new selection list is created, you can search for it and retrieve it via the selection lists Search interface.
 
-=== Clone selection lists ===
+[[clone_selection_lists]]
+=== Clone Selection Lists ===
 
-Cloning selection lists enables you to copy one selection list into a new selection list. You can maintain both copies of the list, or you can delete the previous list.
+Cloning selection lists enables you to copy one selection list into a new selection list. The new selection list is independent of the original and each can be changed or even deleted without affecting the other.
 
-. Click *Acquisitions* -> *My Selection Lists*.
-. Check the box adjacent to the list that you want to clone.
-. Click Clone Selected.
-. Enter a name into the box that appears, and click Clone.
+. Navigate to *Acquisitions -> Selection Lists*. This will open the Selection Lists Search interface.
+. (optional) Use the Search feature to narrow down the selection lists displayed in the grid.
+. Use the checkbox on the left of a line to choose the selection list you wish to clone
+.. You may only clone one selection list at a time.
+. Select the _Actions_ dropdown at the top right of the grid and choose *Clone Selected*.
++
+image::selection_lists_po/acq_clone_selection_list.png[Action: Clone Selected]
++
+. Enter the name of the new selection list in the modal that appears.
++
+image::selection_lists_po/acq_clone_selection_list_modal.png[Clone Selection List Modal]
++
+. Select *Clone* to complete the cloning process. Select *Cancel* to exit without cloning.
 
-image::media/acq_selection_clone.png[clone selection list]
+You can search for and retrieve the cloned selection list via the selection lists search interface.
 
-=== Merge selection lists ===
+[[merge_selection_lists]]
+=== Merge Selection Lists ===
 
 You can merge two or more selection lists into one selection list.
 
+. Navigate to *Acquisitions -> Selection Lists*. This will open the Selection Lists Search interface.
+. (optional) Use the Search feature to narrow down the selection lists displayed in the grid.
+. Use the checkbox on the left of a line to choose the selection lists you wish to merge
+. Select the _Actions_ dropdown at the top right of the grid and choose *Merge Selected*.
++
+image::selection_lists_po/acq_merge_selection_list.png[Action: Merge Selected]
++
+. Choose the lead selection list from the drop down menu. This is the list to which the items on the other list(s) will be transferred.
++
+image::selection_lists_po/acq_merge_selection_list_modal.png[Merge Selection List Modal]
++
+. Select *Merge* to complete the merge process. Select *Cancel* to exit without merging.
 
-. Click *Acquisitions* -> *My Selection Lists*.
-. Check the boxes adjacent to the selection lists that you want to merge, and click Merge Selected.
-. Choose the Lead Selection List from the drop down menu. This is the list to which the items on the other list(s) will be transferred.
-. Click Merge.
+[[delete_selection_lists]]
+=== Delete Selection Lists ===
 
-image::media/acq_selection_merge.png[merge selection list]
+You can delete selection lists that you do not want to save. Deleting a selection list also deletes its line items. You will not be able to retrieve these items through Acquisitions Search after you have deleted the selection list.
 
-=== Delete selection lists ===
+. Navigate to *Acquisitions -> Selection Lists*. This will open the Selection Lists Search interface.
+. (optional) Use the Search feature to narrow down the selection lists displayed in the grid.
+. Use the checkbox on the left of a line to choose the selection list(s) you wish to delete.
+. Select the _Actions_ dropdown at the top right of the grid and choose *Delete Selected*.
++
+image::selection_lists_po/acq_delete_selection_list.png[Action: Delete Selected]
++
+. You will be presented with a confirmation dialog listing your chosen selection list(s).
++
+image::selection_lists_po/acq_delete_selection_list_modal.png[Delte Selection List Modal]
++
+. Select *Delete* to complete the deletion process. Select *Cancel* to exit without deleting.
 
-You can delete selection lists that you do not want to save. You will not be able to retrieve these items through the General Search after you have deleted the list. You must delete all line items from a selection list before you can delete the list.
+[[add_line_items_to_selection_list]]
+=== Add Line Items to a Selection List
 
+You can add line items to a selection list in one of several ways:
 
-. Click *Acquisitions* -> *My Selection Lists*.
-. Check the box adjacent to the selection list(s) that you want to delete.
-. Click Delete Selected.
+* Add a brief record from within the selection list itself.
+* Add a xref:acquisitions/selection_lists_po.adoc#add_brief_records_selection_list[brief record] from the New Brief Record interface.
+* Upload MARC order records from the xref:acquisitions/vandelay_acquisitions_integration.adoc[Load MARC Order Records] interface.
+* Add records through the xref:acquisitions/selection_lists_po.adoc#marc_federated_search[MARC Federated Search] interface.
+* Use the View/Place Orders menu item from the bibliographic record in the staff catalog.
+** Note that this will put you in the old Dojo interface and you will need to know the name of your existing selection list to enter it in the typeahead.
+* From the xref:acquisitions/purchase_requests_management.adoc[ Patron Requests] interface.
 
+To add a line item from within a selection list:
+
+. Open the selection list.
+. Select the _Actions_ button in the upper left of the interface.
+. Choose *Add Brief Record*.
++
+image::selection_lists_po/acq_new_brief_record.png[Action: Add Brief Record]
++
+. In the Add Brief Record interface, fill out the form. These fields map to specified MARC fields, noted in the table below.
+.. As of 3.10 there is an https://bugs.launchpad.net/evergreen/+bug/1959616[open bug] on the _Identifier_ field and it is recommended that you skip this field
+.. _Price_ must contain a numeric value and will map to the line item price field
+. 
+Select *Add Record* when you are finished filling out the form. You will be returned to your selection list and a new line item will be created with information from your brief record.
+
+[[mark_ready_for_selector]]
 === Mark Ready for Selector ===
 
-After an item has been added to a selection list or purchase order, you can mark it ready for selector. This step is optional but may be useful to individual workflows.
+After a line item has been added to a selection list or purchase order, you can mark it as _Ready for Selector_. A selector can then search for line items with the status _Selector Ready_ for review and approval. This step is optional but may be useful to individual workflows, specifically those workflows where a library divides responsibility between the staff member who builds a selection list and the staff member who approves those items and sends them on to a purchase order.
 
+. Open the selection list.
+. Choose line items to mark Selector Ready.
+.. Option A: If you only want to mark some line items as Selector Ready, select individual line items using the checkboxes on each line. You can also use the _Line Items in Page_ to select all line items in your current page.
+.. Option B: If you want to mark all line items as Selector Ready, use the _All Line Items_ checkbox to select all line items in the selection list.
+. Select the _Actions_ button in the upper left of the interface.
+. Choose *Mark Selected Line Items as Ready for Selector*.
++
+image::selection_lists_po/acq_mark_ready_for_selector.png[Action: Mark Ready for Selector]
++
+. You will be presented with a confirmation dialog. Choose *Confirm* to mark the line items as Selector Ready or choose *Cancel* to exit without marking line items as Selector Ready.
+. The marked line item(s) will be highlighted pink, and their status will change to Selector-Ready.
++
+image::selection_lists_po/acq_selector_ready.png,[Selector Ready Line Item]
++
+. Once a Selector has reviewed the line items, they can either send them to a purchase order (see following section) or navigate to *Actions -> Mark Selected Line Items as Ready for Order* as an intermediate step.
++
+image::selection_lists_po/acq_mark_ready_for_order.png[Action: Mark Ready for Order]
+. This action will update selected line item(s) to a status of Order Ready but it will not automatically add them to a purchase order.
++
+image::selection_lists_po/acq_order_ready.png[Order Ready Line Item]
 
-. If you want to mark part of a selection list ready for selector, then you can check the box(es) of the line item(s) that you wish to mark ready for selector. If you want to mark the entire list ready for selector, then skip to step 2.
-. Click *Actions* -> *Mark Ready for Selector*.
-. A pop up box will appear. Choose to mark the selected line items or all line items.
-. Click Go.
-. The screen will refresh. The marked line item(s) will be highlighted pink, and the status changes to selector-ready.
+[[send_selection_list_to_po]]
+=== Send Selection List Line Items to Purchase Order ===
 
-image::media/acq_selection_mark_ready.png[mark ready]
+Use the actions menu to send a selection list or its line items to a purchase order.
 
-=== Convert selection list to purchase order ===
+. Open the selection list.
+. Choose line items to send to a purchase order.
+.. Option A: If you only want to send some line items to a purchase order, select individual line items using the checkboxes on each line. You can also use the _Line Items in Page_ checkbox to select all line items in your current page, or the _All Line Items_ checkbox to select all line items in the selection list.
+... Select the _Actions_ button in the upper left of the interface.
+... Choose *Create Purchase Order From Selected Line Items*.
+.. Option B: If you want to send all line items to a purchase order, you do not need to preselect items.
+... Select the _Actions_ button in the upper left of the interface.
+... Choose *Create Purchase Order From All Line Items*.
++
+image::selection_lists_po/acq_create_po_from_line_items.png[Action: Create Purchase Order from Line Items]
+. You will be taken to a Create Purchase Order interface, with the
+following fields:
+.. _Ordering Agency_ (required) - the organizational unit that owns the purchase order. This does not need to be the same as the organizational unit that created the selection list.
+... This dropdown will only show locations allowed by your working location and permissions
+.. _Name_ - the name of the purchase order. If you leave this field blank, the purchase order name will be the same as the autogenerated purchase order number.
+.. _Provider_ (required) - the Provider who will be supplying the order.
+.. _Prepayment Required_ - check this box to indicate that the purchase order requires prepayment.
+.. _Import Bibs and Create Copies_ - check this box to import on-order bibs and items into the catalog when you create the purchase order.
++
+image::selection_lists_po/acq_create_po.png[Create Purchase Order Form]
++
+. Once you have filled out the fields, click *Create*.
+.. If you did not select _Import Bibs and Create Copies_, you will be taken to the purchase order interface and all line items will be in the status Pending-Order.
+.. If you did select _Import Bibs and Create Copies_, you will be presented with a record import interface to import records from a file at the time of your purchase order creation.
+... This interface is similar to the xref:cataloging/batch_importing_MARC.adoc[MARC Batch Import/Export] and xref:acquisitions/vandelay_acquisitions_integration.adoc[Load MARC Order Records] interfaces. Please see documentation about those interfaces for more information.
+... Once you have loaded your records, you will see your purchase order with all line items in the status Pending-Order.
 
-Use the Actions menu to convert a selection list to a purchase order.
+You can only link selection list line items to one purchase order. If you attempt to create a purchase order from selection list line items that are already part of a purchase order, those line items will be ignored when creating the purchase order and you will see the following warning message in the Create Purchase Order interface:
 
+image::selection_lists_po/acq_add_items_to_multiple_PO.png[Create Purchase Order Warning]
 
-. From a selection list, click *Actions* -> *Create Purchase Order*.
-. A pop up box will appear.
-. Select the ordering agency from the drop down menu.
-. Enter the provider.
-. Check the box adjacent to prepayment required if prepayment is required.
-. Choose if you will add All Lineitems or Selected Lineitems to your purchase order.
-. Check the box if you want to Import Bibs and Create Copies in the catalog.
-. Click Submit.
+After you create your purchase order, if you navigate back to your selection list you will see that all line items sent to a purchase order are marked Pending-Order. The selection list will continue to update line items as they move through the Acquisitions process.
 
-
-[#purchase_orders]
+[[purchase_orders]]
 == Purchase Orders ==
 
-Purchase Orders allow you to keep track of orders and, if EDI is enabled, communicate with your provider.
-To view purchase orders, click
-*Acquisitions* -> *Purchase Orders*.
+Purchase orders allow you to keep track of orders and, if EDI is enabled, communicate with your provider.
 
-=== Naming your purchase order ===
+To view your purchase orders, navigate to *Acquisitions -> Purchase Orders*. This will take you to the Acquisitions Search interface with the tab _Purchase Orders Search_ selected, and a search will automatically be executed for all purchase orders owned by the logged-in user.
 
-You can give your purchase order a name.
+You can change this default search to include other search parameters. For more information please see the xref:acquisitions/acquisitions_search.adoc#default_acquisitions_search[Creating a New Default Search] documentation.
 
-When creating a purchase order or editing an existing purchase order, the purchase order name must be unique for the ordering agency.  Evergreen will display a warning dialog to users, if they attempt to create or edit purchase order names that match the names of already existing purchase orders at the same ordering agency. The *Duplicate Purchase Order Name Warning Dialog* includes a link that will open the matching purchase order in a new tab.
+You can also use the Acquisitions Search interface to search for & retrieve purchase orders created by other users. For more information please see thexref:acquisitions/acquisitions_search.adoc[Acquisitions Search] documentation.
 
-Purchase Order Names are case sensitive.
+[[create_purchase_order]]
+=== Creating a Purchase Order ===
 
-*Duplicate PO Name Detection When Creating a New Purchase Order*
+You can create a purchase order from a xref:acquisitions/selection_lists_po.adoc#send_selection_list_to_po[selection list], from the xref:acquisitions/vandelay_acquisitions_integration.adoc[Load MARC Order Records] interface, or you can create a new purchase order from scratch.
 
-image::media/po_name_detection_1.JPG[PO Name Detection 1]
+To create a new purchase order from scratch:
 
-When a duplicate purchase order name is detected during the creation of a new purchase order, the user may:
+. Navigate to *Acquisitions -> Create Purchase Order*.
+. Fill out the _Create Purchase Order_ form:
+.. _Ordering Agency_ (required) - the organizational unit that owns the purchase order. This does not need to be the same as the organizational unit that created the selection list.
+... This dropdown will only show locations allowed by your working location and permissions.
+.. _Name_ - the name of the purchase order. If you leave this field blank, the purchase order name will be the same as the autogenerated purchase order number. Specifics about purchase order naming are in the following section of this document.
+.. _Provider_ (required) - the Provider who will be supplying the order.
+.. _Prepayment Required_ - check this box to indicate that the purchase order requires prepayment.
++
+image::selection_lists_po/acq_create_po.png[Create a Purchase Order]
++
+. Select *Create*.
 
-* Click *View PO* to view the purchase order with the matching name. The purchase order will open in a new tab.
-* Click *Cancel* to cancel the creation of the new purchase order.
-* Within the _Name (optional)_ field, enter a different, unique name for the new purchase order.
+You will be taken to the purchase order interface where you will be able to add line items and take actions with your purchase order.
 
-If the purchase order name is unique for the ordering agency, the user will continue filling in the remaining fields and click *Save*.
+[[naming_purchase_order]]
+=== Naming a Purchase Order ===
 
-If the purchase order name is not unique for the ordering agency, the Save button will remain grayed out to the user until the purchase order is given a unique name.
+You can choose to give your purchase order a name. If you don’t give your purchase order a name, the system ID number will be used as the purchase order name.
 
-*Duplicate PO Name Detection When Editing the Name of an Existing Purchase Order*
+When creating a purchase order or editing an existing purchase order, the purchase order name must be unique for the ordering agency. Evergreen will display a warning to users if they attempt to create or edit purchase order names that match the names of already existing purchase orders at the same ordering agency.
 
-To change the name of an existing purchase order:
+Purchase order names are case sensitive.
 
-. Within the purchase order, the _Name_ of the purchase order is a link (located at the top left-hand side of the purchase order). Click the PO Name.
-. A new window will open, where users can rename the purchase order.
-. Enter the new purchase order name.
-. Click *OK*.
+[[duplicate_po_name_creation]]
+==== Duplicate PO Name Detection When Creating a New Purchase Order ====
 
-image::media/po_name_detection_2.JPG[PO Name Detection 2]
+image::selection_lists_po/acq_po_duplicate_name.png[Duplicate Purchase Order Name Warning]
 
-If the new purchase order name is unique for the ordering agency, the purchase order will be updated to reflect the new name.
-If the purchase order name is not unique for the ordering agency, the purchase order will not be updated with the new name. Instead, the user will see the *Duplicate Purchase Order Name Warning Dialog* within the purchase order.
+When a duplicate purchase order name is detected during the creation of a new purchase order, you will be given an alert, shown above. Select *View PO* to view the purchase order with the matching name. The purchase order will open in a new tab.
 
-image::media/po_name_detection_3.JPG[PO Name Detection 3]
+Return to the Create Purchase Order tab, and within the _Name (optional)_ field, enter a different, unique name for the new purchase order.
 
-When a duplicate purchase order name is detected during the renaming of an existing purchase order, the user may:
+If the purchase order name is unique for the ordering agency, you can continue filling in the remaining fields and click *Create*.
 
-* Click *View PO* to view the purchase order with the matching name. The purchase order will open in a new tab.
-* Repeat the steps to change the name of an existing purchase order and make the name unique.
+If the purchase order name is not unique for the ordering agency, the Create button will remain inactive until the purchase order is given a unique name.
 
-=== Activating your purchase order ===
+[[duplicate_po_name_editing]]
+==== Duplicate PO Name Detection When Editing an Existing Purchase Order ====
 
-When the appropriate criteria have been met the Activate Order button will appear and you can proceed with the following:
+Within the purchase order, the name field is located at the top left-hand side of the purchase order, indicated by _PO Name_. The name itself is a link. Click on the name and enter the new name in the box.
 
-. Click the button Activate Order.
-. When you activate the order the bibliographic records and copies will be imported into the catalog using the Vandelay interface, if not previously imported. See How to Load Bibliographic Records and Items into the Catalog for instructions on using the Vandelay interface.
-. The funds associated with the purchases will be encumbered.
+image::selection_lists_po/acq_po_edit_name.png[Edit Purchase Order Name]
 
-After you click *Activate Order*, you will be presented with the record import interface for records that are not already in the catalog. Once you complete entering in the parameters for the record import interface, the progress screen will appear. As of Evergreen 2.9, this progress screen consists of a progress bar in the foreground, and a tally of the following in the background of the bottom-left corner:
+If the new purchase order name is unique for the ordering agency, the purchase order will be updated to reflect the new name once you click outside the box.
 
-* Lineitems processed
-* Vandelay Records processed
-* Bib Records Merged/Imported
-* ACQ Copies Processed
-* Debits Encumbered
-* Real Copies Processed
+If the purchase order name is not unique for the ordering agency, the purchase order will not be updated with the new name and you will be given an alert. Select *View PO* to view the purchase order with the matching name. The purchase order will open in a new tab. Return to your original purchase order and give it a unique name.
 
-==== Activate Purchase Order without loading items ====
+image::selection_lists_po/acq_po_edit_name_warning.png[Duplicate Purchase Order Name Warning]
 
-It is possible to activate a purchase order without loading items. Once the purchase order has been activated without loading items, it is not possible to load the items. This feature should only be used in situations where the copies have already been added to the catalog, such as:
+[[purchase_order_actions]]
+=== Purchase Order Actions ===
+
+image::selection_lists_po/acq_po_header.png[Purchase Order Header]
+
+Across the top of your purchase order are several links and actions associated with the purchase order.
+
+* _Notes_ - select this to add a free text note to the purchase order.
+** Selecting _Vendor Public_ will make this note viewable to the vendor if you use EDI ordering.
+** The parentheses in the _Notes_ link indicates the number of notes on the purchase order.
+* _Invoices_ - select this to see all invoices associated with this purchase order.
+** The parentheses in the _Invoices_ link indicates the number of invoices associated with this purchase order.
+* _Create Invoice_ - select this to create a new invoice for this purchase order.
+* _Link Invoice_ - select this to link the purchase order to an existing invoice.
+* _EDI Messages_ - select this to see any EDI messages associated with this purchase order.
+** The parentheses in the _EDI Messages_ link indicates the number of EDI messages associated with this purchase order.
+* _History_ - select this to view the history of the purchase order.
+* _Print_ - select this to view a printable copy of the purchase order.
+From within the printable view you can select *Print Purchase Order* to print the purchase order.
+* _Cancel Order_ - select this to cancel the full order. You will only see this option if your order is already activated (i.e. in “on order” status). Orders in pending status cannot be canceled.
+* _Show PO in Legacy Interface_ - select this if you need to perform an action not supported in the new interface, or if you otherwise wish to see your purchase order in the legacy (Dojo) interface.
+** You will only see this option if the Library Setting _Display Links to Deprecated Acquisitions Interfaces_ is enabled for your workstation location.
+
+Other actions related to purchase orders are accessible via the _Actions_ button. Actions related to purchase orders in this menu
+include:
+
+* _Load Bibs and Items_ - if your purchase order is still in a Pending state and contains titles which are not already in your catalog, you can select this to open an interface to load bibs and items into the catalog.
+** Loading parameters include templates, matching options, and quality parameters in the same manner that the regular MARC Batch Import tool uses.
+** This will create records and items based on the information already included with the line items. For example, if your line items only contain brief record information, this is what will be loaded into the catalog.
+** Once you complete entering in the parameters for the record import interface, select *Submit*. A progress bar will appear and the purchase order screen will refresh when the load is complete.
+** *NOTE*: Activating an order will also load bibs and items, unless you choose to activate the order without loading items.
+* _Mark Selected Line Items as Received_ - this will mark selected items as received.
+* _Un-Receive Selected Line Items_ - this will mark selected items as “un-received” and return them to an on order status.
+* _Cancel Selected Line Items_ - this will open a dialog asking you to confirm the cancellation and select a cancel or delay reason. Choose your cancel or delay reason from the dropdown, and select *Apply* to cancel or delay the selected line items with the chosen reason.
+* _Apply Claim Policy to Selected Line Items_ - this will open a dialog asking you to choose the claim policy to apply to your selected line items. Choose your claim policy from the dropdown, and select *Apply*. Note that by default, the provider’s claim policy will be used on a purchase order.
+* _Create Invoice from Selected Line Items_ - this will open a new tab with an invoice made up of your selected line items. See the xref:acquisitions/invoices.adoc[Invoices documentation] for more information.
+* _Link Selected Line Items to Invoice_ - this will open a dialog asking you to select a provider and invoice number. Select Link Invoice to link your selected line items to the chosen invoice.
+
+All of these actions, except _Load Bibs and Items_, will be applied to selected line items. You can select one, several, or all line items.
+
+Actions that apply to line items regardless of whether they are in a selection list or purchase order are detailed above, under xref:acquisitions/selection_lists_po.adoc#line_item_actions[Line Item Actions].
+
+[[add_line_items_to_po]]
+=== Adding Line Items to a Purchase Order ===
+
+If you created your purchase order from a selection list or from the xref:acquisitions/vandelay_acquisitions_integration.adoc[Load MARC Order Records] interface, your purchase order will already have line item information listed.
+
+To add individual line items from within a purchase order:
+
+. Open the purchase order
+. Select the _Actions_ button in the upper left of the interface
+. Choose *Add Brief Record*
++
+image::selection_lists_po/acq_new_brief_record.png[Action: Add New Brief Record]
++
+. In the Add Brief Record interface, fill out the form. These fields map to specified MARC fields, noted in the table below.
+.. There is an open bug on the _Identifier_ field and it is recommended that you skip this field
+.. _Price_ must contain a numeric value and will map to the line item price field
+. Select *Add Record* when you are finished filling out the form. You will be returned to your purchase order and a new line item will be created with information from your brief record.
+
+You can also add line items to a purchase order from other interfaces:
+
+* In the staff catalog bibliographic record, from the View/Place Orders menu item
+** Note that this will put you in the old Dojo interface and you will need to know the name of your existing purchase order to enter it in the typeahead.
+* Load Catalog Record IDs interface
+* MARC Federated Search interface
+
+[[direct_charges]]
+=== Direct Charges ===
+
+You can add direct charges to a purchase order. Direct charges are not associated with individual line items, but rather with the purchase order itself. You can add one or several direct charges to a purchase order. If a direct charge is directly linked to an invoice charge, the state of the invoice charge controls how the fund debit is handled.
+
+Direct charges can be created for taxes, shipping fees, handling fees, blanket orders, or other reasons. To create a new direct charge, scroll to the bottom of the purchase order and select *New Charge*.
+
+* _Charge Type_ (required) - the type of direct charge
+** Direct charge types are set in xref:admin/acquisitions_admin.adoc#_invoice_item_type[Acquisitions Administration -> Invoice Item Types]
+* _Fund_ (required) - the fund to which the charge is assigned
+* _Title / Description_ - a free text field describing the direct charge
+* _Author_ - if an author is associated with the direct charge, enter that information here
+* _Note_ - a free text note associated with the direct charge
+* _Estimated Cost_ (required) - the estimated cost of the charge.
+
+image::selection_lists_po/acq_direct_charge.png[Direct Charges]
+
+Select *Save* to save your direct charge. Direct charges will appear on an invoice that you create from the purchase order.
+
+You can edit an existing direct charge by selecting _Edit_, or remove an existing direct charge by selecting _Remove_. You will not be asked to confirm removing a direct charge, so only select Remove if you are sure you want to remove the direct charge.
+
+There are circumstances where a direct charge will be debited from a different fund than the one originally entered - e.g., prorating a charge can do this; or where the debited amount be different - e.g., proration, or the invoice charge simply having a different amount. The direct charges list now can display that information in the estimated cost column. The amount actually expended will be labeled _Amount Expended_.
+
+There is a _Disencumber Charge_ button which will be visible under
+select circumstances:
+
+* The purchase order is active (or received) but not canceled
+* The fund debit is not already zero
+* The fund debit is not already linked to an invoice
+
+To see how direct charges are used with blanket orders, see the xref:acquisitions/blanket.adoc[Blanket Orders] documentation.
+
+[[activating_purchase_order]]
+=== Activating a Purchase Order ===
+
+Typically, for a purchase order to be activated, all line items must have items attached. Line items must have a price and be assigned to a fund. If any of these elements are missing, or if there is another reason the purchase order cannot be activated, the purchase order _Status_ will indicate the reason the purchase order cannot be activated.
+
+*NOTE:* Line item prices may not be null, but they can be set to zero.
+
+*NOTE:* If activating the purchase order will cause one of your funds to exceed its warning percentage, you will see a warning in the purchase order _Status_. If activating the purchase order will cause one of your funds to exceed its stop percentage, you will not be permitted to activate the purchase order.
+
+image::selection_lists_po/acq_po_not_activatable.png[Purchase Order Can't be Activated]
+
+Note that you can opt to allow a purchase order to be activated without items attached. If you wish to do this, select the checkbox _Allow Activation with Zero-Item Line Items?_
+
+Once your purchase order is in an activatable state, you will see two options to activate the purchase order: _Activate Without Loading Items_, and _Activate Order_.
+
+image::selection_lists_po/acq_activate_order.png[Activate Purchase Order]
+
+If you select *Activate Without Loading Items*, the order will be activated but no on-order items will be loaded into your catalog. Once the purchase order has been activated without loading items, it is not possible to load the items. This feature should only be used in situations where the items have already been added to the catalog, such as:
 
 * Cleaning up pre-acquisitions backlog
 * Direct purchases that have already been cataloged
 
-To use this feature, click the Activate Without Loading Items button.
+If you select *Activate Order*, the purchase order will be activated. Several things will happen when the order is activated:
 
-==== Activate Purchase Order with Zero Copies ====
+* Bibliographic records and items will be loaded into the catalog
+** If you did not already set call numbers and barcodes for items, Evergreen will generate placeholder call numbers and barcodes.
+** Use the Library Settings _Acquisitions: Temporary barcode prefix_ and _Acquisitions: Temporary call number prefix_ to set prefixes for these placeholder values.
+* Funds associated with the purchases will be encumbered
+* If you are using EDI ordering, the Activate Order action will send the purchase order to the Provider indicated on the order.
 
-By default, a purchase order cannot be activated if a line item on the
-purchase order has zero copies. To activate a purchase order with line
-items that have zero copies, check the box *Allow activation with
-zero-copy lineitems*.
+After you click Activate Order, you will be presented with the record import interface if your purchase order contains items or records that are not already in the catalog. This interface will let you load on-order items and/or records into your catalog, and link these with the purchase order.
 
-image::media/Zero_Copies1.jpg[Zero_Copies1]
+image::selection_lists_po/acq_load_records_and_activate.png[Load Records and Activate Purchase Order]
 
-=== Line item statuses ===
+Loading parameters include templates, matching options, and quality parameters in the same manner that the regular xref:cataloging/batch_importing_MARC.adoc[MARC Batch Import/Export] tool uses.
 
-The purchase orders interface keeps track of various statuses that your
-line items might be in.  This section lists some of the statuses you might
-see when looking at purchase orders.
+*NOTE:* This interface will create records and items based on the information already included with the line items. For example, if your line items only contain brief record information, this is what will be loaded into the catalog.
 
-==== Canceled and Delayed Items ====
+Once you complete entering in the parameters for the record import interface, select *Submit*. A progress bar will appear and the purchase order screen will refresh when the load is complete.
 
-In the purchase order interface, you can easily
-differentiate between canceled and delayed items.  Each label begins
-with *Canceled* or *Delayed*.  To view the list, click *Administration*
--> *Acquisitions Administration* -> *Cancel Reasons*.
+[[receiving_line_items]]
+=== Receiving Line Items ===
 
-The cancel/delay reason label is displayed as the line item status in the list of line items or as the copy status in the list of copies.
+Marking line items as received indicates that your library has received the physical items ordered. To receive line items, open the purchase order in question. You can select individual line items, all line items in the page, or all line items on the purchase order. Navigate to the _Actions_ button in the upper left of your purchase order and select *Mark Selected Line Items as Received*.
 
-image::media/2_7_Enhancements_to_Canceled2.jpg[Canceled2]
+The screen will refresh and the selected line items will now be in a Received status. If you have alerts on any line items, you will be presented with a confirmation dialog for each alert in your selected line items. If there are multiple alerts, the dialog will show “Alert X of Y” and you must acknowledge each alert to receive the line item(s) associated with the alert(s).
 
+If you have erroneously received line items, you can select the line items in question and then navigate to the _Actions_ button in the upper left of your purchase order and select *Un-Receive Selected Line Items*. This will return selected items to an On Order status.
 
-image::media/2_7_Enhancements_to_Canceled4.jpg[Canceled4]
+image::selection_lists_po/acq_po_receive_unreceive.png[Un-Receive Selected Line Items]
 
-A delayed line item can now be canceled.  You can mark a line item as delayed, and if later, the order cannot be filled, you can change the line item's status to canceled.  When delayed line items are canceled, the encumbrances are deleted.
+[[canceling_or_delaying_line_items]]
+=== Canceling or Delaying Line Items ===
 
-Cancel/delay reasons now appear on the worksheet and the printable purchase order.
+Line items may also be marked as Canceled or Delayed. Cancel and delay reasons and parameters are set up in xref:admin/acquisitions_admin.adoc#_canceldelay_reasons[Acquisitions Administration].
 
-[NOTE]
-========================
-When all the copies of a line item are canceled through the Acquisitions interface,
-the parent lineitem is also canceled. The cancel reason will be calculated based
-on the settings of:
-  
-. The cancel reason for the last copy to be canceled copy if the cancel reason's
-_Keep Debits_ setting is true.
-. The cancel reason for any other copy on the line item if the cancel reason's
-_Keep Debits_ setting is true.
-. The cancel reason for the last copy to be canceled if no copies on the line
-item have a cancel reason where _Keep Debits_ is true.
-========================
+To cancel line items or mark them delayed, select one, several, or all line items in the purchase order:
 
+. Navigate to the _Actions_ button in the upper left of your purchase order and select *Cancel Selected Line Items*.
++
+image::selection_lists_po/acq_po_cancel_items.png[Action: Cancel Selected Line Items]
++
+. You will see a dialog asking you to confirm the line item cancellation and select a cancel or delay reason.
++
+image::selection_lists_po/acq_po_cancel_items_modal.png[Cancel Line Items Confirmation Modal]
++
+. Choose your cancel or delay reason from the dropdown, and select *Apply* to cancel or delay the line item with the selected reason. Select *Exit Dialog* to exit without canceling items.
 
-==== Paid PO Line Items ====
+Cancel/delay reasons will appear on the worksheet and the printable purchase order.
 
-Purchase Order line items are marked as "Paid" in red text when all non-cancelled copies on the line item have been invoiced.
+Items which are marked canceled or delayed with a reason that has _Keep Debits_ set to true will still have their funds encumbered, and can still be marked received at the line item level.
 
-image::media/2_10_Lineitem_Paid.png[Paid Lineitem]
+Items which are marked canceled or delayed with a reason that has _Keep Debits_ set to false will have funds released and cannot be marked received at the line item level, and will further attempt to delete any catalog items associated with the canceled line item. Since deleting items requires the DELETE_COPY permission, the cancel or delay will fail with the ACQ_NOT_CANCELABLE error if the user does not have this permission.
 
+*NOTE:* Using the *Actions -> Mark Selected Line Items as Received*
+action will always receive canceled line items, regardless of the cancel reason. If the cancel reason had _Keep Debits_ set to false, the act of receiving said line item will recreate the encumbrance.
 
-[#brief_records]
+*NOTE:* When all the items of a line item are canceled through the
+Acquisitions interface, the parent line item is also canceled. The
+cancel reason will be calculated based on the following:
+
+* The cancel reason for the last item to be canceled if the cancel reason’s _Keep Debits_ setting is true.
+* The cancel reason for any other item on the line item if the cancel reason’s _Keep Debits_ setting is true.
+* The cancel reason for the last item to be canceled if no items on the line item have a cancel reason where the _Keep Debits_ setting is true.
+
+[[claiming_line_items]]
+=== Claiming Line Items ===
+
+Claiming lets you apply a claim policy to selected line items. Claiming policies are set up in xref:admin/acquisitions_admin.adoc#acq_claiming[Acquisitions Administration].
+
+*NOTE:* You will not have the option to mark selected line items claimed until sufficient time has passed according to your claim policy. Applying a claim policy does not initiate a claim, it simply tells the system what to do when or if a claim is initiated.
+
+The default claim policy associated with each Provider is automatically assigned to line items and items ordered from the provider, or you can choose to assign another claim policy to a line item.
+
+. Select one, several, or all line items in the purchase order.
+. Navigate to the _Actions_ button in the upper left of your purchase order and select *Apply Claim Policy to Selected Line Items*.
++
+image::selection_lists_po/acq_po_apply_claim_policy.png[Action: Apply Claim Policy to Selected Line Items]
++
+. You will see a dialog asking you to choose the claim policy to apply. Choose your claim policy from the dropdown, and select *Apply* to apply the claim policy. Select *Exit Dialog* to exit without applying a claim policy.
++
+image::selection_lists_po/acq_po_apply_claim_policy_modal.png[Claim Policy Modal]
+
+After you order an item, once the time interval defined by the claim policy has passed, you can claim the item. You can claim items individually by navigating to the _Line Item Actions Menu_ and selecting *Claims*.
+
+image::selection_lists_po/acq_po_claim_item.png[Line Item Action: Claims]
+
+A dialog will open allowing you to initiate a new claim against the line item. Select the item barcode(s) you wish to claim, select the _Claim Type_, and enter a _Claim Note_ if you wish. Click *Claim Selected* to mark the selected item(s) as claimed. Click *Exit Dialog* to exit without claiming the item(s)
+
+image::selection_lists_po/acq_po_apply_claim_item_modal.png[Mark Item as Claimed]
+
+Claiming can be done in batch via the *Acquisitions -> Claim Ready Items* interface.
+
+[[invoicing_line_items]]
+=== Invoicing Line Items ===
+
+From a purchase order, you have several invoicing options. You can create or link an invoice at any point after your order is placed, whether or not items are received. Open the purchase order and select either *Create Invoice* to create a new invoice or *Link Invoice* to link the purchase order to an existing invoice.
+
+To view invoices linked to a purchase order, open a purchase order and select _Invoices_. The number in parentheses indicates the number of invoices that are attached to the purchase order.
+
+image::selection_lists_po/acq_po_invoicing.png[Purchase Order Invoice]
+
+Please see the xref:acquisitions/invoices.adoc[Invoicing] documentation for specific information about invoicing.
+
+[[brief_records]]
 == Brief Records ==
 
 Brief records are short bibliographic records with minimal information that are often used as placeholder records until items are received. Brief records can be added to selection lists or purchase orders and can be imported into the catalog. You can add brief records to new or existing selection lists. You can add brief records to new, pending or on-order purchase orders.
 
+[[add_brief_records_selection_list]]
 === Add brief records to a selection list ===
 
-. Click *Acquisitions* -> *New Brief Record*. You can also add brief records to an existing selection list by clicking the Actions menu on the selection list and choosing Add Brief Record.
+. Select *Acquisitions -> New Brief Record*.
+.. This version of the brief record interface is still in Dojo.
 . Choose a selection list from the drop down menu, or enter the name of a new selection list.
 . Enter bibliographic information in the desired fields.
-. Click Save Record.
+. Select *Save Record*.
 
-image::media/acq_brief_record.png[]
+Alternatively, you can also add brief records from within an existing selection list.
 
+. Open or create a selection list. See the section on xref:acquisitions/selection_lists_po.adoc#selection_lists[selection lists] for more information.
+. Select _Actions_ and then *Add Brief Record*.
++
+image::selection_lists_po/acq_new_brief_record.png[Action: Add New Brief Record]
++
+. Enter bibliographic information in the desired fields.
+. Select *Add Record* to add the record to your selection list.
+
+[[add_brief_records_purchase_orders]]
 === Add brief records to purchase orders ===
 
-You can add brief records to new or existing purchase orders.
+You can also add brief records to new or existing purchase orders.
 
-. Open or create a purchase order. See the section on xref:#purchase_orders[purchase orders] for more information.
-. Click Add Brief Record.
-. Enter bibliographic information in the desired fields. Notice that the record is added to the purchase order that you just created.
-. Click Save Record.
+. Open or create a purchase order. See the section on xref:acquisitions/selection_lists_po.adoc#purchase_orders[purchase orders] for more information.
+. Select _Actions_ and then *Add Brief Record*.
++
+image::selection_lists_po/acq_new_brief_record.png[Action: Add New Brief Record]
++
+. Enter bibliographic information in the desired fields.
+. Select *Add Record* to add the record to your purchase order.
 
-image::media/acq_brief_record-2.png[]
-
-[#marc_federated_search]
+[marc_federated_search]
 == MARC Federated Search ==
 
-The MARC Federated Search enables you to import bibliographic records into a selection list or purchase order from a Z39.50 source.
+The MARC Federated Search interface enables you to import bibliographic records into a selection list or purchase order from a Z39.50 source.
 
-. Click *Acquisitions* -> *MARC Federated Search*.
-. Check the boxes of Z39.50 services that you want to search. Your local Evergreen Catalog is checked by default. Click Submit.
+As of version 3.10 this interface is still in Dojo.
+
+. Naviate to *Acquisitions* -> *MARC Federated Search*.
+. Select the boxes of z39.50 services that you want to search. Your local Evergreen catalog is checked by default. Select _Submit_.
 +
-image::media/acq_marc_search.png[search form]
+image::selection_lists_po/acq_marc_fed_search_form.png[MARC Federated Search Form]
 +
-. A list of results will appear. Click the "Copies" link to add copy information to the line item. See the xref:#line_items[section on Line Items] for more information.
-. Click the Notes link to add notes or line item alerts to the line item. See the xref:#line_items[section on Line Items] for more information.
-. Enter a price in the "Estimated Price" field.
-. You can save the line item(s) to a selection list by checking the box
-on the line item and clicking *Actions* -> *Save Items to Selection
-List*. You can also create a purchase order from the line item(s) by
-checking the box on the line item and clicking Actions -> Create
-Purchase Order.
-
-image::media/acq_marc_search-2.png[line item]
-
-[#line_items]
-== Line Items ==
-
-=== Return to Line Item ===
-
-This feature enables you to return to a specific line item on a selection list,
-purchase order, or invoice after you have navigated away from the page that
-contained the line item.  This feature is especially useful when you must
-identify a line item in a long list. After working with a line item, you can
-return to your place in the search results or the list of line items.
-
-To use this feature, select a line item, and then, depending on the location of
-the line item, click *Return* or *Return to search*.  Evergreen will take you
-back to the specific line item in your search and highlight the line item with a
-colored box.
-
-For example, you retrieve a selection list, find a line item to examine, and
-click the *Copies* link.  After editing the copies, you click *Return*.
-Evergreen takes you back to your selection list and highlights the line item
-that you viewed. 
-
-image::media/Return_to_line_item1.jpg[Return_to_line_item1]
-
-This feature is available in _General Search Results_, _Purchase Orders_, and
-_Selection Lists_, whenever any of the following links are available: 
-
-* Selection List
-* Purchase Order
-* Copies
-* Notes
-* Worksheet
-
-This feature is available in Invoices whenever any of the following links are
-available:
-
-* Title
-* Selection List
-* Purchase Order
-
-=== Display a Count of Existing Copies on Selection List and Purchase Order Lineitems ===
-
-When displaying Acquisitions lineitems within the Selection List and Purchase Order interfaces, Evergreen displays a count of existing catalog copies on the lineitem. The count of existing catalog copies refers to the number of copies owned at the ordering agency and / or the ordering agency's child organization units.
-
-The counts display for lineitems that have a direct link to a catalog record. Generally, this includes lineitems created as "on order" based on an existing catalog record and lineitems where "Load Bibs and Items" has been applied.
-
-The count of existing copies does not include copies that are in either a Lost or a Missing status.
-
-The existing copy count displays in the link "bar" located below the Order Identifier within the lineitem.
-
-If no existing copies are found, a "0" (zero) will display in plain text.
-
-If the existing copy count is greater than zero, then the count will display in bold and red on the lineitem.
-
-image::media/display_copy_count_1.JPG[Display Copy Count 1]
-
-The user may also hover over the existing copy count to view the accompanying tooltip.
-
-image::media/display_copy_count_2.JPG[Display Copy Count 2]
-
-
+. A list of results will appear. Select the _Copies_ link to add copy information to the line item.
+. Select the _Notes_ link to add notes or line item alerts to the line item. 
+. Enter a price in the _Estimated Price_ field.
+. You can save the line item(s) to a selection list by selecting the line item and then in the upper-left select *Actions -> Save Items to Selection List*. You can also create a purchase order from the line item(s) by selecting the line item and then in the upper-left select *Actions -> Create Purchase Order*.
