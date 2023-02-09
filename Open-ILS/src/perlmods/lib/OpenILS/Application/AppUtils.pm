@@ -1356,11 +1356,10 @@ sub ou_ancestor_setting_log {
         $coust = $e->retrieve_config_org_unit_setting_type([
             $name, {flesh => 1, flesh_fields => {coust => ['view_perm']}}
         ]);
-        my $orgs = $self->get_org_ancestors($orgid);
 
         my $qorg = $self->ou_ancestor_setting_perm_check(
-            $orgs,
-            $coust,
+            $orgid,
+            $coust->view_perm->code,
             $e,
             $auth
         );
