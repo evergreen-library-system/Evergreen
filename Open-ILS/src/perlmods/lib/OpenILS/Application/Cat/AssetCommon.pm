@@ -13,7 +13,6 @@ use OpenILS::Utils::Penalty;
 use OpenILS::Application::Circ::CircCommon;
 my $U = 'OpenILS::Application::AppUtils';
 
-
 # ---------------------------------------------------------------------------
 # Shared copy mangling code.  Do not publish methods from here.
 # ---------------------------------------------------------------------------
@@ -431,6 +430,8 @@ sub update_fleshed_copies {
     my %cache;
     $cache{$vol->id} = $vol if $vol;
 
+    my @new_parts = ();
+
     sub process_copy {
         my ($original_copy, $cache_ref, $editor, $class, $logger) = @_;
 
@@ -496,6 +497,44 @@ sub update_fleshed_copies {
 
         $copy->stat_cat_entries( $sc_entries );
         $evt = $class->update_copy_stat_entries($editor, $copy, $delete_stats);
+
+
+        # Have to watch out for multiple items creating the same new part or the whole update will fail
+        # Twiddling knobs inside an $x inside a for $x in @y has to be done carefully
+        for my $part (@$parts) {
+            next unless $part->isnew;
+
+	    my @existing = grep { $_->label eq $part->label && $_->record == $part->record } @new_parts;
+            if (@existing) {
+                # We've created this part previously, don't want to do that again.
+                my $oldnewthing = $existing[0];
+                if ($oldnewthing->id) {
+                    $part->id($oldnewthing->id);
+                    $part->isnew(0);
+                    $part->ischanged(0);
+                } else {
+                    # Grab the id of the previously created part so we can keep track of it
+                    my $results = $editor->search_biblio_monograph_part(
+                        {
+                            label => $part->label,
+                            record => $part->record,
+                            deleted => 'f'
+                        }
+                    );
+
+                    # There *should* always be a result, but...
+                    if ($results) {
+                        $oldnewthing->id($results->[0]->id);
+                        $part->id($oldnewthing->id);
+                        $part->isnew(0);
+                        $part->ischanged(0);
+                    }
+                }
+            } else {
+                # haven't seen this new part before
+                push(@new_parts, $part);
+            }
+        }
 
         $copy->parts( $parts );
         # probably okay to use $delete_stats here for simplicity
