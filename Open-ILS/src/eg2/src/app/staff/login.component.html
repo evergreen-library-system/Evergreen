@@ -57,7 +57,7 @@
         </div>
 
         <div class="row" *ngIf="pendingXactsDate">
-          <div class="col-lg-8 offset-lg-4 alert alert-warning mt-2">
+          <div class="col-lg-8 offset-lg-4 alert alert-warning mt-2" i18n>
             Unprocessed offline transactions waiting for upload.
             Last transaction added at {{pendingXactsDate | date:'short'}}.
           </div>
