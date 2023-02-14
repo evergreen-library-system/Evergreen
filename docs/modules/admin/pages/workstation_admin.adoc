@@ -21,32 +21,21 @@ on the workstation.
 indexterm:[staff client, fonts, zooming]
 indexterm:[staff client, sounds]
 
-=== In the Staff Client ===
+=== Font Settings (Staff Client and OPAC) ===
 
-You may change the size of displayed text or turn staff client sounds on
-and off. These settings are specific to each workstation and stored on
-local hard disk. They do not affect OPAC font sizes.
-
-. Select *Administration -> Workstation Administration ->   Global Font and Sound
-Settings*.
-. To turn off the system sounds, like the noise that happens when a patron
-with a block is retrieved, check the _disable sound_ box and click _Save
-to Disk_.
-+
-image::media/workstation_admin-1.jpg[disable sound]
-+
-. To change the size of the font, pick the desired option and click _Save
-to Disk_.
- 
-image::media/workstation_admin-2.jpg[font size]
-
-=== In the OPAC ===
-
-It is also possible to zoom in and zoom out when viewing the OPAC in the
-staff client, making the font appear larger or smaller. (This will not
+It is possible to zoom in and zoom out when viewing Evergreen on the staff
+side and OPAC, making the font appear larger or smaller. (This will not
 affect other screens.) Use *CTRL + +* (plus sign, to zoom in), *CTRL + -*
 (minus sign, to zoom out), and *CTRL + 0* (to restore default). The
 workstation will remember the setting.
+
+=== Disable Sounds ===
+
+. Select *Administration -> Workstation Administration*.
+. To turn off the system sounds, like the noise that happens when a patron
+with a block is retrieved, check the _disable sound_ box.
++
+image::workstation/workstation_disable_sounds.png[disable sound]
 
 == Select Hotkeys ==
 
