@@ -42,6 +42,15 @@ include::partial$turn-off-print-headers-chrome.adoc[]
 === Set font size in browser ===
 Font size in the OPAC and TPAC can be increased/decreased by using the CTRL key with + (to increase), with - (to decrease), and with 0 (to restore default font size). Font sizes can persist via a setting in user preferences.
 
+=== Turning Off Google Translate ===
+If you have other languages available on your OPAC via language selector, it would be best to turn off Google Translate so it doesn't
+automatically translate to English.
+
+. In the top-right corner of your browser, click the Chrome menu.
+. Select *Settings*.
+. You can search 'Use Google Translate' in the search bar.
+. Toggle off the option.
+
 == Tab Buttons and Keyboard Shortcuts ==
 
 Now that the client will be loaded in a web browser, users can use browser-based
