@@ -81,7 +81,21 @@ export class AuthorityLinkingDialogComponent
         });
 
         this.pcrud.search('acsbf',
-            {tag: this.bibField.tag},
+            {
+                tag: this.bibField.tag,
+                // we're only interested in the authority fields
+                // that are linked to a heading field; i.e., we're not
+                // interested in subdivision authorities at this time
+                authority_field: {
+                    in: {
+                        select: { acsaf: ['id'] },
+                        from: 'acsaf',
+                        where: {
+                            heading_field: { '!=' : null }
+                        }
+                    }
+                }
+            },
             {flesh: 1, flesh_fields: {acsbf: ['authority_field']}},
             {atomic:  true, anonymous: true}
 
