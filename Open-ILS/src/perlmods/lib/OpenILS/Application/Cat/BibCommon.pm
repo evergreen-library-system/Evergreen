@@ -364,6 +364,10 @@ sub delete_rec {
         $hold->cancel_cause(1); # un-targeted expiration.
         $editor->update_action_hold_request($hold) or return $editor->die_event;
 
+        # Update our copy of the hold to pick up the cancel_time
+        # before we pass it off to A/T.
+        $hold = $editor->retrieve_action_hold_request($hold->id);
+
         my $at_ses = OpenSRF::AppSession->create('open-ils.trigger');
         $at_ses->request(
             'open-ils.trigger.event.autocreate',
