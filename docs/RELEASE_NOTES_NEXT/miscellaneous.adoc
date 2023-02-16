@@ -1,3 +1,4 @@
 * Add patron home library code as a column to the View Holds grid in the staff catalog record details page (LP#1991726)
 * Include template ID in the template table in the Reporter (LP#1998386)
 * Remove the `pub` flag from the `biblio.record_note` table (LP#1978978)
+* Add the publication date to the Staff Catalog's Shelf Browse (LP#1999432)
