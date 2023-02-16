@@ -575,6 +575,10 @@ sub cancel_hold_list {
         $hold->cancel_cause(1); # un-targeted expiration.  Do we need an alternate "target deleted" cause?
         $editor->update_action_hold_request($hold) or return $editor->die_event;
 
+        # Update our copy of the hold to pick up the cancel_time
+        # before we pass it off to A/T.
+        $hold = $editor->retrieve_action_hold_request($hold->id);
+
         # tell A/T the hold was cancelled.  Don't wait for a response..
         my $at_ses = OpenSRF::AppSession->create('open-ils.trigger');
         $at_ses->request(
