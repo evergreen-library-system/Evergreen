@@ -449,7 +449,8 @@ CREATE TRIGGER action_circulation_stop_fines_tgr
 
 CREATE TABLE action.hold_request_cancel_cause (
     id      SERIAL  PRIMARY KEY,
-    label   TEXT    UNIQUE
+    label   TEXT    UNIQUE,
+    manual  BOOL    NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE action.hold_request (

@@ -2926,13 +2926,15 @@ INSERT INTO asset.call_number VALUES (-1,1,NOW(),1,NOW(),-1,1,'UNCATALOGED');
 
 --090.schema.action.sql
 INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (1, oils_i18n_gettext(1, 'Untargeted expiration', 'ahrcc', 'label'));
-INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (2, oils_i18n_gettext(2, 'Hold Shelf expiration', 'ahrcc', 'label'));
-INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (3, oils_i18n_gettext(3, 'Patron via phone', 'ahrcc', 'label'));
-INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (4, oils_i18n_gettext(4, 'Patron in person', 'ahrcc', 'label'));
-INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (5, oils_i18n_gettext(5, 'Staff forced', 'ahrcc', 'label'));
+INSERT INTO action.hold_request_cancel_cause (id,label,manual) VALUES (2, oils_i18n_gettext(2, 'Hold Shelf expiration', 'ahrcc', 'label'), TRUE);
+INSERT INTO action.hold_request_cancel_cause (id,label,manual) VALUES (3, oils_i18n_gettext(3, 'Patron via phone', 'ahrcc', 'label'), TRUE);
+INSERT INTO action.hold_request_cancel_cause (id,label,manual) VALUES (4, oils_i18n_gettext(4, 'Patron in person', 'ahrcc', 'label'), TRUE);
+INSERT INTO action.hold_request_cancel_cause (id,label,manual) VALUES (5, oils_i18n_gettext(5, 'Staff forced', 'ahrcc', 'label'), TRUE);
 INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (6, oils_i18n_gettext(6, 'Patron via OPAC', 'ahrcc', 'label'));
 INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (7, oils_i18n_gettext(7, 'Patron via SIP', 'ahrcc', 'label'));
 INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (8, oils_i18n_gettext(8, 'Hold Group Event rollback', 'ahrcc', 'label'));
+INSERT INTO action.hold_request_cancel_cause (id,label,manual) VALUES (9, oils_i18n_gettext(9, 'Patron via email', 'ahrcc', 'label'), TRUE);
+INSERT INTO action.hold_request_cancel_cause (id,label,manual) VALUES (10, oils_i18n_gettext(10, 'Patron via SMS', 'ahrcc', 'label'), TRUE);
 SELECT SETVAL('action.hold_request_cancel_cause_id_seq', 100);
 
 

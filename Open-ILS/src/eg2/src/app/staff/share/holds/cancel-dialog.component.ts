@@ -53,8 +53,10 @@ export class HoldCancelDialogComponent
         if (this.cancelReasons.length === 0) {
             this.pcrud.retrieveAll('ahrcc', {}, {atomic: true}).toPromise()
             .then(reasons => {
-                this.cancelReasons =
-                    reasons.map(r => ({id: r.id(), label: r.label()}));
+                this.cancelReasons = reasons
+                    // only display reasons for manually canceling holds
+                    .filter(r => 't' === r.manual())
+                    .map(r => ({id: r.id(), label: r.label()}));
             });
         }
 

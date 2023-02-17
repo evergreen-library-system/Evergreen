@@ -116,7 +116,12 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
             ],
             resolve : {
                 cancel_reasons : function() {
-                    return service.get_cancel_reasons();
+                    return service.get_cancel_reasons().then(function(reasons) {
+                        // only display reasons for manually canceling holds
+                        return reasons.filter(function(r) {
+                            return 't' === r.manual();
+                        });
+                    });
                 }
             }
         }).result;
