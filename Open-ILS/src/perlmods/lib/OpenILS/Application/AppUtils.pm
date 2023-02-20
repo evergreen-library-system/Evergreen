@@ -1318,7 +1318,10 @@ sub ou_ancestor_setting {
         my $coust = $e->retrieve_config_org_unit_setting_type([
             $name, {flesh => 1, flesh_fields => {coust => ['view_perm']}}
         ]);
-        return undef unless $self->ou_ancestor_setting_perm_check($orgid, $coust->view_perm->code, $e, $auth)
+        return undef unless defined $coust;
+        if ($coust->view_perm) {
+            return undef unless $self->ou_ancestor_setting_perm_check($orgid, $coust->view_perm->code, $e, $auth);
+        }
     }
 
     my $query = {from => ['actor.org_unit_ancestor_setting', $name, $orgid]};
@@ -1357,9 +1360,10 @@ sub ou_ancestor_setting_log {
             $name, {flesh => 1, flesh_fields => {coust => ['view_perm']}}
         ]);
 
+        my $perm_code = $coust->view_perm ? $coust->view_perm->code : undef;
         my $qorg = $self->ou_ancestor_setting_perm_check(
             $orgid,
-            $coust->view_perm->code,
+            $perm_code,
             $e,
             $auth
         );
