@@ -37,9 +37,9 @@ export class PrintTemplateComponent implements OnInit {
     templateCache: {[id: number]: IdlObject} = {};
     initialOrg: number;
     selectedOrgs: number[];
+    selectedTab = 'template';
 
     @ViewChild('templateSelector', { static: true }) templateSelector: ComboboxComponent;
-    @ViewChild('tabs', { static: false }) tabs: NgbNav;
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
     @ViewChild('confirmDelete', { static: true }) confirmDelete: ConfirmDialogComponent;
     @ViewChild('printContextCbox', {static: false}) printContextCbox: ComboboxComponent;
@@ -170,7 +170,7 @@ export class PrintTemplateComponent implements OnInit {
             this.org.list()[0];
     }
 
-    onTabChange(evt: NgbNavChangeEvent) {
+    onNavChange(evt: NgbNavChangeEvent) {
         if (evt.nextId === 'template') {
             this.refreshPreview();
         }
@@ -243,7 +243,7 @@ export class PrintTemplateComponent implements OnInit {
     }
 
     // If the selected template changes through means other than the
-    // template selecdtor, setting updateSelector=true will force the
+    // template selector, setting updateSelector=true will force the
     // template to appear in the selector and get selected, regardless
     // of whether it would have been fetched with current filters.
     selectTemplate(id: number, updateSelector?: boolean) {
@@ -253,6 +253,14 @@ export class PrintTemplateComponent implements OnInit {
             this.compiledContent = '';
             return;
         }
+
+        // reset things
+        this.selectedTab = 'template';
+        this.compiledContent = '';
+        if (this.container()) {
+            this.container().innerHTML = '';
+        }
+        this.sampleJson = '';
 
         this.pcrud.retrieve('cpt', id).subscribe(t => {
             this.template = this.templateCache[id] = t;
