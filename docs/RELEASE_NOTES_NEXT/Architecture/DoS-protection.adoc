@@ -1,0 +1,10 @@
+== DoS Protection ==
+
+Here we add two ways to protect against denial of service attacks:
+ * Limit concurrent search requests per client IP address
+  ** This helps address issues of accidental spamming from a malfunctioning OPAC workstation, or web crawlers of various types.  The limit is controlled by a global flag called *opac.max_concurrent_search.ip*.  By default there is no limit set.
+ * Limit the global concurrent search requests for the same query
+  ** This helps address both simple and distributed DoS that send the same search request over and over.  The limit is controlled by a global flag called *opac.max_concurrent_search.query*, and defaults to 20.
+
+When a limit is exceeded the client receives an HTTP 429 "Too many requests" response from the web server, and the connection is ended.
+
