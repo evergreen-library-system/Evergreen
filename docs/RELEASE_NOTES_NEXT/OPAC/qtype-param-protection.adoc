@@ -1,0 +1,11 @@
+== Protect qtype CGI parameter ==
+
+Malicious DoS attempts have been witnessed in the wild making use of
+the fact that Evergreen does not check the contents of the qtype CGI
+parameter.  While these fail their intent, it would be better to
+simply drop such searches on the floor when they're seen.
+
+Evergreen will now confirm that the search class in the qtype parameter
+is valid, and that the remainder of the value is structured correctly,
+before processing the search request.
+
