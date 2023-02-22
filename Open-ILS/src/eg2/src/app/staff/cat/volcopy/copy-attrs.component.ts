@@ -276,6 +276,8 @@ export class CopyAttrsComponent implements OnInit, AfterViewInit {
 
             this.context.copyList().forEach(copy => {
                 if (!copy[field] || copy[field]() === value) { return; }
+                // Don't overwrite magic statuses
+                if (field === 'status' && this.volcopy.copyStatIsMagic(copy[field]()) ) { return; }
 
                 // Change selection indicates which items should be modified
                 // based on the display value for the selected field at
