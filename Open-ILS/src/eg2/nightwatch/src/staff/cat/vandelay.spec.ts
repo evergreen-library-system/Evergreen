@@ -24,7 +24,7 @@ module.exports = {
         const vandelay = browser.page.vandelay();
         navigateToMarcBatchImport(vandelay);
         vandelay.click('@recordDisplayAttributes')
-                .click('#authority')
+                .click('@authorityAttributesTab')
                 .click('@newVqradButton')
                 .setValue('@codeInput', 'lccn')
                 .setValue('@descriptionInput', 'LC control number')
