@@ -17,7 +17,7 @@ module.exports = {
                  .click('@authorityTypeInput')
                  .click('@subjectAuthorityType')
                  .click('@searchResult')
-                 .click('#edit');
+                 .click('@editTab');
         const marcEdit = browser.page.marcEdit();
         marcEdit.waitForElementVisible('@marcTag450', 15_000)
                 .setValue('@marcTag450', '550')

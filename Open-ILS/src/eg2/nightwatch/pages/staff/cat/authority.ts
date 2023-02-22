@@ -16,6 +16,10 @@ const authority: PageObjectModel = {
         searchResult: {
             selector: '//a[contains(text(), "Philosophy, Chinese")]',
             locateStrategy: 'xpath'
+        },
+        editTab: {
+            selector: '//a[text()="Edit" and contains(@class, "nav-link")]',
+            locateStrategy: 'xpath'
         }
     }
 };

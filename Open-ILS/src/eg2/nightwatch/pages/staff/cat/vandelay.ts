@@ -41,6 +41,10 @@ const vandelay: PageObjectModel = {
         authorityRecordType: {
             selector: '//button/span[text()="Authority Records"]',
             locateStrategy: 'xpath'
+        },
+        authorityAttributesTab: {
+            selector: '//a[text()="Authority Attributes" and contains(@class, "nav-link")]',
+            locateStrategy: 'xpath'
         }
     }
 };
