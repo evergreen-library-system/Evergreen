@@ -121,8 +121,8 @@ export class StaffResolver implements Resolve<Observable<any>> {
     // valid auth token.  Send the caller back to the login page.
     handleInvalidToken(state: RouterStateSnapshot): void {
         console.debug('StaffResolver: authtoken is not valid');
-        const url = this.ngLocation.prepareExternalUrl(state.url);
-        this.router.navigate([LOGIN_PATH], {queryParams: {routeTo: url}});
+        // state.url is the eg2 path, not a full URL.
+        this.router.navigate([LOGIN_PATH], {queryParams: {routeTo: state.url}});
         this.observer.error('invalid or no auth token');
     }
 
