@@ -118,6 +118,12 @@ ExpiresByType text/css "access plus 1 year"
     #
     # SetEnv carousel_loc 1
 
+    # Uncomment and set this variable to the id of the context org unit
+    # you want to provide SSO / Shibboleth settings for this vhost.
+    # If sso_loc is not set physical_loc will be used instead
+    #
+    # SetEnv sso_loc 1
+
     # If you don't have an SSL cert, you can create self-signed 
     # certificate and key with:
     # openssl req -new -x509 -nodes -out server.crt -keyout server.key

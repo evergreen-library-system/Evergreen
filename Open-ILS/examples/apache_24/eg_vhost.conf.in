@@ -523,6 +523,11 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
     PerlSendHeader On
 </Location>
 
+# Currently required for access to reports when Shibboleth is enabled; may not be necessary once Angularized?
+<IfModule mod_shib>
+    ShibCompatValidUser On
+</IfModule>
+
 # ----------------------------------------------------------------------------------
 # Reports GUI
 # ----------------------------------------------------------------------------------
