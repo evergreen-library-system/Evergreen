@@ -412,7 +412,7 @@ input.small {
 }
 
 .badge-dark,
-badge.text-bg-dark {
+.badge.text-bg-dark {
   color: #000;
   background: #adb5bd;
 }
