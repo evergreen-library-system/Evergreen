@@ -3,3 +3,4 @@
 * Remove the `pub` flag from the `biblio.record_note` table (LP#1978978)
 * Add the publication date to the Staff Catalog's Shelf Browse (LP#1999432)
 * Resolve search performance degradation with PostgreSQL version 12 and up (LP#1999274)
+* Improved styling of paid line items in acquisitions screens (LP#1999270)
