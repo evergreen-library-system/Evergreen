@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1357', :eg_version);
 
 UPDATE config.global_flag
 SET label = 'When enabled, Located URIs will provide visibility behavior identical to copies.'
