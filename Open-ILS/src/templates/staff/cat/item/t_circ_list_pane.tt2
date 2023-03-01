@@ -64,10 +64,18 @@
     }}</div>
     <div class="flex-cell">[% l('Check Out Staff') %]</div>
     <div class="flex-cell well">
-      <a ng-if="circ.circ_staff()" target="_blank"
-        href="./circ/patron/{{circ.circ_staff().id()}}/checkout">
+      <div ng-if="circ.parent_circ() == null">
+        <a target="_blank" href="./circ/patron/{{circ.circ_staff().id()}}/checkout">
           {{circ.circ_staff().usrname()}}
-      </a>
+        </a>
+      </div>
+      <div ng-if="circ.desk_renewal() == 't'">
+        <a target="_blank" href="./circ/patron/{{circ.circ_staff().id()}}/checkout">
+          {{circ.circ_staff().usrname()}}
+        </a>
+      </div>
+      <div ng-if="circ.opac_renewal() == 't'">[% l('<OPAC Renewal>') | html %]</div>
+      <div ng-if="circ.auto_renewal() == 't'">[% l('<Auto-Renewal>') | html %]</div>
     </div>
     <div class="flex-cell">[% l('Stop Fines Reason') %]</div>
     <div class="flex-cell well">{{circ.stop_fines()}}</div>
