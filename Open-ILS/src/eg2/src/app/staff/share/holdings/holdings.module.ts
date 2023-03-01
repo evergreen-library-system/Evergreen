@@ -15,6 +15,8 @@ import {TransferItemsComponent} from './transfer-items.component';
 import {TransferHoldingsComponent} from './transfer-holdings.component';
 import {BatchItemAttrComponent} from './batch-item-attr.component';
 import {CopyAlertManagerDialogComponent} from './copy-alert-manager.component';
+import {CopyNotesEditComponent} from './copy-notes-edit/copy-notes-edit.component';
+import { FmRecordEditorModule } from '@eg/share/fm-editor/fm-editor.module';
 
 @NgModule({
     declarations: [
@@ -24,6 +26,7 @@ import {CopyAlertManagerDialogComponent} from './copy-alert-manager.component';
       CopyAlertsDialogComponent,
       CopyTagsDialogComponent,
       CopyNotesDialogComponent,
+      CopyNotesEditComponent,
       ReplaceBarcodeDialogComponent,
       DeleteHoldingDialogComponent,
       ConjoinedItemsDialogComponent,
@@ -34,7 +37,8 @@ import {CopyAlertManagerDialogComponent} from './copy-alert-manager.component';
     ],
     imports: [
         StaffCommonModule,
-        BillingModule
+        BillingModule,
+        FmRecordEditorModule
     ],
     exports: [
       MarkDamagedDialogComponent,
