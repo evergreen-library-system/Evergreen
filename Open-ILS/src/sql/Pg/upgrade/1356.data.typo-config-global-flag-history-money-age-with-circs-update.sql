@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1356', :eg_version);
 
 UPDATE config.global_flag
 SET label = 'Age billings and payments when circulations are aged.'
