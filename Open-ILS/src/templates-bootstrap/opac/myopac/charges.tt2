@@ -188,7 +188,7 @@
                 [% c = c + 1; %]
                     [% IF myopac_cc_allowed %]
                     <td class="checkCell">
-                        <label class="sr-only">[% l('Billing Number') %] [% c %]</label>
+                        <label class="sr-only">[% l('Billing Number [_1]', c) %]</label>
                         <input aria-label="[% l('Pay This Bill') %]" class="fineCheck" type="checkbox" name="xact_misc" value="[% f.xact.id %]" checked="checked" />
                     </td>
                     [% END %]
