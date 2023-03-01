@@ -1,3 +1,1 @@
-* Patron Interface Gets a New Penalty Refresh Action
-* A new workstation setting optionally allows the full library name to be
-  added to the Angular Org Unit selector. (LP#1771636)
+* `autogen.sh` can now accept a `-c` switch to specify the location of `opensrf_core.xml`. This is useful for certain multi-tenant setups of Evergreen. (LP#2003707)
