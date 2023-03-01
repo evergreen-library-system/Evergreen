@@ -1,0 +1,12 @@
+<button class="btn btn-info label-with-material-icon" (click)="doneWithEdits.emit()">
+    <span class="material-icons" aria-hidden="true">arrow_back</span>
+    <span i18n>Back</span>
+</button>
+<eg-fm-record-editor #fmRecordEditor
+    (recordSaved)="doneWithEdits.emit()"
+    idlClass="acpn" mode="update"
+    hiddenFields="create_date,owning_copy,id,creator"
+    [hideBanner]="true"
+    displayMode="inline" fieldOrder="title,value,pub" [recordId]="recordId">
+</eg-fm-record-editor>
+
