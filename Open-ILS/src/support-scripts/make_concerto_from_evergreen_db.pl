@@ -290,6 +290,14 @@ sub start {
         }
     }
     $loadAll = loadTableOrderMaker( $loadAll, \@loadTables );
+
+    $loadAll .= "SELECT SETVAL('money.billable_xact_id_seq', (SELECT MAX(id) FROM money.billing));\n\n";
+    $loadAll .= "SELECT SETVAL('config.remote_account_id_seq', (SELECT MAX(id) FROM config.remote_account));\n\n";
+    $loadAll .= "SELECT SETVAL('money.payment_id_seq', (SELECT MAX(id) FROM money.payment));\n\n";
+    $loadAll .= "SELECT SETVAL('asset.copy_id_seq', (SELECT MAX(id) FROM asset.copy));\n\n";
+    $loadAll .= "SELECT SETVAL('vandelay.queue_id_seq', (SELECT MAX(id) FROM vandelay.queue));\n\n";
+    $loadAll .= "SELECT SETVAL('vandelay.queued_record_id_seq', (SELECT MAX(id) FROM vandelay.queued_record));\n\n";
+
     $loadAll .= "COMMIT;\n";
     print "Writing loader > $outputFolder/load_all.sql\n";
     open( OUT, "> $outputFolder/load_all.sql" );
