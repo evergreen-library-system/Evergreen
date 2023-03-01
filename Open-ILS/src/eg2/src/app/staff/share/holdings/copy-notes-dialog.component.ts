@@ -32,7 +32,7 @@ export class CopyNotesDialogComponent
     // If there is only one copyId, then notes may be applied or removed.
     @Input() copyIds: number[] = [];
 
-    mode: string; // create | manage
+    mode: string; // create | manage | edit
 
     // If true, no attempt is made to save the new notes to the
     // database.  It's assumed this takes place in the calling code.
@@ -51,6 +51,8 @@ export class CopyNotesDialogComponent
     delNotes: IdlObject[] = [];
 
     autoId = -1;
+
+    idToEdit: number;
 
     @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
     @ViewChild('errorMsg', { static: true }) private errorMsg: StringComponent;
@@ -110,6 +112,18 @@ export class CopyNotesDialogComponent
                 this.copy = copies[0];
             }
         });
+    }
+
+    editNote(note: IdlObject) {
+        this.idToEdit = note.id();
+        this.mode = 'edit';
+    }
+
+    returnToManage() {
+        this.getCopies().then(() => {
+            this.idToEdit = null;
+            this.mode = 'manage';
+        })
     }
 
     removeNote(note: IdlObject) {

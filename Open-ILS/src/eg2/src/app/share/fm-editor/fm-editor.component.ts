@@ -4,7 +4,6 @@ import {NgForm} from '@angular/forms';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
@@ -262,7 +261,6 @@ export class FmRecordEditorComponent
     constructor(
       private modal: NgbModal, // required for passing to parent
       private idl: IdlService,
-      private auth: AuthService,
       private toast: ToastService,
       private format: FormatService,
       private org: OrgService,
