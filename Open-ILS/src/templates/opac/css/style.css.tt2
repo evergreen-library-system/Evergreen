@@ -3504,3 +3504,6 @@ span.egtd { display:table-cell; }
 .pointer {
     cursor: pointer;
 }
+#password_visibility{
+   display: none;
+}

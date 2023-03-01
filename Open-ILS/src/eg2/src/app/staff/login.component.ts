@@ -78,6 +78,8 @@ export class StaffLoginComponent implements OnInit {
 
     handleSubmit() {
 
+        this.passwordVisible = false;
+
         // post-login URL
         let url: string = this.routeTo || '/staff/splash';
 

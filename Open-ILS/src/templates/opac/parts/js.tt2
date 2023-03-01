@@ -44,12 +44,19 @@
 
 <!-- Password Visibility Checkbox -->
 <script>
+    // Show the checkbox if JS is enabled
+    document.getElementById('password_visibility').style.display = 'block';
     let checkbox = document.getElementById('password_visibility_checkbox');
     let input = document.getElementById('password_field');
     checkbox.addEventListener('change', () => {
         if(checkbox.checked) input.type = 'text';
         else input.type = 'password';
         input.focus();
+    });
+    // If the form is submitted revert the password field to a password input 
+    let form = document.getElementById('opac-login-form');
+    form.addEventListener('submit', () => {
+        input.type = 'password';
     });
 </script>
 

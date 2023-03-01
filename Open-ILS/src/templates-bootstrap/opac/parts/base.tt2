@@ -73,6 +73,10 @@
                     input.type == 'password' ? [input.type = 'text', icon.setAttribute('class','fas fa-eye')] : [input.type = 'password', icon.setAttribute('class', 'fas fa-eye-slash')];
                     input.focus();
                 });
+                let loginForm = document.getElementById('login_form');
+                loginForm.addEventListener('submit', ()=>{
+                    input.type = 'password';
+                });
 			});
 		</script>
 

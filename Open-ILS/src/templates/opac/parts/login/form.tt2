@@ -46,7 +46,7 @@
     [% END %]
     [% IF !sso_enabled || sso_native %]
     [% l('Please enter the following information:') %]
-    <form method='post'>
+    <form id="opac-login-form" method='post'>
         <div class='login-form-left'>
             <label for='username_field' class="lbl1" >[% l('Library Card Number or Username') %]</label>
             <div class="input_bg">
@@ -59,7 +59,7 @@
             <div class="input_bg">
                 <input id="password_field" name="password" type="password" spellcheck="false"/>
             </div>
-            <div class="input_bg">
+            <div id="password_visibility" class="input_bg">
                 <input id="password_visibility_checkbox" type="checkbox" />
                 <label for="password_visibility_checkbox">Show Password</label>
             </div>

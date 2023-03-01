@@ -11,7 +11,7 @@
             The input IDs are there to match the labels.  
             They are not referenced in the Login controller.
           -->
-          <form ng-submit="login(args)" name="login-form" class="form-horizontal" role="form">
+          <form ng-submit="login(args)" id="login_form" name="login-form" class="form-horizontal" role="form">
             <div class="form-group">
               <label class="col-md-4 control-label" for="login-username">[% l('Username') %]</label>
               <div class="col-md-8">
@@ -26,7 +26,7 @@
               <div class="col-md-8">
                 <div class="input-group">
                   <input type="password" id="login-password" class="form-control"
-                    placeholder="Password" spellcheck="false" ng-model="args.password"/>
+                    placeholder="Password" spellcheck="false" autocomplete="false" ng-model="args.password"/>
                   <span id="show_password" class="input-group-addon pointer"><i class="glyphicon glyphicon-eye-close"></i></span>
                 </div>
               </div>
@@ -78,5 +78,8 @@
     btn.addEventListener('click', () => {
       input.type == 'password' ? [input.type = 'text', icon.setAttribute('class', 'glyphicon glyphicon-eye-open')] : [input.type = 'password', icon.setAttribute('class', 'glyphicon glyphicon-eye-close')];
       input.focus();
+    });
+    $('#login_form').submit(()=>{
+        input.type='password'; 
     });
 </script>
