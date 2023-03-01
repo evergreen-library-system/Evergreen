@@ -153,7 +153,7 @@
                 <tr class="[% ahr.frozen == 't' ? ' inactive-hold' : '' %]">
                     <td class="checkbox_column">
 
-                    <span class="sr-only">[% l('Hold Number') %] [% cnt; %]</span>
+                    <span class="sr-only">[% l('Hold Number [_1]', cnt); %]</span>
                         <input type="checkbox" name="hold_id" value="[% ahr.id %]"
                             [% html_text_attr('title', l('Select hold [_1]', attrs.title)) %]/>
                     </td>
