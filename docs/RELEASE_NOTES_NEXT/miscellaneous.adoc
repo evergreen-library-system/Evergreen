@@ -6,3 +6,4 @@
 * Improved styling of paid line items in acquisitions screens (LP#1999270)
 * Improved styling of the keyboard shortcut info modal (LP#1999955)
 * (Developer) Add Emacs mode to `fm_IDL.xml` (LP#1914625)
+* `autogen.sh` can now accept a `-c` switch to specify the location of `opensrf_core.xml`. This is useful for certain multi-tenant setups of Evergreen. (LP#2003707)
