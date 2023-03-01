@@ -5,3 +5,4 @@
 * Resolve search performance degradation with PostgreSQL version 12 and up (LP#1999274)
 * Improved styling of paid line items in acquisitions screens (LP#1999270)
 * Improved styling of the keyboard shortcut info modal (LP#1999955)
+* (Developer) Add Emacs mode to `fm_IDL.xml` (LP#1914625)
