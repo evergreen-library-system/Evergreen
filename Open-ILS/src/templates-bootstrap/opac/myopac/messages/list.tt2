@@ -95,7 +95,7 @@
                 [% FOR message IN ctx.patron_messages; %]
                     <tr [% IF !message.is_read %]class="unread-patron-message"[% END %]>
                         <td class="checkCell">
-                            <span class="sr-only">[% l('Message Number') count; %]</span>
+                            <span class="sr-only">[% l('Message Number [_1]', count); %]</span>
                         <input type="checkbox" name="message_id" value="[% message.id %]"
                             [% html_text_attr('aria-label', l('Select message [_1]', message.title)) %]/>
                         </td>
@@ -113,7 +113,7 @@
                         </td>
                         <td>
                         <span class="sr-only">[% l('Message Options') %]</span>
-                            <a class="btn btn-sm btn-action" href="[% mkurl('messages', { single => 1, message_id => message.id } ) %]" title="[% l('Read) message.title | html %]"><i class="fas fa-glasses" aria-hidden="true"></i> [% l('Read') %]</a>
+                            <a class="btn btn-sm btn-action" href="[% mkurl('messages', { single => 1, message_id => message.id } ) %]" title="[% l('Read [_1]', message.title) | html %]"><i class="fas fa-glasses" aria-hidden="true"></i> [% l('Read') %]</a>
                         </td>
                     </tr>
                 [% END %]
