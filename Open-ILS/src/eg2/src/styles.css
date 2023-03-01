@@ -258,6 +258,11 @@ body>.dropdown-menu {z-index: 2100;}
 @media (min-width: 1600px) { .modal-xl { max-width: 1500px; } }
 @media (min-width: 1700px) { .modal-xl { max-width: 1600px; } }
 
+/* Default modal background color */
+.modal-header {
+  background-color: #062C65;
+}
+
 /* Contrast for dialog titles */
 .modal-header .modal-title {
   color: #fff;
