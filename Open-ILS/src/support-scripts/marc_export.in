@@ -100,7 +100,8 @@ sub new {
                'since=s',
                'store=s',
                'uris',
-               'debug');
+               'debug',
+               'pipe');
 
     if ($opts{help}) {
         print <<"HELP";
@@ -132,6 +133,8 @@ Usage: $0 [options]
  --store            Use the given storage backend to connect to the database.
                     Choices are (reporter, cstore, storage) [reporter]
  --since            Export records modified since a certain date and time.
+ --pipe             Force record ids to be read from list on standard input,
+                    despite other options to the contrary
 
  Additional options for type = 'BIBLIO':
  --items or -i      Include items (holdings) in the output
@@ -191,6 +194,15 @@ HELP
     if ($opts{all} && $opts{since}) {
         die('Incompatible arguments: you cannot combine a request for all ' .
                 'records with a request for records added or changed since a certain date');
+    }
+    if ($opts{all} && $opts{pipe}) {
+        die('Incompatible arguments: you cannot combine a request for all ' .
+                'records with the option to read record ids via standard input');
+    }
+    if ($opts{since} && $opts{pipe}) {
+        die('Incompatible arguments: you cannot combine a request for records added or '. 
+                'changed since a certain date with ' .
+                'the option to read record ids via standard input');
     }
     $opts{type} = lc($opts{type});
     if (none {$_ eq $opts{type}} (TYPES)) {
@@ -291,10 +303,13 @@ sub need_ids {
     my $self = shift;
     my $rv = 1;
 
-    $rv = 0 if ($self->{options}->{all});
     $rv = 0 if ($self->{options}->{since});
     $rv = 0 if ($self->{options}->{library});
     $rv = 0 if ($self->{options}->{descendants});
+    # --pipe trumps the above.
+    $rv = 1 if ($self->{options}->{pipe});
+    # --all trumps --pipe, but we should throw an error before we get here.
+    $rv = 0 if ($self->{options}->{all});
 
     return $rv;
 }

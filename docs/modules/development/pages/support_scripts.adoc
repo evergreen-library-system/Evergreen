@@ -171,6 +171,17 @@ All of the specified org. units and their descendants will be included
 in the output.  You can also combine `--library` and `--descendants`
 options when necessary.
 
+==== --pipe ====
+
+If you want to use the `--library` and `--descendants` options with a list
+of bib ids from standard input, you can make use of the `--pipe` option.
+
+If you have a master list of bib ids, and only want to export bibs that have
+holdings from certain owning libraries then this option will help you reach 
+that goal.
+
+It will not work to combine `--all` or `--since` with `--pipe`.
+
 ==== --items ====
 
 The `--items` option will add an 852 field for every relevant item to the MARC

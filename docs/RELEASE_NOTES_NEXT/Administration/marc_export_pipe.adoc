@@ -1,0 +1,25 @@
+== --pipe option for marc_export ==
+
+Add a --pipe option to marc_export to force reading of record ids from
+standard input when one or more of the --library, or
+--descendants options are used.  This permits more flexibility when
+exporting records with holdings for given libraries or subsets of a
+collection.
+
+It is an error to specify the --all or --since  and --pipe options in the same
+command line.
+
+
+[source]
+--------
+        --pipe
+
+Some examples:
+
+        --pipe --library BR1   [Filter the list of bib ids by those 
+                                with BR1 as the Owning Library]
+
+        --pipe --descendants BR1 [Filters the list of bib ids by those 
+                                  with BR1 or descendants as the Owning Library]
+
+--------
