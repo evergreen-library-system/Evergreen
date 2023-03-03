@@ -925,7 +925,7 @@ CREATE TABLE acq.invoice_item ( -- for invoice-only debits: taxes/fees/non-bib i
     id              SERIAL      PRIMARY KEY,
     invoice         INT         NOT NULL REFERENCES acq.invoice (id) ON UPDATE CASCADE ON DELETE CASCADE,
     purchase_order  INT         REFERENCES acq.purchase_order (id) ON UPDATE CASCADE ON DELETE SET NULL,
-    fund_debit      INT         REFERENCES acq.fund_debit (id),
+    fund_debit      INT         REFERENCES acq.fund_debit (id) DEFERRABLE INITIALLY DEFERRED,
     inv_item_type   TEXT        NOT NULL REFERENCES acq.invoice_item_type (code),
     title           TEXT,
     author          TEXT,

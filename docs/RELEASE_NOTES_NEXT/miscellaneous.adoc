@@ -1,1 +1,2 @@
 
+* Make the foreign key relationship between the acq.invoice_item and acq.fund_debit tables deferrable so that fund debits can be deleted when they reference invoice items that are deleted in the same transaction. (LP#2009066)
