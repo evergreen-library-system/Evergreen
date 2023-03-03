@@ -2,3 +2,4 @@
 * Remove deprecated method "open-ils.serial.bib.summary_statements".
   As an upgrade note, any site that is still keeping the legacy JSPAC
   running will experience more degradation of its functionality.
+* Make the foreign key relationship between the acq.invoice_item and acq.fund_debit tables deferrable so that fund debits can be deleted when they reference invoice items that are deleted in the same transaction. (LP#2009066)
