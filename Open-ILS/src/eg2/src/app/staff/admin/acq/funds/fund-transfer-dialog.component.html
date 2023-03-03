@@ -2,7 +2,7 @@
 <eg-string #updateFailedString i18n-text text="Fund Transfer Failed"></eg-string>
 
 <ng-template #dialogContent>
-  <div class="modal-header bg-info" *ngIf="doneLoading">
+  <div class="modal-header" *ngIf="doneLoading">
     <h3 class="modal-title" i18n>Transfer from Fund {{sourceFund?.name()}} ({{sourceFund?.code()}} ({{sourceFund?.year()}}) ({{sourceFund?.org().shortname()}}))</h3>
     <button type="button" class="btn-close btn-close-white"
       i18n-aria-label aria-label="Close" (click)="close()"></button>
