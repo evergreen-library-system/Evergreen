@@ -10,7 +10,7 @@
 </eg-confirm-dialog>
 
 <ng-template #dialogContent>
-  <div class="modal-header bg-info" *ngIf="!hideBanner">
+  <div class="modal-header" *ngIf="!hideBanner">
     <h4 class="modal-title" i18n>Record Editor: {{recordLabel}}</h4>
     <ng-container *ngIf="isDialog()">
       <button type="button" class="close"

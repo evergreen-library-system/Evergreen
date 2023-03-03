@@ -2,7 +2,7 @@
 <eg-string #updateFailedString i18n-text text="Exchange Rates Update Failed"></eg-string>
 
 <ng-template #dialogContent>
-  <div class="modal-header bg-info" *ngIf="doneLoading">
+  <div class="modal-header" *ngIf="doneLoading">
     <h3 *ngIf="canUpdate" class="modal-title" i18n>Manage Exchange Rates for {{currency.code()}}: {{currency.label()}}</h3>
     <h3 *ngIf="!canUpdate" class="modal-title" i18n>View Exchange Rates for {{currency.code()}}: {{currency.label()}}</h3>
     <button type="button" class="close"
