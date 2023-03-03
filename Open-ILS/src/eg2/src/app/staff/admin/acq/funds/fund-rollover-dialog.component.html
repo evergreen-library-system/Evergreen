@@ -2,7 +2,7 @@
 <eg-string #updateFailedString i18n-text text="Rollover Failed"></eg-string>
 
 <ng-template #dialogContent>
-  <div class="modal-header bg-info" *ngIf="doneLoading">
+  <div class="modal-header" *ngIf="doneLoading">
     <h3 class="modal-title" i18n>Fund Propagation and Rollover</h3>
     <button type="button" class="close"
       [disabled]="isProcessing"
